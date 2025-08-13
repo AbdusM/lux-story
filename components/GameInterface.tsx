@@ -75,6 +75,13 @@ export function GameInterface() {
     }
   }, [gameState, handleLoadScene])
   
+  // Auto-load first scene after intro
+  useEffect(() => {
+    if (!showIntro && gameState && isInitialized && messages.length === 0) {
+      handleLoadScene(gameState.getState().currentScene)
+    }
+  }, [showIntro, gameState, isInitialized, messages.length, handleLoadScene])
+  
   const handleChoice = useCallback(async (choice: any) => {
     if (!gameState || !currentScene) return
     
