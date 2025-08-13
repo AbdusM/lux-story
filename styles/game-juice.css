@@ -1,0 +1,67 @@
+/* Ultra-light Game Juice: CSS transforms instead of complex animation library */
+
+/* Button Juice */
+button {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+button:active {
+  transform: translateY(0px);
+  transition-duration: 0.05s;
+}
+
+/* Card Juice */
+[class*="card"] {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+[class*="card"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Progress Bar Juice */
+[class*="progress"] div {
+  transition: width 0.5s ease-out;
+}
+
+/* Message Appear Juice */
+.message-enter {
+  animation: slideUp 0.4s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Choice Hover Juice */
+.choice-button {
+  transition: all 0.2s ease;
+}
+
+.choice-button:hover:not(:disabled) {
+  transform: scale(1.02);
+  filter: brightness(1.1);
+}
+
+/* Companion Bounce */
+.companion-avatar:hover {
+  animation: gentleBounce 0.6s ease-in-out;
+}
+
+@keyframes gentleBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}

@@ -1,0 +1,271 @@
+{
+  "character": {
+    "name": "Lux",
+    "title": "A Sloth",
+    "description": "One who moves slowly through the digital forest"
+  },
+  "chapters": [
+    {
+      "id": 1,
+      "title": "Morning",
+      "scenes": [
+        {
+          "id": "1-1",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The digital forest exists as it always has. Light moves through data streams. You are here."
+        },
+        {
+          "id": "1-2",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The morning arrives without announcement. Something feels different today, though different is not wrong."
+        },
+        {
+          "id": "1-3",
+          "type": "choice",
+          "text": "The air holds a quality you cannot name.",
+          "choices": [
+            {
+              "text": "Notice the quality",
+              "consequence": "observation",
+              "nextScene": "1-4a"
+            },
+            {
+              "text": "Let it be",
+              "consequence": "acceptance",
+              "nextScene": "1-4b"
+            },
+            {
+              "text": "Breathe deeper",
+              "consequence": "immersion",
+              "nextScene": "1-4c"
+            }
+          ]
+        },
+        {
+          "id": "1-4c",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "You breathe. The air enters and leaves. This simple act contains everything."
+        },
+        {
+          "id": "1-4a",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "You notice. The noticing is enough. The forest continues its quiet processes."
+        },
+        {
+          "id": "1-4b",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "You let it be. Being is its own form of understanding."
+        },
+        {
+          "id": "1-5",
+          "type": "choice",
+          "text": "Time passes as time does.",
+          "choices": [
+            {
+              "text": "Move to a different tree",
+              "consequence": "movement",
+              "nextScene": "1-6a"
+            },
+            {
+              "text": "Remain where you are",
+              "consequence": "stillness",
+              "nextScene": "1-6b"
+            }
+          ]
+        },
+        {
+          "id": "1-6a",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "You move slowly to another tree. It is much like the first tree. This is neither good nor bad."
+        },
+        {
+          "id": "1-6b",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "You remain. The tree remains. Together you are still."
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Afternoon",
+      "scenes": [
+        {
+          "id": "2-1",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The light has shifted. This happens every day, yet today you notice it."
+        },
+        {
+          "id": "2-2",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Another presence moves through the forest. Not urgent. Just present."
+        },
+        {
+          "id": "2-3",
+          "type": "choice",
+          "text": "The presence exists in your awareness.",
+          "choices": [
+            {
+              "text": "Acknowledge it silently",
+              "consequence": "recognition",
+              "nextScene": "2-4a"
+            },
+            {
+              "text": "Continue your own path",
+              "consequence": "independence",
+              "nextScene": "2-4b"
+            }
+          ]
+        },
+        {
+          "id": "2-4a",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "You acknowledge. They acknowledge. Nothing more is needed."
+        },
+        {
+          "id": "2-4b",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Paths cross and uncross. This is the way of forests."
+        },
+        {
+          "id": "2-5",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The afternoon deepens. Shadows grow longer, as shadows do."
+        },
+        {
+          "id": "2-6",
+          "type": "choice",
+          "text": "The forest breathes around you.",
+          "choices": [
+            {
+              "text": "Breathe with it",
+              "consequence": "harmony",
+              "nextScene": "2-7a"
+            },
+            {
+              "text": "Breathe your own rhythm",
+              "consequence": "autonomy",
+              "nextScene": "2-7b"
+            },
+            {
+              "text": "Hold your breath",
+              "consequence": "suspension",
+              "nextScene": "2-7c"
+            },
+            {
+              "text": "Forget breathing",
+              "consequence": "transcendence",
+              "nextScene": "2-7d"
+            }
+          ]
+        },
+        {
+          "id": "2-7c",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "You hold. The world continues without your breath. This too is a form of participation."
+        },
+        {
+          "id": "2-7d",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "You forget to think about breathing. It happens anyway. Some things need no attention."
+        },
+        {
+          "id": "2-7a",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Your breath finds the forest's rhythm. Or perhaps the forest finds yours. The distinction matters less than the breathing."
+        },
+        {
+          "id": "2-7b",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Two rhythms exist side by side. Neither disrupts the other."
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Evening",
+      "scenes": [
+        {
+          "id": "3-1",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The day softens toward evening. You have moved little and seen much."
+        },
+        {
+          "id": "3-2",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Or perhaps you have seen little and understood much. The measurement is unimportant."
+        },
+        {
+          "id": "3-3",
+          "type": "choice",
+          "text": "The forest prepares for night.",
+          "choices": [
+            {
+              "text": "Prepare with it",
+              "consequence": "alignment",
+              "nextScene": "3-4a"
+            },
+            {
+              "text": "Watch the preparation",
+              "consequence": "observation",
+              "nextScene": "3-4b"
+            }
+          ]
+        },
+        {
+          "id": "3-4a",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "You settle as the forest settles. Together, you become quiet."
+        },
+        {
+          "id": "3-4b",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "You observe the forest's evening rituals. They are the same as yesterday. This sameness is a form of beauty."
+        },
+        {
+          "id": "3-5",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Stars begin to appear in the spaces between leaves. They have always been there, waiting for darkness to reveal them."
+        },
+        {
+          "id": "3-6",
+          "type": "choice",
+          "text": "Night arrives.",
+          "choices": [
+            {
+              "text": "Rest",
+              "consequence": "rest",
+              "nextScene": "3-7"
+            }
+          ]
+        },
+        {
+          "id": "3-7",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "You rest. The forest continues. Tomorrow will be much like today. This is not a disappointment."
+        }
+      ]
+    }
+  ]
+}

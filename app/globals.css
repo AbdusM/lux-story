@@ -1,0 +1,182 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import centralized animations */
+@import '../styles/animations.css';
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Premium Typography System */
+@layer base {
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "kern" 1;
+  }
+  
+  .text-premium {
+    letter-spacing: 0.025em;
+    line-height: 1.7;
+  }
+  
+  .text-dialogue {
+    @apply text-lg leading-relaxed tracking-wide;
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  }
+  
+  .text-narration {
+    @apply text-lg leading-loose tracking-wider;
+    font-family: Georgia, "Times New Roman", serif;
+  }
+}
+
+/* Pokemon-Style Text Box Design */
+@layer components {
+  .pokemon-text-box {
+    @apply bg-slate-50 dark:bg-slate-900 border-4 border-slate-800 dark:border-slate-200 rounded-lg;
+    box-shadow: 
+      inset 2px 2px 0 rgba(255, 255, 255, 0.8),
+      inset -2px -2px 0 rgba(0, 0, 0, 0.2),
+      0 4px 8px rgba(0, 0, 0, 0.3);
+    max-width: 48rem;
+    margin: 0 auto;
+  }
+  
+  .pokemon-choice-item {
+    @apply relative pl-8 py-3 transition-all duration-200 hover:translate-x-1 hover:bg-black/5 dark:hover:bg-white/5;
+  }
+  
+  .pokemon-choice-arrow {
+    @apply absolute left-2 top-1/2 -translate-y-1/2 opacity-0 transition-opacity duration-200;
+  }
+  
+  .pokemon-choice-item:hover .pokemon-choice-arrow {
+    @apply opacity-100;
+  }
+}
+
+/* Character-Specific Styling */
+@layer utilities {
+  .lux-text-glow {
+    text-shadow: 
+      0 0 20px rgba(147, 112, 219, 0.6),
+      0 0 40px rgba(147, 112, 219, 0.4);
+  }
+  
+  .swift-text-glow {
+    text-shadow: 
+      0 0 15px rgba(76, 175, 80, 0.5),
+      0 0 30px rgba(76, 175, 80, 0.3);
+  }
+  
+  .sage-text-glow {
+    text-shadow: 
+      0 0 18px rgba(255, 152, 0, 0.5),
+      0 0 35px rgba(255, 152, 0, 0.3);
+  }
+  
+  .buzz-text-glow {
+    text-shadow: 
+      0 0 12px rgba(0, 188, 212, 0.5),
+      0 0 25px rgba(0, 188, 212, 0.3);
+  }
+}
+
+/* Premium Animation Utilities - Using centralized keyframes */
+@layer utilities {
+  .lux-meditation {
+    animation: breathe 4s var(--anim-ease-default) infinite;
+  }
+  
+  .text-typewriter {
+    animation: typewriter 0.5s steps(1) forwards;
+  }
+  
+  .pulse-glow {
+    animation: pulse-glow 2s var(--anim-ease-default) infinite;
+  }
+  
+  .float-subtle {
+    animation: float-subtle 3s var(--anim-ease-default) infinite;
+  }
+  
+  .third-eye-glow {
+    @apply shadow-lg shadow-purple-500/50;
+    animation: third-eye-pulse 3s var(--anim-ease-default) infinite;
+  }
+}
+
+/* Supergiant Games-Inspired Atmospheric Effects */
+@layer utilities {
+  .atmospheric-fog {
+    background: 
+      radial-gradient(ellipse at 50% 70%, rgba(173, 216, 230, 0.15) 0%, transparent 70%),
+      linear-gradient(to top, rgba(255, 255, 255, 0.05) 60%, transparent 100%);
+    pointer-events: none;
+  }
+  
+  .depth-shadow {
+    box-shadow: 
+      0 2px 4px rgba(0, 0, 0, 0.1),
+      0 4px 8px rgba(0, 0, 0, 0.1),
+      0 8px 16px rgba(0, 0, 0, 0.1),
+      0 16px 32px rgba(0, 0, 0, 0.15);
+  }
+  
+  .premium-border {
+    @apply border-2 border-slate-700 dark:border-slate-300;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.02), transparent);
+  }
+}
