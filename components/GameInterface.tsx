@@ -15,6 +15,7 @@ import { useGameState } from "@/hooks/useGameState"
 import { useSceneTransitions } from "@/hooks/useSceneTransitions"
 import { useMessageManager } from "@/hooks/useMessageManager"
 import { usePresence } from "@/hooks/usePresence"
+import { usePatternRevelation } from "@/hooks/usePatternRevelation"
 
 export function GameInterface() {
   const [storyEngine] = useState(() => new StoryEngine())
@@ -25,6 +26,7 @@ export function GameInterface() {
   const { currentScene, isProcessing, loadScene, setProcessing } = useSceneTransitions(storyEngine, gameState)
   const { messages, messagesEndRef, addMessage, clearMessages } = useMessageManager()
   const { beginPresence, checkPresence, resetPresence } = usePresence()
+  const { checkForRevelation } = usePatternRevelation()
   
   // Check for natural revelations through presence (not rewards)
   useEffect(() => {
@@ -33,22 +35,35 @@ export function GameInterface() {
       
       // Check occasionally, not constantly - no pressure
       const interval = setInterval(() => {
-        const revelation = checkPresence()
-        if (revelation) {
+        // Check for presence revelations
+        const presenceRevelation = checkPresence()
+        if (presenceRevelation) {
           // Add as a subtle observation, not a reward notification
           setTimeout(() => {
             addMessage({
               speaker: 'narrator',
-              text: revelation,
+              text: presenceRevelation,
               type: 'narration'
             })
           }, 500)
+        }
+        
+        // Check for pattern revelations (Birmingham career demo)
+        const patternRevelation = checkForRevelation()
+        if (patternRevelation) {
+          setTimeout(() => {
+            addMessage({
+              speaker: 'narrator',
+              text: patternRevelation,
+              type: 'whisper'
+            })
+          }, 2000)
         }
       }, 5000) // Check every 5 seconds, not every second
       
       return () => clearInterval(interval)
     }
-  }, [currentScene, beginPresence, checkPresence, addMessage])
+  }, [currentScene, beginPresence, checkPresence, checkForRevelation, addMessage])
   
   // Load scene with simple message handling
   const handleLoadScene = useCallback((sceneId: string, forceLoad = false) => {
@@ -114,8 +129,44 @@ export function GameInterface() {
     setProcessing(true)
     resetPresence() // New scene, new presence
     
-    // Simply record the choice and move on
-    gameState.recordChoice(currentScene.id, choice.text, choice.consequence)
+    // Record the choice with theme tracking for Birmingham demo
+    // Map consequences to career-relevant themes
+    const themeMap: Record<string, string> = {
+      'observation': 'analyzing',
+      'acceptance': 'patience',
+      'immersion': 'experiencing',
+      'patience': 'patience',
+      'engagement': 'connecting',
+      'movement': 'action',
+      'presence': 'mindfulness',
+      'planning': 'organizing',
+      'curiosity': 'questioning',
+      'indifference': 'detachment',
+      'silence': 'listening',
+      'reassurance': 'helping',
+      'questioning': 'questioning',
+      'deflection': 'avoiding',
+      'persistence': 'perseverance',
+      'philosophy': 'thinking',
+      'seeking': 'exploring',
+      'receptivity': 'openness',
+      'contribution': 'sharing',
+      'traditional': 'conforming',
+      'honesty': 'authenticity',
+      'uncertainty': 'accepting_unknown',
+      'creation': 'building',
+      'seeking_peace': 'harmony',
+      'seeking_purpose': 'meaning',
+      'seeking_nothing': 'contentment',
+      'seeking_unknown': 'exploring',
+      'confirmation': 'affirming',
+      'mirror': 'reflecting',
+      'teaching': 'guiding',
+      'nothing': 'simplicity'
+    }
+    
+    const theme = themeMap[choice.consequence] || choice.consequence
+    gameState.recordChoiceWithTheme(currentScene.id, choice.text, choice.consequence, theme)
     
     // Add choice to messages
     addMessage({
