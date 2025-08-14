@@ -361,6 +361,70 @@
           "text": "The afternoon deepens. Shadows grow longer, as shadows do."
         },
         {
+          "id": "2-13a",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "A butterfly flutters past. Then past again. Or maybe it hasn't happened yet."
+        },
+        {
+          "id": "2-13b",
+          "type": "dialogue",
+          "speaker": "Zippy",
+          "text": "Was I going to be here? Or am I already? Time confuses me."
+        },
+        {
+          "id": "2-13c",
+          "type": "choice",
+          "text": "The butterfly hovers, wings beating in patterns that don't match any timeline.",
+          "choices": [
+            {
+              "text": "When are you from?",
+              "consequence": "curiosity",
+              "nextScene": "2-13d"
+            },
+            {
+              "text": "Time is just a concept",
+              "consequence": "philosophy",
+              "nextScene": "2-13e"
+            },
+            {
+              "text": "Watch the wing patterns",
+              "consequence": "observation",
+              "nextScene": "2-13f"
+            }
+          ]
+        },
+        {
+          "id": "2-13d",
+          "type": "dialogue",
+          "speaker": "Zippy",
+          "text": "From? I'm from next Tuesday, I think. Or last year. The rabbit rushed by so fast it bent my timeline."
+        },
+        {
+          "id": "2-13e",
+          "type": "dialogue",
+          "speaker": "Zippy",
+          "text": "Is it? I forgot what I was doing tomorrow. Or did yesterday. Concepts flutter away like... like... what was I saying?"
+        },
+        {
+          "id": "2-13f",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The patterns spell words in languages that haven't been invented yet. Or ancient codes. The difference is unclear."
+        },
+        {
+          "id": "2-13g",
+          "type": "dialogue",
+          "speaker": "Zippy",
+          "text": "The ant knows about carrying. Maybe too much. Time is heavy when you count it."
+        },
+        {
+          "id": "2-13h",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Zippy flutters backward into the future, or forward into the past. The forest continues as if nothing unusual happened."
+        },
+        {
           "id": "2-14",
           "type": "choice",
           "text": "You've been still for a long time.",
@@ -547,6 +611,48 @@
           "type": "narration",
           "speaker": "narrator",
           "text": "Stars begin to appear in the spaces between leaves. They have always been there, waiting for darkness to reveal them."
+        },
+        {
+          "id": "3-9a",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Zippy flutters through a moonbeam, leaving traces of yesterday's light."
+        },
+        {
+          "id": "3-9b",
+          "type": "dialogue",
+          "speaker": "Zippy",
+          "text": "The owl sees in the dark. Useful for some futures. I remember when I'll understand that."
+        },
+        {
+          "id": "3-9c",
+          "type": "dialogue",
+          "speaker": "Wise Owl",
+          "text": "Little butterfly, you speak in riddles."
+        },
+        {
+          "id": "3-9d",
+          "type": "dialogue",
+          "speaker": "Zippy",
+          "text": "Do I? Will I? I thought I was speaking in circles. Time makes everything a riddle."
+        },
+        {
+          "id": "3-9e",
+          "type": "dialogue",
+          "speaker": "Lux",
+          "text": "..."
+        },
+        {
+          "id": "3-9f",
+          "type": "dialogue",
+          "speaker": "Zippy",
+          "text": "Lux doesn't work. This is also work. I learned that tomorrow."
+        },
+        {
+          "id": "3-9g",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The butterfly spirals upward, chasing a memory of next morning's sun."
         },
         {
           "id": "3-10",
@@ -758,6 +864,30 @@
           "type": "narration",
           "speaker": "narrator",
           "text": "And Lux... Lux might be awake or asleep. The distinction has never mattered to Lux."
+        },
+        {
+          "id": "4-9a",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Zippy dreams backward through tomorrow's memories."
+        },
+        {
+          "id": "4-9b",
+          "type": "dialogue",
+          "speaker": "Zippy",
+          "text": "In the future, you already know what you're looking for. I came back to forget it with you."
+        },
+        {
+          "id": "4-9c",
+          "type": "dialogue",
+          "speaker": "Zippy",
+          "text": "The rushing rabbit will slow down next year. Or was it last year? Either way, it happens."
+        },
+        {
+          "id": "4-9d",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Zippy's wings create patterns that spell out careers that don't exist yet, or stopped existing, or both."
         },
         {
           "id": "4-10",
@@ -1057,6 +1187,42 @@
           "type": "narration",
           "speaker": "narrator",
           "text": "You realize Lux has been teaching you something. Or teaching you nothing. Or just hanging from a branch while you learned."
+        },
+        {
+          "id": "5-18a",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Zippy lands on your shoulder, or will land, or has already landed and left."
+        },
+        {
+          "id": "5-18b",
+          "type": "dialogue",
+          "speaker": "Zippy",
+          "text": "You found it! Or you will find it. The thing you weren't looking for."
+        },
+        {
+          "id": "5-18c",
+          "type": "dialogue",
+          "speaker": "You",
+          "text": "What thing?"
+        },
+        {
+          "id": "5-18d",
+          "type": "dialogue",
+          "speaker": "Zippy",
+          "text": "The path that was always there. Some call it career. I call it Tuesday. Or was it Thursday?"
+        },
+        {
+          "id": "5-18e",
+          "type": "dialogue",
+          "speaker": "Zippy",
+          "text": "Time to flutter backward into tomorrow. See you yesterday!"
+        },
+        {
+          "id": "5-18f",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The butterfly disappears, leaving only the faint scent of possibilities."
         },
         {
           "id": "5-19",

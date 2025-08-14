@@ -16,6 +16,7 @@ export function StoryMessage({ speaker, text, type = 'dialogue', className, type
   const [showContinueIndicator, setShowContinueIndicator] = useState(false)
   
   const isLux = speaker === 'Lux'
+  const isZippy = speaker === 'Zippy'
   const isNarration = type === 'narration'
   const isWhisper = type === 'whisper'
   const isSensation = type === 'sensation'
@@ -70,7 +71,10 @@ export function StoryMessage({ speaker, text, type = 'dialogue', className, type
     )} data-type={type}>
       {!isNarration && !isWhisper && !isSensation && (
         <div className="flex items-center gap-3 mb-2">
-          <span className="text-2xl float-subtle">
+          <span className={cn(
+            "text-2xl",
+            isZippy ? "animate-flutter" : "float-subtle"
+          )}>
             {characterEmoji[speaker as keyof typeof characterEmoji] || '🌟'}
           </span>
           <span className={cn(
@@ -82,6 +86,11 @@ export function StoryMessage({ speaker, text, type = 'dialogue', className, type
           {isLux && (
             <span className="text-xs bg-purple-100 dark:bg-purple-900/30 px-3 py-1 rounded-full third-eye-glow">
               Third Eye Active
+            </span>
+          )}
+          {isZippy && (
+            <span className="text-xs bg-blue-100 dark:bg-blue-900/30 px-3 py-1 rounded-full zippy-text-glow">
+              Time Confused
             </span>
           )}
         </div>

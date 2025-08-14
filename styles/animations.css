@@ -165,8 +165,38 @@
 }
 
 /* ========================================
-   Text Effects
+   Character Animations
    ======================================== */
+
+/* Zippy butterfly flutter animation */
+@keyframes flutter {
+  0%, 100% {
+    transform: translateX(0) rotate(0deg);
+  }
+  25% {
+    transform: translateX(-3px) rotate(-2deg) translateY(-2px);
+  }
+  50% {
+    transform: translateX(2px) rotate(1deg) translateY(-4px);
+  }
+  75% {
+    transform: translateX(-2px) rotate(2deg) translateY(-1px);
+  }
+}
+
+/* Zippy text glow effect */
+@keyframes zippy-glow {
+  0%, 100% {
+    text-shadow: 0 0 8px rgba(96, 165, 250, 0.6);
+  }
+  50% {
+    text-shadow: 0 0 16px rgba(96, 165, 250, 0.9);
+  }
+}
+
+/* ========================================
+   Text Effects
+   ========================================*/
 
 /* Typewriter effect for dramatic text */
 @keyframes typewriter {
@@ -261,6 +291,14 @@
 
 .animate-slide-up {
   animation: slide-up var(--anim-duration-medium) var(--anim-ease-out) forwards;
+}
+
+.animate-flutter {
+  animation: flutter 3s var(--anim-ease-elastic) infinite;
+}
+
+.zippy-text-glow {
+  animation: zippy-glow 2s var(--anim-ease-default) infinite;
 }
 
 /* ========================================
