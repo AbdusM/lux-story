@@ -31,7 +31,7 @@ export function GameInterface() {
   const { messages, messagesEndRef, addMessage, clearMessages } = useMessageManager()
   const { beginPresence, checkPresence, resetPresence } = usePresence()
   const { checkForRevelation } = usePatternRevelation()
-  const { enhanceSceneText, getAmbientMessage, enhanceChoices, getBreathingFrequency } = useAdaptiveNarrative()
+  const { performanceLevel, enhanceSceneText, getAmbientMessage, enhanceChoices, getBreathingFrequency } = useAdaptiveNarrative()
   
   // Check for natural revelations through presence (not rewards)
   useEffect(() => {
@@ -275,7 +275,8 @@ export function GameInterface() {
   const state = gameState.getState()
   
   return (
-    <div className="container max-w-4xl mx-auto p-4">
+    <div className={`container max-w-4xl mx-auto p-4 performance-${performanceLevel}`}>
+      <div className="forest-background" />
       <Card className="max-w-3xl mx-auto bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm shadow-xl">
         <CardHeader>
           <CardTitle className="text-center text-sm text-muted-foreground">
@@ -315,13 +316,13 @@ export function GameInterface() {
                   ? "grid grid-cols-3 gap-2"
                   : "grid grid-cols-2 gap-2"
               }>
-                {currentScene.choices.map((choice, index) => (
+                {enhanceChoices(currentScene.choices).map((choice, index) => (
                   <Button
                     key={index}
                     onClick={() => handleChoice(choice)}
                     disabled={isProcessing}
                     variant={currentScene.choices?.length === 1 ? "default" : "outline"}
-                    className={`h-auto py-3 px-4 text-sm text-center whitespace-normal ${
+                    className={`choice-button h-auto py-3 px-4 text-sm text-center whitespace-normal ${
                       currentScene.choices?.length === 1 ? "max-w-xs" : ""
                     }`}
                   >
