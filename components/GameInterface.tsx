@@ -16,10 +16,13 @@ import { useSceneTransitions } from "@/hooks/useSceneTransitions"
 import { useMessageManager } from "@/hooks/useMessageManager"
 import { usePresence } from "@/hooks/usePresence"
 import { usePatternRevelation } from "@/hooks/usePatternRevelation"
+import { getPerformanceSystem } from "@/lib/performance-system"
 
 export function GameInterface() {
   const [storyEngine] = useState(() => new StoryEngine())
   const [showIntro, setShowIntro] = useState(true)
+  const [choiceStartTime, setChoiceStartTime] = useState<number>(Date.now())
+  const [performanceSystem] = useState(() => getPerformanceSystem())
   
   // Simplified state management - no tracking, no stats
   const { gameState, isInitialized, reset } = useGameState()
@@ -32,6 +35,7 @@ export function GameInterface() {
   useEffect(() => {
     if (currentScene?.type === 'choice') {
       beginPresence()
+      setChoiceStartTime(Date.now()) // Track when choice appears
       
       // Check occasionally, not constantly - no pressure
       const interval = setInterval(() => {
@@ -59,11 +63,23 @@ export function GameInterface() {
             })
           }, 2000)
         }
+        
+        // Check for performance guidance
+        const guidance = performanceSystem.getGuidance()
+        if (guidance && Math.random() < 0.3) { // 30% chance to show guidance
+          setTimeout(() => {
+            addMessage({
+              speaker: 'narrator',
+              text: guidance,
+              type: 'whisper'
+            })
+          }, 3000)
+        }
       }, 5000) // Check every 5 seconds, not every second
       
       return () => clearInterval(interval)
     }
-  }, [currentScene, beginPresence, checkPresence, checkForRevelation, addMessage])
+  }, [currentScene, beginPresence, checkPresence, checkForRevelation, performanceSystem, addMessage])
   
   // Load scene with simple message handling
   const handleLoadScene = useCallback((sceneId: string, forceLoad = false) => {
@@ -129,6 +145,9 @@ export function GameInterface() {
     setProcessing(true)
     resetPresence() // New scene, new presence
     
+    // Calculate time taken to make choice
+    const timeToChoose = Date.now() - choiceStartTime
+    
     // Record the choice with theme tracking for Birmingham demo
     // Map consequences to career-relevant themes
     const themeMap: Record<string, string> = {
@@ -168,6 +187,18 @@ export function GameInterface() {
     const theme = themeMap[choice.consequence] || choice.consequence
     gameState.recordChoiceWithTheme(currentScene.id, choice.text, choice.consequence, theme)
     
+    // Update performance metrics
+    const character = messages.slice(-5).find(m => m.speaker !== 'You' && m.speaker !== 'narrator')?.speaker
+    performanceSystem.updateFromChoice(theme, timeToChoose, currentScene.id, character)
+    
+    // Get all recent themes for pattern analysis
+    const state = gameState.getState()
+    const recentThemes = state.choices.slice(-10).map(c => {
+      const mappedTheme = themeMap[c.consequence] || c.consequence
+      return mappedTheme
+    })
+    performanceSystem.updateFromPatterns(recentThemes)
+    
     // Add choice to messages
     addMessage({
       speaker: 'You',
@@ -180,7 +211,7 @@ export function GameInterface() {
       handleLoadScene(choice.nextScene)
       setProcessing(false)
     }, 1000)
-  }, [gameState, currentScene, setProcessing, addMessage, handleLoadScene, resetPresence])
+  }, [gameState, currentScene, setProcessing, addMessage, handleLoadScene, resetPresence, choiceStartTime, performanceSystem, messages])
   
   const handleContinue = useCallback(() => {
     if (!currentScene) return
