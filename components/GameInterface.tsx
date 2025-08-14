@@ -16,6 +16,7 @@ import { useSceneTransitions } from "@/hooks/useSceneTransitions"
 import { useMessageManager } from "@/hooks/useMessageManager"
 import { usePresence } from "@/hooks/usePresence"
 import { usePatternRevelation } from "@/hooks/usePatternRevelation"
+import { useAdaptiveNarrative } from "@/hooks/useAdaptiveNarrative"
 import { getPerformanceSystem } from "@/lib/performance-system"
 
 export function GameInterface() {
@@ -30,6 +31,7 @@ export function GameInterface() {
   const { messages, messagesEndRef, addMessage, clearMessages } = useMessageManager()
   const { beginPresence, checkPresence, resetPresence } = usePresence()
   const { checkForRevelation } = usePatternRevelation()
+  const { enhanceSceneText, getAmbientMessage, enhanceChoices, getBreathingFrequency } = useAdaptiveNarrative()
   
   // Check for natural revelations through presence (not rewards)
   useEffect(() => {
@@ -75,6 +77,18 @@ export function GameInterface() {
             })
           }, 3000)
         }
+        
+        // Check for ambient messages based on performance
+        const ambientMessage = getAmbientMessage()
+        if (ambientMessage) {
+          setTimeout(() => {
+            addMessage({
+              speaker: 'narrator',
+              text: ambientMessage,
+              type: 'narration'
+            })
+          }, 4000)
+        }
       }, 5000) // Check every 5 seconds, not every second
       
       return () => clearInterval(interval)
@@ -96,14 +110,26 @@ export function GameInterface() {
       return
     }
     
-    // Just display the text, no enhancements or variations
+    // Display text with adaptive enhancements
     if (scene.text) {
       const speaker = scene.speaker || 'narrator'
+      const enhancedText = enhanceSceneText(scene.text, scene.type)
       addMessage({ 
         speaker, 
-        text: scene.text,
+        text: enhancedText,
         type: scene.type as 'narration' | 'dialogue'
       })
+      
+      // Add breathing invitation based on performance
+      if (scene.type === 'choice' && Math.random() < getBreathingFrequency()) {
+        setTimeout(() => {
+          addMessage({
+            speaker: 'narrator',
+            text: 'Perhaps this is a moment to breathe.',
+            type: 'whisper'
+          })
+        }, 2000)
+      }
     }
   }, [loadScene, gameState, addMessage])
   
