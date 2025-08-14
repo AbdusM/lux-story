@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  // Temporarily disable static export for clean dev mode
-  // output: 'export',
+  // Enable static export for Cloudflare Pages
+  output: 'export',
   images: {
     unoptimized: true
   },
