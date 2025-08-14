@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { getPatternTracker } from '@/lib/game-state'
 
 /**
@@ -6,7 +6,7 @@ import { getPatternTracker } from '@/lib/game-state'
  * Never explicitly mentions careers - only poetic observations
  */
 export function usePatternRevelation() {
-  const [lastRevelation, setLastRevelation] = useState<number>(0)
+  const lastRevelationRef = useRef<number>(0)
   
   const checkForRevelation = useCallback((): string | null => {
     const tracker = getPatternTracker()
@@ -17,7 +17,7 @@ export function usePatternRevelation() {
     
     // Don't reveal too often
     const now = Date.now()
-    if (now - lastRevelation < 300000) return null // 5 minutes between revelations
+    if (now - lastRevelationRef.current < 300000) return null // 5 minutes between revelations
     
     // Count theme frequencies
     const themeCounts: Record<string, number> = {}
@@ -96,9 +96,9 @@ export function usePatternRevelation() {
     // Pick a random revelation
     const revelation = possibleRevelations[Math.floor(Math.random() * possibleRevelations.length)]
     
-    setLastRevelation(now)
+    lastRevelationRef.current = now
     return revelation
-  }, [lastRevelation])
+  }, [])
   
   return { checkForRevelation }
 }

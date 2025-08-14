@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 
 /**
  * True patience through presence
@@ -20,13 +20,13 @@ export function usePresence() {
     { after: 300000, text: "You are neither waiting nor not waiting. You simply are." }
   ]
   
-  const beginPresence = () => {
+  const beginPresence = useCallback(() => {
     if (!startTime.current) {
       startTime.current = Date.now()
     }
-  }
+  }, [])
   
-  const checkPresence = () => {
+  const checkPresence = useCallback(() => {
     if (!startTime.current) return null
     
     const now = Date.now()
@@ -44,13 +44,13 @@ export function usePresence() {
     }
     
     return null
-  }
+  }, [revelation])
   
-  const resetPresence = () => {
+  const resetPresence = useCallback(() => {
     startTime.current = null
     setTimePresent(0)
     setRevelation(null)
-  }
+  }, [])
   
   // No automatic checking - the component decides when to check
   // This removes the performance pressure of constant timers
