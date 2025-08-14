@@ -10,9 +10,20 @@ export function useGameState() {
   const [isInitialized, setIsInitialized] = useState(false)
 
   useEffect(() => {
-    const manager = new GameStateManager()
-    setGameState(manager)
-    setIsInitialized(true)
+    // Ensure we're on the client side before accessing localStorage
+    if (typeof window !== 'undefined') {
+      try {
+        const manager = new GameStateManager()
+        setGameState(manager)
+        setIsInitialized(true)
+      } catch (error) {
+        console.error('Failed to initialize game state:', error)
+        // Create a fresh instance without localStorage
+        const manager = new GameStateManager()
+        setGameState(manager)
+        setIsInitialized(true)
+      }
+    }
   }, [])
 
   const reset = () => {

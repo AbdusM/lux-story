@@ -47,6 +47,11 @@ export class GameStateManager {
    */
   private loadState(): GameState | null {
     try {
+      // Check if localStorage is available
+      if (typeof window === 'undefined' || !window.localStorage) {
+        return null
+      }
+      
       const saved = localStorage.getItem(STORAGE_KEYS.GAME_STATE)
       if (!saved) return null
       
@@ -73,7 +78,10 @@ export class GameStateManager {
    */
   private saveState(): void {
     try {
-      localStorage.setItem(STORAGE_KEYS.GAME_STATE, JSON.stringify(this.state))
+      // Check if localStorage is available
+      if (typeof window !== 'undefined' && window.localStorage) {
+        localStorage.setItem(STORAGE_KEYS.GAME_STATE, JSON.stringify(this.state))
+      }
     } catch (error) {
       console.warn('Failed to save game state:', error)
     }

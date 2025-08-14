@@ -6,9 +6,11 @@ import { Heart, Eye, Sparkles } from "lucide-react"
 
 interface CharacterIntroProps {
   onStart: () => void
+  onContinue?: () => void
+  hasSavedProgress?: boolean
 }
 
-export function CharacterIntro({ onStart }: CharacterIntroProps) {
+export function CharacterIntro({ onStart, onContinue, hasSavedProgress }: CharacterIntroProps) {
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <Card className="max-w-md w-full">
@@ -56,13 +58,25 @@ export function CharacterIntro({ onStart }: CharacterIntroProps) {
             </div>
           </div>
           
-          <Button 
-            onClick={onStart}
-            className="w-full" 
-            size="lg"
-          >
-            Begin Journey
-          </Button>
+          <div className="space-y-2">
+            <Button 
+              onClick={onStart}
+              className="w-full" 
+              size="lg"
+            >
+              Begin New Journey
+            </Button>
+            {hasSavedProgress && onContinue && (
+              <Button 
+                onClick={onContinue}
+                className="w-full" 
+                size="lg"
+                variant="outline"
+              >
+                Continue Journey
+              </Button>
+            )}
+          </div>
         </CardContent>
       </Card>
     </div>

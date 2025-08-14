@@ -51,9 +51,19 @@ export function GameInterface() {
   }, [currentScene, beginPresence, checkPresence, addMessage])
   
   // Load scene with simple message handling
-  const handleLoadScene = useCallback((sceneId: string) => {
-    const scene = storyEngine.getScene(sceneId)
-    if (!scene || !gameState) return
+  const handleLoadScene = useCallback((sceneId: string, forceLoad = false) => {
+    console.log('handleLoadScene called:', sceneId, forceLoad)
+    if (!gameState) {
+      console.error('Game state not available in handleLoadScene')
+      return
+    }
+    
+    // Load the scene first through useSceneTransitions
+    const scene = loadScene(sceneId, forceLoad)
+    if (!scene) {
+      console.error('Failed to load scene:', sceneId)
+      return
+    }
     
     // Just display the text, no enhancements or variations
     if (scene.text) {
@@ -64,23 +74,39 @@ export function GameInterface() {
         type: scene.type as 'narration' | 'dialogue'
       })
     }
-    
-    loadScene(sceneId)
-  }, [loadScene, gameState, storyEngine, addMessage])
+  }, [loadScene, gameState, addMessage])
   
   const handleStartGame = useCallback(() => {
+    console.log('Starting new game...')
     setShowIntro(false)
     if (gameState) {
-      handleLoadScene(gameState.getState().currentScene)
+      // Always start from the beginning for a new game
+      const initialScene = '1-1'
+      console.log('Starting new game from scene:', initialScene)
+      // Clear messages and reset state for fresh start
+      clearMessages()
+      resetPresence()
+      // Reset game state to beginning
+      gameState.setScene(initialScene)
+      // Force load the initial scene (handleLoadScene will add the message)
+      handleLoadScene(initialScene, true)
     }
-  }, [gameState, handleLoadScene])
+  }, [gameState, clearMessages, resetPresence, handleLoadScene])
+
+  const handleContinueGame = useCallback(() => {
+    console.log('Continuing game...')
+    setShowIntro(false)
+    if (gameState) {
+      const state = gameState.getState()
+      console.log('Continuing from scene:', state.currentScene)
+      // Clear messages but keep progress
+      clearMessages()
+      resetPresence()
+      // Load the saved scene
+      handleLoadScene(state.currentScene, true)
+    }
+  }, [gameState, clearMessages, resetPresence, handleLoadScene])
   
-  // Auto-load first scene after intro
-  useEffect(() => {
-    if (!showIntro && gameState && isInitialized && messages.length === 0) {
-      handleLoadScene(gameState.getState().currentScene)
-    }
-  }, [showIntro, gameState, isInitialized, messages.length, handleLoadScene])
   
   const handleChoice = useCallback(async (choice: any) => {
     if (!gameState || !currentScene) return
@@ -128,7 +154,14 @@ export function GameInterface() {
   
   // Intro screen
   if (showIntro) {
-    return <CharacterIntro onStart={handleStartGame} />
+    const hasSavedProgress = gameState.getState().currentScene !== '1-1'
+    return (
+      <CharacterIntro 
+        onStart={handleStartGame}
+        onContinue={handleContinueGame}
+        hasSavedProgress={hasSavedProgress}
+      />
+    )
   }
   
   const state = gameState.getState()
