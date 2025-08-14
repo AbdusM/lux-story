@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { getPerformanceSystem } from '@/lib/performance-system'
 
 /**
@@ -22,7 +22,7 @@ export function useAdaptiveNarrative() {
   /**
    * Enhance scene text based on performance level
    */
-  const enhanceSceneText = (originalText: string, sceneType: string): string => {
+  const enhanceSceneText = useCallback((originalText: string, sceneType: string): string => {
     // Don't modify choice texts or dialogue
     if (sceneType !== 'narration') return originalText
     
@@ -57,12 +57,12 @@ export function useAdaptiveNarrative() {
     }
     
     return originalText
-  }
+  }, [performanceLevel])
   
   /**
    * Get additional ambient messages based on performance
    */
-  const getAmbientMessage = (): string | null => {
+  const getAmbientMessage = useCallback((): string | null => {
     const messages = {
       struggling: [
         "A leaf falls. There's no rush to catch it.",
@@ -96,12 +96,12 @@ export function useAdaptiveNarrative() {
     }
     
     return null
-  }
+  }, [performanceLevel])
   
   /**
    * Modify choice presentation based on performance
    */
-  const enhanceChoices = (choices: any[]): any[] => {
+  const enhanceChoices = useCallback((choices: any[]): any[] => {
     // For struggling players, subtly highlight calming choices
     if (performanceLevel === 'struggling') {
       return choices.map(choice => {
@@ -132,19 +132,19 @@ export function useAdaptiveNarrative() {
     }
     
     return choices
-  }
+  }, [performanceLevel])
   
   /**
    * Get breathing invitation frequency based on performance
    */
-  const getBreathingFrequency = (): number => {
+  const getBreathingFrequency = useCallback((): number => {
     switch (performanceLevel) {
       case 'struggling': return 0.4  // 40% chance
       case 'exploring': return 0.2   // 20% chance
       case 'flowing': return 0.1     // 10% chance
       case 'mastering': return 0.05  // 5% chance
     }
-  }
+  }, [performanceLevel])
   
   return {
     performanceLevel,

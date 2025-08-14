@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useMemo } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { StoryMessage } from "./StoryMessage"
@@ -23,7 +23,7 @@ export function GameInterface() {
   const [storyEngine] = useState(() => new StoryEngine())
   const [showIntro, setShowIntro] = useState(true)
   const [choiceStartTime, setChoiceStartTime] = useState<number>(Date.now())
-  const [performanceSystem] = useState(() => getPerformanceSystem())
+  const performanceSystem = useMemo(() => getPerformanceSystem(), [])
   
   // Simplified state management - no tracking, no stats
   const { gameState, isInitialized, reset } = useGameState()
@@ -93,7 +93,7 @@ export function GameInterface() {
       
       return () => clearInterval(interval)
     }
-  }, [currentScene, beginPresence, checkPresence, checkForRevelation, performanceSystem, addMessage])
+  }, [currentScene, beginPresence, checkPresence, checkForRevelation, performanceSystem, addMessage, getAmbientMessage])
   
   // Load scene with simple message handling
   const handleLoadScene = useCallback((sceneId: string, forceLoad = false) => {
