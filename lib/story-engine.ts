@@ -64,16 +64,46 @@ export class StoryEngine {
    * Get the next scene ID in sequence
    */
   getNextScene(currentSceneId: string): string | null {
-    const [chapterNum, sceneNum] = currentSceneId.split('-').map(Number)
-    const chapter = this.chapters.find(c => c.id === chapterNum)
-    if (!chapter) return null
+    const [chapterNum] = currentSceneId.split('-')
     
-    const currentIndex = chapter.scenes.findIndex(s => s.id === currentSceneId)
-    if (currentIndex === -1 || currentIndex === chapter.scenes.length - 1) {
-      return null
+    // Handle special scene IDs that include letters (like 1-7b2)
+    const baseSceneId = currentSceneId.replace(/[a-z]\d?$/i, '')
+    
+    // Try to find if there's a direct continuation (like 1-7b -> 1-7b2)
+    const allSceneIds = this.chapters.flatMap(c => c.scenes.map(s => s.id))
+    
+    // Check for numbered continuation (1-7b2 -> 1-7b3)
+    const match = currentSceneId.match(/^(\d+-\d+[a-z]?)(\d+)$/i)
+    if (match) {
+      const nextId = `${match[1]}${parseInt(match[2]) + 1}`
+      if (allSceneIds.includes(nextId)) {
+        return nextId
+      }
     }
     
-    return chapter.scenes[currentIndex + 1].id
+    // Check for lettered continuation (1-7b -> 1-7b2)
+    const nextId = currentSceneId + '2'
+    if (allSceneIds.includes(nextId)) {
+      return nextId
+    }
+    
+    // Check for numbered base scene continuation (1-7 -> 1-8)
+    const sceneMatch = currentSceneId.match(/^(\d+)-(\d+)/)
+    if (sceneMatch) {
+      const nextBaseId = `${sceneMatch[1]}-${parseInt(sceneMatch[2]) + 1}`
+      if (allSceneIds.includes(nextBaseId)) {
+        return nextBaseId
+      }
+    }
+    
+    // If we're at the end of a chapter, move to the next chapter
+    const currentChapterNum = parseInt(chapterNum)
+    const nextChapter = this.chapters.find(c => c.id === currentChapterNum + 1)
+    if (nextChapter && nextChapter.scenes.length > 0) {
+      return nextChapter.scenes[0].id
+    }
+    
+    return null
   }
   
   /**
