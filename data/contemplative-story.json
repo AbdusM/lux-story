@@ -22,6 +22,12 @@
           "text": "A sloth hangs from a branch nearby. This is Lux. Lux doesn't greet you. Greetings imply you weren't already here."
         },
         {
+          "id": "1-2a",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The forest has many regions. Some quieter, where soft beeping blends with breathing. Others louder, where rhythmic hammering marks time. You haven't explored them all. No one has."
+        },
+        {
           "id": "1-3",
           "type": "choice",
           "text": "The morning air holds a quality you cannot name.",
@@ -173,6 +179,12 @@
           "text": "The light has shifted. This happens every day, yet today you notice it."
         },
         {
+          "id": "2-1a",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "You've wandered into a quieter part of the forest. The Quiet Grove, some call it. The air here moves differently, like breathing. Soft sounds, almost like beeping, blend with the rustling leaves."
+        },
+        {
           "id": "2-2",
           "type": "narration",
           "speaker": "narrator",
@@ -277,6 +289,12 @@
           "type": "narration",
           "speaker": "narrator",
           "text": "An ant approaches, carrying something heavy. It sets down its burden and sighs."
+        },
+        {
+          "id": "2-9a",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "You realize you've drifted toward Where Things Take Shape. The sound of patient hammering echoes here. Foundations being laid. Measurements being taken twice."
         },
         {
           "id": "2-10",
@@ -511,6 +529,12 @@
           "type": "narration",
           "speaker": "narrator",
           "text": "An owl settles on a branch near Lux. It moves slowly, deliberately. There is no urgency in its arrival."
+        },
+        {
+          "id": "3-3a",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The owl prefers The Pattern Place, where numbers dance in the air like fireflies. Everything balances there, eventually. Patterns within patterns within patterns."
         },
         {
           "id": "3-4",
@@ -790,6 +814,18 @@
           "text": "Data streams slow to a murmur. The forest processes its dreams."
         },
         {
+          "id": "4-2a",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "In the distance, you sense The Growing Place, where time moves in seasons. Patience is measured differently there. Everything has its season, its moment of readiness."
+        },
+        {
+          "id": "4-2b",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Elsewhere, The Rhythm Section continues its work. Repetition becomes meditation. The same motion, perfectly repeated. There's comfort in the rhythm, even at night."
+        },
+        {
           "id": "4-3",
           "type": "dialogue",
           "speaker": "Lux",
@@ -999,6 +1035,18 @@
           "type": "narration",
           "speaker": "narrator",
           "text": "Lux is still on the branch. You're not sure if Lux ever moved."
+        },
+        {
+          "id": "5-3a",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "You've learned the forest's geography without meaning to. The Quiet Grove with its healing rhythms. Where Things Take Shape with its patient building. The Pattern Place where the owl finds clarity. The Growing Place of endless seasons. The Rhythm Section's meditative repetition."
+        },
+        {
+          "id": "5-3b",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Each creature gravitates to their place. The ant to Where Things Take Shape. The owl to The Pattern Place. And Lux... Lux stays wherever Lux is, making every place a lesson in stillness."
         },
         {
           "id": "5-4",
