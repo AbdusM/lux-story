@@ -178,6 +178,8 @@ export function GameInterface() {
   
   
   const handleChoice = useCallback(async (choice: any) => {
+    console.log('handleChoice called with choice:', choice, 'currentScene:', currentScene?.id)
+    console.trace('handleChoice call stack')
     if (!gameState || !currentScene) return
     
     setProcessing(true)
