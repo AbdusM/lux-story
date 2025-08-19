@@ -70,13 +70,13 @@ export class StoryEngine {
     // For Grand Central Terminus, most scenes are choice-driven
     // Only simple sequential scenes should auto-advance
     
-    // Extract chapter and scene number
-    const match = currentSceneId.match(/^(\d+)-(\d+)([a-z]?)(\d*)$/)
+    // Extract chapter and scene number (handles patterns like 2-3a1, 2-9a-12, etc.)
+    const match = currentSceneId.match(/^(\d+)-(\d+)([a-z]?)(?:-(\d+))?(\d*)$/)
     if (!match) {
       return null
     }
     
-    const [, chapterNum, sceneNum, letter, subNum] = match
+    const [, chapterNum, sceneNum, letter, dashNum, suffixNum] = match
     const chapter = parseInt(chapterNum)
     const scene = parseInt(sceneNum)
     
@@ -87,15 +87,31 @@ export class StoryEngine {
     const allSceneIds = currentChapter.scenes.map(s => s.id)
     
     // For simple numeric scenes (like 1-1), try the next number (1-2)
-    if (!letter && !subNum) {
+    if (!letter && !dashNum && !suffixNum) {
       const nextSimpleId = `${chapter}-${scene + 1}`
       if (allSceneIds.includes(nextSimpleId)) {
         return nextSimpleId
       }
     }
     
+    // For scenes like 2-3a1 -> 2-3a2
+    if (letter && suffixNum) {
+      const nextSuffixId = `${chapter}-${scene}${letter}${parseInt(suffixNum) + 1}`
+      if (allSceneIds.includes(nextSuffixId)) {
+        return nextSuffixId
+      }
+    }
+    
+    // For scenes like 2-9a-11 -> 2-9a-12
+    if (letter && dashNum && suffixNum) {
+      const nextDashId = `${chapter}-${scene}${letter}-${dashNum}${parseInt(suffixNum) + 1}`
+      if (allSceneIds.includes(nextDashId)) {
+        return nextDashId
+      }
+    }
+    
     // For lettered scenes (like 1-3a), try with number (1-3a -> 1-4a if exists, or next sequence)
-    if (letter && !subNum) {
+    if (letter && !suffixNum && !dashNum) {
       // Try next number with same letter first
       const nextLetteredId = `${chapter}-${scene + 1}${letter}`
       if (allSceneIds.includes(nextLetteredId)) {
