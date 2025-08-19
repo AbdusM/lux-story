@@ -424,6 +424,77 @@
           "id": "2-1",
           "type": "narration",
           "text": "Chapter 2 begins with understanding: Grand Central Terminus isn't just a station. It's a living thing, fed by the dreams and fears of everyone who passes through. And tonight, it's particularly hungry for truth.\n\nYour choices have already begun reshaping the architecture. Platforms shift closer to those who need them. Barriers dissolve for those ready to cross them. The station is learning you as much as you're learning it."
+        },
+        {
+          "id": "2-2",
+          "type": "choice",
+          "text": "The station's awareness of you creates new possibilities. What calls to you first in this transformed space?",
+          "choices": [
+            {
+              "text": "Investigate the warm glow emanating from Platform 1.",
+              "consequence": "service_calling",
+              "nextScene": "2-3a",
+              "stateChanges": {
+                "careerValues.directImpact": 2,
+                "platforms.p1.warmth": 1,
+                "patterns.helping": 1
+              }
+            },
+            {
+              "text": "Follow the systematic sounds from Platform 3.",
+              "consequence": "systems_calling", 
+              "nextScene": "2-3b",
+              "stateChanges": {
+                "careerValues.systemsThinking": 2,
+                "platforms.p3.warmth": 1,
+                "patterns.building": 1
+              }
+            },
+            {
+              "text": "Examine the data streams flowing toward Platform 7.",
+              "consequence": "analysis_calling",
+              "nextScene": "2-3c", 
+              "stateChanges": {
+                "careerValues.dataInsights": 2,
+                "platforms.p7.warmth": 1,
+                "patterns.analyzing": 1
+              }
+            },
+            {
+              "text": "Seek the growing energy near Platform 9.",
+              "consequence": "future_calling",
+              "nextScene": "2-3d",
+              "stateChanges": {
+                "careerValues.futureBuilding": 2,
+                "platforms.p9.warmth": 1,
+                "patterns.exploring": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "2-3a",
+          "type": "dialogue",
+          "speaker": "Maya",
+          "text": "You notice the warmth too? Platform 1's been glowing differently since you... whatever you did during that frozen moment.\n\n*She's sitting on a bench near Platform 1, her medical textbooks spread around her, but her hands are assembling what looks like a tiny robotic heart.*\n\n'I keep thinking about Birmingham's hospitals. UAB, Children's, Grandview. All those people needing help, and all those systems that could work better. What if healing doesn't have to choose between human touch and perfect precision?'"
+        },
+        {
+          "id": "2-3b", 
+          "type": "dialogue",
+          "speaker": "Devon",
+          "text": "The acoustics here are fascinating. Platform 3's construction sounds create perfect resonance patterns.\n\n*He's methodically measuring distances between pillars, sketching sight lines and load calculations.*\n\n'Birmingham's growing fast. Infrastructure, logistics, the port. Someone has to think about how thirty years of growth affects traffic patterns, water systems, the whole interconnected web. Systems thinking isn't glamorous, but cities collapse without it.'"
+        },
+        {
+          "id": "2-3c",
+          "type": "dialogue", 
+          "speaker": "Jordan",
+          "text": "Data streams everywhere tonight. Platform 7's terminals are showing patterns I've never seen.\n\n*They're standing before a shimmering display of interconnected nodes, financial flows, and security networks.*\n\n'Look at this - Birmingham's data infrastructure. Banking, healthcare records, energy grids. Someone's always watching for the pattern that shouldn't be there, the anomaly that could mean everything. It's detective work with math.'"
+        },
+        {
+          "id": "2-3d",
+          "type": "dialogue",
+          "speaker": "Alex",
+          "text": "Platform 9 feels different tonight - like it's reaching toward something that hasn't happened yet.\n\n*Alex is surrounded by laptops showing wind patterns, solar irradiation maps, and energy consumption data.*\n\n'Southern Company's renewable transition isn't just about environment - it's about jobs nobody talks about yet. Wind farm technicians, solar installation coordinators, smart grid analysts. The infrastructure for tomorrow is being built today.'"
         }
       ]
     }

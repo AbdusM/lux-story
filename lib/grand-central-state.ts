@@ -6,11 +6,11 @@
 export interface GrandCentralState {
   // Platform states - warmth affects accessibility and appearance
   platforms: {
-    p1: PlatformState  // Care Line
-    p3: PlatformState  // Builder's Track
-    p7: PlatformState  // Data Stream (flickering)
-    p9: PlatformState  // Growing Garden
-    forgotten: PlatformState  // Hidden Platform
+    p1: PlatformState  // Service & Impact (healthcare, counseling, helping professions)
+    p3: PlatformState  // Systems & Operations (building, logistics, process optimization)
+    p7: PlatformState  // Information & Analysis (data science, security, research)
+    p9: PlatformState  // Emerging & Growth (green energy, new fields, patient development)
+    forgotten: PlatformState  // Hybrid & Innovation (cross-disciplinary, new combinations)
   }
   
   // Character relationships affect dialogue and story branches
@@ -31,6 +31,15 @@ export interface GrandCentralState {
     patience: number     // Contemplation, growth
     rushing: number      // Anxiety, impatience
     independence: number // Self-direction, rebellion
+  }
+  
+  // Career values - deeper motivational tracking
+  careerValues: {
+    directImpact: number     // Helping people directly, immediate service
+    systemsThinking: number  // Optimizing how things work, process improvement
+    dataInsights: number     // Finding patterns, security, research
+    futureBuilding: number   // Emerging fields, growth sectors, innovation
+    independence: number     // Creating new approaches, hybrid careers
   }
   
   // Time mechanics
@@ -113,6 +122,13 @@ export class GrandCentralStateManager {
         rushing: 0,
         independence: 0
       },
+      careerValues: {
+        directImpact: 0,
+        systemsThinking: 0,
+        dataInsights: 0,
+        futureBuilding: 0,
+        independence: 0
+      },
       time: {
         current: "11:47 PM",
         minutes: 13,
@@ -155,6 +171,15 @@ export class GrandCentralStateManager {
       Object.entries(changes.patterns).forEach(([pattern, value]) => {
         if (pattern in this.state.patterns) {
           this.state.patterns[pattern as keyof typeof this.state.patterns] += value as number
+        }
+      })
+    }
+    
+    // Update career values
+    if (changes.careerValues) {
+      Object.entries(changes.careerValues).forEach(([value, amount]) => {
+        if (value in this.state.careerValues) {
+          this.state.careerValues[value as keyof typeof this.state.careerValues] += amount as number
         }
       })
     }
@@ -236,25 +261,25 @@ export class GrandCentralStateManager {
   }
   
   private updatePlatformResonance(): void {
-    // Platform 1 (Care) resonates with helping and patience
+    // Platform 1 (Service & Impact) - directImpact + helping patterns
     this.state.platforms.p1.resonance = 
-      (this.state.patterns.helping * 2 + this.state.patterns.patience) / 3
+      (this.state.careerValues.directImpact * 1.5 + this.state.patterns.helping * 2 + this.state.patterns.patience) / 4.5
     
-    // Platform 3 (Building) resonates with building and analyzing
+    // Platform 3 (Systems & Operations) - systemsThinking + building patterns  
     this.state.platforms.p3.resonance = 
-      (this.state.patterns.building * 2 + this.state.patterns.analyzing) / 3
+      (this.state.careerValues.systemsThinking * 1.5 + this.state.patterns.building * 2 + this.state.patterns.analyzing) / 4.5
     
-    // Platform 7 (Data) resonates with analyzing and exploring
+    // Platform 7 (Information & Analysis) - dataInsights + analyzing patterns
     this.state.platforms.p7.resonance = 
-      (this.state.patterns.analyzing * 2 + this.state.patterns.exploring) / 3
+      (this.state.careerValues.dataInsights * 1.5 + this.state.patterns.analyzing * 2 + this.state.patterns.exploring) / 4.5
     
-    // Platform 9 (Growing) resonates with patience and helping
+    // Platform 9 (Emerging & Growth) - futureBuilding + patience patterns
     this.state.platforms.p9.resonance = 
-      (this.state.patterns.patience * 2 + this.state.patterns.helping) / 3
+      (this.state.careerValues.futureBuilding * 1.5 + this.state.patterns.patience * 2 + this.state.patterns.helping) / 4.5
     
-    // Forgotten Platform resonates with independence and exploring
+    // Forgotten Platform (Hybrid & Innovation) - independence value + independence patterns
     this.state.platforms.forgotten.resonance = 
-      (this.state.patterns.independence * 2 + this.state.patterns.exploring) / 3
+      (this.state.careerValues.independence * 1.5 + this.state.patterns.independence * 2 + this.state.patterns.exploring) / 4.5
   }
   
   private checkQuietHourTrigger(): void {
@@ -308,40 +333,58 @@ export class GrandCentralStateManager {
   }
   
   /**
+   * Calculate dominant career value for Chapter 2 branching
+   */
+  getDominantCareerValue(): string {
+    const values = this.state.careerValues
+    const maxValue = Math.max(...Object.values(values))
+    
+    // Find the career value with highest score
+    for (const [key, value] of Object.entries(values)) {
+      if (value === maxValue && maxValue > 2) {
+        return key
+      }
+    }
+    
+    return 'balanced'
+  }
+  
+  /**
    * Calculate which ending the player is heading toward
    */
   calculateEndingPath(): string {
     const patterns = this.state.patterns
+    const values = this.state.careerValues
     
-    // Guide Ending: High helping + patience
-    if (patterns.helping > 8 && patterns.patience > 6) {
-      return 'guide'
+    // Service Guide: High directImpact + helping patterns
+    if (values.directImpact > 6 && patterns.helping > 8) {
+      return 'service_guide'
     }
     
-    // Builder Ending: High building + analyzing
-    if (patterns.building > 8 && patterns.analyzing > 6) {
-      return 'builder'
+    // Systems Builder: High systemsThinking + building patterns
+    if (values.systemsThinking > 6 && patterns.building > 8) {
+      return 'systems_builder'
     }
     
-    // Revolutionary Ending: High independence + exploring
-    if (patterns.independence > 7 && patterns.exploring > 7) {
-      return 'revolutionary'
+    // Data Analyst: High dataInsights + analyzing patterns
+    if (values.dataInsights > 6 && patterns.analyzing > 8) {
+      return 'data_analyst'
     }
     
-    // Walker Ending: Balanced patterns, no extremes
-    const avg = Object.values(patterns).reduce((a, b) => a + b, 0) / 7
-    if (Math.max(...Object.values(patterns)) - Math.min(...Object.values(patterns)) < 3) {
-      return 'walker'
+    // Future Pioneer: High futureBuilding + exploring patterns
+    if (values.futureBuilding > 6 && patterns.exploring > 7) {
+      return 'future_pioneer'
     }
     
-    // Traveler Ending: High exploring
-    if (patterns.exploring > 9) {
-      return 'traveler'
+    // Independent Creator: High independence value + patterns
+    if (values.independence > 6 && patterns.independence > 7) {
+      return 'independent_creator'
     }
     
-    // Patient Ending: Highest patience, low rushing
-    if (patterns.patience > 10 && patterns.rushing < 2) {
-      return 'patient'
+    // Balanced Explorer: Moderate scores across multiple areas
+    const avgValues = Object.values(values).reduce((a, b) => a + b, 0) / 5
+    if (avgValues > 3 && Math.max(...Object.values(values)) - Math.min(...Object.values(values)) < 4) {
+      return 'balanced_explorer'
     }
     
     return 'undetermined'

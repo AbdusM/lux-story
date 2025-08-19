@@ -88,22 +88,23 @@
 
 **Character Arc:** Realizes they're meant to be a guide, not a passenger
 
-### Alex Kim - The Hidden Artist
-**Age:** 20
-**Appearance:** Dressed for business school, hiding sketchbook, ink stains on fingers
-**Background:** Parents own successful restaurant, expected to study business
+### Alex Kim - The Renewable Energy Advocate  
+**Age:** 23
+**Appearance:** Laptop covered in sustainability stickers, carries reusable everything, eyes light up discussing wind patterns
+**Background:** Environmental science degree, interning at Southern Company, fascinated by energy transformation
+**Career Values:** High futureBuilding, growing systemsThinking
 **Personality Traits:**
-- Draws on everything when thinking
-- Speaks in visual metaphors
-- Conflict between safety and passion
-- Sees beauty in the mundane station
+- Speaks passionately about untapped potential (wind, solar, communities)
+- Sees energy systems where others see landscapes  
+- Optimistic about futures others fear
+- Connects environmental health to human health
 
 **Key Dialogue Patterns:**
-- "The spreadsheets make sense but they don't make me feel anything."
-- "I map data at school and draw maps at night. Same thing, different language."
-- "My parents built something from nothing. I want to build something from everything."
+- "Birmingham gets 200+ sunny days a year. We're sitting on power we're not using."
+- "The same wind that powered steamboats could power data centers."
+- "Everyone worries about job transitions. Energy transition creates jobs."
 
-**Character Arc:** Discovers data visualization, graphic design, creative tech paths
+**Character Arc:** Helps player see Platform 9 (Emerging & Growth) connections to Birmingham's energy future
 
 ## Secondary Characters
 
@@ -133,34 +134,44 @@
 
 ## Platform Personalities
 
-### Platform 1 - The Care Line
-**Atmosphere:** Soft blue lighting, sounds of heartbeats and breathing
-**Travelers:** Tired but purposeful, often supporting each other
+### Platform 1 - Service & Impact
+**Atmosphere:** Soft blue lighting, sounds of heartbeats and breathing, warm comfort
+**Career Themes:** Healthcare, counseling, social work, teaching, direct service
+**Travelers:** Tired but purposeful, often supporting each other, seeking meaning through helping
 **Hidden Feature:** Benches that adjust to hold people who are breaking
+**Career Values:** High directImpact - immediate human connection and service
 **Secret:** The hardest workers in caring professions often can't care for themselves
 
-### Platform 3 - The Builder's Track
-**Atmosphere:** Orange industrial glow, sounds of creation and construction
-**Travelers:** Hands dirty, eyes focused on blueprints and possibilities
+### Platform 3 - Systems & Operations  
+**Atmosphere:** Orange industrial glow, sounds of creation and construction, methodical energy
+**Career Themes:** Engineering, logistics, process optimization, infrastructure, building trades
+**Travelers:** Hands dirty, eyes focused on blueprints and possibilities, systematic thinkers
 **Hidden Feature:** Walls you can build on, leave your mark
+**Career Values:** High systemsThinking - optimizing how things work and flow
 **Secret:** Everything built here appears somewhere in the real world
 
-### Platform 7 - The Data Stream
-**Atmosphere:** Purple digital rain, screens showing patterns and possibilities
-**Travelers:** Speaking in algorithms, seeing patterns, overwhelmed by information
+### Platform 7 - Information & Analysis
+**Atmosphere:** Purple digital rain, screens showing patterns and possibilities, analytical focus
+**Career Themes:** Data science, cybersecurity, research, financial analysis, information systems
+**Travelers:** Speaking in algorithms, seeing patterns, sometimes overwhelmed by information
 **Hidden Feature:** Terminals that answer questions you didn't ask
+**Career Values:** High dataInsights - finding patterns, securing systems, revealing truth
 **Secret:** The data stream connects all platforms - it's the station's nervous system
 
-### Platform 9 - The Growing Garden
-**Atmosphere:** Green filtered light, sounds of growth and seasons
-**Travelers:** Patient, often sitting still, watching things grow
+### Platform 9 - Emerging & Growth
+**Atmosphere:** Green filtered light, sounds of growth and seasons, patient optimism
+**Career Themes:** Renewable energy, sustainability, emerging tech, patient development roles
+**Travelers:** Patient, often sitting still, watching things grow, long-term thinkers
 **Hidden Feature:** Time moves differently here - seasons in minutes
+**Career Values:** High futureBuilding - working in emerging fields and growth sectors
 **Secret:** What you plant here grows in your future
 
-### The Forgotten Platform
-**Atmosphere:** Misty, dreamlike, always just out of clear sight
-**Travelers:** Those doing work nobody talks about but everyone needs
+### The Forgotten Platform - Hybrid & Innovation
+**Atmosphere:** Misty, dreamlike, always just out of clear sight, creative possibility
+**Career Themes:** Cross-disciplinary work, new combinations, entrepreneurship, creative tech
+**Travelers:** Those doing work nobody talks about but everyone needs, category-defiers
 **Hidden Feature:** Shows you careers that don't exist yet but will
+**Career Values:** High independence - creating new approaches and hybrid careers
 **Secret:** This platform creates new platforms
 
 ### Platform 7½
