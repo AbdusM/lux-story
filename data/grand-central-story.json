@@ -70,7 +70,8 @@
         {
           "id": "1-1-7",
           "type": "narration",
-          "text": "If you believe the letter."
+          "text": "If you believe the letter.",
+          "nextScene": "1-2"
         },
         {
           "id": "1-2",
@@ -153,7 +154,8 @@
         {
           "id": "1-3a-5",
           "type": "narration",
-          "text": "Other people are around - some rushing, some lost, some just walking. None of them seem to see you."
+          "text": "Other people are around - some rushing, some lost, some just walking. None of them seem to see you.",
+          "nextScene": "1-3b"
         },
         {
           "id": "1-3b",
@@ -166,7 +168,8 @@
           "id": "1-3b-1",
           "type": "dialogue",
           "speaker": "Samuel",
-          "text": "His watch hangs from a brass chain, ticking backwards every third beat - too slow for seconds, too fast for minutes, too different."
+          "text": "His watch hangs from a brass chain, ticking backwards every third beat - too slow for seconds, too fast for minutes, too different.",
+          "nextScene": "1-3c"
         },
         {
           "id": "1-3c",
@@ -183,12 +186,14 @@
         {
           "id": "1-3c-2",
           "type": "narration",
-          "text": "'Interesting choice,' says a voice. You turn to see a janitor with knowing eyes, pushing a cart that rattles metallically - hundreds of brass keys clinking against each other like wind chimes."
+          "text": "'Interesting choice,' says a voice. You turn to see a janitor with knowing eyes, pushing a cart that rattles metallically - hundreds of brass keys clinking against each other like wind chimes.",
+          "nextScene": "1-3d"
         },
         {
           "id": "1-3d",
           "type": "narration",
-          "text": "The big departure board is right above you. The letters flip with loud clicks. The sound has a rhythm - click-click-pause, click-click-pause. Up close, you smell the faint ozone of electrical motors working overtime. The destinations keep changing:"
+          "text": "The big departure board is right above you. The letters flip with loud clicks. The sound has a rhythm - click-click-pause, click-click-pause. Up close, you smell the faint ozone of electrical motors working overtime. The destinations keep changing:",
+          "nextScene": "1-4a"
         },
         {
           "id": "1-4a",
@@ -285,7 +290,8 @@
           "id": "1-4c-1",
           "type": "dialogue",
           "speaker": "Marcus",
-          "text": "Or maybe...' He pauses, keys jangling. 'Maybe you'd rather know why someone wanted you at Platform 7 so badly they sent a letter that burns into moths?'"
+          "text": "Or maybe...' He pauses, keys jangling. 'Maybe you'd rather know why someone wanted you at Platform 7 so badly they sent a letter that burns into moths?'",
+          "nextScene": "1-4d"
         },
         {
           "id": "1-4d",
@@ -312,17 +318,20 @@
           "id": "1-4d-3",
           "type": "dialogue",
           "speaker": "Maya",
-          "text": "Everyone seems to get a different letter. Mine said Platform 1, but I keep making ends meet at Platform 3 instead.'"
+          "text": "Everyone seems to get a different letter. Mine said Platform 1, but I keep making ends meet at Platform 3 instead.'",
+          "nextScene": "1-5a"
         },
         {
           "id": "1-5a",
           "type": "narration",
-          "text": "You pull out your multi-tool - the steel cold and familiar in your palm. The bench's broken joint reveals pine wood, still fragrant with sap. As you work, sawdust falls onto your shoes, and the screws make a satisfying squeak as they bite into the old wood."
+          "text": "You pull out your multi-tool - the steel cold and familiar in your palm. The bench's broken joint reveals pine wood, still fragrant with sap. As you work, sawdust falls onto your shoes, and the screws make a satisfying squeak as they bite into the old wood.",
+          "nextScene": "1-5b"
         },
         {
           "id": "1-5b",
           "type": "narration",
-          "text": "Platform 1 glows softer as you pass, warming the air by degrees. The lights don't just brighten - they pulse gently, matching the rhythm of a resting heartbeat. A medical student nearby yawns and, for the first time in days, doesn't look exhausted."
+          "text": "Platform 1 glows softer as you pass, warming the air by degrees. The lights don't just brighten - they pulse gently, matching the rhythm of a resting heartbeat. A medical student nearby yawns and, for the first time in days, doesn't look exhausted.",
+          "nextScene": "1-5c"
         },
         {
           "id": "1-5c",
@@ -363,7 +372,8 @@
         {
           "id": "1-5c-6",
           "type": "narration",
-          "text": "7..."
+          "text": "7...",
+          "nextScene": "1-5d"
         },
         {
           "id": "1-5d",
@@ -383,7 +393,8 @@
           "id": "1-5d-2",
           "type": "dialogue",
           "speaker": "Samuel",
-          "text": "And you, young switchman, you're standing on tracks that haven't been laid yet.'"
+          "text": "And you, young switchman, you're standing on tracks that haven't been laid yet.'",
+          "nextScene": "1-5e"
         },
         {
           "id": "1-5e",
@@ -410,7 +421,8 @@
           "id": "1-5e-3",
           "type": "dialogue",
           "speaker": "Samuel",
-          "text": "Not what your ticket says you are.'"
+          "text": "Not what your ticket says you are.'",
+          "nextScene": "1-5f"
         },
         {
           "id": "1-5f",
@@ -427,7 +439,8 @@
         {
           "id": "1-5f-2",
           "type": "narration",
-          "text": "If not...'\n\nHe turns away, but you catch his whispered words: 'If not, the station will show you where you actually belong. Whether you like it or not.'\n\nThe clock reads 11:51 PM."
+          "text": "If not...'\n\nHe turns away, but you catch his whispered words: 'If not, the station will show you where you actually belong. Whether you like it or not.'\n\nThe clock reads 11:51 PM.",
+          "nextScene": "1-5g"
         },
         {
           "id": "1-5g",
@@ -468,7 +481,8 @@
         {
           "id": "1-5g-6",
           "type": "narration",
-          "text": "Sometimes the best conductors send trains to sidings to avoid collisions that haven't happened yet.'"
+          "text": "Sometimes the best conductors send trains to sidings to avoid collisions that haven't happened yet.'",
+          "nextScene": "1-6"
         },
         {
           "id": "1-6",
@@ -555,7 +569,8 @@
         {
           "id": "1-7a-6",
           "type": "narration",
-          "text": "Not darkness - nothing. An absence of possibility."
+          "text": "Not darkness - nothing. An absence of possibility.",
+          "nextScene": "1-7b"
         },
         {
           "id": "1-7b",
@@ -590,7 +605,8 @@
         {
           "id": "1-7b-5",
           "type": "narration",
-          "text": "A sign that only exists when you're not looking directly at it."
+          "text": "A sign that only exists when you're not looking directly at it.",
+          "nextScene": "1-7c"
         },
         {
           "id": "1-7c",
@@ -638,7 +654,8 @@
           "id": "1-7c-6",
           "type": "dialogue",
           "speaker": "Maya",
-          "text": "What if they tell us where we're supposed to go, just to see if we're brave enough to choose differently?'"
+          "text": "What if they tell us where we're supposed to go, just to see if we're brave enough to choose differently?'",
+          "nextScene": "1-8-quiet-samuel"
         },
         {
           "id": "1-8-quiet-samuel",
@@ -665,7 +682,8 @@
           "id": "1-8-quiet-samuel-3",
           "type": "dialogue",
           "speaker": "Samuel",
-          "text": "Look at Platform 7 now - see how it's not one platform but a whole roundhouse of possibilities? That's what happens when you stop trying to catch trains and start learning to build them."
+          "text": "Look at Platform 7 now - see how it's not one platform but a whole roundhouse of possibilities? That's what happens when you stop trying to catch trains and start learning to build them.",
+          "nextScene": "1-9"
         },
         {
           "id": "1-9",
@@ -803,7 +821,8 @@
         {
           "id": "1-10a-3-3",
           "type": "narration",
-          "text": "Invisible. Profound as a heartbeat."
+          "text": "Invisible. Profound as a heartbeat.",
+          "nextScene": "1-2"
         },
         {
           "id": "1-10a-4",
@@ -826,7 +845,8 @@
         {
           "id": "1-10a-4-3",
           "type": "narration",
-          "text": "Waiting for architects, not passengers."
+          "text": "Waiting for architects, not passengers.",
+          "nextScene": "1-2"
         },
         {
           "id": "1-10a-continue",
@@ -933,7 +953,8 @@
         {
           "id": "1-10b-1-3",
           "type": "narration",
-          "text": "'Worth paying, but never forget the cost.'"
+          "text": "'Worth paying, but never forget the cost.'",
+          "nextScene": "1-2"
         },
         {
           "id": "1-10b-2",
@@ -950,12 +971,14 @@
         {
           "id": "1-10b-2-2",
           "type": "narration",
-          "text": "'Some threads need to break,' Samuel appears beside you, 'before authentic ones can grow.'"
+          "text": "'Some threads need to break,' Samuel appears beside you, 'before authentic ones can grow.'",
+          "nextScene": "1-2"
         },
         {
           "id": "1-10b-3",
           "type": "narration",
-          "text": "Maya's thread splits three ways: obligation to Platform 1, passion toward Platform 3, and a third strand reaching toward empty space.\n\nThe possibility thread is the strongest, though she doesn't know it yet.\n\n'She's trying to choose,' you realize. 'But the answer is integration, not selection.'"
+          "text": "Maya's thread splits three ways: obligation to Platform 1, passion toward Platform 3, and a third strand reaching toward empty space.\n\nThe possibility thread is the strongest, though she doesn't know it yet.\n\n'She's trying to choose,' you realize. 'But the answer is integration, not selection.'",
+          "nextScene": "1-10b-42"
         },
         {
           "id": "1-10b-42",
@@ -975,7 +998,8 @@
           "id": "1-10b-42-2",
           "type": "dialogue",
           "speaker": "Samuel",
-          "text": "You're not lost, you're unbound.'\n\nThe threads around you shimmer, waiting to be woven into something unprecedented."
+          "text": "You're not lost, you're unbound.'\n\nThe threads around you shimmer, waiting to be woven into something unprecedented.",
+          "nextScene": "1-10c"
         },
         {
           "id": "1-10c",
@@ -1028,7 +1052,8 @@
         {
           "id": "1-10c-8",
           "type": "narration",
-          "text": "We're supposed to build them.'"
+          "text": "We're supposed to build them.'",
+          "nextScene": "1-10d"
         },
         {
           "id": "1-10d",
@@ -1057,7 +1082,8 @@
         {
           "id": "1-10d-4",
           "type": "narration",
-          "text": "Other signs begin flickering, their electrical buzz questioning their own certainty."
+          "text": "Other signs begin flickering, their electrical buzz questioning their own certainty.",
+          "nextScene": "1-12"
         },
         {
           "id": "1-12",
@@ -1119,7 +1145,8 @@
         {
           "id": "2-1",
           "type": "narration",
-          "text": "Chapter 2 begins. The station has accepted you, or perhaps you've accepted it. The air tastes different now - less metallic, more alive. Somewhere distant, a coffee cart opens with the hiss of steam, and the smell of fresh grounds cuts through the industrial atmosphere."
+          "text": "Chapter 2 begins. The station has accepted you, or perhaps you've accepted it. The air tastes different now - less metallic, more alive. Somewhere distant, a coffee cart opens with the hiss of steam, and the smell of fresh grounds cuts through the industrial atmosphere.",
+          "nextScene": "2-2"
         },
         {
           "id": "2-2",
@@ -1171,7 +1198,8 @@
         {
           "id": "2-3a1",
           "type": "narration",
-          "text": "Maya sits on a bench near Platform 1, medical textbooks spread around her. The pages smell of highlighter and desperation. But her hands are assembling what looks like a tiny robotic heart - tiny gears clicking together with precision, the metal components still warm from her pocket."
+          "text": "Maya sits on a bench near Platform 1, medical textbooks spread around her. The pages smell of highlighter and desperation. But her hands are assembling what looks like a tiny robotic heart - tiny gears clicking together with precision, the metal components still warm from her pocket.",
+          "nextScene": "2-3a2"
         },
         {
           "id": "2-3a2",
@@ -1205,7 +1233,8 @@
           "id": "2-3a2-4",
           "type": "dialogue",
           "speaker": "Maya",
-          "text": "Everyone says 'just work harder' but I'm already doing homework at 2 AM after my other job."
+          "text": "Everyone says 'just work harder' but I'm already doing homework at 2 AM after my other job.",
+          "nextScene": "2-3a3"
         },
         {
           "id": "2-3a3",
@@ -1246,7 +1275,8 @@
           "id": "2-3a3-5",
           "type": "dialogue",
           "speaker": "Maya",
-          "text": "So why do I feel like I'm drowning every time I walk into the hospital?"
+          "text": "So why do I feel like I'm drowning every time I walk into the hospital?",
+          "nextScene": "2-3b2"
         },
         {
           "id": "2-3b2",
@@ -1266,12 +1296,14 @@
           "id": "2-3b2-2",
           "type": "dialogue",
           "speaker": "Devon",
-          "text": "Someone has to think about how thirty years of growth affects traffic patterns, water systems, the whole interconnected web. Systems thinking isn't glamorous, but cities collapse without it.'"
+          "text": "Someone has to think about how thirty years of growth affects traffic patterns, water systems, the whole interconnected web. Systems thinking isn't glamorous, but cities collapse without it.'",
+          "nextScene": "2-3c1"
         },
         {
           "id": "2-3c1",
           "type": "narration",
-          "text": "They're standing before a shimmering display of interconnected nodes, financial flows, and security networks."
+          "text": "They're standing before a shimmering display of interconnected nodes, financial flows, and security networks.",
+          "nextScene": "2-3c2"
         },
         {
           "id": "2-3c2",
@@ -1326,7 +1358,8 @@
           "id": "2-3c2-7",
           "type": "dialogue",
           "speaker": "Jordan",
-          "text": "Because eventually they'll figure out I'm just really good at pretending."
+          "text": "Because eventually they'll figure out I'm just really good at pretending.",
+          "nextScene": "2-3d2"
         },
         {
           "id": "2-3d2",
@@ -1339,7 +1372,8 @@
           "id": "2-3d2-1",
           "type": "dialogue",
           "speaker": "Alex",
-          "text": "Wind farm technicians, solar installation coordinators, smart grid analysts. The infrastructure for tomorrow is being built today.'"
+          "text": "Wind farm technicians, solar installation coordinators, smart grid analysts. The infrastructure for tomorrow is being built today.'",
+          "nextScene": "2-4"
         },
         {
           "id": "2-4",
@@ -1417,7 +1451,8 @@
           "id": "2-4-samuel-3",
           "type": "dialogue",
           "speaker": "Samuel",
-          "text": "Eventually, you've got to pick your locomotive and trust it to carry you."
+          "text": "Eventually, you've got to pick your locomotive and trust it to carry you.",
+          "nextScene": "2-5a2"
         },
         {
           "id": "2-5a2",
@@ -1444,12 +1479,14 @@
           "id": "2-5a2-3",
           "type": "dialogue",
           "speaker": "Maya",
-          "text": "Look at UAB's expansion - they're not just hiring more doctors. They need system designers who understand that healing happens in relationships, not just protocols.'"
+          "text": "Look at UAB's expansion - they're not just hiring more doctors. They need system designers who understand that healing happens in relationships, not just protocols.'",
+          "nextScene": "2-5b1"
         },
         {
           "id": "2-5b1",
           "type": "narration",
-          "text": "He unfolds a large diagram showing Birmingham's infrastructure as interconnected webs - transportation, utilities, information, commerce."
+          "text": "He unfolds a large diagram showing Birmingham's infrastructure as interconnected webs - transportation, utilities, information, commerce.",
+          "nextScene": "2-5b2"
         },
         {
           "id": "2-5b2",
@@ -1469,7 +1506,8 @@
           "id": "2-5b2-2",
           "type": "dialogue",
           "speaker": "Devon",
-          "text": "Birmingham needs operations research analysts, logistics coordinators, urban planners who think in networks. The growth is happening - someone has to make it work efficiently.'"
+          "text": "Birmingham needs operations research analysts, logistics coordinators, urban planners who think in networks. The growth is happening - someone has to make it work efficiently.'",
+          "nextScene": "2-5c2"
         },
         {
           "id": "2-5c2",
@@ -1496,12 +1534,14 @@
           "id": "2-5c2-3",
           "type": "dialogue",
           "speaker": "Jordan",
-          "text": "Regions Bank isn't just hiring traditional financial analysts anymore. They need people who can read the intersection of technology, economics, and human behavior.'"
+          "text": "Regions Bank isn't just hiring traditional financial analysts anymore. They need people who can read the intersection of technology, economics, and human behavior.'",
+          "nextScene": "2-5d1"
         },
         {
           "id": "2-5d1",
           "type": "narration",
-          "text": "Alex shows you job postings that didn't exist five years ago: renewable energy project managers, smart grid coordinators, sustainability analysts."
+          "text": "Alex shows you job postings that didn't exist five years ago: renewable energy project managers, smart grid coordinators, sustainability analysts.",
+          "nextScene": "2-5d2"
         },
         {
           "id": "2-5d2",
@@ -1528,7 +1568,8 @@
           "id": "2-5d2-3",
           "type": "dialogue",
           "speaker": "Alex",
-          "text": "You can either wait for traditional career paths to catch up, or you can help build the bridge between what exists and what's needed.'"
+          "text": "You can either wait for traditional career paths to catch up, or you can help build the bridge between what exists and what's needed.'",
+          "nextScene": "2-6"
         },
         {
           "id": "2-6",
@@ -1584,7 +1625,8 @@
         {
           "id": "2-7a1",
           "type": "narration",
-          "text": "She points to the warm glow spreading across the platform's surface."
+          "text": "She points to the warm glow spreading across the platform's surface.",
+          "nextScene": "2-7a3"
         },
         {
           "id": "2-7a3",
@@ -1611,12 +1653,14 @@
           "id": "2-7a3-3",
           "type": "dialogue",
           "speaker": "Jordan",
-          "text": "Platform 7 keeps showing me these patterns about human connection, and every algorithm I run says the same thing: I optimized for the wrong variable."
+          "text": "Platform 7 keeps showing me these patterns about human connection, and every algorithm I run says the same thing: I optimized for the wrong variable.",
+          "nextScene": "2-7b1"
         },
         {
           "id": "2-7b1",
           "type": "narration",
-          "text": "He adjusts his engineering tools, studying the platform's energy patterns."
+          "text": "He adjusts his engineering tools, studying the platform's energy patterns.",
+          "nextScene": "2-7b2"
         },
         {
           "id": "2-7b2",
@@ -1636,7 +1680,8 @@
           "id": "2-7b2-2",
           "type": "dialogue",
           "speaker": "Devon",
-          "text": "Building as service to efficiency."
+          "text": "Building as service to efficiency.",
+          "nextScene": "2-7c2"
         },
         {
           "id": "2-7c2",
@@ -1656,12 +1701,14 @@
           "id": "2-7c2-2",
           "type": "dialogue",
           "speaker": "Jordan",
-          "text": "Information as foresight."
+          "text": "Information as foresight.",
+          "nextScene": "2-7d1"
         },
         {
           "id": "2-7d1",
           "type": "narration",
-          "text": "They gesture to the growing green glow emanating from the platform."
+          "text": "They gesture to the growing green glow emanating from the platform.",
+          "nextScene": "2-7d2"
         },
         {
           "id": "2-7d2",
@@ -1681,7 +1728,8 @@
           "id": "2-7d2-2",
           "type": "dialogue",
           "speaker": "Alex",
-          "text": "Creation of tomorrow's foundations."
+          "text": "Creation of tomorrow's foundations.",
+          "nextScene": "2-8"
         },
         {
           "id": "2-8",
@@ -1801,51 +1849,60 @@
           "id": "2-9a2-3",
           "type": "dialogue",
           "speaker": "Alex",
-          "text": "Maybe I'm just too stubborn to admit I picked the wrong city for the right dream."
+          "text": "Maybe I'm just too stubborn to admit I picked the wrong city for the right dream.",
+          "nextScene": "2-9a-11"
         },
         {
           "id": "2-9a-11",
           "type": "narration",
-          "text": "Platform 1 pulses brighter as he speaks."
+          "text": "Platform 1 pulses brighter as he speaks.",
+          "nextScene": "2-9a-12"
         },
         {
           "id": "2-9a-12",
           "type": "dialogue",
           "speaker": "Samuel",
-          "text": "'UAB's always looking for volunteers who understand that healthcare is about systems, not just individual care.'\n\n'Start in their innovation labs. See how technology serves healing. Your service values will find their systematic expression there.'"
+          "text": "'UAB's always looking for volunteers who understand that healthcare is about systems, not just individual care.'\n\n'Start in their innovation labs. See how technology serves healing. Your service values will find their systematic expression there.'",
+          "nextScene": "2-9a-21"
         },
         {
           "id": "2-9a-21",
           "type": "narration",
-          "text": "Platform 7's streams flow faster, responding to your commitment."
+          "text": "Platform 7's streams flow faster, responding to your commitment.",
+          "nextScene": "2-9a-22"
         },
         {
           "id": "2-9a-22",
           "type": "dialogue",
           "speaker": "Samuel",
-          "text": "'Data science at UAB or Birmingham-Southern - they're building analytics programs that serve the community.'\n\n'The patterns you discover could predict health trends, optimize city services, guide economic development. Analysis in service of Birmingham's growth.'"
+          "text": "'Data science at UAB or Birmingham-Southern - they're building analytics programs that serve the community.'\n\n'The patterns you discover could predict health trends, optimize city services, guide economic development. Analysis in service of Birmingham's growth.'",
+          "nextScene": "2-9a-31"
         },
         {
           "id": "2-9a-31",
           "type": "narration",
-          "text": "Platform 9's energy field expands, recognizing your pioneering spirit."
+          "text": "Platform 9's energy field expands, recognizing your pioneering spirit.",
+          "nextScene": "2-9a-32"
         },
         {
           "id": "2-9a-32",
           "type": "dialogue",
           "speaker": "Samuel",
-          "text": "'Innovation Depot downtown. Start attending their entrepreneurship events.'\n\n'Birmingham needs builders of new solutions. Clean energy, urban agriculture, community tech platforms. The city's the perfect size for testing what works.'"
+          "text": "'Innovation Depot downtown. Start attending their entrepreneurship events.'\n\n'Birmingham needs builders of new solutions. Clean energy, urban agriculture, community tech platforms. The city's the perfect size for testing what works.'",
+          "nextScene": "2-9a-41"
         },
         {
           "id": "2-9a-41",
           "type": "narration",
-          "text": "The Forgotten Platform materializes more clearly, revealing hybrid paths."
+          "text": "The Forgotten Platform materializes more clearly, revealing hybrid paths.",
+          "nextScene": "2-9a-42"
         },
         {
           "id": "2-9a-42",
           "type": "dialogue",
           "speaker": "Samuel",
-          "text": "'Wise. The most interesting careers don't fit traditional categories.'\n\n'Birmingham's small enough for boundary-crossing. Healthcare informatics. Sustainable urban planning. Community-centered business development. The intersections are where innovation happens.'"
+          "text": "'Wise. The most interesting careers don't fit traditional categories.'\n\n'Birmingham's small enough for boundary-crossing. Healthcare informatics. Sustainable urban planning. Community-centered business development. The intersections are where innovation happens.'",
+          "nextScene": "2-9b"
         },
         {
           "id": "2-9b",
@@ -1902,18 +1959,21 @@
         {
           "id": "2-9b-11",
           "type": "narration",
-          "text": "They gesture to the space between platforms where new paths shimmer."
+          "text": "They gesture to the space between platforms where new paths shimmer.",
+          "nextScene": "2-9b-12"
         },
         {
           "id": "2-9b-12",
           "type": "dialogue",
           "speaker": "Hybrid Traveler",
-          "text": "'You don't combine them - you find where they naturally overlap.'\n\n'Healthcare needs better data systems. Environmental projects need community engagement. Urban planning needs both efficiency and equity. The intersections already exist - you just have to see them.'"
+          "text": "'You don't combine them - you find where they naturally overlap.'\n\n'Healthcare needs better data systems. Environmental projects need community engagement. Urban planning needs both efficiency and equity. The intersections already exist - you just have to see them.'",
+          "nextScene": "2-9b-21"
         },
         {
           "id": "2-9b-21",
           "type": "narration",
-          "text": "Platform 1 and Platform 7 both pulse in recognition."
+          "text": "Platform 1 and Platform 7 both pulse in recognition.",
+          "nextScene": "2-9b-22"
         },
         {
           "id": "2-9b-22",
@@ -1938,7 +1998,8 @@
         {
           "id": "2-9b-31",
           "type": "narration",
-          "text": "Platform 3 and Platform 9 resonate together."
+          "text": "Platform 3 and Platform 9 resonate together.",
+          "nextScene": "2-9b-32"
         },
         {
           "id": "2-9b-32",
@@ -1963,7 +2024,8 @@
         {
           "id": "2-9b-41",
           "type": "narration",
-          "text": "Platform 1 and Platform 9 pulse in harmony."
+          "text": "Platform 1 and Platform 9 pulse in harmony.",
+          "nextScene": "2-9b-42"
         },
         {
           "id": "2-9b-42",
@@ -1983,12 +2045,14 @@
           "id": "2-9b-42-2",
           "type": "dialogue",
           "speaker": "Hybrid Traveler",
-          "text": "It's entrepreneurship with purpose.'"
+          "text": "It's entrepreneurship with purpose.'",
+          "nextScene": "2-9c1"
         },
         {
           "id": "2-9c1",
           "type": "narration",
-          "text": "A college student sits on a bench, surrounded by textbooks from completely different fields - computer science, social work, environmental studies, business."
+          "text": "A college student sits on a bench, surrounded by textbooks from completely different fields - computer science, social work, environmental studies, business.",
+          "nextScene": "2-9c2"
         },
         {
           "id": "2-9c2",
@@ -2008,7 +2072,8 @@
           "id": "2-9c2-2",
           "type": "dialogue",
           "speaker": "Young Traveler",
-          "text": "Everyone says pick one thing and stick with it, but what if the best contributions come from combining things?'\n\nHow do you guide them toward understanding their own emerging career values?"
+          "text": "Everyone says pick one thing and stick with it, but what if the best contributions come from combining things?'\n\nHow do you guide them toward understanding their own emerging career values?",
+          "nextScene": "2-9d"
         },
         {
           "id": "2-9d",
@@ -2025,7 +2090,8 @@
         {
           "id": "2-9d-2",
           "type": "narration",
-          "text": "The question isn't 'what job should I get?' but 'how does my unique combination of values serve what Birmingham - and the world - actually needs?'\n\nTime moves differently here. You could stay in this think aboutive space, or you could carry this clarity back into action."
+          "text": "The question isn't 'what job should I get?' but 'how does my unique combination of values serve what Birmingham - and the world - actually needs?'\n\nTime moves differently here. You could stay in this think aboutive space, or you could carry this clarity back into action.",
+          "nextScene": "2-10"
         },
         {
           "id": "2-10",
@@ -2089,7 +2155,8 @@
         {
           "id": "2-11a-2",
           "type": "narration",
-          "text": "This is your train, and it will be here when you're ready to board."
+          "text": "This is your train, and it will be here when you're ready to board.",
+          "nextScene": "2-11"
         },
         {
           "id": "2-11",
@@ -2109,7 +2176,8 @@
           "id": "2-11-2",
           "type": "dialogue",
           "speaker": "Samuel",
-          "text": "Was supposed to become a surgeon. Had the hands for it, the minds for it, the acceptance letter from Johns Hopkins."
+          "text": "Was supposed to become a surgeon. Had the hands for it, the minds for it, the acceptance letter from Johns Hopkins.",
+          "nextScene": "2-2"
         },
         {
           "id": "2-11b",
@@ -2132,7 +2200,8 @@
         {
           "id": "2-11b-3",
           "type": "narration",
-          "text": "Your career path might not have a traditional name yet, but Birmingham's growth creates space for exactly this kind of innovative thinking."
+          "text": "Your career path might not have a traditional name yet, but Birmingham's growth creates space for exactly this kind of innovative thinking.",
+          "nextScene": "2-11c"
         },
         {
           "id": "2-11c",
@@ -2149,7 +2218,8 @@
         {
           "id": "2-11c-2",
           "type": "narration",
-          "text": "More professionals pivoting between industries. Your insights about career values become tools for serving others' discovery processes."
+          "text": "More professionals pivoting between industries. Your insights about career values become tools for serving others' discovery processes.",
+          "nextScene": "2-11d"
         },
         {
           "id": "2-11d",
@@ -2160,7 +2230,8 @@
         {
           "id": "2-11d-1",
           "type": "narration",
-          "text": "Internships, volunteer work, informational interviews, skill-building courses - these become your platforms. You're not avoiding commitment; you're building a foundation for more informed choices."
+          "text": "Internships, volunteer work, informational interviews, skill-building courses - these become your platforms. You're not avoiding commitment; you're building a foundation for more informed choices.",
+          "nextScene": "2-12"
         },
         {
           "id": "2-12",
@@ -2212,7 +2283,8 @@
         {
           "id": "2-12d4",
           "type": "narration",
-          "text": "The station responds to your collective vulnerability. Platform signs stop flickering. The temperature equalizes. For the first time, everything feels... possible."
+          "text": "The station responds to your collective vulnerability. Platform signs stop flickering. The temperature equalizes. For the first time, everything feels... possible.",
+          "nextScene": "2-12c"
         },
         {
           "id": "2-12c",
@@ -2225,12 +2297,14 @@
           "id": "2-12c-1",
           "type": "dialogue",
           "speaker": "You",
-          "text": "What if the station is just an elaborate way of making us think we have control when we don't?"
+          "text": "What if the station is just an elaborate way of making us think we have control when we don't?",
+          "nextScene": "2-2"
         },
         {
           "id": "2-12c2",
           "type": "narration",
-          "text": "The station shudders at your words. Platform signs flicker simultaneously. For a moment, all of them show the same thing: ERROR."
+          "text": "The station shudders at your words. Platform signs flicker simultaneously. For a moment, all of them show the same thing: ERROR.",
+          "nextScene": "2-12c3"
         },
         {
           "id": "2-12c3",
@@ -2250,13 +2324,15 @@
           "id": "2-12c3-2",
           "type": "dialogue",
           "speaker": "Maya",
-          "text": "that's what the platforms are really about."
+          "text": "that's what the platforms are really about.",
+          "nextScene": "2-12b"
         },
         {
           "id": "2-12b",
           "type": "dialogue",
           "speaker": "You",
-          "text": "Your watch stopped at 11:47. Mine might stop too. What if I get on the wrong train and spend thirty years wondering what Platform 7 would have been? What if I'm you, telling this story to someone else someday?"
+          "text": "Your watch stopped at 11:47. Mine might stop too. What if I get on the wrong train and spend thirty years wondering what Platform 7 would have been? What if I'm you, telling this story to someone else someday?",
+          "nextScene": "2-12a"
         },
         {
           "id": "2-12a",
@@ -2283,7 +2359,8 @@
           "id": "2-12a-3",
           "type": "dialogue",
           "speaker": "You",
-          "text": "you chose safety over purpose. How do I know I won't make the same mistakes?"
+          "text": "you chose safety over purpose. How do I know I won't make the same mistakes?",
+          "nextScene": "2-15a"
         },
         {
           "id": "2-15a",
@@ -2300,7 +2377,8 @@
         {
           "id": "2-15a-2",
           "type": "narration",
-          "text": "It will always be there when someone needs to find their direction. Your career exploration has become your career foundation."
+          "text": "It will always be there when someone needs to find their direction. Your career exploration has become your career foundation.",
+          "nextScene": "2-15b2"
         },
         {
           "id": "2-15b2",
@@ -2327,7 +2405,8 @@
           "id": "2-15b2-3",
           "type": "dialogue",
           "speaker": "Samuel",
-          "text": "Your train can wait. There are always more travelers who need guidance, and you've learned that service to others' growth can be its own career path.'"
+          "text": "Your train can wait. There are always more travelers who need guidance, and you've learned that service to others' growth can be its own career path.'",
+          "nextScene": "2-15c"
         },
         {
           "id": "2-15c",
@@ -2356,7 +2435,8 @@
         {
           "id": "2-15c-4",
           "type": "narration",
-          "text": "You need to take the station with you."
+          "text": "You need to take the station with you.",
+          "nextScene": "2-15d"
         },
         {
           "id": "2-15d",
@@ -2379,7 +2459,8 @@
         {
           "id": "2-15d-3",
           "type": "narration",
-          "text": "When you're ready, you'll step forward - whether onto a train, into service, or into the creation of something entirely new."
+          "text": "When you're ready, you'll step forward - whether onto a train, into service, or into the creation of something entirely new.",
+          "nextScene": "2-16"
         },
         {
           "id": "2-16",
@@ -2504,7 +2585,8 @@
         {
           "id": "2-17a-1",
           "type": "narration",
-          "text": "Grand Central Terminus fades, but your ability to recognize value-aligned opportunities in Birmingham's growing economy has just begun."
+          "text": "Grand Central Terminus fades, but your ability to recognize value-aligned opportunities in Birmingham's growing economy has just begun.",
+          "nextScene": "2-17b"
         },
         {
           "id": "2-17b",
@@ -2521,7 +2603,8 @@
         {
           "id": "2-17b-2",
           "type": "narration",
-          "text": "The station taught you that some people's career path is helping others find theirs."
+          "text": "The station taught you that some people's career path is helping others find theirs.",
+          "nextScene": "2-17c"
         },
         {
           "id": "2-17c",
@@ -2544,7 +2627,8 @@
         {
           "id": "2-17c-3",
           "type": "narration",
-          "text": "Your career becomes an act of economic innovation, building bridges between what exists and what's possible. Grand Central Terminus taught you that some platforms don't exist until someone builds them."
+          "text": "Your career becomes an act of economic innovation, building bridges between what exists and what's possible. Grand Central Terminus taught you that some platforms don't exist until someone builds them.",
+          "nextScene": "2-17d"
         },
         {
           "id": "2-17d",
@@ -2561,7 +2645,8 @@
         {
           "id": "2-17d-2",
           "type": "narration",
-          "text": "The station taught you that some journeys never end - they just become more intentional."
+          "text": "The station taught you that some journeys never end - they just become more intentional.",
+          "nextScene": "2-18"
         },
         {
           "id": "2-18",
@@ -2572,7 +2657,8 @@
         {
           "id": "2-18-1",
           "type": "narration",
-          "text": "Grand Central Terminus may fade from view, but its lesson remains: meaningful work happens when personal values meet community needs, and the best career paths often have to be built, not just discovered. Your career journey in Birmingham has just begun."
+          "text": "Grand Central Terminus may fade from view, but its lesson remains: meaningful work happens when personal values meet community needs, and the best career paths often have to be built, not just discovered. Your career journey in Birmingham has just begun.",
+          "nextScene": "2-2"
         }
       ]
     },
@@ -2647,7 +2733,8 @@
         {
           "id": "3-0b-3",
           "type": "narration",
-          "text": "Or maybe Birmingham itself is the magic - a city that refuses to be what others expect."
+          "text": "Or maybe Birmingham itself is the magic - a city that refuses to be what others expect.",
+          "nextScene": "3-2"
         },
         {
           "id": "3-2",
@@ -2714,7 +2801,8 @@
         {
           "id": "3-2a-2",
           "type": "narration",
-          "text": "But she's not reading them - she's sketching designs for surgical robots on their margins. The platform seems to pulse with the heartbeat of Birmingham's medical district."
+          "text": "But she's not reading them - she's sketching designs for surgical robots on their margins. The platform seems to pulse with the heartbeat of Birmingham's medical district.",
+          "nextScene": "3-2b"
         },
         {
           "id": "3-2b",
@@ -2737,7 +2825,8 @@
         {
           "id": "3-2b-3",
           "type": "narration",
-          "text": "Tech startups circle Innovation Depot. We're not random - we're patterns.'"
+          "text": "Tech startups circle Innovation Depot. We're not random - we're patterns.'",
+          "nextScene": "3-2c"
         },
         {
           "id": "3-2c",
@@ -2760,7 +2849,8 @@
         {
           "id": "3-2c-3",
           "type": "narration",
-          "text": "The data doesn't lie - Birmingham is transforming block by block.'"
+          "text": "The data doesn't lie - Birmingham is transforming block by block.'",
+          "nextScene": "3-2d"
         },
         {
           "id": "3-2d",
@@ -2783,12 +2873,14 @@
         {
           "id": "3-2d-3",
           "type": "narration",
-          "text": "The future is renewable, and Alabama has more sun than Silicon Valley. We just have to convince people that green can grow in red clay.'"
+          "text": "The future is renewable, and Alabama has more sun than Silicon Valley. We just have to convince people that green can grow in red clay.'",
+          "nextScene": "3-3a1"
         },
         {
           "id": "3-3a1",
           "type": "narration",
-          "text": "She's the program coordinator at UAB, someone who bridges clinical needs with technology solutions."
+          "text": "She's the program coordinator at UAB, someone who bridges clinical needs with technology solutions.",
+          "nextScene": "3-3a2"
         },
         {
           "id": "3-3a2",
@@ -2822,12 +2914,14 @@
           "id": "3-3a2-4",
           "type": "dialogue",
           "speaker": "Dr. Sarah Martinez",
-          "text": "And what's your comfort level with both patient interaction and data analysis?'"
+          "text": "And what's your comfort level with both patient interaction and data analysis?'",
+          "nextScene": "3-3b1"
         },
         {
           "id": "3-3b1",
           "type": "narration",
-          "text": "He's a Birmingham native who left tech consulting to start a sustainable logistics company."
+          "text": "He's a Birmingham native who left tech consulting to start a sustainable logistics company.",
+          "nextScene": "3-3b2"
         },
         {
           "id": "3-3b2",
@@ -2861,12 +2955,14 @@
           "id": "3-3b2-4",
           "type": "dialogue",
           "speaker": "Marcus Thompson",
-          "text": "It's about finding your people - the ones working on problems you care about. What kind of problems keep you up at night?'"
+          "text": "It's about finding your people - the ones working on problems you care about. What kind of problems keep you up at night?'",
+          "nextScene": "3-3c1"
         },
         {
           "id": "3-3c1",
           "type": "narration",
-          "text": "She's coordinating efforts to connect job training programs with local employers."
+          "text": "She's coordinating efforts to connect job training programs with local employers.",
+          "nextScene": "3-3c2"
         },
         {
           "id": "3-3c2",
@@ -2893,7 +2989,8 @@
           "id": "3-3c2-3",
           "type": "dialogue",
           "speaker": "Community Organizer",
-          "text": "Real conversations about what skills they actually need, not just what job postings say.'"
+          "text": "Real conversations about what skills they actually need, not just what job postings say.'",
+          "nextScene": "3-3d"
         },
         {
           "id": "3-3d",
@@ -2922,7 +3019,8 @@
         {
           "id": "3-3d-4",
           "type": "narration",
-          "text": "Birmingham's size creates opportunities for boundary-crossing that larger cities might not offer."
+          "text": "Birmingham's size creates opportunities for boundary-crossing that larger cities might not offer.",
+          "nextScene": "3-3"
         },
         {
           "id": "3-3",
@@ -3009,7 +3107,8 @@
           "id": "3-3b-2",
           "type": "dialogue",
           "speaker": "Devon",
-          "text": "One change ripples everywhere."
+          "text": "One change ripples everywhere.",
+          "nextScene": "3-3c"
         },
         {
           "id": "3-3c",
@@ -3036,7 +3135,8 @@
           "id": "3-3c-3",
           "type": "dialogue",
           "speaker": "Jordan",
-          "text": "The future isn't replacing the past - it's upgrading it."
+          "text": "The future isn't replacing the past - it's upgrading it.",
+          "nextScene": "3-4"
         },
         {
           "id": "3-4",
@@ -3106,7 +3206,8 @@
         {
           "id": "3-5a-3",
           "type": "narration",
-          "text": "The organic approach lets each connection inform the next, building a nuanced understanding of how your career values apply across different sectors."
+          "text": "The organic approach lets each connection inform the next, building a nuanced understanding of how your career values apply across different sectors.",
+          "nextScene": "3-5b"
         },
         {
           "id": "3-5b",
@@ -3129,12 +3230,14 @@
         {
           "id": "3-5b-3",
           "type": "narration",
-          "text": "By month's end, you're not just exploring career options - you're becoming someone who naturally bridges different sectors."
+          "text": "By month's end, you're not just exploring career options - you're becoming someone who naturally bridges different sectors.",
+          "nextScene": "3-5c1"
         },
         {
           "id": "3-5c1",
           "type": "narration",
-          "text": "She's a workforce development specialist who helps people transition between careers."
+          "text": "She's a workforce development specialist who helps people transition between careers.",
+          "nextScene": "3-5c2"
         },
         {
           "id": "3-5c2",
@@ -3161,7 +3264,8 @@
           "id": "3-5c2-3",
           "type": "dialogue",
           "speaker": "Skills Counselor",
-          "text": "Community development combines research methods with relationship building. Which skill areas feel most important to develop first?'"
+          "text": "Community development combines research methods with relationship building. Which skill areas feel most important to develop first?'",
+          "nextScene": "3-5d"
         },
         {
           "id": "3-5d",
@@ -3184,7 +3288,8 @@
         {
           "id": "3-5d-3",
           "type": "narration",
-          "text": "More importantly, you begin building a network of people who understand your emerging career direction and can provide guidance as opportunities arise."
+          "text": "More importantly, you begin building a network of people who understand your emerging career direction and can provide guidance as opportunities arise.",
+          "nextScene": "3-5"
         },
         {
           "id": "3-5",
@@ -3319,12 +3424,14 @@
         {
           "id": "3-6a-2",
           "type": "narration",
-          "text": "'It's about becoming part of Birmingham's transformation from Steel City to Medical City. We're not just healing bodies - we're healing a region's economy.'"
+          "text": "'It's about becoming part of Birmingham's transformation from Steel City to Medical City. We're not just healing bodies - we're healing a region's economy.'",
+          "nextScene": "3-6b"
         },
         {
           "id": "3-6b",
           "type": "narration",
-          "text": "The construction/systems path solidifies. Devon shows you active project sites across Birmingham - the Protective Stadium, the Birmingham-Jefferson Convention Complex expansion, the Bus Rapid Transit system. 'We're not just building structures,' he explains. 'We're building the skeleton that Birmingham's future will grow on. Every beam, every system, every connection matters.'"
+          "text": "The construction/systems path solidifies. Devon shows you active project sites across Birmingham - the Protective Stadium, the Birmingham-Jefferson Convention Complex expansion, the Bus Rapid Transit system. 'We're not just building structures,' he explains. 'We're building the skeleton that Birmingham's future will grow on. Every beam, every system, every connection matters.'",
+          "nextScene": "3-6c"
         },
         {
           "id": "3-6c",
@@ -3347,7 +3454,8 @@
         {
           "id": "3-6c-3",
           "type": "narration",
-          "text": "The question is: will we use it to repeat old patterns or create new ones?'"
+          "text": "The question is: will we use it to repeat old patterns or create new ones?'",
+          "nextScene": "3-6d"
         },
         {
           "id": "3-6d",
@@ -3364,12 +3472,14 @@
         {
           "id": "3-6d-2",
           "type": "narration",
-          "text": "We could be the South's green tech hub, but first we have to believe it ourselves.'"
+          "text": "We could be the South's green tech hub, but first we have to believe it ourselves.'",
+          "nextScene": "3-7a1"
         },
         {
           "id": "3-7a1",
           "type": "narration",
-          "text": "She's a senior data scientist who transitioned from finance to healthcare analytics."
+          "text": "She's a senior data scientist who transitioned from finance to healthcare analytics.",
+          "nextScene": "3-7a2"
         },
         {
           "id": "3-7a2",
@@ -3403,12 +3513,14 @@
           "id": "3-7a2-4",
           "type": "dialogue",
           "speaker": "Technical Mentor",
-          "text": "The key is building a foundation that adapts.'"
+          "text": "The key is building a foundation that adapts.'",
+          "nextScene": "3-7b1"
         },
         {
           "id": "3-7b1",
           "type": "narration",
-          "text": "He runs leadership development programs for Birmingham's mid-size companies."
+          "text": "He runs leadership development programs for Birmingham's mid-size companies.",
+          "nextScene": "3-7b2"
         },
         {
           "id": "3-7b2",
@@ -3435,12 +3547,14 @@
           "id": "3-7b2-3",
           "type": "dialogue",
           "speaker": "Collaboration Specialist",
-          "text": "Focus on becoming someone who makes collaboration smoother.'"
+          "text": "Focus on becoming someone who makes collaboration smoother.'",
+          "nextScene": "3-7c1"
         },
         {
           "id": "3-7c1",
           "type": "narration",
-          "text": "She consults with Birmingham companies on operational efficiency and growth strategy."
+          "text": "She consults with Birmingham companies on operational efficiency and growth strategy.",
+          "nextScene": "3-7c2"
         },
         {
           "id": "3-7c2",
@@ -3474,12 +3588,14 @@
           "id": "3-7c2-4",
           "type": "dialogue",
           "speaker": "Business Strategist",
-          "text": "You can learn business thinking by asking good questions, not just by getting an MBA.'"
+          "text": "You can learn business thinking by asking good questions, not just by getting an MBA.'",
+          "nextScene": "3-7d1"
         },
         {
           "id": "3-7d1",
           "type": "narration",
-          "text": "She founded a sustainable packaging company that now supplies Birmingham's food industry."
+          "text": "She founded a sustainable packaging company that now supplies Birmingham's food industry.",
+          "nextScene": "3-7d2"
         },
         {
           "id": "3-7d2",
@@ -3506,7 +3622,8 @@
           "id": "3-7d2-3",
           "type": "dialogue",
           "speaker": "Entrepreneur",
-          "text": "Whether you start your own company or work for others, these skills help you create value rather than just following instructions.'"
+          "text": "Whether you start your own company or work for others, these skills help you create value rather than just following instructions.'",
+          "nextScene": "3-8"
         },
         {
           "id": "3-8",
@@ -3558,7 +3675,8 @@
         {
           "id": "3-9a1",
           "type": "narration",
-          "text": "She's a healthcare IT director who's built her career in Birmingham over fifteen years."
+          "text": "She's a healthcare IT director who's built her career in Birmingham over fifteen years.",
+          "nextScene": "3-9a2"
         },
         {
           "id": "3-9a2",
@@ -3585,7 +3703,8 @@
           "id": "3-9a2-3",
           "type": "dialogue",
           "speaker": "Potential Mentor",
-          "text": "Are you ready for that kind of relationship?'"
+          "text": "Are you ready for that kind of relationship?'",
+          "nextScene": "3-9b"
         },
         {
           "id": "3-9b",
@@ -3602,7 +3721,8 @@
         {
           "id": "3-9b-2",
           "type": "narration",
-          "text": "The service impact is visible, the systems thinking is essential, and the data insights drive real decisions. By project's end, you're not just more skilled - you have a portfolio piece that shows your capabilities to future opportunities."
+          "text": "The service impact is visible, the systems thinking is essential, and the data insights drive real decisions. By project's end, you're not just more skilled - you have a portfolio piece that shows your capabilities to future opportunities.",
+          "nextScene": "3-9c"
         },
         {
           "id": "3-9c",
@@ -3625,7 +3745,8 @@
         {
           "id": "3-9c-3",
           "type": "narration",
-          "text": "Within six months, you're not just a member - you're someone others turn to for guidance."
+          "text": "Within six months, you're not just a member - you're someone others turn to for guidance.",
+          "nextScene": "3-9d"
         },
         {
           "id": "3-9d",
@@ -3642,7 +3763,8 @@
         {
           "id": "3-9d-2",
           "type": "narration",
-          "text": "More importantly, the creation process connects you to Birmingham's workforce development ecosystem as a contributor, not just a participant."
+          "text": "More importantly, the creation process connects you to Birmingham's workforce development ecosystem as a contributor, not just a participant.",
+          "nextScene": "3-10"
         },
         {
           "id": "3-10",
@@ -3700,7 +3822,8 @@
         {
           "id": "3-10-birmingham-1",
           "type": "narration",
-          "text": "This is Birmingham's new economy: craft beer where steel mills stood, James Beard winners where company stores crumbled. The transformation isn't complete, but you can taste it happening."
+          "text": "This is Birmingham's new economy: craft beer where steel mills stood, James Beard winners where company stores crumbled. The transformation isn't complete, but you can taste it happening.",
+          "nextScene": "3-11a"
         },
         {
           "id": "3-11a",
@@ -3723,7 +3846,8 @@
         {
           "id": "3-11a-3",
           "type": "narration",
-          "text": "You become the person others turn to when they need someone who really understands both the technical and domain-specific aspects of healthcare data. Within a year, you're not just looking for opportunities - opportunities are finding you."
+          "text": "You become the person others turn to when they need someone who really understands both the technical and domain-specific aspects of healthcare data. Within a year, you're not just looking for opportunities - opportunities are finding you.",
+          "nextScene": "3-11b"
         },
         {
           "id": "3-11b",
@@ -3740,12 +3864,14 @@
         {
           "id": "3-11b-2",
           "type": "narration",
-          "text": "Your career path becomes less predictable but more adaptable. As Birmingham's economy evolves, you're positioned to evolve with it."
+          "text": "Your career path becomes less predictable but more adaptable. As Birmingham's economy evolves, you're positioned to evolve with it.",
+          "nextScene": "3-11c1"
         },
         {
           "id": "3-11c1",
           "type": "narration",
-          "text": "She coordinates economic development initiatives across Birmingham's growth sectors."
+          "text": "She coordinates economic development initiatives across Birmingham's growth sectors.",
+          "nextScene": "3-11c2"
         },
         {
           "id": "3-11c2",
@@ -3772,7 +3898,8 @@
           "id": "3-11c2-3",
           "type": "dialogue",
           "speaker": "Community Leader",
-          "text": "We need people who understand both the technical realities and the human impact of economic transition.'"
+          "text": "We need people who understand both the technical realities and the human impact of economic transition.'",
+          "nextScene": "3-11d"
         },
         {
           "id": "3-11d",
@@ -3789,7 +3916,8 @@
         {
           "id": "3-11d-2",
           "type": "narration",
-          "text": "More importantly, creating something new positions you as someone who builds solutions rather than just implements them."
+          "text": "More importantly, creating something new positions you as someone who builds solutions rather than just implements them.",
+          "nextScene": "3-12"
         },
         {
           "id": "3-12",
@@ -3860,7 +3988,8 @@
         {
           "id": "3-13a-3",
           "type": "narration",
-          "text": "Within two years, your systematic development has positioned you for leadership opportunities that align perfectly with your career values."
+          "text": "Within two years, your systematic development has positioned you for leadership opportunities that align perfectly with your career values.",
+          "nextScene": "3-13b"
         },
         {
           "id": "3-13b",
@@ -3883,12 +4012,14 @@
         {
           "id": "3-13b-3",
           "type": "narration",
-          "text": "Your career becomes a series of thoughtful transitions rather than a single planned trajectory."
+          "text": "Your career becomes a series of thoughtful transitions rather than a single planned trajectory.",
+          "nextScene": "3-13c1"
         },
         {
           "id": "3-13c1",
           "type": "narration",
-          "text": "She's helped dozens of people navigate career transitions in Birmingham's evolving economy."
+          "text": "She's helped dozens of people navigate career transitions in Birmingham's evolving economy.",
+          "nextScene": "3-13c2"
         },
         {
           "id": "3-13c2",
@@ -3908,7 +4039,8 @@
           "id": "3-13c2-2",
           "type": "dialogue",
           "speaker": "Career Advisor",
-          "text": "Your approach - setting directional goals while staying open to unexpected possibilities - positions you perfectly for Birmingham's environment. Organizations here value both reliability and adaptability.'"
+          "text": "Your approach - setting directional goals while staying open to unexpected possibilities - positions you perfectly for Birmingham's environment. Organizations here value both reliability and adaptability.'",
+          "nextScene": "3-13d"
         },
         {
           "id": "3-13d",
@@ -3925,7 +4057,8 @@
         {
           "id": "3-13d-2",
           "type": "narration",
-          "text": "Your career develops through collaboration rather than competition, creating sustainable growth that benefits both you and Birmingham's broader professional community."
+          "text": "Your career develops through collaboration rather than competition, creating sustainable growth that benefits both you and Birmingham's broader professional community.",
+          "nextScene": "3-14"
         },
         {
           "id": "3-14",
@@ -3999,7 +4132,8 @@
           "id": "3-15a2-3",
           "type": "dialogue",
           "speaker": "Maya",
-          "text": "More realistic about creating change."
+          "text": "More realistic about creating change.",
+          "nextScene": "3-15b"
         },
         {
           "id": "3-15b",
@@ -4047,22 +4181,26 @@
         {
           "id": "3-15b-1",
           "type": "narration",
-          "text": "In Atlanta, you'd need six months to get a meeting with a healthcare system director. In Birmingham, you grabbed coffee with Dr. Martinez after one introduction at UAB.\n\nAccessibility creates opportunities for influence. When you can actually talk to decision-makers, your ideas have a chance to become reality."
+          "text": "In Atlanta, you'd need six months to get a meeting with a healthcare system director. In Birmingham, you grabbed coffee with Dr. Martinez after one introduction at UAB.\n\nAccessibility creates opportunities for influence. When you can actually talk to decision-makers, your ideas have a chance to become reality.",
+          "nextScene": "3-15b-2"
         },
         {
           "id": "3-15b-2",
           "type": "narration",
-          "text": "Your Innovation Depot contacts introduced you to UAB researchers. The UAB researchers connected you to community organizers. The community organizers linked you back to startups.\n\nIn Birmingham, the professional ecosystem is interconnected enough to follow opportunity threads across sectors."
+          "text": "Your Innovation Depot contacts introduced you to UAB researchers. The UAB researchers connected you to community organizers. The community organizers linked you back to startups.\n\nIn Birmingham, the professional ecosystem is interconnected enough to follow opportunity threads across sectors.",
+          "nextScene": "3-15b-3"
         },
         {
           "id": "3-15b-3",
           "type": "narration",
-          "text": "That data dashboard you built for the community organization? Live and helping real people within two weeks. In larger cities, it would have taken months of approvals.\n\nBirmingham's scale allows for rapid iteration. Ideas become reality quickly enough to learn and improve."
+          "text": "That data dashboard you built for the community organization? Live and helping real people within two weeks. In larger cities, it would have taken months of approvals.\n\nBirmingham's scale allows for rapid iteration. Ideas become reality quickly enough to learn and improve.",
+          "nextScene": "3-15b-4"
         },
         {
           "id": "3-15b-4",
           "type": "narration",
-          "text": "Large enough to have UAB, Innovation Depot, Fortune 500 companies, and diverse communities. Small enough that you can build genuine relationships across all of them.\n\nThe sweet spot for career development: substantial opportunities without overwhelming complexity."
+          "text": "Large enough to have UAB, Innovation Depot, Fortune 500 companies, and diverse communities. Small enough that you can build genuine relationships across all of them.\n\nThe sweet spot for career development: substantial opportunities without overwhelming complexity.",
+          "nextScene": "3-15c"
         },
         {
           "id": "3-15c",
@@ -4085,7 +4223,8 @@
         {
           "id": "3-15c-3",
           "type": "narration",
-          "text": "You've learned to create value rather than just capture it."
+          "text": "You've learned to create value rather than just capture it.",
+          "nextScene": "3-15d"
         },
         {
           "id": "3-15d",
@@ -4108,7 +4247,8 @@
         {
           "id": "3-15d-3",
           "type": "narration",
-          "text": "You've learned that career development is fundamentally about becoming someone others want to work with and support."
+          "text": "You've learned that career development is fundamentally about becoming someone others want to work with and support.",
+          "nextScene": "3-16"
         },
         {
           "id": "3-16",
@@ -4156,17 +4296,20 @@
         {
           "id": "3-16a",
           "type": "narration",
-          "text": "The UAB internship posting doesn't just look like 'good experience' anymore. You can see how it aligns with your directImpact and dataInsights values. Or doesn't.\n\nGrand Central Terminus gave you a compass. Birmingham taught you how to read it."
+          "text": "The UAB internship posting doesn't just look like 'good experience' anymore. You can see how it aligns with your directImpact and dataInsights values. Or doesn't.\n\nGrand Central Terminus gave you a compass. Birmingham taught you how to read it.",
+          "nextScene": "3-16b"
         },
         {
           "id": "3-16b",
           "type": "narration",
-          "text": "Dr. Martinez's text about a new healthcare innovation project lands differently now. She's not just 'a contact' - she's someone who knows your work and trusts your judgment.\n\nRelationships aren't networking anymore. They're collaboration."
+          "text": "Dr. Martinez's text about a new healthcare innovation project lands differently now. She's not just 'a contact' - she's someone who knows your work and trusts your judgment.\n\nRelationships aren't networking anymore. They're collaboration.",
+          "nextScene": "3-16c"
         },
         {
           "id": "3-16c",
           "type": "narration",
-          "text": "That community data dashboard you built? It opened three new opportunities you couldn't have imagined when you started. Creating value creates possibilities.\n\nYou're not just following paths anymore. You're building them."
+          "text": "That community data dashboard you built? It opened three new opportunities you couldn't have imagined when you started. Creating value creates possibilities.\n\nYou're not just following paths anymore. You're building them.",
+          "nextScene": "3-16d"
         },
         {
           "id": "3-16d",
@@ -4177,7 +4320,8 @@
         {
           "id": "3-16d-1",
           "type": "narration",
-          "text": "Birmingham's data heart beats here, each keystroke a tiny metallic click in the sound of processing."
+          "text": "Birmingham's data heart beats here, each keystroke a tiny metallic click in the sound of processing.",
+          "nextScene": "3-17"
         },
         {
           "id": "3-17",
@@ -4347,7 +4491,8 @@
         {
           "id": "3-18a-birmingham-4",
           "type": "narration",
-          "text": "It's real, and it starts Monday."
+          "text": "It's real, and it starts Monday.",
+          "nextScene": "3-18b-birmingham"
         },
         {
           "id": "3-18b-birmingham",
@@ -4370,7 +4515,8 @@
         {
           "id": "3-18b-birmingham-3",
           "type": "narration",
-          "text": "Real money. Real possibility."
+          "text": "Real money. Real possibility.",
+          "nextScene": "3-18c-birmingham"
         },
         {
           "id": "3-18c-birmingham",
@@ -4387,7 +4533,8 @@
         {
           "id": "3-18c-birmingham-2",
           "type": "narration",
-          "text": "'Birmingham data has soul,' he says."
+          "text": "'Birmingham data has soul,' he says.",
+          "nextScene": "3-18d-birmingham"
         },
         {
           "id": "3-18d-birmingham",
@@ -4410,7 +4557,8 @@
         {
           "id": "3-18d-birmingham-3",
           "type": "narration",
-          "text": "Real wages for real work that really matters."
+          "text": "Real wages for real work that really matters.",
+          "nextScene": "3-19-birmingham-final"
         },
         {
           "id": "3-19-birmingham-final",
@@ -4469,7 +4617,8 @@
         {
           "id": "3-19-birmingham-final-9",
           "type": "narration",
-          "text": "Welcome to your real future. Clock in."
+          "text": "Welcome to your real future. Clock in.",
+          "nextScene": "3-18a"
         },
         {
           "id": "3-18a",
@@ -4486,7 +4635,8 @@
         {
           "id": "3-18a-2",
           "type": "narration",
-          "text": "Your approach - values-based guidance rather than prescriptive advice - spreads through the networks you influence. Your career becomes about enabling others' success, creating sustainable impact that continues long after any individual achievement."
+          "text": "Your approach - values-based guidance rather than prescriptive advice - spreads through the networks you influence. Your career becomes about enabling others' success, creating sustainable impact that continues long after any individual achievement.",
+          "nextScene": "3-18b"
         },
         {
           "id": "3-18b",
@@ -4503,7 +4653,8 @@
         {
           "id": "3-18b-2",
           "type": "narration",
-          "text": "Your career values - once personal insights - become community resources that help others discover and develop their own paths. Your individual journey has become a contribution to Birmingham's collective success."
+          "text": "Your career values - once personal insights - become community resources that help others discover and develop their own paths. Your individual journey has become a contribution to Birmingham's collective success.",
+          "nextScene": "3-18c"
         },
         {
           "id": "3-18c",
@@ -4520,7 +4671,8 @@
         {
           "id": "3-18c-2",
           "type": "narration",
-          "text": "You help organizations understand emerging trends, support professionals through career transitions, and identify opportunities at the intersection of established and emerging sectors. Your exploration-driven approach creates ongoing value for both yourself and Birmingham's professional community."
+          "text": "You help organizations understand emerging trends, support professionals through career transitions, and identify opportunities at the intersection of established and emerging sectors. Your exploration-driven approach creates ongoing value for both yourself and Birmingham's professional community.",
+          "nextScene": "3-18d"
         },
         {
           "id": "3-18d",
@@ -4537,7 +4689,8 @@
         {
           "id": "3-18d-2",
           "type": "narration",
-          "text": "Your career values guide you toward solutions that create sustainable prosperity rather than just short-term growth. Your journey from Grand Central's personal discovery to Birmingham's community contribution becomes a model for value-driven career development that serves both individual fulfillment and collective prosperity."
+          "text": "Your career values guide you toward solutions that create sustainable prosperity rather than just short-term growth. Your journey from Grand Central's personal discovery to Birmingham's community contribution becomes a model for value-driven career development that serves both individual fulfillment and collective prosperity.",
+          "nextScene": "3-19-final"
         },
         {
           "id": "3-19-final",
@@ -4596,7 +4749,8 @@
         {
           "id": "3-19-final-9",
           "type": "narration",
-          "text": "Welcome to your real future. Clock in."
+          "text": "Welcome to your real future. Clock in.",
+          "nextScene": "3-19"
         },
         {
           "id": "3-19",
@@ -4681,7 +4835,8 @@
           "id": "3-20-8",
           "type": "dialogue",
           "speaker": "Samuel",
-          "text": "Healthcare is all about that - seeing people at their worst and helping anyway."
+          "text": "Healthcare is all about that - seeing people at their worst and helping anyway.",
+          "nextScene": "3-21"
         },
         {
           "id": "3-21",
@@ -4715,7 +4870,8 @@
           "id": "3-21-4",
           "type": "dialogue",
           "speaker": "Maya",
-          "text": "Ask about work-study. Ask if you can sit in on a class."
+          "text": "Ask about work-study. Ask if you can sit in on a class.",
+          "nextScene": "3-22"
         },
         {
           "id": "3-22",
@@ -4744,7 +4900,8 @@
         {
           "id": "3-22-4",
           "type": "narration",
-          "text": "Just moves."
+          "text": "Just moves.",
+          "nextScene": "3-23"
         },
         {
           "id": "3-23",
@@ -4816,7 +4973,8 @@
         {
           "id": "3-24a-4",
           "type": "narration",
-          "text": "Your journey starts with a single form, a single conversation, a single step through real doors. Clock in to your future."
+          "text": "Your journey starts with a single form, a single conversation, a single step through real doors. Clock in to your future.",
+          "nextScene": "3-24b"
         },
         {
           "id": "3-24b",
@@ -4839,7 +4997,8 @@
         {
           "id": "3-24b-3",
           "type": "narration",
-          "text": "Your future isn't just yours - it's your family's investment in Birmingham's tomorrow. Clock in together."
+          "text": "Your future isn't just yours - it's your family's investment in Birmingham's tomorrow. Clock in together.",
+          "nextScene": "3-24c"
         },
         {
           "id": "3-24c",
@@ -4862,7 +5021,8 @@
         {
           "id": "3-24c-3",
           "type": "narration",
-          "text": "Clock in prepared."
+          "text": "Clock in prepared.",
+          "nextScene": "3-24d"
         },
         {
           "id": "3-24d",
@@ -4897,7 +5057,8 @@
         {
           "id": "3-24d-5",
           "type": "narration",
-          "text": "Clock in when ready."
+          "text": "Clock in when ready.",
+          "nextScene": "3-25"
         },
         {
           "id": "3-25",
@@ -4926,32 +5087,38 @@
         {
           "id": "3-25-2",
           "type": "narration",
-          "text": "Now go build it."
+          "text": "Now go build it.",
+          "nextScene": "3-26"
         },
         {
           "id": "3-26",
           "type": "narration",
-          "text": "Your journey through Grand Central Terminus is complete. But your real journey? That's just beginning.\n\nLet's look at what you discovered about yourself..."
+          "text": "Your journey through Grand Central Terminus is complete. But your real journey? That's just beginning.\n\nLet's look at what you discovered about yourself...",
+          "nextScene": "3-27"
         },
         {
           "id": "3-26-1",
           "type": "narration",
-          "text": "━━━━━━━━━━━━━━━━━━━━━━━\n🎯 YOUR BIRMINGHAM PATH\n━━━━━━━━━━━━━━━━━━━━━━━\n\nYou explored:\n✓ Healthcare (most visited)\n✓ Technology (considered)\n✓ Trades (investigated)"
+          "text": "━━━━━━━━━━━━━━━━━━━━━━━\n🎯 YOUR BIRMINGHAM PATH\n━━━━━━━━━━━━━━━━━━━━━━━\n\nYou explored:\n✓ Healthcare (most visited)\n✓ Technology (considered)\n✓ Trades (investigated)",
+          "nextScene": "3-26-2"
         },
         {
           "id": "3-26-2",
           "type": "narration",
-          "text": "Your work style:\n• Think before deciding\n• Care about stability\n• Want to help others\n• Value practical training\n\nThis matters because Birmingham employers want people who think things through."
+          "text": "Your work style:\n• Think before deciding\n• Care about stability\n• Want to help others\n• Value practical training\n\nThis matters because Birmingham employers want people who think things through.",
+          "nextScene": "3-26-3"
         },
         {
           "id": "3-26-3",
           "type": "narration",
-          "text": "Programs that fit YOU:\n\n1. UAB Respiratory Therapy\n   2 years → $60K starting\n\n2. Jeff State Dental Hygiene\n   2 years → $58K starting\n\n3. Lawson State Surgical Tech\n   18 months → $48K starting"
+          "text": "Programs that fit YOU:\n\n1. UAB Respiratory Therapy\n   2 years → $60K starting\n\n2. Jeff State Dental Hygiene\n   2 years → $58K starting\n\n3. Lawson State Surgical Tech\n   18 months → $48K starting",
+          "nextScene": "3-26-4"
         },
         {
           "id": "3-26-4",
           "type": "narration",
-          "text": "YOUR NEXT 3 STEPS:\n\n□ Apply for FAFSA by Feb 15\n   (studentaid.gov)\n\n□ Visit Jeff State campus\n   Ms. Patricia: 205-856-8533\n\n□ Tour UAB health programs\n   Open house every Tuesday 4pm"
+          "text": "YOUR NEXT 3 STEPS:\n\n□ Apply for FAFSA by Feb 15\n   (studentaid.gov)\n\n□ Visit Jeff State campus\n   Ms. Patricia: 205-856-8533\n\n□ Tour UAB health programs\n   Open house every Tuesday 4pm",
+          "nextScene": "3-26-5"
         },
         {
           "id": "3-26-5",
@@ -4974,7 +5141,8 @@
           "id": "3-27",
           "type": "dialogue",
           "speaker": "Samuel",
-          "text": "Good. You have your map. Now share it:\n\n• Text it to your parent - 'Look what I found out about careers'\n• Show your counselor - 'Can we talk about these programs?'\n• Email yourself - So you don't forget\n• Keep it as your phone wallpaper - Daily reminder of your path\n\nThe station showed you possibilities. That screenshot? That's your ticket to making them real."
+          "text": "Good. You have your map. Now share it:\n\n• Text it to your parent - 'Look what I found out about careers'\n• Show your counselor - 'Can we talk about these programs?'\n• Email yourself - So you don't forget\n• Keep it as your phone wallpaper - Daily reminder of your path\n\nThe station showed you possibilities. That screenshot? That's your ticket to making them real.",
+          "nextScene": "3-28"
         },
         {
           "id": "3-27-1",
@@ -4985,7 +5153,8 @@
         {
           "id": "3-28",
           "type": "narration",
-          "text": "The station fades. Birmingham remains.\n\nYour future isn't mystical. It's mechanical. It starts with one application, one campus visit, one conversation.\n\nThank you for exploring your future.\n\nNow go build it.\n\n[Journey Complete]"
+          "text": "The station fades. Birmingham remains.\n\nYour future isn't mystical. It's mechanical. It starts with one application, one campus visit, one conversation.\n\nThank you for exploring your future.\n\nNow go build it.\n\n[Journey Complete]",
+          "nextScene": "3-29"
         },
         {
           "id": "3-29",
