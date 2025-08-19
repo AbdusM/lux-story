@@ -185,7 +185,7 @@
         {
           "id": "1-5b",
           "type": "narration",
-          "text": "You take the man's bags - heavier than they look, the canvas rough against your palms. Inside, metal tools clink together softly. He sighs with relief, a sound like steam escaping.\n\n'Kind of you. Most people rush past, their footsteps sharp on the cold marble. They're all trying to catch trains that haven't been scheduled yet.' He walks slowly, and you match his pace. 'Platform 7, right? I can see it in how you keep glancing at the signs. Let me tell you something - the trains that matter most are never the ones you're told to catch.'\n\nPlatform 1 glows softer as you pass, warming the air by degrees. You notice other travelers helping each other with luggage, the soft rustle of shared humanity.\n\nThe clock now reads 11:51 PM."
+          "text": "Platform 1 glows softer as you pass, warming the air by degrees. The lights don't just brighten - they pulse gently, matching the rhythm of a resting heartbeat. A medical student nearby yawns and, for the first time in days, doesn't look exhausted."
         },
         {
           "id": "1-5c",
@@ -284,7 +284,7 @@
         {
           "id": "1-8-quiet",
           "type": "narration",
-          "text": "Time has crystallized around you. The air feels thick, like walking through water. You can move, but each step makes no sound - absolute silence except for your own heartbeat, loud as a drum in your ears. The temperature has dropped to exactly skin temperature - you can't tell where you end and the air begins."
+          "text": "Time has crystallized around you. The air feels thick, like walking through water. You can move, but each step makes no sound - absolute silence except for your own heartbeat, which seems to echo from the station walls themselves, as if the building has adopted your rhythm, loud as a drum in your ears. The temperature has dropped to exactly skin temperature - you can't tell where you end and the air begins."
         },
         {
           "id": "1-9",
@@ -534,7 +534,7 @@
         {
           "id": "1-10c",
           "type": "narration",
-          "text": "You find Maya frozen mid-step between Platforms 1 and 3, her face caught in perfect anguish. The robot on her shoulder is mid-chirp, its tiny speaker cone vibrating with trapped sound.\n\nYou touch her shoulder - warm through her jacket - and she gasps into motion while everything else stays still. The sudden sound is sharp as breaking glass.\n\n'What... how...?' She looks around at the stopped station, her breath forming clouds in the suddenly cold air. 'Is this what clarity feels like?'\n\nIn the Quiet Hour, she can see her threads too - the three-way split. Without hesitation, she grabs the threads to Platforms 1 and 3, the fibers rough as rope in her hands, and begins braiding them together.\n\n'Biomedical engineering. Surgical robots. Healing through building.' The braid becomes a bridge to Platform 7½, which suddenly exists with a sound like ice cracking, solid and real. 'I don't have to choose. I can create.'\n\nShe hugs you, fierce and grateful, smelling of textbooks and determination. 'The letter was wrong. They're all wrong. We're not supposed to find our platforms. We're supposed to build them.'"
+          "text": "You find Maya frozen mid-step between Platforms 1 and 3, her face caught in perfect anguish. The robot on her shoulder is mid-chirp, its tiny speaker cone vibrating with trapped sound.\n\nYou touch her shoulder - warm through her jacket - and she gasps into motion while everything else stays still. The sudden sound is sharp as breaking glass.\n\n'What... how...?' She looks around at the stopped station, her breath forming clouds in the suddenly cold air. 'Is this what clarity feels like?'\n\nIn the Quiet Hour, she can see her threads too - the three-way split. Without hesitation, she grabs the threads to Platforms 1 and 3 - they feel like warm wire in her hands, pulsing with possibility, the fibers rough as rope in her hands, and begins braiding them together.\n\n'Biomedical engineering. Surgical robots. Healing through building.' The braid becomes a bridge to Platform 7½, which suddenly exists with a sound like ice cracking, solid and real. 'I don't have to choose. I can create.'\n\nShe hugs you, fierce and grateful, smelling of textbooks and determination. 'The letter was wrong. They're all wrong. We're not supposed to find our platforms. We're supposed to build them.'"
         },
         {
           "id": "1-10d",
@@ -544,7 +544,7 @@
         {
           "id": "1-11",
           "type": "narration",
-          "text": "The Quiet Hour releases its hold with a sound like inhaling after holding your breath too long. Time crashes back like a wave, bringing with it the smell of motion - sweat, perfume, coffee, life. The station returns to its chaos of footsteps and conversations. But everything has changed:\n\n- Your actions in stopped time have left echoes (warmth where there was cold)\n- People near Platform 7 look confused, rubbing their eyes as if waking\n- Maya (if freed) is already sketching designs on her medical textbooks, pencil scratching urgently\n- Platform 7½ (if created) draws curious crowds, their murmurs like distant surf\n\nThe clock reads... still 11:52 PM. The brass hands haven't moved. The Quiet Hour took no time at all. Or maybe all the time in the world.\n\nSamuel finds you, his footsteps deliberate on the marble, his expression knowing. 'Eight minutes to midnight. Though midnight means something different now, doesn't it? You've learned the station's first secret: Time isn't your enemy here. Rushing is.'"
+          "text": "The Quiet Hour releases its hold with a sound like inhaling after holding your breath too long. Time crashes back like a wave, bringing with it the smell of motion - sweat, perfume, coffee, life. The station returns to its chaos of footsteps and conversations. But everything has changed:\n\n- Your actions in stopped time have left echoes (warmth where there was cold)\n- People near Platform 7 look confused, rubbing their eyes as if waking\n- Maya (if freed) is already sketching designs on her medical textbooks, pencil scratching urgently\n- Platform 7½ (if created) draws curious crowds. The new platform seems to shimmer, not quite solid yet, waiting for more architects to make it permanent, their murmurs like distant surf\n\nThe clock reads... still 11:52 PM. The brass hands haven't moved. The Quiet Hour took no time at all. Or maybe all the time in the world.\n\nSamuel finds you, his footsteps deliberate on the marble, his expression knowing. 'Eight minutes to midnight. Though midnight means something different now, doesn't it? You've learned the station's first secret: Time isn't your enemy here. Rushing is.'"
         },
         {
           "id": "1-12",
@@ -1425,6 +1425,77 @@
           ]
         },
         {
+          "id": "2-17",
+          "type": "choice",
+          "text": "Platform 7 flickers more violently as you approach. The other platforms seem to be pulling at you - not forcefully, but like gentle magnetic fields. You feel their influence as physical sensations.",
+          "choices": [
+            {
+              "text": "Let Platform 1's warmth guide you (your hands stop shaking)",
+              "consequence": "platform_1_pull",
+              "nextScene": "2-17a",
+              "stateChanges": {
+                "platforms": {
+                  "p1": {
+                    "warmth": 3,
+                    "resonance": 5
+                  }
+                },
+                "patterns": {
+                  "helping": 3
+                }
+              }
+            },
+            {
+              "text": "Follow Platform 3's creative pulse (tools in your pockets feel heavier)",
+              "consequence": "platform_3_pull",
+              "nextScene": "2-17b",
+              "stateChanges": {
+                "platforms": {
+                  "p3": {
+                    "warmth": 3,
+                    "resonance": 5
+                  }
+                },
+                "patterns": {
+                  "building": 3
+                }
+              }
+            },
+            {
+              "text": "Pursue Platform 7's data streams (numbers become visible in the air)",
+              "consequence": "platform_7_pull",
+              "nextScene": "2-17c",
+              "stateChanges": {
+                "platforms": {
+                  "p7": {
+                    "warmth": 3,
+                    "resonance": 5
+                  }
+                },
+                "patterns": {
+                  "analyzing": 3
+                }
+              }
+            },
+            {
+              "text": "Resist all platforms and forge your own path",
+              "consequence": "platform_resistance",
+              "nextScene": "2-17d",
+              "stateChanges": {
+                "platforms": {
+                  "forgotten": {
+                    "accessible": true,
+                    "warmth": 5
+                  }
+                },
+                "patterns": {
+                  "independence": 5
+                }
+              }
+            }
+          ]
+        },
+        {
           "id": "2-17a",
           "type": "narration",
           "text": "Walking out of Grand Central Terminus, you carry something invaluable: clarity about your career values and how they connect to Birmingham's actual opportunities.\n\nWhether your path leads toward healthcare systems, data analysis, renewable energy, or hybrid innovations, you now have a framework for making decisions that align with both personal meaning and economic reality.\n\nGrand Central Terminus fades, but your ability to recognize value-aligned opportunities in Birmingham's growing economy has just begun."
@@ -1500,6 +1571,11 @@
               }
             }
           ]
+        },
+        {
+          "id": "3-1a",
+          "type": "narration",
+          "text": "Your footprints from yesterday still glow faintly on the marble. Where you helped someone, tiny cracks in the floor have filled with something that looks like gold. Where you rushed past need, the tiles remain slightly cold to the touch. The station has perfect memory, and it's teaching you through physical feedback."
         },
         {
           "id": "3-2",
