@@ -81,6 +81,91 @@
   animation: text-crystallize 3s ease-in-out forwards;
 }
 
+/* Enhanced text formatting for Chapter 2 career exploration */
+.story-text {
+  line-height: 1.7;
+  font-size: 1.05em;
+  margin-bottom: 1.2em;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.story-text.career-dialogue {
+  background: linear-gradient(135deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.05) 100%);
+  border-left: 3px solid var(--accent, rgba(255,255,255,0.1));
+  padding: 1rem 1.5rem;
+  margin: 1rem 0;
+  border-radius: 0 8px 8px 0;
+  font-style: italic;
+}
+
+.story-text.career-insight {
+  background: rgba(var(--platform-color, 40, 25%, 50%), 0.03);
+  padding: 0.8rem 1.2rem;
+  border-radius: 6px;
+  margin: 0.8rem 0;
+  border: 1px solid rgba(var(--platform-color, 40, 25%, 50%), 0.1);
+}
+
+/* Character-specific dialogue styling */
+.speaker-maya .story-text {
+  --accent: #5C8FD6;
+  color: rgba(92, 143, 214, 0.95);
+}
+
+.speaker-devon .story-text {
+  --accent: #E6A965;
+  color: rgba(230, 169, 101, 0.95);
+}
+
+.speaker-jordan .story-text {
+  --accent: #A96CC8;
+  color: rgba(169, 108, 200, 0.95);
+}
+
+.speaker-alex .story-text {
+  --accent: #71B67A;
+  color: rgba(113, 182, 122, 0.95);
+}
+
+.speaker-samuel .story-text {
+  --accent: #C4C4C4;
+  color: rgba(196, 196, 196, 0.95);
+  font-weight: 500;
+}
+
+/* Improved readability for longer passages */
+.story-text p {
+  margin-bottom: 1em;
+}
+
+.story-text em {
+  color: rgba(255, 255, 255, 0.8);
+  font-style: italic;
+  opacity: 0.9;
+}
+
+/* Career theme text emphasis */
+.text-service-theme {
+  color: rgba(92, 143, 214, 0.9);
+  font-weight: 500;
+}
+
+.text-systems-theme {
+  color: rgba(230, 169, 101, 0.9);
+  font-weight: 500;
+}
+
+.text-analysis-theme {
+  color: rgba(169, 108, 200, 0.9);
+  font-weight: 500;
+}
+
+.text-emerging-theme {
+  color: rgba(113, 182, 122, 0.9);
+  font-weight: 500;
+}
+
 .quiet-hour::before {
   content: '';
   position: absolute;
