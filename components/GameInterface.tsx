@@ -139,7 +139,36 @@ export function GameInterface() {
       'explorer_quiet': 'exploring',
       'understanding_quiet': 'analyzing',
       'helper_quiet': 'helping',
-      'revolutionary_quiet': 'independence'
+      'revolutionary_quiet': 'independence',
+      // Chapter 2 career values consequences
+      'service_calling': 'helping',
+      'systems_calling': 'building',
+      'analysis_calling': 'analyzing',
+      'future_calling': 'exploring',
+      'service_systems_blend': 'helping',
+      'systems_analysis_blend': 'building',
+      'analysis_future_blend': 'analyzing',
+      'future_independence_blend': 'exploring',
+      'service_systems_clarity': 'helping',
+      'systems_analysis_clarity': 'building',
+      'analysis_future_clarity': 'analyzing',
+      'future_independence_clarity': 'exploring',
+      'practical_guidance': 'patience',
+      'hybrid_exploration': 'independence',
+      'mentoring_others': 'helping',
+      'contemplative_insight': 'patience',
+      'focused_commitment': 'building',
+      'hybrid_integration': 'independence',
+      'guide_commitment': 'helping',
+      'continued_exploration': 'exploring',
+      'confident_departure': 'building',
+      'service_before_self': 'helping',
+      'station_integration': 'independence',
+      'final_reflection': 'patience',
+      'values_guided_career': 'analyzing',
+      'workforce_development_career': 'helping',
+      'career_innovation': 'independence',
+      'lifelong_exploration': 'exploring'
     }
     
     const theme = themeMap[choice.consequence] || choice.consequence
