@@ -1,0 +1,454 @@
+/* Phase 4: Enhanced Environmental Responsiveness */
+
+/* Dynamic platform warmth states based on player patterns */
+.platform-warmth-negative-5 {
+  --warmth-color: 200, 60%, 20%;
+  background: linear-gradient(135deg, 
+    hsla(var(--warmth-color), 0.1) 0%, 
+    hsla(var(--warmth-color), 0.05) 100%);
+  filter: brightness(0.7) saturate(0.6) hue-rotate(180deg);
+  animation: frozen-platform 8s ease-in-out infinite;
+}
+
+.platform-warmth-negative-3 {
+  --warmth-color: 200, 50%, 30%;
+  filter: brightness(0.8) saturate(0.7) hue-rotate(120deg);
+  animation: cold-platform 6s ease-in-out infinite;
+}
+
+.platform-warmth-0 {
+  --warmth-color: 40, 25%, 50%;
+  filter: none;
+  animation: neutral-platform 10s ease-in-out infinite;
+}
+
+.platform-warmth-3 {
+  --warmth-color: 35, 55%, 55%;
+  filter: brightness(1.1) saturate(1.2) hue-rotate(-10deg);
+  animation: warm-platform 4s ease-in-out infinite;
+}
+
+.platform-warmth-5 {
+  --warmth-color: 30, 70%, 60%;
+  filter: brightness(1.2) saturate(1.3) hue-rotate(-20deg);
+  animation: resonant-platform 2s ease-in-out infinite;
+  box-shadow: 0 0 30px hsla(var(--warmth-color), 0.4);
+}
+
+/* Time speed effects based on patience/rushing */
+.time-speed-0 {
+  --clock-speed: paused;
+  animation: time-crystallized 0.1s forwards;
+}
+
+.time-speed-0-5 {
+  --clock-speed: 2s;
+  animation: time-slow 2s linear infinite;
+}
+
+.time-speed-1 {
+  --clock-speed: 1s;
+  animation: time-normal 1s linear infinite;
+}
+
+.time-speed-2 {
+  --clock-speed: 0.5s;
+  animation: time-fast 0.5s linear infinite;
+}
+
+/* Pattern-based environmental changes */
+.helping-environment {
+  --env-hue: 35deg;
+  --env-saturation: 1.1;
+  --env-brightness: 1.05;
+}
+
+.helping-environment::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at center,
+    transparent 0%,
+    hsla(35, 40%, 50%, 0.05) 50%,
+    hsla(35, 40%, 50%, 0.1) 100%
+  );
+  pointer-events: none;
+  animation: helping-aura 5s ease-in-out infinite;
+}
+
+.building-environment {
+  --env-hue: 20deg;
+  --env-saturation: 1.15;
+  --env-brightness: 1.08;
+}
+
+.building-environment::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100px;
+  background: linear-gradient(
+    to top,
+    hsla(20, 30%, 40%, 0.1) 0%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+.analyzing-environment {
+  --env-hue: 280deg;
+  --env-saturation: 1.05;
+  --env-brightness: 1.02;
+}
+
+.analyzing-environment .data-streams {
+  opacity: 0.1;
+  animation: data-flow 3s linear infinite;
+}
+
+/* Physical manifestations of choices */
+.shadow-warm {
+  filter: drop-shadow(0 0 10px hsla(35, 70%, 60%, 0.3));
+}
+
+.shadow-cold {
+  filter: drop-shadow(0 0 10px hsla(200, 70%, 40%, 0.3));
+}
+
+.footprints-visible::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 50px;
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 50px,
+    hsla(35, 50%, 50%, 0.1) 50px,
+    hsla(35, 50%, 50%, 0.1) 60px
+  );
+  animation: footprint-fade 10s ease-out forwards;
+}
+
+/* Environmental memory effects */
+.helped-here {
+  position: relative;
+}
+
+.helped-here::before {
+  content: '✨';
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: memory-sparkle 4s ease-in-out infinite;
+  opacity: 0.5;
+}
+
+.rushed-past {
+  position: relative;
+}
+
+.rushed-past::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    transparent 0%,
+    hsla(200, 50%, 30%, 0.05) 100%
+  );
+  pointer-events: none;
+}
+
+/* Platform resonance visualization */
+.resonance-level-0 { opacity: 0.7; }
+.resonance-level-1 { opacity: 0.75; }
+.resonance-level-2 { opacity: 0.8; }
+.resonance-level-3 { opacity: 0.85; }
+.resonance-level-4 { opacity: 0.9; }
+.resonance-level-5 { opacity: 0.95; }
+.resonance-level-6 { opacity: 1; }
+.resonance-level-7 { 
+  opacity: 1;
+  animation: resonance-sync 2s ease-in-out infinite;
+}
+.resonance-level-8 { 
+  opacity: 1;
+  animation: resonance-sync 1.5s ease-in-out infinite;
+}
+.resonance-level-9 { 
+  opacity: 1;
+  animation: resonance-sync 1s ease-in-out infinite;
+}
+.resonance-level-10 { 
+  opacity: 1;
+  animation: perfect-resonance 0.5s ease-in-out infinite;
+  box-shadow: 0 0 50px var(--glow);
+}
+
+/* Career value manifestations */
+.direct-impact-high {
+  --impact-color: 92, 143, 214;
+}
+
+.direct-impact-high .choice-button {
+  border-color: hsla(var(--impact-color), 0.3);
+}
+
+.systems-thinking-high {
+  --systems-color: 230, 169, 101;
+}
+
+.systems-thinking-high .choice-button {
+  border-color: hsla(var(--systems-color), 0.3);
+}
+
+.data-insights-high {
+  --data-color: 169, 108, 200;
+}
+
+.data-insights-high .choice-button {
+  border-color: hsla(var(--data-color), 0.3);
+}
+
+.future-building-high {
+  --future-color: 113, 182, 122;
+}
+
+.future-building-high .choice-button {
+  border-color: hsla(var(--future-color), 0.3);
+}
+
+/* Interactive object responses */
+.objects-responsive .tool {
+  transition: transform 0.3s ease;
+}
+
+.objects-responsive.building-nearby .tool {
+  transform: translateY(-2px);
+  animation: tool-eager 2s ease-in-out infinite;
+}
+
+.objects-responsive .plant {
+  transition: transform 0.5s ease;
+}
+
+.objects-responsive.growth-minded .plant {
+  transform: scale(1.05);
+  animation: plant-lean 3s ease-in-out infinite;
+}
+
+/* Station breathing effect */
+.station-breathing {
+  animation: station-breathe 8s ease-in-out infinite;
+}
+
+@keyframes station-breathe {
+  0%, 100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    transform: scale(1.002);
+    filter: brightness(1.02);
+  }
+}
+
+/* Environmental particles based on choices */
+.particles-helping {
+  background-image: radial-gradient(
+    2px 2px at 20% 30%,
+    hsla(35, 70%, 60%, 0.3),
+    transparent
+  ),
+  radial-gradient(
+    2px 2px at 60% 70%,
+    hsla(35, 70%, 60%, 0.2),
+    transparent
+  ),
+  radial-gradient(
+    1px 1px at 90% 10%,
+    hsla(35, 70%, 60%, 0.2),
+    transparent
+  );
+  background-size: 200% 200%;
+  animation: particle-drift 20s linear infinite;
+}
+
+.particles-building {
+  background-image: radial-gradient(
+    3px 3px at 25% 35%,
+    hsla(20, 60%, 50%, 0.2),
+    transparent
+  );
+  background-size: 150% 150%;
+  animation: particle-drift 15s linear infinite;
+}
+
+/* Quiet Hour enhanced effects */
+.quiet-hour-active {
+  position: relative;
+  overflow: hidden;
+}
+
+.quiet-hour-active::before {
+  content: '';
+  position: absolute;
+  inset: -50%;
+  background: conic-gradient(
+    from 0deg at 50% 50%,
+    transparent 0deg,
+    hsla(280, 50%, 50%, 0.05) 90deg,
+    transparent 180deg,
+    hsla(280, 50%, 50%, 0.05) 270deg,
+    transparent 360deg
+  );
+  animation: quiet-rotation 60s linear infinite;
+  pointer-events: none;
+}
+
+/* Animations */
+@keyframes frozen-platform {
+  0%, 100% {
+    filter: brightness(0.7) saturate(0.6) hue-rotate(180deg);
+  }
+  50% {
+    filter: brightness(0.65) saturate(0.5) hue-rotate(185deg);
+  }
+}
+
+@keyframes warm-platform {
+  0%, 100% {
+    filter: brightness(1.1) saturate(1.2) hue-rotate(-10deg);
+  }
+  50% {
+    filter: brightness(1.15) saturate(1.25) hue-rotate(-15deg);
+  }
+}
+
+@keyframes resonant-platform {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 30px hsla(var(--warmth-color), 0.4);
+  }
+  50% {
+    transform: scale(1.01);
+    box-shadow: 0 0 50px hsla(var(--warmth-color), 0.6);
+  }
+}
+
+@keyframes time-crystallized {
+  to {
+    filter: contrast(1.2) brightness(0.9) saturate(0);
+  }
+}
+
+@keyframes helping-aura {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes data-flow {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+@keyframes memory-sparkle {
+  0%, 100% {
+    opacity: 0.3;
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translateX(-50%) translateY(-5px);
+  }
+}
+
+@keyframes resonance-sync {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.95;
+  }
+  50% {
+    transform: scale(1.02);
+    opacity: 1;
+  }
+}
+
+@keyframes perfect-resonance {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+    box-shadow: 0 0 50px var(--glow);
+  }
+  25% {
+    transform: scale(1.01) rotate(1deg);
+  }
+  50% {
+    transform: scale(1.02) rotate(0deg);
+    box-shadow: 0 0 70px var(--glow);
+  }
+  75% {
+    transform: scale(1.01) rotate(-1deg);
+  }
+}
+
+@keyframes tool-eager {
+  0%, 100% {
+    transform: translateY(-2px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-4px) rotate(2deg);
+  }
+}
+
+@keyframes plant-lean {
+  0%, 100% {
+    transform: scale(1.05) rotate(0deg);
+  }
+  33% {
+    transform: scale(1.06) rotate(1deg);
+  }
+  66% {
+    transform: scale(1.06) rotate(-1deg);
+  }
+}
+
+@keyframes particle-drift {
+  from {
+    background-position: 0% 0%;
+  }
+  to {
+    background-position: 100% 100%;
+  }
+}
+
+@keyframes quiet-rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes footprint-fade {
+  from {
+    opacity: 0.5;
+  }
+  to {
+    opacity: 0;
+  }
+}
