@@ -1,0 +1,58 @@
+/* Mobile-Optimized Text Presentation */
+.story-text {
+  /* Optimal mobile font size */
+  font-size: 18px;
+  line-height: 1.6;
+  
+  /* Add breathing room between paragraphs */
+  margin-bottom: 1.5rem;
+  
+  /* Limit width for readability */
+  max-width: 100%;
+  
+  /* Better letter spacing for mobile */
+  letter-spacing: 0.02em;
+}
+
+/* Break up text walls with visual spacing */
+.story-text p {
+  margin-bottom: 1rem;
+}
+
+/* Ensure text never creates horizontal scroll */
+.story-text {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 640px) {
+  .story-text {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  
+  /* Ensure choices are always visible */
+  .choice-container {
+    position: sticky;
+    bottom: 0;
+    background: white;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e5e5;
+  }
+}
+
+/* Prevent text walls by enforcing max paragraph length */
+.story-text-chunk {
+  max-height: 40vh; /* Never more than 40% of viewport */
+  overflow: visible;
+}
+
+/* Add visual breaks between text chunks */
+.text-divider {
+  width: 30%;
+  height: 2px;
+  background: #d1d5db;
+  margin: 1.5rem auto;
+}

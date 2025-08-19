@@ -6,6 +6,8 @@
 @import '../styles/animations.css';
 @import '../styles/performance.css';
 @import '../styles/grand-central.css';
+@import '../styles/mobile-text.css';
+@import '../styles/mobile-viewport-fix.css';
 
 @layer base {
   :root {

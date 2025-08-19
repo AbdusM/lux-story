@@ -280,8 +280,8 @@ export function GameInterface() {
   const quietHourClass = gcState.time.stopped ? 'quiet-hour' : ''
   
   return (
-    <div className={`container max-w-4xl mx-auto p-4 performance-${performanceLevel} grand-central-terminus ${platformClass} ${quietHourClass}`}>
-      <Card className="max-w-3xl mx-auto bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm shadow-xl">
+    <div className={`game-container container max-w-4xl mx-auto p-4 md:p-4 p-0 performance-${performanceLevel} grand-central-terminus ${platformClass} ${quietHourClass}`}>
+      <Card className="game-card max-w-3xl mx-auto bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm shadow-xl">
         <CardHeader>
           <CardTitle className="text-center text-sm text-muted-foreground">
             <span>·</span>
@@ -309,16 +309,16 @@ export function GameInterface() {
           </div>
           
           {/* Action Area - Adaptive choice layout */}
-          <div className="border-t pt-4">
+          <div className="choice-buttons border-t pt-4">
             {currentScene?.type === 'choice' && currentScene.choices ? (
               <div className={
                 currentScene.choices.length === 1 
                   ? "flex justify-center" 
                   : currentScene.choices.length === 2
-                  ? "grid grid-cols-2 gap-2"
+                  ? "grid grid-cols-1 md:grid-cols-2 gap-2"
                   : currentScene.choices.length === 3
-                  ? "grid grid-cols-3 gap-2"
-                  : "grid grid-cols-2 gap-2"
+                  ? "grid grid-cols-1 md:grid-cols-3 gap-2"
+                  : "grid grid-cols-1 md:grid-cols-2 gap-2"
               }>
                 {enhanceChoices(currentScene.choices).map((choice, index) => (
                   <Button
@@ -326,11 +326,14 @@ export function GameInterface() {
                     onClick={() => handleChoice(choice)}
                     disabled={isProcessing}
                     variant={currentScene.choices?.length === 1 ? "default" : "outline"}
-                    className={`choice-button h-auto py-3 px-4 text-sm text-center whitespace-normal ${
+                    className={`choice-button h-auto py-3 px-4 text-sm md:text-base text-left md:text-center whitespace-normal ${
                       currentScene.choices?.length === 1 ? "max-w-xs" : ""
                     }`}
                   >
-                    {choice.text}
+                    <span className="flex items-start gap-2">
+                      <ChevronRight className="w-4 h-4 mt-0.5 flex-shrink-0 md:hidden" />
+                      <span>{choice.text}</span>
+                    </span>
                   </Button>
                 ))}
               </div>
