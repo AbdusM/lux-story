@@ -318,6 +318,10 @@ export function GameInterface() {
           
           {/* Action Area - Adaptive choice layout */}
           <div className="border-t pt-4">
+            {(() => {
+              console.log('Rendering action area, currentScene:', currentScene?.id, 'type:', currentScene?.type, 'choices:', currentScene?.choices?.length)
+              return null
+            })()}
             {currentScene?.type === 'choice' && currentScene.choices ? (
               <div className={
                 currentScene.choices.length === 1 
