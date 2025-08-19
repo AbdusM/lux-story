@@ -297,42 +297,105 @@
   text-shadow: 0 0 10px var(--glow);
 }
 
-/* Choice consequences visual feedback */
+/* Enhanced choice button styling for career themes */
 .choice-button {
   position: relative;
-  transition: all 0.3s ease;
+  transition: all 0.4s ease;
+  border-radius: 8px;
+  background: linear-gradient(135deg, 
+    rgba(255,255,255,0.05) 0%, 
+    rgba(255,255,255,0.02) 100%);
+  border: 1px solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
 }
 
-.choice-button.consequence-helping::after {
-  content: '♥';
-  position: absolute;
-  right: 10px;
-  opacity: 0.3;
-  color: var(--platform-1-care);
+.choice-button:hover {
+  background: linear-gradient(135deg, 
+    rgba(255,255,255,0.08) 0%, 
+    rgba(255,255,255,0.04) 100%);
+  border-color: rgba(255,255,255,0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
-.choice-button.consequence-building::after {
-  content: '🔨';
-  position: absolute;
-  right: 10px;
-  opacity: 0.3;
-  color: var(--platform-3-building);
+/* Career theme choice indicators */
+.choice-button.consequence-helping {
+  border-left: 3px solid rgba(92, 143, 214, 0.6);
 }
 
-.choice-button.consequence-analyzing::after {
-  content: '📊';
-  position: absolute;
-  right: 10px;
-  opacity: 0.3;
-  color: var(--platform-7-data);
+.choice-button.consequence-helping:hover {
+  background: linear-gradient(135deg, 
+    rgba(92, 143, 214, 0.1) 0%, 
+    rgba(92, 143, 214, 0.05) 100%);
+  box-shadow: 0 4px 12px rgba(92, 143, 214, 0.2);
 }
 
-.choice-button.consequence-exploring::after {
-  content: '🧭';
-  position: absolute;
-  right: 10px;
-  opacity: 0.3;
-  color: var(--platform-forgotten);
+.choice-button.consequence-building {
+  border-left: 3px solid rgba(230, 169, 101, 0.6);
+}
+
+.choice-button.consequence-building:hover {
+  background: linear-gradient(135deg, 
+    rgba(230, 169, 101, 0.1) 0%, 
+    rgba(230, 169, 101, 0.05) 100%);
+  box-shadow: 0 4px 12px rgba(230, 169, 101, 0.2);
+}
+
+.choice-button.consequence-analyzing {
+  border-left: 3px solid rgba(169, 108, 200, 0.6);
+}
+
+.choice-button.consequence-analyzing:hover {
+  background: linear-gradient(135deg, 
+    rgba(169, 108, 200, 0.1) 0%, 
+    rgba(169, 108, 200, 0.05) 100%);
+  box-shadow: 0 4px 12px rgba(169, 108, 200, 0.2);
+}
+
+.choice-button.consequence-exploring {
+  border-left: 3px solid rgba(113, 182, 122, 0.6);
+}
+
+.choice-button.consequence-exploring:hover {
+  background: linear-gradient(135deg, 
+    rgba(113, 182, 122, 0.1) 0%, 
+    rgba(113, 182, 122, 0.05) 100%);
+  box-shadow: 0 4px 12px rgba(113, 182, 122, 0.2);
+}
+
+.choice-button.consequence-patience {
+  border-left: 3px solid rgba(196, 196, 196, 0.6);
+}
+
+.choice-button.consequence-patience:hover {
+  background: linear-gradient(135deg, 
+    rgba(196, 196, 196, 0.1) 0%, 
+    rgba(196, 196, 196, 0.05) 100%);
+  box-shadow: 0 4px 12px rgba(196, 196, 196, 0.2);
+}
+
+.choice-button.consequence-independence {
+  border-left: 3px solid rgba(200, 200, 200, 0.4);
+  border-style: dashed;
+}
+
+.choice-button.consequence-independence:hover {
+  background: linear-gradient(135deg, 
+    rgba(200, 200, 200, 0.08) 0%, 
+    rgba(200, 200, 200, 0.04) 100%);
+  box-shadow: 0 4px 12px rgba(200, 200, 200, 0.15);
+}
+
+/* Chapter 2 career-specific choice styling */
+.choice-button.career-values-choice {
+  padding: 1rem 1.2rem;
+  margin: 0.5rem 0;
+  text-align: left;
+  line-height: 1.4;
+}
+
+.choice-button.career-values-choice:hover {
+  transform: translateX(4px) translateY(-2px);
 }
 
 /* Keyframe animations */
