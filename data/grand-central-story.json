@@ -69,7 +69,7 @@
           "id": "1-3b",
           "type": "dialogue",
           "speaker": "Samuel",
-          "text": "An older man in a conductor's uniform steps from behind a pillar. The fabric looks like wool but shimmers like water. His watch hangs from a brass chain, ticking with a sound like distant hammering on metal - too slow for seconds, too fast for minutes."
+          "text": "An older man in a conductor's uniform steps from behind a pillar. The fabric looks like wool but shimmers like water. His watch hangs from a brass chain, ticking backwards every third beat - too slow for seconds, too fast for minutes, too sideways for time."
         },
         {
           "id": "1-3c",
@@ -196,13 +196,13 @@
           "id": "1-5d",
           "type": "dialogue",
           "speaker": "Samuel",
-          "text": "'Who sends any letter, really? The person writing, or the person who needs to receive it?' Samuel pulls out a worn journal, its leather cover soft with age, smelling of pipe tobacco though he doesn't smoke.\n\n'I've seen hundreds of letters. The paper always feels the same - heavy, important. They all claim to know your future, but futures aren't fixed things. They're more like... probability clouds.' His fingers trace invisible patterns in the air. 'Platform 7 especially. It only solidifies when someone approaches it with absolute certainty. And you, my friend, don't look certain at all.'"
+          "text": "'I've punched a thousand tickets to futures that haven't departed yet. Each one claims to know your destination, but destinations are like signals in fog - red until you're close enough to see they were always green.' His fingers trace invisible track patterns in the air. 'Platform 7 especially. It only couples to trains that know where they're going before they know where they've been. And you, young switchman, you're standing on tracks that haven't been laid yet.'"
         },
         {
           "id": "1-5e",
           "type": "dialogue",
           "speaker": "Samuel",
-          "text": "'Temperamental is kind. Platform 7 has been flickering between existing and not existing for three days. The electrical buzz changes pitch - sometimes a low hum, sometimes a high whine like feedback. Sometimes it shows 7, sometimes 7½, sometimes just... static that makes your teeth ache.'\n\nHe checks his impossible watch, the brass warm against his wrist. 'The trains that arrive at Platform 7 go to futures people think they want. But thinking and wanting are different beasts. The station knows the difference, even if we don't. What do YOU want? Not what the letter tells you to want.'"
+          "text": "He checks his backwards watch, its hands moving counterclockwise except when you blink. 'The trains that call at Platform 7? They run express to futures folks think they've bought tickets for. But the timetable and the heart run on different gauges, if you catch my meaning. The station's a shrewd conductor - knows the difference between passengers and freight. So tell me, are you cargo or captain? Not what your ticket says you are.'"
         },
         {
           "id": "1-5f",
@@ -212,7 +212,7 @@
         {
           "id": "1-5g",
           "type": "narration",
-          "text": "Samuel takes the letter with hands that have held a thousand such messages. As he reads, his expression shifts through surprise, recognition, and something that might be pride.\n\n'Well, well. [Your name]. I was wondering when you'd arrive.' He knows your name though you never said it. 'This handwriting... do you recognize it? Look closer. The way you make your letters, that specific curve on the lowercase 'a'...'\n\nHe holds the letter up to the station's strange light, and you see it clearly - the handwriting is yours. But older. More confident.\n\n'You wrote this to yourself. From a future where you found your way. The question is: will you follow your own advice, or discover why future-you sent you to the wrong platform?'"
+          "text": "Samuel takes the letter with hands that have punched ten thousand tickets to nowhere. As he reads, his expression shifts through the stations of surprise, recognition, and something that might be pride.\n\n'Well, well. [Your name]. Right on schedule for a train that hasn't been built yet.' He knows your name though you never spoke it, reading it from rails that haven't been laid. 'This penmanship... it's got the wear of miles on it. See how the ink flows? Like tracks worn smooth by a journey you haven't taken yet...'\n\nHe holds the letter up to the station's gaslight, and you see it clearly - the handwriting is yours. But weathered by travels you've never made.\n\n'You wrote yourself a return ticket from a destination you haven't reached. The real question, young engineer: will you ride the rails future-you laid down, or will you discover why they switched you to the wrong track? Sometimes the best conductors send trains to sidings to avoid collisions that haven't happened yet.'"
         },
         {
           "id": "1-6",
@@ -285,6 +285,12 @@
           "id": "1-8-quiet",
           "type": "narration",
           "text": "Time has crystallized around you. The air feels thick, like walking through water. You can move, but each step makes no sound - absolute silence except for your own heartbeat, which seems to echo from the station walls themselves, as if the building has adopted your rhythm, loud as a drum in your ears. The temperature has dropped to exactly skin temperature - you can't tell where you end and the air begins."
+        },
+        {
+          "id": "1-8-quiet-samuel",
+          "type": "dialogue",
+          "speaker": "Samuel",
+          "text": "Ah, you've found it. The Quiet Hour. When the timetable holds its breath and even the rails stop humming. Not everyone gets a ticket to this particular service. Time's not stopped, mind you - it's just running on a different gauge. Wide gauge, where seconds stretch like rails across prairies. Look at Platform 7 now - see how it's not one platform but a whole roundhouse of possibilities? That's what happens when you stop trying to catch trains and start learning to build them."
         },
         {
           "id": "1-9",
@@ -544,7 +550,7 @@
         {
           "id": "1-11",
           "type": "narration",
-          "text": "The Quiet Hour releases its hold with a sound like inhaling after holding your breath too long. Time crashes back like a wave, bringing with it the smell of motion - sweat, perfume, coffee, life. The station returns to its chaos of footsteps and conversations. But everything has changed:\n\n- Your actions in stopped time have left echoes (warmth where there was cold)\n- People near Platform 7 look confused, rubbing their eyes as if waking\n- Maya (if freed) is already sketching designs on her medical textbooks, pencil scratching urgently\n- Platform 7½ (if created) draws curious crowds. The new platform seems to shimmer, not quite solid yet, waiting for more architects to make it permanent, their murmurs like distant surf\n\nThe clock reads... still 11:52 PM. The brass hands haven't moved. The Quiet Hour took no time at all. Or maybe all the time in the world.\n\nSamuel finds you, his footsteps deliberate on the marble, his expression knowing. 'Eight minutes to midnight. Though midnight means something different now, doesn't it? You've learned the station's first secret: Time isn't your enemy here. Rushing is.'"
+          "text": "Samuel finds you, his conductor's boots clicking a rhythm that sounds like wheels on tracks, his expression reading you like a punch card. 'Eight minutes to the witching whistle. Though midnight runs on a different schedule now, doesn't it? You've learned what every good engineer knows: It's not about beating the timetable. It's about knowing when to brake and when to build steam. Speed kills trains. Patience builds railways.'"
         },
         {
           "id": "1-12",
@@ -761,6 +767,12 @@
               }
             }
           ]
+        },
+        {
+          "id": "2-4-samuel",
+          "type": "dialogue",
+          "speaker": "Samuel",
+          "text": "The young ones think they're choosing careers like picking seats on a train - window or aisle, first class or coach. But that's passenger thinking. What you're really choosing is whether to ride the rails someone else laid down or grab a sledgehammer and start driving spikes yourself. Maya there? She's got one foot on her parents' track, one on her own. That's how you derail, standing between two moving trains. Eventually, you've got to pick your locomotive and trust it to carry you."
         },
         {
           "id": "2-5a1",
@@ -1340,8 +1352,7 @@
         {
           "id": "2-12b4",
           "type": "dialogue",
-          "speaker": "Samuel",
-          "text": "It started moving again when I told you the truth. Thirty years of stopped time, and honesty was all it took. Maybe Platform 7 isn't about choosing right. Maybe it's about choosing honestly."
+          "speaker": "Samuel"
         },
         {
           "id": "2-12a",
