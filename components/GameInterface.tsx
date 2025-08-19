@@ -5,7 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { StoryMessage } from "./StoryMessage"
 import { CharacterIntro } from "./CharacterIntro"
-import { BreathingInvitation } from "./BreathingInvitation"
 import { SilentCompanion } from "./SilentCompanion"
 import { StoryEngine, Choice } from "@/lib/story-engine"
 import { ChevronRight, RotateCcw } from "lucide-react"
@@ -32,71 +31,15 @@ export function GameInterface() {
   const { gameState, isInitialized, reset } = useGameState()
   const { currentScene, isProcessing, loadScene, setProcessing } = useSceneTransitions(storyEngine, gameState)
   const { messages, messagesEndRef, addMessage, clearMessages } = useMessageManager()
-  const { beginPresence, checkPresence, resetPresence } = usePresence()
-  const { checkForRevelation } = usePatternRevelation()
-  const { performanceLevel, enhanceSceneText, getAmbientMessage, enhanceChoices, getBreathingFrequency } = useAdaptiveNarrative()
+  const { resetPresence } = usePresence()
+  const { performanceLevel, enhanceSceneText, enhanceChoices } = useAdaptiveNarrative()
   
-  // Check for natural revelations through presence (not rewards)
+  // Track choice timing for Grand Central Terminus - no forest interference
   useEffect(() => {
     if (currentScene?.type === 'choice') {
-      beginPresence()
-      setChoiceStartTime(Date.now()) // Track when choice appears
-      
-      // Check occasionally, not constantly - no pressure
-      const interval = setInterval(() => {
-        // Check for presence revelations
-        const presenceRevelation = checkPresence()
-        if (presenceRevelation) {
-          // Add as a subtle observation, not a reward notification
-          setTimeout(() => {
-            addMessage({
-              speaker: 'narrator',
-              text: presenceRevelation,
-              type: 'narration'
-            })
-          }, 500)
-        }
-        
-        // Check for pattern revelations (Birmingham career demo)
-        const patternRevelation = checkForRevelation()
-        if (patternRevelation) {
-          setTimeout(() => {
-            addMessage({
-              speaker: 'narrator',
-              text: patternRevelation,
-              type: 'whisper'
-            })
-          }, 2000)
-        }
-        
-        // Check for performance guidance
-        const guidance = performanceSystem.getGuidance()
-        if (guidance && Math.random() < 0.3) { // 30% chance to show guidance
-          setTimeout(() => {
-            addMessage({
-              speaker: 'narrator',
-              text: guidance,
-              type: 'whisper'
-            })
-          }, 3000)
-        }
-        
-        // Check for ambient messages based on performance
-        const ambientMessage = getAmbientMessage()
-        if (ambientMessage) {
-          setTimeout(() => {
-            addMessage({
-              speaker: 'narrator',
-              text: ambientMessage,
-              type: 'narration'
-            })
-          }, 4000)
-        }
-      }, 5000) // Check every 5 seconds, not every second
-      
-      return () => clearInterval(interval)
+      setChoiceStartTime(Date.now()) // Track when choice appears for performance metrics only
     }
-  }, [currentScene, beginPresence, checkPresence, checkForRevelation, performanceSystem, addMessage, getAmbientMessage])
+  }, [currentScene])
   
   // Load scene with simple message handling
   const handleLoadScene = useCallback((sceneId: string, forceLoad = false) => {
@@ -132,16 +75,7 @@ export function GameInterface() {
         type: scene.type as 'narration' | 'dialogue'
       })
       
-      // Add breathing invitation based on performance
-      if (scene.type === 'choice' && Math.random() < getBreathingFrequency()) {
-        setTimeout(() => {
-          addMessage({
-            speaker: 'narrator',
-            text: 'Perhaps this is a moment to breathe.',
-            type: 'whisper'
-          })
-        }, 2000)
-      }
+      // No breathing invitations for Grand Central Terminus - this is career exploration, not meditation
     }
   }, [loadScene, gameState, addMessage, lastSceneLoadTime])
   
@@ -363,8 +297,7 @@ export function GameInterface() {
         </CardContent>
       </Card>
       
-      {/* Optional breathing invitation - no pressure, just presence */}
-      <BreathingInvitation visible={currentScene?.type === 'choice'} />
+      {/* No breathing invitation for Grand Central Terminus */}
       
       {/* Silent companion - only speaks when asked, only asks questions */}
       <SilentCompanion />
