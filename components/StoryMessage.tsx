@@ -120,9 +120,9 @@ export function StoryMessage({ speaker, text, type = 'dialogue', className, type
             {characterEmoji[speaker as keyof typeof characterEmoji] || '🌟'}
           </span>
           <span className={cn(
-            "text-sm font-bold uppercase tracking-wider",
+            "speaker-label text-sm font-bold uppercase tracking-wider",
             characterStyles[speaker as keyof typeof characterStyles] || "text-slate-700 dark:text-slate-300"
-          )}>
+          )} data-speaker={speaker.toLowerCase()}>
             {speaker}
           </span>
           {isLux && (
@@ -151,7 +151,7 @@ export function StoryMessage({ speaker, text, type = 'dialogue', className, type
             <div className={cn(
               isWhisper && "text-purple-600 dark:text-purple-400 italic",
               isSensation && "text-red-500 dark:text-red-400",
-              !isWhisper && !isSensation && "text-left italic text-slate-300 dark:text-slate-400",
+              !isWhisper && !isSensation && "text-left text-slate-600 dark:text-slate-400",
               "text-premium whitespace-pre-wrap"
             )}>
               {speaker === 'Memory' && '💭 '}

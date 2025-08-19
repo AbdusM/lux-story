@@ -1,0 +1,256 @@
+/* CRITICAL MOBILE UI FIXES
+   Addresses letterboxing, button overflow, typography chaos */
+
+/* ============================================
+   1. FIX LETTERBOXING - Use full viewport
+   ============================================ */
+@media (max-width: 768px) {
+  /* Remove ALL max-width constraints on mobile */
+  .game-container,
+  .game-container.container {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  
+  /* Card should be edge-to-edge on mobile */
+  .game-card,
+  .card {
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    border-left: none !important;
+    border-right: none !important;
+    background: white !important;
+  }
+  
+  /* Dark mode support */
+  .dark .game-card,
+  .dark .card {
+    background: rgb(17, 24, 39) !important;
+  }
+  
+  /* Remove any container that creates letterboxing */
+  main,
+  .min-h-screen {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100vw !important;
+    overflow-x: hidden !important;
+  }
+}
+
+/* ============================================
+   2. FIX BUTTON OVERFLOW - Contain properly
+   ============================================ */
+.choice-button,
+.choice-buttons button,
+button.choice-button {
+  /* Critical box-sizing fix */
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  
+  /* Ensure no overflow */
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  
+  /* Remove any negative margins or transforms */
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  transform: none !important;
+}
+
+@media (max-width: 768px) {
+  .choice-buttons {
+    padding: 1rem !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  
+  .choice-buttons .grid {
+    width: 100% !important;
+    margin: 0 !important;
+  }
+  
+  /* Ensure buttons are properly contained */
+  .choice-buttons button {
+    width: calc(100% - 2px) !important; /* Account for borders */
+    margin: 0 auto !important;
+    min-height: 56px !important; /* Touch target */
+  }
+}
+
+/* ============================================
+   3. FIX TYPOGRAPHY CHAOS - No random italics
+   ============================================ */
+.story-message,
+.story-text,
+.text-content,
+p {
+  font-style: normal !important; /* Kill all italics */
+}
+
+/* Only allow italics where explicitly intended */
+.story-message em,
+.story-message i,
+.intentional-italic {
+  font-style: italic !important;
+}
+
+/* Reset any inherited font styles */
+.game-card * {
+  font-style: inherit;
+}
+
+/* ============================================
+   4. IMPROVE VISUAL HIERARCHY
+   ============================================ */
+.speaker-label {
+  font-weight: 600 !important;
+  font-size: 0.75rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  opacity: 0.7 !important;
+  margin-bottom: 0.5rem !important;
+  font-style: normal !important;
+}
+
+/* Narrator specific styling */
+.speaker-label[data-speaker="narrator"] {
+  color: var(--muted-foreground) !important;
+  border-left: 3px solid var(--border) !important;
+  padding-left: 0.5rem !important;
+}
+
+/* Clear separation between messages */
+.story-message {
+  padding: 1rem !important;
+  margin-bottom: 1rem !important;
+  border-radius: 0.5rem !important;
+  background: rgba(0, 0, 0, 0.02) !important;
+}
+
+.dark .story-message {
+  background: rgba(255, 255, 255, 0.02) !important;
+}
+
+/* ============================================
+   5. MOBILE-SPECIFIC CONTENT ADJUSTMENTS
+   ============================================ */
+@media (max-width: 768px) {
+  /* Content padding for readability */
+  .card-content,
+  [class*="CardContent"] {
+    padding: 1rem !important;
+  }
+  
+  /* Message area adjustments */
+  .h-\[60vh\] {
+    height: calc(100vh - 200px) !important; /* Account for buttons */
+    max-height: none !important;
+  }
+  
+  /* No horizontal scroll ever */
+  * {
+    max-width: 100vw !important;
+  }
+  
+  /* Ensure text doesn't cause overflow */
+  .story-message,
+  .story-text,
+  p {
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    hyphens: auto !important;
+  }
+}
+
+/* ============================================
+   6. BUTTON IMPROVEMENTS
+   ============================================ */
+@media (max-width: 768px) {
+  .choice-button {
+    /* Visual improvements */
+    border: 2px solid var(--border) !important;
+    background: white !important;
+    color: var(--foreground) !important;
+    font-weight: 500 !important;
+    text-align: left !important;
+    padding: 1rem !important;
+    
+    /* Touch feedback */
+    transition: all 0.2s ease !important;
+    cursor: pointer !important;
+    -webkit-tap-highlight-color: transparent !important;
+  }
+  
+  .dark .choice-button {
+    background: rgb(30, 41, 59) !important;
+    border-color: rgb(51, 65, 85) !important;
+  }
+  
+  .choice-button:active {
+    transform: scale(0.98) !important;
+    background: rgba(0, 0, 0, 0.05) !important;
+  }
+  
+  .dark .choice-button:active {
+    background: rgba(255, 255, 255, 0.05) !important;
+  }
+  
+  /* Chevron alignment */
+  .choice-button svg {
+    flex-shrink: 0 !important;
+    margin-right: 0.5rem !important;
+  }
+}
+
+/* ============================================
+   7. SAFE AREA SUPPORT (iPhone notch, etc)
+   ============================================ */
+@supports (padding: env(safe-area-inset-top)) {
+  @media (max-width: 768px) {
+    .game-card {
+      padding-top: env(safe-area-inset-top) !important;
+      padding-bottom: env(safe-area-inset-bottom) !important;
+    }
+    
+    .choice-buttons {
+      padding-bottom: calc(1rem + env(safe-area-inset-bottom)) !important;
+    }
+  }
+}
+
+/* ============================================
+   8. REMOVE SHADOWS ON MOBILE (Performance)
+   ============================================ */
+@media (max-width: 768px) {
+  .game-card,
+  .card {
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+  }
+}
+
+/* ============================================
+   9. DEBUG HELPERS (Remove in production)
+   ============================================ */
+/* Uncomment to visualize container boundaries
+@media (max-width: 768px) {
+  .game-container {
+    border: 2px solid red !important;
+  }
+  .game-card {
+    border: 2px solid blue !important;
+  }
+  .choice-buttons {
+    border: 2px solid green !important;
+  }
+  .choice-button {
+    border: 2px solid orange !important;
+  }
+}
+*/

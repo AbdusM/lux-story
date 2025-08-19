@@ -280,8 +280,8 @@ export function GameInterface() {
   const quietHourClass = gcState.time.stopped ? 'quiet-hour' : ''
   
   return (
-    <div className={`game-container container max-w-4xl mx-auto p-4 md:p-4 p-0 performance-${performanceLevel} grand-central-terminus ${platformClass} ${quietHourClass}`}>
-      <Card className="game-card max-w-3xl mx-auto bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm shadow-xl">
+    <div className={`game-container w-full md:container md:max-w-4xl md:mx-auto p-0 md:p-4 performance-${performanceLevel} grand-central-terminus ${platformClass} ${quietHourClass}`}>
+      <Card className="game-card w-full md:max-w-3xl md:mx-auto bg-white dark:bg-gray-900 md:bg-white/95 md:dark:bg-gray-900/95 md:backdrop-blur-sm md:shadow-xl">
         <CardHeader>
           <CardTitle className="text-center text-sm text-muted-foreground">
             <span>·</span>
