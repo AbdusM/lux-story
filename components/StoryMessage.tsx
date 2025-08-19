@@ -106,25 +106,25 @@ export function StoryMessage({ speaker, text, type = 'dialogue', className, type
             isSensation && "italic opacity-85",
             !isWhisper && !isSensation && "bg-gradient-to-b from-slate-900/80 to-slate-900/60 dark:from-slate-100/10 dark:to-slate-100/5 rounded-lg p-6 premium-border"
           )}>
-            <p className={cn(
+            <div className={cn(
               isWhisper && "text-purple-600 dark:text-purple-400 italic",
               isSensation && "text-red-500 dark:text-red-400",
               !isWhisper && !isSensation && "text-center italic text-slate-300 dark:text-slate-400",
-              "text-premium"
+              "text-premium whitespace-pre-wrap"
             )}>
               {speaker === 'Memory' && '💭 '}
               {displayedText}
-            </p>
+            </div>
           </div>
         ) : (
           <>
-            <p className={cn(
+            <div className={cn(
               "text-slate-800 dark:text-slate-100",
-              "text-premium",
+              "text-premium whitespace-pre-wrap",
               isLux && "lux-text-glow"
             )}>
               {displayedText}
-            </p>
+            </div>
             {showContinueIndicator && typewriter && (
               <span className="absolute bottom-2 right-4 text-slate-500 animate-pulse">
                 ▼

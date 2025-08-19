@@ -67,41 +67,56 @@ export class StoryEngine {
    * Get the next scene ID in sequence
    */
   getNextScene(currentSceneId: string): string | null {
-    const [chapterNum] = currentSceneId.split('-')
+    // For Grand Central Terminus, most scenes are choice-driven
+    // Only simple sequential scenes should auto-advance
     
-    // Handle special scene IDs that include letters (like 1-7b2)
-    const baseSceneId = currentSceneId.replace(/[a-z]\d?$/i, '')
+    // Extract chapter and scene number
+    const match = currentSceneId.match(/^(\d+)-(\d+)([a-z]?)(\d*)$/)
+    if (!match) return null
     
-    // Try to find if there's a direct continuation (like 1-7b -> 1-7b2)
-    const allSceneIds = this.chapters.flatMap(c => c.scenes.map(s => s.id))
+    const [, chapterNum, sceneNum, letter, subNum] = match
+    const chapter = parseInt(chapterNum)
+    const scene = parseInt(sceneNum)
     
-    // Check for numbered continuation (1-7b2 -> 1-7b3)
-    const match = currentSceneId.match(/^(\d+-\d+[a-z]?)(\d+)$/i)
-    if (match) {
-      const nextId = `${match[1]}${parseInt(match[2]) + 1}`
-      if (allSceneIds.includes(nextId)) {
-        return nextId
+    // Get all scene IDs for this chapter
+    const currentChapter = this.chapters.find(c => c.id === chapter)
+    if (!currentChapter) return null
+    
+    const allSceneIds = currentChapter.scenes.map(s => s.id)
+    
+    // For simple numeric scenes (like 1-1), try the next number (1-2)
+    if (!letter && !subNum) {
+      const nextSimpleId = `${chapter}-${scene + 1}`
+      if (allSceneIds.includes(nextSimpleId)) {
+        return nextSimpleId
       }
     }
     
-    // Check for lettered continuation (1-7b -> 1-7b2)
-    const nextId = currentSceneId + '2'
-    if (allSceneIds.includes(nextId)) {
-      return nextId
+    // For lettered scenes (like 1-3a), try with number (1-3a -> 1-4a if exists, or next sequence)
+    if (letter && !subNum) {
+      // Try next number with same letter first
+      const nextLetteredId = `${chapter}-${scene + 1}${letter}`
+      if (allSceneIds.includes(nextLetteredId)) {
+        return nextLetteredId
+      }
+      
+      // Try next simple number
+      const nextSimpleId = `${chapter}-${scene + 1}`
+      if (allSceneIds.includes(nextSimpleId)) {
+        return nextSimpleId
+      }
     }
     
-    // Check for numbered base scene continuation (1-7 -> 1-8)
-    const sceneMatch = currentSceneId.match(/^(\d+)-(\d+)/)
-    if (sceneMatch) {
-      const nextBaseId = `${sceneMatch[1]}-${parseInt(sceneMatch[2]) + 1}`
-      if (allSceneIds.includes(nextBaseId)) {
-        return nextBaseId
+    // For numbered sub-scenes (like 1-7b2), try next number
+    if (letter && subNum) {
+      const nextSubId = `${chapter}-${scene}${letter}${parseInt(subNum) + 1}`
+      if (allSceneIds.includes(nextSubId)) {
+        return nextSubId
       }
     }
     
     // If we're at the end of a chapter, move to the next chapter
-    const currentChapterNum = parseInt(chapterNum)
-    const nextChapter = this.chapters.find(c => c.id === currentChapterNum + 1)
+    const nextChapter = this.chapters.find(c => c.id === chapter + 1)
     if (nextChapter && nextChapter.scenes.length > 0) {
       return nextChapter.scenes[0].id
     }
