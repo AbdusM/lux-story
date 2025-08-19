@@ -1,0 +1,63 @@
+{
+  "mayaDialoguesToFix": [
+    {
+      "id": "2-3a2-natural",
+      "words": 64,
+      "sentences": 8,
+      "text": "You know what's crazy? My mom cleans rooms at UAB Hospital. Sees all these nurses making good money, helping people. She's been cleaning those same rooms for 15 years. I want to be the one in scrubs, not the uniform. That's why respiratory therapy makes sense - 2 years and I'm making $60K. I could buy her a car that actually starts in winter.'",
+      "hasNaturalBreak": true
+    }
+  ],
+  "naturalBreaksNeeded": [
+    {
+      "id": "1-5e",
+      "speaker": "Samuel",
+      "sentences": 6,
+      "text": "They run express to futures folks think they've bought tickets for. But the timetable and the heart run on different gauges, if you catch my meaning. The station's a shrewd conductor - knows the difference between passengers and freight. So tell me, are you cargo or captain? Not what your ticket says you are.'"
+    },
+    {
+      "id": "2-3a2-natural",
+      "speaker": "Maya",
+      "sentences": 8,
+      "text": "You know what's crazy? My mom cleans rooms at UAB Hospital. Sees all these nurses making good money, helping people. She's been cleaning those same rooms for 15 years. I want to be the one in scrubs, not the uniform. That's why respiratory therapy makes sense - 2 years and I'm making $60K. I could buy her a car that actually starts in winter.'"
+    },
+    {
+      "id": "2-3a3",
+      "speaker": "Maya",
+      "sentences": 9,
+      "text": "No shaking. No doubt. Just... certainty. But that's not what my parents sacrificed everything for. They didn't work three jobs so I could play with circuits. They need me to be a doctor. Birmingham needs me to be a doctor. So why do I feel like I'm drowning every time I walk into the hospital?"
+    },
+    {
+      "id": "2-3b2-natural",
+      "speaker": "Devon",
+      "sentences": 6,
+      "text": "But every job posting wants a degree I can't afford. Then I found out Innovation Depot has this 12-week bootcamp. They actually help you get hired after. That's real. That's something I can do while keeping my night job.'"
+    },
+    {
+      "id": "2-3c2-natural",
+      "speaker": "Jordan",
+      "sentences": 8,
+      "text": "But my uncle? HVAC certification, makes $85K, no student loans. Bought a house at 25. Has his own truck. Meanwhile my cousin with the computer science degree? Still living at home, sending out resumes. Sometimes the smart choice isn't what looks smart to others.'"
+    },
+    {
+      "id": "2-3d2-natural",
+      "speaker": "Alex",
+      "sentences": 7,
+      "text": "But now? Food trucks, breweries, design studios, startups. Birmingham's becoming something new. I don't want to mourn what we lost. I want to build what's next. Even if I have to start by working at a coffee shop downtown just to be near it all.'"
+    },
+    {
+      "id": "2-5c2",
+      "speaker": "Jordan",
+      "sentences": 7,
+      "text": "'Banking, healthcare, energy - they're all generating massive datasets. But patterns in that data reveal emerging needs. New types of fraud requiring new detection methods. Supply chain vulnerabilities creating demand for risk analysts. Regions Bank isn't just hiring traditional financial analysts anymore. They need people who can read the intersection of technology, economics, and human behavior.'"
+    },
+    {
+      "id": "3-3c",
+      "speaker": "Jordan",
+      "sentences": 5,
+      "text": "Traditional manufacturing: declining 3%. But here's the interesting part - the successful manufacturers are the ones going digital. ACIPCO uses AI for quality control now. Steel plants run on data as much as coal. The future isn't replacing the past - it's upgrading it."
+    }
+  ],
+  "overSplitScenes": {},
+  "openingDensity": []
+}
