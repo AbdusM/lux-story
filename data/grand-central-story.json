@@ -1474,6 +1474,11 @@
           ]
         },
         {
+          "id": "3-0b",
+          "type": "narration",
+          "text": "The station feels different in Chapter 3. Less mystical, more... Birmingham. The brass still gleams, but now you notice it's the same brass as the doorknobs at City Hall. The platforms still stretch impossibly far, but they end at familiar streets: 20th, University, Richard Arrington.\n\nMaybe the magic was always just Birmingham seen through fresh eyes. Or maybe Birmingham itself is the magic - a city that refuses to be what others expect."
+        },
+        {
           "id": "3-2",
           "type": "choice",
           "text": "Your career values from Grand Central Terminus guide how you approach these real-world opportunities. What calls to you first?",
@@ -2377,6 +2382,13 @@
           ]
         },
         {
+          "id": "3-17b",
+          "type": "dialogue",
+          "speaker": "Samuel",
+          "text": "You're wondering if any of this was real, aren't you? The station appearing overnight, me knowing your future, the platforms that shouldn't exist.\n\nHere's the truth: Birmingham has always been a place of transformation. From iron to medicine, from segregation to innovation. The station? It's been here all along - in every career center, every mentor, every program waiting for someone to walk through the door.\n\nI'm just a conductor. But Birmingham? Birmingham is the real magic. It transforms people who are ready to transform themselves.",
+          "nextScene": "3-18"
+        },
+        {
           "id": "3-17-birmingham",
           "type": "choice",
           "text": "The forms Samuel gave you are real - not metaphorical, not mystical. Real applications with real deadlines. Where do you start your Birmingham journey?",
@@ -2512,18 +2524,18 @@
           "id": "3-20",
           "type": "dialogue",
           "speaker": "Samuel",
-          "text": "Alright, let's get practical. No more mystical station stuff.\n\nBased on your journey, here's what I'm seeing:\n\nYou spent the most time exploring Platform 1 - Healthcare. That's real jobs, real money. Respiratory therapy at Jeff State? Two years, then you're making $60K. Dental hygiene at UAB? Same deal.\n\nYou took your time with decisions. That's good. These programs want people who think things through, not rush into debt.\n\nYou helped Maya and Jordan when they were struggling. Healthcare is all about that - seeing people at their worst and helping anyway."
+          "text": "Alright, the station showed you possibilities. Now let's talk about how to make them real. The mystical part? That was just to get you to pay attention. The practical part? That's your actual life.\n\nBased on your journey, here's what I'm seeing:\n\nYou spent the most time exploring Platform 1 - Healthcare. That's real jobs, real money. Respiratory therapy at Jeff State? Two years, then you're making $60K. Dental hygiene at UAB? Same deal.\n\nYou took your time with decisions. That's good. These programs want people who think things through, not rush into debt.\n\nYou helped Maya and Jordan when they were struggling. Healthcare is all about that - seeing people at their worst and helping anyway."
         },
         {
           "id": "3-21",
           "type": "dialogue",
           "speaker": "Maya",
-          "text": "Listen, I've been where you are. Here's the real talk:\n\nThese programs all have application deadlines:\n- Jeff State: Opens January 15, closes March 1\n- UAB: Rolling admissions but financial aid deadline is February 15\n- Lawson State: Open enrollment but popular programs fill fast\n\nYou need your FAFSA done NOW. Not tomorrow, now. That's free money you're leaving on the table.\n\nAlso, all these schools have free campus tours. Go. Ask about payment plans. Ask about work-study. Ask if you can sit in on a class."
+          "text": "Listen, I know this whole station thing feels weird. But forget the magic stuff for a second. Here's the real talk about real programs:\n\nThese programs all have application deadlines:\n- Jeff State: Opens January 15, closes March 1\n- UAB: Rolling admissions but financial aid deadline is February 15\n- Lawson State: Open enrollment but popular programs fill fast\n\nYou need your FAFSA done NOW. Not tomorrow, now. That's free money you're leaving on the table.\n\nAlso, all these schools have free campus tours. Go. Ask about payment plans. Ask about work-study. Ask if you can sit in on a class."
         },
         {
           "id": "3-22",
           "type": "narration",
-          "text": "Your phone buzzes. A text appears - somehow from the station itself:\n\n📍 YOUR BIRMINGHAM NEXT STEPS:\n\n1. Tomorrow: Visit Jeff State (501 11th St N)\n   Ask for Ms. Patricia in Financial Aid\n\n2. This Week: Apply for FAFSA (studentaid.gov)\n   You'll need your parents' tax info\n\n3. Saturday: Innovation Depot free workshop\n   10am, bring laptop if you have one\n\n4. Save These Numbers:\n   - Central Six AlabamaWorks: 205-325-1574\n   - UAB Career Center: 205-934-4324\n   - Crisis hotline if overwhelmed: 205-323-7777\n\nNo magic. Just moves."
+          "text": "Your phone buzzes. Maybe it's the station, maybe it's just good timing. Doesn't matter. The information is real:\n\n📍 YOUR BIRMINGHAM NEXT STEPS:\n\n1. Tomorrow: Visit Jeff State (501 11th St N)\n   Ask for Ms. Patricia in Financial Aid\n\n2. This Week: Apply for FAFSA (studentaid.gov)\n   You'll need your parents' tax info\n\n3. Saturday: Innovation Depot free workshop\n   10am, bring laptop if you have one\n\n4. Save These Numbers:\n   - Central Six AlabamaWorks: 205-325-1574\n   - UAB Career Center: 205-934-4324\n   - Crisis hotline if overwhelmed: 205-323-7777\n\nNo magic. Just moves."
         },
         {
           "id": "3-23",
