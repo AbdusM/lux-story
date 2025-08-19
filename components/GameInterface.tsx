@@ -112,12 +112,19 @@ export function GameInterface() {
   
   
   const handleChoice = useCallback(async (choice: any) => {
-    console.log('handleChoice called with choice:', choice, 'currentScene:', currentScene?.id)
-    console.trace('handleChoice call stack')
-    if (!gameState || !currentScene) return
-    
-    setProcessing(true)
-    resetPresence() // New scene, new presence
+    try {
+      console.log('🎯 HANDLE_CHOICE_START:', choice, 'currentScene:', currentScene?.id)
+      console.log('🎯 Choice details:', JSON.stringify(choice, null, 2))
+      console.trace('🎯 handleChoice call stack')
+      
+      if (!gameState || !currentScene) {
+        console.error('🎯 HANDLE_CHOICE_ERROR: Missing gameState or currentScene')
+        return
+      }
+      
+      console.log('🎯 Setting processing true')
+      setProcessing(true)
+      resetPresence() // New scene, new presence
     
     // Calculate time taken to make choice
     const timeToChoose = Date.now() - choiceStartTime
@@ -172,11 +179,18 @@ export function GameInterface() {
       type: 'dialogue'
     })
     
+    console.log('🎯 Loading next scene:', choice.nextScene)
     // Load next scene after a short delay
     setTimeout(() => {
       handleLoadScene(choice.nextScene)
       setProcessing(false)
+      console.log('🎯 HANDLE_CHOICE_COMPLETE')
     }, 1000)
+    
+    } catch (error) {
+      console.error('🎯 HANDLE_CHOICE_ERROR:', error)
+      setProcessing(false)
+    }
   }, [gameState, currentScene, setProcessing, addMessage, handleLoadScene, resetPresence, choiceStartTime, performanceSystem, messages])
   
   const handleContinue = useCallback(() => {
@@ -271,7 +285,10 @@ export function GameInterface() {
                 {enhanceChoices(currentScene.choices).map((choice, index) => (
                   <Button
                     key={index}
-                    onClick={() => handleChoice(choice)}
+                    onClick={() => {
+                      console.log('🔘 BUTTON_CLICKED:', index, choice.text)
+                      handleChoice(choice)
+                    }}
                     disabled={isProcessing}
                     variant={currentScene.choices?.length === 1 ? "default" : "outline"}
                     className={`choice-button h-auto py-3 px-4 text-sm text-center whitespace-normal ${
