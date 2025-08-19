@@ -585,7 +585,7 @@
             {
               "text": "Investigate the warm glow emanating from Platform 1.",
               "consequence": "service_calling",
-              "nextScene": "2-3a",
+              "nextScene": "2-3a1",
               "stateChanges": {
                 "careerValues.directImpact": 2,
                 "platforms.p1.warmth": 1,
@@ -625,10 +625,15 @@
           ]
         },
         {
-          "id": "2-3a",
+          "id": "2-3a1",
+          "type": "narration",
+          "text": "Maya sits on a bench near Platform 1, medical textbooks spread around her. But her hands are assembling what looks like a tiny robotic heart."
+        },
+        {
+          "id": "2-3a2",
           "type": "dialogue",
           "speaker": "Maya",
-          "text": "You notice the warmth too? Platform 1's been glowing differently since you... whatever you did during that frozen moment.\n\n*She's sitting on a bench near Platform 1, her medical textbooks spread around her, but her hands are assembling what looks like a tiny robotic heart.*\n\n'I keep thinking about Birmingham's hospitals. UAB, Children's, Grandview. All those people needing help, and all those systems that could work better. What if healing doesn't have to choose between human touch and perfect precision?'"
+          "text": "You notice the warmth too? Platform 1's been glowing differently since... whatever you did during that frozen moment.\n\n'I keep thinking about Birmingham's hospitals. UAB, Children's, Grandview. All those people needing help, and all those systems that could work better. What if healing doesn't have to choose between human touch and perfect precision?'"
         },
         {
           "id": "2-3b", 
