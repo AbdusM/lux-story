@@ -1950,6 +1950,11 @@
           ]
         },
         {
+          "id": "3-10-birmingham",
+          "type": "narration",
+          "text": "The platforms now smell of Birmingham's revival: Avondale Brewing's hops mixing with Hot and Hot Fish Club's cornmeal. A food truck pulls up outside - Eugene's Hot Chicken, the smell making everyone's eyes water and mouths water simultaneously. This is Birmingham's new economy: craft beer where steel mills stood, James Beard winners where company stores crumbled. The transformation isn't complete, but you can taste it happening."
+        },
+        {
           "id": "3-11a",
           "type": "narration",
           "text": "Focusing on deepening your strongest skills proves to be the right strategy for Birmingham's market.\n\nAs you develop genuine expertise in healthcare data analysis, you become one of the few people in the city who can bridge clinical knowledge with technical implementation. Organizations start reaching out to you for specific projects. Your reputation spreads through Birmingham's tight-knit professional networks.\n\nSpecialization doesn't mean isolation. Your deep expertise makes you valuable to cross-functional teams. You become the person others turn to when they need someone who really understands both the technical and domain-specific aspects of healthcare data.\n\nWithin a year, you're not just looking for opportunities - opportunities are finding you."
@@ -2241,7 +2246,7 @@
         {
           "id": "3-16d",
           "type": "narration",
-          "text": "The Innovation Depot startup invitation makes you ask: 'How would this serve Birmingham's growth?' not 'What would this get me?'\n\nService to community has become the filter for personal opportunity."
+          "text": "The Innovation Depot - 140,000 square feet of old Sears building turned startup incubator\nRegions Bank Data Center - processing half of Alabama's transactions\nProtective Life Analytics - where actuaries turn fear into math\n\nThe platform vibrates with server fans and industrial air conditioning. The air tastes of ozone and ambition, that particular flavor of late-night coding sessions fueled by Revelator Coffee. Birmingham's data heart beats here, each keystroke a tiny metallic click in the symphony of processing."
         },
         {
           "id": "3-17",
@@ -2291,6 +2296,90 @@
           ]
         },
         {
+          "id": "3-17-birmingham",
+          "type": "choice",
+          "text": "The forms Samuel gave you are real - not metaphorical, not mystical. Real applications with real deadlines. Where do you start your Birmingham journey?",
+          "choices": [
+            {
+              "text": "UAB's co-op program - work at Children's Hospital while studying",
+              "consequence": "healthcare_path",
+              "nextScene": "3-18a",
+              "stateChanges": {
+                "careerValues": {
+                  "directImpact": 3
+                },
+                "items": {
+                  "chosen_path": "healthcare"
+                }
+              }
+            },
+            {
+              "text": "Innovation Depot's startup accelerator - turn that app idea into reality",
+              "consequence": "innovation_path",
+              "nextScene": "3-18b",
+              "stateChanges": {
+                "careerValues": {
+                  "systemsThinking": 3
+                },
+                "items": {
+                  "chosen_path": "innovation"
+                }
+              }
+            },
+            {
+              "text": "Regions Bank's data analyst training - paid to learn, benefits day one",
+              "consequence": "data_path",
+              "nextScene": "3-18c",
+              "stateChanges": {
+                "careerValues": {
+                  "dataInsights": 3
+                },
+                "items": {
+                  "chosen_path": "data"
+                }
+              }
+            },
+            {
+              "text": "Alabama Power's renewable energy apprenticeship - building tomorrow's grid",
+              "consequence": "renewable_path",
+              "nextScene": "3-18d",
+              "stateChanges": {
+                "careerValues": {
+                  "futureBuilding": 3
+                },
+                "items": {
+                  "chosen_path": "renewable"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "3-18a-birmingham",
+          "type": "narration",
+          "text": "You fill out the UAB co-op application. The address is real: 1720 2nd Avenue South. The program coordinator's name is real: Ms. Patricia Williams, who's helped 500+ students find their path through Birmingham's medical ecosystem. Your shift would be Tuesday/Thursday, 6 AM to 2 PM. Classes Monday/Wednesday/Friday. It's not glamorous. It's not mystical. It's waking up at 5 AM to serve breakfast to kids with cancer. It's real, and it starts Monday."
+        },
+        {
+          "id": "3-18b-birmingham",
+          "type": "narration",
+          "text": "The Innovation Depot application asks for your idea. You write it down - that app that connects Birmingham's food deserts with mobile markets. They have office space available on the second floor, overlooking First Avenue North. The accelerator provides $20,000 seed funding, mentorship from Birmingham venture capitalists, and connections to Shipt, which started here. Your demo day would be in 12 weeks. Real investors. Real money. Real possibility."
+        },
+        {
+          "id": "3-18c-birmingham",
+          "type": "narration",
+          "text": "Regions Bank's training program starts with six weeks at their Birmingham headquarters. $19/hour while training, $52,000/year once placed. They need people who understand both numbers and neighborhoods - someone who can see that zip code 35218 isn't just data, it's Smithfield, and the loan patterns there tell stories about Birmingham's ongoing transformation. Your supervisor would be Marcus Chen, who turned down offers from Charlotte and Atlanta to stay here. 'Birmingham data has soul,' he says."
+        },
+        {
+          "id": "3-18d-birmingham",
+          "type": "narration",
+          "text": "Alabama Power's renewable apprenticeship includes climbing certification - you'd be installing solar panels on roofs from Mountain Brook to Fairfield. The irony isn't lost on anyone: the company that powered Birmingham's furnaces now powers its green transformation. Your trainer would be DeShawn Williams, whose grandfather died of black lung from the mines. 'We're not betraying the past,' he says. 'We're healing it.' Starting pay: $25/hour. After certification: $35. Real wages for real work that really matters."
+        },
+        {
+          "id": "3-19-birmingham-final",
+          "type": "narration",
+          "text": "Monday morning. 6 AM. Birmingham wakes up around you. The 280 traffic builds toward Red Mountain. Coffee brews at O'Henry's in Lakeview. Nurses change shifts at UAB. The city doesn't care about your mystical journey or platform revelations. It only cares that you showed up.\n\nThe station? It was never magic. It was Birmingham showing you what was always here: multiple paths, real choices, a city rebuilding itself one person at a time. Your future isn't mystical. It's mechanical. It starts with filling out the paperwork, showing up on time, doing the work.\n\nThe trains are BJCC's MAX buses now. The platforms are career centers. The magic? That's just Birmingham's humidity making everything shimmer.\n\nWelcome to your real future. Clock in."
+        },
+        {
           "id": "3-18a",
           "type": "narration",
           "text": "Your commitment to mentoring others creates a multiplier effect that extends far beyond your individual career.\n\nYou begin formally mentoring professionals transitioning between careers, students exploring their options, and entrepreneurs building Birmingham-based solutions. Your Grand Central insights about career values discovery become tools for helping others navigate their own journeys.\n\nMore importantly, you help create a culture of developmental relationships within Birmingham's professional community. Your approach - values-based guidance rather than prescriptive advice - spreads through the networks you influence.\n\nYour career becomes about enabling others' success, creating sustainable impact that continues long after any individual achievement."
@@ -2309,6 +2398,11 @@
           "id": "3-18d",
           "type": "narration",
           "text": "Your role as a bridge-builder in Birmingham's economy becomes essential as the city's growth creates both opportunities and challenges requiring cross-sector collaboration.\n\nYou facilitate connections between healthcare and technology, between community development and business growth, between workforce development and organizational needs. Your systems thinking and collaborative approach help Birmingham's growth sectors support rather than compete with each other.\n\nMore importantly, your integration work helps ensure that Birmingham's economic development serves both business success and community needs. Your career values guide you toward solutions that create sustainable prosperity rather than just short-term growth.\n\nYour journey from Grand Central's personal discovery to Birmingham's community contribution becomes a model for value-driven career development that serves both individual fulfillment and collective prosperity."
+        },
+        {
+          "id": "3-19-final",
+          "type": "narration",
+          "text": "Monday morning. 6 AM. Birmingham wakes up around you. The 280 traffic builds toward Red Mountain. Coffee brews at O'Henry's in Lakeview. Nurses change shifts at UAB. The city doesn't care about your mystical journey or platform revelations. It only cares that you showed up.\n\nThe station? It was never magic. It was Birmingham showing you what was always here: multiple paths, real choices, a city rebuilding itself one person at a time. Your future isn't mystical. It's mechanical. It starts with filling out the paperwork, showing up on time, doing the work.\n\nThe trains are BJCC's MAX buses now. The platforms are career centers. The magic? That's just Birmingham's humidity making everything shimmer.\n\nWelcome to your real future. Clock in."
         },
         {
           "id": "3-19",
