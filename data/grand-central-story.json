@@ -1,0 +1,431 @@
+{
+  "title": "Grand Central Terminus",
+  "author": "Lux Story Team",
+  "version": "1.0.0",
+  "chapters": [
+    {
+      "id": 1,
+      "title": "Arrival",
+      "scenes": [
+        {
+          "id": "1-1",
+          "type": "narration",
+          "text": "The letter arrived this morning, slipped under your door while the world slept.\n\n'Your future awaits at Platform 7. Midnight. Don't be late.'\n\nNo signature. No postmark. Just your name written in handwriting that feels familiar but impossible to place.\n\nNow you're standing at the entrance to Grand Central Terminus - a station that wasn't here yesterday. The clock tower shows 11:47 PM.\n\nThirteen minutes to find Platform 7. Thirteen minutes to meet your future.\n\nIf you believe the letter."
+        },
+        {
+          "id": "1-2",
+          "type": "choice",
+          "text": "The station entrance looms before you, all brass and shadows. Through the glass doors, you see platforms stretching into misty distances, more than any station should hold.",
+          "choices": [
+            {
+              "text": "Walk straight to Platform 7. The letter was clear.",
+              "consequence": "trusting",
+              "nextScene": "1-3a",
+              "stateChanges": {
+                "time": -2,
+                "mysteries.letter_sender": "trusted",
+                "patterns.rushing": 1
+              }
+            },
+            {
+              "text": "Find someone who knows this place first.",
+              "consequence": "cautious",
+              "nextScene": "1-3b",
+              "stateChanges": {
+                "time": -3,
+                "relationships.samuel.trust": 1,
+                "patterns.exploring": 1
+              }
+            },
+            {
+              "text": "Tear up the letter. You make your own future.",
+              "consequence": "rebellious",
+              "nextScene": "1-3c",
+              "stateChanges": {
+                "time": -1,
+                "mysteries.letter_sender": "rejected",
+                "patterns.independence": 1,
+                "platforms.forgotten.accessible": true
+              }
+            },
+            {
+              "text": "Study the departure board for clues.",
+              "consequence": "analytical",
+              "nextScene": "1-3d",
+              "stateChanges": {
+                "time": -2,
+                "patterns.analyzing": 1,
+                "platforms.p7.discovered": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "1-3a",
+          "type": "narration",
+          "text": "You push through the heavy doors, their brass handles warm despite the late hour. The station unfolds before you like a Victorian fever dream - impossibly high ceilings, platforms that seem to multiply when you're not looking directly at them.\n\nPlatform 7's sign flickers in the distance, the number shifting between 7 and something else... 7½? No, that's impossible.\n\nAs you walk, you notice the other travelers. They all move with purpose, but different kinds - some rushed, some peaceful, some lost. None of them seem to see you."
+        },
+        {
+          "id": "1-3b",
+          "type": "dialogue",
+          "speaker": "Samuel",
+          "text": "First time at Grand Central Terminus?\n\nAn older man in a conductor's uniform that belongs to no rail company you know steps from behind a pillar. His watch hangs from a chain, ticking to a rhythm that doesn't match seconds.\n\n'I'm Samuel. I keep the station... oriented. You look like someone who received an invitation.'"
+        },
+        {
+          "id": "1-3c",
+          "type": "narration",
+          "text": "You tear the letter into precise quarters, then eighths, letting the pieces flutter to the ground. As they fall, they catch fire - a soft blue flame that doesn't burn, just transforms the paper into moths that spiral upward and disappear.\n\nThe station doors swing open on their own.\n\n'Interesting choice,' says a voice. You turn to see a janitor with knowing eyes, pushing a cart that rattles with keys to doors that shouldn't exist. 'The ones who reject the first path often find the better one. Platform 7's been flickering all week. Maybe it was waiting for someone to say no.'"
+        },
+        {
+          "id": "1-3d",
+          "type": "narration",
+          "text": "The departure board towers above you, its mechanical letters flipping with satisfying clicks. But something's wrong - the destinations keep changing:\n\nPlatform 1: MERCY GENERAL / HEALING HEARTS / WHERE CARE LIVES\nPlatform 3: BUILDER'S JUNCTION / FOUNDATION STATION / CREATE\nPlatform 7: ERROR / RECALCULATING / YOUR FUTURE / ERROR\nPlatform 9: GROWTH TERMINAL / PATIENCE GARDEN / SEASONS TURN\n\nA girl with medical textbooks and grease-stained fingers stands beside you. 'Platform 7's been like that for days,' she says. 'Almost like it's waiting for someone specific.'"
+        },
+        {
+          "id": "1-4a",
+          "type": "choice",
+          "text": "The flickering Platform 7 draws you forward, but you pass Platform 3 first. A bench there is split down the middle, and an elderly man struggles with heavy bags beside it.",
+          "choices": [
+            {
+              "text": "Stop to fix the bench with your pocket tools.",
+              "consequence": "builder",
+              "nextScene": "1-5a",
+              "stateChanges": {
+                "time": -3,
+                "platforms.p3.warmth": 2,
+                "patterns.building": 2,
+                "relationships.oldman.helped": true,
+                "items.safe_spot": "bench"
+              }
+            },
+            {
+              "text": "Help him with his bags but keep moving.",
+              "consequence": "helper",
+              "nextScene": "1-5b",
+              "stateChanges": {
+                "time": -2,
+                "patterns.helping": 1,
+                "platforms.p1.warmth": 1
+              }
+            },
+            {
+              "text": "Rush past - Platform 7 awaits.",
+              "consequence": "focused",
+              "nextScene": "1-5c",
+              "stateChanges": {
+                "time": -1,
+                "patterns.rushing": 2,
+                "platforms.p3.warmth": -1,
+                "platforms.p3.accessible": false
+              }
+            }
+          ]
+        },
+        {
+          "id": "1-4b",
+          "type": "choice",
+          "text": "Samuel's eyes crinkle with something between amusement and concern. 'Platform 7, is it? That one's been temperamental lately.'",
+          "choices": [
+            {
+              "text": "'Do you know who sent the letter?'",
+              "consequence": "direct",
+              "nextScene": "1-5d",
+              "stateChanges": {
+                "relationships.samuel.trust": 1,
+                "mysteries.letter_sender": "investigating"
+              }
+            },
+            {
+              "text": "'What do you mean, temperamental?'",
+              "consequence": "curious",
+              "nextScene": "1-5e",
+              "stateChanges": {
+                "relationships.samuel.trust": 2,
+                "platforms.p7.discovered": true
+              }
+            },
+            {
+              "text": "'I didn't come here for riddles.'",
+              "consequence": "impatient",
+              "nextScene": "1-5f",
+              "stateChanges": {
+                "patterns.rushing": 1,
+                "relationships.samuel.trust": -1
+              }
+            },
+            {
+              "text": "Show him the letter silently.",
+              "consequence": "trusting",
+              "nextScene": "1-5g",
+              "stateChanges": {
+                "relationships.samuel.trust": 3,
+                "relationships.samuel.knows_name": true,
+                "mysteries.letter_sender": "samuel_knows"
+              }
+            }
+          ]
+        },
+        {
+          "id": "1-4c",
+          "type": "dialogue",
+          "speaker": "Marcus",
+          "text": "'The Forgotten Platform opens for those who reject their first destination. Want to see where the untaken tracks lead? Or maybe...' He pauses, keys jangling. 'Maybe you'd rather know why someone wanted you at Platform 7 so badly they sent a letter that burns into moths?'"
+        },
+        {
+          "id": "1-4d",
+          "type": "dialogue",
+          "speaker": "Maya",
+          "text": "'I'm Maya. Pre-med, supposedly.' She juggles her textbooks to shake your hand, and a small robot tumbles out of her bag. It rights itself and chirps.\n\n'I built him during organic chemistry. Probably why I got a B+.' She laughs, but it's edged with exhaustion. 'Are you here for Platform 7 too? Everyone seems to get a different letter. Mine said Platform 1, but I keep finding myself at Platform 3 instead.'"
+        },
+        {
+          "id": "1-5a",
+          "type": "narration",
+          "text": "You pull out your multi-tool - the one you always carry, though you can't remember why. The bench practically tells you how to fix it, wood worn smooth by thousands of waiting travelers. As you work, the elderly man sits on the stable half.\n\n'Engineer, retired,' he says. 'Forty years of building bridges. Real ones, not metaphorical.' His hands mirror yours, phantom-fixing alongside you. 'The thing about broken things - they teach you more than the whole ones ever could.'\n\nThe bench clicks into place, stronger than before. Platform 3's lights shift from harsh fluorescent to warm amber. Other travelers begin gravitating toward your bench, as if it's become a safe harbor.\n\nThe clock now reads 11:52 PM."
+        },
+        {
+          "id": "1-5b",
+          "type": "narration",
+          "text": "You take the man's bags - heavier than they look, filled with what feels like decades of accumulated weight. He sighs with relief.\n\n'Kind of you. Most people rush past. They're all trying to catch trains that haven't been scheduled yet.' He walks slowly, and you match his pace. 'Platform 7, right? I can see it in how you keep glancing at the signs. Let me tell you something - the trains that matter most are never the ones you're told to catch.'\n\nPlatform 1 glows softer as you pass, and you notice other travelers helping each other with luggage, sharing seats, offering tissues to someone crying.\n\nThe clock now reads 11:51 PM."
+        },
+        {
+          "id": "1-5c",
+          "type": "narration",
+          "text": "You rush past the broken bench, the struggling man, the weight of their need. Platform 7 is all that matters. The letter was clear.\n\nBut as you pass, Platform 3's lights dim to a cold industrial glare. The elderly man's bags split, spilling tools across the platform. No one stops to help. The broken bench collapses completely.\n\nYou reach Platform 7 faster, yes. The clock reads 11:50 PM - plenty of time. But the platform itself seems... different. Colder. The sign flickers more violently: 7... ERROR... 7... DENIED... 7..."
+        },
+        {
+          "id": "1-5d",
+          "type": "dialogue",
+          "speaker": "Samuel",
+          "text": "'Who sends any letter, really? The person writing, or the person who needs to receive it?' Samuel pulls out a worn journal filled with names and platform numbers.\n\n'I've seen hundreds of letters. They all claim to know your future, but futures aren't fixed things. They're more like... probability clouds. Platform 7 especially. It only solidifies when someone approaches it with absolute certainty. And you, my friend, don't look certain at all.'"
+        },
+        {
+          "id": "1-5e",
+          "type": "dialogue",
+          "speaker": "Samuel",
+          "text": "'Temperamental is kind. Platform 7 has been flickering between existing and not existing for three days. Sometimes it shows 7, sometimes 7½, sometimes just... static. Like it's waiting for someone specific. Or maybe like it's trying NOT to exist.'\n\nHe checks his impossible watch. 'The trains that arrive at Platform 7 go to futures people think they want. But thinking and wanting are different beasts. What do YOU want? Not what the letter tells you to want.'"
+        },
+        {
+          "id": "1-5f",
+          "type": "narration",
+          "text": "Samuel steps back, his expression closing like a book you'll never read.\n\n'No riddles, then. Platform 7 is down the main corridor, past the platforms that make sense, just before the ones that don't. Your train arrives at midnight, if you're the right passenger. If not...'\n\nHe turns away, but you catch his whispered words: 'If not, the station will show you where you actually belong. Whether you like it or not.'\n\nThe clock reads 11:51 PM."
+        },
+        {
+          "id": "1-5g",
+          "type": "narration",
+          "text": "Samuel takes the letter with hands that have held a thousand such messages. As he reads, his expression shifts through surprise, recognition, and something that might be pride.\n\n'Well, well. [Your name]. I was wondering when you'd arrive.' He knows your name though you never said it. 'This handwriting... do you recognize it? Look closer. The way you make your letters, that specific curve on the lowercase 'a'...'\n\nHe holds the letter up to the station's strange light, and you see it clearly - the handwriting is yours. But older. More confident.\n\n'You wrote this to yourself. From a future where you found your way. The question is: will you follow your own advice, or discover why future-you sent you to the wrong platform?'"
+        },
+        {
+          "id": "1-6",
+          "type": "choice",
+          "text": "The clock now reads 11:52 PM. Eight minutes until midnight. The station thrums with an energy that wasn't there before - like it knows the crucial moment approaches.",
+          "choices": [
+            {
+              "text": "Head directly to Platform 7 now.",
+              "consequence": "determined",
+              "nextScene": "1-7a",
+              "stateChanges": {
+                "patterns.rushing": 1,
+                "time": -2
+              }
+            },
+            {
+              "text": "Explore other platforms first.",
+              "consequence": "exploring",
+              "nextScene": "1-7b",
+              "stateChanges": {
+                "patterns.exploring": 2,
+                "time": -3,
+                "platforms.discovered": "multiple"
+              }
+            },
+            {
+              "text": "Find Maya - her story about different letters matters.",
+              "consequence": "connecting",
+              "nextScene": "1-7c",
+              "stateChanges": {
+                "relationships.maya.trust": 2,
+                "patterns.helping": 1,
+                "time": -2
+              }
+            },
+            {
+              "text": "Sit on the bench (if fixed) and watch the patterns.",
+              "consequence": "observing",
+              "nextScene": "1-7d",
+              "stateChanges": {
+                "patterns.patience": 3,
+                "time": "slowing",
+                "quiet_hour.potential": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "1-7a",
+          "type": "narration",
+          "text": "Platform 7 draws you forward with magnetic certainty. The flickering sign stabilizes as you approach: PLATFORM 7 - DEPARTURES - YOUR FUTURE - NOW BOARDING.\n\nBut something feels wrong. The platform is empty. Completely, eerily empty. No other travelers, no benches, no warmth. Just cold metal tracks disappearing into a tunnel that shouldn't exist.\n\nA train waits. Its doors are open. Inside, you see... nothing. Not darkness - nothing. An absence of possibility."
+        },
+        {
+          "id": "1-7b",
+          "type": "narration",
+          "text": "You wander deeper into the station, ignoring the pull of Platform 7. Each platform tells a story:\n\nPlatform 1 hums with exhausted purpose - medical students, nurses, teachers, all bone-tired but somehow still standing.\n\nPlatform 3 vibrates with creation - people covered in paint, sawdust, code on their screens, building tomorrow.\n\nPlatform 9 grows things - literally. Vines creep along its pillars, and travelers sit in patient circles, watching seeds crack open in fast-forward.\n\nAnd there, between Platforms 9 and 10, a shimmer. The Forgotten Platform. A sign that only exists when you're not looking directly at it."
+        },
+        {
+          "id": "1-7c",
+          "type": "dialogue",
+          "speaker": "Maya",
+          "text": "'You got a letter too.' It's not a question. Maya has found you, her medical books balanced against her hip, the little robot perched on her shoulder.\n\n'Mine said Platform 1. My parents' platform. Twenty years of saving, praying, sacrificing for me to be a doctor.' She laughs, brittle. 'But look.' She points to Platform 3, where sparks fly from someone welding. 'My hands itch when I see that. My brain lights up. Platform 1 makes me feel like I'm drowning.'\n\nThe robot chirps, projecting a tiny hologram of a heart. But it's not a human heart - it's mechanical, beautiful, impossible.\n\n'What if our letters are tests? What if they tell us where we're supposed to go, just to see if we're brave enough to choose differently?'"
+        },
+        {
+          "id": "1-7d",
+          "type": "narration",
+          "text": "You sit on the bench you fixed - your bench now. It feels different from before, warm despite the late hour, solid in a way that suggests permanence in this temporary place.\n\nAs you watch, patterns emerge:\n\n- Travelers rushing to Platform 7 often return, confused\n- Those who help others find their platforms glow faintly\n- The janitor, Marcus, appears wherever someone is truly lost\n- Time moves differently for different people\n\nAnd then it happens.\n\nThe station... breathes.\n\nEverything slows. The clock's second hand stretches like taffy. A woman running for Platform 5 freezes mid-stride, her scarf a red flag in stopped air.\n\nYou're in a Quiet Hour.\n\nAnd you didn't even mean to be."
+        },
+        {
+          "id": "1-8-quiet",
+          "type": "narration",
+          "text": "THE FIRST QUIET HOUR\n\nTime has crystallized around you. You can move, but everyone else is caught between heartbeats. The station reveals itself in this stopped moment:\n\n- Glowing threads connect travelers to platforms, some thick as rope, others thin as spider silk\n- Words hover in the air, unspoken thoughts made visible\n- The platforms pulse with the dreams of everyone who ever stood there\n\nSamuel appears beside you, the only other moving thing. 'First Quiet Hour? They come to those who stop rushing long enough to see. Look closer at Platform 7.'\n\nIn the stillness, Platform 7 isn't one platform. It's dozens, overlapping, each showing a different future. All of them wrong. All of them someone else's idea of where you should go.\n\n'The letter,' Samuel says quietly. 'Look at it now, in the Quiet Hour.'\n\nThe paper shimmers, and new words appear beneath the original message:\n\n'Don't trust this. Find your own platform. I should have.'\n\nSigned in your handwriting. Dated five years from now."
+        },
+        {
+          "id": "1-9",
+          "type": "choice",
+          "text": "The Quiet Hour holds, waiting for your decision. Time won't restart until you choose to let it.",
+          "choices": [
+            {
+              "text": "Walk through the stopped time to explore every platform.",
+              "consequence": "explorer_quiet",
+              "nextScene": "1-10a",
+              "stateChanges": {
+                "patterns.exploring": 3,
+                "patterns.patience": 2,
+                "quiet_hour.experienced": ["first_exploration"],
+                "platforms.all": "discovered"
+              }
+            },
+            {
+              "text": "Touch the glowing threads to understand the connections.",
+              "consequence": "understanding_quiet",
+              "nextScene": "1-10b",
+              "stateChanges": {
+                "patterns.analyzing": 3,
+                "mysteries.station_nature": "understanding",
+                "quiet_hour.experienced": ["thread_reading"]
+              }
+            },
+            {
+              "text": "Find Maya in the stopped time and free her.",
+              "consequence": "helper_quiet",
+              "nextScene": "1-10c",
+              "stateChanges": {
+                "patterns.helping": 3,
+                "relationships.maya.trust": 5,
+                "relationships.maya.influenced_path": true,
+                "quiet_hour.experienced": ["freed_maya"]
+              }
+            },
+            {
+              "text": "Destroy the letter and Platform 7's sign.",
+              "consequence": "revolutionary_quiet",
+              "nextScene": "1-10d",
+              "stateChanges": {
+                "patterns.independence": 5,
+                "patterns.building": 2,
+                "items.letter": "destroyed",
+                "platforms.p7.accessible": false,
+                "platforms.seven_half": "created",
+                "quiet_hour.experienced": ["destroyed_seven"]
+              }
+            }
+          ]
+        },
+        {
+          "id": "1-10a",
+          "type": "narration",
+          "text": "You walk through the crystallized station, weaving between frozen travelers. Each platform reveals its truth in the Quiet Hour:\n\nPlatform 1 (Care): You see the weight of every patient carried by every healer. Beautiful. Crushing. Necessary.\n\nPlatform 3 (Building): Blueprints float in the air, showing what each builder dreams of creating. Cities, bridges, but also relationships, communities, hope.\n\nPlatform 9 (Growing): Seasons cycle in seconds here. You watch careers planted, grown, harvested, replanted. The patience required is staggering.\n\nThe Forgotten Platform: Here are the jobs nobody mentions at career day. The midnight coders who keep the internet running. The translators who prevent wars. The janitors like Marcus who maintain more than just cleanliness.\n\nAnd Platform 7½: It doesn't exist yet. But there's space for it, shimmering between 7 and 8, waiting for someone to define it.\n\nWhen you return to your bench, you understand: Every platform is right for someone. No platform is right for everyone."
+        },
+        {
+          "id": "1-10b",
+          "type": "narration",
+          "text": "You reach out to touch the glowing threads connecting travelers to platforms. The moment your fingers make contact, understanding floods through you:\n\nThe thick golden rope from a tired woman to Platform 1 - she's a nurse returning from break, and the rope is made of every life she's saved.\n\nThe fraying thread from a young man to Platform 7 - forced there by family expectations, the thread is already breaking.\n\nMaya's thread is fascinating - it splits three ways. One to Platform 1 (obligation), one to Platform 3 (passion), and a third to empty space between them (possibility).\n\nYour own thread... you can't see it. Or rather, you see dozens, all equally faint, going everywhere and nowhere.\n\nSamuel nods. 'Those without fixed threads have the rarest gift - the ability to weave new platforms. The station needs builders more than passengers.'"
+        },
+        {
+          "id": "1-10c",
+          "type": "narration",
+          "text": "You find Maya frozen mid-step between Platforms 1 and 3, her face caught in an expression of perfect anguish. The robot on her shoulder is mid-chirp, projecting half a mechanical heart.\n\nYou touch her shoulder, and she gasps into motion while everything else stays still.\n\n'What... how...?' She looks around at the stopped station. 'Is this what clarity feels like?'\n\nIn the Quiet Hour, she can see her threads too - the three-way split. Without hesitation, she grabs the threads to Platforms 1 and 3 and begins braiding them together.\n\n'Biomedical engineering. Surgical robots. Healing through building.' The braid becomes a bridge to Platform 7½, which suddenly exists, solid and real. 'I don't have to choose. I can create.'\n\nShe hugs you, fierce and grateful. 'The letter was wrong. They're all wrong. We're not supposed to find our platforms. We're supposed to build them.'"
+        },
+        {
+          "id": "1-10d",
+          "type": "narration",
+          "text": "You tear the letter into pieces, but this time you know what you're doing. Each piece burns with different colored fire:\n\n- Blue flames for the fear\n- Red flames for others' expectations  \n- Green flames for paths not taken\n- Purple flames for futures that were never yours\n\nThe ashes rise and fly to Platform 7's sign, which cracks, shatters, and reforms:\n\nPLATFORM 7: UNDER CONSTRUCTION\nPLATFORM 7½: NOW ACCEPTING ARCHITECTS\nPLATFORM 7.1 - 7.9: BUILD YOUR OWN\n\nThe empty train dissolves, replaced by workshop spaces, drafting tables, and tools for building futures that don't exist yet.\n\nMarcus appears, no longer frozen, applauding slowly. 'Finally. Someone who understands. The station isn't here to sort people into predetermined futures. It's here to help them build unprecedented ones.'\n\nPlatform 7's destruction sends ripples through the Quiet Hour. Other signs begin flickering, questioning their own certainty."
+        },
+        {
+          "id": "1-11",
+          "type": "narration",
+          "text": "The Quiet Hour releases its hold. Time crashes back like a wave, and the station returns to motion. But everything has changed:\n\n- Your actions in stopped time have left echoes\n- People near Platform 7 look confused, as if waking from a dream\n- Maya (if freed) is already sketching designs on her medical textbooks\n- Platform 7½ (if created) draws curious crowds\n\nThe clock reads... still 11:52 PM. The Quiet Hour took no time at all. Or maybe all the time in the world.\n\nSamuel finds you, his expression knowing. 'Eight minutes to midnight. Though midnight means something different now, doesn't it? You've learned the station's first secret: Time isn't your enemy here. Rushing is.'"
+        },
+        {
+          "id": "1-12",
+          "type": "choice",
+          "text": "The station feels different now - more alive, more responsive to your presence. Where do you go with your remaining eight minutes that might be eight hours?",
+          "choices": [
+            {
+              "text": "Help other travelers find their true platforms.",
+              "consequence": "guide_path",
+              "nextScene": "2-1",
+              "stateChanges": {
+                "patterns.helping": 3,
+                "patterns.patience": 2,
+                "relationships.multiple": "helped",
+                "ending_path": "guide"
+              }
+            },
+            {
+              "text": "Begin building something new at Platform 7½.",
+              "consequence": "builder_path",
+              "nextScene": "2-1",
+              "stateChanges": {
+                "patterns.building": 4,
+                "patterns.analyzing": 2,
+                "platforms.seven_half.development": true,
+                "ending_path": "builder"
+              }
+            },
+            {
+              "text": "Seek the Forgotten Platform's deepest secrets.",
+              "consequence": "seeker_path",
+              "nextScene": "2-1",
+              "stateChanges": {
+                "patterns.exploring": 4,
+                "patterns.independence": 2,
+                "platforms.forgotten.accessible": true,
+                "ending_path": "revolutionary"
+              }
+            },
+            {
+              "text": "Return to your bench and watch everything unfold.",
+              "consequence": "observer_path",
+              "nextScene": "2-1",
+              "stateChanges": {
+                "patterns.patience": 5,
+                "patterns.analyzing": 3,
+                "quiet_hour.potential": true,
+                "ending_path": "patient"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "The Platforms Reveal",
+      "scenes": [
+        {
+          "id": "2-1",
+          "type": "narration",
+          "text": "Chapter 2 begins with understanding: Grand Central Terminus isn't just a station. It's a living thing, fed by the dreams and fears of everyone who passes through. And tonight, it's particularly hungry for truth.\n\nYour choices have already begun reshaping the architecture. Platforms shift closer to those who need them. Barriers dissolve for those ready to cross them. The station is learning you as much as you're learning it."
+        }
+      ]
+    }
+  ]
+}

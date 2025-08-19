@@ -1,0 +1,356 @@
+/* Grand Central Terminus - Visual Feedback System */
+
+/* Base station atmosphere */
+.grand-central-terminus {
+  --station-warmth: 0;
+  --time-speed: 1;
+  background: linear-gradient(
+    180deg,
+    hsl(220, 20%, 10%) 0%,
+    hsl(220, 15%, 15%) 100%
+  );
+  transition: all 2s ease-in-out;
+}
+
+/* Platform warmth states */
+.platform-cold {
+  --platform-color: 200, 50%, 30%;
+  filter: hue-rotate(200deg) brightness(0.7);
+  animation: cold-pulse 4s ease-in-out infinite;
+}
+
+.platform-neutral {
+  --platform-color: 40, 20%, 50%;
+  filter: none;
+}
+
+.platform-warm {
+  --platform-color: 40, 60%, 50%;
+  filter: hue-rotate(20deg) brightness(1.1) saturate(1.2);
+  animation: warm-glow 3s ease-in-out infinite;
+}
+
+.platform-resonant {
+  --platform-color: 280, 70%, 60%;
+  filter: hue-rotate(-20deg) brightness(1.2) saturate(1.3);
+  animation: resonant-pulse 2s ease-in-out infinite;
+}
+
+/* Quiet Hour effects */
+.quiet-hour {
+  filter: sepia(10%) contrast(1.1) brightness(0.95);
+  animation: time-stop 2s ease-in-out forwards;
+}
+
+.quiet-hour .story-text {
+  font-family: 'Crimson Text', Georgia, serif;
+  font-size: 1.1em;
+  line-height: 1.8;
+  letter-spacing: 0.02em;
+  opacity: 0;
+  animation: text-crystallize 3s ease-in-out forwards;
+}
+
+.quiet-hour::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    circle at center,
+    transparent 0%,
+    rgba(147, 112, 219, 0.05) 50%,
+    rgba(147, 112, 219, 0.1) 100%
+  );
+  pointer-events: none;
+  animation: quiet-hour-pulse 8s ease-in-out infinite;
+}
+
+/* Time-based animations */
+.time-slowing {
+  animation: breathe 6s ease-in-out infinite;
+}
+
+.time-stopped {
+  animation: frozen 0.1s linear forwards;
+}
+
+.time-rushing {
+  animation: rush 1s linear infinite;
+}
+
+/* Platform-specific themes */
+.platform-1-care {
+  --accent: #64B5F6;
+  --glow: rgba(100, 181, 246, 0.3);
+}
+
+.platform-3-building {
+  --accent: #FFB74D;
+  --glow: rgba(255, 183, 77, 0.3);
+}
+
+.platform-7-data {
+  --accent: #BA68C8;
+  --glow: rgba(186, 104, 200, 0.3);
+}
+
+.platform-9-growing {
+  --accent: #81C784;
+  --glow: rgba(129, 199, 132, 0.3);
+}
+
+.platform-forgotten {
+  --accent: #E0E0E0;
+  --glow: rgba(224, 224, 224, 0.1);
+  opacity: 0.8;
+  filter: blur(0.5px);
+}
+
+.platform-7-half {
+  background: linear-gradient(
+    45deg,
+    var(--platform-1-care) 0%,
+    var(--platform-3-building) 50%,
+    var(--platform-7-data) 100%
+  );
+  animation: platform-creation 3s ease-in-out forwards;
+}
+
+/* Character trust levels */
+.trust-low .speaker-name {
+  opacity: 0.7;
+}
+
+.trust-medium .speaker-name {
+  opacity: 0.9;
+  font-weight: 500;
+}
+
+.trust-high .speaker-name {
+  opacity: 1;
+  font-weight: 600;
+  text-shadow: 0 0 10px var(--glow);
+}
+
+/* Choice consequences visual feedback */
+.choice-button {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.choice-button.consequence-helping::after {
+  content: '♥';
+  position: absolute;
+  right: 10px;
+  opacity: 0.3;
+  color: var(--platform-1-care);
+}
+
+.choice-button.consequence-building::after {
+  content: '🔨';
+  position: absolute;
+  right: 10px;
+  opacity: 0.3;
+  color: var(--platform-3-building);
+}
+
+.choice-button.consequence-analyzing::after {
+  content: '📊';
+  position: absolute;
+  right: 10px;
+  opacity: 0.3;
+  color: var(--platform-7-data);
+}
+
+.choice-button.consequence-exploring::after {
+  content: '🧭';
+  position: absolute;
+  right: 10px;
+  opacity: 0.3;
+  color: var(--platform-forgotten);
+}
+
+/* Keyframe animations */
+@keyframes cold-pulse {
+  0%, 100% { 
+    box-shadow: 0 0 20px rgba(100, 150, 200, 0.3);
+    transform: scale(1);
+  }
+  50% { 
+    box-shadow: 0 0 30px rgba(100, 150, 200, 0.5);
+    transform: scale(0.98);
+  }
+}
+
+@keyframes warm-glow {
+  0%, 100% { 
+    box-shadow: 0 0 30px var(--glow);
+    transform: scale(1);
+  }
+  50% { 
+    box-shadow: 0 0 50px var(--glow);
+    transform: scale(1.02);
+  }
+}
+
+@keyframes resonant-pulse {
+  0%, 100% { 
+    box-shadow: 0 0 40px var(--glow);
+    transform: scale(1) rotate(0deg);
+  }
+  25% { transform: scale(1.01) rotate(0.5deg); }
+  50% { 
+    box-shadow: 0 0 60px var(--glow);
+    transform: scale(1.02) rotate(0deg);
+  }
+  75% { transform: scale(1.01) rotate(-0.5deg); }
+}
+
+@keyframes time-stop {
+  0% { 
+    filter: none;
+  }
+  100% { 
+    filter: sepia(10%) contrast(1.1) brightness(0.95);
+  }
+}
+
+@keyframes text-crystallize {
+  0% { 
+    opacity: 0;
+    transform: translateY(20px);
+    letter-spacing: 0.05em;
+  }
+  50% {
+    opacity: 0.5;
+    transform: translateY(10px);
+    letter-spacing: 0.03em;
+  }
+  100% { 
+    opacity: 1;
+    transform: translateY(0);
+    letter-spacing: 0.02em;
+  }
+}
+
+@keyframes quiet-hour-pulse {
+  0%, 100% { 
+    opacity: 0.5;
+  }
+  50% { 
+    opacity: 1;
+  }
+}
+
+@keyframes platform-creation {
+  0% { 
+    opacity: 0;
+    transform: scaleX(0);
+    filter: blur(10px);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scaleX(0.5);
+    filter: blur(5px);
+  }
+  100% { 
+    opacity: 1;
+    transform: scaleX(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes breathe {
+  0%, 100% { 
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  50% { 
+    transform: scale(1.02);
+    opacity: 1;
+  }
+}
+
+@keyframes frozen {
+  to {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes rush {
+  0%, 100% { 
+    transform: scale(1) rotate(0deg);
+  }
+  25% { 
+    transform: scale(1.01) rotate(0.1deg);
+  }
+  50% { 
+    transform: scale(0.99) rotate(-0.1deg);
+  }
+  75% { 
+    transform: scale(1.01) rotate(0.1deg);
+  }
+}
+
+/* Visual states based on patterns */
+.high-helping {
+  --ui-warmth: 10deg;
+  --ui-brightness: 1.05;
+}
+
+.high-building {
+  --ui-warmth: 20deg;
+  --ui-brightness: 1.1;
+}
+
+.high-rushing {
+  --ui-warmth: -10deg;
+  --ui-brightness: 0.95;
+  animation: anxiety-shake 0.5s ease-in-out infinite;
+}
+
+.high-patience {
+  --ui-warmth: 5deg;
+  --ui-brightness: 1.02;
+  animation: calm-breathe 6s ease-in-out infinite;
+}
+
+@keyframes anxiety-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-1px); }
+  75% { transform: translateX(1px); }
+}
+
+@keyframes calm-breathe {
+  0%, 100% { 
+    transform: scale(1);
+  }
+  50% { 
+    transform: scale(1.01);
+  }
+}
+
+/* Environmental response to choices */
+.environment-responsive {
+  transition: all 1s ease-in-out;
+}
+
+.bench-fixed {
+  box-shadow: 0 0 20px rgba(255, 183, 77, 0.3);
+}
+
+.bench-safe-spot {
+  animation: safe-pulse 4s ease-in-out infinite;
+}
+
+@keyframes safe-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 183, 77, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(255, 183, 77, 0.5);
+  }
+}
