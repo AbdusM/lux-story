@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Heart, Eye, Sparkles } from "lucide-react"
+import { MapPin, Users, TrendingUp } from "lucide-react"
 
 interface CharacterIntroProps {
   onStart: () => void
@@ -12,47 +12,47 @@ interface CharacterIntroProps {
 
 export function CharacterIntro({ onStart, onContinue, hasSavedProgress }: CharacterIntroProps) {
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <Card className="max-w-md w-full">
+    <div className="min-h-screen flex items-center justify-center p-4 grand-central-terminus">
+      <Card className="max-w-md w-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm shadow-xl">
         <CardHeader className="text-center">
-          <div className="mx-auto w-24 h-24 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center mb-4">
-            <span className="text-4xl">🦥</span>
+          <div className="mx-auto w-24 h-24 bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 rounded-full flex items-center justify-center mb-4">
+            <span className="text-4xl">🚂</span>
           </div>
-          <CardTitle className="text-2xl">Lux</CardTitle>
-          <CardDescription className="text-lg">The Meditative Sloth</CardDescription>
+          <CardTitle className="text-2xl">Grand Central Terminus</CardTitle>
+          <CardDescription className="text-lg">Career Exploration Platform</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <p className="text-center text-muted-foreground">
-            "mm... Wisdom moves slowly but arrives with certainty"
+          <p className="text-center text-muted-foreground italic">
+            "Your future awaits at Platform 7. Midnight. Don't be late."
           </p>
           
           <div className="space-y-3">
             <div className="flex items-start gap-3">
-              <Heart className="w-5 h-5 text-purple-500 mt-0.5" />
+              <MapPin className="w-5 h-5 text-blue-500 mt-0.5" />
               <div>
-                <p className="font-medium">Meditation</p>
+                <p className="font-medium">Career Values Discovery</p>
                 <p className="text-sm text-muted-foreground">
-                  Restore energy through breathing exercises
+                  Explore what truly drives your career choices
                 </p>
               </div>
             </div>
             
             <div className="flex items-start gap-3">
-              <Eye className="w-5 h-5 text-purple-500 mt-0.5" />
+              <Users className="w-5 h-5 text-purple-500 mt-0.5" />
               <div>
-                <p className="font-medium">Third Eye</p>
+                <p className="font-medium">Birmingham Connections</p>
                 <p className="text-sm text-muted-foreground">
-                  See hidden truths in the network
+                  Meet mentors and discover local opportunities
                 </p>
               </div>
             </div>
             
             <div className="flex items-start gap-3">
-              <Sparkles className="w-5 h-5 text-purple-500 mt-0.5" />
+              <TrendingUp className="w-5 h-5 text-green-500 mt-0.5" />
               <div>
-                <p className="font-medium">Kinetic Vortex</p>
+                <p className="font-medium">Action Planning</p>
                 <p className="text-sm text-muted-foreground">
-                  Channel energy to solve crisis moments
+                  Transform insights into practical next steps
                 </p>
               </div>
             </div>
