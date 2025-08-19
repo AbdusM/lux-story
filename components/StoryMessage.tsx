@@ -151,7 +151,7 @@ export function StoryMessage({ speaker, text, type = 'dialogue', className, type
             <div className={cn(
               isWhisper && "text-purple-600 dark:text-purple-400 italic",
               isSensation && "text-red-500 dark:text-red-400",
-              !isWhisper && !isSensation && "text-center italic text-slate-300 dark:text-slate-400",
+              !isWhisper && !isSensation && "text-left italic text-slate-300 dark:text-slate-400",
               "text-premium whitespace-pre-wrap"
             )}>
               {speaker === 'Memory' && '💭 '}

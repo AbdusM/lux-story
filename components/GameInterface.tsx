@@ -103,8 +103,10 @@ export function GameInterface() {
   
   
   const handleChoice = useCallback(async (choice: any) => {
+    console.log('handleChoice called with:', choice)
     try {
       if (!gameState || !currentScene) {
+        console.log('Missing gameState or currentScene:', { gameState: !!gameState, currentScene: !!currentScene })
         return
       }
       
