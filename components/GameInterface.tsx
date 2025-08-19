@@ -14,7 +14,6 @@ import { useGameState } from "@/hooks/useGameState"
 import { useSceneTransitions } from "@/hooks/useSceneTransitions"
 import { useMessageManager } from "@/hooks/useMessageManager"
 import { usePresence } from "@/hooks/usePresence"
-import { usePatternRevelation } from "@/hooks/usePatternRevelation"
 import { useAdaptiveNarrative } from "@/hooks/useAdaptiveNarrative"
 import { getPerformanceSystem } from "@/lib/performance-system"
 import { getGrandCentralState } from "@/lib/grand-central-state"
@@ -43,29 +42,21 @@ export function GameInterface() {
   
   // Load scene with simple message handling
   const handleLoadScene = useCallback((sceneId: string, forceLoad = false) => {
-    console.log('📍 HANDLE_LOAD_SCENE:', sceneId, forceLoad)
-    if (sceneId === '1-3c' || sceneId === '1-7a') {
-      console.error('🚨 SUSPICIOUS SCENE LOAD:', sceneId)
-      console.trace('🚨 Call stack for suspicious scene:')
-    }
     
     // Prevent rapid scene loading (debounce)
     const now = Date.now()
     if (!forceLoad && now - lastSceneLoadTime < 500) {
-      console.log('Scene load blocked - too rapid', now - lastSceneLoadTime)
       return
     }
     setLastSceneLoadTime(now)
     
     if (!gameState) {
-      console.error('Game state not available in handleLoadScene')
       return
     }
     
     // Load the scene first through useSceneTransitions
     const scene = loadScene(sceneId, forceLoad)
     if (!scene) {
-      console.error('Failed to load scene:', sceneId)
       return
     }
     
@@ -84,12 +75,10 @@ export function GameInterface() {
   }, [loadScene, gameState, addMessage, lastSceneLoadTime])
   
   const handleStartGame = useCallback(() => {
-    console.log('Starting new game...')
     setShowIntro(false)
     if (gameState) {
       // Always start from the beginning for a new game
       const initialScene = '1-1'
-      console.log('Starting new game from scene:', initialScene)
       // Clear messages and reset state for fresh start
       clearMessages()
       resetPresence()
@@ -101,11 +90,9 @@ export function GameInterface() {
   }, [gameState, clearMessages, resetPresence, handleLoadScene])
 
   const handleContinueGame = useCallback(() => {
-    console.log('Continuing game...')
     setShowIntro(false)
     if (gameState) {
       const state = gameState.getState()
-      console.log('Continuing from scene:', state.currentScene)
       // Clear messages but keep progress
       clearMessages()
       resetPresence()
@@ -117,16 +104,10 @@ export function GameInterface() {
   
   const handleChoice = useCallback(async (choice: any) => {
     try {
-      console.log('🎯 HANDLE_CHOICE_START:', choice, 'currentScene:', currentScene?.id)
-      console.log('🎯 Choice details:', JSON.stringify(choice, null, 2))
-      console.trace('🎯 handleChoice call stack')
-      
       if (!gameState || !currentScene) {
-        console.error('🎯 HANDLE_CHOICE_ERROR: Missing gameState or currentScene')
         return
       }
       
-      console.log('🎯 Setting processing true')
       setProcessing(true)
       resetPresence() // New scene, new presence
     
@@ -183,31 +164,24 @@ export function GameInterface() {
       type: 'dialogue'
     })
     
-    console.log('🎯 Loading next scene:', choice.nextScene)
     // Load next scene after a short delay
     setTimeout(() => {
       handleLoadScene(choice.nextScene)
       setProcessing(false)
-      console.log('🎯 HANDLE_CHOICE_COMPLETE')
     }, 1000)
     
     } catch (error) {
-      console.error('🎯 HANDLE_CHOICE_ERROR:', error)
       setProcessing(false)
     }
   }, [gameState, currentScene, setProcessing, addMessage, handleLoadScene, resetPresence, choiceStartTime, performanceSystem, messages])
   
   const handleContinue = useCallback(() => {
-    console.log('handleContinue called, currentScene:', currentScene?.id)
     if (!currentScene) return
     
     const nextSceneId = storyEngine.getNextScene(currentScene.id)
-    console.log('Next scene ID from story engine:', nextSceneId)
     if (nextSceneId) {
-      console.log('Loading next scene:', nextSceneId)
       handleLoadScene(nextSceneId)
     } else {
-      console.log('No next scene found, showing chapter complete')
       // End of current chapter
       addMessage({
         speaker: 'narrator',
@@ -272,10 +246,6 @@ export function GameInterface() {
           
           {/* Action Area - Adaptive choice layout */}
           <div className="border-t pt-4">
-            {(() => {
-              console.log('Rendering action area, currentScene:', currentScene?.id, 'type:', currentScene?.type, 'choices:', currentScene?.choices?.length)
-              return null
-            })()}
             {currentScene?.type === 'choice' && currentScene.choices ? (
               <div className={
                 currentScene.choices.length === 1 
@@ -289,10 +259,7 @@ export function GameInterface() {
                 {enhanceChoices(currentScene.choices).map((choice, index) => (
                   <Button
                     key={index}
-                    onClick={() => {
-                      console.log('🔘 BUTTON_CLICKED:', index, choice.text)
-                      handleChoice(choice)
-                    }}
+                    onClick={() => handleChoice(choice)}
                     disabled={isProcessing}
                     variant={currentScene.choices?.length === 1 ? "default" : "outline"}
                     className={`choice-button h-auto py-3 px-4 text-sm text-center whitespace-normal ${
