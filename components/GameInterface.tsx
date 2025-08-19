@@ -234,12 +234,16 @@ export function GameInterface() {
   }, [gameState, currentScene, setProcessing, addMessage, handleLoadScene, resetPresence, choiceStartTime, performanceSystem, messages])
   
   const handleContinue = useCallback(() => {
+    console.log('handleContinue called, currentScene:', currentScene?.id)
     if (!currentScene) return
     
     const nextSceneId = storyEngine.getNextScene(currentScene.id)
+    console.log('Next scene ID from story engine:', nextSceneId)
     if (nextSceneId) {
+      console.log('Loading next scene:', nextSceneId)
       handleLoadScene(nextSceneId)
     } else {
+      console.log('No next scene found, showing chapter complete')
       // End of current chapter
       addMessage({
         speaker: 'narrator',

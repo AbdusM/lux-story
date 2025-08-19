@@ -67,16 +67,22 @@ export class StoryEngine {
    * Get the next scene ID in sequence
    */
   getNextScene(currentSceneId: string): string | null {
+    console.log('getNextScene called with:', currentSceneId)
+    
     // For Grand Central Terminus, most scenes are choice-driven
     // Only simple sequential scenes should auto-advance
     
     // Extract chapter and scene number
     const match = currentSceneId.match(/^(\d+)-(\d+)([a-z]?)(\d*)$/)
-    if (!match) return null
+    if (!match) {
+      console.log('No match for scene ID pattern:', currentSceneId)
+      return null
+    }
     
     const [, chapterNum, sceneNum, letter, subNum] = match
     const chapter = parseInt(chapterNum)
     const scene = parseInt(sceneNum)
+    console.log('Parsed scene:', { chapter, scene, letter, subNum })
     
     // Get all scene IDs for this chapter
     const currentChapter = this.chapters.find(c => c.id === chapter)
@@ -87,7 +93,9 @@ export class StoryEngine {
     // For simple numeric scenes (like 1-1), try the next number (1-2)
     if (!letter && !subNum) {
       const nextSimpleId = `${chapter}-${scene + 1}`
+      console.log('Checking for simple next scene:', nextSimpleId, 'exists:', allSceneIds.includes(nextSimpleId))
       if (allSceneIds.includes(nextSimpleId)) {
+        console.log('Returning next simple scene:', nextSimpleId)
         return nextSimpleId
       }
     }
