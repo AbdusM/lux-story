@@ -10,7 +10,7 @@
         {
           "id": "1-1",
           "type": "narration",
-          "text": "You found a letter under your door this morning.\n\n\"Your future awaits at Platform 7. Midnight. Don't be late.\"",
+          "text": "You found a letter under your door this morning.\n\n\"Your future awaits at Platform 7. Midnight. Don't be late.\"\n\nAt the bottom of the letter, in smaller text: 'You have one year before everything changes. Choose wisely. - Future You'",
           "nextScene": "1-1-1"
         },
         {
@@ -1177,7 +1177,7 @@
           "id": "2-3a2",
           "type": "dialogue",
           "speaker": "Maya",
-          "text": "You notice the warmth too? Platform 1's been glowing differently since...",
+          "text": "You notice the warmth too? Platform 1's been glowing differently since...\n\nMaya looks away for a moment. 'You know what's crazy? My mom cleans rooms at UAB Hospital. Sees all these nurses making good money, helping people. She's been cleaning those same rooms for 15 years. I want to be the one in scrubs, not the uniform. That's why respiratory therapy makes sense - 2 years and I'm making $60K. I could buy her a car that actually starts in winter.'",
           "nextScene": "2-3a2-1"
         },
         {
@@ -1252,7 +1252,7 @@
           "id": "2-3b2",
           "type": "dialogue",
           "speaker": "Devon",
-          "text": "The acoustics here are fascinating. Platform 3's construction sounds create perfect resonance patterns.",
+          "text": "The acoustics here are fascinating. Platform 3's construction sounds create perfect resonance patterns.\n\nDevon shows you his laptop screen - code everywhere. 'Taught myself from YouTube and freeCodeCamp. But every job posting wants a degree I can't afford. Then I found out Innovation Depot has this 12-week bootcamp. They actually help you get hired after. That's real. That's something I can do while keeping my night job.'",
           "nextScene": "2-3b2-1"
         },
         {
@@ -1277,7 +1277,7 @@
           "id": "2-3c2",
           "type": "dialogue",
           "speaker": "Jordan",
-          "text": "I've been mapping the patterns. Look - everyone who helps others, their platforms warm up.",
+          "text": "I've been mapping the patterns. Look - everyone who helps others, their platforms warm up.\n\nJordan's voice drops. 'My dad thinks I'm wasting my brain on trades. But my uncle? HVAC certification, makes $85K, no student loans. Bought a house at 25. Has his own truck. Meanwhile my cousin with the computer science degree? Still living at home, sending out resumes. Sometimes the smart choice isn't what looks smart to others.'",
           "nextScene": "2-3c2-1"
         },
         {
@@ -1332,7 +1332,7 @@
           "id": "2-3d2",
           "type": "dialogue",
           "speaker": "Alex",
-          "text": "Platform 9 feels different tonight - like it's reaching toward something that hasn't happened yet. 'Southern Company's renewable transition isn't just about environment - it's about jobs nobody talks about yet.",
+          "text": "Platform 9 feels different tonight - like it's reaching toward something that hasn't happened yet. 'Southern Company's renewable transition isn't just about environment - it's about jobs nobody talks about yet.\n\nAlex gestures at the station around you. 'This city killed my grandfather's steel job. Broke him. But now? Food trucks, breweries, design studios, startups. Birmingham's becoming something new. I don't want to mourn what we lost. I want to build what's next. Even if I have to start by working at a coffee shop downtown just to be near it all.'",
           "nextScene": "2-3d2-1"
         },
         {
@@ -2583,7 +2583,7 @@
         {
           "id": "3-1",
           "type": "choice",
-          "text": "Three weeks since Grand Central Terminus. You're in a Birmingham coffee shop, phone buzzing with opportunities. Which calls to your career values?",
+          "text": "Three weeks since Grand Central Terminus. You're in a Birmingham coffee shop, phone buzzing with opportunities. Which calls to your career values?\n\nThe letter's warning echoes: 'One year before everything changes.' You feel time pressing.",
           "choices": [
             {
               "text": "UAB internship posting - healthcare innovation needs data analysis.",
@@ -4901,9 +4901,21 @@
         },
         {
           "id": "3-25",
-          "type": "narration",
-          "text": "END OF JOURNEY\n\nGrand Central Terminus has closed, but Birmingham's doors are open. Your next steps are real:\n- Visit campuses\n- Apply for financial aid\n- Talk to people in your interested fields\n- Start where you are, with what you have\n\nNo more mystical trains.",
-          "nextScene": "3-25-1"
+          "type": "choice",
+          "text": "END OF JOURNEY\n\nGrand Central Terminus has closed, but Birmingham's doors are open. Your next steps are real:\n- Visit campuses\n- Apply for financial aid\n- Talk to people in your interested fields\n- Start where you are, with what you have\n\nNo more mystical trains.\n\nBut wait - before you go...",
+          "nextScene": "3-25-1",
+          "choices": [
+            {
+              "text": "Get your personalized Birmingham career path",
+              "consequence": "view_profile",
+              "nextScene": "3-26"
+            },
+            {
+              "text": "End without career summary",
+              "consequence": "skip_profile",
+              "nextScene": "3-28"
+            }
+          ]
         },
         {
           "id": "3-25-1",
@@ -4915,6 +4927,77 @@
           "id": "3-25-2",
           "type": "narration",
           "text": "Now go build it."
+        },
+        {
+          "id": "3-26",
+          "type": "narration",
+          "text": "Your journey through Grand Central Terminus is complete. But your real journey? That's just beginning.\n\nLet's look at what you discovered about yourself..."
+        },
+        {
+          "id": "3-26-1",
+          "type": "narration",
+          "text": "━━━━━━━━━━━━━━━━━━━━━━━\n🎯 YOUR BIRMINGHAM PATH\n━━━━━━━━━━━━━━━━━━━━━━━\n\nYou explored:\n✓ Healthcare (most visited)\n✓ Technology (considered)\n✓ Trades (investigated)"
+        },
+        {
+          "id": "3-26-2",
+          "type": "narration",
+          "text": "Your work style:\n• Think before deciding\n• Care about stability\n• Want to help others\n• Value practical training\n\nThis matters because Birmingham employers want people who think things through."
+        },
+        {
+          "id": "3-26-3",
+          "type": "narration",
+          "text": "Programs that fit YOU:\n\n1. UAB Respiratory Therapy\n   2 years → $60K starting\n\n2. Jeff State Dental Hygiene\n   2 years → $58K starting\n\n3. Lawson State Surgical Tech\n   18 months → $48K starting"
+        },
+        {
+          "id": "3-26-4",
+          "type": "narration",
+          "text": "YOUR NEXT 3 STEPS:\n\n□ Apply for FAFSA by Feb 15\n   (studentaid.gov)\n\n□ Visit Jeff State campus\n   Ms. Patricia: 205-856-8533\n\n□ Tour UAB health programs\n   Open house every Tuesday 4pm"
+        },
+        {
+          "id": "3-26-5",
+          "type": "choice",
+          "text": "📱 SAVE YOUR PATH:\n\nTake a screenshot NOW\nThis is your career roadmap\n\n━━━━━━━━━━━━━━━━━━━━━━━\nGenerated: Today | Grand Central\n━━━━━━━━━━━━━━━━━━━━━━━",
+          "choices": [
+            {
+              "text": "I took a screenshot - show me what to do with it",
+              "consequence": "screenshot_taken",
+              "nextScene": "3-27"
+            },
+            {
+              "text": "Skip this - just end the journey",
+              "consequence": "skip_profile",
+              "nextScene": "3-28"
+            }
+          ]
+        },
+        {
+          "id": "3-27",
+          "type": "dialogue",
+          "speaker": "Samuel",
+          "text": "Good. You have your map. Now share it:\n\n• Text it to your parent - 'Look what I found out about careers'\n• Show your counselor - 'Can we talk about these programs?'\n• Email yourself - So you don't forget\n• Keep it as your phone wallpaper - Daily reminder of your path\n\nThe station showed you possibilities. That screenshot? That's your ticket to making them real."
+        },
+        {
+          "id": "3-27-1",
+          "type": "narration",
+          "text": "Want to explore different paths? You can journey through the station again. Each choice reveals new opportunities.\n\nBut for now, you have what you need: A direction, real programs, and concrete next steps.\n\nBirmingham is waiting.",
+          "nextScene": "3-29"
+        },
+        {
+          "id": "3-28",
+          "type": "narration",
+          "text": "The station fades. Birmingham remains.\n\nYour future isn't mystical. It's mechanical. It starts with one application, one campus visit, one conversation.\n\nThank you for exploring your future.\n\nNow go build it.\n\n[Journey Complete]"
+        },
+        {
+          "id": "3-29",
+          "type": "dialogue",
+          "speaker": "Samuel",
+          "text": "Want to know who sent the letter? Look at what you chose. Healthcare paths? The letter came from you in scrubs, finally able to help your family. Tech paths? From you at a desk downtown, building Birmingham's future. Trade paths? From you with your own truck, your own business, your own life.\n\nThe letter didn't come from who you were. It came from who you're becoming."
+        },
+        {
+          "id": "3-29-1",
+          "type": "narration",
+          "text": "The station starts to shimmer. For just a moment, you see yourself five years from now:\n\nStanding confident. Working in Birmingham. Making real money. Helping your family. Building something that matters.\n\nThat future you? They're waiting. They sent the letter to make sure you find them.\n\nOne choice at a time.",
+          "nextScene": "3-28"
         }
       ]
     }
