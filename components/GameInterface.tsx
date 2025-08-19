@@ -24,6 +24,7 @@ export function GameInterface() {
   const [storyEngine] = useState(() => new StoryEngine())
   const [showIntro, setShowIntro] = useState(true)
   const [choiceStartTime, setChoiceStartTime] = useState<number>(Date.now())
+  const [lastSceneLoadTime, setLastSceneLoadTime] = useState<number>(0)
   const performanceSystem = useMemo(() => getPerformanceSystem(), [])
   const grandCentralState = useMemo(() => getGrandCentralState(), [])
   
@@ -100,6 +101,15 @@ export function GameInterface() {
   // Load scene with simple message handling
   const handleLoadScene = useCallback((sceneId: string, forceLoad = false) => {
     console.log('handleLoadScene called:', sceneId, forceLoad)
+    
+    // Prevent rapid scene loading (debounce)
+    const now = Date.now()
+    if (!forceLoad && now - lastSceneLoadTime < 500) {
+      console.log('Scene load blocked - too rapid', now - lastSceneLoadTime)
+      return
+    }
+    setLastSceneLoadTime(now)
+    
     if (!gameState) {
       console.error('Game state not available in handleLoadScene')
       return
@@ -133,7 +143,7 @@ export function GameInterface() {
         }, 2000)
       }
     }
-  }, [loadScene, gameState, addMessage])
+  }, [loadScene, gameState, addMessage, lastSceneLoadTime])
   
   const handleStartGame = useCallback(() => {
     console.log('Starting new game...')

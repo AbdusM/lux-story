@@ -259,22 +259,21 @@ export class GrandCentralStateManager {
   
   private checkQuietHourTrigger(): void {
     // Quiet Hour triggers if:
-    // - High patience (>5) and low rushing (<2)
-    // - Helped 3+ people
-    // - Discovered 3+ platforms
+    // - High patience (>8) and low rushing (<2) - increased threshold
+    // - Helped 5+ people - increased threshold
+    // - Discovered 4+ platforms - increased threshold
     // - Sitting in contemplation with potential = true
     
-    const highPatience = this.state.patterns.patience > 5 && this.state.patterns.rushing < 2
-    const helpedMany = this.state.patterns.helping > 4
-    const explored = this.state.items.discovered_paths.length >= 3
+    const highPatience = this.state.patterns.patience > 8 && this.state.patterns.rushing < 2
+    const helpedMany = this.state.patterns.helping > 6
+    const explored = this.state.items.discovered_paths.length >= 4
     
-    if (this.state.quiet_hour.potential || highPatience || helpedMany || explored) {
-      this.state.quiet_hour.potential = true
-      
-      // Actually trigger if conditions are very strong
-      if (highPatience && helpedMany) {
+    // Only trigger if explicitly set to potential AND very high thresholds
+    if (this.state.quiet_hour.potential && (highPatience || helpedMany || explored)) {
+      // Actually trigger if conditions are very strong - much higher bar
+      if (highPatience && helpedMany && this.state.patterns.patience > 10) {
         this.triggerQuietHour('compassionate_patience')
-      } else if (explored && this.state.patterns.patience > 3) {
+      } else if (explored && this.state.patterns.patience > 8 && helpedMany) {
         this.triggerQuietHour('patient_exploration')
       }
     }
