@@ -43,7 +43,11 @@ export function GameInterface() {
   
   // Load scene with simple message handling
   const handleLoadScene = useCallback((sceneId: string, forceLoad = false) => {
-    console.log('handleLoadScene called:', sceneId, forceLoad)
+    console.log('📍 HANDLE_LOAD_SCENE:', sceneId, forceLoad)
+    if (sceneId === '1-3c' || sceneId === '1-7a') {
+      console.error('🚨 SUSPICIOUS SCENE LOAD:', sceneId)
+      console.trace('🚨 Call stack for suspicious scene:')
+    }
     
     // Prevent rapid scene loading (debounce)
     const now = Date.now()
