@@ -278,16 +278,16 @@ export function GameInterface() {
   const quietHourClass = gcState.time.stopped ? 'quiet-hour' : ''
   
   return (
-    <div className={`container max-w-4xl mx-auto p-4 performance-${performanceLevel} grand-central-terminus ${platformClass} ${quietHourClass}`}>
-      <Card className="max-w-3xl mx-auto bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm shadow-xl">
+    <div className={`min-h-screen flex flex-col performance-${performanceLevel} grand-central-terminus ${platformClass} ${quietHourClass}`}>
+      <Card className="max-w-3xl mx-auto m-4 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm shadow-xl flex-1 flex flex-col">
         <CardHeader>
           <CardTitle className="text-center text-sm text-muted-foreground">
             <span>·</span>
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          {/* Messages Area - The only thing on screen */}
-          <div className="h-[60vh] overflow-y-auto mb-4 space-y-3 pr-2">
+        <CardContent className="flex-1 flex flex-col">
+          {/* Messages Area - Takes available space */}
+          <div className="flex-1 overflow-y-auto mb-4 space-y-3 pr-2 min-h-0">
             {messages.length === 0 ? (
               <div className="text-center text-muted-foreground py-8">
                 <p>Your journey begins...</p>
@@ -306,8 +306,8 @@ export function GameInterface() {
             <div ref={messagesEndRef} />
           </div>
           
-          {/* Action Area - Adaptive choice layout */}
-          <div className="border-t pt-4">
+          {/* Action Area - Fixed at bottom */}
+          <div className="border-t pt-4 flex-shrink-0">
             {currentScene?.type === 'choice' && currentScene.choices ? (
               <div className={
                 currentScene.choices.length === 1 
