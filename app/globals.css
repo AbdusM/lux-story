@@ -9,6 +9,7 @@
 @import '../styles/mobile-text.css';
 @import '../styles/mobile-viewport-fix.css';
 @import '../styles/mobile-critical-fixes.css';
+@import '../styles/choice-cards-fix.css';
 
 @layer base {
   :root {

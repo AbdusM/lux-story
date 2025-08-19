@@ -325,14 +325,11 @@ export function GameInterface() {
                     key={index}
                     onClick={() => handleChoice(choice)}
                     disabled={isProcessing}
-                    variant={currentScene.choices?.length === 1 ? "default" : "outline"}
-                    className={`choice-button h-auto py-3 px-4 text-sm md:text-base text-left md:text-center whitespace-normal ${
-                      currentScene.choices?.length === 1 ? "max-w-xs" : ""
-                    }`}
+                    variant="outline"
+                    className={`choice-button choice-card h-auto whitespace-normal`}
                   >
-                    <span className="flex items-start gap-2">
-                      <ChevronRight className="w-4 h-4 mt-0.5 flex-shrink-0 md:hidden" />
-                      <span>{choice.text}</span>
+                    <span className="block w-full text-left">
+                      {choice.text}
                     </span>
                   </Button>
                 ))}
@@ -341,11 +338,12 @@ export function GameInterface() {
               <Button
                 onClick={handleContinue}
                 disabled={isProcessing || !storyEngine.getNextScene(currentScene.id)}
-                className="w-full"
+                className="w-full choice-button single-action"
                 size="lg"
               >
-                {storyEngine.getNextScene(currentScene.id) ? 'Continue' : 'Chapter Complete'}
-                <ChevronRight className="w-4 h-4 ml-2" />
+                <span className="block w-full">
+                  {storyEngine.getNextScene(currentScene.id) ? 'Continue' : 'Chapter Complete'}
+                </span>
               </Button>
             ) : null}
           </div>
