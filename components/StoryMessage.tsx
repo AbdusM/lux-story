@@ -23,6 +23,27 @@ export function StoryMessage({ speaker, text, type = 'dialogue', className, type
   
   // Character-specific styling
   const characterStyles = {
+    // Grand Central Terminus characters
+    'narrator': 'text-slate-600 dark:text-slate-400',
+    'You': 'text-blue-600 dark:text-blue-400 font-medium',
+    'Samuel': 'text-gray-700 dark:text-gray-300',
+    'Maya': 'text-blue-600 dark:text-blue-400',
+    'Devon': 'text-orange-600 dark:text-orange-400',
+    'Jordan': 'text-purple-600 dark:text-purple-400',
+    'Alex': 'text-green-600 dark:text-green-400',
+    'Dr. Sarah Martinez': 'text-blue-700 dark:text-blue-300',
+    'Marcus Thompson': 'text-indigo-600 dark:text-indigo-400',
+    'Community Organizer': 'text-teal-600 dark:text-teal-400',
+    'Technical Mentor': 'text-cyan-600 dark:text-cyan-400',
+    'Collaboration Specialist': 'text-pink-600 dark:text-pink-400',
+    'Business Strategist': 'text-emerald-600 dark:text-emerald-400',
+    'Entrepreneur': 'text-yellow-600 dark:text-yellow-400',
+    'Potential Mentor': 'text-violet-600 dark:text-violet-400',
+    'Skills Counselor': 'text-rose-600 dark:text-rose-400',
+    'Young Traveler': 'text-amber-600 dark:text-amber-400',
+    'Community Leader': 'text-red-600 dark:text-red-400',
+    'Career Advisor': 'text-lime-600 dark:text-lime-400',
+    // Legacy characters (for backward compatibility)
     'Lux': 'lux-text-glow text-purple-600 dark:text-purple-400',
     'Zippy': 'zippy-text-glow text-blue-500 dark:text-blue-400',
     'Swift': 'swift-text-glow text-green-600 dark:text-green-400',
@@ -35,6 +56,27 @@ export function StoryMessage({ speaker, text, type = 'dialogue', className, type
   }
   
   const characterEmoji = {
+    // Grand Central Terminus characters
+    'narrator': '📖',
+    'You': '👤',
+    'Samuel': '🚂',
+    'Maya': '🔬',
+    'Devon': '🔧',
+    'Jordan': '💼',
+    'Alex': '🌱',
+    'Dr. Sarah Martinez': '🏥',
+    'Marcus Thompson': '🚀',
+    'Community Organizer': '🤝',
+    'Technical Mentor': '💻',
+    'Collaboration Specialist': '🔗',
+    'Business Strategist': '📊',
+    'Entrepreneur': '💡',
+    'Potential Mentor': '🎯',
+    'Skills Counselor': '🎓',
+    'Young Traveler': '🗺️',
+    'Community Leader': '🏛️',
+    'Career Advisor': '📈',
+    // Legacy characters (for backward compatibility)
     'Lux': '🦥',
     'Zippy': '🦋',
     'Swift': '🏃‍♀️',
