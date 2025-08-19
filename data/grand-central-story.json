@@ -10,12 +10,12 @@
         {
           "id": "1-1",
           "type": "narration",
-          "text": "The letter arrived this morning, slipped under your door while the world slept.\n\n'Your future awaits at Platform 7. Midnight. Don't be late.'\n\nNo signature. No postmark. Just your name written in handwriting that feels familiar but impossible to place.\n\nNow you're standing at the entrance to Grand Central Terminus - a station that wasn't here yesterday. The clock tower shows 11:47 PM.\n\nThirteen minutes to find Platform 7. Thirteen minutes to meet your future.\n\nIf you believe the letter."
+          "text": "The letter arrived this morning, slipped under your door while the world slept. The paper felt thick between your fingers, expensive, with a faint smell of brass polish.\n\n'Your future awaits at Platform 7. Midnight. Don't be late.'\n\nNo signature. No postmark. Just your name written in handwriting that feels familiar but impossible to place.\n\nNow you're standing at the entrance to Grand Central Terminus - a station that wasn't here yesterday. Cold November air bites at your exposed skin. The clock tower shows 11:47 PM, its mechanical tick echoing against wet concrete.\n\nThirteen minutes to find Platform 7. Thirteen minutes to meet your future.\n\nIf you believe the letter."
         },
         {
           "id": "1-2",
           "type": "choice",
-          "text": "The station entrance looms before you, all brass and shadows. Through the glass doors, you see platforms stretching into misty distances, more than any station should hold.",
+          "text": "The station entrance looms before you, all brass and shadows. The revolving doors are warm to the touch despite the cold night. Through the glass, fogged with condensation, you see platforms stretching into misty distances, more than any station should hold. A low rumble vibrates through the ground - trains arriving and departing on tracks you can't quite see.",
           "choices": [
             {
               "text": "Walk straight to Platform 7. The letter was clear.",
@@ -63,28 +63,28 @@
         {
           "id": "1-3a",
           "type": "narration",
-          "text": "You push through the heavy doors, their brass handles warm despite the late hour. The station unfolds before you like a Victorian fever dream - impossibly high ceilings, platforms that seem to multiply when you're not looking directly at them.\n\nPlatform 7's sign flickers in the distance, the number shifting between 7 and something else... 7½? No, that's impossible.\n\nAs you walk, you notice the other travelers. They all move with purpose, but different kinds - some rushed, some peaceful, some lost. None of them seem to see you."
+          "text": "You push through the heavy doors, their brass handles warm and slightly sticky with the residue of countless hands. The station unfolds before you - impossibly high ceilings that smell of machine oil and old wood. Your footsteps echo on marble floors worn smooth by decades of travelers.\n\nPlatform 7's sign flickers in the distance, the fluorescent bulb buzzing like an angry wasp. The number shifts between 7 and something else... 7½? No, that's impossible.\n\nAs you walk, the temperature drops five degrees. You notice the other travelers, their coats rustling, shoes clicking in different rhythms - some rushed, some peaceful, some lost. None of them seem to see you."
         },
         {
           "id": "1-3b",
           "type": "dialogue",
           "speaker": "Samuel",
-          "text": "First time at Grand Central Terminus?\n\nAn older man in a conductor's uniform that belongs to no rail company you know steps from behind a pillar. His watch hangs from a chain, ticking to a rhythm that doesn't match seconds.\n\n'I'm Samuel. I keep the station... oriented. You look like someone who received an invitation.'"
+          "text": "An older man in a conductor's uniform steps from behind a pillar. The fabric looks like wool but shimmers like water. His watch hangs from a brass chain, ticking with a sound like distant hammering on metal - too slow for seconds, too fast for minutes."
         },
         {
           "id": "1-3c",
           "type": "narration",
-          "text": "You tear the letter into precise quarters, then eighths, letting the pieces flutter to the ground. As they fall, they catch fire - a soft blue flame that doesn't burn, just transforms the paper into moths that spiral upward and disappear.\n\nThe station doors swing open on their own.\n\n'Interesting choice,' says a voice. You turn to see a janitor with knowing eyes, pushing a cart that rattles with keys to doors that shouldn't exist. 'The ones who reject the first path often find the better one. Platform 7's been flickering all week. Maybe it was waiting for someone to say no.'"
+          "text": "You tear the letter into precise quarters, then eighths. The paper resists slightly, like tearing fabric. As the pieces flutter down, they catch fire - a soft blue flame that gives off no heat but smells of burnt sugar.\n\nThe station doors swing open with a pneumatic hiss.\n\n'Interesting choice,' says a voice. You turn to see a janitor with knowing eyes, pushing a cart that rattles metallically - hundreds of brass keys clinking against each other like wind chimes."
         },
         {
           "id": "1-3d",
           "type": "narration",
-          "text": "The departure board towers above you, its mechanical letters flipping with satisfying clicks. But something's wrong - the destinations keep changing:\n\nPlatform 1: MERCY GENERAL / HEALING HEARTS / WHERE CARE LIVES\nPlatform 3: BUILDER'S JUNCTION / FOUNDATION STATION / CREATE\nPlatform 7: ERROR / RECALCULATING / YOUR FUTURE / ERROR\nPlatform 9: GROWTH TERMINAL / PATIENCE GARDEN / SEASONS TURN\n\nA girl with medical textbooks and grease-stained fingers stands beside you. 'Platform 7's been like that for days,' she says. 'Almost like it's waiting for someone specific.'"
+          "text": "The departure board towers above you, its mechanical letters flipping with sharp clicks that echo in the vaulted space. The sound has a rhythm - click-click-pause, click-click-pause. Up close, you smell the faint ozone of electrical motors working overtime. The destinations keep changing:"
         },
         {
           "id": "1-4a",
           "type": "choice",
-          "text": "The flickering Platform 7 draws you forward, but you pass Platform 3 first. A bench there is split down the middle, and an elderly man struggles with heavy bags beside it.",
+          "text": "The flickering Platform 7 draws you forward, but you pass Platform 3 first. The wooden bench there creaks under the weight of age, split down the middle. An elderly man struggles with canvas bags that smell of motor oil and memories.",
           "choices": [
             {
               "text": "Stop to fix the bench with your pocket tools.",
@@ -180,29 +180,29 @@
         {
           "id": "1-5a",
           "type": "narration",
-          "text": "You pull out your multi-tool - the one you always carry, though you can't remember why. The bench practically tells you how to fix it, wood worn smooth by thousands of waiting travelers. As you work, the elderly man sits on the stable half.\n\n'Engineer, retired,' he says. 'Forty years of building bridges. Real ones, not metaphorical.' His hands mirror yours, phantom-fixing alongside you. 'The thing about broken things - they teach you more than the whole ones ever could.'\n\nThe bench clicks into place, stronger than before. Platform 3's lights shift from harsh fluorescent to warm amber. Other travelers begin gravitating toward your bench, as if it's become a safe harbor.\n\nThe clock now reads 11:52 PM."
+          "text": "You pull out your multi-tool - the steel cold and familiar in your palm. The bench's broken joint reveals pine wood, still fragrant with sap. As you work, sawdust falls onto your shoes, and the screws make a satisfying squeak as they bite into the old wood."
         },
         {
           "id": "1-5b",
           "type": "narration",
-          "text": "You take the man's bags - heavier than they look, filled with what feels like decades of accumulated weight. He sighs with relief.\n\n'Kind of you. Most people rush past. They're all trying to catch trains that haven't been scheduled yet.' He walks slowly, and you match his pace. 'Platform 7, right? I can see it in how you keep glancing at the signs. Let me tell you something - the trains that matter most are never the ones you're told to catch.'\n\nPlatform 1 glows softer as you pass, and you notice other travelers helping each other with luggage, sharing seats, offering tissues to someone crying.\n\nThe clock now reads 11:51 PM."
+          "text": "You take the man's bags - heavier than they look, the canvas rough against your palms. Inside, metal tools clink together softly. He sighs with relief, a sound like steam escaping.\n\n'Kind of you. Most people rush past, their footsteps sharp on the cold marble. They're all trying to catch trains that haven't been scheduled yet.' He walks slowly, and you match his pace. 'Platform 7, right? I can see it in how you keep glancing at the signs. Let me tell you something - the trains that matter most are never the ones you're told to catch.'\n\nPlatform 1 glows softer as you pass, warming the air by degrees. You notice other travelers helping each other with luggage, the soft rustle of shared humanity.\n\nThe clock now reads 11:51 PM."
         },
         {
           "id": "1-5c",
           "type": "narration",
-          "text": "You rush past the broken bench, the struggling man, the weight of their need. Platform 7 is all that matters. The letter was clear.\n\nBut as you pass, Platform 3's lights dim to a cold industrial glare. The elderly man's bags split, spilling tools across the platform. No one stops to help. The broken bench collapses completely.\n\nYou reach Platform 7 faster, yes. The clock reads 11:50 PM - plenty of time. But the platform itself seems... different. Colder. The sign flickers more violently: 7... ERROR... 7... DENIED... 7..."
+          "text": "You rush past the broken bench, your shoes clicking urgently on the marble floor. The elderly man's bags split with a harsh tearing sound, tools clattering across the platform like scattered bones. No one stops to help. The broken bench collapses completely with a crack like breaking ribs.\n\nYou reach Platform 7 faster, yes. The clock reads 11:50 PM - plenty of time. But the platform itself seems different now. The air is colder, sharp with the scent of rust. The sign flickers more violently: 7... ERROR... 7... DENIED... 7..."
         },
         {
           "id": "1-5d",
           "type": "dialogue",
           "speaker": "Samuel",
-          "text": "'Who sends any letter, really? The person writing, or the person who needs to receive it?' Samuel pulls out a worn journal filled with names and platform numbers.\n\n'I've seen hundreds of letters. They all claim to know your future, but futures aren't fixed things. They're more like... probability clouds. Platform 7 especially. It only solidifies when someone approaches it with absolute certainty. And you, my friend, don't look certain at all.'"
+          "text": "'Who sends any letter, really? The person writing, or the person who needs to receive it?' Samuel pulls out a worn journal, its leather cover soft with age, smelling of pipe tobacco though he doesn't smoke.\n\n'I've seen hundreds of letters. The paper always feels the same - heavy, important. They all claim to know your future, but futures aren't fixed things. They're more like... probability clouds.' His fingers trace invisible patterns in the air. 'Platform 7 especially. It only solidifies when someone approaches it with absolute certainty. And you, my friend, don't look certain at all.'"
         },
         {
           "id": "1-5e",
           "type": "dialogue",
           "speaker": "Samuel",
-          "text": "'Temperamental is kind. Platform 7 has been flickering between existing and not existing for three days. Sometimes it shows 7, sometimes 7½, sometimes just... static. Like it's waiting for someone specific. Or maybe like it's trying NOT to exist.'\n\nHe checks his impossible watch. 'The trains that arrive at Platform 7 go to futures people think they want. But thinking and wanting are different beasts. What do YOU want? Not what the letter tells you to want.'"
+          "text": "'Temperamental is kind. Platform 7 has been flickering between existing and not existing for three days. The electrical buzz changes pitch - sometimes a low hum, sometimes a high whine like feedback. Sometimes it shows 7, sometimes 7½, sometimes just... static that makes your teeth ache.'\n\nHe checks his impossible watch, the brass warm against his wrist. 'The trains that arrive at Platform 7 go to futures people think they want. But thinking and wanting are different beasts. The station knows the difference, even if we don't. What do YOU want? Not what the letter tells you to want.'"
         },
         {
           "id": "1-5f",
@@ -217,7 +217,7 @@
         {
           "id": "1-6",
           "type": "choice",
-          "text": "The clock now reads 11:52 PM. Eight minutes until midnight. The station thrums with an energy that wasn't there before - like it knows the crucial moment approaches.",
+          "text": "The clock now reads 11:52 PM. Eight minutes until midnight. The station thrums with an energy that wasn't there before - you feel it through your feet, a vibration like a massive heart beating beneath the marble floors.",
           "choices": [
             {
               "text": "Head directly to Platform 7 now.",
@@ -263,28 +263,28 @@
         {
           "id": "1-7a",
           "type": "narration",
-          "text": "Platform 7 draws you forward with magnetic certainty. The flickering sign stabilizes as you approach: PLATFORM 7 - DEPARTURES - YOUR FUTURE - NOW BOARDING.\n\nBut something feels wrong. The platform is empty. Completely, eerily empty. No other travelers, no benches, no warmth. Just cold metal tracks disappearing into a tunnel that shouldn't exist.\n\nA train waits. Its doors are open. Inside, you see... nothing. Not darkness - nothing. An absence of possibility."
+          "text": "Platform 7 draws you forward with magnetic certainty. Your footsteps echo hollowly as you approach. The flickering sign stabilizes: PLATFORM 7 - DEPARTURES - YOUR FUTURE - NOW BOARDING.\n\nBut something feels wrong. The platform is empty. Completely, eerily empty. No warmth from other bodies, no smell of coffee or cologne. Just cold metal tracks disappearing into a tunnel that smells of nothing - not even dust.\n\nA train waits. Its doors are open, releasing air that's exactly room temperature. Inside, you see... nothing. Not darkness - nothing. An absence of possibility."
         },
         {
           "id": "1-7b",
           "type": "narration",
-          "text": "You wander deeper into the station, ignoring the pull of Platform 7. Each platform tells a story:\n\nPlatform 1 hums with exhausted purpose - medical students, nurses, teachers, all bone-tired but somehow still standing.\n\nPlatform 3 vibrates with creation - people covered in paint, sawdust, code on their screens, building tomorrow.\n\nPlatform 9 grows things - literally. Vines creep along its pillars, and travelers sit in patient circles, watching seeds crack open in fast-forward.\n\nAnd there, between Platforms 9 and 10, a shimmer. The Forgotten Platform. A sign that only exists when you're not looking directly at it."
+          "text": "You wander deeper into the station, ignoring the pull of Platform 7. Your fingers trail along the walls - rough brick giving way to smooth tile, then back to brick. Each platform tells a story through scent and sound:\n\nPlatform 1 hums with exhausted purpose - antiseptic and instant coffee, the squeak of comfortable shoes on linoleum.\n\nPlatform 3 vibrates with creation - sawdust and solder, the rhythmic hammering of making things real.\n\nPlatform 9 grows things - literally. The air is thick with humidity and earth. Vines creep along its pillars with a sound like whispered secrets.\n\nAnd there, between Platforms 9 and 10, a shimmer. The air tastes of copper pennies. The Forgotten Platform. A sign that only exists when you're not looking directly at it."
         },
         {
           "id": "1-7c",
           "type": "dialogue",
           "speaker": "Maya",
-          "text": "'You got a letter too.' It's not a question. Maya has found you, her medical books balanced against her hip, the little robot perched on her shoulder.\n\n'Mine said Platform 1. My parents' platform. Twenty years of saving, praying, sacrificing for me to be a doctor.' She laughs, brittle. 'But look.' She points to Platform 3, where sparks fly from someone welding. 'My hands itch when I see that. My brain lights up. Platform 1 makes me feel like I'm drowning.'\n\nThe robot chirps, projecting a tiny hologram of a heart. But it's not a human heart - it's mechanical, beautiful, impossible.\n\n'What if our letters are tests? What if they tell us where we're supposed to go, just to see if we're brave enough to choose differently?'"
+          "text": "'You got a letter too.' It's not a question. Maya has found you, her medical books making a soft thump against her hip with each step. The little robot perched on her shoulder chirps - a sound like electronic birdsong.\n\n'Mine said Platform 1. My parents' platform. Twenty years of saving, praying, sacrificing for me to be a doctor.' She laughs, brittle as autumn leaves. 'But look.' She points to Platform 3, where sparks fly in orange cascades from someone welding. 'My hands itch when I see that. My brain lights up like touching a live wire. Platform 1 makes me feel like I'm drowning in formaldehyde.'\n\nThe robot chirps again, projecting a tiny hologram that smells faintly of ozone. A heart, but mechanical - gears and springs working in perfect rhythm.\n\n'What if our letters are tests? What if they tell us where we're supposed to go, just to see if we're brave enough to choose differently?'"
         },
         {
           "id": "1-7d",
           "type": "narration",
-          "text": "You sit on the bench you fixed - your bench now. It feels different from before, warm despite the late hour, solid in a way that suggests permanence in this temporary place.\n\nAs you watch, patterns emerge:\n\n- Travelers rushing to Platform 7 often return, confused\n- Those who help others find their platforms glow faintly\n- The janitor, Marcus, appears wherever someone is truly lost\n- Time moves differently for different people\n\nAnd then it happens.\n\nThe station... breathes.\n\nEverything slows. The clock's second hand stretches like taffy. A woman running for Platform 5 freezes mid-stride, her scarf a red flag in stopped air.\n\nYou're in a Quiet Hour.\n\nAnd you didn't even mean to be."
+          "text": "You sit on the bench you fixed - your bench now. The wood is warm against your back, almost body temperature. It creaks slightly as you settle, a comfortable sound like an old house breathing. The varnish smells faintly of lemon oil."
         },
         {
           "id": "1-8-quiet",
           "type": "narration",
-          "text": "THE FIRST QUIET HOUR\n\nTime has crystallized around you. You can move, but everyone else is caught between heartbeats. The station reveals itself in this stopped moment:\n\n- Glowing threads connect travelers to platforms, some thick as rope, others thin as spider silk\n- Words hover in the air, unspoken thoughts made visible\n- The platforms pulse with the dreams of everyone who ever stood there\n\nSamuel appears beside you, the only other moving thing. 'First Quiet Hour? They come to those who stop rushing long enough to see. Look closer at Platform 7.'\n\nIn the stillness, Platform 7 isn't one platform. It's dozens, overlapping, each showing a different future. All of them wrong. All of them someone else's idea of where you should go.\n\n'The letter,' Samuel says quietly. 'Look at it now, in the Quiet Hour.'\n\nThe paper shimmers, and new words appear beneath the original message:\n\n'Don't trust this. Find your own platform. I should have.'\n\nSigned in your handwriting. Dated five years from now."
+          "text": "Time has crystallized around you. The air feels thick, like walking through water. You can move, but each step makes no sound - absolute silence except for your own heartbeat, loud as a drum in your ears. The temperature has dropped to exactly skin temperature - you can't tell where you end and the air begins."
         },
         {
           "id": "1-9",
@@ -349,7 +349,7 @@
         {
           "id": "1-10a",
           "type": "choice",
-          "text": "In the crystallized station, each platform reveals something different. Where do you look first?",
+          "text": "In the crystallized station, each platform reveals something different. The air is thick as honey, and every movement leaves trails of displaced time. Where do you look first?",
           "choices": [
             {
               "text": "Platform 1 - where a nurse sits with the weight of every life she's saved.",
@@ -404,17 +404,17 @@
         {
           "id": "1-10a-1",
           "type": "narration",
-          "text": "The nurse looks up as you approach. Her golden thread pulses with each heartbeat she's helped preserve.\n\n'Heavy,' she says simply. 'But necessary. Every life matters, even when - especially when - it costs you pieces of yourself.'\n\nYou feel the weight she carries. Beautiful. Crushing. Essential."
+          "text": "The nurse looks up as you approach. Her scrubs smell of bleach and exhaustion. Her golden thread pulses with each heartbeat she's helped preserve - a warm thrumming you feel in your chest.\n\n'Heavy,' she says simply, her voice carrying the weight of 3 AM decisions. 'But necessary. Every life matters, even when - especially when - it costs you pieces of yourself.'\n\nYou feel the weight she carries. Beautiful. Crushing. Essential as breathing."
         },
         {
           "id": "1-10a-2",
           "type": "narration",
-          "text": "The blueprints shift as you watch - cities, bridges, but also relationships, communities, hope made tangible.\n\nA builder's hands move through the frozen air, still reaching for tools. 'We don't just build structures,' his frozen expression seems to say. 'We build the foundation everything else grows on.'\n\nCreation as service. Structure as caring."
+          "text": "The blueprints shift as you watch - paper rustling like wings. Not just structures but relationships, communities, hope made tangible in steel and concrete.\n\nA builder's hands move through the frozen air, callused and sure, still reaching for tools. Sawdust hangs suspended around him like golden snow. 'We don't just build structures,' his frozen expression seems to say. 'We build the foundation everything else grows on.'\n\nCreation as service. Structure as caring. The smell of fresh lumber and possibility."
         },
         {
           "id": "1-10a-3",
           "type": "narration",
-          "text": "The Forgotten Platform hums with quiet necessity. A translator's fingers hover over keys that prevent wars. A night-shift programmer's code keeps hospitals running.\n\nMarcus nods from his janitorial cart. 'The work that matters most,' he says in the stillness, 'rarely gets applause. But without it, everything else stops.'\n\nEssential. Invisible. Profound."
+          "text": "The Forgotten Platform hums with quiet necessity - a low electrical buzz you feel in your bones. A translator's fingers hover over keys worn smooth, preventing wars with each careful word. A night-shift programmer's coffee has gone cold, but their code keeps hospitals running.\n\nMarcus nods from his janitorial cart, the keys jangling a frozen symphony. 'The work that matters most,' he says in the stillness, his breath visible in the suddenly cold air, 'rarely gets applause. But without it, everything else stops.'\n\nEssential. Invisible. Profound as a heartbeat."
         },
         {
           "id": "1-10a-4",
@@ -508,7 +508,7 @@
         {
           "id": "1-10b-1",
           "type": "narration",
-          "text": "The golden rope burns with purpose when you touch it. Every strand is a life preserved, a family kept whole, a future made possible.\n\nBut also: exhaustion, impossible decisions, carrying others' pain. The rope is beautiful and terrible.\n\n'Service has a price,' the nurse says without speaking. 'Worth paying, but never forget the cost.'"
+          "text": "The golden rope burns hot when you touch it - not painful, but intense as holding a fever. Every strand is a life preserved, a family kept whole, a future made possible. You taste copper and salt - blood and tears.\n\nBut also: exhaustion heavy as wet wool, impossible decisions that smell of antiseptic and fear, carrying others' pain until your bones ache with it. The rope is beautiful and terrible.\n\n'Service has a price,' the nurse says without speaking, her words felt rather than heard. 'Worth paying, but never forget the cost.'"
         },
         {
           "id": "1-10b-2",
@@ -534,17 +534,17 @@
         {
           "id": "1-10c",
           "type": "narration",
-          "text": "You find Maya frozen mid-step between Platforms 1 and 3, her face caught in an expression of perfect anguish. The robot on her shoulder is mid-chirp, projecting half a mechanical heart.\n\nYou touch her shoulder, and she gasps into motion while everything else stays still.\n\n'What... how...?' She looks around at the stopped station. 'Is this what clarity feels like?'\n\nIn the Quiet Hour, she can see her threads too - the three-way split. Without hesitation, she grabs the threads to Platforms 1 and 3 and begins braiding them together.\n\n'Biomedical engineering. Surgical robots. Healing through building.' The braid becomes a bridge to Platform 7½, which suddenly exists, solid and real. 'I don't have to choose. I can create.'\n\nShe hugs you, fierce and grateful. 'The letter was wrong. They're all wrong. We're not supposed to find our platforms. We're supposed to build them.'"
+          "text": "You find Maya frozen mid-step between Platforms 1 and 3, her face caught in perfect anguish. The robot on her shoulder is mid-chirp, its tiny speaker cone vibrating with trapped sound.\n\nYou touch her shoulder - warm through her jacket - and she gasps into motion while everything else stays still. The sudden sound is sharp as breaking glass.\n\n'What... how...?' She looks around at the stopped station, her breath forming clouds in the suddenly cold air. 'Is this what clarity feels like?'\n\nIn the Quiet Hour, she can see her threads too - the three-way split. Without hesitation, she grabs the threads to Platforms 1 and 3, the fibers rough as rope in her hands, and begins braiding them together.\n\n'Biomedical engineering. Surgical robots. Healing through building.' The braid becomes a bridge to Platform 7½, which suddenly exists with a sound like ice cracking, solid and real. 'I don't have to choose. I can create.'\n\nShe hugs you, fierce and grateful, smelling of textbooks and determination. 'The letter was wrong. They're all wrong. We're not supposed to find our platforms. We're supposed to build them.'"
         },
         {
           "id": "1-10d",
           "type": "narration",
-          "text": "You tear the letter into pieces, but this time you know what you're doing. Each piece burns with different colored fire:\n\n- Blue flames for the fear\n- Red flames for others' expectations  \n- Green flames for paths not taken\n- Purple flames for futures that were never yours\n\nThe ashes rise and fly to Platform 7's sign, which cracks, shatters, and reforms:\n\nPLATFORM 7: UNDER CONSTRUCTION\nPLATFORM 7½: NOW ACCEPTING ARCHITECTS\nPLATFORM 7.1 - 7.9: BUILD YOUR OWN\n\nThe empty train dissolves, replaced by workshop spaces, drafting tables, and tools for building futures that don't exist yet.\n\nMarcus appears, no longer frozen, applauding slowly. 'Finally. Someone who understands. The station isn't here to sort people into predetermined futures. It's here to help them build unprecedented ones.'\n\nPlatform 7's destruction sends ripples through the Quiet Hour. Other signs begin flickering, questioning their own certainty."
+          "text": "You tear the letter into pieces, the paper making a sound like ripping silk. But this time you know what you're doing. Each piece burns with different colored fire, each with its own scent:\n\n- Blue flames for the fear (smells like rain on hot concrete)\n- Red flames for others' expectations (tastes of copper and disappointment)\n- Green flames for paths not taken (essence of cut grass, childhood summers)\n- Purple flames for futures that were never yours (ozone and distance)\n\nThe ashes rise and fly to Platform 7's sign, which cracks with a sound like winter branches breaking, shatters like your assumptions, and reforms:\n\nPLATFORM 7: UNDER CONSTRUCTION\nPLATFORM 7½: NOW ACCEPTING ARCHITECTS\nPLATFORM 7.1 - 7.9: BUILD YOUR OWN\n\nThe empty train dissolves with a hiss of released pressure, replaced by workshop spaces that smell of sawdust and solder, drafting tables still warm from recent use, and tools for building futures that don't exist yet.\n\nMarcus appears, no longer frozen, applauding slowly - each clap echoing like dropped coins. 'Finally. Someone who understands. The station isn't here to sort people into predetermined futures. It's here to help them build unprecedented ones.'\n\nPlatform 7's destruction sends ripples through the Quiet Hour. Other signs begin flickering, their electrical buzz questioning their own certainty."
         },
         {
           "id": "1-11",
           "type": "narration",
-          "text": "The Quiet Hour releases its hold. Time crashes back like a wave, and the station returns to motion. But everything has changed:\n\n- Your actions in stopped time have left echoes\n- People near Platform 7 look confused, as if waking from a dream\n- Maya (if freed) is already sketching designs on her medical textbooks\n- Platform 7½ (if created) draws curious crowds\n\nThe clock reads... still 11:52 PM. The Quiet Hour took no time at all. Or maybe all the time in the world.\n\nSamuel finds you, his expression knowing. 'Eight minutes to midnight. Though midnight means something different now, doesn't it? You've learned the station's first secret: Time isn't your enemy here. Rushing is.'"
+          "text": "The Quiet Hour releases its hold with a sound like inhaling after holding your breath too long. Time crashes back like a wave, bringing with it the smell of motion - sweat, perfume, coffee, life. The station returns to its chaos of footsteps and conversations. But everything has changed:\n\n- Your actions in stopped time have left echoes (warmth where there was cold)\n- People near Platform 7 look confused, rubbing their eyes as if waking\n- Maya (if freed) is already sketching designs on her medical textbooks, pencil scratching urgently\n- Platform 7½ (if created) draws curious crowds, their murmurs like distant surf\n\nThe clock reads... still 11:52 PM. The brass hands haven't moved. The Quiet Hour took no time at all. Or maybe all the time in the world.\n\nSamuel finds you, his footsteps deliberate on the marble, his expression knowing. 'Eight minutes to midnight. Though midnight means something different now, doesn't it? You've learned the station's first secret: Time isn't your enemy here. Rushing is.'"
         },
         {
           "id": "1-12",
@@ -606,7 +606,7 @@
         {
           "id": "2-1",
           "type": "narration",
-          "text": "Chapter 2 begins with understanding: Grand Central Terminus isn't just a station. It's a living thing, fed by the dreams and fears of everyone who passes through. And tonight, it's particularly hungry for truth.\n\nYour choices have already begun reshaping the architecture. Platforms shift closer to those who need them. Barriers dissolve for those ready to cross them. The station is learning you as much as you're learning it."
+          "text": "Chapter 2 begins. The station has accepted you, or perhaps you've accepted it. The air tastes different now - less metallic, more alive. Somewhere distant, a coffee cart opens with the hiss of steam, and the smell of fresh grounds cuts through the industrial atmosphere."
         },
         {
           "id": "2-2",
@@ -658,7 +658,7 @@
         {
           "id": "2-3a1",
           "type": "narration",
-          "text": "Maya sits on a bench near Platform 1, medical textbooks spread around her. But her hands are assembling what looks like a tiny robotic heart."
+          "text": "Maya sits on a bench near Platform 1, medical textbooks spread around her. The pages smell of highlighter and desperation. But her hands are assembling what looks like a tiny robotic heart - tiny gears clicking together with precision, the metal components still warm from her pocket."
         },
         {
           "id": "2-3a2",
