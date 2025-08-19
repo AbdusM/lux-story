@@ -99,9 +99,17 @@ export function showBirminghamMetrics() {
   console.log('%c================================', 'color: #dc2626; font-weight: bold')
 }
 
+// Demo utilities interface
+interface LuxDemo {
+  showPatterns: () => void;
+  seedPatterns: () => void;
+  clearPatterns: () => void;
+  showBirmingham: () => void;
+}
+
 // Make functions available globally for demo
 if (typeof window !== 'undefined') {
-  (window as any).luxDemo = {
+  (window as unknown as { luxDemo: LuxDemo }).luxDemo = {
     showPatterns: showDemoPatterns,
     seedPatterns: seedDemoPatterns,
     clearPatterns: clearDemoPatterns,

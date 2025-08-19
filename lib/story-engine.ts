@@ -28,7 +28,7 @@ export interface Choice {
   /** Scene ID to transition to after choice */
   nextScene: string
   /** State changes to apply when choice is made */
-  stateChanges?: any
+  stateChanges?: unknown
 }
 
 /**
@@ -58,7 +58,7 @@ export class StoryEngine {
         text: c.text,
         consequence: c.consequence,
         nextScene: c.nextScene,
-        stateChanges: (c as any).stateChanges
+        stateChanges: (c as { stateChanges?: unknown }).stateChanges
       }))
     }
   }

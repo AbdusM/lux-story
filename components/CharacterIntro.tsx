@@ -23,7 +23,7 @@ export function CharacterIntro({ onStart, onContinue, hasSavedProgress }: Charac
         </CardHeader>
         <CardContent className="space-y-4">
           <p className="text-center text-muted-foreground italic">
-            "Your future awaits at Platform 7. Midnight. Don't be late."
+            &quot;Your future awaits at Platform 7. Midnight. Don&apos;t be late.&quot;
           </p>
           
           <div className="space-y-3">

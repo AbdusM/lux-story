@@ -6,8 +6,7 @@ import { Button } from "@/components/ui/button"
 import { StoryMessage } from "./StoryMessage"
 import { CharacterIntro } from "./CharacterIntro"
 import { SilentCompanion } from "./SilentCompanion"
-import { StoryEngine, Choice } from "@/lib/story-engine"
-import { ChevronRight, RotateCcw } from "lucide-react"
+import { StoryEngine } from "@/lib/story-engine"
 
 // Simplified hooks - no more gamification
 import { useGameState } from "@/hooks/useGameState"
@@ -27,7 +26,7 @@ export function GameInterface() {
   const grandCentralState = useMemo(() => getGrandCentralState(), [])
   
   // Simplified state management - no tracking, no stats
-  const { gameState, isInitialized, reset } = useGameState()
+  const { gameState, isInitialized } = useGameState()
   const { currentScene, isProcessing, loadScene, setProcessing } = useSceneTransitions(storyEngine, gameState)
   const { messages, messagesEndRef, addMessage, clearMessages } = useMessageManager()
   const { resetPresence } = usePresence()
@@ -102,7 +101,7 @@ export function GameInterface() {
   }, [gameState, clearMessages, resetPresence, handleLoadScene])
   
   
-  const handleChoice = useCallback(async (choice: any) => {
+  const handleChoice = useCallback(async (choice: { text: string; consequence: string; nextScene: string; stateChanges?: unknown }) => {
     console.log('handleChoice called with:', choice)
     try {
       if (!gameState || !currentScene) {
@@ -234,7 +233,7 @@ export function GameInterface() {
       setProcessing(false)
     }, 1000)
     
-    } catch (error) {
+    } catch {
       setProcessing(false)
     }
   }, [gameState, currentScene, setProcessing, addMessage, handleLoadScene, resetPresence, choiceStartTime, performanceSystem, messages])
@@ -271,8 +270,6 @@ export function GameInterface() {
       />
     )
   }
-  
-  const state = gameState.getState()
   
   const gcState = grandCentralState.getState()
   const platformClass = gcState.platforms.p1.warmth > 2 ? 'platform-warm' : 

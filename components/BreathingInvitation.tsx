@@ -32,7 +32,7 @@ export function BreathingInvitation({ visible }: BreathingInvitationProps) {
           onClick={() => setBreathing(true)}
           className="hover:text-foreground transition-colors"
         >
-          The air is here if you'd like it
+          The air is here if you&apos;d like it
         </button>
       ) : (
         <div className="flex items-center gap-2">
