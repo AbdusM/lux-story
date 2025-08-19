@@ -3,8 +3,16 @@
 
 /* ============================================
    CHOICE CARDS - Consistent across all devices
+   OVERRIDE ALL CONFLICTING STYLES
    ============================================ */
-.choice-button {
+
+/* Base choice button - OVERRIDE ALL OTHER STYLES */
+.choice-button,
+button.choice-button,
+.choice-buttons .choice-button,
+.choice-buttons button,
+[class*="performance-"] .choice-button,
+[class*="consequence-"] .choice-button {
   /* Base card styling for ALL screen sizes */
   background: white !important;
   border: 2px solid rgb(229, 231, 235) !important;
@@ -27,35 +35,73 @@
   /* Remove default button styles that conflict */
   -webkit-appearance: none !important;
   appearance: none !important;
+  
+  /* Override any conflicting transforms or effects */
+  transform: none !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+  
+  /* Remove any conflicting borders */
+  border-left: 2px solid rgb(229, 231, 235) !important;
+  border-right: 2px solid rgb(229, 231, 235) !important;
+  border-top: 2px solid rgb(229, 231, 235) !important;
+  border-bottom: 2px solid rgb(229, 231, 235) !important;
 }
 
-/* Dark mode support */
-.dark .choice-button {
+/* Dark mode support - OVERRIDE ALL CONFLICTING STYLES */
+.dark .choice-button,
+.dark button.choice-button,
+.dark .choice-buttons .choice-button,
+.dark .choice-buttons button,
+.dark [class*="performance-"] .choice-button,
+.dark [class*="consequence-"] .choice-button {
   background: rgb(31, 41, 55) !important;
   border-color: rgb(75, 85, 99) !important;
   color: rgb(243, 244, 246) !important;
 }
 
-/* Hover state - subtle elevation */
-.choice-button:hover:not(:disabled) {
+/* Hover state - subtle elevation - OVERRIDE ALL CONFLICTING STYLES */
+.choice-button:hover:not(:disabled),
+button.choice-button:hover:not(:disabled),
+.choice-buttons .choice-button:hover:not(:disabled),
+.choice-buttons button:hover:not(:disabled),
+[class*="performance-"] .choice-button:hover:not(:disabled),
+[class*="consequence-"] .choice-button:hover:not(:disabled) {
   border-color: rgb(156, 163, 175) !important;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
   transform: translateY(-1px) !important;
+  background: white !important;
 }
 
-.dark .choice-button:hover:not(:disabled) {
+.dark .choice-button:hover:not(:disabled),
+.dark button.choice-button:hover:not(:disabled),
+.dark .choice-buttons .choice-button:hover:not(:disabled),
+.dark .choice-buttons button:hover:not(:disabled),
+.dark [class*="performance-"] .choice-button:hover:not(:disabled),
+.dark [class*="consequence-"] .choice-button:hover:not(:disabled) {
   border-color: rgb(107, 114, 128) !important;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+  background: rgb(31, 41, 55) !important;
 }
 
-/* Active/pressed state */
-.choice-button:active:not(:disabled) {
+/* Active/pressed state - OVERRIDE ALL CONFLICTING STYLES */
+.choice-button:active:not(:disabled),
+button.choice-button:active:not(:disabled),
+.choice-buttons .choice-button:active:not(:disabled),
+.choice-buttons button:active:not(:disabled),
+[class*="performance-"] .choice-button:active:not(:disabled),
+[class*="consequence-"] .choice-button:active:not(:disabled) {
   transform: translateY(0) !important;
   box-shadow: none !important;
   background: rgb(249, 250, 251) !important;
 }
 
-.dark .choice-button:active:not(:disabled) {
+.dark .choice-button:active:not(:disabled),
+.dark button.choice-button:active:not(:disabled),
+.dark .choice-buttons .choice-button:active:not(:disabled),
+.dark .choice-buttons button:active:not(:disabled),
+.dark [class*="performance-"] .choice-button:active:not(:disabled),
+.dark [class*="consequence-"] .choice-button:active:not(:disabled) {
   background: rgb(17, 24, 39) !important;
 }
 
