@@ -30,7 +30,7 @@ export function useAdaptiveNarrative() {
       case 'struggling':
         // Add calming additions for anxious players
         if (Math.random() < 0.3) {
-          return originalText + " The forest holds space for your uncertainty."
+          return originalText + " The station gives you time to think."
         }
         break
         
@@ -44,7 +44,7 @@ export function useAdaptiveNarrative() {
       case 'flowing':
         // Affirm their rhythm
         if (Math.random() < 0.2) {
-          return originalText + " Your rhythm harmonizes with the forest."
+          return originalText + " Your choices align with Birmingham's rhythm."
         }
         break
         
@@ -66,24 +66,24 @@ export function useAdaptiveNarrative() {
     const messages = {
       struggling: [
         "A leaf falls. There's no rush to catch it.",
-        "The forest breathes with you, slowly.",
+        "The station clock ticks patiently.",
         "Even questions can rest.",
-        "Lux hasn't moved. This is also movement."
+        "Samuel watches, understanding your hesitation."
       ],
       exploring: [
         "Paths appear as you walk them.",
         "Each choice creates the next.",
-        "The forest appreciates your curiosity.",
+        "The platforms respond to your interest.",
         "Discovery has its own pace."
       ],
       flowing: [
-        "Your presence ripples through the forest.",
+        "Your choices ripple through the station.",
         "The rhythm you've found is yours alone.",
         "Clarity emerges from consistency.",
-        "The forest recognizes your pattern."
+        "The platforms recognize your career alignment."
       ],
       mastering: [
-        "You've become part of the forest's story.",
+        "You've become part of Birmingham's future.",
         "Your stillness teaches the trees.",
         "The path was always there. Now you see it.",
         "Time bends around your certainty."

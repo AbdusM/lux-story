@@ -11,8 +11,8 @@ import '../styles/environmental-response.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: "Lux's Journey",
-  description: 'A meditative adventure through the digital forest',
+  title: "Grand Central Terminus",
+  description: 'Career exploration platform for Birmingham workforce development',
 }
 
 export const viewport: Viewport = {
