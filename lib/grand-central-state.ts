@@ -229,13 +229,13 @@ export class GrandCentralStateManager {
   
   private updateRelationships(changes: any): void {
     Object.entries(changes).forEach(([character, updates]) => {
-      if (character in this.state.relationships) {
+      if (character in this.state.relationships && typeof updates === 'object' && updates !== null) {
         const relationship = this.state.relationships[character as keyof typeof this.state.relationships]
-        Object.entries(updates).forEach(([key, value]) => {
+        Object.entries(updates as Record<string, any>).forEach(([key, value]) => {
           (relationship as any)[key] = value
         })
         // Meeting someone always sets met to true
-        if (updates.trust !== undefined && updates.trust > 0) {
+        if ((updates as any).trust !== undefined && (updates as any).trust > 0) {
           relationship.met = true
         }
       }
@@ -244,9 +244,9 @@ export class GrandCentralStateManager {
   
   private updatePlatforms(changes: any): void {
     Object.entries(changes).forEach(([platform, updates]) => {
-      if (platform in this.state.platforms) {
+      if (platform in this.state.platforms && typeof updates === 'object' && updates !== null) {
         const plat = this.state.platforms[platform as keyof typeof this.state.platforms]
-        Object.entries(updates).forEach(([key, value]) => {
+        Object.entries(updates as Record<string, any>).forEach(([key, value]) => {
           (plat as any)[key] = value
         })
         // Warmth affects accessibility

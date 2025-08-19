@@ -125,13 +125,7 @@ export class StoryEngine {
       }
     }
     
-    // For numbered sub-scenes (like 1-7b2), try next number
-    if (letter && subNum) {
-      const nextSubId = `${chapter}-${scene}${letter}${parseInt(subNum) + 1}`
-      if (allSceneIds.includes(nextSubId)) {
-        return nextSubId
-      }
-    }
+    // Already handled above in the new logic
     
     // If we're at the end of a chapter, move to the next chapter
     const nextChapter = this.chapters.find(c => c.id === chapter + 1)
