@@ -1,15 +1,37 @@
 /* Grand Central Terminus - Visual Feedback System */
 
-/* Base station atmosphere */
+/* Base station atmosphere with subtle Birmingham integration */
 .grand-central-terminus {
   --station-warmth: 0;
   --time-speed: 1;
+  --birmingham-earth: 15, 12%, 8%;
+  --birmingham-stone: 25, 8%, 12%;
+  --birmingham-warmth: 35, 15%, 18%;
   background: linear-gradient(
     180deg,
-    hsl(220, 20%, 10%) 0%,
+    hsl(var(--birmingham-earth)) 0%,
+    hsl(var(--birmingham-stone)) 50%,
     hsl(220, 15%, 15%) 100%
   );
   transition: all 2s ease-in-out;
+}
+
+/* Subtle regional warmth during career alignment */
+.grand-central-terminus.career-aligned {
+  background: linear-gradient(
+    180deg,
+    hsl(var(--birmingham-earth)) 0%,
+    hsl(var(--birmingham-warmth)) 40%,
+    hsl(220, 18%, 16%) 100%
+  );
+}
+
+/* Alabama-inspired color temperature hints */
+.birmingham-atmosphere {
+  --regional-red: 8, 25%, 45%;
+  --regional-clay: 18, 20%, 35%;
+  --regional-iron: 350, 15%, 25%;
+  --regional-green: 140, 22%, 35%;
 }
 
 /* Enhanced platform warmth states for career alignment */
@@ -196,33 +218,41 @@
   animation: rush 1s linear infinite;
 }
 
-/* Career-themed platform visual differentiation */
+/* Career-themed platform visual differentiation with Birmingham hints */
 .platform-1-service {
   --accent: #5C8FD6;
   --glow: rgba(92, 143, 214, 0.4);
   --career-theme: 'service-impact';
+  --regional-hint: hsl(var(--regional-red));
   filter: hue-rotate(210deg) saturate(1.1);
+  background: linear-gradient(135deg, transparent 0%, hsla(var(--regional-red), 0.05) 100%);
 }
 
 .platform-3-systems {
   --accent: #E6A965;
   --glow: rgba(230, 169, 101, 0.4);
   --career-theme: 'systems-operations';
+  --regional-hint: hsl(var(--regional-clay));
   filter: hue-rotate(35deg) saturate(1.2);
+  background: linear-gradient(135deg, transparent 0%, hsla(var(--regional-clay), 0.05) 100%);
 }
 
 .platform-7-analysis {
   --accent: #A96CC8;
   --glow: rgba(169, 108, 200, 0.4);
   --career-theme: 'information-analysis';
+  --regional-hint: hsl(var(--regional-iron));
   filter: hue-rotate(285deg) saturate(1.15);
+  background: linear-gradient(135deg, transparent 0%, hsla(var(--regional-iron), 0.05) 100%);
 }
 
 .platform-9-emerging {
   --accent: #71B67A;
   --glow: rgba(113, 182, 122, 0.4);
   --career-theme: 'emerging-growth';
+  --regional-hint: hsl(var(--regional-green));
   filter: hue-rotate(125deg) saturate(1.1);
+  background: linear-gradient(135deg, transparent 0%, hsla(var(--regional-green), 0.05) 100%);
 }
 
 .platform-forgotten-hybrid {
