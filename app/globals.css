@@ -5,6 +5,7 @@
 /* Import centralized animations */
 @import '../styles/animations.css';
 @import '../styles/performance.css';
+@import '../styles/grand-central.css';
 
 @layer base {
   :root {

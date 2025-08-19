@@ -1,5 +1,5 @@
-// Use the contemplative narrative instead of crisis narrative
-import storyData from '@/data/contemplative-story.json'
+// Use the Grand Central Terminus narrative
+import storyData from '@/data/grand-central-story.json'
 
 /**
  * Represents a single scene in the story
@@ -27,6 +27,8 @@ export interface Choice {
   consequence: string
   /** Scene ID to transition to after choice */
   nextScene: string
+  /** State changes to apply when choice is made */
+  stateChanges?: any
 }
 
 /**
@@ -55,7 +57,8 @@ export class StoryEngine {
       choices: scene.choices?.map(c => ({
         text: c.text,
         consequence: c.consequence,
-        nextScene: c.nextScene
+        nextScene: c.nextScene,
+        stateChanges: (c as any).stateChanges
       }))
     }
   }

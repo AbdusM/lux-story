@@ -18,12 +18,14 @@ import { usePresence } from "@/hooks/usePresence"
 import { usePatternRevelation } from "@/hooks/usePatternRevelation"
 import { useAdaptiveNarrative } from "@/hooks/useAdaptiveNarrative"
 import { getPerformanceSystem } from "@/lib/performance-system"
+import { getGrandCentralState } from "@/lib/grand-central-state"
 
 export function GameInterface() {
   const [storyEngine] = useState(() => new StoryEngine())
   const [showIntro, setShowIntro] = useState(true)
   const [choiceStartTime, setChoiceStartTime] = useState<number>(Date.now())
   const performanceSystem = useMemo(() => getPerformanceSystem(), [])
+  const grandCentralState = useMemo(() => getGrandCentralState(), [])
   
   // Simplified state management - no tracking, no stats
   const { gameState, isInitialized, reset } = useGameState()
@@ -174,40 +176,32 @@ export function GameInterface() {
     // Calculate time taken to make choice
     const timeToChoose = Date.now() - choiceStartTime
     
+    // Apply Grand Central choice effects
+    if (choice.stateChanges) {
+      grandCentralState.applyChoiceEffects(choice.stateChanges)
+    }
+    
     // Record the choice with theme tracking for Birmingham demo
     // Map consequences to career-relevant themes
     const themeMap: Record<string, string> = {
-      'observation': 'analyzing',
-      'acceptance': 'patience',
-      'immersion': 'experiencing',
-      'patience': 'patience',
-      'engagement': 'connecting',
-      'movement': 'action',
-      'presence': 'mindfulness',
-      'planning': 'organizing',
-      'curiosity': 'questioning',
-      'indifference': 'detachment',
-      'silence': 'listening',
-      'reassurance': 'helping',
-      'questioning': 'questioning',
-      'deflection': 'avoiding',
-      'persistence': 'perseverance',
-      'philosophy': 'thinking',
-      'seeking': 'exploring',
-      'receptivity': 'openness',
-      'contribution': 'sharing',
-      'traditional': 'conforming',
-      'honesty': 'authenticity',
-      'uncertainty': 'accepting_unknown',
-      'creation': 'building',
-      'seeking_peace': 'harmony',
-      'seeking_purpose': 'meaning',
-      'seeking_nothing': 'contentment',
-      'seeking_unknown': 'exploring',
-      'confirmation': 'affirming',
-      'mirror': 'reflecting',
-      'teaching': 'guiding',
-      'nothing': 'simplicity'
+      'trusting': 'trust',
+      'cautious': 'analyzing',
+      'rebellious': 'independence',
+      'analytical': 'analyzing',
+      'builder': 'building',
+      'helper': 'helping',
+      'focused': 'rushing',
+      'direct': 'analyzing',
+      'curious': 'exploring',
+      'impatient': 'rushing',
+      'determined': 'rushing',
+      'exploring': 'exploring',
+      'connecting': 'helping',
+      'observing': 'patience',
+      'explorer_quiet': 'exploring',
+      'understanding_quiet': 'analyzing',
+      'helper_quiet': 'helping',
+      'revolutionary_quiet': 'independence'
     }
     
     const theme = themeMap[choice.consequence] || choice.consequence
@@ -274,9 +268,13 @@ export function GameInterface() {
   
   const state = gameState.getState()
   
+  const gcState = grandCentralState.getState()
+  const platformClass = gcState.platforms.p1.warmth > 2 ? 'platform-warm' : 
+                      gcState.platforms.p1.warmth < -2 ? 'platform-cold' : 'platform-neutral'
+  const quietHourClass = gcState.time.stopped ? 'quiet-hour' : ''
+  
   return (
-    <div className={`container max-w-4xl mx-auto p-4 performance-${performanceLevel}`}>
-      <div className="forest-background" />
+    <div className={`container max-w-4xl mx-auto p-4 performance-${performanceLevel} grand-central-terminus ${platformClass} ${quietHourClass}`}>
       <Card className="max-w-3xl mx-auto bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm shadow-xl">
         <CardHeader>
           <CardTitle className="text-center text-sm text-muted-foreground">
