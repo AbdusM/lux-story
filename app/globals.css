@@ -10,6 +10,7 @@
 @import '../styles/mobile-viewport-fix.css';
 @import '../styles/mobile-critical-fixes.css';
 @import '../styles/choice-cards-fix.css';
+@import '../styles/continue-button-fix.css';
 
 @layer base {
   :root {
