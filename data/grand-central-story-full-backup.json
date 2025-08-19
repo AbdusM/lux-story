@@ -1,7 +1,7 @@
 {
   "title": "Grand Central Terminus",
   "author": "Lux Story Team",
-  "version": "2.0.0-streamlined",
+  "version": "1.0.0",
   "chapters": [
     {
       "id": 1,
@@ -277,6 +277,16 @@
           "text": "'You got a letter too.' It's not a question. Maya has found you, her medical books making a soft thump against her hip with each step. The little robot perched on her shoulder chirps - a sound like electronic birdsong.\n\n'Mine said Platform 1. My parents' platform. Twenty years of saving, praying, sacrificing for me to be a doctor.' She laughs, brittle as autumn leaves. 'But look.' She points to Platform 3, where sparks fly in orange cascades from someone welding. 'My hands itch when I see that. My brain lights up like touching a live wire. Platform 1 makes me feel like I'm drowning in formaldehyde.'\n\nThe robot chirps again, projecting a tiny hologram that smells faintly of ozone. A heart, but mechanical - gears and springs working in perfect rhythm.\n\n'What if our letters are tests? What if they tell us where we're supposed to go, just to see if we're brave enough to choose differently?'"
         },
         {
+          "id": "1-7d",
+          "type": "narration",
+          "text": "You sit on the bench you fixed - your bench now. The wood is warm against your back, almost body temperature. It creaks slightly as you settle, a comfortable sound like an old house breathing. The varnish smells faintly of lemon oil."
+        },
+        {
+          "id": "1-8-quiet",
+          "type": "narration",
+          "text": "Time has crystallized around you. The air feels thick, like walking through water. You can move, but each step makes no sound - absolute silence except for your own heartbeat, which seems to echo from the station walls themselves, as if the building has adopted your rhythm, loud as a drum in your ears. The temperature has dropped to exactly skin temperature - you can't tell where you end and the air begins."
+        },
+        {
           "id": "1-8-quiet-samuel",
           "type": "dialogue",
           "speaker": "Samuel",
@@ -398,6 +408,16 @@
           ]
         },
         {
+          "id": "1-10a-1",
+          "type": "narration",
+          "text": "The nurse looks up as you approach. Her scrubs smell of bleach and exhaustion. Her golden thread pulses with each heartbeat she's helped preserve - a warm thrumming you feel in your chest.\n\n'Heavy,' she says simply, her voice carrying the weight of 3 AM decisions. 'But necessary. Every life matters, even when - especially when - it costs you pieces of yourself.'\n\nYou feel the weight she carries. Beautiful. Crushing. Essential as breathing."
+        },
+        {
+          "id": "1-10a-2",
+          "type": "narration",
+          "text": "The blueprints shift as you watch - paper rustling like wings. Not just structures but relationships, communities, hope made tangible in steel and concrete.\n\nA builder's hands move through the frozen air, callused and sure, still reaching for tools. Sawdust hangs suspended around him like golden snow. 'We don't just build structures,' his frozen expression seems to say. 'We build the foundation everything else grows on.'\n\nCreation as service. Structure as caring. The smell of fresh lumber and possibility."
+        },
+        {
           "id": "1-10a-3",
           "type": "narration",
           "text": "The Forgotten Platform hums with quiet necessity - a low electrical buzz you feel in your bones. A translator's fingers hover over keys worn smooth, preventing wars with each careful word. A night-shift programmer's coffee has gone cold, but their code keeps hospitals running.\n\nMarcus nods from his janitorial cart, the keys jangling a frozen symphony. 'The work that matters most,' he says in the stillness, his breath visible in the suddenly cold air, 'rarely gets applause. But without it, everything else stops.'\n\nEssential. Invisible. Profound as a heartbeat."
@@ -507,6 +527,11 @@
           "text": "Maya's thread splits three ways: obligation to Platform 1, passion toward Platform 3, and a third strand reaching toward empty space.\n\nThe possibility thread is the strongest, though she doesn't know it yet.\n\n'She's trying to choose,' you realize. 'But the answer is integration, not selection.'"
         },
         {
+          "id": "1-10b-41",
+          "type": "narration",
+          "text": "He checks his conductor's watch, which shows symbols instead of numbers."
+        },
+        {
           "id": "1-10b-42",
           "type": "dialogue",
           "speaker": "Samuel",
@@ -521,6 +546,11 @@
           "id": "1-10d",
           "type": "narration",
           "text": "You tear the letter into pieces, the paper making a sound like ripping silk. But this time you know what you're doing. Each piece burns with different colored fire, each with its own scent:\n\n- Blue flames for the fear (smells like rain on hot concrete)\n- Red flames for others' expectations (tastes of copper and disappointment)\n- Green flames for paths not taken (essence of cut grass, childhood summers)\n- Purple flames for futures that were never yours (ozone and distance)\n\nThe ashes rise and fly to Platform 7's sign, which cracks with a sound like winter branches breaking, shatters like your assumptions, and reforms:\n\nPLATFORM 7: UNDER CONSTRUCTION\nPLATFORM 7½: NOW ACCEPTING ARCHITECTS\nPLATFORM 7.1 - 7.9: BUILD YOUR OWN\n\nThe empty train dissolves with a hiss of released pressure, replaced by workshop spaces that smell of sawdust and solder, drafting tables still warm from recent use, and tools for building futures that don't exist yet.\n\nMarcus appears, no longer frozen, applauding slowly - each clap echoing like dropped coins. 'Finally. Someone who understands. The station isn't here to sort people into predetermined futures. It's here to help them build unprecedented ones.'\n\nPlatform 7's destruction sends ripples through the Quiet Hour. Other signs begin flickering, their electrical buzz questioning their own certainty."
+        },
+        {
+          "id": "1-11",
+          "type": "narration",
+          "text": "Samuel finds you, his conductor's boots clicking a rhythm that sounds like wheels on tracks, his expression reading you like a punch card. 'Eight minutes to the witching whistle. Though midnight runs on a different schedule now, doesn't it? You've learned what every good engineer knows: It's not about beating the timetable. It's about knowing when to brake and when to build steam. Speed kills trains. Patience builds railways.'"
         },
         {
           "id": "1-12",
@@ -649,6 +679,11 @@
           "text": "The worst part? When I'm building these little robots, my hands are perfectly steady. No shaking. No doubt. Just... certainty. But that's not what my parents sacrificed everything for. They didn't work three jobs so I could play with circuits. They need me to be a doctor. Birmingham needs me to be a doctor. So why do I feel like I'm drowning every time I walk into the hospital?"
         },
         {
+          "id": "2-3b1",
+          "type": "narration",
+          "text": "He's methodically measuring distances between pillars, sketching sight lines and load calculations."
+        },
+        {
           "id": "2-3b2",
           "type": "dialogue",
           "speaker": "Devon",
@@ -664,6 +699,17 @@
           "type": "dialogue",
           "speaker": "Jordan",
           "text": "I've been mapping the patterns. Look - everyone who helps others, their platforms warm up. The metal actually gets warmer to the touch, I've measured it. Everyone who rushes past need? Their platforms dim, and the air around them drops by exactly 3.7 degrees Celsius.\n\nYou want to know something pathetic? I've been pretending to understand systems for three years. Everyone thinks I'm this brilliant process engineer, but I just... see patterns. I don't know the theory. Never finished my degree. I'm a maintenance guy who reads too much. Last week, they asked me to present at Innovation Depot, and I almost ran. Just packed everything and ran. Because eventually they'll figure out I'm just really good at pretending."
+        },
+        {
+          "id": "2-3c3",
+          "type": "dialogue",
+          "speaker": "Devon",
+          "text": "But this station? It doesn't care about my degree. It responds to what I actually do, not what credentials I have. For the first time, I'm not terrified someone will ask for my qualifications. Maybe that's why I can't leave."
+        },
+        {
+          "id": "2-3d1",
+          "type": "narration",
+          "text": "Alex is surrounded by laptops showing wind patterns, solar irradiation maps, and energy consumption data."
         },
         {
           "id": "2-3d2",
@@ -729,6 +775,11 @@
           "text": "The young ones think they're choosing careers like picking seats on a train - window or aisle, first class or coach. But that's passenger thinking. What you're really choosing is whether to ride the rails someone else laid down or grab a sledgehammer and start driving spikes yourself. Maya there? She's got one foot on her parents' track, one on her own. That's how you derail, standing between two moving trains. Eventually, you've got to pick your locomotive and trust it to carry you."
         },
         {
+          "id": "2-5a1",
+          "type": "narration",
+          "text": "She hands you components of what becomes a device that measures both heart rate and emotional resonance."
+        },
+        {
           "id": "2-5a2",
           "type": "dialogue",
           "speaker": "Maya",
@@ -744,6 +795,11 @@
           "type": "dialogue",
           "speaker": "Devon",
           "text": "Systems mapping requires both engineering precision and data pattern recognition. Watch this.\n\n'The port expansion affects traffic patterns, which affects delivery logistics, which affects retail placement, which affects housing demand. You can't optimize one system without understanding all the others.\n\nBirmingham needs operations research analysts, logistics coordinators, urban planners who think in networks. The growth is happening - someone has to make it work efficiently.'"
+        },
+        {
+          "id": "2-5c1",
+          "type": "narration",
+          "text": "They pull up financial flow analyses, cybersecurity incident patterns, and economic development projections."
         },
         {
           "id": "2-5c2",
@@ -819,6 +875,12 @@
           "text": "She points to the warm glow spreading across the platform's surface."
         },
         {
+          "id": "2-7a2",
+          "type": "dialogue",
+          "speaker": "Maya",
+          "text": "Numbers don't lie. People do, markets do, but clean data? Never. That's why I trust it more than anything else.\n\nMy girlfriend left last month. Said I loved spreadsheets more than her. The thing is... she wasn't wrong. I missed her birthday because of a data migration. Missed Valentine's Day debugging code. Missed every dinner for six months. She said I was having an affair with SQL queries, and I actually laughed because it was technically accurate. I haven't told anyone she left. My status still says 'in a relationship' because changing it would require admitting I chose Python over a person."
+        },
+        {
           "id": "2-7a3",
           "type": "dialogue",
           "speaker": "Jordan",
@@ -834,6 +896,11 @@
           "type": "dialogue",
           "speaker": "Devon",
           "text": "Platform 3's responding to you differently than the others.\n\n'The way you think - you see how fixing one process improves everything downstream. Operations research, supply chain optimization... building systems that make everything else work better.'\n\nThe platform hums with recognition. Building as service to efficiency."
+        },
+        {
+          "id": "2-7c1",
+          "type": "narration",
+          "text": "They watch the information cascades with fascination."
         },
         {
           "id": "2-7c2",
@@ -1228,6 +1295,22 @@
           ]
         },
         {
+          "id": "2-12d",
+          "type": "narration",
+          "text": "You sink to the floor, back against a pillar. The tears come suddenly, unexpectedly. Not sadness exactly, but overwhelm. The weight of potential, the fear of waste, the pressure of choosing correctly - it all crashes down at once."
+        },
+        {
+          "id": "2-12d2",
+          "type": "narration",
+          "text": "One by one, they sit with you. Maya on your left, her robot chirping softly. Devon on your right, his tools quiet for once. Jordan cross-legged in front, laptop closed. Alex behind, a small plant in their hands. Samuel standing watch."
+        },
+        {
+          "id": "2-12d3",
+          "type": "dialogue",
+          "speaker": "Maya",
+          "text": "We've all been where you are. That's why we're still here. Not lost - just taking our time to choose honestly."
+        },
+        {
           "id": "2-12d4",
           "type": "narration",
           "text": "The station responds to your collective vulnerability. Platform signs stop flickering. The temperature equalizes. For the first time, everything feels... possible."
@@ -1256,15 +1339,42 @@
           "text": "Your watch stopped at 11:47. Mine might stop too. What if I get on the wrong train and spend thirty years wondering what Platform 7 would have been? What if I'm you, telling this story to someone else someday?"
         },
         {
+          "id": "2-12b2",
+          "type": "dialogue",
+          "speaker": "Samuel",
+          "text": "Then you'll be here, helping them choose better. That's not the worst fate. The worst fate is never choosing at all. Besides, look at my watch again."
+        },
+        {
+          "id": "2-12b3",
+          "type": "narration",
+          "text": "He holds up his watch. For the first time, the second hand ticks forward. 11:48."
+        },
+        {
+          "id": "2-12b4",
+          "type": "dialogue",
+          "speaker": "Samuel"
+        },
+        {
           "id": "2-12a",
           "type": "dialogue",
           "speaker": "You",
           "text": "I've been standing here for what feels like hours, and every choice feels like closing a door I'll never be able to open again. Maya's torn between medicine and robotics. Devon's terrified of being exposed. Jordan chose data over love. Alex might be delusional. And you... you chose safety over purpose. How do I know I won't make the same mistakes?"
         },
         {
+          "id": "2-12a2",
+          "type": "dialogue",
+          "speaker": "Samuel",
+          "text": "You don't. That's the terrible, beautiful truth. But you know what I've learned, watching thousands pass through here? The ones who try to keep every door open never walk through any of them. The ones who choose, even imperfectly, at least move forward. And movement, even in the wrong direction, teaches you something. Paralysis teaches you nothing."
+        },
+        {
           "id": "2-15a",
           "type": "narration",
           "text": "Your train arrives exactly at midnight - not the midnight on any clock, but the midnight of your readiness.\n\nClimbing aboard, you carry your career clarity like luggage packed for a long journey. Birmingham's opportunities await, and you now have both the values to guide your choices and the understanding that career paths evolve through experience, not just planning.\n\nThrough the train window, you see Grand Central Terminus growing smaller, but not disappearing. It will always be there when someone needs to find their direction.\n\nYour career exploration has become your career foundation."
+        },
+        {
+          "id": "2-15b1",
+          "type": "narration",
+          "text": "He smiles, checking his conductor's watch one final time."
         },
         {
           "id": "2-15b2",
@@ -1472,6 +1582,11 @@
               }
             }
           ]
+        },
+        {
+          "id": "3-1a",
+          "type": "narration",
+          "text": "Your footprints from yesterday still glow faintly on the marble. Where you helped someone, tiny cracks in the floor have filled with something that looks like gold. Where you rushed past need, the tiles remain slightly cold to the touch. The station has perfect memory, and it's teaching you through physical feedback."
         },
         {
           "id": "3-2",
@@ -2186,6 +2301,11 @@
               }
             }
           ]
+        },
+        {
+          "id": "3-15a1",
+          "type": "narration",
+          "text": "She laughs, sketching a biomedical device while talking."
         },
         {
           "id": "3-15a2",
