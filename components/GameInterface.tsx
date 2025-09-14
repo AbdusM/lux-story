@@ -2,16 +2,16 @@
 
 import { useCallback, useMemo, memo } from 'react'
 import { useGame } from '@/hooks/useGame'
-import { StoryMessage } from './StoryMessage'
-import { StreamingMessage } from './StreamingMessage'
+import { GameHeader } from './GameHeader'
+import { GameMessages } from './GameMessages'
+import { GameSupport } from './GameSupport'
+import { GameChoices } from './GameChoices'
+import { GameControls } from './GameControls'
 import { CharacterIntro } from './CharacterIntro'
 import { SilentCompanion } from './SilentCompanion'
 import { CareerReflectionHelper } from './CareerReflectionHelper'
-import { EmotionalSupport } from './EmotionalSupport'
-import { MetacognitiveScaffolding } from './MetacognitiveScaffolding'
-import { DevelopmentalPsychologySupport } from './DevelopmentalPsychologySupport'
-import { NeuroscienceSupport } from './NeuroscienceSupport'
-import { FutureSkillsSupport } from './FutureSkillsSupport'
+import { hapticFeedback } from '@/lib/haptic-feedback'
+import { webShare } from '@/lib/web-share'
 import { logger } from '@/lib/logger'
 import '@/styles/apple-design-system.css'
 import { cn } from '@/lib/utils'
@@ -23,40 +23,6 @@ import { cn } from '@/lib/utils'
  * 
  * HYBRID VERSION: Uses simplified useGame hook + Apple design components
  */
-// Memoized choice button component
-const ChoiceButton = memo(({ choice, index, onChoice, isProcessing }: {
-  choice: any
-  index: number
-  onChoice: (choice: any) => void
-  isProcessing: boolean
-}) => (
-  <button
-    key={index}
-    onClick={() => onChoice(choice)}
-    disabled={isProcessing}
-    className="apple-choice-button"
-  >
-    {choice.text}
-  </button>
-))
-
-// Memoized message component
-const MessageItem = memo(({ message, index, messages }: {
-  message: any
-  index: number
-  messages: any[]
-}) => (
-  <div key={message.id} className="apple-message-wrapper">
-    <StoryMessage
-      speaker={message.speaker}
-      text={message.text}
-      type={message.type}
-      messageWeight={message.messageWeight}
-      className={message.className}
-      isContinuedSpeaker={index > 0 && messages[index - 1].speaker === message.speaker}
-    />
-  </div>
-))
 
 export function GameInterface() {
   // Use simplified game hook (replaces 14 complex hooks)
@@ -175,83 +141,32 @@ export function GameInterface() {
     <div className="apple-game-container">
       <div className="apple-game-main" style={visualAdjustments.style}>
         {/* Header */}
-        <div className="apple-header">
-          <div className="apple-text-headline">Grand Central Terminus</div>
-          <div className="apple-text-caption">Birmingham Career Exploration</div>
-        </div>
+        <GameHeader visualAdjustments={visualAdjustments} />
 
         {/* Messages */}
-        <div className="apple-messages-container">
-          {messages.map((message, index) => (
-            <MessageItem
-              key={message.id}
-              message={message}
-              index={index}
-              messages={messages}
-            />
-          ))}
-        </div>
+        <GameMessages messages={messages} />
 
-        {/* Support Messages (Simplified) */}
-        {emotionalSupport && (
-          <div className="apple-support-message apple-animate-slide-in">
-            <div className="apple-support-text">{emotionalSupport.message}</div>
-          </div>
-        )}
-
-        {metacognitivePrompt && (
-          <div className="apple-support-message apple-animate-slide-in">
-            <div className="apple-support-text">{metacognitivePrompt}</div>
-          </div>
-        )}
-
-        {skillSuggestions && (
-          <div className="apple-support-message apple-animate-slide-in">
-            <div className="apple-support-text">
-              Developing: {skillSuggestions.developing.join(', ')}
-            </div>
-          </div>
-        )}
+        {/* Support Messages */}
+        <GameSupport
+          emotionalSupport={emotionalSupport}
+          metacognitivePrompt={metacognitivePrompt}
+          skillSuggestions={skillSuggestions}
+        />
 
         {/* Choices */}
-        {currentScene?.choices && currentScene.choices.length > 0 && (
-          <div className="apple-choices-container apple-animate-slide-in">
-            {currentScene.choices.map((choice, index) => (
-              <ChoiceButton
-                key={index}
-                choice={choice}
-                index={index}
-                onChoice={handleEnhancedChoice}
-                isProcessing={isProcessing}
-              />
-            ))}
-          </div>
-        )}
+        <GameChoices
+          choices={currentScene?.choices || []}
+          isProcessing={isProcessing}
+          onChoice={handleEnhancedChoice}
+        />
 
-        {/* Continue Button */}
-        {currentScene?.type === 'narration' && (
-          <div className="apple-choices-container apple-animate-slide-in">
-            <button
-              onClick={handleContinue}
-              disabled={isProcessing}
-              className="apple-button apple-button-primary w-full"
-            >
-              {isProcessing ? 'Processing...' : 'Continue'}
-            </button>
-          </div>
-        )}
-
-        {/* Share Button */}
-        {currentScene && (
-          <div className="apple-choices-container apple-animate-slide-in">
-            <button
-              onClick={handleShare}
-              className="apple-button apple-button-ghost w-full"
-            >
-              Share Progress
-            </button>
-          </div>
-        )}
+        {/* Controls */}
+        <GameControls
+          currentScene={currentScene}
+          isProcessing={isProcessing}
+          onContinue={handleContinue}
+          onShare={handleShare}
+        />
 
         {/* Debug Info (Development Only) */}
         {process.env.NODE_ENV === 'development' && (
