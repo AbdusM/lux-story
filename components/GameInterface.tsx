@@ -4,6 +4,7 @@ import { useState, useCallback, useEffect, useMemo, useRef } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { StoryMessage } from "./StoryMessage"
+import { StreamingMessage } from "./StreamingMessage"
 import { CharacterIntro } from "./CharacterIntro"
 import { SilentCompanion } from "./SilentCompanion"
 import { StoryEngine } from "@/lib/story-engine"
@@ -14,6 +15,7 @@ import { useSceneTransitions } from "@/hooks/useSceneTransitions"
 import { useMessageManager } from "@/hooks/useMessageManager"
 import { usePresence } from "@/hooks/usePresence"
 import { useAdaptiveNarrative } from "@/hooks/useAdaptiveNarrative"
+import { useStreamingFlow } from "@/hooks/useStreamingFlow"
 import { getPerformanceSystem } from "@/lib/performance-system"
 import { getGrandCentralState } from "@/lib/grand-central-state"
 
@@ -28,9 +30,10 @@ export function GameInterface() {
   // Simplified state management - no tracking, no stats
   const { gameState, isInitialized } = useGameState()
   const { currentScene, isProcessing, loadScene, setProcessing } = useSceneTransitions(storyEngine, gameState)
-  const { messages, messagesEndRef, addMessage, clearMessages } = useMessageManager()
+  const { messages, messagesEndRef, addMessage, addStreamingMessage, clearMessages } = useMessageManager()
   const { resetPresence } = usePresence()
   const { performanceLevel, enhanceSceneText, analyzeContentSemantics, enhanceChoices } = useAdaptiveNarrative()
+  const { processSceneForStreaming } = useStreamingFlow()
 
   // Semantic-based content chunking with timed reveals
   const createSemanticChunks = useCallback((text: string, speaker: string) => {
@@ -187,6 +190,9 @@ export function GameInterface() {
             return false; // Everything else instant
           }
           
+          // Process text for potential streaming
+          const streamingConfig = processSceneForStreaming(enhancedText, speaker, scene.type)
+          
           if (isSameSpeaker) {
             // For same speaker, just add a simple message (StoryMessage component will handle it)
             console.log('🟡 Same speaker - adding simple message without semantic chunking')
@@ -195,14 +201,26 @@ export function GameInterface() {
               text: enhancedText,
               type: scene.type as 'narration' | 'dialogue',
               typewriter: shouldUseTypewriter(enhancedText, scene.type, speaker),
+              streamingMode: streamingConfig.useStreaming ? 'chatbot' : 'traditional',
               sceneId: scene.id
             })
           } else {
-            // For new speakers, use semantic chunking only if the content is complex enough
-            // Skip semantic chunking for narrator - keep as single flowing narrative
-            const semanticChunks = createSemanticChunks(enhancedText, speaker)
-            
-            if (semanticChunks.length > 1 && enhancedText.length > 150 && speaker !== 'narrator') {
+            // For new speakers, decide between streaming chunks or semantic chunks
+            if (streamingConfig.useStreaming && enhancedText.length > 150) {
+              // Use new streaming system for long narrative content
+              console.log('🟡 Using streaming system with', streamingConfig.chunks.length, 'chunks')
+              addStreamingMessage({
+                speaker,
+                textChunks: streamingConfig.chunks,
+                type: scene.type as 'narration' | 'dialogue',
+                streamingMode: 'chatbot',
+                sceneId: scene.id
+              })
+            } else {
+              // Fallback to semantic chunking for complex multi-part content
+              const semanticChunks = createSemanticChunks(enhancedText, speaker)
+              
+              if (semanticChunks.length > 1 && enhancedText.length > 150 && speaker !== 'narrator') {
               // Add semantic chunks with priority-based delays and styling - only for long complex content
               console.log('🟡 Creating semantic chunks:', semanticChunks.length, 'parts')
               
@@ -222,21 +240,23 @@ export function GameInterface() {
               })
               
               console.log('🟡 Semantic chunks scheduled for scene:', scene.id)
-            } else {
-              // Single message with basic semantic styling
-              const chunk = semanticChunks[0]
-              addMessage({ 
-                speaker, 
-                text: enhancedText,
-                type: scene.type as 'narration' | 'dialogue',
-                typewriter: shouldUseTypewriter(enhancedText, scene.type, speaker),
-                messageWeight: chunk?.priority === 1 ? 'critical' : 
-                             chunk?.priority <= 2 ? 'primary' : 'aside',
-                className: chunk ? `semantic-${chunk.semanticType}` : undefined,
-                sceneId: scene.id
-              })
-              
-              console.log('🟡 Single message added for scene:', scene.id)
+              } else {
+                // Single message with basic semantic styling
+                const chunk = semanticChunks[0]
+                addMessage({ 
+                  speaker, 
+                  text: enhancedText,
+                  type: scene.type as 'narration' | 'dialogue',
+                  typewriter: shouldUseTypewriter(enhancedText, scene.type, speaker),
+                  streamingMode: streamingConfig.streamingMode,
+                  messageWeight: chunk?.priority === 1 ? 'critical' : 
+                               chunk?.priority <= 2 ? 'primary' : 'aside',
+                  className: chunk ? `semantic-${chunk.semanticType}` : undefined,
+                  sceneId: scene.id
+                })
+                
+                console.log('🟡 Single message added for scene:', scene.id)
+              }
             }
           }
         }
@@ -247,7 +267,7 @@ export function GameInterface() {
       // User control: always require Continue button interaction
       // Removed auto-advance to maintain consistent UX and user agency
     }, 10) // Very small delay to ensure state updates
-  }, [loadScene, gameState, addMessage, clearMessages, enhanceSceneText, createSemanticChunks, storyEngine])
+  }, [loadScene, gameState, addMessage, addStreamingMessage, clearMessages, enhanceSceneText, createSemanticChunks, processSceneForStreaming, storyEngine])
   
   const handleStartGame = useCallback(() => {
     setShowIntro(false)
@@ -485,6 +505,24 @@ export function GameInterface() {
                   const isContinuedSpeaker = prevMsg && prevMsg.speaker === msg.speaker && 
                                            msg.speaker !== 'You' // Allow narrator grouping, exclude only user messages
                   
+                  // Render streaming message if it has textChunks
+                  if (msg.isStreamingMessage && msg.textChunks) {
+                    return (
+                      <StreamingMessage
+                        key={msg.id}
+                        speaker={msg.speaker}
+                        textChunks={msg.textChunks}
+                        type={msg.type}
+                        messageWeight={msg.messageWeight}
+                        className={msg.className}
+                        onComplete={() => {
+                          // Optional: Handle completion logic
+                        }}
+                      />
+                    )
+                  }
+                  
+                  // Default to regular StoryMessage
                   return (
                     <StoryMessage
                       key={msg.id} // Use stable message ID instead of scene-based key
@@ -494,7 +532,9 @@ export function GameInterface() {
                       messageWeight={msg.messageWeight}
                       buttonText={msg.buttonText}
                       typewriter={msg.typewriter}
+                      streamingMode={msg.streamingMode}
                       isContinuedSpeaker={isContinuedSpeaker}
+                      className={msg.className}
                     />
                   )
                 })}

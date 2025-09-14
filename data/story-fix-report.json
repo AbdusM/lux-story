@@ -1,0 +1,567 @@
+{
+  "summary": {
+    "duplicateIdsFixed": 44,
+    "selfReferencesFixed": 35,
+    "totalFixed": 79
+  },
+  "fixes": {
+    "duplicateIds": [
+      {
+        "originalId": "1-4d",
+        "newId": "1-4d-1",
+        "chapter": 1,
+        "sceneIndex": 23,
+        "text": "It rights itself and chirps. 'I built him during a..."
+      },
+      {
+        "originalId": "samuel-choice-deeper",
+        "newId": "samuel-choice-deeper-1",
+        "chapter": 1,
+        "sceneIndex": 101,
+        "text": "Samuel seems lost in thought, staring at something..."
+      },
+      {
+        "originalId": "samuel-choice-deeper",
+        "newId": "samuel-choice-deeper-1",
+        "chapter": 1,
+        "sceneIndex": 103,
+        "text": "Samuel seems lost in thought, staring at something..."
+      },
+      {
+        "originalId": "devon-choice-deeper",
+        "newId": "devon-choice-deeper-1",
+        "chapter": 1,
+        "sceneIndex": 107,
+        "text": "Devon seems lost in thought, staring at something ..."
+      },
+      {
+        "originalId": "devon-choice-deeper",
+        "newId": "devon-choice-deeper-1",
+        "chapter": 1,
+        "sceneIndex": 109,
+        "text": "Devon seems lost in thought, staring at something ..."
+      },
+      {
+        "originalId": "jordan-choice-deeper",
+        "newId": "jordan-choice-deeper-1",
+        "chapter": 1,
+        "sceneIndex": 113,
+        "text": "Jordan seems lost in thought, staring at something..."
+      },
+      {
+        "originalId": "jordan-choice-deeper",
+        "newId": "jordan-choice-deeper-1",
+        "chapter": 1,
+        "sceneIndex": 115,
+        "text": "Jordan seems lost in thought, staring at something..."
+      },
+      {
+        "originalId": "2-3a2-3",
+        "newId": "2-3a2-3",
+        "chapter": 2,
+        "sceneIndex": 7,
+        "text": "Mom works doubles at the hospital. Now I'm behind ..."
+      },
+      {
+        "originalId": "2-3a3",
+        "newId": "2-3a3-1",
+        "chapter": 2,
+        "sceneIndex": 10,
+        "text": "No shaking. No doubt. Just... certainty. But that'..."
+      },
+      {
+        "originalId": "2-3b2",
+        "newId": "2-3b2-1",
+        "chapter": 2,
+        "sceneIndex": 13,
+        "text": "'Birmingham's growing fast. Infrastructure, logist..."
+      },
+      {
+        "originalId": "2-4-samuel",
+        "newId": "2-4-samuel-1",
+        "chapter": 2,
+        "sceneIndex": 28,
+        "text": "What you're really choosing is whether to ride the..."
+      },
+      {
+        "originalId": "2-5a2",
+        "newId": "2-5a2-1",
+        "chapter": 2,
+        "sceneIndex": 30,
+        "text": "'Nursing informatics. Clinical decision support sy..."
+      },
+      {
+        "originalId": "2-5b2",
+        "newId": "2-5b2-1",
+        "chapter": 2,
+        "sceneIndex": 33,
+        "text": "'The port expansion affects traffic patterns, whic..."
+      },
+      {
+        "originalId": "2-5c2",
+        "newId": "2-5c2-1",
+        "chapter": 2,
+        "sceneIndex": 35,
+        "text": "'Banking, healthcare, energy - they're all generat..."
+      },
+      {
+        "originalId": "2-5d2",
+        "newId": "2-5d2-1",
+        "chapter": 2,
+        "sceneIndex": 38,
+        "text": "Energy storage specialists. Grid integration analy..."
+      },
+      {
+        "originalId": "2-7a3",
+        "newId": "2-7a3-1",
+        "chapter": 2,
+        "sceneIndex": 41,
+        "text": "I have the studies. I made the graphs. I just... c..."
+      },
+      {
+        "originalId": "2-7b2",
+        "newId": "2-7b2-1",
+        "chapter": 2,
+        "sceneIndex": 44,
+        "text": "Operations research, supply chain optimization... ..."
+      },
+      {
+        "originalId": "2-7c2",
+        "newId": "2-7c2-1",
+        "chapter": 2,
+        "sceneIndex": 46,
+        "text": "Predictive analytics, cybersecurity threats, marke..."
+      },
+      {
+        "originalId": "2-7d2",
+        "newId": "2-7d2-1",
+        "chapter": 2,
+        "sceneIndex": 49,
+        "text": "You want to create what should exist. Renewable en..."
+      },
+      {
+        "originalId": "2-9a2",
+        "newId": "2-9a2-1",
+        "chapter": 2,
+        "sceneIndex": 52,
+        "text": "look at the city lights and wonder if I'm delusion..."
+      },
+      {
+        "originalId": "2-9c2",
+        "newId": "2-9c2-1",
+        "chapter": 2,
+        "sceneIndex": 59,
+        "text": "'I love coding, but I also want to help people. I ..."
+      },
+      {
+        "originalId": "2-11a",
+        "newId": "2-11a-1",
+        "chapter": 2,
+        "sceneIndex": 64,
+        "text": "Whether it's service and systems thinking leading ..."
+      },
+      {
+        "originalId": "2-11b",
+        "newId": "2-11b-1",
+        "chapter": 2,
+        "sceneIndex": 67,
+        "text": "Community-centered data analysis. Human-focused au..."
+      },
+      {
+        "originalId": "2-11c",
+        "newId": "2-11c-1",
+        "chapter": 2,
+        "sceneIndex": 69,
+        "text": "Birmingham's rapid growth means more people facing..."
+      },
+      {
+        "originalId": "2-12c3",
+        "newId": "2-12c3-1",
+        "chapter": 2,
+        "sceneIndex": 77,
+        "text": "We all end up in Birmingham, working, living, stru..."
+      },
+      {
+        "originalId": "2-12a",
+        "newId": "2-12a-1",
+        "chapter": 2,
+        "sceneIndex": 80,
+        "text": "Devon's terrified of being exposed. Jordan chose d..."
+      },
+      {
+        "originalId": "2-17b",
+        "newId": "2-17b-1",
+        "chapter": 2,
+        "sceneIndex": 100,
+        "text": "Your understanding of career values and platform t..."
+      },
+      {
+        "originalId": "2-17d",
+        "newId": "2-17d-1",
+        "chapter": 2,
+        "sceneIndex": 106,
+        "text": "Birmingham's growth means new opportunities emergi..."
+      },
+      {
+        "originalId": "3-0b-1",
+        "newId": "3-0b-1",
+        "chapter": 3,
+        "sceneIndex": 2,
+        "text": "Birmingham. The brass still gleams, but now you no..."
+      },
+      {
+        "originalId": "3-3b",
+        "newId": "3-3b-1",
+        "chapter": 3,
+        "sceneIndex": 43,
+        "text": "Now look: Southside, Avondale, Parkside - all tran..."
+      },
+      {
+        "originalId": "3-3c",
+        "newId": "3-3c-1",
+        "chapter": 3,
+        "sceneIndex": 45,
+        "text": "Traditional manufacturing: declining 3%. But here'..."
+      },
+      {
+        "originalId": "3-6a",
+        "newId": "3-6a-1",
+        "chapter": 3,
+        "sceneIndex": 64,
+        "text": "Maya hands you a co-op application. 'It's not just..."
+      },
+      {
+        "originalId": "3-6c",
+        "newId": "3-6c-1",
+        "chapter": 3,
+        "sceneIndex": 67,
+        "text": "'Data is Birmingham's new steel,' they say. 'We're..."
+      },
+      {
+        "originalId": "3-6d",
+        "newId": "3-6d-1",
+        "chapter": 3,
+        "sceneIndex": 69,
+        "text": "'Birmingham has more green space per capita than D..."
+      },
+      {
+        "originalId": "3-9d",
+        "newId": "3-9d-1",
+        "chapter": 3,
+        "sceneIndex": 105,
+        "text": "Building something from scratch teaches lessons no..."
+      },
+      {
+        "originalId": "3-11b",
+        "newId": "3-11b-1",
+        "chapter": 3,
+        "sceneIndex": 113,
+        "text": "Birmingham's mid-size organizations need exactly t..."
+      },
+      {
+        "originalId": "3-11d",
+        "newId": "3-11d-1",
+        "chapter": 3,
+        "sceneIndex": 120,
+        "text": "Your solution combines career values assessment, s..."
+      },
+      {
+        "originalId": "3-13d",
+        "newId": "3-13d-1",
+        "chapter": 3,
+        "sceneIndex": 134,
+        "text": "Birmingham's size means your reputation spreads qu..."
+      },
+      {
+        "originalId": "3-15a2",
+        "newId": "3-15a2-1",
+        "chapter": 3,
+        "sceneIndex": 136,
+        "text": "It's not just about helping individuals anymore. I..."
+      },
+      {
+        "originalId": "3-18a-birmingham",
+        "newId": "3-18a-birmingham-1",
+        "chapter": 3,
+        "sceneIndex": 162,
+        "text": "The program coordinator's name is real: Ms. Patric..."
+      },
+      {
+        "originalId": "3-18b-birmingham",
+        "newId": "3-18b-birmingham-1",
+        "chapter": 3,
+        "sceneIndex": 164,
+        "text": "They have office space available on the second flo..."
+      },
+      {
+        "originalId": "3-18c-birmingham",
+        "newId": "3-18c-birmingham-1",
+        "chapter": 3,
+        "sceneIndex": 166,
+        "text": "They need people who understand both numbers and n..."
+      },
+      {
+        "originalId": "3-18d-birmingham",
+        "newId": "3-18d-birmingham-1",
+        "chapter": 3,
+        "sceneIndex": 168,
+        "text": "Your trainer would be DeShawn Williams, whose gran..."
+      },
+      {
+        "originalId": "3-24c",
+        "newId": "3-24c-1",
+        "chapter": 3,
+        "sceneIndex": 227,
+        "text": "The station gave you direction, but you're buildin..."
+      }
+    ],
+    "selfReferences": [
+      {
+        "sceneId": "1-4d",
+        "originalNextScene": "1-4d",
+        "newNextScene": "1-4d-1",
+        "chapter": 1,
+        "sceneIndex": 22
+      },
+      {
+        "sceneId": "2-3a3",
+        "originalNextScene": "2-3a3",
+        "newNextScene": "2-3a3-1",
+        "chapter": 2,
+        "sceneIndex": 9
+      },
+      {
+        "sceneId": "2-4-samuel",
+        "originalNextScene": "2-4-samuel",
+        "newNextScene": "2-4-samuel-1",
+        "chapter": 2,
+        "sceneIndex": 27
+      },
+      {
+        "sceneId": "2-5a2",
+        "originalNextScene": "2-5a2",
+        "newNextScene": "2-5a2-1",
+        "chapter": 2,
+        "sceneIndex": 29
+      },
+      {
+        "sceneId": "2-5b2",
+        "originalNextScene": "2-5b2",
+        "newNextScene": "2-5b2-1",
+        "chapter": 2,
+        "sceneIndex": 32
+      },
+      {
+        "sceneId": "2-5c2",
+        "originalNextScene": "2-5c2",
+        "newNextScene": "2-5c2-1",
+        "chapter": 2,
+        "sceneIndex": 34
+      },
+      {
+        "sceneId": "2-5d2",
+        "originalNextScene": "2-5d2",
+        "newNextScene": "2-5d2-1",
+        "chapter": 2,
+        "sceneIndex": 37
+      },
+      {
+        "sceneId": "2-7a3",
+        "originalNextScene": "2-7a3",
+        "newNextScene": "2-7a3-1",
+        "chapter": 2,
+        "sceneIndex": 40
+      },
+      {
+        "sceneId": "2-7b2",
+        "originalNextScene": "2-7b2",
+        "newNextScene": "2-7b2-1",
+        "chapter": 2,
+        "sceneIndex": 43
+      },
+      {
+        "sceneId": "2-7c2",
+        "originalNextScene": "2-7c2",
+        "newNextScene": "2-7c2-1",
+        "chapter": 2,
+        "sceneIndex": 45
+      },
+      {
+        "sceneId": "2-7d2",
+        "originalNextScene": "2-7d2",
+        "newNextScene": "2-7d2-1",
+        "chapter": 2,
+        "sceneIndex": 48
+      },
+      {
+        "sceneId": "2-9a2",
+        "originalNextScene": "2-9a2",
+        "newNextScene": "2-9a2-1",
+        "chapter": 2,
+        "sceneIndex": 51
+      },
+      {
+        "sceneId": "2-9c2",
+        "originalNextScene": "2-9c2",
+        "newNextScene": "2-9c2-1",
+        "chapter": 2,
+        "sceneIndex": 58
+      },
+      {
+        "sceneId": "2-11a",
+        "originalNextScene": "2-11a",
+        "newNextScene": "2-11a-1",
+        "chapter": 2,
+        "sceneIndex": 63
+      },
+      {
+        "sceneId": "2-11b",
+        "originalNextScene": "2-11b",
+        "newNextScene": "2-11b-1",
+        "chapter": 2,
+        "sceneIndex": 66
+      },
+      {
+        "sceneId": "2-11c",
+        "originalNextScene": "2-11c",
+        "newNextScene": "2-11c-1",
+        "chapter": 2,
+        "sceneIndex": 68
+      },
+      {
+        "sceneId": "2-12c3",
+        "originalNextScene": "2-12c3",
+        "newNextScene": "2-12c3-1",
+        "chapter": 2,
+        "sceneIndex": 76
+      },
+      {
+        "sceneId": "2-12a",
+        "originalNextScene": "2-12a",
+        "newNextScene": "2-12a-1",
+        "chapter": 2,
+        "sceneIndex": 79
+      },
+      {
+        "sceneId": "2-17b",
+        "originalNextScene": "2-17b",
+        "newNextScene": "2-17b-1",
+        "chapter": 2,
+        "sceneIndex": 99
+      },
+      {
+        "sceneId": "2-17d",
+        "originalNextScene": "2-17d",
+        "newNextScene": "2-17d-1",
+        "chapter": 2,
+        "sceneIndex": 105
+      },
+      {
+        "sceneId": "3-3b",
+        "originalNextScene": "3-3b",
+        "newNextScene": "3-3b-1",
+        "chapter": 3,
+        "sceneIndex": 42
+      },
+      {
+        "sceneId": "3-3c",
+        "originalNextScene": "3-3c",
+        "newNextScene": "3-3c-1",
+        "chapter": 3,
+        "sceneIndex": 44
+      },
+      {
+        "sceneId": "3-6a",
+        "originalNextScene": "3-6a",
+        "newNextScene": "3-6a-1",
+        "chapter": 3,
+        "sceneIndex": 63
+      },
+      {
+        "sceneId": "3-6c",
+        "originalNextScene": "3-6c",
+        "newNextScene": "3-6c-1",
+        "chapter": 3,
+        "sceneIndex": 66
+      },
+      {
+        "sceneId": "3-6d",
+        "originalNextScene": "3-6d",
+        "newNextScene": "3-6d-1",
+        "chapter": 3,
+        "sceneIndex": 68
+      },
+      {
+        "sceneId": "3-9d",
+        "originalNextScene": "3-9d",
+        "newNextScene": "3-9d-1",
+        "chapter": 3,
+        "sceneIndex": 104
+      },
+      {
+        "sceneId": "3-11b",
+        "originalNextScene": "3-11b",
+        "newNextScene": "3-11b-1",
+        "chapter": 3,
+        "sceneIndex": 112
+      },
+      {
+        "sceneId": "3-11d",
+        "originalNextScene": "3-11d",
+        "newNextScene": "3-11d-1",
+        "chapter": 3,
+        "sceneIndex": 119
+      },
+      {
+        "sceneId": "3-13d",
+        "originalNextScene": "3-13d",
+        "newNextScene": "3-13d-1",
+        "chapter": 3,
+        "sceneIndex": 133
+      },
+      {
+        "sceneId": "3-15a2",
+        "originalNextScene": "3-15a2",
+        "newNextScene": "3-15a2-1",
+        "chapter": 3,
+        "sceneIndex": 135
+      },
+      {
+        "sceneId": "3-18a-birmingham",
+        "originalNextScene": "3-18a-birmingham",
+        "newNextScene": "3-18a-birmingham-1",
+        "chapter": 3,
+        "sceneIndex": 161
+      },
+      {
+        "sceneId": "3-18b-birmingham",
+        "originalNextScene": "3-18b-birmingham",
+        "newNextScene": "3-18b-birmingham-1",
+        "chapter": 3,
+        "sceneIndex": 163
+      },
+      {
+        "sceneId": "3-18c-birmingham",
+        "originalNextScene": "3-18c-birmingham",
+        "newNextScene": "3-18c-birmingham-1",
+        "chapter": 3,
+        "sceneIndex": 165
+      },
+      {
+        "sceneId": "3-18d-birmingham",
+        "originalNextScene": "3-18d-birmingham",
+        "newNextScene": "3-18d-birmingham-1",
+        "chapter": 3,
+        "sceneIndex": 167
+      },
+      {
+        "sceneId": "3-24c",
+        "originalNextScene": "3-24c",
+        "newNextScene": "3-24c-1",
+        "chapter": 3,
+        "sceneIndex": 226
+      }
+    ],
+    "totalFixed": 0
+  }
+}

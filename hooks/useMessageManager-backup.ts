@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useEffect, useSyncExternalStore, useMemo } from 'react'
+import { useState, useCallback, useRef, useEffect, useSyncExternalStore } from 'react'
 
 // Persistent message store that survives React.StrictMode remounts
 class MessageStore {
@@ -85,6 +85,9 @@ class MessageStore {
 // Global singleton instance
 const messageStore = new MessageStore()
 
+// Cached server snapshot function to prevent infinite loops
+const getServerSnapshot = () => []
+
 export interface GameMessage {
   id: string // Stable ID for React keys
   speaker: string
@@ -106,14 +109,11 @@ export interface GameMessage {
  * @returns Message state and management functions
  */
 export function useMessageManager() {
-  // Memoize the server snapshot function to prevent infinite loops
-  const getServerSnapshot = useMemo(() => () => [], [])
-  
   // Use persistent store instead of local state
   const messages = useSyncExternalStore(
     messageStore.subscribe, 
     messageStore.getSnapshot,
-    getServerSnapshot // Use memoized server snapshot function
+    getServerSnapshot // Use cached server snapshot function
   )
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const hookInstanceId = useRef(`hook-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`) // Debug hook instances
