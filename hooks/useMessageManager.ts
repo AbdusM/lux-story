@@ -1,4 +1,5 @@
 import { useState, useCallback, useRef, useEffect, useSyncExternalStore, useMemo } from 'react'
+import { logger } from '@/lib/logger'
 
 // Persistent message store that survives React.StrictMode remounts
 class MessageStore {
@@ -18,7 +19,7 @@ class MessageStore {
   }
 
   addMessage = (message: Omit<GameMessage, 'id'>) => {
-    console.log('🔵 MessageStore.addMessage called:', { 
+    logger.debug('MessageStore.addMessage called:', { 
       speaker: message.speaker, 
       sceneId: message.sceneId, 
       text: message.text.substring(0, 50) + '...' 
@@ -37,7 +38,7 @@ class MessageStore {
     )
     
     if (isDuplicate) {
-      console.log('🔵 Skipping duplicate (same scene, same content, within 2s window)')
+      logger.debug('🔵 Skipping duplicate (same scene, same content, within 2s window)')
       return
     }
     
@@ -50,7 +51,7 @@ class MessageStore {
       )
       
       if (hasIdenticalSceneMessage) {
-        console.log('🔵 Skipping scene duplicate (identical content already exists for this scene)')
+        logger.debug('🔵 Skipping scene duplicate (identical content already exists for this scene)')
         return
       }
     }
@@ -63,15 +64,15 @@ class MessageStore {
     }
     
     this.messages = [...this.messages, messageWithId]
-    console.log('🔵 MessageStore - New messages count:', this.messages.length, 'Scene:', message.sceneId)
+    logger.debug('🔵 MessageStore - New messages count:', this.messages.length, 'Scene:', message.sceneId)
     
     // Notify all subscribers
     this.subscribers.forEach(callback => callback())
   }
 
   clearMessages = () => {
-    console.log('🔴 MessageStore.clearMessages called - clearing all messages')
-    console.log('🔴 Clearing', this.messages.length, 'messages')
+    logger.debug('🔴 MessageStore.clearMessages called - clearing all messages')
+    logger.debug('🔴 Clearing', this.messages.length, 'messages')
     this.messages = []
     this.messageIdCounter = 0
     this.subscribers.forEach(callback => callback())
@@ -120,9 +121,9 @@ export function useMessageManager() {
   
   // Debug: Log hook creation
   useEffect(() => {
-    console.log('🟡 useMessageManager hook created:', hookInstanceId.current, 'messages count:', messages.length)
+    logger.debug('🟡 useMessageManager hook created:', hookInstanceId.current, 'messages count:', messages.length)
     return () => {
-      console.log('🟠 useMessageManager hook destroyed:', hookInstanceId.current)
+      logger.debug('🟠 useMessageManager hook destroyed:', hookInstanceId.current)
     }
   }, [])
 
@@ -136,7 +137,7 @@ export function useMessageManager() {
    * Prevents infinite loops while allowing legitimate story repetition
    */
   const addMessage = useCallback((message: Omit<GameMessage, 'id'>) => {
-    console.log('🔵 addMessage called (hook):', { hookId: hookInstanceId.current, speaker: message.speaker, sceneId: message.sceneId, text: message.text.substring(0, 50) + '...' })
+    logger.debug('🔵 addMessage called (hook):', { hookId: hookInstanceId.current, speaker: message.speaker, sceneId: message.sceneId, text: message.text.substring(0, 50) + '...' })
     messageStore.addMessage(message)
   }, [])
 
@@ -158,7 +159,7 @@ export function useMessageManager() {
    * Add a streaming message with multiple text chunks
    */
   const addStreamingMessage = useCallback((message: Omit<GameMessage, 'id'> & { textChunks: string[] }) => {
-    console.log('🔵 addStreamingMessage called:', { speaker: message.speaker, chunks: message.textChunks.length })
+    logger.debug('🔵 addStreamingMessage called:', { speaker: message.speaker, chunks: message.textChunks.length })
     const streamingMessage: Omit<GameMessage, 'id'> = {
       ...message,
       isStreamingMessage: true,

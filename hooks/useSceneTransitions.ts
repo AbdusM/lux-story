@@ -3,6 +3,7 @@ import { Scene } from '@/lib/story-engine'
 import { GameStateManager } from '@/lib/game-state'
 import { TIMINGS } from '@/lib/game-constants'
 
+import { logger } from '@/lib/logger'
 interface SceneTransitionState {
   currentScene: Scene | null
   isLoadingScene: boolean
@@ -27,23 +28,23 @@ export function useSceneTransitions(
 
   const loadScene = useCallback((sceneId: string, forceLoad = false) => {
     if (!gameState) {
-      console.error('❌ Game state not initialized in loadScene')
+      logger.error('❌ Game state not initialized in loadScene')
       return null
     }
     
-    console.log('🔄 Loading scene:', sceneId, 'forceLoad:', forceLoad)
-    console.log('🔄 Story engine available:', !!storyEngine)
+    logger.debug('🔄 Loading scene:', sceneId, 'forceLoad:', forceLoad)
+    logger.debug('🔄 Story engine available:', !!storyEngine)
     
     // Get the scene first
     const scene = storyEngine.getScene(sceneId)
     if (!scene) {
-      console.error('❌ Scene not found:', sceneId)
-      console.error('❌ Available scenes:', storyEngine.getAllScenes?.() || 'getAllScenes not available')
+      logger.error('❌ Scene not found:', sceneId)
+      logger.error('❌ Available scenes:', storyEngine.getAllScenes?.() || 'getAllScenes not available')
       return null
     }
     
     // Always load the scene when called (simplified logic)
-    console.log('✅ Scene loaded successfully:', scene.id, scene.type)
+    logger.debug('✅ Scene loaded successfully:', scene.id, scene.type)
     setState(prev => ({
       currentScene: scene,
       isLoadingScene: true,
@@ -51,7 +52,7 @@ export function useSceneTransitions(
     }))
     
     // Update game state
-    console.log('🔄 Updating game state to scene:', sceneId)
+    logger.debug('🔄 Updating game state to scene:', sceneId)
     gameState.setScene(sceneId)
     
     // Clear loading flag after a short delay

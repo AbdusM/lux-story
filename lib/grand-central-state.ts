@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger'
 /**
  * Grand Central Terminus - State Management System
  * Tracks platform states, relationships, patterns, and mysteries
@@ -400,7 +401,7 @@ export class GrandCentralStateManager {
       
       // Migration: ensure careerValues exists (for backwards compatibility)
       if (!loadedState.careerValues) {
-        console.log('🔧 Migrating state: adding missing careerValues')
+        logger.debug('🔧 Migrating state: adding missing careerValues')
         loadedState.careerValues = {
           directImpact: 0,
           systemsThinking: 0,
@@ -421,7 +422,7 @@ export class GrandCentralStateManager {
     try {
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.state))
     } catch (error) {
-      console.warn('Failed to save state:', error)
+      logger.warn('Failed to save state:', error)
     }
   }
   

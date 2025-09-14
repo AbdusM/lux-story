@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger'
 /**
  * Simple performance monitor for development
  * Warns when FPS drops below 30
@@ -15,7 +16,7 @@ export function checkPerformance() {
   if (now - lastTime > 1000) {
     const fps = frameCount
     if (fps < 30) {
-      console.warn(`Low FPS detected: ${fps}`)
+      logger.warn(`Low FPS detected: ${fps}`)
     }
     frameCount = 0
     lastTime = now

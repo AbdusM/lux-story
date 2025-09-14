@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { GameStateManager } from '@/lib/game-state'
 
+import { logger } from '@/lib/logger'
 /**
  * Custom hook for managing game state initialization and updates
  * @returns Initialized GameStateManager instance and loading state
@@ -17,7 +18,7 @@ export function useGameState() {
         setGameState(manager)
         setIsInitialized(true)
       } catch (error) {
-        console.error('Failed to initialize game state:', error)
+        logger.error('Failed to initialize game state:', error)
         // Create a fresh instance without localStorage
         const manager = new GameStateManager()
         setGameState(manager)

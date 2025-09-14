@@ -19,6 +19,7 @@ import { useStreamingFlow } from "@/hooks/useStreamingFlow"
 import { getPerformanceSystem } from "@/lib/performance-system"
 import { getGrandCentralState } from "@/lib/grand-central-state"
 
+import { logger } from '@/lib/logger'
 export function GameInterface() {
   const [storyEngine] = useState(() => new StoryEngine())
   const [showIntro, setShowIntro] = useState(true)
@@ -84,7 +85,7 @@ export function GameInterface() {
   }, [analyzeContentSemantics])
   
   // Debug logging for React re-renders (removed to prevent console spam)
-  // console.log('🔄 GameInterface render - currentScene:', currentScene?.id, 'messages count:', messages.length)
+  // logger.debug('🔄 GameInterface render - currentScene:', currentScene?.id, 'messages count:', messages.length)
   
   // Track choice timing for Grand Central Terminus - no forest interference
   useEffect(() => {
@@ -113,7 +114,7 @@ export function GameInterface() {
       return
     }
     
-    console.log('🟡 handleLoadScene - scene loaded:', scene.id, 'text preview:', scene.text?.substring(0, 50))
+    logger.debug('🟡 handleLoadScene - scene loaded:', scene.id, 'text preview:', scene.text?.substring(0, 50))
     
     // Check if this is the same speaker as the last message
     const lastMessage = messages[messages.length - 1]
@@ -126,28 +127,28 @@ export function GameInterface() {
     const isMixedLetterContent = enhancedText.includes('At the bottom of the letter') && enhancedText.includes("'")
     
     if (isSameSpeaker && !isMixedLetterContent) {
-      console.log('🟡 Same speaker detected - will update existing message instead of clearing')
+      logger.debug('🟡 Same speaker detected - will update existing message instead of clearing')
       // Don't clear messages for same speaker, just update content
     } else {
-      console.log('🟡 Different speaker or special content - clearing messages')
+      logger.debug('🟡 Different speaker or special content - clearing messages')
       clearMessages()
     }
     
     if (isMixedLetterContent) {
-      console.log('🟡 Mixed content detected - will split into two messages')
+      logger.debug('🟡 Mixed content detected - will split into two messages')
     }
     
     // Add a small delay to ensure clearing completes before adding new message
     setTimeout(() => {
-      console.log('🟡 After clearMessages delay, adding new message')
+      logger.debug('🟡 After clearMessages delay, adding new message')
       
       // Display current scene text
       if (scene.text) {
-        console.log('🟡 About to add message for scene:', scene.id)
+        logger.debug('🟡 About to add message for scene:', scene.id)
         
         if (isMixedLetterContent) {
-          console.log('🟡 Detected mixed letter content, splitting into two messages')
-          console.log('🟡 Original text:', enhancedText)
+          logger.debug('🟡 Detected mixed letter content, splitting into two messages')
+          logger.debug('🟡 Original text:', enhancedText)
           
           // Split the text properly: "text: 'quoted content'"
           const colonIndex = enhancedText.indexOf(': ')
@@ -155,9 +156,9 @@ export function GameInterface() {
           const quotedPart = enhancedText.substring(colonIndex + 2).trim() // "'You have one year...'"
           const letterPart = quotedPart.replace(/^'|'$/g, '').trim() // Remove surrounding single quotes
           
-          console.log('🟡 Split into:')
-          console.log('🟡 - Narrative part:', narrativePart)
-          console.log('🟡 - Letter part:', letterPart)
+          logger.debug('🟡 Split into:')
+          logger.debug('🟡 - Narrative part:', narrativePart)
+          logger.debug('🟡 - Letter part:', letterPart)
           
           // Add narrative context first (instant)
           addMessage({ 
@@ -179,7 +180,7 @@ export function GameInterface() {
             })
           }, 100)
           
-          console.log('🟡 Split messages added for scene:', scene.id)
+          logger.debug('🟡 Split messages added for scene:', scene.id)
         } else {
           const shouldUseTypewriter = (text: string, type: string, speaker: string) => {
             // Only for quoted letter/note content that's mostly just the quote
@@ -195,7 +196,7 @@ export function GameInterface() {
           
           if (isSameSpeaker) {
             // For same speaker, just add a simple message (StoryMessage component will handle it)
-            console.log('🟡 Same speaker - adding simple message without semantic chunking')
+            logger.debug('🟡 Same speaker - adding simple message without semantic chunking')
             addMessage({ 
               speaker, 
               text: enhancedText,
@@ -208,9 +209,10 @@ export function GameInterface() {
             // For new speakers, decide between streaming chunks or semantic chunks
             if (streamingConfig.useStreaming && enhancedText.length > 150) {
               // Use new streaming system for long narrative content
-              console.log('🟡 Using streaming system with', streamingConfig.chunks.length, 'chunks')
+              logger.debug('🟡 Using streaming system with', streamingConfig.chunks.length, 'chunks')
               addStreamingMessage({
                 speaker,
+                text: enhancedText, // Add required text property
                 textChunks: streamingConfig.chunks,
                 type: scene.type as 'narration' | 'dialogue',
                 streamingMode: 'chatbot',
@@ -222,7 +224,7 @@ export function GameInterface() {
               
               if (semanticChunks.length > 1 && enhancedText.length > 150 && speaker !== 'narrator') {
               // Add semantic chunks with priority-based delays and styling - only for long complex content
-              console.log('🟡 Creating semantic chunks:', semanticChunks.length, 'parts')
+              logger.debug('🟡 Creating semantic chunks:', semanticChunks.length, 'parts')
               
               semanticChunks.forEach((chunk, index) => {
                 setTimeout(() => {
@@ -239,7 +241,7 @@ export function GameInterface() {
                 }, chunk.delay)
               })
               
-              console.log('🟡 Semantic chunks scheduled for scene:', scene.id)
+              logger.debug('🟡 Semantic chunks scheduled for scene:', scene.id)
               } else {
                 // Single message with basic semantic styling
                 const chunk = semanticChunks[0]
@@ -255,13 +257,13 @@ export function GameInterface() {
                   sceneId: scene.id
                 })
                 
-                console.log('🟡 Single message added for scene:', scene.id)
+                logger.debug('🟡 Single message added for scene:', scene.id)
               }
             }
           }
         }
       } else {
-        console.log('🟡 No text for scene:', scene.id)
+        logger.debug('🟡 No text for scene:', scene.id)
       }
       
       // User control: always require Continue button interaction
@@ -300,10 +302,10 @@ export function GameInterface() {
   
   
   const handleChoice = useCallback(async (choice: { text: string; consequence: string; nextScene: string; stateChanges?: unknown }) => {
-    console.log('handleChoice called with:', choice)
+    logger.debug('handleChoice called with:', choice)
     try {
       if (!gameState || !currentScene) {
-        console.log('Missing gameState or currentScene:', { gameState: !!gameState, currentScene: !!currentScene })
+        logger.debug('Missing gameState or currentScene:', { gameState: !!gameState, currentScene: !!currentScene })
         return
       }
       
@@ -421,33 +423,33 @@ export function GameInterface() {
     // Don't add choice as separate message - go directly to next scene
     // Load next scene immediately
     setTimeout(() => {
-      console.log('🔄 setTimeout executing, attempting to load scene:', choice.nextScene)
+      logger.debug('🔄 setTimeout executing, attempting to load scene:', choice.nextScene)
       const result = handleLoadScene(choice.nextScene)
-      console.log('🔄 handleLoadScene result:', result)
+      logger.debug('🔄 handleLoadScene result:', result)
       setProcessing(false)
     }, 500) // Shorter delay
     
     } catch (error) {
-      console.error('❌ Error in handleChoice:', error)
-      console.error('❌ Choice details:', choice)
+      logger.error('❌ Error in handleChoice:', error)
+      logger.error('❌ Choice details:', choice)
       setProcessing(false)
     }
   }, [gameState, currentScene, setProcessing, addMessage, handleLoadScene, resetPresence, choiceStartTime, performanceSystem, messages])
   
   const handleContinue = useCallback(() => {
-    console.log('handleContinue called, currentScene:', currentScene?.id)
+    logger.debug('handleContinue called, currentScene:', currentScene?.id)
     if (!currentScene) {
-      console.log('No currentScene, returning')
+      logger.debug('No currentScene, returning')
       return
     }
     
     const nextSceneId = storyEngine.getNextScene(currentScene.id)
-    console.log('Next scene ID:', nextSceneId)
+    logger.debug('Next scene ID:', nextSceneId)
     
     if (nextSceneId) {
       handleLoadScene(nextSceneId)
     } else {
-      console.log('No next scene, showing end message')
+      logger.debug('No next scene, showing end message')
       // Clear messages first, then add end message
       clearMessages()
       addMessage({
@@ -533,7 +535,7 @@ export function GameInterface() {
                       buttonText={msg.buttonText}
                       typewriter={msg.typewriter}
                       streamingMode={msg.streamingMode}
-                      isContinuedSpeaker={isContinuedSpeaker}
+                      isContinuedSpeaker={isContinuedSpeaker || false}
                       className={msg.className}
                     />
                   )
