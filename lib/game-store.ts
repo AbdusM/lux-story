@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
+import { getMemoryManager, createDebouncedStorage } from './memory-manager'
 
 // Core game state interfaces
 export interface GameState {
@@ -294,6 +295,9 @@ const initialState: GameState = {
   }
 }
 
+// Create debounced storage for performance
+const debouncedStorage = createDebouncedStorage('grand-central-game-state')
+
 // Create the game store
 export const useGameStore = create<GameState & GameActions>()(
   devtools(
@@ -455,7 +459,20 @@ export const useGameStore = create<GameState & GameActions>()(
       }
     ),
     {
-      name: 'grand-central-game-store'
+      name: 'grand-central-game-store',
+      storage: {
+        getItem: (name: string) => {
+          const str = localStorage.getItem(name)
+          if (!str) return null
+          return JSON.parse(str)
+        },
+        setItem: (name: string, value: any) => {
+          localStorage.setItem(name, JSON.stringify(value))
+        },
+        removeItem: (name: string) => {
+          localStorage.removeItem(name)
+        }
+      }
     }
   )
 )
