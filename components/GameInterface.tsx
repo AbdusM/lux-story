@@ -4,6 +4,18 @@ import { useCallback, useMemo, memo, useEffect } from 'react'
 import { useGameContext, useGameState, useGameActions, useGameSystems, useGameSupport, useGameMonitoring } from '@/contexts/GameContext'
 import { useMemoryCleanup } from '@/hooks/useMemoryCleanup'
 import { useEventBusSubscription, useEventBusEmitter, useEventBusDebug } from '@/hooks/useEventBus'
+import { 
+  useCurrentScene, 
+  useHasStarted, 
+  useIsProcessing, 
+  useMessages, 
+  usePerformanceLevel,
+  useEmotionalState,
+  useCognitiveState,
+  useSkills,
+  usePatterns,
+  usePerformanceMetrics
+} from '@/hooks/useStateSelectors'
 import { GameHeader } from './GameHeader'
 import { GameMessages } from './GameMessages'
 import { GameSupport } from './GameSupport'
@@ -41,22 +53,22 @@ export function GameInterface() {
   // Enable event bus debugging in development
   useEventBusDebug(process.env.NODE_ENV === 'development')
 
-  // Destructure for easier access
-  const {
-    currentScene,
-    hasStarted,
-    isProcessing,
-    messages,
-    performanceLevel
-  } = gameState
+  // Use optimized state selectors for better performance
+  const currentScene = useCurrentScene()
+  const hasStarted = useHasStarted()
+  const isProcessing = useIsProcessing()
+  const messages = useMessages()
+  const performanceLevel = usePerformanceLevel()
+  const emotionalState = useEmotionalState()
+  const cognitiveState = useCognitiveState()
+  const skills = useSkills()
+  const patterns = usePatterns()
+  const performanceMetrics = usePerformanceMetrics()
 
+  // Get system functions
   const {
-    emotionalState,
-    cognitiveState,
     identityState,
     neuralState,
-    skills,
-    patterns,
     updateEmotionalState,
     updateCognitiveState,
     updateIdentityState,
@@ -283,11 +295,12 @@ export function GameInterface() {
         {process.env.NODE_ENV === 'development' && (
           <div className="apple-debug-info">
             <div>Performance: {Math.round(performanceLevel * 100)}%</div>
-            <div>Stress: {emotionalState.stressLevel}</div>
-            <div>Flow: {cognitiveState.flowState}</div>
-            <div>Patterns: {Object.entries(patterns).filter(([_, v]) => (v as number) > 0).map(([k, v]) => `${k}:${v}`).join(', ')}</div>
+            <div>Stress: {emotionalState?.stressLevel || 'neutral'}</div>
+            <div>Flow: {cognitiveState?.flowState || 'neutral'}</div>
+            <div>Patterns: {Object.entries(patterns || {}).filter(([_, v]) => (v as number) > 0).map(([k, v]) => `${k}:${v}`).join(', ')}</div>
             <div>Core Web Vitals Score: {Math.round(getScore().overall)}%</div>
             <div>Memory: {getMemoryUsage().percentage.toFixed(1)}%</div>
+            <div>Performance Grade: {performanceMetrics.performanceGrade}</div>
           </div>
             )}
           </div>
