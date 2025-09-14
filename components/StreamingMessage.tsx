@@ -1,7 +1,7 @@
 "use client"
 
 import { cn } from "@/lib/utils"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useState, useRef } from "react"
 
 // Function to parse markdown-style emphasis in text
 function parseEmphasisText(text: string): React.ReactNode[] {
@@ -43,38 +43,54 @@ function parseEmphasisText(text: string): React.ReactNode[] {
   return parts.length > 0 ? parts : [text]
 }
 
-interface StoryMessageProps {
+interface StreamingMessageProps {
   speaker: string
-  text: string
+  textChunks: string[] // Array of text chunks to stream
   type?: 'narration' | 'dialogue' | 'whisper' | 'sensation'
-  messageWeight?: 'primary' | 'aside' | 'critical' // Visual hierarchy for cinematic information staging
-  buttonText?: string // Custom button text for special moments
+  messageWeight?: 'primary' | 'aside' | 'critical'
   className?: string
-  typewriter?: boolean
-  isContinuedSpeaker?: boolean // Visual grouping for same speaker messages
-  streamingMode?: 'chatbot' | 'traditional' // Streaming style selection
-  onComplete?: () => void // Called when text display is complete
+  onComplete?: () => void // Called when all chunks are complete
+  onChunkComplete?: (chunkIndex: number) => void // Called when each chunk completes
+  chunkDelays?: number[] // Custom delays between chunks (ms)
+  enableClickToComplete?: boolean
 }
 
-export function StoryMessage({ speaker, text, type = 'dialogue', messageWeight = 'primary', buttonText, className, typewriter = false, isContinuedSpeaker = false, streamingMode = 'traditional', onComplete }: StoryMessageProps) {
-  const [displayedText, setDisplayedText] = useState(typewriter ? "" : text)
-  const [showContinueIndicator, setShowContinueIndicator] = useState(false)
+export function StreamingMessage({ 
+  speaker, 
+  textChunks, 
+  type = 'dialogue', 
+  messageWeight = 'primary', 
+  className,
+  onComplete,
+  onChunkComplete,
+  chunkDelays = [0, 800, 1200], // Default delays between chunks
+  enableClickToComplete = true
+}: StreamingMessageProps) {
+  // ONLY state that triggers re-renders
+  const [displayedText, setDisplayedText] = useState("")
+  const [isComplete, setIsComplete] = useState(false)
+  const [isStreaming, setIsStreaming] = useState(false)
   
-  const isLux = speaker === 'Lux'
-  const isZippy = speaker === 'Zippy'
+  // ALL control flow uses refs to prevent re-render loops
+  const currentChunkIndexRef = useRef(0)
+  const currentCharIndexRef = useRef(0)
+  const streamingTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const chunkTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const isInitializedRef = useRef(false)
+  const isMountedRef = useRef(true)
+  
   const isNarration = type === 'narration'
   const isWhisper = type === 'whisper'
   const isSensation = type === 'sensation'
   
-  // Character-specific styling with Birmingham-inspired colors
+  // Character-specific styling (same as StoryMessage)
   const characterStyles = {
-    // Grand Central Terminus characters
     'narrator': 'text-slate-600 dark:text-slate-400',
-    'You': 'text-emerald-600 dark:text-emerald-400 font-medium', // Birmingham green
-    'Samuel': 'text-amber-700 dark:text-amber-300', // Station conductor gold
-    'Maya': 'text-blue-600 dark:text-blue-400', // Medical blue
-    'Devon': 'text-orange-600 dark:text-orange-400', // Construction orange
-    'Jordan': 'text-purple-600 dark:text-purple-400', // Career guidance purple
+    'You': 'text-emerald-600 dark:text-emerald-400 font-medium',
+    'Samuel': 'text-amber-700 dark:text-amber-300',
+    'Maya': 'text-blue-600 dark:text-blue-400',
+    'Devon': 'text-orange-600 dark:text-orange-400',
+    'Jordan': 'text-purple-600 dark:text-purple-400',
     'Alex': 'text-green-600 dark:text-green-400',
     'Dr. Sarah Martinez': 'text-blue-700 dark:text-blue-300',
     'Marcus Thompson': 'text-indigo-600 dark:text-indigo-400',
@@ -88,7 +104,7 @@ export function StoryMessage({ speaker, text, type = 'dialogue', messageWeight =
     'Young Traveler': 'text-amber-600 dark:text-amber-400',
     'Community Leader': 'text-red-600 dark:text-red-400',
     'Career Advisor': 'text-lime-600 dark:text-lime-400',
-    // Legacy characters (for backward compatibility)
+    // Legacy characters
     'Lux': 'lux-text-glow text-purple-600 dark:text-purple-400',
     'Zippy': 'zippy-text-glow text-blue-500 dark:text-blue-400',
     'Swift': 'swift-text-glow text-green-600 dark:text-green-400',
@@ -101,7 +117,6 @@ export function StoryMessage({ speaker, text, type = 'dialogue', messageWeight =
   }
   
   const characterEmoji = {
-    // Grand Central Terminus characters
     'narrator': '📖',
     'You': '👤',
     'Samuel': '🚂',
@@ -121,7 +136,7 @@ export function StoryMessage({ speaker, text, type = 'dialogue', messageWeight =
     'Young Traveler': '🗺️',
     'Community Leader': '🏛️',
     'Career Advisor': '📈',
-    // Legacy characters (for backward compatibility)
+    // Legacy characters
     'Lux': '🦥',
     'Zippy': '🦋',
     'Swift': '🏃‍♀️',
@@ -132,53 +147,128 @@ export function StoryMessage({ speaker, text, type = 'dialogue', messageWeight =
     'Forest': '🌲',
     'Body': '❤️',
   }
-  
-  useEffect(() => {
-    if (typewriter && text) {
-      let index = 0
-      let timer: NodeJS.Timeout
+
+  // Cleanup function - clears all timeouts safely
+  const cleanup = useCallback(() => {
+    if (streamingTimeoutRef.current) {
+      clearTimeout(streamingTimeoutRef.current)
+      streamingTimeoutRef.current = null
+    }
+    if (chunkTimeoutRef.current) {
+      clearTimeout(chunkTimeoutRef.current)
+      chunkTimeoutRef.current = null
+    }
+  }, [])
+
+  // Complete streaming immediately with all text
+  const completeStreaming = useCallback(() => {
+    if (!isMountedRef.current) return
+    
+    cleanup()
+    const allText = textChunks.join(' ')
+    setDisplayedText(allText)
+    setIsStreaming(false)
+    setIsComplete(true)
+    onComplete?.()
+  }, [textChunks, cleanup, onComplete])
+
+  // Stream single character - pure function with no external dependencies
+  const streamNextChar = useCallback(() => {
+    if (!isMountedRef.current) return
+    
+    // Bounds checking for safety
+    if (currentChunkIndexRef.current >= textChunks.length) {
+      completeStreaming()
+      return
+    }
+    
+    const currentChunk = textChunks[currentChunkIndexRef.current]
+    if (!currentChunk || typeof currentChunk !== 'string') {
+      completeStreaming()
+      return
+    }
+
+    // Calculate full text up to current position
+    const completedChunks = textChunks.slice(0, currentChunkIndexRef.current)
+    const currentChunkText = currentChunk.slice(0, currentCharIndexRef.current + 1)
+    const fullText = [...completedChunks, currentChunkText].join(' ')
+    
+    setDisplayedText(fullText)
+    currentCharIndexRef.current++
+    
+    // Check if current chunk is complete
+    if (currentCharIndexRef.current >= currentChunk.length) {
+      // Chunk completed
+      onChunkComplete?.(currentChunkIndexRef.current)
       
-      const typeNextChar = () => {
-        if (index < text.length) {
-          setDisplayedText(text.slice(0, index + 1))
-          index++
-          // Chatbot mode: faster streaming (25ms), Traditional: original speed (40ms)
-          const delay = streamingMode === 'chatbot' ? 25 : 40
-          timer = setTimeout(typeNextChar, delay)
-        } else {
-          setShowContinueIndicator(true)
-          onComplete?.() // Notify when complete
-        }
+      // Move to next chunk
+      currentChunkIndexRef.current++
+      currentCharIndexRef.current = 0
+      
+      // Check if all chunks are done
+      if (currentChunkIndexRef.current >= textChunks.length) {
+        setIsStreaming(false)
+        setIsComplete(true)
+        onComplete?.()
+        return
       }
       
-      timer = setTimeout(typeNextChar, streamingMode === 'chatbot' ? 50 : 100) // Initial delay
-      return () => clearTimeout(timer)
-    } else if (!typewriter) {
-      // Non-typewriter text is immediately complete
-      onComplete?.()
+      // Schedule next chunk with delay - with bounds checking
+      const safeDelay = Math.max(0, chunkDelays?.[currentChunkIndexRef.current] || 800)
+      chunkTimeoutRef.current = setTimeout(() => {
+        if (isMountedRef.current) {
+          streamNextChar()
+        }
+      }, safeDelay)
+    } else {
+      // Continue with next character
+      streamingTimeoutRef.current = setTimeout(() => {
+        if (isMountedRef.current) {
+          streamNextChar()
+        }
+      }, 25) // Fast streaming like chatbots
     }
-  }, [text, typewriter, streamingMode, onComplete])
-  
-  // Enhanced click to skip typewriter effect
+  }, [textChunks, chunkDelays, onChunkComplete, onComplete, completeStreaming])
+
+  // Initialize streaming once on mount
+  useEffect(() => {
+    // Safety guards for edge cases
+    if (isInitializedRef.current || !textChunks?.length || textChunks.some(chunk => typeof chunk !== 'string')) {
+      return
+    }
+    
+    isInitializedRef.current = true
+    setIsStreaming(true)
+    
+    // Start streaming with initial delay
+    const initialDelay = Math.max(0, chunkDelays?.[0] || 0) // Ensure non-negative delay
+    streamingTimeoutRef.current = setTimeout(() => {
+      if (isMountedRef.current) {
+        streamNextChar()
+      }
+    }, initialDelay)
+    
+    // Cleanup on unmount
+    return () => {
+      isMountedRef.current = false
+      cleanup()
+    }
+  }, []) // Empty dependency array - runs once on mount only
+
+  // Click to complete handler
   const handleClick = useCallback(() => {
-    if (typewriter && displayedText.length < text.length) {
-      setDisplayedText(text)
-      setShowContinueIndicator(true)
-      onComplete?.() // Notify completion when skipped
-    }
-  }, [typewriter, displayedText.length, text, onComplete])
-  
-  // Pokemon-style design - full width, game-like presentation
+    if (!enableClickToComplete || isComplete) return
+    completeStreaming()
+  }, [enableClickToComplete, isComplete, completeStreaming])
+
   const isUserMessage = speaker === 'You'
-  const showCharacterAvatar = !isNarration && !isWhisper && !isSensation && !isUserMessage && !isContinuedSpeaker
-  
+  const showCharacterAvatar = !isNarration && !isWhisper && !isSensation && !isUserMessage
+
   return (
     <div className={cn(
-      "pokemon-message-container w-full",
-      isContinuedSpeaker ? "mb-3" : "mb-6", // Tighter spacing for continued speakers
+      "pokemon-message-container w-full mb-6",
       "animate-in slide-in-from-bottom-4 duration-700",
       speaker.toLowerCase().replace(' ', '-'),
-      isContinuedSpeaker && "continued-speaker", // CSS class for continued speakers
       className
     )} data-type={type}>
       
@@ -191,7 +281,7 @@ export function StoryMessage({ speaker, text, type = 'dialogue', messageWeight =
           "rounded-lg",
           "p-6 md:p-8",
           "shadow-pokemon",
-          typewriter && displayedText.length < text.length && "cursor-pointer",
+          enableClickToComplete && !isComplete && "cursor-pointer",
           // Multiple layered borders for authentic Game Boy feel
           "before:content-[''] before:absolute before:inset-1 before:border-1 before:border-gray-300/40 before:rounded",
           "after:content-[''] after:absolute after:inset-3 after:border-1 after:border-gray-200/30 after:rounded-sm"
@@ -208,10 +298,9 @@ export function StoryMessage({ speaker, text, type = 'dialogue', messageWeight =
         onClick={handleClick}
       >
         
-        {/* Character Section - Top of text box like Pokemon */}
+        {/* Character Section */}
         {showCharacterAvatar && (
           <div className="flex items-center gap-4 mb-4 pb-4 border-b-2 border-gray-200">
-            {/* Large Character Avatar - Pokemon NPC style */}
             <div className={cn(
               "w-16 h-16 rounded-full flex items-center justify-center text-2xl",
               "bg-gradient-to-br from-amber-100 via-amber-200 to-amber-300",
@@ -228,12 +317,11 @@ export function StoryMessage({ speaker, text, type = 'dialogue', messageWeight =
               {characterEmoji[speaker as keyof typeof characterEmoji] || '🌟'}
             </div>
             
-            {/* Character Info */}
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-1">
                 <span className={cn(
                   "text-lg font-bold uppercase tracking-wider",
-                  "font-mono", // Pokemon-style typography
+                  "font-mono",
                   characterStyles[speaker as keyof typeof characterStyles] || "text-slate-800"
                 )} style={{
                   fontFamily: "'Courier New', monospace, 'Pokemon GB'",
@@ -260,20 +348,18 @@ export function StoryMessage({ speaker, text, type = 'dialogue', messageWeight =
           </div>
         )}
         
-        {/* Message Text - Enhanced with Semantic Hierarchy */}
+        {/* Streaming Text Content */}
         <div className={cn(
-          "pokemon-text", // Base Pokemon text styling
-          // Conditional Tailwind overrides based on semantic classes
+          "pokemon-text", 
           !className?.includes('semantic-') && "text-base leading-relaxed text-gray-900 dark:text-gray-800 font-medium",
           isNarration && "text-center italic",
           isWhisper && "italic opacity-90 text-purple-700",
           isSensation && "italic opacity-85 text-red-600",
           messageWeight === 'aside' && "message-aside",
           messageWeight === 'critical' && "message-critical",
-          className // Semantic styling classes take priority
+          className
         )} style={{
           fontFamily: "'Inter', 'Pokemon GB', monospace",
-          // Allow semantic classes to override text shadow
           textShadow: className?.includes('semantic-') ? undefined : "0 1px 2px rgba(0,0,0,0.1)"
         }}>
           {speaker === 'Memory' && <span className="text-2xl mr-2">💭</span>}
@@ -281,26 +367,11 @@ export function StoryMessage({ speaker, text, type = 'dialogue', messageWeight =
             {parseEmphasisText(displayedText)}
           </span>
           
-          {/* Typing cursor - different styles for different modes */}
-          {typewriter && displayedText.length < text.length && (
-            streamingMode === 'chatbot' ? (
-              <span className="animate-pulse text-gray-600 text-lg ml-1 opacity-70">▋</span>
-            ) : (
-              <span className="animate-pulse text-gray-600 text-2xl ml-1">|</span>
-            )
+          {/* Chatbot-style streaming cursor */}
+          {isStreaming && !isComplete && (
+            <span className="animate-pulse text-gray-600 text-lg ml-1 opacity-70">▋</span>
           )}
         </div>
-        
-        {/* Custom button text only (no arrow needed since we have Continue button) */}
-        {(!typewriter || showContinueIndicator) && buttonText && (
-          <div className="flex justify-center mt-6">
-            <div className="text-center">
-              <div className="text-xs text-gray-500 mt-1 font-medium">
-                {buttonText}
-              </div>
-            </div>
-          </div>
-        )}
         
         {/* User Choice Styling */}
         {isUserMessage && (

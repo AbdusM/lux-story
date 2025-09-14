@@ -915,7 +915,7 @@
           "nextScene": "after_revelation_choice"
         },
         {
-          "id": "samuel-choice-deeper-1-2",
+          "id": "samuel-choice-deeper-1",
           "type": "choice",
           "text": "Samuel seems lost in thought, staring at something in the distance. There's a weight in their expression you haven't seen before.",
           "choices": [
@@ -993,7 +993,7 @@
           "nextScene": "after_revelation_choice"
         },
         {
-          "id": "devon-choice-deeper-1-2",
+          "id": "devon-choice-deeper-1",
           "type": "choice",
           "text": "Devon seems lost in thought, staring at something in the distance. There's a weight in their expression you haven't seen before.",
           "choices": [
@@ -1071,7 +1071,7 @@
           "nextScene": "after_revelation_choice"
         },
         {
-          "id": "jordan-choice-deeper-1-2",
+          "id": "jordan-choice-deeper-1",
           "type": "choice",
           "text": "Jordan seems lost in thought, staring at something in the distance. There's a weight in their expression you haven't seen before.",
           "choices": [

@@ -1,0 +1,17 @@
+{
+  "summary": {
+    "totalScenes": 471,
+    "duplicateIds": 0,
+    "selfReferences": 0,
+    "brokenReferences": 0,
+    "contentIssues": 0,
+    "totalIssues": 0
+  },
+  "issues": {
+    "duplicateIds": [],
+    "selfReferences": [],
+    "brokenReferences": [],
+    "missingContent": [],
+    "invalidStructure": []
+  }
+}

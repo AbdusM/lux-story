@@ -1,6 +1,37 @@
-# Documentation Index
+# Interactive Narrative Game Development Documentation
 
-## 📁 Documentation Structure
+This collection represents distilled wisdom from extensive analysis of educational game development, extracted from real-world development cycles and AAA game design standards.
+
+## 📚 Best Practices Documentation Suite
+
+### **Core Design Frameworks** ⭐ **START HERE**
+
+#### [Interactive Narrative Best Practices Guide](./INTERACTIVE_NARRATIVE_BEST_PRACTICES.md)
+**The Master Reference** - Comprehensive guide covering core design philosophy, critical success factors, and implementation standards.
+- AAA-quality design standards ("Feel" over features)
+- Critical success factors (Information completeness, cognitive load)
+- The "Cathedral Principle" - holistic quality philosophy
+
+#### [Cognitive Load Assessment Framework](./COGNITIVE_LOAD_ASSESSMENT_FRAMEWORK.md)
+**The Evaluation Tool** - Systematic methodology for measuring and optimizing cognitive complexity for ages 9-13.
+- The 10-15 Second Rule for decision parsing
+- Screen-by-screen analysis templates
+- Age-specific testing protocols
+
+#### [Quality Assessment Scoring Rubric](./QUALITY_ASSESSMENT_SCORING_RUBRIC.md)
+**The Decision Framework** - Objective scoring system with weighted categories and launch readiness criteria.
+- Category A (40%): Critical Success Factors
+- Launch thresholds: 8.0+ (Excellent), 7.0+ (Good), <6.0 (Do not launch)
+
+#### [UI/UX Implementation Patterns](./UI_UX_IMPLEMENTATION_PATTERNS.md)
+**The Code Cookbook** - Specific React/CSS patterns for interactive narrative design challenges.
+- Progressive Information Disclosure
+- Semantic Typography Systems
+- Adaptive Difficulty & Emotional State Tracking
+
+---
+
+## 📁 Project Documentation Structure
 
 ### `/technical`
 Technical implementation and deployment guides
