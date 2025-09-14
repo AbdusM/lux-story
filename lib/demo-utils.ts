@@ -6,6 +6,7 @@
 
 import { getPatternTracker } from './game-state'
 
+import { logger } from '@/lib/logger'
 /**
  * Show pattern analysis in console (for demo only)
  */
@@ -13,7 +14,7 @@ export function showDemoPatterns() {
   const tracker = getPatternTracker()
   const patterns = tracker.getPatternData()
   
-  console.log('%c=== GRANT DEMO: Pattern Analysis ===', 'color: #10b981; font-weight: bold')
+  logger.debug('%c=== GRANT DEMO: Pattern Analysis ===', 'color: #10b981; font-weight: bold')
   
   // Count theme frequencies
   const themeCounts: Record<string, number> = {}
@@ -25,9 +26,9 @@ export function showDemoPatterns() {
   const sortedThemes = Object.entries(themeCounts)
     .sort(([, a], [, b]) => b - a)
   
-  console.log('%cChoice Patterns Detected:', 'color: #3b82f6; font-weight: bold')
+  logger.debug('%cChoice Patterns Detected:', 'color: #3b82f6; font-weight: bold')
   sortedThemes.forEach(([theme, count]) => {
-    console.log(`  - "${theme}" chosen ${count} times`)
+    logger.debug(`  - "${theme}" chosen ${count} times`)
   })
   
   // Determine career affinity
@@ -43,14 +44,14 @@ export function showDemoPatterns() {
     }
     
     const suggestedPath = careerMap[dominant] || 'Exploration Phase'
-    console.log(`%cNatural Affinity Detected: ${suggestedPath}`, 'color: #f59e0b; font-weight: bold')
+    logger.debug(`%cNatural Affinity Detected: ${suggestedPath}`, 'color: #f59e0b; font-weight: bold')
   }
   
-  console.log(`%cTotal Choices Made: ${patterns.choiceThemes.length}`, 'color: #8b5cf6')
-  console.log('%cAnxiety Indicators: None', 'color: #10b981')
-  console.log('%cAchievements Unlocked: N/A (No achievement system)', 'color: #64748b')
+  logger.debug(`%cTotal Choices Made: ${patterns.choiceThemes.length}`, 'color: #8b5cf6')
+  logger.debug('%cAnxiety Indicators: None', 'color: #10b981')
+  logger.debug('%cAchievements Unlocked: N/A (No achievement system)', 'color: #64748b')
   
-  console.log('%c=================================', 'color: #10b981; font-weight: bold')
+  logger.debug('%c=================================', 'color: #10b981; font-weight: bold')
 }
 
 /**
@@ -74,7 +75,7 @@ export function seedDemoPatterns() {
     tracker.recordChoiceTheme(theme)
   })
   
-  console.log('%cDemo patterns seeded for presentation', 'color: #64748b; font-style: italic')
+  logger.debug('%cDemo patterns seeded for presentation', 'color: #64748b; font-style: italic')
 }
 
 /**
@@ -83,20 +84,20 @@ export function seedDemoPatterns() {
 export function clearDemoPatterns() {
   const tracker = getPatternTracker()
   tracker.reset()
-  console.log('%cPatterns cleared for fresh demo', 'color: #64748b; font-style: italic')
+  logger.debug('%cPatterns cleared for fresh demo', 'color: #64748b; font-style: italic')
 }
 
 /**
  * Show Birmingham-specific metrics
  */
 export function showBirminghamMetrics() {
-  console.log('%c=== Birmingham Impact Metrics ===', 'color: #dc2626; font-weight: bold')
-  console.log('Counties Served: 7 of 7')
-  console.log('Rural Access: ✓ Offline capable')
-  console.log('Employer Partners: 5 (unnamed in narrative)')
-  console.log('Civil Rights Integration: ✓')
-  console.log('Mental Health Focus: Anxiety reduction through stillness')
-  console.log('%c================================', 'color: #dc2626; font-weight: bold')
+  logger.debug('%c=== Birmingham Impact Metrics ===', 'color: #dc2626; font-weight: bold')
+  logger.debug('Counties Served: 7 of 7')
+  logger.debug('Rural Access: ✓ Offline capable')
+  logger.debug('Employer Partners: 5 (unnamed in narrative)')
+  logger.debug('Civil Rights Integration: ✓')
+  logger.debug('Mental Health Focus: Anxiety reduction through stillness')
+  logger.debug('%c================================', 'color: #dc2626; font-weight: bold')
 }
 
 // Demo utilities interface

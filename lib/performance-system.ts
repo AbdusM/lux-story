@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger'
 /**
  * Performance System for Lux
  * Tracks and influences gameplay based on the equation:
@@ -75,7 +76,7 @@ export class PerformanceSystem {
       }
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(toSave))
     } catch (error) {
-      console.warn('Failed to save performance metrics:', error)
+      logger.warn('Failed to save performance metrics:', error)
     }
   }
   
