@@ -20,43 +20,111 @@ export function useAdaptiveNarrative() {
   }, [performanceSystem])
   
   /**
-   * Enhance scene text based on performance level
+   * Semantic content analyzer - identifies content types and assigns hierarchy
+   */
+  const analyzeContentSemantics = useCallback((text: string) => {
+    const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0)
+    
+    return sentences.map(sentence => {
+      const cleanSentence = sentence.trim()
+      
+      // Critical action - demands immediate attention
+      if (/(\d+ minutes?.*find|find.*\d+ minutes?|got \d+|have \d+.*to)/i.test(cleanSentence)) {
+        return { text: cleanSentence, type: 'critical-action', priority: 1 }
+      }
+      
+      // Specific time - important for urgency
+      if (/\d+:\d+|clock says|time shows/i.test(cleanSentence)) {
+        return { text: cleanSentence, type: 'specific-time', priority: 2 }
+      }
+      
+      // Stakes/mystery - intriguing but not urgent
+      if (/(supposed to|meant to|going to|will|future|change everything|destiny|fate)/i.test(cleanSentence)) {
+        return { text: cleanSentence, type: 'stakes-mystery', priority: 4 }
+      }
+      
+      // Time markers - moderate emphasis
+      if (/(almost|nearly|midnight|dawn|dusk|— |tonight|today)/i.test(cleanSentence)) {
+        return { text: cleanSentence, type: 'time-marker', priority: 3 }
+      }
+      
+      // Atmosphere - recedes to background
+      if (/(cold|hot|dark|bright|smells|sounds|feels|quiet|loud)/i.test(cleanSentence)) {
+        return { text: cleanSentence, type: 'atmosphere', priority: 5 }
+      }
+      
+      // Default to moderate importance
+      return { text: cleanSentence, type: 'default', priority: 3 }
+    }).sort((a, b) => a.priority - b.priority)
+  }, [])
+
+  /**
+   * Enhance scene text based on performance level and improve formatting
    */
   const enhanceSceneText = useCallback((originalText: string, sceneType: string): string => {
-    // Don't modify choice texts or dialogue
-    if (sceneType !== 'narration') return originalText
+    let enhancedText = originalText
     
+    // Add emphasis and styling for key narrative elements
+    enhancedText = enhancedText
+      // Platform numbers get special treatment
+      .replace(/Platform (\d+(?:½)?)/g, '**Platform $1**')
+      // Time references for urgency
+      .replace(/(\d+:\d+|\d+ minutes?)/g, '***$1***')
+      // Important locations and concepts
+      .replace(/(Grand Central Station|Grand Central Terminus)/g, '*$1*')
+      // Letter-style quotes get emphasis
+      .replace(/"([^"]+)"/g, '*"$1"*')
+      // Future references
+      .replace(/(Future You|future awaits)/gi, '**$1**')
+    
+    // Add better line breaks for all text types
+    enhancedText = enhancedText
+      // Add breaks after sentence-ending periods followed by space and capital letter
+      .replace(/\. ([A-Z])/g, '.\n\n$1')
+      // Add breaks after questions and exclamations
+      .replace(/[?!] ([A-Z])/g, '$&\n\n')
+      // Add breaks before conjunctions that start new ideas
+      .replace(/ (But|However|Meanwhile|Suddenly|Then|Now) /g, '\n\n$1 ')
+      // Add spacing around em dashes for emphasis
+      .replace(/ - /g, '\n\n— ')
+      // Break up long descriptions with commas into separate lines for better readability
+      .replace(/, ([a-z][^,]{25,})/g, ',\n$1')
+    
+    // Don't modify choice texts or dialogue beyond formatting
+    if (sceneType !== 'narration') return enhancedText
+    
+    // Performance-based enhancements only for narration - reduced frequency
     switch (performanceLevel) {
       case 'struggling':
-        // Add calming additions for anxious players
-        if (Math.random() < 0.3) {
-          return originalText + " The station gives you time to think."
+        // Add calming additions for anxious players - much less frequently
+        if (Math.random() < 0.05) {
+          return enhancedText + "\n\nThe station gives you time to think."
         }
         break
         
       case 'exploring':
-        // Encourage exploration
-        if (Math.random() < 0.2) {
-          return originalText + " Many paths remain undiscovered."
+        // Encourage exploration - reduced frequency
+        if (Math.random() < 0.08) {
+          return enhancedText + "\n\nMany paths remain undiscovered."
         }
         break
         
       case 'flowing':
-        // Affirm their rhythm
-        if (Math.random() < 0.2) {
-          return originalText + " Your choices align with Birmingham's rhythm."
+        // Affirm their rhythm - reduced frequency  
+        if (Math.random() < 0.08) {
+          return enhancedText + "\n\nYour choices align with Birmingham's rhythm."
         }
         break
         
       case 'mastering':
-        // Deeper insights
-        if (Math.random() < 0.25) {
-          return originalText + " The patterns reveal themselves to your patient observation."
+        // Deeper insights - reduced frequency
+        if (Math.random() < 0.1) {
+          return enhancedText + "\n\nThe patterns reveal themselves to your patient observation."
         }
         break
     }
     
-    return originalText
+    return enhancedText
   }, [performanceLevel])
   
   /**
@@ -149,6 +217,7 @@ export function useAdaptiveNarrative() {
   return {
     performanceLevel,
     enhanceSceneText,
+    analyzeContentSemantics,
     getAmbientMessage,
     enhanceChoices,
     getBreathingFrequency

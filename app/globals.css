@@ -2,15 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Import centralized animations */
+/* Import consolidated styles */
+@import '../styles/core.css';
+@import '../styles/components.css';
+@import '../styles/mobile.css';
 @import '../styles/animations.css';
 @import '../styles/performance.css';
 @import '../styles/grand-central.css';
-@import '../styles/mobile-text.css';
-@import '../styles/mobile-viewport-fix.css';
-@import '../styles/mobile-critical-fixes.css';
-@import '../styles/choice-cards-fix.css';
-@import '../styles/continue-button-fix.css';
+@import '../styles/pokemon-ui.css';
 
 @layer base {
   :root {
@@ -61,6 +60,7 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-size: 1.125rem; /* 18px - increased from default 16px */
   }
 }
 
@@ -79,12 +79,12 @@
   }
   
   .text-dialogue {
-    @apply text-lg leading-relaxed tracking-wide;
+    @apply text-xl leading-relaxed tracking-wide;
     font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
   }
   
   .text-narration {
-    @apply text-lg leading-loose tracking-wider;
+    @apply text-xl leading-loose tracking-wider;
     font-family: Georgia, "Times New Roman", serif;
   }
 }

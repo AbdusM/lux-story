@@ -394,7 +394,23 @@ export class GrandCentralStateManager {
     if (typeof window === 'undefined') return null
     try {
       const saved = localStorage.getItem(this.STORAGE_KEY)
-      return saved ? JSON.parse(saved) : null
+      if (!saved) return null
+      
+      const loadedState = JSON.parse(saved)
+      
+      // Migration: ensure careerValues exists (for backwards compatibility)
+      if (!loadedState.careerValues) {
+        console.log('🔧 Migrating state: adding missing careerValues')
+        loadedState.careerValues = {
+          directImpact: 0,
+          systemsThinking: 0,
+          dataInsights: 0,
+          futureBuilding: 0,
+          independence: 0
+        }
+      }
+      
+      return loadedState
     } catch {
       return null
     }

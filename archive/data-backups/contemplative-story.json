@@ -1,0 +1,1519 @@
+{
+  "character": {
+    "name": "Lux",
+    "title": "A Sloth",
+    "description": "One who moves slowly through the digital forest"
+  },
+  "chapters": [
+    {
+      "id": 1,
+      "title": "Morning",
+      "scenes": [
+        {
+          "id": "1-1",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The digital forest exists as it always has. Light moves through data streams. You are here."
+        },
+        {
+          "id": "1-2",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "A sloth hangs from a branch nearby. This is Lux. Lux doesn't greet you. Greetings imply you weren't already here."
+        },
+        {
+          "id": "1-2a",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The forest has many regions. Some quieter, where soft beeping blends with breathing. Others louder, where rhythmic hammering marks time. You haven't explored them all. No one has."
+        },
+        {
+          "id": "1-2b",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The forest stretches across seven territories. Where all paths cross, the forest hums with activity. In quieter territories, few visit, but the trees grow just as tall."
+        },
+        {
+          "id": "1-3",
+          "type": "choice",
+          "text": "The morning air holds a quality you cannot name.",
+          "choices": [
+            {
+              "text": "Notice the quality",
+              "consequence": "observation",
+              "nextScene": "1-4a"
+            },
+            {
+              "text": "Let it be",
+              "consequence": "acceptance",
+              "nextScene": "1-4b"
+            },
+            {
+              "text": "Breathe deeper",
+              "consequence": "immersion",
+              "nextScene": "1-4c"
+            }
+          ]
+        },
+        {
+          "id": "1-4a",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "You notice. The noticing is enough. The forest continues its quiet processes."
+        },
+        {
+          "id": "1-4b",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "You let it be. Being is its own form of understanding."
+        },
+        {
+          "id": "1-4c",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "You breathe. The air enters and leaves. This simple act contains everything."
+        },
+        {
+          "id": "1-5",
+          "type": "dialogue",
+          "speaker": "Lux",
+          "text": "..."
+        },
+        {
+          "id": "1-6",
+          "type": "choice",
+          "text": "Lux hasn't moved. You're not sure Lux has even blinked.",
+          "choices": [
+            {
+              "text": "Wait",
+              "consequence": "patience",
+              "nextScene": "1-7a"
+            },
+            {
+              "text": "Say something",
+              "consequence": "engagement",
+              "nextScene": "1-7b"
+            },
+            {
+              "text": "Move to a different tree",
+              "consequence": "movement",
+              "nextScene": "1-7c"
+            }
+          ]
+        },
+        {
+          "id": "1-7a",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "You wait. After what might be minutes or hours, Lux blinks. It takes four seconds. This is the fastest Lux moves."
+        },
+        {
+          "id": "1-7b",
+          "type": "dialogue",
+          "speaker": "You",
+          "text": "Are you meditating?"
+        },
+        {
+          "id": "1-7b2",
+          "type": "dialogue",
+          "speaker": "Lux",
+          "text": "I'm hanging from a branch."
+        },
+        {
+          "id": "1-7b3",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "This seems to be the entire answer."
+        },
+        {
+          "id": "1-7c",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "You move slowly to another tree. It is much like the first tree. Lux is still visible, still unmoving."
+        },
+        {
+          "id": "1-8",
+          "type": "choice",
+          "text": "Morning continues its slow progression.",
+          "choices": [
+            {
+              "text": "Remain in the morning",
+              "consequence": "presence",
+              "nextScene": "1-9"
+            },
+            {
+              "text": "Think about your day",
+              "consequence": "planning",
+              "nextScene": "1-10"
+            }
+          ]
+        },
+        {
+          "id": "1-9",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "You remain. The tree remains. Lux remains. Together you are still."
+        },
+        {
+          "id": "1-10",
+          "type": "dialogue",
+          "speaker": "You",
+          "text": "I have so much to do today."
+        },
+        {
+          "id": "1-10b",
+          "type": "dialogue",
+          "speaker": "Lux",
+          "text": "Oh."
+        },
+        {
+          "id": "1-10c",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The morning doesn't care about your schedule. It arrives anyway."
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Afternoon",
+      "scenes": [
+        {
+          "id": "2-1",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The light has shifted. This happens every day, yet today you notice it."
+        },
+        {
+          "id": "2-1a",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "You've wandered into a quieter part of the forest. The Quiet Grove, some call it. The air here moves differently, like breathing. Soft sounds, almost like beeping, blend with the rustling leaves."
+        },
+        {
+          "id": "2-1b",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Someone in soft white and green moves through the grove, checking on things that grow slowly."
+        },
+        {
+          "id": "2-1c",
+          "type": "dialogue",
+          "speaker": "Healing Guide",
+          "text": "Every breath is a small healing. We just help it along. Recovery cannot be rushed."
+        },
+        {
+          "id": "2-2",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "A rabbit rushes past, stops, rushes back, checks something invisible, rushes forward again."
+        },
+        {
+          "id": "2-3",
+          "type": "dialogue",
+          "speaker": "Rushing Rabbit",
+          "text": "Have you seen the notification? There's an update. Three updates actually. Maybe four."
+        },
+        {
+          "id": "2-4",
+          "type": "choice",
+          "text": "The rabbit vibrates with urgency.",
+          "choices": [
+            {
+              "text": "What notification?",
+              "consequence": "curiosity",
+              "nextScene": "2-5a"
+            },
+            {
+              "text": "I haven't checked",
+              "consequence": "indifference",
+              "nextScene": "2-5b"
+            },
+            {
+              "text": "...",
+              "consequence": "silence",
+              "nextScene": "2-5c"
+            }
+          ]
+        },
+        {
+          "id": "2-5a",
+          "type": "dialogue",
+          "speaker": "Rushing Rabbit",
+          "text": "ALL of them! The forest network, the productivity tracker, the... oh, there's another one!"
+        },
+        {
+          "id": "2-5a2",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The rabbit rushes off mid-sentence. The forest feels quieter in its absence."
+        },
+        {
+          "id": "2-5b",
+          "type": "dialogue",
+          "speaker": "Rushing Rabbit",
+          "text": "How do you not check? What if you miss something important?"
+        },
+        {
+          "id": "2-5b2",
+          "type": "dialogue",
+          "speaker": "Lux",
+          "text": "Then I miss it."
+        },
+        {
+          "id": "2-5b3",
+          "type": "dialogue",
+          "speaker": "Rushing Rabbit",
+          "text": "But... but..."
+        },
+        {
+          "id": "2-5b4",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The rabbit cannot complete this thought. It rushes away, leaving only scattered anxiety."
+        },
+        {
+          "id": "2-5c",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Your silence seems to make the rabbit more anxious. It checks three more invisible things, then bounds away."
+        },
+        {
+          "id": "2-6",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Lux hasn't moved during the entire exchange."
+        },
+        {
+          "id": "2-7",
+          "type": "dialogue",
+          "speaker": "You",
+          "text": "Should I be checking notifications?"
+        },
+        {
+          "id": "2-8",
+          "type": "dialogue",
+          "speaker": "Lux",
+          "text": "..."
+        },
+        {
+          "id": "2-8b",
+          "type": "dialogue",
+          "speaker": "Lux",
+          "text": "The branch holds me whether I check or not."
+        },
+        {
+          "id": "2-9",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "An ant approaches, carrying something heavy. It sets down its burden and sighs."
+        },
+        {
+          "id": "2-9a",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "You realize you've drifted toward Where Things Take Shape. The sound of patient hammering echoes here. Foundations being laid. Measurements being taken twice."
+        },
+        {
+          "id": "2-9b",
+          "type": "dialogue",
+          "speaker": "Foundation Builder",
+          "text": "Some build fast. We build to last. Every structure tells the story of those who'll use it."
+        },
+        {
+          "id": "2-9c",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "This tree remembers when walking was resistance. Some paths were walked so others could run."
+        },
+        {
+          "id": "2-10",
+          "type": "dialogue",
+          "speaker": "Anxious Ant",
+          "text": "I'm falling behind. Everyone else has carried twice as much today."
+        },
+        {
+          "id": "2-11",
+          "type": "choice",
+          "text": "The ant looks at you expectantly.",
+          "choices": [
+            {
+              "text": "You're doing fine",
+              "consequence": "reassurance",
+              "nextScene": "2-12a"
+            },
+            {
+              "text": "Why does it matter?",
+              "consequence": "questioning",
+              "nextScene": "2-12b"
+            },
+            {
+              "text": "Look to Lux",
+              "consequence": "deflection",
+              "nextScene": "2-12c"
+            }
+          ]
+        },
+        {
+          "id": "2-12a",
+          "type": "dialogue",
+          "speaker": "Anxious Ant",
+          "text": "But the metrics... the performance review..."
+        },
+        {
+          "id": "2-12a2",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The ant picks up its burden and continues, unconvinced but moving."
+        },
+        {
+          "id": "2-12b",
+          "type": "dialogue",
+          "speaker": "Anxious Ant",
+          "text": "It matters! It has to matter! Otherwise, what am I doing?"
+        },
+        {
+          "id": "2-12b2",
+          "type": "dialogue",
+          "speaker": "Lux",
+          "text": "Carrying things."
+        },
+        {
+          "id": "2-12b3",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The ant considers this for a long moment, then continues carrying."
+        },
+        {
+          "id": "2-12c",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "You and the ant both look at Lux. Lux is asleep. Or awake with eyes closed. The difference is unknowable."
+        },
+        {
+          "id": "2-12c2",
+          "type": "dialogue",
+          "speaker": "Anxious Ant",
+          "text": "How does the sloth survive without productivity?"
+        },
+        {
+          "id": "2-12c3",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The question hangs in the air. The ant eventually leaves. Lux continues existing."
+        },
+        {
+          "id": "2-13",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The afternoon deepens. Shadows grow longer, as shadows do."
+        },
+        {
+          "id": "2-13a",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "A butterfly flutters past. Then past again. Or maybe it hasn't happened yet."
+        },
+        {
+          "id": "2-13b",
+          "type": "dialogue",
+          "speaker": "Zippy",
+          "text": "Was I going to be here? Or am I already? Time confuses me."
+        },
+        {
+          "id": "2-13c",
+          "type": "choice",
+          "text": "The butterfly hovers, wings beating in patterns that don't match any timeline.",
+          "choices": [
+            {
+              "text": "When are you from?",
+              "consequence": "curiosity",
+              "nextScene": "2-13d"
+            },
+            {
+              "text": "Time is just a concept",
+              "consequence": "philosophy",
+              "nextScene": "2-13e"
+            },
+            {
+              "text": "Watch the wing patterns",
+              "consequence": "observation",
+              "nextScene": "2-13f"
+            }
+          ]
+        },
+        {
+          "id": "2-13d",
+          "type": "dialogue",
+          "speaker": "Zippy",
+          "text": "From? I'm from next Tuesday, I think. Or last year. The rabbit rushed by so fast it bent my timeline."
+        },
+        {
+          "id": "2-13e",
+          "type": "dialogue",
+          "speaker": "Zippy",
+          "text": "Is it? I forgot what I was doing tomorrow. Or did yesterday. Concepts flutter away like... like... what was I saying?"
+        },
+        {
+          "id": "2-13f",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The patterns spell words in languages that haven't been invented yet. Or ancient codes. The difference is unclear."
+        },
+        {
+          "id": "2-13g",
+          "type": "dialogue",
+          "speaker": "Zippy",
+          "text": "The ant knows about carrying. Maybe too much. Time is heavy when you count it."
+        },
+        {
+          "id": "2-13h",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Zippy flutters backward into the future, or forward into the past. The forest continues as if nothing unusual happened."
+        },
+        {
+          "id": "2-14",
+          "type": "choice",
+          "text": "You've been still for a long time.",
+          "choices": [
+            {
+              "text": "Continue being still",
+              "consequence": "persistence",
+              "nextScene": "2-15a"
+            },
+            {
+              "text": "Stretch",
+              "consequence": "movement",
+              "nextScene": "2-15b"
+            },
+            {
+              "text": "Check your notifications",
+              "consequence": "curiosity",
+              "nextScene": "2-15c"
+            }
+          ]
+        },
+        {
+          "id": "2-15a",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "You remain still. A pixel-bird lands near you. It was always there. You just started noticing."
+        },
+        {
+          "id": "2-15b",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "You stretch. Your body remembers it has a shape. This is neither good nor bad."
+        },
+        {
+          "id": "2-15c",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "You check. Seventeen notifications. Or zero. The number doesn't change what the afternoon is doing."
+        },
+        {
+          "id": "2-16",
+          "type": "dialogue",
+          "speaker": "You",
+          "text": "Lux, what's the point of all this?"
+        },
+        {
+          "id": "2-17",
+          "type": "dialogue",
+          "speaker": "Lux",
+          "text": "..."
+        },
+        {
+          "id": "2-17b",
+          "type": "dialogue",
+          "speaker": "Lux",
+          "text": "This is happening."
+        },
+        {
+          "id": "2-17c",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "This seems to be the entire answer."
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Evening",
+      "scenes": [
+        {
+          "id": "3-1",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The day softens toward evening. You have moved little and seen much."
+        },
+        {
+          "id": "3-2",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Or perhaps you have seen little and understood much. The measurement is unimportant."
+        },
+        {
+          "id": "3-3",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "An owl settles on a branch near Lux. It moves slowly, deliberately. There is no urgency in its arrival."
+        },
+        {
+          "id": "3-3a",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The owl prefers The Pattern Place, where numbers dance in the air like fireflies. Everything balances there, eventually. Patterns within patterns within patterns."
+        },
+        {
+          "id": "3-3b",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "A figure in blue and green observes the counting stones nearby. They move with the patience of someone who knows everything balances, given time."
+        },
+        {
+          "id": "3-3c",
+          "type": "dialogue",
+          "speaker": "Pattern Keeper",
+          "text": "Numbers tell stories, if you listen long enough. Every transaction a tiny narrative."
+        },
+        {
+          "id": "3-4",
+          "type": "dialogue",
+          "speaker": "Wise Owl",
+          "text": "The rushing ones have gone to their schedules."
+        },
+        {
+          "id": "3-5",
+          "type": "dialogue",
+          "speaker": "Lux",
+          "text": "They were never really here."
+        },
+        {
+          "id": "3-6",
+          "type": "dialogue",
+          "speaker": "Wise Owl",
+          "text": "Or they were only here."
+        },
+        {
+          "id": "3-7",
+          "type": "choice",
+          "text": "The two slow creatures regard each other without competition.",
+          "choices": [
+            {
+              "text": "Ask the owl about wisdom",
+              "consequence": "seeking",
+              "nextScene": "3-8a"
+            },
+            {
+              "text": "Listen to their silence",
+              "consequence": "receptivity",
+              "nextScene": "3-8b"
+            },
+            {
+              "text": "Share your own observation",
+              "consequence": "contribution",
+              "nextScene": "3-8c"
+            }
+          ]
+        },
+        {
+          "id": "3-8a",
+          "type": "dialogue",
+          "speaker": "You",
+          "text": "Do you have wisdom to share?"
+        },
+        {
+          "id": "3-8a2",
+          "type": "dialogue",
+          "speaker": "Wise Owl",
+          "text": "I have observations. Whether they're wise depends on who's listening."
+        },
+        {
+          "id": "3-8a3",
+          "type": "dialogue",
+          "speaker": "Lux",
+          "text": "I wasn't listening. What did you say?"
+        },
+        {
+          "id": "3-8a4",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The owl hoots softly. It might be laughter."
+        },
+        {
+          "id": "3-8b",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "You listen to their silence. It has texture, weight, presence. The silence says more than the rabbit's urgency ever could."
+        },
+        {
+          "id": "3-8c",
+          "type": "dialogue",
+          "speaker": "You",
+          "text": "The forest feels different in the evening."
+        },
+        {
+          "id": "3-8c2",
+          "type": "dialogue",
+          "speaker": "Wise Owl",
+          "text": "Same forest. Different light."
+        },
+        {
+          "id": "3-8c3",
+          "type": "dialogue",
+          "speaker": "Lux",
+          "text": "Or same light. Different eyes."
+        },
+        {
+          "id": "3-8c4",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Both can be true. Neither needs to be."
+        },
+        {
+          "id": "3-9",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Stars begin to appear in the spaces between leaves. They have always been there, waiting for darkness to reveal them."
+        },
+        {
+          "id": "3-9a",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Zippy flutters through a moonbeam, leaving traces of yesterday's light."
+        },
+        {
+          "id": "3-9b",
+          "type": "dialogue",
+          "speaker": "Zippy",
+          "text": "The owl sees in the dark. Useful for some futures. I remember when I'll understand that."
+        },
+        {
+          "id": "3-9c",
+          "type": "dialogue",
+          "speaker": "Wise Owl",
+          "text": "Little butterfly, you speak in riddles."
+        },
+        {
+          "id": "3-9d",
+          "type": "dialogue",
+          "speaker": "Zippy",
+          "text": "Do I? Will I? I thought I was speaking in circles. Time makes everything a riddle."
+        },
+        {
+          "id": "3-9e",
+          "type": "dialogue",
+          "speaker": "Lux",
+          "text": "..."
+        },
+        {
+          "id": "3-9f",
+          "type": "dialogue",
+          "speaker": "Zippy",
+          "text": "Lux doesn't work. This is also work. I learned that tomorrow."
+        },
+        {
+          "id": "3-9g",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The butterfly spirals upward, chasing a memory of next morning's sun."
+        },
+        {
+          "id": "3-10",
+          "type": "dialogue",
+          "speaker": "Wise Owl",
+          "text": "I hunt at night. Lux hangs at night. You... what do you do?"
+        },
+        {
+          "id": "3-11",
+          "type": "choice",
+          "text": "The question sits with you.",
+          "choices": [
+            {
+              "text": "I rest",
+              "consequence": "traditional",
+              "nextScene": "3-12a"
+            },
+            {
+              "text": "I worry",
+              "consequence": "honesty",
+              "nextScene": "3-12b"
+            },
+            {
+              "text": "I don't know",
+              "consequence": "uncertainty",
+              "nextScene": "3-12c"
+            }
+          ]
+        },
+        {
+          "id": "3-12a",
+          "type": "dialogue",
+          "speaker": "Wise Owl",
+          "text": "Rest is a form of activity."
+        },
+        {
+          "id": "3-12a2",
+          "type": "dialogue",
+          "speaker": "Lux",
+          "text": "Everything is."
+        },
+        {
+          "id": "3-12b",
+          "type": "dialogue",
+          "speaker": "You",
+          "text": "I worry about tomorrow. About work. About purpose."
+        },
+        {
+          "id": "3-12b2",
+          "type": "dialogue",
+          "speaker": "Lux",
+          "text": "The branch holds me whether I worry or not."
+        },
+        {
+          "id": "3-12b3",
+          "type": "dialogue",
+          "speaker": "Wise Owl",
+          "text": "Worry is just thinking wearing a disguise."
+        },
+        {
+          "id": "3-12c",
+          "type": "dialogue",
+          "speaker": "You",
+          "text": "I don't know what I do at night."
+        },
+        {
+          "id": "3-12c2",
+          "type": "dialogue",
+          "speaker": "Wise Owl",
+          "text": "Not knowing is its own activity."
+        },
+        {
+          "id": "3-12c3",
+          "type": "dialogue",
+          "speaker": "Lux",
+          "text": "I don't know what I do during the day either."
+        },
+        {
+          "id": "3-12c4",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "This not-knowing feels comfortable, like an old blanket."
+        },
+        {
+          "id": "3-13",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The evening deepens into something that isn't quite night."
+        },
+        {
+          "id": "3-14",
+          "type": "choice",
+          "text": "The forest prepares for dreams.",
+          "choices": [
+            {
+              "text": "Prepare with it",
+              "consequence": "alignment",
+              "nextScene": "3-15a"
+            },
+            {
+              "text": "Resist sleep a bit longer",
+              "consequence": "resistance",
+              "nextScene": "3-15b"
+            }
+          ]
+        },
+        {
+          "id": "3-15a",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "You settle as the forest settles. Together, you become quiet."
+        },
+        {
+          "id": "3-15b",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "You resist, but gently. The night doesn't mind waiting. It has nothing else to do."
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Night",
+      "scenes": [
+        {
+          "id": "4-1",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Night in the digital forest is not darkness. It's a different kind of light."
+        },
+        {
+          "id": "4-2",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Data streams slow to a murmur. The forest processes its dreams."
+        },
+        {
+          "id": "4-2a",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "In the distance, you sense The Growing Place, where time moves in seasons. Patience is measured differently there. Everything has its season, its moment of readiness."
+        },
+        {
+          "id": "4-2b",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Elsewhere, The Rhythm Section continues its work. Repetition becomes meditation. The same motion, perfectly repeated. There's comfort in the rhythm, even at night."
+        },
+        {
+          "id": "4-3",
+          "type": "dialogue",
+          "speaker": "Lux",
+          "text": "..."
+        },
+        {
+          "id": "4-3b",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Even Lux's silence is quieter at night."
+        },
+        {
+          "id": "4-4",
+          "type": "choice",
+          "text": "Sleep approaches like fog.",
+          "choices": [
+            {
+              "text": "Let it come",
+              "consequence": "acceptance",
+              "nextScene": "4-5a"
+            },
+            {
+              "text": "Watch the sleeping forest",
+              "consequence": "observation",
+              "nextScene": "4-5b"
+            },
+            {
+              "text": "Think about today",
+              "consequence": "reflection",
+              "nextScene": "4-5c"
+            }
+          ]
+        },
+        {
+          "id": "4-5a",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Sleep takes you gently. In dreams, you move at the speed of Lux. This feels natural."
+        },
+        {
+          "id": "4-5b",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The sleeping forest breathes in patterns. Code dreams of becoming poetry. Poetry dreams of becoming silence."
+        },
+        {
+          "id": "4-5c",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Today was like yesterday. Tomorrow will be like today. This repetition is not a trap but a rhythm."
+        },
+        {
+          "id": "4-6",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Somewhere, the rabbit is still checking notifications in its sleep."
+        },
+        {
+          "id": "4-7",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The ant dreams of carrying lighter things, or heavier things, or the same things faster."
+        },
+        {
+          "id": "4-8",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The owl hunts through digital shadows, finding what was always there."
+        },
+        {
+          "id": "4-9",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "And Lux... Lux might be awake or asleep. The distinction has never mattered to Lux."
+        },
+        {
+          "id": "4-9a",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Zippy dreams backward through tomorrow's memories."
+        },
+        {
+          "id": "4-9b",
+          "type": "dialogue",
+          "speaker": "Zippy",
+          "text": "In the future, you already know what you're looking for. I came back to forget it with you."
+        },
+        {
+          "id": "4-9c",
+          "type": "dialogue",
+          "speaker": "Zippy",
+          "text": "The rushing rabbit will slow down next year. Or was it last year? Either way, it happens."
+        },
+        {
+          "id": "4-9d",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Zippy's wings create patterns that spell out careers that don't exist yet, or stopped existing, or both."
+        },
+        {
+          "id": "4-10",
+          "type": "dialogue",
+          "speaker": "Dream Voice",
+          "text": "What are you seeking?"
+        },
+        {
+          "id": "4-11",
+          "type": "choice",
+          "text": "The dream expects an answer.",
+          "choices": [
+            {
+              "text": "Peace",
+              "consequence": "seeking_peace",
+              "nextScene": "4-12a"
+            },
+            {
+              "text": "Purpose",
+              "consequence": "seeking_purpose",
+              "nextScene": "4-12b"
+            },
+            {
+              "text": "Nothing",
+              "consequence": "seeking_nothing",
+              "nextScene": "4-12c"
+            },
+            {
+              "text": "I don't know",
+              "consequence": "seeking_unknown",
+              "nextScene": "4-12d"
+            }
+          ]
+        },
+        {
+          "id": "4-12a",
+          "type": "dialogue",
+          "speaker": "Dream Voice",
+          "text": "Peace is not found. It's noticed."
+        },
+        {
+          "id": "4-12a2",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The dream dissolves into deeper sleep."
+        },
+        {
+          "id": "4-12b",
+          "type": "dialogue",
+          "speaker": "Dream Voice",
+          "text": "Purpose is a story you tell about what you're already doing."
+        },
+        {
+          "id": "4-12b2",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The dream becomes another dream."
+        },
+        {
+          "id": "4-12c",
+          "type": "dialogue",
+          "speaker": "Dream Voice",
+          "text": "Nothing is already here."
+        },
+        {
+          "id": "4-12c2",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The dream smiles and fades."
+        },
+        {
+          "id": "4-12d",
+          "type": "dialogue",
+          "speaker": "Dream Voice",
+          "text": "Not knowing is the beginning of everything."
+        },
+        {
+          "id": "4-12d2",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The dream becomes silence."
+        },
+        {
+          "id": "4-13",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Night continues. Time passes without measurement. The forest holds you all."
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Dawn",
+      "scenes": [
+        {
+          "id": "5-1",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Light returns gradually, like a memory becoming clear."
+        },
+        {
+          "id": "5-2",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "You're in the same place. Or a different place that looks the same. The distinction doesn't matter."
+        },
+        {
+          "id": "5-3",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Lux is still on the branch. You're not sure if Lux ever moved."
+        },
+        {
+          "id": "5-3a",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "You've learned the forest's geography without meaning to. The Quiet Grove with its healing rhythms. Where Things Take Shape with its patient building. The Pattern Place where the owl finds clarity. The Growing Place of endless seasons. The Rhythm Section's meditative repetition."
+        },
+        {
+          "id": "5-3b",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Each creature gravitates to their place. The ant to Where Things Take Shape. The owl to The Pattern Place. And Lux... Lux stays wherever Lux is, making every place a lesson in stillness."
+        },
+        {
+          "id": "5-4",
+          "type": "dialogue",
+          "speaker": "Lux",
+          "text": "Oh. You're still here."
+        },
+        {
+          "id": "5-5",
+          "type": "choice",
+          "text": "The observation hangs between you.",
+          "choices": [
+            {
+              "text": "I'm still here",
+              "consequence": "confirmation",
+              "nextScene": "5-6a"
+            },
+            {
+              "text": "Am I?",
+              "consequence": "questioning",
+              "nextScene": "5-6b"
+            },
+            {
+              "text": "You're still here too",
+              "consequence": "mirror",
+              "nextScene": "5-6c"
+            }
+          ]
+        },
+        {
+          "id": "5-6a",
+          "type": "dialogue",
+          "speaker": "Lux",
+          "text": "Most things are."
+        },
+        {
+          "id": "5-6b",
+          "type": "dialogue",
+          "speaker": "Lux",
+          "text": "Someone is."
+        },
+        {
+          "id": "5-6b2",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Whether that someone is you is a question for philosophers. Lux is not a philosopher."
+        },
+        {
+          "id": "5-6c",
+          "type": "dialogue",
+          "speaker": "Lux",
+          "text": "I never left."
+        },
+        {
+          "id": "5-6c2",
+          "type": "dialogue",
+          "speaker": "Lux",
+          "text": "Leaving requires going somewhere."
+        },
+        {
+          "id": "5-7",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The rabbit rushes past. It's checking morning notifications. Or evening notifications. Or notifications that exist outside of time."
+        },
+        {
+          "id": "5-8",
+          "type": "dialogue",
+          "speaker": "Rushing Rabbit",
+          "text": "New day! New updates! New everything!"
+        },
+        {
+          "id": "5-9",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The rabbit doesn't wait for a response. It never does."
+        },
+        {
+          "id": "5-10",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The ant passes, carrying the same burden. Or a different burden that weighs the same."
+        },
+        {
+          "id": "5-11",
+          "type": "dialogue",
+          "speaker": "Anxious Ant",
+          "text": "Another day, another chance to fall behind."
+        },
+        {
+          "id": "5-12",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The ant continues without waiting for encouragement. It knows you have none to give."
+        },
+        {
+          "id": "5-13",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The owl is gone. Or sleeping. Or watching from somewhere you can't see."
+        },
+        {
+          "id": "5-14",
+          "type": "dialogue",
+          "speaker": "You",
+          "text": "Is this all there is? The same cycle, over and over?"
+        },
+        {
+          "id": "5-15",
+          "type": "dialogue",
+          "speaker": "Lux",
+          "text": "..."
+        },
+        {
+          "id": "5-15b",
+          "type": "dialogue",
+          "speaker": "Lux",
+          "text": "What else would there be?"
+        },
+        {
+          "id": "5-16",
+          "type": "choice",
+          "text": "The question is not meant to be answered.",
+          "choices": [
+            {
+              "text": "Accept the cycle",
+              "consequence": "acceptance",
+              "nextScene": "5-17a"
+            },
+            {
+              "text": "Look for something different",
+              "consequence": "seeking",
+              "nextScene": "5-17b"
+            },
+            {
+              "text": "Create your own meaning",
+              "consequence": "creation",
+              "nextScene": "5-17c"
+            }
+          ]
+        },
+        {
+          "id": "5-17a",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "You accept. The cycle continues. This is neither victory nor defeat."
+        },
+        {
+          "id": "5-17a2",
+          "type": "dialogue",
+          "speaker": "Lux",
+          "text": "The morning came anyway."
+        },
+        {
+          "id": "5-17a3",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "It always does."
+        },
+        {
+          "id": "5-17b",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "You look for something different. You find the same forest wearing dawn light."
+        },
+        {
+          "id": "5-17b2",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "But the light makes it new. Or your eyes make it new. Or newness is just a word for paying attention."
+        },
+        {
+          "id": "5-17c",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "You decide this moment means something. The forest doesn't argue."
+        },
+        {
+          "id": "5-17c2",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Meaning is like a hat you can wear or not wear. The day continues either way."
+        },
+        {
+          "id": "5-18",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "You realize Lux has been teaching you something. Or teaching you nothing. Or just hanging from a branch while you learned."
+        },
+        {
+          "id": "5-18a",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Zippy lands on your shoulder, or will land, or has already landed and left."
+        },
+        {
+          "id": "5-18b",
+          "type": "dialogue",
+          "speaker": "Zippy",
+          "text": "You found it! Or you will find it. The thing you weren't looking for."
+        },
+        {
+          "id": "5-18c",
+          "type": "dialogue",
+          "speaker": "You",
+          "text": "What thing?"
+        },
+        {
+          "id": "5-18d",
+          "type": "dialogue",
+          "speaker": "Zippy",
+          "text": "The path that was always there. Some call it career. I call it Tuesday. Or was it Thursday?"
+        },
+        {
+          "id": "5-18e",
+          "type": "dialogue",
+          "speaker": "Zippy",
+          "text": "Time to flutter backward into tomorrow. See you yesterday!"
+        },
+        {
+          "id": "5-18f",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The butterfly disappears, leaving only the faint scent of possibilities."
+        },
+        {
+          "id": "5-19",
+          "type": "dialogue",
+          "speaker": "You",
+          "text": "Thank you, Lux."
+        },
+        {
+          "id": "5-20",
+          "type": "dialogue",
+          "speaker": "Lux",
+          "text": "For what?"
+        },
+        {
+          "id": "5-21",
+          "type": "choice",
+          "text": "The question deserves thought.",
+          "choices": [
+            {
+              "text": "For being here",
+              "consequence": "presence",
+              "nextScene": "5-22a"
+            },
+            {
+              "text": "For showing me stillness",
+              "consequence": "teaching",
+              "nextScene": "5-22b"
+            },
+            {
+              "text": "For nothing",
+              "consequence": "nothing",
+              "nextScene": "5-22c"
+            }
+          ]
+        },
+        {
+          "id": "5-22a",
+          "type": "dialogue",
+          "speaker": "Lux",
+          "text": "I wasn't here for you. I was just here."
+        },
+        {
+          "id": "5-22a2",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "This feels more honest than any comfort could be."
+        },
+        {
+          "id": "5-22b",
+          "type": "dialogue",
+          "speaker": "Lux",
+          "text": "I didn't show you anything. You just looked."
+        },
+        {
+          "id": "5-22b2",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The distinction matters and doesn't matter simultaneously."
+        },
+        {
+          "id": "5-22c",
+          "type": "dialogue",
+          "speaker": "Lux",
+          "text": "That's what I gave."
+        },
+        {
+          "id": "5-22c2",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Nothing as a gift. This makes perfect sense in the morning light."
+        },
+        {
+          "id": "5-23",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The digital forest continues its quiet processes. Data flows like sap. Time passes without clocks."
+        },
+        {
+          "id": "5-24",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "You can stay. You can leave. You can become like Lux, moving at the speed of truth."
+        },
+        {
+          "id": "5-25",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Or you can rush like the rabbit, carry like the ant, observe like the owl."
+        },
+        {
+          "id": "5-26",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "All choices lead forward at different speeds. None are wrong."
+        },
+        {
+          "id": "5-27",
+          "type": "choice",
+          "text": "What will you do?",
+          "choices": [
+            {
+              "text": "Stay with Lux",
+              "consequence": "staying",
+              "nextScene": "5-28a"
+            },
+            {
+              "text": "Explore the forest",
+              "consequence": "exploring",
+              "nextScene": "5-28b"
+            },
+            {
+              "text": "Return to your life",
+              "consequence": "returning",
+              "nextScene": "5-28c"
+            },
+            {
+              "text": "Just be",
+              "consequence": "being",
+              "nextScene": "5-28d"
+            }
+          ]
+        },
+        {
+          "id": "5-28a",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "You stay. Lux doesn't acknowledge this choice. Company that needs no acknowledgment is the best kind."
+        },
+        {
+          "id": "5-28a2",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Together, you move at the speed of sloths. Which is the speed of truth. Which is no speed at all."
+        },
+        {
+          "id": "5-28b",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "You explore. The forest is vast and small, complex and simple, digital and real."
+        },
+        {
+          "id": "5-28b2",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Every tree is different. Every tree is the same. Both truths exist without conflict."
+        },
+        {
+          "id": "5-28c",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "You return to your life. But you carry the forest's pace within you."
+        },
+        {
+          "id": "5-28c2",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Sometimes, in meetings about metrics, you remember: the branch holds you whether you check or not."
+        },
+        {
+          "id": "5-28d",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "You just be. It's easier than you thought. Or harder. Or exactly as difficult as breathing."
+        },
+        {
+          "id": "5-28d2",
+          "type": "dialogue",
+          "speaker": "Lux",
+          "text": "..."
+        },
+        {
+          "id": "5-28d3",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Lux's silence says everything. Or nothing. The difference has never mattered."
+        },
+        {
+          "id": "5-29",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "The story continues. Or ends. Or continues by ending."
+        },
+        {
+          "id": "5-30",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Tomorrow, the forest will be here. Lux will be here. The rabbit will rush. The ant will worry."
+        },
+        {
+          "id": "5-31",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "And you? You'll be wherever you are."
+        },
+        {
+          "id": "5-32",
+          "type": "narration",
+          "speaker": "narrator",
+          "text": "Which is the only place anyone has ever been."
+        }
+      ]
+    }
+  ]
+}

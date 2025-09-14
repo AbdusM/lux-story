@@ -1,0 +1,95 @@
+/* GRAND CENTRAL TERMINUS - CORE STYLES
+   Base layout and container styles */
+
+/* ============================================
+   CORE LAYOUT
+   ============================================ */
+
+/* Game container - main wrapper */
+.game-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+/* Game card - central content area */
+.game-card {
+  width: 100%;
+  max-width: 800px;
+  background: white;
+  border-radius: 12px;
+  border: 1px solid rgb(229, 231, 235);
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+  overflow: hidden;
+}
+
+/* Dark mode support */
+.dark .game-card {
+  background: rgb(17, 24, 39);
+  border-color: rgb(55, 65, 81);
+  color: white;
+}
+
+/* Card header */
+.game-card-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid rgb(229, 231, 235);
+  text-align: center;
+}
+
+.dark .game-card-header {
+  border-bottom-color: rgb(55, 65, 81);
+}
+
+/* Card content */
+.game-card-content {
+  padding: 1.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 400px;
+}
+
+/* Messages area */
+.messages-container {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 1rem;
+  max-height: 60vh;
+}
+
+/* Base text styling */
+.text-base {
+  font-size: 1rem;
+  line-height: 1.625;
+  color: rgb(17, 24, 39);
+}
+
+.dark .text-base {
+  color: rgb(229, 231, 235);
+}
+
+/* Responsive typography */
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75;
+}
+
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75;
+}
+
+/* Utility classes */
+.mt-4 { margin-top: 1rem; }
+.mb-4 { margin-bottom: 1rem; }
+.p-4 { padding: 1rem; }
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.justify-center { justify-content: center; }
+.items-center { align-items: center; }
+.text-center { text-align: center; }

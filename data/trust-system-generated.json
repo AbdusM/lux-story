@@ -1,0 +1,126 @@
+{
+  "generated_date": "2025-09-12T20:50:24.120Z",
+  "trust_mechanics": {
+    "characters": {
+      "Samuel": {
+        "trust_levels": {
+          "0": "Polite but distant, basic guidance only",
+          "3": "Shares station history, offers practical advice",
+          "6": "Reveals his corporate past, deeper wisdom",
+          "8": "Confides his fears about guiding people wrong",
+          "10": "Complete trust, shares the secret of Platform 7½"
+        },
+        "trust_triggers": {
+          "helped_other_character": 2,
+          "chose_authentic_path": 1,
+          "rushed_without_listening": -1,
+          "dismissed_his_advice": -2
+        }
+      },
+      "Maya": {
+        "trust_levels": {
+          "0": "Anxious, keeps family pressure secret",
+          "3": "Admits conflict between medicine and robotics",
+          "6": "Shows you her secret robotics projects",
+          "8": "Asks for help making the big decision",
+          "10": "Credits you with giving her courage to choose authentically"
+        },
+        "trust_triggers": {
+          "validated_her_feelings": 2,
+          "suggested_compromise": 1,
+          "pushed_too_hard": -1,
+          "dismissed_family_importance": -2
+        }
+      },
+      "Devon": {
+        "trust_levels": {
+          "0": "Talks only about technical systems, avoids personal topics",
+          "3": "Explains why he prefers building to people",
+          "6": "Shows vulnerability about social struggles",
+          "8": "Asks for help connecting his work to community impact",
+          "10": "Becomes confident mentor for other technical introverts"
+        },
+        "trust_triggers": {
+          "appreciated_his_systems": 2,
+          "connected_work_to_people": 1,
+          "forced_social_interaction": -1,
+          "called_him_antisocial": -2
+        }
+      },
+      "Jordan": {
+        "trust_levels": {
+          "0": "Defensive about career changes, seems scattered",
+          "3": "Admits feeling like a failure for not sticking to one path",
+          "6": "Shares wisdom about transferable skills",
+          "8": "Becomes guide to hidden/hybrid platforms",
+          "10": "Empowered as mentor for non-linear career paths"
+        },
+        "trust_triggers": {
+          "validated_career_changes": 2,
+          "saw_patterns_in_experience": 1,
+          "suggested_picking_one_thing": -1,
+          "called_them_unfocused": -2
+        }
+      }
+    },
+    "platform_states": {
+      "healthcare": {
+        "cold": "Sterile fluorescent lighting, few people, feels impersonal",
+        "neutral": "Standard hospital ambiance, moderate activity",
+        "warm": "Golden sunrise light, caring conversations, sense of calling",
+        "resonant": "Gentle pulse of life-saving energy, platform recognizes you"
+      },
+      "engineering": {
+        "cold": "Industrial gray, harsh machinery sounds, isolated workstations",
+        "neutral": "Workshop atmosphere, steady construction sounds",
+        "warm": "Collaborative maker space energy, building something meaningful",
+        "resonant": "Blueprints glow with potential, structures seem to respond"
+      },
+      "data": {
+        "cold": "Endless cubicles, screen glare, disconnected from impact",
+        "neutral": "Standard tech office, servers humming",
+        "warm": "Insights lighting up, data telling human stories",
+        "resonant": "Information flows visibly, patterns reveal themselves"
+      },
+      "sustainability": {
+        "cold": "Withered plants, gray corporate sustainability theater",
+        "neutral": "Basic recycling and energy efficiency",
+        "warm": "Thriving green spaces, renewable energy systems",
+        "resonant": "Living systems pulse with natural rhythms"
+      }
+    }
+  },
+  "generated_scenes": null,
+  "platform_responsiveness": {
+    "healthcare": {
+      "cold": "Sterile fluorescent lighting, few people, feels impersonal",
+      "neutral": "Standard hospital ambiance, moderate activity",
+      "warm": "Golden sunrise light, caring conversations, sense of calling",
+      "resonant": "Gentle pulse of life-saving energy, platform recognizes you"
+    },
+    "engineering": {
+      "cold": "Industrial gray, harsh machinery sounds, isolated workstations",
+      "neutral": "Workshop atmosphere, steady construction sounds",
+      "warm": "Collaborative maker space energy, building something meaningful",
+      "resonant": "Blueprints glow with potential, structures seem to respond"
+    },
+    "data": {
+      "cold": "Endless cubicles, screen glare, disconnected from impact",
+      "neutral": "Standard tech office, servers humming",
+      "warm": "Insights lighting up, data telling human stories",
+      "resonant": "Information flows visibly, patterns reveal themselves"
+    },
+    "sustainability": {
+      "cold": "Withered plants, gray corporate sustainability theater",
+      "neutral": "Basic recycling and energy efficiency",
+      "warm": "Thriving green spaces, renewable energy systems",
+      "resonant": "Living systems pulse with natural rhythms"
+    }
+  },
+  "bg3_principles": [
+    "meaningful_choices_with_consequences",
+    "environmental_responsiveness",
+    "character_relationship_depth",
+    "approval_system_feedback"
+  ]
+}

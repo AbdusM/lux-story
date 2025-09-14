@@ -1,0 +1,222 @@
+/* GRAND CENTRAL TERMINUS - MOBILE STYLES
+   Responsive design and mobile-specific fixes */
+
+/* ============================================
+   MOBILE LAYOUT FIXES
+   ============================================ */
+
+@media (max-width: 768px) {
+  /* Remove letterboxing - use full viewport */
+  .game-container,
+  .game-container.container {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  
+  /* Card should be edge-to-edge on mobile */
+  .game-card,
+  .card {
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    border-left: none !important;
+    border-right: none !important;
+    background: white !important;
+  }
+  
+  .dark .game-card,
+  .dark .card {
+    background: rgb(17, 24, 39) !important;
+  }
+  
+  /* Full viewport containers */
+  main,
+  .min-h-screen {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100vw !important;
+    overflow-x: hidden !important;
+  }
+  
+  /* Card content padding adjustment */
+  .game-card-content {
+    padding: 1rem !important;
+  }
+  
+  .game-card-header {
+    padding: 1rem !important;
+  }
+}
+
+/* ============================================
+   MOBILE BUTTON FIXES
+   ============================================ */
+
+@media (max-width: 768px) {
+  /* Ensure buttons are properly contained */
+  .choice-button,
+  .choice-buttons button,
+  button.choice-button {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    word-wrap: break-word !important;
+    white-space: normal !important;
+    
+    /* Prevent overflow */
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    
+    /* Touch-friendly sizing */
+    min-height: 48px !important;
+    padding: 1rem !important;
+    
+    /* Prevent zoom on touch */
+    font-size: 16px !important;
+    -webkit-text-size-adjust: 100% !important;
+  }
+  
+  /* Container spacing */
+  .choice-buttons {
+    gap: 1rem !important;
+    margin-top: 1rem !important;
+    padding: 0 !important;
+  }
+  
+  /* Continue button mobile adjustments */
+  .continue-button,
+  button.continue-button {
+    min-height: 48px !important;
+    padding: 1rem !important;
+    font-size: 16px !important;
+    -webkit-text-size-adjust: 100% !important;
+  }
+}
+
+/* ============================================
+   MOBILE TYPOGRAPHY
+   ============================================ */
+
+@media (max-width: 768px) {
+  /* Prevent iOS zoom on form elements */
+  input, textarea, select {
+    font-size: 16px !important;
+    -webkit-text-size-adjust: 100% !important;
+  }
+  
+  /* Readable text sizing */
+  .message-text {
+    font-size: 16px !important;
+    line-height: 1.6 !important;
+  }
+  
+  .message-speaker {
+    font-size: 14px !important;
+  }
+  
+  /* Character intro mobile adjustments */
+  .character-intro h1 {
+    font-size: 1.875rem !important;
+    padding: 0 1rem !important;
+  }
+  
+  .character-intro p {
+    font-size: 1rem !important;
+    padding: 0 1rem !important;
+  }
+  
+  .character-intro {
+    padding: 1.5rem 1rem !important;
+  }
+}
+
+/* ============================================
+   MOBILE VIEWPORT FIXES
+   ============================================ */
+
+@media (max-width: 768px) {
+  /* Fix viewport height issues */
+  .min-h-screen {
+    min-height: 100vh !important;
+    min-height: -webkit-fill-available !important;
+  }
+  
+  /* Prevent horizontal scrolling */
+  body {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  
+  /* Safe area for notched devices */
+  .game-container {
+    padding-top: env(safe-area-inset-top) !important;
+    padding-bottom: env(safe-area-inset-bottom) !important;
+    padding-left: env(safe-area-inset-left) !important;
+    padding-right: env(safe-area-inset-right) !important;
+  }
+  
+  /* Messages container mobile optimization */
+  .messages-container {
+    max-height: 50vh !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+}
+
+/* ============================================
+   TOUCH OPTIMIZATIONS
+   ============================================ */
+
+@media (max-width: 768px) {
+  /* Larger touch targets */
+  .choice-button,
+  .continue-button,
+  button {
+    min-height: 44px !important;
+    min-width: 44px !important;
+  }
+  
+  /* Smooth scrolling */
+  .messages-container {
+    scroll-behavior: smooth !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  
+  /* Remove tap highlights that conflict with our styling */
+  .choice-button,
+  .continue-button,
+  button {
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-touch-callout: none !important;
+    -webkit-user-select: none !important;
+    user-select: none !important;
+  }
+}
+
+/* ============================================
+   LANDSCAPE MOBILE ADJUSTMENTS
+   ============================================ */
+
+@media (max-width: 768px) and (orientation: landscape) {
+  .character-intro {
+    padding: 1rem !important;
+  }
+  
+  .character-intro h1 {
+    font-size: 1.5rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  .character-intro p {
+    font-size: 0.875rem !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  .messages-container {
+    max-height: 40vh !important;
+  }
+}

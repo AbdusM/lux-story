@@ -67,9 +67,15 @@ export class StoryEngine {
    * Get the next scene ID in sequence
    */
   getNextScene(currentSceneId: string): string | null {
-    // For Grand Central Terminus, most scenes are choice-driven
-    // Only simple sequential scenes should auto-advance
+    // First, try to find the current scene and check if it has an explicit nextScene
+    for (const chapter of this.chapters) {
+      const scene = chapter.scenes.find(s => s.id === currentSceneId)
+      if (scene && (scene as any).nextScene) {
+        return (scene as any).nextScene
+      }
+    }
     
+    // Fallback to pattern-based logic for scenes without explicit nextScene
     // Extract chapter and scene number (handles patterns like 2-3a1, 2-9a-12, etc.)
     const match = currentSceneId.match(/^(\d+)-(\d+)([a-z]?)(?:-(\d+))?(\d*)$/)
     if (!match) {
@@ -124,8 +130,6 @@ export class StoryEngine {
         return nextSimpleId
       }
     }
-    
-    // Already handled above in the new logic
     
     // If we're at the end of a chapter, move to the next chapter
     const nextChapter = this.chapters.find(c => c.id === chapter + 1)

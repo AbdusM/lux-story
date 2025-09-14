@@ -1,6 +1,7 @@
 {
   "name": "lux-story",
   "version": "2.0.0",
+  "type": "module",
   "description": "Performance-based career exploration platform using contemplative storytelling and behavioral psychology",
   "main": "index.js",
   "scripts": {
@@ -10,9 +11,18 @@
     "lint": "next lint",
     "deploy": "npm run build && npx wrangler pages deploy out --project-name=lux-story",
     "type-check": "tsc --noEmit",
-    "clean": "rm -rf .next out node_modules/.cache"
+    "clean": "rm -rf .next out node_modules/.cache",
+    "analyze-typewriter": "node scripts/gemini-typewriter-analysis.js",
+    "check-typewriter": "node scripts/check-typewriter-compliance.js",
+    "precommit": "npm run check-typewriter && npm run lint"
   },
-  "keywords": ["career-exploration", "contemplative-gaming", "performance-psychology", "adaptive-narrative", "birmingham"],
+  "keywords": [
+    "career-exploration",
+    "contemplative-gaming",
+    "performance-psychology",
+    "adaptive-narrative",
+    "birmingham"
+  ],
   "author": "Lux Story Team",
   "license": "MIT",
   "homepage": "https://lux-story.pages.dev",
@@ -21,6 +31,7 @@
     "url": "https://github.com/AbdusM/lux-story.git"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "@radix-ui/react-progress": "^1.1.7",
     "@radix-ui/react-slot": "^1.2.3",
     "class-variance-authority": "^0.7.1",

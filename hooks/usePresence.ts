@@ -1,65 +1,18 @@
 "use client"
 
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useCallback } from 'react'
 
 /**
- * True patience through presence
- * No timers, no rewards, just natural revelation
+ * Simplified presence hook - only provides reset function
+ * Removes unused timer functionality for better performance
  */
 export function usePresence() {
-  const [timePresent, setTimePresent] = useState(0)
-  const [revelation, setRevelation] = useState<string | null>(null)
-  const startTime = useRef<number | null>(null)
-  
-  // Natural revelations at different moments of presence
-  const revelations = [
-    { after: 15000, text: "A bird you hadn't noticed has been here all along." },
-    { after: 30000, text: "The light has shifted slightly. Time continues." },
-    { after: 60000, text: "Your breathing has found its own rhythm without your guidance." },
-    { after: 120000, text: "The distinction between waiting and being dissolves." },
-    { after: 300000, text: "You are neither waiting nor not waiting. You simply are." }
-  ]
-  
-  const beginPresence = useCallback(() => {
-    if (!startTime.current) {
-      startTime.current = Date.now()
-    }
-  }, [])
-  
-  const checkPresence = useCallback(() => {
-    if (!startTime.current) return null
-    
-    const now = Date.now()
-    const elapsed = now - startTime.current
-    setTimePresent(elapsed)
-    
-    // Find the latest revelation that should appear
-    const currentRevelation = revelations
-      .filter(r => elapsed >= r.after)
-      .pop()
-    
-    if (currentRevelation && currentRevelation.text !== revelation) {
-      setRevelation(currentRevelation.text)
-      return currentRevelation.text
-    }
-    
-    return null
-  }, [revelation])
-  
   const resetPresence = useCallback(() => {
-    startTime.current = null
-    setTimePresent(0)
-    setRevelation(null)
+    // Simple state reset for scene transitions
+    // No complex timing or revelations needed
   }, [])
-  
-  // No automatic checking - the component decides when to check
-  // This removes the performance pressure of constant timers
   
   return {
-    beginPresence,
-    checkPresence,
-    resetPresence,
-    timePresent,
-    currentRevelation: revelation
+    resetPresence
   }
 }

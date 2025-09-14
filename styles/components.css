@@ -1,0 +1,227 @@
+/* GRAND CENTRAL TERMINUS - COMPONENT STYLES
+   Buttons, cards, messages, and interactive elements */
+
+/* ============================================
+   CHOICE BUTTONS - Consistent across all devices
+   ============================================ */
+
+/* Base choice button styles */
+.choice-button,
+button.choice-button,
+.choice-buttons .choice-button,
+.choice-buttons button {
+  /* Card-like appearance */
+  background: white !important;
+  border: 2px solid rgb(229, 231, 235) !important;
+  border-radius: 0.5rem !important;
+  padding: 1rem 1.25rem !important;
+  width: 100% !important;
+  min-height: 60px !important;
+  
+  /* Typography */
+  font-weight: 500 !important;
+  text-align: left !important;
+  color: rgb(17, 24, 39) !important;
+  font-size: 1rem !important;
+  line-height: 1.5 !important;
+  
+  /* Interactive states */
+  transition: all 0.15s ease !important;
+  cursor: pointer !important;
+  display: block !important;
+  position: relative !important;
+  
+  /* Remove default button styles */
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  outline: none !important;
+  
+  /* Ensure clean styling */
+  transform: none !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+
+/* Choice button hover state */
+.choice-button:hover,
+button.choice-button:hover {
+  border-color: rgb(147, 197, 253) !important;
+  background: rgb(248, 250, 252) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 2px 4px rgb(0 0 0 / 0.05) !important;
+}
+
+/* Choice button active state */
+.choice-button:active,
+button.choice-button:active {
+  transform: translateY(0) !important;
+  background: rgb(243, 244, 246) !important;
+}
+
+/* Dark mode for choice buttons */
+.dark .choice-button,
+.dark button.choice-button {
+  background: rgb(55, 65, 81) !important;
+  border-color: rgb(75, 85, 99) !important;
+  color: rgb(229, 231, 235) !important;
+}
+
+.dark .choice-button:hover,
+.dark button.choice-button:hover {
+  background: rgb(75, 85, 99) !important;
+  border-color: rgb(147, 197, 253) !important;
+}
+
+/* Choice buttons container */
+.choice-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+/* ============================================
+   CONTINUE BUTTON
+   ============================================ */
+
+.continue-button,
+button.continue-button {
+  background: rgb(59, 130, 246) !important;
+  border: 2px solid rgb(59, 130, 246) !important;
+  border-radius: 0.5rem !important;
+  padding: 0.75rem 1.5rem !important;
+  width: 100% !important;
+  
+  /* Typography */
+  color: white !important;
+  font-weight: 600 !important;
+  text-align: center !important;
+  font-size: 1rem !important;
+  
+  /* Interactive */
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+}
+
+.continue-button:hover,
+button.continue-button:hover {
+  background: rgb(37, 99, 235) !important;
+  border-color: rgb(37, 99, 235) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 2px 4px rgb(0 0 0 / 0.1) !important;
+}
+
+.continue-button:active,
+button.continue-button:active {
+  transform: translateY(0) !important;
+  background: rgb(29, 78, 216) !important;
+}
+
+/* ============================================
+   MESSAGE COMPONENTS
+   ============================================ */
+
+.message {
+  margin-bottom: 1rem;
+  padding: 0.75rem 0;
+}
+
+.message-speaker {
+  font-weight: 600;
+  color: rgb(55, 65, 81);
+  margin-bottom: 0.25rem;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.dark .message-speaker {
+  color: rgb(156, 163, 175);
+}
+
+.message-text {
+  color: rgb(17, 24, 39);
+  line-height: 1.625;
+  font-size: 1rem;
+}
+
+.dark .message-text {
+  color: rgb(229, 231, 235);
+}
+
+/* Dialogue vs narration styling */
+.message[data-type="dialogue"] .message-text {
+  font-style: italic;
+  padding-left: 1rem;
+  border-left: 3px solid rgb(229, 231, 235);
+}
+
+.dark .message[data-type="dialogue"] .message-text {
+  border-left-color: rgb(75, 85, 99);
+}
+
+/* ============================================
+   CHARACTER INTRO COMPONENT
+   ============================================ */
+
+.character-intro {
+  text-align: center;
+  padding: 2rem;
+}
+
+.character-intro h1 {
+  font-size: 2.25rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: rgb(17, 24, 39);
+}
+
+.dark .character-intro h1 {
+  color: white;
+}
+
+.character-intro p {
+  font-size: 1.125rem;
+  color: rgb(75, 85, 99);
+  margin-bottom: 2rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.dark .character-intro p {
+  color: rgb(156, 163, 175);
+}
+
+.intro-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+/* ============================================
+   PERFORMANCE INDICATORS
+   ============================================ */
+
+.performance-indicator {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgb(34, 197, 94);
+  opacity: 0.6;
+}
+
+.performance-indicator.warning {
+  background: rgb(251, 191, 36);
+}
+
+.performance-indicator.critical {
+  background: rgb(239, 68, 68);
+}
