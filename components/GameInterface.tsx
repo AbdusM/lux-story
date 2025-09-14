@@ -10,6 +10,7 @@ import { GameControls } from './GameControls'
 import { CharacterIntro } from './CharacterIntro'
 import { SilentCompanion } from './SilentCompanion'
 import { CareerReflectionHelper } from './CareerReflectionHelper'
+import { GameErrorBoundary } from './GameErrorBoundary'
 import { hapticFeedback } from '@/lib/haptic-feedback'
 import { webShare } from '@/lib/web-share'
 import { logger } from '@/lib/logger'
@@ -138,8 +139,9 @@ export function GameInterface() {
   }
 
   return (
-    <div className="apple-game-container">
-      <div className="apple-game-main" style={visualAdjustments.style}>
+    <GameErrorBoundary componentName="GameInterface">
+      <div className="apple-game-container">
+        <div className="apple-game-main" style={visualAdjustments.style}>
         {/* Header */}
         <GameHeader visualAdjustments={visualAdjustments} />
 
@@ -177,8 +179,9 @@ export function GameInterface() {
             <div>Patterns: {Object.entries(patterns).filter(([_, v]) => v > 0).map(([k, v]) => `${k}:${v}`).join(', ')}</div>
           </div>
         )}
+        </div>
       </div>
-    </div>
+    </GameErrorBoundary>
   )
 }
 
