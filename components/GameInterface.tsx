@@ -3,6 +3,7 @@
 import { useCallback, useMemo, memo, useEffect } from 'react'
 import { useGame } from '@/hooks/useGame'
 import { useMemoryCleanup, useMemoryMonitor } from '@/hooks/useMemoryCleanup'
+import { usePerformanceMonitor } from '@/lib/performance-monitor'
 import { GameHeader } from './GameHeader'
 import { GameMessages } from './GameMessages'
 import { GameSupport } from './GameSupport'
@@ -58,6 +59,9 @@ export function GameInterface() {
   // Memory management
   const { getMemoryUsage, checkMemoryLeaks } = useMemoryMonitor()
 
+  // Performance monitoring
+  const { getMetrics, getScore, trackSceneTransition, trackChoiceResponse } = usePerformanceMonitor()
+
   // Register cleanup functions
   useMemoryCleanup(() => {
     // Cleanup any component-specific resources
@@ -97,6 +101,9 @@ export function GameInterface() {
   // Enhanced choice handling with all systems (memoized)
   const handleEnhancedChoice = useCallback((choice: any) => {
     if (isProcessing) return
+    
+    // Track performance
+    const choiceStartTime = performance.now()
     
     // Track choice across all systems
     const timestamp = Date.now()
@@ -143,6 +150,9 @@ export function GameInterface() {
     
     // Call the main choice handler
     handleChoice(choice)
+    
+    // Track performance
+    trackChoiceResponse(choiceStartTime)
   }, [
     isProcessing,
     emotionalState.rapidClicks,
@@ -209,6 +219,8 @@ export function GameInterface() {
             <div>Stress: {emotionalState.stressLevel}</div>
             <div>Flow: {cognitiveState.flowState}</div>
             <div>Patterns: {Object.entries(patterns).filter(([_, v]) => v > 0).map(([k, v]) => `${k}:${v}`).join(', ')}</div>
+            <div>Core Web Vitals Score: {Math.round(getScore().overall)}%</div>
+            <div>Memory: {getMemoryUsage().percentage.toFixed(1)}%</div>
           </div>
         )}
         </div>
