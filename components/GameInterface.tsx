@@ -1,7 +1,8 @@
 "use client"
 
-import { useCallback, useMemo, memo } from 'react'
+import { useCallback, useMemo, memo, useEffect } from 'react'
 import { useGame } from '@/hooks/useGame'
+import { useMemoryCleanup, useMemoryMonitor } from '@/hooks/useMemoryCleanup'
 import { GameHeader } from './GameHeader'
 import { GameMessages } from './GameMessages'
 import { GameSupport } from './GameSupport'
@@ -53,6 +54,37 @@ export function GameInterface() {
     updateNeuralState,
     updateSkills
   } = useGame()
+
+  // Memory management
+  const { getMemoryUsage, checkMemoryLeaks } = useMemoryMonitor()
+
+  // Register cleanup functions
+  useMemoryCleanup(() => {
+    // Cleanup any component-specific resources
+    logger.debug('GameInterface cleanup: clearing component resources')
+  }, [])
+
+  // Monitor memory usage in development
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'development') {
+      const interval = setInterval(() => {
+        const memory = getMemoryUsage()
+        const leakCheck = checkMemoryLeaks()
+        
+        if (leakCheck.isLeaking) {
+          logger.warn('Memory leak detected:', leakCheck.details)
+        }
+        
+        logger.debug('Memory usage:', {
+          used: `${(memory.used / 1024 / 1024).toFixed(2)}MB`,
+          total: `${(memory.total / 1024 / 1024).toFixed(2)}MB`,
+          percentage: `${memory.percentage.toFixed(2)}%`
+        })
+      }, 30000) // Check every 30 seconds
+
+      return () => clearInterval(interval)
+    }
+  }, [getMemoryUsage, checkMemoryLeaks])
 
   // Get visual adjustments based on emotional state (memoized)
   const visualAdjustments = useMemo(() => getVisualAdjustments(), [getVisualAdjustments])
