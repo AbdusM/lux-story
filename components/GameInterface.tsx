@@ -22,6 +22,8 @@ import { useEmotionalRegulation } from "@/hooks/useEmotionalRegulation"
 import { EmotionalSupport } from "@/components/EmotionalSupport"
 import { useCognitiveDevelopment } from "@/hooks/useCognitiveDevelopment"
 import { MetacognitiveScaffolding } from "@/components/MetacognitiveScaffolding"
+import { useDevelopmentalPsychology } from "@/hooks/useDevelopmentalPsychology"
+import { DevelopmentalPsychologySupport } from "@/components/DevelopmentalPsychologySupport"
 import { getPerformanceSystem } from "@/lib/performance-system"
 import { getGrandCentralState } from "@/lib/grand-central-state"
 
@@ -62,6 +64,18 @@ export function GameInterface() {
     getLearningStyleAdaptations,
     resetCognitiveState
   } = useCognitiveDevelopment()
+  
+  const {
+    identityState,
+    culturalContext,
+    trackChoice: trackDevelopmentalChoice,
+    getIdentityPrompt,
+    getCulturalPrompt,
+    getYouthDevelopmentSupport,
+    getCulturalAdaptations,
+    getIdentityScaffolding,
+    resetDevelopmentalState
+  } = useDevelopmentalPsychology()
 
   // Semantic-based content chunking with timed reveals
   const createSemanticChunks = useCallback((text: string, speaker: string) => {
@@ -604,6 +618,7 @@ export function GameInterface() {
                       trackClick()
                       trackChoice(choice.text, Date.now())
                       trackCognitiveChoice(choice.text, Date.now())
+                      trackDevelopmentalChoice(choice.text, Date.now())
                       resetHesitation()
                       handleChoice(choice)
                     }}
@@ -625,6 +640,7 @@ export function GameInterface() {
                   trackClick()
                   trackChoice('Continue', Date.now())
                   trackCognitiveChoice('Continue', Date.now())
+                  trackDevelopmentalChoice('Continue', Date.now())
                   resetHesitation()
                   handleContinue()
                 }}
@@ -662,6 +678,18 @@ export function GameInterface() {
         cognitiveScaffolding={getCognitiveScaffolding()}
         learningStyleAdaptations={getLearningStyleAdaptations()}
         onDismiss={() => resetCognitiveState()}
+      />
+      
+      {/* Developmental psychology support - provides identity formation and cultural responsiveness */}
+      <DevelopmentalPsychologySupport
+        identityState={identityState}
+        culturalContext={culturalContext}
+        identityPrompt={getIdentityPrompt()}
+        culturalPrompt={getCulturalPrompt()}
+        youthDevelopmentSupport={getYouthDevelopmentSupport()}
+        culturalAdaptations={getCulturalAdaptations()}
+        identityScaffolding={getIdentityScaffolding()}
+        onDismiss={() => resetDevelopmentalState()}
       />
     </div>
   )
