@@ -561,7 +561,7 @@ export function GameInterface() {
                     key={index}
                     onClick={() => handleChoice(choice)}
                     disabled={isProcessing}
-                    className="pokemon-choice-button w-full text-left"
+                    className="pokemon-choice-button-enhanced w-full text-left"
                   >
                     {choice.text}
                   </button>
@@ -572,7 +572,7 @@ export function GameInterface() {
               <button
                 onClick={handleContinue}
                 disabled={isProcessing}
-                className="pokemon-continue-button w-full"
+                className="pokemon-choice-button-enhanced choice-primary w-full"
               >
                 {storyEngine.getNextScene(currentScene?.id || '') ? 'Continue' : 'Chapter Complete'}
               </button>
