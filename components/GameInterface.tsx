@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useCallback, useEffect, useMemo } from 'react'
+import { useState, useCallback, useEffect, useMemo, useRef } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { StoryMessage } from "./StoryMessage"
@@ -21,7 +21,7 @@ export function GameInterface() {
   const [storyEngine] = useState(() => new StoryEngine())
   const [showIntro, setShowIntro] = useState(true)
   const [choiceStartTime, setChoiceStartTime] = useState<number>(Date.now())
-  const [lastSceneLoadTime, setLastSceneLoadTime] = useState<number>(0)
+  const lastSceneLoadTime = useRef<number>(0)
   const performanceSystem = useMemo(() => getPerformanceSystem(), [])
   const grandCentralState = useMemo(() => getGrandCentralState(), [])
   
@@ -30,7 +30,58 @@ export function GameInterface() {
   const { currentScene, isProcessing, loadScene, setProcessing } = useSceneTransitions(storyEngine, gameState)
   const { messages, messagesEndRef, addMessage, clearMessages } = useMessageManager()
   const { resetPresence } = usePresence()
-  const { performanceLevel, enhanceSceneText, enhanceChoices } = useAdaptiveNarrative()
+  const { performanceLevel, enhanceSceneText, analyzeContentSemantics, enhanceChoices } = useAdaptiveNarrative()
+
+  // Semantic-based content chunking with timed reveals
+  const createSemanticChunks = useCallback((text: string, speaker: string) => {
+    // Analyze content for semantic hierarchy
+    const semanticParts = analyzeContentSemantics(text)
+    
+    // If only one part or short content, return as single chunk
+    if (semanticParts.length <= 1 || text.length < 100) {
+      return [{ 
+        text, 
+        delay: 0, 
+        semanticType: semanticParts[0]?.type || 'default',
+        priority: semanticParts[0]?.priority || 3
+      }]
+    }
+    
+    // Create chunks with delays based on priority and narrative flow
+    const chunks = semanticParts.map((part, index) => {
+      let delay = 0
+      
+      // Calculate delays based on priority hierarchy
+      if (index === 0) {
+        // First chunk appears immediately if critical, else small delay
+        delay = part.priority === 1 ? 0 : 400
+      } else {
+        // Subsequent chunks have timing based on their importance
+        const baseDelay = 600
+        const priorityMultiplier = {
+          1: 0.5,   // Critical action appears faster
+          2: 0.8,   // Time info appears fairly quickly  
+          3: 1.0,   // Default timing
+          4: 1.4,   // Stakes/mystery build suspense with longer delay
+          5: 0.3    // Atmosphere fills in quickly
+        }
+        delay = baseDelay * (priorityMultiplier[part.priority as keyof typeof priorityMultiplier] || 1.0) * index
+      }
+      
+      return {
+        text: part.text + '.',
+        delay: Math.round(delay),
+        semanticType: part.type,
+        priority: part.priority
+      }
+    })
+    
+    // Sort chunks by priority for display order, but keep original delays
+    return chunks.sort((a, b) => a.priority - b.priority)
+  }, [analyzeContentSemantics])
+  
+  // Debug logging for React re-renders (removed to prevent console spam)
+  // console.log('🔄 GameInterface render - currentScene:', currentScene?.id, 'messages count:', messages.length)
   
   // Track choice timing for Grand Central Terminus - no forest interference
   useEffect(() => {
@@ -39,15 +90,15 @@ export function GameInterface() {
     }
   }, [currentScene])
   
-  // Load scene with simple message handling
+  // Load scene with simple message handling and auto-advancement for narration
   const handleLoadScene = useCallback((sceneId: string, forceLoad = false) => {
     
     // Prevent rapid scene loading (debounce)
     const now = Date.now()
-    if (!forceLoad && now - lastSceneLoadTime < 500) {
+    if (!forceLoad && now - lastSceneLoadTime.current < 500) {
       return
     }
-    setLastSceneLoadTime(now)
+    lastSceneLoadTime.current = now
     
     if (!gameState) {
       return
@@ -59,19 +110,144 @@ export function GameInterface() {
       return
     }
     
-    // Display text with adaptive enhancements
-    if (scene.text) {
-      const speaker = scene.speaker || 'narrator'
-      const enhancedText = enhanceSceneText(scene.text, scene.type)
-      addMessage({ 
-        speaker, 
-        text: enhancedText,
-        type: scene.type as 'narration' | 'dialogue'
-      })
-      
-      // No breathing invitations for Grand Central Terminus - this is career exploration, not meditation
+    console.log('🟡 handleLoadScene - scene loaded:', scene.id, 'text preview:', scene.text?.substring(0, 50))
+    
+    // Check if this is the same speaker as the last message
+    const lastMessage = messages[messages.length - 1]
+    const sceneText = scene.text || ''
+    const speaker = scene.speaker || 'narrator'
+    const isSameSpeaker = lastMessage && lastMessage.speaker === speaker && speaker !== 'narrator'
+    
+    // Check if this is mixed content that should be split
+    const enhancedText = scene.text ? enhanceSceneText(scene.text, scene.type) : ''
+    const isMixedLetterContent = enhancedText.includes('At the bottom of the letter') && enhancedText.includes("'")
+    
+    if (isSameSpeaker && !isMixedLetterContent) {
+      console.log('🟡 Same speaker detected - will update existing message instead of clearing')
+      // Don't clear messages for same speaker, just update content
+    } else {
+      console.log('🟡 Different speaker or special content - clearing messages')
+      clearMessages()
     }
-  }, [loadScene, gameState, addMessage, lastSceneLoadTime])
+    
+    if (isMixedLetterContent) {
+      console.log('🟡 Mixed content detected - will split into two messages')
+    }
+    
+    // Add a small delay to ensure clearing completes before adding new message
+    setTimeout(() => {
+      console.log('🟡 After clearMessages delay, adding new message')
+      
+      // Display current scene text
+      if (scene.text) {
+        console.log('🟡 About to add message for scene:', scene.id)
+        
+        if (isMixedLetterContent) {
+          console.log('🟡 Detected mixed letter content, splitting into two messages')
+          console.log('🟡 Original text:', enhancedText)
+          
+          // Split the text properly: "text: 'quoted content'"
+          const colonIndex = enhancedText.indexOf(': ')
+          const narrativePart = enhancedText.substring(0, colonIndex + 1).trim() // "At the bottom of the letter, in smaller text:"
+          const quotedPart = enhancedText.substring(colonIndex + 2).trim() // "'You have one year...'"
+          const letterPart = quotedPart.replace(/^'|'$/g, '').trim() // Remove surrounding single quotes
+          
+          console.log('🟡 Split into:')
+          console.log('🟡 - Narrative part:', narrativePart)
+          console.log('🟡 - Letter part:', letterPart)
+          
+          // Add narrative context first (instant)
+          addMessage({ 
+            speaker, 
+            text: narrativePart,
+            type: 'narration',
+            typewriter: false,
+            sceneId: scene.id
+          })
+          
+          // Add letter content with typewriter effect after a short delay
+          setTimeout(() => {
+            addMessage({ 
+              speaker, 
+              text: letterPart,
+              type: 'narration',
+              typewriter: true,
+              sceneId: scene.id
+            })
+          }, 100)
+          
+          console.log('🟡 Split messages added for scene:', scene.id)
+        } else {
+          const shouldUseTypewriter = (text: string, type: string, speaker: string) => {
+            // Only for quoted letter/note content that's mostly just the quote
+            if (text.includes('"') && type === 'narration') {
+              const quotedPart = text.match(/"([^"]*)"/)?.[1] || '';
+              return quotedPart.length > text.length * 0.8; // >80% quoted content
+            }
+            return false; // Everything else instant
+          }
+          
+          if (isSameSpeaker) {
+            // For same speaker, just add a simple message (StoryMessage component will handle it)
+            console.log('🟡 Same speaker - adding simple message without semantic chunking')
+            addMessage({ 
+              speaker, 
+              text: enhancedText,
+              type: scene.type as 'narration' | 'dialogue',
+              typewriter: shouldUseTypewriter(enhancedText, scene.type, speaker),
+              sceneId: scene.id
+            })
+          } else {
+            // For new speakers, use semantic chunking only if the content is complex enough
+            // Skip semantic chunking for narrator - keep as single flowing narrative
+            const semanticChunks = createSemanticChunks(enhancedText, speaker)
+            
+            if (semanticChunks.length > 1 && enhancedText.length > 150 && speaker !== 'narrator') {
+              // Add semantic chunks with priority-based delays and styling - only for long complex content
+              console.log('🟡 Creating semantic chunks:', semanticChunks.length, 'parts')
+              
+              semanticChunks.forEach((chunk, index) => {
+                setTimeout(() => {
+                  addMessage({ 
+                    speaker, 
+                    text: chunk.text,
+                    type: scene.type as 'narration' | 'dialogue',
+                    typewriter: shouldUseTypewriter(chunk.text, scene.type, speaker),
+                    messageWeight: chunk.priority === 1 ? 'critical' : 
+                                 chunk.priority <= 2 ? 'primary' : 'aside',
+                    className: `semantic-${chunk.semanticType}`,
+                    sceneId: scene.id
+                  })
+                }, chunk.delay)
+              })
+              
+              console.log('🟡 Semantic chunks scheduled for scene:', scene.id)
+            } else {
+              // Single message with basic semantic styling
+              const chunk = semanticChunks[0]
+              addMessage({ 
+                speaker, 
+                text: enhancedText,
+                type: scene.type as 'narration' | 'dialogue',
+                typewriter: shouldUseTypewriter(enhancedText, scene.type, speaker),
+                messageWeight: chunk?.priority === 1 ? 'critical' : 
+                             chunk?.priority <= 2 ? 'primary' : 'aside',
+                className: chunk ? `semantic-${chunk.semanticType}` : undefined,
+                sceneId: scene.id
+              })
+              
+              console.log('🟡 Single message added for scene:', scene.id)
+            }
+          }
+        }
+      } else {
+        console.log('🟡 No text for scene:', scene.id)
+      }
+      
+      // User control: always require Continue button interaction
+      // Removed auto-advance to maintain consistent UX and user agency
+    }, 10) // Very small delay to ensure state updates
+  }, [loadScene, gameState, addMessage, clearMessages, enhanceSceneText, createSemanticChunks, storyEngine])
   
   const handleStartGame = useCallback(() => {
     setShowIntro(false)
@@ -81,6 +257,8 @@ export function GameInterface() {
       // Clear messages and reset state for fresh start
       clearMessages()
       resetPresence()
+      
+      
       // Reset game state to beginning
       gameState.setScene(initialScene)
       // Force load the initial scene (handleLoadScene will add the message)
@@ -220,39 +398,47 @@ export function GameInterface() {
     })
     performanceSystem.updateFromPatterns(recentThemes)
     
-    // Add choice to messages
-    addMessage({
-      speaker: 'You',
-      text: choice.text,
-      type: 'dialogue'
-    })
-    
-    // Load next scene after a short delay
+    // Don't add choice as separate message - go directly to next scene
+    // Load next scene immediately
     setTimeout(() => {
-      handleLoadScene(choice.nextScene)
+      console.log('🔄 setTimeout executing, attempting to load scene:', choice.nextScene)
+      const result = handleLoadScene(choice.nextScene)
+      console.log('🔄 handleLoadScene result:', result)
       setProcessing(false)
-    }, 1000)
+    }, 500) // Shorter delay
     
-    } catch {
+    } catch (error) {
+      console.error('❌ Error in handleChoice:', error)
+      console.error('❌ Choice details:', choice)
       setProcessing(false)
     }
   }, [gameState, currentScene, setProcessing, addMessage, handleLoadScene, resetPresence, choiceStartTime, performanceSystem, messages])
   
   const handleContinue = useCallback(() => {
-    if (!currentScene) return
+    console.log('handleContinue called, currentScene:', currentScene?.id)
+    if (!currentScene) {
+      console.log('No currentScene, returning')
+      return
+    }
     
     const nextSceneId = storyEngine.getNextScene(currentScene.id)
+    console.log('Next scene ID:', nextSceneId)
+    
     if (nextSceneId) {
       handleLoadScene(nextSceneId)
     } else {
-      // End of current chapter
+      console.log('No next scene, showing end message')
+      // Clear messages first, then add end message
+      clearMessages()
       addMessage({
         speaker: 'narrator',
         text: 'To be continued...',
-        type: 'narration'
+        type: 'narration',
+        typewriter: false,
+        sceneId: currentScene?.id || 'end'
       })
     }
-  }, [currentScene, storyEngine, handleLoadScene, addMessage])
+  }, [currentScene, storyEngine, handleLoadScene, addMessage, clearMessages])
   
   // Loading state
   if (!gameState || !isInitialized) {
@@ -284,25 +470,36 @@ export function GameInterface() {
             <span>·</span>
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          {/* Messages Area - The only thing on screen */}
-          <div className="h-[60vh] overflow-y-auto mb-4 space-y-3 pr-2">
+        <CardContent className="flex flex-col justify-center min-h-[60vh]">
+          {/* Centered Messages Area */}
+          <div className="flex-1 flex items-center justify-center">
             {messages.length === 0 ? (
               <div className="text-center text-muted-foreground py-8">
                 <p>Your journey begins...</p>
               </div>
             ) : (
-              messages.map((msg, index) => (
-                <div key={index} className="fade-in">
-                  <StoryMessage
-                    speaker={msg.speaker}
-                    text={msg.text}
-                    type={msg.type}
-                  />
-                </div>
-              ))
+              <div className="w-full" key={currentScene?.id || 'no-scene'}>
+                {messages.map((msg, index) => {
+                  // Get previous message for visual grouping
+                  const prevMsg = index > 0 ? messages[index - 1] : null
+                  const isContinuedSpeaker = prevMsg && prevMsg.speaker === msg.speaker && 
+                                           msg.speaker !== 'You' // Allow narrator grouping, exclude only user messages
+                  
+                  return (
+                    <StoryMessage
+                      key={msg.id} // Use stable message ID instead of scene-based key
+                      speaker={msg.speaker}
+                      text={msg.text}
+                      type={msg.type}
+                      messageWeight={msg.messageWeight}
+                      buttonText={msg.buttonText}
+                      typewriter={msg.typewriter}
+                      isContinuedSpeaker={isContinuedSpeaker}
+                    />
+                  )
+                })}
+              </div>
             )}
-            <div ref={messagesEndRef} />
           </div>
           
           {/* Action Area - Adaptive choice layout */}
@@ -318,31 +515,26 @@ export function GameInterface() {
                   : "grid grid-cols-1 md:grid-cols-2 gap-2"
               }>
                 {enhanceChoices(currentScene.choices).map((choice, index) => (
-                  <Button
+                  <button
                     key={index}
                     onClick={() => handleChoice(choice)}
                     disabled={isProcessing}
-                    variant="outline"
-                    className={`choice-button choice-card h-auto whitespace-normal`}
+                    className="pokemon-choice-button w-full text-left"
                   >
-                    <span className="block w-full text-left">
-                      {choice.text}
-                    </span>
-                  </Button>
+                    {choice.text}
+                  </button>
                 ))}
               </div>
-            ) : currentScene ? (
-              <Button
+            ) : (
+              // Show Continue button for all non-choice scenes
+              <button
                 onClick={handleContinue}
-                disabled={isProcessing || !storyEngine.getNextScene(currentScene.id)}
-                className="w-full choice-button single-action"
-                size="lg"
+                disabled={isProcessing}
+                className="pokemon-continue-button w-full"
               >
-                <span className="block w-full">
-                  {storyEngine.getNextScene(currentScene.id) ? 'Continue' : 'Chapter Complete'}
-                </span>
-              </Button>
-            ) : null}
+                {storyEngine.getNextScene(currentScene?.id || '') ? 'Continue' : 'Chapter Complete'}
+              </button>
+            )}
           </div>
         </CardContent>
       </Card>

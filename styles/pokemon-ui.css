@@ -1,0 +1,485 @@
+/* POKEMON-STYLE UI - Grand Central Terminus Edition */
+/* Bringing back that "alive" game dialogue feeling */
+
+/* Pokemon Text Box Foundation */
+.pokemon-textbox {
+  /* Core Pokemon dialogue box styling */
+  position: relative;
+  background: white;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  padding: 20px 24px; /* Better internal spacing */
+  margin: 12px 0; /* Better external spacing */
+  box-shadow: 
+    /* Multiple layers for authentic Game Boy depth */
+    0 2px 0 0 rgba(0, 0, 0, 0.2),           /* Bottom border shadow */
+    0 0 0 1px rgba(0, 0, 0, 0.2),           /* Outer border */
+    inset 0 1px 0 0 #ffffff,     /* Inner highlight */
+    inset 0 0 0 1px rgba(0, 0, 0, 0.2),     /* Inner border */
+    0 4px 8px rgba(0, 0, 0, 0.3); /* Drop shadow */
+  
+  /* Typography that feels game-like */
+  font-family: 'Pokemon GB', 'Courier New', monospace;
+  
+  /* Ensure proper stacking and interaction */
+  z-index: 10;
+  overflow: visible;
+  
+  /* Better text container */
+  max-width: 100%;
+  word-wrap: break-word;
+}
+
+/* Dark mode adjustments */
+.dark .pokemon-textbox {
+  background: #f9fafb;
+  color: #111827;
+}
+
+/* Pokemon Text Styling */
+.pokemon-text {
+  font-family: 'Inter', 'Pokemon GB', monospace;
+  font-size: 1rem;
+  line-height: 1.6; /* Improved line spacing */
+  font-weight: 500;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  text-align: left; /* Left-aligned for better readability */
+  
+  /* Better word wrapping */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  
+  /* Proper paragraph spacing */
+  white-space: pre-wrap; /* Preserves line breaks and spaces */
+  
+  /* Better mobile scaling */
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+}
+
+/* Markdown-style emphasis for narrative focus */
+.pokemon-text strong {
+  font-weight: 700;
+  color: #1f2937;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.pokemon-text em {
+  font-style: italic;
+  color: #374151;
+  font-weight: 500;
+}
+
+/* Triple emphasis for urgent elements (time) */
+.pokemon-text strong em,
+.pokemon-text em strong {
+  font-weight: 700;
+  font-style: italic;
+  color: #dc2626;
+  text-shadow: 0 1px 4px rgba(220, 38, 38, 0.3);
+  animation: subtle-pulse 2s ease-in-out infinite;
+}
+
+@keyframes subtle-pulse {
+  0%, 100% { 
+    opacity: 1; 
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 0.9;
+    transform: scale(1.02);
+  }
+}
+
+/* 5-Level Semantic Typography Hierarchy */
+
+/* Priority 1: Critical Action - Demands immediate attention */
+.semantic-critical-action {
+  font-weight: 600;
+  font-size: 1.125rem; /* 18px */
+  color: #dc2626;
+  text-shadow: 0 1px 4px rgba(220, 38, 38, 0.3);
+  line-height: 1.4;
+  margin: 0.5rem 0;
+  animation: subtle-pulse 2s ease-in-out infinite;
+}
+
+/* Priority 2: Specific Time - Important for urgency */
+.semantic-specific-time {
+  font-weight: 500;
+  font-size: 1rem; /* 16px */
+  color: #1f2937;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  line-height: 1.5;
+  margin: 0.25rem 0;
+}
+
+/* Priority 3: Time Marker/Default - Moderate emphasis */
+.semantic-time-marker,
+.semantic-default {
+  font-weight: 400;
+  font-size: 1rem; /* 16px */
+  color: #374151;
+  opacity: 0.9;
+  font-style: italic;
+  line-height: 1.5;
+  margin: 0.25rem 0;
+}
+
+/* Priority 4: Stakes/Mystery - Intriguing but not urgent */
+.semantic-stakes-mystery {
+  font-weight: 400;
+  font-size: 0.9375rem; /* 15px */
+  color: #4b5563;
+  opacity: 0.85;
+  font-style: italic;
+  line-height: 1.6;
+  margin: 0.375rem 0;
+  text-shadow: none;
+}
+
+/* Priority 5: Atmosphere - Recedes to background */
+.semantic-atmosphere {
+  font-weight: 300;
+  font-size: 0.875rem; /* 14px */
+  color: #6b7280;
+  opacity: 0.8;
+  line-height: 1.6;
+  margin: 0.125rem 0;
+  text-shadow: none;
+}
+
+/* Dark mode adjustments for semantic hierarchy */
+.dark .semantic-critical-action {
+  color: #fca5a5;
+  text-shadow: 0 1px 4px rgba(252, 165, 165, 0.4);
+}
+
+.dark .semantic-specific-time {
+  color: #f9fafb;
+}
+
+.dark .semantic-time-marker,
+.dark .semantic-default {
+  color: #e5e7eb;
+}
+
+.dark .semantic-stakes-mystery {
+  color: #d1d5db;
+}
+
+.dark .semantic-atmosphere {
+  color: #9ca3af;
+}
+
+/* Cinematic Information Architecture - Message Weight Variations */
+.pokemon-text.message-aside {
+  font-size: 0.875rem;     /* 14px - smaller for secondary info */
+  opacity: 0.85;           /* slightly faded */
+  font-style: italic;      /* visual distinction */
+}
+
+.pokemon-text.message-critical {
+  font-weight: 500;        /* medium weight for emphasis */
+  padding: 18px 24px;      /* 10% more padding */
+  border-width: 3px;       /* slightly thicker border */
+}
+
+
+/* Character Name Styling - Pokemon NPC style */
+.pokemon-character-name {
+  font-family: 'Pokemon GB', 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-shadow: 1px 1px 0px rgba(0,0,0,0.3);
+  
+  /* Add subtle glow effect */
+  filter: drop-shadow(0 0 2px rgba(255,255,255,0.3));
+}
+
+/* Typewriter Cursor Animation */
+.pokemon-cursor {
+  display: inline-block;
+  animation: blinkingCursor 1s infinite;
+  font-weight: bold;
+  font-size: 1.5em;
+  line-height: 1;
+}
+
+@keyframes blinkingCursor {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* Continue Arrow Animation - Pokemon style */
+.pokemon-continue-arrow {
+  animation: pokemonBounce 1.5s ease-in-out infinite;
+  cursor: pointer;
+  user-select: none;
+  display: inline-block;
+}
+
+@keyframes pokemonBounce {
+  0%, 20%, 50%, 80%, 100% { 
+    transform: translateY(0); 
+  }
+  40% { 
+    transform: translateY(-8px); 
+  }
+  60% { 
+    transform: translateY(-4px); 
+  }
+}
+
+.pokemon-continue-arrow:hover {
+  animation-duration: 0.8s;
+  filter: brightness(1.2);
+}
+
+/* Character Avatar Enhancements */
+.pokemon-avatar {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.pokemon-avatar:hover {
+  transform: scale(1.05);
+  animation: pokemonAvatarBounce 0.6s ease-in-out;
+}
+
+@keyframes pokemonAvatarBounce {
+  0%, 100% { transform: scale(1.05) translateY(0); }
+  50% { transform: scale(1.05) translateY(-4px); }
+}
+
+/* Message Container Improvements */
+.pokemon-message-container {
+  /* Ensure proper spacing and focus */
+  margin-bottom: 1.5rem;
+  
+  /* Slide in animation from bottom */
+  animation: pokemonSlideIn 0.7s ease-out;
+}
+
+/* Continued Speaker Visual Grouping - Industry Standard */
+.pokemon-message-container.continued-speaker {
+  /* Enhanced spacing for visual grouping */
+  margin-bottom: 0.75rem;
+  margin-top: -0.25rem; /* Pull slightly closer to previous message */
+  
+  /* Subtle visual connection to previous message */
+  position: relative;
+}
+
+/* Enhanced connection line for visual continuity */
+.pokemon-message-container.continued-speaker::before {
+  content: '';
+  position: absolute;
+  left: -15px;
+  top: -8px;
+  bottom: -6px;
+  width: 4px;
+  background: linear-gradient(to bottom, 
+    rgba(147, 197, 253, 0.4) 0%,   /* Slightly more visible */
+    rgba(147, 197, 253, 0.8) 30%,  /* Peak visibility in upper portion */
+    rgba(147, 197, 253, 0.6) 70%,  /* Maintain visibility */
+    rgba(147, 197, 253, 0.3) 100%  /* Gentle fade at bottom */
+  );
+  border-radius: 3px;
+  z-index: 1;
+  box-shadow: 0 0 3px rgba(147, 197, 253, 0.2); /* Subtle glow */
+}
+
+/* Subtle connecting curve at the top */
+.pokemon-message-container.continued-speaker::after {
+  content: '';
+  position: absolute;
+  left: -15px;
+  top: -8px;
+  width: 18px;
+  height: 12px;
+  border-left: 3px solid rgba(147, 197, 253, 0.5);
+  border-top: 3px solid rgba(147, 197, 253, 0.5);
+  border-top-left-radius: 8px;
+  z-index: 2;
+}
+
+/* Continued speaker text box has enhanced styling */
+.pokemon-message-container.continued-speaker .pokemon-textbox {
+  padding-top: 16px; /* Reduced from 20px */
+  margin-top: 0.5rem; /* Slight top margin for cleaner connection */
+  /* Subtle background difference to reinforce grouping */
+  background: linear-gradient(135deg, 
+    rgba(147, 197, 253, 0.02) 0%,
+    rgba(255, 255, 255, 0.95) 15%,
+    rgba(255, 255, 255, 1) 100%
+  );
+}
+
+@keyframes pokemonSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Birmingham-themed Role Badges */
+.birmingham-role-badge {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: #78350f;
+  border: 2px solid #92400e;
+  font-family: 'Pokemon GB', monospace;
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 20px;
+  padding: 4px 12px;
+  box-shadow: 
+    0 2px 4px rgba(146, 64, 14, 0.3),
+    inset 0 1px 2px rgba(255, 255, 255, 0.3);
+}
+
+/* Choice Buttons - Pokemon Style */
+.pokemon-choice-button {
+  background: white;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 16px 20px;
+  font-family: 'Inter', 'Pokemon GB', monospace;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #111827;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  
+  /* Pokemon-style border effects */
+  box-shadow: 
+    0 2px 0 0 rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 0 #ffffff,
+    0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.pokemon-choice-button:hover {
+  background: #fef3c7;
+  border-color: #d97706;
+  transform: translateY(-1px);
+  box-shadow: 
+    0 3px 0 0 #d97706,
+    0 0 0 1px #d97706,
+    inset 0 1px 0 0 #ffffff,
+    0 3px 6px rgba(217, 119, 6, 0.3);
+}
+
+.pokemon-choice-button:active {
+  transform: translateY(0px);
+  box-shadow: 
+    0 1px 0 0 #d97706,
+    0 0 0 1px #d97706,
+    inset 0 1px 0 0 #ffffff,
+    0 1px 3px rgba(217, 119, 6, 0.3);
+}
+
+/* Continue Button - Pokemon Style */
+.pokemon-continue-button {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  border: 2px solid #065f46;
+  border-radius: 8px;
+  padding: 16px 32px;
+  color: white;
+  font-family: 'Inter', 'Pokemon GB', monospace;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  box-shadow: 
+    0 2px 0 0 #065f46,
+    0 3px 6px rgba(16, 185, 129, 0.4),
+    inset 0 1px 2px rgba(255, 255, 255, 0.3);
+}
+
+.pokemon-continue-button:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  transform: translateY(-1px);
+  box-shadow: 
+    0 3px 0 0 #065f46,
+    0 4px 8px rgba(16, 185, 129, 0.5),
+    inset 0 1px 2px rgba(255, 255, 255, 0.4);
+}
+
+.pokemon-continue-button:active {
+  transform: translateY(0px);
+  box-shadow: 
+    0 1px 0 0 #065f46,
+    0 2px 5px rgba(16, 185, 129, 0.4),
+    inset 0 1px 2px rgba(255, 255, 255, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .pokemon-textbox {
+    margin: 0 16px;
+    padding: 20px;
+    border-width: 2px;
+  }
+  
+  .pokemon-text {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  
+  .pokemon-character-name {
+    font-size: 1rem;
+  }
+  
+  .pokemon-choice-button,
+  .pokemon-continue-button {
+    padding: 14px 16px;
+    font-size: 0.95rem;
+  }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  .pokemon-continue-arrow,
+  .pokemon-avatar {
+    animation: none;
+  }
+  
+  .pokemon-message-container {
+    animation: none;
+  }
+}
+
+/* Focus styles for keyboard navigation */
+.pokemon-choice-button:focus,
+.pokemon-continue-button:focus {
+  outline: 3px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Print styles */
+@media print {
+  .pokemon-textbox {
+    box-shadow: none;
+    border: 2px solid #000000;
+  }
+  
+  .pokemon-continue-arrow {
+    display: none;
+  }
+}

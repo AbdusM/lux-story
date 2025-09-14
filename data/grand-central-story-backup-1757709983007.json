@@ -10,37 +10,25 @@
         {
           "id": "1-1",
           "type": "narration",
-          "text": "You found a letter under your door this morning.",
-          "nextScene": "1-1-1a"
+          "text": "You found a letter under your door this morning.\n\n\"Your future awaits at Platform 7. Midnight. Don't be late.\"\n\nAt the bottom of the letter, in smaller text: 'You have one year before everything changes. Choose wisely. - Future You'",
+          "nextScene": "1-1"
         },
         {
-          "id": "1-1-1a",
+          "id": "1-1",
           "type": "narration",
-          "text": "\"Your future awaits at Platform 7. Midnight. Don't be late.\"",
-          "nextScene": "1-1-1b"
+          "text": "No signature. Just your name in familiar handwriting. Now you're at Grand Central Station. Weird thing is, this place wasn't here yesterday. The big clock says 11:47 PM.\n\nYou got 13 minutes to find Platform 7.",
+          "nextScene": "1-1"
         },
         {
-          "id": "1-1-1b",
+          "id": "1-1",
           "type": "narration",
-          "text": "At the bottom of the letter, in smaller text: 'You have one year before everything changes. Choose wisely. - Future You'",
-          "nextScene": "1-1-2"
+          "text": "Smelled weird - like metal. 'Your future awaits at Platform 7. Midnight. Don't be late.'\n\nNo signature.",
+          "nextScene": "1-1-3"
         },
         {
           "id": "1-1-2",
           "type": "narration",
-          "text": "No signature. Just your name in familiar handwriting.",
-          "nextScene": "1-1-2a"
-        },
-        {
-          "id": "1-1-2a",
-          "type": "narration",
-          "text": "Now you're at Grand Central Station. Weird thing is, this place wasn't here yesterday.",
-          "nextScene": "1-1-2b"
-        },
-        {
-          "id": "1-1-2b",
-          "type": "narration",
-          "text": "The big clock says 11:47 PM. You got 13 minutes to find Platform 7.",
+          "text": "No postmark. Just your name written in handwriting that feels familiar but impossible to place. Now you're at Grand Central Station. Weird thing is, this place wasn't here yesterday.",
           "nextScene": "1-1-3"
         },
         {
@@ -58,25 +46,13 @@
         {
           "id": "1-3a",
           "type": "narration",
-          "text": "You push through the heavy doors, their brass handles warm and slightly sticky with the residue of countless hands.",
-          "nextScene": "1-3a-2"
+          "text": "You push through the heavy doors, their brass handles warm and slightly sticky with the residue of countless hands. The station is huge.",
+          "nextScene": "1-3a"
         },
         {
-          "id": "1-3a-2",
+          "id": "1-3a",
           "type": "narration",
-          "text": "The station is huge. Smells like oil and old stuff. Your footsteps echo on the floor.",
-          "nextScene": "1-3a-3"
-        },
-        {
-          "id": "1-3a-3",
-          "type": "narration",
-          "text": "Platform 7's sign flickers up ahead. The number shifts between 7 and something else... 7½? No, that's impossible.",
-          "nextScene": "1-3a-4"
-        },
-        {
-          "id": "1-3a-4",
-          "type": "narration",
-          "text": "It gets colder as you walk. Other people are around - some rushing, some lost, some just walking. None of them seem to see you.",
+          "text": "Smells like oil and old stuff. Your footsteps echo on the floor. Platform 7's sign flickers up ahead. The light's buzzing. The number shifts between 7 and something else... 7½? No, that's impossible. It gets colder as you walk. Other people are around - some rushing, some lost, some just walking. None of them seem to see you.",
           "nextScene": "1-3b"
         },
         {
@@ -244,13 +220,13 @@
         {
           "id": "1-5c",
           "type": "narration",
-          "text": "You rush past the broken bench, your shoes clicking urgently on the marble floor. The elderly man's bags split with a harsh tearing sound, tools clattering across the platform like scattered bones. No one stops to help.",
-          "nextScene": "1-5c-2"
+          "text": "You rush past the broken bench, your shoes clicking urgently on the marble floor. The elderly man's bags split with a harsh tearing sound, tools clattering across the platform like scattered bones.",
+          "nextScene": "1-5c"
         },
         {
-          "id": "1-5c-2",
+          "id": "1-5c",
           "type": "narration",
-          "text": "You reach Platform 7 faster, yes. The clock reads 11:50 PM - plenty of time. But the platform itself seems different now. The air is colder, sharp with the scent of rust. The sign flickers more violently: 7... ERROR... 7... DENIED... 7...",
+          "text": "No one stops to help. The broken bench collapses completely with a crack like breaking ribs. You reach Platform 7 faster, yes. The clock reads 11:50 PM - plenty of time. But the platform itself seems different now. The air is colder, sharp with the scent of rust. The sign flickers more violently: 7... ERROR... 7... DENIED... 7...",
           "nextScene": "1-5d"
         },
         {
@@ -258,10 +234,10 @@
           "type": "dialogue",
           "speaker": "Samuel",
           "text": "'I've punched a thousand tickets to futures that haven't departed yet. Each one claims to know your destination, but destinations are like signals in fog - red until you're close enough to see they were always green.' His fingers trace invisible track patterns in the air.",
-          "nextScene": "1-5d-2"
+          "nextScene": "1-5d"
         },
         {
-          "id": "1-5d-2",
+          "id": "1-5d",
           "type": "dialogue",
           "speaker": "Samuel",
           "text": "'Platform 7 especially. It only couples to trains that know where they're going before they know where they've been. And you, young switchman, you're standing on tracks that haven't been laid yet.'",
@@ -584,10 +560,6 @@
               "nextScene": "1-10c",
               "stateChanges": {
                 "relationships.maya.quiet_hour_helped": true
-              },
-              "trust_impact": {
-                "character": "contextual",
-                "change": 1
               }
             },
             {
@@ -777,318 +749,6 @@
           "type": "narration",
           "text": "Other signs begin flickering, their electrical buzz questioning their own certainty.",
           "nextScene": "1-12"
-        },
-        {
-          "id": "maya-choice-deeper",
-          "type": "choice",
-          "text": "Maya seems lost in thought, staring at something in the distance. There's a weight in their expression you haven't seen before.",
-          "choices": [
-            {
-              "text": "\"Maya, what's on your mind?\"",
-              "nextScene": "maya-backstory-1",
-              "consequence": "trust_gained"
-            },
-            {
-              "text": "Give them space and continue exploring.",
-              "nextScene": "continue_exploration",
-              "consequence": "missed_opportunity"
-            }
-          ]
-        },
-        {
-          "id": "maya-backstory-1",
-          "type": "dialogue",
-          "speaker": "Maya",
-          "text": "The fluorescent lights of the UAB Medical School auditorium buzzed, reflecting off the crisp white coats draped over the chairs. Maya adjusted the collar of her own, the scratchy fabric a constant reminder of the weight on her shoulders. Her parents beamed from the third row, their faces shining with pride. \"This is it, Beta,\" her mother said, her voice a little too loud in the expectant hush. \"All your hard work, finally paying off.\" Maya managed a weak smile, her stomach churning. She could practically taste the iron tang of anxiety, the same metallic scent that clung to the air after dissection lab.\n\nLater, at the celebratory dinner at Highlands Bar & Grill, the clinking of silverware and polite conversation felt like a suffocating blanket. Her father raised his glass. \"To Dr. Maya Patel! May you bring honor to our family and heal the sick.\" Everyone cheered, except Maya. She stared at the shimmering condensation on her water glass, feeling the weight of their expectations pressing down on her. She wanted to tell them about the robotics project she’d secretly been working on, the code she’d written that could potentially revolutionize surgical procedures. But the words caught in her throat, replaced by a familiar, hollow silence.",
-          "emotional_weight": "high",
-          "trust_impact": 2,
-          "nextScene": "after_revelation_choice"
-        },
-        {
-          "id": "maya-choice-deeper",
-          "type": "choice",
-          "text": "Maya seems lost in thought, staring at something in the distance. There's a weight in their expression you haven't seen before.",
-          "choices": [
-            {
-              "text": "\"Maya, what's on your mind?\"",
-              "nextScene": "maya-backstory-2",
-              "consequence": "trust_gained"
-            },
-            {
-              "text": "Give them space and continue exploring.",
-              "nextScene": "continue_exploration",
-              "consequence": "missed_opportunity"
-            }
-          ]
-        },
-        {
-          "id": "maya-backstory-2",
-          "type": "dialogue",
-          "speaker": "Maya",
-          "text": "She was eight, visiting her younger cousin at Children's Hospital. The sterile smell of antiseptic hung heavy in the air, a stark contrast to the vibrant, cartoon-covered walls. But it was the therapy dog program that caught her eye. Not the furry retrievers, but the shiny, battery-powered one. It was a prototype, used for children with severe allergies. Maya knelt beside a girl with a shaved head, watching as the robotic dog tilted its head and whined in response to a gentle touch. \n\nLater, she snuck into a supply closet, her heart pounding against her ribs. There, tucked away in a corner, was the charging station for the robot dog. She spent a blissful hour examining its exposed wires and circuit boards, a sense of wonder bubbling inside her. The cool metal felt right against her skin, a soothing balm to the antiseptic scent and muffled cries echoing from the hallway. That day, surrounded by pain and beeping machines, she discovered a different kind of healing, one that involved logic, creativity, and a touch of code.",
-          "emotional_weight": "high",
-          "trust_impact": 2,
-          "nextScene": "after_revelation_choice"
-        },
-        {
-          "id": "maya-choice-deeper",
-          "type": "choice",
-          "text": "Maya seems lost in thought, staring at something in the distance. There's a weight in their expression you haven't seen before.",
-          "choices": [
-            {
-              "text": "\"Maya, what's on your mind?\"",
-              "nextScene": "maya-backstory-3",
-              "consequence": "trust_gained"
-            },
-            {
-              "text": "Give them space and continue exploring.",
-              "nextScene": "continue_exploration",
-              "consequence": "missed_opportunity"
-            }
-          ]
-        },
-        {
-          "id": "maya-backstory-3",
-          "type": "dialogue",
-          "speaker": "Maya",
-          "text": "The cursor blinked mockingly on her laptop screen. Maya stared at the unfinished email, her fingers hovering over the keyboard. It was addressed to Dr. Anya Sharma at the Innovation Depot, a local robotics expert. The subject line read: 'Robotics Internship Inquiry.' She’d spent hours crafting the perfect message, detailing her coding experience, her passion for medical robotics, and her… her doubts. 'I'm afraid of letting my parents down,' she typed, then deleted. 'They've sacrificed so much for me.' Delete. 'What if I'm not good enough? What if I fail?' Delete. \n\nShe imagined their faces, the disappointment etched into their features. The years of piano lessons, the tutoring, the summer programs - all investments in her future as a doctor. To abandon that now, to pursue something... less certain... felt like a betrayal. She closed the laptop with a sigh, the glow of the screen fading to black. The email remained unsent, a testament to her deepest fear: not failure itself, but the ripple effect of her choices on the people she loved.",
-          "emotional_weight": "high",
-          "trust_impact": 2,
-          "nextScene": "after_revelation_choice"
-        },
-        {
-          "id": "samuel-choice-deeper",
-          "type": "choice",
-          "text": "Samuel seems lost in thought, staring at something in the distance. There's a weight in their expression you haven't seen before.",
-          "choices": [
-            {
-              "text": "\"Samuel, what's on your mind?\"",
-              "nextScene": "samuel-backstory-1",
-              "consequence": "trust_gained"
-            },
-            {
-              "text": "Give them space and continue exploring.",
-              "nextScene": "continue_exploration",
-              "consequence": "missed_opportunity"
-            }
-          ]
-        },
-        {
-          "id": "samuel-backstory-1",
-          "type": "dialogue",
-          "speaker": "Samuel",
-          "text": "The fluorescent lights of the Regions Bank tower hummed, a monotonous drone that mirrored the rhythm of Samuel's life. Another late night, another spreadsheet filled with projections that meant nothing. He stared out at Railroad Park, a green oasis struggling against the concrete jungle. He remembered when it was just tracks and dust, a forgotten corner of the city. Now, families laughed, children played, and someone even dared to fly a kite against the backdrop of the skyline. 'Another million secured, Samuel,' his boss, a man whose face had long ago been smoothed into a mask of ambition, boomed from behind. 'Partner track is practically yours.' Samuel managed a weak smile. He felt like he was drowning in success, the weight of it crushing the air from his lungs. 'Thank you, sir,' he mumbled, the words tasting like ash.\n\nLater, standing on the balcony of his penthouse apartment overlooking the city, the humid Birmingham air thick with the scent of honeysuckle and exhaust, Samuel felt a profound disconnect. He had everything he thought he wanted – the view, the money, the power. But looking at the tiny figures enjoying the park, he realized he envied them. He envied their simple joy, their lack of pretense. The reflection in the glass showed him a man hollowed out by ambition, a ghost haunting his own success. That night, he didn't sleep. He just watched the city breathe, and knew, with a chilling certainty, that he couldn't spend another day climbing that ladder.",
-          "emotional_weight": "high",
-          "trust_impact": 2,
-          "nextScene": "after_revelation_choice"
-        },
-        {
-          "id": "samuel-choice-deeper",
-          "type": "choice",
-          "text": "Samuel seems lost in thought, staring at something in the distance. There's a weight in their expression you haven't seen before.",
-          "choices": [
-            {
-              "text": "\"Samuel, what's on your mind?\"",
-              "nextScene": "samuel-backstory-2",
-              "consequence": "trust_gained"
-            },
-            {
-              "text": "Give them space and continue exploring.",
-              "nextScene": "continue_exploration",
-              "consequence": "missed_opportunity"
-            }
-          ]
-        },
-        {
-          "id": "samuel-backstory-2",
-          "type": "dialogue",
-          "speaker": "Samuel",
-          "text": "The first day was a blur of dust motes dancing in the afternoon sun filtering through the high windows of Grand Central Terminus. The place was… neglected. But it had a heartbeat, a silent hum of potential waiting to be unlocked. He ran a hand along the worn wooden counter, the only piece of furniture in his 'office.' The station master who’d trained him, a wizened woman with eyes that seemed to see straight through him, had simply handed him a ring of tarnished keys. 'These open every door, Samuel,' she’d rasped, her voice like dry leaves rustling. 'But the hardest door to open will be your own.' He remembered the tremor in his hand as he accepted them.\n\nHe spent hours that day just wandering, listening to the echoes of forgotten journeys. He tried imagining the lives that had passed through these halls, the dreams carried, the disappointments endured. Fear gnawed at him. What if he failed? What if he couldn't help these people find their way? He wasn’t an expert, just a dropout from the corporate world. He felt a strange mix of exhilaration and terror, like standing at the edge of a cliff, knowing he had to jump, even if he wasn't sure he could fly. He placed the keys carefully on the counter, a silent promise to do his best.",
-          "emotional_weight": "high",
-          "trust_impact": 2,
-          "nextScene": "after_revelation_choice"
-        },
-        {
-          "id": "samuel-choice-deeper",
-          "type": "choice",
-          "text": "Samuel seems lost in thought, staring at something in the distance. There's a weight in their expression you haven't seen before.",
-          "choices": [
-            {
-              "text": "\"Samuel, what's on your mind?\"",
-              "nextScene": "samuel-backstory-3",
-              "consequence": "trust_gained"
-            },
-            {
-              "text": "Give them space and continue exploring.",
-              "nextScene": "continue_exploration",
-              "consequence": "missed_opportunity"
-            }
-          ]
-        },
-        {
-          "id": "samuel-backstory-3",
-          "type": "dialogue",
-          "speaker": "Samuel",
-          "text": "He remembers Sarah, a bright-eyed young woman convinced she was destined to be a lawyer. She had the grades, the ambition, the perfect resume. He listened, asked questions, trying to understand her 'why.' But her answers felt rehearsed, hollow. He pushed, gently, suggesting other avenues, other possibilities. She grew frustrated. 'I don't have time for this, Samuel,' she snapped one afternoon, her voice echoing in the quiet station. 'I need to get into law school.' He watched her storm off, a wave of disappointment washing over him. He’d failed her.\n\nLater that evening, tending to the small herb garden he'd started outside the station, he understood. He'd been so eager to help, so determined to steer her toward what he *thought* was her authentic path, that he'd rushed the process. He looked at the delicate basil plant he was nurturing, remembering how long it took to sprout, how much patience it required. You can't force a seed to bloom, he realized. You can only provide the right conditions and let nature take its course. He understood then that his role wasn’t to dictate paths, but to nurture the potential within each person, to give them the space and time to discover their own truth. He murmured to the basil, a silent apology to Sarah hanging in the humid air. 'Patience,' he whispered. 'Everything blooms in its own time.'",
-          "emotional_weight": "high",
-          "trust_impact": 2,
-          "nextScene": "after_revelation_choice"
-        },
-        {
-          "id": "devon-choice-deeper",
-          "type": "choice",
-          "text": "Devon seems lost in thought, staring at something in the distance. There's a weight in their expression you haven't seen before.",
-          "choices": [
-            {
-              "text": "\"Devon, what's on your mind?\"",
-              "nextScene": "devon-backstory-1",
-              "consequence": "trust_gained"
-            },
-            {
-              "text": "Give them space and continue exploring.",
-              "nextScene": "continue_exploration",
-              "consequence": "missed_opportunity"
-            }
-          ]
-        },
-        {
-          "id": "devon-backstory-1",
-          "type": "dialogue",
-          "speaker": "Devon",
-          "text": "The echoing roar of Protective Stadium still rings in Devon's ears, a phantom sound clinging to the stale, filtered air of the UAB engineering lab. It was freshman year, the stadium's concourse was a muddy construction site, and Dr. Eldridge had tasked them with designing an improved ventilation system. Devon, fueled by caffeine and a desperate need to prove himself, poured over schematics, optimizing airflow algorithms, calculating pressure gradients. He saw it as a beautiful puzzle. He even presented the idea to the construction managers, convinced he had solved their issues. Their faces, however, were a mixture of boredom and polite confusion. 'Looks good on paper, kid,' one gruff foreman had said, 'but have you considered how many people will be spilling beer, or how the sun bakes the west side in August? That's gonna change everything.'\n\nDevon remembers the shame prickling at his skin, hotter than any Alabama summer. He hadn't. He'd gotten so lost in the technicalities, the elegant equations, that he'd forgotten the stadium was for *people*. That night, he sat alone in his dorm room, the hum of the HVAC a mocking reminder of his failure. He re-ran simulations, adding variables for humidity, crowd density, even the average height of a football fan. But the problem wasn't the simulation; it was him. He closed the laptop, the blue light reflecting in his tired eyes. 'Maybe,' he mumbled to the empty room, 'maybe it's just easier to build something no one can mess up.' From that day on, Devon retreated further into the logic gates and algorithms, seeking refuge in the predictable world of machines.",
-          "emotional_weight": "high",
-          "trust_impact": 2,
-          "nextScene": "after_revelation_choice"
-        },
-        {
-          "id": "devon-choice-deeper",
-          "type": "choice",
-          "text": "Devon seems lost in thought, staring at something in the distance. There's a weight in their expression you haven't seen before.",
-          "choices": [
-            {
-              "text": "\"Devon, what's on your mind?\"",
-              "nextScene": "devon-backstory-2",
-              "consequence": "trust_gained"
-            },
-            {
-              "text": "Give them space and continue exploring.",
-              "nextScene": "continue_exploration",
-              "consequence": "missed_opportunity"
-            }
-          ]
-        },
-        {
-          "id": "devon-backstory-2",
-          "type": "dialogue",
-          "speaker": "Devon",
-          "text": "The flashing lights of the emergency vehicles painted the pre-dawn sky above Red Mountain a garish orange. Devon, usually asleep at this hour, stood huddled with his UAB engineering group, watching the chaos unfold. Their senior project – an autonomous drone designed to inspect the aging infrastructure of the Red Mountain Expressway Cut – had gone rogue. It was supposed to be a masterpiece of efficiency, detecting cracks and weaknesses before they became critical. Instead, it had flown off course, interfering with emergency services responding to a car accident. Dr. Peterson, their exasperated advisor, rubbed his temples, muttering about liability and grant money. 'We optimized the pathing algorithm!' Devon protested, his voice tight with frustration. 'It should have been impossible for it to deviate!'\n\nLater, back in the lab, surrounded by shattered code and sparking wires, Devon saw the news report: a family trapped in their car, rescued thanks to the quick thinking of a first responder. The drone, a supposed marvel of engineering, had almost delayed their rescue. He stared at the screen, the faces of the rescued family blurred but undeniably *there*. Real people. Real consequences. 'We forgot to account for contingencies,' Maria, the team's only social scientist, said quietly, her voice laced with disappointment. 'Human error, unexpected events... things computers can't predict.' Devon didn't respond. He just kept staring at the faces on the screen, a cold knot forming in his stomach. That failure led him to dedicate his free time to building automated medical delivery systems and the like, but the cold knot would always remind him that without human interaction, his designs could do more harm than good.",
-          "emotional_weight": "high",
-          "trust_impact": 2,
-          "nextScene": "after_revelation_choice"
-        },
-        {
-          "id": "devon-choice-deeper",
-          "type": "choice",
-          "text": "Devon seems lost in thought, staring at something in the distance. There's a weight in their expression you haven't seen before.",
-          "choices": [
-            {
-              "text": "\"Devon, what's on your mind?\"",
-              "nextScene": "devon-backstory-3",
-              "consequence": "trust_gained"
-            },
-            {
-              "text": "Give them space and continue exploring.",
-              "nextScene": "continue_exploration",
-              "consequence": "missed_opportunity"
-            }
-          ]
-        },
-        {
-          "id": "devon-backstory-3",
-          "type": "dialogue",
-          "speaker": "Devon",
-          "text": "Devon avoids the elevators in the UAB Hill Student Center. Too many people, too much forced proximity. But today, he's carrying a prototype – a lightweight, hand-cranked generator designed for use in low-income communities lacking reliable electricity. It's for his independent study. He passes the ramp leading to the ground floor and sees Mrs. Hernandez, a woman who sells handcrafted jewelry to support her family. Her usual display is missing. He finds her struggling with her cart, its wheel jammed against a loose brick. He hesitates, his internal monologue screaming at him to keep walking. 'Need a hand?' he blurts out before he can stop himself. \n\nMrs. Hernandez looks up, her face etched with exhaustion. 'Oh, *mijo*, that would be wonderful.' Devon, awkwardly, helps her free the cart. He notices her small, gnarled hands and asks what happened. She explains that her battery-powered display light died. He offers his prototype, explaining how it works. Her eyes light up. 'This...this is a blessing! I can show my work even when the sun goes down.' He watches as she sets up her display, the soft glow of the hand-cranked generator illuminating her colorful creations. A customer stops, drawn to the light. Mrs. Hernandez smiles, a genuine, radiant smile. 'Thank you,' she says to Devon, her voice thick with emotion. 'You have made my day.' Devon, usually so uncomfortable with direct praise, simply nods, a strange warmth spreading through his chest. He quickly excuses himself, mumbling something about a lab appointment, but the image of Mrs. Hernandez's grateful smile lingers in his mind long after he's gone.",
-          "emotional_weight": "high",
-          "trust_impact": 2,
-          "nextScene": "after_revelation_choice"
-        },
-        {
-          "id": "jordan-choice-deeper",
-          "type": "choice",
-          "text": "Jordan seems lost in thought, staring at something in the distance. There's a weight in their expression you haven't seen before.",
-          "choices": [
-            {
-              "text": "\"Jordan, what's on your mind?\"",
-              "nextScene": "jordan-backstory-1",
-              "consequence": "trust_gained"
-            },
-            {
-              "text": "Give them space and continue exploring.",
-              "nextScene": "continue_exploration",
-              "consequence": "missed_opportunity"
-            }
-          ]
-        },
-        {
-          "id": "jordan-backstory-1",
-          "type": "dialogue",
-          "speaker": "Jordan",
-          "text": "The fluorescent lights of the Protective Life data center hummed, a sterile counterpoint to the churning in Jordan's stomach. Three months. That's all they lasted. Three months as a junior data analyst before Mrs. Davison, her manager, pulled her aside. 'Jordan, you have such a bright spark, but... this isn't it, is it?' The words echoed in the cavernous room, bouncing off the server racks like mocking laughter. She tried to explain, to articulate the disconnect between the endless spreadsheets and the burning desire to create, to *build* something tangible. But the words caught in her throat, choked by the shame of admitting failure, *again*. She just mumbled an apology, the Birmingham humidity suddenly clinging to her skin like a shroud. Leaving, she saw her reflection in the tinted glass of the building; a ghost of someone who desperately wanted to be good enough, to *stay* long enough.\n\nLater, sitting on a bench in Railroad Park, the scent of blooming jasmine barely registered. She watched the families laughing, the kids splashing in the splash pad, a stark contrast to the cold, clinical world she’d just escaped. A text from her mom pinged: “Another one? Honey, are you sure you're not just being picky?” Picky. That word stung. It wasn't pickiness; it was a desperate search for a place where she truly belonged, a fear that she was fundamentally broken, incapable of lasting in anything. The Protective Life building loomed in the distance, a silent monolith of her inadequacy.",
-          "emotional_weight": "high",
-          "trust_impact": 2,
-          "nextScene": "after_revelation_choice"
-        },
-        {
-          "id": "jordan-choice-deeper",
-          "type": "choice",
-          "text": "Jordan seems lost in thought, staring at something in the distance. There's a weight in their expression you haven't seen before.",
-          "choices": [
-            {
-              "text": "\"Jordan, what's on your mind?\"",
-              "nextScene": "jordan-backstory-2",
-              "consequence": "trust_gained"
-            },
-            {
-              "text": "Give them space and continue exploring.",
-              "nextScene": "continue_exploration",
-              "consequence": "missed_opportunity"
-            }
-          ]
-        },
-        {
-          "id": "jordan-backstory-2",
-          "type": "dialogue",
-          "speaker": "Jordan",
-          "text": "The cacophony of the BJCC during a career fair was overwhelming. Hundreds of booths, each promising a different path, a different future. Jordan wandered aimlessly, clutching a lukewarm cup of coffee and a handful of crumpled brochures. Nothing felt right. Everything felt like a compromise. Then, overhearing a conversation at the 'Tech Birmingham' booth, something clicked. A recruiter was explaining how project management skills, honed in the seemingly unrelated field of event planning – Jordan’s previous stint – could be invaluable in software development. The recruiter used examples of coordinating vendors, managing budgets, and adhering to timelines, all things Jordan had excelled at during Sidewalk Film Festival.\n\nIt wasn't a revelation, not exactly, but a slow dawning. A realization that the skills she'd accumulated weren't useless baggage from failed ventures, but transferable assets. The fear that she was starting from scratch with each new job began to recede, replaced by a flicker of hope. Leaving the BJCC, the setting sun cast a golden glow on the city skyline. The I-65 traffic still roared, but the sound felt less oppressive, more like a symphony of possibilities. Maybe, just maybe, she wasn't a failure after all. Maybe she was just… evolving.",
-          "emotional_weight": "high",
-          "trust_impact": 2,
-          "nextScene": "after_revelation_choice"
-        },
-        {
-          "id": "jordan-choice-deeper",
-          "type": "choice",
-          "text": "Jordan seems lost in thought, staring at something in the distance. There's a weight in their expression you haven't seen before.",
-          "choices": [
-            {
-              "text": "\"Jordan, what's on your mind?\"",
-              "nextScene": "jordan-backstory-3",
-              "consequence": "trust_gained"
-            },
-            {
-              "text": "Give them space and continue exploring.",
-              "nextScene": "continue_exploration",
-              "consequence": "missed_opportunity"
-            }
-          ]
-        },
-        {
-          "id": "jordan-backstory-3",
-          "type": "dialogue",
-          "speaker": "Jordan",
-          "text": "Helping Maya, a bright-eyed intern at Yellowhammer Creative, navigate her first design project felt surprisingly good. Maya was paralyzed by the same fear that had haunted Jordan for years: the fear of not being good enough, of choosing the wrong path. 'It's okay to try things and change your mind,' Jordan found herself saying, the words tasting foreign but true. 'It doesn't mean you've failed. It just means you've learned something.' They were designing a new mural for a business in Avondale. Initially, Maya was overwhelmed by the possibilities, switching between styles and ideas constantly. Jordan shared her own experience, discussing how she'd felt when she left the data analyst job and another attempt to manage a restaurant in Lakeview; she'd thought her career was over. \n\nSeeing the relief wash over Maya's face, the understanding that flickered in her eyes, was a profound experience. It was as if Jordan were finally giving herself the advice she desperately needed. The smell of coffee from the nearby shop mingled with the sharp scent of paint, a comforting aroma of creativity and collaboration. As Maya confidently sketched out her final design, Jordan realized she was no longer defined by her perceived failures, but by the wisdom she could share. This wasn't just about helping Maya; it was about finally freeing herself.",
-          "emotional_weight": "high",
-          "trust_impact": 2,
-          "nextScene": "after_revelation_choice"
         }
       ]
     },
@@ -3600,107 +3260,5 @@
         }
       ]
     }
-  ],
-  "metadata": {
-    "character_depth_enhanced": true,
-    "bg3_principles_applied": [
-      "character_driven_writing",
-      "wants_vs_needs_conflict",
-      "emotional_backstory_moments",
-      "birmingham_integration"
-    ],
-    "enhancement_date": "2025-09-12T20:46:23.006Z"
-  },
-  "trust_system": {
-    "enabled": true,
-    "character_trust_levels": {
-      "Samuel": {
-        "trust_levels": {
-          "0": "Polite but distant, basic guidance only",
-          "3": "Shares station history, offers practical advice",
-          "6": "Reveals his corporate past, deeper wisdom",
-          "8": "Confides his fears about guiding people wrong",
-          "10": "Complete trust, shares the secret of Platform 7½"
-        },
-        "trust_triggers": {
-          "helped_other_character": 2,
-          "chose_authentic_path": 1,
-          "rushed_without_listening": -1,
-          "dismissed_his_advice": -2
-        }
-      },
-      "Maya": {
-        "trust_levels": {
-          "0": "Anxious, keeps family pressure secret",
-          "3": "Admits conflict between medicine and robotics",
-          "6": "Shows you her secret robotics projects",
-          "8": "Asks for help making the big decision",
-          "10": "Credits you with giving her courage to choose authentically"
-        },
-        "trust_triggers": {
-          "validated_her_feelings": 2,
-          "suggested_compromise": 1,
-          "pushed_too_hard": -1,
-          "dismissed_family_importance": -2
-        }
-      },
-      "Devon": {
-        "trust_levels": {
-          "0": "Talks only about technical systems, avoids personal topics",
-          "3": "Explains why he prefers building to people",
-          "6": "Shows vulnerability about social struggles",
-          "8": "Asks for help connecting his work to community impact",
-          "10": "Becomes confident mentor for other technical introverts"
-        },
-        "trust_triggers": {
-          "appreciated_his_systems": 2,
-          "connected_work_to_people": 1,
-          "forced_social_interaction": -1,
-          "called_him_antisocial": -2
-        }
-      },
-      "Jordan": {
-        "trust_levels": {
-          "0": "Defensive about career changes, seems scattered",
-          "3": "Admits feeling like a failure for not sticking to one path",
-          "6": "Shares wisdom about transferable skills",
-          "8": "Becomes guide to hidden/hybrid platforms",
-          "10": "Empowered as mentor for non-linear career paths"
-        },
-        "trust_triggers": {
-          "validated_career_changes": 2,
-          "saw_patterns_in_experience": 1,
-          "suggested_picking_one_thing": -1,
-          "called_them_unfocused": -2
-        }
-      }
-    },
-    "platform_responsiveness": {
-      "healthcare": {
-        "cold": "Sterile fluorescent lighting, few people, feels impersonal",
-        "neutral": "Standard hospital ambiance, moderate activity",
-        "warm": "Golden sunrise light, caring conversations, sense of calling",
-        "resonant": "Gentle pulse of life-saving energy, platform recognizes you"
-      },
-      "engineering": {
-        "cold": "Industrial gray, harsh machinery sounds, isolated workstations",
-        "neutral": "Workshop atmosphere, steady construction sounds",
-        "warm": "Collaborative maker space energy, building something meaningful",
-        "resonant": "Blueprints glow with potential, structures seem to respond"
-      },
-      "data": {
-        "cold": "Endless cubicles, screen glare, disconnected from impact",
-        "neutral": "Standard tech office, servers humming",
-        "warm": "Insights lighting up, data telling human stories",
-        "resonant": "Information flows visibly, patterns reveal themselves"
-      },
-      "sustainability": {
-        "cold": "Withered plants, gray corporate sustainability theater",
-        "neutral": "Basic recycling and energy efficiency",
-        "warm": "Thriving green spaces, renewable energy systems",
-        "resonant": "Living systems pulse with natural rhythms"
-      }
-    },
-    "trust_scenes": null
-  }
+  ]
 }

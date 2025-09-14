@@ -1,0 +1,399 @@
+/* ========== RESET & BASE ========== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+  }
+  
+  body {
+    font-family: 'Comic Sans MS', 'Arial', sans-serif;
+    background: linear-gradient(to bottom, #87CEEB 0%, #98D8C8 50%, #8B7355 100%);
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  /* ========== LAYOUT CONTAINERS ========== */
+  #gameContainer {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  #startScreen {
+    text-align: center;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 40px;
+    border-radius: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    max-width: 600px;
+    animation: fadeIn 1s ease;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  
+  #gameScreen {
+    display: none;
+    width: 100%;
+    height: 100vh;
+    position: relative;
+  }
+  
+  #victoryScreen {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* ========== TYPOGRAPHY ========== */
+  .title {
+    font-size: 3em;
+    color: #2d5016;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    background: linear-gradient(45deg, #2d5016, #4a7c28);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .subtitle {
+    font-size: 1.5em;
+    color: #666;
+    margin-bottom: 30px;
+  }
+  
+  .victoryContent h1 {
+    color: #4caf50;
+    font-size: 3em;
+  }
+  
+  .victoryContent p {
+    font-size: 1.5em;
+    margin: 20px 0;
+  }
+  
+  /* ========== BUTTONS ========== */
+  .startBtn {
+    background: linear-gradient(45deg, #4caf50, #8bc34a);
+    border: none;
+    padding: 20px 40px;
+    font-size: 1.5em;
+    color: white;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+    font-weight: bold;
+  }
+  
+  .startBtn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(76, 175, 80, 0.6);
+  }
+  
+  /* ========== TREE & CANOPY ========== */
+  #tree {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 400px;
+    height: 600px;
+    background: linear-gradient(to top, #8B4513 0%, #654321 30%, #4a3c28 100%);
+    clip-path: polygon(45% 0%, 55% 0%, 70% 40%, 80% 60%, 100% 100%, 0% 100%, 20% 60%, 30% 40%);
+    box-shadow: inset 0 0 50px rgba(0,0,0,0.5);
+    transition: all 0.5s ease;
+    z-index: 1;
+  }
+  
+  #canopy {
+    position: absolute;
+    top: -200px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 400px;
+    background: radial-gradient(ellipse at center, #228B22 0%, #006400 100%);
+    border-radius: 50%;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    transition: all 0.5s ease;
+    z-index: 2;
+  }
+  
+  #canopy.dry {
+    background: radial-gradient(ellipse at center, #8B7355 0%, #654321 100%);
+  }
+  
+  /* ========== CRACKS ========== */
+  .crack {
+    position: absolute;
+    background: rgba(255, 69, 0, 0.7);
+    box-shadow: 0 0 20px rgba(255, 69, 0, 0.5);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border-radius: 10px;
+    animation: pulse 2s infinite;
+    z-index: 4;
+  }
+  
+  .crack:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 30px rgba(255, 69, 0, 0.8);
+  }
+  
+  .crack.cooled {
+    background: rgba(100, 100, 100, 0.5);
+    animation: none;
+    cursor: default;
+  }
+  
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.7; }
+    50%      { transform: scale(1.1); opacity: 1; }
+  }
+  
+  /* ========== CHARACTERS ========== */
+  .character {
+    position: absolute;
+    font-size: 40px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+    z-index: 5;
+  }
+  
+  .character:hover {
+    transform: scale(1.2);
+  }
+  
+  .character.active {
+    animation: bounce 0.5s ease;
+  }
+  
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-20px); }
+  }
+  
+  /* ========== GREEN SHARD ========== */
+  #shard {
+    position: absolute;
+    width: 60px;
+    height: 80px;
+    background: radial-gradient(ellipse at center, #00ff00 0%, #008800 50%, #004400 100%);
+    clip-path: polygon(50% 0%, 80% 30%, 100% 60%, 50% 100%, 0% 60%, 20% 30%);
+    box-shadow: 0 0 40px rgba(0, 255, 0, 0.8);
+    animation: shardGlow 2s infinite;
+    display: none;
+    cursor: pointer;
+    z-index: 6;
+    transition: transform 0.3s ease;
+  }
+  
+  #shard:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0 60px rgba(0, 255, 0, 1);
+  }
+  
+  @keyframes shardGlow {
+    0%, 100% { filter: brightness(1); }
+    50%      { filter: brightness(1.5); }
+  }
+  
+  /* ========== UI PANELS ========== */
+  #gameUI {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    z-index: 10;
+  }
+  
+  .stat {
+    margin: 10px 0;
+    font-size: 1.2em;
+    color: #333;
+  }
+  
+  .stat span {
+    font-weight: bold;
+    color: #4caf50;
+  }
+  
+  #waterMeter {
+    width: 200px;
+    height: 20px;
+    background: #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 10px 0;
+    position: relative;
+  }
+  
+  #waterLevel {
+    height: 100%;
+    background: linear-gradient(90deg, #2196F3, #03A9F4);
+    width: 100%;
+    transition: width 0.3s ease;
+  }
+  
+  /* ========== HEAT INDICATOR ========== */
+  #heatIndicator {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 50px;
+    height: 150px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 25px;
+    padding: 8px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 10;
+  }
+  
+  #heatIndicator::before {
+    content: '🔥';
+    position: absolute;
+    top: -25px;
+    font-size: 20px;
+  }
+  
+  #heatLevel {
+    width: 34px;
+    background: linear-gradient(to top, #ff0000, #ff6600, #ffaa00);
+    border-radius: 17px;
+    transition: height 0.5s ease;
+    position: relative;
+  }
+  
+  /* ========== STORY PANEL ========== */
+  #storyPanel {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.95);
+    padding: 15px 30px;
+    border-radius: 20px;
+    max-width: 500px;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    font-size: 1.1em;
+    color: #333;
+    display: none;
+    z-index: 10;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  #storyPanel:hover {
+    background: rgba(255, 255, 255, 0.7);
+    transform: translateX(-50%) scale(0.95);
+  }
+  
+  #storyPanel:active {
+    transform: translateX(-50%) scale(0.9);
+  }
+  
+  #storyPanel::after {
+    content: '(Click to dismiss)';
+    display: block;
+    font-size: 0.8em;
+    color: #999;
+    margin-top: 10px;
+  }
+  
+  /* ========== PARTICLES ========== */
+  .particle {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #00aaff;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: float 3s ease-out forwards;
+    z-index: 20;
+  }
+  
+  @keyframes float {
+    0% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-100px) scale(0.5);
+    }
+  }
+  
+  /* ========== VICTORY SCREEN ========== */
+  .victoryContent {
+    background: white;
+    padding: 50px;
+    border-radius: 30px;
+    text-align: center;
+    animation: victoryBounce 0.5s ease-out;
+  }
+  
+  @keyframes victoryBounce {
+    0%   { transform: scale(0); }
+    50%  { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
+  
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 600px) {
+    #tree {
+      width: 300px;
+      height: 450px;
+    }
+    #canopy {
+      width: 450px;
+      height: 300px;
+      top: -150px;
+    }
+    .character {
+      font-size: 30px;
+    }
+    #gameUI {
+      font-size: 0.9em;
+      padding: 15px;
+    }
+    #heatIndicator {
+      width: 40px;
+      height: 120px;
+      padding: 6px;
+    }
+    #heatLevel {
+      width: 28px;
+    }
+    #storyPanel {
+      max-width: 90%;
+      font-size: 1em;
+      padding: 10px 20px;
+    }
+  }
+  

@@ -10,37 +10,25 @@
         {
           "id": "1-1",
           "type": "narration",
-          "text": "You found a letter under your door this morning.",
-          "nextScene": "1-1-1a"
+          "text": "You found a letter under your door this morning.\n\n\"Your future awaits at Platform 7. Midnight. Don't be late.\"\n\nAt the bottom of the letter, in smaller text: 'You have one year before everything changes. Choose wisely. - Future You'",
+          "nextScene": "1-1"
         },
         {
-          "id": "1-1-1a",
+          "id": "1-1",
           "type": "narration",
-          "text": "\"Your future awaits at Platform 7. Midnight. Don't be late.\"",
-          "nextScene": "1-1-1b"
+          "text": "No signature. Just your name in familiar handwriting. Now you're at Grand Central Station. Weird thing is, this place wasn't here yesterday. The big clock says 11:47 PM.\n\nYou got 13 minutes to find Platform 7.",
+          "nextScene": "1-1"
         },
         {
-          "id": "1-1-1b",
+          "id": "1-1",
           "type": "narration",
-          "text": "At the bottom of the letter, in smaller text: 'You have one year before everything changes. Choose wisely. - Future You'",
-          "nextScene": "1-1-2"
+          "text": "Smelled weird - like metal. 'Your future awaits at Platform 7. Midnight. Don't be late.'\n\nNo signature.",
+          "nextScene": "1-1-3"
         },
         {
           "id": "1-1-2",
           "type": "narration",
-          "text": "No signature. Just your name in familiar handwriting.",
-          "nextScene": "1-1-2a"
-        },
-        {
-          "id": "1-1-2a",
-          "type": "narration",
-          "text": "Now you're at Grand Central Station. Weird thing is, this place wasn't here yesterday.",
-          "nextScene": "1-1-2b"
-        },
-        {
-          "id": "1-1-2b",
-          "type": "narration",
-          "text": "The big clock says 11:47 PM. You got 13 minutes to find Platform 7.",
+          "text": "No postmark. Just your name written in handwriting that feels familiar but impossible to place. Now you're at Grand Central Station. Weird thing is, this place wasn't here yesterday.",
           "nextScene": "1-1-3"
         },
         {
@@ -58,25 +46,13 @@
         {
           "id": "1-3a",
           "type": "narration",
-          "text": "You push through the heavy doors, their brass handles warm and slightly sticky with the residue of countless hands.",
-          "nextScene": "1-3a-2"
+          "text": "You push through the heavy doors, their brass handles warm and slightly sticky with the residue of countless hands. The station is huge.",
+          "nextScene": "1-3a"
         },
         {
-          "id": "1-3a-2",
+          "id": "1-3a",
           "type": "narration",
-          "text": "The station is huge. Smells like oil and old stuff. Your footsteps echo on the floor.",
-          "nextScene": "1-3a-3"
-        },
-        {
-          "id": "1-3a-3",
-          "type": "narration",
-          "text": "Platform 7's sign flickers up ahead. The number shifts between 7 and something else... 7½? No, that's impossible.",
-          "nextScene": "1-3a-4"
-        },
-        {
-          "id": "1-3a-4",
-          "type": "narration",
-          "text": "It gets colder as you walk. Other people are around - some rushing, some lost, some just walking. None of them seem to see you.",
+          "text": "Smells like oil and old stuff. Your footsteps echo on the floor. Platform 7's sign flickers up ahead. The light's buzzing. The number shifts between 7 and something else... 7½? No, that's impossible. It gets colder as you walk. Other people are around - some rushing, some lost, some just walking. None of them seem to see you.",
           "nextScene": "1-3b"
         },
         {
@@ -244,13 +220,13 @@
         {
           "id": "1-5c",
           "type": "narration",
-          "text": "You rush past the broken bench, your shoes clicking urgently on the marble floor. The elderly man's bags split with a harsh tearing sound, tools clattering across the platform like scattered bones. No one stops to help.",
-          "nextScene": "1-5c-2"
+          "text": "You rush past the broken bench, your shoes clicking urgently on the marble floor. The elderly man's bags split with a harsh tearing sound, tools clattering across the platform like scattered bones.",
+          "nextScene": "1-5c"
         },
         {
-          "id": "1-5c-2",
+          "id": "1-5c",
           "type": "narration",
-          "text": "You reach Platform 7 faster, yes. The clock reads 11:50 PM - plenty of time. But the platform itself seems different now. The air is colder, sharp with the scent of rust. The sign flickers more violently: 7... ERROR... 7... DENIED... 7...",
+          "text": "No one stops to help. The broken bench collapses completely with a crack like breaking ribs. You reach Platform 7 faster, yes. The clock reads 11:50 PM - plenty of time. But the platform itself seems different now. The air is colder, sharp with the scent of rust. The sign flickers more violently: 7... ERROR... 7... DENIED... 7...",
           "nextScene": "1-5d"
         },
         {
@@ -258,10 +234,10 @@
           "type": "dialogue",
           "speaker": "Samuel",
           "text": "'I've punched a thousand tickets to futures that haven't departed yet. Each one claims to know your destination, but destinations are like signals in fog - red until you're close enough to see they were always green.' His fingers trace invisible track patterns in the air.",
-          "nextScene": "1-5d-2"
+          "nextScene": "1-5d"
         },
         {
-          "id": "1-5d-2",
+          "id": "1-5d",
           "type": "dialogue",
           "speaker": "Samuel",
           "text": "'Platform 7 especially. It only couples to trains that know where they're going before they know where they've been. And you, young switchman, you're standing on tracks that haven't been laid yet.'",

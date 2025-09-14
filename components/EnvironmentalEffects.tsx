@@ -19,12 +19,12 @@ export function EnvironmentalEffects() {
       body.className = body.className.replace(/\S+-high/g, '')
       
       // Platform warmth effects
-      const platforms = state.platforms
+      const platforms = state.platforms || {}
       let dominantWarmth = 0
       let dominantPlatform = ''
       
       Object.entries(platforms).forEach(([key, platform]) => {
-        if (platform.discovered && platform.warmth > dominantWarmth) {
+        if (platform?.discovered && platform.warmth > dominantWarmth) {
           dominantWarmth = platform.warmth
           dominantPlatform = key
         }
@@ -35,12 +35,12 @@ export function EnvironmentalEffects() {
       body.classList.add(warmthClass)
       
       // Time speed effects
-      const timeSpeed = state.time.speed
+      const timeSpeed = state.time?.speed || 1.0
       const timeClass = `time-speed-${timeSpeed.toString().replace('.', '-')}`
       body.classList.add(timeClass)
       
       // Pattern-based environmental changes
-      const patterns = state.patterns
+      const patterns = state.patterns || {}
       const dominantPattern = Object.entries(patterns).reduce(
         (max, [key, value]) => value > max.value ? { key, value } : max,
         { key: '', value: 0 }
@@ -51,7 +51,7 @@ export function EnvironmentalEffects() {
       }
       
       // Career value manifestations
-      const careerValues = state.careerValues
+      const careerValues = state.careerValues || {}
       Object.entries(careerValues).forEach(([key, value]) => {
         if (value > 5) {
           const className = key.replace(/([A-Z])/g, '-$1').toLowerCase()
@@ -67,7 +67,7 @@ export function EnvironmentalEffects() {
       }
       
       // Special states
-      if (state.time.stopped) {
+      if (state.time?.stopped) {
         body.classList.add('quiet-hour-active')
       } else {
         body.classList.remove('quiet-hour-active')

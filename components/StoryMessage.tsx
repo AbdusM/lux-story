@@ -1,17 +1,60 @@
 "use client"
 
 import { cn } from "@/lib/utils"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
+
+// Function to parse markdown-style emphasis in text
+function parseEmphasisText(text: string): React.ReactNode[] {
+  const parts: React.ReactNode[] = []
+  let currentIndex = 0
+  
+  // Regex to match ***text***, **text**, or *text*
+  const emphasisRegex = /(\*{1,3})([^*]+?)\1/g
+  let match: RegExpExecArray | null
+  
+  while ((match = emphasisRegex.exec(text)) !== null) {
+    // Add text before the match
+    if (match.index > currentIndex) {
+      parts.push(text.slice(currentIndex, match.index))
+    }
+    
+    const emphasisLevel = match[1].length
+    const content = match[2]
+    
+    if (emphasisLevel === 3) {
+      // Triple asterisk: strong + em (urgent)
+      parts.push(<strong key={match.index}><em>{content}</em></strong>)
+    } else if (emphasisLevel === 2) {
+      // Double asterisk: strong
+      parts.push(<strong key={match.index}>{content}</strong>)
+    } else {
+      // Single asterisk: em
+      parts.push(<em key={match.index}>{content}</em>)
+    }
+    
+    currentIndex = match.index + match[0].length
+  }
+  
+  // Add remaining text
+  if (currentIndex < text.length) {
+    parts.push(text.slice(currentIndex))
+  }
+  
+  return parts.length > 0 ? parts : [text]
+}
 
 interface StoryMessageProps {
   speaker: string
   text: string
   type?: 'narration' | 'dialogue' | 'whisper' | 'sensation'
+  messageWeight?: 'primary' | 'aside' | 'critical' // Visual hierarchy for cinematic information staging
+  buttonText?: string // Custom button text for special moments
   className?: string
   typewriter?: boolean
+  isContinuedSpeaker?: boolean // Visual grouping for same speaker messages
 }
 
-export function StoryMessage({ speaker, text, type = 'dialogue', className, typewriter = false }: StoryMessageProps) {
+export function StoryMessage({ speaker, text, type = 'dialogue', messageWeight = 'primary', buttonText, className, typewriter = false, isContinuedSpeaker = false }: StoryMessageProps) {
   const [displayedText, setDisplayedText] = useState(typewriter ? "" : text)
   const [showContinueIndicator, setShowContinueIndicator] = useState(false)
   
@@ -21,15 +64,15 @@ export function StoryMessage({ speaker, text, type = 'dialogue', className, type
   const isWhisper = type === 'whisper'
   const isSensation = type === 'sensation'
   
-  // Character-specific styling
+  // Character-specific styling with Birmingham-inspired colors
   const characterStyles = {
     // Grand Central Terminus characters
     'narrator': 'text-slate-600 dark:text-slate-400',
-    'You': 'text-blue-600 dark:text-blue-400 font-medium',
-    'Samuel': 'text-gray-700 dark:text-gray-300',
-    'Maya': 'text-blue-600 dark:text-blue-400',
-    'Devon': 'text-orange-600 dark:text-orange-400',
-    'Jordan': 'text-purple-600 dark:text-purple-400',
+    'You': 'text-emerald-600 dark:text-emerald-400 font-medium', // Birmingham green
+    'Samuel': 'text-amber-700 dark:text-amber-300', // Station conductor gold
+    'Maya': 'text-blue-600 dark:text-blue-400', // Medical blue
+    'Devon': 'text-orange-600 dark:text-orange-400', // Construction orange
+    'Jordan': 'text-purple-600 dark:text-purple-400', // Career guidance purple
     'Alex': 'text-green-600 dark:text-green-400',
     'Dr. Sarah Martinez': 'text-blue-700 dark:text-blue-300',
     'Marcus Thompson': 'text-indigo-600 dark:text-indigo-400',
@@ -91,88 +134,165 @@ export function StoryMessage({ speaker, text, type = 'dialogue', className, type
   useEffect(() => {
     if (typewriter && text) {
       let index = 0
-      const timer = setInterval(() => {
+      let timer: NodeJS.Timeout
+      
+      const typeNextChar = () => {
         if (index < text.length) {
           setDisplayedText(text.slice(0, index + 1))
           index++
+          timer = setTimeout(typeNextChar, 40) // Slightly slower for better readability
         } else {
-          clearInterval(timer)
           setShowContinueIndicator(true)
         }
-      }, 30)
-      return () => clearInterval(timer)
+      }
+      
+      timer = setTimeout(typeNextChar, 100) // Initial delay
+      return () => clearTimeout(timer)
     }
   }, [text, typewriter])
   
+  // Click to skip typewriter effect (Pokemon-style)
+  const handleClick = useCallback(() => {
+    if (typewriter && displayedText.length < text.length) {
+      setDisplayedText(text)
+      setShowContinueIndicator(true)
+    }
+  }, [typewriter, displayedText.length, text])
+  
+  // Pokemon-style design - full width, game-like presentation
+  const isUserMessage = speaker === 'You'
+  const showCharacterAvatar = !isNarration && !isWhisper && !isSensation && !isUserMessage && !isContinuedSpeaker
+  
   return (
     <div className={cn(
-      "animate-in fade-in-0 slide-in-from-bottom-2 duration-500",
-      "story-message",
+      "pokemon-message-container w-full",
+      isContinuedSpeaker ? "mb-3" : "mb-6", // Tighter spacing for continued speakers
+      "animate-in slide-in-from-bottom-4 duration-700",
       speaker.toLowerCase().replace(' ', '-'),
+      isContinuedSpeaker && "continued-speaker", // CSS class for continued speakers
       className
     )} data-type={type}>
-      {!isNarration && !isWhisper && !isSensation && (
-        <div className="flex items-center gap-3 mb-2">
-          <span className={cn(
-            "text-2xl",
-            isZippy ? "animate-flutter" : "float-subtle"
-          )}>
-            {characterEmoji[speaker as keyof typeof characterEmoji] || '🌟'}
-          </span>
-          <span className={cn(
-            "speaker-label text-sm font-bold uppercase tracking-wider",
-            characterStyles[speaker as keyof typeof characterStyles] || "text-slate-700 dark:text-slate-300"
-          )} data-speaker={speaker.toLowerCase()}>
-            {speaker}
-          </span>
-          {isLux && (
-            <span className="text-xs bg-purple-100 dark:bg-purple-900/30 px-3 py-1 rounded-full third-eye-glow">
-              Third Eye Active
-            </span>
-          )}
-          {isZippy && (
-            <span className="text-xs bg-blue-100 dark:bg-blue-900/30 px-3 py-1 rounded-full zippy-text-glow">
-              Time Confused
-            </span>
-          )}
-        </div>
-      )}
-      <div className={cn(
-        "relative",
-        isNarration || isWhisper || isSensation ? "text-narration" : "text-dialogue",
-        type === 'dialogue' && "pokemon-text-box p-6"
-      )}>
-        {(isNarration || isWhisper || isSensation) ? (
-          <div className={cn(
-            isWhisper && "pl-4 opacity-90",
-            isSensation && "italic opacity-85",
-            !isWhisper && !isSensation && "bg-gradient-to-b from-slate-900/80 to-slate-900/60 dark:from-slate-100/10 dark:to-slate-100/5 rounded-lg p-6 premium-border"
-          )}>
+      
+      {/* Pokemon-Style Text Box */}
+      <div 
+        className={cn(
+          "pokemon-textbox relative w-full max-w-2xl mx-auto",
+          "bg-white dark:bg-gray-50",
+          "border-2 border-gray-800/20",
+          "rounded-lg",
+          "p-6 md:p-8",
+          "shadow-pokemon",
+          typewriter && displayedText.length < text.length && "cursor-pointer",
+          // Multiple layered borders for authentic Game Boy feel
+          "before:content-[''] before:absolute before:inset-1 before:border-1 before:border-gray-300/40 before:rounded",
+          "after:content-[''] after:absolute after:inset-3 after:border-1 after:border-gray-200/30 after:rounded-sm"
+        )} 
+        style={{
+          boxShadow: `
+            0 2px 0 0 rgba(0, 0, 0, 0.2),
+            0 0 0 1px rgba(0, 0, 0, 0.2),
+            inset 0 1px 0 0 #ffffff,
+            inset 0 0 0 1px rgba(0, 0, 0, 0.2),
+            0 4px 8px rgba(0, 0, 0, 0.3)
+          `
+        }}
+        onClick={handleClick}
+      >
+        
+        {/* Character Section - Top of text box like Pokemon */}
+        {showCharacterAvatar && (
+          <div className="flex items-center gap-4 mb-4 pb-4 border-b-2 border-gray-200">
+            {/* Large Character Avatar - Pokemon NPC style */}
             <div className={cn(
-              isWhisper && "text-purple-600 dark:text-purple-400 italic",
-              isSensation && "text-red-500 dark:text-red-400",
-              !isWhisper && !isSensation && "text-left text-slate-600 dark:text-slate-400",
-              "text-premium whitespace-pre-wrap"
-            )}>
-              {speaker === 'Memory' && '💭 '}
-              {displayedText}
+              "w-16 h-16 rounded-full flex items-center justify-center text-2xl",
+              "bg-gradient-to-br from-amber-100 via-amber-200 to-amber-300",
+              "border-4 border-amber-600 dark:border-amber-400",
+              "shadow-lg relative",
+              "before:content-[''] before:absolute before:inset-1 before:bg-gradient-to-br before:from-white/40 before:to-transparent before:rounded-full"
+            )} style={{
+              boxShadow: `
+                0 2px 0 0 #92400e,
+                0 4px 8px rgba(146, 64, 14, 0.3),
+                inset 0 2px 4px rgba(255, 255, 255, 0.3)
+              `
+            }}>
+              {characterEmoji[speaker as keyof typeof characterEmoji] || '🌟'}
+            </div>
+            
+            {/* Character Info */}
+            <div className="flex-1">
+              <div className="flex items-center gap-3 mb-1">
+                <span className={cn(
+                  "text-lg font-bold uppercase tracking-wider",
+                  "font-mono", // Pokemon-style typography
+                  characterStyles[speaker as keyof typeof characterStyles] || "text-slate-800"
+                )} style={{
+                  fontFamily: "'Courier New', monospace, 'Pokemon GB'",
+                  textShadow: "1px 1px 0px rgba(0,0,0,0.3)"
+                }}>
+                  {speaker}
+                </span>
+                
+                {/* Birmingham Role Badge */}
+                {speaker === 'Samuel' && (
+                  <span className={cn(
+                    "px-3 py-1 rounded-full text-xs font-semibold uppercase",
+                    "bg-gradient-to-r from-amber-400 to-amber-500",
+                    "text-amber-900 border-2 border-amber-600",
+                    "shadow-sm"
+                  )} style={{
+                    textShadow: "none"
+                  }}>
+                    🚂 Station Keeper
+                  </span>
+                )}
+              </div>
             </div>
           </div>
-        ) : (
-          <>
-            <div className={cn(
-              "text-slate-800 dark:text-slate-100",
-              "text-premium whitespace-pre-wrap",
-              isLux && "lux-text-glow"
-            )}>
-              {displayedText}
+        )}
+        
+        {/* Message Text - Large and Game-like */}
+        <div className={cn(
+          "pokemon-text text-base leading-relaxed",
+          "text-gray-900 dark:text-gray-800",
+          "font-medium",
+          isNarration && "text-center italic",
+          isWhisper && "italic opacity-90 text-purple-700",
+          isSensation && "italic opacity-85 text-red-600",
+          messageWeight === 'aside' && "message-aside",
+          messageWeight === 'critical' && "message-critical",
+          className // Add semantic styling classes
+        )} style={{
+          fontFamily: "'Inter', 'Pokemon GB', monospace",
+          textShadow: "0 1px 2px rgba(0,0,0,0.1)"
+        }}>
+          {speaker === 'Memory' && <span className="text-2xl mr-2">💭</span>}
+          <span className="whitespace-pre-wrap">
+            {parseEmphasisText(displayedText)}
+          </span>
+          
+          {/* Typing cursor for typewriter effect */}
+          {typewriter && displayedText.length < text.length && (
+            <span className="animate-pulse text-gray-600 text-2xl ml-1">|</span>
+          )}
+        </div>
+        
+        {/* Custom button text only (no arrow needed since we have Continue button) */}
+        {(!typewriter || showContinueIndicator) && buttonText && (
+          <div className="flex justify-center mt-6">
+            <div className="text-center">
+              <div className="text-xs text-gray-500 mt-1 font-medium">
+                {buttonText}
+              </div>
             </div>
-            {showContinueIndicator && typewriter && (
-              <span className="absolute bottom-2 right-4 text-slate-500 animate-pulse">
-                ▼
-              </span>
-            )}
-          </>
+          </div>
+        )}
+        
+        {/* User Choice Styling */}
+        {isUserMessage && (
+          <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-emerald-500 border-2 border-emerald-600 flex items-center justify-center shadow-lg">
+            <span className="text-white text-lg">{characterEmoji['You']}</span>
+          </div>
         )}
       </div>
     </div>

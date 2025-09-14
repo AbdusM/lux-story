@@ -10,37 +10,25 @@
         {
           "id": "1-1",
           "type": "narration",
-          "text": "You found a letter under your door this morning.",
-          "nextScene": "1-1-1a"
+          "text": "You found a letter under your door this morning.\n\n\"Your future awaits at Platform 7. Midnight. Don't be late.\"\n\nAt the bottom of the letter, in smaller text: 'You have one year before everything changes. Choose wisely. - Future You'",
+          "nextScene": "1-1"
         },
         {
-          "id": "1-1-1a",
+          "id": "1-1",
           "type": "narration",
-          "text": "\"Your future awaits at Platform 7. Midnight. Don't be late.\"",
-          "nextScene": "1-1-1b"
+          "text": "No signature. Just your name in familiar handwriting. Now you're at Grand Central Station. Weird thing is, this place wasn't here yesterday. The big clock says 11:47 PM.\n\nYou got 13 minutes to find Platform 7.",
+          "nextScene": "1-1"
         },
         {
-          "id": "1-1-1b",
+          "id": "1-1",
           "type": "narration",
-          "text": "At the bottom of the letter, in smaller text: 'You have one year before everything changes. Choose wisely. - Future You'",
-          "nextScene": "1-1-2"
+          "text": "Smelled weird - like metal. 'Your future awaits at Platform 7. Midnight. Don't be late.'\n\nNo signature.",
+          "nextScene": "1-1-3"
         },
         {
           "id": "1-1-2",
           "type": "narration",
-          "text": "No signature. Just your name in familiar handwriting.",
-          "nextScene": "1-1-2a"
-        },
-        {
-          "id": "1-1-2a",
-          "type": "narration",
-          "text": "Now you're at Grand Central Station. Weird thing is, this place wasn't here yesterday.",
-          "nextScene": "1-1-2b"
-        },
-        {
-          "id": "1-1-2b",
-          "type": "narration",
-          "text": "The big clock says 11:47 PM. You got 13 minutes to find Platform 7.",
+          "text": "No postmark. Just your name written in handwriting that feels familiar but impossible to place. Now you're at Grand Central Station. Weird thing is, this place wasn't here yesterday.",
           "nextScene": "1-1-3"
         },
         {
@@ -58,25 +46,13 @@
         {
           "id": "1-3a",
           "type": "narration",
-          "text": "You push through the heavy doors, their brass handles warm and slightly sticky with the residue of countless hands.",
-          "nextScene": "1-3a-2"
+          "text": "You push through the heavy doors, their brass handles warm and slightly sticky with the residue of countless hands. The station is huge.",
+          "nextScene": "1-3a"
         },
         {
-          "id": "1-3a-2",
+          "id": "1-3a",
           "type": "narration",
-          "text": "The station is huge. Smells like oil and old stuff. Your footsteps echo on the floor.",
-          "nextScene": "1-3a-3"
-        },
-        {
-          "id": "1-3a-3",
-          "type": "narration",
-          "text": "Platform 7's sign flickers up ahead. The number shifts between 7 and something else... 7½? No, that's impossible.",
-          "nextScene": "1-3a-4"
-        },
-        {
-          "id": "1-3a-4",
-          "type": "narration",
-          "text": "It gets colder as you walk. Other people are around - some rushing, some lost, some just walking. None of them seem to see you.",
+          "text": "Smells like oil and old stuff. Your footsteps echo on the floor. Platform 7's sign flickers up ahead. The light's buzzing. The number shifts between 7 and something else... 7½? No, that's impossible. It gets colder as you walk. Other people are around - some rushing, some lost, some just walking. None of them seem to see you.",
           "nextScene": "1-3b"
         },
         {
@@ -244,13 +220,13 @@
         {
           "id": "1-5c",
           "type": "narration",
-          "text": "You rush past the broken bench, your shoes clicking urgently on the marble floor. The elderly man's bags split with a harsh tearing sound, tools clattering across the platform like scattered bones. No one stops to help.",
-          "nextScene": "1-5c-2"
+          "text": "You rush past the broken bench, your shoes clicking urgently on the marble floor. The elderly man's bags split with a harsh tearing sound, tools clattering across the platform like scattered bones.",
+          "nextScene": "1-5c"
         },
         {
-          "id": "1-5c-2",
+          "id": "1-5c",
           "type": "narration",
-          "text": "You reach Platform 7 faster, yes. The clock reads 11:50 PM - plenty of time. But the platform itself seems different now. The air is colder, sharp with the scent of rust. The sign flickers more violently: 7... ERROR... 7... DENIED... 7...",
+          "text": "No one stops to help. The broken bench collapses completely with a crack like breaking ribs. You reach Platform 7 faster, yes. The clock reads 11:50 PM - plenty of time. But the platform itself seems different now. The air is colder, sharp with the scent of rust. The sign flickers more violently: 7... ERROR... 7... DENIED... 7...",
           "nextScene": "1-5d"
         },
         {
@@ -258,10 +234,10 @@
           "type": "dialogue",
           "speaker": "Samuel",
           "text": "'I've punched a thousand tickets to futures that haven't departed yet. Each one claims to know your destination, but destinations are like signals in fog - red until you're close enough to see they were always green.' His fingers trace invisible track patterns in the air.",
-          "nextScene": "1-5d-2"
+          "nextScene": "1-5d"
         },
         {
-          "id": "1-5d-2",
+          "id": "1-5d",
           "type": "dialogue",
           "speaker": "Samuel",
           "text": "'Platform 7 especially. It only couples to trains that know where they're going before they know where they've been. And you, young switchman, you're standing on tracks that haven't been laid yet.'",
@@ -584,10 +560,6 @@
               "nextScene": "1-10c",
               "stateChanges": {
                 "relationships.maya.quiet_hour_helped": true
-              },
-              "trust_impact": {
-                "character": "contextual",
-                "change": 1
               }
             },
             {
@@ -3610,97 +3582,5 @@
       "birmingham_integration"
     ],
     "enhancement_date": "2025-09-12T20:46:23.006Z"
-  },
-  "trust_system": {
-    "enabled": true,
-    "character_trust_levels": {
-      "Samuel": {
-        "trust_levels": {
-          "0": "Polite but distant, basic guidance only",
-          "3": "Shares station history, offers practical advice",
-          "6": "Reveals his corporate past, deeper wisdom",
-          "8": "Confides his fears about guiding people wrong",
-          "10": "Complete trust, shares the secret of Platform 7½"
-        },
-        "trust_triggers": {
-          "helped_other_character": 2,
-          "chose_authentic_path": 1,
-          "rushed_without_listening": -1,
-          "dismissed_his_advice": -2
-        }
-      },
-      "Maya": {
-        "trust_levels": {
-          "0": "Anxious, keeps family pressure secret",
-          "3": "Admits conflict between medicine and robotics",
-          "6": "Shows you her secret robotics projects",
-          "8": "Asks for help making the big decision",
-          "10": "Credits you with giving her courage to choose authentically"
-        },
-        "trust_triggers": {
-          "validated_her_feelings": 2,
-          "suggested_compromise": 1,
-          "pushed_too_hard": -1,
-          "dismissed_family_importance": -2
-        }
-      },
-      "Devon": {
-        "trust_levels": {
-          "0": "Talks only about technical systems, avoids personal topics",
-          "3": "Explains why he prefers building to people",
-          "6": "Shows vulnerability about social struggles",
-          "8": "Asks for help connecting his work to community impact",
-          "10": "Becomes confident mentor for other technical introverts"
-        },
-        "trust_triggers": {
-          "appreciated_his_systems": 2,
-          "connected_work_to_people": 1,
-          "forced_social_interaction": -1,
-          "called_him_antisocial": -2
-        }
-      },
-      "Jordan": {
-        "trust_levels": {
-          "0": "Defensive about career changes, seems scattered",
-          "3": "Admits feeling like a failure for not sticking to one path",
-          "6": "Shares wisdom about transferable skills",
-          "8": "Becomes guide to hidden/hybrid platforms",
-          "10": "Empowered as mentor for non-linear career paths"
-        },
-        "trust_triggers": {
-          "validated_career_changes": 2,
-          "saw_patterns_in_experience": 1,
-          "suggested_picking_one_thing": -1,
-          "called_them_unfocused": -2
-        }
-      }
-    },
-    "platform_responsiveness": {
-      "healthcare": {
-        "cold": "Sterile fluorescent lighting, few people, feels impersonal",
-        "neutral": "Standard hospital ambiance, moderate activity",
-        "warm": "Golden sunrise light, caring conversations, sense of calling",
-        "resonant": "Gentle pulse of life-saving energy, platform recognizes you"
-      },
-      "engineering": {
-        "cold": "Industrial gray, harsh machinery sounds, isolated workstations",
-        "neutral": "Workshop atmosphere, steady construction sounds",
-        "warm": "Collaborative maker space energy, building something meaningful",
-        "resonant": "Blueprints glow with potential, structures seem to respond"
-      },
-      "data": {
-        "cold": "Endless cubicles, screen glare, disconnected from impact",
-        "neutral": "Standard tech office, servers humming",
-        "warm": "Insights lighting up, data telling human stories",
-        "resonant": "Information flows visibly, patterns reveal themselves"
-      },
-      "sustainability": {
-        "cold": "Withered plants, gray corporate sustainability theater",
-        "neutral": "Basic recycling and energy efficiency",
-        "warm": "Thriving green spaces, renewable energy systems",
-        "resonant": "Living systems pulse with natural rhythms"
-      }
-    },
-    "trust_scenes": null
   }
 }

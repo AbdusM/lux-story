@@ -27,35 +27,31 @@ export function useSceneTransitions(
 
   const loadScene = useCallback((sceneId: string, forceLoad = false) => {
     if (!gameState) {
-      console.error('Game state not initialized')
+      console.error('❌ Game state not initialized in loadScene')
       return null
     }
     
-    console.log('Loading scene:', sceneId, 'forceLoad:', forceLoad)
+    console.log('🔄 Loading scene:', sceneId, 'forceLoad:', forceLoad)
+    console.log('🔄 Story engine available:', !!storyEngine)
     
     // Get the scene first
     const scene = storyEngine.getScene(sceneId)
     if (!scene) {
-      console.error('Scene not found:', sceneId)
+      console.error('❌ Scene not found:', sceneId)
+      console.error('❌ Available scenes:', storyEngine.getAllScenes?.() || 'getAllScenes not available')
       return null
     }
     
-    // Check if we should skip loading
-    const currentSceneId = state.currentScene?.id
-    if (!forceLoad && currentSceneId === sceneId && !state.isLoadingScene) {
-      console.log('Scene already loaded:', sceneId)
-      return scene
-    }
-    
-    // Update state
-    console.log('Scene loaded successfully:', scene)
-    setState({
+    // Always load the scene when called (simplified logic)
+    console.log('✅ Scene loaded successfully:', scene.id, scene.type)
+    setState(prev => ({
       currentScene: scene,
       isLoadingScene: true,
-      isProcessing: false
-    })
+      isProcessing: prev.isProcessing
+    }))
     
     // Update game state
+    console.log('🔄 Updating game state to scene:', sceneId)
     gameState.setScene(sceneId)
     
     // Clear loading flag after a short delay
@@ -64,7 +60,7 @@ export function useSceneTransitions(
     }, TIMINGS.SCENE_TRANSITION_DELAY || 300)
     
     return scene
-  }, [storyEngine, gameState, state.currentScene?.id, state.isLoadingScene])
+  }, [storyEngine, gameState])
 
   const setProcessing = useCallback((processing: boolean) => {
     setState(prev => ({ ...prev, isProcessing: processing }))
