@@ -1,746 +1,251 @@
 "use client"
 
-import { useState, useCallback, useEffect, useMemo, useRef } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { StoryMessage } from "./StoryMessage"
-import { StreamingMessage } from "./StreamingMessage"
-import { CharacterIntro } from "./CharacterIntro"
-import { SilentCompanion } from "./SilentCompanion"
-import { CareerReflectionHelper } from "./CareerReflectionHelper"
-import { StoryEngine } from "@/lib/story-engine"
-
-// Simplified hooks - no more gamification
-import { useGameState } from "@/hooks/useGameState"
-import { useSceneTransitions } from "@/hooks/useSceneTransitions"
-import { useMessageManager } from "@/hooks/useMessageManager"
-import { usePresence } from "@/hooks/usePresence"
-import { useAdaptiveNarrative } from "@/hooks/useAdaptiveNarrative"
-import { useStreamingFlow } from "@/hooks/useStreamingFlow"
-import { useCareerReflection } from "@/hooks/useCareerReflection"
-import { useEmotionalRegulation } from "@/hooks/useEmotionalRegulation"
-import { EmotionalSupport } from "@/components/EmotionalSupport"
-import { useCognitiveDevelopment } from "@/hooks/useCognitiveDevelopment"
-import { MetacognitiveScaffolding } from "@/components/MetacognitiveScaffolding"
-import { useDevelopmentalPsychology } from "@/hooks/useDevelopmentalPsychology"
-import { DevelopmentalPsychologySupport } from "@/components/DevelopmentalPsychologySupport"
-import { useNeuroscience } from "@/hooks/useNeuroscience"
-import { NeuroscienceSupport } from "@/components/NeuroscienceSupport"
-import { use2030Skills } from "@/hooks/use2030Skills"
-import { FutureSkillsSupport } from "@/components/FutureSkillsSupport"
-import { getPerformanceSystem } from "@/lib/performance-system"
-import { getGrandCentralState } from "@/lib/grand-central-state"
-
+import { useCallback, useMemo } from 'react'
+import { useGame } from '@/hooks/useGame'
+import { StoryMessage } from './StoryMessage'
+import { StreamingMessage } from './StreamingMessage'
+import { CharacterIntro } from './CharacterIntro'
+import { SilentCompanion } from './SilentCompanion'
+import { CareerReflectionHelper } from './CareerReflectionHelper'
+import { EmotionalSupport } from './EmotionalSupport'
+import { MetacognitiveScaffolding } from './MetacognitiveScaffolding'
+import { DevelopmentalPsychologySupport } from './DevelopmentalPsychologySupport'
+import { NeuroscienceSupport } from './NeuroscienceSupport'
+import { FutureSkillsSupport } from './FutureSkillsSupport'
 import { logger } from '@/lib/logger'
+import '@/styles/apple-design-system.css'
+import { cn } from '@/lib/utils'
+
+/**
+ * Apple-Style Game Interface
+ * Implements Apple design principles: clarity, simplicity, beauty
+ * Focuses on emotional resonance and Birmingham youth connection
+ * 
+ * HYBRID VERSION: Uses simplified useGame hook + Apple design components
+ */
 export function GameInterface() {
-  const [storyEngine] = useState(() => new StoryEngine())
-  const [showIntro, setShowIntro] = useState(true)
-  const [choiceStartTime, setChoiceStartTime] = useState<number>(Date.now())
-  const lastSceneLoadTime = useRef<number>(0)
-  const performanceSystem = useMemo(() => getPerformanceSystem(), [])
-  const grandCentralState = useMemo(() => getGrandCentralState(), [])
-  
-  // Simplified state management - no tracking, no stats
-  const { gameState, isInitialized } = useGameState()
-  const { currentScene, isProcessing, loadScene, setProcessing } = useSceneTransitions(storyEngine, gameState)
-  const { messages, messagesEndRef, addMessage, addStreamingMessage, clearMessages } = useMessageManager()
-  const { resetPresence } = usePresence()
-  const { performanceLevel, enhanceSceneText, analyzeContentSemantics, enhanceChoices } = useAdaptiveNarrative()
-  const { processSceneForStreaming } = useStreamingFlow()
-  const { trackClick } = useCareerReflection()
-  const { 
-    emotionalState, 
-    trackChoice, 
-    trackHesitation, 
-    resetHesitation, 
-    getEmotionalSupport, 
-    getVisualAdjustments, 
-    resetEmotionalState 
-  } = useEmotionalRegulation()
-  
+  // Use simplified game hook (replaces 14 complex hooks)
   const {
+    currentScene,
+    hasStarted,
+    isProcessing,
+    messages,
+    performanceLevel,
+    emotionalState,
     cognitiveState,
-    trackChoice: trackCognitiveChoice,
-    startDecisionTracking,
-    getMetacognitivePrompt,
-    getFlowOptimization,
-    getCognitiveScaffolding,
-    getLearningStyleAdaptations,
-    resetCognitiveState
-  } = useCognitiveDevelopment()
-  
-  const {
     identityState,
-    culturalContext,
-    trackChoice: trackDevelopmentalChoice,
-    getIdentityPrompt,
-    getCulturalPrompt,
-    getYouthDevelopmentSupport,
-    getCulturalAdaptations,
-    getIdentityScaffolding,
-    resetDevelopmentalState
-  } = useDevelopmentalPsychology()
-  
-  const {
     neuralState,
-    trackChoice: trackNeuralChoice,
-    getBrainPrompt,
-    getBrainOptimization,
-    getNeuroplasticitySupport,
-    getNeuralEfficiencyTips,
-    resetNeuralState
-  } = useNeuroscience()
-  
-  const {
     skills,
-    matchingCareerPaths,
-    trackChoice: trackSkillsChoice,
-    getSkillPrompt,
-    getSkillsSummary,
-    getSkillDevelopmentSuggestions,
-    getContextualSkillFeedback,
-    resetSkills
-  } = use2030Skills()
+    patterns,
+    handleChoice,
+    handleContinue,
+    handleStartGame,
+    handleShare,
+    getVisualAdjustments,
+    getEmotionalSupport,
+    getMetacognitivePrompt,
+    getSkillSuggestions,
+    updateEmotionalState,
+    updateCognitiveState,
+    updateIdentityState,
+    updateNeuralState,
+    updateSkills
+  } = useGame()
 
-  // Semantic-based content chunking with timed reveals
-  const createSemanticChunks = useCallback((text: string, speaker: string) => {
-    // Analyze content for semantic hierarchy
-    const semanticParts = analyzeContentSemantics(text)
-    
-    // If only one part or short content, return as single chunk
-    if (semanticParts.length <= 1 || text.length < 100) {
-      return [{ 
-        text, 
-        delay: 0, 
-        semanticType: semanticParts[0]?.type || 'default',
-        priority: semanticParts[0]?.priority || 3
-      }]
-    }
-    
-    // Create chunks with delays based on priority and narrative flow
-    const chunks = semanticParts.map((part, index) => {
-      let delay = 0
-      
-      // Calculate delays based on priority hierarchy
-      if (index === 0) {
-        // First chunk appears immediately if critical, else small delay
-        delay = part.priority === 1 ? 0 : 400
-      } else {
-        // Subsequent chunks have timing based on their importance
-        const baseDelay = 600
-        const priorityMultiplier = {
-          1: 0.5,   // Critical action appears faster
-          2: 0.8,   // Time info appears fairly quickly  
-          3: 1.0,   // Default timing
-          4: 1.4,   // Stakes/mystery build suspense with longer delay
-          5: 0.3    // Atmosphere fills in quickly
-        }
-        delay = baseDelay * (priorityMultiplier[part.priority as keyof typeof priorityMultiplier] || 1.0) * index
-      }
-      
-      return {
-        text: part.text + '.',
-        delay: Math.round(delay),
-        semanticType: part.type,
-        priority: part.priority
-      }
-    })
-    
-    // Sort chunks by priority for display order, but keep original delays
-    return chunks.sort((a, b) => a.priority - b.priority)
-  }, [analyzeContentSemantics])
-  
-  // Debug logging for React re-renders (removed to prevent console spam)
-  // logger.debug('🔄 GameInterface render - currentScene:', currentScene?.id, 'messages count:', messages.length)
-  
-  // Track choice timing for Grand Central Terminus - no forest interference
-  useEffect(() => {
-    if (currentScene?.type === 'choice') {
-      setChoiceStartTime(Date.now()) // Track when choice appears for performance metrics only
-    }
-  }, [currentScene])
-  
-  // Load scene with simple message handling and auto-advancement for narration
-  const handleLoadScene = useCallback((sceneId: string, forceLoad = false) => {
-    
-    // Prevent rapid scene loading (debounce)
-    const now = Date.now()
-    if (!forceLoad && now - lastSceneLoadTime.current < 500) {
-      return
-    }
-    lastSceneLoadTime.current = now
-    
-    if (!gameState) {
-      return
-    }
-    
-    // Load the scene first through useSceneTransitions
-    const scene = loadScene(sceneId, forceLoad)
-    if (!scene) {
-      return
-    }
-    
-    logger.debug('🟡 handleLoadScene - scene loaded:', scene.id, 'text preview:', scene.text?.substring(0, 50))
-    
-    // Check if this is the same speaker as the last message
-    const lastMessage = messages[messages.length - 1]
-    const sceneText = scene.text || ''
-    const speaker = scene.speaker || 'narrator'
-    const isSameSpeaker = lastMessage && lastMessage.speaker === speaker && speaker !== 'narrator'
-    
-    // Check if this is mixed content that should be split
-    const enhancedText = scene.text ? enhanceSceneText(scene.text, scene.type) : ''
-    const isMixedLetterContent = enhancedText.includes('At the bottom of the letter') && enhancedText.includes("'")
-    
-    if (isSameSpeaker && !isMixedLetterContent) {
-      logger.debug('🟡 Same speaker detected - will update existing message instead of clearing')
-      // Don't clear messages for same speaker, just update content
-    } else {
-      logger.debug('🟡 Different speaker or special content - clearing messages')
-      clearMessages()
-    }
-    
-    if (isMixedLetterContent) {
-      logger.debug('🟡 Mixed content detected - will split into two messages')
-    }
-    
-    // Add a small delay to ensure clearing completes before adding new message
-    setTimeout(() => {
-      logger.debug('🟡 After clearMessages delay, adding new message')
-      
-      // Display current scene text
-      if (scene.text) {
-        logger.debug('🟡 About to add message for scene:', scene.id)
-        
-        if (isMixedLetterContent) {
-          logger.debug('🟡 Detected mixed letter content, splitting into two messages')
-          logger.debug('🟡 Original text:', enhancedText)
-          
-          // Split the text properly: "text: 'quoted content'"
-          const colonIndex = enhancedText.indexOf(': ')
-          const narrativePart = enhancedText.substring(0, colonIndex + 1).trim() // "At the bottom of the letter, in smaller text:"
-          const quotedPart = enhancedText.substring(colonIndex + 2).trim() // "'You have one year...'"
-          const letterPart = quotedPart.replace(/^'|'$/g, '').trim() // Remove surrounding single quotes
-          
-          logger.debug('🟡 Split into:')
-          logger.debug('🟡 - Narrative part:', narrativePart)
-          logger.debug('🟡 - Letter part:', letterPart)
-          
-          // Add narrative context first (instant)
-          addMessage({ 
-            speaker, 
-            text: narrativePart,
-            type: 'narration',
-            typewriter: false,
-            sceneId: scene.id
-          })
-          
-          // Add letter content with typewriter effect after a short delay
-          setTimeout(() => {
-            addMessage({ 
-              speaker, 
-              text: letterPart,
-              type: 'narration',
-              typewriter: true,
-              sceneId: scene.id
-            })
-          }, 100)
-          
-          logger.debug('🟡 Split messages added for scene:', scene.id)
-        } else {
-          const shouldUseTypewriter = (text: string, type: string, speaker: string) => {
-            // Only for quoted letter/note content that's mostly just the quote
-            if (text.includes('"') && type === 'narration') {
-              const quotedPart = text.match(/"([^"]*)"/)?.[1] || '';
-              return quotedPart.length > text.length * 0.8; // >80% quoted content
-            }
-            return false; // Everything else instant
-          }
-          
-          // Process text for potential streaming
-          const streamingConfig = processSceneForStreaming(enhancedText, speaker, scene.type)
-          
-          if (isSameSpeaker) {
-            // For same speaker, just add a simple message (StoryMessage component will handle it)
-            logger.debug('🟡 Same speaker - adding simple message without semantic chunking')
-            addMessage({ 
-              speaker, 
-              text: enhancedText,
-              type: scene.type as 'narration' | 'dialogue',
-              typewriter: shouldUseTypewriter(enhancedText, scene.type, speaker),
-              streamingMode: streamingConfig.useStreaming ? 'chatbot' : 'traditional',
-              sceneId: scene.id
-            })
-          } else {
-            // For new speakers, decide between streaming chunks or semantic chunks
-            if (streamingConfig.useStreaming && enhancedText.length > 150) {
-              // Use new streaming system for long narrative content
-              logger.debug('🟡 Using streaming system with', streamingConfig.chunks.length, 'chunks')
-              addStreamingMessage({
-                speaker,
-                text: enhancedText, // Add required text property
-                textChunks: streamingConfig.chunks,
-                type: scene.type as 'narration' | 'dialogue',
-                streamingMode: 'chatbot',
-                sceneId: scene.id
-              })
-            } else {
-              // Fallback to semantic chunking for complex multi-part content
-              const semanticChunks = createSemanticChunks(enhancedText, speaker)
-              
-              if (semanticChunks.length > 1 && enhancedText.length > 150 && speaker !== 'narrator') {
-              // Add semantic chunks with priority-based delays and styling - only for long complex content
-              logger.debug('🟡 Creating semantic chunks:', semanticChunks.length, 'parts')
-              
-              semanticChunks.forEach((chunk, index) => {
-                setTimeout(() => {
-                  addMessage({ 
-                    speaker, 
-                    text: chunk.text,
-                    type: scene.type as 'narration' | 'dialogue',
-                    typewriter: shouldUseTypewriter(chunk.text, scene.type, speaker),
-                    messageWeight: chunk.priority === 1 ? 'critical' : 
-                                 chunk.priority <= 2 ? 'primary' : 'aside',
-                    className: `semantic-${chunk.semanticType}`,
-                    sceneId: scene.id
-                  })
-                }, chunk.delay)
-              })
-              
-              logger.debug('🟡 Semantic chunks scheduled for scene:', scene.id)
-              } else {
-                // Single message with basic semantic styling
-                const chunk = semanticChunks[0]
-                addMessage({ 
-                  speaker, 
-                  text: enhancedText,
-                  type: scene.type as 'narration' | 'dialogue',
-                  typewriter: shouldUseTypewriter(enhancedText, scene.type, speaker),
-                  streamingMode: streamingConfig.streamingMode,
-                  messageWeight: chunk?.priority === 1 ? 'critical' : 
-                               chunk?.priority <= 2 ? 'primary' : 'aside',
-                  className: chunk ? `semantic-${chunk.semanticType}` : undefined,
-                  sceneId: scene.id
-                })
-                
-                logger.debug('🟡 Single message added for scene:', scene.id)
-              }
-            }
-          }
-        }
-      } else {
-        logger.debug('🟡 No text for scene:', scene.id)
-      }
-      
-      // User control: always require Continue button interaction
-      // Removed auto-advance to maintain consistent UX and user agency
-    }, 10) // Very small delay to ensure state updates
-  }, [loadScene, gameState, addMessage, addStreamingMessage, clearMessages, enhanceSceneText, createSemanticChunks, processSceneForStreaming, storyEngine])
-  
-  const handleStartGame = useCallback(() => {
-    setShowIntro(false)
-    if (gameState) {
-      // Always start from the beginning for a new game
-      const initialScene = '1-1'
-      // Clear messages and reset state for fresh start
-      clearMessages()
-      resetPresence()
-      
-      
-      // Reset game state to beginning
-      gameState.setScene(initialScene)
-      // Force load the initial scene (handleLoadScene will add the message)
-      handleLoadScene(initialScene, true)
-    }
-  }, [gameState, clearMessages, resetPresence, handleLoadScene])
-
-  const handleContinueGame = useCallback(() => {
-    setShowIntro(false)
-    if (gameState) {
-      const state = gameState.getState()
-      // Clear messages but keep progress
-      clearMessages()
-      resetPresence()
-      // Load the saved scene
-      handleLoadScene(state.currentScene, true)
-    }
-  }, [gameState, clearMessages, resetPresence, handleLoadScene])
-  
-  
-  const handleChoice = useCallback(async (choice: { text: string; consequence: string; nextScene: string; stateChanges?: unknown }) => {
-    logger.debug('handleChoice called with:', choice)
-    try {
-      if (!gameState || !currentScene) {
-        logger.debug('Missing gameState or currentScene:', { gameState: !!gameState, currentScene: !!currentScene })
-        return
-      }
-      
-      setProcessing(true)
-      resetPresence() // New scene, new presence
-    
-    // Calculate time taken to make choice
-    const timeToChoose = Date.now() - choiceStartTime
-    
-    // Apply Grand Central choice effects
-    if (choice.stateChanges) {
-      grandCentralState.applyChoiceEffects(choice.stateChanges)
-    }
-    
-    // Record the choice with theme tracking for Birmingham demo
-    // Map consequences to career-relevant themes
-    const themeMap: Record<string, string> = {
-      'trusting': 'trust',
-      'cautious': 'analyzing',
-      'rebellious': 'independence',
-      'analytical': 'analyzing',
-      'builder': 'building',
-      'helper': 'helping',
-      'focused': 'rushing',
-      'direct': 'analyzing',
-      'curious': 'exploring',
-      'impatient': 'rushing',
-      'determined': 'rushing',
-      'exploring': 'exploring',
-      'connecting': 'helping',
-      'observing': 'patience',
-      'explorer_quiet': 'exploring',
-      'understanding_quiet': 'analyzing',
-      'helper_quiet': 'helping',
-      'revolutionary_quiet': 'independence',
-      // Chapter 2 career values consequences
-      'service_calling': 'helping',
-      'systems_calling': 'building',
-      'analysis_calling': 'analyzing',
-      'future_calling': 'exploring',
-      'service_systems_blend': 'helping',
-      'systems_analysis_blend': 'building',
-      'analysis_future_blend': 'analyzing',
-      'future_independence_blend': 'exploring',
-      'service_systems_clarity': 'helping',
-      'systems_analysis_clarity': 'building',
-      'analysis_future_clarity': 'analyzing',
-      'future_independence_clarity': 'exploring',
-      'practical_guidance': 'patience',
-      'hybrid_exploration': 'independence',
-      'mentoring_others': 'helping',
-      'contemplative_insight': 'patience',
-      'focused_commitment': 'building',
-      'hybrid_integration': 'independence',
-      'guide_commitment': 'helping',
-      'continued_exploration': 'exploring',
-      'confident_departure': 'building',
-      'service_before_self': 'helping',
-      'station_integration': 'independence',
-      'final_reflection': 'patience',
-      'values_guided_career': 'analyzing',
-      'workforce_development_career': 'helping',
-      'career_innovation': 'independence',
-      'lifelong_exploration': 'exploring',
-      // Chapter 3 career development consequences
-      'healthcare_exploration': 'helping',
-      'innovation_networking': 'exploring',
-      'community_service': 'helping',
-      'strategic_research': 'analyzing',
-      'organic_exploration': 'patience',
-      'parallel_exploration': 'exploring',
-      'skills_first_approach': 'building',
-      'relationship_building': 'helping',
-      'technical_specialization': 'building',
-      'interpersonal_development': 'helping',
-      'business_acumen': 'analyzing',
-      'entrepreneurial_development': 'independence',
-      'mentorship_approach': 'patience',
-      'project_approach': 'building',
-      'community_approach': 'helping',
-      'creation_approach': 'independence',
-      'specialization_focus': 'building',
-      'generalist_focus': 'exploring',
-      'influence_focus': 'helping',
-      'innovation_focus': 'independence',
-      'systematic_planning': 'building',
-      'adaptive_planning': 'exploring',
-      'balanced_planning': 'patience',
-      'relationship_planning': 'helping',
-      'values_evolution_insight': 'patience',
-      'location_advantage_insight': 'analyzing',
-      'contribution_insight': 'helping',
-      'relationship_insight': 'helping',
-      'mentorship_commitment': 'helping',
-      'building_commitment': 'building',
-      'exploration_commitment': 'exploring',
-      'integration_commitment': 'analyzing'
-    }
-    
-    const theme = themeMap[choice.consequence] || choice.consequence
-    gameState.recordChoiceWithTheme(currentScene.id, choice.text, choice.consequence, theme)
-    
-    // Update performance metrics
-    const character = messages.slice(-5).find(m => m.speaker !== 'You' && m.speaker !== 'narrator')?.speaker
-    performanceSystem.updateFromChoice(theme, timeToChoose, currentScene.id, character)
-    
-    // Get all recent themes for pattern analysis
-    const state = gameState.getState()
-    const recentThemes = state.choices.slice(-10).map(c => {
-      const mappedTheme = themeMap[c.consequence] || c.consequence
-      return mappedTheme
-    })
-    performanceSystem.updateFromPatterns(recentThemes)
-    
-    // Don't add choice as separate message - go directly to next scene
-    // Load next scene immediately
-    setTimeout(() => {
-      logger.debug('🔄 setTimeout executing, attempting to load scene:', choice.nextScene)
-      const result = handleLoadScene(choice.nextScene)
-      logger.debug('🔄 handleLoadScene result:', result)
-      setProcessing(false)
-    }, 500) // Shorter delay
-    
-    } catch (error) {
-      logger.error('❌ Error in handleChoice:', error)
-      logger.error('❌ Choice details:', choice)
-      setProcessing(false)
-    }
-  }, [gameState, currentScene, setProcessing, addMessage, handleLoadScene, resetPresence, choiceStartTime, performanceSystem, messages])
-  
-  const handleContinue = useCallback(() => {
-    logger.debug('handleContinue called, currentScene:', currentScene?.id)
-    if (!currentScene) {
-      logger.debug('No currentScene, returning')
-      return
-    }
-    
-    const nextSceneId = storyEngine.getNextScene(currentScene.id)
-    logger.debug('Next scene ID:', nextSceneId)
-    
-    if (nextSceneId) {
-      handleLoadScene(nextSceneId)
-    } else {
-      logger.debug('No next scene, showing end message')
-      // Clear messages first, then add end message
-      clearMessages()
-      addMessage({
-        speaker: 'narrator',
-        text: 'To be continued...',
-        type: 'narration',
-        typewriter: false,
-        sceneId: currentScene?.id || 'end'
-      })
-    }
-  }, [currentScene, storyEngine, handleLoadScene, addMessage, clearMessages])
-  
-  // Loading state
-  if (!gameState || !isInitialized) {
-    return <div className="flex items-center justify-center min-h-screen">Loading...</div>
-  }
-  
-  // Intro screen
-  if (showIntro) {
-    const hasSavedProgress = gameState.getState().currentScene !== '1-1'
-    return (
-      <CharacterIntro 
-        onStart={handleStartGame}
-        onContinue={handleContinueGame}
-        hasSavedProgress={hasSavedProgress}
-      />
-    )
-  }
-  
-  const gcState = grandCentralState.getState()
-  const platformClass = gcState.platforms.p1.warmth > 2 ? 'platform-warm' : 
-                      gcState.platforms.p1.warmth < -2 ? 'platform-cold' : 'platform-neutral'
-  const quietHourClass = gcState.time.stopped ? 'quiet-hour' : ''
-  
   // Get visual adjustments based on emotional state
   const visualAdjustments = getVisualAdjustments()
   
+  // Get support messages
+  const emotionalSupport = getEmotionalSupport()
+  const metacognitivePrompt = getMetacognitivePrompt()
+  const skillSuggestions = getSkillSuggestions()
+
+  // Enhanced choice handling with all systems
+  const handleEnhancedChoice = useCallback((choice: any) => {
+    if (isProcessing) return
+    
+    // Track choice across all systems
+    const timestamp = Date.now()
+    
+    // Update emotional state based on choice
+    const choiceText = choice.text.toLowerCase()
+    if (choiceText.includes('rush') || choiceText.includes('hurry')) {
+      updateEmotionalState({ 
+        stressLevel: 'anxious',
+        rapidClicks: (emotionalState.rapidClicks || 0) + 1
+      })
+    } else if (choiceText.includes('wait') || choiceText.includes('patience')) {
+      updateEmotionalState({ 
+        stressLevel: 'calm',
+        hesitationCount: (emotionalState.hesitationCount || 0) + 1
+      })
+    }
+    
+    // Update cognitive state
+    if (choiceText.includes('think') || choiceText.includes('analyze')) {
+      updateCognitiveState({
+        flowState: 'flow',
+        metacognitiveAwareness: Math.min(1, (cognitiveState.metacognitiveAwareness || 0) + 0.1)
+      })
+    }
+    
+    // Update skills based on choice patterns
+    const skillUpdates: Partial<typeof skills> = {}
+    if (choiceText.includes('help') || choiceText.includes('support')) {
+      skillUpdates.communication = Math.min(1, (skills.communication || 0) + 0.05)
+      skillUpdates.emotionalIntelligence = Math.min(1, (skills.emotionalIntelligence || 0) + 0.05)
+    }
+    if (choiceText.includes('build') || choiceText.includes('create')) {
+      skillUpdates.creativity = Math.min(1, (skills.creativity || 0) + 0.05)
+      skillUpdates.problemSolving = Math.min(1, (skills.problemSolving || 0) + 0.05)
+    }
+    if (choiceText.includes('analyze') || choiceText.includes('think')) {
+      skillUpdates.criticalThinking = Math.min(1, (skills.criticalThinking || 0) + 0.05)
+    }
+    
+    if (Object.keys(skillUpdates).length > 0) {
+      updateSkills(skillUpdates)
+    }
+    
+    // Call the main choice handler
+    handleChoice(choice)
+  }, [
+    isProcessing,
+    emotionalState,
+    cognitiveState,
+    skills,
+    updateEmotionalState,
+    updateCognitiveState,
+    updateSkills,
+    handleChoice
+  ])
+
+  // Show intro if not started
+  if (!hasStarted) {
+    return (
+      <div className="apple-game-container">
+        <div className="apple-game-main" style={visualAdjustments.style}>
+          <CharacterIntro onStart={handleStartGame} />
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <div 
-      className={`
-        game-container w-full md:container md:max-w-4xl md:mx-auto p-0 md:p-4 
-        performance-${performanceLevel} grand-central-terminus ${platformClass} ${quietHourClass}
-        ${visualAdjustments.spacing === 'increased' ? 'md:p-6' : ''}
-        ${visualAdjustments.spacing === 'maximum' ? 'md:p-8' : ''}
-        ${visualAdjustments.blurBackground ? 'backdrop-blur-sm' : ''}
-      `}
-      style={{
-        animation: visualAdjustments.animationSpeed === 'slower' ? 'pulse 3s ease-in-out infinite' : 'none'
-      }}
-    >
-      <Card className="game-card w-full md:max-w-3xl md:mx-auto bg-white dark:bg-gray-900 md:bg-white/95 md:dark:bg-gray-900/95 md:backdrop-blur-sm md:shadow-xl">
-        <CardHeader>
-          <CardTitle className="text-center text-sm text-muted-foreground">
-            <span>·</span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="flex flex-col justify-center min-h-[60vh]">
-          {/* Centered Messages Area */}
-          <div className="flex-1 flex items-center justify-center">
-            {messages.length === 0 ? (
-              <div className="text-center text-muted-foreground py-8">
-                <p>Your journey begins...</p>
-              </div>
-            ) : (
-              <div className="w-full" key={currentScene?.id || 'no-scene'}>
-                {messages.map((msg, index) => {
-                  // Get previous message for visual grouping
-                  const prevMsg = index > 0 ? messages[index - 1] : null
-                  const isContinuedSpeaker = prevMsg && prevMsg.speaker === msg.speaker && 
-                                           msg.speaker !== 'You' // Allow narrator grouping, exclude only user messages
-                  
-                  // Render streaming message if it has textChunks
-                  if (msg.isStreamingMessage && msg.textChunks) {
-                    return (
-                      <StreamingMessage
-                        key={msg.id}
-                        speaker={msg.speaker}
-                        textChunks={msg.textChunks}
-                        type={msg.type}
-                        messageWeight={msg.messageWeight}
-                        className={msg.className}
-                        onComplete={() => {
-                          // Optional: Handle completion logic
-                        }}
-                      />
-                    )
-                  }
-                  
-                  // Default to regular StoryMessage
-                  return (
-                    <StoryMessage
-                      key={msg.id} // Use stable message ID instead of scene-based key
-                      speaker={msg.speaker}
-                      text={msg.text}
-                      type={msg.type}
-                      messageWeight={msg.messageWeight}
-                      buttonText={msg.buttonText}
-                      typewriter={msg.typewriter}
-                      streamingMode={msg.streamingMode}
-                      isContinuedSpeaker={isContinuedSpeaker || false}
-                      className={msg.className}
-                    />
-                  )
-                })}
-              </div>
-            )}
-          </div>
-          
-          {/* Action Area - Adaptive choice layout */}
-          <div className="choice-buttons border-t pt-4">
-            {currentScene?.type === 'choice' && currentScene.choices ? (
-              <div className={
-                currentScene.choices.length === 1 
-                  ? "flex justify-center" 
-                  : currentScene.choices.length === 2
-                  ? "grid grid-cols-1 md:grid-cols-2 gap-2"
-                  : currentScene.choices.length === 3
-                  ? "grid grid-cols-1 md:grid-cols-3 gap-2"
-                  : "grid grid-cols-1 md:grid-cols-2 gap-2"
-              }>
-                {enhanceChoices(currentScene.choices).map((choice, index) => (
-                  <button
-                    key={index}
-                    onClick={() => {
-                      trackClick()
-                      trackChoice(choice.text, Date.now())
-                      trackCognitiveChoice(choice.text, Date.now())
-                      trackDevelopmentalChoice(choice.text, Date.now())
-                      trackNeuralChoice(choice.text, Date.now())
-                      trackSkillsChoice(choice.text, currentScene?.id || 'unknown')
-                      resetHesitation()
-                      handleChoice(choice)
-                    }}
-                    onMouseEnter={() => {
-                      trackHesitation()
-                      startDecisionTracking()
-                    }}
-                    disabled={isProcessing}
-                    className="pokemon-choice-button-enhanced w-full text-left"
-                  >
-                    {choice.text}
-                  </button>
-                ))}
-              </div>
-            ) : (
-              // Show Continue button for all non-choice scenes
+    <div className="apple-game-container">
+      <div className="apple-game-main" style={visualAdjustments.style}>
+        {/* Header */}
+        <div className="apple-header">
+          <div className="apple-text-headline">Grand Central Terminus</div>
+          <div className="apple-text-caption">Birmingham Career Exploration</div>
+        </div>
+
+        {/* Messages */}
+        <div className="apple-messages-container">
+          {messages.map((message, index) => (
+            <div key={message.id} className="apple-message-wrapper">
+              <StoryMessage
+                message={message}
+                isContinuedSpeaker={index > 0 && messages[index - 1].speaker === message.speaker}
+                performanceLevel={performanceLevel}
+              />
+            </div>
+          ))}
+        </div>
+
+        {/* Support Components */}
+        {emotionalSupport && (
+          <EmotionalSupport
+            supportMessage={emotionalSupport}
+            visualAdjustments={visualAdjustments}
+            onDismiss={() => updateEmotionalState({ rapidClicks: 0, hesitationCount: 0 })}
+          />
+        )}
+
+        {metacognitivePrompt && (
+          <MetacognitiveScaffolding
+            metacognitivePrompt={metacognitivePrompt}
+            flowOptimization={cognitiveState.flowState}
+            cognitiveScaffolding={cognitiveState}
+            learningStyleAdaptations={cognitiveState.learningStyle}
+            onDismiss={() => {}}
+          />
+        )}
+
+        {skillSuggestions && (
+          <FutureSkillsSupport
+            skills={skills}
+            matchingCareerPaths={[]}
+            skillPrompt={skillSuggestions}
+            skillsSummary={skillSuggestions}
+            skillDevelopmentSuggestions={skillSuggestions}
+            contextualFeedback={skillSuggestions}
+            onDismiss={() => {}}
+          />
+        )}
+
+        {/* Career Reflection Helper */}
+        <CareerReflectionHelper
+          rapidClicks={emotionalState.rapidClicks || 0}
+          onReset={() => updateEmotionalState({ rapidClicks: 0 })}
+        />
+
+        {/* Silent Companion */}
+        <SilentCompanion />
+
+        {/* Choices */}
+        {currentScene?.choices && currentScene.choices.length > 0 && (
+          <div className="apple-choices-container apple-animate-slide-in">
+            {currentScene.choices.map((choice, index) => (
               <button
-                onClick={() => {
-                  trackClick()
-                  trackChoice('Continue', Date.now())
-                  trackCognitiveChoice('Continue', Date.now())
-                  trackDevelopmentalChoice('Continue', Date.now())
-                  trackNeuralChoice('Continue', Date.now())
-                  trackSkillsChoice('Continue', currentScene?.id || 'unknown')
-                  resetHesitation()
-                  handleContinue()
-                }}
+                key={index}
+                onClick={() => handleEnhancedChoice(choice)}
                 disabled={isProcessing}
-                className="pokemon-choice-button-enhanced choice-primary w-full"
+                className="apple-choice-button"
               >
-                {storyEngine.getNextScene(currentScene?.id || '') ? 'Continue' : 'Chapter Complete'}
+                {choice.text}
               </button>
-            )}
+            ))}
           </div>
-        </CardContent>
-      </Card>
-      
-      {/* No breathing invitation for Grand Central Terminus */}
-      
-      {/* Silent companion - only speaks when asked, only asks questions */}
-      <SilentCompanion />
-      
-      {/* Career reflection helper - appears when player seems stressed */}
-      <CareerReflectionHelper />
-      
-      {/* Emotional support - provides gentle regulation when needed */}
-      <EmotionalSupport
-        emotionalState={emotionalState}
-        supportMessage={getEmotionalSupport()}
-        visualAdjustments={getVisualAdjustments()}
-        onDismiss={() => resetEmotionalState()}
-      />
-      
-      {/* Metacognitive scaffolding - provides cognitive development support */}
-      <MetacognitiveScaffolding
-        cognitiveState={cognitiveState}
-        metacognitivePrompt={getMetacognitivePrompt()}
-        flowOptimization={getFlowOptimization()}
-        cognitiveScaffolding={getCognitiveScaffolding()}
-        learningStyleAdaptations={getLearningStyleAdaptations()}
-        onDismiss={() => resetCognitiveState()}
-      />
-      
-      {/* Developmental psychology support - provides identity formation and cultural responsiveness */}
-      <DevelopmentalPsychologySupport
-        identityState={identityState}
-        culturalContext={culturalContext}
-        identityPrompt={getIdentityPrompt()}
-        culturalPrompt={getCulturalPrompt()}
-        youthDevelopmentSupport={getYouthDevelopmentSupport()}
-        culturalAdaptations={getCulturalAdaptations()}
-        identityScaffolding={getIdentityScaffolding()}
-        onDismiss={() => resetDevelopmentalState()}
-      />
-      
-      {/* Neuroscience support - provides brain-based learning and neuroplasticity support */}
-      <NeuroscienceSupport
-        neuralState={neuralState}
-        brainPrompt={getBrainPrompt()}
-        brainOptimization={getBrainOptimization()}
-        neuroplasticitySupport={getNeuroplasticitySupport()}
-        neuralEfficiencyTips={getNeuralEfficiencyTips()}
-        onDismiss={() => resetNeuralState()}
-      />
-      
-      {/* Future skills support - provides 2030 skills development and career path guidance */}
-      <FutureSkillsSupport
-        skills={skills}
-        matchingCareerPaths={matchingCareerPaths}
-        skillPrompt={getSkillPrompt('criticalThinking')} // Default to critical thinking prompt
-        skillsSummary={getSkillsSummary()}
-        skillDevelopmentSuggestions={getSkillDevelopmentSuggestions()}
-        contextualFeedback={getContextualSkillFeedback('')}
-        onDismiss={() => resetSkills()}
-      />
+        )}
+
+        {/* Continue Button */}
+        {currentScene?.type === 'narration' && (
+          <div className="apple-choices-container apple-animate-slide-in">
+            <button
+              onClick={handleContinue}
+              disabled={isProcessing}
+              className="apple-button apple-button-primary w-full"
+            >
+              {isProcessing ? 'Processing...' : 'Continue'}
+            </button>
+          </div>
+        )}
+
+        {/* Share Button */}
+        {currentScene && (
+          <div className="apple-choices-container apple-animate-slide-in">
+            <button
+              onClick={handleShare}
+              className="apple-button apple-button-ghost w-full"
+            >
+              Share Progress
+            </button>
+          </div>
+        )}
+
+        {/* Debug Info (Development Only) */}
+        {process.env.NODE_ENV === 'development' && (
+          <div className="apple-debug-info">
+            <div>Performance: {Math.round(performanceLevel * 100)}%</div>
+            <div>Stress: {emotionalState.stressLevel}</div>
+            <div>Flow: {cognitiveState.flowState}</div>
+            <div>Patterns: {Object.entries(patterns).filter(([_, v]) => v > 0).map(([k, v]) => `${k}:${v}`).join(', ')}</div>
+          </div>
+        )}
+      </div>
     </div>
   )
 }
+
+export default GameInterface

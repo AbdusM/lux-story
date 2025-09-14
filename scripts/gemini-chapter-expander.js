@@ -4,7 +4,11 @@ const path = require('path');
 // Chapter Structure Expansion - BG3 Inspired
 // Implementing: Multi-act journey, escalating stakes, branching narratives that converge
 
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY || 'AIzaSyDEQloxDXlFD2HnFNUrAIr8aANhvr_Ivxg';
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY
+if (!GEMINI_API_KEY) {
+  console.error('❌ GEMINI_API_KEY environment variable is required')
+  process.exit(1)
+};
 const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent';
 
 const CHAPTER_STRUCTURE = {

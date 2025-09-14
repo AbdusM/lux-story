@@ -2,19 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Import enhanced UI styles */
-@import '../styles/enhanced-ui.css';
-@import '../styles/mobile-enhanced.css';
-@import '../styles/visual-hierarchy.css';
-
-/* Import consolidated styles */
-@import '../styles/core.css';
-@import '../styles/components.css';
-@import '../styles/mobile.css';
-@import '../styles/animations.css';
-@import '../styles/performance.css';
-@import '../styles/grand-central.css';
-@import '../styles/pokemon-ui.css';
+/* Import Apple Design System */
+@import '../styles/apple-design-system.css';
 
 @layer base {
   :root {
