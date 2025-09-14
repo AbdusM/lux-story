@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { EnvironmentalEffects } from '@/components/EnvironmentalEffects'
 import { ServiceWorkerProvider } from '@/components/ServiceWorkerProvider'
+import { GameContextProvider } from '@/contexts/GameContext'
 import './globals.css'
 import '../styles/accessibility.css'
 import '../styles/game-juice.css'
@@ -45,16 +46,18 @@ export default function RootLayout({
         userSelect: 'none'
       }}>
         <ServiceWorkerProvider>
-          <EnvironmentalEffects />
-          <ErrorBoundary>
-            <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 environment-responsive"
-                 style={{ 
-                   backgroundColor: 'var(--bg-primary, inherit)',
-                   color: 'var(--text-primary, inherit)'
-                 }}>
-              {children}
-            </div>
-          </ErrorBoundary>
+          <GameContextProvider>
+            <EnvironmentalEffects />
+            <ErrorBoundary>
+              <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 environment-responsive"
+                   style={{
+                     backgroundColor: 'var(--bg-primary, inherit)',
+                     color: 'var(--text-primary, inherit)'
+                   }}>
+                {children}
+              </div>
+            </ErrorBoundary>
+          </GameContextProvider>
         </ServiceWorkerProvider>
       </body>
     </html>

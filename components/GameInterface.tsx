@@ -1,9 +1,8 @@
 "use client"
 
 import { useCallback, useMemo, memo, useEffect } from 'react'
-import { useGame } from '@/hooks/useGame'
-import { useMemoryCleanup, useMemoryMonitor } from '@/hooks/useMemoryCleanup'
-import { usePerformanceMonitor } from '@/lib/performance-monitor'
+import { useGameContext, useGameState, useGameActions, useGameSystems, useGameSupport, useGameMonitoring } from '@/contexts/GameContext'
+import { useMemoryCleanup } from '@/hooks/useMemoryCleanup'
 import { GameHeader } from './GameHeader'
 import { GameMessages } from './GameMessages'
 import { GameSupport } from './GameSupport'
@@ -28,39 +27,58 @@ import { cn } from '@/lib/utils'
  */
 
 export function GameInterface() {
-  // Use simplified game hook (replaces 14 complex hooks)
+  // Use context hooks instead of props drilling
+  const gameState = useGameState()
+  const gameActions = useGameActions()
+  const gameSystems = useGameSystems()
+  const gameSupport = useGameSupport()
+  const gameMonitoring = useGameMonitoring()
+
+  // Destructure for easier access
   const {
     currentScene,
     hasStarted,
     isProcessing,
     messages,
-    performanceLevel,
+    performanceLevel
+  } = gameState
+
+  const {
     emotionalState,
     cognitiveState,
     identityState,
     neuralState,
     skills,
     patterns,
-    handleChoice,
-    handleContinue,
-    handleStartGame,
-    handleShare,
-    getVisualAdjustments,
-    getEmotionalSupport,
-    getMetacognitivePrompt,
-    getSkillSuggestions,
     updateEmotionalState,
     updateCognitiveState,
     updateIdentityState,
     updateNeuralState,
     updateSkills
-  } = useGame()
+  } = gameSystems
 
-  // Memory management
-  const { getMemoryUsage, checkMemoryLeaks } = useMemoryMonitor()
+  const {
+    handleChoice,
+    handleContinue,
+    handleStartGame,
+    handleShare
+  } = gameActions
 
-  // Performance monitoring
-  const { getMetrics, getScore, trackSceneTransition, trackChoiceResponse } = usePerformanceMonitor()
+  const {
+    getVisualAdjustments,
+    getEmotionalSupport,
+    getMetacognitivePrompt,
+    getSkillSuggestions
+  } = gameSupport
+
+  const {
+    getMetrics,
+    getScore,
+    trackSceneTransition,
+    trackChoiceResponse,
+    getMemoryUsage,
+    checkMemoryLeaks
+  } = gameMonitoring
 
   // Register cleanup functions
   useMemoryCleanup(() => {
@@ -218,7 +236,7 @@ export function GameInterface() {
             <div>Performance: {Math.round(performanceLevel * 100)}%</div>
             <div>Stress: {emotionalState.stressLevel}</div>
             <div>Flow: {cognitiveState.flowState}</div>
-            <div>Patterns: {Object.entries(patterns).filter(([_, v]) => v > 0).map(([k, v]) => `${k}:${v}`).join(', ')}</div>
+            <div>Patterns: {Object.entries(patterns).filter(([_, v]) => (v as number) > 0).map(([k, v]) => `${k}:${v}`).join(', ')}</div>
             <div>Core Web Vitals Score: {Math.round(getScore().overall)}%</div>
             <div>Memory: {getMemoryUsage().percentage.toFixed(1)}%</div>
           </div>
