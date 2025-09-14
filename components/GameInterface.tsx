@@ -7,6 +7,7 @@ import { StoryMessage } from "./StoryMessage"
 import { StreamingMessage } from "./StreamingMessage"
 import { CharacterIntro } from "./CharacterIntro"
 import { SilentCompanion } from "./SilentCompanion"
+import { CareerReflectionHelper } from "./CareerReflectionHelper"
 import { StoryEngine } from "@/lib/story-engine"
 
 // Simplified hooks - no more gamification
@@ -16,6 +17,7 @@ import { useMessageManager } from "@/hooks/useMessageManager"
 import { usePresence } from "@/hooks/usePresence"
 import { useAdaptiveNarrative } from "@/hooks/useAdaptiveNarrative"
 import { useStreamingFlow } from "@/hooks/useStreamingFlow"
+import { useCareerReflection } from "@/hooks/useCareerReflection"
 import { getPerformanceSystem } from "@/lib/performance-system"
 import { getGrandCentralState } from "@/lib/grand-central-state"
 
@@ -35,6 +37,7 @@ export function GameInterface() {
   const { resetPresence } = usePresence()
   const { performanceLevel, enhanceSceneText, analyzeContentSemantics, enhanceChoices } = useAdaptiveNarrative()
   const { processSceneForStreaming } = useStreamingFlow()
+  const { trackClick } = useCareerReflection()
 
   // Semantic-based content chunking with timed reveals
   const createSemanticChunks = useCallback((text: string, speaker: string) => {
@@ -559,7 +562,10 @@ export function GameInterface() {
                 {enhanceChoices(currentScene.choices).map((choice, index) => (
                   <button
                     key={index}
-                    onClick={() => handleChoice(choice)}
+                    onClick={() => {
+                      trackClick()
+                      handleChoice(choice)
+                    }}
                     disabled={isProcessing}
                     className="pokemon-choice-button-enhanced w-full text-left"
                   >
@@ -570,7 +576,10 @@ export function GameInterface() {
             ) : (
               // Show Continue button for all non-choice scenes
               <button
-                onClick={handleContinue}
+                onClick={() => {
+                  trackClick()
+                  handleContinue()
+                }}
                 disabled={isProcessing}
                 className="pokemon-choice-button-enhanced choice-primary w-full"
               >
@@ -585,6 +594,9 @@ export function GameInterface() {
       
       {/* Silent companion - only speaks when asked, only asks questions */}
       <SilentCompanion />
+      
+      {/* Career reflection helper - appears when player seems stressed */}
+      <CareerReflectionHelper />
     </div>
   )
 }
