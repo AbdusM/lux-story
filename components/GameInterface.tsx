@@ -26,6 +26,8 @@ import { useDevelopmentalPsychology } from "@/hooks/useDevelopmentalPsychology"
 import { DevelopmentalPsychologySupport } from "@/components/DevelopmentalPsychologySupport"
 import { useNeuroscience } from "@/hooks/useNeuroscience"
 import { NeuroscienceSupport } from "@/components/NeuroscienceSupport"
+import { use2030Skills } from "@/hooks/use2030Skills"
+import { FutureSkillsSupport } from "@/components/FutureSkillsSupport"
 import { getPerformanceSystem } from "@/lib/performance-system"
 import { getGrandCentralState } from "@/lib/grand-central-state"
 
@@ -88,6 +90,17 @@ export function GameInterface() {
     getNeuralEfficiencyTips,
     resetNeuralState
   } = useNeuroscience()
+  
+  const {
+    skills,
+    matchingCareerPaths,
+    trackChoice: trackSkillsChoice,
+    getSkillPrompt,
+    getSkillsSummary,
+    getSkillDevelopmentSuggestions,
+    getContextualSkillFeedback,
+    resetSkills
+  } = use2030Skills()
 
   // Semantic-based content chunking with timed reveals
   const createSemanticChunks = useCallback((text: string, speaker: string) => {
@@ -632,6 +645,7 @@ export function GameInterface() {
                       trackCognitiveChoice(choice.text, Date.now())
                       trackDevelopmentalChoice(choice.text, Date.now())
                       trackNeuralChoice(choice.text, Date.now())
+                      trackSkillsChoice(choice.text, currentScene?.id || 'unknown')
                       resetHesitation()
                       handleChoice(choice)
                     }}
@@ -655,6 +669,7 @@ export function GameInterface() {
                   trackCognitiveChoice('Continue', Date.now())
                   trackDevelopmentalChoice('Continue', Date.now())
                   trackNeuralChoice('Continue', Date.now())
+                  trackSkillsChoice('Continue', currentScene?.id || 'unknown')
                   resetHesitation()
                   handleContinue()
                 }}
@@ -714,6 +729,17 @@ export function GameInterface() {
         neuroplasticitySupport={getNeuroplasticitySupport()}
         neuralEfficiencyTips={getNeuralEfficiencyTips()}
         onDismiss={() => resetNeuralState()}
+      />
+      
+      {/* Future skills support - provides 2030 skills development and career path guidance */}
+      <FutureSkillsSupport
+        skills={skills}
+        matchingCareerPaths={matchingCareerPaths}
+        skillPrompt={getSkillPrompt('criticalThinking')} // Default to critical thinking prompt
+        skillsSummary={getSkillsSummary()}
+        skillDevelopmentSuggestions={getSkillDevelopmentSuggestions()}
+        contextualFeedback={getContextualSkillFeedback('')}
+        onDismiss={() => resetSkills()}
       />
     </div>
   )
