@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, memo } from 'react'
 import { useGame } from '@/hooks/useGame'
 import { StoryMessage } from './StoryMessage'
 import { StreamingMessage } from './StreamingMessage'
@@ -23,6 +23,41 @@ import { cn } from '@/lib/utils'
  * 
  * HYBRID VERSION: Uses simplified useGame hook + Apple design components
  */
+// Memoized choice button component
+const ChoiceButton = memo(({ choice, index, onChoice, isProcessing }: {
+  choice: any
+  index: number
+  onChoice: (choice: any) => void
+  isProcessing: boolean
+}) => (
+  <button
+    key={index}
+    onClick={() => onChoice(choice)}
+    disabled={isProcessing}
+    className="apple-choice-button"
+  >
+    {choice.text}
+  </button>
+))
+
+// Memoized message component
+const MessageItem = memo(({ message, index, messages }: {
+  message: any
+  index: number
+  messages: any[]
+}) => (
+  <div key={message.id} className="apple-message-wrapper">
+    <StoryMessage
+      speaker={message.speaker}
+      text={message.text}
+      type={message.type}
+      messageWeight={message.messageWeight}
+      className={message.className}
+      isContinuedSpeaker={index > 0 && messages[index - 1].speaker === message.speaker}
+    />
+  </div>
+))
+
 export function GameInterface() {
   // Use simplified game hook (replaces 14 complex hooks)
   const {
@@ -52,15 +87,15 @@ export function GameInterface() {
     updateSkills
   } = useGame()
 
-  // Get visual adjustments based on emotional state
-  const visualAdjustments = getVisualAdjustments()
+  // Get visual adjustments based on emotional state (memoized)
+  const visualAdjustments = useMemo(() => getVisualAdjustments(), [getVisualAdjustments])
   
-  // Get support messages
-  const emotionalSupport = getEmotionalSupport()
-  const metacognitivePrompt = getMetacognitivePrompt()
-  const skillSuggestions = getSkillSuggestions()
+  // Get support messages (memoized)
+  const emotionalSupport = useMemo(() => getEmotionalSupport(), [getEmotionalSupport])
+  const metacognitivePrompt = useMemo(() => getMetacognitivePrompt(), [getMetacognitivePrompt])
+  const skillSuggestions = useMemo(() => getSkillSuggestions(), [getSkillSuggestions])
 
-  // Enhanced choice handling with all systems
+  // Enhanced choice handling with all systems (memoized)
   const handleEnhancedChoice = useCallback((choice: any) => {
     if (isProcessing) return
     
@@ -111,9 +146,14 @@ export function GameInterface() {
     handleChoice(choice)
   }, [
     isProcessing,
-    emotionalState,
-    cognitiveState,
-    skills,
+    emotionalState.rapidClicks,
+    emotionalState.hesitationCount,
+    cognitiveState.metacognitiveAwareness,
+    skills.communication,
+    skills.emotionalIntelligence,
+    skills.creativity,
+    skills.problemSolving,
+    skills.criticalThinking,
     updateEmotionalState,
     updateCognitiveState,
     updateSkills,
@@ -143,68 +183,47 @@ export function GameInterface() {
         {/* Messages */}
         <div className="apple-messages-container">
           {messages.map((message, index) => (
-            <div key={message.id} className="apple-message-wrapper">
-              <StoryMessage
-                message={message}
-                isContinuedSpeaker={index > 0 && messages[index - 1].speaker === message.speaker}
-                performanceLevel={performanceLevel}
-              />
-            </div>
+            <MessageItem
+              key={message.id}
+              message={message}
+              index={index}
+              messages={messages}
+            />
           ))}
         </div>
 
-        {/* Support Components */}
+        {/* Support Messages (Simplified) */}
         {emotionalSupport && (
-          <EmotionalSupport
-            supportMessage={emotionalSupport}
-            visualAdjustments={visualAdjustments}
-            onDismiss={() => updateEmotionalState({ rapidClicks: 0, hesitationCount: 0 })}
-          />
+          <div className="apple-support-message apple-animate-slide-in">
+            <div className="apple-support-text">{emotionalSupport.message}</div>
+          </div>
         )}
 
         {metacognitivePrompt && (
-          <MetacognitiveScaffolding
-            metacognitivePrompt={metacognitivePrompt}
-            flowOptimization={cognitiveState.flowState}
-            cognitiveScaffolding={cognitiveState}
-            learningStyleAdaptations={cognitiveState.learningStyle}
-            onDismiss={() => {}}
-          />
+          <div className="apple-support-message apple-animate-slide-in">
+            <div className="apple-support-text">{metacognitivePrompt}</div>
+          </div>
         )}
 
         {skillSuggestions && (
-          <FutureSkillsSupport
-            skills={skills}
-            matchingCareerPaths={[]}
-            skillPrompt={skillSuggestions}
-            skillsSummary={skillSuggestions}
-            skillDevelopmentSuggestions={skillSuggestions}
-            contextualFeedback={skillSuggestions}
-            onDismiss={() => {}}
-          />
+          <div className="apple-support-message apple-animate-slide-in">
+            <div className="apple-support-text">
+              Developing: {skillSuggestions.developing.join(', ')}
+            </div>
+          </div>
         )}
-
-        {/* Career Reflection Helper */}
-        <CareerReflectionHelper
-          rapidClicks={emotionalState.rapidClicks || 0}
-          onReset={() => updateEmotionalState({ rapidClicks: 0 })}
-        />
-
-        {/* Silent Companion */}
-        <SilentCompanion />
 
         {/* Choices */}
         {currentScene?.choices && currentScene.choices.length > 0 && (
           <div className="apple-choices-container apple-animate-slide-in">
             {currentScene.choices.map((choice, index) => (
-              <button
+              <ChoiceButton
                 key={index}
-                onClick={() => handleEnhancedChoice(choice)}
-                disabled={isProcessing}
-                className="apple-choice-button"
-              >
-                {choice.text}
-              </button>
+                choice={choice}
+                index={index}
+                onChoice={handleEnhancedChoice}
+                isProcessing={isProcessing}
+              />
             ))}
           </div>
         )}
@@ -248,4 +267,5 @@ export function GameInterface() {
   )
 }
 
-export default GameInterface
+// Memoize the main component to prevent unnecessary re-renders
+export default memo(GameInterface)
