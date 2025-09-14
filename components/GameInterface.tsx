@@ -24,6 +24,8 @@ import { useCognitiveDevelopment } from "@/hooks/useCognitiveDevelopment"
 import { MetacognitiveScaffolding } from "@/components/MetacognitiveScaffolding"
 import { useDevelopmentalPsychology } from "@/hooks/useDevelopmentalPsychology"
 import { DevelopmentalPsychologySupport } from "@/components/DevelopmentalPsychologySupport"
+import { useNeuroscience } from "@/hooks/useNeuroscience"
+import { NeuroscienceSupport } from "@/components/NeuroscienceSupport"
 import { getPerformanceSystem } from "@/lib/performance-system"
 import { getGrandCentralState } from "@/lib/grand-central-state"
 
@@ -76,6 +78,16 @@ export function GameInterface() {
     getIdentityScaffolding,
     resetDevelopmentalState
   } = useDevelopmentalPsychology()
+  
+  const {
+    neuralState,
+    trackChoice: trackNeuralChoice,
+    getBrainPrompt,
+    getBrainOptimization,
+    getNeuroplasticitySupport,
+    getNeuralEfficiencyTips,
+    resetNeuralState
+  } = useNeuroscience()
 
   // Semantic-based content chunking with timed reveals
   const createSemanticChunks = useCallback((text: string, speaker: string) => {
@@ -619,6 +631,7 @@ export function GameInterface() {
                       trackChoice(choice.text, Date.now())
                       trackCognitiveChoice(choice.text, Date.now())
                       trackDevelopmentalChoice(choice.text, Date.now())
+                      trackNeuralChoice(choice.text, Date.now())
                       resetHesitation()
                       handleChoice(choice)
                     }}
@@ -641,6 +654,7 @@ export function GameInterface() {
                   trackChoice('Continue', Date.now())
                   trackCognitiveChoice('Continue', Date.now())
                   trackDevelopmentalChoice('Continue', Date.now())
+                  trackNeuralChoice('Continue', Date.now())
                   resetHesitation()
                   handleContinue()
                 }}
@@ -690,6 +704,16 @@ export function GameInterface() {
         culturalAdaptations={getCulturalAdaptations()}
         identityScaffolding={getIdentityScaffolding()}
         onDismiss={() => resetDevelopmentalState()}
+      />
+      
+      {/* Neuroscience support - provides brain-based learning and neuroplasticity support */}
+      <NeuroscienceSupport
+        neuralState={neuralState}
+        brainPrompt={getBrainPrompt()}
+        brainOptimization={getBrainOptimization()}
+        neuroplasticitySupport={getNeuroplasticitySupport()}
+        neuralEfficiencyTips={getNeuralEfficiencyTips()}
+        onDismiss={() => resetNeuralState()}
       />
     </div>
   )
