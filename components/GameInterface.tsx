@@ -18,6 +18,8 @@ import { usePresence } from "@/hooks/usePresence"
 import { useAdaptiveNarrative } from "@/hooks/useAdaptiveNarrative"
 import { useStreamingFlow } from "@/hooks/useStreamingFlow"
 import { useCareerReflection } from "@/hooks/useCareerReflection"
+import { useEmotionalRegulation } from "@/hooks/useEmotionalRegulation"
+import { EmotionalSupport } from "@/components/EmotionalSupport"
 import { getPerformanceSystem } from "@/lib/performance-system"
 import { getGrandCentralState } from "@/lib/grand-central-state"
 
@@ -38,6 +40,15 @@ export function GameInterface() {
   const { performanceLevel, enhanceSceneText, analyzeContentSemantics, enhanceChoices } = useAdaptiveNarrative()
   const { processSceneForStreaming } = useStreamingFlow()
   const { trackClick } = useCareerReflection()
+  const { 
+    emotionalState, 
+    trackChoice, 
+    trackHesitation, 
+    resetHesitation, 
+    getEmotionalSupport, 
+    getVisualAdjustments, 
+    resetEmotionalState 
+  } = useEmotionalRegulation()
 
   // Semantic-based content chunking with timed reveals
   const createSemanticChunks = useCallback((text: string, speaker: string) => {
@@ -487,8 +498,22 @@ export function GameInterface() {
                       gcState.platforms.p1.warmth < -2 ? 'platform-cold' : 'platform-neutral'
   const quietHourClass = gcState.time.stopped ? 'quiet-hour' : ''
   
+  // Get visual adjustments based on emotional state
+  const visualAdjustments = getVisualAdjustments()
+  
   return (
-    <div className={`game-container w-full md:container md:max-w-4xl md:mx-auto p-0 md:p-4 performance-${performanceLevel} grand-central-terminus ${platformClass} ${quietHourClass}`}>
+    <div 
+      className={`
+        game-container w-full md:container md:max-w-4xl md:mx-auto p-0 md:p-4 
+        performance-${performanceLevel} grand-central-terminus ${platformClass} ${quietHourClass}
+        ${visualAdjustments.spacing === 'increased' ? 'md:p-6' : ''}
+        ${visualAdjustments.spacing === 'maximum' ? 'md:p-8' : ''}
+        ${visualAdjustments.blurBackground ? 'backdrop-blur-sm' : ''}
+      `}
+      style={{
+        animation: visualAdjustments.animationSpeed === 'slower' ? 'pulse 3s ease-in-out infinite' : 'none'
+      }}
+    >
       <Card className="game-card w-full md:max-w-3xl md:mx-auto bg-white dark:bg-gray-900 md:bg-white/95 md:dark:bg-gray-900/95 md:backdrop-blur-sm md:shadow-xl">
         <CardHeader>
           <CardTitle className="text-center text-sm text-muted-foreground">
@@ -564,8 +589,11 @@ export function GameInterface() {
                     key={index}
                     onClick={() => {
                       trackClick()
+                      trackChoice(choice.text, Date.now())
+                      resetHesitation()
                       handleChoice(choice)
                     }}
+                    onMouseEnter={trackHesitation}
                     disabled={isProcessing}
                     className="pokemon-choice-button-enhanced w-full text-left"
                   >
@@ -578,6 +606,8 @@ export function GameInterface() {
               <button
                 onClick={() => {
                   trackClick()
+                  trackChoice('Continue', Date.now())
+                  resetHesitation()
                   handleContinue()
                 }}
                 disabled={isProcessing}
@@ -597,6 +627,14 @@ export function GameInterface() {
       
       {/* Career reflection helper - appears when player seems stressed */}
       <CareerReflectionHelper />
+      
+      {/* Emotional support - provides gentle regulation when needed */}
+      <EmotionalSupport
+        emotionalState={emotionalState}
+        supportMessage={getEmotionalSupport()}
+        visualAdjustments={getVisualAdjustments()}
+        onDismiss={() => resetEmotionalState()}
+      />
     </div>
   )
 }
