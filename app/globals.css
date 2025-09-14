@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import enhanced UI styles */
+@import '../styles/enhanced-ui.css';
+@import '../styles/mobile-enhanced.css';
+@import '../styles/visual-hierarchy.css';
+
 /* Import consolidated styles */
 @import '../styles/core.css';
 @import '../styles/components.css';

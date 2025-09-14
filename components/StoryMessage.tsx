@@ -185,16 +185,13 @@ export function StoryMessage({ speaker, text, type = 'dialogue', messageWeight =
       {/* Pokemon-Style Text Box */}
       <div 
         className={cn(
-          "pokemon-textbox relative w-full max-w-2xl mx-auto",
-          "bg-white dark:bg-gray-50",
-          "border-2 border-gray-800/20",
-          "rounded-lg",
-          "p-6 md:p-8",
-          "shadow-pokemon",
-          typewriter && displayedText.length < text.length && "cursor-pointer",
-          // Multiple layered borders for authentic Game Boy feel
-          "before:content-[''] before:absolute before:inset-1 before:border-1 before:border-gray-300/40 before:rounded",
-          "after:content-[''] after:absolute after:inset-3 after:border-1 after:border-gray-200/30 after:rounded-sm"
+          "pokemon-textbox-enhanced relative w-full max-w-2xl mx-auto",
+          "message-enter",
+          messageWeight === 'critical' && "message-critical",
+          messageWeight === 'primary' && "message-primary", 
+          messageWeight === 'aside' && "message-aside",
+          speaker.toLowerCase() && `message-${speaker.toLowerCase()}`,
+          typewriter && displayedText.length < text.length && "cursor-pointer"
         )} 
         style={{
           boxShadow: `
