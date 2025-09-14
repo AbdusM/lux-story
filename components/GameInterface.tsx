@@ -20,6 +20,8 @@ import { useStreamingFlow } from "@/hooks/useStreamingFlow"
 import { useCareerReflection } from "@/hooks/useCareerReflection"
 import { useEmotionalRegulation } from "@/hooks/useEmotionalRegulation"
 import { EmotionalSupport } from "@/components/EmotionalSupport"
+import { useCognitiveDevelopment } from "@/hooks/useCognitiveDevelopment"
+import { MetacognitiveScaffolding } from "@/components/MetacognitiveScaffolding"
 import { getPerformanceSystem } from "@/lib/performance-system"
 import { getGrandCentralState } from "@/lib/grand-central-state"
 
@@ -49,6 +51,17 @@ export function GameInterface() {
     getVisualAdjustments, 
     resetEmotionalState 
   } = useEmotionalRegulation()
+  
+  const {
+    cognitiveState,
+    trackChoice: trackCognitiveChoice,
+    startDecisionTracking,
+    getMetacognitivePrompt,
+    getFlowOptimization,
+    getCognitiveScaffolding,
+    getLearningStyleAdaptations,
+    resetCognitiveState
+  } = useCognitiveDevelopment()
 
   // Semantic-based content chunking with timed reveals
   const createSemanticChunks = useCallback((text: string, speaker: string) => {
@@ -590,10 +603,14 @@ export function GameInterface() {
                     onClick={() => {
                       trackClick()
                       trackChoice(choice.text, Date.now())
+                      trackCognitiveChoice(choice.text, Date.now())
                       resetHesitation()
                       handleChoice(choice)
                     }}
-                    onMouseEnter={trackHesitation}
+                    onMouseEnter={() => {
+                      trackHesitation()
+                      startDecisionTracking()
+                    }}
                     disabled={isProcessing}
                     className="pokemon-choice-button-enhanced w-full text-left"
                   >
@@ -607,6 +624,7 @@ export function GameInterface() {
                 onClick={() => {
                   trackClick()
                   trackChoice('Continue', Date.now())
+                  trackCognitiveChoice('Continue', Date.now())
                   resetHesitation()
                   handleContinue()
                 }}
@@ -634,6 +652,16 @@ export function GameInterface() {
         supportMessage={getEmotionalSupport()}
         visualAdjustments={getVisualAdjustments()}
         onDismiss={() => resetEmotionalState()}
+      />
+      
+      {/* Metacognitive scaffolding - provides cognitive development support */}
+      <MetacognitiveScaffolding
+        cognitiveState={cognitiveState}
+        metacognitivePrompt={getMetacognitivePrompt()}
+        flowOptimization={getFlowOptimization()}
+        cognitiveScaffolding={getCognitiveScaffolding()}
+        learningStyleAdaptations={getLearningStyleAdaptations()}
+        onDismiss={() => resetCognitiveState()}
       />
     </div>
   )
