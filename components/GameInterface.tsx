@@ -3,6 +3,7 @@
 import { useCallback, useMemo, memo, useEffect } from 'react'
 import { useGameContext, useGameState, useGameActions, useGameSystems, useGameSupport, useGameMonitoring } from '@/contexts/GameContext'
 import { useMemoryCleanup } from '@/hooks/useMemoryCleanup'
+import { useEventBusSubscription, useEventBusEmitter, useEventBusDebug } from '@/hooks/useEventBus'
 import { GameHeader } from './GameHeader'
 import { GameMessages } from './GameMessages'
 import { GameSupport } from './GameSupport'
@@ -33,6 +34,12 @@ export function GameInterface() {
   const gameSystems = useGameSystems()
   const gameSupport = useGameSupport()
   const gameMonitoring = useGameMonitoring()
+
+  // Event bus integration
+  const { emit, emitSync } = useEventBusEmitter()
+  
+  // Enable event bus debugging in development
+  useEventBusDebug(process.env.NODE_ENV === 'development')
 
   // Destructure for easier access
   const {
@@ -80,11 +87,34 @@ export function GameInterface() {
     checkMemoryLeaks
   } = gameMonitoring
 
+  // Event bus subscriptions for system events
+  useEventBusSubscription('system:error', (data) => {
+    logger.error('System error received:', data)
+    // Handle system errors gracefully
+  })
+
+  useEventBusSubscription('system:warning', (data) => {
+    logger.warn('System warning received:', data)
+    // Handle system warnings
+  })
+
+  useEventBusSubscription('perf:memory:warning', (data) => {
+    logger.warn('Memory warning:', data)
+    // Trigger memory cleanup
+    gameMonitoring.checkMemoryLeaks()
+  })
+
+  useEventBusSubscription('perf:render:slow', (data) => {
+    logger.warn('Slow render detected:', data)
+    // Track performance issues
+  })
+
   // Register cleanup functions
   useMemoryCleanup(() => {
     // Cleanup any component-specific resources
     logger.debug('GameInterface cleanup: clearing component resources')
-  }, [])
+    emit('system:cleanup', { component: 'GameInterface' })
+  }, [emit])
 
   // Monitor memory usage in development
   useEffect(() => {
@@ -126,6 +156,14 @@ export function GameInterface() {
     // Track choice across all systems
     const timestamp = Date.now()
     
+    // Emit choice event
+    emit('game:choice:made', { 
+      choice, 
+      timestamp,
+      emotionalState: emotionalState.stressLevel,
+      cognitiveState: cognitiveState.flowState
+    })
+    
     // Update emotional state based on choice
     const choiceText = choice.text.toLowerCase()
     if (choiceText.includes('rush') || choiceText.includes('hurry')) {
@@ -133,11 +171,13 @@ export function GameInterface() {
         stressLevel: 'anxious',
         rapidClicks: (emotionalState.rapidClicks || 0) + 1
       })
+      emit('game:emotional:stress', { level: 'anxious', trigger: 'rush_choice' })
     } else if (choiceText.includes('wait') || choiceText.includes('patience')) {
       updateEmotionalState({ 
         stressLevel: 'calm',
         hesitationCount: (emotionalState.hesitationCount || 0) + 1
       })
+      emit('game:emotional:calm', { level: 'calm', trigger: 'patience_choice' })
     }
     
     // Update cognitive state
@@ -146,6 +186,7 @@ export function GameInterface() {
         flowState: 'flow',
         metacognitiveAwareness: Math.min(1, (cognitiveState.metacognitiveAwareness || 0) + 0.1)
       })
+      emit('game:cognitive:flow', { state: 'flow', awareness: cognitiveState.metacognitiveAwareness })
     }
     
     // Update skills based on choice patterns
@@ -164,6 +205,7 @@ export function GameInterface() {
     
     if (Object.keys(skillUpdates).length > 0) {
       updateSkills(skillUpdates)
+      emit('game:skills:updated', { skills: skillUpdates, totalSkills: skills })
     }
     
     // Call the main choice handler
@@ -171,6 +213,12 @@ export function GameInterface() {
     
     // Track performance
     trackChoiceResponse(choiceStartTime)
+    
+    // Emit performance event
+    const choiceDuration = performance.now() - choiceStartTime
+    if (choiceDuration > 100) { // If choice takes longer than 100ms
+      emit('perf:choice:slow', { duration: choiceDuration, choice: choice.text })
+    }
   }, [
     isProcessing,
     emotionalState.rapidClicks,
@@ -184,7 +232,8 @@ export function GameInterface() {
     updateEmotionalState,
     updateCognitiveState,
     updateSkills,
-    handleChoice
+    handleChoice,
+    emit
   ])
 
   // Show intro if not started
@@ -197,7 +246,7 @@ export function GameInterface() {
       </div>
     )
   }
-
+  
   return (
     <GameErrorBoundary componentName="GameInterface">
       <div className="apple-game-container">
@@ -240,9 +289,9 @@ export function GameInterface() {
             <div>Core Web Vitals Score: {Math.round(getScore().overall)}%</div>
             <div>Memory: {getMemoryUsage().percentage.toFixed(1)}%</div>
           </div>
-        )}
-        </div>
-      </div>
+            )}
+          </div>
+    </div>
     </GameErrorBoundary>
   )
 }
