@@ -110,7 +110,7 @@ const SIMPLE_SCENES = {
     choices: [
       { text: "That's beautiful code. What are you building?", next: 'devon-technical-passion', consequence: 'devon_technical_sharing+', pattern: 'building' },
       { text: "You ever notice how everyone says 'networking' like it's easy?", next: 'devon-social-struggle', consequence: 'devon_social_comfort', pattern: 'helping' },
-      { text: "What Birmingham tech opportunities have you found?", next: 'devon-birmingham-tech', consequence: 'birmingham_tech', pattern: 'analytical' },
+      { text: "What Birmingham tech opportunities have you found?", next: 'devon-birmingham-tech-community', consequence: 'birmingham_tech', pattern: 'analytical' },
       { text: "Mind if I sit? You look like you understand systems.", next: 'devon-systems-thinking', consequence: 'devon_trust+', pattern: 'patience' }
     ]
   },
@@ -216,10 +216,10 @@ const SIMPLE_SCENES = {
     text: "Samuel leans in conspiratorially. \"UAB Medical Center? They need more than doctors. Biomedical equipment technicians make $65K starting, with a two-year degree from Jeff State. Amazon facility in Bessemer? Robotics maintenance folks pull in $70K, and they'll train you. Downtown banks? Desperate for cybersecurity people - you can learn that online for free if you know where to look.\"",
     speaker: 'Samuel Washington (Station Keeper)',
     choices: [
-      { text: "Can you connect me with people in these fields?", next: 'samuel-networking-offer', consequence: 'birmingham_professional_network', pattern: 'building' },
-      { text: "What's the catch? Why doesn't everyone know this?", next: 'samuel-information-gap', consequence: 'samuel_systemic_insight', pattern: 'analytical' },
-      { text: "How do I prepare for these opportunities?", next: 'samuel-preparation-guidance', consequence: 'samuel_mentorship_deep', pattern: 'patience' },
-      { text: "Which path fits someone with my background?", next: 'samuel-personalized-guidance', consequence: 'samuel_assessment', pattern: 'helping' }
+      { text: "Can you connect me with people in these fields?", next: 'birmingham-partnership-opportunities', consequence: 'birmingham_professional_network', pattern: 'building' },
+      { text: "What's the catch? Why doesn't everyone know this?", next: 'samuel-personal-story', consequence: 'samuel_systemic_insight', pattern: 'analytical' },
+      { text: "How do I prepare for these opportunities?", next: 'uab-partnership-details', consequence: 'samuel_mentorship_deep', pattern: 'patience' },
+      { text: "I want to review what I've learned and make a decision.", next: 'insights-integration', consequence: 'samuel_assessment', pattern: 'helping' }
     ]
   },
 
@@ -241,10 +241,10 @@ const SIMPLE_SCENES = {
     text: "Samuel adjusts his pocket watch and smiles. \"Let's see what the station has revealed about you.\" He pulls out a leather journal. \"Your choices show a pattern - you tend toward analytical thinking when gathering information, helping when people are struggling, building when you see practical solutions, and patience when facing uncertainty. Birmingham has opportunities that match these strengths.\"",
     speaker: 'Samuel Washington (Station Keeper)',
     choices: [
-      { text: "Which Birmingham opportunities match my patterns?", next: 'personalized-recommendations', consequence: 'birmingham_matching', pattern: 'analytical' },
-      { text: "How can I develop the patterns I'm weaker in?", next: 'growth-guidance', consequence: 'skill_development', pattern: 'building' },
-      { text: "Can I talk to people who've taken these paths?", next: 'mentor-connections', consequence: 'professional_networking', pattern: 'helping' },
-      { text: "What's my next step to move forward?", next: 'action-planning', consequence: 'concrete_planning', pattern: 'patience' }
+      { text: "Which Birmingham opportunities match my patterns?", next: 'birmingham-partnership-opportunities', consequence: 'birmingham_matching', pattern: 'analytical' },
+      { text: "How can I develop the patterns I'm weaker in?", next: 'birmingham-entry-level-economics', consequence: 'skill_development', pattern: 'building' },
+      { text: "Can I talk to people who've taken these paths?", next: 'birmingham-professional-story-healthcare', consequence: 'professional_networking', pattern: 'helping' },
+      { text: "I feel ready to take action on my career path.", next: 'path-commitment', consequence: 'concrete_planning', pattern: 'patience' }
     ]
   },
 
@@ -291,10 +291,10 @@ const SIMPLE_SCENES = {
     text: "Maya's eyes widen. \"UAB does have an MD-PhD program in biomedical engineering. It's seven years instead of four, but...\" She pulls up the program on her laptop. \"Look at this - they're developing robotic surgical systems, AI diagnostic tools, prosthetics research. My parents would see the MD, but I'd be building the future of medicine.\"",
     speaker: 'Maya Chen (Pre-med Student)',
     choices: [
-      { text: "This could be your perfect compromise.", next: 'maya-bridge-realization', consequence: 'uab_biomedical_pathway', pattern: 'building' },
-      { text: "How would you present this to your parents?", next: 'maya-family-strategy', consequence: 'maya_communication_plan', pattern: 'analytical' },
-      { text: "You'd be pioneering a new kind of healing.", next: 'maya-vision-validation', consequence: 'maya_confidence_boost', pattern: 'helping' },
-      { text: "Seven years is a long time. Are you ready for that commitment?", next: 'maya-commitment-reflection', consequence: 'maya_long_term_thinking', pattern: 'patience' }
+      { text: "This could be your perfect compromise.", next: 'uab-partnership-details', consequence: 'uab_biomedical_pathway', pattern: 'building' },
+      { text: "How would you present this to your parents?", next: 'maya-family-revelation', consequence: 'maya_communication_plan', pattern: 'analytical' },
+      { text: "You'd be pioneering a new kind of healing.", next: 'birmingham-professional-story-healthcare', consequence: 'maya_confidence_boost', pattern: 'helping' },
+      { text: "Let's explore more Birmingham opportunities.", next: 'insights-integration', consequence: 'maya_long_term_thinking', pattern: 'patience' }
     ]
   },
 
@@ -329,10 +329,10 @@ const SIMPLE_SCENES = {
     text: "Devon pulls up a map on his laptop. \"Actually, there's the Innovation Depot downtown - they have hardware labs and maker spaces. UAB has environmental engineering groups working on exactly the kind of problems I'm solving. And there's a water quality monitoring meetup that meets at the Civil Rights Institute. People who understand that clean water is both a technical and social justice issue.\"",
     speaker: 'Devon Williams (UAB Engineering Student)',
     choices: [
-      { text: "That sounds like your community. Have you connected with them?", next: 'devon-community-engagement', consequence: 'devon_social_growth', pattern: 'helping' },
-      { text: "How does your technical work serve social justice?", next: 'devon-impact-realization', consequence: 'devon_purpose_connection', pattern: 'analytical' },
-      { text: "Want help preparing for that meetup?", next: 'devon-preparation-support', consequence: 'devon_practical_help', pattern: 'building' },
-      { text: "It's powerful when your work aligns with your values.", next: 'devon-values-alignment', consequence: 'devon_holistic_understanding', pattern: 'patience' }
+      { text: "That sounds like your community. Have you connected with them?", next: 'southern-company-partnership', consequence: 'devon_social_growth', pattern: 'helping' },
+      { text: "How does your technical work serve social justice?", next: 'birmingham-neighborhood-context', consequence: 'devon_purpose_connection', pattern: 'analytical' },
+      { text: "Want help preparing for that meetup?", next: 'birmingham-partnership-opportunities', consequence: 'devon_practical_help', pattern: 'building' },
+      { text: "Let's explore more career opportunities together.", next: 'insights-integration', consequence: 'devon_holistic_understanding', pattern: 'patience' }
     ]
   },
 
