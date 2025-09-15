@@ -105,7 +105,7 @@ const SIMPLE_SCENES = {
   },
   'tech-intro': {
     id: 'tech-intro',
-    text: "Platform 7: The Data Stream. Purple light shimmers across multiple screens displaying elegant code. You see a young man hunched over a laptop, completely absorbed. He's muttering to himself about algorithms while simultaneously organizing his cables with mathematical precision.",
+    text: "Platform 7: The Data Stream.\n\nPurple light shimmers across multiple screens displaying elegant code. You see a young man hunched over a laptop, completely absorbed.\n\nHe's muttering to himself about algorithms while simultaneously organizing his cables with mathematical precision.",
     speaker: 'Devon Williams (UAB Engineering Student)',
     choices: [
       { text: "That's beautiful code. What are you building?", next: 'devon-technical-passion', consequence: 'devon_technical_sharing+', pattern: 'building' },
