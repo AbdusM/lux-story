@@ -8,6 +8,58 @@
 import { useSimpleGame } from '@/hooks/useSimpleGame'
 import '@/styles/apple-design-system.css'
 
+// Text parsing function for visual hierarchy and bite-sized information
+function parseTextWithHierarchy(text: string) {
+  // Split by double line breaks to create major sections
+  const sections = text.split('\n\n').filter(section => section.trim())
+  
+  return sections.map((section, index) => {
+    const trimmedSection = section.trim()
+    
+    // Detect different types of content for appropriate styling
+    if (trimmedSection.startsWith('"') && trimmedSection.endsWith('"')) {
+      // Direct dialogue - make it prominent
+      return (
+        <div key={index} className="apple-dialogue-block">
+          <div className="apple-dialogue-text">
+            {trimmedSection.slice(1, -1)}
+          </div>
+        </div>
+      )
+    } else if (trimmedSection.includes(':')) {
+      // Scene setting or character action - make it contextual
+      return (
+        <div key={index} className="apple-context-block">
+          <div className="apple-context-text">
+            {trimmedSection}
+          </div>
+        </div>
+      )
+    } else if (trimmedSection.length > 100) {
+      // Long narrative - break into smaller chunks
+      const sentences = trimmedSection.split('. ').filter(s => s.trim())
+      return (
+        <div key={index} className="apple-narrative-block">
+          {sentences.map((sentence, sentenceIndex) => (
+            <div key={sentenceIndex} className="apple-narrative-sentence">
+              {sentence.trim()}{sentenceIndex < sentences.length - 1 ? '.' : ''}
+            </div>
+          ))}
+        </div>
+      )
+    } else {
+      // Short statements - make them punchy
+      return (
+        <div key={index} className="apple-statement-block">
+          <div className="apple-statement-text">
+            {trimmedSection}
+          </div>
+        </div>
+      )
+    }
+  })
+}
+
 export function MinimalGameInterface() {
   const game = useSimpleGame()
 
@@ -53,7 +105,9 @@ export function MinimalGameInterface() {
         {game.messages && game.messages.length > 0 && (
           <div className="apple-story-message">
             <div className="apple-story-speaker">{game.messages[0].speaker}</div>
-            <div className="apple-story-text">{game.messages[0].text}</div>
+            <div className="apple-story-text">
+              {parseTextWithHierarchy(game.messages[0].text)}
+            </div>
           </div>
         )}
 
