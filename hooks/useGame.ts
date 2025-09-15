@@ -6,6 +6,7 @@ import { StoryEngine, type Scene } from '@/lib/story-engine'
 import { getPersonaTracker } from '@/lib/player-persona'
 import { hapticFeedback } from '@/lib/haptic-feedback'
 import { webShare } from '@/lib/web-share'
+import { generateBridgeText } from '@/lib/narrative-bridge'
 
 /**
  * Simplified Game Hook
@@ -279,12 +280,48 @@ export function useGame() {
       console.warn('Persona tracking failed:', error)
     }
 
-    // Process choice
+    // Process choice with narrative bridge
     if (choice.nextScene) {
-      setTimeout(() => {
-        loadScene(choice.nextScene)
-        setProcessing(false)
-        hapticFeedback.storyProgress()
+      setTimeout(async () => {
+        try {
+          // Load the next scene to get its text
+          const nextScene = storyEngine.getScene(choice.nextScene)
+
+          if (nextScene?.text) {
+            // Generate bridge text connecting the choice to the next scene
+            const bridgeText = await generateBridgeText({
+              userChoiceText: choice.text,
+              nextSceneText: nextScene.text,
+              sceneContext: currentScene?.text,
+              pattern: choice.consequence?.split('_')[0] // Extract pattern from consequence
+            })
+
+            // Add bridge text as a narrative message
+            if (bridgeText && bridgeText.trim() !== '') {
+              addMessage({
+                speaker: 'Narrator',
+                text: bridgeText,
+                type: 'narrative',
+                messageWeight: 'light',
+                bridgeText: true // Flag to identify bridge text
+              })
+
+              // Small delay to let bridge text appear before scene transition
+              await new Promise(resolve => setTimeout(resolve, 500))
+            }
+          }
+
+          // Load the next scene
+          loadScene(choice.nextScene)
+          setProcessing(false)
+          hapticFeedback.storyProgress()
+        } catch (error) {
+          console.error('❌ Bridge generation failed, proceeding with scene:', error)
+          // Fallback to normal scene transition
+          loadScene(choice.nextScene)
+          setProcessing(false)
+          hapticFeedback.storyProgress()
+        }
       }, 1000)
     } else {
       setProcessing(false)
@@ -296,10 +333,12 @@ export function useGame() {
     addMessage,
     addChoiceRecord,
     currentSceneId,
+    currentScene,
     patterns,
     updatePatterns,
     updatePerformance,
-    loadScene
+    loadScene,
+    storyEngine
   ])
 
   // Handle continue
