@@ -309,6 +309,118 @@ const SIMPLE_SCENES = {
       { text: "Do you ever regret leaving surgery?", next: 'healthcare-purpose-evolution', consequence: 'career_transition_wisdom', pattern: 'helping' },
       { text: "What advice would you give to someone torn between medicine and engineering?", next: 'healthcare-engineering-advice', consequence: 'interdisciplinary_wisdom', pattern: 'patience' }
     ]
+  },
+
+  // Devon Breakthrough Scenes
+  'devon-confidence-building': {
+    id: 'devon-confidence-building',
+    text: "Devon's posture changes completely. \"You know, my grandmother always said 'Baby, you don't need to be everybody's friend. You just need to find your people - the ones who speak your language.' Maybe that's what I've been missing. I've been trying to network with everyone instead of finding the people who get excited about water filtration algorithms.\"",
+    speaker: 'Devon Williams (UAB Engineering Student)',
+    choices: [
+      { text: "Where would you find those people in Birmingham?", next: 'devon-birmingham-tech-community', consequence: 'birmingham_tech_community', pattern: 'building' },
+      { text: "Your grandmother sounds wise. What else did she teach you?", next: 'devon-family-wisdom', consequence: 'devon_family_connection', pattern: 'helping' },
+      { text: "Have you considered that explaining your work IS networking?", next: 'devon-teaching-realization', consequence: 'devon_communication_strength', pattern: 'analytical' },
+      { text: "What would it feel like to stop apologizing for your passion?", next: 'devon-authentic-confidence', consequence: 'devon_self_acceptance', pattern: 'patience' }
+    ]
+  },
+
+  'devon-birmingham-tech-community': {
+    id: 'devon-birmingham-tech-community',
+    text: "Devon pulls up a map on his laptop. \"Actually, there's the Innovation Depot downtown - they have hardware labs and maker spaces. UAB has environmental engineering groups working on exactly the kind of problems I'm solving. And there's a water quality monitoring meetup that meets at the Civil Rights Institute. People who understand that clean water is both a technical and social justice issue.\"",
+    speaker: 'Devon Williams (UAB Engineering Student)',
+    choices: [
+      { text: "That sounds like your community. Have you connected with them?", next: 'devon-community-engagement', consequence: 'devon_social_growth', pattern: 'helping' },
+      { text: "How does your technical work serve social justice?", next: 'devon-impact-realization', consequence: 'devon_purpose_connection', pattern: 'analytical' },
+      { text: "Want help preparing for that meetup?", next: 'devon-preparation-support', consequence: 'devon_practical_help', pattern: 'building' },
+      { text: "It's powerful when your work aligns with your values.", next: 'devon-values-alignment', consequence: 'devon_holistic_understanding', pattern: 'patience' }
+    ]
+  },
+
+  // Geographic and Economic Context
+  'birmingham-neighborhood-context': {
+    id: 'birmingham-neighborhood-context',
+    text: "Samuel opens a detailed Birmingham map. \"Let's talk reality. If you're working downtown - UAB, Innovation Depot, the banks - you've got options. Live in Five Points South for the young professional scene, $1,200 for a one-bedroom. Avondale's got character and breweries, $900 apartments. Forest Park if you want suburban feel but can't afford Mountain Brook yet. Each choice shapes your daily life and career network.\"",
+    speaker: 'Samuel Washington (Station Keeper)',
+    choices: [
+      { text: "What about transportation? I don't have a car yet.", next: 'birmingham-transportation-reality', consequence: 'birmingham_transportation', pattern: 'analytical' },
+      { text: "How do different neighborhoods affect career networking?", next: 'birmingham-networking-geography', consequence: 'birmingham_social_capital', pattern: 'building' },
+      { text: "What's realistic for someone starting at $35K?", next: 'birmingham-entry-level-economics', consequence: 'birmingham_cost_of_living', pattern: 'helping' },
+      { text: "Where would you recommend I start?", next: 'birmingham-personalized-recommendation', consequence: 'birmingham_tailored_advice', pattern: 'patience' }
+    ]
+  },
+
+  'birmingham-entry-level-economics': {
+    id: 'birmingham-entry-level-economics',
+    text: "Samuel nods thoughtfully. \"$35K in Birmingham goes further than Atlanta or Nashville. Rent should be max $875 - that's 30% of your income. You can find decent places in Woodlawn, Crestwood North, parts of Southside for $700-800. Keep $200 for utilities, $300 for food, $150 for transportation. Leaves you $1,000 for savings, student loans, and actually having a life. It's doable here.\"",
+    speaker: 'Samuel Washington (Station Keeper)',
+    choices: [
+      { text: "What career paths can get me above $35K quickly?", next: 'birmingham-salary-progression', consequence: 'birmingham_career_advancement', pattern: 'analytical' },
+      { text: "Are there programs to help with housing costs?", next: 'birmingham-housing-assistance', consequence: 'birmingham_support_resources', pattern: 'helping' },
+      { text: "How do I budget for professional development?", next: 'birmingham-professional-investment', consequence: 'career_development_strategy', pattern: 'building' },
+      { text: "This feels more manageable than I thought.", next: 'birmingham-hope-building', consequence: 'confidence_boost', pattern: 'patience' }
+    ]
+  },
+
+  // Partnership Integration - UAB, BCS, Regions Bank, Southern Company
+  'birmingham-partnership-opportunities': {
+    id: 'birmingham-partnership-opportunities',
+    text: "Samuel pulls out a folder marked 'Partnership Programs.' \"These aren't just job listings - these are pathways. UAB has work-study positions that let you earn while learning. Birmingham City Schools needs tech support and tutoring - great for building people skills. Regions Bank has a financial services apprenticeship program. Southern Company offers engineering co-ops that often lead to full-time offers.\"",
+    speaker: 'Samuel Washington (Station Keeper)',
+    choices: [
+      { text: "Tell me more about the UAB work-study opportunities.", next: 'uab-partnership-details', consequence: 'uab_partnership', pattern: 'analytical' },
+      { text: "How do I apply for the Birmingham City Schools positions?", next: 'bcs-partnership-details', consequence: 'bcs_partnership', pattern: 'helping' },
+      { text: "What's the Regions Bank apprenticeship like?", next: 'regions-partnership-details', consequence: 'regions_partnership', pattern: 'building' },
+      { text: "I'm interested in the Southern Company engineering program.", next: 'southern-company-partnership', consequence: 'southern_company_partnership', pattern: 'patience' }
+    ]
+  },
+
+  'uab-partnership-details': {
+    id: 'uab-partnership-details',
+    text: "Samuel opens a UAB brochure. \"Work-study at UAB isn't just filing papers. You could assist with biomedical research, help manage the hospital's technology systems, or support the Innovation Hub's startup incubator. $15-18/hour, flexible scheduling around classes, and real networking opportunities. Plus, if you decide on grad school, you'll already have connections with professors and researchers.\"",
+    speaker: 'Samuel Washington (Station Keeper)',
+    choices: [
+      { text: "How competitive are these positions?", next: 'uab-application-reality', consequence: 'uab_application_process', pattern: 'analytical' },
+      { text: "What skills do they look for in applicants?", next: 'uab-skills-requirements', consequence: 'uab_preparation_needs', pattern: 'building' },
+      { text: "Can you connect me with someone who's done this?", next: 'uab-networking-connection', consequence: 'uab_professional_network', pattern: 'helping' },
+      { text: "When should I start preparing my application?", next: 'uab-timeline-planning', consequence: 'uab_strategic_planning', pattern: 'patience' }
+    ]
+  },
+
+  'regions-partnership-details': {
+    id: 'regions-partnership-details',
+    text: "Samuel leans forward. \"Regions has a Financial Services Apprenticeship - 18 months combining classroom learning with on-the-job experience. You rotate through different departments: personal banking, business lending, investment services, risk management. Starting salary around $42K, with guaranteed raises. Many apprentices become full-time analysts or relationship managers earning $55-65K within three years.\"",
+    speaker: 'Samuel Washington (Station Keeper)',
+    choices: [
+      { text: "What background do they expect for applicants?", next: 'regions-requirements', consequence: 'regions_preparation', pattern: 'analytical' },
+      { text: "How does this compare to a traditional finance degree?", next: 'regions-vs-college', consequence: 'alternative_pathway_wisdom', pattern: 'building' },
+      { text: "Are there opportunities for advancement beyond analyst?", next: 'regions-career-progression', consequence: 'regions_long_term_growth', pattern: 'patience' },
+      { text: "This sounds like it could lead to real financial stability.", next: 'regions-stability-discussion', consequence: 'financial_security_planning', pattern: 'helping' }
+    ]
+  },
+
+  'southern-company-partnership': {
+    id: 'southern-company-partnership',
+    text: "Samuel's eyes light up - his old employer. \"Southern Company's co-op program is how I got my start. Six-month rotations through different engineering divisions: power generation, transmission, renewable energy, grid modernization. You're not just observing - you're contributing to real projects that keep the lights on for millions of people. $22/hour as a co-op, and about 80% get full-time offers starting around $70K.\"",
+    speaker: 'Samuel Washington (Station Keeper)',
+    choices: [
+      { text: "What engineering disciplines do they hire for co-ops?", next: 'southern-company-disciplines', consequence: 'southern_company_technical_paths', pattern: 'analytical' },
+      { text: "How did the co-op program change your career trajectory?", next: 'samuel-southern-company-story', consequence: 'samuel_career_origin', pattern: 'helping' },
+      { text: "What kind of projects would I work on as a co-op?", next: 'southern-company-projects', consequence: 'southern_company_experience', pattern: 'building' },
+      { text: "This feels like the kind of stable career my family would understand.", next: 'southern-company-family-approval', consequence: 'family_career_validation', pattern: 'patience' }
+    ]
+  },
+
+  // Jordan's Multi-Path Wisdom Completion
+  'jordan-all-paths-wisdom': {
+    id: 'jordan-all-paths-wisdom',
+    text: "Jordan smiles warmly. \"That's the thing - they were ALL the right one. The customer service job at the Galleria taught me empathy and how to read what people actually need. Uber taught me Birmingham's geography and how different communities live. Personal training taught me how to motivate people and see their potential. Graphic design taught me visual thinking. Now I use ALL of that in UX design for healthcare apps. Your career isn't a destination - it's an accumulation.\"",
+    speaker: 'Jordan Packard (Multi-Path Mentor)',
+    choices: [
+      { text: "How do you explain that journey to employers?", next: 'jordan-storytelling-skills', consequence: 'jordan_interview_wisdom', pattern: 'analytical' },
+      { text: "Do you ever worry about not being an expert in one thing?", next: 'jordan-generalist-confidence', consequence: 'jordan_expertise_perspective', pattern: 'helping' },
+      { text: "Birmingham seems to reward that kind of flexibility.", next: 'jordan-birmingham-flexibility', consequence: 'birmingham_career_culture', pattern: 'building' },
+      { text: "Your story makes me feel less pressure to choose perfectly.", next: 'jordan-pressure-relief', consequence: 'jordan_validation', pattern: 'patience' }
+    ]
   }
 }
 
