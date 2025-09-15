@@ -74,8 +74,9 @@ export function MinimalGameInterface() {
           </div>
 
           <div className="apple-story-message">
-            <div className="apple-text-body">
-              &quot;Your future awaits at Platform 7. Midnight. Don&apos;t be late.&quot;
+            <div className="apple-story-speaker">NARRATOR</div>
+            <div className="apple-story-text">
+              {parseTextWithHierarchy("Grand Central Terminus isn't on any map, but here you are.\n\nThe letter in your hand reads: \"Platform 7, Midnight. Your future awaits.\"\n\nAround you, platforms stretch into the distance, each humming with different energy.")}
             </div>
           </div>
 
