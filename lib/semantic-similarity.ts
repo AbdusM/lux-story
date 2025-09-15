@@ -9,22 +9,53 @@ import { pipeline, env } from '@xenova/transformers';
 // Disable local model loading for serverless environment
 env.allowLocalModels = false;
 
+// Feature flag to disable semantic similarity if needed
+const ENABLE_SEMANTIC_SIMILARITY = process.env.ENABLE_SEMANTIC_SIMILARITY !== 'false';
+
 // Cache the embeddings pipeline
 let embeddingsPipeline: any = null;
 
 /**
- * Initialize the sentence embeddings pipeline
+ * Initialize the sentence embeddings pipeline with error handling and timeout
  */
 async function getEmbeddingsPipeline() {
   if (!embeddingsPipeline) {
     console.log('🧠 Initializing sentence embeddings pipeline...');
-    embeddingsPipeline = await pipeline(
-      'feature-extraction',
-      'Xenova/all-MiniLM-L6-v2',
-      { revision: 'main' }
-    );
-    console.log('✅ Embeddings pipeline ready');
+
+    try {
+      // Add timeout to prevent hanging
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Pipeline initialization timeout')), 30000)
+      );
+
+      const pipelinePromise = pipeline(
+        'feature-extraction',
+        'Xenova/all-MiniLM-L6-v2',
+        {
+          revision: 'main',
+          progress_callback: (progress: any) => {
+            if (progress.status === 'downloading') {
+              console.log(`📥 Downloading model: ${Math.round(progress.progress || 0)}%`);
+            }
+          }
+        }
+      );
+
+      embeddingsPipeline = await Promise.race([pipelinePromise, timeoutPromise]);
+      console.log('✅ Embeddings pipeline ready');
+
+    } catch (error) {
+      console.warn('⚠️ Failed to initialize embeddings pipeline:', error);
+      // Set to a special "failed" marker so we don't keep retrying
+      embeddingsPipeline = 'FAILED';
+      throw error;
+    }
   }
+
+  if (embeddingsPipeline === 'FAILED') {
+    throw new Error('Embeddings pipeline failed to initialize');
+  }
+
   return embeddingsPipeline;
 }
 
@@ -106,6 +137,12 @@ export async function filterSimilarChoices(
   threshold: number = 0.85
 ): Promise<{ text: string; [key: string]: any }[]> {
   if (choices.length <= 1) return choices;
+
+  // Quick exit if semantic similarity is disabled
+  if (!ENABLE_SEMANTIC_SIMILARITY) {
+    console.log('📄 Semantic similarity disabled, using simple string filtering');
+    return filterWithSimpleStringComparison(choices, threshold);
+  }
 
   console.log(`🔍 Filtering ${choices.length} choices with threshold ${threshold}`);
 
