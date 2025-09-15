@@ -54,7 +54,7 @@ export default function RootLayout({
                    color: 'var(--text-primary, inherit)'
                  }}>
               {children}
-              <ChoiceReviewTrigger />
+              {process.env.NODE_ENV === 'development' && <ChoiceReviewTrigger />}
             </div>
           </ErrorBoundary>
         </ServiceWorkerProvider>

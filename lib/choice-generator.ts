@@ -6,6 +6,7 @@
 import { generateContextualChoices, detectContext } from './choice-templates'
 import { getLiveChoiceEngine, type LiveChoiceRequest } from './live-choice-engine'
 import { getPersonaTracker } from './player-persona'
+import { filterSimilarChoices } from './semantic-similarity'
 import type { Choice, Scene } from './story-engine'
 import type { GameState } from './game-store'
 
@@ -116,6 +117,25 @@ export class ChoiceGenerator {
     // Layer 2: Live Augmentation Engine
     if (options.enableLiveAugmentation && options.playerId) {
       await this.applyLiveAugmentation(scene, gameState, choices, options)
+    }
+
+    // Layer 3: Semantic Similarity Filtering
+    if (choices.length > 1) {
+      console.log(`🔍 Applying semantic similarity filter to ${choices.length} choices...`)
+      const threshold = parseFloat(process.env.CHOICE_SIMILARITY_THRESHOLD || '0.85')
+
+      try {
+        const filteredChoices = await filterSimilarChoices(choices, threshold)
+
+        if (filteredChoices.length < choices.length) {
+          console.log(`📊 Semantic filter: ${choices.length} → ${filteredChoices.length} choices`)
+        }
+
+        return filteredChoices
+      } catch (error) {
+        console.error('❌ Semantic filtering failed, returning original choices:', error)
+        return choices
+      }
     }
 
     return choices
