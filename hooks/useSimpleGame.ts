@@ -105,7 +105,12 @@ export function useSimpleGame() {
       if (scene) {
         setGameState(prev => ({
           ...prev,
-          messages: [{ text: scene.text, speaker: scene.speaker, type: 'narrative' }],
+          messages: [{
+            id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+            text: scene.text,
+            speaker: scene.speaker,
+            type: 'narrative'
+          }],
           choices: scene.choices
         }))
       }
