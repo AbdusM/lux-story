@@ -6,9 +6,81 @@
 import { generateContextualChoices, detectContext } from './choice-templates'
 import { getLiveChoiceEngine, type LiveChoiceRequest } from './live-choice-engine'
 import { getPersonaTracker } from './player-persona'
-import { filterSimilarChoices } from './semantic-similarity'
 import type { Choice, Scene } from './story-engine'
 import type { GameState } from './game-store'
+
+/**
+ * Simple string similarity using Levenshtein distance
+ * Lightweight replacement for semantic similarity
+ */
+function simpleStringSimilarity(str1: string, str2: string): number {
+  const longer = str1.length > str2.length ? str1 : str2
+  const shorter = str1.length > str2.length ? str2 : str1
+
+  if (longer.length === 0) return 1.0
+
+  // Levenshtein distance
+  const editDistance = levenshteinDistance(shorter, longer)
+  return (longer.length - editDistance) / longer.length
+}
+
+function levenshteinDistance(str1: string, str2: string): number {
+  const matrix = []
+
+  for (let i = 0; i <= str2.length; i++) {
+    matrix[i] = [i]
+  }
+
+  for (let j = 0; j <= str1.length; j++) {
+    matrix[0][j] = j
+  }
+
+  for (let i = 1; i <= str2.length; i++) {
+    for (let j = 1; j <= str1.length; j++) {
+      if (str2.charAt(i - 1) === str1.charAt(j - 1)) {
+        matrix[i][j] = matrix[i - 1][j - 1]
+      } else {
+        matrix[i][j] = Math.min(
+          matrix[i - 1][j - 1] + 1,
+          matrix[i][j - 1] + 1,
+          matrix[i - 1][j] + 1
+        )
+      }
+    }
+  }
+
+  return matrix[str2.length][str1.length]
+}
+
+/**
+ * Simple choice deduplication without ML models
+ */
+function filterSimilarChoicesSimple(
+  choices: { text: string; [key: string]: any }[],
+  threshold: number = 0.85
+): { text: string; [key: string]: any }[] {
+  const filtered: typeof choices = []
+
+  for (const candidate of choices) {
+    let isSimilar = false
+
+    for (const accepted of filtered) {
+      const similarity = simpleStringSimilarity(candidate.text, accepted.text)
+      if (similarity >= threshold) {
+        console.log(`❌ Filtered similar choice: "${candidate.text}" (${similarity.toFixed(3)} similarity to "${accepted.text}")`)
+        isSimilar = true
+        break
+      }
+    }
+
+    if (!isSimilar) {
+      console.log(`✅ Accepted choice: "${candidate.text}"`)
+      filtered.push(candidate)
+    }
+  }
+
+  return filtered
+}
 
 export interface ChoiceGenerationOptions {
   /** Override default pattern selection */

@@ -375,6 +375,110 @@
   }
 }
 
+/* ===== ANALYTICS COMPONENTS ===== */
+
+.apple-analytics-card {
+  @apply bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 shadow-lg;
+  border-radius: var(--apple-radius-xl);
+  margin: var(--apple-space-4);
+  max-width: 400px;
+  position: fixed;
+  top: var(--apple-space-4);
+  right: var(--apple-space-4);
+  z-index: 50;
+  transition: all 0.3s ease;
+}
+
+.apple-badge {
+  @apply text-xs font-medium px-2 py-1 rounded-full;
+  background: var(--apple-gray-100);
+  color: var(--apple-gray-700);
+  border: 1px solid var(--apple-gray-200);
+}
+
+.apple-badge[data-variant="default"] {
+  background: var(--apple-primary);
+  color: white;
+  border-color: var(--apple-primary);
+}
+
+.apple-badge[data-variant="secondary"] {
+  background: var(--apple-gray-200);
+  color: var(--apple-gray-800);
+  border-color: var(--apple-gray-300);
+}
+
+.apple-badge[data-variant="outline"] {
+  background: transparent;
+  color: var(--apple-gray-700);
+  border-color: var(--apple-gray-300);
+}
+
+/* ===== GAME INTERFACE OPTIMIZATIONS ===== */
+
+.apple-game-container {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.apple-game-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: var(--apple-space-4);
+  gap: var(--apple-space-4);
+}
+
+.apple-continue-container {
+  display: flex;
+  justify-content: center;
+  padding: var(--apple-space-4);
+}
+
+.apple-continue-button {
+  @apply px-6 py-3 rounded-lg font-medium transition-all duration-200;
+  background: var(--apple-primary);
+  color: white;
+  border: none;
+  cursor: pointer;
+  box-shadow: var(--apple-shadow-md);
+}
+
+.apple-continue-button:hover:not(:disabled) {
+  background: var(--apple-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--apple-shadow-lg);
+}
+
+.apple-continue-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.apple-processing-indicator {
+  @apply flex items-center justify-center gap-3 p-4;
+  background: var(--apple-gray-100);
+  border-radius: var(--apple-radius-lg);
+  margin: var(--apple-space-4);
+}
+
+.apple-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--apple-gray-300);
+  border-top: 2px solid var(--apple-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 /* ===== APPLE ANIMATIONS ===== */
 
 @keyframes apple-fade-in {
