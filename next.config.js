@@ -26,40 +26,41 @@ const nextConfig = {
     optimizePackageImports: ['@/hooks', '@/lib', '@/components']
   },
 
-  webpack: (config, { isServer }) => {
-    // Optimize bundle splitting
-    if (!isServer) {
-      config.optimization.splitChunks = {
-        chunks: 'all',
-        cacheGroups: {
-          default: {
-            minChunks: 2,
-            priority: -20,
-            reuseExistingChunk: true,
-          },
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
-            priority: -10,
-            chunks: 'all',
-          },
-          hooks: {
-            test: /[\\/]hooks[\\/]/,
-            name: 'hooks',
-            priority: 10,
-            chunks: 'all',
-          },
-          lib: {
-            test: /[\\/]lib[\\/]/,
-            name: 'lib',
-            priority: 10,
-            chunks: 'all',
-          }
-        }
-      }
-    }
-    return config
-  },
+  // Temporarily disable custom webpack config to fix runtime errors
+  // webpack: (config, { isServer }) => {
+  //   // Optimize bundle splitting
+  //   if (!isServer) {
+  //     config.optimization.splitChunks = {
+  //       chunks: 'all',
+  //       cacheGroups: {
+  //         default: {
+  //           minChunks: 2,
+  //           priority: -20,
+  //           reuseExistingChunk: true,
+  //         },
+  //         vendor: {
+  //           test: /[\\/]node_modules[\\/]/,
+  //           name: 'vendors',
+  //           priority: -10,
+  //           chunks: 'all',
+  //         },
+  //         hooks: {
+  //           test: /[\\/]hooks[\\/]/,
+  //           name: 'hooks',
+  //           priority: 10,
+  //           chunks: 'all',
+  //         },
+  //         lib: {
+  //           test: /[\\/]lib[\\/]/,
+  //           name: 'lib',
+  //           priority: 10,
+  //           chunks: 'all',
+  //         }
+  //       }
+  //     }
+  //   }
+  //   return config
+  // },
 
   // Security headers only for development server (not compatible with static export)
   ...(process.env.NODE_ENV !== 'production' && {
