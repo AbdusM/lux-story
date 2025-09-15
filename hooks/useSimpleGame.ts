@@ -246,6 +246,69 @@ const SIMPLE_SCENES = {
       { text: "Can I talk to people who've taken these paths?", next: 'mentor-connections', consequence: 'professional_networking', pattern: 'helping' },
       { text: "What's my next step to move forward?", next: 'action-planning', consequence: 'concrete_planning', pattern: 'patience' }
     ]
+  },
+
+  // Samuel's Personal Story Scenes
+  'samuel-personal-story': {
+    id: 'samuel-personal-story',
+    text: "Samuel sets down his tools and looks directly at you. \"Fifteen years ago, I was designing power grid systems at Southern Company. Good money, respect, engineering prestige. But I kept meeting young people from Ensley, Fairfield, places like where I grew up. They had no idea paths like mine existed. One Sunday after church, a kid asked me, 'How did someone like us become someone like you?' That question changed everything.\"",
+    speaker: 'Samuel Washington (Station Keeper)',
+    choices: [
+      { text: "What did you do after that conversation?", next: 'samuel-career-transition', consequence: 'samuel_backstory_deep', pattern: 'helping' },
+      { text: "Did you regret leaving engineering?", next: 'samuel-no-regrets', consequence: 'samuel_wisdom_deep', pattern: 'analytical' },
+      { text: "How did your family react to the career change?", next: 'samuel-family-support', consequence: 'samuel_personal_cost', pattern: 'patience' },
+      { text: "That's exactly why I'm here now.", next: 'samuel-connection-moment', consequence: 'samuel_trust_deep', pattern: 'building' }
+    ]
+  },
+
+  'samuel-career-transition': {
+    id: 'samuel-career-transition',
+    text: "Samuel chuckles. \"I took a 40% pay cut to run a mentorship program at the Birmingham Public Library. My wife thought I'd lost my mind. But when the city created Grand Central Terminus as a career exploration center, they needed someone who understood both where Birmingham had been and where it was going. Someone who could speak to kids from Ensley and Mountain Brook alike.\"",
+    speaker: 'Samuel Washington (Station Keeper)',
+    choices: [
+      { text: "Do you miss the engineering work?", next: 'samuel-engineering-vs-mentorship', consequence: 'samuel_career_wisdom', pattern: 'analytical' },
+      { text: "How did you convince your wife this was right?", next: 'samuel-family-dynamics', consequence: 'samuel_personal_relationships', pattern: 'helping' },
+      { text: "What's the most rewarding part of this work?", next: 'samuel-purpose-fulfillment', consequence: 'samuel_meaning', pattern: 'patience' },
+      { text: "You're building careers instead of power grids now.", next: 'samuel-metaphor-connection', consequence: 'samuel_poetry', pattern: 'building' }
+    ]
+  },
+
+  // Maya Family Dynamics Deep Dive
+  'maya-family-revelation': {
+    id: 'maya-family-revelation',
+    text: "Maya's hands shake slightly. \"My parents came here with nothing in 1995. Dad did his residency at UAB while Mom worked double shifts as a nurse getting her credentials recognized. Every sacrifice, every missed dinner, every time they chose work over family time - it was all so I could have this 'better life.' How do I tell them their dream for me feels like a prison?\"",
+    speaker: 'Maya Chen (Pre-med Student)',
+    choices: [
+      { text: "Their love created opportunities, not obligations.", next: 'maya-reframing-love', consequence: 'maya_family_healing', pattern: 'helping' },
+      { text: "What if you honored their sacrifice by pursuing excellence your way?", next: 'maya-alternative-excellence', consequence: 'maya_strategic_thinking', pattern: 'analytical' },
+      { text: "Have you considered showing them your robotics work?", next: 'maya-demonstration-approach', consequence: 'maya_action_plan', pattern: 'building' },
+      { text: "Sometimes the greatest honor is becoming who we're meant to be.", next: 'maya-authentic-gratitude', consequence: 'maya_self_acceptance', pattern: 'patience' }
+    ]
+  },
+
+  'maya-uab-bridge': {
+    id: 'maya-uab-bridge',
+    text: "Maya's eyes widen. \"UAB does have an MD-PhD program in biomedical engineering. It's seven years instead of four, but...\" She pulls up the program on her laptop. \"Look at this - they're developing robotic surgical systems, AI diagnostic tools, prosthetics research. My parents would see the MD, but I'd be building the future of medicine.\"",
+    speaker: 'Maya Chen (Pre-med Student)',
+    choices: [
+      { text: "This could be your perfect compromise.", next: 'maya-bridge-realization', consequence: 'uab_biomedical_pathway', pattern: 'building' },
+      { text: "How would you present this to your parents?", next: 'maya-family-strategy', consequence: 'maya_communication_plan', pattern: 'analytical' },
+      { text: "You'd be pioneering a new kind of healing.", next: 'maya-vision-validation', consequence: 'maya_confidence_boost', pattern: 'helping' },
+      { text: "Seven years is a long time. Are you ready for that commitment?", next: 'maya-commitment-reflection', consequence: 'maya_long_term_thinking', pattern: 'patience' }
+    ]
+  },
+
+  // Birmingham Professional Integration
+  'birmingham-professional-story-healthcare': {
+    id: 'birmingham-professional-story-healthcare',
+    text: "Maya introduces you to Dr. James Thompson, who works at UAB. \"I was a cardiac surgeon for ten years,\" he says, \"then founded a medical device company. Now my artificial hearts save more lives than I ever could in the OR. The best doctors heal one patient at a time. The best engineers heal thousands.\"",
+    speaker: 'Dr. James Thompson (Medical Device Entrepreneur)',
+    choices: [
+      { text: "How did you make the transition from surgeon to entrepreneur?", next: 'healthcare-entrepreneur-journey', consequence: 'birmingham_healthcare_innovation', pattern: 'analytical' },
+      { text: "What Birmingham resources helped you start your company?", next: 'birmingham-startup-resources', consequence: 'birmingham_business_ecosystem', pattern: 'building' },
+      { text: "Do you ever regret leaving surgery?", next: 'healthcare-purpose-evolution', consequence: 'career_transition_wisdom', pattern: 'helping' },
+      { text: "What advice would you give to someone torn between medicine and engineering?", next: 'healthcare-engineering-advice', consequence: 'interdisciplinary_wisdom', pattern: 'patience' }
+    ]
   }
 }
 
