@@ -1,9 +1,9 @@
-import { GameInterface } from '@/components/GameInterface'
+import { OptimizedGameInterface } from '@/components/OptimizedGameInterface'
 
 export default function Home() {
   return (
     <main className="min-h-screen">
-      <GameInterface />
+      <OptimizedGameInterface />
     </main>
   )
 }
