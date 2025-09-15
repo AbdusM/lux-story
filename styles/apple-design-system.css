@@ -253,14 +253,10 @@
 
 /* ===== TEXT HIERARCHY SYSTEM ===== */
 
-/* Dialogue blocks - most prominent, direct character speech */
+/* Dialogue blocks - direct character speech with subtle emphasis */
 .apple-dialogue-block {
-  margin: var(--apple-space-6) 0;
-  padding: var(--apple-space-4);
-  background: linear-gradient(135deg, var(--apple-gray-50) 0%, white 100%);
-  border-left: 4px solid var(--apple-primary);
-  border-radius: var(--apple-radius-lg);
-  box-shadow: var(--apple-shadow-sm);
+  margin: var(--apple-space-4) 0;
+  padding: 0;
 }
 
 .apple-dialogue-text {
@@ -271,13 +267,10 @@
   font-style: italic;
 }
 
-/* Context blocks - scene setting and character actions */
+/* Context blocks - scene setting with minimal visual treatment */
 .apple-context-block {
-  margin: var(--apple-space-4) 0;
-  padding: var(--apple-space-3);
-  background: var(--apple-gray-100);
-  border-radius: var(--apple-radius-md);
-  border-left: 3px solid var(--apple-secondary);
+  margin: var(--apple-space-3) 0;
+  padding: 0;
 }
 
 .apple-context-text {
@@ -287,41 +280,30 @@
   font-weight: 400;
 }
 
-/* Narrative blocks - longer explanatory text */
+/* Narrative blocks - clean sentence breaks */
 .apple-narrative-block {
-  margin: var(--apple-space-5) 0;
+  margin: var(--apple-space-2) 0;
 }
 
 .apple-narrative-sentence {
-  margin: var(--apple-space-3) 0;
-  padding: var(--apple-space-2) 0;
+  margin: var(--apple-space-1) 0;
+  padding: 0;
   font-size: var(--apple-text-base);
   line-height: 1.7;
   color: var(--apple-gray-800);
-  border-bottom: 1px solid var(--apple-gray-200);
 }
 
-.apple-narrative-sentence:last-child {
-  border-bottom: none;
-  font-weight: 600;
-  color: var(--apple-primary);
-}
-
-/* Statement blocks - short, punchy insights */
+/* Statement blocks - key insights with subtle emphasis */
 .apple-statement-block {
-  margin: var(--apple-space-4) 0;
-  padding: var(--apple-space-4);
-  background: linear-gradient(135deg, var(--apple-primary) 0%, var(--apple-secondary) 100%);
-  border-radius: var(--apple-radius-lg);
-  box-shadow: var(--apple-shadow-md);
+  margin: var(--apple-space-3) 0;
+  padding: 0;
 }
 
 .apple-statement-text {
   font-size: var(--apple-text-lg);
-  line-height: 1.6;
-  color: white;
-  font-weight: 600;
-  text-align: center;
+  line-height: 1.7;
+  color: var(--apple-gray-900);
+  font-weight: 500;
 }
 
 .apple-story-speaker {
