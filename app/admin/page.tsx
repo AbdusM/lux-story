@@ -1,6 +1,6 @@
 'use client'
 
-import { ChoiceReviewPanel } from '@/components/ChoiceReviewPanel'
+import { ChoiceReviewTrigger } from '@/components/ChoiceReviewPanel'
 
 /**
  * Admin Dashboard
@@ -20,7 +20,7 @@ export default function AdminPage() {
         </div>
 
         <div className="bg-white rounded-lg shadow-lg p-6">
-          <ChoiceReviewPanel />
+          <ChoiceReviewTrigger />
         </div>
       </div>
     </div>

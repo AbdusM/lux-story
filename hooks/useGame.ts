@@ -7,6 +7,7 @@ import { getPersonaTracker } from '@/lib/player-persona'
 import { hapticFeedback } from '@/lib/haptic-feedback'
 import { webShare } from '@/lib/web-share'
 import { generateBridgeText } from '@/lib/narrative-bridge'
+import { analyzeChoiceForCareer, getCareerAnalytics } from '@/lib/career-analytics'
 
 /**
  * Simplified Game Hook
@@ -210,7 +211,10 @@ export function useGame() {
       timestamp: Date.now(),
       consequences: choice.consequences
     })
-    
+
+    // Analyze choice for career path implications
+    analyzeChoiceForCareer(choice, userId || 'anonymous')
+
     // Update patterns based on choice
     const choiceText = choice.text.toLowerCase()
     const patternUpdates: Partial<typeof patterns> = {}
@@ -285,7 +289,7 @@ export function useGame() {
       setTimeout(async () => {
         try {
           // Load the next scene to get its text
-          const nextScene = storyEngine.getScene(choice.nextScene)
+          const nextScene = await storyEngine.getScene(choice.nextScene)
 
           if (nextScene?.text) {
             // Generate bridge text connecting the choice to the next scene
@@ -301,9 +305,8 @@ export function useGame() {
               addMessage({
                 speaker: 'Narrator',
                 text: bridgeText,
-                type: 'narrative',
-                messageWeight: 'light',
-                bridgeText: true // Flag to identify bridge text
+                type: 'narration',
+                messageWeight: 'tertiary'
               })
 
               // Small delay to let bridge text appear before scene transition
