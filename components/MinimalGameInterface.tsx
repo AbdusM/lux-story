@@ -23,7 +23,7 @@ export function MinimalGameInterface() {
 
           <div className="apple-story-message">
             <div className="apple-text-body">
-              "Your future awaits at Platform 7. Midnight. Don't be late."
+              &quot;Your future awaits at Platform 7. Midnight. Don&apos;t be late.&quot;
             </div>
           </div>
 
