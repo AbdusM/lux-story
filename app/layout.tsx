@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter } from 'next/font/google'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { EnvironmentalEffects } from '@/components/EnvironmentalEffects'
 import { ServiceWorkerProvider } from '@/components/ServiceWorkerProvider'
@@ -9,8 +8,6 @@ import '../styles/accessibility.css'
 import '../styles/game-juice.css'
 import '../styles/grand-central.css'
 import '../styles/environmental-response.css'
-
-const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: "Grand Central Terminus - Birmingham Career Exploration",
@@ -38,7 +35,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} grand-central-terminus`} style={{ 
+      <body className="grand-central-terminus" style={{ 
         fontSize: 'var(--font-size-base, 1rem)',
         touchAction: 'none',
         overscrollBehavior: 'none',
