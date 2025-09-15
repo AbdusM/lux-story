@@ -8,20 +8,8 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./styles/**/*.css", // Include CSS files for better purging
   ],
-  // Add safelist for dynamically generated classes
+  // Add safelist for dynamically generated classes that are actually used
   safelist: [
-    // Platform warmth states
-    {
-      pattern: /platform-warmth-(negative-)?[0-9]+/,
-    },
-    // Time speed classes
-    {
-      pattern: /time-speed-[0-9]+(\.[0-9]+)?/,
-    },
-    // Performance classes
-    {
-      pattern: /performance-(struggling|exploring|flowing|mastering)/,
-    },
     // Character glow effects
     'lux-text-glow',
     'swift-text-glow',
