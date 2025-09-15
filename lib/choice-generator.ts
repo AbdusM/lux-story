@@ -119,8 +119,8 @@ export class ChoiceGenerator {
       await this.applyLiveAugmentation(scene, gameState, choices, options)
     }
 
-    // Layer 3: Semantic Similarity Filtering
-    if (choices.length > 1) {
+    // Layer 3: Semantic Similarity Filtering (only if enabled)
+    if (process.env.ENABLE_SEMANTIC_SIMILARITY !== 'false' && choices.length > 1) {
       console.log(`🔍 Applying semantic similarity filter to ${choices.length} choices...`)
       const threshold = parseFloat(process.env.CHOICE_SIMILARITY_THRESHOLD || '0.85')
 
@@ -136,6 +136,8 @@ export class ChoiceGenerator {
         console.error('❌ Semantic filtering failed, returning original choices:', error)
         return choices
       }
+    } else if (process.env.ENABLE_SEMANTIC_SIMILARITY === 'false') {
+      console.log('📄 Semantic similarity disabled, skipping filter')
     }
 
     return choices

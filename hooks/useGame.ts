@@ -77,6 +77,21 @@ export function useGame() {
   const [currentScene, setCurrentScene] = useState<Scene | null>(null)
   const [sceneLoading, setSceneLoading] = useState(false)
 
+  // Generate consistent user ID for analytics
+  const [userId] = useState(() => {
+    if (typeof window !== 'undefined') {
+      // Try to get existing ID from localStorage
+      let existingId = localStorage.getItem('lux-player-id')
+      if (!existingId) {
+        // Generate new ID and store it
+        existingId = `player-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+        localStorage.setItem('lux-player-id', existingId)
+      }
+      return existingId
+    }
+    return 'anonymous' // Server-side fallback
+  })
+
   // Load scene asynchronously with dynamic choices
   const loadCurrentScene = useCallback(async () => {
     if (!currentSceneId) {
