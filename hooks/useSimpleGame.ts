@@ -152,7 +152,7 @@ const SIMPLE_SCENES = {
 
   'jordan-multi-path-intro': {
     id: 'jordan-multi-path-intro',
-    text: "Jordan chuckles warmly. \"Seven different careers, to be precise. Started in computer science at Alabama A&M, dropped out to join a startup. Sold phones at the Galleria while learning graphic design. Marketing firm, personal trainer, Uber driver while learning to code. Now I'm a UX designer for a Birmingham health tech company and teach coding bootcamps.\" They pause. \"Everyone else will tell you their straight path to success. I'm here to tell you about the scenic route.\"",
+    text: "Jordan chuckles warmly.\n\n\"Seven different careers, to be precise. Started in computer science at Alabama A&M, dropped out to join a startup.\n\nSold phones at the Galleria while learning graphic design. Marketing firm, personal trainer, Uber driver while learning to code.\n\nNow I'm a UX designer for a Birmingham health tech company and teach coding bootcamps.\"\n\nThey pause.\n\n\"Everyone else will tell you their straight path to success. I'm here to tell you about the scenic route.\"",
     speaker: 'Jordan Packard (Multi-Path Mentor)',
     choices: [
       { text: "Doesn't jumping around hurt your resume?", next: 'jordan-resume-myth', consequence: 'jordan_career_strategy', pattern: 'analytical' },
@@ -326,7 +326,7 @@ const SIMPLE_SCENES = {
 
   'devon-birmingham-tech-community': {
     id: 'devon-birmingham-tech-community',
-    text: "Devon pulls up a map on his laptop. \"Actually, there's the Innovation Depot downtown - they have hardware labs and maker spaces. UAB has environmental engineering groups working on exactly the kind of problems I'm solving. And there's a water quality monitoring meetup that meets at the Civil Rights Institute. People who understand that clean water is both a technical and social justice issue.\"",
+    text: "Devon pulls up a map on his laptop.\n\n\"Actually, there's the Innovation Depot downtown - they have hardware labs and maker spaces. UAB has environmental engineering groups working on exactly the kind of problems I'm solving.\n\nAnd there's a water quality monitoring meetup that meets at the Civil Rights Institute.\n\nPeople who understand that clean water is both a technical and social justice issue.\"",
     speaker: 'Devon Williams (UAB Engineering Student)',
     choices: [
       { text: "That sounds like your community. Have you connected with them?", next: 'southern-company-partnership', consequence: 'devon_social_growth', pattern: 'helping' },
@@ -376,7 +376,7 @@ const SIMPLE_SCENES = {
 
   'uab-partnership-details': {
     id: 'uab-partnership-details',
-    text: "Samuel opens a UAB brochure. \"Work-study at UAB isn't just filing papers. You could assist with biomedical research, help manage the hospital's technology systems, or support the Innovation Hub's startup incubator. $15-18/hour, flexible scheduling around classes, and real networking opportunities. Plus, if you decide on grad school, you'll already have connections with professors and researchers.\"",
+    text: "Samuel opens a UAB brochure.\n\n\"Work-study at UAB isn't just filing papers. You could assist with biomedical research, help manage the hospital's technology systems, or support the Innovation Hub's startup incubator.\n\n$15-18/hour, flexible scheduling around classes, and real networking opportunities.\n\nPlus, if you decide on grad school, you'll already have connections with professors and researchers.\"",
     speaker: 'Samuel Washington (Station Keeper)',
     choices: [
       { text: "How competitive are these positions?", next: 'uab-application-reality', consequence: 'uab_application_process', pattern: 'analytical' },
@@ -400,7 +400,7 @@ const SIMPLE_SCENES = {
 
   'southern-company-partnership': {
     id: 'southern-company-partnership',
-    text: "Samuel's eyes light up - his old employer. \"Southern Company's co-op program is how I got my start. Six-month rotations through different engineering divisions: power generation, transmission, renewable energy, grid modernization. You're not just observing - you're contributing to real projects that keep the lights on for millions of people. $22/hour as a co-op, and about 80% get full-time offers starting around $70K.\"",
+    text: "Samuel's eyes light up - his old employer.\n\n\"Southern Company's co-op program is how I got my start. Six-month rotations through different engineering divisions: power generation, transmission, renewable energy, grid modernization.\n\nYou're not just observing - you're contributing to real projects that keep the lights on for millions of people.\n\n$22/hour as a co-op, and about 80% get full-time offers starting around $70K.\"",
     speaker: 'Samuel Washington (Station Keeper)',
     choices: [
       { text: "What engineering disciplines do they hire for co-ops?", next: 'southern-company-disciplines', consequence: 'southern_company_technical_paths', pattern: 'analytical' },

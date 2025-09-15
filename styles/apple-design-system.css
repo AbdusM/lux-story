@@ -251,6 +251,79 @@
   margin-bottom: var(--apple-space-4);
 }
 
+/* ===== TEXT HIERARCHY SYSTEM ===== */
+
+/* Dialogue blocks - most prominent, direct character speech */
+.apple-dialogue-block {
+  margin: var(--apple-space-6) 0;
+  padding: var(--apple-space-4);
+  background: linear-gradient(135deg, var(--apple-gray-50) 0%, white 100%);
+  border-left: 4px solid var(--apple-primary);
+  border-radius: var(--apple-radius-lg);
+  box-shadow: var(--apple-shadow-sm);
+}
+
+.apple-dialogue-text {
+  font-size: var(--apple-text-lg);
+  line-height: 1.8;
+  color: var(--apple-gray-900);
+  font-weight: 500;
+  font-style: italic;
+}
+
+/* Context blocks - scene setting and character actions */
+.apple-context-block {
+  margin: var(--apple-space-4) 0;
+  padding: var(--apple-space-3);
+  background: var(--apple-gray-100);
+  border-radius: var(--apple-radius-md);
+  border-left: 3px solid var(--apple-secondary);
+}
+
+.apple-context-text {
+  font-size: var(--apple-text-base);
+  line-height: 1.6;
+  color: var(--apple-gray-700);
+  font-weight: 400;
+}
+
+/* Narrative blocks - longer explanatory text */
+.apple-narrative-block {
+  margin: var(--apple-space-5) 0;
+}
+
+.apple-narrative-sentence {
+  margin: var(--apple-space-3) 0;
+  padding: var(--apple-space-2) 0;
+  font-size: var(--apple-text-base);
+  line-height: 1.7;
+  color: var(--apple-gray-800);
+  border-bottom: 1px solid var(--apple-gray-200);
+}
+
+.apple-narrative-sentence:last-child {
+  border-bottom: none;
+  font-weight: 600;
+  color: var(--apple-primary);
+}
+
+/* Statement blocks - short, punchy insights */
+.apple-statement-block {
+  margin: var(--apple-space-4) 0;
+  padding: var(--apple-space-4);
+  background: linear-gradient(135deg, var(--apple-primary) 0%, var(--apple-secondary) 100%);
+  border-radius: var(--apple-radius-lg);
+  box-shadow: var(--apple-shadow-md);
+}
+
+.apple-statement-text {
+  font-size: var(--apple-text-lg);
+  line-height: 1.6;
+  color: white;
+  font-weight: 600;
+  text-align: center;
+}
+
 .apple-story-speaker {
   font-size: var(--apple-text-sm);
   font-weight: 600;
@@ -359,6 +432,44 @@
   
   .apple-text-headline {
     font-size: var(--apple-text-2xl);
+  }
+  
+  /* Mobile text hierarchy optimizations */
+  .apple-dialogue-block {
+    margin: var(--apple-space-4) 0;
+    padding: var(--apple-space-3);
+  }
+  
+  .apple-dialogue-text {
+    font-size: var(--apple-text-base);
+    line-height: 1.7;
+  }
+  
+  .apple-context-block {
+    margin: var(--apple-space-3) 0;
+    padding: var(--apple-space-2);
+  }
+  
+  .apple-context-text {
+    font-size: var(--apple-text-sm);
+    line-height: 1.5;
+  }
+  
+  .apple-narrative-sentence {
+    margin: var(--apple-space-2) 0;
+    padding: var(--apple-space-1) 0;
+    font-size: var(--apple-text-sm);
+    line-height: 1.6;
+  }
+  
+  .apple-statement-block {
+    margin: var(--apple-space-3) 0;
+    padding: var(--apple-space-3);
+  }
+  
+  .apple-statement-text {
+    font-size: var(--apple-text-base);
+    line-height: 1.5;
   }
 }
 
