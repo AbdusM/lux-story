@@ -197,7 +197,7 @@ export class ChoiceGenerator {
       const threshold = parseFloat(process.env.CHOICE_SIMILARITY_THRESHOLD || '0.85')
 
       try {
-        const filteredChoices = await filterSimilarChoices(choices, threshold)
+        const filteredChoices = filterSimilarChoicesSimple(choices, threshold)
 
         if (filteredChoices.length < choices.length) {
           console.log(`📊 Semantic filter: ${choices.length} → ${filteredChoices.length} choices`)
