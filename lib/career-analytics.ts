@@ -6,6 +6,7 @@
  */
 
 import { getPersonaTracker, type PlayerPersona } from './player-persona'
+import { getBirminghamOpportunities, getPersonalizedOpportunities } from './birmingham-opportunities'
 import type { Choice } from './story-engine'
 
 export interface CareerPathAffinities {
@@ -25,6 +26,13 @@ export interface CareerInsight {
   evidencePoints: string[]
   birminghamOpportunities: string[]
   nextSteps: string[]
+  personalizedOpportunities?: Array<{
+    name: string
+    organization: string
+    type: string
+    matchScore: number
+    matchReasons: string[]
+  }>
 }
 
 export interface AnalyticsSnapshot {
@@ -206,6 +214,27 @@ export class CareerAnalyticsEngine {
           birminghamOpportunities: BIRMINGHAM_OPPORTUNITIES[careerPath as keyof CareerPathAffinities].slice(0, 3),
           nextSteps: this.generateNextSteps(careerPath as keyof CareerPathAffinities, affinity)
         }
+
+        // Add personalized Birmingham opportunities
+        try {
+          const platformId = this.getPlatformIdForCareer(careerPath as keyof CareerPathAffinities)
+          const personalizedRecs = getPersonalizedOpportunities(
+            platformId,
+            persona?.patternCounts || {},
+            '16-18'
+          )
+
+          insight.personalizedOpportunities = personalizedRecs.slice(0, 3).map(rec => ({
+            name: rec.opportunity.name,
+            organization: rec.opportunity.organization,
+            type: rec.opportunity.type,
+            matchScore: rec.matchScore,
+            matchReasons: rec.matchReasons
+          }))
+        } catch (error) {
+          console.warn('Failed to get personalized opportunities:', error)
+        }
+
         insights.push(insight)
       }
     }
@@ -310,6 +339,23 @@ export class CareerAnalyticsEngine {
     }
 
     return [...specificSteps[careerPath], ...baseSteps].slice(0, 4)
+  }
+
+  /**
+   * Map career path to platform ID for Birmingham opportunities
+   */
+  private getPlatformIdForCareer(careerPath: keyof CareerPathAffinities): string {
+    const careerToPlatform: Record<keyof CareerPathAffinities, string> = {
+      healthcare: 'platform-1',
+      engineering: 'platform-3',
+      technology: 'platform-7',
+      education: 'platform-1', // Education aligns with care/helping
+      sustainability: 'platform-9',
+      entrepreneurship: 'platform-7-half',
+      creative: 'platform-7-half',
+      service: 'platform-forgotten'
+    }
+    return careerToPlatform[careerPath] || 'platform-1'
   }
 
   /**
