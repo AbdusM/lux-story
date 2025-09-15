@@ -8,6 +8,7 @@ import { hapticFeedback } from '@/lib/haptic-feedback'
 import { webShare } from '@/lib/web-share'
 import { generateBridgeText } from '@/lib/narrative-bridge'
 import { analyzeChoiceForCareer, getCareerAnalytics } from '@/lib/career-analytics'
+import { updatePlatformResonance, getPlatformResonance } from '@/lib/platform-resonance'
 
 /**
  * Simplified Game Hook
@@ -214,6 +215,20 @@ export function useGame() {
 
     // Analyze choice for career path implications
     analyzeChoiceForCareer(choice, userId || 'anonymous')
+
+    // Update platform resonance based on choice
+    try {
+      const resonanceEvents = updatePlatformResonance(userId || 'anonymous', choice)
+
+      // Log platform resonance changes for development
+      if (resonanceEvents.length > 0) {
+        console.log('🏗️ Platform resonance updates:', resonanceEvents.map(event =>
+          `${event.platformId}: ${event.type} (${event.intensity.toFixed(2)})`
+        ).join(', '))
+      }
+    } catch (error) {
+      console.warn('Platform resonance update failed:', error)
+    }
 
     // Update patterns based on choice
     const choiceText = choice.text.toLowerCase()
