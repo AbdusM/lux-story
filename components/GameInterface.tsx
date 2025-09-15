@@ -1,21 +1,10 @@
 "use client"
 
 import { useCallback, useMemo, memo, useEffect } from 'react'
-import { useGameContext, useGameState, useGameActions, useGameSystems, useGameSupport, useGameMonitoring } from '@/contexts/GameContext'
+import { useGame } from '@/hooks/useGame'
 import { useMemoryCleanup } from '@/hooks/useMemoryCleanup'
 import { useEventBusSubscription, useEventBusEmitter, useEventBusDebug } from '@/hooks/useEventBus'
-import { 
-  useCurrentScene, 
-  useHasStarted, 
-  useIsProcessing, 
-  useMessages, 
-  usePerformanceLevel,
-  useEmotionalState,
-  useCognitiveState,
-  useSkills,
-  usePatterns,
-  usePerformanceMetrics
-} from '@/hooks/useStateSelectors'
+import { clearCorruptedStorage } from '@/lib/game-store'
 import { GameHeader } from './GameHeader'
 import { GameMessages } from './GameMessages'
 import { GameSupport } from './GameSupport'
@@ -35,279 +24,195 @@ import { cn } from '@/lib/utils'
  * Apple-Style Game Interface
  * Implements Apple design principles: clarity, simplicity, beauty
  * Focuses on emotional resonance and Birmingham youth connection
- * 
- * HYBRID VERSION: Uses simplified useGame hook + Apple design components
+ *
+ * SIMPLIFIED VERSION: Uses only useGame hook for state management
  */
 
 export function GameInterface() {
-  // Use context hooks instead of props drilling
-  const gameState = useGameState()
-  const gameActions = useGameActions()
-  const gameSystems = useGameSystems()
-  const gameSupport = useGameSupport()
-  const gameMonitoring = useGameMonitoring()
+  // Clear any corrupted localStorage on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      clearCorruptedStorage()
+    }
+  }, [])
+
+  // Use simplified useGame hook directly
+  const game = useGame()
 
   // Event bus integration
-  const { emit, emitSync } = useEventBusEmitter()
-  
-  // Enable event bus debugging in development
+  const { emit } = useEventBusEmitter()
   useEventBusDebug(process.env.NODE_ENV === 'development')
 
-  // Use optimized state selectors for better performance
-  const currentScene = useCurrentScene()
-  const hasStarted = useHasStarted()
-  const isProcessing = useIsProcessing()
-  const messages = useMessages()
-  const performanceLevel = usePerformanceLevel()
-  const emotionalState = useEmotionalState()
-  const cognitiveState = useCognitiveState()
-  const skills = useSkills()
-  const patterns = usePatterns()
-  const performanceMetrics = usePerformanceMetrics()
+  // Defensive defaults for state objects
+  const emotionalState = game.emotionalState || {
+    stressLevel: 'calm',
+    rapidClicks: 0,
+    hesitationCount: 0
+  }
+  const cognitiveState = game.cognitiveState || {
+    flowState: 'neutral',
+    metacognitiveAwareness: 0
+  }
+  const skills = game.skills || {
+    communication: 0,
+    emotionalIntelligence: 0,
+    creativity: 0,
+    problemSolving: 0,
+    criticalThinking: 0
+  }
 
-  // Get system functions
-  const {
-    identityState,
-    neuralState,
-    updateEmotionalState,
-    updateCognitiveState,
-    updateIdentityState,
-    updateNeuralState,
-    updateSkills
-  } = gameSystems
-
-  const {
-    handleChoice,
-    handleContinue,
-    handleStartGame,
-    handleShare
-  } = gameActions
-
-  const {
-    getVisualAdjustments,
-    getEmotionalSupport,
-    getMetacognitivePrompt,
-    getSkillSuggestions
-  } = gameSupport
-
-  const {
-    getMetrics,
-    getScore,
-    trackSceneTransition,
-    trackChoiceResponse,
-    getMemoryUsage,
-    checkMemoryLeaks
-  } = gameMonitoring
+  // Ensure update functions have safe defaults
+  const safeUpdateEmotionalState = game.updateEmotionalState || (() => {})
+  const safeUpdateCognitiveState = game.updateCognitiveState || (() => {})
+  const safeUpdateSkills = game.updateSkills || (() => {})
 
   // Event bus subscriptions for system events
   useEventBusSubscription('system:error', (data) => {
     logger.error('System error received:', data)
-    // Handle system errors gracefully
   })
 
   useEventBusSubscription('system:warning', (data) => {
     logger.warn('System warning received:', data)
-    // Handle system warnings
   })
 
   useEventBusSubscription('perf:memory:warning', (data) => {
     logger.warn('Memory warning:', data)
-    // Trigger memory cleanup
-    gameMonitoring.checkMemoryLeaks()
   })
 
   useEventBusSubscription('perf:render:slow', (data) => {
     logger.warn('Slow render detected:', data)
-    // Track performance issues
   })
 
   // Register cleanup functions
   useMemoryCleanup(() => {
-    // Cleanup any component-specific resources
     logger.debug('GameInterface cleanup: clearing component resources')
     emit('system:cleanup', { component: 'GameInterface' })
   }, [emit])
 
-  // Monitor memory usage in development
+  // Monitor memory usage in development (reduced frequency)
   useEffect(() => {
     if (process.env.NODE_ENV === 'development') {
       const interval = setInterval(() => {
-        const memory = getMemoryUsage()
-        const leakCheck = checkMemoryLeaks()
-        
-        if (leakCheck.isLeaking) {
-          logger.warn('Memory leak detected:', leakCheck.details)
+        const memoryUsage = (performance as any).memory
+        if (memoryUsage && memoryUsage.usedJSHeapSize > 50 * 1024 * 1024) { // 50MB threshold
+          logger.warn('High memory usage detected:', {
+            used: memoryUsage.usedJSHeapSize,
+            total: memoryUsage.totalJSHeapSize
+          })
+          emit('perf:memory:warning', {
+            usage: memoryUsage.usedJSHeapSize,
+            limit: memoryUsage.totalJSHeapSize
+          })
         }
-        
-        logger.debug('Memory usage:', {
-          used: `${(memory.used / 1024 / 1024).toFixed(2)}MB`,
-          total: `${(memory.total / 1024 / 1024).toFixed(2)}MB`,
-          percentage: `${memory.percentage.toFixed(2)}%`
-        })
       }, 30000) // Check every 30 seconds
 
       return () => clearInterval(interval)
     }
-  }, [getMemoryUsage, checkMemoryLeaks])
+  }, [emit])
 
-  // Get visual adjustments based on emotional state (memoized)
-  const visualAdjustments = useMemo(() => getVisualAdjustments(), [getVisualAdjustments])
-  
-  // Get support messages (memoized)
-  const emotionalSupport = useMemo(() => getEmotionalSupport(), [getEmotionalSupport])
-  const metacognitivePrompt = useMemo(() => getMetacognitivePrompt(), [getMetacognitivePrompt])
-  const skillSuggestions = useMemo(() => getSkillSuggestions(), [getSkillSuggestions])
+  // Stress monitoring with throttling
+  const handleRapidClick = useCallback(() => {
+    const currentRapidClicks = (emotionalState.rapidClicks || 0) + 1
 
-  // Enhanced choice handling with all systems (memoized)
-  const handleEnhancedChoice = useCallback((choice: any) => {
-    if (isProcessing) return
-    
-    // Track performance
-    const choiceStartTime = performance.now()
-    
-    // Track choice across all systems
-    const timestamp = Date.now()
-    
-    // Emit choice event
-    emit('game:choice:made', { 
-      choice, 
-      timestamp,
-      emotionalState: emotionalState.stressLevel,
-      cognitiveState: cognitiveState.flowState
-    })
-    
-    // Update emotional state based on choice
-    const choiceText = choice.text.toLowerCase()
-    if (choiceText.includes('rush') || choiceText.includes('hurry')) {
-      updateEmotionalState({ 
+    if (currentRapidClicks >= 3) {
+      safeUpdateEmotionalState({
         stressLevel: 'anxious',
+        rapidClicks: currentRapidClicks,
+        breathingRhythm: 'urgent'
+      })
+    }
+  }, [emotionalState.rapidClicks, safeUpdateEmotionalState])
+
+  // Enhanced choice handler with stress and performance tracking
+  const handleChoiceWithTracking = useCallback((choice: any) => {
+    const startTime = Date.now()
+    handleRapidClick()
+
+    // Call the actual game choice handler
+    game.handleChoice?.(choice)
+
+    // Track response time
+    const responseTime = Date.now() - startTime
+    if (responseTime < 1000) { // Very quick responses
+      safeUpdateEmotionalState({
         rapidClicks: (emotionalState.rapidClicks || 0) + 1
       })
-      emit('game:emotional:stress', { level: 'anxious', trigger: 'rush_choice' })
-    } else if (choiceText.includes('wait') || choiceText.includes('patience')) {
-      updateEmotionalState({ 
-        stressLevel: 'calm',
-        hesitationCount: (emotionalState.hesitationCount || 0) + 1
-      })
-      emit('game:emotional:calm', { level: 'calm', trigger: 'patience_choice' })
-    }
-    
-    // Update cognitive state
-    if (choiceText.includes('think') || choiceText.includes('analyze')) {
-      updateCognitiveState({
-        flowState: 'flow',
-        metacognitiveAwareness: Math.min(1, (cognitiveState.metacognitiveAwareness || 0) + 0.1)
-      })
-      emit('game:cognitive:flow', { state: 'flow', awareness: cognitiveState.metacognitiveAwareness })
-    }
-    
-    // Update skills based on choice patterns
-    const skillUpdates: Partial<typeof skills> = {}
-    if (choiceText.includes('help') || choiceText.includes('support')) {
-      skillUpdates.communication = Math.min(1, (skills.communication || 0) + 0.05)
-      skillUpdates.emotionalIntelligence = Math.min(1, (skills.emotionalIntelligence || 0) + 0.05)
-    }
-    if (choiceText.includes('build') || choiceText.includes('create')) {
-      skillUpdates.creativity = Math.min(1, (skills.creativity || 0) + 0.05)
-      skillUpdates.problemSolving = Math.min(1, (skills.problemSolving || 0) + 0.05)
-    }
-    if (choiceText.includes('analyze') || choiceText.includes('think')) {
-      skillUpdates.criticalThinking = Math.min(1, (skills.criticalThinking || 0) + 0.05)
-    }
-    
-    if (Object.keys(skillUpdates).length > 0) {
-      updateSkills(skillUpdates)
-      emit('game:skills:updated', { skills: skillUpdates, totalSkills: skills })
-    }
-    
-    // Call the main choice handler
-    handleChoice(choice)
-    
-    // Track performance
-    trackChoiceResponse(choiceStartTime)
-    
-    // Emit performance event
-    const choiceDuration = performance.now() - choiceStartTime
-    if (choiceDuration > 100) { // If choice takes longer than 100ms
-      emit('perf:choice:slow', { duration: choiceDuration, choice: choice.text })
     }
   }, [
-    isProcessing,
+    game.handleChoice,
     emotionalState.rapidClicks,
-    emotionalState.hesitationCount,
-    cognitiveState.metacognitiveAwareness,
-    skills.communication,
-    skills.emotionalIntelligence,
-    skills.creativity,
-    skills.problemSolving,
-    skills.criticalThinking,
-    updateEmotionalState,
-    updateCognitiveState,
-    updateSkills,
-    handleChoice,
-    emit
+    handleRapidClick,
+    safeUpdateEmotionalState
   ])
 
-  // Show intro if not started
-  if (!hasStarted) {
+  // Visual adjustments based on emotional state
+  const visualAdjustments = useMemo(() => {
+    const adjustments = game.getVisualAdjustments?.() || { style: {}, className: '' }
+
+    // Add additional Apple-style adjustments
+    if (emotionalState.stressLevel === 'anxious' || emotionalState.stressLevel === 'overwhelmed') {
+      adjustments.style = {
+        ...adjustments.style,
+        filter: 'hue-rotate(10deg) saturate(1.1)',
+        transition: 'all 0.3s ease-out'
+      }
+      adjustments.className += ' apple-stress-response'
+    }
+
+    return adjustments
+  }, [game.getVisualAdjustments, emotionalState.stressLevel])
+
+  // Early return for loading or error states
+  if (!game.hasStarted) {
     return (
-      <div className="apple-game-container">
-        <div className="apple-game-main" style={visualAdjustments.style}>
-          <CharacterIntro onStart={handleStartGame} />
+      <GameErrorBoundary componentName="GameInterface">
+        <div className="apple-container apple-loading">
+          <CharacterIntro onStart={game.handleStartGame} />
         </div>
-      </div>
+      </GameErrorBoundary>
     )
   }
-  
+
   return (
     <GameErrorBoundary componentName="GameInterface">
-      <div className="apple-game-container">
-        <div className="apple-game-main" style={visualAdjustments.style}>
-        {/* Header */}
-        <GameHeader visualAdjustments={visualAdjustments} />
-
-        {/* Messages */}
-        <GameMessages messages={messages} />
-
-        {/* Support Messages */}
-        <GameSupport
-          emotionalSupport={emotionalSupport}
-          metacognitivePrompt={metacognitivePrompt}
-          skillSuggestions={skillSuggestions}
+      <div
+        className={cn(
+          "apple-container apple-game-interface",
+          visualAdjustments.className
+        )}
+        style={visualAdjustments.style}
+      >
+        <GameHeader
+          visualAdjustments={visualAdjustments}
         />
 
-        {/* Choices */}
-        <GameChoices
-          choices={currentScene?.choices || []}
-          isProcessing={isProcessing}
-          onChoice={handleEnhancedChoice}
-        />
+        <main className="apple-main-content">
+          <GameMessages
+            messages={game.messages || []}
+          />
 
-        {/* Controls */}
-        <GameControls
-          currentScene={currentScene}
-          isProcessing={isProcessing}
-          onContinue={handleContinue}
-          onShare={handleShare}
-        />
+          <GameSupport />
 
-        {/* Debug Info (Development Only) */}
-        {process.env.NODE_ENV === 'development' && (
-          <div className="apple-debug-info">
-            <div>Performance: {Math.round(performanceLevel * 100)}%</div>
-            <div>Stress: {emotionalState?.stressLevel || 'neutral'}</div>
-            <div>Flow: {cognitiveState?.flowState || 'neutral'}</div>
-            <div>Patterns: {Object.entries(patterns || {}).filter(([_, v]) => (v as number) > 0).map(([k, v]) => `${k}:${v}`).join(', ')}</div>
-            <div>Core Web Vitals Score: {Math.round(getScore().overall)}%</div>
-            <div>Memory: {getMemoryUsage().percentage.toFixed(1)}%</div>
-            <div>Performance Grade: {performanceMetrics.performanceGrade}</div>
-          </div>
-            )}
-          </div>
-    </div>
+          <GameChoices
+            choices={game.currentScene?.choices || []}
+            isProcessing={game.isProcessing}
+            onChoice={handleChoiceWithTracking}
+          />
+
+          <GameControls
+            currentScene={game.currentScene}
+            isProcessing={game.isProcessing}
+            onContinue={game.handleContinue}
+            onShare={game.handleShare}
+          />
+        </main>
+
+        <SilentCompanion />
+
+        <CareerReflectionHelper />
+      </div>
     </GameErrorBoundary>
   )
 }
 
-// Memoize the main component to prevent unnecessary re-renders
 export default memo(GameInterface)

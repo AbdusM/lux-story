@@ -15,8 +15,8 @@
     margin: 0 !important;
   }
   
-  /* Card should be edge-to-edge on mobile */
-  .game-card,
+  /* Card should be edge-to-edge on mobile - COMMENTED OUT DUE TO SHADCN CONFLICTS */
+  /* .game-card,
   .card {
     max-width: 100% !important;
     width: 100% !important;
@@ -25,12 +25,12 @@
     border-left: none !important;
     border-right: none !important;
     background: white !important;
-  }
+  } */
   
-  .dark .game-card,
+  /* .dark .game-card,
   .dark .card {
     background: rgb(17, 24, 39) !important;
-  }
+  } */
   
   /* Full viewport containers */
   main,

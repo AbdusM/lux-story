@@ -1,8 +1,9 @@
 "use client"
 
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useState, useEffect } from 'react'
 import { useGameStore, useGameSelectors } from '@/lib/game-store'
-import { StoryEngine } from '@/lib/story-engine'
+import { StoryEngine, type Scene } from '@/lib/story-engine'
+import { getPersonaTracker } from '@/lib/player-persona'
 import { hapticFeedback } from '@/lib/haptic-feedback'
 import { webShare } from '@/lib/web-share'
 
@@ -18,7 +19,8 @@ export function useGame() {
   const isProcessing = useGameSelectors.useIsProcessing()
   const messages = useGameSelectors.useMessages()
   const performanceLevel = useGameSelectors.usePerformanceLevel()
-  
+  const performanceMetrics = useGameSelectors.usePerformanceMetrics()
+
   // Game state
   const emotionalState = useGameSelectors.useEmotionalState()
   const cognitiveState = useGameSelectors.useCognitiveState()
@@ -26,10 +28,24 @@ export function useGame() {
   const neuralState = useGameSelectors.useNeuralState()
   const skills = useGameSelectors.useSkills()
   const patterns = useGameSelectors.usePatterns()
+
+  // Additional state from store
+  const gameStore = useGameStore()
+  const {
+    showIntro,
+    choiceStartTime,
+    messageId,
+    visitedScenes,
+    choiceHistory,
+    platformWarmth,
+    platformAccessible,
+    characterTrust,
+    characterHelped
+  } = gameStore
   
   // Actions
   const {
-    setCurrentScene,
+    setCurrentScene: setCurrentSceneId,
     startGame,
     setProcessing,
     setChoiceStartTime,
@@ -54,37 +70,129 @@ export function useGame() {
   // Story engine instance (memoized)
   const storyEngine = useMemo(() => new StoryEngine(), [])
 
-  // Get current scene
-  const currentScene = useMemo(() => {
-    if (!currentSceneId) return null
-    return storyEngine.getScene(currentSceneId)
-  }, [currentSceneId, storyEngine])
+  // Current scene state (managed separately due to async nature)
+  const [currentScene, setCurrentScene] = useState<Scene | null>(null)
+  const [sceneLoading, setSceneLoading] = useState(false)
+
+  // Load scene asynchronously with dynamic choices
+  const loadCurrentScene = useCallback(async () => {
+    if (!currentSceneId) {
+      setCurrentScene(null)
+      return
+    }
+
+    setSceneLoading(true)
+
+    try {
+      // Create game state for dynamic choice generation
+      const gameState = {
+        currentSceneId,
+        hasStarted,
+        showIntro,
+        isProcessing,
+        choiceStartTime,
+        messages,
+        messageId,
+        visitedScenes,
+        choiceHistory,
+        performanceLevel,
+        performanceMetrics,
+        platformWarmth,
+        platformAccessible,
+        characterTrust,
+        characterHelped,
+        patterns,
+        emotionalState,
+        cognitiveState,
+        identityState,
+        neuralState,
+        skills
+      }
+
+      const scene = await storyEngine.getScene(currentSceneId, gameState)
+      setCurrentScene(scene)
+    } catch (error) {
+      console.error('Failed to load scene:', error)
+      // Fallback to basic scene without dynamic choices
+      try {
+        const fallbackScene = await storyEngine.getScene(currentSceneId)
+        setCurrentScene(fallbackScene)
+      } catch (fallbackError) {
+        console.error('Fallback scene loading failed:', fallbackError)
+        setCurrentScene(null)
+      }
+    } finally {
+      setSceneLoading(false)
+    }
+  }, [
+    currentSceneId,
+    storyEngine,
+    performanceLevel,
+    platformWarmth,
+    characterTrust,
+    patterns,
+    emotionalState,
+    hasStarted,
+    showIntro,
+    isProcessing,
+    choiceStartTime,
+    messages,
+    messageId,
+    visitedScenes,
+    choiceHistory,
+    performanceMetrics,
+    platformAccessible,
+    characterHelped,
+    cognitiveState,
+    identityState,
+    neuralState,
+    skills
+  ])
+
+  // Load scene when currentSceneId changes
+  useEffect(() => {
+    loadCurrentScene()
+  }, [loadCurrentScene])
 
   // Load scene
-  const loadScene = useCallback((sceneId: string) => {
-    setCurrentScene(sceneId)
-    markSceneVisited(sceneId)
-    
-    const scene = storyEngine.getScene(sceneId)
-    if (scene) {
+  const loadScene = useCallback(async (sceneId: string) => {
+    try {
+      setCurrentSceneId(sceneId)
+      markSceneVisited(sceneId)
+
+      const scene = await storyEngine.getScene(sceneId)
+      if (scene) {
+        addMessage({
+          speaker: scene.speaker || 'Narrator',
+          text: scene.text || '',
+          type: scene.type === 'choice' ? 'narration' : 'narration',
+          messageWeight: 'primary'
+        })
+      }
+    } catch (error) {
+      console.error('Error loading scene:', error)
+      // Add fallback message to prevent complete failure
       addMessage({
-        speaker: scene.speaker || 'Narrator',
-        text: scene.text || '',
-        type: scene.type === 'choice' ? 'narration' : 'narration',
-        messageWeight: 'primary'
+        speaker: 'System',
+        text: 'Something went wrong loading the next scene. Please try again.',
+        type: 'narration',
+        messageWeight: 'secondary'
       })
     }
-  }, [setCurrentScene, markSceneVisited, storyEngine, addMessage])
+  }, [setCurrentSceneId, markSceneVisited, storyEngine, addMessage])
 
   // Handle choice selection
   const handleChoice = useCallback((choice: any) => {
     if (isProcessing) return
-    
+
+    const responseStartTime = Date.now()
+    const responseTime = choiceStartTime ? responseStartTime - choiceStartTime : 0
+
     // Haptic feedback
     hapticFeedback.choice()
-    
+
     setProcessing(true)
-    setChoiceStartTime(Date.now())
+    setChoiceStartTime(responseStartTime)
     
     // Add user choice message
     addMessage({
@@ -137,7 +245,40 @@ export function useGame() {
       rushing: patternUpdates.rushing ? 1 : 0,
       patience: patternUpdates.patience ? 1 : 0
     })
-    
+
+    // Update player persona
+    try {
+      const personaTracker = getPersonaTracker()
+      const gameState = {
+        currentSceneId,
+        hasStarted,
+        showIntro,
+        isProcessing,
+        choiceStartTime,
+        messages,
+        messageId,
+        visitedScenes,
+        choiceHistory,
+        performanceLevel,
+        performanceMetrics,
+        platformWarmth,
+        platformAccessible,
+        characterTrust,
+        characterHelped,
+        patterns,
+        emotionalState,
+        cognitiveState,
+        identityState,
+        neuralState,
+        skills
+      }
+
+      personaTracker.updatePersona('player-main', choice, responseTime, gameState)
+      console.log('🧠 Player persona updated')
+    } catch (error) {
+      console.warn('Persona tracking failed:', error)
+    }
+
     // Process choice
     if (choice.nextScene) {
       setTimeout(() => {
@@ -298,6 +439,7 @@ export function useGame() {
     currentScene,
     hasStarted,
     isProcessing,
+    sceneLoading,
     messages,
     performanceLevel,
     emotionalState,
