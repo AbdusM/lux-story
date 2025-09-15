@@ -34,7 +34,7 @@ export interface SimpleGameState {
   hasStarted: boolean
   currentScene: string
   messages: Array<{ id: string; text: string; speaker: string; type: string }>
-  choices: Array<{ text: string; next?: string; consequence?: string; pattern?: keyof PlayerPatterns }>
+  choices: Array<{ text: string; next?: string; consequence?: string; pattern?: keyof PlayerPatterns | string }>
   isProcessing: boolean
   userId: string
   choiceHistory: string[]
@@ -173,23 +173,78 @@ const SIMPLE_SCENES = {
       { text: "This sounds like permission to explore without guilt.", next: 'jordan-permission-giving', consequence: 'jordan_validation', pattern: 'patience' }
     ]
   },
-  'career-exploration': {
-    id: 'career-exploration',
-    text: "You're discovering your interests through exploration. What calls to you?",
-    speaker: 'Samuel (Station Keeper)',
+
+  // Samuel wisdom scenes
+  'samuel-wisdom-validation': {
+    id: 'samuel-wisdom-validation',
+    text: "Samuel's expression softens. \"Let me tell you something - I've guided maybe three thousand young folks through this station. The ones who pretend they have it all figured out? They're the ones who end up on the wrong train. You knowing you don't know? That's wisdom, not weakness. Come, let me show you something.\"",
+    speaker: 'Samuel Washington (Station Keeper)',
     choices: [
-      { text: "Review my interests and opportunities", next: 'insights', consequence: 'reflecting' },
-      { text: "Visit a new platform", next: 'intro', consequence: 'exploring' },
-      { text: "Get guidance on next steps", next: 'guidance', consequence: 'planning' }
+      { text: "What do you want to show me?", next: 'samuel-sloss-furnaces-story', consequence: 'samuel_backstory', pattern: 'patience' },
+      { text: "How do you help people figure it out?", next: 'samuel-guidance-method', consequence: 'samuel_trust+', pattern: 'helping' },
+      { text: "You mentioned three thousand people. What patterns do you see?", next: 'samuel-patterns-wisdom', consequence: 'samuel_analytics', pattern: 'analytical' },
+      { text: "Were you lost once too?", next: 'samuel-personal-story', consequence: 'samuel_vulnerability', pattern: 'building' }
     ]
   },
-  'insights': {
-    id: 'insights',
-    text: "Let me share what I've learned about your interests and Birmingham opportunities...",
-    speaker: 'Samuel (Station Keeper)',
+
+  'samuel-sloss-furnaces-story': {
+    id: 'samuel-sloss-furnaces-story',
+    text: "Samuel walks you to a window overlooking the city. \"See that old photo on the wall? That's Sloss Furnaces, 1975. My daddy's in that picture somewhere, covered in soot, proud as could be. When the mills closed, people said Birmingham was finished. But look out there now - UAB Medical Center, Innovation Depot, Protective Life reaching for the sky. You know what changed?\"",
+    speaker: 'Samuel Washington (Station Keeper)',
     choices: [
-      { text: "Continue exploring", next: 'intro', consequence: 'exploring' },
-      { text: "Plan my next steps", next: 'guidance', consequence: 'planning' }
+      { text: "The economy shifted from industrial to medical and tech?", next: 'samuel-economic-transformation', consequence: 'birmingham_economic_history', pattern: 'analytical' },
+      { text: "I don't know, but my family still struggles like they did then.", next: 'samuel-economic-justice', consequence: 'samuel_social_awareness', pattern: 'helping' },
+      { text: "People adapted and learned new skills?", next: 'samuel-adaptation-wisdom', consequence: 'samuel_resilience', pattern: 'building' },
+      { text: "Time and patience. Change takes generations.", next: 'samuel-generational-change', consequence: 'samuel_patience_wisdom', pattern: 'patience' }
+    ]
+  },
+
+  'samuel-economic-justice': {
+    id: 'samuel-economic-justice',
+    text: "Samuel nods seriously. \"You're right to say that. The new Birmingham hasn't lifted everybody up equally. That's exactly why I'm here. Because kids from families like yours and mine need to know - there are ways into those glass towers that don't require you to be born on the right side of Red Mountain. But you've got to know the secret routes. Want me to show you?\"",
+    speaker: 'Samuel Washington (Station Keeper)',
+    choices: [
+      { text: "Yes, show me the secret routes.", next: 'samuel-secret-routes', consequence: 'birmingham_hidden_opportunities', pattern: 'building' },
+      { text: "How do you know these routes exist?", next: 'samuel-personal-journey', consequence: 'samuel_backstory_deep', pattern: 'analytical' },
+      { text: "Why don't schools teach these routes?", next: 'samuel-systemic-critique', consequence: 'samuel_education_reform', pattern: 'helping' },
+      { text: "Are these routes sustainable or just exceptions?", next: 'samuel-systemic-change', consequence: 'samuel_long_term_thinking', pattern: 'patience' }
+    ]
+  },
+
+  'samuel-secret-routes': {
+    id: 'samuel-secret-routes',
+    text: "Samuel leans in conspiratorially. \"UAB Medical Center? They need more than doctors. Biomedical equipment technicians make $65K starting, with a two-year degree from Jeff State. Amazon facility in Bessemer? Robotics maintenance folks pull in $70K, and they'll train you. Downtown banks? Desperate for cybersecurity people - you can learn that online for free if you know where to look.\"",
+    speaker: 'Samuel Washington (Station Keeper)',
+    choices: [
+      { text: "Can you connect me with people in these fields?", next: 'samuel-networking-offer', consequence: 'birmingham_professional_network', pattern: 'building' },
+      { text: "What's the catch? Why doesn't everyone know this?", next: 'samuel-information-gap', consequence: 'samuel_systemic_insight', pattern: 'analytical' },
+      { text: "How do I prepare for these opportunities?", next: 'samuel-preparation-guidance', consequence: 'samuel_mentorship_deep', pattern: 'patience' },
+      { text: "Which path fits someone with my background?", next: 'samuel-personalized-guidance', consequence: 'samuel_assessment', pattern: 'helping' }
+    ]
+  },
+
+  // Integration scenes
+  'career-exploration': {
+    id: 'career-exploration',
+    text: "You've been exploring different platforms and talking with various mentors. The station feels different now - less overwhelming, more like a place where possibilities converge. What draws your attention?",
+    speaker: 'Samuel Washington (Station Keeper)',
+    choices: [
+      { text: "I want to review what I've learned about myself and Birmingham", next: 'insights-integration', consequence: 'self_reflection', pattern: 'analytical' },
+      { text: "I feel ready to commit to a direction", next: 'path-commitment', consequence: 'decision_making', pattern: 'building' },
+      { text: "I want to explore deeper with one of the mentors", next: 'mentor-selection', consequence: 'relationship_deepening', pattern: 'helping' },
+      { text: "I need more time to process everything", next: 'contemplation-space', consequence: 'quiet_reflection', pattern: 'patience' }
+    ]
+  },
+
+  'insights-integration': {
+    id: 'insights-integration',
+    text: "Samuel adjusts his pocket watch and smiles. \"Let's see what the station has revealed about you.\" He pulls out a leather journal. \"Your choices show a pattern - you tend toward analytical thinking when gathering information, helping when people are struggling, building when you see practical solutions, and patience when facing uncertainty. Birmingham has opportunities that match these strengths.\"",
+    speaker: 'Samuel Washington (Station Keeper)',
+    choices: [
+      { text: "Which Birmingham opportunities match my patterns?", next: 'personalized-recommendations', consequence: 'birmingham_matching', pattern: 'analytical' },
+      { text: "How can I develop the patterns I'm weaker in?", next: 'growth-guidance', consequence: 'skill_development', pattern: 'building' },
+      { text: "Can I talk to people who've taken these paths?", next: 'mentor-connections', consequence: 'professional_networking', pattern: 'helping' },
+      { text: "What's my next step to move forward?", next: 'action-planning', consequence: 'concrete_planning', pattern: 'patience' }
     ]
   }
 }
@@ -270,10 +325,10 @@ export function useSimpleGame() {
         const newState = { ...prev }
 
         // Update player patterns based on choice
-        if (choice.pattern) {
+        if (choice.pattern && choice.pattern in prev.playerPatterns) {
           newState.playerPatterns = {
             ...prev.playerPatterns,
-            [choice.pattern]: prev.playerPatterns[choice.pattern] + 1
+            [choice.pattern as keyof PlayerPatterns]: prev.playerPatterns[choice.pattern as keyof PlayerPatterns] + 1
           }
         }
 
@@ -304,6 +359,13 @@ export function useSimpleGame() {
       newRelationships.samuel.trust = Math.min(10, newRelationships.samuel.trust + 1)
       newRelationships.samuel.lastInteraction = 'trust_building'
     }
+    if (consequence === 'samuel_backstory') {
+      newRelationships.samuel.backstoryRevealed.push('engineering_background')
+    }
+    if (consequence === 'samuel_social_awareness') {
+      newRelationships.samuel.trust = Math.min(10, newRelationships.samuel.trust + 2)
+      newRelationships.samuel.backstoryRevealed.push('social_justice_awareness')
+    }
 
     // Maya relationship updates
     if (consequence === 'maya_confidence+') {
@@ -313,6 +375,9 @@ export function useSimpleGame() {
       newRelationships.maya.roboticsRevealed = true
       newBirminghamKnowledge.opportunitiesUnlocked.push('UAB Biomedical Engineering')
     }
+    if (consequence === 'maya_family_pressure') {
+      newRelationships.maya.familyPressure = Math.max(0, newRelationships.maya.familyPressure - 1)
+    }
 
     // Devon relationship updates
     if (consequence === 'devon_technical_sharing+') {
@@ -321,13 +386,20 @@ export function useSimpleGame() {
     if (consequence === 'devon_social_comfort+') {
       newRelationships.devon.socialComfort = Math.min(10, newRelationships.devon.socialComfort + 1)
     }
+    if (consequence === 'devon_confidence+') {
+      newRelationships.devon.socialComfort = Math.min(10, newRelationships.devon.socialComfort + 1)
+      newRelationships.devon.technicalSharing = Math.min(10, newRelationships.devon.technicalSharing + 1)
+    }
 
     // Jordan relationship updates
     if (consequence === 'jordan_mentorship') {
       newRelationships.jordan.mentorshipUnlocked = true
     }
+    if (consequence === 'jordan_wisdom') {
+      newRelationships.jordan.wisdomShared = Math.min(10, newRelationships.jordan.wisdomShared + 1)
+    }
 
-    // Birmingham knowledge updates
+    // Birmingham knowledge updates - Major companies and institutions
     if (consequence === 'birmingham_uab') {
       newBirminghamKnowledge.companiesKnown.push('UAB Medical Center')
       newBirminghamKnowledge.localReferencesRecognized.push('UAB')
@@ -335,6 +407,27 @@ export function useSimpleGame() {
     if (consequence === 'birmingham_innovation_depot') {
       newBirminghamKnowledge.companiesKnown.push('Innovation Depot')
       newBirminghamKnowledge.localReferencesRecognized.push('Innovation Depot')
+    }
+    if (consequence === 'birmingham_economic_history') {
+      newBirminghamKnowledge.localReferencesRecognized.push('Sloss Furnaces', 'Red Mountain', 'Steel Industry Heritage')
+    }
+    if (consequence === 'birmingham_hidden_opportunities') {
+      newBirminghamKnowledge.opportunitiesUnlocked.push('UAB Biomedical Technician', 'Amazon Robotics Maintenance', 'Cybersecurity Training')
+      newBirminghamKnowledge.salaryDataRevealed.push('$65K Biomedical Tech', '$70K Robotics Maintenance')
+    }
+    if (consequence === 'birmingham_professional_network') {
+      newBirminghamKnowledge.companiesKnown.push('Jeff State Community College', 'Amazon Bessemer', 'Downtown Banks')
+    }
+
+    // Career field specific knowledge
+    if (consequence === 'birmingham_healthcare') {
+      newBirminghamKnowledge.opportunitiesUnlocked.push('UAB Medical Center Careers', 'Children\'s Hospital', 'Healthcare Technology')
+    }
+    if (consequence === 'birmingham_tech') {
+      newBirminghamKnowledge.opportunitiesUnlocked.push('Birmingham Tech Scene', 'Software Development', 'Data Analysis')
+    }
+    if (consequence === 'birmingham_engineering') {
+      newBirminghamKnowledge.opportunitiesUnlocked.push('Southern Company Engineering', 'Manufacturing', 'Environmental Engineering')
     }
 
     return { characterRelationships: newRelationships, birminghamKnowledge: newBirminghamKnowledge }
