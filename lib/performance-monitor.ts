@@ -267,7 +267,7 @@ class PerformanceMonitor {
       const updateMemoryUsage = () => {
         const memory = (performance as any).memory
         this.metrics.memoryUsage = memory.usedJSHeapSize / 1024 / 1024 // MB
-        this.logMetric('Memory Usage', this.metrics.memoryUsage, 50) // 50MB budget
+        this.logMetric('Memory Usage', this.metrics.memoryUsage, 100) // 100MB budget (more realistic for React app)
       }
 
       updateMemoryUsage()

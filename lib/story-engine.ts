@@ -1,5 +1,7 @@
 // Use the Grand Central Terminus narrative
 import storyData from '@/data/grand-central-story.json'
+import { generateDynamicChoices, ChoiceGenerator } from './choice-generator'
+import type { GameState } from './game-store'
 
 /**
  * Represents a single scene in the story
@@ -38,9 +40,9 @@ export class StoryEngine {
   private chapters = storyData.chapters
   
   /**
-   * Get a scene by ID
+   * Get a scene by ID with optional dynamic choices
    */
-  getScene(sceneId: string): Scene | null {
+  async getScene(sceneId: string, gameState?: GameState): Promise<Scene | null> {
     const [chapterNum, sceneNum] = sceneId.split('-').map(Number)
     const chapter = this.chapters.find(c => c.id === chapterNum)
     if (!chapter) return null
@@ -48,8 +50,8 @@ export class StoryEngine {
     const scene = chapter.scenes.find(s => s.id === sceneId)
     if (!scene) return null
     
-    // Return scene without any modifications or enhancements
-    return {
+    // Create base scene
+    const baseScene: Scene = {
       id: scene.id,
       type: scene.type as Scene['type'],
       speaker: scene.speaker,
@@ -61,6 +63,30 @@ export class StoryEngine {
         stateChanges: (c as { stateChanges?: unknown }).stateChanges
       }))
     }
+
+    // Apply dynamic choices if game state is provided
+    if (gameState && baseScene.choices) {
+      try {
+        const dynamicChoices = await generateDynamicChoices(baseScene, gameState, {
+          performanceLevel: this.getPerformanceLevel(gameState),
+          platformContext: this.getPlatformContext(baseScene, gameState),
+          characterContext: this.getCharacterContext(baseScene, gameState),
+          enableLiveAugmentation: true,
+          playerId: 'player-main', // In production, this would come from authentication
+          liveAugmentationChance: 0.33
+        })
+
+        // Use dynamic choices if they were generated
+        if (dynamicChoices.length > 0 && ChoiceGenerator.shouldUseDynamicChoices(baseScene)) {
+          baseScene.choices = dynamicChoices
+        }
+      } catch (error) {
+        console.warn('Dynamic choice generation failed, using static choices:', error)
+        // Graceful fallback to static choices
+      }
+    }
+
+    return baseScene
   }
   
   /**
@@ -148,5 +174,79 @@ export class StoryEngine {
       id: c.id,
       title: c.title
     }))
+  }
+
+  /**
+   * Get performance level from game state
+   */
+  private getPerformanceLevel(gameState: GameState): 'struggling' | 'learning' | 'mastering' {
+    const level = gameState.performanceLevel || 0
+    if (level < 0.3) return 'struggling'
+    if (level < 0.7) return 'learning'
+    return 'mastering'
+  }
+
+  /**
+   * Get platform context from game state
+   */
+  private getPlatformContext(scene: Scene, gameState: GameState) {
+    const sceneText = (scene.text || '').toLowerCase()
+
+    // Detect platform references in scene
+    if (sceneText.includes('platform 1')) {
+      return {
+        platformId: 'p1',
+        warmth: gameState.platformWarmth?.p1 || 0,
+        accessible: gameState.platformAccessible?.p1 !== false
+      }
+    }
+    if (sceneText.includes('platform 3')) {
+      return {
+        platformId: 'p3',
+        warmth: gameState.platformWarmth?.p3 || 0,
+        accessible: gameState.platformAccessible?.p3 !== false
+      }
+    }
+    if (sceneText.includes('platform 7')) {
+      return {
+        platformId: 'p7',
+        warmth: gameState.platformWarmth?.p7 || 0,
+        accessible: gameState.platformAccessible?.p7 !== false
+      }
+    }
+
+    return undefined
+  }
+
+  /**
+   * Get character context from game state
+   */
+  private getCharacterContext(scene: Scene, gameState: GameState) {
+    const speaker = scene.speaker?.toLowerCase()
+
+    if (speaker === 'samuel') {
+      const trust = gameState.characterTrust?.samuel || 0
+      const relationship: 'stranger' | 'acquaintance' | 'friend' | 'close' =
+        trust > 7 ? 'close' : trust > 4 ? 'friend' : trust > 1 ? 'acquaintance' : 'stranger'
+
+      return {
+        characterId: 'samuel',
+        trustLevel: trust,
+        relationship
+      }
+    }
+    if (speaker === 'maya') {
+      const trust = gameState.characterTrust?.maya || 0
+      const relationship: 'stranger' | 'acquaintance' | 'friend' | 'close' =
+        trust > 7 ? 'close' : trust > 4 ? 'friend' : trust > 1 ? 'acquaintance' : 'stranger'
+
+      return {
+        characterId: 'maya',
+        trustLevel: trust,
+        relationship
+      }
+    }
+
+    return undefined
   }
 }

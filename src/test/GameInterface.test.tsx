@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { AppleGameInterface } from '@/components/AppleGameInterface'
+import { GameInterface } from '@/components/GameInterface'
 
 // Mock the hooks
 vi.mock('@/hooks/useMessageManager', () => ({
@@ -98,35 +98,35 @@ vi.mock('@/lib/grand-central-state', () => ({
   })
 }))
 
-describe('AppleGameInterface', () => {
+describe('GameInterface', () => {
   beforeEach(() => {
     vi.clearAllMocks()
   })
 
   it('renders the intro screen initially', () => {
-    render(<AppleGameInterface />)
-    
+    render(<GameInterface />)
+
     expect(screen.getByText('Grand Central Terminus')).toBeInTheDocument()
-    expect(screen.getByText('Your future awaits at Platform 7. Midnight. Don\'t be late.')).toBeInTheDocument()
-    expect(screen.getByText('Begin Your Journey')).toBeInTheDocument()
+    expect(screen.getByText('"Your future awaits at Platform 7. Midnight. Don\'t be late."')).toBeInTheDocument()
+    expect(screen.getByText('Begin New Journey')).toBeInTheDocument()
   })
 
-  it('starts the game when Begin Your Journey is clicked', async () => {
-    render(<AppleGameInterface />)
-    
-    const startButton = screen.getByText('Begin Your Journey')
+  it('starts the game when Begin New Journey is clicked', async () => {
+    render(<GameInterface />)
+
+    const startButton = screen.getByText('Begin New Journey')
     fireEvent.click(startButton)
-    
+
     // The game should start and show the main interface
     await waitFor(() => {
-      expect(screen.queryByText('Begin Your Journey')).not.toBeInTheDocument()
+      expect(screen.queryByText('Begin New Journey')).not.toBeInTheDocument()
     })
   })
 
   it('applies Apple design classes correctly', () => {
-    render(<AppleGameInterface />)
-    
-    const container = screen.getByText('Grand Central Terminus').closest('.apple-game-container')
+    render(<GameInterface />)
+
+    const container = screen.getByText('Grand Central Terminus').closest('.apple-container')
     expect(container).toBeInTheDocument()
   })
 })

@@ -277,65 +277,74 @@ export const memoizedGameSelectors = {
 
 // Hook for basic game state
 export function useGameStateSelector<TResult>(
+  state: any,
   selector: Selector<any, TResult>
 ): TResult {
-  return useMemo(() => selector, [selector]);
+  return useMemo(() => selector(state), [state, selector]);
 }
 
 // Hook for emotional state
 export function useEmotionalStateSelector<TResult>(
+  state: any,
   selector: Selector<any, TResult>
 ): TResult {
-  return useMemo(() => selector, [selector]);
+  return useMemo(() => selector(state), [state, selector]);
 }
 
 // Hook for cognitive state
 export function useCognitiveStateSelector<TResult>(
+  state: any,
   selector: Selector<any, TResult>
 ): TResult {
-  return useMemo(() => selector, [selector]);
+  return useMemo(() => selector(state), [state, selector]);
 }
 
 // Hook for skills
 export function useSkillsSelector<TResult>(
+  state: any,
   selector: Selector<any, TResult>
 ): TResult {
-  return useMemo(() => selector, [selector]);
+  return useMemo(() => selector(state), [state, selector]);
 }
 
 // Hook for trust system
 export function useTrustSelector<TResult>(
+  state: any,
   selector: Selector<any, TResult>
 ): TResult {
-  return useMemo(() => selector, [selector]);
+  return useMemo(() => selector(state), [state, selector]);
 }
 
 // Hook for relationships
 export function useRelationshipsSelector<TResult>(
+  state: any,
   selector: Selector<any, TResult>
 ): TResult {
-  return useMemo(() => selector, [selector]);
+  return useMemo(() => selector(state), [state, selector]);
 }
 
 // Hook for platforms
 export function usePlatformsSelector<TResult>(
+  state: any,
   selector: Selector<any, TResult>
 ): TResult {
-  return useMemo(() => selector, [selector]);
+  return useMemo(() => selector(state), [state, selector]);
 }
 
 // Hook for messages
 export function useMessagesSelector<TResult>(
+  state: any,
   selector: Selector<any, TResult>
 ): TResult {
-  return useMemo(() => selector, [selector]);
+  return useMemo(() => selector(state), [state, selector]);
 }
 
 // Hook for performance metrics
 export function usePerformanceSelector<TResult>(
+  state: any,
   selector: Selector<any, TResult>
 ): TResult {
-  return useMemo(() => selector, [selector]);
+  return useMemo(() => selector(state), [state, selector]);
 }
 
 /**

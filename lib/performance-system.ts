@@ -22,8 +22,8 @@ export interface PerformanceMetrics {
   lastCalculation: number
   performanceHistory: number[]
   choiceTimestamps: number[]
-  regionExploration: Set<string>
-  characterInteractions: Set<string>
+  regionExploration: string[]
+  characterInteractions: string[]
 }
 
 export class PerformanceSystem {
@@ -45,8 +45,8 @@ export class PerformanceSystem {
       lastCalculation: Date.now(),
       performanceHistory: [],
       choiceTimestamps: [],
-      regionExploration: new Set(),
-      characterInteractions: new Set()
+      regionExploration: [],
+      characterInteractions: []
     }
   }
   
@@ -56,9 +56,9 @@ export class PerformanceSystem {
       const saved = localStorage.getItem(this.STORAGE_KEY)
       if (!saved) return null
       const parsed = JSON.parse(saved)
-      // Reconstruct Sets from arrays
-      parsed.regionExploration = new Set(parsed.regionExploration || [])
-      parsed.characterInteractions = new Set(parsed.characterInteractions || [])
+      // Ensure arrays are properly initialized
+      parsed.regionExploration = parsed.regionExploration || []
+      parsed.characterInteractions = parsed.characterInteractions || []
       return parsed
     } catch {
       return null
@@ -71,8 +71,8 @@ export class PerformanceSystem {
       const toSave = {
         ...this.metrics,
         // Convert Sets to arrays for storage
-        regionExploration: Array.from(this.metrics.regionExploration),
-        characterInteractions: Array.from(this.metrics.characterInteractions)
+        regionExploration: this.metrics.regionExploration,
+        characterInteractions: this.metrics.characterInteractions
       }
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(toSave))
     } catch (error) {
@@ -108,19 +108,29 @@ export class PerformanceSystem {
     this.metrics.anxiety = this.metrics.anxiety * 0.8 + anxietyScore * 0.2
     
     // Track exploration for learning metric
-    if (currentScene.includes('grove')) this.metrics.regionExploration.add('grove')
-    if (currentScene.includes('pattern')) this.metrics.regionExploration.add('pattern')
-    if (currentScene.includes('shape')) this.metrics.regionExploration.add('shape')
-    if (currentScene.includes('growing')) this.metrics.regionExploration.add('growing')
-    if (currentScene.includes('rhythm')) this.metrics.regionExploration.add('rhythm')
+    if (currentScene.includes('grove') && !this.metrics.regionExploration.includes('grove')) {
+      this.metrics.regionExploration.push('grove')
+    }
+    if (currentScene.includes('pattern') && !this.metrics.regionExploration.includes('pattern')) {
+      this.metrics.regionExploration.push('pattern')
+    }
+    if (currentScene.includes('shape') && !this.metrics.regionExploration.includes('shape')) {
+      this.metrics.regionExploration.push('shape')
+    }
+    if (currentScene.includes('growing') && !this.metrics.regionExploration.includes('growing')) {
+      this.metrics.regionExploration.push('growing')
+    }
+    if (currentScene.includes('rhythm') && !this.metrics.regionExploration.includes('rhythm')) {
+      this.metrics.regionExploration.push('rhythm')
+    }
     
-    if (character) {
-      this.metrics.characterInteractions.add(character)
+    if (character && !this.metrics.characterInteractions.includes(character)) {
+      this.metrics.characterInteractions.push(character)
     }
     
     // Update learning based on exploration
-    const explorationScore = Math.min(1, this.metrics.regionExploration.size / 3)
-    const interactionScore = Math.min(1, this.metrics.characterInteractions.size / 4)
+    const explorationScore = Math.min(1, this.metrics.regionExploration.length / 3)
+    const interactionScore = Math.min(1, this.metrics.characterInteractions.length / 4)
     this.metrics.learning = (explorationScore + interactionScore) / 2
     
     this.saveMetrics()

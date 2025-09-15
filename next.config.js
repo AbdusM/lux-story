@@ -1,23 +1,31 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  // Enable static export for Cloudflare Pages
-  output: 'export',
+
+  // Environment-specific configuration
+  ...(process.env.NODE_ENV === 'production' && {
+    // Enable static export for Cloudflare Pages (production only)
+    output: 'export',
+    trailingSlash: true,
+  }),
+
   images: {
     unoptimized: true
   },
-  // Use trailing slash only for production (Cloudflare Pages)
-  trailingSlash: process.env.NODE_ENV === 'production',
+
   // Ensure clean asset URLs
   basePath: '',
+
   // Re-enable ESLint for security
   eslint: {
     ignoreDuringBuilds: false
   },
+
   // Performance optimizations
   experimental: {
     optimizePackageImports: ['@/hooks', '@/lib', '@/components']
   },
+
   webpack: (config, { isServer }) => {
     // Optimize bundle splitting
     if (!isServer) {
@@ -52,31 +60,35 @@ const nextConfig = {
     }
     return config
   },
-  async headers() {
-    return [
-      {
-        source: '/(.*)',
-        headers: [
-          {
-            key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self';"
-          },
-          {
-            key: 'X-Frame-Options',
-            value: 'DENY'
-          },
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff'
-          },
-          {
-            key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin'
-          }
-        ]
-      }
-    ]
-  }
+
+  // Security headers only for development server (not compatible with static export)
+  ...(process.env.NODE_ENV !== 'production' && {
+    async headers() {
+      return [
+        {
+          source: '/(.*)',
+          headers: [
+            {
+              key: 'Content-Security-Policy',
+              value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self';"
+            },
+            {
+              key: 'X-Frame-Options',
+              value: 'DENY'
+            },
+            {
+              key: 'X-Content-Type-Options',
+              value: 'nosniff'
+            },
+            {
+              key: 'Referrer-Policy',
+              value: 'strict-origin-when-cross-origin'
+            }
+          ]
+        }
+      ]
+    }
+  })
 }
 
 export default nextConfig

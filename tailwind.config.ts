@@ -6,6 +6,31 @@ const config: Config = {
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./styles/**/*.css", // Include CSS files for better purging
+  ],
+  // Add safelist for dynamically generated classes
+  safelist: [
+    // Platform warmth states
+    {
+      pattern: /platform-warmth-(negative-)?[0-9]+/,
+    },
+    // Time speed classes
+    {
+      pattern: /time-speed-[0-9]+(\.[0-9]+)?/,
+    },
+    // Performance classes
+    {
+      pattern: /performance-(struggling|exploring|flowing|mastering)/,
+    },
+    // Character glow effects
+    'lux-text-glow',
+    'swift-text-glow',
+    'sage-text-glow',
+    'buzz-text-glow',
+    // Apple design system classes that need to be preserved
+    'apple-container',
+    'apple-loading',
+    'grand-central-terminus',
   ],
   theme: {
     extend: {
@@ -160,6 +185,40 @@ const config: Config = {
         'modal': '50',
         'celebration': '60',
         'tooltip': '70',
+      },
+
+      // Game-specific animations
+      animation: {
+        'breathe': 'breathe 4s ease-in-out infinite',
+        'platform-pulse': 'resonant-platform 2s ease-in-out infinite',
+        'time-slow': 'time-slow 2s linear infinite',
+        'helping-aura': 'helping-aura 5s ease-in-out infinite',
+        'glow-pulse': 'glow-pulse 2s ease-in-out infinite',
+      },
+
+      // Keyframes for animations
+      keyframes: {
+        breathe: {
+          '0%, 100%': { transform: 'scale(1)', opacity: '1' },
+          '50%': { transform: 'scale(1.05)', opacity: '0.9' },
+        },
+        'resonant-platform': {
+          '0%, 100%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(1.01)' },
+        },
+        'time-slow': {
+          '0%': { filter: 'brightness(1) saturate(1)' },
+          '50%': { filter: 'brightness(1.1) saturate(1.2)' },
+          '100%': { filter: 'brightness(1) saturate(1)' },
+        },
+        'helping-aura': {
+          '0%, 100%': { boxShadow: '0 0 20px rgba(74, 222, 128, 0.3)' },
+          '50%': { boxShadow: '0 0 40px rgba(74, 222, 128, 0.6)' },
+        },
+        'glow-pulse': {
+          '0%, 100%': { textShadow: '0 0 20px currentColor' },
+          '50%': { textShadow: '0 0 40px currentColor, 0 0 60px currentColor' },
+        },
       },
     },
   },

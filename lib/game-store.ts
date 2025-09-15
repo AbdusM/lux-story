@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
-import { getMemoryManager, createDebouncedStorage } from './memory-manager'
+import { getMemoryManager } from './memory-manager'
 
 // Core game state interfaces
 export interface GameState {
@@ -16,7 +16,7 @@ export interface GameState {
   messageId: number
   
   // Game progress
-  visitedScenes: Set<string>
+  visitedScenes: string[]
   choiceHistory: ChoiceRecord[]
   
   // Performance tracking
@@ -202,7 +202,7 @@ const initialState: GameState = {
   messageId: 0,
   
   // Game progress
-  visitedScenes: new Set(),
+  visitedScenes: [],
   choiceHistory: [],
   
   // Performance tracking
@@ -295,8 +295,6 @@ const initialState: GameState = {
   }
 }
 
-// Create debounced storage for performance
-const debouncedStorage = createDebouncedStorage('grand-central-game-state')
 
 // Create the game store
 export const useGameStore = create<GameState & GameActions>()(
@@ -316,7 +314,7 @@ export const useGameStore = create<GameState & GameActions>()(
           const id = `msg-${get().messageId}`
           const timestamp = Date.now()
           set((state) => ({
-            messages: [...state.messages, { ...message, id, timestamp }],
+            messages: [...(state.messages || []), { ...message, id, timestamp }],
             messageId: state.messageId + 1
           }))
         },
@@ -325,7 +323,7 @@ export const useGameStore = create<GameState & GameActions>()(
           const id = `stream-${get().messageId}`
           const timestamp = Date.now()
           set((state) => ({
-            messages: [...state.messages, { ...message, id, timestamp }],
+            messages: [...(state.messages || []), { ...message, id, timestamp }],
             messageId: state.messageId + 1
           }))
         },
@@ -335,13 +333,13 @@ export const useGameStore = create<GameState & GameActions>()(
         // Game progress actions
         markSceneVisited: (sceneId) => {
           set((state) => ({
-            visitedScenes: new Set([...state.visitedScenes, sceneId])
+            visitedScenes: [...(state.visitedScenes || []), sceneId].filter((id, index, arr) => arr.indexOf(id) === index)
           }))
         },
         
         addChoiceRecord: (record) => {
           set((state) => ({
-            choiceHistory: [...state.choiceHistory, record]
+            choiceHistory: [...(state.choiceHistory || []), record]
           }))
         },
         
@@ -438,6 +436,37 @@ export const useGameStore = create<GameState & GameActions>()(
       }),
       {
         name: 'grand-central-game-store',
+        version: 1, // Add version for migrations
+        migrate: (persistedState: any, version: number) => {
+          // Handle migration from corrupted Set data to Arrays
+          if (version === 0 && persistedState) {
+            try {
+              // Fix visitedScenes if it's corrupted Set data
+              if (persistedState.visitedScenes && typeof persistedState.visitedScenes === 'object') {
+                // If it's not an array, try to convert or reset
+                if (!Array.isArray(persistedState.visitedScenes)) {
+                  console.warn('Migrating corrupted visitedScenes from Set to Array')
+                  persistedState.visitedScenes = []
+                }
+              }
+
+              // Ensure all required fields exist with proper types
+              const migratedState = {
+                ...initialState,
+                ...persistedState,
+                visitedScenes: Array.isArray(persistedState.visitedScenes) ? persistedState.visitedScenes : [],
+                choiceHistory: Array.isArray(persistedState.choiceHistory) ? persistedState.choiceHistory : [],
+                messages: [] // Don't persist messages
+              }
+
+              return migratedState
+            } catch (error) {
+              console.warn('State migration failed, using initial state:', error)
+              return initialState
+            }
+          }
+          return persistedState
+        },
         partialize: (state) => ({
           currentSceneId: state.currentSceneId,
           hasStarted: state.hasStarted,
@@ -462,20 +491,117 @@ export const useGameStore = create<GameState & GameActions>()(
       name: 'grand-central-game-store',
       storage: {
         getItem: (name: string) => {
-          const str = localStorage.getItem(name)
-          if (!str) return null
-          return JSON.parse(str)
+          try {
+            const str = localStorage.getItem(name)
+            if (!str) return null
+
+            const parsed = JSON.parse(str)
+
+            // Validate that the parsed data is serializable
+            if (parsed && typeof parsed === 'object') {
+              // Quick check for Set objects or other non-serializable data
+              const testSerialization = JSON.stringify(parsed)
+              JSON.parse(testSerialization) // Will throw if not properly serializable
+            }
+
+            return parsed
+          } catch (error) {
+            console.warn('Failed to parse localStorage data, clearing corrupted state:', error)
+            localStorage.removeItem(name)
+            return null
+          }
         },
         setItem: (name: string, value: any) => {
-          localStorage.setItem(name, JSON.stringify(value))
+          try {
+            // Validate serializability before storing
+            const serialized = JSON.stringify(value)
+            JSON.parse(serialized) // Will throw if not properly serializable
+            localStorage.setItem(name, serialized)
+          } catch (error) {
+            console.error('Failed to store state, data not serializable:', error)
+            // Don't throw, just log the error to prevent app crashes
+          }
         },
         removeItem: (name: string) => {
-          localStorage.removeItem(name)
+          try {
+            localStorage.removeItem(name)
+          } catch (error) {
+            console.warn('Failed to remove localStorage item:', error)
+          }
         }
       }
     }
   )
 )
+
+// Validation utilities for serialization
+export function validateGameState(state: any): { isValid: boolean; errors: string[] } {
+  const errors: string[] = []
+
+  try {
+    // Test JSON serialization
+    const serialized = JSON.stringify(state)
+    const deserialized = JSON.parse(serialized)
+
+    // Check that visitedScenes is an array
+    if (state.visitedScenes && !Array.isArray(state.visitedScenes)) {
+      errors.push('visitedScenes must be an array')
+    }
+
+    // Check that choiceHistory is an array
+    if (state.choiceHistory && !Array.isArray(state.choiceHistory)) {
+      errors.push('choiceHistory must be an array')
+    }
+
+    // Check that messages is an array
+    if (state.messages && !Array.isArray(state.messages)) {
+      errors.push('messages must be an array')
+    }
+
+    // Validate that all numeric values are actually numbers
+    if (typeof state.performanceLevel !== 'number') {
+      errors.push('performanceLevel must be a number')
+    }
+
+    // Check that serialization is reversible
+    if (JSON.stringify(deserialized) !== serialized) {
+      errors.push('State serialization is not reversible')
+    }
+
+  } catch (error) {
+    errors.push(`Serialization failed: ${error}`)
+  }
+
+  return {
+    isValid: errors.length === 0,
+    errors
+  }
+}
+
+// Clear any corrupted localStorage during development
+export function clearCorruptedStorage() {
+  try {
+    const storageKey = 'grand-central-game-store'
+    const stored = localStorage.getItem(storageKey)
+
+    if (stored) {
+      const parsed = JSON.parse(stored)
+      const validation = validateGameState(parsed.state)
+
+      if (!validation.isValid) {
+        console.warn('Clearing corrupted localStorage:', validation.errors)
+        localStorage.removeItem(storageKey)
+        return true
+      }
+    }
+
+    return false
+  } catch (error) {
+    console.warn('Error checking localStorage, clearing it:', error)
+    localStorage.removeItem('grand-central-game-store')
+    return true
+  }
+}
 
 // Selectors for optimized re-renders
 export const useGameSelectors = {
