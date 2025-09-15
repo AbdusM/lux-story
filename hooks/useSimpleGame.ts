@@ -7,58 +7,170 @@ import { useState, useCallback, useEffect } from 'react'
 import { generateUserId, safeStorage, saveProgress, loadProgress } from '@/lib/safe-storage'
 import { trackUserChoice, getUserInsights, getBirminghamMatches } from '@/lib/simple-career-analytics'
 
-// Essential game state only
+// Character relationships and player patterns
+export interface CharacterRelationships {
+  samuel: { trust: number; backstoryRevealed: string[]; lastInteraction: string }
+  maya: { confidence: number; familyPressure: number; roboticsRevealed: boolean }
+  devon: { socialComfort: number; technicalSharing: number; groupProgress: boolean }
+  jordan: { mentorshipUnlocked: boolean; pathsDiscussed: string[]; wisdomShared: number }
+}
+
+export interface PlayerPatterns {
+  analytical: number    // Logic-based, data-driven choices
+  helping: number      // People-focused, supportive choices
+  building: number     // Creative, hands-on choices
+  patience: number     // Thoughtful, long-term choices
+}
+
+export interface BirminghamKnowledge {
+  companiesKnown: string[]
+  opportunitiesUnlocked: string[]
+  localReferencesRecognized: string[]
+  salaryDataRevealed: string[]
+}
+
+// Enhanced game state with character depth
 export interface SimpleGameState {
   hasStarted: boolean
   currentScene: string
-  messages: Array<{ text: string; speaker: string; type: string }>
-  choices: Array<{ text: string; next?: string; consequence?: string }>
+  messages: Array<{ id: string; text: string; speaker: string; type: string }>
+  choices: Array<{ text: string; next?: string; consequence?: string; pattern?: keyof PlayerPatterns }>
   isProcessing: boolean
   userId: string
   choiceHistory: string[]
+  characterRelationships: CharacterRelationships
+  playerPatterns: PlayerPatterns
+  birminghamKnowledge: BirminghamKnowledge
 }
 
-// Simple scene data (replaces complex story engine)
+// Enhanced scene data with character depth and Birmingham integration
 const SIMPLE_SCENES = {
   'intro': {
     id: 'intro',
-    text: "Welcome to Grand Central Terminus. You've received a mysterious letter: \"Platform 7, Midnight. Your future awaits.\"",
+    text: "Grand Central Terminus isn't on any map, but here you are. The letter in your hand reads: \"Platform 7, Midnight. Your future awaits.\" Around you, platforms stretch into the distance, each humming with different energy.",
     speaker: 'Narrator',
     choices: [
-      { text: "Explore the healthcare platform", next: 'healthcare-intro', consequence: 'healthcare' },
-      { text: "Check out the technology area", next: 'tech-intro', consequence: 'technology' },
-      { text: "Visit the engineering section", next: 'engineering-intro', consequence: 'engineering' },
-      { text: "Look around for guidance", next: 'guidance', consequence: 'exploring' }
+      { text: "Explore Platform 1: The Care Line", next: 'healthcare-intro', consequence: 'healthcare', pattern: 'helping' },
+      { text: "Visit Platform 7: The Data Stream", next: 'tech-intro', consequence: 'technology', pattern: 'analytical' },
+      { text: "Check Platform 3: The Builder's Track", next: 'engineering-intro', consequence: 'engineering', pattern: 'building' },
+      { text: "Find the Station Keeper for guidance", next: 'samuel-first-meeting', consequence: 'exploring', pattern: 'patience' }
+    ]
+  },
+
+  'samuel-first-meeting': {
+    id: 'samuel-first-meeting',
+    text: "You find a man in his fifties adjusting an old mechanical clock, his movements precise and patient. He looks up with kind eyes that have seen many lost travelers. \"Welcome to Grand Central. You look a little lost - that's normal. Everyone who comes through here is trying to figure out where they're headed.\"",
+    speaker: 'Samuel (Station Keeper)',
+    choices: [
+      { text: "I don't feel brave. I feel like everyone else knows what they're doing except me.", next: 'samuel-wisdom-validation', consequence: 'samuel_trust+', pattern: 'patience' },
+      { text: "My parents sent me here. They think I need direction.", next: 'samuel-parent-pressure', consequence: 'samuel_backstory', pattern: 'helping' },
+      { text: "I heard you help people find careers. I need something that actually pays.", next: 'samuel-practical-reality', consequence: 'samuel_practical', pattern: 'analytical' },
+      { text: "Birmingham doesn't have opportunities for someone like me.", next: 'samuel-birmingham-transformation', consequence: 'samuel_history', pattern: 'building' }
     ]
   },
   'healthcare-intro': {
     id: 'healthcare-intro',
-    text: "Platform 1: The Care Line. You see medical professionals discussing patient care and healing. This could be your path to helping others.",
-    speaker: 'Maya (Pre-med Student)',
+    text: "Platform 1: The Care Line. Soft blue light bathes everything in warmth. You notice a young woman studying at a table covered with both anatomy books and what looks like robotics components. She looks up, anxiety flickering across her face.",
+    speaker: 'Maya Chen (Pre-med Student)',
     choices: [
-      { text: "Learn about Birmingham medical opportunities", next: 'healthcare-birmingham', consequence: 'healthcare' },
-      { text: "Explore other career areas", next: 'career-exploration', consequence: 'exploring' },
-      { text: "Ask about medical school preparation", next: 'healthcare-education', consequence: 'education' }
+      { text: "Those robotics parts are interesting. Are you building something medical?", next: 'maya-robotics-reveal', consequence: 'maya_confidence+', pattern: 'building' },
+      { text: "Medical school is tough. How are you handling the pressure?", next: 'maya-pressure-discussion', consequence: 'maya_family_pressure', pattern: 'helping' },
+      { text: "What Birmingham medical opportunities have you discovered?", next: 'maya-birmingham-medical', consequence: 'birmingham_healthcare', pattern: 'analytical' },
+      { text: "You seem conflicted about something. Want to talk?", next: 'maya-inner-conflict', consequence: 'maya_trust+', pattern: 'patience' }
+    ]
+  },
+
+  'maya-robotics-reveal': {
+    id: 'maya-robotics-reveal',
+    text: "Maya's eyes light up for the first time. \"You noticed! It's a haptic feedback system for remote surgery training. Surgeons in Birmingham could train doctors in rural Alabama, or even globally. My robotics professor wants to patent it with me.\" Then her expression darkens. \"But if my parents find out I've been spending time on this instead of MCAT prep...\"",
+    speaker: 'Maya Chen (Pre-med Student)',
+    choices: [
+      { text: "This could revolutionize medical training. You're brilliant.", next: 'maya-confidence-building', consequence: 'maya_robotics_revealed', pattern: 'helping' },
+      { text: "Could you present this as enhancing your medical career?", next: 'maya-strategic-thinking', consequence: 'maya_family_strategy', pattern: 'analytical' },
+      { text: "What would happen if you showed this to your parents?", next: 'maya-family-revelation', consequence: 'maya_family_deep', pattern: 'patience' },
+      { text: "UAB has biomedical engineering. Maybe that's your bridge?", next: 'maya-uab-bridge', consequence: 'birmingham_uab', pattern: 'building' }
+    ]
+  },
+
+  'maya-pressure-discussion': {
+    id: 'maya-pressure-discussion',
+    text: "Maya sets down her pencil with shaking hands. \"You want to know the worst part? I'm actually good at the pre-med stuff. Organic chemistry, anatomy, I ace it all. My parents say that means it's my calling. But being good at something and being called to it - those aren't the same thing, are they?\"",
+    speaker: 'Maya Chen (Pre-med Student)',
+    choices: [
+      { text: "No, they're not. What does call to you?", next: 'maya-true-passion', consequence: 'maya_authenticity', pattern: 'helping' },
+      { text: "Twenty years of their sacrifice is a lot of love to honor.", next: 'maya-family-love', consequence: 'maya_family_understanding', pattern: 'patience' },
+      { text: "What specific expectations are weighing on you?", next: 'maya-expectation-details', consequence: 'maya_family_pressure_deep', pattern: 'analytical' },
+      { text: "Maybe excellence in one area can fund passion in another?", next: 'maya-strategic-balance', consequence: 'maya_balance_strategy', pattern: 'building' }
     ]
   },
   'tech-intro': {
     id: 'tech-intro',
-    text: "Platform 7: The Data Stream. Screens flicker with code and innovation. Birmingham's tech scene is growing rapidly.",
-    speaker: 'Devon (Software Engineer)',
+    text: "Platform 7: The Data Stream. Purple light shimmers across multiple screens displaying elegant code. You see a young man hunched over a laptop, completely absorbed. He's muttering to himself about algorithms while simultaneously organizing his cables with mathematical precision.",
+    speaker: 'Devon Williams (UAB Engineering Student)',
     choices: [
-      { text: "Discover Birmingham tech companies", next: 'tech-birmingham', consequence: 'technology' },
-      { text: "Learn about coding bootcamps", next: 'tech-education', consequence: 'education' },
-      { text: "Explore other platforms", next: 'career-exploration', consequence: 'exploring' }
+      { text: "That's beautiful code. What are you building?", next: 'devon-technical-passion', consequence: 'devon_technical_sharing+', pattern: 'building' },
+      { text: "You ever notice how everyone says 'networking' like it's easy?", next: 'devon-social-struggle', consequence: 'devon_social_comfort', pattern: 'helping' },
+      { text: "What Birmingham tech opportunities have you found?", next: 'devon-birmingham-tech', consequence: 'birmingham_tech', pattern: 'analytical' },
+      { text: "Mind if I sit? You look like you understand systems.", next: 'devon-systems-thinking', consequence: 'devon_trust+', pattern: 'patience' }
+    ]
+  },
+
+  'devon-technical-passion': {
+    id: 'devon-technical-passion',
+    text: "Devon's whole demeanor changes. He straightens up, eyes bright. \"It's a water filtration monitoring system for Birmingham's Village Creek. Particulate sensors feeding real-time data to environmental engineers. But the beautiful part is the cascading cleanup algorithm - each sensor learns from upstream patterns.\" He pauses, suddenly self-conscious. \"Sorry, I get excited about systems.\"",
+    speaker: 'Devon Williams (UAB Engineering Student)',
+    choices: [
+      { text: "Don't apologize! Your passion makes it fascinating.", next: 'devon-confidence-building', consequence: 'devon_confidence+', pattern: 'helping' },
+      { text: "How does this help Birmingham's environmental challenges?", next: 'devon-community-impact', consequence: 'devon_impact_awareness', pattern: 'analytical' },
+      { text: "Have you thought about teaching or technical training?", next: 'devon-teaching-realization', consequence: 'devon_career_path', pattern: 'patience' },
+      { text: "Could you demo this at the Innovation Depot?", next: 'devon-innovation-depot', consequence: 'birmingham_innovation_depot', pattern: 'building' }
+    ]
+  },
+
+  'devon-social-struggle': {
+    id: 'devon-social-struggle',
+    text: "Devon looks up, making brief eye contact before looking away. \"Exactly! Like it's as simple as solving a differential equation. At least equations have right answers. You talk to people and you never know if you said the right thing until it's too late to fix it. I made flowcharts for small talk once, but people don't follow scripts.\"",
+    speaker: 'Devon Williams (UAB Engineering Student)',
+    choices: [
+      { text: "I feel the same way. People are complicated.", next: 'devon-shared-understanding', consequence: 'devon_social_comfort+', pattern: 'helping' },
+      { text: "Maybe you need jobs that work with your communication style?", next: 'devon-accommodation-discussion', consequence: 'devon_self_advocacy', pattern: 'analytical' },
+      { text: "What happened when people didn't follow your flowcharts?", next: 'devon-failure-learning', consequence: 'devon_growth_mindset', pattern: 'patience' },
+      { text: "Have you found any Birmingham tech spaces that feel comfortable?", next: 'devon-safe-spaces', consequence: 'birmingham_tech_community', pattern: 'building' }
     ]
   },
   'engineering-intro': {
     id: 'engineering-intro',
-    text: "Platform 3: The Builder's Track. You see blueprints and models. Birmingham has a rich industrial heritage and modern manufacturing.",
-    speaker: 'Jordan (Manufacturing Engineer)',
+    text: "Platform 3: The Builder's Track. Warm orange light illuminates workbenches scattered with prototypes, blueprints, and tools. You notice someone around 35 examining different projects with a knowing smile - they've clearly seen many iterations of innovation. Their presence feels calm, unhurried.",
+    speaker: 'Jordan Packard (Multi-Path Mentor)',
     choices: [
-      { text: "Explore Birmingham engineering firms", next: 'engineering-birmingham', consequence: 'engineering' },
-      { text: "Learn about engineering programs", next: 'engineering-education', consequence: 'education' },
-      { text: "Continue exploring", next: 'career-exploration', consequence: 'exploring' }
+      { text: "You look like someone who's built many different things.", next: 'jordan-multi-path-intro', consequence: 'jordan_mentorship', pattern: 'patience' },
+      { text: "What Birmingham engineering projects excite you most?", next: 'jordan-birmingham-building', consequence: 'birmingham_engineering', pattern: 'building' },
+      { text: "I'm trying to figure out my career path. Any advice?", next: 'jordan-career-wisdom', consequence: 'jordan_wisdom', pattern: 'helping' },
+      { text: "This seems like traditional engineering, but something's different here.", next: 'jordan-non-traditional', consequence: 'jordan_perspective', pattern: 'analytical' }
+    ]
+  },
+
+  'jordan-multi-path-intro': {
+    id: 'jordan-multi-path-intro',
+    text: "Jordan chuckles warmly. \"Seven different careers, to be precise. Started in computer science at Alabama A&M, dropped out to join a startup. Sold phones at the Galleria while learning graphic design. Marketing firm, personal trainer, Uber driver while learning to code. Now I'm a UX designer for a Birmingham health tech company and teach coding bootcamps.\" They pause. \"Everyone else will tell you their straight path to success. I'm here to tell you about the scenic route.\"",
+    speaker: 'Jordan Packard (Multi-Path Mentor)',
+    choices: [
+      { text: "Doesn't jumping around hurt your resume?", next: 'jordan-resume-myth', consequence: 'jordan_career_strategy', pattern: 'analytical' },
+      { text: "How did you not give up when things kept changing?", next: 'jordan-resilience-wisdom', consequence: 'jordan_resilience', pattern: 'helping' },
+      { text: "Which career was the right one?", next: 'jordan-all-paths-wisdom', consequence: 'jordan_integration', pattern: 'patience' },
+      { text: "Birmingham seems perfect for career experimentation.", next: 'jordan-birmingham-flexibility', consequence: 'birmingham_career_culture', pattern: 'building' }
+    ]
+  },
+
+  'jordan-career-wisdom': {
+    id: 'jordan-career-wisdom',
+    text: "Jordan sets down the prototype they were examining. \"Here's my advice, and it's not what your parents want to hear: Stop trying to choose the right path. Start trying to choose the next interesting problem. Birmingham's got problems to solve - healthcare accessibility, education gaps, urban renewal, tech inequality. Pick one that makes you curious.\"",
+    speaker: 'Jordan Packard (Multi-Path Mentor)',
+    choices: [
+      { text: "But how do you know when to stick versus move on?", next: 'jordan-timing-wisdom', consequence: 'jordan_decision_making', pattern: 'analytical' },
+      { text: "What if I waste years on the wrong problem?", next: 'jordan-no-waste-philosophy', consequence: 'jordan_growth_mindset', pattern: 'helping' },
+      { text: "Which Birmingham problems call to you now?", next: 'jordan-current-passion', consequence: 'birmingham_problems', pattern: 'building' },
+      { text: "This sounds like permission to explore without guilt.", next: 'jordan-permission-giving', consequence: 'jordan_validation', pattern: 'patience' }
     ]
   },
   'career-exploration': {
@@ -94,7 +206,25 @@ export function useSimpleGame() {
       choices: [],
       isProcessing: false,
       userId,
-      choiceHistory: savedProgress?.choiceHistory || []
+      choiceHistory: savedProgress?.choiceHistory || [],
+      characterRelationships: {
+        samuel: { trust: 0, backstoryRevealed: [], lastInteraction: '' },
+        maya: { confidence: 0, familyPressure: 5, roboticsRevealed: false },
+        devon: { socialComfort: 0, technicalSharing: 0, groupProgress: false },
+        jordan: { mentorshipUnlocked: false, pathsDiscussed: [], wisdomShared: 0 }
+      },
+      playerPatterns: {
+        analytical: 0,
+        helping: 0,
+        building: 0,
+        patience: 0
+      },
+      birminghamKnowledge: {
+        companiesKnown: [],
+        opportunitiesUnlocked: [],
+        localReferencesRecognized: [],
+        salaryDataRevealed: []
+      }
     }
   })
 
@@ -134,16 +264,81 @@ export function useSimpleGame() {
       choiceHistory: newChoiceHistory
     })
 
-    // Move to next scene
+    // Move to next scene with character and pattern updates
     setTimeout(() => {
-      setGameState(prev => ({
-        ...prev,
-        currentScene: choice.next || prev.currentScene,
-        choiceHistory: newChoiceHistory,
-        isProcessing: false
-      }))
+      setGameState(prev => {
+        const newState = { ...prev }
+
+        // Update player patterns based on choice
+        if (choice.pattern) {
+          newState.playerPatterns = {
+            ...prev.playerPatterns,
+            [choice.pattern]: prev.playerPatterns[choice.pattern] + 1
+          }
+        }
+
+        // Update character relationships based on consequences
+        if (choice.consequence) {
+          const updates = updateCharacterRelationships(prev, choice.consequence)
+          newState.characterRelationships = updates.characterRelationships
+          newState.birminghamKnowledge = updates.birminghamKnowledge
+        }
+
+        return {
+          ...newState,
+          currentScene: choice.next || prev.currentScene,
+          choiceHistory: newChoiceHistory,
+          isProcessing: false
+        }
+      })
     }, 1000)
   }, [gameState.userId, gameState.choiceHistory, gameState.currentScene])
+
+  // Helper function to update character relationships
+  const updateCharacterRelationships = (state: SimpleGameState, consequence: string) => {
+    const newRelationships = { ...state.characterRelationships }
+    const newBirminghamKnowledge = { ...state.birminghamKnowledge }
+
+    // Samuel relationship updates
+    if (consequence === 'samuel_trust+') {
+      newRelationships.samuel.trust = Math.min(10, newRelationships.samuel.trust + 1)
+      newRelationships.samuel.lastInteraction = 'trust_building'
+    }
+
+    // Maya relationship updates
+    if (consequence === 'maya_confidence+') {
+      newRelationships.maya.confidence = Math.min(10, newRelationships.maya.confidence + 1)
+    }
+    if (consequence === 'maya_robotics_revealed') {
+      newRelationships.maya.roboticsRevealed = true
+      newBirminghamKnowledge.opportunitiesUnlocked.push('UAB Biomedical Engineering')
+    }
+
+    // Devon relationship updates
+    if (consequence === 'devon_technical_sharing+') {
+      newRelationships.devon.technicalSharing = Math.min(10, newRelationships.devon.technicalSharing + 1)
+    }
+    if (consequence === 'devon_social_comfort+') {
+      newRelationships.devon.socialComfort = Math.min(10, newRelationships.devon.socialComfort + 1)
+    }
+
+    // Jordan relationship updates
+    if (consequence === 'jordan_mentorship') {
+      newRelationships.jordan.mentorshipUnlocked = true
+    }
+
+    // Birmingham knowledge updates
+    if (consequence === 'birmingham_uab') {
+      newBirminghamKnowledge.companiesKnown.push('UAB Medical Center')
+      newBirminghamKnowledge.localReferencesRecognized.push('UAB')
+    }
+    if (consequence === 'birmingham_innovation_depot') {
+      newBirminghamKnowledge.companiesKnown.push('Innovation Depot')
+      newBirminghamKnowledge.localReferencesRecognized.push('Innovation Depot')
+    }
+
+    return { characterRelationships: newRelationships, birminghamKnowledge: newBirminghamKnowledge }
+  }
 
   const handleContinue = useCallback(() => {
     // Simple continue logic
