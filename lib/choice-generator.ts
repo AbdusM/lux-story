@@ -131,7 +131,7 @@ export class ChoiceGenerator {
           console.log(`📊 Semantic filter: ${choices.length} → ${filteredChoices.length} choices`)
         }
 
-        return filteredChoices
+        return filteredChoices as Choice[]
       } catch (error) {
         console.error('❌ Semantic filtering failed, returning original choices:', error)
         return choices
