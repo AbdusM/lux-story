@@ -59,7 +59,7 @@ const SIMPLE_SCENES = {
 
   'samuel-first-meeting': {
     id: 'samuel-first-meeting',
-    text: "You find a man in his fifties adjusting an old mechanical clock, his movements precise and patient. He looks up with kind eyes that have seen many lost travelers. \"Welcome to Grand Central. You look a little lost - that's normal. Everyone who comes through here is trying to figure out where they're headed.\"",
+    text: "You find a man in his fifties adjusting an old mechanical clock, his movements precise and patient.\n\nHe looks up with kind eyes that have seen many lost travelers.\n\n\"Welcome to Grand Central. You look a little lost - that's normal.\"\n\n\"Everyone who comes through here is trying to figure out where they're headed.\"",
     speaker: 'Samuel Washington (Station Keeper)',
     choices: [
       { text: "I don't feel brave. I feel like everyone else knows what they're doing except me.", next: 'samuel-wisdom-validation', consequence: 'samuel_trust+', pattern: 'patience' },
@@ -70,7 +70,7 @@ const SIMPLE_SCENES = {
   },
   'healthcare-intro': {
     id: 'healthcare-intro',
-    text: "Platform 1: The Care Line. Soft blue light bathes everything in warmth. You notice a young woman studying at a table covered with both anatomy books and what looks like robotics components. She looks up, anxiety flickering across her face.",
+    text: "Platform 1: The Care Line.\n\nSoft blue light bathes everything in warmth.\n\nYou notice a young woman studying at a table covered with both anatomy books and what looks like robotics components.\n\nShe looks up, anxiety flickering across her face.",
     speaker: 'Maya Chen (Pre-med Student)',
     choices: [
       { text: "Those robotics parts are interesting. Are you building something medical?", next: 'maya-robotics-reveal', consequence: 'maya_confidence+', pattern: 'building' },
@@ -155,7 +155,7 @@ const SIMPLE_SCENES = {
   'tech-intro': {
     id: 'tech-intro',
     text: "Platform 7: The Data Stream.\n\nPurple light shimmers across multiple screens displaying elegant code. You see a young man hunched over a laptop, completely absorbed.\n\nHe's muttering to himself about algorithms while simultaneously organizing his cables with mathematical precision.",
-    speaker: 'Devon Williams (UAB Engineering Student)',
+    speaker: 'Devon Kumar (UAB Engineering Student)',
     choices: [
       { text: "That's beautiful code. What are you building?", next: 'devon-technical-passion', consequence: 'devon_technical_sharing+', pattern: 'building' },
       { text: "You ever notice how everyone says 'networking' like it's easy?", next: 'devon-social-struggle', consequence: 'devon_social_comfort', pattern: 'helping' },
@@ -167,7 +167,7 @@ const SIMPLE_SCENES = {
   'devon-technical-passion': {
     id: 'devon-technical-passion',
     text: "Devon's whole demeanor changes. He straightens up, eyes bright. \"It's a water filtration monitoring system for Birmingham's Village Creek. Particulate sensors feeding real-time data to environmental engineers. But the beautiful part is the cascading cleanup algorithm - each sensor learns from upstream patterns.\" He pauses, suddenly self-conscious. \"Sorry, I get excited about systems.\"",
-    speaker: 'Devon Williams (UAB Engineering Student)',
+    speaker: 'Devon Kumar (UAB Engineering Student)',
     choices: [
       { text: "Don't apologize! Your passion makes it fascinating.", next: 'devon-confidence-building', consequence: 'devon_confidence+', pattern: 'helping' },
       { text: "How does this help Birmingham's environmental challenges?", next: 'devon-community-impact', consequence: 'devon_impact_awareness', pattern: 'analytical' },
@@ -179,7 +179,7 @@ const SIMPLE_SCENES = {
   'devon-social-struggle': {
     id: 'devon-social-struggle',
     text: "Devon looks up, making brief eye contact before looking away. \"Exactly! Like it's as simple as solving a differential equation. At least equations have right answers. You talk to people and you never know if you said the right thing until it's too late to fix it. I made flowcharts for small talk once, but people don't follow scripts.\"",
-    speaker: 'Devon Williams (UAB Engineering Student)',
+    speaker: 'Devon Kumar (UAB Engineering Student)',
     choices: [
       { text: "I feel the same way. People are complicated.", next: 'devon-shared-understanding', consequence: 'devon_social_comfort+', pattern: 'helping' },
       { text: "Maybe you need jobs that work with your communication style?", next: 'devon-accommodation-discussion', consequence: 'devon_self_advocacy', pattern: 'analytical' },
@@ -323,7 +323,7 @@ const SIMPLE_SCENES = {
   // Integration scenes
   'career-exploration': {
     id: 'career-exploration',
-    text: "You've been exploring different platforms and talking with various mentors. The station feels different now - less overwhelming, more like a place where possibilities converge. What draws your attention?",
+    text: "You've been exploring different platforms and talking with various mentors.\n\nThe station feels different now - less overwhelming, more like a place where possibilities converge.\n\nWhat draws your attention?",
     speaker: 'Samuel Washington (Station Keeper)',
     choices: [
       { text: "I want to review what I've learned about myself and Birmingham", next: 'insights-integration', consequence: 'self_reflection', pattern: 'analytical' },
@@ -460,7 +460,7 @@ const SIMPLE_SCENES = {
   'devon-confidence-building': {
     id: 'devon-confidence-building',
     text: "Devon's posture changes completely. \"You know, my grandmother always said 'Baby, you don't need to be everybody's friend. You just need to find your people - the ones who speak your language.' Maybe that's what I've been missing. I've been trying to network with everyone instead of finding the people who get excited about water filtration algorithms.\"",
-    speaker: 'Devon Williams (UAB Engineering Student)',
+    speaker: 'Devon Kumar (UAB Engineering Student)',
     choices: [
       { text: "Where would you find those people in Birmingham?", next: 'devon-tech-ecosystem-research', consequence: 'birmingham_tech_community', pattern: 'building' },
       { text: "Your grandmother sounds wise. What else did she teach you?", next: 'devon-family-wisdom', consequence: 'devon_family_connection', pattern: 'helping' },
@@ -764,7 +764,7 @@ const SIMPLE_SCENES = {
 
   'devon-safe-spaces': {
     id: 'devon-safe-spaces',
-    text: "Devon nods enthusiastically. \"Actually, yes! There's a maker space near UAB where people just... build things. No small talk, no networking pressure. Everyone's focused on their projects. And there's this Discord server for Birmingham developers where all communication is asynchronous and documented. It's like social interaction designed for people like me.\"",
+    text: "Devon nods enthusiastically.\n\n\"Actually, yes! There's a maker space near UAB where people just... build things.\"\n\n\"No small talk, no networking pressure. Everyone's focused on their projects.\"\n\n\"And there's this Discord server for Birmingham developers where all communication is asynchronous and documented.\"\n\n\"It's like social interaction designed for people like me.\"",
     speaker: 'Devon Kumar (Engineering Student)',
     choices: [
       { text: "That sounds perfect for building technical confidence.", next: 'devon-confidence-building', consequence: 'devon_community_validation', pattern: 'helping' },
