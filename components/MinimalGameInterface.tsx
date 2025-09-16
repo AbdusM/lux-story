@@ -5,6 +5,7 @@
 
 "use client"
 
+import { useState } from 'react'
 import { useSimpleGame } from '@/hooks/useSimpleGame'
 import '@/styles/apple-design-system.css'
 
@@ -34,12 +35,21 @@ function parseTextWithHierarchy(text: string) {
       )
     }
     
-    // Detect character introduction with action
-    if (trimmedSection.includes('Platform') && trimmedSection.includes(':')) {
+    // Detect character introduction with action (but not in opening sequence)
+    if (trimmedSection.includes('Platform') && trimmedSection.includes(':') && trimmedSection.match(/Platform \d+:/)) {
+      // Skip auto-generating scene headers for generic platform references in opening text
+      if (trimmedSection.includes('Platform 7, Midnight') || trimmedSection.includes('platforms stretch into the distance')) {
+        return (
+          <div key={index} className="apple-action-line">
+            {trimmedSection}
+          </div>
+        )
+      }
+
       // Extract platform name for scene heading
       const platformMatch = trimmedSection.match(/Platform \d+: ([^.]+)/)
       const platformName = platformMatch ? platformMatch[1] : 'UNKNOWN PLATFORM'
-      
+
       return (
         <div key={index}>
           <div className="apple-scene-heading">
@@ -61,6 +71,20 @@ function parseTextWithHierarchy(text: string) {
       )
     }
     
+    // Break text at natural paragraph boundaries for better readability
+    if (trimmedSection.includes('\n\n') || trimmedSection.length > 400) {
+      const naturalParagraphs = createNaturalParagraphs(trimmedSection)
+      return (
+        <div key={index} className="apple-text-paragraphs">
+          {naturalParagraphs.map((paragraph, paragraphIndex) => (
+            <div key={paragraphIndex} className="apple-action-line apple-paragraph">
+              {paragraph}
+            </div>
+          ))}
+        </div>
+      )
+    }
+
     // Default to action lines for other content
     return (
       <div key={index} className="apple-action-line">
@@ -70,14 +94,109 @@ function parseTextWithHierarchy(text: string) {
   })
 }
 
+// Natural paragraph creation that respects semantic boundaries
+function createNaturalParagraphs(text: string): string[] {
+  // First, split by explicit paragraph breaks (double line breaks)
+  const explicitParagraphs = text.split(/\n\n+/).filter(p => p.trim())
+
+  const paragraphs: string[] = []
+
+  for (const paragraph of explicitParagraphs) {
+    const trimmed = paragraph.trim()
+
+    // If paragraph is reasonable length (under 250 chars), keep it whole
+    if (trimmed.length <= 250) {
+      paragraphs.push(trimmed)
+    } else {
+      // For long paragraphs, split at natural sentence boundaries
+      const sentences = trimmed.split(/(?<=[.!?])\s+/)
+      let currentParagraph = ''
+
+      for (const sentence of sentences) {
+        // If adding this sentence keeps us under 250 chars, add it
+        if (currentParagraph.length + sentence.length <= 250) {
+          currentParagraph = currentParagraph ? currentParagraph + ' ' + sentence : sentence
+        } else {
+          // Start new paragraph if current one has content
+          if (currentParagraph) {
+            paragraphs.push(currentParagraph.trim())
+          }
+          currentParagraph = sentence
+        }
+      }
+
+      // Add final paragraph if it has content
+      if (currentParagraph.trim()) {
+        paragraphs.push(currentParagraph.trim())
+      }
+    }
+  }
+
+  return paragraphs.length > 0 ? paragraphs : [text.trim()]
+}
+
+// Character identification for styling
+function getCharacterFromSpeaker(speaker: string): string {
+  if (speaker.toLowerCase().includes('maya')) return 'maya'
+  if (speaker.toLowerCase().includes('samuel')) return 'samuel'
+  if (speaker.toLowerCase().includes('narrator')) return 'narrator'
+  if (speaker.toLowerCase().includes('devon')) return 'devon'
+  if (speaker.toLowerCase().includes('jordan')) return 'jordan'
+  return 'narrator'
+}
+
+// Professional choice categorization with consistent emotional mapping
+function categorizeChoice(choiceText: string): { type: string; icon: string } {
+  const text = choiceText.toLowerCase()
+
+  // Supportive/Agreeable (Green) - Encouraging, validating, agreeing
+  if (text.includes('feel') || text.includes('understand') || text.includes('that must') ||
+      text.includes('sounds like') || text.includes('help') || text.includes('support') ||
+      text.includes('together') || text.includes('believe') || text.includes('validate') ||
+      text.includes('great') || text.includes('excellent') || text.includes('i hear')) {
+    return { type: 'supportive', icon: '🤝' }
+  }
+
+  // Analytical/Question (Blue) - Investigating, questioning, exploring
+  if (text.includes('why') || text.includes('how') || text.includes('what') ||
+      text.includes('analyze') || text.includes('think about') || text.includes('consider') ||
+      text.includes('tell me') || text.includes('explain') || text.includes('curious') ||
+      text.includes('explore') || text.includes('understand more')) {
+    return { type: 'analytical', icon: '🧠' }
+  }
+
+  // Challenge/Push (Orange) - Questioning assumptions, pushing boundaries
+  if (text.includes('but') || text.includes('however') || text.includes('what if') ||
+      text.includes('challenge') || text.includes('push') || text.includes('difficult') ||
+      text.includes('disagree') || text.includes('alternative') || text.includes('consider that')) {
+    return { type: 'challenging', icon: '⚡' }
+  }
+
+  // Listen/Neutral (Gray) - Observing, listening, continuing
+  return { type: 'listening', icon: '👂' }
+}
+
 export function MinimalGameInterface() {
   const game = useSimpleGame()
+  const [selectedChoiceIndex, setSelectedChoiceIndex] = useState<number | null>(null)
+
+  // Detect current platform for gradient theming
+  const getCurrentPlatform = () => {
+    if (!game.messages || game.messages.length === 0) return 'default'
+    const text = game.messages[0].text
+    if (text.includes('Platform 1') || text.includes('Care Line')) return 'care'
+    if (text.includes('Platform 3') || text.includes('Builder')) return 'builder'
+    if (text.includes('Platform 7') || text.includes('Data Stream')) return 'tech'
+    if (text.includes('Platform 9') || text.includes('Growing Garden')) return 'creative'
+    return 'default'
+  }
 
   // Show intro screen if not started
   if (!game.hasStarted) {
     return (
       <div className="apple-game-container">
-        <div className="apple-game-content">
+        <div className="apple-conversation-wrapper">
+          <div className="apple-game-content">
           <div className="apple-header">
             <div className="apple-text-headline">Grand Central Terminus</div>
             <div className="apple-text-caption">Birmingham Career Exploration</div>
@@ -98,6 +217,7 @@ export function MinimalGameInterface() {
               Begin New Journey
             </button>
           </div>
+          </div>
         </div>
       </div>
     )
@@ -106,45 +226,64 @@ export function MinimalGameInterface() {
   // Show main game interface
   return (
     <div className="apple-game-container">
-      <div className="apple-game-content">
+      <div className="apple-conversation-wrapper">
+        <div className="apple-game-content">
         <div className="apple-header">
           <div className="apple-text-headline">Grand Central Terminus</div>
           <div className="apple-text-caption">Birmingham Career Exploration</div>
         </div>
 
-        {/* Screenplay-style message display */}
+        {/* Enhanced story message with character identity */}
         {game.messages && game.messages.length > 0 && (
-          <div className="apple-story-message">
-            <div className="apple-character-cue">{game.messages[0].speaker}</div>
-            <div className="apple-story-text">
+          <div
+            className="apple-story-message"
+            data-platform={getCurrentPlatform()}
+            data-character={getCharacterFromSpeaker(game.messages[0].speaker)}
+            role="article"
+            aria-labelledby="story-speaker"
+          >
+            <div id="story-speaker" className="apple-character-cue">{game.messages[0].speaker}</div>
+            <div className="apple-story-text" aria-live="polite">
               {parseTextWithHierarchy(game.messages[0].text)}
             </div>
           </div>
         )}
 
-        {/* Simple choices - no complex components */}
+        {/* Enhanced choice system with categorization */}
         {game.choices && game.choices.length > 0 && (
-          <div className="apple-choices-container">
-            {game.choices.map((choice, index) => (
-              <button
-                key={index}
-                onClick={() => game.handleChoice(choice)}
-                disabled={game.isProcessing}
-                className="apple-choice-button"
-              >
-                {choice.text}
-              </button>
-            ))}
+          <div className="apple-choices-container" role="group" aria-label="Story choices">
+            {game.choices.map((choice, index) => {
+              const { type, icon } = categorizeChoice(choice.text)
+              return (
+                <button
+                  key={index}
+                  onClick={() => {
+                    setSelectedChoiceIndex(index)
+                    setTimeout(() => {
+                      game.handleChoice(choice)
+                      setSelectedChoiceIndex(null)
+                    }, 400)
+                  }}
+                  className={`apple-choice-button ${
+                    selectedChoiceIndex === index ? 'selected' :
+                    selectedChoiceIndex !== null ? 'faded' : ''
+                  }`}
+                  data-choice-type={type}
+                  aria-describedby={`choice-${index}-description`}
+                  aria-pressed={selectedChoiceIndex === index}
+                >
+                  <span className="choice-icon" aria-hidden="true">{icon}</span>
+                  {choice.text}
+                  <span id={`choice-${index}-description`} className="sr-only">
+                    Choice {index + 1} of {game.choices.length}: {type} response
+                  </span>
+                </button>
+              )
+            })}
           </div>
         )}
 
-        {/* Processing indicator */}
-        {game.isProcessing && (
-          <div className="apple-processing-indicator">
-            <div className="apple-spinner"></div>
-            <span>Processing your choice...</span>
-          </div>
-        )}
+        </div>
       </div>
     </div>
   )
