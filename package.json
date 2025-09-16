@@ -17,6 +17,7 @@
     "clean": "rm -rf .next out node_modules/.cache",
     "analyze-typewriter": "node scripts/gemini-typewriter-analysis.js",
     "check-typewriter": "node scripts/check-typewriter-compliance.js",
+    "analyze-chat-master": "node scripts/gemini-chat-interface-master-analyzer.js",
     "precommit": "npm run check-typewriter && npm run lint"
   },
   "keywords": [
@@ -41,6 +42,7 @@
     "@radix-ui/react-tooltip": "^1.2.8",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "dotenv": "^17.2.2",
     "lucide-react": "^0.539.0",
     "next": "^15.4.6",
     "node-fetch": "^3.3.2",

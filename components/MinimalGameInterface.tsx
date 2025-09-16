@@ -5,11 +5,44 @@
 
 "use client"
 
-import { useState } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useSimpleGame } from '@/hooks/useSimpleGame'
 import '@/styles/apple-design-system.css'
 
-// Screenplay/Graphic Novel text parsing for role-based formatting
+// Function to render a single dialogue chunk
+function renderDialogueChunk(chunk: { text: string; type: string }, index: number) {
+  const { text, type } = chunk
+
+  switch (type) {
+    case 'scene-heading':
+      return (
+        <div key={index} className="apple-scene-heading">
+          {text}
+        </div>
+      )
+    case 'dialogue':
+      return (
+        <div key={index} className="apple-dialogue-card">
+          <div className="apple-dialogue-text">{text}</div>
+        </div>
+      )
+    case 'parenthetical':
+      return (
+        <div key={index} className="apple-parenthetical">
+          {text}
+        </div>
+      )
+    case 'action':
+    default:
+      return (
+        <div key={index} className="apple-action-line">
+          {text}
+        </div>
+      )
+  }
+}
+
+// Legacy function for backward compatibility (now simplified)
 function parseTextWithHierarchy(text: string) {
   // Split by double line breaks to create major sections
   const sections = text.split('\n\n').filter(section => section.trim())
@@ -176,9 +209,50 @@ function categorizeChoice(choiceText: string): { type: string; icon: string } {
   return { type: 'listening', icon: '👂' }
 }
 
+// Speakers that should show all text at once (no progression)
+const NARRATOR_SPEAKERS = ['Narrator', 'SCENE', null, undefined, '']
+
 export function MinimalGameInterface() {
   const game = useSimpleGame()
   const [selectedChoiceIndex, setSelectedChoiceIndex] = useState<number | null>(null)
+  const [chunkIndex, setChunkIndex] = useState(0)
+
+  // Reset chunk index when scene changes
+  useEffect(() => {
+    setChunkIndex(0)
+    setSelectedChoiceIndex(null)
+  }, [game.currentScene])
+
+  // Parse text into chunks (memoized for performance)
+  const chunks = useMemo(() => {
+    if (!game.messages?.[0]?.text) return []
+    return game.messages[0].text
+      .split('\n\n')
+      .filter(chunk => chunk.trim())
+      .map(chunk => chunk.trim())
+  }, [game.messages])
+
+  // Determine scene type and progression state
+  const currentSpeaker = game.messages?.[0]?.speaker || 'Narrator'
+  const isNarrator = NARRATOR_SPEAKERS.includes(currentSpeaker)
+  const isDialogue = !isNarrator
+  const isLastChunk = chunkIndex >= chunks.length - 1
+  const hasChoices = game.choices && game.choices.length > 0
+
+  // Handle continue button click with critical edge case fix
+  const handleContinue = () => {
+    if (!isLastChunk) {
+      // Not on last chunk, just advance the chunk index
+      setChunkIndex(prev => prev + 1)
+    } else {
+      // On last chunk - check if we need to auto-advance
+      if (!hasChoices && game.handleContinueDialogue) {
+        // No choices available, advance to next scene
+        game.handleContinueDialogue()
+      }
+      // If there ARE choices, do nothing - they'll be displayed
+    }
+  }
 
   // Detect current platform for gradient theming
   const getCurrentPlatform = () => {
@@ -233,7 +307,7 @@ export function MinimalGameInterface() {
           <div className="apple-text-caption">Birmingham Career Exploration</div>
         </div>
 
-        {/* Enhanced story message with character identity */}
+        {/* Clean Progressive Dialogue System */}
         {game.messages && game.messages.length > 0 && (
           <div
             className="apple-story-message"
@@ -242,17 +316,40 @@ export function MinimalGameInterface() {
             role="article"
             aria-labelledby="story-speaker"
           >
-            <div id="story-speaker" className="apple-character-cue">{game.messages[0].speaker}</div>
+            <div id="story-speaker" className="apple-character-cue">{currentSpeaker}</div>
             <div className="apple-story-text" aria-live="polite">
-              {parseTextWithHierarchy(game.messages[0].text)}
+              {/* THE CORE LOGIC: Show one chunk for dialogue, all for narrator */}
+              {isDialogue ? (
+                // Progressive dialogue: show only current chunk
+                <div className="apple-dialogue-card">
+                  <div className="apple-dialogue-text">
+                    {chunks[chunkIndex] || chunks[0] || game.messages[0].text}
+                  </div>
+                </div>
+              ) : (
+                // Narrator: show all text at once using the existing parser
+                parseTextWithHierarchy(game.messages[0].text)
+              )}
             </div>
           </div>
         )}
 
-        {/* Enhanced choice system with categorization */}
-        {game.choices && game.choices.length > 0 && (
-          <div className="apple-choices-container" role="group" aria-label="Story choices">
-            {game.choices.map((choice, index) => {
+        {/* Clean Controls: Continue button OR choices */}
+        <div className="apple-choices-container" role="group" aria-label="Story interactions">
+          {/* Show Continue button for dialogue with critical edge case handling */}
+          {isDialogue && (!isLastChunk || (isLastChunk && !hasChoices)) && chunks.length > 1 && (
+            <button
+              onClick={handleContinue}
+              className="apple-button apple-button-primary"
+              style={{ width: '100%' }}
+            >
+              Continue →
+            </button>
+          )}
+
+          {/* Show choices when narrator scene OR last dialogue chunk */}
+          {(isNarrator || (isDialogue && isLastChunk)) && hasChoices && (
+            game.choices.map((choice, index) => {
               const { type, icon } = categorizeChoice(choice.text)
               return (
                 <button
@@ -279,9 +376,9 @@ export function MinimalGameInterface() {
                   </span>
                 </button>
               )
-            })}
-          </div>
-        )}
+            })
+          )}
+        </div>
 
         </div>
       </div>

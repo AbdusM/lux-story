@@ -1,0 +1,24 @@
+Dialogue Formatting Report
+Generated: 2025-09-16T20:58:16.613Z
+Backup: useSimpleGame.backup-1758056296610.ts
+
+Fixed 13 scenes:
+- birmingham-transferable-skills (Samuel Washington (Station Keeper)): 56 words, 0 → 4 breaks
+- jordan-generalist-confidence (Jordan Packard (Multi-Path Mentor)): 48 words, 0 → 6 breaks
+- jordan-current-passion (Jordan Packard (Multi-Path Mentor)): 55 words, 0 → 5 breaks
+- jordan-no-waste-philosophy (Jordan Packard (Multi-Path Mentor)): 60 words, 0 → 6 breaks
+- jordan-permission-giving (Jordan Packard (Multi-Path Mentor)): 59 words, 0 → 5 breaks
+- jordan-resilience-wisdom (Jordan Packard (Multi-Path Mentor)): 67 words, 0 → 5 breaks
+- jordan-birmingham-flexibility (Jordan Packard (Multi-Path Mentor)): 56 words, 0 → 5 breaks
+- birmingham-professional-story-healthcare (Dr. James Thompson (Medical Device Entrepreneur)): 55 words, 0 → 4 breaks
+- maya-demonstration-approach (Maya Chen (Pre-med Student)): 62 words, 0 → 5 breaks
+- maya-alternative-excellence (Maya Chen (Pre-med Student)): 54 words, 0 → 5 breaks
+- maya-reframing-love (Maya Chen (Pre-med Student)): 57 words, 0 → 5 breaks
+- maya-uab-bridge (Maya Chen (Pre-med Student)): 55 words, 0 → 5 breaks
+- jordan-career-wisdom (Jordan Packard (Multi-Path Mentor)): 55 words, 0 → 5 breaks
+
+Summary:
+- Total scenes analyzed: 74
+- Scenes already well-formatted: 61
+- Scenes reformatted: 13
+- Success rate: 17.6% needed fixes
