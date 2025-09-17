@@ -50,7 +50,7 @@ export interface SimpleGameState {
 const SIMPLE_SCENES = {
   'intro': {
     id: 'intro',
-    text: "\"Seek methodical solutions to complex problems.\" or \"Develop a step-by-step plan to address the challenge.\"",
+    text: "Grand Central Terminus isn't on any map, but here you are.\n\nThe letter in your hand reads: \"Platform 7, Midnight. Your future awaits.\"\n\nAround you, platforms stretch into the distance, each humming with different energy.",
     speaker: 'Narrator',
     choices: [
       { text: "Explore Platform 1: The Care Line", next: 'healthcare-intro', consequence: 'healthcare', pattern: 'helping' },
@@ -62,7 +62,7 @@ const SIMPLE_SCENES = {
 
   'samuel-first-meeting': {
     id: 'samuel-first-meeting',
-    text: "You find a man in his fifties adjusting an old mechanical clock, his movements precise and patient.\n\nHe looks up with kind eyes that have seen many travelers pass through.\n\n\"Welcome to Grand Central. It seems your train has yet to arrive on the platform. That's quite alright, young traveler.\"\n\n\"Indeed, it seems every soul who finds themselves here is looking for the right track, the right destination on the great journey.",
+    text: "You find a man in his fifties adjusting an old mechanical clock, his movements precise and patient.\n\nHe looks up with kind eyes that have seen many lost travelers.\n\n\"Welcome to Grand Central. You look a little lost - that's normal.\"\n\n\"Everyone who comes through here is trying to figure out where they're headed.\"",
     speaker: 'Samuel Washington (Station Keeper)',
     choices: [
       { text: "I don't feel brave. I feel like everyone else knows what they're doing except me.", next: 'samuel-wisdom-validation', consequence: 'samuel_trust+', pattern: 'patience' },
@@ -85,7 +85,7 @@ const SIMPLE_SCENES = {
 
   'maya-robotics-reveal': {
     id: 'maya-robotics-reveal',
-    text: "\"Biomedical engineering blends analytical problem-solving with hands-on design and creation of medical solutions.  It might be a good fit.\"",
+    text: "Maya's eyes light up for the first time.\n\n\"You noticed! It's a haptic feedback system for remote surgery training.\"\n\n\"Surgeons in Birmingham could train doctors in rural Alabama, or even globally. My robotics professor wants to patent it with me.\"\n\nThen her expression darkens. \"But if my parents find out I've been spending time on this instead of MCAT prep...\"",
     speaker: 'Maya Chen (Pre-med Student)',
     choices: [
       { text: "This could revolutionize medical training. You're brilliant.", next: 'maya-confidence-building', consequence: 'maya_robotics_revealed', pattern: 'helping' },
@@ -97,7 +97,7 @@ const SIMPLE_SCENES = {
 
   'maya-pressure-discussion': {
     id: 'maya-pressure-discussion',
-    text: "\"Two decades of dedication deserves recognition.\" or \"The consistent effort over twenty years shows deep commitment.\"",
+    text: "Maya sets down her pencil with shaking hands.\n\n\"You want to know the worst part? I'm actually good at the pre-med stuff. Organic chemistry, anatomy, I ace it all.\"\n\n\"My parents say that means it's my calling. But being good at something and being called to it - those aren't the same thing, are they?\"",
     speaker: 'Maya Chen (Pre-med Student)',
     choices: [
       { text: "No, they're not. What does call to you?", next: 'maya-true-passion', consequence: 'maya_authenticity', pattern: 'helping' },
@@ -229,7 +229,7 @@ const SIMPLE_SCENES = {
   // Samuel wisdom scenes
   'samuel-wisdom-validation': {
     id: 'samuel-wisdom-validation',
-    text: "Samuel's expression softens.\\n\\n\\\"I've seen many young travelers pass through this station, each with their own map and compass. More than I can count, really.\\n\\nAnd I've observed, those who believe their path is already laid, often find themselves on a train heading in a direction they didn't foresee.\\n\\nRecognizing the unknown ahead? That's not a stumble, young traveler, but the very ground on which wisdom grows. \\n\\nCome, let me share a view from a different platform.\\\"",
+    text: "Samuel's expression softens.\n\n\"Let me tell you something - I've guided maybe three thousand young folks through this station.\n\nThe ones who pretend they have it all figured out? They're the ones who end up on the wrong train.\n\nYou knowing you don't know? That's wisdom, not weakness.\n\nCome, let me show you something.\"",
     speaker: 'Samuel Washington (Station Keeper)',
     choices: [
       { text: "What do you want to show me?", next: 'samuel-sloss-furnaces-story', consequence: 'samuel_backstory', pattern: 'patience' },
@@ -241,7 +241,7 @@ const SIMPLE_SCENES = {
 
   'samuel-parent-pressure': {
     id: 'samuel-parent-pressure',
-    text: "Samuel nods knowingly.\\n\\n\\\"Ah, the family compass... I imagine its needle points toward a destination that feels… different from the one in your heart?\\\"\\n\\nHe leans against the wall.\\n\\n\\\"Many young travelers arrive at this platform, carrying a similar weight. They feel the pull of a family's journey, a journey paved with sacrifice, and find themselves yearning for a different track.\\n\\nThe important thing, young traveler, is to remember that their train may not be *your* train. And that's alright.\\\"",
+    text: "Samuel nods knowingly.\n\n\"Ah, the family compass. Let me guess - they've been pointing you in directions that feel right to them but wrong to you?\"\n\nHe leans against the wall.\n\n\"I've seen this story before. Parents who sacrificed everything, kids who feel guilty about wanting something different.\n\nThe thing is, sometimes the path they want for you isn't wrong - it's just not yours.\"",
     speaker: 'Samuel Washington (Station Keeper)',
     choices: [
       { text: "They want me to be a doctor, but I'm more interested in building things.", next: 'samuel-practical-reality', consequence: 'samuel_understanding', pattern: 'building' },
@@ -253,7 +253,7 @@ const SIMPLE_SCENES = {
 
   'samuel-practical-reality': {
     id: 'samuel-practical-reality',
-    text: "Samuel's eyes soften with understanding.\\n\\n\\\"That's the language of the rails – the need to keep the engine running, the lamps lit. A worthy pursuit.\\\"\\n\\nHe opens a well-worn notebook.\\n\\n\\\"Birmingham holds many platforms, young traveler. Let's consider what each journey truly offers: the starting wage, the long-term benefits, which tracks allow for further travel and which, sadly, lead to a siding.\\\"",
+    text: "Samuel's eyes sharpen with respect.\n\n\"Now that's honest talk. You need something that puts food on the table and keeps the lights on. I appreciate that.\"\n\nHe pulls out a worn notebook.\n\n\"Birmingham's got opportunities, but let me tell you what's real: entry-level wages, what benefits actually look like, which paths have upward mobility and which ones keep you stuck.\"",
     speaker: 'Samuel Washington (Station Keeper)',
     choices: [
       { text: "What are the real starting salaries in Birmingham?", next: 'birmingham-salary-data', consequence: 'birmingham_salary_reality', pattern: 'analytical' },
@@ -265,7 +265,7 @@ const SIMPLE_SCENES = {
 
   'samuel-birmingham-transformation': {
     id: 'samuel-birmingham-transformation',
-    text: "Samuel chuckles softly.\\n\\n\\\"Young traveler, Birmingham reinvented its tracks more than twice in my own seasons. To say there are no paths here is to only see what lies directly under one's feet.\\\"\\n\\nHe gestures toward the platforms.\\n\\n\\\"Those trains heading to UAB Medical Center, Innovation Depot, Regions Bank, Southern Company... they carry opportunities birthed right here. The journey often begins where one least expects.\\\"",
+    text: "Samuel chuckles, but not unkindly.\n\n\"Birmingham doesn't have opportunities? Child, you're standing in a city that reinvented itself twice in my lifetime.\n\nSee, that's the story people tell when they don't know where to look.\"\n\nHe gestures toward the platforms.\n\n\"You think UAB Medical Center, Innovation Depot, Regions Bank, Southern Company - you think they're hiring from Atlanta? They're right here, looking for local talent.\"",
     speaker: 'Samuel Washington (Station Keeper)',
     choices: [
       { text: "What specific opportunities are you talking about?", next: 'birmingham-partnership-opportunities', consequence: 'birmingham_opportunity_awareness', pattern: 'analytical' },
@@ -277,7 +277,7 @@ const SIMPLE_SCENES = {
 
   'samuel-sloss-furnaces-story': {
     id: 'samuel-sloss-furnaces-story',
-    text: "Samuel walks you to a window overlooking the city.\\n\\n\\\"See that picture there, young traveler? Sloss Furnaces, 1975. My father's spirit rests somewhere in that frame, covered in the dust of his labor, his heart brimming with purpose.\\n\\nWhen the great mills fell silent, many believed this city's journey had reached its end.\\n\\nBut look out upon the horizon now - UAB Medical Center, Innovation Depot, Protective Life, each a new tower reaching for its own sky. What do you think allowed the train to stay on the tracks?\\\"",
+    text: "Samuel walks you to a window overlooking the city.\n\n\"See that old photo on the wall? That's Sloss Furnaces, 1975. My daddy's in that picture somewhere, covered in soot, proud as could be.\n\nWhen the mills closed, people said Birmingham was finished.\n\nBut look out there now - UAB Medical Center, Innovation Depot, Protective Life reaching for the sky. You know what changed?\"",
     speaker: 'Samuel Washington (Station Keeper)',
     choices: [
       { text: "The economy shifted from industrial to medical and tech?", next: 'samuel-economic-transformation', consequence: 'birmingham_economic_history', pattern: 'analytical' },
@@ -289,7 +289,7 @@ const SIMPLE_SCENES = {
 
   'samuel-economic-justice': {
     id: 'samuel-economic-justice',
-    text: "Samuel nods, his gaze thoughtful.\\n\\n\\\"You speak a truth, young traveler. This new Birmingham, like a train pulling some cars but not all, hasn't carried every soul to the same destination. Perhaps that is why this station called to me.\\n\\nFor those from paths like ours, it's important to understand this: the journey to those gleaming towers isn't solely for those born on a privileged platform. \\n\\nThere are less-traveled routes, hidden platforms, waiting to be discovered. Would you like me to share what I've learned of them?\\\"",
+    text: "Samuel nods seriously.\n\n\"You're right to say that. The new Birmingham hasn't lifted everybody up equally. That's exactly why I'm here.\n\nBecause kids from families like yours and mine need to know - there are ways into those glass towers that don't require you to be born on the right side of Red Mountain.\n\nBut you've got to know the secret routes. Want me to show you?\"",
     speaker: 'Samuel Washington (Station Keeper)',
     choices: [
       { text: "Yes, show me the secret routes.", next: 'samuel-secret-routes', consequence: 'birmingham_hidden_opportunities', pattern: 'building' },
@@ -313,7 +313,7 @@ const SIMPLE_SCENES = {
 
   'samuel-guidance-method': {
     id: 'samuel-guidance-method',
-    text: "Samuel sets down his tools and gives you his full attention.\n\n\"My method, young traveler? It's less about pointing the way, and more about helping you find the map within yourself.\n\nMany arrive at this platform seeking answers already etched in stone, but the true treasure lies in crafting the right questions to illuminate your path.\n\nPerhaps ponder this: What landscapes naturally draw your eye? What grand structure would rise if time held no sway? And upon what task does time itself seem to lose its hurried pace?",
+    text: "Samuel sets down his tools and gives you his full attention.\n\n\"My method? I don't give directions - I help people discover their own compass.\n\nSee, everyone comes here thinking they need answers, but what they really need is better questions.\n\nQuestions like: What problems do you naturally notice? What would you build if no one was watching? When do you lose track of time?\"",
     speaker: 'Samuel Washington (Station Keeper)',
     choices: [
       { text: "What problems do I naturally notice?", next: 'samuel-patterns-wisdom', consequence: 'samuel_deep_insight', pattern: 'analytical' },
@@ -326,7 +326,7 @@ const SIMPLE_SCENES = {
   // Integration scenes
   'career-exploration': {
     id: 'career-exploration',
-    text: "Young traveler, I see you've been walking many platforms, listening to the voices of experienced conductors.\n\nThe air here feels different now, doesn't it? Not so much a clamor, but a gentle meeting of paths.\n\nTell me, what songs do you hear calling to you?",
+    text: "You've been exploring different platforms and talking with various mentors.\n\nThe station feels different now - less overwhelming, more like a place where possibilities converge.\n\nWhat draws your attention?",
     speaker: 'Samuel Washington (Station Keeper)',
     choices: [
       { text: "I want to review what I've learned about myself and Birmingham", next: 'insights-integration', consequence: 'self_reflection', pattern: 'analytical' },
@@ -338,7 +338,7 @@ const SIMPLE_SCENES = {
 
   'insights-integration': {
     id: 'insights-integration',
-    text: "Samuel adjusts his pocket watch and smiles. He pulls out a worn, leather-bound journal.\n\n\\\"The tracks of your journey through the station tell a tale... a tale of careful consideration. It seems you gather information like a seasoned surveyor charting new lands, offer a steady hand to those whose train has momentarily stalled, and possess the vision to build where the path ahead is unclear. And perhaps most importantly, young traveler, you understand the virtue of patience when the signals are uncertain.\n\nBirmingham, as it happens, offers platforms well-suited to these very qualities.\\\"",
+    text: "Samuel adjusts his pocket watch and smiles.\n\n\"Let's see what the station has revealed about you.\" He pulls out a leather journal.\n\n\"Your choices show a pattern - you tend toward analytical thinking when gathering information, helping when people are struggling, building when you see practical solutions, and patience when facing uncertainty.\n\nBirmingham has opportunities that match these strengths.\"",
     speaker: 'Samuel Washington (Station Keeper)',
     choices: [
       { text: "Which Birmingham opportunities match my patterns?", next: 'birmingham-partnership-opportunities', consequence: 'birmingham_matching', pattern: 'analytical' },
@@ -351,7 +351,7 @@ const SIMPLE_SCENES = {
   // Samuel's Personal Story Scenes
   'samuel-personal-story': {
     id: 'samuel-personal-story',
-    text: "Samuel sets down his tools and looks directly at you.\n\n\\\"Fifteen years ago, I found myself charting circuits at Southern Company. The rails there gleamed with opportunity, prestige, a certain kind of shine.\n\nBut my journey often crossed paths with young travelers from Ensley, Fairfield – echoes of where my own track began. They seemed unaware that such a route was even possible.\n\nOne Sunday, after the hymns had faded, a young man asked me, 'How does someone like us find a platform like yours?'\n\nThat simple question... it rearranged the entire journey ahead.\\\"",
+    text: "Samuel sets down his tools and looks directly at you.\n\n\"Fifteen years ago, I was designing power grid systems at Southern Company. Good money, respect, engineering prestige.\n\nBut I kept meeting young people from Ensley, Fairfield, places like where I grew up. They had no idea paths like mine existed.\n\nOne Sunday after church, a kid asked me, 'How did someone like us become someone like you?'\n\nThat question changed everything.\"",
     speaker: 'Samuel Washington (Station Keeper)',
     choices: [
       { text: "What did you do after that conversation?", next: 'samuel-career-transition', consequence: 'samuel_backstory_deep', pattern: 'helping' },
@@ -501,7 +501,7 @@ const SIMPLE_SCENES = {
   // Partnership Integration - UAB, BCS, Regions Bank, Southern Company
   'birmingham-partnership-opportunities': {
     id: 'birmingham-partnership-opportunities',
-    text: "Samuel gently slides a folder marked 'Partnership Programs' across the table.\\n\\n\\\"These aren't mere destinations, young traveler, but rather potential platforms along your journey.\\n\\nUAB offers opportunities to learn your craft whilst earning passage. Birmingham City Schools seeks guides for young minds in tech and learning - a chance to cultivate empathy and understanding. \\n\\nRegions Bank has a path to apprenticeship in financial services. And Southern Company... their engineering co-ops can often lead to a long and steady route onward.\\\"",
+    text: "Samuel pulls out a folder marked 'Partnership Programs.'\n\n\"These aren't just job listings - these are pathways.\n\nUAB has work-study positions that let you earn while learning. Birmingham City Schools needs tech support and tutoring - great for building people skills.\n\nRegions Bank has a financial services apprenticeship program. Southern Company offers engineering co-ops that often lead to full-time offers.\"",
     speaker: 'Samuel Washington (Station Keeper)',
     choices: [
       { text: "Tell me more about the UAB work-study opportunities.", next: 'uab-partnership-details', consequence: 'uab_partnership', pattern: 'analytical' },
@@ -525,7 +525,7 @@ const SIMPLE_SCENES = {
 
   'regions-partnership-details': {
     id: 'regions-partnership-details',
-    text: "Samuel leans forward.\\n\\n\\\"Regions offers a journey into Financial Services, an apprenticeship lasting eighteen months. It's a unique platform, combining the classroom with the practical experience of the rails.\\n\\nYou'll find yourself rotating through different stations along the route: personal banking, business lending, investment services, and the vital area of risk management.\\n\\nThe starting fare is around $42,000, with scheduled increases along the way. Many who embark on this apprenticeship find themselves as full-time analysts or relationship managers within three years, earning between $55,000 and $65,000.\\\"",
+    text: "Samuel leans forward.\n\n\"Regions has a Financial Services Apprenticeship - 18 months combining classroom learning with on-the-job experience.\n\nYou rotate through different departments: personal banking, business lending, investment services, risk management.\n\nStarting salary around $42K, with guaranteed raises. Many apprentices become full-time analysts or relationship managers earning $55-65K within three years.\"",
     speaker: 'Samuel Washington (Station Keeper)',
     choices: [
       { text: "What background do they expect for applicants?", next: 'regions-requirements', consequence: 'regions_preparation', pattern: 'analytical' },
@@ -562,7 +562,7 @@ const SIMPLE_SCENES = {
 
   'samuel-southern-company-story': {
     id: 'samuel-southern-company-story',
-    text: "Samuel leans back, a distant smile crossing his face.\n\n\"My journey began on a different track, young traveler. I studied how to bring power to the people, designing the very rails upon which clean energy could travel. Back then, around 2015, the sun and the wind were just beginning to show their strength.\n\nFor five years, I helped build those pathways for Alabama’s solar farms, connecting forgotten communities to a brighter future.\n\nBut I came to realize that my true calling wasn't just in optimizing the flow of power, but in guiding others to discover their own destinations.\n\nThat time taught me a valuable lesson: that the most meaningful work arises when skill and compassion meet upon the same platform.",
+    text: "Samuel leans back, a distant smile crossing his face.\n\n\"I started in electrical engineering, fell in love with renewable energy integration during my third rotation. This was 2015 - solar and wind were just becoming economically competitive.\n\nI spent five years designing grid connections for Alabama solar farms. Helped bring clean energy to rural communities that had been forgotten.\n\nBut I realized I was more passionate about helping people find their paths than I was about optimizing power flows.\n\nThat job taught me that meaningful work happens at the intersection of technical skill and human impact.\"",
     speaker: 'Samuel Washington (Station Keeper)',
     choices: [
       { text: "Do you miss the technical engineering work?", next: 'samuel-engineering-vs-mentorship', consequence: 'samuel_career_reflection', pattern: 'analytical' },
@@ -623,7 +623,7 @@ const SIMPLE_SCENES = {
 
   'jordan-resume-myth': {
     id: 'jordan-resume-myth',
-    text: "Jordan laughs, a hint of disbelief in it.\\n\\n\\\"Yeah, I used to think it was a problem, all this... *stuff*. But then, something shifted. Employers in Birmingham started seeing my circuitous route as, get this, an *advantage*.\\\"\\n\\n\\\"Like when Innovation Depot hired me for UX. They were like:\\n\\n'Look:\\n• You get customer service from your Galleria days.\\n• Logistics from Uber.\\n• Motivation from personal training. \\n• And visual communication from graphic design.\\n\\nIt's not a mess – it's everything. It all *transfers*.'\\\"",
+    text: "Jordan laughs warmly.\n\n\"That's exactly what I thought too! But here's what actually happened: employers in Birmingham started seeing my diverse background as an asset.\"\n\n\"When Innovation Depot hired me for UX design, they said:\n\n'You understand:\n• Customer service from the Galleria\n• Logistics from Uber\n• Motivation from personal training\n• Visual communication from graphic design\n\nYou're not scattered - you're comprehensive.'\"",
     speaker: 'Jordan Packard (Multi-Path Mentor)',
     choices: [
       { text: "How do you frame that story in job interviews?", next: 'jordan-storytelling-skills', consequence: 'jordan_interview_strategy', pattern: 'analytical' },
@@ -955,108 +955,10 @@ const SIMPLE_SCENES = {
       { text: "Working in education feels meaningful and stable.", next: 'insights-integration', consequence: 'bcs_mission_alignment', pattern: 'helping' },
       { text: "Community impact work appeals to me.", next: 'devon-community-impact', consequence: 'bcs_community_connection', pattern: 'patience' }
     ]
-  },
-
-  // Generated scenes to fix navigation issues
-  'maya-birmingham-medical': {
-    text: "Oh, Birmingham!  It's surprisingly rich in medical opportunities, beyond just UAB. I've been researching quite a bit.  There's the Children's of Alabama, of course – a huge teaching hospital with a strong robotics program in surgery, which relates to my project here.  But I've also been looking at smaller, specialized clinics, focusing on areas like regenerative medicine, which is exploding right now.  And then there's the research side – UAB has several cutting-edge labs.  She gestures to her notes, a slight blush rising on her cheeks. It's a lot to take in!",
-    choices: [
-      { text: "Tell me more about the robotics program at Children's of Alabama.", next: 'maya-childrens-robotics', consequence: 'maya_confidence+', pattern: 'analytical' },
-      { text: "Regenerative medicine sounds fascinating. What kind of clinics are you looking at?", next: 'maya-regenerative-medicine', consequence: 'maya_patience+', pattern: 'helping' },
-      { text: "UAB research labs?  What areas are they focusing on?", next: 'maya-uab-research', consequence: 'maya_knowledge+', pattern: 'analytical' },
-      { text: "This is overwhelming. Maybe we should focus on just one area to start?", next: 'maya-focus-strategy', consequence: 'maya_confidence-', pattern: 'patience' }
-    ]
-  },
-
-  'maya-inner-conflict': {
-    text: "Oh, uh, hi.  Yeah, I guess I am a little conflicted.  It's... everything feels so overwhelming.  Pre-med is supposed to be my path, my family expects it.  But this robotics stuff... it's where I feel truly alive.  I'm working on a prosthetic hand design, actually, incorporating some bio-feedback sensors.  But is it realistic to combine both?  Can I even make a living doing that in Birmingham?",
-    choices: [
-      { text: "Birmingham has a surprising number of medical device companies. Have you looked into their internship programs?", next: 'maya-birmingham-opportunities', consequence: 'maya_confidence+', pattern: 'helping' },
-      { text: "Let's break it down. What are your biggest concerns about combining pre-med and robotics?", next: 'maya-problem-solving', consequence: 'maya_confidence++', pattern: 'analytical' },
-      { text: "Don't worry about the 'realistic' part. Just focus on building your skills in both. That passion will open doors.", next: 'maya-passion-focus', consequence: 'maya_confidence+', pattern: 'patience' },
-      { text: "Have you considered reaching out to the robotics club at UAB? They might have some insights.", next: 'maya-uab-connection', consequence: 'maya_network+', pattern: 'building' }
-    ]
-  },
-
-  'maya-confidence-building': {
-    text: "Thanks!  It's still early days, but the potential is huge.  I'm working on a prototype for a surgical simulator using haptic feedback – think realistic, responsive tissue simulation for surgical training.  Birmingham's got some amazing medical tech companies, and I'm hoping to connect with some of them through the UAB Innovation Depot.",
-    choices: [
-      { text: "That's incredible!  Have you considered applying for internships at those companies?  UAB has a strong placement program.", next: 'maya-internship-search', consequence: 'maya_internship_considered', pattern: 'helping' },
-      { text: "The haptic feedback is key!  What challenges are you facing in developing the system?  Perhaps I could help – I have some experience with sensor integration.", next: 'devon-collaboration-offer', consequence: 'devon_offers_help', pattern: 'building' },
-      { text: "This is a long-term project. What's your plan for handling setbacks and unexpected technical issues?", next: 'maya-problem-solving', consequence: 'maya_problem_solving_discussed', pattern: 'analytical' },
-      { text: "Birmingham's medical scene is definitely developing.  It'll take time to see this technology widely adopted. Be patient with the process.", next: 'maya-patience-reminder', consequence: 'maya_patience_emphasized', pattern: 'patience' }
-    ]
-  },
-
-  'maya-strategic-thinking': {
-    text: "That's a great point!  Thinking strategically, how could we frame this robotics project to highlight its applications in a medical setting?  We need to appeal to residency programs and potential grant funders in Birmingham.  What's the strongest angle?",
-    choices: [
-      { text: "Focus on the precision and dexterity improvements – robotic surgery assistance, minimally invasive procedures.", next: 'maya-surgical-robotics', consequence: 'surgical_focus', pattern: 'analytical' },
-      { text: "Highlight the potential for remote patient monitoring and diagnostics – imagine telehealth advancements in underserved rural Alabama communities.", next: 'maya-telehealth-impact', consequence: 'rural_health_focus', pattern: 'helping' },
-      { text: "Emphasize the cost-effectiveness and efficiency gains – reduced hospital stays, faster recovery times, leading to lower healthcare costs.", next: 'maya-cost-efficiency', consequence: 'economic_focus', pattern: 'building' },
-      { text: "Let's present it as a platform for ongoing research and development, securing long-term funding and collaborations with UAB or Children's of Alabama.", next: 'maya-research-collaboration', consequence: 'research_focus', pattern: 'patience' }
-    ]
-  },
-
-  'devon-systems-thinking': {
-    text: "Yeah, sure, have a seat.  It's... intense right now. I'm trying to optimize a traffic flow algorithm for the city.  Birmingham's expanding rapidly, and the current system is... well, let's just say it has room for improvement. He gestures vaguely at the screens, highlighting a particularly chaotic section of the visualization. See this bottleneck near the UAB campus?  It's a nightmare.",
-    choices: [
-      { text: "Could you explain the algorithm to me? I'm fascinated by this kind of thing.", next: 'devon-algorithm-deepdive', consequence: 'devon_analytical_sharing+', pattern: 'analytical' },
-      { text: "I'm more interested in the practical application. How does this impact real people?", next: 'devon-real-world-impact', consequence: 'devon_helping_focus+', pattern: 'helping' },
-      { text: "Wow, that sounds like a massive undertaking.  Have you thought about presenting this to the city?", next: 'devon-city-proposal', consequence: 'devon_building_ambition+', pattern: 'building' },
-      { text: "I'm thinking about a career change.  Your focus seems intense.  How do you stay motivated on something this big?", next: 'devon-motivation', consequence: 'devon_patience_inspiration+', pattern: 'patience' }
-    ]
-  },
-
-  'devon-community-impact': {
-    text: "Devon beams. That's the core of it! Cleaner water means healthier communities, fewer waterborne illnesses, and less strain on the city's resources.  Think about the impact on local businesses reliant on clean water, or the improved quality of life for families living near Village Creek. The data we collect also helps the city allocate resources more effectively for future infrastructure projects.",
-    choices: [
-      { text: "So, it's not just about the technology, but the people it affects?", next: 'devon-broader-impact', consequence: 'devon_empathy+', pattern: 'helping' },
-      { text: "What kind of engineering jobs are involved in a project like this?", next: 'devon-career-paths', consequence: 'devon_career_clarity+', pattern: 'analytical' },
-      { text: "How does the city fund something this ambitious?", next: 'devon-funding-models', consequence: 'devon_realism+', pattern: 'building' },
-      { text: "This sounds really complex.  What if the system fails?", next: 'devon-risk-assessment', consequence: 'devon_problem_solving+', pattern: 'patience' }
-    ]
-  },
-
-  'devon-innovation-depot': {
-    text: "The Innovation Depot?  That's... actually a great idea! They're always looking for innovative solutions for Birmingham's environmental challenges.  I could showcase the real-time data visualization and maybe even get feedback from some of the mentors there.  It's a bit nerve-wracking to present it to a larger audience, but the potential exposure...  It's exciting! Devon fidgets slightly, a hint of his earlier enthusiasm returning. What do you think the best approach would be?",
-    choices: [
-      { text: "Let's focus on the algorithm's efficiency; that's your strongest point.", next: 'devon-algorithm-focus', consequence: 'devon_analytical+', pattern: 'analytical' },
-      { text: "Prepare a short, engaging presentation highlighting the community impact.", next: 'devon-community-impact', consequence: 'devon_confidence+', pattern: 'helping' },
-      { text: "We should build a small-scale demo to show at the Depot, something visually impressive.", next: 'devon-build-demo', consequence: 'devon_practical+', pattern: 'building' },
-      { text: "Maybe start with a smaller, less intimidating setting to build your confidence before the Depot.", next: 'devon-smaller-audience', consequence: 'devon_confidence+', pattern: 'patience' }
-    ]
-  },
-
-  'jordan-birmingham-building': {
-    text: "Ah, Birmingham's building boom!  It's exciting to see so much growth.  From revitalizing historic structures to pioneering new designs, there's a lot to be passionate about here. What particularly catches your eye?",
-    choices: [
-      { text: "The redevelopment of the historic downtown area – I'm fascinated by adaptive reuse projects.", next: 'jordan-adaptive-reuse', consequence: 'jordan_building_passion', pattern: 'building' },
-      { text: "The innovation around sustainable building practices –  green infrastructure and energy efficiency are key to the future.", next: 'jordan-sustainable-building', consequence: 'jordan_sustainability_focus', pattern: 'helping' },
-      { text: "I'm interested in the large-scale infrastructure projects, like the improvements to the interstate system or the airport expansion.", next: 'jordan-infrastructure', consequence: 'jordan_infrastructure_knowledge', pattern: 'analytical' },
-      { text: "Honestly, I'm still exploring.  I'm keen to learn more about the different types of projects before making a decision.", next: 'jordan-birmingham-overview', consequence: 'jordan_exploration_mode', pattern: 'patience' }
-    ]
-  },
-
-  'jordan-non-traditional': {
-    text: "You're right, Maya.  A lot of what you see here is traditional civil and mechanical engineering –  bridge design, material science, that sort of thing. But Birmingham's undergoing a huge tech boom, and that's opening doors to less traditional engineering roles.  Think about it:  we're talking advanced manufacturing, AI-driven logistics for the port, even sustainable infrastructure projects powered by renewable energy.  What piques your interest more?",
-    choices: [
-      { text: "Tell me more about the AI and logistics side.  Sounds fascinating.", next: 'jordan-ai-logistics', consequence: 'ai_interest', pattern: 'analytical' },
-      { text: "Sustainable infrastructure –  how does Birmingham factor into that?", next: 'jordan-sustainable-infra', consequence: 'sustainability_focus', pattern: 'helping' },
-      { text: "I'm still intrigued by the traditional aspects, but maybe with a modern twist.", next: 'jordan-modern-civil', consequence: 'traditional_modern', pattern: 'building' },
-      { text: "Can you give me some examples of people who've made unconventional career paths in engineering here?", next: 'jordan-unconventional-paths', consequence: 'career_path_exploration', pattern: 'patience' }
-    ]
-  },
-
-  'samuel-patterns-wisdom': {
-    text: "Three thousand travelers...a vast sea of faces, yet currents run beneath.  I see patterns, child, in the choices they make. Some cling fiercely to a single destination, their tickets clutched tight, refusing detours. Others, more like the wind, shift with every gust of opportunity, never settling.  And then there are those who, like the river, carve their own path, adapting to the terrain, finding strength in the unexpected bends.  Which current resonates with you?",
-    choices: [
-      { text: "Tell me more about those who carve their own path.", next: 'samuel-entrepreneurship-birmingham', consequence: 'samuel_pathfinding_advice', pattern: 'building' },
-      { text: "What about the ones who are always changing direction?  Is that a bad thing?", next: 'samuel-adaptability-challenges', consequence: 'samuel_adaptability_perspective', pattern: 'analytical' },
-      { text: "I think I'm like the ones who hold tight to their plans.  Is that wrong?", next: 'samuel-commitment-risks', consequence: 'samuel_commitment_reflection', pattern: 'patience' },
-      { text: "Can you give me examples of Birmingham careers that fit these patterns?", next: 'samuel-birmingham-examples', consequence: 'samuel_birmingham_insights', pattern: 'helping' }
-    ]
   }
+
+
+
 
 }
 

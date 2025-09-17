@@ -50,7 +50,7 @@ export interface SimpleGameState {
 const SIMPLE_SCENES = {
   'intro': {
     id: 'intro',
-    text: "\"Seek methodical solutions to complex problems.\" or \"Develop a step-by-step plan to address the challenge.\"",
+    text: "Grand Central Terminus isn't on any map, but here you are.\n\nThe letter in your hand reads: \"Platform 7, Midnight. Your future awaits.\"\n\nAround you, platforms stretch into the distance, each humming with different energy.",
     speaker: 'Narrator',
     choices: [
       { text: "Explore Platform 1: The Care Line", next: 'healthcare-intro', consequence: 'healthcare', pattern: 'helping' },
@@ -85,7 +85,7 @@ const SIMPLE_SCENES = {
 
   'maya-robotics-reveal': {
     id: 'maya-robotics-reveal',
-    text: "\"Biomedical engineering blends analytical problem-solving with hands-on design and creation of medical solutions.  It might be a good fit.\"",
+    text: "Maya's eyes light up for the first time.\n\n\"You noticed! It's a haptic feedback system for remote surgery training.\"\n\n\"Surgeons in Birmingham could train doctors in rural Alabama, or even globally. My robotics professor wants to patent it with me.\"\n\nThen her expression darkens. \"But if my parents find out I've been spending time on this instead of MCAT prep...\"",
     speaker: 'Maya Chen (Pre-med Student)',
     choices: [
       { text: "This could revolutionize medical training. You're brilliant.", next: 'maya-confidence-building', consequence: 'maya_robotics_revealed', pattern: 'helping' },
@@ -97,7 +97,7 @@ const SIMPLE_SCENES = {
 
   'maya-pressure-discussion': {
     id: 'maya-pressure-discussion',
-    text: "\"Two decades of dedication deserves recognition.\" or \"The consistent effort over twenty years shows deep commitment.\"",
+    text: "Maya sets down her pencil with shaking hands.\n\n\"You want to know the worst part? I'm actually good at the pre-med stuff. Organic chemistry, anatomy, I ace it all.\"\n\n\"My parents say that means it's my calling. But being good at something and being called to it - those aren't the same thing, are they?\"",
     speaker: 'Maya Chen (Pre-med Student)',
     choices: [
       { text: "No, they're not. What does call to you?", next: 'maya-true-passion', consequence: 'maya_authenticity', pattern: 'helping' },
@@ -955,108 +955,10 @@ const SIMPLE_SCENES = {
       { text: "Working in education feels meaningful and stable.", next: 'insights-integration', consequence: 'bcs_mission_alignment', pattern: 'helping' },
       { text: "Community impact work appeals to me.", next: 'devon-community-impact', consequence: 'bcs_community_connection', pattern: 'patience' }
     ]
-  },
-
-  // Generated scenes to fix navigation issues
-  'maya-birmingham-medical': {
-    text: "Oh, Birmingham!  It's surprisingly rich in medical opportunities, beyond just UAB. I've been researching quite a bit.  There's the Children's of Alabama, of course – a huge teaching hospital with a strong robotics program in surgery, which relates to my project here.  But I've also been looking at smaller, specialized clinics, focusing on areas like regenerative medicine, which is exploding right now.  And then there's the research side – UAB has several cutting-edge labs.  She gestures to her notes, a slight blush rising on her cheeks. It's a lot to take in!",
-    choices: [
-      { text: "Tell me more about the robotics program at Children's of Alabama.", next: 'maya-childrens-robotics', consequence: 'maya_confidence+', pattern: 'analytical' },
-      { text: "Regenerative medicine sounds fascinating. What kind of clinics are you looking at?", next: 'maya-regenerative-medicine', consequence: 'maya_patience+', pattern: 'helping' },
-      { text: "UAB research labs?  What areas are they focusing on?", next: 'maya-uab-research', consequence: 'maya_knowledge+', pattern: 'analytical' },
-      { text: "This is overwhelming. Maybe we should focus on just one area to start?", next: 'maya-focus-strategy', consequence: 'maya_confidence-', pattern: 'patience' }
-    ]
-  },
-
-  'maya-inner-conflict': {
-    text: "Oh, uh, hi.  Yeah, I guess I am a little conflicted.  It's... everything feels so overwhelming.  Pre-med is supposed to be my path, my family expects it.  But this robotics stuff... it's where I feel truly alive.  I'm working on a prosthetic hand design, actually, incorporating some bio-feedback sensors.  But is it realistic to combine both?  Can I even make a living doing that in Birmingham?",
-    choices: [
-      { text: "Birmingham has a surprising number of medical device companies. Have you looked into their internship programs?", next: 'maya-birmingham-opportunities', consequence: 'maya_confidence+', pattern: 'helping' },
-      { text: "Let's break it down. What are your biggest concerns about combining pre-med and robotics?", next: 'maya-problem-solving', consequence: 'maya_confidence++', pattern: 'analytical' },
-      { text: "Don't worry about the 'realistic' part. Just focus on building your skills in both. That passion will open doors.", next: 'maya-passion-focus', consequence: 'maya_confidence+', pattern: 'patience' },
-      { text: "Have you considered reaching out to the robotics club at UAB? They might have some insights.", next: 'maya-uab-connection', consequence: 'maya_network+', pattern: 'building' }
-    ]
-  },
-
-  'maya-confidence-building': {
-    text: "Thanks!  It's still early days, but the potential is huge.  I'm working on a prototype for a surgical simulator using haptic feedback – think realistic, responsive tissue simulation for surgical training.  Birmingham's got some amazing medical tech companies, and I'm hoping to connect with some of them through the UAB Innovation Depot.",
-    choices: [
-      { text: "That's incredible!  Have you considered applying for internships at those companies?  UAB has a strong placement program.", next: 'maya-internship-search', consequence: 'maya_internship_considered', pattern: 'helping' },
-      { text: "The haptic feedback is key!  What challenges are you facing in developing the system?  Perhaps I could help – I have some experience with sensor integration.", next: 'devon-collaboration-offer', consequence: 'devon_offers_help', pattern: 'building' },
-      { text: "This is a long-term project. What's your plan for handling setbacks and unexpected technical issues?", next: 'maya-problem-solving', consequence: 'maya_problem_solving_discussed', pattern: 'analytical' },
-      { text: "Birmingham's medical scene is definitely developing.  It'll take time to see this technology widely adopted. Be patient with the process.", next: 'maya-patience-reminder', consequence: 'maya_patience_emphasized', pattern: 'patience' }
-    ]
-  },
-
-  'maya-strategic-thinking': {
-    text: "That's a great point!  Thinking strategically, how could we frame this robotics project to highlight its applications in a medical setting?  We need to appeal to residency programs and potential grant funders in Birmingham.  What's the strongest angle?",
-    choices: [
-      { text: "Focus on the precision and dexterity improvements – robotic surgery assistance, minimally invasive procedures.", next: 'maya-surgical-robotics', consequence: 'surgical_focus', pattern: 'analytical' },
-      { text: "Highlight the potential for remote patient monitoring and diagnostics – imagine telehealth advancements in underserved rural Alabama communities.", next: 'maya-telehealth-impact', consequence: 'rural_health_focus', pattern: 'helping' },
-      { text: "Emphasize the cost-effectiveness and efficiency gains – reduced hospital stays, faster recovery times, leading to lower healthcare costs.", next: 'maya-cost-efficiency', consequence: 'economic_focus', pattern: 'building' },
-      { text: "Let's present it as a platform for ongoing research and development, securing long-term funding and collaborations with UAB or Children's of Alabama.", next: 'maya-research-collaboration', consequence: 'research_focus', pattern: 'patience' }
-    ]
-  },
-
-  'devon-systems-thinking': {
-    text: "Yeah, sure, have a seat.  It's... intense right now. I'm trying to optimize a traffic flow algorithm for the city.  Birmingham's expanding rapidly, and the current system is... well, let's just say it has room for improvement. He gestures vaguely at the screens, highlighting a particularly chaotic section of the visualization. See this bottleneck near the UAB campus?  It's a nightmare.",
-    choices: [
-      { text: "Could you explain the algorithm to me? I'm fascinated by this kind of thing.", next: 'devon-algorithm-deepdive', consequence: 'devon_analytical_sharing+', pattern: 'analytical' },
-      { text: "I'm more interested in the practical application. How does this impact real people?", next: 'devon-real-world-impact', consequence: 'devon_helping_focus+', pattern: 'helping' },
-      { text: "Wow, that sounds like a massive undertaking.  Have you thought about presenting this to the city?", next: 'devon-city-proposal', consequence: 'devon_building_ambition+', pattern: 'building' },
-      { text: "I'm thinking about a career change.  Your focus seems intense.  How do you stay motivated on something this big?", next: 'devon-motivation', consequence: 'devon_patience_inspiration+', pattern: 'patience' }
-    ]
-  },
-
-  'devon-community-impact': {
-    text: "Devon beams. That's the core of it! Cleaner water means healthier communities, fewer waterborne illnesses, and less strain on the city's resources.  Think about the impact on local businesses reliant on clean water, or the improved quality of life for families living near Village Creek. The data we collect also helps the city allocate resources more effectively for future infrastructure projects.",
-    choices: [
-      { text: "So, it's not just about the technology, but the people it affects?", next: 'devon-broader-impact', consequence: 'devon_empathy+', pattern: 'helping' },
-      { text: "What kind of engineering jobs are involved in a project like this?", next: 'devon-career-paths', consequence: 'devon_career_clarity+', pattern: 'analytical' },
-      { text: "How does the city fund something this ambitious?", next: 'devon-funding-models', consequence: 'devon_realism+', pattern: 'building' },
-      { text: "This sounds really complex.  What if the system fails?", next: 'devon-risk-assessment', consequence: 'devon_problem_solving+', pattern: 'patience' }
-    ]
-  },
-
-  'devon-innovation-depot': {
-    text: "The Innovation Depot?  That's... actually a great idea! They're always looking for innovative solutions for Birmingham's environmental challenges.  I could showcase the real-time data visualization and maybe even get feedback from some of the mentors there.  It's a bit nerve-wracking to present it to a larger audience, but the potential exposure...  It's exciting! Devon fidgets slightly, a hint of his earlier enthusiasm returning. What do you think the best approach would be?",
-    choices: [
-      { text: "Let's focus on the algorithm's efficiency; that's your strongest point.", next: 'devon-algorithm-focus', consequence: 'devon_analytical+', pattern: 'analytical' },
-      { text: "Prepare a short, engaging presentation highlighting the community impact.", next: 'devon-community-impact', consequence: 'devon_confidence+', pattern: 'helping' },
-      { text: "We should build a small-scale demo to show at the Depot, something visually impressive.", next: 'devon-build-demo', consequence: 'devon_practical+', pattern: 'building' },
-      { text: "Maybe start with a smaller, less intimidating setting to build your confidence before the Depot.", next: 'devon-smaller-audience', consequence: 'devon_confidence+', pattern: 'patience' }
-    ]
-  },
-
-  'jordan-birmingham-building': {
-    text: "Ah, Birmingham's building boom!  It's exciting to see so much growth.  From revitalizing historic structures to pioneering new designs, there's a lot to be passionate about here. What particularly catches your eye?",
-    choices: [
-      { text: "The redevelopment of the historic downtown area – I'm fascinated by adaptive reuse projects.", next: 'jordan-adaptive-reuse', consequence: 'jordan_building_passion', pattern: 'building' },
-      { text: "The innovation around sustainable building practices –  green infrastructure and energy efficiency are key to the future.", next: 'jordan-sustainable-building', consequence: 'jordan_sustainability_focus', pattern: 'helping' },
-      { text: "I'm interested in the large-scale infrastructure projects, like the improvements to the interstate system or the airport expansion.", next: 'jordan-infrastructure', consequence: 'jordan_infrastructure_knowledge', pattern: 'analytical' },
-      { text: "Honestly, I'm still exploring.  I'm keen to learn more about the different types of projects before making a decision.", next: 'jordan-birmingham-overview', consequence: 'jordan_exploration_mode', pattern: 'patience' }
-    ]
-  },
-
-  'jordan-non-traditional': {
-    text: "You're right, Maya.  A lot of what you see here is traditional civil and mechanical engineering –  bridge design, material science, that sort of thing. But Birmingham's undergoing a huge tech boom, and that's opening doors to less traditional engineering roles.  Think about it:  we're talking advanced manufacturing, AI-driven logistics for the port, even sustainable infrastructure projects powered by renewable energy.  What piques your interest more?",
-    choices: [
-      { text: "Tell me more about the AI and logistics side.  Sounds fascinating.", next: 'jordan-ai-logistics', consequence: 'ai_interest', pattern: 'analytical' },
-      { text: "Sustainable infrastructure –  how does Birmingham factor into that?", next: 'jordan-sustainable-infra', consequence: 'sustainability_focus', pattern: 'helping' },
-      { text: "I'm still intrigued by the traditional aspects, but maybe with a modern twist.", next: 'jordan-modern-civil', consequence: 'traditional_modern', pattern: 'building' },
-      { text: "Can you give me some examples of people who've made unconventional career paths in engineering here?", next: 'jordan-unconventional-paths', consequence: 'career_path_exploration', pattern: 'patience' }
-    ]
-  },
-
-  'samuel-patterns-wisdom': {
-    text: "Three thousand travelers...a vast sea of faces, yet currents run beneath.  I see patterns, child, in the choices they make. Some cling fiercely to a single destination, their tickets clutched tight, refusing detours. Others, more like the wind, shift with every gust of opportunity, never settling.  And then there are those who, like the river, carve their own path, adapting to the terrain, finding strength in the unexpected bends.  Which current resonates with you?",
-    choices: [
-      { text: "Tell me more about those who carve their own path.", next: 'samuel-entrepreneurship-birmingham', consequence: 'samuel_pathfinding_advice', pattern: 'building' },
-      { text: "What about the ones who are always changing direction?  Is that a bad thing?", next: 'samuel-adaptability-challenges', consequence: 'samuel_adaptability_perspective', pattern: 'analytical' },
-      { text: "I think I'm like the ones who hold tight to their plans.  Is that wrong?", next: 'samuel-commitment-risks', consequence: 'samuel_commitment_reflection', pattern: 'patience' },
-      { text: "Can you give me examples of Birmingham careers that fit these patterns?", next: 'samuel-birmingham-examples', consequence: 'samuel_birmingham_insights', pattern: 'helping' }
-    ]
   }
+
+
+
 
 }
 
