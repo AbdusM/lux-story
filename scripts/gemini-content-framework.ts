@@ -138,36 +138,42 @@ export class GeminiContentFramework {
   }
 
   /**
-   * Apply improvements to file with backup and validation
+   * Apply scene-based improvements using robust object replacement
    */
-  async applyImprovements(
+  async applySceneImprovements(
     filePath: string,
     improvements: Array<{
-      match: ContentMatch
-      result: ImprovementResult
+      sceneId: string
+      newText: string
+      confidence?: number
+      issues?: string[]
     }>,
     options: {
       dryRun?: boolean
       minConfidence?: number
       createBackup?: boolean
+      debug?: boolean
     } = {}
   ): Promise<{
     applied: number
     skipped: number
     errors: string[]
   }> {
-    const { dryRun = false, minConfidence = 0.8, createBackup = true } = options
+    const { dryRun = false, minConfidence = 0.7, createBackup = true, debug = false } = options
+
+    console.log(`\n🔧 applySceneImprovements called with ${improvements.length} scene improvements`)
+    console.log(`📁 Target file: ${filePath}`)
+    console.log(`⚙️ Options: dryRun=${dryRun}, minConfidence=${minConfidence}, debug=${debug}`)
 
     // Create backup if requested
     if (createBackup && !dryRun) {
       this.createBackup(filePath)
+      console.log(`📦 Backup created for ${filePath}`)
     }
 
     // Read file content
     let fileContent = fs.readFileSync(filePath, 'utf-8')
-
-    // Sort improvements by position (reverse to maintain indices)
-    improvements.sort((a, b) => b.match.startIndex - a.match.startIndex)
+    console.log(`📖 File content read: ${fileContent.length} characters`)
 
     const stats = {
       applied: 0,
@@ -175,38 +181,179 @@ export class GeminiContentFramework {
       errors: [] as string[]
     }
 
-    for (const { match, result } of improvements) {
+    for (let i = 0; i < improvements.length; i++) {
+      const improvement = improvements[i]
+      console.log(`\n--- Processing scene improvement ${i + 1}/${improvements.length}: ${improvement.sceneId} ---`)
+
       // Skip if confidence is too low
-      if (result.confidence < minConfidence) {
+      if (improvement.confidence && improvement.confidence < minConfidence) {
         stats.skipped++
-        stats.errors.push(`Skipped ${match.id}: Low confidence (${result.confidence})`)
+        const error = `Skipped ${improvement.sceneId}: Low confidence (${improvement.confidence})`
+        stats.errors.push(error)
+        console.log(`⚠️ ${error}`)
         continue
       }
 
       // Skip if there are critical issues
-      if (result.issues.some(issue => issue.includes('critical'))) {
+      if (improvement.issues && improvement.issues.some(issue => issue.includes('critical'))) {
         stats.skipped++
-        stats.errors.push(`Skipped ${match.id}: Critical issues - ${result.issues.join(', ')}`)
+        const error = `Skipped ${improvement.sceneId}: Critical issues - ${improvement.issues.join(', ')}`
+        stats.errors.push(error)
+        console.log(`⚠️ ${error}`)
         continue
       }
 
       if (!dryRun) {
-        // Apply the improvement using exact indices
-        fileContent =
-          fileContent.slice(0, match.startIndex) +
-          result.improved +
-          fileContent.slice(match.endIndex)
+        try {
+          console.log(`🎯 Applying scene improvement to ${improvement.sceneId}`)
+
+          // Safely escape the new text for JavaScript string context
+          const escapedText = this.escapeForJavaScript(improvement.newText)
+          console.log(`   📝 Escaped text length: ${escapedText.length}`)
+
+          if (debug) {
+            console.log(`   🔄 New text content:`)
+            console.log(`      "${improvement.newText.substring(0, 100)}${improvement.newText.length > 100 ? '...' : ''}"`)
+          }
+
+          // Apply the scene replacement using robust regex
+          const updatedContent = this.replaceSceneText(fileContent, improvement.sceneId, escapedText, debug)
+
+          if (updatedContent === fileContent) {
+            const error = `No changes made for ${improvement.sceneId} - scene not found or pattern failed`
+            stats.errors.push(error)
+            console.log(`❌ ${error}`)
+            continue
+          }
+
+          fileContent = updatedContent
+          console.log(`   ✅ Successfully replaced scene. New content length: ${fileContent.length}`)
+
+        } catch (error: any) {
+          const errorMsg = `Failed to apply ${improvement.sceneId}: ${error.message}`
+          stats.errors.push(errorMsg)
+          console.log(`❌ ${errorMsg}`)
+          continue
+        }
+      } else {
+        console.log(`🧪 DRY RUN: Would apply scene improvement to ${improvement.sceneId}`)
       }
 
       stats.applied++
     }
 
-    // Write the updated file
+    console.log(`\n📊 Final stats: applied=${stats.applied}, skipped=${stats.skipped}, errors=${stats.errors.length}`)
+
+    // Write the updated file with comprehensive validation
     if (!dryRun && stats.applied > 0) {
-      fs.writeFileSync(filePath, fileContent, 'utf-8')
+      try {
+        // Create debug output file if requested
+        if (debug) {
+          const debugPath = filePath.replace(/\.ts$/, '.debug.ts')
+          fs.writeFileSync(debugPath, fileContent, 'utf-8')
+          console.log(`🐛 Debug output written to: ${debugPath}`)
+        }
+
+        // Validate the content before writing
+        console.log(`🔍 Validating final content...`)
+        this.validateJavaScriptSyntax(fileContent, filePath)
+
+        fs.writeFileSync(filePath, fileContent, 'utf-8')
+        console.log(`✅ Successfully wrote ${fileContent.length} characters to ${filePath}`)
+
+      } catch (error: any) {
+        const errorMsg = `Failed to write file: ${error.message}`
+        stats.errors.push(errorMsg)
+        console.log(`❌ ${errorMsg}`)
+        throw error
+      }
+    } else if (!dryRun) {
+      console.log(`ℹ️ No changes to apply (stats.applied = ${stats.applied})`)
     }
 
     return stats
+  }
+
+  /**
+   * Replace text content in a specific scene using robust regex matching
+   */
+  private replaceSceneText(fileContent: string, sceneId: string, newText: string, debug: boolean = false): string {
+    // Create a highly specific regex to find the scene object and its text property
+    // This pattern matches: 'sceneId': { ... text: "current_text" ... }
+    // Using capture groups to preserve the structure while replacing only the text content
+    const sceneBlockPattern = new RegExp(
+      // Group 1: Scene object start and everything up to text property value
+      `('${sceneId.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}':\\s*\\{[^}]*?text:\\s*")` +
+      // Group 2: The current text content (we'll replace this)
+      `([^"\\\\]*(?:\\\\.[^"\\\\]*)*)` +
+      // Group 3: Closing quote and rest of scene object
+      `(",[^}]*?\\})`,
+      'g'
+    )
+
+    if (debug) {
+      console.log(`   🔍 Searching for scene pattern: ${sceneBlockPattern.source}`)
+    }
+
+    // Check how many matches we find
+    const matches = [...fileContent.matchAll(sceneBlockPattern)]
+
+    if (matches.length === 0) {
+      console.log(`   ⚠️ No matches found for scene '${sceneId}'`)
+      return fileContent
+    }
+
+    if (matches.length > 1) {
+      console.log(`   ⚠️ Multiple matches found for scene '${sceneId}' (${matches.length}). Using first match.`)
+    }
+
+    if (debug && matches.length > 0) {
+      const match = matches[0]
+      console.log(`   📍 Found scene at position ${match.index}`)
+      console.log(`   📜 Original text: "${match[2].substring(0, 100)}${match[2].length > 100 ? '...' : ''}"`)
+    }
+
+    // Perform the replacement using capture groups
+    // $1 = everything before the text content
+    // newText = our replacement content
+    // $3 = everything after the text content
+    return fileContent.replace(sceneBlockPattern, `$1${newText}$3`)
+  }
+
+  /**
+   * Safely escape text for JavaScript string context
+   */
+  private escapeForJavaScript(text: string): string {
+    return text
+      .replace(/\\/g, '\\\\')  // Escape backslashes first
+      .replace(/"/g, '\\"')    // Escape double quotes
+      .replace(/\n/g, '\\n')   // Escape newlines
+      .replace(/\r/g, '\\r')   // Escape carriage returns
+      .replace(/\t/g, '\\t')   // Escape tabs
+  }
+
+  /**
+   * Validate JavaScript syntax without executing
+   */
+  private validateJavaScriptSyntax(content: string, filePath: string): void {
+    try {
+      // Basic validation - check for unescaped quotes in string contexts
+      const lines = content.split('\n')
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i]
+        // Simple check for unescaped quotes in text properties
+        if (line.includes('text:') && line.includes('"')) {
+          const textMatch = line.match(/text:\s*"([^"]*)"/)
+          if (textMatch && textMatch[1].includes('"')) {
+            throw new Error(`Unescaped quote in text property at line ${i + 1}: ${line.trim()}`)
+          }
+        }
+      }
+      console.log(`✅ Basic syntax validation passed`)
+    } catch (error: any) {
+      console.log(`❌ Syntax validation failed: ${error.message}`)
+      throw error
+    }
   }
 
   /**

@@ -408,27 +408,21 @@ Return ONLY the improved text, no commentary or explanation.`
       return
     }
 
-    // Apply improvements
-    const stats = await this.applyImprovements(
+    // Apply improvements using the new scene-based replacement strategy
+    console.log(`\n🔧 Preparing to apply ${improvements.length} voice improvements using scene-object replacement...`)
+
+    const stats = await this.applySceneImprovements(
       this.filePath,
       improvements.map(imp => ({
-        match: {
-          id: imp.dialogue.id,
-          content: imp.dialogue.text,
-          metadata: { character: imp.character },
-          startIndex: imp.dialogue.textStartIndex,
-          endIndex: imp.dialogue.textEndIndex
-        },
-        result: {
-          original: imp.dialogue.text,
-          improved: imp.improved,
-          confidence: 0.9,
-          issues: []
-        }
+        sceneId: imp.dialogue.id,
+        newText: imp.improved,
+        confidence: 0.9,
+        issues: []
       })),
       {
         minConfidence: 0.7,
-        createBackup: true
+        createBackup: true,
+        debug: true  // Enable comprehensive debug logging
       }
     )
 
