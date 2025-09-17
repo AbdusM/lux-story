@@ -1,0 +1,20 @@
+Choice Calibration Report
+Generated: 2025-09-17T01:50:22.221Z
+
+Scenes Analyzed: 75
+Scenes Improved: 12
+Scenes Skipped: 0
+
+Pattern Distribution Check:
+- Analytical: 74 scenes
+- Helping: 74 scenes
+- Building: 74 scenes
+- Patience: 75 scenes
+
+Issues Encountered:
+
+
+Summary:
+The choice calibration ensures that every player choice clearly maps to one of the four
+performance patterns, improving the accuracy of the invisible metrics system and making
+the adaptive narrative more meaningful.

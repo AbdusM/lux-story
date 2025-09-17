@@ -284,8 +284,4 @@ export class GeminiContentFramework {
   }
 }
 
-// Export specialized implementations
-export { DialogueFormatter } from './implementations/dialogue-formatter'
-export { ChoiceGenerator } from './implementations/choice-generator'
-export { SceneTransitioner } from './implementations/scene-transitioner'
-export { PatternAnalyzer } from './implementations/pattern-analyzer'
+// Main framework class export only
