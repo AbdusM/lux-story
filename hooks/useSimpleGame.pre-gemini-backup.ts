@@ -216,7 +216,7 @@ const SIMPLE_SCENES = {
 
   'jordan-career-wisdom': {
     id: 'jordan-career-wisdom',
-    text: "Jordan sets down the prototype they were examining. \"Here's my advice, and it's not what your parents want to hear: Stop trying to choose the right path. Start trying to choose the next interesting problem. Birmingham's got problems to solve - healthcare accessibility, education gaps, urban renewal, tech inequality. Pick one that makes you curious.\"",
+    text: "Jordan sets down the prototype they were examining.\n\n\"Here's my advice, and it's not what your parents want to hear:\n\nStop trying to choose the right path.\n\nStart trying to choose the next interesting problem.\"\n\n\"Birmingham's got problems to solve - healthcare accessibility, education gaps, urban renewal, tech inequality.\"\n\n\"Pick one that makes you curious.\"",
     speaker: 'Jordan Packard (Multi-Path Mentor)',
     choices: [
       { text: "But how do you know when to stick versus move on?", next: 'jordan-timing-wisdom', consequence: 'jordan_decision_making', pattern: 'analytical' },
@@ -388,7 +388,7 @@ const SIMPLE_SCENES = {
 
   'maya-uab-bridge': {
     id: 'maya-uab-bridge',
-    text: "Maya's eyes widen. \"UAB does have an MD-PhD program in biomedical engineering. It's seven years instead of four, but...\" She pulls up the program on her laptop. \"Look at this - they're developing robotic surgical systems, AI diagnostic tools, prosthetics research. My parents would see the MD, but I'd be building the future of medicine.\"",
+    text: "Maya's eyes widen.\n\n\"UAB does have an MD-PhD program in biomedical engineering.\"\n\n\"It's seven years instead of four, but...\"\n\nShe pulls up the program on her laptop.\n\n\"Look at this - they're developing robotic surgical systems, AI diagnostic tools, prosthetics research.\"\n\n\"My parents would see the MD, but I'd be building the future of medicine.\"",
     speaker: 'Maya Chen (Pre-med Student)',
     choices: [
       { text: "This could be your perfect compromise.", next: 'uab-partnership-details', consequence: 'uab_biomedical_pathway', pattern: 'building' },
@@ -412,7 +412,7 @@ const SIMPLE_SCENES = {
 
   'maya-reframing-love': {
     id: 'maya-reframing-love',
-    text: "Maya slowly nods, wiping away tears. \"You're right. Their love gave me opportunities, not obligations. They came to America so I could choose my own path, not follow theirs. I think... I think they'd be prouder of me for building something meaningful than for just following their plan. Their sacrifice was about opening doors, not closing them.\"",
+    text: "Maya slowly nods, wiping away tears.\n\n\"You're right.\n\nTheir love gave me opportunities, not obligations.\"\n\n\"They came to America so I could choose my own path, not follow theirs.\"\n\n\"I think... I think they'd be prouder of me for building something meaningful than for just following their plan.\"\n\n\"Their sacrifice was about opening doors, not closing them.\"",
     speaker: 'Maya Chen (Pre-med Student)',
     choices: [
       { text: "How would you explain your robotics passion to them?", next: 'maya-demonstration-approach', consequence: 'maya_communication_strategy', pattern: 'building' },
@@ -424,7 +424,7 @@ const SIMPLE_SCENES = {
 
   'maya-alternative-excellence': {
     id: 'maya-alternative-excellence',
-    text: "Maya's eyes light up with possibility. \"Excellence. Yes. What if I showed them that excellence isn't just about following their path, but about mastering my own? My robotics work has won three engineering competitions. My research proposal got accepted to UAB's summer program. I'm not failing their dreams - I'm excelling at my own.\"",
+    text: "Maya's eyes light up with possibility.\n\n\"Excellence. Yes.\"\n\n\"What if I showed them that excellence isn't just about following their path, but about mastering my own?\"\n\n\"My robotics work has won three engineering competitions.\"\n\n\"My research proposal got accepted to UAB's summer program.\"\n\n\"I'm not failing their dreams - I'm excelling at my own.\"",
     speaker: 'Maya Chen (Pre-med Student)',
     choices: [
       { text: "Those achievements are incredible. How would you present them?", next: 'maya-demonstration-approach', consequence: 'maya_evidence_building', pattern: 'building' },
@@ -436,7 +436,7 @@ const SIMPLE_SCENES = {
 
   'maya-demonstration-approach': {
     id: 'maya-demonstration-approach',
-    text: "Maya pulls out her phone, scrolling through videos. \"I could show them my surgical robot prototype. It performed a simulated appendectomy with 99.7% precision - better than the average resident. Or this prosthetic hand that responds to muscle signals. I've been hiding my best work because I was afraid they'd see it as distraction from 'real medicine.' But this IS real medicine.\"",
+    text: "Maya pulls out her phone, scrolling through videos.\n\n\"I could show them my surgical robot prototype.\n\nIt performed a simulated appendectomy with 99.7% precision - better than the average resident.\n\nOr this prosthetic hand that responds to muscle signals.\"\n\n\"I've been hiding my best work because I was afraid they'd see it as distraction from 'real medicine.'\n\nBut this IS real medicine.\"",
     speaker: 'Maya Chen (Pre-med Student)',
     choices: [
       { text: "That surgical robot could save thousands of lives.", next: 'maya-authentic-gratitude', consequence: 'maya_impact_realization', pattern: 'helping' },
@@ -449,7 +449,7 @@ const SIMPLE_SCENES = {
   // Birmingham Professional Integration
   'birmingham-professional-story-healthcare': {
     id: 'birmingham-professional-story-healthcare',
-    text: "Maya introduces you to Dr. James Thompson, who works at UAB. \"I was a cardiac surgeon for ten years,\" he says, \"then founded a medical device company. Now my artificial hearts save more lives than I ever could in the OR. The best doctors heal one patient at a time. The best engineers heal thousands.\"",
+    text: "Maya introduces you to Dr. James Thompson, who works at UAB.\n\n\"I was a cardiac surgeon for ten years,\" he says, \"then founded a medical device company.\"\n\n\"Now my artificial hearts save more lives than I ever could in the OR.\"\n\n\"The best doctors heal one patient at a time.\"\n\n\"The best engineers heal thousands.\"",
     speaker: 'Dr. James Thompson (Medical Device Entrepreneur)',
     choices: [
       { text: "How did you make the transition from surgeon to entrepreneur?", next: 'healthcare-entrepreneur-journey', consequence: 'birmingham_healthcare_innovation', pattern: 'analytical' },
@@ -647,7 +647,7 @@ const SIMPLE_SCENES = {
 
   'jordan-birmingham-flexibility': {
     id: 'jordan-birmingham-flexibility',
-    text: "Jordan gestures toward the windows. \"Birmingham is perfect for multi-path careers because we're a city that reinvented itself. UAB needs people who understand both medicine and technology. Innovation Depot loves entrepreneurs with diverse backgrounds. Even Regions Bank hired former teachers to improve customer experience. This city rewards adaptability because adaptability is how we survived and thrived.\"",
+    text: "Jordan gestures toward the windows.\n\n\"Birmingham is perfect for multi-path careers because we're a city that reinvented itself.\"\n\n\"UAB needs people who understand both medicine and technology.\"\n\n\"Innovation Depot loves entrepreneurs with diverse backgrounds.\"\n\n\"Even Regions Bank hired former teachers to improve customer experience.\"\n\n\"This city rewards adaptability because adaptability is how we survived and thrived.\"",
     speaker: 'Jordan Packard (Multi-Path Mentor)',
     choices: [
       { text: "Which Birmingham companies specifically embrace this?", next: 'jordan-current-passion', consequence: 'birmingham_multi_path_employers', pattern: 'analytical' },
@@ -659,7 +659,7 @@ const SIMPLE_SCENES = {
 
   'jordan-resilience-wisdom': {
     id: 'jordan-resilience-wisdom',
-    text: "Jordan's expression grows thoughtful. \"Each time I changed direction, I felt like I was failing. But here's what kept me going: Birmingham has a culture of 'next.' Next opportunity, next skill, next chance to contribute. When one door closed, I'd think 'What did this teach me?' instead of 'Why did I waste time?' Every experience became part of my toolkit, not a detour from my 'real' path.\"",
+    text: "Jordan's expression grows thoughtful.\n\n\"Each time I changed direction, I felt like I was failing.\"\n\n\"But here's what kept me going: Birmingham has a culture of 'next.'\n\nNext opportunity, next skill, next chance to contribute.\"\n\n\"When one door closed, I'd think 'What did this teach me?' instead of 'Why did I waste time?'\"\n\n\"Every experience became part of my toolkit, not a detour from my 'real' path.\"",
     speaker: 'Jordan Packard (Multi-Path Mentor)',
     choices: [
       { text: "How do you reframe failure as learning?", next: 'jordan-no-waste-philosophy', consequence: 'jordan_mindset_shift', pattern: 'analytical' },
@@ -671,7 +671,7 @@ const SIMPLE_SCENES = {
 
   'jordan-permission-giving': {
     id: 'jordan-permission-giving',
-    text: "Jordan reaches across and gently touches your arm. \"Listen to me: You don't need permission to explore. You don't need to justify your curiosity. You don't need to apologize for taking time to figure things out. Birmingham grew from iron and steel to medicine and technology because people had permission to imagine something different. Give yourself that same permission.\"",
+    text: "Jordan reaches across and gently touches your arm.\n\n\"Listen to me: You don't need permission to explore.\n\nYou don't need to justify your curiosity.\n\nYou don't need to apologize for taking time to figure things out.\"\n\n\"Birmingham grew from iron and steel to medicine and technology because people had permission to imagine something different.\"\n\n\"Give yourself that same permission.\"",
     speaker: 'Jordan Packard (Multi-Path Mentor)',
     choices: [
       { text: "I've been waiting for someone to say that.", next: 'jordan-pressure-relief', consequence: 'jordan_emotional_release', pattern: 'patience' },
@@ -683,7 +683,7 @@ const SIMPLE_SCENES = {
 
   'jordan-no-waste-philosophy': {
     id: 'jordan-no-waste-philosophy',
-    text: "Jordan shakes their head emphatically. \"There's no such thing as wasted time if you're paying attention. My customer service years? That's why I understand user frustration. Uber driving? That's why I know Birmingham's communities. Personal training? That's why I can motivate people through difficult changes. Graphic design? That's why my apps are beautiful AND functional. Every 'detour' was actually essential.\"",
+    text: "Jordan shakes their head emphatically.\n\n\"There's no such thing as wasted time if you're paying attention.\"\n\n\"My customer service years? That's why I understand user frustration.\"\n\n\"Uber driving? That's why I know Birmingham's communities.\"\n\n\"Personal training? That's why I can motivate people through difficult changes.\"\n\n\"Graphic design? That's why my apps are beautiful AND functional.\"\n\n\"Every 'detour' was actually essential.\"",
     speaker: 'Jordan Packard (Multi-Path Mentor)',
     choices: [
       { text: "How do you identify the lessons in each experience?", next: 'jordan-generalist-confidence', consequence: 'jordan_reflection_method', pattern: 'analytical' },
@@ -707,7 +707,7 @@ const SIMPLE_SCENES = {
 
   'jordan-current-passion': {
     id: 'jordan-current-passion',
-    text: "Jordan's eyes light up. \"Right now I'm obsessed with healthcare accessibility. Birmingham has world-class medical facilities at UAB, but transportation and technology barriers keep people from accessing care. I'm designing apps that connect patients with rides, translate medical information, and simplify appointment scheduling. It uses everything I've learned - logistics, motivation, design, and human psychology.\"",
+    text: "Jordan's eyes light up.\n\n\"Right now I'm obsessed with healthcare accessibility.\"\n\n\"Birmingham has world-class medical facilities at UAB,\n\nbut transportation and technology barriers keep people from accessing care.\"\n\n\"I'm designing apps that connect patients with rides, translate medical information, and simplify appointment scheduling.\"\n\n\"It uses everything I've learned - logistics, motivation, design, and human psychology.\"",
     speaker: 'Jordan Packard (Multi-Path Mentor)',
     choices: [
       { text: "That perfectly combines all your previous experiences.", next: 'jordan-generalist-confidence', consequence: 'jordan_integration_recognition', pattern: 'analytical' },
@@ -719,7 +719,7 @@ const SIMPLE_SCENES = {
 
   'jordan-generalist-confidence': {
     id: 'jordan-generalist-confidence',
-    text: "Jordan grins. \"Specialists know everything about one thing. Generalists know something about everything. In Birmingham's innovation economy, both are valuable. But generalists are the ones who see connections others miss, who can translate between different fields, who can adapt when industries shift. We're not jack-of-all-trades, master-of-none. We're master-of-connections.\"",
+    text: "Jordan grins.\n\n\"Specialists know everything about one thing.\n\nGeneralists know something about everything.\n\nIn Birmingham's innovation economy, both are valuable.\n\nBut generalists are the ones who see connections others miss, who can translate between different fields, who can adapt when industries shift.\n\nWe're not jack-of-all-trades, master-of-none.\n\nWe're master-of-connections.\"",
     speaker: 'Jordan Packard (Multi-Path Mentor)',
     choices: [
       { text: "How do I frame this as a strength to employers?", next: 'jordan-storytelling-skills', consequence: 'jordan_strength_positioning', pattern: 'analytical' },
@@ -851,7 +851,7 @@ const SIMPLE_SCENES = {
 
   'birmingham-transferable-skills': {
     id: 'birmingham-transferable-skills',
-    text: "Samuel draws a mind map on a napkin. \"Look - customer service at Regions teaches you banking regulations AND communication. That transfers to UAB patient relations, Amazon logistics coordination, or Innovation Depot startup support. Every Birmingham company needs people who can translate between technical systems and human needs. These aren't separate careers - they're connected pathways.\"",
+    text: "Samuel draws a mind map on a napkin.\n\n\"Look - customer service at Regions teaches you banking regulations AND communication.\"\n\n\"That transfers to UAB patient relations, Amazon logistics coordination, or Innovation Depot startup support.\"\n\n\"Every Birmingham company needs people who can translate between technical systems and human needs.\"\n\n\"These aren't separate careers - they're connected pathways.\"",
     speaker: 'Samuel Washington (Station Keeper)',
     choices: [
       { text: "How do I identify which skills transfer where?", next: 'regions-bank-pathway', consequence: 'birmingham_skill_mapping', pattern: 'analytical' },

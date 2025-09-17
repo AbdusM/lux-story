@@ -1,0 +1,963 @@
+{
+  "snippets": [
+    {
+      "id": "anxious-feeling-lost-0",
+      "state": "anxious",
+      "context": "Player has been exploring platforms without making choices",
+      "content": "The purple shimmer on Platform 7 blurs slightly, mirroring your uncertainty. Sometimes, wandering *is* the path, a quiet exploration of possibilities.",
+      "sensory": "The subtle warmth radiating from the platform rail",
+      "character": "station",
+      "tags": [
+        "uncertainty",
+        "exploration",
+        "platform",
+        "possibilities"
+      ]
+    },
+    {
+      "id": "anxious-feeling-lost-1",
+      "state": "anxious",
+      "context": "Player has been exploring platforms without making choices",
+      "content": "Echoing footsteps fade, replaced by the station's gentle hum. Remember the view from Red Mountain – sometimes perspective is found by stepping back.",
+      "sensory": "The cool metal of the bench against your palm",
+      "character": "station",
+      "tags": [
+        "perspective",
+        "quiet",
+        "birmingham",
+        "red mountain"
+      ]
+    },
+    {
+      "id": "anxious-feeling-lost-2",
+      "state": "anxious",
+      "context": "Player has been exploring platforms without making choices",
+      "content": "The air currents shift, carrying a faint scent of wildflowers. Even Railroad Park's paths wind and curve; it's okay to not know the destination immediately.",
+      "sensory": "A warm breeze touches your face",
+      "character": "environment",
+      "tags": [
+        "patience",
+        "destination",
+        "birmingham",
+        "railroad park"
+      ]
+    },
+    {
+      "id": "anxious-feeling-lost-3",
+      "state": "anxious",
+      "context": "Player has been exploring platforms without making choices",
+      "content": "The blue-grey shadows lengthen near the UAB platform. Samuel says that even engineers and doctors felt this way at some point, standing here, unsure.",
+      "sensory": "The faint scent of aged wood from the benches",
+      "character": "samuel",
+      "tags": [
+        "uncertainty",
+        "samuel",
+        "uab",
+        "common experience"
+      ]
+    },
+    {
+      "id": "anxious-feeling-lost-4",
+      "state": "anxious",
+      "context": "Player has been exploring platforms without making choices",
+      "content": "A distant train whistle softens, turning into a low hum. The station understands your hesitation; even the most skilled conductors need a moment to consult their maps.",
+      "sensory": "The echoing whistle fades into the station's hum",
+      "character": "station",
+      "tags": [
+        "patience",
+        "understanding",
+        "station",
+        "maps"
+      ]
+    },
+    {
+      "id": "anxious-time-pressure-0",
+      "state": "anxious",
+      "context": "Player is worried about the midnight deadline",
+      "content": "The midnight train will come whether you worry or not. Feel the cool metal of the rail under your palm; it has seen countless deadlines pass.",
+      "sensory": "Cool metal rails",
+      "tags": [
+        "time",
+        "acceptance",
+        "present moment"
+      ]
+    },
+    {
+      "id": "anxious-time-pressure-1",
+      "state": "anxious",
+      "context": "Player is worried about the midnight deadline",
+      "content": "Even the stars over Red Mountain wait their turn to shine. Perhaps the deadline is simply another star in the night sky.",
+      "sensory": "Soft, golden glow of the station lights",
+      "tags": [
+        "time",
+        "perspective",
+        "birmingham"
+      ]
+    },
+    {
+      "id": "anxious-time-pressure-2",
+      "state": "anxious",
+      "context": "Player is worried about the midnight deadline",
+      "content": "The station breathes with you. Each exhale extends the moment, softens the edges of the approaching deadline. Let the air flow through you.",
+      "sensory": "Warm air currents gently swirling around you",
+      "character": "station",
+      "tags": [
+        "time",
+        "breathing",
+        "calm"
+      ]
+    },
+    {
+      "id": "anxious-time-pressure-3",
+      "state": "anxious",
+      "context": "Player is worried about the midnight deadline",
+      "content": "Samuel says that even UAB's brightest minds once felt this pressure. Close your eyes; feel the soft hum of the station, a constant vibration of potential.",
+      "sensory": "Gentle hum of machinery",
+      "character": "samuel",
+      "tags": [
+        "time",
+        "perspective",
+        "birmingham",
+        "samuel"
+      ]
+    },
+    {
+      "id": "anxious-time-pressure-4",
+      "state": "anxious",
+      "context": "Player is worried about the midnight deadline",
+      "content": "Imagine the Railroad Park, where time stretches out lazy and long. This deadline is only a single grain of sand in that vast space.",
+      "sensory": "Distant train whistle fading in the air",
+      "tags": [
+        "time",
+        "perspective",
+        "birmingham"
+      ]
+    },
+    {
+      "id": "anxious-too-many-options-0",
+      "state": "anxious",
+      "context": "Player is overwhelmed by career choices",
+      "content": "The sheer number of platforms can be overwhelming, like trying to count all the stars from Red Mountain. But each star has its place, and so do you.",
+      "sensory": "A soft, blue-grey shadow stretches from the vaulted ceiling above.",
+      "character": "station",
+      "tags": [
+        "options",
+        "perspective",
+        "location",
+        "red mountain"
+      ]
+    },
+    {
+      "id": "anxious-too-many-options-1",
+      "state": "anxious",
+      "context": "Player is overwhelmed by career choices",
+      "content": "Feel the worn wood of this bench beneath your fingertips. These tracks have seen countless journeys begin, each uncertain but ultimately fulfilling.",
+      "sensory": "The faint warmth radiating from the old bench wood.",
+      "tags": [
+        "journey",
+        "comfort",
+        "touch",
+        "beginning"
+      ]
+    },
+    {
+      "id": "anxious-too-many-options-2",
+      "state": "anxious",
+      "context": "Player is overwhelmed by career choices",
+      "content": "Even the station feels the weight of so many possibilities. Listen to the hum of the tracks, a constant vibration that reminds you it's okay to pause.",
+      "sensory": "A gentle hum resonating from the rail beneath your feet.",
+      "character": "station",
+      "tags": [
+        "pause",
+        "station",
+        "sound",
+        "vibration"
+      ]
+    },
+    {
+      "id": "anxious-too-many-options-3",
+      "state": "anxious",
+      "context": "Player is overwhelmed by career choices",
+      "content": "Remember that even UAB started with a single building. Every journey begins with a single step, a single decision.",
+      "sensory": "A cool draft of air whispers through the platform.",
+      "tags": [
+        "perspective",
+        "journey",
+        "location",
+        "uab"
+      ]
+    },
+    {
+      "id": "anxious-too-many-options-4",
+      "state": "anxious",
+      "context": "Player is overwhelmed by career choices",
+      "content": "Like the carefully arranged exhibits at Railroad Park, each path has its own unique story to tell. You don't have to choose them all at once.",
+      "sensory": "A golden glow illuminates the dust motes dancing in the air.",
+      "tags": [
+        "options",
+        "perspective",
+        "location",
+        "railroad park"
+      ]
+    },
+    {
+      "id": "anxious-family-expectations-0",
+      "state": "anxious",
+      "context": "Player struggling with parent pressure",
+      "content": "A faint scent of coal smoke hangs in the air, a legacy of journeys past. Even the Red Mountain ore trains faced their own uphill climbs.",
+      "sensory": "The metallic tang of coal smoke drifts on the warm air.",
+      "character": "environment",
+      "tags": [
+        "anxiety",
+        "pressure",
+        "legacy",
+        "perspective"
+      ]
+    },
+    {
+      "id": "anxious-family-expectations-1",
+      "state": "anxious",
+      "context": "Player struggling with parent pressure",
+      "content": "The blue-grey shadows lengthen as the sun dips below the station's dome. Let go of what you cannot control; the tracks are already laid.",
+      "sensory": "Cool shadows deepen and soften the edges of the platform.",
+      "character": "station",
+      "tags": [
+        "anxiety",
+        "control",
+        "acceptance",
+        "shadows"
+      ]
+    },
+    {
+      "id": "anxious-family-expectations-2",
+      "state": "anxious",
+      "context": "Player struggling with parent pressure",
+      "content": "Hear the gentle hum of the station, a constant reassurance. Like the steady flow of traffic near UAB, life simply continues onward.",
+      "sensory": "A low, resonant hum vibrates through the floor.",
+      "character": "station",
+      "tags": [
+        "anxiety",
+        "reassurance",
+        "hum",
+        "birmingham"
+      ]
+    },
+    {
+      "id": "anxious-family-expectations-3",
+      "state": "anxious",
+      "context": "Player struggling with parent pressure",
+      "content": "The worn bench beneath you remembers countless travelers, each with their own burdens. Rest here a moment; the platform won't disappear.",
+      "sensory": "The smooth, worn wood of the bench feels cool beneath your hands.",
+      "character": "station",
+      "tags": [
+        "anxiety",
+        "rest",
+        "bench",
+        "perspective"
+      ]
+    },
+    {
+      "id": "anxious-family-expectations-4",
+      "state": "anxious",
+      "context": "Player struggling with parent pressure",
+      "content": "Imagine Railroad Park after a rain - the quiet beauty that emerges. Strength can be forged even from challenging conditions.",
+      "sensory": "The air feels fresh and clean, like rain on metal.",
+      "tags": [
+        "anxiety",
+        "resilience",
+        "strength",
+        "birmingham"
+      ]
+    },
+    {
+      "id": "exploring-discovery-0",
+      "state": "exploring",
+      "context": "Player finding new platforms and paths",
+      "content": "Each platform hums a slightly different tune, a song of potential waiting to be heard. Don't feel rushed to understand them all at once.",
+      "sensory": "A low, resonant hum vibrates gently through the soles of your feet.",
+      "character": "station",
+      "tags": [
+        "discovery",
+        "sound",
+        "patience",
+        "potential"
+      ]
+    },
+    {
+      "id": "exploring-discovery-1",
+      "state": "exploring",
+      "context": "Player finding new platforms and paths",
+      "content": "The air shimmers with the promise of journeys, both familiar and unknown. Notice how the golden light catches the dust motes dancing near Platform UAB.",
+      "sensory": "Warm air currents carry the scent of distant coal and blooming jasmine.",
+      "character": "station",
+      "tags": [
+        "discovery",
+        "light",
+        "birmingham",
+        "exploration"
+      ]
+    },
+    {
+      "id": "exploring-discovery-2",
+      "state": "exploring",
+      "context": "Player finding new platforms and paths",
+      "content": "The cool metal of the handrails offer a grounded contrast to the swirling possibilities. Even Red Mountain had to start with solid ground.",
+      "sensory": "Cool metal against your palm, a grounding sensation.",
+      "tags": [
+        "discovery",
+        "tactile",
+        "grounded",
+        "birmingham"
+      ]
+    },
+    {
+      "id": "exploring-discovery-3",
+      "state": "exploring",
+      "context": "Player finding new platforms and paths",
+      "content": "Footsteps echo through the station, each one a story unfolding. Take your time tracing your own path through this grand library of lives.",
+      "sensory": "Distant echoing footsteps fade into the general hum of the station.",
+      "character": "station",
+      "tags": [
+        "discovery",
+        "sound",
+        "patience",
+        "story"
+      ]
+    },
+    {
+      "id": "exploring-discovery-4",
+      "state": "exploring",
+      "context": "Player finding new platforms and paths",
+      "content": "The platforms pulse with a soft purple shimmer, reflecting the calm curiosity within you. It's alright to pause and simply observe, like a stroll through Railroad Park.",
+      "sensory": "A soft purple shimmer dances on the edge of your vision.",
+      "character": "station",
+      "tags": [
+        "discovery",
+        "visual",
+        "calm",
+        "birmingham"
+      ]
+    },
+    {
+      "id": "exploring-connection-0",
+      "state": "exploring",
+      "context": "Player building relationships with characters",
+      "content": "The air shimmers purple near the 'UAB Medical Innovators' platform as you talk. Connection, like a strong signal, can illuminate unexpected paths.",
+      "sensory": "A warm draft carrying the scent of ozone brushes your face.",
+      "character": "station",
+      "tags": [
+        "connection",
+        "exploration",
+        "light",
+        "UAB"
+      ]
+    },
+    {
+      "id": "exploring-connection-1",
+      "state": "exploring",
+      "context": "Player building relationships with characters",
+      "content": "Listen. The distant whistle of a train doesn't announce arrival, but a reminder that even journeys taken alone, still follow the same tracks.",
+      "sensory": "The cool, smooth metal of the platform rail beneath your fingertips",
+      "tags": [
+        "connection",
+        "journeys",
+        "sound",
+        "loneliness"
+      ]
+    },
+    {
+      "id": "exploring-connection-2",
+      "state": "exploring",
+      "context": "Player building relationships with characters",
+      "content": "Sometimes, the best route is the one shared. Like walking the paths of Railroad Park with a friend, the landscape changes when you see it together.",
+      "sensory": "Echoing footsteps, mingling and fading with your own.",
+      "tags": [
+        "friendship",
+        "railroad park",
+        "perspective",
+        "birmingham"
+      ]
+    },
+    {
+      "id": "exploring-connection-3",
+      "state": "exploring",
+      "context": "Player building relationships with characters",
+      "content": "Samuel is a quiet man, but his gaze holds the stories of many platforms. Not all connections are loud; some are a gentle knowing.",
+      "sensory": "The faint scent of pipe tobacco lingers near where Samuel stood.",
+      "character": "samuel",
+      "tags": [
+        "samuel",
+        "quiet",
+        "observation",
+        "understanding"
+      ]
+    },
+    {
+      "id": "exploring-connection-4",
+      "state": "exploring",
+      "context": "Player building relationships with characters",
+      "content": "Look towards Red Mountain, its silhouette against the fading sky. Even mountains are built from countless tiny connections, layers upon layers.",
+      "sensory": "The soft, golden light of the setting sun warms your shoulder.",
+      "tags": [
+        "red mountain",
+        "perspective",
+        "strength",
+        "nature",
+        "birmingham"
+      ]
+    },
+    {
+      "id": "exploring-birmingham-pride-0",
+      "state": "exploring",
+      "context": "Player discovering local opportunities",
+      "content": "These rails have seen dreams chugging in and out of Birmingham for over a century. Feel the quiet strength beneath your feet, knowing you're part of that story.",
+      "sensory": "The cool metal rails hum faintly with forgotten journeys.",
+      "tags": [
+        "history",
+        "birmingham",
+        "strength",
+        "community"
+      ]
+    },
+    {
+      "id": "exploring-birmingham-pride-1",
+      "state": "exploring",
+      "context": "Player discovering local opportunities",
+      "content": "Each platform here, like each brick in UAB’s campus, was laid with purpose. Take a moment to appreciate the architecture around you, and the architecture of your own life.",
+      "sensory": "The air currents shift, carrying a faint scent of jasmine and exhaust fumes.",
+      "character": "station",
+      "tags": [
+        "purpose",
+        "uab",
+        "architecture",
+        "birmingham"
+      ]
+    },
+    {
+      "id": "exploring-birmingham-pride-2",
+      "state": "exploring",
+      "context": "Player discovering local opportunities",
+      "content": "The city hums, a restless energy like the trains waiting to depart. But even within that rush, there’s a stillness, a sense of belonging in the echoes of this place.",
+      "sensory": "A golden glow warms the worn wood of the bench beside you.",
+      "tags": [
+        "energy",
+        "belonging",
+        "birmingham",
+        "stillness"
+      ]
+    },
+    {
+      "id": "exploring-birmingham-pride-3",
+      "state": "exploring",
+      "context": "Player discovering local opportunities",
+      "content": "Red Mountain stands guard over this city, a silent witness to countless journeys. Remember its quiet strength as you explore the possibilities ahead.",
+      "sensory": "A distant train whistle echoes, a blue-grey shadow stretching across the platform.",
+      "tags": [
+        "red mountain",
+        "strength",
+        "possibilities",
+        "birmingham"
+      ]
+    },
+    {
+      "id": "exploring-birmingham-pride-4",
+      "state": "exploring",
+      "context": "Player discovering local opportunities",
+      "content": "Like Railroad Park, possibilities unfold layer by layer. Notice the subtle details, the connections forming, the quiet growth all around.",
+      "sensory": "The platform beneath your feet pulses with a gentle, purple shimmer.",
+      "tags": [
+        "possibilities",
+        "railroad park",
+        "growth",
+        "birmingham"
+      ]
+    },
+    {
+      "id": "confident-pattern-recognition-0",
+      "state": "confident",
+      "context": "Player understanding their strengths",
+      "content": "Notice the intricate ironwork above, repeated across platforms yet subtly unique. Just like your skills, familiar patterns with individual flair.",
+      "sensory": "The cool metal of the railing feels solid beneath your hand.",
+      "character": "station",
+      "tags": [
+        "skills",
+        "pattern",
+        "strength",
+        "metal"
+      ]
+    },
+    {
+      "id": "confident-pattern-recognition-1",
+      "state": "confident",
+      "context": "Player understanding their strengths",
+      "content": "The platform lights shift, a gentle dance of gold and purple. See how one strength illuminates another, like UAB's lights on Red Mountain at dusk.",
+      "sensory": "Warm air currents swirl around your ankles, carrying the scent of distant coal.",
+      "character": "station",
+      "tags": [
+        "strengths",
+        "light",
+        "birmingham",
+        "red mountain",
+        "uab"
+      ]
+    },
+    {
+      "id": "confident-pattern-recognition-2",
+      "state": "confident",
+      "context": "Player understanding their strengths",
+      "content": "Each rail leads somewhere, but the journey between is where the view unfolds. Remember that knowing your strengths helps you appreciate the landscape.",
+      "sensory": "Distant train whistles harmonize, a chord of possibility.",
+      "tags": [
+        "journey",
+        "strength",
+        "perspective",
+        "sound"
+      ]
+    },
+    {
+      "id": "confident-pattern-recognition-3",
+      "state": "confident",
+      "context": "Player understanding their strengths",
+      "content": "Feel the slight vibration beneath your feet? It's the station's quiet hum, resonating with your energy. Your confidence strengthens the whole structure.",
+      "sensory": "The worn bench wood feels smooth beneath your fingertips.",
+      "character": "station",
+      "tags": [
+        "confidence",
+        "station",
+        "energy",
+        "tactile"
+      ]
+    },
+    {
+      "id": "confident-pattern-recognition-4",
+      "state": "confident",
+      "context": "Player understanding their strengths",
+      "content": "Observe the way the platforms connect, echoing the pathways of Railroad Park. You are similarly able to link your unique gifts to create something new.",
+      "sensory": "The soft light catches the dust motes dancing in the air, creating a golden haze.",
+      "character": "station",
+      "tags": [
+        "birmingham",
+        "railroad park",
+        "gifts",
+        "creativity",
+        "light"
+      ]
+    },
+    {
+      "id": "confident-clear-direction-0",
+      "state": "confident",
+      "context": "Player making aligned choices",
+      "content": "A warm current flows from the UAB platform, carrying whispers of possibility. The air feels lighter, doesn't it?",
+      "sensory": "Warm air currents",
+      "character": "station",
+      "tags": [
+        "confidence",
+        "direction",
+        "possibility",
+        "uab"
+      ]
+    },
+    {
+      "id": "confident-clear-direction-1",
+      "state": "confident",
+      "context": "Player making aligned choices",
+      "content": "The Railroad Park platform gleams with a softer light. A sense of quiet certainty settles, like dust motes dancing in the golden rays.",
+      "sensory": "Golden rays",
+      "character": "station",
+      "tags": [
+        "confidence",
+        "certainty",
+        "railroad park",
+        "light"
+      ]
+    },
+    {
+      "id": "confident-clear-direction-2",
+      "state": "confident",
+      "context": "Player making aligned choices",
+      "content": "Even the shadows under the benches seem less daunting. The station hums a little louder, a song of encouragement echoing within you.",
+      "sensory": "Blue-grey shadows",
+      "character": "station",
+      "tags": [
+        "confidence",
+        "encouragement",
+        "station",
+        "sound"
+      ]
+    },
+    {
+      "id": "confident-clear-direction-3",
+      "state": "confident",
+      "context": "Player making aligned choices",
+      "content": "The worn wood of the bench feels solid beneath your hands. This feeling of groundedness is a powerful guide; listen to it.",
+      "sensory": "Worn bench wood",
+      "tags": [
+        "confidence",
+        "grounded",
+        "tactile",
+        "guidance"
+      ]
+    },
+    {
+      "id": "confident-clear-direction-4",
+      "state": "confident",
+      "context": "Player making aligned choices",
+      "content": "A single train whistle echoes, not mournful, but celebratory. Red Mountain stands, a silent witness to your clarity of purpose.",
+      "sensory": "Distant train whistles",
+      "tags": [
+        "confidence",
+        "celebratory",
+        "red mountain",
+        "sound",
+        "purpose"
+      ]
+    },
+    {
+      "id": "struggling-need-encouragement-0",
+      "state": "struggling",
+      "context": "Player has made choices they regret",
+      "content": "Even the trains sometimes take a detour. Consider this a scenic route through your own landscape; the view from Red Mountain is always worth the climb, even if the path is winding.",
+      "sensory": "A warm breeze carries the scent of distant rain and Birmingham earth.",
+      "tags": [
+        "redemption",
+        "path",
+        "change",
+        "birmingham"
+      ]
+    },
+    {
+      "id": "struggling-need-encouragement-1",
+      "state": "struggling",
+      "context": "Player has made choices they regret",
+      "content": "The rails gleam even after the storm. The Station hums a little louder when someone finds their strength again; it remembers everything.",
+      "sensory": "The cool metal of the handrail grounds you.",
+      "character": "station",
+      "tags": [
+        "hope",
+        "resilience",
+        "strength",
+        "station"
+      ]
+    },
+    {
+      "id": "struggling-need-encouragement-2",
+      "state": "struggling",
+      "context": "Player has made choices they regret",
+      "content": "Each platform offers a new direction, but the one behind isn't erased. Imagine each decision as a brick in the Railroad Park, a foundation for something new and unexpected.",
+      "sensory": "The soft golden light reflects off the polished floor, illuminating a mosaic of dust motes.",
+      "character": "station",
+      "tags": [
+        "perspective",
+        "growth",
+        "railroad park",
+        "foundation"
+      ]
+    },
+    {
+      "id": "struggling-need-encouragement-3",
+      "state": "struggling",
+      "context": "Player has made choices they regret",
+      "content": "Samuel says the heart is like the Terminal: full of echoes, but also possibility. Listen to the echoes, acknowledge them, then choose your next platform at UAB.",
+      "sensory": "Distant train whistles fade in and out, like forgotten memories.",
+      "character": "samuel",
+      "tags": [
+        "heart",
+        "possibility",
+        "reflection",
+        "uab"
+      ]
+    },
+    {
+      "id": "struggling-need-encouragement-4",
+      "state": "struggling",
+      "context": "Player has made choices they regret",
+      "content": "The purple shimmer of the Station is most vibrant when you're willing to start anew. Even regret can be a signal flare, illuminating what you truly desire.",
+      "sensory": "The air feels warm and still, a pause between departures.",
+      "character": "station",
+      "tags": [
+        "new beginnings",
+        "desire",
+        "purple",
+        "illumination"
+      ]
+    },
+    {
+      "id": "struggling-feeling-stuck-0",
+      "state": "struggling",
+      "context": "Player not seeing progress",
+      "content": "Feeling the weight of unmoving tracks, friend? Even the great trains of the age have their moments paused in stations such as this. The warmth of the brass railing soothes.",
+      "sensory": "Warmth of brass railing",
+      "character": "station",
+      "tags": [
+        "stuck",
+        "patience",
+        "comfort",
+        "brass"
+      ]
+    },
+    {
+      "id": "struggling-feeling-stuck-1",
+      "state": "struggling",
+      "context": "Player not seeing progress",
+      "content": "The Station hums a low thrum, a blue-grey pulse you feel more than hear. It whispers that even Red Mountain was once just rising from the earth.",
+      "sensory": "Blue-grey pulse",
+      "character": "station",
+      "tags": [
+        "stuck",
+        "patience",
+        "perspective",
+        "mountain"
+      ]
+    },
+    {
+      "id": "struggling-feeling-stuck-2",
+      "state": "struggling",
+      "context": "Player not seeing progress",
+      "content": "The air here hangs still, but notice the shimmer on the rails ahead. Even at Railroad Park, the grass grows one blade at a time. Progress is there.",
+      "sensory": "Shimmer on the rails",
+      "character": "environment",
+      "tags": [
+        "stuck",
+        "progress",
+        "hope",
+        "rails"
+      ]
+    },
+    {
+      "id": "struggling-feeling-stuck-3",
+      "state": "struggling",
+      "context": "Player not seeing progress",
+      "content": "The scent of coal dust and old stories hangs heavy. Samuel says sometimes you need to wait for the right train to come, like waiting outside UAB for the Magic City Connector. Rest your feet.",
+      "sensory": "Scent of coal dust",
+      "character": "samuel",
+      "tags": [
+        "stuck",
+        "patience",
+        "waiting",
+        "samuel"
+      ]
+    },
+    {
+      "id": "struggling-feeling-stuck-4",
+      "state": "struggling",
+      "context": "Player not seeing progress",
+      "content": "The platform underfoot feels solid, unmoving. But that faint golden light? It's the Station's gentle encouragement, reminding you that every step, no matter how small, is a step forward.",
+      "sensory": "Faint golden light",
+      "character": "station",
+      "tags": [
+        "stuck",
+        "progress",
+        "encouragement",
+        "light"
+      ]
+    },
+    {
+      "id": "struggling-self-doubt-0",
+      "state": "struggling",
+      "context": "Player questioning their abilities",
+      "content": "Doubt casts long shadows, like Red Mountain at dusk. But even shadows give way to the gentle glow of the coming night.",
+      "sensory": "The air grows cool as the golden light dims.",
+      "tags": [
+        "doubt",
+        "red mountain",
+        "perspective",
+        "night"
+      ]
+    },
+    {
+      "id": "struggling-self-doubt-1",
+      "state": "struggling",
+      "context": "Player questioning their abilities",
+      "content": "Each platform here started as just a flicker of possibility. Even the UAB scientists began with a question.",
+      "sensory": "The cool metal of the rail is a grounding presence.",
+      "character": "station",
+      "tags": [
+        "possibility",
+        "uab",
+        "beginnings",
+        "grounding"
+      ]
+    },
+    {
+      "id": "struggling-self-doubt-2",
+      "state": "struggling",
+      "context": "Player questioning their abilities",
+      "content": "The station hums with a quiet energy, a symphony of untold journeys. Your journey doesn't have to be a straight line; detours can reveal hidden wonders.",
+      "sensory": "Feel the vibration of the station through the worn wooden bench.",
+      "character": "station",
+      "tags": [
+        "journey",
+        "energy",
+        "detours",
+        "wonder"
+      ]
+    },
+    {
+      "id": "struggling-self-doubt-3",
+      "state": "struggling",
+      "context": "Player questioning their abilities",
+      "content": "Even the most experienced conductor has moments of uncertainty. Notice the subtle shift in the platform's color as you acknowledge your feelings.",
+      "sensory": "A faint purple shimmer dances across the platform tiles.",
+      "character": "station",
+      "tags": [
+        "uncertainty",
+        "feelings",
+        "platform",
+        "awareness"
+      ]
+    },
+    {
+      "id": "struggling-self-doubt-4",
+      "state": "struggling",
+      "context": "Player questioning their abilities",
+      "content": "Like Railroad Park, you are a space for growth. Sometimes, you need time to take root and bloom.",
+      "sensory": "A warm current of air carries the faint scent of rain from outside.",
+      "tags": [
+        "growth",
+        "railroad park",
+        "patience",
+        "bloom"
+      ]
+    },
+    {
+      "id": "confident-innovation-city-0",
+      "state": "confident",
+      "context": "Birmingham as hub for healthcare and tech innovation",
+      "content": "Feel the energy of Innovation City hum through the rails. UAB's research echoes in the very air, a legacy of progress.",
+      "sensory": "A warm air current carrying the faintest scent of ozone.",
+      "character": "environment",
+      "tags": [
+        "innovation",
+        "energy",
+        "UAB",
+        "progress",
+        "birmingham"
+      ]
+    },
+    {
+      "id": "confident-innovation-city-1",
+      "state": "confident",
+      "context": "Birmingham as hub for healthcare and tech innovation",
+      "content": "Confidence shines like the golden light on the platform. Each step you take echoes on the worn stone, a firm declaration.",
+      "sensory": "The reassuring weight of your feet grounding you on the platform.",
+      "character": "station",
+      "tags": [
+        "confidence",
+        "light",
+        "grounding",
+        "determination",
+        "birmingham"
+      ]
+    },
+    {
+      "id": "confident-innovation-city-2",
+      "state": "confident",
+      "context": "Birmingham as hub for healthcare and tech innovation",
+      "content": "The Railroad Park's reflection shimmers faintly in the distance. Even Red Mountain seems to nod in approval of your path.",
+      "sensory": "A distant train whistle sings a song of journeys beginning.",
+      "tags": [
+        "railroad park",
+        "red mountain",
+        "journeys",
+        "approval",
+        "birmingham"
+      ]
+    },
+    {
+      "id": "confident-magic-city-rising-0",
+      "state": "confident",
+      "context": "Birmingham's transformation and growth opportunities",
+      "content": "The tracks ahead shimmer with possibility, like heat rising from Red Mountain on a summer day. Each platform pulses with a quiet hum, a song of potential yet to be sung.",
+      "sensory": "Warm air currents swirl around you, carrying the scent of distant coal smoke and blooming jasmine.",
+      "character": "station",
+      "tags": [
+        "potential",
+        "birmingham",
+        "red mountain",
+        "opportunity",
+        "birmingham"
+      ]
+    },
+    {
+      "id": "confident-magic-city-rising-1",
+      "state": "confident",
+      "context": "Birmingham's transformation and growth opportunities",
+      "content": "Even the weathered brick walls of this station feel invigorated, a silent witness to the Magic City's rising spirit. Notice how the golden light catches the dust motes, each one a tiny spark of innovation.",
+      "sensory": "Dust motes dance in the golden light, a miniature galaxy swirling around you.",
+      "character": "station",
+      "tags": [
+        "innovation",
+        "birmingham",
+        "magic city",
+        "light",
+        "birmingham"
+      ]
+    },
+    {
+      "id": "confident-magic-city-rising-2",
+      "state": "confident",
+      "context": "Birmingham's transformation and growth opportunities",
+      "content": "Confidence echoes in your footsteps, a steady rhythm across the worn platform. Imagine UAB's bright minds, shaping futures as you are, right here in this station of dreams.",
+      "sensory": "Cool metal of the rail grounds you, a tangible connection to the possibilities ahead.",
+      "character": "station",
+      "tags": [
+        "confidence",
+        "uab",
+        "dreams",
+        "grounded",
+        "birmingham"
+      ]
+    },
+    {
+      "id": "confident-community-strength-0",
+      "state": "confident",
+      "context": "Birmingham's collaborative spirit and support networks",
+      "content": "This confidence hums like the electric rail lines, connecting you to a vibrant network. Think of UAB's campus, buzzing with shared ambition.",
+      "sensory": "A warm current of air rises from the tracks, carrying the scent of possibility.",
+      "tags": [
+        "community",
+        "network",
+        "confidence",
+        "Birmingham",
+        "UAB",
+        "birmingham"
+      ]
+    },
+    {
+      "id": "confident-community-strength-1",
+      "state": "confident",
+      "context": "Birmingham's collaborative spirit and support networks",
+      "content": "You stand tall, like Red Mountain overlooking the city. Remember that Birmingham was built on shared effort, forging its own path.",
+      "sensory": "The cool metal of the platform rail grounds you as the sun shines gently.",
+      "tags": [
+        "strength",
+        "community",
+        "Birmingham",
+        "Red Mountain",
+        "history",
+        "birmingham"
+      ]
+    },
+    {
+      "id": "confident-community-strength-2",
+      "state": "confident",
+      "context": "Birmingham's collaborative spirit and support networks",
+      "content": "This feeling of capability is a platform in itself, built by many hands. Just like Railroad Park, a place of shared joy and purpose.",
+      "sensory": "Distant train whistles resonate, a chorus of collaboration across the lines.",
+      "character": "station",
+      "tags": [
+        "community",
+        "confidence",
+        "Birmingham",
+        "Railroad Park",
+        "support",
+        "birmingham"
+      ]
+    }
+  ],
+  "metadata": {
+    "generated": "2025-09-17T01:52:32.793Z",
+    "version": "1.0.0",
+    "totalSnippets": 60
+  }
+}

@@ -432,8 +432,7 @@ async function main() {
   await generator.run()
 }
 
-if (require.main === module) {
-  main().catch(console.error)
-}
+// Run the script
+main().catch(console.error)
 
 export { AdaptiveContentGenerator }
