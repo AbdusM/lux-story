@@ -146,7 +146,7 @@ CONFIDENCE: [0.1-1.0]`
       const responseText = result.response.text().trim()
 
       // Parse the simplified format
-      const lines = responseText.split('\n').filter(line => line.trim())
+      const lines = responseText.split('\n').filter((line: string) => line.trim())
       const data: Record<string, string> = {}
 
       lines.forEach(line => {
