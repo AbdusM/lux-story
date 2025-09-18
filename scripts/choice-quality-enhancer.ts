@@ -149,7 +149,7 @@ CONFIDENCE: [0.1-1.0]`
       const lines = responseText.split('\n').filter((line: string) => line.trim())
       const data: Record<string, string> = {}
 
-      lines.forEach(line => {
+      lines.forEach((line: string) => {
         const match = line.match(/^(\w+):\s*(.+)$/)
         if (match) {
           data[match[1].toLowerCase()] = match[2].trim()

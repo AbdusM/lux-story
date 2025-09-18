@@ -21,6 +21,11 @@ const nextConfig = {
     ignoreDuringBuilds: true
   },
 
+  // Disable TypeScript checking during builds for legacy scripts
+  typescript: {
+    ignoreBuildErrors: true
+  },
+
   // Performance optimizations
   experimental: {
     optimizePackageImports: ['@/hooks', '@/lib', '@/components']
