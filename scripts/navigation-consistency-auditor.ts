@@ -49,7 +49,7 @@ class NavigationConsistencyAuditor extends GeminiContentFramework {
   private filePath: string
 
   constructor() {
-    super(process.env.GEMINI_API_KEY || '', 'gemini-1.5-flash')
+    super(process.env.GEMINI_API_KEY || '', 'gemini-2.0-flash-exp')
     this.filePath = path.join(process.cwd(), 'hooks', 'useSimpleGame.ts')
   }
 
