@@ -7,6 +7,19 @@ import { useState, useCallback, useEffect } from 'react'
 import { generateUserId, safeStorage, saveProgress, loadProgress } from '@/lib/safe-storage'
 import { trackUserChoice, getUserInsights, getBirminghamMatches } from '@/lib/simple-career-analytics'
 
+// Background validation and streamlining
+const validateStoryInBackground = async () => {
+  try {
+    const response = await fetch('/api/content/validate', { method: 'POST' })
+    const result = await response.json()
+    if (!result.valid && result.errors.length > 0) {
+      console.log('Story validation found issues:', result.errors.length, 'errors')
+    }
+  } catch (error) {
+    console.log('Background validation skipped:', error)
+  }
+}
+
 // Character relationships and player patterns
 export interface CharacterRelationships {
   samuel: { trust: number; backstoryRevealed: string[]; lastInteraction: string }
@@ -1124,6 +1137,11 @@ export function useSimpleGame() {
       // Default to action lines for other content
       return { text: trimmedSection, type: 'action' }
     })
+  }, [])
+
+  // Background validation on game load
+  useEffect(() => {
+    validateStoryInBackground()
   }, [])
 
   // Load current scene

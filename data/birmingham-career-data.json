@@ -1,0 +1,185 @@
+{
+  "employers": {
+    "healthcare": [
+      {
+        "name": "UAB Medicine",
+        "opportunities": [
+          "Nursing",
+          "Medical Technology",
+          "Healthcare Administration"
+        ],
+        "website": "https://www.uabmedicine.org"
+      },
+      {
+        "name": "Children's of Alabama",
+        "opportunities": [
+          "Pediatric Care",
+          "Child Life Services",
+          "Medical Research"
+        ],
+        "website": "https://www.childrensal.org"
+      }
+    ],
+    "technology": [
+      {
+        "name": "Innovation Depot",
+        "opportunities": [
+          "Software Development",
+          "Startup Incubation",
+          "Tech Entrepreneurship"
+        ],
+        "website": "https://innovationdepot.org"
+      },
+      {
+        "name": "Shipt",
+        "opportunities": [
+          "Software Engineering",
+          "Data Science",
+          "Product Management"
+        ],
+        "website": "https://www.shipt.com"
+      }
+    ],
+    "finance": [
+      {
+        "name": "Regions Bank",
+        "opportunities": [
+          "Banking",
+          "Financial Analysis",
+          "Customer Service"
+        ],
+        "website": "https://www.regions.com"
+      },
+      {
+        "name": "BBVA USA",
+        "opportunities": [
+          "Commercial Banking",
+          "Investment Services",
+          "Risk Management"
+        ],
+        "website": "https://www.bbva.com"
+      }
+    ],
+    "manufacturing": [
+      {
+        "name": "Mercedes-Benz US International",
+        "opportunities": [
+          "Manufacturing Engineering",
+          "Quality Control",
+          "Logistics"
+        ],
+        "website": "https://www.mbusi.com"
+      },
+      {
+        "name": "Alabama Power",
+        "opportunities": [
+          "Electrical Engineering",
+          "Environmental Services",
+          "Energy Management"
+        ],
+        "website": "https://www.alabamapower.com"
+      }
+    ],
+    "education": [
+      {
+        "name": "University of Alabama at Birmingham",
+        "opportunities": [
+          "Research",
+          "Education",
+          "Administration"
+        ],
+        "website": "https://www.uab.edu"
+      },
+      {
+        "name": "Jefferson County Schools",
+        "opportunities": [
+          "Teaching",
+          "Educational Support",
+          "Administration"
+        ],
+        "website": "https://www.jefcoed.com"
+      }
+    ]
+  },
+  "programs": {
+    "uab": [
+      {
+        "name": "Biomedical Engineering",
+        "type": "degree",
+        "duration": "4 years",
+        "link": "https://www.uab.edu/engineering/bme/"
+      },
+      {
+        "name": "Computer Science",
+        "type": "degree",
+        "duration": "4 years",
+        "link": "https://www.uab.edu/cas/computerscience/"
+      }
+    ],
+    "communityCollege": [
+      {
+        "name": "Jefferson State Community College - Healthcare Programs",
+        "type": "certificate",
+        "duration": "6-24 months"
+      },
+      {
+        "name": "Lawson State Community College - Technical Programs",
+        "type": "associate",
+        "duration": "2 years"
+      }
+    ],
+    "workforce": [
+      {
+        "name": "Alabama Career Center - Job Training",
+        "type": "skills training",
+        "provider": "Alabama Department of Labor"
+      },
+      {
+        "name": "TechHire Birmingham - Coding Bootcamp",
+        "type": "intensive training",
+        "provider": "Innovation Depot"
+      }
+    ]
+  },
+  "salaryData": {
+    "healthcare": {
+      "entry": 35000,
+      "experienced": 55000,
+      "senior": 75000,
+      "lastUpdated": "2025-09-18T15:40:05.531Z"
+    },
+    "technology": {
+      "entry": 45000,
+      "experienced": 70000,
+      "senior": 95000,
+      "lastUpdated": "2025-09-18T15:40:05.531Z"
+    },
+    "finance": {
+      "entry": 40000,
+      "experienced": 60000,
+      "senior": 85000,
+      "lastUpdated": "2025-09-18T15:40:05.531Z"
+    },
+    "manufacturing": {
+      "entry": 35000,
+      "experienced": 55000,
+      "senior": 75000,
+      "lastUpdated": "2025-09-18T15:40:05.531Z"
+    },
+    "education": {
+      "entry": 30000,
+      "experienced": 45000,
+      "senior": 65000,
+      "lastUpdated": "2025-09-18T15:40:05.531Z"
+    }
+  },
+  "validation": {
+    "lastUpdated": "2025-09-18T15:40:05.531Z",
+    "sources": [
+      "Alabama Department of Labor",
+      "UAB Career Services",
+      "Birmingham Business Journal"
+    ],
+    "verificationLevel": "medium"
+  }
+}
