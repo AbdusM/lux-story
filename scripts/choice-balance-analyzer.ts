@@ -209,9 +209,9 @@ REASON: [brief explanation]`
   }
 
   /**
-   * Analyze balance for a single scene
+   * Analyze balance for a single scene using AI
    */
-  async analyzeSceneBalance(scene: SceneAnalysis): Promise<BalanceRecommendation | null> {
+  async analyzeSceneBalanceWithAI(scene: SceneAnalysis): Promise<BalanceRecommendation | null> {
     console.log(`  ⚖️  Analyzing: ${scene.sceneId} (${scene.uniquePatterns} patterns, score: ${scene.balanceScore})`)
 
     try {
@@ -219,10 +219,10 @@ REASON: [brief explanation]`
       const responseText = result.response.text().trim()
 
       // Parse the simplified format
-      const lines = responseText.split('\n').filter(line => line.trim())
+      const lines = responseText.split('\n').filter((line: string) => line.trim())
       const data: Record<string, string> = {}
 
-      lines.forEach(line => {
+      lines.forEach((line: string) => {
         const match = line.match(/^(\w+):\s*(.+)$/)
         if (match) {
           data[match[1].toLowerCase()] = match[2].trim()
@@ -437,7 +437,7 @@ After implementing balance improvements:
     const results = await this.batchProcess(
       scenesToImprove,
       async (scene) => {
-        const recommendation = await this.analyzeSceneBalance(scene)
+        const recommendation = await this.analyzeSceneBalanceWithAI(scene)
         return recommendation
       },
       {

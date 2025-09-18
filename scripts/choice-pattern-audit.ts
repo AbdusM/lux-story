@@ -137,10 +137,10 @@ REASON: [brief explanation]`
       const responseText = result.response.text().trim()
 
       // Parse the simplified format
-      const lines = responseText.split('\n').filter(line => line.trim())
+      const lines = responseText.split('\n').filter((line: string) => line.trim())
       const data: Record<string, string> = {}
 
-      lines.forEach(line => {
+      lines.forEach((line: string) => {
         const match = line.match(/^(\w+):\s*(.+)$/)
         if (match) {
           data[match[1].toLowerCase()] = match[2].trim()

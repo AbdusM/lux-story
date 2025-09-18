@@ -28,7 +28,7 @@ interface ImprovementResult {
 
 export class GeminiContentFramework {
   private genAI: GoogleGenerativeAI
-  private model: any
+  protected model: any
   private backupDir: string = 'backups'
 
   constructor(
