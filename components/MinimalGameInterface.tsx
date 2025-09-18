@@ -169,17 +169,22 @@ function createNaturalParagraphs(text: string): string[] {
 }
 
 // Character identification for styling
-function getCharacterFromSpeaker(speaker: string): string {
-  if (speaker.toLowerCase().includes('maya')) return 'maya'
-  if (speaker.toLowerCase().includes('samuel')) return 'samuel'
-  if (speaker.toLowerCase().includes('narrator')) return 'narrator'
-  if (speaker.toLowerCase().includes('devon')) return 'devon'
-  if (speaker.toLowerCase().includes('jordan')) return 'jordan'
+function getCharacterFromSpeaker(speaker: string | undefined): string {
+  if (!speaker || typeof speaker !== 'string') return 'narrator'
+  const lowerSpeaker = speaker.toLowerCase()
+  if (lowerSpeaker.includes('maya')) return 'maya'
+  if (lowerSpeaker.includes('samuel')) return 'samuel'
+  if (lowerSpeaker.includes('narrator')) return 'narrator'
+  if (lowerSpeaker.includes('devon')) return 'devon'
+  if (lowerSpeaker.includes('jordan')) return 'jordan'
   return 'narrator'
 }
 
 // Professional choice categorization with consistent emotional mapping
-function categorizeChoice(choiceText: string): { type: string; icon: string } {
+function categorizeChoice(choiceText: string | undefined): { type: string; icon: string } {
+  if (!choiceText || typeof choiceText !== 'string') {
+    return { type: 'neutral', icon: '💭' }
+  }
   const text = choiceText.toLowerCase()
 
   // Supportive/Agreeable (Green) - Encouraging, validating, agreeing

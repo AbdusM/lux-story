@@ -263,10 +263,10 @@ CONFIDENCE: [0.1-1.0]`
       const responseText = result.response.text().trim()
 
       // Parse the simplified format
-      const lines = responseText.split('\n').filter(line => line.trim())
+      const lines = responseText.split('\n').filter((line: string) => line.trim())
       const data: Record<string, string> = {}
 
-      lines.forEach(line => {
+      lines.forEach((line: string) => {
         const match = line.match(/^(\w+(?:_\w+)*):\s*(.+)$/)
         if (match) {
           data[match[1].toLowerCase()] = match[2].trim()
@@ -499,7 +499,7 @@ Enhanced Birmingham integration will:
     return `- **Coverage**: ${mentionedEntities.size}/${sectorEntities.length} entities (${coveragePercent.toFixed(1)}%)
 - **Mentioned**: ${Array.from(mentionedEntities).join(', ') || 'None'}
 - **Missing**: ${sectorEntities.filter(entity =>
-    !Array.from(mentionedEntities).some(mentioned =>
+    !Array.from(mentionedEntities).some((mentioned: any) =>
       entity.toLowerCase().includes(mentioned.toLowerCase()) || mentioned.toLowerCase().includes(entity.toLowerCase())
     )
   ).join(', ')}`
