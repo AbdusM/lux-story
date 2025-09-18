@@ -233,17 +233,57 @@ ${choices.map(choice =>
     fs.writeFileSync(backupPath, this.existingContent, 'utf-8')
     console.log(`📁 Backup created: ${backupPath}`)
 
-    // Find the end of the scenes object
-    const scenesEndPattern = /(\s*}\s*};?\s*)/
-    const match = this.existingContent.match(scenesEndPattern)
+    // Find the SIMPLE_SCENES object specifically
+    const scenesStartPattern = /const\s+SIMPLE_SCENES\s*=\s*\{/
+    const scenesStart = this.existingContent.match(scenesStartPattern)
 
-    if (!match) {
-      console.log('❌ Could not find scenes object end')
+    if (!scenesStart) {
+      console.log('❌ Could not find SIMPLE_SCENES object')
       return
     }
 
-    // Insert new scenes before the closing brace
-    const insertPoint = this.existingContent.lastIndexOf(match[0])
+    // Find the corresponding closing brace for SIMPLE_SCENES
+    let openBraces = 0
+    let inString = false
+    let escapeNext = false
+    let insertPoint = -1
+
+    for (let i = scenesStart.index! + scenesStart[0].length; i < this.existingContent.length; i++) {
+      const char = this.existingContent[i]
+      const prevChar = i > 0 ? this.existingContent[i - 1] : ''
+
+      if (escapeNext) {
+        escapeNext = false
+        continue
+      }
+
+      if (char === '\\') {
+        escapeNext = true
+        continue
+      }
+
+      if (char === '"' && prevChar !== '\\') {
+        inString = !inString
+        continue
+      }
+
+      if (!inString) {
+        if (char === '{') {
+          openBraces++
+        } else if (char === '}') {
+          if (openBraces === 0) {
+            insertPoint = i
+            break
+          }
+          openBraces--
+        }
+      }
+    }
+
+    if (insertPoint === -1) {
+      console.log('❌ Could not find SIMPLE_SCENES closing brace')
+      return
+    }
     const newScenesContent = scenes.map(scene => scene.content).join(',\n\n')
 
     const updatedContent =
