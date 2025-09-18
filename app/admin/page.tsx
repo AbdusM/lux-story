@@ -1,10 +1,11 @@
 'use client'
 
 import { ChoiceReviewTrigger } from '@/components/ChoiceReviewPanel'
+import { ContentManagementPanel } from '@/components/ContentManagementPanel'
 
 /**
  * Admin Dashboard
- * Simple admin interface for managing live choices and reviewing queue
+ * Complete admin interface for managing live choices and content
  */
 export default function AdminPage() {
   return (
@@ -15,11 +16,18 @@ export default function AdminPage() {
             Grand Central Terminus Admin
           </h1>
           <p className="text-gray-600">
-            Live Choice Review and Management Dashboard
+            Live Choice Review and Content Management Dashboard
           </p>
         </div>
 
+        {/* Content Management Section */}
+        <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+          <ContentManagementPanel />
+        </div>
+
+        {/* Choice Review Section */}
         <div className="bg-white rounded-lg shadow-lg p-6">
+          <h2 className="text-xl font-bold mb-4">Live Choice Review</h2>
           <ChoiceReviewTrigger />
         </div>
       </div>
