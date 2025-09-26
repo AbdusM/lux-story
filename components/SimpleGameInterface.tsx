@@ -11,7 +11,7 @@ import { GameErrorBoundary } from './GameErrorBoundary'
 import { GameMessages } from './GameMessages'
 import { GameChoices } from './GameChoices'
 import { CharacterIntro } from './CharacterIntro'
-import '@/styles/apple-design-system.css'
+// Apple Design System removed - using shadcn components
 
 export function SimpleGameInterface() {
   const game = useSimpleGame()

@@ -7,7 +7,7 @@
 
 import { useState, useEffect, useMemo } from 'react'
 import { useSimpleGame } from '@/hooks/useSimpleGame'
-import '@/styles/apple-design-system.css'
+// Apple Design System removed - using shadcn components
 
 // Function to render a single dialogue chunk
 function renderDialogueChunk(chunk: { text: string; type: string }, index: number) {

@@ -17,7 +17,7 @@ import { GameErrorBoundary } from './GameErrorBoundary'
 import { hapticFeedback } from '@/lib/haptic-feedback'
 import { webShare } from '@/lib/web-share'
 import { logger } from '@/lib/logger'
-import '@/styles/apple-design-system.css'
+// Apple Design System removed - using shadcn components
 import { cn } from '@/lib/utils'
 
 /**

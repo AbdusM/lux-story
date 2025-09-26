@@ -2,8 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Import Apple Design System */
-@import '../styles/apple-design-system.css';
+/* Apple Design System removed - using shadcn components */
 
 @layer base {
   :root {
