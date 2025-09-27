@@ -1,9 +1,9 @@
-import { MinimalGameInterfaceShadcn } from '@/components/MinimalGameInterfaceShadcn'
+import StatefulGameInterface from '@/components/StatefulGameInterface'
 
 export default function Home() {
   return (
     <main className="min-h-screen">
-      <MinimalGameInterfaceShadcn />
+      <StatefulGameInterface />
     </main>
   )
 }
