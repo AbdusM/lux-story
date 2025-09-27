@@ -7,6 +7,7 @@
 
 import { useState, useEffect, useMemo } from 'react'
 import { useSimpleGame } from '@/hooks/useSimpleGame'
+import { ChevronRight } from 'lucide-react'
 import { GameCard, GameCardContent, GameCardHeader } from '@/components/game/game-card'
 import { GameChoice, GameChoiceGroup } from '@/components/game/game-choice'
 import { GameMessage } from '@/components/game/game-message'
@@ -69,7 +70,7 @@ function parseTextWithHierarchy(text: string) {
   return sections.map((section, index) => {
     const trimmedSection = section.trim()
 
-    // Detect scene headings (INT./EXT. format)
+    // Detect scene headings (INT./EXT. format) and ensure they're uppercase
     if (trimmedSection.match(/^(INT\.|EXT\.)/i)) {
       return (
         <div key={index} className="mb-4">
@@ -78,7 +79,7 @@ function parseTextWithHierarchy(text: string) {
             font="mono"
             className="uppercase tracking-wider text-amber-700 dark:text-amber-300 text-center"
           >
-            {trimmedSection}
+            {trimmedSection.toUpperCase()}
           </Typography>
         </div>
       )
@@ -215,38 +216,38 @@ function getCharacterFromSpeaker(speaker: string | undefined): string {
   return 'narrator'
 }
 
-// Professional choice categorization with consistent emotional mapping
-function categorizeChoice(choiceText: string | undefined): { type: string; icon: string; pattern: "helping" | "analytical" | "building" | "patience" | "exploring" } {
+// Professional choice categorization (no emoji)
+function categorizeChoice(choiceText: string | undefined): { type: string; pattern: "helping" | "analytical" | "building" | "patience" | "exploring" } {
   if (!choiceText || typeof choiceText !== 'string') {
-    return { type: 'neutral', icon: '💭', pattern: 'exploring' }
+    return { type: 'neutral', pattern: 'exploring' }
   }
   const text = choiceText.toLowerCase()
 
-  // Supportive/Agreeable (Green) - Encouraging, validating, agreeing
+  // Supportive/Agreeable - Encouraging, validating, agreeing
   if (text.includes('feel') || text.includes('understand') || text.includes('that must') ||
       text.includes('sounds like') || text.includes('help') || text.includes('support') ||
       text.includes('together') || text.includes('believe') || text.includes('validate') ||
       text.includes('great') || text.includes('excellent') || text.includes('i hear')) {
-    return { type: 'supportive', icon: '🤝', pattern: 'helping' }
+    return { type: 'supportive', pattern: 'helping' }
   }
 
-  // Analytical/Question (Blue) - Investigating, questioning, exploring
+  // Analytical/Question - Investigating, questioning, exploring
   if (text.includes('why') || text.includes('how') || text.includes('what') ||
       text.includes('analyze') || text.includes('think about') || text.includes('consider') ||
       text.includes('tell me') || text.includes('explain') || text.includes('curious') ||
       text.includes('explore') || text.includes('understand more')) {
-    return { type: 'analytical', icon: '🧠', pattern: 'analytical' }
+    return { type: 'analytical', pattern: 'analytical' }
   }
 
-  // Challenge/Push (Orange) - Questioning assumptions, pushing boundaries
+  // Challenge/Push - Questioning assumptions, pushing boundaries
   if (text.includes('but') || text.includes('however') || text.includes('what if') ||
       text.includes('challenge') || text.includes('push') || text.includes('difficult') ||
       text.includes('disagree') || text.includes('alternative') || text.includes('consider that')) {
-    return { type: 'challenging', icon: '⚡', pattern: 'building' }
+    return { type: 'challenging', pattern: 'building' }
   }
 
-  // Listen/Neutral (Gray) - Observing, listening, continuing
-  return { type: 'listening', icon: '👂', pattern: 'patience' }
+  // Listen/Neutral - Observing, listening, continuing
+  return { type: 'listening', pattern: 'patience' }
 }
 
 // Speakers that should show all text at once (no progression)
@@ -271,8 +272,12 @@ export function MinimalGameInterfaceShadcn() {
     let text = game.messages[0].text.trim()
     text = text.replace(/^["']|["']$/g, '')
 
-    // Smart chunking: split into conversational pieces (150-200 chars)
-    // First try to split at sentence boundaries, then fall back to character limit
+    // Smart chunking: split at sentence boundaries only
+    // This ensures grammatical coherence while managing cognitive load
+    const MAX_CHUNK_SIZE = 200  // About 2-3 sentences
+    const MIN_CHUNK_SIZE = 80   // At least one full sentence
+
+    // Split by sentence-ending punctuation, keeping the punctuation
     const sentences = text.match(/[^.!?]+[.!?]+/g) || [text]
     const conversationalChunks: string[] = []
     let currentChunk = ''
@@ -280,30 +285,22 @@ export function MinimalGameInterfaceShadcn() {
     for (const sentence of sentences) {
       const trimmedSentence = sentence.trim()
 
-      // If adding this sentence keeps us under 200 chars, add it
-      if (currentChunk.length + trimmedSentence.length <= 200) {
-        currentChunk = currentChunk ? currentChunk + ' ' + trimmedSentence : trimmedSentence
+      // If current chunk + new sentence is under max, combine them
+      if (currentChunk && (currentChunk.length + trimmedSentence.length + 1) <= MAX_CHUNK_SIZE) {
+        currentChunk = currentChunk + ' ' + trimmedSentence
+      } else if (currentChunk) {
+        // Save current chunk and start new one
+        conversationalChunks.push(currentChunk)
+        currentChunk = trimmedSentence
       } else {
-        // Save current chunk if it has content
-        if (currentChunk) {
-          conversationalChunks.push(currentChunk)
-        }
+        // First sentence
+        currentChunk = trimmedSentence
+      }
 
-        // If sentence itself is over 200 chars, break it up
-        if (trimmedSentence.length > 200) {
-          const words = trimmedSentence.split(' ')
-          currentChunk = ''
-          for (const word of words) {
-            if (currentChunk.length + word.length + 1 <= 200) {
-              currentChunk = currentChunk ? currentChunk + ' ' + word : word
-            } else {
-              if (currentChunk) conversationalChunks.push(currentChunk)
-              currentChunk = word
-            }
-          }
-        } else {
-          currentChunk = trimmedSentence
-        }
+      // If chunk is getting long, save it
+      if (currentChunk.length >= MAX_CHUNK_SIZE) {
+        conversationalChunks.push(currentChunk)
+        currentChunk = ''
       }
     }
 
@@ -385,13 +382,9 @@ export function MinimalGameInterfaceShadcn() {
                 animated
               >
                 <GameCardHeader>
-                  <Typography
-                    variant="h4"
-                    font="mono"
-                    className="uppercase tracking-wider text-amber-700 dark:text-amber-300 text-center"
-                  >
+                  <div className="text-sm font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-3 text-center">
                     INT. GRAND CENTRAL TERMINUS - NIGHT
-                  </Typography>
+                  </div>
                 </GameCardHeader>
                 <GameCardContent>
                   <div className="space-y-4">
@@ -400,15 +393,24 @@ export function MinimalGameInterfaceShadcn() {
                 </GameCardContent>
               </GameCard>
 
-              {/* Start Button */}
+              {/* Start Button - Minimal style */}
               <div className="flex justify-center">
-                <Button
+                <button
                   onClick={game.handleStartGame}
-                  size="lg"
-                  className="font-semibold px-8 py-4 text-lg"
+                  className={cn(
+                    "px-8 py-4",
+                    "text-[18px] font-medium",
+                    "text-slate-900 dark:text-slate-100",
+                    "bg-white dark:bg-slate-800",
+                    "hover:bg-slate-50 dark:hover:bg-slate-700",
+                    "rounded-xl",
+                    "shadow-sm hover:shadow-md",
+                    "transition-all duration-200",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2"
+                  )}
                 >
                   Begin New Journey
-                </Button>
+                </button>
               </div>
 
             </div>
@@ -418,79 +420,88 @@ export function MinimalGameInterfaceShadcn() {
     )
   }
 
-  // Show main game interface
+  // Show main game interface - Clean Apple style
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 p-4">
-      <div className="max-w-4xl mx-auto">
-        <ScrollArea className="h-screen">
-          <div className="py-8">
+    <div className="min-h-screen bg-white dark:bg-slate-950">
+      <div className="max-w-3xl mx-auto px-4">
+        <div className="py-12">
 
-            {/* Header */}
-            <div className="text-center mb-8">
-              <Typography variant="h2" className="mb-2 text-primary">
-                Grand Central Terminus
-              </Typography>
-              <Typography variant="large" color="muted">
-                Birmingham Career Exploration
-              </Typography>
-            </div>
+          {/* Header - Minimal */}
+          <div className="text-center mb-12">
+            <h1 className="text-[28px] font-semibold text-slate-900 dark:text-slate-100 mb-2">
+              Grand Central Terminus
+            </h1>
+            <p className="text-[15px] text-slate-500 dark:text-slate-400">
+              Birmingham Career Exploration
+            </p>
+          </div>
 
-            {/* Clean Progressive Dialogue System */}
+            {/* Clean Progressive Dialogue System - Minimal Apple Style */}
             {game.messages && game.messages.length > 0 && (
-              <GameCard
-                variant={isDialogue ? "dialogue" : "narration"}
-                platform={getCurrentPlatform()}
-                character={getCurrentCharacter()}
-                className="mb-8 max-w-2xl mx-auto"
-                glow={isDialogue}
-                animated
-              >
-                <GameCardHeader className={cn(
-                  !isDialogue && "sr-only" // Hide header for narrator
+              <div className="mb-6 max-w-2xl mx-auto">
+                {/* Single clean container */}
+                <div className={cn(
+                  "bg-white dark:bg-slate-900",
+                  "rounded-xl",
+                  "p-4",
+                  "shadow-sm",
+                  "animate-in fade-in duration-300"
                 )}>
-                  <Typography variant="large" font="mono" className="uppercase tracking-wider">
-                    {currentSpeaker}
-                  </Typography>
-                </GameCardHeader>
+                  {/* Speaker name - subtle and once */}
+                  {currentSpeaker !== 'Narrator' && (
+                    <div className="text-sm text-slate-500 dark:text-slate-400 mb-2">
+                      {currentSpeaker}
+                    </div>
+                  )}
 
-                <GameCardContent className={cn(
-                  isDialogue ? "pt-0" : "pt-6"
-                )}>
-                  <div className="space-y-4">
-                    {/* THE CORE LOGIC: Show one chunk for dialogue, all for narrator */}
+                  {/* Dialogue text with better line height and max width */}
+                  <div className={cn(
+                    "text-[17px] leading-[1.6]",
+                    "text-slate-900 dark:text-slate-100",
+                    "max-w-[65ch]",
+                    currentSpeaker === 'Narrator' && "text-center italic text-slate-600 dark:text-slate-400"
+                  )}>
                     {isDialogue ? (
-                      // Progressive dialogue: show only current chunk
-                      <GameCard variant="dialogue" className="border-0 shadow-none bg-transparent">
-                        <GameCardContent className="p-0">
-                          <Typography variant="dialogue" className="leading-relaxed">
-                            {chunks[chunkIndex] || chunks[0] || game.messages[0].text}
-                          </Typography>
-                        </GameCardContent>
-                      </GameCard>
+                      // Progressive dialogue: clean text only
+                      chunks[chunkIndex] || chunks[0] || game.messages[0].text
                     ) : (
-                      // Narrator: show all text at once using the existing parser
+                      // Narrator: show all text at once
                       parseTextWithHierarchy(game.messages[0].text)
                     )}
                   </div>
-                </GameCardContent>
-              </GameCard>
+                </div>
+              </div>
             )}
-
-            <Separator className="my-6" />
 
             {/* Clean Controls: Continue button OR choices */}
             <div className="max-w-2xl mx-auto">
-              {/* Show Continue button for dialogue with critical edge case handling */}
+              {/* Show Continue button for dialogue - matches choice style exactly */}
               {isDialogue && (!isLastChunk || (isLastChunk && !hasChoices)) && chunks.length > 1 && (
-                <div className="flex justify-center mb-6">
-                  <Button
+                <div className="mb-6">
+                  <button
                     onClick={handleContinue}
-                    variant="outline"
-                    size="lg"
-                    className="w-full max-w-sm"
+                    className={cn(
+                      // Identical to choice buttons
+                      "w-full text-left",
+                      "p-4",
+                      "rounded-xl",
+                      "transition-all duration-200 ease-out",
+                      "text-[17px] leading-relaxed",
+                      "text-slate-900 dark:text-slate-100",
+                      "hover:bg-slate-50 dark:hover:bg-slate-800",
+                      "active:bg-slate-100 dark:active:bg-slate-700",
+                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2",
+                      "flex items-center justify-between group"
+                    )}
                   >
-                    Continue →
-                  </Button>
+                    <span>Continue</span>
+                    <ChevronRight className={cn(
+                      "w-5 h-5 text-slate-300 dark:text-slate-600",
+                      "transition-all duration-200",
+                      "group-hover:text-slate-500 dark:group-hover:text-slate-400",
+                      "group-hover:translate-x-0.5"
+                    )} />
+                  </button>
                 </div>
               )}
 
@@ -498,7 +509,7 @@ export function MinimalGameInterfaceShadcn() {
               {(isNarrator || (isDialogue && isLastChunk)) && hasChoices && (
                 <GameChoiceGroup>
                   {game.choices.map((choice, index) => {
-                    const { type, icon, pattern } = categorizeChoice(choice.text)
+                    const { type, pattern } = categorizeChoice(choice.text)
                     return (
                       <GameChoice
                         key={index}
@@ -511,18 +522,13 @@ export function MinimalGameInterfaceShadcn() {
                           setTimeout(() => {
                             game.handleChoice(choice)
                             setSelectedChoiceIndex(null)
-                          }, 400)
+                          }, 300)
                         }}
                         isSelected={selectedChoiceIndex === index}
+                        loading={selectedChoiceIndex === index}
                         index={index}
-                        variant={selectedChoiceIndex === index ? 'selected' :
-                                selectedChoiceIndex !== null ? 'disabled' : 'default'}
-                        pattern={pattern}
                         animated
-                        showIcon
-                        className={cn(
-                          selectedChoiceIndex !== null && selectedChoiceIndex !== index && "opacity-50"
-                        )}
+                        disabled={selectedChoiceIndex !== null && selectedChoiceIndex !== index}
                       />
                     )
                   })}
@@ -530,8 +536,7 @@ export function MinimalGameInterfaceShadcn() {
               )}
             </div>
 
-          </div>
-        </ScrollArea>
+        </div>
       </div>
     </div>
   )

@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from 'next'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { EnvironmentalEffects } from '@/components/EnvironmentalEffects'
 import { ServiceWorkerProvider } from '@/components/ServiceWorkerProvider'
-import { ChoiceReviewTrigger } from '@/components/ChoiceReviewPanel'
 import './globals.css'
 import '../styles/accessibility.css'
 import '../styles/game-juice.css'
@@ -51,7 +50,6 @@ export default function RootLayout({
                    color: 'var(--text-primary, inherit)'
                  }}>
               {children}
-              {process.env.NODE_ENV === 'development' && <ChoiceReviewTrigger />}
             </div>
           </ErrorBoundary>
         </ServiceWorkerProvider>

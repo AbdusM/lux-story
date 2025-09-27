@@ -166,8 +166,8 @@ export function GameMessage({
         if (index < text.length) {
           setDisplayedText(text.slice(0, index + 1))
           index++
-          // Chatbot mode: faster streaming (25ms), Traditional: original speed (40ms)
-          const delay = streamingMode === 'chatbot' ? 25 : 40
+          // Chatbot mode: ultra-fast for short chunks (15ms), Traditional: original speed (40ms)
+          const delay = streamingMode === 'chatbot' ? 15 : 40
           timer = setTimeout(typeNextChar, delay)
         } else {
           setShowContinueIndicator(true)
@@ -175,7 +175,7 @@ export function GameMessage({
         }
       }
 
-      timer = setTimeout(typeNextChar, streamingMode === 'chatbot' ? 50 : 100) // Initial delay
+      timer = setTimeout(typeNextChar, streamingMode === 'chatbot' ? 10 : 100) // Minimal initial delay for snappy feel
       return () => clearTimeout(timer)
     } else if (!typewriter) {
       // Non-typewriter text is immediately complete

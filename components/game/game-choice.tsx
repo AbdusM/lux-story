@@ -1,65 +1,24 @@
 "use client"
 
 import * as React from "react"
-import { Button } from "@/components/ui/button"
+import { ChevronRight } from "lucide-react"
+import { LoadingDots } from "@/components/ui/loading-dots"
 import { cn } from "@/lib/utils"
-import { cva, type VariantProps } from "class-variance-authority"
-
-const gameChoiceVariants = cva(
-  "w-full justify-start text-left p-4 h-auto transition-all duration-200 border-2 relative group",
-  {
-    variants: {
-      variant: {
-        default: "border-transparent hover:border-primary/50 hover:bg-accent/5",
-        selected: "border-primary bg-primary/5 shadow-sm",
-        disabled: "opacity-50 cursor-not-allowed",
-        highlight: "border-amber-500/50 bg-amber-50/10 animate-pulse",
-      },
-      pattern: {
-        helping: "hover:border-green-500/50 hover:bg-green-50/5",
-        analytical: "hover:border-blue-500/50 hover:bg-blue-50/5",
-        building: "hover:border-orange-500/50 hover:bg-orange-50/5",
-        patience: "hover:border-purple-500/50 hover:bg-purple-50/5",
-        exploring: "hover:border-emerald-500/50 hover:bg-emerald-50/5",
-        default: "",
-      },
-      size: {
-        default: "text-base",
-        sm: "text-sm p-3",
-        lg: "text-lg p-5",
-      }
-    },
-    defaultVariants: {
-      variant: "default",
-      pattern: "default",
-      size: "default",
-    },
-  }
-)
 
 export interface GameChoiceProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof gameChoiceVariants> {
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   choice: {
     text: string
+    subtext?: string
     next?: string
     consequence?: string
     pattern?: "helping" | "analytical" | "building" | "patience" | "exploring"
   }
   onSelect?: () => void
   isSelected?: boolean
+  loading?: boolean
   index?: number
-  showIcon?: boolean
-  showIndex?: boolean
   animated?: boolean
-}
-
-const patternIcons: Record<string, string> = {
-  helping: "❤️",
-  analytical: "🧠",
-  building: "🔨",
-  patience: "⏳",
-  exploring: "🗺️",
 }
 
 const GameChoice = React.forwardRef<HTMLButtonElement, GameChoiceProps>(
@@ -68,101 +27,82 @@ const GameChoice = React.forwardRef<HTMLButtonElement, GameChoiceProps>(
     choice,
     onSelect,
     isSelected,
+    loading = false,
     index = 0,
-    showIcon = true,
-    showIndex = true,
     animated = true,
-    variant,
-    pattern,
-    size,
     disabled,
     ...props
   }, ref) => {
-    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-      if (!disabled && onSelect) {
-        // Add ripple effect
-        const button = e.currentTarget
-        const rect = button.getBoundingClientRect()
-        const x = e.clientX - rect.left
-        const y = e.clientY - rect.top
-
-        const ripple = document.createElement("span")
-        ripple.className = "absolute bg-primary/20 rounded-full animate-ping pointer-events-none"
-        ripple.style.left = `${x}px`
-        ripple.style.top = `${y}px`
-        ripple.style.width = "20px"
-        ripple.style.height = "20px"
-        ripple.style.transform = "translate(-50%, -50%)"
-
-        button.appendChild(ripple)
-        setTimeout(() => ripple.remove(), 600)
-
-        onSelect()
-      }
-    }
-
-    const getIcon = () => {
-      if (!showIcon && !showIndex) return null
-
-      if (showIcon && choice.pattern && patternIcons[choice.pattern]) {
-        return patternIcons[choice.pattern]
-      }
-
-      if (showIndex) {
-        return `${index + 1}.`
-      }
-
-      return "→"
-    }
-
-    const icon = getIcon()
-    const computedVariant = isSelected ? "selected" : (disabled ? "disabled" : variant)
-    const computedPattern = choice.pattern || pattern
-
     return (
-      <Button
+      <button
         ref={ref}
-        onClick={handleClick}
-        disabled={disabled}
+        onClick={onSelect}
+        disabled={disabled || loading || isSelected}
         className={cn(
-          gameChoiceVariants({
-            variant: computedVariant,
-            pattern: computedPattern,
-            size
-          }),
-          animated && "animate-in fade-in slide-in-from-left duration-500",
+          // Base styles - clean and minimal
+          "w-full text-left",
+          "px-4 py-3.5",
+          "rounded-xl",
+          "transition-all duration-200 ease-out",
+
+          // Typography - optimal readability
+          "text-[17px] leading-relaxed",
+          "text-slate-900 dark:text-slate-100",
+          "font-normal",
+
+          // Interactive states - clear feedback
+          "hover:bg-slate-50 dark:hover:bg-slate-800",
+          "active:bg-slate-100 dark:active:bg-slate-700",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2",
+
+          // Selected state
+          isSelected && "bg-slate-100 dark:bg-slate-800",
+
+          // Disabled/Loading state
+          (disabled || loading || isSelected) && "cursor-not-allowed",
+          loading && "opacity-60",
+
+          // Layout
+          "flex items-center justify-between group",
+
+          // Animation
+          animated && "animate-in fade-in slide-in-from-bottom-2",
+
           className
         )}
         style={{
-          animationDelay: animated ? `${index * 100}ms` : undefined,
+          animationDelay: animated ? `${index * 50}ms` : undefined,
+          animationDuration: "200ms"
         }}
         {...props}
       >
-        {icon && (
-          <span className={cn(
-            "absolute left-4 text-muted-foreground transition-colors",
-            "group-hover:text-primary",
-            isSelected && "text-primary"
-          )}>
-            {icon}
-          </span>
+        <div className="flex-1 pr-3">
+          <div>{choice.text}</div>
+          {choice.subtext && (
+            <div className="text-[15px] text-slate-500 dark:text-slate-400 mt-0.5">
+              {choice.subtext}
+            </div>
+          )}
+        </div>
+
+        {loading ? (
+          <LoadingDots size="sm" className="mr-1" />
+        ) : !isSelected && (
+          <ChevronRight className={cn(
+            "w-5 h-5 text-slate-300 dark:text-slate-600",
+            "transition-all duration-200",
+            "group-hover:text-slate-500 dark:group-hover:text-slate-400",
+            "group-hover:translate-x-0.5"
+          )} />
         )}
-        <span className={icon ? "ml-8" : ""}>
-          {choice.text}
-        </span>
-        {choice.consequence && (
-          <span className="ml-2 text-xs text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity">
-            ({choice.consequence})
-          </span>
-        )}
-      </Button>
+      </button>
     )
   }
 )
 
 GameChoice.displayName = "GameChoice"
 
-// Container component for choices
+// Container component for choices - minimal spacing
 export const GameChoiceGroup = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
@@ -170,7 +110,7 @@ export const GameChoiceGroup = React.forwardRef<
   return (
     <div
       ref={ref}
-      className={cn("space-y-2", className)}
+      className={cn("space-y-3", className)}
       role="group"
       aria-label="Story choices"
       {...props}
@@ -182,4 +122,4 @@ export const GameChoiceGroup = React.forwardRef<
 
 GameChoiceGroup.displayName = "GameChoiceGroup"
 
-export { GameChoice, gameChoiceVariants }
+export { GameChoice }
