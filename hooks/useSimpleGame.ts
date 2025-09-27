@@ -6,6 +6,7 @@
 import { useState, useCallback, useEffect } from 'react'
 import { generateUserId, safeStorage, saveProgress, loadProgress } from '@/lib/safe-storage'
 import { trackUserChoice, getUserInsights, getBirminghamMatches } from '@/lib/simple-career-analytics'
+import { getCachedBridge, preloadCommonBridges } from '@/lib/gemini-bridge'
 
 // Background validation and streamlining
 const validateStoryInBackground = async () => {
@@ -138,7 +139,7 @@ const SIMPLE_SCENES = {
     text: "Maya wipes tears from her eyes.\n\n\"Twenty years. Mom learning English while Dad studied for board exams.\"\n\n\"They'd quiz each other at 2 AM after their shifts.\"\n\n\"Every dollar saved, every birthday they worked through, every dream they deferred - all so I could be 'successful.'\"\n\n\"Their love feels like golden handcuffs. How do I honor their sacrifice without sacrificing myself?\"",
     speaker: 'Maya Chen (Pre-med Student)',
     choices: [
-      { text: "Love that demands self-betrayal isn't really love.", next: 'maya-family-revelation', consequence: 'maya_boundary_setting', pattern: 'challenging' },
+      { text: "Love that demands self-betrayal isn't really love.", next: 'maya-family-revelation', consequence: 'maya_boundary_setting', pattern: 'building' },
       { text: "What if success means being true to who you are?", next: 'maya-true-passion', consequence: 'maya_authenticity', pattern: 'helping' },
       { text: "They sacrificed so you could have choices they never had.", next: 'maya-strategic-balance', consequence: 'maya_perspective_shift', pattern: 'analytical' },
       { text: "Sometimes the best way to honor love is to live authentically.", next: 'maya-authentic-gratitude', consequence: 'maya_self_acceptance', pattern: 'patience' }
@@ -150,7 +151,7 @@ const SIMPLE_SCENES = {
     text: "Maya's voice cracks.\n\n\"Dad tells everyone about 'my future daughter the doctor.' Mom already picked out my specialty - cardiology, like Dr. Chen who helped Dad get his residency.\"\n\n\"They've planned my entire life: med school, residency, fellowship, marriage to another doctor, grandchildren they can brag about.\"\n\n\"I feel like a character in their American Dream screenplay.\"",
     speaker: 'Maya Chen (Pre-med Student)',
     choices: [
-      { text: "Whose life are you actually living?", next: 'maya-true-passion', consequence: 'maya_self_realization', pattern: 'challenging' },
+      { text: "Whose life are you actually living?", next: 'maya-true-passion', consequence: 'maya_self_realization', pattern: 'building' },
       { text: "What would happen if you rewrote the script?", next: 'maya-strategic-balance', consequence: 'maya_creative_thinking', pattern: 'building' },
       { text: "How do their expectations make you feel about yourself?", next: 'maya-family-love', consequence: 'maya_emotional_processing', pattern: 'helping' },
       { text: "Every generation gets to define success differently.", next: 'maya-family-revelation', consequence: 'maya_generational_wisdom', pattern: 'patience' }
@@ -1139,9 +1140,11 @@ export function useSimpleGame() {
     })
   }, [])
 
-  // Background validation on game load
+  // Background validation on game load and preload common bridges
   useEffect(() => {
     validateStoryInBackground()
+    // Preload common AI bridges in background
+    preloadCommonBridges().catch(console.error)
   }, [])
 
   // Load current scene
@@ -1198,20 +1201,20 @@ export function useSimpleGame() {
   const validateChoice = useCallback((choice: any, sourceScene?: string) => {
     if (!choice?.next) {
       const fallback = getContextualFallback(sourceScene)
-      console.warn(`[Navigation Validation] Choice missing .next property from scene "${sourceScene}". Using contextual fallback: "${fallback}"`, choice)
+      // console.warn(`[Navigation Validation] Choice missing .next property from scene "${sourceScene}". Using contextual fallback: "${fallback}"`, choice)
       return { ...choice, next: fallback }
     }
 
     if (!SIMPLE_SCENES[choice.next as keyof typeof SIMPLE_SCENES]) {
       const fallback = getContextualFallback(sourceScene)
-      console.warn(`[Navigation Validation] Invalid choice target "${choice.next}" from scene "${sourceScene}". Using contextual fallback: "${fallback}". Available scenes:`, Object.keys(SIMPLE_SCENES).sort())
+      // console.warn(`[Navigation Validation] Invalid choice target "${choice.next}" from scene "${sourceScene}". Using contextual fallback: "${fallback}". Available scenes:`, Object.keys(SIMPLE_SCENES).sort())
       return { ...choice, next: fallback }
     }
 
     return choice
   }, [getContextualFallback])
 
-  const handleChoice = useCallback((choice: any) => {
+  const handleChoice = useCallback(async (choice: any) => {
     // Validate choice target first
     const validatedChoice = validateChoice(choice, gameState.currentScene)
 
@@ -1227,33 +1230,66 @@ export function useSimpleGame() {
       choiceHistory: newChoiceHistory
     })
 
-    // Move to next scene with character and pattern updates - IMMEDIATE processing
-      setGameState(prev => {
-        const newState = { ...prev }
+    // Get the next scene to determine speaker
+    const nextScene = SIMPLE_SCENES[validatedChoice.next as keyof typeof SIMPLE_SCENES]
 
-        // Update player patterns based on choice
-      if (validatedChoice.pattern && validatedChoice.pattern in prev.playerPatterns) {
-          newState.playerPatterns = {
-            ...prev.playerPatterns,
-          [validatedChoice.pattern as keyof PlayerPatterns]: prev.playerPatterns[validatedChoice.pattern as keyof PlayerPatterns] + 1
+    // Generate bridge text if we have a valid next scene
+    let bridgeText = ''
+    if (nextScene && nextScene.speaker) {
+      try {
+        bridgeText = await getCachedBridge({
+          userChoice: validatedChoice.text,
+          nextSpeaker: nextScene.speaker.split('(')[0].trim(), // Extract name without title
+          context: {
+            platform: gameState.currentScene,
+            previousSpeaker: SIMPLE_SCENES[gameState.currentScene as keyof typeof SIMPLE_SCENES]?.speaker
           }
-        }
+        })
+      } catch (error) {
+        console.error('Bridge generation failed:', error)
+        // Continue without bridge if it fails
+      }
+    }
 
-        // Update character relationships based on consequences
+    // Move to next scene with character and pattern updates - IMMEDIATE processing
+    setGameState(prev => {
+      const newState = { ...prev }
+
+      // Update player patterns based on choice
+      if (validatedChoice.pattern && validatedChoice.pattern in prev.playerPatterns) {
+        newState.playerPatterns = {
+          ...prev.playerPatterns,
+          [validatedChoice.pattern as keyof PlayerPatterns]: prev.playerPatterns[validatedChoice.pattern as keyof PlayerPatterns] + 1
+        }
+      }
+
+      // Update character relationships based on consequences
       if (validatedChoice.consequence) {
         const updates = updateCharacterRelationships(prev, validatedChoice.consequence)
-          newState.characterRelationships = updates.characterRelationships
-          newState.birminghamKnowledge = updates.birminghamKnowledge
-        }
+        newState.characterRelationships = updates.characterRelationships
+        newState.birminghamKnowledge = updates.birminghamKnowledge
+      }
 
-        return {
-          ...newState,
+      // Add bridge as a narrator message if we have one
+      const newMessages = [...prev.messages]
+      if (bridgeText) {
+        newMessages.push({
+          id: `bridge-${Date.now()}`,
+          text: bridgeText,
+          speaker: 'Narrator',
+          type: 'bridge'
+        })
+      }
+
+      return {
+        ...newState,
         currentScene: validatedChoice.next || prev.currentScene,
-          choiceHistory: newChoiceHistory,
-          isProcessing: false
-        }
-      })
-  }, [gameState.userId, gameState.choiceHistory, gameState.currentScene])
+        choiceHistory: newChoiceHistory,
+        messages: newMessages,
+        isProcessing: false
+      }
+    })
+  }, [gameState.userId, gameState.choiceHistory, gameState.currentScene, validateChoice])
 
   // Helper function to update character relationships
   const updateCharacterRelationships = (state: SimpleGameState, consequence: string) => {
