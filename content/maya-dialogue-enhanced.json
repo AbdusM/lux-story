@@ -1,0 +1,606 @@
+{
+  "version": "1.0.0",
+  "generated_at": "2025-09-27T20:36:17.427Z",
+  "total_nodes": 10,
+  "total_variations": 42,
+  "nodes": [
+    {
+      "nodeId": "maya_introduction",
+      "speaker": "Maya Chen",
+      "content": [
+        {
+          "text": "Oh, hello. I'm Maya. Are you... waiting for a train too? This place is strange, isn't it? Not quite real, but more real than anywhere I've been.",
+          "emotion": "anxious",
+          "variation_id": "intro_v1"
+        },
+        {
+          "text": "Okay, Maya, just breathe. Biochem isn't going anywhere. Maybe I should have stayed at the UAB library. But what if that robotics competition application deadline passes while I'm stuck memorizing the Krebs cycle? It's just...a lot.",
+          "emotion": "anxious",
+          "variation_id": "maya_introduction_v1_generated"
+        },
+        {
+          "text": "This is ridiculous. I should be back at UAB, reviewing flashcards. But I had to see Grand Central. Maybe a change of scenery will help focus me for my organic chemistry final. I just hope I don't miss the deadline for the Innovation Depot robotics internship. I don't know how I'm going to balance it all.",
+          "emotion": "anxious",
+          "variation_id": "maya_introduction_v2_generated"
+        },
+        {
+          "text": "I swear, sometimes I wish I'd just stuck with robotics. Mom and Dad wouldn't approve. They want me to be a doctor, make something of myself. But, wouldn't winning that national robotics competition be something? I should go back to Birmingham... I need to call Mom, she'll want to know I'm safe.",
+          "emotion": "anxious",
+          "variation_id": "maya_introduction_v3_generated"
+        },
+        {
+          "text": "Focus, Maya. Focus. This trip was supposed to be a break. But all I can think about is that UAB genetics quiz. Or the fact that I haven't touched my robot design since last week. Maybe I can squeeze in some coding time at Railroad Park when I get back. No, no, genetics first. Medicine first. Always medicine first.",
+          "emotion": "anxious",
+          "variation_id": "maya_introduction_v4_generated"
+        }
+      ],
+      "choices": [
+        {
+          "choiceId": "intro_studies",
+          "text": "You look like you're studying hard. Pre-med?",
+          "nextNodeId": "maya_studies_response",
+          "pattern": "analytical",
+          "consequence": {
+            "characterId": "maya",
+            "addKnowledgeFlags": [
+              "asked_about_studies"
+            ]
+          }
+        },
+        {
+          "choiceId": "intro_anxiety",
+          "text": "You seem anxious. Want to talk about it?",
+          "nextNodeId": "maya_anxiety_check",
+          "pattern": "helping",
+          "visibleCondition": {
+            "trust": {
+              "min": 1
+            }
+          }
+        },
+        {
+          "choiceId": "intro_place",
+          "text": "This station appears when we need it most. Why are you here?",
+          "nextNodeId": "maya_why_here",
+          "pattern": "exploring"
+        }
+      ],
+      "onEnter": [
+        {
+          "characterId": "maya",
+          "addKnowledgeFlags": [
+            "met_player"
+          ]
+        }
+      ],
+      "tags": [
+        "introduction",
+        "maya_arc"
+      ]
+    },
+    {
+      "nodeId": "maya_studies_response",
+      "speaker": "Maya Chen",
+      "content": [
+        {
+          "text": "Yes, pre-med at UAB. Second year. Organic chemistry is... intense. But that's what's expected, right? Become a doctor, make the family proud.",
+          "emotion": "neutral",
+          "variation_id": "studies_v1"
+        }
+      ],
+      "requiredState": {
+        "trust": {
+          "max": 2
+        }
+      },
+      "choices": [
+        {
+          "choiceId": "studies_expected",
+          "text": "Expected by whom?",
+          "nextNodeId": "maya_family_intro",
+          "pattern": "exploring"
+        },
+        {
+          "choiceId": "studies_passion",
+          "text": "But is it what YOU want?",
+          "nextNodeId": "maya_deflect_passion",
+          "pattern": "helping",
+          "visibleCondition": {
+            "trust": {
+              "min": 2
+            }
+          }
+        }
+      ]
+    },
+    {
+      "nodeId": "maya_anxiety_check",
+      "speaker": "Maya Chen",
+      "content": [
+        {
+          "text": "I... how did you know? Is it that obvious?",
+          "emotion": "vulnerable",
+          "variation_id": "anxiety_check_v1"
+        }
+      ],
+      "requiredState": {
+        "trust": {
+          "min": 2
+        }
+      },
+      "choices": [
+        {
+          "choiceId": "anxiety_no_judgment",
+          "text": "We all have our struggles. No judgment here.",
+          "nextNodeId": "maya_anxiety_reveal",
+          "pattern": "helping",
+          "consequence": {
+            "characterId": "maya",
+            "trustChange": 1
+          }
+        },
+        {
+          "choiceId": "anxiety_relate",
+          "text": "I understand pressure. Sometimes it helps to share.",
+          "nextNodeId": "maya_anxiety_reveal",
+          "pattern": "patience"
+        }
+      ]
+    },
+    {
+      "nodeId": "maya_anxiety_reveal",
+      "speaker": "Maya Chen",
+      "content": [
+        {
+          "text": "It's just... everyone sees me as this perfect pre-med student. Good grades, clear path, making my parents' dreams come true. But late at night, when I'm supposed to be memorizing anatomy, I'm actually... doing something else.",
+          "emotion": "anxious",
+          "variation_id": "anxiety_reveal_v1"
+        },
+        {
+          "text": "“It’s just… everyone expects me to be Dr. Chen, right? But sometimes, late at night in my dorm near Blazer Hall, I’m watching videos about the robotics projects at Innovation Depot and I think, what if? What if I could build things instead of…dissecting them?”",
+          "emotion": "anxious",
+          "variation_id": "maya_anxiety_reveal_v1_generated"
+        },
+        {
+          "text": "I know I should be studying for my organic chemistry midterm, especially since Dr. Patterson's exams are killer. But all I can think about is that robotics competition downtown, near Railroad Park. It feels…wrong to even consider it, like I'm letting my parents down, letting UAB down.",
+          "emotion": "anxious",
+          "variation_id": "maya_anxiety_reveal_v2_generated"
+        },
+        {
+          "text": "It's stupid, I know. My parents sacrificed everything to get me here, to UAB, so I could become a doctor. But when I walk past the engineering building, or even see something cool being 3D printed at the library, I get this feeling…like I'm suffocating. Like I'm meant for something else, something…more.",
+          "emotion": "anxious",
+          "variation_id": "maya_anxiety_reveal_v3_generated"
+        },
+        {
+          "text": "Medicine is supposed to be my calling, right? That's what I tell myself every time I'm at the Hill Student Center studying. But the truth is, I spend hours researching robotics online, dreaming of building something that helps people in a different way. Maybe I'm just not cut out for the whole 'doctor' thing.",
+          "emotion": "anxious",
+          "variation_id": "maya_anxiety_reveal_v4_generated"
+        }
+      ],
+      "requiredState": {
+        "trust": {
+          "min": 2
+        },
+        "lacksKnowledgeFlags": [
+          "knows_secret"
+        ]
+      },
+      "choices": [
+        {
+          "choiceId": "reveal_curious",
+          "text": "What are you actually doing?",
+          "nextNodeId": "maya_robotics_hint",
+          "pattern": "exploring"
+        },
+        {
+          "choiceId": "reveal_support",
+          "text": "Whatever it is, it's okay to have your own interests.",
+          "nextNodeId": "maya_grateful_support",
+          "pattern": "helping",
+          "consequence": {
+            "characterId": "maya",
+            "trustChange": 1
+          }
+        }
+      ],
+      "onEnter": [
+        {
+          "characterId": "maya",
+          "addKnowledgeFlags": [
+            "knows_anxiety"
+          ]
+        }
+      ],
+      "tags": [
+        "trust_gate",
+        "maya_arc"
+      ]
+    },
+    {
+      "nodeId": "maya_robotics_passion",
+      "speaker": "Maya Chen",
+      "content": [
+        {
+          "text": "I... I build robots. Small ones, mostly. Medical assistance robots. I dream about circuits and servos, not cells and organs. My parents would be devastated if they knew how much I love engineering.",
+          "emotion": "vulnerable",
+          "variation_id": "robotics_v1"
+        },
+        {
+          "text": "It's just… I spend hours in the Hill Student Center, supposed to be studying for organic chemistry, but I'm really watching videos from the Innovation Depot, tutorials on robotics. My parents sacrificed so much for me to be here, at UAB, to become a doctor. How can I tell them I might want something completely different?",
+          "emotion": "vulnerable",
+          "variation_id": "maya_robotics_passion_v1_generated"
+        },
+        {
+          "text": "I know medicine is… important. It's what they want. But when I'm working on circuits, designing a robot, it's the only time I feel truly alive. I keep thinking about the UAB robotics lab and wishing I was in there instead of trying to memorize the Krebs cycle. What if I'm letting them down by not wanting this enough?",
+          "emotion": "vulnerable",
+          "variation_id": "maya_robotics_passion_v2_generated"
+        },
+        {
+          "text": "Being pre-med at UAB is supposed to be my dream, right? But sometimes, walking through Railroad Park, all I can think about is building something amazing, something that *moves*. Something that isn't just...memorization. I don't know if I can be the doctor they envision. I don't even know if I *want* to.",
+          "emotion": "vulnerable",
+          "variation_id": "maya_robotics_passion_v3_generated"
+        },
+        {
+          "text": "It feels selfish, I know. They came all this way, worked so hard to give me this opportunity at UAB. And here I am, thinking about ditching med school to build robots. It's just... I saw this presentation at the Spencer Honors House last week about AI in robotics and I haven't been able to think about anything else since. How do I even begin to explain that?",
+          "emotion": "vulnerable",
+          "variation_id": "maya_robotics_passion_v4_generated"
+        }
+      ],
+      "requiredState": {
+        "trust": {
+          "min": 3
+        },
+        "hasKnowledgeFlags": [
+          "knows_anxiety"
+        ],
+        "lacksKnowledgeFlags": [
+          "knows_robotics"
+        ]
+      },
+      "choices": [
+        {
+          "choiceId": "robotics_encourage",
+          "text": "Your passion for robotics is beautiful. Don't hide it.",
+          "nextNodeId": "maya_encouraged",
+          "pattern": "helping",
+          "consequence": {
+            "characterId": "maya",
+            "trustChange": 2,
+            "addKnowledgeFlags": [
+              "encouraged_robotics"
+            ]
+          }
+        },
+        {
+          "choiceId": "robotics_practical",
+          "text": "Medical robotics is a growing field. You could do both.",
+          "nextNodeId": "maya_considers_hybrid",
+          "pattern": "analytical",
+          "consequence": {
+            "characterId": "maya",
+            "trustChange": 1,
+            "addKnowledgeFlags": [
+              "suggested_hybrid"
+            ]
+          }
+        },
+        {
+          "choiceId": "robotics_birmingham",
+          "text": "Birmingham's Innovation Depot supports robotics startups.",
+          "nextNodeId": "maya_birmingham_opportunity",
+          "pattern": "building",
+          "consequence": {
+            "characterId": "maya",
+            "addKnowledgeFlags": [
+              "knows_innovation_depot"
+            ]
+          }
+        }
+      ],
+      "onEnter": [
+        {
+          "characterId": "maya",
+          "addKnowledgeFlags": [
+            "knows_robotics"
+          ],
+          "setRelationshipStatus": "confidant"
+        }
+      ],
+      "tags": [
+        "major_reveal",
+        "trust_gate",
+        "maya_arc"
+      ]
+    },
+    {
+      "nodeId": "maya_family_pressure",
+      "speaker": "Maya Chen",
+      "content": [
+        {
+          "text": "My parents immigrated here with nothing. They worked three jobs to put me through school. They dream of saying 'our daughter, the doctor.' How can I tell them I'd rather build machines than heal people?",
+          "emotion": "sad",
+          "variation_id": "family_v1"
+        },
+        {
+          "text": "They just… they gave up everything. Coming here, working those crazy hours at the Five Points South restaurants just so I could even *think* about being a doctor. Sometimes, late at night in the library, I wonder if I'm betraying them by even looking at the Innovation Depot's robotics programs.",
+          "emotion": "sad",
+          "variation_id": "maya_family_pressure_v1_generated"
+        },
+        {
+          "text": "It's just, UAB is so expensive, you know? They're working themselves to the bone. And sometimes I think, what if I just focused on robotics at the Innovation Depot? It's what I really *love*, but it feels selfish when they’re working so hard for me to get into medical school.",
+          "emotion": "sad",
+          "variation_id": "maya_family_pressure_v2_generated"
+        },
+        {
+          "text": "It's hard to explain. They came here for me, for this chance. Seeing them exhausted after their shifts, just so I can study in my dorm near campus...it just makes me feel so guilty. I wish I could tell them I’d rather be tinkering with circuits down at Railroad Park than memorizing the Krebs cycle.",
+          "emotion": "sad",
+          "variation_id": "maya_family_pressure_v3_generated"
+        },
+        {
+          "text": "I know they want the best for me, they sacrificed everything. But med school feels so… rigid. Sometimes I look at the robotics lab at UAB and just want to run. I feel like I owe them medicine, but is that what *I* really want, or am I just trying to fulfill their dream?",
+          "emotion": "sad",
+          "variation_id": "maya_family_pressure_v4_generated"
+        }
+      ],
+      "requiredState": {
+        "trust": {
+          "min": 2
+        }
+      },
+      "choices": [
+        {
+          "choiceId": "family_understanding",
+          "text": "They sacrificed for your happiness, not just a title.",
+          "nextNodeId": "maya_reframes_sacrifice",
+          "pattern": "patience",
+          "consequence": {
+            "characterId": "maya",
+            "trustChange": 1
+          }
+        },
+        {
+          "choiceId": "family_challenge",
+          "text": "Living someone else's dream isn't living at all.",
+          "nextNodeId": "maya_rebellion_thoughts",
+          "pattern": "helping",
+          "consequence": {
+            "characterId": "maya",
+            "trustChange": 2,
+            "addKnowledgeFlags": [
+              "challenged_expectations"
+            ]
+          }
+        }
+      ],
+      "onEnter": [
+        {
+          "characterId": "maya",
+          "addKnowledgeFlags": [
+            "knows_family"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeId": "maya_crossroads",
+      "speaker": "Maya Chen",
+      "content": [
+        {
+          "text": "I've been accepted to UAB's biomedical engineering program. I could transfer. But I also got into the traditional pre-med track my parents expect. The train is coming soon. I need to choose my platform.",
+          "emotion": "anxious",
+          "variation_id": "crossroads_v1"
+        },
+        {
+          "text": "Okay, so, med school is the plan, right? But then I walk past the Innovation Depot and just… feel this pull. It's like, what if I'm wasting my potential to actually *build* something instead of just treating symptoms? I just… I don't know what to do, and application deadlines are looming.",
+          "emotion": "anxious",
+          "variation_id": "maya_crossroads_v1_generated"
+        },
+        {
+          "text": "Mom and Dad sacrificed everything to get me here, to UAB, so I could become a doctor. How can I tell them I'm even *thinking* about switching to engineering? Maybe I could do both, somehow? Shadowing at UAB Hospital is great, but the robotics lab at Sterne Library just feels...right.",
+          "emotion": "anxious",
+          "variation_id": "maya_crossroads_v2_generated"
+        },
+        {
+          "text": "I should probably just go study in the Mervyn Sterne Library, but I keep getting distracted thinking about the robotics competition downtown next month. Medicine is... stable, and what my parents want. Is it selfish to want something different? I feel like I'm letting everyone down, either way.",
+          "emotion": "anxious",
+          "variation_id": "maya_crossroads_v3_generated"
+        },
+        {
+          "text": "Maybe I could volunteer more at the Railroad Park Foundation - I hear they're looking for someone with technical skills. It's not medicine, but maybe it's a good compromise. But then, I'd fall behind on my pre-med requirements. I just wish I knew what the right path was for *me*, not for anyone else.",
+          "emotion": "anxious",
+          "variation_id": "maya_crossroads_v4_generated"
+        }
+      ],
+      "requiredState": {
+        "trust": {
+          "min": 5
+        },
+        "hasKnowledgeFlags": [
+          "knows_robotics",
+          "knows_family"
+        ],
+        "relationship": [
+          "confidant"
+        ]
+      },
+      "choices": [
+        {
+          "choiceId": "crossroads_robotics",
+          "text": "Follow your robotics passion. Your parents will understand in time.",
+          "nextNodeId": "maya_chooses_robotics",
+          "pattern": "helping",
+          "visibleCondition": {
+            "hasKnowledgeFlags": [
+              "encouraged_robotics"
+            ]
+          }
+        },
+        {
+          "choiceId": "crossroads_hybrid",
+          "text": "Biomedical engineering honors both paths.",
+          "nextNodeId": "maya_chooses_hybrid",
+          "pattern": "analytical",
+          "visibleCondition": {
+            "hasKnowledgeFlags": [
+              "suggested_hybrid"
+            ]
+          }
+        },
+        {
+          "choiceId": "crossroads_support",
+          "text": "Whatever you choose, I believe in you.",
+          "nextNodeId": "maya_chooses_self",
+          "pattern": "patience"
+        }
+      ],
+      "tags": [
+        "climax",
+        "maya_arc"
+      ]
+    },
+    {
+      "nodeId": "maya_chooses_robotics",
+      "speaker": "Maya Chen",
+      "content": [
+        {
+          "text": "You're right. I'm switching to robotics engineering. I'll find a way to make my parents understand that healing can take many forms. Maybe my robots will save lives too, just differently. Thank you for believing in my real dream.",
+          "emotion": "confident",
+          "variation_id": "ending_robotics_v1"
+        },
+        {
+          "text": "Okay, I've thought about this. I can still volunteer at UAB Hospital, but I need to dedicate more time to robotics. Maybe I can even find a research project at the Innovation Depot that combines medical applications with robotics engineering. It's time to see if I can make this work.",
+          "emotion": "confident",
+          "variation_id": "maya_chooses_robotics_v1_generated"
+        },
+        {
+          "text": "My parents might not understand, but I have to try. Pre-med has been consuming me, and honestly, I feel more alive when I'm debugging code than dissecting a cadaver. Maybe I can find a way to incorporate robotics into medicine later, but for now, I'm going to focus on building something amazing at the UAB robotics lab.",
+          "emotion": "confident",
+          "variation_id": "maya_chooses_robotics_v2_generated"
+        },
+        {
+          "text": "Look, I know this seems crazy, dropping some of my pre-med focus, but I can't ignore this pull anymore. I can picture it now, walking through Railroad Park, brainstorming robot designs instead of memorizing the Krebs cycle. I'm still going to shadow Dr. Ellis at UAB, but robotics is where my energy needs to be.",
+          "emotion": "confident",
+          "variation_id": "maya_chooses_robotics_v3_generated"
+        },
+        {
+          "text": "This isn't a rash decision; I've considered this for months. I can still volunteer at the hospital and keep my grades up, but I need time to work on my robotics projects. I'm confident I can find a balance between fulfilling my parents' expectations and pursuing my own passion at UAB, even if it means a few more late nights at the Spencer Honors House studying and coding.",
+          "emotion": "confident",
+          "variation_id": "maya_chooses_robotics_v4_generated"
+        }
+      ],
+      "choices": [],
+      "onEnter": [
+        {
+          "characterId": "maya",
+          "addKnowledgeFlags": [
+            "chose_robotics",
+            "completed_arc"
+          ],
+          "addGlobalFlags": [
+            "maya_storyline_complete"
+          ]
+        }
+      ],
+      "tags": [
+        "ending",
+        "maya_arc"
+      ]
+    },
+    {
+      "nodeId": "maya_chooses_hybrid",
+      "speaker": "Maya Chen",
+      "content": [
+        {
+          "text": "Biomedical engineering at UAB. It's perfect - I can build surgical robots, design prosthetics, create devices that heal. My parents get their doctor, sort of, and I get my circuits. You helped me see I don't have to choose between loves.",
+          "emotion": "happy",
+          "variation_id": "ending_hybrid_v1"
+        },
+        {
+          "text": "Oh my gosh, I can actually do this! I was so worried about having to choose between shadowing Dr. Ramsey at UAB Hospital and working on my robotics project at the Innovation Depot. Now, I see a way to combine them – using robotics in surgical procedures! It's like the perfect blend of everything I love.",
+          "emotion": "happy",
+          "variation_id": "maya_chooses_hybrid_v1_generated"
+        },
+        {
+          "text": "This is incredible! I've been pulling all-nighters at Sterne Library trying to balance organic chemistry with coding, feeling so pulled in two directions. But imagine, creating robotic tools that assist surgeons at Kirklin Clinic! I can actually use my robotics skills to *help* people. It's… it's like everything is falling into place.",
+          "emotion": "happy",
+          "variation_id": "maya_chooses_hybrid_v2_generated"
+        },
+        {
+          "text": "Okay, deep breaths. It's still early, but the potential is HUGE! I could develop assistive robots for physical therapy, maybe even partner with the Lakeshore Foundation. This means I don’t have to abandon my robotics passion for medicine. I can do both! Maybe I should celebrate with a trip to Railroad Park later...",
+          "emotion": "happy",
+          "variation_id": "maya_chooses_hybrid_v3_generated"
+        },
+        {
+          "text": "I can't believe I didn't see this sooner! I was so stressed about making my parents proud with a medical degree, and feeling guilty about neglecting my robotics work. But designing robotic prosthetics? That's medicine *and* engineering! Maybe I'll grab a celebratory coffee at Red Cat before heading back to the lab at UAB.",
+          "emotion": "happy",
+          "variation_id": "maya_chooses_hybrid_v4_generated"
+        }
+      ],
+      "choices": [],
+      "onEnter": [
+        {
+          "characterId": "maya",
+          "addKnowledgeFlags": [
+            "chose_hybrid",
+            "completed_arc"
+          ],
+          "addGlobalFlags": [
+            "maya_storyline_complete"
+          ]
+        }
+      ],
+      "tags": [
+        "ending",
+        "maya_arc"
+      ]
+    },
+    {
+      "nodeId": "maya_chooses_self",
+      "speaker": "Maya Chen",
+      "content": [
+        {
+          "text": "I know what I need to do now. Not what they want, not what's expected, but what feels right. Your faith in me, without pushing either way... that's what I needed. To know someone believes I can make my own choice. Thank you.",
+          "emotion": "confident",
+          "variation_id": "ending_self_v1"
+        },
+        {
+          "text": "Okay, I've thought this through. I can volunteer at UAB Hospital *and* still dedicate time to building robots at the Innovation Depot. Maybe I won't be the next surgeon general, but I'll be a doctor who understands technology, and that's valuable too.",
+          "emotion": "confident",
+          "variation_id": "maya_chooses_self_v1_generated"
+        },
+        {
+          "text": "Mom and Dad want me to focus solely on medicine, but I need robotics. Spending my weekends at Railroad Park, brainstorming circuits? That's my recharge. So, I'm sticking with both. Pre-med and the UAB robotics club, deal with it.",
+          "emotion": "confident",
+          "variation_id": "maya_chooses_self_v2_generated"
+        },
+        {
+          "text": "It's not abandoning medicine; it's *enhancing* it. Knowing coding, understanding AI... that's the future of healthcare, right? So, I'll study hard for my classes at UAB, but I'm also making time to perfect my robot design. It's not either/or.",
+          "emotion": "confident",
+          "variation_id": "maya_chooses_self_v3_generated"
+        },
+        {
+          "text": "Look, I know my parents sacrificed everything for me to be successful here at UAB. But success isn't just about a white coat. If I ignore the robotics part of me, I'll burn out. So, I'm going to find a way to balance it all. It's my life, my choice.",
+          "emotion": "confident",
+          "variation_id": "maya_chooses_self_v4_generated"
+        }
+      ],
+      "choices": [],
+      "onEnter": [
+        {
+          "characterId": "maya",
+          "addKnowledgeFlags": [
+            "chose_self",
+            "completed_arc"
+          ],
+          "addGlobalFlags": [
+            "maya_storyline_complete"
+          ]
+        }
+      ],
+      "tags": [
+        "ending",
+        "maya_arc"
+      ]
+    }
+  ]
+}
