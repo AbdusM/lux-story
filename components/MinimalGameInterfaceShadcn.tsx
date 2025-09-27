@@ -266,10 +266,53 @@ export function MinimalGameInterfaceShadcn() {
   // Parse text into chunks (memoized for performance)
   const chunks = useMemo(() => {
     if (!game.messages?.[0]?.text) return []
-    return game.messages[0].text
-      .split('\n\n')
-      .filter(chunk => chunk.trim())
-      .map(chunk => chunk.trim())
+
+    // Strip outer quotes from dialogue
+    let text = game.messages[0].text.trim()
+    text = text.replace(/^["']|["']$/g, '')
+
+    // Smart chunking: split into conversational pieces (150-200 chars)
+    // First try to split at sentence boundaries, then fall back to character limit
+    const sentences = text.match(/[^.!?]+[.!?]+/g) || [text]
+    const conversationalChunks: string[] = []
+    let currentChunk = ''
+
+    for (const sentence of sentences) {
+      const trimmedSentence = sentence.trim()
+
+      // If adding this sentence keeps us under 200 chars, add it
+      if (currentChunk.length + trimmedSentence.length <= 200) {
+        currentChunk = currentChunk ? currentChunk + ' ' + trimmedSentence : trimmedSentence
+      } else {
+        // Save current chunk if it has content
+        if (currentChunk) {
+          conversationalChunks.push(currentChunk)
+        }
+
+        // If sentence itself is over 200 chars, break it up
+        if (trimmedSentence.length > 200) {
+          const words = trimmedSentence.split(' ')
+          currentChunk = ''
+          for (const word of words) {
+            if (currentChunk.length + word.length + 1 <= 200) {
+              currentChunk = currentChunk ? currentChunk + ' ' + word : word
+            } else {
+              if (currentChunk) conversationalChunks.push(currentChunk)
+              currentChunk = word
+            }
+          }
+        } else {
+          currentChunk = trimmedSentence
+        }
+      }
+    }
+
+    // Add any remaining chunk
+    if (currentChunk) {
+      conversationalChunks.push(currentChunk)
+    }
+
+    return conversationalChunks.length > 0 ? conversationalChunks : [text]
   }, [game.messages])
 
   // Determine scene type and progression state
