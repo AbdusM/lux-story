@@ -306,8 +306,12 @@ export default function StatefulGameInterface() {
                     key={evaluatedChoice.choice.choiceId}
                     onClick={() => handleChoice(evaluatedChoice)}
                     disabled={!evaluatedChoice.enabled}
-                    variant={evaluatedChoice.enabled ? "default" : "outline"}
-                    className="w-full text-left justify-start h-auto p-4"
+                    variant={evaluatedChoice.enabled ? "outline" : "ghost"}
+                    className={`w-full text-left justify-start h-auto p-4 ${
+                      evaluatedChoice.enabled
+                        ? "bg-white hover:bg-slate-50 text-slate-800 border-slate-300"
+                        : "bg-slate-100 text-slate-500 cursor-not-allowed"
+                    }`}
                   >
                     <div>
                       <div className="font-medium">
