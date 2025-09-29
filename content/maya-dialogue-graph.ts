@@ -227,7 +227,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "It's just... everyone sees me as this perfect pre-med student. Good grades, clear path, making my parents' dreams come true. But late at night, when I'm supposed to be memorizing anatomy, I'm actually... doing something else.",
+        text: "It's just... everyone sees me as this perfect pre-med student. Good grades, clear path, making my parents' dreams come true.\n\nBut late at night, when I'm supposed to be memorizing anatomy, I'm actually... doing something else.",
         emotion: 'anxious',
         variation_id: 'anxiety_reveal_v1'
       }
@@ -390,7 +390,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "You really think so? Sometimes I feel like I'm living a double life. Pre-med student by day, robot builder by night. But hearing you say it's beautiful... maybe it doesn't have to be a secret anymore.",
+        text: "You really think so? Sometimes I feel like I'm living a double life. Pre-med student by day, robot builder by night.\n\nBut hearing you say it's beautiful... maybe it doesn't have to be a secret anymore.",
         emotion: 'encouraged',
         variation_id: 'encouraged_v1'
       }
@@ -477,7 +477,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "My parents immigrated here with nothing. They worked three jobs to put me through school. They dream of saying 'our daughter, the doctor.' How can I tell them I'd rather build machines than heal people?",
+        text: "My parents immigrated here with nothing. They worked three jobs to put me through school. They dream of saying 'our daughter, the doctor.'\n\nHow can I tell them I'd rather build machines than heal people?",
         emotion: 'sad',
         variation_id: 'family_v1'
       }
@@ -615,7 +615,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "You're right. I'm switching to robotics engineering. I'll find a way to make my parents understand that healing can take many forms. Maybe my robots will save lives too, just differently. Thank you for believing in my real dream.",
+        text: "You're right. I'm switching to robotics engineering. I'll find a way to make my parents understand that healing can take many forms.\n\nMaybe my robots will save lives too, just differently. Thank you for believing in my real dream.",
         emotion: 'confident',
         variation_id: 'ending_robotics_v1'
       }
@@ -636,7 +636,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Biomedical engineering at UAB. It's perfect - I can build surgical robots, design prosthetics, create devices that heal. My parents get their doctor, sort of, and I get my circuits. You helped me see I don't have to choose between loves.",
+        text: "Biomedical engineering at UAB. It's perfect - I can build surgical robots, design prosthetics, create devices that heal.\n\nMy parents get their doctor, sort of, and I get my circuits. You helped me see I don't have to choose between loves.",
         emotion: 'happy',
         variation_id: 'ending_hybrid_v1'
       }
@@ -657,7 +657,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "I know what I need to do now. Not what they want, not what's expected, but what feels right. Your faith in me, without pushing either way... that's what I needed. To know someone believes I can make my own choice. Thank you.",
+        text: "I know what I need to do now. Not what they want, not what's expected, but what feels right.\n\nYour faith in me, without pushing either way... that's what I needed. To know someone believes I can make my own choice. Thank you.",
         emotion: 'confident',
         variation_id: 'ending_self_v1'
       }

@@ -365,9 +365,9 @@ export default function StatefulGameInterface() {
               <h2 className="text-lg font-semibold text-slate-700 mb-2">
                 {state.currentNode?.speaker}
               </h2>
-              <p className="text-slate-800 leading-relaxed">
+              <div className="text-slate-800 leading-loose space-y-4 whitespace-pre-line">
                 {state.currentContent}
-              </p>
+              </div>
             </div>
 
             {/* Scene info for debugging */}
