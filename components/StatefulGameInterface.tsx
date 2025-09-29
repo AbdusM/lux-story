@@ -61,26 +61,40 @@ export default function StatefulGameInterface() {
       console.log('✅ Loaded existing game state')
     }
 
-    // Get the starting node
-    const startNode = mayaDialogueGraph.nodes.get('maya_introduction')
-    if (!startNode) {
-      console.error('❌ Start node not found!')
+    // Get the current node (either new game start or saved position)
+    const nodeId = gameState.currentNodeId
+
+    if (nodeId !== 'maya_introduction') {
+      console.log(`📍 Resuming from: ${nodeId}`)
+    }
+
+    // Get the node
+    const currentNode = mayaDialogueGraph.nodes.get(nodeId)
+    if (!currentNode) {
+      console.error(`❌ Node not found: ${nodeId}`)
       return
     }
 
+    // Update current node in state
+    gameState.currentNodeId = currentNode.nodeId
+
     // Select content variation
-    const content = DialogueGraphNavigator.selectContent(startNode)
+    const maya = gameState.characters.get('maya')!
+    const content = DialogueGraphNavigator.selectContent(
+      currentNode,
+      maya.conversationHistory
+    )
 
     // Evaluate available choices
     const choices = StateConditionEvaluator.evaluateChoices(
-      startNode,
+      currentNode,
       gameState,
       'maya'
     ).filter(choice => choice.visible)
 
     setState({
       gameState,
-      currentNode: startNode,
+      currentNode: currentNode,
       availableChoices: choices,
       currentContent: content.text,
       isLoading: false,
@@ -130,6 +144,9 @@ export default function StatefulGameInterface() {
     // Update conversation history
     const mayaState = newGameState.characters.get('maya')!
     mayaState.conversationHistory.push(nextNode.nodeId)
+
+    // Update current node position in save state
+    newGameState.currentNodeId = nextNode.nodeId
 
     // Select content variation
     const content = DialogueGraphNavigator.selectContent(

@@ -234,7 +234,7 @@ export class GameStateUtils {
         exploring: 0
       },
       lastSaved: Date.now(),
-      currentNodeId: 'start'
+      currentNodeId: 'maya_introduction' // Start at beginning of Maya's story
     }
   }
 
