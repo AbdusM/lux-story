@@ -41,68 +41,88 @@ export default function StatefulGameInterface() {
   // Client-only state for save file detection (prevents hydration mismatch)
   const [hasSaveFile, setHasSaveFile] = useState(false)
 
-  // Check for save file after mounting (client-side only)
+  // Check for save file and if it's at an ending
+  const [saveIsComplete, setSaveIsComplete] = useState(false)
+
   useEffect(() => {
-    setHasSaveFile(GameStateManager.hasSaveFile())
+    const exists = GameStateManager.hasSaveFile()
+    setHasSaveFile(exists)
+
+    // Check if save is at a completed ending
+    if (exists) {
+      const loadedState = GameStateManager.loadGameState()
+      if (loadedState) {
+        const node = mayaDialogueGraph.nodes.get(loadedState.currentNodeId)
+        const isEnding = node && node.choices.length === 0
+        setSaveIsComplete(!!isEnding)
+      }
+    }
   }, [])
 
   // Initialize or load game
   const initializeGame = useCallback(() => {
     console.log('🎮 Initializing Stateful Narrative Engine...')
 
-    // Try to load existing save
-    let gameState = GameStateManager.loadGameState()
+    try {
+      // Try to load existing save
+      let gameState = GameStateManager.loadGameState()
 
-    if (!gameState) {
-      // Create new game
-      gameState = GameStateUtils.createNewGameState('player_' + Date.now())
-      console.log('✅ Created new game state')
-    } else {
-      console.log('✅ Loaded existing game state')
+      if (!gameState) {
+        // Create new game
+        gameState = GameStateUtils.createNewGameState('player_' + Date.now())
+        console.log('✅ Created new game state')
+      } else {
+        console.log('✅ Loaded existing game state')
+      }
+
+      // Get the current node (either new game start or saved position)
+      const nodeId = gameState.currentNodeId
+
+      if (nodeId !== 'maya_introduction') {
+        console.log(`📍 Resuming from: ${nodeId}`)
+      }
+
+      // Get the node
+      const currentNode = mayaDialogueGraph.nodes.get(nodeId)
+      if (!currentNode) {
+        console.error(`❌ Node not found: ${nodeId}`)
+        console.error('Available nodes:', Array.from(mayaDialogueGraph.nodes.keys()))
+        alert(`Error: Dialogue node "${nodeId}" not found. Save may be corrupted. Click "Start New Journey" to reset.`)
+        return
+      }
+
+      // Update current node in state
+      gameState.currentNodeId = currentNode.nodeId
+
+      // Select content variation
+      const maya = gameState.characters.get('maya')!
+      const content = DialogueGraphNavigator.selectContent(
+        currentNode,
+        maya.conversationHistory
+      )
+
+      // Evaluate available choices
+      const choices = StateConditionEvaluator.evaluateChoices(
+        currentNode,
+        gameState,
+        'maya'
+      ).filter(choice => choice.visible)
+
+      setState({
+        gameState,
+        currentNode: currentNode,
+        availableChoices: choices,
+        currentContent: content.text,
+        isLoading: false,
+        hasStarted: true
+      })
+
+      // Auto-save
+      GameStateManager.saveGameState(gameState)
+    } catch (error) {
+      console.error('❌ Fatal error initializing game:', error)
+      alert(`Error starting game: ${error instanceof Error ? error.message : 'Unknown error'}. Click "Start New Journey" to reset.`)
     }
-
-    // Get the current node (either new game start or saved position)
-    const nodeId = gameState.currentNodeId
-
-    if (nodeId !== 'maya_introduction') {
-      console.log(`📍 Resuming from: ${nodeId}`)
-    }
-
-    // Get the node
-    const currentNode = mayaDialogueGraph.nodes.get(nodeId)
-    if (!currentNode) {
-      console.error(`❌ Node not found: ${nodeId}`)
-      return
-    }
-
-    // Update current node in state
-    gameState.currentNodeId = currentNode.nodeId
-
-    // Select content variation
-    const maya = gameState.characters.get('maya')!
-    const content = DialogueGraphNavigator.selectContent(
-      currentNode,
-      maya.conversationHistory
-    )
-
-    // Evaluate available choices
-    const choices = StateConditionEvaluator.evaluateChoices(
-      currentNode,
-      gameState,
-      'maya'
-    ).filter(choice => choice.visible)
-
-    setState({
-      gameState,
-      currentNode: currentNode,
-      availableChoices: choices,
-      currentContent: content.text,
-      isLoading: false,
-      hasStarted: true
-    })
-
-    // Auto-save
-    GameStateManager.saveGameState(gameState)
   }, [])
 
   // Handle choice selection
@@ -178,17 +198,30 @@ export default function StatefulGameInterface() {
     console.log(`🎯 Maya trust: ${newGameState.characters.get('maya')?.trust}`)
   }, [state.gameState])
 
-  // Reset game
-  const resetGame = useCallback(() => {
-    GameStateManager.resetGameState()
-    setState({
-      gameState: null,
-      currentNode: null,
-      availableChoices: [],
-      currentContent: '',
-      isLoading: false,
-      hasStarted: false
-    })
+  // Continue journey (resets position but keeps relationships)
+  const continueJourney = useCallback(() => {
+    const currentState = GameStateManager.loadGameState()
+    if (currentState) {
+      const resetState = GameStateManager.resetConversationPosition(currentState)
+      GameStateManager.saveGameState(resetState)
+    }
+    // Reinitialize with preserved relationships
+    window.location.reload()
+  }, [])
+
+  // DANGER: Nuclear reset (wipes everything)
+  const nuclearReset = useCallback(() => {
+    if (confirm('⚠️ This will PERMANENTLY erase your entire journey and all relationships with Maya. Are you absolutely sure?')) {
+      GameStateManager.nuclearReset()
+      setState({
+        gameState: null,
+        currentNode: null,
+        availableChoices: [],
+        currentContent: '',
+        isLoading: false,
+        hasStarted: false
+      })
+    }
   }, [])
 
   // Debug: show current state
@@ -218,21 +251,53 @@ export default function StatefulGameInterface() {
               Meet Maya, a pre-med student torn between family expectations and personal passion.
             </p>
             <div className="space-y-4">
-              <Button
-                onClick={initializeGame}
-                size="lg"
-                className="w-full"
-              >
-                Begin New Journey
-              </Button>
+              {saveIsComplete ? (
+                <>
+                  <Button
+                    onClick={continueJourney}
+                    size="lg"
+                    className="w-full"
+                  >
+                    New Conversation with Maya
+                  </Button>
+                  <Button
+                    onClick={initializeGame}
+                    variant="outline"
+                    size="lg"
+                    className="w-full"
+                  >
+                    Review Last Conversation
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button
+                    onClick={initializeGame}
+                    size="lg"
+                    className="w-full"
+                  >
+                    {hasSaveFile ? 'Continue Your Journey' : 'Enter the Station'}
+                  </Button>
+                  {hasSaveFile && (
+                    <Button
+                      onClick={continueJourney}
+                      variant="outline"
+                      size="lg"
+                      className="w-full"
+                    >
+                      New Conversation with Maya
+                    </Button>
+                  )}
+                </>
+              )}
               {hasSaveFile && (
                 <Button
-                  onClick={initializeGame}
-                  variant="outline"
-                  size="lg"
-                  className="w-full"
+                  onClick={nuclearReset}
+                  variant="ghost"
+                  size="sm"
+                  className="w-full text-xs text-red-600 hover:text-red-700"
                 >
-                  Continue Journey
+                  Erase All Progress (Danger Zone)
                 </Button>
               )}
             </div>
@@ -267,8 +332,8 @@ export default function StatefulGameInterface() {
             <Button variant="outline" size="sm" onClick={showDebugInfo}>
               Debug
             </Button>
-            <Button variant="outline" size="sm" onClick={resetGame}>
-              Reset
+            <Button variant="outline" size="sm" onClick={continueJourney}>
+              New Conversation
             </Button>
           </div>
         </div>
@@ -357,17 +422,17 @@ export default function StatefulGameInterface() {
           <Card>
             <CardContent className="p-6 text-center">
               <h3 className="text-xl font-bold text-slate-800 mb-4">
-                Chapter Complete
+                Conversation Complete
               </h3>
               <p className="text-slate-600 mb-6">
-                Maya's story continues, shaped by your choices.
+                Maya will remember this conversation. Your relationship: {maya?.relationshipStatus} • Trust: {maya?.trust}/10
               </p>
               <div className="space-y-2">
-                <Button onClick={resetGame} className="w-full">
-                  Start New Journey
+                <Button onClick={continueJourney} className="w-full">
+                  New Conversation with Maya
                 </Button>
                 <Button variant="outline" onClick={showDebugInfo} className="w-full">
-                  View Journey Summary
+                  View Conversation Summary
                 </Button>
               </div>
             </CardContent>

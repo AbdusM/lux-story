@@ -190,13 +190,27 @@ export class GameStateManager {
   }
 
   /**
-   * Delete all save data and backups
+   * Reset conversation position while preserving relationships
+   * (Maya remembers you, but conversation starts fresh)
    */
-  static resetGameState(): void {
+  static resetConversationPosition(state: GameState): GameState {
+    return {
+      ...state,
+      currentNodeId: 'maya_introduction',
+      lastSaved: Date.now()
+    }
+  }
+
+  /**
+   * DANGER ZONE: Delete all save data and backups
+   * This wipes ALL progress including relationships
+   * Only use when player explicitly wants to start completely over
+   */
+  static nuclearReset(): void {
     try {
       localStorage.removeItem(STORAGE_KEY)
       localStorage.removeItem(BACKUP_STORAGE_KEY)
-      console.log('All save data deleted')
+      console.log('⚠️ NUCLEAR RESET: All save data deleted')
     } catch (error) {
       console.error('Failed to reset game state:', error)
     }
