@@ -91,6 +91,102 @@ export const mayaDialogueNodes: DialogueNode[] = [
     ]
   },
 
+  // ============= WHY HERE PATH =============
+  {
+    nodeId: 'maya_why_here',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "I... I'm not sure. I was walking home from the library, stressed about tomorrow's exam, and suddenly I was here. Like this place called to me. Maybe because I'm at a crossroads?",
+        emotion: 'contemplative',
+        variation_id: 'why_here_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'why_crossroads',
+        text: "What kind of crossroads?",
+        nextNodeId: 'maya_studies_response',
+        pattern: 'exploring'
+      },
+      {
+        choiceId: 'why_comfort',
+        text: "This place does feel safe, doesn't it?",
+        nextNodeId: 'maya_anxiety_check',
+        pattern: 'helping',
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
+      }
+    ]
+  },
+
+  // ============= FAMILY INTRO PATH =============
+  {
+    nodeId: 'maya_family_intro',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "My parents. They immigrated here with nothing. Worked three jobs each to get me through school. Their dream is simple: 'Our daughter, the doctor.' How can I disappoint them?",
+        emotion: 'conflicted',
+        variation_id: 'family_intro_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'family_pressure',
+        text: "That sounds like a lot of pressure.",
+        nextNodeId: 'maya_family_pressure',
+        pattern: 'helping',
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'family_dreams',
+        text: "But what are YOUR dreams?",
+        nextNodeId: 'maya_deflect_passion',
+        pattern: 'exploring'
+      }
+    ]
+  },
+
+  // ============= DEFLECT PASSION PATH =============
+  {
+    nodeId: 'maya_deflect_passion',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "My dreams? I... I try not to think about them. It's easier to follow the path laid out for me. Dreams are dangerous when they don't match expectations.",
+        emotion: 'guarded',
+        variation_id: 'deflect_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'deflect_safe',
+        text: "Sometimes safe paths aren't the right paths.",
+        nextNodeId: 'maya_anxiety_reveal',
+        pattern: 'helping',
+        visibleCondition: {
+          trust: { min: 2 }
+        }
+      },
+      {
+        choiceId: 'deflect_understand',
+        text: "I understand the conflict between duty and desire.",
+        nextNodeId: 'maya_family_pressure',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
+      }
+    ]
+  },
+
   // ============= ANXIETY PATH (Trust Gate) =============
   {
     nodeId: 'maya_anxiety_check',
@@ -167,6 +263,67 @@ export const mayaDialogueNodes: DialogueNode[] = [
     tags: ['trust_gate', 'maya_arc']
   },
 
+  // ============= ROBOTICS HINT PATH =============
+  {
+    nodeId: 'maya_robotics_hint',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "I... build things. Small things. With circuits and servos. Things that move and think and help. But that's not medicine, is it? That's engineering, and engineers aren't doctors.",
+        emotion: 'hesitant',
+        variation_id: 'hint_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'hint_encourage',
+        text: "Tell me more about what you build.",
+        nextNodeId: 'maya_robotics_passion',
+        pattern: 'exploring',
+        visibleCondition: {
+          trust: { min: 3 }
+        }
+      },
+      {
+        choiceId: 'hint_support',
+        text: "Building healing devices IS medicine.",
+        nextNodeId: 'maya_grateful_support',
+        pattern: 'helping'
+      }
+    ]
+  },
+
+  // ============= GRATEFUL SUPPORT PATH =============
+  {
+    nodeId: 'maya_grateful_support',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "Thank you for saying that. I... I've never thought of it that way. Maybe there's room for both worlds in my future. Maybe I don't have to choose between healing and building.",
+        emotion: 'hopeful',
+        variation_id: 'grateful_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'support_explore',
+        text: "What would combining both look like?",
+        nextNodeId: 'maya_considers_hybrid',
+        pattern: 'analytical'
+      },
+      {
+        choiceId: 'support_trust',
+        text: "Trust yourself. Your instincts are good.",
+        nextNodeId: 'maya_robotics_passion',
+        pattern: 'helping',
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
+      }
+    ]
+  },
+
   // ============= ROBOTICS REVEAL (Major Trust Gate) =============
   {
     nodeId: 'maya_robotics_passion',
@@ -227,6 +384,93 @@ export const mayaDialogueNodes: DialogueNode[] = [
     tags: ['major_reveal', 'trust_gate', 'maya_arc']
   },
 
+  // ============= ENCOURAGED PATH =============
+  {
+    nodeId: 'maya_encouraged',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "You really think so? Sometimes I feel like I'm living a double life. Pre-med student by day, robot builder by night. But hearing you say it's beautiful... maybe it doesn't have to be a secret anymore.",
+        emotion: 'encouraged',
+        variation_id: 'encouraged_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'encouraged_parents',
+        text: "How do you think your parents would react?",
+        nextNodeId: 'maya_family_pressure',
+        pattern: 'exploring'
+      },
+      {
+        choiceId: 'encouraged_future',
+        text: "What would you do if you could choose freely?",
+        nextNodeId: 'maya_crossroads',
+        pattern: 'helping',
+        visibleCondition: {
+          trust: { min: 5 }
+        }
+      }
+    ]
+  },
+
+  // ============= CONSIDERS HYBRID PATH =============
+  {
+    nodeId: 'maya_considers_hybrid',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "You know, UAB has a biomedical engineering program. I could design surgical robots, create prosthetics, build devices that heal. It's like... having my cake and eating it too. Medicine AND robotics.",
+        emotion: 'excited',
+        variation_id: 'hybrid_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'hybrid_perfect',
+        text: "That sounds perfect for you.",
+        nextNodeId: 'maya_crossroads',
+        pattern: 'helping',
+        visibleCondition: {
+          trust: { min: 4 }
+        }
+      },
+      {
+        choiceId: 'hybrid_parents',
+        text: "Would your parents approve of that path?",
+        nextNodeId: 'maya_family_pressure',
+        pattern: 'analytical'
+      }
+    ]
+  },
+
+  // ============= BIRMINGHAM OPPORTUNITY PATH =============
+  {
+    nodeId: 'maya_birmingham_opportunity',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "Really? I've heard of Innovation Depot but never thought... could I actually do that? Start something here in Birmingham? It feels so far from what my parents expect, but so close to what I dream about.",
+        emotion: 'curious',
+        variation_id: 'birmingham_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'birmingham_encourage',
+        text: "Birmingham needs innovative minds like yours.",
+        nextNodeId: 'maya_encouraged',
+        pattern: 'building'
+      },
+      {
+        choiceId: 'birmingham_practical',
+        text: "You could start small while finishing your degree.",
+        nextNodeId: 'maya_considers_hybrid',
+        pattern: 'analytical'
+      }
+    ]
+  },
+
   // ============= FAMILY PRESSURE =============
   {
     nodeId: 'maya_family_pressure',
@@ -268,6 +512,54 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         characterId: 'maya',
         addKnowledgeFlags: ['knows_family']
+      }
+    ]
+  },
+
+  // ============= REFRAMES SACRIFICE PATH =============
+  {
+    nodeId: 'maya_reframes_sacrifice',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "I... I never thought of it that way. They sacrificed for my happiness, not just for a title. Maybe telling them about my real passion would honor their sacrifice, not betray it.",
+        emotion: 'revelatory',
+        variation_id: 'reframes_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'reframes_courage',
+        text: "It takes courage to live authentically.",
+        nextNodeId: 'maya_crossroads',
+        pattern: 'helping',
+        visibleCondition: {
+          trust: { min: 5 }
+        }
+      }
+    ]
+  },
+
+  // ============= REBELLION THOUGHTS PATH =============
+  {
+    nodeId: 'maya_rebellion_thoughts',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "You're right. I've been so afraid of disappointing them that I was ready to disappoint myself forever. That's not living, that's just... existing. But how do I find the courage to choose my own path?",
+        emotion: 'determined',
+        variation_id: 'rebellion_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'rebellion_courage',
+        text: "Courage isn't the absence of fear. It's action despite fear.",
+        nextNodeId: 'maya_crossroads',
+        pattern: 'helping',
+        visibleCondition: {
+          trust: { min: 5 }
+        }
       }
     ]
   },

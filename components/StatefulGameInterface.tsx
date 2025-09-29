@@ -8,7 +8,8 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { GameState, GameStateUtils, GameStateManager } from '@/lib/character-state'
+import { GameState, GameStateUtils } from '@/lib/character-state'
+import { GameStateManager } from '@/lib/game-state-manager'
 import {
   DialogueGraph,
   DialogueNode,
@@ -36,6 +37,14 @@ export default function StatefulGameInterface() {
     isLoading: false,
     hasStarted: false
   })
+
+  // Client-only state for save file detection (prevents hydration mismatch)
+  const [hasSaveFile, setHasSaveFile] = useState(false)
+
+  // Check for save file after mounting (client-side only)
+  useEffect(() => {
+    setHasSaveFile(GameStateManager.hasSaveFile())
+  }, [])
 
   // Initialize or load game
   const initializeGame = useCallback(() => {
@@ -199,7 +208,7 @@ export default function StatefulGameInterface() {
               >
                 Begin New Journey
               </Button>
-              {GameStateManager.hasSaveFile() && (
+              {hasSaveFile && (
                 <Button
                   onClick={initializeGame}
                   variant="outline"
