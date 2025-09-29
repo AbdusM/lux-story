@@ -206,6 +206,7 @@ export class GameStateManager {
    * Check if a save file exists
    */
   static hasSaveFile(): boolean {
+    if (typeof window === 'undefined') return false // SSR compatibility
     return localStorage.getItem(STORAGE_KEY) !== null
   }
 
