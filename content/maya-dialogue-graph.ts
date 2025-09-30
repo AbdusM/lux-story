@@ -181,6 +181,19 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "I understand the conflict between duty and desire.",
         nextNodeId: 'maya_family_pressure',
         pattern: 'patience',
+        visibleCondition: {
+          trust: { min: 2 }
+        },
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'deflect_respect',
+        text: "*Nod quietly in understanding*",
+        nextNodeId: 'maya_early_gratitude',
+        pattern: 'patience',
         consequence: {
           characterId: 'maya',
           trustChange: 1
@@ -283,7 +296,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         nextNodeId: 'maya_robotics_passion',
         pattern: 'exploring',
         visibleCondition: {
-          trust: { min: 3 }
+          trust: { min: 2 }
         }
       },
       {
