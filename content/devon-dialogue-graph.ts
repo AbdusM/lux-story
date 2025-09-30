@@ -694,43 +694,45 @@ export const devonDialogueNodes: DialogueNode[] = [
   },
 
   // ============= THE INTEGRATION =============
-  {
-    nodeId: 'devon_vulnerable_moment',
-    speaker: 'Devon Kumar',
-    content: [
-      {
-        text: "*He puts the flowchart down, the technical precision in his voice gone for the first time*\n\nIt's a conversational map for my dad. He lives up in Huntsville. Since mom died... every call is an exception error. I built a system to help him, to optimize his grief. A flowchart.\n\n*He looks at you, his eyes filled with a kind of logical despair*\n\nBut there's no schematic for a sad dad. And you can't debug a memory. My system is perfect, and it is completely useless.",
-        emotion: 'raw_vulnerable',
-        variation_id: 'vulnerable_v1'
-      }
-    ],
-    requiredState: {
-      trust: { min: 5 },
-      hasKnowledgeFlags: ['system_failed']
-    },
-    choices: [
-      {
-        choiceId: 'empathy_is_data',
-        text: "Listening is data collection. A hug is data transmission.",
-        nextNodeId: 'devon_reframe',
-        pattern: 'helping',
-        consequence: {
-          characterId: 'devon',
-          trustChange: 2
-        }
-      },
-      {
-        choiceId: 'expand_definition',
-        text: "Expand your definition of 'system.' Include emotions.",
-        nextNodeId: 'devon_integration_idea',
-        pattern: 'analytical',
-        consequence: {
-          characterId: 'devon',
-          trustChange: 2
-        }
-      }
-    ]
-  },
+  // NOTE: devon_vulnerable_moment is orphaned (no incoming links)
+  // Commented out pending integration or removal decision
+  // {
+  //   nodeId: 'devon_vulnerable_moment',
+  //   speaker: 'Devon Kumar',
+  //   content: [
+  //     {
+  //       text: "*He puts the flowchart down, the technical precision in his voice gone for the first time*\n\nIt's a conversational map for my dad. He lives up in Huntsville. Since mom died... every call is an exception error. I built a system to help him, to optimize his grief. A flowchart.\n\n*He looks at you, his eyes filled with a kind of logical despair*\n\nBut there's no schematic for a sad dad. And you can't debug a memory. My system is perfect, and it is completely useless.",
+  //       emotion: 'raw_vulnerable',
+  //       variation_id: 'vulnerable_v1'
+  //     }
+  //   ],
+  //   requiredState: {
+  //     trust: { min: 5 },
+  //     hasKnowledgeFlags: ['system_failed']
+  //   },
+  //   choices: [
+  //     {
+  //       choiceId: 'empathy_is_data',
+  //       text: "Listening is data collection. A hug is data transmission.",
+  //       nextNodeId: 'devon_reframe',
+  //       pattern: 'helping',
+  //       consequence: {
+  //         characterId: 'devon',
+  //         trustChange: 2
+  //         }
+  //       },
+  //       {
+  //         choiceId: 'expand_definition',
+  //         text: "Expand your definition of 'system.' Include emotions.",
+  //         nextNodeId: 'devon_integration_idea',
+  //         pattern: 'analytical',
+  //         consequence: {
+  //           characterId: 'devon',
+  //           trustChange: 2
+  //         }
+  //       }
+  //     ]
+  //   },
 
   {
     nodeId: 'devon_reframe',
@@ -824,7 +826,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       }
     ],
     requiredState: {
-      trust: { min: 7 },
+      trust: { min: 6 },
       hasKnowledgeFlags: ['system_failed']
     },
     choices: [
@@ -1009,7 +1011,7 @@ export const devonEntryPoints = {
   INTRODUCTION: 'devon_introduction',
 
   /** Core vulnerable moment - requires trust ≥5 */
-  VULNERABLE_MOMENT: 'devon_vulnerable_moment',
+  // VULNERABLE_MOMENT: 'devon_vulnerable_moment', // Commented out - orphaned node
 
   /** Crossroads decision point */
   CROSSROADS: 'devon_crossroads'
