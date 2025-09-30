@@ -191,12 +191,13 @@ export class GameStateManager {
 
   /**
    * Reset conversation position while preserving relationships
-   * (Maya remembers you, but conversation starts fresh)
+   * (Characters remember you, but conversation starts fresh at Samuel's hub)
    */
   static resetConversationPosition(state: GameState): GameState {
     return {
       ...state,
-      currentNodeId: 'maya_introduction',
+      currentNodeId: 'samuel_introduction',
+      currentCharacterId: 'samuel',
       lastSaved: Date.now()
     }
   }
