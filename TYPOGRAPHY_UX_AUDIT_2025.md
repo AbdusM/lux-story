@@ -340,153 +340,71 @@ aria-hidden="true" // on decorative emojis
 
 ---
 
-## Implementation Roadmap
+## Implementation Strategy: Minimal & Critical Only
 
-### Phase 1: Critical Fixes (2-3 hours)
-**Priority: P0 issues blocking accessibility and mobile UX**
+**Philosophy:** Fix what's broken. Don't add features. Optimize existing design.
 
-1. **Fix Font Loading** (15 min)
-   - Add Next.js font imports
-   - Configure CSS variables
-   - Test rendering consistency
+### Phase 1: Critical Fixes ONLY (1.5 hours total)
+**Priority: P0 issues breaking accessibility and reading experience**
 
-2. **Reduce Body Font Size** (5 min)
-   - Change 18px → 16px
-   - Test mobile layout
-   - Verify no zoom on input focus
+**Goal:** Fix broken systems, improve readability, maintain existing design.
 
-3. **Fix Line Length** (5 min)
-   - max-w-2xl → max-w-xl
-   - Test desktop readability
-   - Verify mobile doesn't break
-
-4. **Fix Color Contrast** (10 min)
-   - Update narrator text color
-   - Update whisper opacity
-   - Run contrast checker (WCAG AA)
-
-5. **Add ARIA Labels** (30 min)
-   - Avatars: `aria-label`
-   - Cards: `role="article"`
-   - Typewriter: `aria-live="polite"`
-   - Emojis: `aria-hidden="true"`
-
-6. **Fix Auto-Scroll** (15 min)
-   - Add scroll position check
-   - Only scroll if near bottom
-   - Test with rapid message flow
-
-**Estimated Impact:**
-- Accessibility: 5/10 → 8/10
-- Reading Comfort: 6.5/10 → 8.5/10
-- Mobile UX: 7/10 → 9/10
-
----
-
-### Phase 2: Dialogue Chunking (4-6 hours)
-**Priority: P1 issues affecting emotional impact**
-
-1. **Audit All Scenes** (2 hours)
-   - Identify walls of text (>5 lines)
-   - Mark natural pause points
-   - Document chunking guidelines
-
-2. **Fix Top 10 Offenders** (2 hours)
-   - Jordan mentor context
-   - Samuel reflections
-   - Maya family pressure
-   - Devon introduction
-   - Birmingham frames
-
-3. **Test Emotional Rhythm** (1 hour)
-   - Playthrough with changes
-   - Verify pacing feels natural
-   - Adjust based on feel
-
-4. **Create Style Guide** (1 hour)
-   - Document pipe `|` usage
-   - Show before/after examples
-   - Train future content creation
-
-**Estimated Impact:**
-- Emotional Resonance: +25%
-- Comprehension: +15%
-- Reading Fatigue: -30%
-
----
-
-### Phase 3: Enhanced Controls (6-8 hours)
-**Priority: P2 quality-of-life improvements**
-
-1. **Text Speed Settings** (2 hours)
-   - Add settings panel
-   - Implement speed slider
-   - Save preferences to localStorage
-
-2. **Conversation History UI** (4 hours)
-   - Collapsible sidebar
-   - Jump to message
-   - Mobile modal overlay
-
-3. **Smart Scroll Behavior** (2 hours)
-   - "New Message ↓" button
-   - Scroll detection
-   - Visual indicators
-
-4. **Enhanced Typewriter** (2 hours)
-   - Spacebar pause/resume
-   - Hold key to speed up
-   - Visual pause indicator
-
-**Estimated Impact:**
-- Player Satisfaction: +40%
-- Re-engagement: +20%
-- Accessibility: +2 points
-
----
-
-### Phase 4: Polish & Optimization (8-12 hours)
-**Priority: P3 long-term enhancements**
-
-1. **Fluid Typography System** (3 hours)
-2. **Performance Optimization** (3 hours)
-3. **Reading Preferences Suite** (4 hours)
-4. **Mobile Gestures** (4 hours)
-
----
-
-## Quick Wins (Implement Today)
-
-Copy-paste these fixes for immediate improvement:
-
-### Fix 1: Reduce Line Length (5 min)
+#### 1. Fix Font Loading (15 min)
 ```typescript
-// components/game/game-message.tsx:232
-<Card className={cn(
-  "relative w-full max-w-xl mx-auto", // ← Changed from max-w-2xl
-  // ... rest of classes
-)}>
+// app/layout.tsx - ADD
+import { Inter, Crimson_Pro } from 'next/font/google'
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap'
+})
+
+const crimsonPro = Crimson_Pro({
+  subsets: ['latin'],
+  weight: ['400', '600', '700'],
+  variable: '--font-crimson',
+  display: 'swap'
+})
 ```
 
-### Fix 2: Fix Body Font Size (5 min)
+#### 2. Reduce Body Font Size (5 min)
 ```css
-/* app/globals.css:56 */
+/* globals.css line 56 */
 body {
-  font-size: 1rem; /* ← Changed from 1.125rem */
+  font-size: 1rem; /* Change from 1.125rem (18px) */
   line-height: 1.7;
 }
 ```
 
-### Fix 3: Improve Contrast (5 min)
+#### 3. Fix Line Length (5 min)
 ```typescript
-// components/ui/typography.tsx:21
-narrator: "text-base italic text-slate-600 dark:text-slate-300 leading-relaxed",
-// ↑ Changed from text-muted-foreground
+// components/game/game-message.tsx line 232
+<Card className={cn(
+  "relative w-full max-w-xl mx-auto", // Change from max-w-2xl
+  // ... rest
+)}>
 ```
 
-### Fix 4: Add Scroll Buffer (15 min)
+#### 4. Fix Color Contrast for Accessibility (10 min)
 ```typescript
-// components/GameMessages.tsx:57-62
+// components/ui/typography.tsx line 21
+narrator: "text-base italic text-slate-600 dark:text-slate-300 leading-relaxed",
+// Change from text-muted-foreground (fails WCAG AA)
+```
+
+#### 5. Essential ARIA Labels (20 min)
+```typescript
+// components/game/game-message.tsx
+<Card role="article" aria-label={`Message from ${speaker}`}>
+<Avatar aria-label={`${speaker} speaking`} role="img">
+<AvatarFallback aria-hidden="true">{emoji}</AvatarFallback>
+<Typography aria-live="polite">
+```
+
+#### 6. Fix Auto-Scroll Interruption (10 min)
+```typescript
+// components/GameMessages.tsx lines 57-62
 useEffect(() => {
   if (containerRef.current) {
     const { scrollTop, scrollHeight, clientHeight } = containerRef.current
@@ -498,15 +416,80 @@ useEffect(() => {
 }, [messages.length])
 ```
 
-### Fix 5: Increase Choice Stagger (5 min)
-```typescript
-// components/game/game-choice.tsx:74
-animationDelay: animated ? `${index * 150}ms` : undefined,
-// ↑ Changed from 50ms
-```
+**Estimated Impact:**
+- Accessibility: 5/10 → 8/10 (WCAG AA compliance)
+- Reading Comfort: 6.5/10 → 8.5/10
+- Mobile UX: 7/10 → 9/10
+- **No new features. No complexity added. Just fixes.**
 
-**Total Time: 35 minutes**
-**Total Impact: Reading Experience +30%, Accessibility +3 WCAG points**
+---
+
+### Phase 2: Dialogue Chunking (2-3 hours)
+**Priority: P1 - Improve existing content readability**
+
+**Goal:** Make existing dialogue easier to read. No new systems.
+
+#### Fix Top 5 Worst Offenders ONLY
+
+1. **Jordan Mentor Context** (line 484) - 30 min
+   - Break 8-line spiral into digestible chunks
+   - Add `|` separators every 2-3 sentences
+
+2. **Samuel Deep Reflection** (line 722) - 20 min
+   - Separate list structure (fear, shame, loneliness)
+   - Give final revelation breathing room
+
+3. **Maya Family Pressure** (lines 132, 568) - 20 min
+   - Break 4-sentence block into emotional beats
+   - Let guilt statement land separately
+
+4. **Devon Introduction** (line 25) - 15 min
+   - Chunk technical monologue
+   - Separate noticing player from speaking
+
+5. **Samuel Birmingham Frame** (line 1352) - 20 min
+   - Give historical context space to resonate
+   - Break parallel structure for clarity
+
+**Total Time: ~2 hours**
+
+**Estimated Impact:**
+- Emotional Resonance: +25%
+- Comprehension: +15%
+- **No new features. Just better formatting of existing content.**
+
+---
+
+## What We're NOT Doing
+
+❌ **No conversation history UI** - too complex
+❌ **No text speed settings panel** - existing click-to-skip works
+❌ **No enhanced typewriter controls** - current implementation fine
+❌ **No smart scroll indicators** - simple fix is enough
+❌ **No fluid typography system** - over-engineering
+❌ **No reading preferences suite** - feature creep
+❌ **No mobile gestures** - touch works fine
+❌ **No performance optimization** - not currently needed
+
+**Philosophy:** The design is good. Fix what's broken, improve readability of existing content, stop there.
+
+---
+
+## Critical Fixes Summary
+
+**Total Time: 1.5 hours**
+**Impact: Accessibility 5/10→8/10, Reading 6.5/10→8.5/10, Mobile 7/10→9/10**
+
+### The 6 Essential Fixes
+
+1. **Font Loading** (15 min) - Add Next.js font imports
+2. **Body Font Size** (5 min) - Reduce 18px → 16px
+3. **Line Length** (5 min) - Narrow max-w-2xl → max-w-xl
+4. **Color Contrast** (10 min) - Fix WCAG failures
+5. **ARIA Labels** (20 min) - Screen reader accessibility
+6. **Auto-Scroll** (10 min) - Stop interrupting reading
+
+**No new features. No complexity. Just fixing what's broken.**
 
 ---
 
@@ -572,22 +555,45 @@ animationDelay: animated ? `${index * 150}ms` : undefined,
 
 ## Conclusion
 
-Grand Central Terminus has **excellent narrative design** and **strong visual identity**, but critical typography and accessibility issues significantly harm the reading experience.
+Grand Central Terminus has **excellent narrative design** and **strong foundational UX**. The core experience is solid. We just need to fix what's broken and optimize existing content.
 
-**The Good News:** All issues are fixable with low-effort, high-impact changes. The codebase is well-structured and maintainable.
+### The Minimal Approach
 
-**Immediate Action Required:**
-1. Fix font loading (15 min)
-2. Reduce body font size (5 min)
-3. Fix line length (5 min)
-4. Improve color contrast (10 min)
+**Don't add features. Fix systems. Improve readability.**
 
-**35 minutes of work = 30% improvement in reading experience**
+**Phase 1 (1.5 hours):**
+- Fix broken font loading
+- Correct body font size for mobile
+- Optimize line length for readability
+- Fix WCAG accessibility failures
+- Add essential ARIA labels
+- Fix auto-scroll interruption
 
-After these fixes, Grand Central Terminus will have:
+**Phase 2 (2 hours):**
+- Fix 5 worst dialogue formatting issues
+- Add pipe `|` separators for breathing room
+- No new systems, just better content formatting
+
+**Total Investment: 3.5 hours**
+**Result:** Professional, accessible, readable experience without added complexity
+
+### After These Fixes
+
 - ✅ WCAG AA accessibility compliance
-- ✅ Optimal reading comfort
-- ✅ Excellent mobile experience
-- ✅ Professional polish matching the narrative quality
+- ✅ Optimal reading comfort (65ch line length)
+- ✅ Excellent mobile experience (16px base)
+- ✅ Emotional beats land properly
+- ✅ Same simple design, just better
 
-**Recommendation:** Implement Phase 1 fixes immediately, then tackle dialogue chunking in Phase 2. The enhanced controls in Phase 3 can wait for user feedback.
+### What We're NOT Doing
+
+We're explicitly avoiding feature creep:
+- ❌ No conversation history UI
+- ❌ No settings panels
+- ❌ No enhanced controls
+- ❌ No new typography systems
+- ❌ No performance over-optimization
+
+**The design is good. We're just fixing what's broken.**
+
+**Recommendation:** Implement all Phase 1 fixes in one session (1.5 hours), then Phase 2 dialogue chunking (2 hours). Stop there. Ship it.
