@@ -487,10 +487,28 @@ export default function StatefulGameInterface() {
                 {characterNames[state.currentCharacterId]} will remember this conversation. Your relationship: {currentCharacter?.relationshipStatus} • Trust: {currentCharacter?.trust}/10
               </p>
               <div className="space-y-2">
-                <Button onClick={continueJourney} className="w-full">
-                  New Conversation
+                <Button onClick={() => {
+                  // Start a new conversation with the SAME character
+                  const currentState = GameStateManager.loadGameState()
+                  if (currentState) {
+                    // Get the appropriate graph for this character
+                    const characterId = state.currentCharacterId
+                    const graph = getGraphForCharacter(characterId, currentState)
+
+                    // Set to character's start node (introduction or revisit entry)
+                    currentState.currentNodeId = graph.startNodeId
+                    currentState.currentCharacterId = characterId
+
+                    GameStateManager.saveGameState(currentState)
+                    window.location.reload()
+                  }
+                }} className="w-full">
+                  Talk to {characterNames[state.currentCharacterId]} Again
                 </Button>
-                <Button variant="outline" onClick={showDebugInfo} className="w-full">
+                <Button variant="outline" onClick={continueJourney} className="w-full">
+                  Return to Station
+                </Button>
+                <Button variant="ghost" size="sm" onClick={showDebugInfo} className="w-full text-xs">
                   View Conversation Summary
                 </Button>
               </div>
