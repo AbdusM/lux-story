@@ -611,6 +611,16 @@ export const mayaDialogueNodes: DialogueNode[] = [
         visibleCondition: {
           trust: { min: 5 }
         }
+      },
+      {
+        choiceId: 'reframes_acknowledge',
+        text: "That's a powerful realization. How are you feeling?",
+        nextNodeId: 'maya_early_gratitude',
+        pattern: 'helping',
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
       }
     ]
   },
@@ -634,6 +644,16 @@ export const mayaDialogueNodes: DialogueNode[] = [
         pattern: 'helping',
         visibleCondition: {
           trust: { min: 5 }
+        }
+      },
+      {
+        choiceId: 'rebellion_acknowledge',
+        text: "Start small. One honest conversation at a time.",
+        nextNodeId: 'maya_early_gratitude',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
         }
       }
     ]
@@ -763,6 +783,39 @@ export const mayaDialogueNodes: DialogueNode[] = [
       }
     ],
     tags: ['ending', 'maya_arc']
+  },
+
+  // ============= EARLY GRATITUDE (Low Trust Closure) =============
+  {
+    nodeId: 'maya_early_gratitude',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "Thank you for listening. Really. I've been carrying this alone for so long.\n\nI'm not sure what I'll do yet, but... talking to you helped me see things differently. That matters more than you know.\n\nI should get back to studying. But maybe we'll talk again?",
+        emotion: 'grateful',
+        variation_id: 'early_gratitude_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'early_farewell',
+        text: "I hope you find your path, Maya.",
+        nextNodeId: samuelEntryPoints.MAYA_REFLECTION_GATEWAY,
+        pattern: 'helping',
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1,
+          addKnowledgeFlags: ['early_connection_made']
+        }
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'maya',
+        addKnowledgeFlags: ['early_closure']
+      }
+    ],
+    tags: ['early_ending', 'maya_arc']
   },
 
   // ============= FAREWELL NODES (Return to Samuel for Reflection) =============
