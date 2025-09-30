@@ -388,9 +388,11 @@ export default function StatefulGameInterface() {
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold text-slate-800">Grand Central Terminus</h1>
           <div className="flex gap-2">
-            <Button variant="outline" size="sm" onClick={showDebugInfo}>
-              Debug
-            </Button>
+            {process.env.NODE_ENV === 'development' && (
+              <Button variant="outline" size="sm" onClick={showDebugInfo}>
+                Debug
+              </Button>
+            )}
             <Button variant="outline" size="sm" onClick={continueJourney}>
               New Conversation
             </Button>
@@ -508,9 +510,11 @@ export default function StatefulGameInterface() {
                 <Button variant="outline" onClick={continueJourney} className="w-full">
                   Return to Station
                 </Button>
-                <Button variant="ghost" size="sm" onClick={showDebugInfo} className="w-full text-xs">
-                  View Conversation Summary
-                </Button>
+                {process.env.NODE_ENV === 'development' && (
+                  <Button variant="ghost" size="sm" onClick={showDebugInfo} className="w-full text-xs">
+                    Debug: View Conversation Summary
+                  </Button>
+                )}
               </div>
             </CardContent>
           </Card>
