@@ -371,21 +371,204 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "*He nods stiffly, clearly uncomfortable with the emotional directness*\n\nThank you. She was... she was the interpreter. Between me and dad. She translated my logic into warmth. And now that translation layer is gone.\n\nSo I built a system. To optimize our conversations. To help him.",
+        text: "*He nods stiffly, clearly uncomfortable with the emotional directness* | Thank you. She was... she was the interpreter. Between me and dad. She translated my logic into warmth. | And now that translation layer is gone. | So I built a system. To optimize our conversations. To help him.",
         emotion: 'raw',
         variation_id: 'accepts_sympathy_v1'
       }
     ],
     choices: [
       {
-        choiceId: 'did_it_work',
-        text: "Did it work?",
-        nextNodeId: 'devon_system_failure',
+        choiceId: 'ask_about_dad_work',
+        text: "What does your dad do in Huntsville?",
+        nextNodeId: 'devon_father_aerospace',
         pattern: 'exploring',
         consequence: {
           characterId: 'devon',
           trustChange: 1
         }
+      },
+      {
+        choiceId: 'did_it_work',
+        text: "Did it work?",
+        nextNodeId: 'devon_system_failure',
+        pattern: 'analytical'
+      }
+    ]
+  },
+
+  // ============= BIRMINGHAM CAREER INTEGRATION: NASA/UAB Engineering =============
+  {
+    nodeId: 'devon_father_aerospace',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "He's an aerospace engineer at NASA Marshall. | Twenty-five years debugging rocket systems. Guidance control, error detection, mission-critical protocols. | *Devon looks at his flowchart* | He can troubleshoot a spacecraft traveling 17,000 miles per hour, but he can't... | He can't debug his own grief.",
+        emotion: 'frustrated_admiration',
+        variation_id: 'father_aerospace_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'ask_devon_engineering',
+        text: "Is that why you went into engineering?",
+        nextNodeId: 'devon_uab_systems_engineering',
+        pattern: 'exploring',
+        consequence: {
+          characterId: 'devon',
+          addKnowledgeFlags: ['father_nasa_engineer', 'inspired_by_father']
+        }
+      },
+      {
+        choiceId: 'comment_on_similarity',
+        text: "You're doing what he does - trying to debug systems.",
+        nextNodeId: 'devon_realizes_parallel',
+        pattern: 'analytical',
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1,
+          addKnowledgeFlags: ['father_nasa_engineer']
+        }
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'devon',
+        addKnowledgeFlags: ['father_aerospace_engineer']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'devon_uab_systems_engineering',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "Yeah. UAB's Integrated Systems Engineering program. | I'm doing my senior capstone on error detection in distributed systems - how different components communicate when something fails. | *He half-smiles* | Southern Company's DevOps team will be at our Engineering Week showcase next month. They're looking for graduates who understand system resilience. | Ironic, right? I can debug code exceptions but not emotional ones.",
+        emotion: 'self_aware',
+        variation_id: 'uab_systems_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'encourage_capstone',
+        text: "That capstone project sounds impressive.",
+        nextNodeId: 'devon_career_context',
+        pattern: 'helping',
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1,
+          addKnowledgeFlags: ['knows_uab_program', 'knows_capstone']
+        }
+      },
+      {
+        choiceId: 'connect_to_dad',
+        text: "Maybe you and your dad could talk about system failures together.",
+        nextNodeId: 'devon_realizes_bridge',
+        pattern: 'helping',
+        consequence: {
+          characterId: 'devon',
+          trustChange: 2,
+          addKnowledgeFlags: ['knows_uab_program']
+        }
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'devon',
+        addKnowledgeFlags: ['revealed_career_path']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'devon_career_context',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "It's about making systems that don't just work - they work even when things go wrong. Redundancy, graceful degradation, error handling. | *He looks down at his conversation flowchart* | I thought I could apply the same principles to people. Build a system that handles conversational failures gracefully. | But people aren't systems. And grief isn't a bug to patch.",
+        emotion: 'dawning_understanding',
+        variation_id: 'career_context_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'acknowledge_realization',
+        text: "Sounds like you're learning what your system can't teach.",
+        nextNodeId: 'devon_system_failure',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1
+        }
+      }
+    ]
+  },
+
+  {
+    nodeId: 'devon_realizes_parallel',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "*He stops, looks at you with sudden recognition* | You're right. I'm debugging our relationship like it's a mission-critical system. | Dad does the same thing - solves problems by analyzing failure modes, testing solutions, iterating. That's how we were taught to think at UAB Engineering. | But mom... she didn't think in flowcharts. And now neither of us knows how to talk without her translation layer.",
+        emotion: 'breakthrough',
+        variation_id: 'realizes_parallel_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'suggest_shared_language',
+        text: "Maybe engineering IS your shared language with him.",
+        nextNodeId: 'devon_realizes_bridge',
+        pattern: 'helping',
+        consequence: {
+          characterId: 'devon',
+          trustChange: 2
+        }
+      }
+    ]
+  },
+
+  {
+    nodeId: 'devon_realizes_bridge',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "*Something shifts in his expression* | What if... what if I stopped trying to optimize the conversation and just... asked him about the systems he's debugging at Marshall? | Not as a therapeutic technique. Just as his son who also debugs complex systems. | *He looks at you with cautious hope* | We both understand system failures. Maybe that's enough.",
+        emotion: 'hopeful',
+        variation_id: 'realizes_bridge_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'support_approach',
+        text: "That sounds like a real conversation, not a scripted one.",
+        nextNodeId: 'devon_grateful_insight',
+        pattern: 'helping',
+        consequence: {
+          characterId: 'devon',
+          trustChange: 2,
+          setRelationshipStatus: 'confidant'
+        }
+      }
+    ]
+  },
+
+  {
+    nodeId: 'devon_grateful_insight',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "*He carefully folds up his conversation flowchart* | Thank you. I've been so focused on fixing the conversation that I forgot we could just... have one. | About rockets and distributed systems and things that fail and how you handle it. | *He manages a real smile* | That's what engineers do, right? We learn from failures.",
+        emotion: 'grateful',
+        variation_id: 'grateful_insight_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'devon_farewell_engineer',
+        text: "Good luck with your capstone - and with your dad.",
+        nextNodeId: 'devon_farewell_integration',
+        pattern: 'helping'
       }
     ]
   },
