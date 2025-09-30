@@ -345,13 +345,13 @@ export const samuelDialogueNodes: DialogueNode[] = [
     ]
   },
 
-  // ============= REFLECTION: Understanding Influence vs. Agency =============
+  // ============= REFLECTION: Understanding Influence vs. Agency (BIRMINGHAM CAREER INTEGRATION) =============
   {
     nodeId: 'samuel_reflect_on_influence',
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You did help her. But not in the way most people think 'helping' works.\n\nYou didn't fix her problem. You didn't tell her what to do. You created space for her to see options she couldn't see before. That's influence, not control. And influence - the kind that respects someone's agency - that's rare.",
+        text: "You did help her. But not in the way most people think 'helping' works. | You didn't fix her problem. You didn't tell her what to do. You created space for her to see options she couldn't see before. | *He pauses thoughtfully* | You've got the helper instinct - that's what drives our UAB Medical resident advisors and Birmingham City Schools guidance counselors. But I learned at Southern Company: the best mentors help people find their own answers, not just feel supported. | These reflection skills you're using right now? They're the foundation of counseling, coaching, teaching. Real careers in Birmingham that value this exact capacity.",
         emotion: 'teaching',
         variation_id: 'influence_v1'
       }
@@ -379,6 +379,12 @@ export const samuelDialogueNodes: DialogueNode[] = [
           trustChange: 1
         }
       }
+    ],
+    onEnter: [
+      {
+        characterId: 'samuel',
+        addKnowledgeFlags: ['recognized_mentorship_skills']
+      }
     ]
   },
 
@@ -387,7 +393,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*He smiles, a quiet satisfaction in his expression*\n\nExactly. She made her own choice. That's the most important thing you could understand about what just happened.\n\nYou were a mirror, not a map. You reflected possibilities back to her, but she's the one who decided which way to walk. That's the difference between helping someone and trying to save them.",
+        text: "*He smiles, a quiet satisfaction in his expression* | Exactly. She made her own choice. That's the most important thing you could understand about what just happened. | You understand agency - that's advanced. | *His voice carries weight from experience* | Took me fifteen years at Southern Company to learn I couldn't engineer people's decisions. The best career counselors in Birmingham know this: we illuminate paths, but the traveler chooses the direction. | Innovation Depot startup mentors do exactly what you just did: ask questions, hold space, let the founder discover their path. That's facilitator instinct - a professional skill that drives leadership development, organizational psychology, HR careers across this city.",
         emotion: 'proud',
         variation_id: 'agency_v1'
       }
@@ -404,6 +410,12 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "Is that what you do here? Be a mirror?",
         nextNodeId: 'samuel_station_keeper_truth',
         pattern: 'patience'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'samuel',
+        addKnowledgeFlags: ['recognized_facilitator_skills']
       }
     ]
   },
@@ -548,7 +560,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Is it okay? It's more than okay - it's courageous.\n\nOur whole world is designed to make you choose fast, commit early, lock in your path before you've even walked it. Maya choosing to sit with uncertainty? That's her refusing to let urgency override truth.",
+        text: "Is it okay? It's more than okay - it's courageous. | Our whole world is designed to make you choose fast, commit early, lock in your path before you've even walked it. Maya choosing to sit with uncertainty? That's her refusing to let urgency override truth. | *He reflects on his own journey* | Not knowing is honest - and that's the foundation of coaching, not fixing. Birmingham's Innovation Depot startup mentors know this. The best facilitators don't rush to answers. They hold space for emergence. | You just demonstrated a professional competency that career counselors, coaches, and organizational development specialists spend years developing.",
         emotion: 'wise',
         variation_id: 'patience_wisdom_v1'
       }
@@ -563,6 +575,12 @@ export const samuelDialogueNodes: DialogueNode[] = [
           characterId: 'samuel',
           trustChange: 1
         }
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'samuel',
+        addKnowledgeFlags: ['recognized_coaching_skills']
       }
     ]
   },
