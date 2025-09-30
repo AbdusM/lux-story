@@ -118,19 +118,58 @@ export default function StatefulGameInterface() {
       console.log(`📍 Current character: ${characterId}, Node: ${nodeId}`)
 
       // Get the node from the appropriate graph
-      const currentNode = currentGraph.nodes.get(nodeId)
+      let currentNode = currentGraph.nodes.get(nodeId)
+      let actualCharacterId = characterId
+      let actualGraph = currentGraph
+
+      // DEFENSIVE: Handle corrupted save states where character/node mismatch
       if (!currentNode) {
-        console.error(`❌ Node not found in ${characterId} graph: ${nodeId}`)
-        console.error('Available nodes:', Array.from(currentGraph.nodes.keys()))
-        alert(`Error: Dialogue node "${nodeId}" not found. Save may be corrupted. Click "Start New Journey" to reset.`)
-        return
+        console.warn(`⚠️ Node "${nodeId}" not found in ${characterId} graph, searching other graphs...`)
+
+        // Try to find the node in any graph
+        let foundInGraph: CharacterId | null = null
+        for (const [charId, graph] of Object.entries(DIALOGUE_GRAPHS)) {
+          if (graph.nodes.has(nodeId)) {
+            foundInGraph = charId as CharacterId
+            actualCharacterId = charId as CharacterId
+            actualGraph = selectDialogueGraph(actualCharacterId, gameState)
+            currentNode = actualGraph.nodes.get(nodeId)
+            console.warn(`✅ Found node in ${charId} graph, correcting character mismatch`)
+            break
+          }
+        }
+
+        // If still not found, check revisit graphs
+        if (!currentNode && gameState.globalFlags.has('maya_arc_complete')) {
+          if (mayaRevisitGraph.nodes.has(nodeId)) {
+            actualCharacterId = 'maya'
+            actualGraph = mayaRevisitGraph
+            currentNode = mayaRevisitGraph.nodes.get(nodeId)
+            console.warn(`✅ Found node in maya revisit graph`)
+          }
+        }
+
+        // Last resort: fall back to safe starting point
+        if (!currentNode) {
+          console.error(`❌ Node "${nodeId}" not found in any graph. Resetting to safe start.`)
+          actualCharacterId = 'samuel'
+          actualGraph = samuelDialogueGraph
+          currentNode = actualGraph.nodes.get(actualGraph.startNodeId)!
+          gameState.currentCharacterId = 'samuel'
+          gameState.currentNodeId = actualGraph.startNodeId
+          console.warn(`🔄 Reset to safe start: ${actualGraph.startNodeId}`)
+        } else {
+          // Update gameState with corrected character
+          gameState.currentCharacterId = actualCharacterId
+        }
       }
 
       // Update current node in state
       gameState.currentNodeId = currentNode.nodeId
+      gameState.currentCharacterId = actualCharacterId
 
       // Select content variation (use character's conversation history)
-      const character = gameState.characters.get(characterId)!
+      const character = gameState.characters.get(actualCharacterId)!
       const content = DialogueGraphNavigator.selectContent(
         currentNode,
         character.conversationHistory
@@ -140,14 +179,14 @@ export default function StatefulGameInterface() {
       const choices = StateConditionEvaluator.evaluateChoices(
         currentNode,
         gameState,
-        characterId
+        actualCharacterId
       ).filter(choice => choice.visible)
 
       setState({
         gameState,
         currentNode: currentNode,
-        currentGraph: currentGraph,
-        currentCharacterId: characterId,
+        currentGraph: actualGraph,
+        currentCharacterId: actualCharacterId,
         availableChoices: choices,
         currentContent: content.text,
         isLoading: false,
