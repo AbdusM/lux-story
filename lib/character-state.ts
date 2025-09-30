@@ -30,6 +30,7 @@ export interface GameState {
   patterns: PlayerPatterns // Pattern tracking for final revelation
   lastSaved: number
   currentNodeId: string // Current position in dialogue graph
+  currentCharacterId: 'samuel' | 'maya' | 'devon' | 'jordan' // Current character being talked to
 }
 
 /**
@@ -109,6 +110,7 @@ export interface SerializableGameState {
   patterns: PlayerPatterns
   lastSaved: number
   currentNodeId: string
+  currentCharacterId: 'samuel' | 'maya' | 'devon' | 'jordan'
 }
 
 /**
@@ -208,7 +210,8 @@ export class GameStateUtils {
       globalFlags: new Set(state.globalFlags),
       patterns: { ...state.patterns },
       lastSaved: state.lastSaved,
-      currentNodeId: state.currentNodeId
+      currentNodeId: state.currentNodeId,
+      currentCharacterId: state.currentCharacterId
     }
   }
 
@@ -234,7 +237,8 @@ export class GameStateUtils {
         exploring: 0
       },
       lastSaved: Date.now(),
-      currentNodeId: 'maya_introduction' // Start at beginning of Maya's story
+      currentNodeId: 'samuel_introduction', // Start with Samuel (Station Keeper)
+      currentCharacterId: 'samuel' // Game begins at the station entrance
     }
   }
 
@@ -268,7 +272,8 @@ export class GameStateUtils {
       globalFlags: Array.from(state.globalFlags),
       patterns: state.patterns,
       lastSaved: state.lastSaved,
-      currentNodeId: state.currentNodeId
+      currentNodeId: state.currentNodeId,
+      currentCharacterId: state.currentCharacterId
     }
   }
 
@@ -291,7 +296,8 @@ export class GameStateUtils {
       globalFlags: new Set(serialized.globalFlags),
       patterns: serialized.patterns,
       lastSaved: serialized.lastSaved,
-      currentNodeId: serialized.currentNodeId
+      currentNodeId: serialized.currentNodeId,
+      currentCharacterId: serialized.currentCharacterId
     }
   }
 }
@@ -310,7 +316,8 @@ export class StateValidation {
       obj.patterns &&
       typeof obj.patterns.analytical === 'number' &&
       typeof obj.lastSaved === 'number' &&
-      typeof obj.currentNodeId === 'string'
+      typeof obj.currentNodeId === 'string' &&
+      typeof obj.currentCharacterId === 'string'
     )
   }
 
@@ -324,7 +331,8 @@ export class StateValidation {
       obj.patterns &&
       typeof obj.patterns.analytical === 'number' &&
       typeof obj.lastSaved === 'number' &&
-      typeof obj.currentNodeId === 'string'
+      typeof obj.currentNodeId === 'string' &&
+      typeof obj.currentCharacterId === 'string'
     )
   }
 }
