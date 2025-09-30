@@ -17,36 +17,12 @@ import {
   DialogueGraphNavigator,
   EvaluatedChoice
 } from '@/lib/dialogue-graph'
-import { mayaDialogueGraph } from '@/content/maya-dialogue-graph'
-import { mayaRevisitGraph } from '@/content/maya-revisit-graph'
-import { samuelDialogueGraph } from '@/content/samuel-dialogue-graph'
-
-// Dialogue graph registry for multi-character navigation
-const DIALOGUE_GRAPHS = {
-  samuel: samuelDialogueGraph,
-  maya: mayaDialogueGraph
-  // devon: devonDialogueGraph, // future
-  // jordan: jordanDialogueGraph // future
-} as const
-
-type CharacterId = keyof typeof DIALOGUE_GRAPHS
-
-/**
- * Select the correct dialogue graph for a character based on game state
- * CRITICAL: Maya has two graphs - initial and revisit
- */
-function selectDialogueGraph(characterId: CharacterId, gameState: GameState): DialogueGraph {
-  if (characterId === 'maya') {
-    // If Maya's arc is complete, use revisit graph
-    if (gameState.globalFlags.has('maya_arc_complete')) {
-      console.log('📖 Loading Maya revisit graph (arc completed)')
-      return mayaRevisitGraph
-    }
-  }
-
-  // Default: use base graph from registry
-  return DIALOGUE_GRAPHS[characterId]
-}
+import {
+  CharacterId,
+  getGraphForCharacter,
+  findCharacterForNode,
+  getSafeStart
+} from '@/lib/graph-registry'
 
 interface GameInterfaceState {
   gameState: GameState | null
@@ -60,11 +36,12 @@ interface GameInterfaceState {
 }
 
 export default function StatefulGameInterface() {
+  const safeStart = getSafeStart()
   const [state, setState] = useState<GameInterfaceState>({
     gameState: null,
     currentNode: null,
-    currentGraph: samuelDialogueGraph, // Start with Samuel
-    currentCharacterId: 'samuel', // Game begins with Station Keeper
+    currentGraph: safeStart.graph, // Start with Samuel (safe start)
+    currentCharacterId: safeStart.characterId, // Game begins with Station Keeper
     availableChoices: [],
     currentContent: '',
     isLoading: false,
@@ -85,7 +62,10 @@ export default function StatefulGameInterface() {
     if (exists) {
       const loadedState = GameStateManager.loadGameState()
       if (loadedState) {
-        const node = mayaDialogueGraph.nodes.get(loadedState.currentNodeId)
+        // Use registry to get the correct graph for the saved character
+        const characterId = (loadedState.currentCharacterId || 'samuel') as CharacterId
+        const graph = getGraphForCharacter(characterId, loadedState)
+        const node = graph.nodes.get(loadedState.currentNodeId)
         const isEnding = node && node.choices.length === 0
         setSaveIsComplete(!!isEnding)
       }
@@ -110,57 +90,44 @@ export default function StatefulGameInterface() {
 
       // Get character ID from saved state (defaults to samuel for new games)
       const characterId = (gameState.currentCharacterId || 'samuel') as CharacterId
-      const currentGraph = selectDialogueGraph(characterId, gameState)
+
+      // Get the state-appropriate graph for this character
+      const currentGraph = getGraphForCharacter(characterId, gameState)
 
       // Get the current node (either new game start or saved position)
       const nodeId = gameState.currentNodeId
 
       console.log(`📍 Current character: ${characterId}, Node: ${nodeId}`)
 
-      // Get the node from the appropriate graph
+      // Get the node from the graph
       let currentNode = currentGraph.nodes.get(nodeId)
       let actualCharacterId = characterId
       let actualGraph = currentGraph
 
       // DEFENSIVE: Handle corrupted save states where character/node mismatch
       if (!currentNode) {
-        console.warn(`⚠️ Node "${nodeId}" not found in ${characterId} graph, searching other graphs...`)
+        console.warn(`⚠️ Node "${nodeId}" not found in ${characterId} graph, searching all graphs...`)
 
-        // Try to find the node in any graph
-        let foundInGraph: CharacterId | null = null
-        for (const [charId, graph] of Object.entries(DIALOGUE_GRAPHS)) {
-          if (graph.nodes.has(nodeId)) {
-            foundInGraph = charId as CharacterId
-            actualCharacterId = charId as CharacterId
-            actualGraph = selectDialogueGraph(actualCharacterId, gameState)
-            currentNode = actualGraph.nodes.get(nodeId)
-            console.warn(`✅ Found node in ${charId} graph, correcting character mismatch`)
-            break
-          }
-        }
+        // Use registry to find which character owns this node
+        const searchResult = findCharacterForNode(nodeId, gameState)
 
-        // If still not found, check revisit graphs
-        if (!currentNode && gameState.globalFlags.has('maya_arc_complete')) {
-          if (mayaRevisitGraph.nodes.has(nodeId)) {
-            actualCharacterId = 'maya'
-            actualGraph = mayaRevisitGraph
-            currentNode = mayaRevisitGraph.nodes.get(nodeId)
-            console.warn(`✅ Found node in maya revisit graph`)
-          }
-        }
-
-        // Last resort: fall back to safe starting point
-        if (!currentNode) {
+        if (searchResult) {
+          // Found the node in a different character's graph
+          actualCharacterId = searchResult.characterId
+          actualGraph = searchResult.graph
+          currentNode = actualGraph.nodes.get(nodeId)!
+          gameState.currentCharacterId = actualCharacterId
+          console.warn(`✅ Found node in ${actualCharacterId} graph, corrected character mismatch`)
+        } else {
+          // Last resort: fall back to safe starting point
           console.error(`❌ Node "${nodeId}" not found in any graph. Resetting to safe start.`)
-          actualCharacterId = 'samuel'
-          actualGraph = samuelDialogueGraph
+          const safeStart = getSafeStart()
+          actualCharacterId = safeStart.characterId
+          actualGraph = safeStart.graph
           currentNode = actualGraph.nodes.get(actualGraph.startNodeId)!
-          gameState.currentCharacterId = 'samuel'
+          gameState.currentCharacterId = actualCharacterId
           gameState.currentNodeId = actualGraph.startNodeId
           console.warn(`🔄 Reset to safe start: ${actualGraph.startNodeId}`)
-        } else {
-          // Update gameState with corrected character
-          gameState.currentCharacterId = actualCharacterId
         }
       }
 
@@ -222,39 +189,23 @@ export default function StatefulGameInterface() {
       })
     }
 
-    // Try to get next node from current graph first
-    let nextNode = state.currentGraph.nodes.get(choice.choice.nextNodeId)
-    let targetGraph = state.currentGraph
-    let targetCharacterId = state.currentCharacterId
+    // Use registry to find which character owns the next node
+    // This handles cross-graph navigation AND state-aware graph selection
+    const searchResult = findCharacterForNode(choice.choice.nextNodeId, newGameState)
 
-    // If not found, search other graphs (cross-graph navigation)
-    if (!nextNode) {
-      // Search base graphs first
-      for (const [charId, graph] of Object.entries(DIALOGUE_GRAPHS)) {
-        if (graph.nodes.has(choice.choice.nextNodeId)) {
-          nextNode = graph.nodes.get(choice.choice.nextNodeId)!
-          targetGraph = graph
-          targetCharacterId = charId as CharacterId
-          console.log(`🔀 Cross-graph navigation: ${state.currentCharacterId} → ${charId}`)
-          break
-        }
-      }
-
-      // If still not found, check Maya revisit graph (if arc complete)
-      if (!nextNode && newGameState.globalFlags.has('maya_arc_complete')) {
-        if (mayaRevisitGraph.nodes.has(choice.choice.nextNodeId)) {
-          nextNode = mayaRevisitGraph.nodes.get(choice.choice.nextNodeId)!
-          targetGraph = mayaRevisitGraph
-          targetCharacterId = 'maya'
-          console.log(`🔀 Cross-graph navigation: ${state.currentCharacterId} → maya (revisit)`)
-        }
-      }
-    }
-
-    if (!nextNode) {
+    if (!searchResult) {
       console.error(`❌ Next node not found in any graph: ${choice.choice.nextNodeId}`)
       setState(prev => ({ ...prev, isLoading: false }))
       return
+    }
+
+    const nextNode = searchResult.graph.nodes.get(choice.choice.nextNodeId)!
+    const targetGraph = searchResult.graph
+    const targetCharacterId = searchResult.characterId
+
+    // Log cross-graph navigation if character changed
+    if (targetCharacterId !== state.currentCharacterId) {
+      console.log(`🔀 Cross-graph navigation: ${state.currentCharacterId} → ${targetCharacterId}`)
     }
 
     // Apply node entry state changes
