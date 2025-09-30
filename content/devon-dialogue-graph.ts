@@ -22,7 +22,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "If input is 'I'm fine,' then route to conversational branch 4.B, sub-routine 'gentle_probe.' No, no, the latency on that is too high...\n\n*He finally notices you, his posture immediately becoming guarded.*\n\nOh. I didn't see you. This is a... closed system. Are you a variable I need to account for?",
+        text: "If input is 'I'm fine,' then route to conversational branch 4.B, sub-routine 'gentle_probe.' | No, no, the latency on that is too high... | *He finally notices you, his posture immediately becoming guarded.* | Oh. I didn't see you. | This is a... closed system. Are you a variable I need to account for?",
         emotion: 'guarded',
         variation_id: 'intro_v1'
       }
