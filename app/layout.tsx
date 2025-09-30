@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next'
+import { Inter, Crimson_Pro } from 'next/font/google'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { EnvironmentalEffects } from '@/components/EnvironmentalEffects'
 import { ServiceWorkerProvider } from '@/components/ServiceWorkerProvider'
@@ -7,6 +8,18 @@ import '../styles/accessibility.css'
 import '../styles/game-juice.css'
 import '../styles/grand-central.css'
 import '../styles/environmental-response.css'
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+})
+
+const crimsonPro = Crimson_Pro({
+  subsets: ['latin'],
+  variable: '--font-crimson-pro',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   title: "Grand Central Terminus - Birmingham Career Exploration",
@@ -33,7 +46,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${inter.variable} ${crimsonPro.variable}`}>
       <body className="grand-central-terminus" style={{ 
         fontSize: 'var(--font-size-base, 1rem)',
         touchAction: 'none',
