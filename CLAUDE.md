@@ -485,3 +485,14 @@ This approach transforms the product from "technically impressive prototype" to 
 - **COMMIT PROGRESS**: Regular commits showing Phase 2 advancement
 - **MEASURE SUCCESS**: Track against established Phase 2 criteria
 - **NO SCOPE CREEP**: Complete Phase 2 before considering Phase 3 features
+
+---
+
+## 📚 **Additional Documentation**
+
+For complete technical architecture details, see:
+- **[Technical Architecture](docs/TECHNICAL_ARCHITECTURE.md)** - Comprehensive system overview, stack details, integration points, and implementation patterns
+
+For recent work and audits, see:
+- **[Dialogue Graph Audit 2025](DIALOGUE_GRAPH_AUDIT_2025.md)** - Trust-gate analysis and fixes
+- **[Typography UX Audit 2025](TYPOGRAPHY_UX_AUDIT_2025.md)** - Reading experience improvements
