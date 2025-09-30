@@ -54,10 +54,14 @@ export const GameMessages = memo(({ messages }: GameMessagesProps) => {
     }
   }, [])
 
-  // Scroll to bottom when new messages are added
+  // Scroll to bottom when new messages are added (only if user is near bottom)
   useEffect(() => {
     if (containerRef.current) {
-      containerRef.current.scrollTop = containerRef.current.scrollHeight
+      const { scrollTop, scrollHeight, clientHeight } = containerRef.current
+      const isNearBottom = scrollHeight - scrollTop - clientHeight < 100
+      if (isNearBottom) {
+        containerRef.current.scrollTop = scrollHeight
+      }
     }
   }, [messages.length])
 
