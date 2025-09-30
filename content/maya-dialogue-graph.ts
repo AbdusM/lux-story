@@ -168,7 +168,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'deflect_safe',
-        text: "Sometimes safe paths aren't the right paths.",
+        text: "What if the safe path isn't the right path for you?",
         nextNodeId: 'maya_anxiety_reveal',
         pattern: 'helping',
         visibleCondition: {
@@ -344,7 +344,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'robotics_encourage',
-        text: "Your passion for robotics is beautiful. Don't hide it.",
+        text: "Your passion for robotics - that's a gift, isn't it?",
         nextNodeId: 'maya_encouraged',
         pattern: 'helping',
         consequence: {
@@ -355,7 +355,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'robotics_practical',
-        text: "Medical robotics is a growing field. You could do both.",
+        text: "Have you thought about medical robotics?",
         nextNodeId: 'maya_considers_hybrid',
         pattern: 'analytical',
         consequence: {
@@ -366,7 +366,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'robotics_birmingham',
-        text: "Birmingham's Innovation Depot supports robotics startups.",
+        text: "Do you know about Innovation Depot in Birmingham?",
         nextNodeId: 'maya_birmingham_opportunity',
         pattern: 'building',
         consequence: {
@@ -489,7 +489,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'family_understanding',
-        text: "They sacrificed for your happiness, not just a title.",
+        text: "What if they sacrificed for your happiness, not just a title?",
         nextNodeId: 'maya_reframes_sacrifice',
         pattern: 'patience',
         consequence: {
@@ -499,7 +499,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'family_challenge',
-        text: "Living someone else's dream isn't living at all.",
+        text: "Can you live your life for someone else?",
         nextNodeId: 'maya_rebellion_thoughts',
         pattern: 'helping',
         consequence: {
@@ -531,7 +531,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'reframes_courage',
-        text: "It takes courage to live authentically.",
+        text: "What does living authentically mean to you?",
         nextNodeId: 'maya_crossroads',
         pattern: 'helping',
         visibleCondition: {
@@ -555,7 +555,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'rebellion_courage',
-        text: "Courage isn't the absence of fear. It's action despite fear.",
+        text: "Where does courage come from for you?",
         nextNodeId: 'maya_crossroads',
         pattern: 'helping',
         visibleCondition: {
@@ -584,14 +584,14 @@ export const mayaDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'crossroads_robotics',
-        text: "Follow your robotics passion. Your parents will understand in time.",
+        text: "What would it mean to choose robotics?",
         nextNodeId: 'maya_chooses_robotics',
         pattern: 'helping'
         // Removed flag requirement - always show at trust 10
       },
       {
         choiceId: 'crossroads_hybrid',
-        text: "Biomedical engineering honors both paths.",
+        text: "Could both paths honor what matters?",
         nextNodeId: 'maya_chooses_hybrid',
         pattern: 'analytical'
         // Removed flag requirement - always show at trust 10
