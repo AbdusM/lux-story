@@ -18,10 +18,23 @@ import {
   EvaluatedChoice
 } from '@/lib/dialogue-graph'
 import { mayaDialogueGraph } from '@/content/maya-dialogue-graph'
+import { samuelDialogueGraph } from '@/content/samuel-dialogue-graph'
+
+// Dialogue graph registry for multi-character navigation
+const DIALOGUE_GRAPHS = {
+  samuel: samuelDialogueGraph,
+  maya: mayaDialogueGraph
+  // devon: devonDialogueGraph, // future
+  // jordan: jordanDialogueGraph // future
+} as const
+
+type CharacterId = keyof typeof DIALOGUE_GRAPHS
 
 interface GameInterfaceState {
   gameState: GameState | null
   currentNode: DialogueNode | null
+  currentGraph: DialogueGraph
+  currentCharacterId: CharacterId
   availableChoices: EvaluatedChoice[]
   currentContent: string
   isLoading: boolean
@@ -32,6 +45,8 @@ export default function StatefulGameInterface() {
   const [state, setState] = useState<GameInterfaceState>({
     gameState: null,
     currentNode: null,
+    currentGraph: samuelDialogueGraph, // Start with Samuel
+    currentCharacterId: 'samuel', // Game begins with Station Keeper
     availableChoices: [],
     currentContent: '',
     isLoading: false,
@@ -75,18 +90,20 @@ export default function StatefulGameInterface() {
         console.log('✅ Loaded existing game state')
       }
 
+      // Get character ID from saved state (defaults to samuel for new games)
+      const characterId = (gameState.currentCharacterId || 'samuel') as CharacterId
+      const currentGraph = DIALOGUE_GRAPHS[characterId]
+
       // Get the current node (either new game start or saved position)
       const nodeId = gameState.currentNodeId
 
-      if (nodeId !== 'maya_introduction') {
-        console.log(`📍 Resuming from: ${nodeId}`)
-      }
+      console.log(`📍 Current character: ${characterId}, Node: ${nodeId}`)
 
-      // Get the node
-      const currentNode = mayaDialogueGraph.nodes.get(nodeId)
+      // Get the node from the appropriate graph
+      const currentNode = currentGraph.nodes.get(nodeId)
       if (!currentNode) {
-        console.error(`❌ Node not found: ${nodeId}`)
-        console.error('Available nodes:', Array.from(mayaDialogueGraph.nodes.keys()))
+        console.error(`❌ Node not found in ${characterId} graph: ${nodeId}`)
+        console.error('Available nodes:', Array.from(currentGraph.nodes.keys()))
         alert(`Error: Dialogue node "${nodeId}" not found. Save may be corrupted. Click "Start New Journey" to reset.`)
         return
       }
@@ -94,23 +111,25 @@ export default function StatefulGameInterface() {
       // Update current node in state
       gameState.currentNodeId = currentNode.nodeId
 
-      // Select content variation
-      const maya = gameState.characters.get('maya')!
+      // Select content variation (use character's conversation history)
+      const character = gameState.characters.get(characterId)!
       const content = DialogueGraphNavigator.selectContent(
         currentNode,
-        maya.conversationHistory
+        character.conversationHistory
       )
 
       // Evaluate available choices
       const choices = StateConditionEvaluator.evaluateChoices(
         currentNode,
         gameState,
-        'maya'
+        characterId
       ).filter(choice => choice.visible)
 
       setState({
         gameState,
         currentNode: currentNode,
+        currentGraph: currentGraph,
+        currentCharacterId: characterId,
         availableChoices: choices,
         currentContent: content.text,
         isLoading: false,
@@ -125,7 +144,7 @@ export default function StatefulGameInterface() {
     }
   }, [])
 
-  // Handle choice selection
+  // Handle choice selection (with cross-graph navigation support)
   const handleChoice = useCallback(async (choice: EvaluatedChoice) => {
     if (!state.gameState || !choice.enabled) return
 
@@ -146,10 +165,26 @@ export default function StatefulGameInterface() {
       })
     }
 
-    // Get next node
-    const nextNode = mayaDialogueGraph.nodes.get(choice.choice.nextNodeId)
+    // Try to get next node from current graph first
+    let nextNode = state.currentGraph.nodes.get(choice.choice.nextNodeId)
+    let targetGraph = state.currentGraph
+    let targetCharacterId = state.currentCharacterId
+
+    // If not found, search other graphs (cross-graph navigation)
     if (!nextNode) {
-      console.error(`❌ Next node not found: ${choice.choice.nextNodeId}`)
+      for (const [charId, graph] of Object.entries(DIALOGUE_GRAPHS)) {
+        if (graph.nodes.has(choice.choice.nextNodeId)) {
+          nextNode = graph.nodes.get(choice.choice.nextNodeId)!
+          targetGraph = graph
+          targetCharacterId = charId as CharacterId
+          console.log(`🔀 Cross-graph navigation: ${state.currentCharacterId} → ${charId}`)
+          break
+        }
+      }
+    }
+
+    if (!nextNode) {
+      console.error(`❌ Next node not found in any graph: ${choice.choice.nextNodeId}`)
       setState(prev => ({ ...prev, isLoading: false }))
       return
     }
@@ -161,30 +196,33 @@ export default function StatefulGameInterface() {
       }
     }
 
-    // Update conversation history
-    const mayaState = newGameState.characters.get('maya')!
-    mayaState.conversationHistory.push(nextNode.nodeId)
+    // Update conversation history for TARGET character
+    const targetCharacter = newGameState.characters.get(targetCharacterId)!
+    targetCharacter.conversationHistory.push(nextNode.nodeId)
 
-    // Update current node position in save state
+    // Update current position and character
     newGameState.currentNodeId = nextNode.nodeId
+    newGameState.currentCharacterId = targetCharacterId
 
     // Select content variation
     const content = DialogueGraphNavigator.selectContent(
       nextNode,
-      mayaState.conversationHistory
+      targetCharacter.conversationHistory
     )
 
     // Evaluate new choices
     const newChoices = StateConditionEvaluator.evaluateChoices(
       nextNode,
       newGameState,
-      'maya'
+      targetCharacterId
     ).filter(choice => choice.visible)
 
     // Update state
     setState({
       gameState: newGameState,
       currentNode: nextNode,
+      currentGraph: targetGraph,
+      currentCharacterId: targetCharacterId,
       availableChoices: newChoices,
       currentContent: content.text,
       isLoading: false,
@@ -195,8 +233,8 @@ export default function StatefulGameInterface() {
     GameStateManager.saveGameState(newGameState)
 
     console.log(`🎭 Moved to: ${nextNode.nodeId}`)
-    console.log(`🎯 Maya trust: ${newGameState.characters.get('maya')?.trust}`)
-  }, [state.gameState])
+    console.log(`🎯 ${targetCharacterId} trust: ${newGameState.characters.get(targetCharacterId)?.trust}`)
+  }, [state.gameState, state.currentGraph, state.currentCharacterId])
 
   // Continue journey (resets position but keeps relationships)
   const continueJourney = useCallback(() => {
@@ -319,7 +357,13 @@ export default function StatefulGameInterface() {
   }
 
   const isEnding = state.availableChoices.length === 0
-  const maya = state.gameState?.characters.get('maya')
+  const currentCharacter = state.gameState?.characters.get(state.currentCharacterId)
+
+  // Character display names
+  const characterNames: Record<CharacterId, string> = {
+    samuel: 'Samuel Washington',
+    maya: 'Maya Chen'
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 p-4">
@@ -339,18 +383,18 @@ export default function StatefulGameInterface() {
         </div>
 
         {/* Character Status */}
-        {maya && (
+        {currentCharacter && (
           <Card className="mb-6">
             <CardContent className="p-4">
               <div className="flex justify-between items-center">
                 <div>
-                  <h3 className="font-semibold">Maya Chen</h3>
-                  <p className="text-sm text-slate-600">Relationship: {maya.relationshipStatus}</p>
+                  <h3 className="font-semibold">{characterNames[state.currentCharacterId]}</h3>
+                  <p className="text-sm text-slate-600">Relationship: {currentCharacter.relationshipStatus}</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm text-slate-600">Trust: {maya.trust}/10</p>
+                  <p className="text-sm text-slate-600">Trust: {currentCharacter.trust}/10</p>
                   <p className="text-xs text-slate-500">
-                    {maya.knowledgeFlags.size} things learned
+                    {currentCharacter.knowledgeFlags.size} things learned
                   </p>
                 </div>
               </div>
@@ -425,11 +469,11 @@ export default function StatefulGameInterface() {
                 Conversation Complete
               </h3>
               <p className="text-slate-600 mb-6">
-                Maya will remember this conversation. Your relationship: {maya?.relationshipStatus} • Trust: {maya?.trust}/10
+                {characterNames[state.currentCharacterId]} will remember this conversation. Your relationship: {currentCharacter?.relationshipStatus} • Trust: {currentCharacter?.trust}/10
               </p>
               <div className="space-y-2">
                 <Button onClick={continueJourney} className="w-full">
-                  New Conversation with Maya
+                  New Conversation
                 </Button>
                 <Button variant="outline" onClick={showDebugInfo} className="w-full">
                   View Conversation Summary
