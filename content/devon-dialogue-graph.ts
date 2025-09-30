@@ -158,6 +158,80 @@ export const devonDialogueNodes: DialogueNode[] = [
     ]
   },
 
+  {
+    nodeId: 'devon_opens_up',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "*After a long silence, he looks up. There's something different in his eyes - recognition, maybe*\n\nYou... just waited. Most people fill silences. They're uncomfortable with latency. But you let the system complete its processing.\n\n*He sets down his pen*\n\nThis flowchart - it's not for an engineering class. It's for someone important to me.",
+        emotion: 'grateful',
+        variation_id: 'opens_up_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'ask_who_its_for',
+        text: "Who is it for?",
+        nextNodeId: 'devon_father_hint',
+        pattern: 'exploring',
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'acknowledge_their_importance',
+        text: "They must mean a lot to you.",
+        nextNodeId: 'devon_father_hint',
+        pattern: 'helping',
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1
+        }
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'devon',
+        addKnowledgeFlags: ['respected_his_process']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'devon_people_problem',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "*He looks up sharply, as if you've identified the core bug*\n\nExactly. People are... non-deterministic. Same input, different outputs depending on state variables I can't observe. Emotional cache, historical context, unspoken expectations.\n\nSystems have specifications. People have... feelings. And I'm not good at debugging feelings.",
+        emotion: 'frustrated',
+        variation_id: 'people_problem_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'suggest_empathy',
+        text: "Maybe feelings aren't bugs to fix?",
+        nextNodeId: 'devon_validated',
+        pattern: 'helping',
+        consequence: {
+          characterId: 'devon',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'ask_specific_case',
+        text: "Is there someone specific you're trying to understand?",
+        nextNodeId: 'devon_father_hint',
+        pattern: 'exploring',
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1
+        }
+      }
+    ]
+  },
+
   // ============= BUILDING TRUST =============
   {
     nodeId: 'devon_why_system',
