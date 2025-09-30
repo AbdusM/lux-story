@@ -270,14 +270,8 @@ export default function StatefulGameInterface() {
   const nuclearReset = useCallback(() => {
     if (confirm('⚠️ This will PERMANENTLY erase your entire journey and all relationships with Maya. Are you absolutely sure?')) {
       GameStateManager.nuclearReset()
-      setState({
-        gameState: null,
-        currentNode: null,
-        availableChoices: [],
-        currentContent: '',
-        isLoading: false,
-        hasStarted: false
-      })
+      // Reload page to start completely fresh
+      window.location.reload()
     }
   }, [])
 
