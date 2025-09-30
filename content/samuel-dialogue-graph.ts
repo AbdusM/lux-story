@@ -794,6 +794,380 @@ export const samuelDialogueNodes: DialogueNode[] = [
     ]
   },
 
+  // ============= JORDAN REFLECTION GATEWAY (Return from Jordan) =============
+  {
+    nodeId: 'samuel_jordan_reflection_gateway',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*He's waiting near the conference rooms as you return, a slight smile on his face*\n\nYou're back. I saw Jordan heading into that classroom earlier - she looked different than when she arrived. Less frantic. More grounded.\n\nSeven jobs in seven years. Most people would call that instability. But I've learned the station measures something deeper than résumés. How did her journey look to you?",
+        emotion: 'observant',
+        variation_id: 'jordan_gateway_v1'
+      }
+    ],
+    requiredState: {
+      hasGlobalFlags: ['jordan_arc_complete'],
+      lacksKnowledgeFlags: ['reflected_on_jordan']
+    },
+    choices: [
+      {
+        choiceId: 'seemed_lost',
+        text: "She seemed lost, searching for solid ground.",
+        nextNodeId: 'samuel_jordan_mentorship_reflection',
+        pattern: 'helping'
+      },
+      {
+        choiceId: 'was_building',
+        text: "She was building something, even if she didn't realize it.",
+        nextNodeId: 'samuel_jordan_mentorship_reflection',
+        pattern: 'analytical'
+      },
+      {
+        choiceId: 'reminded_me',
+        text: "She reminded me of myself.",
+        nextNodeId: 'samuel_jordan_mentorship_reflection',
+        pattern: 'patience'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'samuel',
+        addKnowledgeFlags: ['reflected_on_jordan']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_jordan_mentorship_reflection',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "The students in that classroom needed Jordan more than they knew. Not because she has all the answers - but because she's lived the questions they're afraid to ask.\n\n*He pauses thoughtfully*\n\nThere's a difference between helping someone see their path and convincing them to walk yours. What did you offer her in those moments before her speech?",
+        emotion: 'teaching',
+        variation_id: 'mentorship_question_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'offered_mirror',
+        text: "I tried to show her what she couldn't see in herself.",
+        nextNodeId: 'samuel_jordan_path_reflection',
+        pattern: 'helping'
+      },
+      {
+        choiceId: 'asked_questions',
+        text: "I asked questions. Let her find her own answers.",
+        nextNodeId: 'samuel_jordan_path_reflection',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'just_listened',
+        text: "Just listened. Sometimes that's enough.",
+        nextNodeId: 'samuel_jordan_path_reflection',
+        pattern: 'patience'
+      }
+    ]
+  },
+
+  // VARIATION 1: Accumulation Frame
+  {
+    nodeId: 'samuel_jordan_path_reflection',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "She walked into that classroom and told them the truth they needed to hear: every job that felt like failure was building her foundation.\n\n*His voice carries quiet admiration*\n\nThe marketing role that taught her user empathy. The startup that showed her how to ship under pressure. The agency work that refined her craft. Seven years. Seven teachers. Each one necessary.\n\nYou helped her see that accumulation isn't the same as collecting baggage - it's gathering wisdom. Those students needed a mentor who had stumbled, not someone who made it look easy from day one.",
+        emotion: 'affirming',
+        variation_id: 'accumulation_reflection_v1'
+      }
+    ],
+    requiredState: {
+      hasGlobalFlags: ['jordan_chose_accumulation']
+    },
+    choices: [
+      {
+        choiceId: 'will_she_believe_it',
+        text: "Do you think she believed it? Or just needed to hear it?",
+        nextNodeId: 'samuel_jordan_belief_wisdom',
+        pattern: 'analytical'
+      },
+      {
+        choiceId: 'gave_permission',
+        text: "She gave those students permission to be imperfect.",
+        nextNodeId: 'samuel_jordan_hub_return',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'wonder_future',
+        text: "I wonder what she'll do with that frame after today.",
+        nextNodeId: 'samuel_jordan_future_wisdom',
+        pattern: 'exploring'
+      }
+    ]
+  },
+
+  // VARIATION 2: Birmingham Frame
+  {
+    nodeId: 'samuel_jordan_path_reflection',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "She stood before those students and claimed her place in this city's story. Birmingham - where reinvention isn't weakness, it's the foundation.\n\n*He gestures toward the windows, the city lights beyond*\n\nThis city transformed from steel mills to medical research, from railroads to tech hubs. Jordan moved through seven companies in a place that rewards people who can pivot, who can see what's next. She wasn't failing - she was adapting faster than most.\n\nYou helped her see that she's not a fraud. She's proof that Birmingham values evolution over staying still. Those students needed to hear that career paths don't have to be straight lines - not in this city.",
+        emotion: 'proud',
+        variation_id: 'birmingham_reflection_v1'
+      }
+    ],
+    requiredState: {
+      hasGlobalFlags: ['jordan_chose_birmingham']
+    },
+    choices: [
+      {
+        choiceId: 'city_rewards_reinvention',
+        text: "This city really does reward reinvention, doesn't it?",
+        nextNodeId: 'samuel_jordan_city_wisdom',
+        pattern: 'analytical'
+      },
+      {
+        choiceId: 'part_of_story',
+        text: "She's part of Birmingham's next chapter now.",
+        nextNodeId: 'samuel_jordan_hub_return',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'ripple_effect',
+        text: "I wonder how many students will take a winding path because of her.",
+        nextNodeId: 'samuel_jordan_ripple_wisdom',
+        pattern: 'helping'
+      }
+    ]
+  },
+
+  // VARIATION 3: Internal Validation Frame
+  {
+    nodeId: 'samuel_jordan_path_reflection',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "She walked into that room carrying a different story than the one she arrived with. Not seven failures - seven chapters of becoming someone who understands design from seven different angles.\n\n*He nods slowly*\n\n'The story you tell yourself is the only one that matters.' You gave her permission to rewrite the narrative. Impostor syndrome lives in the gap between others' definitions of success and the story we're living. Jordan closed that gap.\n\nThe most powerful thing you can give someone isn't validation from the outside. It's the reminder that they control the frame.",
+        emotion: 'contemplative',
+        variation_id: 'internal_reflection_v1'
+      }
+    ],
+    requiredState: {
+      hasGlobalFlags: ['jordan_chose_internal']
+    },
+    choices: [
+      {
+        choiceId: 'story_might_change',
+        text: "But what if the story she tells herself changes again?",
+        nextNodeId: 'samuel_jordan_narrative_wisdom',
+        pattern: 'analytical'
+      },
+      {
+        choiceId: 'needed_authorship',
+        text: "She just needed permission to author her own story.",
+        nextNodeId: 'samuel_jordan_hub_return',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'lonely_frame',
+        text: "That's a lonely frame though, isn't it? 'Only your story matters.'",
+        nextNodeId: 'samuel_jordan_sovereignty_wisdom',
+        pattern: 'helping'
+      }
+    ]
+  },
+
+  // Follow-up wisdom nodes
+  {
+    nodeId: 'samuel_jordan_belief_wisdom',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "That's the right question. Sometimes we need to hear something before we can believe it. The hearing plants the seed. The believing - that takes time, evidence, lived experience.\n\nShe'll test that frame. Have a hard day. Wonder if she's really qualified or just performing confidence. But the seed is planted. And every time she shares what she learned at one job with someone from another, she'll water it.",
+        emotion: 'patient_wisdom',
+        variation_id: 'belief_wisdom_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'hope_it_roots',
+        text: "I hope it takes root.",
+        nextNodeId: 'samuel_jordan_hub_return',
+        pattern: 'patience'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_jordan_future_wisdom',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "She'll carry it differently depending on the day. Some days it'll feel true. Some days it'll feel like something she said once to sound confident.\n\nBut here's what I've seen: the frame becomes real when she uses it to help the next person. When a junior designer is drowning and Jordan says, 'I've been there at three different companies. Let me tell you what worked.'\n\nThat's when accumulation transforms from a frame into a foundation.",
+        emotion: 'knowing',
+        variation_id: 'future_wisdom_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'shell_guide_others',
+        text: "She'll be a good guide for others.",
+        nextNodeId: 'samuel_jordan_hub_return',
+        pattern: 'helping'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_jordan_city_wisdom',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Always has. This city was built by people who knew how to pivot when the steel dried up. Who turned abandoned warehouses into innovation centers. Who saw 'decline' and chose 'transformation.'\n\nJordan's carrying forward what Birmingham has always done. And those students - they're watching someone prove that the path doesn't have to be linear to be legitimate.\n\nThis station sits in Birmingham for a reason. It's always been a crossroads city.",
+        emotion: 'reverent',
+        variation_id: 'city_wisdom_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'teaching_next_generation',
+        text: "And she's teaching the next generation that.",
+        nextNodeId: 'samuel_jordan_hub_return',
+        pattern: 'patience'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_jordan_ripple_wisdom',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "More than you think. Maybe not immediately - but five years from now, one of them will be on their third job, feeling like a failure, and they'll remember Jordan saying, 'Seven companies. Seven teachers. All of it mattered.'\n\nThat's how change happens in Birmingham. One person shows it's possible. Then another. Then a dozen. Then it's just how things work here.\n\nYou helped start that ripple today.",
+        emotion: 'hopeful',
+        variation_id: 'ripple_wisdom_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'hope_it_reaches',
+        text: "I hope it reaches the people who need it.",
+        nextNodeId: 'samuel_jordan_hub_return',
+        pattern: 'helping'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_jordan_narrative_wisdom',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "It probably will. Stories aren't fixed - they evolve as we do. Jordan might tell herself a different story in five years, and that's okay.\n\nThe power isn't in finding the one true story. It's in knowing you have the agency to rewrite when the old story stops serving you. You gave her that agency. She'll use it again when she needs to.",
+        emotion: 'wise',
+        variation_id: 'narrative_wisdom_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'good_tool',
+        text: "That's a good tool to carry.",
+        nextNodeId: 'samuel_jordan_hub_return',
+        pattern: 'patience'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_jordan_sovereignty_wisdom',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "It can be, if you take it to mean 'no one else's opinion matters' or 'you're completely alone in deciding who you are.'\n\nBut I think Jordan heard it differently. Not 'only your story matters' - but 'you get to decide which story you tell about yourself.' Other people's stories still exist. Their opinions still have weight. But she's the editor. She chooses which feedback to integrate and which to set aside.\n\nThat's not lonely. That's sovereignty.",
+        emotion: 'nuanced',
+        variation_id: 'sovereignty_wisdom_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'like_distinction',
+        text: "I like that distinction.",
+        nextNodeId: 'samuel_jordan_hub_return',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_jordan_hub_return',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*He glances toward the platforms, then back to you*\n\nJordan's in there teaching right now. Living the frame you helped her find. That's the beautiful thing about this station - influence ripples outward in ways we don't always see immediately.\n\nThere are other travelers tonight if you're ready. Or we can sit with what just happened a bit longer. The choice is yours.",
+        emotion: 'offering_space',
+        variation_id: 'jordan_hub_return_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'reflect_more_jordan',
+        text: "Tell me more about what you saw with Jordan.",
+        nextNodeId: 'samuel_deep_jordan_reflection',
+        pattern: 'patience'
+      },
+      {
+        choiceId: 'meet_other_travelers',
+        text: "I'm ready to meet someone else.",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'exploring'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_deep_jordan_reflection',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "I saw you meeting Jordan where she was - in that spiral of doubt right before a moment that mattered. You didn't try to fix her impostor syndrome. You helped her reframe it.\n\nThat's wisdom. Most people want to eliminate doubt, make it go away. You understood that doubt isn't always the enemy. Sometimes it's information. Sometimes it's the question that leads to the answer.\n\nJordan needed someone who could sit in uncertainty without rushing to resolution. You gave her that gift.",
+        emotion: 'deep_knowing',
+        variation_id: 'deep_jordan_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'return_after_deep_jordan',
+        text: "*nod thoughtfully*",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      }
+    ]
+  },
+
   // ============= HUB: AFTER MAYA (Maya + Devon available) =============
   {
     nodeId: 'samuel_hub_after_maya',
@@ -1168,6 +1542,9 @@ export const samuelEntryPoints = {
 
   /** Reflection gateway - first return from Maya (mirrors player's influence) */
   MAYA_REFLECTION_GATEWAY: 'samuel_maya_reflection_gateway',
+
+  /** Reflection gateway - return from Jordan (celebrates mentorship influence) */
+  JORDAN_REFLECTION_GATEWAY: 'samuel_jordan_reflection_gateway',
 
   /** Hub after completing Maya's arc (Maya + Devon available) */
   HUB_AFTER_MAYA: 'samuel_hub_after_maya',
