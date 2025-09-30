@@ -270,7 +270,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "I... build things. Small things. With circuits and servos. Things that move and think and help. But that's not medicine, is it? That's engineering, and engineers aren't doctors.",
+        text: "I... build things. Small things. With circuits and servos. Things that move and think and help. | But that's not medicine, is it? That's engineering, and engineers aren't doctors.",
         emotion: 'hesitant',
         variation_id: 'hint_v1'
       }
@@ -286,10 +286,83 @@ export const mayaDialogueNodes: DialogueNode[] = [
         }
       },
       {
+        choiceId: 'hint_question',
+        text: "What if there's a field that combines both?",
+        nextNodeId: 'maya_uab_revelation',
+        pattern: 'helping'
+      },
+      {
         choiceId: 'hint_support',
         text: "Building healing devices IS medicine.",
         nextNodeId: 'maya_grateful_support',
         pattern: 'helping'
+      }
+    ]
+  },
+
+  // ============= UAB BIOMEDICAL ENGINEERING REVELATION (Birmingham Integration) =============
+  {
+    nodeId: 'maya_uab_revelation',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "*She pulls out her phone, searches for something, then stares at the screen* | Wait. Biomedical Engineering at UAB. They literally build surgical robots, prosthetics, medical devices. | *Her voice trembles with recognition* | This is... this is an actual field. Building technology that heals people. That's real medicine.",
+        emotion: 'dawning_realization',
+        variation_id: 'uab_revelation_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'uab_encourage_research',
+        text: "UAB's program is nationally recognized.",
+        nextNodeId: 'maya_actionable_path',
+        pattern: 'analytical',
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1,
+          addKnowledgeFlags: ['knows_biomedical_engineering', 'knows_uab_program']
+        }
+      },
+      {
+        choiceId: 'uab_validate_feeling',
+        text: "You just found your bridge between both worlds.",
+        nextNodeId: 'maya_grateful_support',
+        pattern: 'helping',
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2,
+          addKnowledgeFlags: ['knows_biomedical_engineering']
+        }
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'maya',
+        addKnowledgeFlags: ['discovered_hybrid_path']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'maya_actionable_path',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "I could talk to someone in the UAB program. See what the pathway looks like. | *She looks at you with something like hope* | My parents always wanted me to go to UAB for medical school. What if I tell them... same school, just a different building?",
+        emotion: 'hopeful_strategic',
+        variation_id: 'actionable_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'support_strategy',
+        text: "Frame it as innovation in medicine, not abandoning it.",
+        nextNodeId: 'maya_considers_hybrid',
+        pattern: 'analytical',
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
       }
     ]
   },
