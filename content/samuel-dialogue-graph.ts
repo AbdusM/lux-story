@@ -812,6 +812,419 @@ export const samuelDialogueNodes: DialogueNode[] = [
     ]
   },
 
+  // ============= RECIPROCITY ENGINE: SAMUEL REFLECTIONS =============
+  // These nodes close the feedback loop when player shares personal information with NPCs
+  {
+    nodeId: 'samuel_reflects_stable_parents',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*He looks at you with knowing eyes*\n\nI was thinking about what you told Maya. About your parents and their stable careers.\n\n*He nods slowly*\n\nIt helps me understand the way you approach problems - with a patience that comes from solid foundation. You've never had to rush because you've never had to run. That's a gift you give others without realizing it.\n\nThe station shows me these patterns. Your patience isn't just a trait - it's an inheritance.",
+        emotion: 'insightful',
+        variation_id: 'stable_parents_reflection_v1'
+      }
+    ],
+    requiredState: {
+      hasGlobalFlags: ['player_revealed_stable_parents'],
+      lacksKnowledgeFlags: ['closed_reciprocity_loop'],
+      trust: { min: 5 }
+    },
+    choices: [
+      {
+        choiceId: 'never_thought_of_it',
+        text: "I never thought of patience as inherited.",
+        nextNodeId: 'samuel_inheritance_wisdom',
+        pattern: 'exploring'
+      },
+      {
+        choiceId: 'makes_sense',
+        text: "That actually makes a lot of sense.",
+        nextNodeId: 'samuel_pattern_confirmation',
+        pattern: 'patience'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'samuel',
+        addKnowledgeFlags: ['discussed_player_background', 'closed_reciprocity_loop']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_reflects_entrepreneur_parents',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Maya told me you opened up to her. About growing up with parents who were always building something new.\n\n*He smiles knowingly*\n\nThat explains your exploring pattern. You don't see closed doors - you see opportunities to build new ones. Risk feels like possibility to you because that's the water you swam in growing up.\n\nThe station called you here because you have the rare ability to help others see possibility where they see only walls.",
+        emotion: 'appreciative',
+        variation_id: 'entrepreneur_parents_reflection_v1'
+      }
+    ],
+    requiredState: {
+      hasGlobalFlags: ['player_revealed_entrepreneur_parents'],
+      lacksKnowledgeFlags: ['closed_reciprocity_loop'],
+      trust: { min: 5 }
+    },
+    choices: [
+      {
+        choiceId: 'pattern_recognition',
+        text: "You really do see the patterns, don't you?",
+        nextNodeId: 'samuel_pattern_wisdom',
+        pattern: 'analytical'
+      },
+      {
+        choiceId: 'helping_see_possibility',
+        text: "I try to help people see what's possible.",
+        nextNodeId: 'samuel_possibility_keeper',
+        pattern: 'helping'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'samuel',
+        addKnowledgeFlags: ['discussed_player_background', 'closed_reciprocity_loop']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_reflects_struggling_parents',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*His voice is gentle, respectful of the weight you've shared*\n\nMaya mentioned you shared something difficult with her. About watching your parents struggle.\n\n*Long pause*\n\nThat kind of witnessing changes you. Makes you see need before it's spoken. Makes you hold space before it's asked for.\n\nYou have the helper pattern not because you chose it, but because life taught you early what it means to need help. That's not a burden. That's wisdom.\n\nThe station recognizes servants who serve from understanding, not obligation.",
+        emotion: 'deep_respect',
+        variation_id: 'struggling_parents_reflection_v1'
+      }
+    ],
+    requiredState: {
+      hasGlobalFlags: ['player_revealed_struggling_parents'],
+      lacksKnowledgeFlags: ['closed_reciprocity_loop'],
+      trust: { min: 5 }
+    },
+    choices: [
+      {
+        choiceId: 'wisdom_from_struggle',
+        text: "I never saw it as wisdom before.",
+        nextNodeId: 'samuel_struggle_transformation',
+        pattern: 'patience'
+      },
+      {
+        choiceId: 'understanding_not_obligation',
+        text: "Understanding, not obligation. I like that framing.",
+        nextNodeId: 'samuel_service_philosophy',
+        pattern: 'helping'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'samuel',
+        addKnowledgeFlags: ['discussed_player_background', 'closed_reciprocity_loop'],
+        trustChange: 1
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_reflects_absent_parents',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "I heard you shared something personal with Maya. About success and absence in your family.\n\n*He looks out at the platforms*\n\nYou learned early that achievement can become a disappearing act. That's why you have such patience with others' journeys. You're not rushing anyone because you know where rushing leads - to being successful and hollow.\n\nThe station brought you here because you understand something crucial: presence matters more than performance.",
+        emotion: 'understanding',
+        variation_id: 'absent_parents_reflection_v1'
+      }
+    ],
+    requiredState: {
+      hasGlobalFlags: ['player_revealed_absent_parents'],
+      lacksKnowledgeFlags: ['closed_reciprocity_loop'],
+      trust: { min: 5 }
+    },
+    choices: [
+      {
+        choiceId: 'presence_over_performance',
+        text: "Presence over performance. Still learning that.",
+        nextNodeId: 'samuel_presence_teaching',
+        pattern: 'patience'
+      },
+      {
+        choiceId: 'hollow_success',
+        text: "I've seen what hollow success looks like.",
+        nextNodeId: 'samuel_hollow_wisdom',
+        pattern: 'analytical'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'samuel',
+        addKnowledgeFlags: ['discussed_player_background', 'closed_reciprocity_loop']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_reflects_boundaries',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*He smiles with deep approval*\n\nMaya told me something interesting. Not what you shared with her - but that you chose NOT to share something when she asked.\n\n*He leans forward*\n\nDo you know how rare that is? Most people perform vulnerability to earn connection. But you set a boundary, kindly but firmly.\n\nThat's mastery. Maya's trust in you grew not despite your 'no,' but because of it. The station respects those who know the difference between walls and boundaries.",
+        emotion: 'profound_respect',
+        variation_id: 'boundaries_reflection_v1'
+      }
+    ],
+    requiredState: {
+      hasGlobalFlags: ['player_set_boundary'],
+      lacksKnowledgeFlags: ['closed_reciprocity_loop'],
+      trust: { min: 5 }
+    },
+    choices: [
+      {
+        choiceId: 'didnt_feel_like_mastery',
+        text: "It didn't feel like mastery. Just honesty.",
+        nextNodeId: 'samuel_honesty_mastery',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'walls_vs_boundaries',
+        text: "Walls and boundaries - that's an important distinction.",
+        nextNodeId: 'samuel_boundary_philosophy',
+        pattern: 'analytical'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'samuel',
+        addKnowledgeFlags: ['recognized_boundary_wisdom', 'closed_reciprocity_loop']
+      }
+    ]
+  },
+
+  // Continuation nodes for reciprocity reflections
+  {
+    nodeId: 'samuel_inheritance_wisdom',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Most people don't. They think their traits are just personality. But we're all carrying forward patterns we learned before we had words for them.\n\nYour parents showed you that steady work creates space for rest. That security isn't boring - it's the foundation for everything else. You give that gift to others now, whether you realize it or not.",
+        emotion: 'teaching',
+        variation_id: 'inheritance_wisdom_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_from_inheritance',
+        text: "That's a beautiful way to see it.",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_pattern_confirmation',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "It does, doesn't it? The station helps us see these connections. Your foundation gives you a particular kind of wisdom - the ability to be present without urgency.\n\nThat's what Maya needed from you. That's what you had to give.",
+        emotion: 'affirming',
+        variation_id: 'pattern_confirmation_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_from_confirmation',
+        text: "*nod thoughtfully*",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_pattern_wisdom',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "That's what this station is for. I see the patterns because I've learned to watch for them. You're doing the same thing with the travelers you meet - seeing what they can't see in themselves.\n\nEntrepreneurs raise explorers. It's not destiny, but it is inheritance.",
+        emotion: 'knowing',
+        variation_id: 'pattern_wisdom_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_from_pattern',
+        text: "I'm starting to see it too.",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'exploring'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_possibility_keeper',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "And you succeed. Maya saw robotics as a betrayal. You helped her see it as a bridge. That's the entrepreneur's child in you - finding the third option when everyone else sees only two.",
+        emotion: 'proud',
+        variation_id: 'possibility_keeper_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_from_possibility',
+        text: "There's usually a third option.",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'helping',
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_struggle_transformation',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Struggle becomes wisdom when we let it teach us instead of harden us. You learned to see. You learned to respond. You learned that help isn't charity - it's connection.\n\nThat's transformation. And it's powerful.",
+        emotion: 'reverent',
+        variation_id: 'struggle_transformation_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_from_struggle',
+        text: "Thank you for reflecting that back.",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_service_philosophy',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "It's everything. Service from obligation breeds resentment. Service from understanding breeds connection. You serve because you know what it's like to need. That authenticity - people feel it.",
+        emotion: 'deep_teaching',
+        variation_id: 'service_philosophy_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_from_service',
+        text: "I want to keep doing that.",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'helping'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_presence_teaching',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "We all are. It's the hardest lesson because the world rewards performance. But you're learning. The fact that you're here, taking time with Maya, with these conversations - that's presence. That's the work.",
+        emotion: 'encouraging',
+        variation_id: 'presence_teaching_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_from_presence',
+        text: "Presence is the work.",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_hollow_wisdom',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "And now you're building something different. The station brought you here because you understand what matters. Not titles. Not achievements. Connection. Presence. Being seen and seeing others.\n\nThat's not hollow. That's real.",
+        emotion: 'affirming_depth',
+        variation_id: 'hollow_wisdom_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_from_hollow',
+        text: "I'm trying to build something real.",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'exploring'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_honesty_mastery',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*He nods, that deep knowing in his eyes*\n\nThat's why it is mastery. True skill looks effortless. You didn't perform - you were honest. And honesty without cruelty, boundaries without walls - that's the work of a lifetime.\n\nKeep being honest. The station sees it. So do the travelers.",
+        emotion: 'profound_recognition',
+        variation_id: 'honesty_mastery_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_from_honesty',
+        text: "I will.",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_boundary_philosophy',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Walls keep people out. Boundaries invite people in - on your terms. Walls say 'I don't trust you.' Boundaries say 'I trust myself to protect what matters while staying open to connection.'\n\nYou showed Maya the difference. She'll remember that.",
+        emotion: 'teaching_nuance',
+        variation_id: 'boundary_philosophy_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_from_boundary',
+        text: "Boundaries invite connection.",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'analytical',
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      }
+    ]
+  },
+
   // ============= JORDAN REFLECTION GATEWAY (Return from Jordan) =============
   {
     nodeId: 'samuel_jordan_reflection_gateway',
@@ -1224,6 +1637,62 @@ export const samuelDialogueNodes: DialogueNode[] = [
         pattern: 'patience',
         visibleCondition: {
           trust: { min: 3 }
+        }
+      },
+      // Reciprocity Engine reflection triggers
+      {
+        choiceId: 'reflect_stable_parents',
+        text: "You mentioned understanding where my patience comes from...",
+        nextNodeId: 'samuel_reflects_stable_parents',
+        pattern: 'patience',
+        visibleCondition: {
+          hasGlobalFlags: ['player_revealed_stable_parents'],
+          lacksKnowledgeFlags: ['closed_reciprocity_loop'],
+          trust: { min: 5 }
+        }
+      },
+      {
+        choiceId: 'reflect_entrepreneur_parents',
+        text: "You said something about how I see possibilities...",
+        nextNodeId: 'samuel_reflects_entrepreneur_parents',
+        pattern: 'exploring',
+        visibleCondition: {
+          hasGlobalFlags: ['player_revealed_entrepreneur_parents'],
+          lacksKnowledgeFlags: ['closed_reciprocity_loop'],
+          trust: { min: 5 }
+        }
+      },
+      {
+        choiceId: 'reflect_struggling_parents',
+        text: "I've been thinking about what I shared with Maya...",
+        nextNodeId: 'samuel_reflects_struggling_parents',
+        pattern: 'patience',
+        visibleCondition: {
+          hasGlobalFlags: ['player_revealed_struggling_parents'],
+          lacksKnowledgeFlags: ['closed_reciprocity_loop'],
+          trust: { min: 5 }
+        }
+      },
+      {
+        choiceId: 'reflect_absent_parents',
+        text: "What you said about presence over performance...",
+        nextNodeId: 'samuel_reflects_absent_parents',
+        pattern: 'patience',
+        visibleCondition: {
+          hasGlobalFlags: ['player_revealed_absent_parents'],
+          lacksKnowledgeFlags: ['closed_reciprocity_loop'],
+          trust: { min: 5 }
+        }
+      },
+      {
+        choiceId: 'reflect_boundaries',
+        text: "Maya mentioned something about boundaries?",
+        nextNodeId: 'samuel_reflects_boundaries',
+        pattern: 'analytical',
+        visibleCondition: {
+          hasGlobalFlags: ['player_set_boundary'],
+          lacksKnowledgeFlags: ['closed_reciprocity_loop'],
+          trust: { min: 5 }
         }
       },
       {
