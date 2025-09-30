@@ -18,6 +18,7 @@ import {
   EvaluatedChoice
 } from '@/lib/dialogue-graph'
 import { mayaDialogueGraph } from '@/content/maya-dialogue-graph'
+import { mayaRevisitGraph } from '@/content/maya-revisit-graph'
 import { samuelDialogueGraph } from '@/content/samuel-dialogue-graph'
 
 // Dialogue graph registry for multi-character navigation
@@ -29,6 +30,23 @@ const DIALOGUE_GRAPHS = {
 } as const
 
 type CharacterId = keyof typeof DIALOGUE_GRAPHS
+
+/**
+ * Select the correct dialogue graph for a character based on game state
+ * CRITICAL: Maya has two graphs - initial and revisit
+ */
+function selectDialogueGraph(characterId: CharacterId, gameState: GameState): DialogueGraph {
+  if (characterId === 'maya') {
+    // If Maya's arc is complete, use revisit graph
+    if (gameState.globalFlags.has('maya_arc_complete')) {
+      console.log('📖 Loading Maya revisit graph (arc completed)')
+      return mayaRevisitGraph
+    }
+  }
+
+  // Default: use base graph from registry
+  return DIALOGUE_GRAPHS[characterId]
+}
 
 interface GameInterfaceState {
   gameState: GameState | null
@@ -92,7 +110,7 @@ export default function StatefulGameInterface() {
 
       // Get character ID from saved state (defaults to samuel for new games)
       const characterId = (gameState.currentCharacterId || 'samuel') as CharacterId
-      const currentGraph = DIALOGUE_GRAPHS[characterId]
+      const currentGraph = selectDialogueGraph(characterId, gameState)
 
       // Get the current node (either new game start or saved position)
       const nodeId = gameState.currentNodeId
@@ -172,6 +190,7 @@ export default function StatefulGameInterface() {
 
     // If not found, search other graphs (cross-graph navigation)
     if (!nextNode) {
+      // Search base graphs first
       for (const [charId, graph] of Object.entries(DIALOGUE_GRAPHS)) {
         if (graph.nodes.has(choice.choice.nextNodeId)) {
           nextNode = graph.nodes.get(choice.choice.nextNodeId)!
@@ -179,6 +198,16 @@ export default function StatefulGameInterface() {
           targetCharacterId = charId as CharacterId
           console.log(`🔀 Cross-graph navigation: ${state.currentCharacterId} → ${charId}`)
           break
+        }
+      }
+
+      // If still not found, check Maya revisit graph (if arc complete)
+      if (!nextNode && newGameState.globalFlags.has('maya_arc_complete')) {
+        if (mayaRevisitGraph.nodes.has(choice.choice.nextNodeId)) {
+          nextNode = mayaRevisitGraph.nodes.get(choice.choice.nextNodeId)!
+          targetGraph = mayaRevisitGraph
+          targetCharacterId = 'maya'
+          console.log(`🔀 Cross-graph navigation: ${state.currentCharacterId} → maya (revisit)`)
         }
       }
     }
