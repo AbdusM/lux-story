@@ -693,7 +693,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'return_to_samuel_integration',
         text: "Return to Samuel",
-        nextNodeId: samuelEntryPoints.HUB_AFTER_MAYA, // Will need HUB_AFTER_DEVON eventually
+        nextNodeId: samuelEntryPoints.HUB_AFTER_DEVON,
         pattern: 'exploring'
       }
     ],
@@ -714,7 +714,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'return_to_samuel_heart',
         text: "Return to Samuel",
-        nextNodeId: samuelEntryPoints.HUB_AFTER_MAYA,
+        nextNodeId: samuelEntryPoints.HUB_AFTER_DEVON,
         pattern: 'helping'
       }
     ],
@@ -735,7 +735,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'return_to_samuel_presence',
         text: "Return to Samuel",
-        nextNodeId: samuelEntryPoints.HUB_AFTER_MAYA,
+        nextNodeId: samuelEntryPoints.HUB_AFTER_DEVON,
         pattern: 'patience'
       }
     ],
