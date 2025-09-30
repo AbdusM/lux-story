@@ -83,8 +83,11 @@ export interface NodeSearchResult {
 /**
  * Find which character owns a given node ID
  *
- * Searches all graphs (base + revisit variants) based on current game state
- * This enables type-safe cross-graph navigation without hardcoding search logic
+ * TRULY DYNAMIC: Automatically searches all characters by inspecting DIALOGUE_GRAPHS keys
+ * When you add a new character graph, this function automatically includes it - ZERO code changes needed
+ *
+ * Searches both state-appropriate graphs (base or revisit) AND handles edge case where
+ * revisit content links back to base nodes (e.g., "Remember when we first met?")
  *
  * @param nodeId - The dialogue node ID to search for
  * @param gameState - Current game state (determines which graphs to search)
@@ -94,18 +97,40 @@ export function findCharacterForNode(
   nodeId: string,
   gameState: GameState
 ): NodeSearchResult | null {
-  // Search all character IDs
-  const allCharacterIds: CharacterId[] = ['samuel', 'maya', 'devon', 'jordan']
+  // TRULY DYNAMIC: Derive character list from DIALOGUE_GRAPHS keys
+  // Filter out revisit graphs (_revisit suffix) to get base character list
+  const baseCharacterIds = Object.keys(DIALOGUE_GRAPHS).filter(
+    key => !key.includes('_revisit')
+  ) as CharacterId[]
 
-  for (const charId of allCharacterIds) {
-    // Get the state-appropriate graph for this character
+  for (const charId of baseCharacterIds) {
+    // Get the state-appropriate graph (base or revisit) for this character
     const graph = getGraphForCharacter(charId, gameState)
 
-    // Check if this graph contains the node
+    // Defensive: Skip if graph is undefined
+    if (!graph) continue
+
+    // Check if node exists in state-appropriate graph
     if (graph.nodes.has(nodeId)) {
       return {
         characterId: charId,
         graph
+      }
+    }
+
+    // EDGE CASE: If we're using a revisit graph, ALSO check base graph
+    // Handles scenario where revisit content links back to base nodes
+    // Example: Maya revisit says "Remember when we first talked about Pepper?"
+    // That node might be in maya_dialogue_graph, not maya_revisit_graph
+    const revisitGraphKey = `${charId}_revisit` as keyof typeof DIALOGUE_GRAPHS
+    const revisitGraph = DIALOGUE_GRAPHS[revisitGraphKey]
+    const baseGraph = DIALOGUE_GRAPHS[charId]
+
+    // If current graph is the revisit variant, check if node exists in base
+    if (graph === revisitGraph && baseGraph && baseGraph.nodes.has(nodeId)) {
+      return {
+        characterId: charId,
+        graph: baseGraph
       }
     }
   }
