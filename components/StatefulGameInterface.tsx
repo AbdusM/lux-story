@@ -381,7 +381,9 @@ export default function StatefulGameInterface() {
   // Character display names
   const characterNames: Record<CharacterId, string> = {
     samuel: 'Samuel Washington',
-    maya: 'Maya Chen'
+    maya: 'Maya Chen',
+    devon: 'Devon Kumar',
+    jordan: 'Jordan Packard'
   }
 
   return (

@@ -1138,7 +1138,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'meet_other_travelers',
         text: "I'm ready to meet someone else.",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_after_devon',
         pattern: 'exploring'
       }
     ]
@@ -1158,7 +1158,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'return_after_deep_jordan',
         text: "*nod thoughtfully*",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_after_devon',
         pattern: 'patience',
         consequence: {
           characterId: 'samuel',
@@ -1462,6 +1462,111 @@ export const samuelDialogueNodes: DialogueNode[] = [
     ]
   },
 
+  // ============= JORDAN INTRODUCTION (After Devon complete) =============
+  {
+    nodeId: 'samuel_jordan_intro',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "There's someone else here tonight - Jordan Packard. She's over by the conference rooms, guest instructor for a coding bootcamp's Career Day.\n\n*He glances in that direction*\n\nSeven jobs in seven years. Most people see that and think 'instability.' But I see someone who's been learning this city's full ecosystem - tech, design, startups, agencies. She's about to give a speech to students, but she's carrying a lot of doubt about whether she belongs in front of that room.",
+        emotion: 'observant',
+        variation_id: 'jordan_intro_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'go_to_jordan',
+        text: "I'll go talk to her.",
+        nextNodeId: 'jordan_introduction',
+        pattern: 'exploring',
+        consequence: {
+          addGlobalFlags: ['met_jordan']
+        }
+      },
+      {
+        choiceId: 'why_me_jordan',
+        text: "Why do you think I should talk to her?",
+        nextNodeId: 'samuel_why_jordan',
+        pattern: 'analytical'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_why_jordan',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Because impostor syndrome doesn't care about résumés. Jordan has built real skills across this city's tech scene, but she's about to stand in front of students while feeling like a fraud.\n\nYou've shown you can help people see frames they can't see themselves. Maya needed permission to honor both her family and herself. Devon needed to see that emotions are data, not noise. Jordan needs help seeing that her winding path isn't a liability - it's exactly what makes her valuable as a mentor.\n\nAnd those students need to hear that from someone who's lived it.",
+        emotion: 'teaching',
+        variation_id: 'why_jordan_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'go_to_jordan_now',
+        text: "I'll go find her.",
+        nextNodeId: 'jordan_introduction',
+        pattern: 'helping',
+        consequence: {
+          addGlobalFlags: ['met_jordan']
+        }
+      }
+    ]
+  },
+
+  // ============= HUB: AFTER DEVON (Maya + Devon + Jordan available) =============
+  {
+    nodeId: 'samuel_hub_after_devon',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*He gestures toward the platforms and conference rooms*\n\nMaya's on Platform 1 if you want to see how her journey's unfolding. Devon's still on Platform 3, building his bridges between logic and heart.\n\nAnd there's Jordan Packard over by the conference rooms - guest instructor tonight, wrestling with whether seven jobs makes her qualified or fraudulent. She has twenty minutes before she speaks to a room full of students.\n\nWhere does your attention pull you?",
+        emotion: 'offering_space',
+        variation_id: 'hub_after_devon_v1'
+      }
+    ],
+    requiredState: {
+      hasGlobalFlags: ['devon_arc_complete'],
+      lacksGlobalFlags: ['jordan_arc_complete']
+    },
+    choices: [
+      {
+        choiceId: 'return_to_maya_2',
+        text: "I'd like to talk to Maya again.",
+        nextNodeId: mayaRevisitEntryPoints.WELCOME,
+        pattern: 'helping',
+        visibleCondition: {
+          hasGlobalFlags: ['maya_arc_complete']
+        }
+      },
+      {
+        choiceId: 'return_to_devon',
+        text: "I'll check in with Devon.",
+        nextNodeId: 'devon_introduction',
+        pattern: 'exploring',
+        visibleCondition: {
+          hasGlobalFlags: ['met_devon']
+        }
+      },
+      {
+        choiceId: 'meet_jordan',
+        text: "Tell me more about Jordan.",
+        nextNodeId: 'samuel_jordan_intro',
+        pattern: 'exploring'
+      },
+      {
+        choiceId: 'tell_me_pattern_2',
+        text: "What pattern do you see in me now?",
+        nextNodeId: 'samuel_pattern_observation',
+        pattern: 'patience',
+        visibleCondition: {
+          trust: { min: 3 }
+        }
+      }
+    ]
+  },
+
   // ============= PATTERN OBSERVATION (Trust-gated wisdom) =============
   {
     nodeId: 'samuel_pattern_observation',
@@ -1548,6 +1653,9 @@ export const samuelEntryPoints = {
 
   /** Hub after completing Maya's arc (Maya + Devon available) */
   HUB_AFTER_MAYA: 'samuel_hub_after_maya',
+
+  /** Hub after completing Devon's arc (Maya + Devon + Jordan available) */
+  HUB_AFTER_DEVON: 'samuel_hub_after_devon',
 
   /** Samuel's backstory reveal (trust-gated) */
   BACKSTORY: 'samuel_backstory_intro',
