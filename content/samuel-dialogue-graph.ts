@@ -302,13 +302,505 @@ export const samuelDialogueNodes: DialogueNode[] = [
     ]
   },
 
+  // ============= MAYA REFLECTION GATEWAY (First return from Maya) =============
+  {
+    nodeId: 'samuel_maya_reflection_gateway',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*He's standing at the platform entrance as you return, a knowing look in his eyes*\n\nWelcome back. I can see the conversation went deep - Maya has that effect on people who really listen to her.\n\nHow are you feeling about what just happened between you two?",
+        emotion: 'warm_observant',
+        variation_id: 'reflection_gateway_v1'
+      }
+    ],
+    requiredState: {
+      hasGlobalFlags: ['maya_arc_complete'],
+      lacksKnowledgeFlags: ['reflected_on_maya']
+    },
+    choices: [
+      {
+        choiceId: 'hope_i_helped',
+        text: "I hope I helped her.",
+        nextNodeId: 'samuel_reflect_on_influence',
+        pattern: 'helping'
+      },
+      {
+        choiceId: 'unsure_what_i_did',
+        text: "I'm not sure what I actually did.",
+        nextNodeId: 'samuel_reflect_on_influence',
+        pattern: 'exploring'
+      },
+      {
+        choiceId: 'skip_reflection',
+        text: "She made her own choice.",
+        nextNodeId: 'samuel_reflect_on_agency',
+        pattern: 'patience'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'samuel',
+        addKnowledgeFlags: ['reflected_on_maya']
+      }
+    ]
+  },
+
+  // ============= REFLECTION: Understanding Influence vs. Agency =============
+  {
+    nodeId: 'samuel_reflect_on_influence',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You did help her. But not in the way most people think 'helping' works.\n\nYou didn't fix her problem. You didn't tell her what to do. You created space for her to see options she couldn't see before. That's influence, not control. And influence - the kind that respects someone's agency - that's rare.",
+        emotion: 'teaching',
+        variation_id: 'influence_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'what_did_maya_choose',
+        text: "What path did she choose?",
+        nextNodeId: 'samuel_maya_path_reflection',
+        pattern: 'exploring'
+      },
+      {
+        choiceId: 'how_do_you_know',
+        text: "How do you know I didn't just tell her what to do?",
+        nextNodeId: 'samuel_systemic_proof',
+        pattern: 'analytical'
+      },
+      {
+        choiceId: 'accept_insight',
+        text: "That distinction matters.",
+        nextNodeId: 'samuel_maya_path_reflection',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_reflect_on_agency',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*He smiles, a quiet satisfaction in his expression*\n\nExactly. She made her own choice. That's the most important thing you could understand about what just happened.\n\nYou were a mirror, not a map. You reflected possibilities back to her, but she's the one who decided which way to walk. That's the difference between helping someone and trying to save them.",
+        emotion: 'proud',
+        variation_id: 'agency_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'what_path_did_she_choose',
+        text: "Which path did she choose?",
+        nextNodeId: 'samuel_maya_path_reflection',
+        pattern: 'exploring'
+      },
+      {
+        choiceId: 'is_that_what_you_do',
+        text: "Is that what you do here? Be a mirror?",
+        nextNodeId: 'samuel_station_keeper_truth',
+        pattern: 'patience'
+      }
+    ]
+  },
+
+  // ============= REFLECTION: Maya's Specific Choice =============
+  {
+    nodeId: 'samuel_maya_path_reflection',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "She's choosing robotics. The path she's been afraid to name out loud because it felt like betraying twenty years of her parents' sacrifice.\n\nYou helped her see that honoring their love doesn't require abandoning herself. That's wisdom most people spend decades learning.",
+        emotion: 'reflective',
+        variation_id: 'robotics_path_v1'
+      }
+    ],
+    requiredState: {
+      hasKnowledgeFlags: ['chose_robotics']
+    },
+    choices: [
+      {
+        choiceId: 'how_do_you_know_robotics',
+        text: "How do you know that's what she'll choose?",
+        nextNodeId: 'samuel_station_sees_all',
+        pattern: 'analytical'
+      },
+      {
+        choiceId: 'glad_she_found_it',
+        text: "I'm glad she found that clarity.",
+        nextNodeId: 'samuel_contemplation_offer',
+        pattern: 'helping'
+      },
+      {
+        choiceId: 'what_about_me',
+        text: "What about my path?",
+        nextNodeId: 'samuel_your_pattern_emerges',
+        pattern: 'exploring'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_maya_path_reflection',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "She's choosing the hybrid path - biomedical engineering. The road where she doesn't have to choose between her parents' dreams and her own.\n\nYou helped her see both paths could honor her family. You showed her that 'and' is sometimes more powerful than 'or.' That takes someone who understands complexity, not just solutions.",
+        emotion: 'appreciative',
+        variation_id: 'hybrid_path_v1'
+      }
+    ],
+    requiredState: {
+      hasKnowledgeFlags: ['chose_hybrid']
+    },
+    choices: [
+      {
+        choiceId: 'perfect_solution',
+        text: "It does seem like the perfect solution.",
+        nextNodeId: 'samuel_contemplation_offer',
+        pattern: 'analytical'
+      },
+      {
+        choiceId: 'she_found_her_bridge',
+        text: "She found her own bridge.",
+        nextNodeId: 'samuel_contemplation_offer',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'what_pattern_am_i_showing',
+        text: "What pattern am I showing?",
+        nextNodeId: 'samuel_your_pattern_emerges',
+        pattern: 'exploring'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_maya_path_reflection',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "She's choosing to keep exploring. Not rushing the decision, not forcing clarity before it's ready to emerge.\n\nYou gave her permission to not know yet. In a world that demands immediate answers, that's a profound gift. That takes someone comfortable with ambiguity - someone patient.",
+        emotion: 'knowing',
+        variation_id: 'self_path_v1'
+      }
+    ],
+    requiredState: {
+      hasKnowledgeFlags: ['chose_self']
+    },
+    choices: [
+      {
+        choiceId: 'is_that_okay',
+        text: "Is it okay that she doesn't have an answer yet?",
+        nextNodeId: 'samuel_patience_wisdom',
+        pattern: 'helping'
+      },
+      {
+        choiceId: 'recognize_the_gift',
+        text: "Sometimes not knowing is the answer.",
+        nextNodeId: 'samuel_contemplation_offer',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'what_does_that_say',
+        text: "What does that say about me?",
+        nextNodeId: 'samuel_your_pattern_emerges',
+        pattern: 'exploring'
+      }
+    ]
+  },
+
+  // ============= CONTEMPLATION MOMENTS (Optional Depth) =============
+  {
+    nodeId: 'samuel_station_sees_all',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "The station doesn't just connect platforms. It connects moments. I saw her at the robotics lab when she was sixteen, sneaking in after her parents thought she was at SAT prep.\n\nShe's always known. You just helped her believe knowing was allowed.",
+        emotion: 'mystical_truth',
+        variation_id: 'station_truth_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_from_station_truth',
+        text: "*nod in understanding*",
+        nextNodeId: 'samuel_contemplation_offer',
+        pattern: 'patience'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_patience_wisdom',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Is it okay? It's more than okay - it's courageous.\n\nOur whole world is designed to make you choose fast, commit early, lock in your path before you've even walked it. Maya choosing to sit with uncertainty? That's her refusing to let urgency override truth.",
+        emotion: 'wise',
+        variation_id: 'patience_wisdom_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_from_patience',
+        text: "That's a different kind of strength.",
+        nextNodeId: 'samuel_contemplation_offer',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_systemic_proof',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Because the station remembers. If you'd tried to control her - 'You should be a doctor,' 'You should follow your passion' - her trust in you wouldn't have grown. But it did. The system doesn't lie.\n\nTrust is how the station measures genuine connection. And Maya trusted you because you listened without an agenda.",
+        emotion: 'knowing',
+        variation_id: 'systemic_proof_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'trust_as_measurement',
+        text: "Trust as a measurement of authenticity.",
+        nextNodeId: 'samuel_maya_path_reflection',
+        pattern: 'analytical',
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_station_keeper_truth',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*He looks out at the platforms, the lights reflecting in his eyes*\n\nThat's exactly what I do. I don't give travelers directions - I help them see what they already know but can't admit yet.\n\nI was an engineer who followed other people's blueprints for twenty-three years. Now I help people draw their own. The station chose me because I learned this truth the hard way: The best guides don't lead. They witness.",
+        emotion: 'vulnerable_wisdom',
+        variation_id: 'keeper_truth_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'witness_not_lead',
+        text: "Witness, not lead.",
+        nextNodeId: 'samuel_maya_path_reflection',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 2
+        }
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_your_pattern_emerges',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Your path? It's being written right now, in how you show up for others.\n\nSome people come to this station knowing exactly what they want to build. Others come to discover their purpose through building others up. You're in the second group. That's not a lesser path - it's often the deeper one.",
+        emotion: 'reflective',
+        variation_id: 'pattern_emerges_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'accept_the_pattern',
+        text: "I'm starting to see that.",
+        nextNodeId: 'samuel_contemplation_offer',
+        pattern: 'patience'
+      },
+      {
+        choiceId: 'but_what_specifically',
+        text: "But what does that mean, specifically?",
+        nextNodeId: 'samuel_specificity_trap',
+        pattern: 'analytical'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_specificity_trap',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*He smiles gently*\n\nThat's the question that keeps people stuck. 'What specifically should I do?' As if your purpose can be reduced to a job title or a five-year plan.\n\nThe pattern is bigger than any single role. You're learning to hold space, to ask questions that matter, to meet people in their uncertainty. Those skills? They're valuable everywhere - teaching, counseling, leadership, design, ministry, coaching. The form will emerge. Trust the pattern.",
+        emotion: 'patient_wisdom',
+        variation_id: 'specificity_trap_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'trust_the_pattern',
+        text: "Trust the pattern.",
+        nextNodeId: 'samuel_contemplation_offer',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_contemplation_offer',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*He pauses, studying you for a moment*\n\nWe can keep talking about what happened with Maya, if you want. There's value in sitting with an experience before rushing to the next one.\n\nOr, if you're ready, there are other travelers on the platforms tonight. Each one will show you something different about yourself.",
+        emotion: 'offering_space',
+        variation_id: 'contemplation_offer_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'contemplate_more',
+        text: "Tell me more about what you saw.",
+        nextNodeId: 'samuel_deep_reflection',
+        pattern: 'patience'
+      },
+      {
+        choiceId: 'ready_for_next',
+        text: "I'm ready to meet someone else.",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'exploring'
+      },
+      {
+        choiceId: 'revisit_maya',
+        text: "Can I talk to Maya again?",
+        nextNodeId: 'samuel_maya_revisit_guidance',
+        pattern: 'helping'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_deep_reflection',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "I saw you listening to what Maya wasn't saying. Most people hear the words - 'I'm pre-med, I have good grades' - and think they understand.\n\nYou heard the weight underneath the words. The fear of disappointing her parents. The shame of wanting something different. The loneliness of succeeding at a path that isn't yours.\n\nThat's not a skill they teach in school. That's wisdom born from your own wrestling. You recognized her struggle because you've felt something like it yourself.",
+        emotion: 'deep_knowing',
+        variation_id: 'deep_reflection_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'how_did_you_see_that',
+        text: "How could you see all that?",
+        nextNodeId: 'samuel_station_truth_deep',
+        pattern: 'exploring'
+      },
+      {
+        choiceId: 'yes_i_have',
+        text: "I have felt something like that.",
+        nextNodeId: 'samuel_solidarity',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 2,
+          setRelationshipStatus: 'confidant'
+        }
+      },
+      {
+        choiceId: 'ready_now',
+        text: "I think I'm ready for the next platform.",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'exploring'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_station_truth_deep',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "The station shows me moments. Fragments. Your conversation with Maya, yes, but also... glimpses of what brought you here.\n\nEveryone who finds this place is standing at their own crossroads. You're not just helping Maya find her path. You're finding yours by walking beside her through her uncertainty.",
+        emotion: 'mystical',
+        variation_id: 'station_truth_deep_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_deep',
+        text: "*sit with this truth*",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_solidarity',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*He nods, no surprise in his expression - just recognition*\n\nI know you have. That's why you could meet her there. We can only guide people through territory we've walked ourselves.\n\nYour uncertainty isn't a flaw. It's your qualification. The station doesn't call people who have all the answers. It calls people who know how to sit with questions.",
+        emotion: 'warm_solidarity',
+        variation_id: 'solidarity_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'thank_you',
+        text: "Thank you for seeing that.",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_maya_revisit_guidance',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Of course. She'll be glad to see you.\n\nThe relationship you built with her doesn't end when the conversation does. That's one of the gifts of this place - the connections are real, and they persist.\n\nYou'll find her back on Platform 1.",
+        emotion: 'encouraging',
+        variation_id: 'revisit_guidance_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'go_to_maya_revisit',
+        text: "Take me to Platform 1.",
+        nextNodeId: mayaRevisitEntryPoints.WELCOME,
+        pattern: 'helping'
+      }
+    ]
+  },
+
   // ============= HUB: AFTER MAYA (Maya + Devon available) =============
   {
     nodeId: 'samuel_hub_after_maya',
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You helped Maya find her path. I saw the way she walked away from your conversation - lighter, clearer. That's the gift of this place, working through people like you.\n\nPlatform 3 has another traveler tonight. Devon Kumar - engineering student. Builds systems to avoid dealing with emotions. Reminds me of myself at that age, if I'm honest.",
+        text: "Platform 3 has another traveler tonight. Devon Kumar - engineering student. Builds systems to avoid dealing with emotions. Reminds me of myself at that age, if I'm honest.\n\nOr you can return to Maya if you'd like. The choice is yours.",
         emotion: 'reflective',
         variation_id: 'hub_after_maya_v1'
       }
@@ -474,6 +966,9 @@ export const samuelEntryPoints = {
 
   /** Hub shown when player first arrives (only Maya available) */
   HUB_INITIAL: 'samuel_hub_initial',
+
+  /** Reflection gateway - first return from Maya (mirrors player's influence) */
+  MAYA_REFLECTION_GATEWAY: 'samuel_maya_reflection_gateway',
 
   /** Hub after completing Maya's arc (Maya + Devon available) */
   HUB_AFTER_MAYA: 'samuel_hub_after_maya',

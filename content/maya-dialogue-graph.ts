@@ -691,7 +691,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     tags: ['ending', 'maya_arc']
   },
 
-  // ============= FAREWELL NODES (Return to Samuel) =============
+  // ============= FAREWELL NODES (Return to Samuel for Reflection) =============
   {
     nodeId: 'maya_farewell_robotics',
     speaker: 'Maya Chen',
@@ -706,7 +706,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'return_to_samuel',
         text: "Return to Samuel",
-        nextNodeId: samuelEntryPoints.HUB_AFTER_MAYA, // Type-safe cross-graph navigation ✅
+        nextNodeId: samuelEntryPoints.MAYA_REFLECTION_GATEWAY, // Routes through reflection ✅
         pattern: 'exploring'
       }
     ],
@@ -727,7 +727,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'return_to_samuel_hybrid',
         text: "Return to Samuel",
-        nextNodeId: samuelEntryPoints.HUB_AFTER_MAYA, // Type-safe cross-graph navigation ✅
+        nextNodeId: samuelEntryPoints.MAYA_REFLECTION_GATEWAY, // Routes through reflection ✅
         pattern: 'exploring'
       }
     ],
@@ -748,7 +748,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'return_to_samuel_self',
         text: "Return to Samuel",
-        nextNodeId: samuelEntryPoints.HUB_AFTER_MAYA, // Type-safe cross-graph navigation ✅
+        nextNodeId: samuelEntryPoints.MAYA_REFLECTION_GATEWAY, // Routes through reflection ✅
         pattern: 'exploring'
       }
     ],
