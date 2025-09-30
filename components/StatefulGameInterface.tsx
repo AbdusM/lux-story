@@ -8,6 +8,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
+import { DialogueDisplay } from '@/components/DialogueDisplay'
 import { GameState, GameStateUtils } from '@/lib/character-state'
 import { GameStateManager } from '@/lib/game-state-manager'
 import {
@@ -384,51 +385,42 @@ export default function StatefulGameInterface() {
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 p-3 sm:p-4">
       <div className="max-w-4xl mx-auto">
 
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-4 sm:mb-6">
-          <h1 className="text-xl sm:text-2xl font-bold text-slate-800">Grand Central Terminus</h1>
-          <div className="flex gap-2">
-            {process.env.NODE_ENV === 'development' && (
-              <Button variant="outline" size="sm" onClick={showDebugInfo} className="text-xs sm:text-sm">
-                Debug
-              </Button>
-            )}
-            <Button variant="outline" size="sm" onClick={continueJourney} className="text-xs sm:text-sm whitespace-nowrap">
-              New Conversation
+        {/* Header - Minimal Actions Only */}
+        <div className="flex justify-end gap-2 mb-4">
+          {process.env.NODE_ENV === 'development' && (
+            <Button variant="ghost" size="sm" onClick={showDebugInfo} className="text-xs">
+              Debug
             </Button>
-          </div>
+          )}
+          <Button variant="ghost" size="sm" onClick={continueJourney} className="text-xs">
+            New Conversation
+          </Button>
         </div>
 
-        {/* Character Status */}
+        {/* Character Banner - Minimal Chat Style */}
         {currentCharacter && (
-          <Card className="mb-4 sm:mb-6">
-            <CardContent className="p-3 sm:p-4">
-              <div className="flex justify-between items-start sm:items-center gap-2">
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-semibold text-sm sm:text-base truncate">{characterNames[state.currentCharacterId]}</h3>
-                  <p className="text-xs sm:text-sm text-slate-600 truncate">Relationship: {currentCharacter.relationshipStatus}</p>
-                </div>
-                <div className="text-right flex-shrink-0">
-                  <p className="text-xs sm:text-sm text-slate-600 font-medium">Trust: {currentCharacter.trust}/10</p>
-                  <p className="text-xs text-slate-500">
-                    {currentCharacter.knowledgeFlags.size} learned
-                  </p>
-                </div>
+          <div className="mb-4 px-3 py-2 bg-white/50 border border-slate-200 rounded-lg">
+            <div className="flex items-center justify-between gap-3 text-xs sm:text-sm">
+              <div className="flex items-center gap-2 font-medium text-slate-700">
+                <span className="truncate">{characterNames[state.currentCharacterId]}</span>
+                <span className="text-slate-400">•</span>
+                <span className="text-slate-600">{currentCharacter.relationshipStatus}</span>
               </div>
-            </CardContent>
-          </Card>
+              <div className="text-slate-500 flex-shrink-0">
+                Trust: {currentCharacter.trust}/10
+              </div>
+            </div>
+          </div>
         )}
 
         {/* Main Content */}
         <Card className="mb-4 sm:mb-6">
           <CardContent className="p-4 sm:p-6">
             <div className="mb-3 sm:mb-4">
-              <h2 className="text-base sm:text-lg font-semibold text-slate-700 mb-2">
+              <h2 className="text-base sm:text-lg font-semibold text-slate-700 mb-3">
                 {state.currentNode?.speaker}
               </h2>
-              <div className="text-sm sm:text-base text-slate-800 leading-relaxed sm:leading-loose space-y-3 sm:space-y-4 whitespace-pre-line">
-                {state.currentContent}
-              </div>
+              <DialogueDisplay text={state.currentContent} />
             </div>
 
             {/* Scene info for debugging */}
@@ -465,11 +457,6 @@ export default function StatefulGameInterface() {
                       {!evaluatedChoice.enabled && evaluatedChoice.reason && (
                         <div className="text-xs text-slate-500 mt-1 break-words">
                           {evaluatedChoice.reason}
-                        </div>
-                      )}
-                      {evaluatedChoice.choice.pattern && process.env.NODE_ENV === 'development' && (
-                        <div className="text-xs text-blue-600 mt-1">
-                          Pattern: {evaluatedChoice.choice.pattern}
                         </div>
                       )}
                     </div>
