@@ -43,9 +43,7 @@ export const reciprocityQuestions: Record<string, ReciprocityQuestion> = {
         choiceId: 'stable_career_parent',
         choiceText: "They taught me stability matters most. Same job for decades, reliable income.",
         stateChanges: [
-          { type: 'pattern', pattern: 'patience', delta: 2 },
-          { type: 'pattern', pattern: 'building', delta: 1 },
-          { type: 'pattern', pattern: 'exploring', delta: -1 }
+          { patternChanges: { patience: 2, building: 1, exploring: -1 } }
         ],
         npcResponse: "That's why you were so patient with me. You understand the weight of expectations."
       },
@@ -53,9 +51,7 @@ export const reciprocityQuestions: Record<string, ReciprocityQuestion> = {
         choiceId: 'entrepreneurial_parent',
         choiceText: "They were always starting something new. Risk was normal in our house.",
         stateChanges: [
-          { type: 'pattern', pattern: 'exploring', delta: 2 },
-          { type: 'pattern', pattern: 'analytical', delta: 1 },
-          { type: 'pattern', pattern: 'patience', delta: -1 }
+          { patternChanges: { exploring: 2, analytical: 1, patience: -1 } }
         ],
         npcResponse: "That explains why you pushed me to consider robotics. You see possibility, not just risk."
       },
@@ -63,9 +59,7 @@ export const reciprocityQuestions: Record<string, ReciprocityQuestion> = {
         choiceId: 'struggling_parent',
         choiceText: "I watched them struggle. Multiple jobs, never enough. It made me want to help.",
         stateChanges: [
-          { type: 'pattern', pattern: 'helping', delta: 2 },
-          { type: 'pattern', pattern: 'patience', delta: 1 },
-          { type: 'pattern', pattern: 'analytical', delta: 1 }
+          { patternChanges: { helping: 2, patience: 1, analytical: 1 } }
         ],
         npcResponse: "You know what it's like to carry weight. That's why you could hold space for mine."
       },
@@ -73,9 +67,7 @@ export const reciprocityQuestions: Record<string, ReciprocityQuestion> = {
         choiceId: 'absent_parent_work',
         choiceText: "They were always working. Success meant absence in our family.",
         stateChanges: [
-          { type: 'pattern', pattern: 'patience', delta: 2 },
-          { type: 'pattern', pattern: 'helping', delta: 1 },
-          { type: 'pattern', pattern: 'building', delta: -1 }
+          { patternChanges: { patience: 2, helping: 1, building: -1 } }
         ],
         npcResponse: "So you learned early that achievement has costs. No wonder you understood my conflict."
       }
