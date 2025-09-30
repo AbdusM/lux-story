@@ -291,17 +291,17 @@ export default function StatefulGameInterface() {
 
   if (!state.hasStarted) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 flex items-center justify-center p-3 sm:p-4">
         <Card className="w-full max-w-2xl">
-          <CardContent className="p-8 text-center">
-            <h1 className="text-3xl font-bold text-slate-800 mb-4">
+          <CardContent className="p-5 sm:p-8 text-center">
+            <h1 className="text-2xl sm:text-3xl font-bold text-slate-800 mb-3 sm:mb-4">
               Grand Central Terminus
             </h1>
-            <p className="text-slate-600 mb-8">
+            <p className="text-sm sm:text-base text-slate-600 mb-6 sm:mb-8 leading-relaxed">
               A magical train station appears between who you were and who you're becoming.
               Meet Maya, a pre-med student torn between family expectations and personal passion.
             </p>
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               {saveIsComplete ? (
                 <>
                   <Button
@@ -360,10 +360,10 @@ export default function StatefulGameInterface() {
 
   if (state.isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 flex items-center justify-center p-4">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-slate-600">Loading...</p>
+          <div className="animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-sm sm:text-base text-slate-600">Loading...</p>
         </div>
       </div>
     )
@@ -381,19 +381,19 @@ export default function StatefulGameInterface() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 p-4">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 p-3 sm:p-4">
       <div className="max-w-4xl mx-auto">
 
         {/* Header */}
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-slate-800">Grand Central Terminus</h1>
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-4 sm:mb-6">
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-800">Grand Central Terminus</h1>
           <div className="flex gap-2">
             {process.env.NODE_ENV === 'development' && (
-              <Button variant="outline" size="sm" onClick={showDebugInfo}>
+              <Button variant="outline" size="sm" onClick={showDebugInfo} className="text-xs sm:text-sm">
                 Debug
               </Button>
             )}
-            <Button variant="outline" size="sm" onClick={continueJourney}>
+            <Button variant="outline" size="sm" onClick={continueJourney} className="text-xs sm:text-sm whitespace-nowrap">
               New Conversation
             </Button>
           </div>
@@ -401,17 +401,17 @@ export default function StatefulGameInterface() {
 
         {/* Character Status */}
         {currentCharacter && (
-          <Card className="mb-6">
-            <CardContent className="p-4">
-              <div className="flex justify-between items-center">
-                <div>
-                  <h3 className="font-semibold">{characterNames[state.currentCharacterId]}</h3>
-                  <p className="text-sm text-slate-600">Relationship: {currentCharacter.relationshipStatus}</p>
+          <Card className="mb-4 sm:mb-6">
+            <CardContent className="p-3 sm:p-4">
+              <div className="flex justify-between items-start sm:items-center gap-2">
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-semibold text-sm sm:text-base truncate">{characterNames[state.currentCharacterId]}</h3>
+                  <p className="text-xs sm:text-sm text-slate-600 truncate">Relationship: {currentCharacter.relationshipStatus}</p>
                 </div>
-                <div className="text-right">
-                  <p className="text-sm text-slate-600">Trust: {currentCharacter.trust}/10</p>
+                <div className="text-right flex-shrink-0">
+                  <p className="text-xs sm:text-sm text-slate-600 font-medium">Trust: {currentCharacter.trust}/10</p>
                   <p className="text-xs text-slate-500">
-                    {currentCharacter.knowledgeFlags.size} things learned
+                    {currentCharacter.knowledgeFlags.size} learned
                   </p>
                 </div>
               </div>
@@ -420,44 +420,46 @@ export default function StatefulGameInterface() {
         )}
 
         {/* Main Content */}
-        <Card className="mb-6">
-          <CardContent className="p-6">
-            <div className="mb-4">
-              <h2 className="text-lg font-semibold text-slate-700 mb-2">
+        <Card className="mb-4 sm:mb-6">
+          <CardContent className="p-4 sm:p-6">
+            <div className="mb-3 sm:mb-4">
+              <h2 className="text-base sm:text-lg font-semibold text-slate-700 mb-2">
                 {state.currentNode?.speaker}
               </h2>
-              <div className="text-slate-800 leading-loose space-y-4 whitespace-pre-line">
+              <div className="text-sm sm:text-base text-slate-800 leading-relaxed sm:leading-loose space-y-3 sm:space-y-4 whitespace-pre-line">
                 {state.currentContent}
               </div>
             </div>
 
             {/* Scene info for debugging */}
-            <div className="text-xs text-slate-400 border-t pt-2">
-              Scene: {state.currentNode?.nodeId}
-            </div>
+            {process.env.NODE_ENV === 'development' && (
+              <div className="text-xs text-slate-400 border-t pt-2 mt-2">
+                Scene: {state.currentNode?.nodeId}
+              </div>
+            )}
           </CardContent>
         </Card>
 
         {/* Choices */}
         {!isEnding && (
           <Card>
-            <CardContent className="p-6">
-              <h3 className="text-lg font-semibold text-slate-700 mb-4">Your Response</h3>
-              <div className="space-y-3">
+            <CardContent className="p-4 sm:p-6">
+              <h3 className="text-base sm:text-lg font-semibold text-slate-700 mb-3 sm:mb-4">Your Response</h3>
+              <div className="space-y-2 sm:space-y-3">
                 {state.availableChoices.map((evaluatedChoice, index) => (
                   <Button
                     key={evaluatedChoice.choice.choiceId}
                     onClick={() => handleChoice(evaluatedChoice)}
                     disabled={!evaluatedChoice.enabled}
                     variant={evaluatedChoice.enabled ? "outline" : "ghost"}
-                    className={`w-full text-left justify-start h-auto p-4 ${
+                    className={`w-full text-left justify-start h-auto p-3 sm:p-4 min-h-[3rem] ${
                       evaluatedChoice.enabled
-                        ? "bg-white hover:bg-slate-50 text-slate-800 border-slate-300"
+                        ? "bg-white hover:bg-slate-50 text-slate-800 border-slate-300 active:bg-slate-100"
                         : "bg-slate-100 text-slate-500 cursor-not-allowed"
                     }`}
                   >
-                    <div>
-                      <div className="font-medium">
+                    <div className="w-full">
+                      <div className="font-medium text-sm sm:text-base">
                         {evaluatedChoice.choice.text}
                       </div>
                       {!evaluatedChoice.enabled && evaluatedChoice.reason && (
@@ -465,7 +467,7 @@ export default function StatefulGameInterface() {
                           {evaluatedChoice.reason}
                         </div>
                       )}
-                      {evaluatedChoice.choice.pattern && (
+                      {evaluatedChoice.choice.pattern && process.env.NODE_ENV === 'development' && (
                         <div className="text-xs text-blue-600 mt-1">
                           Pattern: {evaluatedChoice.choice.pattern}
                         </div>
@@ -481,14 +483,14 @@ export default function StatefulGameInterface() {
         {/* Ending */}
         {isEnding && (
           <Card>
-            <CardContent className="p-6 text-center">
-              <h3 className="text-xl font-bold text-slate-800 mb-4">
+            <CardContent className="p-4 sm:p-6 text-center">
+              <h3 className="text-lg sm:text-xl font-bold text-slate-800 mb-3 sm:mb-4">
                 Conversation Complete
               </h3>
-              <p className="text-slate-600 mb-6">
+              <p className="text-sm sm:text-base text-slate-600 mb-4 sm:mb-6">
                 {characterNames[state.currentCharacterId]} will remember this conversation. Your relationship: {currentCharacter?.relationshipStatus} • Trust: {currentCharacter?.trust}/10
               </p>
-              <div className="space-y-2">
+              <div className="space-y-2 sm:space-y-3">
                 <Button onClick={() => {
                   // Start a new conversation with the SAME character
                   const currentState = GameStateManager.loadGameState()
