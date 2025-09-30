@@ -833,6 +833,205 @@ export const samuelDialogueNodes: DialogueNode[] = [
         visibleCondition: {
           trust: { min: 3 }
         }
+      },
+      {
+        choiceId: 'acknowledge_robotics_share',
+        text: "Did you notice Maya opened up about robotics?",
+        nextNodeId: 'samuel_acknowledges_robotics',
+        pattern: 'exploring',
+        visibleCondition: {
+          characterKnowledge: {
+            characterId: 'maya',
+            hasFlags: ['knows_robotics']
+          }
+        }
+      },
+      {
+        choiceId: 'acknowledge_family_share',
+        text: "She told me about her family's expectations.",
+        nextNodeId: 'samuel_acknowledges_family',
+        pattern: 'patience',
+        visibleCondition: {
+          characterKnowledge: {
+            characterId: 'maya',
+            hasFlags: ['knows_family']
+          }
+        }
+      }
+    ]
+  },
+
+  // ============= TRUST MILESTONE ACKNOWLEDGMENTS =============
+  {
+    nodeId: 'samuel_acknowledges_robotics',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*His expression shifts to something warmer, more knowing*\n\nI did. Maya doesn't share that with many people. She's been building robots since high school, but she guards that passion like a secret shame.\n\nWhatever you said, whatever space you held - it created safety for her to name what she loves. That's not a small thing. Trust like that is earned through presence, not technique.",
+        emotion: 'recognizing_achievement',
+        variation_id: 'ack_robotics_v1'
+      }
+    ],
+    requiredState: {
+      hasGlobalFlags: ['maya_arc_complete']
+    },
+    choices: [
+      {
+        choiceId: 'how_did_you_know',
+        text: "How did you know she loves robotics?",
+        nextNodeId: 'samuel_station_knows_passions',
+        pattern: 'exploring'
+      },
+      {
+        choiceId: 'accept_acknowledgment',
+        text: "I just listened.",
+        nextNodeId: 'samuel_listening_wisdom',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'back_to_hub',
+        text: "What about the other travelers?",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'exploring'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_acknowledges_family',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*He nods slowly, as if confirming something he already knew*\n\nThe weight of immigrant parents' dreams. That's the heaviest burden Maya carries - twenty years of sacrifice distilled into expectations she never asked for but can't bring herself to disappoint.\n\nShe told you about that. That means she felt safe enough to show you the conflict at her core. Most people never get to see that depth. You didn't judge, you didn't solve - you witnessed. That's what created the opening.",
+        emotion: 'honoring_depth',
+        variation_id: 'ack_family_v1'
+      }
+    ],
+    requiredState: {
+      hasGlobalFlags: ['maya_arc_complete']
+    },
+    choices: [
+      {
+        choiceId: 'what_does_that_mean',
+        text: "What does 'witnessing' really mean?",
+        nextNodeId: 'samuel_teaching_witnessing',
+        pattern: 'exploring'
+      },
+      {
+        choiceId: 'recognize_weight',
+        text: "It's a lot to carry.",
+        nextNodeId: 'samuel_empathy_recognition',
+        pattern: 'helping',
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'continue_exploring',
+        text: "Tell me about Devon.",
+        nextNodeId: 'samuel_devon_intro',
+        pattern: 'exploring'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_station_knows_passions',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "The station shows me glimpses. Fragments of who people are when they're alone with what they love.\n\nI've seen Maya late at night in her dorm room, soldering circuit boards while her textbooks gather dust. I've seen the way her face changes when she talks about surgical robots - like sun breaking through clouds. The station doesn't judge passions. It just recognizes them.",
+        emotion: 'mystical_knowing',
+        variation_id: 'knows_passions_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_from_passions',
+        text: "That's a gift, seeing people that clearly.",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_listening_wisdom',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*A slight smile*\n\n'Just listened.' As if that's simple. As if most people know how to listen without planning their next response, without fixing, without judging.\n\nYou're learning something most people never master: presence without agenda. Keep practicing that. It's the foundation of everything meaningful you'll do in this world.",
+        emotion: 'teaching_gently',
+        variation_id: 'listening_wisdom_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'return_to_hub',
+        text: "What's next?",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'exploring'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'samuel',
+        addKnowledgeFlags: ['recognized_listening_skill']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_teaching_witnessing',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Witnessing means being fully present to someone's experience without needing to change it, fix it, or make it about you.\n\nMost 'help' is really about making the helper feel better - 'I fixed your problem, now I can stop feeling uncomfortable about your pain.' But witnessing? That's sitting in the discomfort with someone. Holding space for their truth without rushing to resolution.\n\nMaya needed someone to see her conflict without collapsing it into a simple answer. You did that. That's rare.",
+        emotion: 'teaching_depth',
+        variation_id: 'teaching_witnessing_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'understand_witnessing',
+        text: "Present without fixing.",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 2
+        }
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'samuel',
+        addKnowledgeFlags: ['taught_witnessing']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_empathy_recognition',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "It is. And you didn't try to make it lighter by offering easy solutions. You didn't say 'just follow your passion' or 'just honor your parents' - as if two decades of love and sacrifice can be resolved with 'just.'\n\nYou sat with the weight. That's empathy. Not sympathy - feeling sorry for someone. Empathy - feeling with someone. You're building something important here.",
+        emotion: 'affirming',
+        variation_id: 'empathy_recognition_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_journey',
+        text: "Let's meet the next traveler.",
+        nextNodeId: 'samuel_devon_intro',
+        pattern: 'exploring'
       }
     ]
   },
