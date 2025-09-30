@@ -6,6 +6,7 @@
 
 import { DialogueNode, DialogueGraph } from '../lib/dialogue-graph'
 import { StateChange } from '../lib/character-state'
+import { samuelEntryPoints } from './samuel-dialogue-graph'
 
 // Node definitions with placeholder content
 // The AI pipeline will generate variations for each
@@ -616,12 +617,19 @@ export const mayaDialogueNodes: DialogueNode[] = [
         variation_id: 'ending_robotics_v1'
       }
     ],
-    choices: [],
+    choices: [
+      {
+        choiceId: 'continue_after_robotics',
+        text: "I'm glad I could help.",
+        nextNodeId: 'maya_farewell_robotics',
+        pattern: 'helping'
+      }
+    ],
     onEnter: [
       {
         characterId: 'maya',
         addKnowledgeFlags: ['chose_robotics', 'completed_arc'],
-        addGlobalFlags: ['maya_storyline_complete']
+        addGlobalFlags: ['maya_arc_complete']
       }
     ],
     tags: ['ending', 'maya_arc']
@@ -637,12 +645,19 @@ export const mayaDialogueNodes: DialogueNode[] = [
         variation_id: 'ending_hybrid_v1'
       }
     ],
-    choices: [],
+    choices: [
+      {
+        choiceId: 'continue_after_hybrid',
+        text: "That's a beautiful path.",
+        nextNodeId: 'maya_farewell_hybrid',
+        pattern: 'helping'
+      }
+    ],
     onEnter: [
       {
         characterId: 'maya',
         addKnowledgeFlags: ['chose_hybrid', 'completed_arc'],
-        addGlobalFlags: ['maya_storyline_complete']
+        addGlobalFlags: ['maya_arc_complete']
       }
     ],
     tags: ['ending', 'maya_arc']
@@ -658,26 +673,121 @@ export const mayaDialogueNodes: DialogueNode[] = [
         variation_id: 'ending_self_v1'
       }
     ],
-    choices: [],
+    choices: [
+      {
+        choiceId: 'continue_after_self',
+        text: "I believe in you.",
+        nextNodeId: 'maya_farewell_self',
+        pattern: 'patience'
+      }
+    ],
     onEnter: [
       {
         characterId: 'maya',
         addKnowledgeFlags: ['chose_self', 'completed_arc'],
-        addGlobalFlags: ['maya_storyline_complete']
+        addGlobalFlags: ['maya_arc_complete']
       }
     ],
     tags: ['ending', 'maya_arc']
+  },
+
+  // ============= FAREWELL NODES (Return to Samuel) =============
+  {
+    nodeId: 'maya_farewell_robotics',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "I'm going to talk to my parents tonight. Tell them about the robotics program, about what I actually want.\n\nSamuel is probably waiting for you at the main platform. He has a way of knowing when someone's journey is shifting. Good luck with yours.",
+        emotion: 'grateful',
+        variation_id: 'farewell_robotics_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'return_to_samuel',
+        text: "Return to Samuel",
+        nextNodeId: samuelEntryPoints.HUB_AFTER_MAYA, // Type-safe cross-graph navigation ✅
+        pattern: 'exploring'
+      }
+    ],
+    tags: ['transition', 'maya_arc']
+  },
+
+  {
+    nodeId: 'maya_farewell_hybrid',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "Biomedical engineering. The best of both worlds. I'm going to submit my transfer application tomorrow.\n\nSamuel is probably at the main platform. He helped me find this place - maybe he can help you too. Thank you again.",
+        emotion: 'excited',
+        variation_id: 'farewell_hybrid_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'return_to_samuel_hybrid',
+        text: "Return to Samuel",
+        nextNodeId: samuelEntryPoints.HUB_AFTER_MAYA, // Type-safe cross-graph navigation ✅
+        pattern: 'exploring'
+      }
+    ],
+    tags: ['transition', 'maya_arc']
+  },
+
+  {
+    nodeId: 'maya_farewell_self',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "I need some time to think about what's next. But I know it'll be MY choice, not anyone else's.\n\nYou should talk to Samuel. He's been doing this a long time - helping people find their way. Safe travels.",
+        emotion: 'peaceful',
+        variation_id: 'farewell_self_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'return_to_samuel_self',
+        text: "Return to Samuel",
+        nextNodeId: samuelEntryPoints.HUB_AFTER_MAYA, // Type-safe cross-graph navigation ✅
+        pattern: 'exploring'
+      }
+    ],
+    tags: ['transition', 'maya_arc']
   }
 ]
+
+// ============= PUBLIC API: EXPORTED ENTRY POINTS =============
+// These nodes are designed for cross-graph navigation.
+// Do NOT link to internal nodes - only use these exported IDs.
+
+export const mayaEntryPoints = {
+  /** Initial entry point - first meeting with Maya */
+  INTRODUCTION: 'maya_introduction',
+
+  /** Anxiety reveal (trust ≥2 required) */
+  ANXIETY_REVEAL: 'maya_anxiety_reveal',
+
+  /** Robotics passion reveal (trust ≥3 required) */
+  ROBOTICS_PASSION: 'maya_robotics_passion',
+
+  /** Family pressure discussion */
+  FAMILY_PRESSURE: 'maya_family_pressure',
+
+  /** The crossroads decision (trust ≥5 required) */
+  CROSSROADS: 'maya_crossroads'
+} as const
+
+// Type export for TypeScript autocomplete
+export type MayaEntryPoint = typeof mayaEntryPoints[keyof typeof mayaEntryPoints]
 
 // Create the complete dialogue graph
 export const mayaDialogueGraph: DialogueGraph = {
   version: '1.0.0',
   nodes: new Map(mayaDialogueNodes.map(node => [node.nodeId, node])),
-  startNodeId: 'maya_introduction',
+  startNodeId: mayaEntryPoints.INTRODUCTION,
   metadata: {
     title: "Maya's Journey",
-    author: 'Grand Central Narrative Team',
+    author: 'Guided Generation (Build-Time)',
     createdAt: Date.now(),
     lastModified: Date.now(),
     totalNodes: mayaDialogueNodes.length,
