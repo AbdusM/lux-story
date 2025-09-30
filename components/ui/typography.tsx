@@ -18,7 +18,7 @@ const typographyVariants = cva("", {
       muted: "text-sm text-muted-foreground",
 
       // Game-specific variants
-      narrator: "text-base italic text-muted-foreground leading-relaxed",
+      narrator: "text-base italic text-slate-600 dark:text-slate-300 leading-relaxed",
       dialogue: "text-base leading-relaxed",
       whisper: "text-sm italic opacity-75",
       caption: "text-sm text-muted-foreground",
