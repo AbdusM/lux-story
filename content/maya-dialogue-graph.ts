@@ -585,19 +585,15 @@ export const mayaDialogueNodes: DialogueNode[] = [
         choiceId: 'crossroads_robotics',
         text: "Follow your robotics passion. Your parents will understand in time.",
         nextNodeId: 'maya_chooses_robotics',
-        pattern: 'helping',
-        visibleCondition: {
-          hasKnowledgeFlags: ['encouraged_robotics']
-        }
+        pattern: 'helping'
+        // Removed flag requirement - always show at trust 10
       },
       {
         choiceId: 'crossroads_hybrid',
         text: "Biomedical engineering honors both paths.",
         nextNodeId: 'maya_chooses_hybrid',
-        pattern: 'analytical',
-        visibleCondition: {
-          hasKnowledgeFlags: ['suggested_hybrid']
-        }
+        pattern: 'analytical'
+        // Removed flag requirement - always show at trust 10
       },
       {
         choiceId: 'crossroads_support',
