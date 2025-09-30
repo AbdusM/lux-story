@@ -229,7 +229,7 @@ export function GameMessage({
     )} data-type={type}>
 
       <Card className={cn(
-        "relative w-full max-w-2xl mx-auto transition-all duration-300",
+        "relative w-full max-w-xl mx-auto transition-all duration-300",
         messageWeight === 'critical' && "border-red-500 shadow-red-500/20 shadow-lg",
         messageWeight === 'primary' && "border-slate-200 dark:border-slate-700",
         messageWeight === 'aside' && "border-slate-100 dark:border-slate-800 opacity-90",
@@ -239,6 +239,8 @@ export function GameMessage({
         "shadow-[0_2px_0_0_rgba(0,0,0,0.2),0_0_0_1px_rgba(0,0,0,0.2),inset_0_1px_0_0_#ffffff,inset_0_0_0_1px_rgba(0,0,0,0.2),0_4px_8px_rgba(0,0,0,0.3)]"
       )}
       onClick={handleClick}
+      role="article"
+      aria-label={`Message from ${speaker}`}
       >
 
         {/* Character Header */}
@@ -256,8 +258,11 @@ export function GameMessage({
                   0 4px 8px rgba(146, 64, 14, 0.3),
                   inset 0 2px 4px rgba(255, 255, 255, 0.3)
                 `
-              }}>
-                <AvatarFallback className="text-2xl bg-transparent">
+              }}
+              role="img"
+              aria-label={`${speaker} speaking`}
+              >
+                <AvatarFallback className="text-2xl bg-transparent" aria-hidden="true">
                   {characterIcon}
                 </AvatarFallback>
               </Avatar>
@@ -288,7 +293,7 @@ export function GameMessage({
                       "text-amber-900 border-2 border-amber-600",
                       "shadow-sm"
                     )}>
-                      🚂 Station Keeper
+                      <span aria-hidden="true">🚂</span> <span className="sr-only">Station Keeper</span>Station Keeper
                     </span>
                   )}
                 </div>
@@ -316,6 +321,8 @@ export function GameMessage({
               fontFamily: "'Inter', 'Pokemon GB', monospace",
               textShadow: className?.includes('semantic-') ? undefined : "0 1px 2px rgba(0,0,0,0.1)"
             }}
+            aria-live={typewriter ? "polite" : "off"}
+            aria-busy={typewriter && displayedText.length < text.length}
           >
             {speaker === 'Memory' && <span className="text-2xl mr-2">💭</span>}
             {parseEmphasisText(displayedText)}
