@@ -130,7 +130,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "My parents. They immigrated here with nothing. Worked three jobs each to get me through school. Their dream is simple: 'Our daughter, the doctor.' How can I disappoint them?",
+        text: "My parents. | They immigrated here with nothing. Worked three jobs each to get me through school. | Their dream is simple: 'Our daughter, the doctor.' | How can I disappoint them?",
         emotion: 'conflicted',
         variation_id: 'family_intro_v1'
       }
@@ -565,7 +565,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "My parents immigrated here with nothing. They worked three jobs to put me through school. They dream of saying 'our daughter, the doctor.'\n\nHow can I tell them I'd rather build machines than heal people?",
+        text: "My parents immigrated here with nothing. | They worked three jobs to put me through school. | They dream of saying 'our daughter, the doctor.' | How can I tell them I'd rather build machines than heal people?",
         emotion: 'sad',
         variation_id: 'family_v1'
       }

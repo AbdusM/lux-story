@@ -481,7 +481,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_mentor_context',
     speaker: 'Jordan Packard',
     content: [{
-      text: "*Her expression shifts—triumphant energy drains away*\n\nBecause when I look at that story, I don't see a clever pattern. I see seven jobs in twelve years. I see someone who couldn't stick with anything. Couldn't commit. Couldn't figure it out while everyone else was building careers, I was... what? Collecting participation trophies?\n\n*Quieter*\n\nAnd now I'm supposed to stand in front of thirty people who are making a huge bet on themselves—time, money, hope—and tell them what? That it's okay to fail six times first?",
+      text: "*Her expression shifts—triumphant energy drains away* | Because when I look at that story, I don't see a clever pattern. | I see seven jobs in twelve years. Someone who couldn't stick with anything. Couldn't commit. | Couldn't figure it out while everyone else was building careers, I was... what? Collecting participation trophies? | *Quieter* | And now I'm supposed to stand in front of thirty people who are making a huge bet on themselves—time, money, hope—and tell them what? | That it's okay to fail six times first?",
       emotion: 'vulnerable',
       variation_id: 'jordan_mentor_1'
     }],

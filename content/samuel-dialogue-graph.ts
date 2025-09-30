@@ -720,7 +720,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "I saw you listening to what Maya wasn't saying. Most people hear the words - 'I'm pre-med, I have good grades' - and think they understand.\n\nYou heard the weight underneath the words. The fear of disappointing her parents. The shame of wanting something different. The loneliness of succeeding at a path that isn't yours.\n\nThat's not a skill they teach in school. That's wisdom born from your own wrestling. You recognized her struggle because you've felt something like it yourself.",
+        text: "I saw you listening to what Maya wasn't saying. Most people hear the words - 'I'm pre-med, I have good grades' - and think they understand. | You heard the weight underneath the words. | The fear of disappointing her parents. | The shame of wanting something different. | The loneliness of succeeding at a path that isn't yours. | That's not a skill they teach in school. That's wisdom born from your own wrestling. You recognized her struggle because you've felt something like it yourself.",
         emotion: 'deep_knowing',
         variation_id: 'deep_reflection_v1'
       }
@@ -1350,7 +1350,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "She stood before those students and claimed her place in this city's story. Birmingham - where reinvention isn't weakness, it's the foundation.\n\n*He gestures toward the windows, the city lights beyond*\n\nThis city transformed from steel mills to medical research, from railroads to tech hubs. Jordan moved through seven companies in a place that rewards people who can pivot, who can see what's next. She wasn't failing - she was adapting faster than most.\n\nYou helped her see that she's not a fraud. She's proof that Birmingham values evolution over staying still. Those students needed to hear that career paths don't have to be straight lines - not in this city.",
+        text: "She stood before those students and claimed her place in this city's story. | Birmingham - where reinvention isn't weakness, it's the foundation. | *He gestures toward the windows, the city lights beyond* | This city transformed from steel mills to medical research, from railroads to tech hubs. | Jordan moved through seven companies in a place that rewards people who can pivot, who can see what's next. | She wasn't failing - she was adapting faster than most. | You helped her see that she's not a fraud. She's proof that Birmingham values evolution over staying still. | Those students needed to hear that career paths don't have to be straight lines - not in this city.",
         emotion: 'proud',
         variation_id: 'birmingham_reflection_v1'
       }
