@@ -12,6 +12,7 @@
 import { mayaDialogueGraph } from '@/content/maya-dialogue-graph'
 import { mayaRevisitGraph } from '@/content/maya-revisit-graph'
 import { samuelDialogueGraph } from '@/content/samuel-dialogue-graph'
+import { devonDialogueGraph } from '@/content/devon-dialogue-graph'
 import { DialogueGraph } from './dialogue-graph'
 import { GameState } from './character-state'
 
@@ -22,9 +23,9 @@ import { GameState } from './character-state'
 export const DIALOGUE_GRAPHS = {
   samuel: samuelDialogueGraph,
   maya: mayaDialogueGraph,
-  maya_revisit: mayaRevisitGraph
+  maya_revisit: mayaRevisitGraph,
+  devon: devonDialogueGraph
   // Future expansion:
-  // devon: devonDialogueGraph,
   // devon_revisit: devonRevisitGraph,
   // jordan: jordanDialogueGraph,
   // jordan_revisit: jordanRevisitGraph
