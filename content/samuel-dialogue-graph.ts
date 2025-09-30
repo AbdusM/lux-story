@@ -11,6 +11,7 @@ import {
   DialogueNode,
   DialogueGraph
 } from '@/lib/dialogue-graph'
+import { mayaRevisitEntryPoints } from './maya-revisit-graph'
 
 export const samuelDialogueNodes: DialogueNode[] = [
   // ============= INTRODUCTION =============
@@ -320,7 +321,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'return_to_maya',
         text: "I'd like to talk to Maya again.",
-        nextNodeId: 'maya_introduction', // Can revisit Maya
+        nextNodeId: mayaRevisitEntryPoints.WELCOME, // Type-safe revisit navigation ✅
         pattern: 'helping',
         visibleCondition: {
           hasGlobalFlags: ['maya_arc_complete']
