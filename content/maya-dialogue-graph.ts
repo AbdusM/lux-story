@@ -7,6 +7,7 @@
 import { DialogueNode, DialogueGraph } from '../lib/dialogue-graph'
 import { StateChange } from '../lib/character-state'
 import { samuelEntryPoints } from './samuel-dialogue-graph'
+import { parentalWorkLegacy } from './player-questions'
 
 // Node definitions with placeholder content
 // The AI pipeline will generate variations for each
@@ -694,7 +695,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'continue_after_robotics',
         text: "I'm glad I could help.",
-        nextNodeId: 'maya_farewell_robotics',
+        nextNodeId: 'maya_reciprocity_ask',
         pattern: 'helping'
       }
     ],
@@ -722,7 +723,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'continue_after_hybrid',
         text: "That's a beautiful path.",
-        nextNodeId: 'maya_farewell_hybrid',
+        nextNodeId: 'maya_reciprocity_ask',
         pattern: 'helping'
       }
     ],
@@ -750,7 +751,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'continue_after_self',
         text: "I believe in you.",
-        nextNodeId: 'maya_farewell_self',
+        nextNodeId: 'maya_reciprocity_ask',
         pattern: 'patience'
       }
     ],
@@ -826,6 +827,246 @@ export const mayaDialogueNodes: DialogueNode[] = [
       }
     ],
     tags: ['transition', 'maya_arc']
+  },
+
+  // ============= RECIPROCITY ENGINE: MUTUAL VULNERABILITY =============
+  {
+    nodeId: 'maya_reciprocity_ask',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "*She pauses, looking at you with new curiosity* | You know so much about my struggle now. You helped me see what I couldn't. | Can I... can I ask you something personal? | About your own path?",
+        emotion: 'curious',
+        variation_id: 'reciprocity_ask_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 6 },
+      hasGlobalFlags: ['maya_arc_complete']
+    },
+    choices: [
+      {
+        choiceId: 'allow_question',
+        text: "Of course. After everything you've shared, it's only fair.",
+        nextNodeId: 'maya_reciprocity_question',
+        pattern: 'helping',
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1,
+          addKnowledgeFlags: ['player_opened_up']
+        }
+      },
+      {
+        choiceId: 'deflect_question',
+        text: "I'd rather not talk about that, if it's okay.",
+        nextNodeId: 'maya_graceful_decline',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['reciprocity', 'maya_arc']
+  },
+
+  // ============= GRACEFUL DECLINE PATH (Rewards boundary-setting) =============
+  {
+    nodeId: 'maya_graceful_decline',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "*She smiles softly, with genuine understanding* | Of course. Thank you for being honest with me. | *She fidgets with her notebook* | You know what? The fact that you feel safe enough to say 'no' means more than any answer you could have given. | You've held space for my story without demanding I earn it. I can do the same for you.",
+        emotion: 'warm',
+        variation_id: 'graceful_decline_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'appreciate_understanding',
+        text: "Thank you for understanding.",
+        nextNodeId: 'maya_farewell_robotics',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1,
+          addKnowledgeFlags: ['respected_boundaries', 'player_set_boundary']
+        }
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'maya',
+        addKnowledgeFlags: ['deeper_trust_established']
+      }
+    ],
+    tags: ['reciprocity', 'boundary_respect', 'maya_arc']
+  },
+
+  // ============= THE QUESTION: Parental Work Legacy =============
+  {
+    nodeId: 'maya_reciprocity_question',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: parentalWorkLegacy.questionText,
+        emotion: 'interested',
+        variation_id: 'parental_work_question_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 6 },
+      hasKnowledgeFlags: ['player_opened_up']
+    },
+    choices: [
+      {
+        choiceId: parentalWorkLegacy.choices[0].choiceId,
+        text: parentalWorkLegacy.choices[0].choiceText,
+        nextNodeId: 'maya_reaction_stable',
+        pattern: 'patience',
+        consequence: parentalWorkLegacy.choices[0].stateChanges[0]
+      },
+      {
+        choiceId: parentalWorkLegacy.choices[1].choiceId,
+        text: parentalWorkLegacy.choices[1].choiceText,
+        nextNodeId: 'maya_reaction_entrepreneur',
+        pattern: 'exploring',
+        consequence: parentalWorkLegacy.choices[1].stateChanges[0]
+      },
+      {
+        choiceId: parentalWorkLegacy.choices[2].choiceId,
+        text: parentalWorkLegacy.choices[2].choiceText,
+        nextNodeId: 'maya_reaction_struggling',
+        pattern: 'helping',
+        consequence: parentalWorkLegacy.choices[2].stateChanges[0]
+      },
+      {
+        choiceId: parentalWorkLegacy.choices[3].choiceId,
+        text: parentalWorkLegacy.choices[3].choiceText,
+        nextNodeId: 'maya_reaction_absent',
+        pattern: 'patience',
+        consequence: parentalWorkLegacy.choices[3].stateChanges[0]
+      }
+    ],
+    tags: ['reciprocity', 'player_reveal', 'maya_arc']
+  },
+
+  // ============= MEANINGFUL REACTIONS (Not quiz show responses) =============
+  {
+    nodeId: 'maya_reaction_stable',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "*Her eyes widen with recognition* | That makes so much sense. That consistency, that foundation... | I can see why you're so patient with people like me who are spiraling. You grew up with solid ground beneath you. | *She pauses, thoughtful* | For me, it was the opposite. My parents gave up everything stable to come here. Every day was a gamble on the future. | Maybe that's why your patience felt so... safe. Like something I could trust.",
+        emotion: 'understanding',
+        variation_id: 'stable_reaction_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'mutual_understanding',
+        text: "We balance each other out.",
+        nextNodeId: 'maya_farewell_robotics',
+        pattern: 'helping',
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1,
+          addKnowledgeFlags: ['shared_vulnerability', 'player_revealed_stable_parents']
+        }
+      }
+    ],
+    onEnter: [
+      {
+        addGlobalFlags: ['player_shared_parental_work_legacy']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'maya_reaction_entrepreneur',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "*She laughs, but it's not bitter - it's recognition* | Of course! That's why you pushed me toward robotics without hesitation. | Risk is normal for you. Starting fresh, building something from nothing - that's your inherited language. | *She looks at her med school textbooks* | My parents took one huge risk coming to America. They want me to never have to risk again. | But you... you grew up seeing risk as possibility, not threat. That's why you could see my path when I couldn't.",
+        emotion: 'dawning_understanding',
+        variation_id: 'entrepreneur_reaction_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'risk_as_inheritance',
+        text: "We inherit more than we realize.",
+        nextNodeId: 'maya_farewell_robotics',
+        pattern: 'analytical',
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1,
+          addKnowledgeFlags: ['shared_vulnerability', 'player_revealed_entrepreneur_parents']
+        }
+      }
+    ],
+    onEnter: [
+      {
+        addGlobalFlags: ['player_shared_parental_work_legacy']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'maya_reaction_struggling',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "*Her expression softens into something deeper than sympathy* | Oh. | *Long pause* | You know what it's like to watch someone you love fight just to stay afloat. | That's why you didn't try to fix me or minimize my struggle. You've seen what real weight looks like. | *She reaches toward you, then stops* | When you helped me, you weren't performing empathy. You were remembering. | That's... that's different. That's real.",
+        emotion: 'profound_connection',
+        variation_id: 'struggling_reaction_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'shared_weight',
+        text: "Some weights teach us how to help carry others.",
+        nextNodeId: 'maya_farewell_robotics',
+        pattern: 'helping',
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2,
+          addKnowledgeFlags: ['deep_vulnerability_shared', 'player_revealed_struggling_parents'],
+          setRelationshipStatus: 'profound_connection'
+        }
+      }
+    ],
+    onEnter: [
+      {
+        addGlobalFlags: ['player_shared_parental_work_legacy', 'deep_reciprocal_vulnerability']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'maya_reaction_absent',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "*She nods slowly, understanding crossing her face* | Success at the cost of presence. | You learned early that achievement and absence can be the same thing. | *She looks at her stack of study materials* | I've been so afraid of disappointing my parents, I never considered I might disappear into my achievements. | You saw that in me, didn't you? The risk of succeeding at the wrong thing.",
+        emotion: 'sobering_realization',
+        variation_id: 'absent_reaction_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'presence_matters',
+        text: "Being present for your own life matters too.",
+        nextNodeId: 'maya_farewell_robotics',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1,
+          addKnowledgeFlags: ['shared_vulnerability', 'player_revealed_absent_parents']
+        }
+      }
+    ],
+    onEnter: [
+      {
+        addGlobalFlags: ['player_shared_parental_work_legacy']
+      }
+    ]
   }
 ]
 
