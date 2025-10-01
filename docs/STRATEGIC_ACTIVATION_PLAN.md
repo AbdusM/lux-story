@@ -147,10 +147,14 @@ useEffect(() => {
 
 **Strategic Reasons**:
 1. **Grant-friendly**: WEF backing = credibility with funders
-2. **User-facing**: Transforms passive tracking → active learning feedback
+2. **Narrative-driven**: Transforms passive tracking → Samuel's personalized observations
 3. **Birmingham relevance**: Skills map directly to local job requirements
 4. **Already built**: 443 lines of complete backend logic
-5. **Simple UI**: "Skill demonstrated: Critical Thinking" notification
+5. **Immersive integration**: No UI additions, uses existing character dialogue
+
+**Critical Design Principle**: **Samuel as Skills Feedback Loop**
+
+Skills are NOT shown through UI notifications or progress bars. Instead, Samuel (the station keeper) becomes eerily personalized based on what he "notices" about the player's approach.
 
 **Implementation Path**:
 ```typescript
@@ -160,30 +164,63 @@ const choiceData = {
   skills: ['critical_thinking', 'creativity', 'empathy']
 }
 
-// After choice processing
+// Track silently in backend
 for (const skill of choiceData.skills) {
   skillTracker.trackDemonstration(skill, context)
-
-  // NEW: Surface to user
-  showSkillNotification({
-    skill: formatSkillName(skill),
-    message: "You demonstrated critical thinking by seeing a bridge between two passions"
-  })
 }
+
+// When generating Samuel's dialogue via LiveChoiceEngine
+const samuelPrompt = `
+Generate Samuel's response considering:
+- Player recently demonstrated: ${recentSkills.join(', ')}
+- Context: "Helped Maya bridge medicine/robotics"
+- Samuel's role: Observant station keeper
+
+Samuel should subtly reflect what he's noticed about the player's
+approach, connecting it to career paths without being preachy.
+
+Example: "I noticed how you approached Maya earlier - seeing the
+bridge between medicine and robotics. That kind of thinking opens doors."
+`
 ```
 
-**UI Integration**:
-- Subtle notification after choice (2-3 seconds)
-- Skill progress bar in UI corner
-- "Skills Developed" recap at chapter breaks
+**Example Samuel Enhancements**:
+
+*Critical Thinking Pattern*:
+```
+Traditional: "The platforms reveal different paths."
+Enhanced: "I watched you help Maya see robotics and medicine aren't
+opposites. That same thinking - finding bridges instead of choosing
+sides - it's what makes Platform 7½ appear for some travelers."
+```
+
+*Helping Pattern*:
+```
+Traditional: "You've helped several people tonight."
+Enhanced: "Devon needed that perspective on his festival plan. Maya
+needed permission to dream differently. You're seeing what people need
+before they ask for it - that's a rare skill. Healthcare? Teaching?
+Both need that."
+```
+
+**Narrative Integration** (Zero User-Facing UI):
+- No skill notifications or popups
+- No progress bars or explicit skill displays
+- Samuel's dialogue becomes personalized based on tracked skills
+- Player feels "seen" without gamification
+
+**Admin Dashboard Enhancement** (Counselor-Facing Only):
+- Explicit 2030 skills visualization in detailed dashboard
+- Skill trajectory graphs with Birmingham career connections
+- AI Briefing mentions specific skill patterns with evidence
 
 **Supabase Sync**:
-- Store in existing `skill_summaries` table
-- Enable admin dashboard to show skill trajectories
+- Store in `skill_summaries` table
 - Power cohort analytics (which skills are students developing?)
+- Enable grant-ready reports with WEF framework backing
 
 **Effort**: 1-2 days
-**ROI**: High (differentiates from "just a story" to "skill-building platform")
+**ROI**: High (differentiates from "just a story" to "skill-building platform" without breaking immersion)
 
 ---
 
@@ -256,43 +293,108 @@ for (const skill of choiceData.skills) {
 
 ---
 
-## Part 6: Week 2 Activation (2030 Skills)
+## Part 6: Week 2 Activation (Samuel Enhancement)
 
-### Goal: Show Users What They're Learning
+### Goal: Make Samuel Eerily Personalized (Zero User-Facing UI Changes)
 
 **Monday-Tuesday**: Backend Integration
-1. Map choice metadata to 2030 skills
-2. Update LiveChoiceEngine prompts to tag skills
-3. Test skill detection accuracy
+1. Map choice metadata to 2030 skills in dialogue graph
+2. Update PlayerPersona to track recent skill demonstrations with contexts
+3. Test skill tagging accuracy across 20+ key choice points
 
-**Wednesday-Thursday**: UI Components
-1. Create `SkillNotification` component (subtle, 2-3 sec display)
-2. Add skill progress indicator to UI corner
-3. Create "Skills Developed" recap for chapter breaks
-4. Test with student persona
+**Example Choice Metadata**:
+```typescript
+{
+  id: "maya-robotics-bridge",
+  text: "Why not medical robotics?",
+  skills: ['critical_thinking', 'creativity', 'empathy'],
+  context: "Helped Maya bridge medicine/robotics passions"
+}
+```
 
-**Friday**: Admin Dashboard
-1. Add skill trajectory visualization to detailed dashboard
-2. Show which 2030 skills student is developing
-3. Connect to Birmingham career requirements
+**Wednesday-Thursday**: Samuel Dialogue Enhancement
+1. Update LiveChoiceEngine system prompts for Samuel scenes
+2. Pass PlayerPersona with recent skills to Gemini generation
+3. Add skill-aware examples to Samuel prompt templates
+4. Test: Play through multiple paths → Samuel reflects YOUR choices
 
-**Acceptance**: Student sees "You demonstrated: Critical Thinking" after meaningful choices
+**Samuel Prompt Template Enhancement**:
+```typescript
+const samuelSystemPrompt = `
+You are Samuel, the wise station keeper at Grand Central Terminus.
+You notice patterns in how travelers approach choices.
+
+PLAYER CONTEXT:
+- Recent skills demonstrated: ${persona.recentSkills}
+- Latest example: "${persona.latestSkillContext}"
+- Platforms explored: ${persona.platformsVisited}
+- Helping vs Analyzing tendency: ${persona.patterns}
+
+Your dialogue should subtly reflect what you've observed about this
+specific traveler's approach. Make connections between their choices
+and career paths, but keep your wise, gentle tone. Never explicitly
+say "you demonstrated X skill" - show you noticed through observation.
+
+Examples:
+- If critical_thinking: "I watched how you helped Maya see bridges..."
+- If empathy pattern: "You're seeing what people need before they ask..."
+- If exploration: "Five platforms in one night. You're mapping the whole station..."
+`
+```
+
+**Friday**: Admin Dashboard Enhancement (Counselor-Facing)
+1. Add 2030 Skills visualization to detailed dashboard (6th section within tabs)
+2. Show skill trajectory graph with demonstration counts
+3. Connect skills to Birmingham career requirements
+4. Update AI Briefing to reference specific skill patterns with evidence
+
+**Admin Dashboard Addition**:
+```typescript
+<Card>
+  <CardHeader>
+    <CardTitle>2030 Skills Development</CardTitle>
+    <p>WEF Future of Jobs Framework</p>
+  </CardHeader>
+  <CardContent>
+    {skills.map(skill => (
+      <div key={skill.name}>
+        <h4>{skill.name}</h4>
+        <ProgressBar value={skill.count} max={10} />
+        <p>Latest: "{skill.latestContext}"</p>
+      </div>
+    ))}
+  </CardContent>
+</Card>
+```
+
+**Acceptance Criteria**:
+- [ ] Player experiences personalized Samuel dialogue based on their choices
+- [ ] No UI changes visible to students (narrative only)
+- [ ] Admin dashboard shows explicit 2030 skills with evidence
+- [ ] AI Briefing references skills with specific examples
+- [ ] Immersion preserved (no gamification feel)
 
 ---
 
 ## Part 7: Success Metrics (Pilot Launch Criteria)
 
 ### Technical Completeness
-- [ ] Urgency + Skills in unified dashboard
+- [ ] Urgency + Skills in unified admin dashboard
 - [ ] Career analytics persist across sessions
 - [ ] Skill summaries sync to Supabase
 - [ ] Cross-device hydration works
-- [ ] 2030 Skills user-visible
+- [ ] 2030 Skills tracked backend, reflected in Samuel dialogue
 
 ### User Experience
-- [ ] Counselor workflow: Urgency → Detailed View → AI Briefing (no context loss)
-- [ ] Student workflow: Make choice → See skill feedback → Feel progress
-- [ ] Admin workflow: View cohort → Identify patterns → Export reports
+- [ ] **Counselor workflow**: Urgency → Detailed View → AI Briefing (no context loss)
+- [ ] **Student workflow**: Make choice → Samuel reflects your approach → Feel understood (not gamified)
+- [ ] **Admin workflow**: View cohort → See skill trajectories → Export grant-ready reports
+
+### Immersion Preservation
+- [ ] Zero new UI elements for students (no popups, progress bars, skill notifications)
+- [ ] Samuel's dialogue feels personalized based on actual choices
+- [ ] Narrative experience unchanged from student perspective
+- [ ] Skills tracking invisible to students, explicit to counselors
 
 ### Data Integrity
 - [ ] Supabase is verifiably single source of truth (test: clear localStorage → app hydrates from DB)
@@ -313,6 +415,8 @@ for (const skill of choiceData.skills) {
 3. **Don't add new features** - Connect existing excellence first
 4. **Don't optimize for scale** - 50-100 students is pilot target
 5. **Don't perfectionist the code** - Ship the value, refine in production
+6. **Don't add user-facing UI for skills** - Keep narrative immersion, use Samuel as feedback loop
+7. **Don't gamify the experience** - No progress bars, achievements, or explicit skill notifications for students
 
 ---
 
@@ -351,14 +455,17 @@ SyncQueue = truth delivery mechanism
 
 **Payback Period**: 1 week of pilot usage
 
-### Week 2 Investment: ~12-16 hours (2030 Skills)
+### Week 2 Investment: ~12-16 hours (Samuel Enhancement)
 **Returns**:
 - Skill-based differentiation (vs "just a narrative game")
 - Grant application credibility (WEF research backing)
-- Student motivation (visible progress feedback)
+- Student connection (Samuel becomes eerily personalized without breaking immersion)
 - Cohort insights (which skills are students developing?)
+- Zero UI debt (uses existing character, no new components to maintain)
 
 **Payback Period**: First grant application / sales demo
+
+**Key Innovation**: Skills tracking without gamification - students feel "seen" through narrative, counselors see explicit WEF framework data
 
 ### Total 2-Week Investment: ~30-35 hours
 **Returns**: Complete, differentiated, pilot-ready product with unified data architecture
@@ -372,14 +479,16 @@ SyncQueue = truth delivery mechanism
 2. Counselor intelligence system (intervention + analytics)
 
 **Week 1 makes them shake hands.**
-**Week 2 shows your differentiation.**
+**Week 2 shows your differentiation through Samuel's personalized wisdom.**
 **Then you ship.**
 
 Everything else - Erikson frameworks, neuroscience systems, advanced cohort analytics - is your Series A differentiation. Bank it for later.
 
 **The mandate is clear**: Supabase is the single source of truth. This isn't just a technical decision - it's the philosophical foundation that enables everything else.
 
-Ship what you have + the urgency fix + data persistence + 2030 Skills.
+**The design principle is clear**: No user-facing UI for skills. Samuel becomes the feedback loop. Immersion stays intact, counselors get WEF-backed data.
+
+Ship what you have + the urgency fix + data persistence + Samuel enhancement.
 **That's not a pilot. That's a product.**
 
 ---
