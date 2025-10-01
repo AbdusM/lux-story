@@ -2,12 +2,8 @@
 const nextConfig = {
   reactStrictMode: true,
 
-  // Environment-specific configuration
-  ...(process.env.NODE_ENV === 'production' && {
-    // Enable static export for Cloudflare Pages (production only)
-    output: 'export',
-    trailingSlash: true,
-  }),
+  // Vercel handles serverless functions automatically - no static export needed
+  // (Removed output: 'export' to enable API routes in production)
 
   images: {
     unoptimized: true
