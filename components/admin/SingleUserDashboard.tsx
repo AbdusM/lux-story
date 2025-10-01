@@ -251,6 +251,40 @@ const mockUserData = {
   ]
 };
 
+/**
+ * Data Source Badge Component
+ * Shows whether framework is using real, partial, or mock data
+ */
+function DataSourceBadge({
+  hasRealData,
+  minDemonstrations,
+  actualDemonstrations
+}: {
+  hasRealData: boolean
+  minDemonstrations: number
+  actualDemonstrations: number
+}) {
+  if (hasRealData && actualDemonstrations >= minDemonstrations) {
+    return (
+      <Badge variant="outline" className="bg-green-100 text-green-800 border-green-300 text-xs">
+        ✓ Real Data ({actualDemonstrations} demos)
+      </Badge>
+    )
+  } else if (actualDemonstrations >= Math.floor(minDemonstrations / 2)) {
+    return (
+      <Badge variant="outline" className="bg-yellow-100 text-yellow-800 border-yellow-300 text-xs">
+        ⚠ Partial ({actualDemonstrations}/{minDemonstrations} demos)
+      </Badge>
+    )
+  } else {
+    return (
+      <Badge variant="outline" className="bg-gray-100 text-gray-800 border-gray-300 text-xs">
+        ⊗ Mock Data ({actualDemonstrations}/{minDemonstrations} demos)
+      </Badge>
+    )
+  }
+}
+
 const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profile }) => {
   const [activeTab, setActiveTab] = useState("urgency");
   const user = profile; // Use real profile data instead of mock
@@ -845,12 +879,41 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
 
         {/* EVIDENCE TAB - Scientific frameworks and outcomes */}
         <TabsContent value="evidence" className="space-y-4">
-          {/* MOCK DATA WARNING */}
-          <Alert className="bg-yellow-50 border-yellow-400">
-            <AlertCircle className="h-4 w-4 text-yellow-600" />
+          {/* DATA SOURCE INDICATOR */}
+          <Alert className={
+            user.totalDemonstrations >= 10 ? "bg-blue-50 border-blue-400" :
+            user.totalDemonstrations >= 5 ? "bg-yellow-50 border-yellow-400" :
+            "bg-gray-50 border-gray-400"
+          }>
+            <AlertCircle className={`h-4 w-4 ${
+              user.totalDemonstrations >= 10 ? "text-blue-600" :
+              user.totalDemonstrations >= 5 ? "text-yellow-600" :
+              "text-gray-600"
+            }`} />
             <AlertDescription>
-              <strong>Demo Mode:</strong> Evidence frameworks below are prototypes showing the scientific foundation.
-              Production version will pull from real student interaction data and validated assessment instruments.
+              <div className="flex items-center justify-between">
+                <div>
+                  <strong>Data Source Status:</strong>{" "}
+                  {user.totalDemonstrations >= 10 ? (
+                    <span className="text-blue-700">
+                      Real Student Data ({user.totalDemonstrations} demonstrations)
+                    </span>
+                  ) : user.totalDemonstrations >= 5 ? (
+                    <span className="text-yellow-700">
+                      Partial Data ({user.totalDemonstrations} demonstrations - need 10+ for full analysis)
+                    </span>
+                  ) : (
+                    <span className="text-gray-700">
+                      Insufficient Data ({user.totalDemonstrations} demonstrations - need 10+ for frameworks)
+                    </span>
+                  )}
+                </div>
+                {user.totalDemonstrations < 10 && (
+                  <Badge variant="outline" className="bg-yellow-100 text-yellow-800">
+                    Using Mock Data Below
+                  </Badge>
+                )}
+              </div>
             </AlertDescription>
           </Alert>
           <Card>
@@ -868,7 +931,11 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                   <p className="font-medium text-sm">World Economic Forum - Future of Jobs Report 2030</p>
                   <div className="flex items-center gap-2">
                     <Badge variant="default">12 Skills Tracked</Badge>
-                    <Badge variant="outline" className="bg-yellow-100 text-yellow-800 text-xs">Mock Data</Badge>
+                    <DataSourceBadge
+                      hasRealData={false}
+                      minDemonstrations={10}
+                      actualDemonstrations={user.totalDemonstrations}
+                    />
                   </div>
                 </div>
                 <p className="text-xs text-muted-foreground">
