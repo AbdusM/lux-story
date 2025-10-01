@@ -5,22 +5,49 @@
  * Provides singleton Supabase client for database operations
  */
 
-import { createClient } from '@supabase/supabase-js'
+import { createClient, SupabaseClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+let _supabaseInstance: SupabaseClient | null = null
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.warn('[Supabase] Missing environment variables. Database features disabled.')
+/**
+ * Lazy-initialized Supabase client singleton
+ * Allows environment variables to be loaded before client creation
+ */
+function getSupabaseClient(): SupabaseClient {
+  if (_supabaseInstance) {
+    return _supabaseInstance
+  }
+
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    console.warn('[Supabase] Missing environment variables. Database features disabled.')
+    // Return a mock client that will fail gracefully
+    throw new Error('Supabase configuration missing. Check NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY')
+  }
+
+  _supabaseInstance = createClient(supabaseUrl, supabaseAnonKey, {
+    auth: {
+      persistSession: false // We handle our own session management
+    }
+  })
+
+  return _supabaseInstance
 }
 
 /**
  * Supabase client singleton
  * Use this for all database operations
  */
-export const supabase = createClient(supabaseUrl || '', supabaseAnonKey || '', {
-  auth: {
-    persistSession: false // We handle our own session management
+export const supabase = new Proxy({} as SupabaseClient, {
+  get(_target, prop) {
+    const client = getSupabaseClient()
+    const value = (client as any)[prop]
+    if (typeof value === 'function') {
+      return value.bind(client)
+    }
+    return value
   }
 })
 

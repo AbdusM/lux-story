@@ -96,3 +96,22 @@ export function loadMetrics(userId: string): any {
     return null
   }
 }
+
+// Player data storage (for DatabaseService compatibility)
+export function getStoredPlayerData(userId: string): any | null {
+  const key = `lux-player-data-${userId}`
+  const stored = safeStorage.getItem(key)
+  if (!stored) return null
+
+  try {
+    return JSON.parse(stored)
+  } catch (error) {
+    console.warn('Failed to parse player data:', error)
+    return null
+  }
+}
+
+export function savePlayerData(userId: string, data: any): boolean {
+  const key = `lux-player-data-${userId}`
+  return safeStorage.setItem(key, JSON.stringify(data))
+}

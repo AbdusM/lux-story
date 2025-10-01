@@ -9,6 +9,8 @@ import { trackUserChoice, getUserInsights, getBirminghamMatches } from '@/lib/si
 import { getCachedBridge, preloadCommonBridges } from '@/lib/gemini-bridge'
 import { SkillTracker } from '@/lib/skill-tracker'
 import type { SkillProfile } from '@/lib/skill-tracker'
+import { SyncQueue, generateActionId } from '@/lib/sync-queue'
+import { useBackgroundSync } from './useBackgroundSync'
 
 // Background validation and streamlining
 const validateStoryInBackground = async () => {
@@ -1117,6 +1119,15 @@ export function useSimpleGame() {
   // SkillTracker ref - initialized when game starts
   const skillTrackerRef = useRef<SkillTracker | null>(null)
 
+  // Background sync for durable offline-first database writes
+  // Guarantees zero data loss even with spotty network connection
+  const { queueStats } = useBackgroundSync({
+    enabled: true,
+    intervalMs: 30000, // Sync every 30 seconds
+    syncOnFocus: true, // Sync when user returns to tab
+    syncOnOnline: true // Sync when network restored
+  })
+
   // Helper function to parse text into dialogue chunks
   const parseTextIntoChunks = useCallback((text: string): Array<{ text: string; type: string }> => {
     // Split by double line breaks to create major sections
@@ -1191,7 +1202,15 @@ export function useSimpleGame() {
 
   const handleStartGame = useCallback(() => {
     setGameState(prev => ({ ...prev, hasStarted: true }))
-  }, [])
+
+    // === DURABLE QUEUE: Record journey start milestone ===
+    SyncQueue.addToQueue({
+      id: generateActionId(),
+      method: 'recordMilestone',
+      args: [gameState.userId, 'journey_start', 'Player began Grand Central Terminus journey'],
+      timestamp: Date.now()
+    })
+  }, [gameState.userId])
 
   // Get contextual fallback based on source scene for intelligent emergency navigation
   const getContextualFallback = useCallback((sourceScene?: string): string => {
@@ -1243,12 +1262,37 @@ export function useSimpleGame() {
     // Track the choice
     trackUserChoice(gameState.userId, validatedChoice)
 
+    // === DURABLE QUEUE: Record choice ===
+    // Guarantees this choice will sync to Supabase even if network fails
+    SyncQueue.addToQueue({
+      id: generateActionId(),
+      method: 'recordChoice',
+      args: [
+        gameState.userId,
+        currentSceneBeforeChoice,
+        validatedChoice.text || 'unknown',
+        validatedChoice.text
+      ],
+      timestamp: Date.now()
+    })
+
     // Save progress
     const newChoiceHistory = [...gameState.choiceHistory, validatedChoice.text]
     saveProgress({
       currentScene: validatedChoice.next || gameState.currentScene,
       choiceHistory: newChoiceHistory
     })
+
+    // === DURABLE QUEUE: Record scene visit ===
+    // Queue the next scene visit if we're moving to a new scene
+    if (validatedChoice.next && validatedChoice.next !== gameState.currentScene) {
+      SyncQueue.addToQueue({
+        id: generateActionId(),
+        method: 'recordSceneVisit',
+        args: [gameState.userId, validatedChoice.next],
+        timestamp: Date.now()
+      })
+    }
 
     // Get the next scene to determine speaker
     const nextScene = SIMPLE_SCENES[validatedChoice.next as keyof typeof SIMPLE_SCENES]
@@ -1277,10 +1321,27 @@ export function useSimpleGame() {
 
       // Update player patterns based on choice
       if (validatedChoice.pattern && validatedChoice.pattern in prev.playerPatterns) {
+        const patternName = validatedChoice.pattern as keyof PlayerPatterns
+        const newValue = prev.playerPatterns[patternName] + 1
+
         newState.playerPatterns = {
           ...prev.playerPatterns,
-          [validatedChoice.pattern as keyof PlayerPatterns]: prev.playerPatterns[validatedChoice.pattern as keyof PlayerPatterns] + 1
+          [patternName]: newValue
         }
+
+        // === DURABLE QUEUE: Update pattern ===
+        // Queue pattern update to Supabase
+        SyncQueue.addToQueue({
+          id: generateActionId(),
+          method: 'updatePlayerPattern',
+          args: [
+            gameState.userId,
+            patternName,
+            newValue / 10, // Normalize to 0-1 range (assuming max ~10 demonstrations)
+            newValue  // demonstration count
+          ],
+          timestamp: Date.now()
+        })
       }
 
       // Update character relationships based on consequences

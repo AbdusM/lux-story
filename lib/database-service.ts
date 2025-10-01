@@ -52,6 +52,43 @@ interface RelationshipProgress {
   keyMoments: Array<{ scene: string; choice: string; timestamp: Date }>
 }
 
+// ============================================================================
+// NORMALIZED SCHEMA INTERFACES (Migration 002)
+// ============================================================================
+
+interface PlayerPattern {
+  patternName: 'helping' | 'analyzing' | 'building' | 'exploring' | 'patience' | 'rushing'
+  patternValue: number // 0.00 to 1.00
+  demonstrationCount: number
+}
+
+interface BehavioralProfile {
+  responseSpeed?: 'deliberate' | 'moderate' | 'quick' | 'impulsive'
+  stressResponse?: 'calm' | 'adaptive' | 'reactive' | 'overwhelmed'
+  socialOrientation?: 'helper' | 'collaborator' | 'independent' | 'observer'
+  problemApproach?: 'analytical' | 'creative' | 'practical' | 'intuitive'
+  communicationStyle?: 'direct' | 'thoughtful' | 'expressive' | 'reserved'
+  culturalAlignment?: number // 0.00 to 1.00
+  totalChoices?: number
+  avgResponseTimeMs?: number
+  summaryText?: string
+}
+
+interface Choice {
+  sceneId: string
+  choiceId: string
+  choiceText: string
+  chosenAt: Date
+}
+
+interface Milestone {
+  milestoneType: 'journey_start' | 'first_demonstration' | 'five_demonstrations' |
+                 'ten_demonstrations' | 'fifteen_demonstrations' | 'character_trust_gained' |
+                 'platform_discovered' | 'arc_completed'
+  milestoneContext?: string
+  reachedAt: Date
+}
+
 /**
  * Database Service
  * Provides unified interface for data operations
@@ -168,6 +205,142 @@ export class DatabaseService {
   }
 
   // ============================================================================
+  // GAME PROGRESS OPERATIONS (Migration 002 - Normalized Schema)
+  // ============================================================================
+
+  async recordSceneVisit(userId: string, sceneId: string): Promise<void> {
+    if (this.mode === 'localStorage') {
+      return this.recordSceneVisitToLocalStorage(userId, sceneId)
+    }
+
+    if (this.mode === 'dual-write') {
+      await Promise.all([
+        this.recordSceneVisitToLocalStorage(userId, sceneId),
+        this.recordSceneVisitToSupabase(userId, sceneId)
+      ])
+      return
+    }
+
+    return this.recordSceneVisitToSupabase(userId, sceneId)
+  }
+
+  async recordChoice(userId: string, sceneId: string, choiceId: string, choiceText: string): Promise<void> {
+    if (this.mode === 'localStorage') {
+      return this.recordChoiceToLocalStorage(userId, sceneId, choiceId, choiceText)
+    }
+
+    if (this.mode === 'dual-write') {
+      await Promise.all([
+        this.recordChoiceToLocalStorage(userId, sceneId, choiceId, choiceText),
+        this.recordChoiceToSupabase(userId, sceneId, choiceId, choiceText)
+      ])
+      return
+    }
+
+    return this.recordChoiceToSupabase(userId, sceneId, choiceId, choiceText)
+  }
+
+  async getVisitedScenes(userId: string): Promise<string[]> {
+    if (this.mode === 'localStorage' || this.mode === 'dual-write') {
+      return this.getVisitedScenesFromLocalStorage(userId)
+    }
+
+    return this.getVisitedScenesFromSupabase(userId)
+  }
+
+  async getChoiceHistory(userId: string): Promise<Choice[]> {
+    if (this.mode === 'localStorage' || this.mode === 'dual-write') {
+      return this.getChoiceHistoryFromLocalStorage(userId)
+    }
+
+    return this.getChoiceHistoryFromSupabase(userId)
+  }
+
+  // ============================================================================
+  // PATTERN OPERATIONS (Migration 002)
+  // ============================================================================
+
+  async updatePlayerPattern(userId: string, patternName: PlayerPattern['patternName'], value: number, demonstrationCount: number = 0): Promise<void> {
+    if (this.mode === 'localStorage') {
+      return this.updatePatternInLocalStorage(userId, patternName, value, demonstrationCount)
+    }
+
+    if (this.mode === 'dual-write') {
+      await Promise.all([
+        this.updatePatternInLocalStorage(userId, patternName, value, demonstrationCount),
+        this.updatePatternInSupabase(userId, patternName, value, demonstrationCount)
+      ])
+      return
+    }
+
+    return this.updatePatternInSupabase(userId, patternName, value, demonstrationCount)
+  }
+
+  async getPlayerPatterns(userId: string): Promise<Record<string, number>> {
+    if (this.mode === 'localStorage' || this.mode === 'dual-write') {
+      return this.getPatternsFromLocalStorage(userId)
+    }
+
+    return this.getPatternsFromSupabase(userId)
+  }
+
+  // ============================================================================
+  // BEHAVIORAL PROFILE OPERATIONS (Migration 002)
+  // ============================================================================
+
+  async updateBehavioralProfile(userId: string, profile: BehavioralProfile): Promise<void> {
+    if (this.mode === 'localStorage') {
+      return this.updateBehavioralProfileInLocalStorage(userId, profile)
+    }
+
+    if (this.mode === 'dual-write') {
+      await Promise.all([
+        this.updateBehavioralProfileInLocalStorage(userId, profile),
+        this.updateBehavioralProfileInSupabase(userId, profile)
+      ])
+      return
+    }
+
+    return this.updateBehavioralProfileInSupabase(userId, profile)
+  }
+
+  async getBehavioralProfile(userId: string): Promise<BehavioralProfile | null> {
+    if (this.mode === 'localStorage' || this.mode === 'dual-write') {
+      return this.getBehavioralProfileFromLocalStorage(userId)
+    }
+
+    return this.getBehavioralProfileFromSupabase(userId)
+  }
+
+  // ============================================================================
+  // MILESTONE OPERATIONS (Migration 002)
+  // ============================================================================
+
+  async recordMilestone(userId: string, milestoneType: Milestone['milestoneType'], context?: string): Promise<void> {
+    if (this.mode === 'localStorage') {
+      return this.recordMilestoneToLocalStorage(userId, milestoneType, context)
+    }
+
+    if (this.mode === 'dual-write') {
+      await Promise.all([
+        this.recordMilestoneToLocalStorage(userId, milestoneType, context),
+        this.recordMilestoneToSupabase(userId, milestoneType, context)
+      ])
+      return
+    }
+
+    return this.recordMilestoneToSupabase(userId, milestoneType, context)
+  }
+
+  async getMilestones(userId: string): Promise<Milestone[]> {
+    if (this.mode === 'localStorage' || this.mode === 'dual-write') {
+      return this.getMilestonesFromLocalStorage(userId)
+    }
+
+    return this.getMilestonesFromSupabase(userId)
+  }
+
+  // ============================================================================
   // LOCALSTORAGE IMPLEMENTATIONS
   // ============================================================================
 
@@ -258,6 +431,126 @@ export class DatabaseService {
       ...data,
       relationships
     })
+  }
+
+  // ============================================================================
+  // NORMALIZED SCHEMA - LOCALSTORAGE IMPLEMENTATIONS (Migration 002)
+  // ============================================================================
+
+  private recordSceneVisitToLocalStorage(userId: string, sceneId: string): void {
+    const data = getStoredPlayerData(userId) || {}
+    const visitedScenes = new Set<string>(data.visitedScenes || [])
+    visitedScenes.add(sceneId)
+
+    savePlayerData(userId, {
+      ...data,
+      visitedScenes: Array.from(visitedScenes)
+    })
+  }
+
+  private recordChoiceToLocalStorage(userId: string, sceneId: string, choiceId: string, choiceText: string): void {
+    const data = getStoredPlayerData(userId) || {}
+    const choiceHistory = data.choiceHistory || []
+
+    choiceHistory.push({
+      sceneId,
+      choiceId,
+      choiceText,
+      chosenAt: new Date().toISOString()
+    })
+
+    savePlayerData(userId, {
+      ...data,
+      choiceHistory
+    })
+  }
+
+  private getVisitedScenesFromLocalStorage(userId: string): string[] {
+    const data = getStoredPlayerData(userId)
+    return data?.visitedScenes || []
+  }
+
+  private getChoiceHistoryFromLocalStorage(userId: string): Choice[] {
+    const data = getStoredPlayerData(userId)
+    if (!data?.choiceHistory) return []
+
+    return data.choiceHistory.map((choice: any) => ({
+      sceneId: choice.sceneId,
+      choiceId: choice.choiceId,
+      choiceText: choice.choiceText,
+      chosenAt: new Date(choice.chosenAt)
+    }))
+  }
+
+  private updatePatternInLocalStorage(userId: string, patternName: string, value: number, demonstrationCount: number): void {
+    const data = getStoredPlayerData(userId) || {}
+    const patterns = data.patterns || {}
+
+    patterns[patternName] = {
+      value,
+      demonstrationCount,
+      updatedAt: new Date().toISOString()
+    }
+
+    savePlayerData(userId, {
+      ...data,
+      patterns
+    })
+  }
+
+  private getPatternsFromLocalStorage(userId: string): Record<string, number> {
+    const data = getStoredPlayerData(userId)
+    if (!data?.patterns) return {}
+
+    const result: Record<string, number> = {}
+    for (const [key, pattern] of Object.entries(data.patterns)) {
+      result[key] = (pattern as any).value
+    }
+    return result
+  }
+
+  private updateBehavioralProfileInLocalStorage(userId: string, profile: BehavioralProfile): void {
+    const data = getStoredPlayerData(userId) || {}
+
+    savePlayerData(userId, {
+      ...data,
+      behavioralProfile: {
+        ...profile,
+        updatedAt: new Date().toISOString()
+      }
+    })
+  }
+
+  private getBehavioralProfileFromLocalStorage(userId: string): BehavioralProfile | null {
+    const data = getStoredPlayerData(userId)
+    return data?.behavioralProfile || null
+  }
+
+  private recordMilestoneToLocalStorage(userId: string, milestoneType: string, context?: string): void {
+    const data = getStoredPlayerData(userId) || {}
+    const milestones = data.milestones || []
+
+    milestones.push({
+      milestoneType,
+      milestoneContext: context,
+      reachedAt: new Date().toISOString()
+    })
+
+    savePlayerData(userId, {
+      ...data,
+      milestones
+    })
+  }
+
+  private getMilestonesFromLocalStorage(userId: string): Milestone[] {
+    const data = getStoredPlayerData(userId)
+    if (!data?.milestones) return []
+
+    return data.milestones.map((milestone: any) => ({
+      milestoneType: milestone.milestoneType,
+      milestoneContext: milestone.milestoneContext,
+      reachedAt: new Date(milestone.reachedAt)
+    }))
   }
 
   // ============================================================================
@@ -375,6 +668,201 @@ export class DatabaseService {
       console.error('[DatabaseService] Error updating relationship:', error)
       throw error
     }
+  }
+
+  // ============================================================================
+  // NORMALIZED SCHEMA - SUPABASE IMPLEMENTATIONS (Migration 002)
+  // ============================================================================
+
+  private async recordSceneVisitToSupabase(userId: string, sceneId: string): Promise<void> {
+    const { error } = await supabase
+      .from('visited_scenes')
+      .upsert({
+        player_id: userId,
+        scene_id: sceneId,
+        visited_at: new Date().toISOString()
+      }, {
+        onConflict: 'player_id,scene_id',
+        ignoreDuplicates: true
+      })
+
+    if (error) {
+      console.error('[DatabaseService] Error recording scene visit:', error)
+      throw error
+    }
+  }
+
+  private async recordChoiceToSupabase(userId: string, sceneId: string, choiceId: string, choiceText: string): Promise<void> {
+    const { error } = await supabase
+      .from('choice_history')
+      .insert({
+        player_id: userId,
+        scene_id: sceneId,
+        choice_id: choiceId,
+        choice_text: choiceText,
+        chosen_at: new Date().toISOString()
+      })
+
+    if (error) {
+      console.error('[DatabaseService] Error recording choice:', error)
+      throw error
+    }
+  }
+
+  private async getVisitedScenesFromSupabase(userId: string): Promise<string[]> {
+    const { data, error } = await supabase
+      .from('visited_scenes')
+      .select('scene_id')
+      .eq('player_id', userId)
+
+    if (error) {
+      console.error('[DatabaseService] Error fetching visited scenes:', error)
+      return []
+    }
+
+    return data.map(row => row.scene_id)
+  }
+
+  private async getChoiceHistoryFromSupabase(userId: string): Promise<Choice[]> {
+    const { data, error } = await supabase
+      .from('choice_history')
+      .select('scene_id, choice_id, choice_text, chosen_at')
+      .eq('player_id', userId)
+      .order('chosen_at', { ascending: false })
+
+    if (error) {
+      console.error('[DatabaseService] Error fetching choice history:', error)
+      return []
+    }
+
+    return data.map(row => ({
+      sceneId: row.scene_id,
+      choiceId: row.choice_id,
+      choiceText: row.choice_text,
+      chosenAt: new Date(row.chosen_at)
+    }))
+  }
+
+  private async updatePatternInSupabase(userId: string, patternName: string, value: number, demonstrationCount: number): Promise<void> {
+    const { error } = await supabase
+      .from('player_patterns')
+      .upsert({
+        player_id: userId,
+        pattern_name: patternName,
+        pattern_value: value,
+        demonstration_count: demonstrationCount,
+        updated_at: new Date().toISOString()
+      }, {
+        onConflict: 'player_id,pattern_name'
+      })
+
+    if (error) {
+      console.error('[DatabaseService] Error updating player pattern:', error)
+      throw error
+    }
+  }
+
+  private async getPatternsFromSupabase(userId: string): Promise<Record<string, number>> {
+    const { data, error } = await supabase
+      .from('player_patterns')
+      .select('pattern_name, pattern_value')
+      .eq('player_id', userId)
+
+    if (error) {
+      console.error('[DatabaseService] Error fetching player patterns:', error)
+      return {}
+    }
+
+    const result: Record<string, number> = {}
+    for (const row of data) {
+      result[row.pattern_name] = row.pattern_value
+    }
+    return result
+  }
+
+  private async updateBehavioralProfileInSupabase(userId: string, profile: BehavioralProfile): Promise<void> {
+    const { error } = await supabase
+      .from('player_behavioral_profiles')
+      .upsert({
+        player_id: userId,
+        response_speed: profile.responseSpeed,
+        stress_response: profile.stressResponse,
+        social_orientation: profile.socialOrientation,
+        problem_approach: profile.problemApproach,
+        communication_style: profile.communicationStyle,
+        cultural_alignment: profile.culturalAlignment,
+        total_choices: profile.totalChoices,
+        avg_response_time_ms: profile.avgResponseTimeMs,
+        summary_text: profile.summaryText,
+        updated_at: new Date().toISOString()
+      })
+
+    if (error) {
+      console.error('[DatabaseService] Error updating behavioral profile:', error)
+      throw error
+    }
+  }
+
+  private async getBehavioralProfileFromSupabase(userId: string): Promise<BehavioralProfile | null> {
+    const { data, error } = await supabase
+      .from('player_behavioral_profiles')
+      .select('*')
+      .eq('player_id', userId)
+      .single()
+
+    if (error) {
+      console.error('[DatabaseService] Error fetching behavioral profile:', error)
+      return null
+    }
+
+    if (!data) return null
+
+    return {
+      responseSpeed: data.response_speed,
+      stressResponse: data.stress_response,
+      socialOrientation: data.social_orientation,
+      problemApproach: data.problem_approach,
+      communicationStyle: data.communication_style,
+      culturalAlignment: data.cultural_alignment,
+      totalChoices: data.total_choices,
+      avgResponseTimeMs: data.avg_response_time_ms,
+      summaryText: data.summary_text
+    }
+  }
+
+  private async recordMilestoneToSupabase(userId: string, milestoneType: string, context?: string): Promise<void> {
+    const { error } = await supabase
+      .from('skill_milestones')
+      .insert({
+        player_id: userId,
+        milestone_type: milestoneType,
+        milestone_context: context,
+        reached_at: new Date().toISOString()
+      })
+
+    if (error) {
+      console.error('[DatabaseService] Error recording milestone:', error)
+      throw error
+    }
+  }
+
+  private async getMilestonesFromSupabase(userId: string): Promise<Milestone[]> {
+    const { data, error } = await supabase
+      .from('skill_milestones')
+      .select('milestone_type, milestone_context, reached_at')
+      .eq('player_id', userId)
+      .order('reached_at', { ascending: false })
+
+    if (error) {
+      console.error('[DatabaseService] Error fetching milestones:', error)
+      return []
+    }
+
+    return data.map(row => ({
+      milestoneType: row.milestone_type,
+      milestoneContext: row.milestone_context,
+      reachedAt: new Date(row.reached_at)
+    }))
   }
 }
 

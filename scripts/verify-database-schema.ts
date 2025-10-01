@@ -17,8 +17,8 @@ async function verifySchema() {
   const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   const supabase = createClient(supabaseUrl, supabaseKey)
 
-  // Expected tables
-  const expectedTables = [
+  // Expected tables (Migration 001)
+  const migration001Tables = [
     'player_profiles',
     'skill_demonstrations',
     'career_explorations',
@@ -26,11 +26,24 @@ async function verifySchema() {
     'platform_states'
   ]
 
-  console.log('📋 Checking for required tables...\n')
+  // Expected tables (Migration 002 - Normalized Schema)
+  const migration002Tables = [
+    'visited_scenes',
+    'choice_history',
+    'player_patterns',
+    'player_behavioral_profiles',
+    'skill_milestones',
+    'relationship_key_moments',
+    'career_local_opportunities'
+  ]
 
-  let allTablesExist = true
+  const allTables = [...migration001Tables, ...migration002Tables]
 
-  for (const tableName of expectedTables) {
+  console.log('📋 Checking Migration 001 tables (Core Schema)...\n')
+
+  let migration001Complete = true
+
+  for (const tableName of migration001Tables) {
     const { data, error } = await supabase
       .from(tableName)
       .select('*')
@@ -39,7 +52,26 @@ async function verifySchema() {
     if (error) {
       console.log(`❌ ${tableName}: MISSING or ERROR`)
       console.log(`   Error: ${error.message}`)
-      allTablesExist = false
+      migration001Complete = false
+    } else {
+      console.log(`✅ ${tableName}: EXISTS`)
+    }
+  }
+
+  console.log('\n📋 Checking Migration 002 tables (Normalized Schema)...\n')
+
+  let migration002Complete = true
+
+  for (const tableName of migration002Tables) {
+    const { data, error } = await supabase
+      .from(tableName)
+      .select('*')
+      .limit(0)
+
+    if (error) {
+      console.log(`❌ ${tableName}: MISSING or ERROR`)
+      console.log(`   Error: ${error.message}`)
+      migration002Complete = false
     } else {
       console.log(`✅ ${tableName}: EXISTS`)
     }
@@ -48,16 +80,24 @@ async function verifySchema() {
   console.log('\n📊 Schema Validation Results:')
   console.log('─'.repeat(50))
 
-  if (allTablesExist) {
-    console.log('✅ All 5 tables created successfully!')
-    console.log('\n🎯 Database Schema Status: READY')
+  if (migration001Complete && migration002Complete) {
+    console.log('✅ All 12 tables created successfully!')
+    console.log('   • Migration 001: 5/5 tables ✅')
+    console.log('   • Migration 002: 7/7 tables ✅')
+    console.log('\n🎯 Database Schema Status: READY FOR DUAL-WRITE')
     console.log('\n📌 Next Steps:')
     console.log('   1. Switch to dual-write mode in lib/database-service.ts')
-    console.log('   2. Test data persistence with test users')
-    console.log('   3. Verify admin dashboard reads from Supabase')
+    console.log('   2. Integrate Supabase writes in useSimpleGame.ts')
+    console.log('   3. Test data consistency between localStorage and Supabase')
   } else {
     console.log('❌ Some tables are missing or have errors')
-    console.log('\n💡 Fix: Run migration again with:')
+    if (!migration001Complete) {
+      console.log('   • Migration 001: INCOMPLETE')
+    }
+    if (!migration002Complete) {
+      console.log('   • Migration 002: INCOMPLETE')
+    }
+    console.log('\n💡 Fix: Run migrations with:')
     console.log('   supabase db push')
   }
 
