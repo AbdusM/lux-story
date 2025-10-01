@@ -1,5 +1,61 @@
 'use client'
 
+/**
+ * SingleUserDashboard - Skills Analytics Dashboard
+ *
+ * MOCK DATA REPLACEMENT CHECKLIST (Priority Order):
+ * ================================================
+ *
+ * 🔴 HIGH PRIORITY (Replace First):
+ * 1. Evidence Tab (Lines ~782-789): Top-level mock data warning
+ *    - Source: Add Alert component flagging demo mode
+ *    - Status: ✅ COMPLETED
+ *
+ * 2. Evidence Tab - All 5 Frameworks (Lines ~799-913):
+ *    - Framework 1 (WEF 2030 Skills): Pull from Supabase skill_demonstrations table
+ *    - Framework 2 (Erikson Identity): Calculate from player_persona developmental stage analysis
+ *    - Framework 3 (Flow Theory): Calculate from game_state scene_history timestamps + engagement metrics
+ *    - Framework 4 (Limbic Learning): Pull from player_persona behavior_metrics stress indicators
+ *    - Framework 5 (SCCT Self-Efficacy): Derive from choice_history confidence + skill demonstrations
+ *    - Status: ✅ FLAGGED with yellow badges and TODO comments
+ *
+ * 3. Evidence Tab - Grant-Reportable Outcomes (Lines ~917-966):
+ *    - Aggregate metrics from skill_demonstrations, career_matches, player_persona
+ *    - Calculate real percentages and counts from Supabase tables
+ *    - Status: ✅ FLAGGED with yellow badge and TODO comment
+ *
+ * 🟡 MEDIUM PRIORITY (Replace After Evidence Tab):
+ * 4. Careers Tab - Career Matching Algorithm (Line ~687):
+ *    - Replace mock career match logic with production Supabase queries
+ *    - Integrate skill_demonstrations + BIRMINGHAM_OPPORTUNITIES data
+ *    - Status: ✅ FLAGGED with TODO comment
+ *
+ * 5. Mock User Data Object (Lines ~47-193):
+ *    - Currently used as fallback/reference
+ *    - Replace with actual SkillProfile from props
+ *    - Note: Most of dashboard already uses real profile prop, but mock data shows structure
+ *    - Status: ⚠️ REFERENCE ONLY - Can remain for development
+ *
+ * 🟢 LOW PRIORITY (Data Already Real):
+ * - Urgency Tab: ✅ Already pulling from /api/admin/urgency
+ * - Skills Tab: ✅ Already pulling from profile.skillDemonstrations (real data)
+ * - 2030 Skills Tab: ✅ Already pulling from /api/user/skill-summaries
+ * - Gaps Tab: Uses profile.skillGaps (derived from real data)
+ * - Action Tab: Uses profile data (real)
+ *
+ * NARRATIVE BRIDGES ADDED:
+ * ✅ Skills → Careers (Line ~679): Connects skill demonstrations to career pathways
+ * ✅ Careers → Gaps (Line ~1077): Bridges career matches to skill development needs
+ * ✅ Gaps → Action (Line ~1138): Connects skill gaps to concrete Birmingham actions
+ * ✅ Action → 2030 Skills (Line ~1235): Frames WEF skills in workforce readiness context
+ *
+ * IMPLEMENTATION NOTES:
+ * - All mock data sections have yellow "Mock Data" badges for visibility
+ * - TODO comments include specific Supabase table/column references
+ * - Warnings are informational (yellow), not alarming (red)
+ * - Production replacement priority: Evidence Tab first (highest stakeholder visibility)
+ */
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -7,11 +63,14 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Target, TrendingUp, Briefcase, Lightbulb, CheckCircle2, AlertTriangle, RefreshCw, Award, BookOpen, Building2 } from 'lucide-react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Target, TrendingUp, Briefcase, Lightbulb, CheckCircle2, AlertTriangle, RefreshCw, Award, BookOpen, Building2, AlertCircle } from 'lucide-react';
 import type { SkillProfile } from '@/lib/skill-profile-adapter';
 import { ExportButton } from '@/components/admin/ExportButton';
 import { AdvisorBriefingButton } from '@/components/admin/AdvisorBriefingButton';
 import { BIRMINGHAM_OPPORTUNITIES } from '@/lib/simple-career-analytics';
+import { SkillProgressionChart } from '@/components/admin/SkillProgressionChart';
+import { SparklineTrend } from '@/components/admin/SparklineTrend';
 
 interface SingleUserDashboardProps {
   userId: string
@@ -580,6 +639,12 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
             </p>
           </div>
 
+          {/* Skill Progression Timeline Chart */}
+          <SkillProgressionChart
+            skillDemonstrations={user.skillDemonstrations}
+            totalDemonstrations={user.totalDemonstrations}
+          />
+
           <div className="grid gap-6">
             {Object.entries(user.skillDemonstrations)
               .filter(([_, demos]) => demos.length > 0)
@@ -672,8 +737,122 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
           )}
         </TabsContent>
 
+        {/* CAREERS TAB - Actual Birmingham pathways */}
+        <TabsContent value="careers" className="space-y-4">
+          {/* NARRATIVE BRIDGE: Skills → Careers */}
+          <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r">
+            <p className="text-sm text-gray-700">
+              <strong>From Skills to Careers:</strong> Based on {user.totalDemonstrations} skill demonstrations,
+              here are Birmingham career pathways where {user.userName.split(' ')[0]}'s strengths align best.
+              Match scores reflect readiness across skill requirements, education access, and local opportunities.
+            </p>
+          </div>
+
+          {/* TODO: Replace career match algorithm with production Supabase queries integrating skill_demonstrations + BIRMINGHAM_OPPORTUNITIES */}
+
+          {user.careerMatches.map((career) => (
+            <Card key={career.id}>
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-lg">{career.name}</CardTitle>
+                  <Badge variant={getReadinessDisplay(career.readiness).variant}>{getReadinessDisplay(career.readiness).text}</Badge>
+                </div>
+                <CardDescription>
+                  ${career.salaryRange[0].toLocaleString()} - ${career.salaryRange[1].toLocaleString()} •
+                  Birmingham Relevance: {Math.round(career.birminghamRelevance * 100)}%
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {/* Skill requirements */}
+                <div>
+                  <p className="text-sm font-medium mb-2">Skill Requirements:</p>
+                  <div className="space-y-2">
+                    {Object.entries(career.requiredSkills).map(([skill, data]) => (
+                      <div key={skill} className="space-y-1">
+                        <div className="flex justify-between text-xs">
+                          <span className="capitalize">{skill.replace(/([A-Z])/g, ' $1').trim()}</span>
+                          <span className={data.gap > 0 ? "text-yellow-600" : "text-green-600"}>
+                            {data.current >= data.required ? "✓ Met" : `Gap: ${Math.round(data.gap * 100)}%`}
+                          </span>
+                        </div>
+                        <div className="flex gap-1 items-center">
+                          <div className="flex-1 bg-gray-200 rounded-full h-1.5">
+                            <div
+                              className={`h-1.5 rounded-full ${data.gap > 0 ? 'bg-yellow-500' : 'bg-green-500'}`}
+                              style={{ width: `${(data.current / data.required) * 100}%` }}
+                            />
+                          </div>
+                          <span className="text-xs text-muted-foreground w-16 text-right">
+                            {Math.round(data.current * 100)}/{Math.round(data.required * 100)}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Education paths */}
+                <div>
+                  <p className="text-sm font-medium mb-1">Education Pathways:</p>
+                  <div className="flex flex-wrap gap-1">
+                    {career.educationPaths.map(path => (
+                      <Badge key={path} variant="secondary" className="text-xs">{path}</Badge>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Local opportunities */}
+                <div>
+                  <p className="text-sm font-medium mb-1">Birmingham Employers:</p>
+                  <div className="flex flex-wrap gap-1">
+                    {career.localOpportunities.map(opp => (
+                      <Badge key={opp} variant="outline" className="text-xs">{opp}</Badge>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Readiness */}
+                <div className="pt-2 border-t">
+                  {career.readiness === 'near_ready' && (
+                    <div className="flex items-start gap-2 text-sm">
+                      <CheckCircle2 className="w-4 h-4 text-green-600 mt-0.5" />
+                      <p className="text-green-600">
+                        <strong>Near Ready:</strong> Small skill gaps. Consider exploratory experiences.
+                      </p>
+                    </div>
+                  )}
+                  {career.readiness === 'skill_gaps' && (
+                    <div className="flex items-start gap-2 text-sm">
+                      <AlertTriangle className="w-4 h-4 text-yellow-600 mt-0.5" />
+                      <p className="text-yellow-600">
+                        <strong>Skill Gaps:</strong> Good foundation but needs development. See Gaps tab.
+                      </p>
+                    </div>
+                  )}
+                  {career.readiness === 'exploratory' && (
+                    <div className="flex items-start gap-2 text-sm">
+                      <Lightbulb className="w-4 h-4 text-blue-600 mt-0.5" />
+                      <p className="text-blue-600">
+                        <strong>Worth Exploring:</strong> Moderate match. Informational interviews recommended.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </TabsContent>
+
         {/* EVIDENCE TAB - Scientific frameworks and outcomes */}
         <TabsContent value="evidence" className="space-y-4">
+          {/* MOCK DATA WARNING */}
+          <Alert className="bg-yellow-50 border-yellow-400">
+            <AlertCircle className="h-4 w-4 text-yellow-600" />
+            <AlertDescription>
+              <strong>Demo Mode:</strong> Evidence frameworks below are prototypes showing the scientific foundation.
+              Production version will pull from real student interaction data and validated assessment instruments.
+            </AlertDescription>
+          </Alert>
           <Card>
             <CardHeader>
               <CardTitle>Evidence-Based Framework</CardTitle>
@@ -683,13 +862,17 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
             </CardHeader>
             <CardContent className="space-y-4">
               {/* Framework 1: 2030 Skills (World Economic Forum) */}
+              {/* TODO: Replace with real data from Supabase skill_demonstrations table */}
               <div className="p-3 border rounded space-y-2">
                 <div className="flex items-center justify-between">
                   <p className="font-medium text-sm">World Economic Forum - Future of Jobs Report 2030</p>
-                  <Badge variant="default">12 Skills Tracked</Badge>
+                  <div className="flex items-center gap-2">
+                    <Badge variant="default">12 Skills Tracked</Badge>
+                    <Badge variant="outline" className="bg-yellow-100 text-yellow-800 text-xs">Mock Data</Badge>
+                  </div>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Framework: Critical skills identified for 2030 workforce readiness including critical thinking, 
+                  Framework: Critical skills identified for 2030 workforce readiness including critical thinking,
                   emotional intelligence, digital literacy, and problem-solving.
                 </p>
                 <div className="bg-blue-50 p-2 rounded text-xs">
@@ -704,13 +887,17 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
               </div>
 
               {/* Framework 2: Erikson Identity Development */}
+              {/* TODO: Replace with real developmental stage assessment from player_persona analysis */}
               <div className="p-3 border rounded space-y-2">
                 <div className="flex items-center justify-between">
                   <p className="font-medium text-sm">Erikson's Identity Development Theory</p>
-                  <Badge variant="default">Stage 5: Identity vs. Role Confusion</Badge>
+                  <div className="flex items-center gap-2">
+                    <Badge variant="default">Stage 5: Identity vs. Role Confusion</Badge>
+                    <Badge variant="outline" className="bg-yellow-100 text-yellow-800 text-xs">Mock Data</Badge>
+                  </div>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Framework: Adolescent identity formation through exploration and commitment. 
+                  Framework: Adolescent identity formation through exploration and commitment.
                   Key outcomes: self-concept clarity, value integration, career identity crystallization.
                 </p>
                 <div className="bg-blue-50 p-2 rounded text-xs">
@@ -723,13 +910,17 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
               </div>
 
               {/* Framework 3: Flow Theory */}
+              {/* TODO: Replace with real engagement metrics from game_state scene_history timestamps */}
               <div className="p-3 border rounded space-y-2">
                 <div className="flex items-center justify-between">
                   <p className="font-medium text-sm">Csikszentmihalyi's Flow Theory</p>
-                  <Badge variant="default">Engagement Optimization</Badge>
+                  <div className="flex items-center gap-2">
+                    <Badge variant="default">Engagement Optimization</Badge>
+                    <Badge variant="outline" className="bg-yellow-100 text-yellow-800 text-xs">Mock Data</Badge>
+                  </div>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Framework: Optimal experience through challenge-skill balance. Measures engagement depth, 
+                  Framework: Optimal experience through challenge-skill balance. Measures engagement depth,
                   intrinsic motivation, and sustained attention as indicators of meaningful exploration.
                 </p>
                 <div className="bg-blue-50 p-2 rounded text-xs">
@@ -742,13 +933,17 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
               </div>
 
               {/* Framework 4: Limbic Learning */}
+              {/* TODO: Replace with real stress metrics from player_persona behavior_metrics */}
               <div className="p-3 border rounded space-y-2">
                 <div className="flex items-center justify-between">
                   <p className="font-medium text-sm">Limbic System Learning Integration</p>
-                  <Badge variant="default">Emotional + Cognitive</Badge>
+                  <div className="flex items-center gap-2">
+                    <Badge variant="default">Emotional + Cognitive</Badge>
+                    <Badge variant="outline" className="bg-yellow-100 text-yellow-800 text-xs">Mock Data</Badge>
+                  </div>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Framework: Emotion-cognition integration for deeper learning. Stress response patterns, 
+                  Framework: Emotion-cognition integration for deeper learning. Stress response patterns,
                   emotional regulation, and affective decision-making as learning indicators.
                 </p>
                 <div className="bg-blue-50 p-2 rounded text-xs">
@@ -761,13 +956,17 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
               </div>
 
               {/* Framework 5: Social Cognitive Career Theory */}
+              {/* TODO: Replace with real self-efficacy metrics from choice_history confidence indicators */}
               <div className="p-3 border rounded space-y-2">
                 <div className="flex items-center justify-between">
                   <p className="font-medium text-sm">Social Cognitive Career Theory (SCCT)</p>
-                  <Badge variant="default">Self-Efficacy Building</Badge>
+                  <div className="flex items-center gap-2">
+                    <Badge variant="default">Self-Efficacy Building</Badge>
+                    <Badge variant="outline" className="bg-yellow-100 text-yellow-800 text-xs">Mock Data</Badge>
+                  </div>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Framework: Career development through self-efficacy beliefs, outcome expectations, 
+                  Framework: Career development through self-efficacy beliefs, outcome expectations,
                   and personal goals. Measures confidence in skill areas and readiness for career action.
                 </p>
                 <div className="bg-blue-50 p-2 rounded text-xs">
@@ -782,10 +981,16 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
           </Card>
 
           {/* Measurable Outcomes for Funders */}
+          {/* TODO: Replace with real aggregated metrics from skill_demonstrations, career_matches, and player_persona tables */}
           <Card className="border-2 border-green-600">
             <CardHeader>
-              <CardTitle className="text-lg">Grant-Reportable Outcomes</CardTitle>
-              <CardDescription>Quantifiable metrics for funding accountability</CardDescription>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="text-lg">Grant-Reportable Outcomes</CardTitle>
+                  <CardDescription>Quantifiable metrics for funding accountability</CardDescription>
+                </div>
+                <Badge variant="outline" className="bg-yellow-100 text-yellow-800">Mock Data</Badge>
+              </div>
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="grid grid-cols-2 gap-3">
@@ -932,6 +1137,16 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
 
         {/* GAPS TAB - What skills need development */}
         <TabsContent value="gaps" className="space-y-4">
+          {/* NARRATIVE BRIDGE: Careers → Gaps */}
+          {user.careerMatches.length > 0 && (
+            <div className="bg-amber-50 border-l-4 border-amber-400 p-4 rounded-r">
+              <p className="text-sm text-gray-700">
+                <strong>Bridging to {user.careerMatches[0].name}:</strong> To strengthen this {Math.round(user.careerMatches[0].matchScore * 100)}% career match,
+                let's identify specific skill development opportunities. These gaps aren't weaknesses—they're growth areas with clear pathways forward.
+              </p>
+            </div>
+          )}
+
           <Card>
             <CardHeader>
               <CardTitle>Skill Development Priorities</CardTitle>
@@ -949,9 +1164,18 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                   .map((gap, idx) => (
                     <div key={idx} className="p-3 border rounded space-y-2">
                       <div className="flex items-center justify-between">
-                        <span className="font-medium capitalize">
-                          {gap.skill.replace(/([A-Z])/g, ' $1').trim()}
-                        </span>
+                        <div className="flex items-center gap-2">
+                          <span className="font-medium capitalize">
+                            {gap.skill.replace(/([A-Z])/g, ' $1').trim()}
+                          </span>
+                          {/* Sparkline Trend Indicator */}
+                          <SparklineTrend
+                            current={gap.currentLevel}
+                            target={gap.targetForTopCareers}
+                            width={40}
+                            height={12}
+                          />
+                        </div>
                         <Badge variant={gap.priority === 'high' ? 'destructive' : 'secondary'}>
                           {gap.priority} priority
                         </Badge>
@@ -983,6 +1207,16 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
 
         {/* ACTION TAB - Administrator next steps */}
         <TabsContent value="action" className="space-y-4">
+          {/* NARRATIVE BRIDGE: Gaps → Action */}
+          {user.skillGaps.length > 0 && (
+            <div className="bg-green-50 border-l-4 border-green-400 p-4 rounded-r">
+              <p className="text-sm text-gray-700">
+                <strong>From Analysis to Action:</strong> Here are Birmingham-based next steps to close the {user.skillGaps[0].skill.replace(/([A-Z])/g, ' $1').toLowerCase()} gap
+                and advance toward {user.careerMatches[0]?.name || 'career goals'}. These are concrete, local opportunities you can facilitate this week.
+              </p>
+            </div>
+          )}
+
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -1070,6 +1304,15 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
 
         {/* 2030 SKILLS TAB - WEF Skills Tracking */}
         <TabsContent value="2030skills" className="space-y-4">
+          {/* NARRATIVE BRIDGE: Action → 2030 Skills */}
+          <div className="bg-purple-50 border-l-4 border-purple-400 p-4 rounded-r">
+            <p className="text-sm text-gray-700">
+              <strong>World Economic Forum Skills Framework:</strong> This tab tracks real-time skill development against
+              2030 workforce readiness criteria. Every choice {user.userName.split(' ')[0]} makes demonstrates specific skills,
+              creating an evidence-based profile that connects directly to Birmingham career opportunities.
+            </p>
+          </div>
+
           {skillsLoading ? (
             <Card>
               <CardContent className="py-12 text-center text-gray-500">
