@@ -357,8 +357,9 @@ function convertTrackerProfileToDashboard(
 
   // Convert career matches to dashboard format
   const careerMatches: CareerMatch[] = trackerProfile.careerMatches.map(match => {
-    // Build required skills object (simplified since we don't have detailed requirements)
-    const requiredSkills: CareerMatch['requiredSkills'] = {}
+    // SkillTracker already provides fully populated requiredSkills with current/required/gap
+    // Just pass it through directly
+    const requiredSkills = match.requiredSkills || {}
 
     // Map readiness values from SkillTracker to dashboard format
     let readiness: CareerMatch['readiness']

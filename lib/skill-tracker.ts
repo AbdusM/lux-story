@@ -37,6 +37,7 @@ export interface CareerMatch {
   name: string
   matchScore: number // Internal use, not primary presentation
   evidenceForMatch: string[] // THIS is what we show
+  requiredSkills: Record<string, { current: number; required: number; gap: number }> // Skill requirements and gaps
   salaryRange: [number, number]
   educationPaths: string[]
   localOpportunities: string[]
