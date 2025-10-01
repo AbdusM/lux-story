@@ -5,7 +5,8 @@
  * Uses the new Stateful Narrative Engine instead of old linear scenes
  */
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { DialogueDisplay } from '@/components/DialogueDisplay'
@@ -24,6 +25,8 @@ import {
   findCharacterForNode,
   getSafeStart
 } from '@/lib/graph-registry'
+import { SkillTracker } from '@/lib/skill-tracker'
+import { SCENE_SKILL_MAPPINGS } from '@/lib/scene-skill-mappings'
 
 interface GameInterfaceState {
   gameState: GameState | null
@@ -48,6 +51,9 @@ export default function StatefulGameInterface() {
     isLoading: false,
     hasStarted: false
   })
+
+  // Skill tracker for recording demonstrations
+  const skillTrackerRef = useRef<SkillTracker | null>(null)
 
   // Client-only state for save file detection (prevents hydration mismatch)
   const [hasSaveFile, setHasSaveFile] = useState(false)
@@ -87,6 +93,12 @@ export default function StatefulGameInterface() {
         console.log('✅ Created new game state')
       } else {
         console.log('✅ Loaded existing game state')
+      }
+
+      // Initialize skill tracker with this user's ID
+      if (typeof window !== 'undefined' && !skillTrackerRef.current) {
+        skillTrackerRef.current = new SkillTracker(gameState.playerId)
+        console.log('✅ Initialized skill tracker for user:', gameState.playerId)
       }
 
       // Get character ID from saved state (defaults to samuel for new games)
@@ -237,6 +249,23 @@ export default function StatefulGameInterface() {
       targetCharacterId
     ).filter(choice => choice.visible)
 
+    // Record skill demonstration from this choice
+    if (skillTrackerRef.current && state.currentNode) {
+      const sceneMapping = SCENE_SKILL_MAPPINGS[state.currentNode.nodeId]
+      if (sceneMapping) {
+        const choiceMapping = sceneMapping.choiceMappings[choice.choice.choiceId]
+        if (choiceMapping) {
+          skillTrackerRef.current.recordSkillDemonstration(
+            state.currentNode.nodeId,
+            choice.choice.choiceId,
+            choiceMapping.skillsDemonstrated,
+            choiceMapping.context
+          )
+          console.log(`📊 Recorded skill demonstration: ${choiceMapping.skillsDemonstrated.join(', ')}`)
+        }
+      }
+    }
+
     // Update state
     setState({
       gameState: newGameState,
@@ -254,7 +283,7 @@ export default function StatefulGameInterface() {
 
     console.log(`🎭 Moved to: ${nextNode.nodeId}`)
     console.log(`🎯 ${targetCharacterId} trust: ${newGameState.characters.get(targetCharacterId)?.trust}`)
-  }, [state.gameState, state.currentGraph, state.currentCharacterId])
+  }, [state.gameState, state.currentGraph, state.currentCharacterId, state.currentNode])
 
   // Continue journey (resets position but keeps relationships)
   const continueJourney = useCallback(() => {
@@ -289,6 +318,39 @@ export default function StatefulGameInterface() {
     console.log('Global Flags:', Array.from(state.gameState.globalFlags))
     console.log('Patterns:', state.gameState.patterns)
   }, [state])
+
+  // Export full analytics profile for BEFORE/AFTER validation
+  const exportFullAnalyticsProfile = useCallback(() => {
+    console.log('📦 Preparing full analytics profile export...')
+
+    // 1. Gather data from all primary systems
+    const rawGameState = state.gameState
+    const skillProfile = skillTrackerRef.current?.exportSkillProfile()
+
+    // 2. Aggregate into comprehensive object
+    const fullProfile = {
+      exportVersion: '1.0.0',
+      timestamp: new Date().toISOString(),
+      profileSource: 'GCT_Manual_Export_BEFORE',
+      skillProfile,
+      rawGameState,
+    }
+
+    // 3. Create and trigger browser download
+    try {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(fullProfile, null, 2))
+      const downloadAnchorNode = document.createElement('a')
+      downloadAnchorNode.setAttribute("href", dataStr)
+      downloadAnchorNode.setAttribute("download", `analytics_profile_BEFORE.json`)
+      document.body.appendChild(downloadAnchorNode)
+      downloadAnchorNode.click()
+      downloadAnchorNode.remove()
+
+      console.log('✅ Full analytics profile exported as analytics_profile_BEFORE.json')
+    } catch (error) {
+      console.error('❌ Failed to export analytics profile:', error)
+    }
+  }, [state.gameState, skillTrackerRef])
 
   if (!state.hasStarted) {
     return (
@@ -388,9 +450,16 @@ export default function StatefulGameInterface() {
         {/* Header - Minimal Actions Only */}
         <div className="flex justify-end gap-2 mb-4">
           {process.env.NODE_ENV === 'development' && (
-            <Button variant="ghost" size="sm" onClick={showDebugInfo} className="text-xs">
-              Debug
-            </Button>
+            <>
+              <Link href="/admin">
+                <Button variant="ghost" size="sm" className="text-xs">
+                  Admin
+                </Button>
+              </Link>
+              <Button variant="secondary" size="sm" onClick={exportFullAnalyticsProfile} className="text-xs">
+                Export Analytics JSON
+              </Button>
+            </>
           )}
           <Button variant="ghost" size="sm" onClick={continueJourney} className="text-xs">
             New Conversation

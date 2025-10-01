@@ -3,10 +3,12 @@
  * Replaces complex useGame with essential functionality only
  */
 
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import { generateUserId, safeStorage, saveProgress, loadProgress } from '@/lib/safe-storage'
 import { trackUserChoice, getUserInsights, getBirminghamMatches } from '@/lib/simple-career-analytics'
 import { getCachedBridge, preloadCommonBridges } from '@/lib/gemini-bridge'
+import { SkillTracker } from '@/lib/skill-tracker'
+import type { SkillProfile } from '@/lib/skill-tracker'
 
 // Background validation and streamlining
 const validateStoryInBackground = async () => {
@@ -1112,6 +1114,9 @@ export function useSimpleGame() {
     }
   })
 
+  // SkillTracker ref - initialized when game starts
+  const skillTrackerRef = useRef<SkillTracker | null>(null)
+
   // Helper function to parse text into dialogue chunks
   const parseTextIntoChunks = useCallback((text: string): Array<{ text: string; type: string }> => {
     // Split by double line breaks to create major sections
@@ -1146,6 +1151,18 @@ export function useSimpleGame() {
     // Preload common AI bridges in background
     preloadCommonBridges().catch(console.error)
   }, [])
+
+  // Initialize SkillTracker when game starts
+  useEffect(() => {
+    if (gameState.hasStarted && !skillTrackerRef.current) {
+      try {
+        skillTrackerRef.current = new SkillTracker(gameState.userId)
+      } catch (error) {
+        console.error('Failed to initialize SkillTracker:', error)
+        // Continue without skill tracking if initialization fails
+      }
+    }
+  }, [gameState.hasStarted, gameState.userId])
 
   // Load current scene
   useEffect(() => {
@@ -1218,6 +1235,9 @@ export function useSimpleGame() {
     // Validate choice target first
     const validatedChoice = validateChoice(choice, gameState.currentScene)
 
+    // Capture current scene BEFORE processing (scene will change after state update)
+    const currentSceneBeforeChoice = gameState.currentScene
+
     setGameState(prev => ({ ...prev, isProcessing: true }))
 
     // Track the choice
@@ -1281,13 +1301,29 @@ export function useSimpleGame() {
         })
       }
 
-      return {
+      const finalState = {
         ...newState,
         currentScene: validatedChoice.next || prev.currentScene,
         choiceHistory: newChoiceHistory,
         messages: newMessages,
         isProcessing: false
       }
+
+      // Record skill demonstration AFTER state update
+      try {
+        if (skillTrackerRef.current) {
+          skillTrackerRef.current.recordChoice(
+            validatedChoice,
+            currentSceneBeforeChoice,
+            finalState
+          )
+        }
+      } catch (error) {
+        console.error('SkillTracker recording failed:', error)
+        // Continue game even if skill tracking fails
+      }
+
+      return finalState
     })
   }, [gameState.userId, gameState.choiceHistory, gameState.currentScene, validateChoice])
 
@@ -1431,6 +1467,14 @@ Check out this career exploration tool!`
     return getBirminghamMatches(gameState.userId)
   }, [gameState.userId])
 
+  // Get skill profile for admin dashboard
+  const getSkillProfile = useCallback((): SkillProfile | null => {
+    if (!skillTrackerRef.current) {
+      return null
+    }
+    return skillTrackerRef.current.exportSkillProfile()
+  }, [])
+
   return {
     ...gameState,
     currentScene: gameState.hasStarted ? SIMPLE_SCENES[gameState.currentScene as keyof typeof SIMPLE_SCENES] : null,
@@ -1440,6 +1484,7 @@ Check out this career exploration tool!`
     handleContinueDialogue,
     handleShare,
     getInsights,
-    getBirminghamOpportunities
+    getBirminghamOpportunities,
+    getSkillProfile
   }
 }
