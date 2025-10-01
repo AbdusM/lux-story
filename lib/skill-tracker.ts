@@ -14,6 +14,7 @@ import { FutureSkillsSystem } from './2030-skills-system'
 import { safeStorage } from './safe-storage'
 import type { SimpleGameState } from '../hooks/useSimpleGame'
 import { SCENE_SKILL_MAPPINGS, type SceneSkillMapping } from './scene-skill-mappings'
+import { queueSkillSummarySync } from './sync-queue'
 
 export interface SkillDemonstration {
   scene: string
@@ -115,6 +116,38 @@ export class SkillTracker {
     } else {
       this.handleSaveFailure()
     }
+
+    // 7. Queue Supabase sync every 3rd demonstration for each skill
+    demonstrations.forEach(demo => {
+      demo.skillsDemonstrated.forEach(skill => {
+        const skillDemoCount = this.getSkillDemonstrationCount(skill)
+
+        if (skillDemoCount % 3 === 0) {
+          // Get all scenes where this skill was demonstrated
+          const scenesInvolved = Array.from(
+            new Set(
+              this.demonstrations
+                .filter(d => d.skillsDemonstrated.includes(skill))
+                .map(d => d.scene)
+            )
+          )
+
+          // Queue sync to Supabase
+          queueSkillSummarySync({
+            user_id: this.userId,
+            skill_name: skill,
+            demonstration_count: skillDemoCount,
+            latest_context: demo.context, // Rich 100-150 word context
+            scenes_involved: scenesInvolved,
+            last_demonstrated: new Date().toISOString()
+          })
+
+          console.log(
+            `[SkillTracker] Queued sync for ${skill} (${skillDemoCount} demonstrations)`
+          )
+        }
+      })
+    })
   }
 
   /**
@@ -149,6 +182,36 @@ export class SkillTracker {
 
     // Persist to localStorage
     this.saveToStorage()
+
+    // Queue Supabase sync every 3rd demonstration for each skill
+    skills.forEach(skill => {
+      const skillDemoCount = this.getSkillDemonstrationCount(skill)
+
+      if (skillDemoCount % 3 === 0) {
+        // Get all scenes where this skill was demonstrated
+        const scenesInvolved = Array.from(
+          new Set(
+            this.demonstrations
+              .filter(d => d.skillsDemonstrated.includes(skill))
+              .map(d => d.scene)
+          )
+        )
+
+        // Queue sync to Supabase
+        queueSkillSummarySync({
+          user_id: this.userId,
+          skill_name: skill,
+          demonstration_count: skillDemoCount,
+          latest_context: context, // Rich 100-150 word context
+          scenes_involved: scenesInvolved,
+          last_demonstrated: new Date().toISOString()
+        })
+
+        console.log(
+          `[SkillTracker] Queued sync for ${skill} (${skillDemoCount} demonstrations)`
+        )
+      }
+    })
   }
 
   /**

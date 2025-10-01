@@ -1,7 +1,14 @@
 /**
  * Simplified Career Analytics
  * Preserves core functionality with 90% less complexity
+ *
+ * Supabase-primary architecture:
+ * - On app mount: Hydrate from Supabase (source of truth)
+ * - On updates: Write to localStorage + queue sync to Supabase
  */
+
+import { queueCareerAnalyticsSync } from './sync-queue'
+import { safeStorage } from './safe-storage'
 
 // Essential interfaces only
 export interface SimpleCareerMetrics {
@@ -46,6 +53,133 @@ export const BIRMINGHAM_OPPORTUNITIES: SimpleBirminghamOpportunity[] = [
 // Simple analytics engine (replaces 1,935 lines with ~100)
 export class SimpleCareerAnalytics {
   private metrics: Map<string, SimpleCareerMetrics> = new Map()
+  private hydrationPromises: Map<string, Promise<void>> = new Map()
+  private syncCounter: Map<string, number> = new Map() // Track updates per user
+
+  /**
+   * Hydrate user metrics from Supabase (source of truth)
+   * Called on app mount
+   */
+  async hydrateFromSupabase(userId: string): Promise<boolean> {
+    // Return existing hydration promise if already in progress
+    if (this.hydrationPromises.has(userId)) {
+      await this.hydrationPromises.get(userId)
+      return this.metrics.has(userId)
+    }
+
+    // Create new hydration promise
+    const hydrationPromise = this._performHydration(userId)
+    this.hydrationPromises.set(userId, hydrationPromise)
+
+    try {
+      await hydrationPromise
+      return this.metrics.has(userId)
+    } finally {
+      this.hydrationPromises.delete(userId)
+    }
+  }
+
+  private async _performHydration(userId: string): Promise<void> {
+    try {
+      const response = await fetch(`/api/user/career-analytics?userId=${userId}`)
+
+      if (!response.ok) {
+        console.warn('[SimpleCareerAnalytics] Failed to fetch from Supabase, falling back to localStorage')
+        this.loadFromLocalStorage(userId)
+        return
+      }
+
+      const result = await response.json()
+
+      if (result.exists && result.analytics) {
+        // Supabase is source of truth
+        this.metrics.set(userId, {
+          platformsExplored: result.analytics.platformsExplored || [],
+          careerInterests: result.analytics.careerInterests || [],
+          choicesMade: result.analytics.choicesMade || 0,
+          timeSpent: result.analytics.timeSpent || 0,
+          sectionsViewed: result.analytics.sectionsViewed || [],
+          birminghamOpportunities: result.analytics.birminghamOpportunities || []
+        })
+
+        // Also save to localStorage for offline access
+        this.saveToLocalStorage(userId)
+
+        console.log('[SimpleCareerAnalytics] Hydrated from Supabase:', userId)
+      } else {
+        // No Supabase data, try localStorage
+        this.loadFromLocalStorage(userId)
+
+        // If localStorage has data, push to Supabase to establish truth
+        if (this.metrics.has(userId)) {
+          this.queueSync(userId)
+        }
+      }
+    } catch (error) {
+      console.error('[SimpleCareerAnalytics] Hydration error:', error)
+      this.loadFromLocalStorage(userId)
+    }
+  }
+
+  /**
+   * Load metrics from localStorage (fallback)
+   */
+  private loadFromLocalStorage(userId: string): void {
+    const key = `career_analytics_${userId}`
+    const stored = safeStorage.getItem(key)
+
+    if (stored) {
+      try {
+        const data = JSON.parse(stored)
+        this.metrics.set(userId, data)
+        console.log('[SimpleCareerAnalytics] Loaded from localStorage:', userId)
+      } catch (error) {
+        console.error('[SimpleCareerAnalytics] Failed to parse localStorage data:', error)
+      }
+    }
+  }
+
+  /**
+   * Save metrics to localStorage
+   */
+  private saveToLocalStorage(userId: string): void {
+    const key = `career_analytics_${userId}`
+    const metrics = this.metrics.get(userId)
+
+    if (metrics) {
+      safeStorage.setItem(key, JSON.stringify(metrics))
+    }
+  }
+
+  /**
+   * Queue sync to Supabase (background, eventual consistency)
+   * Syncs every 5 updates to reduce API load
+   */
+  private queueSync(userId: string): void {
+    const metrics = this.metrics.get(userId)
+    if (!metrics) return
+
+    // Increment sync counter
+    const counter = (this.syncCounter.get(userId) || 0) + 1
+    this.syncCounter.set(userId, counter)
+
+    // Sync every 5 updates
+    if (counter % 5 === 0) {
+      queueCareerAnalyticsSync({
+        user_id: userId,
+        platforms_explored: metrics.platformsExplored,
+        career_interests: metrics.careerInterests,
+        choices_made: metrics.choicesMade,
+        time_spent_seconds: metrics.timeSpent,
+        sections_viewed: metrics.sectionsViewed,
+        birmingham_opportunities: metrics.birminghamOpportunities
+      })
+
+      console.log(
+        `[SimpleCareerAnalytics] Queued sync for ${userId} (update #${counter})`
+      )
+    }
+  }
 
   trackChoice(userId: string, choice: any) {
     const userMetrics = this.getUserMetrics(userId)
@@ -65,24 +199,40 @@ export class SimpleCareerAnalytics {
     if (choiceText.includes('teach') || choiceText.includes('learn')) {
       this.addInterest(userId, 'education')
     }
+
+    // Persist and sync
+    this.saveToLocalStorage(userId)
+    this.queueSync(userId)
   }
 
   trackPlatformVisit(userId: string, platformId: string) {
     const userMetrics = this.getUserMetrics(userId)
     if (!userMetrics.platformsExplored.includes(platformId)) {
       userMetrics.platformsExplored.push(platformId)
+
+      // Persist and sync
+      this.saveToLocalStorage(userId)
+      this.queueSync(userId)
     }
   }
 
   trackTimeSpent(userId: string, seconds: number) {
     const userMetrics = this.getUserMetrics(userId)
     userMetrics.timeSpent += seconds
+
+    // Persist and sync
+    this.saveToLocalStorage(userId)
+    this.queueSync(userId)
   }
 
   addInterest(userId: string, careerArea: string) {
     const userMetrics = this.getUserMetrics(userId)
     if (!userMetrics.careerInterests.includes(careerArea)) {
       userMetrics.careerInterests.push(careerArea)
+
+      // Persist and sync
+      this.saveToLocalStorage(userId)
+      this.queueSync(userId)
     }
   }
 
