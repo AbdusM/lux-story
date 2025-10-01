@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Users, TrendingUp, Award, ArrowRight, AlertTriangle, RefreshCw } from 'lucide-react'
 import type { UrgentStudent } from '@/lib/types/admin'
+import { formatUserIdShort, formatUserIdRelative } from '@/lib/format-user-id'
 
 /**
  * Admin Dashboard
@@ -263,8 +264,11 @@ export default function AdminPage() {
                               <div className="space-y-2 flex-1">
                                 <div className="flex items-center gap-3">
                                   <h3 className="font-semibold text-lg">
-                                    User: {userId.slice(0, 12)}...
+                                    {formatUserIdShort(userId)}
                                   </h3>
+                                  <span className="text-xs text-gray-500">
+                                    ({formatUserIdRelative(userId)})
+                                  </span>
                                   {stats && (
                                     <Badge variant="outline" className="gap-1">
                                       <Award className="w-3 h-3" />
@@ -396,16 +400,11 @@ function UrgentStudentCard({ student }: { student: UrgentStudent }) {
             <div>
               <Link href={`/admin/skills?userId=${student.userId}`}>
                 <h3 className="font-semibold text-lg hover:text-blue-600 hover:underline">
-                  {student.userId}
+                  Student: {formatUserIdShort(student.userId)}
                 </h3>
               </Link>
               <p className="text-sm text-gray-600">
-                Last active: {new Date(student.lastActivity).toLocaleDateString('en-US', {
-                  month: 'short',
-                  day: 'numeric',
-                  hour: 'numeric',
-                  minute: '2-digit'
-                })}
+                Last active: {formatUserIdRelative(student.lastActivity || student.userId)}
               </p>
             </div>
           </div>
