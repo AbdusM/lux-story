@@ -332,6 +332,13 @@ export class PlayerPersonaTracker {
     context: string,
     sceneId: string
   ): PlayerPersona {
+    console.log('🎯 [PlayerPersona] Adding skill demonstration:', {
+      playerId,
+      skills,
+      sceneId,
+      contextLength: context.length
+    })
+
     let persona = this.personas.get(playerId) || this.createBasePersona(playerId)
 
     // Update skill demonstrations
@@ -371,6 +378,12 @@ export class PlayerPersonaTracker {
     this.personas.set(playerId, persona)
     this.savePersonas()
 
+    console.log('✅ [PlayerPersona] Updated persona:', {
+      recentSkills: persona.recentSkills,
+      topSkills: persona.topSkills.slice(0, 3).map(s => `${s.skill}:${s.count}`),
+      totalDemonstrations: Object.keys(persona.skillDemonstrations).length
+    })
+
     return persona
   }
 
@@ -402,6 +415,7 @@ export class PlayerPersonaTracker {
   getSkillSummaryForAI(playerId: string): string {
     const persona = this.personas.get(playerId)
     if (!persona || persona.topSkills.length === 0) {
+      console.log('📊 [PlayerPersona] No skill demonstrations yet for:', playerId)
       return 'No skill demonstrations yet.'
     }
 
@@ -422,6 +436,13 @@ export class PlayerPersonaTracker {
         const skillName = this.formatSkillName(topSkill.skill)
         summary += `${skillName}: ${skillData.latestContext}. `
       }
+    })
+
+    console.log('📊 [PlayerPersona] AI Summary generated:', {
+      playerId,
+      summaryLength: summary.length,
+      topSkills: topThree.map(s => s.skill),
+      preview: summary.substring(0, 100) + '...'
     })
 
     return summary.trim()

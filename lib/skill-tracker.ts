@@ -160,6 +160,14 @@ export class SkillTracker {
     skills: string[],
     context: string
   ): void {
+    console.log('📝 [SkillTracker] Recording skill demonstration:', {
+      userId: this.userId,
+      sceneId,
+      skills,
+      contextLength: context.length,
+      totalDemonstrations: this.demonstrations.length
+    })
+
     // Look up scene mapping for rich context
     const sceneMapping = SCENE_SKILL_MAPPINGS[sceneId]
     const sceneDescription = sceneMapping?.sceneDescription || `Scene: ${sceneId}`
@@ -187,6 +195,12 @@ export class SkillTracker {
     skills.forEach(skill => {
       const skillDemoCount = this.getSkillDemonstrationCount(skill)
 
+      console.log('📊 [SkillTracker] Skill demonstration count:', {
+        skill,
+        count: skillDemoCount,
+        willSync: skillDemoCount % 3 === 0
+      })
+
       if (skillDemoCount % 3 === 0) {
         // Get all scenes where this skill was demonstrated
         const scenesInvolved = Array.from(
@@ -207,9 +221,12 @@ export class SkillTracker {
           last_demonstrated: new Date().toISOString()
         })
 
-        console.log(
-          `[SkillTracker] Queued sync for ${skill} (${skillDemoCount} demonstrations)`
-        )
+        console.log('🔄 [SkillTracker] Queued Supabase sync:', {
+          skill,
+          demonstrationCount: skillDemoCount,
+          scenesInvolved: scenesInvolved.length,
+          contextLength: context.length
+        })
       }
     })
   }
