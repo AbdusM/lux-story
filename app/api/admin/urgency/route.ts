@@ -97,9 +97,26 @@ export async function GET(request: NextRequest): Promise<NextResponse<UrgencyAPI
 
     console.log(`[Admin API] Successfully fetched ${data?.length || 0} urgent students`)
 
+    // Transform snake_case to camelCase for TypeScript frontend
+    const students = (data || []).map((row: any) => ({
+      userId: row.user_id,
+      currentScene: row.current_scene,
+      urgencyLevel: row.urgency_level,
+      urgencyScore: row.urgency_score,
+      urgencyNarrative: row.urgency_narrative,
+      disengagementScore: row.disengagement_score,
+      confusionScore: row.confusion_score,
+      stressScore: row.stress_score,
+      isolationScore: row.isolation_score,
+      lastActivity: row.last_activity,
+      totalChoices: row.total_choices,
+      uniqueScenesVisited: row.unique_scenes_visited,
+      relationshipsFormed: row.relationships_formed
+    }))
+
     return NextResponse.json({
-      students: data || [],
-      count: data?.length || 0,
+      students,
+      count: students.length,
       timestamp: new Date().toISOString()
     })
 

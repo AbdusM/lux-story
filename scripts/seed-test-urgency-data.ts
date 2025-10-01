@@ -51,16 +51,16 @@ async function seedTestData() {
       player_id: criticalUserId,
       scene_id: i < 5 ? 'maya-intro' : i < 10 ? 'devon-workshop' : 'samuel-station',
       choice_text: `Test choice ${i + 1}`,
-      choice_index: i % 3,
+      choice_id: `choice_${i % 3}`,
       chosen_at: nineAgoAgo
     })
   }
 
   // Only 3 unique scenes visited
   await supabase.from('visited_scenes').insert([
-    { player_id: criticalUserId, scene_id: 'maya-intro', reached_at: nineAgoAgo },
-    { player_id: criticalUserId, scene_id: 'devon-workshop', reached_at: nineAgoAgo },
-    { player_id: criticalUserId, scene_id: 'samuel-station', reached_at: nineAgoAgo }
+    { player_id: criticalUserId, scene_id: 'maya-intro', visited_at: nineAgoAgo },
+    { player_id: criticalUserId, scene_id: 'devon-workshop', visited_at: nineAgoAgo },
+    { player_id: criticalUserId, scene_id: 'samuel-station', visited_at: nineAgoAgo }
   ])
 
   // No relationships formed (isolation)
@@ -93,21 +93,21 @@ async function seedTestData() {
       player_id: highUserId,
       scene_id: i < 3 ? 'maya-intro' : i < 6 ? 'devon-workshop' : 'jordan-platforms',
       choice_text: `Test choice ${i + 1}`,
-      choice_index: i % 3,
+      choice_id: `choice_${i % 3}`,
       chosen_at: fourDaysAgo
     })
   }
 
   // 3 scenes visited
   await supabase.from('visited_scenes').insert([
-    { player_id: highUserId, scene_id: 'maya-intro', reached_at: fourDaysAgo },
-    { player_id: highUserId, scene_id: 'devon-workshop', reached_at: fourDaysAgo },
-    { player_id: highUserId, scene_id: 'jordan-platforms', reached_at: fourDaysAgo }
+    { player_id: highUserId, scene_id: 'maya-intro', visited_at: fourDaysAgo },
+    { player_id: highUserId, scene_id: 'devon-workshop', visited_at: fourDaysAgo },
+    { player_id: highUserId, scene_id: 'jordan-platforms', visited_at: fourDaysAgo }
   ])
 
   // 1 relationship (some social engagement)
   await supabase.from('relationship_progress').insert({
-    player_id: highUserId,
+    user_id: highUserId,
     character_name: 'Devon',
     trust_level: 2
   })
@@ -139,24 +139,24 @@ async function seedTestData() {
       player_id: lowUserId,
       scene_id: ['maya-intro', 'devon-workshop', 'samuel-station', 'jordan-platforms', 'quiet-hours'][i % 5],
       choice_text: `Test choice ${i + 1}`,
-      choice_index: i % 3,
+      choice_id: `choice_${i % 3}`,
       chosen_at: today
     })
   }
 
   // 5 unique scenes visited
   await supabase.from('visited_scenes').insert([
-    { player_id: lowUserId, scene_id: 'maya-intro', reached_at: today },
-    { player_id: lowUserId, scene_id: 'devon-workshop', reached_at: today },
-    { player_id: lowUserId, scene_id: 'samuel-station', reached_at: today },
-    { player_id: lowUserId, scene_id: 'jordan-platforms', reached_at: today },
-    { player_id: lowUserId, scene_id: 'quiet-hours', reached_at: today }
+    { player_id: lowUserId, scene_id: 'maya-intro', visited_at: today },
+    { player_id: lowUserId, scene_id: 'devon-workshop', visited_at: today },
+    { player_id: lowUserId, scene_id: 'samuel-station', visited_at: today },
+    { player_id: lowUserId, scene_id: 'jordan-platforms', visited_at: today },
+    { player_id: lowUserId, scene_id: 'quiet-hours', visited_at: today }
   ])
 
   // 2 relationships (good social engagement)
   await supabase.from('relationship_progress').insert([
-    { player_id: lowUserId, character_name: 'Maya', trust_level: 3 },
-    { player_id: lowUserId, character_name: 'Devon', trust_level: 2 }
+    { user_id: lowUserId, character_name: 'Maya', trust_level: 3 },
+    { user_id: lowUserId, character_name: 'Devon', trust_level: 2 }
   ])
 
   // Positive helping pattern
@@ -169,8 +169,9 @@ async function seedTestData() {
   // 1 milestone
   await supabase.from('skill_milestones').insert({
     player_id: lowUserId,
-    milestone_name: 'First_Connection',
-    achieved_at: today
+    milestone_type: 'character_trust_gained',
+    milestone_context: 'First connection with Maya',
+    reached_at: today
   })
 
   console.log('   ✅ Created LOW player: ' + lowUserId)
