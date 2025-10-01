@@ -374,10 +374,16 @@ function UrgentStudentCard({ student }: { student: UrgentStudent }) {
       bg: 'bg-green-50',
       badge: 'bg-green-100 text-green-800',
       icon: '🟢'
+    },
+    pending: {
+      border: 'border-l-gray-500',
+      bg: 'bg-gray-50',
+      badge: 'bg-gray-100 text-gray-800',
+      icon: '⏳'
     }
   }
 
-  const colors = urgencyColors[student.urgencyLevel]
+  const colors = urgencyColors[student.urgencyLevel || 'pending']
   const percentage = Math.round((student.urgencyScore || 0) * 100)
 
   return (
@@ -407,7 +413,7 @@ function UrgentStudentCard({ student }: { student: UrgentStudent }) {
         <div className="text-right">
           <div className="text-3xl font-bold text-gray-900">{percentage}%</div>
           <Badge className={colors.badge}>
-            {student.urgencyLevel.toUpperCase()}
+            {(student.urgencyLevel || 'pending').toUpperCase()}
           </Badge>
         </div>
       </div>
