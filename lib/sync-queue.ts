@@ -20,8 +20,10 @@ const MAX_RETRY_AGE_MS = 7 * 24 * 60 * 60 * 1000 // 7 days
 
 export interface QueuedAction {
   id: string // UUID for idempotency
-  method: string // DatabaseService method name
-  args: any[] // Method arguments
+  type: string // Action type: 'db_method' | 'career_analytics' | 'skill_summary'
+  method?: string // DatabaseService method name (for db_method type)
+  args?: any[] // Method arguments (for db_method type)
+  data?: any // Payload data (for career_analytics/skill_summary types)
   timestamp: number // When action was created
   retries: number // How many times we've attempted sync
 }
@@ -106,7 +108,7 @@ export class SyncQueue {
    * Strategy: Process actions in order, but continue on individual failures
    * to maximize successful syncs even if some fail.
    */
-  static async processQueue(db: any): Promise<SyncResult> {
+  static async processQueue(db?: any): Promise<SyncResult> {
     const queue = this.getQueue()
 
     if (queue.length === 0) {
@@ -120,16 +122,57 @@ export class SyncQueue {
 
     for (const action of queue) {
       try {
-        // Call the DatabaseService method with original arguments
-        const method = db[action.method]
-        if (typeof method !== 'function') {
-          console.error(`[SyncQueue] Unknown method: ${action.method}`)
-          failedActions.push({ ...action, retries: action.retries + 1 })
-          continue
-        }
+        // Handle different action types
+        if (action.type === 'db_method') {
+          // Legacy: DatabaseService method call
+          if (!db) {
+            console.error('[SyncQueue] No database service provided for db_method')
+            failedActions.push({ ...action, retries: action.retries + 1 })
+            continue
+          }
 
-        await method.apply(db, action.args)
-        successfulIds.push(action.id)
+          const method = db[action.method!]
+          if (typeof method !== 'function') {
+            console.error(`[SyncQueue] Unknown method: ${action.method}`)
+            failedActions.push({ ...action, retries: action.retries + 1 })
+            continue
+          }
+
+          await method.apply(db, action.args)
+          successfulIds.push(action.id)
+
+        } else if (action.type === 'career_analytics') {
+          // Sync career analytics to Supabase
+          const response = await fetch('/api/user/career-analytics', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(action.data)
+          })
+
+          if (!response.ok) {
+            throw new Error(`Career analytics sync failed: ${response.status}`)
+          }
+
+          successfulIds.push(action.id)
+
+        } else if (action.type === 'skill_summary') {
+          // Sync skill summary to Supabase
+          const response = await fetch('/api/user/skill-summaries', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(action.data)
+          })
+
+          if (!response.ok) {
+            throw new Error(`Skill summary sync failed: ${response.status}`)
+          }
+
+          successfulIds.push(action.id)
+
+        } else {
+          console.error(`[SyncQueue] Unknown action type: ${action.type}`)
+          failedActions.push({ ...action, retries: action.retries + 1 })
+        }
 
       } catch (error) {
         console.error(`[SyncQueue] Failed to sync action ${action.id}:`, error)
@@ -194,6 +237,48 @@ export interface QueueStats {
   newestAction: number | null
   actionsByMethod: Record<string, number>
   averageRetries: number
+}
+
+/**
+ * Helper: Queue career analytics sync
+ */
+export function queueCareerAnalyticsSync(data: {
+  user_id: string
+  platforms_explored?: string[]
+  career_interests?: string[]
+  choices_made?: number
+  time_spent_seconds?: number
+  sections_viewed?: string[]
+  birmingham_opportunities?: string[]
+}): void {
+  SyncQueue.addToQueue({
+    id: generateActionId(),
+    type: 'career_analytics',
+    data,
+    timestamp: Date.now()
+  })
+}
+
+/**
+ * Helper: Queue skill summary sync
+ */
+export function queueSkillSummarySync(data: {
+  user_id: string
+  skill_name: string
+  demonstration_count: number
+  latest_context: string
+  scenes_involved: string[]
+  last_demonstrated?: string
+}): void {
+  SyncQueue.addToQueue({
+    id: generateActionId(),
+    type: 'skill_summary',
+    data: {
+      ...data,
+      last_demonstrated: data.last_demonstrated || new Date().toISOString()
+    },
+    timestamp: Date.now()
+  })
 }
 
 /**
