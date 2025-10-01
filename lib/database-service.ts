@@ -17,7 +17,7 @@ type StorageMode = 'localStorage' | 'supabase' | 'dual-write'
  * - dual-write: Write to both, read from localStorage (Phase 3.1)
  * - supabase: Database-first with localStorage cache (Phase 3.2+)
  */
-const STORAGE_MODE: StorageMode = 'localStorage' // TODO: Make configurable
+const STORAGE_MODE: StorageMode = 'dual-write' // Phase 2 complete: Durable offline-first sync enabled
 
 interface PlayerProfile {
   userId: string
@@ -474,12 +474,14 @@ export class DatabaseService {
     const data = getStoredPlayerData(userId)
     if (!data?.choiceHistory) return []
 
-    return data.choiceHistory.map((choice: any) => ({
-      sceneId: choice.sceneId,
-      choiceId: choice.choiceId,
-      choiceText: choice.choiceText,
-      chosenAt: new Date(choice.chosenAt)
-    }))
+    return data.choiceHistory
+      .map((choice: any) => ({
+        sceneId: choice.sceneId,
+        choiceId: choice.choiceId,
+        choiceText: choice.choiceText,
+        chosenAt: new Date(choice.chosenAt)
+      }))
+      .sort((a, b) => b.chosenAt.getTime() - a.chosenAt.getTime()) // DESC order (newest first)
   }
 
   private updatePatternInLocalStorage(userId: string, patternName: string, value: number, demonstrationCount: number): void {
@@ -546,11 +548,13 @@ export class DatabaseService {
     const data = getStoredPlayerData(userId)
     if (!data?.milestones) return []
 
-    return data.milestones.map((milestone: any) => ({
-      milestoneType: milestone.milestoneType,
-      milestoneContext: milestone.milestoneContext,
-      reachedAt: new Date(milestone.reachedAt)
-    }))
+    return data.milestones
+      .map((milestone: any) => ({
+        milestoneType: milestone.milestoneType,
+        milestoneContext: milestone.milestoneContext,
+        reachedAt: new Date(milestone.reachedAt)
+      }))
+      .sort((a, b) => b.reachedAt.getTime() - a.reachedAt.getTime()) // DESC order (newest first)
   }
 
   // ============================================================================
