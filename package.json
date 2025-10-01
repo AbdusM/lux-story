@@ -12,12 +12,14 @@
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
+    "validate-skills": "npx tsx scripts/validate-skills-system.ts",
     "deploy": "npm run build && npx wrangler pages deploy out --project-name=lux-story",
     "type-check": "tsc --noEmit",
     "clean": "rm -rf .next out node_modules/.cache",
     "analyze-typewriter": "node scripts/gemini-typewriter-analysis.js",
     "check-typewriter": "node scripts/check-typewriter-compliance.js",
     "analyze-chat-master": "node scripts/gemini-chat-interface-master-analyzer.js",
+    "analyze-skills-dashboard": "node scripts/gemini-skills-dashboard-analyzer.js",
     "precommit": "npm run check-typewriter && npm run lint"
   },
   "keywords": [
@@ -35,6 +37,7 @@
     "url": "https://github.com/AbdusM/lux-story.git"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.65.0",
     "@google/generative-ai": "^0.24.1",
     "@radix-ui/react-avatar": "^1.1.10",
     "@radix-ui/react-dialog": "^1.1.15",
@@ -47,6 +50,7 @@
     "@radix-ui/react-tabs": "^1.1.13",
     "@radix-ui/react-toggle": "^1.1.10",
     "@radix-ui/react-tooltip": "^1.2.8",
+    "@react-pdf/renderer": "^4.3.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dotenv": "^17.2.2",
@@ -54,6 +58,8 @@
     "next": "^15.4.6",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1",
     "tailwind-merge": "^3.3.1",
     "tailwindcss": "^3.4.17",
     "zustand": "^5.0.8"
@@ -74,6 +80,7 @@
     "node-fetch": "^3.3.2",
     "postcss": "^8.5.6",
     "puppeteer": "^24.22.3",
+    "ts-morph": "^27.0.0",
     "typescript": "^5.9.2",
     "vitest": "^3.2.4"
   }
