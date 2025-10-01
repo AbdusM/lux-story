@@ -330,6 +330,7 @@ export class FutureSkillsSystem {
 
   /**
    * Get career paths that match current skills
+   * Returns top matches even for early-stage players (evidence-first approach)
    */
   getMatchingCareerPaths(): CareerPath2030[] {
     return this.careerPaths
@@ -337,8 +338,8 @@ export class FutureSkillsSystem {
         ...path,
         matchScore: this.calculateCareerMatch(path)
       }))
-      .filter(path => path.matchScore > 0.6)
       .sort((a, b) => b.matchScore - a.matchScore)
+      .slice(0, 6) // Return top 6 matches, no minimum threshold
   }
 
   private calculateCareerMatch(careerPath: CareerPath2030): number {
