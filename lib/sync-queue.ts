@@ -115,31 +115,49 @@ export class SyncQueue {
       return { success: true, processed: 0, failed: 0 }
     }
 
-    console.log(`[SyncQueue] Processing ${queue.length} queued actions...`)
+    const actionTypes = queue.reduce((acc, a) => {
+      acc[a.type] = (acc[a.type] || 0) + 1
+      return acc
+    }, {} as Record<string, number>)
+
+    console.log('🚀 [SyncQueue] Processing queue:', {
+      totalActions: queue.length,
+      actionTypes,
+      oldestAction: queue.length > 0 ? new Date(queue[0].timestamp).toISOString() : null
+    })
 
     const successfulIds: string[] = []
     const failedActions: QueuedAction[] = []
 
     for (const action of queue) {
+      const actionAge = Date.now() - action.timestamp
+      console.log('⏳ [SyncQueue] Processing action:', {
+        type: action.type,
+        id: action.id.substring(0, 8),
+        retries: action.retries,
+        ageSeconds: Math.floor(actionAge / 1000)
+      })
+
       try {
         // Handle different action types
         if (action.type === 'db_method') {
           // Legacy: DatabaseService method call
           if (!db) {
-            console.error('[SyncQueue] No database service provided for db_method')
+            console.error('❌ [SyncQueue] No database service provided for db_method')
             failedActions.push({ ...action, retries: action.retries + 1 })
             continue
           }
 
           const method = db[action.method!]
           if (typeof method !== 'function') {
-            console.error(`[SyncQueue] Unknown method: ${action.method}`)
+            console.error(`❌ [SyncQueue] Unknown method: ${action.method}`)
             failedActions.push({ ...action, retries: action.retries + 1 })
             continue
           }
 
           await method.apply(db, action.args)
           successfulIds.push(action.id)
+          console.log('✅ [SyncQueue] Action successful:', { type: 'db_method', method: action.method })
 
         } else if (action.type === 'career_analytics') {
           // Sync career analytics to Supabase
@@ -154,6 +172,7 @@ export class SyncQueue {
           }
 
           successfulIds.push(action.id)
+          console.log('✅ [SyncQueue] Action successful:', { type: 'career_analytics', userId: action.data?.user_id })
 
         } else if (action.type === 'skill_summary') {
           // Sync skill summary to Supabase
@@ -168,14 +187,26 @@ export class SyncQueue {
           }
 
           successfulIds.push(action.id)
+          console.log('✅ [SyncQueue] Action successful:', {
+            type: 'skill_summary',
+            skill: action.data?.skill_name,
+            count: action.data?.demonstration_count
+          })
 
         } else {
-          console.error(`[SyncQueue] Unknown action type: ${action.type}`)
+          console.error(`❌ [SyncQueue] Unknown action type: ${action.type}`)
           failedActions.push({ ...action, retries: action.retries + 1 })
         }
 
-      } catch (error) {
-        console.error(`[SyncQueue] Failed to sync action ${action.id}:`, error)
+      } catch (error: any) {
+        const willRetry = action.retries < 3
+        console.error('❌ [SyncQueue] Action failed:', {
+          type: action.type,
+          id: action.id.substring(0, 8),
+          error: error.message,
+          retries: action.retries,
+          willRetry
+        })
         failedActions.push({ ...action, retries: action.retries + 1 })
       }
     }
@@ -183,7 +214,7 @@ export class SyncQueue {
     // Remove successful actions from queue
     if (successfulIds.length > 0) {
       this.removeFromQueue(successfulIds)
-      console.log(`✅ [SyncQueue] Successfully synced ${successfulIds.length} actions`)
+      console.log(`🎉 [SyncQueue] Successfully synced ${successfulIds.length} actions`)
     }
 
     // Update retry counts for failed actions
@@ -196,11 +227,15 @@ export class SyncQueue {
     // Clean stale actions periodically
     this.cleanStaleActions()
 
-    return {
+    const result = {
       success: failedActions.length === 0,
       processed: successfulIds.length,
       failed: failedActions.length
     }
+
+    console.log('🎉 [SyncQueue] Queue processing complete:', result)
+
+    return result
   }
 
   /**

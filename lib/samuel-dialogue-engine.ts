@@ -53,19 +53,32 @@ export class SamuelDialogueEngine {
     // Generate cache key from node ID and top skills
     const cacheKey = this.getCacheKey(nodeId, playerPersona)
 
+    console.log('💬 [SamuelDialogue] Generating dialogue:', {
+      nodeId,
+      cacheKey: cacheKey.substring(0, 50) + '...',
+      topSkills: playerPersona.topSkills.slice(0, 3).map(s => s.skill),
+      cached: this.cache.has(cacheKey)
+    })
+
     // Check cache first
     const cached = this.cache.get(cacheKey)
     if (cached) {
-      console.log('[SamuelDialogue] Using cached response for:', nodeId)
+      const cacheAge = Date.now() - cached.generatedAt
+      console.log('⚡ [SamuelDialogue] Cache HIT:', {
+        nodeId,
+        ageSeconds: Math.floor(cacheAge / 1000)
+      })
       return cached
     }
 
     // Check if request already in progress
     const inProgress = this.requestInProgress.get(cacheKey)
     if (inProgress) {
-      console.log('[SamuelDialogue] Request in progress, waiting...')
+      console.log('⏳ [SamuelDialogue] Request in progress, waiting...')
       return inProgress
     }
+
+    console.log('🌐 [SamuelDialogue] Fetching from API:', { nodeId, cacheKey: cacheKey.substring(0, 30) })
 
     // Start new request
     const requestPromise = this.generateDialogueInternal(nodeId, playerPersona, gameContext)
@@ -77,6 +90,10 @@ export class SamuelDialogueEngine {
       // Cache successful responses
       if (!response.error && response.confidence > 0.7) {
         this.cache.set(cacheKey, response)
+        console.log('💾 [SamuelDialogue] Response cached:', {
+          nodeId,
+          confidence: response.confidence
+        })
       }
 
       return response
@@ -99,10 +116,9 @@ export class SamuelDialogueEngine {
       currentLocation: string
     }
   ): Promise<SamuelDialogueResponse> {
-    try {
-      console.log('[SamuelDialogue] Generating for node:', nodeId)
-      console.log('[SamuelDialogue] Top skills:', playerPersona.topSkills.slice(0, 3).map(s => s.skill))
+    const startTime = Date.now()
 
+    try {
       const request: SamuelDialogueRequest = {
         nodeId,
         playerPersona,
@@ -123,14 +139,25 @@ export class SamuelDialogueEngine {
       }
 
       const data: SamuelDialogueResponse = await response.json()
+      const generationTime = Date.now() - startTime
 
-      console.log('[SamuelDialogue] Generated:', data.dialogue.substring(0, 50) + '...')
-      console.log('[SamuelDialogue] Emotion:', data.emotion, '| Confidence:', data.confidence)
+      console.log('✅ [SamuelDialogue] Dialogue generated:', {
+        nodeId,
+        dialogueLength: data.dialogue.length,
+        emotion: data.emotion,
+        confidence: data.confidence,
+        generationTimeMs: generationTime,
+        preview: data.dialogue.substring(0, 50) + '...'
+      })
 
       return data
 
     } catch (error: any) {
-      console.error('[SamuelDialogue] Generation failed:', error)
+      console.error('❌ [SamuelDialogue] Generation failed:', {
+        nodeId,
+        error: error.message,
+        timeMs: Date.now() - startTime
+      })
 
       // Return fallback dialogue
       return {

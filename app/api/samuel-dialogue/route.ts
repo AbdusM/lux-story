@@ -170,9 +170,16 @@ function formatSkillName(skill: string): string {
  * Generates skill-aware Samuel dialogue
  */
 export async function POST(request: NextRequest) {
+  const startTime = Date.now()
+
+  console.log('🔵 [API:SamuelDialogue] Request received:', {
+    timestamp: new Date().toISOString()
+  })
+
   try {
     // 1. Validate API key
     if (!GEMINI_API_KEY) {
+      console.error('❌ [API:SamuelDialogue] GEMINI_API_KEY not configured')
       return NextResponse.json(
         { error: 'GEMINI_API_KEY not configured in .env.local' },
         { status: 500 }
@@ -183,7 +190,16 @@ export async function POST(request: NextRequest) {
     const body: SamuelDialogueRequest = await request.json()
     const { nodeId, playerPersona, gameContext } = body
 
+    console.log('📥 [API:SamuelDialogue] Request body:', {
+      nodeId,
+      hasPersona: !!playerPersona,
+      topSkills: playerPersona?.topSkills?.slice(0, 3).map(s => `${s.skill}:${s.count}`),
+      samuelTrust: gameContext?.samuelTrust,
+      platformsVisited: gameContext?.platformsVisited?.length || 0
+    })
+
     if (!nodeId || !playerPersona) {
+      console.error('❌ [API:SamuelDialogue] Missing required fields')
       return NextResponse.json(
         { error: 'Missing required fields: nodeId, playerPersona' },
         { status: 400 }
@@ -192,6 +208,7 @@ export async function POST(request: NextRequest) {
 
     // 3. Validate persona has skill data
     if (!playerPersona.topSkills || playerPersona.topSkills.length === 0) {
+      console.log('ℹ️ [API:SamuelDialogue] No skill demonstrations yet, using generic dialogue')
       // Return generic Samuel dialogue for new players
       return NextResponse.json({
         dialogue: "Every traveler starts somewhere. Take your time exploring the platforms. The right path reveals itself through experience, not overthinking.",
@@ -206,9 +223,11 @@ export async function POST(request: NextRequest) {
     const systemPrompt = buildSamuelSystemPrompt(playerPersona, gameContext)
     const dialoguePrompt = buildDialoguePrompt(nodeId, playerPersona, gameContext)
 
-    console.log('[SamuelDialogue] Generating for node:', nodeId)
-    console.log('[SamuelDialogue] Top skill:', playerPersona.topSkills[0]?.skill)
-    console.log('[SamuelDialogue] Demonstrations:', playerPersona.topSkills[0]?.count)
+    console.log('🤖 [API:SamuelDialogue] Calling Gemini:', {
+      model: 'gemini-1.5-flash',
+      promptLength: systemPrompt.length + dialoguePrompt.length,
+      temperature: 0.8
+    })
 
     // 5. Call Gemini API
     const genAI = new GoogleGenerativeAI(GEMINI_API_KEY)
@@ -232,6 +251,13 @@ export async function POST(request: NextRequest) {
 
     const response = result.response
     const dialogue = response.text().trim()
+    const generationTime = Date.now() - startTime
+
+    console.log('✅ [API:SamuelDialogue] Gemini response:', {
+      dialogueLength: dialogue.length,
+      generationTimeMs: generationTime,
+      preview: dialogue.substring(0, 50) + '...'
+    })
 
     // 6. Validate response quality
     if (!dialogue || dialogue.length < 20) {
@@ -251,16 +277,16 @@ export async function POST(request: NextRequest) {
       /your.*skill.*is/i
     ]
 
+    let hasForbiddenPatterns = false
     for (const pattern of forbiddenPatterns) {
       if (pattern.test(dialogue)) {
-        console.warn('[SamuelDialogue] Warning: Dialogue contains forbidden pattern:', pattern)
+        console.warn('⚠️ [API:SamuelDialogue] Gamification detected:', { pattern: pattern.toString() })
+        hasForbiddenPatterns = true
       }
     }
 
     // 7. Determine emotion from content
     const emotion = determineEmotion(dialogue)
-
-    console.log('[SamuelDialogue] Success:', dialogue.substring(0, 50) + '...')
 
     // 8. Return response
     const responseData: SamuelDialogueResponse = {
@@ -270,10 +296,22 @@ export async function POST(request: NextRequest) {
       generatedAt: Date.now()
     }
 
+    console.log('📤 [API:SamuelDialogue] Sending response:', {
+      success: true,
+      emotion,
+      confidence: responseData.confidence,
+      generationTimeMs: generationTime,
+      hasForbiddenPatterns
+    })
+
     return NextResponse.json(responseData)
 
   } catch (error: any) {
-    console.error('[SamuelDialogue] Error:', error)
+    const errorTime = Date.now() - startTime
+    console.error('❌ [API:SamuelDialogue] Error:', {
+      error: error.message,
+      timeMs: errorTime
+    })
 
     // Fallback to generic Samuel wisdom
     return NextResponse.json({

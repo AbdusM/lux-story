@@ -39,7 +39,10 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const userId = searchParams.get('userId')
 
+    console.log('🔵 [API:CareerAnalytics] GET request:', { userId })
+
     if (!userId) {
+      console.error('❌ [API:CareerAnalytics] Missing userId parameter')
       return NextResponse.json(
         { error: 'Missing userId parameter' },
         { status: 400 }
@@ -57,15 +60,27 @@ export async function GET(request: NextRequest) {
     if (error) {
       // If no data exists, return exists: false (not an error)
       if (error.code === 'PGRST116') {
+        console.log('ℹ️ [API:CareerAnalytics] No data found for user:', userId)
         return NextResponse.json({ exists: false })
       }
 
-      console.error('[CareerAnalytics API] Error fetching data:', error)
+      console.error('❌ [API:CareerAnalytics] Supabase error:', {
+        code: error.code,
+        message: error.message,
+        userId
+      })
       return NextResponse.json(
         { error: 'Failed to fetch career analytics' },
         { status: 500 }
       )
     }
+
+    console.log('✅ [API:CareerAnalytics] Retrieved analytics:', {
+      userId,
+      platformsExplored: data.platforms_explored?.length || 0,
+      careerInterests: data.career_interests?.length || 0,
+      choicesMade: data.choices_made || 0
+    })
 
     // Transform database format to application format
     return NextResponse.json({
@@ -117,7 +132,16 @@ export async function POST(request: NextRequest) {
       birmingham_opportunities
     } = body
 
+    console.log('🔵 [API:CareerAnalytics] POST request:', {
+      userId: user_id,
+      platformsCount: platforms_explored?.length || 0,
+      careerInterestsCount: career_interests?.length || 0,
+      choicesMade: choices_made || 0,
+      timeSpentMinutes: Math.floor((time_spent_seconds || 0) / 60)
+    })
+
     if (!user_id) {
+      console.error('❌ [API:CareerAnalytics] Missing user_id')
       return NextResponse.json(
         { error: 'Missing user_id' },
         { status: 400 }
@@ -142,12 +166,21 @@ export async function POST(request: NextRequest) {
       })
 
     if (error) {
-      console.error('[CareerAnalytics API] Error upserting data:', error)
+      console.error('❌ [API:CareerAnalytics] Supabase upsert error:', {
+        code: error.code,
+        message: error.message,
+        userId: user_id
+      })
       return NextResponse.json(
         { error: 'Failed to save career analytics' },
         { status: 500 }
       )
     }
+
+    console.log('✅ [API:CareerAnalytics] Upsert successful:', {
+      userId: user_id,
+      choicesMade: choices_made
+    })
 
     return NextResponse.json({ success: true })
   } catch (error) {

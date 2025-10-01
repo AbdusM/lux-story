@@ -43,18 +43,29 @@ export const AdvisorBriefingButton: React.FC<AdvisorBriefingButtonProps> = ({
    * Fetch skill summaries from Supabase API
    */
   const fetchSkillsData = async (userId: string): Promise<SkillSummary[]> => {
+    console.log('🔍 [AdvisorBriefing] Fetching skills:', { userId })
+
     try {
       const response = await fetch(`/api/user/skill-summaries?userId=${userId}`);
 
       if (!response.ok) {
-        console.warn('[AdvisorBriefing] Skills API failed, continuing without skills data');
+        console.warn('⚠️ [AdvisorBriefing] Skills API failed, continuing without skills data:', {
+          status: response.status
+        });
         return [];
       }
 
       const data = await response.json();
+
+      console.log('✅ [AdvisorBriefing] Skills loaded:', {
+        userId,
+        skillCount: data.summaries?.length || 0,
+        topSkills: data.summaries?.slice(0, 3).map((s: any) => s.skillName)
+      })
+
       return data.summaries || [];
     } catch (error) {
-      console.warn('[AdvisorBriefing] Skills fetch error:', error);
+      console.warn('⚠️ [AdvisorBriefing] Skills fetch error:', error);
       return [];
     }
   };
@@ -70,15 +81,19 @@ export const AdvisorBriefingButton: React.FC<AdvisorBriefingButtonProps> = ({
   };
 
   const handleGenerate = async () => {
+    const startTime = Date.now()
+
     try {
       setIsGenerating(true);
       setError(null);
 
-      console.log('[AdvisorBriefing] Requesting briefing for user:', profile.userId);
+      console.log('📝 [AdvisorBriefing] Generating briefing:', {
+        userId: profile.userId,
+        totalDemonstrations: profile.totalDemonstrations
+      })
 
       // Fetch skills data from API (parallel with briefing preparation)
       const skillsData = await fetchSkillsData(profile.userId);
-      console.log('[AdvisorBriefing] Fetched skills data:', skillsData.length, 'skills');
 
       // Send both profile and skills data to API
       const response = await fetch('/api/advisor-briefing', {
@@ -98,8 +113,14 @@ export const AdvisorBriefingButton: React.FC<AdvisorBriefingButtonProps> = ({
       }
 
       const data = await response.json();
+      const generationTime = Date.now() - startTime
 
-      console.log('[AdvisorBriefing] Success! Tokens used:', data.tokensUsed);
+      console.log('✅ [AdvisorBriefing] Briefing generated:', {
+        userId: profile.userId,
+        briefingLength: data.briefing?.length || 0,
+        tokensUsed: data.tokensUsed,
+        generationTimeMs: generationTime
+      })
 
       setBriefing(data.briefing);
       setShowModal(true);
@@ -113,7 +134,12 @@ export const AdvisorBriefingButton: React.FC<AdvisorBriefingButtonProps> = ({
       }));
 
     } catch (error) {
-      console.error('[AdvisorBriefing] Error:', error);
+      const errorTime = Date.now() - startTime
+      console.error('❌ [AdvisorBriefing] Error:', {
+        userId: profile.userId,
+        error: error instanceof Error ? error.message : 'Unknown error',
+        timeMs: errorTime
+      });
       setError(error instanceof Error ? error.message : 'Unknown error occurred');
       alert(`Failed to generate briefing: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {

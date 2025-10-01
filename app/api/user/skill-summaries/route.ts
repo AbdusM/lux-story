@@ -39,7 +39,10 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const userId = searchParams.get('userId')
 
+    console.log('🔵 [API:SkillSummaries] GET request:', { userId })
+
     if (!userId) {
+      console.error('❌ [API:SkillSummaries] Missing userId parameter')
       return NextResponse.json(
         { error: 'Missing userId parameter' },
         { status: 400 }
@@ -55,7 +58,11 @@ export async function GET(request: NextRequest) {
       .order('last_demonstrated', { ascending: false })
 
     if (error) {
-      console.error('[SkillSummaries API] Error fetching data:', error)
+      console.error('❌ [API:SkillSummaries] Supabase error:', {
+        code: error.code,
+        message: error.message,
+        userId
+      })
       return NextResponse.json(
         { error: 'Failed to fetch skill summaries' },
         { status: 500 }
@@ -70,6 +77,12 @@ export async function GET(request: NextRequest) {
       scenesInvolved: row.scenes_involved || [],
       lastDemonstrated: row.last_demonstrated
     }))
+
+    console.log('✅ [API:SkillSummaries] Retrieved summaries:', {
+      userId,
+      count: summaries.length,
+      skills: summaries.slice(0, 5).map(s => `${s.skillName}:${s.demonstrationCount}`)
+    })
 
     return NextResponse.json({
       success: true,
@@ -110,7 +123,16 @@ export async function POST(request: NextRequest) {
       last_demonstrated
     } = body
 
+    console.log('🔵 [API:SkillSummaries] POST request:', {
+      userId: user_id,
+      skillName: skill_name,
+      demonstrationCount: demonstration_count,
+      contextLength: latest_context?.length || 0,
+      scenesCount: scenes_involved?.length || 0
+    })
+
     if (!user_id || !skill_name) {
+      console.error('❌ [API:SkillSummaries] Missing required fields')
       return NextResponse.json(
         { error: 'Missing user_id or skill_name' },
         { status: 400 }
@@ -121,9 +143,11 @@ export async function POST(request: NextRequest) {
     if (latest_context) {
       const wordCount = latest_context.split(/\s+/).length
       if (wordCount < 50 || wordCount > 200) {
-        console.warn(
-          `[SkillSummaries API] Context length warning for ${skill_name}: ${wordCount} words (expected 100-150)`
-        )
+        console.warn('⚠️ [API:SkillSummaries] Context length warning:', {
+          skillName: skill_name,
+          wordCount,
+          expected: '100-150 words'
+        })
       }
     }
 
@@ -143,12 +167,23 @@ export async function POST(request: NextRequest) {
       })
 
     if (error) {
-      console.error('[SkillSummaries API] Error upserting data:', error)
+      console.error('❌ [API:SkillSummaries] Supabase upsert error:', {
+        code: error.code,
+        message: error.message,
+        userId: user_id,
+        skillName: skill_name
+      })
       return NextResponse.json(
         { error: 'Failed to save skill summary' },
         { status: 500 }
       )
     }
+
+    console.log('✅ [API:SkillSummaries] Upsert successful:', {
+      userId: user_id,
+      skillName: skill_name,
+      demonstrationCount: demonstration_count
+    })
 
     return NextResponse.json({ success: true })
   } catch (error) {
