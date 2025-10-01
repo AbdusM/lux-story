@@ -16,8 +16,17 @@ import type { SkillProfile } from '@/lib/skill-profile-adapter'
 
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY
 
+interface SkillSummary {
+  skillName: string
+  demonstrationCount: number
+  latestContext: string
+  scenesInvolved: string[]
+  lastDemonstrated: string
+}
+
 interface AdvisorBriefingRequest {
   profile: SkillProfile
+  skillsData?: SkillSummary[] // NEW: WEF 2030 Skills data
 }
 
 interface AdvisorBriefingResponse {
@@ -28,10 +37,40 @@ interface AdvisorBriefingResponse {
 }
 
 /**
+ * Format skill name for display (critical_thinking → Critical Thinking)
+ */
+function formatSkillName(skillName: string): string {
+  return skillName
+    .split('_')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ')
+}
+
+/**
+ * Format skills section for Gemini prompt
+ */
+function formatSkillsSection(skillsData: SkillSummary[]): string {
+  const top3 = skillsData
+    .sort((a, b) => b.demonstrationCount - a.demonstrationCount)
+    .slice(0, 3)
+
+  if (top3.length === 0) {
+    return 'No WEF 2030 skills data available (student just started or skills tracking not yet implemented).'
+  }
+
+  return top3.map((skill, idx) => `
+${idx + 1}. **${formatSkillName(skill.skillName)}** (${skill.demonstrationCount} demonstrations)
+   - Latest Context: ${skill.latestContext}
+   - Scenes: ${skill.scenesInvolved.join(', ')}
+  `).join('\n')
+}
+
+/**
  * Build the master prompt for Claude
  * Uses the user's exact 5-section template specification
+ * Enhanced with WEF 2030 Skills data
  */
-function buildMasterPrompt(profile: SkillProfile): string {
+function buildMasterPrompt(profile: SkillProfile, skillsData?: SkillSummary[]): string {
   // Extract key data for the prompt
   const topSkills = Object.entries(profile.skillDemonstrations)
     .sort(([, a], [, b]) => b.length - a.length)
@@ -60,7 +99,22 @@ function buildMasterPrompt(profile: SkillProfile): string {
     }))
   }
 
+  // Format WEF 2030 Skills section (if available)
+  const skillsSection = skillsData && skillsData.length > 0
+    ? formatSkillsSection(skillsData)
+    : 'No WEF 2030 skills data available.'
+
   return `You are a world-class career counselor and workforce development strategist for the city of Birmingham, Alabama. You are an expert in the World Economic Forum's 2030 Skills framework and Erikson's theory of identity development.
+
+**[-- WEF 2030 SKILLS FRAMEWORK DATA --]**
+
+This student's journey has been analyzed using the World Economic Forum's 2030 Skills framework. The following skills have been demonstrated with evidence:
+
+${skillsSection}
+
+These skills are tracked using research-backed frameworks and provide concrete evidence of the student's capabilities. Reference these specific skills and their contexts when making recommendations.
+
+**[-- END WEF 2030 SKILLS DATA --]**
 
 You have been provided with the complete data profile of a young person's journey through the "Grand Central Terminus" career exploration experience.
 
@@ -85,9 +139,12 @@ Your task is to analyze this complete data profile and generate a concise, empat
    - Keep it to 2-3 sentences maximum.
 
 ## 2. Top Strengths (What is their superpower?)
-   - Identify their top 3 demonstrated skills.
-   - For EACH skill, provide the single strongest piece of evidence using the exact choice quote and context from above.
-   - Format: "**[Skill Name]**: [Evidence from their actual choice]"
+   - **PRIORITIZE WEF 2030 SKILLS**: If WEF 2030 skills data is available (shown above), use those skills first as they are research-backed and evidence-rich.
+   - Identify their top 3 demonstrated skills, drawing from WEF 2030 skills when available.
+   - For EACH skill, provide the single strongest piece of evidence using either:
+     a) The WEF skill's "Latest Context" (if from WEF data), OR
+     b) The exact choice quote and context (if from behavioral patterns)
+   - Format: "**[Skill Name (WEF 2030)]**: [Evidence from their actual context]" (note the WEF badge for credibility)
    - Do not just list the skill; prove it with their actions.
 
 ## 3. The Primary Blocker (What is holding them back?)
@@ -104,16 +161,19 @@ Your task is to analyze this complete data profile and generate a concise, empat
 
 ## 5. The Conversation Starter (What should I say?)
    - Generate a single, empathetic opening line for a conversation with this student.
-   - It must reference one of their strengths (using their actual choice quote if possible) and connect it naturally to the strategic recommendation.
-   - Example format: "I was impressed by [reference to their specific choice]. That same [skill] is exactly what [Birmingham opportunity] is looking for."
+   - It must reference one of their WEF 2030 skills (if available) or behavioral strengths, using actual evidence/context.
+   - Connect this strength naturally to the strategic recommendation.
+   - Example format: "I was impressed by [reference to their specific skill demonstration]. That same [WEF skill] is exactly what [Birmingham opportunity] is looking for."
    - Make it sound natural, warm, and specific to their journey.
 
 **CRITICAL REQUIREMENTS:**
-- Use EXACT quotes from their actual choices (found in "Choice:" fields above)
+- **PRIORITIZE WEF 2030 SKILLS**: When available, reference these skills by name for research credibility
+- Use EXACT quotes/contexts from WEF skills data or behavioral choices (found in "Choice:" and "Latest Context" fields above)
 - Reference REAL Birmingham locations from their career matches (UAB, Innovation Depot, Children's Hospital, etc.)
 - Be concise: Each section should be 2-4 sentences maximum
 - Write in a warm, professional tone appropriate for a guidance counselor
 - Focus on actionability: every insight must lead to a concrete next step
+- Show that this analysis is grounded in evidence-based frameworks (WEF 2030)
 
 Generate only the five sections as clean markdown. No preamble or conclusion. Start immediately with "## 1. The Authentic Story"`
 }
@@ -125,7 +185,7 @@ Generate only the five sections as clean markdown. No preamble or conclusion. St
 export async function POST(request: NextRequest) {
   // Parse request body first
   const body: AdvisorBriefingRequest = await request.json()
-  const { profile } = body
+  const { profile, skillsData } = body
 
   try {
     // 1. Validate API key
@@ -151,11 +211,12 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // 4. Build master prompt
-    const masterPrompt = buildMasterPrompt(profile)
+    // 4. Build master prompt with WEF 2030 skills data
+    const masterPrompt = buildMasterPrompt(profile, skillsData)
 
     console.log('[AdvisorBriefing] Generating briefing for user:', profile.userId)
     console.log('[AdvisorBriefing] Demonstrations:', profile.totalDemonstrations)
+    console.log('[AdvisorBriefing] WEF 2030 Skills:', skillsData?.length || 0)
     console.log('[AdvisorBriefing] Prompt length:', masterPrompt.length, 'chars')
 
     // 5. Call Claude API (or use mock for testing)
@@ -170,17 +231,23 @@ export async function POST(request: NextRequest) {
       const topSkill = Object.entries(profile.skillDemonstrations)[0]
       const topCareer = profile.careerMatches[0]
 
+      // Use WEF 2030 skills if available, otherwise use profile data
+      const hasWEFSkills = skillsData && skillsData.length > 0
+      const wefSkill1 = hasWEFSkills ? skillsData[0] : null
+      const wefSkill2 = hasWEFSkills && skillsData.length > 1 ? skillsData[1] : null
+      const wefSkill3 = hasWEFSkills && skillsData.length > 2 ? skillsData[2] : null
+
       briefingText = `## 1. The Authentic Story
 
 This is a bridge-builder who creates connections through patience and understanding. Their choice to say "${profile.keySkillMoments[0]?.choice || 'I have felt something like that'}" reveals someone who leads with empathy while maintaining analytical depth. They're learning that their superpower isn't choosing between logic and emotion—it's integrating both.
 
 ## 2. Top Strengths
 
-**Emotional Intelligence**: When Devon struggled with his father's grief, they said "${profile.keySkillMoments[0]?.choice || 'That must have hurt'}"—validating pain without rushing to fix it. This demonstrates rare emotional maturity.
+${wefSkill1 ? `**${formatSkillName(wefSkill1.skillName)} (WEF 2030)**: ${wefSkill1.latestContext} This skill has been demonstrated ${wefSkill1.demonstrationCount} times across their journey.` : `**Emotional Intelligence**: When Devon struggled with his father's grief, they said "${profile.keySkillMoments[0]?.choice || 'That must have hurt'}"—validating pain without rushing to fix it. This demonstrates rare emotional maturity.`}
 
-**Communication**: Their response "${profile.keySkillMoments[1]?.choice || 'What about my own path?'}" to Samuel shows vulnerability and directness, creating authentic dialogue that builds trust.
+${wefSkill2 ? `**${formatSkillName(wefSkill2.skillName)} (WEF 2030)**: ${wefSkill2.latestContext} Demonstrated ${wefSkill2.demonstrationCount} times, showing consistent application of this critical skill.` : `**Communication**: Their response "${profile.keySkillMoments[1]?.choice || 'What about my own path?'}" to Samuel shows vulnerability and directness, creating authentic dialogue that builds trust.`}
 
-**Critical Thinking**: Recognized the false binary in Devon's thinking ("${profile.keySkillMoments[2]?.choice || 'Logic OR emotion. What about both?'}"), demonstrating systems thinking that embraces complexity.
+${wefSkill3 ? `**${formatSkillName(wefSkill3.skillName)} (WEF 2030)**: ${wefSkill3.latestContext}` : `**Critical Thinking**: Recognized the false binary in Devon's thinking ("${profile.keySkillMoments[2]?.choice || 'Logic OR emotion. What about both?'}"), demonstrating systems thinking that embraces complexity.`}
 
 ## 3. The Primary Blocker
 
@@ -192,10 +259,10 @@ The **${Math.round((profile.skillGaps[0]?.gap || 0.7) * 100)}% gap in ${profile.
 
 ## 5. The Conversation Starter
 
-"I was impressed when you told Devon that '${profile.keySkillMoments[0]?.choice || 'both logic and emotion matter'}.' That integration mindset is exactly what ${topCareer?.localOpportunities?.[0] || 'UAB\'s Innovation Lab'} looks for in their emerging leaders program—they need people who can bridge technical and human systems."
+${wefSkill1 ? `"I was impressed by your demonstrated ${formatSkillName(wefSkill1.skillName)}—specifically when you ${wefSkill1.latestContext.slice(0, 100)}... That WEF 2030 skill is exactly what ${topCareer?.localOpportunities?.[0] || 'UAB Innovation Lab'} looks for in their emerging leaders program."` : `"I was impressed when you told Devon that '${profile.keySkillMoments[0]?.choice || 'both logic and emotion matter'}.' That integration mindset is exactly what ${topCareer?.localOpportunities?.[0] || 'UAB\'s Innovation Lab'} looks for in their emerging leaders program—they need people who can bridge technical and human systems."`}
 
 ---
-*Note: This is a development preview. Configure ANTHROPIC_API_KEY in .env.local for production use.*`
+*Note: This is a development preview. Configure ANTHROPIC_API_KEY in .env.local for production use.${hasWEFSkills ? ' Using WEF 2030 Skills Framework data.' : ''}*`
 
       tokensUsed = 850 // Mock token count
     } else {
