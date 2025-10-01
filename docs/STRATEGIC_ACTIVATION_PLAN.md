@@ -143,7 +143,7 @@ useEffect(() => {
 | Csikszentmihalyi Flow | Embedded | Flow Theory | Dormant | Week 4-6 (MEDIUM) |
 | Cognitive Development | ~300 | Metacognition | Dormant | Phase 4+ (LOW) |
 
-### Why Activate 2030 Skills First (Week 2)
+### Why Samuel Enhancement (2030 Skills via Narrative) First (Week 2)
 
 **Strategic Reasons**:
 1. **Grant-friendly**: WEF backing = credibility with funders
