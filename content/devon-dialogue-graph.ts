@@ -174,6 +174,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "Who is it for?",
         nextNodeId: 'devon_father_hint',
         pattern: 'exploring',
+        skills: ['communication', 'emotional_intelligence'],
         consequence: {
           characterId: 'devon',
           trustChange: 1
@@ -184,6 +185,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "They must mean a lot to you.",
         nextNodeId: 'devon_father_hint',
         pattern: 'helping',
+        skills: ['emotional_intelligence'],
         consequence: {
           characterId: 'devon',
           trustChange: 1
@@ -214,6 +216,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "Maybe feelings aren't bugs to fix?",
         nextNodeId: 'devon_validated',
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'critical_thinking'],
         consequence: {
           characterId: 'devon',
           trustChange: 2
@@ -224,6 +227,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "Is there someone specific you're trying to understand?",
         nextNodeId: 'devon_father_hint',
         pattern: 'exploring',
+        skills: ['emotional_intelligence', 'communication'],
         consequence: {
           characterId: 'devon',
           trustChange: 1
@@ -423,6 +427,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "You're doing what he does - trying to debug systems.",
         nextNodeId: 'devon_realizes_parallel',
         pattern: 'analytical',
+        skills: ['critical_thinking', 'emotional_intelligence'],
         consequence: {
           characterId: 'devon',
           trustChange: 1,
@@ -465,6 +470,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "Maybe you and your dad could talk about system failures together.",
         nextNodeId: 'devon_realizes_bridge',
         pattern: 'helping',
+        skills: ['creativity', 'emotional_intelligence', 'communication'],
         consequence: {
           characterId: 'devon',
           trustChange: 2,
@@ -520,6 +526,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "Maybe engineering IS your shared language with him.",
         nextNodeId: 'devon_realizes_bridge',
         pattern: 'helping',
+        skills: ['creativity', 'critical_thinking', 'emotional_intelligence'],
         consequence: {
           characterId: 'devon',
           trustChange: 2
@@ -651,6 +658,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "Maybe empathy IS a kind of data.",
         nextNodeId: 'devon_reframe',
         pattern: 'helping',
+        skills: ['creativity', 'critical_thinking', 'emotional_intelligence'],
         consequence: {
           characterId: 'devon',
           trustChange: 2
@@ -661,6 +669,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "You're thinking in binaries. Logic OR emotion. What about both?",
         nextNodeId: 'devon_integration_idea',
         pattern: 'analytical',
+        skills: ['critical_thinking', 'creativity'],
         consequence: {
           characterId: 'devon',
           trustChange: 2
@@ -834,19 +843,22 @@ export const devonDialogueNodes: DialogueNode[] = [
         choiceId: 'crossroads_integrated',
         text: "You don't have to choose between engineer and son. Be both.",
         nextNodeId: 'devon_chooses_integration',
-        pattern: 'analytical'
+        pattern: 'analytical',
+        skills: ['critical_thinking', 'creativity', 'emotional_intelligence']
       },
       {
         choiceId: 'crossroads_emotional',
         text: "Trust your heart. The flowchart can wait.",
         nextNodeId: 'devon_chooses_heart',
-        pattern: 'helping'
+        pattern: 'helping',
+        skills: ['emotional_intelligence']
       },
       {
         choiceId: 'crossroads_support',
         text: "Whatever feels right. He just needs you there.",
         nextNodeId: 'devon_chooses_presence',
-        pattern: 'patience'
+        pattern: 'patience',
+        skills: ['emotional_intelligence', 'adaptability']
       }
     ],
     tags: ['climax', 'devon_arc']

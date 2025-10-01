@@ -466,6 +466,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "You didn't wander. You were assembling exactly the skills you needed.",
         nextNodeId: 'jordan_mentor_context',
         pattern: 'analytical',
+        skills: ['critical_thinking', 'creativity'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -495,6 +496,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "What are you really afraid they'll think?",
         nextNodeId: 'jordan_impostor_reveal',
         pattern: 'exploring',
+        skills: ['emotional_intelligence', 'communication'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1
@@ -505,6 +507,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "You're telling yourself the wrong story about those seven jobs.",
         nextNodeId: 'jordan_impostor_reveal',
         pattern: 'helping',
+        skills: ['critical_thinking', 'creativity'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1
@@ -515,6 +518,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "That voice calling them 'participation trophies'—whose voice is that really?",
         nextNodeId: 'jordan_impostor_reveal',
         pattern: 'analytical',
+        skills: ['critical_thinking', 'emotional_intelligence'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1
@@ -543,6 +547,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "What would you tell those students if you believed your story was real?",
         nextNodeId: 'jordan_crossroads',
         pattern: 'exploring',
+        skills: ['creativity', 'critical_thinking', 'communication'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -554,6 +559,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "You're not a fraud. You're the most qualified person to give this talk.",
         nextNodeId: 'jordan_crossroads',
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'leadership'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -565,6 +571,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "Luck is what people call it when preparation meets opportunity. You created both.",
         nextNodeId: 'jordan_crossroads',
         pattern: 'analytical',
+        skills: ['critical_thinking', 'creativity'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -593,19 +600,22 @@ export const jordanDialogueNodes: DialogueNode[] = [
         choiceId: 'jordan_crossroads_accumulation',
         text: "What if your past is exactly why you're the perfect mentor?",
         nextNodeId: 'jordan_chooses_accumulation',
-        pattern: 'helping'
+        pattern: 'helping',
+        skills: ['creativity', 'critical_thinking', 'leadership']
       },
       {
         choiceId: 'jordan_crossroads_birmingham',
         text: "What if you're proof that Birmingham rewards people who adapt?",
         nextNodeId: 'jordan_chooses_birmingham',
-        pattern: 'analytical'
+        pattern: 'analytical',
+        skills: ['critical_thinking', 'adaptability', 'creativity']
       },
       {
         choiceId: 'jordan_crossroads_internal',
         text: "What if the story you tell yourself is the only one that matters?",
         nextNodeId: 'jordan_chooses_internal',
-        pattern: 'patience'
+        pattern: 'patience',
+        skills: ['emotional_intelligence', 'leadership']
       }
     ],
     onEnter: [{

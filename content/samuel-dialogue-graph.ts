@@ -51,6 +51,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "Who are you, really?",
         nextNodeId: 'samuel_backstory_intro',
         pattern: 'patience',
+        skills: ['emotional_intelligence', 'communication'],
         consequence: {
           characterId: 'samuel',
           trustChange: 2
@@ -322,19 +323,22 @@ export const samuelDialogueNodes: DialogueNode[] = [
         choiceId: 'hope_i_helped',
         text: "I hope I helped her.",
         nextNodeId: 'samuel_reflect_on_influence',
-        pattern: 'helping'
+        pattern: 'helping',
+        skills: ['emotional_intelligence']
       },
       {
         choiceId: 'unsure_what_i_did',
         text: "I'm not sure what I actually did.",
         nextNodeId: 'samuel_reflect_on_influence',
-        pattern: 'exploring'
+        pattern: 'exploring',
+        skills: ['critical_thinking', 'adaptability']
       },
       {
         choiceId: 'skip_reflection',
         text: "She made her own choice.",
         nextNodeId: 'samuel_reflect_on_agency',
-        pattern: 'patience'
+        pattern: 'patience',
+        skills: ['critical_thinking', 'emotional_intelligence']
       }
     ],
     onEnter: [
@@ -367,13 +371,15 @@ export const samuelDialogueNodes: DialogueNode[] = [
         choiceId: 'how_do_you_know',
         text: "How do you know I didn't just tell her what to do?",
         nextNodeId: 'samuel_systemic_proof',
-        pattern: 'analytical'
+        pattern: 'analytical',
+        skills: ['critical_thinking']
       },
       {
         choiceId: 'accept_insight',
         text: "That distinction matters.",
         nextNodeId: 'samuel_maya_path_reflection',
         pattern: 'patience',
+        skills: ['critical_thinking', 'emotional_intelligence'],
         consequence: {
           characterId: 'samuel',
           trustChange: 1
@@ -451,7 +457,8 @@ export const samuelDialogueNodes: DialogueNode[] = [
         choiceId: 'what_about_me',
         text: "What about my path?",
         nextNodeId: 'samuel_your_pattern_emerges',
-        pattern: 'exploring'
+        pattern: 'exploring',
+        skills: ['adaptability', 'critical_thinking']
       }
     ]
   },

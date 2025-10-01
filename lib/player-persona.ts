@@ -8,6 +8,19 @@
 import type { GameState } from './game-store'
 import type { Choice } from './story-engine'
 
+export interface SkillDemonstrationSummary {
+  count: number
+  latestContext: string // Rich 100-150 word context
+  latestScene: string
+  timestamp: number
+}
+
+export interface TopSkill {
+  skill: string
+  count: number
+  percentage: number // % of total demonstrations
+}
+
 export interface PlayerPersona {
   playerId: string
 
@@ -26,6 +39,11 @@ export interface PlayerPersona {
   culturalAlignment: number // 0-1 scale
   localReferences: string[]
   communicationStyle: 'direct' | 'thoughtful' | 'expressive' | 'reserved'
+
+  // 2030 Skills tracking (NEW)
+  recentSkills: string[] // Last 5 unique skills demonstrated
+  skillDemonstrations: Record<string, SkillDemonstrationSummary>
+  topSkills: TopSkill[] // Top 5 skills by demonstration count
 
   // AI context
   summaryText: string
@@ -111,6 +129,9 @@ export class PlayerPersonaTracker {
       culturalAlignment: 0.5,
       localReferences: [],
       communicationStyle: 'thoughtful',
+      recentSkills: [],
+      skillDemonstrations: {},
+      topSkills: [],
       summaryText: 'New player just beginning their journey.',
       lastUpdated: Date.now(),
       totalChoices: 0
@@ -234,6 +255,17 @@ export class PlayerPersonaTracker {
       }
     }
 
+    // Skill demonstrations (NEW)
+    if (persona.topSkills.length > 0) {
+      const topSkill = persona.topSkills[0]
+      summary += `Most demonstrated skill: ${this.formatSkillName(topSkill.skill)} (${topSkill.count}x, ${Math.round(topSkill.percentage)}%). `
+
+      if (persona.topSkills.length > 1) {
+        const secondSkill = persona.topSkills[1]
+        summary += `Also shows ${this.formatSkillName(secondSkill.skill)} (${secondSkill.count}x). `
+      }
+    }
+
     // Behavioral insights
     summary += this.getResponseSpeedDescription(responseSpeed) + ' '
     summary += this.getStressResponseDescription(stressResponse) + ' '
@@ -291,6 +323,183 @@ export class PlayerPersonaTracker {
   }
 
   /**
+   * Add skill demonstration to persona
+   * Called when choices with skills metadata are made
+   */
+  addSkillDemonstration(
+    playerId: string,
+    skills: string[],
+    context: string,
+    sceneId: string
+  ): PlayerPersona {
+    let persona = this.personas.get(playerId) || this.createBasePersona(playerId)
+
+    // Update skill demonstrations
+    skills.forEach(skill => {
+      if (!persona.skillDemonstrations[skill]) {
+        persona.skillDemonstrations[skill] = {
+          count: 0,
+          latestContext: '',
+          latestScene: '',
+          timestamp: 0
+        }
+      }
+
+      persona.skillDemonstrations[skill].count++
+      persona.skillDemonstrations[skill].latestContext = context
+      persona.skillDemonstrations[skill].latestScene = sceneId
+      persona.skillDemonstrations[skill].timestamp = Date.now()
+    })
+
+    // Update recent skills (last 5 unique)
+    skills.forEach(skill => {
+      // Remove skill if already in list
+      persona.recentSkills = persona.recentSkills.filter(s => s !== skill)
+      // Add to front
+      persona.recentSkills.unshift(skill)
+    })
+    // Keep only last 5 unique
+    persona.recentSkills = persona.recentSkills.slice(0, 5)
+
+    // Recalculate top skills
+    persona.topSkills = this.calculateTopSkills(persona.skillDemonstrations)
+
+    // Update timestamp
+    persona.lastUpdated = Date.now()
+
+    // Save and return
+    this.personas.set(playerId, persona)
+    this.savePersonas()
+
+    return persona
+  }
+
+  /**
+   * Calculate top skills by demonstration count
+   */
+  private calculateTopSkills(skillDemonstrations: Record<string, SkillDemonstrationSummary>): TopSkill[] {
+    // Calculate total demonstrations
+    const totalDemonstrations = Object.values(skillDemonstrations)
+      .reduce((sum, skill) => sum + skill.count, 0)
+
+    if (totalDemonstrations === 0) return []
+
+    // Sort skills by count and take top 5
+    return Object.entries(skillDemonstrations)
+      .map(([skill, data]) => ({
+        skill,
+        count: data.count,
+        percentage: (data.count / totalDemonstrations) * 100
+      }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 5)
+  }
+
+  /**
+   * Get skill summary for AI prompts
+   * Returns formatted string with recent skills and top demonstrations
+   */
+  getSkillSummaryForAI(playerId: string): string {
+    const persona = this.personas.get(playerId)
+    if (!persona || persona.topSkills.length === 0) {
+      return 'No skill demonstrations yet.'
+    }
+
+    let summary = 'Recent skills: '
+
+    // Add top 3 skills with counts
+    const topThree = persona.topSkills.slice(0, 3)
+    summary += topThree
+      .map(skill => `${this.formatSkillName(skill.skill)} (${skill.count}x)`)
+      .join(', ')
+
+    summary += '. '
+
+    // Add latest contexts for top 3 skills
+    topThree.forEach((topSkill, index) => {
+      const skillData = persona.skillDemonstrations[topSkill.skill]
+      if (skillData && skillData.latestContext) {
+        const skillName = this.formatSkillName(topSkill.skill)
+        summary += `${skillName}: ${skillData.latestContext}. `
+      }
+    })
+
+    return summary.trim()
+  }
+
+  /**
+   * Sync skill demonstrations from SkillTracker
+   * Call this on app mount or scene transitions to ensure persona is up-to-date
+   */
+  syncFromSkillTracker(playerId: string, skillTrackerData: any[]): PlayerPersona {
+    let persona = this.personas.get(playerId) || this.createBasePersona(playerId)
+
+    // Reset skill demonstrations
+    persona.skillDemonstrations = {}
+    persona.recentSkills = []
+
+    // Build skill demonstrations from SkillTracker data
+    skillTrackerData.forEach(demo => {
+      demo.skillsDemonstrated.forEach((skill: string) => {
+        if (!persona.skillDemonstrations[skill]) {
+          persona.skillDemonstrations[skill] = {
+            count: 0,
+            latestContext: '',
+            latestScene: '',
+            timestamp: 0
+          }
+        }
+
+        persona.skillDemonstrations[skill].count++
+
+        // Keep the most recent context
+        if (demo.timestamp > persona.skillDemonstrations[skill].timestamp) {
+          persona.skillDemonstrations[skill].latestContext = demo.context
+          persona.skillDemonstrations[skill].latestScene = demo.scene
+          persona.skillDemonstrations[skill].timestamp = demo.timestamp
+        }
+      })
+    })
+
+    // Calculate recent skills from most recent demonstrations
+    const recentDemos = skillTrackerData
+      .sort((a, b) => b.timestamp - a.timestamp)
+      .slice(0, 10) // Look at last 10 demonstrations
+
+    const recentSkillsSet = new Set<string>()
+    recentDemos.forEach(demo => {
+      demo.skillsDemonstrated.forEach((skill: string) => {
+        if (recentSkillsSet.size < 5) {
+          recentSkillsSet.add(skill)
+        }
+      })
+    })
+    persona.recentSkills = Array.from(recentSkillsSet)
+
+    // Recalculate top skills
+    persona.topSkills = this.calculateTopSkills(persona.skillDemonstrations)
+
+    // Update timestamp
+    persona.lastUpdated = Date.now()
+
+    // Save and return
+    this.personas.set(playerId, persona)
+    this.savePersonas()
+
+    return persona
+  }
+
+  /**
+   * Format skill name for display (camelCase to Title Case)
+   */
+  private formatSkillName(skill: string): string {
+    return skill
+      .replace(/([A-Z])/g, ' $1')
+      .replace(/^./, str => str.toUpperCase())
+      .trim()
+  }
+
+  /**
    * Get persona insights for debugging/analytics
    */
   getPersonaInsights(playerId: string): PersonaInsight[] {
@@ -310,6 +519,17 @@ export class PlayerPersonaTracker {
           examples: [`${Math.round(percentage * persona.totalChoices)} of ${persona.totalChoices} choices`]
         })
       }
+    }
+
+    // Skill insights
+    if (persona.topSkills.length > 0) {
+      const topSkill = persona.topSkills[0]
+      insights.push({
+        category: 'Skills',
+        insight: `Strong ${this.formatSkillName(topSkill.skill)} pattern`,
+        confidence: topSkill.percentage / 100,
+        examples: [`${topSkill.count} demonstrations (${Math.round(topSkill.percentage)}%)`]
+      })
     }
 
     // Behavioral insights
