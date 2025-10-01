@@ -7,10 +7,11 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Target, TrendingUp, Briefcase, Lightbulb, CheckCircle2, AlertTriangle, RefreshCw } from 'lucide-react';
+import { Target, TrendingUp, Briefcase, Lightbulb, CheckCircle2, AlertTriangle, RefreshCw, Award, BookOpen, Building2 } from 'lucide-react';
 import type { SkillProfile } from '@/lib/skill-profile-adapter';
 import { ExportButton } from '@/components/admin/ExportButton';
 import { AdvisorBriefingButton } from '@/components/admin/AdvisorBriefingButton';
+import { BIRMINGHAM_OPPORTUNITIES } from '@/lib/simple-career-analytics';
 
 interface SingleUserDashboardProps {
   userId: string
@@ -30,6 +31,14 @@ interface UrgencyData {
   totalChoices: number
   uniqueScenesVisited: number
   relationshipsFormed: number
+}
+
+interface SkillSummary {
+  skillName: string
+  demonstrationCount: number
+  latestContext: string
+  scenesInvolved: string[]
+  lastDemonstrated: string
 }
 
 // Mock data for reference (will be replaced with real profile prop)
@@ -193,6 +202,12 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
   const [urgencyError, setUrgencyError] = useState<string | null>(null);
   const [recalculating, setRecalculating] = useState(false);
 
+  // 2030 Skills data state
+  const [skillsData, setSkillsData] = useState<SkillSummary[]>([]);
+  const [skillsLoading, setSkillsLoading] = useState(false);
+  const [skillsError, setSkillsError] = useState<string | null>(null);
+  const [expandedSkill, setExpandedSkill] = useState<string | null>(null);
+
   // Fetch urgency data for this specific user
   useEffect(() => {
     const fetchUrgencyData = async () => {
@@ -228,6 +243,45 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
 
     if (userId) {
       fetchUrgencyData();
+    }
+  }, [userId]);
+
+  // Fetch 2030 skills data for this specific user
+  useEffect(() => {
+    const fetchSkillsData = async () => {
+      setSkillsLoading(true);
+      setSkillsError(null);
+
+      try {
+        const token = process.env.NEXT_PUBLIC_ADMIN_API_TOKEN;
+        const response = await fetch(`/api/user/skill-summaries?userId=${userId}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch skills data');
+        }
+
+        const data = await response.json();
+
+        if (data.success) {
+          setSkillsData(data.summaries || []);
+        } else {
+          setSkillsError('Failed to load skill data');
+        }
+      } catch (error) {
+        console.error('Error fetching skills data:', error);
+        setSkillsError('Unable to load skill summaries');
+      } finally {
+        setSkillsLoading(false);
+      }
+    };
+
+    if (userId) {
+      fetchSkillsData();
     }
   }, [userId]);
 
@@ -286,6 +340,34 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
     }
   };
 
+  // Helper function to get Birmingham career connections for a skill
+  const getBirminghamConnectionsForSkill = (skillName: string): string[] => {
+    const skillToCareerMap: Record<string, string[]> = {
+      'critical_thinking': ['UAB Healthcare', 'Regions Bank Analytics', 'Innovation Depot Tech'],
+      'communication': ['UAB Community Health', 'Birmingham City Schools', 'Local Non-profits'],
+      'collaboration': ['Community Health Programs', 'YMCA Youth Programs', 'City Projects'],
+      'creativity': ['Innovation Depot Startups', 'Birmingham Arts Scene', 'Design Studios'],
+      'adaptability': ['Tech Startups', 'Healthcare Innovation', 'Entrepreneurship Programs'],
+      'leadership': ['Youth Leadership Programs', 'Community Organizations', 'Team Projects'],
+      'digital_literacy': ['Regions Bank IT', 'Shipt Tech', 'Innovation Depot'],
+      'emotional_intelligence': ['UAB Healthcare', 'Community Health', 'Social Services'],
+      'cultural_competence': ['Community Health', 'Birmingham Non-profits', 'Public Service'],
+      'financial_literacy': ['Regions Bank', 'Local Credit Unions', 'Financial Planning'],
+      'time_management': ['All Professional Paths', 'Project Management', 'Operations'],
+      'problem_solving': ['Engineering (Southern Company)', 'Healthcare Tech', 'Data Analytics']
+    };
+
+    return skillToCareerMap[skillName.toLowerCase()] || ['Various Birmingham Career Paths'];
+  };
+
+  // Get color for skill demonstration count
+  const getSkillColor = (count: number, maxCount: number): string => {
+    const ratio = count / maxCount;
+    if (ratio > 0.7) return 'bg-orange-500';
+    if (ratio > 0.4) return 'bg-yellow-500';
+    return 'bg-blue-500';
+  };
+
   return (
     <div className="w-full max-w-2xl mx-auto p-4 space-y-4">
       {/* Header */}
@@ -313,13 +395,14 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
 
       {/* Main Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-6">
+        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-7">
           <TabsTrigger value="urgency">Urgency</TabsTrigger>
           <TabsTrigger value="skills">Skills</TabsTrigger>
           <TabsTrigger value="careers">Careers</TabsTrigger>
           <TabsTrigger value="evidence">Evidence</TabsTrigger>
           <TabsTrigger value="gaps">Gaps</TabsTrigger>
           <TabsTrigger value="action">Action</TabsTrigger>
+          <TabsTrigger value="2030skills">2030 Skills</TabsTrigger>
         </TabsList>
 
         {/* URGENCY TAB - Glass Box intervention priority */}
@@ -983,6 +1066,283 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
               ))}
             </CardContent>
           </Card>
+        </TabsContent>
+
+        {/* 2030 SKILLS TAB - WEF Skills Tracking */}
+        <TabsContent value="2030skills" className="space-y-4">
+          {skillsLoading ? (
+            <Card>
+              <CardContent className="py-12 text-center text-gray-500">
+                Loading 2030 skills data...
+              </CardContent>
+            </Card>
+          ) : skillsError ? (
+            <Card>
+              <CardContent className="py-12 text-center text-red-500">
+                {skillsError}
+              </CardContent>
+            </Card>
+          ) : skillsData.length === 0 ? (
+            <Card>
+              <CardContent className="py-12 text-center space-y-4">
+                <Award className="w-12 h-12 mx-auto text-gray-400" />
+                <div>
+                  <p className="text-gray-600 font-medium">No skill demonstrations recorded yet</p>
+                  <p className="text-sm text-gray-500 mt-2">
+                    Skills are tracked automatically as students make choices in the narrative.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          ) : (
+            <>
+              {/* Overview Section */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Award className="w-5 h-5 text-blue-600" />
+                    2030 Skills Trajectory
+                  </CardTitle>
+                  <CardDescription>
+                    Skills identified by the World Economic Forum as critical for 2030 workforce readiness
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  {/* Top 5 Skills Bars */}
+                  <div className="space-y-3">
+                    <h4 className="font-medium text-sm text-gray-700">Top Demonstrated Skills:</h4>
+                    {skillsData
+                      .sort((a, b) => b.demonstrationCount - a.demonstrationCount)
+                      .slice(0, 5)
+                      .map((skill, idx) => {
+                        const maxCount = Math.max(...skillsData.map(s => s.demonstrationCount));
+                        const percentage = (skill.demonstrationCount / maxCount) * 100;
+                        const colorClass = getSkillColor(skill.demonstrationCount, maxCount);
+
+                        return (
+                          <div key={skill.skillName} className="space-y-1">
+                            <div className="flex items-center justify-between text-sm">
+                              <span className="font-medium capitalize">
+                                {skill.skillName.replace(/_/g, ' ')}
+                              </span>
+                              <span className="text-gray-600">
+                                {skill.demonstrationCount} {skill.demonstrationCount === 1 ? 'time' : 'times'}
+                              </span>
+                            </div>
+                            <div className="w-full bg-gray-200 rounded-full h-3">
+                              <div
+                                className={`${colorClass} h-3 rounded-full transition-all`}
+                                style={{ width: `${percentage}%` }}
+                              />
+                            </div>
+                          </div>
+                        );
+                      })}
+                  </div>
+
+                  {/* Summary Stats */}
+                  <div className="grid grid-cols-3 gap-4 pt-4 border-t">
+                    <div className="text-center">
+                      <p className="text-2xl font-bold text-blue-600">{skillsData.length}</p>
+                      <p className="text-xs text-gray-600">Skills Demonstrated</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-2xl font-bold text-blue-600">
+                        {skillsData.reduce((sum, s) => sum + s.demonstrationCount, 0)}
+                      </p>
+                      <p className="text-xs text-gray-600">Total Demonstrations</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-2xl font-bold text-blue-600">
+                        {new Set(skillsData.flatMap(s => s.scenesInvolved)).size}
+                      </p>
+                      <p className="text-xs text-gray-600">Scenes Involved</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Latest Demonstrations Table */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <BookOpen className="w-5 h-5 text-purple-600" />
+                    Latest Skill Demonstrations
+                  </CardTitle>
+                  <CardDescription>
+                    Click to expand and view full context
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    {skillsData
+                      .sort((a, b) => new Date(b.lastDemonstrated).getTime() - new Date(a.lastDemonstrated).getTime())
+                      .map((skill) => (
+                        <div
+                          key={skill.skillName}
+                          className="border rounded-lg overflow-hidden hover:shadow-sm transition-shadow"
+                        >
+                          <button
+                            onClick={() => setExpandedSkill(expandedSkill === skill.skillName ? null : skill.skillName)}
+                            className="w-full p-3 text-left hover:bg-gray-50 transition-colors"
+                          >
+                            <div className="flex items-center justify-between">
+                              <div className="flex-1">
+                                <p className="font-medium capitalize">
+                                  {skill.skillName.replace(/_/g, ' ')}
+                                </p>
+                                <p className="text-xs text-gray-500 mt-1">
+                                  {skill.latestContext.substring(0, 80)}...
+                                </p>
+                              </div>
+                              <div className="flex items-center gap-4 ml-4">
+                                <Badge variant="secondary" className="text-xs">
+                                  {skill.demonstrationCount}x
+                                </Badge>
+                                <span className="text-xs text-gray-500">
+                                  {new Date(skill.lastDemonstrated).toLocaleDateString()}
+                                </span>
+                              </div>
+                            </div>
+                          </button>
+
+                          {/* Expanded Context */}
+                          {expandedSkill === skill.skillName && (
+                            <div className="p-4 bg-gray-50 border-t space-y-3">
+                              <div>
+                                <p className="text-xs font-semibold text-gray-700 mb-1">Full Context:</p>
+                                <p className="text-sm text-gray-700 leading-relaxed">
+                                  {skill.latestContext}
+                                </p>
+                              </div>
+
+                              {skill.scenesInvolved.length > 0 && (
+                                <div>
+                                  <p className="text-xs font-semibold text-gray-700 mb-1">Scenes Involved:</p>
+                                  <div className="flex flex-wrap gap-1">
+                                    {skill.scenesInvolved.map((scene, idx) => (
+                                      <Badge key={idx} variant="outline" className="text-xs">
+                                        {scene}
+                                      </Badge>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Birmingham Career Connections */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Building2 className="w-5 h-5 text-green-600" />
+                    Birmingham Career Connections
+                  </CardTitle>
+                  <CardDescription>
+                    Local career paths aligned with demonstrated skills
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {skillsData
+                    .sort((a, b) => b.demonstrationCount - a.demonstrationCount)
+                    .slice(0, 3)
+                    .map((skill) => {
+                      const connections = getBirminghamConnectionsForSkill(skill.skillName);
+
+                      return (
+                        <div key={skill.skillName} className="p-3 border rounded-lg bg-green-50/50">
+                          <div className="flex items-start justify-between mb-2">
+                            <p className="font-medium capitalize text-sm">
+                              {skill.skillName.replace(/_/g, ' ')}
+                            </p>
+                            <Badge variant="secondary" className="text-xs">
+                              {skill.demonstrationCount} demonstrations
+                            </Badge>
+                          </div>
+                          <div className="space-y-1">
+                            {connections.map((connection, idx) => (
+                              <div key={idx} className="flex items-center gap-2 text-sm text-gray-700">
+                                <span className="text-green-600">→</span>
+                                <span>{connection}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    })}
+
+                  {skillsData.length > 3 && (
+                    <p className="text-xs text-gray-500 italic pt-2 border-t">
+                      Additional skills demonstrated: {skillsData.slice(3).map(s => s.skillName.replace(/_/g, ' ')).join(', ')}
+                    </p>
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* WEF Framework Reference */}
+              <Card className="border-2 border-blue-600">
+                <CardHeader>
+                  <CardTitle className="text-sm">World Economic Forum 2030 Skills Framework</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <p className="text-sm text-gray-700">
+                    These skills are identified by the World Economic Forum as critical for 2030 workforce readiness.
+                    They represent the capabilities employers will seek as the economy evolves.
+                  </p>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                    <div className="space-y-2">
+                      <p className="font-semibold text-gray-700">Cognitive Skills:</p>
+                      <ul className="space-y-1 text-gray-600">
+                        <li>• Critical Thinking</li>
+                        <li>• Creativity</li>
+                        <li>• Problem Solving</li>
+                      </ul>
+                    </div>
+
+                    <div className="space-y-2">
+                      <p className="font-semibold text-gray-700">Social-Emotional:</p>
+                      <ul className="space-y-1 text-gray-600">
+                        <li>• Emotional Intelligence</li>
+                        <li>• Communication</li>
+                        <li>• Collaboration</li>
+                        <li>• Cultural Competence</li>
+                      </ul>
+                    </div>
+
+                    <div className="space-y-2">
+                      <p className="font-semibold text-gray-700">Self-Management:</p>
+                      <ul className="space-y-1 text-gray-600">
+                        <li>• Adaptability</li>
+                        <li>• Time Management</li>
+                        <li>• Leadership</li>
+                      </ul>
+                    </div>
+
+                    <div className="space-y-2">
+                      <p className="font-semibold text-gray-700">Technical:</p>
+                      <ul className="space-y-1 text-gray-600">
+                        <li>• Digital Literacy</li>
+                        <li>• Financial Literacy</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div className="pt-3 border-t">
+                    <p className="text-xs text-gray-500">
+                      <strong>Note:</strong> Grand Central Terminus tracks these skills automatically through narrative choices,
+                      providing counselors with evidence-based insights for career guidance.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            </>
+          )}
         </TabsContent>
       </Tabs>
     </div>

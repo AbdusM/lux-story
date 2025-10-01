@@ -3,6 +3,8 @@
  *
  * Triggers AI-powered strategic briefing generation
  * The "Co-Pilot" feature for administrators
+ *
+ * Week 2 Day 3 Enhancement: Now includes WEF 2030 Skills with evidence
  */
 
 'use client';
@@ -19,6 +21,14 @@ interface AdvisorBriefingButtonProps {
   size?: 'default' | 'sm' | 'lg' | 'icon';
 }
 
+interface SkillSummary {
+  skillName: string;
+  demonstrationCount: number;
+  latestContext: string;
+  scenesInvolved: string[];
+  lastDemonstrated: string;
+}
+
 export const AdvisorBriefingButton: React.FC<AdvisorBriefingButtonProps> = ({
   profile,
   variant = 'default',
@@ -29,6 +39,36 @@ export const AdvisorBriefingButton: React.FC<AdvisorBriefingButtonProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
 
+  /**
+   * Fetch skill summaries from Supabase API
+   */
+  const fetchSkillsData = async (userId: string): Promise<SkillSummary[]> => {
+    try {
+      const response = await fetch(`/api/user/skill-summaries?userId=${userId}`);
+
+      if (!response.ok) {
+        console.warn('[AdvisorBriefing] Skills API failed, continuing without skills data');
+        return [];
+      }
+
+      const data = await response.json();
+      return data.summaries || [];
+    } catch (error) {
+      console.warn('[AdvisorBriefing] Skills fetch error:', error);
+      return [];
+    }
+  };
+
+  /**
+   * Format skill name for display (critical_thinking → Critical Thinking)
+   */
+  const formatSkillName = (skillName: string): string => {
+    return skillName
+      .split('_')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  };
+
   const handleGenerate = async () => {
     try {
       setIsGenerating(true);
@@ -36,12 +76,20 @@ export const AdvisorBriefingButton: React.FC<AdvisorBriefingButtonProps> = ({
 
       console.log('[AdvisorBriefing] Requesting briefing for user:', profile.userId);
 
+      // Fetch skills data from API (parallel with briefing preparation)
+      const skillsData = await fetchSkillsData(profile.userId);
+      console.log('[AdvisorBriefing] Fetched skills data:', skillsData.length, 'skills');
+
+      // Send both profile and skills data to API
       const response = await fetch('/api/advisor-briefing', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ profile })
+        body: JSON.stringify({
+          profile,
+          skillsData // NEW: Include WEF 2030 skills with evidence
+        })
       });
 
       if (!response.ok) {
