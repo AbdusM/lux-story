@@ -15,6 +15,7 @@ import { safeStorage } from './safe-storage'
 import type { SimpleGameState } from '../hooks/useSimpleGame'
 import { SCENE_SKILL_MAPPINGS, type SceneSkillMapping } from './scene-skill-mappings'
 import { queueSkillSummarySync } from './sync-queue'
+import { logSkillDemo } from './real-time-monitor'
 
 export interface SkillDemonstration {
   scene: string
@@ -200,6 +201,10 @@ export class SkillTracker {
         count: skillDemoCount,
         willSync: skillDemoCount % 3 === 0
       })
+
+      // Real-time monitoring
+      const willSync = skillDemoCount % 3 === 0
+      logSkillDemo(this.userId, skill, skillDemoCount, willSync)
 
       if (skillDemoCount % 3 === 0) {
         // Get all scenes where this skill was demonstrated
