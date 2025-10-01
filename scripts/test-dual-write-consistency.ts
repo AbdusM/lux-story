@@ -91,10 +91,7 @@ async function testSceneVisitTracking(): Promise<void> {
   console.log('─'.repeat(50))
 
   const userId = generateTestUserId()
-  const db = new DatabaseService
-
-    // Create player profile first (required for foreign keys)
-    await createTestPlayer(userId)('dual-write')
+  const db = new DatabaseService('dual-write')
 
   try {
     // Create player profile first (required for foreign keys)
@@ -161,12 +158,11 @@ async function testChoiceHistoryIntegrity(): Promise<void> {
   console.log('─'.repeat(50))
 
   const userId = generateTestUserId()
-  const db = new DatabaseService
-
-    // Create player profile first (required for foreign keys)
-    await createTestPlayer(userId)('dual-write')
+  const db = new DatabaseService('dual-write')
 
   try {
+    // Create player profile first (required for foreign keys)
+    await createTestPlayer(userId)
     // Simulate 10 sequential choices
     const choices = [
       { sceneId: 'intro', choiceId: 'choice-1', text: 'Explore Platform 1' },
@@ -243,12 +239,12 @@ async function testPatternEvolution(): Promise<void> {
   console.log('─'.repeat(50))
 
   const userId = generateTestUserId()
-  const db = new DatabaseService
-
-    // Create player profile first (required for foreign keys)
-    await createTestPlayer(userId)('dual-write')
+  const db = new DatabaseService('dual-write')
 
   try {
+    // Create player profile first (required for foreign keys)
+    await createTestPlayer(userId)
+
     // Simulate 'helping' pattern evolution: 0 → 1 → 2 → 3 → 4 → 5
     const patternName = 'helping'
     const demonstrations = [1, 2, 3, 4, 5]
@@ -318,12 +314,12 @@ async function testMilestoneSequence(): Promise<void> {
   console.log('─'.repeat(50))
 
   const userId = generateTestUserId()
-  const db = new DatabaseService
-
-    // Create player profile first (required for foreign keys)
-    await createTestPlayer(userId)('dual-write')
+  const db = new DatabaseService('dual-write')
 
   try {
+    // Create player profile first (required for foreign keys)
+    await createTestPlayer(userId)
+
     // Simulate milestone progression
     const milestones = [
       { type: 'journey_start', context: 'Player began journey' },
@@ -402,6 +398,9 @@ async function testNetworkFailureRecovery(): Promise<void> {
   const userId = generateTestUserId()
 
   try {
+    // Create player profile first (required for foreign keys)
+    await createTestPlayer(userId)
+
     // Queue 10 actions
     console.log('   Queueing 10 actions...')
     for (let i = 0; i < 10; i++) {
@@ -469,12 +468,12 @@ async function testConcurrentActions(): Promise<void> {
   console.log('─'.repeat(50))
 
   const userId = generateTestUserId()
-  const db = new DatabaseService
-
-    // Create player profile first (required for foreign keys)
-    await createTestPlayer(userId)('dual-write')
+  const db = new DatabaseService('dual-write')
 
   try {
+    // Create player profile first (required for foreign keys)
+    await createTestPlayer(userId)
+
     // Rapidly queue 20 actions (simulate fast clicking)
     console.log('   Rapidly queueing 20 actions...')
     const actionIds = new Set<string>()
