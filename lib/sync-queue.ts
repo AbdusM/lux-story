@@ -13,6 +13,7 @@
  */
 
 import { safeStorage } from './safe-storage'
+import { logSync } from './real-time-monitor'
 
 const SYNC_QUEUE_KEY = 'lux-sync-queue'
 const MAX_QUEUE_SIZE = 500 // Prevent unbounded growth
@@ -159,6 +160,9 @@ export class SyncQueue {
           successfulIds.push(action.id)
           console.log('✅ [SyncQueue] Action successful:', { type: 'db_method', method: action.method })
 
+          // Real-time monitoring
+          logSync(action.data?.user_id || 'unknown', 'career_analytics', true)
+
         } else if (action.type === 'career_analytics') {
           // Sync career analytics to Supabase
           const response = await fetch('/api/user/career-analytics', {
@@ -173,6 +177,9 @@ export class SyncQueue {
 
           successfulIds.push(action.id)
           console.log('✅ [SyncQueue] Action successful:', { type: 'career_analytics', userId: action.data?.user_id })
+
+          // Real-time monitoring
+          logSync(action.data?.user_id || 'unknown', 'career_analytics', true)
 
         } else if (action.type === 'skill_summary') {
           // Sync skill summary to Supabase
@@ -193,6 +200,9 @@ export class SyncQueue {
             count: action.data?.demonstration_count
           })
 
+          // Real-time monitoring
+          logSync(action.data?.user_id || 'unknown', 'skill_summary', true)
+
         } else {
           console.error(`❌ [SyncQueue] Unknown action type: ${action.type}`)
           failedActions.push({ ...action, retries: action.retries + 1 })
@@ -207,6 +217,11 @@ export class SyncQueue {
           retries: action.retries,
           willRetry
         })
+
+        // Real-time monitoring for failures
+        const syncType = action.type === 'skill_summary' ? 'skill_summary' : 'career_analytics'
+        logSync(action.data?.user_id || 'unknown', syncType, false, error.message)
+
         failedActions.push({ ...action, retries: action.retries + 1 })
       }
     }

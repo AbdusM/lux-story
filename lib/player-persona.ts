@@ -7,6 +7,7 @@
 
 import type { GameState } from './game-store'
 import type { Choice } from './story-engine'
+import { logChoice } from './real-time-monitor'
 
 export interface SkillDemonstrationSummary {
   count: number
@@ -338,6 +339,9 @@ export class PlayerPersonaTracker {
       sceneId,
       contextLength: context.length
     })
+
+    // Real-time monitoring
+    logChoice(playerId, sceneId, skills, sceneId)
 
     let persona = this.personas.get(playerId) || this.createBasePersona(playerId)
 
