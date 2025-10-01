@@ -303,13 +303,15 @@ export const mayaDialogueNodes: DialogueNode[] = [
         choiceId: 'hint_question',
         text: "What if there's a field that combines both?",
         nextNodeId: 'maya_uab_revelation',
-        pattern: 'helping'
+        pattern: 'helping',
+        skills: ['creativity', 'problem_solving', 'critical_thinking']
       },
       {
         choiceId: 'hint_support',
         text: "Building healing devices IS medicine.",
         nextNodeId: 'maya_grateful_support',
-        pattern: 'helping'
+        pattern: 'helping',
+        skills: ['creativity', 'emotional_intelligence']
       }
     ]
   },
@@ -331,6 +333,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "UAB's program is nationally recognized.",
         nextNodeId: 'maya_actionable_path',
         pattern: 'analytical',
+        skills: ['critical_thinking', 'problem_solving'],
         consequence: {
           characterId: 'maya',
           trustChange: 1,
@@ -342,6 +345,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "You just found your bridge between both worlds.",
         nextNodeId: 'maya_grateful_support',
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'creativity'],
         consequence: {
           characterId: 'maya',
           trustChange: 2,
@@ -373,6 +377,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "Frame it as innovation in medicine, not abandoning it.",
         nextNodeId: 'maya_considers_hybrid',
         pattern: 'analytical',
+        skills: ['communication', 'creativity', 'critical_thinking'],
         consequence: {
           characterId: 'maya',
           trustChange: 1
@@ -434,6 +439,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "Your passion for robotics - that's a gift, isn't it?",
         nextNodeId: 'maya_encouraged',
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'creativity'],
         consequence: {
           characterId: 'maya',
           trustChange: 2,
@@ -445,6 +451,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "Have you thought about medical robotics?",
         nextNodeId: 'maya_considers_hybrid',
         pattern: 'analytical',
+        skills: ['problem_solving', 'critical_thinking', 'creativity'],
         consequence: {
           characterId: 'maya',
           trustChange: 1,
@@ -456,6 +463,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "Do you know about Innovation Depot in Birmingham?",
         nextNodeId: 'maya_birmingham_opportunity',
         pattern: 'building',
+        skills: ['problem_solving', 'communication'],
         consequence: {
           characterId: 'maya',
           addKnowledgeFlags: ['knows_innovation_depot']
@@ -579,6 +587,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "What if they sacrificed for your happiness, not just a title?",
         nextNodeId: 'maya_reframes_sacrifice',
         pattern: 'patience',
+        skills: ['emotional_intelligence', 'cultural_competence', 'critical_thinking'],
         consequence: {
           characterId: 'maya',
           trustChange: 1
@@ -589,6 +598,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "Can you live your life for someone else?",
         nextNodeId: 'maya_rebellion_thoughts',
         pattern: 'helping',
+        skills: ['critical_thinking', 'emotional_intelligence'],
         consequence: {
           characterId: 'maya',
           trustChange: 2,
@@ -693,21 +703,24 @@ export const mayaDialogueNodes: DialogueNode[] = [
         choiceId: 'crossroads_robotics',
         text: "What would it mean to choose robotics?",
         nextNodeId: 'maya_chooses_robotics',
-        pattern: 'helping'
+        pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication']
         // Removed flag requirement - always show at trust 10
       },
       {
         choiceId: 'crossroads_hybrid',
         text: "Could both paths honor what matters?",
         nextNodeId: 'maya_chooses_hybrid',
-        pattern: 'analytical'
+        pattern: 'analytical',
+        skills: ['critical_thinking', 'creativity', 'problem_solving']
         // Removed flag requirement - always show at trust 10
       },
       {
         choiceId: 'crossroads_support',
         text: "Whatever you choose, I believe in you.",
         nextNodeId: 'maya_chooses_self',
-        pattern: 'patience'
+        pattern: 'patience',
+        skills: ['emotional_intelligence', 'leadership']
       }
     ],
     tags: ['climax', 'maya_arc']
