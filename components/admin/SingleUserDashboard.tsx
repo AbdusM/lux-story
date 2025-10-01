@@ -1,13 +1,13 @@
 'use client'
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Target, TrendingUp, Briefcase, Lightbulb, CheckCircle2, AlertTriangle } from 'lucide-react';
+import { Target, TrendingUp, Briefcase, Lightbulb, CheckCircle2, AlertTriangle, RefreshCw } from 'lucide-react';
 import type { SkillProfile } from '@/lib/skill-profile-adapter';
 import { ExportButton } from '@/components/admin/ExportButton';
 import { AdvisorBriefingButton } from '@/components/admin/AdvisorBriefingButton';
@@ -15,6 +15,21 @@ import { AdvisorBriefingButton } from '@/components/admin/AdvisorBriefingButton'
 interface SingleUserDashboardProps {
   userId: string
   profile: SkillProfile
+}
+
+interface UrgencyData {
+  userId: string
+  urgencyLevel: 'critical' | 'high' | 'medium' | 'low' | null
+  urgencyScore: number
+  urgencyNarrative: string
+  disengagementScore: number
+  confusionScore: number
+  stressScore: number
+  isolationScore: number
+  lastActivity: string
+  totalChoices: number
+  uniqueScenesVisited: number
+  relationshipsFormed: number
 }
 
 // Mock data for reference (will be replaced with real profile prop)
@@ -169,8 +184,87 @@ const mockUserData = {
 };
 
 const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profile }) => {
-  const [activeTab, setActiveTab] = useState("skills");
+  const [activeTab, setActiveTab] = useState("urgency");
   const user = profile; // Use real profile data instead of mock
+
+  // Urgency data state
+  const [urgencyData, setUrgencyData] = useState<UrgencyData | null>(null);
+  const [urgencyLoading, setUrgencyLoading] = useState(false);
+  const [urgencyError, setUrgencyError] = useState<string | null>(null);
+  const [recalculating, setRecalculating] = useState(false);
+
+  // Fetch urgency data for this specific user
+  useEffect(() => {
+    const fetchUrgencyData = async () => {
+      setUrgencyLoading(true);
+      setUrgencyError(null);
+
+      try {
+        const token = process.env.NEXT_PUBLIC_ADMIN_API_TOKEN;
+        // Fetch all students since API doesn't support userId filter
+        const response = await fetch('/api/admin/urgency?level=all&limit=200', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch urgency data');
+        }
+
+        const data = await response.json();
+
+        // Find the student matching this userId
+        const student = data.students?.find((s: UrgencyData) => s.userId === userId);
+        setUrgencyData(student || null);
+      } catch (error) {
+        console.error('Error fetching urgency data:', error);
+        setUrgencyError('Unable to load urgency data');
+      } finally {
+        setUrgencyLoading(false);
+      }
+    };
+
+    if (userId) {
+      fetchUrgencyData();
+    }
+  }, [userId]);
+
+  // Recalculate urgency for this user
+  const handleRecalculate = async () => {
+    setRecalculating(true);
+    try {
+      const token = process.env.NEXT_PUBLIC_ADMIN_API_TOKEN;
+      const response = await fetch('/api/admin/urgency', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        // Refetch urgency data after recalculation
+        const dataResponse = await fetch('/api/admin/urgency?level=all&limit=200', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (dataResponse.ok) {
+          const data = await dataResponse.json();
+          const student = data.students?.find((s: UrgencyData) => s.userId === userId);
+          setUrgencyData(student || null);
+        }
+      }
+    } catch (error) {
+      console.error('Recalculation failed:', error);
+    } finally {
+      setRecalculating(false);
+    }
+  };
 
   const formatSkillName = (skill: string): string => {
     return skill
@@ -219,13 +313,181 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
 
       {/* Main Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-5">
+        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-6">
+          <TabsTrigger value="urgency">Urgency</TabsTrigger>
           <TabsTrigger value="skills">Skills</TabsTrigger>
           <TabsTrigger value="careers">Careers</TabsTrigger>
           <TabsTrigger value="evidence">Evidence</TabsTrigger>
           <TabsTrigger value="gaps">Gaps</TabsTrigger>
           <TabsTrigger value="action">Action</TabsTrigger>
         </TabsList>
+
+        {/* URGENCY TAB - Glass Box intervention priority */}
+        <TabsContent value="urgency" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="flex items-center gap-2">
+                    <AlertTriangle className="w-5 h-5 text-orange-500" />
+                    Intervention Priority
+                  </CardTitle>
+                  <CardDescription>
+                    Glass Box urgency scoring with transparent narrative justification
+                  </CardDescription>
+                </div>
+                <Button
+                  onClick={handleRecalculate}
+                  disabled={recalculating}
+                  size="sm"
+                  className="gap-2"
+                >
+                  <RefreshCw className={`w-4 h-4 ${recalculating ? 'animate-spin' : ''}`} />
+                  Recalculate
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent>
+              {urgencyLoading ? (
+                <div className="text-center py-12 text-gray-500">
+                  Loading urgency data...
+                </div>
+              ) : urgencyError ? (
+                <div className="text-center py-12 text-red-500">
+                  {urgencyError}
+                </div>
+              ) : !urgencyData ? (
+                <div className="text-center py-12 space-y-4">
+                  <p className="text-gray-600">No urgency data available for this student.</p>
+                  <p className="text-sm text-gray-500">
+                    Click "Recalculate" to generate urgency score.
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  {/* Urgency Level Badge and Score */}
+                  <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                    <div>
+                      <p className="text-sm text-gray-600 mb-1">Urgency Level</p>
+                      <Badge
+                        className={
+                          urgencyData.urgencyLevel === 'critical' ? 'bg-red-100 text-red-800' :
+                          urgencyData.urgencyLevel === 'high' ? 'bg-orange-100 text-orange-800' :
+                          urgencyData.urgencyLevel === 'medium' ? 'bg-yellow-100 text-yellow-800' :
+                          urgencyData.urgencyLevel === 'low' ? 'bg-green-100 text-green-800' :
+                          'bg-gray-100 text-gray-800'
+                        }
+                      >
+                        {urgencyData.urgencyLevel?.toUpperCase() || 'PENDING'}
+                      </Badge>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-sm text-gray-600 mb-1">Urgency Score</p>
+                      <p className="text-3xl font-bold text-gray-900">
+                        {Math.round((urgencyData.urgencyScore || 0) * 100)}%
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Glass Box Narrative - The Hero Element */}
+                  <div className="p-4 bg-blue-50 border-l-4 border-blue-400 rounded">
+                    <h4 className="text-sm font-semibold text-gray-700 mb-2">Glass Box Narrative:</h4>
+                    <p className="text-sm italic text-gray-700 leading-relaxed">
+                      {urgencyData.urgencyNarrative || "No narrative generated yet."}
+                    </p>
+                  </div>
+
+                  {/* Contributing Factors with Progress Bars */}
+                  <div className="space-y-4">
+                    <h4 className="text-sm font-semibold text-gray-700">Contributing Factors:</h4>
+
+                    {/* Disengagement (40% weight) */}
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="font-medium">Disengagement</span>
+                        <span className="text-gray-600">40% weight • {Math.round((urgencyData.disengagementScore || 0) * 100)}%</span>
+                      </div>
+                      <Progress value={(urgencyData.disengagementScore || 0) * 100} className="h-2" />
+                    </div>
+
+                    {/* Confusion (30% weight) */}
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="font-medium">Confusion</span>
+                        <span className="text-gray-600">30% weight • {Math.round((urgencyData.confusionScore || 0) * 100)}%</span>
+                      </div>
+                      <Progress value={(urgencyData.confusionScore || 0) * 100} className="h-2" />
+                    </div>
+
+                    {/* Stress (20% weight) */}
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="font-medium">Stress</span>
+                        <span className="text-gray-600">20% weight • {Math.round((urgencyData.stressScore || 0) * 100)}%</span>
+                      </div>
+                      <Progress value={(urgencyData.stressScore || 0) * 100} className="h-2" />
+                    </div>
+
+                    {/* Isolation (10% weight) */}
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="font-medium">Isolation</span>
+                        <span className="text-gray-600">10% weight • {Math.round((urgencyData.isolationScore || 0) * 100)}%</span>
+                      </div>
+                      <Progress value={(urgencyData.isolationScore || 0) * 100} className="h-2" />
+                    </div>
+                  </div>
+
+                  {/* Activity Summary */}
+                  <div className="pt-4 border-t space-y-2">
+                    <h4 className="text-sm font-semibold text-gray-700">Activity Summary:</h4>
+                    <div className="grid grid-cols-2 gap-4 text-sm">
+                      <div>
+                        <p className="text-gray-600">Last Activity</p>
+                        <p className="font-medium">
+                          {new Date(urgencyData.lastActivity).toLocaleDateString('en-US', {
+                            month: 'short',
+                            day: 'numeric',
+                            hour: 'numeric',
+                            minute: '2-digit'
+                          })}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-gray-600">Total Choices</p>
+                        <p className="font-medium">{urgencyData.totalChoices || 0}</p>
+                      </div>
+                      <div>
+                        <p className="text-gray-600">Scenes Visited</p>
+                        <p className="font-medium">{urgencyData.uniqueScenesVisited || 0}</p>
+                      </div>
+                      <div>
+                        <p className="text-gray-600">Relationships Formed</p>
+                        <p className="font-medium">{urgencyData.relationshipsFormed || 0}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* High/Critical Alert */}
+                  {urgencyData.urgencyLevel && ['high', 'critical'].includes(urgencyData.urgencyLevel) && (
+                    <div className="p-4 bg-red-50 border-l-4 border-red-500 rounded">
+                      <div className="flex items-start gap-2">
+                        <AlertTriangle className="w-5 h-5 text-red-600 mt-0.5" />
+                        <div>
+                          <h4 className="font-semibold text-red-900">Action Required</h4>
+                          <p className="text-sm text-red-700 mt-1">
+                            This student shows {urgencyData.urgencyLevel} urgency indicators.
+                            Consider immediate counselor intervention or follow-up.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
 
         {/* SKILLS TAB - Evidence-first design */}
         <TabsContent value="skills" className="space-y-6">
