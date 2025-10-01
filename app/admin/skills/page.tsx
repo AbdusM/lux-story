@@ -8,6 +8,7 @@ import SingleUserDashboard from '@/components/admin/SingleUserDashboard'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { AlertCircle, ArrowLeft } from 'lucide-react'
+import { formatUserId } from '@/lib/format-user-id'
 
 /**
  * Inner component that uses useSearchParams
@@ -73,9 +74,9 @@ function SkillsProfileContent() {
           </Alert>
 
           <div className="bg-white rounded-lg border p-6 space-y-4">
-            <h2 className="text-xl font-semibold">User: {userId || 'Unknown'}</h2>
+            <h2 className="text-xl font-semibold">Student: {userId ? formatUserId(userId) : 'Unknown'}</h2>
             <p className="text-gray-600">
-              This user has not completed any skill demonstrations yet. They need to:
+              This student has not completed any skill demonstrations yet. They need to:
             </p>
             <ul className="list-disc list-inside space-y-2 text-sm text-gray-700">
               <li>Start the Grand Central Terminus journey</li>
