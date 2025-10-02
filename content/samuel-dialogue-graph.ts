@@ -395,7 +395,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'how_do_you_know',
-        text: "How do you know I didn't just tell her what to do?",
+        text: "How do you know I didn't just tell her?",
         nextNodeId: 'samuel_systemic_proof',
         pattern: 'analytical',
         skills: ['critical_thinking']
@@ -1553,7 +1553,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'lonely_frame',
-        text: "That's a lonely frame though, isn't it? 'Only your story matters.'",
+        text: "Isn't 'only your story matters' lonely?",
         nextNodeId: 'samuel_jordan_sovereignty_wisdom',
         pattern: 'helping'
       }

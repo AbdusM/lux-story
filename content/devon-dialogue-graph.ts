@@ -259,7 +259,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'challenge_assumption',
-        text: "But conversations aren't circuits. There's unpredictability.",
+        text: "Conversations aren't circuits though.",
         nextNodeId: 'devon_defends_logic',
         pattern: 'analytical'
       }
@@ -465,7 +465,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'connect_to_dad',
-        text: "Maybe you and your dad could talk about system failures together.",
+        text: "Talk system failures with your dad?",
         nextNodeId: 'devon_realizes_bridge',
         pattern: 'helping',
         skills: ['creativity', 'emotional_intelligence', 'communication'],
@@ -521,7 +521,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'suggest_shared_language',
-        text: "Maybe engineering IS your shared language with him.",
+        text: "Engineering is your shared language.",
         nextNodeId: 'devon_realizes_bridge',
         pattern: 'helping',
         skills: ['creativity', 'critical_thinking', 'emotional_intelligence'],
@@ -664,7 +664,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'challenge_binary',
-        text: "You're thinking in binaries. Logic OR emotion. What about both?",
+        text: "What about logic AND emotion?",
         nextNodeId: 'devon_integration_idea',
         pattern: 'analytical',
         skills: ['critical_thinking', 'creativity'],
