@@ -592,12 +592,139 @@ export const devonDialogueNodes: DialogueNode[] = [
     ],
     choices: [
       {
-        choiceId: 'devon_farewell_engineer',
-        text: "Good luck with your capstone - and with your dad.",
-        nextNodeId: 'devon_farewell_integration',
-        pattern: 'helping'
+        choiceId: 'devon_continue_to_reciprocity',
+        text: "(Continue)",
+        nextNodeId: 'devon_asks_player',
+        pattern: 'patience'
       }
     ]
+  },
+
+  // ============= RECIPROCITY: Devon Asks Player =============
+  {
+    nodeId: 'devon_asks_player',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "*He looks at you with genuine curiosity*\n\nCan I ask you something? You've helped me see that logic and emotion aren't opposites. But how do YOU navigate that balance?\n\nYou seem comfortable with both. I'm curious how you think about it.",
+        emotion: 'curious',
+        variation_id: 'devon_reciprocity_v1'
+      }
+    ],
+    requiredState: {
+      hasGlobalFlags: ['devon_arc_complete']
+    },
+    choices: [
+      {
+        choiceId: 'player_logic_primary',
+        text: "Logic keeps me safe. Emotions feel unpredictable.",
+        nextNodeId: 'devon_response_logic',
+        pattern: 'exploring'
+      },
+      {
+        choiceId: 'player_emotion_primary',
+        text: "I trust my feelings first. Logic comes after.",
+        nextNodeId: 'devon_response_emotion',
+        pattern: 'exploring'
+      },
+      {
+        choiceId: 'player_both_integrated',
+        text: "Both matter, but integrating them is hard work.",
+        nextNodeId: 'devon_response_both',
+        pattern: 'exploring'
+      },
+      {
+        choiceId: 'player_still_learning',
+        text: "Honestly? I'm still figuring that out myself.",
+        nextNodeId: 'devon_response_learning',
+        pattern: 'exploring'
+      }
+    ],
+    tags: ['reciprocity', 'player_reflection', 'devon_arc']
+  },
+
+  {
+    nodeId: 'devon_response_logic',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "*He nods understanding*\n\nYeah. Predictable is safe. I get that completely. Maybe we're both learning that safety isn't the only thing worth optimizing for.",
+        emotion: 'thoughtful',
+        variation_id: 'devon_response_logic_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'devon_continue_after_logic',
+        text: "(Continue)",
+        nextNodeId: 'devon_farewell_integration',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['reciprocity', 'devon_arc']
+  },
+
+  {
+    nodeId: 'devon_response_emotion',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "*He looks thoughtful*\n\nThat's the opposite of how I operate. But maybe that's why you could see what I couldn't—you weren't filtering everything through systems first.\n\nThat's valuable. Thank you for sharing that.",
+        emotion: 'appreciative',
+        variation_id: 'devon_response_emotion_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'devon_continue_after_emotion',
+        text: "(Continue)",
+        nextNodeId: 'devon_farewell_integration',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['reciprocity', 'devon_arc']
+  },
+
+  {
+    nodeId: 'devon_response_both',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "*He smiles slightly*\n\nYeah, it is hard work. But you make it look natural. Maybe that's what integration actually is—not seamless, just... committed to both.\n\nI appreciate you being honest about the difficulty.",
+        emotion: 'understanding',
+        variation_id: 'devon_response_both_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'devon_continue_after_both',
+        text: "(Continue)",
+        nextNodeId: 'devon_farewell_integration',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['reciprocity', 'devon_arc']
+  },
+
+  {
+    nodeId: 'devon_response_learning',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "*He gives you a genuine smile*\n\nThat makes two of us. Maybe that's the real insight—nobody has this perfectly figured out. We're all just... debugging ourselves as we go.\n\nThank you for being honest about that.",
+        emotion: 'connected',
+        variation_id: 'devon_response_learning_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'devon_continue_after_learning',
+        text: "(Continue)",
+        nextNodeId: 'devon_farewell_integration',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['reciprocity', 'devon_arc']
   },
 
   {

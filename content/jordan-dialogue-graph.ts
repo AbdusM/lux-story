@@ -560,40 +560,131 @@ export const jordanDialogueNodes: DialogueNode[] = [
     },
     choices: [
       {
-        choiceId: 'jordan_mentor_ask_fear',
-        text: "What are you really afraid they'll think?",
-        nextNodeId: 'jordan_impostor_reveal',
-        pattern: 'exploring',
-        skills: ['emotional_intelligence', 'communication'],
-        consequence: {
-          characterId: 'jordan',
-          trustChange: 1
-        }
-      },
-      {
-        choiceId: 'jordan_mentor_challenge_frame',
-        text: "You're telling yourself the wrong story about those seven jobs.",
-        nextNodeId: 'jordan_impostor_reveal',
-        pattern: 'helping',
-        skills: ['critical_thinking', 'creativity'],
-        consequence: {
-          characterId: 'jordan',
-          trustChange: 1
-        }
-      },
-      {
-        choiceId: 'jordan_mentor_analyze_voice',
-        text: "That voice calling them 'participation trophies'—whose voice is that really?",
-        nextNodeId: 'jordan_impostor_reveal',
-        pattern: 'analytical',
-        skills: ['critical_thinking', 'emotional_intelligence'],
-        consequence: {
-          characterId: 'jordan',
-          trustChange: 1
-        }
+        choiceId: 'jordan_continue_to_reciprocity',
+        text: "(Continue)",
+        nextNodeId: 'jordan_asks_player',
+        pattern: 'patience'
       }
     ],
     tags: ['vulnerability', 'jordan_arc']
+  },
+
+  // ============= RECIPROCITY: Jordan Asks Player =============
+  {
+    nodeId: 'jordan_asks_player',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: "*She pauses, then turns to look at you directly*\n\nActually, can I ask you something? I've been talking about my path this whole time, but... how do YOU deal with uncertainty?\n\nLike, when you don't know if you're making the right choice—career, life, whatever. What do you do with that feeling?",
+      emotion: 'curious',
+      variation_id: 'jordan_reciprocity_v1'
+    }],
+    requiredState: {
+      trust: { min: 8 },
+      hasKnowledgeFlags: ['knows_job_7']
+    },
+    choices: [
+      {
+        choiceId: 'player_trust_process',
+        text: "I try to trust that even wrong turns teach me something.",
+        nextNodeId: 'jordan_response_trust',
+        pattern: 'exploring'
+      },
+      {
+        choiceId: 'player_plan_reduce_uncertainty',
+        text: "I make plans. Structure helps me feel less lost.",
+        nextNodeId: 'jordan_response_plan',
+        pattern: 'exploring'
+      },
+      {
+        choiceId: 'player_sit_with_discomfort',
+        text: "I sit with it. Uncertainty doesn't always need solving.",
+        nextNodeId: 'jordan_response_acceptance',
+        pattern: 'exploring'
+      },
+      {
+        choiceId: 'player_uncertainty_terrifies',
+        text: "Honestly? It terrifies me. I avoid it when I can.",
+        nextNodeId: 'jordan_response_fear',
+        pattern: 'exploring'
+      }
+    ],
+    tags: ['reciprocity', 'player_reflection', 'jordan_arc']
+  },
+
+  {
+    nodeId: 'jordan_response_trust',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: "*She nods slowly*\n\nThat's... really wise, actually. Wrong turns teach you something. Maybe that's what I needed to hear about my own path.\n\nThank you for sharing that with me.",
+      emotion: 'thoughtful',
+      variation_id: 'jordan_response_trust_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'jordan_continue_after_trust',
+        text: "(Continue)",
+        nextNodeId: 'jordan_impostor_reveal',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['reciprocity', 'jordan_arc']
+  },
+
+  {
+    nodeId: 'jordan_response_plan',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: "*She gives a wry smile*\n\nYeah, I get that. Structure as a life raft. I tried that for years—making plans, setting goals. Sometimes it helped. Sometimes life just... laughed at my spreadsheets.\n\nBut I respect the attempt. Thanks for being honest.",
+      emotion: 'understanding',
+      variation_id: 'jordan_response_plan_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'jordan_continue_after_plan',
+        text: "(Continue)",
+        nextNodeId: 'jordan_impostor_reveal',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['reciprocity', 'jordan_arc']
+  },
+
+  {
+    nodeId: 'jordan_response_acceptance',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: "*Her eyes widen slightly*\n\nWow. That's... I don't know if I'm there yet. Just sitting with uncertainty without trying to fix it or understand it or plan around it?\n\nThat takes real strength. Thank you for that perspective.",
+      emotion: 'impressed',
+      variation_id: 'jordan_response_acceptance_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'jordan_continue_after_acceptance',
+        text: "(Continue)",
+        nextNodeId: 'jordan_impostor_reveal',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['reciprocity', 'jordan_arc']
+  },
+
+  {
+    nodeId: 'jordan_response_fear',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: "*She exhales, relieved*\n\nOkay, thank you for saying that. Because same. God, same. I spent twelve years running from uncertainty by just... jumping to the next thing.\n\nMaybe we're both still learning. Thanks for being real with me.",
+      emotion: 'connected',
+      variation_id: 'jordan_response_fear_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'jordan_continue_after_fear',
+        text: "(Continue)",
+        nextNodeId: 'jordan_impostor_reveal',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['reciprocity', 'jordan_arc']
   },
 
   // ============= IMPOSTOR SYNDROME REVEAL (Trust 9) =============
