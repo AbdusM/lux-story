@@ -12,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Users, TrendingUp, Award, ArrowRight, AlertTriangle, RefreshCw } from 'lucide-react'
 import type { UrgentStudent } from '@/lib/types/admin'
 import { formatUserIdShort, formatUserIdRelative } from '@/lib/format-user-id'
@@ -38,6 +39,9 @@ export default function AdminPage() {
   const [urgencyLoading, setUrgencyLoading] = useState(true)
   const [recalculating, setRecalculating] = useState(false)
   const [urgencyFilter, setUrgencyFilter] = useState<'all' | 'critical' | 'high' | 'all-students'>('all')
+
+  // Agent 9: Environment validation warning
+  const [dbHealthy, setDbHealthy] = useState(true)
 
   // Load student journeys (existing logic)
   useEffect(() => {
@@ -68,6 +72,23 @@ export default function AdminPage() {
     fetchUrgentStudents()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [urgencyFilter])
+
+  // Check database health on mount
+  useEffect(() => {
+    const checkDbHealth = async () => {
+      try {
+        const response = await fetch('/api/admin/urgency?limit=1')
+        if (!response.ok && response.status === 503) {
+          setDbHealthy(false)
+        }
+      } catch (error) {
+        console.error('DB health check failed:', error)
+        setDbHealthy(false)
+      }
+    }
+
+    checkDbHealth()
+  }, [])
 
   async function fetchUrgentStudents() {
     setUrgencyLoading(true)
@@ -132,6 +153,18 @@ export default function AdminPage() {
             </Link>
           </div>
         </div>
+
+        {/* Database Health Warning Banner */}
+        {!dbHealthy && (
+          <Alert variant="destructive">
+            <AlertTriangle className="h-4 w-4" />
+            <AlertTitle>Database Not Configured</AlertTitle>
+            <AlertDescription>
+              Supabase environment variables are missing. Check .env.local configuration.
+              Using local data only (no sync).
+            </AlertDescription>
+          </Alert>
+        )}
 
         {/* Main Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">

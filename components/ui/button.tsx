@@ -19,10 +19,10 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
-        default: "h-10 px-4 py-2",
-        sm: "h-9 rounded-md px-3",
-        lg: "h-11 rounded-md px-8",
-        icon: "h-10 w-10",
+        default: "h-11 px-4 py-2",  // Agent 8: Changed from h-10 to h-11 (44px touch target)
+        sm: "h-10 rounded-md px-3",  // Agent 8: Changed from h-9 to h-10 (40px - acceptable for sm)
+        lg: "h-12 rounded-md px-8",  // Agent 8: Changed from h-11 to h-12 (48px)
+        icon: "h-11 w-11",           // Agent 8: Changed from h-10 to h-11 (44px)
       },
     },
     defaultVariants: {
