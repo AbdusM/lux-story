@@ -125,14 +125,10 @@ export default function AdminPage() {
 
         {/* Main Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 bg-white">
+          <TabsList className="grid w-full grid-cols-2 bg-white">
             <TabsTrigger value="urgency" className="gap-2">
               <AlertTriangle className="w-4 h-4" />
-              Urgency Triage
-            </TabsTrigger>
-            <TabsTrigger value="journeys" className="gap-2">
-              <Users className="w-4 h-4" />
-              Student Journeys
+              Student Triage
             </TabsTrigger>
             <TabsTrigger value="choices" className="gap-2">
               <TrendingUp className="w-4 h-4" />
@@ -161,7 +157,8 @@ export default function AdminPage() {
                       onChange={(e) => setUrgencyFilter(e.target.value as any)}
                       className="px-3 py-1.5 border rounded-md text-sm"
                     >
-                      <option value="all">All Levels</option>
+                      <option value="all">All Urgent Students</option>
+                      <option value="all-students">📊 All Students (includes non-urgent)</option>
                       <option value="critical">Critical Only</option>
                       <option value="high">High + Critical</option>
                     </select>

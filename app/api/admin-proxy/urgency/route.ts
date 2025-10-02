@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { getAllUserIds, loadSkillProfile } from '@/lib/skill-profile-adapter'
 
 /**
  * Server-side proxy for urgency API
@@ -7,7 +8,43 @@ import { NextRequest, NextResponse } from 'next/server'
  * Security: Only accessible to authenticated admin users
  */
 export async function GET(request: NextRequest) {
-  // Get admin API token from server environment (not exposed to client)
+  // Extract query parameters
+  const { searchParams } = new URL(request.url)
+  const level = searchParams.get('level') || 'all'
+  const limit = searchParams.get('limit') || '50'
+
+  // Special case: "all-students" filter uses localStorage fallback
+  if (level === 'all-students') {
+    try {
+      const userIds = getAllUserIds()
+      const students = userIds.map(userId => {
+        const profile = loadSkillProfile(userId)
+        if (!profile) return null
+
+        return {
+          userId,
+          urgencyLevel: 'pending', // No urgency score calculated yet
+          urgencyScore: 0,
+          urgencyNarrative: 'Student data available - urgency score pending calculation.',
+          totalChoices: profile.totalDemonstrations,
+          uniqueScenesVisited: 0,
+          relationshipsFormed: 0,
+          disengagementScore: 0,
+          confusionScore: 0,
+          stressScore: 0,
+          isolationScore: 0,
+          lastActivity: userId
+        }
+      }).filter(Boolean)
+
+      return NextResponse.json({ students })
+    } catch (error) {
+      console.error('Failed to fetch all students from localStorage:', error)
+      return NextResponse.json({ students: [] })
+    }
+  }
+
+  // Standard urgency flow: forward to Supabase API
   const adminToken = process.env.ADMIN_API_TOKEN
 
   if (!adminToken) {
@@ -16,11 +53,6 @@ export async function GET(request: NextRequest) {
       { status: 500 }
     )
   }
-
-  // Extract query parameters
-  const { searchParams } = new URL(request.url)
-  const level = searchParams.get('level') || 'all'
-  const limit = searchParams.get('limit') || '50'
 
   // Forward request to actual urgency API with server-side token
   try {
