@@ -838,8 +838,8 @@ export const SCENE_SKILL_MAPPINGS: Record<string, SceneSkillMapping> = {
   },
 
   // SCENE 18: Witnessing vs Fixing Teaching Moment
-  'samuel_teaching_witnessing': {
-    sceneId: 'samuel_teaching_witnessing',
+  'samuel_teaching_witnessing_pt2': {
+    sceneId: 'samuel_teaching_witnessing_pt2',
     characterArc: 'samuel',
     sceneDescription: 'Samuel explains witnessing as being fully present to experience without needing to change it',
 
