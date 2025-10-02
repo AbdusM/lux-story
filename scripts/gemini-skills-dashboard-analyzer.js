@@ -22,7 +22,13 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Initialize Gemini AI
-const genAI = new GoogleGenerativeAI('AIzaSyDEQloxDXlFD2HnFNUrAIr8aANhvr_Ivxg');
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+if (!GEMINI_API_KEY) {
+  console.error('❌ GEMINI_API_KEY environment variable is required');
+  console.error('💡 Add it to your .env.local file');
+  process.exit(1);
+}
+const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 
 class SkillsDashboardAnalyzer {
   constructor() {

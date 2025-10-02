@@ -29,7 +29,7 @@
 ### Environment Variables Status
 
 **✅ Configured:**
-- `ADMIN_API_TOKEN=3f52086db613f78c1db6daff10557ebd6d3deed456f6ba151092c42567095b34`
+- `ADMIN_API_TOKEN=your-secure-admin-token-here`
 - `NEXT_PUBLIC_SUPABASE_URL=https://tavalvqcebosfxamuvlx.supabase.co`
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY=***`
 

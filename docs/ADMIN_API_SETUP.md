@@ -6,7 +6,7 @@ Add these to your `.env.local` file:
 
 ```bash
 # Admin API Token (for authentication)
-ADMIN_API_TOKEN=3f52086db613f78c1db6daff10557ebd6d3deed456f6ba151092c42567095b34
+ADMIN_API_TOKEN=your-secure-admin-token-here
 
 # Supabase Service Role Key (for admin database access)
 # Get from: https://supabase.com/dashboard → Your Project → Settings → API → service_role
@@ -46,7 +46,7 @@ Fetch urgent students with Glass Box narratives.
 **Request:**
 ```bash
 curl http://localhost:3000/api/admin/urgency?level=all&limit=50 \
-  -H "Authorization: Bearer 3f52086db613f78c1db6daff10557ebd6d3deed456f6ba151092c42567095b34"
+  -H "Authorization: Bearer your-secure-admin-token-here"
 ```
 
 **Response:**
@@ -75,7 +75,7 @@ Trigger urgency recalculation for all players.
 **Request:**
 ```bash
 curl -X POST http://localhost:3000/api/admin/urgency \
-  -H "Authorization: Bearer 3f52086db613f78c1db6daff10557ebd6d3deed456f6ba151092c42567095b34" \
+  -H "Authorization: Bearer your-secure-admin-token-here" \
   -H "Content-Type: application/json"
 ```
 
@@ -117,7 +117,7 @@ curl "http://localhost:3000/api/admin/urgency?level=high" \
 All admin endpoints require a Bearer token in the Authorization header:
 
 ```
-Authorization: Bearer 3f52086db613f78c1db6daff10557ebd6d3deed456f6ba151092c42567095b34
+Authorization: Bearer your-secure-admin-token-here
 ```
 
 Without authentication, requests will receive:
