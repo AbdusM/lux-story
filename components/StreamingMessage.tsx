@@ -273,9 +273,9 @@ export function StreamingMessage({
     )} data-type={type}>
       
       {/* Pokemon-Style Text Box */}
-      <div 
+      <div
         className={cn(
-          "pokemon-textbox relative w-full max-w-2xl mx-auto",
+          "pokemon-textbox relative w-full max-w-xl mx-auto",
           "bg-white dark:bg-gray-50",
           "border-2 border-gray-800/20",
           "rounded-lg",
@@ -351,7 +351,7 @@ export function StreamingMessage({
         {/* Streaming Text Content */}
         <div className={cn(
           "pokemon-text", 
-          !className?.includes('semantic-') && "text-base leading-relaxed text-gray-900 dark:text-gray-800 font-medium",
+          !className?.includes('semantic-') && "text-base leading-[1.7] text-gray-900 dark:text-gray-800 font-medium",
           isNarration && "text-center italic",
           isWhisper && "italic opacity-90 text-purple-700",
           isSensation && "italic opacity-85 text-red-600",

@@ -183,9 +183,9 @@ export function StoryMessage({ speaker, text, type = 'dialogue', messageWeight =
     )} data-type={type}>
       
       {/* Pokemon-Style Text Box */}
-      <div 
+      <div
         className={cn(
-          "pokemon-textbox-enhanced relative w-full max-w-2xl mx-auto",
+          "pokemon-textbox-enhanced relative w-full max-w-xl mx-auto",
           "message-enter",
           messageWeight === 'critical' && "message-critical",
           messageWeight === 'primary' && "message-primary", 
@@ -261,7 +261,7 @@ export function StoryMessage({ speaker, text, type = 'dialogue', messageWeight =
         <div className={cn(
           "pokemon-text", // Base Pokemon text styling
           // Conditional Tailwind overrides based on semantic classes
-          !className?.includes('semantic-') && "text-base leading-relaxed text-gray-900 dark:text-gray-800 font-medium",
+          !className?.includes('semantic-') && "text-base leading-[1.7] text-gray-900 dark:text-gray-800 font-medium",
           isNarration && "text-center italic",
           isWhisper && "italic opacity-90 text-purple-700",
           isSensation && "italic opacity-85 text-red-600",
