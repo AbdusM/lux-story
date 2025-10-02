@@ -37,7 +37,7 @@ export default function AdminPage() {
   const [urgentStudents, setUrgentStudents] = useState<UrgentStudent[]>([])
   const [urgencyLoading, setUrgencyLoading] = useState(true)
   const [recalculating, setRecalculating] = useState(false)
-  const [urgencyFilter, setUrgencyFilter] = useState<'all' | 'critical' | 'high'>('all')
+  const [urgencyFilter, setUrgencyFilter] = useState<'all' | 'critical' | 'high' | 'all-students'>('all')
 
   // Load student journeys (existing logic)
   useEffect(() => {
