@@ -355,7 +355,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You did help her. But not in the way most people think 'helping' works. | You didn't fix her problem. You didn't tell her what to do. You created space for her to see options she couldn't see before. | *He pauses thoughtfully* | You've got the helper instinct - that's what drives our UAB Medical resident advisors and Birmingham City Schools guidance counselors. But I learned at Southern Company: the best mentors help people find their own answers, not just feel supported. | These reflection skills you're using right now? They're the foundation of counseling, coaching, teaching. Real careers in Birmingham that value this exact capacity.",
+        text: "You did help her. But not in the way most people think 'helping' works.\n\nYou didn't fix her problem. You didn't tell her what to do. You created space for her to see options she couldn't see before.\n\n*He pauses thoughtfully*\n\nYou've got the helper instinct - that's what drives our UAB Medical resident advisors and Birmingham City Schools guidance counselors. But I learned at Southern Company: the best mentors help people find their own answers, not just feel supported.\n\nThese reflection skills you're using right now? They're the foundation of counseling, coaching, teaching. Real careers in Birmingham that value this exact capacity.",
         emotion: 'teaching',
         variation_id: 'influence_v1'
       }
@@ -388,8 +388,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     ],
     onEnter: [
       {
-        characterId: 'samuel',
-        addKnowledgeFlags: ['recognized_mentorship_skills']
+        characterId: 'samuel'
       }
     ]
   },
@@ -399,7 +398,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*He smiles, a quiet satisfaction in his expression* | Exactly. She made her own choice. That's the most important thing you could understand about what just happened. | You understand agency - that's advanced. | *His voice carries weight from experience* | Took me fifteen years at Southern Company to learn I couldn't engineer people's decisions. The best career counselors in Birmingham know this: we illuminate paths, but the traveler chooses the direction. | Innovation Depot startup mentors do exactly what you just did: ask questions, hold space, let the founder discover their path. That's facilitator instinct - a professional skill that drives leadership development, organizational psychology, HR careers across this city.",
+        text: "*He smiles, a quiet satisfaction in his expression*\n\nExactly. She made her own choice. That's the most important thing you could understand about what just happened.\n\nYou understand agency - that's advanced.\n\n*His voice carries weight from experience*\n\nTook me fifteen years at Southern Company to learn I couldn't engineer people's decisions. The best career counselors in Birmingham know this: we illuminate paths, but the traveler chooses the direction.\n\nInnovation Depot (Birmingham's startup hub) mentors do exactly what you just did: ask questions, hold space, let the founder discover their path. That's facilitator instinct - a professional skill that drives leadership development, organizational psychology, HR careers across this city.",
         emotion: 'proud',
         variation_id: 'agency_v1'
       }
@@ -2120,8 +2119,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     ],
     onEnter: [
       {
-        characterId: 'samuel',
-        addKnowledgeFlags: ['pattern_revealed']
+        characterId: 'samuel'
       }
     ]
   }

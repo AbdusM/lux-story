@@ -194,8 +194,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     ],
     onEnter: [
       {
-        characterId: 'devon',
-        addKnowledgeFlags: ['respected_his_process']
+        characterId: 'devon'
       }
     ]
   },
@@ -291,8 +290,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     ],
     onEnter: [
       {
-        characterId: 'devon',
-        addKnowledgeFlags: ['validated_his_approach']
+        characterId: 'devon'
       }
     ]
   },
@@ -375,7 +373,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "*He nods stiffly, clearly uncomfortable with the emotional directness* | Thank you. She was... she was the interpreter. Between me and dad. She translated my logic into warmth. | And now that translation layer is gone. | So I built a system. To optimize our conversations. To help him.",
+        text: "*He nods stiffly, clearly uncomfortable with the emotional directness*\n\nThank you. She was... she was the interpreter. Between me and dad. She translated my logic into warmth.\n\nAnd now that translation layer is gone.\n\nSo I built a system. To optimize our conversations. To help him.",
         emotion: 'raw',
         variation_id: 'accepts_sympathy_v1'
       }
@@ -406,7 +404,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "He's an aerospace engineer at NASA Marshall. | Twenty-five years debugging rocket systems. Guidance control, error detection, mission-critical protocols. | *Devon looks at his flowchart* | He can troubleshoot a spacecraft traveling 17,000 miles per hour, but he can't... | He can't debug his own grief.",
+        text: "He's an aerospace engineer at NASA Marshall.\n\nTwenty-five years debugging rocket systems. Guidance control, error detection, mission-critical protocols.\n\n*Devon looks at his flowchart*\n\nHe can troubleshoot a spacecraft traveling 17,000 miles per hour, but he can't...\n\nHe can't debug his own grief.",
         emotion: 'frustrated_admiration',
         variation_id: 'father_aerospace_v1'
       }
@@ -419,7 +417,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         pattern: 'exploring',
         consequence: {
           characterId: 'devon',
-          addKnowledgeFlags: ['father_nasa_engineer', 'inspired_by_father']
+          addKnowledgeFlags: ['father_nasa_engineer']
         }
       },
       {
@@ -448,7 +446,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "Yeah. UAB's Integrated Systems Engineering program. | I'm doing my senior capstone on error detection in distributed systems - how different components communicate when something fails. | *He half-smiles* | Southern Company's DevOps team will be at our Engineering Week showcase next month. They're looking for graduates who understand system resilience. | Ironic, right? I can debug code exceptions but not emotional ones.",
+        text: "Yeah. University of Alabama at Birmingham's (UAB) Integrated Systems Engineering program.\n\nI'm doing my senior capstone (final project) on error detection in distributed systems (seeing how parts connect) - how different components communicate when something fails.\n\n*He half-smiles*\n\nSouthern Company's DevOps team will be at our Engineering Week showcase next month. They're looking for graduates who understand system resilience.\n\nIronic, right? I can debug code exceptions but not emotional ones.",
         emotion: 'self_aware',
         variation_id: 'uab_systems_v1'
       }
@@ -462,7 +460,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         consequence: {
           characterId: 'devon',
           trustChange: 1,
-          addKnowledgeFlags: ['knows_uab_program', 'knows_capstone']
+          addKnowledgeFlags: ['knows_uab_program']
         }
       },
       {
@@ -491,7 +489,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "It's about making systems that don't just work - they work even when things go wrong. Redundancy, graceful degradation, error handling. | *He looks down at his conversation flowchart* | I thought I could apply the same principles to people. Build a system that handles conversational failures gracefully. | But people aren't systems. And grief isn't a bug to patch.",
+        text: "It's about making systems that don't just work - they work even when things go wrong. Redundancy, graceful degradation, error handling.\n\n*He looks down at his conversation flowchart*\n\nI thought I could apply the same principles to people. Build a system that handles conversational failures gracefully.\n\nBut people aren't systems. And grief isn't a bug to patch.",
         emotion: 'dawning_understanding',
         variation_id: 'career_context_v1'
       }
@@ -515,7 +513,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "*He stops, looks at you with sudden recognition* | You're right. I'm debugging our relationship like it's a mission-critical system. | Dad does the same thing - solves problems by analyzing failure modes, testing solutions, iterating. That's how we were taught to think at UAB Engineering. | But mom... she didn't think in flowcharts. And now neither of us knows how to talk without her translation layer.",
+        text: "*He stops, looks at you with sudden recognition*\n\nYou're right. I'm debugging our relationship like it's a mission-critical system.\n\nDad does the same thing - solves problems by analyzing failure modes, testing solutions, iterating. That's how we were taught to think at UAB Engineering.\n\nBut mom... she didn't think in flowcharts. And now neither of us knows how to talk without her translation layer.",
         emotion: 'breakthrough',
         variation_id: 'realizes_parallel_v1'
       }

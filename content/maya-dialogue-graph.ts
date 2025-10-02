@@ -130,7 +130,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "My parents. | They immigrated here with nothing. Worked three jobs each to get me through school. | Their dream is simple: 'Our daughter, the doctor.' | How can I disappoint them?",
+        text: "My parents.\n\nThey immigrated here with nothing. Worked three jobs each to get me through school.\n\nTheir dream is simple: 'Our daughter, the doctor.'\n\nHow can I disappoint them?",
         emotion: 'conflicted',
         variation_id: 'family_intro_v1'
       }
@@ -284,7 +284,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "I... build things. Small things. With circuits and servos. Things that move and think and help. | But that's not medicine, is it? That's engineering, and engineers aren't doctors.",
+        text: "I... build things. Small things. With circuits and servos. Things that move and think and help.\n\nBut that's not medicine, is it? That's engineering, and engineers aren't doctors.",
         emotion: 'hesitant',
         variation_id: 'hint_v1'
       }
@@ -322,7 +322,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*She pulls out her phone, searches for something, then stares at the screen* | Wait. Biomedical Engineering at UAB. They literally build surgical robots, prosthetics, medical devices. | *Her voice trembles with recognition* | This is... this is an actual field. Building technology that heals people. That's real medicine.",
+        text: "*She pulls out her phone, searches for something, then stares at the screen*\n\nWait. Biomedical Engineering at University of Alabama at Birmingham (UAB). They literally build surgical robots, prosthetics, medical devices.\n\n*Her voice trembles with recognition*\n\nThis is... this is an actual field. Building technology that heals people. That's real medicine.",
         emotion: 'dawning_realization',
         variation_id: 'uab_revelation_v1'
       }
@@ -366,7 +366,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "I could talk to someone in the UAB program. See what the pathway looks like. | *She looks at you with something like hope* | My parents always wanted me to go to UAB for medical school. What if I tell them... same school, just a different building?",
+        text: "I could talk to someone in the UAB program. See what the pathway looks like.\n\n*She looks at you with something like hope*\n\nMy parents always wanted me to go to UAB for medical school. What if I tell them... same school, just a different building?",
         emotion: 'hopeful_strategic',
         variation_id: 'actionable_v1'
       }
@@ -466,7 +466,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         skills: ['problem_solving', 'communication'],
         consequence: {
           characterId: 'maya',
-          addKnowledgeFlags: ['knows_innovation_depot']
+          addKnowledgeFlags: []
         }
       }
     ],
@@ -546,7 +546,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Really? I've heard of Innovation Depot but never thought... could I actually do that? Start something here in Birmingham? It feels so far from what my parents expect, but so close to what I dream about.",
+        text: "Really? I've heard of Innovation Depot (Birmingham's startup hub) but never thought... could I actually do that? Start something here in Birmingham?\n\nIt feels so far from what my parents expect, but so close to what I dream about.",
         emotion: 'curious',
         variation_id: 'birmingham_v1'
       }
@@ -573,7 +573,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "My parents immigrated here with nothing. | They worked three jobs to put me through school. | They dream of saying 'our daughter, the doctor.' | How can I tell them I'd rather build machines than heal people?",
+        text: "My parents immigrated here with nothing.\n\nThey worked three jobs to put me through school.\n\nThey dream of saying 'our daughter, the doctor.'\n\nHow can I tell them I'd rather build machines than heal people?",
         emotion: 'sad',
         variation_id: 'family_v1'
       }
@@ -914,7 +914,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*She pauses, looking at you with new curiosity* | You know so much about my struggle now. You helped me see what I couldn't. | Can I... can I ask you something personal? | About your own path?",
+        text: "*She pauses, looking at you with new curiosity*\n\nYou know so much about my struggle now. You helped me see what I couldn't.\n\nCan I... can I ask you something personal?\n\nAbout your own path?",
         emotion: 'curious',
         variation_id: 'reciprocity_ask_v1'
       }
@@ -1032,7 +1032,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*Her eyes widen with recognition* | That makes so much sense. That consistency, that foundation... | I can see why you're so patient with people like me who are spiraling. You grew up with solid ground beneath you. | *She pauses, thoughtful* | For me, it was the opposite. My parents gave up everything stable to come here. Every day was a gamble on the future. | Maybe that's why your patience felt so... safe. Like something I could trust.",
+        text: "*Her eyes widen with recognition*\n\nThat makes so much sense. That consistency, that foundation...\n\nI can see why you're so patient with people like me who are spiraling. You grew up with solid ground beneath you.\n\n*She pauses, thoughtful*\n\nFor me, it was the opposite. My parents gave up everything stable to come here. Every day was a gamble on the future.\n\nMaybe that's why your patience felt so... safe. Like something I could trust.",
         emotion: 'understanding',
         variation_id: 'stable_reaction_v1'
       }
@@ -1062,7 +1062,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*She laughs, but it's not bitter - it's recognition* | Of course! That's why you pushed me toward robotics without hesitation. | Risk is normal for you. Starting fresh, building something from nothing - that's your inherited language. | *She looks at her med school textbooks* | My parents took one huge risk coming to America. They want me to never have to risk again. | But you... you grew up seeing risk as possibility, not threat. That's why you could see my path when I couldn't.",
+        text: "*She laughs, but it's not bitter - it's recognition*\n\nOf course! That's why you pushed me toward robotics without hesitation.\n\nRisk is normal for you. Starting fresh, building something from nothing - that's your inherited language.\n\n*She looks at her med school textbooks*\n\nMy parents took one huge risk coming to America. They want me to never have to risk again.\n\nBut you... you grew up seeing risk as possibility, not threat. That's why you could see my path when I couldn't.",
         emotion: 'dawning_understanding',
         variation_id: 'entrepreneur_reaction_v1'
       }
@@ -1092,7 +1092,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*Her expression softens into something deeper than sympathy* | Oh. | *Long pause* | You know what it's like to watch someone you love fight just to stay afloat. | That's why you didn't try to fix me or minimize my struggle. You've seen what real weight looks like. | *She reaches toward you, then stops* | When you helped me, you weren't performing empathy. You were remembering. | That's... that's different. That's real.",
+        text: "*Her expression softens into something deeper than sympathy*\n\nOh.\n\n*Long pause*\n\nYou know what it's like to watch someone you love fight just to stay afloat.\n\nThat's why you didn't try to fix me or minimize my struggle. You've seen what real weight looks like.\n\n*She reaches toward you, then stops*\n\nWhen you helped me, you weren't performing empathy. You were remembering.\n\nThat's... that's different. That's real.",
         emotion: 'profound_connection',
         variation_id: 'struggling_reaction_v1'
       }
