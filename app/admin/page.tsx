@@ -125,10 +125,14 @@ export default function AdminPage() {
 
         {/* Main Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2 bg-white">
+          <TabsList className="grid w-full grid-cols-3 bg-white">
             <TabsTrigger value="urgency" className="gap-2">
               <AlertTriangle className="w-4 h-4" />
               Student Triage
+            </TabsTrigger>
+            <TabsTrigger value="journeys" className="gap-2">
+              <Users className="w-4 h-4" />
+              Student Journeys
             </TabsTrigger>
             <TabsTrigger value="choices" className="gap-2">
               <TrendingUp className="w-4 h-4" />

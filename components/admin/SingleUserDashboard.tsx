@@ -313,14 +313,8 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
       setUrgencyError(null);
 
       try {
-        const token = process.env.NEXT_PUBLIC_ADMIN_API_TOKEN;
-        // Fetch all students since API doesn't support userId filter
-        const response = await fetch('/api/admin/urgency?level=all&limit=200', {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        });
+        // Use admin proxy to avoid exposing token in client bundle
+        const response = await fetch('/api/admin-proxy/urgency?level=all&limit=200');
 
         if (!response.ok) {
           throw new Error('Failed to fetch urgency data');
@@ -351,13 +345,8 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
       setSkillsError(null);
 
       try {
-        const token = process.env.NEXT_PUBLIC_ADMIN_API_TOKEN;
-        const response = await fetch(`/api/user/skill-summaries?userId=${userId}`, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        });
+        // skill-summaries API doesn't require auth token (user-scoped endpoint)
+        const response = await fetch(`/api/user/skill-summaries?userId=${userId}`);
 
         if (!response.ok) {
           throw new Error('Failed to fetch skills data');
@@ -415,23 +404,14 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
   const handleRecalculate = async () => {
     setRecalculating(true);
     try {
-      const token = process.env.NEXT_PUBLIC_ADMIN_API_TOKEN;
-      const response = await fetch('/api/admin/urgency', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
+      // Use admin proxy to avoid exposing token in client bundle
+      const response = await fetch('/api/admin-proxy/urgency', {
+        method: 'POST'
       });
 
       if (response.ok) {
         // Refetch urgency data after recalculation
-        const dataResponse = await fetch('/api/admin/urgency?level=all&limit=200', {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        });
+        const dataResponse = await fetch('/api/admin-proxy/urgency?level=all&limit=200');
 
         if (dataResponse.ok) {
           const data = await dataResponse.json();
@@ -843,95 +823,95 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
             </Card>
           ) : user.careerMatches && user.careerMatches.length > 0 ? (
             user.careerMatches.map((career) => (
-            <Card key={career.id}>
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg">{career.name}</CardTitle>
-                  <Badge variant={getReadinessDisplay(career.readiness).variant}>{getReadinessDisplay(career.readiness).text}</Badge>
-                </div>
-                <CardDescription>
-                  ${career.salaryRange[0].toLocaleString()} - ${career.salaryRange[1].toLocaleString()} •
-                  Birmingham Relevance: {Math.round(career.birminghamRelevance * 100)}%
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                {/* Skill requirements */}
-                <div>
-                  <p className="text-sm font-medium mb-2">Skill Requirements:</p>
-                  <div className="space-y-2">
-                    {Object.entries(career.requiredSkills).map(([skill, data]) => (
-                      <div key={skill} className="space-y-1">
-                        <div className="flex justify-between text-xs">
-                          <span className="capitalize">{skill.replace(/([A-Z])/g, ' $1').trim()}</span>
-                          <span className={data.gap > 0 ? "text-yellow-600" : "text-green-600"}>
-                            {data.current >= data.required ? "✓ Met" : `Gap: ${Math.round(data.gap * 100)}%`}
-                          </span>
-                        </div>
-                        <div className="flex gap-1 items-center">
-                          <div className="flex-1 bg-gray-200 rounded-full h-1.5">
-                            <div
-                              className={`h-1.5 rounded-full ${data.gap > 0 ? 'bg-yellow-500' : 'bg-green-500'}`}
-                              style={{ width: `${(data.current / data.required) * 100}%` }}
-                            />
+              <Card key={career.id}>
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-lg">{career.name}</CardTitle>
+                    <Badge variant={getReadinessDisplay(career.readiness).variant}>{getReadinessDisplay(career.readiness).text}</Badge>
+                  </div>
+                  <CardDescription>
+                    ${career.salaryRange[0].toLocaleString()} - ${career.salaryRange[1].toLocaleString()} •
+                    Birmingham Relevance: {Math.round(career.birminghamRelevance * 100)}%
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  {/* Skill requirements */}
+                  <div>
+                    <p className="text-sm font-medium mb-2">Skill Requirements:</p>
+                    <div className="space-y-2">
+                      {Object.entries(career.requiredSkills).map(([skill, data]) => (
+                        <div key={skill} className="space-y-1">
+                          <div className="flex justify-between text-xs">
+                            <span className="capitalize">{skill.replace(/([A-Z])/g, ' $1').trim()}</span>
+                            <span className={data.gap > 0 ? "text-yellow-600" : "text-green-600"}>
+                              {data.current >= data.required ? "✓ Met" : `Gap: ${Math.round(data.gap * 100)}%`}
+                            </span>
                           </div>
-                          <span className="text-xs text-muted-foreground w-16 text-right">
-                            {Math.round(data.current * 100)}/{Math.round(data.required * 100)}
-                          </span>
+                          <div className="flex gap-1 items-center">
+                            <div className="flex-1 bg-gray-200 rounded-full h-1.5">
+                              <div
+                                className={`h-1.5 rounded-full ${data.gap > 0 ? 'bg-yellow-500' : 'bg-green-500'}`}
+                                style={{ width: `${(data.current / data.required) * 100}%` }}
+                              />
+                            </div>
+                            <span className="text-xs text-muted-foreground w-16 text-right">
+                              {Math.round(data.current * 100)}/{Math.round(data.required * 100)}
+                            </span>
+                          </div>
                         </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Education paths */}
+                  <div>
+                    <p className="text-sm font-medium mb-1">Education Pathways:</p>
+                    <div className="flex flex-wrap gap-1">
+                      {career.educationPaths.map(path => (
+                        <Badge key={path} variant="secondary" className="text-xs">{path}</Badge>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Local opportunities */}
+                  <div>
+                    <p className="text-sm font-medium mb-1">Birmingham Employers:</p>
+                    <div className="flex flex-wrap gap-1">
+                      {career.localOpportunities.map(opp => (
+                        <Badge key={opp} variant="outline" className="text-xs">{opp}</Badge>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Readiness */}
+                  <div className="pt-2 border-t">
+                    {career.readiness === 'near_ready' && (
+                      <div className="flex items-start gap-2 text-sm">
+                        <CheckCircle2 className="w-4 h-4 text-green-600 mt-0.5" />
+                        <p className="text-green-600">
+                          <strong>Near Ready:</strong> Small skill gaps. Consider exploratory experiences.
+                        </p>
                       </div>
-                    ))}
+                    )}
+                    {career.readiness === 'skill_gaps' && (
+                      <div className="flex items-start gap-2 text-sm">
+                        <AlertTriangle className="w-4 h-4 text-yellow-600 mt-0.5" />
+                        <p className="text-yellow-600">
+                          <strong>Skill Gaps:</strong> Good foundation but needs development. See Gaps tab.
+                        </p>
+                      </div>
+                    )}
+                    {career.readiness === 'exploratory' && (
+                      <div className="flex items-start gap-2 text-sm">
+                        <Lightbulb className="w-4 h-4 text-blue-600 mt-0.5" />
+                        <p className="text-blue-600">
+                          <strong>Worth Exploring:</strong> Moderate match. Informational interviews recommended.
+                        </p>
+                      </div>
+                    )}
                   </div>
-                </div>
-
-                {/* Education paths */}
-                <div>
-                  <p className="text-sm font-medium mb-1">Education Pathways:</p>
-                  <div className="flex flex-wrap gap-1">
-                    {career.educationPaths.map(path => (
-                      <Badge key={path} variant="secondary" className="text-xs">{path}</Badge>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Local opportunities */}
-                <div>
-                  <p className="text-sm font-medium mb-1">Birmingham Employers:</p>
-                  <div className="flex flex-wrap gap-1">
-                    {career.localOpportunities.map(opp => (
-                      <Badge key={opp} variant="outline" className="text-xs">{opp}</Badge>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Readiness */}
-                <div className="pt-2 border-t">
-                  {career.readiness === 'near_ready' && (
-                    <div className="flex items-start gap-2 text-sm">
-                      <CheckCircle2 className="w-4 h-4 text-green-600 mt-0.5" />
-                      <p className="text-green-600">
-                        <strong>Near Ready:</strong> Small skill gaps. Consider exploratory experiences.
-                      </p>
-                    </div>
-                  )}
-                  {career.readiness === 'skill_gaps' && (
-                    <div className="flex items-start gap-2 text-sm">
-                      <AlertTriangle className="w-4 h-4 text-yellow-600 mt-0.5" />
-                      <p className="text-yellow-600">
-                        <strong>Skill Gaps:</strong> Good foundation but needs development. See Gaps tab.
-                      </p>
-                    </div>
-                  )}
-                  {career.readiness === 'exploratory' && (
-                    <div className="flex items-start gap-2 text-sm">
-                      <Lightbulb className="w-4 h-4 text-blue-600 mt-0.5" />
-                      <p className="text-blue-600">
-                        <strong>Worth Exploring:</strong> Moderate match. Informational interviews recommended.
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
           ))
         ) : (
           <Card>

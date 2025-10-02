@@ -56,7 +56,10 @@ export async function GET(request: NextRequest) {
 
   // Forward request to actual urgency API with server-side token
   try {
-    const apiUrl = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/admin/urgency?level=${level}&limit=${limit}`
+    // Dynamic host detection - works in dev (localhost) and prod (Vercel)
+    const protocol = request.headers.get('x-forwarded-proto') || 'http'
+    const host = request.headers.get('host') || 'localhost:3000'
+    const apiUrl = `${protocol}://${host}/api/admin/urgency?level=${level}&limit=${limit}`
 
     const response = await fetch(apiUrl, {
       headers: {
@@ -92,7 +95,10 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const apiUrl = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/admin/urgency`
+    // Dynamic host detection - works in dev (localhost) and prod (Vercel)
+    const protocol = request.headers.get('x-forwarded-proto') || 'http'
+    const host = request.headers.get('host') || 'localhost:3000'
+    const apiUrl = `${protocol}://${host}/api/admin/urgency`
 
     const response = await fetch(apiUrl, {
       method: 'POST',
