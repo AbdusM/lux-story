@@ -419,9 +419,35 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*He smiles, a quiet satisfaction in his expression*\n\nExactly. She made her own choice. That's the most important thing you could understand about what just happened.\n\nYou understand agency - that's advanced.\n\n*His voice carries weight from experience*\n\nTook me fifteen years at Southern Company to learn I couldn't engineer people's decisions. The best career counselors in Birmingham know this: we illuminate paths, but the traveler chooses the direction.\n\nInnovation Depot (Birmingham's startup hub) mentors do exactly what you just did: ask questions, hold space, let the founder discover their path. That's facilitator instinct - a professional skill that drives leadership development, organizational psychology, HR careers across this city.",
+        text: "*He smiles, a quiet satisfaction in his expression*\n\nExactly. She made her own choice. That's the most important thing you could understand about what just happened.\n\nYou understand agency - that's advanced.\n\n*His voice carries weight from experience*\n\nTook me fifteen years at Southern Company to learn I couldn't engineer people's decisions. The best career counselors in Birmingham know this: we illuminate paths, but the traveler chooses the direction.",
         emotion: 'proud',
-        variation_id: 'agency_v1'
+        variation_id: 'agency_v1_pt1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_agency_reflection',
+        text: "(Continue)",
+        nextNodeId: 'samuel_reflect_on_agency_pt2',
+        pattern: 'patience'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'samuel',
+        addKnowledgeFlags: ['recognized_facilitator_skills']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_reflect_on_agency_pt2',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Innovation Depot (Birmingham's startup hub) mentors do exactly what you just did: ask questions, hold space, let the founder discover their path. That's facilitator instinct - a professional skill that drives leadership development, organizational psychology, HR careers across this city.",
+        emotion: 'proud',
+        variation_id: 'agency_v1_pt2'
       }
     ],
     choices: [
@@ -436,12 +462,6 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "Is that what you do here? Be a mirror?",
         nextNodeId: 'samuel_station_keeper_truth',
         pattern: 'patience'
-      }
-    ],
-    onEnter: [
-      {
-        characterId: 'samuel',
-        addKnowledgeFlags: ['recognized_facilitator_skills']
       }
     ]
   },
@@ -767,9 +787,29 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "I saw you listening to what Maya wasn't saying. Most people hear the words - 'I'm pre-med, I have good grades' - and think they understand. | You heard the weight underneath the words. | The fear of disappointing her parents. | The shame of wanting something different. | The loneliness of succeeding at a path that isn't yours. | That's not a skill they teach in school. That's wisdom born from your own wrestling. You recognized her struggle because you've felt something like it yourself.",
+        text: "I saw you listening to what Maya wasn't saying. Most people hear the words - 'I'm pre-med, I have good grades' - and think they understand.\n\nYou heard the weight underneath the words.\n\nThe fear of disappointing her parents. The shame of wanting something different. The loneliness of succeeding at a path that isn't yours.",
         emotion: 'deep_knowing',
-        variation_id: 'deep_reflection_v1'
+        variation_id: 'deep_reflection_v1_pt1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_deep_reflection',
+        text: "(Continue)",
+        nextNodeId: 'samuel_deep_reflection_pt2',
+        pattern: 'patience'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_deep_reflection_pt2',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "That's not a skill they teach in school. That's wisdom born from your own wrestling. You recognized her struggle because you've felt something like it yourself.",
+        emotion: 'deep_knowing',
+        variation_id: 'deep_reflection_v1_pt2'
       }
     ],
     choices: [
@@ -940,9 +980,41 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*His voice is gentle, respectful of the weight you've shared*\n\nMaya mentioned you shared something difficult with her. About watching your parents struggle.\n\n*Long pause*\n\nThat kind of witnessing changes you. Makes you see need before it's spoken. Makes you hold space before it's asked for.\n\nYou have the helper pattern not because you chose it, but because life taught you early what it means to need help. That's not a burden. That's wisdom.\n\nThe station recognizes servants who serve from understanding, not obligation.",
+        text: "*His voice is gentle, respectful of the weight you've shared*\n\nMaya mentioned you shared something difficult with her. About watching your parents struggle.\n\n*Long pause*\n\nThat kind of witnessing changes you. Makes you see need before it's spoken. Makes you hold space before it's asked for.",
         emotion: 'deep_respect',
-        variation_id: 'struggling_parents_reflection_v1'
+        variation_id: 'struggling_parents_reflection_v1_pt1'
+      }
+    ],
+    requiredState: {
+      hasGlobalFlags: ['player_revealed_struggling_parents'],
+      lacksKnowledgeFlags: ['closed_reciprocity_loop'],
+      trust: { min: 5 }
+    },
+    choices: [
+      {
+        choiceId: 'continue_struggling_parents_reflection',
+        text: "(Continue)",
+        nextNodeId: 'samuel_reflects_struggling_parents_pt2',
+        pattern: 'patience'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'samuel',
+        addKnowledgeFlags: ['discussed_player_background', 'closed_reciprocity_loop'],
+        trustChange: 1
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_reflects_struggling_parents_pt2',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You have the helper pattern not because you chose it, but because life taught you early what it means to need help. That's not a burden. That's wisdom.\n\nThe station recognizes servants who serve from understanding, not obligation.",
+        emotion: 'deep_respect',
+        variation_id: 'struggling_parents_reflection_v1_pt2'
       }
     ],
     requiredState: {
@@ -962,13 +1034,6 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "Understanding, not obligation. I like that framing.",
         nextNodeId: 'samuel_service_philosophy',
         pattern: 'helping'
-      }
-    ],
-    onEnter: [
-      {
-        characterId: 'samuel',
-        addKnowledgeFlags: ['discussed_player_background', 'closed_reciprocity_loop'],
-        trustChange: 1
       }
     ]
   },

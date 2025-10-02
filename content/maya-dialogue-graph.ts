@@ -1092,9 +1092,34 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*Her expression softens into something deeper than sympathy*\n\nOh.\n\n*Long pause*\n\nYou know what it's like to watch someone you love fight just to stay afloat.\n\nThat's why you didn't try to fix me or minimize my struggle. You've seen what real weight looks like.\n\n*She reaches toward you, then stops*\n\nWhen you helped me, you weren't performing empathy. You were remembering.\n\nThat's... that's different. That's real.",
+        text: "*Her expression softens into something deeper than sympathy*\n\nOh.\n\n*Long pause*\n\nYou know what it's like to watch someone you love fight just to stay afloat.\n\nThat's why you didn't try to fix me or minimize my struggle. You've seen what real weight looks like.",
         emotion: 'profound_connection',
-        variation_id: 'struggling_reaction_v1'
+        variation_id: 'struggling_reaction_v1_pt1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_struggling_reaction',
+        text: "(Continue)",
+        nextNodeId: 'maya_reaction_struggling_pt2',
+        pattern: 'patience'
+      }
+    ],
+    onEnter: [
+      {
+        addGlobalFlags: ['player_shared_parental_work_legacy', 'deep_reciprocal_vulnerability']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'maya_reaction_struggling_pt2',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "*She reaches toward you, then stops*\n\nWhen you helped me, you weren't performing empathy. You were remembering.\n\nThat's... that's different. That's real.",
+        emotion: 'profound_connection',
+        variation_id: 'struggling_reaction_v1_pt2'
       }
     ],
     choices: [
@@ -1109,11 +1134,6 @@ export const mayaDialogueNodes: DialogueNode[] = [
           addKnowledgeFlags: ['deep_vulnerability_shared', 'player_revealed_struggling_parents'],
           setRelationshipStatus: 'profound_connection'
         }
-      }
-    ],
-    onEnter: [
-      {
-        addGlobalFlags: ['player_shared_parental_work_legacy', 'deep_reciprocal_vulnerability']
       }
     ]
   },
