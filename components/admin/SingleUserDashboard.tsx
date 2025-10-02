@@ -957,185 +957,214 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              {/* Framework 1: 2030 Skills (World Economic Forum) */}
-              {/* TODO: Replace with real data from Supabase skill_demonstrations table */}
-              <div className="p-3 border rounded space-y-2">
-                <div className="flex items-center justify-between">
-                  <p className="font-medium text-sm">World Economic Forum - Future of Jobs Report 2030</p>
-                  <div className="flex items-center gap-2">
-                    <Badge variant="default">12 Skills Tracked</Badge>
-                    <DataSourceBadge
-                      hasRealData={false}
-                      minDemonstrations={10}
-                      actualDemonstrations={user.totalDemonstrations}
-                    />
-                  </div>
+              {/* Loading/Error States */}
+              {evidenceLoading ? (
+                <div className="text-center py-12 text-gray-500">
+                  <RefreshCw className="w-8 h-8 mx-auto animate-spin mb-2" />
+                  <p>Loading evidence frameworks...</p>
                 </div>
-                <p className="text-xs text-muted-foreground">
-                  Framework: Critical skills identified for 2030 workforce readiness including critical thinking,
-                  emotional intelligence, digital literacy, and problem-solving.
-                </p>
-                <div className="bg-blue-50 p-2 rounded text-xs">
-                  <p className="font-medium mb-1">Student Outcomes:</p>
-                  <div className="grid grid-cols-2 gap-1">
-                    <p>• Critical Thinking: 82% (Advanced)</p>
-                    <p>• Emotional Intelligence: 85% (Advanced)</p>
-                    <p>• Problem Solving: 80% (Advanced)</p>
-                    <p>• Digital Literacy: 68% (Intermediate)</p>
-                  </div>
+              ) : evidenceError ? (
+                <Alert className="bg-red-50 border-red-400">
+                  <AlertCircle className="h-4 w-4 text-red-600" />
+                  <AlertDescription>
+                    <strong>Error:</strong> {evidenceError}
+                  </AlertDescription>
+                </Alert>
+              ) : !evidenceData || !evidenceData.frameworks ? (
+                <div className="text-center py-12 space-y-4">
+                  <p className="text-gray-600">No evidence data available yet.</p>
+                  <p className="text-sm text-gray-500">
+                    Students need to complete choices to generate framework evidence.
+                  </p>
                 </div>
-              </div>
+              ) : (
+                <>
+                  {/* Framework 1: Skill Evidence */}
+                  <div className="p-3 border rounded space-y-2">
+                    <div className="flex items-center justify-between">
+                      <p className="font-medium text-sm">Skill Evidence Framework</p>
+                      <div className="flex items-center gap-2">
+                        <Badge variant="default">{evidenceData.frameworks.skillEvidence.uniqueSkills} Skills Tracked</Badge>
+                        <DataSourceBadge
+                          hasRealData={evidenceData.frameworks.skillEvidence.hasRealData}
+                          minDemonstrations={10}
+                          actualDemonstrations={evidenceData.frameworks.skillEvidence.totalDemonstrations}
+                        />
+                      </div>
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      Framework: Tracked skill demonstrations showing concrete evidence of capability development.
+                    </p>
+                    <div className="bg-blue-50 p-2 rounded text-xs">
+                      <p className="font-medium mb-1">Student Outcomes:</p>
+                      <div className="space-y-1">
+                        <p>• Total Demonstrations: <strong>{evidenceData.frameworks.skillEvidence.totalDemonstrations}</strong></p>
+                        <p>• Unique Skills: <strong>{evidenceData.frameworks.skillEvidence.uniqueSkills}</strong></p>
+                        {evidenceData.frameworks.skillEvidence.skillBreakdown.slice(0, 3).map((skill: any) => (
+                          <p key={skill.skill}>
+                            • {skill.skill}: {skill.demonstrations} demonstrations
+                          </p>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
 
-              {/* Framework 2: Erikson Identity Development */}
-              {/* TODO: Replace with real developmental stage assessment from player_persona analysis */}
-              <div className="p-3 border rounded space-y-2">
-                <div className="flex items-center justify-between">
-                  <p className="font-medium text-sm">Erikson's Identity Development Theory</p>
-                  <div className="flex items-center gap-2">
-                    <Badge variant="default">Stage 5: Identity vs. Role Confusion</Badge>
-                    <Badge variant="outline" className="bg-yellow-100 text-yellow-800 text-xs">Mock Data</Badge>
+                  {/* Framework 2: Career Readiness */}
+                  <div className="p-3 border rounded space-y-2">
+                    <div className="flex items-center justify-between">
+                      <p className="font-medium text-sm">Career Readiness Framework</p>
+                      <div className="flex items-center gap-2">
+                        <Badge variant="default">{evidenceData.frameworks.careerReadiness.exploredCareers} Careers Explored</Badge>
+                        <DataSourceBadge
+                          hasRealData={evidenceData.frameworks.careerReadiness.hasRealData}
+                          minDemonstrations={1}
+                          actualDemonstrations={evidenceData.frameworks.careerReadiness.exploredCareers}
+                        />
+                      </div>
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      Framework: Career exploration and match quality showing pathway clarity.
+                    </p>
+                    <div className="bg-blue-50 p-2 rounded text-xs">
+                      <p className="font-medium mb-1">Student Progress:</p>
+                      <div className="space-y-1">
+                        {evidenceData.frameworks.careerReadiness.topMatch ? (
+                          <>
+                            <p>• Top Match: <strong>{evidenceData.frameworks.careerReadiness.topMatch.career_name}</strong></p>
+                            <p>• Match Score: <strong>{Math.round((evidenceData.frameworks.careerReadiness.topMatch.match_score || 0) * 100)}%</strong></p>
+                            <p>• Readiness: <strong>{evidenceData.frameworks.careerReadiness.topMatch.readiness_level}</strong></p>
+                          </>
+                        ) : (
+                          <p>• No career matches yet - continue exploring</p>
+                        )}
+                        <p>• Birmingham Opportunities: <strong>{evidenceData.frameworks.careerReadiness.birminghamOpportunities.length}</strong></p>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  Framework: Adolescent identity formation through exploration and commitment.
-                  Key outcomes: self-concept clarity, value integration, career identity crystallization.
-                </p>
-                <div className="bg-blue-50 p-2 rounded text-xs">
-                  <p className="font-medium mb-1">Student Progress:</p>
-                  <p>• Identity Status: <strong>Crystallizing (80%)</strong></p>
-                  <p>• Exploration → Integration pathway demonstrated</p>
-                  <p>• Values alignment showing strategic thinking</p>
-                  <p>• Ready for structured exploration phase</p>
-                </div>
-              </div>
 
-              {/* Framework 3: Flow Theory */}
-              {/* TODO: Replace with real engagement metrics from game_state scene_history timestamps */}
-              <div className="p-3 border rounded space-y-2">
-                <div className="flex items-center justify-between">
-                  <p className="font-medium text-sm">Csikszentmihalyi's Flow Theory</p>
-                  <div className="flex items-center gap-2">
-                    <Badge variant="default">Engagement Optimization</Badge>
-                    <Badge variant="outline" className="bg-yellow-100 text-yellow-800 text-xs">Mock Data</Badge>
+                  {/* Framework 3: Pattern Recognition */}
+                  <div className="p-3 border rounded space-y-2">
+                    <div className="flex items-center justify-between">
+                      <p className="font-medium text-sm">Pattern Recognition Framework</p>
+                      <div className="flex items-center gap-2">
+                        <Badge variant="default">Behavioral Analysis</Badge>
+                        <DataSourceBadge
+                          hasRealData={evidenceData.frameworks.patternRecognition.hasRealData}
+                          minDemonstrations={15}
+                          actualDemonstrations={evidenceData.frameworks.patternRecognition.totalChoices}
+                        />
+                      </div>
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      Framework: Consistency and progression patterns in choice behavior.
+                    </p>
+                    <div className="bg-blue-50 p-2 rounded text-xs">
+                      <p className="font-medium mb-1">Behavioral Patterns:</p>
+                      <div className="space-y-1">
+                        <p>• Pattern Consistency: <strong>{Math.round((evidenceData.frameworks.patternRecognition.patternConsistency || 0) * 100)}%</strong></p>
+                        <p>• Total Choices: <strong>{evidenceData.frameworks.patternRecognition.totalChoices}</strong></p>
+                        {evidenceData.frameworks.patternRecognition.behavioralTrends.map((trend: string, i: number) => (
+                          <p key={i}>• {trend}</p>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  Framework: Optimal experience through challenge-skill balance. Measures engagement depth,
-                  intrinsic motivation, and sustained attention as indicators of meaningful exploration.
-                </p>
-                <div className="bg-blue-50 p-2 rounded text-xs">
-                  <p className="font-medium mb-1">Engagement Markers:</p>
-                  <p>• Deep engagement: 18 min (Maya family pressure narrative)</p>
-                  <p>• Challenge-skill match: Healthcare Tech (87% alignment)</p>
-                  <p>• Intrinsic motivation: Problem-solving choices (80%)</p>
-                  <p>• Sustained focus: Multiple return visits to integration themes</p>
-                </div>
-              </div>
 
-              {/* Framework 4: Limbic Learning */}
-              {/* TODO: Replace with real stress metrics from player_persona behavior_metrics */}
-              <div className="p-3 border rounded space-y-2">
-                <div className="flex items-center justify-between">
-                  <p className="font-medium text-sm">Limbic System Learning Integration</p>
-                  <div className="flex items-center gap-2">
-                    <Badge variant="default">Emotional + Cognitive</Badge>
-                    <Badge variant="outline" className="bg-yellow-100 text-yellow-800 text-xs">Mock Data</Badge>
+                  {/* Framework 4: Time Investment */}
+                  <div className="p-3 border rounded space-y-2">
+                    <div className="flex items-center justify-between">
+                      <p className="font-medium text-sm">Time Investment Framework</p>
+                      <div className="flex items-center gap-2">
+                        <Badge variant="default">Engagement Tracking</Badge>
+                        <DataSourceBadge
+                          hasRealData={evidenceData.frameworks.timeInvestment.hasRealData}
+                          minDemonstrations={10}
+                          actualDemonstrations={evidenceData.frameworks.timeInvestment.totalDays}
+                        />
+                      </div>
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      Framework: Sustained engagement and consistency over time.
+                    </p>
+                    <div className="bg-blue-50 p-2 rounded text-xs">
+                      <p className="font-medium mb-1">Engagement Metrics:</p>
+                      <div className="space-y-1">
+                        <p>• Days Active: <strong>{evidenceData.frameworks.timeInvestment.totalDays}</strong></p>
+                        <p>• Avg Demos/Day: <strong>{evidenceData.frameworks.timeInvestment.averageDemosPerDay.toFixed(1)}</strong></p>
+                        <p>• Consistency Score: <strong>{Math.round((evidenceData.frameworks.timeInvestment.consistencyScore || 0) * 100)}%</strong></p>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  Framework: Emotion-cognition integration for deeper learning. Stress response patterns,
-                  emotional regulation, and affective decision-making as learning indicators.
-                </p>
-                <div className="bg-blue-50 p-2 rounded text-xs">
-                  <p className="font-medium mb-1">Stress Response Profile:</p>
-                  <p>• Baseline: Adaptive (healthy regulation)</p>
-                  <p>• Brief reactive spike: Maya family scenes (emotionally loaded topic identified)</p>
-                  <p>• Recovery: Quick return to calm (resilience demonstrated)</p>
-                  <p>• Pattern: Emotional intelligence + Critical thinking integration</p>
-                </div>
-              </div>
 
-              {/* Framework 5: Social Cognitive Career Theory */}
-              {/* TODO: Replace with real self-efficacy metrics from choice_history confidence indicators */}
-              <div className="p-3 border rounded space-y-2">
-                <div className="flex items-center justify-between">
-                  <p className="font-medium text-sm">Social Cognitive Career Theory (SCCT)</p>
-                  <div className="flex items-center gap-2">
-                    <Badge variant="default">Self-Efficacy Building</Badge>
-                    <Badge variant="outline" className="bg-yellow-100 text-yellow-800 text-xs">Mock Data</Badge>
+                  {/* Framework 5: Relationship Framework */}
+                  <div className="p-3 border rounded space-y-2">
+                    <div className="flex items-center justify-between">
+                      <p className="font-medium text-sm">Relationship Development Framework</p>
+                      <div className="flex items-center gap-2">
+                        <Badge variant="default">{evidenceData.frameworks.relationshipFramework.totalRelationships} Relationships</Badge>
+                        <DataSourceBadge
+                          hasRealData={evidenceData.frameworks.relationshipFramework.hasRealData}
+                          minDemonstrations={1}
+                          actualDemonstrations={evidenceData.frameworks.relationshipFramework.totalRelationships}
+                        />
+                      </div>
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      Framework: Social-emotional learning through character relationships.
+                    </p>
+                    <div className="bg-blue-50 p-2 rounded text-xs">
+                      <p className="font-medium mb-1">Relationship Metrics:</p>
+                      <div className="space-y-1">
+                        <p>• Average Trust: <strong>{evidenceData.frameworks.relationshipFramework.averageTrust.toFixed(1)}/10</strong></p>
+                        {evidenceData.frameworks.relationshipFramework.relationshipDetails.slice(0, 3).map((rel: any) => (
+                          <p key={rel.character}>• {rel.character}: Trust {rel.trust}/10</p>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  Framework: Career development through self-efficacy beliefs, outcome expectations,
-                  and personal goals. Measures confidence in skill areas and readiness for career action.
-                </p>
-                <div className="bg-blue-50 p-2 rounded text-xs">
-                  <p className="font-medium mb-1">Self-Efficacy Indicators:</p>
-                  <p>• Strong self-efficacy: Emotional Intelligence (85%), Problem-solving (80%)</p>
-                  <p>• Developing self-efficacy: Collaboration (58%), Time Management (42%)</p>
-                  <p>• Career confidence: Healthcare Tech match (87%) with clear action steps</p>
-                  <p>• Outcome expectations: Explored salary data, education pathways</p>
-                </div>
-              </div>
+
+                  {/* Framework 6: Behavioral Consistency */}
+                  <div className="p-3 border rounded space-y-2">
+                    <div className="flex items-center justify-between">
+                      <p className="font-medium text-sm">Behavioral Consistency Framework</p>
+                      <div className="flex items-center gap-2">
+                        <Badge variant="default">Focus Analysis</Badge>
+                        <DataSourceBadge
+                          hasRealData={evidenceData.frameworks.behavioralConsistency.hasRealData}
+                          minDemonstrations={20}
+                          actualDemonstrations={evidenceData.frameworks.behavioralConsistency.topThreeSkills.reduce((sum: number, s: any) => sum + s.count, 0)}
+                        />
+                      </div>
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      Framework: Focus vs exploration balance analysis.
+                    </p>
+                    <div className="bg-blue-50 p-2 rounded text-xs">
+                      <p className="font-medium mb-1">Consistency Metrics:</p>
+                      <div className="space-y-1">
+                        <p>• Focus Score: <strong>{Math.round((evidenceData.frameworks.behavioralConsistency.focusScore || 0) * 100)}%</strong></p>
+                        <p>• Exploration Score: <strong>{Math.round((evidenceData.frameworks.behavioralConsistency.explorationScore || 0) * 100)}%</strong></p>
+                        <p>• Platform Alignment: <strong>{evidenceData.frameworks.behavioralConsistency.platformAlignment}</strong> platforms</p>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
             </CardContent>
           </Card>
 
-          {/* Measurable Outcomes for Funders */}
-          {/* TODO: Replace with real aggregated metrics from skill_demonstrations, career_matches, and player_persona tables */}
-          <Card className="border-2 border-green-600">
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <div>
-                  <CardTitle className="text-lg">Grant-Reportable Outcomes</CardTitle>
-                  <CardDescription>Quantifiable metrics for funding accountability</CardDescription>
-                </div>
-                <Badge variant="outline" className="bg-yellow-100 text-yellow-800">Mock Data</Badge>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="grid grid-cols-2 gap-3">
-                <div className="p-2 bg-green-50 rounded">
-                  <p className="text-2xl font-bold text-green-600">87%</p>
-                  <p className="text-xs text-muted-foreground">Career Match Score (Healthcare Tech)</p>
-                </div>
-                <div className="p-2 bg-green-50 rounded">
-                  <p className="text-2xl font-bold text-green-600">80%</p>
-                  <p className="text-xs text-muted-foreground">Identity Clarity (Erikson Framework)</p>
-                </div>
-                <div className="p-2 bg-green-50 rounded">
-                  <p className="text-2xl font-bold text-green-600">3</p>
-                  <p className="text-xs text-muted-foreground">Advanced-Level Skills Developed</p>
-                </div>
-                <div className="p-2 bg-green-50 rounded">
-                  <p className="text-2xl font-bold text-green-600">6</p>
-                  <p className="text-xs text-muted-foreground">Birmingham Career Pathways Explored</p>
-                </div>
-              </div>
-
-              <div className="border-t pt-3 space-y-2 text-xs">
-                <p className="font-medium">Funder-Specific Metrics:</p>
-                <div className="space-y-1 text-muted-foreground">
-                  <p>• <strong>Skill Development:</strong> 32% improvement in Critical Thinking (0.50 → 0.82)</p>
-                  <p>• <strong>Career Clarity:</strong> From exploration (20%) to crystallization (80%) in identity formation</p>
-                  <p>• <strong>Local Connection:</strong> 90% Birmingham relevance score (UAB, Innovation Depot focus)</p>
-                  <p>• <strong>Action Readiness:</strong> 2 concrete next steps identified with specific employers</p>
-                  <p>• <strong>Evidence-Based:</strong> 5 validated psychological frameworks with measurable outcomes</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Research Backing */}
+          {/* Scientific Literature Support */}
           <Card>
             <CardHeader>
               <CardTitle className="text-sm">Scientific Literature Support</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 text-xs text-muted-foreground">
-              <p>• <strong>2030 Skills:</strong> World Economic Forum, Future of Jobs Report (2020, 2023)</p>
-              <p>• <strong>Identity Development:</strong> Erikson, E. H. (1968). Identity: Youth and Crisis</p>
-              <p>• <strong>Flow Theory:</strong> Csikszentmihalyi, M. (1990). Flow: The Psychology of Optimal Experience</p>
-              <p>• <strong>Limbic Learning:</strong> LeDoux, J. (2015). Anxious: Using the Brain to Understand Fear</p>
-              <p>• <strong>Career Theory:</strong> Lent, R. W., Brown, S. D., & Hackett, G. (1994). SCCT</p>
+              <p>• <strong>Skill Evidence:</strong> WEF Future of Jobs Report (2020, 2023)</p>
+              <p>• <strong>Career Readiness:</strong> Holland, J. L. (1997). Making Vocational Choices</p>
+              <p>• <strong>Pattern Recognition:</strong> Behavioral consistency & development research</p>
+              <p>• <strong>Time Investment:</strong> Engagement metrics & sustained learning theory</p>
+              <p>• <strong>Relationships:</strong> Social-emotional learning frameworks</p>
+              <p>• <strong>Behavioral Consistency:</strong> Focus vs exploration balance analysis</p>
             </CardContent>
           </Card>
         </TabsContent>
