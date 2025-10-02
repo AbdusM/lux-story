@@ -62,17 +62,9 @@ export default function AdminPage() {
   async function fetchUrgentStudents() {
     setUrgencyLoading(true)
     try {
-      // TODO: Replace with actual env var token in production
-      const token = process.env.NEXT_PUBLIC_ADMIN_API_TOKEN || 'demo-token'
-
+      // Use server-side proxy to protect API token
       const response = await fetch(
-        `/api/admin/urgency?level=${urgencyFilter}&limit=50`,
-        {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        }
+        `/api/admin-proxy/urgency?level=${urgencyFilter}&limit=50`
       )
 
       if (!response.ok) {
@@ -93,14 +85,9 @@ export default function AdminPage() {
   async function triggerRecalculation() {
     setRecalculating(true)
     try {
-      const token = process.env.NEXT_PUBLIC_ADMIN_API_TOKEN || 'demo-token'
-
-      const response = await fetch('/api/admin/urgency', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
+      // Use server-side proxy to protect API token
+      const response = await fetch('/api/admin-proxy/urgency', {
+        method: 'POST'
       })
 
       if (response.ok) {
