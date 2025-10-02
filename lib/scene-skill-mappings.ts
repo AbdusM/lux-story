@@ -349,9 +349,9 @@ export const SCENE_SKILL_MAPPINGS: Record<string, SceneSkillMapping> = {
 
   // ============= JORDAN ARC (8 scenes) =============
 
-  // SCENE 11: Seven Jobs Impostor Syndrome Introduction
-  'jordan_mentor_context': {
-    sceneId: 'jordan_mentor_context',
+  // SCENE 11: Seven Jobs Impostor Syndrome Introduction (Part 2 only - Part 1 has no choices)
+  'jordan_mentor_context_pt2': {
+    sceneId: 'jordan_mentor_context_pt2',
     characterArc: 'jordan',
     sceneDescription: 'Jordan reveals impostor syndrome before Career Day speech - seven jobs feel like failures, not learning',
 
@@ -810,9 +810,9 @@ export const SCENE_SKILL_MAPPINGS: Record<string, SceneSkillMapping> = {
     }
   },
 
-  // SCENE 17: Maya Reflection - Understanding Influence vs Agency
-  'samuel_reflect_on_influence': {
-    sceneId: 'samuel_reflect_on_influence',
+  // SCENE 17: Maya Reflection - Understanding Influence vs Agency (Part 2 only - Part 1 has no choices)
+  'samuel_reflect_on_influence_pt2': {
+    sceneId: 'samuel_reflect_on_influence_pt2',
     characterArc: 'samuel',
     sceneDescription: 'Samuel teaches difference between helping someone see options vs telling them what to do',
 

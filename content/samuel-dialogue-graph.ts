@@ -349,15 +349,41 @@ export const samuelDialogueNodes: DialogueNode[] = [
     ]
   },
 
-  // ============= REFLECTION: Understanding Influence vs. Agency (BIRMINGHAM CAREER INTEGRATION) =============
+  // ============= REFLECTION: Understanding Influence vs. Agency - Part 1 =============
   {
     nodeId: 'samuel_reflect_on_influence',
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You did help her. But not in the way most people think 'helping' works.\n\nYou didn't fix her problem. You didn't tell her what to do. You created space for her to see options she couldn't see before.\n\n*He pauses thoughtfully*\n\nYou've got the helper instinct - that's what drives our UAB Medical resident advisors and Birmingham City Schools guidance counselors. But I learned at Southern Company: the best mentors help people find their own answers, not just feel supported.\n\nThese reflection skills you're using right now? They're the foundation of counseling, coaching, teaching. Real careers in Birmingham that value this exact capacity.",
+        text: "You did help her. But not in the way most people think 'helping' works.\n\nYou didn't fix her problem. You didn't tell her what to do. You created space for her to see options she couldn't see before.\n\n*He pauses thoughtfully*\n\nYou've got the helper instinct - that's what drives our UAB Medical resident advisors and Birmingham City Schools guidance counselors.",
         emotion: 'teaching',
-        variation_id: 'influence_v1'
+        variation_id: 'influence_v1_pt1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_samuel_influence',
+        text: "(Continue)",
+        nextNodeId: 'samuel_reflect_on_influence_pt2',
+        pattern: 'patience'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'samuel'
+      }
+    ]
+  },
+
+  // ============= REFLECTION: Understanding Influence vs. Agency - Part 2 =============
+  {
+    nodeId: 'samuel_reflect_on_influence_pt2',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "But I learned at Southern Company: the best mentors help people find their own answers, not just feel supported.\n\nThese reflection skills you're using right now? They're the foundation of counseling, coaching, teaching. Real careers in Birmingham that value this exact capacity.",
+        emotion: 'teaching',
+        variation_id: 'influence_v1_pt2'
       }
     ],
     choices: [
@@ -384,11 +410,6 @@ export const samuelDialogueNodes: DialogueNode[] = [
           characterId: 'samuel',
           trustChange: 1
         }
-      }
-    ],
-    onEnter: [
-      {
-        characterId: 'samuel'
       }
     ]
   },

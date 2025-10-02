@@ -501,14 +501,38 @@ export const jordanDialogueNodes: DialogueNode[] = [
     tags: ['job_revelation', 'jordan_arc']
   },
 
-  // ============= MENTOR CONTEXT (Trust 8) =============
+  // ============= MENTOR CONTEXT (Trust 8) - Part 1 =============
   {
     nodeId: 'jordan_mentor_context',
     speaker: 'Jordan Packard',
     content: [{
-      text: "*Her expression shifts—triumphant energy drains away*\n\nBecause when I look at that story, I don't see a clever pattern.\n\nI see seven jobs in twelve years. Someone who couldn't stick with anything. Couldn't commit.\n\nCouldn't figure it out while everyone else was building careers, I was... what? Collecting participation trophies?\n\n*Quieter*\n\nAnd now I'm supposed to stand in front of thirty people who are making a huge bet on themselves—time, money, hope—and tell them what?\n\nThat it's okay to fail six times first?",
+      text: "*Her expression shifts—triumphant energy drains away*\n\nBecause when I look at that story, I don't see a clever pattern.\n\nI see seven jobs in twelve years. Someone who couldn't stick with anything. Couldn't commit.\n\nCouldn't figure it out while everyone else was building careers, I was... what? Collecting participation trophies?",
       emotion: 'vulnerable',
-      variation_id: 'jordan_mentor_1'
+      variation_id: 'jordan_mentor_1_pt1'
+    }],
+    requiredState: {
+      trust: { min: 8 },
+      hasKnowledgeFlags: ['knows_job_7']
+    },
+    choices: [
+      {
+        choiceId: 'continue_jordan_mentor',
+        text: "(Continue)",
+        nextNodeId: 'jordan_mentor_context_pt2',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['vulnerability', 'jordan_arc']
+  },
+
+  // ============= MENTOR CONTEXT - Part 2 =============
+  {
+    nodeId: 'jordan_mentor_context_pt2',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: "*Quieter*\n\nAnd now I'm supposed to stand in front of thirty people who are making a huge bet on themselves—time, money, hope—and tell them what?\n\nThat it's okay to fail six times first?",
+      emotion: 'vulnerable',
+      variation_id: 'jordan_mentor_1_pt2'
     }],
     requiredState: {
       trust: { min: 8 },
