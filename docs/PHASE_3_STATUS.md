@@ -30,7 +30,7 @@
 
 **✅ Configured:**
 - `ADMIN_API_TOKEN=your-secure-admin-token-here`
-- `NEXT_PUBLIC_SUPABASE_URL=https://tavalvqcebosfxamuvlx.supabase.co`
+- `NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT_REF.supabase.co`
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY=***`
 
 **❌ Missing:**
@@ -39,12 +39,12 @@
 ### How to Get SUPABASE_SERVICE_ROLE_KEY
 
 1. Go to [Supabase Dashboard](https://supabase.com/dashboard)
-2. Select your project: `tavalvqcebosfxamuvlx`
+2. Select your project
 3. Navigate to **Settings** → **API**
 4. Copy the `service_role` key (NOT the `anon` key)
 5. Add to `.env.local`:
    ```bash
-   SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRhdmFsdnFjZWJvc2Z4YW11dmx4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1OTI3OTk5MiwiZXhwIjoyMDc0ODU1OTkyfQ.YOUR_ACTUAL_KEY_HERE
+   SUPABASE_SERVICE_ROLE_KEY=your_service_role_key_here
    ```
 
 **⚠️ SECURITY WARNING**: The service role key bypasses Row Level Security and grants full database access. NEVER commit this to git or expose to client-side code.

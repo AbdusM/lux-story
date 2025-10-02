@@ -16,7 +16,7 @@ SUPABASE_SERVICE_ROLE_KEY=your-service-role-key-here
 ## Getting Your Supabase Service Role Key
 
 1. Go to [Supabase Dashboard](https://supabase.com/dashboard)
-2. Select your project (`tavalvqcebosfxamuvlx`)
+2. Select your project
 3. Navigate to **Settings** → **API**
 4. Copy the `service_role` key (NOT the `anon` key)
 5. Add to `.env.local` as shown above
