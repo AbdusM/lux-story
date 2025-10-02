@@ -566,9 +566,35 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Is it okay? It's more than okay - it's courageous. | Our whole world is designed to make you choose fast, commit early, lock in your path before you've even walked it. Maya choosing to sit with uncertainty? That's her refusing to let urgency override truth. | *He reflects on his own journey* | Not knowing is honest - and that's the foundation of coaching, not fixing. Birmingham's Innovation Depot startup mentors know this. The best facilitators don't rush to answers. They hold space for emergence. | You just demonstrated a professional competency that career counselors, coaches, and organizational development specialists spend years developing.",
+        text: "Is it okay? It's more than okay - it's courageous.\n\nOur whole world is designed to make you choose fast, commit early, lock in your path before you've even walked it. Maya choosing to sit with uncertainty? That's her refusing to let urgency override truth.\n\n*He reflects on his own journey*\n\nNot knowing is honest - and that's the foundation of coaching, not fixing. Birmingham's Innovation Depot startup mentors know this. The best facilitators don't rush to answers. They hold space for emergence.",
         emotion: 'wise',
-        variation_id: 'patience_wisdom_v1'
+        variation_id: 'patience_wisdom_v1_pt1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_patience_wisdom',
+        text: "(Continue)",
+        nextNodeId: 'samuel_patience_wisdom_pt2',
+        pattern: 'patience'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'samuel',
+        addKnowledgeFlags: ['recognized_coaching_skills']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_patience_wisdom_pt2',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You just demonstrated a professional competency that career counselors, coaches, and organizational development specialists spend years developing.",
+        emotion: 'wise',
+        variation_id: 'patience_wisdom_v1_pt2'
       }
     ],
     choices: [
@@ -581,12 +607,6 @@ export const samuelDialogueNodes: DialogueNode[] = [
           characterId: 'samuel',
           trustChange: 1
         }
-      }
-    ],
-    onEnter: [
-      {
-        characterId: 'samuel',
-        addKnowledgeFlags: ['recognized_coaching_skills']
       }
     ]
   },
@@ -1350,15 +1370,39 @@ export const samuelDialogueNodes: DialogueNode[] = [
     ]
   },
 
-  // VARIATION 2: Birmingham Frame
+  // VARIATION 2: Birmingham Frame - Part 1
   {
     nodeId: 'samuel_jordan_path_reflection',
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "She stood before those students and claimed her place in this city's story. | Birmingham - where reinvention isn't weakness, it's the foundation. | *He gestures toward the windows, the city lights beyond* | This city transformed from steel mills to medical research, from railroads to tech hubs. | Jordan moved through seven companies in a place that rewards people who can pivot, who can see what's next. | She wasn't failing - she was adapting faster than most. | You helped her see that she's not a fraud. She's proof that Birmingham values evolution over staying still. | Those students needed to hear that career paths don't have to be straight lines - not in this city.",
+        text: "She stood before those students and claimed her place in this city's story.\n\nBirmingham - where reinvention isn't weakness, it's the foundation.\n\n*He gestures toward the windows, the city lights beyond*\n\nThis city transformed from steel mills to medical research, from railroads to tech hubs. Jordan moved through seven companies in a place that rewards people who can pivot, who can see what's next.\n\nShe wasn't failing - she was adapting faster than most.",
         emotion: 'proud',
-        variation_id: 'birmingham_reflection_v1'
+        variation_id: 'birmingham_reflection_v1_pt1'
+      }
+    ],
+    requiredState: {
+      hasGlobalFlags: ['jordan_chose_birmingham']
+    },
+    choices: [
+      {
+        choiceId: 'continue_birmingham_reflection',
+        text: "(Continue)",
+        nextNodeId: 'samuel_jordan_path_reflection_pt2',
+        pattern: 'patience'
+      }
+    ]
+  },
+
+  // VARIATION 2: Birmingham Frame - Part 2
+  {
+    nodeId: 'samuel_jordan_path_reflection_pt2',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You helped her see that she's not a fraud. She's proof that Birmingham values evolution over staying still.\n\nThose students needed to hear that career paths don't have to be straight lines - not in this city.",
+        emotion: 'proud',
+        variation_id: 'birmingham_reflection_v1_pt2'
       }
     ],
     requiredState: {

@@ -424,14 +424,38 @@ export const jordanDialogueNodes: DialogueNode[] = [
     tags: ['job_revelation', 'jordan_arc']
   },
 
-  // ============= JOB REVEAL 7: UX Designer Current (Trust 8) =============
+  // ============= JOB REVEAL 7: UX Designer Current (Trust 8) - Part 1 =============
   {
     nodeId: 'jordan_job_reveal_7',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Birmingham-Jefferson Convention Complex (BJCC) career fair, three years ago. I was there dropping off a passenger, saw the banner, wandered in on a whim.\n\nThere was a booth for Innovation Depot (Birmingham's startup hub)—health tech startup looking for a UX designer. I didn't even know what UX meant, but when they explained it, everything clicked.\n\n*Her voice gains energy*\n\nUser research? That's customer service. Visual design? Graphic design. Motivation psychology? Personal training. Systems thinking (seeing how parts connect)? Uber. They hired me as a junior designer that week.\n\nNow I lead a team, teach at the bootcamp, and finally—FINALLY—my mom tells people what I do without apologizing first.",
+      text: "Birmingham-Jefferson Convention Complex (BJCC) career fair, three years ago. I was there dropping off a passenger, saw the banner, wandered in on a whim.\n\nThere was a booth for Innovation Depot (Birmingham's startup hub)—health tech startup looking for a UX designer. I didn't even know what UX meant, but when they explained it, everything clicked.\n\n*Her voice gains energy*\n\nUser research? That's customer service. Visual design? Graphic design. Motivation psychology? Personal training. Systems thinking (seeing how parts connect)? Uber. They hired me as a junior designer that week.",
       emotion: 'triumphant',
-      variation_id: 'jordan_job7_1'
+      variation_id: 'jordan_job7_1_pt1'
+    }],
+    requiredState: {
+      trust: { min: 8 },
+      hasKnowledgeFlags: ['knows_job_6'],
+      lacksKnowledgeFlags: ['knows_job_7']
+    },
+    choices: [
+      {
+        choiceId: 'continue_job7',
+        text: "(Continue)",
+        nextNodeId: 'jordan_job_reveal_7_pt2',
+        pattern: 'patience'
+      }
+    ]
+  },
+
+  // ============= JOB REVEAL 7: UX Designer Current - Part 2 =============
+  {
+    nodeId: 'jordan_job_reveal_7_pt2',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: "Now I lead a team, teach at the bootcamp, and finally—FINALLY—my mom tells people what I do without apologizing first.",
+      emotion: 'triumphant',
+      variation_id: 'jordan_job7_1_pt2'
     }],
     requiredState: {
       trust: { min: 8 },
