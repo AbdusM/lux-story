@@ -1859,10 +1859,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         nextNodeId: 'samuel_acknowledges_robotics',
         pattern: 'exploring',
         visibleCondition: {
-          characterKnowledge: {
-            characterId: 'maya',
-            hasFlags: ['knows_robotics']
-          }
+          hasGlobalFlags: ['maya_arc_complete']
         }
       },
       {
@@ -1871,10 +1868,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         nextNodeId: 'samuel_acknowledges_family',
         pattern: 'patience',
         visibleCondition: {
-          characterKnowledge: {
-            characterId: 'maya',
-            hasFlags: ['knows_family']
-          }
+          hasGlobalFlags: ['maya_arc_complete']
         }
       }
     ]

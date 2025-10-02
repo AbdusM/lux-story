@@ -75,28 +75,28 @@ export const mayaReciprocityNodes: DialogueNode[] = [
         nextNodeId: 'maya_reciprocity_response_stable',
         pattern: 'patience', // Matches the pattern impact
         // The state changes update PlayerPatterns
-        consequences: parentalWorkLegacy.choices[0].stateChanges
+        consequence: parentalWorkLegacy.choices[0].stateChanges[0]
       },
       {
         choiceId: parentalWorkLegacy.choices[1].choiceId,
         text: parentalWorkLegacy.choices[1].choiceText,
         nextNodeId: 'maya_reciprocity_response_entrepreneur',
         pattern: 'exploring',
-        consequences: parentalWorkLegacy.choices[1].stateChanges
+        consequence: parentalWorkLegacy.choices[1].stateChanges[0]
       },
       {
         choiceId: parentalWorkLegacy.choices[2].choiceId,
         text: parentalWorkLegacy.choices[2].choiceText,
         nextNodeId: 'maya_reciprocity_response_struggling',
         pattern: 'helping',
-        consequences: parentalWorkLegacy.choices[2].stateChanges
+        consequence: parentalWorkLegacy.choices[2].stateChanges[0]
       },
       {
         choiceId: parentalWorkLegacy.choices[3].choiceId,
         text: parentalWorkLegacy.choices[3].choiceText,
         nextNodeId: 'maya_reciprocity_response_absent',
         pattern: 'patience',
-        consequences: parentalWorkLegacy.choices[3].stateChanges
+        consequence: parentalWorkLegacy.choices[3].stateChanges[0]
       }
     ],
     tags: ['reciprocity', 'player_reveal', 'maya_arc']
@@ -273,28 +273,28 @@ export const mayaReciprocityNodes: DialogueNode[] = [
         text: unlimitedResources.choices[0].choiceText,
         nextNodeId: 'maya_unlimited_response_create',
         pattern: 'building',
-        consequences: unlimitedResources.choices[0].stateChanges
+        consequence: unlimitedResources.choices[0].stateChanges[0]
       },
       {
         choiceId: unlimitedResources.choices[1].choiceId,
         text: unlimitedResources.choices[1].choiceText,
         nextNodeId: 'maya_unlimited_response_explore',
         pattern: 'exploring',
-        consequences: unlimitedResources.choices[1].stateChanges
+        consequence: unlimitedResources.choices[1].stateChanges[0]
       },
       {
         choiceId: unlimitedResources.choices[2].choiceId,
         text: unlimitedResources.choices[2].choiceText,
         nextNodeId: 'maya_unlimited_response_teach',
         pattern: 'helping',
-        consequences: unlimitedResources.choices[2].stateChanges
+        consequence: unlimitedResources.choices[2].stateChanges[0]
       },
       {
         choiceId: unlimitedResources.choices[3].choiceId,
         text: unlimitedResources.choices[3].choiceText,
         nextNodeId: 'maya_unlimited_response_rest',
         pattern: 'patience',
-        consequences: unlimitedResources.choices[3].stateChanges
+        consequence: unlimitedResources.choices[3].stateChanges[0]
       }
     ]
   },
@@ -321,7 +321,7 @@ export const mayaReciprocityNodes: DialogueNode[] = [
       {
         characterId: 'maya',
         addKnowledgeFlags: ['deep_mutual_understanding'],
-        setRelationshipStatus: 'profound_connection'
+        setRelationshipStatus: 'confidant'
       }
     ]
   },

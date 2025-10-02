@@ -36,10 +36,18 @@ interface SamuelDialogueResponse {
   generatedAt: number
 }
 
+interface DialogueContext {
+  trustLevel?: number
+  lastInteraction?: string
+  platformsVisited?: string[]
+  samuelTrust?: number
+  [key: string]: unknown
+}
+
 /**
  * Build skill-aware system prompt for Samuel
  */
-function buildSamuelSystemPrompt(persona: PlayerPersona, context: any): string {
+function buildSamuelSystemPrompt(persona: PlayerPersona, context: DialogueContext): string {
   // Extract skill context
   const topSkills = persona.topSkills.slice(0, 3)
   const skillContexts = topSkills.map(skill => {
@@ -52,8 +60,7 @@ function buildSamuelSystemPrompt(persona: PlayerPersona, context: any): string {
     }
   })
 
-  // Determine dominant pattern tendency
-  const dominantPattern = persona.dominantPatterns[0] || 'exploring'
+  // Determine helper vs analyzer tendency
   const helperVsAnalyzer = persona.socialOrientation === 'helper' ? 'Helper' :
                            persona.problemApproach === 'analytical' ? 'Analyzer' : 'Explorer'
 
@@ -73,8 +80,8 @@ ${skillContexts.map(s => `  - ${formatSkillName(s.skill)}: ${s.count} times
     Scene: ${s.latestScene}`).join('\n')}
 
 Behavioral Pattern: ${helperVsAnalyzer}
-Platforms Explored: ${context.platformsVisited.join(', ') || 'None yet'}
-Trust Level: ${context.samuelTrust}/10
+Platforms Explored: ${(context.platformsVisited ?? []).join(', ') || 'None yet'}
+Trust Level: ${context.samuelTrust ?? 0}/10
 Response Style: ${persona.responseSpeed}
 
 YOUR DIALOGUE APPROACH:
@@ -122,9 +129,8 @@ Generate dialogue that feels like Samuel noticed something specific about THIS t
 /**
  * Build the specific dialogue generation prompt
  */
-function buildDialoguePrompt(nodeId: string, persona: PlayerPersona, context: any): string {
+function buildDialoguePrompt(nodeId: string, persona: PlayerPersona, context: DialogueContext): string {
   const topSkill = persona.topSkills[0]
-  const secondSkill = persona.topSkills[1]
   const skillContext = persona.skillDemonstrations[topSkill?.skill]?.latestContext || ''
 
   // Node-specific guidance
@@ -306,10 +312,11 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(responseData)
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     const errorTime = Date.now() - startTime
+    const err = error as { message?: string }
     console.error('❌ [API:SamuelDialogue] Error:', {
-      error: error.message,
+      error: err.message,
       timeMs: errorTime
     })
 
@@ -320,7 +327,7 @@ export async function POST(request: NextRequest) {
       confidence: 0.5,
       generatedAt: Date.now(),
       error: 'Generated fallback due to error',
-      originalError: error.message
+      originalError: err.message
     })
   }
 }

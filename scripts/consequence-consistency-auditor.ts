@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Consequence Consistency Auditor Script
  *

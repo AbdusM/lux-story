@@ -3,7 +3,7 @@
 import { memo, useCallback } from 'react'
 
 interface GameControlsProps {
-  currentScene: any
+  currentScene: { id?: string; text?: string; speaker?: string; type?: string } | null
   isProcessing: boolean
   onContinue: () => void
   onShare: () => void

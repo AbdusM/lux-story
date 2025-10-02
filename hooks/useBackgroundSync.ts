@@ -66,7 +66,7 @@ export function useBackgroundSync(
     setIsProcessing(true)
 
     try {
-      const result = await SyncQueue.processQueue(db)
+      const result = await SyncQueue.processQueue(db as unknown as Record<string, (...args: unknown[]) => Promise<unknown>>)
       setLastSyncResult(result)
 
       // Update stats after sync

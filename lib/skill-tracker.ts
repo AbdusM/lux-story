@@ -88,7 +88,7 @@ export class SkillTracker {
   /**
    * Core method: Record a skill demonstration after each choice
    */
-  recordChoice(choice: any, scene: string, gameState: SimpleGameState): void {
+  recordChoice(choice: { text: string; pattern?: string; id?: string }, scene: string, gameState: SimpleGameState): void {
     // 1. Extract skill demonstrations from choice
     const demonstrations = this.extractDemonstrations(choice, scene, gameState)
 
@@ -254,7 +254,7 @@ export class SkillTracker {
    * Extract demonstrations - PRIORITY: Rich scene mappings, FALLBACK: Pattern detection
    */
   private extractDemonstrations(
-    choice: any,
+    choice: { text: string; pattern?: string; id?: string },
     scene: string,
     gameState: SimpleGameState
   ): SkillDemonstration[] {
@@ -303,7 +303,7 @@ export class SkillTracker {
    */
   private findChoiceMapping(
     sceneMapping: SceneSkillMapping,
-    choice: any
+    choice: { text: string; pattern?: string; id?: string }
   ): { skillsDemonstrated: string[]; context: string } | null {
     // Try exact match by choice ID first
     if (choice.id && sceneMapping.choiceMappings[choice.id]) {
@@ -326,7 +326,7 @@ export class SkillTracker {
   /**
    * Pattern-based skill detection (fallback)
    */
-  private detectSkillsFromPattern(choice: any): string[] {
+  private detectSkillsFromPattern(choice: { text: string; pattern?: string; id?: string }): string[] {
     const patternSkillMap: Record<string, string[]> = {
       helping: ['emotionalIntelligence', 'collaboration', 'communication'],
       analytical: ['criticalThinking', 'problemSolving', 'digitalLiteracy'],
@@ -390,7 +390,7 @@ export class SkillTracker {
   /**
    * Generate human-readable context for demonstration
    */
-  private generateContext(choice: any, scene: string, gameState: SimpleGameState): string {
+  private generateContext(choice: { text: string; pattern?: string; id?: string }, scene: string, gameState: SimpleGameState): string {
     const characterArc = this.detectCharacterArc(scene)
     const pattern = choice.pattern || 'exploring'
     const choiceCount = gameState.choiceHistory?.length || 0
@@ -480,8 +480,8 @@ export class SkillTracker {
       const requiredSkills = match.requiredSkills || []
 
       requiredSkills.forEach((skillKey: string) => {
-        const required = match.skillLevels?.[skillKey] || 0.7
-        const current = internalSkills[skillKey] || 0.5
+        const required = match.skillLevels?.[skillKey as keyof typeof match.skillLevels] || 0.7
+        const current = (internalSkills as any)[skillKey] || 0.5
         const gap = Math.max(0, required - current)
 
         requiredSkillsObj[skillKey] = { current, required, gap }
@@ -503,7 +503,7 @@ export class SkillTracker {
   /**
    * Calculate match score for a career
    */
-  private calculateMatchScore(match: any, skills: Record<string, number>): number {
+  private calculateMatchScore(match: { requiredSkills?: string[] }, skills: Record<string, number>): number {
     const requiredSkills = match.requiredSkills || []
     if (requiredSkills.length === 0) return 0.5
 
@@ -517,7 +517,11 @@ export class SkillTracker {
   /**
    * Build evidence statements for why career matches
    */
-  private buildEvidenceForCareer(match: any, skills: Record<string, number>): string[] {
+  private buildEvidenceForCareer(match: {
+    requiredSkills?: string[]
+    birminghamRelevance?: number
+    growthProjection?: string
+  }, skills: Record<string, number>): string[] {
     const evidence: string[] = []
 
     // Find demonstrations that align with career requirements
@@ -545,7 +549,7 @@ export class SkillTracker {
     })
 
     // Add Birmingham relevance if high
-    if (match.birminghamRelevance > 0.8) {
+    if (match.birminghamRelevance && match.birminghamRelevance > 0.8) {
       evidence.push(`High Birmingham job market relevance`)
     }
 

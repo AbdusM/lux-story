@@ -4,28 +4,65 @@ import { memo, useRef, useEffect } from 'react'
 import { StoryMessage } from './StoryMessage'
 import { useMessageListVirtualization } from '@/hooks/useVirtualScrolling'
 
+interface GameMessage {
+  id: string
+  text: string
+  speaker: string
+  type: string
+  messageWeight?: string
+  className?: string
+}
+
 interface GameMessagesProps {
-  messages: any[]
+  messages: GameMessage[]
 }
 
 // Memoized message component
-const MessageItem = memo(({ message, index, messages, actualIndex }: {
-  message: any
-  index: number
-  messages: any[]
+const MessageItem = memo(({ message, messages, actualIndex }: {
+  message: GameMessage
+  messages: GameMessage[]
   actualIndex: number
-}) => (
-  <div key={message.id} className="apple-message-wrapper">
-    <StoryMessage
-      speaker={message.speaker}
-      text={message.text}
-      type={message.type}
-      messageWeight={message.messageWeight}
-      className={message.className}
-      isContinuedSpeaker={actualIndex > 0 && messages[actualIndex - 1].speaker === message.speaker}
-    />
-  </div>
-))
+}) => {
+  // Map game message types to StoryMessage types
+  const getStoryMessageType = (type: string): 'narration' | 'dialogue' | 'whisper' | 'sensation' | undefined => {
+    const typeMap: Record<string, 'narration' | 'dialogue' | 'whisper' | 'sensation'> = {
+      'narration': 'narration',
+      'dialogue': 'dialogue',
+      'choice': 'dialogue',
+      'consequence': 'narration',
+      'whisper': 'whisper',
+      'sensation': 'sensation'
+    }
+    return typeMap[type]
+  }
+
+  // Map game message weights to StoryMessage weights
+  const getStoryMessageWeight = (weight?: string): 'primary' | 'aside' | 'critical' | undefined => {
+    if (!weight) return undefined
+    const weightMap: Record<string, 'primary' | 'aside' | 'critical'> = {
+      'light': 'aside',
+      'medium': 'primary',
+      'heavy': 'critical',
+      'primary': 'primary',
+      'aside': 'aside',
+      'critical': 'critical'
+    }
+    return weightMap[weight]
+  }
+
+  return (
+    <div key={message.id} className="apple-message-wrapper">
+      <StoryMessage
+        speaker={message.speaker}
+        text={message.text}
+        type={getStoryMessageType(message.type)}
+        messageWeight={getStoryMessageWeight(message.messageWeight)}
+        className={message.className}
+        isContinuedSpeaker={actualIndex > 0 && messages[actualIndex - 1].speaker === message.speaker}
+      />
+    </div>
+  )
+})
 
 MessageItem.displayName = 'MessageItem'
 
@@ -38,7 +75,6 @@ export const GameMessages = memo(({ messages }: GameMessagesProps) => {
   const {
     isVirtualized,
     visibleRange,
-    totalHeight,
     handleScroll,
     visibleMessages,
     config
@@ -73,7 +109,6 @@ export const GameMessages = memo(({ messages }: GameMessagesProps) => {
           <MessageItem
             key={message.id}
             message={message}
-            index={index}
             messages={messages}
             actualIndex={index}
           />
@@ -104,7 +139,6 @@ export const GameMessages = memo(({ messages }: GameMessagesProps) => {
           <MessageItem
             key={message.id}
             message={message}
-            index={index}
             messages={messages}
             actualIndex={actualIndex}
           />

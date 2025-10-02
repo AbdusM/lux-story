@@ -155,7 +155,7 @@ export async function GET(
           return acc
         }, {} as Record<string, number>)
       )
-        .sort(([, a], [, b]) => b - a)
+        .sort(([, a], [, b]) => (b as number) - (a as number))
         .slice(0, 3)
         .map(([skill, count]) => ({ skill, count })),
       focusScore: calculateFocusScore(skillDemos),
@@ -188,8 +188,25 @@ export async function GET(
   }
 }
 
+// Helper types for database records
+interface SkillDemo {
+  skill_name: string
+  demonstrated_at: string
+}
+
+interface SkillTimeline {
+  skill: string
+  timestamp: number
+}
+
+interface QuartileResult {
+  period: string
+  topSkill: string
+  demonstrations: number
+}
+
 // Helper functions
-function calculatePatternConsistency(skillDemos: any[]): number {
+function calculatePatternConsistency(skillDemos: SkillDemo[]): number {
   if (skillDemos.length < 10) return 0
 
   const skillCounts = skillDemos.reduce((acc, demo) => {
@@ -197,7 +214,7 @@ function calculatePatternConsistency(skillDemos: any[]): number {
     return acc
   }, {} as Record<string, number>)
 
-  const counts = Object.values(skillCounts)
+  const counts = Object.values(skillCounts) as number[]
   const avg = counts.reduce((sum, count) => sum + count, 0) / counts.length
   const variance = counts.reduce((sum, count) => sum + Math.pow(count - avg, 2), 0) / counts.length
   const stdDev = Math.sqrt(variance)
@@ -206,8 +223,8 @@ function calculatePatternConsistency(skillDemos: any[]): number {
   return Math.max(0, 1 - (stdDev / avg))
 }
 
-function analyzeSkillProgression(skillDemos: any[]): any[] {
-  const skillTimeline = skillDemos.map(demo => ({
+function analyzeSkillProgression(skillDemos: SkillDemo[]): QuartileResult[] {
+  const skillTimeline: SkillTimeline[] = skillDemos.map(demo => ({
     skill: demo.skill_name,
     timestamp: new Date(demo.demonstrated_at).getTime()
   }))
@@ -230,7 +247,7 @@ function analyzeSkillProgression(skillDemos: any[]): any[] {
     }, {} as Record<string, number>)
 
     const topSkill = Object.entries(skillCounts)
-      .sort(([, a], [, b]) => b - a)[0]
+      .sort(([, a], [, b]) => (b as number) - (a as number))[0]
 
     return {
       period: `Q${i + 1}`,
@@ -240,7 +257,7 @@ function analyzeSkillProgression(skillDemos: any[]): any[] {
   })
 }
 
-function analyzeBehavioralTrends(skillDemos: any[]): string[] {
+function analyzeBehavioralTrends(skillDemos: SkillDemo[]): string[] {
   if (skillDemos.length < 10) return []
 
   const trends: string[] = []
@@ -270,7 +287,7 @@ function calculateDaysBetween(start: string | undefined, end: string | undefined
   return Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24))
 }
 
-function calculateAverageDemosPerDay(skillDemos: any[]): number {
+function calculateAverageDemosPerDay(skillDemos: SkillDemo[]): number {
   if (skillDemos.length < 2) return 0
 
   const days = calculateDaysBetween(
@@ -281,7 +298,7 @@ function calculateAverageDemosPerDay(skillDemos: any[]): number {
   return days > 0 ? skillDemos.length / days : 0
 }
 
-function calculateConsistencyScore(skillDemos: any[]): number {
+function calculateConsistencyScore(skillDemos: SkillDemo[]): number {
   if (skillDemos.length < 10) return 0
 
   // Calculate time gaps between demonstrations
@@ -299,13 +316,13 @@ function calculateConsistencyScore(skillDemos: any[]): number {
   return Math.max(0, 1 - (stdDev / avgGap))
 }
 
-function calculateFocusScore(skillDemos: any[]): number {
+function calculateFocusScore(skillDemos: SkillDemo[]): number {
   const skillCounts = skillDemos.reduce((acc, demo) => {
     acc[demo.skill_name] = (acc[demo.skill_name] || 0) + 1
     return acc
   }, {} as Record<string, number>)
 
-  const topThreeCount = Object.values(skillCounts)
+  const topThreeCount = (Object.values(skillCounts) as number[])
     .sort((a, b) => b - a)
     .slice(0, 3)
     .reduce((sum, count) => sum + count, 0)
@@ -313,17 +330,25 @@ function calculateFocusScore(skillDemos: any[]): number {
   return topThreeCount / skillDemos.length
 }
 
-function calculateExplorationScore(skillDemos: any[]): number {
+function calculateExplorationScore(skillDemos: SkillDemo[]): number {
   const uniqueSkills = new Set(skillDemos.map(d => d.skill_name)).size
   const totalSkillsPossible = 12 // WEF 2030 Skills Framework
 
   return uniqueSkills / totalSkillsPossible
 }
 
+interface CareerRecord {
+  length: number
+}
+
+interface RelationshipRecord {
+  length: number
+}
+
 function calculateDataQuality(
-  skillDemos: any[],
-  careers: any[],
-  relationships: any[]
+  skillDemos: SkillDemo[],
+  careers: CareerRecord,
+  relationships: RelationshipRecord
 ): 'excellent' | 'good' | 'fair' | 'poor' {
   const score = (
     (skillDemos.length >= 20 ? 3 : skillDemos.length >= 10 ? 2 : skillDemos.length >= 5 ? 1 : 0) +

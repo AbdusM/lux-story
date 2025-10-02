@@ -8,7 +8,7 @@ import { resolve } from 'path'
 
 config({ path: resolve(process.cwd(), '.env.local') })
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+const supabaseUrl = process.env.SUPABASE_URL!
 const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
 
 async function checkTables() {

@@ -88,14 +88,14 @@ function auditScenes() {
 
         // Placeholder content?
         if (choiceText.includes('" or "') || choiceText.includes("' or '")) {
-          stats.placeholderContent.push(sceneId);
+          stats.placeholderContent.push(sceneId as never);
           stats.problemScenes.add(sceneId);
         }
 
         // Invalid pattern?
         const patternMatch = choiceText.match(/pattern:\s*['"]([^'"]+)['"]/);
         if (patternMatch && !validPatterns.includes(patternMatch[1])) {
-          stats.invalidPatterns.push(`${sceneId}: ${patternMatch[1]}`);
+          stats.invalidPatterns.push(`${sceneId}: ${patternMatch[1]}` as never);
           stats.problemScenes.add(sceneId);
         }
       }

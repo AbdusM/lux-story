@@ -388,7 +388,13 @@ export class DatabaseService {
     const data = getStoredPlayerData(userId)
     if (!data?.skillDemonstrations) return []
 
-    return data.skillDemonstrations.map((demo: any) => ({
+    return data.skillDemonstrations.map((demo: {
+      skill: string
+      scene: string
+      choice: string
+      context: string
+      timestamp: string
+    }) => ({
       userId,
       skillName: demo.skill,
       sceneId: demo.scene,
@@ -475,13 +481,18 @@ export class DatabaseService {
     if (!data?.choiceHistory) return []
 
     return data.choiceHistory
-      .map((choice: any) => ({
+      .map((choice: {
+        sceneId: string
+        choiceId: string
+        choiceText: string
+        chosenAt: string
+      }) => ({
         sceneId: choice.sceneId,
         choiceId: choice.choiceId,
         choiceText: choice.choiceText,
         chosenAt: new Date(choice.chosenAt)
       }))
-      .sort((a, b) => b.chosenAt.getTime() - a.chosenAt.getTime()) // DESC order (newest first)
+      .sort((a: { chosenAt: Date }, b: { chosenAt: Date }) => b.chosenAt.getTime() - a.chosenAt.getTime()) // DESC order (newest first)
   }
 
   private updatePatternInLocalStorage(userId: string, patternName: string, value: number, demonstrationCount: number): void {
@@ -506,7 +517,7 @@ export class DatabaseService {
 
     const result: Record<string, number> = {}
     for (const [key, pattern] of Object.entries(data.patterns)) {
-      result[key] = (pattern as any).value
+      result[key] = (pattern as { value: number }).value
     }
     return result
   }
@@ -549,12 +560,16 @@ export class DatabaseService {
     if (!data?.milestones) return []
 
     return data.milestones
-      .map((milestone: any) => ({
+      .map((milestone: {
+        milestoneType: Milestone['milestoneType']
+        milestoneContext?: string
+        reachedAt: string
+      }) => ({
         milestoneType: milestone.milestoneType,
         milestoneContext: milestone.milestoneContext,
         reachedAt: new Date(milestone.reachedAt)
       }))
-      .sort((a, b) => b.reachedAt.getTime() - a.reachedAt.getTime()) // DESC order (newest first)
+      .sort((a: { reachedAt: Date }, b: { reachedAt: Date }) => b.reachedAt.getTime() - a.reachedAt.getTime()) // DESC order (newest first)
   }
 
   // ============================================================================

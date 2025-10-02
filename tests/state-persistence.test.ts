@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * State Persistence Tests
  * CRITICAL: These tests ensure our save/load system is bulletproof

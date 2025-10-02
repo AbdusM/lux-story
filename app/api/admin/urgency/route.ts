@@ -49,7 +49,7 @@ function requireAuth(request: NextRequest): NextResponse | null {
 export async function GET(request: NextRequest): Promise<NextResponse<UrgencyAPIResponse>> {
   // Authentication check
   const authError = requireAuth(request)
-  if (authError) return authError
+  if (authError) return authError as NextResponse<UrgencyAPIResponse>
 
   try {
     const searchParams = request.nextUrl.searchParams
@@ -98,29 +98,35 @@ export async function GET(request: NextRequest): Promise<NextResponse<UrgencyAPI
     console.log(`[Admin API] Successfully fetched ${data?.length || 0} urgent students`)
 
     // Transform snake_case to camelCase for TypeScript frontend
-    const students = (data || []).map((row: any) => ({
+    const students = (data || []).map((row: Record<string, unknown>) => ({
       userId: row.user_id,
       currentScene: row.current_scene,
-      urgencyLevel: row.urgency_level,
+      totalDemonstrations: row.total_demonstrations || 0,
+      lastActivity: row.last_activity,
       urgencyScore: row.urgency_score,
+      urgencyLevel: row.urgency_level,
       urgencyNarrative: row.urgency_narrative,
       disengagementScore: row.disengagement_score,
       confusionScore: row.confusion_score,
       stressScore: row.stress_score,
       isolationScore: row.isolation_score,
-      lastActivity: row.last_activity,
       totalChoices: row.total_choices,
       uniqueScenesVisited: row.unique_scenes_visited,
-      relationshipsFormed: row.relationships_formed
+      totalSceneVisits: row.total_scene_visits || 0,
+      helpingPattern: row.helping_pattern,
+      rushingPattern: row.rushing_pattern,
+      exploringPattern: row.exploring_pattern,
+      relationshipsFormed: row.relationships_formed,
+      avgTrustLevel: row.avg_trust_level
     }))
 
     return NextResponse.json({
       students,
       count: students.length,
       timestamp: new Date().toISOString()
-    })
+    } as UrgencyAPIResponse)
 
-  } catch (error: any) {
+  } catch (error) {
     console.error('[Admin API] Unexpected error:', error)
     return NextResponse.json(
       {
@@ -145,7 +151,7 @@ export async function GET(request: NextRequest): Promise<NextResponse<UrgencyAPI
 export async function POST(request: NextRequest): Promise<NextResponse<RecalculationResponse>> {
   // Authentication check
   const authError = requireAuth(request)
-  if (authError) return authError
+  if (authError) return authError as NextResponse<RecalculationResponse>
 
   try {
     console.log('[Admin API] Starting urgency recalculation for all players...')
@@ -222,7 +228,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<Recalcula
       timestamp: new Date().toISOString()
     })
 
-  } catch (error: any) {
+  } catch (error) {
     console.error('[Admin API] Unexpected error during recalculation:', error)
     return NextResponse.json(
       {

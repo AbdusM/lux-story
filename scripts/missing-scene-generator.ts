@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Missing Scene Generator Script
  *

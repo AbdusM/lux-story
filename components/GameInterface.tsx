@@ -14,8 +14,6 @@ import { CharacterIntro } from './CharacterIntro'
 import { SilentCompanion } from './SilentCompanion'
 import { CareerReflectionHelper } from './CareerReflectionHelper'
 import { GameErrorBoundary } from './GameErrorBoundary'
-import { hapticFeedback } from '@/lib/haptic-feedback'
-import { webShare } from '@/lib/web-share'
 import { logger } from '@/lib/logger'
 // Apple Design System removed - using shadcn components
 import { cn } from '@/lib/utils'
@@ -49,22 +47,9 @@ export function GameInterface() {
     rapidClicks: 0,
     hesitationCount: 0
   }
-  const cognitiveState = game.cognitiveState || {
-    flowState: 'neutral',
-    metacognitiveAwareness: 0
-  }
-  const skills = game.skills || {
-    communication: 0,
-    emotionalIntelligence: 0,
-    creativity: 0,
-    problemSolving: 0,
-    criticalThinking: 0
-  }
 
   // Ensure update functions have safe defaults
   const safeUpdateEmotionalState = game.updateEmotionalState || (() => {})
-  const safeUpdateCognitiveState = game.updateCognitiveState || (() => {})
-  const safeUpdateSkills = game.updateSkills || (() => {})
 
   // Event bus subscriptions for system events
   useEventBusSubscription('system:error', (data) => {
@@ -93,16 +78,19 @@ export function GameInterface() {
   useEffect(() => {
     if (process.env.NODE_ENV === 'development') {
       const interval = setInterval(() => {
-        const memoryUsage = (performance as any).memory
-        if (memoryUsage && memoryUsage.usedJSHeapSize > 50 * 1024 * 1024) { // 50MB threshold
-          logger.warn('High memory usage detected:', {
-            used: memoryUsage.usedJSHeapSize,
-            total: memoryUsage.totalJSHeapSize
-          })
-          emit('perf:memory:warning', {
-            usage: memoryUsage.usedJSHeapSize,
-            limit: memoryUsage.totalJSHeapSize
-          })
+        // Check if Performance API with memory is available (Chrome only)
+        if ('memory' in performance) {
+          const memoryUsage = (performance as Performance & { memory?: { usedJSHeapSize: number; totalJSHeapSize: number } }).memory
+          if (memoryUsage && memoryUsage.usedJSHeapSize > 50 * 1024 * 1024) { // 50MB threshold
+            logger.warn('High memory usage detected:', {
+              used: memoryUsage.usedJSHeapSize,
+              total: memoryUsage.totalJSHeapSize
+            })
+            emit('perf:memory:warning', {
+              usage: memoryUsage.usedJSHeapSize,
+              limit: memoryUsage.totalJSHeapSize
+            })
+          }
         }
       }, 30000) // Check every 30 seconds
 
@@ -124,7 +112,7 @@ export function GameInterface() {
   }, [emotionalState.rapidClicks, safeUpdateEmotionalState])
 
   // Enhanced choice handler with stress and performance tracking
-  const handleChoiceWithTracking = useCallback((choice: any) => {
+  const handleChoiceWithTracking = useCallback((choice: { text: string; next?: string; consequence?: string; pattern?: string }) => {
     const startTime = Date.now()
     handleRapidClick()
 
@@ -139,7 +127,7 @@ export function GameInterface() {
       })
     }
   }, [
-    game.handleChoice,
+    game,
     emotionalState.rapidClicks,
     handleRapidClick,
     safeUpdateEmotionalState
@@ -147,20 +135,22 @@ export function GameInterface() {
 
   // Visual adjustments based on emotional state
   const visualAdjustments = useMemo(() => {
-    const adjustments = game.getVisualAdjustments?.() || { style: {}, className: '' }
+    const baseAdjustments = game.getVisualAdjustments?.() || { style: {} as React.CSSProperties, className: '' }
 
     // Add additional Apple-style adjustments
     if (emotionalState.stressLevel === 'anxious' || emotionalState.stressLevel === 'overwhelmed') {
-      adjustments.style = {
-        ...adjustments.style,
-        filter: 'hue-rotate(10deg) saturate(1.1)',
-        transition: 'all 0.3s ease-out'
+      return {
+        style: {
+          ...baseAdjustments.style,
+          filter: 'hue-rotate(10deg) saturate(1.1)',
+          transition: 'all 0.3s ease-out'
+        } as React.CSSProperties,
+        className: baseAdjustments.className + ' apple-stress-response'
       }
-      adjustments.className += ' apple-stress-response'
     }
 
-    return adjustments
-  }, [game.getVisualAdjustments, emotionalState.stressLevel])
+    return baseAdjustments
+  }, [game, emotionalState.stressLevel])
 
   // Early return for loading or error states
   if (!game.hasStarted) {

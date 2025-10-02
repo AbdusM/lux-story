@@ -195,10 +195,13 @@ export function GameMessage({
   // Determine if we should show character avatar
   const showCharacterAvatar = !isNarration && !isWhisper && !isSensation && !isUserMessage && !isContinuedSpeaker
 
+  // Normalize speaker name for consistent lookups (capitalize first letter)
+  const normalizedSpeaker = speaker.charAt(0).toUpperCase() + speaker.slice(1).toLowerCase()
+
   // Get character-specific styles
-  const characterColor = characterStyles[speaker as keyof typeof characterStyles] || 'text-slate-800 dark:text-slate-200'
-  const characterIcon = characterEmoji[speaker as keyof typeof characterEmoji] || '🌟'
-  const avatarStyle = characterAvatarStyles[speaker as keyof typeof characterAvatarStyles] || 'bg-gradient-to-br from-slate-100 via-slate-200 to-slate-300 border-slate-600 dark:border-slate-400'
+  const characterColor = characterStyles[normalizedSpeaker as keyof typeof characterStyles] || 'text-slate-800 dark:text-slate-200'
+  const characterIcon = characterEmoji[normalizedSpeaker as keyof typeof characterEmoji] || '🌟'
+  const avatarStyle = characterAvatarStyles[normalizedSpeaker as keyof typeof characterAvatarStyles] || 'bg-gradient-to-br from-slate-100 via-slate-200 to-slate-300 border-slate-600 dark:border-slate-400'
 
   // Determine typography variant based on message type
   const getTypographyVariant = () => {
@@ -209,12 +212,12 @@ export function GameMessage({
 
   // Determine typography color based on speaker
   const getTypographyColor = () => {
-    const colorKey = speaker.toLowerCase() as keyof typeof characterStyles
-    if (colorKey === 'samuel') return 'samuel'
-    if (colorKey === 'maya') return 'maya'
-    if (colorKey === 'devon') return 'devon'
-    if (colorKey === 'jordan') return 'jordan'
-    if (colorKey === 'you') return 'you'
+    const lowerSpeaker = speaker.toLowerCase()
+    if (lowerSpeaker === 'samuel') return 'samuel'
+    if (lowerSpeaker === 'maya') return 'maya'
+    if (lowerSpeaker === 'devon') return 'devon'
+    if (lowerSpeaker === 'jordan') return 'jordan'
+    if (lowerSpeaker === 'you') return 'you'
     return 'default'
   }
 

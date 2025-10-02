@@ -13,7 +13,7 @@ interface GameErrorBoundaryProps {
  * Provides game-specific error handling and recovery
  */
 export class GameErrorBoundary extends Component<GameErrorBoundaryProps> {
-  private handleError = (error: Error, errorInfo: any) => {
+  private handleError = (error: Error, _errorInfo: React.ErrorInfo) => {
     // Log game-specific error context
     console.error(`Game Error in ${this.props.componentName}:`, {
       error: error.message,

@@ -3,13 +3,33 @@
 import { useState, useEffect } from 'react'
 import { FutureSkills, CareerPath2030 } from '@/lib/2030-skills-system'
 
+interface SkillData {
+  name: string
+  level: number
+  count?: number
+}
+
+interface SkillsSummary {
+  topSkills?: SkillData[]
+  developingSkills?: SkillData[]
+  overallLevel?: string
+  progression?: string
+  [key: string]: unknown
+}
+
+interface ContextualFeedback {
+  message?: string
+  type?: string
+  [key: string]: unknown
+}
+
 interface FutureSkillsSupportProps {
   skills: FutureSkills
   matchingCareerPaths: CareerPath2030[]
   skillPrompt: string | null
-  skillsSummary: Record<string, any>
+  skillsSummary: SkillsSummary
   skillDevelopmentSuggestions: string[]
-  contextualFeedback: any
+  contextualFeedback: ContextualFeedback
   onDismiss?: () => void
 }
 
@@ -107,7 +127,7 @@ export function FutureSkillsSupport({
           {contextualFeedback && (
             <div className="mb-6 p-4 bg-green-50 rounded-lg">
               <p className="text-green-800 font-medium">
-                ✨ {contextualFeedback.explanation}
+                ✨ {contextualFeedback.explanation as React.ReactNode}
               </p>
             </div>
           )}
@@ -243,9 +263,9 @@ export function FutureSkillsSupport({
                   <div>
                     <h5 className="font-semibold mb-2">Top Skills:</h5>
                     <ul className="space-y-1">
-                      {skillsSummary.topSkills?.map((skill: any, index: number) => (
+                      {skillsSummary.topSkills?.map((skill, index) => (
                         <li key={index}>
-                          {skill.skill}: {skill.value}% ({skill.level})
+                          {skill.name}: {skill.level}% {skill.count ? `(${skill.count})` : ''}
                         </li>
                       ))}
                     </ul>
@@ -253,9 +273,9 @@ export function FutureSkillsSupport({
                   <div>
                     <h5 className="font-semibold mb-2">Developing Skills:</h5>
                     <ul className="space-y-1">
-                      {skillsSummary.developingSkills?.map((skill: any, index: number) => (
+                      {skillsSummary.developingSkills?.map((skill, index) => (
                         <li key={index}>
-                          {skill.skill}: {skill.value}%
+                          {skill.name}: {skill.level}%
                         </li>
                       ))}
                     </ul>
@@ -264,7 +284,7 @@ export function FutureSkillsSupport({
                 <div className="mt-4 pt-4 border-t">
                   <div className="flex justify-between">
                     <span><strong>Overall Level:</strong> {skillsSummary.overallLevel}</span>
-                    <span><strong>Career Readiness:</strong> {skillsSummary.careerReadiness}%</span>
+                    <span><strong>Career Readiness:</strong> {skillsSummary.careerReadiness as React.ReactNode}%</span>
                   </div>
                 </div>
               </div>
