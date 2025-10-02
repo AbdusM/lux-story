@@ -286,7 +286,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'jordan_job4_ask_making',
         text: "What kind of making did you want to do?",
-        nextNodeId: 'jordan_job_reveal_5',
+        nextNodeId: 'jordan_pause_after_job4',
         pattern: 'exploring',
         consequence: {
           characterId: 'jordan',
@@ -297,7 +297,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'jordan_job4_validate_clarity',
         text: "That makes perfect sense. You were getting closer to what you actually wanted.",
-        nextNodeId: 'jordan_job_reveal_5',
+        nextNodeId: 'jordan_pause_after_job4',
         pattern: 'helping',
         consequence: {
           characterId: 'jordan',
@@ -308,7 +308,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'jordan_job4_pattern_creator',
         text: "You're a builder, not a promoter. That's an important distinction.",
-        nextNodeId: 'jordan_job_reveal_5',
+        nextNodeId: 'jordan_pause_after_job4',
         pattern: 'analytical',
         consequence: {
           characterId: 'jordan',
@@ -318,6 +318,26 @@ export const jordanDialogueNodes: DialogueNode[] = [
       }
     ],
     tags: ['job_revelation', 'jordan_arc']
+  },
+
+  // ============= PAUSE: After Job 4 Reveal (Breathing Room) =============
+  {
+    nodeId: 'jordan_pause_after_job4',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: "*She pauses, catching her breath*\n\nSorry, that's a lot of career history all at once. But you get the picture?",
+      emotion: 'processing',
+      variation_id: 'pause_job4_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'jordan_continue_after_pause',
+        text: "(Continue)",
+        nextNodeId: 'jordan_job_reveal_5',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['scene_break', 'pacing', 'jordan_arc']
   },
 
   // ============= JOB REVEAL 5: Personal Trainer (Trust 6) =============

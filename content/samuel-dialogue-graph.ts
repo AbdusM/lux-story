@@ -164,7 +164,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'what_did_you_want',
         text: "What did you want to build?",
-        nextNodeId: 'samuel_purpose_found',
+        nextNodeId: 'samuel_pause_after_backstory',
         pattern: 'exploring',
         consequence: {
           characterId: 'samuel',
@@ -174,7 +174,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'relate',
         text: "I understand that feeling.",
-        nextNodeId: 'samuel_purpose_found',
+        nextNodeId: 'samuel_pause_after_backstory',
         pattern: 'helping',
         consequence: {
           characterId: 'samuel',
@@ -183,6 +183,28 @@ export const samuelDialogueNodes: DialogueNode[] = [
         }
       }
     ]
+  },
+
+  // ============= PAUSE: After Backstory Revelation (Breathing Room) =============
+  {
+    nodeId: 'samuel_pause_after_backstory',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*He looks out over the platforms, a gentle smile on his face*\n\nThat was a lifetime ago. But it still matters.",
+        emotion: 'thoughtful',
+        variation_id: 'pause_backstory_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'samuel_continue_after_backstory',
+        text: "(Continue)",
+        nextNodeId: 'samuel_purpose_found',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['scene_break', 'pacing', 'samuel_arc']
   },
 
   {

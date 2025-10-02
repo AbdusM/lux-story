@@ -331,7 +331,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'uab_encourage_research',
         text: "UAB's program is nationally recognized.",
-        nextNodeId: 'maya_actionable_path',
+        nextNodeId: 'maya_pause_after_uab_revelation',
         pattern: 'analytical',
         skills: ['critical_thinking', 'problem_solving'],
         consequence: {
@@ -343,7 +343,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'uab_validate_feeling',
         text: "You found your bridge.",
-        nextNodeId: 'maya_grateful_support',
+        nextNodeId: 'maya_pause_after_uab_revelation',
         pattern: 'helping',
         skills: ['emotional_intelligence', 'creativity'],
         consequence: {
@@ -359,6 +359,28 @@ export const mayaDialogueNodes: DialogueNode[] = [
         addKnowledgeFlags: ['discovered_hybrid_path']
       }
     ]
+  },
+
+  // ============= PAUSE: After UAB Revelation (Breathing Room) =============
+  {
+    nodeId: 'maya_pause_after_uab_revelation',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "*She stares at her phone screen, eyes wide*\n\nI can't believe I never saw this before.",
+        emotion: 'processing',
+        variation_id: 'pause_uab_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'maya_continue_after_uab',
+        text: "(Continue)",
+        nextNodeId: 'maya_actionable_path',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['scene_break', 'pacing', 'maya_arc']
   },
 
   {
@@ -702,7 +724,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'crossroads_robotics',
         text: "What would it mean to choose robotics?",
-        nextNodeId: 'maya_chooses_robotics',
+        nextNodeId: 'maya_pause_robotics',
         pattern: 'helping',
         skills: ['emotional_intelligence', 'communication']
         // Removed flag requirement - always show at trust 10
@@ -710,7 +732,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'crossroads_hybrid',
         text: "Could both paths honor what matters?",
-        nextNodeId: 'maya_chooses_hybrid',
+        nextNodeId: 'maya_pause_hybrid',
         pattern: 'analytical',
         skills: ['critical_thinking', 'creativity', 'problem_solving']
         // Removed flag requirement - always show at trust 10
@@ -718,12 +740,78 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'crossroads_support',
         text: "Whatever you choose, I believe in you.",
-        nextNodeId: 'maya_chooses_self',
+        nextNodeId: 'maya_pause_self',
         pattern: 'patience',
         skills: ['emotional_intelligence', 'leadership']
       }
     ],
     tags: ['climax', 'maya_arc']
+  },
+
+  // ============= PAUSE: Before Robotics Ending (Breathing Room) =============
+  {
+    nodeId: 'maya_pause_robotics',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "*She closes her eyes for a moment, then opens them with new certainty*\n\nI know what I need to do.",
+        emotion: 'resolved',
+        variation_id: 'pause_ending_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'maya_continue_to_robotics',
+        text: "(Continue)",
+        nextNodeId: 'maya_chooses_robotics',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['scene_break', 'pacing', 'maya_arc']
+  },
+
+  // ============= PAUSE: Before Hybrid Ending (Breathing Room) =============
+  {
+    nodeId: 'maya_pause_hybrid',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "*She closes her eyes for a moment, then opens them with new certainty*\n\nI know what I need to do.",
+        emotion: 'resolved',
+        variation_id: 'pause_ending_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'maya_continue_to_hybrid',
+        text: "(Continue)",
+        nextNodeId: 'maya_chooses_hybrid',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['scene_break', 'pacing', 'maya_arc']
+  },
+
+  // ============= PAUSE: Before Self Ending (Breathing Room) =============
+  {
+    nodeId: 'maya_pause_self',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "*She closes her eyes for a moment, then opens them with new certainty*\n\nI know what I need to do.",
+        emotion: 'resolved',
+        variation_id: 'pause_ending_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'maya_continue_to_self',
+        text: "(Continue)",
+        nextNodeId: 'maya_chooses_self',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['scene_break', 'pacing', 'maya_arc']
   },
 
   // ============= ENDINGS =============
