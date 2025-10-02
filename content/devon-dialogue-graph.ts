@@ -489,7 +489,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         choiceId: 'connect_to_dad',
         text: "Talk system failures with your dad?",
         nextNodeId: 'devon_realizes_bridge',
-        pattern: 'helping',
+        pattern: 'building',
         skills: ['creativity', 'emotional_intelligence', 'communication'],
         consequence: {
           characterId: 'devon',
@@ -545,7 +545,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         choiceId: 'suggest_shared_language',
         text: "Engineering is your shared language.",
         nextNodeId: 'devon_realizes_bridge',
-        pattern: 'helping',
+        pattern: 'building',
         skills: ['creativity', 'critical_thinking', 'emotional_intelligence'],
         consequence: {
           characterId: 'devon',
@@ -804,7 +804,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         choiceId: 'reframe_empathy',
         text: "Maybe empathy IS a kind of data.",
         nextNodeId: 'devon_reframe',
-        pattern: 'helping',
+        pattern: 'building',
         skills: ['creativity', 'critical_thinking', 'emotional_intelligence'],
         consequence: {
           characterId: 'devon',
@@ -815,7 +815,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         choiceId: 'challenge_binary',
         text: "What about logic AND emotion?",
         nextNodeId: 'devon_integration_idea',
-        pattern: 'analytical',
+        pattern: 'building',
         skills: ['critical_thinking', 'creativity'],
         consequence: {
           characterId: 'devon',

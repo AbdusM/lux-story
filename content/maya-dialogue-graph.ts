@@ -303,14 +303,14 @@ export const mayaDialogueNodes: DialogueNode[] = [
         choiceId: 'hint_question',
         text: "What if there's a field that combines both?",
         nextNodeId: 'maya_uab_revelation',
-        pattern: 'helping',
+        pattern: 'building',
         skills: ['creativity', 'problem_solving', 'critical_thinking']
       },
       {
         choiceId: 'hint_support',
         text: "Building healing devices IS medicine.",
         nextNodeId: 'maya_grateful_support',
-        pattern: 'helping',
+        pattern: 'building',
         skills: ['creativity', 'emotional_intelligence']
       }
     ]
@@ -398,7 +398,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         choiceId: 'support_strategy',
         text: "Frame it as medical innovation.",
         nextNodeId: 'maya_considers_hybrid',
-        pattern: 'analytical',
+        pattern: 'building',
         skills: ['communication', 'creativity', 'critical_thinking'],
         consequence: {
           characterId: 'maya',

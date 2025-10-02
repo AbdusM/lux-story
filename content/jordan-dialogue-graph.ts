@@ -309,7 +309,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         choiceId: 'jordan_job4_pattern_creator',
         text: "You're a builder, not a promoter. That's an important distinction.",
         nextNodeId: 'jordan_pause_after_job4',
-        pattern: 'analytical',
+        pattern: 'building',
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
