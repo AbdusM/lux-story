@@ -1,6 +1,7 @@
 "use client"
 
 import { memo } from 'react'
+import { Button } from '@/components/ui/button'
 
 interface Choice {
   text: string
@@ -22,14 +23,16 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing }: {
   onChoice: (choice: Choice) => void
   isProcessing: boolean
 }) => (
-  <button
+  <Button
     key={index}
     onClick={() => onChoice(choice)}
     disabled={isProcessing}
-    className="apple-choice-button"
+    variant="default"
+    size="lg"
+    className="w-full min-h-[44px] text-base"
   >
     {choice.text}
-  </button>
+  </Button>
 ))
 
 ChoiceButton.displayName = 'ChoiceButton'

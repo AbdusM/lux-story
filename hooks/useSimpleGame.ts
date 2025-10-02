@@ -1134,25 +1134,27 @@ export function useSimpleGame() {
     const sections = text.split('\n\n').filter(section => section.trim())
 
     return sections.map((section, index) => {
-      const trimmedSection = section.trim()
+      // Preserve internal line breaks while removing only leading/trailing spaces
+      // Use regex to trim spaces but keep \n characters
+      const cleanSection = section.replace(/^[ \t]+|[ \t]+$/gm, '')
 
       // Detect scene headings (INT./EXT. format)
-      if (trimmedSection.match(/^(INT\.|EXT\.)/i)) {
-        return { text: trimmedSection, type: 'scene-heading' }
+      if (cleanSection.match(/^(INT\.|EXT\.)/i)) {
+        return { text: cleanSection, type: 'scene-heading' }
       }
 
       // Detect direct dialogue (quoted text)
-      if (trimmedSection.startsWith('"') && trimmedSection.endsWith('"')) {
-        return { text: trimmedSection, type: 'dialogue' }
+      if (cleanSection.startsWith('"') && cleanSection.endsWith('"')) {
+        return { text: cleanSection, type: 'dialogue' }
       }
 
       // Detect parentheticals (tone indicators)
-      if (trimmedSection.startsWith('*(') && trimmedSection.endsWith(')*')) {
-        return { text: trimmedSection.slice(2, -2), type: 'parenthetical' }
+      if (cleanSection.startsWith('*(') && cleanSection.endsWith(')*')) {
+        return { text: cleanSection.slice(2, -2), type: 'parenthetical' }
       }
 
       // Default to action lines for other content
-      return { text: trimmedSection, type: 'action' }
+      return { text: cleanSection, type: 'action' }
     })
   }, [])
 

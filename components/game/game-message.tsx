@@ -8,7 +8,8 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Typography } from "@/components/ui/typography"
 
 // Function to parse markdown-style emphasis in text
-function parseEmphasisText(text: string): React.ReactNode[] {
+// Returns a single React fragment to preserve whitespace structure
+function parseEmphasisText(text: string): React.ReactNode {
   const parts: React.ReactNode[] = []
   let currentIndex = 0
 
@@ -17,9 +18,13 @@ function parseEmphasisText(text: string): React.ReactNode[] {
   let match: RegExpExecArray | null
 
   while ((match = emphasisRegex.exec(text)) !== null) {
-    // Add text before the match
+    // Add text before the match (wrap in Fragment to preserve whitespace)
     if (match.index > currentIndex) {
-      parts.push(text.slice(currentIndex, match.index))
+      parts.push(
+        <React.Fragment key={`text-${currentIndex}`}>
+          {text.slice(currentIndex, match.index)}
+        </React.Fragment>
+      )
     }
 
     const emphasisLevel = match[1].length
@@ -39,12 +44,17 @@ function parseEmphasisText(text: string): React.ReactNode[] {
     currentIndex = match.index + match[0].length
   }
 
-  // Add remaining text
+  // Add remaining text (wrap in Fragment to preserve whitespace)
   if (currentIndex < text.length) {
-    parts.push(text.slice(currentIndex))
+    parts.push(
+      <React.Fragment key="text-end">
+        {text.slice(currentIndex)}
+      </React.Fragment>
+    )
   }
 
-  return parts.length > 0 ? parts : [text]
+  // Return single fragment containing all parts
+  return parts.length > 0 ? <>{parts}</> : text
 }
 
 // Character-specific styling with Birmingham-inspired colors
