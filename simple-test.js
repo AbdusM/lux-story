@@ -10,7 +10,7 @@ async function testBasicFunctionality() {
 
     // Test 1: Basic connectivity
     try {
-        const response = await fetch('http://localhost:3000');
+        const response = await fetch('http://localhost:3003');
         const html = await response.text();
 
         console.log('✅ Server responds successfully');
@@ -70,7 +70,7 @@ async function testBasicFunctionality() {
         console.log('\n🌐 API Endpoint Testing:');
 
         try {
-            const validateResponse = await fetch('http://localhost:3000/api/content/validate', {
+            const validateResponse = await fetch('http://localhost:3003/api/content/validate', {
                 method: 'POST'
             });
             if (validateResponse.ok) {
@@ -90,7 +90,7 @@ async function testBasicFunctionality() {
         };
 
     } catch (error) {
-        console.log(`❌ CRITICAL: Cannot connect to localhost:3000`);
+        console.log(`❌ CRITICAL: Cannot connect to localhost:3003`);
         console.log(`   Error: ${error.message}`);
         return { status: 'error', error: error.message };
     }

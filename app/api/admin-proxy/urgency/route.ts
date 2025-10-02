@@ -58,7 +58,7 @@ export async function GET(request: NextRequest) {
   try {
     // Dynamic host detection - works in dev (localhost) and prod (Vercel)
     const protocol = request.headers.get('x-forwarded-proto') || 'http'
-    const host = request.headers.get('host') || 'localhost:3000'
+    const host = request.headers.get('host') || 'localhost:3003'
     const apiUrl = `${protocol}://${host}/api/admin/urgency?level=${level}&limit=${limit}`
 
     const response = await fetch(apiUrl, {
@@ -97,7 +97,7 @@ export async function POST(request: NextRequest) {
   try {
     // Dynamic host detection - works in dev (localhost) and prod (Vercel)
     const protocol = request.headers.get('x-forwarded-proto') || 'http'
-    const host = request.headers.get('host') || 'localhost:3000'
+    const host = request.headers.get('host') || 'localhost:3003'
     const apiUrl = `${protocol}://${host}/api/admin/urgency`
 
     const response = await fetch(apiUrl, {

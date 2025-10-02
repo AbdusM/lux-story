@@ -21,7 +21,7 @@ import { resolve } from 'path'
 
 config({ path: resolve(process.cwd(), '.env.local') })
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:3000'
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:3003'
 const ADMIN_TOKEN = process.env.ADMIN_API_TOKEN
 
 interface TestResult {
