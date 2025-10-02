@@ -64,7 +64,7 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Target, TrendingUp, Briefcase, Lightbulb, CheckCircle2, AlertTriangle, RefreshCw, Award, BookOpen, Building2, AlertCircle, Users, GraduationCap } from 'lucide-react';
+import { Target, TrendingUp, Briefcase, Lightbulb, CheckCircle2, AlertTriangle, RefreshCw, Award, BookOpen, Building2, AlertCircle, Users, GraduationCap, ChevronDown } from 'lucide-react';
 import type { SkillProfile } from '@/lib/skill-profile-adapter';
 import { ExportButton } from '@/components/admin/ExportButton';
 import { AdvisorBriefingButton } from '@/components/admin/AdvisorBriefingButton';
@@ -768,7 +768,8 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
 
                         {hasMore && (
                           <Button variant="ghost" size="sm" className="w-full">
-                            View all {demonstrations.length} demonstrations →
+                            {/* Agent 8: Action-oriented button text (Issue 9B) */}
+                            Show all {demonstrations.length} demonstrations →
                           </Button>
                         )}
                       </div>
@@ -1627,6 +1628,12 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                                 <span className="text-xs text-gray-500">
                                   {new Date(skill.lastDemonstrated).toLocaleDateString()}
                                 </span>
+                                {/* Agent 8: Chevron icon for expandable component (Issue 43) */}
+                                <ChevronDown
+                                  className={`w-4 h-4 text-gray-400 transition-transform ${
+                                    expandedSkill === skill.skillName ? 'rotate-180' : ''
+                                  }`}
+                                />
                               </div>
                             </div>
                           </button>
