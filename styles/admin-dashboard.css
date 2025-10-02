@@ -1,0 +1,217 @@
+/**
+ * Admin Dashboard Design System
+ * Agent 7: Visual Design System
+ *
+ * Issues: 1A-1C (typography), 2A-2B (color semantics), 3A-3C (spacing), 39 (urgency colors), 32 (contributing factors)
+ */
+
+/* ============================================================================
+   TYPOGRAPHY SCALE - Issues 1A, 1B, 1C
+   ============================================================================
+   5-level hierarchy for consistent readability and visual structure
+
+   page-title:   32px (h1, main dashboard title)
+   tab-title:    24px (h2, tab section headers)
+   section:      20px (h3, card titles)
+   subsection:   16px (h4, subsection headers)
+   body:         14px (p, default text)
+*/
+
+/* Page Title - Student name, main dashboard header */
+.admin-page-title {
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* Tab Title - Section headers within tabs */
+.admin-tab-title {
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* Section Title - Card titles, framework headers */
+.admin-section-title {
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 600;
+}
+
+/* Subsection Title - Nested headers, list titles */
+.admin-subsection-title {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+}
+
+/* Body Text - Default paragraph and UI text */
+.admin-body-text {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+}
+
+/* ============================================================================
+   8PX BASELINE GRID - Issues 3A, 3B, 3C
+   ============================================================================
+   All spacing uses 8px increments for visual rhythm
+*/
+
+.admin-spacing-xs   { margin: 8px; }   /* 1 unit */
+.admin-spacing-sm   { margin: 16px; }  /* 2 units */
+.admin-spacing-md   { margin: 24px; }  /* 3 units */
+.admin-spacing-lg   { margin: 32px; }  /* 4 units */
+.admin-spacing-xl   { margin: 40px; }  /* 5 units */
+
+.admin-gap-xs  { gap: 8px; }
+.admin-gap-sm  { gap: 16px; }
+.admin-gap-md  { gap: 24px; }
+.admin-gap-lg  { gap: 32px; }
+
+.admin-padding-xs  { padding: 8px; }
+.admin-padding-sm  { padding: 16px; }
+.admin-padding-md  { padding: 24px; }
+.admin-padding-lg  { padding: 32px; }
+
+/* ============================================================================
+   URGENCY COLOR MATCHING - Issue 39
+   ============================================================================
+   Percentage colors match urgency badge colors for consistency
+*/
+
+/* Critical Urgency (Red) */
+.admin-urgency-critical {
+  color: #DC2626; /* red-600 */
+  font-weight: 600;
+}
+
+.admin-urgency-critical-bg {
+  background-color: #FEF2F2; /* red-50 */
+  border-color: #FCA5A5; /* red-300 */
+}
+
+/* High Urgency (Orange/Amber) */
+.admin-urgency-high {
+  color: #EA580C; /* orange-600 */
+  font-weight: 600;
+}
+
+.admin-urgency-high-bg {
+  background-color: #FFF7ED; /* orange-50 */
+  border-color: #FDBA74; /* orange-300 */
+}
+
+/* Medium Urgency (Yellow) */
+.admin-urgency-medium {
+  color: #CA8A04; /* yellow-600 */
+  font-weight: 600;
+}
+
+.admin-urgency-medium-bg {
+  background-color: #FEFCE8; /* yellow-50 */
+  border-color: #FDE047; /* yellow-300 */
+}
+
+/* Low Urgency (Green) */
+.admin-urgency-low {
+  color: #16A34A; /* green-600 */
+  font-weight: 600;
+}
+
+.admin-urgency-low-bg {
+  background-color: #F0FDF4; /* green-50 */
+  border-color: #86EFAC; /* green-300 */
+}
+
+/* ============================================================================
+   COLOR SEMANTICS - Issues 2A, 2B
+   ============================================================================
+   Blue reserved ONLY for interactive elements (buttons, links)
+   Static badges use purple, gray, or context colors
+*/
+
+/* Interactive Blue - ONLY for buttons, links, clickable elements */
+.admin-interactive {
+  color: #2563EB; /* blue-600 */
+  cursor: pointer;
+}
+
+.admin-interactive:hover {
+  color: #1D4ED8; /* blue-700 */
+}
+
+.admin-button-primary {
+  background-color: #2563EB; /* blue-600 */
+  color: white;
+}
+
+.admin-button-primary:hover {
+  background-color: #1D4ED8; /* blue-700 */
+}
+
+/* Static Badges - Use purple/gray, NOT blue */
+.admin-badge-static {
+  background-color: #F3F4F6; /* gray-100 */
+  color: #374151; /* gray-700 */
+  border-color: #D1D5DB; /* gray-300 */
+}
+
+.admin-badge-info {
+  background-color: #F5F3FF; /* purple-50 */
+  color: #7C3AED; /* purple-600 */
+  border-color: #C4B5FD; /* purple-300 */
+}
+
+/* ============================================================================
+   CONTRIBUTING FACTORS - Issue 32
+   ============================================================================
+   Color-coded factors for quick scanning
+*/
+
+/* Negative Contributing Factors (Red) */
+.admin-factor-negative {
+  color: #DC2626; /* red-600 */
+  background-color: #FEF2F2; /* red-50 */
+  border-left: 3px solid #DC2626;
+  padding: 8px 12px;
+  border-radius: 4px;
+}
+
+/* Positive Contributing Factors (Green) */
+.admin-factor-positive {
+  color: #16A34A; /* green-600 */
+  background-color: #F0FDF4; /* green-50 */
+  border-left: 3px solid #16A34A;
+  padding: 8px 12px;
+  border-radius: 4px;
+}
+
+/* Neutral Contributing Factors (Gray) */
+.admin-factor-neutral {
+  color: #6B7280; /* gray-500 */
+  background-color: #F9FAFB; /* gray-50 */
+  border-left: 3px solid #9CA3AF; /* gray-400 */
+  padding: 8px 12px;
+  border-radius: 4px;
+}
+
+/* ============================================================================
+   UTILITIES
+   ============================================================================ */
+
+/* Text Colors */
+.admin-text-primary    { color: #111827; } /* gray-900 */
+.admin-text-secondary  { color: #6B7280; } /* gray-500 */
+.admin-text-muted      { color: #9CA3AF; } /* gray-400 */
+
+/* Backgrounds */
+.admin-bg-subtle       { background-color: #F9FAFB; } /* gray-50 */
+.admin-bg-elevated     { background-color: #FFFFFF; }
+.admin-bg-interactive  { background-color: #EFF6FF; } /* blue-50 - only for hover states */
+
+/* Borders */
+.admin-border-default  { border-color: #E5E7EB; } /* gray-200 */
+.admin-border-subtle   { border-color: #F3F4F6; } /* gray-100 */

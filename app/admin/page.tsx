@@ -1,5 +1,8 @@
 'use client'
 
+// Agent 7: Admin Dashboard Design System CSS (Issues 1A-1C, 2A-2B, 3A-3C, 39, 32)
+import '@/styles/admin-dashboard.css'
+
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { ChoiceReviewTrigger } from '@/components/ChoiceReviewPanel'
