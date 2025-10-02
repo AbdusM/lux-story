@@ -429,7 +429,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_job_reveal_7',
     speaker: 'Jordan Packard',
     content: [{
-      text: "BJCC career fair, three years ago. I was there dropping off a passenger, saw the banner, wandered in on a whim.\n\nThere was a booth for Innovation Depot—health tech startup looking for a UX designer. I didn't even know what UX meant, but when they explained it, everything clicked.\n\n*Her voice gains energy*\n\nUser research? That's customer service. Visual design? Graphic design. Motivation psychology? Personal training. Systems thinking? Uber. They hired me as a junior designer that week.\n\nNow I lead a team, teach at the bootcamp, and finally—FINALLY—my mom tells people what I do without apologizing first.",
+      text: "Birmingham-Jefferson Convention Complex (BJCC) career fair, three years ago. I was there dropping off a passenger, saw the banner, wandered in on a whim.\n\nThere was a booth for Innovation Depot (Birmingham's startup hub)—health tech startup looking for a UX designer. I didn't even know what UX meant, but when they explained it, everything clicked.\n\n*Her voice gains energy*\n\nUser research? That's customer service. Visual design? Graphic design. Motivation psychology? Personal training. Systems thinking (seeing how parts connect)? Uber. They hired me as a junior designer that week.\n\nNow I lead a team, teach at the bootcamp, and finally—FINALLY—my mom tells people what I do without apologizing first.",
       emotion: 'triumphant',
       variation_id: 'jordan_job7_1'
     }],
@@ -482,7 +482,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_mentor_context',
     speaker: 'Jordan Packard',
     content: [{
-      text: "*Her expression shifts—triumphant energy drains away* | Because when I look at that story, I don't see a clever pattern. | I see seven jobs in twelve years. Someone who couldn't stick with anything. Couldn't commit. | Couldn't figure it out while everyone else was building careers, I was... what? Collecting participation trophies? | *Quieter* | And now I'm supposed to stand in front of thirty people who are making a huge bet on themselves—time, money, hope—and tell them what? | That it's okay to fail six times first?",
+      text: "*Her expression shifts—triumphant energy drains away*\n\nBecause when I look at that story, I don't see a clever pattern.\n\nI see seven jobs in twelve years. Someone who couldn't stick with anything. Couldn't commit.\n\nCouldn't figure it out while everyone else was building careers, I was... what? Collecting participation trophies?\n\n*Quieter*\n\nAnd now I'm supposed to stand in front of thirty people who are making a huge bet on themselves—time, money, hope—and tell them what?\n\nThat it's okay to fail six times first?",
       emotion: 'vulnerable',
       variation_id: 'jordan_mentor_1'
     }],
