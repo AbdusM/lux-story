@@ -340,7 +340,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'express_sympathy',
         text: "I'm sorry about your mom.",
-        nextNodeId: 'devon_accepts_sympathy',
+        nextNodeId: 'devon_pause_after_father_reveal',
         pattern: 'helping',
         consequence: {
           characterId: 'devon',
@@ -351,7 +351,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'ask_about_system',
         text: "So you built this flowchart to help him?",
-        nextNodeId: 'devon_system_purpose',
+        nextNodeId: 'devon_pause_after_father_reveal',
         pattern: 'analytical',
         consequence: {
           characterId: 'devon',
@@ -366,6 +366,28 @@ export const devonDialogueNodes: DialogueNode[] = [
         addKnowledgeFlags: ['father_in_huntsville', 'mother_died']
       }
     ]
+  },
+
+  // ============= PAUSE: After Father Reveal (Breathing Room) =============
+  {
+    nodeId: 'devon_pause_after_father_reveal',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "*He looks down at his flowchart, hands still*\n\nSorry. That's... more than I usually tell people.",
+        emotion: 'processing',
+        variation_id: 'pause_father_reveal_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'devon_continue_after_pause',
+        text: "(Continue)",
+        nextNodeId: 'devon_accepts_sympathy',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['scene_break', 'pacing', 'devon_arc']
   },
 
   {
@@ -755,7 +777,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'confirm',
         text: "Exactly. You're not broken. Your framework just needed updating.",
-        nextNodeId: 'devon_crossroads',
+        nextNodeId: 'devon_pause_before_crossroads',
         pattern: 'helping',
         consequence: {
           characterId: 'devon',
@@ -785,7 +807,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'affirm',
         text: "Now you're thinking in systems that can hold complexity.",
-        nextNodeId: 'devon_crossroads',
+        nextNodeId: 'devon_pause_before_crossroads',
         pattern: 'analytical',
         consequence: {
           characterId: 'devon',
@@ -815,10 +837,32 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'what_now',
         text: "So what will you do?",
-        nextNodeId: 'devon_crossroads',
+        nextNodeId: 'devon_pause_before_crossroads',
         pattern: 'exploring'
       }
     ]
+  },
+
+  // ============= PAUSE: Before Crossroads (Breathing Room) =============
+  {
+    nodeId: 'devon_pause_before_crossroads',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "*He takes a deep breath, sets his flowchart aside*\n\nThis feels different. Clearer.",
+        emotion: 'reflective',
+        variation_id: 'pause_crossroads_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'devon_continue_to_crossroads',
+        text: "(Continue)",
+        nextNodeId: 'devon_crossroads',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['scene_break', 'pacing', 'devon_arc']
   },
 
   // ============= CROSSROADS (Multiple Paths) =============
