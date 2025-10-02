@@ -36,8 +36,8 @@ async function testLuxStoryUX() {
             }
         });
 
-        console.log('📄 Loading localhost:3000...');
-        await page.goto('http://localhost:3000', { waitUntil: 'networkidle0' });
+        console.log('📄 Loading localhost:3003...');
+        await page.goto('http://localhost:3003', { waitUntil: 'networkidle0' });
 
         // Test 1: Page loads successfully
         const title = await page.title();

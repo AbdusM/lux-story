@@ -231,7 +231,7 @@ async function seedTestData() {
   console.log('✅ TEST DATA SEEDING COMPLETE')
   console.log('='.repeat(60))
   console.log('\nYou can now:')
-  console.log('1. Visit http://localhost:3000/admin')
+  console.log('1. Visit http://localhost:3003/admin')
   console.log('2. Click "Urgency Triage" tab')
   console.log('3. Verify 3 test students with Glass Box narratives')
   console.log('\nCleanup: npx tsx scripts/cleanup-test-urgency-data.ts')
