@@ -728,238 +728,112 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
           </Card>
         </TabsContent>
 
-        {/* SKILLS TAB - Agent 3: Consolidated Skills + 2030 Skills (Issue 4A) */}
-        <TabsContent value="skills" className="space-y-4">
-          {/* Section 1: Core Skills Demonstrated */}
-          <Card>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <div>
-                  {/* Agent 2: Personalized section header (Issue 10A) */}
-                  <CardTitle className="text-xl">{user.userName.split(' ')[0]}'s Core Skills Demonstrated</CardTitle>
-                  <CardDescription>
-                    Evidence-based skill profile from {user.totalDemonstrations} demonstrations across journey
-                  </CardDescription>
-                </div>
-                {/* Agent 3: Sorting controls (Issue 14) */}
-                <div className="flex items-center gap-2">
-                  <select
-                    value={skillSortMode}
-                    onChange={(e) => setSkillSortMode(e.target.value as SortMode)}
-                    className="text-xs border rounded px-2 py-1 bg-white"
-                  >
-                    <option value="by_count">By Count</option>
-                    <option value="alphabetical">Alphabetical</option>
-                    <option value="by_recency">By Recency</option>
-                    <option value="by_scene_type">By Scene Type</option>
-                  </select>
-                </div>
-              </div>
-            </CardHeader>
+        {/* SKILLS TAB - Evidence-first design */}
+        <TabsContent value="skills" className="space-y-6">
+          <div className="space-y-1">
+            <p className="text-sm text-muted-foreground">
+              Evidence-based skill profile from {user.totalDemonstrations} demonstrations across journey
+            </p>
+          </div>
 
-            <CardContent className="space-y-2">
-              {/* Agent 3: Analyze patterns and sort (Issues 13, 14) */}
-              {(() => {
-                const patterns = analyzeSkillPatterns(user.skillDemonstrations);
-                const sortedPatterns = sortSkillPatterns(patterns, skillSortMode);
+          {/* Skill Progression Timeline Chart */}
+          <SkillProgressionChart
+            skillDemonstrations={user.skillDemonstrations}
+            totalDemonstrations={user.totalDemonstrations}
+          />
 
-                if (sortedPatterns.length === 0) {
-                  return (
-                    <div className="py-8 text-center text-muted-foreground">
-                      {/* Agent 2: Encouraging empty state (Issue 49) */}
-                      Ready to explore skills! {user.userName.split(' ')[0]} will demonstrate abilities as they make choices in their journey.
-                    </div>
-                  );
-                }
+          <div className="grid gap-6">
+            {Object.entries(user.skillDemonstrations)
+              .filter(([_, demos]) => demos.length > 0)
+              .sort(([,a], [,b]) => b.length - a.length)
+              .map(([skill, demonstrations]) => {
+                // Get most recent demonstrations (up to 3)
+                const recentDemos = demonstrations
+                  .sort((a, b) => {
+                    // If timestamp exists, use it, otherwise consider order
+                    const aTime = (a as any).timestamp || 0
+                    const bTime = (b as any).timestamp || 0
+                    return bTime - aTime
+                  })
+                  .slice(0, 3)
 
-                return sortedPatterns.map((pattern) => {
-                  const demonstrations = user.skillDemonstrations[pattern.skillName] || [];
-                  const isExpanded = expandedCoreSkill === pattern.skillName;
+                const hasMore = demonstrations.length > 3
 
-                  // Get most recent 3 demonstrations
-                  const recentDemos = demonstrations
-                    .sort((a, b) => ((b as any).timestamp || 0) - ((a as any).timestamp || 0))
-                    .slice(0, 3);
-
-                  // Agent 3: Recency indicator (Issue 12)
-                  const recency = getRecencyIndicator(pattern.lastDemonstrated ? new Date(pattern.lastDemonstrated).getTime() : undefined);
-
-                  return (
-                    <div key={pattern.skillName} className="border rounded-lg hover:bg-gray-50 transition-colors">
-                      {/* Agent 3: Collapsible header (Issue 5A, 34 - tighter spacing) */}
-                      <button
-                        onClick={() => setExpandedCoreSkill(isExpanded ? null : pattern.skillName)}
-                        className="w-full p-3 text-left"
-                      >
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-3 flex-1">
-                            {/* Agent 3: Recency dot (Issue 12) */}
-                            <div className={`w-2 h-2 rounded-full ${recency.color}`} title={recency.label} />
-
-                            {/* Agent 3: Bold skill name for scannability (Issue 34) */}
-                            <span className="font-bold text-sm">
-                              {formatSkillName(pattern.skillName)}
-                            </span>
-
-                            {/* Pattern insight */}
-                            <span className="text-xs text-muted-foreground">
-                              {pattern.strengthContext}
-                            </span>
-                          </div>
-
-                          <div className="flex items-center gap-3">
-                            <Badge variant="secondary" className="text-xs">
-                              {pattern.totalDemonstrations}x
-                            </Badge>
-
-                            {/* Agent 8: Chevron icon (Issue 43) */}
-                            <ChevronDown
-                              className={`w-4 h-4 text-gray-400 transition-transform ${
-                                isExpanded ? 'rotate-180' : ''
-                              }`}
-                            />
-                          </div>
+                return (
+                  <Card key={skill} className="border-l-4 border-l-blue-500">
+                    <CardHeader>
+                      <div className="flex items-start justify-between">
+                        <div className="space-y-1">
+                          <CardTitle className="text-xl">
+                            {formatSkillName(skill)}
+                          </CardTitle>
+                          <p className="text-sm text-muted-foreground">
+                            Demonstrated through {demonstrations.length === 1 ? '1 choice' : `${demonstrations.length} choices`}
+                          </p>
                         </div>
-                      </button>
 
-                      {/* Agent 3: Expanded demonstrations (Issue 5A - collapsed by default) */}
-                      {isExpanded && (
-                        <div className="px-3 pb-3 space-y-2 border-t bg-gray-50">
-                          <p className="text-xs font-semibold text-gray-600 mt-2">Evidence:</p>
-                          {recentDemos.map((demo, idx) => {
-                            const timestamp = (demo as any).timestamp;
-                            const choiceText = (demo as any).choice || demo.context.substring(0, 60);
+                        <Badge variant="secondary" className="text-base px-3 py-1">
+                          {demonstrations.length} {demonstrations.length === 1 ? 'time' : 'times'}
+                        </Badge>
+                      </div>
+                    </CardHeader>
 
-                            return (
-                              <div key={idx} className="text-xs space-y-1 pl-3 border-l-2 border-blue-300">
-                                <div className="flex items-start justify-between">
-                                  <span className="font-medium">{demo.scene}</span>
-                                  {timestamp && (
-                                    <span className="text-gray-500">
-                                      {new Date(timestamp).toLocaleDateString()}
-                                    </span>
-                                  )}
-                                </div>
-                                {choiceText && (
-                                  <p className="text-gray-600 italic">"{choiceText}"</p>
-                                )}
-                                <p className="text-gray-700">{demo.context}</p>
-                              </div>
-                            );
-                          })}
+                    <CardContent className="space-y-4">
+                      <div className="space-y-3">
+                        <h4 className="font-medium text-sm text-muted-foreground">Key Evidence:</h4>
 
-                          {demonstrations.length > 3 && (
-                            <p className="text-xs text-gray-500 italic pt-1">
-                              + {demonstrations.length - 3} more demonstrations
-                            </p>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  );
-                });
-              })()}
-            </CardContent>
-          </Card>
+                        {recentDemos.map((demo, idx) => {
+                          const timestamp = (demo as any).timestamp
+                          const choiceText = (demo as any).choice || demo.context.substring(0, 80)
 
-          {/* Section 2: WEF 2030 Skills Framework */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Award className="w-5 h-5 text-purple-600" />
-                WEF 2030 Skills Framework
-              </CardTitle>
-              <CardDescription>
-                World Economic Forum future-ready skills tracked through narrative choices
-              </CardDescription>
-            </CardHeader>
-
-            <CardContent className="space-y-4">
-              {skillsLoading ? (
-                <div className="text-center py-8 text-gray-500">Loading 2030 skills data...</div>
-              ) : skillsError ? (
-                <div className="text-center py-8 text-red-500">{skillsError}</div>
-              ) : skillsData.length === 0 ? (
-                <div className="text-center py-8 space-y-2">
-                  <Award className="w-12 h-12 mx-auto text-gray-400" />
-                  <p className="text-gray-600">No WEF skills data yet</p>
-                  <p className="text-sm text-gray-500">Skills tracked automatically as students make choices</p>
-                </div>
-              ) : (
-                <>
-                  {/* Top 5 Skills Progress Bars */}
-                  <div className="space-y-2">
-                    {skillsData
-                      .sort((a, b) => b.demonstrationCount - a.demonstrationCount)
-                      .slice(0, 5)
-                      .map((skill) => {
-                        const maxCount = Math.max(...skillsData.map(s => s.demonstrationCount));
-                        const percentage = (skill.demonstrationCount / maxCount) * 100;
-                        const colorClass = getSkillColor(skill.demonstrationCount, maxCount);
-
-                        return (
-                          <div key={skill.skillName} className="space-y-1">
-                            <div className="flex items-center justify-between text-xs">
-                              <span className="font-semibold capitalize">
-                                {skill.skillName.replace(/_/g, ' ')}
-                              </span>
-                              <span className="text-gray-600">
-                                {skill.demonstrationCount} {skill.demonstrationCount === 1 ? 'time' : 'times'}
-                              </span>
-                            </div>
-                            <div className="w-full bg-gray-200 rounded-full h-2">
-                              <div
-                                className={`${colorClass} h-2 rounded-full transition-all`}
-                                style={{ width: `${percentage}%` }}
-                              />
-                            </div>
-                          </div>
-                        );
-                      })}
-                  </div>
-
-                  {/* Summary Stats */}
-                  <div className="grid grid-cols-3 gap-4 pt-3 border-t">
-                    <div className="text-center">
-                      <p className="text-xl font-bold text-purple-600">{skillsData.length}</p>
-                      <p className="text-xs text-gray-600">Skills</p>
-                    </div>
-                    <div className="text-center">
-                      <p className="text-xl font-bold text-purple-600">
-                        {skillsData.reduce((sum, s) => sum + s.demonstrationCount, 0)}
-                      </p>
-                      <p className="text-xs text-gray-600">Demonstrations</p>
-                    </div>
-                    <div className="text-center">
-                      <p className="text-xl font-bold text-purple-600">
-                        {new Set(skillsData.flatMap(s => s.scenesInvolved)).size}
-                      </p>
-                      <p className="text-xs text-gray-600">Scenes</p>
-                    </div>
-                  </div>
-
-                  {/* Birmingham Career Connections */}
-                  <div className="pt-3 border-t">
-                    <p className="text-xs font-semibold text-gray-700 mb-2">Birmingham Career Connections:</p>
-                    <div className="space-y-2">
-                      {skillsData
-                        .sort((a, b) => b.demonstrationCount - a.demonstrationCount)
-                        .slice(0, 3)
-                        .map((skill) => {
-                          const connections = getBirminghamConnectionsForSkill(skill.skillName);
                           return (
-                            <div key={skill.skillName} className="text-xs">
-                              <span className="font-medium capitalize">{skill.skillName.replace(/_/g, ' ')}:</span>{' '}
-                              <span className="text-gray-600">{connections.join(', ')}</span>
+                            <div
+                              key={idx}
+                              className="border-l-2 border-blue-300 pl-4 py-2 space-y-2 bg-muted/30 rounded-r"
+                            >
+                              <div className="flex items-start justify-between">
+                                <p className="font-medium text-sm">{demo.scene}</p>
+                                {timestamp && (
+                                  <Badge variant="outline" className="text-xs">
+                                    {new Date(timestamp).toLocaleDateString()}
+                                  </Badge>
+                                )}
+                              </div>
+
+                              {choiceText && (
+                                <p className="text-sm text-muted-foreground italic">
+                                  "{choiceText}"
+                                </p>
+                              )}
+
+                              <p className="text-sm leading-relaxed">
+                                {demo.context}
+                              </p>
                             </div>
-                          );
+                          )
                         })}
-                    </div>
-                  </div>
-                </>
-              )}
-            </CardContent>
-          </Card>
+
+                        {hasMore && (
+                          <Button variant="ghost" size="sm" className="w-full">
+                            {/* Agent 8: Action-oriented button text (Issue 9B) */}
+                            Show all {demonstrations.length} demonstrations →
+                          </Button>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
+                )
+              })}
+          </div>
+
+          {Object.keys(user.skillDemonstrations).filter(skill => user.skillDemonstrations[skill].length > 0).length === 0 && (
+            <Card>
+              <CardContent className="py-8 text-center text-muted-foreground">
+                {/* Agent 2: Encouraging empty state (Issue 49) */}
+                Ready to explore skills! {user.userName.split(' ')[0]} will demonstrate abilities as they make choices in their journey.
+              </CardContent>
+            </Card>
+          )}
         </TabsContent>
 
         {/* CAREERS TAB - Actual Birmingham pathways */}
@@ -1760,6 +1634,295 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
           </Card>
         </TabsContent>
 
+        {/* 2030 SKILLS TAB - WEF Skills Tracking */}
+        <TabsContent value="2030skills" className="space-y-4">
+          {/* NARRATIVE BRIDGE: Action → 2030 Skills - Agent 2: <25 words (Issue 7A-7C) */}
+          <div className="bg-purple-50 border-l-4 border-purple-400 p-4 rounded-r">
+            <p className="text-sm text-gray-700">
+              <strong>World Economic Forum 2030 Skills:</strong> {user.userName.split(' ')[0]}'s choices build skills for workforce readiness and Birmingham careers.
+            </p>
+          </div>
+
+          {skillsLoading ? (
+            <Card>
+              <CardContent className="py-12 text-center text-gray-500">
+                Loading 2030 skills data...
+              </CardContent>
+            </Card>
+          ) : skillsError ? (
+            <Card>
+              <CardContent className="py-12 text-center text-red-500">
+                {skillsError}
+              </CardContent>
+            </Card>
+          ) : skillsData.length === 0 ? (
+            <Card>
+              <CardContent className="py-12 text-center space-y-4">
+                <Award className="w-12 h-12 mx-auto text-gray-400" />
+                <div>
+                  <p className="text-gray-600 font-medium">No skill demonstrations recorded yet</p>
+                  <p className="text-sm text-gray-500 mt-2">
+                    Skills are tracked automatically as students make choices in the narrative.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          ) : (
+            <>
+              {/* Overview Section */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Award className="w-5 h-5 text-blue-600" />
+                    2030 Skills Trajectory
+                  </CardTitle>
+                  <CardDescription>
+                    Skills identified by the World Economic Forum as critical for 2030 workforce readiness
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  {/* Top 5 Skills Bars */}
+                  <div className="space-y-3">
+                    <h4 className="font-medium text-sm text-gray-700">Top Demonstrated Skills:</h4>
+                    {skillsData
+                      .sort((a, b) => b.demonstrationCount - a.demonstrationCount)
+                      .slice(0, 5)
+                      .map((skill, idx) => {
+                        const maxCount = Math.max(...skillsData.map(s => s.demonstrationCount));
+                        const percentage = (skill.demonstrationCount / maxCount) * 100;
+                        const colorClass = getSkillColor(skill.demonstrationCount, maxCount);
+
+                        return (
+                          <div key={skill.skillName} className="space-y-1">
+                            <div className="flex items-center justify-between text-sm">
+                              <span className="font-medium capitalize">
+                                {skill.skillName.replace(/_/g, ' ')}
+                              </span>
+                              <span className="text-gray-600">
+                                {skill.demonstrationCount} {skill.demonstrationCount === 1 ? 'time' : 'times'}
+                              </span>
+                            </div>
+                            <div className="w-full bg-gray-200 rounded-full h-3">
+                              <div
+                                className={`${colorClass} h-3 rounded-full transition-all`}
+                                style={{ width: `${percentage}%` }}
+                              />
+                            </div>
+                          </div>
+                        );
+                      })}
+                  </div>
+
+                  {/* Summary Stats */}
+                  <div className="grid grid-cols-3 gap-4 pt-4 border-t">
+                    <div className="text-center">
+                      <p className="text-2xl font-bold text-blue-600">{skillsData.length}</p>
+                      <p className="text-xs text-gray-600">Skills Demonstrated</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-2xl font-bold text-blue-600">
+                        {skillsData.reduce((sum, s) => sum + s.demonstrationCount, 0)}
+                      </p>
+                      <p className="text-xs text-gray-600">Total Demonstrations</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-2xl font-bold text-blue-600">
+                        {new Set(skillsData.flatMap(s => s.scenesInvolved)).size}
+                      </p>
+                      <p className="text-xs text-gray-600">Scenes Involved</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Latest Demonstrations Table */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <BookOpen className="w-5 h-5 text-purple-600" />
+                    Latest Skill Demonstrations
+                  </CardTitle>
+                  <CardDescription>
+                    Click to expand and view full context
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    {skillsData
+                      .sort((a, b) => new Date(b.lastDemonstrated).getTime() - new Date(a.lastDemonstrated).getTime())
+                      .map((skill) => (
+                        <div
+                          key={skill.skillName}
+                          className="border rounded-lg overflow-hidden hover:shadow-sm transition-shadow"
+                        >
+                          <button
+                            onClick={() => setExpandedSkill(expandedSkill === skill.skillName ? null : skill.skillName)}
+                            className="w-full p-3 text-left hover:bg-gray-50 transition-colors"
+                          >
+                            <div className="flex items-center justify-between">
+                              <div className="flex-1">
+                                <p className="font-medium capitalize">
+                                  {skill.skillName.replace(/_/g, ' ')}
+                                </p>
+                                <p className="text-xs text-gray-500 mt-1">
+                                  {skill.latestContext.substring(0, 80)}...
+                                </p>
+                              </div>
+                              <div className="flex items-center gap-4 ml-4">
+                                <Badge variant="secondary" className="text-xs">
+                                  {skill.demonstrationCount}x
+                                </Badge>
+                                <span className="text-xs text-gray-500">
+                                  {new Date(skill.lastDemonstrated).toLocaleDateString()}
+                                </span>
+                                {/* Agent 8: Chevron icon for expandable component (Issue 43) */}
+                                <ChevronDown
+                                  className={`w-4 h-4 text-gray-400 transition-transform ${
+                                    expandedSkill === skill.skillName ? 'rotate-180' : ''
+                                  }`}
+                                />
+                              </div>
+                            </div>
+                          </button>
+
+                          {/* Expanded Context */}
+                          {expandedSkill === skill.skillName && (
+                            <div className="p-4 bg-gray-50 border-t space-y-3">
+                              <div>
+                                <p className="text-xs font-semibold text-gray-700 mb-1">Full Context:</p>
+                                <p className="text-sm text-gray-700 leading-relaxed">
+                                  {skill.latestContext}
+                                </p>
+                              </div>
+
+                              {skill.scenesInvolved.length > 0 && (
+                                <div>
+                                  <p className="text-xs font-semibold text-gray-700 mb-1">Scenes Involved:</p>
+                                  <div className="flex flex-wrap gap-1">
+                                    {skill.scenesInvolved.map((scene, idx) => (
+                                      <Badge key={idx} variant="outline" className="text-xs">
+                                        {scene}
+                                      </Badge>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Birmingham Career Connections */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Building2 className="w-5 h-5 text-green-600" />
+                    Birmingham Career Connections
+                  </CardTitle>
+                  <CardDescription>
+                    Local career paths aligned with demonstrated skills
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {skillsData
+                    .sort((a, b) => b.demonstrationCount - a.demonstrationCount)
+                    .slice(0, 3)
+                    .map((skill) => {
+                      const connections = getBirminghamConnectionsForSkill(skill.skillName);
+
+                      return (
+                        <div key={skill.skillName} className="p-3 border rounded-lg bg-green-50/50">
+                          <div className="flex items-start justify-between mb-2">
+                            <p className="font-medium capitalize text-sm">
+                              {skill.skillName.replace(/_/g, ' ')}
+                            </p>
+                            <Badge variant="secondary" className="text-xs">
+                              {skill.demonstrationCount} demonstrations
+                            </Badge>
+                          </div>
+                          <div className="space-y-1">
+                            {connections.map((connection, idx) => (
+                              <div key={idx} className="flex items-center gap-2 text-sm text-gray-700">
+                                <span className="text-green-600">→</span>
+                                <span>{connection}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    })}
+
+                  {skillsData.length > 3 && (
+                    <p className="text-xs text-gray-500 italic pt-2 border-t">
+                      Additional skills demonstrated: {skillsData.slice(3).map(s => s.skillName.replace(/_/g, ' ')).join(', ')}
+                    </p>
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* WEF Framework Reference */}
+              <Card className="border-2 border-blue-600">
+                <CardHeader>
+                  <CardTitle className="text-sm">World Economic Forum 2030 Skills Framework</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <p className="text-sm text-gray-700">
+                    These skills are identified by the World Economic Forum as critical for 2030 workforce readiness.
+                    They represent the capabilities employers will seek as the economy evolves.
+                  </p>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                    <div className="space-y-2">
+                      <p className="font-semibold text-gray-700">Cognitive Skills:</p>
+                      <ul className="space-y-1 text-gray-600">
+                        <li>• Critical Thinking</li>
+                        <li>• Creativity</li>
+                        <li>• Problem Solving</li>
+                      </ul>
+                    </div>
+
+                    <div className="space-y-2">
+                      <p className="font-semibold text-gray-700">Social-Emotional:</p>
+                      <ul className="space-y-1 text-gray-600">
+                        <li>• Emotional Intelligence</li>
+                        <li>• Communication</li>
+                        <li>• Collaboration</li>
+                        <li>• Cultural Competence</li>
+                      </ul>
+                    </div>
+
+                    <div className="space-y-2">
+                      <p className="font-semibold text-gray-700">Self-Management:</p>
+                      <ul className="space-y-1 text-gray-600">
+                        <li>• Adaptability</li>
+                        <li>• Time Management</li>
+                        <li>• Leadership</li>
+                      </ul>
+                    </div>
+
+                    <div className="space-y-2">
+                      <p className="font-semibold text-gray-700">Technical:</p>
+                      <ul className="space-y-1 text-gray-600">
+                        <li>• Digital Literacy</li>
+                        <li>• Financial Literacy</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div className="pt-3 border-t">
+                    <p className="text-xs text-gray-500">
+                      <strong>Note:</strong> Grand Central Terminus tracks these skills automatically through narrative choices,
+                      providing counselors with evidence-based insights for career guidance.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            </>
+          )}
+        </TabsContent>
       </Tabs>
     </div>
   );
