@@ -5,7 +5,7 @@
   "description": "Performance-based career exploration platform using contemplative storytelling and behavioral psychology",
   "main": "index.js",
   "scripts": {
-    "dev": "next dev",
+    "dev": "PORT=3003 next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
