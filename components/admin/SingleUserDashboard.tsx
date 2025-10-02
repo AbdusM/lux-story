@@ -815,9 +815,34 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
             </p>
           </div>
 
-          {/* TODO: Replace career match algorithm with production Supabase queries integrating skill_demonstrations + BIRMINGHAM_OPPORTUNITIES */}
-
-          {user.careerMatches.map((career) => (
+          {/* Show Evidence-based career exploration or message if no data */}
+          {evidenceData && evidenceData.careerExploration ? (
+            <Card>
+              <CardHeader>
+                <CardTitle>Career Exploration Progress</CardTitle>
+                <CardDescription>
+                  Paths explored: {evidenceData.careerExploration.totalExplorations} |
+                  Demonstrated skills: {evidenceData.careerExploration.skillsDemonstrated}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {evidenceData.careerExploration.paths?.map((path: any, idx: number) => (
+                    <div key={idx} className="border-l-4 border-blue-500 pl-4">
+                      <h3 className="font-semibold">{path.category || `Career Path ${idx + 1}`}</h3>
+                      <p className="text-sm text-gray-600">{path.description || 'Exploring career opportunities'}</p>
+                      {path.opportunities && (
+                        <div className="mt-2 text-xs text-gray-500">
+                          Birmingham opportunities: {path.opportunities.join(', ')}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          ) : user.careerMatches && user.careerMatches.length > 0 ? (
+            user.careerMatches.map((career) => (
             <Card key={career.id}>
               <CardHeader>
                 <div className="flex items-center justify-between">
@@ -907,7 +932,14 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                 </div>
               </CardContent>
             </Card>
-          ))}
+          ))
+        ) : (
+          <Card>
+            <CardContent className="py-8 text-center text-muted-foreground">
+              No career exploration data available yet. Student needs to complete more of the journey.
+            </CardContent>
+          </Card>
+        )}
         </TabsContent>
 
         {/* EVIDENCE TAB - Scientific frameworks and outcomes */}
@@ -1267,71 +1299,123 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
         {/* GAPS TAB - What skills need development */}
         <TabsContent value="gaps" className="space-y-4">
           {/* NARRATIVE BRIDGE: Careers → Gaps */}
-          {user.careerMatches.length > 0 && (
+          {evidenceData?.careerExploration && (
             <div className="bg-amber-50 border-l-4 border-amber-400 p-4 rounded-r">
               <p className="text-sm text-gray-700">
-                <strong>Bridging to {user.careerMatches[0].name}:</strong> To strengthen this {Math.round(user.careerMatches[0].matchScore * 100)}% career match,
-                let's identify specific skill development opportunities. These gaps aren't weaknesses—they're growth areas with clear pathways forward.
+                <strong>Skills Development Path:</strong> Based on {evidenceData.careerExploration.totalExplorations} career explorations,
+                here are skill areas to strengthen. These gaps aren't weaknesses—they're growth areas with clear pathways forward.
               </p>
             </div>
           )}
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Skill Development Priorities</CardTitle>
-              <CardDescription>
-                Skills to develop for top career matches
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {user.skillGaps
-                  .sort((a, b) => {
-                    const priorityOrder = { high: 3, medium: 2, low: 1 };
-                    return priorityOrder[b.priority] - priorityOrder[a.priority];
-                  })
-                  .map((gap, idx) => (
+          {/* Show Evidence-based skill progression or message if no data */}
+          {evidenceData && evidenceData.skillSummaries && evidenceData.skillSummaries.length > 0 ? (
+            <Card>
+              <CardHeader>
+                <CardTitle>Skill Development Progress</CardTitle>
+                <CardDescription>
+                  Real-time skill demonstration tracking from gameplay
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {evidenceData.skillSummaries.map((skill: any, idx: number) => (
                     <div key={idx} className="p-3 border rounded space-y-2">
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <span className="font-medium capitalize">
-                            {gap.skill.replace(/([A-Z])/g, ' $1').trim()}
-                          </span>
-                          {/* Sparkline Trend Indicator */}
-                          <SparklineTrend
-                            current={gap.currentLevel}
-                            target={gap.targetForTopCareers}
-                            width={40}
-                            height={12}
-                          />
-                        </div>
-                        <Badge variant={gap.priority === 'high' ? 'destructive' : 'secondary'}>
-                          {gap.priority} priority
+                        <span className="font-medium capitalize">
+                          {skill.skill_name?.replace(/_/g, ' ') || `Skill ${idx + 1}`}
+                        </span>
+                        <Badge variant={skill.demonstration_count >= 5 ? 'default' : 'secondary'}>
+                          {skill.demonstration_count || 0} demonstrations
                         </Badge>
                       </div>
-                      
+
                       <div className="flex items-center gap-2 text-sm">
-                        <span className="text-muted-foreground">Current:</span>
-                        <Progress value={gap.currentLevel * 100} className="flex-1 h-2" />
-                        <span className="font-medium">{Math.round(gap.currentLevel * 100)}%</span>
-                      </div>
-                      
-                      <div className="flex items-center gap-2 text-sm">
-                        <span className="text-muted-foreground">Target:</span>
-                        <div className="flex-1 bg-green-100 rounded-full h-2">
-                          <div className="bg-green-600 h-2 rounded-full" style={{ width: '100%' }} />
-                        </div>
-                        <span className="font-medium">{Math.round(gap.targetForTopCareers * 100)}%</span>
+                        <span className="text-muted-foreground">Progress:</span>
+                        <Progress value={(skill.demonstration_count || 0) * 10} className="flex-1 h-2" />
+                        <span className="font-medium">{skill.demonstration_count || 0}/10</span>
                       </div>
 
-                      <p className="text-xs text-muted-foreground italic">
-                        {gap.developmentPath}
-                      </p>
+                      {skill.last_demonstrated && (
+                        <p className="text-xs text-muted-foreground">
+                          Last demonstrated: {new Date(skill.last_demonstrated).toLocaleDateString()}
+                        </p>
+                      )}
+
+                      {skill.demonstration_count < 5 && (
+                        <p className="text-xs text-amber-600 italic">
+                          Continue making choices to develop this skill
+                        </p>
+                      )}
                     </div>
                   ))}
-              </div>
-            </CardContent>
-          </Card>
+                </div>
+              </CardContent>
+            </Card>
+          ) : user.skillGaps && user.skillGaps.length > 0 ? (
+            <Card>
+              <CardHeader>
+                <CardTitle>Skill Development Priorities</CardTitle>
+                <CardDescription>
+                  Skills to develop for top career matches
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {user.skillGaps
+                    .sort((a, b) => {
+                      const priorityOrder = { high: 3, medium: 2, low: 1 };
+                      return priorityOrder[b.priority] - priorityOrder[a.priority];
+                    })
+                    .map((gap, idx) => (
+                      <div key={idx} className="p-3 border rounded space-y-2">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <span className="font-medium capitalize">
+                              {gap.skill.replace(/([A-Z])/g, ' $1').trim()}
+                            </span>
+                            {/* Sparkline Trend Indicator */}
+                            <SparklineTrend
+                              current={gap.currentLevel}
+                              target={gap.targetForTopCareers}
+                              width={40}
+                              height={12}
+                            />
+                          </div>
+                          <Badge variant={gap.priority === 'high' ? 'destructive' : 'secondary'}>
+                            {gap.priority} priority
+                          </Badge>
+                        </div>
+
+                        <div className="flex items-center gap-2 text-sm">
+                          <span className="text-muted-foreground">Current:</span>
+                          <Progress value={gap.currentLevel * 100} className="flex-1 h-2" />
+                          <span className="font-medium">{Math.round(gap.currentLevel * 100)}%</span>
+                        </div>
+
+                        <div className="flex items-center gap-2 text-sm">
+                          <span className="text-muted-foreground">Target:</span>
+                          <div className="flex-1 bg-green-100 rounded-full h-2">
+                            <div className="bg-green-600 h-2 rounded-full" style={{ width: '100%' }} />
+                          </div>
+                          <span className="font-medium">{Math.round(gap.targetForTopCareers * 100)}%</span>
+                        </div>
+
+                        <p className="text-xs text-muted-foreground italic">
+                          {gap.developmentPath}
+                        </p>
+                      </div>
+                    ))}
+                </div>
+              </CardContent>
+            </Card>
+          ) : (
+            <Card>
+              <CardContent className="py-8 text-center text-muted-foreground">
+                No skill gap data available yet. Student needs to complete more of the journey.
+              </CardContent>
+            </Card>
+          )}
         </TabsContent>
 
         {/* ACTION TAB - Administrator next steps */}
