@@ -14,7 +14,12 @@ import { DialogueNode, DialogueContent } from '../lib/dialogue-graph'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-const GEMINI_API_KEY = 'AIzaSyDEQloxDXlFD2HnFNUrAIr8aANhvr_Ivxg'
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY
+if (!GEMINI_API_KEY) {
+  console.error('❌ GEMINI_API_KEY environment variable is required')
+  console.error('💡 Add it to your .env.local file')
+  process.exit(1)
+}
 const API_ENDPOINT = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent'
 
 interface GenerationRequest {

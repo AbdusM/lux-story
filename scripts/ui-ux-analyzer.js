@@ -2,7 +2,12 @@ const fs = require('fs');
 const path = require('path');
 
 // Gemini API configuration for vision analysis
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY || 'AIzaSyDEQloxDXlFD2HnFNUrAIr8aANhvr_Ivxg';
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+if (!GEMINI_API_KEY) {
+  console.error('❌ GEMINI_API_KEY environment variable is required');
+  console.error('💡 Add it to your .env.local file');
+  process.exit(1);
+}
 const GEMINI_FLASH_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent';
 
 /**

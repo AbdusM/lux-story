@@ -42,15 +42,17 @@ The interface shows:
   console.log('  node ui-ux-analyzer.js batch /path/to/screenshots/');
   
   // Test API key configuration
-  const apiKey = process.env.GEMINI_API_KEY || 'AIzaSyDEQloxDXlFD2HnFNUrAIr8aANhvr_Ivxg';
+  const apiKey = process.env.GEMINI_API_KEY;
   console.log('\n🔑 API Configuration:');
   console.log(`   Gemini API Key: ${apiKey ? '✅ Configured' : '❌ Missing'}`);
   console.log(`   Key Length: ${apiKey ? apiKey.length : 0} characters`);
-  
-  if (apiKey && apiKey !== 'YOUR_API_KEY_HERE') {
+
+  if (apiKey) {
     console.log('   Status: Ready for analysis! 🎉');
   } else {
     console.log('   Status: Please configure API key');
+    console.error('\n❌ GEMINI_API_KEY environment variable is required');
+    console.error('💡 Add it to your .env.local file');
   }
   
   console.log('\n📊 Analysis Output:');

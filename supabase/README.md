@@ -70,7 +70,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_actual_anon_key_here
 
 **Option B: Command Line (requires network access)**
 ```bash
-PGPASSWORD='yX6BHhb?@_Qs3PV' psql \
+PGPASSWORD='your_database_password' psql \
   -h db.tavalvqcebosfxamuvlx.supabase.co \
   -p 5432 \
   -U postgres \
