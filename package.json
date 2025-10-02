@@ -20,6 +20,7 @@
     "check-typewriter": "node scripts/check-typewriter-compliance.js",
     "analyze-chat-master": "node scripts/gemini-chat-interface-master-analyzer.js",
     "analyze-skills-dashboard": "node scripts/gemini-skills-dashboard-analyzer.js",
+    "audit-config": "npx tsx scripts/audit-configuration.ts",
     "precommit": "npm run check-typewriter && npm run lint"
   },
   "keywords": [
