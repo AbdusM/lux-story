@@ -781,7 +781,8 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
           {Object.keys(user.skillDemonstrations).filter(skill => user.skillDemonstrations[skill].length > 0).length === 0 && (
             <Card>
               <CardContent className="py-8 text-center text-muted-foreground">
-                No skill demonstrations recorded yet. Student needs to complete more of the journey.
+                {/* Agent 2: Encouraging empty state (Issue 49) */}
+                Ready to explore skills! {user.userName.split(' ')[0]} will demonstrate abilities as they make choices in their journey.
               </CardContent>
             </Card>
           )}
@@ -789,12 +790,10 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
 
         {/* CAREERS TAB - Actual Birmingham pathways */}
         <TabsContent value="careers" className="space-y-4">
-          {/* NARRATIVE BRIDGE: Skills → Careers */}
+          {/* NARRATIVE BRIDGE: Skills → Careers - Agent 2: <25 words (Issue 7A-7C) */}
           <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r">
             <p className="text-sm text-gray-700">
-              <strong>From Skills to Careers:</strong> Based on {user.totalDemonstrations} skill demonstrations,
-              here are Birmingham career pathways where {user.userName.split(' ')[0]}'s strengths align best.
-              Match scores reflect readiness across skill requirements, education access, and local opportunities.
+              <strong>From Skills to Careers:</strong> {user.userName.split(' ')[0]}'s {user.totalDemonstrations} skill demonstrations reveal Birmingham career matches. Scores show skill fit and readiness.
             </p>
           </div>
 
@@ -802,7 +801,8 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
           {evidenceData && evidenceData.careerExploration ? (
             <Card>
               <CardHeader>
-                <CardTitle>Career Exploration Progress</CardTitle>
+                {/* Agent 2: Personalized section header (Issue 10A) */}
+                <CardTitle>{user.userName.split(' ')[0]}'s Career Exploration Progress</CardTitle>
                 <CardDescription>
                   Paths explored: {evidenceData.careerExploration.totalExplorations} |
                   Demonstrated skills: {evidenceData.careerExploration.skillsDemonstrated}
@@ -919,7 +919,8 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
         ) : (
           <Card>
             <CardContent className="py-8 text-center text-muted-foreground">
-              No career exploration data available yet. Student needs to complete more of the journey.
+              {/* Agent 2: Encouraging empty state (Issue 49) */}
+              Ready to discover careers! {user.userName.split(' ')[0]}'s career matches will appear as they explore their journey.
             </CardContent>
           </Card>
         )}
@@ -1095,7 +1096,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                             <p>• Readiness: <strong>{evidenceData.frameworks.careerReadiness.topMatch.readiness_level}</strong></p>
                           </>
                         ) : (
-                          <p>• No career matches yet - continue exploring</p>
+                          <p>• Discovering career paths - keep exploring!</p>
                         )}
                         <p>• Birmingham Opportunities: <strong>{evidenceData.frameworks.careerReadiness.birminghamOpportunities.length}</strong></p>
                       </div>
@@ -1267,12 +1268,11 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
 
         {/* GAPS TAB - What skills need development */}
         <TabsContent value="gaps" className="space-y-4">
-          {/* NARRATIVE BRIDGE: Careers → Gaps */}
+          {/* NARRATIVE BRIDGE: Careers → Gaps - Agent 2: <25 words (Issue 7A-7C) */}
           {evidenceData?.careerExploration && (
             <div className="bg-amber-50 border-l-4 border-amber-400 p-4 rounded-r">
               <p className="text-sm text-gray-700">
-                <strong>Skills Development Path:</strong> Based on {evidenceData.careerExploration.totalExplorations} career explorations,
-                here are skill areas to strengthen. These gaps aren't weaknesses—they're growth areas with clear pathways forward.
+                <strong>Skills Development Path:</strong> {evidenceData.careerExploration.totalExplorations} career explorations reveal growth areas. Gaps aren't weaknesses—they're opportunities with clear pathways.
               </p>
             </div>
           )}
@@ -1281,7 +1281,8 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
           {evidenceData && evidenceData.skillSummaries && evidenceData.skillSummaries.length > 0 ? (
             <Card>
               <CardHeader>
-                <CardTitle>Skill Development Progress</CardTitle>
+                {/* Agent 2: Personalized section header (Issue 10A) */}
+                <CardTitle>{user.userName.split(' ')[0]}'s Skill Development Progress</CardTitle>
                 <CardDescription>
                   Real-time skill demonstration tracking from gameplay
                 </CardDescription>
@@ -1324,7 +1325,8 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
           ) : user.skillGaps && user.skillGaps.length > 0 ? (
             <Card>
               <CardHeader>
-                <CardTitle>Skill Development Priorities</CardTitle>
+                {/* Agent 2: Personalized section header (Issue 10A) */}
+                <CardTitle>{user.userName.split(' ')[0]}'s Skill Development Priorities</CardTitle>
                 <CardDescription>
                   Skills to develop for top career matches
                 </CardDescription>
@@ -1381,7 +1383,8 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
           ) : (
             <Card>
               <CardContent className="py-8 text-center text-muted-foreground">
-                No skill gap data available yet. Student needs to complete more of the journey.
+                {/* Agent 2: Encouraging empty state (Issue 49) */}
+                Building skills daily! Gap analysis will appear as {user.userName.split(' ')[0]} explores career pathways.
               </CardContent>
             </Card>
           )}
@@ -1389,12 +1392,11 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
 
         {/* ACTION TAB - Administrator next steps */}
         <TabsContent value="action" className="space-y-4">
-          {/* NARRATIVE BRIDGE: Gaps → Action */}
+          {/* NARRATIVE BRIDGE: Gaps → Action - Agent 2: <25 words (Issue 7A-7C) */}
           {user.skillGaps.length > 0 && (
             <div className="bg-green-50 border-l-4 border-green-400 p-4 rounded-r">
               <p className="text-sm text-gray-700">
-                <strong>From Analysis to Action:</strong> Here are Birmingham-based next steps to close the {user.skillGaps[0].skill.replace(/([A-Z])/g, ' $1').toLowerCase()} gap
-                and advance toward {user.careerMatches[0]?.name || 'career goals'}. These are concrete, local opportunities you can facilitate this week.
+                <strong>From Analysis to Action:</strong> Birmingham opportunities to build {user.skillGaps[0].skill.replace(/([A-Z])/g, ' $1').toLowerCase()} and advance toward {user.careerMatches[0]?.name || 'career goals'}. Start this week.
               </p>
             </div>
           )}
@@ -1486,12 +1488,10 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
 
         {/* 2030 SKILLS TAB - WEF Skills Tracking */}
         <TabsContent value="2030skills" className="space-y-4">
-          {/* NARRATIVE BRIDGE: Action → 2030 Skills */}
+          {/* NARRATIVE BRIDGE: Action → 2030 Skills - Agent 2: <25 words (Issue 7A-7C) */}
           <div className="bg-purple-50 border-l-4 border-purple-400 p-4 rounded-r">
             <p className="text-sm text-gray-700">
-              <strong>World Economic Forum Skills Framework:</strong> This tab tracks real-time skill development against
-              2030 workforce readiness criteria. Every choice {user.userName.split(' ')[0]} makes demonstrates specific skills,
-              creating an evidence-based profile that connects directly to Birmingham career opportunities.
+              <strong>World Economic Forum 2030 Skills:</strong> {user.userName.split(' ')[0]}'s choices build skills for workforce readiness and Birmingham careers.
             </p>
           </div>
 
