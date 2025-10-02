@@ -951,9 +951,36 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*She smiles softly, with genuine understanding* | Of course. Thank you for being honest with me. | *She fidgets with her notebook* | You know what? The fact that you feel safe enough to say 'no' means more than any answer you could have given. | You've held space for my story without demanding I earn it. I can do the same for you.",
+        text: "*She smiles softly, with genuine understanding*\n\nOf course. Thank you for being honest with me.\n\n*She fidgets with her notebook*\n\nYou know what? The fact that you feel safe enough to say 'no' means more than any answer you could have given.",
         emotion: 'warm',
-        variation_id: 'graceful_decline_v1'
+        variation_id: 'graceful_decline_v1_pt1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_graceful_decline',
+        text: "(Continue)",
+        nextNodeId: 'maya_graceful_decline_pt2',
+        pattern: 'patience'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'maya',
+        addKnowledgeFlags: ['deeper_trust_established']
+      }
+    ],
+    tags: ['reciprocity', 'boundary_respect', 'maya_arc']
+  },
+
+  {
+    nodeId: 'maya_graceful_decline_pt2',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "You've held space for my story without demanding I earn it. I can do the same for you.",
+        emotion: 'warm',
+        variation_id: 'graceful_decline_v1_pt2'
       }
     ],
     choices: [
@@ -967,12 +994,6 @@ export const mayaDialogueNodes: DialogueNode[] = [
           trustChange: 1,
           addKnowledgeFlags: ['respected_boundaries', 'player_set_boundary']
         }
-      }
-    ],
-    onEnter: [
-      {
-        characterId: 'maya',
-        addKnowledgeFlags: ['deeper_trust_established']
       }
     ],
     tags: ['reciprocity', 'boundary_respect', 'maya_arc']
@@ -1032,9 +1053,34 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*Her eyes widen with recognition*\n\nThat makes so much sense. That consistency, that foundation...\n\nI can see why you're so patient with people like me who are spiraling. You grew up with solid ground beneath you.\n\n*She pauses, thoughtful*\n\nFor me, it was the opposite. My parents gave up everything stable to come here. Every day was a gamble on the future.\n\nMaybe that's why your patience felt so... safe. Like something I could trust.",
+        text: "*Her eyes widen with recognition*\n\nThat makes so much sense. That consistency, that foundation...\n\nI can see why you're so patient with people like me who are spiraling. You grew up with solid ground beneath you.\n\n*She pauses, thoughtful*\n\nFor me, it was the opposite. My parents gave up everything stable to come here. Every day was a gamble on the future.",
         emotion: 'understanding',
-        variation_id: 'stable_reaction_v1'
+        variation_id: 'stable_reaction_v1_pt1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_stable_reaction',
+        text: "(Continue)",
+        nextNodeId: 'maya_reaction_stable_pt2',
+        pattern: 'patience'
+      }
+    ],
+    onEnter: [
+      {
+        addGlobalFlags: ['player_shared_parental_work_legacy']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'maya_reaction_stable_pt2',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "Maybe that's why your patience felt so... safe. Like something I could trust.",
+        emotion: 'understanding',
+        variation_id: 'stable_reaction_v1_pt2'
       }
     ],
     choices: [
@@ -1048,11 +1094,6 @@ export const mayaDialogueNodes: DialogueNode[] = [
           trustChange: 1,
           addKnowledgeFlags: ['shared_vulnerability', 'player_revealed_stable_parents']
         }
-      }
-    ],
-    onEnter: [
-      {
-        addGlobalFlags: ['player_shared_parental_work_legacy']
       }
     ]
   },
@@ -1143,9 +1184,34 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*She nods slowly, understanding crossing her face* | Success at the cost of presence. | You learned early that achievement and absence can be the same thing. | *She looks at her stack of study materials* | I've been so afraid of disappointing my parents, I never considered I might disappear into my achievements. | You saw that in me, didn't you? The risk of succeeding at the wrong thing.",
+        text: "*She nods slowly, understanding crossing her face*\n\nSuccess at the cost of presence.\n\nYou learned early that achievement and absence can be the same thing.\n\n*She looks at her stack of study materials*\n\nI've been so afraid of disappointing my parents, I never considered I might disappear into my achievements.",
         emotion: 'sobering_realization',
-        variation_id: 'absent_reaction_v1'
+        variation_id: 'absent_reaction_v1_pt1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_absent_reaction',
+        text: "(Continue)",
+        nextNodeId: 'maya_reaction_absent_pt2',
+        pattern: 'patience'
+      }
+    ],
+    onEnter: [
+      {
+        addGlobalFlags: ['player_shared_parental_work_legacy']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'maya_reaction_absent_pt2',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "You saw that in me, didn't you? The risk of succeeding at the wrong thing.",
+        emotion: 'sobering_realization',
+        variation_id: 'absent_reaction_v1_pt2'
       }
     ],
     choices: [
@@ -1159,11 +1225,6 @@ export const mayaDialogueNodes: DialogueNode[] = [
           trustChange: 1,
           addKnowledgeFlags: ['shared_vulnerability', 'player_revealed_absent_parents']
         }
-      }
-    ],
-    onEnter: [
-      {
-        addGlobalFlags: ['player_shared_parental_work_legacy']
       }
     ]
   }

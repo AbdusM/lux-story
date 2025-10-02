@@ -1988,9 +1988,35 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Witnessing means being fully present to someone's experience without needing to change it, fix it, or make it about you.\n\nMost 'help' is really about making the helper feel better - 'I fixed your problem, now I can stop feeling uncomfortable about your pain.' But witnessing? That's sitting in the discomfort with someone. Holding space for their truth without rushing to resolution.\n\nMaya needed someone to see her conflict without collapsing it into a simple answer. You did that. That's rare.",
+        text: "Witnessing means being fully present to someone's experience without needing to change it, fix it, or make it about you.\n\nMost 'help' is really about making the helper feel better - 'I fixed your problem, now I can stop feeling uncomfortable about your pain.' But witnessing? That's sitting in the discomfort with someone. Holding space for their truth without rushing to resolution.",
         emotion: 'teaching_depth',
-        variation_id: 'teaching_witnessing_v1'
+        variation_id: 'teaching_witnessing_v1_pt1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_witnessing_teaching',
+        text: "(Continue)",
+        nextNodeId: 'samuel_teaching_witnessing_pt2',
+        pattern: 'patience'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'samuel',
+        addKnowledgeFlags: ['taught_witnessing']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_teaching_witnessing_pt2',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Maya needed someone to see her conflict without collapsing it into a simple answer. You did that. That's rare.",
+        emotion: 'teaching_depth',
+        variation_id: 'teaching_witnessing_v1_pt2'
       }
     ],
     choices: [
@@ -2004,12 +2030,6 @@ export const samuelDialogueNodes: DialogueNode[] = [
           trustChange: 2
         }
       }
-    ],
-    onEnter: [
-      {
-        characterId: 'samuel',
-        addKnowledgeFlags: ['taught_witnessing']
-      }
     ]
   },
 
@@ -2018,9 +2038,29 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "It is. And you didn't try to make it lighter by offering easy solutions. You didn't say 'just follow your passion' or 'just honor your parents' - as if two decades of love and sacrifice can be resolved with 'just.'\n\nYou sat with the weight. That's empathy. Not sympathy - feeling sorry for someone. Empathy - feeling with someone. You're building something important here.",
+        text: "It is. And you didn't try to make it lighter by offering easy solutions. You didn't say 'just follow your passion' or 'just honor your parents' - as if two decades of love and sacrifice can be resolved with 'just.'",
         emotion: 'affirming',
-        variation_id: 'empathy_recognition_v1'
+        variation_id: 'empathy_recognition_v1_pt1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_empathy_recognition',
+        text: "(Continue)",
+        nextNodeId: 'samuel_empathy_recognition_pt2',
+        pattern: 'patience'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_empathy_recognition_pt2',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You sat with the weight. That's empathy. Not sympathy - feeling sorry for someone. Empathy - feeling with someone. You're building something important here.",
+        emotion: 'affirming',
+        variation_id: 'empathy_recognition_v1_pt2'
       }
     ],
     choices: [
