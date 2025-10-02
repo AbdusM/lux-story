@@ -301,6 +301,11 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
   const [skillsError, setSkillsError] = useState<string | null>(null);
   const [expandedSkill, setExpandedSkill] = useState<string | null>(null);
 
+  // Evidence frameworks data state
+  const [evidenceData, setEvidenceData] = useState<any>(null);
+  const [evidenceLoading, setEvidenceLoading] = useState(false);
+  const [evidenceError, setEvidenceError] = useState<string | null>(null);
+
   // Fetch urgency data for this specific user
   useEffect(() => {
     const fetchUrgencyData = async () => {
@@ -375,6 +380,34 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
 
     if (userId) {
       fetchSkillsData();
+    }
+  }, [userId]);
+
+  // Fetch Evidence frameworks data
+  useEffect(() => {
+    const fetchEvidenceData = async () => {
+      setEvidenceLoading(true);
+      setEvidenceError(null);
+
+      try {
+        const response = await fetch(`/api/admin/evidence/${userId}`);
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch evidence data');
+        }
+
+        const data = await response.json();
+        setEvidenceData(data);
+      } catch (error) {
+        console.error('Error fetching evidence data:', error);
+        setEvidenceError('Unable to load evidence frameworks');
+      } finally {
+        setEvidenceLoading(false);
+      }
+    };
+
+    if (userId) {
+      fetchEvidenceData();
     }
   }, [userId]);
 
