@@ -55,13 +55,13 @@ Environmental responsiveness - platform warmth and accessibility
 ### Step 2: Update Environment Variables
 Add to `.env.local`:
 ```bash
-NEXT_PUBLIC_SUPABASE_URL=https://tavalvqcebosfxamuvlx.supabase.co
+NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT_REF.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_actual_anon_key_here
 ```
 
 ### Step 3: Run Database Migration
 **Option A: Supabase Dashboard (Recommended)**
-1. Go to https://supabase.com/dashboard/project/tavalvqcebosfxamuvlx
+1. Go to https://supabase.com/dashboard/project/YOUR_PROJECT_REF
 2. Click "SQL Editor" in left sidebar
 3. Click "New query"
 4. Copy contents of `migrations/001_initial_schema.sql`
@@ -71,7 +71,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_actual_anon_key_here
 **Option B: Command Line (requires network access)**
 ```bash
 PGPASSWORD='your_database_password' psql \
-  -h db.tavalvqcebosfxamuvlx.supabase.co \
+  -h db.YOUR_PROJECT_REF.supabase.co \
   -p 5432 \
   -U postgres \
   -d postgres \
@@ -87,7 +87,7 @@ npm install -g supabase
 supabase login
 
 # Link to your project
-supabase link --project-ref tavalvqcebosfxamuvlx
+supabase link --project-ref YOUR_PROJECT_REF
 
 # Run migrations
 supabase db push
