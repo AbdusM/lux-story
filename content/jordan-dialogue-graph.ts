@@ -255,7 +255,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'jordan_job3_pattern_skills',
-        text: "You're collecting skills like puzzle pieces. I wonder what picture they're making.",
+        text: "Skills like puzzle pieces—what's the picture?",
         nextNodeId: 'jordan_job_reveal_4',
         pattern: 'analytical',
         consequence: {
@@ -411,7 +411,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'jordan_job6_pattern_systems',
-        text: "You were learning systems thinking—how people move through spaces and experiences.",
+        text: "You learned systems thinking and user flows.",
         nextNodeId: 'jordan_job_reveal_7',
         pattern: 'analytical',
         consequence: {
@@ -592,7 +592,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'jordan_impostor_ask_real',
-        text: "What would you tell those students if you believed your story was real?",
+        text: "What if you believed your story?",
         nextNodeId: 'jordan_crossroads',
         pattern: 'exploring',
         skills: ['creativity', 'critical_thinking', 'communication'],

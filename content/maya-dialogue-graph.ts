@@ -169,7 +169,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'deflect_safe',
-        text: "What if the safe path isn't the right path for you?",
+        text: "What if safe isn't right for you?",
         nextNodeId: 'maya_anxiety_reveal',
         pattern: 'helping',
         visibleCondition: {
@@ -178,7 +178,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'deflect_understand',
-        text: "I understand the conflict between duty and desire.",
+        text: "I understand duty vs desire.",
         nextNodeId: 'maya_family_pressure',
         pattern: 'patience',
         visibleCondition: {
@@ -260,7 +260,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'reveal_support',
-        text: "Whatever it is, it's okay to have your own interests.",
+        text: "It's okay to have your own interests.",
         nextNodeId: 'maya_grateful_support',
         pattern: 'helping',
         consequence: {
@@ -342,7 +342,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'uab_validate_feeling',
-        text: "You just found your bridge between both worlds.",
+        text: "You found your bridge.",
         nextNodeId: 'maya_grateful_support',
         pattern: 'helping',
         skills: ['emotional_intelligence', 'creativity'],
@@ -374,7 +374,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'support_strategy',
-        text: "Frame it as innovation in medicine, not abandoning it.",
+        text: "Frame it as medical innovation.",
         nextNodeId: 'maya_considers_hybrid',
         pattern: 'analytical',
         skills: ['communication', 'creativity', 'critical_thinking'],
@@ -637,7 +637,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'reframes_acknowledge',
-        text: "That's a powerful realization. How are you feeling?",
+        text: "Powerful realization. How do you feel?",
         nextNodeId: 'maya_early_gratitude',
         pattern: 'helping',
         consequence: {
