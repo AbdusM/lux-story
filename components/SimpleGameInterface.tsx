@@ -11,6 +11,8 @@ import { GameErrorBoundary } from './GameErrorBoundary'
 import { GameMessages } from './GameMessages'
 import { GameChoices } from './GameChoices'
 import { CharacterIntro } from './CharacterIntro'
+import { Button } from '@/components/ui/button'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 // Apple Design System removed - using shadcn components
 
 export function SimpleGameInterface() {
@@ -40,13 +42,14 @@ export function SimpleGameInterface() {
           <div className="apple-text-caption">Birmingham Career Exploration</div>
 
           {/* Simple insights toggle */}
-          <button
+          <Button
             onClick={handleInsightsToggle}
-            className="apple-button apple-button-ghost"
-            style={{ marginLeft: 'auto' }}
+            variant="ghost"
+            size="sm"
+            className="ml-auto"
           >
             {showInsights ? 'Hide' : 'Show'} Insights
-          </button>
+          </Button>
         </header>
 
         <main className="apple-game-content">
@@ -60,13 +63,17 @@ export function SimpleGameInterface() {
 
           {/* Simple insights display */}
           {showInsights && (
-            <div className="apple-card" style={{ marginTop: '1rem' }}>
-              <div className="apple-text-title">Your Career Exploration</div>
-              <SimpleInsightsDisplay
-                insights={game.getInsights()}
-                birminghamOpportunities={game.getBirminghamOpportunities()}
-              />
-            </div>
+            <Card className="mt-4">
+              <CardHeader>
+                <CardTitle>Your Career Exploration</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <SimpleInsightsDisplay
+                  insights={game.getInsights()}
+                  birminghamOpportunities={game.getBirminghamOpportunities()}
+                />
+              </CardContent>
+            </Card>
           )}
         </main>
       </div>

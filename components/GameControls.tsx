@@ -1,6 +1,7 @@
 "use client"
 
 import { memo, useCallback } from 'react'
+import { Button } from '@/components/ui/button'
 
 interface GameControlsProps {
   currentScene: { id?: string; text?: string; speaker?: string; type?: string } | null
@@ -13,11 +14,11 @@ interface GameControlsProps {
  * Game Controls Component
  * Displays continue button and share functionality
  */
-export const GameControls = memo(({ 
-  currentScene, 
-  isProcessing, 
-  onContinue, 
-  onShare 
+export const GameControls = memo(({
+  currentScene,
+  isProcessing,
+  onContinue,
+  onShare
 }: GameControlsProps) => {
   const handleContinue = useCallback(() => {
     if (!isProcessing) {
@@ -34,25 +35,29 @@ export const GameControls = memo(({
       {/* Continue Button */}
       {currentScene?.type === 'narration' && (
         <div className="apple-choices-container apple-animate-slide-in">
-          <button
+          <Button
             onClick={handleContinue}
             disabled={isProcessing}
-            className="apple-button apple-button-primary w-full"
+            variant="default"
+            size="lg"
+            className="w-full"
           >
             {isProcessing ? 'Processing...' : 'Continue'}
-          </button>
+          </Button>
         </div>
       )}
 
       {/* Share Button */}
       {currentScene && (
         <div className="apple-choices-container apple-animate-slide-in">
-          <button
+          <Button
             onClick={handleShare}
-            className="apple-button apple-button-ghost w-full"
+            variant="ghost"
+            size="lg"
+            className="w-full"
           >
             Share Progress
-          </button>
+          </Button>
         </div>
       )}
     </>

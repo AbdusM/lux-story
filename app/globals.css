@@ -242,6 +242,17 @@
   }
 }
 
+/* Text Rendering: Force whitespace preservation for narrative text */
+.pokemon-textbox-enhanced .pokemon-text,
+.pokemon-textbox-enhanced .whitespace-pre-wrap,
+.pokemon-message-container [class*="text-"],
+.story-text,
+.whitespace-pre-wrap {
+  white-space: pre-wrap !important;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
 @media (max-width: 375px) {
   .apple-choice-button {
     font-size: 14px;

@@ -1,26 +1,31 @@
 "use client"
 
+import React, { useCallback, useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
-import { useCallback, useEffect, useState } from "react"
 
 // Function to parse markdown-style emphasis in text
-function parseEmphasisText(text: string): React.ReactNode[] {
+// Returns a single React fragment to preserve whitespace structure
+function parseEmphasisText(text: string): React.ReactNode {
   const parts: React.ReactNode[] = []
   let currentIndex = 0
-  
+
   // Regex to match ***text***, **text**, or *text*
   const emphasisRegex = /(\*{1,3})([^*]+?)\1/g
   let match: RegExpExecArray | null
-  
+
   while ((match = emphasisRegex.exec(text)) !== null) {
-    // Add text before the match
+    // Add text before the match (wrap in Fragment to preserve whitespace)
     if (match.index > currentIndex) {
-      parts.push(text.slice(currentIndex, match.index))
+      parts.push(
+        <React.Fragment key={`text-${currentIndex}`}>
+          {text.slice(currentIndex, match.index)}
+        </React.Fragment>
+      )
     }
-    
+
     const emphasisLevel = match[1].length
     const content = match[2]
-    
+
     if (emphasisLevel === 3) {
       // Triple asterisk: strong + em (urgent)
       parts.push(<strong key={match.index}><em>{content}</em></strong>)
@@ -31,16 +36,21 @@ function parseEmphasisText(text: string): React.ReactNode[] {
       // Single asterisk: em
       parts.push(<em key={match.index}>{content}</em>)
     }
-    
+
     currentIndex = match.index + match[0].length
   }
-  
-  // Add remaining text
+
+  // Add remaining text (wrap in Fragment to preserve whitespace)
   if (currentIndex < text.length) {
-    parts.push(text.slice(currentIndex))
+    parts.push(
+      <React.Fragment key="text-end">
+        {text.slice(currentIndex)}
+      </React.Fragment>
+    )
   }
-  
-  return parts.length > 0 ? parts : [text]
+
+  // Return single fragment containing all parts
+  return parts.length > 0 ? <>{parts}</> : text
 }
 
 interface StoryMessageProps {
