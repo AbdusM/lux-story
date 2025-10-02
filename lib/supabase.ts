@@ -22,9 +22,24 @@ function getSupabaseClient(): SupabaseClient {
   const supabaseAnonKey = process.env.SUPABASE_ANON_KEY
 
   if (!supabaseUrl || !supabaseAnonKey) {
-    console.warn('[Supabase] Missing environment variables. Database features disabled.')
-    // Return a mock client that will fail gracefully
-    throw new Error('Supabase configuration missing. Check SUPABASE_URL and SUPABASE_ANON_KEY')
+    console.warn('[Supabase] Missing environment variables. Using mock client for development.')
+
+    // Return mock client that prevents crashes
+    const mockClient = new Proxy({} as any, {
+      get: (target, prop) => {
+        console.warn(`[Supabase Mock] Attempted to call: ${String(prop)}`)
+        return () => {
+          return {
+            data: null,
+            error: { message: 'Supabase not configured. Check environment variables.' },
+            status: 503
+          }
+        }
+      }
+    })
+
+    _supabaseInstance = mockClient as unknown as SupabaseClient
+    return _supabaseInstance
   }
 
   _supabaseInstance = createClient(supabaseUrl, supabaseAnonKey, {

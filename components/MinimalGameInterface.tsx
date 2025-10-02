@@ -7,6 +7,7 @@
 
 import { useState, useEffect, useMemo } from 'react'
 import { useSimpleGame } from '@/hooks/useSimpleGame'
+import { Button } from '@/components/ui/button'
 // Apple Design System removed - using shadcn components
 
 // Function to render a single dialogue chunk
@@ -289,12 +290,13 @@ export function MinimalGameInterface() {
           </div>
 
           <div className="apple-choices-container">
-            <button
+            <Button
               onClick={game.handleStartGame}
-              className="apple-button apple-button-primary"
+              variant="default"
+              size="lg"
             >
               Begin New Journey
-            </button>
+            </Button>
           </div>
           </div>
         </div>
@@ -343,13 +345,14 @@ export function MinimalGameInterface() {
         <div className="apple-choices-container" role="group" aria-label="Story interactions">
           {/* Show Continue button for dialogue with critical edge case handling */}
           {isDialogue && (!isLastChunk || (isLastChunk && !hasChoices)) && chunks.length > 1 && (
-            <button
+            <Button
               onClick={handleContinue}
-              className="apple-button apple-button-primary"
-              style={{ width: '100%' }}
+              variant="default"
+              size="lg"
+              className="w-full"
             >
               Continue →
-            </button>
+            </Button>
           )}
 
           {/* Show choices when narrator scene OR last dialogue chunk */}
@@ -357,7 +360,7 @@ export function MinimalGameInterface() {
             game.choices.map((choice, index) => {
               const { type, icon } = categorizeChoice(choice.text)
               return (
-                <button
+                <Button
                   key={index}
                   onClick={() => {
                     setSelectedChoiceIndex(index)
@@ -366,7 +369,9 @@ export function MinimalGameInterface() {
                       setSelectedChoiceIndex(null)
                     }, 400)
                   }}
-                  className={`apple-choice-button ${
+                  variant="default"
+                  size="lg"
+                  className={`w-full min-h-[44px] ${
                     selectedChoiceIndex === index ? 'selected' :
                     selectedChoiceIndex !== null ? 'faded' : ''
                   }`}
@@ -379,7 +384,7 @@ export function MinimalGameInterface() {
                   <span id={`choice-${index}-description`} className="sr-only">
                     Choice {index + 1} of {game.choices.length}: {type} response
                   </span>
-                </button>
+                </Button>
               )
             })
           )}

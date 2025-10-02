@@ -2,6 +2,7 @@
 
 import { Component, ReactNode } from 'react'
 import { ErrorBoundary } from './ErrorBoundary'
+import { Button } from '@/components/ui/button'
 
 interface GameErrorBoundaryProps {
   children: ReactNode
@@ -59,12 +60,14 @@ export class GameErrorBoundary extends Component<GameErrorBoundaryProps> {
               </div>
 
               <div className="apple-choices-container">
-                <button
+                <Button
                   onClick={() => window.location.reload()}
-                  className="apple-button apple-button-primary w-full"
+                  variant="default"
+                  size="lg"
+                  className="w-full"
                 >
                   Continue Your Journey
-                </button>
+                </Button>
               </div>
             </div>
           </div>
