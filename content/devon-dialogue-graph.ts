@@ -915,7 +915,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     onEnter: [
       {
         characterId: 'devon',
-        addKnowledgeFlags: ['empathy_reframe']
+        addKnowledgeFlags: ['empathy_reframe', 'devon_reframe_insight']
       }
     ]
   },
@@ -945,7 +945,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     onEnter: [
       {
         characterId: 'devon',
-        addKnowledgeFlags: ['integration_insight']
+        addKnowledgeFlags: ['integration_insight', 'devon_integration_insight']
       }
     ]
   },
@@ -998,9 +998,20 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "I need to call him. But differently this time. No flowchart. No optimization.\n\nJust... me, talking to my dad. Listening for the data I've been filtering out. The pauses. The pain. The love underneath the 'I'm fine.'\n\nWhat if I just... let the conversation be what it needs to be?",
+        text: "You helped me see emotions as data. Now I can work with them.\n\nI need to call him. But differently this time. No flowchart. Just... me, talking to my dad. Listening for the data I've been filtering out. The pauses. The pain. The love underneath the 'I'm fine.'\n\nWhat if I just... let the conversation be what it needs to be?",
         emotion: 'ready',
-        variation_id: 'crossroads_v1'
+        variation_id: 'crossroads_reframe',
+        requiredState: {
+          hasKnowledgeFlags: ['devon_reframe_insight']
+        }
+      },
+      {
+        text: "You helped me integrate logic and heart. They're not enemies.\n\nI need to call him. But differently this time. Not logic OR emotion—both. Just... me, talking to my dad. Present with all of it. The pauses. The pain. The love underneath the 'I'm fine.'\n\nWhat if I just... let the conversation be what it needs to be?",
+        emotion: 'ready',
+        variation_id: 'crossroads_integration',
+        requiredState: {
+          hasKnowledgeFlags: ['devon_integration_insight']
+        }
       }
     ],
     requiredState: {
