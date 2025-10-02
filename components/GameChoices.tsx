@@ -1,18 +1,25 @@
 "use client"
 
-import { memo, useCallback } from 'react'
+import { memo } from 'react'
+
+interface Choice {
+  text: string
+  next?: string
+  consequence?: string
+  pattern?: string
+}
 
 interface GameChoicesProps {
-  choices: any[]
+  choices: Choice[]
   isProcessing: boolean
-  onChoice: (choice: any) => void
+  onChoice: (choice: Choice) => void
 }
 
 // Memoized choice button component
 const ChoiceButton = memo(({ choice, index, onChoice, isProcessing }: {
-  choice: any
+  choice: Choice
   index: number
-  onChoice: (choice: any) => void
+  onChoice: (choice: Choice) => void
   isProcessing: boolean
 }) => (
   <button

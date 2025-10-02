@@ -173,7 +173,7 @@ export const enhancedReactionNodes: DialogueNode[] = [
           characterId: 'maya',
           trustChange: 2,
           addKnowledgeFlags: ['deep_vulnerability_shared', 'player_revealed_struggling_parents'],
-          setRelationshipStatus: 'profound_connection'
+          setRelationshipStatus: 'confidant'
         }
       }
     ],

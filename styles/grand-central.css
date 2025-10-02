@@ -579,3 +579,30 @@
     box-shadow: 0 0 40px rgba(255, 183, 77, 0.5);
   }
 }
+
+/* Accessibility: Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .platform-cold,
+  .platform-warm,
+  .platform-resonant,
+  .career-alignment-high,
+  .quiet-hour,
+  .quiet-hour::before,
+  .time-slowing,
+  .time-stopped,
+  .time-rushing,
+  .platform-7-half,
+  .high-rushing,
+  .high-patience,
+  .bench-safe-spot {
+    animation: none !important;
+  }
+
+  .choice-button:hover {
+    transform: none !important;
+  }
+
+  .trust-high .speaker-name {
+    text-shadow: none;
+  }
+}

@@ -3,10 +3,14 @@
 import { Component, ReactNode } from 'react'
 import { logger } from '@/lib/logger'
 
+interface ErrorInfo {
+  componentStack: string
+}
+
 interface Props {
   children: ReactNode
   fallback?: ReactNode
-  onError?: (error: Error, errorInfo: any) => void
+  onError?: (error: Error, errorInfo: ErrorInfo) => void
   resetOnPropsChange?: boolean
   resetKeys?: Array<string | number>
 }
@@ -14,7 +18,7 @@ interface Props {
 interface State {
   hasError: boolean
   error: Error | null
-  errorInfo: any
+  errorInfo: ErrorInfo | null
   errorId: string
 }
 
@@ -43,7 +47,7 @@ export class ErrorBoundary extends Component<Props, State> {
     }
   }
 
-  componentDidCatch(error: Error, errorInfo: any) {
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     const errorId = this.state.errorId
     
     // Log error with context
@@ -64,8 +68,12 @@ export class ErrorBoundary extends Component<Props, State> {
     this.setState({ errorInfo })
 
     // Report to error tracking service (if available)
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', 'exception', {
+    interface WindowWithGtag extends Window {
+      gtag?: (event: string, action: string, params: Record<string, unknown>) => void
+    }
+
+    if (typeof window !== 'undefined' && (window as WindowWithGtag).gtag) {
+      (window as WindowWithGtag).gtag!('event', 'exception', {
         description: error.message,
         fatal: false,
         custom_map: {

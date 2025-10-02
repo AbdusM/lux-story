@@ -64,7 +64,7 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Target, TrendingUp, Briefcase, Lightbulb, CheckCircle2, AlertTriangle, RefreshCw, Award, BookOpen, Building2, AlertCircle } from 'lucide-react';
+import { Target, TrendingUp, Briefcase, Lightbulb, CheckCircle2, AlertTriangle, RefreshCw, Award, BookOpen, Building2, AlertCircle, Users, GraduationCap } from 'lucide-react';
 import type { SkillProfile } from '@/lib/skill-profile-adapter';
 import { ExportButton } from '@/components/admin/ExportButton';
 import { AdvisorBriefingButton } from '@/components/admin/AdvisorBriefingButton';
@@ -288,6 +288,9 @@ function DataSourceBadge({
 const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profile }) => {
   const [activeTab, setActiveTab] = useState("urgency");
   const user = profile; // Use real profile data instead of mock
+
+  // Agent 1: Evidence Tab mode toggle (Issue 5C)
+  const [evidenceMode, setEvidenceMode] = useState<'research' | 'family'>('family');
 
   // Urgency data state
   const [urgencyData, setUrgencyData] = useState<UrgencyData | null>(null);
@@ -924,43 +927,70 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
 
         {/* EVIDENCE TAB - Scientific frameworks and outcomes */}
         <TabsContent value="evidence" className="space-y-4">
-          {/* DATA SOURCE INDICATOR */}
-          <Alert className={
-            user.totalDemonstrations >= 10 ? "bg-blue-50 border-blue-400" :
-            user.totalDemonstrations >= 5 ? "bg-yellow-50 border-yellow-400" :
-            "bg-gray-50 border-gray-400"
-          }>
-            <AlertCircle className={`h-4 w-4 ${
-              user.totalDemonstrations >= 10 ? "text-blue-600" :
-              user.totalDemonstrations >= 5 ? "text-yellow-600" :
-              "text-gray-600"
-            }`} />
-            <AlertDescription>
-              <div className="flex items-center justify-between">
-                <div>
-                  <strong>Data Source Status:</strong>{" "}
-                  {user.totalDemonstrations >= 10 ? (
-                    <span className="text-blue-700">
-                      Real Student Data ({user.totalDemonstrations} demonstrations)
-                    </span>
-                  ) : user.totalDemonstrations >= 5 ? (
-                    <span className="text-yellow-700">
-                      Partial Data ({user.totalDemonstrations} demonstrations - need 10+ for full analysis)
-                    </span>
-                  ) : (
-                    <span className="text-gray-700">
-                      Insufficient Data ({user.totalDemonstrations} demonstrations - need 10+ for frameworks)
-                    </span>
+          {/* AGENT 1: Research/Family Meeting Mode Toggle (Issue 5C) */}
+          <div className="flex items-center justify-between bg-gray-50 p-3 rounded-lg border">
+            <div className="flex items-center gap-2">
+              {evidenceMode === 'family' ? (
+                <Users className="w-5 h-5 text-purple-600" />
+              ) : (
+                <GraduationCap className="w-5 h-5 text-blue-600" />
+              )}
+              <span className="font-medium text-sm">
+                {evidenceMode === 'family' ? 'Family Meeting Mode' : 'Research Mode'}
+              </span>
+              <Badge variant="outline" className="text-xs">
+                {evidenceMode === 'family' ? 'Plain English' : 'Scientific Terms'}
+              </Badge>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setEvidenceMode(evidenceMode === 'family' ? 'research' : 'family')}
+              className="text-xs"
+            >
+              Switch to {evidenceMode === 'family' ? 'Research' : 'Family'} Mode
+            </Button>
+          </div>
+
+          {/* DATA SOURCE INDICATOR - Agent 1: Sticky positioning (Issue 4C) */}
+          <div className="sticky top-0 z-10">
+            <Alert className={
+              user.totalDemonstrations >= 10 ? "bg-blue-50 border-blue-400" :
+              user.totalDemonstrations >= 5 ? "bg-yellow-50 border-yellow-400" :
+              "bg-gray-50 border-gray-400"
+            }>
+              <AlertCircle className={`h-4 w-4 ${
+                user.totalDemonstrations >= 10 ? "text-blue-600" :
+                user.totalDemonstrations >= 5 ? "text-yellow-600" :
+                "text-gray-600"
+              }`} />
+              <AlertDescription>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <strong>Data Source Status:</strong>{" "}
+                    {user.totalDemonstrations >= 10 ? (
+                      <span className="text-blue-700">
+                        Real Student Data ({user.totalDemonstrations} demonstrations)
+                      </span>
+                    ) : user.totalDemonstrations >= 5 ? (
+                      <span className="text-yellow-700">
+                        Partial Data ({user.totalDemonstrations} demonstrations - need 10+ for full analysis)
+                      </span>
+                    ) : (
+                      <span className="text-gray-700">
+                        Insufficient Data ({user.totalDemonstrations} demonstrations - need 10+ for frameworks)
+                      </span>
+                    )}
+                  </div>
+                  {user.totalDemonstrations < 10 && (
+                    <Badge variant="outline" className="bg-yellow-100 text-yellow-800">
+                      Using Mock Data Below
+                    </Badge>
                   )}
                 </div>
-                {user.totalDemonstrations < 10 && (
-                  <Badge variant="outline" className="bg-yellow-100 text-yellow-800">
-                    Using Mock Data Below
-                  </Badge>
-                )}
-              </div>
-            </AlertDescription>
-          </Alert>
+              </AlertDescription>
+            </Alert>
+          </div>
           <Card>
             <CardHeader>
               <CardTitle>Evidence-Based Framework</CardTitle>
@@ -991,10 +1021,15 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                 </div>
               ) : (
                 <>
-                  {/* Framework 1: Skill Evidence */}
+                  {/* Framework 1: Skill Evidence - Agent 1: Audience tags + Plain English (Issues 19, 20) */}
                   <div className="p-3 border rounded space-y-2">
                     <div className="flex items-center justify-between">
-                      <p className="font-medium text-sm">Skill Evidence Framework</p>
+                      <div className="flex items-center gap-2">
+                        <p className="font-medium text-sm">Skill Evidence Framework</p>
+                        <Badge variant="outline" className="text-xs bg-purple-50 text-purple-700 border-purple-300">
+                          {evidenceMode === 'family' ? 'For Parents' : 'For Researchers'}
+                        </Badge>
+                      </div>
                       <div className="flex items-center gap-2">
                         <Badge variant="default">{evidenceData.frameworks.skillEvidence.uniqueSkills} Skills Tracked</Badge>
                         <DataSourceBadge
@@ -1005,7 +1040,11 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                       </div>
                     </div>
                     <p className="text-xs text-muted-foreground">
-                      Framework: Tracked skill demonstrations showing concrete evidence of capability development.
+                      {evidenceMode === 'family' ? (
+                        <span><strong>What this means:</strong> Every time your student makes a choice in the game, we track what skills they showed (like problem-solving or creativity). This shows real evidence of their growing abilities.</span>
+                      ) : (
+                        <span><strong>Framework:</strong> Tracked skill demonstrations showing concrete evidence of capability development.</span>
+                      )}
                     </p>
                     <div className="bg-blue-50 p-2 rounded text-xs">
                       <p className="font-medium mb-1">Student Outcomes:</p>
@@ -1021,10 +1060,15 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                     </div>
                   </div>
 
-                  {/* Framework 2: Career Readiness */}
+                  {/* Framework 2: Career Readiness - Agent 1: Audience tags + Plain English (Issues 19, 20) */}
                   <div className="p-3 border rounded space-y-2">
                     <div className="flex items-center justify-between">
-                      <p className="font-medium text-sm">Career Readiness Framework</p>
+                      <div className="flex items-center gap-2">
+                        <p className="font-medium text-sm">Career Readiness Framework</p>
+                        <Badge variant="outline" className="text-xs bg-purple-50 text-purple-700 border-purple-300">
+                          {evidenceMode === 'family' ? 'For Parents' : 'For Researchers'}
+                        </Badge>
+                      </div>
                       <div className="flex items-center gap-2">
                         <Badge variant="default">{evidenceData.frameworks.careerReadiness.exploredCareers} Careers Explored</Badge>
                         <DataSourceBadge
@@ -1035,7 +1079,11 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                       </div>
                     </div>
                     <p className="text-xs text-muted-foreground">
-                      Framework: Career exploration and match quality showing pathway clarity.
+                      {evidenceMode === 'family' ? (
+                        <span><strong>What this means:</strong> We track which careers your student explores and how well their current skills match each one. This helps you see where they're headed and what they need to get there.</span>
+                      ) : (
+                        <span><strong>Framework:</strong> Career exploration and match quality showing pathway clarity.</span>
+                      )}
                     </p>
                     <div className="bg-blue-50 p-2 rounded text-xs">
                       <p className="font-medium mb-1">Student Progress:</p>
@@ -1054,10 +1102,15 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                     </div>
                   </div>
 
-                  {/* Framework 3: Pattern Recognition */}
+                  {/* Framework 3: Pattern Recognition - Agent 1: Audience tags + Plain English (Issues 19, 20) */}
                   <div className="p-3 border rounded space-y-2">
                     <div className="flex items-center justify-between">
-                      <p className="font-medium text-sm">Pattern Recognition Framework</p>
+                      <div className="flex items-center gap-2">
+                        <p className="font-medium text-sm">Pattern Recognition Framework</p>
+                        <Badge variant="outline" className="text-xs bg-purple-50 text-purple-700 border-purple-300">
+                          {evidenceMode === 'family' ? 'For Parents' : 'For Researchers'}
+                        </Badge>
+                      </div>
                       <div className="flex items-center gap-2">
                         <Badge variant="default">Behavioral Analysis</Badge>
                         <DataSourceBadge
@@ -1068,7 +1121,11 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                       </div>
                     </div>
                     <p className="text-xs text-muted-foreground">
-                      Framework: Consistency and progression patterns in choice behavior.
+                      {evidenceMode === 'family' ? (
+                        <span><strong>What this means:</strong> We look for patterns in your student's choices. Are they consistently helping others? Do they prefer solving problems alone or with others? These patterns reveal their natural strengths.</span>
+                      ) : (
+                        <span><strong>Framework:</strong> Consistency and progression patterns in choice behavior.</span>
+                      )}
                     </p>
                     <div className="bg-blue-50 p-2 rounded text-xs">
                       <p className="font-medium mb-1">Behavioral Patterns:</p>
@@ -1082,10 +1139,15 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                     </div>
                   </div>
 
-                  {/* Framework 4: Time Investment */}
+                  {/* Framework 4: Time Investment - Agent 1: Audience tags + Plain English (Issues 19, 20) */}
                   <div className="p-3 border rounded space-y-2">
                     <div className="flex items-center justify-between">
-                      <p className="font-medium text-sm">Time Investment Framework</p>
+                      <div className="flex items-center gap-2">
+                        <p className="font-medium text-sm">Time Investment Framework</p>
+                        <Badge variant="outline" className="text-xs bg-purple-50 text-purple-700 border-purple-300">
+                          {evidenceMode === 'family' ? 'For Parents' : 'For Researchers'}
+                        </Badge>
+                      </div>
                       <div className="flex items-center gap-2">
                         <Badge variant="default">Engagement Tracking</Badge>
                         <DataSourceBadge
@@ -1096,7 +1158,11 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                       </div>
                     </div>
                     <p className="text-xs text-muted-foreground">
-                      Framework: Sustained engagement and consistency over time.
+                      {evidenceMode === 'family' ? (
+                        <span><strong>What this means:</strong> We track how often your student uses the tool and whether they're staying engaged. Consistent engagement shows they're actively thinking about their future.</span>
+                      ) : (
+                        <span><strong>Framework:</strong> Sustained engagement and consistency over time.</span>
+                      )}
                     </p>
                     <div className="bg-blue-50 p-2 rounded text-xs">
                       <p className="font-medium mb-1">Engagement Metrics:</p>
@@ -1108,10 +1174,15 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                     </div>
                   </div>
 
-                  {/* Framework 5: Relationship Framework */}
+                  {/* Framework 5: Relationship Framework - Agent 1: Audience tags + Plain English (Issues 19, 20) */}
                   <div className="p-3 border rounded space-y-2">
                     <div className="flex items-center justify-between">
-                      <p className="font-medium text-sm">Relationship Development Framework</p>
+                      <div className="flex items-center gap-2">
+                        <p className="font-medium text-sm">Relationship Development Framework</p>
+                        <Badge variant="outline" className="text-xs bg-purple-50 text-purple-700 border-purple-300">
+                          {evidenceMode === 'family' ? 'For Parents' : 'For Researchers'}
+                        </Badge>
+                      </div>
                       <div className="flex items-center gap-2">
                         <Badge variant="default">{evidenceData.frameworks.relationshipFramework.totalRelationships} Relationships</Badge>
                         <DataSourceBadge
@@ -1122,7 +1193,11 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                       </div>
                     </div>
                     <p className="text-xs text-muted-foreground">
-                      Framework: Social-emotional learning through character relationships.
+                      {evidenceMode === 'family' ? (
+                        <span><strong>What this means:</strong> Your student builds relationships with characters in the game (like Maya or Samuel). How they interact shows their social skills and emotional intelligence.</span>
+                      ) : (
+                        <span><strong>Framework:</strong> Social-emotional learning through character relationships.</span>
+                      )}
                     </p>
                     <div className="bg-blue-50 p-2 rounded text-xs">
                       <p className="font-medium mb-1">Relationship Metrics:</p>
@@ -1135,10 +1210,15 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                     </div>
                   </div>
 
-                  {/* Framework 6: Behavioral Consistency */}
+                  {/* Framework 6: Behavioral Consistency - Agent 1: Audience tags + Plain English (Issues 19, 20) */}
                   <div className="p-3 border rounded space-y-2">
                     <div className="flex items-center justify-between">
-                      <p className="font-medium text-sm">Behavioral Consistency Framework</p>
+                      <div className="flex items-center gap-2">
+                        <p className="font-medium text-sm">Behavioral Consistency Framework</p>
+                        <Badge variant="outline" className="text-xs bg-purple-50 text-purple-700 border-purple-300">
+                          {evidenceMode === 'family' ? 'For Parents' : 'For Researchers'}
+                        </Badge>
+                      </div>
                       <div className="flex items-center gap-2">
                         <Badge variant="default">Focus Analysis</Badge>
                         <DataSourceBadge
@@ -1149,7 +1229,11 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                       </div>
                     </div>
                     <p className="text-xs text-muted-foreground">
-                      Framework: Focus vs exploration balance analysis.
+                      {evidenceMode === 'family' ? (
+                        <span><strong>What this means:</strong> We check if your student focuses deeply on a few skills or explores many different ones. Both approaches are valid - this helps you understand their style.</span>
+                      ) : (
+                        <span><strong>Framework:</strong> Focus vs exploration balance analysis.</span>
+                      )}
                     </p>
                     <div className="bg-blue-50 p-2 rounded text-xs">
                       <p className="font-medium mb-1">Consistency Metrics:</p>
@@ -1179,101 +1263,6 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
               <p>• <strong>Behavioral Consistency:</strong> Focus vs exploration balance analysis</p>
             </CardContent>
           </Card>
-        </TabsContent>
-
-        {/* CAREERS TAB - Actual Birmingham pathways */}
-        <TabsContent value="careers" className="space-y-4">
-          {user.careerMatches.map((career) => (
-            <Card key={career.id}>
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg">{career.name}</CardTitle>
-                  <Badge variant={getReadinessDisplay(career.readiness).variant}>{getReadinessDisplay(career.readiness).text}</Badge>
-                </div>
-                <CardDescription>
-                  ${career.salaryRange[0].toLocaleString()} - ${career.salaryRange[1].toLocaleString()} • 
-                  Birmingham Relevance: {Math.round(career.birminghamRelevance * 100)}%
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                {/* Skill requirements */}
-                <div>
-                  <p className="text-sm font-medium mb-2">Skill Requirements:</p>
-                  <div className="space-y-2">
-                    {Object.entries(career.requiredSkills).map(([skill, data]) => (
-                      <div key={skill} className="space-y-1">
-                        <div className="flex justify-between text-xs">
-                          <span className="capitalize">{skill.replace(/([A-Z])/g, ' $1').trim()}</span>
-                          <span className={data.gap > 0 ? "text-yellow-600" : "text-green-600"}>
-                            {data.current >= data.required ? "✓ Met" : `Gap: ${Math.round(data.gap * 100)}%`}
-                          </span>
-                        </div>
-                        <div className="flex gap-1 items-center">
-                          <div className="flex-1 bg-gray-200 rounded-full h-1.5">
-                            <div
-                              className={`h-1.5 rounded-full ${data.gap > 0 ? 'bg-yellow-500' : 'bg-green-500'}`}
-                              style={{ width: `${(data.current / data.required) * 100}%` }}
-                            />
-                          </div>
-                          <span className="text-xs text-muted-foreground w-16 text-right">
-                            {Math.round(data.current * 100)}/{Math.round(data.required * 100)}
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Education paths */}
-                <div>
-                  <p className="text-sm font-medium mb-1">Education Pathways:</p>
-                  <div className="flex flex-wrap gap-1">
-                    {career.educationPaths.map(path => (
-                      <Badge key={path} variant="secondary" className="text-xs">{path}</Badge>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Local opportunities */}
-                <div>
-                  <p className="text-sm font-medium mb-1">Birmingham Employers:</p>
-                  <div className="flex flex-wrap gap-1">
-                    {career.localOpportunities.map(opp => (
-                      <Badge key={opp} variant="outline" className="text-xs">{opp}</Badge>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Readiness */}
-                <div className="pt-2 border-t">
-                  {career.readiness === 'near_ready' && (
-                    <div className="flex items-start gap-2 text-sm">
-                      <CheckCircle2 className="w-4 h-4 text-green-600 mt-0.5" />
-                      <p className="text-green-600">
-                        <strong>Near Ready:</strong> Small skill gaps. Consider exploratory experiences.
-                      </p>
-                    </div>
-                  )}
-                  {career.readiness === 'skill_gaps' && (
-                    <div className="flex items-start gap-2 text-sm">
-                      <AlertTriangle className="w-4 h-4 text-yellow-600 mt-0.5" />
-                      <p className="text-yellow-600">
-                        <strong>Skill Gaps:</strong> Good foundation but needs development. See Gaps tab.
-                      </p>
-                    </div>
-                  )}
-                  {career.readiness === 'exploratory' && (
-                    <div className="flex items-start gap-2 text-sm">
-                      <Lightbulb className="w-4 h-4 text-blue-600 mt-0.5" />
-                      <p className="text-blue-600">
-                        <strong>Worth Exploring:</strong> Moderate match. Informational interviews recommended.
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          ))}
         </TabsContent>
 
         {/* GAPS TAB - What skills need development */}

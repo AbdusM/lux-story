@@ -65,3 +65,22 @@ button:active {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-5px); }
 }
+
+/* Accessibility: Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  button:hover:not(:disabled),
+  button:active,
+  [class*="card"]:hover,
+  .choice-button:hover:not(:disabled) {
+    transform: none !important;
+  }
+
+  .message-enter,
+  .companion-avatar:hover {
+    animation: none !important;
+  }
+
+  [class*="progress"] div {
+    transition: none;
+  }
+}

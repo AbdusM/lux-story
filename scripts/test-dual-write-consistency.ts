@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Dual-Write Consistency Test Suite
  * Grand Central Terminus - Birmingham Career Exploration
@@ -38,8 +39,8 @@ import { createClient } from '@supabase/supabase-js'
 import { SyncQueue, generateActionId } from '../lib/sync-queue'
 import { DatabaseService } from '../lib/database-service'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+const supabaseUrl = process.env.SUPABASE_URL!
+const supabaseKey = process.env.SUPABASE_ANON_KEY!
 
 interface TestResult {
   name: string

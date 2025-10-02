@@ -23,8 +23,8 @@ export interface QueuedAction {
   id: string // UUID for idempotency
   type: string // Action type: 'db_method' | 'career_analytics' | 'skill_summary'
   method?: string // DatabaseService method name (for db_method type)
-  args?: any[] // Method arguments (for db_method type)
-  data?: any // Payload data (for career_analytics/skill_summary types)
+  args?: unknown[] // Method arguments (for db_method type)
+  data?: Record<string, unknown> // Payload data (for career_analytics/skill_summary types)
   timestamp: number // When action was created
   retries: number // How many times we've attempted sync
 }
@@ -109,7 +109,7 @@ export class SyncQueue {
    * Strategy: Process actions in order, but continue on individual failures
    * to maximize successful syncs even if some fail.
    */
-  static async processQueue(db?: any): Promise<SyncResult> {
+  static async processQueue(db?: Record<string, (...args: unknown[]) => Promise<unknown>>): Promise<SyncResult> {
     const queue = this.getQueue()
 
     if (queue.length === 0) {
@@ -156,12 +156,12 @@ export class SyncQueue {
             continue
           }
 
-          await method.apply(db, action.args)
+          await method.apply(db, action.args as unknown[])
           successfulIds.push(action.id)
           console.log('✅ [SyncQueue] Action successful:', { type: 'db_method', method: action.method })
 
           // Real-time monitoring
-          logSync(action.data?.user_id || 'unknown', 'career_analytics', true)
+          logSync((action.data as { user_id?: string })?.user_id || 'unknown', 'career_analytics', true)
 
         } else if (action.type === 'career_analytics') {
           // Sync career analytics to Supabase
@@ -176,10 +176,10 @@ export class SyncQueue {
           }
 
           successfulIds.push(action.id)
-          console.log('✅ [SyncQueue] Action successful:', { type: 'career_analytics', userId: action.data?.user_id })
+          console.log('✅ [SyncQueue] Action successful:', { type: 'career_analytics', userId: (action.data as { user_id?: string })?.user_id })
 
           // Real-time monitoring
-          logSync(action.data?.user_id || 'unknown', 'career_analytics', true)
+          logSync((action.data as { user_id?: string })?.user_id || 'unknown', 'career_analytics', true)
 
         } else if (action.type === 'skill_summary') {
           // Sync skill summary to Supabase
@@ -196,31 +196,33 @@ export class SyncQueue {
           successfulIds.push(action.id)
           console.log('✅ [SyncQueue] Action successful:', {
             type: 'skill_summary',
-            skill: action.data?.skill_name,
-            count: action.data?.demonstration_count
+            skill: (action.data as { skill_name?: string })?.skill_name,
+            count: (action.data as { demonstration_count?: number })?.demonstration_count
           })
 
           // Real-time monitoring
-          logSync(action.data?.user_id || 'unknown', 'skill_summary', true)
+          logSync((action.data as { user_id?: string })?.user_id || 'unknown', 'skill_summary', true)
 
         } else {
           console.error(`❌ [SyncQueue] Unknown action type: ${action.type}`)
           failedActions.push({ ...action, retries: action.retries + 1 })
         }
 
-      } catch (error: any) {
+      } catch (error) {
         const willRetry = action.retries < 3
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error'
         console.error('❌ [SyncQueue] Action failed:', {
           type: action.type,
           id: action.id.substring(0, 8),
-          error: error.message,
+          error: errorMessage,
           retries: action.retries,
           willRetry
         })
 
         // Real-time monitoring for failures
         const syncType = action.type === 'skill_summary' ? 'skill_summary' : 'career_analytics'
-        logSync(action.data?.user_id || 'unknown', syncType, false, error.message)
+        const userId = typeof action.data?.user_id === 'string' ? action.data.user_id : 'unknown'
+        logSync(userId, syncType, false, errorMessage)
 
         failedActions.push({ ...action, retries: action.retries + 1 })
       }
@@ -264,8 +266,8 @@ export class SyncQueue {
       totalActions: queue.length,
       oldestAction: queue.length > 0 ? Math.min(...queue.map(a => a.timestamp)) : null,
       newestAction: queue.length > 0 ? Math.max(...queue.map(a => a.timestamp)) : null,
-      actionsByMethod: queue.reduce((acc, action) => {
-        acc[action.method] = (acc[action.method] || 0) + 1
+      actionsByMethod: queue.reduce((acc: Record<string, number>, action) => {
+        acc[action.method as string] = (acc[action.method as string] || 0) + 1
         return acc
       }, {} as Record<string, number>),
       averageRetries: queue.length > 0

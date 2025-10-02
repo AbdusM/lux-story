@@ -14,13 +14,13 @@ async function testConnection() {
   console.log('[Supabase Test] Testing connection...')
 
   // Check environment variables
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  const supabaseUrl = process.env.SUPABASE_URL
+  const supabaseKey = process.env.SUPABASE_ANON_KEY
 
   if (!supabaseUrl || !supabaseKey) {
     console.error('❌ Missing environment variables')
-    console.error('   NEXT_PUBLIC_SUPABASE_URL:', supabaseUrl ? '✓' : '✗')
-    console.error('   NEXT_PUBLIC_SUPABASE_ANON_KEY:', supabaseKey ? '✓' : '✗')
+    console.error('   SUPABASE_URL:', supabaseUrl ? '✓' : '✗')
+    console.error('   SUPABASE_ANON_KEY:', supabaseKey ? '✓' : '✗')
     process.exit(1)
   }
 

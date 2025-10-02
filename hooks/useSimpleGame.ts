@@ -1206,6 +1206,7 @@ export function useSimpleGame() {
     // === DURABLE QUEUE: Record journey start milestone ===
     SyncQueue.addToQueue({
       id: generateActionId(),
+      type: 'db_method',
       method: 'recordMilestone',
       args: [gameState.userId, 'journey_start', 'Player began Grand Central Terminus journey'],
       timestamp: Date.now()
@@ -1266,6 +1267,7 @@ export function useSimpleGame() {
     // Guarantees this choice will sync to Supabase even if network fails
     SyncQueue.addToQueue({
       id: generateActionId(),
+      type: 'db_method',
       method: 'recordChoice',
       args: [
         gameState.userId,
@@ -1288,6 +1290,7 @@ export function useSimpleGame() {
     if (validatedChoice.next && validatedChoice.next !== gameState.currentScene) {
       SyncQueue.addToQueue({
         id: generateActionId(),
+        type: 'db_method',
         method: 'recordSceneVisit',
         args: [gameState.userId, validatedChoice.next],
         timestamp: Date.now()
@@ -1299,14 +1302,17 @@ export function useSimpleGame() {
 
     // Generate bridge text if we have a valid next scene
     let bridgeText = ''
-    if (nextScene && nextScene.speaker) {
+    if (nextScene && 'speaker' in nextScene && nextScene.speaker) {
       try {
+        const currentScene = SIMPLE_SCENES[gameState.currentScene as keyof typeof SIMPLE_SCENES]
+        const previousSpeaker = currentScene && 'speaker' in currentScene ? currentScene.speaker : undefined
+
         bridgeText = await getCachedBridge({
           userChoice: validatedChoice.text,
           nextSpeaker: nextScene.speaker.split('(')[0].trim(), // Extract name without title
           context: {
             platform: gameState.currentScene,
-            previousSpeaker: SIMPLE_SCENES[gameState.currentScene as keyof typeof SIMPLE_SCENES]?.speaker
+            previousSpeaker: previousSpeaker
           }
         })
       } catch (error) {
@@ -1333,6 +1339,7 @@ export function useSimpleGame() {
         // Queue pattern update to Supabase
         SyncQueue.addToQueue({
           id: generateActionId(),
+          type: 'db_method',
           method: 'updatePlayerPattern',
           args: [
             gameState.userId,

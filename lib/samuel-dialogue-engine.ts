@@ -152,10 +152,11 @@ export class SamuelDialogueEngine {
 
       return data
 
-    } catch (error: any) {
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error'
       console.error('❌ [SamuelDialogue] Generation failed:', {
         nodeId,
-        error: error.message,
+        error: errorMessage,
         timeMs: Date.now() - startTime
       })
 
@@ -165,7 +166,7 @@ export class SamuelDialogueEngine {
         emotion: 'warm',
         confidence: 0.5,
         generatedAt: Date.now(),
-        error: error.message
+        error: errorMessage
       }
     }
   }
@@ -419,7 +420,7 @@ export async function testSamuelDialogue() {
     ['Helper (Emotional Intelligence)', helperProfile],
     ['Analyzer (Critical Thinking)', analyzerProfile],
     ['Explorer (Creativity)', explorerProfile]
-  ]) {
+  ] as Array<[string, PlayerPersona]>) {
     console.log(`\n--- Testing ${profileName} Profile ---`)
 
     try {

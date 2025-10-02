@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server'
+import fs from 'fs'
+import path from 'path'
 
 export async function POST() {
   try {
     // Simple validation - just check if story.json exists and is valid JSON
-    const fs = require('fs')
-    const path = require('path')
 
     const storyPath = path.join(process.cwd(), 'data', 'story.json')
 
@@ -30,10 +30,11 @@ export async function POST() {
       brokenConnections: 0,
       birminghamReferences: 0
     })
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const err = error as { message?: string }
     return NextResponse.json({
       valid: false,
-      errors: [`Validation error: ${error.message}`],
+      errors: [`Validation error: ${err.message || 'Unknown error'}`],
       warnings: [],
       totalScenes: 0,
       brokenConnections: 0,

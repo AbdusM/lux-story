@@ -75,9 +75,22 @@ export function SimpleGameInterface() {
 }
 
 // Simple insights component
+interface SimpleInsights {
+  primaryInterest?: string
+  engagementLevel: string
+  platformsCount?: number
+  nextSteps?: string[]
+}
+
+interface BirminghamOpportunity {
+  id: string
+  name: string
+  organization: string
+}
+
 function SimpleInsightsDisplay({ insights, birminghamOpportunities }: {
-  insights: any
-  birminghamOpportunities: any[]
+  insights: SimpleInsights
+  birminghamOpportunities: BirminghamOpportunity[]
 }) {
   return (
     <div className="simple-insights">
@@ -104,7 +117,7 @@ function SimpleInsightsDisplay({ insights, birminghamOpportunities }: {
         </div>
       )}
 
-      {insights.nextSteps?.length > 0 && (
+      {insights.nextSteps && insights.nextSteps.length > 0 && (
         <div style={{ marginTop: '1rem' }}>
           <div className="apple-text-body"><strong>Suggested Next Steps:</strong></div>
           {insights.nextSteps.map((step: string, idx: number) => (

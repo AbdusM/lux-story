@@ -13,8 +13,8 @@ config({ path: resolve(process.cwd(), '.env.local') })
 async function verifySchema() {
   console.log('🔍 Verifying Grand Central Terminus Database Schema\n')
 
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  const supabaseUrl = process.env.SUPABASE_URL!
+  const supabaseKey = process.env.SUPABASE_ANON_KEY!
   const supabase = createClient(supabaseUrl, supabaseKey)
 
   // Expected tables (Migration 001)

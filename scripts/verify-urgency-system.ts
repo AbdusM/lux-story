@@ -17,8 +17,8 @@ import { createClient } from '@supabase/supabase-js'
 
 config({ path: resolve(process.cwd(), '.env.local') })
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+const supabaseUrl = process.env.SUPABASE_URL!
+const supabaseKey = process.env.SUPABASE_ANON_KEY!
 
 async function verifyUrgencySystem() {
   console.log('\n' + '='.repeat(60))

@@ -7,9 +7,18 @@
 
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { getLiveChoiceEngine, type ReviewQueueEntry } from '@/lib/live-choice-engine'
-import { getPersonaTracker } from '@/lib/player-persona'
+
+interface Statistics {
+  totalGenerated: number
+  totalApproved?: number
+  totalRejected?: number
+  averageConfidence?: number
+  approvalRate: number
+  pending?: number
+  cachedChoices?: number
+}
 
 interface ChoiceReviewPanelProps {
   isOpen: boolean
@@ -18,23 +27,23 @@ interface ChoiceReviewPanelProps {
 
 export function ChoiceReviewPanel({ isOpen, onClose }: ChoiceReviewPanelProps) {
   const [reviewQueue, setReviewQueue] = useState<ReviewQueueEntry[]>([])
-  const [statistics, setStatistics] = useState<any>({})
+  const [statistics, setStatistics] = useState<Statistics>({ totalGenerated: 0, approvalRate: 0 })
   const [editingText, setEditingText] = useState<Record<string, string>>({})
 
   const liveEngine = getLiveChoiceEngine()
+
+  const loadReviewQueue = useCallback(() => {
+    const pending = liveEngine.getPendingReviews()
+    const stats = liveEngine.getStatistics()
+    setReviewQueue(pending)
+    setStatistics(stats)
+  }, [liveEngine])
 
   useEffect(() => {
     if (isOpen) {
       loadReviewQueue()
     }
-  }, [isOpen])
-
-  const loadReviewQueue = () => {
-    const pending = liveEngine.getPendingReviews()
-    const stats = liveEngine.getStatistics()
-    setReviewQueue(pending)
-    setStatistics(stats)
-  }
+  }, [isOpen, loadReviewQueue])
 
   const handleApprove = (entryId: string) => {
     const editedText = editingText[entryId]
@@ -62,8 +71,8 @@ export function ChoiceReviewPanel({ isOpen, onClose }: ChoiceReviewPanelProps) {
           <div>
             <h2 className="text-xl font-bold">Live Choice Review Queue</h2>
             <p className="text-blue-100 text-sm">
-              {statistics.totalGenerated} generated • {statistics.pending} pending •
-              {Math.round(statistics.approvalRate * 100)}% approval rate
+              {statistics.totalGenerated} generated • {statistics.pending ?? 0} pending •
+              {Math.round((statistics.approvalRate ?? 0) * 100)}% approval rate
             </p>
           </div>
           <button
@@ -188,16 +197,16 @@ export function ChoiceReviewPanel({ isOpen, onClose }: ChoiceReviewPanelProps) {
                 <div>
                   <div className="font-medium text-gray-600">Approval Rate</div>
                   <div className="text-2xl font-bold text-green-600">
-                    {Math.round(statistics.approvalRate * 100)}%
+                    {Math.round((statistics.approvalRate ?? 0) * 100)}%
                   </div>
                 </div>
                 <div>
                   <div className="font-medium text-gray-600">Cached Choices</div>
-                  <div className="text-2xl font-bold text-purple-600">{statistics.cachedChoices}</div>
+                  <div className="text-2xl font-bold text-purple-600">{statistics.cachedChoices ?? 0}</div>
                 </div>
                 <div>
                   <div className="font-medium text-gray-600">Pending Review</div>
-                  <div className="text-2xl font-bold text-orange-600">{statistics.pending}</div>
+                  <div className="text-2xl font-bold text-orange-600">{statistics.pending ?? 0}</div>
                 </div>
               </div>
             </div>

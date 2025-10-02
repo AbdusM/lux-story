@@ -452,3 +452,37 @@
     opacity: 0;
   }
 }
+
+/* Accessibility: Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .platform-warmth-negative-5,
+  .platform-warmth-negative-3,
+  .platform-warmth-0,
+  .platform-warmth-3,
+  .platform-warmth-5,
+  .time-speed-0,
+  .time-speed-0-5,
+  .time-speed-1,
+  .time-speed-2,
+  .helping-environment::before,
+  .analyzing-environment .data-streams,
+  .footprints-visible::after,
+  .helped-here::before,
+  .resonance-level-7,
+  .resonance-level-8,
+  .resonance-level-9,
+  .resonance-level-10,
+  .objects-responsive.building-nearby .tool,
+  .objects-responsive.growth-minded .plant,
+  .station-breathing,
+  .particles-helping,
+  .particles-building,
+  .quiet-hour-active::before {
+    animation: none !important;
+  }
+
+  .objects-responsive .tool,
+  .objects-responsive .plant {
+    transform: none !important;
+  }
+}

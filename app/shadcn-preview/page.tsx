@@ -47,7 +47,7 @@ export default function ShadcnPreview() {
               This is narrator text with italic styling for scene descriptions.
             </Typography>
             <Typography variant="dialogue" font="dialogue">
-              "This is dialogue text with special font family for character speech."
+              &quot;This is dialogue text with special font family for character speech.&quot;
             </Typography>
             <Typography variant="whisper">
               *whispered text with reduced opacity*
@@ -177,10 +177,10 @@ export default function ShadcnPreview() {
         {/* Platform-specific Cards */}
         <div className="space-y-4">
           <Typography variant="h3">Character Cards</Typography>
-          {["samuel", "maya", "devon", "jordan", "you"].map(character => (
+          {(["samuel", "maya", "devon", "jordan", "you"] as const).map(character => (
             <GameCard
               key={character}
-              character={character as any}
+              character={character}
               variant="dialogue"
               animated
             >

@@ -566,8 +566,8 @@ const SingleUserDashboard = () => {
               <div className="space-y-4">
                 {user.skillGaps
                   .sort((a, b) => {
-                    const priorityOrder = { high: 3, medium: 2, low: 1 };
-                    return priorityOrder[b.priority] - priorityOrder[a.priority];
+                    const priorityOrder: Record<string, number> = { high: 3, medium: 2, low: 1 };
+                    return (priorityOrder[b.priority] || 0) - (priorityOrder[a.priority] || 0);
                   })
                   .map((gap, idx) => (
                     <div key={idx} className="p-3 border rounded space-y-2">

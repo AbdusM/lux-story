@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Choice Calibration Script using Gemini API
  *

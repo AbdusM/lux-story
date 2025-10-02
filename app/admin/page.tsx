@@ -21,7 +21,12 @@ export default function AdminPage() {
 
   // Student Journeys state (existing)
   const [userIds, setUserIds] = useState<string[]>([])
-  const [userStats, setUserStats] = useState<Map<string, any>>(new Map())
+  const [userStats, setUserStats] = useState<Map<string, {
+    totalDemonstrations: number
+    topSkill: [string, unknown[]]
+    topCareer?: { matchScore: number }
+    milestones: number
+  }>>(new Map())
   const [journeysLoading, setJourneysLoading] = useState(true)
 
   // Urgency Triage state (NEW)
@@ -57,6 +62,7 @@ export default function AdminPage() {
   // Load urgent students (NEW)
   useEffect(() => {
     fetchUrgentStudents()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [urgencyFilter])
 
   async function fetchUrgentStudents() {
@@ -158,7 +164,7 @@ export default function AdminPage() {
                     {/* Filter Dropdown */}
                     <select
                       value={urgencyFilter}
-                      onChange={(e) => setUrgencyFilter(e.target.value as any)}
+                      onChange={(e) => setUrgencyFilter(e.target.value as 'all' | 'critical' | 'high')}
                       className="px-3 py-1.5 border rounded-md text-sm"
                     >
                       <option value="all">All Urgent Students</option>

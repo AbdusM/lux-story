@@ -1000,18 +1000,12 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         text: "You helped me see emotions as data. Now I can work with them.\n\nI need to call him. But differently this time. No flowchart. Just... me, talking to my dad. Listening for the data I've been filtering out. The pauses. The pain. The love underneath the 'I'm fine.'\n\nWhat if I just... let the conversation be what it needs to be?",
         emotion: 'ready',
-        variation_id: 'crossroads_reframe',
-        requiredState: {
-          hasKnowledgeFlags: ['devon_reframe_insight']
-        }
+        variation_id: 'crossroads_reframe'
       },
       {
         text: "You helped me integrate logic and heart. They're not enemies.\n\nI need to call him. But differently this time. Not logic OR emotion—both. Just... me, talking to my dad. Present with all of it. The pauses. The pain. The love underneath the 'I'm fine.'\n\nWhat if I just... let the conversation be what it needs to be?",
         emotion: 'ready',
-        variation_id: 'crossroads_integration',
-        requiredState: {
-          hasKnowledgeFlags: ['devon_integration_insight']
-        }
+        variation_id: 'crossroads_integration'
       }
     ],
     requiredState: {

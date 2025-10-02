@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { CheckCircle2, Download } from 'lucide-react'
@@ -48,7 +48,7 @@ export default function TestDataPage() {
           tracker.recordSkillDemonstration(
             demo.scene,
             demo.choice,
-            demo.skills as any,
+            demo.skills as ('communication' | 'emotionalIntelligence' | 'creativity' | 'problemSolving' | 'criticalThinking' | 'leadership' | 'collaboration' | 'adaptability' | 'digitalLiteracy' | 'culturalCompetence')[],
             demo.context
           )
         })
