@@ -395,12 +395,11 @@ export function sortSkills(skills: SortableSkill[], mode: SortMode): SortableSki
  */
 export function patternToSortable(pattern: SkillPattern): SortableSkill {
   return {
+    ...pattern, // Spread first to preserve all properties
     skillName: pattern.skillName,
     demonstrationCount: pattern.totalDemonstrations,
     lastDemonstrated: pattern.lastDemonstrated,
-    dominantSceneType: pattern.sceneTypes[0]?.type,
-    // Preserve all pattern properties
-    ...pattern
+    dominantSceneType: pattern.sceneTypes[0]?.type
   }
 }
 
