@@ -46,7 +46,7 @@ export interface DialogueNode {
  */
 export interface DialogueContent {
   text: string
-  emotion?: 'neutral' | 'happy' | 'sad' | 'anxious' | 'confident' | 'thoughtful'
+  emotion?: string // Emotion tag for the dialogue (e.g., 'neutral', 'anxious', 'hopeful', 'vulnerable', etc.)
   variation_id: string // For tracking which variation was shown
 }
 

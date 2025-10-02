@@ -72,7 +72,7 @@ const AUDIT_RULES: AuditRule[] = [
 
       // Search for localhost:XXXX patterns
       const result = execSync(
-        `grep -rn "localhost:[0-9]\\+" --include="*.ts" --include="*.tsx" --include="*.js" --include="*.json" . | grep -v node_modules | grep -v .next || true`,
+        `grep -rn "localhost:[0-9]\\+" --include="*.ts" --include="*.tsx" --include="*.js" --include="*.json" --exclude-dir=node_modules --exclude-dir=.next --exclude-dir=dist --exclude-dir=out --exclude-dir=coverage --exclude-dir=.vercel . || true`,
         { encoding: 'utf-8' }
       )
 
@@ -111,7 +111,7 @@ const AUDIT_RULES: AuditRule[] = [
 
       // Check for NEXT_PUBLIC_ prefix on sensitive variables
       const result = execSync(
-        `grep -rn "NEXT_PUBLIC_.*\\(TOKEN\\|KEY\\|SECRET\\|PASSWORD\\)" --include="*.ts" --include="*.tsx" --include="*.js" --include=".env*" . | grep -v node_modules || true`,
+        `grep -rn "NEXT_PUBLIC_.*\\(TOKEN\\|KEY\\|SECRET\\|PASSWORD\\)" --include="*.ts" --include="*.tsx" --include="*.js" --include=".env*" --exclude-dir=node_modules --exclude-dir=.next --exclude-dir=dist --exclude-dir=out --exclude-dir=coverage --exclude-dir=.vercel . || true`,
         { encoding: 'utf-8' }
       )
 
@@ -256,7 +256,7 @@ const AUDIT_RULES: AuditRule[] = [
 
       // Find all API base URL definitions
       const result = execSync(
-        `grep -rn "API_BASE\\|apiBase\\|baseUrl\\|baseURL" --include="*.ts" --include="*.tsx" --include="*.js" . | grep -v node_modules | grep -v .next || true`,
+        `grep -rn "API_BASE\\|apiBase\\|baseUrl\\|baseURL" --include="*.ts" --include="*.tsx" --include="*.js" --exclude-dir=node_modules --exclude-dir=.next --exclude-dir=dist --exclude-dir=out --exclude-dir=coverage --exclude-dir=.vercel . || true`,
         { encoding: 'utf-8' }
       )
 
@@ -307,7 +307,7 @@ const AUDIT_RULES: AuditRule[] = [
 
       // Search for potential secrets (long alphanumeric strings)
       const result = execSync(
-        `grep -rn "\\(api.*key\\|secret\\|token\\|password\\).*=.*['\\"\\x60][A-Za-z0-9_-]\\{32,\\}['\\"\\x60]" --include="*.ts" --include="*.tsx" --include="*.js" -i . | grep -v node_modules | grep -v .next | grep -v ".env" || true`,
+        `grep -rn "\\(api.*key\\|secret\\|token\\|password\\).*=.*['\\"\\x60][A-Za-z0-9_-]\\{32,\\}['\\"\\x60]" --include="*.ts" --include="*.tsx" --include="*.js" --exclude=".env*" --exclude-dir=node_modules --exclude-dir=.next --exclude-dir=dist --exclude-dir=out --exclude-dir=coverage --exclude-dir=.vercel -i . || true`,
         { encoding: 'utf-8' }
       )
 
@@ -387,7 +387,7 @@ const AUDIT_RULES: AuditRule[] = [
 
       // Check for relative imports that could use aliases
       const result = execSync(
-        `grep -rn "from ['\\"\\x60]\\.\\./" --include="*.ts" --include="*.tsx" . | grep -v node_modules | grep -v .next || true`,
+        `grep -rn "from ['\\"\\x60]\\.\\./" --include="*.ts" --include="*.tsx" --exclude-dir=node_modules --exclude-dir=.next --exclude-dir=dist --exclude-dir=out --exclude-dir=coverage --exclude-dir=.vercel . || true`,
         { encoding: 'utf-8' }
       )
 
