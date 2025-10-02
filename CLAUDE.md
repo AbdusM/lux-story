@@ -11,11 +11,14 @@
 - ✅ Agent 0 (Infrastructure): Pattern recognition + skill sorting - COMPLETE
 - ✅ Agent 1 (Data/Evidence): Evidence tab redesign - COMPLETE
 - ✅ Agent 2 (Content/Copy): Narrative/text improvements - COMPLETE
-- 📅 Agent 3-6 (Tab Engineers): Ready to begin (Agent 0 complete)
+- ✅ Agent 3 (Skills Tab): Consolidation + recency indicators - COMPLETE
+- ✅ Agent 4 (Careers Tab): Gap prioritization + color-coding - COMPLETE
+- ✅ Agent 5 (Gaps/Action): Development paths + Birmingham opportunities - COMPLETE
+- ✅ Agent 6 (Navigation): Breadcrumbs + enhanced tab styling - COMPLETE
 - ✅ Agent 7 (Visual Design): Typography/color system - COMPLETE
 - ✅ Agent 8 (Components): Button/interaction polish - COMPLETE
 - ✅ Agent 9 (Mobile/A11y): Responsive + WCAG - COMPLETE
-- 📅 Agent 10 (Advanced): Deferred to post-launch
+- 📅 Agent 10 (Advanced): Deferred to post-launch (deep linking, modals, calendars)
 
 **See:** Section "Admin Dashboard Agent Plan" below for complete details
 
@@ -579,68 +582,86 @@ For recent work and audits, see:
 
 ---
 
-### **Agent 3: Skills Tab Engineer (1.5 days) - WAITS FOR AGENT 0**
+### **Agent 3: Skills Tab Engineer (1.5 days) - COMPLETE ✅**
 **Issues:** 4A, 5A, 12, 34
-**Dependencies:** Agent 0 (pattern recognition, sorting)
+**Dependencies:** Agent 0 (pattern recognition, sorting) ✅
 **Deliverables:**
-- Consolidate Skills + 2030 Skills tabs into single view
-- Demonstrations collapsed by default (expand to see quotes)
-- Recency indicators: green (<3 days), yellow (3-7 days), gray (>7 days)
-- Table scannability improvements (tighter rows, bold skill names)
+- ✅ Consolidated 7 tabs → 6 tabs (Skills + 2030 Skills merged)
+- ✅ Demonstrations collapsed by default with expandable headers
+- ✅ Recency indicators: 🟢 <3 days, 🟡 3-7 days, ⚪ >7 days
+- ✅ Table scannability improvements (space-y-2, bold names, text-xs)
+- ✅ Pattern recognition integrated (scene types, character context)
+- ✅ 4 sort modes: by_count, alphabetical, by_recency, by_scene_type
 
 **Validation:**
-- ✅ Single Skills tab with WEF 2030 section integrated
-- ✅ Demonstrations expandable with chevron
-- ✅ Recency color-coded dots visible
+- ✅ Single Skills tab with WEF 2030 section integrated (lines 685-917)
+- ✅ Demonstrations expandable with ChevronDown icon
+- ✅ Recency color-coded dots visible with tooltips
+- ✅ analyzeSkillPatterns() and sortSkillPatterns() integrated
+- ✅ Birmingham career connections shown in WEF section
 
 ---
 
-### **Agent 4: Careers Tab Engineer (1.5 days) - WAITS FOR AGENT 0**
+### **Agent 4: Careers Tab Engineer (1.5 days) - COMPLETE ✅**
 **Issues:** 5B, 15, 16, 17, 18
-**Dependencies:** Agent 0 (pattern recognition)
+**Dependencies:** Agent 0 (pattern recognition) ✅
 **Deliverables:**
-- Show gaps only by default (hide met requirements unless toggled)
-- Inline match explanations (not separate boxes)
-- Color-coded requirements: red (0 demos), yellow (1-2 demos), green (3+ demos)
-- Static Birmingham employer badges (defer modals to Agent 10)
-- Directive readiness badges ("Build This Skill", "Strong Match!")
+- ✅ Gaps shown prominently first, met requirements collapsible
+- ✅ Inline match explanations: "87% match - Strong fit, needs digital literacy"
+- ✅ Color-coded requirements with backgrounds:
+  - Red (bg-red-50): 0 demonstrations - critical gap
+  - Yellow (bg-yellow-50): 1-2 demonstrations - developing
+  - Green (bg-green-50): 3+ demonstrations - strong
+- ✅ Static Birmingham employer badges maintained (modals deferred to Agent 10)
+- ✅ Directive readiness badges:
+  - "Strong Match!" (green) - near_ready + 0 gaps
+  - "Good Foundation" (blue) - ≤1 gap
+  - "Build This Skill" (orange) - multiple gaps
 
 **Validation:**
-- ✅ Gaps shown first, met requirements collapsed
-- ✅ Color-coded skill requirements
-- ✅ Employer badges visible (static text)
+- ✅ Gaps sorted by size and shown first (lines 829-927)
+- ✅ Color-coded skill requirements with demo counts
+- ✅ Employer badges visible (lines 1013-1019)
+- ✅ getDirectiveBadge() and getMatchExplanation() helpers implemented
+- ✅ ChevronRight toggle for met requirements
 
 ---
 
-### **Agent 5: Gaps & Action Engineer (2 days) - WAITS FOR AGENT 0**
+### **Agent 5: Gaps & Action Engineer (2 days) - COMPLETE ✅**
 **Issues:** 25, 26, 4B, 27, 28, 30
-**Dependencies:** Agent 0 (pattern recognition)
+**Dependencies:** Agent 0 (pattern recognition) ✅
 **Deliverables:**
-- "Focus on These First" section on Gaps tab (3 highest-priority gaps)
-- Development paths with scene names ("Try Scene 12: Hospital Volunteer")
-- Action tab mini-summaries for Skills/Careers/Gaps
-- Specific conversation starters with evidence quotes
+- ✅ "Focus on These First" priority section (top 3 gaps with Alert component)
+- ✅ Development paths with scene mapping ("Maya Family Meeting", "Healthcare Tech scenarios")
+- ✅ Cross-tab mini-summaries linking Skills/Careers/Gaps data
+- ✅ Evidence-based conversation starters with actual student choice quotes
+- ✅ "This Week's Birmingham Opportunities" section mapping gaps to local resources
+- ✅ Specific contact info and action items (YMCA, Innovation Depot, etc.)
 
 **Validation:**
-- ✅ Top 3 gaps highlighted with specific development paths
-- ✅ Action tab references other tabs with summaries
-- ✅ Conversation starters include real student quotes
+- ✅ Top 3 gaps highlighted with development paths (implementation ready)
+- ✅ Action tab references other tabs with context
+- ✅ Conversation starters use keySkillMoments quotes
+- ✅ Birmingham opportunities include schedules and contact details
+- ✅ Scene suggestions make replay actionable
 
 ---
 
-### **Agent 6: Navigation Engineer (1 day) - WAITS FOR AGENT 0**
+### **Agent 6: Navigation Engineer (1 day) - COMPLETE ✅**
 **Issues:** 6A, 6B
-**Dependencies:** Agent 0 (for cross-tab context)
+**Dependencies:** Agent 0 (for cross-tab context) ✅
 **Deliverables:**
-- Breadcrumbs showing "All Students > Jordan Davis > Skills Tab"
-- Active tab visual state (not just underline)
-- "Next: View Career Matches" suggestions at tab bottom
-- Cross-tab text references ("See Careers tab for matches")
+- ✅ Breadcrumbs showing "All Students > Jordan Davis > Skills Tab" (dynamic with activeTab state)
+- ✅ Active tab visual state (blue-50 background + blue-600 top border + semibold font)
+- ✅ "Next: View Career Matches" suggestions at tab bottom (ArrowRight icon)
+- ✅ Cross-tab text references ("See Careers tab for matches") integrated inline
+- ✅ Helper functions: getTabLabel(), getNextTab() for dynamic navigation
 
 **Validation:**
-- ✅ Breadcrumbs functional
-- ✅ Active tab has distinct visual treatment
-- ✅ Navigation suggestions contextually relevant
+- ✅ Breadcrumbs functional with ChevronRight separators
+- ✅ Active tab has distinct visual treatment (bg-blue-50, border-t-2, font-semibold)
+- ✅ Navigation suggestions contextually relevant with full-width ghost buttons
+- ✅ Cross-tab references in CardDescription components across all tabs
 
 ---
 
