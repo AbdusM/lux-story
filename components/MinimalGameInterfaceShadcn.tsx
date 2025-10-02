@@ -274,7 +274,8 @@ export function MinimalGameInterfaceShadcn() {
 
     // Smart chunking: split at sentence boundaries only
     // This ensures grammatical coherence while managing cognitive load
-    const MAX_CHUNK_SIZE = 200  // About 2-3 sentences
+    // CALIBRATION: Tuned for max-w-xl (576px ≈ 65 chars/line)
+    const MAX_CHUNK_SIZE = 170  // About 2-3 sentences at 65ch width
     const MIN_CHUNK_SIZE = 80   // At least one full sentence
 
     // Split by sentence-ending punctuation, keeping the punctuation
@@ -377,7 +378,7 @@ export function MinimalGameInterfaceShadcn() {
               <GameCard
                 variant="narration"
                 platform={getCurrentPlatform()}
-                className="mb-8 max-w-2xl mx-auto"
+                className="mb-8 max-w-xl mx-auto"
                 glow
                 animated
               >
@@ -438,7 +439,7 @@ export function MinimalGameInterfaceShadcn() {
 
             {/* Clean Progressive Dialogue System - Minimal Apple Style */}
             {game.messages && game.messages.length > 0 && (
-              <div className="mb-6 max-w-2xl mx-auto">
+              <div className="mb-6 max-w-xl mx-auto">
                 {/* Single clean container */}
                 <div className={cn(
                   "bg-white dark:bg-slate-900",
@@ -456,7 +457,7 @@ export function MinimalGameInterfaceShadcn() {
 
                   {/* Dialogue text with better line height and max width */}
                   <div className={cn(
-                    "text-[17px] leading-[1.6]",
+                    "text-[17px] leading-[1.7]",
                     "text-slate-900 dark:text-slate-100",
                     "max-w-[65ch]",
                     currentSpeaker === 'Narrator' && "text-center italic text-slate-600 dark:text-slate-400"
@@ -474,7 +475,7 @@ export function MinimalGameInterfaceShadcn() {
             )}
 
             {/* Clean Controls: Continue button OR choices */}
-            <div className="max-w-2xl mx-auto">
+            <div className="max-w-xl mx-auto">
               {/* Show Continue button for dialogue - matches choice style exactly */}
               {isDialogue && (!isLastChunk || (isLastChunk && !hasChoices)) && chunks.length > 1 && (
                 <div className="mb-6">
