@@ -65,6 +65,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Target, TrendingUp, Briefcase, Lightbulb, CheckCircle2, AlertTriangle, RefreshCw, Award, BookOpen, Building2, AlertCircle, Users, GraduationCap, ChevronDown } from 'lucide-react';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import type { SkillProfile } from '@/lib/skill-profile-adapter';
 import { ExportButton } from '@/components/admin/ExportButton';
 import { AdvisorBriefingButton } from '@/components/admin/AdvisorBriefingButton';
@@ -929,29 +930,42 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
 
         {/* EVIDENCE TAB - Scientific frameworks and outcomes */}
         <TabsContent value="evidence" className="space-y-4">
-          {/* AGENT 1: Research/Family Meeting Mode Toggle (Issue 5C) */}
-          <div className="flex items-center justify-between bg-gray-50 p-3 rounded-lg border">
-            <div className="flex items-center gap-2">
-              {evidenceMode === 'family' ? (
-                <Users className="w-5 h-5 text-purple-600" />
-              ) : (
-                <GraduationCap className="w-5 h-5 text-blue-600" />
-              )}
-              <span className="font-medium text-sm">
-                {evidenceMode === 'family' ? 'Family Meeting Mode' : 'Research Mode'}
-              </span>
-              <Badge variant="outline" className="text-xs">
-                {evidenceMode === 'family' ? 'Plain English' : 'Scientific Terms'}
-              </Badge>
-            </div>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setEvidenceMode(evidenceMode === 'family' ? 'research' : 'family')}
-              className="text-xs"
+          {/* shadcn RadioGroup - Better semantics & accessibility (Issue 5C) */}
+          <div className="bg-gray-50 p-4 rounded-lg border space-y-3">
+            <p className="text-sm font-medium text-gray-700">Select View Mode:</p>
+            <RadioGroup
+              value={evidenceMode}
+              onValueChange={(value) => setEvidenceMode(value as 'research' | 'family')}
+              className="flex flex-col gap-3"
             >
-              Switch to {evidenceMode === 'family' ? 'Research' : 'Family'} Mode
-            </Button>
+              <div className="flex items-center space-x-3 p-3 rounded-md hover:bg-gray-100 transition-colors cursor-pointer">
+                <RadioGroupItem value="family" id="mode-family" />
+                <label htmlFor="mode-family" className="flex items-center gap-2 cursor-pointer flex-1">
+                  <Users className="w-5 h-5 text-purple-600" />
+                  <div className="flex-1">
+                    <span className="text-sm font-medium block">Family Meeting Mode</span>
+                    <span className="text-xs text-gray-600">Plain English explanations</span>
+                  </div>
+                  {evidenceMode === 'family' && (
+                    <Badge variant="default" className="text-xs">Active</Badge>
+                  )}
+                </label>
+              </div>
+
+              <div className="flex items-center space-x-3 p-3 rounded-md hover:bg-gray-100 transition-colors cursor-pointer">
+                <RadioGroupItem value="research" id="mode-research" />
+                <label htmlFor="mode-research" className="flex items-center gap-2 cursor-pointer flex-1">
+                  <GraduationCap className="w-5 h-5 text-blue-600" />
+                  <div className="flex-1">
+                    <span className="text-sm font-medium block">Research Mode</span>
+                    <span className="text-xs text-gray-600">Scientific terminology</span>
+                  </div>
+                  {evidenceMode === 'research' && (
+                    <Badge variant="default" className="text-xs">Active</Badge>
+                  )}
+                </label>
+              </div>
+            </RadioGroup>
           </div>
 
           {/* DATA SOURCE INDICATOR - Agent 1: Sticky positioning (Issue 4C) */}

@@ -11,6 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Users, TrendingUp, Award, ArrowRight, AlertTriangle, RefreshCw } from 'lucide-react'
 import type { UrgentStudent } from '@/lib/types/admin'
 import { formatUserIdShort, formatUserIdRelative } from '@/lib/format-user-id'
@@ -164,17 +165,21 @@ export default function AdminPage() {
                     </CardDescription>
                   </div>
                   <div className="flex items-center gap-2">
-                    {/* Filter Dropdown */}
-                    <select
+                    {/* shadcn Select Component - Better accessibility & UX */}
+                    <Select
                       value={urgencyFilter}
-                      onChange={(e) => setUrgencyFilter(e.target.value as 'all' | 'critical' | 'high')}
-                      className="px-3 py-1.5 border rounded-md text-sm"
+                      onValueChange={(value) => setUrgencyFilter(value as 'all' | 'critical' | 'high' | 'all-students')}
                     >
-                      <option value="all">All Urgent Students</option>
-                      <option value="all-students">📊 All Students (includes non-urgent)</option>
-                      <option value="critical">Critical Only</option>
-                      <option value="high">High + Critical</option>
-                    </select>
+                      <SelectTrigger className="w-[280px] h-10">
+                        <SelectValue placeholder="Filter students by urgency" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">All Urgent Students</SelectItem>
+                        <SelectItem value="all-students">📊 All Students (includes non-urgent)</SelectItem>
+                        <SelectItem value="critical">🔴 Critical Only</SelectItem>
+                        <SelectItem value="high">🟠 High + Critical</SelectItem>
+                      </SelectContent>
+                    </Select>
 
                     {/* Recalculate Button */}
                     <Button
