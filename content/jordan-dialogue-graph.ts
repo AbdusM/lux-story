@@ -234,7 +234,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'jordan_job3_ask_growth',
         text: "Where did the graphic design lead?",
-        nextNodeId: 'jordan_job_reveal_4',
+        nextNodeId: 'jordan_pattern_acknowledgment',
         pattern: 'exploring',
         consequence: {
           characterId: 'jordan',
@@ -245,7 +245,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'jordan_job3_validate_learning',
         text: "Teaching yourself a whole new skill from scratch takes real discipline.",
-        nextNodeId: 'jordan_job_reveal_4',
+        nextNodeId: 'jordan_pattern_acknowledgment',
         pattern: 'helping',
         consequence: {
           characterId: 'jordan',
@@ -256,7 +256,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'jordan_job3_pattern_skills',
         text: "Skills like puzzle pieces—what's the picture?",
-        nextNodeId: 'jordan_job_reveal_4',
+        nextNodeId: 'jordan_pattern_acknowledgment',
         pattern: 'analytical',
         consequence: {
           characterId: 'jordan',
@@ -266,6 +266,26 @@ export const jordanDialogueNodes: DialogueNode[] = [
       }
     ],
     tags: ['job_revelation', 'jordan_arc']
+  },
+
+  // ============= PATTERN ACKNOWLEDGMENT: Jordan notices player engagement =============
+  {
+    nodeId: 'jordan_pattern_acknowledgment',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: "*She pauses, noticing your attentiveness*\n\nYou're really following along. Most people zone out by job three—eyes glaze over, polite nods. But you're actually listening.\n\nThat means a lot. Thank you.",
+      emotion: 'appreciative',
+      variation_id: 'jordan_acknowledgment_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'jordan_continue_jobs',
+        text: "(Continue)",
+        nextNodeId: 'jordan_job_reveal_4',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['engagement', 'jordan_arc']
   },
 
   // ============= JOB REVEAL 4: Marketing Firm (Trust 5) =============
