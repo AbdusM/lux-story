@@ -634,13 +634,13 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
         <TabsContent value="urgency" className="space-y-4">
           <Card>
             <CardHeader>
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
-                  <CardTitle className="flex items-center gap-2">
+                  <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
                     <AlertTriangle className="w-5 h-5 text-orange-500" />
                     Intervention Priority
                   </CardTitle>
-                  <CardDescription>
+                  <CardDescription className="text-sm sm:text-base">
                     Your intervention priority with transparent narrative justification
                   </CardDescription>
                 </div>
@@ -648,7 +648,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                   onClick={handleRecalculate}
                   disabled={recalculating}
                   size="sm"
-                  className="gap-2"
+                  className="gap-2 min-h-[44px] w-full sm:w-auto"
                 >
                   <RefreshCw className={`w-4 h-4 ${recalculating ? 'animate-spin' : ''}`} />
                   Recalculate
@@ -666,17 +666,17 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                 </div>
               ) : !urgencyData ? (
                 <div className="text-center py-12 space-y-4">
-                  <p className="text-gray-600">No urgency data available for you yet.</p>
+                  <p className="text-gray-600 text-sm sm:text-base">No urgency data available for you yet.</p>
                   <p className="text-sm text-gray-500">
                     Click "Recalculate" to generate your urgency score.
                   </p>
                 </div>
               ) : (
                 <div className="space-y-6">
-                  {/* Urgency Level Badge and Score */}
-                  <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                  {/* Urgency Level Badge and Score - Mobile optimized */}
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 sm:p-6 bg-gray-50 rounded-lg">
                     <div>
-                      <p className="text-sm text-gray-600 mb-1">Your Priority Level</p>
+                      <p className="text-sm sm:text-base text-gray-600 mb-2">Your Priority Level</p>
                       <Badge
                         className={
                           urgencyData.urgencyLevel === 'critical' ? 'bg-red-100 text-red-800' :
@@ -689,67 +689,67 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                         {urgencyData.urgencyLevel?.toUpperCase() || 'PENDING'}
                       </Badge>
                     </div>
-                    <div className="text-right">
-                      <p className="text-sm text-gray-600 mb-1">Your Priority Score</p>
-                      <p className="text-3xl font-bold text-gray-900">
+                    <div className="text-center sm:text-right">
+                      <p className="text-sm sm:text-base text-gray-600 mb-2">Your Priority Score</p>
+                      <p className="text-3xl sm:text-4xl font-bold text-gray-900">
                         {Math.round((urgencyData.urgencyScore || 0) * 100)}%
                       </p>
                     </div>
                   </div>
 
-                  {/* Glass Box Narrative - The Hero Element */}
-                  <div className="p-4 bg-blue-50 border-l-4 border-blue-400 rounded">
-                    <h4 className="text-sm font-semibold text-gray-700 mb-2">Your Priority Explanation:</h4>
-                    <p className="text-sm italic text-gray-700 leading-relaxed">
+                  {/* Glass Box Narrative - The Hero Element - Mobile optimized */}
+                  <div className="p-4 sm:p-6 bg-blue-50 border-l-4 border-blue-400 rounded-lg">
+                    <h4 className="text-sm sm:text-base font-semibold text-gray-700 mb-3">Your Priority Explanation:</h4>
+                    <p className="text-sm sm:text-base italic text-gray-700 leading-relaxed">
                       {urgencyData.urgencyNarrative || "No narrative generated yet."}
                     </p>
                   </div>
 
                   {/* Contributing Factors with Progress Bars */}
                   <div className="space-y-4">
-                    <h4 className="text-sm font-semibold text-gray-700">Your Contributing Factors:</h4>
+                    <h4 className="text-sm sm:text-base font-semibold text-gray-700">Your Contributing Factors:</h4>
 
-                    {/* Disengagement (40% weight) */}
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="font-medium">Disengagement</span>
-                        <span className="text-gray-600">40% weight • {Math.round((urgencyData.disengagementScore || 0) * 100)}%</span>
+                    {/* Disengagement (40% weight) - Mobile optimized */}
+                    <div className="space-y-3 p-3 bg-gray-50 rounded-lg">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
+                        <span className="font-medium text-sm sm:text-base">Disengagement</span>
+                        <span className="text-gray-600 text-xs sm:text-sm">40% weight • {Math.round((urgencyData.disengagementScore || 0) * 100)}%</span>
                       </div>
-                      <Progress value={(urgencyData.disengagementScore || 0) * 100} className="h-2" />
+                      <Progress value={(urgencyData.disengagementScore || 0) * 100} className="h-3" />
                     </div>
 
-                    {/* Confusion (30% weight) */}
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="font-medium">Confusion</span>
-                        <span className="text-gray-600">30% weight • {Math.round((urgencyData.confusionScore || 0) * 100)}%</span>
+                    {/* Confusion (30% weight) - Mobile optimized */}
+                    <div className="space-y-3 p-3 bg-gray-50 rounded-lg">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
+                        <span className="font-medium text-sm sm:text-base">Confusion</span>
+                        <span className="text-gray-600 text-xs sm:text-sm">30% weight • {Math.round((urgencyData.confusionScore || 0) * 100)}%</span>
                       </div>
-                      <Progress value={(urgencyData.confusionScore || 0) * 100} className="h-2" />
+                      <Progress value={(urgencyData.confusionScore || 0) * 100} className="h-3" />
                     </div>
 
-                    {/* Stress (20% weight) */}
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="font-medium">Stress</span>
-                        <span className="text-gray-600">20% weight • {Math.round((urgencyData.stressScore || 0) * 100)}%</span>
+                    {/* Stress (20% weight) - Mobile optimized */}
+                    <div className="space-y-3 p-3 bg-gray-50 rounded-lg">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
+                        <span className="font-medium text-sm sm:text-base">Stress</span>
+                        <span className="text-gray-600 text-xs sm:text-sm">20% weight • {Math.round((urgencyData.stressScore || 0) * 100)}%</span>
                       </div>
-                      <Progress value={(urgencyData.stressScore || 0) * 100} className="h-2" />
+                      <Progress value={(urgencyData.stressScore || 0) * 100} className="h-3" />
                     </div>
 
-                    {/* Isolation (10% weight) */}
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="font-medium">Isolation</span>
-                        <span className="text-gray-600">10% weight • {Math.round((urgencyData.isolationScore || 0) * 100)}%</span>
+                    {/* Isolation (10% weight) - Mobile optimized */}
+                    <div className="space-y-3 p-3 bg-gray-50 rounded-lg">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
+                        <span className="font-medium text-sm sm:text-base">Isolation</span>
+                        <span className="text-gray-600 text-xs sm:text-sm">10% weight • {Math.round((urgencyData.isolationScore || 0) * 100)}%</span>
                       </div>
-                      <Progress value={(urgencyData.isolationScore || 0) * 100} className="h-2" />
+                      <Progress value={(urgencyData.isolationScore || 0) * 100} className="h-3" />
                     </div>
                   </div>
 
-                  {/* Activity Summary */}
-                  <div className="pt-4 border-t space-y-2">
-                    <h4 className="text-sm font-semibold text-gray-700">Activity Summary:</h4>
-                    <div className="grid grid-cols-2 gap-4 text-sm">
+                  {/* Activity Summary - Mobile optimized */}
+                  <div className="pt-4 border-t space-y-3">
+                    <h4 className="text-sm sm:text-base font-semibold text-gray-700">Activity Summary:</h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm sm:text-base">
                       <div>
                         <p className="text-gray-600">Last Activity</p>
                         <p className="font-medium">
@@ -776,14 +776,14 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                     </div>
                   </div>
 
-                  {/* High/Critical Alert */}
+                  {/* High/Critical Alert - Mobile optimized */}
                   {urgencyData.urgencyLevel && ['high', 'critical'].includes(urgencyData.urgencyLevel) && (
-                    <div className="p-4 bg-red-50 border-l-4 border-red-500 rounded">
-                      <div className="flex items-start gap-2">
-                        <AlertTriangle className="w-5 h-5 text-red-600 mt-0.5" />
+                    <div className="p-4 sm:p-6 bg-red-50 border-l-4 border-red-500 rounded-lg">
+                      <div className="flex items-start gap-3">
+                        <AlertTriangle className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" />
                         <div>
-                          <h4 className="font-semibold text-red-900">Support Available</h4>
-                          <p className="text-sm text-red-700 mt-1">
+                          <h4 className="font-semibold text-red-900 text-sm sm:text-base">Support Available</h4>
+                          <p className="text-sm sm:text-base text-red-700 mt-2 leading-relaxed">
                             You show {urgencyData.urgencyLevel} priority indicators.
                             Consider reaching out for support or guidance.
                           </p>
