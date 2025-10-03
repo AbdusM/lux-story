@@ -1465,7 +1465,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                           </Badge>
                         </div>
                         <div className="flex flex-wrap items-center gap-2">
-                          <Badge variant="default" className="text-xs">{evidenceData.frameworks.skillEvidence.uniqueSkills} Skills Tracked</Badge>
+                          <Badge variant="default" className="text-xs">{Math.max(0, evidenceData.frameworks.skillEvidence.uniqueSkills)} Skills Tracked</Badge>
                           <DataSourceBadge
                             hasRealData={evidenceData.frameworks.skillEvidence.hasRealData}
                             minDemonstrations={10}
@@ -1485,13 +1485,13 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                       <div className="bg-blue-50 p-3 sm:p-4 rounded-lg">
                         <p className="font-medium mb-2 text-sm sm:text-base">Your Progress:</p>
                         <div className="space-y-2 text-xs sm:text-sm">
-                          <p>• Total Demonstrations: <strong>{evidenceData.frameworks.skillEvidence.totalDemonstrations}</strong></p>
-                          <p>• Unique Skills: <strong>{evidenceData.frameworks.skillEvidence.uniqueSkills}</strong></p>
-                          {evidenceData.frameworks.skillEvidence.skillBreakdown.slice(0, 3).map((skill: any) => (
+                          <p>• Total Demonstrations: <strong>{Math.max(0, evidenceData.frameworks.skillEvidence.totalDemonstrations)}</strong></p>
+                          <p>• Unique Skills: <strong>{Math.max(0, evidenceData.frameworks.skillEvidence.uniqueSkills)}</strong></p>
+                          {evidenceData.frameworks.skillEvidence.skillBreakdown?.slice(0, 3).map((skill: any) => (
                             <p key={skill.skill}>
-                              • {skill.skill}: {skill.demonstrations} demonstrations
+                              • {skill.skill || 'Unknown Skill'}: {Math.max(0, skill.demonstrations || 0)} demonstrations
                             </p>
-                          ))}
+                          )) || <p>• No skill data available yet</p>}
                         </div>
                       </div>
                     </CardContent>
@@ -1508,7 +1508,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                           </Badge>
                         </div>
                         <div className="flex flex-wrap items-center gap-2">
-                          <Badge variant="default" className="text-xs">{evidenceData.frameworks.careerReadiness.exploredCareers} Careers Explored</Badge>
+                          <Badge variant="default" className="text-xs">{Math.max(0, evidenceData.frameworks.careerReadiness.exploredCareers)} Careers Explored</Badge>
                           <DataSourceBadge
                             hasRealData={evidenceData.frameworks.careerReadiness.hasRealData}
                             minDemonstrations={1}
@@ -1531,13 +1531,13 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                           {evidenceData.frameworks.careerReadiness.topMatch ? (
                             <>
                               <p>• Top Match: <strong>{evidenceData.frameworks.careerReadiness.topMatch.career_name}</strong></p>
-                              <p>• Match Score: <strong>{Math.round((evidenceData.frameworks.careerReadiness.topMatch.match_score || 0) * 100)}%</strong></p>
+                              <p>• Match Score: <strong>{Math.max(0, Math.min(100, Math.round((evidenceData.frameworks.careerReadiness.topMatch.match_score || 0) * 100)))}%</strong></p>
                               <p>• Readiness: <strong>{evidenceData.frameworks.careerReadiness.topMatch.readiness_level}</strong></p>
                             </>
                           ) : (
                             <p>• Discovering career paths - keep exploring!</p>
                           )}
-                          <p>• Birmingham Opportunities: <strong>{evidenceData.frameworks.careerReadiness.birminghamOpportunities.length}</strong></p>
+                          <p>• Birmingham Opportunities: <strong>{Math.max(0, evidenceData.frameworks.careerReadiness.birminghamOpportunities?.length || 0)}</strong></p>
                         </div>
                       </div>
                     </CardContent>
@@ -1574,11 +1574,11 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                       <div className="bg-blue-50 p-3 sm:p-4 rounded-lg">
                         <p className="font-medium mb-2 text-sm sm:text-base">Your Patterns:</p>
                         <div className="space-y-2 text-xs sm:text-sm">
-                          <p>• Pattern Consistency: <strong>{Math.round((evidenceData.frameworks.patternRecognition.patternConsistency || 0) * 100)}%</strong></p>
-                          <p>• Total Choices: <strong>{evidenceData.frameworks.patternRecognition.totalChoices}</strong></p>
-                          {evidenceData.frameworks.patternRecognition.behavioralTrends.map((trend: string, i: number) => (
-                            <p key={i}>• {trend}</p>
-                          ))}
+                          <p>• Pattern Consistency: <strong>{Math.max(0, Math.min(100, Math.round((evidenceData.frameworks.patternRecognition.patternConsistency || 0) * 100)))}%</strong></p>
+                          <p>• Total Choices: <strong>{Math.max(0, evidenceData.frameworks.patternRecognition.totalChoices)}</strong></p>
+                          {evidenceData.frameworks.patternRecognition.behavioralTrends?.map((trend: string, i: number) => (
+                            <p key={i}>• {trend || 'Pattern analysis in progress'}</p>
+                          )) || <p>• No behavioral patterns identified yet</p>}
                         </div>
                       </div>
                     </CardContent>
@@ -1615,9 +1615,9 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                       <div className="bg-blue-50 p-3 sm:p-4 rounded-lg">
                         <p className="font-medium mb-2 text-sm sm:text-base">Your Engagement:</p>
                         <div className="space-y-2 text-xs sm:text-sm">
-                          <p>• Days Active: <strong>{evidenceData.frameworks.timeInvestment.totalDays}</strong></p>
-                          <p>• Avg Demos/Day: <strong>{evidenceData.frameworks.timeInvestment.averageDemosPerDay.toFixed(1)}</strong></p>
-                          <p>• Consistency Score: <strong>{Math.round((evidenceData.frameworks.timeInvestment.consistencyScore || 0) * 100)}%</strong></p>
+                          <p>• Days Active: <strong>{Math.max(0, evidenceData.frameworks.timeInvestment.totalDays)}</strong></p>
+                          <p>• Avg Demos/Day: <strong>{Math.max(0, evidenceData.frameworks.timeInvestment.averageDemosPerDay).toFixed(1)}</strong></p>
+                          <p>• Consistency Score: <strong>{Math.max(0, Math.min(100, Math.round((evidenceData.frameworks.timeInvestment.consistencyScore || 0) * 100)))}%</strong></p>
                         </div>
                       </div>
                     </CardContent>
@@ -1634,7 +1634,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                           </Badge>
                         </div>
                         <div className="flex flex-wrap items-center gap-2">
-                          <Badge variant="default" className="text-xs">{evidenceData.frameworks.relationshipFramework.totalRelationships} Relationships</Badge>
+                          <Badge variant="default" className="text-xs">{Math.max(0, evidenceData.frameworks.relationshipFramework.totalRelationships)} Relationships</Badge>
                           <DataSourceBadge
                             hasRealData={evidenceData.frameworks.relationshipFramework.hasRealData}
                             minDemonstrations={1}
@@ -1654,10 +1654,10 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                       <div className="bg-blue-50 p-3 sm:p-4 rounded-lg">
                         <p className="font-medium mb-2 text-sm sm:text-base">Your Relationships:</p>
                         <div className="space-y-2 text-xs sm:text-sm">
-                          <p>• Average Trust: <strong>{evidenceData.frameworks.relationshipFramework.averageTrust.toFixed(1)}/10</strong></p>
-                          {evidenceData.frameworks.relationshipFramework.relationshipDetails.slice(0, 3).map((rel: any) => (
-                            <p key={rel.character}>• {rel.character}: Trust {rel.trust}/10</p>
-                          ))}
+                          <p>• Average Trust: <strong>{Math.max(0, Math.min(10, evidenceData.frameworks.relationshipFramework.averageTrust)).toFixed(1)}/10</strong></p>
+                          {evidenceData.frameworks.relationshipFramework.relationshipDetails?.slice(0, 3).map((rel: any) => (
+                            <p key={rel.character}>• {rel.character || 'Unknown Character'}: Trust {Math.max(0, Math.min(10, rel.trust || 0))}/10</p>
+                          )) || <p>• No relationship data available yet</p>}
                         </div>
                       </div>
                     </CardContent>
@@ -1694,9 +1694,9 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                       <div className="bg-blue-50 p-3 sm:p-4 rounded-lg">
                         <p className="font-medium mb-2 text-sm sm:text-base">Your Learning Style:</p>
                         <div className="space-y-2 text-xs sm:text-sm">
-                          <p>• Focus Score: <strong>{Math.round((evidenceData.frameworks.behavioralConsistency.focusScore || 0) * 100)}%</strong></p>
-                          <p>• Exploration Score: <strong>{Math.round((evidenceData.frameworks.behavioralConsistency.explorationScore || 0) * 100)}%</strong></p>
-                          <p>• Platform Alignment: <strong>{evidenceData.frameworks.behavioralConsistency.platformAlignment}</strong> platforms</p>
+                          <p>• Focus Score: <strong>{Math.max(0, Math.min(100, Math.round((evidenceData.frameworks.behavioralConsistency.focusScore || 0) * 100)))}%</strong></p>
+                          <p>• Exploration Score: <strong>{Math.max(0, Math.min(100, Math.round((evidenceData.frameworks.behavioralConsistency.explorationScore || 0) * 100)))}%</strong></p>
+                          <p>• Platform Alignment: <strong>{Math.max(0, evidenceData.frameworks.behavioralConsistency.platformAlignment)}</strong> platforms</p>
                         </div>
                       </div>
                     </CardContent>
