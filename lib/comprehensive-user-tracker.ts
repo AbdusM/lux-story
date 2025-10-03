@@ -86,6 +86,8 @@ export class ComprehensiveUserTracker {
     characterId?: string,
     timeToChoose?: number
   ): Promise<void> {
+    console.log(`[ComprehensiveTracker] trackChoice called for ${userId} in ${sceneId}`)
+    
     const interaction: UserInteraction = {
       userId,
       timestamp: Date.now(),
@@ -104,17 +106,28 @@ export class ComprehensiveUserTracker {
     }
 
     this.interactions.push(interaction)
+    console.log(`[ComprehensiveTracker] Added interaction, total: ${this.interactions.length}`)
 
     // Track in all systems
-    await Promise.all([
-      this.trackInSkillTracker(choice, sceneId),
-      this.trackInCareerAnalytics(choice),
-      this.trackInPerformanceSystem(choice, sceneId, timeToChoose || 0),
-      this.trackInGameState(choice, sceneId)
-    ])
+    try {
+      await Promise.all([
+        this.trackInSkillTracker(choice, sceneId),
+        this.trackInCareerAnalytics(choice),
+        this.trackInPerformanceSystem(choice, sceneId, timeToChoose || 0),
+        this.trackInGameState(choice, sceneId)
+      ])
+      console.log(`[ComprehensiveTracker] All tracking systems completed for ${userId}`)
+    } catch (error) {
+      console.error(`[ComprehensiveTracker] Error in tracking systems:`, error)
+    }
 
     // Generate career explorations if conditions are met
-    await this.generateCareerExplorations(userId)
+    try {
+      await this.generateCareerExplorations(userId)
+      console.log(`[ComprehensiveTracker] Career exploration generation completed for ${userId}`)
+    } catch (error) {
+      console.error(`[ComprehensiveTracker] Error in career exploration generation:`, error)
+    }
   }
 
   /**
