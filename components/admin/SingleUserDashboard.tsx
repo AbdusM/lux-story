@@ -1740,7 +1740,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
           {evidenceData?.careerExploration && (
             <div className="bg-amber-50 border-l-4 border-amber-400 p-4 rounded-r">
               <p className="text-sm text-gray-700">
-                <strong>Skills Development Path:</strong> {evidenceData.careerExploration.totalExplorations} career explorations reveal growth areas. Gaps aren't weaknesses—they're opportunities with clear pathways.
+                <strong>Your Growth Journey:</strong> Your {evidenceData.careerExploration.totalExplorations} career explorations reveal growth areas. Gaps aren't weaknesses—they're opportunities with clear pathways.
               </p>
             </div>
           )}
@@ -1750,7 +1750,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
             <Alert className="border-orange-500 bg-orange-50">
               <AlertTriangle className="h-5 w-5 text-orange-600" />
               <AlertDescription className="mt-2 space-y-3">
-                <p className="text-lg font-semibold text-orange-900">Focus on These First</p>
+                <p className="text-lg font-semibold text-orange-900">Your Priority Skills to Develop</p>
                 {user.skillGaps
                   .sort((a, b) => {
                     const priorityOrder: Record<string, number> = { high: 3, medium: 2, low: 1 };
@@ -1779,9 +1779,9 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
             <Card>
               <CardHeader>
                 {/* Agent 2: Personalized section header (Issue 10A) */}
-                <CardTitle>{user.userName.split(' ')[0]}'s Skill Development Progress</CardTitle>
+                <CardTitle>Your Skill Development Progress</CardTitle>
                 <CardDescription>
-                  Real-time skill demonstration tracking from gameplay
+                  Your skill demonstration tracking from your journey
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -1811,7 +1811,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
 
                       {skill.demonstration_count < 5 && (
                         <p className="text-xs text-amber-600 italic">
-                          Continue making choices to develop this skill
+                          Keep making choices to develop this skill
                         </p>
                       )}
                     </div>
@@ -1823,9 +1823,9 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
             <Card>
               <CardHeader>
                 {/* Agent 2: Personalized section header (Issue 10A) */}
-                <CardTitle>{user.userName.split(' ')[0]}'s Skill Development Priorities</CardTitle>
+                <CardTitle>Your Skill Development Priorities</CardTitle>
                 <CardDescription>
-                  Skills to develop for top career matches
+                  Skills to develop for your top career matches
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -1856,13 +1856,13 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                         </div>
 
                         <div className="flex items-center gap-2 text-sm">
-                          <span className="text-muted-foreground">Current:</span>
+                          <span className="text-muted-foreground">Your Current Level:</span>
                           <Progress value={gap.currentLevel * 100} className="flex-1 h-2" />
                           <span className="font-medium">{Math.round(gap.currentLevel * 100)}%</span>
                         </div>
 
                         <div className="flex items-center gap-2 text-sm">
-                          <span className="text-muted-foreground">Target:</span>
+                          <span className="text-muted-foreground">Your Target Level:</span>
                           <div className="flex-1 bg-green-100 rounded-full h-2">
                             <div className="bg-green-600 h-2 rounded-full" style={{ width: '100%' }} />
                           </div>
@@ -1875,7 +1875,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
 
                         {/* Agent 5: Scene-specific development paths (Issue 26) */}
                         <div className="text-sm text-gray-600 mt-2 bg-blue-50 p-2 rounded">
-                          <strong>Development Path:</strong> Try Scene {Math.floor(Math.random() * 15) + 1}:{' '}
+                          <strong>Your Development Path:</strong> Try Scene {Math.floor(Math.random() * 15) + 1}:{' '}
                           {gap.skill.toLowerCase().includes('communication') ? 'Maya Family Meeting' :
                            gap.skill.toLowerCase().includes('technical') || gap.skill.toLowerCase().includes('digital') ? 'Devon System Building' :
                            gap.skill.toLowerCase().includes('leadership') ? 'Jordan Mentorship Panel' :
@@ -1891,7 +1891,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
             <Card>
               <CardContent className="py-8 text-center text-muted-foreground">
                 {/* Agent 2: Encouraging empty state (Issue 49) */}
-                Building skills daily! Gap analysis will appear as {user.userName.split(' ')[0]} explores career pathways.
+                Building skills daily! Your gap analysis will appear as you explore career pathways.
               </CardContent>
             </Card>
           )}
