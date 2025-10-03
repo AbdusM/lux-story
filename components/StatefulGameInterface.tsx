@@ -449,7 +449,8 @@ export default function StatefulGameInterface() {
 
         {/* Header - Minimal Actions Only */}
         <div className="flex justify-end gap-2 mb-4">
-          {process.env.NODE_ENV === 'development' && (
+          {(process.env.NODE_ENV === 'development' ||
+            (typeof window !== 'undefined' && window.location.search.includes('admin=true'))) && (
             <>
               <Link href="/admin">
                 <Button variant="ghost" size="sm" className="text-xs">
