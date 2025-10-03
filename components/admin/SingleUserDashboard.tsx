@@ -1738,8 +1738,8 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
         <TabsContent value="gaps" className="space-y-4">
           {/* NARRATIVE BRIDGE: Careers → Gaps - Agent 2: <25 words (Issue 7A-7C) */}
           {evidenceData?.careerExploration && (
-            <div className="bg-amber-50 border-l-4 border-amber-400 p-4 rounded-r">
-              <p className="text-sm text-gray-700">
+            <div className="bg-amber-50 border-l-4 border-amber-400 p-4 sm:p-6 rounded-r">
+              <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
                 <strong>Your Growth Journey:</strong> Your {evidenceData.careerExploration.totalExplorations} career explorations reveal growth areas. Gaps aren't weaknesses—they're opportunities with clear pathways.
               </p>
             </div>
@@ -1750,7 +1750,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
             <Alert className="border-orange-500 bg-orange-50">
               <AlertTriangle className="h-5 w-5 text-orange-600" />
               <AlertDescription className="mt-2 space-y-3">
-                <p className="text-lg font-semibold text-orange-900">Your Priority Skills to Develop</p>
+                <p className="text-lg sm:text-xl font-semibold text-orange-900">Your Priority Skills to Develop</p>
                 {user.skillGaps
                   .sort((a, b) => {
                     const priorityOrder: Record<string, number> = { high: 3, medium: 2, low: 1 };
@@ -1758,14 +1758,14 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                   })
                   .slice(0, 3)
                   .map((gap, idx) => (
-                    <div key={idx} className="border-l-4 border-orange-400 pl-3">
-                      <div className="font-semibold text-orange-900 capitalize">
+                    <div key={idx} className="border-l-4 border-orange-400 pl-3 sm:pl-4 p-3 sm:p-4 bg-orange-25 rounded-r-lg">
+                      <div className="font-semibold text-orange-900 capitalize text-sm sm:text-base">
                         {gap.skill.replace(/([A-Z])/g, ' $1').trim()}
                       </div>
-                      <div className="text-sm text-orange-800">
+                      <div className="text-sm sm:text-base text-orange-800 mt-1">
                         Try: Scene {12 + idx * 4} (Hospital Volunteer) or Scene {8 + idx * 3} (Maya Family Meeting)
                       </div>
-                      <div className="text-xs text-orange-700 mt-1">
+                      <div className="text-xs sm:text-sm text-orange-700 mt-2">
                         📍 Birmingham: UAB Medicine Youth Mentorship Program
                       </div>
                     </div>
@@ -1779,42 +1779,44 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
             <Card>
               <CardHeader>
                 {/* Agent 2: Personalized section header (Issue 10A) */}
-                <CardTitle>Your Skill Development Progress</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-lg sm:text-xl">Your Skill Development Progress</CardTitle>
+                <CardDescription className="text-sm sm:text-base">
                   Your skill demonstration tracking from your journey
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   {evidenceData.skillSummaries.map((skill: any, idx: number) => (
-                    <div key={idx} className="p-3 border rounded space-y-2">
-                      <div className="flex items-center justify-between">
-                        <span className="font-medium capitalize">
-                          {skill.skill_name?.replace(/_/g, ' ') || `Skill ${idx + 1}`}
-                        </span>
-                        <Badge variant={skill.demonstration_count >= 5 ? 'default' : 'secondary'}>
-                          {skill.demonstration_count || 0} demonstrations
-                        </Badge>
-                      </div>
+                    <Card key={idx} className="p-3 sm:p-4">
+                      <CardContent className="p-0 space-y-3">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                          <span className="font-medium capitalize text-sm sm:text-base">
+                            {skill.skill_name?.replace(/_/g, ' ') || `Skill ${idx + 1}`}
+                          </span>
+                          <Badge variant={skill.demonstration_count >= 5 ? 'default' : 'secondary'} className="text-xs">
+                            {skill.demonstration_count || 0} demonstrations
+                          </Badge>
+                        </div>
 
-                      <div className="flex items-center gap-2 text-sm">
-                        <span className="text-muted-foreground">Progress:</span>
-                        <Progress value={(skill.demonstration_count || 0) * 10} className="flex-1 h-2" />
-                        <span className="font-medium">{skill.demonstration_count || 0}/10</span>
-                      </div>
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-sm">
+                          <span className="text-muted-foreground text-xs sm:text-sm">Progress:</span>
+                          <Progress value={(skill.demonstration_count || 0) * 10} className="flex-1 h-2 sm:h-3" />
+                          <span className="font-medium text-xs sm:text-sm">{skill.demonstration_count || 0}/10</span>
+                        </div>
 
-                      {skill.last_demonstrated && (
-                        <p className="text-xs text-muted-foreground">
-                          Last demonstrated: {new Date(skill.last_demonstrated).toLocaleDateString()}
-                        </p>
-                      )}
+                        {skill.last_demonstrated && (
+                          <p className="text-xs sm:text-sm text-muted-foreground">
+                            Last demonstrated: {new Date(skill.last_demonstrated).toLocaleDateString()}
+                          </p>
+                        )}
 
-                      {skill.demonstration_count < 5 && (
-                        <p className="text-xs text-amber-600 italic">
-                          Keep making choices to develop this skill
-                        </p>
-                      )}
-                    </div>
+                        {skill.demonstration_count < 5 && (
+                          <p className="text-xs sm:text-sm text-amber-600 italic">
+                            Keep making choices to develop this skill
+                          </p>
+                        )}
+                      </CardContent>
+                    </Card>
                   ))}
                 </div>
               </CardContent>
@@ -1823,8 +1825,8 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
             <Card>
               <CardHeader>
                 {/* Agent 2: Personalized section header (Issue 10A) */}
-                <CardTitle>Your Skill Development Priorities</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-lg sm:text-xl">Your Skill Development Priorities</CardTitle>
+                <CardDescription className="text-sm sm:text-base">
                   Skills to develop for your top career matches
                 </CardDescription>
               </CardHeader>
@@ -1836,62 +1838,64 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                       return priorityOrder[b.priority] - priorityOrder[a.priority];
                     })
                     .map((gap, idx) => (
-                      <div key={idx} className="p-3 border rounded space-y-2">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <span className="font-medium capitalize">
-                              {gap.skill.replace(/([A-Z])/g, ' $1').trim()}
-                            </span>
-                            {/* Sparkline Trend Indicator */}
-                            <SparklineTrend
-                              current={gap.currentLevel}
-                              target={gap.targetForTopCareers}
-                              width={40}
-                              height={12}
-                            />
+                      <Card key={idx} className="p-3 sm:p-4">
+                        <CardContent className="p-0 space-y-3">
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div className="flex items-center gap-2">
+                              <span className="font-medium capitalize text-sm sm:text-base">
+                                {gap.skill.replace(/([A-Z])/g, ' $1').trim()}
+                              </span>
+                              {/* Sparkline Trend Indicator */}
+                              <SparklineTrend
+                                current={gap.currentLevel}
+                                target={gap.targetForTopCareers}
+                                width={40}
+                                height={12}
+                              />
+                            </div>
+                            <Badge variant={gap.priority === 'high' ? 'destructive' : 'secondary'} className="text-xs">
+                              {gap.priority} priority
+                            </Badge>
                           </div>
-                          <Badge variant={gap.priority === 'high' ? 'destructive' : 'secondary'}>
-                            {gap.priority} priority
-                          </Badge>
-                        </div>
 
-                        <div className="flex items-center gap-2 text-sm">
-                          <span className="text-muted-foreground">Your Current Level:</span>
-                          <Progress value={gap.currentLevel * 100} className="flex-1 h-2" />
-                          <span className="font-medium">{Math.round(gap.currentLevel * 100)}%</span>
-                        </div>
-
-                        <div className="flex items-center gap-2 text-sm">
-                          <span className="text-muted-foreground">Your Target Level:</span>
-                          <div className="flex-1 bg-green-100 rounded-full h-2">
-                            <div className="bg-green-600 h-2 rounded-full" style={{ width: '100%' }} />
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-sm">
+                            <span className="text-muted-foreground text-xs sm:text-sm">Your Current Level:</span>
+                            <Progress value={gap.currentLevel * 100} className="flex-1 h-2 sm:h-3" />
+                            <span className="font-medium text-xs sm:text-sm">{Math.round(gap.currentLevel * 100)}%</span>
                           </div>
-                          <span className="font-medium">{Math.round(gap.targetForTopCareers * 100)}%</span>
-                        </div>
 
-                        <p className="text-xs text-muted-foreground italic">
-                          {gap.developmentPath}
-                        </p>
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-sm">
+                            <span className="text-muted-foreground text-xs sm:text-sm">Your Target Level:</span>
+                            <div className="flex-1 bg-green-100 rounded-full h-2 sm:h-3">
+                              <div className="bg-green-600 h-2 sm:h-3 rounded-full" style={{ width: '100%' }} />
+                            </div>
+                            <span className="font-medium text-xs sm:text-sm">{Math.round(gap.targetForTopCareers * 100)}%</span>
+                          </div>
 
-                        {/* Agent 5: Scene-specific development paths (Issue 26) */}
-                        <div className="text-sm text-gray-600 mt-2 bg-blue-50 p-2 rounded">
-                          <strong>Your Development Path:</strong> Try Scene {Math.floor(Math.random() * 15) + 1}:{' '}
-                          {gap.skill.toLowerCase().includes('communication') ? 'Maya Family Meeting' :
-                           gap.skill.toLowerCase().includes('technical') || gap.skill.toLowerCase().includes('digital') ? 'Devon System Building' :
-                           gap.skill.toLowerCase().includes('leadership') ? 'Jordan Mentorship Panel' :
-                           gap.skill.toLowerCase().includes('emotional') || gap.skill.toLowerCase().includes('empathy') ? 'Samuel Trust Building' :
-                           'Healthcare Scenarios'}
-                        </div>
-                      </div>
+                          <p className="text-xs sm:text-sm text-muted-foreground italic">
+                            {gap.developmentPath}
+                          </p>
+
+                          {/* Agent 5: Scene-specific development paths (Issue 26) */}
+                          <div className="text-sm sm:text-base text-gray-600 mt-2 bg-blue-50 p-3 sm:p-4 rounded-lg">
+                            <strong>Your Development Path:</strong> Try Scene {Math.floor(Math.random() * 15) + 1}:{' '}
+                            {gap.skill.toLowerCase().includes('communication') ? 'Maya Family Meeting' :
+                             gap.skill.toLowerCase().includes('technical') || gap.skill.toLowerCase().includes('digital') ? 'Devon System Building' :
+                             gap.skill.toLowerCase().includes('leadership') ? 'Jordan Mentorship Panel' :
+                             gap.skill.toLowerCase().includes('emotional') || gap.skill.toLowerCase().includes('empathy') ? 'Samuel Trust Building' :
+                             'Healthcare Scenarios'}
+                          </div>
+                        </CardContent>
+                      </Card>
                     ))}
                 </div>
               </CardContent>
             </Card>
           ) : (
             <Card>
-              <CardContent className="py-8 text-center text-muted-foreground">
+              <CardContent className="py-8 sm:py-12 text-center text-muted-foreground">
                 {/* Agent 2: Encouraging empty state (Issue 49) */}
-                Building skills daily! Your gap analysis will appear as you explore career pathways.
+                <p className="text-sm sm:text-base">Building skills daily! Your gap analysis will appear as you explore career pathways.</p>
               </CardContent>
             </Card>
           )}
@@ -1900,7 +1904,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
           {getNextTab('gaps') && (
             <Button
               variant="ghost"
-              className="w-full justify-center gap-2 mt-6"
+              className="w-full justify-center gap-2 mt-6 min-h-[44px]"
               onClick={() => setActiveTab(getNextTab('gaps')!.value)}
             >
               Next: {getNextTab('gaps')!.label}
