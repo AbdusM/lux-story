@@ -811,20 +811,20 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
           {/* Section 1: Core Skills Demonstrated */}
           <Card>
             <CardHeader>
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
                   {/* Agent 2: Personalized section header (Issue 10A) */}
-                  <CardTitle className="text-xl">Your Core Skills Demonstrated</CardTitle>
-                  <CardDescription>
+                  <CardTitle className="text-lg sm:text-xl">Your Core Skills Demonstrated</CardTitle>
+                  <CardDescription className="text-sm">
                     Your skill profile from {user.totalDemonstrations} demonstrations across your journey
                   </CardDescription>
                 </div>
-                {/* Agent 3: Sorting controls (Issue 14) */}
+                {/* Agent 3: Sorting controls (Issue 14) - Mobile optimized */}
                 <div className="flex items-center gap-2">
                   <select
                     value={skillSortMode}
                     onChange={(e) => setSkillSortMode(e.target.value as SortMode)}
-                    className="text-xs border rounded px-2 py-1 bg-white"
+                    className="text-sm border rounded px-3 py-2 bg-white min-h-[44px] w-full sm:w-auto"
                   >
                     <option value="by_count">By Count</option>
                     <option value="alphabetical">Alphabetical</option>
@@ -864,35 +864,35 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
 
                   return (
                     <div key={pattern.skillName} className="border rounded-lg hover:bg-gray-50 transition-colors">
-                      {/* Agent 3: Collapsible header (Issue 5A, 34 - tighter spacing) */}
+                      {/* Agent 3: Collapsible header (Issue 5A, 34 - mobile optimized) */}
                       <button
                         onClick={() => setExpandedCoreSkill(isExpanded ? null : pattern.skillName)}
-                        className="w-full p-3 text-left"
+                        className="w-full p-4 text-left min-h-[60px] touch-manipulation"
                       >
                         <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-3 flex-1">
+                          <div className="flex items-center gap-3 flex-1 min-w-0">
                             {/* Agent 3: Recency dot (Issue 12) */}
-                            <div className={`w-2 h-2 rounded-full ${recency.color}`} title={recency.label} />
+                            <div className={`w-3 h-3 rounded-full ${recency.color} flex-shrink-0`} title={recency.label} />
 
                             {/* Agent 3: Bold skill name for scannability (Issue 34) */}
-                            <span className="font-bold text-sm">
+                            <span className="font-bold text-sm sm:text-base truncate">
                               {formatSkillName(pattern.skillName)}
                             </span>
 
-                            {/* Pattern insight */}
-                            <span className="text-xs text-muted-foreground">
+                            {/* Pattern insight - hidden on mobile */}
+                            <span className="hidden sm:block text-xs text-muted-foreground truncate">
                               {pattern.strengthContext}
                             </span>
                           </div>
 
-                          <div className="flex items-center gap-3">
-                            <Badge variant="secondary" className="text-xs">
+                          <div className="flex items-center gap-2 flex-shrink-0">
+                            <Badge variant="secondary" className="text-xs px-2 py-1">
                               {pattern.totalDemonstrations}x
                             </Badge>
 
                             {/* Agent 8: Chevron icon (Issue 43) */}
                             <ChevronDown
-                              className={`w-4 h-4 text-gray-400 transition-transform ${
+                              className={`w-5 h-5 text-gray-400 transition-transform ${
                                 isExpanded ? 'rotate-180' : ''
                               }`}
                             />
@@ -900,34 +900,34 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                         </div>
                       </button>
 
-                      {/* Agent 3: Expanded demonstrations (Issue 5A - collapsed by default) */}
+                      {/* Agent 3: Expanded demonstrations (Issue 5A - mobile optimized) */}
                       {isExpanded && (
-                        <div className="px-3 pb-3 space-y-2 border-t bg-gray-50">
-                          <p className="text-xs font-semibold text-gray-600 mt-2">Evidence:</p>
+                        <div className="px-4 pb-4 space-y-3 border-t bg-gray-50">
+                          <p className="text-sm font-semibold text-gray-600 mt-3">Evidence:</p>
                           {recentDemos.map((demo, idx) => {
                             const timestamp = (demo as any).timestamp;
                             const choiceText = (demo as any).choice || demo.context.substring(0, 60);
 
                             return (
-                              <div key={idx} className="text-xs space-y-1 pl-3 border-l-2 border-blue-300">
-                                <div className="flex items-start justify-between">
-                                  <span className="font-medium">{demo.scene}</span>
+                              <div key={idx} className="text-sm space-y-2 pl-4 border-l-2 border-blue-300">
+                                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1">
+                                  <span className="font-medium text-gray-800">{demo.scene}</span>
                                   {timestamp && (
-                                    <span className="text-gray-500">
+                                    <span className="text-gray-500 text-xs">
                                       {new Date(timestamp).toLocaleDateString()}
                                     </span>
                                   )}
                                 </div>
                                 {choiceText && (
-                                  <p className="text-gray-600 italic">"{choiceText}"</p>
+                                  <p className="text-gray-600 italic text-sm">"{choiceText}"</p>
                                 )}
-                                <p className="text-gray-700">{demo.context}</p>
+                                <p className="text-gray-700 text-sm leading-relaxed">{demo.context}</p>
                               </div>
                             );
                           })}
 
                           {demonstrations.length > 3 && (
-                            <p className="text-xs text-gray-500 italic pt-1">
+                            <p className="text-sm text-gray-500 italic pt-2">
                               + {demonstrations.length - 3} more demonstrations
                             </p>
                           )}
@@ -996,39 +996,39 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                       })}
                   </div>
 
-                  {/* Summary Stats */}
-                  <div className="grid grid-cols-3 gap-4 pt-3 border-t">
-                    <div className="text-center">
-                      <p className="text-xl font-bold text-purple-600">{skillsData.length}</p>
-                      <p className="text-xs text-gray-600">Skills</p>
+                  {/* Summary Stats - Mobile optimized */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t">
+                    <div className="text-center p-3 bg-purple-50 rounded-lg">
+                      <p className="text-2xl font-bold text-purple-600">{skillsData.length}</p>
+                      <p className="text-sm text-gray-600">Skills</p>
                     </div>
-                    <div className="text-center">
-                      <p className="text-xl font-bold text-purple-600">
+                    <div className="text-center p-3 bg-purple-50 rounded-lg">
+                      <p className="text-2xl font-bold text-purple-600">
                         {skillsData.reduce((sum, s) => sum + s.demonstrationCount, 0)}
                       </p>
-                      <p className="text-xs text-gray-600">Demonstrations</p>
+                      <p className="text-sm text-gray-600">Demonstrations</p>
                     </div>
-                    <div className="text-center">
-                      <p className="text-xl font-bold text-purple-600">
+                    <div className="text-center p-3 bg-purple-50 rounded-lg">
+                      <p className="text-2xl font-bold text-purple-600">
                         {new Set(skillsData.flatMap(s => s.scenesInvolved)).size}
                       </p>
-                      <p className="text-xs text-gray-600">Scenes</p>
+                      <p className="text-sm text-gray-600">Scenes</p>
                     </div>
                   </div>
 
-                  {/* Birmingham Career Connections */}
-                  <div className="pt-3 border-t">
-                    <p className="text-xs font-semibold text-gray-700 mb-2">Your Birmingham Career Connections:</p>
-                    <div className="space-y-2">
+                  {/* Birmingham Career Connections - Mobile optimized */}
+                  <div className="pt-4 border-t">
+                    <p className="text-sm font-semibold text-gray-700 mb-3">Your Birmingham Career Connections:</p>
+                    <div className="space-y-3">
                       {skillsData
                         .sort((a, b) => b.demonstrationCount - a.demonstrationCount)
                         .slice(0, 3)
                         .map((skill) => {
                           const connections = getBirminghamConnectionsForSkill(skill.skillName);
                           return (
-                            <div key={skill.skillName} className="text-xs">
-                              <span className="font-medium capitalize">{skill.skillName.replace(/_/g, ' ')}:</span>{' '}
-                              <span className="text-gray-600">{connections.join(', ')}</span>
+                            <div key={skill.skillName} className="text-sm p-3 bg-blue-50 rounded-lg">
+                              <span className="font-medium capitalize text-blue-800">{skill.skillName.replace(/_/g, ' ')}:</span>
+                              <p className="text-gray-600 mt-1">{connections.join(', ')}</p>
                             </div>
                           );
                         })}
