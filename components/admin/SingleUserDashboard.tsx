@@ -692,7 +692,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                     <div className="text-center sm:text-right">
                       <p className="text-sm sm:text-base text-gray-600 mb-2">Your Priority Score</p>
                       <p className="text-3xl sm:text-4xl font-bold text-gray-900">
-                        {Math.round((urgencyData.urgencyScore || 0) * 100)}%
+                        {Math.max(0, Math.min(100, Math.round((urgencyData.urgencyScore || 0) * 100)))}%
                       </p>
                     </div>
                   </div>
@@ -713,36 +713,36 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                     <div className="space-y-3 p-3 bg-gray-50 rounded-lg">
                       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
                         <span className="font-medium text-sm sm:text-base">Disengagement</span>
-                        <span className="text-gray-600 text-xs sm:text-sm">40% weight • {Math.round((urgencyData.disengagementScore || 0) * 100)}%</span>
+                        <span className="text-gray-600 text-xs sm:text-sm">40% weight • {Math.max(0, Math.min(100, Math.round((urgencyData.disengagementScore || 0) * 100)))}%</span>
                       </div>
-                      <Progress value={(urgencyData.disengagementScore || 0) * 100} className="h-3" />
+                      <Progress value={Math.max(0, Math.min(100, (urgencyData.disengagementScore || 0) * 100))} className="h-3" />
                     </div>
 
                     {/* Confusion (30% weight) - Mobile optimized */}
                     <div className="space-y-3 p-3 bg-gray-50 rounded-lg">
                       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
                         <span className="font-medium text-sm sm:text-base">Confusion</span>
-                        <span className="text-gray-600 text-xs sm:text-sm">30% weight • {Math.round((urgencyData.confusionScore || 0) * 100)}%</span>
+                        <span className="text-gray-600 text-xs sm:text-sm">30% weight • {Math.max(0, Math.min(100, Math.round((urgencyData.confusionScore || 0) * 100)))}%</span>
                       </div>
-                      <Progress value={(urgencyData.confusionScore || 0) * 100} className="h-3" />
+                      <Progress value={Math.max(0, Math.min(100, (urgencyData.confusionScore || 0) * 100))} className="h-3" />
                     </div>
 
                     {/* Stress (20% weight) - Mobile optimized */}
                     <div className="space-y-3 p-3 bg-gray-50 rounded-lg">
                       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
                         <span className="font-medium text-sm sm:text-base">Stress</span>
-                        <span className="text-gray-600 text-xs sm:text-sm">20% weight • {Math.round((urgencyData.stressScore || 0) * 100)}%</span>
+                        <span className="text-gray-600 text-xs sm:text-sm">20% weight • {Math.max(0, Math.min(100, Math.round((urgencyData.stressScore || 0) * 100)))}%</span>
                       </div>
-                      <Progress value={(urgencyData.stressScore || 0) * 100} className="h-3" />
+                      <Progress value={Math.max(0, Math.min(100, (urgencyData.stressScore || 0) * 100))} className="h-3" />
                     </div>
 
                     {/* Isolation (10% weight) - Mobile optimized */}
                     <div className="space-y-3 p-3 bg-gray-50 rounded-lg">
                       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
                         <span className="font-medium text-sm sm:text-base">Isolation</span>
-                        <span className="text-gray-600 text-xs sm:text-sm">10% weight • {Math.round((urgencyData.isolationScore || 0) * 100)}%</span>
+                        <span className="text-gray-600 text-xs sm:text-sm">10% weight • {Math.max(0, Math.min(100, Math.round((urgencyData.isolationScore || 0) * 100)))}%</span>
                       </div>
-                      <Progress value={(urgencyData.isolationScore || 0) * 100} className="h-3" />
+                      <Progress value={Math.max(0, Math.min(100, (urgencyData.isolationScore || 0) * 100))} className="h-3" />
                     </div>
                   </div>
 
@@ -753,25 +753,25 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                       <div>
                         <p className="text-gray-600">Last Activity</p>
                         <p className="font-medium">
-                          {new Date(urgencyData.lastActivity).toLocaleDateString('en-US', {
+                          {urgencyData.lastActivity ? new Date(urgencyData.lastActivity).toLocaleDateString('en-US', {
                             month: 'short',
                             day: 'numeric',
                             hour: 'numeric',
                             minute: '2-digit'
-                          })}
+                          }) : 'No activity recorded'}
                         </p>
                       </div>
                       <div>
                         <p className="text-gray-600">Total Choices</p>
-                        <p className="font-medium">{urgencyData.totalChoices || 0}</p>
+                        <p className="font-medium">{Math.max(0, urgencyData.totalChoices || 0)}</p>
                       </div>
                       <div>
                         <p className="text-gray-600">Scenes Visited</p>
-                        <p className="font-medium">{urgencyData.uniqueScenesVisited || 0}</p>
+                        <p className="font-medium">{Math.max(0, urgencyData.uniqueScenesVisited || 0)}</p>
                       </div>
                       <div>
                         <p className="text-gray-600">Relationships Formed</p>
-                        <p className="font-medium">{urgencyData.relationshipsFormed || 0}</p>
+                        <p className="font-medium">{Math.max(0, urgencyData.relationshipsFormed || 0)}</p>
                       </div>
                     </div>
                   </div>
