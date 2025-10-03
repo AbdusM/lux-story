@@ -318,7 +318,21 @@ export async function loadSkillProfile(userId: string): Promise<SkillProfile | n
   if (typeof window === 'undefined') return null
 
   try {
-    // Try Supabase first
+    // Try admin API first (uses service role key)
+    try {
+      const response = await fetch(`/api/admin/skill-data?userId=${encodeURIComponent(userId)}`)
+      if (response.ok) {
+        const result = await response.json()
+        if (result.success && result.profile) {
+          console.log(`[SkillProfileAdapter] Loaded user ${userId} from admin API`)
+          return convertSupabaseProfileToDashboard(result.profile)
+        }
+      }
+    } catch (apiError) {
+      console.warn(`[SkillProfileAdapter] Admin API failed for ${userId}, falling back to direct Supabase`)
+    }
+
+    // Fallback to direct Supabase (may be blocked by RLS)
     const { supabase } = await import('./supabase')
     
     const { data: profile, error } = await supabase
