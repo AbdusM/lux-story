@@ -1883,13 +1883,13 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
           )}
         </TabsContent>
 
-        {/* ACTION TAB - Administrator next steps */}
+        {/* ACTION TAB - Your next steps */}
         <TabsContent value="action" className="space-y-4">
           {/* NARRATIVE BRIDGE: Gaps → Action - Agent 2: <25 words (Issue 7A-7C) */}
           {user.skillGaps.length > 0 && (
             <div className="bg-green-50 border-l-4 border-green-400 p-4 rounded-r">
               <p className="text-sm text-gray-700">
-                <strong>From Analysis to Action:</strong> Birmingham opportunities to build {user.skillGaps[0].skill.replace(/([A-Z])/g, ' $1').toLowerCase()} and advance toward {user.careerMatches[0]?.name || 'career goals'}. Start this week.
+                <strong>From Analysis to Action:</strong> Birmingham opportunities to build your {user.skillGaps[0].skill.replace(/([A-Z])/g, ' $1').toLowerCase()} and advance toward {user.careerMatches[0]?.name || 'your career goals'}. Start this week.
               </p>
             </div>
           )}
@@ -1898,44 +1898,44 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Briefcase className="w-5 h-5" />
-                Administrator Action Plan
+                Your Action Plan
               </CardTitle>
-              <CardDescription>Concrete next steps for this student</CardDescription>
+              <CardDescription>Concrete next steps for your journey</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {/* Conversation starters */}
               <div>
-                <p className="font-medium text-sm mb-2">Conversation Starters:</p>
+                <p className="font-medium text-sm mb-2">Questions to Consider:</p>
                 <div className="space-y-2 text-sm">
                   <div className="p-2 bg-blue-50 rounded border-l-2 border-blue-600">
-                    <p>"You showed strong emotional intelligence and problem-solving skills. 
-                    Have you thought about healthcare technology roles that use both?"</p>
+                    <p>"I showed strong emotional intelligence and problem-solving skills. 
+                    Have I thought about healthcare technology roles that use both?"</p>
                   </div>
                   <div className="p-2 bg-blue-50 rounded border-l-2 border-blue-600">
-                    <p>"Your critical thinking is advanced (82%) but collaboration is developing (58%). 
-                    Would you be interested in experiences that build team skills?"</p>
+                    <p>"My critical thinking is advanced (82%) but collaboration is developing (58%). 
+                    Would I be interested in experiences that build team skills?"</p>
                   </div>
                 </div>
               </div>
 
               {/* Immediate actions */}
               <div>
-                <p className="font-medium text-sm mb-2">This Week:</p>
+                <p className="font-medium text-sm mb-2">This Week - Your Actions:</p>
                 <div className="space-y-1 text-sm">
                   <div className="flex items-start gap-2">
                     <CheckCircle2 className="w-4 h-4 text-green-600 mt-0.5" />
-                    <p>Schedule UAB Health Informatics tour (87% career match, near ready)</p>
+                    <p>Schedule UAB Health Informatics tour (87% career match, you're near ready)</p>
                   </div>
                   <div className="flex items-start gap-2">
                     <CheckCircle2 className="w-4 h-4 text-green-600 mt-0.5" />
-                    <p>Discuss digital literacy development options (gap: 12%)</p>
+                    <p>Explore digital literacy development options (your gap: 12%)</p>
                   </div>
                 </div>
               </div>
 
               {/* Next month */}
               <div>
-                <p className="font-medium text-sm mb-2">Next Month:</p>
+                <p className="font-medium text-sm mb-2">Next Month - Your Goals:</p>
                 <div className="space-y-1 text-sm">
                   <div className="flex items-start gap-2">
                     <Lightbulb className="w-4 h-4 text-blue-600 mt-0.5" />
@@ -1943,18 +1943,18 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                   </div>
                   <div className="flex items-start gap-2">
                     <Lightbulb className="w-4 h-4 text-blue-600 mt-0.5" />
-                    <p>Explore group projects or team activities (collaboration skill gap)</p>
+                    <p>Explore group projects or team activities (your collaboration skill gap)</p>
                   </div>
                 </div>
               </div>
 
               {/* What to avoid */}
               <div className="border-t pt-3">
-                <p className="font-medium text-sm mb-2 text-red-600">Avoid:</p>
+                <p className="font-medium text-sm mb-2 text-red-600">Be Mindful Of:</p>
                 <div className="space-y-1 text-sm text-muted-foreground">
-                  <p>• Pushing for immediate career commitment (still exploring)</p>
-                  <p>• Ignoring skill gaps (collaboration needs work for Community Health path)</p>
-                  <p>• Overlooking time management weakness (42% - may struggle with structured programs)</p>
+                  <p>• Rushing into immediate career commitment (you're still exploring)</p>
+                  <p>• Ignoring skill gaps (your collaboration needs work for Community Health path)</p>
+                  <p>• Overlooking time management weakness (42% - you may struggle with structured programs)</p>
                 </div>
               </div>
             </CardContent>
@@ -1963,7 +1963,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
           {/* Key insights */}
           <Card className="border-2 border-blue-600">
             <CardHeader>
-              <CardTitle className="text-lg">Key Psychological Insights</CardTitle>
+              <CardTitle className="text-lg">Your Key Insights</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 text-sm">
               {user.keySkillMoments.map((moment, idx) => (
