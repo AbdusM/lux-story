@@ -965,70 +965,101 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                 </div>
               ) : (
                 <>
-                  {/* Top 5 Skills Progress Bars */}
-                  <div className="space-y-2">
+                  {/* Top 5 Skills Progress Bars - Logical consistency improved */}
+                  <div className="space-y-3">
                     {skillsData
                       .sort((a, b) => b.demonstrationCount - a.demonstrationCount)
                       .slice(0, 5)
-                      .map((skill) => {
+                      .map((skill, index) => {
+                        // Fix: Use consistent progress calculation
                         const maxCount = Math.max(...skillsData.map(s => s.demonstrationCount));
-                        const percentage = (skill.demonstrationCount / maxCount) * 100;
+                        const percentage = maxCount > 0 ? (skill.demonstrationCount / maxCount) * 100 : 0;
                         const colorClass = getSkillColor(skill.demonstrationCount, maxCount);
+                        
+                        // Fix: Add clear ranking and context
+                        const rank = index + 1;
+                        const isTopSkill = rank === 1;
 
                         return (
-                          <div key={skill.skillName} className="space-y-1">
-                            <div className="flex items-center justify-between text-xs">
-                              <span className="font-semibold capitalize">
-                                {skill.skillName.replace(/_/g, ' ')}
-                              </span>
-                              <span className="text-gray-600">
-                                {skill.demonstrationCount} {skill.demonstrationCount === 1 ? 'time' : 'times'}
+                          <div key={skill.skillName} className="space-y-2 p-3 bg-gray-50 rounded-lg">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-2">
+                                <span className="text-sm font-bold text-purple-600">#{rank}</span>
+                                <span className="font-semibold text-sm capitalize">
+                                  {skill.skillName.replace(/_/g, ' ')}
+                                </span>
+                                {isTopSkill && (
+                                  <Badge variant="default" className="text-xs bg-purple-100 text-purple-700">
+                                    Top Skill
+                                  </Badge>
+                                )}
+                              </div>
+                              <span className="text-sm text-gray-600">
+                                {skill.demonstrationCount} {skill.demonstrationCount === 1 ? 'demonstration' : 'demonstrations'}
                               </span>
                             </div>
-                            <div className="w-full bg-gray-200 rounded-full h-2">
+                            <div className="w-full bg-gray-200 rounded-full h-3">
                               <div
-                                className={`${colorClass} h-2 rounded-full transition-all`}
+                                className={`${colorClass} h-3 rounded-full transition-all`}
                                 style={{ width: `${percentage}%` }}
                               />
+                            </div>
+                            <div className="text-xs text-gray-500">
+                              {percentage.toFixed(0)}% of your most demonstrated skill
                             </div>
                           </div>
                         );
                       })}
                   </div>
 
-                  {/* Summary Stats - Mobile optimized */}
+                  {/* Summary Stats - Logical consistency improved */}
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t">
-                    <div className="text-center p-3 bg-purple-50 rounded-lg">
+                    <div className="text-center p-4 bg-purple-50 rounded-lg">
                       <p className="text-2xl font-bold text-purple-600">{skillsData.length}</p>
-                      <p className="text-sm text-gray-600">Skills</p>
+                      <p className="text-sm text-gray-600">Skills Demonstrated</p>
+                      <p className="text-xs text-gray-500 mt-1">Across your journey</p>
                     </div>
-                    <div className="text-center p-3 bg-purple-50 rounded-lg">
+                    <div className="text-center p-4 bg-purple-50 rounded-lg">
                       <p className="text-2xl font-bold text-purple-600">
                         {skillsData.reduce((sum, s) => sum + s.demonstrationCount, 0)}
                       </p>
-                      <p className="text-sm text-gray-600">Demonstrations</p>
+                      <p className="text-sm text-gray-600">Total Demonstrations</p>
+                      <p className="text-xs text-gray-500 mt-1">Evidence of your abilities</p>
                     </div>
-                    <div className="text-center p-3 bg-purple-50 rounded-lg">
+                    <div className="text-center p-4 bg-purple-50 rounded-lg">
                       <p className="text-2xl font-bold text-purple-600">
                         {new Set(skillsData.flatMap(s => s.scenesInvolved)).size}
                       </p>
-                      <p className="text-sm text-gray-600">Scenes</p>
+                      <p className="text-sm text-gray-600">Scenes Explored</p>
+                      <p className="text-xs text-gray-500 mt-1">Where you showed skills</p>
                     </div>
                   </div>
 
-                  {/* Birmingham Career Connections - Mobile optimized */}
+                  {/* Birmingham Career Connections - Logical consistency improved */}
                   <div className="pt-4 border-t">
                     <p className="text-sm font-semibold text-gray-700 mb-3">Your Birmingham Career Connections:</p>
+                    <p className="text-xs text-gray-500 mb-3">Based on your demonstrated skills</p>
                     <div className="space-y-3">
                       {skillsData
                         .sort((a, b) => b.demonstrationCount - a.demonstrationCount)
                         .slice(0, 3)
-                        .map((skill) => {
+                        .map((skill, index) => {
                           const connections = getBirminghamConnectionsForSkill(skill.skillName);
+                          const hasConnections = connections.length > 0;
+                          
                           return (
                             <div key={skill.skillName} className="text-sm p-3 bg-blue-50 rounded-lg">
-                              <span className="font-medium capitalize text-blue-800">{skill.skillName.replace(/_/g, ' ')}:</span>
-                              <p className="text-gray-600 mt-1">{connections.join(', ')}</p>
+                              <div className="flex items-center gap-2 mb-2">
+                                <span className="font-medium capitalize text-blue-800">{skill.skillName.replace(/_/g, ' ')}</span>
+                                <Badge variant="secondary" className="text-xs">
+                                  {skill.demonstrationCount} {skill.demonstrationCount === 1 ? 'time' : 'times'}
+                                </Badge>
+                              </div>
+                              {hasConnections ? (
+                                <p className="text-gray-600">{connections.join(', ')}</p>
+                              ) : (
+                                <p className="text-gray-500 italic">No specific career connections identified yet</p>
+                              )}
                             </div>
                           );
                         })}
