@@ -212,16 +212,24 @@ export class ComprehensiveUserTracker {
   private async generateCareerExplorations(userId: string): Promise<void> {
     const userMetrics = this.careerAnalytics.getUserMetrics(userId)
     
-    // Only generate if user has sufficient data
-    if (userMetrics.careerInterests.length === 0 && userMetrics.choicesMade < 5) {
-      return
-    }
-
-    const careerExplorations = this.mapInteractionsToCareers(userId, userMetrics)
+    console.log(`[ComprehensiveTracker] Checking career generation for ${userId}:`, {
+      careerInterests: userMetrics.careerInterests.length,
+      choicesMade: userMetrics.choicesMade,
+      platformsExplored: userMetrics.platformsExplored.length
+    })
     
-    // Queue each career exploration for sync
-    for (const exploration of careerExplorations) {
-      await this.queueCareerExplorationSync(exploration)
+    // Generate career explorations if user has sufficient data
+    if (userMetrics.careerInterests.length > 0 || userMetrics.choicesMade >= 3) {
+      console.log(`[ComprehensiveTracker] Generating career explorations for ${userId}`)
+      
+      const careerExplorations = this.mapInteractionsToCareers(userId, userMetrics)
+      
+      // Queue each career exploration for sync
+      for (const exploration of careerExplorations) {
+        await this.queueCareerExplorationSync(exploration)
+      }
+    } else {
+      console.log(`[ComprehensiveTracker] Insufficient data for career generation: ${userId}`)
     }
   }
 
@@ -258,42 +266,71 @@ export class ComprehensiveUserTracker {
       ]
     }
 
-    // Generate career explorations for each interest
-    for (const interest of userMetrics.careerInterests) {
-      const careers = careerMapping[interest as keyof typeof careerMapping] || []
+    // If user has specific career interests, generate those
+    if (userMetrics.careerInterests.length > 0) {
+      for (const interest of userMetrics.careerInterests) {
+        const careers = careerMapping[interest as keyof typeof careerMapping] || []
+        
+        for (const career of careers) {
+          const exploration = this.createCareerExploration(userId, career, userMetrics)
+          explorations.push(exploration)
+        }
+      }
+    } else {
+      // If no specific interests, generate general career explorations based on engagement
+      console.log(`[ComprehensiveTracker] No specific interests, generating general careers for ${userId}`)
       
-      for (const career of careers) {
-        // Calculate match score based on interactions
-        let matchScore = career.baseScore
-        
-        // Boost score based on engagement
-        if (userMetrics.choicesMade > 10) matchScore += 0.05
-        if (userMetrics.platformsExplored.length > 2) matchScore += 0.05
-        if (userMetrics.timeSpent > 300) matchScore += 0.05 // 5+ minutes
-        
-        matchScore = Math.min(1.0, matchScore)
-
-        // Get Birmingham-specific data
-        const birminghamData = this.getBirminghamCareerData(career.name)
-
-        explorations.push({
-          user_id: userId,
-          career_name: career.name,
-          match_score: matchScore,
-          readiness_level: career.readiness as any,
-          local_opportunities: birminghamData.localOpportunities,
-          education_paths: birminghamData.educationPaths,
-          evidence: {
-            skill_demonstrations: this.getSkillDemonstrationsForCareer(career.name),
-            character_interactions: this.getCharacterInteractionsForCareer(career.name),
-            scene_choices: this.getSceneChoicesForCareer(career.name),
-            time_invested: userMetrics.timeSpent
-          }
-        })
+      // Generate 2-3 general career explorations based on user engagement
+      const generalCareers = [
+        { name: 'General Professional', baseScore: 0.70, readiness: 'exploratory' },
+        { name: 'Birmingham Community Contributor', baseScore: 0.75, readiness: 'emerging' }
+      ]
+      
+      for (const career of generalCareers) {
+        const exploration = this.createCareerExploration(userId, career, userMetrics)
+        explorations.push(exploration)
       }
     }
 
+    console.log(`[ComprehensiveTracker] Generated ${explorations.length} career explorations for ${userId}`)
     return explorations
+  }
+
+  /**
+   * Create a single career exploration
+   */
+  private createCareerExploration(
+    userId: string,
+    career: { name: string; baseScore: number; readiness: string },
+    userMetrics: any
+  ): CareerExplorationData {
+    // Calculate match score based on interactions
+    let matchScore = career.baseScore
+    
+    // Boost score based on engagement
+    if (userMetrics.choicesMade > 10) matchScore += 0.05
+    if (userMetrics.platformsExplored.length > 2) matchScore += 0.05
+    if (userMetrics.timeSpent > 300) matchScore += 0.05 // 5+ minutes
+    
+    matchScore = Math.min(1.0, matchScore)
+
+    // Get Birmingham-specific data
+    const birminghamData = this.getBirminghamCareerData(career.name)
+
+    return {
+      user_id: userId,
+      career_name: career.name,
+      match_score: matchScore,
+      readiness_level: career.readiness as any,
+      local_opportunities: birminghamData.localOpportunities,
+      education_paths: birminghamData.educationPaths,
+      evidence: {
+        skill_demonstrations: this.getSkillDemonstrationsForCareer(career.name),
+        character_interactions: this.getCharacterInteractionsForCareer(career.name),
+        scene_choices: this.getSceneChoicesForCareer(career.name),
+        time_invested: userMetrics.timeSpent
+      }
+    }
   }
 
   /**
@@ -319,6 +356,14 @@ export class ComprehensiveUserTracker {
       'Teacher': {
         localOpportunities: ['Birmingham City Schools', 'Jefferson County Schools', 'Private Schools'],
         educationPaths: ['UAB School of Education', 'Samford University Education Program']
+      },
+      'General Professional': {
+        localOpportunities: ['Birmingham Business Alliance', 'Local Companies', 'Startup Community'],
+        educationPaths: ['UAB Professional Development', 'Jefferson State Programs', 'Community College']
+      },
+      'Birmingham Community Contributor': {
+        localOpportunities: ['Non-profit Organizations', 'Community Centers', 'Local Government'],
+        educationPaths: ['Community Programs', 'Volunteer Training', 'Leadership Development']
       }
     }
 
