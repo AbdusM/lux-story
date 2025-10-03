@@ -22,7 +22,7 @@ import { formatUserIdShort, formatUserIdRelative } from '@/lib/format-user-id'
  * Unified interface for urgency triage, skills analytics, and live choice review
  */
 export default function AdminPage() {
-  const [activeTab, setActiveTab] = useState('urgency')
+  const [activeTab, setActiveTab] = useState('journeys')
 
   // Student Journeys state (existing)
   const [userIds, setUserIds] = useState<string[]>([])
@@ -46,7 +46,14 @@ export default function AdminPage() {
   // Load student journeys (existing logic)
   useEffect(() => {
     const ids = getAllUserIds()
-    setUserIds(ids)
+    // Sort by recency (newest first) - user IDs contain timestamps
+    const sortedIds = ids.sort((a, b) => {
+      // Extract timestamp from user ID (format: player_TIMESTAMP)
+      const timestampA = a.match(/player_(\d+)/)?.[1] || '0'
+      const timestampB = b.match(/player_(\d+)/)?.[1] || '0'
+      return parseInt(timestampB) - parseInt(timestampA) // Descending order (newest first)
+    })
+    setUserIds(sortedIds)
 
     const stats = new Map()
     ids.forEach(userId => {
@@ -169,10 +176,6 @@ export default function AdminPage() {
         {/* Main Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-3 bg-white">
-            <TabsTrigger value="urgency" className="gap-2">
-              <AlertTriangle className="w-4 h-4" />
-              Student Triage
-            </TabsTrigger>
             <TabsTrigger value="journeys" className="gap-2">
               <Users className="w-4 h-4" />
               Student Journeys
@@ -181,76 +184,11 @@ export default function AdminPage() {
               <TrendingUp className="w-4 h-4" />
               Live Choices
             </TabsTrigger>
+            <TabsTrigger value="urgency" className="gap-2">
+              <AlertTriangle className="w-4 h-4" />
+              Student Triage
+            </TabsTrigger>
           </TabsList>
-
-          {/* URGENCY TRIAGE TAB (NEW) */}
-          <TabsContent value="urgency" className="mt-6 space-y-4">
-            <Card>
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle className="flex items-center gap-2">
-                      <AlertTriangle className="w-5 h-5 text-orange-500" />
-                      Student Intervention Priority
-                    </CardTitle>
-                    <CardDescription>
-                      Glass Box urgency scoring with transparent narrative justifications
-                    </CardDescription>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    {/* shadcn Select Component - Better accessibility & UX */}
-                    <Select
-                      value={urgencyFilter}
-                      onValueChange={(value) => setUrgencyFilter(value as 'all' | 'critical' | 'high' | 'all-students')}
-                    >
-                      <SelectTrigger className="w-[280px] h-10">
-                        <SelectValue placeholder="Filter students by urgency" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">All Urgent Students</SelectItem>
-                        <SelectItem value="all-students">📊 All Students (includes non-urgent)</SelectItem>
-                        <SelectItem value="critical">🔴 Critical Only</SelectItem>
-                        <SelectItem value="high">🟠 High + Critical</SelectItem>
-                      </SelectContent>
-                    </Select>
-
-                    {/* Recalculate Button */}
-                    <Button
-                      onClick={triggerRecalculation}
-                      disabled={recalculating}
-                      size="sm"
-                      className="gap-2"
-                    >
-                      <RefreshCw className={`w-4 h-4 ${recalculating ? 'animate-spin' : ''}`} />
-                      Recalculate
-                    </Button>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                {urgencyLoading ? (
-                  <div className="text-center py-12 text-gray-500">
-                    Loading urgent students...
-                  </div>
-                ) : urgentStudents.length === 0 ? (
-                  <div className="text-center py-12 space-y-4">
-                    <p className="text-gray-600">No urgent students found.</p>
-                    <p className="text-sm text-gray-500">
-                      {urgencyFilter !== 'all'
-                        ? 'Try changing the filter or run recalculation.'
-                        : 'No students have urgency scores yet. Click "Recalculate" to generate scores.'}
-                    </p>
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    {urgentStudents.map((student) => (
-                      <UrgentStudentCard key={student.userId} student={student} />
-                    ))}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </TabsContent>
 
           {/* STUDENT JOURNEYS TAB (EXISTING) */}
           <TabsContent value="journeys" className="mt-6">
@@ -377,6 +315,75 @@ export default function AdminPage() {
                 Content validation runs automatically when players load the game
               </p>
             </div>
+          </TabsContent>
+
+          {/* URGENCY TRIAGE TAB (NEW) */}
+          <TabsContent value="urgency" className="mt-6 space-y-4">
+            <Card>
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle className="flex items-center gap-2">
+                      <AlertTriangle className="w-5 h-5 text-orange-500" />
+                      Student Intervention Priority
+                    </CardTitle>
+                    <CardDescription>
+                      Glass Box urgency scoring with transparent narrative justifications
+                    </CardDescription>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {/* shadcn Select Component - Better accessibility & UX */}
+                    <Select
+                      value={urgencyFilter}
+                      onValueChange={(value) => setUrgencyFilter(value as 'all' | 'critical' | 'high' | 'all-students')}
+                    >
+                      <SelectTrigger className="w-[280px] h-10">
+                        <SelectValue placeholder="Filter students by urgency" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">All Urgent Students</SelectItem>
+                        <SelectItem value="all-students">📊 All Students (includes non-urgent)</SelectItem>
+                        <SelectItem value="critical">🔴 Critical Only</SelectItem>
+                        <SelectItem value="high">🟠 High + Critical</SelectItem>
+                      </SelectContent>
+                    </Select>
+
+                    {/* Recalculate Button */}
+                    <Button
+                      onClick={triggerRecalculation}
+                      disabled={recalculating}
+                      size="sm"
+                      className="gap-2"
+                    >
+                      <RefreshCw className={`w-4 h-4 ${recalculating ? 'animate-spin' : ''}`} />
+                      Recalculate
+                    </Button>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                {urgencyLoading ? (
+                  <div className="text-center py-12 text-gray-500">
+                    Loading urgent students...
+                  </div>
+                ) : urgentStudents.length === 0 ? (
+                  <div className="text-center py-12 space-y-4">
+                    <p className="text-gray-600">No urgent students found.</p>
+                    <p className="text-sm text-gray-500">
+                      {urgencyFilter !== 'all'
+                        ? 'Try changing the filter or run recalculation.'
+                        : 'No students have urgency scores yet. Click "Recalculate" to generate scores.'}
+                    </p>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {urgentStudents.map((student) => (
+                      <UrgentStudentCard key={student.userId} student={student} />
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
           </TabsContent>
         </Tabs>
       </div>

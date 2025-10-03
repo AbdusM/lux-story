@@ -260,7 +260,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'challenge_assumption',
         text: "Conversations aren't circuits though.",
-        nextNodeId: 'devon_defends_logic',
+        nextNodeId: 'devon_defends_focus',
         pattern: 'analytical'
       }
     ]

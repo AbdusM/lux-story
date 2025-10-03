@@ -135,6 +135,15 @@ export function findCharacterForNode(
         graph: baseGraph
       }
     }
+
+    // ADDITIONAL FIX: If we're looking for a revisit node but the current graph is base,
+    // also check the revisit graph directly
+    if (nodeId.includes('_revisit_') && revisitGraph && revisitGraph.nodes.has(nodeId)) {
+      return {
+        characterId: charId,
+        graph: revisitGraph
+      }
+    }
   }
 
   // Node not found in any graph
