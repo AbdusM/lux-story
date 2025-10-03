@@ -1887,8 +1887,8 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
         <TabsContent value="action" className="space-y-4">
           {/* NARRATIVE BRIDGE: Gaps → Action - Agent 2: <25 words (Issue 7A-7C) */}
           {user.skillGaps.length > 0 && (
-            <div className="bg-green-50 border-l-4 border-green-400 p-4 rounded-r">
-              <p className="text-sm text-gray-700">
+            <div className="bg-green-50 border-l-4 border-green-400 p-4 sm:p-6 rounded-r">
+              <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
                 <strong>From Analysis to Action:</strong> Birmingham opportunities to build your {user.skillGaps[0].skill.replace(/([A-Z])/g, ' $1').toLowerCase()} and advance toward {user.careerMatches[0]?.name || 'your career goals'}. Start this week.
               </p>
             </div>
@@ -1896,23 +1896,23 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
 
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
                 <Briefcase className="w-5 h-5" />
                 Your Action Plan
               </CardTitle>
-              <CardDescription>Concrete next steps for your journey</CardDescription>
+              <CardDescription className="text-sm sm:text-base">Concrete next steps for your journey</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {/* Conversation starters */}
               <div>
-                <p className="font-medium text-sm mb-2">Questions to Consider:</p>
-                <div className="space-y-2 text-sm">
-                  <div className="p-2 bg-blue-50 rounded border-l-2 border-blue-600">
-                    <p>"I showed strong emotional intelligence and problem-solving skills. 
+                <p className="font-medium text-sm sm:text-base mb-3">Questions to Consider:</p>
+                <div className="space-y-3 text-sm sm:text-base">
+                  <div className="p-3 sm:p-4 bg-blue-50 rounded-lg border-l-4 border-blue-600">
+                    <p className="leading-relaxed">"I showed strong emotional intelligence and problem-solving skills. 
                     Have I thought about healthcare technology roles that use both?"</p>
                   </div>
-                  <div className="p-2 bg-blue-50 rounded border-l-2 border-blue-600">
-                    <p>"My critical thinking is advanced (82%) but collaboration is developing (58%). 
+                  <div className="p-3 sm:p-4 bg-blue-50 rounded-lg border-l-4 border-blue-600">
+                    <p className="leading-relaxed">"My critical thinking is advanced (82%) but collaboration is developing (58%). 
                     Would I be interested in experiences that build team skills?"</p>
                   </div>
                 </div>
@@ -1920,41 +1920,47 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
 
               {/* Immediate actions */}
               <div>
-                <p className="font-medium text-sm mb-2">This Week - Your Actions:</p>
-                <div className="space-y-1 text-sm">
-                  <div className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-green-600 mt-0.5" />
-                    <p>Schedule UAB Health Informatics tour (87% career match, you're near ready)</p>
+                <p className="font-medium text-sm sm:text-base mb-3">This Week - Your Actions:</p>
+                <div className="space-y-3 text-sm sm:text-base">
+                  <div className="flex items-start gap-3 p-3 bg-green-50 rounded-lg">
+                    <CheckCircle2 className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <p className="leading-relaxed">Schedule UAB Health Informatics tour (87% career match, you're near ready)</p>
                   </div>
-                  <div className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-green-600 mt-0.5" />
-                    <p>Explore digital literacy development options (your gap: 12%)</p>
+                  <div className="flex items-start gap-3 p-3 bg-green-50 rounded-lg">
+                    <CheckCircle2 className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <p className="leading-relaxed">Explore digital literacy development options (your gap: 12%)</p>
                   </div>
                 </div>
               </div>
 
               {/* Next month */}
               <div>
-                <p className="font-medium text-sm mb-2">Next Month - Your Goals:</p>
-                <div className="space-y-1 text-sm">
-                  <div className="flex items-start gap-2">
-                    <Lightbulb className="w-4 h-4 text-blue-600 mt-0.5" />
-                    <p>Connect with UAB Hospital or Children's Hospital for shadowing</p>
+                <p className="font-medium text-sm sm:text-base mb-3">Next Month - Your Goals:</p>
+                <div className="space-y-3 text-sm sm:text-base">
+                  <div className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg">
+                    <Lightbulb className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                    <p className="leading-relaxed">Connect with UAB Hospital or Children's Hospital for shadowing</p>
                   </div>
-                  <div className="flex items-start gap-2">
-                    <Lightbulb className="w-4 h-4 text-blue-600 mt-0.5" />
-                    <p>Explore group projects or team activities (your collaboration skill gap)</p>
+                  <div className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg">
+                    <Lightbulb className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                    <p className="leading-relaxed">Explore group projects or team activities (your collaboration skill gap)</p>
                   </div>
                 </div>
               </div>
 
               {/* What to avoid */}
-              <div className="border-t pt-3">
-                <p className="font-medium text-sm mb-2 text-red-600">Be Mindful Of:</p>
-                <div className="space-y-1 text-sm text-muted-foreground">
-                  <p>• Rushing into immediate career commitment (you're still exploring)</p>
-                  <p>• Ignoring skill gaps (your collaboration needs work for Community Health path)</p>
-                  <p>• Overlooking time management weakness (42% - you may struggle with structured programs)</p>
+              <div className="border-t pt-4">
+                <p className="font-medium text-sm sm:text-base mb-3 text-red-600">Be Mindful Of:</p>
+                <div className="space-y-2 text-sm sm:text-base text-muted-foreground">
+                  <div className="p-3 bg-red-50 rounded-lg border-l-4 border-red-400">
+                    <p className="leading-relaxed">• Rushing into immediate career commitment (you're still exploring)</p>
+                  </div>
+                  <div className="p-3 bg-red-50 rounded-lg border-l-4 border-red-400">
+                    <p className="leading-relaxed">• Ignoring skill gaps (your collaboration needs work for Community Health path)</p>
+                  </div>
+                  <div className="p-3 bg-red-50 rounded-lg border-l-4 border-red-400">
+                    <p className="leading-relaxed">• Overlooking time management weakness (42% - you may struggle with structured programs)</p>
+                  </div>
                 </div>
               </div>
             </CardContent>
@@ -1963,15 +1969,15 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
           {/* Key insights */}
           <Card className="border-2 border-blue-600">
             <CardHeader>
-              <CardTitle className="text-lg">Your Key Insights</CardTitle>
+              <CardTitle className="text-lg sm:text-xl">Your Key Insights</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-2 text-sm">
+            <CardContent className="space-y-3 text-sm sm:text-base">
               {user.keySkillMoments.map((moment, idx) => (
-                <div key={idx} className="flex items-start gap-2">
-                  <span className="text-blue-600">→</span>
+                <div key={idx} className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg">
+                  <span className="text-blue-600 text-lg">→</span>
                   <div>
-                    <p className="font-medium">"{moment.choice}"</p>
-                    <p className="text-muted-foreground text-xs">{moment.insight}</p>
+                    <p className="font-medium leading-relaxed">"{moment.choice}"</p>
+                    <p className="text-muted-foreground text-xs sm:text-sm mt-1">{moment.insight}</p>
                   </div>
                 </div>
               ))}
