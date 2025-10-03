@@ -80,7 +80,7 @@ export default function StatefulGameInterface() {
   }, [])
 
   // Initialize or load game
-  const initializeGame = useCallback(() => {
+  const initializeGame = useCallback(async () => {
     console.log('🎮 Initializing Stateful Narrative Engine...')
 
     try {
