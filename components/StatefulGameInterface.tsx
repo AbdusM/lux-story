@@ -449,6 +449,14 @@ export default function StatefulGameInterface() {
 
         {/* Header - Minimal Actions Only */}
         <div className="flex justify-end gap-2 mb-4">
+          {/* Debug: Show admin button logic */}
+          {process.env.NODE_ENV === 'development' && (
+            <div className="text-xs text-gray-500 mb-2">
+              Debug: NODE_ENV={process.env.NODE_ENV}, 
+              window={typeof window !== 'undefined' ? 'exists' : 'undefined'}, 
+              search={typeof window !== 'undefined' ? window.location.search : 'no-window'}
+            </div>
+          )}
           {(process.env.NODE_ENV === 'development' ||
             (typeof window !== 'undefined' && window.location.search.includes('admin=true'))) && (
             <>
