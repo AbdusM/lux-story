@@ -312,13 +312,33 @@ export function createSkillProfile(
 }
 
 /**
- * Load SkillProfile from SkillTracker for a given user
+ * Load SkillProfile from Supabase or SkillTracker for a given user
  */
-export function loadSkillProfile(userId: string): SkillProfile | null {
+export async function loadSkillProfile(userId: string): Promise<SkillProfile | null> {
   if (typeof window === 'undefined') return null
 
   try {
-    // Load from existing SkillTracker
+    // Try Supabase first
+    const { supabase } = await import('./supabase')
+    
+    const { data: profile, error } = await supabase
+      .from('player_profiles')
+      .select(`
+        *,
+        skill_demonstrations(*),
+        career_explorations(*),
+        relationship_progress(*)
+      `)
+      .eq('user_id', userId)
+      .single()
+
+    if (!error && profile && profile.total_demonstrations > 0) {
+      console.log(`[SkillProfileAdapter] Loaded user ${userId} from Supabase`)
+      return convertSupabaseProfileToDashboard(profile)
+    }
+
+    // Fallback to localStorage
+    console.log(`[SkillProfileAdapter] Supabase empty for ${userId}, checking localStorage`)
     const tracker = new SkillTracker(userId)
     const trackerProfile = tracker.exportSkillProfile()
 
@@ -332,6 +352,108 @@ export function loadSkillProfile(userId: string): SkillProfile | null {
   } catch (error) {
     console.error('Failed to load skill profile:', error)
     return null
+  }
+}
+
+/**
+ * Convert Supabase profile to dashboard-compatible format
+ */
+function convertSupabaseProfileToDashboard(supabaseProfile: any): SkillProfile {
+  const userId = supabaseProfile.user_id
+  
+  // Convert skill demonstrations
+  const skillDemonstrations: SkillDemonstrations = {}
+  if (supabaseProfile.skill_demonstrations) {
+    supabaseProfile.skill_demonstrations.forEach((demo: any) => {
+      if (!skillDemonstrations[demo.skill_name]) {
+        skillDemonstrations[demo.skill_name] = []
+      }
+      skillDemonstrations[demo.skill_name].push({
+        scene: demo.scene_id,
+        choice: demo.choice_text || 'Your choice',
+        sceneDescription: demo.scene_id.replace(/_/g, ' ').replace(/^\w/, c => c.toUpperCase()),
+        context: demo.context,
+        value: 1, // Supabase doesn't store values, use 1 for demonstration
+        timestamp: new Date(demo.demonstrated_at).getTime()
+      })
+    })
+  }
+
+  // Convert career matches
+  const careerMatches: CareerMatch[] = []
+  if (supabaseProfile.career_explorations) {
+    supabaseProfile.career_explorations.forEach((career: any) => {
+      careerMatches.push({
+        id: career.id,
+        name: career.career_name,
+        matchScore: career.match_score,
+        requiredSkills: {}, // Would need to be populated from career data
+        birminghamRelevance: 0.8, // Default value
+        growthProjection: 'Growing',
+        readinessLevel: career.readiness_level || 'exploring',
+        localOpportunities: career.local_opportunities || [],
+        educationPathways: career.education_paths || []
+      })
+    })
+  }
+
+  // Convert milestones (would need to be stored in Supabase)
+  const milestones: string[] = []
+
+  // Calculate skill gaps (simplified)
+  const skillGaps: SkillGap[] = []
+  const allSkills = ['criticalThinking', 'communication', 'collaboration', 'creativity', 'adaptability', 'leadership', 'digitalLiteracy', 'emotionalIntelligence', 'culturalCompetence', 'financialLiteracy', 'timeManagement', 'problemSolving']
+  
+  allSkills.forEach(skill => {
+    const demos = skillDemonstrations[skill] || []
+    if (demos.length < 3) { // Less than 3 demonstrations = gap
+      skillGaps.push({
+        skill,
+        currentLevel: demos.length / 10, // Normalize to 0-1
+        targetForTopCareers: 0.7, // Target level
+        developmentPath: `Practice ${skill} through more choices`,
+        priority: demos.length === 0 ? 'high' : 'medium'
+      })
+    }
+  })
+
+  // Convert skill evolution
+  const skillEvolution: SkillEvolution[] = []
+  Object.entries(skillDemonstrations).forEach(([skill, demos]) => {
+    if (demos.length > 0) {
+      skillEvolution.push({
+        skill,
+        trend: 'improving',
+        recentDemonstrations: demos.slice(-3),
+        growthRate: Math.min(demos.length * 0.1, 1)
+      })
+    }
+  })
+
+  // Convert key skill moments
+  const keySkillMoments: KeySkillMoment[] = []
+  Object.entries(skillDemonstrations).forEach(([skill, demos]) => {
+    if (demos.length > 0) {
+      const latestDemo = demos[demos.length - 1]
+      keySkillMoments.push({
+        scene: latestDemo.scene,
+        choice: latestDemo.choice,
+        skillsDemonstrated: [skill],
+        insight: latestDemo.context
+      })
+    }
+  })
+
+  return {
+    userId,
+    userName: `User ${userId.slice(0, 8)}`,
+    skillDemonstrations,
+    careerMatches,
+    skillEvolution,
+    keySkillMoments,
+    skillGaps,
+    totalDemonstrations: supabaseProfile.total_demonstrations || 0,
+    milestones
   }
 }
 
@@ -469,14 +591,29 @@ export function saveSkillData(
 
 /**
  * Get all user IDs with skill data
- * Looks for SkillTracker data in localStorage
+ * First tries Supabase, falls back to localStorage
  */
-export function getAllUserIds(): string[] {
+export async function getAllUserIds(): Promise<string[]> {
   if (typeof window === 'undefined') return []
 
   try {
+    // Try Supabase first
+    const { supabase } = await import('./supabase')
+    
+    const { data: profiles, error } = await supabase
+      .from('player_profiles')
+      .select('user_id')
+      .gt('total_demonstrations', 0)
+      .order('last_activity', { ascending: false })
+
+    if (!error && profiles && profiles.length > 0) {
+      console.log(`[SkillProfileAdapter] Found ${profiles.length} users in Supabase`)
+      return profiles.map(p => p.user_id)
+    }
+
+    // Fallback to localStorage
+    console.log('[SkillProfileAdapter] Supabase empty, checking localStorage')
     const keys = Object.keys(localStorage)
-    // SkillTracker stores data with key format: skill_tracker_{userId}
     const trackerKeys = keys.filter(k => k.startsWith('skill_tracker_'))
     const userIds = trackerKeys.map(k => k.replace('skill_tracker_', ''))
 
