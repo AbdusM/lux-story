@@ -43,35 +43,44 @@ export default function AdminPage() {
   // Agent 9: Environment validation warning
   const [dbHealthy, setDbHealthy] = useState(true)
 
-  // Load student journeys (existing logic)
+  // Load student journeys (updated to use Supabase)
   useEffect(() => {
-    const ids = getAllUserIds()
-    // Sort by recency (newest first) - user IDs contain timestamps
-    const sortedIds = ids.sort((a, b) => {
-      // Extract timestamp from user ID (format: player_TIMESTAMP)
-      const timestampA = a.match(/player_(\d+)/)?.[1] || '0'
-      const timestampB = b.match(/player_(\d+)/)?.[1] || '0'
-      return parseInt(timestampB) - parseInt(timestampA) // Descending order (newest first)
-    })
-    setUserIds(sortedIds)
-
-    const stats = new Map()
-    ids.forEach(userId => {
-      const profile = loadSkillProfile(userId)
-      if (profile) {
-        const topSkill = Object.entries(profile.skillDemonstrations)
-          .sort(([, a], [, b]) => b.length - a.length)[0] || ['none', []]
-
-        stats.set(userId, {
-          totalDemonstrations: profile.totalDemonstrations,
-          topSkill,
-          topCareer: profile.careerMatches[0],
-          milestones: profile.milestones.length
+    const loadUserData = async () => {
+      try {
+        const ids = await getAllUserIds()
+        // Sort by recency (newest first) - user IDs contain timestamps
+        const sortedIds = ids.sort((a, b) => {
+          // Extract timestamp from user ID (format: player_TIMESTAMP)
+          const timestampA = a.match(/player_(\d+)/)?.[1] || '0'
+          const timestampB = b.match(/player_(\d+)/)?.[1] || '0'
+          return parseInt(timestampB) - parseInt(timestampA) // Descending order (newest first)
         })
+        setUserIds(sortedIds)
+
+        const stats = new Map()
+        for (const userId of ids) {
+          const profile = await loadSkillProfile(userId)
+          if (profile) {
+            const topSkill = Object.entries(profile.skillDemonstrations)
+              .sort(([, a], [, b]) => b.length - a.length)[0] || ['none', []]
+
+            stats.set(userId, {
+              totalDemonstrations: profile.totalDemonstrations,
+              topSkill,
+              topCareer: profile.careerMatches[0],
+              milestones: profile.milestones.length
+            })
+          }
+        }
+        setUserStats(stats)
+        setJourneysLoading(false)
+      } catch (error) {
+        console.error('Failed to load user data:', error)
+        setJourneysLoading(false)
       }
-    })
-    setUserStats(stats)
-    setJourneysLoading(false)
+    }
+
+    loadUserData()
   }, [])
 
   // Load urgent students (NEW)
