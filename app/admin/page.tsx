@@ -22,6 +22,7 @@ import { formatUserIdShort, formatUserIdRelative } from '@/lib/format-user-id'
  * Unified interface for urgency triage, skills analytics, and live choice review
  */
 export default function AdminPage() {
+  console.log('[Admin] Component rendering...')
   const [activeTab, setActiveTab] = useState('journeys')
 
   // Student Journeys state (existing)
@@ -156,6 +157,8 @@ export default function AdminPage() {
     }
   }
 
+  console.log('[Admin] About to render...')
+  
   return (
     <div className="min-h-screen bg-gray-50 p-4">
       <div className="max-w-7xl mx-auto space-y-6">
