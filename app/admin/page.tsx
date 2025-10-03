@@ -46,8 +46,12 @@ export default function AdminPage() {
   // Load student journeys (updated to use Supabase)
   useEffect(() => {
     const loadUserData = async () => {
+      console.log('[Admin] Starting to load user data...')
       try {
+        console.log('[Admin] Calling getAllUserIds()...')
         const ids = await getAllUserIds()
+        console.log('[Admin] getAllUserIds() returned:', ids)
+        
         // Sort by recency (newest first) - user IDs contain timestamps
         const sortedIds = ids.sort((a, b) => {
           // Extract timestamp from user ID (format: player_TIMESTAMP)
@@ -55,10 +59,12 @@ export default function AdminPage() {
           const timestampB = b.match(/player_(\d+)/)?.[1] || '0'
           return parseInt(timestampB) - parseInt(timestampA) // Descending order (newest first)
         })
+        console.log('[Admin] Sorted user IDs:', sortedIds)
         setUserIds(sortedIds)
 
         const stats = new Map()
         for (const userId of ids) {
+          console.log('[Admin] Loading profile for user:', userId)
           const profile = await loadSkillProfile(userId)
           if (profile) {
             const topSkill = Object.entries(profile.skillDemonstrations)
@@ -72,10 +78,12 @@ export default function AdminPage() {
             })
           }
         }
+        console.log('[Admin] User stats:', stats)
         setUserStats(stats)
         setJourneysLoading(false)
+        console.log('[Admin] User data loading complete')
       } catch (error) {
-        console.error('Failed to load user data:', error)
+        console.error('[Admin] Failed to load user data:', error)
         setJourneysLoading(false)
       }
     }
@@ -161,6 +169,10 @@ export default function AdminPage() {
               <p className="text-gray-600">
                 Student Urgency Triage, Skills Analytics & Live Choice Review
               </p>
+              {/* Debug info */}
+              <div className="text-xs text-gray-500 mt-2">
+                Debug: activeTab={activeTab}, userIds.length={userIds.length}, journeysLoading={journeysLoading.toString()}
+              </div>
             </div>
             <Link href="/">
               <Button variant="outline" size="sm">
