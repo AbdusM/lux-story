@@ -814,9 +814,9 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
               <div className="flex items-center justify-between">
                 <div>
                   {/* Agent 2: Personalized section header (Issue 10A) */}
-                  <CardTitle className="text-xl">{user.userName.split(' ')[0]}'s Core Skills Demonstrated</CardTitle>
+                  <CardTitle className="text-xl">Your Core Skills Demonstrated</CardTitle>
                   <CardDescription>
-                    Evidence-based skill profile from {user.totalDemonstrations} demonstrations across journey
+                    Your skill profile from {user.totalDemonstrations} demonstrations across your journey
                   </CardDescription>
                 </div>
                 {/* Agent 3: Sorting controls (Issue 14) */}
@@ -845,7 +845,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                   return (
                     <div className="py-8 text-center text-muted-foreground">
                       {/* Agent 2: Encouraging empty state (Issue 49) */}
-                      Ready to explore skills! {user.userName.split(' ')[0]} will demonstrate abilities as they make choices in their journey.
+                      Ready to explore skills! You'll demonstrate abilities as you make choices in your journey.
                     </div>
                   );
                 }
@@ -948,7 +948,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                 WEF 2030 Skills Framework
               </CardTitle>
               <CardDescription>
-                World Economic Forum future-ready skills tracked through narrative choices
+                Your future-ready skills tracked through your narrative choices
               </CardDescription>
             </CardHeader>
 
@@ -960,8 +960,8 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
               ) : skillsData.length === 0 ? (
                 <div className="text-center py-8 space-y-2">
                   <Award className="w-12 h-12 mx-auto text-gray-400" />
-                  <p className="text-gray-600">No WEF skills data yet</p>
-                  <p className="text-sm text-gray-500">Skills tracked automatically as students make choices</p>
+                  <p className="text-gray-600">No skills data yet</p>
+                  <p className="text-sm text-gray-500">Your skills are tracked automatically as you make choices</p>
                 </div>
               ) : (
                 <>
@@ -1018,7 +1018,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
 
                   {/* Birmingham Career Connections */}
                   <div className="pt-3 border-t">
-                    <p className="text-xs font-semibold text-gray-700 mb-2">Birmingham Career Connections:</p>
+                    <p className="text-xs font-semibold text-gray-700 mb-2">Your Birmingham Career Connections:</p>
                     <div className="space-y-2">
                       {skillsData
                         .sort((a, b) => b.demonstrationCount - a.demonstrationCount)
