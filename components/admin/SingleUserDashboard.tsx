@@ -66,6 +66,9 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Target, TrendingUp, Briefcase, Lightbulb, CheckCircle2, AlertTriangle, RefreshCw, Award, BookOpen, Building2, AlertCircle, Users, GraduationCap, ChevronDown, ChevronRight, ArrowRight } from 'lucide-react';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Separator } from '@/components/ui/separator';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import type { SkillProfile } from '@/lib/skill-profile-adapter';
 import { ExportButton } from '@/components/admin/ExportButton';
 import { AdvisorBriefingButton } from '@/components/admin/AdvisorBriefingButton';
@@ -819,18 +822,28 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                     Your skill profile from {user.totalDemonstrations} demonstrations across your journey
                   </CardDescription>
                 </div>
-                {/* Agent 3: Sorting controls (Issue 14) - Mobile optimized */}
+                {/* Agent 3: Sorting controls (Issue 14) - shadcn Select */}
                 <div className="flex items-center gap-2">
-                  <select
-                    value={skillSortMode}
-                    onChange={(e) => setSkillSortMode(e.target.value as SortMode)}
-                    className="text-sm border rounded px-3 py-2 bg-white min-h-[44px] w-full sm:w-auto"
-                  >
-                    <option value="by_count">By Count</option>
-                    <option value="alphabetical">Alphabetical</option>
-                    <option value="by_recency">By Recency</option>
-                    <option value="by_scene_type">By Scene Type</option>
-                  </select>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Select value={skillSortMode} onValueChange={(value) => setSkillSortMode(value as SortMode)}>
+                          <SelectTrigger className="w-full sm:w-[180px] min-h-[44px]">
+                            <SelectValue placeholder="Sort skills" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="by_count">By Count</SelectItem>
+                            <SelectItem value="alphabetical">Alphabetical</SelectItem>
+                            <SelectItem value="by_recency">By Recency</SelectItem>
+                            <SelectItem value="by_scene_type">By Scene Type</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Choose how to sort your skills</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 </div>
               </div>
             </CardHeader>
@@ -1013,7 +1026,8 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                   </div>
 
                   {/* Summary Stats - Logical consistency improved */}
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t">
+                  <Separator className="my-4" />
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div className="text-center p-4 bg-purple-50 rounded-lg">
                       <p className="text-2xl font-bold text-purple-600">{skillsData.length}</p>
                       <p className="text-sm text-gray-600">Skills Demonstrated</p>
@@ -1036,7 +1050,8 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                   </div>
 
                   {/* Birmingham Career Connections - Logical consistency improved */}
-                  <div className="pt-4 border-t">
+                  <Separator className="my-4" />
+                  <div>
                     <p className="text-sm font-semibold text-gray-700 mb-3">Your Birmingham Career Connections:</p>
                     <p className="text-xs text-gray-500 mb-3">Based on your demonstrated skills</p>
                     <div className="space-y-3">
@@ -1085,9 +1100,9 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
 
         {/* CAREERS TAB - Actual Birmingham pathways */}
         <TabsContent value="careers" className="space-y-4">
-          {/* NARRATIVE BRIDGE: Skills → Careers - Agent 2: <25 words (Issue 7A-7C) */}
-          <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r">
-            <p className="text-sm text-gray-700">
+          {/* NARRATIVE BRIDGE: Skills → Careers - Mobile optimized */}
+          <div className="bg-blue-50 border-l-4 border-blue-400 p-4 sm:p-6 rounded-r">
+            <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
               <strong>From Skills to Careers:</strong> Your {user.totalDemonstrations} skill demonstrations reveal Birmingham career matches. Scores show your skill fit and readiness.
             </p>
           </div>
@@ -1106,12 +1121,12 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
               <CardContent>
                 <div className="space-y-4">
                   {evidenceData.careerExploration.paths?.map((path: any, idx: number) => (
-                    <div key={idx} className="border-l-4 border-blue-500 pl-4">
-                      <h3 className="font-semibold">{path.category || `Career Path ${idx + 1}`}</h3>
-                      <p className="text-sm text-gray-600">{path.description || 'Exploring your career opportunities'}</p>
+                    <div key={idx} className="border-l-4 border-blue-500 pl-4 sm:pl-6 p-3 sm:p-4 bg-blue-50 rounded-r-lg">
+                      <h3 className="font-semibold text-base sm:text-lg">{path.category || `Career Path ${idx + 1}`}</h3>
+                      <p className="text-sm sm:text-base text-gray-600 mt-2 leading-relaxed">{path.description || 'Exploring your career opportunities'}</p>
                       {path.opportunities && (
-                        <div className="mt-2 text-xs text-gray-500">
-                          Your Birmingham opportunities: {path.opportunities.join(', ')}
+                        <div className="mt-3 text-xs sm:text-sm text-gray-500 bg-white p-2 rounded">
+                          <strong>Your Birmingham opportunities:</strong> {path.opportunities.join(', ')}
                         </div>
                       )}
                     </div>
@@ -1162,28 +1177,33 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
               return (
               <Card key={career.id}>
                 <CardHeader>
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
                     <div className="flex-1">
-                      <CardTitle className="text-lg">{career.name}</CardTitle>
+                      <CardTitle className="text-lg sm:text-xl">{career.name}</CardTitle>
                       {/* Agent 4: Inline match explanation (Issue 15) */}
-                      <p className="text-sm text-muted-foreground mt-1">
+                      <p className="text-sm sm:text-base text-muted-foreground mt-2 leading-relaxed">
                         {getMatchExplanation(career.matchScore, gapSkills)}
                       </p>
                     </div>
                     {/* Agent 4: Directive readiness badge (Issue 18) */}
-                    {getDirectiveBadge(career.readiness, gapSkills.length)}
+                    <div className="flex-shrink-0">
+                      {getDirectiveBadge(career.readiness, gapSkills.length)}
+                    </div>
                   </div>
-                  <CardDescription>
-                    ${career.salaryRange[0].toLocaleString()} - ${career.salaryRange[1].toLocaleString()} •
-                    Birmingham Relevance: {Math.round(career.birminghamRelevance * 100)}%
+                  <CardDescription className="text-sm sm:text-base mt-3">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+                      <span>${career.salaryRange[0].toLocaleString()} - ${career.salaryRange[1].toLocaleString()}</span>
+                      <span className="hidden sm:inline">•</span>
+                      <span>Birmingham Relevance: {Math.round(career.birminghamRelevance * 100)}%</span>
+                    </div>
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   {/* Agent 4: Skill gaps shown first (Issue 5B) */}
                   {gapSkills.length > 0 && (
                     <div>
-                      <p className="text-sm font-medium mb-2">Skills to Develop:</p>
-                      <div className="space-y-2">
+                      <p className="text-sm sm:text-base font-medium mb-3">Skills to Develop:</p>
+                      <div className="space-y-3">
                         {gapSkills
                           .sort((a, b) => b[1].gap - a[1].gap) // Sort by largest gap first
                           .map(([skill, data]) => {
@@ -1193,23 +1213,23 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                             const bgColor = demoCount === 0 ? 'bg-red-50' : demoCount <= 2 ? 'bg-yellow-50' : 'bg-green-50';
 
                             return (
-                            <div key={skill} className={`space-y-1 p-2 rounded ${bgColor}`}>
-                              <div className="flex justify-between text-xs">
-                                <span className="capitalize font-medium">{skill.replace(/([A-Z])/g, ' $1').trim()}</span>
-                                <span className={gapColor}>
+                            <div key={skill} className={`space-y-2 p-3 sm:p-4 rounded-lg ${bgColor}`}>
+                              <div className="flex flex-col sm:flex-row sm:justify-between gap-1">
+                                <span className="capitalize font-medium text-sm sm:text-base">{skill.replace(/([A-Z])/g, ' $1').trim()}</span>
+                                <span className={`text-xs sm:text-sm ${gapColor}`}>
                                   Gap: {Math.round(data.gap * 100)}% ({demoCount} demos)
                                 </span>
                               </div>
-                              <div className="flex gap-1 items-center">
-                                <div className="flex-1 bg-gray-200 rounded-full h-1.5">
+                              <div className="flex gap-2 items-center">
+                                <div className="flex-1 bg-gray-200 rounded-full h-2 sm:h-3">
                                   <div
-                                    className={`h-1.5 rounded-full ${
+                                    className={`h-2 sm:h-3 rounded-full ${
                                       demoCount === 0 ? 'bg-red-500' : demoCount <= 2 ? 'bg-yellow-500' : 'bg-green-500'
                                     }`}
                                     style={{ width: `${(data.current / data.required) * 100}%` }}
                                   />
                                 </div>
-                                <span className="text-xs text-muted-foreground w-16 text-right">
+                                <span className="text-xs sm:text-sm text-muted-foreground w-16 sm:w-20 text-right">
                                   {Math.round(data.current * 100)}/{Math.round(data.required * 100)}
                                 </span>
                               </div>
@@ -1219,25 +1239,25 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                     </div>
                   )}
 
-                  {/* Agent 4: Met requirements collapsible (Issue 5B) */}
+                  {/* Agent 4: Met requirements collapsible (Issue 5B) - Mobile optimized */}
                   {metSkills.length > 0 && (
-                    <div className="pt-2 border-t">
+                    <div className="pt-3 border-t">
                       <button
                         onClick={() => setShowMetRequirements(!showMetRequirements)}
-                        className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                        className="flex items-center gap-2 text-sm sm:text-base text-muted-foreground hover:text-foreground transition-colors min-h-[44px] w-full text-left"
                       >
-                        <ChevronRight className={`w-4 h-4 transition-transform ${showMetRequirements ? 'rotate-90' : ''}`} />
+                        <ChevronRight className={`w-5 h-5 transition-transform ${showMetRequirements ? 'rotate-90' : ''}`} />
                         <span>Your {metSkills.length} strengths</span>
                       </button>
 
                       {showMetRequirements && (
-                        <div className="mt-2 space-y-1">
+                        <div className="mt-3 space-y-2">
                           {metSkills.map(([skill, data]) => {
                             const demoCount = user.skillDemonstrations[skill]?.length || 0;
                             return (
-                              <div key={skill} className="flex justify-between text-xs text-muted-foreground bg-green-50 p-2 rounded">
-                                <span className="capitalize">{skill.replace(/([A-Z])/g, ' $1').trim()}</span>
-                                <span className="text-green-600">✓ Strong ({demoCount} demos)</span>
+                              <div key={skill} className="flex flex-col sm:flex-row sm:justify-between gap-1 text-sm bg-green-50 p-3 rounded-lg">
+                                <span className="capitalize font-medium">{skill.replace(/([A-Z])/g, ' $1').trim()}</span>
+                                <span className="text-green-600 font-medium">✓ Strong ({demoCount} demos)</span>
                               </div>
                             );
                           })}
@@ -1246,48 +1266,48 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                     </div>
                   )}
 
-                  {/* Education paths */}
+                  {/* Education paths - Mobile optimized */}
                   <div>
-                    <p className="text-sm font-medium mb-1">Education Pathways:</p>
-                    <div className="flex flex-wrap gap-1">
+                    <p className="text-sm sm:text-base font-medium mb-3">Education Pathways:</p>
+                    <div className="flex flex-wrap gap-2">
                       {career.educationPaths.map(path => (
-                        <Badge key={path} variant="secondary" className="text-xs">{path}</Badge>
+                        <Badge key={path} variant="secondary" className="text-xs sm:text-sm px-2 py-1">{path}</Badge>
                       ))}
                     </div>
                   </div>
 
-                  {/* Local opportunities */}
+                  {/* Local opportunities - Mobile optimized */}
                   <div>
-                    <p className="text-sm font-medium mb-1">Birmingham Employers:</p>
-                    <div className="flex flex-wrap gap-1">
+                    <p className="text-sm sm:text-base font-medium mb-3">Birmingham Employers:</p>
+                    <div className="flex flex-wrap gap-2">
                       {career.localOpportunities.map(opp => (
-                        <Badge key={opp} variant="outline" className="text-xs">{opp}</Badge>
+                        <Badge key={opp} variant="outline" className="text-xs sm:text-sm px-2 py-1">{opp}</Badge>
                       ))}
                     </div>
                   </div>
 
-                  {/* Readiness */}
-                  <div className="pt-2 border-t">
+                  {/* Readiness - Mobile optimized */}
+                  <div className="pt-3 border-t">
                     {career.readiness === 'near_ready' && (
-                      <div className="flex items-start gap-2 text-sm">
-                        <CheckCircle2 className="w-4 h-4 text-green-600 mt-0.5" />
-                        <p className="text-green-600">
+                      <div className="flex items-start gap-3 text-sm sm:text-base p-3 bg-green-50 rounded-lg">
+                        <CheckCircle2 className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                        <p className="text-green-600 leading-relaxed">
                           <strong>You're Nearly Ready:</strong> Small skill gaps. Consider exploratory experiences.
                         </p>
                       </div>
                     )}
                     {career.readiness === 'skill_gaps' && (
-                      <div className="flex items-start gap-2 text-sm">
-                        <AlertTriangle className="w-4 h-4 text-yellow-600 mt-0.5" />
-                        <p className="text-yellow-600">
+                      <div className="flex items-start gap-3 text-sm sm:text-base p-3 bg-yellow-50 rounded-lg">
+                        <AlertTriangle className="w-5 h-5 text-yellow-600 mt-0.5 flex-shrink-0" />
+                        <p className="text-yellow-600 leading-relaxed">
                           <strong>Building Your Skills:</strong> Good foundation but needs development. See Gaps tab.
                         </p>
                       </div>
                     )}
                     {career.readiness === 'exploratory' && (
-                      <div className="flex items-start gap-2 text-sm">
-                        <Lightbulb className="w-4 h-4 text-blue-600 mt-0.5" />
-                        <p className="text-blue-600">
+                      <div className="flex items-start gap-3 text-sm sm:text-base p-3 bg-blue-50 rounded-lg">
+                        <Lightbulb className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                        <p className="text-blue-600 leading-relaxed">
                           <strong>Worth Exploring:</strong> Moderate match. Consider informational interviews.
                         </p>
                       </div>
