@@ -1159,19 +1159,22 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                 return <Badge className="bg-orange-600 text-white">Build This Skill</Badge>;
               };
 
-              // Agent 4: Generate inline match explanation (Issue 15)
+              // Agent 4: Generate inline match explanation (Issue 15) - Logical consistency improved
               const getMatchExplanation = (score: number, gapSkills: [string, any][]) => {
                 const gapNames = gapSkills.slice(0, 2).map(([skill]) =>
                   skill.replace(/([A-Z])/g, ' $1').trim().toLowerCase()
                 ).join(', ');
 
+                // Fix: Ensure score is valid and consistent
+                const validScore = Math.max(0, Math.min(100, Math.round(score * 100)));
+
                 if (gapSkills.length === 0) {
-                  return `${Math.round(score * 100)}% match - All requirements met`;
+                  return `${validScore}% match - All requirements met`;
                 }
                 if (gapSkills.length === 1) {
-                  return `${Math.round(score * 100)}% match - Strong fit, needs ${gapNames}`;
+                  return `${validScore}% match - Strong fit, needs ${gapNames}`;
                 }
-                return `${Math.round(score * 100)}% match - Solid base, developing ${gapNames}`;
+                return `${validScore}% match - Solid base, developing ${gapNames}`;
               };
 
               return (
@@ -1194,7 +1197,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                     <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
                       <span>${career.salaryRange[0].toLocaleString()} - ${career.salaryRange[1].toLocaleString()}</span>
                       <span className="hidden sm:inline">•</span>
-                      <span>Birmingham Relevance: {Math.round(career.birminghamRelevance * 100)}%</span>
+                      <span>Birmingham Relevance: {Math.max(0, Math.min(100, Math.round(career.birminghamRelevance * 100)))}%</span>
                     </div>
                   </CardDescription>
                 </CardHeader>
@@ -1217,7 +1220,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                               <div className="flex flex-col sm:flex-row sm:justify-between gap-1">
                                 <span className="capitalize font-medium text-sm sm:text-base">{skill.replace(/([A-Z])/g, ' $1').trim()}</span>
                                 <span className={`text-xs sm:text-sm ${gapColor}`}>
-                                  Gap: {Math.round(data.gap * 100)}% ({demoCount} demos)
+                                  Gap: {Math.max(0, Math.min(100, Math.round(data.gap * 100)))}% ({demoCount} demos)
                                 </span>
                               </div>
                               <div className="flex gap-2 items-center">
@@ -1226,11 +1229,11 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                                     className={`h-2 sm:h-3 rounded-full ${
                                       demoCount === 0 ? 'bg-red-500' : demoCount <= 2 ? 'bg-yellow-500' : 'bg-green-500'
                                     }`}
-                                    style={{ width: `${(data.current / data.required) * 100}%` }}
+                                    style={{ width: `${Math.max(0, Math.min(100, (data.current / data.required) * 100))}%` }}
                                   />
                                 </div>
                                 <span className="text-xs sm:text-sm text-muted-foreground w-16 sm:w-20 text-right">
-                                  {Math.round(data.current * 100)}/{Math.round(data.required * 100)}
+                                  {Math.max(0, Math.round(data.current * 100))}/{Math.max(1, Math.round(data.required * 100))}
                                 </span>
                               </div>
                             </div>
@@ -1322,7 +1325,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
           <Card>
             <CardContent className="py-8 text-center text-muted-foreground">
               {/* Agent 2: Encouraging empty state (Issue 49) */}
-              Ready to discover careers! {user.userName.split(' ')[0]}'s career matches will appear as they explore their journey.
+              Ready to discover careers! Your career matches will appear as you explore your journey.
             </CardContent>
           </Card>
         )}
