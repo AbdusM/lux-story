@@ -91,6 +91,22 @@ export default function StatefulGameInterface() {
         // Create new game
         gameState = GameStateUtils.createNewGameState('player_' + Date.now())
         console.log('✅ Created new game state')
+        
+        // Create database profile for new user
+        try {
+          const { DatabaseService } = await import('@/lib/database-service')
+          const db = new DatabaseService()
+          await db.upsertPlayerProfile({
+            userId: gameState.playerId,
+            currentScene: gameState.currentNodeId,
+            totalDemonstrations: 0,
+            lastActivity: new Date()
+          })
+          console.log('✅ Created database profile for user:', gameState.playerId)
+        } catch (error) {
+          console.error('❌ Failed to create database profile:', error)
+          // Continue anyway - user can still play, profile will be created on first sync
+        }
       } else {
         console.log('✅ Loaded existing game state')
       }
