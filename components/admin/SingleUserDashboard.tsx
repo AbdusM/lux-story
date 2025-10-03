@@ -2040,4 +2040,3 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
 };
 
 export default SingleUserDashboard;
-export default SingleUserDashboard;
