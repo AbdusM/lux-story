@@ -400,7 +400,7 @@ export default function StatefulGameInterface() {
                     New Conversation with Maya
                   </Button>
                   <Button
-                    onClick={initializeGame}
+                    onClick={() => initializeGame()}
                     variant="outline"
                     size="lg"
                     className="w-full"
@@ -411,7 +411,7 @@ export default function StatefulGameInterface() {
               ) : (
                 <>
                   <Button
-                    onClick={initializeGame}
+                    onClick={() => initializeGame()}
                     size="lg"
                     className="w-full"
                   >
