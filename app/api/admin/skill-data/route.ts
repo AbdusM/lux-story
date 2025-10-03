@@ -64,6 +64,23 @@ export async function GET(request: NextRequest) {
       .eq('user_id', userId)
       .single()
 
+    // Also fetch career explorations separately to ensure we get all data
+    const { data: careerExplorations, error: careerError } = await supabase
+      .from('career_explorations')
+      .select('*')
+      .eq('user_id', userId)
+      .order('match_score', { ascending: false })
+
+    if (careerError) {
+      console.warn('❌ [Admin Skill Data API] Career explorations error:', careerError)
+    } else if (careerExplorations && careerExplorations.length > 0) {
+      console.log(`✅ [Admin Skill Data API] Found ${careerExplorations.length} career explorations for ${userId}`)
+      // Merge career explorations into profile
+      if (profile) {
+        profile.career_explorations = careerExplorations
+      }
+    }
+
     if (error) {
       console.error('❌ [Admin:SkillData] Supabase error:', {
         code: error.code,

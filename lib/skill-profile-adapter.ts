@@ -318,19 +318,32 @@ export async function loadSkillProfile(userId: string): Promise<SkillProfile | n
   if (typeof window === 'undefined') return null
 
   try {
-    // Try admin API first (uses service role key)
-    try {
-      const response = await fetch(`/api/admin/skill-data?userId=${encodeURIComponent(userId)}`)
-      if (response.ok) {
-        const result = await response.json()
-        if (result.success && result.profile) {
-          console.log(`[SkillProfileAdapter] Loaded user ${userId} from admin API`)
-          return convertSupabaseProfileToDashboard(result.profile)
-        }
+  // Try admin API first (uses service role key)
+  try {
+    const response = await fetch(`/api/admin/skill-data?userId=${encodeURIComponent(userId)}`)
+    if (response.ok) {
+      const result = await response.json()
+      if (result.success && result.profile) {
+        console.log(`[SkillProfileAdapter] Loaded user ${userId} from admin API`)
+        return convertSupabaseProfileToDashboard(result.profile)
       }
-    } catch (apiError) {
-      console.warn(`[SkillProfileAdapter] Admin API failed for ${userId}, falling back to direct Supabase`)
     }
+  } catch (apiError) {
+    console.warn(`[SkillProfileAdapter] Admin API failed for ${userId}, falling back to direct Supabase`)
+  }
+
+  // Try career explorations API
+  try {
+    const careerResponse = await fetch(`/api/user/career-explorations?userId=${encodeURIComponent(userId)}`)
+    if (careerResponse.ok) {
+      const careerResult = await careerResponse.json()
+      if (careerResult.success && careerResult.careerExplorations) {
+        console.log(`[SkillProfileAdapter] Loaded ${careerResult.careerExplorations.length} career explorations for ${userId}`)
+      }
+    }
+  } catch (careerError) {
+    console.warn(`[SkillProfileAdapter] Career explorations API failed for ${userId}`)
+  }
 
     // Fallback to direct Supabase (may be blocked by RLS)
     const { supabase } = await import('./supabase')
