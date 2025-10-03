@@ -466,6 +466,11 @@ function convertSupabaseProfileToDashboard(supabaseProfile: any): SkillProfile {
     }
   })
 
+  // Calculate total demonstrations from skill_summaries
+  const totalDemonstrations = supabaseProfile.skill_summaries 
+    ? supabaseProfile.skill_summaries.reduce((sum: number, summary: any) => sum + (summary.demonstration_count || 0), 0)
+    : (supabaseProfile.total_demonstrations || 0)
+
   return {
     userId,
     userName: `User ${userId.slice(0, 8)}`,
@@ -474,7 +479,7 @@ function convertSupabaseProfileToDashboard(supabaseProfile: any): SkillProfile {
     skillEvolution,
     keySkillMoments,
     skillGaps,
-    totalDemonstrations: supabaseProfile.total_demonstrations || 0,
+    totalDemonstrations,
     milestones
   }
 }
