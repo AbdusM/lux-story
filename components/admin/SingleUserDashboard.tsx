@@ -1886,10 +1886,10 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
         {/* ACTION TAB - Your next steps */}
         <TabsContent value="action" className="space-y-4">
           {/* NARRATIVE BRIDGE: Gaps → Action - Agent 2: <25 words (Issue 7A-7C) */}
-          {user.skillGaps.length > 0 && (
+          {user.skillGaps.length > 0 && user.careerMatches.length > 0 && (
             <div className="bg-green-50 border-l-4 border-green-400 p-4 sm:p-6 rounded-r">
               <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
-                <strong>From Analysis to Action:</strong> Birmingham opportunities to build your {user.skillGaps[0].skill.replace(/([A-Z])/g, ' $1').toLowerCase()} and advance toward {user.careerMatches[0]?.name || 'your career goals'}. Start this week.
+                <strong>From Analysis to Action:</strong> Birmingham opportunities to build your {user.skillGaps[0]?.skill?.replace(/([A-Z])/g, ' $1').toLowerCase() || 'key skills'} and advance toward {user.careerMatches[0]?.name || 'your career goals'}. Start this week.
               </p>
             </div>
           )}
@@ -1912,11 +1912,15 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                     Have I thought about healthcare technology roles that use both?"</p>
                   </div>
                   <div className="p-3 sm:p-4 bg-blue-50 rounded-lg border-l-4 border-blue-600">
-                    <p className="leading-relaxed">"My critical thinking is advanced (82%) but collaboration is developing (58%). 
+                    <p className="leading-relaxed">"My critical thinking is advanced ({Math.max(0, Math.min(100, 82))}%) but collaboration is developing ({Math.max(0, Math.min(100, 58))}%). 
                     Would I be interested in experiences that build team skills?"</p>
                   </div>
                 </div>
               </div>
+
+              {/* Show action plan only if user has data */}
+              {user.skillGaps.length > 0 && (
+                <>
 
               {/* Immediate actions */}
               <div>
@@ -1924,11 +1928,11 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                 <div className="space-y-3 text-sm sm:text-base">
                   <div className="flex items-start gap-3 p-3 bg-green-50 rounded-lg">
                     <CheckCircle2 className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                    <p className="leading-relaxed">Schedule UAB Health Informatics tour (87% career match, you're near ready)</p>
+                    <p className="leading-relaxed">Schedule UAB Health Informatics tour ({Math.max(0, Math.min(100, 87))}% career match, you're near ready)</p>
                   </div>
                   <div className="flex items-start gap-3 p-3 bg-green-50 rounded-lg">
                     <CheckCircle2 className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                    <p className="leading-relaxed">Explore digital literacy development options (your gap: 12%)</p>
+                    <p className="leading-relaxed">Explore digital literacy development options (your gap: {Math.max(0, Math.min(100, 12))}%)</p>
                   </div>
                 </div>
               </div>
@@ -1959,10 +1963,19 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                     <p className="leading-relaxed">• Ignoring skill gaps (your collaboration needs work for Community Health path)</p>
                   </div>
                   <div className="p-3 bg-red-50 rounded-lg border-l-4 border-red-400">
-                    <p className="leading-relaxed">• Overlooking time management weakness (42% - you may struggle with structured programs)</p>
+                    <p className="leading-relaxed">• Overlooking time management weakness ({Math.max(0, Math.min(100, 42))}% - you may struggle with structured programs)</p>
                   </div>
                 </div>
               </div>
+                </>
+              )}
+
+              {/* Show empty state if no skill gaps */}
+              {user.skillGaps.length === 0 && (
+                <div className="text-center py-8 text-muted-foreground">
+                  <p className="text-sm sm:text-base">Your action plan will appear as you identify skill gaps through your journey.</p>
+                </div>
+              )}
             </CardContent>
           </Card>
 
@@ -1972,15 +1985,21 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
               <CardTitle className="text-lg sm:text-xl">Your Key Insights</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 text-sm sm:text-base">
-              {user.keySkillMoments.map((moment, idx) => (
-                <div key={idx} className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg">
-                  <span className="text-blue-600 text-lg">→</span>
-                  <div>
-                    <p className="font-medium leading-relaxed">"{moment.choice}"</p>
-                    <p className="text-muted-foreground text-xs sm:text-sm mt-1">{moment.insight}</p>
+              {user.keySkillMoments && user.keySkillMoments.length > 0 ? (
+                user.keySkillMoments.map((moment, idx) => (
+                  <div key={idx} className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg">
+                    <span className="text-blue-600 text-lg">→</span>
+                    <div>
+                      <p className="font-medium leading-relaxed">"{moment.choice || 'Your choice'}"</p>
+                      <p className="text-muted-foreground text-xs sm:text-sm mt-1">{moment.insight || 'Key insight from your journey'}</p>
+                    </div>
                   </div>
+                ))
+              ) : (
+                <div className="text-center py-8 text-muted-foreground">
+                  <p className="text-sm sm:text-base">Your key insights will appear as you make meaningful choices in your journey.</p>
                 </div>
-              ))}
+              )}
             </CardContent>
           </Card>
         </TabsContent>
@@ -1990,4 +2009,5 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
   );
 };
 
+export default SingleUserDashboard;
 export default SingleUserDashboard;
