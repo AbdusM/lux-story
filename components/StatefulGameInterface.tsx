@@ -12,6 +12,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { DialogueDisplay } from '@/components/DialogueDisplay'
 import { GameState, GameStateUtils } from '@/lib/character-state'
 import { GameStateManager } from '@/lib/game-state-manager'
+import { useBackgroundSync } from '@/hooks/useBackgroundSync'
 import {
   DialogueGraph,
   DialogueNode,
@@ -54,6 +55,15 @@ export default function StatefulGameInterface() {
 
   // Skill tracker for recording demonstrations
   const skillTrackerRef = useRef<SkillTracker | null>(null)
+
+  // Background sync for durable offline-first database writes
+  // Guarantees zero data loss even with spotty network connection
+  const { queueStats } = useBackgroundSync({
+    enabled: true,
+    intervalMs: 30000, // Sync every 30 seconds
+    syncOnFocus: true, // Sync when user returns to tab
+    syncOnOnline: true // Sync when network restored
+  })
 
   // Client-only state for save file detection (prevents hydration mismatch)
   const [hasSaveFile, setHasSaveFile] = useState(false)
