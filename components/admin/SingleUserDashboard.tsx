@@ -1088,7 +1088,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
           {/* NARRATIVE BRIDGE: Skills → Careers - Agent 2: <25 words (Issue 7A-7C) */}
           <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r">
             <p className="text-sm text-gray-700">
-              <strong>From Skills to Careers:</strong> {user.userName.split(' ')[0]}'s {user.totalDemonstrations} skill demonstrations reveal Birmingham career matches. Scores show skill fit and readiness.
+              <strong>From Skills to Careers:</strong> Your {user.totalDemonstrations} skill demonstrations reveal Birmingham career matches. Scores show your skill fit and readiness.
             </p>
           </div>
 
@@ -1097,10 +1097,10 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
             <Card>
               <CardHeader>
                 {/* Agent 2: Personalized section header (Issue 10A) */}
-                <CardTitle>{user.userName.split(' ')[0]}'s Career Exploration Progress</CardTitle>
+                <CardTitle>Your Career Exploration Progress</CardTitle>
                 <CardDescription>
                   Paths explored: {evidenceData.careerExploration.totalExplorations} |
-                  Demonstrated skills: {evidenceData.careerExploration.skillsDemonstrated}
+                  Skills demonstrated: {evidenceData.careerExploration.skillsDemonstrated}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -1108,10 +1108,10 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                   {evidenceData.careerExploration.paths?.map((path: any, idx: number) => (
                     <div key={idx} className="border-l-4 border-blue-500 pl-4">
                       <h3 className="font-semibold">{path.category || `Career Path ${idx + 1}`}</h3>
-                      <p className="text-sm text-gray-600">{path.description || 'Exploring career opportunities'}</p>
+                      <p className="text-sm text-gray-600">{path.description || 'Exploring your career opportunities'}</p>
                       {path.opportunities && (
                         <div className="mt-2 text-xs text-gray-500">
-                          Birmingham opportunities: {path.opportunities.join(', ')}
+                          Your Birmingham opportunities: {path.opportunities.join(', ')}
                         </div>
                       )}
                     </div>
@@ -1182,7 +1182,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                   {/* Agent 4: Skill gaps shown first (Issue 5B) */}
                   {gapSkills.length > 0 && (
                     <div>
-                      <p className="text-sm font-medium mb-2">Skill Gaps to Address:</p>
+                      <p className="text-sm font-medium mb-2">Skills to Develop:</p>
                       <div className="space-y-2">
                         {gapSkills
                           .sort((a, b) => b[1].gap - a[1].gap) // Sort by largest gap first
@@ -1227,7 +1227,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                         className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
                       >
                         <ChevronRight className={`w-4 h-4 transition-transform ${showMetRequirements ? 'rotate-90' : ''}`} />
-                        <span>{metSkills.length} requirements met</span>
+                        <span>Your {metSkills.length} strengths</span>
                       </button>
 
                       {showMetRequirements && (
@@ -1237,7 +1237,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                             return (
                               <div key={skill} className="flex justify-between text-xs text-muted-foreground bg-green-50 p-2 rounded">
                                 <span className="capitalize">{skill.replace(/([A-Z])/g, ' $1').trim()}</span>
-                                <span className="text-green-600">✓ Met ({demoCount} demos)</span>
+                                <span className="text-green-600">✓ Strong ({demoCount} demos)</span>
                               </div>
                             );
                           })}
@@ -1272,7 +1272,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                       <div className="flex items-start gap-2 text-sm">
                         <CheckCircle2 className="w-4 h-4 text-green-600 mt-0.5" />
                         <p className="text-green-600">
-                          <strong>Near Ready:</strong> Small skill gaps. Consider exploratory experiences.
+                          <strong>You're Nearly Ready:</strong> Small skill gaps. Consider exploratory experiences.
                         </p>
                       </div>
                     )}
@@ -1280,7 +1280,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                       <div className="flex items-start gap-2 text-sm">
                         <AlertTriangle className="w-4 h-4 text-yellow-600 mt-0.5" />
                         <p className="text-yellow-600">
-                          <strong>Skill Gaps:</strong> Good foundation but needs development. See Gaps tab.
+                          <strong>Building Your Skills:</strong> Good foundation but needs development. See Gaps tab.
                         </p>
                       </div>
                     )}
@@ -1288,7 +1288,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                       <div className="flex items-start gap-2 text-sm">
                         <Lightbulb className="w-4 h-4 text-blue-600 mt-0.5" />
                         <p className="text-blue-600">
-                          <strong>Worth Exploring:</strong> Moderate match. Informational interviews recommended.
+                          <strong>Worth Exploring:</strong> Moderate match. Consider informational interviews.
                         </p>
                       </div>
                     )}
