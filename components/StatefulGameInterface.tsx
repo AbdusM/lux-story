@@ -28,6 +28,7 @@ import {
 } from '@/lib/graph-registry'
 import { SkillTracker } from '@/lib/skill-tracker'
 import { SCENE_SKILL_MAPPINGS } from '@/lib/scene-skill-mappings'
+import { getComprehensiveTracker } from '@/lib/comprehensive-user-tracker'
 
 interface GameInterfaceState {
   gameState: GameState | null
@@ -212,6 +213,22 @@ export default function StatefulGameInterface() {
     if (!state.gameState || !choice.enabled) return
 
     setState(prev => ({ ...prev, isLoading: true }))
+
+    // Track the choice in comprehensive tracker
+    try {
+      console.log(`[StatefulGameInterface] Calling comprehensive tracker for ${state.gameState.playerId}`)
+      const comprehensiveTracker = getComprehensiveTracker(state.gameState.playerId)
+      await comprehensiveTracker.trackChoice(
+        state.gameState.playerId,
+        choice.choice,
+        state.currentNode?.nodeId || 'unknown',
+        state.currentCharacterId,
+        0 // Time to choose not tracked in this interface
+      )
+      console.log(`[StatefulGameInterface] Comprehensive tracker completed for ${state.gameState.playerId}`)
+    } catch (error) {
+      console.error(`[StatefulGameInterface] Comprehensive tracker error:`, error)
+    }
 
     let newGameState = state.gameState
 
