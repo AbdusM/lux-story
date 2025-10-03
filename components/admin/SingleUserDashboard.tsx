@@ -1347,7 +1347,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
         <TabsContent value="evidence" className="space-y-4">
           {/* shadcn RadioGroup - Better semantics & accessibility (Issue 5C) */}
           <div className="bg-gray-50 p-4 rounded-lg border space-y-3">
-            <p className="text-sm font-medium text-gray-700">Select View Mode:</p>
+            <p className="text-sm font-medium text-gray-700">Choose Your View:</p>
             <RadioGroup
               value={evidenceMode}
               onValueChange={(value) => setEvidenceMode(value as 'research' | 'family')}
@@ -1358,8 +1358,8 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                 <label htmlFor="mode-family" className="flex items-center gap-2 cursor-pointer flex-1">
                   <Users className="w-5 h-5 text-purple-600" />
                   <div className="flex-1">
-                    <span className="text-sm font-medium block">Family Meeting Mode</span>
-                    <span className="text-xs text-gray-600">Plain English explanations</span>
+                    <span className="text-sm font-medium block">Your Personal View</span>
+                    <span className="text-xs text-gray-600">Clear, encouraging explanations</span>
                   </div>
                   {evidenceMode === 'family' && (
                     <Badge variant="default" className="text-xs">Active</Badge>
@@ -1372,8 +1372,8 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                 <label htmlFor="mode-research" className="flex items-center gap-2 cursor-pointer flex-1">
                   <GraduationCap className="w-5 h-5 text-blue-600" />
                   <div className="flex-1">
-                    <span className="text-sm font-medium block">Research Mode</span>
-                    <span className="text-xs text-gray-600">Scientific terminology</span>
+                    <span className="text-sm font-medium block">Detailed Analysis</span>
+                    <span className="text-xs text-gray-600">Technical insights and data</span>
                   </div>
                   {evidenceMode === 'research' && (
                     <Badge variant="default" className="text-xs">Active</Badge>
@@ -1398,24 +1398,24 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
               <AlertDescription>
                 <div className="flex items-center justify-between">
                   <div>
-                    <strong>Data Source Status:</strong>{" "}
+                    <strong>Your Progress:</strong>{" "}
                     {user.totalDemonstrations >= 10 ? (
                       <span className="text-blue-700">
-                        Real Student Data ({user.totalDemonstrations} demonstrations)
+                        Strong Foundation ({user.totalDemonstrations} skill demonstrations)
                       </span>
                     ) : user.totalDemonstrations >= 5 ? (
                       <span className="text-yellow-700">
-                        Partial Data ({user.totalDemonstrations} demonstrations - need 10+ for full analysis)
+                        Building Skills ({user.totalDemonstrations} demonstrations - keep going for deeper insights)
                       </span>
                     ) : (
                       <span className="text-gray-700">
-                        Insufficient Data ({user.totalDemonstrations} demonstrations - need 10+ for frameworks)
+                        Getting Started ({user.totalDemonstrations} demonstrations - explore more to unlock insights)
                       </span>
                     )}
                   </div>
                   {user.totalDemonstrations < 10 && (
                     <Badge variant="outline" className="bg-yellow-100 text-yellow-800">
-                      Using Mock Data Below
+                      Sample Insights Below
                     </Badge>
                   )}
                 </div>
@@ -1424,9 +1424,9 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
           </div>
           <Card>
             <CardHeader>
-              <CardTitle>Evidence-Based Framework</CardTitle>
+              <CardTitle>Your Growth Insights</CardTitle>
               <CardDescription>
-                Scientific models and measurable outcomes for funding accountability
+                Evidence of your skills and progress through your journey
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -1434,7 +1434,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
               {evidenceLoading ? (
                 <div className="text-center py-12 text-gray-500">
                   <RefreshCw className="w-8 h-8 mx-auto animate-spin mb-2" />
-                  <p>Loading evidence frameworks...</p>
+                  <p>Loading your insights...</p>
                 </div>
               ) : evidenceError ? (
                 <Alert className="bg-red-50 border-red-400">
@@ -1445,9 +1445,9 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                 </Alert>
               ) : !evidenceData || !evidenceData.frameworks ? (
                 <div className="text-center py-12 space-y-4">
-                  <p className="text-gray-600">No evidence data available yet.</p>
+                  <p className="text-gray-600">Your insights are building as you explore.</p>
                   <p className="text-sm text-gray-500">
-                    Students need to complete choices to generate framework evidence.
+                    Keep making choices in your journey to unlock personalized insights.
                   </p>
                 </div>
               ) : (
@@ -1456,9 +1456,9 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                   <div className="p-3 border rounded space-y-2">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <p className="font-medium text-sm">Skill Evidence Framework</p>
+                        <p className="font-medium text-sm">Your Skill Development</p>
                         <Badge variant="outline" className="text-xs bg-purple-50 text-purple-700 border-purple-300">
-                          {evidenceMode === 'family' ? 'For Parents' : 'For Researchers'}
+                          {evidenceMode === 'family' ? 'Personal View' : 'Detailed Analysis'}
                         </Badge>
                       </div>
                       <div className="flex items-center gap-2">
@@ -1472,13 +1472,13 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                     </div>
                     <p className="text-xs text-muted-foreground">
                       {evidenceMode === 'family' ? (
-                        <span><strong>What this means:</strong> Every time your student makes a choice in the game, we track what skills they showed (like problem-solving or creativity). This shows real evidence of their growing abilities.</span>
+                        <span><strong>What this means:</strong> Every time you make a choice in your journey, we track what skills you showed (like problem-solving or creativity). This shows real evidence of your growing abilities.</span>
                       ) : (
                         <span><strong>Framework:</strong> Tracked skill demonstrations showing concrete evidence of capability development.</span>
                       )}
                     </p>
                     <div className="bg-blue-50 p-2 rounded text-xs">
-                      <p className="font-medium mb-1">Student Outcomes:</p>
+                      <p className="font-medium mb-1">Your Progress:</p>
                       <div className="space-y-1">
                         <p>• Total Demonstrations: <strong>{evidenceData.frameworks.skillEvidence.totalDemonstrations}</strong></p>
                         <p>• Unique Skills: <strong>{evidenceData.frameworks.skillEvidence.uniqueSkills}</strong></p>
@@ -1495,9 +1495,9 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                   <div className="p-3 border rounded space-y-2">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <p className="font-medium text-sm">Career Readiness Framework</p>
+                        <p className="font-medium text-sm">Your Career Exploration</p>
                         <Badge variant="outline" className="text-xs bg-purple-50 text-purple-700 border-purple-300">
-                          {evidenceMode === 'family' ? 'For Parents' : 'For Researchers'}
+                          {evidenceMode === 'family' ? 'Personal View' : 'Detailed Analysis'}
                         </Badge>
                       </div>
                       <div className="flex items-center gap-2">
@@ -1511,13 +1511,13 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                     </div>
                     <p className="text-xs text-muted-foreground">
                       {evidenceMode === 'family' ? (
-                        <span><strong>What this means:</strong> We track which careers your student explores and how well their current skills match each one. This helps you see where they're headed and what they need to get there.</span>
+                        <span><strong>What this means:</strong> We track which careers you explore and how well your current skills match each one. This helps you see where you're headed and what you need to get there.</span>
                       ) : (
                         <span><strong>Framework:</strong> Career exploration and match quality showing pathway clarity.</span>
                       )}
                     </p>
                     <div className="bg-blue-50 p-2 rounded text-xs">
-                      <p className="font-medium mb-1">Student Progress:</p>
+                      <p className="font-medium mb-1">Your Career Progress:</p>
                       <div className="space-y-1">
                         {evidenceData.frameworks.careerReadiness.topMatch ? (
                           <>
@@ -1537,9 +1537,9 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                   <div className="p-3 border rounded space-y-2">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <p className="font-medium text-sm">Pattern Recognition Framework</p>
+                        <p className="font-medium text-sm">Your Decision Patterns</p>
                         <Badge variant="outline" className="text-xs bg-purple-50 text-purple-700 border-purple-300">
-                          {evidenceMode === 'family' ? 'For Parents' : 'For Researchers'}
+                          {evidenceMode === 'family' ? 'Personal View' : 'Detailed Analysis'}
                         </Badge>
                       </div>
                       <div className="flex items-center gap-2">
@@ -1553,13 +1553,13 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                     </div>
                     <p className="text-xs text-muted-foreground">
                       {evidenceMode === 'family' ? (
-                        <span><strong>What this means:</strong> We look for patterns in your student's choices. Are they consistently helping others? Do they prefer solving problems alone or with others? These patterns reveal their natural strengths.</span>
+                        <span><strong>What this means:</strong> We look for patterns in your choices. Are you consistently helping others? Do you prefer solving problems alone or with others? These patterns reveal your natural strengths.</span>
                       ) : (
                         <span><strong>Framework:</strong> Consistency and progression patterns in choice behavior.</span>
                       )}
                     </p>
                     <div className="bg-blue-50 p-2 rounded text-xs">
-                      <p className="font-medium mb-1">Behavioral Patterns:</p>
+                      <p className="font-medium mb-1">Your Patterns:</p>
                       <div className="space-y-1">
                         <p>• Pattern Consistency: <strong>{Math.round((evidenceData.frameworks.patternRecognition.patternConsistency || 0) * 100)}%</strong></p>
                         <p>• Total Choices: <strong>{evidenceData.frameworks.patternRecognition.totalChoices}</strong></p>
@@ -1574,9 +1574,9 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                   <div className="p-3 border rounded space-y-2">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <p className="font-medium text-sm">Time Investment Framework</p>
+                        <p className="font-medium text-sm">Your Engagement Journey</p>
                         <Badge variant="outline" className="text-xs bg-purple-50 text-purple-700 border-purple-300">
-                          {evidenceMode === 'family' ? 'For Parents' : 'For Researchers'}
+                          {evidenceMode === 'family' ? 'Personal View' : 'Detailed Analysis'}
                         </Badge>
                       </div>
                       <div className="flex items-center gap-2">
@@ -1590,13 +1590,13 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                     </div>
                     <p className="text-xs text-muted-foreground">
                       {evidenceMode === 'family' ? (
-                        <span><strong>What this means:</strong> We track how often your student uses the tool and whether they're staying engaged. Consistent engagement shows they're actively thinking about their future.</span>
+                        <span><strong>What this means:</strong> We track how often you use the tool and whether you're staying engaged. Consistent engagement shows you're actively thinking about your future.</span>
                       ) : (
                         <span><strong>Framework:</strong> Sustained engagement and consistency over time.</span>
                       )}
                     </p>
                     <div className="bg-blue-50 p-2 rounded text-xs">
-                      <p className="font-medium mb-1">Engagement Metrics:</p>
+                      <p className="font-medium mb-1">Your Engagement:</p>
                       <div className="space-y-1">
                         <p>• Days Active: <strong>{evidenceData.frameworks.timeInvestment.totalDays}</strong></p>
                         <p>• Avg Demos/Day: <strong>{evidenceData.frameworks.timeInvestment.averageDemosPerDay.toFixed(1)}</strong></p>
@@ -1609,9 +1609,9 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                   <div className="p-3 border rounded space-y-2">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <p className="font-medium text-sm">Relationship Development Framework</p>
+                        <p className="font-medium text-sm">Your Relationships</p>
                         <Badge variant="outline" className="text-xs bg-purple-50 text-purple-700 border-purple-300">
-                          {evidenceMode === 'family' ? 'For Parents' : 'For Researchers'}
+                          {evidenceMode === 'family' ? 'Personal View' : 'Detailed Analysis'}
                         </Badge>
                       </div>
                       <div className="flex items-center gap-2">
@@ -1625,13 +1625,13 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                     </div>
                     <p className="text-xs text-muted-foreground">
                       {evidenceMode === 'family' ? (
-                        <span><strong>What this means:</strong> Your student builds relationships with characters in the game (like Maya or Samuel). How they interact shows their social skills and emotional intelligence.</span>
+                        <span><strong>What this means:</strong> You build relationships with characters in your journey (like Maya or Samuel). How you interact shows your social skills and emotional intelligence.</span>
                       ) : (
                         <span><strong>Framework:</strong> Social-emotional learning through character relationships.</span>
                       )}
                     </p>
                     <div className="bg-blue-50 p-2 rounded text-xs">
-                      <p className="font-medium mb-1">Relationship Metrics:</p>
+                      <p className="font-medium mb-1">Your Relationships:</p>
                       <div className="space-y-1">
                         <p>• Average Trust: <strong>{evidenceData.frameworks.relationshipFramework.averageTrust.toFixed(1)}/10</strong></p>
                         {evidenceData.frameworks.relationshipFramework.relationshipDetails.slice(0, 3).map((rel: any) => (
@@ -1645,9 +1645,9 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                   <div className="p-3 border rounded space-y-2">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <p className="font-medium text-sm">Behavioral Consistency Framework</p>
+                        <p className="font-medium text-sm">Your Learning Style</p>
                         <Badge variant="outline" className="text-xs bg-purple-50 text-purple-700 border-purple-300">
-                          {evidenceMode === 'family' ? 'For Parents' : 'For Researchers'}
+                          {evidenceMode === 'family' ? 'Personal View' : 'Detailed Analysis'}
                         </Badge>
                       </div>
                       <div className="flex items-center gap-2">
@@ -1661,13 +1661,13 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                     </div>
                     <p className="text-xs text-muted-foreground">
                       {evidenceMode === 'family' ? (
-                        <span><strong>What this means:</strong> We check if your student focuses deeply on a few skills or explores many different ones. Both approaches are valid - this helps you understand their style.</span>
+                        <span><strong>What this means:</strong> We check if you focus deeply on a few skills or explore many different ones. Both approaches are valid - this helps you understand your style.</span>
                       ) : (
                         <span><strong>Framework:</strong> Focus vs exploration balance analysis.</span>
                       )}
                     </p>
                     <div className="bg-blue-50 p-2 rounded text-xs">
-                      <p className="font-medium mb-1">Consistency Metrics:</p>
+                      <p className="font-medium mb-1">Your Learning Style:</p>
                       <div className="space-y-1">
                         <p>• Focus Score: <strong>{Math.round((evidenceData.frameworks.behavioralConsistency.focusScore || 0) * 100)}%</strong></p>
                         <p>• Exploration Score: <strong>{Math.round((evidenceData.frameworks.behavioralConsistency.explorationScore || 0) * 100)}%</strong></p>
@@ -1683,7 +1683,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
           {/* Scientific Literature Support */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-sm">Scientific Literature Support</CardTitle>
+              <CardTitle className="text-sm">Research Foundation</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 text-xs text-muted-foreground">
               <p>• <strong>Skill Evidence:</strong> WEF Future of Jobs Report (2020, 2023)</p>
