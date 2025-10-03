@@ -102,7 +102,7 @@ export default function AdminPage() {
   useEffect(() => {
     const checkDbHealth = async () => {
       try {
-        const response = await fetch('/api/admin/urgency?limit=1')
+        const response = await fetch('/api/admin-proxy/urgency?limit=1')
         if (!response.ok && response.status === 503) {
           setDbHealthy(false)
         }
@@ -166,10 +166,10 @@ export default function AdminPage() {
         <div className="bg-white rounded-lg shadow-lg p-6">
           <div className="flex items-start justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              <h1 className="admin-page-title admin-text-primary mb-2">
                 Grand Central Terminus Admin
               </h1>
-              <p className="text-gray-600">
+              <p className="admin-body-text admin-text-secondary">
                 Student Urgency Triage, Skills Analytics & Live Choice Review
               </p>
               {/* Debug info */}
@@ -220,11 +220,11 @@ export default function AdminPage() {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div>
-                    <CardTitle className="flex items-center gap-2">
+                    <CardTitle className="admin-tab-title admin-text-primary flex items-center gap-2">
                       <Users className="w-5 h-5" />
                       User Skill Journeys
                     </CardTitle>
-                    <CardDescription>
+                    <CardDescription className="admin-body-text admin-text-secondary">
                       Evidence-based career exploration analytics
                     </CardDescription>
                   </div>
@@ -260,10 +260,10 @@ export default function AdminPage() {
                             <div className="flex items-center justify-between">
                               <div className="space-y-2 flex-1">
                                 <div className="flex items-center gap-3">
-                                  <h3 className="font-semibold text-lg">
+                                  <h3 className="admin-section-title admin-text-primary">
                                     {formatUserIdShort(userId)}
                                   </h3>
-                                  <span className="text-xs text-gray-500">
+                                  <span className="admin-body-text admin-text-muted">
                                     ({formatUserIdRelative(userId)})
                                   </span>
                                   {stats && (
@@ -277,21 +277,21 @@ export default function AdminPage() {
                                 {stats && (
                                   <div className="grid grid-cols-3 gap-4 text-sm">
                                     <div>
-                                      <p className="text-gray-500">Demonstrations</p>
-                                      <p className="font-medium text-blue-600">
+                                      <p className="admin-body-text admin-text-secondary">Demonstrations</p>
+                                      <p className="admin-subsection-title admin-interactive">
                                         {stats.totalDemonstrations}
                                       </p>
                                     </div>
                                     <div>
-                                      <p className="text-gray-500">Most Demonstrated</p>
-                                      <p className="font-medium capitalize">
+                                      <p className="admin-body-text admin-text-secondary">Most Demonstrated</p>
+                                      <p className="admin-subsection-title capitalize">
                                         {stats.topSkill[0].replace(/([A-Z])/g, ' $1').trim()} ({stats.topSkill[1].length}x)
                                       </p>
                                     </div>
                                     {stats.topCareer && (
                                       <div>
-                                        <p className="text-gray-500">Top Career Match</p>
-                                        <p className="font-medium text-green-600">
+                                        <p className="admin-body-text admin-text-secondary">Top Career Match</p>
+                                        <p className="admin-subsection-title admin-urgency-low">
                                           {Math.round(stats.topCareer.matchScore * 100)}%
                                         </p>
                                       </div>
@@ -323,8 +323,8 @@ export default function AdminPage() {
           <TabsContent value="choices" className="mt-6">
             <Card>
               <CardHeader>
-                <CardTitle>Live Choice Management</CardTitle>
-                <CardDescription>
+                <CardTitle className="admin-tab-title admin-text-primary">Live Choice Management</CardTitle>
+                <CardDescription className="admin-body-text admin-text-secondary">
                   Review and validate AI-generated choices
                 </CardDescription>
               </CardHeader>
@@ -334,7 +334,7 @@ export default function AdminPage() {
             </Card>
 
             <div className="bg-white rounded-lg border p-4 mt-4">
-              <p className="text-sm text-green-600 flex items-center gap-2">
+              <p className="admin-body-text admin-urgency-low flex items-center gap-2">
                 <TrendingUp className="w-4 h-4" />
                 Content validation runs automatically when players load the game
               </p>
@@ -347,11 +347,11 @@ export default function AdminPage() {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div>
-                    <CardTitle className="flex items-center gap-2">
+                    <CardTitle className="admin-tab-title admin-text-primary flex items-center gap-2">
                       <AlertTriangle className="w-5 h-5 text-orange-500" />
                       Student Intervention Priority
                     </CardTitle>
-                    <CardDescription>
+                    <CardDescription className="admin-body-text admin-text-secondary">
                       Glass Box urgency scoring with transparent narrative justifications
                     </CardDescription>
                   </div>
@@ -465,11 +465,11 @@ function UrgentStudentCard({ student }: { student: UrgentStudent }) {
             <span className="text-2xl">{colors.icon}</span>
             <div>
               <Link href={`/admin/skills?userId=${student.userId}`}>
-                <h3 className="font-semibold text-lg hover:text-blue-600 hover:underline">
+                <h3 className="admin-section-title admin-text-primary hover:admin-interactive hover:underline">
                   Student: {formatUserIdShort(student.userId)}
                 </h3>
               </Link>
-              <p className="text-sm text-gray-600">
+              <p className="admin-body-text admin-text-secondary">
                 Last active: {formatUserIdRelative(student.lastActivity || student.userId)}
               </p>
             </div>
@@ -485,14 +485,14 @@ function UrgentStudentCard({ student }: { student: UrgentStudent }) {
 
       {/* NARRATIVE BOX - The Glass Box Hero Element */}
       <div className="my-4 p-4 bg-blue-50 border-l-4 border-blue-400 rounded">
-        <p className="text-sm italic text-gray-700 leading-relaxed">
+        <p className="admin-body-text italic admin-text-primary leading-relaxed">
           {student.urgencyNarrative || "No narrative generated yet."}
         </p>
       </div>
 
       {/* Contributing Factors */}
       <div className="space-y-2 mb-4">
-        <h4 className="text-sm font-semibold text-gray-700">Contributing Factors:</h4>
+        <h4 className="admin-subsection-title admin-text-primary">Contributing Factors:</h4>
         <FactorBar label="Disengagement" value={student.disengagementScore || 0} />
         <FactorBar label="Confusion" value={student.confusionScore || 0} />
         <FactorBar label="Stress" value={student.stressScore || 0} />
@@ -500,7 +500,7 @@ function UrgentStudentCard({ student }: { student: UrgentStudent }) {
       </div>
 
       {/* Activity Summary */}
-      <div className="flex items-center gap-6 text-sm text-gray-600 pt-4 border-t">
+      <div className="flex items-center gap-6 admin-body-text admin-text-secondary pt-4 border-t">
         <span>{student.totalChoices || 0} choices</span>
         <span>{student.uniqueScenesVisited || 0} scenes</span>
         <span>{student.relationshipsFormed || 0} relationships</span>
@@ -519,14 +519,14 @@ function FactorBar({ label, value }: { label: string; value: number }) {
 
   return (
     <div className="flex items-center gap-2">
-      <span className="w-32 text-sm text-gray-600">{label}:</span>
+      <span className="w-32 admin-body-text admin-text-secondary">{label}:</span>
       <div className="flex-1 bg-gray-200 rounded-full h-3">
         <div
           className={`${color} h-3 rounded-full transition-all`}
           style={{ width: `${percentage}%` }}
         />
       </div>
-      <span className="w-12 text-sm text-gray-700 text-right">{percentage}%</span>
+      <span className="w-12 admin-body-text admin-text-primary text-right">{percentage}%</span>
     </div>
   )
 }

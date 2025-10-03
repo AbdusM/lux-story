@@ -185,6 +185,11 @@ function calculateTrend(demonstrations: SkillDemonstration[]): TrendDirection {
 export function analyzeSkillPatterns(demonstrations: SkillDemonstrations): SkillPattern[] {
   const patterns: SkillPattern[] = []
 
+  // Guard against undefined/null demonstrations
+  if (!demonstrations || typeof demonstrations !== 'object') {
+    return patterns
+  }
+
   for (const [skillName, demos] of Object.entries(demonstrations)) {
     if (!demos || demos.length === 0) continue
 

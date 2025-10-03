@@ -562,7 +562,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
               </CardDescription>
             </div>
             <div className="flex items-center gap-3">
-              {user.careerMatches.length > 0 && (
+              {user.careerMatches && user.careerMatches.length > 0 && (
                 <Badge variant={getReadinessDisplay(user.careerMatches[0].readiness).variant} className="text-lg">
                   {getReadinessDisplay(user.careerMatches[0].readiness).text}
                 </Badge>
@@ -851,7 +851,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
             <CardContent className="space-y-2">
               {/* Agent 3: Analyze patterns and sort (Issues 13, 14) */}
               {(() => {
-                const patterns = analyzeSkillPatterns(user.skillDemonstrations);
+                const patterns = analyzeSkillPatterns(user.skillDemonstrations || {});
                 const sortedPatterns = sortSkillPatterns(patterns, skillSortMode);
 
                 if (sortedPatterns.length === 0) {
@@ -1916,7 +1916,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
         {/* ACTION TAB - Your next steps */}
         <TabsContent value="action" className="space-y-4">
           {/* NARRATIVE BRIDGE: Gaps → Action - Agent 2: <25 words (Issue 7A-7C) */}
-          {user.skillGaps.length > 0 && user.careerMatches.length > 0 && (
+          {user.skillGaps && user.skillGaps.length > 0 && user.careerMatches && user.careerMatches.length > 0 && (
             <div className="bg-green-50 border-l-4 border-green-400 p-4 sm:p-6 rounded-r">
               <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
                 <strong>From Analysis to Action:</strong> Birmingham opportunities to build your {user.skillGaps[0]?.skill?.replace(/([A-Z])/g, ' $1').toLowerCase() || 'key skills'} and advance toward {user.careerMatches[0]?.name || 'your career goals'}. Start this week.
@@ -1949,7 +1949,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
               </div>
 
               {/* Show action plan only if user has data */}
-              {user.skillGaps.length > 0 && (
+              {user.skillGaps && user.skillGaps.length > 0 && (
                 <>
 
               {/* Immediate actions */}
@@ -2001,7 +2001,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
               )}
 
               {/* Show empty state if no skill gaps */}
-              {user.skillGaps.length === 0 && (
+              {(!user.skillGaps || user.skillGaps.length === 0) && (
                 <div className="text-center py-8 text-muted-foreground">
                   <p className="text-sm sm:text-base">Your action plan will appear as you identify skill gaps through your journey.</p>
                 </div>

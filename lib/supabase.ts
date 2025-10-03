@@ -6,6 +6,7 @@
  */
 
 import { createClient, SupabaseClient } from '@supabase/supabase-js'
+import { getSupabaseConfig } from './env'
 
 let _supabaseInstance: SupabaseClient | null = null
 
@@ -18,11 +19,12 @@ function getSupabaseClient(): SupabaseClient {
     return _supabaseInstance
   }
 
-  const supabaseUrl = process.env.SUPABASE_URL
-  const supabaseAnonKey = process.env.SUPABASE_ANON_KEY
+  const config = getSupabaseConfig()
 
-  if (!supabaseUrl || !supabaseAnonKey) {
-    console.warn('[Supabase] Missing environment variables. Using mock client for development.')
+  if (!config.isConfigured) {
+    console.warn('[Supabase] Missing environment variables. Check .env.local configuration.')
+    console.warn('[Supabase] Expected: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY')
+    console.warn('[Supabase] Current config:', { url: !!config.url, anonKey: !!config.anonKey })
 
     // Return mock client that prevents crashes
     const mockClient = new Proxy({} as any, {
@@ -42,7 +44,7 @@ function getSupabaseClient(): SupabaseClient {
     return _supabaseInstance
   }
 
-  _supabaseInstance = createClient(supabaseUrl, supabaseAnonKey, {
+  _supabaseInstance = createClient(config.url, config.anonKey, {
     auth: {
       persistSession: false // We handle our own session management
     }

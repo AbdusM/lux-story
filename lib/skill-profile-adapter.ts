@@ -332,7 +332,7 @@ export async function loadSkillProfile(userId: string): Promise<SkillProfile | n
       .eq('user_id', userId)
       .single()
 
-    if (!error && profile && profile.total_demonstrations > 0) {
+    if (!error && profile) {
       console.log(`[SkillProfileAdapter] Loaded user ${userId} from Supabase`)
       return convertSupabaseProfileToDashboard(profile)
     }
@@ -598,13 +598,27 @@ export async function getAllUserIds(): Promise<string[]> {
 
   try {
     // Try Supabase first
+    console.log('[SkillProfileAdapter] Attempting to load Supabase client...')
     const { supabase } = await import('./supabase')
+    console.log('[SkillProfileAdapter] Supabase client loaded:', !!supabase)
+    console.log('[SkillProfileAdapter] Supabase client type:', typeof supabase)
+    console.log('[SkillProfileAdapter] Supabase from method:', typeof supabase.from)
     
     const { data: profiles, error } = await supabase
       .from('player_profiles')
       .select('user_id')
-      .gt('total_demonstrations', 0)
       .order('last_activity', { ascending: false })
+
+    console.log('[SkillProfileAdapter] Supabase query result:', { 
+      data: profiles, 
+      error,
+      dataType: typeof profiles,
+      errorType: typeof error
+    })
+
+    if (error) {
+      console.error('[SkillProfileAdapter] Supabase query error:', error)
+    }
 
     if (!error && profiles && profiles.length > 0) {
       console.log(`[SkillProfileAdapter] Found ${profiles.length} users in Supabase`)
@@ -612,10 +626,11 @@ export async function getAllUserIds(): Promise<string[]> {
     }
 
     // Fallback to localStorage
-    console.log('[SkillProfileAdapter] Supabase empty, checking localStorage')
+    console.log('[SkillProfileAdapter] Supabase empty or error, checking localStorage')
     const keys = Object.keys(localStorage)
     const trackerKeys = keys.filter(k => k.startsWith('skill_tracker_'))
     const userIds = trackerKeys.map(k => k.replace('skill_tracker_', ''))
+    console.log('[SkillProfileAdapter] Found', userIds.length, 'users in localStorage')
 
     // Filter to only users with actual demonstration data
     return userIds.filter(userId => {
@@ -624,7 +639,7 @@ export async function getAllUserIds(): Promise<string[]> {
       return profile.totalDemonstrations > 0
     })
   } catch (error) {
-    console.error('Failed to get user IDs:', error)
+    console.error('[SkillProfileAdapter] Failed to get user IDs:', error)
     return []
   }
 }
