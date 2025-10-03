@@ -1760,7 +1760,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                   .map((gap, idx) => (
                     <div key={idx} className="border-l-4 border-orange-400 pl-3 sm:pl-4 p-3 sm:p-4 bg-orange-25 rounded-r-lg">
                       <div className="font-semibold text-orange-900 capitalize text-sm sm:text-base">
-                        {gap.skill.replace(/([A-Z])/g, ' $1').trim()}
+                        {gap.skill?.replace(/([A-Z])/g, ' $1').trim() || 'Unknown Skill'}
                       </div>
                       <div className="text-sm sm:text-base text-orange-800 mt-1">
                         Try: Scene {12 + idx * 4} (Hospital Volunteer) or Scene {8 + idx * 3} (Maya Family Meeting)
@@ -1793,15 +1793,15 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                           <span className="font-medium capitalize text-sm sm:text-base">
                             {skill.skill_name?.replace(/_/g, ' ') || `Skill ${idx + 1}`}
                           </span>
-                          <Badge variant={skill.demonstration_count >= 5 ? 'default' : 'secondary'} className="text-xs">
-                            {skill.demonstration_count || 0} demonstrations
+                          <Badge variant={(skill.demonstration_count || 0) >= 5 ? 'default' : 'secondary'} className="text-xs">
+                            {Math.max(0, skill.demonstration_count || 0)} demonstrations
                           </Badge>
                         </div>
 
                         <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-sm">
                           <span className="text-muted-foreground text-xs sm:text-sm">Progress:</span>
-                          <Progress value={(skill.demonstration_count || 0) * 10} className="flex-1 h-2 sm:h-3" />
-                          <span className="font-medium text-xs sm:text-sm">{skill.demonstration_count || 0}/10</span>
+                          <Progress value={Math.max(0, Math.min(100, (skill.demonstration_count || 0) * 10))} className="flex-1 h-2 sm:h-3" />
+                          <span className="font-medium text-xs sm:text-sm">{Math.max(0, skill.demonstration_count || 0)}/10</span>
                         </div>
 
                         {skill.last_demonstrated && (
@@ -1810,7 +1810,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                           </p>
                         )}
 
-                        {skill.demonstration_count < 5 && (
+                        {(skill.demonstration_count || 0) < 5 && (
                           <p className="text-xs sm:text-sm text-amber-600 italic">
                             Keep making choices to develop this skill
                           </p>
@@ -1843,7 +1843,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                             <div className="flex items-center gap-2">
                               <span className="font-medium capitalize text-sm sm:text-base">
-                                {gap.skill.replace(/([A-Z])/g, ' $1').trim()}
+                                {gap.skill?.replace(/([A-Z])/g, ' $1').trim() || 'Unknown Skill'}
                               </span>
                               {/* Sparkline Trend Indicator */}
                               <SparklineTrend
@@ -1860,8 +1860,8 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
 
                           <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-sm">
                             <span className="text-muted-foreground text-xs sm:text-sm">Your Current Level:</span>
-                            <Progress value={gap.currentLevel * 100} className="flex-1 h-2 sm:h-3" />
-                            <span className="font-medium text-xs sm:text-sm">{Math.round(gap.currentLevel * 100)}%</span>
+                            <Progress value={Math.max(0, Math.min(100, gap.currentLevel * 100))} className="flex-1 h-2 sm:h-3" />
+                            <span className="font-medium text-xs sm:text-sm">{Math.max(0, Math.min(100, Math.round(gap.currentLevel * 100)))}%</span>
                           </div>
 
                           <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-sm">
@@ -1869,7 +1869,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                             <div className="flex-1 bg-green-100 rounded-full h-2 sm:h-3">
                               <div className="bg-green-600 h-2 sm:h-3 rounded-full" style={{ width: '100%' }} />
                             </div>
-                            <span className="font-medium text-xs sm:text-sm">{Math.round(gap.targetForTopCareers * 100)}%</span>
+                            <span className="font-medium text-xs sm:text-sm">{Math.max(0, Math.min(100, Math.round(gap.targetForTopCareers * 100)))}%</span>
                           </div>
 
                           <p className="text-xs sm:text-sm text-muted-foreground italic">
@@ -1879,10 +1879,10 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                           {/* Agent 5: Scene-specific development paths (Issue 26) */}
                           <div className="text-sm sm:text-base text-gray-600 mt-2 bg-blue-50 p-3 sm:p-4 rounded-lg">
                             <strong>Your Development Path:</strong> Try Scene {Math.floor(Math.random() * 15) + 1}:{' '}
-                            {gap.skill.toLowerCase().includes('communication') ? 'Maya Family Meeting' :
-                             gap.skill.toLowerCase().includes('technical') || gap.skill.toLowerCase().includes('digital') ? 'Devon System Building' :
-                             gap.skill.toLowerCase().includes('leadership') ? 'Jordan Mentorship Panel' :
-                             gap.skill.toLowerCase().includes('emotional') || gap.skill.toLowerCase().includes('empathy') ? 'Samuel Trust Building' :
+                            {gap.skill?.toLowerCase().includes('communication') ? 'Maya Family Meeting' :
+                             gap.skill?.toLowerCase().includes('technical') || gap.skill?.toLowerCase().includes('digital') ? 'Devon System Building' :
+                             gap.skill?.toLowerCase().includes('leadership') ? 'Jordan Mentorship Panel' :
+                             gap.skill?.toLowerCase().includes('emotional') || gap.skill?.toLowerCase().includes('empathy') ? 'Samuel Trust Building' :
                              'Healthcare Scenarios'}
                           </div>
                         </CardContent>
