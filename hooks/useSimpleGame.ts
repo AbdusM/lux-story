@@ -1265,14 +1265,20 @@ export function useSimpleGame() {
     setGameState(prev => ({ ...prev, isProcessing: true }))
 
     // Track the choice in comprehensive tracker
-    const comprehensiveTracker = getComprehensiveTracker(gameState.userId)
-    await comprehensiveTracker.trackChoice(
-      gameState.userId,
-      validatedChoice,
-      currentSceneBeforeChoice,
-      gameState.currentCharacter,
-      Date.now() - choiceStartTime
-    )
+    try {
+      console.log(`[useSimpleGame] Calling comprehensive tracker for ${gameState.userId}`)
+      const comprehensiveTracker = getComprehensiveTracker(gameState.userId)
+      await comprehensiveTracker.trackChoice(
+        gameState.userId,
+        validatedChoice,
+        currentSceneBeforeChoice,
+        gameState.currentCharacter,
+        Date.now() - choiceStartTime
+      )
+      console.log(`[useSimpleGame] Comprehensive tracker completed for ${gameState.userId}`)
+    } catch (error) {
+      console.error(`[useSimpleGame] Comprehensive tracker error:`, error)
+    }
 
     // Track the choice in legacy systems
     trackUserChoice(gameState.userId, validatedChoice)
