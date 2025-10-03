@@ -641,7 +641,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                     Intervention Priority
                   </CardTitle>
                   <CardDescription>
-                    Glass Box urgency scoring with transparent narrative justification
+                    Your intervention priority with transparent narrative justification
                   </CardDescription>
                 </div>
                 <Button
@@ -666,9 +666,9 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                 </div>
               ) : !urgencyData ? (
                 <div className="text-center py-12 space-y-4">
-                  <p className="text-gray-600">No urgency data available for this student.</p>
+                  <p className="text-gray-600">No urgency data available for you yet.</p>
                   <p className="text-sm text-gray-500">
-                    Click "Recalculate" to generate urgency score.
+                    Click "Recalculate" to generate your urgency score.
                   </p>
                 </div>
               ) : (
@@ -676,7 +676,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                   {/* Urgency Level Badge and Score */}
                   <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                     <div>
-                      <p className="text-sm text-gray-600 mb-1">Urgency Level</p>
+                      <p className="text-sm text-gray-600 mb-1">Your Priority Level</p>
                       <Badge
                         className={
                           urgencyData.urgencyLevel === 'critical' ? 'bg-red-100 text-red-800' :
@@ -690,7 +690,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                       </Badge>
                     </div>
                     <div className="text-right">
-                      <p className="text-sm text-gray-600 mb-1">Urgency Score</p>
+                      <p className="text-sm text-gray-600 mb-1">Your Priority Score</p>
                       <p className="text-3xl font-bold text-gray-900">
                         {Math.round((urgencyData.urgencyScore || 0) * 100)}%
                       </p>
@@ -699,7 +699,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
 
                   {/* Glass Box Narrative - The Hero Element */}
                   <div className="p-4 bg-blue-50 border-l-4 border-blue-400 rounded">
-                    <h4 className="text-sm font-semibold text-gray-700 mb-2">Glass Box Narrative:</h4>
+                    <h4 className="text-sm font-semibold text-gray-700 mb-2">Your Priority Explanation:</h4>
                     <p className="text-sm italic text-gray-700 leading-relaxed">
                       {urgencyData.urgencyNarrative || "No narrative generated yet."}
                     </p>
@@ -707,7 +707,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
 
                   {/* Contributing Factors with Progress Bars */}
                   <div className="space-y-4">
-                    <h4 className="text-sm font-semibold text-gray-700">Contributing Factors:</h4>
+                    <h4 className="text-sm font-semibold text-gray-700">Your Contributing Factors:</h4>
 
                     {/* Disengagement (40% weight) */}
                     <div className="space-y-2">
@@ -782,10 +782,10 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                       <div className="flex items-start gap-2">
                         <AlertTriangle className="w-5 h-5 text-red-600 mt-0.5" />
                         <div>
-                          <h4 className="font-semibold text-red-900">Action Required</h4>
+                          <h4 className="font-semibold text-red-900">Support Available</h4>
                           <p className="text-sm text-red-700 mt-1">
-                            This student shows {urgencyData.urgencyLevel} urgency indicators.
-                            Consider immediate counselor intervention or follow-up.
+                            You show {urgencyData.urgencyLevel} priority indicators.
+                            Consider reaching out for support or guidance.
                           </p>
                         </div>
                       </div>
