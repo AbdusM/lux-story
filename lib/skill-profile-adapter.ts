@@ -326,6 +326,7 @@ export async function loadSkillProfile(userId: string): Promise<SkillProfile | n
       .select(`
         *,
         skill_demonstrations(*),
+        skill_summaries(*),
         career_explorations(*),
         relationship_progress(*)
       `)
@@ -361,8 +362,29 @@ export async function loadSkillProfile(userId: string): Promise<SkillProfile | n
 function convertSupabaseProfileToDashboard(supabaseProfile: any): SkillProfile {
   const userId = supabaseProfile.user_id
   
-  // Convert skill demonstrations
+  // Convert skill demonstrations from skill_summaries
   const skillDemonstrations: SkillDemonstrations = {}
+  if (supabaseProfile.skill_summaries) {
+    supabaseProfile.skill_summaries.forEach((summary: any) => {
+      if (!skillDemonstrations[summary.skill_name]) {
+        skillDemonstrations[summary.skill_name] = []
+      }
+      
+      // Create demonstration entries based on demonstration_count
+      for (let i = 0; i < summary.demonstration_count; i++) {
+        skillDemonstrations[summary.skill_name].push({
+          scene: summary.scenes_involved?.[0] || 'unknown_scene',
+          choice: 'Your choice',
+          sceneDescription: (summary.scenes_involved?.[0] || 'unknown_scene').replace(/_/g, ' ').replace(/^\w/, c => c.toUpperCase()),
+          context: summary.latest_context || 'Skill demonstration',
+          value: 1,
+          timestamp: new Date(summary.last_demonstrated).getTime()
+        })
+      }
+    })
+  }
+  
+  // Also include any legacy skill_demonstrations data
   if (supabaseProfile.skill_demonstrations) {
     supabaseProfile.skill_demonstrations.forEach((demo: any) => {
       if (!skillDemonstrations[demo.skill_name]) {
@@ -373,7 +395,7 @@ function convertSupabaseProfileToDashboard(supabaseProfile: any): SkillProfile {
         choice: demo.choice_text || 'Your choice',
         sceneDescription: demo.scene_id.replace(/_/g, ' ').replace(/^\w/, c => c.toUpperCase()),
         context: demo.context,
-        value: 1, // Supabase doesn't store values, use 1 for demonstration
+        value: 1,
         timestamp: new Date(demo.demonstrated_at).getTime()
       })
     })
