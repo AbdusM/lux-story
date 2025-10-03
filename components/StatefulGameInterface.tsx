@@ -355,6 +355,15 @@ export default function StatefulGameInterface() {
   if (!state.hasStarted) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 flex items-center justify-center p-3 sm:p-4">
+        {/* Admin Button - Top Right */}
+        <div className="absolute top-4 right-4">
+          <Link href="/admin">
+            <Button variant="ghost" size="sm" className="text-xs">
+              Admin
+            </Button>
+          </Link>
+        </div>
+        
         <Card className="w-full max-w-2xl">
           <CardContent className="p-5 sm:p-8 text-center">
             <h1 className="text-2xl sm:text-3xl font-bold text-slate-800 mb-3 sm:mb-4">
@@ -457,8 +466,7 @@ export default function StatefulGameInterface() {
               search={typeof window !== 'undefined' ? window.location.search : 'no-window'}
             </div>
           )}
-          {(process.env.NODE_ENV === 'development' ||
-            (typeof window !== 'undefined' && window.location.search.includes('admin=true'))) && (
+          {true && (
             <>
               <Link href="/admin">
                 <Button variant="ghost" size="sm" className="text-xs">
