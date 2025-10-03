@@ -11,6 +11,7 @@ import { SkillTracker } from '@/lib/skill-tracker'
 import type { SkillProfile } from '@/lib/skill-tracker'
 import { SyncQueue, generateActionId } from '@/lib/sync-queue'
 import { useBackgroundSync } from './useBackgroundSync'
+import { getComprehensiveTracker } from '@/lib/comprehensive-user-tracker'
 
 // Background validation and streamlining
 const validateStoryInBackground = async () => {
@@ -1259,10 +1260,21 @@ export function useSimpleGame() {
 
     // Capture current scene BEFORE processing (scene will change after state update)
     const currentSceneBeforeChoice = gameState.currentScene
+    const choiceStartTime = Date.now()
 
     setGameState(prev => ({ ...prev, isProcessing: true }))
 
-    // Track the choice
+    // Track the choice in comprehensive tracker
+    const comprehensiveTracker = getComprehensiveTracker(gameState.userId)
+    await comprehensiveTracker.trackChoice(
+      gameState.userId,
+      validatedChoice,
+      currentSceneBeforeChoice,
+      gameState.currentCharacter,
+      Date.now() - choiceStartTime
+    )
+
+    // Track the choice in legacy systems
     trackUserChoice(gameState.userId, validatedChoice)
 
     // === DURABLE QUEUE: Record choice ===
