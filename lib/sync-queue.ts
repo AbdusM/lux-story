@@ -210,13 +210,24 @@ export class SyncQueue {
 
       } catch (error) {
         const willRetry = action.retries < 3
-        const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+        let errorMessage = 'Unknown error'
+        
+        if (error instanceof Error) {
+          errorMessage = error.message
+        } else if (error && typeof error === 'object') {
+          // Handle non-Error objects (like API responses)
+          errorMessage = JSON.stringify(error)
+        } else if (typeof error === 'string') {
+          errorMessage = error
+        }
+        
         console.error('❌ [SyncQueue] Action failed:', {
           type: action.type,
           id: action.id.substring(0, 8),
           error: errorMessage,
           retries: action.retries,
-          willRetry
+          willRetry,
+          rawError: error
         })
 
         // Real-time monitoring for failures
