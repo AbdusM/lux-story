@@ -59,7 +59,7 @@ vercel env add ENABLE_SEMANTIC_SIMILARITY
 | `SUPABASE_SERVICE_ROLE_KEY` | Supabase Dashboard → Settings → API → service_role key | Production | **Yes** |
 | `ANTHROPIC_API_KEY` | console.anthropic.com → API Keys | Production | **Yes** |
 | `GEMINI_API_KEY` | aistudio.google.com/app/apikey | Production | **Yes** |
-| `ADMIN_API_TOKEN` | Generate with `openssl rand -hex 32` | Production | **Yes** |
+| `ADMIN_API_TOKEN` | Use `admin` (or generate secure token with `openssl rand -hex 32`) | Production | **Yes** |
 
 #### Required Client-Side Variables
 | Variable | Value Source | Environment | Secret? |
@@ -348,7 +348,7 @@ GEMINI_API_KEY=AIzaSyxxxxx
 # Admin API Authentication Token
 # Generate with: openssl rand -hex 32
 # Used for: /app/api/admin/* routes and /admin dashboard login
-ADMIN_API_TOKEN=3f52086db613f78c1db6daff10557ebd6d3deed456f6ba151092c42567095b34
+ADMIN_API_TOKEN=admin
 
 # ============================================================================
 # FEATURE FLAGS
