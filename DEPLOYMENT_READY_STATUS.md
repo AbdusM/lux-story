@@ -141,7 +141,7 @@ VERCEL_URL=https://lux-story.vercel.app npm run verify:admin:prod
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Client auth | No | Same as SUPABASE_ANON_KEY |
 | `ANTHROPIC_API_KEY` | Live choice generation | **Yes** | console.anthropic.com → API Keys |
 | `GEMINI_API_KEY` | Skill-aware dialogue | **Yes** | aistudio.google.com/app/apikey |
-| `ADMIN_API_TOKEN` | Admin dashboard login | **Yes** | Generate: `openssl rand -hex 32` |
+| `ADMIN_API_TOKEN` | Admin dashboard login | **Yes** | Use: `admin` |
 
 ---
 
