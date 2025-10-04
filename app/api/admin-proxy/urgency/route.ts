@@ -16,14 +16,14 @@ export async function GET(request: NextRequest) {
   // Special case: "all-students" filter uses localStorage fallback
   if (level === 'all-students') {
     try {
-      const userIds = getAllUserIds()
-      const students = userIds.map(userId => {
-        const profile = loadSkillProfile(userId)
+      const userIds = await getAllUserIds()
+      const profilePromises = userIds.map(async (userId) => {
+        const profile = await loadSkillProfile(userId)
         if (!profile) return null
 
         return {
           userId,
-          urgencyLevel: 'pending', // No urgency score calculated yet
+          urgencyLevel: 'pending' as const, // No urgency score calculated yet
           urgencyScore: 0,
           urgencyNarrative: 'Student data available - urgency score pending calculation.',
           totalChoices: profile.totalDemonstrations,
@@ -35,7 +35,10 @@ export async function GET(request: NextRequest) {
           isolationScore: 0,
           lastActivity: userId
         }
-      }).filter(Boolean)
+      })
+
+      const studentsWithNulls = await Promise.all(profilePromises)
+      const students = studentsWithNulls.filter(Boolean)
 
       return NextResponse.json({ students })
     } catch (error) {

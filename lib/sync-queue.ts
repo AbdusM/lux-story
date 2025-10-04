@@ -14,6 +14,7 @@
 
 import { safeStorage } from './safe-storage'
 import { logSync } from './real-time-monitor'
+import { ensureUserProfile } from './ensure-user-profile'
 
 const SYNC_QUEUE_KEY = 'lux-sync-queue'
 const MAX_QUEUE_SIZE = 500 // Prevent unbounded growth
@@ -130,6 +131,36 @@ export class SyncQueue {
     const successfulIds: string[] = []
     const failedActions: QueuedAction[] = []
 
+    // Track user IDs we've already ensured exist to avoid duplicate checks
+    const ensuredUserIds = new Set<string>()
+
+    // PERFORMANCE FIX: Check localStorage cache for profile existence
+    const PROFILE_CACHE_KEY = 'profile-existence-cache'
+    const CACHE_EXPIRY_MS = 24 * 60 * 60 * 1000 // 24 hours
+
+    const getCachedProfileExists = (userId: string): boolean | null => {
+      const cached = safeStorage.getItem(`${PROFILE_CACHE_KEY}-${userId}`)
+      if (!cached) return null
+
+      try {
+        const data = JSON.parse(cached)
+        if (Date.now() - data.timestamp > CACHE_EXPIRY_MS) {
+          safeStorage.removeItem(`${PROFILE_CACHE_KEY}-${userId}`)
+          return null
+        }
+        return data.exists
+      } catch {
+        return null
+      }
+    }
+
+    const setCachedProfileExists = (userId: string, exists: boolean): void => {
+      safeStorage.setItem(`${PROFILE_CACHE_KEY}-${userId}`, JSON.stringify({
+        exists,
+        timestamp: Date.now()
+      }))
+    }
+
     for (const action of queue) {
       const actionAge = Date.now() - action.timestamp
       console.log('⏳ [SyncQueue] Processing action:', {
@@ -140,6 +171,40 @@ export class SyncQueue {
       })
 
       try {
+        // Extract user_id from action (needed for foreign key constraints)
+        let userId: string | undefined
+
+        if (action.type === 'db_method' && action.args && action.args.length > 0) {
+          // First arg is usually userId for db methods
+          userId = typeof action.args[0] === 'string' ? action.args[0] : undefined
+        } else if (action.data && typeof action.data.user_id === 'string') {
+          userId = action.data.user_id
+        }
+
+        // Ensure user profile exists before any data insertion
+        if (userId && !ensuredUserIds.has(userId)) {
+          // PERFORMANCE FIX: Check cache first to avoid unnecessary database query
+          const cachedExists = getCachedProfileExists(userId)
+
+          if (cachedExists === true) {
+            console.log(`⚡ [SyncQueue] Profile cached for ${userId}, skipping check`)
+            ensuredUserIds.add(userId)
+          } else {
+            console.log(`🔒 [SyncQueue] Ensuring profile exists for ${userId}...`)
+            const profileEnsured = await ensureUserProfile(userId)
+
+            if (!profileEnsured) {
+              console.error(`❌ [SyncQueue] Failed to ensure profile for ${userId}, skipping action`)
+              failedActions.push({ ...action, retries: action.retries + 1 })
+              continue
+            }
+
+            ensuredUserIds.add(userId)
+            setCachedProfileExists(userId, true)
+            console.log(`✅ [SyncQueue] Profile ensured and cached for ${userId}`)
+          }
+        }
+
         // Handle different action types
         if (action.type === 'db_method') {
           // Legacy: DatabaseService method call

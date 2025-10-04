@@ -3,12 +3,28 @@
 import { useEffect, useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
 import { loadSkillProfile, type SkillProfile } from '@/lib/skill-profile-adapter'
-import SingleUserDashboard from '@/components/admin/SingleUserDashboard'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { AlertCircle, ArrowLeft } from 'lucide-react'
 import { formatUserId } from '@/lib/format-user-id'
+
+// PERFORMANCE FIX: Code-split the heavy SingleUserDashboard component
+const SingleUserDashboard = dynamic(
+  () => import('@/components/admin/SingleUserDashboard'),
+  {
+    loading: () => (
+      <div className="flex items-center justify-center min-h-screen bg-gray-50">
+        <div className="text-center space-y-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto" />
+          <p className="text-lg font-medium text-gray-900">Loading dashboard...</p>
+        </div>
+      </div>
+    ),
+    ssr: false // Dashboard is client-side only
+  }
+)
 
 /**
  * Inner component that uses useSearchParams
@@ -28,22 +44,26 @@ function SkillsProfileContent() {
       return
     }
 
-    try {
-      // Load skill profile for this user
-      const profile = loadSkillProfile(userId)
+    async function loadProfile() {
+      try {
+        // Load skill profile for this user
+        const profile = await loadSkillProfile(userId)
 
-      // Validate we have data
-      if (!profile || profile.totalDemonstrations === 0) {
-        setError('No journey data found for this user')
-      } else {
-        setProfileData(profile)
+        // Validate we have data
+        if (!profile || profile.totalDemonstrations === 0) {
+          setError('No journey data found for this user')
+        } else {
+          setProfileData(profile)
+        }
+      } catch (err) {
+        console.error('Failed to load skill profile:', err)
+        setError('Failed to load skill profile')
+      } finally {
+        setLoading(false)
       }
-    } catch (err) {
-      console.error('Failed to load skill profile:', err)
-      setError('Failed to load skill profile')
-    } finally {
-      setLoading(false)
     }
+
+    loadProfile()
   }, [userId])
 
   // Loading state

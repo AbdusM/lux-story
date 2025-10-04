@@ -3,9 +3,9 @@
 // Agent 7: Admin Dashboard Design System CSS (Issues 1A-1C, 2A-2B, 3A-3C, 39, 32)
 import '@/styles/admin-dashboard.css'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo, useCallback, memo } from 'react'
 import Link from 'next/link'
-import { ChoiceReviewTrigger } from '@/components/ChoiceReviewPanel'
+import dynamic from 'next/dynamic'
 import { getAllUserIds, loadSkillProfile } from '@/lib/skill-profile-adapter'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -17,12 +17,26 @@ import { Users, TrendingUp, Award, ArrowRight, AlertTriangle, RefreshCw } from '
 import type { UrgentStudent } from '@/lib/types/admin'
 import { formatUserIdShort, formatUserIdRelative } from '@/lib/format-user-id'
 
+// PERFORMANCE FIX: Code-split heavy components to reduce initial bundle size
+const ChoiceReviewTrigger = dynamic(
+  () => import('@/components/ChoiceReviewPanel').then(mod => ({ default: mod.ChoiceReviewTrigger })),
+  {
+    loading: () => (
+      <div className="text-center py-8 text-gray-500">
+        Loading choice review panel...
+      </div>
+    ),
+    ssr: false
+  }
+)
+
 /**
  * Admin Dashboard
  * Unified interface for urgency triage, skills analytics, and live choice review
  */
 export default function AdminPage() {
   console.log('[Admin] Component rendering...')
+  const [mounted, setMounted] = useState(false)
   const [activeTab, setActiveTab] = useState('journeys')
 
   // Student Journeys state (existing)
@@ -44,15 +58,22 @@ export default function AdminPage() {
   // Agent 9: Environment validation warning
   const [dbHealthy, setDbHealthy] = useState(true)
 
-  // Load student journeys (updated to use Supabase)
+  // Client-side only mounting check
   useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Load student journeys (updated to use Supabase with batch loading)
+  useEffect(() => {
+    if (!mounted) return // Skip during SSR/SSG
+
     const loadUserData = async () => {
       console.log('[Admin] Starting to load user data...')
       try {
         console.log('[Admin] Calling getAllUserIds()...')
         const ids = await getAllUserIds()
         console.log('[Admin] getAllUserIds() returned:', ids)
-        
+
         // Sort by recency (newest first) - user IDs contain timestamps
         const sortedIds = ids.sort((a, b) => {
           // Extract timestamp from user ID (format: player_TIMESTAMP)
@@ -63,23 +84,27 @@ export default function AdminPage() {
         console.log('[Admin] Sorted user IDs:', sortedIds)
         setUserIds(sortedIds)
 
+        // PERFORMANCE FIX: Batch load all profiles instead of sequential N+1 queries
+        console.log('[Admin] Batch loading profiles for', ids.length, 'users')
+        const profilePromises = ids.map(userId => loadSkillProfile(userId))
+        const profiles = await Promise.all(profilePromises)
+
         const stats = new Map()
-        for (const userId of ids) {
-          console.log('[Admin] Loading profile for user:', userId)
-          const profile = await loadSkillProfile(userId)
+        profiles.forEach((profile, index) => {
           if (profile) {
             const topSkill = Object.entries(profile.skillDemonstrations)
               .sort(([, a], [, b]) => b.length - a.length)[0] || ['none', []]
 
-            stats.set(userId, {
+            stats.set(ids[index], {
               totalDemonstrations: profile.totalDemonstrations,
               topSkill,
               topCareer: profile.careerMatches[0],
               milestones: profile.milestones.length
             })
           }
-        }
-        console.log('[Admin] User stats:', stats)
+        })
+
+        console.log('[Admin] User stats loaded via batch:', stats.size, 'profiles')
         setUserStats(stats)
         setJourneysLoading(false)
         console.log('[Admin] User data loading complete')
@@ -90,16 +115,19 @@ export default function AdminPage() {
     }
 
     loadUserData()
-  }, [])
+  }, [mounted])
 
   // Load urgent students (NEW)
   useEffect(() => {
+    if (!mounted) return // Skip during SSR/SSG
     fetchUrgentStudents()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [urgencyFilter])
+  }, [urgencyFilter, mounted])
 
   // Check database health on mount
   useEffect(() => {
+    if (!mounted) return // Skip during SSR/SSG
+
     const checkDbHealth = async () => {
       try {
         const response = await fetch('/api/admin-proxy/urgency?limit=1')
@@ -113,9 +141,10 @@ export default function AdminPage() {
     }
 
     checkDbHealth()
-  }, [])
+  }, [mounted])
 
-  async function fetchUrgentStudents() {
+  // PERFORMANCE FIX: Memoize callbacks to prevent unnecessary re-renders
+  const fetchUrgentStudents = useCallback(async () => {
     setUrgencyLoading(true)
     try {
       // Use server-side proxy to protect API token
@@ -136,9 +165,9 @@ export default function AdminPage() {
     } finally {
       setUrgencyLoading(false)
     }
-  }
+  }, [urgencyFilter])
 
-  async function triggerRecalculation() {
+  const triggerRecalculation = useCallback(async () => {
     setRecalculating(true)
     try {
       // Use server-side proxy to protect API token
@@ -155,10 +184,44 @@ export default function AdminPage() {
     } finally {
       setRecalculating(false)
     }
-  }
+  }, [fetchUrgentStudents])
+
+  // PERFORMANCE FIX: Memoize sorted user IDs to avoid re-sorting on every render
+  const sortedUserIds = useMemo(() => {
+    return userIds.sort((a, b) => {
+      const timestampA = a.match(/player_(\d+)/)?.[1] || '0'
+      const timestampB = b.match(/player_(\d+)/)?.[1] || '0'
+      return parseInt(timestampB) - parseInt(timestampA)
+    })
+  }, [userIds])
 
   console.log('[Admin] About to render...')
-  
+
+  // Show loading state during SSR/initial mount with WCAG accessibility
+  if (!mounted) {
+    return (
+      <div className="min-h-screen bg-gray-50 p-4">
+        <div className="flex items-center justify-center min-h-[600px]">
+          <div
+            className="text-center space-y-4 fade-in"
+            role="status"
+            aria-live="polite"
+            aria-busy="true"
+          >
+            <div
+              className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"
+              aria-label="Loading spinner"
+            />
+            <div className="space-y-2">
+              <p className="text-lg font-medium text-gray-900">Loading Admin Dashboard...</p>
+              <p className="text-sm text-gray-600">Initializing student analytics</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 p-4">
       <div className="max-w-7xl mx-auto space-y-6">
@@ -172,10 +235,12 @@ export default function AdminPage() {
               <p className="admin-body-text admin-text-secondary">
                 Student Urgency Triage, Skills Analytics & Live Choice Review
               </p>
-              {/* Debug info */}
-              <div className="text-xs text-gray-500 mt-2">
-                Debug: activeTab={activeTab}, userIds.length={userIds.length}, journeysLoading={journeysLoading.toString()}
-              </div>
+              {/* Debug info - only shown in development */}
+              {process.env.NODE_ENV === 'development' && (
+                <div className="text-xs text-gray-500 mt-2">
+                  Debug: activeTab={activeTab}, userIds.length={userIds.length}, journeysLoading={journeysLoading.toString()}
+                </div>
+              )}
             </div>
             <Link href="/">
               <Button variant="outline" size="sm">
@@ -215,7 +280,7 @@ export default function AdminPage() {
           </TabsList>
 
           {/* STUDENT JOURNEYS TAB (EXISTING) */}
-          <TabsContent value="journeys" className="mt-6">
+          <TabsContent value="journeys" className="mt-6 admin-content-fade-in">
             <Card>
               <CardHeader>
                 <div className="flex items-center justify-between">
@@ -235,15 +300,31 @@ export default function AdminPage() {
               </CardHeader>
               <CardContent>
                 {journeysLoading ? (
-                  <div className="text-center py-8 text-gray-500">
-                    Loading user data...
+                  <div
+                    className="flex items-center justify-center py-12"
+                    role="status"
+                    aria-live="polite"
+                    aria-busy="true"
+                  >
+                    <div className="text-center space-y-4">
+                      <div
+                        className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mx-auto"
+                        aria-label="Loading spinner"
+                      />
+                      <p className="text-sm text-gray-600">Loading user data...</p>
+                    </div>
                   </div>
                 ) : userIds.length === 0 ? (
-                  <div className="text-center py-8 space-y-4">
-                    <p className="text-gray-600">No user journeys found yet.</p>
-                    <p className="text-sm text-gray-500">
-                      Users need to complete at least 5 skill demonstrations for data to appear here.
-                    </p>
+                  <div className="text-center py-12 space-y-4">
+                    <div className="space-y-3">
+                      <p className="text-2xl">🚀</p>
+                      <p className="text-lg font-medium text-gray-700">
+                        Ready for students!
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        User journeys appear after students start their career exploration.
+                      </p>
+                    </div>
                     <Link href="/test-data">
                       <Button className="mt-4">
                         Generate Test User Data
@@ -252,65 +333,10 @@ export default function AdminPage() {
                   </div>
                 ) : (
                   <div className="space-y-3">
-                    {userIds.map(userId => {
+                    {sortedUserIds.map(userId => {
                       const stats = userStats.get(userId)
                       return (
-                        <Link key={userId} href={`/admin/skills?userId=${userId}`}>
-                          <div className="block p-4 border rounded-lg hover:bg-gray-50 hover:border-blue-500 transition group">
-                            <div className="flex items-center justify-between">
-                              <div className="space-y-2 flex-1">
-                                <div className="flex items-center gap-3">
-                                  <h3 className="admin-section-title admin-text-primary">
-                                    {formatUserIdShort(userId)}
-                                  </h3>
-                                  <span className="admin-body-text admin-text-muted">
-                                    ({formatUserIdRelative(userId)})
-                                  </span>
-                                  {stats && (
-                                    <Badge variant="outline" className="gap-1">
-                                      <Award className="w-3 h-3" />
-                                      {stats.milestones} milestones
-                                    </Badge>
-                                  )}
-                                </div>
-
-                                {stats && (
-                                  <div className="grid grid-cols-3 gap-4 text-sm">
-                                    <div>
-                                      <p className="admin-body-text admin-text-secondary">Demonstrations</p>
-                                      <p className="admin-subsection-title admin-interactive">
-                                        {stats.totalDemonstrations}
-                                      </p>
-                                    </div>
-                                    <div>
-                                      <p className="admin-body-text admin-text-secondary">Most Demonstrated</p>
-                                      <p className="admin-subsection-title capitalize">
-                                        {stats.topSkill[0].replace(/([A-Z])/g, ' $1').trim()} ({stats.topSkill[1].length}x)
-                                      </p>
-                                    </div>
-                                    {stats.topCareer && (
-                                      <div>
-                                        <p className="admin-body-text admin-text-secondary">Top Career Match</p>
-                                        <p className="admin-subsection-title admin-urgency-low">
-                                          {Math.round(stats.topCareer.matchScore * 100)}%
-                                        </p>
-                                      </div>
-                                    )}
-                                  </div>
-                                )}
-                              </div>
-
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                className="gap-2 group-hover:bg-blue-50"
-                              >
-                                View Journey
-                                <ArrowRight className="w-4 h-4" />
-                              </Button>
-                            </div>
-                          </div>
-                        </Link>
+                        <UserCard key={userId} userId={userId} stats={stats} />
                       )
                     })}
                   </div>
@@ -320,7 +346,7 @@ export default function AdminPage() {
           </TabsContent>
 
           {/* LIVE CHOICES TAB (EXISTING) */}
-          <TabsContent value="choices" className="mt-6">
+          <TabsContent value="choices" className="mt-6 admin-content-fade-in">
             <Card>
               <CardHeader>
                 <CardTitle className="admin-tab-title admin-text-primary">Live Choice Management</CardTitle>
@@ -342,7 +368,7 @@ export default function AdminPage() {
           </TabsContent>
 
           {/* URGENCY TRIAGE TAB (NEW) */}
-          <TabsContent value="urgency" className="mt-6 space-y-4">
+          <TabsContent value="urgency" className="mt-6 space-y-4 admin-content-fade-in">
             <Card>
               <CardHeader>
                 <div className="flex items-center justify-between">
@@ -387,17 +413,43 @@ export default function AdminPage() {
               </CardHeader>
               <CardContent>
                 {urgencyLoading ? (
-                  <div className="text-center py-12 text-gray-500">
-                    Loading urgent students...
+                  <div
+                    className="flex items-center justify-center py-12"
+                    role="status"
+                    aria-live="polite"
+                    aria-busy="true"
+                  >
+                    <div className="text-center space-y-4">
+                      <div
+                        className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mx-auto"
+                        aria-label="Loading spinner"
+                      />
+                      <p className="text-sm text-gray-600">Loading urgent students...</p>
+                    </div>
                   </div>
                 ) : urgentStudents.length === 0 ? (
                   <div className="text-center py-12 space-y-4">
-                    <p className="text-gray-600">No urgent students found.</p>
-                    <p className="text-sm text-gray-500">
-                      {urgencyFilter !== 'all'
-                        ? 'Try changing the filter or run recalculation.'
-                        : 'No students have urgency scores yet. Click "Recalculate" to generate scores.'}
-                    </p>
+                    {urgencyFilter === 'all-students' || urgencyFilter === 'all' ? (
+                      <div className="space-y-3">
+                        <p className="text-2xl">✅</p>
+                        <p className="text-lg font-medium text-gray-700">
+                          Great news - no urgent students!
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          Check back after students complete more scenes, or use "All Students" filter to see everyone.
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="space-y-3">
+                        <p className="text-2xl">✅</p>
+                        <p className="text-lg font-medium text-gray-700">
+                          No {urgencyFilter} priority students
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          Try a different filter or run recalculation to update scores.
+                        </p>
+                      </div>
+                    )}
                   </div>
                 ) : (
                   <div className="space-y-4">
@@ -414,6 +466,81 @@ export default function AdminPage() {
     </div>
   )
 }
+
+/**
+ * PERFORMANCE FIX: Memoized User Card Component
+ * Prevents re-rendering when parent updates
+ */
+const UserCard = memo(({ userId, stats }: {
+  userId: string
+  stats?: {
+    totalDemonstrations: number
+    topSkill: [string, unknown[]]
+    topCareer?: { matchScore: number }
+    milestones: number
+  }
+}) => {
+  return (
+    <Link href={`/admin/skills?userId=${userId}`}>
+      <div className="block p-4 border rounded-lg hover:bg-gray-50 hover:border-blue-500 transition group">
+        <div className="flex items-center justify-between">
+          <div className="space-y-2 flex-1">
+            <div className="flex items-center gap-3">
+              <h3 className="admin-section-title admin-text-primary">
+                {formatUserIdShort(userId)}
+              </h3>
+              <span className="admin-body-text admin-text-muted">
+                ({formatUserIdRelative(userId)})
+              </span>
+              {stats && (
+                <Badge variant="outline" className="gap-1">
+                  <Award className="w-3 h-3" />
+                  {stats.milestones} milestones
+                </Badge>
+              )}
+            </div>
+
+            {stats && (
+              <div className="grid grid-cols-3 gap-4 text-sm">
+                <div>
+                  <p className="admin-body-text admin-text-secondary">Demonstrations</p>
+                  <p className="admin-subsection-title admin-interactive">
+                    {stats.totalDemonstrations}
+                  </p>
+                </div>
+                <div>
+                  <p className="admin-body-text admin-text-secondary">Most Demonstrated</p>
+                  <p className="admin-subsection-title capitalize">
+                    {stats.topSkill[0].replace(/([A-Z])/g, ' $1').trim()} ({stats.topSkill[1].length}x)
+                  </p>
+                </div>
+                {stats.topCareer && (
+                  <div>
+                    <p className="admin-body-text admin-text-secondary">Top Career Match</p>
+                    <p className="admin-subsection-title admin-urgency-low">
+                      {Math.round(stats.topCareer.matchScore * 100)}%
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
+          <Button
+            variant="ghost"
+            size="sm"
+            className="gap-2 group-hover:bg-blue-50"
+          >
+            View Journey
+            <ArrowRight className="w-4 h-4" />
+          </Button>
+        </div>
+      </div>
+    </Link>
+  )
+})
+
+UserCard.displayName = 'UserCard'
 
 /**
  * Urgent Student Card Component

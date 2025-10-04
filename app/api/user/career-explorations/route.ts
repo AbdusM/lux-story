@@ -8,18 +8,27 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { rateLimit, getClientIp } from '@/lib/rate-limit'
 
 // Mark as dynamic for Next.js static export compatibility
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
 
+// Rate limiter: 30 requests per minute per IP
+const postLimiter = rateLimit({
+  interval: 60 * 1000, // 1 minute
+  uniqueTokenPerInterval: 500,
+})
+
 // Server-side Supabase client with service role (bypasses RLS)
 function getServiceClient() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  // SECURITY: Use server-side variables only, never NEXT_PUBLIC_
+  const supabaseUrl = process.env.SUPABASE_URL
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
   if (!supabaseUrl || !serviceRoleKey) {
-    throw new Error('Missing Supabase environment variables')
+    console.error('[Security] Missing server-side Supabase environment variables')
+    throw new Error('Database configuration incomplete')
   }
 
   return createClient(supabaseUrl, serviceRoleKey, {
@@ -51,6 +60,17 @@ function getServiceClient() {
  */
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting
+    const ip = getClientIp(request)
+    try {
+      await postLimiter.check(ip, 30) // 30 requests per minute
+    } catch {
+      return NextResponse.json(
+        { error: 'Too many requests. Please try again later.' },
+        { status: 429 }
+      )
+    }
+
     const body = await request.json()
 
     const {

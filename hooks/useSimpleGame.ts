@@ -1267,12 +1267,17 @@ export function useSimpleGame() {
     // Track the choice in comprehensive tracker
     try {
       console.log(`[useSimpleGame] Calling comprehensive tracker for ${gameState.userId}`)
+
+      // Extract character ID from current scene's speaker
+      const currentSceneData = SIMPLE_SCENES[currentSceneBeforeChoice as keyof typeof SIMPLE_SCENES] as any
+      const characterId = (currentSceneData?.speaker as string | undefined)?.split('(')[0]?.trim() || undefined
+
       const comprehensiveTracker = getComprehensiveTracker(gameState.userId)
       await comprehensiveTracker.trackChoice(
         gameState.userId,
         validatedChoice,
         currentSceneBeforeChoice,
-        gameState.currentCharacter,
+        characterId,
         Date.now() - choiceStartTime
       )
       console.log(`[useSimpleGame] Comprehensive tracker completed for ${gameState.userId}`)

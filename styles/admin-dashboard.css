@@ -79,7 +79,11 @@
 /* ============================================================================
    URGENCY COLOR MATCHING - Issue 39
    ============================================================================
-   Percentage colors match urgency badge colors for consistency
+   Comprehensive urgency color system with:
+   - Border-left accent (4px solid)
+   - Card background tint (50% opacity)
+   - Percentage number matching badge color
+   - Badge background and text colors
 */
 
 /* Critical Urgency (Red) */
@@ -93,6 +97,16 @@
   border-color: #FCA5A5; /* red-300 */
 }
 
+.admin-urgency-critical-card {
+  border-left: 4px solid #DC2626; /* red-600 */
+  background: rgba(254, 242, 242, 0.5); /* red-50 at 50% */
+}
+
+.admin-urgency-critical-percentage {
+  color: #DC2626; /* red-600 */
+  font-weight: 600;
+}
+
 /* High Urgency (Orange/Amber) */
 .admin-urgency-high {
   color: #EA580C; /* orange-600 */
@@ -102,6 +116,16 @@
 .admin-urgency-high-bg {
   background-color: #FFF7ED; /* orange-50 */
   border-color: #FDBA74; /* orange-300 */
+}
+
+.admin-urgency-high-card {
+  border-left: 4px solid #EA580C; /* orange-600 */
+  background: rgba(255, 247, 237, 0.5); /* orange-50 at 50% */
+}
+
+.admin-urgency-high-percentage {
+  color: #EA580C; /* orange-600 */
+  font-weight: 600;
 }
 
 /* Medium Urgency (Yellow) */
@@ -115,6 +139,16 @@
   border-color: #FDE047; /* yellow-300 */
 }
 
+.admin-urgency-medium-card {
+  border-left: 4px solid #CA8A04; /* yellow-600 */
+  background: rgba(254, 252, 232, 0.5); /* yellow-50 at 50% */
+}
+
+.admin-urgency-medium-percentage {
+  color: #CA8A04; /* yellow-600 */
+  font-weight: 600;
+}
+
 /* Low Urgency (Green) */
 .admin-urgency-low {
   color: #16A34A; /* green-600 */
@@ -124,6 +158,16 @@
 .admin-urgency-low-bg {
   background-color: #F0FDF4; /* green-50 */
   border-color: #86EFAC; /* green-300 */
+}
+
+.admin-urgency-low-card {
+  border-left: 4px solid #16A34A; /* green-600 */
+  background: rgba(240, 253, 244, 0.5); /* green-50 at 50% */
+}
+
+.admin-urgency-low-percentage {
+  color: #16A34A; /* green-600 */
+  font-weight: 600;
 }
 
 /* ============================================================================
@@ -317,7 +361,7 @@
 }
 
 /* ============================================================================
-   WCAG AA CONTRAST COMPLIANCE - Issues 47, 48
+   WCAG AA CONTRAST COMPLIANCE - Issues 47, 48, Section 2.2
    ============================================================================
    All text passes 4.5:1 minimum contrast ratio
 */
@@ -341,6 +385,23 @@
 
 .admin-text-on-gray-bg {
   color: #1F2937; /* gray-800 on gray-50 (F9FAFB) = 15.29:1 ✓ */
+}
+
+/* WCAG AA Fixes - Section 2.2 */
+.admin-text-gray-800 {
+  color: #1F2937; /* gray-800 - use on blue-50/colored backgrounds */
+}
+
+.admin-text-gray-700 {
+  color: #374151; /* gray-700 - use for badges and secondary text */
+}
+
+.admin-text-gray-600 {
+  color: #4B5563; /* gray-600 - use on white/light backgrounds only */
+}
+
+.admin-scene-name {
+  color: #4B5563; /* gray-600 for scene names on white = 7.87:1 ✓ */
 }
 
 /* Link colors with sufficient contrast */
@@ -423,5 +484,46 @@
 [tabindex]:not([tabindex="-1"]):focus-visible {
   outline: 2px solid #2563EB;
   outline-offset: 2px;
+}
+
+/* ============================================================================
+   ANIMATIONS & TRANSITIONS
+   ============================================================================
+   Smooth fade-in and loading state animations
+*/
+
+/* Fade in animation for loading states */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+/* Content fade-in for tab content */
+.admin-content-fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+
+/* Pulse animation for loading spinners */
+@keyframes pulse-subtle {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.pulse-subtle {
+  animation: pulse-subtle 2s ease-in-out infinite;
 }
 

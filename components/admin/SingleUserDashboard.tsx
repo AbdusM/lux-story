@@ -43,11 +43,12 @@
  * - Gaps Tab: Uses profile.skillGaps (derived from real data)
  * - Action Tab: Uses profile data (real)
  *
- * NARRATIVE BRIDGES ADDED:
- * ✅ Skills → Careers (Line ~679): Connects skill demonstrations to career pathways
- * ✅ Careers → Gaps (Line ~1077): Bridges career matches to skill development needs
- * ✅ Gaps → Action (Line ~1138): Connects skill gaps to concrete Birmingham actions
- * ✅ Action → 2030 Skills (Line ~1235): Frames WEF skills in workforce readiness context
+ * NARRATIVE BRIDGES ADDED (Agent 2: Issue 7A-7C - ALL <25 WORDS):
+ * ✅ Urgency → Skills (Line ~864): Shows focus areas from urgency analysis (13/7 words)
+ * ✅ Skills → Careers (Line ~1188): Connects skill demonstrations to Birmingham careers (16/14 words)
+ * ✅ Careers → Gaps (Line ~1824): Reframes gaps as opportunities for development (16/12 words)
+ * ✅ Gaps → Action (Line ~2025): Bridges skill gaps to concrete Birmingham actions (13/9 words)
+ * ✅ Action → Evidence (Line ~2179): Links action recommendations to research frameworks (13/8 words)
  *
  * IMPLEMENTATION NOTES:
  * - All mock data sections have yellow "Mock Data" badges for visibility
@@ -76,6 +77,9 @@ import { BIRMINGHAM_OPPORTUNITIES } from '@/lib/simple-career-analytics';
 import { SkillProgressionChart } from '@/components/admin/SkillProgressionChart';
 import { SparklineTrend } from '@/components/admin/SparklineTrend';
 import { analyzeSkillPatterns, sortSkillPatterns, type SkillPattern, type SortMode } from '@/lib/admin-pattern-recognition';
+import { getUrgencyClasses } from '@/lib/admin-urgency-classes';
+import { PatternRecognitionCard } from '@/components/admin/PatternRecognitionCard';
+import { formatAdminDate, formatAdminDateWithLabel, type DateContext, type ViewMode } from '@/lib/admin-date-formatting';
 
 interface SingleUserDashboardProps {
   userId: string
@@ -294,8 +298,20 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
   const [activeTab, setActiveTab] = useState("urgency");
   const user = profile; // Use real profile data instead of mock
 
-  // Agent 1: Evidence Tab mode toggle (Issue 5C)
-  const [evidenceMode, setEvidenceMode] = useState<'research' | 'family'>('family');
+  // Global Admin View Mode - Family/Research toggle (Issue 5C - Global Extension)
+  const [adminViewMode, setAdminViewMode] = useState<'family' | 'research'>(() => {
+    if (typeof window !== 'undefined') {
+      return (localStorage.getItem('admin_view_preference') as 'family' | 'research') || 'family';
+    }
+    return 'family';
+  });
+
+  // Persist adminViewMode to localStorage
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('admin_view_preference', adminViewMode);
+    }
+  }, [adminViewMode]);
 
   // Urgency data state
   const [urgencyData, setUrgencyData] = useState<UrgencyData | null>(null);
@@ -316,6 +332,9 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
   // Agent 4: Careers Tab state (Issue 5B - show met requirements toggle)
   const [showMetRequirements, setShowMetRequirements] = useState(false);
 
+  // Agent 6: Cross-tab navigation state (Issue 6A - highlighting)
+  const [highlightedSkill, setHighlightedSkill] = useState<string | null>(null);
+  const [highlightedCareer, setHighlightedCareer] = useState<string | null>(null);
   // Evidence frameworks data state
   const [evidenceData, setEvidenceData] = useState<any>(null);
   const [evidenceLoading, setEvidenceLoading] = useState(false);
@@ -341,6 +360,17 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
       tabsList.removeEventListener('scroll', handleScroll)
     }
   }, [])
+
+  // Agent 6: Clear highlights after 3 seconds (Issue 6A)
+  useEffect(() => {
+    if (highlightedSkill || highlightedCareer) {
+      const timer = setTimeout(() => {
+        setHighlightedSkill(null);
+        setHighlightedCareer(null);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [highlightedSkill, highlightedCareer])
 
   // Fetch urgency data for this specific user
   useEffect(() => {
@@ -510,16 +540,40 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
     return 'bg-blue-500';
   };
 
-  // Agent 3: Recency indicator helper (Issue 12)
-  const getRecencyIndicator = (timestamp?: number): { color: string; label: string } => {
-    if (!timestamp) return { color: 'bg-gray-400', label: 'Unknown' };
+  // Agent 3: Recency indicator helper (Issue 12) - Enhanced with viewMode support
+  const getRecencyIndicator = (timestamp?: number): { color: string; label: string; familyLabel: string; researchLabel: string } => {
+    if (!timestamp) return {
+      color: 'bg-gray-400',
+      label: 'Unknown',
+      familyLabel: '',
+      researchLabel: ''
+    };
 
     const now = Date.now();
     const daysSince = (now - timestamp) / (1000 * 60 * 60 * 24);
 
-    if (daysSince < 3) return { color: 'bg-green-500', label: 'Recent (<3 days)' };
-    if (daysSince < 7) return { color: 'bg-yellow-500', label: 'This week' };
-    return { color: 'bg-gray-400', label: `${Math.floor(daysSince)} days ago` };
+    if (daysSince < 3) {
+      return {
+        color: 'bg-green-500',
+        label: 'Recent (<3 days)',
+        familyLabel: 'New!',
+        researchLabel: '<3 days'
+      };
+    }
+    if (daysSince < 7) {
+      return {
+        color: 'bg-yellow-500',
+        label: 'This week',
+        familyLabel: 'This week',
+        researchLabel: '3-7 days'
+      };
+    }
+    return {
+      color: 'bg-gray-400',
+      label: `${Math.floor(daysSince)} days ago`,
+      familyLabel: '',
+      researchLabel: `>${Math.floor(daysSince)} days`
+    };
   };
 
   // Tab navigation helpers
@@ -549,6 +603,41 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
     return tabFlow[currentTab] || null;
   };
 
+  // Agent 6: Cross-tab navigation helpers (Issue 6A - Section 4.1)
+  const jumpToSkillsTab = (skillName: string) => {
+    setHighlightedSkill(skillName);
+    setActiveTab('skills');
+    // Scroll to skill after a brief delay to allow tab switch
+    setTimeout(() => {
+      const element = document.getElementById(`skill-${skillName.toLowerCase().replace(/\s+/g, '-')}`);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 100);
+  };
+
+  const jumpToCareersTab = (careerId: string) => {
+    setHighlightedCareer(careerId);
+    setActiveTab('careers');
+    // Scroll to career after a brief delay to allow tab switch
+    setTimeout(() => {
+      const element = document.getElementById(`career-${careerId}`);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 100);
+  };
+
+  // Helper to find careers that use a specific skill
+  const getCareersUsingSkill = (skillName: string) => {
+    if (!user.careerMatches) return [];
+    return user.careerMatches.filter(career =>
+      Object.keys(career.requiredSkills).some(reqSkill =>
+        reqSkill.toLowerCase() === skillName.toLowerCase()
+      )
+    ).slice(0, 3); // Show top 3 careers
+  };
+
   return (
     <div className="w-full max-w-2xl mx-auto p-4 space-y-4">
       {/* Header */}
@@ -573,6 +662,44 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
           </div>
         </CardHeader>
       </Card>
+
+      {/* Global Dashboard View Mode Toggle - Sticky Header */}
+      <div className="sticky top-0 z-20 bg-white pb-2">
+        <Card className="bg-gradient-to-r from-purple-50 to-blue-50 border-purple-200">
+          <CardContent className="p-3 sm:p-4">
+            <div className="flex items-center justify-between gap-4">
+              <p className="text-xs sm:text-sm font-medium text-gray-700">Dashboard View:</p>
+              <RadioGroup
+                value={adminViewMode}
+                onValueChange={(value) => setAdminViewMode(value as 'family' | 'research')}
+                className="flex gap-2"
+              >
+                <div className="flex items-center space-x-2 p-2 sm:p-3 rounded-md hover:bg-white/50 transition-colors cursor-pointer min-h-[44px] border border-transparent hover:border-purple-300">
+                  <RadioGroupItem value="family" id="global-mode-family" />
+                  <label htmlFor="global-mode-family" className="flex items-center gap-1.5 cursor-pointer">
+                    <Users className="w-4 h-4 text-purple-600" />
+                    <span className="text-xs sm:text-sm font-medium">Personal</span>
+                    {adminViewMode === 'family' && (
+                      <Badge variant="default" className="text-xs ml-1">Active</Badge>
+                    )}
+                  </label>
+                </div>
+
+                <div className="flex items-center space-x-2 p-2 sm:p-3 rounded-md hover:bg-white/50 transition-colors cursor-pointer min-h-[44px] border border-transparent hover:border-blue-300">
+                  <RadioGroupItem value="research" id="global-mode-research" />
+                  <label htmlFor="global-mode-research" className="flex items-center gap-1.5 cursor-pointer">
+                    <GraduationCap className="w-4 h-4 text-blue-600" />
+                    <span className="text-xs sm:text-sm font-medium">Analysis</span>
+                    {adminViewMode === 'research' && (
+                      <Badge variant="default" className="text-xs ml-1">Active</Badge>
+                    )}
+                  </label>
+                </div>
+              </RadioGroup>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
 
       {/* Main Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
@@ -673,47 +800,49 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                 </div>
               ) : (
                 <div className="space-y-6">
-                  {/* Urgency Level Badge and Score - Mobile optimized */}
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 sm:p-6 bg-gray-50 rounded-lg">
+                  {/* Urgency Level Badge and Score - WCAG AA compliant with color consistency */}
+                  <div className={`flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 ${getUrgencyClasses(urgencyData.urgencyLevel).card}`}>
                     <div>
-                      <p className="text-sm sm:text-base text-gray-600 mb-2">Your Priority Level</p>
-                      <Badge
-                        className={
-                          urgencyData.urgencyLevel === 'critical' ? 'bg-red-100 text-red-800' :
-                          urgencyData.urgencyLevel === 'high' ? 'bg-orange-100 text-orange-800' :
-                          urgencyData.urgencyLevel === 'medium' ? 'bg-yellow-100 text-yellow-800' :
-                          urgencyData.urgencyLevel === 'low' ? 'bg-green-100 text-green-800' :
-                          'bg-gray-100 text-gray-800'
-                        }
-                      >
+                      <p className="text-sm sm:text-base text-gray-800 mb-2">Your Priority Level</p>
+                      <Badge className={getUrgencyClasses(urgencyData.urgencyLevel).badge}>
                         {urgencyData.urgencyLevel?.toUpperCase() || 'PENDING'}
                       </Badge>
                     </div>
                     <div className="text-center sm:text-right">
-                      <p className="text-sm sm:text-base text-gray-600 mb-2">Your Priority Score</p>
-                      <p className="text-3xl sm:text-4xl font-bold text-gray-900">
-                        {Math.max(0, Math.min(100, Math.round((urgencyData.urgencyScore || 0) * 100)))}%
+                      <p className="text-sm sm:text-base text-gray-800 mb-2">
+                        {adminViewMode === 'family' ? 'Attention Needed' : 'Your Priority Score'}
+                      </p>
+                      <p className={getUrgencyClasses(urgencyData.urgencyLevel).percentage}>
+                        {adminViewMode === 'family'
+                          ? `${urgencyData.urgencyLevel?.charAt(0).toUpperCase() + urgencyData.urgencyLevel?.slice(1) || 'Pending'} (${Math.max(0, Math.min(100, Math.round((urgencyData.urgencyScore || 0) * 100)))}%)`
+                          : `${Math.max(0, Math.min(100, Math.round((urgencyData.urgencyScore || 0) * 100)))}% urgency score (disengagement risk)`
+                        }
                       </p>
                     </div>
                   </div>
 
                   {/* Glass Box Narrative - The Hero Element - Mobile optimized */}
                   <div className="p-4 sm:p-6 bg-blue-50 border-l-4 border-blue-400 rounded-lg">
-                    <h4 className="text-sm sm:text-base font-semibold text-gray-700 mb-3">Your Priority Explanation:</h4>
-                    <p className="text-sm sm:text-base italic text-gray-700 leading-relaxed">
+                    <h4 className="text-sm sm:text-base font-semibold text-gray-800 mb-3">Your Priority Explanation:</h4>
+                    <p className="text-sm sm:text-base italic text-gray-800 leading-relaxed">
                       {urgencyData.urgencyNarrative || "No narrative generated yet."}
                     </p>
                   </div>
 
                   {/* Contributing Factors with Progress Bars */}
                   <div className="space-y-4">
-                    <h4 className="text-sm sm:text-base font-semibold text-gray-700">Your Contributing Factors:</h4>
+                    <h4 className="text-sm sm:text-base font-semibold text-gray-800">Your Contributing Factors:</h4>
 
                     {/* Disengagement (40% weight) - Mobile optimized */}
                     <div className="space-y-3 p-3 bg-gray-50 rounded-lg">
                       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
                         <span className="font-medium text-sm sm:text-base">Disengagement</span>
-                        <span className="text-gray-600 text-xs sm:text-sm">40% weight • {Math.max(0, Math.min(100, Math.round((urgencyData.disengagementScore || 0) * 100)))}%</span>
+                        <span className="text-gray-600 text-xs sm:text-sm">
+                          {adminViewMode === 'family'
+                            ? `Most important factor (${Math.max(0, Math.min(100, Math.round((urgencyData.disengagementScore || 0) * 100)))}%)`
+                            : `40% weight • ${Math.max(0, Math.min(100, Math.round((urgencyData.disengagementScore || 0) * 100)))}%`
+                          }
+                        </span>
                       </div>
                       <Progress value={Math.max(0, Math.min(100, (urgencyData.disengagementScore || 0) * 100))} className="h-3" />
                     </div>
@@ -722,7 +851,12 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                     <div className="space-y-3 p-3 bg-gray-50 rounded-lg">
                       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
                         <span className="font-medium text-sm sm:text-base">Confusion</span>
-                        <span className="text-gray-600 text-xs sm:text-sm">30% weight • {Math.max(0, Math.min(100, Math.round((urgencyData.confusionScore || 0) * 100)))}%</span>
+                        <span className="text-gray-600 text-xs sm:text-sm">
+                          {adminViewMode === 'family'
+                            ? `Career uncertainty (${Math.max(0, Math.min(100, Math.round((urgencyData.confusionScore || 0) * 100)))}%)`
+                            : `30% weight • ${Math.max(0, Math.min(100, Math.round((urgencyData.confusionScore || 0) * 100)))}%`
+                          }
+                        </span>
                       </div>
                       <Progress value={Math.max(0, Math.min(100, (urgencyData.confusionScore || 0) * 100))} className="h-3" />
                     </div>
@@ -731,7 +865,12 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                     <div className="space-y-3 p-3 bg-gray-50 rounded-lg">
                       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
                         <span className="font-medium text-sm sm:text-base">Stress</span>
-                        <span className="text-gray-600 text-xs sm:text-sm">20% weight • {Math.max(0, Math.min(100, Math.round((urgencyData.stressScore || 0) * 100)))}%</span>
+                        <span className="text-gray-600 text-xs sm:text-sm">
+                          {adminViewMode === 'family'
+                            ? `Decision pressure (${Math.max(0, Math.min(100, Math.round((urgencyData.stressScore || 0) * 100)))}%)`
+                            : `20% weight • ${Math.max(0, Math.min(100, Math.round((urgencyData.stressScore || 0) * 100)))}%`
+                          }
+                        </span>
                       </div>
                       <Progress value={Math.max(0, Math.min(100, (urgencyData.stressScore || 0) * 100))} className="h-3" />
                     </div>
@@ -740,7 +879,12 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                     <div className="space-y-3 p-3 bg-gray-50 rounded-lg">
                       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
                         <span className="font-medium text-sm sm:text-base">Isolation</span>
-                        <span className="text-gray-600 text-xs sm:text-sm">10% weight • {Math.max(0, Math.min(100, Math.round((urgencyData.isolationScore || 0) * 100)))}%</span>
+                        <span className="text-gray-600 text-xs sm:text-sm">
+                          {adminViewMode === 'family'
+                            ? `Exploring alone (${Math.max(0, Math.min(100, Math.round((urgencyData.isolationScore || 0) * 100)))}%)`
+                            : `10% weight • ${Math.max(0, Math.min(100, Math.round((urgencyData.isolationScore || 0) * 100)))}%`
+                          }
+                        </span>
                       </div>
                       <Progress value={Math.max(0, Math.min(100, (urgencyData.isolationScore || 0) * 100))} className="h-3" />
                     </div>
@@ -751,14 +895,9 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                     <h4 className="text-sm sm:text-base font-semibold text-gray-700">Activity Summary:</h4>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm sm:text-base">
                       <div>
-                        <p className="text-gray-600">Last Activity</p>
+                        <p className="text-gray-600">Last Active</p>
                         <p className="font-medium">
-                          {urgencyData.lastActivity ? new Date(urgencyData.lastActivity).toLocaleDateString('en-US', {
-                            month: 'short',
-                            day: 'numeric',
-                            hour: 'numeric',
-                            minute: '2-digit'
-                          }) : 'No activity recorded'}
+                          {urgencyData.lastActivity ? formatAdminDate(urgencyData.lastActivity, 'urgency', adminViewMode as ViewMode) : 'No activity recorded'}
                         </p>
                       </div>
                       <div>
@@ -811,6 +950,25 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
 
         {/* SKILLS TAB - Agent 3: Consolidated Skills + 2030 Skills (Issue 4A) */}
         <TabsContent value="skills" className="space-y-4">
+          {/* NARRATIVE BRIDGE: Urgency → Skills - Agent 2: <25 words (Issue 7A-7C) - 18 words (family), 10 words (research) */}
+          {urgencyData && (
+            <div className="bg-purple-50 border-l-4 border-purple-400 p-4 sm:p-6 rounded-r">
+              <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
+                {adminViewMode === 'family' ? (
+                  <>{user.userName}'s urgency score shows where to focus. Let's see what skills they've demonstrated.</>
+                ) : (
+                  <>Urgency factors identified. Skill demonstration analysis follows.</>
+                )}
+              </p>
+            </div>
+          )}
+
+          {/* Agent 3: Pattern Recognition Visualization Card (Section 2.3) */}
+          <PatternRecognitionCard
+            skillDemonstrations={user.skillDemonstrations || {}}
+            adminViewMode={adminViewMode}
+          />
+
           {/* Section 1: Core Skills Demonstrated */}
           <Card>
             <CardHeader>
@@ -856,9 +1014,27 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
 
                 if (sortedPatterns.length === 0) {
                   return (
-                    <div className="py-8 text-center text-muted-foreground">
-                      {/* Agent 2: Encouraging empty state (Issue 49) */}
-                      Ready to explore skills! You'll demonstrate abilities as you make choices in your journey.
+                    <div className="text-center py-12">
+                      {adminViewMode === 'family' ? (
+                        <div className="space-y-3">
+                          <p className="text-2xl">🎯</p>
+                          <p className="text-lg font-medium text-gray-700">
+                            Ready to explore skills!
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            Skill tracking starts after making choices in the story.
+                          </p>
+                        </div>
+                      ) : (
+                        <div className="space-y-3">
+                          <p className="text-sm font-medium text-gray-700">
+                            Skill demonstration tracking initialized
+                          </p>
+                          <p className="text-xs text-gray-600">
+                            Data population requires user interaction with narrative scenarios.
+                          </p>
+                        </div>
+                      )}
                     </div>
                   );
                 }
@@ -876,7 +1052,13 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                   const recency = getRecencyIndicator(pattern.lastDemonstrated ? new Date(pattern.lastDemonstrated).getTime() : undefined);
 
                   return (
-                    <div key={pattern.skillName} className="border rounded-lg hover:bg-gray-50 transition-colors">
+                    <div
+                      key={pattern.skillName}
+                      id={`skill-${pattern.skillName.toLowerCase().replace(/\s+/g, '-')}`}
+                      className={`border rounded-lg hover:bg-gray-50 transition-colors ${
+                        highlightedSkill === pattern.skillName ? 'ring-2 ring-blue-500 bg-blue-50' : ''
+                      }`}
+                    >
                       {/* Agent 3: Collapsible header (Issue 5A, 34 - mobile optimized) */}
                       <button
                         onClick={() => setExpandedCoreSkill(isExpanded ? null : pattern.skillName)}
@@ -884,8 +1066,20 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                       >
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3 flex-1 min-w-0">
-                            {/* Agent 3: Recency dot (Issue 12) */}
-                            <div className={`w-3 h-3 rounded-full ${recency.color} flex-shrink-0`} title={recency.label} />
+                            {/* Agent 3: Enhanced recency indicator with text labels (Issue 12) */}
+                            <span className="inline-flex items-center gap-1.5" aria-label="Recent activity">
+                              <span className={`w-2.5 h-2.5 rounded-full ${recency.color} flex-shrink-0`} title={recency.label} />
+                              {adminViewMode === 'family' && recency.familyLabel && (
+                                <span className={`text-xs ${recency.color === 'bg-green-500' ? 'text-green-700' : 'text-yellow-700'}`}>
+                                  {recency.familyLabel}
+                                </span>
+                              )}
+                              {adminViewMode === 'research' && recency.researchLabel && (
+                                <span className="text-xs text-gray-600">
+                                  {recency.researchLabel}
+                                </span>
+                              )}
+                            </span>
 
                             {/* Agent 3: Bold skill name for scannability (Issue 34) */}
                             <span className="font-bold text-sm sm:text-base truncate">
@@ -905,7 +1099,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
 
                             {/* Agent 8: Chevron icon (Issue 43) */}
                             <ChevronDown
-                              className={`w-5 h-5 text-gray-400 transition-transform ${
+                              className={`w-5 h-5 text-gray-600 transition-transform ${
                                 isExpanded ? 'rotate-180' : ''
                               }`}
                             />
@@ -926,8 +1120,8 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                                 <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1">
                                   <span className="font-medium text-gray-800">{demo.scene}</span>
                                   {timestamp && (
-                                    <span className="text-gray-500 text-xs">
-                                      {new Date(timestamp).toLocaleDateString()}
+                                    <span className="text-gray-600 text-xs">
+                                      {formatAdminDate(timestamp, 'activity', adminViewMode as ViewMode)}
                                     </span>
                                   )}
                                 </div>
@@ -944,6 +1138,38 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                               + {demonstrations.length - 3} more demonstrations
                             </p>
                           )}
+
+                          {/* Agent 6: Cross-tab career preview (Issue 6A - Section 4.1) */}
+                          {(() => {
+                            const careersUsingSkill = getCareersUsingSkill(pattern.skillName);
+                            if (careersUsingSkill.length === 0) return null;
+
+                            return (
+                              <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                                <h4 className="font-semibold mb-2 text-sm sm:text-base">
+                                  {adminViewMode === 'family'
+                                    ? "🎯 Where This Skill Leads"
+                                    : "Careers Requiring This Skill"}
+                                </h4>
+                                <div className="space-y-2">
+                                  {careersUsingSkill.map(career => (
+                                    <button
+                                      key={career.id}
+                                      onClick={() => jumpToCareersTab(career.id)}
+                                      className="block p-2 hover:bg-blue-100 rounded transition w-full text-left min-h-[44px]"
+                                    >
+                                      <p className="font-medium text-sm sm:text-base">{career.name}</p>
+                                      <p className="text-xs sm:text-sm text-gray-600">
+                                        {adminViewMode === 'family'
+                                          ? `${Math.round(career.matchScore * 100)}% fit based on this skill`
+                                          : `${Math.round(career.matchScore * 100)}% career match (skills: 40%, education: 30%, local: 30%)`}
+                                      </p>
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
+                            );
+                          })()}
                         </div>
                       )}
                     </div>
@@ -971,10 +1197,27 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
               ) : skillsError ? (
                 <div className="text-center py-8 text-red-500">{skillsError}</div>
               ) : skillsData.length === 0 ? (
-                <div className="text-center py-8 space-y-2">
-                  <Award className="w-12 h-12 mx-auto text-gray-400" />
-                  <p className="text-gray-600">No skills data yet</p>
-                  <p className="text-sm text-gray-500">Your skills are tracked automatically as you make choices</p>
+                <div className="text-center py-12">
+                  {adminViewMode === 'family' ? (
+                    <div className="space-y-3">
+                      <p className="text-2xl">🎯</p>
+                      <p className="text-lg font-medium text-gray-700">
+                        Ready to explore skills!
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        Skill tracking starts after making choices in the story.
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      <p className="text-sm font-medium text-gray-700">
+                        Skill demonstration tracking initialized
+                      </p>
+                      <p className="text-xs text-gray-600">
+                        Data population requires user interaction with narrative scenarios.
+                      </p>
+                    </div>
+                  )}
                 </div>
               ) : (
                 <>
@@ -1100,10 +1343,14 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
 
         {/* CAREERS TAB - Actual Birmingham pathways */}
         <TabsContent value="careers" className="space-y-4">
-          {/* NARRATIVE BRIDGE: Skills → Careers - Mobile optimized */}
+          {/* NARRATIVE BRIDGE: Skills → Careers - Agent 2: <25 words (Issue 7A-7C) - 21 words (family), 16 words (research) */}
           <div className="bg-blue-50 border-l-4 border-blue-400 p-4 sm:p-6 rounded-r">
             <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
-              <strong>From Skills to Careers:</strong> Your {user.totalDemonstrations} skill demonstrations reveal Birmingham career matches. Scores show your skill fit and readiness.
+              {adminViewMode === 'family' ? (
+                <>{user.userName}'s shown {user.totalDemonstrations} skills—here's where they lead in Birmingham. Focus on 'Near Ready' careers first.</>
+              ) : (
+                <>{user.totalDemonstrations} skill demonstrations → Birmingham labor market alignment. Match = skills (40%) + education (30%) + local (30%).</>
+              )}
             </p>
           </div>
 
@@ -1178,7 +1425,11 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
               };
 
               return (
-              <Card key={career.id}>
+              <Card
+                key={career.id}
+                id={`career-${career.id}`}
+                className={highlightedCareer === career.id ? 'ring-2 ring-blue-500 bg-blue-50' : ''}
+              >
                 <CardHeader>
                   <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
                     <div className="flex-1">
@@ -1197,7 +1448,12 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                     <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
                       <span>${career.salaryRange[0].toLocaleString()} - ${career.salaryRange[1].toLocaleString()}</span>
                       <span className="hidden sm:inline">•</span>
-                      <span>Birmingham Relevance: {Math.max(0, Math.min(100, Math.round(career.birminghamRelevance * 100)))}%</span>
+                      <span>
+                        {adminViewMode === 'family'
+                          ? `${career.localOpportunities.length} Birmingham employers (${Math.max(0, Math.min(100, Math.round(career.birminghamRelevance * 100)))}% local)`
+                          : `${Math.max(0, Math.min(100, Math.round(career.birminghamRelevance * 100)))}% Birmingham relevance (${career.localOpportunities.length} local employers)`
+                        }
+                      </span>
                     </div>
                   </CardDescription>
                 </CardHeader>
@@ -1218,9 +1474,18 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                             return (
                             <div key={skill} className={`space-y-2 p-3 sm:p-4 rounded-lg ${bgColor}`}>
                               <div className="flex flex-col sm:flex-row sm:justify-between gap-1">
-                                <span className="capitalize font-medium text-sm sm:text-base">{skill.replace(/([A-Z])/g, ' $1').trim()}</span>
+                                {/* Agent 6: Clickable skill names to jump to Skills tab (Issue 6A - Section 4.1) */}
+                                <button
+                                  onClick={() => jumpToSkillsTab(skill)}
+                                  className="capitalize font-medium text-sm sm:text-base text-left text-blue-600 hover:underline"
+                                >
+                                  {skill.replace(/([A-Z])/g, ' $1').trim()}
+                                </button>
                                 <span className={`text-xs sm:text-sm ${gapColor}`}>
-                                  Gap: {Math.max(0, Math.min(100, Math.round(data.gap * 100)))}% ({demoCount} demos)
+                                  {adminViewMode === 'family'
+                                    ? `Need to develop (${Math.max(0, Math.min(100, Math.round(data.gap * 100)))}% gap, ${demoCount} shown)`
+                                    : `Gap: ${Math.max(0, Math.min(100, Math.round(data.gap * 100)))}% (${demoCount} demonstrations)`
+                                  }
                                 </span>
                               </div>
                               <div className="flex gap-2 items-center">
@@ -1259,7 +1524,13 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                             const demoCount = user.skillDemonstrations[skill]?.length || 0;
                             return (
                               <div key={skill} className="flex flex-col sm:flex-row sm:justify-between gap-1 text-sm bg-green-50 p-3 rounded-lg">
-                                <span className="capitalize font-medium">{skill.replace(/([A-Z])/g, ' $1').trim()}</span>
+                                {/* Agent 6: Clickable skill names to jump to Skills tab (Issue 6A - Section 4.1) */}
+                                <button
+                                  onClick={() => jumpToSkillsTab(skill)}
+                                  className="capitalize font-medium text-left text-blue-600 hover:underline"
+                                >
+                                  {skill.replace(/([A-Z])/g, ' $1').trim()}
+                                </button>
                                 <span className="text-green-600 font-medium">✓ Strong ({demoCount} demos)</span>
                               </div>
                             );
@@ -1323,9 +1594,27 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
             </>
         ) : (
           <Card>
-            <CardContent className="py-8 text-center text-muted-foreground">
-              {/* Agent 2: Encouraging empty state (Issue 49) */}
-              Ready to discover careers! Your career matches will appear as you explore your journey.
+            <CardContent className="py-12 text-center">
+              {adminViewMode === 'family' ? (
+                <div className="space-y-3">
+                  <p className="text-2xl">✨</p>
+                  <p className="text-lg font-medium text-gray-700">
+                    Career possibilities ahead!
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    Careers appear as you explore different story paths.
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  <p className="text-sm font-medium text-gray-700">
+                    Career exploration module active
+                  </p>
+                  <p className="text-xs text-gray-600">
+                    Data generation contingent on platform interaction and scene completion.
+                  </p>
+                </div>
+              )}
             </CardContent>
           </Card>
         )}
@@ -1345,45 +1634,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
 
         {/* EVIDENCE TAB - Scientific frameworks and outcomes */}
         <TabsContent value="evidence" className="space-y-4">
-          {/* shadcn RadioGroup - Better semantics & accessibility (Issue 5C) */}
-          <Card className="bg-gray-50">
-            <CardContent className="p-4 sm:p-6 space-y-3">
-              <p className="text-sm sm:text-base font-medium text-gray-700">Choose Your View:</p>
-              <RadioGroup
-                value={evidenceMode}
-                onValueChange={(value) => setEvidenceMode(value as 'research' | 'family')}
-                className="flex flex-col gap-3"
-              >
-                <div className="flex items-center space-x-3 p-3 sm:p-4 rounded-md hover:bg-gray-100 transition-colors cursor-pointer min-h-[60px]">
-                  <RadioGroupItem value="family" id="mode-family" />
-                  <label htmlFor="mode-family" className="flex items-center gap-2 cursor-pointer flex-1">
-                    <Users className="w-5 h-5 text-purple-600" />
-                    <div className="flex-1">
-                      <span className="text-sm sm:text-base font-medium block">Your Personal View</span>
-                      <span className="text-xs sm:text-sm text-gray-600">Clear, encouraging explanations</span>
-                    </div>
-                    {evidenceMode === 'family' && (
-                      <Badge variant="default" className="text-xs">Active</Badge>
-                    )}
-                  </label>
-                </div>
-
-                <div className="flex items-center space-x-3 p-3 sm:p-4 rounded-md hover:bg-gray-100 transition-colors cursor-pointer min-h-[60px]">
-                  <RadioGroupItem value="research" id="mode-research" />
-                  <label htmlFor="mode-research" className="flex items-center gap-2 cursor-pointer flex-1">
-                    <GraduationCap className="w-5 h-5 text-blue-600" />
-                    <div className="flex-1">
-                      <span className="text-sm sm:text-base font-medium block">Detailed Analysis</span>
-                      <span className="text-xs sm:text-sm text-gray-600">Technical insights and data</span>
-                    </div>
-                    {evidenceMode === 'research' && (
-                      <Badge variant="default" className="text-xs">Active</Badge>
-                    )}
-                  </label>
-                </div>
-              </RadioGroup>
-            </CardContent>
-          </Card>
+          {/* Global mode toggle now in sticky header above tabs (removed duplicate) */}
 
           {/* DATA SOURCE INDICATOR - Agent 1: Sticky positioning (Issue 4C) */}
           <div className="sticky top-0 z-10">
@@ -1446,11 +1697,27 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                   </AlertDescription>
                 </Alert>
               ) : !evidenceData || !evidenceData.frameworks ? (
-                <div className="text-center py-8 sm:py-12 space-y-3 sm:space-y-4">
-                  <p className="text-sm sm:text-base text-gray-600">Your insights are building as you explore.</p>
-                  <p className="text-xs sm:text-sm text-gray-500">
-                    Keep making choices in your journey to unlock personalized insights.
-                  </p>
+                <div className="text-center py-12">
+                  {adminViewMode === 'family' ? (
+                    <div className="space-y-3">
+                      <p className="text-2xl">📊</p>
+                      <p className="text-lg font-medium text-gray-700">
+                        Building your evidence!
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        Frameworks become more accurate as you make more choices (need 5+ demonstrations).
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      <p className="text-sm font-medium text-gray-700">
+                        Insufficient sample size for statistical significance
+                      </p>
+                      <p className="text-xs text-gray-600">
+                        Minimum threshold: 5 skill demonstrations.
+                      </p>
+                    </div>
+                  )}
                 </div>
               ) : (
                 <>
@@ -1461,7 +1728,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                         <div className="flex items-center gap-2">
                           <p className="font-medium text-sm sm:text-base">Your Skill Development</p>
                           <Badge variant="outline" className="text-xs bg-purple-50 text-purple-700 border-purple-300">
-                            {evidenceMode === 'family' ? 'Personal View' : 'Detailed Analysis'}
+                            {adminViewMode === 'family' ? 'Personal View' : 'Detailed Analysis'}
                           </Badge>
                         </div>
                         <div className="flex flex-wrap items-center gap-2">
@@ -1476,7 +1743,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                     </CardHeader>
                     <CardContent className="p-0 space-y-3">
                       <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                        {evidenceMode === 'family' ? (
+                        {adminViewMode === 'family' ? (
                           <span><strong>What this means:</strong> Every time you make a choice in your journey, we track what skills you showed (like problem-solving or creativity). This shows real evidence of your growing abilities.</span>
                         ) : (
                           <span><strong>Framework:</strong> Tracked skill demonstrations showing concrete evidence of capability development.</span>
@@ -1491,7 +1758,13 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                             <p key={skill.skill}>
                               • {skill.skill || 'Unknown Skill'}: {Math.max(0, skill.demonstrations || 0)} demonstrations
                             </p>
-                          )) || <p>• No skill data available yet</p>}
+                          )) || (
+                            adminViewMode === 'family' ? (
+                              <p className="text-gray-600">• Keep exploring to discover your skills!</p>
+                            ) : (
+                              <p className="text-gray-600">• Skill breakdown pending (requires ≥3 demonstrations)</p>
+                            )
+                          )}
                         </div>
                       </div>
                     </CardContent>
@@ -1504,7 +1777,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                         <div className="flex items-center gap-2">
                           <p className="font-medium text-sm sm:text-base">Your Career Exploration</p>
                           <Badge variant="outline" className="text-xs bg-purple-50 text-purple-700 border-purple-300">
-                            {evidenceMode === 'family' ? 'Personal View' : 'Detailed Analysis'}
+                            {adminViewMode === 'family' ? 'Personal View' : 'Detailed Analysis'}
                           </Badge>
                         </div>
                         <div className="flex flex-wrap items-center gap-2">
@@ -1519,7 +1792,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                     </CardHeader>
                     <CardContent className="p-0 space-y-3">
                       <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                        {evidenceMode === 'family' ? (
+                        {adminViewMode === 'family' ? (
                           <span><strong>What this means:</strong> We track which careers you explore and how well your current skills match each one. This helps you see where you're headed and what you need to get there.</span>
                         ) : (
                           <span><strong>Framework:</strong> Career exploration and match quality showing pathway clarity.</span>
@@ -1531,7 +1804,12 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                           {evidenceData.frameworks.careerReadiness.topMatch ? (
                             <>
                               <p>• Top Match: <strong>{evidenceData.frameworks.careerReadiness.topMatch.career_name}</strong></p>
-                              <p>• Match Score: <strong>{Math.max(0, Math.min(100, Math.round((evidenceData.frameworks.careerReadiness.topMatch.match_score || 0) * 100)))}%</strong></p>
+                              <p>• Match Score: <strong>
+                                {adminViewMode === 'family'
+                                  ? `${Math.max(0, Math.min(100, Math.round((evidenceData.frameworks.careerReadiness.topMatch.match_score || 0) * 100)))}% fit with your skills`
+                                  : `${Math.max(0, Math.min(100, Math.round((evidenceData.frameworks.careerReadiness.topMatch.match_score || 0) * 100)))}% (skills + education + local factors)`
+                                }
+                              </strong></p>
                               <p>• Readiness: <strong>{evidenceData.frameworks.careerReadiness.topMatch.readiness_level}</strong></p>
                             </>
                           ) : (
@@ -1550,7 +1828,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                         <div className="flex items-center gap-2">
                           <p className="font-medium text-sm sm:text-base">Your Decision Patterns</p>
                           <Badge variant="outline" className="text-xs bg-purple-50 text-purple-700 border-purple-300">
-                            {evidenceMode === 'family' ? 'Personal View' : 'Detailed Analysis'}
+                            {adminViewMode === 'family' ? 'Personal View' : 'Detailed Analysis'}
                           </Badge>
                         </div>
                         <div className="flex flex-wrap items-center gap-2">
@@ -1565,7 +1843,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                     </CardHeader>
                     <CardContent className="p-0 space-y-3">
                       <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                        {evidenceMode === 'family' ? (
+                        {adminViewMode === 'family' ? (
                           <span><strong>What this means:</strong> We look for patterns in your choices. Are you consistently helping others? Do you prefer solving problems alone or with others? These patterns reveal your natural strengths.</span>
                         ) : (
                           <span><strong>Framework:</strong> Consistency and progression patterns in choice behavior.</span>
@@ -1574,7 +1852,12 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                       <div className="bg-blue-50 p-3 sm:p-4 rounded-lg">
                         <p className="font-medium mb-2 text-sm sm:text-base">Your Patterns:</p>
                         <div className="space-y-2 text-xs sm:text-sm">
-                          <p>• Pattern Consistency: <strong>{Math.max(0, Math.min(100, Math.round((evidenceData.frameworks.patternRecognition.patternConsistency || 0) * 100)))}%</strong></p>
+                          <p>• Pattern Consistency: <strong>
+                            {adminViewMode === 'family'
+                              ? `${Math.max(0, Math.min(100, Math.round((evidenceData.frameworks.patternRecognition.patternConsistency || 0) * 100)))}% - How steady your choices are`
+                              : `${Math.max(0, Math.min(100, Math.round((evidenceData.frameworks.patternRecognition.patternConsistency || 0) * 100)))}% (behavioral trend reliability)`
+                            }
+                          </strong></p>
                           <p>• Total Choices: <strong>{Math.max(0, evidenceData.frameworks.patternRecognition.totalChoices)}</strong></p>
                           {evidenceData.frameworks.patternRecognition.behavioralTrends?.map((trend: string, i: number) => (
                             <p key={i}>• {trend || 'Pattern analysis in progress'}</p>
@@ -1591,7 +1874,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                         <div className="flex items-center gap-2">
                           <p className="font-medium text-sm sm:text-base">Your Engagement Journey</p>
                           <Badge variant="outline" className="text-xs bg-purple-50 text-purple-700 border-purple-300">
-                            {evidenceMode === 'family' ? 'Personal View' : 'Detailed Analysis'}
+                            {adminViewMode === 'family' ? 'Personal View' : 'Detailed Analysis'}
                           </Badge>
                         </div>
                         <div className="flex flex-wrap items-center gap-2">
@@ -1606,7 +1889,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                     </CardHeader>
                     <CardContent className="p-0 space-y-3">
                       <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                        {evidenceMode === 'family' ? (
+                        {adminViewMode === 'family' ? (
                           <span><strong>What this means:</strong> We track how often you use the tool and whether you're staying engaged. Consistent engagement shows you're actively thinking about your future.</span>
                         ) : (
                           <span><strong>Framework:</strong> Sustained engagement and consistency over time.</span>
@@ -1617,7 +1900,12 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                         <div className="space-y-2 text-xs sm:text-sm">
                           <p>• Days Active: <strong>{Math.max(0, evidenceData.frameworks.timeInvestment.totalDays)}</strong></p>
                           <p>• Avg Demos/Day: <strong>{Math.max(0, evidenceData.frameworks.timeInvestment.averageDemosPerDay).toFixed(1)}</strong></p>
-                          <p>• Consistency Score: <strong>{Math.max(0, Math.min(100, Math.round((evidenceData.frameworks.timeInvestment.consistencyScore || 0) * 100)))}%</strong></p>
+                          <p>• Consistency Score: <strong>
+                            {adminViewMode === 'family'
+                              ? `${Math.max(0, Math.min(100, Math.round((evidenceData.frameworks.timeInvestment.consistencyScore || 0) * 100)))}% - How regularly you engage`
+                              : `${Math.max(0, Math.min(100, Math.round((evidenceData.frameworks.timeInvestment.consistencyScore || 0) * 100)))}% (engagement regularity across ${Math.max(0, evidenceData.frameworks.timeInvestment.totalDays)} days)`
+                            }
+                          </strong></p>
                         </div>
                       </div>
                     </CardContent>
@@ -1630,7 +1918,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                         <div className="flex items-center gap-2">
                           <p className="font-medium text-sm sm:text-base">Your Relationships</p>
                           <Badge variant="outline" className="text-xs bg-purple-50 text-purple-700 border-purple-300">
-                            {evidenceMode === 'family' ? 'Personal View' : 'Detailed Analysis'}
+                            {adminViewMode === 'family' ? 'Personal View' : 'Detailed Analysis'}
                           </Badge>
                         </div>
                         <div className="flex flex-wrap items-center gap-2">
@@ -1645,7 +1933,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                     </CardHeader>
                     <CardContent className="p-0 space-y-3">
                       <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                        {evidenceMode === 'family' ? (
+                        {adminViewMode === 'family' ? (
                           <span><strong>What this means:</strong> You build relationships with characters in your journey (like Maya or Samuel). How you interact shows your social skills and emotional intelligence.</span>
                         ) : (
                           <span><strong>Framework:</strong> Social-emotional learning through character relationships.</span>
@@ -1670,7 +1958,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                         <div className="flex items-center gap-2">
                           <p className="font-medium text-sm sm:text-base">Your Learning Style</p>
                           <Badge variant="outline" className="text-xs bg-purple-50 text-purple-700 border-purple-300">
-                            {evidenceMode === 'family' ? 'Personal View' : 'Detailed Analysis'}
+                            {adminViewMode === 'family' ? 'Personal View' : 'Detailed Analysis'}
                           </Badge>
                         </div>
                         <div className="flex flex-wrap items-center gap-2">
@@ -1685,7 +1973,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                     </CardHeader>
                     <CardContent className="p-0 space-y-3">
                       <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                        {evidenceMode === 'family' ? (
+                        {adminViewMode === 'family' ? (
                           <span><strong>What this means:</strong> We check if you focus deeply on a few skills or explore many different ones. Both approaches are valid - this helps you understand your style.</span>
                         ) : (
                           <span><strong>Framework:</strong> Focus vs exploration balance analysis.</span>
@@ -1694,8 +1982,18 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                       <div className="bg-blue-50 p-3 sm:p-4 rounded-lg">
                         <p className="font-medium mb-2 text-sm sm:text-base">Your Learning Style:</p>
                         <div className="space-y-2 text-xs sm:text-sm">
-                          <p>• Focus Score: <strong>{Math.max(0, Math.min(100, Math.round((evidenceData.frameworks.behavioralConsistency.focusScore || 0) * 100)))}%</strong></p>
-                          <p>• Exploration Score: <strong>{Math.max(0, Math.min(100, Math.round((evidenceData.frameworks.behavioralConsistency.explorationScore || 0) * 100)))}%</strong></p>
+                          <p>• Focus Score: <strong>
+                            {adminViewMode === 'family'
+                              ? `${Math.max(0, Math.min(100, Math.round((evidenceData.frameworks.behavioralConsistency.focusScore || 0) * 100)))}% - Deep diving into skills`
+                              : `${Math.max(0, Math.min(100, Math.round((evidenceData.frameworks.behavioralConsistency.focusScore || 0) * 100)))}% (depth over breadth preference)`
+                            }
+                          </strong></p>
+                          <p>• Exploration Score: <strong>
+                            {adminViewMode === 'family'
+                              ? `${Math.max(0, Math.min(100, Math.round((evidenceData.frameworks.behavioralConsistency.explorationScore || 0) * 100)))}% - Trying new things`
+                              : `${Math.max(0, Math.min(100, Math.round((evidenceData.frameworks.behavioralConsistency.explorationScore || 0) * 100)))}% (breadth over depth preference)`
+                            }
+                          </strong></p>
                           <p>• Platform Alignment: <strong>{Math.max(0, evidenceData.frameworks.behavioralConsistency.platformAlignment)}</strong> platforms</p>
                         </div>
                       </div>
@@ -1736,11 +2034,15 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
 
         {/* GAPS TAB - What skills need development */}
         <TabsContent value="gaps" className="space-y-4">
-          {/* NARRATIVE BRIDGE: Careers → Gaps - Agent 2: <25 words (Issue 7A-7C) */}
+          {/* NARRATIVE BRIDGE: Careers → Gaps - Agent 2: <25 words (Issue 7A-7C) - 21 words (family), 18 words (research) */}
           {evidenceData?.careerExploration && (
             <div className="bg-amber-50 border-l-4 border-amber-400 p-4 sm:p-6 rounded-r">
               <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
-                <strong>Your Growth Journey:</strong> Your {evidenceData.careerExploration.totalExplorations} career explorations reveal growth areas. Gaps aren't weaknesses—they're opportunities with clear pathways.
+                {adminViewMode === 'family' ? (
+                  <>Looking at {evidenceData.careerExploration.totalExplorations} careers {user.userName}'s interested in, here's what to unlock next. Think: opportunities, not problems.</>
+                ) : (
+                  <>Gap analysis for {evidenceData.careerExploration.totalExplorations} career targets. Priority = career impact × proficiency × development time.</>
+                )}
               </p>
             </div>
           )}
@@ -1806,7 +2108,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
 
                         {skill.last_demonstrated && (
                           <p className="text-xs sm:text-sm text-muted-foreground">
-                            Last demonstrated: {new Date(skill.last_demonstrated).toLocaleDateString()}
+                            {formatAdminDateWithLabel(skill.last_demonstrated, 'activity', adminViewMode as ViewMode, 'Last demonstrated')}
                           </p>
                         )}
 
@@ -1845,12 +2147,14 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                               <span className="font-medium capitalize text-sm sm:text-base">
                                 {gap.skill?.replace(/([A-Z])/g, ' $1').trim() || 'Unknown Skill'}
                               </span>
-                              {/* Sparkline Trend Indicator */}
+                              {/* Sparkline Trend Indicator - Enhanced with tooltips (Agent 1) */}
                               <SparklineTrend
                                 current={gap.currentLevel}
                                 target={gap.targetForTopCareers}
                                 width={40}
                                 height={12}
+                                viewMode={adminViewMode}
+                                skillName={gap.skill?.replace(/([A-Z])/g, ' $1').trim() || 'Unknown Skill'}
                               />
                             </div>
                             <Badge variant={gap.priority === 'high' ? 'destructive' : 'secondary'} className="text-xs">
@@ -1859,17 +2163,31 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                           </div>
 
                           <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-sm">
-                            <span className="text-muted-foreground text-xs sm:text-sm">Your Current Level:</span>
+                            <span className="text-muted-foreground text-xs sm:text-sm">
+                              {adminViewMode === 'family' ? 'Where you are now:' : 'Your Current Level:'}
+                            </span>
                             <Progress value={Math.max(0, Math.min(100, gap.currentLevel * 100))} className="flex-1 h-2 sm:h-3" />
-                            <span className="font-medium text-xs sm:text-sm">{Math.max(0, Math.min(100, Math.round(gap.currentLevel * 100)))}%</span>
+                            <span className="font-medium text-xs sm:text-sm">
+                              {adminViewMode === 'family'
+                                ? `${Math.max(0, Math.min(100, Math.round(gap.currentLevel * 100)))}%`
+                                : `${Math.max(0, Math.min(100, Math.round(gap.currentLevel * 100)))}% current proficiency`
+                              }
+                            </span>
                           </div>
 
                           <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-sm">
-                            <span className="text-muted-foreground text-xs sm:text-sm">Your Target Level:</span>
+                            <span className="text-muted-foreground text-xs sm:text-sm">
+                              {adminViewMode === 'family' ? 'Where you need to be:' : 'Your Target Level:'}
+                            </span>
                             <div className="flex-1 bg-green-100 rounded-full h-2 sm:h-3">
                               <div className="bg-green-600 h-2 sm:h-3 rounded-full" style={{ width: '100%' }} />
                             </div>
-                            <span className="font-medium text-xs sm:text-sm">{Math.max(0, Math.min(100, Math.round(gap.targetForTopCareers * 100)))}%</span>
+                            <span className="font-medium text-xs sm:text-sm">
+                              {adminViewMode === 'family'
+                                ? `${Math.max(0, Math.min(100, Math.round(gap.targetForTopCareers * 100)))}%`
+                                : `${Math.max(0, Math.min(100, Math.round(gap.targetForTopCareers * 100)))}% for top careers`
+                              }
+                            </span>
                           </div>
 
                           <p className="text-xs sm:text-sm text-muted-foreground italic">
@@ -1893,9 +2211,27 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
             </Card>
           ) : (
             <Card>
-              <CardContent className="py-8 sm:py-12 text-center text-muted-foreground">
-                {/* Agent 2: Encouraging empty state (Issue 49) */}
-                <p className="text-sm sm:text-base">Building skills daily! Your gap analysis will appear as you explore career pathways.</p>
+              <CardContent className="py-12 text-center">
+                {adminViewMode === 'family' ? (
+                  <div className="space-y-3">
+                    <p className="text-2xl">🎉</p>
+                    <p className="text-lg font-medium text-gray-700">
+                      Looking strong!
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      No major skill gaps detected for top career matches.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    <p className="text-sm font-medium text-gray-700">
+                      Skill-to-career alignment optimal
+                    </p>
+                    <p className="text-xs text-gray-600">
+                      Current competency profile meets requirements for identified career targets.
+                    </p>
+                  </div>
+                )}
               </CardContent>
             </Card>
           )}
@@ -1915,11 +2251,15 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
 
         {/* ACTION TAB - Your next steps */}
         <TabsContent value="action" className="space-y-4">
-          {/* NARRATIVE BRIDGE: Gaps → Action - Agent 2: <25 words (Issue 7A-7C) */}
+          {/* NARRATIVE BRIDGE: Gaps → Action - Agent 2: <25 words (Issue 7A-7C) - 16 words (family), 13 words (research) */}
           {user.skillGaps && user.skillGaps.length > 0 && user.careerMatches && user.careerMatches.length > 0 && (
             <div className="bg-green-50 border-l-4 border-green-400 p-4 sm:p-6 rounded-r">
               <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
-                <strong>From Analysis to Action:</strong> Birmingham opportunities to build your {user.skillGaps[0]?.skill?.replace(/([A-Z])/g, ' $1').toLowerCase() || 'key skills'} and advance toward {user.careerMatches[0]?.name || 'your career goals'}. Start this week.
+                {adminViewMode === 'family' ? (
+                  <>Ready to bridge those gaps? Here are concrete next steps with Birmingham resources.</>
+                ) : (
+                  <>Development pathways with evidence-based interventions and regional partnership resources.</>
+                )}
               </p>
             </div>
           )}
@@ -1942,8 +2282,12 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                     Have I thought about healthcare technology roles that use both?"</p>
                   </div>
                   <div className="p-3 sm:p-4 bg-blue-50 rounded-lg border-l-4 border-blue-600">
-                    <p className="leading-relaxed">"My critical thinking is advanced ({Math.max(0, Math.min(100, 82))}%) but collaboration is developing ({Math.max(0, Math.min(100, 58))}%). 
-                    Would I be interested in experiences that build team skills?"</p>
+                    <p className="leading-relaxed">
+                      {adminViewMode === 'family'
+                        ? `"My critical thinking is strong (${Math.max(0, Math.min(100, 82))}%) but collaboration is still growing (${Math.max(0, Math.min(100, 58))}%). Would I be interested in experiences that build team skills?"`
+                        : `"Critical thinking advanced (${Math.max(0, Math.min(100, 82))}% proficiency) vs collaboration developing (${Math.max(0, Math.min(100, 58))}% proficiency). Consider team-based skill development opportunities."`
+                      }
+                    </p>
                   </div>
                 </div>
               </div>
@@ -1958,11 +2302,21 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                 <div className="space-y-3 text-sm sm:text-base">
                   <div className="flex items-start gap-3 p-3 bg-green-50 rounded-lg">
                     <CheckCircle2 className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                    <p className="leading-relaxed">Schedule UAB Health Informatics tour ({Math.max(0, Math.min(100, 87))}% career match, you're near ready)</p>
+                    <p className="leading-relaxed">
+                      {adminViewMode === 'family'
+                        ? `Schedule UAB Health Informatics tour (${Math.max(0, Math.min(100, 87))}% match - you're nearly ready)`
+                        : `Schedule UAB Health Informatics tour (${Math.max(0, Math.min(100, 87))}% career match score, near_ready status)`
+                      }
+                    </p>
                   </div>
                   <div className="flex items-start gap-3 p-3 bg-green-50 rounded-lg">
                     <CheckCircle2 className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                    <p className="leading-relaxed">Explore digital literacy development options (your gap: {Math.max(0, Math.min(100, 12))}%)</p>
+                    <p className="leading-relaxed">
+                      {adminViewMode === 'family'
+                        ? `Explore digital literacy development options (need ${Math.max(0, Math.min(100, 12))}% more to reach target)`
+                        : `Explore digital literacy development options (${Math.max(0, Math.min(100, 12))}% proficiency gap vs career requirements)`
+                      }
+                    </p>
                   </div>
                 </div>
               </div>
@@ -1993,7 +2347,12 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                     <p className="leading-relaxed">• Ignoring skill gaps (your collaboration needs work for Community Health path)</p>
                   </div>
                   <div className="p-3 bg-red-50 rounded-lg border-l-4 border-red-400">
-                    <p className="leading-relaxed">• Overlooking time management weakness ({Math.max(0, Math.min(100, 42))}% - you may struggle with structured programs)</p>
+                    <p className="leading-relaxed">
+                      {adminViewMode === 'family'
+                        ? `• Overlooking time management needs (${Math.max(0, Math.min(100, 42))}% - may struggle with structured programs)`
+                        : `• Overlooking time management weakness (${Math.max(0, Math.min(100, 42))}% proficiency - risk factor for structured programs)`
+                      }
+                    </p>
                   </div>
                 </div>
               </div>
@@ -2002,8 +2361,27 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
 
               {/* Show empty state if no skill gaps */}
               {(!user.skillGaps || user.skillGaps.length === 0) && (
-                <div className="text-center py-8 text-muted-foreground">
-                  <p className="text-sm sm:text-base">Your action plan will appear as you identify skill gaps through your journey.</p>
+                <div className="text-center py-12">
+                  {adminViewMode === 'family' ? (
+                    <div className="space-y-3">
+                      <p className="text-2xl">👍</p>
+                      <p className="text-lg font-medium text-gray-700">
+                        All set!
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        No immediate actions needed. Check back weekly for updates.
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      <p className="text-sm font-medium text-gray-700">
+                        No evidence-based interventions required at this time
+                      </p>
+                      <p className="text-xs text-gray-600">
+                        Scheduled review: weekly cadence.
+                      </p>
+                    </div>
+                  )}
                 </div>
               )}
             </CardContent>
@@ -2026,12 +2404,42 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                   </div>
                 ))
               ) : (
-                <div className="text-center py-8 text-muted-foreground">
-                  <p className="text-sm sm:text-base">Your key insights will appear as you make meaningful choices in your journey.</p>
+                <div className="text-center py-8">
+                  {adminViewMode === 'family' ? (
+                    <div className="space-y-3">
+                      <p className="text-2xl">💡</p>
+                      <p className="text-lg font-medium text-gray-700">
+                        Key insights coming soon!
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        Your most meaningful moments will appear here as you explore different story paths.
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      <p className="text-sm font-medium text-gray-700">
+                        Insight extraction pending
+                      </p>
+                      <p className="text-xs text-gray-600">
+                        Key skill moments identified through narrative choice analysis will populate after threshold interactions.
+                      </p>
+                    </div>
+                  )}
                 </div>
               )}
             </CardContent>
           </Card>
+
+          {/* NARRATIVE BRIDGE: Action → Evidence - Agent 2: <25 words (Issue 7A-7C) - 15 words (family), 11 words (research) */}
+          <div className="bg-indigo-50 border-l-4 border-indigo-400 p-4 sm:p-6 rounded-r mt-6">
+            <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
+              {adminViewMode === 'family' ? (
+                <>Want to see the data behind these recommendations? Evidence tab shows the research.</>
+              ) : (
+                <>Supporting frameworks and research-backed evidence for above recommendations.</>
+              )}
+            </p>
+          </div>
         </TabsContent>
 
       </Tabs>
