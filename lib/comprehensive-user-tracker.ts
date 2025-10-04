@@ -9,6 +9,7 @@ import { queueSkillSummarySync } from './sync-queue'
 import { trackUserChoice, getSimpleAnalytics } from './simple-career-analytics'
 import { SkillTracker } from './skill-tracker'
 import { getPerformanceSystem } from './performance-system'
+import { ensureUserProfile } from './ensure-user-profile'
 
 // Comprehensive interaction data structure
 export interface UserInteraction {
@@ -69,11 +70,35 @@ export class ComprehensiveUserTracker {
   private skillTracker: SkillTracker
   private performanceSystem: any
   private careerAnalytics: any
+  private userId: string
+  private profileEnsured: boolean = false
 
   constructor(userId: string) {
+    this.userId = userId
     this.skillTracker = new SkillTracker(userId)
     this.performanceSystem = getPerformanceSystem()
     this.careerAnalytics = getSimpleAnalytics()
+
+    // Ensure user profile exists on tracker initialization
+    this.ensureProfile()
+  }
+
+  /**
+   * Ensure user profile exists in database (async, non-blocking)
+   */
+  private async ensureProfile(): Promise<void> {
+    if (this.profileEnsured) return
+
+    try {
+      const success = await ensureUserProfile(this.userId)
+      this.profileEnsured = success
+
+      if (!success) {
+        console.error(`[ComprehensiveTracker] Failed to ensure profile for ${this.userId}`)
+      }
+    } catch (error) {
+      console.error(`[ComprehensiveTracker] Error ensuring profile:`, error)
+    }
   }
 
   /**
@@ -208,6 +233,7 @@ export class ComprehensiveUserTracker {
         timeSpent
       },
       context: {
+        sceneId: `platform_${platformId}`, // Add required sceneId
         platformId,
         timeSpent
       }
@@ -221,22 +247,31 @@ export class ComprehensiveUserTracker {
 
   /**
    * Generate career explorations from tracked data
+   * PERFORMANCE FIX: Debounced to run every 5th choice instead of every choice
    */
   private async generateCareerExplorations(userId: string): Promise<void> {
     const userMetrics = this.careerAnalytics.getUserMetrics(userId)
-    
+
     console.log(`[ComprehensiveTracker] Checking career generation for ${userId}:`, {
       careerInterests: userMetrics.careerInterests.length,
       choicesMade: userMetrics.choicesMade,
       platformsExplored: userMetrics.platformsExplored.length
     })
-    
+
+    // PERFORMANCE FIX: Only generate career explorations every 5th choice to reduce API calls
+    const shouldGenerate = userMetrics.choicesMade % 5 === 0
+
+    if (!shouldGenerate) {
+      console.log(`[ComprehensiveTracker] Skipping career generation (choice ${userMetrics.choicesMade}, waiting for multiple of 5)`)
+      return
+    }
+
     // Generate career explorations if user has sufficient data
     if (userMetrics.careerInterests.length > 0 || userMetrics.choicesMade >= 3) {
-      console.log(`[ComprehensiveTracker] Generating career explorations for ${userId}`)
-      
+      console.log(`[ComprehensiveTracker] Generating career explorations for ${userId} (choice ${userMetrics.choicesMade})`)
+
       const careerExplorations = this.mapInteractionsToCareers(userId, userMetrics)
-      
+
       // Queue each career exploration for sync
       for (const exploration of careerExplorations) {
         await this.queueCareerExplorationSync(exploration)
@@ -454,7 +489,8 @@ export class ComprehensiveUserTracker {
    */
   private async trackInSkillTracker(choice: any, sceneId: string): Promise<void> {
     if (this.skillTracker) {
-      this.skillTracker.recordChoice(choice, sceneId, {})
+      // Create minimal game state - recordChoice only uses it for pattern extraction
+      this.skillTracker.recordChoice(choice, sceneId, {} as any)
     }
   }
 
@@ -523,12 +559,91 @@ export class ComprehensiveUserTracker {
   }
 }
 
-// Singleton instance per user
-const trackerInstances = new Map<string, ComprehensiveUserTracker>()
+// Singleton instance per user with memory leak protection
+const trackerInstances = new Map<string, { tracker: ComprehensiveUserTracker; timestamp: number }>()
+const MAX_TRACKER_AGE = 60 * 60 * 1000 // 1 hour
+const MAX_TRACKERS = 100 // Prevent unbounded growth
+
+/**
+ * Clean up stale tracker instances to prevent memory leaks
+ */
+function cleanupStaleTrackers(): void {
+  const now = Date.now()
+  const toDelete: string[] = []
+
+  trackerInstances.forEach((value, userId) => {
+    if (now - value.timestamp > MAX_TRACKER_AGE) {
+      toDelete.push(userId)
+    }
+  })
+
+  toDelete.forEach(userId => {
+    trackerInstances.delete(userId)
+    console.log(`[ComprehensiveTracker] Cleaned up stale tracker for ${userId}`)
+  })
+
+  // Also enforce max trackers limit (LRU eviction)
+  if (trackerInstances.size > MAX_TRACKERS) {
+    const sorted = Array.from(trackerInstances.entries())
+      .sort((a, b) => a[1].timestamp - b[1].timestamp)
+
+    const toEvict = sorted.slice(0, trackerInstances.size - MAX_TRACKERS)
+    toEvict.forEach(([userId]) => {
+      trackerInstances.delete(userId)
+      console.log(`[ComprehensiveTracker] Evicted tracker for ${userId} (LRU)`)
+    })
+  }
+}
 
 export function getComprehensiveTracker(userId: string): ComprehensiveUserTracker {
-  if (!trackerInstances.has(userId)) {
-    trackerInstances.set(userId, new ComprehensiveUserTracker(userId))
+  // Clean up stale trackers periodically
+  if (Math.random() < 0.1) { // 10% chance on each call
+    cleanupStaleTrackers()
   }
-  return trackerInstances.get(userId)!
+
+  const existing = trackerInstances.get(userId)
+  if (existing) {
+    // Update timestamp on access
+    existing.timestamp = Date.now()
+    return existing.tracker
+  }
+
+  const tracker = new ComprehensiveUserTracker(userId)
+  trackerInstances.set(userId, {
+    tracker,
+    timestamp: Date.now()
+  })
+
+  return tracker
+}
+
+/**
+ * Manually reset all trackers (for testing or manual cleanup)
+ */
+export function resetAllTrackers(): void {
+  trackerInstances.clear()
+  console.log('[ComprehensiveTracker] All trackers cleared')
+}
+
+/**
+ * Get tracker statistics for monitoring
+ */
+export function getTrackerStats(): {
+  count: number
+  oldest: number
+  newest: number
+  trackers: Array<{ userId: string; age: number }>
+} {
+  const now = Date.now()
+  const trackers = Array.from(trackerInstances.entries()).map(([userId, data]) => ({
+    userId,
+    age: now - data.timestamp
+  }))
+
+  return {
+    count: trackerInstances.size,
+    oldest: Math.max(...trackers.map(t => t.age), 0),
+    newest: Math.min(...trackers.map(t => t.age), 0),
+    trackers
+  }
 }

@@ -43,7 +43,11 @@ class MockLocalStorage {
 
 // Replace global localStorage with mock
 const mockStorage = new MockLocalStorage()
-global.localStorage = mockStorage as any
+Object.defineProperty(global, 'localStorage', {
+  value: mockStorage,
+  writable: true,
+  configurable: true
+})
 
 describe('State Persistence', () => {
   beforeEach(() => {

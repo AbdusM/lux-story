@@ -27,10 +27,17 @@ export function getSupabaseConfig() {
 
 /**
  * Get Supabase admin configuration (server-side only)
+ * SECURITY: Only use non-public environment variables for admin operations
  */
 export function getSupabaseAdminConfig() {
-  const url = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || ''
+  // IMPORTANT: Do NOT use NEXT_PUBLIC_ variables for server-side admin operations
+  // Service role key should NEVER be exposed to client
+  const url = process.env.SUPABASE_URL || ''
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
+
+  if (!url || !serviceRoleKey) {
+    console.warn('[Security] Server-side Supabase config incomplete. Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.')
+  }
 
   return {
     url,
