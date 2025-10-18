@@ -243,87 +243,238 @@ export const samuelDialogueNodes: DialogueNode[] = [
     ]
   },
 
-  // ============= HUB: INITIAL (Only Maya available) =============
+  // ============= HUB: INITIAL (Discovery-based character routing) =============
   {
     nodeId: 'samuel_hub_initial',
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Tonight, there's a young woman on Platform 1 - The Care Line. Her name is Maya Chen. Pre-med student at UAB, brilliant mind. But she's carrying a weight she doesn't quite know how to put down.\n\nI have a feeling you two should meet. Sometimes the best way to find your own path is to help someone else see theirs.",
-        emotion: 'knowing',
+        text: "There are three travelers here tonight. Each one at their own crossroads.\n\nBefore I tell you about them, let me ask you something: When you think about the decision in front of you - whatever brought you to this station - what pulls at you most?",
+        emotion: 'curious',
         variation_id: 'hub_initial_v1'
       }
     ],
     requiredState: {
-      lacksGlobalFlags: ['met_maya', 'maya_arc_complete']
+      lacksGlobalFlags: ['met_maya', 'met_devon', 'met_jordan']
     },
     choices: [
       {
-        choiceId: 'go_to_maya',
-        text: "I'll find her on Platform 1.",
-        nextNodeId: 'maya_introduction', // Cross-graph to Maya
+        choiceId: 'hub_helping_others',
+        text: "Wanting to help people, but not sure I'm on the right path for it.",
+        nextNodeId: 'samuel_discovers_helping',
         pattern: 'helping',
         consequence: {
-          addGlobalFlags: ['met_maya']
+          characterId: 'samuel',
+          addKnowledgeFlags: ['player_values_helping']
         }
       },
       {
-        choiceId: 'tell_me_more',
-        text: "Tell me more about Maya first.",
-        nextNodeId: 'samuel_maya_context',
-        pattern: 'analytical'
+        choiceId: 'hub_systems_logic',
+        text: "I like solving problems logically, but I feel like something's missing.",
+        nextNodeId: 'samuel_discovers_building',
+        pattern: 'building',
+        consequence: {
+          characterId: 'samuel',
+          addKnowledgeFlags: ['player_values_logic']
+        }
       },
       {
-        choiceId: 'need_time',
-        text: "I need a moment to think.",
-        nextNodeId: 'samuel_patience_response',
-        pattern: 'patience'
+        choiceId: 'hub_multiple_paths',
+        text: "I've tried different things and I'm not sure if that's okay.",
+        nextNodeId: 'samuel_discovers_exploring',
+        pattern: 'exploring',
+        consequence: {
+          characterId: 'samuel',
+          addKnowledgeFlags: ['player_values_adaptability']
+        }
+      },
+      {
+        choiceId: 'hub_not_sure',
+        text: "I'm not sure what I'm looking for yet.",
+        nextNodeId: 'samuel_hub_fallback',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'samuel',
+          addKnowledgeFlags: ['player_uncertain']
+        }
       }
     ]
   },
 
+  // ============= DISCOVERY PATH: HELPING → MAYA =============
   {
-    nodeId: 'samuel_maya_context',
+    nodeId: 'samuel_discovers_helping',
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Maya's parents are immigrants. They sacrificed everything to give her opportunities they never had. Now she's succeeding by every measure - top grades, MCAT scores, acceptance letters.\n\nBut success and fulfillment aren't always the same thing. She's torn between honoring her parents' dreams and finding her own. It's a weight many first-generation students carry.",
-        emotion: 'empathetic',
-        variation_id: 'maya_context_v1'
+        text: "*He nods thoughtfully*\n\nThat's a particular kind of struggle. When your heart knows what it wants but the path there feels... complicated.\n\nThere's someone on Platform 1 tonight who understands that tension. Maya Chen - brilliant pre-med student at UAB. She's supposed to become a doctor, and she's good enough to do it. But between what she's 'supposed' to do and what she dreams about, there's a gap that's tearing her apart.",
+        emotion: 'knowing',
+        variation_id: 'discovers_helping_v1'
       }
     ],
     choices: [
       {
-        choiceId: 'go_now',
-        text: "I'll go talk to her.",
+        choiceId: 'meet_maya',
+        text: "I'd like to talk to her.",
         nextNodeId: 'maya_introduction',
         pattern: 'helping',
         consequence: {
           addGlobalFlags: ['met_maya']
         }
-      }
-    ]
-  },
-
-  {
-    nodeId: 'samuel_patience_response',
-    speaker: 'Samuel Washington',
-    content: [
+      },
       {
-        text: "Take all the time you need. The platforms aren't going anywhere, and neither am I.\n\nThis station has been here for as long as people have needed it. It'll be here when you're ready.",
-        emotion: 'patient',
-        variation_id: 'patience_v1'
-      }
-    ],
-    choices: [
-      {
-        choiceId: 'ready_now',
-        text: "Actually, I'm ready now.",
-        nextNodeId: 'samuel_hub_initial',
+        choiceId: 'ask_about_others',
+        text: "Who else is here tonight?",
+        nextNodeId: 'samuel_other_travelers',
         pattern: 'exploring'
       }
     ]
   },
+
+  // ============= DISCOVERY PATH: BUILDING → DEVON =============
+  {
+    nodeId: 'samuel_discovers_building',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*A slight smile crosses his face*\n\nAh. The engineer's dilemma. You can map every system, optimize every process, but then life throws you something that doesn't fit the flowchart.\n\nDevon Kumar is on Platform 3 - The Builder's Track. UAB engineering student, sharp as they come. He built a conversational decision tree to help his grieving father. Logic, optimization, efficiency. It failed catastrophically. Now he's sitting there trying to debug human connection.",
+        emotion: 'understanding',
+        variation_id: 'discovers_building_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'meet_devon',
+        text: "That sounds... familiar. I'll find him.",
+        nextNodeId: 'devon_introduction',
+        pattern: 'building',
+        consequence: {
+          addGlobalFlags: ['met_devon']
+        }
+      },
+      {
+        choiceId: 'ask_about_others',
+        text: "Are there other travelers here?",
+        nextNodeId: 'samuel_other_travelers',
+        pattern: 'exploring'
+      }
+    ]
+  },
+
+  // ============= DISCOVERY PATH: EXPLORING → JORDAN =============
+  {
+    nodeId: 'samuel_discovers_exploring',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*He chuckles warmly*\n\nSeven jobs in twelve years. That's Jordan Packard's count, anyway. She's in Conference Room B preparing for a mentorship panel at a coding bootcamp.\n\nHere's the thing - she's terrified those thirty students will see her résumé as chaos instead of evolution. Impostor syndrome while you're supposed to be the expert. The question isn't 'what should I become?' but 'how do I own what I've already been?'",
+        emotion: 'amused_empathetic',
+        variation_id: 'discovers_exploring_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'meet_jordan',
+        text: "I need to hear her story.",
+        nextNodeId: 'jordan_introduction',
+        pattern: 'exploring',
+        consequence: {
+          addGlobalFlags: ['met_jordan']
+        }
+      },
+      {
+        choiceId: 'ask_about_others',
+        text: "Tell me about the others first.",
+        nextNodeId: 'samuel_other_travelers',
+        pattern: 'patience'
+      }
+    ]
+  },
+
+  // ============= FALLBACK: UNSURE → GUIDED CHOICE =============
+  {
+    nodeId: 'samuel_hub_fallback',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "That's honest. And honestly, that's why you're here.\n\n*He gestures to the platforms around you*\n\nLet me tell you about tonight's travelers. Listen to their stories - see which one pulls at something inside you:\n\n**Maya Chen** on Platform 1 - Pre-med student who wants to help people, but maybe not the way everyone expects.\n\n**Devon Kumar** on Platform 3 - Engineer learning that some problems can't be solved with logic alone.\n\n**Jordan Packard** in Conference Room B - Seven jobs, one powerful question about whether that makes her experienced or unfocused.\n\nWho speaks to you?",
+        emotion: 'gentle_guide',
+        variation_id: 'fallback_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'choose_maya',
+        text: "Maya - the helping but uncertain path.",
+        nextNodeId: 'maya_introduction',
+        pattern: 'helping',
+        consequence: {
+          addGlobalFlags: ['met_maya']
+        }
+      },
+      {
+        choiceId: 'choose_devon',
+        text: "Devon - logic meeting its limits.",
+        nextNodeId: 'devon_introduction',
+        pattern: 'building',
+        consequence: {
+          addGlobalFlags: ['met_devon']
+        }
+      },
+      {
+        choiceId: 'choose_jordan',
+        text: "Jordan - owning a non-linear journey.",
+        nextNodeId: 'jordan_introduction',
+        pattern: 'exploring',
+        consequence: {
+          addGlobalFlags: ['met_jordan']
+        }
+      }
+    ]
+  },
+
+  // ============= OTHER TRAVELERS (Optional exploration before committing) =============
+  {
+    nodeId: 'samuel_other_travelers',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*He considers for a moment*\n\nFair question. Let me paint the full picture:\n\n**Maya Chen** - Platform 1. Pre-med brilliance, family expectations, robotics dreams. The weight of making others proud while finding yourself.\n\n**Devon Kumar** - Platform 3. Systems engineer who tried to debug grief with a flowchart. Learning that empathy isn't the opposite of logic.\n\n**Jordan Packard** - Conference Room B. Seven careers, thirty students waiting for wisdom, one question: Is my path proof of adaptability or just chaos?\n\nWho do you want to meet first?",
+        emotion: 'patient_informative',
+        variation_id: 'other_travelers_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'meet_maya_alt',
+        text: "Maya on Platform 1.",
+        nextNodeId: 'maya_introduction',
+        pattern: 'helping',
+        consequence: {
+          addGlobalFlags: ['met_maya']
+        }
+      },
+      {
+        choiceId: 'meet_devon_alt',
+        text: "Devon on Platform 3.",
+        nextNodeId: 'devon_introduction',
+        pattern: 'building',
+        consequence: {
+          addGlobalFlags: ['met_devon']
+        }
+      },
+      {
+        choiceId: 'meet_jordan_alt',
+        text: "Jordan in Conference Room B.",
+        nextNodeId: 'jordan_introduction',
+        pattern: 'exploring',
+        consequence: {
+          addGlobalFlags: ['met_jordan']
+        }
+      }
+    ]
+  },
+
 
   // ============= MAYA REFLECTION GATEWAY (First return from Maya) =============
   {
