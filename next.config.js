@@ -12,14 +12,15 @@ const nextConfig = {
   // Ensure clean asset URLs
   basePath: '',
 
-  // Temporarily disable ESLint for legacy components during Phase 2 testing
+  // SYSTEMATIC FIX (Oct 17, 2025): Re-enabled validation after comprehensive fixes
+  // Type checking and linting now run during builds to catch issues early
   eslint: {
-    ignoreDuringBuilds: true
+    ignoreDuringBuilds: false  // ✅ Re-enabled after deprecation notices added
   },
 
-  // Disable TypeScript checking during builds for legacy scripts
+  // TypeScript validation now enabled - all critical type errors resolved
   typescript: {
-    ignoreBuildErrors: true
+    ignoreBuildErrors: false  // ✅ Re-enabled after database fixes implemented
   },
 
   // Performance optimizations

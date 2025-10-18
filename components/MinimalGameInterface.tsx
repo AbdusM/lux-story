@@ -1,5 +1,17 @@
 /**
- * MINIMAL Game Interface - Zero Complex Dependencies
+ * ⚠️ DEPRECATED - DO NOT USE ⚠️
+ * 
+ * **Use instead**: StatefulGameInterface.tsx
+ * **Deprecation Date**: October 17, 2025
+ * **Reason**: Intermediate implementation, superseded by dialogue graph system
+ * 
+ * See: components/_GAME_INTERFACE_STATUS.md for details
+ * 
+ * @deprecated Use StatefulGameInterface instead
+ * 
+ * ---
+ * 
+ * Original: MINIMAL Game Interface - Zero Complex Dependencies
  * Breaks the whack-a-mole cycle with guaranteed-working simple components
  */
 

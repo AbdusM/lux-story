@@ -1,5 +1,19 @@
 /**
- * MINIMAL Game Interface - Shadcn Version
+ * ⚠️ DEPRECATED - DO NOT USE ⚠️
+ * 
+ * **Use instead**: StatefulGameInterface.tsx
+ * **Deprecation Date**: October 17, 2025
+ * **Reason**: shadcn/ui experiment, not production-ready
+ * 
+ * The canonical interface (StatefulGameInterface) already uses shadcn/ui.
+ * 
+ * See: components/_GAME_INTERFACE_STATUS.md for details
+ * 
+ * @deprecated Use StatefulGameInterface instead
+ * 
+ * ---
+ * 
+ * Original: MINIMAL Game Interface - Shadcn Version
  * Drop-in replacement using shadcn components instead of apple-design-system.css
  */
 

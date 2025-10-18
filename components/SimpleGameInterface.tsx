@@ -1,5 +1,17 @@
 /**
- * Simplified Game Interface
+ * ⚠️ DEPRECATED - DO NOT USE ⚠️
+ * 
+ * **Use instead**: StatefulGameInterface.tsx
+ * **Deprecation Date**: October 17, 2025
+ * **Reason**: Simplified prototype, not feature-complete
+ * 
+ * See: components/_GAME_INTERFACE_STATUS.md for details
+ * 
+ * @deprecated Use StatefulGameInterface instead
+ * 
+ * ---
+ * 
+ * Original: Simplified Game Interface
  * Uses simplified hooks and analytics - much cleaner than the complex version
  */
 

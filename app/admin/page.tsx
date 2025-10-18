@@ -35,9 +35,23 @@ const ChoiceReviewTrigger = dynamic(
  * Unified interface for urgency triage, skills analytics, and live choice review
  */
 export default function AdminPage() {
-  console.log('[Admin] Component rendering...')
+  // PRODUCTION DEBUGGING: Comprehensive logging for production issue diagnosis
+  const buildInfo = {
+    timestamp: new Date().toISOString(),
+    nodeEnv: process.env.NODE_ENV,
+    nextPublicSupabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL ? '✅ Set' : '❌ Missing',
+    nextPublicSupabaseAnonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? '✅ Set' : '❌ Missing',
+    userAgent: typeof window !== 'undefined' ? window.navigator.userAgent : 'SSR',
+    url: typeof window !== 'undefined' ? window.location.href : 'SSR'
+  }
+  
+  console.log('🚀 [Admin] Component rendering...', buildInfo)
   const [mounted, setMounted] = useState(false)
   const [activeTab, setActiveTab] = useState('journeys')
+  
+  // PRODUCTION DEBUGGING: Error tracking state
+  const [errors, setErrors] = useState<Array<{timestamp: string, context: string, error: string}>>([])
+  const [debugInfo, setDebugInfo] = useState<Record<string, unknown>>({})
 
   // Student Journeys state (existing)
   const [userIds, setUserIds] = useState<string[]>([])
@@ -57,10 +71,30 @@ export default function AdminPage() {
 
   // Agent 9: Environment validation warning
   const [dbHealthy, setDbHealthy] = useState(true)
+  
+  // PRODUCTION DEBUGGING: Add error to tracked list
+  const logError = useCallback((context: string, error: unknown) => {
+    const errorString = error instanceof Error ? `${error.message}\n${error.stack}` : String(error)
+    console.error(`❌ [Admin:${context}]`, error)
+    setErrors(prev => [...prev, {
+      timestamp: new Date().toISOString(),
+      context,
+      error: errorString
+    }])
+  }, [])
+  
+  // PRODUCTION DEBUGGING: Update debug info
+  const updateDebugInfo = useCallback((key: string, value: unknown) => {
+    console.log(`📊 [Admin:Debug] ${key}:`, value)
+    setDebugInfo(prev => ({ ...prev, [key]: value }))
+  }, [])
 
   // Client-side only mounting check
   useEffect(() => {
+    console.log('✅ [Admin] Component mounted')
     setMounted(true)
+    updateDebugInfo('mounted', true)
+    updateDebugInfo('buildInfo', buildInfo)
   }, [])
 
   // Load student journeys (updated to use Supabase with batch loading)
@@ -69,10 +103,14 @@ export default function AdminPage() {
 
     const loadUserData = async () => {
       console.log('[Admin] Starting to load user data...')
+      updateDebugInfo('loadUserData:started', new Date().toISOString())
+      
       try {
         console.log('[Admin] Calling getAllUserIds()...')
+        updateDebugInfo('getAllUserIds:calling', true)
         const ids = await getAllUserIds()
         console.log('[Admin] getAllUserIds() returned:', ids)
+        updateDebugInfo('getAllUserIds:returned', { count: ids.length, ids: ids.slice(0, 5) })
 
         // Sort by recency (newest first) - user IDs contain timestamps
         const sortedIds = ids.sort((a, b) => {
@@ -82,12 +120,15 @@ export default function AdminPage() {
           return parseInt(timestampB) - parseInt(timestampA) // Descending order (newest first)
         })
         console.log('[Admin] Sorted user IDs:', sortedIds)
+        updateDebugInfo('userIds:sorted', sortedIds.length)
         setUserIds(sortedIds)
 
         // PERFORMANCE FIX: Batch load all profiles instead of sequential N+1 queries
         console.log('[Admin] Batch loading profiles for', ids.length, 'users')
+        updateDebugInfo('profiles:loading', ids.length)
         const profilePromises = ids.map(userId => loadSkillProfile(userId))
         const profiles = await Promise.all(profilePromises)
+        updateDebugInfo('profiles:loaded', profiles.filter(Boolean).length)
 
         const stats = new Map()
         profiles.forEach((profile, index) => {
@@ -105,17 +146,21 @@ export default function AdminPage() {
         })
 
         console.log('[Admin] User stats loaded via batch:', stats.size, 'profiles')
+        updateDebugInfo('userStats:loaded', stats.size)
         setUserStats(stats)
         setJourneysLoading(false)
+        updateDebugInfo('journeysLoading', false)
         console.log('[Admin] User data loading complete')
       } catch (error) {
-        console.error('[Admin] Failed to load user data:', error)
+        logError('loadUserData', error)
         setJourneysLoading(false)
+        // PRODUCTION DEBUGGING: Show user-friendly error without crashing dashboard
+        updateDebugInfo('loadUserData:failed', true)
       }
     }
 
     loadUserData()
-  }, [mounted])
+  }, [mounted, logError, updateDebugInfo])
 
   // Load urgent students (NEW)
   useEffect(() => {
@@ -129,13 +174,19 @@ export default function AdminPage() {
     if (!mounted) return // Skip during SSR/SSG
 
     const checkDbHealth = async () => {
+      updateDebugInfo('dbHealthCheck:started', true)
       try {
         const response = await fetch('/api/admin-proxy/urgency?limit=1')
+        updateDebugInfo('dbHealthCheck:response', { status: response.status, ok: response.ok })
         if (!response.ok && response.status === 503) {
           setDbHealthy(false)
+          updateDebugInfo('dbHealthy', false)
+        } else {
+          updateDebugInfo('dbHealthy', true)
         }
       } catch (error) {
-        console.error('DB health check failed:', error)
+        logError('dbHealthCheck', error)
+        updateDebugInfo('dbHealthy', false)
         setDbHealthy(false)
       }
     }
@@ -146,45 +197,51 @@ export default function AdminPage() {
   // PERFORMANCE FIX: Memoize callbacks to prevent unnecessary re-renders
   const fetchUrgentStudents = useCallback(async () => {
     setUrgencyLoading(true)
+    updateDebugInfo('fetchUrgentStudents:started', { filter: urgencyFilter })
     try {
       // Use server-side proxy to protect API token
       const response = await fetch(
         `/api/admin-proxy/urgency?level=${urgencyFilter}&limit=50`
       )
+      updateDebugInfo('fetchUrgentStudents:response', { status: response.status, ok: response.ok })
 
       if (!response.ok) {
         throw new Error(`API error: ${response.status}`)
       }
 
       const data = await response.json()
+      updateDebugInfo('fetchUrgentStudents:data', { studentCount: data.students?.length || 0 })
       setUrgentStudents(data.students || [])
     } catch (error) {
-      console.error('Failed to fetch urgent students:', error)
+      logError('fetchUrgentStudents', error)
       // Show empty state rather than error for now
       setUrgentStudents([])
+      updateDebugInfo('fetchUrgentStudents:failed', true)
     } finally {
       setUrgencyLoading(false)
     }
-  }, [urgencyFilter])
+  }, [urgencyFilter, logError, updateDebugInfo])
 
   const triggerRecalculation = useCallback(async () => {
     setRecalculating(true)
+    updateDebugInfo('triggerRecalculation:started', true)
     try {
       // Use server-side proxy to protect API token
       const response = await fetch('/api/admin-proxy/urgency', {
         method: 'POST'
       })
+      updateDebugInfo('triggerRecalculation:response', { status: response.status, ok: response.ok })
 
       if (response.ok) {
         // Refresh urgent students after recalculation
         await fetchUrgentStudents()
       }
     } catch (error) {
-      console.error('Recalculation failed:', error)
+      logError('triggerRecalculation', error)
     } finally {
       setRecalculating(false)
     }
-  }, [fetchUrgentStudents])
+  }, [fetchUrgentStudents, logError, updateDebugInfo])
 
   // PERFORMANCE FIX: Memoize sorted user IDs to avoid re-sorting on every render
   const sortedUserIds = useMemo(() => {
@@ -462,6 +519,51 @@ export default function AdminPage() {
             </Card>
           </TabsContent>
         </Tabs>
+        
+        {/* PRODUCTION DEBUGGING: Comprehensive Error & Debug Panel */}
+        {(errors.length > 0 || process.env.NODE_ENV === 'development') && (
+          <div className="mt-8 space-y-4">
+            {errors.length > 0 && (
+              <Alert variant="destructive">
+                <AlertTriangle className="h-4 w-4" />
+                <AlertTitle>Errors Detected ({errors.length})</AlertTitle>
+                <AlertDescription className="mt-2 space-y-2">
+                  {errors.map((error, idx) => (
+                    <div key={idx} className="text-xs font-mono p-2 bg-red-50 rounded border border-red-200">
+                      <div className="font-semibold text-red-900">{error.timestamp} - {error.context}</div>
+                      <div className="text-red-700 whitespace-pre-wrap mt-1">{error.error}</div>
+                    </div>
+                  ))}
+                </AlertDescription>
+              </Alert>
+            )}
+            
+            {process.env.NODE_ENV === 'development' && Object.keys(debugInfo).length > 0 && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-sm">Debug Information</CardTitle>
+                  <CardDescription>Production debugging data (development only)</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <pre className="text-xs overflow-auto max-h-96 p-4 bg-gray-50 rounded border">
+                    {JSON.stringify(debugInfo, null, 2)}
+                  </pre>
+                  <Button
+                    onClick={() => {
+                      navigator.clipboard.writeText(JSON.stringify({ errors, debugInfo }, null, 2))
+                      alert('Debug data copied to clipboard')
+                    }}
+                    variant="outline"
+                    size="sm"
+                    className="mt-2"
+                  >
+                    Copy Debug Data to Clipboard
+                  </Button>
+                </CardContent>
+              </Card>
+            )}
+          </div>
+        )}
       </div>
     </div>
   )
