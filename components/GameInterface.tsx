@@ -1,3 +1,18 @@
+/**
+ * ⚠️ DEPRECATED - DO NOT USE ⚠️
+ * 
+ * This component is deprecated and should NOT be used for new development.
+ * 
+ * **Use instead**: StatefulGameInterface.tsx
+ * 
+ * **Deprecation Date**: October 17, 2025
+ * **Reason**: Superseded by StatefulGameInterface with dialogue graph system
+ * 
+ * See: components/_GAME_INTERFACE_STATUS.md for details
+ * 
+ * @deprecated Use StatefulGameInterface instead
+ */
+
 "use client"
 
 import { useCallback, useMemo, memo, useEffect } from 'react'

@@ -103,23 +103,40 @@ export default function StatefulGameInterface() {
         gameState = GameStateUtils.createNewGameState('player_' + Date.now())
         console.log('✅ Created new game state')
         
-        // Create database profile for new user
+        // CRITICAL FIX: Create database profile using reliable ensureUserProfile utility
         try {
-          const { DatabaseService } = await import('@/lib/database-service')
-          const db = new DatabaseService()
-          await db.upsertPlayerProfile({
-            userId: gameState.playerId,
-            currentScene: gameState.currentNodeId,
-            totalDemonstrations: 0,
-            lastActivity: new Date()
+          const { ensureUserProfile } = await import('@/lib/ensure-user-profile')
+          const profileCreated = await ensureUserProfile(gameState.playerId, {
+            current_scene: gameState.currentNodeId,
+            total_demonstrations: 0,
+            last_activity: new Date().toISOString()
           })
-          console.log('✅ Created database profile for user:', gameState.playerId)
+          
+          if (profileCreated) {
+            console.log('✅ Database profile ensured for user:', gameState.playerId)
+          } else {
+            console.error('⚠️ Database profile creation returned false for user:', gameState.playerId)
+            // Profile creation failed but game can continue - will retry on next sync
+          }
         } catch (error) {
-          console.error('❌ Failed to create database profile:', error)
-          // Continue anyway - user can still play, profile will be created on first sync
+          console.error('❌ Failed to ensure database profile:', error)
+          // Continue anyway - user can still play, profile will be ensured on first tracker call
         }
       } else {
         console.log('✅ Loaded existing game state')
+        
+        // CRITICAL FIX: Ensure profile exists for returning users too (handles backfill)
+        try {
+          const { ensureUserProfile } = await import('@/lib/ensure-user-profile')
+          await ensureUserProfile(gameState.playerId, {
+            current_scene: gameState.currentNodeId,
+            last_activity: new Date().toISOString()
+          })
+          console.log('✅ Database profile verified for returning user:', gameState.playerId)
+        } catch (error) {
+          console.error('⚠️ Failed to verify profile for returning user:', error)
+          // Non-critical - will be ensured on next tracker call
+        }
       }
 
       // Initialize skill tracker with this user's ID

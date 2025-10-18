@@ -84,7 +84,9 @@ export class ComprehensiveUserTracker {
   }
 
   /**
-   * Ensure user profile exists in database (async, non-blocking)
+   * Ensure user profile exists in database (BLOCKING - must complete before any writes)
+   * CRITICAL FIX: This prevents foreign key violations by guaranteeing profile exists
+   * before skill_demonstrations, career_explorations, or relationship_progress writes.
    */
   private async ensureProfile(): Promise<void> {
     if (this.profileEnsured) return
@@ -94,15 +96,20 @@ export class ComprehensiveUserTracker {
       this.profileEnsured = success
 
       if (!success) {
-        console.error(`[ComprehensiveTracker] Failed to ensure profile for ${this.userId}`)
+        console.error(`[ComprehensiveTracker] ❌ CRITICAL: Failed to ensure profile for ${this.userId}`)
+        throw new Error(`Profile creation failed for ${this.userId} - cannot proceed with database writes`)
       }
+      
+      console.log(`[ComprehensiveTracker] ✅ Profile verified/created for ${this.userId}`)
     } catch (error) {
-      console.error(`[ComprehensiveTracker] Error ensuring profile:`, error)
+      console.error(`[ComprehensiveTracker] ❌ CRITICAL: Error ensuring profile:`, error)
+      throw error // Propagate error to prevent writes without profile
     }
   }
 
   /**
    * Track a user choice with comprehensive context
+   * CRITICAL FIX: Now blocks on profile creation before ANY database operations
    */
   async trackChoice(
     userId: string,
@@ -112,6 +119,9 @@ export class ComprehensiveUserTracker {
     timeToChoose?: number
   ): Promise<void> {
     console.log(`[ComprehensiveTracker] trackChoice called for ${userId} in ${sceneId}`)
+    
+    // CRITICAL FIX: Block until profile exists before proceeding
+    await this.ensureProfile()
     
     const interaction: UserInteraction = {
       userId,
@@ -133,7 +143,7 @@ export class ComprehensiveUserTracker {
     this.interactions.push(interaction)
     console.log(`[ComprehensiveTracker] Added interaction, total: ${this.interactions.length}`)
 
-    // Track in all systems
+    // Track in all systems (profile is now guaranteed to exist)
     try {
       await Promise.all([
         this.trackInSkillTracker(choice, sceneId),
@@ -144,6 +154,7 @@ export class ComprehensiveUserTracker {
       console.log(`[ComprehensiveTracker] All tracking systems completed for ${userId}`)
     } catch (error) {
       console.error(`[ComprehensiveTracker] Error in tracking systems:`, error)
+      // Don't throw - tracking errors shouldn't break the game
     }
 
     // Generate career explorations if conditions are met

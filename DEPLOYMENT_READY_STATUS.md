@@ -117,15 +117,19 @@ vercel --prod
 
 ```bash
 # Run automated verification
-VERCEL_URL=https://lux-story.vercel.app npm run verify:admin:prod
+VERCEL_URL=https://lux-story.linkdap.com npm run verify:admin:prod
 
 # Manual verification:
-# 1. Visit: https://lux-story.vercel.app/admin
-# 2. Login with ADMIN_API_TOKEN
+# 1. Visit: https://lux-story.linkdap.com/admin
+# 2. Login with password: admin
 # 3. Verify 21+ users load from Supabase
 # 4. Test Family/Research mode toggle
 # 5. Check all tabs display data correctly
 ```
+
+**Production URLs:**
+- Primary: https://lux-story.linkdap.com
+- Alternative: https://lux-story.vercel.app
 
 ---
 
