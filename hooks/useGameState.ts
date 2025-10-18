@@ -18,7 +18,7 @@ export function useGameState() {
         setGameState(manager)
         setIsInitialized(true)
       } catch (error) {
-        logger.error('Failed to initialize game state:', error)
+        logger.error('Failed to initialize game state:', { error: error instanceof Error ? error.message : String(error) })
         // Create a fresh instance without localStorage
         const manager = new GameStateManager()
         setGameState(manager)

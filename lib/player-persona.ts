@@ -74,7 +74,7 @@ export class PlayerPersonaTracker {
    * Update persona based on a choice made
    */
   updatePersona(playerId: string, choice: Choice, responseTime: number, gameState: GameState): PlayerPersona {
-    let persona = this.personas.get(playerId) || this.createBasePersona(playerId)
+    const persona = this.personas.get(playerId) || this.createBasePersona(playerId)
 
     // Update pattern counts
     const pattern = this.extractPatternFromChoice(choice)

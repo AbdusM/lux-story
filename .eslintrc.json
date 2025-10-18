@@ -23,6 +23,15 @@
     "no-console": "off",
     
     // Allow unescaped entities in JSX - natural dialogue should use real quotes
-    "react/no-unescaped-entities": "off"
+    "react/no-unescaped-entities": "off",
+    
+    // Allow empty interfaces that extend base types (common in shadcn/ui)
+    "@typescript-eslint/no-empty-object-type": "off",
+    
+    // Allow let when object is being mutated (even if variable not reassigned)
+    "prefer-const": ["warn", {
+      "destructuring": "all",
+      "ignoreReadBeforeAssign": true
+    }]
   }
 }

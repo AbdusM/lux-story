@@ -814,7 +814,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                       </p>
                       <p className={getUrgencyClasses(urgencyData.urgencyLevel).percentage}>
                         {adminViewMode === 'family'
-                          ? `${urgencyData.urgencyLevel?.charAt(0).toUpperCase() + urgencyData.urgencyLevel?.slice(1) || 'Pending'} (${Math.max(0, Math.min(100, Math.round((urgencyData.urgencyScore || 0) * 100)))}%)`
+                          ? `${urgencyData.urgencyLevel ? urgencyData.urgencyLevel.charAt(0).toUpperCase() + urgencyData.urgencyLevel.slice(1) : 'Pending'} (${Math.max(0, Math.min(100, Math.round((urgencyData.urgencyScore || 0) * 100)))}%)`
                           : `${Math.max(0, Math.min(100, Math.round((urgencyData.urgencyScore || 0) * 100)))}% urgency score (disengagement risk)`
                         }
                       </p>
