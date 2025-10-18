@@ -1,4 +1,4 @@
-// @ts-nocheck
+// @ts-expect-error - Legacy PDF export component with type issues, to be refactored
 /**
  * PDF Export for Skills-Based Career Profile
  * Evidence-first formatting - show what they DID, not just scores

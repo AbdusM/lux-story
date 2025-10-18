@@ -32,19 +32,17 @@ export function useSceneTransitions(
       return null
     }
     
-    logger.debug('🔄 Loading scene:', sceneId, 'forceLoad:', forceLoad)
-    logger.debug('🔄 Story engine available:', !!storyEngine)
+    logger.debug('🔄 Loading scene', { sceneId, forceLoad, storyEngineAvailable: !!storyEngine })
     
     // Get the scene first
     const scene = storyEngine.getScene(sceneId)
     if (!scene) {
-      logger.error('❌ Scene not found:', sceneId)
-      logger.error('❌ Available scenes:', storyEngine.getAllScenes?.() || 'getAllScenes not available')
+      logger.error('❌ Scene not found', { sceneId, availableScenes: storyEngine.getAllScenes?.() || 'getAllScenes not available' })
       return null
     }
     
     // Always load the scene when called (simplified logic)
-    logger.debug('✅ Scene loaded successfully:', scene.id, scene.type)
+    logger.debug('✅ Scene loaded successfully', { sceneId: scene.id, type: scene.type })
     setState(prev => ({
       currentScene: scene,
       isLoadingScene: true,
@@ -52,7 +50,7 @@ export function useSceneTransitions(
     }))
     
     // Update game state
-    logger.debug('🔄 Updating game state to scene:', sceneId)
+    logger.debug('🔄 Updating game state to scene', { sceneId })
     gameState.setScene(sceneId)
     
     // Clear loading flag after a short delay

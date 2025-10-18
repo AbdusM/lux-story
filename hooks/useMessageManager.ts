@@ -64,15 +64,14 @@ class MessageStore {
     }
     
     this.messages = [...this.messages, messageWithId]
-    logger.debug('🔵 MessageStore - New messages count:', this.messages.length, 'Scene:', message.sceneId)
+    logger.debug('🔵 MessageStore - New messages count:', { count: this.messages.length, sceneId: message.sceneId })
     
     // Notify all subscribers
     this.subscribers.forEach(callback => callback())
   }
 
   clearMessages = () => {
-    logger.debug('🔴 MessageStore.clearMessages called - clearing all messages')
-    logger.debug('🔴 Clearing', this.messages.length, 'messages')
+    logger.debug('🔴 MessageStore.clearMessages called', { count: this.messages.length })
     this.messages = []
     this.messageIdCounter = 0
     this.subscribers.forEach(callback => callback())
@@ -121,9 +120,9 @@ export function useMessageManager() {
   
   // Debug: Log hook creation
   useEffect(() => {
-    logger.debug('🟡 useMessageManager hook created:', hookInstanceId.current, 'messages count:', messages.length)
+    logger.debug('🟡 useMessageManager hook created', { hookId: hookInstanceId.current, messageCount: messages.length })
     return () => {
-      logger.debug('🟠 useMessageManager hook destroyed:', hookInstanceId.current)
+      logger.debug('🟠 useMessageManager hook destroyed', { hookId: hookInstanceId.current })
     }
   }, [])
 
