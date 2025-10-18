@@ -10,6 +10,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { DialogueDisplay } from '@/components/DialogueDisplay'
+import { AtmosphericIntro } from '@/components/AtmosphericIntro'
 import { GameState, GameStateUtils } from '@/lib/character-state'
 import { GameStateManager } from '@/lib/game-state-manager'
 import { useBackgroundSync } from '@/hooks/useBackgroundSync'
@@ -413,6 +414,25 @@ export default function StatefulGameInterface() {
   }, [state.gameState, skillTrackerRef])
 
   if (!state.hasStarted) {
+    // First-time users get atmospheric intro
+    // Returning users get quick start screen
+    if (!hasSaveFile) {
+      return (
+        <>
+          {/* Admin Button - Top Right */}
+          <div className="absolute top-4 right-4 z-50">
+            <Link href="/admin">
+              <Button variant="ghost" size="sm" className="text-xs">
+                Admin
+              </Button>
+            </Link>
+          </div>
+          <AtmosphericIntro onStart={() => initializeGame()} />
+        </>
+      )
+    }
+
+    // Returning users: Quick start screen
     return (
       <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 flex items-center justify-center p-3 sm:p-4">
         {/* Admin Button - Top Right */}
@@ -427,11 +447,10 @@ export default function StatefulGameInterface() {
         <Card className="w-full max-w-2xl">
           <CardContent className="p-5 sm:p-8 text-center">
             <h1 className="text-2xl sm:text-3xl font-bold text-slate-800 mb-3 sm:mb-4">
-              Grand Central Terminus
+              Welcome Back
             </h1>
             <p className="text-sm sm:text-base text-slate-600 mb-6 sm:mb-8 leading-relaxed">
-              A magical train station appears between who you were and who you're becoming.
-              Meet Maya, a pre-med student torn between family expectations and personal passion.
+              Grand Central Terminus awaits. Continue your journey or start fresh.
             </p>
             <div className="space-y-3 sm:space-y-4">
               {saveIsComplete ? (
@@ -441,7 +460,7 @@ export default function StatefulGameInterface() {
                     size="lg"
                     className="w-full"
                   >
-                    New Conversation with Maya
+                    Begin New Journey
                   </Button>
                   <Button
                     onClick={() => initializeGame()}
@@ -459,30 +478,26 @@ export default function StatefulGameInterface() {
                     size="lg"
                     className="w-full"
                   >
-                    {hasSaveFile ? 'Continue Your Journey' : 'Enter the Station'}
+                    Continue Your Journey
                   </Button>
-                  {hasSaveFile && (
-                    <Button
-                      onClick={continueJourney}
-                      variant="outline"
-                      size="lg"
-                      className="w-full"
-                    >
-                      New Conversation with Maya
-                    </Button>
-                  )}
+                  <Button
+                    onClick={continueJourney}
+                    variant="outline"
+                    size="lg"
+                    className="w-full"
+                  >
+                    Start Over
+                  </Button>
                 </>
               )}
-              {hasSaveFile && (
-                <Button
-                  onClick={nuclearReset}
-                  variant="ghost"
-                  size="sm"
-                  className="w-full text-xs text-red-600 hover:text-red-700"
-                >
-                  Erase All Progress (Danger Zone)
-                </Button>
-              )}
+              <Button
+                onClick={nuclearReset}
+                variant="ghost"
+                size="sm"
+                className="w-full text-xs text-red-600 hover:text-red-700"
+              >
+                Erase All Progress (Danger Zone)
+              </Button>
             </div>
           </CardContent>
         </Card>
