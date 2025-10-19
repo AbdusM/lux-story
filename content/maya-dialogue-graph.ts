@@ -68,9 +68,9 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Yes, pre-med at UAB. Second year. Organic chemistry is... intense. But that's what's expected, right? Become a doctor, make the family proud.",
-        emotion: 'neutral',
-        variation_id: 'studies_v1'
+        text: "*She forces a bright smile*\n\nYes, pre-med at UAB. Second year. Organic chemistry is... it's going great. Really great.\n\n*The smile doesn't reach her eyes*\n\nMy parents are so proud.",
+        emotion: 'deflecting',
+        variation_id: 'studies_v2_subtextual'
       }
     ],
     requiredState: {
@@ -78,10 +78,15 @@ export const mayaDialogueNodes: DialogueNode[] = [
     },
     choices: [
       {
-        choiceId: 'studies_expected',
-        text: "Expected by whom?",
+        choiceId: 'studies_notice_deflection',
+        text: "You said 'my parents' not 'I am'.",
         nextNodeId: 'maya_family_intro',
-        pattern: 'exploring'
+        pattern: 'analytical',
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1,
+          addKnowledgeFlags: ['player_noticed_deflection']
+        }
       },
       {
         choiceId: 'studies_passion',
@@ -244,9 +249,9 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "It's just... everyone sees me as this perfect pre-med student. Good grades, clear path, making my parents' dreams come true.\n\nBut late at night, when I'm supposed to be memorizing anatomy, I'm actually... doing something else.",
-        emotion: 'anxious',
-        variation_id: 'anxiety_reveal_v1'
+        text: "*Her hands are shaking. She notices you noticing, tucks them under the table*\n\n'I'm fine. Just... everyone sees me as this perfect pre-med student. Good grades, clear path, making my parents' dreams come true.'\n\n*She stares at her organic chemistry notes. Hasn't turned the page in ten minutes*\n\n'But late at night, when I'm supposed to be memorizing anatomy, I'm actually... doing something else.'",
+        emotion: 'anxious_deflecting',
+        variation_id: 'anxiety_reveal_v2_subtextual'
       }
     ],
     requiredState: {
@@ -269,6 +274,17 @@ export const mayaDialogueNodes: DialogueNode[] = [
           characterId: 'maya',
           trustChange: 1
         }
+      },
+      {
+        choiceId: 'reveal_wait',
+        text: "[Say nothing. Wait.]",
+        nextNodeId: 'maya_fills_silence',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2,
+          addKnowledgeFlags: ['player_gave_space']
+        }
       }
     ],
     onEnter: [
@@ -277,7 +293,29 @@ export const mayaDialogueNodes: DialogueNode[] = [
         addKnowledgeFlags: ['knows_anxiety']
       }
     ],
-    tags: ['trust_gate', 'maya_arc']
+    tags: ['trust_gate', 'maya_arc', 'bg3_subtext']
+  },
+
+  // ============= SILENCE RESPONSE (Rewards emotional intelligence) =============
+  {
+    nodeId: 'maya_fills_silence',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "*The silence stretches. She breaks first*\n\n'Robotics. I'm building robots when I should be studying.'\n\n*She laughs, but it's fragile*\n\n'You didn't push. Most people push. Thank you for that.'",
+        emotion: 'grateful_vulnerable',
+        variation_id: 'fills_silence_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_after_silence',
+        text: "Tell me about the robots.",
+        nextNodeId: 'maya_robotics_hint',
+        pattern: 'exploring'
+      }
+    ],
+    tags: ['emotional_intelligence_reward', 'maya_arc']
   },
 
   // ============= ROBOTICS HINT PATH =============
