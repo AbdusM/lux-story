@@ -29,6 +29,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "That's a lot of different roles. What's the through-line?",
         nextNodeId: 'jordan_career_question',
         pattern: 'exploring',
+        skills: ['communication'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -40,9 +41,10 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "Six rewrites means you care about getting it right.",
         nextNodeId: 'jordan_career_question',
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
         consequence: {
           characterId: 'jordan',
-          trustChange: 1
+          trustChange: 2
         }
       },
       {
@@ -50,9 +52,10 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "You seem uncertain about your own story.",
         nextNodeId: 'jordan_career_question',
         pattern: 'analytical',
+        skills: ['critical_thinking', 'communication'],
         consequence: {
           characterId: 'jordan',
-          trustChange: 2,
+          trustChange: 1,
           addKnowledgeFlags: ['noticed_uncertainty']
         }
       }

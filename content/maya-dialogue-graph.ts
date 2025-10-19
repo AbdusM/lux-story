@@ -82,6 +82,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "You said 'my parents' not 'I am'.",
         nextNodeId: 'maya_family_intro',
         pattern: 'analytical',
+        skills: ['critical_thinking', 'communication'],
         consequence: {
           characterId: 'maya',
           trustChange: 1,
@@ -93,8 +94,13 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "But is it what YOU want?",
         nextNodeId: 'maya_deflect_passion',
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
         visibleCondition: {
           trust: { min: 2 }
+        },
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2
         }
       }
     ]
