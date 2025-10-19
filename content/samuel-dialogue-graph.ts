@@ -419,6 +419,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "Wanting to help people, but not sure I'm on the right path for it.",
         nextNodeId: 'samuel_discovers_helping',
         pattern: 'helping',
+        skills: ['communication', 'emotional_intelligence'],
         consequence: {
           characterId: 'samuel',
           addKnowledgeFlags: ['player_values_helping']
@@ -429,6 +430,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "I like solving problems logically, but I feel like something's missing.",
         nextNodeId: 'samuel_discovers_building',
         pattern: 'building',
+        skills: ['critical_thinking', 'communication'],
         consequence: {
           characterId: 'samuel',
           addKnowledgeFlags: ['player_values_logic']
@@ -439,6 +441,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "I've tried different things and I'm not sure if that's okay.",
         nextNodeId: 'samuel_discovers_exploring',
         pattern: 'exploring',
+        skills: ['adaptability', 'communication'],
         consequence: {
           characterId: 'samuel',
           addKnowledgeFlags: ['player_values_adaptability']
@@ -474,6 +477,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "I'd like to talk to her.",
         nextNodeId: 'maya_introduction',
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'collaboration'],
         consequence: {
           addGlobalFlags: ['met_maya']
         }
@@ -482,7 +486,8 @@ export const samuelDialogueNodes: DialogueNode[] = [
         choiceId: 'ask_about_others',
         text: "Who else is here tonight?",
         nextNodeId: 'samuel_other_travelers',
-        pattern: 'exploring'
+        pattern: 'exploring',
+        skills: ['communication', 'collaboration']
       }
     ]
   },
@@ -548,6 +553,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "I need to hear her story.",
         nextNodeId: 'jordan_introduction',
         pattern: 'exploring',
+        skills: ['communication', 'collaboration'],
         consequence: {
           addGlobalFlags: ['met_jordan']
         }
@@ -556,7 +562,8 @@ export const samuelDialogueNodes: DialogueNode[] = [
         choiceId: 'ask_about_others',
         text: "Tell me about the others first.",
         nextNodeId: 'samuel_other_travelers',
-        pattern: 'patience'
+        pattern: 'patience',
+        skills: ['communication', 'collaboration', 'adaptability']
       }
     ]
   },
@@ -578,6 +585,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "Maya - the helping but uncertain path.",
         nextNodeId: 'maya_introduction',
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'collaboration'],
         consequence: {
           addGlobalFlags: ['met_maya']
         }
@@ -587,6 +595,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "Devon - logic meeting its limits.",
         nextNodeId: 'devon_introduction',
         pattern: 'building',
+        skills: ['critical_thinking', 'collaboration'],
         consequence: {
           addGlobalFlags: ['met_devon']
         }
@@ -596,6 +605,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "Jordan - owning a non-linear journey.",
         nextNodeId: 'jordan_introduction',
         pattern: 'exploring',
+        skills: ['adaptability', 'collaboration'],
         consequence: {
           addGlobalFlags: ['met_jordan']
         }
