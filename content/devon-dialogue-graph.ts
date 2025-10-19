@@ -33,6 +33,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "What are you working on?",
         nextNodeId: 'devon_explains_system',
         pattern: 'exploring',
+        skills: ['communication'],
         consequence: {
           characterId: 'devon',
           trustChange: 1
@@ -43,9 +44,10 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "That looks like a decision tree. For what?",
         nextNodeId: 'devon_technical_response',
         pattern: 'analytical',
+        skills: ['critical_thinking', 'communication'],
         consequence: {
           characterId: 'devon',
-          trustChange: 2,
+          trustChange: 1,
           addKnowledgeFlags: ['recognizes_technical_work']
         }
       },
@@ -53,7 +55,12 @@ export const devonDialogueNodes: DialogueNode[] = [
         choiceId: 'intro_gentle',
         text: "I'm just passing through. You seem focused.",
         nextNodeId: 'devon_defends_focus',
-        pattern: 'patience'
+        pattern: 'patience',
+        skills: ['emotional_intelligence', 'adaptability'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 2
+        }
       }
     ]
   },
