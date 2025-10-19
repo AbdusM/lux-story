@@ -812,13 +812,15 @@ export const samuelDialogueNodes: DialogueNode[] = [
         choiceId: 'what_path_did_she_choose',
         text: "Which path did she choose?",
         nextNodeId: 'samuel_maya_path_reflection',
-        pattern: 'exploring'
+        pattern: 'exploring',
+        skills: ['communication']
       },
       {
         choiceId: 'is_that_what_you_do',
         text: "Is that what you do here? Be a mirror?",
         nextNodeId: 'samuel_station_keeper_truth',
-        pattern: 'patience'
+        pattern: 'patience',
+        skills: ['emotional_intelligence', 'communication']
       }
     ]
   },
@@ -1185,13 +1187,15 @@ export const samuelDialogueNodes: DialogueNode[] = [
         choiceId: 'how_did_you_see_that',
         text: "How could you see all that?",
         nextNodeId: 'samuel_station_truth_deep',
-        pattern: 'exploring'
+        pattern: 'exploring',
+        skills: ['communication', 'critical_thinking']
       },
       {
         choiceId: 'yes_i_have',
         text: "I have felt something like that.",
         nextNodeId: 'samuel_solidarity',
         pattern: 'patience',
+        skills: ['emotional_intelligence', 'communication'],
         consequence: {
           characterId: 'samuel',
           trustChange: 2,
@@ -1472,6 +1476,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "It didn't feel like mastery. Just honesty.",
         nextNodeId: 'samuel_honesty_mastery',
         pattern: 'patience',
+        skills: ['emotional_intelligence', 'communication'],
         consequence: {
           characterId: 'samuel',
           trustChange: 2
@@ -1733,13 +1738,15 @@ export const samuelDialogueNodes: DialogueNode[] = [
         choiceId: 'seemed_lost',
         text: "She seemed lost, searching for solid ground.",
         nextNodeId: 'samuel_jordan_mentorship_reflection',
-        pattern: 'helping'
+        pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication']
       },
       {
         choiceId: 'was_building',
         text: "She was building something, even if she didn't realize it.",
         nextNodeId: 'samuel_jordan_mentorship_reflection',
-        pattern: 'analytical'
+        pattern: 'analytical',
+        skills: ['critical_thinking', 'communication']
       },
       {
         choiceId: 'reminded_me',
@@ -1771,13 +1778,15 @@ export const samuelDialogueNodes: DialogueNode[] = [
         choiceId: 'offered_mirror',
         text: "I tried to show her what she couldn't see in herself.",
         nextNodeId: 'samuel_jordan_path_reflection',
-        pattern: 'helping'
+        pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication', 'leadership']
       },
       {
         choiceId: 'asked_questions',
         text: "I asked questions. Let her find her own answers.",
         nextNodeId: 'samuel_jordan_path_reflection',
         pattern: 'patience',
+        skills: ['emotional_intelligence', 'communication', 'leadership'],
         consequence: {
           characterId: 'samuel',
           trustChange: 1
@@ -1811,13 +1820,15 @@ export const samuelDialogueNodes: DialogueNode[] = [
         choiceId: 'will_she_believe_it',
         text: "Do you think she believed it? Or just needed to hear it?",
         nextNodeId: 'samuel_jordan_belief_wisdom',
-        pattern: 'analytical'
+        pattern: 'analytical',
+        skills: ['critical_thinking', 'communication']
       },
       {
         choiceId: 'gave_permission',
         text: "She gave those students permission to be imperfect.",
         nextNodeId: 'samuel_jordan_hub_return',
         pattern: 'patience',
+        skills: ['emotional_intelligence', 'communication', 'leadership'],
         consequence: {
           characterId: 'samuel',
           trustChange: 1
@@ -1851,7 +1862,8 @@ export const samuelDialogueNodes: DialogueNode[] = [
         choiceId: 'continue_birmingham_reflection',
         text: "(Continue)",
         nextNodeId: 'samuel_jordan_path_reflection_pt2',
-        pattern: 'patience'
+        pattern: 'patience',
+        skills: ['communication']
       }
     ]
   },
@@ -1915,13 +1927,15 @@ export const samuelDialogueNodes: DialogueNode[] = [
         choiceId: 'story_might_change',
         text: "But what if the story she tells herself changes again?",
         nextNodeId: 'samuel_jordan_narrative_wisdom',
-        pattern: 'analytical'
+        pattern: 'analytical',
+        skills: ['critical_thinking', 'communication']
       },
       {
         choiceId: 'needed_authorship',
         text: "She just needed permission to author her own story.",
         nextNodeId: 'samuel_jordan_hub_return',
         pattern: 'patience',
+        skills: ['emotional_intelligence', 'communication', 'leadership'],
         consequence: {
           characterId: 'samuel',
           trustChange: 1
@@ -2076,13 +2090,15 @@ export const samuelDialogueNodes: DialogueNode[] = [
         choiceId: 'reflect_more_jordan',
         text: "Tell me more about what you saw with Jordan.",
         nextNodeId: 'samuel_deep_jordan_reflection',
-        pattern: 'patience'
+        pattern: 'patience',
+        skills: ['communication', 'emotional_intelligence']
       },
       {
         choiceId: 'meet_other_travelers',
         text: "I'm ready to meet someone else.",
         nextNodeId: 'samuel_hub_after_devon',
-        pattern: 'exploring'
+        pattern: 'exploring',
+        skills: ['communication', 'collaboration']
       }
     ]
   },
@@ -2132,6 +2148,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "I'd like to talk to Maya again.",
         nextNodeId: mayaRevisitEntryPoints.WELCOME, // Type-safe revisit navigation ✅
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'collaboration'],
         visibleCondition: {
           hasGlobalFlags: ['maya_arc_complete']
         }
