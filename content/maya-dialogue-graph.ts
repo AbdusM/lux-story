@@ -626,6 +626,19 @@ export const mayaDialogueNodes: DialogueNode[] = [
           trustChange: 2,
           addKnowledgeFlags: ['challenged_expectations']
         }
+      },
+      {
+        choiceId: 'family_tried_talking',
+        text: "Have you tried talking to them about it?",
+        nextNodeId: 'maya_parent_conversation_failed',
+        pattern: 'analytical',
+        visibleCondition: {
+          trust: { min: 3 }
+        },
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
       }
     ],
     onEnter: [
@@ -634,6 +647,52 @@ export const mayaDialogueNodes: DialogueNode[] = [
         addKnowledgeFlags: ['knows_family']
       }
     ]
+  },
+
+  // ============= PARENT CONVERSATION SCENE (Specific Incident) =============
+  {
+    nodeId: 'maya_parent_conversation_failed',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "*She laughs bitterly*\n\nOh, I tried. Last month.\n\nI printed out the MIT robotics program information. Highlighted the parts about medical device innovation. Prepared a whole presentation about how it's still helping people.\n\nSat them down at the kitchen table. My mother made tea. Good sign, I thought.\n\nI got through maybe two sentences before she smiled.\n\n*Pause*\n\nThat smile. The one that means 'I'm disappointed but I won't say it.'\n\nThen she said: 'That's lovely, Maya. But you'll be a doctor first, yes?'\n\n*Maya's hands clench*\n\nNot 'no.' Not 'we forbid it.' Just... a question that wasn't a question.\n\nMy father didn't say anything. Just kept drinking his tea. Wouldn't look at me.\n\n*Quiet, raw*\n\nI'd rather they forbid it. At least then I could be angry instead of guilty.\n\nThat's worse somehow. The silence. The smile. The 'but you'll be a doctor first, yes?'\n\nI haven't brought it up since.",
+        emotion: 'wounded',
+        variation_id: 'parent_conversation_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 3 }
+    },
+    choices: [
+      {
+        choiceId: 'acknowledge_pain',
+        text: "That sounds incredibly painful.",
+        nextNodeId: 'maya_rebellion_thoughts',
+        pattern: 'helping',
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2,
+          addKnowledgeFlags: ['shared_parent_failure']
+        }
+      },
+      {
+        choiceId: 'try_again_suggestion',
+        text: "Maybe they need more time to process it?",
+        nextNodeId: 'maya_reframes_sacrifice',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'maya',
+        addKnowledgeFlags: ['tried_parent_conversation']
+      }
+    ],
+    tags: ['emotional_incident', 'maya_arc', 'bg3_depth']
   },
 
   // ============= REFRAMES SACRIFICE PATH =============
