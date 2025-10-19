@@ -265,6 +265,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "Is there someone specific you're trying to talk to?",
         nextNodeId: 'devon_father_reveal',
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
         consequence: {
           characterId: 'devon',
           trustChange: 2
@@ -274,7 +275,8 @@ export const devonDialogueNodes: DialogueNode[] = [
         choiceId: 'challenge_assumption',
         text: "Conversations aren't circuits though.",
         nextNodeId: 'devon_defends_focus',
-        pattern: 'analytical'
+        pattern: 'analytical',
+        skills: ['critical_thinking']
       }
     ]
   },
