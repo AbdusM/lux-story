@@ -27,6 +27,8 @@ interface ChoiceQualityScore {
   patienceOptions: number
   trustRewards: number
   quizMode: boolean
+  skillsTagged: number  // NEW: How many choices have skills
+  skillsCoverage: number  // NEW: Total unique skills demonstrated
   grade: 'A' | 'B' | 'C' | 'D' | 'F'
 }
 
@@ -233,6 +235,15 @@ function scoreChoiceQuality(): ChoiceQualityScore[] {
       score -= 30
     }
     
+    // Skills bonus (+20 if any choice has skills, +10 per unique skill type)
+    const choicesWithSkills = choices.filter(c => c.skills && c.skills.length > 0)
+    const uniqueSkills = new Set(choices.flatMap(c => c.skills || []))
+    
+    if (choicesWithSkills.length > 0) {
+      score += 20  // Base bonus for having skills
+      score += Math.min(20, uniqueSkills.size * 5)  // +5 per unique skill, max +20
+    }
+    
     // Clamp to 0-100
     score = Math.max(0, Math.min(100, score))
     
@@ -252,6 +263,8 @@ function scoreChoiceQuality(): ChoiceQualityScore[] {
       patienceOptions,
       trustRewards: totalTrustReward,
       quizMode: allQuestions,
+      skillsTagged: choicesWithSkills.length,
+      skillsCoverage: uniqueSkills.size,
       grade
     })
   }
@@ -348,7 +361,7 @@ function generateReport() {
   topScores.forEach((score, idx) => {
     console.log(`${idx + 1}. ${score.nodeId} (${score.speaker})`)
     console.log(`   Score: ${score.score}/100 (Grade: ${score.grade})`)
-    console.log(`   Empathy: ${score.empathyOptions}, Patience: ${score.patienceOptions}, Trust: +${score.trustRewards}`)
+    console.log(`   Empathy: ${score.empathyOptions}, Patience: ${score.patienceOptions}, Trust: +${score.trustRewards}, Skills: ${score.skillsTagged}/${score.skillsCoverage}`)
   })
   
   // Bottom Scoring Nodes (Needs Improvement)
@@ -359,17 +372,28 @@ function generateReport() {
   bottomScores.forEach((score, idx) => {
     console.log(`${idx + 1}. ${score.nodeId} (${score.speaker})`)
     console.log(`   Score: ${score.score}/100 (Grade: ${score.grade})`)
-    console.log(`   Empathy: ${score.empathyOptions}, Patience: ${score.patienceOptions}, Quiz Mode: ${score.quizMode ? 'YES' : 'no'}`)
+    console.log(`   Empathy: ${score.empathyOptions}, Patience: ${score.patienceOptions}, Skills: ${score.skillsTagged}/${score.skillsCoverage}, Quiz: ${score.quizMode ? 'YES' : 'no'}`)
   })
+  
+  // Skills Coverage
+  const noSkillsIssues = issues.filter(i => i.issue.includes('No WEF 2030 skills'))
+  const skillsCoveragePercent = ((totalNodes - noSkillsIssues.length) / totalNodes * 100).toFixed(1)
+  
+  console.log('\n\n📚 WEF 2030 SKILLS COVERAGE')
+  console.log('─'.repeat(60))
+  console.log(`Nodes with Skills Tagged: ${totalNodes - noSkillsIssues.length}/${totalNodes} (${skillsCoveragePercent}%)`)
+  console.log(`Nodes Missing Skills: ${noSkillsIssues.length}`)
+  console.log(`Target: 40%+ nodes with skills (currently ${skillsCoveragePercent}%)`)
   
   // Action Items
   console.log('\n\n📋 RECOMMENDED ACTION ITEMS')
   console.log('─'.repeat(60))
   console.log(`1. Fix ${bySeverity.critical.length} critical issues (no empathetic options)`)
   console.log(`2. Review ${bySeverity.high.length} high priority issues (reward structure)`)
-  console.log(`3. Polish ${bottomScores.length} lowest-scoring nodes`)
-  console.log(`4. Study top 10 nodes as templates for new content`)
-  console.log(`5. Target: Raise average score from ${avgScore.toFixed(1)} to 85+`)
+  console.log(`3. Tag ${noSkillsIssues.length} nodes with WEF skills (${skillsCoveragePercent}% → 40%+)`)
+  console.log(`4. Polish ${bottomScores.length} lowest-scoring nodes`)
+  console.log(`5. Study top 10 nodes as templates for new content`)
+  console.log(`6. Target: Raise average score from ${avgScore.toFixed(1)} to 85+`)
   
   // Overall Assessment
   console.log('\n\n🎯 OVERALL ASSESSMENT')
