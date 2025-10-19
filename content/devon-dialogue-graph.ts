@@ -1129,9 +1129,9 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "I'm going to go call him now. Integrated approach - engineer and son, both online.\n\nSamuel's probably at the main platform. He has a way of knowing when someone's found their path. Or at least the next step of it.\n\nThank you. For being a good debugging partner.",
-        emotion: 'grateful',
-        variation_id: 'farewell_integration_v1'
+        text: "*He opens his phone, stares at Dad's contact, closes it*\n\nI'm going to call him. Integrated approach - engineer and son, both online.\n\n*Pause*\n\nBut I'm terrified I'll optimize again. Fall back into solution mode. Build another system without realizing it.\n\n*He looks at his flowchart notes, then deliberately closes the notebook*\n\nThis will be work. Every conversation. Catching myself before I try to fix instead of feel.\n\nThe flowchart failed catastrophically. But the instinct that built it? That's still in me.\n\n*Small, uncertain smile*\n\nThank you for showing me empathy isn't the opposite of logic. But knowing that and living it are different things.\n\nSamuel's at the main platform. Good debugging partner, by the way.",
+        emotion: 'determined_but_fragile',
+        variation_id: 'farewell_integration_v2_complex'
       }
     ],
     choices: [
@@ -1142,7 +1142,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         pattern: 'exploring'
       }
     ],
-    tags: ['transition', 'devon_arc']
+    tags: ['transition', 'devon_arc', 'bittersweet']
   },
 
   {
@@ -1150,9 +1150,9 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "I'm going to find a quiet place and call him. Let my heart do the talking instead of my head.\n\nYou should go see Samuel. He's good at helping people find what they need. Even if what they need is just... permission to feel.\n\nThank you for giving me that permission.",
-        emotion: 'warm',
-        variation_id: 'farewell_heart_v1'
+        text: "*He pulls out his phone, then sets it down*\n\nI'm going to call him. Let my heart do the talking instead of my head.\n\n*Long pause, staring at the phone*\n\nBut I don't know how. Twenty-two years of thinking first, feeling second. You don't debug that overnight.\n\nWhat if I call and still can't say what I mean? What if the words come out mechanical even when I'm trying to be real?\n\n*He picks up the phone anyway*\n\nI guess that's what trying looks like. Doing it even when you don't know how.\n\n*Quiet*\n\nThank you for showing me that emotions aren't errors in the system. They're... they're the system.\n\nBut knowing that and living it—those are different things. I'm still learning.\n\nSamuel's waiting for you. Tell him Devon finally understood. Even if the implementation is still buggy.",
+        emotion: 'vulnerable_determination',
+        variation_id: 'farewell_heart_v2_complex'
       }
     ],
     choices: [
@@ -1163,7 +1163,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         pattern: 'helping'
       }
     ],
-    tags: ['transition', 'devon_arc']
+    tags: ['transition', 'devon_arc', 'bittersweet']
   },
 
   {
@@ -1171,9 +1171,9 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "I'm going to call him right now. Just to say hi. To be present. No agenda. No system. Just me and dad.\n\nSamuel's at the main platform if you need direction. He's good at that. Being present while you figure things out.\n\nI think I finally understand what he does.",
-        emotion: 'centered',
-        variation_id: 'farewell_presence_v1'
+        text: "*He dials, hand shaking slightly*\n\nI'm going to call him right now. Just to say hi. Be present. No agenda. No system.\n\n*The phone rings once. He almost hangs up*\n\nWhat if presence isn't enough? What if he needs solutions and all I have now is... being there?\n\nMom knew how to be both. Present AND helpful. I only knew helpful.\n\n*Second ring*\n\nLearning to just exist with someone's pain instead of solving it—that feels like standing still while everything in me screams to act.\n\n*Third ring. He doesn't hang up*\n\nBut maybe that's growth. Doing the uncomfortable thing because it's right, not because it's logical.\n\n*Quiet*\n\nThank you for showing me that empathy isn't anti-logic. It's just... harder to compile.\n\nSamuel's waiting for you. I think I finally understand what he does—he debugs hearts, not systems.",
+        emotion: 'raw_courage',
+        variation_id: 'farewell_presence_v2_complex'
       }
     ],
     choices: [
@@ -1184,7 +1184,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         pattern: 'patience'
       }
     ],
-    tags: ['transition', 'devon_arc']
+    tags: ['transition', 'devon_arc', 'bittersweet']
   }
 ]
 

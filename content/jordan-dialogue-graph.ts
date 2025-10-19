@@ -893,9 +893,9 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_farewell_accumulation',
     speaker: 'Jordan Packard',
     content: [{
-      text: "*She gathers her things, tucks her phone away, stands taller*\n\nThank you. Seriously. I've been spiraling for weeks, and you just... gave me the frame I needed.\n\n*Heads toward Conference Room B, then pauses*\n\nYou know what? I'm going to tell them about you too. About the stranger at the station who helped me see my own path clearly. Because that's what mentorship is, right? Reflecting back what someone can't see themselves.\n\n*Smiles—genuine this time*\n\nI hope whatever brought you here tonight, you find the same clarity.\n\nGood luck with your journey.",
-      emotion: 'grateful',
-      variation_id: 'jordan_farewell_accumulation_1'
+      text: "*She gathers her things, stands, then sits back down*\n\nOkay. Seven jobs as accumulation. Experience building on experience. That's the frame.\n\n*Looks at Conference Room B door*\n\nBut what if they see through it? What if I walk in there and they just... know I'm a fraud who got lucky?\n\n*Forces herself to stand again*\n\nThe voice that says 'you don't belong here' doesn't care about frameworks or narratives. It'll be there when I walk through that door. It'll probably be there for years.\n\n*Tucks phone away*\n\nBut at least now I have words for it. At least I can name what's happening instead of drowning in it.\n\n*Heads toward Conference Room B, voice quieter*\n\nThank you for the frame. I hope it holds when I'm actually standing in front of thirty people who think I have answers.\n\nGood luck with your journey. I hope yours feels less fragile than mine does right now.",
+      emotion: 'grateful_but_shaken',
+      variation_id: 'jordan_farewell_accumulation_v2_complex'
     }],
     choices: [
       {
@@ -905,16 +905,16 @@ export const jordanDialogueNodes: DialogueNode[] = [
         pattern: 'helping'
       }
     ],
-    tags: ['transition', 'jordan_arc']
+    tags: ['transition', 'jordan_arc', 'bittersweet']
   },
 
   {
     nodeId: 'jordan_farewell_birmingham',
     speaker: 'Jordan Packard',
     content: [{
-      text: "*She picks up her bag, glances toward Conference Room B, then back at you*\n\nYou just gave me the speech I needed. The Birmingham frame—it's perfect. It's honest. It's bigger than just me.\n\n*Grins*\n\nI'm going to print out a map of the city and mark every single place I worked. Show them the geography of a 'messy' career. Galleria. Downtown marketing firm. Gyms all over Homewood. Uber routes crisscrossing everything. Innovation Depot.\n\nIt's not chaos. It's a city learning itself. And so was I.\n\n*Extends her hand for a shake*\n\nThank you for helping me see that. I hope Birmingham's been good to you too, whatever your path looks like.\n\nMaybe I'll see you around the city.",
-      emotion: 'grounded',
-      variation_id: 'jordan_farewell_birmingham_1'
+      text: "*She picks up her bag, glances toward Conference Room B*\n\nThe Birmingham frame. Geography of adaptation. It's... it's good. It's honest.\n\n*Pulls out her phone, starts mapping her jobs, then stops*\n\nBut you know what's funny? Some of those jobs I hated. The gym management gig lasted six weeks before I rage-quit. The marketing firm laid me off.\n\nAm I rewriting failure as growth? Is this just a more sophisticated way of lying to myself?\n\n*Puts phone away*\n\nEvolution and chaos can look identical from the outside. I'm asking thirty students to trust that mine was evolution. But some nights I'm not sure I trust it myself.\n\n*Straightens her posture*\n\nBut I'm going in there anyway. Because even if I'm uncertain, at least I'm honest about it now.\n\n*Quiet*\n\nThank you for the framework. I hope it's sturdy enough to hold when I'm standing in front of people expecting answers.\n\nGood luck with whatever brought you here. Birmingham's full of people rebuilding their own maps.",
+      emotion: 'determined_doubt',
+      variation_id: 'jordan_farewell_birmingham_v2_complex'
     }],
     choices: [
       {
@@ -924,16 +924,16 @@ export const jordanDialogueNodes: DialogueNode[] = [
         pattern: 'helping'
       }
     ],
-    tags: ['transition', 'jordan_arc']
+    tags: ['transition', 'jordan_arc', 'bittersweet']
   },
 
   {
     nodeId: 'jordan_farewell_internal',
     speaker: 'Jordan Packard',
     content: [{
-      text: "*She closes her eyes briefly, takes a deep breath, opens them*\n\nI feel... lighter. Like I've been carrying someone else's doubts for years and I just set them down.\n\n*Soft smile*\n\nI don't know if those students will love the speech. I don't know if they'll think I'm inspiring or just messy. But I know I'll walk out of that room believing what I said.\n\nAnd that's the only story that matters.\n\n*Gathers her things slowly, deliberately*\n\nThank you for listening. For asking the right questions. For not trying to fix me, just... reflecting me back to myself.\n\n*Heads toward Conference Room B, turns once more*\n\nWhatever you're here looking for tonight—I hope you find your own version of that clarity.\n\nThe story you tell yourself is the only one that matters. Don't forget that.",
-      emotion: 'peaceful',
-      variation_id: 'jordan_farewell_internal_1'
+      text: "*She closes her eyes briefly, takes a breath*\n\nI feel... lighter. Like I've been carrying someone else's doubts for years.\n\n*Opens eyes, but the smile is uncertain*\n\nBut they'll be back. Tomorrow, next week, at the next career transition. Impostor syndrome doesn't get defeated once. It just gets... managed.\n\n*Looks toward Conference Room B*\n\nI don't know if those students will think I'm inspiring or just another person who doesn't have it figured out. Maybe both.\n\nBut I'll walk out of that room believing what I said. For today, anyway.\n\n*Quiet*\n\nThe story you tell yourself is the only one that matters—until you stop believing it again. Then you have to rebuild it. Again.\n\n*Gathers her things*\n\nThank you for helping me rebuild mine tonight. For not trying to fix me. For letting doubt and confidence exist in the same person.\n\n*Heads toward Conference Room B*\n\nWhatever brought you here, I hope you find something worth keeping. Even if it's complicated.",
+      emotion: 'peaceful_but_realistic',
+      variation_id: 'jordan_farewell_internal_v2_complex'
     }],
     choices: [
       {
@@ -943,7 +943,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         pattern: 'patience'
       }
     ],
-    tags: ['transition', 'jordan_arc']
+    tags: ['transition', 'jordan_arc', 'bittersweet']
   }
 ]
 

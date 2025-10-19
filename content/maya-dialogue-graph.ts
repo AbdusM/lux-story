@@ -938,9 +938,9 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "I'm going to talk to my parents tonight. Tell them about the robotics program, about what I actually want.\n\nSamuel is probably waiting for you at the main platform. He has a way of knowing when someone's journey is shifting. Good luck with yours.",
-        emotion: 'grateful',
-        variation_id: 'farewell_robotics_v1'
+        text: "*She takes a shaky breath, smiling through tears*\n\nI'm going to apply to the robotics program. And I'm going to call my parents tonight.\n\nThey'll be heartbroken. My mother will cry. My father will probably go silent for days.\n\n*She wipes her eyes*\n\nBut I can't live their dream anymore. Even if it was a beautiful dream. Even if it breaks their hearts.\n\n*Pause*\n\nThank you for helping me choose myself. Even when it hurts.\n\n*She straightens her shoulders*\n\nSamuel is waiting for you. He has a way of knowing when someone's journey is shifting. Good luck with yours.",
+        emotion: 'bittersweet_resolve',
+        variation_id: 'farewell_robotics_v2_complex'
       }
     ],
     choices: [
@@ -951,7 +951,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         pattern: 'exploring'
       }
     ],
-    tags: ['transition', 'maya_arc']
+    tags: ['transition', 'maya_arc', 'bittersweet']
   },
 
   {
@@ -959,9 +959,9 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Biomedical engineering. The best of both worlds. I'm going to submit my transfer application tomorrow.\n\nSamuel is probably at the main platform. He helped me find this place - maybe he can help you too. Thank you again.",
-        emotion: 'excited',
-        variation_id: 'farewell_hybrid_v1'
+        text: "*She exhales slowly, somewhere between relief and uncertainty*\n\nBiomedical engineering. Medical robotics. The intersection I need.\n\nMy parents will accept it eventually. It's close enough to their dream that maybe they'll understand. Maybe.\n\n*A pause*\n\nBut I'll always wonder what would have happened if I'd just... chosen purely. For myself. Without compromise.\n\n*She looks at you*\n\nIs taking the safe middle path brave or cowardly? I guess I'll find out.\n\n*Small smile*\n\nThank you for helping me find a path that doesn't break anyone. Even if it feels like it bends me a little.\n\nSamuel is waiting for you. Good luck.",
+        emotion: 'ambivalent_hope',
+        variation_id: 'farewell_hybrid_v2_complex'
       }
     ],
     choices: [
@@ -972,7 +972,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         pattern: 'exploring'
       }
     ],
-    tags: ['transition', 'maya_arc']
+    tags: ['transition', 'maya_arc', 'bittersweet']
   },
 
   {
@@ -980,9 +980,9 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "I need some time to think about what's next. But I know it'll be MY choice, not anyone else's.\n\nYou should talk to Samuel. He's been doing this a long time - helping people find their way. Safe travels.",
-        emotion: 'peaceful',
-        variation_id: 'farewell_self_v1'
+        text: "*She's quiet for a long moment, staring at her hands*\n\nI don't know what I'm going to do yet. Medicine or robotics or something else entirely.\n\nBut I know it'll be MY choice, not anyone else's. That's... terrifying, actually.\n\n*Looks up at you*\n\nBecause when it's my choice, I can't blame them if it's wrong. I can't hide behind 'they made me.' The failure would be mine.\n\n*Pause*\n\nBut so would the success.\n\n*She stands, steadier*\n\nThank you for not telling me what to do. For trusting me with my own life. That's rarer than you think.\n\nSamuel is waiting for you. He's been doing this a long time - helping people find their way. Safe travels.",
+        emotion: 'empowered_but_uncertain',
+        variation_id: 'farewell_self_v2_complex'
       }
     ],
     choices: [
@@ -993,7 +993,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         pattern: 'exploring'
       }
     ],
-    tags: ['transition', 'maya_arc']
+    tags: ['transition', 'maya_arc', 'bittersweet']
   },
 
   // ============= RECIPROCITY ENGINE: MUTUAL VULNERABILITY =============
