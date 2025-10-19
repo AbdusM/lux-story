@@ -76,13 +76,15 @@ export const samuelDialogueNodes: DialogueNode[] = [
         choiceId: 'ask_your_story',
         text: "Were you a traveler once?",
         nextNodeId: 'samuel_backstory_intro',
-        pattern: 'patience'
+        pattern: 'patience',
+        skills: ['emotional_intelligence', 'communication']
       },
       {
         choiceId: 'ready_to_explore',
         text: "I'm ready to explore the platforms.",
         nextNodeId: 'samuel_hub_initial',
-        pattern: 'exploring'
+        pattern: 'exploring',
+        skills: ['communication']
       }
     ]
   },
@@ -103,6 +105,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "What's your story? How did you become the Station Keeper?",
         nextNodeId: 'samuel_backstory_intro',
         pattern: 'patience',
+        skills: ['emotional_intelligence', 'communication'],
         consequence: {
           characterId: 'samuel',
           trustChange: 1
@@ -112,7 +115,8 @@ export const samuelDialogueNodes: DialogueNode[] = [
         choiceId: 'ready_to_meet',
         text: "I'd like to meet someone.",
         nextNodeId: 'samuel_hub_initial',
-        pattern: 'helping'
+        pattern: 'helping',
+        skills: ['communication']
       }
     ]
   },
@@ -133,13 +137,15 @@ export const samuelDialogueNodes: DialogueNode[] = [
         choiceId: 'ask_why_leave',
         text: "Why did you leave?",
         nextNodeId: 'samuel_backstory_revelation',
-        pattern: 'exploring'
+        pattern: 'exploring',
+        skills: ['communication']
       },
       {
         choiceId: 'acknowledge',
         text: "That sounds like a good life.",
         nextNodeId: 'samuel_backstory_revelation',
-        pattern: 'patience'
+        pattern: 'patience',
+        skills: ['emotional_intelligence', 'communication']
       }
     ],
     onEnter: [
@@ -166,6 +172,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "What did you want to build?",
         nextNodeId: 'samuel_pause_after_backstory',
         pattern: 'exploring',
+        skills: ['communication', 'critical_thinking'],
         consequence: {
           characterId: 'samuel',
           trustChange: 1
@@ -176,6 +183,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "I understand that feeling.",
         nextNodeId: 'samuel_pause_after_backstory',
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
         consequence: {
           characterId: 'samuel',
           trustChange: 2,
@@ -223,6 +231,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "That's a beautiful purpose.",
         nextNodeId: 'samuel_hub_initial',
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
         consequence: {
           characterId: 'samuel',
           trustChange: 1
@@ -232,7 +241,8 @@ export const samuelDialogueNodes: DialogueNode[] = [
         choiceId: 'ready_for_my_blueprint',
         text: "I'm ready to find my blueprint.",
         nextNodeId: 'samuel_hub_initial',
-        pattern: 'exploring'
+        pattern: 'exploring',
+        skills: ['communication']
       },
       {
         choiceId: 'how_did_you_find_station',
@@ -331,6 +341,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "So you stayed to give others what you gave her.",
         nextNodeId: 'samuel_hub_initial',
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
         consequence: {
           characterId: 'samuel',
           trustChange: 1
@@ -340,7 +351,8 @@ export const samuelDialogueNodes: DialogueNode[] = [
         choiceId: 'ask_about_letters_from_daughter',
         text: "And the letters people receive... you send those?",
         nextNodeId: 'samuel_letter_system',
-        pattern: 'analytical'
+        pattern: 'analytical',
+        skills: ['critical_thinking', 'communication']
       }
     ],
     onEnter: [
