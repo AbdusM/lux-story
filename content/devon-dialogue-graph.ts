@@ -779,6 +779,19 @@ export const devonDialogueNodes: DialogueNode[] = [
           characterId: 'devon',
           trustChange: 1
         }
+      },
+      {
+        choiceId: 'what_actually_happened',
+        text: "What actually happened when you showed him?",
+        nextNodeId: 'devon_flowchart_incident',
+        pattern: 'exploring',
+        visibleCondition: {
+          trust: { min: 3 }
+        },
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1
+        }
       }
     ],
     onEnter: [
@@ -787,6 +800,53 @@ export const devonDialogueNodes: DialogueNode[] = [
         addKnowledgeFlags: ['system_failed']
       }
     ]
+  },
+
+  // ============= FLOWCHART INCIDENT (Specific Emotional Scene) =============
+  {
+    nodeId: 'devon_flowchart_incident',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "*He's very still, then starts speaking in a flat, precise tone*\n\nThree weeks after Mom died, I found Dad sitting in her chair. Just... sitting. Staring at nothing. For four hours.\n\nI panicked. Built the decision tree that night. Mapped every possible input to an optimal response. If he says X, I respond with Y. Categorized grief stages, outlined gentle probes, planned conversation branches.\n\nThe next day I showed it to him. Printed it out. Thirty-seven pages. Color-coded.\n\n*Devon's voice cracks slightly*\n\nHe looked at it. Looked at me. And he said:\n\n'Your mother would be so proud of how smart you are.'\n\n*Long pause*\n\nThen he went to his room. Didn't speak to me for a week.\n\n*Quiet, matter-of-fact*\n\nThe system was perfect. The flowchart was flawless. Every decision node optimized.\n\nAnd I hurt him more than silence ever could.",
+        emotion: 'numb_recollection',
+        variation_id: 'flowchart_incident_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 3 }
+    },
+    choices: [
+      {
+        choiceId: 'acknowledge_wound',
+        text: "He wasn't rejecting your help. He was grieving your mother together.",
+        nextNodeId: 'devon_admits_hurt',
+        pattern: 'helping',
+        consequence: {
+          characterId: 'devon',
+          trustChange: 2,
+          addKnowledgeFlags: ['shared_flowchart_failure']
+        }
+      },
+      {
+        choiceId: 'technical_analysis',
+        text: "The flowchart assumed grief could be solved. But he needed presence.",
+        nextNodeId: 'devon_analyzes_failure',
+        pattern: 'analytical',
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1,
+          addKnowledgeFlags: ['shared_flowchart_failure']
+        }
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'devon',
+        addKnowledgeFlags: ['revealed_flowchart_incident']
+      }
+    ],
+    tags: ['emotional_incident', 'devon_arc', 'bg3_depth']
   },
 
   {
