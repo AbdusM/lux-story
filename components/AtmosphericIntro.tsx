@@ -181,18 +181,18 @@ const sequences = [
   },
   {
     location: "THE ENTRANCE",
-    text: "The station materializes as you approach. Not appearing—it was always there, you just couldn't see it until now.\n\nGrand Central Terminus. The name on the facade glows softly, like it's lit from behind by something other than electricity.",
+    text: "The station materializes as you approach. Not appearing—it was always there, you just couldn't see it until now.\n\nGrand Central Terminus. Beaux-Arts ceilings, Art Deco metalwork—Birmingham's lost Terminal Station, but wrong somehow.",
     sound: "A low hum. Energy. Possibility."
   },
   {
     location: "THRESHOLD",
-    text: "Three other people stand at the entrance. They look as confused as you feel.\n\nOne clutches medical textbooks. One mutters about flowcharts and decision trees. One keeps checking a phone calendar, scrolling through years of different jobs.\n\nThey're here for the same reason you are.",
-    sound: "Quiet voices. Uncertainty made audible."
+    text: "Three people stand at the entrance, confused.\n\nOne clutches medical textbooks. One mutters about flowcharts. One scrolls through a calendar of different jobs.\n\nBeyond them, others wait—sitting, pacing, lost in thought.",
+    sound: "Quiet voices. Distant footsteps. Uncertainty made audible."
   },
   {
     location: "INT. GRAND CENTRAL TERMINUS",
-    text: "You step inside.\n\nPlatforms stretch into impossible distances. Each one hums with different energy—care, creation, calculation, growth. Above them, departure boards flicker with destinations that aren't places but futures:\n\n\"Platform 1: The Care Line\"\n\"Platform 3: The Builder's Track\"\n\"Platform 7: The Data Stream\"\n\nAn older man in a conductor's uniform watches you arrive. His name tag reads SAMUEL. He smiles, as if he's been expecting you.",
-    sound: "The station breathes. You are not alone."
+    text: "You step inside.\n\nPlatforms stretch into impossible distances. Platform 1 glows warm blue. Platform 3 pulses amber. Platform 7 flickers violet.\n\nAbove them, departure boards list destinations that aren't places but futures:\n\"Platform 1: The Care Line\"\n\"Platform 3: The Builder's Track\"\n\"Platform 7: The Data Stream\"\n\nA man in conductor's uniform stands at the information desk. Name tag: SAMUEL WASHINGTON. He smiles.",
+    sound: "The station breathes. Distant footsteps echo. You are not alone."
   }
 ]
 
