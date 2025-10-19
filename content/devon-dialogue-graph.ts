@@ -311,16 +311,29 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "Who is it?",
         nextNodeId: 'devon_father_reveal',
         pattern: 'exploring',
+        skills: ['communication'],
         consequence: {
           characterId: 'devon',
           trustChange: 1
         }
       },
       {
+        choiceId: 'devon_recognize_care',
+        text: "You care deeply about them. That's not a failure.",
+        nextNodeId: 'devon_father_reveal',
+        pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 2
+        }
+      },
+      {
         choiceId: 'ask_why_failing',
         text: "Why do you think conversations are failing?",
         nextNodeId: 'devon_system_failure',
-        pattern: 'analytical'
+        pattern: 'analytical',
+        skills: ['critical_thinking']
       }
     ]
   },
@@ -406,16 +419,29 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "What does your dad do in Huntsville?",
         nextNodeId: 'devon_father_aerospace',
         pattern: 'exploring',
+        skills: ['communication'],
         consequence: {
           characterId: 'devon',
           trustChange: 1
         }
       },
       {
+        choiceId: 'devon_loss_recognition',
+        text: "You lost your translator. That's a profound loss.",
+        nextNodeId: 'devon_system_failure',
+        pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 2
+        }
+      },
+      {
         choiceId: 'did_it_work',
         text: "Did it work?",
         nextNodeId: 'devon_system_failure',
-        pattern: 'analytical'
+        pattern: 'analytical',
+        skills: ['critical_thinking']
       }
     ]
   },
@@ -437,9 +463,21 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "Is that why you went into engineering?",
         nextNodeId: 'devon_uab_systems_engineering',
         pattern: 'exploring',
+        skills: ['communication'],
         consequence: {
           characterId: 'devon',
           addKnowledgeFlags: ['father_nasa_engineer']
+        }
+      },
+      {
+        choiceId: 'devon_grief_recognition',
+        text: "Grief can't be debugged. It can only be felt.",
+        nextNodeId: 'devon_realizes_parallel',
+        pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 2
         }
       },
       {
@@ -619,25 +657,40 @@ export const devonDialogueNodes: DialogueNode[] = [
         choiceId: 'player_logic_primary',
         text: "Logic keeps me safe. Emotions feel unpredictable.",
         nextNodeId: 'devon_response_logic',
-        pattern: 'exploring'
+        pattern: 'exploring',
+        skills: ['communication']
+      },
+      {
+        choiceId: 'devon_reflect_growth',
+        text: "You've already figured it out. You're asking me because you care.",
+        nextNodeId: 'devon_response_both',
+        pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1
+        }
       },
       {
         choiceId: 'player_emotion_primary',
         text: "I trust my feelings first. Logic comes after.",
         nextNodeId: 'devon_response_emotion',
-        pattern: 'exploring'
+        pattern: 'exploring',
+        skills: ['communication']
       },
       {
         choiceId: 'player_both_integrated',
         text: "Both matter, but integrating them is hard work.",
         nextNodeId: 'devon_response_both',
-        pattern: 'exploring'
+        pattern: 'exploring',
+        skills: ['adaptability', 'critical_thinking']
       },
       {
         choiceId: 'player_still_learning',
         text: "Honestly? I'm still figuring that out myself.",
         nextNodeId: 'devon_response_learning',
-        pattern: 'exploring'
+        pattern: 'patience',
+        skills: ['emotional_intelligence', 'communication']
       }
     ],
     tags: ['reciprocity', 'player_reflection', 'devon_arc']
@@ -860,6 +913,17 @@ export const devonDialogueNodes: DialogueNode[] = [
       }
     ],
     choices: [
+      {
+        choiceId: 'devon_presence_validation',
+        text: "[Say nothing. Just be here with him.]",
+        nextNodeId: 'devon_reframe',
+        pattern: 'patience',
+        skills: ['emotional_intelligence', 'adaptability'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 3
+        }
+      },
       {
         choiceId: 'reframe_empathy',
         text: "Maybe empathy IS a kind of data.",

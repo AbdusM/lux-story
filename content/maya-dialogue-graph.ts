@@ -340,6 +340,17 @@ export const mayaDialogueNodes: DialogueNode[] = [
         }
       },
       {
+        choiceId: 'hint_passion_recognition',
+        text: "You light up when you talk about this.",
+        nextNodeId: 'maya_grateful_support',
+        pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
+      },
+      {
         choiceId: 'hint_question',
         text: "What if there's a field that combines both?",
         nextNodeId: 'maya_uab_revelation',
@@ -618,13 +629,26 @@ export const mayaDialogueNodes: DialogueNode[] = [
         choiceId: 'birmingham_encourage',
         text: "Birmingham needs innovative minds like yours.",
         nextNodeId: 'maya_encouraged',
-        pattern: 'building'
+        pattern: 'building',
+        skills: ['leadership', 'creativity']
+      },
+      {
+        choiceId: 'birmingham_dream_recognition',
+        text: "Your dreams matter just as much as their expectations.",
+        nextNodeId: 'maya_encouraged',
+        pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
       },
       {
         choiceId: 'birmingham_practical',
         text: "You could start small while finishing your degree.",
         nextNodeId: 'maya_considers_hybrid',
-        pattern: 'analytical'
+        pattern: 'analytical',
+        skills: ['problem_solving', 'adaptability']
       }
     ]
   },

@@ -609,25 +609,40 @@ export const jordanDialogueNodes: DialogueNode[] = [
         choiceId: 'player_trust_process',
         text: "I try to trust that even wrong turns teach me something.",
         nextNodeId: 'jordan_response_trust',
-        pattern: 'exploring'
+        pattern: 'exploring',
+        skills: ['adaptability', 'critical_thinking']
+      },
+      {
+        choiceId: 'jordan_strength_recognition',
+        text: "You're asking me, but you've already navigated seven careers. You know how.",
+        nextNodeId: 'jordan_response_trust',
+        pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication', 'leadership'],
+        consequence: {
+          characterId: 'jordan',
+          trustChange: 1
+        }
       },
       {
         choiceId: 'player_plan_reduce_uncertainty',
         text: "I make plans. Structure helps me feel less lost.",
         nextNodeId: 'jordan_response_plan',
-        pattern: 'exploring'
+        pattern: 'exploring',
+        skills: ['problem_solving']
       },
       {
         choiceId: 'player_sit_with_discomfort',
         text: "I sit with it. Uncertainty doesn't always need solving.",
         nextNodeId: 'jordan_response_acceptance',
-        pattern: 'exploring'
+        pattern: 'patience',
+        skills: ['emotional_intelligence', 'adaptability']
       },
       {
         choiceId: 'player_uncertainty_terrifies',
         text: "Honestly? It terrifies me. I avoid it when I can.",
         nextNodeId: 'jordan_response_fear',
-        pattern: 'exploring'
+        pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication']
       }
     ],
     tags: ['reciprocity', 'player_reflection', 'jordan_arc']

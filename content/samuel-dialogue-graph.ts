@@ -276,9 +276,21 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "Where is your daughter now?",
         nextNodeId: 'samuel_daughter_path',
         pattern: 'exploring',
+        skills: ['communication'],
         consequence: {
           characterId: 'samuel',
           trustChange: 1
+        }
+      },
+      {
+        choiceId: 'samuel_courage_recognition',
+        text: "It takes courage to admit you were on the wrong train.",
+        nextNodeId: 'samuel_daughter_path',
+        pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 2
         }
       },
       {
@@ -286,6 +298,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "The letters... do you send them?",
         nextNodeId: 'samuel_letter_system',
         pattern: 'analytical',
+        skills: ['critical_thinking'],
         consequence: {
           characterId: 'samuel',
           trustChange: 1
@@ -479,7 +492,20 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "That sounds... familiar. I'll find him.",
         nextNodeId: 'devon_introduction',
         pattern: 'building',
+        skills: ['problem_solving'],
         consequence: {
+          addGlobalFlags: ['met_devon']
+        }
+      },
+      {
+        choiceId: 'devon_empathy',
+        text: "He must feel so lost. Trying to help but not knowing how.",
+        nextNodeId: 'devon_introduction',
+        pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1,
           addGlobalFlags: ['met_devon']
         }
       },
@@ -487,7 +513,8 @@ export const samuelDialogueNodes: DialogueNode[] = [
         choiceId: 'ask_about_others',
         text: "Are there other travelers here?",
         nextNodeId: 'samuel_other_travelers',
-        pattern: 'exploring'
+        pattern: 'exploring',
+        skills: ['communication']
       }
     ]
   },
@@ -2385,9 +2412,22 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'go_to_devon',
         text: "I'll go meet Devon.",
-        nextNodeId: 'devon_introduction', // Cross-graph to Devon (future)
+        nextNodeId: 'devon_introduction',
         pattern: 'exploring',
+        skills: ['communication'],
         consequence: {
+          addGlobalFlags: ['met_devon']
+        }
+      },
+      {
+        choiceId: 'devon_understand',
+        text: "Hearts are harder than mechanics. I understand that struggle.",
+        nextNodeId: 'devon_introduction',
+        pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1,
           addGlobalFlags: ['met_devon']
         }
       },
@@ -2395,7 +2435,8 @@ export const samuelDialogueNodes: DialogueNode[] = [
         choiceId: 'why_me',
         text: "Why do you think I should talk to him?",
         nextNodeId: 'samuel_why_devon',
-        pattern: 'analytical'
+        pattern: 'analytical',
+        skills: ['critical_thinking']
       }
     ]
   },
@@ -2440,7 +2481,20 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "I'll go talk to her.",
         nextNodeId: 'jordan_introduction',
         pattern: 'exploring',
+        skills: ['communication'],
         consequence: {
+          addGlobalFlags: ['met_jordan']
+        }
+      },
+      {
+        choiceId: 'jordan_empathy',
+        text: "Seven jobs means seven times she took a risk. That takes courage.",
+        nextNodeId: 'jordan_introduction',
+        pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication', 'leadership'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1,
           addGlobalFlags: ['met_jordan']
         }
       },
@@ -2448,7 +2502,8 @@ export const samuelDialogueNodes: DialogueNode[] = [
         choiceId: 'why_me_jordan',
         text: "Why do you think I should talk to her?",
         nextNodeId: 'samuel_why_jordan',
-        pattern: 'analytical'
+        pattern: 'analytical',
+        skills: ['critical_thinking']
       }
     ]
   },
