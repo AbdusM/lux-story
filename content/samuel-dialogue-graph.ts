@@ -94,7 +94,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Each platform leads somewhere different. Platform 1 - The Care Line - that's where you find people who heal, who teach, who help others grow. Platform 3 - The Builder's Track - engineers, makers, people who create with their hands.\n\nThe thing is, you don't choose a platform by logic alone. You talk to the travelers, hear their stories, see which ones resonate. Your path reveals itself through connection.",
+        text: "Each platform leads somewhere different. Platform 1 - The Care Line - that's where you find people who heal, who teach, who help others grow.\n\nPlatform 3 - The Builder's Track - engineers, makers, people who create with their hands.\n\nThe thing is, you don't choose a platform by logic alone. You talk to the travelers, hear their stories, see which ones resonate.\n\nYour path reveals itself through connection.",
         emotion: 'reflective',
         variation_id: 'platforms_v1'
       }
@@ -220,7 +220,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "I wanted to help people find their own blueprints. Not hand them answers, but create a space where they could ask the right questions.\n\nThat's what this station is. I didn't build it - it was here, waiting for someone to keep it. Been doing this for... well, time works differently here. Long enough to see hundreds of travelers find their way.",
+        text: "I wanted to help people find their own blueprints. Not hand them answers, but create a space where they could ask the right questions.\n\nThat's what this station is. I didn't build it - it was here, waiting for someone to keep it.\n\nBeen doing this for... well, time works differently here. Long enough to see hundreds of travelers find their way.",
         emotion: 'warm',
         variation_id: 'purpose_v1'
       }
@@ -330,7 +330,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*A proud smile crosses his face*\n\nShe's a biomedical engineer in Atlanta now. CDC. Designs diagnostic systems for underserved communities.\n\nShe calls every Sunday. Still thanks me for bringing her to the station that night.\n\n*Quiet*\n\nShe could have been a lawyer. That's what I thought she should be. Practical, stable, lucrative.\n\nBut she boarded the train to engineering. And she's... she's exactly who she was meant to be.\n\nWatching her find that—that's when I knew what I wanted to build for the rest of my life.",
+        text: "She's a biomedical engineer in Atlanta now. CDC. Designs diagnostic systems for underserved communities.\n\nShe calls every Sunday. Still thanks me for bringing her to the station that night.\n\nShe could have been a lawyer. That's what I thought she should be. Practical, stable, lucrative.\n\nBut she boarded the train to engineering. And she's... she's exactly who she was meant to be.\n\nWatching her find that—that's when I knew what I wanted to build for the rest of my life.",
         emotion: 'paternal_pride',
         variation_id: 'daughter_v1'
       }
@@ -370,7 +370,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*He pulls an envelope from his pocket—same heavy paper, elegant script*\n\nI write one every night. To someone whose name just... comes to me.\n\nLike you knew [character] needed your perspective tonight. Like Maya knew which question to ask you. The station speaks through us, I suppose.\n\n*He sets the letter on his desk*\n\nTomorrow's traveler. Someone in Huntsville who doesn't know they're at a crossroads yet. But they will be. And when they find the letter in their hand, they'll find their way here.\n\n*Pause*\n\nI don't question how I know the names anymore. After thirty-five years, you learn to trust what you can't explain.",
+        text: "I write one every night. To someone whose name just... comes to me.\n\nLike you knew [character] needed your perspective tonight. Like Maya knew which question to ask you. The station speaks through us, I suppose.\n\nTomorrow's traveler. Someone in Huntsville who doesn't know they're at a crossroads yet. But they will be.\n\nAnd when they find the letter in their hand, they'll find their way here.\n\nI don't question how I know the names anymore. After thirty-five years, you learn to trust what you can't explain.",
         emotion: 'mystical_acceptance',
         variation_id: 'letter_system_v1'
       }
