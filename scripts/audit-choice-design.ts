@@ -401,6 +401,27 @@ function generateReport() {
   console.log(`Nodes Missing Skills: ${noSkillsIssues.length}`)
   console.log(`Target: 40%+ nodes with skills (currently ${skillsCoveragePercent}%)`)
   
+  // List nodes needing skills (for systematic tagging)
+  if (noSkillsIssues.length > 0) {
+    console.log('\n\n📝 NODES NEEDING WEF SKILLS TAGGING')
+    console.log('─'.repeat(60))
+    console.log(`Total: ${noSkillsIssues.length} nodes\n`)
+    
+    // Group by character
+    const byCharacter: Record<string, string[]> = {}
+    noSkillsIssues.forEach(issue => {
+      const char = issue.speaker
+      if (!byCharacter[char]) byCharacter[char] = []
+      byCharacter[char].push(issue.nodeId)
+    })
+    
+    Object.entries(byCharacter).forEach(([char, nodes]) => {
+      console.log(`${char}: ${nodes.length} nodes`)
+      nodes.slice(0, 10).forEach(node => console.log(`  - ${node}`))
+      if (nodes.length > 10) console.log(`  ... and ${nodes.length - 10} more`)
+    })
+  }
+  
   // Action Items
   console.log('\n\n📋 RECOMMENDED ACTION ITEMS')
   console.log('─'.repeat(60))
