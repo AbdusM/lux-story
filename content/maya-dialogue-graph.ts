@@ -19,9 +19,9 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*A young woman sits on a bench, furiously highlighting a biochemistry textbook. Next to her: a disassembled circuit board, scattered robot parts, and a soldering iron.*\n\n*She's trying to study. She's failing. She looks up, startled.*\n\n'Oh. Hi. Sorry, I—were you watching me?'\n\n*Gestures at the contradiction on her bench*\n\n'I know it's weird. Biochemistry notes and robotics parts. I'm not usually this... scattered.'\n\n*Pause*\n\n'Or maybe I am. I don't know anymore.'",
+        text: "Oh. Hi. Sorry, I—were you watching me?\n\nI know it's weird. Biochemistry notes and robotics parts spread everywhere. I'm not usually this... scattered.\n\nOr maybe I am. I don't know anymore.",
         emotion: 'anxious_scattered',
-        variation_id: 'intro_v2_visual_contradiction'
+        variation_id: 'intro_v2_clean'
       }
     ],
     choices: [
@@ -68,9 +68,9 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*She forces a bright smile*\n\nYes, pre-med at UAB. Second year. Organic chemistry is... it's going great. Really great.\n\n*The smile doesn't reach her eyes*\n\nMy parents are so proud.",
+        text: "Yes, pre-med at UAB. Second year. Organic chemistry is... it's going great. Really great.\n\nMy parents are so proud.",
         emotion: 'deflecting',
-        variation_id: 'studies_v2_subtextual'
+        variation_id: 'studies_v2_clean'
       }
     ],
     requiredState: {
@@ -249,9 +249,9 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*Her hands are shaking. She notices you noticing, tucks them under the table*\n\n'I'm fine. Just... everyone sees me as this perfect pre-med student. Good grades, clear path, making my parents' dreams come true.'\n\n*She stares at her organic chemistry notes. Hasn't turned the page in ten minutes*\n\n'But late at night, when I'm supposed to be memorizing anatomy, I'm actually... doing something else.'",
+        text: "I'm fine. Just... everyone sees me as this perfect pre-med student. Good grades, clear path, making my parents' dreams come true.\n\nBut late at night, when I'm supposed to be memorizing anatomy, I'm actually... doing something else.",
         emotion: 'anxious_deflecting',
-        variation_id: 'anxiety_reveal_v2_subtextual'
+        variation_id: 'anxiety_reveal_v2_clean'
       }
     ],
     requiredState: {
@@ -302,9 +302,9 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*The silence stretches. She breaks first*\n\n'Robotics. I'm building robots when I should be studying.'\n\n*She laughs, but it's fragile*\n\n'You didn't push. Most people push. Thank you for that.'",
+        text: "...\n\nRobotics. I'm building robots when I should be studying.\n\nYou didn't push. Most people push. Thank you for that.",
         emotion: 'grateful_vulnerable',
-        variation_id: 'fills_silence_v1'
+        variation_id: 'fills_silence_v1_clean'
       }
     ],
     choices: [
@@ -695,7 +695,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*She laughs bitterly*\n\nOh, I tried. Last month.\n\nI printed out the MIT robotics program information. Highlighted the parts about medical device innovation. Prepared a whole presentation about how it's still helping people.\n\nSat them down at the kitchen table. My mother made tea. Good sign, I thought.\n\nI got through maybe two sentences before she smiled.\n\n*Pause*\n\nThat smile. The one that means 'I'm disappointed but I won't say it.'\n\nThen she said: 'That's lovely, Maya. But you'll be a doctor first, yes?'\n\n*Maya's hands clench*\n\nNot 'no.' Not 'we forbid it.' Just... a question that wasn't a question.\n\nMy father didn't say anything. Just kept drinking his tea. Wouldn't look at me.\n\n*Quiet, raw*\n\nI'd rather they forbid it. At least then I could be angry instead of guilty.\n\nThat's worse somehow. The silence. The smile. The 'but you'll be a doctor first, yes?'\n\nI haven't brought it up since.",
+        text: "Oh, I tried. Last month.\n\nPrinted out the MIT robotics program. Highlighted the medical device innovation parts. Prepared my whole case for how it's still helping people.\n\nKitchen table. My mother made tea. Good sign, I thought.\n\nTwo sentences in, she smiled. That smile.\n\nThen: 'That's lovely, Maya. But you'll be a doctor first, yes?'\n\nNot 'no.' Not 'we forbid it.' Just a question that wasn't a question.\n\nMy father kept drinking his tea. Wouldn't look at me.\n\nI'd rather they forbid it. At least then I could be angry instead of guilty.\n\nI haven't brought it up since.",
         emotion: 'wounded',
         variation_id: 'parent_conversation_v1'
       }
@@ -1037,7 +1037,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*She takes a shaky breath, smiling through tears*\n\nI'm going to apply to the robotics program. And I'm going to call my parents tonight.\n\nThey'll be heartbroken. My mother will cry. My father will probably go silent for days.\n\n*She wipes her eyes*\n\nBut I can't live their dream anymore. Even if it was a beautiful dream. Even if it breaks their hearts.\n\n*Pause*\n\nThank you for helping me choose myself. Even when it hurts.\n\n*She straightens her shoulders*\n\nSamuel is waiting for you. He has a way of knowing when someone's journey is shifting. Good luck with yours.",
+        text: "I'm going to apply to the robotics program. And I'm going to call my parents tonight.\n\nThey'll be heartbroken. My mother will cry. My father will probably go silent for days.\n\nBut I can't live their dream anymore. Even if it was a beautiful dream. Even if it breaks their hearts.\n\nThank you for helping me choose myself. Even when it hurts.\n\nSamuel is waiting for you. He has a way of knowing when someone's journey is shifting. Good luck with yours.",
         emotion: 'bittersweet_resolve',
         variation_id: 'farewell_robotics_v2_complex'
       }
@@ -1058,7 +1058,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*She exhales slowly, somewhere between relief and uncertainty*\n\nBiomedical engineering. Medical robotics. The intersection I need.\n\nMy parents will accept it eventually. It's close enough to their dream that maybe they'll understand. Maybe.\n\n*A pause*\n\nBut I'll always wonder what would have happened if I'd just... chosen purely. For myself. Without compromise.\n\n*She looks at you*\n\nIs taking the safe middle path brave or cowardly? I guess I'll find out.\n\n*Small smile*\n\nThank you for helping me find a path that doesn't break anyone. Even if it feels like it bends me a little.\n\nSamuel is waiting for you. Good luck.",
+        text: "Biomedical engineering. Medical robotics. The intersection I need.\n\nMy parents will accept it eventually. It's close enough to their dream that maybe they'll understand. Maybe.\n\nBut I'll always wonder what would have happened if I'd just... chosen purely. For myself. Without compromise.\n\nIs taking the safe middle path brave or cowardly? I guess I'll find out.\n\nThank you for helping me find a path that doesn't break anyone. Even if it feels like it bends me a little.\n\nSamuel is waiting for you. Good luck.",
         emotion: 'ambivalent_hope',
         variation_id: 'farewell_hybrid_v2_complex'
       }
@@ -1079,7 +1079,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*She's quiet for a long moment, staring at her hands*\n\nI don't know what I'm going to do yet. Medicine or robotics or something else entirely.\n\nBut I know it'll be MY choice, not anyone else's. That's... terrifying, actually.\n\n*Looks up at you*\n\nBecause when it's my choice, I can't blame them if it's wrong. I can't hide behind 'they made me.' The failure would be mine.\n\n*Pause*\n\nBut so would the success.\n\n*She stands, steadier*\n\nThank you for not telling me what to do. For trusting me with my own life. That's rarer than you think.\n\nSamuel is waiting for you. He's been doing this a long time - helping people find their way. Safe travels.",
+        text: "I don't know what I'm going to do yet. Medicine or robotics or something else entirely.\n\nBut I know it'll be MY choice, not anyone else's. That's... terrifying, actually.\n\nBecause when it's my choice, I can't blame them if it's wrong. I can't hide behind 'they made me.' The failure would be mine.\n\nBut so would the success.\n\nThank you for not telling me what to do. For trusting me with my own life. That's rarer than you think.\n\nSamuel is waiting for you. He's been doing this a long time - helping people find their way. Safe travels.",
         emotion: 'empowered_but_uncertain',
         variation_id: 'farewell_self_v2_complex'
       }
