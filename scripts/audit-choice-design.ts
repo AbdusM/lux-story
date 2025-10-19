@@ -186,6 +186,22 @@ function auditChoiceDesign(): ChoiceDesignIssue[] {
         })
       }
     }
+    
+    // ========================================
+    // MEDIUM: No WEF Skills Tagged
+    // ========================================
+    const hasSkills = choices.some(c => c.skills && c.skills.length > 0)
+    
+    if (!hasSkills && choices.length >= 2) {
+      issues.push({
+        nodeId: node.nodeId,
+        speaker: node.speaker,
+        issue: 'No WEF 2030 skills tagged on any choices',
+        severity: 'medium',
+        recommendation: 'Tag choices with skills: emotional_intelligence, critical_thinking, creativity, etc.',
+        currentChoices: choiceTexts
+      })
+    }
   }
   
   return issues
