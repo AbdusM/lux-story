@@ -19,15 +19,15 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Oh, hello. I'm Maya. Are you... waiting for a train too? This place is strange, isn't it? Not quite real, but more real than anywhere I've been.",
-        emotion: 'anxious',
-        variation_id: 'intro_v1'
+        text: "*A young woman sits on a bench, furiously highlighting a biochemistry textbook. Next to her: a disassembled circuit board, scattered robot parts, and a soldering iron.*\n\n*She's trying to study. She's failing. She looks up, startled.*\n\n'Oh. Hi. Sorry, I—were you watching me?'\n\n*Gestures at the contradiction on her bench*\n\n'I know it's weird. Biochemistry notes and robotics parts. I'm not usually this... scattered.'\n\n*Pause*\n\n'Or maybe I am. I don't know anymore.'",
+        emotion: 'anxious_scattered',
+        variation_id: 'intro_v2_visual_contradiction'
       }
     ],
     choices: [
       {
         choiceId: 'intro_studies',
-        text: "You look like you're studying hard. Pre-med?",
+        text: "Pre-med and robotics? That's an interesting combination.",
         nextNodeId: 'maya_studies_response',
         pattern: 'analytical',
         consequence: {
@@ -36,12 +36,14 @@ export const mayaDialogueNodes: DialogueNode[] = [
         }
       },
       {
-        choiceId: 'intro_anxiety',
-        text: "You seem anxious. Want to talk about it?",
+        choiceId: 'intro_contradiction',
+        text: "You're trying to be two things at once.",
         nextNodeId: 'maya_anxiety_check',
         pattern: 'helping',
-        visibleCondition: {
-          trust: { min: 1 }
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1,
+          addKnowledgeFlags: ['noticed_contradiction']
         }
       },
       {
@@ -57,7 +59,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         addKnowledgeFlags: ['met_player']
       }
     ],
-    tags: ['introduction', 'maya_arc']
+    tags: ['introduction', 'maya_arc', 'bg3_hook']
   },
 
   // ============= STUDIES PATH =============

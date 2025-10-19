@@ -19,24 +19,25 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_introduction',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Hey there! You waiting for someone? I'm Jordan—just here for a Career Day thing at the coding bootcamp. Innovation Depot rented out Conference Room B, but I got here way too early. Classic overcompensation, right?",
-      emotion: 'friendly',
-      variation_id: 'jordan_intro_1'
+      text: "*A woman in her early thirties sits near Conference Room B, phone in hand, scrolling frantically. Her laptop is open with a half-written speech. Notes everywhere.*\n\n*She looks up, forces a smile*\n\n'Hey there! Career Day at the coding bootcamp. Innovation Depot rented out Conference Room B. Got here way too early. Classic overcompensation.'\n\n*She laughs, but it sounds rehearsed*\n\n*Holds up her phone—LinkedIn profile visible. Job history scrolling past: UX Designer, Gym Manager, Marketing Coordinator, Uber Driver, Freelance Developer, Product Manager, Senior Designer.*\n\n'I've rewritten this speech six times. What do you tell thirty students about career paths when yours looks like... this?'",
+      emotion: 'friendly_but_anxious',
+      variation_id: 'jordan_intro_v2_visual_hook'
     }],
     choices: [
       {
-        choiceId: 'jordan_intro_ask_career',
-        text: "What kind of Career Day?",
+        choiceId: 'jordan_intro_ask_jobs',
+        text: "That's a lot of different roles. What's the through-line?",
         nextNodeId: 'jordan_career_question',
         pattern: 'exploring',
         consequence: {
           characterId: 'jordan',
-          trustChange: 1
+          trustChange: 1,
+          addKnowledgeFlags: ['noticed_job_diversity']
         }
       },
       {
-        choiceId: 'jordan_intro_relate_waiting',
-        text: "I know that feeling—showing up too early, not sure what to expect.",
+        choiceId: 'jordan_intro_relate_rewriting',
+        text: "Six rewrites means you care about getting it right.",
         nextNodeId: 'jordan_career_question',
         pattern: 'helping',
         consequence: {
@@ -45,13 +46,14 @@ export const jordanDialogueNodes: DialogueNode[] = [
         }
       },
       {
-        choiceId: 'jordan_intro_observe_nervous',
-        text: "You seem a little nervous for just a Career Day talk.",
+        choiceId: 'jordan_intro_observe_doubt',
+        text: "You seem uncertain about your own story.",
         nextNodeId: 'jordan_career_question',
         pattern: 'analytical',
         consequence: {
           characterId: 'jordan',
-          trustChange: 1
+          trustChange: 2,
+          addKnowledgeFlags: ['noticed_uncertainty']
         }
       }
     ],
@@ -59,7 +61,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
       characterId: 'jordan',
       setRelationshipStatus: 'stranger'
     }],
-    tags: ['introduction', 'jordan_arc']
+    tags: ['introduction', 'jordan_arc', 'bg3_hook']
   },
 
   // ============= CAREER CONTEXT (Trust 1) =============
