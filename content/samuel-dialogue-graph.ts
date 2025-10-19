@@ -613,9 +613,9 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*He's at the information desk, closing a leather-bound logbook*\n\n*Looks up with knowing eyes*\n\nWelcome back. I can see the conversation went deep - Maya has that effect on people who really listen to her.\n\nHow are you feeling about what just happened between you two?",
+        text: "Welcome back. I can see the conversation went deep - Maya has that effect on people who really listen to her.\n\nHow are you feeling about what just happened between you two?",
         emotion: 'warm_observant',
-        variation_id: 'reflection_gateway_v2_functional'
+        variation_id: 'reflection_gateway_v3_clean'
       }
     ],
     requiredState: {
@@ -2045,9 +2045,9 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*He sets down his pen, looks up from his logbook*\n\nPlatform 3 has another traveler tonight. Devon Kumar - engineering student. Builds systems to avoid dealing with emotions. Reminds me of myself at that age, if I'm honest.\n\nOr you can return to Maya if you'd like. The choice is yours.",
+        text: "Platform 3 has another traveler tonight. Devon Kumar - engineering student. Builds systems to avoid dealing with emotions. Reminds me of myself at that age, if I'm honest.\n\nOr you can return to Maya if you'd like. The choice is yours.",
         emotion: 'reflective',
-        variation_id: 'hub_after_maya_v2_functional'
+        variation_id: 'hub_after_maya_v3_clean'
       }
     ],
     requiredState: {
@@ -2482,9 +2482,9 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*He's filling out tomorrow's departure schedule, neat handwriting noting arrival and departure times*\n\n*Looks up*\n\nMaya's on Platform 1 if you want to see how her journey's unfolding. Devon's still on Platform 3, building his bridges between logic and heart.\n\nAnd there's Jordan Packard over by the conference rooms - guest instructor tonight, wrestling with whether seven jobs makes her qualified or fraudulent. She has twenty minutes before she speaks to a room full of students.\n\nWhere does your attention pull you?",
+        text: "Maya's on Platform 1 if you want to see how her journey's unfolding. Devon's still on Platform 3, building his bridges between logic and heart.\n\nAnd there's Jordan Packard over by the conference rooms - guest instructor tonight, wrestling with whether seven jobs makes her qualified or fraudulent. She has twenty minutes before she speaks to a room full of students.\n\nWhere does your attention pull you?",
         emotion: 'offering_space',
-        variation_id: 'hub_after_devon_v2_functional'
+        variation_id: 'hub_after_devon_v3_clean'
       }
     ],
     requiredState: {

@@ -808,7 +808,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "*He's very still, then starts speaking in a flat, precise tone*\n\nThree weeks after Mom died, I found Dad sitting in her chair. Just... sitting. Staring at nothing. For four hours.\n\nI panicked. Built the decision tree that night. Mapped every possible input to an optimal response. If he says X, I respond with Y. Categorized grief stages, outlined gentle probes, planned conversation branches.\n\nThe next day I showed it to him. Printed it out. Thirty-seven pages. Color-coded.\n\n*Devon's voice cracks slightly*\n\nHe looked at it. Looked at me. And he said:\n\n'Your mother would be so proud of how smart you are.'\n\n*Long pause*\n\nThen he went to his room. Didn't speak to me for a week.\n\n*Quiet, matter-of-fact*\n\nThe system was perfect. The flowchart was flawless. Every decision node optimized.\n\nAnd I hurt him more than silence ever could.",
+        text: "Three weeks after Mom died, I found Dad sitting in her chair. Just... sitting. Staring at nothing. For four hours.\n\nI panicked. Built the decision tree that night. Mapped every possible input to an optimal response. If he says X, I respond with Y. Categorized grief stages, outlined gentle probes, planned conversation branches.\n\nNext day I showed it to him. Printed it out. Thirty-seven pages. Color-coded.\n\nHe looked at it. Looked at me.\n\n'Your mother would be so proud of how smart you are.'\n\nThen he went to his room. Didn't speak to me for a week.\n\nThe system was perfect. The flowchart was flawless. Every decision node optimized.\n\nAnd I hurt him more than silence ever could.",
         emotion: 'numb_recollection',
         variation_id: 'flowchart_incident_v1'
       }
@@ -1189,7 +1189,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "*He opens his phone, stares at Dad's contact, closes it*\n\nI'm going to call him. Integrated approach - engineer and son, both online.\n\n*Pause*\n\nBut I'm terrified I'll optimize again. Fall back into solution mode. Build another system without realizing it.\n\n*He looks at his flowchart notes, then deliberately closes the notebook*\n\nThis will be work. Every conversation. Catching myself before I try to fix instead of feel.\n\nThe flowchart failed catastrophically. But the instinct that built it? That's still in me.\n\n*Small, uncertain smile*\n\nThank you for showing me empathy isn't the opposite of logic. But knowing that and living it are different things.\n\nSamuel's at the main platform. Good debugging partner, by the way.",
+        text: "I'm going to call him. Integrated approach - engineer and son, both online.\n\nBut I'm terrified I'll optimize again. Fall back into solution mode. Build another system without realizing it.\n\nThis will be work. Every conversation. Catching myself before I try to fix instead of feel.\n\nThe flowchart failed catastrophically. But the instinct that built it? That's still in me.\n\nThank you for showing me empathy isn't the opposite of logic. But knowing that and living it are different things.\n\nSamuel's at the main platform. Good debugging partner, by the way.",
         emotion: 'determined_but_fragile',
         variation_id: 'farewell_integration_v2_complex'
       }
@@ -1210,7 +1210,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "*He pulls out his phone, then sets it down*\n\nI'm going to call him. Let my heart do the talking instead of my head.\n\n*Long pause, staring at the phone*\n\nBut I don't know how. Twenty-two years of thinking first, feeling second. You don't debug that overnight.\n\nWhat if I call and still can't say what I mean? What if the words come out mechanical even when I'm trying to be real?\n\n*He picks up the phone anyway*\n\nI guess that's what trying looks like. Doing it even when you don't know how.\n\n*Quiet*\n\nThank you for showing me that emotions aren't errors in the system. They're... they're the system.\n\nBut knowing that and living it—those are different things. I'm still learning.\n\nSamuel's waiting for you. Tell him Devon finally understood. Even if the implementation is still buggy.",
+        text: "I'm going to call him. Let my heart do the talking instead of my head.\n\nBut I don't know how. Twenty-two years of thinking first, feeling second. You don't debug that overnight.\n\nWhat if I call and still can't say what I mean? What if the words come out mechanical even when I'm trying to be real?\n\nI guess that's what trying looks like. Doing it even when you don't know how.\n\nThank you for showing me that emotions aren't errors in the system. They're... they're the system.\n\nBut knowing that and living it—those are different things. I'm still learning.\n\nSamuel's waiting for you. Tell him Devon finally understood. Even if the implementation is still buggy.",
         emotion: 'vulnerable_determination',
         variation_id: 'farewell_heart_v2_complex'
       }
@@ -1231,7 +1231,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "*He dials, hand shaking slightly*\n\nI'm going to call him right now. Just to say hi. Be present. No agenda. No system.\n\n*The phone rings once. He almost hangs up*\n\nWhat if presence isn't enough? What if he needs solutions and all I have now is... being there?\n\nMom knew how to be both. Present AND helpful. I only knew helpful.\n\n*Second ring*\n\nLearning to just exist with someone's pain instead of solving it—that feels like standing still while everything in me screams to act.\n\n*Third ring. He doesn't hang up*\n\nBut maybe that's growth. Doing the uncomfortable thing because it's right, not because it's logical.\n\n*Quiet*\n\nThank you for showing me that empathy isn't anti-logic. It's just... harder to compile.\n\nSamuel's waiting for you. I think I finally understand what he does—he debugs hearts, not systems.",
+        text: "I'm going to call him right now. Just to say hi. Be present. No agenda. No system.\n\nWhat if presence isn't enough? What if he needs solutions and all I have now is... being there?\n\nMom knew how to be both. Present AND helpful. I only knew helpful.\n\nLearning to just exist with someone's pain instead of solving it—that feels like standing still while everything in me screams to act.\n\nBut maybe that's growth. Doing the uncomfortable thing because it's right, not because it's logical.\n\nThank you for showing me that empathy isn't anti-logic. It's just... harder to compile.\n\nSamuel's waiting for you. I think I finally understand what he does—he debugs hearts, not systems.",
         emotion: 'raw_courage',
         variation_id: 'farewell_presence_v2_complex'
       }
