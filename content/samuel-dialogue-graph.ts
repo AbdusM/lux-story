@@ -1887,13 +1887,15 @@ export const samuelDialogueNodes: DialogueNode[] = [
         choiceId: 'city_rewards_reinvention',
         text: "This city really does reward reinvention, doesn't it?",
         nextNodeId: 'samuel_jordan_city_wisdom',
-        pattern: 'analytical'
+        pattern: 'analytical',
+        skills: ['critical_thinking', 'communication']
       },
       {
         choiceId: 'part_of_story',
         text: "She's part of Birmingham's next chapter now.",
         nextNodeId: 'samuel_jordan_hub_return',
         pattern: 'patience',
+        skills: ['emotional_intelligence', 'communication'],
         consequence: {
           characterId: 'samuel',
           trustChange: 1
@@ -2264,13 +2266,15 @@ export const samuelDialogueNodes: DialogueNode[] = [
         choiceId: 'how_did_you_know',
         text: "How did you know she loves robotics?",
         nextNodeId: 'samuel_station_knows_passions',
-        pattern: 'exploring'
+        pattern: 'exploring',
+        skills: ['communication', 'critical_thinking']
       },
       {
         choiceId: 'accept_acknowledgment',
         text: "I just listened.",
         nextNodeId: 'samuel_listening_wisdom',
         pattern: 'patience',
+        skills: ['emotional_intelligence', 'communication'],
         consequence: {
           characterId: 'samuel',
           trustChange: 1
@@ -2303,13 +2307,15 @@ export const samuelDialogueNodes: DialogueNode[] = [
         choiceId: 'what_does_that_mean',
         text: "What does 'witnessing' really mean?",
         nextNodeId: 'samuel_teaching_witnessing',
-        pattern: 'exploring'
+        pattern: 'exploring',
+        skills: ['communication', 'critical_thinking']
       },
       {
         choiceId: 'recognize_weight',
         text: "It's a lot to carry.",
         nextNodeId: 'samuel_empathy_recognition',
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
         consequence: {
           characterId: 'samuel',
           trustChange: 1
@@ -2614,6 +2620,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "I'd like to talk to Maya again.",
         nextNodeId: mayaRevisitEntryPoints.WELCOME,
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'collaboration'],
         visibleCondition: {
           hasGlobalFlags: ['maya_arc_complete']
         }
@@ -2623,6 +2630,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "I'll check in with Devon.",
         nextNodeId: 'devon_introduction',
         pattern: 'exploring',
+        skills: ['communication', 'collaboration'],
         visibleCondition: {
           hasGlobalFlags: ['met_devon']
         }
@@ -2631,13 +2639,15 @@ export const samuelDialogueNodes: DialogueNode[] = [
         choiceId: 'meet_jordan',
         text: "Tell me more about Jordan.",
         nextNodeId: 'samuel_jordan_intro',
-        pattern: 'exploring'
+        pattern: 'exploring',
+        skills: ['communication', 'collaboration']
       },
       {
         choiceId: 'tell_me_pattern_2',
         text: "What pattern do you see in me now?",
         nextNodeId: 'samuel_pattern_observation',
         pattern: 'patience',
+        skills: ['communication', 'emotional_intelligence'],
         visibleCondition: {
           trust: { min: 3 }
         }
@@ -2665,6 +2675,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "What about my own path?",
         nextNodeId: 'samuel_your_path',
         pattern: 'exploring',
+        skills: ['communication'],
         consequence: {
           characterId: 'samuel',
           trustChange: 1
@@ -2675,6 +2686,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "Thank you for seeing that.",
         nextNodeId: 'samuel_hub_after_maya',
         pattern: 'patience',
+        skills: ['emotional_intelligence', 'communication'],
         consequence: {
           characterId: 'samuel',
           trustChange: 2,
