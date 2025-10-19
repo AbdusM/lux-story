@@ -85,6 +85,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "What does your path look like?",
         nextNodeId: 'jordan_job_reveal_1',
         pattern: 'exploring',
+        skills: ['communication'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1
@@ -95,6 +96,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "Maybe messy paths are the most honest ones to share.",
         nextNodeId: 'jordan_job_reveal_1',
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication', 'leadership'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1
@@ -137,6 +139,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "What did you do after the startup collapsed?",
         nextNodeId: 'jordan_job_reveal_2',
         pattern: 'exploring',
+        skills: ['communication'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -148,6 +151,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "At least you took a risk. That's more than most people do at twenty.",
         nextNodeId: 'jordan_job_reveal_2',
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication', 'leadership'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -189,6 +193,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "Did you stay in sales after that?",
         nextNodeId: 'jordan_job_reveal_3',
         pattern: 'exploring',
+        skills: ['communication'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -200,6 +205,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "That's actually a really valuable skill—reading people that quickly.",
         nextNodeId: 'jordan_job_reveal_3',
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -241,6 +247,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "Where did the graphic design lead?",
         nextNodeId: 'jordan_pattern_acknowledgment',
         pattern: 'exploring',
+        skills: ['communication'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -252,6 +259,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "Teaching yourself a whole new skill from scratch takes real discipline.",
         nextNodeId: 'jordan_pattern_acknowledgment',
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication', 'leadership'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -313,6 +321,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "What kind of making did you want to do?",
         nextNodeId: 'jordan_pause_after_job4',
         pattern: 'exploring',
+        skills: ['communication'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -385,6 +394,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "How did you get from personal training to tech?",
         nextNodeId: 'jordan_job_reveal_6',
         pattern: 'exploring',
+        skills: ['communication'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -437,6 +447,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "When did everything finally come together?",
         nextNodeId: 'jordan_job_reveal_7',
         pattern: 'exploring',
+        skills: ['communication'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
