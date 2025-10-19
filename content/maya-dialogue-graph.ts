@@ -30,6 +30,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "Pre-med and robotics? That's an interesting combination.",
         nextNodeId: 'maya_studies_response',
         pattern: 'analytical',
+        skills: ['critical_thinking', 'communication'],
         consequence: {
           characterId: 'maya',
           addKnowledgeFlags: ['asked_about_studies']
@@ -40,6 +41,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "You're trying to be two things at once.",
         nextNodeId: 'maya_anxiety_check',
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
         consequence: {
           characterId: 'maya',
           trustChange: 1,
@@ -50,7 +52,8 @@ export const mayaDialogueNodes: DialogueNode[] = [
         choiceId: 'intro_place',
         text: "This station appears when we need it most. Why are you here?",
         nextNodeId: 'maya_why_here',
-        pattern: 'exploring'
+        pattern: 'exploring',
+        skills: ['communication', 'critical_thinking']
       }
     ],
     onEnter: [
@@ -122,13 +125,15 @@ export const mayaDialogueNodes: DialogueNode[] = [
         choiceId: 'why_crossroads',
         text: "What kind of crossroads?",
         nextNodeId: 'maya_studies_response',
-        pattern: 'exploring'
+        pattern: 'exploring',
+        skills: ['communication']
       },
       {
         choiceId: 'why_comfort',
         text: "This place does feel safe, doesn't it?",
         nextNodeId: 'maya_anxiety_check',
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
         consequence: {
           characterId: 'maya',
           trustChange: 1
@@ -154,6 +159,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "That sounds like a lot of pressure.",
         nextNodeId: 'maya_family_pressure',
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
         consequence: {
           characterId: 'maya',
           trustChange: 1
@@ -163,7 +169,8 @@ export const mayaDialogueNodes: DialogueNode[] = [
         choiceId: 'family_dreams',
         text: "But what are YOUR dreams?",
         nextNodeId: 'maya_deflect_passion',
-        pattern: 'exploring'
+        pattern: 'exploring',
+        skills: ['communication', 'critical_thinking']
       }
     ]
   },
@@ -185,6 +192,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "What if safe isn't right for you?",
         nextNodeId: 'maya_anxiety_reveal',
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
         visibleCondition: {
           trust: { min: 2 }
         }
@@ -194,6 +202,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "I understand duty vs desire.",
         nextNodeId: 'maya_family_pressure',
         pattern: 'patience',
+        skills: ['emotional_intelligence', 'cultural_competence'],
         visibleCondition: {
           trust: { min: 2 }
         },
@@ -207,6 +216,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "*Nod quietly in understanding*",
         nextNodeId: 'maya_early_gratitude',
         pattern: 'patience',
+        skills: ['emotional_intelligence', 'adaptability'],
         consequence: {
           characterId: 'maya',
           trustChange: 1
@@ -235,6 +245,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "We all have our struggles. No judgment here.",
         nextNodeId: 'maya_anxiety_reveal',
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
         consequence: {
           characterId: 'maya',
           trustChange: 1
@@ -244,7 +255,8 @@ export const mayaDialogueNodes: DialogueNode[] = [
         choiceId: 'anxiety_relate',
         text: "I understand pressure. Sometimes it helps to share.",
         nextNodeId: 'maya_anxiety_reveal',
-        pattern: 'patience'
+        pattern: 'patience',
+        skills: ['emotional_intelligence', 'adaptability']
       }
     ]
   },
@@ -269,13 +281,15 @@ export const mayaDialogueNodes: DialogueNode[] = [
         choiceId: 'reveal_curious',
         text: "What are you actually doing?",
         nextNodeId: 'maya_robotics_hint',
-        pattern: 'exploring'
+        pattern: 'exploring',
+        skills: ['communication']
       },
       {
         choiceId: 'reveal_support',
         text: "It's okay to have your own interests.",
         nextNodeId: 'maya_grateful_support',
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
         consequence: {
           characterId: 'maya',
           trustChange: 1
@@ -286,6 +300,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "[Say nothing. Wait.]",
         nextNodeId: 'maya_fills_silence',
         pattern: 'patience',
+        skills: ['emotional_intelligence', 'adaptability'],
         consequence: {
           characterId: 'maya',
           trustChange: 2,
@@ -481,13 +496,15 @@ export const mayaDialogueNodes: DialogueNode[] = [
         choiceId: 'support_explore',
         text: "What would combining both look like?",
         nextNodeId: 'maya_considers_hybrid',
-        pattern: 'analytical'
+        pattern: 'analytical',
+        skills: ['critical_thinking', 'creativity']
       },
       {
         choiceId: 'support_trust',
         text: "Trust yourself. Your instincts are good.",
         nextNodeId: 'maya_robotics_passion',
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication', 'leadership'],
         consequence: {
           characterId: 'maya',
           trustChange: 1
@@ -575,13 +592,15 @@ export const mayaDialogueNodes: DialogueNode[] = [
         choiceId: 'encouraged_parents',
         text: "How do you think your parents would react?",
         nextNodeId: 'maya_family_pressure',
-        pattern: 'exploring'
+        pattern: 'exploring',
+        skills: ['communication', 'critical_thinking']
       },
       {
         choiceId: 'encouraged_future',
         text: "What would you do if you could choose freely?",
         nextNodeId: 'maya_crossroads',
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
         visibleCondition: {
           trust: { min: 5 }
         }
@@ -606,6 +625,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "That sounds perfect for you.",
         nextNodeId: 'maya_crossroads',
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
         visibleCondition: {
           trust: { min: 4 }
         }
@@ -614,7 +634,8 @@ export const mayaDialogueNodes: DialogueNode[] = [
         choiceId: 'hybrid_parents',
         text: "Would your parents approve of that path?",
         nextNodeId: 'maya_family_pressure',
-        pattern: 'analytical'
+        pattern: 'analytical',
+        skills: ['critical_thinking', 'cultural_competence']
       }
     ]
   },
@@ -739,6 +760,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "That sounds incredibly painful.",
         nextNodeId: 'maya_rebellion_thoughts',
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
         consequence: {
           characterId: 'maya',
           trustChange: 2,
@@ -750,6 +772,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "Maybe they need more time to process it?",
         nextNodeId: 'maya_reframes_sacrifice',
         pattern: 'patience',
+        skills: ['emotional_intelligence', 'adaptability', 'cultural_competence'],
         consequence: {
           characterId: 'maya',
           trustChange: 1
