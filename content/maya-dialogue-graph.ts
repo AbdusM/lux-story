@@ -333,7 +333,8 @@ export const mayaDialogueNodes: DialogueNode[] = [
         choiceId: 'continue_after_silence',
         text: "Tell me about the robots.",
         nextNodeId: 'maya_robotics_hint',
-        pattern: 'exploring'
+        pattern: 'exploring',
+        skills: ['communication']
       }
     ],
     tags: ['emotional_intelligence_reward', 'maya_arc']
@@ -805,6 +806,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "What does living authentically mean to you?",
         nextNodeId: 'maya_crossroads',
         pattern: 'helping',
+        skills: ['communication', 'emotional_intelligence'],
         visibleCondition: {
           trust: { min: 5 }
         }
@@ -814,6 +816,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "Powerful realization. How do you feel?",
         nextNodeId: 'maya_early_gratitude',
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
         consequence: {
           characterId: 'maya',
           trustChange: 1
@@ -839,6 +842,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "Where does courage come from for you?",
         nextNodeId: 'maya_crossroads',
         pattern: 'helping',
+        skills: ['communication', 'emotional_intelligence'],
         visibleCondition: {
           trust: { min: 5 }
         }
@@ -848,6 +852,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "Start small. One honest conversation at a time.",
         nextNodeId: 'maya_early_gratitude',
         pattern: 'patience',
+        skills: ['emotional_intelligence', 'problem_solving', 'adaptability'],
         consequence: {
           characterId: 'maya',
           trustChange: 1
@@ -1169,6 +1174,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "Of course. After everything you've shared, it's only fair.",
         nextNodeId: 'maya_reciprocity_question',
         pattern: 'helping',
+        skills: ['communication', 'emotional_intelligence'],
         consequence: {
           characterId: 'maya',
           trustChange: 1,
@@ -1179,7 +1185,8 @@ export const mayaDialogueNodes: DialogueNode[] = [
         choiceId: 'deflect_question',
         text: "I'd rather not talk about that, if it's okay.",
         nextNodeId: 'maya_graceful_decline',
-        pattern: 'patience'
+        pattern: 'patience',
+        skills: ['communication', 'emotional_intelligence']
       }
     ],
     tags: ['reciprocity', 'maya_arc']
@@ -1260,6 +1267,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: parentalWorkLegacy.choices[0].choiceText,
         nextNodeId: 'maya_reaction_stable',
         pattern: 'patience',
+        skills: ['communication', 'emotional_intelligence'],
         consequence: parentalWorkLegacy.choices[0].stateChanges[0]
       },
       {
@@ -1267,6 +1275,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: parentalWorkLegacy.choices[1].choiceText,
         nextNodeId: 'maya_reaction_entrepreneur',
         pattern: 'exploring',
+        skills: ['communication', 'adaptability'],
         consequence: parentalWorkLegacy.choices[1].stateChanges[0]
       },
       {
@@ -1274,6 +1283,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: parentalWorkLegacy.choices[2].choiceText,
         nextNodeId: 'maya_reaction_struggling',
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
         consequence: parentalWorkLegacy.choices[2].stateChanges[0]
       },
       {
