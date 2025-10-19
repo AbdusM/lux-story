@@ -297,7 +297,7 @@ export function MinimalGameInterface() {
           <div className="apple-story-message">
             <div className="apple-scene-heading">INT. GRAND CENTRAL TERMINUS - NIGHT</div>
             <div className="apple-story-text">
-              {parseTextWithHierarchy("Grand Central Terminus isn't on any map, but here you are.\n\nThe letter in your hand reads: \"Platform 7, Midnight. Your future awaits.\"\n\nAround you, platforms stretch into the distance, each humming with different energy.")}
+              {parseTextWithHierarchy("A magical train station appears between who you were and who you're becoming.\n\nPlatform 7. Midnight. Your future awaits.\n\nAround you, platforms stretch into the distance, each humming with different energy.")}
             </div>
           </div>
 
