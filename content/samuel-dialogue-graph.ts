@@ -199,7 +199,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*He looks out over the platforms, a gentle smile on his face*\n\nThat was a lifetime ago. But it still matters.",
+        text: "That was a lifetime ago. But it still matters.",
         emotion: 'thoughtful',
         variation_id: 'pause_backstory_v1'
       }
@@ -272,7 +272,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*He's quiet for a moment, choosing his words carefully*\n\nI was a traveler once. Like you. Like Maya and Devon and Jordan.\n\nThirty-five years ago, I stood where you're standing. Got a letter—same elegant script. 'Platform 7. Midnight.'\n\nI was choosing between VP of Engineering at Southern Company or staying technical. Management meant power, money, respect. Hands-on meant... doing what I loved.\n\n*Pause*\n\nI took the management train. Spent twenty years in meetings about meetings. Every promotion felt like moving further from what made me want to be an engineer in the first place.\n\n*He looks at the platforms*\n\nWhen my daughter was nineteen, she found herself at a crossroads. I brought her here. Watched her meet travelers, make her choice, board her train.\n\nI saw the relief in her eyes.\n\n*Quiet*\n\nRealized I'd been on the wrong train for two decades.\n\nI came back through the station. Faced my own crossroads again. This time I chose differently.\n\nI chose to stay. To keep the station. To help others avoid my mistakes.",
+        text: "I was a traveler once. Like you. Like Maya and Devon and Jordan.\n\nThirty-five years ago, I stood where you're standing. Got a letter—same elegant script. 'Platform 7. Midnight.'\n\nI was choosing between VP of Engineering at Southern Company or staying technical. Management meant power, money, respect. Hands-on meant... doing what I loved.\n\nI took the management train. Spent twenty years in meetings about meetings. Every promotion felt like moving further from what made me want to be an engineer in the first place.\n\nWhen my daughter was nineteen, she found herself at a crossroads. I brought her here. Watched her meet travelers, make her choice, board her train.\n\nI saw the relief in her eyes.\n\nRealized I'd been on the wrong train for two decades.\n\nI came back through the station. Faced my own crossroads again. This time I chose differently.\n\nI chose to stay. To keep the station. To help others avoid my mistakes.",
         emotion: 'vulnerable_wisdom',
         variation_id: 'traveler_origin_v1'
       }
@@ -466,7 +466,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*He nods thoughtfully*\n\nThat's a particular kind of struggle. When your heart knows what it wants but the path there feels... complicated.\n\nThere's someone on Platform 1 tonight who understands that tension. Maya Chen - brilliant pre-med student at UAB. She's supposed to become a doctor, and she's good enough to do it. But between what she's 'supposed' to do and what she dreams about, there's a gap that's tearing her apart.",
+        text: "That's a particular kind of struggle. When your heart knows what it wants but the path there feels... complicated.\n\nThere's someone on Platform 1 tonight who understands that tension. Maya Chen - brilliant pre-med student at UAB. She's supposed to become a doctor, and she's good enough to do it. But between what she's 'supposed' to do and what she dreams about, there's a gap that's tearing her apart.",
         emotion: 'knowing',
         variation_id: 'discovers_helping_v1'
       }
@@ -960,7 +960,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'continue_from_station_truth',
-        text: "*nod in understanding*",
+        text: "[Nod in understanding]",
         nextNodeId: 'samuel_contemplation_offer',
         pattern: 'patience'
       }
@@ -1224,7 +1224,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'continue_deep',
-        text: "*sit with this truth*",
+        text: "[Sit with this truth]",
         nextNodeId: 'samuel_hub_after_maya',
         pattern: 'patience'
       }
@@ -1531,7 +1531,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'continue_from_confirmation',
-        text: "*nod thoughtfully*",
+        text: "[Nod thoughtfully]",
         nextNodeId: 'samuel_hub_after_maya',
         pattern: 'patience',
         consequence: {
@@ -2118,7 +2118,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'return_after_deep_jordan',
-        text: "*nod thoughtfully*",
+        text: "[Nod thoughtfully]",
         nextNodeId: 'samuel_hub_after_devon',
         pattern: 'patience',
         consequence: {

@@ -213,7 +213,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'deflect_respect',
-        text: "*Nod quietly in understanding*",
+        text: "[Nod quietly in understanding]",
         nextNodeId: 'maya_early_gratitude',
         pattern: 'patience',
         skills: ['emotional_intelligence', 'adaptability'],

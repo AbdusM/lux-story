@@ -152,7 +152,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'stay_quiet',
-        text: "*Wait quietly*",
+        text: "[Wait quietly]",
         nextNodeId: 'devon_opens_up',
         pattern: 'patience',
         skills: ['emotional_intelligence', 'adaptability'],
