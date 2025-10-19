@@ -82,6 +82,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "Why do you need a system for conversations?",
         nextNodeId: 'devon_why_system',
         pattern: 'exploring',
+        skills: ['communication', 'critical_thinking'],
         consequence: {
           characterId: 'devon',
           trustChange: 1
@@ -92,6 +93,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "Who is this for?",
         nextNodeId: 'devon_father_hint',
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
         consequence: {
           characterId: 'devon',
           trustChange: 2
@@ -116,6 +118,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "What's the use case for this system?",
         nextNodeId: 'devon_father_hint',
         pattern: 'analytical',
+        skills: ['critical_thinking', 'communication'],
         consequence: {
           characterId: 'devon',
           trustChange: 1
@@ -126,6 +129,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "That's actually brilliant. Systems make sense.",
         nextNodeId: 'devon_validated',
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
         consequence: {
           characterId: 'devon',
           trustChange: 2,
@@ -151,6 +155,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "*Wait quietly*",
         nextNodeId: 'devon_opens_up',
         pattern: 'patience',
+        skills: ['emotional_intelligence', 'adaptability'],
         consequence: {
           characterId: 'devon',
           trustChange: 2
@@ -160,7 +165,8 @@ export const devonDialogueNodes: DialogueNode[] = [
         choiceId: 'ask_about_people',
         text: "People aren't predictable?",
         nextNodeId: 'devon_people_problem',
-        pattern: 'exploring'
+        pattern: 'exploring',
+        skills: ['communication']
       }
     ]
   },
@@ -362,6 +368,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "I'm sorry about your mom.",
         nextNodeId: 'devon_pause_after_father_reveal',
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
         consequence: {
           characterId: 'devon',
           trustChange: 2,
@@ -373,6 +380,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "So you built this flowchart to help him?",
         nextNodeId: 'devon_pause_after_father_reveal',
         pattern: 'analytical',
+        skills: ['critical_thinking', 'communication'],
         consequence: {
           characterId: 'devon',
           trustChange: 1,
@@ -824,6 +832,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "That must have hurt.",
         nextNodeId: 'devon_admits_hurt',
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
         consequence: {
           characterId: 'devon',
           trustChange: 2,
@@ -835,6 +844,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "What went wrong with the system?",
         nextNodeId: 'devon_analyzes_failure',
         pattern: 'analytical',
+        skills: ['critical_thinking', 'problem_solving'],
         consequence: {
           characterId: 'devon',
           trustChange: 1
@@ -882,6 +892,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "He wasn't rejecting your help. He was grieving your mother together.",
         nextNodeId: 'devon_admits_hurt',
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
         consequence: {
           characterId: 'devon',
           trustChange: 2,
@@ -893,6 +904,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "The flowchart assumed grief could be solved. But he needed presence.",
         nextNodeId: 'devon_analyzes_failure',
         pattern: 'analytical',
+        skills: ['critical_thinking', 'emotional_intelligence'],
         consequence: {
           characterId: 'devon',
           trustChange: 1,
