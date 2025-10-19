@@ -233,6 +233,19 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "I'm ready to find my blueprint.",
         nextNodeId: 'samuel_hub_initial',
         pattern: 'exploring'
+      },
+      {
+        choiceId: 'how_did_you_find_station',
+        text: "How did you find the station?",
+        nextNodeId: 'samuel_traveler_origin',
+        pattern: 'exploring',
+        visibleCondition: {
+          trust: { min: 5 }
+        },
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
       }
     ],
     onEnter: [
@@ -241,6 +254,124 @@ export const samuelDialogueNodes: DialogueNode[] = [
         addKnowledgeFlags: ['knows_purpose']
       }
     ]
+  },
+
+  // ============= SAMUEL'S TRAVELER ORIGIN (High Trust - Fridge Logic Fix) =============
+  {
+    nodeId: 'samuel_traveler_origin',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*He's quiet for a moment, choosing his words carefully*\n\nI was a traveler once. Like you. Like Maya and Devon and Jordan.\n\nThirty-five years ago, I stood where you're standing. Got a letter—same elegant script. 'Platform 7. Midnight.'\n\nI was choosing between VP of Engineering at Southern Company or staying technical. Management meant power, money, respect. Hands-on meant... doing what I loved.\n\n*Pause*\n\nI took the management train. Spent twenty years in meetings about meetings. Every promotion felt like moving further from what made me want to be an engineer in the first place.\n\n*He looks at the platforms*\n\nWhen my daughter was nineteen, she found herself at a crossroads. I brought her here. Watched her meet travelers, make her choice, board her train.\n\nI saw the relief in her eyes.\n\n*Quiet*\n\nRealized I'd been on the wrong train for two decades.\n\nI came back through the station. Faced my own crossroads again. This time I chose differently.\n\nI chose to stay. To keep the station. To help others avoid my mistakes.",
+        emotion: 'vulnerable_wisdom',
+        variation_id: 'traveler_origin_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 5 }
+    },
+    choices: [
+      {
+        choiceId: 'ask_about_daughter',
+        text: "Where is your daughter now?",
+        nextNodeId: 'samuel_daughter_path',
+        pattern: 'exploring',
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'ask_about_letters',
+        text: "The letters... do you send them?",
+        nextNodeId: 'samuel_letter_system',
+        pattern: 'analytical',
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'samuel',
+        addKnowledgeFlags: ['knows_samuel_was_traveler']
+      }
+    ],
+    tags: ['backstory', 'fridge_logic_fix', 'samuel_arc']
+  },
+
+  // ============= SAMUEL'S DAUGHTER (Emotional Anchor) =============
+  {
+    nodeId: 'samuel_daughter_path',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*A proud smile crosses his face*\n\nShe's a biomedical engineer in Atlanta now. CDC. Designs diagnostic systems for underserved communities.\n\nShe calls every Sunday. Still thanks me for bringing her to the station that night.\n\n*Quiet*\n\nShe could have been a lawyer. That's what I thought she should be. Practical, stable, lucrative.\n\nBut she boarded the train to engineering. And she's... she's exactly who she was meant to be.\n\nWatching her find that—that's when I knew what I wanted to build for the rest of my life.",
+        emotion: 'paternal_pride',
+        variation_id: 'daughter_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'return_to_purpose',
+        text: "So you stayed to give others what you gave her.",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'helping',
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'ask_about_letters_from_daughter',
+        text: "And the letters people receive... you send those?",
+        nextNodeId: 'samuel_letter_system',
+        pattern: 'analytical'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'samuel',
+        addKnowledgeFlags: ['knows_about_daughter']
+      }
+    ],
+    tags: ['backstory', 'samuel_arc']
+  },
+
+  // ============= LETTER SYSTEM EXPLANATION (Fridge Logic Fix) =============
+  {
+    nodeId: 'samuel_letter_system',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*He pulls an envelope from his pocket—same heavy paper, elegant script*\n\nI write one every night. To someone whose name just... comes to me.\n\nLike you knew [character] needed your perspective tonight. Like Maya knew which question to ask you. The station speaks through us, I suppose.\n\n*He sets the letter on his desk*\n\nTomorrow's traveler. Someone in Huntsville who doesn't know they're at a crossroads yet. But they will be. And when they find the letter in their hand, they'll find their way here.\n\n*Pause*\n\nI don't question how I know the names anymore. After thirty-five years, you learn to trust what you can't explain.",
+        emotion: 'mystical_acceptance',
+        variation_id: 'letter_system_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 5 }
+    },
+    choices: [
+      {
+        choiceId: 'understand_letters',
+        text: "So the station chose you to guide others.",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'samuel',
+        addKnowledgeFlags: ['knows_letter_system']
+      }
+    ],
+    tags: ['fridge_logic_fix', 'samuel_arc']
   },
 
   // ============= HUB: INITIAL (Discovery-based character routing) =============
