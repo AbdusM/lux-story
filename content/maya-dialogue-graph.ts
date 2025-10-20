@@ -1337,7 +1337,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'mutual_understanding',
         text: "We balance each other out.",
-        nextNodeId: 'maya_farewell_robotics',
+        nextNodeId: 'maya_mutual_recognition_stable',
         pattern: 'helping',
         consequence: {
           characterId: 'maya',
@@ -1349,11 +1349,38 @@ export const mayaDialogueNodes: DialogueNode[] = [
   },
 
   {
+    nodeId: 'maya_mutual_recognition_stable',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "We do, don't we?\n\nYou had solid ground and learned patience. I had unstable ground and learned urgency.\n\nAnd somehow, talking to you, I don't feel like I have to choose between them anymore. I can be urgent about my own dreams AND patient with the process.\n\nThat's what you showed me.",
+        emotion: 'grateful_recognition',
+        variation_id: 'mutual_stable_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'transition_to_farewell_stable',
+        text: "I'm glad we found each other tonight.",
+        nextNodeId: 'maya_farewell_robotics',
+        pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1,
+          addKnowledgeFlags: ['mutual_recognition_achieved']
+        }
+      }
+    ],
+    tags: ['reciprocity', 'mutual_recognition', 'maya_arc']
+  },
+
+  {
     nodeId: 'maya_reaction_entrepreneur',
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*She laughs, but it's not bitter - it's recognition*\n\nOf course! That's why you pushed me toward robotics without hesitation.\n\nRisk is normal for you. Starting fresh, building something from nothing - that's your inherited language.\n\n*She looks at her med school textbooks*\n\nMy parents took one huge risk coming to America. They want me to never have to risk again.\n\nBut you... you grew up seeing risk as possibility, not threat. That's why you could see my path when I couldn't.",
+        text: "Of course! That's why you pushed me toward robotics without hesitation.\n\nRisk is normal for you. Starting fresh, building something from nothing - that's your inherited language.\n\nMy parents took one huge risk coming to America. They want me to never have to risk again.\n\nBut you... you grew up seeing risk as possibility, not threat. That's why you could see my path when I couldn't.",
         emotion: 'dawning_understanding',
         variation_id: 'entrepreneur_reaction_v1'
       }
@@ -1362,7 +1389,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'risk_as_inheritance',
         text: "We inherit more than we realize.",
-        nextNodeId: 'maya_farewell_robotics',
+        nextNodeId: 'maya_mutual_recognition_entrepreneur',
         pattern: 'analytical',
         consequence: {
           characterId: 'maya',
@@ -1376,6 +1403,33 @@ export const mayaDialogueNodes: DialogueNode[] = [
         addGlobalFlags: ['player_shared_parental_work_legacy']
       }
     ]
+  },
+
+  {
+    nodeId: 'maya_mutual_recognition_entrepreneur',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "We really do.\n\nYour parents gave you permission to leap. Mine gave me the weight of their one successful leap.\n\nBut tonight, talking to you, I realized something. Their risk wasn't wasted if I use it to take my own risk. That's the real inheritance.\n\nBuilding something from nothing. Just like they did. Just like you do. Just... my version.",
+        emotion: 'inspired_recognition',
+        variation_id: 'mutual_entrepreneur_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'transition_to_farewell_entrepreneur',
+        text: "That's exactly it. Your version.",
+        nextNodeId: 'maya_farewell_robotics',
+        pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1,
+          addKnowledgeFlags: ['mutual_recognition_achieved']
+        }
+      }
+    ],
+    tags: ['reciprocity', 'mutual_recognition', 'maya_arc']
   },
 
   {
@@ -1408,7 +1462,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*She reaches toward you, then stops*\n\nWhen you helped me, you weren't performing empathy. You were remembering.\n\nThat's... that's different. That's real.",
+        text: "When you helped me, you weren't performing empathy. You were remembering.\n\nThat's... that's different. That's real.",
         emotion: 'profound_connection',
         variation_id: 'struggling_reaction_v1_pt2'
       }
@@ -1417,7 +1471,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'shared_weight',
         text: "Some weights teach us how to help carry others.",
-        nextNodeId: 'maya_farewell_robotics',
+        nextNodeId: 'maya_mutual_recognition_struggling',
         pattern: 'helping',
         consequence: {
           characterId: 'maya',
@@ -1427,6 +1481,33 @@ export const mayaDialogueNodes: DialogueNode[] = [
         }
       }
     ]
+  },
+
+  {
+    nodeId: 'maya_mutual_recognition_struggling',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "They do, don't they?\n\nYou learned to recognize struggle because you lived beside it. I learned to hide my struggle because I thought it would burden people who already had enough.\n\nBut tonight, with you, I didn't have to hide. You already knew. You'd already seen it.\n\nThat's the gift we just gave each other. Being seen without having to explain.",
+        emotion: 'deep_connection',
+        variation_id: 'mutual_struggling_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'transition_to_farewell_struggling',
+        text: "[Nod quietly in understanding]",
+        nextNodeId: 'maya_farewell_robotics',
+        pattern: 'patience',
+        skills: ['emotional_intelligence'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1,
+          addKnowledgeFlags: ['mutual_recognition_achieved', 'deepest_bond_formed']
+        }
+      }
+    ],
+    tags: ['reciprocity', 'mutual_recognition', 'maya_arc', 'deep_bond']
   },
 
   {
@@ -1468,7 +1549,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'presence_matters',
         text: "Being present for your own life matters too.",
-        nextNodeId: 'maya_farewell_robotics',
+        nextNodeId: 'maya_mutual_recognition_absent',
         pattern: 'patience',
         consequence: {
           characterId: 'maya',
@@ -1477,6 +1558,33 @@ export const mayaDialogueNodes: DialogueNode[] = [
         }
       }
     ]
+  },
+
+  {
+    nodeId: 'maya_mutual_recognition_absent',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "It really does.\n\nYou learned that lesson the hard way. Watching achievement from a distance. Loving someone who was too busy succeeding to be there.\n\nI was about to do the same thing. Different version, same absence.\n\nBut you recognized it because you lived it. And by telling me your story, you saved me from repeating it.\n\nThat's what tonight was about, wasn't it? Both of us choosing presence over achievement for once.",
+        emotion: 'grateful_clarity',
+        variation_id: 'mutual_absent_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'transition_to_farewell_absent',
+        text: "That's exactly what tonight was about.",
+        nextNodeId: 'maya_farewell_robotics',
+        pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1,
+          addKnowledgeFlags: ['mutual_recognition_achieved']
+        }
+      }
+    ],
+    tags: ['reciprocity', 'mutual_recognition', 'maya_arc']
   }
 ]
 

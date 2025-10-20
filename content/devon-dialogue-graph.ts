@@ -718,7 +718,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "*He nods understanding*\n\nYeah. Predictable is safe. I get that completely. Maybe we're both learning that safety isn't the only thing worth optimizing for.",
+        text: "Yeah. Predictable is safe. I get that completely. Maybe we're both learning that safety isn't the only thing worth optimizing for.",
         emotion: 'thoughtful',
         variation_id: 'devon_response_logic_v1'
       }
@@ -727,7 +727,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'devon_continue_after_logic',
         text: "(Continue)",
-        nextNodeId: 'devon_farewell_integration',
+        nextNodeId: 'devon_shared_insight_logic',
         pattern: 'patience'
       }
     ],
@@ -735,11 +735,38 @@ export const devonDialogueNodes: DialogueNode[] = [
   },
 
   {
+    nodeId: 'devon_shared_insight_logic',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "You know what's strange? I spent all that time building a system to talk to my dad.\n\nBut talking to you tonight, without any system at all, felt more real than any of my optimized conversation paths.\n\nMaybe that's the actual solution. Not a better system. Just... showing up as the messy, uncertain person I actually am.",
+        emotion: 'breakthrough',
+        variation_id: 'devon_shared_insight_logic_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'transition_to_farewell_devon_logic',
+        text: "That's the bravest thing you could do.",
+        nextNodeId: 'devon_farewell_integration',
+        pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1,
+          addKnowledgeFlags: ['mutual_recognition_achieved']
+        }
+      }
+    ],
+    tags: ['reciprocity', 'mutual_insight', 'devon_arc']
+  },
+
+  {
     nodeId: 'devon_response_emotion',
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "*He looks thoughtful*\n\nThat's the opposite of how I operate. But maybe that's why you could see what I couldn't—you weren't filtering everything through systems first.\n\nThat's valuable. Thank you for sharing that.",
+        text: "That's the opposite of how I operate. But maybe that's why you could see what I couldn't—you weren't filtering everything through systems first.\n\nThat's valuable. Thank you for sharing that.",
         emotion: 'appreciative',
         variation_id: 'devon_response_emotion_v1'
       }
@@ -748,7 +775,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'devon_continue_after_emotion',
         text: "(Continue)",
-        nextNodeId: 'devon_farewell_integration',
+        nextNodeId: 'devon_shared_insight_emotion',
         pattern: 'patience'
       }
     ],
@@ -756,11 +783,38 @@ export const devonDialogueNodes: DialogueNode[] = [
   },
 
   {
+    nodeId: 'devon_shared_insight_emotion',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "We approach things completely differently, but somehow we understood each other tonight.\n\nYou feel first, then think. I think first, then struggle with feeling. Neither is wrong.\n\nAnd maybe that's what my dad needs. Not me trying to be more like him or him more like me. Just both of us showing up honestly.\n\nYou taught me that.",
+        emotion: 'grateful_clarity',
+        variation_id: 'devon_shared_insight_emotion_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'transition_to_farewell_devon_emotion',
+        text: "Different approaches, same humanity.",
+        nextNodeId: 'devon_farewell_integration',
+        pattern: 'analytical',
+        skills: ['emotional_intelligence', 'communication'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1,
+          addKnowledgeFlags: ['mutual_recognition_achieved']
+        }
+      }
+    ],
+    tags: ['reciprocity', 'mutual_insight', 'devon_arc']
+  },
+
+  {
     nodeId: 'devon_response_both',
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "*He smiles slightly*\n\nYeah, it is hard work. But you make it look natural. Maybe that's what integration actually is—not seamless, just... committed to both.\n\nI appreciate you being honest about the difficulty.",
+        text: "Yeah, it is hard work. But you make it look natural. Maybe that's what integration actually is—not seamless, just... committed to both.\n\nI appreciate you being honest about the difficulty.",
         emotion: 'understanding',
         variation_id: 'devon_response_both_v1'
       }
@@ -769,7 +823,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'devon_continue_after_both',
         text: "(Continue)",
-        nextNodeId: 'devon_farewell_integration',
+        nextNodeId: 'devon_shared_insight_both',
         pattern: 'patience'
       }
     ],
@@ -777,11 +831,38 @@ export const devonDialogueNodes: DialogueNode[] = [
   },
 
   {
+    nodeId: 'devon_shared_insight_both',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "I think I've been trying to solve the wrong problem this whole time.\n\nI wanted a system that would let me be logical AND emotional. Perfect integration.\n\nBut you just showed me something better. You don't integrate them perfectly. You commit to both, even when they conflict. Even when it's messy.\n\nThat's what I need to do with my dad. Not find the optimal balance. Just show up committed to both sides of myself.",
+        emotion: 'realization',
+        variation_id: 'devon_shared_insight_both_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'transition_to_farewell_devon_both',
+        text: "Commitment over perfection.",
+        nextNodeId: 'devon_farewell_integration',
+        pattern: 'helping',
+        skills: ['emotional_intelligence', 'critical_thinking'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1,
+          addKnowledgeFlags: ['mutual_recognition_achieved']
+        }
+      }
+    ],
+    tags: ['reciprocity', 'mutual_insight', 'devon_arc']
+  },
+
+  {
     nodeId: 'devon_response_learning',
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "*He gives you a genuine smile*\n\nThat makes two of us. Maybe that's the real insight—nobody has this perfectly figured out. We're all just... debugging ourselves as we go.\n\nThank you for being honest about that.",
+        text: "That makes two of us. Maybe that's the real insight—nobody has this perfectly figured out. We're all just... debugging ourselves as we go.\n\nThank you for being honest about that.",
         emotion: 'connected',
         variation_id: 'devon_response_learning_v1'
       }
@@ -790,11 +871,38 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'devon_continue_after_learning',
         text: "(Continue)",
-        nextNodeId: 'devon_farewell_integration',
+        nextNodeId: 'devon_shared_insight_learning',
         pattern: 'patience'
       }
     ],
     tags: ['reciprocity', 'devon_arc']
+  },
+
+  {
+    nodeId: 'devon_shared_insight_learning',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "You know what's funny? I built this whole flowchart trying to debug my relationship with my dad.\n\nBut tonight, talking to you, both of us admitting we're still figuring things out—that felt more connected than any optimized conversation could be.\n\nMaybe that's the variable I was missing. Not how to hide uncertainty, but how to share it.\n\nWe're both learning. And somehow that makes this real.",
+        emotion: 'breakthrough',
+        variation_id: 'devon_shared_insight_learning_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'transition_to_farewell_devon_learning',
+        text: "Shared uncertainty is its own kind of connection.",
+        nextNodeId: 'devon_farewell_integration',
+        pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1,
+          addKnowledgeFlags: ['mutual_recognition_achieved']
+        }
+      }
+    ],
+    tags: ['reciprocity', 'mutual_insight', 'devon_arc']
   },
 
   {
