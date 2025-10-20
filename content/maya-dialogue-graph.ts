@@ -1360,7 +1360,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     ],
     choices: [
       {
-        choiceId: 'transition_to_farewell_stable',
+        choiceId: 'stable_warm',
         text: "I'm glad we found each other tonight.",
         nextNodeId: 'maya_farewell_robotics',
         pattern: 'helping',
@@ -1368,6 +1368,29 @@ export const mayaDialogueNodes: DialogueNode[] = [
         consequence: {
           characterId: 'maya',
           trustChange: 1,
+          addKnowledgeFlags: ['mutual_recognition_achieved']
+        }
+      },
+      {
+        choiceId: 'stable_reflective',
+        text: "Different foundations, same understanding.",
+        nextNodeId: 'maya_farewell_robotics',
+        pattern: 'analytical',
+        skills: ['critical_thinking', 'communication'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1,
+          addKnowledgeFlags: ['mutual_recognition_achieved']
+        }
+      },
+      {
+        choiceId: 'stable_quiet',
+        text: "[Nod with quiet recognition]",
+        nextNodeId: 'maya_farewell_robotics',
+        pattern: 'patience',
+        skills: ['emotional_intelligence'],
+        consequence: {
+          characterId: 'maya',
           addKnowledgeFlags: ['mutual_recognition_achieved']
         }
       }
@@ -1417,7 +1440,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     ],
     choices: [
       {
-        choiceId: 'transition_to_farewell_entrepreneur',
+        choiceId: 'entrepreneur_affirm',
         text: "That's exactly it. Your version.",
         nextNodeId: 'maya_farewell_robotics',
         pattern: 'helping',
@@ -1426,6 +1449,30 @@ export const mayaDialogueNodes: DialogueNode[] = [
           characterId: 'maya',
           trustChange: 1,
           addKnowledgeFlags: ['mutual_recognition_achieved']
+        }
+      },
+      {
+        choiceId: 'entrepreneur_connect',
+        text: "Both of us carrying what we were given forward.",
+        nextNodeId: 'maya_farewell_robotics',
+        pattern: 'analytical',
+        skills: ['critical_thinking', 'communication'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1,
+          addKnowledgeFlags: ['mutual_recognition_achieved']
+        }
+      },
+      {
+        choiceId: 'entrepreneur_honor',
+        text: "Your parents would be proud of that realization.",
+        nextNodeId: 'maya_farewell_robotics',
+        pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1,
+          addKnowledgeFlags: ['mutual_recognition_achieved', 'honored_parental_legacy']
         }
       }
     ],
@@ -1495,11 +1542,35 @@ export const mayaDialogueNodes: DialogueNode[] = [
     ],
     choices: [
       {
-        choiceId: 'transition_to_farewell_struggling',
+        choiceId: 'struggling_silent',
         text: "[Nod quietly in understanding]",
         nextNodeId: 'maya_farewell_robotics',
         pattern: 'patience',
         skills: ['emotional_intelligence'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1,
+          addKnowledgeFlags: ['mutual_recognition_achieved', 'deepest_bond_formed']
+        }
+      },
+      {
+        choiceId: 'struggling_seen',
+        text: "Thank you for seeing me too.",
+        nextNodeId: 'maya_farewell_robotics',
+        pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2,
+          addKnowledgeFlags: ['mutual_recognition_achieved', 'deepest_bond_formed']
+        }
+      },
+      {
+        choiceId: 'struggling_gift',
+        text: "That's what tonight was about. Mutual recognition.",
+        nextNodeId: 'maya_farewell_robotics',
+        pattern: 'analytical',
+        skills: ['emotional_intelligence', 'critical_thinking'],
         consequence: {
           characterId: 'maya',
           trustChange: 1,
@@ -1572,7 +1643,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     ],
     choices: [
       {
-        choiceId: 'transition_to_farewell_absent',
+        choiceId: 'absent_affirm',
         text: "That's exactly what tonight was about.",
         nextNodeId: 'maya_farewell_robotics',
         pattern: 'helping',
@@ -1581,6 +1652,30 @@ export const mayaDialogueNodes: DialogueNode[] = [
           characterId: 'maya',
           trustChange: 1,
           addKnowledgeFlags: ['mutual_recognition_achieved']
+        }
+      },
+      {
+        choiceId: 'absent_presence',
+        text: "Being here, fully present, with each other.",
+        nextNodeId: 'maya_farewell_robotics',
+        pattern: 'patience',
+        skills: ['emotional_intelligence', 'adaptability'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1,
+          addKnowledgeFlags: ['mutual_recognition_achieved']
+        }
+      },
+      {
+        choiceId: 'absent_break_cycle',
+        text: "We both just broke the cycle. That matters.",
+        nextNodeId: 'maya_farewell_robotics',
+        pattern: 'analytical',
+        skills: ['critical_thinking', 'emotional_intelligence'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1,
+          addKnowledgeFlags: ['mutual_recognition_achieved', 'cycle_broken']
         }
       }
     ],

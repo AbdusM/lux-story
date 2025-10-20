@@ -746,8 +746,32 @@ export const devonDialogueNodes: DialogueNode[] = [
     ],
     choices: [
       {
-        choiceId: 'transition_to_farewell_devon_logic',
+        choiceId: 'logic_brave',
         text: "That's the bravest thing you could do.",
+        nextNodeId: 'devon_farewell_integration',
+        pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1,
+          addKnowledgeFlags: ['mutual_recognition_achieved']
+        }
+      },
+      {
+        choiceId: 'logic_real',
+        text: "Real connection doesn't optimize well.",
+        nextNodeId: 'devon_farewell_integration',
+        pattern: 'analytical',
+        skills: ['critical_thinking', 'communication'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1,
+          addKnowledgeFlags: ['mutual_recognition_achieved']
+        }
+      },
+      {
+        choiceId: 'logic_dad',
+        text: "Your dad will feel the difference.",
         nextNodeId: 'devon_farewell_integration',
         pattern: 'helping',
         skills: ['emotional_intelligence', 'communication'],
@@ -794,7 +818,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     ],
     choices: [
       {
-        choiceId: 'transition_to_farewell_devon_emotion',
+        choiceId: 'emotion_humanity',
         text: "Different approaches, same humanity.",
         nextNodeId: 'devon_farewell_integration',
         pattern: 'analytical',
@@ -802,6 +826,29 @@ export const devonDialogueNodes: DialogueNode[] = [
         consequence: {
           characterId: 'devon',
           trustChange: 1,
+          addKnowledgeFlags: ['mutual_recognition_achieved']
+        }
+      },
+      {
+        choiceId: 'emotion_complement',
+        text: "Maybe that's why it worked. We complement each other.",
+        nextNodeId: 'devon_farewell_integration',
+        pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1,
+          addKnowledgeFlags: ['mutual_recognition_achieved']
+        }
+      },
+      {
+        choiceId: 'emotion_authentic',
+        text: "Both showing up authentically. That's all it takes.",
+        nextNodeId: 'devon_farewell_integration',
+        pattern: 'patience',
+        skills: ['emotional_intelligence'],
+        consequence: {
+          characterId: 'devon',
           addKnowledgeFlags: ['mutual_recognition_achieved']
         }
       }
@@ -842,7 +889,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     ],
     choices: [
       {
-        choiceId: 'transition_to_farewell_devon_both',
+        choiceId: 'both_commitment',
         text: "Commitment over perfection.",
         nextNodeId: 'devon_farewell_integration',
         pattern: 'helping',
@@ -851,6 +898,30 @@ export const devonDialogueNodes: DialogueNode[] = [
           characterId: 'devon',
           trustChange: 1,
           addKnowledgeFlags: ['mutual_recognition_achieved']
+        }
+      },
+      {
+        choiceId: 'both_messy',
+        text: "Messy and real beats optimized and empty.",
+        nextNodeId: 'devon_farewell_integration',
+        pattern: 'analytical',
+        skills: ['critical_thinking', 'communication'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1,
+          addKnowledgeFlags: ['mutual_recognition_achieved']
+        }
+      },
+      {
+        choiceId: 'both_integrated',
+        text: "Engineer AND son. Both at once.",
+        nextNodeId: 'devon_farewell_integration',
+        pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1,
+          addKnowledgeFlags: ['mutual_recognition_achieved', 'integration_understood']
         }
       }
     ],
@@ -890,8 +961,32 @@ export const devonDialogueNodes: DialogueNode[] = [
     ],
     choices: [
       {
-        choiceId: 'transition_to_farewell_devon_learning',
+        choiceId: 'learning_connection',
         text: "Shared uncertainty is its own kind of connection.",
+        nextNodeId: 'devon_farewell_integration',
+        pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1,
+          addKnowledgeFlags: ['mutual_recognition_achieved']
+        }
+      },
+      {
+        choiceId: 'learning_debug',
+        text: "We're all debugging ourselves as we go.",
+        nextNodeId: 'devon_farewell_integration',
+        pattern: 'analytical',
+        skills: ['critical_thinking', 'adaptability'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1,
+          addKnowledgeFlags: ['mutual_recognition_achieved']
+        }
+      },
+      {
+        choiceId: 'learning_honest',
+        text: "Being honest about not knowing—that's the real variable.",
         nextNodeId: 'devon_farewell_integration',
         pattern: 'helping',
         skills: ['emotional_intelligence', 'communication'],
