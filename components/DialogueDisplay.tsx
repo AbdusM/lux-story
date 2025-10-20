@@ -9,6 +9,7 @@
  */
 
 import { cn } from "@/lib/utils"
+import { autoChunkDialogue } from "@/lib/auto-chunk-dialogue"
 
 // Parse markdown-style emphasis in text (from StoryMessage pattern)
 function parseEmphasisText(text: string): React.ReactNode[] {
@@ -64,8 +65,9 @@ interface DialogueDisplayProps {
  * - Consistent typography rhythm across all narrative text
  */
 export function DialogueDisplay({ text, className }: DialogueDisplayProps) {
-  // Split by | separator for pacing chunks
-  const chunks = text.split('|').map(chunk => chunk.trim()).filter(chunk => chunk.length > 0)
+  // Auto-chunk long text, then split by | separator for pacing chunks
+  const chunkedText = autoChunkDialogue(text, { activationThreshold: 200 })
+  const chunks = chunkedText.split('|').map(chunk => chunk.trim()).filter(chunk => chunk.length > 0)
 
   return (
     <div className={cn("space-y-4", className)}>
