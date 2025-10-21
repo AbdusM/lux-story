@@ -1403,7 +1403,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Of course! That's why you pushed me toward robotics without hesitation.\n\nRisk is normal for you. Starting fresh, building something from nothing - that's your inherited language.\n\nMy parents took one huge risk coming to America. They want me to never have to risk again.\n\nBut you... you grew up seeing risk as possibility, not threat. That's why you could see my path when I couldn't.",
+        text: "That's why you pushed me toward robotics without hesitation.\n\nRisk is normal for you. Your inherited language.\n\nMy parents took one huge risk. They want me never to risk again.\n\nYou grew up seeing risk as possibility. That's why you could see my path.",
         emotion: 'dawning_understanding',
         variation_id: 'entrepreneur_reaction_v1'
       }
@@ -1433,7 +1433,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "We really do.\n\nYour parents gave you permission to leap. Mine gave me the weight of their one successful leap.\n\nBut tonight, talking to you, I realized something. Their risk wasn't wasted if I use it to take my own risk. That's the real inheritance.\n\nBuilding something from nothing. Just like they did. Just like you do. Just... my version.",
+        text: "We do.\n\nYour parents gave you permission to leap. Mine gave me the weight of their leap.\n\nTheir risk wasn't wasted if I use it to take my own.\n\nBuilding from nothing. My version.",
         emotion: 'inspired_recognition',
         variation_id: 'mutual_entrepreneur_v1'
       }

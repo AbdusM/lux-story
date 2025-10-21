@@ -125,7 +125,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_job_reveal_1',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Okay, so. I started at Alabama A&M in Huntsville—computer science major. Did one semester, got recruited by this startup that was 'the next big thing.' Dropped out to join them.\n\nThey folded in eight months. No degree, no job, no plan. I was twenty years old, back in Birmingham, living with my mom who kept asking when I was going back to school.",
+      text: "Alabama A&M. Computer science major. One semester, then got recruited by a startup. 'The next big thing.'\n\nFolded in eight months. No degree, no job, no plan.\n\nTwenty years old, back with my mom. She kept asking when I'd go back to school.",
       emotion: 'rueful',
       variation_id: 'jordan_job1_1'
     }],
