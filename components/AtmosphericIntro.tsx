@@ -186,7 +186,7 @@ const sequences = [
   },
   {
     location: "THRESHOLD",
-    text: "Three people stand at the entrance, confused.\n\nOne clutches medical textbooks. One mutters about flowcharts. One scrolls through a calendar of different jobs.\n\nBeyond them, others wait—sitting, pacing, lost in thought.",
+    text: "Three people stand at the entrance, each lost in their own uncertainty.\n\nOne clutches papers close. One mutters to themselves. One scrolls through something on their phone.\n\nBeyond them, others wait—sitting, pacing, lost in thought.",
     sound: "Quiet voices. Distant footsteps. Uncertainty made audible."
   },
   {
