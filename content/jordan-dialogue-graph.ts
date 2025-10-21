@@ -840,7 +840,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_chooses_accumulation',
     speaker: 'Jordan Packard',
     content: [{
-      text: "You're right. God, you're right.\n\nI'm going to walk in there and write all seven jobs on the whiteboard. Computer science dropout. Phone sales. Graphic design. Marketing. Personal training. Uber. UX designer.\n\nAnd then I'm going to draw lines. Customer service empathy to user research. Visual hierarchy to interface design. Motivation psychology to engagement metrics. Route optimization to user journey mapping.\n\nI'm not a fraud. I'm a composite. Every single job was collecting a tool I didn't know I'd need. My past isn't a liability—it's my entire competitive advantage.\n\nThose students need to hear that nothing is wasted. Every 'detour' is data.",
+      text: "You're right.\n\nI'm going to write all seven jobs on the whiteboard. Then draw lines between them.\n\nCustomer service to user research. Visual design to interface work. Motivation psychology to engagement.\n\nI'm not a fraud. I'm a composite.\n\nThose students need to hear that nothing is wasted.",
       emotion: 'empowered',
       variation_id: 'jordan_accumulation_1'
     }],
@@ -868,7 +868,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_chooses_birmingham',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Birmingham. Of course. This city is the whole metaphor.\n\nSteel mills and railroads collapsed. The city could've died. Instead—UAB, Innovation Depot, Shipt, medical tech, startups. Birmingham didn't cling to what it was. It adapted.\n\nAnd that's what I did. I'm not an anomaly—I'm a Birmingham career path. The Galleria where I sold phones? That's where Uber riders go. The career fair at BJCC? That's where the city hosts its future. Every single job was in this city's ecosystem.\n\nI'm going to tell those students that if Birmingham can reinvent itself after an entire industrial collapse, they can sure as hell pivot from one career track to another.\n\nAdaptability isn't failure. In this city, it's survival. And survival becomes success.",
+      text: "Birmingham. This city is the whole metaphor.\n\nSteel mills collapsed. The city could've died. Instead—UAB, Innovation Depot, startups. It adapted.\n\nI'm not an anomaly. I'm a Birmingham career path.\n\nI'm going to tell those students: if Birmingham can reinvent itself after industrial collapse, they can pivot from one career to another.\n\nAdaptability isn't failure here. It's survival.",
       emotion: 'grounded',
       variation_id: 'jordan_birmingham_1'
     }],
@@ -896,7 +896,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_chooses_internal',
     speaker: 'Jordan Packard',
     content: [{
-      text: "The story I tell myself is the only one that matters.\n\nI don't need to convince those students I'm qualified. I don't need to prove my path was strategic. I don't need to reframe seven jobs into a tidy narrative.\n\nI just need to tell the truth.\n\nI'm going to walk in there and say: 'I spent twelve years thinking I was lost. Twelve years hearing my mom's worry, my own doubt. But I wasn't lost. I was building. And the hardest part wasn't the seven jobs—it was learning to trust that I knew what I was doing, even when it looked like I didn't.'\n\nImpostor syndrome doesn't care about résumés. It's the voice that says you don't belong. The only way to answer it is to stop asking for permission to be here.\n\nThat's the speech. Raw. Honest. No clever frameworks. Just the truth.",
+      text: "The story I tell myself is the only one that matters.\n\nI don't need to convince them. I don't need to prove anything.\n\nI'm going to walk in there and say: 'I spent twelve years thinking I was lost. But I wasn't. I was building.'\n\nThat's the speech. Raw. Honest. Just the truth.",
       emotion: 'serene',
       variation_id: 'jordan_internal_1'
     }],
@@ -924,7 +924,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_farewell_accumulation',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Okay. Seven jobs as accumulation. Experience building on experience. That's the frame.\n\nBut what if they see through it? What if I walk in there and they just... know I'm a fraud who got lucky?\n\nThe voice that says 'you don't belong here' doesn't care about frameworks or narratives. It'll be there when I walk through that door. It'll probably be there for years.\n\nBut at least now I have words for it. At least I can name what's happening instead of drowning in it.\n\nThank you for the frame. I hope it holds when I'm actually standing in front of thirty people who think I have answers.\n\nGood luck with your journey. I hope yours feels less fragile than mine does right now.",
+      text: "Accumulation. Experience building on experience.\n\nBut what if they see through it? What if they know I'm a fraud?\n\nThe voice will be there when I walk through that door. Probably for years.\n\nBut at least now I can name it.\n\nThank you. Good luck with your journey.",
       emotion: 'grateful_but_shaken',
       variation_id: 'jordan_farewell_accumulation_v2_complex'
     }],
@@ -943,7 +943,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_farewell_birmingham',
     speaker: 'Jordan Packard',
     content: [{
-      text: "The Birmingham frame. Geography of adaptation. It's... it's good. It's honest.\n\nBut you know what's funny? Some of those jobs I hated. The gym management gig lasted six weeks before I rage-quit. The marketing firm laid me off.\n\nAm I rewriting failure as growth? Is this just a more sophisticated way of lying to myself?\n\nEvolution and chaos can look identical from the outside. I'm asking thirty students to trust that mine was evolution. But some nights I'm not sure I trust it myself.\n\nBut I'm going in there anyway. Because even if I'm uncertain, at least I'm honest about it now.\n\nThank you for the framework. I hope it's sturdy enough to hold when I'm standing in front of people expecting answers.\n\nGood luck with whatever brought you here. Birmingham's full of people rebuilding their own maps.",
+      text: "Birmingham. Adaptation is survival here.\n\nSome of those jobs? I hated them. Rage-quit after six weeks. Got laid off.\n\nBut I'm going in there anyway.\n\nThank you for this. Birmingham's full of people rebuilding their maps.\n\nGood luck with yours.",
       emotion: 'determined_doubt',
       variation_id: 'jordan_farewell_birmingham_v2_complex'
     }],
@@ -962,7 +962,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_farewell_internal',
     speaker: 'Jordan Packard',
     content: [{
-      text: "I feel... lighter. Like I've been carrying someone else's doubts for years.\n\nBut they'll be back. Tomorrow, next week, at the next career transition. Impostor syndrome doesn't get defeated once. It just gets... managed.\n\nI don't know if those students will think I'm inspiring or just another person who doesn't have it figured out. Maybe both.\n\nBut I'll walk out of that room believing what I said. For today, anyway.\n\nThe story you tell yourself is the only one that matters—until you stop believing it again. Then you have to rebuild it. Again.\n\nThank you for helping me rebuild mine tonight. For not trying to fix me. For letting doubt and confidence exist in the same person.\n\nWhatever brought you here, I hope you find something worth keeping. Even if it's complicated.",
+      text: "I feel lighter.\n\nThe doubts will be back. Impostor syndrome doesn't get defeated once.\n\nBut for today, I believe what I said.\n\nThank you for not trying to fix me. For letting doubt and confidence exist together.\n\nGood luck with your journey.",
       emotion: 'peaceful_but_realistic',
       variation_id: 'jordan_farewell_internal_v2_complex'
     }],

@@ -266,14 +266,14 @@ export const samuelDialogueNodes: DialogueNode[] = [
     ]
   },
 
-  // ============= SAMUEL'S TRAVELER ORIGIN (High Trust - Fridge Logic Fix) =============
+  // ============= SAMUEL'S TRAVELER ORIGIN (High Trust - Split for Chat Pacing) =============
   {
     nodeId: 'samuel_traveler_origin',
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "I was a traveler once. Like you. Like Maya and Devon and Jordan.\n\nThirty-five years ago, I stood where you're standing. Got a letter—same elegant script. 'Platform 7. Midnight.'\n\nI was choosing between VP of Engineering at Southern Company or staying technical. Management meant power, money, respect. Hands-on meant... doing what I loved.\n\nI took the management train. Spent twenty years in meetings about meetings. Every promotion felt like moving further from what made me want to be an engineer in the first place.\n\nWhen my daughter was nineteen, she found herself at a crossroads. I brought her here. Watched her meet travelers, make her choice, board her train.\n\nI saw the relief in her eyes.\n\nRealized I'd been on the wrong train for two decades.\n\nI came back through the station. Faced my own crossroads again. This time I chose differently.\n\nI chose to stay. To keep the station. To help others avoid my mistakes.",
-        emotion: 'vulnerable_wisdom',
+        text: "I was a traveler once.\n\nThirty-five years ago. Same letter. Same choice.",
+        emotion: 'vulnerable_opening',
         variation_id: 'traveler_origin_v1'
       }
     ],
@@ -282,8 +282,94 @@ export const samuelDialogueNodes: DialogueNode[] = [
     },
     choices: [
       {
+        choiceId: 'samuel_origin_curious',
+        text: "What was your crossroads?",
+        nextNodeId: 'samuel_origin_choice',
+        pattern: 'exploring',
+        skills: ['communication']
+      },
+      {
+        choiceId: 'samuel_origin_listen',
+        text: "[Listen]",
+        nextNodeId: 'samuel_origin_choice',
+        pattern: 'patience',
+        skills: ['emotional_intelligence']
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'samuel',
+        addKnowledgeFlags: ['knows_samuel_was_traveler']
+      }
+    ],
+    tags: ['backstory', 'fridge_logic_fix', 'samuel_arc']
+  },
+
+  {
+    nodeId: 'samuel_origin_choice',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "VP of Engineering at Southern Company. Or stay technical.\n\nPower and money. Or do what I loved.",
+        emotion: 'reflective',
+        variation_id: 'origin_choice_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'samuel_which_train',
+        text: "Which did you choose?",
+        nextNodeId: 'samuel_origin_wrong_train',
+        pattern: 'analytical',
+        skills: ['communication']
+      }
+    ],
+    tags: ['backstory', 'samuel_arc']
+  },
+
+  {
+    nodeId: 'samuel_origin_wrong_train',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Management. Twenty years in meetings about meetings.\n\nEvery promotion moved me further from why I became an engineer.",
+        emotion: 'regretful',
+        variation_id: 'wrong_train_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'samuel_what_changed',
+        text: "What made you realize?",
+        nextNodeId: 'samuel_origin_daughter_moment',
+        pattern: 'exploring',
+        skills: ['communication']
+      }
+    ],
+    tags: ['backstory', 'samuel_arc']
+  },
+
+  {
+    nodeId: 'samuel_origin_daughter_moment',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "My daughter. Nineteen, at her own crossroads.\n\nI brought her here. Saw the relief in her eyes when she boarded her train.",
+        emotion: 'bittersweet',
+        variation_id: 'daughter_moment_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'samuel_realization',
+        text: "And you realized...",
+        nextNodeId: 'samuel_origin_keeper_choice',
+        pattern: 'helping',
+        skills: ['emotional_intelligence']
+      },
+      {
         choiceId: 'ask_about_daughter',
-        text: "Where is your daughter now?",
+        text: "Where is she now?",
         nextNodeId: 'samuel_daughter_path',
         pattern: 'exploring',
         skills: ['communication'],
@@ -291,16 +377,42 @@ export const samuelDialogueNodes: DialogueNode[] = [
           characterId: 'samuel',
           trustChange: 1
         }
-      },
+      }
+    ],
+    tags: ['backstory', 'samuel_arc']
+  },
+
+  {
+    nodeId: 'samuel_origin_keeper_choice',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "I'd been on the wrong train for twenty years.\n\nCame back through. Chose differently.\n\nI chose to stay. To help others avoid my mistakes.",
+        emotion: 'purposeful',
+        variation_id: 'keeper_choice_v1'
+      }
+    ],
+    choices: [
       {
         choiceId: 'samuel_courage_recognition',
-        text: "It takes courage to admit you were on the wrong train.",
+        text: "That takes real courage.",
         nextNodeId: 'samuel_daughter_path',
         pattern: 'helping',
-        skills: ['emotional_intelligence', 'communication'],
+        skills: ['emotional_intelligence'],
         consequence: {
           characterId: 'samuel',
           trustChange: 2
+        }
+      },
+      {
+        choiceId: 'ask_about_daughter_after',
+        text: "Where is your daughter now?",
+        nextNodeId: 'samuel_daughter_path',
+        pattern: 'exploring',
+        skills: ['communication'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
         }
       },
       {
@@ -315,13 +427,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         }
       }
     ],
-    onEnter: [
-      {
-        characterId: 'samuel',
-        addKnowledgeFlags: ['knows_samuel_was_traveler']
-      }
-    ],
-    tags: ['backstory', 'fridge_logic_fix', 'samuel_arc']
+    tags: ['backstory', 'samuel_arc']
   },
 
   // ============= SAMUEL'S DAUGHTER (Emotional Anchor) =============
@@ -330,7 +436,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "She's a biomedical engineer in Atlanta now. CDC. Designs diagnostic systems for underserved communities.\n\nShe calls every Sunday. Still thanks me for bringing her to the station that night.\n\nShe could have been a lawyer. That's what I thought she should be. Practical, stable, lucrative.\n\nBut she boarded the train to engineering. And she's... she's exactly who she was meant to be.\n\nWatching her find that—that's when I knew what I wanted to build for the rest of my life.",
+        text: "Biomedical engineer at the CDC. Designs diagnostic systems.\n\nCalls every Sunday. Still thanks me for bringing her here.\n\nShe could have been a lawyer. That's what I wanted.\n\nBut she boarded her own train.\n\nWatching her find that—that's when I knew.",
         emotion: 'paternal_pride',
         variation_id: 'daughter_v1'
       }
@@ -370,7 +476,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "I write one every night. To someone whose name just... comes to me. Same heavy paper, elegant script.\n\nLike you knew [character] needed your perspective tonight. Like Maya knew which question to ask you. The station speaks through us, I suppose.\n\nTomorrow's traveler. Someone in Huntsville who doesn't know they're at a crossroads yet. But they will be. And when they find the letter in their hand, they'll find their way here.\n\nI don't question how I know the names anymore. After thirty-five years, you learn to trust what you can't explain.",
+        text: "I write one every night. To someone whose name comes to me.\n\nLike you knew [character] needed your perspective. The station speaks through us.\n\nAfter thirty-five years, you learn to trust what you can't explain.",
         emotion: 'mystical_acceptance',
         variation_id: 'letter_system_v1'
       }
@@ -2581,7 +2687,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Because impostor syndrome doesn't care about résumés. Jordan has built real skills across this city's tech scene, but she's about to stand in front of students while feeling like a fraud.\n\nYou've shown you can help people see frames they can't see themselves. Maya needed permission to honor both her family and herself. Devon needed to see that emotions are data, not noise. Jordan needs help seeing that her winding path isn't a liability - it's exactly what makes her valuable as a mentor.\n\nAnd those students need to hear that from someone who's lived it.",
+        text: "Impostor syndrome doesn't care about résumés.\n\nJordan's built real skills but feels like a fraud.\n\nYou help people see frames they can't see. Jordan needs to see her winding path isn't a liability—it's what makes her valuable.\n\nThose students need someone who's lived it.",
         emotion: 'teaching',
         variation_id: 'why_jordan_v1'
       }
