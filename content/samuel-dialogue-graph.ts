@@ -604,7 +604,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Ah. The engineer's dilemma. You can map every system, optimize every process, but then life throws you something that doesn't fit the flowchart.\n\nDevon Kumar is on Platform 3 - The Builder's Track. UAB engineering student, sharp as they come. He built a conversational decision tree to help his grieving father. Logic, optimization, efficiency. It failed catastrophically. Now he's sitting there trying to debug human connection.",
+        text: "The engineer's dilemma. You can map every system, but life throws you something that doesn't fit the flowchart.\n\nDevon Kumar is on Platform 3. UAB engineering student. He built a decision tree to help his grieving father. It failed catastrophically.\n\nNow he's trying to debug human connection.",
         emotion: 'understanding',
         variation_id: 'discovers_building_v1'
       }
@@ -1423,7 +1423,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Maya told me you opened up to her. About growing up with parents who were always building something new.\n\nThat explains your exploring pattern. You don't see closed doors - you see opportunities to build new ones. Risk feels like possibility to you because that's the water you swam in growing up.\n\nThe station called you here because you have the rare ability to help others see possibility where they see only walls.",
+        text: "What you told Maya. Parents always building something new.\n\nThat explains your exploring pattern. You see opportunities, not closed doors. Risk feels like possibility.\n\nThe station called you here because you help others see possibility where they see walls.",
         emotion: 'appreciative',
         variation_id: 'entrepreneur_parents_reflection_v1'
       }
@@ -1527,7 +1527,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "I heard you shared something personal with Maya. About success and absence in your family.\n\nYou learned early that achievement can become a disappearing act. That's why you have such patience with others' journeys. You're not rushing anyone because you know where rushing leads - to being successful and hollow.\n\nThe station brought you here because you understand something crucial: presence matters more than performance.",
+        text: "What you shared with Maya. Success and absence in your family.\n\nYou learned achievement can become a disappearing act. That's why you're patient. You know where rushing leads.\n\nThe station brought you here because you understand: presence matters more than performance.",
         emotion: 'understanding',
         variation_id: 'absent_parents_reflection_v1'
       }
@@ -1566,7 +1566,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Maya told me something interesting. Not what you shared with her - but that you chose NOT to share something when she asked.\n\nDo you know how rare that is? Most people perform vulnerability to earn connection. But you set a boundary, kindly but firmly.\n\nThat's mastery. Maya's trust in you grew not despite your 'no,' but because of it. The station respects those who know the difference between walls and boundaries.",
+        text: "Maya told me you chose NOT to share when she asked.\n\nRare. Most people perform vulnerability to earn connection. You set a boundary. Kindly but firmly.\n\nThat's mastery. Maya's trust grew because of your 'no,' not despite it.",
         emotion: 'profound_respect',
         variation_id: 'boundaries_reflection_v1'
       }
@@ -1913,7 +1913,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "She walked into that classroom and told them the truth they needed to hear: every job that felt like failure was building her foundation.\n\nThe marketing role that taught her user empathy. The startup that showed her how to ship under pressure. The agency work that refined her craft. Seven years. Seven teachers. Each one necessary.\n\nYou helped her see that accumulation isn't the same as collecting baggage - it's gathering wisdom. Those students needed a mentor who had stumbled, not someone who made it look easy from day one.",
+        text: "She walked into that classroom and told them the truth: every job that felt like failure was building her foundation.\n\nMarketing taught user empathy. Startup taught shipping under pressure. Agency refined her craft. Seven years. Seven teachers.\n\nYou helped her see accumulation isn't collecting baggage - it's gathering wisdom.",
         emotion: 'affirming',
         variation_id: 'accumulation_reflection_v1'
       }

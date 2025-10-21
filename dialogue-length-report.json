@@ -2,8 +2,8 @@
   "stats": {
     "content/samuel-dialogue-graph.ts": {
       "total": 73,
-      "long": 29,
-      "tooLong": 44
+      "long": 32,
+      "tooLong": 41
     },
     "content/maya-dialogue-graph.ts": {
       "total": 23,
@@ -31,13 +31,6 @@
     },
     {
       "file": "samuel-dialogue-graph.ts",
-      "nodeId": "samuel_jordan_path_reflection",
-      "length": 525,
-      "text": "She walked into that classroom and told them the truth they needed to hear: every job that felt like...",
-      "lineNumber": 1916
-    },
-    {
-      "file": "samuel-dialogue-graph.ts",
       "nodeId": "samuel_deep_jordan_reflection",
       "length": 478,
       "text": "I saw you meeting Jordan where she was - in that spiral of doubt right before a moment that mattered...",
@@ -52,20 +45,6 @@
     },
     {
       "file": "samuel-dialogue-graph.ts",
-      "nodeId": "samuel_jordan_sovereignty_wisdom",
-      "length": 446,
-      "text": "It can be, if you take it to mean 'no one else's opinion matters' or 'you're completely alone in dec...",
-      "lineNumber": 2167
-    },
-    {
-      "file": "samuel-dialogue-graph.ts",
-      "nodeId": "samuel_jordan_city_wisdom",
-      "length": 440,
-      "text": "Always has. This city was built by people who knew how to pivot when the steel dried up. Who turned ...",
-      "lineNumber": 2107
-    },
-    {
-      "file": "samuel-dialogue-graph.ts",
       "nodeId": "samuel_jordan_intro",
       "length": 438,
       "text": "There's someone else here tonight - Jordan Packard. She's over by the conference rooms, guest instru...",
@@ -73,45 +52,10 @@
     },
     {
       "file": "samuel-dialogue-graph.ts",
-      "nodeId": "samuel_jordan_future_wisdom",
-      "length": 433,
-      "text": "She'll carry it differently depending on the day. Some days it'll feel true. Some days it'll feel li...",
-      "lineNumber": 2087
-    },
-    {
-      "file": "samuel-dialogue-graph.ts",
-      "nodeId": "samuel_discovers_building",
-      "length": 427,
-      "text": "Ah. The engineer's dilemma. You can map every system, optimize every process, but then life throws y...",
-      "lineNumber": 607
-    },
-    {
-      "file": "samuel-dialogue-graph.ts",
-      "nodeId": "samuel_reflects_absent_parents",
-      "length": 419,
-      "text": "I heard you shared something personal with Maya. About success and absence in your family.\\n\\nYou le...",
-      "lineNumber": 1530
-    },
-    {
-      "file": "samuel-dialogue-graph.ts",
       "nodeId": "samuel_acknowledges_family",
       "length": 415,
       "text": "The weight of immigrant parents' dreams. That's the heaviest burden Maya carries - twenty years of s...",
       "lineNumber": 2403
-    },
-    {
-      "file": "samuel-dialogue-graph.ts",
-      "nodeId": "samuel_reflects_entrepreneur_parents",
-      "length": 414,
-      "text": "Maya told me you opened up to her. About growing up with parents who were always building something ...",
-      "lineNumber": 1426
-    },
-    {
-      "file": "samuel-dialogue-graph.ts",
-      "nodeId": "samuel_reflects_boundaries",
-      "length": 413,
-      "text": "Maya told me something interesting. Not what you shared with her - but that you chose NOT to share s...",
-      "lineNumber": 1569
     },
     {
       "file": "samuel-dialogue-graph.ts",
@@ -142,18 +86,18 @@
       "lineNumber": 2770
     },
     {
-      "file": "jordan-dialogue-graph.ts",
-      "nodeId": "jordan_chooses_birmingham",
-      "length": 376,
-      "text": "Birmingham. This city is the whole metaphor.\\n\\nSteel mills collapsed. The city could've died. Inste...",
-      "lineNumber": 871
-    },
-    {
       "file": "samuel-dialogue-graph.ts",
       "nodeId": "samuel_other_travelers",
       "length": 362,
       "text": "The full picture:\\n\\n**Maya Chen** - Platform 1. Pre-med brilliance, family expectations, robotics d...",
       "lineNumber": 728
+    },
+    {
+      "file": "jordan-dialogue-graph.ts",
+      "nodeId": "jordan_chooses_birmingham",
+      "length": 342,
+      "text": "Birmingham. This city is the whole metaphor.\\n\\nSteel mills collapsed. The city could've died. Inste...",
+      "lineNumber": 871
     },
     {
       "file": "jordan-dialogue-graph.ts",
@@ -182,6 +126,13 @@
       "length": 323,
       "text": "She's choosing the hybrid path - biomedical engineering. The road where she doesn't have to choose b...",
       "lineNumber": 978
+    },
+    {
+      "file": "samuel-dialogue-graph.ts",
+      "nodeId": "samuel_jordan_path_reflection",
+      "length": 323,
+      "text": "She walked into that classroom and told them the truth: every job that felt like failure was buildin...",
+      "lineNumber": 1916
     },
     {
       "file": "samuel-dialogue-graph.ts",
@@ -282,11 +233,25 @@
       "lineNumber": 1179
     },
     {
+      "file": "samuel-dialogue-graph.ts",
+      "nodeId": "samuel_jordan_city_wisdom",
+      "length": 292,
+      "text": "Always has. Built by people who pivoted when steel dried up. Warehouses into innovation centers.\\n\\n...",
+      "lineNumber": 2107
+    },
+    {
       "file": "maya-dialogue-graph.ts",
       "nodeId": "maya_reaction_stable",
       "length": 292,
       "text": "That makes so much sense. That consistency, that foundation...\\n\\nI can see why you're so patient wi...",
       "lineNumber": 1306
+    },
+    {
+      "file": "samuel-dialogue-graph.ts",
+      "nodeId": "samuel_discovers_building",
+      "length": 289,
+      "text": "The engineer's dilemma. You can map every system, but life throws you something that doesn't fit the...",
+      "lineNumber": 607
     },
     {
       "file": "samuel-dialogue-graph.ts",
@@ -416,6 +381,13 @@
     },
     {
       "file": "samuel-dialogue-graph.ts",
+      "nodeId": "samuel_reflects_absent_parents",
+      "length": 265,
+      "text": "What you shared with Maya. Success and absence in your family.\\n\\nYou learned achievement can become...",
+      "lineNumber": 1530
+    },
+    {
+      "file": "samuel-dialogue-graph.ts",
       "nodeId": "samuel_why_jordan",
       "length": 265,
       "text": "Impostor syndrome doesn't care about résumés.\\n\\nJordan's built real skills but feels like a fraud.\\...",
@@ -490,6 +462,13 @@
       "length": 255,
       "text": "Accumulation. Experience building on experience.\\n\\nBut what if they see through it? What if they kn...",
       "lineNumber": 927
+    },
+    {
+      "file": "samuel-dialogue-graph.ts",
+      "nodeId": "samuel_reflects_entrepreneur_parents",
+      "length": 254,
+      "text": "What you told Maya. Parents always building something new.\\n\\nThat explains your exploring pattern. ...",
+      "lineNumber": 1426
     },
     {
       "file": "samuel-dialogue-graph.ts",
@@ -639,6 +618,13 @@
       "lineNumber": 1365
     },
     {
+      "file": "samuel-dialogue-graph.ts",
+      "nodeId": "samuel_jordan_sovereignty_wisdom",
+      "length": 231,
+      "text": "It can be, if you mean 'no one else matters' or 'you're completely alone.'\\n\\nBut Jordan heard it di...",
+      "lineNumber": 2167
+    },
+    {
       "file": "jordan-dialogue-graph.ts",
       "nodeId": "jordan_job_reveal_2",
       "length": 230,
@@ -714,6 +700,13 @@
       "length": 220,
       "text": "It was a good life. But it wasn't MY life.\\n\\nOne day, standing in front of Vulcan, looking down at ...",
       "lineNumber": 164
+    },
+    {
+      "file": "samuel-dialogue-graph.ts",
+      "nodeId": "samuel_reflects_boundaries",
+      "length": 220,
+      "text": "Maya told me you chose NOT to share when she asked.\\n\\nRare. Most people perform vulnerability to ea...",
+      "lineNumber": 1569
     },
     {
       "file": "devon-dialogue-graph.ts",
@@ -833,6 +826,13 @@
       "length": 207,
       "text": "I write one every night. To someone whose name comes to me.\\n\\nLike you knew [character] needed your...",
       "lineNumber": 479
+    },
+    {
+      "file": "samuel-dialogue-graph.ts",
+      "nodeId": "samuel_jordan_future_wisdom",
+      "length": 207,
+      "text": "She'll carry it differently depending on the day. Some days true. Some days just words.\\n\\nBut the f...",
+      "lineNumber": 2087
     },
     {
       "file": "devon-dialogue-graph.ts",
@@ -1085,5 +1085,5 @@
     "LONG": 180,
     "TOO_LONG": 250
   },
-  "generatedAt": "2025-10-21T14:10:52.634Z"
+  "generatedAt": "2025-10-21T14:14:02.139Z"
 }
