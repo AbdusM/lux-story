@@ -125,7 +125,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_job_reveal_1',
     speaker: 'Jordan Packard',
     content: [{
-      text: "*Laughs dryly*\n\nOkay, so. I started at Alabama A&M in Huntsville—computer science major. Did one semester, got recruited by this startup that was 'the next big thing.' Dropped out to join them.\n\nThey folded in eight months. No degree, no job, no plan. I was twenty years old, back in Birmingham, living with my mom who kept asking when I was going back to school.",
+      text: "Okay, so. I started at Alabama A&M in Huntsville—computer science major. Did one semester, got recruited by this startup that was 'the next big thing.' Dropped out to join them.\n\nThey folded in eight months. No degree, no job, no plan. I was twenty years old, back in Birmingham, living with my mom who kept asking when I was going back to school.",
       emotion: 'rueful',
       variation_id: 'jordan_job1_1'
     }],
@@ -178,7 +178,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_job_reveal_2',
     speaker: 'Jordan Packard',
     content: [{
-      text: "I got a job selling phones at the Galleria. You know, the kiosks in the middle of the walkway where you try to make eye contact with people speed-walking past you?\n\n*Smiles slightly*\n\nIt was humbling. But I learned something crucial: how to read people in three seconds. How to ask questions that made them feel heard instead of sold to. Customer service is just applied empathy, really.",
+      text: "I got a job selling phones at the Galleria. You know, the kiosks in the middle of the walkway where you try to make eye contact with people speed-walking past you?\n\nIt was humbling. But I learned something crucial: how to read people in three seconds. How to ask questions that made them feel heard instead of sold to. Customer service is just applied empathy, really.",
       emotion: 'reflective',
       variation_id: 'jordan_job2_1'
     }],
@@ -286,7 +286,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_pattern_acknowledgment',
     speaker: 'Jordan Packard',
     content: [{
-      text: "*She pauses, noticing your attentiveness*\n\nYou're really following along. Most people zone out by job three—eyes glaze over, polite nods. But you're actually listening.\n\nThat means a lot. Thank you.",
+      text: "You're really following along. Most people zone out by job three—eyes glaze over, polite nods. But you're actually listening.\n\nThat means a lot. Thank you.",
       emotion: 'appreciative',
       variation_id: 'jordan_acknowledgment_v1'
     }],
@@ -359,7 +359,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_pause_after_job4',
     speaker: 'Jordan Packard',
     content: [{
-      text: "*She pauses, catching her breath*\n\nSorry, that's a lot of career history all at once. But you get the picture?",
+      text: "Sorry, that's a lot of career history all at once. But you get the picture?",
       emotion: 'processing',
       variation_id: 'pause_job4_v1'
     }],
@@ -379,7 +379,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_job_reveal_5',
     speaker: 'Jordan Packard',
     content: [{
-      text: "*Laughs*\n\nOkay, this is where it gets weird. I quit to become a personal trainer.\n\nI know. But hear me out—I'd been going to the gym to deal with work stress, and I realized trainers are really just motivation psychologists. They're designing experiences that make people believe they can do hard things.\n\nThat clicked for me. Experience design. User motivation. I just didn't have the language for it yet.",
+      text: "Okay, this is where it gets weird. I quit to become a personal trainer.\n\nI know. But hear me out—I'd been going to the gym to deal with work stress, and I realized trainers are really just motivation psychologists. They're designing experiences that make people believe they can do hard things.\n\nThat clicked for me. Experience design. User motivation. I just didn't have the language for it yet.",
       emotion: 'animated',
       variation_id: 'jordan_job5_1'
     }],
@@ -432,7 +432,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_job_reveal_6',
     speaker: 'Jordan Packard',
     content: [{
-      text: "I didn't. Not directly. Personal training didn't pay enough, so I started driving for Uber on the side.\n\n*Gestures around*\n\nBest education in Birmingham I ever got. You learn every neighborhood, every traffic pattern, every event that changes the flow of the city. You learn logistics. Efficiency. Route optimization.\n\nAnd you talk to hundreds of people. Tourists, business folks, college kids. Everyone's going somewhere, and they all have a story about why.",
+      text: "I didn't. Not directly. Personal training didn't pay enough, so I started driving for Uber on the side.\n\nBest education in Birmingham I ever got. You learn every neighborhood, every traffic pattern, every event that changes the flow of the city. You learn logistics. Efficiency. Route optimization.\n\nAnd you talk to hundreds of people. Tourists, business folks, college kids. Everyone's going somewhere, and they all have a story about why.",
       emotion: 'thoughtful',
       variation_id: 'jordan_job6_1'
     }],
@@ -562,7 +562,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_mentor_context',
     speaker: 'Jordan Packard',
     content: [{
-      text: "*Her expression shifts—triumphant energy drains away*\n\nBecause when I look at that story, I don't see a clever pattern.\n\nI see seven jobs in twelve years. Someone who couldn't stick with anything. Couldn't commit.\n\nCouldn't figure it out while everyone else was building careers, I was... what? Collecting participation trophies?",
+      text: "Because when I look at that story, I don't see a clever pattern.\n\nI see seven jobs in twelve years. Someone who couldn't stick with anything. Couldn't commit.\n\nCouldn't figure it out while everyone else was building careers, I was... what? Collecting participation trophies?",
       emotion: 'vulnerable',
       variation_id: 'jordan_mentor_1_pt1'
     }],
@@ -586,7 +586,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_mentor_context_pt2',
     speaker: 'Jordan Packard',
     content: [{
-      text: "*Quieter*\n\nAnd now I'm supposed to stand in front of thirty people who are making a huge bet on themselves—time, money, hope—and tell them what?\n\nThat it's okay to fail six times first?",
+      text: "And now I'm supposed to stand in front of thirty people who are making a huge bet on themselves—time, money, hope—and tell them what?\n\nThat it's okay to fail six times first?",
       emotion: 'vulnerable',
       variation_id: 'jordan_mentor_1_pt2'
     }],
@@ -610,7 +610,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_asks_player',
     speaker: 'Jordan Packard',
     content: [{
-      text: "*She pauses, then turns to look at you directly*\n\nActually, can I ask you something? I've been talking about my path this whole time, but... how do YOU deal with uncertainty?\n\nLike, when you don't know if you're making the right choice—career, life, whatever. What do you do with that feeling?",
+      text: "Actually, can I ask you something? I've been talking about my path this whole time, but... how do YOU deal with uncertainty?\n\nLike, when you don't know if you're making the right choice—career, life, whatever. What do you do with that feeling?",
       emotion: 'curious',
       variation_id: 'jordan_reciprocity_v1'
     }],
@@ -666,7 +666,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_response_trust',
     speaker: 'Jordan Packard',
     content: [{
-      text: "*She nods slowly*\n\nThat's... really wise, actually. Wrong turns teach you something. Maybe that's what I needed to hear about my own path.\n\nThank you for sharing that with me.",
+      text: "That's... really wise, actually. Wrong turns teach you something. Maybe that's what I needed to hear about my own path.\n\nThank you for sharing that with me.",
       emotion: 'thoughtful',
       variation_id: 'jordan_response_trust_v1'
     }],
@@ -685,7 +685,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_response_plan',
     speaker: 'Jordan Packard',
     content: [{
-      text: "*She gives a wry smile*\n\nYeah, I get that. Structure as a life raft. I tried that for years—making plans, setting goals. Sometimes it helped. Sometimes life just... laughed at my spreadsheets.\n\nBut I respect the attempt. Thanks for being honest.",
+      text: "Yeah, I get that. Structure as a life raft. I tried that for years—making plans, setting goals. Sometimes it helped. Sometimes life just... laughed at my spreadsheets.\n\nBut I respect the attempt. Thanks for being honest.",
       emotion: 'understanding',
       variation_id: 'jordan_response_plan_v1'
     }],
@@ -723,7 +723,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_response_fear',
     speaker: 'Jordan Packard',
     content: [{
-      text: "*She exhales, relieved*\n\nOkay, thank you for saying that. Because same. God, same. I spent twelve years running from uncertainty by just... jumping to the next thing.\n\nMaybe we're both still learning. Thanks for being real with me.",
+      text: "Okay, thank you for saying that. Because same. God, same. I spent twelve years running from uncertainty by just... jumping to the next thing.\n\nMaybe we're both still learning. Thanks for being real with me.",
       emotion: 'connected',
       variation_id: 'jordan_response_fear_v1'
     }],
@@ -797,7 +797,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_crossroads',
     speaker: 'Jordan Packard',
     content: [{
-      text: "*She takes a shaky breath, looks down at her crumpled speech notes*\n\nI have twenty minutes before that room fills up. Twenty minutes to decide what story I'm telling—about myself, about career paths, about Birmingham, about what counts as success.\n\n*Meets your eyes*\n\nI keep rewriting this speech because I don't know which version is true. The one where my past is a liability? The one where it's an asset? The one where it doesn't matter because I define what it means?\n\nWhich story should I tell those students?",
+      text: "I have twenty minutes before that room fills up. Twenty minutes to decide what story I'm telling—about myself, about career paths, about Birmingham, about what counts as success.\n\nI keep rewriting this speech because I don't know which version is true. The one where my past is a liability? The one where it's an asset? The one where it doesn't matter because I define what it means?\n\nWhich story should I tell those students?",
       emotion: 'desperate_clarity',
       variation_id: 'jordan_crossroads_1'
     }],
@@ -840,7 +840,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_chooses_accumulation',
     speaker: 'Jordan Packard',
     content: [{
-      text: "*Something shifts in her posture—shoulders back, chin lifted*\n\nYou're right. God, you're right.\n\n*She opens her notes app, starts typing furiously*\n\nI'm going to walk in there and write all seven jobs on the whiteboard. Computer science dropout. Phone sales. Graphic design. Marketing. Personal training. Uber. UX designer.\n\nAnd then I'm going to draw lines. Customer service empathy to user research. Visual hierarchy to interface design. Motivation psychology to engagement metrics. Route optimization to user journey mapping.\n\n*Looks up, eyes bright*\n\nI'm not a fraud. I'm a composite. Every single job was collecting a tool I didn't know I'd need. My past isn't a liability—it's my entire competitive advantage.\n\nThose students need to hear that nothing is wasted. Every 'detour' is data.",
+      text: "You're right. God, you're right.\n\nI'm going to walk in there and write all seven jobs on the whiteboard. Computer science dropout. Phone sales. Graphic design. Marketing. Personal training. Uber. UX designer.\n\nAnd then I'm going to draw lines. Customer service empathy to user research. Visual hierarchy to interface design. Motivation psychology to engagement metrics. Route optimization to user journey mapping.\n\nI'm not a fraud. I'm a composite. Every single job was collecting a tool I didn't know I'd need. My past isn't a liability—it's my entire competitive advantage.\n\nThose students need to hear that nothing is wasted. Every 'detour' is data.",
       emotion: 'empowered',
       variation_id: 'jordan_accumulation_1'
     }],
@@ -896,7 +896,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_chooses_internal',
     speaker: 'Jordan Packard',
     content: [{
-      text: "*She goes very still, then slowly nods*\n\nThe story I tell myself is the only one that matters.\n\n*Sits down, closes her laptop, sets aside her phone*\n\nI don't need to convince those students I'm qualified. I don't need to prove my path was strategic. I don't need to reframe seven jobs into a tidy narrative.\n\nI just need to tell the truth.\n\n*Quiet, steady*\n\nI'm going to walk in there and say: 'I spent twelve years thinking I was lost. Twelve years hearing my mom's worry, my own doubt. But I wasn't lost. I was building. And the hardest part wasn't the seven jobs—it was learning to trust that I knew what I was doing, even when it looked like I didn't.'\n\n*Looks at you*\n\nImpostor syndrome doesn't care about résumés. It's the voice that says you don't belong. The only way to answer it is to stop asking for permission to be here.\n\nThat's the speech. Raw. Honest. No clever frameworks. Just the truth.",
+      text: "The story I tell myself is the only one that matters.\n\nI don't need to convince those students I'm qualified. I don't need to prove my path was strategic. I don't need to reframe seven jobs into a tidy narrative.\n\nI just need to tell the truth.\n\nI'm going to walk in there and say: 'I spent twelve years thinking I was lost. Twelve years hearing my mom's worry, my own doubt. But I wasn't lost. I was building. And the hardest part wasn't the seven jobs—it was learning to trust that I knew what I was doing, even when it looked like I didn't.'\n\nImpostor syndrome doesn't care about résumés. It's the voice that says you don't belong. The only way to answer it is to stop asking for permission to be here.\n\nThat's the speech. Raw. Honest. No clever frameworks. Just the truth.",
       emotion: 'serene',
       variation_id: 'jordan_internal_1'
     }],
