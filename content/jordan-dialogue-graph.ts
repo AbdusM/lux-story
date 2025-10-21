@@ -232,7 +232,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_job_reveal_3',
     speaker: 'Jordan Packard',
     content: [{
-      text: "No, I got restless. Taught myself graphic design through YouTube tutorials and library books. Started doing freelance work—logos, flyers, that kind of thing.\n\nI wasn't great at first. But I learned visual hierarchy. How people's eyes move across a page. How color creates emotion before words even register.",
+      text: "Got restless. Taught myself graphic design. YouTube, library books. Freelance work—logos, flyers.\n\nWasn't great at first. But I learned visual hierarchy. How eyes move. How color creates emotion.",
       emotion: 'nostalgic',
       variation_id: 'jordan_job3_1'
     }],
@@ -306,7 +306,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_job_reveal_4',
     speaker: 'Jordan Packard',
     content: [{
-      text: "I got hired at a small marketing firm downtown. Finally, a 'real' job with benefits and everything. I did social media management, some campaign planning.\n\nIt was fine. Professional. But I realized I liked making things more than I liked talking about things other people made. Does that make sense?",
+      text: "Small marketing firm downtown. Finally a 'real' job. Benefits and everything.\n\nSocial media management, campaign planning.\n\nIt was fine. But I liked making things more than talking about other people's things.",
       emotion: 'contemplative',
       variation_id: 'jordan_job4_1'
     }],
@@ -562,7 +562,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_mentor_context',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Because when I look at that story, I don't see a clever pattern.\n\nI see seven jobs in twelve years. Someone who couldn't stick with anything. Couldn't commit.\n\nCouldn't figure it out while everyone else was building careers, I was... what? Collecting participation trophies?",
+      text: "When I look at that story, I don't see a pattern.\n\nSeven jobs. Twelve years. Someone who couldn't stick. Couldn't commit.\n\nEveryone else building careers. Me collecting participation trophies?",
       emotion: 'vulnerable',
       variation_id: 'jordan_mentor_1_pt1'
     }],
@@ -610,7 +610,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_asks_player',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Actually, can I ask you something? I've been talking about my path this whole time, but... how do YOU deal with uncertainty?\n\nLike, when you don't know if you're making the right choice—career, life, whatever. What do you do with that feeling?",
+      text: "Can I ask you something? I've been talking about my path.\n\nHow do YOU deal with uncertainty? When you don't know if you're making the right choice?\n\nWhat do you do with that feeling?",
       emotion: 'curious',
       variation_id: 'jordan_reciprocity_v1'
     }],

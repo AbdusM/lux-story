@@ -12,13 +12,13 @@
     },
     "content/devon-dialogue-graph.ts": {
       "total": 37,
-      "long": 21,
-      "tooLong": 16
+      "long": 24,
+      "tooLong": 13
     },
     "content/jordan-dialogue-graph.ts": {
-      "total": 22,
-      "long": 11,
-      "tooLong": 11
+      "total": 21,
+      "long": 13,
+      "tooLong": 8
     }
   },
   "allLongNodes": [
@@ -254,20 +254,6 @@
       "lineNumber": 1833
     },
     {
-      "file": "jordan-dialogue-graph.ts",
-      "nodeId": "jordan_job_reveal_3",
-      "length": 305,
-      "text": "No, I got restless. Taught myself graphic design through YouTube tutorials and library books. Starte...",
-      "lineNumber": 235
-    },
-    {
-      "file": "devon-dialogue-graph.ts",
-      "nodeId": "devon_system_failure",
-      "length": 303,
-      "text": "No. I followed the flowchart perfectly. Every decision node, every optimal response path. And it mad...",
-      "lineNumber": 1029
-    },
-    {
       "file": "samuel-dialogue-graph.ts",
       "nodeId": "samuel_why_devon",
       "length": 301,
@@ -282,32 +268,11 @@
       "lineNumber": 1325
     },
     {
-      "file": "devon-dialogue-graph.ts",
-      "nodeId": "devon_system_purpose",
-      "length": 298,
-      "text": "Yes. I mapped conversational patterns. Identified failure modes. Built decision trees for different ...",
-      "lineNumber": 1008
-    },
-    {
-      "file": "jordan-dialogue-graph.ts",
-      "nodeId": "jordan_job_reveal_4",
-      "length": 297,
-      "text": "I got hired at a small marketing firm downtown. Finally, a 'real' job with benefits and everything. ...",
-      "lineNumber": 309
-    },
-    {
       "file": "jordan-dialogue-graph.ts",
       "nodeId": "jordan_introduction",
       "length": 295,
       "text": "Hey! Career Day at the coding bootcamp. Got here way too early. Classic overcompensation.\\n\\nI've re...",
       "lineNumber": 22
-    },
-    {
-      "file": "devon-dialogue-graph.ts",
-      "nodeId": "devon_analyzes_failure",
-      "length": 294,
-      "text": "The system assumed emotional states could be categorized and responses could be optimized. But grief...",
-      "lineNumber": 1210
     },
     {
       "file": "samuel-dialogue-graph.ts",
@@ -441,13 +406,6 @@
       "length": 270,
       "text": "Exactly. People are... non-deterministic. Same input, different outputs depending on state variables...",
       "lineNumber": 220
-    },
-    {
-      "file": "jordan-dialogue-graph.ts",
-      "nodeId": "jordan_mentor_context",
-      "length": 270,
-      "text": "Because when I look at that story, I don't see a clever pattern.\\n\\nI see seven jobs in twelve years...",
-      "lineNumber": 565
     },
     {
       "file": "samuel-dialogue-graph.ts",
@@ -625,13 +583,6 @@
       "lineNumber": 1808
     },
     {
-      "file": "jordan-dialogue-graph.ts",
-      "nodeId": "jordan_asks_player",
-      "length": 241,
-      "text": "Actually, can I ask you something? I've been talking about my path this whole time, but... how do YO...",
-      "lineNumber": 613
-    },
-    {
       "file": "samuel-dialogue-graph.ts",
       "nodeId": "samuel_daughter_path",
       "length": 240,
@@ -770,6 +721,13 @@
       "length": 228,
       "text": "You're right. I'm switching to robotics engineering. I'll find a way to make my parents understand t...",
       "lineNumber": 980
+    },
+    {
+      "file": "devon-dialogue-graph.ts",
+      "nodeId": "devon_system_purpose",
+      "length": 226,
+      "text": "I mapped conversational patterns. Identified failure modes. Built decision trees.\\n\\nIf he says 'I'm...",
+      "lineNumber": 1008
     },
     {
       "file": "devon-dialogue-graph.ts",
@@ -947,6 +905,13 @@
       "lineNumber": 479
     },
     {
+      "file": "devon-dialogue-graph.ts",
+      "nodeId": "devon_system_failure",
+      "length": 207,
+      "text": "No. I followed it perfectly. Every decision node, every optimal path.\\n\\nMade everything worse.\\n\\nH...",
+      "lineNumber": 1029
+    },
+    {
       "file": "samuel-dialogue-graph.ts",
       "nodeId": "samuel_presence_teaching",
       "length": 206,
@@ -966,6 +931,13 @@
       "length": 206,
       "text": "Thank you. She was... she was the interpreter. Between me and dad. She translated my logic into warm...",
       "lineNumber": 428
+    },
+    {
+      "file": "jordan-dialogue-graph.ts",
+      "nodeId": "jordan_job_reveal_4",
+      "length": 205,
+      "text": "Small marketing firm downtown. Finally a 'real' job. Benefits and everything.\\n\\nSocial media manage...",
+      "lineNumber": 309
     },
     {
       "file": "devon-dialogue-graph.ts",
@@ -1081,6 +1053,13 @@
     },
     {
       "file": "jordan-dialogue-graph.ts",
+      "nodeId": "jordan_job_reveal_3",
+      "length": 193,
+      "text": "Got restless. Taught myself graphic design. YouTube, library books. Freelance work—logos, flyers.\\n\\...",
+      "lineNumber": 235
+    },
+    {
+      "file": "jordan-dialogue-graph.ts",
       "nodeId": "jordan_response_acceptance",
       "length": 193,
       "text": "Wow. That's... I don't know if I'm there yet. Just sitting with uncertainty without trying to fix it...",
@@ -1106,6 +1085,20 @@
       "length": 188,
       "text": "That's the opposite of how I operate. But maybe that's why you could see what I couldn't—you weren't...",
       "lineNumber": 793
+    },
+    {
+      "file": "devon-dialogue-graph.ts",
+      "nodeId": "devon_analyzes_failure",
+      "length": 188,
+      "text": "The system assumed emotional states could be optimized.\\n\\nBut grief isn't a bug. Not something to r...",
+      "lineNumber": 1210
+    },
+    {
+      "file": "jordan-dialogue-graph.ts",
+      "nodeId": "jordan_mentor_context",
+      "length": 188,
+      "text": "When I look at that story, I don't see a pattern.\\n\\nSeven jobs. Twelve years. Someone who couldn't ...",
+      "lineNumber": 565
     },
     {
       "file": "devon-dialogue-graph.ts",
@@ -1155,5 +1148,5 @@
     "LONG": 180,
     "TOO_LONG": 250
   },
-  "generatedAt": "2025-10-21T14:05:22.139Z"
+  "generatedAt": "2025-10-21T14:07:30.562Z"
 }

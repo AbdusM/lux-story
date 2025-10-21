@@ -1005,7 +1005,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "Yes. I mapped conversational patterns. Identified failure modes. Built decision trees for different emotional states.\n\nIf he says 'I'm fine' but voice pattern indicates stress, route to gentle probe subroutine. If he mentions mom, acknowledge without dwelling. Optimize for minimal emotional latency.",
+        text: "I mapped conversational patterns. Identified failure modes. Built decision trees.\n\nIf he says 'I'm fine' but sounds stressed, gentle probe. If he mentions mom, acknowledge without dwelling.\n\nOptimize for minimal emotional latency.",
         emotion: 'clinical',
         variation_id: 'system_purpose_v1'
       }
@@ -1026,7 +1026,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "No. I followed the flowchart perfectly. Every decision node, every optimal response path. And it made everything worse.\n\nHe said I sounded like I was reading from a script. That I was treating him like a problem to solve instead of a person to be with. The system was perfect. And it was completely wrong.",
+        text: "No. I followed it perfectly. Every decision node, every optimal path.\n\nMade everything worse.\n\nHe said I sounded like a script. Treating him like a problem, not a person.\n\nThe system was perfect. Completely wrong.",
         emotion: 'devastated',
         variation_id: 'system_failure_v1'
       }
@@ -1207,7 +1207,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "The system assumed emotional states could be categorized and responses could be optimized. But grief isn't a bug. It's not something to route around.\n\nI was treating symptoms - the silences, the 'I'm fine' responses - instead of the underlying condition. The system was solving the wrong problem.",
+        text: "The system assumed emotional states could be optimized.\n\nBut grief isn't a bug. Not something to route around.\n\nI was treating symptoms. Not the underlying condition.\n\nSolving the wrong problem.",
         emotion: 'analytical',
         variation_id: 'analyzes_failure_v1'
       }
