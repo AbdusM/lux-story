@@ -868,7 +868,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_chooses_birmingham',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Birmingham. This city is the whole metaphor.\n\nSteel mills collapsed. The city could've died. Instead—UAB, Innovation Depot, startups. It adapted.\n\nI'm not an anomaly. I'm a Birmingham career path.\n\nI'm going to tell those students: if Birmingham can reinvent itself after industrial collapse, they can pivot from one career to another.\n\nAdaptability isn't failure here. It's survival.",
+      text: "Birmingham. This city is the whole metaphor.\n\nSteel mills collapsed. The city could've died. Instead—UAB, Innovation Depot, startups. It adapted.\n\nI'm not an anomaly. I'm a Birmingham career path.\n\nIf Birmingham can reinvent itself after industrial collapse, they can pivot from one career to another.\n\nAdaptability isn't failure here. It's survival.",
       emotion: 'grounded',
       variation_id: 'jordan_birmingham_1'
     }],
