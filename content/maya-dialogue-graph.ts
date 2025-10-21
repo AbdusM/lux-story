@@ -747,7 +747,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Oh, I tried. Last month.\n\nPrinted out the MIT robotics program. Highlighted the medical device innovation parts. Prepared my whole case for how it's still helping people.\n\nKitchen table. My mother made tea. Good sign, I thought.\n\nTwo sentences in, she smiled. That smile.\n\nThen: 'That's lovely, Maya. But you'll be a doctor first, yes?'\n\nNot 'no.' Not 'we forbid it.' Just a question that wasn't a question.\n\nMy father kept drinking his tea. Wouldn't look at me.\n\nI'd rather they forbid it. At least then I could be angry instead of guilty.\n\nI haven't brought it up since.",
+        text: "I tried. Last month.\n\nPrinted the MIT robotics program. Prepared my case.\n\nTwo sentences in, my mother smiled. That smile.\n\n'That's lovely, Maya. But you'll be a doctor first, yes?'\n\nNot a question. My father wouldn't look at me.\n\nI'd rather they forbid it. Then I could be angry instead of guilty.",
         emotion: 'wounded',
         variation_id: 'parent_conversation_v1'
       }
@@ -1095,7 +1095,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "I'm going to apply to the robotics program. And I'm going to call my parents tonight.\n\nThey'll be heartbroken. My mother will cry. My father will probably go silent for days.\n\nBut I can't live their dream anymore. Even if it was a beautiful dream. Even if it breaks their hearts.\n\nThank you for helping me choose myself. Even when it hurts.\n\nSamuel is waiting for you. He has a way of knowing when someone's journey is shifting. Good luck with yours.",
+        text: "I'm going to apply to the robotics program. Call my parents tonight.\n\nThey'll be heartbroken. But I can't live their dream anymore.\n\nThank you for helping me choose myself.\n\nSamuel's waiting. Good luck.",
         emotion: 'bittersweet_resolve',
         variation_id: 'farewell_robotics_v2_complex'
       }
@@ -1116,7 +1116,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Biomedical engineering. Medical robotics. The intersection I need.\n\nMy parents will accept it eventually. It's close enough to their dream that maybe they'll understand. Maybe.\n\nBut I'll always wonder what would have happened if I'd just... chosen purely. For myself. Without compromise.\n\nIs taking the safe middle path brave or cowardly? I guess I'll find out.\n\nThank you for helping me find a path that doesn't break anyone. Even if it feels like it bends me a little.\n\nSamuel is waiting for you. Good luck.",
+        text: "Biomedical engineering. Medical robotics. The intersection.\n\nMy parents will accept it. Close enough to their dream.\n\nBut I'll always wonder if I should have chosen purely for myself.\n\nIs the middle path brave or cowardly? I'll find out.\n\nThank you. Samuel's waiting.",
         emotion: 'ambivalent_hope',
         variation_id: 'farewell_hybrid_v2_complex'
       }
@@ -1137,7 +1137,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "I don't know what I'm going to do yet. Medicine or robotics or something else entirely.\n\nBut I know it'll be MY choice, not anyone else's. That's... terrifying, actually.\n\nBecause when it's my choice, I can't blame them if it's wrong. I can't hide behind 'they made me.' The failure would be mine.\n\nBut so would the success.\n\nThank you for not telling me what to do. For trusting me with my own life. That's rarer than you think.\n\nSamuel is waiting for you. He's been doing this a long time - helping people find their way. Safe travels.",
+        text: "I don't know what I'll do yet. Medicine, robotics, something else.\n\nBut it'll be MY choice. Terrifying.\n\nWhen it's my choice, I can't blame them if it's wrong. The failure would be mine.\n\nBut so would the success.\n\nThank you for trusting me with my own life.\n\nSamuel's waiting. Safe travels.",
         emotion: 'empowered_but_uncertain',
         variation_id: 'farewell_self_v2_complex'
       }
