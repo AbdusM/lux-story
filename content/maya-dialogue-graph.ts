@@ -267,7 +267,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "I'm fine. Just... everyone sees me as this perfect pre-med student. Good grades, clear path, making my parents' dreams come true.\n\nBut late at night, when I'm supposed to be memorizing anatomy, I'm actually... doing something else.",
+        text: "I'm fine. Everyone sees me as this perfect pre-med student. Good grades, clear path.\n\nBut late at night, when I'm memorizing anatomy, I'm actually... doing something else.",
         emotion: 'anxious_deflecting',
         variation_id: 'anxiety_reveal_v2_clean'
       }
@@ -647,7 +647,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Really? I've heard of Innovation Depot (Birmingham's startup hub) but never thought... could I actually do that? Start something here in Birmingham?\n\nIt feels so far from what my parents expect, but so close to what I dream about.",
+        text: "Really? I've heard of Innovation Depot but never thought... could I do that? Start something here?\n\nSo far from what my parents expect. So close to what I dream.",
         emotion: 'curious',
         variation_id: 'birmingham_v1'
       }
@@ -977,7 +977,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "You're right. I'm switching to robotics engineering. I'll find a way to make my parents understand that healing can take many forms.\n\nMaybe my robots will save lives too, just differently. Thank you for believing in my real dream.",
+        text: "You're right. Robotics engineering. I'll make my parents understand healing takes many forms.\n\nMaybe my robots will save lives too. Just differently.\n\nThank you for believing in my real dream.",
         emotion: 'confident',
         variation_id: 'ending_robotics_v1'
       }
@@ -1005,7 +1005,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Biomedical engineering at UAB. It's perfect - I can build surgical robots, design prosthetics, create devices that heal.\n\nMy parents get their doctor, sort of, and I get my circuits. You helped me see I don't have to choose between loves.",
+        text: "Biomedical engineering at UAB. Surgical robots, prosthetics, devices that heal.\n\nMy parents get their doctor. Sort of. I get my circuits.\n\nYou helped me see I don't have to choose.",
         emotion: 'happy',
         variation_id: 'ending_hybrid_v1'
       }

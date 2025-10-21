@@ -511,7 +511,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "There are three travelers here tonight. Each one at their own crossroads.\n\nBefore I tell you about them, let me ask you something: When you think about the decision in front of you - whatever brought you to this station - what pulls at you most?",
+        text: "Three travelers tonight. Each at their own crossroads.\n\nBefore I tell you about them—when you think about your decision, what pulls at you most?",
         emotion: 'curious',
         variation_id: 'hub_initial_v1'
       }
@@ -1228,7 +1228,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "We can keep talking about what happened with Maya, if you want. There's value in sitting with an experience before rushing to the next one.\n\nOr, if you're ready, there are other travelers on the platforms tonight. Each one will show you something different about yourself.",
+        text: "We can keep talking about Maya. There's value in sitting with an experience.\n\nOr, if you're ready, there are other travelers. Each one will show you something different.",
         emotion: 'offering_space',
         variation_id: 'contemplation_offer_v1'
       }
@@ -1805,7 +1805,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Walls keep people out. Boundaries invite people in - on your terms. Walls say 'I don't trust you.' Boundaries say 'I trust myself to protect what matters while staying open to connection.'\n\nYou showed Maya the difference. She'll remember that.",
+        text: "Walls keep people out. Boundaries invite them in on your terms.\n\nWalls say 'I don't trust you.' Boundaries say 'I trust myself while staying open.'\n\nYou showed Maya the difference.",
         emotion: 'teaching_nuance',
         variation_id: 'boundary_philosophy_v1'
       }
@@ -2084,7 +2084,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "She'll carry it differently depending on the day. Some days it'll feel true. Some days it'll feel like something she said once to sound confident.\n\nBut here's what I've seen: the frame becomes real when she uses it to help the next person. When a junior designer is drowning and Jordan says, 'I've been there at three different companies. Let me tell you what worked.'\n\nThat's when accumulation transforms from a frame into a foundation.",
+        text: "She'll carry it differently depending on the day. Some days true. Some days just words.\n\nBut the frame becomes real when she uses it to help the next person.\n\nThat's when accumulation transforms into foundation.",
         emotion: 'knowing',
         variation_id: 'future_wisdom_v1'
       }
@@ -2104,7 +2104,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Always has. This city was built by people who knew how to pivot when the steel dried up. Who turned abandoned warehouses into innovation centers. Who saw 'decline' and chose 'transformation.'\n\nJordan's carrying forward what Birmingham has always done. And those students - they're watching someone prove that the path doesn't have to be linear to be legitimate.\n\nThis station sits in Birmingham for a reason. It's always been a crossroads city.",
+        text: "Always has. Built by people who pivoted when steel dried up. Warehouses into innovation centers.\n\nJordan's carrying forward what Birmingham does. Those students are watching someone prove nonlinear paths are legitimate.\n\nThis station sits here for a reason. Birmingham's always been a crossroads.",
         emotion: 'reverent',
         variation_id: 'city_wisdom_v1'
       }
@@ -2164,7 +2164,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "It can be, if you take it to mean 'no one else's opinion matters' or 'you're completely alone in deciding who you are.'\n\nBut I think Jordan heard it differently. Not 'only your story matters' - but 'you get to decide which story you tell about yourself.' Other people's stories still exist. Their opinions still have weight. But she's the editor. She chooses which feedback to integrate and which to set aside.\n\nThat's not lonely. That's sovereignty.",
+        text: "It can be, if you mean 'no one else matters' or 'you're completely alone.'\n\nBut Jordan heard it differently. 'You decide which story you tell.' Others' opinions have weight. But she's the editor.\n\nThat's not lonely. That's sovereignty.",
         emotion: 'nuanced',
         variation_id: 'sovereignty_wisdom_v1'
       }
