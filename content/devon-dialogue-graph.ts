@@ -1083,8 +1083,8 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "Three weeks after Mom died, I found Dad sitting in her chair. Just... sitting. Staring at nothing. For four hours.\n\nI panicked. Built the decision tree that night. Mapped every possible input to an optimal response. If he says X, I respond with Y. Categorized grief stages, outlined gentle probes, planned conversation branches.\n\nNext day I showed it to him. Printed it out. Thirty-seven pages. Color-coded.\n\nHe looked at it. Looked at me.\n\n'Your mother would be so proud of how smart you are.'\n\nThen he went to his room. Didn't speak to me for a week.\n\nThe system was perfect. The flowchart was flawless. Every decision node optimized.\n\nAnd I hurt him more than silence ever could.",
-        emotion: 'numb_recollection',
+        text: "Three weeks after Mom died, I found Dad in her chair. Just sitting. For four hours.\n\nI panicked. Built the decision tree that night. Thirty-seven pages. Color-coded.",
+        emotion: 'controlled_pain',
         variation_id: 'flowchart_incident_v1'
       }
     ],
@@ -1093,8 +1093,43 @@ export const devonDialogueNodes: DialogueNode[] = [
     },
     choices: [
       {
+        choiceId: 'devon_flowchart_what_happened',
+        text: "What happened when you showed him?",
+        nextNodeId: 'devon_flowchart_reaction',
+        pattern: 'exploring',
+        skills: ['communication']
+      },
+      {
+        choiceId: 'devon_flowchart_wait',
+        text: "[Wait for him to continue]",
+        nextNodeId: 'devon_flowchart_reaction',
+        pattern: 'patience',
+        skills: ['emotional_intelligence']
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'devon',
+        addKnowledgeFlags: ['revealed_flowchart_incident']
+      }
+    ],
+    tags: ['emotional_incident', 'devon_arc', 'bg3_depth']
+  },
+
+  {
+    nodeId: 'devon_flowchart_reaction',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "He looked at it. Looked at me.\n\n'Your mother would be so proud of how smart you are.'\n\nThen he went to his room. Didn't speak to me for a week.",
+        emotion: 'hollow',
+        variation_id: 'flowchart_reaction_v1'
+      }
+    ],
+    choices: [
+      {
         choiceId: 'acknowledge_wound',
-        text: "He wasn't rejecting your help. He was grieving your mother together.",
+        text: "He wasn't rejecting your help.",
         nextNodeId: 'devon_admits_hurt',
         pattern: 'helping',
         skills: ['emotional_intelligence', 'communication'],
@@ -1106,7 +1141,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'technical_analysis',
-        text: "The flowchart assumed grief could be solved. But he needed presence.",
+        text: "The flowchart assumed grief could be solved.",
         nextNodeId: 'devon_analyzes_failure',
         pattern: 'analytical',
         skills: ['critical_thinking', 'emotional_intelligence'],
@@ -1117,13 +1152,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         }
       }
     ],
-    onEnter: [
-      {
-        characterId: 'devon',
-        addKnowledgeFlags: ['revealed_flowchart_incident']
-      }
-    ],
-    tags: ['emotional_incident', 'devon_arc', 'bg3_depth']
+    tags: ['emotional_incident', 'devon_arc']
   },
 
   {
@@ -1498,7 +1527,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "I'm going to call him. Let my heart do the talking instead of my head.\n\nBut I don't know how. Twenty-two years of thinking first, feeling second. You don't debug that overnight.\n\nWhat if I call and still can't say what I mean? What if the words come out mechanical even when I'm trying to be real?\n\nI guess that's what trying looks like. Doing it even when you don't know how.\n\nThank you for showing me that emotions aren't errors in the system. They're... they're the system.\n\nBut knowing that and living it—those are different things. I'm still learning.\n\nSamuel's waiting for you. Tell him Devon finally understood. Even if the implementation is still buggy.",
+        text: "I'm going to call him. Let my heart do the talking.\n\nI don't know how. Twenty-two years of thinking first.\n\nBut that's what trying looks like. Doing it even when you don't know how.\n\nThank you. Tell Samuel Devon finally understood.",
         emotion: 'vulnerable_determination',
         variation_id: 'farewell_heart_v2_complex'
       }
@@ -1519,7 +1548,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "I'm going to call him right now. Just to say hi. Be present. No agenda. No system.\n\nWhat if presence isn't enough? What if he needs solutions and all I have now is... being there?\n\nMom knew how to be both. Present AND helpful. I only knew helpful.\n\nLearning to just exist with someone's pain instead of solving it—that feels like standing still while everything in me screams to act.\n\nBut maybe that's growth. Doing the uncomfortable thing because it's right, not because it's logical.\n\nThank you for showing me that empathy isn't anti-logic. It's just... harder to compile.\n\nSamuel's waiting for you. I think I finally understand what he does—he debugs hearts, not systems.",
+        text: "I'm going to call him. Be present. No agenda.\n\nMom knew how to be both. Present and helpful. I only knew helpful.\n\nLearning to just exist with someone's pain—everything in me screams to act.\n\nBut maybe that's growth.\n\nThank you. Samuel's waiting.",
         emotion: 'raw_courage',
         variation_id: 'farewell_presence_v2_complex'
       }
