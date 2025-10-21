@@ -1535,7 +1535,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "They do, don't they?\n\nYou learned to recognize struggle because you lived beside it. I learned to hide my struggle because I thought it would burden people who already had enough.\n\nBut tonight, with you, I didn't have to hide. You already knew. You'd already seen it.\n\nThat's the gift we just gave each other. Being seen without having to explain.",
+        text: "They do.\n\nYou learned to recognize struggle because you lived beside it. I learned to hide mine.\n\nBut tonight I didn't have to hide. You already knew.\n\nThat's the gift. Being seen without having to explain.",
         emotion: 'deep_connection',
         variation_id: 'mutual_struggling_v1'
       }
@@ -1636,7 +1636,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "It really does.\n\nYou learned that lesson the hard way. Watching achievement from a distance. Loving someone who was too busy succeeding to be there.\n\nI was about to do the same thing. Different version, same absence.\n\nBut you recognized it because you lived it. And by telling me your story, you saved me from repeating it.\n\nThat's what tonight was about, wasn't it? Both of us choosing presence over achievement for once.",
+        text: "You learned that the hard way. Watching achievement from a distance.\n\nI was about to do the same thing. Different version, same absence.\n\nYou recognized it because you lived it.\n\nThat's what tonight was. Both of us choosing presence over achievement.",
         emotion: 'grateful_clarity',
         variation_id: 'mutual_absent_v1'
       }

@@ -19,7 +19,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_introduction',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Hey there! Career Day at the coding bootcamp. Innovation Depot, Conference Room B. Got here way too early. Classic overcompensation.\n\nI've rewritten this speech six times. Look—\n\nUX Designer. Gym Manager. Marketing Coordinator. Uber Driver. Freelance Developer. Product Manager. Senior Designer.\n\nSeven jobs. Twelve years.\n\nWhat do you tell thirty students about career paths when yours looks like this?",
+      text: "Hey! Career Day at the coding bootcamp. Got here way too early. Classic overcompensation.\n\nI've rewritten this speech six times.\n\nUX Designer. Gym Manager. Marketing. Uber. Developer. Product Manager. Senior Designer.\n\nSeven jobs. Twelve years.\n\nWhat do you tell students when your path looks like this?",
       emotion: 'friendly_but_anxious',
       variation_id: 'jordan_intro_v2_visual_hook'
     }],
@@ -72,7 +72,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_career_question',
     speaker: 'Jordan Packard',
     content: [{
-      text: "It's a mentorship panel for a coding bootcamp cohort—about thirty students trying to break into tech. I'm supposed to share my 'journey' and give advice. Which sounds simple until you actually sit down to figure out what to say, you know?\n\nI've rewritten this speech like six times. What do you even tell people about career paths when yours looks like... well. Mine.",
+      text: "Mentorship panel. Thirty students trying to break into tech. Share my 'journey' and give advice.\n\nSounds simple. Until you sit down to write it.\n\nI've rewritten this speech six times. What do you tell people when your path looks like mine?",
       emotion: 'uncertain',
       variation_id: 'jordan_career_1'
     }],
@@ -178,7 +178,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_job_reveal_2',
     speaker: 'Jordan Packard',
     content: [{
-      text: "I got a job selling phones at the Galleria. You know, the kiosks in the middle of the walkway where you try to make eye contact with people speed-walking past you?\n\nIt was humbling. But I learned something crucial: how to read people in three seconds. How to ask questions that made them feel heard instead of sold to. Customer service is just applied empathy, really.",
+      text: "Selling phones at the Galleria. You know, those kiosks where you chase people speed-walking past?\n\nHumbling. But I learned to read people in three seconds. Ask questions that made them feel heard.\n\nCustomer service is applied empathy.",
       emotion: 'reflective',
       variation_id: 'jordan_job2_1'
     }],
@@ -379,7 +379,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_job_reveal_5',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Okay, this is where it gets weird. I quit to become a personal trainer.\n\nI know. But hear me out—I'd been going to the gym to deal with work stress, and I realized trainers are really just motivation psychologists. They're designing experiences that make people believe they can do hard things.\n\nThat clicked for me. Experience design. User motivation. I just didn't have the language for it yet.",
+      text: "This is where it gets weird. I quit to become a personal trainer.\n\nHear me out. Trainers are motivation psychologists. Designing experiences that make people believe they can do hard things.\n\nExperience design. User motivation. I just didn't have the language yet.",
       emotion: 'animated',
       variation_id: 'jordan_job5_1'
     }],
