@@ -2,46 +2,32 @@
   "stats": {
     "content/samuel-dialogue-graph.ts": {
       "total": 76,
-      "long": 17,
-      "tooLong": 59
+      "long": 20,
+      "tooLong": 56
     },
     "content/maya-dialogue-graph.ts": {
       "total": 27,
-      "long": 15,
-      "tooLong": 12
+      "long": 16,
+      "tooLong": 11
     },
     "content/devon-dialogue-graph.ts": {
       "total": 39,
-      "long": 17,
-      "tooLong": 22
+      "long": 18,
+      "tooLong": 21
     },
     "content/jordan-dialogue-graph.ts": {
       "total": 22,
-      "long": 6,
-      "tooLong": 16
+      "long": 7,
+      "tooLong": 15
     }
   },
   "allLongNodes": [
-    {
-      "file": "maya-dialogue-graph.ts",
-      "nodeId": "maya_parent_conversation_failed",
-      "length": 556,
-      "text": "Oh, I tried. Last month.\\n\\nPrinted out the MIT robotics program. Highlighted the medical device inn...",
-      "lineNumber": 750
-    },
     {
       "file": "jordan-dialogue-graph.ts",
       "nodeId": "jordan_job_reveal_7",
       "length": 556,
       "text": "Birmingham-Jefferson Convention Complex (BJCC) career fair, three years ago. I was there dropping of...",
       "lineNumber": 488
-    },
-    {
-      "file": "samuel-dialogue-graph.ts",
-      "nodeId": "samuel_why_jordan",
-      "length": 555,
-      "text": "Because impostor syndrome doesn't care about résumés. Jordan has built real skills across this city'...",
-      "lineNumber": 2690
     },
     {
       "file": "samuel-dialogue-graph.ts",
@@ -56,20 +42,6 @@
       "length": 547,
       "text": "I'm going to call him. Integrated approach - engineer and son, both online.\\n\\nBut I'm terrified I'l...",
       "lineNumber": 1509
-    },
-    {
-      "file": "samuel-dialogue-graph.ts",
-      "nodeId": "samuel_letter_system",
-      "length": 537,
-      "text": "I write one every night. To someone whose name just... comes to me. Same heavy paper, elegant script...",
-      "lineNumber": 479
-    },
-    {
-      "file": "maya-dialogue-graph.ts",
-      "nodeId": "maya_farewell_self",
-      "length": 527,
-      "text": "I don't know what I'm going to do yet. Medicine or robotics or something else entirely.\\n\\nBut I kno...",
-      "lineNumber": 1140
     },
     {
       "file": "jordan-dialogue-graph.ts",
@@ -100,39 +72,11 @@
       "lineNumber": 728
     },
     {
-      "file": "maya-dialogue-graph.ts",
-      "nodeId": "maya_farewell_hybrid",
-      "length": 499,
-      "text": "Biomedical engineering. Medical robotics. The intersection I need.\\n\\nMy parents will accept it even...",
-      "lineNumber": 1119
-    },
-    {
       "file": "samuel-dialogue-graph.ts",
       "nodeId": "samuel_deep_jordan_reflection",
       "length": 478,
       "text": "I saw you meeting Jordan where she was - in that spiral of doubt right before a moment that mattered...",
       "lineNumber": 2219
-    },
-    {
-      "file": "devon-dialogue-graph.ts",
-      "nodeId": "devon_uab_systems_engineering",
-      "length": 476,
-      "text": "Yeah. University of Alabama at Birmingham's (UAB) Integrated Systems Engineering program.\\n\\nI'm doi...",
-      "lineNumber": 526
-    },
-    {
-      "file": "samuel-dialogue-graph.ts",
-      "nodeId": "samuel_daughter_path",
-      "length": 465,
-      "text": "She's a biomedical engineer in Atlanta now. CDC. Designs diagnostic systems for underserved communit...",
-      "lineNumber": 439
-    },
-    {
-      "file": "samuel-dialogue-graph.ts",
-      "nodeId": "samuel_patience_wisdom",
-      "length": 461,
-      "text": "Is it okay? It's more than okay - it's courageous.\\n\\nOur whole world is designed to make you choose...",
-      "lineNumber": 1081
     },
     {
       "file": "devon-dialogue-graph.ts",
@@ -149,13 +93,6 @@
       "lineNumber": 2167
     },
     {
-      "file": "maya-dialogue-graph.ts",
-      "nodeId": "maya_farewell_robotics",
-      "length": 442,
-      "text": "I'm going to apply to the robotics program. And I'm going to call my parents tonight.\\n\\nThey'll be ...",
-      "lineNumber": 1098
-    },
-    {
       "file": "samuel-dialogue-graph.ts",
       "nodeId": "samuel_jordan_city_wisdom",
       "length": 440,
@@ -168,20 +105,6 @@
       "length": 438,
       "text": "There's someone else here tonight - Jordan Packard. She's over by the conference rooms, guest instru...",
       "lineNumber": 2647
-    },
-    {
-      "file": "jordan-dialogue-graph.ts",
-      "nodeId": "jordan_job_reveal_6",
-      "length": 436,
-      "text": "I didn't. Not directly. Personal training didn't pay enough, so I started driving for Uber on the si...",
-      "lineNumber": 435
-    },
-    {
-      "file": "samuel-dialogue-graph.ts",
-      "nodeId": "samuel_specificity_trap",
-      "length": 435,
-      "text": "That's the question that keeps people stuck. 'What specifically should I do?' As if your purpose can...",
-      "lineNumber": 1207
     },
     {
       "file": "samuel-dialogue-graph.ts",
@@ -639,6 +562,13 @@
       "lineNumber": 911
     },
     {
+      "file": "maya-dialogue-graph.ts",
+      "nodeId": "maya_parent_conversation_failed",
+      "length": 288,
+      "text": "I tried. Last month.\\n\\nPrinted the MIT robotics program. Prepared my case.\\n\\nTwo sentences in, my ...",
+      "lineNumber": 750
+    },
+    {
       "file": "samuel-dialogue-graph.ts",
       "nodeId": "samuel_solidarity",
       "length": 285,
@@ -658,6 +588,13 @@
       "length": 282,
       "text": "Engineer and son. Logic and love. Both are valid data sources. Both matter.\\n\\nI'll call him tonight...",
       "lineNumber": 1424
+    },
+    {
+      "file": "maya-dialogue-graph.ts",
+      "nodeId": "maya_farewell_self",
+      "length": 281,
+      "text": "I don't know what I'll do yet. Medicine, robotics, something else.\\n\\nBut it'll be MY choice. Terrif...",
+      "lineNumber": 1140
     },
     {
       "file": "samuel-dialogue-graph.ts",
@@ -730,6 +667,13 @@
       "lineNumber": 940
     },
     {
+      "file": "samuel-dialogue-graph.ts",
+      "nodeId": "samuel_why_jordan",
+      "length": 265,
+      "text": "Impostor syndrome doesn't care about résumés.\\n\\nJordan's built real skills but feels like a fraud.\\...",
+      "lineNumber": 2690
+    },
+    {
       "file": "maya-dialogue-graph.ts",
       "nodeId": "maya_uab_revelation",
       "length": 264,
@@ -749,6 +693,13 @@
       "length": 260,
       "text": "He's an aerospace engineer at NASA Marshall.\\n\\nTwenty-five years debugging rocket systems. Guidance...",
       "lineNumber": 472
+    },
+    {
+      "file": "maya-dialogue-graph.ts",
+      "nodeId": "maya_farewell_hybrid",
+      "length": 259,
+      "text": "Biomedical engineering. Medical robotics. The intersection.\\n\\nMy parents will accept it. Close enou...",
+      "lineNumber": 1119
     },
     {
       "file": "devon-dialogue-graph.ts",
@@ -777,6 +728,13 @@
       "length": 252,
       "text": "Thank you for listening. Really. I've been carrying this alone for so long.\\n\\nI'm not sure what I'l...",
       "lineNumber": 1065
+    },
+    {
+      "file": "samuel-dialogue-graph.ts",
+      "nodeId": "samuel_patience_wisdom",
+      "length": 251,
+      "text": "More than okay. Courageous.\\n\\nOur world demands you choose fast. Lock in your path before you've wa...",
+      "lineNumber": 1081
     },
     {
       "file": "devon-dialogue-graph.ts",
@@ -819,6 +777,13 @@
       "length": 241,
       "text": "Actually, can I ask you something? I've been talking about my path this whole time, but... how do YO...",
       "lineNumber": 613
+    },
+    {
+      "file": "samuel-dialogue-graph.ts",
+      "nodeId": "samuel_daughter_path",
+      "length": 240,
+      "text": "Biomedical engineer at the CDC. Designs diagnostic systems.\\n\\nCalls every Sunday. Still thanks me f...",
+      "lineNumber": 439
     },
     {
       "file": "samuel-dialogue-graph.ts",
@@ -868,6 +833,13 @@
       "length": 234,
       "text": "Welcome to Grand Central Terminus. I'm Samuel Washington, and I keep this station.\\n\\nYou have the l...",
       "lineNumber": 23
+    },
+    {
+      "file": "samuel-dialogue-graph.ts",
+      "nodeId": "samuel_specificity_trap",
+      "length": 233,
+      "text": "'What specifically should I do?' That keeps people stuck.\\n\\nThe pattern is bigger than any role. Yo...",
+      "lineNumber": 1207
     },
     {
       "file": "devon-dialogue-graph.ts",
@@ -962,6 +934,13 @@
     },
     {
       "file": "devon-dialogue-graph.ts",
+      "nodeId": "devon_uab_systems_engineering",
+      "length": 219,
+      "text": "UAB Systems Engineering. Senior capstone on error detection in distributed systems.\\n\\nSouthern Comp...",
+      "lineNumber": 526
+    },
+    {
+      "file": "devon-dialogue-graph.ts",
       "nodeId": "devon_reframe",
       "length": 218,
       "text": "Empathy as data collection. Presence as bandwidth. You're saying... I don't have to abandon systems ...",
@@ -1017,11 +996,25 @@
       "lineNumber": 1452
     },
     {
+      "file": "jordan-dialogue-graph.ts",
+      "nodeId": "jordan_job_reveal_6",
+      "length": 209,
+      "text": "Started driving for Uber on the side.\\n\\nBest education in Birmingham I ever got. Every neighborhood...",
+      "lineNumber": 435
+    },
+    {
       "file": "maya-dialogue-graph.ts",
       "nodeId": "maya_reaction_absent",
       "length": 208,
       "text": "Success at the cost of presence.\\n\\nYou learned early that achievement and absence can be the same t...",
       "lineNumber": 1589
+    },
+    {
+      "file": "samuel-dialogue-graph.ts",
+      "nodeId": "samuel_letter_system",
+      "length": 207,
+      "text": "I write one every night. To someone whose name comes to me.\\n\\nLike you knew [character] needed your...",
+      "lineNumber": 479
     },
     {
       "file": "samuel-dialogue-graph.ts",
@@ -1108,6 +1101,13 @@
       "lineNumber": 523
     },
     {
+      "file": "maya-dialogue-graph.ts",
+      "nodeId": "maya_farewell_robotics",
+      "length": 196,
+      "text": "I'm going to apply to the robotics program. Call my parents tonight.\\n\\nThey'll be heartbroken. But ...",
+      "lineNumber": 1098
+    },
+    {
       "file": "jordan-dialogue-graph.ts",
       "nodeId": "jordan_response_acceptance",
       "length": 193,
@@ -1176,5 +1176,5 @@
     "LONG": 180,
     "TOO_LONG": 250
   },
-  "generatedAt": "2025-10-21T13:41:00.536Z"
+  "generatedAt": "2025-10-21T13:45:02.796Z"
 }

@@ -432,7 +432,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_job_reveal_6',
     speaker: 'Jordan Packard',
     content: [{
-      text: "I didn't. Not directly. Personal training didn't pay enough, so I started driving for Uber on the side.\n\nBest education in Birmingham I ever got. You learn every neighborhood, every traffic pattern, every event that changes the flow of the city. You learn logistics. Efficiency. Route optimization.\n\nAnd you talk to hundreds of people. Tourists, business folks, college kids. Everyone's going somewhere, and they all have a story about why.",
+      text: "Started driving for Uber on the side.\n\nBest education in Birmingham I ever got. Every neighborhood, every traffic pattern. Logistics. Route optimization.\n\nAnd hundreds of conversations. Everyone's going somewhere.",
       emotion: 'thoughtful',
       variation_id: 'jordan_job6_1'
     }],
@@ -485,7 +485,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_job_reveal_7',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Birmingham-Jefferson Convention Complex (BJCC) career fair, three years ago. I was there dropping off a passenger, saw the banner, wandered in on a whim.\n\nThere was a booth for Innovation Depot (Birmingham's startup hub)—health tech startup looking for a UX designer. I didn't even know what UX meant, but when they explained it, everything clicked.\n\nUser research? That's customer service. Visual design? Graphic design. Motivation psychology? Personal training. Systems thinking (seeing how parts connect)? Uber. They hired me as a junior designer that week.",
+      text: "BJCC career fair, three years ago. Dropped off a passenger, wandered in.\n\nInnovation Depot booth. Health tech startup looking for a UX designer. I didn't know what UX meant.\n\nThen they explained it. Everything clicked.\n\nUser research? Customer service. Visual design? Graphic design. Motivation psych? Personal training.\n\nThey hired me that week.",
       emotion: 'triumphant',
       variation_id: 'jordan_job7_1_pt1'
     }],
@@ -743,7 +743,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_impostor_reveal',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Let me show you something. A text from my mom after I quit the marketing firm.\n\n'Another one? Are you sure you're not just being picky, baby?'\n\nShe didn't say it to be cruel—she was worried about me. But I hear that voice every time someone calls me a 'senior designer' or asks me to mentor.\n\nWhat if I'm not proof of adaptability? What if I'm just a fraud who got lucky at a career fair? What if those students look at my résumé and think, 'This person has no idea what they're doing'?\n\nBecause some days, that's exactly what I think.",
+      text: "Let me show you something. A text from my mom:\n\n'Another one? Are you sure you're not just being picky, baby?'\n\nShe was worried. But I hear that voice every time someone calls me a 'senior designer.'\n\nWhat if I'm just a fraud who got lucky? What if those students see right through me?\n\nBecause some days, that's exactly what I think.",
       emotion: 'raw',
       variation_id: 'jordan_impostor_1'
     }],
@@ -797,7 +797,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_crossroads',
     speaker: 'Jordan Packard',
     content: [{
-      text: "I have twenty minutes before that room fills up. Twenty minutes to decide what story I'm telling—about myself, about career paths, about Birmingham, about what counts as success.\n\nI keep rewriting this speech because I don't know which version is true. The one where my past is a liability? The one where it's an asset? The one where it doesn't matter because I define what it means?\n\nWhich story should I tell those students?",
+      text: "Twenty minutes before that room fills up.\n\nI keep rewriting this speech. Which version is true?\n\nPast as liability? Past as asset? Or I define what it means?\n\nWhich story should I tell them?",
       emotion: 'desperate_clarity',
       variation_id: 'jordan_crossroads_1'
     }],

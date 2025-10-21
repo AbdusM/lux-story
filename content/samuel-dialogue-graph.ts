@@ -680,7 +680,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "That's honest. And honestly, that's why you're here.\n\nLet me tell you about tonight's travelers. Listen to their stories - see which one pulls at something inside you:\n\n**Maya Chen** on Platform 1 - Pre-med student who wants to help people, but maybe not the way everyone expects.\n\n**Devon Kumar** on Platform 3 - Engineer learning that some problems can't be solved with logic alone.\n\n**Jordan Packard** in Conference Room B - Seven jobs, one powerful question about whether that makes her experienced or unfocused.\n\nWho speaks to you?",
+        text: "That's honest. That's why you're here.\n\nTonight's travelers:\n\n**Maya Chen** - Platform 1. Pre-med who wants to help, but maybe differently.\n\n**Devon Kumar** - Platform 3. Engineer learning logic isn't enough.\n\n**Jordan Packard** - Conference Room B. Seven jobs. One question.\n\nWho speaks to you?",
         emotion: 'gentle_guide',
         variation_id: 'fallback_v1'
       }
@@ -725,7 +725,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Fair question. Let me paint the full picture:\n\n**Maya Chen** - Platform 1. Pre-med brilliance, family expectations, robotics dreams. The weight of making others proud while finding yourself.\n\n**Devon Kumar** - Platform 3. Systems engineer who tried to debug grief with a flowchart. Learning that empathy isn't the opposite of logic.\n\n**Jordan Packard** - Conference Room B. Seven careers, thirty students waiting for wisdom, one question: Is my path proof of adaptability or just chaos?\n\nWho do you want to meet first?",
+        text: "The full picture:\n\n**Maya Chen** - Platform 1. Pre-med brilliance, family expectations, robotics dreams. Making others proud while finding yourself.\n\n**Devon Kumar** - Platform 3. Systems engineer who tried to debug grief. Learning empathy isn't anti-logic.\n\n**Jordan Packard** - Conference Room B. Seven careers. Is that adaptability or chaos?\n\nWho do you want to meet?",
         emotion: 'patient_informative',
         variation_id: 'other_travelers_v1'
       }
@@ -1078,7 +1078,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Is it okay? It's more than okay - it's courageous.\n\nOur whole world is designed to make you choose fast, commit early, lock in your path before you've even walked it. Maya choosing to sit with uncertainty? That's her refusing to let urgency override truth.\n\nNot knowing is honest - and that's the foundation of coaching, not fixing. Birmingham's Innovation Depot startup mentors know this. The best facilitators don't rush to answers. They hold space for emergence.",
+        text: "More than okay. Courageous.\n\nOur world demands you choose fast. Lock in your path before you've walked it.\n\nMaya sitting with uncertainty? That's refusing to let urgency override truth.\n\nNot knowing is honest. The best facilitators hold space for emergence.",
         emotion: 'wise',
         variation_id: 'patience_wisdom_v1_pt1'
       }
@@ -1204,7 +1204,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "That's the question that keeps people stuck. 'What specifically should I do?' As if your purpose can be reduced to a job title or a five-year plan.\n\nThe pattern is bigger than any single role. You're learning to hold space, to ask questions that matter, to meet people in their uncertainty. Those skills? They're valuable everywhere - teaching, counseling, leadership, design, ministry, coaching. The form will emerge. Trust the pattern.",
+        text: "'What specifically should I do?' That keeps people stuck.\n\nThe pattern is bigger than any role. You hold space. Ask questions that matter. Meet people in uncertainty.\n\nThose skills work everywhere. The form will emerge.\n\nTrust the pattern.",
         emotion: 'patient_wisdom',
         variation_id: 'specificity_trap_v1'
       }

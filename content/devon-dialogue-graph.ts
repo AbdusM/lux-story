@@ -523,7 +523,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "Yeah. University of Alabama at Birmingham's (UAB) Integrated Systems Engineering program.\n\nI'm doing my senior capstone (final project) on error detection in distributed systems (seeing how parts connect) - how different components communicate when something fails.\n\nSouthern Company's DevOps team will be at our Engineering Week showcase next month. They're looking for graduates who understand system resilience.\n\nIronic, right? I can debug code exceptions but not emotional ones.",
+        text: "UAB Systems Engineering. Senior capstone on error detection in distributed systems.\n\nSouthern Company's DevOps team is coming to our showcase. Looking for system resilience grads.\n\nIronic. I can debug code but not emotions.",
         emotion: 'self_aware',
         variation_id: 'uab_systems_v1'
       }
