@@ -72,7 +72,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_career_question',
     speaker: 'Jordan Packard',
     content: [{
-      text: "It's a mentorship panel for a coding bootcamp cohort—about thirty students trying to break into tech. I'm supposed to share my 'journey' and give advice. Which sounds simple until you actually sit down to figure out what to say, you know?\n\n*She pulls out her phone, scrolls through notes*\n\nI've rewritten this speech like six times. What do you even tell people about career paths when yours looks like... well. Mine.",
+      text: "It's a mentorship panel for a coding bootcamp cohort—about thirty students trying to break into tech. I'm supposed to share my 'journey' and give advice. Which sounds simple until you actually sit down to figure out what to say, you know?\n\nI've rewritten this speech like six times. What do you even tell people about career paths when yours looks like... well. Mine.",
       emotion: 'uncertain',
       variation_id: 'jordan_career_1'
     }],
@@ -485,7 +485,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_job_reveal_7',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Birmingham-Jefferson Convention Complex (BJCC) career fair, three years ago. I was there dropping off a passenger, saw the banner, wandered in on a whim.\n\nThere was a booth for Innovation Depot (Birmingham's startup hub)—health tech startup looking for a UX designer. I didn't even know what UX meant, but when they explained it, everything clicked.\n\n*Her voice gains energy*\n\nUser research? That's customer service. Visual design? Graphic design. Motivation psychology? Personal training. Systems thinking (seeing how parts connect)? Uber. They hired me as a junior designer that week.",
+      text: "Birmingham-Jefferson Convention Complex (BJCC) career fair, three years ago. I was there dropping off a passenger, saw the banner, wandered in on a whim.\n\nThere was a booth for Innovation Depot (Birmingham's startup hub)—health tech startup looking for a UX designer. I didn't even know what UX meant, but when they explained it, everything clicked.\n\nUser research? That's customer service. Visual design? Graphic design. Motivation psychology? Personal training. Systems thinking (seeing how parts connect)? Uber. They hired me as a junior designer that week.",
       emotion: 'triumphant',
       variation_id: 'jordan_job7_1_pt1'
     }],
@@ -704,7 +704,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_response_acceptance',
     speaker: 'Jordan Packard',
     content: [{
-      text: "*Her eyes widen slightly*\n\nWow. That's... I don't know if I'm there yet. Just sitting with uncertainty without trying to fix it or understand it or plan around it?\n\nThat takes real strength. Thank you for that perspective.",
+      text: "Wow. That's... I don't know if I'm there yet. Just sitting with uncertainty without trying to fix it or understand it or plan around it?\n\nThat takes real strength. Thank you for that perspective.",
       emotion: 'impressed',
       variation_id: 'jordan_response_acceptance_v1'
     }],
@@ -743,7 +743,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_impostor_reveal',
     speaker: 'Jordan Packard',
     content: [{
-      text: "*She pulls out her phone, shows you a text thread with 'Mom ❤️'*\n\n*Reads aloud*\n\n'Another one? Are you sure you're not just being picky, baby?'\n\nThat was after I quit the marketing firm. She didn't say it to be cruel—she was worried about me. But I hear that voice every time someone calls me a 'senior designer' or asks me to mentor.\n\n*Looks up, eyes slightly glassy*\n\nWhat if I'm not proof of adaptability? What if I'm just a fraud who got lucky at a career fair? What if those students look at my résumé and think, 'This person has no idea what they're doing'?\n\nBecause some days, that's exactly what I think.",
+      text: "Let me show you something. A text from my mom after I quit the marketing firm.\n\n'Another one? Are you sure you're not just being picky, baby?'\n\nShe didn't say it to be cruel—she was worried about me. But I hear that voice every time someone calls me a 'senior designer' or asks me to mentor.\n\nWhat if I'm not proof of adaptability? What if I'm just a fraud who got lucky at a career fair? What if those students look at my résumé and think, 'This person has no idea what they're doing'?\n\nBecause some days, that's exactly what I think.",
       emotion: 'raw',
       variation_id: 'jordan_impostor_1'
     }],
@@ -868,7 +868,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_chooses_birmingham',
     speaker: 'Jordan Packard',
     content: [{
-      text: "*Her eyes widen slightly—recognition spreading across her face*\n\nBirmingham. Of course. This city is the whole metaphor.\n\n*She paces, thinking aloud*\n\nSteel mills and railroads collapsed. The city could've died. Instead—UAB, Innovation Depot, Shipt, medical tech, startups. Birmingham didn't cling to what it was. It adapted.\n\n*Turns back to you*\n\nAnd that's what I did. I'm not an anomaly—I'm a Birmingham career path. The Galleria where I sold phones? That's where Uber riders go. The career fair at BJCC? That's where the city hosts its future. Every single job was in this city's ecosystem.\n\nI'm going to tell those students that if Birmingham can reinvent itself after an entire industrial collapse, they can sure as hell pivot from one career track to another.\n\nAdaptability isn't failure. In this city, it's survival. And survival becomes success.",
+      text: "Birmingham. Of course. This city is the whole metaphor.\n\nSteel mills and railroads collapsed. The city could've died. Instead—UAB, Innovation Depot, Shipt, medical tech, startups. Birmingham didn't cling to what it was. It adapted.\n\nAnd that's what I did. I'm not an anomaly—I'm a Birmingham career path. The Galleria where I sold phones? That's where Uber riders go. The career fair at BJCC? That's where the city hosts its future. Every single job was in this city's ecosystem.\n\nI'm going to tell those students that if Birmingham can reinvent itself after an entire industrial collapse, they can sure as hell pivot from one career track to another.\n\nAdaptability isn't failure. In this city, it's survival. And survival becomes success.",
       emotion: 'grounded',
       variation_id: 'jordan_birmingham_1'
     }],

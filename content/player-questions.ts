@@ -120,7 +120,7 @@ export const reciprocityQuestions: Record<string, ReciprocityQuestion> = {
   // ============= THE PROVING GROUND =============
   proving_ground: {
     questionId: 'proving_ground',
-    questionText: "*After a long pause* | You saw through my systems to what I was really doing - trying to prove something. | What about you? What are you trying to prove? And to whom?",
+    questionText: "You saw through my systems to what I was really doing - trying to prove something. | What about you? What are you trying to prove? And to whom?",
     askedBy: 'devon',
     minTrust: 7,
     requiredFlags: ['broke_through_systems', 'devon_vulnerable'],
