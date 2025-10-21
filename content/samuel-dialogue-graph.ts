@@ -572,7 +572,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "That's a particular kind of struggle. When your heart knows what it wants but the path there feels... complicated.\n\nThere's someone on Platform 1 tonight who understands that tension. Maya Chen - brilliant pre-med student at UAB. She's supposed to become a doctor, and she's good enough to do it. But between what she's 'supposed' to do and what she dreams about, there's a gap that's tearing her apart.",
+        text: "That's a particular kind of struggle. When your heart knows what it wants but the path feels... complicated.\n\nThere's someone on Platform 1 tonight who understands that tension. Maya Chen - brilliant pre-med student at UAB. She's supposed to become a doctor, and she's good enough to do it.\n\nBut between what she's 'supposed' to do and what she dreams about, there's a gap that's tearing her apart.",
         emotion: 'knowing',
         variation_id: 'discovers_helping_v1'
       }
@@ -2064,7 +2064,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "That's the right question. Sometimes we need to hear something before we can believe it. The hearing plants the seed. The believing - that takes time, evidence, lived experience.\n\nShe'll test that frame. Have a hard day. Wonder if she's really qualified or just performing confidence. But the seed is planted. And every time she shares what she learned at one job with someone from another, she'll water it.",
+        text: "That's the right question. Sometimes we need to hear something before we can believe it. The hearing plants the seed.\n\nShe'll test that frame. Have a hard day. Wonder if she's really qualified or just performing confidence. But the seed is planted.\n\nEvery time she shares what she learned at one job with someone from another, she'll water it.",
         emotion: 'patient_wisdom',
         variation_id: 'belief_wisdom_v1'
       }
@@ -2767,7 +2767,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "What do I see in you? I see someone who listens more than they speak. Who asks questions that make people think instead of giving answers that shut down thinking.\n\nYou're not here by accident. The station called you because you have the capacity to hold space for others' becoming. That's a rare gift, and a difficult one. It means you'll often help others find clarity before you find your own.",
+        text: "What do I see in you? Someone who listens more than they speak. Who asks questions that make people think instead of giving answers that shut down thinking.\n\nYou're not here by accident. The station called you because you have the capacity to hold space for others' becoming.\n\nThat's a rare gift, and a difficult one. You'll often help others find clarity before you find your own.",
         emotion: 'knowing',
         variation_id: 'pattern_v1'
       }
