@@ -107,7 +107,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "You recognize the structure. Most people just see... scribbles. Yes, it's a decision tree. Conversational routing logic.\n\nIf input A, then response B. If emotional_state == 'defensive', route to de-escalation subroutine. That kind of thing.",
+        text: "You recognize it. Most people see scribbles.\n\nDecision tree. Conversational routing.\n\nIf input A, response B. If emotional_state defensive, de-escalate.",
         emotion: 'relieved',
         variation_id: 'technical_v1'
       }
@@ -640,7 +640,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "Thank you. I've been so focused on fixing the conversation that I forgot we could just... have one. | About rockets and distributed systems and things that fail and how you handle it. | That's what engineers do, right? We learn from failures.",
+        text: "Thank you. I've been so focused on fixing the conversation.\n\nI forgot we could just have one. | About rockets and distributed systems. Things that fail. How you handle it. | That's what engineers do. Learn from failures.",
         emotion: 'grateful',
         variation_id: 'grateful_insight_v1'
       }
@@ -1302,7 +1302,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "A system that includes emotional variables. Not logic OR emotion. Logic AND emotion. An integrated architecture.\n\nGrief isn't a bug to fix. It's a valid system state. Requiring presence, not optimization. Requiring connection, not solutions.",
+        text: "A system with emotional variables. Not logic OR emotion. Both.\n\nGrief isn't a bug. It's a valid state.\n\nRequiring presence. Not optimization.",
         emotion: 'integrating',
         variation_id: 'integration_v1'
       }
@@ -1332,7 +1332,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "The right problem isn't 'How do I fix my dad.' The right problem is 'How do I be present with my dad.'\n\nYou can't optimize connection. You can only... show up for it. Be in the system instead of trying to design it from outside.",
+        text: "The right problem isn't 'How do I fix my dad.'\n\nIt's 'How do I be present with my dad.'\n\nYou can't optimize connection. You show up. Be in the system instead of designing it.",
         emotion: 'understanding',
         variation_id: 'realizes_v1'
       }

@@ -1,18 +1,18 @@
 {
   "stats": {
     "content/samuel-dialogue-graph.ts": {
-      "total": 76,
-      "long": 31,
-      "tooLong": 45
+      "total": 73,
+      "long": 29,
+      "tooLong": 44
     },
     "content/maya-dialogue-graph.ts": {
-      "total": 26,
-      "long": 19,
+      "total": 23,
+      "long": 16,
       "tooLong": 7
     },
     "content/devon-dialogue-graph.ts": {
-      "total": 37,
-      "long": 24,
+      "total": 34,
+      "long": 21,
       "tooLong": 13
     },
     "content/jordan-dialogue-graph.ts": {
@@ -394,13 +394,6 @@
       "lineNumber": 899
     },
     {
-      "file": "samuel-dialogue-graph.ts",
-      "nodeId": "samuel_contemplation_offer",
-      "length": 270,
-      "text": "We can keep talking about what happened with Maya, if you want. There's value in sitting with an exp...",
-      "lineNumber": 1231
-    },
-    {
       "file": "devon-dialogue-graph.ts",
       "nodeId": "devon_people_problem",
       "length": 270,
@@ -556,31 +549,10 @@
     },
     {
       "file": "samuel-dialogue-graph.ts",
-      "nodeId": "samuel_hub_initial",
-      "length": 243,
-      "text": "There are three travelers here tonight. Each one at their own crossroads.\\n\\nBefore I tell you about...",
-      "lineNumber": 514
-    },
-    {
-      "file": "samuel-dialogue-graph.ts",
       "nodeId": "samuel_station_sees_all",
       "length": 243,
       "text": "The station doesn't just connect platforms. It connects moments. I saw her at the robotics lab when ...",
       "lineNumber": 1061
-    },
-    {
-      "file": "devon-dialogue-graph.ts",
-      "nodeId": "devon_grateful_insight",
-      "length": 242,
-      "text": "Thank you. I've been so focused on fixing the conversation that I forgot we could just... have one. ...",
-      "lineNumber": 643
-    },
-    {
-      "file": "samuel-dialogue-graph.ts",
-      "nodeId": "samuel_boundary_philosophy",
-      "length": 241,
-      "text": "Walls keep people out. Boundaries invite people in - on your terms. Walls say 'I don't trust you.' B...",
-      "lineNumber": 1808
     },
     {
       "file": "samuel-dialogue-graph.ts",
@@ -598,31 +570,10 @@
     },
     {
       "file": "devon-dialogue-graph.ts",
-      "nodeId": "devon_integration_idea",
-      "length": 239,
-      "text": "A system that includes emotional variables. Not logic OR emotion. Logic AND emotion. An integrated a...",
-      "lineNumber": 1305
-    },
-    {
-      "file": "devon-dialogue-graph.ts",
-      "nodeId": "devon_technical_response",
-      "length": 238,
-      "text": "You recognize the structure. Most people just see... scribbles. Yes, it's a decision tree. Conversat...",
-      "lineNumber": 110
-    },
-    {
-      "file": "devon-dialogue-graph.ts",
       "nodeId": "devon_farewell_presence",
       "length": 238,
       "text": "I'm going to call him. Be present. No agenda.\\n\\nMom knew how to be both. Present and helpful. I onl...",
       "lineNumber": 1551
-    },
-    {
-      "file": "maya-dialogue-graph.ts",
-      "nodeId": "maya_chooses_hybrid",
-      "length": 236,
-      "text": "Biomedical engineering at UAB. It's perfect - I can build surgical robots, design prosthetics, creat...",
-      "lineNumber": 1008
     },
     {
       "file": "jordan-dialogue-graph.ts",
@@ -695,13 +646,6 @@
       "lineNumber": 181
     },
     {
-      "file": "maya-dialogue-graph.ts",
-      "nodeId": "maya_anxiety_reveal",
-      "length": 229,
-      "text": "I'm fine. Just... everyone sees me as this perfect pre-med student. Good grades, clear path, making ...",
-      "lineNumber": 270
-    },
-    {
       "file": "samuel-dialogue-graph.ts",
       "nodeId": "samuel_reflects_struggling_parents_pt2",
       "length": 228,
@@ -709,32 +653,11 @@
       "lineNumber": 1497
     },
     {
-      "file": "maya-dialogue-graph.ts",
-      "nodeId": "maya_birmingham_opportunity",
-      "length": 228,
-      "text": "Really? I've heard of Innovation Depot (Birmingham's startup hub) but never thought... could I actua...",
-      "lineNumber": 650
-    },
-    {
-      "file": "maya-dialogue-graph.ts",
-      "nodeId": "maya_chooses_robotics",
-      "length": 228,
-      "text": "You're right. I'm switching to robotics engineering. I'll find a way to make my parents understand t...",
-      "lineNumber": 980
-    },
-    {
       "file": "devon-dialogue-graph.ts",
       "nodeId": "devon_system_purpose",
       "length": 226,
       "text": "I mapped conversational patterns. Identified failure modes. Built decision trees.\\n\\nIf he says 'I'm...",
       "lineNumber": 1008
-    },
-    {
-      "file": "devon-dialogue-graph.ts",
-      "nodeId": "devon_realizes_connection",
-      "length": 226,
-      "text": "The right problem isn't 'How do I fix my dad.' The right problem is 'How do I be present with my dad...",
-      "lineNumber": 1335
     },
     {
       "file": "samuel-dialogue-graph.ts",
@@ -798,6 +721,13 @@
       "length": 219,
       "text": "UAB Systems Engineering. Senior capstone on error detection in distributed systems.\\n\\nSouthern Comp...",
       "lineNumber": 526
+    },
+    {
+      "file": "devon-dialogue-graph.ts",
+      "nodeId": "devon_grateful_insight",
+      "length": 218,
+      "text": "Thank you. I've been so focused on fixing the conversation.\\n\\nI forgot we could just have one. | Ab...",
+      "lineNumber": 643
     },
     {
       "file": "devon-dialogue-graph.ts",
@@ -1080,6 +1010,13 @@
       "lineNumber": 664
     },
     {
+      "file": "maya-dialogue-graph.ts",
+      "nodeId": "maya_chooses_robotics",
+      "length": 188,
+      "text": "You're right. Robotics engineering. I'll make my parents understand healing takes many forms.\\n\\nMay...",
+      "lineNumber": 980
+    },
+    {
       "file": "devon-dialogue-graph.ts",
       "nodeId": "devon_response_emotion",
       "length": 188,
@@ -1148,5 +1085,5 @@
     "LONG": 180,
     "TOO_LONG": 250
   },
-  "generatedAt": "2025-10-21T14:07:30.562Z"
+  "generatedAt": "2025-10-21T14:10:52.634Z"
 }
