@@ -22,7 +22,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "If input is 'I'm fine,' then route to conversational branch 4.B, sub-routine 'gentle_probe.' | No, no, the latency on that is too high... | *He finally notices you, his posture immediately becoming guarded.* | Oh. I didn't see you. | This is a... closed system. Are you a variable I need to account for?",
+        text: "If input is 'I'm fine,' then route to conversational branch 4.B, sub-routine 'gentle_probe.' | No, no, the latency on that is too high... | Oh. I didn't see you. | This is a... closed system. Are you a variable I need to account for?",
         emotion: 'guarded',
         variation_id: 'intro_v1'
       }
@@ -107,7 +107,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "*His guarded posture relaxes slightly*\n\nYou recognize the structure. Most people just see... scribbles. Yes, it's a decision tree. Conversational routing logic.\n\nIf input A, then response B. If emotional_state == 'defensive', route to de-escalation subroutine. That kind of thing.",
+        text: "You recognize the structure. Most people just see... scribbles. Yes, it's a decision tree. Conversational routing logic.\n\nIf input A, then response B. If emotional_state == 'defensive', route to de-escalation subroutine. That kind of thing.",
         emotion: 'relieved',
         variation_id: 'technical_v1'
       }
@@ -144,7 +144,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "Focus is necessary. Systems don't build themselves. And unlike people, systems are... predictable. They do what you design them to do.\n\n*He returns to his flowchart, but you can tell he's still aware of your presence*",
+        text: "Focus is necessary. Systems don't build themselves. And unlike people, systems are... predictable. They do what you design them to do.",
         emotion: 'defensive',
         variation_id: 'defends_v1'
       }
@@ -217,7 +217,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "*He looks up sharply, as if you've identified the core bug*\n\nExactly. People are... non-deterministic. Same input, different outputs depending on state variables I can't observe. Emotional cache, historical context, unspoken expectations.\n\nSystems have specifications. People have... feelings. And I'm not good at debugging feelings.",
+        text: "Exactly. People are... non-deterministic. Same input, different outputs depending on state variables I can't observe. Emotional cache, historical context, unspoken expectations.\n\nSystems have specifications. People have... feelings. And I'm not good at debugging feelings.",
         emotion: 'frustrated',
         variation_id: 'people_problem_v1'
       }
@@ -286,7 +286,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "*For the first time, he makes eye contact*\n\nThank you. Most people think I'm... cold. That I don't care. But systems are how I show I care. I'm trying to solve a problem. I'm trying to make things work.\n\nThis system - it's for my dad. In Huntsville.",
+        text: "Thank you. Most people think I'm... cold. That I don't care. But systems are how I show I care. I'm trying to solve a problem. I'm trying to make things work.\n\nThis system - it's for my dad. In Huntsville.",
         emotion: 'grateful',
         variation_id: 'validated_v1'
       }
@@ -404,7 +404,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "*He looks down at his flowchart, hands still*\n\nSorry. That's... more than I usually tell people.",
+        text: "Sorry. That's... more than I usually tell people.",
         emotion: 'processing',
         variation_id: 'pause_father_reveal_v1'
       }
@@ -425,7 +425,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "*He nods stiffly, clearly uncomfortable with the emotional directness*\n\nThank you. She was... she was the interpreter. Between me and dad. She translated my logic into warmth.\n\nAnd now that translation layer is gone.\n\nSo I built a system. To optimize our conversations. To help him.",
+        text: "Thank you. She was... she was the interpreter. Between me and dad. She translated my logic into warmth.\n\nAnd now that translation layer is gone.\n\nSo I built a system. To optimize our conversations. To help him.",
         emotion: 'raw',
         variation_id: 'accepts_sympathy_v1'
       }
@@ -469,7 +469,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "He's an aerospace engineer at NASA Marshall.\n\nTwenty-five years debugging rocket systems. Guidance control, error detection, mission-critical protocols.\n\n*Devon looks at his flowchart*\n\nHe can troubleshoot a spacecraft traveling 17,000 miles per hour, but he can't...\n\nHe can't debug his own grief.",
+        text: "He's an aerospace engineer at NASA Marshall.\n\nTwenty-five years debugging rocket systems. Guidance control, error detection, mission-critical protocols.\n\nHe can troubleshoot a spacecraft traveling 17,000 miles per hour, but he can't...\n\nHe can't debug his own grief.",
         emotion: 'frustrated_admiration',
         variation_id: 'father_aerospace_v1'
       }
@@ -523,7 +523,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "Yeah. University of Alabama at Birmingham's (UAB) Integrated Systems Engineering program.\n\nI'm doing my senior capstone (final project) on error detection in distributed systems (seeing how parts connect) - how different components communicate when something fails.\n\n*He half-smiles*\n\nSouthern Company's DevOps team will be at our Engineering Week showcase next month. They're looking for graduates who understand system resilience.\n\nIronic, right? I can debug code exceptions but not emotional ones.",
+        text: "Yeah. University of Alabama at Birmingham's (UAB) Integrated Systems Engineering program.\n\nI'm doing my senior capstone (final project) on error detection in distributed systems (seeing how parts connect) - how different components communicate when something fails.\n\nSouthern Company's DevOps team will be at our Engineering Week showcase next month. They're looking for graduates who understand system resilience.\n\nIronic, right? I can debug code exceptions but not emotional ones.",
         emotion: 'self_aware',
         variation_id: 'uab_systems_v1'
       }
@@ -566,7 +566,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "It's about making systems that don't just work - they work even when things go wrong. Redundancy, graceful degradation, error handling.\n\n*He looks down at his conversation flowchart*\n\nI thought I could apply the same principles to people. Build a system that handles conversational failures gracefully.\n\nBut people aren't systems. And grief isn't a bug to patch.",
+        text: "It's about making systems that don't just work - they work even when things go wrong. Redundancy, graceful degradation, error handling.\n\nI thought I could apply the same principles to people. Build a system that handles conversational failures gracefully.\n\nBut people aren't systems. And grief isn't a bug to patch.",
         emotion: 'dawning_understanding',
         variation_id: 'career_context_v1'
       }
@@ -590,7 +590,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "*He stops, looks at you with sudden recognition*\n\nYou're right. I'm debugging our relationship like it's a mission-critical system.\n\nDad does the same thing - solves problems by analyzing failure modes, testing solutions, iterating. That's how we were taught to think at UAB Engineering.\n\nBut mom... she didn't think in flowcharts. And now neither of us knows how to talk without her translation layer.",
+        text: "You're right. I'm debugging our relationship like it's a mission-critical system.\n\nDad does the same thing - solves problems by analyzing failure modes, testing solutions, iterating. That's how we were taught to think at UAB Engineering.\n\nBut mom... she didn't think in flowcharts. And now neither of us knows how to talk without her translation layer.",
         emotion: 'breakthrough',
         variation_id: 'realizes_parallel_v1'
       }
@@ -615,7 +615,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "*Something shifts in his expression* | What if... what if I stopped trying to optimize the conversation and just... asked him about the systems he's debugging at Marshall? | Not as a therapeutic technique. Just as his son who also debugs complex systems. | *He looks at you with cautious hope* | We both understand system failures. Maybe that's enough.",
+        text: "What if... what if I stopped trying to optimize the conversation and just... asked him about the systems he's debugging at Marshall? | Not as a therapeutic technique. Just as his son who also debugs complex systems. | We both understand system failures. Maybe that's enough.",
         emotion: 'hopeful',
         variation_id: 'realizes_bridge_v1'
       }
@@ -640,7 +640,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "*He carefully folds up his conversation flowchart* | Thank you. I've been so focused on fixing the conversation that I forgot we could just... have one. | About rockets and distributed systems and things that fail and how you handle it. | *He manages a real smile* | That's what engineers do, right? We learn from failures.",
+        text: "Thank you. I've been so focused on fixing the conversation that I forgot we could just... have one. | About rockets and distributed systems and things that fail and how you handle it. | That's what engineers do, right? We learn from failures.",
         emotion: 'grateful',
         variation_id: 'grateful_insight_v1'
       }
@@ -661,7 +661,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "*He looks at you with genuine curiosity*\n\nCan I ask you something? You've helped me see that logic and emotion aren't opposites. But how do YOU navigate that balance?\n\nYou seem comfortable with both. I'm curious how you think about it.",
+        text: "Can I ask you something? You've helped me see that logic and emotion aren't opposites. But how do YOU navigate that balance?\n\nYou seem comfortable with both. I'm curious how you think about it.",
         emotion: 'curious',
         variation_id: 'devon_reciprocity_v1'
       }
@@ -1243,7 +1243,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "*He stops, processing this like a revelation*\n\nEmpathy as data collection. Presence as bandwidth. You're saying... I don't have to abandon systems thinking. I have to expand what counts as data.\n\nEmotions aren't noise interfering with the signal. They ARE the signal.",
+        text: "Empathy as data collection. Presence as bandwidth. You're saying... I don't have to abandon systems thinking. I have to expand what counts as data.\n\nEmotions aren't noise interfering with the signal. They ARE the signal.",
         emotion: 'dawning_realization',
         variation_id: 'reframe_v1'
       }
@@ -1273,7 +1273,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "A system that includes emotional variables. Not logic OR emotion. Logic AND emotion. An integrated architecture.\n\n*He's thinking out loud now, the engineer returning but softer*\n\nGrief isn't a bug to fix. It's a valid system state. Requiring presence, not optimization. Requiring connection, not solutions.",
+        text: "A system that includes emotional variables. Not logic OR emotion. Logic AND emotion. An integrated architecture.\n\nGrief isn't a bug to fix. It's a valid system state. Requiring presence, not optimization. Requiring connection, not solutions.",
         emotion: 'integrating',
         variation_id: 'integration_v1'
       }
@@ -1324,7 +1324,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "*He takes a deep breath, sets his flowchart aside*\n\nThis feels different. Clearer.",
+        text: "This feels different. Clearer.",
         emotion: 'reflective',
         variation_id: 'pause_crossroads_v1'
       }

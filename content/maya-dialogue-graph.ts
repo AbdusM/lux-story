@@ -440,7 +440,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*She stares at her phone screen, eyes wide*\n\nI can't believe I never saw this before.",
+        text: "I can't believe I never saw this before.",
         emotion: 'processing',
         variation_id: 'pause_uab_v1'
       }
@@ -461,7 +461,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "I could talk to someone in the UAB program. See what the pathway looks like.\n\n*She looks at you with something like hope*\n\nMy parents always wanted me to go to UAB for medical school. What if I tell them... same school, just a different building?",
+        text: "I could talk to someone in the UAB program. See what the pathway looks like.\n\nMy parents always wanted me to go to UAB for medical school. What if I tell them... same school, just a different building?",
         emotion: 'hopeful_strategic',
         variation_id: 'actionable_v1'
       }
@@ -911,7 +911,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*She closes her eyes for a moment, then opens them with new certainty*\n\nI know what I need to do.",
+        text: "I know what I need to do.",
         emotion: 'resolved',
         variation_id: 'pause_ending_v1'
       }
@@ -933,7 +933,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*She closes her eyes for a moment, then opens them with new certainty*\n\nI know what I need to do.",
+        text: "I know what I need to do.",
         emotion: 'resolved',
         variation_id: 'pause_ending_v1'
       }
@@ -955,7 +955,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*She closes her eyes for a moment, then opens them with new certainty*\n\nI know what I need to do.",
+        text: "I know what I need to do.",
         emotion: 'resolved',
         variation_id: 'pause_ending_v1'
       }
@@ -1159,7 +1159,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*She pauses, looking at you with new curiosity*\n\nYou know so much about my struggle now. You helped me see what I couldn't.\n\nCan I... can I ask you something personal?\n\nAbout your own path?",
+        text: "You know so much about my struggle now. You helped me see what I couldn't.\n\nCan I... can I ask you something personal?\n\nAbout your own path?",
         emotion: 'curious',
         variation_id: 'reciprocity_ask_v1'
       }
@@ -1198,7 +1198,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*She smiles softly, with genuine understanding*\n\nOf course. Thank you for being honest with me.\n\n*She fidgets with her notebook*\n\nYou know what? The fact that you feel safe enough to say 'no' means more than any answer you could have given.",
+        text: "Of course. Thank you for being honest with me.\n\nYou know what? The fact that you feel safe enough to say 'no' means more than any answer you could have given.",
         emotion: 'warm',
         variation_id: 'graceful_decline_v1_pt1'
       }
@@ -1303,7 +1303,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*Her eyes widen with recognition*\n\nThat makes so much sense. That consistency, that foundation...\n\nI can see why you're so patient with people like me who are spiraling. You grew up with solid ground beneath you.\n\n*She pauses, thoughtful*\n\nFor me, it was the opposite. My parents gave up everything stable to come here. Every day was a gamble on the future.",
+        text: "That makes so much sense. That consistency, that foundation...\n\nI can see why you're so patient with people like me who are spiraling. You grew up with solid ground beneath you.\n\nFor me, it was the opposite. My parents gave up everything stable to come here. Every day was a gamble on the future.",
         emotion: 'understanding',
         variation_id: 'stable_reaction_v1_pt1'
       }
@@ -1484,7 +1484,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*Her expression softens into something deeper than sympathy*\n\nOh.\n\n*Long pause*\n\nYou know what it's like to watch someone you love fight just to stay afloat.\n\nThat's why you didn't try to fix me or minimize my struggle. You've seen what real weight looks like.",
+        text: "Oh.\n\nYou know what it's like to watch someone you love fight just to stay afloat.\n\nThat's why you didn't try to fix me or minimize my struggle. You've seen what real weight looks like.",
         emotion: 'profound_connection',
         variation_id: 'struggling_reaction_v1_pt1'
       }
@@ -1586,7 +1586,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*She nods slowly, understanding crossing her face*\n\nSuccess at the cost of presence.\n\nYou learned early that achievement and absence can be the same thing.\n\n*She looks at her stack of study materials*\n\nI've been so afraid of disappointing my parents, I never considered I might disappear into my achievements.",
+        text: "Success at the cost of presence.\n\nYou learned early that achievement and absence can be the same thing.\n\nI've been so afraid of disappointing my parents, I never considered I might disappear into my achievements.",
         emotion: 'sobering_realization',
         variation_id: 'absent_reaction_v1_pt1'
       }

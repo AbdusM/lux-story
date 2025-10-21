@@ -330,7 +330,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*A proud smile crosses his face*\n\nShe's a biomedical engineer in Atlanta now. CDC. Designs diagnostic systems for underserved communities.\n\nShe calls every Sunday. Still thanks me for bringing her to the station that night.\n\n*Quiet*\n\nShe could have been a lawyer. That's what I thought she should be. Practical, stable, lucrative.\n\nBut she boarded the train to engineering. And she's... she's exactly who she was meant to be.\n\nWatching her find that—that's when I knew what I wanted to build for the rest of my life.",
+        text: "She's a biomedical engineer in Atlanta now. CDC. Designs diagnostic systems for underserved communities.\n\nShe calls every Sunday. Still thanks me for bringing her to the station that night.\n\nShe could have been a lawyer. That's what I thought she should be. Practical, stable, lucrative.\n\nBut she boarded the train to engineering. And she's... she's exactly who she was meant to be.\n\nWatching her find that—that's when I knew what I wanted to build for the rest of my life.",
         emotion: 'paternal_pride',
         variation_id: 'daughter_v1'
       }
@@ -498,7 +498,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*A slight smile crosses his face*\n\nAh. The engineer's dilemma. You can map every system, optimize every process, but then life throws you something that doesn't fit the flowchart.\n\nDevon Kumar is on Platform 3 - The Builder's Track. UAB engineering student, sharp as they come. He built a conversational decision tree to help his grieving father. Logic, optimization, efficiency. It failed catastrophically. Now he's sitting there trying to debug human connection.",
+        text: "Ah. The engineer's dilemma. You can map every system, optimize every process, but then life throws you something that doesn't fit the flowchart.\n\nDevon Kumar is on Platform 3 - The Builder's Track. UAB engineering student, sharp as they come. He built a conversational decision tree to help his grieving father. Logic, optimization, efficiency. It failed catastrophically. Now he's sitting there trying to debug human connection.",
         emotion: 'understanding',
         variation_id: 'discovers_building_v1'
       }
@@ -542,7 +542,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*He chuckles warmly*\n\nSeven jobs in twelve years. That's Jordan Packard's count, anyway. She's in Conference Room B preparing for a mentorship panel at a coding bootcamp.\n\nHere's the thing - she's terrified those thirty students will see her résumé as chaos instead of evolution. Impostor syndrome while you're supposed to be the expert. The question isn't 'what should I become?' but 'how do I own what I've already been?'",
+        text: "Seven jobs in twelve years. That's Jordan Packard's count, anyway. She's in Conference Room B preparing for a mentorship panel at a coding bootcamp.\n\nHere's the thing - she's terrified those thirty students will see her résumé as chaos instead of evolution. Impostor syndrome while you're supposed to be the expert. The question isn't 'what should I become?' but 'how do I own what I've already been?'",
         emotion: 'amused_empathetic',
         variation_id: 'discovers_exploring_v1'
       }
@@ -619,7 +619,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*He considers for a moment*\n\nFair question. Let me paint the full picture:\n\n**Maya Chen** - Platform 1. Pre-med brilliance, family expectations, robotics dreams. The weight of making others proud while finding yourself.\n\n**Devon Kumar** - Platform 3. Systems engineer who tried to debug grief with a flowchart. Learning that empathy isn't the opposite of logic.\n\n**Jordan Packard** - Conference Room B. Seven careers, thirty students waiting for wisdom, one question: Is my path proof of adaptability or just chaos?\n\nWho do you want to meet first?",
+        text: "Fair question. Let me paint the full picture:\n\n**Maya Chen** - Platform 1. Pre-med brilliance, family expectations, robotics dreams. The weight of making others proud while finding yourself.\n\n**Devon Kumar** - Platform 3. Systems engineer who tried to debug grief with a flowchart. Learning that empathy isn't the opposite of logic.\n\n**Jordan Packard** - Conference Room B. Seven careers, thirty students waiting for wisdom, one question: Is my path proof of adaptability or just chaos?\n\nWho do you want to meet first?",
         emotion: 'patient_informative',
         variation_id: 'other_travelers_v1'
       }
@@ -711,7 +711,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You did help her. But not in the way most people think 'helping' works.\n\nYou didn't fix her problem. You didn't tell her what to do. You created space for her to see options she couldn't see before.\n\n*He pauses thoughtfully*\n\nYou've got the helper instinct - that's what drives our UAB Medical resident advisors and Birmingham City Schools guidance counselors.",
+        text: "You did help her. But not in the way most people think 'helping' works.\n\nYou didn't fix her problem. You didn't tell her what to do. You created space for her to see options she couldn't see before.\n\nYou've got the helper instinct - that's what drives our UAB Medical resident advisors and Birmingham City Schools guidance counselors.",
         emotion: 'teaching',
         variation_id: 'influence_v1_pt1'
       }
@@ -775,7 +775,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*He smiles, a quiet satisfaction in his expression*\n\nExactly. She made her own choice. That's the most important thing you could understand about what just happened.\n\nYou understand agency - that's advanced.\n\n*His voice carries weight from experience*\n\nTook me fifteen years at Southern Company to learn I couldn't engineer people's decisions. The best career counselors in Birmingham know this: we illuminate paths, but the traveler chooses the direction.",
+        text: "Exactly. She made her own choice. That's the most important thing you could understand about what just happened.\n\nYou understand agency - that's advanced.\n\nTook me fifteen years at Southern Company to learn I couldn't engineer people's decisions. The best career counselors in Birmingham know this: we illuminate paths, but the traveler chooses the direction.",
         emotion: 'proud',
         variation_id: 'agency_v1_pt1'
       }
@@ -972,7 +972,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Is it okay? It's more than okay - it's courageous.\n\nOur whole world is designed to make you choose fast, commit early, lock in your path before you've even walked it. Maya choosing to sit with uncertainty? That's her refusing to let urgency override truth.\n\n*He reflects on his own journey*\n\nNot knowing is honest - and that's the foundation of coaching, not fixing. Birmingham's Innovation Depot startup mentors know this. The best facilitators don't rush to answers. They hold space for emergence.",
+        text: "Is it okay? It's more than okay - it's courageous.\n\nOur whole world is designed to make you choose fast, commit early, lock in your path before you've even walked it. Maya choosing to sit with uncertainty? That's her refusing to let urgency override truth.\n\nNot knowing is honest - and that's the foundation of coaching, not fixing. Birmingham's Innovation Depot startup mentors know this. The best facilitators don't rush to answers. They hold space for emergence.",
         emotion: 'wise',
         variation_id: 'patience_wisdom_v1_pt1'
       }
@@ -1046,7 +1046,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*He looks out at the platforms, the lights reflecting in his eyes*\n\nThat's exactly what I do. I don't give travelers directions - I help them see what they already know but can't admit yet.\n\nI was an engineer who followed other people's blueprints for twenty-three years. Now I help people draw their own. The station chose me because I learned this truth the hard way: The best guides don't lead. They witness.",
+        text: "That's exactly what I do. I don't give travelers directions - I help them see what they already know but can't admit yet.\n\nI was an engineer who followed other people's blueprints for twenty-three years. Now I help people draw their own. The station chose me because I learned this truth the hard way: The best guides don't lead. They witness.",
         emotion: 'vulnerable_wisdom',
         variation_id: 'keeper_truth_v1'
       }
@@ -1098,7 +1098,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*He smiles gently*\n\nThat's the question that keeps people stuck. 'What specifically should I do?' As if your purpose can be reduced to a job title or a five-year plan.\n\nThe pattern is bigger than any single role. You're learning to hold space, to ask questions that matter, to meet people in their uncertainty. Those skills? They're valuable everywhere - teaching, counseling, leadership, design, ministry, coaching. The form will emerge. Trust the pattern.",
+        text: "That's the question that keeps people stuck. 'What specifically should I do?' As if your purpose can be reduced to a job title or a five-year plan.\n\nThe pattern is bigger than any single role. You're learning to hold space, to ask questions that matter, to meet people in their uncertainty. Those skills? They're valuable everywhere - teaching, counseling, leadership, design, ministry, coaching. The form will emerge. Trust the pattern.",
         emotion: 'patient_wisdom',
         variation_id: 'specificity_trap_v1'
       }
@@ -1122,7 +1122,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*He pauses, studying you for a moment*\n\nWe can keep talking about what happened with Maya, if you want. There's value in sitting with an experience before rushing to the next one.\n\nOr, if you're ready, there are other travelers on the platforms tonight. Each one will show you something different about yourself.",
+        text: "We can keep talking about what happened with Maya, if you want. There's value in sitting with an experience before rushing to the next one.\n\nOr, if you're ready, there are other travelers on the platforms tonight. Each one will show you something different about yourself.",
         emotion: 'offering_space',
         variation_id: 'contemplation_offer_v1'
       }
@@ -1236,7 +1236,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*He nods, no surprise in his expression - just recognition*\n\nI know you have. That's why you could meet her there. We can only guide people through territory we've walked ourselves.\n\nYour uncertainty isn't a flaw. It's your qualification. The station doesn't call people who have all the answers. It calls people who know how to sit with questions.",
+        text: "I know you have. That's why you could meet her there. We can only guide people through territory we've walked ourselves.\n\nYour uncertainty isn't a flaw. It's your qualification. The station doesn't call people who have all the answers. It calls people who know how to sit with questions.",
         emotion: 'warm_solidarity',
         variation_id: 'solidarity_v1'
       }
@@ -1278,7 +1278,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*He looks at you with knowing eyes*\n\nI was thinking about what you told Maya. About your parents and their stable careers.\n\n*He nods slowly*\n\nIt helps me understand the way you approach problems - with a patience that comes from solid foundation. You've never had to rush because you've never had to run. That's a gift you give others without realizing it.\n\nThe station shows me these patterns. Your patience isn't just a trait - it's an inheritance.",
+        text: "I was thinking about what you told Maya. About your parents and their stable careers.\n\nIt helps me understand the way you approach problems - with a patience that comes from solid foundation. You've never had to rush because you've never had to run. That's a gift you give others without realizing it.\n\nThe station shows me these patterns. Your patience isn't just a trait - it's an inheritance.",
         emotion: 'insightful',
         variation_id: 'stable_parents_reflection_v1'
       }
@@ -1317,7 +1317,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Maya told me you opened up to her. About growing up with parents who were always building something new.\n\n*He smiles knowingly*\n\nThat explains your exploring pattern. You don't see closed doors - you see opportunities to build new ones. Risk feels like possibility to you because that's the water you swam in growing up.\n\nThe station called you here because you have the rare ability to help others see possibility where they see only walls.",
+        text: "Maya told me you opened up to her. About growing up with parents who were always building something new.\n\nThat explains your exploring pattern. You don't see closed doors - you see opportunities to build new ones. Risk feels like possibility to you because that's the water you swam in growing up.\n\nThe station called you here because you have the rare ability to help others see possibility where they see only walls.",
         emotion: 'appreciative',
         variation_id: 'entrepreneur_parents_reflection_v1'
       }
@@ -1356,7 +1356,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*His voice is gentle, respectful of the weight you've shared*\n\nMaya mentioned you shared something difficult with her. About watching your parents struggle.\n\n*Long pause*\n\nThat kind of witnessing changes you. Makes you see need before it's spoken. Makes you hold space before it's asked for.",
+        text: "Maya mentioned you shared something difficult with her. About watching your parents struggle.\n\nThat kind of witnessing changes you. Makes you see need before it's spoken. Makes you hold space before it's asked for.",
         emotion: 'deep_respect',
         variation_id: 'struggling_parents_reflection_v1_pt1'
       }
@@ -1421,7 +1421,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "I heard you shared something personal with Maya. About success and absence in your family.\n\n*He looks out at the platforms*\n\nYou learned early that achievement can become a disappearing act. That's why you have such patience with others' journeys. You're not rushing anyone because you know where rushing leads - to being successful and hollow.\n\nThe station brought you here because you understand something crucial: presence matters more than performance.",
+        text: "I heard you shared something personal with Maya. About success and absence in your family.\n\nYou learned early that achievement can become a disappearing act. That's why you have such patience with others' journeys. You're not rushing anyone because you know where rushing leads - to being successful and hollow.\n\nThe station brought you here because you understand something crucial: presence matters more than performance.",
         emotion: 'understanding',
         variation_id: 'absent_parents_reflection_v1'
       }
@@ -1460,7 +1460,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*He smiles with deep approval*\n\nMaya told me something interesting. Not what you shared with her - but that you chose NOT to share something when she asked.\n\n*He leans forward*\n\nDo you know how rare that is? Most people perform vulnerability to earn connection. But you set a boundary, kindly but firmly.\n\nThat's mastery. Maya's trust in you grew not despite your 'no,' but because of it. The station respects those who know the difference between walls and boundaries.",
+        text: "Maya told me something interesting. Not what you shared with her - but that you chose NOT to share something when she asked.\n\nDo you know how rare that is? Most people perform vulnerability to earn connection. But you set a boundary, kindly but firmly.\n\nThat's mastery. Maya's trust in you grew not despite your 'no,' but because of it. The station respects those who know the difference between walls and boundaries.",
         emotion: 'profound_respect',
         variation_id: 'boundaries_reflection_v1'
       }
@@ -1679,7 +1679,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*He nods, that deep knowing in his eyes*\n\nThat's why it is mastery. True skill looks effortless. You didn't perform - you were honest. And honesty without cruelty, boundaries without walls - that's the work of a lifetime.\n\nKeep being honest. The station sees it. So do the travelers.",
+        text: "That's why it is mastery. True skill looks effortless. You didn't perform - you were honest. And honesty without cruelty, boundaries without walls - that's the work of a lifetime.\n\nKeep being honest. The station sees it. So do the travelers.",
         emotion: 'profound_recognition',
         variation_id: 'honesty_mastery_v1'
       }
@@ -1724,7 +1724,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*He's waiting near the conference rooms as you return, a slight smile on his face*\n\nYou're back. I saw Jordan heading into that classroom earlier - she looked different than when she arrived. Less frantic. More grounded.\n\nSeven jobs in seven years. Most people would call that instability. But I've learned the station measures something deeper than résumés. How did her journey look to you?",
+        text: "You're back. I saw Jordan heading into that classroom earlier - she looked different than when she arrived. Less frantic. More grounded.\n\nSeven jobs in seven years. Most people would call that instability. But I've learned the station measures something deeper than résumés. How did her journey look to you?",
         emotion: 'observant',
         variation_id: 'jordan_gateway_v1'
       }
@@ -1768,7 +1768,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "The students in that classroom needed Jordan more than they knew. Not because she has all the answers - but because she's lived the questions they're afraid to ask.\n\n*He pauses thoughtfully*\n\nThere's a difference between helping someone see their path and convincing them to walk yours. What did you offer her in those moments before her speech?",
+        text: "The students in that classroom needed Jordan more than they knew. Not because she has all the answers - but because she's lived the questions they're afraid to ask.\n\nThere's a difference between helping someone see their path and convincing them to walk yours. What did you offer her in those moments before her speech?",
         emotion: 'teaching',
         variation_id: 'mentorship_question_v1'
       }
@@ -1807,7 +1807,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "She walked into that classroom and told them the truth they needed to hear: every job that felt like failure was building her foundation.\n\n*His voice carries quiet admiration*\n\nThe marketing role that taught her user empathy. The startup that showed her how to ship under pressure. The agency work that refined her craft. Seven years. Seven teachers. Each one necessary.\n\nYou helped her see that accumulation isn't the same as collecting baggage - it's gathering wisdom. Those students needed a mentor who had stumbled, not someone who made it look easy from day one.",
+        text: "She walked into that classroom and told them the truth they needed to hear: every job that felt like failure was building her foundation.\n\nThe marketing role that taught her user empathy. The startup that showed her how to ship under pressure. The agency work that refined her craft. Seven years. Seven teachers. Each one necessary.\n\nYou helped her see that accumulation isn't the same as collecting baggage - it's gathering wisdom. Those students needed a mentor who had stumbled, not someone who made it look easy from day one.",
         emotion: 'affirming',
         variation_id: 'accumulation_reflection_v1'
       }
@@ -1916,7 +1916,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "She walked into that room carrying a different story than the one she arrived with. Not seven failures - seven chapters of becoming someone who understands design from seven different angles.\n\n*He nods slowly*\n\n'The story you tell yourself is the only one that matters.' You gave her permission to rewrite the narrative. Impostor syndrome lives in the gap between others' definitions of success and the story we're living. Jordan closed that gap.\n\nThe most powerful thing you can give someone isn't validation from the outside. It's the reminder that they control the frame.",
+        text: "She walked into that room carrying a different story than the one she arrived with. Not seven failures - seven chapters of becoming someone who understands design from seven different angles.\n\n'The story you tell yourself is the only one that matters.' You gave her permission to rewrite the narrative. Impostor syndrome lives in the gap between others' definitions of success and the story we're living. Jordan closed that gap.\n\nThe most powerful thing you can give someone isn't validation from the outside. It's the reminder that they control the frame.",
         emotion: 'contemplative',
         variation_id: 'internal_reflection_v1'
       }
@@ -2082,7 +2082,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*He glances toward the platforms, then back to you*\n\nJordan's in there teaching right now. Living the frame you helped her find. That's the beautiful thing about this station - influence ripples outward in ways we don't always see immediately.\n\nThere are other travelers tonight if you're ready. Or we can sit with what just happened a bit longer. The choice is yours.",
+        text: "Jordan's in there teaching right now. Living the frame you helped her find. That's the beautiful thing about this station - influence ripples outward in ways we don't always see immediately.\n\nThere are other travelers tonight if you're ready. Or we can sit with what just happened a bit longer. The choice is yours.",
         emotion: 'offering_space',
         variation_id: 'jordan_hub_return_v1'
       }
@@ -2253,7 +2253,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*His expression shifts to something warmer, more knowing*\n\nI did. Maya doesn't share that with many people. She's been building robots since high school, but she guards that passion like a secret shame.\n\nWhatever you said, whatever space you held - it created safety for her to name what she loves. That's not a small thing. Trust like that is earned through presence, not technique.",
+        text: "I did. Maya doesn't share that with many people. She's been building robots since high school, but she guards that passion like a secret shame.\n\nWhatever you said, whatever space you held - it created safety for her to name what she loves. That's not a small thing. Trust like that is earned through presence, not technique.",
         emotion: 'recognizing_achievement',
         variation_id: 'ack_robotics_v1'
       }
@@ -2294,7 +2294,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*He nods slowly, as if confirming something he already knew*\n\nThe weight of immigrant parents' dreams. That's the heaviest burden Maya carries - twenty years of sacrifice distilled into expectations she never asked for but can't bring herself to disappoint.\n\nShe told you about that. That means she felt safe enough to show you the conflict at her core. Most people never get to see that depth. You didn't judge, you didn't solve - you witnessed. That's what created the opening.",
+        text: "The weight of immigrant parents' dreams. That's the heaviest burden Maya carries - twenty years of sacrifice distilled into expectations she never asked for but can't bring herself to disappoint.\n\nShe told you about that. That means she felt safe enough to show you the conflict at her core. Most people never get to see that depth. You didn't judge, you didn't solve - you witnessed. That's what created the opening.",
         emotion: 'honoring_depth',
         variation_id: 'ack_family_v1'
       }
@@ -2355,7 +2355,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*A slight smile*\n\n'Just listened.' As if that's simple. As if most people know how to listen without planning their next response, without fixing, without judging.\n\nYou're learning something most people never master: presence without agenda. Keep practicing that. It's the foundation of everything meaningful you'll do in this world.",
+        text: "'Just listened.' As if that's simple. As if most people know how to listen without planning their next response, without fixing, without judging.\n\nYou're learning something most people never master: presence without agenda. Keep practicing that. It's the foundation of everything meaningful you'll do in this world.",
         emotion: 'teaching_gently',
         variation_id: 'listening_wisdom_v1'
       }
@@ -2538,7 +2538,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "There's someone else here tonight - Jordan Packard. She's over by the conference rooms, guest instructor for a coding bootcamp's Career Day.\n\n*He glances in that direction*\n\nSeven jobs in seven years. Most people see that and think 'instability.' But I see someone who's been learning this city's full ecosystem - tech, design, startups, agencies. She's about to give a speech to students, but she's carrying a lot of doubt about whether she belongs in front of that room.",
+        text: "There's someone else here tonight - Jordan Packard. She's over by the conference rooms, guest instructor for a coding bootcamp's Career Day.\n\nSeven jobs in seven years. Most people see that and think 'instability.' But I see someone who's been learning this city's full ecosystem - tech, design, startups, agencies. She's about to give a speech to students, but she's carrying a lot of doubt about whether she belongs in front of that room.",
         emotion: 'observant',
         variation_id: 'jordan_intro_v1'
       }
