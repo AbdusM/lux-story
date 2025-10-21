@@ -725,7 +725,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "The full picture:\n\n**Maya Chen** - Platform 1. Pre-med brilliance, family expectations, robotics dreams. Making others proud while finding yourself.\n\n**Devon Kumar** - Platform 3. Systems engineer who tried to debug grief. Learning empathy isn't anti-logic.\n\n**Jordan Packard** - Conference Room B. Seven careers. Is that adaptability or chaos?\n\nWho do you want to meet?",
+        text: "The full picture:\n\n**Maya Chen** - Platform 1. Pre-med brilliance, family expectations, robotics dreams.\n\n**Devon Kumar** - Platform 3. Systems engineer who tried to debug grief.\n\n**Jordan Packard** - Conference Room B. Seven careers. Adaptability or chaos?\n\nWho do you want to meet?",
         emotion: 'patient_informative',
         variation_id: 'other_travelers_v1'
       }
@@ -2216,7 +2216,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "I saw you meeting Jordan where she was - in that spiral of doubt right before a moment that mattered. You didn't try to fix her impostor syndrome. You helped her reframe it.\n\nThat's wisdom. Most people want to eliminate doubt, make it go away. You understood that doubt isn't always the enemy. Sometimes it's information. Sometimes it's the question that leads to the answer.\n\nJordan needed someone who could sit in uncertainty without rushing to resolution. You gave her that gift.",
+        text: "I saw you meeting Jordan where she was - in that spiral of doubt. You didn't try to fix her impostor syndrome. You helped her reframe it.\n\nThat's wisdom. Most people want to eliminate doubt. You understood doubt isn't always the enemy. Sometimes it's information.\n\nJordan needed someone who could sit in uncertainty without rushing to resolution. You gave her that gift.",
         emotion: 'deep_knowing',
         variation_id: 'deep_jordan_v1'
       }
@@ -2400,7 +2400,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "The weight of immigrant parents' dreams. That's the heaviest burden Maya carries - twenty years of sacrifice distilled into expectations she never asked for but can't bring herself to disappoint.\n\nShe told you about that. That means she felt safe enough to show you the conflict at her core. Most people never get to see that depth. You didn't judge, you didn't solve - you witnessed. That's what created the opening.",
+        text: "The weight of immigrant parents' dreams. Twenty years of sacrifice distilled into expectations she never asked for.\n\nShe told you about that. That means she felt safe enough to show you the conflict at her core. You didn't judge, you didn't solve - you witnessed.\n\nThat's what created the opening.",
         emotion: 'honoring_depth',
         variation_id: 'ack_family_v1'
       }
@@ -2644,7 +2644,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "There's someone else here tonight - Jordan Packard. She's over by the conference rooms, guest instructor for a coding bootcamp's Career Day.\n\nSeven jobs in seven years. Most people see that and think 'instability.' But I see someone who's been learning this city's full ecosystem - tech, design, startups, agencies. She's about to give a speech to students, but she's carrying a lot of doubt about whether she belongs in front of that room.",
+        text: "There's someone else here tonight - Jordan Packard. Conference rooms, guest instructor for Career Day.\n\nSeven jobs in seven years. Most people see 'instability.' But I see someone learning this city's full ecosystem - tech, design, startups, agencies.\n\nShe's about to give a speech, but carrying doubt about whether she belongs in front of that room.",
         emotion: 'observant',
         variation_id: 'jordan_intro_v1'
       }
