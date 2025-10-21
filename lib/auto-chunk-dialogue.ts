@@ -1,32 +1,33 @@
 /**
- * Auto-Chunking Utility for Dense Dialogue
+ * Auto-Chunking Utility for Chat-Paced Dialogue
  *
- * TIER 2 Solution: Non-destructive, render-time text chunking
- * Automatically breaks dense paragraphs into digestible chunks
+ * CHAT PACING: Transform novel-length text into message-sized bubbles
+ * Inspired by Netflix Timed Text Style Guide for optimal readability
  *
  * Architecture:
  * - Pure function: deterministic, testable
  * - Non-destructive: never modifies source content
- * - Scales to millions: O(n) complexity, no API calls
- * - Respects natural language boundaries
+ * - Netflix-compliant: respects 7-second max read time (~180 chars)
+ * - Smart breaking: after punctuation, before conjunctions
+ * - Chat rhythm: 60 char chunks = natural conversation flow
  */
 
 export interface ChunkConfig {
-  /** Maximum characters per chunk (default: 120) */
+  /** Maximum characters per chunk (default: 60 for chat pacing) */
   maxChunkLength?: number
-  /** Minimum characters per chunk to avoid fragments (default: 40) */
+  /** Minimum characters per chunk to avoid fragments (default: 20) */
   minChunkLength?: number
   /** Enable automatic chunking based on length threshold (default: true) */
   enabled?: boolean
-  /** Only chunk text longer than this threshold (default: 250) */
+  /** Only chunk text longer than this threshold (default: 120) */
   activationThreshold?: number
 }
 
 const DEFAULT_CONFIG: Required<ChunkConfig> = {
-  maxChunkLength: 120,
-  minChunkLength: 40,
+  maxChunkLength: 60,  // Chat-like bubbles: ~2 lines max (Netflix: 42 chars/line)
+  minChunkLength: 20,  // Allow shorter fragments for natural rhythm
   enabled: true,
-  activationThreshold: 250,
+  activationThreshold: 120,  // Catch medium-length text, not just long paragraphs
 }
 
 /**
@@ -68,7 +69,32 @@ export function autoChunkDialogue(
   // Split into sentences at natural boundaries
   // Regex: Match sentence-ending punctuation followed by space or end-of-string
   const sentenceRegex = /([^.!?]+[.!?]+(?:\s|$))/g
-  const sentences = text.match(sentenceRegex) || [text]
+  let sentences = text.match(sentenceRegex) || [text]
+  
+  // NETFLIX-STYLE: Further split long sentences at natural breaks
+  // Priority: after punctuation > before conjunctions > before prepositions
+  const smartBreakSentences: string[] = []
+  for (const sentence of sentences) {
+    if (sentence.length <= cfg.maxChunkLength) {
+      smartBreakSentences.push(sentence)
+    } else {
+      // Try to split at commas, semicolons first
+      const clauseSplit = sentence.split(/([,;]\s+)/)
+      let currentFragment = ''
+      
+      for (let i = 0; i < clauseSplit.length; i++) {
+        const part = clauseSplit[i]
+        if (currentFragment.length + part.length <= cfg.maxChunkLength) {
+          currentFragment += part
+        } else {
+          if (currentFragment.trim()) smartBreakSentences.push(currentFragment.trim())
+          currentFragment = part
+        }
+      }
+      if (currentFragment.trim()) smartBreakSentences.push(currentFragment.trim())
+    }
+  }
+  sentences = smartBreakSentences
 
   // Handle case where text has no sentence-ending punctuation
   if (sentences.length === 0) {

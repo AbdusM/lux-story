@@ -65,8 +65,11 @@ interface DialogueDisplayProps {
  * - Consistent typography rhythm across all narrative text
  */
 export function DialogueDisplay({ text, className }: DialogueDisplayProps) {
-  // Auto-chunk long text, then split by | separator for pacing chunks
-  const chunkedText = autoChunkDialogue(text, { activationThreshold: 200 })
+  // Auto-chunk long text for chat pacing, then split by | separator
+  const chunkedText = autoChunkDialogue(text, { 
+    activationThreshold: 120,  // Chat pacing: catch medium text
+    maxChunkLength: 60         // Netflix-style: ~2 lines max
+  })
   const chunks = chunkedText.split('|').map(chunk => chunk.trim()).filter(chunk => chunk.length > 0)
 
   return (
