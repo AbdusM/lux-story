@@ -66,7 +66,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "This station exists for people like you - people at a turning point. It's not on any map. You can't find it unless you need it.\n\nEvery platform here represents a different path, a different way of contributing to the world. The travelers you meet here? They're all asking the same question you are: 'What am I supposed to do with my life?'",
+        text: "This station exists for people at a turning point. Not on any map. You can't find it unless you need it.\n\nEvery platform represents a different path. The travelers here? All asking the same question: 'What am I supposed to do?'",
         emotion: 'knowing',
         variation_id: 'explains_v1'
       }
@@ -161,7 +161,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "It was a good life. But it wasn't MY life, if that makes sense.\n\nOne day I'm standing in front of Vulcan, looking down at Birmingham spread out below. And I realize I've spent twenty-three years building other people's systems, following other people's blueprints. I was good at it. But I'd never asked myself what I actually wanted to build.",
+        text: "It was a good life. But it wasn't MY life.\n\nOne day, standing in front of Vulcan, looking down at Birmingham. Twenty-three years building other people's systems.\n\nI was good at it. But I'd never asked what I wanted to build.",
         emotion: 'vulnerable',
         variation_id: 'revelation_v1'
       }
@@ -220,7 +220,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "I wanted to help people find their own blueprints. Not hand them answers, but create a space where they could ask the right questions.\n\nThat's what this station is. I didn't build it - it was here, waiting for someone to keep it. Been doing this for... well, time works differently here. Long enough to see hundreds of travelers find their way.",
+        text: "I wanted to help people find their own blueprints. Not hand them answers. Create space for the right questions.\n\nThat's this station. I didn't build it. It was waiting for someone to keep it.\n\nTime works differently here. Long enough to see hundreds find their way.",
         emotion: 'warm',
         variation_id: 'purpose_v1'
       }
@@ -648,7 +648,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Seven jobs in twelve years. That's Jordan Packard's count, anyway. She's in Conference Room B preparing for a mentorship panel at a coding bootcamp.\n\nHere's the thing - she's terrified those thirty students will see her résumé as chaos instead of evolution. Impostor syndrome while you're supposed to be the expert. The question isn't 'what should I become?' but 'how do I own what I've already been?'",
+        text: "Seven jobs in twelve years. Jordan Packard. Conference Room B, mentorship panel.\n\nShe's terrified thirty students will see chaos instead of evolution. Impostor syndrome while she's the expert.\n\nThe question isn't 'what should I become?' It's 'how do I own what I've been?'",
         emotion: 'amused_empathetic',
         variation_id: 'discovers_exploring_v1'
       }
@@ -1152,7 +1152,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "That's exactly what I do. I don't give travelers directions - I help them see what they already know but can't admit yet.\n\nI was an engineer who followed other people's blueprints for twenty-three years. Now I help people draw their own. The station chose me because I learned this truth the hard way: The best guides don't lead. They witness.",
+        text: "I don't give directions. I help them see what they already know.\n\nI followed other people's blueprints for twenty-three years. Now I help people draw their own.\n\nThe best guides don't lead. They witness.",
         emotion: 'vulnerable_wisdom',
         variation_id: 'keeper_truth_v1'
       }
@@ -1384,7 +1384,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "I was thinking about what you told Maya. About your parents and their stable careers.\n\nIt helps me understand the way you approach problems - with a patience that comes from solid foundation. You've never had to rush because you've never had to run. That's a gift you give others without realizing it.\n\nThe station shows me these patterns. Your patience isn't just a trait - it's an inheritance.",
+        text: "What you told Maya. About your parents' stable careers.\n\nThat explains your patience. Solid foundation. You've never had to rush because you've never had to run.\n\nThe station shows me patterns. Your patience is an inheritance.",
         emotion: 'insightful',
         variation_id: 'stable_parents_reflection_v1'
       }
@@ -1609,7 +1609,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Most people don't. They think their traits are just personality. But we're all carrying forward patterns we learned before we had words for them.\n\nYour parents showed you that steady work creates space for rest. That security isn't boring - it's the foundation for everything else. You give that gift to others now, whether you realize it or not.",
+        text: "Most people don't. They think traits are just personality.\n\nWe're all carrying patterns we learned before we had words.\n\nYour parents showed you steady work creates space. Security as foundation. You give that gift now.",
         emotion: 'teaching',
         variation_id: 'inheritance_wisdom_v1'
       }
@@ -2124,7 +2124,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "More than you think. Maybe not immediately - but five years from now, one of them will be on their third job, feeling like a failure, and they'll remember Jordan saying, 'Seven companies. Seven teachers. All of it mattered.'\n\nThat's how change happens in Birmingham. One person shows it's possible. Then another. Then a dozen. Then it's just how things work here.\n\nYou helped start that ripple today.",
+        text: "More than you think.\n\nFive years from now, one of them will be on their third job, feeling like a failure. They'll remember Jordan. 'Seven companies. All of it mattered.'\n\nThat's how change happens. One person shows it's possible. Then another.\n\nYou started that ripple.",
         emotion: 'hopeful',
         variation_id: 'ripple_wisdom_v1'
       }
@@ -2144,7 +2144,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "It probably will. Stories aren't fixed - they evolve as we do. Jordan might tell herself a different story in five years, and that's okay.\n\nThe power isn't in finding the one true story. It's in knowing you have the agency to rewrite when the old story stops serving you. You gave her that agency. She'll use it again when she needs to.",
+        text: "It probably will. Stories evolve.\n\nJordan might tell herself a different story in five years. That's okay.\n\nThe power is knowing you can rewrite when the old story stops serving you. You gave her that.",
         emotion: 'wise',
         variation_id: 'narrative_wisdom_v1'
       }
@@ -2441,7 +2441,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "The station shows me glimpses. Fragments of who people are when they're alone with what they love.\n\nI've seen Maya late at night in her dorm room, soldering circuit boards while her textbooks gather dust. I've seen the way her face changes when she talks about surgical robots - like sun breaking through clouds. The station doesn't judge passions. It just recognizes them.",
+        text: "The station shows me glimpses. Who people are when they're alone with what they love.\n\nMaya late at night, soldering circuit boards while textbooks gather dust. Her face when she talks about surgical robots.\n\nThe station doesn't judge. It recognizes.",
         emotion: 'mystical_knowing',
         variation_id: 'knows_passions_v1'
       }
@@ -2487,7 +2487,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Witnessing means being fully present to someone's experience without needing to change it, fix it, or make it about you.\n\nMost 'help' is really about making the helper feel better - 'I fixed your problem, now I can stop feeling uncomfortable about your pain.' But witnessing? That's sitting in the discomfort with someone. Holding space for their truth without rushing to resolution.",
+        text: "Witnessing means being present without needing to change it, fix it, or make it about you.\n\nMost 'help' makes the helper feel better. Witnessing? Sitting in the discomfort. Holding space without rushing to resolution.",
         emotion: 'teaching_depth',
         variation_id: 'teaching_witnessing_v1_pt1'
       }
@@ -2577,7 +2577,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Devon's on Platform 3 - The Builder's Track. Engineering student, probably hunched over some blueprint or schematic right now.\n\nHe organizes everything into systems because systems are predictable. People aren't. He's brilliant at designing solutions for problems, but he struggles when the problems involve hearts instead of mechanics.",
+        text: "Devon's on Platform 3. Engineering student, probably hunched over a blueprint.\n\nHe organizes everything into systems. Systems are predictable. People aren't.\n\nBrilliant at solving problems. Struggles when they involve hearts.",
         emotion: 'understanding',
         variation_id: 'devon_intro_v1'
       }
@@ -2711,7 +2711,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Maya's on Platform 1 if you want to see how her journey's unfolding. Devon's still on Platform 3, building his bridges between logic and heart.\n\nAnd there's Jordan Packard over by the conference rooms - guest instructor tonight, wrestling with whether seven jobs makes her qualified or fraudulent. She has twenty minutes before she speaks to a room full of students.\n\nWhere does your attention pull you?",
+        text: "Maya's on Platform 1. Devon's on Platform 3, building his bridges.\n\nJordan's by the conference rooms. Guest instructor. Wrestling with whether seven jobs makes her qualified or fraudulent.\n\nTwenty minutes before she speaks.\n\nWhere does your attention pull you?",
         emotion: 'offering_space',
         variation_id: 'hub_after_devon_v3_clean'
       }
@@ -2807,7 +2807,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Your path is being revealed right now, in these conversations. Every traveler you help is a mirror showing you something about yourself.\n\nThe station doesn't give answers. It provides encounters. The meaning emerges from what you do with them. Keep walking the platforms. Your blueprint is taking shape, even if you can't see the full design yet.",
+        text: "Your path is being revealed now. Every traveler you help is a mirror.\n\nThe station provides encounters. The meaning emerges from what you do with them.\n\nKeep walking. Your blueprint is taking shape.",
         emotion: 'patient',
         variation_id: 'your_path_v1'
       }

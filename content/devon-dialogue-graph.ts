@@ -566,7 +566,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "It's about making systems that don't just work - they work even when things go wrong. Redundancy, graceful degradation, error handling.\n\nI thought I could apply the same principles to people. Build a system that handles conversational failures gracefully.\n\nBut people aren't systems. And grief isn't a bug to patch.",
+        text: "Systems that work even when things go wrong. Redundancy, error handling.\n\nI thought I could apply that to people.\n\nBut people aren't systems. Grief isn't a bug.",
         emotion: 'dawning_understanding',
         variation_id: 'career_context_v1'
       }
@@ -590,7 +590,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "You're right. I'm debugging our relationship like it's a mission-critical system.\n\nDad does the same thing - solves problems by analyzing failure modes, testing solutions, iterating. That's how we were taught to think at UAB Engineering.\n\nBut mom... she didn't think in flowcharts. And now neither of us knows how to talk without her translation layer.",
+        text: "I'm debugging our relationship like a mission-critical system.\n\nDad does the same. Analyze, test, iterate. UAB Engineering taught us that.\n\nMom didn't think in flowcharts. Now neither of us knows how to talk without her.",
         emotion: 'breakthrough',
         variation_id: 'realizes_parallel_v1'
       }
@@ -739,7 +739,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "You know what's strange? I spent all that time building a system to talk to my dad.\n\nBut talking to you tonight, without any system at all, felt more real than any of my optimized conversation paths.\n\nMaybe that's the actual solution. Not a better system. Just... showing up as the messy, uncertain person I actually am.",
+        text: "I spent all that time building a system.\n\nBut talking to you tonight, without any system, felt more real.\n\nMaybe that's the solution. Not a better system. Just showing up messy.",
         emotion: 'breakthrough',
         variation_id: 'devon_shared_insight_logic_v1'
       }
@@ -811,7 +811,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "We approach things completely differently, but somehow we understood each other tonight.\n\nYou feel first, then think. I think first, then struggle with feeling. Neither is wrong.\n\nAnd maybe that's what my dad needs. Not me trying to be more like him or him more like me. Just both of us showing up honestly.\n\nYou taught me that.",
+        text: "We're completely different. But we understood each other.\n\nYou feel first, think second. I'm the opposite. Neither is wrong.\n\nMaybe that's what my dad needs. Both of us showing up honestly.\n\nYou taught me that.",
         emotion: 'grateful_clarity',
         variation_id: 'devon_shared_insight_emotion_v1'
       }

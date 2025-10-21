@@ -2,23 +2,23 @@
   "stats": {
     "content/samuel-dialogue-graph.ts": {
       "total": 76,
-      "long": 21,
-      "tooLong": 55
+      "long": 31,
+      "tooLong": 45
     },
     "content/maya-dialogue-graph.ts": {
-      "total": 27,
-      "long": 18,
-      "tooLong": 9
+      "total": 26,
+      "long": 19,
+      "tooLong": 7
     },
     "content/devon-dialogue-graph.ts": {
-      "total": 39,
-      "long": 19,
-      "tooLong": 20
+      "total": 37,
+      "long": 21,
+      "tooLong": 16
     },
     "content/jordan-dialogue-graph.ts": {
       "total": 22,
-      "long": 10,
-      "tooLong": 12
+      "long": 11,
+      "tooLong": 11
     }
   },
   "allLongNodes": [
@@ -136,52 +136,10 @@
     },
     {
       "file": "samuel-dialogue-graph.ts",
-      "nodeId": "samuel_discovers_exploring",
-      "length": 399,
-      "text": "Seven jobs in twelve years. That's Jordan Packard's count, anyway. She's in Conference Room B prepar...",
-      "lineNumber": 651
-    },
-    {
-      "file": "samuel-dialogue-graph.ts",
-      "nodeId": "samuel_hub_after_devon",
-      "length": 399,
-      "text": "Maya's on Platform 1 if you want to see how her journey's unfolding. Devon's still on Platform 3, bu...",
-      "lineNumber": 2714
-    },
-    {
-      "file": "samuel-dialogue-graph.ts",
-      "nodeId": "samuel_jordan_ripple_wisdom",
-      "length": 396,
-      "text": "More than you think. Maybe not immediately - but five years from now, one of them will be on their t...",
-      "lineNumber": 2127
-    },
-    {
-      "file": "samuel-dialogue-graph.ts",
       "nodeId": "samuel_pattern_observation",
       "length": 393,
       "text": "What do I see in you? I see someone who listens more than they speak. Who asks questions that make p...",
       "lineNumber": 2770
-    },
-    {
-      "file": "samuel-dialogue-graph.ts",
-      "nodeId": "samuel_reflects_stable_parents",
-      "length": 391,
-      "text": "I was thinking about what you told Maya. About your parents and their stable careers.\\n\\nIt helps me...",
-      "lineNumber": 1387
-    },
-    {
-      "file": "samuel-dialogue-graph.ts",
-      "nodeId": "samuel_teaching_witnessing",
-      "length": 381,
-      "text": "Witnessing means being fully present to someone's experience without needing to change it, fix it, o...",
-      "lineNumber": 2490
-    },
-    {
-      "file": "maya-dialogue-graph.ts",
-      "nodeId": "maya_reaction_entrepreneur",
-      "length": 378,
-      "text": "Of course! That's why you pushed me toward robotics without hesitation.\\n\\nRisk is normal for you. S...",
-      "lineNumber": 1406
     },
     {
       "file": "jordan-dialogue-graph.ts",
@@ -192,66 +150,10 @@
     },
     {
       "file": "samuel-dialogue-graph.ts",
-      "nodeId": "samuel_station_knows_passions",
-      "length": 371,
-      "text": "The station shows me glimpses. Fragments of who people are when they're alone with what they love.\\n...",
-      "lineNumber": 2444
-    },
-    {
-      "file": "samuel-dialogue-graph.ts",
       "nodeId": "samuel_other_travelers",
       "length": 362,
       "text": "The full picture:\\n\\n**Maya Chen** - Platform 1. Pre-med brilliance, family expectations, robotics d...",
       "lineNumber": 728
-    },
-    {
-      "file": "devon-dialogue-graph.ts",
-      "nodeId": "devon_realizes_parallel",
-      "length": 348,
-      "text": "You're right. I'm debugging our relationship like it's a mission-critical system.\\n\\nDad does the sa...",
-      "lineNumber": 593
-    },
-    {
-      "file": "jordan-dialogue-graph.ts",
-      "nodeId": "jordan_job_reveal_1",
-      "length": 345,
-      "text": "Okay, so. I started at Alabama A&M in Huntsville—computer science major. Did one semester, got recru...",
-      "lineNumber": 128
-    },
-    {
-      "file": "samuel-dialogue-graph.ts",
-      "nodeId": "samuel_inheritance_wisdom",
-      "length": 344,
-      "text": "Most people don't. They think their traits are just personality. But we're all carrying forward patt...",
-      "lineNumber": 1612
-    },
-    {
-      "file": "samuel-dialogue-graph.ts",
-      "nodeId": "samuel_your_path",
-      "length": 344,
-      "text": "Your path is being revealed right now, in these conversations. Every traveler you help is a mirror s...",
-      "lineNumber": 2810
-    },
-    {
-      "file": "samuel-dialogue-graph.ts",
-      "nodeId": "samuel_purpose_found",
-      "length": 342,
-      "text": "I wanted to help people find their own blueprints. Not hand them answers, but create a space where t...",
-      "lineNumber": 223
-    },
-    {
-      "file": "samuel-dialogue-graph.ts",
-      "nodeId": "samuel_station_keeper_truth",
-      "length": 341,
-      "text": "That's exactly what I do. I don't give travelers directions - I help them see what they already know...",
-      "lineNumber": 1155
-    },
-    {
-      "file": "samuel-dialogue-graph.ts",
-      "nodeId": "samuel_backstory_revelation",
-      "length": 340,
-      "text": "It was a good life. But it wasn't MY life, if that makes sense.\\n\\nOne day I'm standing in front of ...",
-      "lineNumber": 164
     },
     {
       "file": "jordan-dialogue-graph.ts",
@@ -259,34 +161,6 @@
       "length": 338,
       "text": "BJCC career fair, three years ago. Dropped off a passenger, wandered in.\\n\\nInnovation Depot booth. ...",
       "lineNumber": 488
-    },
-    {
-      "file": "samuel-dialogue-graph.ts",
-      "nodeId": "samuel_explains_station",
-      "length": 337,
-      "text": "This station exists for people like you - people at a turning point. It's not on any map. You can't ...",
-      "lineNumber": 69
-    },
-    {
-      "file": "maya-dialogue-graph.ts",
-      "nodeId": "maya_mutual_recognition_entrepreneur",
-      "length": 335,
-      "text": "We really do.\\n\\nYour parents gave you permission to leap. Mine gave me the weight of their one succ...",
-      "lineNumber": 1436
-    },
-    {
-      "file": "samuel-dialogue-graph.ts",
-      "nodeId": "samuel_jordan_narrative_wisdom",
-      "length": 334,
-      "text": "It probably will. Stories aren't fixed - they evolve as we do. Jordan might tell herself a different...",
-      "lineNumber": 2147
-    },
-    {
-      "file": "samuel-dialogue-graph.ts",
-      "nodeId": "samuel_devon_intro",
-      "length": 334,
-      "text": "Devon's on Platform 3 - The Builder's Track. Engineering student, probably hunched over some bluepri...",
-      "lineNumber": 2580
     },
     {
       "file": "samuel-dialogue-graph.ts",
@@ -318,13 +192,6 @@
     },
     {
       "file": "devon-dialogue-graph.ts",
-      "nodeId": "devon_shared_insight_emotion",
-      "length": 322,
-      "text": "We approach things completely differently, but somehow we understood each other tonight.\\n\\nYou feel...",
-      "lineNumber": 814
-    },
-    {
-      "file": "devon-dialogue-graph.ts",
       "nodeId": "devon_crossroads",
       "length": 320,
       "text": "You helped me see emotions as data. Now I can work with them.\\n\\nI need to call him. But differently...",
@@ -343,13 +210,6 @@
       "length": 317,
       "text": "The students in that classroom needed Jordan more than they knew. Not because she has all the answer...",
       "lineNumber": 1877
-    },
-    {
-      "file": "devon-dialogue-graph.ts",
-      "nodeId": "devon_shared_insight_logic",
-      "length": 316,
-      "text": "You know what's strange? I spent all that time building a system to talk to my dad.\\n\\nBut talking t...",
-      "lineNumber": 742
     },
     {
       "file": "samuel-dialogue-graph.ts",
@@ -371,13 +231,6 @@
       "length": 311,
       "text": "Because the station remembers. If you'd tried to control her - 'You should be a doctor,' 'You should...",
       "lineNumber": 1131
-    },
-    {
-      "file": "devon-dialogue-graph.ts",
-      "nodeId": "devon_career_context",
-      "length": 311,
-      "text": "It's about making systems that don't just work - they work even when things go wrong. Redundancy, gr...",
-      "lineNumber": 569
     },
     {
       "file": "devon-dialogue-graph.ts",
@@ -598,6 +451,13 @@
     },
     {
       "file": "samuel-dialogue-graph.ts",
+      "nodeId": "samuel_discovers_exploring",
+      "length": 268,
+      "text": "Seven jobs in twelve years. Jordan Packard. Conference Room B, mentorship panel.\\n\\nShe's terrified ...",
+      "lineNumber": 651
+    },
+    {
+      "file": "samuel-dialogue-graph.ts",
       "nodeId": "samuel_maya_path_reflection",
       "length": 268,
       "text": "She's choosing robotics. The path she's been afraid to name out loud because it felt like betraying ...",
@@ -609,6 +469,13 @@
       "length": 265,
       "text": "Impostor syndrome doesn't care about résumés.\\n\\nJordan's built real skills but feels like a fraud.\\...",
       "lineNumber": 2690
+    },
+    {
+      "file": "samuel-dialogue-graph.ts",
+      "nodeId": "samuel_jordan_ripple_wisdom",
+      "length": 264,
+      "text": "More than you think.\\n\\nFive years from now, one of them will be on their third job, feeling like a ...",
+      "lineNumber": 2127
     },
     {
       "file": "maya-dialogue-graph.ts",
@@ -623,6 +490,13 @@
       "length": 262,
       "text": "That's what this station is for. I see the patterns because I've learned to watch for them. You're d...",
       "lineNumber": 1656
+    },
+    {
+      "file": "samuel-dialogue-graph.ts",
+      "nodeId": "samuel_purpose_found",
+      "length": 261,
+      "text": "I wanted to help people find their own blueprints. Not hand them answers. Create space for the right...",
+      "lineNumber": 223
     },
     {
       "file": "devon-dialogue-graph.ts",
@@ -667,6 +541,13 @@
       "lineNumber": 927
     },
     {
+      "file": "samuel-dialogue-graph.ts",
+      "nodeId": "samuel_hub_after_devon",
+      "length": 254,
+      "text": "Maya's on Platform 1. Devon's on Platform 3, building his bridges.\\n\\nJordan's by the conference roo...",
+      "lineNumber": 2714
+    },
+    {
       "file": "devon-dialogue-graph.ts",
       "nodeId": "devon_father_reveal",
       "length": 254,
@@ -693,6 +574,20 @@
       "length": 250,
       "text": "Just be there. That's the whole system, isn't it? Show up. Listen. Be present in his grief instead o...",
       "lineNumber": 1480
+    },
+    {
+      "file": "samuel-dialogue-graph.ts",
+      "nodeId": "samuel_station_knows_passions",
+      "length": 246,
+      "text": "The station shows me glimpses. Who people are when they're alone with what they love.\\n\\nMaya late a...",
+      "lineNumber": 2444
+    },
+    {
+      "file": "maya-dialogue-graph.ts",
+      "nodeId": "maya_reaction_entrepreneur",
+      "length": 245,
+      "text": "That's why you pushed me toward robotics without hesitation.\\n\\nRisk is normal for you. Your inherit...",
+      "lineNumber": 1406
     },
     {
       "file": "maya-dialogue-graph.ts",
@@ -787,6 +682,13 @@
     },
     {
       "file": "jordan-dialogue-graph.ts",
+      "nodeId": "jordan_job_reveal_1",
+      "length": 235,
+      "text": "Alabama A&M. Computer science major. One semester, then got recruited by a startup. 'The next big th...",
+      "lineNumber": 128
+    },
+    {
+      "file": "jordan-dialogue-graph.ts",
       "nodeId": "jordan_farewell_birmingham",
       "length": 235,
       "text": "Birmingham. Adaptation is survival here.\\n\\nSome of those jobs? I hated them. Rage-quit after six we...",
@@ -878,6 +780,13 @@
     },
     {
       "file": "samuel-dialogue-graph.ts",
+      "nodeId": "samuel_explains_station",
+      "length": 225,
+      "text": "This station exists for people at a turning point. Not on any map. You can't find it unless you need...",
+      "lineNumber": 69
+    },
+    {
+      "file": "samuel-dialogue-graph.ts",
       "nodeId": "samuel_pattern_confirmation",
       "length": 225,
       "text": "It does, doesn't it? The station helps us see these connections. Your foundation gives you a particu...",
@@ -905,6 +814,27 @@
       "lineNumber": 1036
     },
     {
+      "file": "samuel-dialogue-graph.ts",
+      "nodeId": "samuel_reflects_stable_parents",
+      "length": 222,
+      "text": "What you told Maya. About your parents' stable careers.\\n\\nThat explains your patience. Solid founda...",
+      "lineNumber": 1387
+    },
+    {
+      "file": "samuel-dialogue-graph.ts",
+      "nodeId": "samuel_devon_intro",
+      "length": 221,
+      "text": "Devon's on Platform 3. Engineering student, probably hunched over a blueprint.\\n\\nHe organizes every...",
+      "lineNumber": 2580
+    },
+    {
+      "file": "samuel-dialogue-graph.ts",
+      "nodeId": "samuel_backstory_revelation",
+      "length": 220,
+      "text": "It was a good life. But it wasn't MY life.\\n\\nOne day, standing in front of Vulcan, looking down at ...",
+      "lineNumber": 164
+    },
+    {
       "file": "devon-dialogue-graph.ts",
       "nodeId": "devon_uab_systems_engineering",
       "length": 219,
@@ -924,6 +854,27 @@
       "length": 218,
       "text": "Yeah, I get that. Structure as a life raft. I tried that for years—making plans, setting goals. Some...",
       "lineNumber": 688
+    },
+    {
+      "file": "devon-dialogue-graph.ts",
+      "nodeId": "devon_realizes_parallel",
+      "length": 216,
+      "text": "I'm debugging our relationship like a mission-critical system.\\n\\nDad does the same. Analyze, test, ...",
+      "lineNumber": 593
+    },
+    {
+      "file": "samuel-dialogue-graph.ts",
+      "nodeId": "samuel_inheritance_wisdom",
+      "length": 215,
+      "text": "Most people don't. They think traits are just personality.\\n\\nWe're all carrying patterns we learned...",
+      "lineNumber": 1612
+    },
+    {
+      "file": "samuel-dialogue-graph.ts",
+      "nodeId": "samuel_teaching_witnessing",
+      "length": 215,
+      "text": "Witnessing means being present without needing to change it, fix it, or make it about you.\\n\\nMost '...",
+      "lineNumber": 2490
     },
     {
       "file": "devon-dialogue-graph.ts",
@@ -1017,6 +968,13 @@
       "lineNumber": 428
     },
     {
+      "file": "devon-dialogue-graph.ts",
+      "nodeId": "devon_shared_insight_emotion",
+      "length": 204,
+      "text": "We're completely different. But we understood each other.\\n\\nYou feel first, think second. I'm the o...",
+      "lineNumber": 814
+    },
+    {
       "file": "jordan-dialogue-graph.ts",
       "nodeId": "jordan_response_fear",
       "length": 204,
@@ -1043,6 +1001,13 @@
       "length": 200,
       "text": "They do.\\n\\nYou learned to recognize struggle because you lived beside it. I learned to hide mine.\\n...",
       "lineNumber": 1538
+    },
+    {
+      "file": "samuel-dialogue-graph.ts",
+      "nodeId": "samuel_station_keeper_truth",
+      "length": 199,
+      "text": "I don't give directions. I help them see what they already know.\\n\\nI followed other people's bluepr...",
+      "lineNumber": 1155
     },
     {
       "file": "maya-dialogue-graph.ts",
@@ -1080,6 +1045,13 @@
       "lineNumber": 618
     },
     {
+      "file": "samuel-dialogue-graph.ts",
+      "nodeId": "samuel_jordan_narrative_wisdom",
+      "length": 197,
+      "text": "It probably will. Stories evolve.\\n\\nJordan might tell herself a different story in five years. That...",
+      "lineNumber": 2147
+    },
+    {
       "file": "maya-dialogue-graph.ts",
       "nodeId": "maya_robotics_passion",
       "length": 197,
@@ -1099,6 +1071,13 @@
       "length": 196,
       "text": "I'm going to apply to the robotics program. Call my parents tonight.\\n\\nThey'll be heartbroken. But ...",
       "lineNumber": 1098
+    },
+    {
+      "file": "samuel-dialogue-graph.ts",
+      "nodeId": "samuel_your_path",
+      "length": 194,
+      "text": "Your path is being revealed now. Every traveler you help is a mirror.\\n\\nThe station provides encoun...",
+      "lineNumber": 2810
     },
     {
       "file": "jordan-dialogue-graph.ts",
@@ -1176,5 +1155,5 @@
     "LONG": 180,
     "TOO_LONG": 250
   },
-  "generatedAt": "2025-10-21T13:51:25.375Z"
+  "generatedAt": "2025-10-21T14:05:22.139Z"
 }
