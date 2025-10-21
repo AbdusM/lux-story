@@ -94,7 +94,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Each platform leads somewhere different. Platform 1 - The Care Line - that's where you find people who heal, who teach, who help others grow. Platform 3 - The Builder's Track - engineers, makers, people who create with their hands.\n\nThe thing is, you don't choose a platform by logic alone. You talk to the travelers, hear their stories, see which ones resonate. Your path reveals itself through connection.",
+        text: "Each platform leads somewhere different.\n\nPlatform 1—The Care Line. People who heal, teach, help others grow.\n\nPlatform 3—The Builder's Track. Engineers, makers, creators.\n\nYou don't choose by logic alone. Talk to travelers. See which resonates.\n\nYour path reveals itself through connection.",
         emotion: 'reflective',
         variation_id: 'platforms_v1'
       }
@@ -881,7 +881,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Exactly. She made her own choice. That's the most important thing you could understand about what just happened.\n\nYou understand agency - that's advanced.\n\nTook me fifteen years at Southern Company to learn I couldn't engineer people's decisions. The best career counselors in Birmingham know this: we illuminate paths, but the traveler chooses the direction.",
+        text: "Exactly. She made her own choice. That's the most important thing.\n\nYou understand agency. That's advanced.\n\nTook me fifteen years to learn I can't engineer people's decisions. We illuminate paths. Travelers choose.",
         emotion: 'proud',
         variation_id: 'agency_v1_pt1'
       }

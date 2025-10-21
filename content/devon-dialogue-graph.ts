@@ -882,7 +882,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "I think I've been trying to solve the wrong problem this whole time.\n\nI wanted a system that would let me be logical AND emotional. Perfect integration.\n\nBut you just showed me something better. You don't integrate them perfectly. You commit to both, even when they conflict. Even when it's messy.\n\nThat's what I need to do with my dad. Not find the optimal balance. Just show up committed to both sides of myself.",
+        text: "I've been solving the wrong problem.\n\nI wanted perfect integration. Logical and emotional.\n\nBut you showed me something better. You don't integrate perfectly. You commit to both. Even when messy.\n\nThat's what I need with my dad. Show up committed to both sides.",
         emotion: 'realization',
         variation_id: 'devon_shared_insight_both_v1'
       }
@@ -954,7 +954,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "You know what's funny? I built this whole flowchart trying to debug my relationship with my dad.\n\nBut tonight, talking to you, both of us admitting we're still figuring things out—that felt more connected than any optimized conversation could be.\n\nMaybe that's the variable I was missing. Not how to hide uncertainty, but how to share it.\n\nWe're both learning. And somehow that makes this real.",
+        text: "I built this flowchart trying to debug my relationship.\n\nBut tonight? Both of us admitting we're figuring things out. That felt more connected than any optimized conversation.\n\nMaybe that's the variable. Not hiding uncertainty. Sharing it.\n\nWe're both learning. That makes this real.",
         emotion: 'breakthrough',
         variation_id: 'devon_shared_insight_learning_v1'
       }
@@ -1506,7 +1506,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "I'm going to call him. Integrated approach - engineer and son, both online.\n\nBut I'm terrified I'll optimize again. Fall back into solution mode. Build another system without realizing it.\n\nThis will be work. Every conversation. Catching myself before I try to fix instead of feel.\n\nThe flowchart failed catastrophically. But the instinct that built it? That's still in me.\n\nThank you for showing me empathy isn't the opposite of logic. But knowing that and living it are different things.\n\nSamuel's at the main platform. Good debugging partner, by the way.",
+        text: "I'm going to call him. Engineer and son. Both.\n\nBut I'm terrified I'll optimize again. Fall back into solution mode.\n\nThis will be work. Every conversation. Catching myself.\n\nThank you. Samuel's waiting.",
         emotion: 'determined_but_fragile',
         variation_id: 'farewell_integration_v2_complex'
       }

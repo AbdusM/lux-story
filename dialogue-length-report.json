@@ -2,33 +2,26 @@
   "stats": {
     "content/samuel-dialogue-graph.ts": {
       "total": 76,
-      "long": 20,
-      "tooLong": 56
+      "long": 21,
+      "tooLong": 55
     },
     "content/maya-dialogue-graph.ts": {
       "total": 27,
-      "long": 16,
-      "tooLong": 11
+      "long": 18,
+      "tooLong": 9
     },
     "content/devon-dialogue-graph.ts": {
       "total": 39,
-      "long": 18,
-      "tooLong": 21
+      "long": 19,
+      "tooLong": 20
     },
     "content/jordan-dialogue-graph.ts": {
       "total": 22,
-      "long": 7,
-      "tooLong": 15
+      "long": 10,
+      "tooLong": 12
     }
   },
   "allLongNodes": [
-    {
-      "file": "jordan-dialogue-graph.ts",
-      "nodeId": "jordan_job_reveal_7",
-      "length": 556,
-      "text": "Birmingham-Jefferson Convention Complex (BJCC) career fair, three years ago. I was there dropping of...",
-      "lineNumber": 488
-    },
     {
       "file": "samuel-dialogue-graph.ts",
       "nodeId": "samuel_jordan_path_reflection",
@@ -37,39 +30,11 @@
       "lineNumber": 2025
     },
     {
-      "file": "devon-dialogue-graph.ts",
-      "nodeId": "devon_farewell_integration",
-      "length": 547,
-      "text": "I'm going to call him. Integrated approach - engineer and son, both online.\\n\\nBut I'm terrified I'l...",
-      "lineNumber": 1509
-    },
-    {
-      "file": "jordan-dialogue-graph.ts",
-      "nodeId": "jordan_impostor_reveal",
-      "length": 527,
-      "text": "Let me show you something. A text from my mom after I quit the marketing firm.\\n\\n'Another one? Are ...",
-      "lineNumber": 746
-    },
-    {
-      "file": "samuel-dialogue-graph.ts",
-      "nodeId": "samuel_hub_fallback",
-      "length": 526,
-      "text": "That's honest. And honestly, that's why you're here.\\n\\nLet me tell you about tonight's travelers. L...",
-      "lineNumber": 683
-    },
-    {
       "file": "samuel-dialogue-graph.ts",
       "nodeId": "samuel_jordan_path_reflection",
       "length": 525,
       "text": "She walked into that classroom and told them the truth they needed to hear: every job that felt like...",
       "lineNumber": 1916
-    },
-    {
-      "file": "samuel-dialogue-graph.ts",
-      "nodeId": "samuel_other_travelers",
-      "length": 510,
-      "text": "Fair question. Let me paint the full picture:\\n\\n**Maya Chen** - Platform 1. Pre-med brilliance, fam...",
-      "lineNumber": 728
     },
     {
       "file": "samuel-dialogue-graph.ts",
@@ -121,13 +86,6 @@
       "lineNumber": 607
     },
     {
-      "file": "jordan-dialogue-graph.ts",
-      "nodeId": "jordan_crossroads",
-      "length": 422,
-      "text": "I have twenty minutes before that room fills up. Twenty minutes to decide what story I'm telling—abo...",
-      "lineNumber": 800
-    },
-    {
       "file": "samuel-dialogue-graph.ts",
       "nodeId": "samuel_reflects_absent_parents",
       "length": 419,
@@ -149,32 +107,11 @@
       "lineNumber": 1426
     },
     {
-      "file": "maya-dialogue-graph.ts",
-      "nodeId": "maya_mutual_recognition_absent",
-      "length": 414,
-      "text": "It really does.\\n\\nYou learned that lesson the hard way. Watching achievement from a distance. Lovin...",
-      "lineNumber": 1639
-    },
-    {
       "file": "samuel-dialogue-graph.ts",
       "nodeId": "samuel_reflects_boundaries",
       "length": 413,
       "text": "Maya told me something interesting. Not what you shared with her - but that you chose NOT to share s...",
       "lineNumber": 1569
-    },
-    {
-      "file": "devon-dialogue-graph.ts",
-      "nodeId": "devon_shared_insight_both",
-      "length": 408,
-      "text": "I think I've been trying to solve the wrong problem this whole time.\\n\\nI wanted a system that would...",
-      "lineNumber": 885
-    },
-    {
-      "file": "samuel-dialogue-graph.ts",
-      "nodeId": "samuel_explains_platforms",
-      "length": 405,
-      "text": "Each platform leads somewhere different. Platform 1 - The Care Line - that's where you find people w...",
-      "lineNumber": 97
     },
     {
       "file": "samuel-dialogue-graph.ts",
@@ -219,13 +156,6 @@
       "lineNumber": 2127
     },
     {
-      "file": "jordan-dialogue-graph.ts",
-      "nodeId": "jordan_introduction",
-      "length": 395,
-      "text": "Hey there! Career Day at the coding bootcamp. Innovation Depot, Conference Room B. Got here way too ...",
-      "lineNumber": 22
-    },
-    {
       "file": "samuel-dialogue-graph.ts",
       "nodeId": "samuel_pattern_observation",
       "length": 393,
@@ -233,25 +163,11 @@
       "lineNumber": 2770
     },
     {
-      "file": "jordan-dialogue-graph.ts",
-      "nodeId": "jordan_job_reveal_5",
-      "length": 392,
-      "text": "Okay, this is where it gets weird. I quit to become a personal trainer.\\n\\nI know. But hear me out—I...",
-      "lineNumber": 382
-    },
-    {
       "file": "samuel-dialogue-graph.ts",
       "nodeId": "samuel_reflects_stable_parents",
       "length": 391,
       "text": "I was thinking about what you told Maya. About your parents and their stable careers.\\n\\nIt helps me...",
       "lineNumber": 1387
-    },
-    {
-      "file": "devon-dialogue-graph.ts",
-      "nodeId": "devon_shared_insight_learning",
-      "length": 388,
-      "text": "You know what's funny? I built this whole flowchart trying to debug my relationship with my dad.\\n\\n...",
-      "lineNumber": 957
     },
     {
       "file": "samuel-dialogue-graph.ts",
@@ -282,25 +198,11 @@
       "lineNumber": 2444
     },
     {
-      "file": "jordan-dialogue-graph.ts",
-      "nodeId": "jordan_job_reveal_2",
-      "length": 366,
-      "text": "I got a job selling phones at the Galleria. You know, the kiosks in the middle of the walkway where ...",
-      "lineNumber": 181
-    },
-    {
-      "file": "jordan-dialogue-graph.ts",
-      "nodeId": "jordan_career_question",
-      "length": 365,
-      "text": "It's a mentorship panel for a coding bootcamp cohort—about thirty students trying to break into tech...",
-      "lineNumber": 75
-    },
-    {
       "file": "samuel-dialogue-graph.ts",
-      "nodeId": "samuel_reflect_on_agency",
-      "length": 355,
-      "text": "Exactly. She made her own choice. That's the most important thing you could understand about what ju...",
-      "lineNumber": 884
+      "nodeId": "samuel_other_travelers",
+      "length": 362,
+      "text": "The full picture:\\n\\n**Maya Chen** - Platform 1. Pre-med brilliance, family expectations, robotics d...",
+      "lineNumber": 728
     },
     {
       "file": "devon-dialogue-graph.ts",
@@ -345,18 +247,18 @@
       "lineNumber": 1155
     },
     {
-      "file": "maya-dialogue-graph.ts",
-      "nodeId": "maya_mutual_recognition_struggling",
-      "length": 341,
-      "text": "They do, don't they?\\n\\nYou learned to recognize struggle because you lived beside it. I learned to ...",
-      "lineNumber": 1538
-    },
-    {
       "file": "samuel-dialogue-graph.ts",
       "nodeId": "samuel_backstory_revelation",
       "length": 340,
       "text": "It was a good life. But it wasn't MY life, if that makes sense.\\n\\nOne day I'm standing in front of ...",
       "lineNumber": 164
+    },
+    {
+      "file": "jordan-dialogue-graph.ts",
+      "nodeId": "jordan_job_reveal_7",
+      "length": 338,
+      "text": "BJCC career fair, three years ago. Dropped off a passenger, wandered in.\\n\\nInnovation Depot booth. ...",
+      "lineNumber": 488
     },
     {
       "file": "samuel-dialogue-graph.ts",
@@ -392,6 +294,13 @@
       "length": 330,
       "text": "You did help her. But not in the way most people think 'helping' works.\\n\\nYou didn't fix her proble...",
       "lineNumber": 820
+    },
+    {
+      "file": "jordan-dialogue-graph.ts",
+      "nodeId": "jordan_impostor_reveal",
+      "length": 326,
+      "text": "Let me show you something. A text from my mom:\\n\\n'Another one? Are you sure you're not just being p...",
+      "lineNumber": 746
     },
     {
       "file": "samuel-dialogue-graph.ts",
@@ -534,6 +443,13 @@
       "lineNumber": 309
     },
     {
+      "file": "jordan-dialogue-graph.ts",
+      "nodeId": "jordan_introduction",
+      "length": 295,
+      "text": "Hey! Career Day at the coding bootcamp. Got here way too early. Classic overcompensation.\\n\\nI've re...",
+      "lineNumber": 22
+    },
+    {
       "file": "devon-dialogue-graph.ts",
       "nodeId": "devon_analyzes_failure",
       "length": 294,
@@ -570,10 +486,24 @@
     },
     {
       "file": "samuel-dialogue-graph.ts",
+      "nodeId": "samuel_hub_fallback",
+      "length": 285,
+      "text": "That's honest. That's why you're here.\\n\\nTonight's travelers:\\n\\n**Maya Chen** - Platform 1. Pre-me...",
+      "lineNumber": 683
+    },
+    {
+      "file": "samuel-dialogue-graph.ts",
       "nodeId": "samuel_solidarity",
       "length": 285,
       "text": "I know you have. That's why you could meet her there. We can only guide people through territory we'...",
       "lineNumber": 1345
+    },
+    {
+      "file": "samuel-dialogue-graph.ts",
+      "nodeId": "samuel_explains_platforms",
+      "length": 283,
+      "text": "Each platform leads somewhere different.\\n\\nPlatform 1—The Care Line. People who heal, teach, help o...",
+      "lineNumber": 97
     },
     {
       "file": "jordan-dialogue-graph.ts",
@@ -609,6 +539,13 @@
       "length": 278,
       "text": "We do, don't we?\\n\\nYou had solid ground and learned patience. I had unstable ground and learned urg...",
       "lineNumber": 1356
+    },
+    {
+      "file": "devon-dialogue-graph.ts",
+      "nodeId": "devon_shared_insight_learning",
+      "length": 277,
+      "text": "I built this flowchart trying to debug my relationship.\\n\\nBut tonight? Both of us admitting we're f...",
+      "lineNumber": 957
     },
     {
       "file": "samuel-dialogue-graph.ts",
@@ -695,6 +632,13 @@
       "lineNumber": 472
     },
     {
+      "file": "jordan-dialogue-graph.ts",
+      "nodeId": "jordan_job_reveal_5",
+      "length": 260,
+      "text": "This is where it gets weird. I quit to become a personal trainer.\\n\\nHear me out. Trainers are motiv...",
+      "lineNumber": 382
+    },
+    {
       "file": "maya-dialogue-graph.ts",
       "nodeId": "maya_farewell_hybrid",
       "length": 259,
@@ -707,6 +651,13 @@
       "length": 257,
       "text": "It's an optimization system. A conversational flowchart. You map inputs - what someone says - to out...",
       "lineNumber": 74
+    },
+    {
+      "file": "devon-dialogue-graph.ts",
+      "nodeId": "devon_shared_insight_both",
+      "length": 255,
+      "text": "I've been solving the wrong problem.\\n\\nI wanted perfect integration. Logical and emotional.\\n\\nBut ...",
+      "lineNumber": 885
     },
     {
       "file": "jordan-dialogue-graph.ts",
@@ -742,6 +693,13 @@
       "length": 250,
       "text": "Just be there. That's the whole system, isn't it? Show up. Listen. Be present in his grief instead o...",
       "lineNumber": 1480
+    },
+    {
+      "file": "maya-dialogue-graph.ts",
+      "nodeId": "maya_mutual_recognition_absent",
+      "length": 244,
+      "text": "You learned that the hard way. Watching achievement from a distance.\\n\\nI was about to do the same t...",
+      "lineNumber": 1639
     },
     {
       "file": "samuel-dialogue-graph.ts",
@@ -822,6 +780,13 @@
     },
     {
       "file": "jordan-dialogue-graph.ts",
+      "nodeId": "jordan_career_question",
+      "length": 235,
+      "text": "Mentorship panel. Thirty students trying to break into tech. Share my 'journey' and give advice.\\n\\n...",
+      "lineNumber": 75
+    },
+    {
+      "file": "jordan-dialogue-graph.ts",
       "nodeId": "jordan_farewell_birmingham",
       "length": 235,
       "text": "Birmingham. Adaptation is survival here.\\n\\nSome of those jobs? I hated them. Rage-quit after six we...",
@@ -868,6 +833,13 @@
       "length": 231,
       "text": "Of course. She'll be glad to see you.\\n\\nThe relationship you built with her doesn't end when the co...",
       "lineNumber": 1365
+    },
+    {
+      "file": "jordan-dialogue-graph.ts",
+      "nodeId": "jordan_job_reveal_2",
+      "length": 230,
+      "text": "Selling phones at the Galleria. You know, those kiosks where you chase people speed-walking past?\\n\\...",
+      "lineNumber": 181
     },
     {
       "file": "maya-dialogue-graph.ts",
@@ -983,6 +955,13 @@
     },
     {
       "file": "samuel-dialogue-graph.ts",
+      "nodeId": "samuel_reflect_on_agency",
+      "length": 211,
+      "text": "Exactly. She made her own choice. That's the most important thing.\\n\\nYou understand agency. That's ...",
+      "lineNumber": 884
+    },
+    {
+      "file": "samuel-dialogue-graph.ts",
       "nodeId": "samuel_struggle_transformation",
       "length": 209,
       "text": "Struggle becomes wisdom when we let it teach us instead of harden us. You learned to see. You learne...",
@@ -1060,6 +1039,13 @@
     },
     {
       "file": "maya-dialogue-graph.ts",
+      "nodeId": "maya_mutual_recognition_struggling",
+      "length": 200,
+      "text": "They do.\\n\\nYou learned to recognize struggle because you lived beside it. I learned to hide mine.\\n...",
+      "lineNumber": 1538
+    },
+    {
+      "file": "maya-dialogue-graph.ts",
       "nodeId": "maya_actionable_path",
       "length": 199,
       "text": "I could talk to someone in the UAB program. See what the pathway looks like.\\n\\nMy parents always wa...",
@@ -1099,6 +1085,13 @@
       "length": 197,
       "text": "I... I build robots. Small ones, mostly. Medical assistance robots. I dream about circuits and servo...",
       "lineNumber": 523
+    },
+    {
+      "file": "devon-dialogue-graph.ts",
+      "nodeId": "devon_farewell_integration",
+      "length": 197,
+      "text": "I'm going to call him. Engineer and son. Both.\\n\\nBut I'm terrified I'll optimize again. Fall back i...",
+      "lineNumber": 1509
     },
     {
       "file": "maya-dialogue-graph.ts",
@@ -1164,6 +1157,13 @@
       "lineNumber": 22
     },
     {
+      "file": "jordan-dialogue-graph.ts",
+      "nodeId": "jordan_crossroads",
+      "length": 184,
+      "text": "Twenty minutes before that room fills up.\\n\\nI keep rewriting this speech. Which version is true?\\n\\...",
+      "lineNumber": 800
+    },
+    {
       "file": "maya-dialogue-graph.ts",
       "nodeId": "maya_reaction_struggling",
       "length": 180,
@@ -1176,5 +1176,5 @@
     "LONG": 180,
     "TOO_LONG": 250
   },
-  "generatedAt": "2025-10-21T13:45:02.796Z"
+  "generatedAt": "2025-10-21T13:51:25.375Z"
 }
