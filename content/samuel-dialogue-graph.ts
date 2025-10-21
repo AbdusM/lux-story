@@ -370,7 +370,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*He pulls an envelope from his pocket—same heavy paper, elegant script*\n\nI write one every night. To someone whose name just... comes to me.\n\nLike you knew [character] needed your perspective tonight. Like Maya knew which question to ask you. The station speaks through us, I suppose.\n\n*He sets the letter on his desk*\n\nTomorrow's traveler. Someone in Huntsville who doesn't know they're at a crossroads yet. But they will be. And when they find the letter in their hand, they'll find their way here.\n\n*Pause*\n\nI don't question how I know the names anymore. After thirty-five years, you learn to trust what you can't explain.",
+        text: "I write one every night. To someone whose name just... comes to me. Same heavy paper, elegant script.\n\nLike you knew [character] needed your perspective tonight. Like Maya knew which question to ask you. The station speaks through us, I suppose.\n\nTomorrow's traveler. Someone in Huntsville who doesn't know they're at a crossroads yet. But they will be. And when they find the letter in their hand, they'll find their way here.\n\nI don't question how I know the names anymore. After thirty-five years, you learn to trust what you can't explain.",
         emotion: 'mystical_acceptance',
         variation_id: 'letter_system_v1'
       }
@@ -574,7 +574,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "That's honest. And honestly, that's why you're here.\n\n*He gestures to the platforms around you*\n\nLet me tell you about tonight's travelers. Listen to their stories - see which one pulls at something inside you:\n\n**Maya Chen** on Platform 1 - Pre-med student who wants to help people, but maybe not the way everyone expects.\n\n**Devon Kumar** on Platform 3 - Engineer learning that some problems can't be solved with logic alone.\n\n**Jordan Packard** in Conference Room B - Seven jobs, one powerful question about whether that makes her experienced or unfocused.\n\nWho speaks to you?",
+        text: "That's honest. And honestly, that's why you're here.\n\nLet me tell you about tonight's travelers. Listen to their stories - see which one pulls at something inside you:\n\n**Maya Chen** on Platform 1 - Pre-med student who wants to help people, but maybe not the way everyone expects.\n\n**Devon Kumar** on Platform 3 - Engineer learning that some problems can't be solved with logic alone.\n\n**Jordan Packard** in Conference Room B - Seven jobs, one powerful question about whether that makes her experienced or unfocused.\n\nWho speaks to you?",
         emotion: 'gentle_guide',
         variation_id: 'fallback_v1'
       }
@@ -1849,7 +1849,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "She stood before those students and claimed her place in this city's story.\n\nBirmingham - where reinvention isn't weakness, it's the foundation.\n\n*He gestures toward the windows, the city lights beyond*\n\nThis city transformed from steel mills to medical research, from railroads to tech hubs. Jordan moved through seven companies in a place that rewards people who can pivot, who can see what's next.\n\nShe wasn't failing - she was adapting faster than most.",
+        text: "She stood before those students and claimed her place in this city's story.\n\nBirmingham - where reinvention isn't weakness, it's the foundation.\n\nLook at this city. It transformed from steel mills to medical research, from railroads to tech hubs. Jordan moved through seven companies in a place that rewards people who can pivot, who can see what's next.\n\nShe wasn't failing - she was adapting faster than most.",
         emotion: 'proud',
         variation_id: 'birmingham_reflection_v1_pt1'
       }

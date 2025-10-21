@@ -395,7 +395,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*She pulls out her phone, searches for something, then stares at the screen*\n\nWait. Biomedical Engineering at University of Alabama at Birmingham (UAB). They literally build surgical robots, prosthetics, medical devices.\n\n*Her voice trembles with recognition*\n\nThis is... this is an actual field. Building technology that heals people. That's real medicine.",
+        text: "Wait. Let me look something up. Biomedical Engineering at University of Alabama at Birmingham (UAB). They literally build surgical robots, prosthetics, medical devices.\n\nThis is... this is an actual field. Building technology that heals people. That's real medicine.",
         emotion: 'dawning_realization',
         variation_id: 'uab_revelation_v1'
       }

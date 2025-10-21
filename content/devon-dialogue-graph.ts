@@ -176,7 +176,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "*After a long silence, he looks up. There's something different in his eyes - recognition, maybe*\n\nYou... just waited. Most people fill silences. They're uncomfortable with latency. But you let the system complete its processing.\n\n*He sets down his pen*\n\nThis flowchart - it's not for an engineering class. It's for someone important to me.",
+        text: "You... just waited. Most people fill silences. They're uncomfortable with latency. But you let the system complete its processing.\n\nThis flowchart - it's not for an engineering class. It's for someone important to me.",
         emotion: 'grateful',
         variation_id: 'opens_up_v1'
       }
@@ -1131,7 +1131,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "*His technical precision cracks*\n\nIt did. Because he was right. I was treating him like a system failure. Like debugging code. But you can't debug a memory. You can't optimize grief.\n\nAnd I don't know any other way to help.",
+        text: "It did. Because he was right. I was treating him like a system failure. Like debugging code. But you can't debug a memory. You can't optimize grief.\n\nAnd I don't know any other way to help.",
         emotion: 'broken',
         variation_id: 'admits_hurt_v1'
       }
