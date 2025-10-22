@@ -24,10 +24,10 @@ export interface ChunkConfig {
 }
 
 const DEFAULT_CONFIG: Required<ChunkConfig> = {
-  maxChunkLength: 60,  // Chat-like bubbles: ~2 lines max (Netflix: 42 chars/line)
-  minChunkLength: 20,  // Allow shorter fragments for natural rhythm
+  maxChunkLength: 100,  // Allow complete sentences (increased from 60)
+  minChunkLength: 30,   // Prevent tiny fragments (increased from 20)
   enabled: true,
-  activationThreshold: 120,  // Catch medium-length text, not just long paragraphs
+  activationThreshold: 150,  // Only chunk longer paragraphs (increased from 120)
 }
 
 /**
@@ -71,27 +71,68 @@ export function autoChunkDialogue(
   const sentenceRegex = /([^.!?]+[.!?]+(?:\s|$))/g
   let sentences = text.match(sentenceRegex) || [text]
   
-  // NETFLIX-STYLE: Further split long sentences at natural breaks
-  // Priority: after punctuation > before conjunctions > before prepositions
+  // IMPROVED: Further split long sentences at natural breaks
+  // Priority: Complete sentences > natural clause boundaries > avoid mid-phrase breaks
   const smartBreakSentences: string[] = []
+  
   for (const sentence of sentences) {
     if (sentence.length <= cfg.maxChunkLength) {
+      // Sentence is short enough, keep it whole
       smartBreakSentences.push(sentence)
+    } else if (sentence.length <= cfg.maxChunkLength * 1.5) {
+      // Sentence is moderately long - try to split at commas before conjunctions
+      const conjunctionPattern = /,\s+(and|but|or|so|yet|for|nor)\s+/gi
+      const parts = sentence.split(conjunctionPattern)
+      
+      if (parts.length > 1) {
+        let currentFragment = ''
+        for (let i = 0; i < parts.length; i++) {
+          const part = parts[i]
+          const nextPart = parts[i + 1]
+          
+          // Reconstruct with conjunction if it was captured
+          const fragment = nextPart && /^(and|but|or|so|yet|for|nor)$/i.test(part) 
+            ? `, ${part} ` 
+            : part
+          
+          if (currentFragment.length + fragment.length <= cfg.maxChunkLength) {
+            currentFragment += fragment
+          } else {
+            if (currentFragment.trim().length >= cfg.minChunkLength) {
+              smartBreakSentences.push(currentFragment.trim())
+            }
+            currentFragment = fragment
+          }
+        }
+        if (currentFragment.trim().length >= cfg.minChunkLength) {
+          smartBreakSentences.push(currentFragment.trim())
+        }
+      } else {
+        // No good conjunction break points, keep sentence whole
+        smartBreakSentences.push(sentence)
+      }
     } else {
-      // Try to split at commas, semicolons first
+      // Very long sentence - split at any comma/semicolon, ensuring minimum lengths
       const clauseSplit = sentence.split(/([,;]\s+)/)
       let currentFragment = ''
       
       for (let i = 0; i < clauseSplit.length; i++) {
         const part = clauseSplit[i]
-        if (currentFragment.length + part.length <= cfg.maxChunkLength) {
+        const proposedLength = currentFragment.length + part.length
+        
+        // Only break if both fragments would be substantial
+        if (proposedLength <= cfg.maxChunkLength || currentFragment.length < cfg.minChunkLength) {
           currentFragment += part
         } else {
-          if (currentFragment.trim()) smartBreakSentences.push(currentFragment.trim())
+          if (currentFragment.trim().length >= cfg.minChunkLength) {
+            smartBreakSentences.push(currentFragment.trim())
+          }
           currentFragment = part
         }
       }
-      if (currentFragment.trim()) smartBreakSentences.push(currentFragment.trim())
+      if (currentFragment.trim().length >= cfg.minChunkLength) {
+        smartBreakSentences.push(currentFragment.trim())
+      }
     }
   }
   sentences = smartBreakSentences
