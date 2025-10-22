@@ -25,7 +25,8 @@ export function parseChoicePatterns(profile: SkillProfile): ChoicePatternInsight
   }
 
   // Count skill demonstrations by type
-  Object.entries(profile.skillDemonstrations).forEach(([skillKey, demonstrations]) => {
+  const skillDemonstrations = profile.skillDemonstrations || {}
+  Object.entries(skillDemonstrations).forEach(([skillKey, demonstrations]) => {
     const count = demonstrations.length
     
     // Map skill types to choice patterns
@@ -102,7 +103,8 @@ export function parseCharacterRelationships(profile: SkillProfile): CharacterIns
   ]
 
   // Parse skill demonstrations for character interactions
-  profile.skillDemonstrations && Object.entries(profile.skillDemonstrations).forEach(([, demonstrations]) => {
+  const skillDemonstrations = profile.skillDemonstrations || {}
+  Object.entries(skillDemonstrations).forEach(([, demonstrations]) => {
     demonstrations.forEach(demo => {
       const scene = demo.scene.toLowerCase()
       
@@ -156,7 +158,8 @@ export function parseCharacterRelationships(profile: SkillProfile): CharacterIns
 export function parseBreakthroughMoments(profile: SkillProfile): BreakthroughMoment[] {
   const moments: BreakthroughMoment[] = []
 
-  profile.keySkillMoments.forEach(moment => {
+  const keyMoments = profile.keySkillMoments || []
+  keyMoments.forEach(moment => {
     const scene = moment.scene.toLowerCase()
     let type: BreakthroughMoment['type'] = 'decision'
     let characterName: string | undefined
@@ -203,13 +206,15 @@ export function parseBreakthroughMoments(profile: SkillProfile): BreakthroughMom
  * Extract career discovery insights
  */
 export function parseCareerDiscovery(profile: SkillProfile): CareerInsight {
-  const topMatch = profile.careerMatches[0]
-  const secondMatch = profile.careerMatches[1]
+  // Safely access career matches with null checks
+  const careerMatches = profile.careerMatches || []
+  const topMatch = careerMatches[0]
+  const secondMatch = careerMatches[1]
 
   // Extract Birmingham opportunities
   const birminghamOpportunities: string[] = []
-  profile.careerMatches.forEach(career => {
-    if (career.localOpportunities) {
+  careerMatches.forEach(career => {
+    if (career && career.localOpportunities) {
       birminghamOpportunities.push(...career.localOpportunities)
     }
   })
@@ -245,11 +250,12 @@ export function parseCareerDiscovery(profile: SkillProfile): CareerInsight {
  * Parse complete student insights from profile
  */
 export function parseStudentInsights(profile: SkillProfile): StudentInsights {
+  const keyMoments = profile.keySkillMoments || []
   return {
     userId: profile.userId,
     lastActive: Date.now(), // Placeholder - would need actual last activity timestamp
-    currentScene: profile.keySkillMoments.length > 0 
-      ? profile.keySkillMoments[profile.keySkillMoments.length - 1].scene 
+    currentScene: keyMoments.length > 0 
+      ? keyMoments[keyMoments.length - 1].scene 
       : 'Starting journey',
     choicePatterns: parseChoicePatterns(profile),
     characterRelationships: parseCharacterRelationships(profile),
