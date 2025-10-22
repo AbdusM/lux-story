@@ -572,7 +572,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "That's a particular kind of struggle. When your heart knows what it wants but the path feels... complicated.\n\nThere's someone on Platform 1 tonight who understands that tension. Maya Chen - brilliant pre-med student at UAB. She's supposed to become a doctor, and she's good enough to do it.\n\nBut between what she's 'supposed' to do and what she dreams about, there's a gap that's tearing her apart.",
+        text: "That's a particular kind of struggle. When your heart knows what it wants but the path feels... complicated.\n\nThere's someone on Platform 1 who understands that. Maya Chen - brilliant pre-med student at UAB. She's supposed to become a doctor, and she's good enough.\n\nBut between what she's 'supposed' to do and what she dreams about, there's a gap that's tearing her apart.",
         emotion: 'knowing',
         variation_id: 'discovers_helping_v1'
       }
@@ -1955,7 +1955,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "She stood before those students and claimed her place in this city's story.\n\nBirmingham - where reinvention isn't weakness, it's the foundation.\n\nLook at this city. It transformed from steel mills to medical research, from railroads to tech hubs. Jordan moved through seven companies in a place that rewards people who can pivot, who can see what's next.\n\nShe wasn't failing - she was adapting faster than most.",
+        text: "She stood before those students and claimed her place in this city's story.\n\nBirmingham - where reinvention isn't weakness, it's the foundation.\n\nThis city transformed from steel mills to medical research, railroads to tech hubs. Jordan moved through seven companies in a place that rewards people who pivot.\n\nShe wasn't failing - she was adapting faster than most.",
         emotion: 'proud',
         variation_id: 'birmingham_reflection_v1_pt1'
       }
@@ -2022,7 +2022,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "She walked into that room carrying a different story than the one she arrived with. Not seven failures - seven chapters of becoming someone who understands design from seven different angles.\n\n'The story you tell yourself is the only one that matters.' You gave her permission to rewrite the narrative. Impostor syndrome lives in the gap between others' definitions of success and the story we're living. Jordan closed that gap.\n\nThe most powerful thing you can give someone isn't validation from the outside. It's the reminder that they control the frame.",
+        text: "She walked in with a different story. Not seven failures - seven chapters.\n\nYou gave her permission to rewrite the narrative. Impostor syndrome lives in the gap between others' definitions and the story we're living. Jordan closed that gap.\n\nThe most powerful thing you can give someone? They control the frame.",
         emotion: 'contemplative',
         variation_id: 'internal_reflection_v1'
       }
@@ -2216,7 +2216,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "I saw you meeting Jordan where she was - in that spiral of doubt. You didn't try to fix her impostor syndrome. You helped her reframe it.\n\nThat's wisdom. Most people want to eliminate doubt. You understood doubt isn't always the enemy. Sometimes it's information.\n\nJordan needed someone who could sit in uncertainty without rushing to resolution. You gave her that gift.",
+        text: "I saw you meeting Jordan where she was - in that spiral of doubt. You didn't try to fix her impostor syndrome. You helped her reframe it.\n\nThat's wisdom. Most people want to eliminate doubt. You understood doubt isn't always the enemy.\n\nJordan needed someone who could sit in uncertainty without rushing to resolution. You gave her that gift.",
         emotion: 'deep_knowing',
         variation_id: 'deep_jordan_v1'
       }
@@ -2644,7 +2644,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "There's someone else here tonight - Jordan Packard. Conference rooms, guest instructor for Career Day.\n\nSeven jobs in seven years. Most people see 'instability.' But I see someone learning this city's full ecosystem - tech, design, startups, agencies.\n\nShe's about to give a speech, but carrying doubt about whether she belongs in front of that room.",
+        text: "There's someone else here tonight - Jordan Packard. Conference rooms, guest instructor for Career Day.\n\nSeven jobs in seven years. Most people see 'instability.' But I see someone learning this city's ecosystem.\n\nShe's about to give a speech, but carrying doubt about whether she belongs in front of that room.",
         emotion: 'observant',
         variation_id: 'jordan_intro_v1'
       }
@@ -2767,7 +2767,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "What do I see in you? Someone who listens more than they speak. Who asks questions that make people think instead of giving answers that shut down thinking.\n\nYou're not here by accident. The station called you because you have the capacity to hold space for others' becoming.\n\nThat's a rare gift, and a difficult one. You'll often help others find clarity before you find your own.",
+        text: "What do I see in you? Someone who listens more than they speak. Who asks questions that make people think.\n\nYou're not here by accident. The station called you because you can hold space for others' becoming.\n\nThat's a rare gift, and a difficult one. You'll often help others find clarity before you find your own.",
         emotion: 'knowing',
         variation_id: 'pattern_v1'
       }
