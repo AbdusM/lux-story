@@ -1,567 +1,98 @@
 'use client'
 
-// Agent 7: Admin Dashboard Design System CSS (Issues 1A-1C, 2A-2B, 3A-3C, 39, 32)
-import '@/styles/admin-dashboard.css'
-
-import { useEffect, useState, useMemo, useCallback, memo } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import dynamic from 'next/dynamic'
 import { getAllUserIds, loadSkillProfile } from '@/lib/skill-profile-adapter'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { parseStudentInsights } from '@/lib/student-insights-parser'
+import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Users, TrendingUp, Award, ArrowRight, AlertTriangle, RefreshCw } from 'lucide-react'
-import type { UrgentStudent } from '@/lib/types/admin'
 import { formatUserIdShort, formatUserIdRelative } from '@/lib/format-user-id'
-
-// PERFORMANCE FIX: Code-split heavy components to reduce initial bundle size
-const ChoiceReviewTrigger = dynamic(
-  () => import('@/components/ChoiceReviewPanel').then(mod => ({ default: mod.ChoiceReviewTrigger })),
-  {
-    loading: () => (
-      <div className="text-center py-8 text-gray-500">
-        Loading choice review panel...
-      </div>
-    ),
-    ssr: false
-  }
-)
+import type { StudentInsights } from '@/lib/types/student-insights'
 
 /**
- * Admin Dashboard
- * Unified interface for urgency triage, skills analytics, and live choice review
+ * Admin Dashboard - Individual Student Insights
+ * Focus on understanding each student's unique journey
  */
 export default function AdminPage() {
-  // PRODUCTION DEBUGGING: Comprehensive logging for production issue diagnosis
-  const buildInfo = {
-    timestamp: new Date().toISOString(),
-    nodeEnv: process.env.NODE_ENV,
-    nextPublicSupabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL ? '✅ Set' : '❌ Missing',
-    nextPublicSupabaseAnonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? '✅ Set' : '❌ Missing',
-    userAgent: typeof window !== 'undefined' ? window.navigator.userAgent : 'SSR',
-    url: typeof window !== 'undefined' ? window.location.href : 'SSR'
-  }
-  
-  console.log('🚀 [Admin] Component rendering...', buildInfo)
+  const [students, setStudents] = useState<StudentInsights[]>([])
+  const [loading, setLoading] = useState(true)
   const [mounted, setMounted] = useState(false)
-  const [activeTab, setActiveTab] = useState('journeys')
-  
-  // PRODUCTION DEBUGGING: Error tracking state
-  const [errors, setErrors] = useState<Array<{timestamp: string, context: string, error: string}>>([])
-  const [debugInfo, setDebugInfo] = useState<Record<string, unknown>>({})
 
-  // Student Journeys state (existing)
-  const [userIds, setUserIds] = useState<string[]>([])
-  const [userStats, setUserStats] = useState<Map<string, {
-    totalDemonstrations: number
-    topSkill: [string, unknown[]]
-    topCareer?: { matchScore: number }
-    milestones: number
-  }>>(new Map())
-  const [journeysLoading, setJourneysLoading] = useState(true)
-
-  // Urgency Triage state (NEW)
-  const [urgentStudents, setUrgentStudents] = useState<UrgentStudent[]>([])
-  const [urgencyLoading, setUrgencyLoading] = useState(true)
-  const [recalculating, setRecalculating] = useState(false)
-  const [urgencyFilter, setUrgencyFilter] = useState<'all' | 'critical' | 'high' | 'all-students'>('all')
-
-  // Agent 9: Environment validation warning
-  const [dbHealthy, setDbHealthy] = useState(true)
-  
-  // PRODUCTION DEBUGGING: Add error to tracked list
-  const logError = useCallback((context: string, error: unknown) => {
-    const errorString = error instanceof Error ? `${error.message}\n${error.stack}` : String(error)
-    console.error(`❌ [Admin:${context}]`, error)
-    setErrors(prev => [...prev, {
-      timestamp: new Date().toISOString(),
-      context,
-      error: errorString
-    }])
-  }, [])
-  
-  // PRODUCTION DEBUGGING: Update debug info
-  const updateDebugInfo = useCallback((key: string, value: unknown) => {
-    console.log(`📊 [Admin:Debug] ${key}:`, value)
-    setDebugInfo(prev => ({ ...prev, [key]: value }))
-  }, [])
-
-  // Client-side only mounting check
   useEffect(() => {
-    console.log('✅ [Admin] Component mounted')
     setMounted(true)
-    updateDebugInfo('mounted', true)
-    updateDebugInfo('buildInfo', buildInfo)
   }, [])
 
-  // Load student journeys (updated to use Supabase with batch loading)
+  // Load and parse all student data
   useEffect(() => {
-    if (!mounted) return // Skip during SSR/SSG
+    if (!mounted) return
 
-    const loadUserData = async () => {
-      console.log('[Admin] Starting to load user data...')
-      updateDebugInfo('loadUserData:started', new Date().toISOString())
-      
+    const loadStudentData = async () => {
       try {
-        console.log('[Admin] Calling getAllUserIds()...')
-        updateDebugInfo('getAllUserIds:calling', true)
+        // Get all user IDs
         const ids = await getAllUserIds()
-        console.log('[Admin] getAllUserIds() returned:', ids)
-        updateDebugInfo('getAllUserIds:returned', { count: ids.length, ids: ids.slice(0, 5) })
-
-        // Sort by recency (newest first) - user IDs contain timestamps
+        
+        // Sort by recency (newest first)
         const sortedIds = ids.sort((a, b) => {
-          // Extract timestamp from user ID (format: player_TIMESTAMP)
           const timestampA = a.match(/player_(\d+)/)?.[1] || '0'
           const timestampB = b.match(/player_(\d+)/)?.[1] || '0'
-          return parseInt(timestampB) - parseInt(timestampA) // Descending order (newest first)
-        })
-        console.log('[Admin] Sorted user IDs:', sortedIds)
-        updateDebugInfo('userIds:sorted', sortedIds.length)
-        setUserIds(sortedIds)
-
-        // PERFORMANCE FIX: Batch load all profiles instead of sequential N+1 queries
-        console.log('[Admin] Batch loading profiles for', ids.length, 'users')
-        updateDebugInfo('profiles:loading', ids.length)
-        const profilePromises = ids.map(userId => loadSkillProfile(userId))
-        const profiles = await Promise.all(profilePromises)
-        updateDebugInfo('profiles:loaded', profiles.filter(Boolean).length)
-
-        const stats = new Map()
-        profiles.forEach((profile, index) => {
-          if (profile) {
-            const topSkill = Object.entries(profile.skillDemonstrations)
-              .sort(([, a], [, b]) => b.length - a.length)[0] || ['none', []]
-
-            stats.set(ids[index], {
-              totalDemonstrations: profile.totalDemonstrations,
-              topSkill,
-              topCareer: profile.careerMatches[0],
-              milestones: profile.milestones.length
-            })
-          }
+          return parseInt(timestampB) - parseInt(timestampA)
         })
 
-        console.log('[Admin] User stats loaded via batch:', stats.size, 'profiles')
-        updateDebugInfo('userStats:loaded', stats.size)
-        setUserStats(stats)
-        setJourneysLoading(false)
-        updateDebugInfo('journeysLoading', false)
-        console.log('[Admin] User data loading complete')
+        // Load profiles in parallel
+        const profiles = await Promise.all(
+          sortedIds.map(id => loadSkillProfile(id))
+        )
+
+        // Parse into insights
+        const insights = profiles
+          .filter(profile => profile !== null)
+          .map(profile => parseStudentInsights(profile!))
+
+        setStudents(insights)
       } catch (error) {
-        logError('loadUserData', error)
-        setJourneysLoading(false)
-        // PRODUCTION DEBUGGING: Show user-friendly error without crashing dashboard
-        updateDebugInfo('loadUserData:failed', true)
+        console.error('Failed to load student data:', error)
+      } finally {
+        setLoading(false)
       }
     }
 
-    loadUserData()
-  }, [mounted, logError, updateDebugInfo])
-
-  // Load urgent students (NEW)
-  useEffect(() => {
-    if (!mounted) return // Skip during SSR/SSG
-    fetchUrgentStudents()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [urgencyFilter, mounted])
-
-  // Check database health on mount
-  useEffect(() => {
-    if (!mounted) return // Skip during SSR/SSG
-
-    const checkDbHealth = async () => {
-      updateDebugInfo('dbHealthCheck:started', true)
-      try {
-        const response = await fetch('/api/admin-proxy/urgency?limit=1')
-        updateDebugInfo('dbHealthCheck:response', { status: response.status, ok: response.ok })
-        if (!response.ok && response.status === 503) {
-          setDbHealthy(false)
-          updateDebugInfo('dbHealthy', false)
-        } else {
-          updateDebugInfo('dbHealthy', true)
-        }
-      } catch (error) {
-        logError('dbHealthCheck', error)
-        updateDebugInfo('dbHealthy', false)
-        setDbHealthy(false)
-      }
-    }
-
-    checkDbHealth()
+    loadStudentData()
   }, [mounted])
 
-  // PERFORMANCE FIX: Memoize callbacks to prevent unnecessary re-renders
-  const fetchUrgentStudents = useCallback(async () => {
-    setUrgencyLoading(true)
-    updateDebugInfo('fetchUrgentStudents:started', { filter: urgencyFilter })
-    try {
-      // Use server-side proxy to protect API token
-      const response = await fetch(
-        `/api/admin-proxy/urgency?level=${urgencyFilter}&limit=50`
-      )
-      updateDebugInfo('fetchUrgentStudents:response', { status: response.status, ok: response.ok })
-
-      if (!response.ok) {
-        throw new Error(`API error: ${response.status}`)
-      }
-
-      const data = await response.json()
-      updateDebugInfo('fetchUrgentStudents:data', { studentCount: data.students?.length || 0 })
-      setUrgentStudents(data.students || [])
-    } catch (error) {
-      logError('fetchUrgentStudents', error)
-      // Show empty state rather than error for now
-      setUrgentStudents([])
-      updateDebugInfo('fetchUrgentStudents:failed', true)
-    } finally {
-      setUrgencyLoading(false)
-    }
-  }, [urgencyFilter, logError, updateDebugInfo])
-
-  const triggerRecalculation = useCallback(async () => {
-    setRecalculating(true)
-    updateDebugInfo('triggerRecalculation:started', true)
-    try {
-      // Use server-side proxy to protect API token
-      const response = await fetch('/api/admin-proxy/urgency', {
-        method: 'POST'
-      })
-      updateDebugInfo('triggerRecalculation:response', { status: response.status, ok: response.ok })
-
-      if (response.ok) {
-        // Refresh urgent students after recalculation
-        await fetchUrgentStudents()
-      }
-    } catch (error) {
-      logError('triggerRecalculation', error)
-    } finally {
-      setRecalculating(false)
-    }
-  }, [fetchUrgentStudents, logError, updateDebugInfo])
-
-  // PERFORMANCE FIX: Memoize sorted user IDs to avoid re-sorting on every render
-  const sortedUserIds = useMemo(() => {
-    return userIds.sort((a, b) => {
-      const timestampA = a.match(/player_(\d+)/)?.[1] || '0'
-      const timestampB = b.match(/player_(\d+)/)?.[1] || '0'
-      return parseInt(timestampB) - parseInt(timestampA)
-    })
-  }, [userIds])
-
-  console.log('[Admin] About to render...')
-
-  // Show loading state during SSR/initial mount with WCAG accessibility
-  if (!mounted) {
+  if (!mounted || loading) {
     return (
-      <div className="min-h-screen bg-gray-50 p-4">
-        <div className="flex items-center justify-center min-h-[600px]">
-          <div
-            className="text-center space-y-4 fade-in"
-            role="status"
-            aria-live="polite"
-            aria-busy="true"
-          >
-            <div
-              className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"
-              aria-label="Loading spinner"
-            />
-            <div className="space-y-2">
-              <p className="text-lg font-medium text-gray-900">Loading Admin Dashboard...</p>
-              <p className="text-sm text-gray-600">Initializing student analytics</p>
-            </div>
-          </div>
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto" />
+          <p className="text-gray-600">Loading student insights...</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className="min-h-screen bg-gray-50 p-8">
+      <div className="max-w-6xl mx-auto space-y-6">
         {/* Header */}
-        <div className="bg-white rounded-lg shadow-lg p-6">
-          <div className="flex items-start justify-between">
-            <div>
-              <h1 className="admin-page-title admin-text-primary mb-2">
-                Grand Central Terminus Admin
-              </h1>
-              <p className="admin-body-text admin-text-secondary">
-                Student Urgency Triage, Skills Analytics & Live Choice Review
-              </p>
-              {/* Debug info - only shown in development */}
-              {process.env.NODE_ENV === 'development' && (
-                <div className="text-xs text-gray-500 mt-2">
-                  Debug: activeTab={activeTab}, userIds.length={userIds.length}, journeysLoading={journeysLoading.toString()}
-                </div>
-              )}
-            </div>
-            <Link href="/">
-              <Button variant="outline" size="sm">
-                ← Back to Game
-              </Button>
-            </Link>
-          </div>
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">All Students</h1>
+          <p className="text-gray-600 mt-1">
+            {students.length} {students.length === 1 ? 'student' : 'students'} exploring their career paths
+          </p>
         </div>
 
-        {/* Database Health Warning Banner */}
-        {!dbHealthy && (
-          <Alert variant="destructive">
-            <AlertTriangle className="h-4 w-4" />
-            <AlertTitle>Database Not Configured</AlertTitle>
-            <AlertDescription>
-              Supabase environment variables are missing. Check .env.local configuration.
-              Using local data only (no sync).
-            </AlertDescription>
-          </Alert>
-        )}
-
-        {/* Main Tabs */}
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 bg-white">
-            <TabsTrigger value="journeys" className="gap-2">
-              <Users className="w-4 h-4" />
-              Student Journeys
-            </TabsTrigger>
-            <TabsTrigger value="choices" className="gap-2">
-              <TrendingUp className="w-4 h-4" />
-              Live Choices
-            </TabsTrigger>
-            <TabsTrigger value="urgency" className="gap-2">
-              <AlertTriangle className="w-4 h-4" />
-              Student Triage
-            </TabsTrigger>
-          </TabsList>
-
-          {/* STUDENT JOURNEYS TAB (EXISTING) */}
-          <TabsContent value="journeys" className="mt-6 admin-content-fade-in">
-            <Card>
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle className="admin-tab-title admin-text-primary flex items-center gap-2">
-                      <Users className="w-5 h-5" />
-                      User Skill Journeys
-                    </CardTitle>
-                    <CardDescription className="admin-body-text admin-text-secondary">
-                      Evidence-based career exploration analytics
-                    </CardDescription>
-                  </div>
-                  <Badge variant="secondary" className="text-lg">
-                    {userIds.length} {userIds.length === 1 ? 'User' : 'Users'}
-                  </Badge>
-                </div>
-              </CardHeader>
-              <CardContent>
-                {journeysLoading ? (
-                  <div
-                    className="flex items-center justify-center py-12"
-                    role="status"
-                    aria-live="polite"
-                    aria-busy="true"
-                  >
-                    <div className="text-center space-y-4">
-                      <div
-                        className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mx-auto"
-                        aria-label="Loading spinner"
-                      />
-                      <p className="text-sm text-gray-600">Loading user data...</p>
-                    </div>
-                  </div>
-                ) : userIds.length === 0 ? (
-                  <div className="text-center py-12 space-y-4">
-                    <div className="space-y-3">
-                      <p className="text-2xl">🚀</p>
-                      <p className="text-lg font-medium text-gray-700">
-                        Ready for students!
-                      </p>
-                      <p className="text-sm text-gray-600">
-                        User journeys appear after students start their career exploration.
-                      </p>
-                    </div>
-                    <Link href="/test-data">
-                      <Button className="mt-4">
-                        Generate Test User Data
-                      </Button>
-                    </Link>
-                  </div>
-                ) : (
-                  <div className="space-y-3">
-                    {sortedUserIds.map(userId => {
-                      const stats = userStats.get(userId)
-                      return (
-                        <UserCard key={userId} userId={userId} stats={stats} />
-                      )
-                    })}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* LIVE CHOICES TAB (EXISTING) */}
-          <TabsContent value="choices" className="mt-6 admin-content-fade-in">
-            <Card>
-              <CardHeader>
-                <CardTitle className="admin-tab-title admin-text-primary">Live Choice Management</CardTitle>
-                <CardDescription className="admin-body-text admin-text-secondary">
-                  Review and validate AI-generated choices
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ChoiceReviewTrigger />
-              </CardContent>
-            </Card>
-
-            <div className="bg-white rounded-lg border p-4 mt-4">
-              <p className="admin-body-text admin-urgency-low flex items-center gap-2">
-                <TrendingUp className="w-4 h-4" />
-                Content validation runs automatically when players load the game
-              </p>
-            </div>
-          </TabsContent>
-
-          {/* URGENCY TRIAGE TAB (NEW) */}
-          <TabsContent value="urgency" className="mt-6 space-y-4 admin-content-fade-in">
-            <Card>
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle className="admin-tab-title admin-text-primary flex items-center gap-2">
-                      <AlertTriangle className="w-5 h-5 text-orange-500" />
-                      Student Intervention Priority
-                    </CardTitle>
-                    <CardDescription className="admin-body-text admin-text-secondary">
-                      Glass Box urgency scoring with transparent narrative justifications
-                    </CardDescription>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    {/* shadcn Select Component - Better accessibility & UX */}
-                    <Select
-                      value={urgencyFilter}
-                      onValueChange={(value) => setUrgencyFilter(value as 'all' | 'critical' | 'high' | 'all-students')}
-                    >
-                      <SelectTrigger className="w-[280px] h-10">
-                        <SelectValue placeholder="Filter students by urgency" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">All Urgent Students</SelectItem>
-                        <SelectItem value="all-students">📊 All Students (includes non-urgent)</SelectItem>
-                        <SelectItem value="critical">🔴 Critical Only</SelectItem>
-                        <SelectItem value="high">🟠 High + Critical</SelectItem>
-                      </SelectContent>
-                    </Select>
-
-                    {/* Recalculate Button */}
-                    <Button
-                      onClick={triggerRecalculation}
-                      disabled={recalculating}
-                      size="sm"
-                      className="gap-2"
-                    >
-                      <RefreshCw className={`w-4 h-4 ${recalculating ? 'animate-spin' : ''}`} />
-                      Recalculate
-                    </Button>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                {urgencyLoading ? (
-                  <div
-                    className="flex items-center justify-center py-12"
-                    role="status"
-                    aria-live="polite"
-                    aria-busy="true"
-                  >
-                    <div className="text-center space-y-4">
-                      <div
-                        className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mx-auto"
-                        aria-label="Loading spinner"
-                      />
-                      <p className="text-sm text-gray-600">Loading urgent students...</p>
-                    </div>
-                  </div>
-                ) : urgentStudents.length === 0 ? (
-                  <div className="text-center py-12 space-y-4">
-                    {urgencyFilter === 'all-students' || urgencyFilter === 'all' ? (
-                      <div className="space-y-3">
-                        <p className="text-2xl">✅</p>
-                        <p className="text-lg font-medium text-gray-700">
-                          Great news - no urgent students!
-                        </p>
-                        <p className="text-sm text-gray-600">
-                          Check back after students complete more scenes, or use "All Students" filter to see everyone.
-                        </p>
-                      </div>
-                    ) : (
-                      <div className="space-y-3">
-                        <p className="text-2xl">✅</p>
-                        <p className="text-lg font-medium text-gray-700">
-                          No {urgencyFilter} priority students
-                        </p>
-                        <p className="text-sm text-gray-600">
-                          Try a different filter or run recalculation to update scores.
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    {urgentStudents.map((student) => (
-                      <UrgentStudentCard key={student.userId} student={student} />
-                    ))}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
-        
-        {/* PRODUCTION DEBUGGING: Comprehensive Error & Debug Panel */}
-        {(errors.length > 0 || process.env.NODE_ENV === 'development') && (
-          <div className="mt-8 space-y-4">
-            {errors.length > 0 && (
-              <Alert variant="destructive">
-                <AlertTriangle className="h-4 w-4" />
-                <AlertTitle>Errors Detected ({errors.length})</AlertTitle>
-                <AlertDescription className="mt-2 space-y-2">
-                  {errors.map((error, idx) => (
-                    <div key={idx} className="text-xs font-mono p-2 bg-red-50 rounded border border-red-200">
-                      <div className="font-semibold text-red-900">{error.timestamp} - {error.context}</div>
-                      <div className="text-red-700 whitespace-pre-wrap mt-1">{error.error}</div>
-                    </div>
-                  ))}
-                </AlertDescription>
-              </Alert>
-            )}
-            
-            {process.env.NODE_ENV === 'development' && Object.keys(debugInfo).length > 0 && (
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-sm">Debug Information</CardTitle>
-                  <CardDescription>Production debugging data (development only)</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <pre className="text-xs overflow-auto max-h-96 p-4 bg-gray-50 rounded border">
-                    {JSON.stringify(debugInfo, null, 2)}
-                  </pre>
-                  <Button
-                    onClick={() => {
-                      navigator.clipboard.writeText(JSON.stringify({ errors, debugInfo }, null, 2))
-                      alert('Debug data copied to clipboard')
-                    }}
-                    variant="outline"
-                    size="sm"
-                    className="mt-2"
-                  >
-                    Copy Debug Data to Clipboard
-                  </Button>
-                </CardContent>
-              </Card>
-            )}
+        {/* Student List */}
+        {students.length === 0 ? (
+          <Card>
+            <CardContent className="p-8 text-center text-gray-500">
+              No students yet. Student data will appear here as they begin their journey.
+            </CardContent>
+          </Card>
+        ) : (
+          <div className="space-y-4">
+            {students.map(student => (
+              <StudentCard key={student.userId} student={student} />
+            ))}
           </div>
         )}
       </div>
@@ -570,192 +101,80 @@ export default function AdminPage() {
 }
 
 /**
- * PERFORMANCE FIX: Memoized User Card Component
- * Prevents re-rendering when parent updates
+ * Individual Student Card
  */
-const UserCard = memo(({ userId, stats }: {
-  userId: string
-  stats?: {
-    totalDemonstrations: number
-    topSkill: [string, unknown[]]
-    topCareer?: { matchScore: number }
-    milestones: number
-  }
-}) => {
-  return (
-    <Link href={`/admin/skills?userId=${userId}`}>
-      <div className="block p-4 border rounded-lg hover:bg-gray-50 hover:border-blue-500 transition group">
-        <div className="flex items-center justify-between">
-          <div className="space-y-2 flex-1">
-            <div className="flex items-center gap-3">
-              <h3 className="admin-section-title admin-text-primary">
-                {formatUserIdShort(userId)}
-              </h3>
-              <span className="admin-body-text admin-text-muted">
-                ({formatUserIdRelative(userId)})
-              </span>
-              {stats && (
-                <Badge variant="outline" className="gap-1">
-                  <Award className="w-3 h-3" />
-                  {stats.milestones} milestones
-                </Badge>
-              )}
-            </div>
+function StudentCard({ student }: { student: StudentInsights }) {
+  const { choicePatterns, characterRelationships } = student
 
-            {stats && (
-              <div className="grid grid-cols-3 gap-4 text-sm">
-                <div>
-                  <p className="admin-body-text admin-text-secondary">Demonstrations</p>
-                  <p className="admin-subsection-title admin-interactive">
-                    {stats.totalDemonstrations}
-                  </p>
-                </div>
-                <div>
-                  <p className="admin-body-text admin-text-secondary">Most Demonstrated</p>
-                  <p className="admin-subsection-title capitalize">
-                    {stats.topSkill[0].replace(/([A-Z])/g, ' $1').trim()} ({stats.topSkill[1].length}x)
-                  </p>
-                </div>
-                {stats.topCareer && (
-                  <div>
-                    <p className="admin-body-text admin-text-secondary">Top Career Match</p>
-                    <p className="admin-subsection-title admin-urgency-low">
-                      {Math.round(stats.topCareer.matchScore * 100)}%
-                    </p>
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
+  // Get dominant pattern and percentage
+  const patterns = [
+    { name: 'Helping', value: choicePatterns.helping },
+    { name: 'Analytical', value: choicePatterns.analytical },
+    { name: 'Patience', value: choicePatterns.patience },
+    { name: 'Exploring', value: choicePatterns.exploring },
+    { name: 'Building', value: choicePatterns.building }
+  ].filter(p => p.value > 0).sort((a, b) => b.value - a.value)
 
-          <Button
-            variant="ghost"
-            size="sm"
-            className="gap-2 group-hover:bg-blue-50"
-          >
-            View Journey
-            <ArrowRight className="w-4 h-4" />
-          </Button>
-        </div>
-      </div>
-    </Link>
-  )
-})
-
-UserCard.displayName = 'UserCard'
-
-/**
- * Urgent Student Card Component
- * Glass Box design: Narrative is the hero element
- */
-function UrgentStudentCard({ student }: { student: UrgentStudent }) {
-  const urgencyColors = {
-    critical: {
-      border: 'border-l-red-500',
-      bg: 'bg-red-50',
-      badge: 'bg-red-100 text-red-800',
-      icon: '🔴'
-    },
-    high: {
-      border: 'border-l-orange-500',
-      bg: 'bg-orange-50',
-      badge: 'bg-orange-100 text-orange-800',
-      icon: '🟠'
-    },
-    medium: {
-      border: 'border-l-yellow-500',
-      bg: 'bg-yellow-50',
-      badge: 'bg-yellow-100 text-yellow-800',
-      icon: '🟡'
-    },
-    low: {
-      border: 'border-l-green-500',
-      bg: 'bg-green-50',
-      badge: 'bg-green-100 text-green-800',
-      icon: '🟢'
-    },
-    pending: {
-      border: 'border-l-gray-500',
-      bg: 'bg-gray-50',
-      badge: 'bg-gray-100 text-gray-800',
-      icon: '⏳'
-    }
-  }
-
-  const colors = urgencyColors[student.urgencyLevel || 'pending']
-  const percentage = Math.round((student.urgencyScore || 0) * 100)
+  // Get current activity from character relationships
+  const currentActivity = characterRelationships.find(c => c.met && c.currentStatus !== 'Not yet met')?.currentStatus || 'Starting journey'
 
   return (
-    <div className={`border-l-4 ${colors.border} ${colors.bg} rounded-lg p-6`}>
-      {/* Header */}
-      <div className="flex items-start justify-between mb-4">
-        <div className="flex-1">
-          <div className="flex items-center gap-3 mb-2">
-            <span className="text-2xl">{colors.icon}</span>
-            <div>
-              <Link href={`/admin/skills?userId=${student.userId}`}>
-                <h3 className="admin-section-title admin-text-primary hover:admin-interactive hover:underline">
-                  Student: {formatUserIdShort(student.userId)}
+    <Link href={`/admin/skills?userId=${student.userId}`}>
+      <Card className="hover:shadow-lg hover:border-blue-300 transition cursor-pointer">
+        <CardContent className="p-6">
+          <div className="flex items-start justify-between gap-4">
+            {/* Left: User Info */}
+            <div className="space-y-3 flex-1">
+              <div className="flex items-center gap-3">
+                <h3 className="text-lg font-semibold text-gray-900">
+                  {formatUserIdShort(student.userId)}
                 </h3>
-              </Link>
-              <p className="admin-body-text admin-text-secondary">
-                Last active: {formatUserIdRelative(student.lastActivity || student.userId)}
+                <span className="text-sm text-gray-500">
+                  ({formatUserIdRelative(student.userId)})
+                </span>
+              </div>
+
+              {/* Character Trust Levels */}
+              <div className="flex items-center gap-4 text-sm">
+                {characterRelationships.map(char => {
+                  const shortName = char.characterName.split(' ')[0]
+                  return (
+                    <div key={char.characterName} className="flex items-center gap-1">
+                      <span className="text-gray-600">{shortName}:</span>
+                      <span className={char.met ? 'font-medium text-gray-900' : 'text-gray-400'}>
+                        {char.trustLevel}/10
+                      </span>
+                    </div>
+                  )
+                })}
+              </div>
+
+              {/* Choice Patterns */}
+              {patterns.length > 0 && (
+                <div className="flex items-center gap-2 flex-wrap">
+                  {patterns.slice(0, 2).map(pattern => (
+                    <Badge key={pattern.name} variant="secondary">
+                      {pattern.name} {pattern.value}%
+                    </Badge>
+                  ))}
+                </div>
+              )}
+
+              {/* Current Activity */}
+              <p className="text-sm text-gray-600">
+                → {currentActivity}
               </p>
             </div>
+
+            {/* Right: View Details Arrow */}
+            <div className="text-gray-400 group-hover:text-blue-600 transition">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
           </div>
-        </div>
-        <div className="text-right">
-          <div className="text-3xl font-bold text-gray-900">{percentage}%</div>
-          <Badge className={colors.badge}>
-            {(student.urgencyLevel || 'pending').toUpperCase()}
-          </Badge>
-        </div>
-      </div>
-
-      {/* NARRATIVE BOX - The Glass Box Hero Element */}
-      <div className="my-4 p-4 bg-blue-50 border-l-4 border-blue-400 rounded">
-        <p className="admin-body-text italic admin-text-primary leading-relaxed">
-          {student.urgencyNarrative || "No narrative generated yet."}
-        </p>
-      </div>
-
-      {/* Contributing Factors */}
-      <div className="space-y-2 mb-4">
-        <h4 className="admin-subsection-title admin-text-primary">Contributing Factors:</h4>
-        <FactorBar label="Disengagement" value={student.disengagementScore || 0} />
-        <FactorBar label="Confusion" value={student.confusionScore || 0} />
-        <FactorBar label="Stress" value={student.stressScore || 0} />
-        <FactorBar label="Isolation" value={student.isolationScore || 0} />
-      </div>
-
-      {/* Activity Summary */}
-      <div className="flex items-center gap-6 admin-body-text admin-text-secondary pt-4 border-t">
-        <span>{student.totalChoices || 0} choices</span>
-        <span>{student.uniqueScenesVisited || 0} scenes</span>
-        <span>{student.relationshipsFormed || 0} relationships</span>
-      </div>
-    </div>
-  )
-}
-
-/**
- * Factor Bar Component
- * Visual representation of urgency contributing factors
- */
-function FactorBar({ label, value }: { label: string; value: number }) {
-  const percentage = Math.round(value * 100)
-  const color = value >= 0.7 ? 'bg-red-500' : value >= 0.5 ? 'bg-orange-500' : 'bg-gray-400'
-
-  return (
-    <div className="flex items-center gap-2">
-      <span className="w-32 admin-body-text admin-text-secondary">{label}:</span>
-      <div className="flex-1 bg-gray-200 rounded-full h-3">
-        <div
-          className={`${color} h-3 rounded-full transition-all`}
-          style={{ width: `${percentage}%` }}
-        />
-      </div>
-      <span className="w-12 admin-body-text admin-text-primary text-right">{percentage}%</span>
-    </div>
+        </CardContent>
+      </Card>
+    </Link>
   )
 }
