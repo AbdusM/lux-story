@@ -10,6 +10,7 @@
 
 import { cn } from "@/lib/utils"
 import { autoChunkDialogue } from "@/lib/auto-chunk-dialogue"
+import { ChatPacedDialogue } from "./ChatPacedDialogue"
 
 // Parse markdown-style emphasis in text (from StoryMessage pattern)
 function parseEmphasisText(text: string): React.ReactNode[] {
@@ -54,6 +55,8 @@ function parseEmphasisText(text: string): React.ReactNode[] {
 interface DialogueDisplayProps {
   text: string
   className?: string
+  useChatPacing?: boolean // Enable sequential reveal with typing indicators
+  characterName?: string // Required if useChatPacing is true
 }
 
 /**
@@ -63,13 +66,27 @@ interface DialogueDisplayProps {
  * - Parses | separator into line breaks with breathing room
  * - Handles markdown-style emphasis (**bold**, *italic*)
  * - Consistent typography rhythm across all narrative text
+ * - Optional sequential reveal with typing indicators (ChatPacedDialogue)
  */
-export function DialogueDisplay({ text, className }: DialogueDisplayProps) {
+export function DialogueDisplay({ text, className, useChatPacing, characterName }: DialogueDisplayProps) {
   // Auto-chunk long text for chat pacing, then split by | separator
   const chunkedText = autoChunkDialogue(text, { 
     activationThreshold: 120,  // Chat pacing: catch medium text
     maxChunkLength: 60         // Netflix-style: ~2 lines max
   })
+  
+  // If chat pacing is enabled, use ChatPacedDialogue for sequential reveal
+  if (useChatPacing && characterName) {
+    return (
+      <ChatPacedDialogue
+        text={chunkedText}
+        characterName={characterName}
+        className={className}
+      />
+    )
+  }
+
+  // Otherwise, use standard instant display
   const chunks = chunkedText.split('|').map(chunk => chunk.trim()).filter(chunk => chunk.length > 0)
 
   return (

@@ -269,7 +269,8 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         text: "I'm fine. Everyone sees me as this perfect pre-med student. Good grades, clear path.\n\nBut late at night, when I'm memorizing anatomy, I'm actually... doing something else.",
         emotion: 'anxious_deflecting',
-        variation_id: 'anxiety_reveal_v2_clean'
+        variation_id: 'anxiety_reveal_v2_clean',
+        useChatPacing: true // High-impact vulnerability moment
       }
     ],
     requiredState: {
@@ -522,7 +523,8 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         text: "I... I build robots. Small ones, mostly. Medical assistance robots. I dream about circuits and servos, not cells and organs. My parents would be devastated if they knew how much I love engineering.",
         emotion: 'vulnerable',
-        variation_id: 'robotics_v1'
+        variation_id: 'robotics_v1',
+        useChatPacing: true // Major vulnerability/secret reveal moment
       }
     ],
     requiredState: {
@@ -1097,7 +1099,8 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         text: "I'm going to apply to the robotics program. Call my parents tonight.\n\nThey'll be heartbroken. But I can't live their dream anymore.\n\nThank you for helping me choose myself.\n\nSamuel's waiting. Good luck.",
         emotion: 'bittersweet_resolve',
-        variation_id: 'farewell_robotics_v2_complex'
+        variation_id: 'farewell_robotics_v2_complex',
+        useChatPacing: true // Emotional farewell moment
       }
     ],
     choices: [

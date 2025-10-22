@@ -38,6 +38,7 @@ interface GameInterfaceState {
   currentCharacterId: CharacterId
   availableChoices: EvaluatedChoice[]
   currentContent: string
+  useChatPacing: boolean  // Whether to use sequential reveal for this node
   isLoading: boolean
   hasStarted: boolean
 }
@@ -51,6 +52,7 @@ export default function StatefulGameInterface() {
     currentCharacterId: safeStart.characterId, // Game begins with Station Keeper
     availableChoices: [],
     currentContent: '',
+    useChatPacing: false,
     isLoading: false,
     hasStarted: false
   })
@@ -214,6 +216,7 @@ export default function StatefulGameInterface() {
         currentCharacterId: actualCharacterId,
         availableChoices: choices,
         currentContent: content.text,
+        useChatPacing: content.useChatPacing || false,
         isLoading: false,
         hasStarted: true
       })
@@ -335,6 +338,7 @@ export default function StatefulGameInterface() {
       currentCharacterId: targetCharacterId,
       availableChoices: newChoices,
       currentContent: content.text,
+      useChatPacing: content.useChatPacing || false,
       isLoading: false,
       hasStarted: true
     })
@@ -581,7 +585,11 @@ export default function StatefulGameInterface() {
               <h2 className="text-base sm:text-lg font-semibold text-slate-700 mb-3">
                 {state.currentNode?.speaker}
               </h2>
-              <DialogueDisplay text={state.currentContent} />
+              <DialogueDisplay 
+                text={state.currentContent} 
+                useChatPacing={state.useChatPacing}
+                characterName={state.currentNode?.speaker}
+              />
             </div>
 
             {/* Scene info for debugging */}
