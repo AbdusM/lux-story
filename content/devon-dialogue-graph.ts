@@ -1375,7 +1375,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "You helped me see emotions as data. Now I can work with them.\n\nI need to call him. But differently this time. No flowchart. Just... me, talking to my dad. Listening for the data I've been filtering out. The pauses. The pain. The love underneath the 'I'm fine.'\n\nWhat if I just... let the conversation be what it needs to be?",
+        text: "You helped me see emotions as data. Now I can work with them.\n\nI need to call him. But differently. No flowchart. Just... me, talking to my dad. Listening for what I've been filtering out. The pauses. The pain. The love underneath the 'I'm fine.'\n\nWhat if I just... let the conversation be what it needs to be?",
         emotion: 'ready',
         variation_id: 'crossroads_reframe'
       },

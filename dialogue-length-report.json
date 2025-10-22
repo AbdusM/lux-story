@@ -23,13 +23,6 @@
   },
   "allLongNodes": [
     {
-      "file": "samuel-dialogue-graph.ts",
-      "nodeId": "samuel_jordan_path_reflection",
-      "length": 552,
-      "text": "She walked into that room carrying a different story than the one she arrived with. Not seven failur...",
-      "lineNumber": 2025
-    },
-    {
       "file": "devon-dialogue-graph.ts",
       "nodeId": "devon_vulnerable_moment",
       "length": 458,
@@ -38,38 +31,17 @@
     },
     {
       "file": "samuel-dialogue-graph.ts",
-      "nodeId": "samuel_jordan_path_reflection",
-      "length": 405,
-      "text": "She stood before those students and claimed her place in this city's story.\\n\\nBirmingham - where re...",
-      "lineNumber": 1958
-    },
-    {
-      "file": "samuel-dialogue-graph.ts",
       "nodeId": "samuel_discovers_helping",
-      "length": 394,
+      "length": 369,
       "text": "That's a particular kind of struggle. When your heart knows what it wants but the path feels... comp...",
       "lineNumber": 575
     },
     {
       "file": "samuel-dialogue-graph.ts",
-      "nodeId": "samuel_pattern_observation",
-      "length": 377,
-      "text": "What do I see in you? Someone who listens more than they speak. Who asks questions that make people ...",
-      "lineNumber": 2770
-    },
-    {
-      "file": "samuel-dialogue-graph.ts",
-      "nodeId": "samuel_deep_jordan_reflection",
-      "length": 366,
-      "text": "I saw you meeting Jordan where she was - in that spiral of doubt. You didn't try to fix her impostor...",
-      "lineNumber": 2219
-    },
-    {
-      "file": "samuel-dialogue-graph.ts",
-      "nodeId": "samuel_jordan_intro",
-      "length": 346,
-      "text": "There's someone else here tonight - Jordan Packard. Conference rooms, guest instructor for Career Da...",
-      "lineNumber": 2647
+      "nodeId": "samuel_jordan_path_reflection",
+      "length": 359,
+      "text": "She stood before those students and claimed her place in this city's story.\\n\\nBirmingham - where re...",
+      "lineNumber": 1958
     },
     {
       "file": "jordan-dialogue-graph.ts",
@@ -84,6 +56,13 @@
       "length": 339,
       "text": "That's the right question. Sometimes we need to hear something before we can believe it. The hearing...",
       "lineNumber": 2067
+    },
+    {
+      "file": "samuel-dialogue-graph.ts",
+      "nodeId": "samuel_deep_jordan_reflection",
+      "length": 338,
+      "text": "I saw you meeting Jordan where she was - in that spiral of doubt. You didn't try to fix her impostor...",
+      "lineNumber": 2219
     },
     {
       "file": "jordan-dialogue-graph.ts",
@@ -170,6 +149,13 @@
       "lineNumber": 1131
     },
     {
+      "file": "samuel-dialogue-graph.ts",
+      "nodeId": "samuel_pattern_observation",
+      "length": 310,
+      "text": "What do I see in you? Someone who listens more than they speak. Who asks questions that make people ...",
+      "lineNumber": 2770
+    },
+    {
       "file": "devon-dialogue-graph.ts",
       "nodeId": "devon_crossroads",
       "length": 309,
@@ -178,10 +164,24 @@
     },
     {
       "file": "samuel-dialogue-graph.ts",
+      "nodeId": "samuel_jordan_path_reflection",
+      "length": 307,
+      "text": "She walked in with a different story. Not seven failures - seven chapters.\\n\\nYou gave her permissio...",
+      "lineNumber": 2025
+    },
+    {
+      "file": "samuel-dialogue-graph.ts",
       "nodeId": "samuel_backstory_intro",
       "length": 306,
       "text": "You want to know my story? Fair question.\\n\\nI was an engineer at Southern Company for twenty-three ...",
       "lineNumber": 130
+    },
+    {
+      "file": "samuel-dialogue-graph.ts",
+      "nodeId": "samuel_jordan_intro",
+      "length": 306,
+      "text": "There's someone else here tonight - Jordan Packard. Conference rooms, guest instructor for Career Da...",
+      "lineNumber": 2647
     },
     {
       "file": "samuel-dialogue-graph.ts",
@@ -1085,5 +1085,5 @@
     "LONG": 180,
     "TOO_LONG": 250
   },
-  "generatedAt": "2025-10-22T00:44:41.111Z"
+  "generatedAt": "2025-10-22T00:47:09.162Z"
 }
