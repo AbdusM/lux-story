@@ -817,7 +817,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You did help her. But not in the way most people think 'helping' works.\n\nYou didn't fix her problem. You didn't tell her what to do. You created space for her to see options she couldn't see before.\n\nYou've got the helper instinct - that's what drives our UAB Medical resident advisors and Birmingham City Schools guidance counselors.",
+        text: "You did help her. But not in the way most people think 'helping' works.\n\nYou didn't fix her problem. You created space for her to see options she couldn't see before.\n\nYou've got the helper instinct - what drives UAB resident advisors and Birmingham guidance counselors.",
         emotion: 'teaching',
         variation_id: 'influence_v1_pt1'
       }
@@ -2359,7 +2359,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "I did. Maya doesn't share that with many people. She's been building robots since high school, but she guards that passion like a secret shame.\n\nWhatever you said, whatever space you held - it created safety for her to name what she loves. That's not a small thing. Trust like that is earned through presence, not technique.",
+        text: "I did. Maya doesn't share that with many people. She's been building robots since high school, but she guards that passion like a secret shame.\n\nWhatever you said, whatever space you held - it created safety for her to name what she loves. Trust like that is earned through presence, not technique.",
         emotion: 'recognizing_achievement',
         variation_id: 'ack_robotics_v1'
       }
