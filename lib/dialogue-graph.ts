@@ -48,6 +48,7 @@ export interface DialogueContent {
   text: string
   emotion?: string // Emotion tag for the dialogue (e.g., 'neutral', 'anxious', 'hopeful', 'vulnerable', etc.)
   variation_id: string // For tracking which variation was shown
+  useChatPacing?: boolean // If true, use ChatPacedDialogue component for sequential reveal (use sparingly!)
 }
 
 /**

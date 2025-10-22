@@ -1085,7 +1085,8 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         text: "Three weeks after Mom died, I found Dad in her chair. Just sitting. For four hours.\n\nI panicked. Built the decision tree that night. Thirty-seven pages. Color-coded.",
         emotion: 'controlled_pain',
-        variation_id: 'flowchart_incident_v1'
+        variation_id: 'flowchart_incident_v1',
+        useChatPacing: true // Emotional vulnerability reveal
       }
     ],
     requiredState: {
@@ -1377,7 +1378,8 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         text: "You helped me see emotions as data. Now I can work with them.\n\nI need to call him. But differently. No flowchart. Just... me, talking to my dad. Listening for what I've been filtering out. The pauses. The pain. The love underneath the 'I'm fine.'\n\nWhat if I just... let the conversation be what it needs to be?",
         emotion: 'ready',
-        variation_id: 'crossroads_reframe'
+        variation_id: 'crossroads_reframe',
+        useChatPacing: true // Breakthrough moment
       },
       {
         text: "You helped me integrate logic and heart. They're not enemies.\n\nI need to call him. But differently this time. Not logic OR emotion—both. Just... me, talking to my dad. Present with all of it. The pauses. The pain. The love underneath the 'I'm fine.'\n\nWhat if I just... let the conversation be what it needs to be?",
@@ -1529,7 +1531,8 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         text: "I'm going to call him. Let my heart do the talking.\n\nI don't know how. Twenty-two years of thinking first.\n\nBut that's what trying looks like. Doing it even when you don't know how.\n\nThank you. Tell Samuel Devon finally understood.",
         emotion: 'vulnerable_determination',
-        variation_id: 'farewell_heart_v2_complex'
+        variation_id: 'farewell_heart_v2_complex',
+        useChatPacing: true // Emotional farewell moment
       }
     ],
     choices: [
