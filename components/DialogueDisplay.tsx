@@ -94,7 +94,7 @@ export function DialogueDisplay({ text, className, useChatPacing, characterName 
       {chunks.map((chunk, index) => (
         <p
           key={index}
-          className="text-sm sm:text-base text-slate-800 leading-relaxed sm:leading-loose"
+          className="text-base text-slate-800 leading-relaxed"
         >
           {parseEmphasisText(chunk)}
         </p>

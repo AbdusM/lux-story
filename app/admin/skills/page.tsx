@@ -69,14 +69,26 @@ function StudentDetailContent() {
 
   if (error || !insights) {
     return (
-      <div className="min-h-screen bg-gray-50 p-8">
+      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 p-4 sm:p-6 lg:p-8">
         <div className="max-w-4xl mx-auto">
-          <Card>
+          <Card className="border-red-200 bg-red-50">
             <CardContent className="p-8 text-center">
-              <p className="text-red-600 mb-4">{error || 'Student not found'}</p>
-              <Link href="/admin">
-                <Button>Back to Student List</Button>
-              </Link>
+              <div className="space-y-4">
+                <div className="w-16 h-16 mx-auto bg-red-100 rounded-full flex items-center justify-center">
+                  <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.232 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold text-red-900 mb-2">Error Loading Student</h3>
+                  <p className="text-base text-red-700 mb-6">{error || 'Student not found'}</p>
+                  <Link href="/admin">
+                    <Button variant="outline" className="border-red-300 text-red-700 hover:bg-red-50">
+                      Back to Student List
+                    </Button>
+                  </Link>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </div>
@@ -85,30 +97,32 @@ function StudentDetailContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <div className="max-w-4xl mx-auto space-y-6">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 p-4 sm:p-6 lg:p-8">
+      <div className="max-w-4xl mx-auto space-y-8">
         {/* Back Button */}
         <Link href="/admin">
-          <Button variant="ghost" className="mb-2">
+          <Button variant="ghost" className="mb-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100">
             ← Back to All Students
           </Button>
         </Link>
 
         {/* Header */}
-        <Card>
-          <CardHeader>
+        <Card className="border-slate-200 shadow-sm">
+          <CardHeader className="pb-4">
             <div className="flex items-start justify-between">
-              <div>
-                <CardTitle className="text-2xl">
+              <div className="space-y-2">
+                <CardTitle className="text-2xl sm:text-3xl text-slate-900">
                   {formatUserIdShort(insights.userId)}
                 </CardTitle>
-                <CardDescription className="mt-1">
+                <CardDescription className="text-base text-slate-600">
                   {formatUserIdRelative(insights.userId)}
                 </CardDescription>
               </div>
             </div>
-            <div className="mt-4 text-sm text-gray-600">
-              <p><span className="font-medium">Current Scene:</span> {insights.currentScene}</p>
+            <div className="mt-6 p-4 bg-slate-50 rounded-lg">
+              <p className="text-base text-slate-700">
+                <span className="font-semibold text-slate-900">Current Scene:</span> {insights.currentScene}
+              </p>
             </div>
           </CardHeader>
         </Card>
@@ -178,10 +192,16 @@ function StudentDetailContent() {
 
 function LoadingState() {
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-      <div className="text-center space-y-4">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto" />
-        <p className="text-gray-600">Loading student insights...</p>
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 flex items-center justify-center p-4">
+      <div className="text-center space-y-6">
+        <div className="relative">
+          <div className="animate-spin rounded-full h-16 w-16 border-2 border-slate-200 border-t-blue-600 mx-auto" />
+          <div className="absolute inset-0 animate-ping rounded-full border-2 border-blue-400 opacity-20" />
+        </div>
+        <div>
+          <p className="text-lg font-medium text-slate-900 mb-2">Loading Student Profile</p>
+          <p className="text-base text-slate-600">Analyzing choice patterns and character relationships...</p>
+        </div>
       </div>
     </div>
   )

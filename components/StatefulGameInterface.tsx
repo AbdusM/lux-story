@@ -11,6 +11,12 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { DialogueDisplay } from '@/components/DialogueDisplay'
 import { AtmosphericIntro } from '@/components/AtmosphericIntro'
+import { CharacterLoadingState } from '@/components/CharacterLoadingState'
+import { ErrorRecoveryState } from '@/components/ErrorRecoveryState'
+import { SkillToast } from '@/components/SkillToast'
+import { CharacterTransition } from '@/components/CharacterTransition'
+import { Heart, Brain, Clock, Check } from 'lucide-react'
+import { cn } from '@/lib/utils'
 import { GameState, GameStateUtils } from '@/lib/character-state'
 import { GameStateManager } from '@/lib/game-state-manager'
 import { useBackgroundSync } from '@/hooks/useBackgroundSync'
@@ -41,6 +47,12 @@ interface GameInterfaceState {
   useChatPacing: boolean  // Whether to use sequential reveal for this node
   isLoading: boolean
   hasStarted: boolean
+  selectedChoice: string | null  // For choice selection feedback
+  showSaveConfirmation: boolean  // For auto-save confirmation
+  skillToast: { skill: string; message: string } | null  // For skill demonstration
+  error: { title: string; message: string; severity: 'error' | 'warning' | 'info' } | null  // For error states
+  showTransition: boolean  // For character switching
+  transitionData: { platform: number; message: string } | null  // Transition details
 }
 
 export default function StatefulGameInterface() {
@@ -54,7 +66,13 @@ export default function StatefulGameInterface() {
     currentContent: '',
     useChatPacing: false,
     isLoading: false,
-    hasStarted: false
+    hasStarted: false,
+    selectedChoice: null,
+    showSaveConfirmation: false,
+    skillToast: null,
+    error: null,
+    showTransition: false,
+    transitionData: null
   })
 
   // Skill tracker for recording demonstrations
@@ -74,6 +92,16 @@ export default function StatefulGameInterface() {
 
   // Check for save file and if it's at an ending
   const [saveIsComplete, setSaveIsComplete] = useState(false)
+
+  // Auto-save confirmation effect
+  useEffect(() => {
+    if (state.showSaveConfirmation) {
+      const timer = setTimeout(() => {
+        setState(prev => ({ ...prev, showSaveConfirmation: false }))
+      }, 2000)
+      return () => clearTimeout(timer)
+    }
+  }, [state.showSaveConfirmation])
 
   useEffect(() => {
     const exists = GameStateManager.hasSaveFile()
@@ -233,7 +261,11 @@ export default function StatefulGameInterface() {
   const handleChoice = useCallback(async (choice: EvaluatedChoice) => {
     if (!state.gameState || !choice.enabled) return
 
-    setState(prev => ({ ...prev, isLoading: true }))
+    // Immediate feedback for choice selection
+    setState(prev => ({ ...prev, selectedChoice: choice.choice.choiceId, isLoading: true }))
+
+    // Brief pause for visual confirmation
+    await new Promise(resolve => setTimeout(resolve, 200))
 
     // Track the choice in comprehensive tracker
     try {
@@ -326,8 +358,35 @@ export default function StatefulGameInterface() {
             choiceMapping.context
           )
           console.log(`📊 Recorded skill demonstration: ${choiceMapping.skillsDemonstrated.join(', ')}`)
+          
+          // Show skill demonstration toast
+          setState(prev => ({
+            ...prev,
+            skillToast: {
+              skill: choiceMapping.skillsDemonstrated.join(', '),
+              message: choiceMapping.context
+            }
+          }))
         }
       }
+    }
+
+    // Check for character transition
+    const isCharacterChange = targetCharacterId !== state.currentCharacterId
+    if (isCharacterChange) {
+      setState(prev => ({
+        ...prev,
+        showTransition: true,
+        transitionData: {
+          platform: Math.floor(Math.random() * 10) + 1, // Random platform 1-10
+          message: `Moving to ${characterNames[targetCharacterId]}...`
+        }
+      }))
+      
+      // Hide transition after delay
+      setTimeout(() => {
+        setState(prev => ({ ...prev, showTransition: false, transitionData: null }))
+      }, 2000)
     }
 
     // Update state
@@ -340,7 +399,13 @@ export default function StatefulGameInterface() {
       currentContent: content.text,
       useChatPacing: content.useChatPacing || false,
       isLoading: false,
-      hasStarted: true
+      hasStarted: true,
+      selectedChoice: null, // Reset choice selection
+      showSaveConfirmation: true, // Show save confirmation
+      skillToast: state.skillToast, // Keep existing toast
+      error: null,
+      showTransition: state.showTransition, // Keep existing transition
+      transitionData: state.transitionData
     })
 
     // Auto-save
@@ -512,10 +577,10 @@ export default function StatefulGameInterface() {
   if (state.isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 flex items-center justify-center p-4">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-sm sm:text-base text-slate-600">Loading...</p>
-        </div>
+        <CharacterLoadingState 
+          characterName={state.currentNode?.speaker || 'Character'}
+          context="thinking"
+        />
       </div>
     )
   }
@@ -535,31 +600,41 @@ export default function StatefulGameInterface() {
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 p-3 sm:p-4">
       <div className="max-w-4xl mx-auto">
 
-        {/* Header - Minimal Actions Only */}
-        <div className="flex justify-end gap-2 mb-4">
-          {/* Debug: Show admin button logic */}
-          {process.env.NODE_ENV === 'development' && (
-            <div className="text-xs text-gray-500 mb-2">
-              Debug: NODE_ENV={process.env.NODE_ENV}, 
-              window={typeof window !== 'undefined' ? 'exists' : 'undefined'}, 
-              search={typeof window !== 'undefined' ? window.location.search : 'no-window'}
-            </div>
-          )}
-          {true && (
-            <>
-              <Link href="/admin">
-                <Button variant="ghost" size="sm" className="text-xs">
-                  Admin
+        {/* Header - Mobile Optimized */}
+        <div className="flex flex-col-reverse sm:flex-row justify-between gap-2 mb-4">
+          {/* Choices at top on mobile (easy to reach) */}
+          <div className="flex gap-2 sm:hidden">
+            <Button variant="ghost" size="sm" onClick={continueJourney} className="text-xs">
+              New Conversation
+            </Button>
+          </div>
+          
+          {/* Actions at top on desktop, bottom on mobile */}
+          <div className="flex justify-end gap-2">
+            {/* Debug: Show admin button logic */}
+            {process.env.NODE_ENV === 'development' && (
+              <div className="text-xs text-gray-500 mb-2">
+                Debug: NODE_ENV={process.env.NODE_ENV}, 
+                window={typeof window !== 'undefined' ? 'exists' : 'undefined'}, 
+                search={typeof window !== 'undefined' ? window.location.search : 'no-window'}
+              </div>
+            )}
+            {true && (
+              <>
+                <Link href="/admin">
+                  <Button variant="ghost" size="sm" className="text-xs">
+                    Admin
+                  </Button>
+                </Link>
+                <Button variant="secondary" size="sm" onClick={exportFullAnalyticsProfile} className="text-xs">
+                  Export Analytics JSON
                 </Button>
-              </Link>
-              <Button variant="secondary" size="sm" onClick={exportFullAnalyticsProfile} className="text-xs">
-                Export Analytics JSON
-              </Button>
-            </>
-          )}
-          <Button variant="ghost" size="sm" onClick={continueJourney} className="text-xs">
-            New Conversation
-          </Button>
+              </>
+            )}
+            <Button variant="ghost" size="sm" onClick={continueJourney} className="text-xs hidden sm:inline-flex">
+              New Conversation
+            </Button>
+          </div>
         </div>
 
         {/* Character Banner - Minimal Chat Style */}
@@ -571,8 +646,14 @@ export default function StatefulGameInterface() {
                 <span className="text-slate-400">•</span>
                 <span className="text-slate-600">{currentCharacter.relationshipStatus}</span>
               </div>
-              <div className="text-slate-500 flex-shrink-0">
-                Trust: {currentCharacter.trust}/10
+              <div className="text-slate-500 flex-shrink-0 flex items-center gap-2">
+                <span>Trust: {currentCharacter.trust}/10</span>
+                {state.showSaveConfirmation && (
+                  <span className="text-xs text-green-600 flex items-center gap-1 animate-fade-in">
+                    <Check className="w-3 h-3" />
+                    Saved
+                  </span>
+                )}
               </div>
             </div>
           </div>
@@ -613,21 +694,50 @@ export default function StatefulGameInterface() {
                     onClick={() => handleChoice(evaluatedChoice)}
                     disabled={!evaluatedChoice.enabled}
                     variant={evaluatedChoice.enabled ? "outline" : "ghost"}
-                    className={`w-full text-left justify-start h-auto p-3 sm:p-4 min-h-[3rem] whitespace-normal ${
-                      evaluatedChoice.enabled
-                        ? "bg-white hover:bg-slate-50 text-slate-800 border-slate-300 active:bg-slate-100"
-                        : "bg-slate-100 text-slate-500 cursor-not-allowed"
-                    }`}
+                    className={cn(
+                      // Base sizing (touch target)
+                      "min-h-[48px] w-full px-6 py-3",
+                      
+                      // Typography
+                      "text-base font-medium text-left",
+                      
+                      // Visual feedback
+                      "hover:bg-slate-50 hover:border-slate-300 hover:shadow-md",
+                      "active:scale-[0.98]",
+                      "transition-all duration-200 ease-out",
+                      
+                      // Pattern-specific styling
+                      evaluatedChoice.choice.pattern === 'helping' && "border-l-4 border-l-rose-400",
+                      evaluatedChoice.choice.pattern === 'analytical' && "border-l-4 border-l-blue-400",
+                      evaluatedChoice.choice.pattern === 'patience' && "border-l-4 border-l-green-400",
+                      
+                      // Selection feedback
+                      state.selectedChoice === evaluatedChoice.choice.choiceId && "bg-blue-50 border-blue-400 scale-[0.98]",
+                      
+                      // Rounded corners
+                      "rounded-lg",
+                      
+                      // Disabled state
+                      !evaluatedChoice.enabled && "bg-slate-100 text-slate-500 cursor-not-allowed opacity-50"
+                    )}
                   >
-                    <div className="w-full">
-                      <div className="font-medium text-sm sm:text-base break-words">
-                        {evaluatedChoice.choice.text}
-                      </div>
-                      {!evaluatedChoice.enabled && evaluatedChoice.reason && (
-                        <div className="text-xs text-slate-500 mt-1 break-words">
-                          {evaluatedChoice.reason}
+                    <div className="flex items-center gap-3 w-full">
+                      {/* Pattern icon */}
+                      {evaluatedChoice.choice.pattern === 'helping' && <Heart className="w-4 h-4 text-rose-500 flex-shrink-0" />}
+                      {evaluatedChoice.choice.pattern === 'analytical' && <Brain className="w-4 h-4 text-blue-500 flex-shrink-0" />}
+                      {evaluatedChoice.choice.pattern === 'patience' && <Clock className="w-4 h-4 text-green-500 flex-shrink-0" />}
+                      
+                      {/* Choice text */}
+                      <div className="flex-1">
+                        <div className="font-medium text-base break-words">
+                          {evaluatedChoice.choice.text}
                         </div>
-                      )}
+                        {!evaluatedChoice.enabled && evaluatedChoice.reason && (
+                          <div className="text-xs text-slate-500 mt-1 break-words">
+                            {evaluatedChoice.reason}
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </Button>
                 ))}
@@ -679,6 +789,57 @@ export default function StatefulGameInterface() {
             </CardContent>
           </Card>
         )}
+
+        {/* Skill Demonstration Toast */}
+        {state.skillToast && (
+          <SkillToast
+            skill={state.skillToast.skill}
+            message={state.skillToast.message}
+            onClose={() => setState(prev => ({ ...prev, skillToast: null }))}
+          />
+        )}
+
+        {/* Character Transition */}
+        {state.showTransition && state.transitionData && (
+          <CharacterTransition
+            nextPlatform={state.transitionData.platform}
+            transitionMessage={state.transitionData.message}
+            onComplete={() => setState(prev => ({ ...prev, showTransition: false, transitionData: null }))}
+          />
+        )}
+
+        {/* Error State */}
+        {state.error && (
+          <ErrorRecoveryState
+            title={state.error.title}
+            message={state.error.message}
+            severity={state.error.severity}
+            onRetry={() => setState(prev => ({ ...prev, error: null }))}
+            onDismiss={() => setState(prev => ({ ...prev, error: null }))}
+          />
+        )}
+
+        {/* Mobile Bottom Action Bar */}
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 p-4 sm:hidden z-40">
+          <div className="flex gap-2">
+            <Button 
+              onClick={continueJourney} 
+              variant="outline" 
+              size="sm" 
+              className="flex-1"
+            >
+              New Conversation
+            </Button>
+            <Link href="/admin" className="flex-1">
+              <Button variant="ghost" size="sm" className="w-full">
+                Admin
+              </Button>
+            </Link>
+          </div>
+        </div>
+
+        {/* Add bottom padding on mobile to account for sticky bar */}
+        <div className="h-20 sm:hidden" />
       </div>
     </div>
   )
