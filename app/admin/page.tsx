@@ -30,7 +30,7 @@ export default function AdminPage() {
       try {
         // Get all user IDs
         const ids = await getAllUserIds()
-        
+
         // Sort by recency (newest first)
         const sortedIds = ids.sort((a, b) => {
           const timestampA = a.match(/player_(\d+)/)?.[1] || '0'
@@ -61,35 +61,56 @@ export default function AdminPage() {
 
   if (!mounted || loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto" />
-          <p className="text-gray-600">Loading student insights...</p>
+      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 flex items-center justify-center p-4">
+        <div className="text-center space-y-6">
+          <div className="relative">
+            <div className="animate-spin rounded-full h-16 w-16 border-2 border-slate-200 border-t-blue-600 mx-auto" />
+            <div className="absolute inset-0 animate-ping rounded-full border-2 border-blue-400 opacity-20" />
+            </div>
+          <div>
+            <p className="text-lg font-medium text-slate-900 mb-2">Loading Student Insights</p>
+            <p className="text-base text-slate-600">Analyzing student journeys and career patterns...</p>
+          </div>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <div className="max-w-6xl mx-auto space-y-6">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 p-4 sm:p-6 lg:p-8">
+      <div className="max-w-6xl mx-auto space-y-8">
         {/* Header */}
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">All Students</h1>
-          <p className="text-gray-600 mt-1">
+        <div className="space-y-2">
+          <h1 className="text-3xl sm:text-4xl font-bold text-slate-900">Student Insights Dashboard</h1>
+          <p className="text-lg text-slate-600">
             {students.length} {students.length === 1 ? 'student' : 'students'} exploring their career paths
           </p>
         </div>
 
         {/* Student List */}
         {students.length === 0 ? (
-          <Card>
-            <CardContent className="p-8 text-center text-gray-500">
-              No students yet. Student data will appear here as they begin their journey.
-            </CardContent>
-          </Card>
-        ) : (
-          <div className="space-y-4">
+          <Card className="border-dashed border-2 border-slate-300">
+            <CardContent className="p-12 text-center">
+              <div className="space-y-4">
+                <div className="w-16 h-16 mx-auto bg-slate-100 rounded-full flex items-center justify-center">
+                  <svg className="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold text-slate-900 mb-2">No Students Yet</h3>
+                  <p className="text-base text-slate-600 mb-4">
+                    Student insights will appear here as they begin their career exploration journey.
+                  </p>
+                  <p className="text-sm text-slate-500">
+                    Each student's unique path, choice patterns, and character relationships will be tracked and analyzed.
+                      </p>
+                    </div>
+                  </div>
+              </CardContent>
+            </Card>
+                ) : (
+                  <div className="space-y-4">
             {students.map(student => (
               <StudentCard key={student.userId} student={student} />
             ))}
@@ -120,28 +141,28 @@ function StudentCard({ student }: { student: StudentInsights }) {
 
   return (
     <Link href={`/admin/skills?userId=${student.userId}`}>
-      <Card className="hover:shadow-lg hover:border-blue-300 transition cursor-pointer">
+      <Card className="group hover:shadow-lg hover:border-blue-400 transition-all duration-200 cursor-pointer border-slate-200">
         <CardContent className="p-6">
-          <div className="flex items-start justify-between gap-4">
+          <div className="flex items-start justify-between gap-6">
             {/* Left: User Info */}
-            <div className="space-y-3 flex-1">
-              <div className="flex items-center gap-3">
-                <h3 className="text-lg font-semibold text-gray-900">
+            <div className="space-y-4 flex-1">
+            <div className="flex items-center gap-3">
+                <h3 className="text-xl font-semibold text-slate-900 group-hover:text-blue-600 transition-colors">
                   {formatUserIdShort(student.userId)}
-                </h3>
-                <span className="text-sm text-gray-500">
-                  ({formatUserIdRelative(student.userId)})
-                </span>
-              </div>
+              </h3>
+                <span className="text-sm text-slate-500 bg-slate-100 px-2 py-1 rounded-full">
+                  {formatUserIdRelative(student.userId)}
+              </span>
+            </div>
 
               {/* Character Trust Levels */}
-              <div className="flex items-center gap-4 text-sm">
+              <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-sm">
                 {characterRelationships.map(char => {
                   const shortName = char.characterName.split(' ')[0]
                   return (
-                    <div key={char.characterName} className="flex items-center gap-1">
-                      <span className="text-gray-600">{shortName}:</span>
-                      <span className={char.met ? 'font-medium text-gray-900' : 'text-gray-400'}>
+                    <div key={char.characterName} className="flex items-center gap-2">
+                      <span className="text-slate-600 font-medium">{shortName}:</span>
+                      <span className={`font-semibold ${char.met ? 'text-slate-900' : 'text-slate-400'}`}>
                         {char.trustLevel}/10
                       </span>
                     </div>
@@ -153,7 +174,7 @@ function StudentCard({ student }: { student: StudentInsights }) {
               {patterns.length > 0 && (
                 <div className="flex items-center gap-2 flex-wrap">
                   {patterns.slice(0, 2).map(pattern => (
-                    <Badge key={pattern.name} variant="secondary">
+                    <Badge key={pattern.name} variant="secondary" className="text-xs font-medium">
                       {pattern.name} {pattern.value}%
                     </Badge>
                   ))}
@@ -161,13 +182,16 @@ function StudentCard({ student }: { student: StudentInsights }) {
               )}
 
               {/* Current Activity */}
-              <p className="text-sm text-gray-600">
-                → {currentActivity}
-              </p>
-            </div>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
+                <p className="text-base text-slate-600 font-medium">
+                  {currentActivity}
+                </p>
+              </div>
+          </div>
 
             {/* Right: View Details Arrow */}
-            <div className="text-gray-400 group-hover:text-blue-600 transition">
+            <div className="text-slate-400 group-hover:text-blue-600 transition-all duration-200 group-hover:translate-x-1">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>

@@ -75,7 +75,7 @@ export function ChatPacedDialogue({
               animation: 'fadeIn 0.3s ease-in'
             }}
           >
-            <p className="text-sm leading-relaxed whitespace-pre-wrap">
+            <p className="text-base leading-relaxed whitespace-pre-wrap">
               {chunk}
             </p>
           </div>
