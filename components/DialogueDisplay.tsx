@@ -71,7 +71,7 @@ interface DialogueDisplayProps {
 export function DialogueDisplay({ text, className, useChatPacing, characterName }: DialogueDisplayProps) {
   // Auto-chunk long text for chat pacing, then split by | separator
   const chunkedText = autoChunkDialogue(text, { 
-    activationThreshold: 150,  // Only chunk longer paragraphs
+    activationThreshold: 200,  // Only chunk longer paragraphs (increased to prevent over-chunking)
     maxChunkLength: 100        // Allow complete sentences
   })
   

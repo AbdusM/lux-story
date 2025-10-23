@@ -27,7 +27,7 @@ const DEFAULT_CONFIG: Required<ChunkConfig> = {
   maxChunkLength: 100,  // Allow complete sentences (increased from 60)
   minChunkLength: 30,   // Prevent tiny fragments (increased from 20)
   enabled: true,
-  activationThreshold: 150,  // Only chunk longer paragraphs (increased from 120)
+  activationThreshold: 200,  // Only chunk longer paragraphs (increased from 150 to prevent over-chunking)
 }
 
 /**
