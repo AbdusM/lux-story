@@ -260,7 +260,12 @@ export function parseStudentInsights(profile: SkillProfile): StudentInsights {
     choicePatterns: parseChoicePatterns(profile),
     characterRelationships: parseCharacterRelationships(profile),
     breakthroughMoments: parseBreakthroughMoments(profile),
-    careerDiscovery: parseCareerDiscovery(profile)
+    careerDiscovery: parseCareerDiscovery(profile),
+    // NEW: Add skill-focused data
+    skillGaps: profile.skillGaps || [],
+    keySkillMoments: profile.keySkillMoments || [],
+    totalDemonstrations: profile.totalDemonstrations || 0,
+    skillEvolution: profile.skillEvolution || []
   }
 }
 

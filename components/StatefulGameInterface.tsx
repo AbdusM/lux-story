@@ -53,6 +53,7 @@ interface GameInterfaceState {
   error: { title: string; message: string; severity: 'error' | 'warning' | 'info' } | null  // For error states
   showTransition: boolean  // For character switching
   transitionData: { platform: number; message: string } | null  // Transition details
+  previousSpeaker: string | null  // For detecting continued speakers (avatar logic)
 }
 
 export default function StatefulGameInterface() {
@@ -67,6 +68,7 @@ export default function StatefulGameInterface() {
     useChatPacing: false,
     isLoading: false,
     hasStarted: false,
+    previousSpeaker: null,
     selectedChoice: null,
     showSaveConfirmation: false,
     skillToast: null,
@@ -246,7 +248,8 @@ export default function StatefulGameInterface() {
         currentContent: content.text,
         useChatPacing: content.useChatPacing || false,
         isLoading: false,
-        hasStarted: true
+        hasStarted: true,
+        previousSpeaker: state.currentNode?.speaker || null
       })
 
       // Auto-save
@@ -402,6 +405,7 @@ export default function StatefulGameInterface() {
       hasStarted: true,
       selectedChoice: null, // Reset choice selection
       showSaveConfirmation: true, // Show save confirmation
+      previousSpeaker: state.currentNode?.speaker || null, // Track previous speaker for avatar logic
       skillToast: state.skillToast, // Keep existing toast
       error: null,
       showTransition: state.showTransition, // Keep existing transition
@@ -670,6 +674,8 @@ export default function StatefulGameInterface() {
                 text={state.currentContent} 
                 useChatPacing={state.useChatPacing}
                 characterName={state.currentNode?.speaker}
+                showAvatar={true}
+                isContinuedSpeaker={state.currentNode?.speaker === state.previousSpeaker}
               />
             </div>
 
@@ -693,7 +699,7 @@ export default function StatefulGameInterface() {
                     key={evaluatedChoice.choice.choiceId}
                     onClick={() => handleChoice(evaluatedChoice)}
                     disabled={!evaluatedChoice.enabled}
-                    variant={evaluatedChoice.enabled ? "outline" : "ghost"}
+                    variant="ghost"
                     className={cn(
                       // Base sizing (touch target)
                       "min-h-[48px] w-full px-6 py-3",
@@ -701,43 +707,37 @@ export default function StatefulGameInterface() {
                       // Typography
                       "text-base font-medium text-left",
                       
-                      // Visual feedback
-                      "hover:bg-slate-50 hover:border-slate-300 hover:shadow-md",
+                      // Clean, subtle styling
+                      "border border-slate-200 bg-white",
+                      "hover:bg-slate-50 hover:border-slate-300 hover:shadow-sm",
                       "active:scale-[0.98]",
                       "transition-all duration-200 ease-out",
                       
-                      // Pattern-specific styling
-                      evaluatedChoice.choice.pattern === 'helping' && "border-l-4 border-l-rose-400",
-                      evaluatedChoice.choice.pattern === 'analytical' && "border-l-4 border-l-blue-400",
-                      evaluatedChoice.choice.pattern === 'patience' && "border-l-4 border-l-green-400",
+                      // Pattern-specific subtle accent
+                      evaluatedChoice.choice.pattern === 'helping' && "border-l-2 border-l-rose-300",
+                      evaluatedChoice.choice.pattern === 'analytical' && "border-l-2 border-l-blue-300",
+                      evaluatedChoice.choice.pattern === 'patience' && "border-l-2 border-l-green-300",
                       
                       // Selection feedback
-                      state.selectedChoice === evaluatedChoice.choice.choiceId && "bg-blue-50 border-blue-400 scale-[0.98]",
+                      state.selectedChoice === evaluatedChoice.choice.choiceId && "bg-blue-50 border-blue-300 scale-[0.98]",
                       
                       // Rounded corners
                       "rounded-lg",
                       
                       // Disabled state
-                      !evaluatedChoice.enabled && "bg-slate-100 text-slate-500 cursor-not-allowed opacity-50"
+                      !evaluatedChoice.enabled && "bg-slate-50 text-slate-400 cursor-not-allowed border-slate-200"
                     )}
                   >
-                    <div className="flex items-center gap-3 w-full">
-                      {/* Pattern icon */}
-                      {evaluatedChoice.choice.pattern === 'helping' && <Heart className="w-4 h-4 text-rose-500 flex-shrink-0" />}
-                      {evaluatedChoice.choice.pattern === 'analytical' && <Brain className="w-4 h-4 text-blue-500 flex-shrink-0" />}
-                      {evaluatedChoice.choice.pattern === 'patience' && <Clock className="w-4 h-4 text-green-500 flex-shrink-0" />}
-                      
+                    <div className="w-full">
                       {/* Choice text */}
-                      <div className="flex-1">
-                        <div className="font-medium text-base break-words">
-                          {evaluatedChoice.choice.text}
-                        </div>
-                        {!evaluatedChoice.enabled && evaluatedChoice.reason && (
-                          <div className="text-xs text-slate-500 mt-1 break-words">
-                            {evaluatedChoice.reason}
-                          </div>
-                        )}
+                      <div className="font-medium text-base break-words">
+                        {evaluatedChoice.choice.text}
                       </div>
+                      {!evaluatedChoice.enabled && evaluatedChoice.reason && (
+                        <div className="text-xs text-slate-500 mt-1 break-words">
+                          {evaluatedChoice.reason}
+                        </div>
+                      )}
                     </div>
                   </Button>
                 ))}

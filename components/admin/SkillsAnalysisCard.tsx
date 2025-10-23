@@ -1,0 +1,167 @@
+/**
+ * Skills Analysis Card Component
+ * Deep dive into 2030 Skills framework with evidence linking
+ */
+
+import type { SkillProfile } from '@/lib/skill-profile-adapter'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { ExternalLink, TrendingUp, Clock, Target, BookOpen } from 'lucide-react'
+
+interface SkillsAnalysisCardProps {
+  profile: SkillProfile
+}
+
+export function SkillsAnalysisCard({ profile }: SkillsAnalysisCardProps) {
+  // Extract skills from demonstrations
+  const skillDemonstrations = profile.skillDemonstrations || {}
+  const totalDemonstrations = profile.totalDemonstrations || 0
+  
+  // Calculate skill development metrics
+  const skillMetrics = Object.entries(skillDemonstrations).map(([skill, demos]) => ({
+    skill,
+    demonstrations: demos.length,
+    latestContext: demos[demos.length - 1]?.context || '',
+    latestScene: demos[demos.length - 1]?.scene || '',
+    firstDemonstration: demos[0]?.timestamp || 0,
+    lastDemonstration: demos[demos.length - 1]?.timestamp || 0,
+    developmentSpan: demos.length > 1 ? 
+      (demos[demos.length - 1]?.timestamp || 0) - (demos[0]?.timestamp || 0) : 0
+  })).sort((a, b) => b.demonstrations - a.demonstrations)
+
+  // Top 5 skills by demonstration count
+  const topSkills = skillMetrics.slice(0, 5)
+  
+  // Skills with evidence (quotes/context)
+  const skillsWithEvidence = skillMetrics.filter(skill => skill.latestContext.length > 20)
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <Target className="w-5 h-5 text-blue-600" />
+          What Skills Are They Building?
+        </CardTitle>
+        <CardDescription>
+          A look at the skills this student is developing through their choices
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        
+        {/* Skills Overview */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="bg-blue-50 rounded-lg p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <TrendingUp className="w-4 h-4 text-blue-600" />
+              <span className="font-semibold text-blue-900">Skills in Action</span>
+            </div>
+            <p className="text-2xl font-bold text-blue-600">{totalDemonstrations}</p>
+            <p className="text-sm text-blue-700">moments of skill building across {Object.keys(skillDemonstrations).length} different areas</p>
+          </div>
+          
+          <div className="bg-green-50 rounded-lg p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <Clock className="w-4 h-4 text-green-600" />
+              <span className="font-semibold text-green-900">Learning Journey</span>
+            </div>
+            <p className="text-2xl font-bold text-green-600">
+              {skillMetrics.length > 0 ? Math.round(skillMetrics[0].developmentSpan / (1000 * 60 * 60 * 24)) : 0}
+            </p>
+            <p className="text-sm text-green-700">days of active skill development</p>
+          </div>
+        </div>
+
+        {/* Top Skills with Evidence */}
+        <div>
+          <h4 className="font-semibold text-slate-900 mb-3">Their Strongest Skills</h4>
+          <div className="space-y-3">
+            {topSkills.map((skill, index) => (
+              <div key={skill.skill} className="border border-slate-200 rounded-lg p-4 hover:bg-slate-50 transition-colors">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <Badge variant="secondary" className="text-xs">
+                      #{index + 1}
+                    </Badge>
+                    <span className="font-medium text-slate-900 capitalize">
+                      {skill.skill.replace(/([A-Z])/g, ' $1').trim()}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-slate-600">{skill.demonstrations} times shown</span>
+                    <Button variant="ghost" size="sm" className="h-6 px-2">
+                      <ExternalLink className="w-3 h-3" />
+                    </Button>
+                  </div>
+                </div>
+                
+                {/* Evidence Quote */}
+                {skill.latestContext && (
+                  <div className="bg-slate-50 rounded p-3 mt-2">
+                    <p className="text-sm text-slate-700 italic">
+                      "{skill.latestContext.length > 100 
+                        ? skill.latestContext.substring(0, 100) + '...' 
+                        : skill.latestContext}"
+                    </p>
+                    <p className="text-xs text-slate-500 mt-1">
+                      From: {skill.latestScene.replace(/_/g, ' ').replace(/^\w/, c => c.toUpperCase())}
+                    </p>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Skill Development Timeline */}
+        {profile.skillEvolution && profile.skillEvolution.length > 0 && (
+          <div>
+            <h4 className="font-semibold text-slate-900 mb-3">How Their Skills Have Grown</h4>
+            <div className="space-y-2">
+              {profile.skillEvolution.map((checkpoint, index) => (
+                <div key={checkpoint.checkpoint} className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                    <span className="text-xs font-semibold text-blue-600">{index + 1}</span>
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-medium text-slate-900">{checkpoint.checkpoint}</p>
+                    <p className="text-sm text-slate-600">{checkpoint.totalDemonstrations} skill moments</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-xs text-slate-500">
+                      {new Date(checkpoint.timestamp).toLocaleDateString()}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Research References */}
+        <div className="border-t pt-4">
+          <div className="flex items-center gap-2 mb-3">
+            <BookOpen className="w-4 h-4 text-slate-600" />
+            <h4 className="font-semibold text-slate-900">Learn More About These Skills</h4>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="bg-slate-50 rounded-lg p-3">
+              <p className="text-sm font-medium text-slate-900">WEF 2030 Skills Framework</p>
+              <p className="text-xs text-slate-600">World Economic Forum (2023). Future of Jobs Report 2023</p>
+              <Button variant="link" size="sm" className="h-auto p-0 text-blue-600" onClick={() => window.open('/docs/RESEARCH_FOUNDATION.md#1-world-economic-forum-2030-skills-framework', '_blank')}>
+                View Research →
+              </Button>
+            </div>
+            <div className="bg-slate-50 rounded-lg p-3">
+              <p className="text-sm font-medium text-slate-900">Evidence-Based Assessment</p>
+              <p className="text-xs text-slate-600">Messick (1995). Performance-based validation methodology</p>
+              <Button variant="link" size="sm" className="h-auto p-0 text-blue-600" onClick={() => window.open('/docs/RESEARCH_FOUNDATION.md#6-evidence-based-assessment-methodology', '_blank')}>
+                View Research →
+              </Button>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}

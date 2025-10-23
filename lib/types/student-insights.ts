@@ -49,5 +49,10 @@ export interface StudentInsights {
   characterRelationships: CharacterInsight[]
   breakthroughMoments: BreakthroughMoment[]
   careerDiscovery: CareerInsight
+  // NEW: Skill-focused data
+  skillGaps: any[] // Will be properly typed when we import SkillGap
+  keySkillMoments: any[] // Will be properly typed when we import KeySkillMoment
+  totalDemonstrations: number
+  skillEvolution: any[] // Will be properly typed when we import SkillEvolutionPoint
 }
 
