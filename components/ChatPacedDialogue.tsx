@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react'
+import { CharacterAvatar } from './CharacterAvatar'
 
 interface ChatPacedDialogueProps {
   /** The dialogue text with chunks separated by | or \n\n */
   text: string
   /** Character name for the typing indicator */
   characterName: string
+  /** Show character avatar */
+  showAvatar?: boolean
   /** Delay between chunks in milliseconds (default: 1500) */
   chunkDelay?: number
   /** Typing indicator duration in milliseconds (default: 800) */
@@ -28,6 +31,7 @@ interface ChatPacedDialogueProps {
 export function ChatPacedDialogue({
   text,
   characterName,
+  showAvatar = true,
   chunkDelay = 1500,
   typingDuration = 800,
   onComplete,
@@ -65,6 +69,20 @@ export function ChatPacedDialogue({
 
   return (
     <div className={`chat-paced-dialogue ${className}`}>
+      {/* Character Avatar + Name Header (shown once at start) */}
+      {showAvatar && visibleChunks.length > 0 && (
+        <div className="flex items-center gap-3 mb-3 animate-fade-in">
+          <CharacterAvatar 
+            characterName={characterName} 
+            size="sm"
+            showAvatar={showAvatar}
+          />
+          <span className="text-sm font-semibold text-slate-700 capitalize">
+            {characterName}
+          </span>
+        </div>
+      )}
+      
       <div className="space-y-3">
         {/* Visible chunks */}
         {visibleChunks.map((chunk, index) => (
@@ -81,16 +99,26 @@ export function ChatPacedDialogue({
           </div>
         ))}
 
-        {/* Typing indicator */}
+        {/* Typing indicator with avatar */}
         {isTyping && (
-          <div className="chat-typing-indicator animate-pulse">
-            <span className="text-xs text-muted-foreground italic">
-              {characterName} is typing...
-            </span>
-            <div className="typing-dots">
-              <span className="dot">.</span>
-              <span className="dot">.</span>
-              <span className="dot">.</span>
+          <div className="flex items-center gap-2 chat-typing-indicator">
+            {showAvatar && (
+              <CharacterAvatar 
+                characterName={characterName} 
+                size="sm"
+                isTyping={true}
+                showAvatar={showAvatar}
+              />
+            )}
+            <div className="flex-1">
+              <span className="text-xs text-muted-foreground italic">
+                {characterName} is typing...
+              </span>
+              <div className="typing-dots">
+                <span className="dot">.</span>
+                <span className="dot">.</span>
+                <span className="dot">.</span>
+              </div>
             </div>
           </div>
         )}
@@ -121,11 +149,8 @@ export function ChatPacedDialogue({
         }
 
         .chat-typing-indicator {
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-          padding: 0.5rem 1rem;
-          opacity: 0.6;
+          padding: 0.5rem 0;
+          opacity: 0.7;
         }
 
         .typing-dots {

@@ -2010,12 +2010,17 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
               <CardTitle className="text-sm sm:text-base">Research Foundation</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 text-xs sm:text-sm text-muted-foreground">
-              <p>• <strong>Skill Evidence:</strong> WEF Future of Jobs Report (2020, 2023)</p>
-              <p>• <strong>Career Readiness:</strong> Holland, J. L. (1997). Making Vocational Choices</p>
-              <p>• <strong>Pattern Recognition:</strong> Behavioral consistency & development research</p>
-              <p>• <strong>Time Investment:</strong> Engagement metrics & sustained learning theory</p>
-              <p>• <strong>Relationships:</strong> Social-emotional learning frameworks</p>
-              <p>• <strong>Behavioral Consistency:</strong> Focus vs exploration balance analysis</p>
+              <p>• <strong>WEF 2030 Skills:</strong> World Economic Forum (2023). Future of Jobs Report 2023</p>
+              <p>• <strong>Career Theory:</strong> Holland, J. L. (1997). Making Vocational Choices</p>
+              <p>• <strong>Identity Development:</strong> Erikson, E. H. (1968). Identity: Youth and Crisis</p>
+              <p>• <strong>Flow Theory:</strong> Csíkszentmihályi, M. (1990). Flow: The Psychology of Optimal Experience</p>
+              <p>• <strong>Self-Efficacy:</strong> Bandura, A. (1986). Social Foundations of Thought and Action</p>
+              <p>• <strong>Evidence Assessment:</strong> Messick, S. (1995). Validity of psychological assessment</p>
+              <div className="pt-2">
+                <Button variant="link" size="sm" className="h-auto p-0 text-blue-600" onClick={() => window.open('/docs/RESEARCH_FOUNDATION.md', '_blank')}>
+                  View Complete Research Foundation →
+                </Button>
+              </div>
             </CardContent>
           </Card>
 

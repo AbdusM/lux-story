@@ -12,6 +12,9 @@ import { ChoicePatternBar } from '@/components/admin/ChoicePatternBar'
 import { CharacterRelationshipCard } from '@/components/admin/CharacterRelationshipCard'
 import { BreakthroughTimeline } from '@/components/admin/BreakthroughTimeline'
 import { CareerDiscoveryCard } from '@/components/admin/CareerDiscoveryCard'
+import { SkillsAnalysisCard } from '@/components/admin/SkillsAnalysisCard'
+import { SkillGapsAnalysis } from '@/components/admin/SkillGapsAnalysis'
+import { EvidenceTimeline } from '@/components/admin/EvidenceTimeline'
 import type { StudentInsights } from '@/lib/types/student-insights'
 
 /**
@@ -126,6 +129,21 @@ function StudentDetailContent() {
             </div>
           </CardHeader>
         </Card>
+
+        {/* Skills Analysis - NEW FOCUS */}
+        <SkillsAnalysisCard profile={insights} />
+
+        {/* Skill Gaps Analysis - NEW FOCUS */}
+        <SkillGapsAnalysis 
+          skillGaps={insights.skillGaps || []} 
+          totalDemonstrations={insights.totalDemonstrations || 0} 
+        />
+
+        {/* Evidence Timeline - NEW FOCUS */}
+        <EvidenceTimeline 
+          keySkillMoments={insights.keySkillMoments || []} 
+          totalDemonstrations={insights.totalDemonstrations || 0} 
+        />
 
         {/* Choice Patterns */}
         <Card>

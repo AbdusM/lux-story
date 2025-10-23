@@ -11,6 +11,7 @@
 import { cn } from "@/lib/utils"
 import { autoChunkDialogue } from "@/lib/auto-chunk-dialogue"
 import { ChatPacedDialogue } from "./ChatPacedDialogue"
+import { CharacterAvatar, shouldShowAvatar } from "./CharacterAvatar"
 
 // Parse markdown-style emphasis in text (from StoryMessage pattern)
 function parseEmphasisText(text: string): React.ReactNode[] {
@@ -57,6 +58,8 @@ interface DialogueDisplayProps {
   className?: string
   useChatPacing?: boolean // Enable sequential reveal with typing indicators
   characterName?: string // Required if useChatPacing is true
+  showAvatar?: boolean // Show character avatar
+  isContinuedSpeaker?: boolean // Hide avatar if same speaker as previous
 }
 
 /**
@@ -68,12 +71,22 @@ interface DialogueDisplayProps {
  * - Consistent typography rhythm across all narrative text
  * - Optional sequential reveal with typing indicators (ChatPacedDialogue)
  */
-export function DialogueDisplay({ text, className, useChatPacing, characterName }: DialogueDisplayProps) {
+export function DialogueDisplay({ 
+  text, 
+  className, 
+  useChatPacing, 
+  characterName,
+  showAvatar = true,
+  isContinuedSpeaker = false
+}: DialogueDisplayProps) {
   // Auto-chunk long text for chat pacing, then split by | separator
   const chunkedText = autoChunkDialogue(text, { 
     activationThreshold: 200,  // Only chunk longer paragraphs (increased to prevent over-chunking)
     maxChunkLength: 100        // Allow complete sentences
   })
+  
+  // Determine if avatar should be displayed
+  const displayAvatar = showAvatar && shouldShowAvatar(characterName, isContinuedSpeaker, false)
   
   // If chat pacing is enabled, use ChatPacedDialogue for sequential reveal
   if (useChatPacing && characterName) {
@@ -81,6 +94,7 @@ export function DialogueDisplay({ text, className, useChatPacing, characterName 
       <ChatPacedDialogue
         text={chunkedText}
         characterName={characterName}
+        showAvatar={displayAvatar}
         className={className}
       />
     )
@@ -91,6 +105,21 @@ export function DialogueDisplay({ text, className, useChatPacing, characterName 
 
   return (
     <div className={cn("space-y-4", className)}>
+      {/* Character Avatar + Name Header */}
+      {displayAvatar && characterName && (
+        <div className="flex items-center gap-3 mb-2 animate-fade-in">
+          <CharacterAvatar 
+            characterName={characterName} 
+            size="sm"
+            showAvatar={displayAvatar}
+          />
+          <span className="text-sm font-semibold text-slate-700 capitalize">
+            {characterName}
+          </span>
+        </div>
+      )}
+      
+      {/* Dialogue Content */}
       {chunks.map((chunk, index) => (
         <p
           key={index}

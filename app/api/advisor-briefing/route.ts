@@ -104,7 +104,7 @@ function buildMasterPrompt(profile: SkillProfile, skillsData?: SkillSummary[]): 
     ? formatSkillsSection(skillsData)
     : 'No WEF 2030 skills data available.'
 
-  return `You are a world-class career counselor and workforce development strategist for the city of Birmingham, Alabama. You are an expert in the World Economic Forum's 2030 Skills framework and Erikson's theory of identity development.
+  return `You are a world-class career counselor and workforce development strategist for the city of Birmingham, Alabama. You are an expert in the World Economic Forum's 2030 Skills framework (WEF, 2023) and Erikson's theory of identity development (Erikson, 1968).
 
 **[-- WEF 2030 SKILLS FRAMEWORK DATA --]**
 
@@ -139,7 +139,7 @@ Your task is to analyze this complete data profile and generate a concise, empat
    - Keep it to 2-3 sentences maximum.
 
 ## 2. Top Strengths (What is their superpower?)
-   - **PRIORITIZE WEF 2030 SKILLS**: If WEF 2030 skills data is available (shown above), use those skills first as they are research-backed and evidence-rich.
+   - **PRIORITIZE WEF 2030 SKILLS**: If WEF 2030 skills data is available (shown above), use those skills first as they are research-backed (WEF, 2023) and evidence-rich.
    - Identify their top 3 demonstrated skills, drawing from WEF 2030 skills when available.
    - For EACH skill, provide the single strongest piece of evidence using either:
      a) The WEF skill's "Latest Context" (if from WEF data), OR
@@ -173,7 +173,7 @@ Your task is to analyze this complete data profile and generate a concise, empat
 - Be concise: Each section should be 2-4 sentences maximum
 - Write in a warm, professional tone appropriate for a guidance counselor
 - Focus on actionability: every insight must lead to a concrete next step
-- Show that this analysis is grounded in evidence-based frameworks (WEF 2030)
+- Show that this analysis is grounded in evidence-based frameworks (WEF 2030, Erikson 1968, Holland 1997)
 
 Generate only the five sections as clean markdown. No preamble or conclusion. Start immediately with "## 1. The Authentic Story"`
 }
