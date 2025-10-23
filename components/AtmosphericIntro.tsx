@@ -1,7 +1,7 @@
 /**
  * Atmospheric Intro - The Half-Life style hook
  * 
- * Uses existing Apple Design System patterns for seamless flow
+ * Uses clean shadcn/ui design for seamless flow
  * Environmental storytelling with progressive disclosure
  */
 
@@ -37,131 +37,127 @@ export function AtmosphericIntro({ onStart }: AtmosphericIntroProps) {
   }, [currentSequence])
 
   return (
-    <div className="apple-game-container">
-      <div className="apple-conversation-wrapper">
-        <div className="apple-game-content">
-          
-          {/* Header - consistent with game interface */}
-          <div className="apple-header">
-            <div className="apple-text-headline">Grand Central Terminus</div>
-            <div className="apple-text-caption">Birmingham Career Exploration</div>
-          </div>
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 p-3 sm:p-4">
+      <div className="max-w-4xl mx-auto">
+        
+        {/* Header - consistent with game interface */}
+        <div className="text-center mb-8">
+          <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-2">Grand Central Terminus</h1>
+          <p className="text-lg text-slate-600">Birmingham Career Exploration</p>
+        </div>
 
-          {/* Story sequences using existing apple-story-message pattern */}
-          <div className="apple-story-container">
-            {sequences.map((sequence, index) => (
-              <div
-                key={index}
-                className="apple-story-message"
-                data-platform="default"
-                style={{
-                  opacity: currentSequence === index ? 1 : currentSequence > index ? 0.3 : 0,
-                  transform: currentSequence === index 
-                    ? 'translateY(0)' 
-                    : currentSequence > index 
-                    ? 'translateY(-8px)' 
-                    : 'translateY(8px)',
-                  transition: 'all 1s cubic-bezier(0.4, 0, 0.2, 1)',
-                  marginBottom: '1rem'
-                }}
-              >
-                {/* Location heading in screenplay format */}
-                {sequence.location && (
-                  <div className="apple-scene-heading">
-                    {sequence.location}
-                  </div>
-                )}
-
-                {/* Main text - action lines */}
-                <div className="apple-story-text">
-                  {sequence.text.split('\n\n').map((paragraph, i) => (
-                    <div key={i} className="apple-action-line apple-paragraph">
-                      {paragraph}
-                    </div>
-                  ))}
-                </div>
-
-                {/* Sound description - parenthetical */}
-                {sequence.sound && (
-                  <div className="apple-parenthetical">
-                    {sequence.sound}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-
-          {/* Start Button - using existing apple-choices-container */}
-          {showButton && (
-            <div 
-              className="apple-choices-container"
+        {/* Story sequences using clean card design */}
+        <div className="space-y-4">
+          {sequences.map((sequence, index) => (
+            <div
+              key={index}
+              className="bg-white border border-slate-200 rounded-lg p-6 shadow-sm"
               style={{
-                opacity: showButton ? 1 : 0,
-                transition: 'opacity 1s ease-in-out'
+                opacity: currentSequence === index ? 1 : currentSequence > index ? 0.3 : 0,
+                transform: currentSequence === index 
+                  ? 'translateY(0)' 
+                  : currentSequence > index 
+                  ? 'translateY(-8px)' 
+                  : 'translateY(8px)',
+                transition: 'all 1s cubic-bezier(0.4, 0, 0.2, 1)',
               }}
             >
-              <Button
-                onClick={onStart}
-                variant="default"
-                size="lg"
-                className="w-full"
-                aria-label="Begin your journey at Grand Central Terminus"
-              >
-                Enter the Station
-              </Button>
+              {/* Location heading in screenplay format */}
+              {sequence.location && (
+                <div className="text-sm font-semibold text-slate-600 uppercase tracking-wide mb-3">
+                  {sequence.location}
+                </div>
+              )}
 
-              <button
-                onClick={onStart}
-                className="apple-text-caption"
-                style={{ 
-                  textAlign: 'center', 
-                  marginTop: '1rem',
-                  cursor: 'pointer',
-                  background: 'none',
-                  border: 'none',
-                  opacity: 0.6,
-                  transition: 'opacity 0.2s'
-                }}
-                onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
-                onMouseLeave={(e) => e.currentTarget.style.opacity = '0.6'}
-                aria-label="Skip atmospheric introduction"
-              >
-                Skip Introduction →
-              </button>
+              {/* Main text - action lines */}
+              <div className="space-y-3">
+                {sequence.text.split('\n\n').map((paragraph, i) => (
+                  <p key={i} className="text-base text-slate-800 leading-relaxed">
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+
+              {/* Sound description - parenthetical */}
+              {sequence.sound && (
+                <div className="text-sm text-slate-500 italic mt-3">
+                  {sequence.sound}
+                </div>
+              )}
             </div>
-          )}
+          ))}
+        </div>
 
-          {/* Progress indicators */}
+        {/* Start Button - clean design */}
+        {showButton && (
           <div 
+            className="text-center mt-8"
             style={{
-              display: 'flex',
-              justifyContent: 'center',
-              gap: '0.5rem',
-              marginTop: '2rem',
-              opacity: showButton ? 0 : 1,
-              transition: 'opacity 0.5s'
+              opacity: showButton ? 1 : 0,
+              transition: 'opacity 1s ease-in-out'
             }}
           >
-            {sequences.map((_, index) => (
-              <div
-                key={index}
-                style={{
-                  width: currentSequence >= index ? '2rem' : '0.5rem',
-                  height: '0.5rem',
-                  borderRadius: '0.25rem',
-                  background: currentSequence >= index ? 'var(--apple-primary)' : 'var(--apple-gray-300)',
-                  transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)'
-                }}
-                aria-label={`Sequence ${index + 1} of ${sequences.length}`}
-                role="progressbar"
-                aria-valuenow={currentSequence >= index ? 100 : 0}
-                aria-valuemin={0}
-                aria-valuemax={100}
-              />
-            ))}
-          </div>
+            <Button
+              onClick={onStart}
+              variant="default"
+              size="lg"
+              className="w-full min-h-[48px]"
+              aria-label="Begin your journey at Grand Central Terminus"
+            >
+              Enter the Station
+            </Button>
 
+            <button
+              onClick={onStart}
+              className="text-sm text-slate-500 hover:text-slate-700 min-h-[48px] px-4 py-2"
+              style={{ 
+                textAlign: 'center', 
+                marginTop: '1rem',
+                cursor: 'pointer',
+                background: 'none',
+                border: 'none',
+                opacity: 0.6,
+                transition: 'opacity 0.2s'
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
+              onMouseLeave={(e) => e.currentTarget.style.opacity = '0.6'}
+              aria-label="Skip atmospheric introduction"
+            >
+              Skip Introduction →
+            </button>
+          </div>
+        )}
+
+        {/* Progress indicators */}
+        <div 
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            gap: '0.5rem',
+            marginTop: '2rem',
+            opacity: showButton ? 0 : 1,
+            transition: 'opacity 0.5s'
+          }}
+        >
+          {sequences.map((_, index) => (
+            <div
+              key={index}
+              style={{
+                width: currentSequence >= index ? '2rem' : '0.5rem',
+                height: '0.5rem',
+                borderRadius: '0.25rem',
+                background: currentSequence >= index ? '#3b82f6' : '#cbd5e1',
+                transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)'
+              }}
+              aria-label={`Sequence ${index + 1} of ${sequences.length}`}
+              role="progressbar"
+              aria-valuenow={currentSequence >= index ? 100 : 0}
+              aria-valuemin={0}
+              aria-valuemax={100}
+            />
+          ))}
         </div>
+
       </div>
     </div>
   )
@@ -195,4 +191,3 @@ const sequences = [
     sound: "The station breathes. Distant footsteps echo. You are not alone."
   }
 ]
-

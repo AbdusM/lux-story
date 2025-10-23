@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { DialogueDisplay } from '@/components/DialogueDisplay'
 import { AtmosphericIntro } from '@/components/AtmosphericIntro'
-import { CharacterLoadingState } from '@/components/CharacterLoadingState'
+// import { CharacterLoadingState } from '@/components/CharacterLoadingState' // Removed - using subtle loading instead
 import { ErrorRecoveryState } from '@/components/ErrorRecoveryState'
 import { SkillToast } from '@/components/SkillToast'
 import { CharacterTransition } from '@/components/CharacterTransition'
@@ -491,7 +491,7 @@ export default function StatefulGameInterface() {
           {/* Admin Button - Top Right */}
           <div className="absolute top-4 right-4 z-50">
             <Link href="/admin">
-              <Button variant="ghost" size="sm" className="text-xs">
+              <Button variant="ghost" size="sm" className="text-xs min-h-[48px]">
                 Admin
               </Button>
             </Link>
@@ -507,7 +507,7 @@ export default function StatefulGameInterface() {
         {/* Admin Button - Top Right */}
         <div className="absolute top-4 right-4">
           <Link href="/admin">
-            <Button variant="ghost" size="sm" className="text-xs">
+            <Button variant="ghost" size="sm" className="text-xs min-h-[48px]">
               Admin
             </Button>
           </Link>
@@ -577,10 +577,10 @@ export default function StatefulGameInterface() {
   if (state.isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 flex items-center justify-center p-4">
-        <CharacterLoadingState 
-          characterName={state.currentNode?.speaker || 'Character'}
-          context="thinking"
-        />
+        {/* Subtle loading state - no distracting animations */}
+        <div className="text-center">
+          <div className="text-slate-600 text-sm">Loading...</div>
+        </div>
       </div>
     )
   }
@@ -604,7 +604,7 @@ export default function StatefulGameInterface() {
         <div className="flex flex-col-reverse sm:flex-row justify-between gap-2 mb-4">
           {/* Choices at top on mobile (easy to reach) */}
           <div className="flex gap-2 sm:hidden">
-            <Button variant="ghost" size="sm" onClick={continueJourney} className="text-xs">
+            <Button variant="ghost" size="sm" onClick={continueJourney} className="text-xs min-h-[48px]">
               New Conversation
             </Button>
           </div>
@@ -622,16 +622,16 @@ export default function StatefulGameInterface() {
             {true && (
               <>
                 <Link href="/admin">
-                  <Button variant="ghost" size="sm" className="text-xs">
+                  <Button variant="ghost" size="sm" className="text-xs min-h-[48px]">
                     Admin
                   </Button>
                 </Link>
-                <Button variant="secondary" size="sm" onClick={exportFullAnalyticsProfile} className="text-xs">
+                <Button variant="secondary" size="sm" onClick={exportFullAnalyticsProfile} className="text-xs min-h-[48px]">
                   Export Analytics JSON
                 </Button>
               </>
             )}
-            <Button variant="ghost" size="sm" onClick={continueJourney} className="text-xs hidden sm:inline-flex">
+            <Button variant="ghost" size="sm" onClick={continueJourney} className="text-xs hidden sm:inline-flex min-h-[48px]">
               New Conversation
             </Button>
           </div>
@@ -757,7 +757,7 @@ export default function StatefulGameInterface() {
                 {characterNames[state.currentCharacterId]} will remember this conversation. Your relationship: {currentCharacter?.relationshipStatus} • Trust: {currentCharacter?.trust}/10
               </p>
               <div className="space-y-2 sm:space-y-3">
-                <Button variant="outline" onClick={continueJourney} className="w-full">
+                <Button variant="outline" onClick={continueJourney} className="w-full min-h-[48px]">
                   Return to Station
                 </Button>
                 {process.env.NODE_ENV === 'development' && (
@@ -780,7 +780,7 @@ export default function StatefulGameInterface() {
                     }} variant="ghost" size="sm" className="w-full text-xs">
                       Debug: Talk to {characterNames[state.currentCharacterId]} Again
                     </Button>
-                    <Button variant="ghost" size="sm" onClick={showDebugInfo} className="w-full text-xs">
+                    <Button variant="ghost" size="sm" onClick={showDebugInfo} className="w-full text-xs min-h-[48px]">
                       Debug: View Conversation Summary
                     </Button>
                   </>
@@ -831,7 +831,7 @@ export default function StatefulGameInterface() {
               New Conversation
             </Button>
             <Link href="/admin" className="flex-1">
-              <Button variant="ghost" size="sm" className="w-full">
+              <Button variant="ghost" size="sm" className="w-full min-h-[48px]">
                 Admin
               </Button>
             </Link>
