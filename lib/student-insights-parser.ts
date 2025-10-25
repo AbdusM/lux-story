@@ -190,13 +190,23 @@ export function parseBreakthroughMoments(profile: SkillProfile): BreakthroughMom
       }
     }
 
-    moments.push({
-      type,
-      characterName,
-      quote: moment.choice || moment.insight,
-      scene: moment.scene,
-      timestamp: Date.now() // Placeholder - would need actual timestamp from data
-    })
+    // Only include meaningful quotes (not "Choice 0" or similar)
+    const meaningfulQuote = moment.choice && 
+      !moment.choice.includes('Choice 0') && 
+      !moment.choice.includes('_') && 
+      moment.choice.length > 10
+      ? moment.choice 
+      : moment.insight
+
+    if (meaningfulQuote && meaningfulQuote.length > 10) {
+      moments.push({
+        type,
+        characterName,
+        quote: meaningfulQuote,
+        scene: moment.scene,
+        timestamp: moment.timestamp || Date.now()
+      })
+    }
   })
 
   return moments.slice(0, 10) // Limit to 10 most recent

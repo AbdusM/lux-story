@@ -358,6 +358,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "Tell me more about what you build.",
         nextNodeId: 'maya_robotics_passion',
         pattern: 'exploring',
+        skills: ['communication', 'emotional_intelligence'],
         visibleCondition: {
           trust: { min: 2 }
         }
@@ -726,6 +727,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "Have you tried talking to them about it?",
         nextNodeId: 'maya_parent_conversation_failed',
         pattern: 'analytical',
+        skills: ['communication', 'problem_solving'],
         visibleCondition: {
           trust: { min: 3 }
         },
@@ -989,7 +991,8 @@ export const mayaDialogueNodes: DialogueNode[] = [
         choiceId: 'continue_after_robotics',
         text: "I'm glad I could help.",
         nextNodeId: 'maya_reciprocity_ask',
-        pattern: 'helping'
+        pattern: 'helping',
+        skills: ["emotionalIntelligence","communication"]
       }
     ],
     onEnter: [
@@ -1017,7 +1020,8 @@ export const mayaDialogueNodes: DialogueNode[] = [
         choiceId: 'continue_after_hybrid',
         text: "That's a beautiful path.",
         nextNodeId: 'maya_reciprocity_ask',
-        pattern: 'helping'
+        pattern: 'helping',
+        skills: ["emotionalIntelligence","communication"]
       }
     ],
     onEnter: [
@@ -1045,7 +1049,8 @@ export const mayaDialogueNodes: DialogueNode[] = [
         choiceId: 'continue_after_self',
         text: "I believe in you.",
         nextNodeId: 'maya_reciprocity_ask',
-        pattern: 'patience'
+        pattern: 'patience',
+        skills: ["emotionalIntelligence","communication"]
       }
     ],
     onEnter: [
@@ -1075,6 +1080,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "I hope you find your path, Maya.",
         nextNodeId: samuelEntryPoints.MAYA_REFLECTION_GATEWAY,
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
         consequence: {
           characterId: 'maya',
           trustChange: 1,
@@ -1239,6 +1245,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "Thank you for understanding.",
         nextNodeId: 'maya_farewell_robotics',
         pattern: 'patience',
+        skills: ['emotional_intelligence', 'communication'],
         consequence: {
           characterId: 'maya',
           trustChange: 1,
@@ -1342,6 +1349,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "We balance each other out.",
         nextNodeId: 'maya_mutual_recognition_stable',
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'collaboration'],
         consequence: {
           characterId: 'maya',
           trustChange: 1,
@@ -1417,6 +1425,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "We inherit more than we realize.",
         nextNodeId: 'maya_mutual_recognition_entrepreneur',
         pattern: 'analytical',
+        skills: ['critical_thinking', 'emotional_intelligence'],
         consequence: {
           characterId: 'maya',
           trustChange: 1,
@@ -1523,6 +1532,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "Some weights teach us how to help carry others.",
         nextNodeId: 'maya_mutual_recognition_struggling',
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'empathy', 'communication'],
         consequence: {
           characterId: 'maya',
           trustChange: 2,
@@ -1625,6 +1635,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "Being present for your own life matters too.",
         nextNodeId: 'maya_mutual_recognition_absent',
         pattern: 'patience',
+        skills: ["emotionalIntelligence","communication"],
         consequence: {
           characterId: 'maya',
           trustChange: 1,

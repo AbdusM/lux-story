@@ -71,9 +71,9 @@ export interface ConditionalChoice {
 
   // WEF 2030 Skills demonstrated by this choice (for Samuel's personalization)
   skills?: Array<
-    'critical_thinking' | 'creativity' | 'communication' | 'collaboration' |
-    'adaptability' | 'leadership' | 'digital_literacy' | 'emotional_intelligence' |
-    'cultural_competence' | 'problem_solving' | 'time_management' | 'financial_literacy'
+    'criticalThinking' | 'creativity' | 'communication' | 'collaboration' |
+    'adaptability' | 'leadership' | 'digitalLiteracy' | 'emotionalIntelligence' |
+    'culturalCompetence' | 'problemSolving' | 'timeManagement' | 'financialLiteracy'
   >
 
   // State changes when this choice is selected

@@ -6,8 +6,26 @@
 import type { KeySkillMoment } from '@/lib/skill-profile-adapter'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Quote, Calendar, MapPin, ExternalLink, Lightbulb } from 'lucide-react'
+import { Quote, Calendar, MapPin, Lightbulb, BookOpen } from 'lucide-react'
+
+// Helper to make insights more conversational and less academic
+function simplifyInsight(insight: string, skills: string[]): string {
+  // If the insight is too academic/dense, simplify it
+  if (insight.length > 200) {
+    // Extract the first sentence or main idea
+    const firstSentence = insight.split('.')[0] + '.'
+    return firstSentence
+  }
+  
+  // If it contains academic jargon, simplify
+  if (insight.includes('Synthesized') || insight.includes('non-directive') || insight.includes('bridge discipline')) {
+    // Provide a simpler explanation based on the skills
+    const skillName = skills[0]?.replace(/([A-Z])/g, ' $1').trim().toLowerCase() || 'skill'
+    return `They showed ${skillName} through their thoughtful response in this conversation.`
+  }
+  
+  return insight
+}
 
 interface EvidenceTimelineProps {
   keySkillMoments: KeySkillMoment[]
@@ -77,7 +95,7 @@ export function EvidenceTimeline({ keySkillMoments, totalDemonstrations }: Evide
               <div key={scene} className="border-l-4 border-purple-200 pl-4">
                 <div className="mb-3">
                   <h5 className="font-medium text-slate-900 capitalize">
-                    {scene.replace(/_/g, ' ').replace(/^\w/, c => c.toUpperCase())}
+                    {scene.replace(/_/g, ' ').replace(/^\w/, c => c.toUpperCase()).replace(/Hub/g, 'Conversation').replace(/After/g, 'After Meeting')}
                   </h5>
                   <p className="text-sm text-slate-600">
                     {moments.length} time{moments.length !== 1 ? 's' : ''} they showed their skills
@@ -93,28 +111,27 @@ export function EvidenceTimeline({ keySkillMoments, totalDemonstrations }: Evide
                             {moment.skillsDemonstrated.length} skill{moment.skillsDemonstrated.length !== 1 ? 's' : ''} shown
                           </Badge>
                           <span className="text-sm text-slate-600">
-                            {new Date(moment.timestamp).toLocaleDateString()}
+                            {moment.timestamp ? new Date(moment.timestamp).toLocaleDateString() : 'Recently'}
                           </span>
                         </div>
-                        <Button variant="ghost" size="sm" className="h-6 px-2">
-                          <ExternalLink className="w-3 h-3" />
-                        </Button>
                       </div>
                       
-                      {/* Student Quote */}
-                      <div className="bg-white rounded p-3 mb-3 border-l-4 border-purple-300">
-                        <div className="flex items-start gap-2">
-                          <Quote className="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0" />
-                          <div className="flex-1">
-                            <p className="text-sm text-slate-800 italic">
-                              "{moment.choice}"
-                            </p>
-                            <p className="text-xs text-slate-500 mt-1">
-                              What they actually said
-                            </p>
+                      {/* Student Quote - Only show if it looks like actual dialogue, not a node ID */}
+                      {moment.choice && !moment.choice.includes('_') && moment.choice.length > 10 && (
+                        <div className="bg-white rounded p-4 mb-3 border-l-4 border-purple-300">
+                          <div className="flex items-start gap-2">
+                            <Quote className="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0" />
+                            <div className="flex-1">
+                              <p className="text-sm text-slate-800 italic leading-relaxed">
+                                "{moment.choice}"
+                              </p>
+                              <p className="text-xs text-slate-500 mt-2">
+                                What they said
+                              </p>
+                            </div>
                           </div>
                         </div>
-                      </div>
+                      )}
                       
                       {/* Skills Demonstrated */}
                       <div className="mb-3">
@@ -128,11 +145,11 @@ export function EvidenceTimeline({ keySkillMoments, totalDemonstrations }: Evide
                         </div>
                       </div>
                       
-                      {/* Analysis/Insight */}
-                      <div className="bg-blue-50 rounded p-3">
-                        <p className="text-sm font-medium text-blue-900 mb-1">What this tells us:</p>
-                        <p className="text-sm text-blue-800">
-                          {moment.insight}
+                      {/* Analysis/Insight - Simplified for readability */}
+                      <div className="bg-blue-50 rounded p-4 space-y-2">
+                        <p className="text-sm font-medium text-blue-900">What this shows:</p>
+                        <p className="text-sm text-blue-800 leading-relaxed">
+                          {simplifyInsight(moment.insight, moment.skillsDemonstrated)}
                         </p>
                       </div>
                     </div>
@@ -146,23 +163,21 @@ export function EvidenceTimeline({ keySkillMoments, totalDemonstrations }: Evide
         {/* Research References */}
         <div className="border-t pt-4">
           <div className="flex items-center gap-2 mb-3">
-            <ExternalLink className="w-4 h-4 text-slate-600" />
-            <h4 className="font-semibold text-slate-900">Learn More About This Approach</h4>
+            <BookOpen className="w-4 h-4 text-slate-600" />
+            <h4 className="font-semibold text-slate-900">Research Foundation</h4>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div className="bg-slate-50 rounded-lg p-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-slate-50 rounded-lg p-4 space-y-2">
               <p className="text-sm font-medium text-slate-900">Evidence-Based Assessment</p>
-              <p className="text-xs text-slate-600">Messick (1995). Performance-based validation methodology</p>
-              <Button variant="link" size="sm" className="h-auto p-0 text-blue-600" onClick={() => window.open('/docs/RESEARCH_FOUNDATION.md#6-evidence-based-assessment-methodology', '_blank')}>
-                View Research →
-              </Button>
+              <p className="text-xs text-slate-600 leading-relaxed">This analysis uses Messick (1995) to validate how this student's choices demonstrate real skills</p>
             </div>
-            <div className="bg-slate-50 rounded-lg p-3">
+            <div className="bg-slate-50 rounded-lg p-4 space-y-2">
               <p className="text-sm font-medium text-slate-900">Narrative Assessment Framework</p>
-              <p className="text-xs text-slate-600">McAdams (2001). Identity through storytelling methodology</p>
-              <Button variant="link" size="sm" className="h-auto p-0 text-blue-600" onClick={() => window.open('/docs/RESEARCH_FOUNDATION.md#7-narrative-assessment-framework', '_blank')}>
-                View Research →
-              </Button>
+              <p className="text-xs text-slate-600 leading-relaxed">McAdams (2001) shows how their story choices reveal identity development</p>
+            </div>
+            <div className="bg-slate-50 rounded-lg p-4 space-y-2">
+              <p className="text-sm font-medium text-slate-900">Limbic Learning Theory</p>
+              <p className="text-xs text-slate-600 leading-relaxed">Immordino-Yang & Damasio (2007) explains why emotional moments create deeper learning</p>
             </div>
           </div>
         </div>

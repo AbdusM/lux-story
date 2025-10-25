@@ -2010,17 +2010,20 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
               <CardTitle className="text-sm sm:text-base">Research Foundation</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 text-xs sm:text-sm text-muted-foreground">
+              <p className="font-semibold text-slate-900 mb-2">Core Frameworks</p>
               <p>• <strong>WEF 2030 Skills:</strong> World Economic Forum (2023). Future of Jobs Report 2023</p>
               <p>• <strong>Career Theory:</strong> Holland, J. L. (1997). Making Vocational Choices</p>
               <p>• <strong>Identity Development:</strong> Erikson, E. H. (1968). Identity: Youth and Crisis</p>
               <p>• <strong>Flow Theory:</strong> Csíkszentmihályi, M. (1990). Flow: The Psychology of Optimal Experience</p>
               <p>• <strong>Self-Efficacy:</strong> Bandura, A. (1986). Social Foundations of Thought and Action</p>
               <p>• <strong>Evidence Assessment:</strong> Messick, S. (1995). Validity of psychological assessment</p>
-              <div className="pt-2">
-                <Button variant="link" size="sm" className="h-auto p-0 text-blue-600" onClick={() => window.open('/docs/RESEARCH_FOUNDATION.md', '_blank')}>
-                  View Complete Research Foundation →
-                </Button>
-              </div>
+              <p>• <strong>Narrative Assessment:</strong> McAdams, D. P. (2001). Psychology of life stories</p>
+              <p>• <strong>Birmingham Context:</strong> AL Dept of Labor (2023). Birmingham Labor Market Report</p>
+              
+              <p className="font-semibold text-slate-900 mt-4 mb-2">Supporting Research</p>
+              <p>• <strong>Cognitive Load:</strong> Sweller, J. (1988). Cognitive load during problem solving</p>
+              <p>• <strong>Self-Determination:</strong> Deci, E. L., & Ryan, R. M. (2000). Self-determination theory</p>
+              <p>• <strong>Limbic Learning:</strong> Immordino-Yang & Damasio (2007). We feel, therefore we learn</p>
             </CardContent>
           </Card>
 

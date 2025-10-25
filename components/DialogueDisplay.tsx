@@ -105,21 +105,7 @@ export function DialogueDisplay({
 
   return (
     <div className={cn("space-y-4", className)}>
-      {/* Character Avatar + Name Header */}
-      {displayAvatar && characterName && (
-        <div className="flex items-center gap-3 mb-2 animate-fade-in">
-          <CharacterAvatar 
-            characterName={characterName} 
-            size="sm"
-            showAvatar={displayAvatar}
-          />
-          <span className="text-sm font-semibold text-slate-700 capitalize">
-            {characterName}
-          </span>
-        </div>
-      )}
-      
-      {/* Dialogue Content */}
+      {/* Dialogue Content - No inline avatars */}
       {chunks.map((chunk, index) => (
         <p
           key={index}

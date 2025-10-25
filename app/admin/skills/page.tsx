@@ -100,8 +100,8 @@ function StudentDetailContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 p-4 sm:p-6 lg:p-8">
-      <div className="max-w-4xl mx-auto space-y-8">
+    <div className="min-h-screen max-h-screen overflow-y-auto bg-gradient-to-b from-slate-50 to-slate-100">
+      <div className="max-w-4xl mx-auto space-y-8 p-4 sm:p-6 lg:p-8">
         {/* Back Button */}
         <Link href="/admin">
           <Button variant="ghost" className="mb-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100">
@@ -130,7 +130,7 @@ function StudentDetailContent() {
           </CardHeader>
         </Card>
 
-        {/* Skills Analysis - NEW FOCUS */}
+        {/* Skills Analysis */}
         <SkillsAnalysisCard profile={insights} />
 
         {/* Skill Gaps Analysis - NEW FOCUS */}

@@ -10,34 +10,48 @@ interface CareerDiscoveryCardProps {
 }
 
 export function CareerDiscoveryCard({ career }: CareerDiscoveryCardProps) {
+  // Only show matches with meaningful confidence (>10%)
+  const showTopMatch = career.topMatch && career.topMatch.confidence > 10
+  const showSecondMatch = career.secondMatch && career.secondMatch.confidence > 10
+  
   return (
     <div className="space-y-4">
-      {/* Top Career Matches */}
-      <div className="space-y-2">
-        <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg border border-blue-200">
-          <div>
-            <p className="text-sm text-blue-600 font-medium">Top Match</p>
-            <p className="font-semibold text-gray-900">{career.topMatch.name}</p>
-          </div>
-          <div className="text-right">
-            <p className="text-2xl font-bold text-blue-600">{career.topMatch.confidence}%</p>
-            <p className="text-xs text-blue-600">confidence</p>
-          </div>
-        </div>
+      {/* Top Career Matches - Only show if confidence is meaningful */}
+      {(showTopMatch || showSecondMatch) ? (
+        <div className="space-y-2">
+          {showTopMatch && (
+            <div className="flex items-center justify-between p-4 bg-blue-50 rounded-lg border border-blue-200">
+              <div>
+                <p className="text-sm text-blue-600 font-medium">Emerging Career Interest</p>
+                <p className="font-semibold text-gray-900 leading-relaxed">{career.topMatch.name}</p>
+              </div>
+              <div className="text-right">
+                <p className="text-2xl font-bold text-blue-600">{career.topMatch.confidence}%</p>
+                <p className="text-xs text-blue-600">match</p>
+              </div>
+            </div>
+          )}
 
-        {career.secondMatch && (
-          <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200">
-            <div>
-              <p className="text-sm text-gray-600 font-medium">2nd Match</p>
-              <p className="font-semibold text-gray-900">{career.secondMatch.name}</p>
+          {showSecondMatch && (
+            <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-200">
+              <div>
+                <p className="text-sm text-gray-600 font-medium">Also Exploring</p>
+                <p className="font-semibold text-gray-900 leading-relaxed">{career.secondMatch.name}</p>
+              </div>
+              <div className="text-right">
+                <p className="text-2xl font-bold text-gray-600">{career.secondMatch.confidence}%</p>
+                <p className="text-xs text-gray-600">match</p>
+              </div>
             </div>
-            <div className="text-right">
-              <p className="text-2xl font-bold text-gray-600">{career.secondMatch.confidence}%</p>
-              <p className="text-xs text-gray-600">confidence</p>
-            </div>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      ) : (
+        <div className="p-6 text-center bg-slate-50 rounded-lg border border-slate-200">
+          <p className="text-base text-slate-600 leading-relaxed">
+            Still exploring - career interests will emerge as they make more choices
+          </p>
+        </div>
+      )}
 
       {/* Birmingham Opportunities */}
       {career.birminghamOpportunities.length > 0 && (
