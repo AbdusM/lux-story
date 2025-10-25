@@ -9,6 +9,7 @@
 
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 
 interface AtmosphericIntroProps {
   onStart: () => void
@@ -37,8 +38,8 @@ export function AtmosphericIntro({ onStart }: AtmosphericIntroProps) {
   }, [currentSequence])
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 p-3 sm:p-4">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 p-3 sm:p-4 overflow-y-auto">
+      <div className="max-w-4xl mx-auto pb-20">
         
         {/* Header - consistent with game interface */}
         <div className="text-center mb-8">
@@ -46,20 +47,20 @@ export function AtmosphericIntro({ onStart }: AtmosphericIntroProps) {
           <p className="text-lg text-slate-600">Birmingham Career Exploration</p>
         </div>
 
-        {/* Story sequences using clean card design */}
+        {/* Story sequences - show only current one */}
         <div className="space-y-4">
           {sequences.map((sequence, index) => (
             <div
               key={index}
-              className="bg-white border border-slate-200 rounded-lg p-6 shadow-sm"
+              className={cn(
+                "bg-white border border-slate-200 rounded-lg p-6 shadow-sm",
+                "transition-all duration-1000 ease-out",
+                currentSequence === index 
+                  ? "opacity-100 translate-y-0" 
+                  : "opacity-0 translate-y-4 pointer-events-none absolute inset-0"
+              )}
               style={{
-                opacity: currentSequence === index ? 1 : currentSequence > index ? 0.3 : 0,
-                transform: currentSequence === index 
-                  ? 'translateY(0)' 
-                  : currentSequence > index 
-                  ? 'translateY(-8px)' 
-                  : 'translateY(8px)',
-                transition: 'all 1s cubic-bezier(0.4, 0, 0.2, 1)',
+                display: currentSequence === index ? 'block' : 'none'
               }}
             >
               {/* Location heading in screenplay format */}
@@ -88,6 +89,17 @@ export function AtmosphericIntro({ onStart }: AtmosphericIntroProps) {
           ))}
         </div>
 
+        {/* Skip Button - always visible */}
+        <div className="text-center mt-6">
+          <button
+            onClick={onStart}
+            className="text-sm text-slate-500 hover:text-slate-700 min-h-[48px] px-4 py-2 rounded-lg hover:bg-slate-100 transition-all duration-200"
+            aria-label="Skip atmospheric introduction"
+          >
+            Skip Introduction →
+          </button>
+        </div>
+
         {/* Start Button - clean design */}
         {showButton && (
           <div 
@@ -106,25 +118,6 @@ export function AtmosphericIntro({ onStart }: AtmosphericIntroProps) {
             >
               Enter the Station
             </Button>
-
-            <button
-              onClick={onStart}
-              className="text-sm text-slate-500 hover:text-slate-700 min-h-[48px] px-4 py-2"
-              style={{ 
-                textAlign: 'center', 
-                marginTop: '1rem',
-                cursor: 'pointer',
-                background: 'none',
-                border: 'none',
-                opacity: 0.6,
-                transition: 'opacity 0.2s'
-              }}
-              onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
-              onMouseLeave={(e) => e.currentTarget.style.opacity = '0.6'}
-              aria-label="Skip atmospheric introduction"
-            >
-              Skip Introduction →
-            </button>
           </div>
         )}
 

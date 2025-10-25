@@ -77,8 +77,8 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 p-4 sm:p-6 lg:p-8">
-      <div className="max-w-6xl mx-auto space-y-8">
+    <div className="min-h-screen max-h-screen overflow-y-auto bg-gradient-to-b from-slate-50 to-slate-100">
+      <div className="max-w-6xl mx-auto space-y-8 p-4 sm:p-6 lg:p-8">
         {/* Header */}
         <div className="space-y-2">
           <h1 className="text-3xl sm:text-4xl font-bold text-slate-900">Student Insights Dashboard</h1>
@@ -184,7 +184,7 @@ function StudentCard({ student }: { student: StudentInsights }) {
               {/* Current Activity */}
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
-                <p className="text-base text-slate-600 font-medium">
+                <p className="text-base text-slate-600 font-medium leading-relaxed">
                   {currentActivity}
                 </p>
               </div>

@@ -42,25 +42,33 @@ export async function ensureUserProfile(
         total_demonstrations: initialData?.total_demonstrations || 0,
         last_activity: initialData?.last_activity || new Date().toISOString(),
         // updated_at will be set automatically by database trigger
-      }, {
-        onConflict: 'user_id',
-        ignoreDuplicates: false // CRITICAL FIX: Update existing profiles with newer data
+      }, { 
+        onConflict: 'user_id'
       })
 
     if (error) {
+      // Check if it's a Supabase configuration error
+      if (error.message?.includes('Supabase not configured') || error.message?.includes('fetch failed')) {
+        console.warn(`[EnsureUserProfile] Supabase not available - running in local-only mode for ${userId}`)
+        return true // Allow game to continue without database
+      }
+      
       console.error(`[EnsureUserProfile] Failed to create profile for ${userId}:`, {
         code: error.code,
         message: error.message,
-        details: error.details
+        details: error.details,
+        hint: error.hint
       })
-      return false
+      console.warn('[EnsureUserProfile] Game will continue in local-only mode.')
+      return true // Allow game to continue even if database fails
     }
 
     console.log(`[EnsureUserProfile] ✅ Profile ensured for ${userId}`)
     return true
   } catch (error) {
-    console.error(`[EnsureUserProfile] Unexpected error for ${userId}:`, error)
-    return false
+    console.warn(`[EnsureUserProfile] Database unavailable for ${userId}:`, error)
+    console.warn('[EnsureUserProfile] Game will continue in local-only mode.')
+    return true // Allow game to continue in local-only mode
   }
 }
 

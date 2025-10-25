@@ -36,7 +36,7 @@ export function BreakthroughTimeline({ moments }: BreakthroughTimelineProps) {
   return (
     <div className="space-y-4">
       {moments.map((moment, index) => (
-        <div key={index} className="flex gap-3 p-4 border rounded-lg hover:bg-gray-50 transition">
+        <div key={index} className="flex gap-3 p-5 border rounded-lg hover:bg-gray-50 transition">
           <div className="text-3xl flex-shrink-0">
             {typeIcons[moment.type]}
           </div>
@@ -52,19 +52,22 @@ export function BreakthroughTimeline({ moments }: BreakthroughTimelineProps) {
                 )}
               </div>
               <span className="text-xs text-gray-500">
-                {moment.scene}
+                {moment.scene.replace(/_/g, ' ').replace(/^\w/, c => c.toUpperCase()).replace(/Hub/g, 'Conversation')}
               </span>
             </div>
 
-            <div className="text-sm">
-              <p className="text-gray-700 italic">"{moment.quote}"</p>
-              
-              {moment.studentResponse && (
-                <p className="text-gray-600 mt-2">
-                  → Student: "{moment.studentResponse}"
-                </p>
-              )}
-            </div>
+            {/* Only show quote if it looks like actual text, not a node ID */}
+            {moment.quote && !moment.quote.includes('_') && moment.quote.length > 10 && (
+              <div className="text-sm space-y-2">
+                <p className="text-gray-700 italic leading-relaxed">"{moment.quote}"</p>
+                
+                {moment.studentResponse && (
+                  <p className="text-gray-600 leading-relaxed">
+                    → Student: "{moment.studentResponse}"
+                  </p>
+                )}
+              </div>
+            )}
           </div>
         </div>
       ))}

@@ -107,6 +107,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "Six rewrites means you're overthinking the story you're telling.",
         nextNodeId: 'jordan_job_reveal_1',
         pattern: 'analytical',
+        skills: ['critical_thinking', 'communication'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1
@@ -163,6 +164,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "Sounds like you've been figuring it out as you go since the beginning.",
         nextNodeId: 'jordan_job_reveal_2',
         pattern: 'analytical',
+        skills: ['critical_thinking', 'adaptability', 'communication'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -217,6 +219,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "Applied empathy sounds a lot like user experience design.",
         nextNodeId: 'jordan_job_reveal_3',
         pattern: 'analytical',
+        skills: ['critical_thinking', 'creativity', 'communication'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -271,6 +274,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "Skills like puzzle pieces—what's the picture?",
         nextNodeId: 'jordan_pattern_acknowledgment',
         pattern: 'analytical',
+        skills: ['critical_thinking', 'creativity', 'communication'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -333,6 +337,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "That makes perfect sense. You were getting closer to what you actually wanted.",
         nextNodeId: 'jordan_pause_after_job4',
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -344,6 +349,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "You're a builder, not a promoter. That's an important distinction.",
         nextNodeId: 'jordan_pause_after_job4',
         pattern: 'building',
+        skills: ['critical_thinking', 'communication'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -406,6 +412,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "That's actually brilliant—seeing the deeper pattern underneath the job title.",
         nextNodeId: 'jordan_job_reveal_6',
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -417,6 +424,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "You've been doing UX design this whole time. You just kept changing the medium.",
         nextNodeId: 'jordan_job_reveal_6',
         pattern: 'analytical',
+        skills: ['critical_thinking', 'creativity', 'communication'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -459,6 +467,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "Most people would just see that as survival work. You made it an education.",
         nextNodeId: 'jordan_job_reveal_7',
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'critical_thinking', 'communication'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -470,6 +479,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "You learned systems thinking and user flows.",
         nextNodeId: 'jordan_job_reveal_7',
         pattern: 'analytical',
+        skills: ['critical_thinking', 'problem_solving', 'communication'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -524,6 +534,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "So why are you nervous about the mentorship talk?",
         nextNodeId: 'jordan_mentor_context',
         pattern: 'exploring',
+        skills: ['communication', 'emotional_intelligence'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -535,6 +546,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "That's an incredible story. You should be proud of every single step.",
         nextNodeId: 'jordan_mentor_context',
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication', 'leadership'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -854,7 +866,8 @@ export const jordanDialogueNodes: DialogueNode[] = [
         choiceId: 'jordan_accumulation_celebrate',
         text: "That's the speech they need to hear.",
         nextNodeId: 'jordan_farewell_accumulation',
-        pattern: 'helping'
+        pattern: 'helping',
+        skills: ["emotionalIntelligence","communication"]
       }
     ],
     onEnter: [{
@@ -882,7 +895,8 @@ export const jordanDialogueNodes: DialogueNode[] = [
         choiceId: 'jordan_birmingham_affirm',
         text: "The parallel between you and the city—that's powerful.",
         nextNodeId: 'jordan_farewell_birmingham',
-        pattern: 'helping'
+        pattern: 'helping',
+        skills: ["emotionalIntelligence","communication"]
       }
     ],
     onEnter: [{
@@ -910,7 +924,8 @@ export const jordanDialogueNodes: DialogueNode[] = [
         choiceId: 'jordan_internal_honor',
         text: "That vulnerability is your most powerful teaching tool.",
         nextNodeId: 'jordan_farewell_internal',
-        pattern: 'helping'
+        pattern: 'helping',
+        skills: ["emotionalIntelligence","communication","leadership"]
       }
     ],
     onEnter: [{
@@ -935,7 +950,8 @@ export const jordanDialogueNodes: DialogueNode[] = [
         choiceId: 'jordan_farewell_accumulation_end',
         text: "Good luck with your speech.",
         nextNodeId: samuelEntryPoints.JORDAN_REFLECTION_GATEWAY,
-        pattern: 'helping'
+        pattern: 'helping',
+        skills: ["emotionalIntelligence","communication"]
       }
     ],
     tags: ['transition', 'jordan_arc', 'bittersweet']
@@ -954,7 +970,8 @@ export const jordanDialogueNodes: DialogueNode[] = [
         choiceId: 'jordan_farewell_birmingham_end',
         text: "Maybe so. Good luck with the speech.",
         nextNodeId: samuelEntryPoints.JORDAN_REFLECTION_GATEWAY,
-        pattern: 'helping'
+        pattern: 'helping',
+        skills: ["emotionalIntelligence","communication"]
       }
     ],
     tags: ['transition', 'jordan_arc', 'bittersweet']

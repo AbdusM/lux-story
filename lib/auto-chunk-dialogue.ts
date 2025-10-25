@@ -71,6 +71,14 @@ export function autoChunkDialogue(
   const sentenceRegex = /([^.!?]+[.!?]+(?:\s|$))/g
   let sentences = text.match(sentenceRegex) || [text]
   
+  // If no sentence boundaries found, try to split at commas and semicolons
+  if (sentences.length === 1 && sentences[0].length > cfg.maxChunkLength) {
+    const commaSplit = sentences[0].split(/([,;]\s+)/)
+    if (commaSplit.length > 1) {
+      sentences = commaSplit.filter(s => s.trim().length > 0)
+    }
+  }
+  
   // IMPROVED: Further split long sentences at natural breaks
   // Priority: Complete sentences > natural clause boundaries > avoid mid-phrase breaks
   const smartBreakSentences: string[] = []

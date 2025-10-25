@@ -476,26 +476,25 @@ function convertSupabaseProfileToDashboard(supabaseProfile: any): SkillProfile {
 
   // Convert skill evolution to SkillEvolutionPoint[] (the correct interface)
   const skillEvolution: SkillEvolutionPoint[] = []
-  const checkpoints = ['Start', 'Mid-Journey', 'Current']
   const totalDemos = Object.values(skillDemonstrations).reduce((sum, demos) => sum + demos.length, 0)
 
   if (totalDemos > 0) {
     skillEvolution.push({
-      checkpoint: 'Start',
+      checkpoint: 'Beginning their journey',
       totalDemonstrations: 0,
       timestamp: Date.now() - 7 * 24 * 60 * 60 * 1000 // 7 days ago estimate
     })
 
     if (totalDemos >= 5) {
       skillEvolution.push({
-        checkpoint: 'Mid-Journey',
+        checkpoint: 'Building confidence',
         totalDemonstrations: Math.floor(totalDemos / 2),
         timestamp: Date.now() - 3 * 24 * 60 * 60 * 1000 // 3 days ago estimate
       })
     }
 
     skillEvolution.push({
-      checkpoint: 'Current',
+      checkpoint: 'Active skill development',
       totalDemonstrations: totalDemos,
       timestamp: Date.now()
     })
@@ -585,24 +584,49 @@ function convertTrackerProfileToDashboard(
 
   // Generate skill evolution from milestones (evidence-based)
   const skillEvolution: SkillEvolutionPoint[] = trackerProfile.milestones.map(milestone => ({
-    checkpoint: milestone.checkpoint,
+    checkpoint: milestone.checkpoint.replace(/Start/g, 'Beginning their journey')
+                                   .replace(/Mid-Journey/g, 'Building confidence')
+                                   .replace(/Current/g, 'Active skill development'),
     totalDemonstrations: milestone.demonstrationCount || 0,
     timestamp: milestone.timestamp
   }))
 
   // Extract key skill moments (top demonstrations)
+  // Group by scene+choice to avoid duplicate insights for the same choice
   const keySkillMoments: KeySkillMoment[] = []
-  Object.entries(skillDemonstrations).slice(0, 5).forEach(([skill, demos]) => {
+  const seenChoices = new Set<string>()
+  
+  Object.entries(skillDemonstrations).forEach(([skill, demos]) => {
     if (demos.length > 0) {
-      const demo = demos[0]
-      keySkillMoments.push({
-        scene: demo.scene,
-        choice: demo.choice || demo.context,  // Use actual choice text, fallback to context
-        skillsDemonstrated: [skill],
-        insight: demo.context  // Use context for the analysis/insight
+      demos.forEach(demo => {
+        const choiceKey = `${demo.scene}:${demo.choice || demo.context}`
+        
+        // If we haven't seen this choice before, create a new moment
+        if (!seenChoices.has(choiceKey)) {
+          seenChoices.add(choiceKey)
+          
+          // Find all skills demonstrated by this same choice
+          const allSkillsFromChoice: string[] = []
+          Object.entries(skillDemonstrations).forEach(([otherSkill, otherDemos]) => {
+            if (otherDemos.some(d => `${d.scene}:${d.choice || d.context}` === choiceKey)) {
+              allSkillsFromChoice.push(otherSkill)
+            }
+          })
+          
+          keySkillMoments.push({
+            scene: demo.scene,
+            choice: demo.choice || demo.context,
+            skillsDemonstrated: allSkillsFromChoice.length > 0 ? allSkillsFromChoice : [skill],
+            insight: demo.context
+          })
+        }
       })
     }
   })
+  
+  // Sort by most skills demonstrated and take top 5
+  keySkillMoments.sort((a, b) => b.skillsDemonstrated.length - a.skillsDemonstrated.length)
+  keySkillMoments.splice(5) // Keep only top 5
 
   // Calculate internal skill levels for gap analysis only (not exported)
   const internalSkills: FutureSkills = {

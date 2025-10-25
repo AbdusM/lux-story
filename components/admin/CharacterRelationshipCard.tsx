@@ -57,32 +57,32 @@ export function CharacterRelationshipCard({ character }: CharacterRelationshipCa
 
         <div className="flex items-center gap-3">
           <span className="text-slate-600 font-medium min-w-fit">Status:</span>
-          <span className="text-slate-700 font-medium">{character.currentStatus}</span>
+          <span className="text-slate-700 font-medium leading-relaxed">{character.currentStatus}</span>
         </div>
 
         {character.vulnerabilityShared && (
           <div className="pt-4 border-t border-slate-200">
-            <div className="bg-rose-50 rounded-lg p-4">
-              <p className="text-rose-700 font-medium mb-2">Vulnerability Shared</p>
-              <p className="text-rose-800 italic">"{character.vulnerabilityShared}"</p>
+            <div className="bg-rose-50 rounded-lg p-5 space-y-2">
+              <p className="text-rose-700 font-medium">Vulnerability Shared</p>
+              <p className="text-rose-800 italic leading-relaxed">"{character.vulnerabilityShared}"</p>
             </div>
           </div>
         )}
 
         {character.studentHelped && (
           <div className="pt-4 border-t border-slate-200">
-            <div className="bg-green-50 rounded-lg p-4">
-              <p className="text-green-700 font-medium mb-2">Student Helped</p>
-              <p className="text-green-800">{character.studentHelped}</p>
+            <div className="bg-green-50 rounded-lg p-5 space-y-2">
+              <p className="text-green-700 font-medium">Student Helped</p>
+              <p className="text-green-800 leading-relaxed">{character.studentHelped}</p>
             </div>
           </div>
         )}
 
         {character.personalSharing && (
           <div className="pt-4 border-t border-slate-200">
-            <div className="bg-blue-50 rounded-lg p-4">
-              <p className="text-blue-700 font-medium mb-2">Personal Sharing</p>
-              <p className="text-blue-800 italic">"{character.personalSharing}"</p>
+            <div className="bg-blue-50 rounded-lg p-5 space-y-2">
+              <p className="text-blue-700 font-medium">Personal Sharing</p>
+              <p className="text-blue-800 italic leading-relaxed">"{character.personalSharing}"</p>
             </div>
           </div>
         )}

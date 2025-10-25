@@ -21,22 +21,47 @@ interface CharacterAvatarProps {
   className?: string
 }
 
-// Character-specific avatar configuration
+// Character-specific avatar configuration using DiceBear with realistic gender alignment
 const characterAvatars = {
-  Maya: { emoji: '🤖', gradient: 'from-blue-400 to-blue-600', name: 'Maya Chen' },
-  Devon: { emoji: '🏗️', gradient: 'from-orange-400 to-orange-600', name: 'Devon Kumar' },
-  Jordan: { emoji: '💼', gradient: 'from-purple-400 to-purple-600', name: 'Jordan Packard' },
-  Samuel: { emoji: '🚂', gradient: 'from-amber-400 to-amber-600', name: 'Samuel' },
-  You: { emoji: '👤', gradient: 'from-emerald-400 to-emerald-600', name: 'You' }
+  'Maya Chen': { 
+    seed: 'maya-chen-female-robotics', 
+    backgroundColor: '3b82f6,60a5fa,93c5fd', // Blue gradient
+    name: 'Maya Chen',
+    style: 'avataaars' // More realistic style
+  },
+  'Devon Kumar': { 
+    seed: 'devon-kumar-male-construction', 
+    backgroundColor: 'f97316,fb923c,fdba74', // Orange gradient
+    name: 'Devon Kumar',
+    style: 'avataaars' // More realistic style
+  },
+  'Jordan Packard': { 
+    seed: 'jordan-packard-female-career', 
+    backgroundColor: '8b5cf6,a78bfa,c4b5fd', // Purple gradient
+    name: 'Jordan Packard',
+    style: 'avataaars' // More realistic style
+  },
+  'Samuel Washington': { 
+    seed: 'samuel-washington-male-conductor', 
+    backgroundColor: 'f59e0b,fbbf24,fde047', // Amber gradient
+    name: 'Samuel Washington',
+    style: 'avataaars' // More realistic style
+  },
+  'You': { 
+    seed: 'you-player-neutral', 
+    backgroundColor: '10b981,34d399,6ee7b7', // Green gradient
+    name: 'You',
+    style: 'avataaars' // More realistic style
+  }
 } as const
 
 type CharacterName = keyof typeof characterAvatars
 
 // Size configurations (mobile-first responsive)
 const sizeClasses = {
-  sm: 'w-8 h-8 sm:w-10 sm:h-10 text-lg sm:text-xl',      // Mobile: 32px, Desktop: 40px
-  md: 'w-10 h-10 sm:w-12 sm:h-12 text-xl sm:text-2xl',   // Mobile: 40px, Desktop: 48px
-  lg: 'w-12 h-12 sm:w-16 sm:h-16 text-2xl sm:text-3xl'   // Mobile: 48px, Desktop: 64px
+  sm: 'w-8 h-8 sm:w-10 sm:h-10',      // Mobile: 32px, Desktop: 40px
+  md: 'w-10 h-10 sm:w-12 sm:h-12',     // Mobile: 40px, Desktop: 48px
+  lg: 'w-12 h-12 sm:w-16 sm:h-16'      // Mobile: 48px, Desktop: 64px
 }
 
 export function CharacterAvatar({
@@ -49,23 +74,24 @@ export function CharacterAvatar({
   // Safeguard: Don't render if explicitly hidden
   if (!showAvatar) return null
 
-  // Safeguard: Normalize character name (handle case variations)
-  const normalizedName = characterName.charAt(0).toUpperCase() + characterName.slice(1).toLowerCase()
-  
-  // Safeguard: Check if this is a valid character
-  const character = characterAvatars[normalizedName as CharacterName]
-  if (!character) return null
+  // Safeguard: Check if this is a valid character (exact match)
+  const character = characterAvatars[characterName as CharacterName]
+  if (!character) {
+    return null
+  }
 
   // Safeguard: Don't show avatar for player
-  if (normalizedName === 'You') return null
+  if (characterName === 'You') return null
+
+  // Generate DiceBear avatar URL with more realistic style
+  const avatarSize = size === 'sm' ? '32' : size === 'md' ? '40' : '64'
+  const avatarUrl = `https://api.dicebear.com/7.x/${character.style}/svg?seed=${encodeURIComponent(character.seed)}&backgroundColor=${character.backgroundColor}&backgroundType=gradientLinear&size=${avatarSize}`
 
   return (
     <div
       className={cn(
         // Base styles
-        'flex-shrink-0 rounded-full flex items-center justify-center',
-        'bg-gradient-to-br',
-        character.gradient,
+        'flex-shrink-0 rounded-full overflow-hidden',
         'shadow-sm border-2 border-white/20',
         
         // Size
@@ -84,9 +110,12 @@ export function CharacterAvatar({
       role="img"
       aria-label={`${character.name} avatar`}
     >
-      <span className="select-none" aria-hidden="true">
-        {character.emoji}
-      </span>
+      <img
+        src={avatarUrl}
+        alt={`${character.name} avatar`}
+        className="w-full h-full object-cover"
+        loading="lazy"
+      />
     </div>
   )
 }
@@ -112,8 +141,7 @@ export function shouldShowAvatar(
   // Don't show for player
   if (characterName.toLowerCase() === 'you') return false
   
-  // Check if valid character exists
-  const normalizedName = characterName.charAt(0).toUpperCase() + characterName.slice(1).toLowerCase()
-  return normalizedName in characterAvatars
+  // Check if valid character exists (exact match)
+  return characterName in characterAvatars
 }
 

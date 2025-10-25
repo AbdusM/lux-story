@@ -26,19 +26,31 @@ function getSupabaseClient(): SupabaseClient {
     console.warn('[Supabase] Expected: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY')
     console.warn('[Supabase] Current config:', { url: !!config.url, anonKey: !!config.anonKey })
 
-    // Return mock client that prevents crashes
-    const mockClient = new Proxy({} as any, {
+    // Return mock client that prevents crashes and supports chaining
+    const createMockChain = (): any => new Proxy({}, {
       get: (target, prop) => {
         console.warn(`[Supabase Mock] Attempted to call: ${String(prop)}`)
-        return () => {
-          return {
-            data: null,
-            error: { message: 'Supabase not configured. Check environment variables.' },
-            status: 503
+        if (prop === 'then' || prop === 'catch') {
+          // Don't chain for Promise-like behavior
+          return undefined
+        }
+        return (...args: any[]) => {
+          // Return another chainable mock for method chaining
+          const result = createMockChain()
+          // Also make it awaitable with error
+          result.then = (resolve: any) => {
+            resolve({ 
+              data: null, 
+              error: { message: 'Supabase not configured. Check environment variables.' } 
+            })
+            return Promise.resolve()
           }
+          return result
         }
       }
     })
+    
+    const mockClient = createMockChain()
 
     _supabaseInstance = mockClient as unknown as SupabaseClient
     return _supabaseInstance

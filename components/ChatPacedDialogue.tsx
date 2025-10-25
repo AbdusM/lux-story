@@ -69,20 +69,7 @@ export function ChatPacedDialogue({
 
   return (
     <div className={`chat-paced-dialogue ${className}`}>
-      {/* Character Avatar + Name Header (shown once at start) */}
-      {showAvatar && visibleChunks.length > 0 && (
-        <div className="flex items-center gap-3 mb-3 animate-fade-in">
-          <CharacterAvatar 
-            characterName={characterName} 
-            size="sm"
-            showAvatar={showAvatar}
-          />
-          <span className="text-sm font-semibold text-slate-700 capitalize">
-            {characterName}
-          </span>
-        </div>
-      )}
-      
+      {/* No inline avatars - handled by top bar */}
       <div className="space-y-3">
         {/* Visible chunks */}
         {visibleChunks.map((chunk, index) => (

@@ -7,8 +7,7 @@ import type { SkillGap } from '@/lib/skill-profile-adapter'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
-import { Button } from '@/components/ui/button'
-import { AlertTriangle, TrendingUp, BookOpen, Target, ExternalLink } from 'lucide-react'
+import { AlertTriangle, TrendingUp, BookOpen, Target } from 'lucide-react'
 
 interface SkillGapsAnalysisProps {
   skillGaps: SkillGap[]
@@ -94,9 +93,11 @@ export function SkillGapsAnalysis({ skillGaps, totalDemonstrations }: SkillGapsA
                     </div>
                   </div>
                   
-                  <div className="bg-white rounded p-3">
-                    <p className="text-sm text-red-800 font-medium mb-1">How to help them grow:</p>
-                    <p className="text-sm text-red-700">{gap.developmentPath}</p>
+                  <div className="bg-white rounded p-4 space-y-2">
+                    <p className="text-sm text-red-800 font-medium">How to help them grow:</p>
+                    <p className="text-sm text-red-700 leading-relaxed">
+                      {gap.developmentPath.replace(/Healthcare Technology Specialist, Sustainable Construction Manager/g, 'healthcare tech and construction careers they\'re exploring')}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -127,7 +128,7 @@ export function SkillGapsAnalysis({ skillGaps, totalDemonstrations }: SkillGapsA
                       </p>
                     </div>
                   </div>
-                  <p className="text-xs text-amber-700 mt-1">{gap.developmentPath}</p>
+                  <p className="text-xs text-amber-700 mt-1 leading-relaxed">{gap.developmentPath}</p>
                 </div>
               ))}
             </div>
@@ -167,20 +168,14 @@ export function SkillGapsAnalysis({ skillGaps, totalDemonstrations }: SkillGapsA
             <BookOpen className="w-4 h-4 text-slate-600" />
             <h4 className="font-semibold text-slate-900">Resources to Help Them Grow</h4>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div className="bg-slate-50 rounded-lg p-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-slate-50 rounded-lg p-4 space-y-2">
               <p className="text-sm font-medium text-slate-900">WEF 2030 Skills Framework</p>
-              <p className="text-xs text-slate-600">World Economic Forum (2023). Future of Jobs Report 2023</p>
-              <Button variant="link" size="sm" className="h-auto p-0 text-blue-600" onClick={() => window.open('/docs/RESEARCH_FOUNDATION.md#1-world-economic-forum-2030-skills-framework', '_blank')}>
-                View Research →
-              </Button>
+              <p className="text-xs text-slate-600 leading-relaxed">World Economic Forum (2023) identifies skills needed for careers this student is exploring</p>
             </div>
-            <div className="bg-slate-50 rounded-lg p-3">
+            <div className="bg-slate-50 rounded-lg p-4 space-y-2">
               <p className="text-sm font-medium text-slate-900">Birmingham Workforce Context</p>
-              <p className="text-xs text-slate-600">AL Dept of Labor (2023). Birmingham Labor Market Report</p>
-              <Button variant="link" size="sm" className="h-auto p-0 text-blue-600" onClick={() => window.open('/docs/RESEARCH_FOUNDATION.md#8-birmingham-workforce-development-context', '_blank')}>
-                View Research →
-              </Button>
+              <p className="text-xs text-slate-600 leading-relaxed">AL Dept of Labor (2023) shows local opportunities matching their skill development</p>
             </div>
           </div>
         </div>

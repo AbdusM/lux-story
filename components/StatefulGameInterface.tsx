@@ -11,15 +11,16 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { DialogueDisplay } from '@/components/DialogueDisplay'
 import { AtmosphericIntro } from '@/components/AtmosphericIntro'
+import { CharacterAvatar } from '@/components/CharacterAvatar'
 // import { CharacterLoadingState } from '@/components/CharacterLoadingState' // Removed - using subtle loading instead
 import { ErrorRecoveryState } from '@/components/ErrorRecoveryState'
 import { SkillToast } from '@/components/SkillToast'
 import { CharacterTransition } from '@/components/CharacterTransition'
-import { Heart, Brain, Clock, Check } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { GameState, GameStateUtils } from '@/lib/character-state'
 import { GameStateManager } from '@/lib/game-state-manager'
 import { useBackgroundSync } from '@/hooks/useBackgroundSync'
+import { generateUserId } from '@/lib/safe-storage'
 import {
   DialogueGraph,
   DialogueNode,
@@ -132,9 +133,10 @@ export default function StatefulGameInterface() {
       let gameState = GameStateManager.loadGameState()
 
       if (!gameState) {
-        // Create new game
-        gameState = GameStateUtils.createNewGameState('player_' + Date.now())
-        console.log('✅ Created new game state')
+        // Create new game with consistent userId (uses/creates localStorage 'lux-player-id')
+        const userId = generateUserId()
+        gameState = GameStateUtils.createNewGameState(userId)
+        console.log('✅ Created new game state for user:', userId)
         
         // CRITICAL FIX: Create database profile using reliable ensureUserProfile utility
         try {
@@ -351,6 +353,9 @@ export default function StatefulGameInterface() {
     // Record skill demonstration from this choice
     if (skillTrackerRef.current && state.currentNode) {
       const sceneMapping = SCENE_SKILL_MAPPINGS[state.currentNode.nodeId]
+      let skillsRecorded = false
+      
+      // Priority 1: Use SCENE_SKILL_MAPPINGS if available (rich context)
       if (sceneMapping) {
         const choiceMapping = sceneMapping.choiceMappings[choice.choice.choiceId]
         if (choiceMapping) {
@@ -360,7 +365,8 @@ export default function StatefulGameInterface() {
             choiceMapping.skillsDemonstrated,
             choiceMapping.context
           )
-          console.log(`📊 Recorded skill demonstration: ${choiceMapping.skillsDemonstrated.join(', ')}`)
+          console.log(`📊 Recorded skill demonstration (scene mapping): ${choiceMapping.skillsDemonstrated.join(', ')}`)
+          skillsRecorded = true
           
           // Show skill demonstration toast
           setState(prev => ({
@@ -371,6 +377,18 @@ export default function StatefulGameInterface() {
             }
           }))
         }
+      }
+      
+      // Priority 2: Fallback to choice.skills if no scene mapping (newly added 341 skills)
+      if (!skillsRecorded && choice.choice.skills && choice.choice.skills.length > 0) {
+        const skills = choice.choice.skills as string[] // Cast to string[] for compatibility
+        skillTrackerRef.current.recordSkillDemonstration(
+          state.currentNode.nodeId,
+          choice.choice.choiceId,
+          skills,
+          `Demonstrated ${skills.join(', ')} through choice: "${choice.choice.text}"`
+        )
+        console.log(`📊 Recorded skill demonstration (choice.skills): ${skills.join(', ')}`)
       }
     }
 
@@ -601,63 +619,47 @@ export default function StatefulGameInterface() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 p-3 sm:p-4">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen max-h-screen overflow-y-auto bg-gradient-to-b from-slate-50 to-slate-100">
+      <div className="max-w-4xl mx-auto p-3 sm:p-4">
 
-        {/* Header - Mobile Optimized */}
-        <div className="flex flex-col-reverse sm:flex-row justify-between gap-2 mb-4">
-          {/* Choices at top on mobile (easy to reach) */}
-          <div className="flex gap-2 sm:hidden">
-            <Button variant="ghost" size="sm" onClick={continueJourney} className="text-xs min-h-[48px]">
-              New Conversation
-            </Button>
-          </div>
-          
-          {/* Actions at top on desktop, bottom on mobile */}
-          <div className="flex justify-end gap-2">
-            {/* Debug: Show admin button logic */}
+        {/* Subtle top utility bar */}
+        <div className="flex justify-between items-center mb-3">
+          <Link href="/admin">
+            <button className="text-xs text-slate-400 hover:text-slate-600 transition-colors px-2 py-1">
+              Admin
+            </button>
+          </Link>
+          <div className="flex gap-2">
             {process.env.NODE_ENV === 'development' && (
-              <div className="text-xs text-gray-500 mb-2">
-                Debug: NODE_ENV={process.env.NODE_ENV}, 
-                window={typeof window !== 'undefined' ? 'exists' : 'undefined'}, 
-                search={typeof window !== 'undefined' ? window.location.search : 'no-window'}
-              </div>
+              <Button variant="ghost" size="sm" onClick={exportFullAnalyticsProfile} className="text-xs h-7 px-2 text-slate-400">
+                Export
+              </Button>
             )}
-            {true && (
-              <>
-                <Link href="/admin">
-                  <Button variant="ghost" size="sm" className="text-xs min-h-[48px]">
-                    Admin
-                  </Button>
-                </Link>
-                <Button variant="secondary" size="sm" onClick={exportFullAnalyticsProfile} className="text-xs min-h-[48px]">
-                  Export Analytics JSON
-                </Button>
-              </>
-            )}
-            <Button variant="ghost" size="sm" onClick={continueJourney} className="text-xs hidden sm:inline-flex min-h-[48px]">
-              New Conversation
-            </Button>
+            <button 
+              onClick={continueJourney} 
+              className="text-xs text-slate-400 hover:text-slate-600 transition-colors px-2 py-1"
+            >
+              Reset
+            </button>
           </div>
         </div>
 
-        {/* Character Banner - Minimal Chat Style */}
+        {/* Character Banner - Minimal Chat Style with Avatar */}
         {currentCharacter && (
           <div className="mb-4 px-3 py-2 bg-white/50 border border-slate-200 rounded-lg">
             <div className="flex items-center justify-between gap-3 text-xs sm:text-sm">
               <div className="flex items-center gap-2 font-medium text-slate-700">
+                <CharacterAvatar 
+                  characterName={characterNames[state.currentCharacterId]} 
+                  size="sm"
+                  showAvatar={true}
+                />
                 <span className="truncate">{characterNames[state.currentCharacterId]}</span>
                 <span className="text-slate-400">•</span>
                 <span className="text-slate-600">{currentCharacter.relationshipStatus}</span>
               </div>
-              <div className="text-slate-500 flex-shrink-0 flex items-center gap-2">
+              <div className="text-slate-500 flex-shrink-0">
                 <span>Trust: {currentCharacter.trust}/10</span>
-                {state.showSaveConfirmation && (
-                  <span className="text-xs text-green-600 flex items-center gap-1 animate-fade-in">
-                    <Check className="w-3 h-3" />
-                    Saved
-                  </span>
-                )}
               </div>
             </div>
           </div>
@@ -667,14 +669,11 @@ export default function StatefulGameInterface() {
         <Card className="mb-4 sm:mb-6">
           <CardContent className="p-4 sm:p-6">
             <div className="mb-3 sm:mb-4">
-              <h2 className="text-base sm:text-lg font-semibold text-slate-700 mb-3">
-                {state.currentNode?.speaker}
-              </h2>
               <DialogueDisplay 
                 text={state.currentContent} 
                 useChatPacing={state.useChatPacing}
                 characterName={state.currentNode?.speaker}
-                showAvatar={true}
+                showAvatar={false}
                 isContinuedSpeaker={state.currentNode?.speaker === state.previousSpeaker}
               />
             </div>
@@ -692,7 +691,7 @@ export default function StatefulGameInterface() {
         {!isEnding && (
           <Card>
             <CardContent className="p-4 sm:p-6">
-              <h3 className="text-base sm:text-lg font-semibold text-slate-700 mb-3 sm:mb-4">Your Response</h3>
+              <h3 className="text-lg sm:text-xl font-semibold text-slate-700 mb-3 sm:mb-4">Your Response</h3>
               <div className="space-y-2 sm:space-y-3">
                 {state.availableChoices.map((evaluatedChoice, index) => (
                   <Button
@@ -704,19 +703,14 @@ export default function StatefulGameInterface() {
                       // Base sizing (touch target)
                       "min-h-[48px] w-full px-6 py-3",
                       
-                      // Typography
-                      "text-base font-medium text-left",
+                      // Typography - ensure text wraps
+                      "text-base font-medium text-left whitespace-normal",
                       
                       // Clean, subtle styling
                       "border border-slate-200 bg-white",
                       "hover:bg-slate-50 hover:border-slate-300 hover:shadow-sm",
                       "active:scale-[0.98]",
                       "transition-all duration-200 ease-out",
-                      
-                      // Pattern-specific subtle accent
-                      evaluatedChoice.choice.pattern === 'helping' && "border-l-2 border-l-rose-300",
-                      evaluatedChoice.choice.pattern === 'analytical' && "border-l-2 border-l-blue-300",
-                      evaluatedChoice.choice.pattern === 'patience' && "border-l-2 border-l-green-300",
                       
                       // Selection feedback
                       state.selectedChoice === evaluatedChoice.choice.choiceId && "bg-blue-50 border-blue-300 scale-[0.98]",
@@ -819,27 +813,6 @@ export default function StatefulGameInterface() {
           />
         )}
 
-        {/* Mobile Bottom Action Bar */}
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 p-4 sm:hidden z-40">
-          <div className="flex gap-2">
-            <Button 
-              onClick={continueJourney} 
-              variant="outline" 
-              size="sm" 
-              className="flex-1"
-            >
-              New Conversation
-            </Button>
-            <Link href="/admin" className="flex-1">
-              <Button variant="ghost" size="sm" className="w-full min-h-[48px]">
-                Admin
-              </Button>
-            </Link>
-          </div>
-        </div>
-
-        {/* Add bottom padding on mobile to account for sticky bar */}
-        <div className="h-20 sm:hidden" />
       </div>
     </div>
   )

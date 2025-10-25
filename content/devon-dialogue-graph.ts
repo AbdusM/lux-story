@@ -297,6 +297,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "What's going on with your dad?",
         nextNodeId: 'devon_father_reveal',
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
         consequence: {
           characterId: 'devon',
           trustChange: 1
@@ -534,6 +535,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "That capstone project sounds impressive.",
         nextNodeId: 'devon_career_context',
         pattern: 'helping',
+        skills: ['communication', 'emotional_intelligence'],
         consequence: {
           characterId: 'devon',
           trustChange: 1,
@@ -577,6 +579,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "Sounds like you're learning what your system can't teach.",
         nextNodeId: 'devon_system_failure',
         pattern: 'patience',
+        skills: ['emotional_intelligence', 'communication'],
         consequence: {
           characterId: 'devon',
           trustChange: 1
@@ -626,6 +629,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "That sounds like a real conversation, not a scripted one.",
         nextNodeId: 'devon_grateful_insight',
         pattern: 'helping',
+        skills: ['emotional_intelligence', 'communication'],
         consequence: {
           characterId: 'devon',
           trustChange: 2,
@@ -1015,7 +1019,8 @@ export const devonDialogueNodes: DialogueNode[] = [
         choiceId: 'ask_if_worked',
         text: "And did it work?",
         nextNodeId: 'devon_system_failure',
-        pattern: 'analytical'
+        pattern: 'analytical',
+        skills: ['communication', 'critical_thinking']
       }
     ]
   },
@@ -1060,6 +1065,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "What actually happened when you showed him?",
         nextNodeId: 'devon_flowchart_incident',
         pattern: 'exploring',
+        skills: ['communication', 'emotional_intelligence'],
         visibleCondition: {
           trust: { min: 3 }
         },
@@ -1219,6 +1225,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "So what's the right problem?",
         nextNodeId: 'devon_realizes_connection',
         pattern: 'exploring',
+        skills: ['critical_thinking', 'problem_solving', 'communication'],
         consequence: {
           characterId: 'devon',
           trustChange: 1
@@ -1284,6 +1291,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "Exactly. You're not broken. Your framework just needed updating.",
         nextNodeId: 'devon_pause_before_crossroads',
         pattern: 'helping',
+        skills: ["emotionalIntelligence","communication"],
         consequence: {
           characterId: 'devon',
           trustChange: 1
@@ -1314,6 +1322,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "Now you're thinking in systems that can hold complexity.",
         nextNodeId: 'devon_pause_before_crossroads',
         pattern: 'analytical',
+        skills: ["criticalThinking","communication"],
         consequence: {
           characterId: 'devon',
           trustChange: 1
@@ -1343,7 +1352,8 @@ export const devonDialogueNodes: DialogueNode[] = [
         choiceId: 'what_now',
         text: "So what will you do?",
         nextNodeId: 'devon_pause_before_crossroads',
-        pattern: 'exploring'
+        pattern: 'exploring',
+        skills: ['communication', 'emotional_intelligence']
       }
     ]
   },
@@ -1433,7 +1443,8 @@ export const devonDialogueNodes: DialogueNode[] = [
         choiceId: 'continue_after_integration',
         text: "Good luck with the call.",
         nextNodeId: 'devon_farewell_integration',
-        pattern: 'analytical'
+        pattern: 'analytical',
+        skills: ["criticalThinking","communication"]
       }
     ],
     onEnter: [
@@ -1461,7 +1472,8 @@ export const devonDialogueNodes: DialogueNode[] = [
         choiceId: 'continue_after_heart',
         text: "He'll hear you.",
         nextNodeId: 'devon_farewell_heart',
-        pattern: 'helping'
+        pattern: 'helping',
+        skills: ["emotionalIntelligence","communication"]
       }
     ],
     onEnter: [
@@ -1489,7 +1501,8 @@ export const devonDialogueNodes: DialogueNode[] = [
         choiceId: 'continue_after_presence',
         text: "Your mom would be proud.",
         nextNodeId: 'devon_farewell_presence',
-        pattern: 'patience'
+        pattern: 'patience',
+        skills: ["emotionalIntelligence","communication"]
       }
     ],
     onEnter: [
