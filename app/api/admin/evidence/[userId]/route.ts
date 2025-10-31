@@ -1,18 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import { requireAdminAuth, getAdminSupabaseClient } from '@/lib/admin-supabase-client'
 
 /**
  * Admin Evidence API
  * Aggregates real Supabase data for Evidence Tab frameworks
  */
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
-
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ userId: string }> }
 ) {
+  // Authentication check - verify admin cookie
+  const authError = requireAdminAuth(request)
+  if (authError) return authError
+
   const { userId } = await params
 
   if (!userId) {
@@ -20,7 +21,7 @@ export async function GET(
   }
 
   try {
-    const supabase = createClient(supabaseUrl, supabaseServiceKey)
+    const supabase = getAdminSupabaseClient()
 
     // Parallel queries for all framework data
     const [
@@ -180,9 +181,12 @@ export async function GET(
       }
     })
   } catch (error) {
-    console.error('Evidence API error:', error)
+    // Log detailed error server-side
+    console.error('[Admin:Evidence] Unexpected error:', error)
+
+    // Return generic error to client (don't expose details)
     return NextResponse.json(
-      { error: 'Failed to fetch evidence data', details: error },
+      { error: 'An error occurred fetching evidence data' },
       { status: 500 }
     )
   }
