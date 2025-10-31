@@ -14,7 +14,7 @@ import { FutureSkillsSystem } from './2030-skills-system'
 import { safeStorage } from './safe-storage'
 import type { SimpleGameState } from '../hooks/useSimpleGame'
 import { SCENE_SKILL_MAPPINGS, type SceneSkillMapping } from './scene-skill-mappings'
-import { queueSkillSummarySync } from './sync-queue'
+import { queueSkillSummarySync, queueSkillDemonstrationSync } from './sync-queue'
 import { logSkillDemo } from './real-time-monitor'
 
 export interface SkillDemonstration {
@@ -119,11 +119,22 @@ export class SkillTracker {
       this.handleSaveFailure()
     }
 
-    // 7. Queue Supabase sync every 3rd demonstration for each skill
+    // 7. Queue individual skill demonstrations AND summaries
     demonstrations.forEach(demo => {
       demo.skillsDemonstrated.forEach(skill => {
+        // Queue EVERY individual demonstration for granular admin evidence
+        queueSkillDemonstrationSync({
+          user_id: this.userId,
+          skill_name: skill,
+          scene_id: demo.scene,
+          choice_text: demo.choice,
+          context: demo.context,
+          demonstrated_at: new Date(demo.timestamp).toISOString()
+        })
+
         const skillDemoCount = this.getSkillDemonstrationCount(skill)
 
+        // Also queue aggregated summary every 3rd demonstration
         if (skillDemoCount % 3 === 0) {
           // Get all scenes where this skill was demonstrated
           const scenesInvolved = Array.from(
@@ -145,7 +156,7 @@ export class SkillTracker {
           })
 
           console.log(
-            `[SkillTracker] Queued sync for ${skill} (${skillDemoCount} demonstrations)`
+            `[SkillTracker] Queued summary sync for ${skill} (${skillDemoCount} demonstrations)`
           )
         }
       })

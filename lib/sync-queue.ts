@@ -162,11 +162,26 @@ export class SyncQueue {
     }
 
     for (const action of queue) {
-      const actionAge = Date.now() - action.timestamp
+      // Validate action structure
+      if (!action || typeof action !== 'object') {
+        console.error('❌ [SyncQueue] Invalid action structure:', action)
+        continue
+      }
+      
+      if (!action.id || !action.type) {
+        console.error('❌ [SyncQueue] Action missing required fields:', {
+          hasId: !!action.id,
+          hasType: !!action.type,
+          actionKeys: Object.keys(action)
+        })
+        continue
+      }
+      
+      const actionAge = Date.now() - (action.timestamp || Date.now())
       console.log('⏳ [SyncQueue] Processing action:', {
         type: action.type,
-        id: action.id.substring(0, 8),
-        retries: action.retries,
+        id: action.id ? action.id.substring(0, 8) : 'no-id',
+        retries: action.retries || 0,
         ageSeconds: Math.floor(actionAge / 1000)
       })
 
@@ -230,14 +245,27 @@ export class SyncQueue {
 
         } else if (action.type === 'career_analytics') {
           // Sync career analytics to Supabase
-          const response = await fetch('/api/user/career-analytics', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(action.data)
-          })
+          let response: Response
+          try {
+            response = await fetch('/api/user/career-analytics', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(action.data)
+            })
+          } catch (fetchError) {
+            // Network error - rethrow with more context
+            throw new Error(`Network error syncing career analytics: ${fetchError instanceof Error ? fetchError.message : String(fetchError)}`)
+          }
 
           if (!response.ok) {
-            throw new Error(`Career analytics sync failed: ${response.status}`)
+            // Try to get error details from response
+            let errorBody = ''
+            try {
+              errorBody = await response.text()
+            } catch (e) {
+              // Ignore if we can't read body
+            }
+            throw new Error(`Career analytics sync failed: ${response.status} ${response.statusText}${errorBody ? ` - ${errorBody.slice(0, 100)}` : ''}`)
           }
 
           successfulIds.push(action.id)
@@ -248,14 +276,27 @@ export class SyncQueue {
 
         } else if (action.type === 'skill_summary') {
           // Sync skill summary to Supabase
-          const response = await fetch('/api/user/skill-summaries', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(action.data)
-          })
+          let response: Response
+          try {
+            response = await fetch('/api/user/skill-summaries', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(action.data)
+            })
+          } catch (fetchError) {
+            // Network error - rethrow with more context
+            throw new Error(`Network error syncing skill summary: ${fetchError instanceof Error ? fetchError.message : String(fetchError)}`)
+          }
 
           if (!response.ok) {
-            throw new Error(`Skill summary sync failed: ${response.status}`)
+            // Try to get error details from response
+            let errorBody = ''
+            try {
+              errorBody = await response.text()
+            } catch (e) {
+              // Ignore if we can't read body
+            }
+            throw new Error(`Skill summary sync failed: ${response.status} ${response.statusText}${errorBody ? ` - ${errorBody.slice(0, 100)}` : ''}`)
           }
 
           successfulIds.push(action.id)
@@ -268,6 +309,41 @@ export class SyncQueue {
           // Real-time monitoring
           logSync((action.data as { user_id?: string })?.user_id || 'unknown', 'skill_summary', true)
 
+        } else if (action.type === 'skill_demonstration') {
+          // Sync individual skill demonstration to Supabase
+          let response: Response
+          try {
+            response = await fetch('/api/user/skill-demonstrations', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(action.data)
+            })
+          } catch (fetchError) {
+            // Network error - rethrow with more context
+            throw new Error(`Network error syncing skill demonstration: ${fetchError instanceof Error ? fetchError.message : String(fetchError)}`)
+          }
+
+          if (!response.ok) {
+            // Try to get error details from response
+            let errorBody = ''
+            try {
+              errorBody = await response.text()
+            } catch (e) {
+              // Ignore if we can't read body
+            }
+            throw new Error(`Skill demonstration sync failed: ${response.status} ${response.statusText}${errorBody ? ` - ${errorBody.slice(0, 100)}` : ''}`)
+          }
+
+          successfulIds.push(action.id)
+          console.log('✅ [SyncQueue] Action successful:', {
+            type: 'skill_demonstration',
+            skill: (action.data as { skill_name?: string })?.skill_name,
+            scene: (action.data as { scene_id?: string })?.scene_id
+          })
+
+          // Real-time monitoring
+          logSync((action.data as { user_id?: string })?.user_id || 'unknown', 'skill_demonstration', true)
+
         } else {
           console.error(`❌ [SyncQueue] Unknown action type: ${action.type}`)
           failedActions.push({ ...action, retries: action.retries + 1 })
@@ -276,23 +352,41 @@ export class SyncQueue {
       } catch (error) {
         const willRetry = action.retries < 3
         let errorMessage = 'Unknown error'
+        let errorDetails: any = null
         
         if (error instanceof Error) {
-          errorMessage = error.message
+          errorMessage = error.message || 'Error object has no message'
+          errorDetails = {
+            name: error.name,
+            stack: error.stack,
+            message: error.message
+          }
         } else if (error && typeof error === 'object') {
           // Handle non-Error objects (like API responses)
-          errorMessage = JSON.stringify(error)
+          try {
+            errorMessage = JSON.stringify(error)
+            errorDetails = error
+          } catch (e) {
+            errorMessage = 'Failed to stringify error object'
+            errorDetails = { toString: String(error) }
+          }
         } else if (typeof error === 'string') {
           errorMessage = error
+        } else if (error === null || error === undefined) {
+          errorMessage = 'Error is null or undefined'
+        } else {
+          errorMessage = `Unexpected error type: ${typeof error}`
+          errorDetails = { value: String(error) }
         }
         
         console.error('❌ [SyncQueue] Action failed:', {
           type: action.type,
-          id: action.id.substring(0, 8),
+          id: action.id?.substring(0, 8) || 'unknown',
           error: errorMessage,
-          retries: action.retries,
+          errorDetails,
+          retries: action.retries || 0,
           willRetry,
-          rawError: error
+          actionData: action.data ? (typeof action.data === 'object' ? Object.keys(action.data) : action.data) : 'no data'
         })
 
         // Real-time monitoring for failures
@@ -404,6 +498,29 @@ export function queueSkillSummarySync(data: {
     data: {
       ...data,
       last_demonstrated: data.last_demonstrated || new Date().toISOString()
+    },
+    timestamp: Date.now()
+  })
+}
+
+/**
+ * Helper: Queue individual skill demonstration sync
+ * Called for EVERY demonstration to provide granular evidence
+ */
+export function queueSkillDemonstrationSync(data: {
+  user_id: string
+  skill_name: string
+  scene_id: string
+  choice_text: string
+  context: string
+  demonstrated_at?: string
+}): void {
+  SyncQueue.addToQueue({
+    id: generateActionId(),
+    type: 'skill_demonstration',
+    data: {
+      ...data,
+      demonstrated_at: data.demonstrated_at || new Date().toISOString()
     },
     timestamp: Date.now()
   })
