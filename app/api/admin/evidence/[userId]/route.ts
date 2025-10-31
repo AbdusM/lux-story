@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAdminAuth, getAdminSupabaseClient } from '@/lib/admin-supabase-client'
+import { auditLog } from '@/lib/audit-logger'
 
 /**
  * Admin Evidence API
@@ -37,6 +38,7 @@ export async function GET(
         .from('player_profiles')
         .select('*')
         .eq('user_id', userId)
+        .abortSignal(AbortSignal.timeout(10000))
         .single(),
 
       // Skill demonstrations (with temporal data)
@@ -44,32 +46,37 @@ export async function GET(
         .from('skill_demonstrations')
         .select('*')
         .eq('user_id', userId)
-        .order('demonstrated_at', { ascending: true }),
+        .order('demonstrated_at', { ascending: true })
+        .abortSignal(AbortSignal.timeout(10000)),
 
       // Skill summaries (rich context)
       supabase
         .from('skill_summaries')
         .select('*')
-        .eq('user_id', userId),
+        .eq('user_id', userId)
+        .abortSignal(AbortSignal.timeout(10000)),
 
       // Career explorations
       supabase
         .from('career_explorations')
         .select('*')
         .eq('user_id', userId)
-        .order('match_score', { ascending: false }),
+        .order('match_score', { ascending: false })
+        .abortSignal(AbortSignal.timeout(10000)),
 
       // Relationships
       supabase
         .from('relationship_progress')
         .select('*')
-        .eq('user_id', userId),
+        .eq('user_id', userId)
+        .abortSignal(AbortSignal.timeout(10000)),
 
       // Platform states
       supabase
         .from('platform_states')
         .select('*')
         .eq('user_id', userId)
+        .abortSignal(AbortSignal.timeout(10000))
     ])
 
     const profile = profileResult.data
@@ -163,6 +170,9 @@ export async function GET(
       explorationScore: calculateExplorationScore(skillDemos),
       platformAlignment: platforms.filter(p => (p.warmth || 0) > 50).length
     }
+
+    // Audit log: Admin accessed student evidence data
+    auditLog('view_evidence_data', 'admin', userId)
 
     return NextResponse.json({
       userId,

@@ -5,7 +5,7 @@
   "description": "Performance-based career exploration platform using contemplative storytelling and behavioral psychology",
   "main": "index.js",
   "scripts": {
-    "dev": "PORT=3003 next dev",
+    "dev": "PORT=3005 next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -17,6 +17,7 @@
     "validate-env": "npx tsx scripts/validate-env.ts",
     "verify:admin": "npx tsx scripts/verify-production-admin.ts",
     "verify:admin:prod": "npx tsx scripts/verify-production-admin.ts",
+    "test:admin-improvements": "npx tsx scripts/test-admin-improvements.ts",
     "verify:env:vercel": "vercel env ls",
     "predeploy": "npm run validate-env && npm run test:run && npm run build",
     "deploy": "npx wrangler pages deploy out --project-name=lux-story",
@@ -74,6 +75,7 @@
     "remark-gfm": "^4.0.1",
     "tailwind-merge": "^3.3.1",
     "tailwindcss": "^3.4.17",
+    "zod": "^4.1.12",
     "zustand": "^5.0.8"
   },
   "devDependencies": {

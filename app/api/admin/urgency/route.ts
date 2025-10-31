@@ -15,6 +15,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAdminAuth, getAdminSupabaseClient } from '@/lib/admin-supabase-client'
 import type { UrgencyAPIResponse, RecalculationResponse, UrgencyLevel } from '@/lib/types/admin'
+import { auditLog } from '@/lib/audit-logger'
 
 /**
  * GET /api/admin/urgency
@@ -42,6 +43,7 @@ export async function GET(request: NextRequest): Promise<NextResponse<UrgencyAPI
         .from('urgent_students')
         .select('*')
         .eq('user_id', userIdParam)
+        .abortSignal(AbortSignal.timeout(10000)) // 10 second timeout
         .single()
 
       if (error) {
@@ -82,6 +84,9 @@ export async function GET(request: NextRequest): Promise<NextResponse<UrgencyAPI
         relationshipsFormed: data.relationships_formed || 0
       }
 
+      // Audit log: Admin accessed single user urgency data
+      auditLog('view_urgency_single', 'admin', userIdParam)
+
       return NextResponse.json({
         user,
         timestamp: new Date().toISOString()
@@ -114,7 +119,7 @@ export async function GET(request: NextRequest): Promise<NextResponse<UrgencyAPI
       query = query.eq('urgency_level', level)
     }
 
-    const { data, error } = await query
+    const { data, error } = await query.abortSignal(AbortSignal.timeout(10000))
 
     if (error) {
       console.error('[Admin API] Database error:', error)
@@ -152,6 +157,9 @@ export async function GET(request: NextRequest): Promise<NextResponse<UrgencyAPI
       relationshipsFormed: row.relationships_formed,
       avgTrustLevel: row.avg_trust_level
     }))
+
+    // Audit log: Admin accessed urgency list
+    auditLog('view_urgency_list', 'admin', undefined, { level, count: students.length })
 
     return NextResponse.json({
       students,
@@ -198,6 +206,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<Recalcula
     const { data: players, error: fetchError } = await supabase
       .from('player_profiles')
       .select('user_id')
+      .abortSignal(AbortSignal.timeout(10000))
 
     if (fetchError) {
       console.error('[Admin API] Error fetching players:', fetchError)
@@ -256,6 +265,12 @@ export async function POST(request: NextRequest): Promise<NextResponse<Recalcula
       console.error('[Admin API] Failed to refresh materialized view:', refreshError)
       // Don't fail the request - calculations succeeded
     }
+
+    // Audit log: Admin triggered urgency recalculation
+    auditLog('recalculate_urgency', 'admin', undefined, {
+      playersProcessed: successCount,
+      errors: errorCount
+    })
 
     return NextResponse.json({
       message: `Urgency calculation complete: ${successCount} players processed${errorCount > 0 ? `, ${errorCount} errors` : ''}`,
