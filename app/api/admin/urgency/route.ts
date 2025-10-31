@@ -8,36 +8,13 @@
  * - GET /api/admin/urgency?level={all|high|critical}&limit=50
  * - POST /api/admin/urgency (triggers recalculation for all players)
  *
- * Authentication: Bearer token (ADMIN_API_TOKEN environment variable)
- *
- * TODO (Security): Replace Bearer token with proper OAuth/JWT before production
- * Current setup sufficient for pilot (internal network, ~3 admins)
- * Future: Implement Supabase Auth with admin role claims
+ * Authentication: Cookie-based (admin_auth_token)
+ * Security: Uses centralized admin client with service role access
  */
 
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import { requireAdminAuth, getAdminSupabaseClient } from '@/lib/admin-supabase-client'
 import type { UrgencyAPIResponse, RecalculationResponse, UrgencyLevel } from '@/lib/types/admin'
-
-// SECURITY: Use server-side variables only for admin operations
-const supabaseUrl = process.env.SUPABASE_URL!
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
-
-// Simple auth helper - inline for MVP, easy to extract to middleware later
-function requireAuth(request: NextRequest): NextResponse | null {
-  const token = request.headers.get('Authorization')
-  const expectedToken = `Bearer ${process.env.ADMIN_API_TOKEN}`
-
-  if (!token || token !== expectedToken) {
-    console.warn('[Admin API] Unauthorized access attempt from:', request.headers.get('x-forwarded-for') || 'unknown')
-    return NextResponse.json(
-      { error: 'Unauthorized - Admin access required' },
-      { status: 401 }
-    )
-  }
-
-  return null // Auth passed
-}
 
 /**
  * GET /api/admin/urgency
@@ -49,11 +26,69 @@ function requireAuth(request: NextRequest): NextResponse | null {
  */
 export async function GET(request: NextRequest): Promise<NextResponse<UrgencyAPIResponse>> {
   // Authentication check
-  const authError = requireAuth(request)
+  const authError = requireAdminAuth(request)
   if (authError) return authError as NextResponse<UrgencyAPIResponse>
 
   try {
+    const supabase = getAdminSupabaseClient()
     const searchParams = request.nextUrl.searchParams
+    const userIdParam = searchParams.get('userId') // Single user lookup
+
+    // Single user lookup - optimized path
+    if (userIdParam) {
+      console.log(`[Admin API] Fetching urgency data for user: ${userIdParam}`)
+      
+      const { data, error } = await supabase
+        .from('urgent_students')
+        .select('*')
+        .eq('user_id', userIdParam)
+        .single()
+
+      if (error) {
+        console.error('[Admin API] Single user query error:', error)
+        return NextResponse.json(
+          {
+            user: null,
+            timestamp: new Date().toISOString()
+          },
+          { status: 404 }
+        )
+      }
+
+      if (!data) {
+        return NextResponse.json(
+          {
+            user: null,
+            timestamp: new Date().toISOString()
+          },
+          { status: 404 }
+        )
+      }
+
+      // Transform to camelCase
+      const user = {
+        userId: data.user_id,
+        currentScene: data.current_scene,
+        totalDemonstrations: data.total_demonstrations || 0,
+        lastActivity: data.last_activity,
+        urgencyScore: data.urgency_score,
+        urgencyLevel: data.urgency_level,
+        urgencyNarrative: data.urgency_narrative,
+        disengagementScore: data.disengagement_score,
+        confusionScore: data.confusion_score,
+        stressScore: data.stress_score,
+        isolationScore: data.isolation_score,
+        uniqueScenesVisited: data.unique_scenes_visited || 0,
+        relationshipsFormed: data.relationships_formed || 0
+      }
+
+      return NextResponse.json({
+        user,
+        timestamp: new Date().toISOString()
+      })
+    }
+
+    // Multi-user query (original behavior)
     const levelParam = searchParams.get('level') || 'all'
     const limitParam = parseInt(searchParams.get('limit') || '50', 10)
 
@@ -67,9 +102,6 @@ export async function GET(request: NextRequest): Promise<NextResponse<UrgencyAPI
       : 'all'
 
     console.log(`[Admin API] Fetching urgent students: level=${level}, limit=${limit}`)
-
-    // Create service role client (bypasses RLS for admin access)
-    const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
     // Query urgent_students materialized view
     let query = supabase
@@ -127,8 +159,11 @@ export async function GET(request: NextRequest): Promise<NextResponse<UrgencyAPI
       timestamp: new Date().toISOString()
     } as UrgencyAPIResponse)
 
-  } catch (error) {
+  } catch (error: any) {
+    // Log detailed error server-side
     console.error('[Admin API] Unexpected error:', error)
+
+    // Return generic error to client (don't expose implementation details)
     return NextResponse.json(
       {
         students: [],
@@ -151,14 +186,13 @@ export async function GET(request: NextRequest): Promise<NextResponse<UrgencyAPI
  */
 export async function POST(request: NextRequest): Promise<NextResponse<RecalculationResponse>> {
   // Authentication check
-  const authError = requireAuth(request)
+  const authError = requireAdminAuth(request)
   if (authError) return authError as NextResponse<RecalculationResponse>
 
   try {
     console.log('[Admin API] Starting urgency recalculation for all players...')
 
-    // Create service role client
-    const supabase = createClient(supabaseUrl, supabaseServiceKey)
+    const supabase = getAdminSupabaseClient()
 
     // Get all player IDs
     const { data: players, error: fetchError } = await supabase
@@ -229,11 +263,14 @@ export async function POST(request: NextRequest): Promise<NextResponse<Recalcula
       timestamp: new Date().toISOString()
     })
 
-  } catch (error) {
+  } catch (error: any) {
+    // Log detailed error server-side
     console.error('[Admin API] Unexpected error during recalculation:', error)
+
+    // Return generic error to client
     return NextResponse.json(
       {
-        message: 'Unexpected error during recalculation',
+        message: 'An error occurred during recalculation',
         playersProcessed: 0,
         timestamp: new Date().toISOString()
       },

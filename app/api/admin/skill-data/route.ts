@@ -7,34 +7,21 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import { requireAdminAuth, getAdminSupabaseClient } from '@/lib/admin-supabase-client'
 
 // Mark as dynamic for Next.js static export compatibility
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
-
-// Server-side Supabase client with service role (bypasses RLS)
-function getServiceClient() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
-
-  if (!supabaseUrl || !serviceRoleKey) {
-    throw new Error('Missing Supabase environment variables')
-  }
-
-  return createClient(supabaseUrl, serviceRoleKey, {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false
-    }
-  })
-}
 
 /**
  * GET /api/admin/skill-data?userId=X
  * Fetch complete skill profile for admin dashboard
  */
 export async function GET(request: NextRequest) {
+  // Authentication check - verify admin cookie
+  const authError = requireAdminAuth(request)
+  if (authError) return authError
+
   try {
     const { searchParams } = new URL(request.url)
     const userId = searchParams.get('userId')
@@ -49,7 +36,7 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    const supabase = getServiceClient()
+    const supabase = getAdminSupabaseClient()
 
     // Fetch complete user profile with all related data
     const { data: profile, error } = await supabase
@@ -112,10 +99,13 @@ export async function GET(request: NextRequest) {
       success: true,
       profile
     })
-  } catch (error) {
+  } catch (error: any) {
+    // Log detailed error server-side
     console.error('[Admin:SkillData] Unexpected error:', error)
+
+    // Return generic error to client
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'An error occurred fetching skill data' },
       { status: 500 }
     )
   }
