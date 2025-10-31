@@ -109,157 +109,6 @@ interface SkillSummary {
   lastDemonstrated: string
 }
 
-// Mock data for reference (will be replaced with real profile prop)
-const mockUserData = {
-  userId: "user_12345",
-  userName: "Jamal T.",
-  
-  // From 2030 Skills System - 12 concrete skills (0-1 scale)
-  skills: {
-    criticalThinking: 0.82,      // Advanced
-    communication: 0.75,          // Intermediate
-    collaboration: 0.58,          // Developing
-    creativity: 0.65,             // Intermediate
-    adaptability: 0.70,           // Intermediate
-    leadership: 0.52,             // Developing
-    digitalLiteracy: 0.68,        // Intermediate
-    emotionalIntelligence: 0.85,  // Advanced
-    culturalCompetence: 0.78,     // Intermediate
-    financialLiteracy: 0.45,      // Developing
-    timeManagement: 0.42,         // Needs work
-    problemSolving: 0.80          // Advanced
-  },
-
-  // Skill demonstrations (from skillHistory)
-  skillDemonstrations: {
-    criticalThinking: [
-      { scene: "maya-family-love", context: "Analyzed family expectations vs. authentic passion", value: 0.85 },
-      { scene: "jordan-resume-myth", context: "Evaluated career path complexity", value: 0.78 }
-    ],
-    emotionalIntelligence: [
-      { scene: "maya-family-love", context: "Recognized emotional weight of family sacrifice", value: 0.90 },
-      { scene: "devon-social-struggle", context: "Showed empathy for social anxiety", value: 0.82 }
-    ],
-    problemSolving: [
-      { scene: "maya-strategic-balance", context: "Found bridge solution (MD-PhD)", value: 0.85 },
-      { scene: "jordan-all-paths-wisdom", context: "Recognized accumulation vs. single path", value: 0.80 }
-    ]
-  },
-
-  // Career matches from the actual 6 Birmingham paths
-  careerMatches: [
-    {
-      id: 'healthcare-tech',
-      name: 'Healthcare Technology Specialist',
-      matchScore: 0.87,
-      requiredSkills: {
-        digitalLiteracy: { current: 0.68, required: 0.80, gap: 0.12 },
-        communication: { current: 0.75, required: 0.70, gap: 0 },
-        problemSolving: { current: 0.80, required: 0.80, gap: 0 },
-        emotionalIntelligence: { current: 0.85, required: 0.90, gap: 0.05 }
-      },
-      salaryRange: [55000, 85000],
-      educationPaths: ['UAB Health Informatics', 'Jeff State Medical Technology', 'Bootcamp + Certification'],
-      localOpportunities: ['UAB Hospital', 'Children\'s Hospital', 'St. Vincent\'s', 'Innovation Depot Health Tech'],
-      birminghamRelevance: 0.9,
-      growthProjection: 'high',
-      readiness: 'near_ready' // Close match, small skill gaps
-    },
-    {
-      id: 'community-health-worker',
-      name: 'Community Health Worker',
-      matchScore: 0.82,
-      requiredSkills: {
-        communication: { current: 0.75, required: 0.90, gap: 0.15 },
-        culturalCompetence: { current: 0.78, required: 0.90, gap: 0.12 },
-        emotionalIntelligence: { current: 0.85, required: 0.80, gap: 0 },
-        collaboration: { current: 0.58, required: 0.80, gap: 0.22 }
-      },
-      salaryRange: [35000, 55000],
-      educationPaths: ['Jeff State Community Health', 'UAB Public Health', 'Community College + Certification'],
-      localOpportunities: ['UAB Hospital', 'Jefferson County Health', 'Community Clinics', 'Non-profits'],
-      birminghamRelevance: 0.9,
-      growthProjection: 'high',
-      readiness: 'skill_gaps' // Good match but needs collaboration development
-    },
-    {
-      id: 'data-analyst-community',
-      name: 'Community Data Analyst',
-      matchScore: 0.78,
-      requiredSkills: {
-        criticalThinking: { current: 0.82, required: 0.90, gap: 0.08 },
-        digitalLiteracy: { current: 0.68, required: 0.80, gap: 0.12 },
-        communication: { current: 0.75, required: 0.70, gap: 0 },
-        culturalCompetence: { current: 0.78, required: 0.80, gap: 0.02 }
-      },
-      salaryRange: [50000, 80000],
-      educationPaths: ['UAB Data Science', 'Jeff State Computer Science', 'Bootcamp + Community Focus'],
-      localOpportunities: ['City of Birmingham', 'United Way', 'Innovation Depot', 'UAB Research'],
-      birminghamRelevance: 0.9,
-      growthProjection: 'high',
-      readiness: 'exploratory' // Moderate match, worth exploring
-    }
-  ],
-
-  // Skill trajectory over journey
-  skillEvolution: [
-    { checkpoint: "Start", criticalThinking: 0.50, emotionalIntelligence: 0.50, problemSolving: 0.50 },
-    { checkpoint: "Ch1 Complete", criticalThinking: 0.65, emotionalIntelligence: 0.72, problemSolving: 0.68 },
-    { checkpoint: "Maya Arc", criticalThinking: 0.75, emotionalIntelligence: 0.82, problemSolving: 0.75 },
-    { checkpoint: "Current", criticalThinking: 0.82, emotionalIntelligence: 0.85, problemSolving: 0.80 }
-  ],
-
-  // What choices demonstrated
-  keySkillMoments: [
-    {
-      scene: "maya-family-love",
-      choice: "Sometimes the best way to honor love is to live authentically",
-      skillsDemonstrated: ["emotionalIntelligence", "criticalThinking"],
-      insight: "Recognized emotional complexity while thinking strategically about values"
-    },
-    {
-      scene: "maya-strategic-balance",
-      choice: "MD-PhD programs - strategic integration",
-      skillsDemonstrated: ["problemSolving", "creativity"],
-      insight: "Found innovative bridge solution rather than either/or thinking"
-    },
-    {
-      scene: "jordan-permission-giving",
-      choice: "I've been waiting for someone to say that",
-      skillsDemonstrated: ["adaptability", "emotionalIntelligence"],
-      insight: "Open to non-linear thinking and self-compassion"
-    }
-  ],
-
-  // Gap analysis
-  skillGaps: [
-    {
-      skill: "timeManagement",
-      currentLevel: 0.42,
-      targetForTopCareers: 0.60,
-      gap: 0.18,
-      priority: "medium",
-      developmentPath: "Practice structured exploration - not rushing decisions shows patience, but needs planning skills"
-    },
-    {
-      skill: "collaboration",
-      currentLevel: 0.58,
-      targetForTopCareers: 0.80,
-      gap: 0.22,
-      priority: "high",
-      developmentPath: "Community Health Worker requires team skills. Consider group project experiences."
-    },
-    {
-      skill: "digitalLiteracy",
-      currentLevel: 0.68,
-      targetForTopCareers: 0.80,
-      gap: 0.12,
-      priority: "medium",
-      developmentPath: "Healthcare Tech requires higher digital skills. Bootcamp or online courses recommended."
-    }
-  ]
-};
-
 /**
  * Data Source Badge Component
  * Shows whether framework is using real, partial, or mock data
@@ -328,6 +177,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
   // Agent 3: Skills tab state (Issue 5A - collapsed demonstrations)
   const [expandedCoreSkill, setExpandedCoreSkill] = useState<string | null>(null);
   const [skillSortMode, setSkillSortMode] = useState<SortMode>('by_count');
+  const [skillsToShow, setSkillsToShow] = useState<number>(15); // Show first 15 skills initially
 
   // Agent 4: Careers Tab state (Issue 5B - show met requirements toggle)
   const [showMetRequirements, setShowMetRequirements] = useState(false);
@@ -379,8 +229,8 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
       setUrgencyError(null);
 
       try {
-        // Use admin proxy to avoid exposing token in client bundle
-        const response = await fetch('/api/admin-proxy/urgency?level=all&limit=200');
+        // Use admin proxy with userId filter to fetch only this user's data
+        const response = await fetch(`/api/admin-proxy/urgency?userId=${encodeURIComponent(userId)}`);
 
         if (!response.ok) {
           throw new Error('Failed to fetch urgency data');
@@ -388,9 +238,16 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
 
         const data = await response.json();
 
-        // Find the student matching this userId
-        const student = data.students?.find((s: UrgencyData) => s.userId === userId);
-        setUrgencyData(student || null);
+        // API should return single user object, not array
+        if (data.user) {
+          setUrgencyData(data.user);
+        } else if (data.students && Array.isArray(data.students)) {
+          // Fallback: if API still returns array, find user
+          const student = data.students.find((s: UrgencyData) => s.userId === userId);
+          setUrgencyData(student || null);
+        } else {
+          setUrgencyData(null);
+        }
       } catch (error) {
         console.error('Error fetching urgency data:', error);
         setUrgencyError('Unable to load urgency data');
@@ -476,13 +333,18 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
       });
 
       if (response.ok) {
-        // Refetch urgency data after recalculation
-        const dataResponse = await fetch('/api/admin-proxy/urgency?level=all&limit=200');
+        // Refetch urgency data after recalculation using optimized single-user endpoint
+        const dataResponse = await fetch(`/api/admin-proxy/urgency?userId=${encodeURIComponent(userId)}`);
 
         if (dataResponse.ok) {
           const data = await dataResponse.json();
-          const student = data.students?.find((s: UrgencyData) => s.userId === userId);
-          setUrgencyData(student || null);
+          if (data.user) {
+            setUrgencyData(data.user);
+          } else if (data.students && Array.isArray(data.students)) {
+            // Fallback: if API still returns array
+            const student = data.students.find((s: UrgencyData) => s.userId === userId);
+            setUrgencyData(student || null);
+          }
         }
       }
     } catch (error) {
@@ -628,6 +490,30 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
     }, 100);
   };
 
+  // Helper to get top skills for summary
+  const getTopSkills = () => {
+    if (!user.skillDemonstrations) return [];
+    return Object.entries(user.skillDemonstrations)
+      .map(([skill, demos]) => ({
+        skill,
+        count: Array.isArray(demos) ? demos.length : 0
+      }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 3)
+      .map(item => item.skill.replace(/([A-Z])/g, ' $1').trim());
+  };
+
+  // Helper to calculate readiness percentage
+  const getReadinessPercentage = () => {
+    if (!user.careerMatches || user.careerMatches.length === 0) return null;
+    const topCareer = user.careerMatches[0];
+    if (!topCareer.requiredSkills) return null;
+    
+    const skills = Object.values(topCareer.requiredSkills);
+    const avgGap = skills.reduce((sum, skill) => sum + skill.gap, 0) / skills.length;
+    return Math.max(0, Math.min(100, Math.round((1 - avgGap) * 100)));
+  };
+
   // Helper to find careers that use a specific skill
   const getCareersUsingSkill = (skillName: string) => {
     if (!user.careerMatches) return [];
@@ -661,6 +547,79 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
             </div>
           </div>
         </CardHeader>
+      </Card>
+
+      {/* Quick Summary Bar - At a Glance Metrics */}
+      <Card className="bg-gradient-to-r from-slate-50 to-blue-50 border-blue-200">
+        <CardContent className="p-4 sm:p-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            {/* Total Skill Moments */}
+            <div className="text-center sm:text-left">
+              <div className="text-3xl sm:text-4xl font-bold text-blue-600 mb-1">
+                {user.totalDemonstrations || 0}
+              </div>
+              <div className="text-sm sm:text-base text-gray-600">
+                {adminViewMode === 'family' 
+                  ? 'times they showed skills'
+                  : 'skill demonstrations'}
+              </div>
+            </div>
+
+            {/* Top Skills */}
+            <div className="text-center sm:text-left">
+              <div className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
+                {adminViewMode === 'family' ? 'Building' : 'Top Skills'}
+              </div>
+              <div className="text-sm sm:text-base text-gray-600 space-y-1">
+                {getTopSkills().length > 0 ? (
+                  getTopSkills().map((skill, idx) => (
+                    <div key={idx} className="flex items-center gap-2">
+                      <TrendingUp className="w-4 h-4 text-green-600" />
+                      <span className="capitalize">{skill}</span>
+                    </div>
+                  ))
+                ) : (
+                  <span className="text-gray-500 italic">Just getting started</span>
+                )}
+              </div>
+            </div>
+
+            {/* Readiness Percentage */}
+            {getReadinessPercentage() !== null && (
+              <div className="text-center sm:text-left">
+                <div className="text-3xl sm:text-4xl font-bold text-green-600 mb-1">
+                  {getReadinessPercentage()}%
+                </div>
+                <div className="text-sm sm:text-base text-gray-600">
+                  {adminViewMode === 'family' 
+                    ? 'ready for top career'
+                    : 'readiness score'}
+                </div>
+                {user.careerMatches && user.careerMatches.length > 0 && (
+                  <div className="text-xs text-gray-500 mt-1">
+                    {user.careerMatches[0].name}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Current Activity */}
+            <div className="text-center sm:text-left">
+              <div className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
+                {adminViewMode === 'family' ? 'Currently' : 'Status'}
+              </div>
+              <div className="text-sm sm:text-base text-gray-600">
+                {urgencyData?.currentScene ? (
+                  <span className="capitalize">{urgencyData.currentScene.replace(/_/g, ' ')}</span>
+                ) : user.skillDemonstrations && Object.keys(user.skillDemonstrations).length > 0 ? (
+                  <span>Exploring story paths</span>
+                ) : (
+                  <span className="text-gray-500 italic">Getting started</span>
+                )}
+              </div>
+            </div>
+          </div>
+        </CardContent>
       </Card>
 
       {/* Global Dashboard View Mode Toggle - Sticky Header */}
@@ -800,7 +759,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                 </div>
               ) : (
                 <div className="space-y-6">
-                  {/* Urgency Level Badge and Score - WCAG AA compliant with color consistency */}
+          {/* Urgency Level Badge and Score - WCAG AA compliant with color consistency */}
                   <div className={`flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 ${getUrgencyClasses(urgencyData.urgencyLevel).card}`}>
                     <div>
                       <p className="text-sm sm:text-base text-gray-800 mb-2">Your Priority Level</p>
@@ -812,11 +771,10 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                       <p className="text-sm sm:text-base text-gray-800 mb-2">
                         {adminViewMode === 'family' ? 'Attention Needed' : 'Your Priority Score'}
                       </p>
-                      <p className={getUrgencyClasses(urgencyData.urgencyLevel).percentage}>
+                      <p className={`text-2xl sm:text-3xl font-bold ${getUrgencyClasses(urgencyData.urgencyLevel).percentage}`}>
                         {adminViewMode === 'family'
                           ? `${urgencyData.urgencyLevel ? urgencyData.urgencyLevel.charAt(0).toUpperCase() + urgencyData.urgencyLevel.slice(1) : 'Pending'} (${Math.max(0, Math.min(100, Math.round((urgencyData.urgencyScore || 0) * 100)))}%)`
-                          : `${Math.max(0, Math.min(100, Math.round((urgencyData.urgencyScore || 0) * 100)))}% urgency score (disengagement risk)`
-                        }
+                          : `${Math.max(0, Math.min(100, Math.round((urgencyData.urgencyScore || 0) * 100)))}%`}
                       </p>
                     </div>
                   </div>
@@ -890,27 +848,27 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                     </div>
                   </div>
 
-                  {/* Activity Summary - Mobile optimized */}
+                  {/* Activity Summary - Mobile optimized with improved typography */}
                   <div className="pt-4 border-t space-y-3">
-                    <h4 className="text-sm sm:text-base font-semibold text-gray-700">Activity Summary:</h4>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm sm:text-base">
-                      <div>
-                        <p className="text-gray-600">Last Active</p>
-                        <p className="font-medium">
-                          {urgencyData.lastActivity ? formatAdminDate(urgencyData.lastActivity, 'urgency', adminViewMode as ViewMode) : 'No activity recorded'}
+                    <h4 className="text-base sm:text-lg font-semibold text-gray-800 mb-4">Activity Summary:</h4>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                      <div className="text-center sm:text-left">
+                        <p className="text-xs sm:text-sm text-gray-600 mb-1">Last Active</p>
+                        <p className="text-base sm:text-lg font-semibold text-gray-900">
+                          {urgencyData.lastActivity ? formatAdminDate(urgencyData.lastActivity, 'urgency', adminViewMode as ViewMode) : 'No activity'}
                         </p>
                       </div>
-                      <div>
-                        <p className="text-gray-600">Total Choices</p>
-                        <p className="font-medium">{Math.max(0, urgencyData.totalChoices || 0)}</p>
+                      <div className="text-center sm:text-left">
+                        <p className="text-xs sm:text-sm text-gray-600 mb-1">Total Choices</p>
+                        <p className="text-2xl sm:text-3xl font-bold text-blue-600">{Math.max(0, urgencyData.totalChoices || 0)}</p>
                       </div>
-                      <div>
-                        <p className="text-gray-600">Scenes Visited</p>
-                        <p className="font-medium">{Math.max(0, urgencyData.uniqueScenesVisited || 0)}</p>
+                      <div className="text-center sm:text-left">
+                        <p className="text-xs sm:text-sm text-gray-600 mb-1">Scenes Visited</p>
+                        <p className="text-2xl sm:text-3xl font-bold text-purple-600">{Math.max(0, urgencyData.uniqueScenesVisited || 0)}</p>
                       </div>
-                      <div>
-                        <p className="text-gray-600">Relationships Formed</p>
-                        <p className="font-medium">{Math.max(0, urgencyData.relationshipsFormed || 0)}</p>
+                      <div className="text-center sm:text-left">
+                        <p className="text-xs sm:text-sm text-gray-600 mb-1">Relationships</p>
+                        <p className="text-2xl sm:text-3xl font-bold text-green-600">{Math.max(0, urgencyData.relationshipsFormed || 0)}</p>
                       </div>
                     </div>
                   </div>
@@ -973,11 +931,18 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
           <Card>
             <CardHeader>
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <div>
-                  {/* Agent 2: Personalized section header (Issue 10A) */}
-                  <CardTitle className="text-lg sm:text-xl">Your Core Skills Demonstrated</CardTitle>
+                <div className="flex-1">
+                  {/* Improved typography hierarchy */}
+                  <div className="flex items-baseline gap-3 mb-2">
+                    <CardTitle className="text-lg sm:text-xl">Your Core Skills Demonstrated</CardTitle>
+                    {user.totalDemonstrations > 0 && (
+                      <span className="text-2xl sm:text-3xl font-bold text-blue-600">
+                        {user.totalDemonstrations}
+                      </span>
+                    )}
+                  </div>
                   <CardDescription className="text-sm">
-                    Your skill profile from {user.totalDemonstrations} demonstrations across your journey
+                    Skills shown through your choices and interactions
                   </CardDescription>
                 </div>
                 {/* Agent 3: Sorting controls (Issue 14) - shadcn Select */}
@@ -1011,7 +976,7 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
               {(() => {
                 const patterns = analyzeSkillPatterns(user.skillDemonstrations || {});
                 const sortedPatterns = sortSkillPatterns(patterns, skillSortMode);
-
+                
                 if (sortedPatterns.length === 0) {
                   return (
                     <div className="text-center py-12">
@@ -1039,142 +1004,175 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                   );
                 }
 
-                return sortedPatterns.map((pattern) => {
-                  const demonstrations = user.skillDemonstrations[pattern.skillName] || [];
-                  const isExpanded = expandedCoreSkill === pattern.skillName;
+                // Apply pagination limit - MUST slice before mapping
+                const visiblePatterns = sortedPatterns.slice(0, skillsToShow);
+                
+                return (
+                  <>
+                    {visiblePatterns.map((pattern) => {
+                      const demonstrations = user.skillDemonstrations[pattern.skillName] || [];
+                      const isExpanded = expandedCoreSkill === pattern.skillName;
 
-                  // Get most recent 3 demonstrations
-                  const recentDemos = demonstrations
-                    .sort((a, b) => ((b as any).timestamp || 0) - ((a as any).timestamp || 0))
-                    .slice(0, 3);
+                      // Get most recent 3 demonstrations
+                      const recentDemos = demonstrations
+                        .sort((a, b) => ((b as any).timestamp || 0) - ((a as any).timestamp || 0))
+                        .slice(0, 3);
 
-                  // Agent 3: Recency indicator (Issue 12)
-                  const recency = getRecencyIndicator(pattern.lastDemonstrated ? new Date(pattern.lastDemonstrated).getTime() : undefined);
+                      // Agent 3: Recency indicator (Issue 12)
+                      const recency = getRecencyIndicator(pattern.lastDemonstrated ? new Date(pattern.lastDemonstrated).getTime() : undefined);
 
-                  return (
-                    <div
-                      key={pattern.skillName}
-                      id={`skill-${pattern.skillName.toLowerCase().replace(/\s+/g, '-')}`}
-                      className={`border rounded-lg hover:bg-gray-50 transition-colors ${
-                        highlightedSkill === pattern.skillName ? 'ring-2 ring-blue-500 bg-blue-50' : ''
-                      }`}
-                    >
-                      {/* Agent 3: Collapsible header (Issue 5A, 34 - mobile optimized) */}
-                      <button
-                        onClick={() => setExpandedCoreSkill(isExpanded ? null : pattern.skillName)}
-                        className="w-full p-4 text-left min-h-[60px] touch-manipulation"
-                      >
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-3 flex-1 min-w-0">
-                            {/* Agent 3: Enhanced recency indicator with text labels (Issue 12) */}
-                            <span className="inline-flex items-center gap-1.5" aria-label="Recent activity">
-                              <span className={`w-2.5 h-2.5 rounded-full ${recency.color} flex-shrink-0`} title={recency.label} />
-                              {adminViewMode === 'family' && recency.familyLabel && (
-                                <span className={`text-xs ${recency.color === 'bg-green-500' ? 'text-green-700' : 'text-yellow-700'}`}>
-                                  {recency.familyLabel}
-                                </span>
-                              )}
-                              {adminViewMode === 'research' && recency.researchLabel && (
-                                <span className="text-xs text-gray-600">
-                                  {recency.researchLabel}
-                                </span>
-                              )}
-                            </span>
-
-                            {/* Agent 3: Bold skill name for scannability (Issue 34) */}
-                            <span className="font-bold text-sm sm:text-base truncate">
-                              {formatSkillName(pattern.skillName)}
-                            </span>
-
-                            {/* Pattern insight - hidden on mobile */}
-                            <span className="hidden sm:block text-xs text-muted-foreground truncate">
-                              {pattern.strengthContext}
-                            </span>
-                          </div>
-
-                          <div className="flex items-center gap-2 flex-shrink-0">
-                            <Badge variant="secondary" className="text-xs px-2 py-1">
-                              {pattern.totalDemonstrations}x
-                            </Badge>
-
-                            {/* Agent 8: Chevron icon (Issue 43) */}
-                            <ChevronDown
-                              className={`w-5 h-5 text-gray-600 transition-transform ${
-                                isExpanded ? 'rotate-180' : ''
-                              }`}
-                            />
-                          </div>
-                        </div>
-                      </button>
-
-                      {/* Agent 3: Expanded demonstrations (Issue 5A - mobile optimized) */}
-                      {isExpanded && (
-                        <div className="px-4 pb-4 space-y-3 border-t bg-gray-50">
-                          <p className="text-sm font-semibold text-gray-600 mt-3">Evidence:</p>
-                          {recentDemos.map((demo, idx) => {
-                            const timestamp = (demo as any).timestamp;
-                            const choiceText = (demo as any).choice || demo.context.substring(0, 60);
-
-                            return (
-                              <div key={idx} className="text-sm space-y-2 pl-4 border-l-2 border-blue-300">
-                                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1">
-                                  <span className="font-medium text-gray-800">{demo.scene}</span>
-                                  {timestamp && (
-                                    <span className="text-gray-600 text-xs">
-                                      {formatAdminDate(timestamp, 'activity', adminViewMode as ViewMode)}
+                      return (
+                        <div
+                          key={pattern.skillName}
+                          id={`skill-${pattern.skillName.toLowerCase().replace(/\s+/g, '-')}`}
+                          className={`border rounded-lg hover:bg-gray-50 transition-colors ${
+                            highlightedSkill === pattern.skillName ? 'ring-2 ring-blue-500 bg-blue-50' : ''
+                          }`}
+                        >
+                          {/* Agent 3: Collapsible header (Issue 5A, 34 - mobile optimized) */}
+                          <button
+                            onClick={() => setExpandedCoreSkill(isExpanded ? null : pattern.skillName)}
+                            className="w-full p-4 text-left min-h-[60px] touch-manipulation"
+                          >
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-3 flex-1 min-w-0">
+                                {/* Agent 3: Enhanced recency indicator with text labels (Issue 12) */}
+                                <span className="inline-flex items-center gap-1.5" aria-label="Recent activity">
+                                  <span className={`w-2.5 h-2.5 rounded-full ${recency.color} flex-shrink-0`} title={recency.label} />
+                                  {adminViewMode === 'family' && recency.familyLabel && (
+                                    <span className={`text-xs ${recency.color === 'bg-green-500' ? 'text-green-700' : 'text-yellow-700'}`}>
+                                      {recency.familyLabel}
                                     </span>
                                   )}
-                                </div>
-                                {choiceText && (
-                                  <p className="text-gray-600 italic text-sm">"{choiceText}"</p>
-                                )}
-                                <p className="text-gray-700 text-sm leading-relaxed">{demo.context}</p>
-                              </div>
-                            );
-                          })}
+                                  {adminViewMode === 'research' && recency.researchLabel && (
+                                    <span className="text-xs text-gray-600">
+                                      {recency.researchLabel}
+                                    </span>
+                                  )}
+                                </span>
 
-                          {demonstrations.length > 3 && (
-                            <p className="text-sm text-gray-500 italic pt-2">
-                              + {demonstrations.length - 3} more demonstrations
-                            </p>
+                                {/* Agent 3: Bold skill name for scannability (Issue 34) */}
+                                <span className="font-bold text-sm sm:text-base truncate">
+                                  {formatSkillName(pattern.skillName)}
+                                </span>
+
+                                {/* Pattern insight - hidden on mobile */}
+                                <span className="hidden sm:block text-xs text-muted-foreground truncate">
+                                  {pattern.strengthContext}
+                                </span>
+                              </div>
+
+                              <div className="flex items-center gap-2 flex-shrink-0">
+                                <Badge variant="secondary" className="text-sm sm:text-base px-3 py-1 font-semibold">
+                                  {pattern.totalDemonstrations}x
+                                </Badge>
+
+                                {/* Agent 8: Chevron icon (Issue 43) */}
+                                <ChevronDown
+                                  className={`w-5 h-5 text-gray-600 transition-transform ${
+                                    isExpanded ? 'rotate-180' : ''
+                                  }`}
+                                />
+                              </div>
+                            </div>
+                          </button>
+
+                          {/* Agent 3: Expanded demonstrations (Issue 5A - mobile optimized) */}
+                          {isExpanded && (
+                            <div className="px-4 pb-4 space-y-3 border-t bg-gray-50">
+                              <p className="text-sm font-semibold text-gray-600 mt-3">Evidence:</p>
+                              {recentDemos.map((demo, idx) => {
+                                const timestamp = (demo as any).timestamp;
+                                const choiceText = (demo as any).choice || demo.context.substring(0, 60);
+
+                                return (
+                                  <div key={idx} className="text-sm space-y-2 pl-4 border-l-2 border-blue-300">
+                                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1">
+                                      <span className="font-medium text-gray-800">{demo.scene}</span>
+                                      {timestamp && (
+                                        <span className="text-gray-600 text-xs">
+                                          {formatAdminDate(timestamp, 'activity', adminViewMode as ViewMode)}
+                                        </span>
+                                      )}
+                                    </div>
+                                    {choiceText && (
+                                      <p className="text-gray-600 italic text-sm">"{choiceText}"</p>
+                                    )}
+                                    <p className="text-gray-700 text-sm leading-relaxed">{demo.context}</p>
+                                  </div>
+                                );
+                              })}
+
+                              {demonstrations.length > 3 && (
+                                <p className="text-sm text-gray-500 italic pt-2">
+                                  + {demonstrations.length - 3} more demonstrations
+                                </p>
+                              )}
+
+                              {/* Agent 6: Cross-tab career preview (Issue 6A - Section 4.1) */}
+                              {(() => {
+                                const careersUsingSkill = getCareersUsingSkill(pattern.skillName);
+                                if (careersUsingSkill.length === 0) return null;
+
+                                return (
+                                  <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                                    <h4 className="font-semibold mb-2 text-sm sm:text-base">
+                                      {adminViewMode === 'family'
+                                        ? "🎯 Where This Skill Leads"
+                                        : "Careers Requiring This Skill"}
+                                    </h4>
+                                    <div className="space-y-2">
+                                      {careersUsingSkill.map(career => (
+                                        <button
+                                          key={career.id}
+                                          onClick={() => jumpToCareersTab(career.id)}
+                                          className="block p-2 hover:bg-blue-100 rounded transition w-full text-left min-h-[44px]"
+                                        >
+                                          <p className="font-medium text-sm sm:text-base">{career.name}</p>
+                                          <p className="text-xs sm:text-sm text-gray-600">
+                                            {adminViewMode === 'family'
+                                              ? `${Math.round(career.matchScore * 100)}% fit based on this skill`
+                                              : `${Math.round(career.matchScore * 100)}% career match (skills: 40%, education: 30%, local: 30%)`}
+                                          </p>
+                                        </button>
+                                      ))}
+                                    </div>
+                                  </div>
+                                );
+                              })()}
+                            </div>
                           )}
-
-                          {/* Agent 6: Cross-tab career preview (Issue 6A - Section 4.1) */}
-                          {(() => {
-                            const careersUsingSkill = getCareersUsingSkill(pattern.skillName);
-                            if (careersUsingSkill.length === 0) return null;
-
-                            return (
-                              <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                                <h4 className="font-semibold mb-2 text-sm sm:text-base">
-                                  {adminViewMode === 'family'
-                                    ? "🎯 Where This Skill Leads"
-                                    : "Careers Requiring This Skill"}
-                                </h4>
-                                <div className="space-y-2">
-                                  {careersUsingSkill.map(career => (
-                                    <button
-                                      key={career.id}
-                                      onClick={() => jumpToCareersTab(career.id)}
-                                      className="block p-2 hover:bg-blue-100 rounded transition w-full text-left min-h-[44px]"
-                                    >
-                                      <p className="font-medium text-sm sm:text-base">{career.name}</p>
-                                      <p className="text-xs sm:text-sm text-gray-600">
-                                        {adminViewMode === 'family'
-                                          ? `${Math.round(career.matchScore * 100)}% fit based on this skill`
-                                          : `${Math.round(career.matchScore * 100)}% career match (skills: 40%, education: 30%, local: 30%)`}
-                                      </p>
-                                    </button>
-                                  ))}
-                                </div>
-                              </div>
-                            );
-                          })()}
                         </div>
-                      )}
-                    </div>
-                  );
-                });
+                      );
+                    })}
+                    
+                    {/* Show more button if there are more skills */}
+                    {sortedPatterns.length > skillsToShow && (
+                      <div className="pt-4 border-t">
+                        <Button
+                          variant="outline"
+                          onClick={() => setSkillsToShow(sortedPatterns.length)}
+                          className="w-full"
+                        >
+                          Show {sortedPatterns.length - skillsToShow} more skills
+                        </Button>
+                      </div>
+                    )}
+                    
+                    {/* Show less button if all skills are shown */}
+                    {skillsToShow >= sortedPatterns.length && sortedPatterns.length > 15 && (
+                      <div className="pt-4 border-t">
+                        <Button
+                          variant="ghost"
+                          onClick={() => setSkillsToShow(15)}
+                          className="w-full"
+                        >
+                          Show less
+                        </Button>
+                      </div>
+                    )}
+                  </>
+                );
               })()}
             </CardContent>
           </Card>
@@ -1354,6 +1352,45 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
             </p>
           </div>
 
+          {/* At a Glance Summary Card */}
+          {user.careerMatches && user.careerMatches.length > 0 && (
+            <Card className="bg-gradient-to-r from-purple-50 to-indigo-50 border-purple-200">
+              <CardContent className="p-4 sm:p-6">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="text-center sm:text-left">
+                    <div className="text-3xl sm:text-4xl font-bold text-purple-600 mb-1">
+                      {user.careerMatches.length}
+                    </div>
+                    <div className="text-sm sm:text-base text-gray-600">
+                      {adminViewMode === 'family' ? 'careers explored' : 'career matches'}
+                    </div>
+                  </div>
+                  <div className="text-center sm:text-left">
+                    <div className="text-3xl sm:text-4xl font-bold text-green-600 mb-1">
+                      {Math.round(user.careerMatches[0].matchScore * 100)}%
+                    </div>
+                    <div className="text-sm sm:text-base text-gray-600">
+                      {adminViewMode === 'family' ? 'top match score' : 'highest match'}
+                    </div>
+                    <div className="text-xs text-gray-500 mt-1">
+                      {user.careerMatches[0].name}
+                    </div>
+                  </div>
+                  <div className="text-center sm:text-left">
+                    <div className="text-lg sm:text-xl font-semibold text-gray-900 mb-1">
+                      {user.careerMatches[0].readiness === 'near_ready' ? '✓ Nearly Ready' :
+                       user.careerMatches[0].readiness === 'skill_gaps' ? 'Building Skills' :
+                       'Exploring'}
+                    </div>
+                    <div className="text-sm sm:text-base text-gray-600">
+                      {adminViewMode === 'family' ? 'for your top career' : 'readiness status'}
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
           {/* Show Evidence-based career exploration or message if no data */}
           {evidenceData && evidenceData.careerExploration ? (
             <Card>
@@ -1433,7 +1470,13 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                 <CardHeader>
                   <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
                     <div className="flex-1">
-                      <CardTitle className="text-lg sm:text-xl">{career.name}</CardTitle>
+                      {/* Improved typography hierarchy */}
+                      <div className="flex items-baseline gap-3 mb-2">
+                        <CardTitle className="text-lg sm:text-xl">{career.name}</CardTitle>
+                        <span className="text-2xl sm:text-3xl font-bold text-green-600">
+                          {Math.round(career.matchScore * 100)}%
+                        </span>
+                      </div>
                       {/* Agent 4: Inline match explanation (Issue 15) */}
                       <p className="text-sm sm:text-base text-muted-foreground mt-2 leading-relaxed">
                         {getMatchExplanation(career.matchScore, gapSkills)}
@@ -2060,7 +2103,14 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
             <Alert className="border-orange-500 bg-orange-50">
               <AlertTriangle className="h-5 w-5 text-orange-600" />
               <AlertDescription className="mt-2 space-y-3">
-                <p className="text-lg sm:text-xl font-semibold text-orange-900">Your Priority Skills to Develop</p>
+                <div className="flex items-baseline gap-3 mb-3">
+                  <p className="text-lg sm:text-xl font-semibold text-orange-900">Your Priority Skills to Develop</p>
+                  {user.skillGaps.length > 0 && (
+                    <span className="text-2xl sm:text-3xl font-bold text-orange-600">
+                      {user.skillGaps.length}
+                    </span>
+                  )}
+                </div>
                 {user.skillGaps
                   .sort((a, b) => {
                     const priorityOrder: Record<string, number> = { high: 3, medium: 2, low: 1 };
@@ -2069,8 +2119,13 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
                   .slice(0, 3)
                   .map((gap, idx) => (
                     <div key={idx} className="border-l-4 border-orange-400 pl-3 sm:pl-4 p-3 sm:p-4 bg-orange-25 rounded-r-lg">
-                      <div className="font-semibold text-orange-900 capitalize text-sm sm:text-base">
-                        {gap.skill?.replace(/([A-Z])/g, ' $1').trim() || 'Unknown Skill'}
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="font-semibold text-orange-900 capitalize text-sm sm:text-base">
+                          {gap.skill?.replace(/([A-Z])/g, ' $1').trim() || 'Unknown Skill'}
+                        </div>
+                        <Badge variant="outline" className="text-xs border-orange-300 text-orange-700">
+                          {gap.priority?.toUpperCase() || 'MEDIUM'}
+                        </Badge>
                       </div>
                       <div className="text-sm sm:text-base text-orange-800 mt-1">
                         Try: Scene {12 + idx * 4} (Hospital Volunteer) or Scene {8 + idx * 3} (Maya Family Meeting)
@@ -2398,19 +2453,52 @@ const SingleUserDashboard: React.FC<SingleUserDashboardProps> = ({ userId, profi
           {/* Key insights */}
           <Card className="border-2 border-blue-600">
             <CardHeader>
-              <CardTitle className="text-lg sm:text-xl">Your Key Insights</CardTitle>
+              <div className="flex items-baseline gap-3 mb-2">
+                <CardTitle className="text-lg sm:text-xl">Your Key Insights</CardTitle>
+                {user.keySkillMoments && user.keySkillMoments.length > 0 && (
+                  <span className="text-2xl sm:text-3xl font-bold text-blue-600">
+                    {user.keySkillMoments.length}
+                  </span>
+                )}
+              </div>
+              <CardDescription className="text-sm sm:text-base">
+                Breakthrough moments from your journey
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-3 text-sm sm:text-base">
               {user.keySkillMoments && user.keySkillMoments.length > 0 ? (
-                user.keySkillMoments.map((moment, idx) => (
-                  <div key={idx} className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg">
-                    <span className="text-blue-600 text-lg">→</span>
-                    <div>
-                      <p className="font-medium leading-relaxed">"{moment.choice || 'Your choice'}"</p>
-                      <p className="text-muted-foreground text-xs sm:text-sm mt-1">{moment.insight || 'Key insight from your journey'}</p>
+                <>
+                  {user.keySkillMoments.slice(0, 5).map((moment, idx) => (
+                    <div key={idx} className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg">
+                      <span className="text-blue-600 text-lg font-bold">#{idx + 1}</span>
+                      <div className="flex-1">
+                        <p className="font-medium leading-relaxed">"{moment.choice || 'Your choice'}"</p>
+                        <p className="text-muted-foreground text-xs sm:text-sm mt-1">{moment.insight || 'Key insight from your journey'}</p>
+                        {moment.skillsDemonstrated && moment.skillsDemonstrated.length > 0 && (
+                          <div className="flex flex-wrap gap-1 mt-2">
+                            {moment.skillsDemonstrated.slice(0, 3).map((skill, sidx) => (
+                              <Badge key={sidx} variant="secondary" className="text-xs">
+                                {skill.replace(/([A-Z])/g, ' $1').trim()}
+                              </Badge>
+                            ))}
+                            {moment.skillsDemonstrated.length > 3 && (
+                              <Badge variant="outline" className="text-xs">
+                                +{moment.skillsDemonstrated.length - 3} more
+                              </Badge>
+                            )}
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                ))
+                  ))}
+                  {user.keySkillMoments.length > 5 && (
+                    <div className="text-center pt-2">
+                      <p className="text-sm text-gray-600">
+                        + {user.keySkillMoments.length - 5} more insights
+                      </p>
+                    </div>
+                  )}
+                </>
               ) : (
                 <div className="text-center py-8">
                   {adminViewMode === 'family' ? (

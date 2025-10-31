@@ -8,6 +8,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAdminAuth, getAdminSupabaseClient } from '@/lib/admin-supabase-client'
+import { auditLog } from '@/lib/audit-logger'
 
 // Mark as dynamic for Next.js static export compatibility
 export const dynamic = 'force-dynamic'
@@ -49,6 +50,7 @@ export async function GET(request: NextRequest) {
         relationship_progress(*)
       `)
       .eq('user_id', userId)
+      .abortSignal(AbortSignal.timeout(10000))
       .single()
 
     // Also fetch career explorations separately to ensure we get all data
@@ -57,6 +59,7 @@ export async function GET(request: NextRequest) {
       .select('*')
       .eq('user_id', userId)
       .order('match_score', { ascending: false })
+      .abortSignal(AbortSignal.timeout(10000))
 
     if (careerError) {
       console.warn('❌ [Admin Skill Data API] Career explorations error:', careerError)
@@ -94,6 +97,9 @@ export async function GET(request: NextRequest) {
       skillDemonstrations: profile.skill_demonstrations?.length || 0,
       careerExplorations: profile.career_explorations?.length || 0
     })
+
+    // Audit log: Admin accessed student skill data
+    auditLog('view_skill_data', 'admin', userId)
 
     return NextResponse.json({
       success: true,

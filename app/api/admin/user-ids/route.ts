@@ -8,6 +8,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAdminAuth, getAdminSupabaseClient } from '@/lib/admin-supabase-client'
+import { auditLog } from '@/lib/audit-logger'
 
 // Mark as dynamic for Next.js static export compatibility
 export const dynamic = 'force-dynamic'
@@ -30,6 +31,7 @@ export async function GET(request: NextRequest) {
       .from('player_profiles')
       .select('user_id, last_activity')
       .order('last_activity', { ascending: false })
+      .abortSignal(AbortSignal.timeout(10000))
 
     if (error) {
       console.error('❌ [Admin:UserIds] Supabase error:', {
@@ -45,6 +47,9 @@ export async function GET(request: NextRequest) {
     const userIds = (profiles || []).map(p => p.user_id)
 
     console.log(`✅ [Admin:UserIds] Retrieved ${userIds.length} user IDs`)
+
+    // Audit log: Admin accessed user ID list
+    auditLog('view_user_list', 'admin', undefined, { count: userIds.length })
 
     return NextResponse.json({
       success: true,

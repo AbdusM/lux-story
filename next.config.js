@@ -26,7 +26,10 @@ const nextConfig = {
 
   // Performance optimizations
   experimental: {
-    optimizePackageImports: ['@/hooks', '@/lib', '@/components']
+    optimizePackageImports: ['@/hooks', '@/lib', '@/components'],
+    serverActions: {
+      bodySizeLimit: '2mb'  // Prevent DoS via large payloads
+    }
   },
 
   // Temporarily disable custom webpack config to fix runtime errors
