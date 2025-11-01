@@ -63,6 +63,7 @@ interface DialogueDisplayProps {
   isContinuedSpeaker?: boolean // Hide avatar if same speaker as previous
   richEffects?: RichTextEffect // Optional rich text effects (terminal-style animations)
   interaction?: string // Visual interaction animation ('big', 'small', 'shake', 'nod', 'ripple', 'bloom', 'jitter')
+  emotion?: string // Emotion tag for the dialogue (e.g., 'anxious', 'excited', 'vulnerable')
   playerPatterns?: {
     analytical?: number
     helping?: number
@@ -90,6 +91,7 @@ export function DialogueDisplay({
   isContinuedSpeaker = false,
   richEffects,
   interaction,
+  emotion,
   playerPatterns
 }: DialogueDisplayProps) {
   // Auto-chunk long text for chat pacing, then split by | separator
@@ -101,8 +103,16 @@ export function DialogueDisplay({
   // Determine if avatar should be displayed
   const displayAvatar = showAvatar && shouldShowAvatar(characterName, isContinuedSpeaker, false)
   
+  // Auto-enable chat pacing for longer/multi-chunk text if character name available
+  // Heuristic: text > 150 chars OR has 2+ chunks (separated by |)
+  const chunksBySeparator = text.split('|').map(chunk => chunk.trim()).filter(chunk => chunk.length > 0)
+  const shouldAutoActivateChatPacing = characterName && (
+    text.length > 150 || chunksBySeparator.length >= 2
+  )
+  const shouldUseChatPacing = useChatPacing || shouldAutoActivateChatPacing
+  
   // If chat pacing is enabled, use ChatPacedDialogue for sequential reveal
-  if (useChatPacing && characterName) {
+  if (shouldUseChatPacing && characterName) {
     return (
       <ChatPacedDialogue
         text={chunkedText}
@@ -110,6 +120,7 @@ export function DialogueDisplay({
         showAvatar={displayAvatar}
         className={className}
         interaction={interaction}
+        emotion={emotion}
         playerPatterns={playerPatterns}
       />
     )

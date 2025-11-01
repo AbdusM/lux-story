@@ -925,6 +925,7 @@ export default function StatefulGameInterface() {
                 isContinuedSpeaker={state.currentNode?.speaker === state.previousSpeaker}
                 richEffects={getRichEffectContext(state.currentDialogueContent, state.isLoading, state.recentSkills, state.useChatPacing)}
                 interaction={state.currentDialogueContent?.interaction}
+                emotion={state.currentDialogueContent?.emotion}
                 playerPatterns={state.gameState?.patterns ? {
                   analytical: state.gameState.patterns.analytical || 0,
                   helping: state.gameState.patterns.helping || 0,
