@@ -117,7 +117,7 @@ export function GapsSection({ userId, profile, adminViewMode }: GapsSectionProps
             {/* Personalized section header */}
             <CardTitle className="text-lg sm:text-xl">Your Skill Development Progress</CardTitle>
             <CardDescription className="text-sm sm:text-base">
-              Your skill demonstration tracking from your journey
+              Choices aligned with skills from your journey
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -130,7 +130,7 @@ export function GapsSection({ userId, profile, adminViewMode }: GapsSectionProps
                         {skill.skill_name?.replace(/_/g, ' ') || `Skill ${idx + 1}`}
                       </span>
                       <Badge variant={(skill.demonstration_count || 0) >= 5 ? 'default' : 'secondary'} className="text-xs">
-                        {Math.max(0, skill.demonstration_count || 0)} demonstrations
+                        {Math.max(0, skill.demonstration_count || 0)} choices aligned
                       </Badge>
                     </div>
 
@@ -142,7 +142,7 @@ export function GapsSection({ userId, profile, adminViewMode }: GapsSectionProps
 
                     {skill.last_demonstrated && (
                       <p className="text-xs sm:text-sm text-muted-foreground">
-                        {formatAdminDateWithLabel(skill.last_demonstrated, 'activity', adminViewMode as ViewMode, 'Last demonstrated')}
+                        {formatAdminDateWithLabel(skill.last_demonstrated, 'activity', adminViewMode as ViewMode, 'Last aligned with this skill')}
                       </p>
                     )}
 

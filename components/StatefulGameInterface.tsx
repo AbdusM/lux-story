@@ -487,7 +487,7 @@ export default function StatefulGameInterface() {
       targetCharacterId
     ).filter(choice => choice.visible)
 
-    // Record skill demonstration from this choice
+    // Record skills aligned with this choice (not actual skill demonstration)
     let demonstratedSkills: string[] = []
     let skillToastUpdate: { skill: string; message: string } | null = null
     
@@ -560,6 +560,23 @@ export default function StatefulGameInterface() {
       ...transitionUpdate, // Spread transition state
       recentSkills: skillsToKeep
     })
+
+    // Track Samuel quotes when he speaks
+    if (nextNode.speaker === 'Samuel Washington' && content.text && skillTrackerRef.current) {
+      try {
+        const quoteText = content.text
+        const sceneDescription = nextNode.nodeId.replace(/_/g, ' ').replace(/^\w/, c => c.toUpperCase())
+        skillTrackerRef.current.recordSamuelQuote(
+          nextNode.nodeId,
+          quoteText,
+          nextNode.nodeId,
+          sceneDescription,
+          content.emotion
+        )
+      } catch (error) {
+        console.error(`[StatefulGameInterface] Error recording Samuel quote:`, error)
+      }
+    }
 
     // Priority 3: Move async operations AFTER UI update (don't block rendering)
     // Run tracking in background, don't wait for it
