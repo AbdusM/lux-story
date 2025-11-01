@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { AlertCircle, RefreshCw, ArrowRight } from 'lucide-react'
+import { SamuelQuotesSection } from './SamuelQuotesSection'
 
 interface EvidenceSectionProps {
   userId: string
@@ -99,15 +100,15 @@ export function EvidenceSection({ userId, profile, adminViewMode }: EvidenceSect
                 <strong>Your Progress:</strong>{" "}
                 {user.totalDemonstrations >= 10 ? (
                   <span className="text-blue-700">
-                    Strong Foundation ({user.totalDemonstrations} skill demonstrations)
+                    Strong Foundation ({user.totalDemonstrations} choices aligned with skills)
                   </span>
                 ) : user.totalDemonstrations >= 5 ? (
                   <span className="text-yellow-700">
-                    Building Skills ({user.totalDemonstrations} demonstrations - keep going for deeper insights)
+                    Building Skills ({user.totalDemonstrations} choices aligned with skills - keep going for deeper insights)
                   </span>
                 ) : (
                   <span className="text-gray-700">
-                    Getting Started ({user.totalDemonstrations} demonstrations - explore more to unlock insights)
+                    Getting Started ({user.totalDemonstrations} choices aligned with skills - explore more to unlock insights)
                   </span>
                 )}
               </div>
@@ -160,7 +161,7 @@ export function EvidenceSection({ userId, profile, adminViewMode }: EvidenceSect
                     Insufficient sample size for statistical significance
                   </p>
                   <p className="text-xs text-gray-600">
-                    Minimum threshold: 5 skill demonstrations.
+                    Minimum threshold: 5 choices aligned with skills.
                   </p>
                 </div>
               )}
@@ -190,25 +191,25 @@ export function EvidenceSection({ userId, profile, adminViewMode }: EvidenceSect
                 <CardContent className="p-0 space-y-3">
                   <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                     {adminViewMode === 'family' ? (
-                      <span><strong>What this means:</strong> Every time you make a choice in your journey, we track what skills you showed (like problem-solving or creativity). This shows real evidence of your growing abilities.</span>
+                      <span><strong>What this means:</strong> Every time you make a choice in your journey, we track what skills your choice aligns with (like problem-solving or creativity). This shows real evidence of your growing abilities.</span>
                     ) : (
-                      <span><strong>Framework:</strong> Tracked skill demonstrations showing concrete evidence of capability development.</span>
+                      <span><strong>Framework:</strong> Tracked choices aligned with skills showing concrete evidence of capability development.</span>
                     )}
                   </p>
                   <div className="bg-blue-50 p-3 sm:p-4 rounded-lg">
                     <p className="font-medium mb-2 text-sm sm:text-base">Your Progress:</p>
                     <div className="space-y-2 text-xs sm:text-sm">
-                      <p>• Total Demonstrations: <strong>{Math.max(0, evidenceData.frameworks.skillEvidence.totalDemonstrations)}</strong></p>
+                      <p>• Total Choices Aligned with Skills: <strong>{Math.max(0, evidenceData.frameworks.skillEvidence.totalDemonstrations)}</strong></p>
                       <p>• Unique Skills: <strong>{Math.max(0, evidenceData.frameworks.skillEvidence.uniqueSkills)}</strong></p>
                       {evidenceData.frameworks.skillEvidence.skillBreakdown?.slice(0, 3).map((skill: any) => (
                         <p key={skill.skill}>
-                          • {skill.skill || 'Unknown Skill'}: {Math.max(0, skill.demonstrations || 0)} demonstrations
+                          • {skill.skill || 'Unknown Skill'}: {Math.max(0, skill.demonstrations || 0)} choices aligned
                         </p>
                       )) || (
                         adminViewMode === 'family' ? (
                           <p className="text-gray-600">• Keep exploring to discover your skills!</p>
                         ) : (
-                          <p className="text-gray-600">• Skill breakdown pending (requires ≥3 demonstrations)</p>
+                          <p className="text-gray-600">• Skill breakdown pending (requires ≥3 choices aligned with skills)</p>
                         )
                       )}
                     </div>
@@ -449,6 +450,13 @@ export function EvidenceSection({ userId, profile, adminViewMode }: EvidenceSect
           )}
         </CardContent>
       </Card>
+
+      {/* Samuel's Wisdom Section */}
+      <SamuelQuotesSection
+        quotes={profile.samuelQuotes || []}
+        adminViewMode={adminViewMode}
+        userName={user.userName || 'Student'}
+      />
 
       {/* Scientific Literature Support */}
       <Card>

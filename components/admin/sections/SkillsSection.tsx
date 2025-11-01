@@ -55,7 +55,7 @@ export function SkillsSection({ userId, profile, adminViewMode }: SkillsSectionP
           summaries.push({
             skillName,
             demonstrationCount: demonstrations.length,
-            latestContext: (latest as any)?.context || `${skillName} demonstrated through narrative choices`,
+            latestContext: (latest as any)?.context || `${skillName} indicated through narrative choices`,
             scenesInvolved: scenes,
             lastDemonstrated: latest && (latest as any).timestamp 
               ? new Date((latest as any).timestamp).toISOString() 
@@ -89,9 +89,9 @@ export function SkillsSection({ userId, profile, adminViewMode }: SkillsSectionP
       <div className="bg-purple-50 border-l-4 border-purple-400 p-4 sm:p-6 rounded-r">
         <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
           {adminViewMode === 'family' ? (
-            <>Let's see what skills they've demonstrated through their journey.</>
+            <>Let's see what skills their choices align with through their journey.</>
           ) : (
-            <>Skill demonstration analysis follows urgency factors.</>
+            <>Skills indicated by choices analysis follows urgency factors.</>
           )}
         </p>
       </div>
@@ -108,7 +108,7 @@ export function SkillsSection({ userId, profile, adminViewMode }: SkillsSectionP
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="flex-1">
               <div className="flex items-baseline gap-3 mb-2">
-                <CardTitle className="text-lg sm:text-xl">Your Core Skills Demonstrated</CardTitle>
+                <CardTitle className="text-lg sm:text-xl">Your Core Skills (Indicated by Choices)</CardTitle>
                 {profile.totalDemonstrations > 0 && (
                   <span className="text-2xl sm:text-3xl font-bold text-blue-600">
                     {profile.totalDemonstrations}
@@ -160,7 +160,7 @@ export function SkillsSection({ userId, profile, adminViewMode }: SkillsSectionP
               ) : (
                 <div className="space-y-3">
                   <p className="text-sm font-medium text-gray-700">
-                    Skill demonstration tracking initialized
+                    Skills alignment tracking initialized
                   </p>
                   <p className="text-xs text-gray-600">
                     Data population requires user interaction with narrative scenarios.
@@ -313,7 +313,7 @@ export function SkillsSection({ userId, profile, adminViewMode }: SkillsSectionP
               ) : (
                 <div className="space-y-3">
                   <p className="text-sm font-medium text-gray-700">
-                    Skill demonstration tracking initialized
+                    Skills alignment tracking initialized
                   </p>
                   <p className="text-xs text-gray-600">
                     Data population requires user interaction with narrative scenarios.

@@ -4,7 +4,7 @@
  * Converts evidence-based skill data into comprehensive admin dashboard format
  */
 
-import { SkillTracker, type SkillProfile as TrackerSkillProfile } from './skill-tracker'
+import { SkillTracker, type SkillProfile as TrackerSkillProfile, type SamuelQuote } from './skill-tracker'
 import { FutureSkills, SkillContext, CareerPath2030 } from './2030-skills-system'
 
 export interface SkillDemonstration {
@@ -72,6 +72,7 @@ export interface SkillProfile {
   skillGaps: SkillGap[]
   totalDemonstrations: number
   milestones: string[]
+  samuelQuotes?: SamuelQuote[] // Samuel's wisdom shared with this user
 }
 
 /**
@@ -320,21 +321,36 @@ export async function loadSkillProfile(userId: string): Promise<SkillProfile | n
   try {
   // Try admin API first (uses service role key)
   try {
-    const response = await fetch(`/api/admin/skill-data?userId=${encodeURIComponent(userId)}`)
+    const response = await fetch(`/api/admin/skill-data?userId=${encodeURIComponent(userId)}`, {
+      credentials: 'include', // Include cookies for authentication
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
     if (response.ok) {
       const result = await response.json()
       if (result.success && result.profile) {
         console.log(`[SkillProfileAdapter] Loaded user ${userId} from admin API`)
         return convertSupabaseProfileToDashboard(result.profile)
+      } else {
+        console.warn(`[SkillProfileAdapter] Admin API returned unsuccessful result for ${userId}:`, result.error || 'Unknown error')
       }
+    } else {
+      const errorText = await response.text().catch(() => 'Unable to read error response')
+      console.warn(`[SkillProfileAdapter] Admin API returned ${response.status} for ${userId}:`, errorText.substring(0, 200))
     }
-  } catch (apiError) {
-    console.warn(`[SkillProfileAdapter] Admin API failed for ${userId}, falling back to direct Supabase`)
+  } catch (apiError: any) {
+    console.warn(`[SkillProfileAdapter] Admin API failed for ${userId}:`, {
+      message: apiError?.message || 'Network or fetch error',
+      name: apiError?.name
+    })
   }
 
-  // Try career explorations API
+  // Try career explorations API (optional - just for logging)
   try {
-    const careerResponse = await fetch(`/api/user/career-explorations?userId=${encodeURIComponent(userId)}`)
+    const careerResponse = await fetch(`/api/user/career-explorations?userId=${encodeURIComponent(userId)}`, {
+      credentials: 'include',
+    })
     if (careerResponse.ok) {
       const careerResult = await careerResponse.json()
       if (careerResult.success && careerResult.careerExplorations) {
@@ -346,27 +362,61 @@ export async function loadSkillProfile(userId: string): Promise<SkillProfile | n
   }
 
     // Fallback to direct Supabase (may be blocked by RLS)
-    const { supabase } = await import('./supabase')
+    // Note: This is a fallback if admin API fails - it may fail due to RLS policies
+    try {
+      const { supabase } = await import('./supabase')
 
-    // PERFORMANCE FIX: Select only needed columns instead of SELECT *
-    const { data: profile, error } = await supabase
-      .from('player_profiles')
-      .select(`
-        user_id,
-        current_scene,
-        total_demonstrations,
-        last_activity,
-        skill_demonstrations(skill_name, scene_id, choice_text, context, demonstrated_at),
-        skill_summaries(skill_name, demonstration_count, latest_context, scenes_involved, last_demonstrated),
-        career_explorations(id, career_name, match_score, readiness_level, local_opportunities, education_paths),
-        relationship_progress(character_name, trust_level, last_interaction, key_moments, interaction_count)
-      `)
-      .eq('user_id', userId)
-      .single()
+      // PERFORMANCE FIX: Select only needed columns instead of SELECT *
+      const { data: profile, error } = await supabase
+        .from('player_profiles')
+        .select(`
+          user_id,
+          current_scene,
+          total_demonstrations,
+          last_activity,
+          skill_demonstrations(skill_name, scene_id, choice_text, context, demonstrated_at),
+          skill_summaries(skill_name, demonstration_count, latest_context, scenes_involved, last_demonstrated),
+          career_explorations(id, career_name, match_score, readiness_level, local_opportunities, education_paths),
+          relationship_progress(character_name, trust_level, last_interaction, key_moments, interaction_count)
+        `)
+        .eq('user_id', userId)
+        .single()
 
-    if (!error && profile) {
-      console.log(`[SkillProfileAdapter] Loaded user ${userId} from Supabase`)
-      return convertSupabaseProfileToDashboard(profile)
+      if (error) {
+        // Check if it's a network error (Supabase unreachable)
+        const isNetworkError = 
+          error.message?.includes('Failed to fetch') ||
+          error.message?.includes('fetch failed') ||
+          !error.code // Network errors often don't have error codes
+        
+        if (!isNetworkError) {
+          // Only log non-network errors (actual Supabase errors)
+          console.warn(`[SkillProfileAdapter] Supabase direct query error for ${userId}:`, {
+            code: error.code,
+            message: error.message,
+            details: error.details,
+            hint: error.hint
+          })
+        }
+      } else if (profile) {
+        console.log(`[SkillProfileAdapter] Loaded user ${userId} from Supabase (direct)`)
+        return convertSupabaseProfileToDashboard(profile)
+      }
+    } catch (supabaseError: any) {
+      // Check if it's a network error (Supabase unreachable)
+      const isNetworkError = 
+        supabaseError?.message?.includes('Failed to fetch') ||
+        supabaseError?.message?.includes('ERR_NAME_NOT_RESOLVED') ||
+        supabaseError?.name === 'TypeError' ||
+        supabaseError?.toString().includes('fetch')
+      
+      if (!isNetworkError) {
+        // Only log unexpected errors
+        console.warn(`[SkillProfileAdapter] Supabase connection error for ${userId}:`, {
+          message: supabaseError?.message || 'Unknown error',
+          name: supabaseError?.name
+        })
+      }
     }
 
     // Fallback to localStorage
@@ -665,7 +715,8 @@ function convertTrackerProfileToDashboard(
     keySkillMoments,
     skillGaps,
     totalDemonstrations: trackerProfile.totalDemonstrations,
-    milestones: trackerProfile.milestones.map(m => m.checkpoint)
+    milestones: trackerProfile.milestones.map(m => m.checkpoint),
+    samuelQuotes: trackerProfile.samuelQuotes || []
   }
 }
 
@@ -691,42 +742,49 @@ export function saveSkillData(
 
 /**
  * Get all user IDs with skill data
- * First tries Supabase, falls back to localStorage
+ * Uses admin API (server-side with service role) to bypass RLS, falls back to localStorage
  */
 export async function getAllUserIds(): Promise<string[]> {
   if (typeof window === 'undefined') return []
 
   try {
-    // Try Supabase first
-    console.log('[SkillProfileAdapter] Attempting to load Supabase client...')
-    const { supabase } = await import('./supabase')
-    console.log('[SkillProfileAdapter] Supabase client loaded:', !!supabase)
-    console.log('[SkillProfileAdapter] Supabase client type:', typeof supabase)
-    console.log('[SkillProfileAdapter] Supabase from method:', typeof supabase.from)
-    
-    const { data: profiles, error } = await supabase
-      .from('player_profiles')
-      .select('user_id')
-      .order('last_activity', { ascending: false })
+    // Try admin API first (uses service role key, bypasses RLS)
+    try {
+      const response = await fetch('/api/admin/user-ids', {
+        credentials: 'include', // Include cookies for authentication
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
 
-    console.log('[SkillProfileAdapter] Supabase query result:', { 
-      data: profiles, 
-      error,
-      dataType: typeof profiles,
-      errorType: typeof error
-    })
-
-    if (error) {
-      console.error('[SkillProfileAdapter] Supabase query error:', error)
-    }
-
-    if (!error && profiles && profiles.length > 0) {
-      console.log(`[SkillProfileAdapter] Found ${profiles.length} users in Supabase`)
-      return profiles.map(p => p.user_id)
+      if (response.ok) {
+        const result = await response.json()
+        if (result.success && result.userIds) {
+          console.log(`[SkillProfileAdapter] Loaded ${result.userIds.length} user IDs from admin API`)
+          return result.userIds
+        }
+      } else {
+        // Handle specific error cases
+        if (response.status === 401) {
+          console.warn(`[SkillProfileAdapter] Admin authentication required. Please log in at /admin/login`)
+          // Don't throw - fall through to localStorage fallback
+        } else {
+          const errorText = await response.text().catch(() => 'Unable to read error response')
+          console.warn(`[SkillProfileAdapter] Admin user-ids API returned ${response.status}:`, errorText.substring(0, 200))
+        }
+      }
+    } catch (apiError: any) {
+      // Network errors, CORS issues, etc.
+      console.warn(`[SkillProfileAdapter] Admin user-ids API request failed:`, {
+        message: apiError?.message || 'Network or fetch error',
+        name: apiError?.name,
+        stack: apiError?.stack?.substring(0, 200)
+      })
+      // Don't throw - fall through to localStorage fallback
     }
 
     // Fallback to localStorage
-    console.log('[SkillProfileAdapter] Supabase empty or error, checking localStorage')
+    console.log('[SkillProfileAdapter] Admin API failed or returned no data, checking localStorage')
     const keys = Object.keys(localStorage)
     const trackerKeys = keys.filter(k => k.startsWith('skill_tracker_'))
     const userIds = trackerKeys.map(k => k.replace('skill_tracker_', ''))

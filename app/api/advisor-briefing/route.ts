@@ -134,13 +134,13 @@ Your task is to analyze this complete data profile and generate a concise, empat
 
 ## 1. The Authentic Story (Who is this person?)
    - Synthesize their journey. What is their core conflict or question?
-   - Based on their choices and demonstrated skills, what is their "Player Persona"? (e.g., "This is an analytical problem-solver who is learning to embrace their empathetic side.")
+   - Based on their choices and the skills their choices are aligned with, what is their "Player Persona"? (e.g., "This is an analytical problem-solver who is learning to embrace their empathetic side.")
    - Pull 1-2 EXACT quotes from their actual choices (shown above in "Choice:" fields) that serve as powerful evidence for this story.
    - Keep it to 2-3 sentences maximum.
 
 ## 2. Top Strengths (What is their superpower?)
    - **PRIORITIZE WEF 2030 SKILLS**: If WEF 2030 skills data is available (shown above), use those skills first as they are research-backed (WEF, 2023) and evidence-rich.
-   - Identify their top 3 demonstrated skills, drawing from WEF 2030 skills when available.
+   - Identify their top 3 skills indicated by their choices, drawing from WEF 2030 skills when available.
    - For EACH skill, provide the single strongest piece of evidence using either:
      a) The WEF skill's "Latest Context" (if from WEF data), OR
      b) The exact choice quote and context (if from behavioral patterns)
@@ -163,7 +163,7 @@ Your task is to analyze this complete data profile and generate a concise, empat
    - Generate a single, empathetic opening line for a conversation with this student.
    - It must reference one of their WEF 2030 skills (if available) or behavioral strengths, using actual evidence/context.
    - Connect this strength naturally to the strategic recommendation.
-   - Example format: "I was impressed by [reference to their specific skill demonstration]. That same [WEF skill] is exactly what [Birmingham opportunity] is looking for."
+   - Example format: "I noticed [reference to their specific choice aligned with a skill]. That same [WEF skill] is exactly what [Birmingham opportunity] is looking for."
    - Make it sound natural, warm, and specific to their journey.
 
 **CRITICAL REQUIREMENTS:**

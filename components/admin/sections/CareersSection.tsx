@@ -97,7 +97,7 @@ export function CareersSection({ userId, profile, adminViewMode }: CareersSectio
           {adminViewMode === 'family' ? (
             <>{user.userName}'s shown {user.totalDemonstrations} skills—here's where they lead in Birmingham. Focus on 'Near Ready' careers first.</>
           ) : (
-            <>{user.totalDemonstrations} skill demonstrations → Birmingham labor market alignment. Match = skills (40%) + education (30%) + local (30%).</>
+            <>{user.totalDemonstrations} choices aligned with skills → Birmingham labor market alignment. Match = skills (40%) + education (30%) + local (30%).</>
           )}
         </p>
       </div>
@@ -155,7 +155,7 @@ export function CareersSection({ userId, profile, adminViewMode }: CareersSectio
             <CardTitle>Your Career Exploration Progress</CardTitle>
             <CardDescription>
               Paths explored: {evidenceData.careerExploration.totalExplorations} |
-              Skills demonstrated: {evidenceData.careerExploration.skillsDemonstrated}
+              Skills indicated by choices: {evidenceData.careerExploration.skillsDemonstrated}
             </CardDescription>
           </CardHeader>
           <CardContent>

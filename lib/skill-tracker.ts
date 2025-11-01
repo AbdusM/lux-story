@@ -4,7 +4,10 @@
  * THE KEY INSIGHT: We are NOT building a measurement tool that produces scores.
  * We ARE building an evidence-gathering tool that produces stories.
  *
- * Primary data structure: SkillDemonstration[] (what actually happened)
+ * IMPORTANT: Users don't "demonstrate" skills in the game - they make choices
+ * that are aligned with skills. Actual skill demonstration requires different work.
+ *
+ * Primary data structure: SkillDemonstration[] (choices aligned with skills)
  * Numbers are INTERNAL ONLY (for career matching algorithms)
  * exportSkillProfile() returns evidence and context, NOT scores
  * False precision like emotionalIntelligence: 0.82 is a lie - we don't do that
@@ -33,6 +36,15 @@ export interface SkillMilestone {
   timestamp: number
 }
 
+export interface SamuelQuote {
+  quoteId: string // nodeId from dialogue graph
+  quoteText: string // The actual quote/wisdom shared
+  sceneId: string // Which scene/node it came from
+  sceneDescription?: string // Context about when it was shared
+  timestamp: number // When it was shared
+  emotion?: string // Emotion tag if available
+}
+
 export interface CareerMatch {
   name: string
   matchScore: number // Internal use, not primary presentation
@@ -54,6 +66,9 @@ export interface SkillProfile {
   // Career matches with evidence
   careerMatches: CareerMatch[]
 
+  // Samuel's wisdom shared with this user
+  samuelQuotes: SamuelQuote[]
+
   // Metadata
   totalDemonstrations: number
   journeyStarted: number
@@ -61,7 +76,8 @@ export interface SkillProfile {
 
 /**
  * Evidence-First Skill Tracker
- * Records skill demonstrations as evidence, not as numeric scores
+ * Records choices aligned with skills as evidence, not as numeric scores
+ * Note: These track choices that align with skills, not actual skill demonstrations
  */
 export class SkillTracker {
   // Maximum number of demonstrations to keep in memory
@@ -76,6 +92,7 @@ export class SkillTracker {
   private userId: string
   private demonstrations: SkillDemonstration[] = []
   private milestones: SkillMilestone[] = []
+  private samuelQuotes: SamuelQuote[] = []
   private saveErrorCount = 0
   private lastSaveError: number | null = null
 
@@ -86,10 +103,11 @@ export class SkillTracker {
   }
 
   /**
-   * Core method: Record a skill demonstration after each choice
+   * Core method: Record choices aligned with skills after each user choice
+   * Note: These are choices that align with skills, not actual skill demonstrations
    */
   recordChoice(choice: { text: string; pattern?: string; id?: string }, scene: string, gameState: SimpleGameState): void {
-    // 1. Extract skill demonstrations from choice
+    // 1. Extract skills aligned with this choice
     const demonstrations = this.extractDemonstrations(choice, scene, gameState)
 
     // 2. Record evidence
@@ -257,6 +275,33 @@ export class SkillTracker {
       totalChoices: this.demonstrations.length,
       demonstrationCount: this.demonstrations.length,
       timestamp: Date.now()
+    })
+    this.saveToStorage()
+  }
+
+  /**
+   * Record a Samuel quote/wisdom shared with the user
+   */
+  recordSamuelQuote(
+    quoteId: string,
+    quoteText: string,
+    sceneId: string,
+    sceneDescription?: string,
+    emotion?: string
+  ): void {
+    // Check if we already have this quote (avoid duplicates)
+    const exists = this.samuelQuotes.some(q => q.quoteId === quoteId)
+    if (exists) {
+      return // Don't record duplicates
+    }
+
+    this.samuelQuotes.push({
+      quoteId,
+      quoteText,
+      sceneId,
+      sceneDescription,
+      timestamp: Date.now(),
+      emotion
     })
     this.saveToStorage()
   }
@@ -469,6 +514,9 @@ export class SkillTracker {
 
       // Career matches with evidence
       careerMatches,
+
+      // Samuel's wisdom shared with this user
+      samuelQuotes: this.samuelQuotes,
 
       // Metadata
       totalDemonstrations: this.demonstrations.length,
@@ -845,6 +893,7 @@ export class SkillTracker {
         const data = JSON.parse(saved)
         this.demonstrations = data.demonstrations || []
         this.milestones = data.milestones || []
+        this.samuelQuotes = data.samuelQuotes || []
       } catch (error) {
         console.warn('Failed to load skill tracker data:', error)
       }
@@ -868,6 +917,7 @@ export class SkillTracker {
       const data = {
         demonstrations: this.demonstrations,
         milestones: this.milestones,
+        samuelQuotes: this.samuelQuotes,
         lastUpdated: Date.now()
       }
 
@@ -891,6 +941,7 @@ export class SkillTracker {
         const cleanedData = JSON.stringify({
           demonstrations: this.demonstrations,
           milestones: this.milestones,
+          samuelQuotes: this.samuelQuotes,
           lastUpdated: Date.now()
         })
 
@@ -929,6 +980,7 @@ export class SkillTracker {
   clearAllData(): void {
     this.demonstrations = []
     this.milestones = []
+    this.samuelQuotes = []
     this.saveToStorage()
   }
 
