@@ -344,6 +344,41 @@ export class SyncQueue {
           // Real-time monitoring
           logSync((action.data as { user_id?: string })?.user_id || 'unknown', 'skill_demonstration', true)
 
+        } else if (action.type === 'career_exploration') {
+          // Sync career exploration to Supabase
+          let response: Response
+          try {
+            response = await fetch('/api/user/career-explorations', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(action.data)
+            })
+          } catch (fetchError) {
+            // Network error - rethrow with more context
+            throw new Error(`Network error syncing career exploration: ${fetchError instanceof Error ? fetchError.message : String(fetchError)}`)
+          }
+
+          if (!response.ok) {
+            // Try to get error details from response
+            let errorBody = ''
+            try {
+              errorBody = await response.text()
+            } catch (e) {
+              // Ignore if we can't read body
+            }
+            throw new Error(`Career exploration sync failed: ${response.status} ${response.statusText}${errorBody ? ` - ${errorBody.slice(0, 100)}` : ''}`)
+          }
+
+          successfulIds.push(action.id)
+          console.log('✅ [SyncQueue] Action successful:', {
+            type: 'career_exploration',
+            career: (action.data as { career_name?: string })?.career_name,
+            matchScore: (action.data as { match_score?: number })?.match_score
+          })
+
+          // Real-time monitoring
+          logSync((action.data as { user_id?: string })?.user_id || 'unknown', 'career_exploration', true)
+
         } else {
           console.error(`❌ [SyncQueue] Unknown action type: ${action.type}`)
           failedActions.push({ ...action, retries: action.retries + 1 })
@@ -523,6 +558,36 @@ export function queueSkillDemonstrationSync(data: {
       demonstrated_at: data.demonstrated_at || new Date().toISOString()
     },
     timestamp: Date.now()
+  })
+}
+
+/**
+ * Helper: Queue career exploration sync
+ * Called when user demonstrates career interest
+ */
+export function queueCareerExplorationSync(data: {
+  user_id: string
+  career_name: string
+  match_score: number
+  readiness_level: 'exploratory' | 'emerging' | 'near_ready' | 'ready'
+  local_opportunities: string[]
+  education_paths: string[]
+  explored_at?: string
+}): void {
+  SyncQueue.addToQueue({
+    id: generateActionId(),
+    type: 'career_exploration',
+    data: {
+      ...data,
+      explored_at: data.explored_at || new Date().toISOString()
+    },
+    timestamp: Date.now()
+  })
+
+  console.log('[SyncQueue] Queued career exploration sync:', {
+    userId: data.user_id,
+    careerName: data.career_name,
+    matchScore: data.match_score
   })
 }
 
