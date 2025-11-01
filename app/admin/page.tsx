@@ -17,19 +17,39 @@ export default function AdminPage() {
   const [students, setStudents] = useState<StudentInsights[]>([])
   const [loading, setLoading] = useState(true)
   const [mounted, setMounted] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [isSupabaseUnreachable, setIsSupabaseUnreachable] = useState(false)
 
   useEffect(() => {
     setMounted(true)
   }, [])
 
-  // Load and parse all student data
+  // Load student IDs and initial batch
   useEffect(() => {
     if (!mounted) return
 
     const loadStudentData = async () => {
       try {
-        // Get all user IDs
+        setError(null)
+        setIsSupabaseUnreachable(false)
+        
+        // Get all user IDs first
         const ids = await getAllUserIds()
+
+        // Check if Supabase is unreachable by comparing API vs localStorage
+        if (ids.length === 0) {
+          // Check localStorage to see if there's local data
+          const localStorageKeys = Object.keys(localStorage).filter(k => k.startsWith('skill_tracker_'))
+          if (localStorageKeys.length > 0) {
+            // We have local data but API returned empty - Supabase is unreachable
+            setIsSupabaseUnreachable(true)
+            setError('Database connection issue detected. Showing local-only data from this browser.')
+          } else {
+            // No data anywhere - might be truly empty or Supabase unreachable
+            setIsSupabaseUnreachable(true)
+            setError('No student data found. Check Supabase configuration if you expect data.')
+          }
+        }
 
         // Sort by recency (newest first)
         const sortedIds = ids.sort((a, b) => {
@@ -38,19 +58,40 @@ export default function AdminPage() {
           return parseInt(timestampB) - parseInt(timestampA)
         })
 
-        // Load profiles in parallel
-        const profiles = await Promise.all(
-          sortedIds.map(id => loadSkillProfile(id))
-        )
+        // Load first batch (50 students max for performance)
+        const initialBatch = sortedIds.slice(0, 50)
 
-        // Parse into insights
-        const insights = profiles
-          .filter(profile => profile !== null)
-          .map(profile => parseStudentInsights(profile!))
+        // Load profiles in smaller batches to prevent UI blocking
+        const batchSize = 10
+        const insights: StudentInsights[] = []
+
+        for (let i = 0; i < initialBatch.length; i += batchSize) {
+          const batch = initialBatch.slice(i, i + batchSize)
+          const profiles = await Promise.all(
+            batch.map(id => loadSkillProfile(id))
+          )
+
+          const batchInsights = profiles
+            .filter(profile => profile !== null)
+            .map(profile => parseStudentInsights(profile!))
+
+          insights.push(...batchInsights)
+          
+          // Update UI progressively
+          setStudents([...insights])
+        }
 
         setStudents(insights)
-      } catch (error) {
+        
+        // Clear error if we successfully loaded students (even if from localStorage)
+        if (insights.length > 0) {
+          setError(null)
+          setIsSupabaseUnreachable(false)
+        }
+      } catch (error: any) {
         console.error('Failed to load student data:', error)
+        setError(error?.message || 'Failed to load student data')
+        setIsSupabaseUnreachable(true)
       } finally {
         setLoading(false)
       }
@@ -87,6 +128,34 @@ export default function AdminPage() {
           </p>
         </div>
 
+        {/* Error Alert */}
+        {error && (
+          <Card className={`border-2 ${isSupabaseUnreachable ? 'border-amber-300 bg-amber-50' : 'border-red-300 bg-red-50'}`}>
+            <CardContent className="p-4">
+              <div className="flex items-start gap-3">
+                <div className={`flex-shrink-0 w-5 h-5 ${isSupabaseUnreachable ? 'text-amber-600' : 'text-red-600'}`}>
+                  <svg fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <h3 className={`text-sm font-semibold mb-1 ${isSupabaseUnreachable ? 'text-amber-900' : 'text-red-900'}`}>
+                    {isSupabaseUnreachable ? 'Database Connection Issue' : 'Error Loading Data'}
+                  </h3>
+                  <p className={`text-sm ${isSupabaseUnreachable ? 'text-amber-800' : 'text-red-800'}`}>
+                    {error}
+                  </p>
+                  {isSupabaseUnreachable && (
+                    <p className="text-xs text-amber-700 mt-2">
+                      The app is running in local-only mode. Check your Supabase configuration in <code className="bg-amber-100 px-1 rounded">.env.local</code>
+                    </p>
+                  )}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Student List */}
         {students.length === 0 ? (
           <Card className="border-dashed border-2 border-slate-300">
@@ -100,15 +169,19 @@ export default function AdminPage() {
                 <div>
                   <h3 className="text-xl font-semibold text-slate-900 mb-2">No Students Yet</h3>
                   <p className="text-base text-slate-600 mb-4">
-                    Student insights will appear here as they begin their career exploration journey.
+                    {isSupabaseUnreachable 
+                      ? 'Unable to load students from database. Check your Supabase configuration.'
+                      : 'Student insights will appear here as they begin their career exploration journey.'}
                   </p>
-                  <p className="text-sm text-slate-500">
-                    Each student's unique path, choice patterns, and character relationships will be tracked and analyzed.
-                      </p>
-                    </div>
-                  </div>
-              </CardContent>
-            </Card>
+                  {!isSupabaseUnreachable && (
+                    <p className="text-sm text-slate-500">
+                      Each student's unique path, choice patterns, and character relationships will be tracked and analyzed.
+                    </p>
+                  )}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
                 ) : (
                   <div className="space-y-4">
             {students.map(student => (
@@ -140,7 +213,7 @@ function StudentCard({ student }: { student: StudentInsights }) {
   const currentActivity = characterRelationships.find(c => c.met && c.currentStatus !== 'Not yet met')?.currentStatus || 'Starting journey'
 
   return (
-    <Link href={`/admin/skills?userId=${student.userId}`}>
+    <Link href={`/admin/${student.userId}/urgency`}>
       <Card className="group hover:shadow-lg hover:border-blue-400 transition-all duration-200 cursor-pointer border-slate-200">
         <CardContent className="p-6">
           <div className="flex items-start justify-between gap-6">

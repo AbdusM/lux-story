@@ -164,13 +164,27 @@ export class GameStateUtils {
 
       // Trust changes
       if (change.trustChange !== undefined) {
+        const oldTrust = charState.trust
         charState.trust = Math.max(
           NARRATIVE_CONSTANTS.MIN_TRUST,
           Math.min(NARRATIVE_CONSTANTS.MAX_TRUST, charState.trust + change.trustChange)
         )
+        
+        // Auto-update relationship status based on trust level
+        // Only if not explicitly set in this change
+        if (!change.setRelationshipStatus) {
+          const newTrust = charState.trust
+          if (newTrust >= 8) {
+            charState.relationshipStatus = 'confidant'
+          } else if (newTrust >= 4) {
+            charState.relationshipStatus = 'acquaintance'
+          } else {
+            charState.relationshipStatus = 'stranger'
+          }
+        }
       }
 
-      // EXPLICIT relationship status change (not automatic)
+      // EXPLICIT relationship status change (overrides auto-update)
       if (change.setRelationshipStatus) {
         charState.relationshipStatus = change.setRelationshipStatus
       }
