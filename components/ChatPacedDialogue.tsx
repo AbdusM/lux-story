@@ -175,54 +175,48 @@ export function ChatPacedDialogue({
     }
   }
 
-  // Get behavioral indicator based on character, emotion, and context
-  const getBehavioralIndicator = (): string => {
-    const behaviors = characterBehaviors[characterName]
-    if (!behaviors) {
-      // Fallback for unknown characters
-      return characterName === 'Narrator' ? 'pauses' : 'takes a breath'
-    }
-
-    // Determine emotion category from emotion tag
-    let emotionCategory = 'default'
-    if (emotion) {
-      const emotionLower = emotion.toLowerCase()
-      if (emotionLower.includes('anxious') || emotionLower.includes('nervous') || emotionLower.includes('worried')) {
-        emotionCategory = 'anxious'
-      } else if (emotionLower.includes('excited') || emotionLower.includes('enthusiastic') || emotionLower.includes('energetic')) {
-        emotionCategory = 'excited'
-      } else if (emotionLower.includes('vulnerable') || emotionLower.includes('raw') || emotionLower.includes('open')) {
-        emotionCategory = 'vulnerable'
-      } else if (emotionLower.includes('thoughtful') || emotionLower.includes('contemplative')) {
-        emotionCategory = 'thoughtful'
-      } else if (emotionLower.includes('focused') || emotionLower.includes('concentrated')) {
-        emotionCategory = 'focused'
-      } else if (emotionLower.includes('concerned') || emotionLower.includes('worried')) {
-        emotionCategory = 'concerned'
-      }
-    }
-
-    // Get behavior pool for this emotion category
-    const behaviorPool = behaviors[emotionCategory] || behaviors.default || ['takes a breath']
-    
-    // Filter out recently used behaviors (avoid immediate repetition)
-    const availableBehaviors = behaviorPool.filter(b => !usedBehaviors.slice(-2).includes(b))
-    const poolToUse = availableBehaviors.length > 0 ? availableBehaviors : behaviorPool
-
-    // Randomly select from pool
-    const selectedBehavior = poolToUse[Math.floor(Math.random() * poolToUse.length)]
-    
-    return selectedBehavior
-  }
-  
   // Update behavioral indicator when chunk index changes
   useEffect(() => {
     if (isTyping && currentChunkIndex < chunks.length) {
-      const newBehavior = getBehavioralIndicator()
-      setCurrentBehavioralIndicator(newBehavior)
-      setUsedBehaviors(prev => [...prev.slice(-4), newBehavior])
+      const behaviors = characterBehaviors[characterName]
+      if (!behaviors) {
+        setCurrentBehavioralIndicator(characterName === 'Narrator' ? 'pauses' : 'takes a breath')
+        return
+      }
+
+      // Determine emotion category from emotion tag
+      let emotionCategory = 'default'
+      if (emotion) {
+        const emotionLower = emotion.toLowerCase()
+        if (emotionLower.includes('anxious') || emotionLower.includes('nervous') || emotionLower.includes('worried')) {
+          emotionCategory = 'anxious'
+        } else if (emotionLower.includes('excited') || emotionLower.includes('enthusiastic') || emotionLower.includes('energetic')) {
+          emotionCategory = 'excited'
+        } else if (emotionLower.includes('vulnerable') || emotionLower.includes('raw') || emotionLower.includes('open')) {
+          emotionCategory = 'vulnerable'
+        } else if (emotionLower.includes('thoughtful') || emotionLower.includes('contemplative')) {
+          emotionCategory = 'thoughtful'
+        } else if (emotionLower.includes('focused') || emotionLower.includes('concentrated')) {
+          emotionCategory = 'focused'
+        } else if (emotionLower.includes('concerned') || emotionLower.includes('worried')) {
+          emotionCategory = 'concerned'
+        }
+      }
+
+      // Get behavior pool for this emotion category
+      const behaviorPool = behaviors[emotionCategory] || behaviors.default || ['takes a breath']
+      
+      // Filter out recently used behaviors (avoid immediate repetition)
+      const availableBehaviors = behaviorPool.filter(b => !usedBehaviors.slice(-2).includes(b))
+      const poolToUse = availableBehaviors.length > 0 ? availableBehaviors : behaviorPool
+
+      // Randomly select from pool
+      const selectedBehavior = poolToUse[Math.floor(Math.random() * poolToUse.length)]
+      
+      setCurrentBehavioralIndicator(selectedBehavior)
+      setUsedBehaviors(prev => [...prev.slice(-4), selectedBehavior])
     }
-  }, [currentChunkIndex, isTyping, characterName, emotion])
+  }, [currentChunkIndex, isTyping, characterName, emotion, usedBehaviors])
 
   useEffect(() => {
     // If text is empty (loading state), show thinking indicator indefinitely
