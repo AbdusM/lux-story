@@ -5,7 +5,7 @@
  * and are available in the admin dashboard. No more piecemeal tracking.
  */
 
-import { queueSkillSummarySync } from './sync-queue'
+import { queueSkillSummarySync, queueCareerExplorationSync } from './sync-queue'
 import { trackUserChoice, getSimpleAnalytics } from './simple-career-analytics'
 import { SkillTracker } from './skill-tracker'
 import { getPerformanceSystem } from './performance-system'
@@ -461,26 +461,20 @@ export class ComprehensiveUserTracker {
 
   /**
    * Queue career exploration for database sync
+   * Now uses reliable sync queue instead of direct API call
    */
   private async queueCareerExplorationSync(exploration: CareerExplorationData): Promise<void> {
-    // Use the existing sync queue mechanism
-    // We'll need to extend it to handle career_explorations
     console.log(`[ComprehensiveTracker] Queuing career exploration: ${exploration.career_name}`)
-    
-    // For now, we'll use a direct API call
-    try {
-      const response = await fetch('/api/user/career-explorations', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(exploration)
-      })
-      
-      if (!response.ok) {
-        console.error('Failed to sync career exploration:', response.statusText)
-      }
-    } catch (error) {
-      console.error('Error syncing career exploration:', error)
-    }
+
+    // Use the sync queue for reliability (same as skill demonstrations)
+    queueCareerExplorationSync({
+      user_id: exploration.user_id,
+      career_name: exploration.career_name,
+      match_score: exploration.match_score,
+      readiness_level: exploration.readiness_level,
+      local_opportunities: exploration.local_opportunities,
+      education_paths: exploration.education_paths
+    })
   }
 
   /**
