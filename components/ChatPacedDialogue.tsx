@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
+import { cn } from '@/lib/utils'
 import { CharacterAvatar } from './CharacterAvatar'
+import { RichTextRenderer, type RichTextEffect } from './RichTextRenderer'
 
 interface ChatPacedDialogueProps {
   /** The dialogue text with chunks separated by | or \n\n */
@@ -16,15 +18,25 @@ interface ChatPacedDialogueProps {
   onComplete?: () => void
   /** Additional CSS classes */
   className?: string
+  /** Visual interaction animation ('big', 'small', 'shake', 'nod', 'ripple', 'bloom', 'jitter') */
+  interaction?: string
+  /** Player behavior patterns - used to show contextual states */
+  playerPatterns?: {
+    analytical?: number
+    helping?: number
+    building?: number
+    patience?: number
+    exploring?: number
+  }
 }
 
 /**
- * ChatPacedDialogue - Sequential message display with typing indicators
+ * ChatPacedDialogue - Sequential message display with contextual thinking indicators
  * 
- * Simulates a real-time messaging experience by:
- * 1. Showing typing indicator ("...") 
- * 2. Revealing one chunk at a time
- * 3. Adding natural pauses between messages
+ * Train station context-aware states that subtly reflect player behaviors:
+ * 1. Shows contextual state based on character and player patterns
+ * 2. Reveals one chunk at a time
+ * 3. Adds natural pauses between messages
  * 
  * Use sparingly for high-impact moments to avoid slowing pacing.
  */
@@ -35,7 +47,9 @@ export function ChatPacedDialogue({
   chunkDelay = 1500,
   typingDuration = 800,
   onComplete,
-  className = ''
+  className = '',
+  interaction,
+  playerPatterns
 }: ChatPacedDialogueProps) {
   // Split text into chunks by | or \n\n
   const chunks = text
@@ -47,9 +61,63 @@ export function ChatPacedDialogue({
   const [isTyping, setIsTyping] = useState(false)
   const [currentChunkIndex, setCurrentChunkIndex] = useState(0)
 
+  // Determine contextual state text based on character and player behaviors
+  // Train station context: characters are considering, thinking, reflecting - not "typing"
+  const getStateText = (): string => {
+    // Character-specific defaults for train station context
+    const characterStates: Record<string, string> = {
+      'Samuel': 'considering',     // Station keeper - thoughtful consideration
+      'Maya': 'thinking',          // Student - introspective
+      'Devon': 'processing',        // Technical - systematic
+      'Jordan': 'reflecting',       // Career advisor - contemplative
+      'Narrator': 'pausing',        // Story pauses for emphasis
+      'You': 'thinking'             // Player - internal reflection
+    }
+
+    let baseState = characterStates[characterName] || 'thinking'
+
+    // Adjust based on player patterns (subtle behavioral reflection)
+    // This subtly shows the game recognizing player behaviors without explicit UI
+    if (playerPatterns) {
+      const dominantPattern = Object.entries(playerPatterns)
+        .filter(([_, value]) => value && value > 0)
+        .sort(([_, a], [__, b]) => (b || 0) - (a || 0))[0]?.[0]
+
+      // Map player patterns to character states (shows system is aware of player approach)
+      if (dominantPattern === 'analytical' && (playerPatterns.analytical || 0) > 2) {
+        // Player makes analytical choices - character reflects this in their state
+        if (characterName === 'Samuel' || characterName === 'Devon') {
+          baseState = 'analyzing'
+        }
+      } else if (dominantPattern === 'helping' && (playerPatterns.helping || 0) > 2) {
+        // Player shows helping behavior - character considers responses carefully
+        baseState = 'considering'
+      } else if (dominantPattern === 'exploring' && (playerPatterns.exploring || 0) > 2) {
+        // Player is curious - character matches exploratory energy
+        if (characterName === 'Jordan' || characterName === 'Maya') {
+          baseState = 'exploring'
+        }
+      } else if (dominantPattern === 'patience' && (playerPatterns.patience || 0) > 2) {
+        // Player is patient - character takes time to reflect
+        baseState = 'reflecting'
+      }
+    }
+
+    return baseState
+  }
+
+  const stateText = getStateText()
+
   useEffect(() => {
+    // If text is empty (loading state), show thinking indicator indefinitely
+    if (chunks.length === 0) {
+      setIsTyping(true)
+      return
+    }
+
     if (currentChunkIndex >= chunks.length) {
       // All chunks displayed
+      setIsTyping(false)
       if (onComplete) onComplete()
       return
     }
@@ -71,20 +139,32 @@ export function ChatPacedDialogue({
     <div className={`chat-paced-dialogue ${className}`}>
       {/* No inline avatars - handled by top bar */}
       <div className="space-y-3">
-        {/* Visible chunks */}
-        {visibleChunks.map((chunk, index) => (
-          <div
-            key={index}
-            className="chat-bubble animate-fade-in"
-            style={{
-              animation: 'fadeIn 0.3s ease-in'
-            }}
-          >
-            <p className="text-base leading-relaxed whitespace-pre-wrap">
-              {chunk}
-            </p>
-          </div>
-        ))}
+        {/* Visible chunks - fade-in for clean text introduction */}
+        {visibleChunks.map((chunk, index) => {
+          // Use fade-in for clean, elegant text introduction (not typewriter)
+          const chatPacingEffect: RichTextEffect = {
+            mode: 'fade-in',
+            speed: 1.0,
+            state: 'default'
+          }
+
+          // Get interaction class if provided (applies to all chunks)
+          const interactionClass = interaction ? `narrative-interaction-${interaction}` : null
+
+          return (
+            <div
+              key={index}
+              className={cn("chat-bubble", interactionClass)}
+              style={{ transition: 'none' }}
+            >
+              <RichTextRenderer
+                text={chunk}
+                effects={chatPacingEffect}
+                className="text-base leading-relaxed"
+              />
+            </div>
+          )
+        })}
 
         {/* Typing indicator with avatar */}
         {isTyping && (
@@ -99,7 +179,7 @@ export function ChatPacedDialogue({
             )}
             <div className="flex-1">
               <span className="text-xs text-muted-foreground italic">
-                {characterName} is typing...
+                {characterName} is {stateText}...
               </span>
               <div className="typing-dots">
                 <span className="dot">.</span>

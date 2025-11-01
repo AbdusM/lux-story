@@ -8,14 +8,16 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
 import { DialogueDisplay } from '@/components/DialogueDisplay'
+import type { RichTextEffect } from '@/components/RichTextRenderer'
 import { AtmosphericIntro } from '@/components/AtmosphericIntro'
 import { CharacterAvatar } from '@/components/CharacterAvatar'
 // import { CharacterLoadingState } from '@/components/CharacterLoadingState' // Removed - using subtle loading instead
 import { ErrorRecoveryState } from '@/components/ErrorRecoveryState'
-import { SkillToast } from '@/components/SkillToast'
-import { CharacterTransition } from '@/components/CharacterTransition'
+// Removed: SkillToast and CharacterTransition - break single UI principle
+// Skills acknowledged naturally in narrative; transitions handled by dialogue
 import { cn } from '@/lib/utils'
 import { GameState, GameStateUtils } from '@/lib/character-state'
 import { GameStateManager } from '@/lib/game-state-manager'
@@ -24,6 +26,7 @@ import { generateUserId } from '@/lib/safe-storage'
 import {
   DialogueGraph,
   DialogueNode,
+  DialogueContent,
   StateConditionEvaluator,
   DialogueGraphNavigator,
   EvaluatedChoice
@@ -45,6 +48,7 @@ interface GameInterfaceState {
   currentCharacterId: CharacterId
   availableChoices: EvaluatedChoice[]
   currentContent: string
+  currentDialogueContent: DialogueContent | null  // Full content object for rich effects
   useChatPacing: boolean  // Whether to use sequential reveal for this node
   isLoading: boolean
   hasStarted: boolean
@@ -55,6 +59,7 @@ interface GameInterfaceState {
   showTransition: boolean  // For character switching
   transitionData: { platform: number; message: string } | null  // Transition details
   previousSpeaker: string | null  // For detecting continued speakers (avatar logic)
+  recentSkills: string[]  // Recently demonstrated skills for highlighting
 }
 
 export default function StatefulGameInterface() {
@@ -66,6 +71,7 @@ export default function StatefulGameInterface() {
     currentCharacterId: safeStart.characterId, // Game begins with Station Keeper
     availableChoices: [],
     currentContent: '',
+    currentDialogueContent: null,
     useChatPacing: false,
     isLoading: false,
     hasStarted: false,
@@ -75,8 +81,152 @@ export default function StatefulGameInterface() {
     skillToast: null,
     error: null,
     showTransition: false,
-    transitionData: null
+    transitionData: null,
+    recentSkills: []
   })
+
+  // Feature flag for rich text effects (terminal-style animations)
+  const enableRichEffects = true // Rich text effects enabled
+
+  // Helper function to get rich text effects from content (Phase 2 & 3 - with emotion mapping and skill highlighting)
+  // Typewriter ONLY for chat pacing moments (interactive conversation feel)
+  // Fade-in/static for regular dialogue (clean dropdown, less demanding)
+  const getRichEffectContext = useCallback((content: DialogueContent | null, isLoading: boolean, recentSkills: string[], useChatPacing: boolean): RichTextEffect | undefined => {
+    if (!enableRichEffects || !content) {
+      return undefined
+    }
+
+    // Chat pacing = interactive conversation = typewriter effect (character-by-character)
+    // Regular dialogue = clean fade-in dropdown (smooth appearance, less demanding)
+    // If chat pacing is active, ChatPacedDialogue handles it - don't apply rich effects
+    // Rich effects only for regular dialogue chunks (fade-in for smooth appearance)
+    const useTypewriter = false // Typewriter reserved for ChatPacedDialogue only, not RichTextRenderer
+
+    // If content has explicit richEffectContext, use it (highest priority)
+    if (content.richEffectContext) {
+      const effect: RichTextEffect = {
+        mode: useTypewriter ? 'typewriter' : 'fade-in', // Typewriter for chat pacing, fade-in for regular
+        state: content.richEffectContext,
+        speed: 1.0,
+        charDelay: useTypewriter ? 20 : undefined // Faster typewriter for chat pacing
+      }
+
+      // Phase 3: Add skill highlighting if skills are mentioned in dialogue
+      if (recentSkills.length > 0 && content.text) {
+        const mentionedSkills = recentSkills.filter(skill => {
+          // Convert skill name (e.g., "criticalThinking") to readable format and check if it appears
+          const skillWords = skill.replace(/([A-Z])/g, ' $1').trim().toLowerCase()
+          const skillVariations = [
+            skill.toLowerCase(),
+            skillWords,
+            skill.replace(/([A-Z])/g, ' $1').trim() // With capitals
+          ]
+          return skillVariations.some(variation => content.text!.toLowerCase().includes(variation))
+        })
+
+        if (mentionedSkills.length > 0) {
+          effect.highlightWords = mentionedSkills.map(skill => 
+            skill.replace(/([A-Z])/g, ' $1').trim()
+          )
+          effect.rainbow = true // Subtle rainbow effect for skill highlights
+        }
+      }
+
+      return effect
+    }
+
+    // If loading, apply thinking effect (fade-in for cleaner feel)
+    if (isLoading) {
+      return {
+        mode: 'fade-in',
+        state: 'thinking',
+        speed: 1.0,
+        perCharColor: false // Simpler for loading states
+      }
+    }
+
+    // Map emotions to contexts (subtle, minimal mapping)
+    const emotionMap: Record<string, 'thinking' | 'warning' | 'success' | undefined> = {
+      'anxious': 'warning',
+      'worried': 'warning',
+      'vulnerable': 'thinking',
+      'thoughtful': 'thinking',
+      'reflecting': 'thinking',
+      'excited': 'success',
+      'determined': 'success'
+    }
+
+    let mappedContext: 'thinking' | 'warning' | 'success' | undefined
+    if (content.emotion) {
+      mappedContext = emotionMap[content.emotion]
+    }
+
+    if (mappedContext) {
+      const effect: RichTextEffect = {
+        mode: useTypewriter ? 'typewriter' : 'fade-in', // Typewriter for chat pacing, fade-in for regular
+        state: mappedContext,
+        speed: mappedContext === 'warning' ? 1.2 : 1.0,
+        charDelay: useTypewriter ? (mappedContext === 'warning' ? 20 : 25) : undefined, // Typewriter only for chat
+        flashing: mappedContext === 'warning' // Flash warnings for emphasis
+      }
+
+      // Phase 3: Add skill highlighting if skills are mentioned in dialogue
+      if (recentSkills.length > 0 && content.text) {
+        const mentionedSkills = recentSkills.filter(skill => {
+          const skillWords = skill.replace(/([A-Z])/g, ' $1').trim().toLowerCase()
+          const skillVariations = [
+            skill.toLowerCase(),
+            skillWords,
+            skill.replace(/([A-Z])/g, ' $1').trim()
+          ]
+          return skillVariations.some(variation => content.text!.toLowerCase().includes(variation))
+        })
+
+        if (mentionedSkills.length > 0) {
+          effect.highlightWords = mentionedSkills.map(skill => 
+            skill.replace(/([A-Z])/g, ' $1').trim()
+          )
+          effect.rainbow = true
+        }
+      }
+
+      return effect
+    }
+
+    // Phase 3: Even without emotion mapping, highlight skills if mentioned
+    if (recentSkills.length > 0 && content.text) {
+      const mentionedSkills = recentSkills.filter(skill => {
+        const skillWords = skill.replace(/([A-Z])/g, ' $1').trim().toLowerCase()
+        const skillVariations = [
+          skill.toLowerCase(),
+          skillWords,
+          skill.replace(/([A-Z])/g, ' $1').trim()
+        ]
+        return skillVariations.some(variation => content.text!.toLowerCase().includes(variation))
+      })
+
+      if (mentionedSkills.length > 0) {
+        return {
+          mode: useTypewriter ? 'typewriter' : 'fade-in', // Typewriter for chat pacing, fade-in for regular
+          state: 'success',
+          highlightWords: mentionedSkills.map(skill => 
+            skill.replace(/([A-Z])/g, ' $1').trim()
+          ),
+          rainbow: true,
+          speed: 1.0,
+          charDelay: useTypewriter ? 25 : undefined // Typewriter only for chat pacing
+        }
+      }
+    }
+
+    // Default: simple fade-in (clean, not distracting)
+    // Line-by-line fade can be applied selectively via DialogueDisplay if needed
+    return {
+      mode: 'fade-in',
+      speed: 1.0,
+      state: 'default'
+    }
+  }, [enableRichEffects])
 
   // Skill tracker for recording demonstrations
   const skillTrackerRef = useRef<SkillTracker | null>(null)
@@ -248,10 +398,18 @@ export default function StatefulGameInterface() {
         currentCharacterId: actualCharacterId,
         availableChoices: choices,
         currentContent: content.text,
+        currentDialogueContent: content,
         useChatPacing: content.useChatPacing || false,
         isLoading: false,
         hasStarted: true,
-        previousSpeaker: state.currentNode?.speaker || null
+        selectedChoice: null,
+        showSaveConfirmation: false,
+        skillToast: null,
+        error: null,
+        showTransition: false,
+        transitionData: null,
+        previousSpeaker: state.currentNode?.speaker || null,
+        recentSkills: [] // Reset on initialization
       })
 
       // Auto-save
@@ -266,28 +424,7 @@ export default function StatefulGameInterface() {
   const handleChoice = useCallback(async (choice: EvaluatedChoice) => {
     if (!state.gameState || !choice.enabled) return
 
-    // Immediate feedback for choice selection
-    setState(prev => ({ ...prev, selectedChoice: choice.choice.choiceId, isLoading: true }))
-
-    // Brief pause for visual confirmation
-    await new Promise(resolve => setTimeout(resolve, 200))
-
-    // Track the choice in comprehensive tracker
-    try {
-      console.log(`[StatefulGameInterface] Calling comprehensive tracker for ${state.gameState.playerId}`)
-      const comprehensiveTracker = getComprehensiveTracker(state.gameState.playerId)
-      await comprehensiveTracker.trackChoice(
-        state.gameState.playerId,
-        choice.choice,
-        state.currentNode?.nodeId || 'unknown',
-        state.currentCharacterId,
-        0 // Time to choose not tracked in this interface
-      )
-      console.log(`[StatefulGameInterface] Comprehensive tracker completed for ${state.gameState.playerId}`)
-    } catch (error) {
-      console.error(`[StatefulGameInterface] Comprehensive tracker error:`, error)
-    }
-
+    // Prepare all state changes first (Priority 1: Batch state updates)
     let newGameState = state.gameState
 
     // Apply choice consequences
@@ -309,7 +446,7 @@ export default function StatefulGameInterface() {
 
     if (!searchResult) {
       console.error(`❌ Next node not found in any graph: ${choice.choice.nextNodeId}`)
-      setState(prev => ({ ...prev, isLoading: false }))
+      // Error case - keep current state, don't update
       return
     }
 
@@ -351,6 +488,9 @@ export default function StatefulGameInterface() {
     ).filter(choice => choice.visible)
 
     // Record skill demonstration from this choice
+    let demonstratedSkills: string[] = []
+    let skillToastUpdate: { skill: string; message: string } | null = null
+    
     if (skillTrackerRef.current && state.currentNode) {
       const sceneMapping = SCENE_SKILL_MAPPINGS[state.currentNode.nodeId]
       let skillsRecorded = false
@@ -359,6 +499,7 @@ export default function StatefulGameInterface() {
       if (sceneMapping) {
         const choiceMapping = sceneMapping.choiceMappings[choice.choice.choiceId]
         if (choiceMapping) {
+          demonstratedSkills = choiceMapping.skillsDemonstrated
           skillTrackerRef.current.recordSkillDemonstration(
             state.currentNode.nodeId,
             choice.choice.choiceId,
@@ -368,49 +509,38 @@ export default function StatefulGameInterface() {
           console.log(`📊 Recorded skill demonstration (scene mapping): ${choiceMapping.skillsDemonstrated.join(', ')}`)
           skillsRecorded = true
           
-          // Show skill demonstration toast
-          setState(prev => ({
-            ...prev,
-            skillToast: {
-              skill: choiceMapping.skillsDemonstrated.join(', '),
-              message: choiceMapping.context
-            }
-          }))
+          // Skills are tracked but not shown via toast - breaks single UI principle
+          // Skills should be acknowledged naturally in narrative, not via overlays
+          skillToastUpdate = null
         }
       }
       
       // Priority 2: Fallback to choice.skills if no scene mapping (newly added 341 skills)
       if (!skillsRecorded && choice.choice.skills && choice.choice.skills.length > 0) {
-        const skills = choice.choice.skills as string[] // Cast to string[] for compatibility
+        demonstratedSkills = choice.choice.skills as string[]
         skillTrackerRef.current.recordSkillDemonstration(
           state.currentNode.nodeId,
           choice.choice.choiceId,
-          skills,
-          `Demonstrated ${skills.join(', ')} through choice: "${choice.choice.text}"`
+          demonstratedSkills,
+          `Demonstrated ${demonstratedSkills.join(', ')} through choice: "${choice.choice.text}"`
         )
-        console.log(`📊 Recorded skill demonstration (choice.skills): ${skills.join(', ')}`)
+        console.log(`📊 Recorded skill demonstration (choice.skills): ${demonstratedSkills.join(', ')}`)
       }
     }
 
-    // Check for character transition
-    const isCharacterChange = targetCharacterId !== state.currentCharacterId
-    if (isCharacterChange) {
-      setState(prev => ({
-        ...prev,
-        showTransition: true,
-        transitionData: {
-          platform: Math.floor(Math.random() * 10) + 1, // Random platform 1-10
-          message: `Moving to ${characterNames[targetCharacterId]}...`
-        }
-      }))
-      
-      // Hide transition after delay
-      setTimeout(() => {
-        setState(prev => ({ ...prev, showTransition: false, transitionData: null }))
-      }, 2000)
+    // Character transitions should happen naturally in narrative, not via modal
+    // Remove transition modal - let Samuel handle it narratively
+    const transitionUpdate = {
+      showTransition: false, // Always false - no modal overlays
+      transitionData: null
     }
 
-    // Update state
+    // Phase 3: Track recent skills for highlighting (keep for next 3-5 nodes, then clear)
+    const skillsToKeep = demonstratedSkills.length > 0 
+      ? [...demonstratedSkills, ...state.recentSkills].slice(0, 10)
+      : state.recentSkills.slice(0, 8)
+
+    // Priority 1: Single batched state update - all changes at once
     setState({
       gameState: newGameState,
       currentNode: nextNode,
@@ -418,17 +548,39 @@ export default function StatefulGameInterface() {
       currentCharacterId: targetCharacterId,
       availableChoices: newChoices,
       currentContent: content.text,
+      currentDialogueContent: content,
       useChatPacing: content.useChatPacing || false,
-      isLoading: false,
+      isLoading: false, // Clear loading immediately with new content
       hasStarted: true,
-      selectedChoice: null, // Reset choice selection
-      showSaveConfirmation: true, // Show save confirmation
-      previousSpeaker: state.currentNode?.speaker || null, // Track previous speaker for avatar logic
-      skillToast: state.skillToast, // Keep existing toast
+      selectedChoice: null,
+      showSaveConfirmation: true,
+      previousSpeaker: state.currentNode?.speaker || null,
+      skillToast: skillToastUpdate || state.skillToast, // Use prepared toast or keep existing
       error: null,
-      showTransition: state.showTransition, // Keep existing transition
-      transitionData: state.transitionData
+      ...transitionUpdate, // Spread transition state
+      recentSkills: skillsToKeep
     })
+
+    // Priority 3: Move async operations AFTER UI update (don't block rendering)
+    // Run tracking in background, don't wait for it
+    try {
+      const trackerPromise = getComprehensiveTracker(state.gameState.playerId)
+        .trackChoice(
+          state.gameState.playerId,
+          choice.choice,
+          state.currentNode?.nodeId || 'unknown',
+          state.currentCharacterId,
+          0
+        )
+      // Don't await - let it run in background
+      trackerPromise.catch(error => {
+        console.error(`[StatefulGameInterface] Comprehensive tracker error:`, error)
+      })
+    } catch (error) {
+      console.error(`[StatefulGameInterface] Comprehensive tracker setup error:`, error)
+    }
+
+    // No transition modal needed - narrative handles character changes naturally
 
     // Auto-save
     GameStateManager.saveGameState(newGameState)
@@ -596,15 +748,42 @@ export default function StatefulGameInterface() {
     )
   }
 
-  if (state.isLoading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 flex items-center justify-center p-4">
-        {/* Subtle loading state - no distracting animations */}
-        <div className="text-center">
-          <div className="text-slate-600 text-sm">Loading...</div>
-        </div>
-      </div>
-    )
+  // Loading state now handled inline with chat pacing - no full-screen replacement
+
+  // Helper to get contextual thinking state text (matching ChatPacedDialogue logic)
+  const getThinkingStateText = (characterName: string, patterns?: { analytical?: number; helping?: number; building?: number; patience?: number; exploring?: number }): string => {
+    const characterStates: Record<string, string> = {
+      'Samuel': 'considering',
+      'Maya': 'thinking',
+      'Devon': 'processing',
+      'Jordan': 'reflecting',
+      'Narrator': 'pausing',
+      'You': 'thinking'
+    }
+
+    let baseState = characterStates[characterName] || 'thinking'
+
+    if (patterns) {
+      const dominantPattern = Object.entries(patterns)
+        .filter(([_, value]) => value && value > 0)
+        .sort(([_, a], [__, b]) => (b || 0) - (a || 0))[0]?.[0]
+
+      if (dominantPattern === 'analytical' && (patterns.analytical || 0) > 2) {
+        if (characterName === 'Samuel' || characterName === 'Devon') {
+          baseState = 'analyzing'
+        }
+      } else if (dominantPattern === 'helping' && (patterns.helping || 0) > 2) {
+        baseState = 'considering'
+      } else if (dominantPattern === 'exploring' && (patterns.exploring || 0) > 2) {
+        if (characterName === 'Jordan' || characterName === 'Maya') {
+          baseState = 'exploring'
+        }
+      } else if (dominantPattern === 'patience' && (patterns.patience || 0) > 2) {
+        baseState = 'reflecting'
+      }
+    }
+
+    return baseState
   }
 
   const isEnding = state.availableChoices.length === 0
@@ -619,7 +798,11 @@ export default function StatefulGameInterface() {
   }
 
   return (
-    <div className="min-h-screen max-h-screen overflow-y-auto bg-gradient-to-b from-slate-50 to-slate-100">
+    <div 
+      key="game-container" 
+      className="min-h-screen max-h-screen overflow-y-auto bg-gradient-to-b from-slate-50 to-slate-100"
+      style={{ willChange: 'auto', contain: 'layout style paint', transition: 'none' }}
+    >
       <div className="max-w-4xl mx-auto p-3 sm:p-4">
 
         {/* Subtle top utility bar */}
@@ -646,7 +829,7 @@ export default function StatefulGameInterface() {
 
         {/* Character Banner - Minimal Chat Style with Avatar */}
         {currentCharacter && (
-          <div className="mb-4 px-3 py-2 bg-white/50 border border-slate-200 rounded-lg">
+          <div className="mb-4 px-3 py-2 bg-white/50 border border-slate-300 rounded-xl backdrop-blur-sm">
             <div className="flex items-center justify-between gap-3 text-xs sm:text-sm">
               <div className="flex items-center gap-2 font-medium text-slate-700">
                 <CharacterAvatar 
@@ -656,46 +839,129 @@ export default function StatefulGameInterface() {
                 />
                 <span className="truncate">{characterNames[state.currentCharacterId]}</span>
                 <span className="text-slate-400">•</span>
-                <span className="text-slate-600">{currentCharacter.relationshipStatus}</span>
+                <Badge variant="outline" className="text-xs font-normal border-slate-300 text-slate-600">
+                  {currentCharacter.relationshipStatus}
+                </Badge>
               </div>
-              <div className="text-slate-500 flex-shrink-0">
-                <span>Trust: {currentCharacter.trust}/10</span>
+              <div className="flex items-center gap-2 sm:gap-3">
+                {/* Character Switcher - Clean button row */}
+                {state.gameState && (() => {
+                  const availableChars = (['samuel', 'maya', 'devon', 'jordan'] as CharacterId[]).filter(charId => {
+                    const char = state.gameState!.characters.get(charId)
+                    const hasMet = char && (char.trust > 0 || char.conversationHistory.length > 0)
+                    return hasMet || charId === 'samuel' // Always show Samuel
+                  })
+                  
+                  // Only show switcher if more than one character is available
+                  if (availableChars.length <= 1) {
+                    return null
+                  }
+                  
+                  return (
+                    <div className="flex gap-1 border-r border-slate-300 pr-2 sm:pr-3 mr-1 sm:mr-2">
+                      {availableChars.map((charId) => {
+                        const char = state.gameState!.characters.get(charId)
+                        const isCurrent = charId === state.currentCharacterId
+                        
+                        return (
+                          <button
+                            key={charId}
+                            onClick={() => {
+                              const graph = getGraphForCharacter(charId, state.gameState!)
+                              const startNode = graph.nodes.get(graph.startNodeId)!
+                              const content = DialogueGraphNavigator.selectContent(startNode, char?.conversationHistory || [])
+                              
+                              setState(prev => ({
+                                ...prev,
+                                currentCharacterId: charId,
+                                currentGraph: graph,
+                                currentNode: startNode,
+                                currentContent: content.text,
+                                currentDialogueContent: content,
+                                useChatPacing: content.useChatPacing || false,
+                                availableChoices: StateConditionEvaluator.evaluateChoices(startNode, state.gameState!, charId).filter(c => c.visible),
+                                previousSpeaker: null
+                              }))
+                            }}
+                            className={cn(
+                              "px-2 py-1 rounded text-xs transition-colors min-h-[32px] border",
+                              isCurrent 
+                                ? "bg-blue-100 text-blue-700 font-medium border-blue-300 shadow-sm" 
+                                : "bg-white/70 text-slate-600 hover:bg-slate-50 border-slate-300 hover:border-slate-400"
+                            )}
+                            title={characterNames[charId]}
+                          >
+                            {characterNames[charId].split(' ')[0]}
+                          </button>
+                        )
+                      })}
+                    </div>
+                  )
+                })()}
+                <div className="text-slate-500 flex-shrink-0">
+                  <span 
+                    className={cn(
+                      currentCharacter.trust === 10 && "trust-max-celebration"
+                    )}
+                  >
+                    Trust: {currentCharacter.trust}/10
+                  </span>
+                </div>
               </div>
             </div>
           </div>
         )}
 
-        {/* Main Content */}
-        <Card className="mb-4 sm:mb-6">
+        {/* Main Content - Fixed min-height container to prevent jumping */}
+        <Card key="dialogue-card" className="mb-4 sm:mb-6 rounded-xl shadow-md" style={{ transition: 'none', minHeight: '250px' }}>
           <CardContent className="p-4 sm:p-6">
-            <div className="mb-3 sm:mb-4">
+            <div className="mb-3 sm:mb-4" key="dialogue-content-stable" style={{ transition: 'none' }}>
+              {/* Dialogue content - stable container, content updates smoothly */}
               <DialogueDisplay 
-                text={state.currentContent} 
+                text={state.currentContent || ''} 
                 useChatPacing={state.useChatPacing}
                 characterName={state.currentNode?.speaker}
                 showAvatar={false}
                 isContinuedSpeaker={state.currentNode?.speaker === state.previousSpeaker}
+                richEffects={getRichEffectContext(state.currentDialogueContent, state.isLoading, state.recentSkills, state.useChatPacing)}
+                interaction={state.currentDialogueContent?.interaction}
+                playerPatterns={state.gameState?.patterns ? {
+                  analytical: state.gameState.patterns.analytical || 0,
+                  helping: state.gameState.patterns.helping || 0,
+                  building: state.gameState.patterns.building || 0,
+                  patience: state.gameState.patterns.patience || 0,
+                  exploring: state.gameState.patterns.exploring || 0
+                } : undefined}
               />
             </div>
-
-            {/* Scene info for debugging */}
-            {process.env.NODE_ENV === 'development' && (
-              <div className="text-xs text-slate-400 border-t pt-2 mt-2">
-                Scene: {state.currentNode?.nodeId}
-              </div>
-            )}
           </CardContent>
         </Card>
 
-        {/* Choices */}
+        {/* Choices - Stable container, always mounted (Priority 2: Never unmount) */}
         {!isEnding && (
-          <Card>
-            <CardContent className="p-4 sm:p-6">
-              <h3 className="text-lg sm:text-xl font-semibold text-slate-700 mb-3 sm:mb-4">Your Response</h3>
-              <div className="space-y-2 sm:space-y-3">
-                {state.availableChoices.map((evaluatedChoice, index) => (
+          <Card key="choices-card" className="rounded-xl shadow-md" style={{ transition: 'none' }}>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-lg sm:text-xl text-slate-700">Your Response</CardTitle>
+            </CardHeader>
+            <CardContent className="p-4 sm:p-6 pt-0">
+              <div 
+                className="space-y-2 sm:space-y-3" 
+                key="choices-list-stable"
+                style={{ 
+                  opacity: state.isLoading ? 0.5 : 1,
+                  pointerEvents: state.isLoading ? 'none' : 'auto',
+                  transition: 'none' // Priority 5: No transitions on state changes
+                }}
+              >
+                {state.availableChoices.map((evaluatedChoice) => {
+                  // Get interaction class if choice has interaction specified
+                  const interactionClass = evaluatedChoice.choice.interaction 
+                    ? `narrative-interaction-${evaluatedChoice.choice.interaction}` 
+                    : null
+                  
+                  return (
                   <Button
-                    key={evaluatedChoice.choice.choiceId}
+                    key={`choice-${evaluatedChoice.choice.choiceId}`}
                     onClick={() => handleChoice(evaluatedChoice)}
                     disabled={!evaluatedChoice.enabled}
                     variant="ghost"
@@ -706,24 +972,27 @@ export default function StatefulGameInterface() {
                       // Typography - ensure text wraps
                       "text-base font-medium text-left whitespace-normal",
                       
-                      // Clean, subtle styling
+                      // Clean, subtle styling - removed transition-all to prevent flashing
                       "border border-slate-200 bg-white",
-                      "hover:bg-slate-50 hover:border-slate-300 hover:shadow-sm",
+                      "hover:bg-slate-50 hover:border-slate-300 hover:shadow-lg",
                       "active:scale-[0.98]",
-                      "transition-all duration-200 ease-out",
+                      "transition-colors duration-150 ease-out", // Only transition colors, not all properties
                       
                       // Selection feedback
-                      state.selectedChoice === evaluatedChoice.choice.choiceId && "bg-blue-50 border-blue-300 scale-[0.98]",
+                      state.selectedChoice === evaluatedChoice.choice.choiceId && "bg-blue-50 border-blue-300",
                       
                       // Rounded corners
                       "rounded-lg",
                       
                       // Disabled state
-                      !evaluatedChoice.enabled && "bg-slate-50 text-slate-400 cursor-not-allowed border-slate-200"
+                      !evaluatedChoice.enabled && "bg-slate-50 text-slate-400 cursor-not-allowed border-slate-200",
+                      
+                      // Interaction animation (applied on mount, doesn't interfere with hover/active)
+                      interactionClass
                     )}
                   >
                     <div className="w-full">
-                      {/* Choice text */}
+                      {/* Choice text - simple display (no animations) */}
                       <div className="font-medium text-base break-words">
                         {evaluatedChoice.choice.text}
                       </div>
@@ -734,7 +1003,8 @@ export default function StatefulGameInterface() {
                       )}
                     </div>
                   </Button>
-                ))}
+                  )
+                })}
               </div>
             </CardContent>
           </Card>
@@ -742,7 +1012,7 @@ export default function StatefulGameInterface() {
 
         {/* Ending */}
         {isEnding && (
-          <Card>
+          <Card className="rounded-xl shadow-md">
             <CardContent className="p-4 sm:p-6 text-center">
               <h3 className="text-lg sm:text-xl font-bold text-slate-800 mb-3 sm:mb-4">
                 Conversation Complete
@@ -784,23 +1054,8 @@ export default function StatefulGameInterface() {
           </Card>
         )}
 
-        {/* Skill Demonstration Toast */}
-        {state.skillToast && (
-          <SkillToast
-            skill={state.skillToast.skill}
-            message={state.skillToast.message}
-            onClose={() => setState(prev => ({ ...prev, skillToast: null }))}
-          />
-        )}
-
-        {/* Character Transition */}
-        {state.showTransition && state.transitionData && (
-          <CharacterTransition
-            nextPlatform={state.transitionData.platform}
-            transitionMessage={state.transitionData.message}
-            onComplete={() => setState(prev => ({ ...prev, showTransition: false, transitionData: null }))}
-          />
-        )}
+        {/* Removed: SkillToast and CharacterTransition - break single UI principle */}
+        {/* Skills acknowledged naturally in narrative; transitions handled by Samuel's dialogue */}
 
         {/* Error State */}
         {state.error && (
