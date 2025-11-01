@@ -6,6 +6,13 @@
  * Throws clear errors if configuration is missing
  */
 
+import {
+  formatPlaceholderMessage,
+  isPlaceholderSupabaseAnonKey,
+  isPlaceholderSupabaseServiceKey,
+  isPlaceholderSupabaseUrl
+} from './env-placeholders'
+
 export interface EnvConfig {
   // Next.js
   nodeEnv: string
@@ -78,6 +85,30 @@ function validateRequired(name: string, value: string | undefined, context: stri
   return value
 }
 
+function ensureNotPlaceholder(name: string, value: string): void {
+  let isPlaceholder = false
+
+  switch (name) {
+    case 'SUPABASE_URL':
+    case 'NEXT_PUBLIC_SUPABASE_URL':
+      isPlaceholder = isPlaceholderSupabaseUrl(value)
+      break
+    case 'SUPABASE_ANON_KEY':
+    case 'NEXT_PUBLIC_SUPABASE_ANON_KEY':
+      isPlaceholder = isPlaceholderSupabaseAnonKey(value)
+      break
+    case 'SUPABASE_SERVICE_ROLE_KEY':
+      isPlaceholder = isPlaceholderSupabaseServiceKey(value)
+      break
+    default:
+      isPlaceholder = false
+  }
+
+  if (isPlaceholder) {
+    throw new Error(formatPlaceholderMessage(name))
+  }
+}
+
 /**
  * Validate environment configuration
  */
@@ -102,21 +133,25 @@ export function validateEnv(context: 'server' | 'client' = 'server'): EnvConfig 
   // Server-side variables
   if (context === 'server') {
     try {
-      config.supabaseUrl = validateRequired(
+      const supabaseUrl = validateRequired(
         'SUPABASE_URL',
         process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL,
         'Server-side Supabase configuration'
       )
+      ensureNotPlaceholder('SUPABASE_URL', supabaseUrl)
+      config.supabaseUrl = supabaseUrl
     } catch (e) {
       errors.push((e as Error).message)
     }
 
     try {
-      config.supabaseAnonKey = validateRequired(
+      const supabaseAnonKey = validateRequired(
         'SUPABASE_ANON_KEY',
         process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
         'Server-side Supabase configuration'
       )
+      ensureNotPlaceholder('SUPABASE_ANON_KEY', supabaseAnonKey)
+      config.supabaseAnonKey = supabaseAnonKey
     } catch (e) {
       errors.push((e as Error).message)
     }
@@ -152,7 +187,15 @@ export function validateEnv(context: 'server' | 'client' = 'server'): EnvConfig 
     }
 
     // Service role key (optional in development)
-    config.supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+    if (serviceRoleKey) {
+      if (isPlaceholderSupabaseServiceKey(serviceRoleKey)) {
+        errors.push(formatPlaceholderMessage('SUPABASE_SERVICE_ROLE_KEY'))
+      } else {
+        config.supabaseServiceRoleKey = serviceRoleKey
+      }
+    }
+
     if (process.env.NODE_ENV === 'production' && !config.supabaseServiceRoleKey) {
       errors.push('Missing SUPABASE_SERVICE_ROLE_KEY (required in production for migrations)')
     }
@@ -160,21 +203,25 @@ export function validateEnv(context: 'server' | 'client' = 'server'): EnvConfig 
 
   // Client-side variables
   try {
-    config.publicSupabaseUrl = validateRequired(
+    const publicSupabaseUrl = validateRequired(
       'NEXT_PUBLIC_SUPABASE_URL',
       process.env.NEXT_PUBLIC_SUPABASE_URL,
       'Client-side Supabase configuration'
     )
+    ensureNotPlaceholder('NEXT_PUBLIC_SUPABASE_URL', publicSupabaseUrl)
+    config.publicSupabaseUrl = publicSupabaseUrl
   } catch (e) {
     errors.push((e as Error).message)
   }
 
   try {
-    config.publicSupabaseAnonKey = validateRequired(
+    const publicSupabaseAnonKey = validateRequired(
       'NEXT_PUBLIC_SUPABASE_ANON_KEY',
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
       'Client-side Supabase configuration'
     )
+    ensureNotPlaceholder('NEXT_PUBLIC_SUPABASE_ANON_KEY', publicSupabaseAnonKey)
+    config.publicSupabaseAnonKey = publicSupabaseAnonKey
   } catch (e) {
     errors.push((e as Error).message)
   }

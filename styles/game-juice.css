@@ -1,8 +1,10 @@
 /* Ultra-light Game Juice: CSS transforms instead of complex animation library */
 
-/* Button Juice */
+/* Button Juice - Reduced to prevent flashing */
 button {
   transition: transform 0.15s ease, box-shadow 0.15s ease;
+  /* Prevent layout shifts */
+  will-change: transform, box-shadow;
 }
 
 button:hover:not(:disabled) {
@@ -15,12 +17,21 @@ button:active {
   transition-duration: 0.05s;
 }
 
-/* Card Juice */
-[class*="card"] {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+/* Card Juice - Reduced to prevent flashing during updates */
+[class*="card"],
+[class*="Card"] {
+  /* Prevent any transitions during content updates - only on hover */
+  transition: none !important;
+  /* Prevent filter/opacity changes that cause flashing */
+  will-change: auto;
+  /* Ensure stable rendering */
+  contain: layout style paint;
 }
 
-[class*="card"]:hover {
+[class*="card"]:hover,
+[class*="Card"]:hover {
+  /* Only apply transitions on hover */
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
@@ -66,6 +77,112 @@ button:active {
   50% { transform: translateY(-5px); }
 }
 
+/* Rich Text Effects - Terminal-style animations */
+.rich-text-renderer {
+  position: relative;
+}
+
+/* Rainbow cycling animation */
+@keyframes rainbowCycle {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+.rich-text-renderer .rainbow-char {
+  animation: rainbowCycle 3s linear infinite;
+}
+
+/* Flashing effect */
+@keyframes flash {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.rich-text-renderer .flash-char {
+  animation: flash 1s ease-in-out infinite;
+}
+
+/* Wave effect - characters appear in sequence */
+@keyframes waveChar {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.rich-text-renderer.wave-mode span {
+  animation: waveChar 0.3s ease-out forwards;
+  opacity: 0;
+}
+
+/* Pulse glow for thinking states */
+@keyframes pulseGlow {
+  0%, 100% {
+    text-shadow: 0 0 5px currentColor;
+  }
+  50% {
+    text-shadow: 0 0 15px currentColor, 0 0 25px currentColor;
+  }
+}
+
+.rich-text-renderer.state-thinking {
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+/* Executing state - green pulse */
+@keyframes executePulse {
+  0%, 100% {
+    color: rgb(34, 197, 94);
+    text-shadow: 0 0 8px rgba(34, 197, 94, 0.5);
+  }
+  50% {
+    color: rgb(74, 222, 128);
+    text-shadow: 0 0 12px rgba(74, 222, 128, 0.8);
+  }
+}
+
+.rich-text-renderer.state-executing {
+  animation: executePulse 1.5s ease-in-out infinite;
+}
+
+/* Warning state - amber flash */
+@keyframes warningFlash {
+  0%, 100% {
+    color: rgb(245, 158, 11);
+  }
+  50% {
+    color: rgb(251, 191, 36);
+  }
+}
+
+.rich-text-renderer.state-warning {
+  animation: warningFlash 1s ease-in-out infinite;
+}
+
+/* Character-level color transition */
+.rich-text-renderer .char-transition {
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+/* Syntax-highlighting style for code/keywords */
+.rich-text-renderer .syntax-keyword {
+  color: #c678dd;
+  font-weight: 600;
+}
+
+.rich-text-renderer .syntax-string {
+  color: #98c379;
+}
+
+.rich-text-renderer .syntax-comment {
+  color: #5c6370;
+  font-style: italic;
+}
+
 /* Accessibility: Respect user's motion preferences */
 @media (prefers-reduced-motion: reduce) {
   button:hover:not(:disabled),
@@ -82,5 +199,19 @@ button:active {
 
   [class*="progress"] div {
     transition: none;
+  }
+
+  .rich-text-renderer,
+  .rich-text-renderer .rainbow-char,
+  .rich-text-renderer .flash-char,
+  .rich-text-renderer.state-thinking,
+  .rich-text-renderer.state-executing,
+  .rich-text-renderer.state-warning {
+    animation: none !important;
+  }
+
+  .rich-text-renderer.wave-mode span {
+    animation: none !important;
+    opacity: 1 !important;
   }
 }

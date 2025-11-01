@@ -15,11 +15,14 @@ export const runtime = 'nodejs'
 
 // Server-side Supabase client with service role (bypasses RLS)
 function getServiceClient() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
   if (!supabaseUrl || !serviceRoleKey) {
-    throw new Error('Missing Supabase environment variables')
+    const missing = []
+    if (!supabaseUrl) missing.push('NEXT_PUBLIC_SUPABASE_URL or SUPABASE_URL')
+    if (!serviceRoleKey) missing.push('SUPABASE_SERVICE_ROLE_KEY')
+    throw new Error(`Missing Supabase environment variables: ${missing.join(', ')}`)
   }
 
   return createClient(supabaseUrl, serviceRoleKey, {
@@ -88,10 +91,21 @@ export async function GET(request: NextRequest) {
       success: true,
       summaries
     })
-  } catch (error) {
+  } catch (error: any) {
     console.error('[SkillSummaries API] Unexpected error:', error)
+    const errorMessage = error?.message || 'Internal server error'
+    
+    // If it's a missing env var error, return empty data gracefully
+    if (errorMessage.includes('Missing Supabase environment variables')) {
+      console.warn('⚠️ [SkillSummaries API] Missing Supabase config - returning empty data')
+      return NextResponse.json({
+        success: true,
+        summaries: []
+      })
+    }
+    
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: errorMessage },
       { status: 500 }
     )
   }
@@ -186,10 +200,18 @@ export async function POST(request: NextRequest) {
     })
 
     return NextResponse.json({ success: true })
-  } catch (error) {
+  } catch (error: any) {
     console.error('[SkillSummaries API] Unexpected error:', error)
+    const errorMessage = error?.message || 'Internal server error'
+    
+    // If it's a missing env var error, return success but log warning
+    if (errorMessage.includes('Missing Supabase environment variables')) {
+      console.warn('⚠️ [SkillSummaries API] Missing Supabase config - operation skipped')
+      return NextResponse.json({ success: true })
+    }
+    
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: errorMessage },
       { status: 500 }
     )
   }

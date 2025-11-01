@@ -362,7 +362,8 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         text: "My dad. He lives up in Huntsville. Since mom died six months ago, every phone call is... an exception error.\n\nHe says he's fine. But his voice has this... lag. Like packet loss. Information that isn't being transmitted. And I don't know how to debug grief.",
         emotion: 'vulnerable',
-        variation_id: 'father_reveal_v1'
+        variation_id: 'father_reveal_v1',
+        richEffectContext: 'thinking' // Emotional vulnerability - deep reflection
       }
     ],
     choices: [

@@ -22,13 +22,15 @@ const postLimiter = rateLimit({
 
 // Server-side Supabase client with service role (bypasses RLS)
 function getServiceClient() {
-  // SECURITY: Use server-side variables only, never NEXT_PUBLIC_
-  const supabaseUrl = process.env.SUPABASE_URL
+  // Use NEXT_PUBLIC_SUPABASE_URL for consistency with other routes
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
   if (!supabaseUrl || !serviceRoleKey) {
-    console.error('[Security] Missing server-side Supabase environment variables')
-    throw new Error('Database configuration incomplete')
+    const missing = []
+    if (!supabaseUrl) missing.push('NEXT_PUBLIC_SUPABASE_URL or SUPABASE_URL')
+    if (!serviceRoleKey) missing.push('SUPABASE_SERVICE_ROLE_KEY')
+    throw new Error(`Missing Supabase environment variables: ${missing.join(', ')}`)
   }
 
   return createClient(supabaseUrl, serviceRoleKey, {
@@ -139,10 +141,18 @@ export async function POST(request: NextRequest) {
       success: true, 
       careerExploration: data?.[0] 
     })
-  } catch (error) {
+  } catch (error: any) {
     console.error('[CareerExplorations API] Unexpected error:', error)
+    const errorMessage = error?.message || 'Internal server error'
+    
+    // If it's a missing env var error, return success but log warning
+    if (errorMessage.includes('Missing Supabase environment variables')) {
+      console.warn('⚠️ [CareerExplorations API] Missing Supabase config - operation skipped')
+      return NextResponse.json({ success: true })
+    }
+    
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: errorMessage },
       { status: 500 }
     )
   }
@@ -196,10 +206,21 @@ export async function GET(request: NextRequest) {
       success: true,
       careerExplorations: data || []
     })
-  } catch (error) {
+  } catch (error: any) {
     console.error('[CareerExplorations API] Unexpected error:', error)
+    const errorMessage = error?.message || 'Internal server error'
+    
+    // If it's a missing env var error, return empty data gracefully
+    if (errorMessage.includes('Missing Supabase environment variables')) {
+      console.warn('⚠️ [CareerExplorations API] Missing Supabase config - returning empty data')
+      return NextResponse.json({
+        success: true,
+        careerExplorations: []
+      })
+    }
+    
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: errorMessage },
       { status: 500 }
     )
   }

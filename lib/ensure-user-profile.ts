@@ -47,27 +47,47 @@ export async function ensureUserProfile(
       })
 
     if (error) {
-      // Check if it's a Supabase configuration error
-      if (error.message?.includes('Supabase not configured') || error.message?.includes('fetch failed')) {
-        console.warn(`[EnsureUserProfile] Supabase not available - running in local-only mode for ${userId}`)
+      // Check if it's a network/configuration error (Supabase unreachable)
+      const isNetworkError = 
+        error.message?.includes('Supabase not configured') ||
+        error.message?.includes('fetch failed') ||
+        error.message?.includes('Failed to fetch') ||
+        error.message?.includes('ERR_NAME_NOT_RESOLVED') ||
+        error.details?.includes('Failed to fetch') ||
+        (!error.code && !error.message) // Empty error object often indicates network failure
+      
+      if (isNetworkError) {
+        // Silent fallback - don't spam console with network errors
         return true // Allow game to continue without database
       }
       
+      // Only log non-network errors (actual Supabase errors)
       console.error(`[EnsureUserProfile] Failed to create profile for ${userId}:`, {
         code: error.code,
         message: error.message,
         details: error.details,
         hint: error.hint
       })
-      console.warn('[EnsureUserProfile] Game will continue in local-only mode.')
       return true // Allow game to continue even if database fails
     }
 
     console.log(`[EnsureUserProfile] ✅ Profile ensured for ${userId}`)
     return true
-  } catch (error) {
+  } catch (error: any) {
+    // Check if it's a network error (Supabase unreachable)
+    const isNetworkError = 
+      error?.message?.includes('Failed to fetch') ||
+      error?.message?.includes('ERR_NAME_NOT_RESOLVED') ||
+      error?.name === 'TypeError' ||
+      error?.toString().includes('fetch')
+    
+    if (isNetworkError) {
+      // Silent fallback - don't spam console with network errors
+      return true
+    }
+    
+    // Only log unexpected errors
     console.warn(`[EnsureUserProfile] Database unavailable for ${userId}:`, error)
-    console.warn('[EnsureUserProfile] Game will continue in local-only mode.')
     return true // Allow game to continue in local-only mode
   }
 }

@@ -576,7 +576,8 @@ export const jordanDialogueNodes: DialogueNode[] = [
     content: [{
       text: "When I look at that story, I don't see a pattern.\n\nSeven jobs. Twelve years. Someone who couldn't stick. Couldn't commit.\n\nEveryone else building careers. Me collecting participation trophies?",
       emotion: 'vulnerable',
-      variation_id: 'jordan_mentor_1_pt1'
+      variation_id: 'jordan_mentor_1_pt1',
+      richEffectContext: 'thinking' // Vulnerability about career journey - reflective moment
     }],
     requiredState: {
       trust: { min: 8 },
