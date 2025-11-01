@@ -104,10 +104,11 @@ export function DialogueDisplay({
   const displayAvatar = showAvatar && shouldShowAvatar(characterName, isContinuedSpeaker, false)
   
   // Auto-enable chat pacing for longer/multi-chunk text if character name available
-  // Heuristic: text > 150 chars OR has 2+ chunks (separated by |)
+  // Heuristic: text > 200 chars OR has 2+ chunks (separated by |)
+  // More conservative threshold to avoid breaking normal dialogue flow
   const chunksBySeparator = text.split('|').map(chunk => chunk.trim()).filter(chunk => chunk.length > 0)
   const shouldAutoActivateChatPacing = characterName && (
-    text.length > 150 || chunksBySeparator.length >= 2
+    (text.length > 200 && chunksBySeparator.length >= 2) || chunksBySeparator.length >= 3
   )
   const shouldUseChatPacing = useChatPacing || shouldAutoActivateChatPacing
   

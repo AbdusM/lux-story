@@ -63,160 +63,69 @@ export function ChatPacedDialogue({
   const [visibleChunks, setVisibleChunks] = useState<string[]>([])
   const [isTyping, setIsTyping] = useState(false)
   const [currentChunkIndex, setCurrentChunkIndex] = useState(0)
-  const [usedBehaviors, setUsedBehaviors] = useState<string[]>([]) // Track to avoid repetition
-  const [currentBehavioralIndicator, setCurrentBehavioralIndicator] = useState<string>('takes a breath')
 
-  // Character-specific behavioral dictionaries (show, don't tell)
-  const characterBehaviors: Record<string, Record<string, string[]>> = {
-    'Jordan': {
-      default: [
-        'taps her pen',
-        'checks her notes',
-        'adjusts her glasses',
-        'takes a breath',
-        'looks at her phone'
-      ],
-      anxious: [
-        'taps her pen quickly',
-        'fidgets with her phone',
-        'takes a shaky breath',
-        'checks her notes nervously',
-        'adjusts her glasses repeatedly'
-      ],
-      excited: [
-        'taps her pen with energy',
-        'grins while checking her notes',
-        'straightens up',
-        'taps fingers quickly'
-      ],
-      vulnerable: [
-        'takes a deep breath',
-        'looks away briefly',
-        'runs fingers through her hair',
-        'pauses to collect herself'
-      ]
-    },
-    'Maya': {
-      default: [
-        'fidgets with robotics parts',
-        'taps her textbook',
-        'takes a deep breath',
-        'looks at her scattered notes',
-        'adjusts her backpack'
-      ],
-      anxious: [
-        'fidgets nervously with parts',
-        'taps her textbook quickly',
-        'takes a shaky breath',
-        'looks away anxiously',
-        'scatters notes nervously'
-      ],
-      excited: [
-        'picks up a robotics part with interest',
-        'taps her textbook excitedly',
-        'straightens up',
-        'eyes light up'
-      ],
-      vulnerable: [
-        'takes a deep breath',
-        'looks down at her hands',
-        'pauses mid-fidget',
-        'collects her scattered thoughts'
-      ]
-    },
-    'Samuel': {
-      default: [
-        'taps his clipboard',
-        'checks the station board',
-        'rubs his beard',
-        'looks toward Platform 7',
-        'adjusts his cap'
-      ],
-      thoughtful: [
-        'rubs his beard thoughtfully',
-        'checks the station board',
-        'taps his clipboard slowly',
-        'looks toward the tracks',
-        'takes a measured breath'
-      ],
-      concerned: [
-        'taps his clipboard quickly',
-        'checks the board nervously',
-        'looks around the station',
-        'adjusts his cap'
-      ]
-    },
-    'Devon': {
-      default: [
-        'adjusts his headset',
-        'taps his keyboard',
-        'checks his tablet',
-        'looks at the code',
-        'runs his fingers through his hair'
-      ],
-      focused: [
-        'taps his keyboard methodically',
-        'adjusts his headset',
-        'studies his tablet',
-        'narrows eyes at the screen'
-      ],
-      anxious: [
-        'fidgets with his headset',
-        'taps keyboard nervously',
-        'checks tablet repeatedly',
-        'takes a shaky breath'
-      ],
-      excited: [
-        'taps keyboard with energy',
-        'adjusts headset excitedly',
-        'straightens up',
-        'grins at the screen'
-      ]
+  // Character-specific mental states with contextual synonyms
+  // Show various thinking/processing states instead of physical actions
+  const getStateText = (): string => {
+    // Character-specific defaults
+    const characterStates: Record<string, string[]> = {
+      'Jordan': ['reflecting', 'considering', 'pondering', 'mulling over'],
+      'Maya': ['thinking', 'contemplating', 'processing', 'working through'],
+      'Samuel': ['considering', 'reflecting', 'mulling it over', 'taking it in'],
+      'Devon': ['processing', 'analyzing', 'computing', 'thinking through'],
+      'Narrator': ['pausing', 'taking a moment'],
+      'You': ['thinking', 'considering', 'pondering']
     }
+
+    const baseStates = characterStates[characterName] || ['thinking']
+    let selectedState = baseStates[0] // Default
+
+    // Adjust based on emotion if provided
+    if (emotion) {
+      const emotionLower = emotion.toLowerCase()
+      if (emotionLower.includes('anxious') || emotionLower.includes('nervous')) {
+        // More uncertain/worried states
+        const anxiousStates: Record<string, string[]> = {
+          'Jordan': ['weighing carefully', 'considering cautiously', 'mulling it over'],
+          'Maya': ['trying to process', 'thinking carefully', 'working through it'],
+          'Samuel': ['taking it in', 'considering thoughtfully', 'reflecting'],
+          'Devon': ['analyzing carefully', 'processing methodically']
+        }
+        const states = anxiousStates[characterName] || baseStates
+        selectedState = states[Math.floor(Math.random() * states.length)]
+      } else if (emotionLower.includes('excited') || emotionLower.includes('enthusiastic')) {
+        // More energetic/positive states
+        const excitedStates: Record<string, string[]> = {
+          'Jordan': ['considering with interest', 'reflecting enthusiastically', 'thinking it over'],
+          'Maya': ['thinking excitedly', 'processing with energy', 'working through eagerly'],
+          'Samuel': ['taking it in', 'considering with warmth'],
+          'Devon': ['analyzing with interest', 'processing enthusiastically']
+        }
+        const states = excitedStates[characterName] || baseStates
+        selectedState = states[Math.floor(Math.random() * states.length)]
+      } else if (emotionLower.includes('vulnerable') || emotionLower.includes('raw')) {
+        // More thoughtful/careful states
+        const vulnerableStates: Record<string, string[]> = {
+          'Jordan': ['carefully considering', 'reflecting thoughtfully', 'taking a moment'],
+          'Maya': ['thinking carefully', 'processing slowly', 'working through gently'],
+          'Samuel': ['considering deeply', 'reflecting with care'],
+          'Devon': ['processing thoughtfully', 'analyzing carefully']
+        }
+        const states = vulnerableStates[characterName] || baseStates
+        selectedState = states[Math.floor(Math.random() * states.length)]
+      } else {
+        // Default: randomize from base states
+        selectedState = baseStates[Math.floor(Math.random() * baseStates.length)]
+      }
+    } else {
+      // No emotion: randomize from base states
+      selectedState = baseStates[Math.floor(Math.random() * baseStates.length)]
+    }
+
+    return selectedState
   }
 
-  // Update behavioral indicator when chunk index changes
-  useEffect(() => {
-    if (isTyping && currentChunkIndex < chunks.length) {
-      const behaviors = characterBehaviors[characterName]
-      if (!behaviors) {
-        setCurrentBehavioralIndicator(characterName === 'Narrator' ? 'pauses' : 'takes a breath')
-        return
-      }
-
-      // Determine emotion category from emotion tag
-      let emotionCategory = 'default'
-      if (emotion) {
-        const emotionLower = emotion.toLowerCase()
-        if (emotionLower.includes('anxious') || emotionLower.includes('nervous') || emotionLower.includes('worried')) {
-          emotionCategory = 'anxious'
-        } else if (emotionLower.includes('excited') || emotionLower.includes('enthusiastic') || emotionLower.includes('energetic')) {
-          emotionCategory = 'excited'
-        } else if (emotionLower.includes('vulnerable') || emotionLower.includes('raw') || emotionLower.includes('open')) {
-          emotionCategory = 'vulnerable'
-        } else if (emotionLower.includes('thoughtful') || emotionLower.includes('contemplative')) {
-          emotionCategory = 'thoughtful'
-        } else if (emotionLower.includes('focused') || emotionLower.includes('concentrated')) {
-          emotionCategory = 'focused'
-        } else if (emotionLower.includes('concerned') || emotionLower.includes('worried')) {
-          emotionCategory = 'concerned'
-        }
-      }
-
-      // Get behavior pool for this emotion category
-      const behaviorPool = behaviors[emotionCategory] || behaviors.default || ['takes a breath']
-      
-      // Filter out recently used behaviors (avoid immediate repetition)
-      const availableBehaviors = behaviorPool.filter(b => !usedBehaviors.slice(-2).includes(b))
-      const poolToUse = availableBehaviors.length > 0 ? availableBehaviors : behaviorPool
-
-      // Randomly select from pool
-      const selectedBehavior = poolToUse[Math.floor(Math.random() * poolToUse.length)]
-      
-      setCurrentBehavioralIndicator(selectedBehavior)
-      setUsedBehaviors(prev => [...prev.slice(-4), selectedBehavior])
-    }
-  }, [currentChunkIndex, isTyping, characterName, emotion, usedBehaviors])
+  const stateText = getStateText()
 
   useEffect(() => {
     // If text is empty (loading state), show thinking indicator indefinitely
@@ -289,7 +198,7 @@ export function ChatPacedDialogue({
             )}
             <div className="flex-1">
               <span className="text-xs text-muted-foreground italic">
-                {characterName} {currentBehavioralIndicator}...
+                {characterName} is {stateText}...
               </span>
               <div className="typing-dots">
                 <span className="dot">.</span>
