@@ -21,7 +21,9 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         text: "Oh. Hi. Sorry, I—were you watching me?\n\nI know it's weird. Biochemistry notes and robotics parts spread everywhere. I'm not usually this... scattered.\n\nOr maybe I am. I don't know anymore.",
         emotion: 'anxious_scattered',
-        variation_id: 'intro_v2_clean'
+        variation_id: 'intro_v2_clean',
+        richEffectContext: 'warning', // High anxiety - warning state for emphasis
+        interaction: 'shake' // Visual shake animation conveys anxiety and uncertainty
       }
     ],
     choices: [
@@ -42,6 +44,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         nextNodeId: 'maya_anxiety_check',
         pattern: 'helping',
         skills: ['emotional_intelligence', 'communication'],
+        interaction: 'nod', // Subtle nod animation indicates this is a supportive, acknowledging choice
         consequence: {
           characterId: 'maya',
           trustChange: 1,
@@ -270,7 +273,9 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "I'm fine. Everyone sees me as this perfect pre-med student. Good grades, clear path.\n\nBut late at night, when I'm memorizing anatomy, I'm actually... doing something else.",
         emotion: 'anxious_deflecting',
         variation_id: 'anxiety_reveal_v2_clean',
-        useChatPacing: true // High-impact vulnerability moment
+        useChatPacing: true, // High-impact vulnerability moment
+        richEffectContext: 'thinking', // Vulnerability - thoughtful processing state
+        interaction: 'ripple' // Ripple animation for impactful realization moment
       }
     ],
     requiredState: {
@@ -525,6 +530,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "I... I build robots. Small ones, mostly. Medical assistance robots. I dream about circuits and servos, not cells and organs. My parents would be devastated if they knew how much I love engineering.",
         emotion: 'vulnerable',
         variation_id: 'robotics_v1',
+        richEffectContext: 'thinking', // Major vulnerability - thoughtful revelation
         useChatPacing: true // Major vulnerability/secret reveal moment
       }
     ],
@@ -620,7 +626,8 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         text: "You know, UAB has a biomedical engineering program. I could design surgical robots, create prosthetics, build devices that heal. It's like... having my cake and eating it too. Medicine AND robotics.",
         emotion: 'excited',
-        variation_id: 'hybrid_v1'
+        variation_id: 'hybrid_v1',
+        interaction: 'bloom' // Bloom animation for revelation and excitement
       }
     ],
     choices: [
@@ -630,6 +637,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         nextNodeId: 'maya_crossroads',
         pattern: 'helping',
         skills: ['emotional_intelligence', 'communication'],
+        interaction: 'big', // Big animation emphasizes this supportive, important choice
         visibleCondition: {
           trust: { min: 4 }
         }
