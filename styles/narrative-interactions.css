@@ -1,0 +1,196 @@
+/**
+ * Narrative Interaction Animations
+ * 
+ * iPhone message-style interaction animations for narrative text and choices.
+ * One-shot animations that enhance emphasis without looping.
+ * 
+ * All animations use transform and opacity only (GPU-accelerated).
+ * Respects prefers-reduced-motion for accessibility.
+ */
+
+/* ========================================
+   Keyframe Definitions
+   ======================================== */
+
+@keyframes narrative-big {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1.12);
+    opacity: 1;
+  }
+}
+
+@keyframes narrative-small {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(0.94);
+    opacity: 1;
+  }
+}
+
+@keyframes narrative-shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-3px);
+  }
+  40% {
+    transform: translateX(3px);
+  }
+  60% {
+    transform: translateX(-2px);
+  }
+  80% {
+    transform: translateX(2px);
+  }
+}
+
+@keyframes narrative-nod {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(-4px);
+  }
+  50% {
+    transform: translateY(4px);
+  }
+  75% {
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes narrative-ripple {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes narrative-bloom {
+  0% {
+    transform: scale(0.9) rotate(-1deg);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.08) rotate(1deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+@keyframes narrative-jitter {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(-1px, 1px);
+  }
+  50% {
+    transform: translate(1px, -1px);
+  }
+  75% {
+    transform: translate(-1px, 0);
+  }
+}
+
+/* ========================================
+   Animation Classes
+   ======================================== */
+
+.narrative-interaction-big {
+  animation: narrative-big 400ms ease-out forwards;
+  will-change: transform, opacity;
+}
+
+.narrative-interaction-small {
+  animation: narrative-small 350ms ease-out forwards;
+  will-change: transform, opacity;
+}
+
+.narrative-interaction-shake {
+  animation: narrative-shake 500ms ease-in-out forwards;
+  will-change: transform;
+}
+
+.narrative-interaction-nod {
+  animation: narrative-nod 400ms ease-in-out forwards;
+  will-change: transform;
+}
+
+.narrative-interaction-ripple {
+  animation: narrative-ripple 600ms ease-out forwards;
+  will-change: transform, opacity;
+}
+
+.narrative-interaction-bloom {
+  animation: narrative-bloom 500ms ease-out forwards;
+  will-change: transform, opacity;
+}
+
+.narrative-interaction-jitter {
+  animation: narrative-jitter 400ms ease-in-out forwards;
+  will-change: transform;
+}
+
+/* ========================================
+   Performance Optimization
+   ======================================== */
+
+/* Remove will-change after animation completes to prevent memory overhead */
+.narrative-interaction-big,
+.narrative-interaction-small,
+.narrative-interaction-shake,
+.narrative-interaction-nod,
+.narrative-interaction-ripple,
+.narrative-interaction-bloom,
+.narrative-interaction-jitter {
+  animation-fill-mode: forwards;
+}
+
+/* Remove will-change after animation (handled by component logic if needed) */
+.narrative-interaction-big[data-animation-complete="true"],
+.narrative-interaction-small[data-animation-complete="true"],
+.narrative-interaction-shake[data-animation-complete="true"],
+.narrative-interaction-nod[data-animation-complete="true"],
+.narrative-interaction-ripple[data-animation-complete="true"],
+.narrative-interaction-bloom[data-animation-complete="true"],
+.narrative-interaction-jitter[data-animation-complete="true"] {
+  will-change: auto;
+}
+
+/* ========================================
+   Accessibility: Respect Reduced Motion
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .narrative-interaction-big,
+  .narrative-interaction-small,
+  .narrative-interaction-shake,
+  .narrative-interaction-nod,
+  .narrative-interaction-ripple,
+  .narrative-interaction-bloom,
+  .narrative-interaction-jitter {
+    animation: none !important;
+    will-change: auto !important;
+  }
+}
+

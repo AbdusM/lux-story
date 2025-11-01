@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils"
 import { autoChunkDialogue } from "@/lib/auto-chunk-dialogue"
 import { ChatPacedDialogue } from "./ChatPacedDialogue"
 import { CharacterAvatar, shouldShowAvatar } from "./CharacterAvatar"
+import { RichTextRenderer, type RichTextEffect } from "./RichTextRenderer"
 
 // Parse markdown-style emphasis in text (from StoryMessage pattern)
 function parseEmphasisText(text: string): React.ReactNode[] {
@@ -60,6 +61,15 @@ interface DialogueDisplayProps {
   characterName?: string // Required if useChatPacing is true
   showAvatar?: boolean // Show character avatar
   isContinuedSpeaker?: boolean // Hide avatar if same speaker as previous
+  richEffects?: RichTextEffect // Optional rich text effects (terminal-style animations)
+  interaction?: string // Visual interaction animation ('big', 'small', 'shake', 'nod', 'ripple', 'bloom', 'jitter')
+  playerPatterns?: {
+    analytical?: number
+    helping?: number
+    building?: number
+    patience?: number
+    exploring?: number
+  }
 }
 
 /**
@@ -77,7 +87,10 @@ export function DialogueDisplay({
   useChatPacing, 
   characterName,
   showAvatar = true,
-  isContinuedSpeaker = false
+  isContinuedSpeaker = false,
+  richEffects,
+  interaction,
+  playerPatterns
 }: DialogueDisplayProps) {
   // Auto-chunk long text for chat pacing, then split by | separator
   const chunkedText = autoChunkDialogue(text, { 
@@ -96,6 +109,8 @@ export function DialogueDisplay({
         characterName={characterName}
         showAvatar={displayAvatar}
         className={className}
+        interaction={interaction}
+        playerPatterns={playerPatterns}
       />
     )
   }
@@ -103,17 +118,40 @@ export function DialogueDisplay({
   // Otherwise, use standard instant display
   const chunks = chunkedText.split('|').map(chunk => chunk.trim()).filter(chunk => chunk.length > 0)
 
+  // If no chunks, return empty to maintain stable container
+  if (chunks.length === 0) {
+    return <div className={cn("space-y-4", className)}></div>
+  }
+
+  // Get interaction class if provided
+  const interactionClass = interaction ? `narrative-interaction-${interaction}` : null
+
   return (
-    <div className={cn("space-y-4", className)}>
+    <div className={cn("space-y-4", className)} key="dialogue-chunks-container" style={{ transition: 'none' }}>
       {/* Dialogue Content - No inline avatars */}
-      {chunks.map((chunk, index) => (
-        <p
-          key={index}
-          className="text-base text-slate-800 leading-relaxed"
-        >
-          {parseEmphasisText(chunk)}
-        </p>
-      ))}
+      {chunks.map((chunk, index) => {
+        const ChunkWrapper = richEffects ? 'div' : 'p'
+        
+        return (
+          <ChunkWrapper
+            key={`chunk-${chunk.slice(0, 20).replace(/\s/g, '-')}-${index}`}
+            className={cn(
+              "text-base text-slate-800 leading-relaxed",
+              interactionClass
+            )}
+          >
+            {richEffects ? (
+              <RichTextRenderer
+                text={chunk}
+                effects={richEffects}
+                className="text-base text-slate-800 leading-relaxed"
+              />
+            ) : (
+              parseEmphasisText(chunk)
+            )}
+          </ChunkWrapper>
+        )
+      })}
     </div>
   )
 }

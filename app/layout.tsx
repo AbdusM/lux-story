@@ -8,6 +8,7 @@ import '../styles/accessibility.css'
 import '../styles/game-juice.css'
 import '../styles/grand-central.css'
 import '../styles/environmental-response.css'
+import '../styles/narrative-interactions.css'
 
 const inter = Inter({
   subsets: ['latin'],
