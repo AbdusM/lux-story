@@ -49,6 +49,22 @@ export interface DialogueContent {
   emotion?: string // Emotion tag for the dialogue (e.g., 'neutral', 'anxious', 'hopeful', 'vulnerable', etc.)
   variation_id: string // For tracking which variation was shown
   useChatPacing?: boolean // If true, use ChatPacedDialogue component for sequential reveal (use sparingly!)
+  richEffectContext?: 'thinking' | 'warning' | 'success' | 'executing' // Optional context for rich text effects
+  /**
+   * Visual interaction animation to apply to this content.
+   * One-shot animations that enhance emphasis without looping.
+   * Applied to all chunks from this DialogueContent.
+   * 
+   * Options:
+   * - 'big': Scale up with fade (emphasis, importance)
+   * - 'small': Scale down with fade (subtle, quiet)
+   * - 'shake': Horizontal shake (anxiety, uncertainty, distress)
+   * - 'nod': Vertical bounce (agreement, confirmation)
+   * - 'ripple': Expand from center (impact, realization)
+   * - 'bloom': Scale with rotation (revelation, discovery)
+   * - 'jitter': Multi-directional micro-movements (nervousness, tension)
+   */
+  interaction?: 'big' | 'small' | 'shake' | 'nod' | 'ripple' | 'bloom' | 'jitter'
 }
 
 /**
@@ -81,6 +97,21 @@ export interface ConditionalChoice {
 
   // Preview text shown on hover (optional)
   preview?: string
+
+  /**
+   * Visual interaction animation to apply to this choice button.
+   * One-shot animations that enhance emphasis when the choice appears.
+   * 
+   * Options:
+   * - 'big': Scale up with fade (important choice, emphasis)
+   * - 'small': Scale down with fade (subtle option)
+   * - 'shake': Horizontal shake (uncertainty, risk)
+   * - 'nod': Vertical bounce (agreement, safe choice)
+   * - 'ripple': Expand from center (significant impact)
+   * - 'bloom': Scale with rotation (revealing choice)
+   * - 'jitter': Multi-directional micro-movements (tension)
+   */
+  interaction?: 'big' | 'small' | 'shake' | 'nod' | 'ripple' | 'bloom' | 'jitter'
 }
 
 /**
