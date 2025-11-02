@@ -4,9 +4,12 @@
  *
  * Guarantees a player_profiles record exists before any foreign key insertions.
  * Consolidates all user profile creation logic into a single reliable function.
+ *
+ * Uses admin client (service role) to bypass RLS since profile creation
+ * should work without requiring authenticated user context.
  */
 
-import { supabase } from './supabase'
+import { getAdminSupabase } from './admin-supabase-client'
 
 export interface UserProfileData {
   user_id: string
@@ -33,6 +36,9 @@ export async function ensureUserProfile(
   }
 
   try {
+    // Use admin client to bypass RLS - profile creation should always work
+    const supabase = getAdminSupabase()
+
     // Use upsert for idempotency - only inserts if record doesn't exist
     const { error } = await supabase
       .from('player_profiles')
@@ -42,25 +48,28 @@ export async function ensureUserProfile(
         total_demonstrations: initialData?.total_demonstrations || 0,
         last_activity: initialData?.last_activity || new Date().toISOString(),
         // updated_at will be set automatically by database trigger
-      }, { 
+      }, {
         onConflict: 'user_id'
       })
 
     if (error) {
+      // Check if error object is effectively empty (all properties undefined/empty)
+      const hasNoErrorInfo = !error.code && !error.message && !error.details && !error.hint
+
       // Check if it's a network/configuration error (Supabase unreachable)
-      const isNetworkError = 
+      const isNetworkError =
+        hasNoErrorInfo || // Empty error object often indicates network failure
         error.message?.includes('Supabase not configured') ||
         error.message?.includes('fetch failed') ||
         error.message?.includes('Failed to fetch') ||
         error.message?.includes('ERR_NAME_NOT_RESOLVED') ||
-        error.details?.includes('Failed to fetch') ||
-        (!error.code && !error.message) // Empty error object often indicates network failure
-      
+        error.details?.includes('Failed to fetch')
+
       if (isNetworkError) {
         // Silent fallback - don't spam console with network errors
         return true // Allow game to continue without database
       }
-      
+
       // Only log non-network errors (actual Supabase errors)
       console.error(`[EnsureUserProfile] Failed to create profile for ${userId}:`, {
         code: error.code,
@@ -141,6 +150,7 @@ export async function userProfileExists(userId: string): Promise<boolean> {
   }
 
   try {
+    const supabase = getAdminSupabase()
     const { data, error } = await supabase
       .from('player_profiles')
       .select('user_id')
