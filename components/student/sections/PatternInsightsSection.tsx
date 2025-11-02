@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { Brain, TrendingUp, Lightbulb, Target, Sparkles } from 'lucide-react'
 import type { PatternProfile } from '@/lib/pattern-profile-adapter'
+import { PatternEvolutionChart } from '@/components/student/PatternEvolutionChart'
 
 interface PatternInsightsSectionProps {
   userId: string
@@ -103,7 +104,7 @@ export function PatternInsightsSection({ userId }: PatternInsightsSectionProps) 
     )
   }
 
-  const { summaries, decisionStyle, diversityScore, skillCorrelations } = patternProfile
+  const { summaries, decisionStyle, diversityScore, skillCorrelations, evolution } = patternProfile
 
   // Format pattern names for display
   const formatPatternName = (pattern: string): string => {
@@ -130,6 +131,7 @@ export function PatternInsightsSection({ userId }: PatternInsightsSectionProps) 
   }
 
   return (
+    <>
     <Card className="shadow-md border-2 border-purple-200 bg-gradient-to-br from-purple-50 to-pink-50">
       <CardHeader>
         <div className="flex items-center gap-2">
@@ -271,5 +273,11 @@ export function PatternInsightsSection({ userId }: PatternInsightsSectionProps) 
         </div>
       </CardContent>
     </Card>
+
+    {/* Pattern Evolution Chart (if we have time-series data) */}
+    {evolution && evolution.length > 0 && (
+      <PatternEvolutionChart evolution={evolution} />
+    )}
+  </>
   )
 }
