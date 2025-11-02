@@ -22,6 +22,7 @@ interface SharedDashboardLayoutProps {
 
 const NAV_SECTIONS = [
   { id: 'urgency', label: 'Urgency', path: 'urgency' },
+  { id: 'patterns', label: 'Patterns', path: 'patterns' },
   { id: 'skills', label: 'Skills', path: 'skills' },
   { id: 'careers', label: 'Careers', path: 'careers' },
   { id: 'evidence', label: 'Evidence', path: 'evidence' },
