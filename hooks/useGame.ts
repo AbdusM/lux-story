@@ -9,6 +9,7 @@ import { webShare } from '@/lib/web-share'
 import { generateBridgeText } from '@/lib/narrative-bridge'
 import { analyzeChoiceForCareer, getCareerAnalytics } from '@/lib/career-analytics'
 import { updatePlatformResonance, getPlatformResonance } from '@/lib/platform-resonance'
+import { createSkillTracker } from '@/lib/skill-tracker'
 
 /**
  * Simplified Game Hook
@@ -227,6 +228,32 @@ export function useGame() {
       timestamp: Date.now(),
       consequences: choice.consequences
     })
+
+    // Record choice with SkillTracker (handles skill + pattern tracking)
+    if (userId) {
+      try {
+        const skillTracker = createSkillTracker(userId)
+        // Create minimal gameState object for SkillTracker
+        const minimalGameState = {
+          choiceHistory: choiceHistory || [],
+          characterRelationships: undefined, // Optional - would need character state integration
+          hasStarted,
+          currentScene: currentSceneId || 'unknown',
+          messages: [],
+          choices: [],
+          isProcessing,
+          userId,
+          playerPatterns: patterns,
+          birminghamKnowledge: {},
+          currentDialogueIndex: 0,
+          isShowingDialogue: false,
+          dialogueChunks: []
+        }
+        skillTracker.recordChoice(choice, currentSceneId || 'unknown', minimalGameState as any)
+      } catch (error) {
+        console.warn('Failed to record choice with SkillTracker:', error)
+      }
+    }
 
     // Analyze choice for career path implications
     analyzeChoiceForCareer(choice, userId || 'anonymous')
