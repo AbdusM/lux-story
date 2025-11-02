@@ -9,7 +9,7 @@
  * should work without requiring authenticated user context.
  */
 
-import { getAdminSupabase } from './admin-supabase-client'
+import { getAdminSupabaseClient } from './admin-supabase-client'
 
 export interface UserProfileData {
   user_id: string
@@ -37,7 +37,7 @@ export async function ensureUserProfile(
 
   try {
     // Use admin client to bypass RLS - profile creation should always work
-    const supabase = getAdminSupabase()
+    const supabase = getAdminSupabaseClient()
 
     // Use upsert for idempotency - only inserts if record doesn't exist
     const { error } = await supabase
@@ -150,7 +150,7 @@ export async function userProfileExists(userId: string): Promise<boolean> {
   }
 
   try {
-    const supabase = getAdminSupabase()
+    const supabase = getAdminSupabaseClient()
     const { data, error } = await supabase
       .from('player_profiles')
       .select('user_id')
