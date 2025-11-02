@@ -379,6 +379,41 @@ export class SyncQueue {
           // Real-time monitoring
           logSync((action.data as { user_id?: string })?.user_id || 'unknown', 'career_exploration', true)
 
+        } else if (action.type === 'pattern_demonstration') {
+          // Sync pattern demonstration to Supabase
+          let response: Response
+          try {
+            response = await fetch('/api/user/pattern-demonstrations', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(action.data)
+            })
+          } catch (fetchError) {
+            // Network error - rethrow with more context
+            throw new Error(`Network error syncing pattern demonstration: ${fetchError instanceof Error ? fetchError.message : String(fetchError)}`)
+          }
+
+          if (!response.ok) {
+            // Try to get error details from response
+            let errorBody = ''
+            try {
+              errorBody = await response.text()
+            } catch (e) {
+              // Ignore if we can't read body
+            }
+            throw new Error(`Pattern demonstration sync failed: ${response.status} ${response.statusText}${errorBody ? ` - ${errorBody.slice(0, 100)}` : ''}`)
+          }
+
+          successfulIds.push(action.id)
+          console.log('✅ [SyncQueue] Action successful:', {
+            type: 'pattern_demonstration',
+            pattern: (action.data as { pattern_name?: string })?.pattern_name,
+            scene: (action.data as { scene_id?: string })?.scene_id
+          })
+
+          // Real-time monitoring
+          logSync((action.data as { user_id?: string })?.user_id || 'unknown', 'pattern_demonstration', true)
+
         } else {
           console.error(`❌ [SyncQueue] Unknown action type: ${action.type}`)
           failedActions.push({ ...action, retries: action.retries + 1 })
@@ -588,6 +623,37 @@ export function queueCareerExplorationSync(data: {
     userId: data.user_id,
     careerName: data.career_name,
     matchScore: data.match_score
+  })
+}
+
+/**
+ * Helper: Queue pattern demonstration sync
+ * Called when user demonstrates a decision-making pattern through their choices
+ */
+export function queuePatternDemonstrationSync(data: {
+  user_id: string
+  pattern_name: string
+  choice_id: string
+  choice_text: string
+  scene_id: string
+  character_id: string
+  context: string
+  demonstrated_at?: string
+}): void {
+  SyncQueue.addToQueue({
+    id: generateActionId(),
+    type: 'pattern_demonstration',
+    data: {
+      ...data,
+      demonstrated_at: data.demonstrated_at || new Date().toISOString()
+    },
+    timestamp: Date.now()
+  })
+
+  console.log('[SyncQueue] Queued pattern demonstration sync:', {
+    userId: data.user_id,
+    pattern: data.pattern_name,
+    scene: data.scene_id
   })
 }
 
