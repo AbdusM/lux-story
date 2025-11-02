@@ -17,7 +17,7 @@ import { FutureSkillsSystem } from './2030-skills-system'
 import { safeStorage } from './safe-storage'
 import type { SimpleGameState } from '../hooks/useSimpleGame'
 import { SCENE_SKILL_MAPPINGS, type SceneSkillMapping } from './scene-skill-mappings'
-import { queueSkillSummarySync, queueSkillDemonstrationSync } from './sync-queue'
+import { queueSkillSummarySync, queueSkillDemonstrationSync, queuePatternDemonstrationSync } from './sync-queue'
 import { logSkillDemo } from './real-time-monitor'
 
 export interface SkillDemonstration {
@@ -137,7 +137,19 @@ export class SkillTracker {
       this.handleSaveFailure()
     }
 
-    // 7. Queue individual skill demonstrations AND summaries
+    // 7. Queue pattern demonstration if pattern exists
+    if (choice.pattern) {
+      const characterId = this.detectCharacterArc(scene).toLowerCase()
+      this.recordPatternDemonstration(
+        choice.pattern,
+        choice.id || choice.text.substring(0, 50), // Use choice ID or truncated text
+        choice.text,
+        scene,
+        characterId
+      )
+    }
+
+    // 8. Queue individual skill demonstrations AND summaries
     demonstrations.forEach(demo => {
       demo.skillsDemonstrated.forEach(skill => {
         // Queue EVERY individual demonstration for granular admin evidence
@@ -304,6 +316,60 @@ export class SkillTracker {
       emotion
     })
     this.saveToStorage()
+  }
+
+  /**
+   * Record a pattern demonstration (decision-making style)
+   * Queues sync to Supabase for pattern tracking and analytics
+   */
+  recordPatternDemonstration(
+    patternName: string,
+    choiceId: string,
+    choiceText: string,
+    sceneId: string,
+    characterId: string
+  ): void {
+    // Validate pattern name
+    const validPatterns = ['analytical', 'patience', 'exploring', 'helping', 'building']
+    if (!validPatterns.includes(patternName)) {
+      console.warn(`[SkillTracker] Invalid pattern name: "${patternName}", skipping pattern tracking`)
+      return
+    }
+
+    // Generate human-readable context
+    const context = this.generatePatternContext(patternName)
+
+    // Queue Supabase sync (no localStorage needed - patterns already in gameState)
+    queuePatternDemonstrationSync({
+      user_id: this.userId,
+      pattern_name: patternName,
+      choice_id: choiceId,
+      choice_text: choiceText,
+      scene_id: sceneId,
+      character_id: characterId,
+      context: context
+    })
+
+    console.log('📊 [SkillTracker] Queued pattern demonstration sync:', {
+      pattern: patternName,
+      scene: sceneId,
+      character: characterId
+    })
+  }
+
+  /**
+   * Generate human-readable context for pattern demonstration
+   */
+  private generatePatternContext(pattern: string): string {
+    const descriptions: Record<string, string> = {
+      analytical: 'Approached the situation by analyzing details and thinking critically about the options',
+      patience: 'Took time to listen carefully and understand before responding or making a decision',
+      exploring: 'Asked curious questions to learn more and explore different perspectives',
+      helping: 'Offered support and assistance to others, showing care for their wellbeing',
+      building: 'Worked on creating or improving something, taking a constructive approach'
+    }
+
+    return descriptions[pattern] || `Demonstrated ${pattern} decision-making pattern`
   }
 
   /**
