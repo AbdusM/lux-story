@@ -7,6 +7,7 @@ import { Progress } from '@/components/ui/progress'
 import { Brain, TrendingUp, Lightbulb, Target, Sparkles } from 'lucide-react'
 import type { PatternProfile } from '@/lib/pattern-profile-adapter'
 import { PatternEvolutionChart } from '@/components/student/PatternEvolutionChart'
+import { formatPatternName, getPatternDescription } from '@/lib/patterns'
 
 interface PatternInsightsSectionProps {
   userId: string
@@ -105,30 +106,6 @@ export function PatternInsightsSection({ userId }: PatternInsightsSectionProps) 
   }
 
   const { summaries, decisionStyle, diversityScore, skillCorrelations, evolution } = patternProfile
-
-  // Format pattern names for display
-  const formatPatternName = (pattern: string): string => {
-    const names: Record<string, string> = {
-      analytical: 'Analytical',
-      patience: 'Patient',
-      exploring: 'Curious',
-      helping: 'Supportive',
-      building: 'Creative'
-    }
-    return names[pattern] || pattern
-  }
-
-  // Get pattern description
-  const getPatternDescription = (pattern: string): string => {
-    const descriptions: Record<string, string> = {
-      analytical: 'You analyze details and think critically about options',
-      patience: 'You listen carefully and understand before responding',
-      exploring: 'You ask questions to learn more and explore perspectives',
-      helping: 'You offer support and show care for others',
-      building: 'You create and improve things with a constructive approach'
-    }
-    return descriptions[pattern] || ''
-  }
 
   return (
     <>
