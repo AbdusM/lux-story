@@ -6,8 +6,11 @@ import { getAllUserIds, loadSkillProfile } from '@/lib/skill-profile-adapter'
 import { parseStudentInsights } from '@/lib/student-insights-parser'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { formatUserIdShort, formatUserIdRelative } from '@/lib/format-user-id'
+import { PATTERN_TYPES, formatPatternName, getPatternBgClass } from '@/lib/patterns'
 import type { StudentInsights } from '@/lib/types/student-insights'
+import type { PatternType } from '@/lib/patterns'
 
 /**
  * Admin Dashboard - Individual Student Insights
@@ -19,6 +22,7 @@ export default function AdminPage() {
   const [mounted, setMounted] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [isSupabaseUnreachable, setIsSupabaseUnreachable] = useState(false)
+  const [patternFilter, setPatternFilter] = useState<PatternType | 'all'>('all')
 
   useEffect(() => {
     setMounted(true)
@@ -117,6 +121,21 @@ export default function AdminPage() {
     )
   }
 
+  // Filter students by selected pattern
+  const filteredStudents = patternFilter === 'all'
+    ? students
+    : students.filter(student => {
+        const patterns = [
+          { name: 'helping', value: student.choicePatterns.helping },
+          { name: 'analytical', value: student.choicePatterns.analytical },
+          { name: 'patience', value: student.choicePatterns.patience },
+          { name: 'exploring', value: student.choicePatterns.exploring },
+          { name: 'building', value: student.choicePatterns.building }
+        ].filter(p => p.value > 0).sort((a, b) => b.value - a.value)
+
+        return patterns[0]?.name === patternFilter
+      })
+
   return (
     <div className="min-h-screen max-h-screen overflow-y-auto bg-gradient-to-b from-slate-50 to-slate-100">
       <div className="max-w-6xl mx-auto space-y-8 p-4 sm:p-6 lg:p-8">
@@ -124,9 +143,55 @@ export default function AdminPage() {
         <div className="space-y-2">
           <h1 className="text-3xl sm:text-4xl font-bold text-slate-900">Student Insights Dashboard</h1>
           <p className="text-lg text-slate-600">
-            {students.length} {students.length === 1 ? 'student' : 'students'} exploring their career paths
+            {filteredStudents.length} of {students.length} {students.length === 1 ? 'student' : 'students'}
+            {patternFilter !== 'all' && ` with ${formatPatternName(patternFilter)} pattern`}
           </p>
         </div>
+
+        {/* Pattern Filter */}
+        {students.length > 0 && (
+          <Card className="shadow-md">
+            <CardContent className="p-4">
+              <div className="space-y-3">
+                <h3 className="text-sm font-semibold text-slate-700">Filter by Decision-Making Pattern</h3>
+                <div className="flex flex-wrap gap-2">
+                  <Button
+                    variant={patternFilter === 'all' ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => setPatternFilter('all')}
+                    className="text-xs"
+                  >
+                    All Students ({students.length})
+                  </Button>
+                  {PATTERN_TYPES.map(pattern => {
+                    const count = students.filter(student => {
+                      const patterns = [
+                        { name: 'helping', value: student.choicePatterns.helping },
+                        { name: 'analytical', value: student.choicePatterns.analytical },
+                        { name: 'patience', value: student.choicePatterns.patience },
+                        { name: 'exploring', value: student.choicePatterns.exploring },
+                        { name: 'building', value: student.choicePatterns.building }
+                      ].filter(p => p.value > 0).sort((a, b) => b.value - a.value)
+                      return patterns[0]?.name === pattern
+                    }).length
+
+                    return (
+                      <Button
+                        key={pattern}
+                        variant={patternFilter === pattern ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => setPatternFilter(pattern)}
+                        className={`text-xs ${patternFilter === pattern ? getPatternBgClass(pattern) : ''}`}
+                      >
+                        {formatPatternName(pattern)} ({count})
+                      </Button>
+                    )
+                  })}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Error Alert */}
         {error && (
@@ -157,7 +222,28 @@ export default function AdminPage() {
         )}
 
         {/* Student List */}
-        {students.length === 0 ? (
+        {filteredStudents.length === 0 && students.length > 0 ? (
+          <Card className="border-dashed border-2 border-slate-300">
+            <CardContent className="p-12 text-center">
+              <div className="space-y-4">
+                <div className="w-16 h-16 mx-auto bg-slate-100 rounded-full flex items-center justify-center">
+                  <svg className="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold text-slate-900 mb-2">No Matching Students</h3>
+                  <p className="text-base text-slate-600 mb-4">
+                    No students found with {formatPatternName(patternFilter as PatternType)} as their dominant pattern.
+                  </p>
+                  <Button variant="outline" size="sm" onClick={() => setPatternFilter('all')}>
+                    Clear Filter
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ) : students.length === 0 ? (
           <Card className="border-dashed border-2 border-slate-300">
             <CardContent className="p-12 text-center">
               <div className="space-y-4">
@@ -182,9 +268,9 @@ export default function AdminPage() {
               </div>
             </CardContent>
           </Card>
-                ) : (
-                  <div className="space-y-4">
-            {students.map(student => (
+        ) : (
+          <div className="space-y-4">
+            {filteredStudents.map(student => (
               <StudentCard key={student.userId} student={student} />
             ))}
           </div>
