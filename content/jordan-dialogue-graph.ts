@@ -996,6 +996,182 @@ export const jordanDialogueNodes: DialogueNode[] = [
       }
     ],
     tags: ['transition', 'jordan_arc', 'bittersweet']
+  },
+
+  // ============= PATTERN-GATED BONUS CONTENT =============
+  // These nodes unlock after consistent pattern demonstrations
+  // Reward players for decision-making styles with deeper character insights
+
+  {
+    nodeId: 'jordan_analytical_bonus',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: "You analyze patterns. I see that about you.\n\nLet me show you something. My spreadsheet. Seven jobs in six years—dates, skills used, what worked, what didn't.\n\nI've been analyzing my own career like it's a dataset. Looking for the pattern that explains why nothing sticks.\n\nAnd I finally found it: I wasn't failing. I was iterating. Each job was a test. Barista → customer service skills. Copywriting → storytelling. UX design → user empathy. Data entry → attention to detail.\n\nI wasn't job-hopping. I was skill-stacking.\n\nThe pattern was there all along. I just needed analytical distance to see it.\n\nYou understand that kind of thinking. How do you spot patterns in your own chaos?",
+      emotion: 'analytical_breakthrough',
+      variation_id: 'analytical_bonus_v1'
+    }],
+    requiredState: {
+      trust: { min: 3 },
+      patterns: {
+        analytical: { min: 5 }
+      }
+    },
+    choices: [
+      {
+        choiceId: 'analytical_meta_pattern',
+        text: "You found the meta-pattern. That's high-level analysis.",
+        nextNodeId: 'jordan_meta_recognition',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'adaptability']
+      },
+      {
+        choiceId: 'analytical_reframe',
+        text: "Reframing failure as iteration—that changes everything.",
+        nextNodeId: 'jordan_reframe_insight',
+        pattern: 'exploring',
+        skills: ['creativity', 'criticalThinking']
+      }
+    ],
+    tags: ['pattern_bonus', 'analytical', 'career_pattern', 'jordan_arc']
+  },
+
+  {
+    nodeId: 'jordan_patience_bonus',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: "*She's quieter than usual*\n\nYou've been so patient with my spirals. My doubt-loops.\n\nMost people try to talk me out of impostor syndrome. 'You're not a fraud!' 'Just believe in yourself!' Like confidence is a light switch.\n\nBut you... you sat with the doubt. Didn't rush to fix it. Let it exist alongside the evidence of my competence.\n\nThat's what I've never been able to do. Give myself time. Let the career path unfold without forcing it.\n\nI've been so impatient with my own trajectory. Seven jobs feels like failure because I expected to 'arrive' by now.\n\nBut maybe arriving isn't the point. Maybe the journey is the skill.\n\nHow did you learn to be patient with your own uncertainty?",
+      emotion: 'vulnerable_grateful',
+      variation_id: 'patience_bonus_v1'
+    }],
+    requiredState: {
+      trust: { min: 4 },
+      patterns: {
+        patience: { min: 5 }
+      }
+    },
+    choices: [
+      {
+        choiceId: 'patience_uncertainty',
+        text: "Uncertainty is where growth happens. You're living it.",
+        nextNodeId: 'jordan_living_uncertainty',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'adaptability']
+      },
+      {
+        choiceId: 'patience_both',
+        text: "Doubt and competence can coexist. That's maturity.",
+        nextNodeId: 'jordan_coexistence',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication']
+      }
+    ],
+    tags: ['pattern_bonus', 'patience', 'emotional_growth', 'jordan_arc']
+  },
+
+  {
+    nodeId: 'jordan_exploring_bonus',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: "You're always asking 'what else?' Like me.\n\nThat's the gift and curse of exploratory thinkers. We see possibilities everywhere. Every job is interesting *until* we learn its edges.\n\nBarista? Loved the customer psychology. Hated the monotony.\nCopywriting? Loved the storytelling. Hated the corporate constraints.\nUX design? Loved the user research. Hated the design execution.\n\nI'm not flaky. I'm thorough. I explore until I understand, then I move to the next mystery.\n\nWhat if that's the skill? Professional curiosity. Meta-learning. The ability to onboard quickly, extract insights, and apply them somewhere new.\n\nBirmingham's economy needs people like us. People who connect disparate fields. Who see patterns across industries.\n\nYour exploration style—what have you discovered by refusing to specialize?",
+      emotion: 'excited_recognition',
+      variation_id: 'exploring_bonus_v1'
+    }],
+    requiredState: {
+      trust: { min: 3 },
+      patterns: {
+        exploring: { min: 5 }
+      }
+    },
+    choices: [
+      {
+        choiceId: 'exploring_gift',
+        text: "Exploration isn't failure to commit. It's rapid learning.",
+        nextNodeId: 'jordan_rapid_learning',
+        pattern: 'exploring',
+        skills: ['adaptability', 'creativity']
+      },
+      {
+        choiceId: 'exploring_connectors',
+        text: "The world needs connectors who understand multiple domains.",
+        nextNodeId: 'jordan_connector_role',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'collaboration']
+      }
+    ],
+    tags: ['pattern_bonus', 'exploring', 'career_exploration', 'jordan_arc']
+  },
+
+  {
+    nodeId: 'jordan_helping_bonus',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: "*Her voice cracks slightly*\n\nI need to tell you something. When you listened to my seven-job story without judgment...\n\nEveryone else hears that and thinks 'unstable.' You heard 'adaptive.'\n\nThat reframing—that single shift—just changed my entire Career Day talk. Maybe my entire self-concept.\n\nI was about to go in there apologizing for my 'non-traditional path.' Now I'm going in celebrating it.\n\nYou helped me without trying to fix me. You didn't solve my impostor syndrome—you witnessed it while reflecting my competence back.\n\nThat's a profound gift. You see people's strengths when they can only see their gaps.\n\nHow did you develop that ability to reflect people's best selves back to them?",
+      emotion: 'deeply_grateful',
+      variation_id: 'helping_bonus_v1'
+    }],
+    requiredState: {
+      trust: { min: 5 },
+      patterns: {
+        helping: { min: 5 }
+      }
+    },
+    choices: [
+      {
+        choiceId: 'helping_reframing',
+        text: "I just named what was already there. You did the work.",
+        nextNodeId: 'jordan_own_work',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication']
+      },
+      {
+        choiceId: 'helping_mirror',
+        text: "Sometimes we need a mirror to see ourselves clearly.",
+        nextNodeId: 'jordan_mirror_moment',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'collaboration']
+      }
+    ],
+    tags: ['pattern_bonus', 'helping', 'deep_connection', 'jordan_arc']
+  },
+
+  {
+    nodeId: 'jordan_building_bonus',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: "*She pulls out her phone, shows you something*\n\nLook at this. I've been building something.\n\nIt's a portfolio site, but not for design work. It's a 'career archaeology' project. Each job is a dig site. I'm documenting the artifacts—skills, insights, connections, failures.\n\nBarista job? I built customer rapport in 90 seconds. That's a skill.\nData entry? I created efficiency systems that reduced errors by 40%. That's a skill.\nCopywriting? I learned brand voice mimicry. That's a skill.\n\nI'm not job-hopping—I'm building a cathedral from seven quarries. Each stone contributes to something larger.\n\nThis Career Day talk? It's the blueprint. Showing students that careers aren't ladders anymore. They're LEGO sets. You build what you need from whatever pieces you've gathered.\n\nYou understand building unconventional structures, don't you? What are you creating from your seemingly unrelated pieces?",
+      emotion: 'inspired_constructing',
+      variation_id: 'building_bonus_v1'
+    }],
+    requiredState: {
+      trust: { min: 4 },
+      patterns: {
+        building: { min: 5 }
+      }
+    },
+    choices: [
+      {
+        choiceId: 'building_cathedral',
+        text: "A cathedral from seven quarries—that's a powerful metaphor.",
+        nextNodeId: 'jordan_cathedral_vision',
+        pattern: 'building',
+        skills: ['creativity', 'leadership']
+      },
+      {
+        choiceId: 'building_lego',
+        text: "LEGO careers—students need to hear that.",
+        nextNodeId: 'jordan_lego_generation',
+        pattern: 'helping',
+        skills: ['communication', 'creativity']
+      },
+      {
+        choiceId: 'building_archaeology',
+        text: "Career archaeology—you're creating a new framework.",
+        nextNodeId: 'jordan_new_framework',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'creativity']
+      }
+    ],
+    tags: ['pattern_bonus', 'building', 'career_construction', 'jordan_arc']
   }
 ]
 

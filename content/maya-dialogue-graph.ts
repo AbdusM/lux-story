@@ -1697,6 +1697,192 @@ export const mayaDialogueNodes: DialogueNode[] = [
       }
     ],
     tags: ['reciprocity', 'mutual_recognition', 'maya_arc']
+  },
+
+  // ============= PATTERN-GATED BONUS CONTENT =============
+  // These nodes unlock after consistent pattern demonstrations
+  // Reward players for decision-making styles with deeper character insights
+
+  {
+    nodeId: 'maya_analytical_bonus',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "You know, since you understand systematic thinking... can I show you something technical?\n\nThis adaptive learning algorithm I'm developing—it uses reinforcement learning to optimize prosthetic response times. The robot 'learns' from user movement patterns rather than following pre-programmed responses.\n\nMost people's eyes glaze over when I talk about Q-learning and reward functions, but you... you think analytically. You'd understand why reducing latency by 12 milliseconds matters when someone's trying to pick up their coffee.\n\nThat's what I love about this. Every optimization makes a real difference in someone's daily life.",
+        emotion: 'excited_technical',
+        variation_id: 'analytical_bonus_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 3 },
+      patterns: {
+        analytical: { min: 5 }
+      }
+    },
+    choices: [
+      {
+        choiceId: 'analytical_algorithm_details',
+        text: "Walk me through the algorithm architecture.",
+        nextNodeId: 'maya_algorithm_details',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'digitalLiteracy']
+      },
+      {
+        choiceId: 'analytical_impact',
+        text: "12 milliseconds could mean independence for someone.",
+        nextNodeId: 'maya_impact_reflection',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'criticalThinking']
+      }
+    ],
+    tags: ['pattern_bonus', 'analytical', 'robotics_deep', 'maya_arc']
+  },
+
+  {
+    nodeId: 'maya_patience_bonus',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "You've been so patient with me tonight. Never rushing, just... listening.\n\nIt took me two years to realize I wasn't happy in pre-med. Two years of telling myself 'give it more time, it'll click eventually.' But that wasn't patience—that was avoidance.\n\nReal patience is what you've shown. Sitting with uncomfortable truths instead of forcing quick answers. Letting insights emerge naturally.\n\nThat's what I'm learning now. The decision to switch to biomedical engineering isn't about rushing toward something new. It's about finally being honest about what I've known for a while.\n\nThank you for teaching me the difference.",
+        emotion: 'grateful_reflective',
+        variation_id: 'patience_bonus_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 4 },
+      patterns: {
+        patience: { min: 5 }
+      }
+    },
+    choices: [
+      {
+        choiceId: 'patience_timing',
+        text: "Some realizations can't be rushed.",
+        nextNodeId: 'maya_timing_reflection',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'adaptability']
+      },
+      {
+        choiceId: 'patience_courage',
+        text: "Honesty with yourself takes courage.",
+        nextNodeId: 'maya_courage_response',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication']
+      }
+    ],
+    tags: ['pattern_bonus', 'patience', 'emotional_growth', 'maya_arc']
+  },
+
+  {
+    nodeId: 'maya_exploring_bonus',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "Your curiosity is infectious, you know? The way you ask questions, explore possibilities...\n\nI've been researching alternatives. Biomedical engineering, yes, but also: neural interface design, prosthetics UX research, even healthcare robotics policy. There are these emerging fields nobody tells you about in pre-med orientation.\n\nDid you know Birmingham has a growing medtech startup scene? Southern Research Institute is doing brain-computer interface work. UAB's collaborative robotics lab partners with Children's Hospital.\n\nI could design assistive technology AND work with patients. I could bridge medicine and engineering without sacrificing either.\n\nI never would have explored these options if you hadn't kept asking 'what else is possible?'",
+        emotion: 'inspired_discovering',
+        variation_id: 'exploring_bonus_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 3 },
+      patterns: {
+        exploring: { min: 5 }
+      }
+    },
+    choices: [
+      {
+        choiceId: 'exploring_medtech',
+        text: "Tell me more about Birmingham's medtech scene.",
+        nextNodeId: 'maya_medtech_exploration',
+        pattern: 'exploring',
+        skills: ['criticalThinking', 'adaptability']
+      },
+      {
+        choiceId: 'exploring_bridge',
+        text: "You don't have to choose between medicine and engineering.",
+        nextNodeId: 'maya_bridge_realization',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'creativity']
+      }
+    ],
+    tags: ['pattern_bonus', 'exploring', 'career_possibilities', 'maya_arc']
+  },
+
+  {
+    nodeId: 'maya_helping_bonus',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "*She reaches out, touches your arm gently*\n\nI need to tell you something. When we met tonight, I was... I don't think I would have made it through. Not in any dramatic way, just... I would have kept going through the motions, hollow.\n\nYou saw me. Not the pre-med student my parents want, not the robotics enthusiast I hide. Just... me. Confused, scared, trying to figure it out.\n\nAnd instead of giving advice or telling me what to do, you just... stayed. Supported me while I found my own answers.\n\nThat's real help. Not fixing someone—believing in them while they fix themselves.\n\nYou have a gift for that. Whatever you do with your career, don't lose that ability to truly support people.",
+        emotion: 'deeply_grateful',
+        variation_id: 'helping_bonus_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 5 },
+      patterns: {
+        helping: { min: 5 }
+      }
+    },
+    choices: [
+      {
+        choiceId: 'helping_gift',
+        text: "You found your own answers. I just listened.",
+        nextNodeId: 'maya_listener_reflection',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'communication']
+      },
+      {
+        choiceId: 'helping_mutual',
+        text: "You helped me understand my own approach to supporting others.",
+        nextNodeId: 'maya_mutual_growth',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'collaboration']
+      }
+    ],
+    tags: ['pattern_bonus', 'helping', 'deep_connection', 'maya_arc']
+  },
+
+  {
+    nodeId: 'maya_building_bonus',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "*She carefully unwraps something from her backpack*\n\nI want to show you this. My first working prototype.\n\nIt's a pediatric prosthetic hand with adaptive grip strength. See these pressure sensors? The child doesn't have to think about how hard to squeeze—the hand learns their intention and adjusts in real-time.\n\nI built this. Every circuit, every line of code, every 3D-printed joint. Stayed up for 72 hours during spring break just troubleshooting the servo calibration.\n\nAnd when it finally worked—when the fingers curled smoothly around a test object—I cried. Because someday, maybe, a kid will use this to hold their parent's hand.\n\nThat's what building means to me. Creating something that doesn't exist yet. Something that matters.\n\nYou understand that impulse, don't you? The drive to make, to construct, to bring ideas into reality?",
+        emotion: 'proud_vulnerable',
+        variation_id: 'building_bonus_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 4 },
+      patterns: {
+        building: { min: 5 }
+      }
+    },
+    choices: [
+      {
+        choiceId: 'building_marvel',
+        text: "*Examine the prototype carefully* This is remarkable engineering.",
+        nextNodeId: 'maya_engineering_pride',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'creativity']
+      },
+      {
+        choiceId: 'building_meaning',
+        text: "You created something that will change a child's life.",
+        nextNodeId: 'maya_purpose_realization',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'creativity']
+      },
+      {
+        choiceId: 'building_impulse',
+        text: "Yes. The drive to create is powerful.",
+        nextNodeId: 'maya_creator_kinship',
+        pattern: 'building',
+        skills: ['creativity', 'leadership']
+      }
+    ],
+    tags: ['pattern_bonus', 'building', 'robotics_reveal', 'maya_arc']
   }
 ]
 
