@@ -73,6 +73,7 @@ export interface SkillProfile {
   totalDemonstrations: number
   milestones: string[]
   samuelQuotes?: SamuelQuote[] // Samuel's wisdom shared with this user
+  learningObjectivesEngagement?: import('./learning-objectives-tracker').LearningObjectiveEngagement[] // Learning objectives engagement tracking
 }
 
 /**
@@ -430,7 +431,7 @@ export async function loadSkillProfile(userId: string): Promise<SkillProfile | n
     }
 
     // Convert TrackerSkillProfile to dashboard SkillProfile
-    return convertTrackerProfileToDashboard(userId, trackerProfile)
+    return await convertTrackerProfileToDashboard(userId, trackerProfile)
   } catch (error) {
     console.error('Failed to load skill profile:', error)
     return null
@@ -585,10 +586,10 @@ function convertSupabaseProfileToDashboard(supabaseProfile: any): SkillProfile {
 /**
  * Convert SkillTracker profile to dashboard-compatible format
  */
-function convertTrackerProfileToDashboard(
+async function convertTrackerProfileToDashboard(
   userId: string,
   trackerProfile: TrackerSkillProfile
-): SkillProfile {
+): Promise<SkillProfile> {
   // Convert skill demonstrations to expected format
   const skillDemonstrations: SkillDemonstrations = {}
   Object.entries(trackerProfile.skillDemonstrations).forEach(([skill, demos]) => {
@@ -705,6 +706,18 @@ function convertTrackerProfileToDashboard(
   // Generate skill gaps using internal levels
   const skillGaps = calculateSkillGaps(careerMatches, internalSkills)
 
+  // Load learning objectives engagement
+  let learningObjectivesEngagement: import('./learning-objectives-tracker').LearningObjectiveEngagement[] | undefined
+  try {
+    if (typeof window !== 'undefined') {
+      const { getLearningObjectivesTracker } = await import('./learning-objectives-tracker')
+      const objectivesTracker = getLearningObjectivesTracker(userId)
+      learningObjectivesEngagement = objectivesTracker.exportEngagements()
+    }
+  } catch (error) {
+    console.warn('[SkillProfileAdapter] Failed to load learning objectives:', error)
+  }
+
   return {
     userId,
     userName: `User ${userId.slice(0, 8)}`,
@@ -716,7 +729,8 @@ function convertTrackerProfileToDashboard(
     skillGaps,
     totalDemonstrations: trackerProfile.totalDemonstrations,
     milestones: trackerProfile.milestones.map(m => m.checkpoint),
-    samuelQuotes: trackerProfile.samuelQuotes || []
+    samuelQuotes: trackerProfile.samuelQuotes || [],
+    learningObjectivesEngagement
   }
 }
 

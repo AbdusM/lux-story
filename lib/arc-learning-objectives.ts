@@ -1,0 +1,174 @@
+/**
+ * Arc Learning Objectives
+ * Defines what students learn through each character arc
+ * Used for Experience Summary component (Kolb's Cycle Stage 2: Reflective Observation)
+ */
+
+import type { ExperienceSummaryData, ArcLearningObjective } from '@/components/ExperienceSummary'
+import type { GameState } from './character-state'
+
+export const ARC_LEARNING_OBJECTIVES: Record<'maya' | 'devon' | 'jordan', {
+  theme: string
+  defaultSkills: ArcLearningObjective[]
+  defaultInsights: string[]
+}> = {
+  maya: {
+    theme: "You helped Maya navigate the tension between her family's expectations and her authentic passion for robotics. Through your conversations, you explored how identity, cultural values, and personal dreams intersect.",
+    defaultSkills: [
+      {
+        skill: 'emotionalIntelligence',
+        howYouShowedIt: 'You recognized Maya\'s emotional struggle and helped her process complex feelings about family expectations versus personal identity.',
+        whyItMatters: 'Emotional intelligence is critical for understanding others\' perspectives and building authentic relationships in any career.'
+      },
+      {
+        skill: 'culturalCompetence',
+        howYouShowedIt: 'You understood the cultural dynamics of immigrant families and the weight of sacrifice across generations.',
+        whyItMatters: 'Cultural competence helps you work effectively with diverse teams and understand different perspectives in the workplace.'
+      },
+      {
+        skill: 'communication',
+        howYouShowedIt: 'You asked thoughtful questions and helped Maya articulate her values and dreams clearly.',
+        whyItMatters: 'Strong communication skills enable you to express ideas, ask powerful questions, and build understanding with others.'
+      },
+      {
+        skill: 'criticalThinking',
+        howYouShowedIt: 'You helped Maya analyze the difference between fulfilling expectations and honoring deeper intentions.',
+        whyItMatters: 'Critical thinking allows you to evaluate complex situations and make informed decisions about your own path.'
+      }
+    ],
+    defaultInsights: [
+      'Family expectations can come from love, even when they feel limiting',
+      'Authentic choices require balancing multiple important values',
+      'Supporting others in difficult decisions builds trust and connection',
+      'Cultural identity and personal dreams can coexist with understanding'
+    ]
+  },
+  devon: {
+    theme: "You helped Devon process grief and navigate family relationships while exploring his technical interests. Through your conversations, you discovered how logic and emotion both matter in meaningful connections.",
+    defaultSkills: [
+      {
+        skill: 'emotionalIntelligence',
+        howYouShowedIt: 'You recognized Devon\'s emotional needs around grief and family relationships, supporting him through difficult conversations.',
+        whyItMatters: 'Emotional intelligence helps you support colleagues through challenges and build workplace relationships.'
+      },
+      {
+        skill: 'problemSolving',
+        howYouShowedIt: 'You helped Devon find systematic approaches to complex emotional situations, like creating flowcharts for difficult conversations.',
+        whyItMatters: 'Problem-solving skills let you break down complex challenges into manageable steps, useful in any career.'
+      },
+      {
+        skill: 'communication',
+        howYouShowedIt: 'You adapted your communication style to match Devon\'s logical, structured approach to emotional topics.',
+        whyItMatters: 'Adaptive communication helps you connect with different personality types and working styles.'
+      },
+      {
+        skill: 'criticalThinking',
+        howYouShowedIt: 'You helped Devon analyze patterns in his relationships and think through the implications of different approaches.',
+        whyItMatters: 'Critical thinking enables you to see connections and make thoughtful decisions in complex situations.'
+      }
+    ],
+    defaultInsights: [
+      'Logic and emotion are both important in relationships',
+      'Systematic approaches can help navigate emotional challenges',
+      'Supporting others through grief requires patience and understanding',
+      'Different communication styles can be equally valid and effective'
+    ]
+  },
+  jordan: {
+    theme: "You helped Jordan navigate impostor syndrome and recognize the value of their trade skills. Through your conversations, you explored how different paths can lead to meaningful careers.",
+    defaultSkills: [
+      {
+        skill: 'emotionalIntelligence',
+        howYouShowedIt: 'You recognized Jordan\'s self-doubt and helped them see their own value and accomplishments.',
+        whyItMatters: 'Emotional intelligence helps you build confidence in yourself and support others in doing the same.'
+      },
+      {
+        skill: 'leadership',
+        howYouShowedIt: 'You helped Jordan recognize their leadership potential in construction and sustainable building.',
+        whyItMatters: 'Leadership skills enable you to guide projects, mentor others, and advance in your career.'
+      },
+      {
+        skill: 'communication',
+        howYouShowedIt: 'You validated Jordan\'s experiences and helped them articulate the value of hands-on skills and trade knowledge.',
+        whyItMatters: 'Strong communication helps you advocate for yourself and explain your unique value to employers.'
+      },
+      {
+        skill: 'criticalThinking',
+        howYouShowedIt: 'You helped Jordan analyze the differences between academic and practical paths, recognizing both have value.',
+        whyItMatters: 'Critical thinking helps you evaluate career options and make informed decisions about your path.'
+      }
+    ],
+    defaultInsights: [
+      'Hands-on skills and trade knowledge are valuable career foundations',
+      'Impostor syndrome can affect anyone, regardless of their path',
+      'Leadership can be developed through many different experiences',
+      'There are multiple valid paths to meaningful careers'
+    ]
+  }
+}
+
+/**
+ * Generate experience summary data from game state after arc completion
+ */
+export async function generateExperienceSummary(
+  characterArc: 'maya' | 'devon' | 'jordan',
+  gameState: GameState,
+  profile?: import('@/lib/skill-profile-adapter').SkillProfile | null
+): Promise<ExperienceSummaryData> {
+  const characterId = characterArc
+  const character = gameState.characters.get(characterId)
+  const arcData = ARC_LEARNING_OBJECTIVES[characterArc]
+
+  // Get actual skills developed during this arc from skill tracker
+  // For now, use default skills (can be enhanced with actual tracked skills)
+  const skillsDeveloped = arcData.defaultSkills
+
+  // Determine dominant pattern from game state
+  const patterns = gameState.patterns
+  const patternEntries = Object.entries(patterns) as [keyof typeof patterns, number][]
+  const dominantPattern = patternEntries
+    .sort(([, a], [, b]) => b - a)[0]?.[0] || 'helping'
+
+  const characterNames: Record<string, string> = {
+    maya: 'Maya Chen',
+    devon: 'Devon Kumar',
+    jordan: 'Jordan Packard'
+  }
+
+  return {
+    characterName: characterNames[characterArc],
+    characterArc,
+    arcTheme: arcData.theme,
+    skillsDeveloped,
+    keyInsights: arcData.defaultInsights,
+    trustLevel: character?.trust || 0,
+    relationshipStatus: character?.relationshipStatus || 'stranger',
+    dominantPattern,
+    profile: profile || undefined
+  }
+}
+
+/**
+ * Check if an arc just completed based on state changes
+ */
+export function detectArcCompletion(
+  previousState: GameState,
+  currentState: GameState
+): 'maya' | 'devon' | 'jordan' | null {
+  const arcFlags = ['maya_arc_complete', 'devon_arc_complete', 'jordan_arc_complete']
+  
+  for (const flag of arcFlags) {
+    const wasComplete = previousState.globalFlags.has(flag)
+    const isNowComplete = currentState.globalFlags.has(flag)
+    
+    if (!wasComplete && isNowComplete) {
+      // Arc just completed
+      if (flag === 'maya_arc_complete') return 'maya'
+      if (flag === 'devon_arc_complete') return 'devon'
+      if (flag === 'jordan_arc_complete') return 'jordan'
+    }
+  }
+  
+  return null
+}
+

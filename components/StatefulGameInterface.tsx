@@ -40,6 +40,11 @@ import {
 import { SkillTracker } from '@/lib/skill-tracker'
 import { SCENE_SKILL_MAPPINGS } from '@/lib/scene-skill-mappings'
 import { getComprehensiveTracker } from '@/lib/comprehensive-user-tracker'
+import { ExperienceSummary, type ExperienceSummaryData } from '@/components/ExperienceSummary'
+import { detectArcCompletion, generateExperienceSummary } from '@/lib/arc-learning-objectives'
+import { loadSkillProfile } from '@/lib/skill-profile-adapter'
+import { getLearningObjectivesTracker } from '@/lib/learning-objectives-tracker'
+import { getLearningObjectivesForNode } from '@/lib/learning-objectives-definitions'
 
 interface GameInterfaceState {
   gameState: GameState | null
@@ -60,6 +65,8 @@ interface GameInterfaceState {
   transitionData: { platform: number; message: string } | null  // Transition details
   previousSpeaker: string | null  // For detecting continued speakers (avatar logic)
   recentSkills: string[]  // Recently demonstrated skills for highlighting
+  showExperienceSummary: boolean  // For showing learning objectives after arc completion
+  experienceSummaryData: ExperienceSummaryData | null  // Data for experience summary
 }
 
 export default function StatefulGameInterface() {
@@ -82,7 +89,9 @@ export default function StatefulGameInterface() {
     error: null,
     showTransition: false,
     transitionData: null,
-    recentSkills: []
+    recentSkills: [],
+    showExperienceSummary: false,
+    experienceSummaryData: null
   })
 
   // Feature flag for rich text effects (terminal-style animations)
@@ -328,6 +337,10 @@ export default function StatefulGameInterface() {
       if (typeof window !== 'undefined' && !skillTrackerRef.current) {
         skillTrackerRef.current = new SkillTracker(gameState.playerId)
         console.log('✅ Initialized skill tracker for user:', gameState.playerId)
+        
+        // Initialize learning objectives tracker
+        const objectivesTracker = getLearningObjectivesTracker(gameState.playerId)
+        console.log('✅ Initialized learning objectives tracker for user:', gameState.playerId)
       }
 
       // Get character ID from saved state (defaults to samuel for new games)
@@ -338,6 +351,21 @@ export default function StatefulGameInterface() {
 
       // Get the current node (either new game start or saved position)
       const nodeId = gameState.currentNodeId
+      
+      // Track learning objectives for initial node view
+      if (nodeId && typeof window !== 'undefined') {
+        const currentNode = currentGraph.nodes.get(nodeId)
+        if (currentNode?.learningObjectives) {
+          const objectivesTracker = getLearningObjectivesTracker(gameState.playerId)
+          currentNode.learningObjectives.forEach(objectiveId => {
+            objectivesTracker.recordEngagement(
+              objectiveId,
+              nodeId,
+              'viewed'
+            )
+          })
+        }
+      }
 
       console.log(`📍 Current character: ${characterId}, Node: ${nodeId}`)
 
@@ -409,7 +437,9 @@ export default function StatefulGameInterface() {
         showTransition: false,
         transitionData: null,
         previousSpeaker: state.currentNode?.speaker || null,
-        recentSkills: [] // Reset on initialization
+        recentSkills: [], // Reset on initialization
+        showExperienceSummary: false,
+        experienceSummaryData: null
       })
 
       // Auto-save
@@ -491,6 +521,37 @@ export default function StatefulGameInterface() {
     let demonstratedSkills: string[] = []
     let skillToastUpdate: { skill: string; message: string } | null = null
     
+    // Track learning objectives engagement for the choice
+    if (state.gameState && state.currentNode) {
+      const objectivesTracker = getLearningObjectivesTracker(state.gameState.playerId)
+      
+      // Track node-level learning objectives (when viewing the node)
+      if (state.currentNode.learningObjectives && state.currentNode.learningObjectives.length > 0) {
+        state.currentNode.learningObjectives.forEach(objectiveId => {
+          objectivesTracker.recordEngagement(
+            objectiveId,
+            state.currentNode!.nodeId,
+            'viewed',
+            undefined,
+            choice.choice.skills || [],
+            choice.choice.pattern ? [choice.choice.pattern] : undefined
+          )
+        })
+      }
+      
+      // Track choice-level learning objectives (when making the choice)
+      if (choice.choice.learningObjectiveId) {
+        objectivesTracker.recordEngagement(
+          choice.choice.learningObjectiveId,
+          state.currentNode.nodeId,
+          'chose',
+          choice.choice.choiceId,
+          choice.choice.skills || [],
+          choice.choice.pattern ? [choice.choice.pattern] : undefined
+        )
+      }
+    }
+    
     if (skillTrackerRef.current && state.currentNode) {
       const sceneMapping = SCENE_SKILL_MAPPINGS[state.currentNode.nodeId]
       let skillsRecorded = false
@@ -540,6 +601,37 @@ export default function StatefulGameInterface() {
       ? [...demonstratedSkills, ...state.recentSkills].slice(0, 10)
       : state.recentSkills.slice(0, 8)
 
+    // Check for arc completion (after state changes but before UI update)
+    const completedArc = detectArcCompletion(state.gameState, newGameState)
+    let experienceSummaryUpdate: { showExperienceSummary: boolean; experienceSummaryData: ExperienceSummaryData | null } = {
+      showExperienceSummary: false,
+      experienceSummaryData: null
+    }
+
+    if (completedArc) {
+      // Load profile for framework insights
+      loadSkillProfile(newGameState.playerId).then(profile => {
+        generateExperienceSummary(completedArc, newGameState, profile).then(summaryData => {
+          setState(prev => ({
+            ...prev,
+            showExperienceSummary: true,
+            experienceSummaryData: summaryData
+          }))
+          console.log(`🎓 Arc completed: ${completedArc} - showing experience summary`)
+        })
+      }).catch(error => {
+        console.error('Failed to load profile for experience summary:', error)
+        // Show summary without profile (framework insights won't be available)
+        generateExperienceSummary(completedArc, newGameState, null).then(summaryData => {
+          setState(prev => ({
+            ...prev,
+            showExperienceSummary: true,
+            experienceSummaryData: summaryData
+          }))
+        })
+      })
+    }
+
     // Priority 1: Single batched state update - all changes at once
     setState({
       gameState: newGameState,
@@ -558,7 +650,8 @@ export default function StatefulGameInterface() {
       skillToast: skillToastUpdate || state.skillToast, // Use prepared toast or keep existing
       error: null,
       ...transitionUpdate, // Spread transition state
-      recentSkills: skillsToKeep
+      recentSkills: skillsToKeep,
+      ...experienceSummaryUpdate // Spread experience summary state
     })
 
     // Track Samuel quotes when he speaks
@@ -824,11 +917,18 @@ export default function StatefulGameInterface() {
 
         {/* Subtle top utility bar */}
         <div className="flex justify-between items-center mb-3">
-          <Link href="/admin">
-            <button className="text-xs text-slate-400 hover:text-slate-600 transition-colors px-2 py-1">
-              Admin
-            </button>
-          </Link>
+          <div className="flex gap-3">
+            <Link href="/student/insights">
+              <button className="text-xs text-blue-600 hover:text-blue-700 transition-colors px-2 py-1 font-medium">
+                Your Journey
+              </button>
+            </Link>
+            <Link href="/admin">
+              <button className="text-xs text-slate-400 hover:text-slate-600 transition-colors px-2 py-1">
+                Admin
+              </button>
+            </Link>
+          </div>
           <div className="flex gap-2">
             {process.env.NODE_ENV === 'development' && (
               <Button variant="ghost" size="sm" onClick={exportFullAnalyticsProfile} className="text-xs h-7 px-2 text-slate-400">
@@ -1083,6 +1183,18 @@ export default function StatefulGameInterface() {
             severity={state.error.severity}
             onRetry={() => setState(prev => ({ ...prev, error: null }))}
             onDismiss={() => setState(prev => ({ ...prev, error: null }))}
+          />
+        )}
+
+        {/* Experience Summary (Kolb's Cycle Stage 2: Reflective Observation) */}
+        {state.showExperienceSummary && state.experienceSummaryData && (
+          <ExperienceSummary
+            data={state.experienceSummaryData}
+            onContinue={() => setState(prev => ({ 
+              ...prev, 
+              showExperienceSummary: false,
+              experienceSummaryData: null
+            }))}
           />
         )}
 
