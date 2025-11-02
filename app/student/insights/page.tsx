@@ -8,6 +8,7 @@ import { ArrowLeft, Sparkles, TrendingUp, Target, Lightbulb, BookOpen, Rocket } 
 import { loadSkillProfile } from '@/lib/skill-profile-adapter'
 import type { SkillProfile } from '@/lib/skill-profile-adapter'
 import { YourJourneySection } from '@/components/student/sections/YourJourneySection'
+import { PatternInsightsSection } from '@/components/student/sections/PatternInsightsSection'
 import { SkillGrowthSection } from '@/components/student/sections/SkillGrowthSection'
 import { CareerExplorationSection } from '@/components/student/sections/CareerExplorationSection'
 import { NextStepsSection } from '@/components/student/sections/NextStepsSection'
@@ -165,6 +166,7 @@ export default function StudentInsightsPage() {
 
         {/* Main Sections */}
         <YourJourneySection profile={profile} />
+        {userId && <PatternInsightsSection userId={userId} />}
         <SkillGrowthSection profile={profile} />
         <CareerExplorationSection profile={profile} />
         <NextStepsSection profile={profile} />
