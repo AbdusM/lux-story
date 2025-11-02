@@ -19,6 +19,7 @@ import type { SimpleGameState } from '../hooks/useSimpleGame'
 import { SCENE_SKILL_MAPPINGS, type SceneSkillMapping } from './scene-skill-mappings'
 import { queueSkillSummarySync, queueSkillDemonstrationSync, queuePatternDemonstrationSync } from './sync-queue'
 import { logSkillDemo } from './real-time-monitor'
+import { PATTERN_SKILL_MAP, getPatternContextDescription, isValidPattern } from './patterns'
 
 export interface SkillDemonstration {
   scene: string
@@ -329,15 +330,14 @@ export class SkillTracker {
     sceneId: string,
     characterId: string
   ): void {
-    // Validate pattern name
-    const validPatterns = ['analytical', 'patience', 'exploring', 'helping', 'building']
-    if (!validPatterns.includes(patternName)) {
+    // Validate pattern name using canonical source
+    if (!isValidPattern(patternName)) {
       console.warn(`[SkillTracker] Invalid pattern name: "${patternName}", skipping pattern tracking`)
       return
     }
 
-    // Generate human-readable context
-    const context = this.generatePatternContext(patternName)
+    // Generate human-readable context from canonical source
+    const context = getPatternContextDescription(patternName)
 
     // Queue Supabase sync (no localStorage needed - patterns already in gameState)
     queuePatternDemonstrationSync({
@@ -355,21 +355,6 @@ export class SkillTracker {
       scene: sceneId,
       character: characterId
     })
-  }
-
-  /**
-   * Generate human-readable context for pattern demonstration
-   */
-  private generatePatternContext(pattern: string): string {
-    const descriptions: Record<string, string> = {
-      analytical: 'Approached the situation by analyzing details and thinking critically about the options',
-      patience: 'Took time to listen carefully and understand before responding or making a decision',
-      exploring: 'Asked curious questions to learn more and explore different perspectives',
-      helping: 'Offered support and assistance to others, showing care for their wellbeing',
-      building: 'Worked on creating or improving something, taking a constructive approach'
-    }
-
-    return descriptions[pattern] || `Demonstrated ${pattern} decision-making pattern`
   }
 
   /**
@@ -447,26 +432,19 @@ export class SkillTracker {
 
   /**
    * Pattern-based skill detection (fallback)
+   * Uses canonical PATTERN_SKILL_MAP from lib/patterns.ts
    */
   private detectSkillsFromPattern(choice: { text: string; pattern?: string; id?: string }): string[] {
-    const patternSkillMap: Record<string, string[]> = {
-      helping: ['emotionalIntelligence', 'collaboration', 'communication'],
-      analytical: ['criticalThinking', 'problemSolving', 'digitalLiteracy'],
-      building: ['creativity', 'problemSolving', 'leadership'],
-      patience: ['timeManagement', 'adaptability', 'emotionalIntelligence'],
-      exploring: ['adaptability', 'creativity', 'criticalThinking']
-    }
-
     if (!choice.pattern) return []
 
-    const skills = patternSkillMap[choice.pattern] || []
-
-    // Validate pattern is recognized
-    if (choice.pattern && !patternSkillMap[choice.pattern]) {
+    // Validate pattern using canonical source
+    if (!isValidPattern(choice.pattern)) {
       console.warn(`Unknown pattern: "${choice.pattern}" in choice: "${choice.text}"`)
+      return []
     }
 
-    return skills
+    // Get skills from canonical mapping
+    return PATTERN_SKILL_MAP[choice.pattern] || []
   }
 
   /**
