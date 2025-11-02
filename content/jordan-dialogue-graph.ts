@@ -41,7 +41,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "Six rewrites means you care about getting it right.",
         nextNodeId: 'jordan_career_question',
         pattern: 'helping',
-        skills: ['emotional_intelligence', 'communication'],
+        skills: ['emotionalIntelligence', 'communication'],
         consequence: {
           characterId: 'jordan',
           trustChange: 2
@@ -52,7 +52,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "You seem uncertain about your own story.",
         nextNodeId: 'jordan_career_question',
         pattern: 'analytical',
-        skills: ['critical_thinking', 'communication'],
+        skills: ['criticalThinking', 'communication'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -96,7 +96,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "Maybe messy paths are the most honest ones to share.",
         nextNodeId: 'jordan_job_reveal_1',
         pattern: 'helping',
-        skills: ['emotional_intelligence', 'communication', 'leadership'],
+        skills: ['emotionalIntelligence', 'communication', 'leadership'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1
@@ -107,7 +107,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "Six rewrites means you're overthinking the story you're telling.",
         nextNodeId: 'jordan_job_reveal_1',
         pattern: 'analytical',
-        skills: ['critical_thinking', 'communication'],
+        skills: ['criticalThinking', 'communication'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1
@@ -152,7 +152,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "At least you took a risk. That's more than most people do at twenty.",
         nextNodeId: 'jordan_job_reveal_2',
         pattern: 'helping',
-        skills: ['emotional_intelligence', 'communication', 'leadership'],
+        skills: ['emotionalIntelligence', 'communication', 'leadership'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -164,7 +164,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "Sounds like you've been figuring it out as you go since the beginning.",
         nextNodeId: 'jordan_job_reveal_2',
         pattern: 'analytical',
-        skills: ['critical_thinking', 'adaptability', 'communication'],
+        skills: ['criticalThinking', 'adaptability', 'communication'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -207,7 +207,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "That's actually a really valuable skill—reading people that quickly.",
         nextNodeId: 'jordan_job_reveal_3',
         pattern: 'helping',
-        skills: ['emotional_intelligence', 'communication'],
+        skills: ['emotionalIntelligence', 'communication'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -219,7 +219,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "Applied empathy sounds a lot like user experience design.",
         nextNodeId: 'jordan_job_reveal_3',
         pattern: 'analytical',
-        skills: ['critical_thinking', 'creativity', 'communication'],
+        skills: ['criticalThinking', 'creativity', 'communication'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -262,7 +262,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "Teaching yourself a whole new skill from scratch takes real discipline.",
         nextNodeId: 'jordan_pattern_acknowledgment',
         pattern: 'helping',
-        skills: ['emotional_intelligence', 'communication', 'leadership'],
+        skills: ['emotionalIntelligence', 'communication', 'leadership'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -274,7 +274,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "Skills like puzzle pieces—what's the picture?",
         nextNodeId: 'jordan_pattern_acknowledgment',
         pattern: 'analytical',
-        skills: ['critical_thinking', 'creativity', 'communication'],
+        skills: ['criticalThinking', 'creativity', 'communication'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -337,7 +337,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "That makes perfect sense. You were getting closer to what you actually wanted.",
         nextNodeId: 'jordan_pause_after_job4',
         pattern: 'helping',
-        skills: ['emotional_intelligence', 'communication'],
+        skills: ['emotionalIntelligence', 'communication'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -349,7 +349,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "You're a builder, not a promoter. That's an important distinction.",
         nextNodeId: 'jordan_pause_after_job4',
         pattern: 'building',
-        skills: ['critical_thinking', 'communication'],
+        skills: ['criticalThinking', 'communication'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -412,7 +412,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "That's actually brilliant—seeing the deeper pattern underneath the job title.",
         nextNodeId: 'jordan_job_reveal_6',
         pattern: 'helping',
-        skills: ['emotional_intelligence', 'communication'],
+        skills: ['emotionalIntelligence', 'communication'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -424,7 +424,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "You've been doing UX design this whole time. You just kept changing the medium.",
         nextNodeId: 'jordan_job_reveal_6',
         pattern: 'analytical',
-        skills: ['critical_thinking', 'creativity', 'communication'],
+        skills: ['criticalThinking', 'creativity', 'communication'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -467,7 +467,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "Most people would just see that as survival work. You made it an education.",
         nextNodeId: 'jordan_job_reveal_7',
         pattern: 'helping',
-        skills: ['emotional_intelligence', 'critical_thinking', 'communication'],
+        skills: ['emotionalIntelligence', 'criticalThinking', 'communication'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -479,7 +479,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "You learned systems thinking and user flows.",
         nextNodeId: 'jordan_job_reveal_7',
         pattern: 'analytical',
-        skills: ['critical_thinking', 'problem_solving', 'communication'],
+        skills: ['criticalThinking', 'problemSolving', 'communication'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -534,7 +534,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "So why are you nervous about the mentorship talk?",
         nextNodeId: 'jordan_mentor_context',
         pattern: 'exploring',
-        skills: ['communication', 'emotional_intelligence'],
+        skills: ['communication', 'emotionalIntelligence'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -546,7 +546,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "That's an incredible story. You should be proud of every single step.",
         nextNodeId: 'jordan_mentor_context',
         pattern: 'helping',
-        skills: ['emotional_intelligence', 'communication', 'leadership'],
+        skills: ['emotionalIntelligence', 'communication', 'leadership'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -558,7 +558,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "You didn't wander. You were assembling exactly the skills you needed.",
         nextNodeId: 'jordan_mentor_context',
         pattern: 'analytical',
-        skills: ['critical_thinking', 'creativity'],
+        skills: ['criticalThinking', 'creativity'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -637,14 +637,14 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "I try to trust that even wrong turns teach me something.",
         nextNodeId: 'jordan_response_trust',
         pattern: 'exploring',
-        skills: ['adaptability', 'critical_thinking']
+        skills: ['adaptability', 'criticalThinking']
       },
       {
         choiceId: 'jordan_strength_recognition',
         text: "You're asking me, but you've already navigated seven careers. You know how.",
         nextNodeId: 'jordan_response_trust',
         pattern: 'helping',
-        skills: ['emotional_intelligence', 'communication', 'leadership'],
+        skills: ['emotionalIntelligence', 'communication', 'leadership'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1
@@ -655,21 +655,21 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "I make plans. Structure helps me feel less lost.",
         nextNodeId: 'jordan_response_plan',
         pattern: 'exploring',
-        skills: ['problem_solving']
+        skills: ['problemSolving']
       },
       {
         choiceId: 'player_sit_with_discomfort',
         text: "I sit with it. Uncertainty doesn't always need solving.",
         nextNodeId: 'jordan_response_acceptance',
         pattern: 'patience',
-        skills: ['emotional_intelligence', 'adaptability']
+        skills: ['emotionalIntelligence', 'adaptability']
       },
       {
         choiceId: 'player_uncertainty_terrifies',
         text: "Honestly? It terrifies me. I avoid it when I can.",
         nextNodeId: 'jordan_response_fear',
         pattern: 'helping',
-        skills: ['emotional_intelligence', 'communication']
+        skills: ['emotionalIntelligence', 'communication']
       }
     ],
     tags: ['reciprocity', 'player_reflection', 'jordan_arc']
@@ -771,7 +771,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "What if you believed your story?",
         nextNodeId: 'jordan_crossroads',
         pattern: 'exploring',
-        skills: ['creativity', 'critical_thinking', 'communication'],
+        skills: ['creativity', 'criticalThinking', 'communication'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -783,7 +783,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "You're not a fraud. You're the most qualified person to give this talk.",
         nextNodeId: 'jordan_crossroads',
         pattern: 'helping',
-        skills: ['emotional_intelligence', 'leadership'],
+        skills: ['emotionalIntelligence', 'leadership'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -795,7 +795,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "Luck is what people call it when preparation meets opportunity. You created both.",
         nextNodeId: 'jordan_crossroads',
         pattern: 'analytical',
-        skills: ['critical_thinking', 'creativity'],
+        skills: ['criticalThinking', 'creativity'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -826,21 +826,21 @@ export const jordanDialogueNodes: DialogueNode[] = [
         text: "What if your past is exactly why you're the perfect mentor?",
         nextNodeId: 'jordan_chooses_accumulation',
         pattern: 'helping',
-        skills: ['creativity', 'critical_thinking', 'leadership']
+        skills: ['creativity', 'criticalThinking', 'leadership']
       },
       {
         choiceId: 'jordan_crossroads_birmingham',
         text: "What if you're proof that Birmingham rewards people who adapt?",
         nextNodeId: 'jordan_chooses_birmingham',
         pattern: 'analytical',
-        skills: ['critical_thinking', 'adaptability', 'creativity']
+        skills: ['criticalThinking', 'adaptability', 'creativity']
       },
       {
         choiceId: 'jordan_crossroads_internal',
         text: "What if the story you tell yourself is the only one that matters?",
         nextNodeId: 'jordan_chooses_internal',
         pattern: 'patience',
-        skills: ['emotional_intelligence', 'leadership']
+        skills: ['emotionalIntelligence', 'leadership']
       }
     ],
     onEnter: [{
