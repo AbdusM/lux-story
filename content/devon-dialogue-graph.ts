@@ -1579,6 +1579,192 @@ export const devonDialogueNodes: DialogueNode[] = [
       }
     ],
     tags: ['transition', 'devon_arc', 'bittersweet']
+  },
+
+  // ============= PATTERN-GATED BONUS CONTENT =============
+  // These nodes unlock after consistent pattern demonstrations
+  // Reward players for decision-making styles with deeper character insights
+
+  {
+    nodeId: 'devon_analytical_bonus',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "You think like an engineer. Systematically. Let me show you something.\n\n*He pulls out structural drawings*\n\nBirmingham's Railroad Park—see how the bridge loads distribute? The pedestrian flow patterns determine optimal support placement. Every decision cascades.\n\nMom taught me that. 'Load paths aren't just physics, Devon. They're philosophy. How stress moves through a system. How support reaches where it's needed.'\n\nI can calculate beam deflection to three decimal places. But I couldn't see the load path in my family. Dad's grief, Samuel's guilt—I saw individual stresses, not the system.\n\nYou understand systems thinking. How do you know when to analyze and when to just... hold?",
+        emotion: 'vulnerable_technical',
+        variation_id: 'analytical_bonus_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 3 },
+      patterns: {
+        analytical: { min: 5 }
+      }
+    },
+    choices: [
+      {
+        choiceId: 'analytical_systems',
+        text: "Emotional systems are non-linear. They don't follow engineering logic.",
+        nextNodeId: 'devon_nonlinear_insight',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'emotionalIntelligence']
+      },
+      {
+        choiceId: 'analytical_balance',
+        text: "Sometimes analysis is how we process what's too painful to feel.",
+        nextNodeId: 'devon_analysis_as_coping',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication']
+      }
+    ],
+    tags: ['pattern_bonus', 'analytical', 'engineering_deep', 'devon_arc']
+  },
+
+  {
+    nodeId: 'devon_patience_bonus',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "*He's quiet for a long moment*\n\nYou've taught me something tonight. Real patience.\n\nI always thought I was patient. Taking time to measure, to calculate, to optimize. But that's not patience—that's procrastination dressed as precision.\n\nWhat you've shown me is different. Sitting with grief instead of fixing it. Listening to Dad's silences instead of filling them. Letting Samuel's guilt unfold at its own pace.\n\nMom was like that. She could sit with people's pain without trying to engineer solutions. I inherited her analytical mind but not her patient heart.\n\nUntil tonight. Watching you... you don't rush. You don't force. You just... wait with people. That's revolutionary to someone who optimizes everything.\n\nHow did you learn to be present like that?",
+        emotion: 'grateful_humble',
+        variation_id: 'patience_bonus_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 4 },
+      patterns: {
+        patience: { min: 5 }
+      }
+    },
+    choices: [
+      {
+        choiceId: 'patience_practice',
+        text: "Presence is a practice, not a solution.",
+        nextNodeId: 'devon_presence_practice',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'adaptability']
+      },
+      {
+        choiceId: 'patience_gift',
+        text: "Your mother's gift is still in you. You're learning to use it.",
+        nextNodeId: 'devon_mothers_legacy',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication']
+      }
+    ],
+    tags: ['pattern_bonus', 'patience', 'emotional_growth', 'devon_arc']
+  },
+
+  {
+    nodeId: 'devon_exploring_bonus',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "Your curiosity is relentless. Always asking 'what else?' 'what if?' That's... that's not how engineers usually think.\n\nWe narrow down. Eliminate variables. Find the optimal solution and stop.\n\nBut tonight you've made me question everything. What if structural engineering isn't just about buildings? What if I could design resilient systems—infrastructure that adapts to climate change, community spaces that foster connection, shelters that house Birmingham's homeless?\n\nWhat if being helpful isn't about solving problems, but creating possibilities?\n\nMom designed community centers. Not just structurally sound—emotionally sound. Spaces where people felt held. I always thought that was soft engineering. But maybe it's the hardest kind.\n\nYou see possibilities I've trained myself not to see. Show me more.",
+        emotion: 'expanding_wonder',
+        variation_id: 'exploring_bonus_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 3 },
+      patterns: {
+        exploring: { min: 5 }
+      }
+    },
+    choices: [
+      {
+        choiceId: 'exploring_possibilities',
+        text: "Engineering can build more than buildings. It can build belonging.",
+        nextNodeId: 'devon_building_belonging',
+        pattern: 'exploring',
+        skills: ['creativity', 'criticalThinking']
+      },
+      {
+        choiceId: 'exploring_mothers_vision',
+        text: "Your mother was engineering emotional safety. You inherited that.",
+        nextNodeId: 'devon_emotional_engineering',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'creativity']
+      }
+    ],
+    tags: ['pattern_bonus', 'exploring', 'career_possibilities', 'devon_arc']
+  },
+
+  {
+    nodeId: 'devon_helping_bonus',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "*His voice breaks slightly*\n\nI need you to know something. When Mom died, I became the helper. The fixer. The one who handles everything so Dad and Samuel don't have to.\n\nAnd tonight... you helped me. Not by fixing anything. Not by telling me what to do. Just by... witnessing.\n\nYou saw a man who's been holding up everyone else, and you asked: 'Who holds you?'\n\nNobody asks that. They see Devon who's got it together, Devon who builds things, Devon who's strong.\n\nYou saw Devon who's tired. Devon who misses his mom. Devon who doesn't know how to just *be* instead of just *do*.\n\nThat's a profound gift. You help people by seeing their full humanity. Not their function. Their being.\n\nThank you for being present to my absence.",
+        emotion: 'deeply_moved',
+        variation_id: 'helping_bonus_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 5 },
+      patterns: {
+        helping: { min: 5 }
+      }
+    },
+    choices: [
+      {
+        choiceId: 'helping_witnessing',
+        text: "Being witnessed is a human need. You deserve that too.",
+        nextNodeId: 'devon_worthy_of_care',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication']
+      },
+      {
+        choiceId: 'helping_shared',
+        text: "We witnessed each other tonight. That's mutual.",
+        nextNodeId: 'devon_mutual_witnessing',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'collaboration']
+      }
+    ],
+    tags: ['pattern_bonus', 'helping', 'deep_connection', 'devon_arc']
+  },
+
+  {
+    nodeId: 'devon_building_bonus',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "*He shows you photos on his phone*\n\nThis is the last structure Mom designed. Birmingham's Woodlawn Community Center. Look at the load-bearing columns—she specified reclaimed wood from demolished homes in the neighborhood.\n\n'Devon,' she said, 'we're not just building a center. We're building with memory. Every beam carries stories of families who lived in those homes. The building literally holds the community's history.'\n\nI didn't get it then. It seemed inefficient. Reclaimed lumber costs more, requires more engineering.\n\nBut she was building meaning, not just structure. Creating something that matters, not just something that stands.\n\nThat's what you understand, isn't it? The building impulse isn't just about construction—it's about creating containers for human flourishing.\n\nI want to build like that. Like her. Creating spaces that hold people's full complexity.",
+        emotion: 'inspired_purposeful',
+        variation_id: 'building_bonus_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 4 },
+      patterns: {
+        building: { min: 5 }
+      }
+    },
+    choices: [
+      {
+        choiceId: 'building_legacy',
+        text: "You're already building her legacy. This conversation proves it.",
+        nextNodeId: 'devon_building_forward',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'creativity']
+      },
+      {
+        choiceId: 'building_meaning',
+        text: "Structures that hold stories are the ones that endure.",
+        nextNodeId: 'devon_stories_in_steel',
+        pattern: 'building',
+        skills: ['creativity', 'leadership']
+      },
+      {
+        choiceId: 'building_complexity',
+        text: "Engineering human flourishing—that's the hardest build.",
+        nextNodeId: 'devon_hardest_engineering',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'creativity']
+      }
+    ],
+    tags: ['pattern_bonus', 'building', 'mothers_legacy', 'devon_arc']
   }
 ]
 

@@ -2880,6 +2880,213 @@ export const samuelDialogueNodes: DialogueNode[] = [
         characterId: 'samuel'
       }
     ]
+  },
+
+  // ============= PATTERN-GATED BONUS CONTENT =============
+  // These nodes unlock after consistent pattern demonstrations
+  // Reward players for decision-making styles with deeper character insights
+
+  {
+    nodeId: 'samuel_analytical_bonus',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You approach encounters systematically. I've noticed.\n\nLet me share something from my therapeutic practice. I tracked patterns across 847 client sessions before I arrived here. Looking for the algorithms of human change.\n\nThe data revealed something surprising: Insight doesn't cause transformation. It's a correlation, not causation. People change when they feel safe enough to act on what they already know.\n\nYou analyze carefully—Maya's contradiction, Devon's grief patterns, Jordan's career trajectory. But you also know when analysis ends and presence begins.\n\nThat's wisdom. Knowing that some problems need frameworks, others need witnessing.\n\nIn your own journey, how do you balance systematic thinking with intuitive knowing?",
+        emotion: 'wise_analytical',
+        variation_id: 'analytical_bonus_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 4 },
+      patterns: {
+        analytical: { min: 5 }
+      }
+    },
+    choices: [
+      {
+        choiceId: 'analytical_balance',
+        text: "Analysis provides structure. Intuition provides direction.",
+        nextNodeId: 'samuel_structure_direction',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'emotionalIntelligence']
+      },
+      {
+        choiceId: 'analytical_limits',
+        text: "I'm learning when analysis becomes avoidance.",
+        nextNodeId: 'samuel_analysis_avoidance',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'adaptability']
+      }
+    ],
+    tags: ['pattern_bonus', 'analytical', 'wisdom_sharing', 'samuel_arc']
+  },
+
+  {
+    nodeId: 'samuel_patience_bonus',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*He settles into stillness, his presence expanding*\n\nYou understand patience. Not the passive kind—the active kind.\n\nIn therapy, I learned that patience isn't waiting. It's creating space for emergence. Not rushing the client's process. Not solving before they're ready.\n\nI see you doing this. With Maya's anxiety, Devon's grief, Jordan's doubt. You don't force resolution. You hold space for their unfolding.\n\nThat's a rare gift. Most people can't tolerate another's struggle without trying to fix it.\n\nYou can.\n\nI spent thirty years developing that capacity. You seem to carry it naturally.\n\nOr perhaps you've learned it through your own necessary waiting. Which is it?",
+        emotion: 'deeply_present',
+        variation_id: 'patience_bonus_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 5 },
+      patterns: {
+        patience: { min: 5 }
+      }
+    },
+    choices: [
+      {
+        choiceId: 'patience_learned',
+        text: "Learned. Through waiting I didn't choose.",
+        nextNodeId: 'samuel_necessary_waiting',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'adaptability']
+      },
+      {
+        choiceId: 'patience_practice',
+        text: "Still practicing. Every encounter teaches me.",
+        nextNodeId: 'samuel_practice_patience',
+        pattern: 'exploring',
+        skills: ['adaptability', 'communication']
+      },
+      {
+        choiceId: 'patience_natural',
+        text: "Maybe both. Some things are native, some cultivated.",
+        nextNodeId: 'samuel_native_cultivated',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'emotionalIntelligence']
+      }
+    ],
+    tags: ['pattern_bonus', 'patience', 'deep_wisdom', 'samuel_arc']
+  },
+
+  {
+    nodeId: 'samuel_exploring_bonus',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You ask questions that open doors. That's your gift.\n\nIn my practice, I learned to distinguish between questions that narrow (diagnostic) and questions that expand (therapeutic). \n\n'What's wrong?' narrows.\n'What else is possible?' expands.\n\nYou naturally ask the expansive kind. With Maya: 'What if you could bridge both?' With Jordan: 'What patterns connect your jobs?' With Devon: 'What would presence look like?'\n\nYou're not gathering information—you're creating possibility space.\n\nBirmingham needs that. Not more answers, more possibilities. Career paths nobody's named yet. Combinations that don't fit the boxes.\n\nHow did you develop that exploratory approach? Were you taught, or did necessity force you to find alternatives?",
+        emotion: 'recognizing_kindred',
+        variation_id: 'exploring_bonus_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 3 },
+      patterns: {
+        exploring: { min: 5 }
+      }
+    },
+    choices: [
+      {
+        choiceId: 'exploring_necessity',
+        text: "Necessity. Traditional paths didn't fit me.",
+        nextNodeId: 'samuel_paths_not_fit',
+        pattern: 'exploring',
+        skills: ['adaptability', 'creativity']
+      },
+      {
+        choiceId: 'exploring_curiosity',
+        text: "Curiosity. I can't help asking 'what if?'",
+        nextNodeId: 'samuel_native_curiosity',
+        pattern: 'exploring',
+        skills: ['creativity', 'criticalThinking']
+      },
+      {
+        choiceId: 'exploring_learned',
+        text: "Learned from watching closed doors create suffering.",
+        nextNodeId: 'samuel_closed_doors',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'creativity']
+      }
+    ],
+    tags: ['pattern_bonus', 'exploring', 'possibility_creation', 'samuel_arc']
+  },
+
+  {
+    nodeId: 'samuel_helping_bonus',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*His eyes glisten slightly—the first time you've seen emotion break through*\n\nYou help by witnessing. That's the highest form.\n\nI watched you tonight. Maya needed to be seen beyond her parents' expectations. Devon needed someone to hold him while he held everyone else. Jordan needed her competence reflected back.\n\nYou didn't fix them. You didn't advise them. You just... saw them fully.\n\nThat's what I tried to do for thirty years as a therapist. Some clinicians solve problems. Others bear witness to the humanity beneath the problems.\n\nYou're the latter kind. Naturally.\n\nI need you to know something: This station appeared for you too. Not just for Maya and Devon and Jordan.\n\nYou're not just a helper. You're also a traveler who needs to be helped.\n\nWho witnesses you?",
+        emotion: 'vulnerable_profound',
+        variation_id: 'helping_bonus_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 6 },
+      patterns: {
+        helping: { min: 5 }
+      }
+    },
+    choices: [
+      {
+        choiceId: 'helping_question',
+        text: "That's... a question I avoid asking.",
+        nextNodeId: 'samuel_avoiding_question',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'communication']
+      },
+      {
+        choiceId: 'helping_mutual',
+        text: "Maybe we witness each other. Right now.",
+        nextNodeId: 'samuel_mutual_witnessing',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'collaboration']
+      },
+      {
+        choiceId: 'helping_role',
+        text: "I'm more comfortable in the helper role.",
+        nextNodeId: 'samuel_comfortable_role',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'emotionalIntelligence']
+      }
+    ],
+    tags: ['pattern_bonus', 'helping', 'profound_connection', 'samuel_arc']
+  },
+
+  {
+    nodeId: 'samuel_building_bonus',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You build bridges between people and their possibilities. That's what I've observed.\n\nLet me tell you about the last structure I built before arriving here. Not physical—conceptual. A framework for career resilience I developed with Birmingham educators.\n\nWe were trying to help students in neighborhoods with 40% unemployment. Traditional career counseling wasn't working. 'Find your passion' means nothing when you're worried about survival.\n\nSo we built something new: Career as construction project. You work with available materials—skills, connections, constraints. You build what's possible now, not what's ideal someday.\n\nMaya's building her robotics prototype with borrowed equipment. Devon's building meaning from his mother's legacy. Jordan's building a career cathedral from seven different quarries.\n\nYou helped them see themselves as builders, not failures.\n\nWhat are you building with your own available materials?",
+        emotion: 'wise_constructive',
+        variation_id: 'building_bonus_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 4 },
+      patterns: {
+        building: { min: 5 }
+      }
+    },
+    choices: [
+      {
+        choiceId: 'building_still_discovering',
+        text: "Still discovering what materials I have.",
+        nextNodeId: 'samuel_inventory_phase',
+        pattern: 'exploring',
+        skills: ['adaptability', 'creativity']
+      },
+      {
+        choiceId: 'building_framework',
+        text: "Maybe a framework for helping others build.",
+        nextNodeId: 'samuel_helper_framework',
+        pattern: 'building',
+        skills: ['creativity', 'leadership']
+      },
+      {
+        choiceId: 'building_between',
+        text: "Bridges between people and their potential.",
+        nextNodeId: 'samuel_bridge_builder',
+        pattern: 'helping',
+        skills: ['collaboration', 'communication']
+      }
+    ],
+    tags: ['pattern_bonus', 'building', 'framework_creation', 'samuel_arc']
   }
 ]
 
