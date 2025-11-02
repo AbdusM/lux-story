@@ -38,6 +38,9 @@ export interface DialogueNode {
   // Metadata for content management
   tags?: string[] // e.g., ['maya_arc', 'trust_gate', 'birmingham']
   priority?: number // For sorting when multiple nodes are available
+  
+  // Learning objectives addressed in this node
+  learningObjectives?: string[] // IDs of learning objectives covered
 }
 
 /**
@@ -91,6 +94,9 @@ export interface ConditionalChoice {
     'adaptability' | 'leadership' | 'digitalLiteracy' | 'emotionalIntelligence' |
     'culturalCompetence' | 'problemSolving' | 'timeManagement' | 'financialLiteracy'
   >
+
+  // Learning objective addressed by this specific choice (optional - more granular than node-level)
+  learningObjectiveId?: string
 
   // State changes when this choice is selected
   consequence?: StateChange

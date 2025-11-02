@@ -3,8 +3,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Quote } from 'lucide-react'
-import type { ViewMode } from '@/lib/admin-dashboard-helpers'
-import { formatAdminDateWithLabel } from '@/lib/admin-dashboard-helpers'
+import { formatAdminDateWithLabel, type ViewMode } from '@/lib/admin-date-formatting'
 import type { SamuelQuote } from '@/lib/skill-tracker'
 
 interface SamuelQuotesSectionProps {
