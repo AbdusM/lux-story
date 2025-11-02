@@ -16,12 +16,10 @@ CREATE TABLE IF NOT EXISTS pattern_demonstrations (
   scene_id TEXT,
   character_id TEXT,
   context TEXT, -- Description of the pattern demonstration
-  demonstrated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  demonstrated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 
-  -- Foreign key to user profiles
-  CONSTRAINT fk_pattern_user FOREIGN KEY (user_id)
-    REFERENCES user_profiles(user_id)
-    ON DELETE CASCADE
+  -- Note: Foreign key constraint removed to avoid dependency issues
+  -- Pattern demonstrations can exist independently of user_profiles table
 );
 
 -- ============================================================================
