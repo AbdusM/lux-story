@@ -16,6 +16,12 @@
  */
 
 import { createClient } from '@supabase/supabase-js'
+import {
+  type PatternType,
+  PATTERN_SKILL_MAP,
+  formatPatternName,
+  getPatternDescription
+} from './patterns'
 
 // Server-side Supabase client with service role (bypasses RLS)
 function getServiceClient() {
@@ -36,9 +42,6 @@ function getServiceClient() {
     }
   })
 }
-
-// Valid pattern types (must match database CHECK constraint)
-export type PatternType = 'analytical' | 'patience' | 'exploring' | 'helping' | 'building'
 
 export interface PatternDemonstration {
   id: string
@@ -100,27 +103,6 @@ export interface PatternProfile {
   recentDemonstrations: PatternDemonstration[]
 }
 
-/**
- * Pattern-to-skill mapping based on skill-tracker.ts detectSkillsFromPattern
- */
-const PATTERN_SKILL_MAP: Record<PatternType, string[]> = {
-  analytical: ['criticalThinking', 'problemSolving', 'digitalLiteracy'],
-  patience: ['timeManagement', 'adaptability', 'emotionalIntelligence'],
-  exploring: ['adaptability', 'creativity', 'criticalThinking'],
-  helping: ['emotionalIntelligence', 'collaboration', 'communication'],
-  building: ['creativity', 'problemSolving', 'leadership']
-}
-
-/**
- * Decision style descriptions for each pattern
- */
-const PATTERN_DESCRIPTIONS: Record<PatternType, string> = {
-  analytical: 'You approach situations by analyzing details and thinking critically about options. You value logic and systematic thinking.',
-  patience: 'You take time to listen carefully and understand before responding. You demonstrate emotional awareness and adaptability.',
-  exploring: 'You ask curious questions to learn more and explore different perspectives. You embrace creativity and new ideas.',
-  helping: 'You offer support and assistance to others, showing care for their wellbeing. You excel at collaboration and communication.',
-  building: 'You work on creating or improving things, taking a constructive approach. You demonstrate leadership and problem-solving.'
-}
 
 /**
  * Fetch all pattern demonstrations for a user from Supabase
@@ -239,7 +221,7 @@ async function fetchDecisionStyle(userId: string): Promise<DecisionStyle | null>
     secondaryPattern,
     secondaryPercentage: data.secondary_percentage || null,
     styleName: data.decision_style || formatPatternName(dominantPattern),
-    description: PATTERN_DESCRIPTIONS[dominantPattern]
+    description: getPatternDescription(dominantPattern)
   }
 }
 
@@ -314,20 +296,6 @@ function calculatePatternDiversityScore(summaries: PatternSummary[]): PatternDiv
     entropy: Math.round(entropy * 100) / 100,
     recommendation
   }
-}
-
-/**
- * Format pattern name for display (camelCase → Title Case)
- */
-function formatPatternName(pattern: PatternType): string {
-  const names: Record<PatternType, string> = {
-    analytical: 'Analytical',
-    patience: 'Patient',
-    exploring: 'Exploring',
-    helping: 'Helping',
-    building: 'Building'
-  }
-  return names[pattern] || pattern
 }
 
 /**

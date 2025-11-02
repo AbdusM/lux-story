@@ -3,6 +3,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { TrendingUp } from 'lucide-react'
 import type { PatternEvolutionPoint } from '@/lib/pattern-profile-adapter'
+import { getPatternBgClass, formatPatternName, PATTERN_TYPES } from '@/lib/patterns'
 
 interface PatternEvolutionChartProps {
   evolution: PatternEvolutionPoint[]
@@ -32,23 +33,6 @@ export function PatternEvolutionChart({ evolution }: PatternEvolutionChartProps)
   // Only show if we have at least 2 weeks of data
   if (weeks.length < 2) {
     return null
-  }
-
-  // Pattern colors
-  const patternColors: Record<string, string> = {
-    analytical: 'bg-blue-500',
-    patience: 'bg-green-500',
-    exploring: 'bg-purple-500',
-    helping: 'bg-pink-500',
-    building: 'bg-amber-500'
-  }
-
-  const patternLabels: Record<string, string> = {
-    analytical: 'Analytical',
-    patience: 'Patient',
-    exploring: 'Curious',
-    helping: 'Supportive',
-    building: 'Creative'
   }
 
   // Calculate max for scaling
@@ -86,7 +70,7 @@ export function PatternEvolutionChart({ evolution }: PatternEvolutionChartProps)
     const lastTop = getTopPattern(lastWeek)
 
     if (firstTop.pattern !== lastTop.pattern) {
-      return `You're exploring ${patternLabels[lastTop.pattern]} approaches more than before`
+      return `You're exploring ${formatPatternName(lastTop.pattern)} approaches more than before`
     }
 
     // Check if diversity is increasing
@@ -97,7 +81,7 @@ export function PatternEvolutionChart({ evolution }: PatternEvolutionChartProps)
       return `You're exploring more diverse decision-making approaches`
     }
 
-    return `You're consistently using ${patternLabels[firstTop.pattern]} approaches`
+    return `You're consistently using ${formatPatternName(firstTop.pattern)} approaches`
   }
 
   const trend = calculateTrend()
@@ -141,9 +125,9 @@ export function PatternEvolutionChart({ evolution }: PatternEvolutionChartProps)
                     return (
                       <div
                         key={pattern}
-                        className={`${patternColors[pattern]} flex items-center justify-center text-white text-xs font-semibold`}
+                        className={`${getPatternBgClass(pattern)} flex items-center justify-center text-white text-xs font-semibold`}
                         style={{ width: `${percentage}%` }}
-                        title={`${patternLabels[pattern]}: ${count} (${Math.round(percentage)}%)`}
+                        title={`${formatPatternName(pattern)}: ${count} (${Math.round(percentage)}%)`}
                       >
                         {percentage > 15 && count}
                       </div>
@@ -157,10 +141,10 @@ export function PatternEvolutionChart({ evolution }: PatternEvolutionChartProps)
 
         {/* Legend */}
         <div className="flex flex-wrap gap-3 pt-2 border-t border-indigo-200">
-          {Object.entries(patternLabels).map(([pattern, label]) => (
+          {PATTERN_TYPES.map((pattern) => (
             <div key={pattern} className="flex items-center gap-1.5">
-              <div className={`w-3 h-3 rounded ${patternColors[pattern]}`} />
-              <span className="text-xs text-gray-700">{label}</span>
+              <div className={`w-3 h-3 rounded ${getPatternBgClass(pattern)}`} />
+              <span className="text-xs text-gray-700">{formatPatternName(pattern)}</span>
             </div>
           ))}
         </div>
