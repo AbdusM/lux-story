@@ -1,8 +1,8 @@
 # Pattern Metadata Gap - Implementation Progress
 
 **Started:** November 2, 2025
-**Status:** Phase 1 Complete ✅ (All 3 sub-phases)
-**Remaining:** Phases 2 - 7 (5 weeks estimated)
+**Status:** Phase 1 Complete ✅ | Phase 2: 50% Complete ⏳
+**Remaining:** Phase 2 completion (0.5 weeks), Phases 3-7 (4.5 weeks estimated)
 
 ---
 
@@ -245,7 +245,113 @@ User makes choice → skill-tracker.recordChoice()
 
 ---
 
-## Next Steps: Phase 2 - Student Pattern Insights (Week 2)
+## Phase 2: Student Pattern Insights (In Progress)
+
+**Started:** November 2, 2025
+**Status:** 50% Complete (UI done, evolution chart pending)
+**Files Created:** 2 (PatternInsightsSection, API route)
+**Commit:** `c50582b` - "feat(patterns): Phase 2 - Student pattern insights UI (initial)"
+
+### Implementations:
+
+**1. Created PatternInsightsSection component (280 lines):**
+
+**UI Features:**
+- **Decision Style Display** - Shows auto-classified style ("Analytical Thinker", etc.)
+  - Primary pattern with percentage badge
+  - Secondary pattern (if applicable)
+  - Human-readable description of decision approach
+- **Pattern Breakdown** - Visual breakdown of all patterns
+  - Progress bars showing percentage distribution
+  - Count badges for each pattern
+  - Individual pattern descriptions
+- **Diversity Score** - Shannon entropy-based metric (0-100)
+  - Color-coded feedback (green >70, yellow 40-70, red <40)
+  - Personalized recommendations for balanced decision-making
+  - Suggests underutilized patterns
+- **Pattern-Skill Correlations** - Shows how patterns connect to skills
+  - Grid layout with top 4 patterns
+  - Skill badges for each pattern's top 3 correlated skills
+
+**Visual Design:**
+- Purple/pink gradient theme (distinct from skills section)
+- Brain icon for decision-making theme
+- Responsive grid layouts
+- Loading spinner during data fetch
+- Graceful empty/error states
+
+**User Experience:**
+- Encourages growth mindset ("no bad patterns")
+- Positive framing of diversity recommendations
+- Clear call-to-action to keep playing
+- Handles database not ready gracefully
+
+**2. Created API route: /api/user/pattern-profile/route.ts**
+
+**Endpoints:**
+- `GET /api/user/pattern-profile?userId=xxx&mode=full`
+  - Returns complete PatternProfile from adapter
+  - Includes summaries, evolution, decision style, correlations, diversity
+- `GET /api/user/pattern-profile?userId=xxx&mode=quick`
+  - Returns lightweight PatternSummaryQuick
+  - Just total demonstrations, decision style, top pattern
+
+**Error Handling:**
+- 400: Missing userId parameter
+- 503: Database not configured (dev mode without migration)
+- 500: Unexpected errors with detailed logging
+- Graceful degradation when Supabase unavailable
+
+**3. Integrated into app/student/insights/page.tsx**
+
+**Placement:**
+- Added between YourJourneySection and SkillGrowthSection
+- Conditional render: `{userId && <PatternInsightsSection userId={userId} />}`
+- Seamlessly fits existing insights page design
+
+**Data Flow:**
+```
+Student Insights Page → PatternInsightsSection
+                      ↓
+         fetch('/api/user/pattern-profile?userId=xxx')
+                      ↓
+              API route (service role)
+                      ↓
+      getPatternProfile() from pattern-profile-adapter
+                      ↓
+        Queries pattern_summaries, pattern_evolution,
+        user_decision_styles views
+                      ↓
+           Returns PatternProfile JSON
+                      ↓
+       Component renders insights
+```
+
+### What's Working:
+
+✅ **Pattern insights visible** to students
+✅ **Decision style auto-classification** displayed
+✅ **Diversity scoring** with recommendations
+✅ **Pattern-skill connections** shown
+✅ **Graceful error handling** (no data, DB offline)
+✅ **Responsive design** (mobile-friendly)
+
+### Remaining Work (Phase 2):
+
+⏳ **Pattern Evolution Chart**
+- Time-series visualization showing pattern usage over time
+- Line/area chart showing weekly pattern counts
+- Identifies trends (e.g., "becoming more analytical")
+- Would use pattern_evolution view data
+
+⏳ **Pattern Evidence Cards** (optional)
+- Show actual choice examples for each pattern
+- "You demonstrated patience when..."
+- Similar to skill evidence in admin dashboard
+
+---
+
+## Next Steps: Phase 2 Completion → Phase 3
 
 ## Key Design Decisions
 
@@ -530,6 +636,6 @@ WHERE user_id = 'test-user-id';
 ---
 
 **Last Updated:** November 2, 2025 (End of Day)
-**Status:** Phase 1 Complete ✅ (All 3 sub-phases)
-**Overall Progress:** ~15% of total work (Phase 1 of 7 complete)
-**Next:** Phase 2 - Student Pattern Insights UI
+**Status:** Phase 1 Complete ✅ | Phase 2: 50% Complete ⏳
+**Overall Progress:** ~22% of total work (Phase 1 + half of Phase 2 complete)
+**Next:** Complete Phase 2 (evolution chart) or begin Phase 3 (pattern-based dialogue)
