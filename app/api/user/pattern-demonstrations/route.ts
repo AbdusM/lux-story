@@ -8,6 +8,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { PATTERN_TYPES } from '@/lib/patterns'
 
 // Mark as dynamic for Next.js static export compatibility
 export const dynamic = 'force-dynamic'
@@ -79,11 +80,10 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate pattern_name against CHECK constraint
-    const validPatterns = ['analytical', 'patience', 'exploring', 'helping', 'building']
-    if (!validPatterns.includes(pattern_name)) {
+    if (!PATTERN_TYPES.includes(pattern_name)) {
       console.error('❌ [API:PatternDemonstrations] Invalid pattern name:', pattern_name)
       return NextResponse.json(
-        { error: `Invalid pattern_name. Must be one of: ${validPatterns.join(', ')}` },
+        { error: `Invalid pattern_name. Must be one of: ${PATTERN_TYPES.join(', ')}` },
         { status: 400 }
       )
     }
