@@ -609,9 +609,19 @@ export default function StatefulGameInterface() {
     }
 
     if (completedArc) {
-      // Load profile for framework insights
-      loadSkillProfile(newGameState.playerId).then(profile => {
-        generateExperienceSummary(completedArc, newGameState, profile).then(summaryData => {
+      // Load profile for framework insights (single Promise chain to avoid spam)
+      loadSkillProfile(newGameState.playerId)
+        .then(profile => {
+          // Profile loaded (may be null if not found)
+          return generateExperienceSummary(completedArc, newGameState, profile)
+        })
+        .catch(error => {
+          // Profile fetch failed - continue without profile
+          console.warn('Profile load failed, showing summary without profile:', error)
+          return generateExperienceSummary(completedArc, newGameState, null)
+        })
+        .then(summaryData => {
+          // Show summary regardless of profile load success
           setState(prev => ({
             ...prev,
             showExperienceSummary: true,
@@ -619,17 +629,9 @@ export default function StatefulGameInterface() {
           }))
           console.log(`🎓 Arc completed: ${completedArc} - showing experience summary`)
         })
-      }).catch(error => {
-        console.error('Failed to load profile for experience summary:', error)
-        // Show summary without profile (framework insights won't be available)
-        generateExperienceSummary(completedArc, newGameState, null).then(summaryData => {
-          setState(prev => ({
-            ...prev,
-            showExperienceSummary: true,
-            experienceSummaryData: summaryData
-          }))
+        .catch(error => {
+          console.error('Failed to generate experience summary:', error)
         })
-      })
     }
 
     // Priority 1: Single batched state update - all changes at once

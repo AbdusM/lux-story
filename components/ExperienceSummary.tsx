@@ -53,8 +53,8 @@ export function ExperienceSummary({ data, onContinue }: ExperienceSummaryProps) 
   const colors = getCharacterColor(data.characterArc)
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-      <Card className={`max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border-2 ${colors.border}`}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+      <Card className={`max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border-2 ${colors.border} bg-white`}>
         <CardHeader className={`${colors.bg} border-b ${colors.border}`}>
           <div className="flex items-start justify-between">
             <div className="flex-1">

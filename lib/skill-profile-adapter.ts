@@ -7,6 +7,10 @@
 import { SkillTracker, type SkillProfile as TrackerSkillProfile, type SamuelQuote } from './skill-tracker'
 import { FutureSkills, SkillContext, CareerPath2030 } from './2030-skills-system'
 
+// Cache for profile loads to prevent duplicate requests
+const profileCache = new Map<string, { profile: any; timestamp: number }>()
+const CACHE_TTL = 5000 // 5 seconds cache
+
 export interface SkillDemonstration {
   scene: string
   choice?: string  // Actual player choice text (for quotes in briefings)
@@ -319,6 +323,13 @@ export function createSkillProfile(
 export async function loadSkillProfile(userId: string): Promise<SkillProfile | null> {
   if (typeof window === 'undefined') return null
 
+  // Check cache first to prevent duplicate requests
+  const cached = profileCache.get(userId)
+  if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
+    console.log(`[SkillProfileAdapter] Using cached profile for ${userId}`)
+    return cached.profile
+  }
+
   try {
   // Try admin API first (uses service role key)
   try {
@@ -332,7 +343,9 @@ export async function loadSkillProfile(userId: string): Promise<SkillProfile | n
       const result = await response.json()
       if (result.success && result.profile) {
         console.log(`[SkillProfileAdapter] Loaded user ${userId} from admin API`)
-        return convertSupabaseProfileToDashboard(result.profile)
+        const profile = convertSupabaseProfileToDashboard(result.profile)
+        profileCache.set(userId, { profile, timestamp: Date.now() })
+        return profile
       } else {
         console.warn(`[SkillProfileAdapter] Admin API returned unsuccessful result for ${userId}:`, result.error || 'Unknown error')
       }
@@ -401,7 +414,9 @@ export async function loadSkillProfile(userId: string): Promise<SkillProfile | n
         }
       } else if (profile) {
         console.log(`[SkillProfileAdapter] Loaded user ${userId} from Supabase (direct)`)
-        return convertSupabaseProfileToDashboard(profile)
+        const dashboardProfile = convertSupabaseProfileToDashboard(profile)
+        profileCache.set(userId, { profile: dashboardProfile, timestamp: Date.now() })
+        return dashboardProfile
       }
     } catch (supabaseError: any) {
       // Check if it's a network error (Supabase unreachable)
