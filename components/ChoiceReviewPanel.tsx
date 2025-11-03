@@ -110,7 +110,7 @@ export function ChoiceReviewPanel({ isOpen, onClose }: ChoiceReviewPanelProps) {
                   {/* Existing Choices */}
                   <div className="mb-4">
                     <h4 className="font-medium text-gray-700 mb-2">Existing Choices:</h4>
-                    <div className="grid grid-cols-2 gap-2">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {entry.request.existingChoices.map((choice, i) => (
                         <div key={i} className="bg-white px-3 py-2 rounded border text-sm">
                           {choice}
@@ -189,7 +189,7 @@ export function ChoiceReviewPanel({ isOpen, onClose }: ChoiceReviewPanelProps) {
           {statistics.totalGenerated > 0 && (
             <div className="mt-8 pt-6 border-t bg-gray-50 -mx-6 px-6 py-4">
               <h3 className="font-semibold text-gray-800 mb-3">System Statistics</h3>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                 <div>
                   <div className="font-medium text-gray-600">Total Generated</div>
                   <div className="text-2xl font-bold text-blue-600">{statistics.totalGenerated}</div>
