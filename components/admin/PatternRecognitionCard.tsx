@@ -30,6 +30,7 @@ export function PatternRecognitionCard({
   adminViewMode
 }: PatternRecognitionCardProps) {
   const [hoveredBar, setHoveredBar] = useState<string | null>(null)
+  const [touchedBar, setTouchedBar] = useState<string | null>(null)
 
   const patterns = analyzeSkillPatterns(skillDemonstrations || {})
 
@@ -101,7 +102,7 @@ export function PatternRecognitionCard({
                   const total = Object.values(sceneTypeDistribution).reduce((a, b) => a + b, 0)
                   const percentage = Math.round((count / total) * 100)
                   const barId = `scene-${type}`
-                  const isHovered = hoveredBar === barId
+                  const isHovered = hoveredBar === barId || touchedBar === barId
 
                   return (
                     <div key={type} className="relative">
@@ -109,6 +110,8 @@ export function PatternRecognitionCard({
                         className="flex items-center gap-3 group"
                         onMouseEnter={() => setHoveredBar(barId)}
                         onMouseLeave={() => setHoveredBar(null)}
+                        onTouchStart={() => setTouchedBar(touchedBar === barId ? null : barId)}
+                        onTouchEnd={(e) => e.preventDefault()}
                         role="img"
                         aria-label={`${type.replace(/_/g, ' ')}: ${count} demonstrations, ${percentage}% of total`}
                       >
@@ -156,7 +159,7 @@ export function PatternRecognitionCard({
                   const total = Object.values(characterDistribution).reduce((a, b) => a + b, 0)
                   const percentage = Math.round((frequency / total) * 100)
                   const barId = `char-${character}`
-                  const isHovered = hoveredBar === barId
+                  const isHovered = hoveredBar === barId || touchedBar === barId
 
                   return (
                     <div key={character} className="relative">
@@ -164,6 +167,8 @@ export function PatternRecognitionCard({
                         className="flex items-center gap-3 group"
                         onMouseEnter={() => setHoveredBar(barId)}
                         onMouseLeave={() => setHoveredBar(null)}
+                        onTouchStart={() => setTouchedBar(touchedBar === barId ? null : barId)}
+                        onTouchEnd={(e) => e.preventDefault()}
                         role="img"
                         aria-label={`${character}: ${frequency} interactions, ${percentage}% of total`}
                       >
