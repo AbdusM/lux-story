@@ -79,8 +79,8 @@ export function EmotionalSupport({
   }
 
   return (
-    <div className="fixed inset-0 bg-black/10 flex items-center justify-center z-50">
-      <div 
+    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+      <div
         className={`
           bg-white rounded-lg p-6 max-w-md mx-4 shadow-xl
           ${visualAdjustments.spacing === 'increased' ? 'p-8' : ''}
