@@ -82,7 +82,7 @@ export function EmotionalSupport({
     <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
       <div
         className={`
-          bg-white rounded-lg p-6 max-w-md mx-4 shadow-xl
+          bg-white rounded-lg p-6 max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto shadow-xl
           ${visualAdjustments.spacing === 'increased' ? 'p-8' : ''}
           ${visualAdjustments.spacing === 'maximum' ? 'p-10' : ''}
           ${visualAdjustments.blurBackground ? 'backdrop-blur-sm' : ''}
