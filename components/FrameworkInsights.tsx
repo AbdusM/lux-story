@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { BookOpen, GraduationCap, Lightbulb, TrendingUp, X, Award } from 'lucide-react'
 import { formatSkillName } from '@/lib/admin-dashboard-helpers'
+import { useEffect } from 'react'
 import type { SkillProfile } from '@/lib/skill-profile-adapter'
 
 export interface FrameworkInsight {
@@ -24,6 +25,15 @@ interface FrameworkInsightsProps {
 }
 
 export function FrameworkInsights({ profile, onClose }: FrameworkInsightsProps) {
+  // Handle escape key to close modal
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', handleEscape)
+    return () => window.removeEventListener('keydown', handleEscape)
+  }, [onClose])
+
   // Get top skills for WEF framework connection
   const topSkills = Object.entries(profile.skillDemonstrations || {})
     .map(([skill, demos]) => ({
