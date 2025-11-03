@@ -45,6 +45,16 @@ export function ChoiceReviewPanel({ isOpen, onClose }: ChoiceReviewPanelProps) {
     }
   }, [isOpen, loadReviewQueue])
 
+  // Handle escape key to close modal
+  useEffect(() => {
+    if (!isOpen) return
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', handleEscape)
+    return () => window.removeEventListener('keydown', handleEscape)
+  }, [isOpen, onClose])
+
   const handleApprove = (entryId: string) => {
     const editedText = editingText[entryId]
     liveEngine.approveChoice(entryId, editedText)

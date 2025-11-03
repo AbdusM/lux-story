@@ -50,6 +50,19 @@ export function FutureSkillsSupport({
   const [showDetails, setShowDetails] = useState(false)
   const [selectedCareerPath, setSelectedCareerPath] = useState<CareerPath2030 | null>(null)
 
+  // Handle escape key to close modal
+  useEffect(() => {
+    if (!isVisible) return
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsVisible(false)
+        onDismiss?.()
+      }
+    }
+    window.addEventListener('keydown', handleEscape)
+    return () => window.removeEventListener('keydown', handleEscape)
+  }, [isVisible, onDismiss])
+
   // Show support when appropriate
   useEffect(() => {
     const shouldShow = (
