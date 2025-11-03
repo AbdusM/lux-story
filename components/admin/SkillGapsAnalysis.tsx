@@ -75,8 +75,8 @@ export function SkillGapsAnalysis({ skillGaps, totalDemonstrations }: SkillGapsA
                       </p>
                     </div>
                   </div>
-                  
-                  <div className="grid grid-cols-2 gap-4 mb-3">
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-3">
                     <div>
                       <p className="text-xs text-red-700 mb-1">Current Level</p>
                       <div className="flex items-center gap-2">

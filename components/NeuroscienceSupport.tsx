@@ -106,7 +106,7 @@ export function NeuroscienceSupport({
   }
 
   return (
-    <div className="fixed inset-0 bg-black/10 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg p-6 max-w-2xl mx-4 shadow-xl">
         <div className="text-center">
           {/* Neural state indicator */}
@@ -254,7 +254,7 @@ export function NeuroscienceSupport({
             
             {showDetails && (
               <div className="mt-2 p-3 bg-gray-50 rounded-lg text-xs text-gray-600">
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   <div>
                     <strong>Memory Consolidation:</strong> {neuralState.memoryConsolidation}
                   </div>
