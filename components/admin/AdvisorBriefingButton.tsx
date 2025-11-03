@@ -11,7 +11,7 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Sparkles, Loader2 } from 'lucide-react';
+import { Sparkles, Loader2, AlertCircle } from 'lucide-react';
 import type { SkillProfile } from '@/lib/skill-profile-adapter';
 import { AdvisorBriefingModal } from './AdvisorBriefingModal';
 
@@ -141,7 +141,6 @@ export const AdvisorBriefingButton: React.FC<AdvisorBriefingButtonProps> = ({
         timeMs: errorTime
       });
       setError(error instanceof Error ? error.message : 'Unknown error occurred');
-      alert(`Failed to generate briefing: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       setIsGenerating(false);
     }
@@ -153,30 +152,49 @@ export const AdvisorBriefingButton: React.FC<AdvisorBriefingButtonProps> = ({
 
   return (
     <>
-      <Button
-        onClick={handleGenerate}
-        variant={variant}
-        size={size}
-        disabled={isGenerating || profile.totalDemonstrations === 0}
-        className="gap-2"
-        title={
-          profile.totalDemonstrations === 0
-            ? 'No skill demonstrations yet. Student needs to complete more of the journey.'
-            : 'Generate AI-powered strategic briefing (~10 seconds)'
-        }
-      >
-        {isGenerating ? (
-          <>
-            <Loader2 className="h-4 w-4 animate-spin" />
-            Generating...
-          </>
-        ) : (
-          <>
-            <Sparkles className="h-4 w-4" />
-            Generate Advisor Briefing
-          </>
+      <div className="space-y-2">
+        <Button
+          onClick={handleGenerate}
+          variant={variant}
+          size={size}
+          disabled={isGenerating || profile.totalDemonstrations === 0}
+          className="gap-2"
+          title={
+            profile.totalDemonstrations === 0
+              ? 'No skill demonstrations yet. Student needs to complete more of the journey.'
+              : 'Generate AI-powered strategic briefing (~10 seconds)'
+          }
+        >
+          {isGenerating ? (
+            <>
+              <Loader2 className="h-4 w-4 animate-spin" />
+              Generating...
+            </>
+          ) : (
+            <>
+              <Sparkles className="h-4 w-4" />
+              Generate Advisor Briefing
+            </>
+          )}
+        </Button>
+
+        {error && (
+          <div className="flex items-start gap-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+            <AlertCircle className="h-4 w-4 text-red-600 mt-0.5 flex-shrink-0" />
+            <div className="flex-1">
+              <p className="text-sm font-medium text-red-900">Failed to generate briefing</p>
+              <p className="text-xs text-red-700 mt-1">{error}</p>
+            </div>
+            <button
+              onClick={() => setError(null)}
+              className="text-red-400 hover:text-red-600 text-xs"
+              aria-label="Dismiss error"
+            >
+              ✕
+            </button>
+          </div>
         )}
-      </Button>
+      </div>
 
       {showModal && briefing && (
         <AdvisorBriefingModal
