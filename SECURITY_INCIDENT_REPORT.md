@@ -23,7 +23,7 @@ Sensitive production credentials were committed to git repository history on **O
 ## Exposed Credentials
 
 ### 1. ANTHROPIC_API_KEY (CRITICAL)
-**Value:** `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`
+**Value:** `sk-ant-api03-[REDACTED]`
 **Service:** Anthropic Claude API
 **Impact:**
 - Unlimited API usage billed to your account
@@ -37,7 +37,7 @@ Sensitive production credentials were committed to git repository history on **O
 ---
 
 ### 2. GEMINI_API_KEY (CRITICAL)
-**Value:** `AIzaSyDEQloxDXlFD2HnFNUrAIr8aANhvr_Ivxg`
+**Value:** `AIzaSy[REDACTED]`
 **Service:** Google Gemini API
 **Impact:**
 - Unlimited API usage billed to Google Cloud account
@@ -51,7 +51,7 @@ Sensitive production credentials were committed to git repository history on **O
 ---
 
 ### 3. SUPABASE_SERVICE_ROLE_KEY (CRITICAL - HIGHEST PRIORITY)
-**Value:** `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRhdmFsdnFjZWJvc2Z4YW11dmx4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1OTI3OTk5MiwiZXhwIjoyMDc0ODU1OTkyfQ.mmbJz9FDU93AcW8wbWyrAlTdYfPP-OLVTc6loG0EseE`
+**Value:** `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.[REDACTED]`
 **Service:** Supabase Database (tavalvqcebosfxamuvlx.supabase.co)
 **Impact:**
 - **BYPASSES ALL ROW LEVEL SECURITY** - Full read/write access to all tables
@@ -74,7 +74,7 @@ Sensitive production credentials were committed to git repository history on **O
 ---
 
 ### 4. VERCEL_OIDC_TOKEN (HIGH)
-**Value:** `eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im1yay00MzAyZWMxYjY3MGY0OGE5OGFkNjFkYWRlNGEyM2JlNyJ9...` (truncated)
+**Value:** `eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.[REDACTED]` (truncated)
 **Service:** Vercel Deployment
 **Impact:**
 - Potential unauthorized deployments
@@ -172,7 +172,7 @@ vercel env add ANTHROPIC_API_KEY production
 **Gemini API Key:**
 ```bash
 # 1. Go to https://console.cloud.google.com/apis/credentials
-# 2. Find key: AIzaSyDEQloxDXlFD2HnFNUrAIr8aANhvr_Ivxg
+# 2. Find key: AIzaSy[REDACTED]
 # 3. Click "Delete"
 # 4. Create new API key with restrictions
 # 5. Update Vercel:
