@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge'
 import { Textarea } from '@/components/ui/textarea'
 import { Input } from '@/components/ui/input'
 import { Checkbox } from '@/components/ui/checkbox'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Rocket, Target, Calendar, CheckCircle2, X, Lightbulb, MapPin, GraduationCap } from 'lucide-react'
 import { useState } from 'react'
 import type { SkillProfile } from '@/lib/skill-profile-adapter'
@@ -152,6 +153,7 @@ export function ActionPlanBuilder({ profile, onClose, onSave }: ActionPlanBuilde
             </CardDescription>
             
             <Textarea
+              aria-label="Purpose statement for your career goals"
               placeholder="Example: I want to use my emotional intelligence and communication skills to help young people navigate career decisions..."
               value={purposeStatement}
               onChange={(e) => setPurposeStatement(e.target.value)}
@@ -222,6 +224,7 @@ export function ActionPlanBuilder({ profile, onClose, onSave }: ActionPlanBuilde
             ) : (
               <div className="space-y-2 bg-gray-50 rounded-lg p-3">
                 <Input
+                  aria-label="New goal description"
                   placeholder="What do you want to accomplish?"
                   value={newGoalText}
                   onChange={(e) => setNewGoalText(e.target.value)}
@@ -233,14 +236,17 @@ export function ActionPlanBuilder({ profile, onClose, onSave }: ActionPlanBuilde
                   }}
                 />
                 <div className="flex gap-2">
-                  <select
-                    value={newGoalTimeframe}
-                    onChange={(e) => setNewGoalTimeframe(e.target.value as ActionGoal['timeframe'])}
-                    className="flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm"
-                  >
-                    <option value="thisWeek">This Week</option>
-                    <option value="thisMonth">This Month</option>
-                  </select>
+                  <Select value={newGoalTimeframe} onValueChange={(value) => setNewGoalTimeframe(value as ActionGoal['timeframe'])}>
+                    <SelectTrigger className="flex-1" aria-label="Goal timeframe">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="thisWeek">This Week</SelectItem>
+                      <SelectItem value="thisMonth">This Month</SelectItem>
+                      <SelectItem value="thisSemester">This Semester</SelectItem>
+                      <SelectItem value="thisYear">This Year</SelectItem>
+                    </SelectContent>
+                  </Select>
                   <Button onClick={addGoal} size="sm">Add</Button>
                   <Button variant="ghost" onClick={() => setIsAddingGoal(false)} size="sm">Cancel</Button>
                 </div>
