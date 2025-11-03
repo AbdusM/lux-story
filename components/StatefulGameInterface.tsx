@@ -1103,9 +1103,9 @@ export default function StatefulGameInterface() {
                       
                       // Rounded corners
                       "rounded-lg",
-                      
+
                       // Disabled state
-                      !evaluatedChoice.enabled && "bg-slate-50 text-slate-400 cursor-not-allowed border-slate-200",
+                      !evaluatedChoice.enabled && "bg-slate-50 text-slate-600 cursor-not-allowed border-slate-200",
                       
                       // Interaction animation (applied on mount, doesn't interfere with hover/active)
                       interactionClass

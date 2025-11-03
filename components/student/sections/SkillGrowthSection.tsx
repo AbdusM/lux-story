@@ -40,7 +40,7 @@ export function SkillGrowthSection({ profile }: SkillGrowthSectionProps) {
       <CardContent className="space-y-4">
         {skills.length === 0 ? (
           <div className="text-center py-8 text-gray-500">
-            <Sparkles className="w-12 h-12 mx-auto mb-4 text-gray-300" />
+            <Sparkles className="w-12 h-12 mx-auto mb-4 text-gray-500" />
             <p>Make some choices in the game to see your skills grow!</p>
           </div>
         ) : (
