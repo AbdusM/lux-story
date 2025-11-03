@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { X, Award, Lightbulb, Target, TrendingUp, BookOpen, Rocket } from 'lucide-react'
 import { formatSkillName } from '@/lib/admin-dashboard-helpers'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { FrameworkInsights } from '@/components/FrameworkInsights'
 import { ActionPlanBuilder } from '@/components/ActionPlanBuilder'
 import type { SkillProfile } from '@/lib/skill-profile-adapter'
@@ -36,6 +36,17 @@ interface ExperienceSummaryProps {
 export function ExperienceSummary({ data, onContinue }: ExperienceSummaryProps) {
   const [showFrameworks, setShowFrameworks] = useState(false)
   const [showActionPlan, setShowActionPlan] = useState(false)
+
+  // Handle escape key to close modal
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && !showFrameworks && !showActionPlan) {
+        onContinue()
+      }
+    }
+    window.addEventListener('keydown', handleEscape)
+    return () => window.removeEventListener('keydown', handleEscape)
+  }, [onContinue, showFrameworks, showActionPlan])
 
   const getCharacterColor = (arc: string) => {
     switch (arc) {

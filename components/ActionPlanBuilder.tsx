@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Rocket, Target, Calendar, CheckCircle2, X, Lightbulb, MapPin, GraduationCap } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import type { SkillProfile } from '@/lib/skill-profile-adapter'
 import { formatSkillName } from '@/lib/admin-dashboard-helpers'
 
@@ -42,6 +42,15 @@ export function ActionPlanBuilder({ profile, onClose, onSave }: ActionPlanBuilde
   const [newGoalText, setNewGoalText] = useState('')
   const [newGoalTimeframe, setNewGoalTimeframe] = useState<ActionGoal['timeframe']>('thisWeek')
   const [isAddingGoal, setIsAddingGoal] = useState(false)
+
+  // Handle escape key to close modal
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', handleEscape)
+    return () => window.removeEventListener('keydown', handleEscape)
+  }, [onClose])
 
   // Get top skills and career matches for suggestions
   const topSkills = Object.entries(profile.skillDemonstrations || {})
