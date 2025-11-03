@@ -63,6 +63,7 @@ export function SparklineTrend({
 }: SparklineTrendProps) {
   const [isHovered, setIsHovered] = useState(false)
   const [isFocused, setIsFocused] = useState(false)
+  const [isTouched, setIsTouched] = useState(false)
   // Calculate gap and trend
   const gap = target - current
 
@@ -135,7 +136,7 @@ export function SparklineTrend({
     .join(' ')
 
   // Custom Tooltip
-  const showTooltip = isHovered || isFocused
+  const showTooltip = isHovered || isFocused || isTouched
   const Tooltip = () => {
     if (!showTooltip) return null
 
@@ -185,6 +186,8 @@ export function SparklineTrend({
     onMouseLeave: () => setIsHovered(false),
     onFocus: () => setIsFocused(true),
     onBlur: () => setIsFocused(false),
+    onTouchStart: () => setIsTouched(!isTouched),
+    onTouchEnd: (e: React.TouchEvent) => e.preventDefault(),
     className: "inline-flex items-center gap-1 cursor-pointer hover:opacity-80 transition-opacity focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1 rounded px-1",
     type: "button" as const,
     'aria-label': skillName
@@ -193,6 +196,8 @@ export function SparklineTrend({
   } : {
     onMouseEnter: () => setIsHovered(true),
     onMouseLeave: () => setIsHovered(false),
+    onTouchStart: () => setIsTouched(!isTouched),
+    onTouchEnd: (e: React.TouchEvent) => e.preventDefault(),
     className: "inline-flex items-center gap-1 relative",
     role: "img" as const,
     'aria-label': `Skill trend: ${trendDirection}. Current ${Math.round(current * 100)}%, target ${Math.round(target * 100)}%`
