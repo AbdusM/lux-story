@@ -24,6 +24,19 @@ export function EmotionalSupport({
   const [breathingPhase, setBreathingPhase] = useState<'in' | 'out' | 'hold'>('in')
   const [breathingCount, setBreathingCount] = useState(0)
 
+  // Handle escape key to close modal
+  useEffect(() => {
+    if (!isVisible) return
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsVisible(false)
+        onDismiss?.()
+      }
+    }
+    window.addEventListener('keydown', handleEscape)
+    return () => window.removeEventListener('keydown', handleEscape)
+  }, [isVisible, onDismiss])
+
   // Show support when regulation is needed
   useEffect(() => {
     if (emotionalState.regulationNeeded && supportMessage) {

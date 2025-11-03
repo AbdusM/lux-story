@@ -31,6 +31,19 @@ export function DevelopmentalPsychologySupport({
   const [isVisible, setIsVisible] = useState(false)
   const [showDetails, setShowDetails] = useState(false)
 
+  // Handle escape key to close modal
+  useEffect(() => {
+    if (!isVisible) return
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsVisible(false)
+        onDismiss?.()
+      }
+    }
+    window.addEventListener('keydown', handleEscape)
+    return () => window.removeEventListener('keydown', handleEscape)
+  }, [isVisible, onDismiss])
+
   // Show support when appropriate
   useEffect(() => {
     const shouldShow = (
