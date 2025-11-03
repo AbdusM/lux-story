@@ -92,7 +92,13 @@ export function EmotionalSupport({
   }
 
   return (
-    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+    <div
+      className="fixed inset-0 bg-black/70 flex items-center justify-center z-50"
+      onClick={() => {
+        setIsVisible(false)
+        onDismiss?.()
+      }}
+    >
       <div
         className={`
           bg-white rounded-lg p-6 max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto shadow-xl
@@ -103,6 +109,7 @@ export function EmotionalSupport({
         style={{
           animation: visualAdjustments.animationSpeed === 'slower' ? 'pulse 2s ease-in-out' : 'none'
         }}
+        onClick={(e) => e.stopPropagation()}
       >
         <div className="text-center">
           {/* Stress level indicator */}

@@ -140,8 +140,14 @@ export function FrameworkInsights({ profile, onClose }: FrameworkInsightsProps) 
   }
 
   return (
-    <div className="fixed inset-0 z-60 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm overflow-y-auto">
-      <Card className="max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border-2 border-blue-200 bg-white">
+    <div
+      className="fixed inset-0 z-60 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm overflow-y-auto"
+      onClick={onClose}
+    >
+      <Card
+        className="max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border-2 border-blue-200 bg-white"
+        onClick={(e) => e.stopPropagation()}
+      >
         <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-blue-200">
           <div className="flex items-start justify-between">
             <div className="flex-1">
