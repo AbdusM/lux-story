@@ -1536,7 +1536,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'return_to_samuel_integration',
         text: "Return to Samuel",
-        nextNodeId: samuelEntryPoints.HUB_AFTER_DEVON,
+        nextNodeId: samuelEntryPoints.DEVON_REFLECTION_GATEWAY,
         pattern: 'exploring'
       }
     ],
@@ -1558,7 +1558,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'return_to_samuel_heart',
         text: "Return to Samuel",
-        nextNodeId: samuelEntryPoints.HUB_AFTER_DEVON,
+        nextNodeId: samuelEntryPoints.DEVON_REFLECTION_GATEWAY,
         pattern: 'helping'
       }
     ],
@@ -1579,7 +1579,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'return_to_samuel_presence',
         text: "Return to Samuel",
-        nextNodeId: samuelEntryPoints.HUB_AFTER_DEVON,
+        nextNodeId: samuelEntryPoints.DEVON_REFLECTION_GATEWAY,
         pattern: 'patience'
       }
     ],
