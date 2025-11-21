@@ -18,13 +18,7 @@ export const marcusDialogueNodes: DialogueNode[] = [
     speaker: 'Marcus',
     content: [
       {
-        text: "*He's staring at his hands, holding them perfectly still in the air. His breathing is shallow, controlled.*
-
-Seventy-two beats per minute. Flow rate 4.5 liters. Pressure stable.
-
-*He blinks, looking at you.*
-
-Don't bump the table. Please.",
+        text: "*He's staring at his hands, holding them perfectly still in the air. His breathing is shallow, controlled.*\nSeventy-two beats per minute. Flow rate 4.5 liters. Pressure stable.\n*He blinks, looking at you.*\nDon't bump the table. Please.",
         emotion: 'focused_tense',
         variation_id: 'marcus_intro_v1',
         richEffectContext: 'warning' // High tension
@@ -71,11 +65,7 @@ Don't bump the table. Please.",
     speaker: 'Marcus',
     content: [
       {
-        text: "I'm holding a life. Well, the machine that holds the life.
-
-ECMO. Extracorporeal Membrane Oxygenation. It pulls blood out, oxygenates it, warms it, and pumps it back in.
-
-For the last twelve hours, I was the only thing keeping a 40-year-old father alive while his heart waited for a transplant.",
+        text: "I'm holding a life. Well, the machine that holds the life.\nECMO. Extracorporeal Membrane Oxygenation. It pulls blood out, oxygenates it, warms it, and pumps it back in.\nFor the last twelve hours, I was the only thing keeping a 40-year-old father alive while his heart waited for a transplant.",
         emotion: 'exhausted_proud',
         variation_id: 'visualizes_machine_v1'
       }
@@ -103,11 +93,7 @@ For the last twelve hours, I was the only thing keeping a 40-year-old father ali
     speaker: 'Marcus',
     content: [
       {
-        text: "Me and the machine. We're a loop. I watch the flow dynamics, the hemolysis numbers, the clot risks.
-
-People think nursing is just... comforting. And it is. But in the CVICU (Cardiovascular Intensive Care Unit), it's engineering. Fluid dynamics. Pressure regulation.
-
-If I calculate the heparin drip wrong, he bleeds out. If I miss a clot, he strokes out.",
+        text: "Me and the machine. We're a loop. I watch the flow dynamics, the hemolysis numbers, the clot risks.\nPeople think nursing is just... comforting. And it is. But in the CVICU (Cardiovascular Intensive Care Unit), it's engineering. Fluid dynamics. Pressure regulation.\nIf I calculate the heparin drip wrong, he bleeds out. If I miss a clot, he strokes out.",
         emotion: 'proud',
         variation_id: 'technical_pride_v1'
       }

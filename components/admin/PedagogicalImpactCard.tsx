@@ -28,6 +28,12 @@ export function PedagogicalImpactCard() {
       relatedObjectives: ['devon_emotional_logic_integration', 'devon_systematic_communication']
     },
     {
+      id: 'crisis_management',
+      title: 'Crisis Management',
+      description: 'Maintaining situational awareness and decisive action under high pressure.',
+      relatedObjectives: ['marcus_crisis_management']
+    },
+    {
       id: 'cultural_competence',
       title: 'Cultural Navigation',
       description: 'Balancing personal authenticity with family and community expectations.',
@@ -101,6 +107,7 @@ export function PedagogicalImpactCard() {
                         'jordan_impostor_syndrome': 'Reframed Impostor Syndrome',
                         'devon_grief_processing': 'Navigated Grief Complexity',
                         'devon_emotional_logic_integration': 'Integrated Logic & Emotion',
+                        'marcus_crisis_management': 'Executed Under Pressure',
                         'maya_cultural_competence': 'Honored Family Context',
                         'maya_boundary_setting': 'Set Healthy Boundaries',
                         'jordan_trade_value': 'Valued Practical Skills'
