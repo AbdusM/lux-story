@@ -3157,7 +3157,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Smart. Insight fades if you don't anchor it.\n\nWhen you're ready, use the 'Experience Summary' to build a concrete plan. Connect the skills you've used here to the goals you have out there.\n\nThat's how you bring the station home with you.",
+        text: "Smart. Insight fades if you don't anchor it.\n\nTake everything we've uncovered tonight. The patterns, the instincts, the choices. Don't let them fade.\n\nMap them out. Make them real. That's how you bring the station home with you.",
         emotion: 'teaching',
         variation_id: 'action_plan_intro_v1'
       }
