@@ -17,13 +17,13 @@ export const yaquinRevisitNodes: DialogueNode[] = [
     speaker: 'Yaquin',
     content: [
       {
-        text: "*He's pacing again, but this time with a tablet. He looks tired but electric.*
+        text: `*He's pacing again, but this time with a tablet. He looks tired but electric.*
 
 It happened. It actually happened.
 
 The 'Alginate Mixing Hack' video? 400,000 views. I have 12,000 subscribers. My inbox is full of people asking for the course.
 
-I... I don't know what to do.",
+I... I don't know what to do.`,
         emotion: 'overwhelmed_excited',
         variation_id: 'revisit_intro_v1',
         richEffectContext: 'thinking'
@@ -60,11 +60,11 @@ I... I don't know what to do.",
     speaker: 'Yaquin',
     content: [
       {
-        text: "The problem is... I'm still working full-time at the clinic. I'm answering YouTube comments at 2 AM.
+        text: `The problem is... I'm still working full-time at the clinic. I'm answering YouTube comments at 2 AM.
 
 And now brands are emailing me. 'Sponsor our dental floss!' 'Review our curing light!'
 
-Do I sell out? Do I launch the paid course now? Do I quit my job? I feel like I'm holding a tiger by the tail.",
+Do I sell out? Do I launch the paid course now? Do I quit my job? I feel like I'm holding a tiger by the tail.`,
         emotion: 'anxious',
         variation_id: 'the_problem_v1'
       }
@@ -86,7 +86,7 @@ Do I sell out? Do I launch the paid course now? Do I quit my job? I feel like I'
     speaker: 'Yaquin',
     content: [
       {
-        text: "Okay. Strategy. 
+        text: `Okay. Strategy. 
 
 Option A: Take the sponsorship money. Quick cash, easy.
 
@@ -94,7 +94,7 @@ Option B: Launch the 'Chairside Masterclass' for $497. High effort, high reward.
 
 Option C: Membership. $10/month for weekly tips. Recurring revenue.
 
-Which one builds a real school?",
+Which one builds a real school?`,
         emotion: 'calculating',
         variation_id: 'strategy_session_v1',
         useChatPacing: true,
@@ -142,11 +142,11 @@ Which one builds a real school?",
     speaker: 'Yaquin',
     content: [
       {
-        text: "You're right. If I take ads, I'm just an influencer. If I sell a course, I'm an educator.
+        text: `You're right. If I take ads, I'm just an influencer. If I sell a course, I'm an educator.
 
 It's scary though. Asking for $500. But I know the value is there. One raise negotiation pays for it.
 
-I'm going to do it. 'The Chairside Masterclass.' Launching next week.",
+I'm going to do it. 'The Chairside Masterclass.' Launching next week.`,
         emotion: 'determined',
         variation_id: 'course_path_v1'
       }
@@ -169,11 +169,11 @@ I'm going to do it. 'The Chairside Masterclass.' Launching next week.",
     speaker: 'Yaquin',
     content: [
       {
-        text: "A community. Yeah. 'The Assistant's Lounge.'
+        text: `A community. Yeah. 'The Assistant's Lounge.'
 
 They're lonely. They want to talk to each other, not just listen to me.
 
-Recurring revenue means I can quit the clinic safely. And I build a tribe, not just a customer list.",
+Recurring revenue means I can quit the clinic safely. And I build a tribe, not just a customer list.`,
         emotion: 'inspired',
         variation_id: 'membership_path_v1'
       }
@@ -196,11 +196,11 @@ Recurring revenue means I can quit the clinic safely. And I build a tribe, not j
     speaker: 'Yaquin',
     content: [
       {
-        text: "Runway. That's the smart play. I can't film a masterclass while working 40 hours a week.
+        text: `Runway. That's the smart play. I can't film a masterclass while working 40 hours a week.
 
 I'll take the dental floss deal. Use the cash to buy better lights, a mic, and... time.
 
-It feels like selling out a little, but it's actually buying my freedom.",
+It feels like selling out a little, but it's actually buying my freedom.`,
         emotion: 'pragmatic',
         variation_id: 'sponsorship_path_v1'
       }
@@ -223,11 +223,11 @@ It feels like selling out a little, but it's actually buying my freedom.",
     speaker: 'Yaquin',
     content: [
       {
-        text: "Thanks. Again. 
+        text: `Thanks. Again. 
 
 First you helped me start. Now you're helping me scale.
 
-I guess this is what a Founder's journey looks like. It never stops being scary, does it?",
+I guess this is what a Founder's journey looks like. It never stops being scary, does it?`,
         emotion: 'grateful_mature',
         variation_id: 'revisit_farewell_v1'
       }
