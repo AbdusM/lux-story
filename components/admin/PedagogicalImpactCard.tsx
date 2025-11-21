@@ -44,6 +44,12 @@ export function PedagogicalImpactCard() {
       title: 'Career Adaptability',
       description: 'Recognizing non-linear paths and transferable skills.',
       relatedObjectives: ['jordan_trade_value', 'jordan_leadership_potential']
+    },
+    {
+      id: 'entrepreneurial_thinking',
+      title: 'Entrepreneurial Thinking',
+      description: 'Identifying opportunities, assessing risk, and articulating vision.',
+      relatedObjectives: ['tess_entrepreneurial_spirit']
     }
   ]
 
@@ -110,7 +116,8 @@ export function PedagogicalImpactCard() {
                         'marcus_crisis_management': 'Executed Under Pressure',
                         'maya_cultural_competence': 'Honored Family Context',
                         'maya_boundary_setting': 'Set Healthy Boundaries',
-                        'jordan_trade_value': 'Valued Practical Skills'
+                        'jordan_trade_value': 'Valued Practical Skills',
+                        'tess_entrepreneurial_spirit': 'Evaluated Risk & Vision'
                       }
                       
                       return (

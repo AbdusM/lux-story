@@ -108,6 +108,17 @@ export const LEARNING_OBJECTIVES: Record<string, LearningObjective> = {
     nodeId: 'marcus_simulation_start'
   },
 
+  // ============= TESS ARC OBJECTIVES =============
+  'tess_entrepreneurial_spirit': {
+    id: 'tess_entrepreneurial_spirit',
+    title: 'Entrepreneurial Vision & Risk',
+    description: 'Evaluate risk vs. reward in launching new ventures and articulate a compelling vision.',
+    category: 'skill',
+    relatedSkills: ['entrepreneurship', 'riskAssessment', 'visionaryThinking'],
+    relatedPatterns: ['building', 'helping'],
+    nodeId: 'tess_the_pitch_setup'
+  },
+
   // ============= SAMUEL ARC OBJECTIVES (Meta-Learning) =============
   'samuel_reflective_observation': {
     id: 'samuel_reflective_observation',

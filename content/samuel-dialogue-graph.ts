@@ -558,6 +558,13 @@ export const samuelDialogueNodes: DialogueNode[] = [
         }
       },
       {
+        choiceId: 'hub_education_reform',
+        text: "I'm interested in education and leadership, but the system feels broken.",
+        nextNodeId: 'samuel_discovers_tess',
+        pattern: 'building',
+        skills: ['visionaryThinking', 'education']
+      },
+      {
         choiceId: 'hub_not_sure',
         text: "I'm not sure what I'm looking for yet.",
         nextNodeId: 'samuel_hub_fallback',
@@ -675,6 +682,38 @@ export const samuelDialogueNodes: DialogueNode[] = [
         nextNodeId: 'samuel_other_travelers',
         pattern: 'patience',
         skills: ['communication', 'collaboration', 'adaptability']
+      }
+    ]
+  },
+
+  // ============= DISCOVERY PATH: EDUCATION → TESS =============
+  {
+    nodeId: 'samuel_discovers_tess',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "The system works for some, but fails many. Tess is in the Waiting Room. She's a Career Counselor who's realizing she can't counsel students into a broken world—she has to build a new one.\n\nShe's trying to start a school that counts 'hiking the Appalachian Trail' as senior year physics.",
+        emotion: 'intrigued',
+        variation_id: 'discovers_tess_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'meet_tess',
+        text: "That sounds radical. I want to meet her.",
+        nextNodeId: 'tess_introduction', // Links to new graph
+        pattern: 'building',
+        skills: ['curiosity'],
+        consequence: {
+          addGlobalFlags: ['met_tess']
+        }
+      },
+      {
+        choiceId: 'ask_about_others_tess',
+        text: "Who else is here?",
+        nextNodeId: 'samuel_other_travelers',
+        pattern: 'exploring',
+        skills: ['communication']
       }
     ]
   },
@@ -2299,6 +2338,91 @@ export const samuelDialogueNodes: DialogueNode[] = [
     ]
   },
 
+  // ============= TESS REFLECTION GATEWAY =============
+  {
+    nodeId: 'samuel_tess_reflection_gateway',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Tess just left. She wasn't pacing anymore. She looked... focused. Like she finally had a map.\n\nStarting something new is terrifying. Most people wait for permission. It seems she decided not to wait.",
+        emotion: 'proud',
+        variation_id: 'tess_gateway_v1'
+      }
+    ],
+    requiredState: {
+      hasGlobalFlags: ['tess_arc_complete'],
+      lacksKnowledgeFlags: ['reflected_on_tess']
+    },
+    choices: [
+      {
+        choiceId: 'tess_encouraged_risk',
+        text: "She needed to know the risk was worth it.",
+        nextNodeId: 'samuel_reflects_tess_risk',
+        pattern: 'building',
+        skills: ['leadership', 'entrepreneurship'],
+        visibleCondition: {
+          hasGlobalFlags: ['tess_chose_risk']
+        }
+      },
+      {
+        choiceId: 'tess_encouraged_caution',
+        text: "She's going to test it first. Smart growth.",
+        nextNodeId: 'samuel_reflects_tess_caution',
+        pattern: 'analytical',
+        skills: ['riskManagement'],
+        visibleCondition: {
+          hasGlobalFlags: ['tess_chose_safe']
+        }
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'samuel',
+        addKnowledgeFlags: ['reflected_on_tess']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_reflects_tess_risk',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You helped her jump. That's a heavy thing to do.\n\nBut you saw that her safety was actually a cage. Sometimes the most dangerous thing you can do is stay safe.\n\nYou have the eye of a founder - seeing what could be, not just what is.",
+        emotion: 'respectful',
+        variation_id: 'tess_risk_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'tess_return_hub',
+        text: "She's going to build something amazing.",
+        nextNodeId: 'samuel_hub_after_devon',
+        pattern: 'helping'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_reflects_tess_caution',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You helped her build a bridge instead of a cliff.\n\nVisionaries often burn out because they try to do everything at once. You taught her that sustainability is part of the mission.\n\nThat's the wisdom of a strategist.",
+        emotion: 'wise',
+        variation_id: 'tess_caution_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'tess_return_hub_safe',
+        text: "She'll get there, one step at a time.",
+        nextNodeId: 'samuel_hub_after_devon',
+        pattern: 'patience'
+      }
+    ]
+  },
+
   // ============= JORDAN REFLECTION GATEWAY (Return from Jordan) =============
   {
     nodeId: 'samuel_jordan_reflection_gateway',
@@ -3628,6 +3752,9 @@ export const samuelEntryPoints = {
 
   /** Hub after completing Devon's arc (Maya + Devon + Jordan available) */
   HUB_AFTER_DEVON: 'samuel_hub_after_devon',
+
+  /** Reflection gateway - return from Tess (validates entrepreneurial risk) */
+  TESS_REFLECTION_GATEWAY: 'samuel_tess_reflection_gateway',
 
   /** Samuel's backstory reveal (trust-gated) */
   BACKSTORY: 'samuel_backstory_intro',
