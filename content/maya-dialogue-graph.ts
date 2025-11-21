@@ -1076,6 +1076,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
   // ============= EARLY GRATITUDE (Low Trust Closure) =============
   {
     nodeId: 'maya_early_gratitude',
+    learningObjectives: ['maya_cultural_competence'],
     speaker: 'Maya Chen',
     content: [
       {
