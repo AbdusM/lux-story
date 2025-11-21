@@ -36,7 +36,7 @@ Sorry. I'm just... correcting the 'official' curriculum. It's fifty years out of
         text: "The map isn't the territory. You know the reality.",
         nextNodeId: 'yaquin_gap_reveal',
         pattern: 'analytical',
-        skills: ['criticalThinking', 'industryAwareness'],
+        skills: ['criticalThinking', 'culturalCompetence'],
         consequence: {
           characterId: 'yaquin',
           trustChange: 1
@@ -47,14 +47,14 @@ Sorry. I'm just... correcting the 'official' curriculum. It's fifty years out of
         text: "Why are you rewriting a textbook?",
         nextNodeId: 'yaquin_gap_reveal',
         pattern: 'exploring',
-        skills: ['curiosity', 'communication']
+        skills: ['criticalThinking', 'communication']
       },
       {
         choiceId: 'yaquin_intro_practical',
         text: "What's the right way to hold it?",
         nextNodeId: 'yaquin_practical_demo',
         pattern: 'building',
-        skills: ['technicalLiteracy'],
+        skills: ['digitalLiteracy'],
         consequence: {
           characterId: 'yaquin',
           trustChange: 2
@@ -90,7 +90,7 @@ See? Simple. But this book spends three pages on 'historical suction methods' an
         text: "You just taught me that in ten seconds. You should be teaching this.",
         nextNodeId: 'yaquin_impostor_hurdle',
         pattern: 'helping',
-        skills: ['talentRecognition', 'encouragement'],
+        skills: ['emotionalIntelligence', 'communication'],
         consequence: {
           characterId: 'yaquin',
           trustChange: 1
@@ -117,14 +117,14 @@ I have to retrain them from scratch every time. It's exhausting. I wish I could 
         text: "You could. Have you thought about making your own course?",
         nextNodeId: 'yaquin_impostor_hurdle',
         pattern: 'building',
-        skills: ['entrepreneurship', 'problemSolving']
+        skills: ['leadership', 'problemSolving']
       },
       {
         choiceId: 'yaquin_system_issue',
         text: "That sounds like a systemic failure in dental education.",
         nextNodeId: 'yaquin_impostor_hurdle',
         pattern: 'analytical',
-        skills: ['systemsThinking']
+        skills: ['problemSolving']
       }
     ]
   },
@@ -150,7 +150,7 @@ Besides, how would I even do that? Just... put videos online?`,
         text: "Not just videos. A cohort. Teach a small group live, online.",
         nextNodeId: 'yaquin_cohort_explanation',
         pattern: 'building',
-        skills: ['instructionalDesign', 'businessAcumen'],
+        skills: ['creativity', 'financialLiteracy'],
         consequence: {
           characterId: 'yaquin',
           trustChange: 1
@@ -161,14 +161,14 @@ Besides, how would I even do that? Just... put videos online?`,
         text: "Start with YouTube. Solve the specific problems people are searching for.",
         nextNodeId: 'yaquin_youtube_strategy',
         pattern: 'building',
-        skills: ['digitalLiteracy', 'marketing']
+        skills: ['digitalLiteracy', 'communication']
       },
       {
         choiceId: 'yaquin_value_proposition',
         text: "The value isn't the PhD. It's the practical survival skills.",
         nextNodeId: 'yaquin_curriculum_design',
         pattern: 'analytical',
-        skills: ['valueProposition', 'persuasion'],
+        skills: ['criticalThinking', 'communication'],
         consequence: {
           characterId: 'yaquin',
           trustChange: 2
@@ -198,7 +198,7 @@ But how do I... charge for that? How do I find them?`,
         text: "Keep it simple. Landing page, mailing list, payment link.",
         nextNodeId: 'yaquin_tech_stack_details',
         pattern: 'analytical',
-        skills: ['digitalLiteracy', 'systemsThinking']
+        skills: ['digitalLiteracy', 'problemSolving']
       }
     ]
   },
@@ -223,7 +223,7 @@ But how does that become a business? I can't pay rent with 'likes.'`,
         text: "YouTube builds trust. Then you invite them to a paid workshop.",
         nextNodeId: 'yaquin_tech_stack_details',
         pattern: 'building',
-        skills: ['marketing', 'businessModel']
+        skills: ['communication', 'financialLiteracy']
       }
     ]
   },
@@ -253,14 +253,14 @@ I just need... a way to capture emails and a way to take money?`,
         text: "The list is your asset. Start a newsletter with tips.",
         nextNodeId: 'yaquin_curriculum_design',
         pattern: 'building',
-        skills: ['audienceBuilding', 'marketing']
+        skills: ['collaboration', 'communication']
       },
       {
         choiceId: 'yaquin_presell',
         text: "Pre-sell it. Don't build the course until 10 people pay.",
         nextNodeId: 'yaquin_presell_revelation',
         pattern: 'analytical',
-        skills: ['leanStartup', 'riskManagement']
+        skills: ['problemSolving', 'criticalThinking']
       }
     ]
   },
@@ -285,7 +285,7 @@ Okay. Say I get the 10 people. What do I actually teach them? I can't teach *eve
         text: "That's the secret. You have to cut 80% of the fluff.",
         nextNodeId: 'yaquin_curriculum_design',
         pattern: 'analytical',
-        skills: ['prioritization', 'curriculumDesign']
+        skills: ['timeManagement', 'creativity']
       }
     ]
   },
@@ -315,7 +315,7 @@ If I only have 6 weeks to make them job-ready, what do I cut?`,
         text: "Cut History and Bio. Focus 100% on Chairside Assisting.",
         nextNodeId: 'yaquin_focused_curriculum',
         pattern: 'building',
-        skills: ['curriculumDesign', 'pragmatism'],
+        skills: ['creativity', 'criticalThinking'],
         consequence: {
           characterId: 'yaquin',
           trustChange: 2,
@@ -327,7 +327,7 @@ If I only have 6 weeks to make them job-ready, what do I cut?`,
         text: "Keep Etiquette and Assisting. Soft skills get you hired, hard skills keep you hired.",
         nextNodeId: 'yaquin_soft_skills_focus',
         pattern: 'helping',
-        skills: ['emotionalIntelligence', 'careerReadiness'],
+        skills: ['emotionalIntelligence', 'adaptability'],
         consequence: {
           characterId: 'yaquin',
           trustChange: 1
@@ -338,7 +338,7 @@ If I only have 6 weeks to make them job-ready, what do I cut?`,
         text: "Don't cut. Just summarize the history quickly.",
         nextNodeId: 'yaquin_overwhelmed_response',
         pattern: 'patience', // Actually a trap choice in terms of efficacy, but shows patience
-        skills: ['comprehensiveThinking']
+        skills: ['criticalThinking']
       }
     ]
   },
@@ -364,7 +364,7 @@ That's the product.`,
         text: "Now you just need to launch it.",
         nextNodeId: 'yaquin_climax_launch',
         pattern: 'building',
-        skills: ['projectManagement']
+        skills: ['timeManagement']
       }
     ]
   },
@@ -389,7 +389,7 @@ That's a niche nobody else is filling.`,
         text: "It's a premium offering. Launch it.",
         nextNodeId: 'yaquin_climax_launch',
         pattern: 'helping',
-        skills: ['marketPositioning']
+        skills: ['communication']
       }
     ]
   },
@@ -447,14 +447,14 @@ If I do this... I'm not just an assistant anymore. I'm a founder.`,
         text: "Post it. You have something they need.",
         nextNodeId: 'yaquin_ending_success',
         pattern: 'building',
-        skills: ['courage', 'entrepreneurship']
+        skills: ['adaptability', 'leadership']
       },
       {
         choiceId: 'yaquin_hesitate',
         text: "Maybe draft the email list first?",
         nextNodeId: 'yaquin_ending_cautious',
         pattern: 'analytical',
-        skills: ['riskManagement']
+        skills: ['problemSolving']
       }
     ]
   },
@@ -483,7 +483,7 @@ Wow. I'm doing this.`,
         text: "You're an educator now, Yaquin.",
         nextNodeId: 'yaquin_farewell',
         pattern: 'helping',
-        skills: ['empowerment']
+        skills: ['leadership']
       }
     ],
     onEnter: [
@@ -514,7 +514,7 @@ Build the audience, then sell the course. Smart.`,
         text: "That's a solid strategy.",
         nextNodeId: 'yaquin_farewell',
         pattern: 'analytical',
-        skills: ['strategy']
+        skills: ['criticalThinking']
       }
     ],
     onEnter: [

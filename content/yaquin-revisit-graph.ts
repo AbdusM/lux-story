@@ -35,14 +35,14 @@ I... I don't know what to do.`,
         text: "That's incredible! You built an audience.",
         nextNodeId: 'yaquin_the_problem',
         pattern: 'helping',
-        skills: ['emotionalIntelligence', 'encouragement']
+        skills: ['emotionalIntelligence', 'communication']
       },
       {
         choiceId: 'yaquin_analyze_traffic',
         text: "That's a lot of traffic. What's the conversion rate?",
         nextNodeId: 'yaquin_the_problem',
         pattern: 'analytical',
-        skills: ['dataLiteracy', 'businessAcumen']
+        skills: ['digitalLiteracy', 'financialLiteracy']
       },
       {
         choiceId: 'yaquin_ask_problem',
@@ -75,7 +75,7 @@ Do I sell out? Do I launch the paid course now? Do I quit my job? I feel like I'
         text: "You need a monetization strategy, not just a reaction.",
         nextNodeId: 'yaquin_strategy_session',
         pattern: 'building',
-        skills: ['strategicThinking', 'businessModel']
+        skills: ['criticalThinking', 'financialLiteracy']
       }
     ]
   },
@@ -107,7 +107,7 @@ Which one builds a real school?`,
         text: "Launch the Course. Own your product. Don't rent your audience to sponsors.",
         nextNodeId: 'yaquin_course_path',
         pattern: 'building',
-        skills: ['entrepreneurship', 'productStrategy'],
+        skills: ['leadership', 'creativity'],
         consequence: {
           addGlobalFlags: ['yaquin_chose_course']
         }
@@ -117,7 +117,7 @@ Which one builds a real school?`,
         text: "Membership. Build a community of practice, not just a transaction.",
         nextNodeId: 'yaquin_membership_path',
         pattern: 'helping',
-        skills: ['communityBuilding', 'businessModel'],
+        skills: ['collaboration', 'financialLiteracy'],
         consequence: {
           addGlobalFlags: ['yaquin_chose_membership']
         }
@@ -127,7 +127,7 @@ Which one builds a real school?`,
         text: "Sponsorships give you runway to quit your job. Then build the course.",
         nextNodeId: 'yaquin_sponsorship_path',
         pattern: 'analytical',
-        skills: ['riskManagement', 'financialLiteracy'],
+        skills: ['problemSolving', 'financialLiteracy'],
         consequence: {
           addGlobalFlags: ['yaquin_chose_sponsorship']
         }
@@ -157,7 +157,7 @@ I'm going to do it. 'The Chairside Masterclass.' Launching next week.`,
         text: "Your audience is ready. They trust you.",
         nextNodeId: 'yaquin_revisit_farewell',
         pattern: 'helping',
-        skills: ['empowerment']
+        skills: ['leadership']
       }
     ],
     tags: ['revisit', 'yaquin_arc']
@@ -184,7 +184,7 @@ Recurring revenue means I can quit the clinic safely. And I build a tribe, not j
         text: "Community is the strongest moat.",
         nextNodeId: 'yaquin_revisit_farewell',
         pattern: 'analytical',
-        skills: ['strategicThinking']
+        skills: ['criticalThinking']
       }
     ],
     tags: ['revisit', 'yaquin_arc']

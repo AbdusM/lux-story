@@ -1,17 +1,15 @@
-# Software Development Plan: UI/UX Polish Phase
-## "The Living Terminal" Upgrade
+# Software Development Plan: UI/UX Polish & System Hardening
 
-**Goal:** Transform the current functional interface into a responsive, tactile, and cognitively efficient "Living Terminal" that respects the user's time and attention.
+**Goal:** Implement the UI/UX enhancements defined in `DESIGN_AUDIT_REPORT.md` and resolve persistent type safety issues to ensure a robust, production-ready application.
 
 **Timeline:** 3-4 Days (Estimated)
 
 ---
 
-## 1. "KILL THE TYPEWRITER" (Text Rendering Engine)
-**Status:** 🔴 Critical Discrepancy. Currently rendering char-by-char in `RichTextRenderer.tsx` & `StreamingMessage.tsx`.
-**Objective:** Replace with "Staggered Fade-In" (Word/Block reveal).
+## Phase 1: Core Experience Upgrade (High Impact)
 
-### Tasks:
+### 1. "KILL THE TYPEWRITER" (Text Rendering Engine)
+**Objective:** Replace character-by-character typing with cognitive-friendly "Staggered Fade-In".
 *   [ ] **Refactor `RichTextRenderer.tsx`:**
     *   Remove `charDelay` logic.
     *   Implement `framer-motion` based rendering.
@@ -24,13 +22,8 @@
     *   Replace usages with the new `RichTextRenderer` mode.
     *   Ensure "Thinking..." states use a pulsing block cursor or subtle fade, not a typing animation.
 
----
-
-## 2. Layout Architecture (Desktop vs. Mobile)
-**Status:** 🟡 Major Gap. Single column used everywhere. No "Context Sidebar."
-**Objective:** Optimize screen real estate usage.
-
-### Tasks:
+### 2. Layout Architecture (Desktop vs. Mobile)
+**Objective:** Optimize screen real estate usage and solve "Choice Paralysis".
 *   [ ] **Implement Grid Layout (Desktop):**
     *   Update `StatefulGameInterface.tsx` to use a CSS Grid / Flex row layout on `md:` breakpoints.
     *   **Left Col (Main):** Dialogue & Choices (65% width).
@@ -40,13 +33,8 @@
     *   **Desktop:** Switch from vertical stack (`space-y-3`) to a 2-column grid (`grid-cols-2 gap-4`) for choices when > 4 options exist.
     *   **Mobile:** Keep vertical stack but ensure tap targets are min 48px height.
 
----
-
-## 3. "Juice" & Interaction Feedback
-**Status:** 🔴 Missing. No tactile feedback on decisions.
+### 3. "Juice" & Interaction Feedback
 **Objective:** Provide immediate physical response to input.
-
-### Tasks:
 *   [ ] **Enhance `GameChoices.tsx` Buttons:**
     *   Add `framer-motion` `whileTap={{ scale: 0.98 }}`.
     *   Implement **"Semantic Feedback"** props:
@@ -57,31 +45,34 @@
 
 ---
 
-## 4. Navigation & Chrome
-**Status:** 🟡 Cluttered header on mobile.
-**Objective:** "Cinema View" (Focus on content).
+## Phase 2: System Hardening & Security (Production Readiness)
 
-### Tasks:
-*   [ ] **Dynamic Header (Mobile):**
-    *   Implement "Scroll-away" logic for the top utility bar (`Admin`, `Reset`).
-    *   Keep Character Name/Avatar sticky but minimal (small font) when scrolling down.
-*   [ ] **"Hamburger" Menu:**
-    *   Move secondary actions (`Admin`, `Reset`, `Export`) into a `DropdownMenu` (shadcn/ui) to declutter the visual field.
+### 4. Type Safety Remediation
+**Objective:** Eliminate `ignoreBuildErrors: true` by resolving the 160+ persistent type errors.
+*   [ ] **Admin Component Types:** Fix `profile` prop mismatches in `app/admin/[userId]/skills/page.tsx` and `SkillsAnalysisCard.tsx`.
+*   [ ] **Prop Drilling Fixes:** Resolve `showConfigWarning` missing in state updates within `StatefulGameInterface.tsx`.
+*   [ ] **Character ID Strictness:** Ensure `CharacterId` type definition is consistent across `lib/character-state.ts`, `lib/graph-registry.ts`, and `StatefulGameInterface.tsx` (specifically adding 'tess' and 'yaquin' everywhere).
+*   [ ] **Skills System Types:** Resolve `keyof FutureSkills` mismatches in `scene-skill-mappings.ts` and `2030-skills-system.ts`.
+
+### 5. Security & Data Integrity
+**Objective:** Lock down the database and ensure data persistence.
+*   [ ] **Row Level Security (RLS):**
+    *   Create RLS policies for `player_profiles`, `skill_demonstrations`, `choice_history`.
+    *   Ensure users can only read/write their own data.
+    *   Create specific policies for Admin access.
+*   [ ] **Database Migrations:**
+    *   Verify all 11 migration files in `supabase/migrations/` are applied to production.
+    *   Add specific indexes for high-traffic queries (e.g., `skill_demonstrations` by `user_id`).
+
+### 6. Final Polish
+*   [ ] **Navigation:** Move secondary actions (`Admin`, `Reset`) to a "Hamburger" menu on mobile.
+*   [ ] **Typography Audit:** Verify `html { font-size: 16px; }` to prevent iOS zoom.
+*   [ ] **Interruptibility Test:** Stress test all new animations to ensure they never block user input.
 
 ---
 
-## 5. Cleanup & Optimization
-**Status:** 🟢 Routine.
-**Objective:** Ensure performance.
-
-### Tasks:
-*   [ ] **Audit Font Sizes:** Ensure `globals.css` sets `html { font-size: 16px; }` to prevent iOS zoom on inputs.
-*   [ ] **Verify Interruptibility:** Stress test the "Tap to Skip" functionality on all new animations.
-
----
-
-## Execution Order
-1.  **Core Engine:** Fix Text Rendering (High Impact, High Risk).
-2.  **Layout:** Implement Desktop Grid (High Visibility).
-3.  **Interaction:** Add Button "Juice" (High Delight).
-4.  **Chrome:** Polish Header/Menu (Low Risk).
+## Execution Strategy
+1.  **Security First:** Implement RLS policies immediately to protect any new production data.
+2.  **Type Safety:** Fix the build errors to enable strict CI/CD checks.
+3.  **UX Upgrade:** Implement the "Kill the Typewriter" and Layout changes.
+4.  **Polish:** Add the "Juice" and ambient effects last.
