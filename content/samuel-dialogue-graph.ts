@@ -565,6 +565,13 @@ export const samuelDialogueNodes: DialogueNode[] = [
         skills: ['visionaryThinking', 'education']
       },
       {
+        choiceId: 'hub_creator_economy',
+        text: "I have skills I want to teach, but I don't fit in a traditional classroom.",
+        nextNodeId: 'samuel_discovers_yaquin',
+        pattern: 'building',
+        skills: ['entrepreneurship', 'communication']
+      },
+      {
         choiceId: 'hub_not_sure',
         text: "I'm not sure what I'm looking for yet.",
         nextNodeId: 'samuel_hub_fallback',
@@ -710,6 +717,38 @@ export const samuelDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'ask_about_others_tess',
+        text: "Who else is here?",
+        nextNodeId: 'samuel_other_travelers',
+        pattern: 'exploring',
+        skills: ['communication']
+      }
+    ]
+  },
+
+  // ============= DISCOVERY PATH: CREATOR → YAQUIN =============
+  {
+    nodeId: 'samuel_discovers_yaquin',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Platform 5 is a bit louder. Yaquin is there. Dental assistant, frustrated with the old textbooks.\n\nHe's realized he knows more than the professors, but he doesn't know how to build a school. He's on the verge of inventing a new way to teach.",
+        emotion: 'amused_respect',
+        variation_id: 'discovers_yaquin_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'meet_yaquin',
+        text: "I want to help him build that.",
+        nextNodeId: 'yaquin_introduction', // Links to new graph
+        pattern: 'building',
+        skills: ['instructionalDesign'],
+        consequence: {
+          addGlobalFlags: ['met_yaquin']
+        }
+      },
+      {
+        choiceId: 'ask_about_others_yaquin',
         text: "Who else is here?",
         nextNodeId: 'samuel_other_travelers',
         pattern: 'exploring',
@@ -1515,6 +1554,91 @@ export const samuelDialogueNodes: DialogueNode[] = [
         nextNodeId: 'samuel_hub_after_maya',
         pattern: 'patience',
         skills: ["emotionalIntelligence","communication"]
+      }
+    ]
+  },
+
+  // ============= YAQUIN REFLECTION GATEWAY =============
+  {
+    nodeId: 'samuel_yaquin_reflection_gateway',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Yaquin just sprinted past with a notebook full of diagrams. He said he's launching a 'beta cohort.'\n\nYou helped him realize he doesn't need permission to teach. That's a powerful shift.",
+        emotion: 'proud',
+        variation_id: 'yaquin_gateway_v1'
+      }
+    ],
+    requiredState: {
+      hasGlobalFlags: ['yaquin_arc_complete'],
+      lacksKnowledgeFlags: ['reflected_on_yaquin']
+    },
+    choices: [
+      {
+        choiceId: 'yaquin_launched_now',
+        text: "He stopped waiting for perfect and started building.",
+        nextNodeId: 'samuel_reflects_yaquin_launch',
+        pattern: 'building',
+        skills: ['leanStartup', 'actionOrientation'],
+        visibleCondition: {
+          hasGlobalFlags: ['yaquin_launched']
+        }
+      },
+      {
+        choiceId: 'yaquin_building_audience',
+        text: "He's building trust first. Playing the long game.",
+        nextNodeId: 'samuel_reflects_yaquin_audience',
+        pattern: 'analytical',
+        skills: ['audienceBuilding'],
+        visibleCondition: {
+          hasGlobalFlags: ['yaquin_building_audience']
+        }
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'samuel',
+        addKnowledgeFlags: ['reflected_on_yaquin']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_reflects_yaquin_launch',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Exactly. Imperfect action beats perfect inaction.\n\nHe was waiting for a credential. You showed him the market only cares about competence.\n\nThat's the new economy. Skill speaks louder than paper.",
+        emotion: 'affirming',
+        variation_id: 'yaquin_launch_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'yaquin_return_hub',
+        text: "I'm glad he saw it.",
+        nextNodeId: 'samuel_hub_after_devon',
+        pattern: 'helping'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_reflects_yaquin_audience',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Smart. A teacher without students is just a voice in an empty room.\n\nYou helped him think like a strategist. Build the community, then offer the value.\n\nThat's business wisdom applied to education.",
+        emotion: 'wise',
+        variation_id: 'yaquin_audience_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'yaquin_return_hub_audience',
+        text: "It's a solid plan.",
+        nextNodeId: 'samuel_hub_after_devon',
+        pattern: 'analytical'
       }
     ]
   },
@@ -3755,6 +3879,9 @@ export const samuelEntryPoints = {
 
   /** Reflection gateway - return from Tess (validates entrepreneurial risk) */
   TESS_REFLECTION_GATEWAY: 'samuel_tess_reflection_gateway',
+
+  /** Reflection gateway - return from Yaquin (validates creator economy) */
+  YAQUIN_REFLECTION_GATEWAY: 'samuel_yaquin_reflection_gateway',
 
   /** Samuel's backstory reveal (trust-gated) */
   BACKSTORY: 'samuel_backstory_intro',

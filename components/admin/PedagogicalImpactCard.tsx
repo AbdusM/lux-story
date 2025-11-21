@@ -50,6 +50,12 @@ export function PedagogicalImpactCard() {
       title: 'Entrepreneurial Thinking',
       description: 'Identifying opportunities, assessing risk, and articulating vision.',
       relatedObjectives: ['tess_entrepreneurial_spirit']
+    },
+    {
+      id: 'creator_economy',
+      title: 'Creator Economy',
+      description: 'Leveraging digital tools to monetize expertise directly.',
+      relatedObjectives: ['yaquin_edtech_entrepreneurship']
     }
   ]
 
@@ -117,7 +123,8 @@ export function PedagogicalImpactCard() {
                         'maya_cultural_competence': 'Honored Family Context',
                         'maya_boundary_setting': 'Set Healthy Boundaries',
                         'jordan_trade_value': 'Valued Practical Skills',
-                        'tess_entrepreneurial_spirit': 'Evaluated Risk & Vision'
+                        'tess_entrepreneurial_spirit': 'Evaluated Risk & Vision',
+                        'yaquin_edtech_entrepreneurship': 'Designed Digital Course'
                       }
                       
                       return (

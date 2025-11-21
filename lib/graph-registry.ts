@@ -16,6 +16,7 @@ import { devonDialogueGraph } from '@/content/devon-dialogue-graph'
 import { jordanDialogueGraph } from '@/content/jordan-dialogue-graph'
 import { marcusDialogueGraph } from '@/content/marcus-dialogue-graph'
 import { tessDialogueGraph } from '@/content/tess-dialogue-graph'
+import { yaquinDialogueGraph } from '@/content/yaquin-dialogue-graph'
 import { DialogueGraph } from './dialogue-graph'
 import { GameState } from './character-state'
 
@@ -30,7 +31,8 @@ export const DIALOGUE_GRAPHS = {
   devon: devonDialogueGraph,
   jordan: jordanDialogueGraph,
   marcus: marcusDialogueGraph,
-  tess: tessDialogueGraph
+  tess: tessDialogueGraph,
+  yaquin: yaquinDialogueGraph
   // Future expansion:
   // devon_revisit: devonRevisitGraph,
   // jordan_revisit: jordanRevisitGraph
@@ -40,7 +42,7 @@ export const DIALOGUE_GRAPHS = {
  * Character IDs that can be navigated to
  * Must match keys in GameState.characters Map
  */
-export type CharacterId = 'samuel' | 'maya' | 'devon' | 'jordan' | 'marcus' | 'tess'
+export type CharacterId = 'samuel' | 'maya' | 'devon' | 'jordan' | 'marcus' | 'tess' | 'yaquin'
 
 /**
  * Get the correct dialogue graph for a character based on current game state

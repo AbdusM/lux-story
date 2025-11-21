@@ -110,7 +110,7 @@ export interface SerializableGameState {
   patterns: PlayerPatterns
   lastSaved: number
   currentNodeId: string
-  currentCharacterId: 'samuel' | 'maya' | 'devon' | 'jordan' | 'marcus' | 'tess'
+  currentCharacterId: 'samuel' | 'maya' | 'devon' | 'jordan' | 'marcus' | 'tess' | 'yaquin'
 }
 
 /**
@@ -242,7 +242,8 @@ export class GameStateUtils {
         ['devon', this.createCharacterState('devon')],
         ['jordan', this.createCharacterState('jordan')],
         ['marcus', this.createCharacterState('marcus')],
-        ['tess', this.createCharacterState('tess')]
+        ['tess', this.createCharacterState('tess')],
+        ['yaquin', this.createCharacterState('yaquin')]
       ]),
       globalFlags: new Set(),
       patterns: {
