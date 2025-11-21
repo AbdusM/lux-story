@@ -357,13 +357,15 @@ export const devonDialogueNodes: DialogueNode[] = [
   // ============= THE CORE REVEAL =============
   {
     nodeId: 'devon_father_reveal',
+    learningObjectives: ['devon_emotional_logic_integration'],
     speaker: 'Devon Kumar',
     content: [
       {
         text: "My dad. He lives up in Huntsville. Since mom died six months ago, every phone call is... an exception error.\n\nHe says he's fine. But his voice has this... lag. Like packet loss. Information that isn't being transmitted. And I don't know how to debug grief.",
         emotion: 'vulnerable',
         variation_id: 'father_reveal_v1',
-        richEffectContext: 'thinking' // Emotional vulnerability - deep reflection
+        richEffectContext: 'thinking', // Emotional vulnerability - deep reflection
+        useChatPacing: true // Major vulnerability reveal
       }
     ],
     choices: [
@@ -1087,6 +1089,7 @@ export const devonDialogueNodes: DialogueNode[] = [
   // ============= FLOWCHART INCIDENT (Specific Emotional Scene) =============
   {
     nodeId: 'devon_flowchart_incident',
+    learningObjectives: ['devon_grief_processing'],
     speaker: 'Devon Kumar',
     content: [
       {
@@ -1384,13 +1387,15 @@ export const devonDialogueNodes: DialogueNode[] = [
   // ============= CROSSROADS (Multiple Paths) =============
   {
     nodeId: 'devon_crossroads',
+    learningObjectives: ['devon_systematic_communication'],
     speaker: 'Devon Kumar',
     content: [
       {
         text: "You helped me see emotions as data. Now I can work with them.\n\nI need to call him. But differently. No flowchart. Just... me, talking to my dad. Listening for what I've been filtering out. The pauses. The pain. The love underneath the 'I'm fine.'\n\nWhat if I just... let the conversation be what it needs to be?",
         emotion: 'ready',
         variation_id: 'crossroads_reframe',
-        useChatPacing: true // Breakthrough moment
+        useChatPacing: true, // Breakthrough moment
+        richEffectContext: 'thinking'
       },
       {
         text: "You helped me integrate logic and heart. They're not enemies.\n\nI need to call him. But differently this time. Not logic OR emotion—both. Just... me, talking to my dad. Present with all of it. The pauses. The pain. The love underneath the 'I'm fine.'\n\nWhat if I just... let the conversation be what it needs to be?",
