@@ -3101,6 +3101,13 @@ export const samuelDialogueNodes: DialogueNode[] = [
     ],
     choices: [
       {
+        choiceId: 'create_action_plan',
+        text: "I want to map out what I've learned.",
+        nextNodeId: 'samuel_action_plan_intro',
+        pattern: 'building',
+        skills: ['criticalThinking', 'leadership']
+      },
+      {
         choiceId: 'continue',
         text: "I'll keep exploring.",
         nextNodeId: 'samuel_hub_after_maya',
@@ -3112,6 +3119,28 @@ export const samuelDialogueNodes: DialogueNode[] = [
         characterId: 'samuel'
       }
     ]
+  },
+
+  {
+    nodeId: 'samuel_action_plan_intro',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Smart. Insight fades if you don't anchor it.\n\nWhen you're ready, use the 'Experience Summary' to build a concrete plan. Connect the skills you've used here to the goals you have out there.\n\nThat's how you bring the station home with you.",
+        emotion: 'teaching',
+        variation_id: 'action_plan_intro_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'will_do',
+        text: "I'll do that.",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'building',
+        skills: ['timeManagement', 'problemSolving']
+      }
+    ],
+    tags: ['synthesis', 'samuel_arc']
   },
 
   // ============= PATTERN-GATED BONUS CONTENT =============
