@@ -809,6 +809,45 @@ export const jordanDialogueNodes: DialogueNode[] = [
     tags: ['climax', 'jordan_arc']
   },
 
+  // ============= CROSSROADS (Low Trust / Shallow Path) =============
+  {
+    nodeId: 'jordan_crossroads',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: "Twenty minutes. I guess I just need to pick a story and stick to it.\n\nFake it 'til you make it, right? Just tell them what they want to hear.\n\nWhich version sounds best?",
+      emotion: 'anxious_performative',
+      variation_id: 'jordan_crossroads_shallow',
+      useChatPacing: true
+    }],
+    requiredState: {
+      trust: { max: 9 } // Shows if trust is not at max
+    },
+    choices: [
+      {
+        choiceId: 'jordan_crossroads_accumulation_shallow',
+        text: "Go with the 'skills accumulation' angle. It sounds professional.",
+        nextNodeId: 'jordan_chooses_accumulation',
+        pattern: 'analytical',
+        skills: ['communication']
+      },
+      {
+        choiceId: 'jordan_crossroads_birmingham_shallow',
+        text: "Use the Birmingham metaphor. People love local pride.",
+        nextNodeId: 'jordan_chooses_birmingham',
+        pattern: 'helping',
+        skills: ['culturalCompetence']
+      },
+      {
+        choiceId: 'jordan_crossroads_internal_shallow',
+        text: "Just tell your own story. It's easier to remember.",
+        nextNodeId: 'jordan_chooses_internal',
+        pattern: 'patience',
+        skills: ['communication']
+      }
+    ],
+    tags: ['crossroads', 'jordan_arc', 'shallow_path']
+  },
+
   // ============= CROSSROADS (Trust 10) =============
   {
     nodeId: 'jordan_crossroads',
