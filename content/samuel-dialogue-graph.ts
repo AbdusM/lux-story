@@ -945,6 +945,37 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
+        text: "She went back to studying. Sometimes the timing isn't right. Or maybe we pushed too hard, too fast.\n\nRespecting someone's 'no' is just as important as encouraging their 'yes'. You gave her space. That counts.",
+        emotion: 'gentle_truth',
+        variation_id: 'early_exit_v1'
+      }
+    ],
+    requiredState: {
+      hasKnowledgeFlags: ['early_connection_made']
+    },
+    choices: [
+      {
+        choiceId: 'wish_i_could_do_more',
+        text: "I wish I could have done more.",
+        nextNodeId: 'samuel_patience_wisdom',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
+      },
+      {
+        choiceId: 'timing_matters',
+        text: "Timing matters.",
+        nextNodeId: 'samuel_contemplation_offer',
+        pattern: 'patience',
+        skills: ['adaptability', 'timeManagement']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_maya_path_reflection',
+    speaker: 'Samuel Washington',
+    content: [
+      {
         text: "She's choosing robotics. The path she's been afraid to name out loud because it felt like betraying twenty years of her parents' sacrifice.\n\nYou helped her see that honoring their love doesn't require abandoning herself. That's wisdom most people spend decades learning.",
         emotion: 'reflective',
         variation_id: 'robotics_path_v1'

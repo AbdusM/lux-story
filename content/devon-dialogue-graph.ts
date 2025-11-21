@@ -1031,6 +1031,7 @@ export const devonDialogueNodes: DialogueNode[] = [
   // ============= THE GLITCH =============
   {
     nodeId: 'devon_system_failure',
+    learningObjectives: ['devon_emotional_logic_integration'],
     speaker: 'Devon Kumar',
     content: [
       {
