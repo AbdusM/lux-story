@@ -219,6 +219,26 @@ export const SCENE_SKILL_MAPPINGS: Record<string, SceneSkillMapping> = {
     }
   },
 
+  // SCENE: Marcus ECMO Simulation
+  'marcus_simulation_start': {
+    sceneId: 'marcus_simulation_start',
+    characterArc: 'maya', // Linked to Maya's biomed theme
+    sceneDescription: 'High-stakes ECMO simulation requiring precision and crisis management',
+
+    choiceMappings: {
+      'sim_clamp_line': {
+        skillsDemonstrated: ['crisisManagement', 'decisiveness', 'systemsThinking'],
+        context: 'Demonstrated immediate crisis response by identifying the priority action (stopping flow) over communication in a critical 1.5s window.',
+        intensity: 'high'
+      },
+      'sim_call_help': {
+        skillsDemonstrated: ['communication'],
+        context: 'Prioritized communication, which is valid in many settings but fatal in this specific rapid-response scenario.',
+        intensity: 'medium'
+      }
+    }
+  },
+
   // ============= DEVON ARC (7 scenes) =============
 
   // SCENE 6: Father Grief System Revelation

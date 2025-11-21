@@ -3165,6 +3165,13 @@ export const samuelDialogueNodes: DialogueNode[] = [
     },
     choices: [
       {
+        choiceId: 'meet_marcus',
+        text: "There's someone near the medical bay?",
+        nextNodeId: 'samuel_marcus_intro',
+        pattern: 'building',
+        skills: ['curiosity', 'technicalLiteracy']
+      },
+      {
         choiceId: 'return_to_maya_2',
         text: "I'd like to talk to Maya again.",
         nextNodeId: mayaRevisitEntryPoints.WELCOME,
@@ -3200,6 +3207,30 @@ export const samuelDialogueNodes: DialogueNode[] = [
         skills: ['communication', 'emotionalIntelligence'],
         visibleCondition: {
           trust: { min: 3 }
+        }
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_marcus_intro',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "That's Marcus. CVICU Nurse. He's standing by Platform 4, looking like he's still on shift.\n\nHe deals with life and death every night. But he's realizing the machines he uses are just as important as the medicine.\n\nGo gently. He's still carrying the weight of his last shift.",
+        emotion: 'respectful',
+        variation_id: 'marcus_intro_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'go_to_marcus',
+        text: "I'll go talk to him.",
+        nextNodeId: 'marcus_introduction', // Links to new graph
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          addGlobalFlags: ['met_marcus']
         }
       }
     ]
