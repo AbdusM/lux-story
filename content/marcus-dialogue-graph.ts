@@ -473,7 +473,7 @@ If you see Samuel... tell him the patient made it. The machine held.",
       {
         choiceId: 'return_to_samuel',
         text: "I'll tell him.",
-        nextNodeId: samuelEntryPoints.HUB_AFTER_DEVON, // Joins the main hub
+        nextNodeId: samuelEntryPoints.MARCUS_REFLECTION_GATEWAY, // Routes through reflection ✅
         pattern: 'patience'
       }
     ],

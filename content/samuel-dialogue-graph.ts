@@ -2239,6 +2239,66 @@ export const samuelDialogueNodes: DialogueNode[] = [
     ]
   },
 
+  // ============= MARCUS REFLECTION GATEWAY (Return from Marcus) =============
+  {
+    nodeId: 'samuel_marcus_reflection_gateway',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Marcus just walked past. He looked... lighter. He said the patient made it.\n\nBut more than that, he said you saw the engineering in his work. That you understood the weight of the machine.\n\nHow was it, stepping into that kind of pressure?",
+        emotion: 'respectful',
+        variation_id: 'marcus_gateway_v1'
+      }
+    ],
+    requiredState: {
+      hasGlobalFlags: ['marcus_arc_complete'],
+      lacksKnowledgeFlags: ['reflected_on_marcus']
+    },
+    choices: [
+      {
+        choiceId: 'marcus_pressure_intense',
+        text: "It was intense. One mistake and it's over.",
+        nextNodeId: 'samuel_reflects_marcus_stakes',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'crisisManagement']
+      },
+      {
+        choiceId: 'marcus_pressure_meaningful',
+        text: "It felt meaningful to hold a life like that.",
+        nextNodeId: 'samuel_reflects_marcus_stakes',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'empathy']
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'samuel',
+        addKnowledgeFlags: ['reflected_on_marcus']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_reflects_marcus_stakes',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "High stakes clarify things. In that simulation, there was no room for doubt. You had to act.\n\nThat decisiveness you showed? That's a skill. Not everyone can move when the alarm screams.\n\nYou helped Marcus see that his work isn't just care—it's precision engineering. You built a bridge between his identity as a nurse and his potential as an innovator.",
+        emotion: 'proud',
+        variation_id: 'marcus_stakes_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'marcus_bridge_return',
+        text: "He's going to design better machines.",
+        nextNodeId: 'samuel_hub_after_devon', // Or appropriate hub
+        pattern: 'building',
+        skills: ['careerDevelopment', 'innovation']
+      }
+    ]
+  },
+
   // ============= JORDAN REFLECTION GATEWAY (Return from Jordan) =============
   {
     nodeId: 'samuel_jordan_reflection_gateway',
@@ -3556,6 +3616,9 @@ export const samuelEntryPoints = {
 
   /** Reflection gateway - return from Devon (validates systems/heart integration) */
   DEVON_REFLECTION_GATEWAY: 'samuel_devon_reflection_gateway',
+
+  /** Reflection gateway - return from Marcus (validates crisis management) */
+  MARCUS_REFLECTION_GATEWAY: 'samuel_marcus_reflection_gateway',
 
   /** Reflection gateway - return from Jordan (celebrates mentorship influence) */
   JORDAN_REFLECTION_GATEWAY: 'samuel_jordan_reflection_gateway',
