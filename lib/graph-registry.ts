@@ -14,6 +14,8 @@ import { mayaRevisitGraph } from '@/content/maya-revisit-graph'
 import { samuelDialogueGraph } from '@/content/samuel-dialogue-graph'
 import { devonDialogueGraph } from '@/content/devon-dialogue-graph'
 import { jordanDialogueGraph } from '@/content/jordan-dialogue-graph'
+import { marcusDialogueGraph } from '@/content/marcus-dialogue-graph'
+import { tessDialogueGraph } from '@/content/tess-dialogue-graph'
 import { DialogueGraph } from './dialogue-graph'
 import { GameState } from './character-state'
 
@@ -26,7 +28,9 @@ export const DIALOGUE_GRAPHS = {
   maya: mayaDialogueGraph,
   maya_revisit: mayaRevisitGraph,
   devon: devonDialogueGraph,
-  jordan: jordanDialogueGraph
+  jordan: jordanDialogueGraph,
+  marcus: marcusDialogueGraph,
+  tess: tessDialogueGraph
   // Future expansion:
   // devon_revisit: devonRevisitGraph,
   // jordan_revisit: jordanRevisitGraph
@@ -36,7 +40,7 @@ export const DIALOGUE_GRAPHS = {
  * Character IDs that can be navigated to
  * Must match keys in GameState.characters Map
  */
-export type CharacterId = 'samuel' | 'maya' | 'devon' | 'jordan'
+export type CharacterId = 'samuel' | 'maya' | 'devon' | 'jordan' | 'marcus' | 'tess'
 
 /**
  * Get the correct dialogue graph for a character based on current game state
