@@ -47,14 +47,14 @@ Don't bump the table. Please.`,
         text: "What are you seeing right now?",
         nextNodeId: 'marcus_visualizes_machine',
         pattern: 'exploring',
-        skills: ['communication', 'curiosity']
+        skills: ['communication', 'criticalThinking']
       },
       {
         choiceId: 'marcus_intro_check',
         text: "You look like you're holding something invisible.",
         nextNodeId: 'marcus_visualizes_machine',
         pattern: 'analytical',
-        skills: ['observation']
+        skills: ['emotionalIntelligence']
       }
     ],
     onEnter: [
@@ -93,7 +93,7 @@ For the last twelve hours, I was the only thing keeping a 40-year-old father ali
         text: "You run the machine yourself?",
         nextNodeId: 'marcus_technical_pride',
         pattern: 'analytical',
-        skills: ['criticalThinking', 'technicalLiteracy']
+        skills: ['criticalThinking', 'digitalLiteracy']
       }
     ]
   },
@@ -118,7 +118,7 @@ If I calculate the heparin drip wrong, he bleeds out. If I miss a clot, he strok
         text: "You think like an engineer.",
         nextNodeId: 'marcus_the_bubble',
         pattern: 'analytical',
-        skills: ['criticalThinking', 'systemsThinking'],
+        skills: ['criticalThinking', 'problemSolving'],
         consequence: {
           characterId: 'marcus',
           trustChange: 1
@@ -162,7 +162,7 @@ Tonight... the alarm screamed. 'AIR IN LINE.'`,
         text: "What did you do?",
         nextNodeId: 'marcus_simulation_start',
         pattern: 'exploring',
-        skills: ['crisisManagement']
+        skills: ['problemSolving']
       },
       {
         choiceId: 'marcus_panic_check',
@@ -200,7 +200,7 @@ I want you to see it. Close your eyes. Put your hands out.
         text: "[ACTION] CLAMP THE LINE immediately to stop flow.",
         nextNodeId: 'marcus_sim_step_2',
         pattern: 'building',
-        skills: ['crisisManagement', 'decisiveness']
+        skills: ['problemSolving', 'criticalThinking']
       },
       {
         choiceId: 'sim_call_help',
@@ -237,7 +237,7 @@ Too slow. You have 1.5 seconds. Try again.`,
         text: "Reset. Let me try again.",
         nextNodeId: 'marcus_simulation_start',
         pattern: 'patience',
-        skills: ['resilience', 'learningAgility']
+        skills: ['adaptability', 'emotionalIntelligence']
       }
     ]
   },
@@ -266,7 +266,7 @@ What do you do?`,
         text: "[ACTION] Flick the tubing to dislodge the bubble back to the port.",
         nextNodeId: 'marcus_sim_step_3',
         pattern: 'building',
-        skills: ['technicalLiteracy', 'problemSolving']
+        skills: ['digitalLiteracy', 'problemSolving']
       },
       {
         choiceId: 'sim_unclamp',
@@ -302,7 +302,7 @@ He's gone. You saved flow, but you delivered poison. Precision matters more than
         text: "Reset. I understand now.",
         nextNodeId: 'marcus_simulation_start',
         pattern: 'analytical',
-        skills: ['resilience']
+        skills: ['adaptability']
       }
     ]
   },
@@ -330,7 +330,7 @@ He is becoming hypoxic.`,
         text: "[ACTION] Aspirate (suck out) the bubble with the syringe.",
         nextNodeId: 'marcus_sim_success',
         pattern: 'analytical',
-        skills: ['precision', 'technicalLiteracy']
+        skills: ['criticalThinking', 'digitalLiteracy']
       },
       {
         choiceId: 'sim_push_fluid',
@@ -366,7 +366,7 @@ Now it's impossible to retrieve. We have to change the whole circuit. He won't s
         text: "One more time. I can do this.",
         nextNodeId: 'marcus_simulation_start',
         pattern: 'patience',
-        skills: ['resilience', 'grit']
+        skills: ['adaptability', 'emotionalIntelligence']
       }
     ]
   },
@@ -402,7 +402,7 @@ You got it. Clean line. Flow restored. He wakes up tomorrow.`,
         text: "The precision required... that's engineering.",
         nextNodeId: 'marcus_career_bridge',
         pattern: 'analytical',
-        skills: ['criticalThinking', 'systemsThinking']
+        skills: ['criticalThinking', 'problemSolving']
       }
     ],
     onEnter: [
@@ -436,7 +436,7 @@ I started as a nurse. But now? I'm thinking about designing the next machine.`,
         text: "You'd be amazing at designing them. You know exactly how they fail.",
         nextNodeId: 'marcus_farewell',
         pattern: 'building',
-        skills: ['careerDevelopment', 'innovation'],
+        skills: ['creativity', 'leadership'],
         consequence: {
           characterId: 'marcus',
           trustChange: 2
@@ -447,7 +447,7 @@ I started as a nurse. But now? I'm thinking about designing the next machine.`,
         text: "The operating room needs people like you running the console.",
         nextNodeId: 'marcus_farewell',
         pattern: 'helping',
-        skills: ['careerDevelopment'],
+        skills: ['adaptability'],
         consequence: {
           characterId: 'marcus',
           trustChange: 1

@@ -56,7 +56,7 @@ Hey. You look like you've been outside recently. Does 'Wilderness Immersion' sou
         text: "What are you trying to name?",
         nextNodeId: 'tess_explains_school',
         pattern: 'exploring',
-        skills: ['curiosity', 'communication']
+        skills: ['criticalThinking', 'communication']
       }
     ],
     onEnter: [
@@ -93,7 +93,7 @@ I'm trying to explain to a grant committee why that teaches you more than AP Cal
         text: "Real learning happens when you're uncomfortable.",
         nextNodeId: 'tess_explains_school',
         pattern: 'helping',
-        skills: ['emotionalIntelligence', 'learningAgility'],
+        skills: ['emotionalIntelligence', 'adaptability'],
         consequence: {
           characterId: 'tess',
           trustChange: 1
@@ -122,7 +122,7 @@ I need to make them see the *curriculum* inside the chaos.`,
         text: "So translate it. What's the curriculum?",
         nextNodeId: 'tess_the_pitch_setup',
         pattern: 'building',
-        skills: ['communication', 'translation']
+        skills: ['communication', 'communication']
       }
     ]
   },
@@ -209,7 +209,7 @@ If I do this, I quit the safe job. No net.`,
         text: "The safe path isn't always the right path.",
         nextNodeId: 'tess_defunding_reveal',
         pattern: 'helping',
-        skills: ['emotionalIntelligence', 'riskAssessment'],
+        skills: ['emotionalIntelligence', 'problemSolving'],
         consequence: {
           characterId: 'tess',
           trustChange: 1
@@ -246,21 +246,21 @@ What's the headline? What are we actually selling?`,
         text: "Sell the outcome: 'Forging Antifragile Leaders.'",
         nextNodeId: 'tess_pitch_resilience',
         pattern: 'building',
-        skills: ['strategicThinking', 'persuasion', 'marketing']
+        skills: ['criticalThinking', 'communication', 'creativity']
       },
       {
         choiceId: 'pitch_mental_health',
         text: "Sell the solution: 'The Cure for Academic Burnout.'",
         nextNodeId: 'tess_pitch_mental_health',
         pattern: 'helping',
-        skills: ['emotionalIntelligence', 'socialAwareness']
+        skills: ['emotionalIntelligence', 'emotionalIntelligence']
       },
       {
         choiceId: 'pitch_skills',
         text: "Sell the competency: 'Real-World Project Management Lab.'",
         nextNodeId: 'tess_pitch_skills',
         pattern: 'analytical',
-        skills: ['translation', 'professionalism']
+        skills: ['communication', 'culturalCompetence']
       }
     ],
     tags: ['pitch_mechanic', 'tess_arc']
@@ -287,7 +287,7 @@ Yes. 'We don't teach history; we teach how to make history when the map runs out
         text: "Exactly. You're building leaders, not hikers.",
         nextNodeId: 'tess_pitch_climax',
         pattern: 'building',
-        skills: ['leadership', 'visionaryThinking']
+        skills: ['leadership', 'creativity']
       }
     ],
     onEnter: [
@@ -318,7 +318,7 @@ So this isn't a gap year. It's a reset. 'Disconnect to Reconnect.'
         text: "That's the mission. Wellness is the foundation of success.",
         nextNodeId: 'tess_pitch_climax',
         pattern: 'helping',
-        skills: ['emotionalIntelligence', 'advocacy']
+        skills: ['emotionalIntelligence', 'leadership']
       }
     ],
     onEnter: [
@@ -351,7 +351,7 @@ It's an executive MBA for 18-year-olds.`,
         text: "It's experiential career prep. That gets funded.",
         nextNodeId: 'tess_pitch_climax',
         pattern: 'analytical',
-        skills: ['translation', 'businessAcumen']
+        skills: ['communication', 'financialLiteracy']
       }
     ],
     onEnter: [
@@ -389,21 +389,21 @@ If I fail, I'm just an unemployed hiker.`,
         text: "You can't lead a 'Walkabout' if you're afraid to leave the path.",
         nextNodeId: 'tess_decision_made',
         pattern: 'building',
-        skills: ['leadership', 'entrepreneurship', 'courage']
+        skills: ['leadership', 'adaptability', 'emotionalIntelligence']
       },
       {
         choiceId: 'tess_commit_safety',
         text: "Is there a way to do this part-time? Test it first?",
         nextNodeId: 'tess_decision_cautious',
         pattern: 'analytical',
-        skills: ['riskManagement', 'prudence']
+        skills: ['problemSolving', 'criticalThinking']
       },
       {
         choiceId: 'tess_commit_belief',
         text: "The students need this. They need you to be brave first.",
         nextNodeId: 'tess_decision_made',
         pattern: 'helping',
-        skills: ['emotionalIntelligence', 'motivation']
+        skills: ['emotionalIntelligence', 'emotionalIntelligence']
       }
     ]
   },
@@ -433,7 +433,7 @@ I'm terrifyingly free.`,
         text: "Congratulations, Founder.",
         nextNodeId: 'tess_farewell',
         pattern: 'building',
-        skills: ['support']
+        skills: ['collaboration']
       }
     ],
     onEnter: [
@@ -464,7 +464,7 @@ Thank you. I almost jumped without a parachute.`,
         text: "Smart growth is still growth.",
         nextNodeId: 'tess_farewell',
         pattern: 'analytical',
-        skills: ['prudence']
+        skills: ['criticalThinking']
       }
     ],
     onEnter: [

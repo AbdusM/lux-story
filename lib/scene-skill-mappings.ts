@@ -227,7 +227,7 @@ export const SCENE_SKILL_MAPPINGS: Record<string, SceneSkillMapping> = {
 
     choiceMappings: {
       'sim_clamp_line': {
-        skillsDemonstrated: ['crisisManagement', 'decisiveness', 'systemsThinking'],
+        skillsDemonstrated: ['problemSolving', 'criticalThinking', 'problemSolving'],
         context: 'Demonstrated immediate crisis response by identifying the priority action (stopping flow) over communication in a critical 1.5s window.',
         intensity: 'high'
       },

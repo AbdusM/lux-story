@@ -8,7 +8,7 @@ export interface LearningObjective {
   id: string
   title: string
   description: string
-  category: 'skill' | 'career' | 'identity' | 'relationship' | 'decision'
+  category: 'skill' | 'career' | 'identity' | 'relationship' | 'decision' | 'meta'
   relatedSkills: string[] // WEF 2030 skills
   relatedPatterns?: ('analytical' | 'helping' | 'building' | 'patience' | 'exploring')[]
   nodeId: string // Dialogue node where this objective is addressed

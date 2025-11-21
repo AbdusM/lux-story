@@ -562,14 +562,14 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "I'm interested in education and leadership, but the system feels broken.",
         nextNodeId: 'samuel_discovers_tess',
         pattern: 'building',
-        skills: ['visionaryThinking', 'education']
+        skills: ['creativity', 'communication']
       },
       {
         choiceId: 'hub_creator_economy',
         text: "I have skills I want to teach, but I don't fit in a traditional classroom.",
         nextNodeId: 'samuel_discovers_yaquin',
         pattern: 'building',
-        skills: ['entrepreneurship', 'communication']
+        skills: ['leadership', 'communication']
       },
       {
         choiceId: 'hub_not_sure',
@@ -710,7 +710,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "That sounds radical. I want to meet her.",
         nextNodeId: 'tess_introduction', // Links to new graph
         pattern: 'building',
-        skills: ['curiosity'],
+        skills: ['criticalThinking'],
         consequence: {
           addGlobalFlags: ['met_tess']
         }
@@ -742,7 +742,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "I want to help him build that.",
         nextNodeId: 'yaquin_introduction', // Links to new graph
         pattern: 'building',
-        skills: ['instructionalDesign'],
+        skills: ['creativity'],
         consequence: {
           addGlobalFlags: ['met_yaquin']
         }
@@ -1579,7 +1579,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "He stopped waiting for perfect and started building.",
         nextNodeId: 'samuel_reflects_yaquin_launch',
         pattern: 'building',
-        skills: ['leanStartup', 'actionOrientation'],
+        skills: ['problemSolving', 'adaptability'],
         visibleCondition: {
           hasGlobalFlags: ['yaquin_launched']
         }
@@ -1589,7 +1589,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "He's building trust first. Playing the long game.",
         nextNodeId: 'samuel_reflects_yaquin_audience',
         pattern: 'analytical',
-        skills: ['audienceBuilding'],
+        skills: ['collaboration'],
         visibleCondition: {
           hasGlobalFlags: ['yaquin_building_audience']
         }
@@ -2250,7 +2250,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "It's a more robust system now.",
         nextNodeId: 'samuel_devon_systems_wisdom',
         pattern: 'analytical',
-        skills: ['criticalThinking', 'systemsThinking']
+        skills: ['criticalThinking', 'problemSolving']
       }
     ]
   },
@@ -2423,14 +2423,14 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "It was intense. One mistake and it's over.",
         nextNodeId: 'samuel_reflects_marcus_stakes',
         pattern: 'analytical',
-        skills: ['criticalThinking', 'crisisManagement']
+        skills: ['criticalThinking', 'problemSolving']
       },
       {
         choiceId: 'marcus_pressure_meaningful',
         text: "It felt meaningful to hold a life like that.",
         nextNodeId: 'samuel_reflects_marcus_stakes',
         pattern: 'helping',
-        skills: ['emotionalIntelligence', 'empathy']
+        skills: ['emotionalIntelligence', 'emotionalIntelligence']
       }
     ],
     onEnter: [
@@ -2457,7 +2457,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "He's going to design better machines.",
         nextNodeId: 'samuel_hub_after_devon', // Or appropriate hub
         pattern: 'building',
-        skills: ['careerDevelopment', 'innovation']
+        skills: ['adaptability', 'creativity']
       }
     ]
   },
@@ -2483,7 +2483,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "She needed to know the risk was worth it.",
         nextNodeId: 'samuel_reflects_tess_risk',
         pattern: 'building',
-        skills: ['leadership', 'entrepreneurship'],
+        skills: ['leadership', 'leadership'],
         visibleCondition: {
           hasGlobalFlags: ['tess_chose_risk']
         }
@@ -2493,7 +2493,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "She's going to test it first. Smart growth.",
         nextNodeId: 'samuel_reflects_tess_caution',
         pattern: 'analytical',
-        skills: ['riskManagement'],
+        skills: ['problemSolving'],
         visibleCondition: {
           hasGlobalFlags: ['tess_chose_safe']
         }
@@ -3477,7 +3477,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "There's someone near the medical bay?",
         nextNodeId: 'samuel_marcus_intro',
         pattern: 'building',
-        skills: ['curiosity', 'technicalLiteracy']
+        skills: ['criticalThinking', 'digitalLiteracy']
       },
       {
         choiceId: 'return_to_maya_2',
