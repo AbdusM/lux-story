@@ -521,6 +521,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
   // ============= ROBOTICS REVEAL (Major Trust Gate) =============
   {
     nodeId: 'maya_robotics_passion',
+    learningObjectives: ['maya_identity_exploration'],
     speaker: 'Maya Chen',
     content: [
       {
@@ -690,6 +691,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
   // ============= FAMILY PRESSURE =============
   {
     nodeId: 'maya_family_pressure',
+    learningObjectives: ['maya_cultural_competence'],
     speaker: 'Maya Chen',
     content: [
       {
@@ -871,6 +873,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
   // ============= THE CROSSROADS (Climax) =============
   {
     nodeId: 'maya_crossroads',
+    learningObjectives: ['maya_boundary_setting'],
     speaker: 'Maya Chen',
     content: [
       {

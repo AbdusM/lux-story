@@ -144,7 +144,7 @@ export function DialogueDisplay({
           <ChunkWrapper
             key={`chunk-${chunk.slice(0, 20).replace(/\s/g, '-')}-${index}`}
             className={cn(
-              "text-base text-slate-800 leading-relaxed",
+              "text-base text-slate-800 leading-relaxed whitespace-pre-wrap",
               interactionClass
             )}
           >

@@ -433,30 +433,105 @@ export class ComprehensiveUserTracker {
   }
 
   /**
-   * Get skill demonstrations relevant to a career
+   * Get skill demonstrations relevant to a career - REAL DATA
    */
   private getSkillDemonstrationsForCareer(careerName: string): string[] {
-    // This would analyze the skill tracker data for relevant skills
-    // For now, return placeholder
-    return ['Problem Solving', 'Communication', 'Critical Thinking']
+    const demos = this.skillTracker.getAllDemonstrations()
+    
+    // Map careers to relevant skills
+    const careerSkills: Record<string, string[]> = {
+      'Healthcare Professional': ['emotionalIntelligence', 'communication', 'culturalCompetence'],
+      'Nurse': ['emotionalIntelligence', 'communication', 'problemSolving'],
+      'Medical Assistant': ['communication', 'digitalLiteracy', 'timeManagement'],
+      'Software Developer': ['criticalThinking', 'problemSolving', 'digitalLiteracy'],
+      'IT Support Specialist': ['problemSolving', 'communication', 'digitalLiteracy'],
+      'Data Analyst': ['criticalThinking', 'digitalLiteracy', 'analytical'],
+      'Mechanical Engineer': ['criticalThinking', 'problemSolving', 'building'],
+      'Civil Engineer': ['criticalThinking', 'problemSolving', 'collaboration'],
+      'Engineering Technician': ['problemSolving', 'building', 'digitalLiteracy'],
+      'Teacher': ['communication', 'leadership', 'emotionalIntelligence'],
+      'Educational Assistant': ['communication', 'collaboration', 'patience'],
+      'Tutor': ['communication', 'criticalThinking', 'patience'],
+      'General Professional': ['communication', 'collaboration', 'adaptability'],
+      'Birmingham Community Contributor': ['culturalCompetence', 'leadership', 'collaboration']
+    }
+
+    const relevantSkills = careerSkills[careerName] || ['problemSolving', 'communication']
+
+    // Filter demos for these skills
+    const relevantDemos = demos.filter(d => 
+      d.skillsDemonstrated.some(skill => relevantSkills.includes(skill))
+    )
+
+    // Return unique contexts or choice descriptions
+    // Limit to top 3 most recent
+    return Array.from(new Set(
+      relevantDemos
+        .reverse()
+        .slice(0, 3)
+        .map(d => `${d.choice} (${d.skillsDemonstrated.filter(s => relevantSkills.includes(s)).join(', ')})`)
+    ))
   }
 
   /**
-   * Get character interactions relevant to a career
+   * Get character interactions relevant to a career - REAL DATA
    */
   private getCharacterInteractionsForCareer(careerName: string): string[] {
-    // This would analyze character interaction data
-    // For now, return placeholder
-    return ['Samuel - Career Guidance', 'Maya - Technical Discussion']
+    const demos = this.skillTracker.getAllDemonstrations()
+    
+    // Map careers to characters
+    const careerCharacters: Record<string, string> = {
+      'Healthcare Professional': 'maya',
+      'Nurse': 'maya',
+      'Medical Assistant': 'maya',
+      'Software Developer': 'devon',
+      'IT Support Specialist': 'devon',
+      'Data Analyst': 'devon',
+      'Mechanical Engineer': 'samuel', // Samuel was an engineer
+      'Civil Engineer': 'samuel',
+      'Engineering Technician': 'samuel',
+      'Teacher': 'jordan', // Jordan is a mentor figure
+      'Educational Assistant': 'jordan',
+      'Tutor': 'jordan',
+      'General Professional': 'samuel',
+      'Birmingham Community Contributor': 'samuel'
+    }
+
+    const targetChar = careerCharacters[careerName]
+    if (!targetChar) return []
+
+    // Filter for scenes involving this character
+    const interactions = demos.filter(d => d.scene.toLowerCase().includes(targetChar))
+
+    return Array.from(new Set(
+      interactions
+        .reverse()
+        .slice(0, 3)
+        .map(d => `${d.sceneDescription}: ${d.choice}`)
+    ))
   }
 
   /**
-   * Get scene choices relevant to a career
+   * Get scene choices relevant to a career - REAL DATA
    */
   private getSceneChoicesForCareer(careerName: string): string[] {
-    // This would analyze choice history for career-relevant decisions
-    // For now, return placeholder
-    return ['Platform Exploration', 'Career Values Discussion']
+    // Re-use logic from skill demonstrations but focus on the choice text itself
+    // and broaden to any scene that demonstrated relevant skills
+    // Simple heuristic: Get choices that demonstrated "Critical Thinking" or "Problem Solving"
+    // as these are universally relevant for career discussions
+    const demos = this.skillTracker.getAllDemonstrations()
+    const strategicSkills = ['criticalThinking', 'problemSolving', 'leadership']
+
+    const strategicChoices = demos.filter(d => 
+      d.skillsDemonstrated.some(s => strategicSkills.includes(s))
+    )
+
+    return Array.from(new Set(
+      strategicChoices
+        .reverse()
+        .slice(0, 3)
+        .map(d => d.choice)
+    ))
   }
 
   /**

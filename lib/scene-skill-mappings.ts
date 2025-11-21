@@ -60,6 +60,33 @@ export const SCENE_SKILL_MAPPINGS: Record<string, SceneSkillMapping> = {
     }
   },
 
+  // SCENE 1.5: Anxiety Reveal (High Trust Moment)
+  'maya_anxiety_reveal': {
+    sceneId: 'maya_anxiety_reveal',
+    characterArc: 'maya',
+    sceneDescription: 'Maya confesses she is not studying at night but doing "something else", testing player reaction to her secret',
+
+    choiceMappings: {
+      'reveal_curious': {
+        skillsDemonstrated: ['communication', 'criticalThinking'],
+        context: 'Responded to vulnerability with open curiosity rather than judgment. Demonstrated communication by inviting further disclosure without pressure, and critical thinking by seeking to understand the reality behind the facade.',
+        intensity: 'medium'
+      },
+
+      'reveal_support': {
+        skillsDemonstrated: ['emotionalIntelligence', 'communication'],
+        context: 'Validated the human need for personal interests outside of obligations. Demonstrated emotional intelligence by normalizing her struggle and providing immediate psychological safety.',
+        intensity: 'medium'
+      },
+
+      'reveal_wait': {
+        skillsDemonstrated: ['emotionalIntelligence', 'adaptability', 'communication'],
+        context: 'Chose silence to hold space, recognizing that active questioning might feel intrusive. Demonstrated high emotional intelligence by prioritizing the relationship over information gathering. Adaptability shown in shifting from "player" to "listener" role.',
+        intensity: 'high'
+      }
+    }
+  },
+
   // SCENE 2: Robotics Passion Reveal (Major Trust Gate)
   'maya_robotics_passion': {
     sceneId: 'maya_robotics_passion',

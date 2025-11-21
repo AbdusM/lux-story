@@ -41,6 +41,7 @@ import { SkillTracker } from '@/lib/skill-tracker'
 import { SCENE_SKILL_MAPPINGS } from '@/lib/scene-skill-mappings'
 import { getComprehensiveTracker } from '@/lib/comprehensive-user-tracker'
 import { ExperienceSummary, type ExperienceSummaryData } from '@/components/ExperienceSummary'
+import { NarrativeFeedback } from '@/components/NarrativeFeedback'
 import { detectArcCompletion, generateExperienceSummary } from '@/lib/arc-learning-objectives'
 import { loadSkillProfile } from '@/lib/skill-profile-adapter'
 import { getLearningObjectivesTracker } from '@/lib/learning-objectives-tracker'
@@ -570,9 +571,11 @@ export default function StatefulGameInterface() {
           console.log(`📊 Recorded skill demonstration (scene mapping): ${choiceMapping.skillsDemonstrated.join(', ')}`)
           skillsRecorded = true
           
-          // Skills are tracked but not shown via toast - breaks single UI principle
-          // Skills should be acknowledged naturally in narrative, not via overlays
-          skillToastUpdate = null
+          // Feedback: Show subtle narrative indicator
+          skillToastUpdate = {
+            skill: choiceMapping.skillsDemonstrated[0],
+            message: `Demonstrated ${choiceMapping.skillsDemonstrated[0].replace(/([A-Z])/g, ' $1').toLowerCase()}`
+          }
         }
       }
       
@@ -586,6 +589,12 @@ export default function StatefulGameInterface() {
           `Demonstrated ${demonstratedSkills.join(', ')} through choice: "${choice.choice.text}"`
         )
         console.log(`📊 Recorded skill demonstration (choice.skills): ${demonstratedSkills.join(', ')}`)
+        
+        // Feedback: Show subtle narrative indicator for fallback skills too
+        skillToastUpdate = {
+          skill: demonstratedSkills[0],
+          message: `Demonstrated ${demonstratedSkills[0].replace(/([A-Z])/g, ' $1').toLowerCase()}`
+        }
       }
     }
 
@@ -1199,6 +1208,13 @@ export default function StatefulGameInterface() {
             }))}
           />
         )}
+
+        {/* Narrative Feedback - Subtle state change indicator */}
+        <NarrativeFeedback 
+          message={state.skillToast?.message || ''}
+          isVisible={!!state.skillToast}
+          onDismiss={() => setState(prev => ({ ...prev, skillToast: null }))}
+        />
 
       </div>
     </div>

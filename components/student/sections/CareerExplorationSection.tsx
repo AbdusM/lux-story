@@ -64,6 +64,23 @@ export function CareerExplorationSection({ profile }: CareerExplorationSectionPr
                     </div>
                   </div>
 
+                  <div className="mt-3">
+                    <p className="text-xs font-medium text-gray-700 mb-1">Why this match?</p>
+                    <div className="flex flex-wrap gap-1">
+                      {Object.entries(career.requiredSkills)
+                        .filter(([_, data]) => data.current >= 0.6)
+                        .slice(0, 3)
+                        .map(([skill]) => (
+                          <Badge key={skill} variant="secondary" className="text-[10px] px-1.5 py-0">
+                            {skill.replace(/([A-Z])/g, ' $1').trim()}
+                          </Badge>
+                        ))}
+                      {Object.entries(career.requiredSkills).filter(([_, data]) => data.current >= 0.6).length === 0 && (
+                        <span className="text-xs text-gray-500 italic">Based on your exploration pattern</span>
+                      )}
+                    </div>
+                  </div>
+
                   {career.localOpportunities && career.localOpportunities.length > 0 && (
                     <div className="mt-3 space-y-1">
                       <p className="text-xs font-medium text-gray-700 flex items-center gap-1">
