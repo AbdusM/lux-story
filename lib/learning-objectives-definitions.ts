@@ -96,6 +96,34 @@ export const LEARNING_OBJECTIVES: Record<string, LearningObjective> = {
     relatedPatterns: ['building', 'helping'],
     nodeId: 'jordan_leadership_path'
   }
+  // ============= SAMUEL ARC OBJECTIVES (Meta-Learning) =============
+  'samuel_reflective_observation': {
+    id: 'samuel_reflective_observation',
+    title: 'Reflective Observation',
+    description: 'Reflect on the mentorship experience and the impact of your choices on others',
+    category: 'meta',
+    relatedSkills: ['emotionalIntelligence', 'criticalThinking', 'communication'],
+    relatedPatterns: ['patience', 'analytical'],
+    nodeId: 'samuel_reflect_on_influence'
+  },
+  'samuel_abstract_conceptualization': {
+    id: 'samuel_abstract_conceptualization',
+    title: 'Abstract Conceptualization',
+    description: 'Understand underlying patterns of agency, influence, and career development',
+    category: 'meta',
+    relatedSkills: ['criticalThinking', 'leadership', 'problemSolving'],
+    relatedPatterns: ['analytical', 'building'],
+    nodeId: 'samuel_reflect_on_agency'
+  },
+  'samuel_active_experimentation': {
+    id: 'samuel_active_experimentation',
+    title: 'Active Experimentation',
+    description: 'Apply mentorship wisdom to your own future choices and identity',
+    category: 'meta',
+    relatedSkills: ['adaptability', 'leadership', 'creativity'],
+    relatedPatterns: ['exploring', 'building'],
+    nodeId: 'samuel_your_pattern_emerges'
+  }
 }
 
 /**
