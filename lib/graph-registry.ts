@@ -17,6 +17,7 @@ import { jordanDialogueGraph } from '@/content/jordan-dialogue-graph'
 import { marcusDialogueGraph } from '@/content/marcus-dialogue-graph'
 import { tessDialogueGraph } from '@/content/tess-dialogue-graph'
 import { yaquinDialogueGraph } from '@/content/yaquin-dialogue-graph'
+import { yaquinRevisitGraph } from '@/content/yaquin-revisit-graph'
 import { DialogueGraph } from './dialogue-graph'
 import { GameState } from './character-state'
 
@@ -32,7 +33,8 @@ export const DIALOGUE_GRAPHS = {
   jordan: jordanDialogueGraph,
   marcus: marcusDialogueGraph,
   tess: tessDialogueGraph,
-  yaquin: yaquinDialogueGraph
+  yaquin: yaquinDialogueGraph,
+  yaquin_revisit: yaquinRevisitGraph
   // Future expansion:
   // devon_revisit: devonRevisitGraph,
   // jordan_revisit: jordanRevisitGraph
@@ -62,6 +64,12 @@ export function getGraphForCharacter(
   if (characterId === 'maya' && gameState.globalFlags.has('maya_arc_complete')) {
     console.log('📖 Loading Maya revisit graph (arc completed)')
     return DIALOGUE_GRAPHS.maya_revisit
+  }
+
+  // YAQUIN: Revisit logic (triggered by arc completion)
+  if (characterId === 'yaquin' && gameState.globalFlags.has('yaquin_arc_complete')) {
+    console.log('📖 Loading Yaquin revisit graph (arc completed)')
+    return DIALOGUE_GRAPHS.yaquin_revisit
   }
 
   // DEVON: Future revisit logic
