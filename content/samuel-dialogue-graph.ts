@@ -1857,6 +1857,231 @@ export const samuelDialogueNodes: DialogueNode[] = [
     ]
   },
 
+  // ============= DEVON REFLECTION GATEWAY (Return from Devon) =============
+  {
+    nodeId: 'samuel_devon_reflection_gateway',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "I saw Devon leaving Platform 3. He wasn't looking at his phone or checking schematics. He was just... walking. Present.\n\nThat's a significant shift for a young man who tries to optimize every second. How did you navigate that conversation?",
+        emotion: 'observant',
+        variation_id: 'devon_gateway_v1'
+      }
+    ],
+    requiredState: {
+      hasGlobalFlags: ['devon_arc_complete'],
+      lacksKnowledgeFlags: ['reflected_on_devon']
+    },
+    choices: [
+      {
+        choiceId: 'helped_him_integrate',
+        text: "I helped him see that logic and emotion aren't enemies.",
+        nextNodeId: 'samuel_reflects_devon_systems',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'emotionalIntelligence']
+      },
+      {
+        choiceId: 'focused_on_connection',
+        text: "We focused on connection instead of fixing.",
+        nextNodeId: 'samuel_reflects_devon_systems',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication']
+      },
+      {
+        choiceId: 'just_listened_devon',
+        text: "I just let him talk until he found his own answer.",
+        nextNodeId: 'samuel_reflects_devon_systems',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'communication']
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'samuel',
+        addKnowledgeFlags: ['reflected_on_devon']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_reflects_devon_systems',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Devon's trap is common in this city. Engineers, researchers, data scientists - we think if we can just measure the problem accurately enough, the solution will appear.\n\nBut grief isn't a problem to be solved. It's a landscape to be traversed. You helped him put down the map and look at the terrain.",
+        emotion: 'teaching',
+        variation_id: 'devon_systems_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'what_did_he_choose',
+        text: "He made a choice about how to talk to his dad.",
+        nextNodeId: 'samuel_devon_path_reflection',
+        pattern: 'exploring',
+        skills: ['communication']
+      },
+      {
+        choiceId: 'systems_can_hold_grief',
+        text: "I think he realized systems can hold grief too.",
+        nextNodeId: 'samuel_devon_path_reflection',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'creativity'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      }
+    ]
+  },
+
+  // VARIATION 1: Integration Frame (Engineer AND Son)
+  {
+    nodeId: 'samuel_devon_path_reflection',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "He's choosing integration. Not abandoning his analytical mind, but using it to serve his heart.\n\nThat's rare. Most people swing like a pendulum - all logic or all emotion. You helped him find the synthesis.\n\n'Engineer and Son.' That's a powerful identity.",
+        emotion: 'affirming',
+        variation_id: 'devon_integration_reflection_v1'
+      }
+    ],
+    requiredState: {
+      hasKnowledgeFlags: ['chose_integration']
+    },
+    choices: [
+      {
+        choiceId: 'hope_it_works',
+        text: "It won't be easy, but it's honest.",
+        nextNodeId: 'samuel_devon_systems_wisdom',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'communication']
+      },
+      {
+        choiceId: 'he_needed_permission',
+        text: "He just needed to know he didn't have to amputate parts of himself.",
+        nextNodeId: 'samuel_hub_after_devon',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'leadership'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      }
+    ]
+  },
+
+  // VARIATION 2: Heart Frame (Logic < Heart)
+  {
+    nodeId: 'samuel_devon_path_reflection',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "He's putting the flowchart away. Leading with vulnerability.\n\nThat takes courage for someone wired like him. To walk into a conversation without a script? That's free-fall.\n\nYou gave him the parachute.",
+        emotion: 'respectful',
+        variation_id: 'devon_heart_reflection_v1'
+      }
+    ],
+    requiredState: {
+      hasKnowledgeFlags: ['chose_heart']
+    },
+    choices: [
+      {
+        choiceId: 'vulnerability_is_strength',
+        text: "Vulnerability is data too.",
+        nextNodeId: 'samuel_devon_heart_wisdom',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'emotionalIntelligence']
+      },
+      {
+        choiceId: 'he_was_ready',
+        text: "He was ready. He just needed a nudge.",
+        nextNodeId: 'samuel_hub_after_devon',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'communication'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      }
+    ]
+  },
+
+  // VARIATION 3: Presence Frame (Just be there)
+  {
+    nodeId: 'samuel_devon_path_reflection',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "He's choosing simply to be there. No agenda. No optimization.\n\nThat's the hardest path for a fixer. To sit with broken things and not reach for the glue.\n\nYou taught him that presence is an action. That's profound.",
+        emotion: 'deep_knowing',
+        variation_id: 'devon_presence_reflection_v1'
+      }
+    ],
+    requiredState: {
+      hasKnowledgeFlags: ['chose_presence']
+    },
+    choices: [
+      {
+        choiceId: 'presence_is_hard',
+        text: "It's the hardest thing to do.",
+        nextNodeId: 'samuel_hub_after_devon',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'adaptability']
+      },
+      {
+        choiceId: 'mom_legacy',
+        text: "He realized that's what his mother did.",
+        nextNodeId: 'samuel_devon_systems_wisdom',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication']
+      }
+    ]
+  },
+
+  // Follow-up wisdom nodes for Devon
+  {
+    nodeId: 'samuel_devon_systems_wisdom',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Systems thinking is Birmingham's language. Logistics, medical protocols, engineering specs. But the city's soul is in the gaps between the systems.\n\nDevon will be a better engineer because he learned to feel. And a better son because he learned to think.",
+        emotion: 'wise',
+        variation_id: 'devon_wisdom_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'return_to_hub_devon',
+        text: "He's going to be okay.",
+        nextNodeId: 'samuel_hub_after_devon',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_devon_heart_wisdom',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You helped him debug his own operating system. The error wasn't in the code - it was in the assumption that feelings are bugs.\n\nOnce he saw emotions as features, everything clicked.",
+        emotion: 'amused_wise',
+        variation_id: 'devon_heart_wisdom_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'return_to_hub_devon_heart',
+        text: "I'm glad I could help him see that.",
+        nextNodeId: 'samuel_hub_after_devon',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
+      }
+    ]
+  },
+
   // ============= JORDAN REFLECTION GATEWAY (Return from Jordan) =============
   {
     nodeId: 'samuel_jordan_reflection_gateway',
@@ -3111,6 +3336,9 @@ export const samuelEntryPoints = {
 
   /** Reflection gateway - first return from Maya (mirrors player's influence) */
   MAYA_REFLECTION_GATEWAY: 'samuel_maya_reflection_gateway',
+
+  /** Reflection gateway - return from Devon (validates systems/heart integration) */
+  DEVON_REFLECTION_GATEWAY: 'samuel_devon_reflection_gateway',
 
   /** Reflection gateway - return from Jordan (celebrates mentorship influence) */
   JORDAN_REFLECTION_GATEWAY: 'samuel_jordan_reflection_gateway',
