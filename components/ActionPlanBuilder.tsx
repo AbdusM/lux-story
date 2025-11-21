@@ -124,6 +124,18 @@ export function ActionPlanBuilder({ profile, onClose, onSave }: ActionPlanBuilde
       birminghamOpportunities,
       createdAt: Date.now()
     }
+    // Persist to Supabase if profile exists
+    if (profile.userId) {
+      fetch('/api/user/action-plan', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: profile.userId,
+          plan
+        })
+      }).catch(err => console.warn('Failed to sync action plan to cloud:', err))
+    }
+
     onSave?.(plan)
     onClose()
   }
