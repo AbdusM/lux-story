@@ -18,7 +18,7 @@ export const tessDialogueNodes: DialogueNode[] = [
     speaker: 'Tess',
     content: [
       {
-        text: "*She's pacing the Waiting Room, hiking boots clunking against the marble floor. She's wearing a blazer over a flannel shirt.*
+        text: `*She's pacing the Waiting Room, hiking boots clunking against the marble floor. She's wearing a blazer over a flannel shirt.*
 
 *She stops, staring at a corkboard covered in index cards.*
 
@@ -26,7 +26,7 @@ export const tessDialogueNodes: DialogueNode[] = [
 
 *She turns to you, eyes wide.*
 
-Hey. You look like you've been outside recently. Does 'Wilderness Immersion' sound like a vacation or a crucible?",
+Hey. You look like you've been outside recently. Does 'Wilderness Immersion' sound like a vacation or a crucible?`,
         emotion: 'frantic_focused',
         variation_id: 'tess_intro_v1',
         richEffectContext: 'thinking'
@@ -73,9 +73,9 @@ Hey. You look like you've been outside recently. Does 'Wilderness Immersion' sou
     speaker: 'Tess',
     content: [
       {
-        text: "Exactly. It's not s'mores and ghost stories. It's twelve weeks on the Appalachian Trail with thirty pounds on your back and no phone.
+        text: `Exactly. It's not s'mores and ghost stories. It's twelve weeks on the Appalachian Trail with thirty pounds on your back and no phone.
 
-I'm trying to explain to a grant committee why that teaches you more than AP Calculus.",
+I'm trying to explain to a grant committee why that teaches you more than AP Calculus.`,
         emotion: 'passionate',
         variation_id: 'crucible_v1'
       }
@@ -107,11 +107,11 @@ I'm trying to explain to a grant committee why that teaches you more than AP Cal
     speaker: 'Tess',
     content: [
       {
-        text: "See, that's the problem. That's what the investors hear. 'Camping.'
+        text: `See, that's the problem. That's what the investors hear. 'Camping.'
 
 They don't see the decision-making. The logistics. The conflict resolution when you're wet, hungry, and lost at 4,000 feet.
 
-I need to make them see the *curriculum* inside the chaos.",
+I need to make them see the *curriculum* inside the chaos.`,
         emotion: 'frustrated_determined',
         variation_id: 'defends_v1'
       }
@@ -133,11 +133,11 @@ I need to make them see the *curriculum* inside the chaos.",
     speaker: 'Tess',
     content: [
       {
-        text: "I'm trying to restart 'Walkabout.'
+        text: `I'm trying to restart 'Walkabout.'
 
 It was this incredible program in Philly. Instead of senior year—sitting in rows, taking standardized tests—you went out. Hiked the trail. Did service projects. Built your own syllabus.
 
-I did it ten years ago. It changed my life. I learned more about leadership in those woods than I did in four years of college.",
+I did it ten years ago. It changed my life. I learned more about leadership in those woods than I did in four years of college.`,
         emotion: 'nostalgic_inspired',
         variation_id: 'school_story_v1'
       }
@@ -165,11 +165,11 @@ I did it ten years ago. It changed my life. I learned more about leadership in t
     speaker: 'Tess',
     content: [
       {
-        text: "Defunded. 'Not enough measurable outcomes.' 'High liability.'
+        text: `Defunded. 'Not enough measurable outcomes.' 'High liability.'
 
 They want spreadsheets. They want test scores. You can't put 'learned how to trust myself' on a scantron sheet.
 
-So I'm starting my own. 'The Apex Semester.' But I need $250,000 in seed funding, and my pitch deck is... well, it's messy.",
+So I'm starting my own. 'The Apex Semester.' But I need $250,000 in seed funding, and my pitch deck is... well, it's messy.`,
         emotion: 'determined_anxious',
         variation_id: 'defunding_v1'
       }
@@ -194,11 +194,11 @@ So I'm starting my own. 'The Apex Semester.' But I need $250,000 in seed funding
     speaker: 'Tess',
     content: [
       {
-        text: "I have a safe job right now. Career Counselor at the high school. Pension. Health insurance. Summer break.
+        text: `I have a safe job right now. Career Counselor at the high school. Pension. Health insurance. Summer break.
 
 But I see these kids... they're burnt out at 17. They don't need another AP class. They need to know they can survive something hard.
 
-If I do this, I quit the safe job. No net.",
+If I do this, I quit the safe job. No net.`,
         emotion: 'vulnerable',
         variation_id: 'motivation_v1'
       }
@@ -224,13 +224,13 @@ If I do this, I quit the safe job. No net.",
     speaker: 'Tess',
     content: [
       {
-        text: "Okay. You be the investor. The skeptic. The guy who loves standardized testing.
+        text: `Okay. You be the investor. The skeptic. The guy who loves standardized testing.
 
 I need to translate 'hiking' into 'investable asset.'
 
 Here's the slide: **'The Walkabout Experience: 3 Months in the Wilderness.'**
 
-What's the headline? What are we actually selling?",
+What's the headline? What are we actually selling?`,
         emotion: 'focused_work_mode',
         variation_id: 'pitch_setup_v1',
         richEffectContext: 'thinking',
@@ -272,11 +272,11 @@ What's the headline? What are we actually selling?",
     speaker: 'Tess',
     content: [
       {
-        text: "'Antifragile.' I like that. Investors love that word.
+        text: `'Antifragile.' I like that. Investors love that word.
 
 So the hike isn't about nature. It's about... stress inoculation? Learning to thrive in chaos?
 
-Yes. 'We don't teach history; we teach how to make history when the map runs out.'",
+Yes. 'We don't teach history; we teach how to make history when the map runs out.'`,
         emotion: 'inspired',
         variation_id: 'pitch_resilience_v1'
       }
@@ -303,11 +303,11 @@ Yes. 'We don't teach history; we teach how to make history when the map runs out
     speaker: 'Tess',
     content: [
       {
-        text: "Burnout. God, yes. The suicide rates, the anxiety... schools are pressure cookers.
+        text: `Burnout. God, yes. The suicide rates, the anxiety... schools are pressure cookers.
 
 So this isn't a gap year. It's a reset. 'Disconnect to Reconnect.'
 
-'We give students the one thing high school steals: Their agency.'",
+'We give students the one thing high school steals: Their agency.'`,
         emotion: 'empathetic_determined',
         variation_id: 'pitch_mental_health_v1'
       }
@@ -334,13 +334,13 @@ So this isn't a gap year. It's a reset. 'Disconnect to Reconnect.'
     speaker: 'Tess',
     content: [
       {
-        text: "Right. Translate it into corporate speak. 
+        text: `Right. Translate it into corporate speak. 
 
 Setting up camp in a storm? 'Crisis Management.'
 Navigating by compass? 'Strategic Planning.'
 Cooking for 12 people on a fire? 'Resource Allocation.'
 
-It's an executive MBA for 18-year-olds.",
+It's an executive MBA for 18-year-olds.`,
         emotion: 'analytical_excited',
         variation_id: 'pitch_skills_v1'
       }
@@ -367,13 +367,13 @@ It's an executive MBA for 18-year-olds.",
     speaker: 'Tess',
     content: [
       {
-        text: "*She writes the headline on a card and pins it to the center of the board. She steps back, looking at the full picture.*
+        text: `*She writes the headline on a card and pins it to the center of the board. She steps back, looking at the full picture.*
 
 It works. I can sell this. I know I can.
 
 But if I send this email... I'm resigning. I'm leaving the pension. The tenure track.
 
-If I fail, I'm just an unemployed hiker.",
+If I fail, I'm just an unemployed hiker.`,
         emotion: 'scared_excited',
         variation_id: 'climax_v1',
         richEffectContext: 'thinking',
@@ -413,7 +413,7 @@ If I fail, I'm just an unemployed hiker.",
     speaker: 'Tess',
     content: [
       {
-        text: "*She takes a deep breath, her hand hovering over her phone.*
+        text: `*She takes a deep breath, her hand hovering over her phone.*
 
 You're right. I can't teach courage if I'm playing it safe.
 
@@ -421,7 +421,7 @@ You're right. I can't teach courage if I'm playing it safe.
 
 It's done. Resignation sent. Grant application submitted.
 
-I'm terrifyingly free.",
+I'm terrifyingly free.`,
         emotion: 'liberated',
         variation_id: 'decision_made_v1',
         richEffectContext: 'success'
@@ -449,11 +449,11 @@ I'm terrifyingly free.",
     speaker: 'Tess',
     content: [
       {
-        text: "Maybe... maybe I can run a pilot program this summer. Keep the job, prove the concept.
+        text: `Maybe... maybe I can run a pilot program this summer. Keep the job, prove the concept.
 
 Yeah. That's smarter. I don't need to blow up my life to build a new one.
 
-Thank you. I almost jumped without a parachute.",
+Thank you. I almost jumped without a parachute.`,
         emotion: 'relieved',
         variation_id: 'decision_cautious_v1'
       }
@@ -480,9 +480,9 @@ Thank you. I almost jumped without a parachute.",
     speaker: 'Tess',
     content: [
       {
-        text: "I have a lot of work to do. But for the first time in years, I know exactly where I'm going.
+        text: `I have a lot of work to do. But for the first time in years, I know exactly where I'm going.
 
-If you see Samuel, tell him... tell him I'm finally going for a walk.",
+If you see Samuel, tell him... tell him I'm finally going for a walk.`,
         emotion: 'grateful',
         variation_id: 'farewell_v1'
       }

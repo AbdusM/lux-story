@@ -47,7 +47,7 @@ export const LEARNING_OBJECTIVES: Record<string, LearningObjective> = {
     category: 'decision',
     relatedSkills: ['criticalThinking', 'emotionalIntelligence', 'problemSolving'],
     relatedPatterns: ['analytical', 'helping'],
-    nodeId: 'devon_father_relationship'
+    nodeId: 'devon_father_reveal'
   },
   'devon_grief_processing': {
     id: 'devon_grief_processing',
@@ -56,7 +56,7 @@ export const LEARNING_OBJECTIVES: Record<string, LearningObjective> = {
     category: 'relationship',
     relatedSkills: ['emotionalIntelligence', 'communication', 'adaptability'],
     relatedPatterns: ['helping', 'patience'],
-    nodeId: 'devon_grief_reveal'
+    nodeId: 'devon_flowchart_incident'
   },
   'devon_systematic_communication': {
     id: 'devon_systematic_communication',
@@ -65,7 +65,7 @@ export const LEARNING_OBJECTIVES: Record<string, LearningObjective> = {
     category: 'skill',
     relatedSkills: ['problemSolving', 'communication', 'creativity'],
     relatedPatterns: ['analytical', 'building'],
-    nodeId: 'devon_flowchart_conversation'
+    nodeId: 'devon_crossroads'
   },
 
   // ============= JORDAN ARC OBJECTIVES =============
@@ -85,7 +85,7 @@ export const LEARNING_OBJECTIVES: Record<string, LearningObjective> = {
     category: 'career',
     relatedSkills: ['criticalThinking', 'culturalCompetence', 'communication'],
     relatedPatterns: ['analytical', 'helping'],
-    nodeId: 'jordan_trade_pride'
+    nodeId: 'jordan_job_reveal_2'
   },
   'jordan_leadership_potential': {
     id: 'jordan_leadership_potential',
@@ -94,7 +94,7 @@ export const LEARNING_OBJECTIVES: Record<string, LearningObjective> = {
     category: 'career',
     relatedSkills: ['leadership', 'communication', 'problemSolving'],
     relatedPatterns: ['building', 'helping'],
-    nodeId: 'jordan_leadership_path'
+    nodeId: 'jordan_crossroads'
   },
 
   // ============= MARCUS ARC OBJECTIVES =============

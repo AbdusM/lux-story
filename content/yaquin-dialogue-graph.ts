@@ -18,13 +18,13 @@ export const yaquinDialogueNodes: DialogueNode[] = [
     speaker: 'Yaquin',
     content: [
       {
-        text: "*He's sitting on a bench, aggressively highlighting a thick textbook with a red marker. He groans, crossing out an entire paragraph.*
+        text: `*He's sitting on a bench, aggressively highlighting a thick textbook with a red marker. He groans, crossing out an entire paragraph.*
 
 'Nobody holds the suction tip like that! You'll gag the patient!'
 
 *He looks up, realizing you're there.*
 
-Sorry. I'm just... correcting the 'official' curriculum. It's fifty years out of date.",
+Sorry. I'm just... correcting the 'official' curriculum. It's fifty years out of date.`,
         emotion: 'frustrated_passionate',
         variation_id: 'yaquin_intro_v1',
         richEffectContext: 'warning'
@@ -75,11 +75,11 @@ Sorry. I'm just... correcting the 'official' curriculum. It's fifty years out of
     speaker: 'Yaquin',
     content: [
       {
-        text: "*He lights up, mimicking the motion.*
+        text: `*He lights up, mimicking the motion.*
 
 Modified pen grasp, rolled slightly distal. Keeps the tongue back, clear line of sight for the doctor, patient breathes easy.
 
-See? Simple. But this book spends three pages on 'historical suction methods' and zero on patient comfort.",
+See? Simple. But this book spends three pages on 'historical suction methods' and zero on patient comfort.`,
         emotion: 'confident_teacher',
         variation_id: 'practical_demo_v1'
       }
@@ -104,9 +104,9 @@ See? Simple. But this book spends three pages on 'historical suction methods' an
     speaker: 'Yaquin',
     content: [
       {
-        text: "Because I have three trainees starting Monday. They all paid $15,000 for a certificate, and they don't know how to mix alginate without making a mess.
+        text: `Because I have three trainees starting Monday. They all paid $15,000 for a certificate, and they don't know how to mix alginate without making a mess.
 
-I have to retrain them from scratch every time. It's exhausting. I wish I could just... download my brain into theirs before they walk in the door.",
+I have to retrain them from scratch every time. It's exhausting. I wish I could just... download my brain into theirs before they walk in the door.`,
         emotion: 'tired',
         variation_id: 'gap_reveal_v1'
       }
@@ -135,11 +135,11 @@ I have to retrain them from scratch every time. It's exhausting. I wish I could 
     speaker: 'Yaquin',
     content: [
       {
-        text: "Me? Teach a course? I'm just a dental assistant. I don't have a PhD. I don't have a campus.
+        text: `Me? Teach a course? I'm just a dental assistant. I don't have a PhD. I don't have a campus.
 
 I just know how to do the job so you don't get fired on day one.
 
-Besides, how would I even do that? Just... put videos online?",
+Besides, how would I even do that? Just... put videos online?`,
         emotion: 'skeptical_insecure',
         variation_id: 'impostor_hurdle_v1'
       }
@@ -183,11 +183,11 @@ Besides, how would I even do that? Just... put videos online?",
     speaker: 'Yaquin',
     content: [
       {
-        text: "A cohort? You mean like... a bootcamp? But for dental assisting?
+        text: `A cohort? You mean like... a bootcamp? But for dental assisting?
 
 So instead of a 2-year degree, I give them a 6-week intensive on the stuff that actually matters?
 
-But how do I... charge for that? How do I find them?",
+But how do I... charge for that? How do I find them?`,
         emotion: 'curious_overwhelmed',
         variation_id: 'cohort_v1'
       }
@@ -208,11 +208,11 @@ But how do I... charge for that? How do I find them?",
     speaker: 'Yaquin',
     content: [
       {
-        text: "YouTube... 'How to mix alginate.' 'How to set up a tray.'
+        text: `YouTube... 'How to mix alginate.' 'How to set up a tray.'
 
 I guess I could record that on my phone in the clinic after hours.
 
-But how does that become a business? I can't pay rent with 'likes.'",
+But how does that become a business? I can't pay rent with 'likes.'`,
         emotion: 'calculating',
         variation_id: 'youtube_v1'
       }
@@ -233,11 +233,11 @@ But how does that become a business? I can't pay rent with 'likes.'",
     speaker: 'Yaquin',
     content: [
       {
-        text: "Okay, slow down. I know teeth, not tech.
+        text: `Okay, slow down. I know teeth, not tech.
 
 You're saying I don't need to build a whole university website?
 
-I just need... a way to capture emails and a way to take money?",
+I just need... a way to capture emails and a way to take money?`,
         emotion: 'processing',
         variation_id: 'tech_stack_v1',
         richEffectContext: 'thinking',
@@ -270,11 +270,11 @@ I just need... a way to capture emails and a way to take money?",
     speaker: 'Yaquin',
     content: [
       {
-        text: "Wait. Ask for money *before* I film the videos?
+        text: `Wait. Ask for money *before* I film the videos?
 
 That sounds... scary. But also smart. If nobody buys it, I haven't wasted three months filming.
 
-Okay. Say I get the 10 people. What do I actually teach them? I can't teach *everything* in 6 weeks.",
+Okay. Say I get the 10 people. What do I actually teach them? I can't teach *everything* in 6 weeks.`,
         emotion: 'epiphany',
         variation_id: 'presell_v1'
       }
@@ -296,14 +296,14 @@ Okay. Say I get the 10 people. What do I actually teach them? I can't teach *eve
     speaker: 'Yaquin',
     content: [
       {
-        text: "Okay. Let's look at this 'official' syllabus. It's got:
+        text: `Okay. Let's look at this 'official' syllabus. It's got:
 
 1. History of Dentistry (1800-1950)
 2. molecular biology of enamel
 3. Office Reception etiquette
 4. Chairside Assisting
 
-If I only have 6 weeks to make them job-ready, what do I cut?",
+If I only have 6 weeks to make them job-ready, what do I cut?`,
         emotion: 'focused_work',
         variation_id: 'curriculum_v1',
         richEffectContext: 'thinking'
@@ -348,11 +348,11 @@ If I only have 6 weeks to make them job-ready, what do I cut?",
     speaker: 'Yaquin',
     content: [
       {
-        text: "You're right. The dentist doesn't care if they know who Pierre Fauchard is. They care if they can hand the composite gun without fumbling.
+        text: `You're right. The dentist doesn't care if they know who Pierre Fauchard is. They care if they can hand the composite gun without fumbling.
 
 **'The 6-Week Chairside Sprint.'** No fluff. Just the skills that make you indispensable.
 
-That's the product.",
+That's the product.`,
         emotion: 'excited_clarity',
         variation_id: 'focused_v1',
         richEffectContext: 'success'
@@ -374,11 +374,11 @@ That's the product.",
     speaker: 'Yaquin',
     content: [
       {
-        text: "That's true. Most firings happen because of attitude, not aptitude.
+        text: `That's true. Most firings happen because of attitude, not aptitude.
 
 **'The Professional Assistant.'** Half clinical skills, half patient management. How to calm a terrified kid. How to manage a stressed doctor.
 
-That's a niche nobody else is filling.",
+That's a niche nobody else is filling.`,
         emotion: 'thoughtful_clarity',
         variation_id: 'soft_skills_v1'
       }
@@ -399,11 +399,11 @@ That's a niche nobody else is filling.",
     speaker: 'Yaquin',
     content: [
       {
-        text: "I... I guess. But that's what the colleges do. They cram it all in, and the students remember none of it.
+        text: `I... I guess. But that's what the colleges do. They cram it all in, and the students remember none of it.
 
 If I do that, I'm just a cheaper version of a bad product.
 
-No. I need to be different. I need to be *effective*.",
+No. I need to be different. I need to be *effective*.`,
         emotion: 'determined_correction',
         variation_id: 'overwhelmed_v1'
       }
@@ -425,13 +425,13 @@ No. I need to be different. I need to be *effective*.",
     speaker: 'Yaquin',
     content: [
       {
-        text: "*He pulls out his phone, opening Instagram.*
+        text: `*He pulls out his phone, opening Instagram.*
 
 I have 500 followers. Mostly other assistants complaining about their backs.
 
 I'm going to post it. 'Beta Cohort: Master Chairside Skills in 6 Weeks.' Link in bio to a simple form.
 
-If I do this... I'm not just an assistant anymore. I'm a founder.",
+If I do this... I'm not just an assistant anymore. I'm a founder.`,
         emotion: 'nervous_anticipation',
         variation_id: 'climax_launch_v1',
         useChatPacing: true,
@@ -464,7 +464,7 @@ If I do this... I'm not just an assistant anymore. I'm a founder.",
     speaker: 'Yaquin',
     content: [
       {
-        text: "*He taps the screen. Takes a deep breath.*
+        text: `*He taps the screen. Takes a deep breath.*
 
 It's up. 
 
@@ -472,7 +472,7 @@ Already a comment: 'Does this cover digital impressions?'
 
 I know digital impressions. I can teach that.
 
-Wow. I'm doing this.",
+Wow. I'm doing this.`,
         emotion: 'joyful_disbelief',
         variation_id: 'ending_success_v1'
       }
@@ -499,11 +499,11 @@ Wow. I'm doing this.",
     speaker: 'Yaquin',
     content: [
       {
-        text: "Yeah. Email first. Less pressure.
+        text: `Yeah. Email first. Less pressure.
 
 I'll write a guide: '5 Things Dental School Didn't Teach You.' Free download in exchange for email.
 
-Build the audience, then sell the course. Smart.",
+Build the audience, then sell the course. Smart.`,
         emotion: 'settled_plan',
         variation_id: 'ending_cautious_v1'
       }
@@ -530,11 +530,11 @@ Build the audience, then sell the course. Smart.",
     speaker: 'Yaquin',
     content: [
       {
-        text: "Thank you. I came here looking for a new job, but I think I just invented one instead.
+        text: `Thank you. I came here looking for a new job, but I think I just invented one instead.
 
 I'm going to go record that video on alginate mixing. 
 
-See you around the station.",
+See you around the station.`,
         emotion: 'grateful',
         variation_id: 'farewell_v1'
       }
