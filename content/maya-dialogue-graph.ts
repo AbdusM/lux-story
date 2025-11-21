@@ -697,7 +697,9 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         text: "My parents immigrated here with nothing.\n\nThey worked three jobs to put me through school.\n\nThey dream of saying 'our daughter, the doctor.'\n\nHow can I tell them I'd rather build machines than heal people?",
         emotion: 'sad',
-        variation_id: 'family_v1'
+        variation_id: 'family_v1',
+        useChatPacing: true,
+        richEffectContext: 'warning'
       }
     ],
     requiredState: {
@@ -879,7 +881,9 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         text: "I've been accepted to UAB's biomedical engineering program. I could transfer. But I also got into the traditional pre-med track my parents expect. The train is coming soon. I need to choose my platform.",
         emotion: 'anxious',
-        variation_id: 'crossroads_v1'
+        variation_id: 'crossroads_v1',
+        useChatPacing: true,
+        richEffectContext: 'thinking'
       }
     ],
     requiredState: {
@@ -1081,6 +1085,40 @@ export const mayaDialogueNodes: DialogueNode[] = [
       }
     ],
     choices: [
+      {
+        choiceId: 'early_recovery',
+        text: "Wait. I feel like there's more you're not saying.",
+        nextNodeId: 'maya_anxiety_reveal',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'adaptability'],
+        visibleCondition: {
+          patterns: {
+            patience: { min: 3 }
+          }
+        },
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1,
+          addKnowledgeFlags: ['recovery_attempt_successful']
+        }
+      },
+      {
+        choiceId: 'early_recovery_help',
+        text: "I'm really listening, if you want to share.",
+        nextNodeId: 'maya_anxiety_reveal',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication'],
+        visibleCondition: {
+          patterns: {
+            helping: { min: 3 }
+          }
+        },
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1,
+          addKnowledgeFlags: ['recovery_attempt_successful']
+        }
+      },
       {
         choiceId: 'early_farewell',
         text: "I hope you find your path, Maya.",

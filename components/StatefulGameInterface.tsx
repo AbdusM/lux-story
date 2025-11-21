@@ -42,6 +42,7 @@ import { SCENE_SKILL_MAPPINGS } from '@/lib/scene-skill-mappings'
 import { getComprehensiveTracker } from '@/lib/comprehensive-user-tracker'
 import { ExperienceSummary, type ExperienceSummaryData } from '@/components/ExperienceSummary'
 import { NarrativeFeedback } from '@/components/NarrativeFeedback'
+import { SyncStatusIndicator } from '@/components/SyncStatusIndicator'
 import { detectArcCompletion, generateExperienceSummary } from '@/lib/arc-learning-objectives'
 import { loadSkillProfile } from '@/lib/skill-profile-adapter'
 import { getLearningObjectivesTracker } from '@/lib/learning-objectives-tracker'
@@ -946,6 +947,7 @@ export default function StatefulGameInterface() {
                 Export
               </Button>
             )}
+            <SyncStatusIndicator />
             <button 
               onClick={continueJourney} 
               className="text-xs text-slate-400 hover:text-slate-600 transition-colors px-2 py-1"
