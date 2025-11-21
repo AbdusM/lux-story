@@ -66,8 +66,12 @@ export function FrameworkInsights({ profile, onClose }: FrameworkInsightsProps) 
     patternCounts[pattern] = (patternCounts[pattern] || 0) + count
   })
   
-  const dominantPattern = Object.entries(patternCounts)
-    .sort(([, a], [, b]) => b - a)[0]?.[0] || 'helping'
+  const sortedPatterns = Object.entries(patternCounts).sort(([, a], [, b]) => b - a)
+  const topCount = sortedPatterns[0][1]
+  const topPatterns = sortedPatterns.filter(([, count]) => count === topCount).map(([pattern]) => pattern)
+  
+  const isHybrid = topPatterns.length > 1 && topCount > 0
+  const dominantPattern = topPatterns[0] || 'helping'
 
   const patternToRIASEC: Record<string, { type: string; description: string }> = {
     helping: { type: 'Social (S)', description: 'You naturally support and help others, making you well-suited for careers in healthcare, education, counseling, and social services.' },
@@ -77,7 +81,15 @@ export function FrameworkInsights({ profile, onClose }: FrameworkInsightsProps) 
     exploring: { type: 'Artistic (A)', description: 'You explore new ideas and express creativity, making you a good fit for careers in arts, design, writing, and creative problem-solving.' }
   }
 
-  const riasecMatch = patternToRIASEC[dominantPattern] || patternToRIASEC.helping
+  let riasecMatch = patternToRIASEC[dominantPattern] || patternToRIASEC.helping
+  
+  if (isHybrid) {
+    const types = topPatterns.map(p => patternToRIASEC[p]?.type.split(' ')[0]).join(' / ')
+    riasecMatch = {
+      type: `Hybrid: ${types}`,
+      description: `You have a versatile balanced profile, combining strengths from ${topPatterns.join(' and ')}. This makes you adaptable across many career fields that require multiple skill sets.`
+    }
+  }
 
   const frameworks: FrameworkInsight[] = [
     {

@@ -971,6 +971,76 @@ export const samuelDialogueNodes: DialogueNode[] = [
     ]
   },
 
+  // NUANCE: Robotics + Patience
+  {
+    nodeId: 'samuel_maya_path_reflection',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "She's choosing robotics. But what struck me was how she got there.\n\nYou didn't push. You waited. You let the silence do the work.\n\nThat's the difference between forcing a flower open and letting it bloom. She chose this because she felt safe, not because she was persuaded.",
+        emotion: 'deep_respect',
+        variation_id: 'robotics_patience_v1'
+      }
+    ],
+    requiredState: {
+      hasKnowledgeFlags: ['chose_robotics'],
+      patterns: {
+        patience: { min: 5 }
+      }
+    },
+    choices: [
+      {
+        choiceId: 'patience_was_key',
+        text: "The silence felt necessary.",
+        nextNodeId: 'samuel_contemplation_offer',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'adaptability']
+      },
+      {
+        choiceId: 'she_needed_space',
+        text: "She just needed room to breathe.",
+        nextNodeId: 'samuel_contemplation_offer',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication']
+      }
+    ]
+  },
+
+  // NUANCE: Robotics + Analytical
+  {
+    nodeId: 'samuel_maya_path_reflection',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "She's choosing robotics. You helped her see the logic of it - that UAB has a program, that it's a valid field.\n\nSometimes passion needs a scaffold. You built that for her. You took a dream that felt impossible and gave it structure.",
+        emotion: 'affirming_analytical',
+        variation_id: 'robotics_analytical_v1'
+      }
+    ],
+    requiredState: {
+      hasKnowledgeFlags: ['chose_robotics'],
+      patterns: {
+        analytical: { min: 5 }
+      }
+    },
+    choices: [
+      {
+        choiceId: 'structure_supports_dreams',
+        text: "Dreams need foundations.",
+        nextNodeId: 'samuel_contemplation_offer',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'problemSolving']
+      },
+      {
+        choiceId: 'logic_validated_feeling',
+        text: "The facts helped her trust her feelings.",
+        nextNodeId: 'samuel_contemplation_offer',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication']
+      }
+    ]
+  },
+
   {
     nodeId: 'samuel_maya_path_reflection',
     speaker: 'Samuel Washington',
@@ -1962,6 +2032,62 @@ export const samuelDialogueNodes: DialogueNode[] = [
           characterId: 'samuel',
           trustChange: 1
         }
+      }
+    ]
+  },
+
+  // NUANCE: Integration + Helping (Gentle Presence)
+  {
+    nodeId: 'samuel_devon_path_reflection',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "He's choosing integration. But more importantly, he's choosing it because he feels safe.\n\nYou approached his logic with so much gentleness. You didn't try to break his system; you helped him expand it to include himself.\n\nThat's how you help a rigid mind become flexible. Warmth melts structure.",
+        emotion: 'warm_approval',
+        variation_id: 'devon_integration_helping_v1'
+      }
+    ],
+    requiredState: {
+      hasKnowledgeFlags: ['chose_integration'],
+      patterns: {
+        helping: { min: 5 }
+      }
+    },
+    choices: [
+      {
+        choiceId: 'gentleness_is_strength',
+        text: "He just needed to know he wasn't broken.",
+        nextNodeId: 'samuel_devon_systems_wisdom',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication']
+      }
+    ]
+  },
+
+  // NUANCE: Integration + Analytical (Structural Insight)
+  {
+    nodeId: 'samuel_devon_path_reflection',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "He's choosing integration. You spoke his language perfectly.\n\nYou helped him see that emotions are variables, not errors. That was the key. You didn't ask him to stop being an engineer; you helped him become a better one.\n\nThat's systemic change.",
+        emotion: 'respectful_analytical',
+        variation_id: 'devon_integration_analytical_v1'
+      }
+    ],
+    requiredState: {
+      hasKnowledgeFlags: ['chose_integration'],
+      patterns: {
+        analytical: { min: 5 }
+      }
+    },
+    choices: [
+      {
+        choiceId: 'better_system',
+        text: "It's a more robust system now.",
+        nextNodeId: 'samuel_devon_systems_wisdom',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'systemsThinking']
       }
     ]
   },
