@@ -819,6 +819,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
   // ============= REFLECTION: Understanding Influence vs. Agency - Part 1 =============
   {
     nodeId: 'samuel_reflect_on_influence',
+    learningObjectives: ['samuel_reflective_observation'],
     speaker: 'Samuel Washington',
     content: [
       {
@@ -884,6 +885,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
 
   {
     nodeId: 'samuel_reflect_on_agency',
+    learningObjectives: ['samuel_abstract_conceptualization'],
     speaker: 'Samuel Washington',
     content: [
       {
@@ -1164,7 +1166,9 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         text: "I don't give directions. I help them see what they already know.\n\nI followed other people's blueprints for twenty-three years. Now I help people draw their own.\n\nThe best guides don't lead. They witness.",
         emotion: 'vulnerable_wisdom',
-        variation_id: 'keeper_truth_v1'
+        variation_id: 'keeper_truth_v1',
+        useChatPacing: true,
+        richEffectContext: 'thinking'
       }
     ],
     choices: [
@@ -1184,6 +1188,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
 
   {
     nodeId: 'samuel_your_pattern_emerges',
+    learningObjectives: ['samuel_active_experimentation'],
     speaker: 'Samuel Washington',
     content: [
       {
@@ -1217,7 +1222,9 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         text: "'What specifically should I do?' That keeps people stuck.\n\nThe pattern is bigger than any role. You hold space. Ask questions that matter. Meet people in uncertainty.\n\nThose skills work everywhere. The form will emerge.\n\nTrust the pattern.",
         emotion: 'patient_wisdom',
-        variation_id: 'specificity_trap_v1'
+        variation_id: 'specificity_trap_v1',
+        useChatPacing: true,
+        richEffectContext: 'thinking'
       }
     ],
     choices: [
