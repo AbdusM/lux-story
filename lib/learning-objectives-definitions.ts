@@ -97,6 +97,17 @@ export const LEARNING_OBJECTIVES: Record<string, LearningObjective> = {
     nodeId: 'jordan_leadership_path'
   },
 
+  // ============= MARCUS ARC OBJECTIVES =============
+  'marcus_crisis_management': {
+    id: 'marcus_crisis_management',
+    title: 'Crisis Management & Technical Precision',
+    description: 'Execute precise technical interventions under time pressure while maintaining situational awareness.',
+    category: 'skill',
+    relatedSkills: ['crisisManagement', 'technicalLiteracy', 'decisiveness'],
+    relatedPatterns: ['building', 'analytical'],
+    nodeId: 'marcus_simulation_start'
+  },
+
   // ============= SAMUEL ARC OBJECTIVES (Meta-Learning) =============
   'samuel_reflective_observation': {
     id: 'samuel_reflective_observation',
