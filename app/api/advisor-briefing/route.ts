@@ -219,83 +219,40 @@ export async function POST(request: NextRequest) {
     console.log('[AdvisorBriefing] WEF 2030 Skills:', skillsData?.length || 0)
     console.log('[AdvisorBriefing] Prompt length:', masterPrompt.length, 'chars')
 
-    // 5. Call Claude API (or use mock for testing)
+    // 5. Call Claude API
     let briefingText: string | null = null
     let tokensUsed = 0
 
-    // For development/testing without API key, generate a mock response
-    if (ANTHROPIC_API_KEY === 'your_anthropic_api_key_here' || !ANTHROPIC_API_KEY) {
-      console.log('[AdvisorBriefing] Using MOCK response for testing (no API key configured)')
+    // Production: Use real Claude API
+    const anthropic = new Anthropic({
+      apiKey: ANTHROPIC_API_KEY,
+    })
 
-      // Generate a realistic mock briefing based on actual data
-      const topCareer = profile.careerMatches[0]
-
-      // Use WEF 2030 skills if available, otherwise use profile data
-      const hasWEFSkills = skillsData && skillsData.length > 0
-      const wefSkill1 = hasWEFSkills ? skillsData[0] : null
-      const wefSkill2 = hasWEFSkills && skillsData.length > 1 ? skillsData[1] : null
-      const wefSkill3 = hasWEFSkills && skillsData.length > 2 ? skillsData[2] : null
-
-      briefingText = `## 1. The Authentic Story
-
-This is a bridge-builder who creates connections through patience and understanding. Their choice to say "${profile.keySkillMoments[0]?.choice || 'I have felt something like that'}" reveals someone who leads with empathy while maintaining analytical depth. They're learning that their superpower isn't choosing between logic and emotion—it's integrating both.
-
-## 2. Top Strengths
-
-${wefSkill1 ? `**${formatSkillName(wefSkill1.skillName)} (WEF 2030)**: ${wefSkill1.latestContext} This skill has been demonstrated ${wefSkill1.demonstrationCount} times across their journey.` : `**Emotional Intelligence**: When Devon struggled with his father's grief, they said "${profile.keySkillMoments[0]?.choice || 'That must have hurt'}"—validating pain without rushing to fix it. This demonstrates rare emotional maturity.`}
-
-${wefSkill2 ? `**${formatSkillName(wefSkill2.skillName)} (WEF 2030)**: ${wefSkill2.latestContext} Demonstrated ${wefSkill2.demonstrationCount} times, showing consistent application of this critical skill.` : `**Communication**: Their response "${profile.keySkillMoments[1]?.choice || 'What about my own path?'}" to Samuel shows vulnerability and directness, creating authentic dialogue that builds trust.`}
-
-${wefSkill3 ? `**${formatSkillName(wefSkill3.skillName)} (WEF 2030)**: ${wefSkill3.latestContext}` : `**Critical Thinking**: Recognized the false binary in Devon's thinking ("${profile.keySkillMoments[2]?.choice || 'Logic OR emotion. What about both?'}"), demonstrating systems thinking that embraces complexity.`}
-
-## 3. The Primary Blocker
-
-The **${Math.round((profile.skillGaps[0]?.gap || 0.7) * 100)}% gap in ${profile.skillGaps[0]?.skill || 'Leadership'}** is blocking ${topCareer?.name || 'Healthcare Innovation'}. Without demonstrated leadership experience, they can't transition from helper to guide—critical for ${topCareer?.name || 'career advancement'}.
-
-## 4. The Strategic Recommendation
-
-**This week:** Visit ${topCareer?.localOpportunities?.[0] || 'UAB Innovation Lab'} and join their student leadership program. **Why:** This directly addresses your leadership gap while leveraging your demonstrated emotional intelligence in a structured mentorship environment.
-
-## 5. The Conversation Starter
-
-${wefSkill1 ? `"I was impressed by your demonstrated ${formatSkillName(wefSkill1.skillName)}—specifically when you ${wefSkill1.latestContext.slice(0, 100)}... That WEF 2030 skill is exactly what ${topCareer?.localOpportunities?.[0] || 'UAB Innovation Lab'} looks for in their emerging leaders program."` : `"I was impressed when you told Devon that '${profile.keySkillMoments[0]?.choice || 'both logic and emotion matter'}.' That integration mindset is exactly what ${topCareer?.localOpportunities?.[0] || 'UAB\'s Innovation Lab'} looks for in their emerging leaders program—they need people who can bridge technical and human systems."`}
-
----
-*Note: This is a development preview. Configure ANTHROPIC_API_KEY in .env.local for production use.${hasWEFSkills ? ' Using WEF 2030 Skills Framework data.' : ''}*`
-
-      tokensUsed = 850 // Mock token count
-    } else {
-      // Production: Use real Claude API
-      const anthropic = new Anthropic({
-        apiKey: ANTHROPIC_API_KEY,
-      })
-
-      interface ClaudeTextBlock {
-        type: 'text'
-        text: string
-      }
-
-      interface ClaudeResponse {
-        content: ClaudeTextBlock[]
-        usage: {
-          input_tokens: number
-          output_tokens: number
-        }
-      }
-
-      const message = await anthropic.messages.create({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 2000,
-        temperature: 0.7,
-        messages: [{
-          role: 'user',
-          content: masterPrompt
-        }]
-      }) as ClaudeResponse
-
-      briefingText = message.content[0].type === 'text' ? message.content[0].text : null
-      tokensUsed = message.usage.input_tokens + message.usage.output_tokens
+    interface ClaudeTextBlock {
+      type: 'text'
+      text: string
     }
+
+    interface ClaudeResponse {
+      content: ClaudeTextBlock[]
+      usage: {
+        input_tokens: number
+        output_tokens: number
+      }
+    }
+
+    const message = await anthropic.messages.create({
+      model: 'claude-3-5-sonnet-20240620',
+      max_tokens: 2000,
+      temperature: 0.7,
+      messages: [{
+        role: 'user',
+        content: masterPrompt
+      }]
+    }) as ClaudeResponse
+
+    briefingText = message.content[0].type === 'text' ? message.content[0].text : null
+    tokensUsed = message.usage.input_tokens + message.usage.output_tokens
 
     // 6. Validate response
 

@@ -47,6 +47,7 @@ import { detectArcCompletion, generateExperienceSummary } from '@/lib/arc-learni
 import { loadSkillProfile } from '@/lib/skill-profile-adapter'
 import { getLearningObjectivesTracker } from '@/lib/learning-objectives-tracker'
 import { getLearningObjectivesForNode } from '@/lib/learning-objectives-definitions'
+import { isSupabaseConfigured } from '@/lib/supabase'
 
 interface GameInterfaceState {
   gameState: GameState | null
@@ -69,6 +70,7 @@ interface GameInterfaceState {
   recentSkills: string[]  // Recently demonstrated skills for highlighting
   showExperienceSummary: boolean  // For showing learning objectives after arc completion
   experienceSummaryData: ExperienceSummaryData | null  // Data for experience summary
+  showConfigWarning: boolean // For dev/preview environments without DB
 }
 
 export default function StatefulGameInterface() {
@@ -93,7 +95,8 @@ export default function StatefulGameInterface() {
     transitionData: null,
     recentSkills: [],
     showExperienceSummary: false,
-    experienceSummaryData: null
+    experienceSummaryData: null,
+    showConfigWarning: !isSupabaseConfigured()
   })
 
   // Feature flag for rich text effects (terminal-style animations)
@@ -930,6 +933,20 @@ export default function StatefulGameInterface() {
       style={{ willChange: 'auto', contain: 'layout style paint', transition: 'none' }}
     >
       <div className="max-w-4xl mx-auto p-3 sm:p-4">
+
+        {/* Configuration Warning Banner */}
+        {state.showConfigWarning && (
+          <div className="mb-4 px-4 py-3 bg-amber-50 border border-amber-200 rounded-lg flex items-start gap-3">
+            <div className="text-amber-600 mt-0.5">⚠️</div>
+            <div>
+              <h4 className="text-sm font-medium text-amber-800">Database Not Configured</h4>
+              <p className="text-xs text-amber-700 mt-1">
+                Running in local preview mode. Progress will be saved to your browser but not synced to the cloud.
+                To enable cloud sync, configure Supabase variables in .env.local.
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* Subtle top utility bar */}
         <div className="flex justify-between items-center mb-3">

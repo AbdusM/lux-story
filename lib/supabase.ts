@@ -142,6 +142,15 @@ export const supabase = new Proxy({} as SupabaseClient, {
 })
 
 /**
+ * Check if Supabase is properly configured
+ * Useful for showing UI warnings in development/preview
+ */
+export const isSupabaseConfigured = () => {
+  const config = getSupabaseConfig()
+  return config.isConfigured
+}
+
+/**
  * Database Schema Types
  * Auto-generated types will go here once schema is created
  */
