@@ -18,6 +18,7 @@ export interface SimpleCareerMetrics {
   timeSpent: number
   choicesMade: number
   platformsExplored: string[]
+  localAffinity: number // New: Birmingham connectivity score
 }
 
 export interface SimpleBirminghamOpportunity {
@@ -99,7 +100,8 @@ export class SimpleCareerAnalytics {
           choicesMade: result.analytics.choicesMade || 0,
           timeSpent: result.analytics.timeSpent || 0,
           sectionsViewed: result.analytics.sectionsViewed || [],
-          birminghamOpportunities: result.analytics.birminghamOpportunities || []
+          birminghamOpportunities: result.analytics.birminghamOpportunities || [],
+          localAffinity: result.analytics.localAffinity || 0
         })
 
         // Also save to localStorage for offline access
@@ -200,6 +202,13 @@ export class SimpleCareerAnalytics {
       this.addInterest(userId, 'education')
     }
 
+    // New: Local Affinity Scoring (Pattern 4)
+    const localKeywords = ['birmingham', 'uab', 'depot', 'railroad', 'magic city', 'bessemer', 'homewood', 'local']
+    if (localKeywords.some(keyword => choiceText.includes(keyword))) {
+      userMetrics.localAffinity = (userMetrics.localAffinity || 0) + 1
+      console.log(`🏙️ Local Affinity Increased: ${userMetrics.localAffinity}`)
+    }
+
     // Persist and sync
     this.saveToLocalStorage(userId)
     this.queueSync(userId)
@@ -257,6 +266,7 @@ export class SimpleCareerAnalytics {
       platformsCount: userMetrics.platformsExplored.length,
       engagementLevel: this.calculateEngagement(userMetrics),
       birminghamMatches: this.getBirminghamOpportunities(userId).length,
+      localAffinity: userMetrics.localAffinity || 0,
       nextSteps: this.getNextSteps(userMetrics)
     }
   }
@@ -269,7 +279,8 @@ export class SimpleCareerAnalytics {
         birminghamOpportunities: [],
         timeSpent: 0,
         choicesMade: 0,
-        platformsExplored: []
+        platformsExplored: [],
+        localAffinity: 0
       })
     }
     return this.metrics.get(userId)!
