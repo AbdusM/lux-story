@@ -36,7 +36,7 @@ export const LEARNING_OBJECTIVES: Record<string, LearningObjective> = {
     category: 'relationship',
     relatedSkills: ['emotionalIntelligence', 'communication', 'leadership'],
     relatedPatterns: ['helping', 'building'],
-    nodeId: 'maya_final_decision'
+    nodeId: 'maya_crossroads'
   },
 
   // ============= DEVON ARC OBJECTIVES =============
@@ -95,7 +95,8 @@ export const LEARNING_OBJECTIVES: Record<string, LearningObjective> = {
     relatedSkills: ['leadership', 'communication', 'problemSolving'],
     relatedPatterns: ['building', 'helping'],
     nodeId: 'jordan_leadership_path'
-  }
+  },
+
   // ============= SAMUEL ARC OBJECTIVES (Meta-Learning) =============
   'samuel_reflective_observation': {
     id: 'samuel_reflective_observation',
