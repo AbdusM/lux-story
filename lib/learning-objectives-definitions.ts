@@ -119,6 +119,17 @@ export const LEARNING_OBJECTIVES: Record<string, LearningObjective> = {
     nodeId: 'tess_the_pitch_setup'
   },
 
+  // ============= YAQUIN ARC OBJECTIVES =============
+  'yaquin_edtech_entrepreneurship': {
+    id: 'yaquin_edtech_entrepreneurship',
+    title: 'Digital Course Creation Strategy',
+    description: 'Design a curriculum and launch strategy for a cohort-based learning program.',
+    category: 'skill',
+    relatedSkills: ['instructionalDesign', 'marketing', 'leanStartup'],
+    relatedPatterns: ['building', 'analytical'],
+    nodeId: 'yaquin_tech_stack_details'
+  },
+
   // ============= SAMUEL ARC OBJECTIVES (Meta-Learning) =============
   'samuel_reflective_observation': {
     id: 'samuel_reflective_observation',

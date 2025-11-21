@@ -919,7 +919,8 @@ export default function StatefulGameInterface() {
     devon: 'Devon Kumar',
     jordan: 'Jordan Packard',
     marcus: 'Marcus',
-    tess: 'Tess'
+    tess: 'Tess',
+    yaquin: 'Yaquin'
   }
 
   return (
@@ -979,7 +980,7 @@ export default function StatefulGameInterface() {
               <div className="flex items-center gap-2 sm:gap-3">
                 {/* Character Switcher - Clean button row */}
                 {state.gameState && (() => {
-                  const availableChars = (['samuel', 'maya', 'devon', 'jordan', 'marcus', 'tess'] as CharacterId[]).filter(charId => {
+                  const availableChars = (['samuel', 'maya', 'devon', 'jordan', 'marcus', 'tess', 'yaquin'] as CharacterId[]).filter(charId => {
                     const char = state.gameState!.characters.get(charId)
                     const hasMet = char && (char.trust > 0 || char.conversationHistory.length > 0)
                     return hasMet || charId === 'samuel' // Always show Samuel
