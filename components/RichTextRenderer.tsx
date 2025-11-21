@@ -89,6 +89,7 @@ export function RichTextRenderer({
 }: RichTextRendererProps) {
   const [isComplete, setIsComplete] = useState(false)
   const [visibleChunks, setVisibleChunks] = useState<number>(0)
+  const shouldReduceMotion = useReducedMotion()
   
   // Default to staggered if 'typewriter' is requested (migration strategy)
   const mode = effects.mode === 'typewriter' ? 'staggered' : (effects.mode || 'static')
@@ -105,7 +106,7 @@ export function RichTextRenderer({
     setIsComplete(false)
     setVisibleChunks(0)
     
-    if (mode === 'static' || mode === 'fade-in') {
+    if (shouldReduceMotion || mode === 'static' || mode === 'fade-in') {
       setVisibleChunks(chunks.length)
       setIsComplete(true)
       onComplete?.()
@@ -192,13 +193,13 @@ export function RichTextRenderer({
       )}
       onClick={handleSkip}
     >
-      {chunks.map((chunk, index) => (
-        <motion.div
-          key={`${text.substring(0, 10)}-${index}`}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{
-            opacity: index < visibleChunks ? 1 : 0,
-            y: index < visibleChunks ? 0 : 10
+            {chunks.map((chunk, index) => (
+              <motion.div
+                key={`${text.substring(0, 10)}-${index}`}
+                layout
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ 
+                  opacity: index < visibleChunks ? 1 : 0,            y: index < visibleChunks ? 0 : 10
           }}
           transition={{ type: "spring", stiffness: 400, damping: 30 }}
           className={cn(

@@ -1,4 +1,3 @@
-// @ts-expect-error - Legacy PDF export component with type issues, to be refactored
 /**
  * PDF Export for Skills-Based Career Profile
  * Evidence-first formatting - show what they DID, not just scores
@@ -118,8 +117,9 @@ interface SkillsReportPDFProps {
 }
 
 export const SkillsReportPDF: React.FC<SkillsReportPDFProps> = ({ profile }) => {
-  // Get top 5 skills for focused display
-  const topSkills = Object.entries(profile.skills)
+  // Get top 5 skills for focused display (based on demonstration count)
+  const topSkills = Object.entries(profile.skillDemonstrations)
+    .map(([skillKey, demos]) => [skillKey, demos.length] as const)
     .sort(([, a], [, b]) => b - a)
     .slice(0, 5);
 
@@ -141,7 +141,7 @@ export const SkillsReportPDF: React.FC<SkillsReportPDFProps> = ({ profile }) => 
             return (
               <View key={skillKey} style={styles.skillBlock}>
                 <Text style={styles.skillName}>
-                  {formatSkillName(skillKey)} - {Math.round(score * 100)}% Developed
+                  {formatSkillName(skillKey)} - {score} demonstrations
                 </Text>
                 {demos.slice(0, 2).map((demo, idx) => (
                   <Text key={idx} style={styles.demonstration}>
@@ -174,12 +174,12 @@ export const SkillsReportPDF: React.FC<SkillsReportPDFProps> = ({ profile }) => 
           ))}
         </View>
 
-        {/* Action Steps Section */}
+        {/* Skill Gaps Section */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Recommended Actions</Text>
-          {profile.actionSteps.slice(0, 5).map((step, idx) => (
+          <Text style={styles.sectionTitle}>Development Opportunities</Text>
+          {profile.skillGaps.slice(0, 5).map((gap, idx) => (
             <Text key={idx} style={styles.demonstration}>
-              {idx + 1}. {step.action} ({step.timeframe})
+              {idx + 1}. {gap.skill}: {gap.developmentPath}
             </Text>
           ))}
         </View>
