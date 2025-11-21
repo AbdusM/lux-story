@@ -178,6 +178,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
   // ============= JOB REVEAL 2: Galleria Sales (Trust 3) =============
   {
     nodeId: 'jordan_job_reveal_2',
+    learningObjectives: ['jordan_trade_value'],
     speaker: 'Jordan Packard',
     content: [{
       text: "Selling phones at the Galleria. You know, those kiosks where you chase people speed-walking past?\n\nHumbling. But I learned to read people in three seconds. Ask questions that made them feel heard.\n\nCustomer service is applied empathy.",
@@ -754,12 +755,14 @@ export const jordanDialogueNodes: DialogueNode[] = [
   // ============= IMPOSTOR SYNDROME REVEAL (Trust 9) =============
   {
     nodeId: 'jordan_impostor_reveal',
+    learningObjectives: ['jordan_impostor_syndrome'],
     speaker: 'Jordan Packard',
     content: [{
       text: "Let me show you something. A text from my mom:\n\n'Another one? Are you sure you're not just being picky, baby?'\n\nShe was worried. But I hear that voice every time someone calls me a 'senior designer.'\n\nWhat if I'm just a fraud who got lucky? What if those students see right through me?\n\nBecause some days, that's exactly what I think.",
       emotion: 'raw',
       variation_id: 'jordan_impostor_1',
-      useChatPacing: true // Major vulnerability reveal
+      useChatPacing: true, // Major vulnerability reveal
+      richEffectContext: 'thinking'
     }],
     requiredState: {
       trust: { min: 9 },
@@ -809,12 +812,14 @@ export const jordanDialogueNodes: DialogueNode[] = [
   // ============= CROSSROADS (Trust 10) =============
   {
     nodeId: 'jordan_crossroads',
+    learningObjectives: ['jordan_leadership_potential'],
     speaker: 'Jordan Packard',
     content: [{
       text: "Twenty minutes before that room fills up.\n\nI keep rewriting this speech. Which version is true?\n\nPast as liability? Past as asset? Or I define what it means?\n\nWhich story should I tell them?",
       emotion: 'desperate_clarity',
       variation_id: 'jordan_crossroads_1',
-      useChatPacing: true // Crossroads decision moment
+      useChatPacing: true, // Crossroads decision moment
+      richEffectContext: 'thinking'
     }],
     requiredState: {
       trust: { min: 10 },
