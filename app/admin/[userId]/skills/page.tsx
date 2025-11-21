@@ -1,22 +1,25 @@
 'use client'
 
-import { use } from 'react'
-import { SkillsSection } from '@/components/admin/sections/SkillsSection'
-import { useAdminDashboard } from '@/components/admin/AdminDashboardContext'
+import { SkillProgressionChart } from '@/components/admin/SkillProgressionChart'
+import { PedagogicalImpactCard } from '@/components/admin/PedagogicalImpactCard'
 
-export default function SkillsPage({ params }: { params: Promise<{ userId: string }> }) {
-  const { userId } = use(params)
-  const { profile, adminViewMode } = useAdminDashboard()
-
-  if (!profile) {
-    return (
-      <div className="text-center py-12">
-        <div className="animate-spin rounded-full h-8 w-8 border-2 border-slate-200 border-t-blue-600 mx-auto mb-4" />
-        <p className="text-gray-600">Loading...</p>
+export default function AdminSkillsPage() {
+  return (
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <SkillsAnalysisCard />
+        <SkillGapsAnalysis />
       </div>
-    )
-  }
-
-  return <SkillsSection userId={userId} profile={profile} adminViewMode={adminViewMode} />
+      
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2">
+          <SkillProgressionChart />
+        </div>
+        <div className="lg:col-span-1">
+          <PedagogicalImpactCard />
+        </div>
+      </div>
+    </div>
+  )
 }
 
