@@ -10,6 +10,7 @@ import {
   StateCondition,
   StateChange
 } from './character-state'
+import { FutureSkills } from './2030-skills-system'
 
 /**
  * A single dialogue node in the narrative graph
@@ -89,11 +90,7 @@ export interface ConditionalChoice {
   pattern?: 'analytical' | 'helping' | 'building' | 'patience' | 'exploring'
 
   // WEF 2030 Skills demonstrated by this choice (for Samuel's personalization)
-  skills?: Array<
-    'criticalThinking' | 'creativity' | 'communication' | 'collaboration' |
-    'adaptability' | 'leadership' | 'digitalLiteracy' | 'emotionalIntelligence' |
-    'culturalCompetence' | 'problemSolving' | 'timeManagement' | 'financialLiteracy'
-  >
+  skills?: (keyof FutureSkills)[]
 
   // Learning objective addressed by this specific choice (optional - more granular than node-level)
   learningObjectiveId?: string

@@ -1,5 +1,7 @@
 'use client'
 
+import { SkillsAnalysisCard } from '@/components/admin/SkillsAnalysisCard'
+import { SkillGapsAnalysis } from '@/components/admin/SkillGapsAnalysis'
 import { SkillProgressionChart } from '@/components/admin/SkillProgressionChart'
 import { PedagogicalImpactCard } from '@/components/admin/PedagogicalImpactCard'
 
