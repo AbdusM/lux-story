@@ -30,7 +30,7 @@ export interface GameState {
   patterns: PlayerPatterns // Pattern tracking for final revelation
   lastSaved: number
   currentNodeId: string // Current position in dialogue graph
-  currentCharacterId: 'samuel' | 'maya' | 'devon' | 'jordan' // Current character being talked to
+  currentCharacterId: 'samuel' | 'maya' | 'devon' | 'jordan' | 'marcus' // Current character being talked to
 }
 
 /**
@@ -110,7 +110,7 @@ export interface SerializableGameState {
   patterns: PlayerPatterns
   lastSaved: number
   currentNodeId: string
-  currentCharacterId: 'samuel' | 'maya' | 'devon' | 'jordan'
+  currentCharacterId: 'samuel' | 'maya' | 'devon' | 'jordan' | 'marcus'
 }
 
 /**
@@ -240,7 +240,8 @@ export class GameStateUtils {
         ['samuel', this.createCharacterState('samuel')],
         ['maya', this.createCharacterState('maya')],
         ['devon', this.createCharacterState('devon')],
-        ['jordan', this.createCharacterState('jordan')]
+        ['jordan', this.createCharacterState('jordan')],
+        ['marcus', this.createCharacterState('marcus')]
       ]),
       globalFlags: new Set(),
       patterns: {
@@ -251,8 +252,8 @@ export class GameStateUtils {
         exploring: 0
       },
       lastSaved: Date.now(),
-      currentNodeId: 'samuel_introduction', // Start with Samuel (Station Keeper)
-      currentCharacterId: 'samuel' // Game begins at the station entrance
+      currentNodeId: 'marcus_introduction', // Start with Marcus (ECMO Simulation)
+      currentCharacterId: 'marcus' // Game begins with the Nurse
     }
   }
 
