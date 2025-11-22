@@ -380,12 +380,12 @@ export default function StatefulGameInterface() {
                     ref={scrollAreaRef}
                     className="h-full md:col-span-8 lg:col-span-8 overflow-y-auto p-4 md:p-0 scroll-smooth"
                 >
-                    <div className="space-y-6 pb-20 md:pb-0">
-                        
-                        {/* Dialogue Card */}
-                        <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 md:p-8">
-                             <DialogueDisplay 
-                                text={state.currentContent || ''} 
+                    <div className="space-y-5 pb-20 md:pb-0 max-w-3xl">
+
+                        {/* Dialogue - Clean, borderless */}
+                        <div className="py-4">
+                             <DialogueDisplay
+                                text={state.currentContent || ''}
                                 useChatPacing={state.useChatPacing}
                                 characterName={state.currentNode?.speaker}
                                 showAvatar={false} // Avatar is in header now
@@ -394,10 +394,10 @@ export default function StatefulGameInterface() {
                             />
                         </div>
 
-                        {/* Choices */}
-                        {!isEnding && (
-                            <div className="animate-in slide-in-from-bottom-4 fade-in duration-500">
-                                <GameChoices 
+                        {/* Choices - Clean, minimal chrome */}
+                        {!isEnding && state.availableChoices.length > 0 && (
+                            <div className="pt-2">
+                                <GameChoices
                                     choices={state.availableChoices.map(c => ({
                                         text: c.choice.text,
                                         pattern: c.choice.pattern,

@@ -130,7 +130,8 @@ export class SkillTracker {
     })
 
     // 5. Take milestone snapshot if needed
-    if (this.isMilestone(gameState)) {
+    const choiceCount = gameState.choiceHistory?.length || 0
+    if (this.isMilestone(choiceCount)) {
       this.recordMilestone(gameState)
     }
 
@@ -885,9 +886,10 @@ export class SkillTracker {
   }
 
   // Helper methods
-  private isMilestone(gameState: SimpleGameState): boolean {
-    const count = gameState.choiceHistory?.length || 0
-    return count === 1 || count % 10 === 0
+  private isMilestone(choiceCount: number): boolean {
+    // 0 is not a milestone
+    if (choiceCount === 0) return false
+    return choiceCount % 10 === 0
   }
 
   private recordMilestone(gameState: SimpleGameState): void {

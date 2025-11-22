@@ -196,21 +196,20 @@ export function RichTextRenderer({
             {chunks.map((chunk, index) => (
               <motion.div
                 key={`${text.substring(0, 10)}-${index}`}
-                layout
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ 
-                  opacity: index < visibleChunks ? 1 : 0,            y: index < visibleChunks ? 0 : 10
-          }}
-          transition={{ type: "spring", stiffness: 400, damping: 30 }}
-          className={cn(
-            "leading-relaxed text-slate-700",
-            // Hide chunks that shouldn't be visible yet to prevent layout jumps
-            index >= visibleChunks && "hidden"
-          )}
-        >
-          {renderChunkWithHighlights(chunk)}
-        </motion.div>
-      ))}
+                initial={{ opacity: 0 }}
+                animate={{
+                  opacity: index < visibleChunks ? 1 : 0
+                }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
+                className={cn(
+                  "leading-relaxed text-slate-700",
+                  // Hide chunks that shouldn't be visible yet to prevent layout jumps
+                  index >= visibleChunks && "hidden"
+                )}
+              >
+                {renderChunkWithHighlights(chunk)}
+              </motion.div>
+            ))}
       
       {/* Thinking indicator (pulsing block) if processing */}
       {!isComplete && mode === 'staggered' && (
