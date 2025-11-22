@@ -18,27 +18,17 @@ export const kaiDialogueNodes: DialogueNode[] = [
     speaker: 'Kai',
     content: [
       {
-        text: `*Kai is staring at a tablet, swiping back and forth on the same slide. Their hand is shaking slightly. They look less like a corporate executive and more like a witness to a crime.*
-
-*They whisper, voice tight.*
-
-"Ensure the safety harness is secured. Click Next."
-
-*They look up at you, eyes wide and unblinking.*
-
-It was right there. Slide 14. "Ensure harness is secured." He clicked Next. He clicked it. I have the logs.
-
-But he didn't secure the harness.`,
+        text: `"You know what keeps me up at night? Not the lawsuits. Not the regulatory fines."\n\n*Kai's jaw tightens slightly*\n\n"It's the woman who called me last month. Her ex used a stalking app—legal at the time—to track her for two years. Every grocery store. Every friend's house. Every shelter she tried to hide in."\n\n*A beat of silence*\n\n"She asked me why the law didn't protect her. And I had to tell her the truth: because we write the rules *after* the damage is done. I'm trying to change that. But legislation moves like glaciers, and surveillance moves like wildfire."`,
         emotion: 'haunted',
-        variation_id: 'kai_intro_v2',
+        variation_id: 'kai_intro_rewrite',
         richEffectContext: 'warning'
       }
     ],
     choices: [
       {
-        choiceId: 'kai_intro_accident',
-        text: "What happened?",
-        nextNodeId: 'kai_accident_reveal',
+        choiceId: 'kai_intro_frustration',
+        text: "That must be incredibly frustrating.",
+        nextNodeId: 'kai_frustration_response',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'crisisManagement'],
         consequence: {
@@ -47,18 +37,11 @@ But he didn't secure the harness.`,
         }
       },
       {
-        choiceId: 'kai_intro_design',
-        text: "Clicking isn't learning. You know that.",
-        nextNodeId: 'kai_design_failure',
+        choiceId: 'kai_intro_strategy',
+        text: "How do you fight a battle you're always losing?",
+        nextNodeId: 'kai_strategy_discussion',
         pattern: 'analytical',
-        skills: ['instructionalDesign', 'criticalThinking']
-      },
-      {
-        choiceId: 'kai_intro_defensive',
-        text: "If he clicked it, you're legally covered. That's the job.",
-        nextNodeId: 'kai_compliance_trap',
-        pattern: 'building', // Using logic to "build" safety, but wrongly
-        skills: ['riskManagement']
+        skills: ['strategicThinking', 'resilience']
       }
     ],
     onEnter: [
@@ -100,6 +83,42 @@ We designed a green checkmark. We didn't design safety.`,
         nextNodeId: 'kai_simulation_setup',
         pattern: 'analytical',
         skills: ['systemsThinking']
+      },
+      {
+        choiceId: 'kai_marcus_connection',
+        text: "I met a nurse, Marcus. He talks about the difference between the machine and the patient too.",
+        nextNodeId: 'kai_marcus_reference',
+        pattern: 'building',
+        skills: ['collaboration'],
+        visibleCondition: {
+          hasGlobalFlags: ['marcus_arc_complete']
+        }
+      }
+    ]
+  },
+
+  {
+    nodeId: 'kai_marcus_reference',
+    speaker: 'Kai',
+    content: [
+      {
+        text: `Marcus. The ECMO specialist? I read about his case in a medical ethics journal.
+
+He has to decide, in seconds, who lives. I have months to design these courses, and I still failed.
+
+If he makes a mistake, a patient dies. If I make a mistake... 50,000 employees learn the wrong thing. And then what happens?
+
+The scale is different. The guilt is the same.`,
+        emotion: 'reflective_guilt',
+        variation_id: 'marcus_ref_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'kai_marcus_back',
+        text: "So fix it. Like he did.",
+        nextNodeId: 'kai_simulation_setup',
+        pattern: 'building'
       }
     ]
   },
