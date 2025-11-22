@@ -21,8 +21,8 @@ interface GameChoicesProps {
 
 // Animation variants for juice
 const buttonVariants = {
-  initial: { opacity: 0, y: 10 },
-  animate: { opacity: 1, y: 0 },
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
   tap: { scale: 0.98 },
   hover: { scale: 1.01, boxShadow: "0px 4px 12px rgba(0,0,0,0.1)" }
 }
