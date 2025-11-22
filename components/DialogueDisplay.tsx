@@ -134,7 +134,7 @@ export function DialogueDisplay({
   // This allows RichTextRenderer to control chunking internally
   if (richEffects) {
     return (
-      <div className={cn("space-y-4", className)} key="dialogue-chunks-container" style={{ transition: 'none' }}>
+      <div className={cn("space-y-4 min-h-[120px]", className)} key="dialogue-chunks-container" style={{ transition: 'none' }}>
         <RichTextRenderer
           text={chunkedText}
           effects={richEffects}
@@ -149,11 +149,11 @@ export function DialogueDisplay({
 
   // If no chunks, return empty to maintain stable container
   if (chunks.length === 0) {
-    return <div className={cn("space-y-4", className)}></div>
+    return <div className={cn("space-y-4 min-h-[120px]", className)}></div>
   }
 
   return (
-    <div className={cn("space-y-4", className)} key="dialogue-chunks-container" style={{ transition: 'none' }}>
+    <div className={cn("space-y-4 min-h-[120px]", className)} key="dialogue-chunks-container" style={{ transition: 'none' }}>
       {/* Dialogue Content - No inline avatars */}
       {chunks.map((chunk, index) => (
         <p

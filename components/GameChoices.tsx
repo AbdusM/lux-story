@@ -100,15 +100,26 @@ const groupChoices = (choices: Choice[]) => {
   const groups: Record<string, Choice[]> = {
     'Career Paths': [],
     'Exploration': [],
+    'Approach': [],
     'Other': []
   }
 
   choices.forEach(choice => {
-    if (choice.pattern === 'building' || choice.pattern === 'helping' || choice.pattern === 'analytical') {
+    const p = choice.pattern || ''
+    
+    // Core Career Patterns
+    if (['building', 'helping', 'analytical', 'systemsThinking', 'technicalLiteracy', 'leadership', 'creativity', 'crisisManagement'].includes(p)) {
       groups['Career Paths'].push(choice)
-    } else if (choice.pattern === 'exploring' || choice.pattern === 'patience') {
+    } 
+    // Exploration & Soft Skills
+    else if (['exploring', 'patience', 'adaptability', 'resilience', 'communication', 'emotionalIntelligence', 'humility', 'wisdom'].includes(p)) {
       groups['Exploration'].push(choice)
-    } else {
+    }
+    // Approach / Trap Patterns
+    else if (['fairness', 'compliance', 'pragmatism', 'safety', 'efficiency'].includes(p)) {
+       groups['Approach'].push(choice)
+    }
+    else {
       groups['Other'].push(choice)
     }
   })

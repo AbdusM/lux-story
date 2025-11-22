@@ -361,8 +361,8 @@ export const mayaDialogueNodes: DialogueNode[] = [
     },
     choices: [
       {
-        choiceId: 'debug_voltage',
-        text: "[ACTION] Check the voltage regulator. It might be a power surge.",
+        choiceId: 'debug_force',
+        text: "[ACTION] Force the servo to zero position to reset the loop.",
         nextNodeId: 'maya_robotics_fail_burnout', // FAILURE STATE INJECTION
         pattern: 'analytical',
         skills: ['problemSolving', 'technicalLiteracy']
