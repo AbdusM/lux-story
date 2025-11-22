@@ -18,27 +18,19 @@ export const silasDialogueNodes: DialogueNode[] = [
     speaker: 'Silas',
     content: [
       {
-        text: `*Silas is kneeling in the dirt. Not digging—shaking. He's holding a clump of soil like it's a live grenade.*
-
-*He looks at a tablet propped up on a crate. It displays a cheerful green checkmark: "MOISTURE OPTIMAL."*
-
-*He squeezes the soil. It crumbles into dust. Bone dry.*
-
-The dashboard says we're fine. The dashboard says I'm a genius.
-
-But the basil is dying.`,
-        emotion: 'fearful_disbelief',
-        variation_id: 'silas_intro_v2',
+        text: `"My grandmother died in the Texas freeze of '21. Not from the cold—from the insulin that spoiled when the power went out for four days."\n\n*Silas's voice is flat, controlled*\n\n"She lived 30 minutes from a wind farm. Thousands of turbines, just sitting there frozen because the grid operators didn't weatherize the infrastructure. Not 'couldn't'—*didn't*. Too expensive."\n\n*A pause*\n\n"I'm an engineer, not an activist. I don't do protests or policy papers. But I can design microgrids that don't give up when it gets hard. Systems that keep the lights on when the 'too expensive' excuses start flying."\n\n*He meets your eyes*\n\n"So when people ask me why I care about renewable energy, I don't talk about carbon emissions. I talk about my grandmother's fridge, and the insulin inside it, and the fact that she died because someone decided resilience wasn't worth the investment."\n\n*His voice drops*\n\n"I'm making it worth the investment.",
+        emotion: 'grounded_anger',
+        variation_id: 'silas_intro_rewrite',
         richEffectContext: 'warning'
       }
     ],
     choices: [
       {
-        choiceId: 'silas_intro_reality',
-        text: "The map isn't the territory.",
-        nextNodeId: 'silas_bankruptcy_reveal',
-        pattern: 'analytical',
-        skills: ['wisdom'],
+        choiceId: 'silas_intro_empathy',
+        text: "I'm sorry for your loss.",
+        nextNodeId: 'silas_grief_response',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
         consequence: {
           characterId: 'silas',
           trustChange: 2
@@ -46,17 +38,10 @@ But the basil is dying.`,
       },
       {
         choiceId: 'silas_intro_tech',
-        text: "Sensor calibration drift?",
-        nextNodeId: 'silas_tech_defense',
+        text: "How do you design systems that won't fail like that?",
+        nextNodeId: 'silas_technical_philosophy',
         pattern: 'analytical',
-        skills: ['technicalLiteracy']
-      },
-      {
-        choiceId: 'silas_intro_empathy',
-        text: "You look terrified.",
-        nextNodeId: 'silas_bankruptcy_reveal',
-        pattern: 'helping',
-        skills: ['emotionalIntelligence']
+        skills: ['systemsThinking']
       }
     ],
     onEnter: [
@@ -69,13 +54,104 @@ But the basil is dying.`,
   },
 
   {
+    nodeId: 'silas_grief_response',
+    speaker: 'Silas',
+    content: [
+      {
+        text: `Don't be sorry. Be redundant.
+
+Grief is just data without a use case. I turned mine into a spec sheet.
+
+Every system I build now has triple redundancy. Solar, wind, and diesel backup. Because failure isn't an abstraction for me anymore.`,
+        emotion: 'stoic',
+        variation_id: 'grief_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'silas_resilience',
+        text: "Resilience is expensive. How do you pay for it?",
+        nextNodeId: 'silas_bankruptcy_reveal',
+        pattern: 'building',
+        skills: ['financialLiteracy']
+      },
+      {
+        choiceId: 'silas_pressure',
+        text: "That's a lot of pressure to put on a circuit breaker.",
+        nextNodeId: 'silas_technical_philosophy',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
+      },
+      {
+        choiceId: 'silas_yaquin_connection',
+        text: "Yaquin talked about fixing systems by removing the fluff. You're adding redundancy.",
+        nextNodeId: 'silas_yaquin_reference',
+        pattern: 'analytical',
+        skills: ['systemsThinking'],
+        visibleCondition: {
+          hasGlobalFlags: ['yaquin_arc_complete']
+        }
+      }
+    ]
+  },
+
+  {
+    nodeId: 'silas_yaquin_reference',
+    speaker: 'Silas',
+    content: [
+      {
+        text: `Yaquin? The guy rewriting the dental books?
+
+He's right. In education, you cut. In life support, you add.
+
+But we're both fighting the same enemy: "Good Enough."
+
+The textbook says the old way is good enough. The grid operator says the old transformer is good enough. It's not.`,
+        emotion: 'solidarity',
+        variation_id: 'yaquin_ref_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'silas_yaquin_back',
+        text: "It's definitely not.",
+        nextNodeId: 'silas_technical_philosophy',
+        pattern: 'building'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'silas_technical_philosophy',
+    speaker: 'Silas',
+    content: [
+      {
+        text: `You assume the worst case. You design for the 100-year storm happening every Tuesday.
+
+Most engineers optimize for efficiency. I optimize for survival.
+
+But survival is expensive. And right now... I'm not sure I can afford it.`,
+        emotion: 'worried',
+        variation_id: 'philosophy_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'silas_ask_trouble',
+        text: "What's wrong?",
+        nextNodeId: 'silas_bankruptcy_reveal',
+        pattern: 'exploring',
+        skills: ['communication']
+      }
+    ]
+  },
+
+  {
     nodeId: 'silas_bankruptcy_reveal',
     speaker: 'Silas',
     content: [
       {
-        text: `I should be.
-
-I cashed out my Amazon stock options. All of it. Bought this vertical farm. "High-Efficiency Aeroponics."
+        text: `I cashed out my Amazon stock options. All of it. Bought this vertical farm. "High-Efficiency Aeroponics."
 
 Last quarter, the sensors said the pH was perfect. I lost the entire strawberry crop. $40,000 gone in a weekend.
 
@@ -102,51 +178,45 @@ If this basil dies, I lose the farm. I lose my house.`,
     ]
   },
 
-  {
-    nodeId: 'silas_tech_defense',
-    speaker: 'Silas',
-    content: [
-      {
-        text: `It's not drift! These are military-grade hygrometers. They cost more than my truck.
-
-They *can't* be wrong. Because if they're wrong, then I don't know anything. I'm just a guy playing in the dirt with expensive toys.`,
-        emotion: 'defensive_panic',
-        variation_id: 'tech_defense_v1'
-      }
-    ],
-    choices: [
-      {
-        choiceId: 'silas_look_down',
-        text: "Look at the dirt, Silas.",
-        nextNodeId: 'silas_simulation_start',
-        pattern: 'helping',
-        skills: ['grounding']
-      }
-    ]
-  },
-
-  // ============= THE SIMULATION: THE DROUGHT =============
+  // ============= THE SIMULATION: MICROGRID CRISIS =============
   {
     nodeId: 'silas_simulation_start',
     speaker: 'Silas',
     content: [
       {
-        text: `*He shoves the tablet at you.*
+        text: `*Silas pulls up a grid visualization on the wall monitor*
 
-**SYSTEM STATUS:**
-**ZONE 4:** 65% HUMIDITY (OPTIMAL)
-**FLOW RATE:** 2.5 L/MIN
-**VALVE STATE:** OPEN
+"This is the microgrid we built for the coastal district. Hurricane's hitting in 3 hours. Main grid will fail—it always does."
 
-It says the water is flowing. It says everything is fine.
+┌─────────────────────────────────┐
+│ MICROGRID STATUS: OPERATIONAL   │
+├─────────────────────────────────┤
+│ Solar Array:      0 kW (night)  │
+│ Battery Storage:  847 kWh       │
+│ Wind Turbines:    142 kW        │
+│ Diesel Backup:    OFFLINE       │
+├─────────────────────────────────┤
+│ TOTAL CAPACITY:   142 kW        │
+│ PROJECTED DEMAND: 380 kW        │
+│ DEFICIT:          238 kW (63%)  │
+└─────────────────────────────────┘
 
-*He points to the wilted plants.*
+**CONNECTED BUILDINGS**
+├─ Community Center    [120 kW] ← Shelter (200 people)
+├─ Medical Clinic      [90 kW]  ← Dialysis, O2, ICU
+├─ Fire Station        [45 kW]  ← Emergency response
+├─ School              [80 kW]  ← Backup shelter
+└─ Residential         [45 kW]  ← 43 homes
 
-But look at them. They're gasping.
+*He taps the deficit line*
 
-What do I do? If I override the system and flood them, I could rot the roots. If I do nothing, they dry out by morning.`,
-        emotion: 'paralyzed',
-        variation_id: 'sim_start_v2',
+"We don't have enough power for everyone. The battery will drain in 4 hours if we try. So we have to choose."
+
+*His voice is completely flat*
+
+"This is the part they don't put in the renewable energy brochures.",
+        emotion: 'grim_practical',
+        variation_id: 'sim_start_v3',
         richEffectContext: 'warning',
         useChatPacing: true
       }
@@ -156,159 +226,140 @@ What do I do? If I override the system and flood them, I could rot the roots. If
     },
     choices: [
       {
-        choiceId: 'sim_trust_sensor',
-        text: "[ACTION] Trust the data. Run a diagnostic on the valve software.",
-        nextNodeId: 'silas_sim_fail_software',
-        pattern: 'analytical', // Wrong tool
-        skills: ['digitalLiteracy'] 
+        choiceId: 'sim_medical_priority',
+        text: "[ACTION] Prioritize medical clinic—lives over comfort.",
+        nextNodeId: 'silas_sim_medical_priority',
+        pattern: 'helping',
+        skills: ['crisisManagement', 'triage']
       },
       {
-        choiceId: 'sim_physical_trace',
-        text: "[ACTION] Follow the pipe. Physically trace the water line from the tank to the bed.",
-        nextNodeId: 'silas_sim_step_2',
+        choiceId: 'sim_community_priority',
+        text: "[ACTION] Prioritize community center. It's the main shelter.",
+        nextNodeId: 'silas_microgrid_failure', // FAILURE STATE INJECTION
         pattern: 'building',
-        skills: ['systemsThinking', 'observation']
+        skills: ['systemsThinking']
       },
       {
-        choiceId: 'sim_override_flood',
-        text: "[ACTION] Manual Override. Open the emergency floodgates NOW.",
-        nextNodeId: 'silas_sim_fail_rot',
-        pattern: 'helping', // Panic reaction
-        skills: ['crisisManagement']
+        choiceId: 'sim_distribute_evenly',
+        text: "[ACTION] Distribute power evenly—reduce load across all buildings.",
+        nextNodeId: 'silas_sim_fail_brownout',
+        pattern: 'analytical', // Trying to be "fair" kills everyone
+        skills: ['fairness']
       }
     ],
     tags: ['simulation', 'silas_arc', 'immersive_scenario']
   },
 
-  // --- FAILURE STATE 1: SOFTWARE TRAP ---
+  // --- FAILURE STATE 1: WRONG PRIORITY ---
   {
-    nodeId: 'silas_sim_fail_software',
+    nodeId: 'silas_microgrid_failure',
     speaker: 'Silas',
     content: [
       {
-        text: `*You run the diagnostic. A loading bar spins.*
+        text: `*The community center's lights flicker and die*
 
-**DIAGNOSTIC COMPLETE: NO ERRORS FOUND.**
+"The microgrid failed."
 
-*Silas stares at the screen. A leaf falls off the basil plant next to him. It crunches when it hits the floor.*
+*Silas's voice is flat, emotionless—the engineer's mask firmly in place*
 
-The software says we're fine. The plant is dead.
+"You prioritized the community center because it's a shelter. Smart call on paper. Except you didn't account for the medical clinic two blocks over running on the same transformer."
 
-I... I can't do this. I'm going back to cloud computing. At least there, when it says 'Up', it means 'Up'.`,
-        emotion: 'defeated_hollow',
-        variation_id: 'sim_fail_software_v1',
+*He pulls up a map*
+
+"Dialysis machines. Oxygen concentrators. All offline. The clinic's backup generator has 30 minutes of fuel, and the roads are flooded."
+
+*A long pause*
+
+"This is what I meant about systems thinking. You can't just pick the 'most important' building. You have to map the dependencies."
+
+**CONSEQUENCE**: Medical emergency, lives at risk, community trust shaken
+**LESSON**: Renewable systems require NETWORK thinking, not priority lists`,
+        emotion: 'devastated_flat',
+        variation_id: 'sim_fail_priority_v1',
         richEffectContext: 'error'
       }
     ],
     choices: [
       {
-        choiceId: 'silas_give_up',
-        text: "Maybe that's best.",
-        nextNodeId: 'silas_bad_ending',
+        choiceId: 'silas_retry_priority',
+        text: "I didn't see the dependency. Let me try again.",
+        nextNodeId: 'silas_simulation_start',
         pattern: 'patience',
+        skills: ['systemsThinking']
+      },
+      {
+        choiceId: 'silas_give_up_priority',
+        text: "It's too complex. I can't make these calls.",
+        nextNodeId: 'silas_bad_ending',
+        pattern: 'helping',
         consequence: {
           addGlobalFlags: ['silas_chose_tech'] // BAD ENDING
         }
-      },
-      {
-        choiceId: 'silas_retry_physical',
-        text: "Stop looking at the screen! Look at the pipe!",
-        nextNodeId: 'silas_simulation_start',
-        pattern: 'helping',
-        skills: ['urgency']
-      }
-    ]
-  },
-
-  // --- FAILURE STATE 2: ROOT ROT ---
-  {
-    nodeId: 'silas_sim_fail_rot',
-    speaker: 'Silas',
-    content: [
-      {
-        text: `*You yank the manual lever. Water roars into the bed.*
-
-*The dry soil turns to mud instantly. But the water doesn't drain. It sits there, stagnating.*
-
-**ALERT: ROOT ANOXIA DETECTED.**
-
-*Silas groans.*
-
-We drowned them. The soil was compacted. It couldn't drain. Now they'll rot before morning.
-
-I panicked. I broke the system because I was scared.`,
-        emotion: 'guilt',
-        variation_id: 'sim_fail_rot_v1',
-        richEffectContext: 'error'
-      }
-    ],
-    choices: [
-      {
-        choiceId: 'silas_retry_calm',
-        text: "We can drain it. But we need to find the blockage.",
-        nextNodeId: 'silas_simulation_start',
-        pattern: 'patience',
-        skills: ['resilience']
-      }
-    ]
-  },
-
-  // --- STEP 2: THE PHYSICAL BLOCK ---
-  {
-    nodeId: 'silas_sim_step_2',
-    speaker: 'Silas',
-    content: [
-      {
-        text: `*You crawl under the rack. You trace the PVC pipe. It vibrates—there's water inside.*
-
-*But right before the nozzle... a kink. A physical crimp in the line.*
-
-*Silas crawls next to you.*
-
-The sensor measures flow at the *valve*. The kink is *after* the valve.
-
-The sensor wasn't lying. It was measuring the wrong thing. It was measuring intent, not delivery.`,
-        emotion: 'epiphany',
-        variation_id: 'sim_step_2_v2',
-        richEffectContext: 'thinking'
-      }
-    ],
-    choices: [
-      {
-        choiceId: 'sim_uncrimp',
-        text: "[ACTION] Unkink the pipe. Restore the flow.",
-        nextNodeId: 'silas_sim_success',
-        pattern: 'building',
-        skills: ['actionOrientation']
       }
     ],
     tags: ['simulation', 'silas_arc']
   },
 
+  // --- FAILURE STATE 2: BROWNOUT ---
   {
-    nodeId: 'silas_sim_success',
+    nodeId: 'silas_sim_fail_brownout',
     speaker: 'Silas',
     content: [
       {
-        text: `*A hiss of air, then a steady trickle of water. The soil darkens.*
+        text: `*You try to balance the load. Voltage drops across the board.*
 
-*Silas touches the wet dirt. He closes his eyes.*
+**SYSTEM ALERT: UNDERVOLTAGE LOCKOUT.**
 
-Ground truth.
+*Every breaker trips at once. The entire grid goes dark.*
 
-I spent all year coding dashboards to avoid crawling in the dirt. But the answer was in the dirt.`,
-        emotion: 'humbled',
-        variation_id: 'sim_success_v2',
+"Fairness," Silas says quietly, "is a physics violation."
+
+"You tried to give everyone 60% power. Motors burned out. Compressors stalled. Now nobody has anything.",
+        emotion: 'cold_logic',
+        variation_id: 'sim_fail_brownout_v1',
+        richEffectContext: 'error'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'silas_retry_brownout',
+        text: "You're right. Physics doesn't care about fairness.",
+        nextNodeId: 'silas_simulation_start',
+        pattern: 'analytical',
+        skills: ['physics']
+      }
+    ]
+  },
+
+  // --- SUCCESS STATE ---
+  {
+    nodeId: 'silas_sim_medical_priority',
+    speaker: 'Silas',
+    content: [
+      {
+        text: `*You cut the residential and school lines. The clinic stays green.*
+
+"It's ugly," Silas says. "Those 43 homes are dark. The school is dark."
+
+*He points to the clinic status.*
+
+"But the ventilators are running. The insulin is cold."
+
+*He exhales.*
+
+"You saved the critical node. You let the rest fail safely. That's resilience. It's not about everything working. It's about the right things surviving.",
+        emotion: 'respect',
+        variation_id: 'sim_success_v3',
         richEffectContext: 'success'
       }
     ],
     choices: [
       {
-        choiceId: 'silas_lesson',
-        text: "You can't farm from a dashboard.",
+        choiceId: 'silas_lesson_survival',
+        text: "Resilience is about choices.",
         nextNodeId: 'silas_climax_decision',
-        pattern: 'wisdom',
-        skills: ['groundedness']
+        pattern: 'building',
+        skills: ['decisionMaking']
       }
     ],
     tags: ['simulation_complete', 'silas_arc']

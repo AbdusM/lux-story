@@ -104,6 +104,40 @@ If we accept this... David didn't matter. *I* don't matter. We're just slow, bug
           characterId: 'rohan',
           trustChange: 1
         }
+      },
+      {
+        choiceId: 'rohan_tess_connection',
+        text: "Tess talked about this. Making choices when the map runs out.",
+        nextNodeId: 'rohan_tess_reference',
+        pattern: 'helping',
+        skills: ['collaboration'],
+        visibleCondition: {
+          hasGlobalFlags: ['tess_arc_complete']
+        }
+      }
+    ]
+  },
+
+  {
+    nodeId: 'rohan_tess_reference',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: `Tess. The one starting the wilderness school?
+
+She gets it. You're out there, no GPS, storm coming in. You can't ask ChatGPT "how to survive." You have to know.
+
+Code is the same. When the servers are melting down, you can't prompt-engineer your way out. You have to know the metal.`,
+        emotion: 'respect',
+        variation_id: 'tess_ref_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'rohan_tess_back',
+        text: "Exactly. Show me the metal.",
+        nextNodeId: 'rohan_simulation_setup',
+        pattern: 'analytical'
       }
     ]
   },
