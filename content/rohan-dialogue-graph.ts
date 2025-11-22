@@ -115,7 +115,8 @@ If we accept this... David didn't matter. *I* don't matter. We're just slow, bug
           hasGlobalFlags: ['tess_arc_complete']
         }
       }
-    ]
+    ],
+    tags: ['rohan_arc']
   },
 
   {
@@ -185,7 +186,7 @@ It looks perfect. It's migrating 40 million user records.
 
 But look at line 402.
 
-`import { user_integrity_check } from 'legacy-core'`
+'import { user_integrity_check } from "legacy-core"'
 
 'legacy-core' doesn't exist. I deleted it three years ago. The AI remembers a ghost.
 
@@ -271,7 +272,7 @@ You're treating it like a colleague. It's a parrot. We're done.`,
     speaker: 'Rohan',
     content: [
       {
-        text: `*You type `//` before the line. The error clears.*
+        text: `*You type '//' before the line. The error clears.*
 
 **STATUS:** MIGRATION COMPLETE.
 
@@ -372,13 +373,13 @@ That's not janitorial work. That's... communion.`,
     speaker: 'Rohan',
     content: [
       {
-        text: "I'm not quitting. I can't quit.
+        text: `I'm not quitting. I can't quit.
 
 There's an instructional designer upstairs, Kai. They're burning their slide decks. Good. We need to burn it all down to build it right.
 
 I'm going to start an academy. Not 'Coding Bootcamp.' 'First Principles.'
 
-We're going to teach people how to read the metal. How to know what is real.",
+We're going to teach people how to read the metal. How to know what is real.`,
         emotion: 'resolved_monk',
         variation_id: 'climax_v2'
       }
@@ -408,13 +409,13 @@ We're going to teach people how to read the metal. How to know what is real.",
     speaker: 'Rohan',
     content: [
       {
-        text: "*Rohan looks at the screen, defeat in his eyes.*
+        text: `*Rohan looks at the screen, defeat in his eyes.*
 
 Yeah. Let it run. If it breaks, they'll just hire another AI to fix it.
 
 I'm going to apply for that carpentry apprenticeship. Wood doesn't lie.
 
-Goodbye.",
+Goodbye.`,
         emotion: 'broken_spirit',
         variation_id: 'bad_ending_v1'
       }
@@ -440,9 +441,9 @@ Goodbye.",
     speaker: 'Rohan',
     content: [
       {
-        text: "You heard the hum, didn't you? The noise underneath the noise.
+        text: `You heard the hum, didn't you? The noise underneath the noise.
 
-If you see Samuel, tell him... tell him I'm staying. Someone has to keep the lights on.",
+If you see Samuel, tell him... tell him I'm staying. Someone has to keep the lights on.`,
         emotion: 'grateful_solemn',
         variation_id: 'farewell_v2'
       }

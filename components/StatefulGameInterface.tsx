@@ -362,7 +362,10 @@ export default function StatefulGameInterface() {
     jordan: 'Jordan Packard',
     marcus: 'Marcus',
     tess: 'Tess',
-    yaquin: 'Yaquin'
+    yaquin: 'Yaquin',
+    kai: 'Kai',
+    rohan: 'Rohan',
+    silas: 'Silas'
   }
   
   const currentCharacter = state.gameState?.characters.get(state.currentCharacterId)

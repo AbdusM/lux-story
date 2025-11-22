@@ -53,7 +53,7 @@ export interface DialogueContent {
   emotion?: string // Emotion tag for the dialogue (e.g., 'neutral', 'anxious', 'hopeful', 'vulnerable', etc.)
   variation_id: string // For tracking which variation was shown
   useChatPacing?: boolean // If true, use ChatPacedDialogue component for sequential reveal (use sparingly!)
-  richEffectContext?: 'thinking' | 'warning' | 'success' | 'executing' // Optional context for rich text effects
+  richEffectContext?: 'thinking' | 'warning' | 'success' | 'executing' | 'error' // Optional context for rich text effects
   /**
    * Visual interaction animation to apply to this content.
    * One-shot animations that enhance emphasis without looping.

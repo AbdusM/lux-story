@@ -73,14 +73,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "Don't just look at it. Run it. 
-
-*He gestures to the air, and the scribbles seem to align into a glowing blue decision tree floating between you.* 
-
-**SYSTEM ACTIVE: CONVERSATIONAL OPTIMIZER v1.4** 
-**SUBJECT:** FATHER 
-**INPUT:** \"I'm fine.\" 
-**STATUS:** PROCESSING...",
+        text: "Don't just look at it. Run it.\n\n*He gestures to the air, and the scribbles seem to align into a glowing blue decision tree floating between you.*\n\n*Text scrolls across the projection:*\n\n\"System Active. Conversational Optimizer v1.4.\"\n\"Subject: Father.\"\n\"Input: 'I'm fine.'\"\n\"Status: Processing...",
         emotion: 'clinical_simulation',
         variation_id: 'explains_scenario_v1',
         richEffectContext: 'warning', // Blueprint/Debug mode
@@ -118,15 +111,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "*Devon taps the spectral analyzer. A waveform spikes red.* 
-
-Look at that. 140Hz tremor. Pitch flat. Volume low. 
-
-**PROBABILITY OF DECEPTION: 88%** 
-
-The machine sees it. He's lying. He's not fine. 
-
-Suggested Output: \"Conversational Subroutine 4B: Gentle Probe.\"",
+        text: "*Devon taps the spectral analyzer. A waveform spikes red.*\n\nLook at that. 140Hz tremor. Pitch flat. Volume low.\n\n*The analyzer flashes red.*\n\n\"Probability of Deception: 88%.\"\n\nThe machine sees it. He's lying. He's not fine.\n\nSuggested Output: \"Conversational Subroutine 4B: Gentle Probe.\"",
         emotion: 'clinical_simulation',
         variation_id: 'debug_step_2_v1',
         richEffectContext: 'warning'
@@ -156,15 +141,7 @@ Suggested Output: \"Conversational Subroutine 4B: Gentle Probe.\"",
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "*Devon swipes the node. The tree goes dark.* 
-
-**CONVERSATION ENDED.** 
-
-I accepted the input. I hung up. 
-
-*He looks at his phone, pained.* 
-
-He was waiting for me to push back. I failed the test because I passed the logic check.",
+        text: "*Devon swipes the node. The tree goes dark.*\n\n*A robotic voice confirms:* \"Conversation Ended.\"\n\nI accepted the input. I hung up.\n\n*He looks at his phone, pained.*\n\nHe was waiting for me to push back. I failed the test because I passed the logic check.",
         emotion: 'regretful',
         variation_id: 'debug_fail_literal_v1',
         richEffectContext: 'error'
@@ -186,15 +163,7 @@ He was waiting for me to push back. I failed the test because I passed the logic
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "*Devon reads the line. It sounds perfect. Measured. Safe.* 
-
-\"Dad, data suggests you are distressed. Are you sure you are okay?\" 
-
-*Silence. Then a click.* 
-
-**ERROR: CONNECTION REFUSED** 
-
-He hung up. He heard the script. He heard me debugging him instead of talking to him.",
+        text: "*Devon reads the line. It sounds perfect. Measured. Safe.*\n\n\"Dad, data suggests you are distressed. Are you sure you are okay?\"\n\n*Silence. Then a click.*\n\n*Red text blinks.* \"Error: Connection Refused.\"\n\nHe hung up. He heard the script. He heard me debugging him instead of talking to him.",
         emotion: 'devastated',
         variation_id: 'debug_fail_script_v1',
         richEffectContext: 'error'
@@ -226,15 +195,7 @@ He hung up. He heard the script. He heard me debugging him instead of talking to
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "*The system flashes: UNKNOWN VARIABLE.* 
-
-You went off script. 
-
-*Devon looks at you, intrigued.* 
-
-My system creates a loop. You broke it. You ignored the data to find the... feeling. 
-
-I can't code that.",
+        text: "*The system flashes.* \"Unknown Variable.\"\n\nYou went off script.\n\n*Devon looks at you, intrigued.*\n\nMy system creates a loop. You broke it. You ignored the data to find the... feeling.\n\nI can't code that.",
         emotion: 'intrigued',
         variation_id: 'debug_override_v1',
         richEffectContext: 'thinking'
@@ -810,7 +771,8 @@ I can't code that.",
         characterId: 'devon',
         addKnowledgeFlags: ['empathy_reframe', 'devon_reframe_insight']
       }
-    ]
+    ],
+    tags: ['simulation', 'devon_arc']
   },
 
   {

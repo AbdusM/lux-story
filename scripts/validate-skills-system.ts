@@ -135,7 +135,7 @@ function testSceneMappingLookup() {
       }
 
       // Check character arc is valid
-      const validArcs = ['maya', 'devon', 'jordan', 'samuel']
+      const validArcs = ['maya', 'devon', 'jordan', 'samuel', 'kai', 'rohan', 'silas', 'marcus', 'tess', 'yaquin']
       if (!validArcs.includes(mapping.characterArc)) {
         invalidScenes.push(`${sceneId} (invalid arc: ${mapping.characterArc})`)
         return
@@ -259,7 +259,13 @@ function testSceneMappingCoverage() {
       maya: 0,
       devon: 0,
       jordan: 0,
-      samuel: 0
+      samuel: 0,
+      kai: 0,
+      rohan: 0,
+      silas: 0,
+      marcus: 0,
+      tess: 0,
+      yaquin: 0
     }
 
     let totalChoices = 0

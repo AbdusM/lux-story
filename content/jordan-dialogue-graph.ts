@@ -20,7 +20,15 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_introduction',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Hey! Career Day at the coding bootcamp. Got here way too early. Classic overcompensation.\n\nI've rewritten this speech six times.\n\nUX Designer. Gym Manager. Marketing. Uber. Developer. Product Manager. Senior Designer.\n\nSeven jobs. Twelve years.\n\nWhat do you tell students when your path looks like this?",
+      text: `Hey! Career Day at the coding bootcamp. Got here way too early. Classic overcompensation.
+
+I've rewritten this speech six times.
+
+UX Designer. Gym Manager. Marketing. Uber. Developer. Product Manager. Senior Designer.
+
+Seven jobs. Twelve years.
+
+What do you tell students when your path looks like this?`,
       emotion: 'friendly_but_anxious',
       variation_id: 'jordan_intro_v2_visual_hook'
     }],
@@ -72,7 +80,11 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_career_question',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Mentorship panel. Thirty students trying to break into tech. Share my 'journey' and give advice.\n\nSounds simple. Until you sit down to write it.\n\nI've rewritten this speech six times. What do you tell people when your path looks like mine?",
+      text: `Mentorship panel. Thirty students trying to break into tech. Share my 'journey' and give advice.
+
+Sounds simple. Until you sit down to write it.
+
+I've rewritten this speech six times. What do you tell people when your path looks like mine?`,
       emotion: 'uncertain',
       variation_id: 'jordan_career_1'
     }],
@@ -125,7 +137,11 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_job_reveal_1',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Alabama A&M. Computer science major. One semester, then got recruited by a startup. 'The next big thing.'\n\nFolded in eight months. No degree, no job, no plan.\n\nTwenty years old, back with my mom. She kept asking when I'd go back to school.",
+      text: `Alabama A&M. Computer science major. One semester, then got recruited by a startup. 'The next big thing.'
+
+Folded in eight months. No degree, no job, no plan.
+
+Twenty years old, back with my mom. She kept asking when I'd go back to school.`,
       emotion: 'rueful',
       variation_id: 'jordan_job1_1'
     }],
@@ -178,7 +194,11 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_job_reveal_2',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Selling phones at the Galleria. You know, those kiosks where you chase people speed-walking past?\n\nHumbling. But I learned to read people in three seconds. Ask questions that made them feel heard.\n\nCustomer service is applied empathy.",
+      text: `Selling phones at the Galleria. You know, those kiosks where you chase people speed-walking past?
+
+Humbling. But I learned to read people in three seconds. Ask questions that made them feel heard.
+
+Customer service is applied empathy.`,
       emotion: 'reflective',
       variation_id: 'jordan_job2_1'
     }],
@@ -232,7 +252,9 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_job_reveal_3',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Got restless. Taught myself graphic design. YouTube, library books. Freelance work—logos, flyers.\n\nWasn't great at first. But I learned visual hierarchy. How eyes move. How color creates emotion.",
+      text: `Got restless. Taught myself graphic design. YouTube, library books. Freelance work—logos, flyers.
+
+Wasn't great at first. But I learned visual hierarchy. How eyes move. How color creates emotion.`,
       emotion: 'nostalgic',
       variation_id: 'jordan_job3_1'
     }],
@@ -286,7 +308,9 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_pattern_acknowledgment',
     speaker: 'Jordan Packard',
     content: [{
-      text: "You're really following along. Most people zone out by job three—eyes glaze over, polite nods. But you're actually listening.\n\nThat means a lot. Thank you.",
+      text: `You're really following along. Most people zone out by job three—eyes glaze over, polite nods. But you're actually listening.
+
+That means a lot. Thank you.`,
       emotion: 'appreciative',
       variation_id: 'jordan_acknowledgment_v1'
     }],
@@ -305,7 +329,11 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_job_reveal_4',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Small marketing firm downtown. Finally a 'real' job. Benefits and everything.\n\nSocial media management, campaign planning.\n\nIt was fine. But I liked making things more than talking about other people's things.",
+      text: `Small marketing firm downtown. Finally a 'real' job. Benefits and everything.
+
+Social media management, campaign planning.
+
+It was fine. But I liked making things more than talking about other people's things.`,
       emotion: 'contemplative',
       variation_id: 'jordan_job4_1'
     }],
@@ -378,7 +406,11 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_job_reveal_5',
     speaker: 'Jordan Packard',
     content: [{
-      text: "This is where it gets weird. I quit to become a personal trainer.\n\nHear me out. Trainers are motivation psychologists. Designing experiences that make people believe they can do hard things.\n\nExperience design. User motivation. I just didn't have the language yet.",
+      text: `This is where it gets weird. I quit to become a personal trainer.
+
+Hear me out. Trainers are motivation psychologists. Designing experiences that make people believe they can do hard things.
+
+Experience design. User motivation. I just didn't have the language yet.`,
       emotion: 'animated',
       variation_id: 'jordan_job5_1'
     }],
@@ -432,7 +464,11 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_job_reveal_6',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Started driving for Uber on the side.\n\nBest education in Birmingham I ever got. Every neighborhood, every traffic pattern. Logistics. Route optimization.\n\nAnd hundreds of conversations. Everyone's going somewhere.",
+      text: `Started driving for Uber on the side.
+
+Best education in Birmingham I ever got. Every neighborhood, every traffic pattern. Logistics. Route optimization.
+
+And hundreds of conversations. Everyone's going somewhere.`,
       emotion: 'thoughtful',
       variation_id: 'jordan_job6_1'
     }],
@@ -487,10 +523,13 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_job_reveal_7',
     speaker: 'Jordan Packard',
     content: [{
-      text: "BJCC career fair. I stumbled into the Health Tech booth. They were looking for a UX designer. 
-\n*She opens her laptop. A chaotic whiteboard app fills the screen.* 
-\nLook at this. This is what I do now. It's a user journey for a diabetes management app. 
-\nI'm seeing a retention failure at Day 3. Users download, setup... and then quit.",
+      text: `BJCC career fair. I stumbled into the Health Tech booth. They were looking for a UX designer. 
+
+*She opens her laptop. A chaotic whiteboard app fills the screen.* 
+
+Look at this. This is what I do now. It's a user journey for a diabetes management app. 
+
+I'm seeing a retention failure at Day 3. Users download, setup... and then quit.`,
       emotion: 'focused_professional',
       variation_id: 'job7_scenario_v2',
       richEffectContext: 'warning', // UX Analysis Mode
@@ -532,9 +571,11 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_ux_fail_visuals',
     speaker: 'Jordan Packard',
     content: [{
-      text: "*Jordan sighs, deleting the color palette changes.* 
-\nWe tried that. A/B tested ten different button styles. It didn't move the needle a single percent. 
-\nIt's not about the pixels. It's deeper than that. If I can't figure this out, maybe I really am just a graphic designer pretending to be UX.",
+      text: `*Jordan sighs, deleting the color palette changes.* 
+
+We tried that. A/B tested ten different button styles. It didn't move the needle a single percent. 
+
+It's not about the pixels. It's deeper than that. If I can't figure this out, maybe I really am just a graphic designer pretending to be UX.`,
       emotion: 'frustrated_doubt',
       variation_id: 'ux_fail_visuals_v1',
       richEffectContext: 'error'
@@ -565,14 +606,18 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_ux_insight',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Exactly. It wasn't a software bug. It was a *human* bug. 
-\n*She taps the screen, highlighting the insight.* 
-\nThey needed encouragement, not just data entry. 
-\nThat's when I realized: 
-\nUser research? That's just customer service listening. 
+      text: `Exactly. It wasn't a software bug. It was a *human* bug. 
+
+*She taps the screen, highlighting the insight.* 
+
+They needed encouragement, not just data entry. 
+
+That's when I realized: 
+User research? That's just customer service listening. 
 Wireframing? That's graphic design. 
 Motivation loops? That's personal training. 
-\nI've been training for this job my whole life.",
+
+I've been training for this job my whole life.`,
       emotion: 'triumphant',
       variation_id: 'job7_insight_v1',
       richEffectContext: 'success'
@@ -593,7 +638,7 @@ Motivation loops? That's personal training.
     nodeId: 'jordan_job_reveal_7_pt2',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Now I lead a team, teach at the bootcamp, and finally—FINALLY—my mom tells people what I do without apologizing first.",
+      text: `Now I lead a team, teach at the bootcamp, and finally—FINALLY—my mom tells people what I do without apologizing first.`,
       emotion: 'triumphant',
       variation_id: 'jordan_job7_1_pt2'
     }],
@@ -627,9 +672,11 @@ Motivation loops? That's personal training.
     nodeId: 'jordan_mentor_context',
     speaker: 'Jordan Packard',
     content: [{
-      text: "When I look at that story, I don't see a pattern.
-\nSeven jobs. Twelve years. Someone who couldn't stick. Couldn't commit.
-\nEveryone else building careers. Me collecting participation trophies?",
+      text: `When I look at that story, I don't see a pattern.
+
+Seven jobs. Twelve years. Someone who couldn't stick. Couldn't commit.
+
+Everyone else building careers. Me collecting participation trophies?`,
       emotion: 'vulnerable',
       variation_id: 'jordan_mentor_1_pt1',
       richEffectContext: 'thinking'
@@ -649,8 +696,9 @@ Motivation loops? That's personal training.
     nodeId: 'jordan_mentor_context_pt2',
     speaker: 'Jordan Packard',
     content: [{
-      text: "And now I'm supposed to stand in front of thirty people who are making a huge bet on themselves—time, money, hope—and tell them what?
-\nThat it's okay to fail six times first?",
+      text: `And now I'm supposed to stand in front of thirty people who are making a huge bet on themselves—time, money, hope—and tell them what?
+
+That it's okay to fail six times first?`,
       emotion: 'vulnerable',
       variation_id: 'jordan_mentor_1_pt2'
     }],
@@ -670,9 +718,11 @@ Motivation loops? That's personal training.
     nodeId: 'jordan_asks_player',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Can I ask you something? I've been talking about my path.
-\nHow do YOU deal with uncertainty? When you don't know if you're making the right choice?
-\nWhat do you do with that feeling?",
+      text: `Can I ask you something? I've been talking about my path.
+
+How do YOU deal with uncertainty? When you don't know if you're making the right choice?
+
+What do you do with that feeling?`,
       emotion: 'curious',
       variation_id: 'jordan_reciprocity_v1'
     }],
@@ -694,10 +744,13 @@ Motivation loops? That's personal training.
     learningObjectives: ['jordan_leadership_potential'],
     speaker: 'Jordan Packard',
     content: [{
-      text: "Twenty minutes before that room fills up.
-\nI keep rewriting this speech. Which version is true?
-\nPast as liability? Past as asset? Or I define what it means?
-\nWhich story should I tell them?",
+      text: `Twenty minutes before that room fills up.
+
+I keep rewriting this speech. Which version is true?
+
+Past as liability? Past as asset? Or I define what it means?
+
+Which story should I tell them?`,
       emotion: 'desperate_clarity',
       variation_id: 'jordan_crossroads_1',
       useChatPacing: true,
@@ -741,12 +794,17 @@ Motivation loops? That's personal training.
     nodeId: 'jordan_chooses_accumulation',
     speaker: 'Jordan Packard',
     content: [{
-      text: "You're right.
-\nI'm going to write all seven jobs on the whiteboard. Then draw lines between them.
-\nCustomer service to user research. Visual design to interface work. Motivation psychology to engagement.
-\nI'm not a fraud. I'm a composite.
-\nThose students need to hear that nothing is wasted.
-\nI heard about a guy teaching dental skills on TikTok. Yaquin? He's doing exactly what I'm talking about. Accumulating skills, not titles.",
+      text: `You're right.
+
+I'm going to write all seven jobs on the whiteboard. Then draw lines between them.
+
+Customer service to user research. Visual design to interface work. Motivation psychology to engagement.
+
+I'm not a fraud. I'm a composite.
+
+Those students need to hear that nothing is wasted.
+
+I heard about a guy teaching dental skills on TikTok. Yaquin? He's doing exactly what I'm talking about. Accumulating skills, not titles.`,
       emotion: 'empowered',
       variation_id: 'jordan_accumulation_1'
     }],
@@ -771,11 +829,15 @@ Motivation loops? That's personal training.
     nodeId: 'jordan_farewell_accumulation',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Accumulation. Experience building on experience.
-\nBut what if they see through it? What if they know I'm a fraud?
-\nThe voice will be there when I walk through that door. Probably for years.
-\nBut at least now I can name it.
-\nThank you. Good luck with your journey.",
+      text: `Accumulation. Experience building on experience.
+
+But what if they see through it? What if they know I'm a fraud?
+
+The voice will be there when I walk through that door. Probably for years.
+
+But at least now I can name it.
+
+Thank you. Good luck with your journey.`,
       emotion: 'grateful_but_shaken',
       variation_id: 'jordan_farewell_accumulation_v2_complex'
     }],
@@ -795,10 +857,13 @@ Motivation loops? That's personal training.
     nodeId: 'jordan_chooses_birmingham',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Birmingham. This city is the whole metaphor.
-\nSteel mills collapsed. The city could've died. Instead—UAB, Innovation Depot, startups. It adapted.
-\nI'm not an anomaly. I'm a Birmingham career path.
-\nAdaptability isn't failure here. It's survival.",
+      text: `Birmingham. This city is the whole metaphor.
+
+Steel mills collapsed. The city could've died. Instead—UAB, Innovation Depot, startups. It adapted.
+
+I'm not an anomaly. I'm a Birmingham career path.
+
+Adaptability isn't failure here. It's survival.`,
       emotion: 'grounded',
       variation_id: 'jordan_birmingham_1'
     }],
@@ -823,9 +888,11 @@ Motivation loops? That's personal training.
     nodeId: 'jordan_farewell_birmingham',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Birmingham. Adaptation is survival here.
-\nThank you for this. Birmingham's full of people rebuilding their maps.
-\nGood luck with yours.",
+      text: `Birmingham. Adaptation is survival here.
+
+Thank you for this. Birmingham's full of people rebuilding their maps.
+
+Good luck with yours.`,
       emotion: 'determined_doubt',
       variation_id: 'jordan_farewell_birmingham_v2_complex'
     }],
@@ -845,9 +912,11 @@ Motivation loops? That's personal training.
     nodeId: 'jordan_chooses_internal',
     speaker: 'Jordan Packard',
     content: [{
-      text: "The story I tell myself is the only one that matters.
-\nI'm going to walk in there and say: 'I spent twelve years thinking I was lost. But I wasn't. I was building.'
-\nThat's the speech. Raw. Honest. Just the truth.",
+      text: `The story I tell myself is the only one that matters.
+
+I'm going to walk in there and say: 'I spent twelve years thinking I was lost. But I wasn't. I was building.'
+
+That's the speech. Raw. Honest. Just the truth.`,
       emotion: 'serene',
       variation_id: 'jordan_internal_1'
     }],
@@ -872,9 +941,11 @@ Motivation loops? That's personal training.
     nodeId: 'jordan_farewell_internal',
     speaker: 'Jordan Packard',
     content: [{
-      text: "I feel lighter.
-\nThank you for not trying to fix me. For letting doubt and confidence exist together.
-\nGood luck with your journey.",
+      text: `I feel lighter.
+
+Thank you for not trying to fix me. For letting doubt and confidence exist together.
+
+Good luck with your journey.`,
       emotion: 'peaceful_but_realistic',
       variation_id: 'jordan_farewell_internal_v2_complex',
       useChatPacing: true
@@ -895,9 +966,11 @@ Motivation loops? That's personal training.
     nodeId: 'jordan_bad_ending',
     speaker: 'Jordan Packard',
     content: [{
-      text: "You know what? You're right. It's safer to just stick to the script.
-\nI'll talk about 'agile methodology' and 'design systems.' The stuff they want to hear.
-\nMy story is too messy. Better to hide it.",
+      text: `You know what? You're right. It's safer to just stick to the script.
+
+I'll talk about 'agile methodology' and 'design systems.' The stuff they want to hear.
+
+My story is too messy. Better to hide it.`,
       emotion: 'resigned_mask',
       variation_id: 'jordan_bad_ending_v1'
     }],

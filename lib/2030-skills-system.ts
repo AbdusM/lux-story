@@ -16,6 +16,48 @@ export interface FutureSkills {
   financialLiteracy: number // 0-1 scale
   timeManagement: number // 0-1 scale
   problemSolving: number // 0-1 scale
+  
+  // Expanded Skills
+  systemsThinking: number
+  crisisManagement: number
+  instructionalDesign: number
+  riskManagement: number
+  courage: number
+  informationLiteracy: number
+  learningAgility: number
+  entrepreneurship: number
+  encouragement: number
+  technicalLiteracy: number
+  sustainability: number
+  strategicThinking: number
+  integrity: number
+  mentorship: number
+  wisdom: number
+  actionOrientation: number
+  psychology: number
+  grounding: number
+  observation: number
+  urgency: number
+  resilience: number
+  groundedness: number
+  humor: number
+  pedagogy: number
+  curriculumDesign: number
+  marketing: number
+  branding: number
+  strategy: number
+  deepWork: number
+  pragmatism: number
+  humility: number
+  fairness: number
+  coding: number
+  respect: number
+  curiosity: number
+  patience: number
+  triage: number
+  empathy: number
+  accountability: number
+  visionaryThinking: number
 }
 
 export interface CareerPath2030 {
@@ -59,7 +101,48 @@ export class FutureSkillsSystem {
       culturalCompetence: 0.5,
       financialLiteracy: 0.5,
       timeManagement: 0.5,
-      problemSolving: 0.5
+      problemSolving: 0.5,
+      
+      systemsThinking: 0.5,
+      crisisManagement: 0.5,
+      instructionalDesign: 0.5,
+      riskManagement: 0.5,
+      courage: 0.5,
+      informationLiteracy: 0.5,
+      learningAgility: 0.5,
+      entrepreneurship: 0.5,
+      encouragement: 0.5,
+      technicalLiteracy: 0.5,
+      sustainability: 0.5,
+      strategicThinking: 0.5,
+      integrity: 0.5,
+      mentorship: 0.5,
+      wisdom: 0.5,
+      actionOrientation: 0.5,
+      psychology: 0.5,
+      grounding: 0.5,
+      observation: 0.5,
+      urgency: 0.5,
+      resilience: 0.5,
+      groundedness: 0.5,
+      humor: 0.5,
+      pedagogy: 0.5,
+      curriculumDesign: 0.5,
+      marketing: 0.5,
+      branding: 0.5,
+      strategy: 0.5,
+      deepWork: 0.5,
+      pragmatism: 0.5,
+      humility: 0.5,
+      fairness: 0.5,
+      coding: 0.5,
+      respect: 0.5,
+      curiosity: 0.5,
+      patience: 0.5,
+      triage: 0.5,
+      empathy: 0.5,
+      accountability: 0.5,
+      visionaryThinking: 0.5
     }
     
     this.skillHistory = []
@@ -145,6 +228,7 @@ export class FutureSkillsSystem {
   }
 
   private initializeSkillPrompts() {
+    // Original prompts maintained
     this.skillPrompts = new Map([
       ['criticalThinking', [
         "What would you analyze first in this situation?",
@@ -153,8 +237,8 @@ export class FutureSkillsSystem {
         "What are the potential consequences of each option?"
       ]],
       ['communication', [
-        "How would you explain this to someone who doesn't understand?",
-        "What's the most important thing to communicate here?",
+        "How would you explain this to someone who doesn\'t understand?",
+        "What\'s the most important thing to communicate here?",
         "How would you present this idea to a group?",
         "What questions would you ask to clarify this situation?"
       ]],
@@ -165,14 +249,14 @@ export class FutureSkillsSystem {
         "What would make this a successful group effort?"
       ]],
       ['creativity', [
-        "What's a creative way to approach this?",
+        "What\'s a creative way to approach this?",
         "How could you make this more interesting?",
         "What new ideas come to mind?",
         "How would you make this stand out?"
       ]],
       ['adaptability', [
         "How would you adjust if things changed?",
-        "What would you do if your first plan didn't work?",
+        "What would you do if your first plan didn\'t work?",
         "How would you handle unexpected challenges?",
         "What backup options do you have?"
       ]],
@@ -197,7 +281,7 @@ export class FutureSkillsSystem {
       ['culturalCompetence', [
         "How would you include different perspectives?",
         "What cultural factors might be important?",
-        "How would you respect everyone's background?",
+        "How would you respect everyone\'s background?",
         "What would make this welcoming for all?"
       ]],
       ['financialLiteracy', [
@@ -213,7 +297,7 @@ export class FutureSkillsSystem {
         "What deadlines are most important?"
       ]],
       ['problemSolving', [
-        "What's the real problem here?",
+        "What\'s the real problem here?",
         "How would you test your solution?",
         "What steps would you take?",
         "How would you know if it worked?"
@@ -258,7 +342,8 @@ export class FutureSkillsSystem {
   }
 
   private calculateSkillValue(choiceText: string, skillType: keyof FutureSkills): number {
-    const skillKeywords = {
+    // Basic keywords for original skills - expanded skills use defaults for now
+    const skillKeywords: Partial<Record<keyof FutureSkills, string[]>> = {
       criticalThinking: ['analyze', 'consider', 'evaluate', 'think', 'reason', 'logic', 'examine', 'assess'],
       communication: ['explain', 'tell', 'share', 'present', 'discuss', 'talk', 'write', 'express'],
       collaboration: ['together', 'team', 'help', 'support', 'work with', 'partner', 'collaborate', 'cooperate'],
@@ -275,6 +360,8 @@ export class FutureSkillsSystem {
 
     const text = choiceText.toLowerCase()
     const keywords = skillKeywords[skillType] || []
+    if (keywords.length === 0) return 0.1 // Default for new skills if not mapped
+
     const matches = keywords.filter(keyword => text.includes(keyword)).length
     const baseValue = Math.min(matches / keywords.length, 1)
     
@@ -286,7 +373,7 @@ export class FutureSkillsSystem {
   }
 
   private getSkillContext(skillType: keyof FutureSkills, choiceText: string): string {
-    const contexts = {
+    const contexts: Partial<Record<keyof FutureSkills, string>> = {
       criticalThinking: 'Analyzing and evaluating information',
       communication: 'Expressing ideas and sharing information',
       collaboration: 'Working with others toward common goals',
@@ -304,7 +391,7 @@ export class FutureSkillsSystem {
   }
 
   private getSkillExplanation(skillType: keyof FutureSkills, value: number): string {
-    const explanations = {
+    const explanations: Partial<Record<keyof FutureSkills, string>> = {
       criticalThinking: 'You\'re developing strong analytical thinking skills that employers value.',
       communication: 'You\'re building communication skills that help in any career.',
       collaboration: 'You\'re learning to work effectively with others.',
@@ -415,20 +502,10 @@ export class FutureSkillsSystem {
    * Reset skills
    */
   reset() {
-    this.skills = {
-      criticalThinking: 0.5,
-      communication: 0.5,
-      collaboration: 0.5,
-      creativity: 0.5,
-      adaptability: 0.5,
-      leadership: 0.5,
-      digitalLiteracy: 0.5,
-      emotionalIntelligence: 0.5,
-      culturalCompetence: 0.5,
-      financialLiteracy: 0.5,
-      timeManagement: 0.5,
-      problemSolving: 0.5
-    }
+    // Reset to default
+    const defaultSkill = 0.5
+    // @ts-ignore - Efficient reset
+    Object.keys(this.skills).forEach(key => this.skills[key] = defaultSkill)
     this.skillHistory = []
   }
 }
