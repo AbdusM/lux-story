@@ -135,16 +135,16 @@ export function DialogueDisplay({
   const interactionClass = interaction ? `narrative-interaction-${interaction}` : null
 
   return (
-    <div className={cn("space-y-4", className)} key="dialogue-chunks-container" style={{ transition: 'none' }}>
+    <div className={cn("space-y-2.5", className)} key="dialogue-chunks-container" style={{ transition: 'none' }}>
       {/* Dialogue Content - No inline avatars */}
       {chunks.map((chunk, index) => {
         const ChunkWrapper = richEffects ? 'div' : 'p'
-        
+
         return (
           <ChunkWrapper
             key={`chunk-${chunk.slice(0, 20).replace(/\s/g, '-')}-${index}`}
             className={cn(
-              "text-base text-slate-800 leading-relaxed whitespace-pre-wrap",
+              "text-[15.5px] text-slate-800 leading-loose whitespace-pre-wrap max-w-[65ch]",
               interactionClass
             )}
           >
@@ -152,7 +152,7 @@ export function DialogueDisplay({
               <RichTextRenderer
                 text={chunk}
                 effects={richEffects}
-                className="text-base text-slate-800 leading-relaxed"
+                className="text-[15.5px] text-slate-800 leading-loose"
               />
             ) : (
               parseEmphasisText(chunk)
