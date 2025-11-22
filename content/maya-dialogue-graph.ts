@@ -518,18 +518,18 @@ export const mayaDialogueNodes: DialogueNode[] = [
     ]
   },
 
-  // ============= ROBOTICS REVEAL (Major Trust Gate) =============
+  // ============= ROBOTICS REVEAL (Major Trust Gate & Immersive Scenario) =============
   {
     nodeId: 'maya_robotics_passion',
     learningObjectives: ['maya_identity_exploration'],
     speaker: 'Maya Chen',
     content: [
       {
-        text: "I... I build robots. Small ones, mostly. Medical assistance robots. I dream about circuits and servos, not cells and organs. My parents would be devastated if they knew how much I love engineering.",
-        emotion: 'vulnerable',
-        variation_id: 'robotics_v1',
-        richEffectContext: 'thinking', // Major vulnerability - thoughtful revelation
-        useChatPacing: true // Major vulnerability/secret reveal moment
+        text: "*She hesitates, then reaches into her bag. She pulls out a sleek, 3D-printed skeletal hand. It's twitching violently, servos whining.* \n\nI... I build these. Or I try to. This is a prototype for pediatric grip assistance. \n\nBut look at it. The index actuator is oscillating. I've checked the code a thousand times. It won't stabilize. \n\n*The hand spasms, fingers clenching into a fist.* \n\nIt's fighting itself. Just like me.",
+        emotion: 'vulnerable_focused',
+        variation_id: 'robotics_scenario_v1',
+        richEffectContext: 'warning', // Immersive "System Alert" feel
+        useChatPacing: true
       }
     ],
     requiredState: {
@@ -539,38 +539,36 @@ export const mayaDialogueNodes: DialogueNode[] = [
     },
     choices: [
       {
-        choiceId: 'robotics_encourage',
-        text: "Your passion for robotics - that's a gift, isn't it?",
-        nextNodeId: 'maya_encouraged',
-        pattern: 'helping',
-        skills: ['emotionalIntelligence', 'creativity'],
-        consequence: {
-          characterId: 'maya',
-          trustChange: 2,
-          addKnowledgeFlags: ['encouraged_robotics']
-        }
-      },
-      {
-        choiceId: 'robotics_practical',
-        text: "Have you thought about medical robotics?",
-        nextNodeId: 'maya_considers_hybrid',
+        choiceId: 'debug_voltage',
+        text: "[ACTION] Check the voltage regulator. It might be a power surge.",
+        nextNodeId: 'maya_robotics_debug_success',
         pattern: 'analytical',
-        skills: ['problemSolving', 'criticalThinking', 'creativity'],
+        skills: ['problemSolving', 'technicalLiteracy'],
         consequence: {
           characterId: 'maya',
-          trustChange: 1,
-          addKnowledgeFlags: ['suggested_hybrid']
+          trustChange: 1
         }
       },
       {
-        choiceId: 'robotics_birmingham',
-        text: "Do you know about Innovation Depot in Birmingham?",
-        nextNodeId: 'maya_birmingham_opportunity',
-        pattern: 'building',
-        skills: ['problemSolving', 'communication'],
+        choiceId: 'debug_stabilize',
+        text: "[ACTION] Gently stabilize the joint with your hand to dampen the feedback loop.",
+        nextNodeId: 'maya_robotics_debug_success',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'patience'],
         consequence: {
           characterId: 'maya',
-          addKnowledgeFlags: []
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'debug_isolate',
+        text: "[ACTION] Isolate the noisy signal in the control loop.",
+        nextNodeId: 'maya_robotics_debug_success',
+        pattern: 'building',
+        skills: ['systemsThinking', 'creativity'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
         }
       }
     ],
@@ -581,7 +579,38 @@ export const mayaDialogueNodes: DialogueNode[] = [
         setRelationshipStatus: 'confidant'
       }
     ],
-    tags: ['major_reveal', 'trust_gate', 'maya_arc']
+    tags: ['major_reveal', 'trust_gate', 'maya_arc', 'immersive_scenario']
+  },
+
+  // ============= SCENARIO RESOLUTION =============
+  {
+    nodeId: 'maya_robotics_debug_success',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "*The whining stops. The fingers relax, then curl gently, perfectly smooth.* \n\nYou fixed it. \n\n*She looks from the machine to you, eyes wide.* \n\nMy parents see a doctor when they look at me. You saw... an engineer. \n\nThat's the first time anyone has helped me with the machine instead of telling me to put it away.",
+        emotion: 'awed_grateful',
+        variation_id: 'robotics_debug_success_v1',
+        richEffectContext: 'success'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'scenario_affirm',
+        text: "It's beautiful work, Maya.",
+        nextNodeId: 'maya_encouraged', // Back to original flow
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication']
+      },
+      {
+        choiceId: 'scenario_bridge',
+        text: "See? You're already healing people. Just with circuits.",
+        nextNodeId: 'maya_encouraged', // Back to original flow
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'creativity']
+      }
+    ],
+    tags: ['scenario_resolution', 'maya_arc']
   },
 
   // ============= ENCOURAGED PATH =============
