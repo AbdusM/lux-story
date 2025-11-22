@@ -12,6 +12,7 @@ import { DialogueNode, DialogueGraph } from '../lib/dialogue-graph'
 import { samuelEntryPoints } from './samuel-dialogue-graph'
 
 export const marcusDialogueNodes: DialogueNode[] = [
+  // ... [INTRODUCTION NODES SAME AS BEFORE UNTIL SIMULATION] ...
   // ============= INTRODUCTION =============
   {
     nodeId: 'marcus_introduction',
@@ -174,7 +175,7 @@ Tonight... the alarm screamed. 'AIR IN LINE.'`,
     ]
   },
 
-  // ============= THE SIMULATION (Interactive "Episodic" Experience) =============
+  // ============= THE SIMULATION (Updated: Character Narrates System) =============
   {
     nodeId: 'marcus_simulation_start',
     speaker: 'Marcus',
@@ -186,11 +187,11 @@ I want you to see it. Close your eyes. Put your hands out.
 
 *He guides your hands into position. The air around you seems to hum with machinery.*
 
-**SIMULATION ACTIVE: ECMO CIRCUIT BRAVO**
-**STATUS: CRITICAL**
-**ERROR: AIR DETECTED - ARTERIAL LINE**`,
+*Marcus's voice becomes tight, mechanical.*
+
+"Monitor is screaming. Red strobe. Oxygen saturation dropping. 98... 95... 92. The bubble detector is flashing. It sees air in the arterial line."`,
         emotion: 'clinical_simulation',
-        variation_id: 'sim_start_v1',
+        variation_id: 'sim_start_v2',
         richEffectContext: 'warning' // Simulation UI feel
       }
     ],
@@ -215,20 +216,19 @@ I want you to see it. Close your eyes. Put your hands out.
 
   {
     nodeId: 'marcus_sim_fail_slow',
-    speaker: 'SYSTEM ALERT',
+    speaker: 'Marcus',
     content: [
       {
-        text: `**ERROR: TIMEOUT**
-**PATIENT STATUS: ASYSTOLE**
+        text: `*Marcus shakes his head, dropping his hands.*
 
-By the time the surgeon turned around, the bubble traveled 40cm. It hit the patient's carotid artery.
+"Too slow. By the time the surgeon turned around, the bubble traveled 40cm. It hit the patient's carotid artery."
 
-*Marcus shakes his head.*
+*He looks at you, eyes haunted.*
 
-Too slow. You have 1.5 seconds. Try again.`,
+"Flatline. Asystole. He's gone. You have 1.5 seconds. You can't wait for permission."`,
         emotion: 'critical_failure',
-        variation_id: 'sim_fail_v1',
-        richEffectContext: 'warning'
+        variation_id: 'sim_fail_v2',
+        richEffectContext: 'error'
       }
     ],
     choices: [
@@ -244,19 +244,20 @@ Too slow. You have 1.5 seconds. Try again.`,
 
   {
     nodeId: 'marcus_sim_step_2',
-    speaker: 'SYSTEM ALERT',
+    speaker: 'Marcus',
     content: [
       {
-        text: `**FLOW STOPPED.**
-**PATIENT MAP: DROPPING**
+        text: `*Marcus nods. He mimes clamping a heavy tubing.*
 
-The patient has no blood flow. You have clamped his life support.
+"Good. Flow stopped. But look at the patient map."
 
-The bubble is trapped right before the cannula.
+*He points to the invisible monitor.*
 
-What do you do?`,
+"Blood pressure crashing. He has no flow. You clamped his life support. The bubble is trapped right before the cannula."
+
+"What do you do?"`,
         emotion: 'clinical_simulation',
-        variation_id: 'sim_step_2_v1',
+        variation_id: 'sim_step_2_v2',
         richEffectContext: 'warning'
       }
     ],
@@ -281,19 +282,19 @@ What do you do?`,
 
   {
     nodeId: 'marcus_sim_fail_air',
-    speaker: 'SYSTEM ALERT',
+    speaker: 'Marcus',
     content: [
       {
-        text: `**FATAL ERROR**
+        text: `*Marcus winces.*
 
-You unclamped. The bubble entered the bloodstream.
+"You unclamped. I saw the bubble enter the cannula. It's in him now."
 
-*Marcus looks down.*
+*He looks down at his hands.*
 
-He's gone. You saved flow, but you delivered poison. Precision matters more than speed.`,
+"Vapor lock. Massive stroke. He's gone. You saved the flow, but you delivered the poison. Precision matters more than speed."`,
         emotion: 'critical_failure',
-        variation_id: 'sim_fail_air_v1',
-        richEffectContext: 'warning'
+        variation_id: 'sim_fail_air_v2',
+        richEffectContext: 'error'
       }
     ],
     choices: [
@@ -309,18 +310,18 @@ He's gone. You saved flow, but you delivered poison. Precision matters more than
 
   {
     nodeId: 'marcus_sim_step_3',
-    speaker: 'SYSTEM ALERT',
+    speaker: 'Marcus',
     content: [
       {
-        text: `**BUBBLE ISOLATED.**
+        text: `*He mimics flicking the line. Hard.*
 
-It's at the access port. You have a syringe.
+"Bubble isolated. It's at the access port. You have a syringe."
 
-**PATIENT O2: 88%... 85%... 82%...**
+"Patient O2 is dropping. 88... 85... 82..."
 
-He is becoming hypoxic.`,
+"He's becoming hypoxic. You have seconds."`,
         emotion: 'clinical_simulation',
-        variation_id: 'sim_step_3_v1',
+        variation_id: 'sim_step_3_v2',
         richEffectContext: 'warning'
       }
     ],
@@ -345,19 +346,19 @@ He is becoming hypoxic.`,
 
   {
     nodeId: 'marcus_sim_fail_push',
-    speaker: 'SYSTEM ALERT',
+    speaker: 'Marcus',
     content: [
       {
-        text: `**ERROR**
+        text: `*Marcus sighs, a heavy sound.*
 
-You pushed the bubble further down the line against the clamp pressure.
+"You pushed against the pressure. You just drove the bubble further down the line."
 
-*Marcus sighs.*
+"Now it's impossible to retrieve. We have to change the whole circuit. He won't survive the changeover time."
 
-Now it's impossible to retrieve. We have to change the whole circuit. He won't survive the change.`,
+"It's over."`,
         emotion: 'critical_failure',
-        variation_id: 'sim_fail_push_v1',
-        richEffectContext: 'warning'
+        variation_id: 'sim_fail_push_v2',
+        richEffectContext: 'error'
       }
     ],
     choices: [
@@ -376,16 +377,15 @@ Now it's impossible to retrieve. We have to change the whole circuit. He won't s
     speaker: 'Marcus',
     content: [
       {
-        text: `*The hum of the machine returns to a steady rhythm.*
+        text: `*The hum of the machine seems to settle into a steady rhythm.*
 
-**SYSTEM STABLE.**
-**PATIENT O2: 98%**
+"System stable. Patient O2 rising... 98%."
 
 *Marcus opens his eyes. He looks exhausted but alive.*
 
-You got it. Clean line. Flow restored. He wakes up tomorrow.`,
+"You got it. Clean line. Flow restored. He wakes up tomorrow."`,
         emotion: 'relieved_triumphant',
-        variation_id: 'sim_success_v1',
+        variation_id: 'sim_success_v2',
         richEffectContext: 'success'
       }
     ],
@@ -415,7 +415,7 @@ You got it. Clean line. Flow restored. He wakes up tomorrow.`,
     tags: ['simulation_complete', 'marcus_arc']
   },
 
-  // ============= CAREER BRIDGE =============
+  // ... [CAREER BRIDGE & ENDING - UNCHANGED] ...
   {
     nodeId: 'marcus_career_bridge',
     speaker: 'Marcus',
@@ -473,7 +473,7 @@ If you see Samuel... tell him the patient made it. The machine held.`,
       {
         choiceId: 'return_to_samuel',
         text: "I'll tell him.",
-        nextNodeId: samuelEntryPoints.MARCUS_REFLECTION_GATEWAY, // Routes through reflection ✅
+        nextNodeId: samuelEntryPoints.MARCUS_REFLECTION_GATEWAY,
         pattern: 'patience'
       }
     ],

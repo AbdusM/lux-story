@@ -1,64 +1,60 @@
 /**
  * Yaquin's Dialogue Graph
- * The Practical Educator - Platform 5 (Creator Economy / EdTech)
+ * The Practical Creator - Platform 5 (Creator Economy / EdTech)
  *
- * CHARACTER: The Dental Assistant turned Educator
- * Core Conflict: "I'm just an assistant" vs. "I know the real job better than the textbook"
- * Arc: Moving from tacit knowledge to explicit instruction (Curriculum Design & Business Logic)
- * Mechanic: "The Blueprint" - Structuring a cohort-based course and tech stack
+ * CHARACTER: The Dental Assistant Turned Educator
+ * Core Conflict: "Tacit Knowledge" vs. "Formal Credentials"
+ * Arc: Realizing that his practical skills are more valuable than theoretical degrees
+ * Mechanic: "The Curriculum" - Designing a course that strips away the fluff
  */
 
 import { DialogueNode, DialogueGraph } from '../lib/dialogue-graph'
 import { samuelEntryPoints } from './samuel-dialogue-graph'
 
 export const yaquinDialogueNodes: DialogueNode[] = [
-  // ============= INTRODUCTION =============
+  // ... [KEEPING INTRO NODES] ...
   {
     nodeId: 'yaquin_introduction',
     speaker: 'Yaquin',
     content: [
       {
-        text: `*He's sitting on a bench, aggressively highlighting a thick textbook with a red marker. He groans, crossing out an entire paragraph.*
+        text: `*He's surrounded by dental models—sets of teeth, gum molds—and a ring light setup. He's talking to his phone.*
 
-'Nobody holds the suction tip like that! You'll gag the patient!'
+"Okay, guys, forget the textbook. Chapter 4 is garbage. This is how you actually mix the alginate so it doesn't gag the patient."
 
-*He looks up, realizing you're there.*
+*He stops recording and sighs.*
 
-Sorry. I'm just... correcting the 'official' curriculum. It's fifty years out of date.`,
-        emotion: 'frustrated_passionate',
+Is it garbage? Or am I just uneducated?`,
+        emotion: 'frustrated_passion',
         variation_id: 'yaquin_intro_v1',
         richEffectContext: 'warning'
       }
     ],
     choices: [
       {
-        choiceId: 'yaquin_intro_validate',
-        text: "The map isn't the territory. You know the reality.",
-        nextNodeId: 'yaquin_gap_reveal',
-        pattern: 'analytical',
-        skills: ['criticalThinking', 'culturalCompetence'],
+        choiceId: 'yaquin_intro_garbage',
+        text: "If the textbook doesn't work, it's garbage.",
+        nextNodeId: 'yaquin_textbook_problem',
+        pattern: 'building',
+        skills: ['criticalThinking'],
         consequence: {
           characterId: 'yaquin',
           trustChange: 1
         }
       },
       {
-        choiceId: 'yaquin_intro_curious',
-        text: "Why are you rewriting a textbook?",
-        nextNodeId: 'yaquin_gap_reveal',
-        pattern: 'exploring',
-        skills: ['criticalThinking', 'communication']
+        choiceId: 'yaquin_intro_authority',
+        text: "Why do you think you're uneducated?",
+        nextNodeId: 'yaquin_credential_gap',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
       },
       {
-        choiceId: 'yaquin_intro_practical',
-        text: "What's the right way to hold it?",
-        nextNodeId: 'yaquin_practical_demo',
-        pattern: 'building',
-        skills: ['digitalLiteracy'],
-        consequence: {
-          characterId: 'yaquin',
-          trustChange: 2
-        }
+        choiceId: 'yaquin_intro_content',
+        text: "You're teaching online?",
+        nextNodeId: 'yaquin_creator_path',
+        pattern: 'exploring',
+        skills: ['digitalLiteracy']
       }
     ],
     onEnter: [
@@ -71,26 +67,58 @@ Sorry. I'm just... correcting the 'official' curriculum. It's fifty years out of
   },
 
   {
-    nodeId: 'yaquin_practical_demo',
+    nodeId: 'yaquin_textbook_problem',
     speaker: 'Yaquin',
     content: [
       {
-        text: `*He lights up, mimicking the motion.*
+        text: `Right? It says 'mix for 45 seconds.' If you do that, it sets in the bowl. You ruin the mold.
 
-Modified pen grasp, rolled slightly distal. Keeps the tongue back, clear line of sight for the doctor, patient breathes easy.
+I've been a dental assistant for 8 years. I know the feel of the paste. I know the look in a patient's eyes when they're scared.
 
-See? Simple. But this book spends three pages on 'historical suction methods' and zero on patient comfort.`,
-        emotion: 'confident_teacher',
-        variation_id: 'practical_demo_v1'
+The books don't teach that.`,
+        emotion: 'confident',
+        variation_id: 'textbook_v1'
       }
     ],
     choices: [
       {
-        choiceId: 'yaquin_should_teach',
-        text: "You just taught me that in ten seconds. You should be teaching this.",
-        nextNodeId: 'yaquin_impostor_hurdle',
+        choiceId: 'yaquin_tacit_knowledge',
+        text: "That's called tacit knowledge. It's valuable.",
+        nextNodeId: 'yaquin_curriculum_dream',
+        pattern: 'analytical',
+        skills: ['pedagogy']
+      },
+      {
+        choiceId: 'yaquin_teach_that',
+        text: "So teach THAT. The real stuff.",
+        nextNodeId: 'yaquin_curriculum_setup',
+        pattern: 'building',
+        skills: ['leadership']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'yaquin_credential_gap',
+    speaker: 'Yaquin',
+    content: [
+      {
+        text: `I'm 'just' an assistant. I didn't go to dental school.
+
+But the dentists ask *me* how to handle the difficult patients. They ask *me* to train the new hires.
+
+I'm doing the work, but I don't have the paper.`,
+        emotion: 'insecure',
+        variation_id: 'credential_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'yaquin_competence',
+        text: "Competence matters more than paper.",
+        nextNodeId: 'yaquin_curriculum_dream',
         pattern: 'helping',
-        skills: ['emotionalIntelligence', 'communication'],
+        skills: ['encouragement'],
         consequence: {
           characterId: 'yaquin',
           trustChange: 1
@@ -100,147 +128,46 @@ See? Simple. But this book spends three pages on 'historical suction methods' an
   },
 
   {
-    nodeId: 'yaquin_gap_reveal',
+    nodeId: 'yaquin_curriculum_dream',
     speaker: 'Yaquin',
     content: [
       {
-        text: `Because I have three trainees starting Monday. They all paid $15,000 for a certificate, and they don't know how to mix alginate without making a mess.
+        text: `I want to build a course. 'The Real Dental Assistant.'
 
-I have to retrain them from scratch every time. It's exhausting. I wish I could just... download my brain into theirs before they walk in the door.`,
-        emotion: 'tired',
-        variation_id: 'gap_reveal_v1'
+Not theory. Reality. How to calm a crying kid. How to mix the paste. How to anticipate what the doctor needs before they ask.
+
+But I keep looking at the syllabus and thinking... I need to include the history of dentistry. And anatomy. And ethics.`,
+        emotion: 'overwhelmed',
+        variation_id: 'dream_v1'
       }
     ],
     choices: [
       {
-        choiceId: 'yaquin_suggest_course',
-        text: "You could. Have you thought about making your own course?",
-        nextNodeId: 'yaquin_impostor_hurdle',
+        choiceId: 'yaquin_help_edit',
+        text: "You're adding fluff. Let's cut it.",
+        nextNodeId: 'yaquin_curriculum_setup',
         pattern: 'building',
-        skills: ['leadership', 'problemSolving']
-      },
-      {
-        choiceId: 'yaquin_system_issue',
-        text: "That sounds like a systemic failure in dental education.",
-        nextNodeId: 'yaquin_impostor_hurdle',
-        pattern: 'analytical',
-        skills: ['problemSolving']
+        skills: ['instructionalDesign']
       }
     ]
   },
 
-  // ============= THE IMPOSTOR HURDLE =============
+  // ============= THE CURRICULUM (Immersive Scenario) =============
   {
-    nodeId: 'yaquin_impostor_hurdle',
+    nodeId: 'yaquin_curriculum_setup',
     speaker: 'Yaquin',
     content: [
       {
-        text: `Me? Teach a course? I'm just a dental assistant. I don't have a PhD. I don't have a campus.
+        text: `*He slams a notebook onto the table. It's thick, messy, and covered in coffee stains.*
 
-I just know how to do the job so you don't get fired on day one.
+"Look at this list. I'm trying to turn 8 years of instinct into a checklist. It's impossible."
 
-Besides, how would I even do that? Just... put videos online?`,
-        emotion: 'skeptical_insecure',
-        variation_id: 'impostor_hurdle_v1'
-      }
-    ],
-    choices: [
-      {
-        choiceId: 'yaquin_cohort_idea',
-        text: "Not just videos. A cohort. Teach a small group live, online.",
-        nextNodeId: 'yaquin_cohort_explanation',
-        pattern: 'building',
-        skills: ['creativity', 'financialLiteracy'],
-        consequence: {
-          characterId: 'yaquin',
-          trustChange: 1
-        }
-      },
-      {
-        choiceId: 'yaquin_youtube_idea',
-        text: "Start with YouTube. Solve the specific problems people are searching for.",
-        nextNodeId: 'yaquin_youtube_strategy',
-        pattern: 'building',
-        skills: ['digitalLiteracy', 'communication']
-      },
-      {
-        choiceId: 'yaquin_value_proposition',
-        text: "The value isn't the PhD. It's the practical survival skills.",
-        nextNodeId: 'yaquin_curriculum_design',
-        pattern: 'analytical',
-        skills: ['criticalThinking', 'communication'],
-        consequence: {
-          characterId: 'yaquin',
-          trustChange: 2
-        }
-      }
-    ]
-  },
+*He points to three potential modules.*
 
-  // ============= THE MECHANICS (Tech Stack & Strategy) =============
-  {
-    nodeId: 'yaquin_cohort_explanation',
-    speaker: 'Yaquin',
-    content: [
-      {
-        text: `A cohort? You mean like... a bootcamp? But for dental assisting?
-
-So instead of a 2-year degree, I give them a 6-week intensive on the stuff that actually matters?
-
-But how do I... charge for that? How do I find them?`,
-        emotion: 'curious_overwhelmed',
-        variation_id: 'cohort_v1'
-      }
-    ],
-    choices: [
-      {
-        choiceId: 'yaquin_tech_stack',
-        text: "Keep it simple. Landing page, mailing list, payment link.",
-        nextNodeId: 'yaquin_tech_stack_details',
-        pattern: 'analytical',
-        skills: ['digitalLiteracy', 'problemSolving']
-      }
-    ]
-  },
-
-  {
-    nodeId: 'yaquin_youtube_strategy',
-    speaker: 'Yaquin',
-    content: [
-      {
-        text: `YouTube... 'How to mix alginate.' 'How to set up a tray.'
-
-I guess I could record that on my phone in the clinic after hours.
-
-But how does that become a business? I can't pay rent with 'likes.'`,
-        emotion: 'calculating',
-        variation_id: 'youtube_v1'
-      }
-    ],
-    choices: [
-      {
-        choiceId: 'yaquin_funnel_strategy',
-        text: "YouTube builds trust. Then you invite them to a paid workshop.",
-        nextNodeId: 'yaquin_tech_stack_details',
-        pattern: 'building',
-        skills: ['communication', 'financialLiteracy']
-      }
-    ]
-  },
-
-  {
-    nodeId: 'yaquin_tech_stack_details',
-    speaker: 'Yaquin',
-    content: [
-      {
-        text: `Okay, slow down. I know teeth, not tech.
-
-You're saying I don't need to build a whole university website?
-
-I just need... a way to capture emails and a way to take money?`,
-        emotion: 'processing',
-        variation_id: 'tech_stack_v1',
-        richEffectContext: 'thinking',
+"I only have time to film one pilot module this weekend. If I pick the wrong one, nobody watches, and I go back to cleaning spit valves."`,
+        emotion: 'frustrated_focused',
+        variation_id: 'curriculum_setup_v2',
+        richEffectContext: 'warning', // Editor Mode
         useChatPacing: true
       }
     ],
@@ -249,183 +176,147 @@ I just need... a way to capture emails and a way to take money?`,
     },
     choices: [
       {
-        choiceId: 'yaquin_email_first',
-        text: "The list is your asset. Start a newsletter with tips.",
-        nextNodeId: 'yaquin_curriculum_design',
-        pattern: 'building',
-        skills: ['collaboration', 'communication']
+        choiceId: 'module_history',
+        text: "[ACTION] 'Module 1: The History of Dentistry (1800-Present).'",
+        nextNodeId: 'yaquin_fail_boring',
+        pattern: 'analytical', // Trap choice: boring
+        skills: ['curriculumDesign']
       },
       {
-        choiceId: 'yaquin_presell',
-        text: "Pre-sell it. Don't build the course until 10 people pay.",
-        nextNodeId: 'yaquin_presell_revelation',
-        pattern: 'analytical',
-        skills: ['problemSolving', 'criticalThinking']
-      }
-    ]
-  },
-
-  {
-    nodeId: 'yaquin_presell_revelation',
-    speaker: 'Yaquin',
-    content: [
-      {
-        text: `Wait. Ask for money *before* I film the videos?
-
-That sounds... scary. But also smart. If nobody buys it, I haven't wasted three months filming.
-
-Okay. Say I get the 10 people. What do I actually teach them? I can't teach *everything* in 6 weeks.`,
-        emotion: 'epiphany',
-        variation_id: 'presell_v1'
-      }
-    ],
-    choices: [
-      {
-        choiceId: 'yaquin_curriculum_cut',
-        text: "That's the secret. You have to cut 80% of the fluff.",
-        nextNodeId: 'yaquin_curriculum_design',
-        pattern: 'analytical',
-        skills: ['timeManagement', 'creativity']
-      }
-    ]
-  },
-
-  // ============= CURRICULUM DESIGN (Immersive Scenario) =============
-  {
-    nodeId: 'yaquin_curriculum_design',
-    speaker: 'Yaquin',
-    content: [
-      {
-        text: "*He slams the notebook onto the bench. A messy list of 20 topics fills the page.* \n\n**SYSTEM ACTIVE: CURRICULUM BUILDER v0.1** \n**CONSTRAINT:** 6 Weeks \n**GOAL:** Job Readiness \n\nI can't teach it all. I have to cut. \n\n*He hands you the red marker.* \n\nWhat goes? Be ruthless.",
-        emotion: 'focused_work',
-        variation_id: 'curriculum_scenario_v1',
-        richEffectContext: 'warning' // Blueprint/Editor Mode
-      }
-    ],
-    choices: [
-      {
-        choiceId: 'edit_cut_history',
-        text: "[ACTION] Cross out 'History of Dentistry (1800-1950)'. It's trivia, not a skill.",
-        nextNodeId: 'yaquin_focused_curriculum', // Re-using this node ID for the success state
+        choiceId: 'module_practical',
+        text: "[ACTION] 'Module 1: The Perfect Impression (How not to choke your patient).'",
+        nextNodeId: 'yaquin_success_practical',
         pattern: 'building',
-        skills: ['creativity', 'criticalThinking'],
-        consequence: {
-          characterId: 'yaquin',
-          trustChange: 2,
-          addKnowledgeFlags: ['helped_curriculum']
-        }
+        skills: ['marketing', 'empathy']
       },
       {
-        choiceId: 'edit_keep_soft',
-        text: "[ACTION] Circle 'Patient Etiquette'. Keep it. That's what gets them hired.",
-        nextNodeId: 'yaquin_soft_skills_focus',
+        choiceId: 'module_soft_skills',
+        text: "[ACTION] 'Module 1: Reading the Room (Patient Psychology).'",
+        nextNodeId: 'yaquin_success_psych',
         pattern: 'helping',
-        skills: ['emotionalIntelligence', 'adaptability'],
-        consequence: {
-          characterId: 'yaquin',
-          trustChange: 1
-        }
-      },
-      {
-        choiceId: 'edit_condense',
-        text: "[ACTION] Draw an arrow merging 'Anatomy' and 'Assisting'. Teach them together.",
-        nextNodeId: 'yaquin_overwhelmed_response',
-        pattern: 'analytical',
-        skills: ['problemSolving']
+        skills: ['emotionalIntelligence']
       }
     ],
     tags: ['simulation', 'yaquin_arc', 'immersive_scenario']
   },
 
+  // --- FAILURE STATE: BORING ---
   {
-    nodeId: 'yaquin_focused_curriculum',
+    nodeId: 'yaquin_fail_boring',
     speaker: 'Yaquin',
     content: [
       {
-        text: "*The red ink bleeds into the paper. Half the list is gone.* \n\nIt looks... clean. \n\n**'The 6-Week Chairside Sprint.'** \n\nNo fluff. Just the skills that make you indispensable. \n\nThat's the product.",
-        emotion: 'excited_clarity',
-        variation_id: 'focused_v1',
+        text: `*Yaquin films it. He watches the playback.*
+
+"Hello class. Today we will discuss 19th century forceps."
+
+*He puts his head in his hands.*
+
+"I'm bored. I'm literally bored watching myself. Nobody is going to pay $50 for this. I sound like the professors I hated."`,
+        emotion: 'defeated',
+        variation_id: 'fail_boring_v1',
+        richEffectContext: 'error'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'retry_curriculum',
+        text: "Cut the history. Teach the skill.",
+        nextNodeId: 'yaquin_curriculum_setup',
+        pattern: 'building'
+      },
+      {
+        choiceId: 'give_up_boring',
+        text: "Maybe you need a degree to teach.",
+        nextNodeId: 'yaquin_bad_ending',
+        pattern: 'analytical',
+        consequence: {
+           addGlobalFlags: ['yaquin_chose_safe'] 
+        }
+      }
+    ]
+  },
+
+  // --- SUCCESS VARIATIONS ---
+  {
+    nodeId: 'yaquin_success_practical',
+    speaker: 'Yaquin',
+    content: [
+      {
+        text: `*He films it. Fast. Energetic. He mixes the paste on camera, making a mess, laughing.*
+
+"See? It's pink. It's goopy. And you have 30 seconds before it turns to stone. Go!"
+
+*He watches the playback, grinning.*
+
+"That's it. That's the energy. It's not a lecture. It's a cooking show for teeth."`,
+        emotion: 'excited',
+        variation_id: 'success_practical_v1',
         richEffectContext: 'success'
       }
     ],
     choices: [
       {
-        choiceId: 'yaquin_launch_plan',
-        text: "Now you just need to launch it.",
-        nextNodeId: 'yaquin_climax_launch',
+        choiceId: 'confirm_practical',
+        text: "That's your brand. 'The Cooking Show for Teeth.'",
+        nextNodeId: 'yaquin_launch_decision',
         pattern: 'building',
-        skills: ['timeManagement']
+        skills: ['branding']
+      }
+    ],
+    onEnter: [
+      {
+        addGlobalFlags: ['yaquin_chose_practical']
       }
     ]
   },
 
   {
-    nodeId: 'yaquin_soft_skills_focus',
+    nodeId: 'yaquin_success_psych',
     speaker: 'Yaquin',
     content: [
       {
-        text: `That's true. Most firings happen because of attitude, not aptitude.
+        text: `*He talks to the camera like it's a scared patient.*
 
-**'The Professional Assistant.'** Half clinical skills, half patient management. How to calm a terrified kid. How to manage a stressed doctor.
+"I know you're nervous. I know the drill sounds loud. Watch my eyes. Breathe with me."
 
-That's a niche nobody else is filling.`,
-        emotion: 'thoughtful_clarity',
-        variation_id: 'soft_skills_v1'
+*He stops recording.*
+
+"That's what I do all day. I don't fix teeth. I fix fear. That's what I'm selling."`,
+        emotion: 'inspired',
+        variation_id: 'success_psych_v1',
+        richEffectContext: 'success'
       }
     ],
     choices: [
       {
-        choiceId: 'yaquin_launch_plan_soft',
-        text: "It's a premium offering. Launch it.",
-        nextNodeId: 'yaquin_climax_launch',
+        choiceId: 'confirm_psych',
+        text: "You're teaching emotional intelligence, not just dentistry.",
+        nextNodeId: 'yaquin_launch_decision',
         pattern: 'helping',
-        skills: ['communication']
-      }
-    ]
-  },
-
-  {
-    nodeId: 'yaquin_overwhelmed_response',
-    speaker: 'Yaquin',
-    content: [
-      {
-        text: `I... I guess. But that's what the colleges do. They cram it all in, and the students remember none of it.
-
-If I do that, I'm just a cheaper version of a bad product.
-
-No. I need to be different. I need to be *effective*.`,
-        emotion: 'determined_correction',
-        variation_id: 'overwhelmed_v1'
+        skills: ['emotionalIntelligence']
       }
     ],
-    choices: [
+    onEnter: [
       {
-        choiceId: 'yaquin_recorrect_cut',
-        text: "You're right. Be bold. Cut the history.",
-        nextNodeId: 'yaquin_focused_curriculum',
-        pattern: 'analytical',
-        skills: ['adaptability']
+        addGlobalFlags: ['yaquin_chose_psych']
       }
     ]
   },
 
-  // ============= CLIMAX: THE LAUNCH =============
+  // ============= THE LAUNCH (Climax) =============
   {
-    nodeId: 'yaquin_climax_launch',
+    nodeId: 'yaquin_launch_decision',
     speaker: 'Yaquin',
     content: [
       {
-        text: `*He pulls out his phone, opening Instagram.*
+        text: "I have the video. I have the platform.
 
-I have 500 followers. Mostly other assistants complaining about their backs.
+But if I hit publish... the dentists I work for will see it. They might fire me. 'Who does this guy think he is?'
 
-I'm going to post it. 'Beta Cohort: Master Chairside Skills in 6 Weeks.' Link in bio to a simple form.
-
-If I do this... I'm not just an assistant anymore. I'm a founder.`,
-        emotion: 'nervous_anticipation',
-        variation_id: 'climax_launch_v1',
-        useChatPacing: true,
-        richEffectContext: 'thinking'
+But if I don't... I'm just a guy shouting at his phone in a basement.",
+        emotion: 'nervous_energy',
+        variation_id: 'launch_v1'
       }
     ],
     requiredState: {
@@ -433,47 +324,44 @@ If I do this... I'm not just an assistant anymore. I'm a founder.`,
     },
     choices: [
       {
-        choiceId: 'yaquin_push_button',
-        text: "Post it. You have something they need.",
-        nextNodeId: 'yaquin_ending_success',
+        choiceId: 'launch_now',
+        text: "Launch it. Ask for forgiveness, not permission.",
+        nextNodeId: 'yaquin_launched',
         pattern: 'building',
-        skills: ['adaptability', 'leadership']
+        skills: ['entrepreneurship', 'courage']
       },
       {
-        choiceId: 'yaquin_hesitate',
-        text: "Maybe draft the email list first?",
-        nextNodeId: 'yaquin_ending_cautious',
+        choiceId: 'launch_wait',
+        text: "Build an audience anonymously first.",
+        nextNodeId: 'yaquin_audience_first',
         pattern: 'analytical',
-        skills: ['problemSolving']
+        skills: ['strategy']
       }
     ]
   },
 
   {
-    nodeId: 'yaquin_ending_success',
+    nodeId: 'yaquin_launched',
     speaker: 'Yaquin',
     content: [
       {
-        text: `*He taps the screen. Takes a deep breath.*
+        text: "*He hits the button.*
 
-It's up. 
+It's live.
 
-Already a comment: 'Does this cover digital impressions?'
+First comment: 'Finally someone explains the mixing ratio!'
 
-I know digital impressions. I can teach that.
-
-Wow. I'm doing this.`,
-        emotion: 'joyful_disbelief',
-        variation_id: 'ending_success_v1'
+I'm doing it. I'm actually doing it. I'm a teacher.",
+        emotion: 'triumphant',
+        variation_id: 'launched_v1'
       }
     ],
     choices: [
       {
-        choiceId: 'yaquin_farewell',
-        text: "You're an educator now, Yaquin.",
+        choiceId: 'yaquin_farewell_launched',
+        text: "You always were.",
         nextNodeId: 'yaquin_farewell',
-        pattern: 'helping',
-        skills: ['leadership']
+        pattern: 'helping'
       }
     ],
     onEnter: [
@@ -485,26 +373,25 @@ Wow. I'm doing this.`,
   },
 
   {
-    nodeId: 'yaquin_ending_cautious',
+    nodeId: 'yaquin_audience_first',
     speaker: 'Yaquin',
     content: [
       {
-        text: `Yeah. Email first. Less pressure.
+        text: "Smart. I'll create a brand name. 'The Dental Ninja.' Build trust, then sell the course.
 
-I'll write a guide: '5 Things Dental School Didn't Teach You.' Free download in exchange for email.
+It's safer. But it's still moving forward.
 
-Build the audience, then sell the course. Smart.`,
-        emotion: 'settled_plan',
-        variation_id: 'ending_cautious_v1'
+Thank you. You kept me from making a reckless mistake.",
+        emotion: 'relieved',
+        variation_id: 'audience_v1'
       }
     ],
     choices: [
       {
-        choiceId: 'yaquin_farewell_safe',
-        text: "That's a solid strategy.",
+        choiceId: 'yaquin_farewell_audience',
+        text: "Strategy beats speed.",
         nextNodeId: 'yaquin_farewell',
-        pattern: 'analytical',
-        skills: ['criticalThinking']
+        pattern: 'analytical'
       }
     ],
     onEnter: [
@@ -515,17 +402,46 @@ Build the audience, then sell the course. Smart.`,
     tags: ['ending', 'yaquin_arc']
   },
 
+  // ============= BAD ENDING =============
+  {
+    nodeId: 'yaquin_bad_ending',
+    speaker: 'Yaquin',
+    content: [
+      {
+        text: "Yeah. I should probably just go back to school. Get the degree. Then maybe people will listen.
+
+This was... a nice fantasy. But I'm just an assistant.
+
+Thanks for listening.",
+        emotion: 'deflated',
+        variation_id: 'bad_ending_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'yaquin_leave_bad',
+        text: "...",
+        nextNodeId: samuelEntryPoints.YAQUIN_REFLECTION_GATEWAY,
+        pattern: 'patience'
+      }
+    ],
+    onEnter: [
+      {
+        addGlobalFlags: ['yaquin_chose_safe', 'yaquin_arc_complete']
+      }
+    ],
+    tags: ['ending', 'bad_ending', 'yaquin_arc']
+  },
+
   {
     nodeId: 'yaquin_farewell',
     speaker: 'Yaquin',
     content: [
       {
-        text: `Thank you. I came here looking for a new job, but I think I just invented one instead.
+        text: "I have a lot of editing to do.
 
-I'm going to go record that video on alginate mixing. 
-
-See you around the station.`,
-        emotion: 'grateful',
+If you see Samuel, tell him... tell him class is in session.",
+        emotion: 'happy',
         variation_id: 'farewell_v1'
       }
     ],

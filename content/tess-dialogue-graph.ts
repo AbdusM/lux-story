@@ -12,7 +12,8 @@ import { DialogueNode, DialogueGraph } from '../lib/dialogue-graph'
 import { samuelEntryPoints } from './samuel-dialogue-graph'
 
 export const tessDialogueNodes: DialogueNode[] = [
-  // ============= INTRODUCTION =============
+  // ... [KEEPING INTRO NODES] ...
+  // I will rewrite the scenario node directly in context.
   {
     nodeId: 'tess_introduction',
     speaker: 'Tess',
@@ -127,7 +128,6 @@ I need to make them see the *curriculum* inside the chaos.`,
     ]
   },
 
-  // ============= THE BACKSTORY =============
   {
     nodeId: 'tess_explains_school',
     speaker: 'Tess',
@@ -224,9 +224,19 @@ If I do this, I quit the safe job. No net.`,
     speaker: 'Tess',
     content: [
       {
-        text: "*She thrusts a tablet into your hands. The slide is a wall of text. Bullets, charts, paragraphs.* \n\n**SYSTEM ACTIVE: DECK EDITOR v2.0** \n**CURRENT SLIDE:** 'The Pedagogical Benefits of Wilderness Immersion for Adolescent Neural Development' \n\nToo long. Too academic. They'll fall asleep. \n\n*The cursor blinks at the headline.* \n\nFix it. What are we actually selling?",
+        text: `*She thrusts a tablet into your hands. The slide is a wall of text. Bullets, charts, paragraphs.* 
+
+"Look at this. 'The Pedagogical Benefits of Wilderness Immersion for Adolescent Neural Development.'"
+
+*She grimaces.*
+
+"I sound like a textbook. If I present this, they'll fall asleep before I ask for the money."
+
+*The cursor blinks at the headline.*
+
+"Fix it. Be ruthless. What are we actually selling?"`,
         emotion: 'focused_work_mode',
-        variation_id: 'pitch_scenario_v1',
+        variation_id: 'pitch_scenario_v2',
         richEffectContext: 'warning', // Editor Mode
         useChatPacing: true
       }
@@ -250,17 +260,54 @@ If I do this, I quit the safe job. No net.`,
         skills: ['emotionalIntelligence', 'emotionalIntelligence']
       },
       {
-        choiceId: 'pitch_skills',
-        text: "[ACTION] Focus on the outcomes. Type: 'REAL-WORLD PROJECT MANAGEMENT LAB.'",
-        nextNodeId: 'tess_pitch_skills',
-        pattern: 'analytical',
+        choiceId: 'pitch_safe',
+        text: "[ACTION] Keep the academic tone but bold the key stats. 'Evidence-Based Outdoor Education.'",
+        nextNodeId: 'tess_pitch_fail_safe',
+        pattern: 'analytical', // Trap choice: too safe
         skills: ['communication', 'culturalCompetence']
       }
     ],
     tags: ['pitch_mechanic', 'tess_arc', 'immersive_scenario']
   },
 
-  // --- Pitch Variation: Resilience ---
+  // --- FAILURE STATE: TOO SAFE ---
+  {
+    nodeId: 'tess_pitch_fail_safe',
+    speaker: 'Tess',
+    content: [
+      {
+        text: `*Tess reads the new headline. She sighs.*
+
+'Evidence-Based Outdoor Education.' It's accurate. It's professional.
+
+And it's boring. I can see the committee now. They'll nod, say 'interesting,' and fund another STEM lab because it's safer.
+
+If I can't make them *feel* the urgency, I've already lost.`,
+        emotion: 'deflated',
+        variation_id: 'pitch_fail_safe_v1',
+        richEffectContext: 'error'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'retry_pitch',
+        text: "You're right. Be bold.",
+        nextNodeId: 'tess_the_pitch_setup',
+        pattern: 'patience'
+      },
+      {
+        choiceId: 'accept_safe',
+        text: "Maybe boring gets funded.",
+        nextNodeId: 'tess_decision_cautious', // Forces Cautious Path
+        pattern: 'analytical',
+        consequence: {
+           addGlobalFlags: ['tess_chose_safe'] 
+        }
+      }
+    ]
+  },
+
+  // --- SUCCESS VARIATIONS ---
   {
     nodeId: 'tess_pitch_resilience',
     speaker: 'Tess',
@@ -291,7 +338,6 @@ Yes. 'We don't teach history; we teach how to make history when the map runs out
     ]
   },
 
-  // --- Pitch Variation: Mental Health ---
   {
     nodeId: 'tess_pitch_mental_health',
     speaker: 'Tess',
@@ -318,39 +364,6 @@ So this isn't a gap year. It's a reset. 'Disconnect to Reconnect.'
     onEnter: [
       {
         addGlobalFlags: ['tess_pitch_mental_health']
-      }
-    ]
-  },
-
-  // --- Pitch Variation: Skills ---
-  {
-    nodeId: 'tess_pitch_skills',
-    speaker: 'Tess',
-    content: [
-      {
-        text: `Right. Translate it into corporate speak. 
-
-Setting up camp in a storm? 'Crisis Management.'
-Navigating by compass? 'Strategic Planning.'
-Cooking for 12 people on a fire? 'Resource Allocation.'
-
-It's an executive MBA for 18-year-olds.`,
-        emotion: 'analytical_excited',
-        variation_id: 'pitch_skills_v1'
-      }
-    ],
-    choices: [
-      {
-        choiceId: 'pitch_skills_affirm',
-        text: "It's experiential career prep. That gets funded.",
-        nextNodeId: 'tess_pitch_climax',
-        pattern: 'analytical',
-        skills: ['communication', 'financialLiteracy']
-      }
-    ],
-    onEnter: [
-      {
-        addGlobalFlags: ['tess_pitch_skills']
       }
     ]
   },
