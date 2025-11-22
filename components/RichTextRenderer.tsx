@@ -93,12 +93,26 @@ export function RichTextRenderer({
   
   // Default to staggered if 'typewriter' is requested (migration strategy)
   const mode = effects.mode === 'typewriter' ? 'staggered' : (effects.mode || 'static')
-  
-  // Split text into chunks (paragraphs)
-  // We split by double newline first to get paragraphs
+
+  // Split text into chunks respecting author intent
+  // Priority: 1) Manual | separators, 2) Paragraph breaks (\n\n), 3) Keep as single chunk
   const chunks = React.useMemo(() => {
     if (!text) return []
-    return text.split(/\n\n/).filter(Boolean)
+
+    // If author used | separator, respect it
+    if (text.includes('|')) {
+      return text.split('|').map(c => c.trim()).filter(Boolean)
+    }
+
+    // Otherwise split by paragraph breaks
+    const paragraphs = text.split(/\n\n+/).filter(Boolean)
+
+    // If only one paragraph and it's very short, keep as single chunk
+    if (paragraphs.length === 1 && paragraphs[0].length < 150) {
+      return [text]
+    }
+
+    return paragraphs
   }, [text])
   
   useEffect(() => {
@@ -193,15 +207,14 @@ export function RichTextRenderer({
       )}
       onClick={handleSkip}
     >
-            {chunks.map((chunk, index) => (
-              <motion.div
-                key={`${text.substring(0, 10)}-${index}`}
-                layout
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ 
-                  opacity: index < visibleChunks ? 1 : 0,            y: index < visibleChunks ? 0 : 10
+      {chunks.map((chunk, index) => (
+        <motion.div
+          key={`${text.substring(0, 10)}-${index}`}
+          initial={{ opacity: 0 }}
+          animate={{
+            opacity: index < visibleChunks ? 1 : 0
           }}
-          transition={{ type: "spring", stiffness: 400, damping: 30 }}
+          transition={{ duration: 0.2, ease: "easeOut" }}
           className={cn(
             "leading-relaxed text-slate-700",
             // Hide chunks that shouldn't be visible yet to prevent layout jumps

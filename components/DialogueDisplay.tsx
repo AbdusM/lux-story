@@ -82,10 +82,10 @@ interface DialogueDisplayProps {
  * - Consistent typography rhythm across all narrative text
  * - Optional sequential reveal with typing indicators (ChatPacedDialogue)
  */
-export function DialogueDisplay({ 
-  text, 
-  className, 
-  useChatPacing, 
+export function DialogueDisplay({
+  text,
+  className,
+  useChatPacing,
   characterName,
   showAvatar = true,
   isContinuedSpeaker = false,
@@ -94,11 +94,14 @@ export function DialogueDisplay({
   emotion,
   playerPatterns
 }: DialogueDisplayProps) {
-  // Auto-chunk long text for chat pacing, then split by | separator
-  const chunkedText = autoChunkDialogue(text, { 
-    activationThreshold: 200,  // Only chunk longer paragraphs (increased to prevent over-chunking)
-    maxChunkLength: 100        // Allow complete sentences
-  })
+  // Auto-chunk long text ONLY if NOT using richEffects
+  // When richEffects is enabled, respect the original text structure completely
+  const chunkedText = richEffects
+    ? text  // Let RichTextRenderer handle chunking via \n\n splits
+    : autoChunkDialogue(text, {
+        activationThreshold: 200,
+        maxChunkLength: 100
+      })
   
   // Determine if avatar should be displayed
   const displayAvatar = showAvatar && shouldShowAvatar(characterName, isContinuedSpeaker, false)
@@ -124,6 +127,24 @@ export function DialogueDisplay({
   }
 
   // Otherwise, use standard instant display
+  // Get interaction class if provided
+  const interactionClass = interaction ? `narrative-interaction-${interaction}` : null
+
+  // If richEffects is enabled, use RichTextRenderer for the entire text
+  // This allows RichTextRenderer to control chunking internally
+  if (richEffects) {
+    return (
+      <div className={cn("space-y-4", className)} key="dialogue-chunks-container" style={{ transition: 'none' }}>
+        <RichTextRenderer
+          text={chunkedText}
+          effects={richEffects}
+          className={cn("text-base text-slate-800 leading-relaxed", interactionClass)}
+        />
+      </div>
+    )
+  }
+
+  // Standard display without richEffects: split by | and render paragraphs instantly
   const chunks = chunkedText.split('|').map(chunk => chunk.trim()).filter(chunk => chunk.length > 0)
 
   // If no chunks, return empty to maintain stable container
@@ -131,35 +152,20 @@ export function DialogueDisplay({
     return <div className={cn("space-y-4", className)}></div>
   }
 
-  // Get interaction class if provided
-  const interactionClass = interaction ? `narrative-interaction-${interaction}` : null
-
   return (
     <div className={cn("space-y-4", className)} key="dialogue-chunks-container" style={{ transition: 'none' }}>
       {/* Dialogue Content - No inline avatars */}
-      {chunks.map((chunk, index) => {
-        const ChunkWrapper = richEffects ? 'div' : 'p'
-        
-        return (
-          <ChunkWrapper
-            key={`chunk-${chunk.slice(0, 20).replace(/\s/g, '-')}-${index}`}
-            className={cn(
-              "text-base text-slate-800 leading-relaxed whitespace-pre-wrap",
-              interactionClass
-            )}
-          >
-            {richEffects ? (
-              <RichTextRenderer
-                text={chunk}
-                effects={richEffects}
-                className="text-base text-slate-800 leading-relaxed"
-              />
-            ) : (
-              parseEmphasisText(chunk)
-            )}
-          </ChunkWrapper>
-        )
-      })}
+      {chunks.map((chunk, index) => (
+        <p
+          key={`chunk-${chunk.slice(0, 20).replace(/\s/g, '-')}-${index}`}
+          className={cn(
+            "text-base text-slate-800 leading-relaxed whitespace-pre-wrap",
+            interactionClass
+          )}
+        >
+          {parseEmphasisText(chunk)}
+        </p>
+      ))}
     </div>
   )
 }
