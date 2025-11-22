@@ -19,12 +19,12 @@ interface GameChoicesProps {
   onChoice: (choice: Choice) => void
 }
 
-// Animation variants - minimal, modern
+// Animation variants for juice
 const buttonVariants = {
-  initial: { opacity: 0 },
-  animate: { opacity: 1 },
-  tap: { opacity: 0.7 },
-  hover: { opacity: 0.8 }
+  initial: { opacity: 0, y: 10 },
+  animate: { opacity: 1, y: 0 },
+  tap: { scale: 0.98 },
+  hover: { scale: 1.01, boxShadow: "0px 4px 12px rgba(0,0,0,0.1)" }
 }
 
 const shakeVariant = {
@@ -75,14 +75,14 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing }: {
         disabled={isProcessing}
         variant="ghost"
         className={`
-          w-full min-h-[44px] px-4 py-2.5
-          text-[15px] font-normal text-slate-700 text-left whitespace-normal leading-relaxed
-          border-[0.5px] border-slate-200 bg-white
-          hover:bg-slate-50/50
-          transition-colors duration-150 ease-out
-          rounded-md
-          ${choice.feedback === 'shake' ? 'border-red-300 bg-red-50/80' : ''}
-          ${choice.feedback === 'glow' ? 'border-blue-300 bg-blue-50/80' : ''}
+          w-full min-h-[56px] px-6 py-4 
+          text-base font-medium text-left whitespace-normal leading-relaxed
+          border border-slate-200 bg-white 
+          hover:bg-slate-50 hover:border-slate-300 
+          transition-colors duration-200 ease-out 
+          rounded-xl shadow-sm
+          ${choice.feedback === 'shake' ? 'border-red-200 bg-red-50' : ''}
+          ${choice.feedback === 'glow' ? 'border-blue-300 bg-blue-50' : ''}
         `}
       >
         {choice.text}
@@ -134,17 +134,13 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice }: GameChoice
     const nonEmptyGroups = Object.entries(groups).filter(([_, groupChoices]) => groupChoices.length > 0)
 
     return (
-      <div className="space-y-6">
+      <div className="space-y-8">
         {nonEmptyGroups.map(([title, groupChoices]) => (
           <div key={title} className="space-y-3">
             {title !== 'Other' && (
-              <div className="flex items-center gap-2 mb-3">
-                <div className="h-px flex-1 bg-slate-100"></div>
-                <span className="text-xs font-medium text-slate-400 px-2">
-                  {title}
-                </span>
-                <div className="h-px flex-1 bg-slate-100"></div>
-              </div>
+              <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider px-1">
+                {title}
+              </h4>
             )}
             <div className={`grid gap-3 ${groupChoices.length > 1 ? 'md:grid-cols-2' : 'grid-cols-1'}`}>
               {groupChoices.map((choice, index) => (

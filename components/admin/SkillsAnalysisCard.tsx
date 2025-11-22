@@ -129,10 +129,10 @@ export function SkillsAnalysisCard({ profile }: SkillsAnalysisCardProps) {
           <div>
             <h4 className="font-semibold text-slate-900 mb-3">How Their Skills Have Grown</h4>
             <div className="space-y-2">
-                {profile.skillEvolution.map((checkpoint, idx) => (
-                  <div key={`${checkpoint.checkpoint}-${idx}`} className="text-sm border-l-2 border-blue-200 pl-3 py-1">
+              {profile.skillEvolution.map((checkpoint, index) => (
+                <div key={checkpoint.checkpoint} className="flex items-center gap-3">
                   <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                    <span className="text-xs font-semibold text-blue-600">{idx + 1}</span>
+                    <span className="text-xs font-semibold text-blue-600">{index + 1}</span>
                   </div>
                   <div className="flex-1">
                     <p className="font-medium text-slate-900">{checkpoint.checkpoint}</p>
