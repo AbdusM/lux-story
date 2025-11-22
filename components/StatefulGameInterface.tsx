@@ -377,7 +377,7 @@ export default function StatefulGameInterface() {
       className="min-h-screen max-h-screen overflow-y-auto bg-gradient-to-b from-slate-50 to-slate-100"
       style={{ willChange: 'auto', contain: 'layout style paint', transition: 'none' }}
     >
-      <div className="max-w-4xl mx-auto p-3 sm:p-4">
+      <div className="max-w-4xl mx-auto p-3 sm:p-4" data-testid="game-interface">
 
         {/* Top Actions */}
         <div className="flex justify-between items-center mb-3">
@@ -426,8 +426,8 @@ export default function StatefulGameInterface() {
         )}
 
         {/* Dialogue Card - Fixed height to prevent layout shifts */}
-        <Card key="dialogue-card" className="mb-4 sm:mb-6 rounded-xl shadow-md" style={{ transition: 'none' }}>
-          <CardContent className="p-6 sm:p-8 min-h-[400px] max-h-[60vh] overflow-y-auto">
+        <Card key="dialogue-card" className="mb-4 sm:mb-6 rounded-xl shadow-md" style={{ transition: 'none' }} data-testid="dialogue-card">
+          <CardContent className="p-6 sm:p-8 min-h-[400px] max-h-[60vh] overflow-y-auto" data-testid="dialogue-content" data-speaker={state.currentNode?.speaker || ''}>
             <DialogueDisplay
               text={state.currentContent || ''}
               useChatPacing={state.useChatPacing}

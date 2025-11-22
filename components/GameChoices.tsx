@@ -74,12 +74,15 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing }: {
         onClick={() => onChoice(choice)}
         disabled={isProcessing}
         variant="ghost"
+        data-testid="choice-button"
+        data-choice-text={choice.text}
+        data-pattern={choice.pattern || ''}
         className={`
-          w-full min-h-[56px] px-6 py-4 
+          w-full min-h-[56px] px-6 py-4
           text-base font-medium text-left whitespace-normal leading-relaxed
-          border border-slate-200 bg-white 
-          hover:bg-slate-50 hover:border-slate-300 
-          transition-colors duration-200 ease-out 
+          border border-slate-200 bg-white
+          hover:bg-slate-50 hover:border-slate-300
+          transition-colors duration-200 ease-out
           rounded-xl shadow-sm
           ${choice.feedback === 'shake' ? 'border-red-200 bg-red-50' : ''}
           ${choice.feedback === 'glow' ? 'border-blue-300 bg-blue-50' : ''}
@@ -171,7 +174,7 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice }: GameChoice
   }
 
   return (
-    <div className={`grid gap-3 ${useGrid ? 'md:grid-cols-2' : 'grid-cols-1'}`}>
+    <div className={`grid gap-3 ${useGrid ? 'md:grid-cols-2' : 'grid-cols-1'}`} data-testid="game-choices">
       {choices.map((choice, index) => (
         <ChoiceButton
           key={index}
