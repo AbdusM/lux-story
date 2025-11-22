@@ -422,20 +422,17 @@ export default function StatefulGameInterface() {
           </Card>
         )}
 
-        {/* Dialogue Card - Restored */}
-        <Card key="dialogue-card" className="mb-4 sm:mb-6 rounded-xl shadow-md" style={{ transition: 'none', minHeight: '200px' }}>
-          <CardContent className="p-6 sm:p-8">
-            <div className="mb-3 sm:mb-4">
-              <DialogueDisplay 
-                text={state.currentContent || ''} 
-                useChatPacing={state.useChatPacing}
-                characterName={state.currentNode?.speaker}
-                showAvatar={false} // Managed by DialogueDisplay logic usually, forcing false here to match screenshot if needed, but standard is to show it. 
-                // Screenshot shows "Samuel Washington" as HEADING inside card. DialogueDisplay handles this if we pass characterName.
-                richEffects={getRichEffectContext(state.currentDialogueContent, state.isLoading, state.recentSkills, state.useChatPacing)}
-                interaction={state.currentDialogueContent?.interaction}
-              />
-            </div>
+        {/* Dialogue Card - Fixed height to prevent layout shifts */}
+        <Card key="dialogue-card" className="mb-4 sm:mb-6 rounded-xl shadow-md" style={{ transition: 'none' }}>
+          <CardContent className="p-6 sm:p-8 min-h-[400px] max-h-[60vh] overflow-y-auto">
+            <DialogueDisplay
+              text={state.currentContent || ''}
+              useChatPacing={state.useChatPacing}
+              characterName={state.currentNode?.speaker}
+              showAvatar={false}
+              richEffects={getRichEffectContext(state.currentDialogueContent, state.isLoading, state.recentSkills, state.useChatPacing)}
+              interaction={state.currentDialogueContent?.interaction}
+            />
           </CardContent>
         </Card>
 
