@@ -133,10 +133,10 @@ They *can't* be wrong. Because if they're wrong, then I don't know anything. I'm
       {
         text: `*He shoves the tablet at you.*
 
-**SYSTEM STATUS:**
-**ZONE 4:** 65% HUMIDITY (OPTIMAL)
-**FLOW RATE:** 2.5 L/MIN
-**VALVE STATE:** OPEN
+*The screen displays a readout:*
+"SYSTEM STATUS: ZONE 4 - 65% HUMIDITY (OPTIMAL)"
+"FLOW RATE: 2.5 L/MIN"
+"VALVE STATE: OPEN"
 
 It says the water is flowing. It says everything is fine.
 
@@ -188,7 +188,7 @@ What do I do? If I override the system and flood them, I could rot the roots. If
       {
         text: `*You run the diagnostic. A loading bar spins.*
 
-**DIAGNOSTIC COMPLETE: NO ERRORS FOUND.**
+*A green checkmark appears: "NO ERRORS FOUND."*
 
 *Silas stares at the screen. A leaf falls off the basil plant next to him. It crunches when it hits the floor.*
 
@@ -230,7 +230,7 @@ I... I can't do this. I'm going back to cloud computing. At least there, when it
 
 *The dry soil turns to mud instantly. But the water doesn't drain. It sits there, stagnating.*
 
-**ALERT: ROOT ANOXIA DETECTED.**
+*The tablet flashes: "ALERT: ROOT ANOXIA DETECTED."*
 
 *Silas groans.*
 
@@ -307,7 +307,7 @@ I spent all year coding dashboards to avoid crawling in the dirt. But the answer
         choiceId: 'silas_lesson',
         text: "You can't farm from a dashboard.",
         nextNodeId: 'silas_climax_decision',
-        pattern: 'wisdom',
+        pattern: 'analytical',
         skills: ['groundedness']
       }
     ],
@@ -320,13 +320,13 @@ I spent all year coding dashboards to avoid crawling in the dirt. But the answer
     speaker: 'Silas',
     content: [
       {
-        text: "Systems are everywhere. I saw a kid, Devon, drawing flowcharts for his dad. He gets it. A family is just a network that needs maintenance.
+        text: `Systems are everywhere. I saw a kid, Devon, drawing flowcharts for his dad. He gets it. A family is just a network that needs maintenance.
 
 But I'm done with 'Smart Farming.'
 
 I'm going to start a 'Feral Lab.' Low-tech. High-biology.
 
-We teach engineers how to touch grass. Real grass. How to listen to a system that doesn't have an API.",
+We teach engineers how to touch grass. Real grass. How to listen to a system that doesn't have an API.`,
         emotion: 'resolved_grounded',
         variation_id: 'climax_v2'
       }
@@ -356,13 +356,13 @@ We teach engineers how to touch grass. Real grass. How to listen to a system tha
     speaker: 'Silas',
     content: [
       {
-        text: "*Silas stands up, dusting off his knees.*
+        text: `*Silas stands up, dusting off his knees.*
 
 I'm listing the equipment on eBay tomorrow.
 
 I'll take a contract job. Database admin. Something air-conditioned. Something where I can't kill anything.
 
-Safe travels.",
+Safe travels.`,
         emotion: 'resigned',
         variation_id: 'bad_ending_v1'
       }
@@ -388,9 +388,9 @@ Safe travels.",
     speaker: 'Silas',
     content: [
       {
-        text: "I will.
+        text: `I will.
 
-If you see Samuel, tell him... tell him the sensor was wrong. The ground was right.",
+If you see Samuel, tell him... tell him the sensor was wrong. The ground was right.`,
         emotion: 'peaceful',
         variation_id: 'farewell_v2'
       }

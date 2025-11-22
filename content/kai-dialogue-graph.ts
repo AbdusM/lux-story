@@ -18,17 +18,27 @@ export const kaiDialogueNodes: DialogueNode[] = [
     speaker: 'Kai',
     content: [
       {
-        text: `"You know what keeps me up at night? Not the lawsuits. Not the regulatory fines."\n\n*Kai's jaw tightens slightly*\n\n"It's the woman who called me last month. Her ex used a stalking app—legal at the time—to track her for two years. Every grocery store. Every friend's house. Every shelter she tried to hide in."\n\n*A beat of silence*\n\n"She asked me why the law didn't protect her. And I had to tell her the truth: because we write the rules *after* the damage is done. I'm trying to change that. But legislation moves like glaciers, and surveillance moves like wildfire."`,
+        text: `*Kai is staring at a tablet, swiping back and forth on the same slide. Their hand is shaking slightly. They look less like a corporate executive and more like a witness to a crime.*
+
+*They whisper, voice tight.*
+
+"Ensure the safety harness is secured. Click Next."
+
+*They look up at you, eyes wide and unblinking.*
+
+It was right there. Slide 14. "Ensure harness is secured." He clicked Next. He clicked it. I have the logs.
+
+But he didn't secure the harness.`,
         emotion: 'haunted',
-        variation_id: 'kai_intro_rewrite',
+        variation_id: 'kai_intro_v2',
         richEffectContext: 'warning'
       }
     ],
     choices: [
       {
-        choiceId: 'kai_intro_frustration',
-        text: "That must be incredibly frustrating.",
-        nextNodeId: 'kai_frustration_response',
+        choiceId: 'kai_intro_accident',
+        text: "What happened?",
+        nextNodeId: 'kai_accident_reveal',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'crisisManagement'],
         consequence: {
@@ -37,11 +47,18 @@ export const kaiDialogueNodes: DialogueNode[] = [
         }
       },
       {
-        choiceId: 'kai_intro_strategy',
-        text: "How do you fight a battle you're always losing?",
-        nextNodeId: 'kai_strategy_discussion',
+        choiceId: 'kai_intro_design',
+        text: "Clicking isn't learning. You know that.",
+        nextNodeId: 'kai_accident_reveal',
         pattern: 'analytical',
-        skills: ['strategicThinking', 'resilience']
+        skills: ['instructionalDesign', 'criticalThinking']
+      },
+      {
+        choiceId: 'kai_intro_defensive',
+        text: "If he clicked it, you're legally covered. That's the job.",
+        nextNodeId: 'kai_compliance_trap',
+        pattern: 'building',
+        skills: ['riskManagement']
       }
     ],
     onEnter: [
@@ -207,7 +224,7 @@ What do you do?`,
       {
         text: `*The screen goes black. A sickening crunch of metal on concrete.*
 
-**SIMULATION ENDED. FATALITY.**
+*Red text floods the view: "FATAL ACCIDENT REPORTED."*
 
 *Kai stares at the black screen, face pale.*
 
@@ -249,7 +266,7 @@ That's what the old training taught them. "Efficiency first."`,
 
 *While you're reading, the load shifts. The crate falls.*
 
-**SIMULATION ENDED. INJURY.**
+*The screen flashes red. "INJURY REPORTED."*
 
 *Kai shakes their head.*
 
@@ -315,11 +332,11 @@ That's it. That's the skill. Not "harness safety." *Courage.*`,
     speaker: 'Kai',
     content: [
       {
-        text: "I have to show this. Not to the VP—to the workers.
+        text: `I have to show this. Not to the VP—to the workers.
 
 I met a guy downstairs, Rohan. He said the code is broken. I think the training is broken too. We're both just trying to find the truth.
 
-If I stay, I'm complicit. I'm building the checkmarks that hide the danger.",
+If I stay, I'm complicit. I'm building the checkmarks that hide the danger.`,
         emotion: 'determined',
         variation_id: 'studio_v2'
       }
@@ -340,15 +357,18 @@ If I stay, I'm complicit. I'm building the checkmarks that hide the danger.",
     speaker: 'Kai',
     content: [
       {
-        text: "Kairos Learning Design. No certificates. Just survival.
+        text: `Kairos Learning Design. No certificates. Just survival.
 
 It's terrifying. I'm giving up the salary, the benefits... the green checkmarks.
 
-But I'll never have to click 'Next' again.",
+But I'll never have to click 'Next' again.`,
         emotion: 'liberated',
         variation_id: 'climax_v2'
       }
     ],
+    requiredState: {
+      lacksGlobalFlags: ['kai_chose_safety']
+    },
     choices: [
       {
         choiceId: 'kai_farewell',
@@ -374,13 +394,13 @@ But I'll never have to click 'Next' again.",
     speaker: 'Kai',
     content: [
       {
-        text: "*Kai closes the tablet. The screen goes dark.*
+        text: `*Kai closes the tablet. The screen goes dark.*
 
 Yeah. You're right. It's too risky. The VP will never approve it.
 
 I'll just... add a bold font to the safety warning. That should be enough.
 
-Thanks for trying.",
+Thanks for trying.`,
         emotion: 'defeated',
         variation_id: 'bad_ending_v1'
       }
@@ -406,9 +426,9 @@ Thanks for trying.",
     speaker: 'Kai',
     content: [
       {
-        text: "Thank you. You didn't just help me fix a module. You helped me stop lying to myself.
+        text: `Thank you. You didn't just help me fix a module. You helped me stop lying to myself.
 
-If you see Samuel... tell him I'm done with compliance. I'm in the business of reality now.",
+If you see Samuel... tell him I'm done with compliance. I'm in the business of reality now.`,
         emotion: 'grateful',
         variation_id: 'farewell_v2'
       }

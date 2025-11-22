@@ -269,3 +269,53 @@ export const SCENE_SKILL_MAPPINGS: Record<string, SceneSkillMapping> = {
     }
   }
 }
+
+// Helper functions needed by other modules
+
+/**
+ * Get all scene mappings for a specific character
+ */
+export function getScenesByCharacter(characterId: string): SceneSkillMapping[] {
+  return Object.values(SCENE_SKILL_MAPPINGS).filter(
+    scene => scene.characterArc === characterId
+  )
+}
+
+/**
+ * Get all scenes that represent high-intensity moments (trust gates, crisis)
+ */
+export function getHighIntensityMoments(): SceneSkillMapping[] {
+  return Object.values(SCENE_SKILL_MAPPINGS).filter(scene => {
+    return Object.values(scene.choiceMappings).some(
+      choice => choice.intensity === 'high'
+    )
+  })
+}
+
+/**
+ * Get list of all skills demonstrated in a specific scene, or all skills across the system if no sceneId provided
+ */
+export function getAllSkillsDemonstrated(sceneId?: string): (keyof FutureSkills)[] | Record<string, number> {
+  if (sceneId) {
+    const scene = SCENE_SKILL_MAPPINGS[sceneId]
+    if (!scene) return []
+    
+    const skills = new Set<keyof FutureSkills>()
+    Object.values(scene.choiceMappings).forEach(choice => {
+      choice.skillsDemonstrated.forEach(skill => skills.add(skill))
+    })
+    
+    return Array.from(skills)
+  }
+
+  // Aggregate count for all scenes (for validation script)
+  const counts: Record<string, number> = {}
+  Object.values(SCENE_SKILL_MAPPINGS).forEach(scene => {
+    Object.values(scene.choiceMappings).forEach(choice => {
+      choice.skillsDemonstrated.forEach(skill => {
+        counts[skill] = (counts[skill] || 0) + 1
+      })
+    })
+  })
+  return counts
+}

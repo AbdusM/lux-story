@@ -310,11 +310,11 @@ But I keep looking at the syllabus and thinking... I need to include the history
     speaker: 'Yaquin',
     content: [
       {
-        text: "I have the video. I have the platform.
+        text: `I have the video. I have the platform.
 
 But if I hit publish... the dentists I work for will see it. They might fire me. 'Who does this guy think he is?'
 
-But if I don't... I'm just a guy shouting at his phone in a basement.",
+But if I don't... I'm just a guy shouting at his phone in a basement.`,
         emotion: 'nervous_energy',
         variation_id: 'launch_v1'
       }
@@ -345,13 +345,13 @@ But if I don't... I'm just a guy shouting at his phone in a basement.",
     speaker: 'Yaquin',
     content: [
       {
-        text: "*He hits the button.*
+        text: `*He hits the button.*
 
 It's live.
 
 First comment: 'Finally someone explains the mixing ratio!'
 
-I'm doing it. I'm actually doing it. I'm a teacher.",
+I'm doing it. I'm actually doing it. I'm a teacher.`,
         emotion: 'triumphant',
         variation_id: 'launched_v1'
       }
@@ -377,11 +377,11 @@ I'm doing it. I'm actually doing it. I'm a teacher.",
     speaker: 'Yaquin',
     content: [
       {
-        text: "Smart. I'll create a brand name. 'The Dental Ninja.' Build trust, then sell the course.
+        text: `Smart. I'll create a brand name. 'The Dental Ninja.' Build trust, then sell the course.
 
 It's safer. But it's still moving forward.
 
-Thank you. You kept me from making a reckless mistake.",
+Thank you. You kept me from making a reckless mistake.`,
         emotion: 'relieved',
         variation_id: 'audience_v1'
       }
@@ -408,11 +408,11 @@ Thank you. You kept me from making a reckless mistake.",
     speaker: 'Yaquin',
     content: [
       {
-        text: "Yeah. I should probably just go back to school. Get the degree. Then maybe people will listen.
+        text: `Yeah. I should probably just go back to school. Get the degree. Then maybe people will listen.
 
 This was... a nice fantasy. But I'm just an assistant.
 
-Thanks for listening.",
+Thanks for listening.`,
         emotion: 'deflated',
         variation_id: 'bad_ending_v1'
       }
@@ -438,9 +438,9 @@ Thanks for listening.",
     speaker: 'Yaquin',
     content: [
       {
-        text: "I have a lot of editing to do.
+        text: `I have a lot of editing to do.
 
-If you see Samuel, tell him... tell him class is in session.",
+If you see Samuel, tell him... tell him class is in session.`,
         emotion: 'happy',
         variation_id: 'farewell_v1'
       }
