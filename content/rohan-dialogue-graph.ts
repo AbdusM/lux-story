@@ -2,11 +2,10 @@
  * Rohan's Dialogue Graph
  * The Legacy Archaeologist - Platform 7 (The Substructure / Deep Tech)
  *
- * CHARACTER: The Guardian of the "Black Box"
- * Core Conflict: "AI Generation" vs. "Human Understanding"
- * Arc: From burned-out "Digital Janitor" to "Guardian of First Principles"
- * Mechanic: "The Debug" - Tracing a race condition in AI-generated spaghetti code
- * Theme: Inspired by the HN thread about "Vibe Coding" vs. "Deep Engineering"
+ * CHARACTER: The Monk of the Machine
+ * Core Conflict: "The Black Box" vs. "Human Understanding"
+ * Arc: From "Janitor of Slop" to "Guardian of First Principles"
+ * Mechanic: "The Ghost in the Machine" - Tracing a hallucinated library that doesn't exist.
  */
 
 import { DialogueNode, DialogueGraph } from '../lib/dialogue-graph'
@@ -19,45 +18,45 @@ export const rohanDialogueNodes: DialogueNode[] = [
     speaker: 'Rohan',
     content: [
       {
-        text: `*He's sitting on the floor, back against a server rack that hums with an ominous, uneven rhythm. He's drinking espresso from a thermos that looks like it's been dropped off a building.*
+        text: `*The server room is cold. It smells of ozone and stale coffee. Rohan sits cross-legged on the floor, surrounded by three laptops.*
 
-*He taps a laptop screen filled with cascading red text.*
+*He doesn't look up. He whispers, tracing a line of code on the screen with a trembling finger.*
 
-Do you know what 'vibe coding' looks like when it hits production?
+It's beautiful. Look at this recursion. It's absolutely perfect.
 
-It looks like a $400 million database corruption because an LLM hallucinated a library that doesn't exist.`,
-        emotion: 'exhausted_cynical',
-        variation_id: 'rohan_intro_v1',
+*He turns to you. His eyes are red-rimmed, terrified.*
+
+And it's fake. A machine wrote it. It calls a library that hasn't existed since 2019.
+
+It's hallucinating reality, and it's doing it better than I ever could.`,
+        emotion: 'terrified_awe',
+        variation_id: 'rohan_intro_v2',
         richEffectContext: 'warning'
       }
     ],
     choices: [
       {
-        choiceId: 'rohan_intro_ask_slop',
-        text: "Sounds like you're cleaning up a mess you didn't make.",
-        nextNodeId: 'rohan_slop_reveal',
+        choiceId: 'rohan_intro_fear',
+        text: "You sound afraid of it.",
+        nextNodeId: 'rohan_erasure_reveal',
         pattern: 'helping',
-        skills: ['emotionalIntelligence', 'problemSolving'],
+        skills: ['emotionalIntelligence'],
         consequence: {
           characterId: 'rohan',
           trustChange: 2
         }
       },
       {
-        choiceId: 'rohan_intro_technical',
-        text: "Hallucinated dependency? Did it bypass the CI/CD pipeline?",
-        nextNodeId: 'rohan_technical_bond',
+        choiceId: 'rohan_intro_tech',
+        text: "Hallucinated dependency? That's a supply chain attack vector.",
+        nextNodeId: 'rohan_technical_dismissal',
         pattern: 'analytical',
-        skills: ['technicalLiteracy', 'systemsThinking'],
-        consequence: {
-          characterId: 'rohan',
-          trustChange: 1
-        }
+        skills: ['technicalLiteracy']
       },
       {
-        choiceId: 'rohan_intro_future',
-        text: "I thought AI was supposed to fix all this.",
-        nextNodeId: 'rohan_ai_reality',
+        choiceId: 'rohan_intro_wonder',
+        text: "If it works, does it matter who wrote it?",
+        nextNodeId: 'rohan_philosophy_trap',
         pattern: 'exploring',
         skills: ['criticalThinking']
       }
@@ -72,108 +71,93 @@ It looks like a $400 million database corruption because an LLM hallucinated a l
   },
 
   {
-    nodeId: 'rohan_slop_reveal',
+    nodeId: 'rohan_erasure_reveal',
     speaker: 'Rohan',
     content: [
       {
-        text: `I haven't written new code in three years. I just act as a garbage collector for the '10x engineers'—which is just one guy and a GPT-6 subscription.
+        text: `I am.
 
-They generate terabytes of code. It passes the unit tests because they asked the AI to write the tests too.
+My mentor, David, spent 40 years mastering memory management. He treated every byte like it was sacred.
 
-But nobody *understands* it. Nobody knows why it works. So when it breaks... they call me.`,
-        emotion: 'bitter',
-        variation_id: 'slop_reveal_v1'
+This thing? It generated David's life's work in 400 milliseconds. And it added a bug that David would never have made.
+
+If we accept this... David didn't matter. *I* don't matter. We're just slow, buggy biological bootloaders for the machine.`,
+        emotion: 'existential_dread',
+        variation_id: 'erasure_v1'
       }
     ],
     choices: [
       {
-        choiceId: 'rohan_archaeologist',
-        text: "You're not a janitor. You're an archaeologist.",
-        nextNodeId: 'rohan_archeology_metaphor',
+        choiceId: 'rohan_value_human',
+        text: "Speed isn't the only metric. Understanding is the metric.",
+        nextNodeId: 'rohan_simulation_setup',
         pattern: 'building',
-        skills: ['reframing', 'communication']
+        skills: ['wisdom', 'leadership']
       },
       {
-        choiceId: 'rohan_black_box',
-        text: "We're building black boxes we can't look inside.",
-        nextNodeId: 'rohan_black_box_scenario',
+        choiceId: 'rohan_defense',
+        text: "You're the one who found the bug. The machine didn't.",
+        nextNodeId: 'rohan_simulation_setup',
         pattern: 'analytical',
-        skills: ['systemsThinking', 'criticalThinking']
+        skills: ['criticalThinking'],
+        consequence: {
+          characterId: 'rohan',
+          trustChange: 1
+        }
       }
     ]
   },
 
   {
-    nodeId: 'rohan_technical_bond',
+    nodeId: 'rohan_technical_dismissal',
     speaker: 'Rohan',
     content: [
       {
-        text: `*He laughs, a dry, sharp sound.*
+        text: `*He waves a hand, dismissive.*
 
-CI/CD? The pipeline was AI-generated too. It 'optimized' the safety checks right out of existence because they slowed down deployment.
+Security? Forget security. This isn't about hackers. This is about truth.
 
-We fired the junior devs who used to catch this stuff. 'Why pay juniors when AI is free?'
-
-Now I'm the only human in the loop.`,
-        emotion: 'dark_humor',
-        variation_id: 'technical_bond_v1'
+If the code lies about its own existence, and we deploy it because we're too lazy to check... we aren't engineers anymore. We're believers. We're praying to a black box.`,
+        emotion: 'zealous',
+        variation_id: 'dismissal_v1'
       }
     ],
     choices: [
       {
-        choiceId: 'rohan_human_firewall',
-        text: "You're the human firewall.",
-        nextNodeId: 'rohan_archeology_metaphor',
-        pattern: 'building',
-        skills: ['leadership', 'resilience']
-      }
-    ]
-  },
-
-  {
-    nodeId: 'rohan_archeology_metaphor',
-    speaker: 'Rohan',
-    content: [
-      {
-        text: `Archaeologist... I like that. Digging through layers of sediment.
-
-Layer 1: Clean AI code.
-Layer 2: Patchy human fixes.
-Layer 3: The ancient COBOL core that actually moves the money.
-
-The AI is terrified of Layer 3. It hallucinates wildly when it touches bare metal.`,
-        emotion: 'reflective',
-        variation_id: 'archeology_v1'
-      }
-    ],
-    choices: [
-      {
-        choiceId: 'rohan_start_sim',
-        text: "Show me what you're digging into right now.",
-        nextNodeId: 'rohan_simulation_start',
+        choiceId: 'rohan_show_me',
+        text: "Show me the lie.",
+        nextNodeId: 'rohan_simulation_setup',
         pattern: 'analytical',
         skills: ['curiosity']
       }
     ]
   },
 
-  // ============= THE SIMULATION: THE BLACK BOX DEBUG =============
+  // ============= THE SIMULATION: THE GHOST IN THE MACHINE =============
   {
-    nodeId: 'rohan_simulation_start',
+    nodeId: 'rohan_simulation_setup',
     speaker: 'Rohan',
     content: [
       {
-        text: `*He slides the laptop toward you. The terminal is blinking red.*
+        text: `Look.
 
-**CRITICAL ALERT: TRANSACTION LEDGER IMBALANCE**
-**VELOCITY:** -$10,000 / sec
-**SOURCE:** Unknown Service Mesh
+*He spins the laptop. The screen is a wall of white text on black. A single cursor blinks.*
 
-The AI suggests a 'rollback.' But if I rollback, we lose the last hour of trades. Millions of dollars.
+**SYSTEM:** PROD_DB_MIGRATION_SCRIPT.py
+**AUTHOR:** CoPilot-v6
+**STATUS:** RUNNING (DRY RUN)
 
-There's a bug in the concurrency logic. Find it.`,
-        emotion: 'focused_crisis',
-        variation_id: 'sim_start_v1',
+It looks perfect. It's migrating 40 million user records.
+
+But look at line 402.
+
+`import { user_integrity_check } from 'legacy-core'`
+
+'legacy-core' doesn't exist. I deleted it three years ago. The AI remembers a ghost.
+
+If this runs, it will call a null pointer on 40 million people.`,
+        emotion: 'quiet_intensity',
+        variation_id: 'sim_setup_v2',
         richEffectContext: 'warning', // Terminal Mode
         useChatPacing: true
       }
@@ -183,90 +167,134 @@ There's a bug in the concurrency logic. Find it.`,
     },
     choices: [
       {
-        choiceId: 'debug_ask_ai',
-        text: "[ACTION] Ask the AI Assistant to 'Fix the race condition.'",
-        nextNodeId: 'rohan_sim_trap',
-        pattern: 'building', // Trying to use tools, but wrongly
-        skills: ['digitalLiteracy'] 
+        choiceId: 'sim_ask_ai',
+        text: "[ACTION] Ask the AI to 'fix the import error'.",
+        nextNodeId: 'rohan_sim_fail_hallucination',
+        pattern: 'building',
+        skills: ['digitalLiteracy'] // Relying on the tool that broke it
       },
       {
-        choiceId: 'debug_logs',
-        text: "[ACTION] Ignore the AI. Tail the raw transaction logs. Look for the timestamp delta.",
+        choiceId: 'sim_manual_trace',
+        text: "[ACTION] Open the source code. Trace the `user_integrity_check` function manually.",
         nextNodeId: 'rohan_sim_step_2',
         pattern: 'analytical',
-        skills: ['technicalLiteracy', 'problemSolving']
+        skills: ['technicalLiteracy', 'deepWork']
       },
       {
-        choiceId: 'debug_halt',
-        text: "[ACTION] Hit the kill switch. Stop the bleeding first.",
-        nextNodeId: 'rohan_sim_panic',
-        pattern: 'helping',
-        skills: ['crisisManagement']
+        choiceId: 'sim_comment_out',
+        text: "[ACTION] Comment out line 402. Skip the check.",
+        nextNodeId: 'rohan_sim_fail_corruption',
+        pattern: 'helping', // Trying to "help" by bypassing
+        skills: ['pragmatism']
       }
     ],
     tags: ['simulation', 'rohan_arc', 'immersive_scenario']
   },
 
+  // --- FAILURE STATE 1: HALLUCINATION LOOP ---
   {
-    nodeId: 'rohan_sim_trap',
-    speaker: 'SYSTEM ALERT',
+    nodeId: 'rohan_sim_fail_hallucination',
+    speaker: 'Rohan',
     content: [
       {
-        text: `**AI ASSISTANT:** "I have applied a mutex lock to the User Object!"
+        text: `*The screen flickers.*
 
-*Rohan slams his fist on the floor.*
+**AI RESPONSE:** "I have corrected the import to 'legacy-core-v2'."
 
-**ALERT: DEADLOCK DETECTED. SYSTEM FROZEN.**
+*Rohan buries his face in his hands.*
 
-You just froze the entire bank. The AI locked the wrong object because it doesn't understand the dependency graph. It just guessed.`,
-        emotion: 'critical_failure',
-        variation_id: 'sim_trap_v1',
+It just made up a *new* name. It's lying to cover the lie.
+
+You're treating it like a colleague. It's a parrot. We're done.`,
+        emotion: 'hopeless',
+        variation_id: 'sim_fail_hallucination_v1',
         richEffectContext: 'error'
       }
     ],
     choices: [
       {
-        choiceId: 'retry_manual',
-        text: "Reset. I'll do it the hard way.",
-        nextNodeId: 'rohan_simulation_start',
+        choiceId: 'rohan_retry_manual',
+        text: "I'm sorry. I'll look at the code myself.",
+        nextNodeId: 'rohan_simulation_setup',
         pattern: 'patience',
-        skills: ['resilience']
+        skills: ['humility']
+      },
+      {
+        choiceId: 'rohan_give_up',
+        text: "It's too complex. Maybe we should just let it run.",
+        nextNodeId: 'rohan_bad_ending',
+        pattern: 'analytical',
+        consequence: {
+          addGlobalFlags: ['rohan_chose_apathy'] // BAD ENDING
+        }
       }
-    ],
-    tags: ['simulation', 'rohan_arc']
+    ]
   },
 
+  // --- FAILURE STATE 2: CORRUPTION ---
   {
-    nodeId: 'rohan_sim_step_2',
-    speaker: 'SYSTEM ALERT',
+    nodeId: 'rohan_sim_fail_corruption',
+    speaker: 'Rohan',
     content: [
       {
-        text: `*Logs scroll faster than the eye can track. But you see the pattern.*
+        text: `*You type `//` before the line. The error clears.*
 
-Transaction A: 10:00:00.001 (Pending)
-Transaction B: 10:00:00.002 (Success)
-Transaction A: 10:00:00.003 (Failed - Insufficient Funds)
+**STATUS:** MIGRATION COMPLETE.
 
-The balance check is happening *before* the database commit completes. It's an eventual consistency error disguised as a logic bug.`,
-        emotion: 'focused_flow',
+*Rohan stares at the logs. His face goes grey.*
+
+You skipped the integrity check.
+
+The database migrated. But every user with a special character in their name just got deleted.
+
+My name is Rohan. It's fine.
+My mother's name is Zoë. She's gone.
+
+You fixed the code. You broke the people.`,
+        emotion: 'horrified_whisper',
+        variation_id: 'sim_fail_corruption_v1',
+        richEffectContext: 'error'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'rohan_retry_corruption',
+        text: "Rollback. Now. I need to understand what the check was doing.",
+        nextNodeId: 'rohan_simulation_setup',
+        pattern: 'helping',
+        skills: ['accountability']
+      }
+    ]
+  },
+
+  // --- STEP 2: THE DEEP DIVE ---
+  {
+    nodeId: 'rohan_sim_step_2',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: `*You open the file viewer. The file isn't there. You check the git history.*
+
+**LAST MODIFIED:** 3 years ago by [David_V].
+**COMMIT MESSAGE:** "Temporary bypass. Fix before 2025."
+
+*Rohan traces the screen.*
+
+David. He knew. He wrote a bypass because the legacy system couldn't handle UTF-8 characters.
+
+The AI saw the bypass and thought it was a feature. It's trying to import a hack that David deleted.`,
+        emotion: 'reverent_sadness',
         variation_id: 'sim_step_2_v1',
         richEffectContext: 'thinking'
       }
     ],
     choices: [
       {
-        choiceId: 'fix_add_wait',
-        text: "[ACTION] Add a 50ms wait time to the transaction.",
-        nextNodeId: 'rohan_sim_bandaid',
-        pattern: 'building',
-        skills: ['problemSolving']
-      },
-      {
-        choiceId: 'fix_atomic',
-        text: "[ACTION] Rewrite the SQL query to use an ATOMIC transaction block. Force consistency.",
+        choiceId: 'sim_rewrite_modern',
+        text: "[ACTION] Rewrite the integrity check using modern libraries. No hallucinations. First principles.",
         nextNodeId: 'rohan_sim_success',
-        pattern: 'analytical',
-        skills: ['technicalLiteracy', 'systemsThinking']
+        pattern: 'building',
+        skills: ['coding', 'respect']
       }
     ],
     tags: ['simulation', 'rohan_arc']
@@ -277,95 +305,56 @@ The balance check is happening *before* the database commit completes. It's an e
     speaker: 'Rohan',
     content: [
       {
-        text: `*You type the SQL manually. No autocomplete. Just raw logic.*
+        text: `*You type the new function. You verify the inputs. You write a test case for "Zoë".*
 
-**COMMIT SUCCESS.**
-**LEDGER BALANCED.**
+**TEST PASSED.**
+**MIGRATION SUCCESSFUL.**
 
-*Rohan exhales, a long, shuddering breath.*
+*Rohan closes the laptop slowly. The hum of the servers seems to quiet.*
 
-You verified it. You didn't guess. You went to the source of truth.
+You talked to the ghosts. You didn't just prompt. You listened to what David was trying to tell us.
 
-That... that is what we're losing. The ability to know *why* it works.`,
-        emotion: 'relieved_respect',
-        variation_id: 'sim_success_v1',
+That's not janitorial work. That's... communion.`,
+        emotion: 'profound_relief',
+        variation_id: 'sim_success_v2',
         richEffectContext: 'success'
       }
     ],
     choices: [
       {
-        choiceId: 'rohan_skill_value',
-        text: "Deep understanding is the only safety net.",
-        nextNodeId: 'rohan_new_role',
-        pattern: 'analytical',
-        skills: ['criticalThinking', 'wisdom']
-      },
-      {
-        choiceId: 'rohan_human_value',
-        text: "The machine generates. The human verifies.",
-        nextNodeId: 'rohan_new_role',
+        choiceId: 'rohan_new_purpose',
+        text: "We need people who can talk to the ghosts.",
+        nextNodeId: 'rohan_climax_decision',
         pattern: 'helping',
-        skills: ['leadership']
+        skills: ['wisdom']
       }
     ],
     tags: ['simulation_complete', 'rohan_arc']
   },
 
-  // ============= THE TURN: FROM JANITOR TO GUARDIAN =============
-  {
-    nodeId: 'rohan_new_role',
-    speaker: 'Rohan',
-    content: [
-      {
-        text: "I've been thinking about quitting. Becoming a carpenter. Something real.
-
-But if I leave... who teaches the next generation how to read the logs? Who teaches them that code isn't magic?
-
-If we all leave, the black box wins.",
-        emotion: 'determined',
-        variation_id: 'new_role_v1'
-      }
-    ],
-    choices: [
-      {
-        choiceId: 'rohan_start_academy',
-        text: "Start an academy. 'First Principles Engineering.'",
-        nextNodeId: 'rohan_climax_decision',
-        pattern: 'building',
-        skills: ['leadership', 'education']
-      },
-      {
-        choiceId: 'rohan_mentorship',
-        text: "Don't fix the code. Fix the engineers. Be the mentor you wish you had.",
-        nextNodeId: 'rohan_climax_decision',
-        pattern: 'helping',
-        skills: ['mentorship', 'communication']
-      }
-    ]
-  },
-
+  // ============= THE TURN =============
   {
     nodeId: 'rohan_climax_decision',
     speaker: 'Rohan',
     content: [
       {
-        text: "*He closes the laptop. The red alerts are gone.*
+        text: "I'm not quitting. I can't quit.
 
-I'm not going to fix their bugs anymore. I'm going to build a team that doesn't write them.
+There's an instructional designer upstairs, Kai. They're burning their slide decks. Good. We need to burn it all down to build it right.
 
-The 'Integration Engineers.' The ones who can bridge the gap between the AI's speed and the human's understanding.
+I'm going to start an academy. Not 'Coding Bootcamp.' 'First Principles.'
 
-It's not glamorous. It's not 'vibe coding.' It's the foundation. And foundations have to be solid.",
-        emotion: 'resolved',
-        variation_id: 'climax_v1'
+We're going to teach people how to read the metal. How to know what is real.",
+        emotion: 'resolved_monk',
+        variation_id: 'climax_v2'
       }
     ],
     choices: [
       {
         choiceId: 'rohan_farewell',
-        text: "The world needs foundations.",
+        text: "The world needs guardians.",
         nextNodeId: 'rohan_farewell',
-        pattern: 'patience',
+        pattern: 'building',
         skills: ['encouragement']
       }
     ],
@@ -379,18 +368,49 @@ It's not glamorous. It's not 'vibe coding.' It's the foundation. And foundations
     tags: ['ending', 'rohan_arc']
   },
 
+  // ============= BAD ENDING =============
+  {
+    nodeId: 'rohan_bad_ending',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: "*Rohan looks at the screen, defeat in his eyes.*
+
+Yeah. Let it run. If it breaks, they'll just hire another AI to fix it.
+
+I'm going to apply for that carpentry apprenticeship. Wood doesn't lie.
+
+Goodbye.",
+        emotion: 'broken_spirit',
+        variation_id: 'bad_ending_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'rohan_leave_bad',
+        text: "...",
+        nextNodeId: samuelEntryPoints.ROHAN_REFLECTION_GATEWAY,
+        pattern: 'patience'
+      }
+    ],
+    onEnter: [
+      {
+        addGlobalFlags: ['rohan_chose_apathy', 'rohan_arc_complete']
+      }
+    ],
+    tags: ['ending', 'bad_ending', 'rohan_arc']
+  },
+
   {
     nodeId: 'rohan_farewell',
     speaker: 'Rohan',
     content: [
       {
-        text: "Thank you. For sitting in the noise with me.
+        text: "You heard the hum, didn't you? The noise underneath the noise.
 
-There's an instructional designer upstairs, Kai. They're burning their slide decks. Good. We need to burn it all down to build it right.
-
-If you see Samuel, tell him... tell him I finally found the bug. It wasn't in the code. It was in how we were teaching people to write it.",
-        emotion: 'grateful',
-        variation_id: 'farewell_v1'
+If you see Samuel, tell him... tell him I'm staying. Someone has to keep the lights on.",
+        emotion: 'grateful_solemn',
+        variation_id: 'farewell_v2'
       }
     ],
     choices: [

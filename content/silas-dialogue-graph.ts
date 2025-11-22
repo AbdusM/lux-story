@@ -2,10 +2,10 @@
  * Silas's Dialogue Graph
  * The Systems Gardener - Platform 8 (Regenerative Tech / "Touch Grass")
  *
- * CHARACTER: The Cloud Architect turned Farmer
- * Core Conflict: "Digital Burnout" vs. "Physical Complexity"
- * Arc: Realizing that a farm is just a server cluster that breathes (Systems Thinking applied to Nature)
- * Mechanic: "The Hive" - Debugging a biological system collapse using sensor data vs. intuition
+ * CHARACTER: The Humbled Engineer
+ * Core Conflict: "Sensor Data" vs. "Ground Truth"
+ * Arc: Realizing that nature has higher latency and harsher penalties than any server.
+ * Mechanic: "The Drought" - Debugging a crop failure where the dashboard lies.
  */
 
 import { DialogueNode, DialogueGraph } from '../lib/dialogue-graph'
@@ -18,49 +18,45 @@ export const silasDialogueNodes: DialogueNode[] = [
     speaker: 'Silas',
     content: [
       {
-        text: `*He's kneeling by a hydroponic rack, checking the pH levels of a nutrient tank. He's wearing a flannel shirt that smells like soil and ozone.*
+        text: `*Silas is kneeling in the dirt. Not digging—shaking. He's holding a clump of soil like it's a live grenade.*
 
-*He taps a ruggedized tablet.*
+*He looks at a tablet propped up on a crate. It displays a cheerful green checkmark: "MOISTURE OPTIMAL."*
 
-Nitrogen levels are spiking in Zone 4. The mycelium network should have buffered that. 
+*He squeezes the soil. It crumbles into dust. Bone dry.*
 
-*He looks at you.*
+The dashboard says we're fine. The dashboard says I'm a genius.
 
-You look like you've spent too much time staring at pixels. I know the look. I used to be a Cloud Architect at Amazon. Now I debug dirt.`,
-        emotion: 'grounded',
-        variation_id: 'silas_intro_v1',
+But the basil is dying.`,
+        emotion: 'fearful_disbelief',
+        variation_id: 'silas_intro_v2',
         richEffectContext: 'warning'
       }
     ],
     choices: [
       {
-        choiceId: 'silas_intro_escape',
-        text: "Debug dirt? Sounds peaceful.",
-        nextNodeId: 'silas_peace_myth',
-        pattern: 'helping',
-        skills: ['emotionalIntelligence'],
-        consequence: {
-          characterId: 'silas',
-          trustChange: 1
-        }
-      },
-      {
-        choiceId: 'silas_intro_systems',
-        text: "Mycelium network... you talk about it like it's a server mesh.",
-        nextNodeId: 'silas_systems_reveal',
+        choiceId: 'silas_intro_reality',
+        text: "The map isn't the territory.",
+        nextNodeId: 'silas_bankruptcy_reveal',
         pattern: 'analytical',
-        skills: ['systemsThinking', 'biomimicry'],
+        skills: ['wisdom'],
         consequence: {
           characterId: 'silas',
           trustChange: 2
         }
       },
       {
-        choiceId: 'silas_intro_why_leave',
-        text: "Why did you leave Amazon?",
-        nextNodeId: 'silas_burnout_reveal',
-        pattern: 'exploring',
-        skills: ['communication']
+        choiceId: 'silas_intro_tech',
+        text: "Sensor calibration drift?",
+        nextNodeId: 'silas_tech_defense',
+        pattern: 'analytical',
+        skills: ['technicalLiteracy']
+      },
+      {
+        choiceId: 'silas_intro_empathy',
+        text: "You look terrified.",
+        nextNodeId: 'silas_bankruptcy_reveal',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
       }
     ],
     onEnter: [
@@ -73,99 +69,85 @@ You look like you've spent too much time staring at pixels. I know the look. I u
   },
 
   {
-    nodeId: 'silas_peace_myth',
+    nodeId: 'silas_bankruptcy_reveal',
     speaker: 'Silas',
     content: [
       {
-        text: `Peaceful? Nature isn't peaceful. It's a chaotic, high-throughput system with zero downtime and brutal garbage collection.
+        text: `I should be.
 
-People think farming is "simple." It's the most complex distributed system on earth.
+I cashed out my Amazon stock options. All of it. Bought this vertical farm. "High-Efficiency Aeroponics."
 
-If AWS goes down, people can't watch Netflix. If my pollination drones fail, the crop dies.`,
-        emotion: 'intense_respect',
-        variation_id: 'peace_myth_v1'
+Last quarter, the sensors said the pH was perfect. I lost the entire strawberry crop. $40,000 gone in a weekend.
+
+If this basil dies, I lose the farm. I lose my house.`,
+        emotion: 'desperate',
+        variation_id: 'bankruptcy_v1'
       }
     ],
     choices: [
       {
-        choiceId: 'silas_stakes',
-        text: "Higher stakes. Lower latency.",
-        nextNodeId: 'silas_systems_reveal',
-        pattern: 'analytical',
-        skills: ['criticalThinking']
-      }
-    ]
-  },
-
-  {
-    nodeId: 'silas_burnout_reveal',
-    speaker: 'Silas',
-    content: [
-      {
-        text: `I spent 15 years optimizing virtual machines. Making imaginary numbers go up.
-
-Then I realized: I couldn't eat code. I couldn't hold a server instance.
-
-I wanted to touch something real. Something that fought back.`,
-        emotion: 'reflective',
-        variation_id: 'burnout_v1'
-      }
-    ],
-    choices: [
-      {
-        choiceId: 'silas_atoms_bits',
-        text: "From bits to atoms.",
-        nextNodeId: 'silas_systems_reveal',
+        choiceId: 'silas_stakes_high',
+        text: "So why are you staring at the tablet?",
+        nextNodeId: 'silas_simulation_start',
         pattern: 'building',
-        skills: ['creativity']
-      }
-    ]
-  },
-
-  {
-    nodeId: 'silas_systems_reveal',
-    speaker: 'Silas',
-    content: [
+        skills: ['actionOrientation']
+      },
       {
-        text: `Exactly. But here's the joke: I didn't stop being an engineer.
-
-I monitor humidity deltas. I code drone flight paths. I analyze soil microbiome data.
-
-I'm still a systems architect. I just changed the substrate.`,
-        emotion: 'proud',
-        variation_id: 'systems_reveal_v1'
-      }
-    ],
-    choices: [
-      {
-        choiceId: 'silas_start_sim',
-        text: "Show me the system.",
+        choiceId: 'silas_fear_paralysis',
+        text: "You're afraid to trust your eyes because they don't have an API.",
         nextNodeId: 'silas_simulation_start',
         pattern: 'analytical',
-        skills: ['curiosity', 'technicalLiteracy']
+        skills: ['psychology']
       }
     ]
   },
 
-  // ============= THE SIMULATION: HIVE COLLAPSE =============
+  {
+    nodeId: 'silas_tech_defense',
+    speaker: 'Silas',
+    content: [
+      {
+        text: `It's not drift! These are military-grade hygrometers. They cost more than my truck.
+
+They *can't* be wrong. Because if they're wrong, then I don't know anything. I'm just a guy playing in the dirt with expensive toys.`,
+        emotion: 'defensive_panic',
+        variation_id: 'tech_defense_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'silas_look_down',
+        text: "Look at the dirt, Silas.",
+        nextNodeId: 'silas_simulation_start',
+        pattern: 'helping',
+        skills: ['grounding']
+      }
+    ]
+  },
+
+  // ============= THE SIMULATION: THE DROUGHT =============
   {
     nodeId: 'silas_simulation_start',
     speaker: 'Silas',
     content: [
       {
-        text: `*He hands you the tablet. It displays a heatmap of a beehive.*
+        text: `*He shoves the tablet at you.*
 
-**SYSTEM ALERT: HIVE 4 THERMAL ANOMALY**
-**INTERNAL TEMP:** 96°F (RISING)
-**HUMIDITY:** 40% (DROPPING)
-**AUDIO:** HIGH FREQUENCY BUZZ
+**SYSTEM STATUS:**
+**ZONE 4:** 65% HUMIDITY (OPTIMAL)
+**FLOW RATE:** 2.5 L/MIN
+**VALVE STATE:** OPEN
 
-The AI says it's a ventilation failure. It recommends opening the vents.
+It says the water is flowing. It says everything is fine.
 
-But look at the audio graph. That's not overheating. That's a war cry.`,
-        emotion: 'focused_crisis',
-        variation_id: 'sim_start_v1',
-        richEffectContext: 'warning', // Dashboard Mode
+*He points to the wilted plants.*
+
+But look at them. They're gasping.
+
+What do I do? If I override the system and flood them, I could rot the roots. If I do nothing, they dry out by morning.`,
+        emotion: 'paralyzed',
+        variation_id: 'sim_start_v2',
+        richEffectContext: 'warning',
         useChatPacing: true
       }
     ],
@@ -174,115 +156,128 @@ But look at the audio graph. That's not overheating. That's a war cry.`,
     },
     choices: [
       {
-        choiceId: 'hive_trust_ai',
-        text: "[ACTION] Trust the sensor. Open the vents to cool the hive.",
-        nextNodeId: 'silas_sim_fail_robbers',
-        pattern: 'analytical',
-        skills: ['dataLiteracy'] // Too trusting of data
+        choiceId: 'sim_trust_sensor',
+        text: "[ACTION] Trust the data. Run a diagnostic on the valve software.",
+        nextNodeId: 'silas_sim_fail_software',
+        pattern: 'analytical', // Wrong tool
+        skills: ['digitalLiteracy'] 
       },
       {
-        choiceId: 'hive_listen',
-        text: "[ACTION] Ignore the temp. Analyze the audio frequency. Is it a Queen signal?",
+        choiceId: 'sim_physical_trace',
+        text: "[ACTION] Follow the pipe. Physically trace the water line from the tank to the bed.",
         nextNodeId: 'silas_sim_step_2',
-        pattern: 'helping',
-        skills: ['observation', 'patternRecognition']
+        pattern: 'building',
+        skills: ['systemsThinking', 'observation']
       },
       {
-        choiceId: 'hive_physical',
-        text: "[ACTION] Put down the tablet. Put your ear to the box.",
-        nextNodeId: 'silas_sim_success', // Shortcutting to success via "Ground Truthing"
-        pattern: 'building',
-        skills: ['intuition', 'riskManagement']
+        choiceId: 'sim_override_flood',
+        text: "[ACTION] Manual Override. Open the emergency floodgates NOW.",
+        nextNodeId: 'silas_sim_fail_rot',
+        pattern: 'helping', // Panic reaction
+        skills: ['crisisManagement']
       }
     ],
     tags: ['simulation', 'silas_arc', 'immersive_scenario']
   },
 
+  // --- FAILURE STATE 1: SOFTWARE TRAP ---
   {
-    nodeId: 'silas_sim_fail_robbers',
-    speaker: 'SYSTEM ALERT',
+    nodeId: 'silas_sim_fail_software',
+    speaker: 'Silas',
     content: [
       {
-        text: `**ALERT: EXTERNAL INTRUSION**
+        text: `*You run the diagnostic. A loading bar spins.*
 
-You opened the vents. The smell of honey escaped.
+**DIAGNOSTIC COMPLETE: NO ERRORS FOUND.**
 
-*A dark cloud of wasps descends on the opening.*
+*Silas stares at the screen. A leaf falls off the basil plant next to him. It crunches when it hits the floor.*
 
-It wasn't overheating. They were balling up to defend the entrance. You just opened the front door to a raid.`,
-        emotion: 'critical_failure',
-        variation_id: 'sim_fail_v1',
+The software says we're fine. The plant is dead.
+
+I... I can't do this. I'm going back to cloud computing. At least there, when it says 'Up', it means 'Up'.`,
+        emotion: 'defeated_hollow',
+        variation_id: 'sim_fail_software_v1',
         richEffectContext: 'error'
       }
     ],
     choices: [
       {
-        choiceId: 'retry_hive',
-        text: "Reset. The sensor lied.",
-        nextNodeId: 'silas_simulation_start',
+        choiceId: 'silas_give_up',
+        text: "Maybe that's best.",
+        nextNodeId: 'silas_bad_ending',
         pattern: 'patience',
-        skills: ['adaptability']
+        consequence: {
+          addGlobalFlags: ['silas_chose_tech'] // BAD ENDING
+        }
+      },
+      {
+        choiceId: 'silas_retry_physical',
+        text: "Stop looking at the screen! Look at the pipe!",
+        nextNodeId: 'silas_simulation_start',
+        pattern: 'helping',
+        skills: ['urgency']
       }
-    ],
-    tags: ['simulation', 'silas_arc']
+    ]
   },
 
+  // --- FAILURE STATE 2: ROOT ROT ---
   {
-    nodeId: 'silas_sim_step_2',
-    speaker: 'SYSTEM ALERT',
+    nodeId: 'silas_sim_fail_rot',
+    speaker: 'Silas',
     content: [
       {
-        text: `**AUDIO ANALYSIS:** 450Hz. Distinct "piping" sound.
+        text: `*You yank the manual lever. Water roars into the bed.*
 
-The sensor interpreted the intense vibration of the wings as heat.
+*The dry soil turns to mud instantly. But the water doesn't drain. It sits there, stagnating.*
 
-They aren't hot. They are preparing to swarm. Or they are fighting off an intruder.
+**ALERT: ROOT ANOXIA DETECTED.**
 
-What do you do?`,
-        emotion: 'focused_flow',
-        variation_id: 'sim_step_2_v1',
+*Silas groans.*
+
+We drowned them. The soil was compacted. It couldn't drain. Now they'll rot before morning.
+
+I panicked. I broke the system because I was scared.`,
+        emotion: 'guilt',
+        variation_id: 'sim_fail_rot_v1',
+        richEffectContext: 'error'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'silas_retry_calm',
+        text: "We can drain it. But we need to find the blockage.",
+        nextNodeId: 'silas_simulation_start',
+        pattern: 'patience',
+        skills: ['resilience']
+      }
+    ]
+  },
+
+  // --- STEP 2: THE PHYSICAL BLOCK ---
+  {
+    nodeId: 'silas_sim_step_2',
+    speaker: 'Silas',
+    content: [
+      {
+        text: `*You crawl under the rack. You trace the PVC pipe. It vibrates—there's water inside.*
+
+*But right before the nozzle... a kink. A physical crimp in the line.*
+
+*Silas crawls next to you.*
+
+The sensor measures flow at the *valve*. The kink is *after* the valve.
+
+The sensor wasn't lying. It was measuring the wrong thing. It was measuring intent, not delivery.`,
+        emotion: 'epiphany',
+        variation_id: 'sim_step_2_v2',
         richEffectContext: 'thinking'
       }
     ],
     choices: [
       {
-        choiceId: 'hive_smoke',
-        text: "[ACTION] Use smoke to mask the pheromones and calm them.",
+        choiceId: 'sim_uncrimp',
+        text: "[ACTION] Unkink the pipe. Restore the flow.",
         nextNodeId: 'silas_sim_success',
-        pattern: 'helping',
-        skills: ['problemSolving', 'empathy']
-      },
-      {
-        choiceId: 'hive_sensor_recalibrate',
-        text: "[ACTION] Recalibrate the temp sensor threshold.",
-        nextNodeId: 'silas_sim_fail_too_late',
-        pattern: 'analytical',
-        skills: ['technicalLiteracy'] // Trying to fix the tool, not the problem
-      }
-    ],
-    tags: ['simulation', 'silas_arc']
-  },
-
-  {
-    nodeId: 'silas_sim_fail_too_late',
-    speaker: 'SYSTEM ALERT',
-    content: [
-      {
-        text: `**ERROR: HIVE ABSCONDED**
-
-While you were coding, the bees left.
-
-Biological systems don't wait for you to push a commit.`,
-        emotion: 'critical_failure',
-        variation_id: 'sim_fail_late_v1',
-        richEffectContext: 'error'
-      }
-    ],
-    choices: [
-      {
-        choiceId: 'retry_hive_2',
-        text: "Reset. Act, don't code.",
-        nextNodeId: 'silas_simulation_start',
         pattern: 'building',
         skills: ['actionOrientation']
       }
@@ -295,88 +290,54 @@ Biological systems don't wait for you to push a commit.`,
     speaker: 'Silas',
     content: [
       {
-        text: `*The buzzing subsides.*
+        text: `*A hiss of air, then a steady trickle of water. The soil darkens.*
 
-**HIVE STATUS: STABLE**
+*Silas touches the wet dirt. He closes his eyes.*
 
-You stopped looking at the data and looked at the life.
+Ground truth.
 
-The sensor was right about the temperature, but wrong about the *cause*. A server overheats because a fan breaks. A hive overheats because they are working together.
-
-You have to know the difference.`,
-        emotion: 'deep_respect',
-        variation_id: 'sim_success_v1',
+I spent all year coding dashboards to avoid crawling in the dirt. But the answer was in the dirt.`,
+        emotion: 'humbled',
+        variation_id: 'sim_success_v2',
         richEffectContext: 'success'
       }
     ],
     choices: [
       {
-        choiceId: 'silas_ground_truth',
-        text: "Ground truth beats sensor data.",
-        nextNodeId: 'silas_new_role',
-        pattern: 'building',
-        skills: ['wisdom', 'systemsThinking']
-      },
-      {
-        choiceId: 'silas_nature_complexity',
-        text: "Nature is the ultimate system.",
-        nextNodeId: 'silas_new_role',
-        pattern: 'exploring',
-        skills: ['biomimicry']
+        choiceId: 'silas_lesson',
+        text: "You can't farm from a dashboard.",
+        nextNodeId: 'silas_climax_decision',
+        pattern: 'wisdom',
+        skills: ['groundedness']
       }
     ],
     tags: ['simulation_complete', 'silas_arc']
   },
 
-  // ============= THE TURN: SYSTEMS GARDENER =============
-  {
-    nodeId: 'silas_new_role',
-    speaker: 'Silas',
-    content: [
-      {
-        text: "I'm not going back to Amazon. But I'm not just a farmer, either.
-
-I'm building a 'Biotic API.' Sensors that listen to the soil, but don't try to control it. Tech that serves the biology, not the other way around.
-
-We need engineers who aren't afraid to get their hands dirty. Literally.",
-        emotion: 'visionary',
-        variation_id: 'new_role_v1'
-      }
-    ],
-    choices: [
-      {
-        choiceId: 'silas_start_agtech',
-        text: "Start an AgTech collective. 'Code & Soil.'",
-        nextNodeId: 'silas_climax_decision',
-        pattern: 'building',
-        skills: ['entrepreneurship', 'sustainability']
-      }
-    ]
-  },
-
+  // ============= THE TURN =============
   {
     nodeId: 'silas_climax_decision',
     speaker: 'Silas',
     content: [
       {
-        text: "*He wipes his hands on his jeans.*
+        text: "Systems are everywhere. I saw a kid, Devon, drawing flowcharts for his dad. He gets it. A family is just a network that needs maintenance.
 
-I'm going to launch it. A field lab. For burnt-out coders who want to remember what reality feels like.
+But I'm done with 'Smart Farming.'
 
-We'll code in the morning, farm in the afternoon. Restore the soil, restore the soul.
+I'm going to start a 'Feral Lab.' Low-tech. High-biology.
 
-It's the only way to survive the next ten years.",
-        emotion: 'resolved_hopeful',
-        variation_id: 'climax_v1'
+We teach engineers how to touch grass. Real grass. How to listen to a system that doesn't have an API.",
+        emotion: 'resolved_grounded',
+        variation_id: 'climax_v2'
       }
     ],
     choices: [
       {
         choiceId: 'silas_farewell',
-        text: "Restore the soil, restore the soul.",
+        text: "Touch grass, Silas.",
         nextNodeId: 'silas_farewell',
         pattern: 'helping',
-        skills: ['empathy']
+        skills: ['humor']
       }
     ],
     onEnter: [
@@ -389,18 +350,49 @@ It's the only way to survive the next ten years.",
     tags: ['ending', 'silas_arc']
   },
 
+  // ============= BAD ENDING =============
+  {
+    nodeId: 'silas_bad_ending',
+    speaker: 'Silas',
+    content: [
+      {
+        text: "*Silas stands up, dusting off his knees.*
+
+I'm listing the equipment on eBay tomorrow.
+
+I'll take a contract job. Database admin. Something air-conditioned. Something where I can't kill anything.
+
+Safe travels.",
+        emotion: 'resigned',
+        variation_id: 'bad_ending_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'silas_leave_bad',
+        text: "...",
+        nextNodeId: samuelEntryPoints.SILAS_REFLECTION_GATEWAY,
+        pattern: 'patience'
+      }
+    ],
+    onEnter: [
+      {
+        addGlobalFlags: ['silas_chose_tech', 'silas_arc_complete']
+      }
+    ],
+    tags: ['ending', 'bad_ending', 'silas_arc']
+  },
+
   {
     nodeId: 'silas_farewell',
     speaker: 'Silas',
     content: [
       {
-        text: "Thanks. I needed to hear that from someone who speaks both languages.
+        text: "I will.
 
-Systems are everywhere. I saw a kid, Devon, drawing flowcharts for his dad. He gets it. A family is just a network that needs maintenance.
-
-If you see Samuel, tell him... tell him the hive is stable. The queen is safe.",
-        emotion: 'grateful',
-        variation_id: 'farewell_v1'
+If you see Samuel, tell him... tell him the sensor was wrong. The ground was right.",
+        emotion: 'peaceful',
+        variation_id: 'farewell_v2'
       }
     ],
     choices: [
