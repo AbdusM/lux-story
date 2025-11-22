@@ -218,22 +218,16 @@ If I do this, I quit the safe job. No net.`,
     ]
   },
 
-  // ============= THE PITCH (Interactive Mechanic) =============
+  // ============= THE PITCH (Immersive Scenario) =============
   {
     nodeId: 'tess_the_pitch_setup',
     speaker: 'Tess',
     content: [
       {
-        text: `Okay. You be the investor. The skeptic. The guy who loves standardized testing.
-
-I need to translate 'hiking' into 'investable asset.'
-
-Here's the slide: **'The Walkabout Experience: 3 Months in the Wilderness.'**
-
-What's the headline? What are we actually selling?`,
+        text: "*She thrusts a tablet into your hands. The slide is a wall of text. Bullets, charts, paragraphs.* \n\n**SYSTEM ACTIVE: DECK EDITOR v2.0** \n**CURRENT SLIDE:** 'The Pedagogical Benefits of Wilderness Immersion for Adolescent Neural Development' \n\nToo long. Too academic. They'll fall asleep. \n\n*The cursor blinks at the headline.* \n\nFix it. What are we actually selling?",
         emotion: 'focused_work_mode',
-        variation_id: 'pitch_setup_v1',
-        richEffectContext: 'thinking',
+        variation_id: 'pitch_scenario_v1',
+        richEffectContext: 'warning', // Editor Mode
         useChatPacing: true
       }
     ],
@@ -243,27 +237,27 @@ What's the headline? What are we actually selling?`,
     choices: [
       {
         choiceId: 'pitch_resilience',
-        text: "Sell the outcome: 'Forging Antifragile Leaders.'",
+        text: "[ACTION] Delete the paragraph. Type: 'FORGING ANTIFRAGILE LEADERS.'",
         nextNodeId: 'tess_pitch_resilience',
         pattern: 'building',
         skills: ['criticalThinking', 'communication', 'creativity']
       },
       {
         choiceId: 'pitch_mental_health',
-        text: "Sell the solution: 'The Cure for Academic Burnout.'",
+        text: "[ACTION] Highlight the burnout stats. Type: 'THE CURE FOR ACADEMIC EXHAUSTION.'",
         nextNodeId: 'tess_pitch_mental_health',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'emotionalIntelligence']
       },
       {
         choiceId: 'pitch_skills',
-        text: "Sell the competency: 'Real-World Project Management Lab.'",
+        text: "[ACTION] Focus on the outcomes. Type: 'REAL-WORLD PROJECT MANAGEMENT LAB.'",
         nextNodeId: 'tess_pitch_skills',
         pattern: 'analytical',
         skills: ['communication', 'culturalCompetence']
       }
     ],
-    tags: ['pitch_mechanic', 'tess_arc']
+    tags: ['pitch_mechanic', 'tess_arc', 'immersive_scenario']
   },
 
   // --- Pitch Variation: Resilience ---
