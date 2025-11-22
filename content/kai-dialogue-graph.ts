@@ -2,10 +2,10 @@
  * Kai's Dialogue Graph
  * The Instructional Architect - Platform 6 (Corporate Innovation / L&D)
  *
- * CHARACTER: The Frustrated Futurist
- * Core Conflict: "Safe & Boring" vs. "Disruptive & Effective"
- * Arc: From Corporate L&D Manager to Founder of an AI Learning Studio
- * Mechanic: "The Transformation" - Converting a boring slide deck into an AI simulation
+ * CHARACTER: The Guilty Teacher
+ * Core Conflict: "Compliance Safety" vs. "Real-World Danger"
+ * Arc: From hiding behind "Click Next" modules to building simulations that actually save lives.
+ * Mechanic: "The Safety Drill" - Rebuilding a failed safety module that caused a real injury.
  */
 
 import { DialogueNode, DialogueGraph } from '../lib/dialogue-graph'
@@ -18,49 +18,47 @@ export const kaiDialogueNodes: DialogueNode[] = [
     speaker: 'Kai',
     content: [
       {
-        text: `*Kai is leaning against a glass wall, scrolling through a tablet with a look of profound boredom. They are dressed in a sharp, corporate-casual blazer.*
+        text: `*Kai is staring at a tablet, swiping back and forth on the same slide. Their hand is shaking slightly. They look less like a corporate executive and more like a witness to a crime.*
 
-*They tap the screen aggressively.*
+*They whisper, voice tight.*
 
-'Click Next to Continue.' 'Click Next to Continue.'
+"Ensure the safety harness is secured. Click Next."
 
-*They look up at you, eyes tired.*
+*They look up at you, eyes wide and unblinking.*
 
-Do you know how much money my company spends to make 50,000 people click 'Next' without reading a single word? Millions.`,
-        emotion: 'cynical_bored',
-        variation_id: 'kai_intro_v1',
+It was right there. Slide 14. "Ensure harness is secured." He clicked Next. He clicked it. I have the logs.
+
+But he didn't secure the harness.`,
+        emotion: 'haunted',
+        variation_id: 'kai_intro_v2',
         richEffectContext: 'warning'
       }
     ],
     choices: [
       {
-        choiceId: 'kai_intro_waste',
-        text: "That sounds like a waste of potential.",
-        nextNodeId: 'kai_potential_reveal',
-        pattern: 'building',
-        skills: ['criticalThinking', 'financialLiteracy'],
-        consequence: {
-          characterId: 'kai',
-          trustChange: 1
-        }
-      },
-      {
-        choiceId: 'kai_intro_empathy',
-        text: "You sound like you want to build something better.",
-        nextNodeId: 'kai_potential_reveal',
+        choiceId: 'kai_intro_accident',
+        text: "What happened?",
+        nextNodeId: 'kai_accident_reveal',
         pattern: 'helping',
-        skills: ['emotionalIntelligence', 'communication'],
+        skills: ['emotionalIntelligence', 'crisisManagement'],
         consequence: {
           characterId: 'kai',
           trustChange: 2
         }
       },
       {
-        choiceId: 'kai_intro_curious',
-        text: "What *should* they be doing?",
-        nextNodeId: 'kai_vision_reveal',
-        pattern: 'exploring',
-        skills: ['criticalThinking', 'creativity']
+        choiceId: 'kai_intro_design',
+        text: "Clicking isn't learning. You know that.",
+        nextNodeId: 'kai_design_failure',
+        pattern: 'analytical',
+        skills: ['instructionalDesign', 'criticalThinking']
+      },
+      {
+        choiceId: 'kai_intro_defensive',
+        text: "If he clicked it, you're legally covered. That's the job.",
+        nextNodeId: 'kai_compliance_trap',
+        pattern: 'building', // Using logic to "build" safety, but wrongly
+        skills: ['riskManagement']
       }
     ],
     onEnter: [
@@ -73,279 +71,247 @@ Do you know how much money my company spends to make 50,000 people click 'Next' 
   },
 
   {
-    nodeId: 'kai_potential_reveal',
+    nodeId: 'kai_accident_reveal',
     speaker: 'Kai',
     content: [
       {
-        text: `It's worse than a waste. It's active harm. We're training people to ignore us.
+        text: `Warehouse accident. Three days ago. Broken pelvis.
 
-I have a Master's in Instructional Design. I know about cognitive load, spaced repetition, flow states.
+He's 22. Same age as my little brother.
 
-But the VP just wants a completion certificate to show the auditors.`,
-        emotion: 'frustrated',
-        variation_id: 'potential_v1'
+The investigation cleared us. "Employee completed mandatory safety training on Oct 4th." The certificate is in the system. Green checkmark.
+
+We designed a green checkmark. We didn't design safety.`,
+        emotion: 'guilty',
+        variation_id: 'accident_v1'
       }
     ],
     choices: [
       {
-        choiceId: 'kai_vision_ask',
-        text: "If you were the VP, what would you build?",
-        nextNodeId: 'kai_vision_reveal',
-        pattern: 'building',
-        skills: ['leadership', 'creativity']
+        choiceId: 'kai_accountability',
+        text: "You feel responsible because you designed the checkmark.",
+        nextNodeId: 'kai_simulation_setup',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
       },
       {
-        choiceId: 'kai_trap_recognition',
-        text: "You're trapped between your expertise and their bureaucracy.",
-        nextNodeId: 'kai_golden_handcuffs',
+        choiceId: 'kai_system_fail',
+        text: "The system worked for the company. It failed the human.",
+        nextNodeId: 'kai_simulation_setup',
         pattern: 'analytical',
-        skills: ['criticalThinking', 'emotionalIntelligence'],
-        consequence: {
-          characterId: 'kai',
-          trustChange: 1
-        }
+        skills: ['systemsThinking']
       }
     ]
   },
 
   {
-    nodeId: 'kai_vision_reveal',
+    nodeId: 'kai_compliance_trap',
     speaker: 'Kai',
     content: [
       {
-        text: `I'd burn the slides.
+        text: `*Kai laughs, a brittle, snapping sound.*
 
-Imagine an AI-driven simulation. You're a manager facing a supply chain crisis. The characters react to your voice. The scenario adapts. You fail, you learn, you try again.
+Legally covered. Yes. That's what my VP said. "Great work, Kai. The audit trail is perfect."
 
-It's limbic learning. You feel the pressure. You remember it forever.
+He's in the hospital, and we're celebrating our audit trail.
 
-But I can't even get approval for a branching scenario. 'Too complex,' they say.`,
-        emotion: 'inspired_then_deflated',
-        variation_id: 'vision_v1'
+I can't do this anymore. I can't build shields for the company that leave the people exposed.`,
+        emotion: 'angry_despair',
+        variation_id: 'compliance_v1'
       }
     ],
     choices: [
       {
-        choiceId: 'kai_show_me',
-        text: "Do you have a prototype?",
+        choiceId: 'kai_move_to_sim',
+        text: "So build something that actually protects them.",
         nextNodeId: 'kai_simulation_setup',
         pattern: 'building',
-        skills: ['creativity', 'digitalLiteracy'],
-        consequence: {
-          characterId: 'kai',
-          trustChange: 2
-        }
-      },
-      {
-        choiceId: 'kai_risk_assess',
-        text: "The risk isn't complexity. The risk is irrelevance.",
-        nextNodeId: 'kai_risk_realization',
-        pattern: 'analytical',
-        skills: ['strategicThinking', 'persuasion']
+        skills: ['leadership']
       }
     ]
   },
 
-  {
-    nodeId: 'kai_golden_handcuffs',
-    speaker: 'Kai',
-    content: [
-      {
-        text: `Exactly. And they pay me very well to stay trapped.
-
-Golden handcuffs. I have a mortgage. A 401k.
-
-Is it worth blowing all that up just because I'm bored?`, 
-        emotion: 'fearful',
-        variation_id: 'handcuffs_v1'
-      }
-    ],
-    choices: [
-      {
-        choiceId: 'kai_boredom_cost',
-        text: "Boredom is expensive. It costs you your spark.",
-        nextNodeId: 'kai_vision_reveal',
-        pattern: 'helping',
-        skills: ['emotionalIntelligence', 'careerDevelopment']
-      }
-    ]
-  },
-
-  // ============= THE SIMULATION: AI TRANSFORMATION =============
+  // ============= THE SIMULATION: THE SAFETY DRILL =============
   {
     nodeId: 'kai_simulation_setup',
     speaker: 'Kai',
     content: [
       {
-        text: `I... I have a sandbox version. On my personal laptop.
+        text: `I deleted the module. The new one... I'm building it now. Secretly.
 
-*Kai opens a sleek laptop. On screen is a split view: Left side is a wall of text titled 'Conflict Resolution Policy'. Right side is a blank canvas.*
+*Kai turns the tablet. It's not a slide deck. It's a rough, grainy video feed simulation.*
 
-I was trying to redesign the 'Difficult Conversations' module.
+It's a Forklift Operator scenario. But no text. No "Click Next."
 
-**SYSTEM ACTIVE: LEARNING ARCHITECT v4.0**
-**SOURCE:** Static PDF (45 pages)
-**GOAL:** Immersive Simulation
+*Kai taps the screen. The view shakes.*
 
-Help me. How do we turn page 14—'De-escalating Angry Clients'—into something real?`,
-        emotion: 'nervous_excited',
-        variation_id: 'sim_setup_v1',
-        richEffectContext: 'warning', // Editor Mode
+You're in the cab. The load is unstable. The foreman is screaming at you to hurry up because the truck is waiting.
+
+What do you do?`,
+        emotion: 'manic_focused',
+        variation_id: 'sim_setup_v2',
+        richEffectContext: 'thinking',
         useChatPacing: true
       }
     ],
-    requiredState: {
-      trust: { min: 1 }
-    },
     choices: [
       {
-        choiceId: 'sim_ai_avatar',
-        text: "[ACTION] Generate an AI avatar client who interrupts you if you pause too long.",
-        nextNodeId: 'kai_sim_step_2',
-        pattern: 'building',
-        skills: ['digitalLiteracy', 'creativity', 'technicalLiteracy']
+        choiceId: 'sim_pressure_compliance',
+        text: "[ACTION] Follow the foreman's order. Move the load quickly.",
+        nextNodeId: 'kai_sim_fail_compliance',
+        pattern: 'building', // Trying to be "productive"
+        skills: ['adaptability'] 
       },
       {
-        choiceId: 'sim_emotional_mapping',
-        text: "[ACTION] Map the user's voice tone to the client's anger level.",
-        nextNodeId: 'kai_sim_step_2',
+        choiceId: 'sim_pressure_safety',
+        text: "[ACTION] Stop. Get out of the cab. Refuse to move.",
+        nextNodeId: 'kai_sim_success',
         pattern: 'helping',
-        skills: ['emotionalIntelligence', 'systemsThinking']
+        skills: ['courage', 'leadership']
       },
       {
-        choiceId: 'sim_branching_consequence',
-        text: "[ACTION] Create a failure branch where the client cancels the contract immediately.",
-        nextNodeId: 'kai_sim_step_2',
+        choiceId: 'sim_check_manual',
+        text: "[ACTION] Check the safety manual PDF.",
+        nextNodeId: 'kai_sim_fail_pdf',
         pattern: 'analytical',
-        skills: ['gameDesign', 'strategicThinking']
+        skills: ['informationLiteracy']
       }
     ],
     tags: ['simulation', 'kai_arc', 'immersive_scenario']
   },
 
+  // --- FAILURE STATE 1: COMPLIANCE ---
   {
-    nodeId: 'kai_sim_step_2',
-    speaker: 'SYSTEM ALERT',
+    nodeId: 'kai_sim_fail_compliance',
+    speaker: 'Kai',
     content: [
       {
-        text: `*Kai types furiously. The screen shifts.*
+        text: `*The screen goes black. A sickening crunch of metal on concrete.*
 
-**SCENARIO GENERATED.**
-**CLIENT STATE:** Furious.
-**STAKES:** $2M Contract.
+**SIMULATION ENDED. FATALITY.**
 
-*The AI client screams: "I don't care about your policy! I want it fixed NOW!"*
+*Kai stares at the black screen, face pale.*
 
-The traditional module would ask a multiple-choice question here. 'A) Apologize, B) Quote policy.'
+You listened to the boss. You got the job done. And you killed someone.
 
-That's too easy. What do we do instead?`,
-        emotion: 'focused_flow',
-        variation_id: 'sim_step_2_v1',
+That's what the old training taught them. "Efficiency first."`,
+        emotion: 'horrified',
+        variation_id: 'sim_fail_compliance_v1',
+        richEffectContext: 'error'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'kai_retry_compliance',
+        text: "I didn't think... let me try again.",
+        nextNodeId: 'kai_simulation_setup',
+        pattern: 'patience',
+        skills: ['learningAgility']
+      },
+      {
+        choiceId: 'kai_give_up_compliance',
+        text: "It's too hard. Maybe just stick to the slides.",
+        nextNodeId: 'kai_bad_ending',
+        pattern: 'analytical',
+        consequence: {
+          addGlobalFlags: ['kai_chose_safety'] // BAD ENDING
+        }
+      }
+    ]
+  },
+
+  // --- FAILURE STATE 2: PDF ---
+  {
+    nodeId: 'kai_sim_fail_pdf',
+    speaker: 'Kai',
+    content: [
+      {
+        text: `*You tap the PDF icon. A 40-page document opens.*
+
+*While you're reading, the load shifts. The crate falls.*
+
+**SIMULATION ENDED. INJURY.**
+
+*Kai shakes their head.*
+
+Nobody reads the PDF in a crisis. You hesitated. Real life doesn't pause for documentation.`,
+        emotion: 'frustrated_teacher',
+        variation_id: 'sim_fail_pdf_v1',
         richEffectContext: 'warning'
       }
     ],
     choices: [
       {
-        choiceId: 'sim_pressure_timer',
-        text: "[ACTION] Remove the pause button. Force a real-time response in 5 seconds.",
-        nextNodeId: 'kai_sim_success',
-        pattern: 'building',
-        skills: ['learningAgility', 'riskManagement']
-      },
-      {
-        choiceId: 'sim_ambiguity',
-        text: "[ACTION] Make both options 'right' but with different trade-offs.",
-        nextNodeId: 'kai_sim_success',
-        pattern: 'analytical',
-        skills: ['criticalThinking', 'instructionalDesign']
+        choiceId: 'kai_retry_pdf',
+        text: "You're right. No manuals. Action.",
+        nextNodeId: 'kai_simulation_setup',
+        pattern: 'patience',
+        skills: ['learningAgility']
       }
-    ],
-    tags: ['simulation', 'kai_arc']
+    ]
   },
 
+  // --- SUCCESS STATE ---
   {
     nodeId: 'kai_sim_success',
     speaker: 'Kai',
     content: [
       {
-        text: `*Kai leans back. The simulation runs. It's tense, messy, and real.*
+        text: `*The foreman screams in your face. The AI voice is deafening.*
 
-My heart is racing just watching it.
+*But you stopped. The load wobbles, then settles. Safe.*
 
-That... that actually teaches something. It teaches composure.
+*Kai exhales, shoulders dropping.*
 
-If I show this to the VP, they'll freak out. "It's too unpredictable." "It's not compliant."`,
-        emotion: 'awed_scared',
-        variation_id: 'sim_success_v1',
+You stopped. You ignored the authority figure to save the human.
+
+That's it. That's the skill. Not "harness safety." *Courage.*`,
+        emotion: 'awed_relief',
+        variation_id: 'sim_success_v2',
         richEffectContext: 'success'
       }
     ],
     choices: [
       {
-        choiceId: 'kai_pitch_it',
-        text: "Show them anyway. Disruption is always scary at first.",
-        nextNodeId: 'kai_corporate_rejection',
-        pattern: 'building',
-        skills: ['courage', 'leadership']
+        choiceId: 'kai_teach_courage',
+        text: "You can't teach courage with a slide deck.",
+        nextNodeId: 'kai_studio_realization',
+        pattern: 'helping',
+        skills: ['leadership', 'instructionalDesign']
       },
       {
-        choiceId: 'kai_build_outside',
-        text: "Maybe this isn't for them. Maybe this is for *your* studio.",
+        choiceId: 'kai_sim_power',
+        text: "I felt that fear. I'll remember it.",
         nextNodeId: 'kai_studio_realization',
-        pattern: 'exploring',
-        skills: ['entrepreneurship', 'visionaryThinking']
+        pattern: 'building',
+        skills: ['emotionalIntelligence']
       }
     ],
     tags: ['simulation_complete', 'kai_arc']
   },
 
-  // ============= THE CROSSROADS =============
-  {
-    nodeId: 'kai_corporate_rejection',
-    speaker: 'Kai',
-    content: [
-      {
-        text: "I tried. Last year. I showed a prototype like this.\n\nThey buried it. 'Let's stick to Articulate Storyline. It's safer.'\n\nYou're right. It's not that I *can't* build this there. It's that they won't let me.",
-        emotion: 'resigned_clarity',
-        variation_id: 'rejection_v1'
-      }
-    ],
-    choices: [
-      {
-        choiceId: 'kai_go_solo',
-        text: "Then you have to build it yourself. Outside.",
-        nextNodeId: 'kai_studio_realization',
-        pattern: 'building',
-        skills: ['entrepreneurship']
-      }
-    ]
-  },
-
+  // ============= THE REALIZATION =============
   {
     nodeId: 'kai_studio_realization',
     speaker: 'Kai',
     content: [
       {
-        text: "A studio. 'Kairos Learning Design.'\n\nI met a guy downstairs, Rohan. He said the code is broken. I think the training is broken too. We're both just trying to find the truth.\n\nI could work with companies that actually want to change. Tech startups. Healthcare innovators.\n\nI have the skills. I have the vision. I just... I've been waiting for permission.",
-        emotion: 'dawning_hope',
-        variation_id: 'studio_v1',
-        richEffectContext: 'thinking'
+        text: "I have to show this. Not to the VP—to the workers.
+
+I met a guy downstairs, Rohan. He said the code is broken. I think the training is broken too. We're both just trying to find the truth.
+
+If I stay, I'm complicit. I'm building the checkmarks that hide the danger.",
+        emotion: 'determined',
+        variation_id: 'studio_v2'
       }
     ],
     choices: [
       {
-        choiceId: 'kai_give_permission',
-        text: "You don't need their permission to be brilliant.",
+        choiceId: 'kai_leave',
+        text: "Leave. Build the studio that saves lives.",
         nextNodeId: 'kai_climax_decision',
-        pattern: 'helping',
-        skills: ['empowerment', 'leadership']
-      },
-      {
-        choiceId: 'kai_market_need',
-        text: "The market is starving for this. You'll find clients.",
-        nextNodeId: 'kai_climax_decision',
-        pattern: 'analytical',
-        skills: ['businessAcumen', 'marketPositioning']
+        pattern: 'building',
+        skills: ['entrepreneurship', 'courage']
       }
     ]
   },
@@ -355,24 +321,22 @@ If I show this to the VP, they'll freak out. "It's too unpredictable." "It's not
     speaker: 'Kai',
     content: [
       {
-        text: "*Kai closes the laptop. But this time, not in frustration. In resolution.*
+        text: "Kairos Learning Design. No certificates. Just survival.
 
-I'm going to do it. I'm going to resign.
+It's terrifying. I'm giving up the salary, the benefits... the green checkmarks.
 
-I'll freelance first. Build the portfolio. Then the studio.
-
-It's risky. But staying is riskier. Staying means my brain slowly dies.",
-        emotion: 'determined',
-        variation_id: 'climax_v1'
+But I'll never have to click 'Next' again.",
+        emotion: 'liberated',
+        variation_id: 'climax_v2'
       }
     ],
     choices: [
       {
         choiceId: 'kai_farewell',
-        text: "Go build the future, Kai.",
+        text: "Go build it.",
         nextNodeId: 'kai_farewell',
-        pattern: 'building',
-        skills: ['inspiration']
+        pattern: 'helping',
+        skills: ['encouragement']
       }
     ],
     onEnter: [
@@ -385,16 +349,49 @@ It's risky. But staying is riskier. Staying means my brain slowly dies.",
     tags: ['ending', 'kai_arc']
   },
 
+  // ============= BAD ENDING (Resignation) =============
+  {
+    nodeId: 'kai_bad_ending',
+    speaker: 'Kai',
+    content: [
+      {
+        text: "*Kai closes the tablet. The screen goes dark.*
+
+Yeah. You're right. It's too risky. The VP will never approve it.
+
+I'll just... add a bold font to the safety warning. That should be enough.
+
+Thanks for trying.",
+        emotion: 'defeated',
+        variation_id: 'bad_ending_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'kai_leave_bad',
+        text: "...",
+        nextNodeId: samuelEntryPoints.KAI_REFLECTION_GATEWAY,
+        pattern: 'patience'
+      }
+    ],
+    onEnter: [
+      {
+        addGlobalFlags: ['kai_chose_safety', 'kai_arc_complete'] // Bad ending flag
+      }
+    ],
+    tags: ['ending', 'bad_ending', 'kai_arc']
+  },
+
   {
     nodeId: 'kai_farewell',
     speaker: 'Kai',
     content: [
       {
-        text: "Thank you. You pushed me off the ledge I've been standing on for five years.
+        text: "Thank you. You didn't just help me fix a module. You helped me stop lying to myself.
 
-If you see Samuel... tell him I'm done clicking 'Next.' I'm writing the new code.",
+If you see Samuel... tell him I'm done with compliance. I'm in the business of reality now.",
         emotion: 'grateful',
-        variation_id: 'farewell_v1'
+        variation_id: 'farewell_v2'
       }
     ],
     choices: [
