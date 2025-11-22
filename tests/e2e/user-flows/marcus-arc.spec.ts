@@ -171,7 +171,7 @@ test.describe('Marcus Arc - State Tracking', () => {
     const initialTrust = await page.evaluate(() => {
       const state = JSON.parse(localStorage.getItem('lux-game-state') || '{}')
       const characters = new Map(state.characters || [])
-      const marcus = characters.get('marcus')
+      const marcus = characters.get('marcus') as { trust?: number } | undefined
       return marcus?.trust || 0
     })
 
