@@ -18,14 +18,14 @@ function createTestGameState(profile: {
   knowledgeFlags: string[]
 }): GameState {
   const state: GameState = {
+    saveVersion: '1.0',
     playerId: profile.userId,
     currentNodeId: 'test_node',
+    currentCharacterId: 'samuel',
     characters: new Map(),
     globalFlags: new Set(profile.globalFlags),
     patterns: profile.patterns,
-    visitedScenes: new Set(['maya_introduction', 'samuel_welcome']),
-    choiceHistory: [],
-    timestamp: Date.now()
+    lastSaved: Date.now()
   }
   
   // Add characters
@@ -33,34 +33,30 @@ function createTestGameState(profile: {
     ['maya', {
       characterId: 'maya',
       trust: profile.trustLevels.maya,
-      currentEmotion: 'neutral',
+      relationshipStatus: 'acquaintance',
       knowledgeFlags: new Set(profile.knowledgeFlags),
-      visitedNodes: new Set(),
-      choices: new Map()
+      conversationHistory: []
     }],
     ['devon', {
       characterId: 'devon',
       trust: profile.trustLevels.devon,
-      currentEmotion: 'neutral',
+      relationshipStatus: 'stranger',
       knowledgeFlags: new Set(),
-      visitedNodes: new Set(),
-      choices: new Map()
+      conversationHistory: []
     }],
     ['jordan', {
       characterId: 'jordan',
       trust: profile.trustLevels.jordan,
-      currentEmotion: 'neutral',
+      relationshipStatus: 'stranger',
       knowledgeFlags: new Set(),
-      visitedNodes: new Set(),
-      choices: new Map()
+      conversationHistory: []
     }],
     ['samuel', {
       characterId: 'samuel',
       trust: profile.trustLevels.samuel,
-      currentEmotion: 'neutral',
+      relationshipStatus: 'confidant',
       knowledgeFlags: new Set(),
-      visitedNodes: new Set(),
-      choices: new Map()
+      conversationHistory: []
     }]
   ]
   

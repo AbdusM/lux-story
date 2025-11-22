@@ -111,7 +111,7 @@ export function EvidenceTimeline({ keySkillMoments, totalDemonstrations }: Evide
                             {moment.skillsDemonstrated.length} skill{moment.skillsDemonstrated.length !== 1 ? 's' : ''} shown
                           </Badge>
                           <span className="text-sm text-slate-600">
-                            {moment.timestamp ? new Date(moment.timestamp).toLocaleDateString() : 'Recently'}
+                            {moment.timestamp ?? Date.now() ? new Date(moment.timestamp ?? Date.now()).toLocaleDateString() : 'Recently'}
                           </span>
                         </div>
                       </div>

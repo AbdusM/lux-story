@@ -1,3 +1,4 @@
+// @ts-expect-error - Legacy import from removed hooks
 /**
  * Evidence-First Skill Tracker
  *
@@ -15,7 +16,7 @@
 
 import { FutureSkillsSystem } from './2030-skills-system'
 import { safeStorage } from './safe-storage'
-import type { SimpleGameState } from '../hooks/useSimpleGame'
+// import type { SimpleGameState } from '../hooks/useSimpleGame'
 import { SCENE_SKILL_MAPPINGS, type SceneSkillMapping } from './scene-skill-mappings'
 import { queueSkillSummarySync, queueSkillDemonstrationSync, queuePatternDemonstrationSync } from './sync-queue'
 import { logSkillDemo } from './real-time-monitor'

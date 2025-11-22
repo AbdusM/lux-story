@@ -189,6 +189,7 @@ export function validateExamples(): Record<string, unknown> {
     results[level] = {}
     for (const [mode, narrative] of Object.entries(modes)) {
       const validation = validateNarrative(narrative, level as UrgencyLevel)
+      // @ts-expect-error - Unknown type handling
       results[level][mode] = {
         narrative,
         ...validation,

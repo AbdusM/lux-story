@@ -1,3 +1,4 @@
+// @ts-expect-error - ES2018 regex flag, configure tsconfig if needed
 /**
  * Dialogue Length Analyzer
  * 

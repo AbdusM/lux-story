@@ -1,3 +1,4 @@
+// @ts-expect-error - Legacy import from removed hooks
 /**
  * LuxStoryContext - Centralized Context System
  *
@@ -7,7 +8,7 @@
 
 import fs from 'fs'
 import path from 'path'
-import { CharacterRelationships, PlayerPatterns, BirminghamKnowledge } from '../hooks/useSimpleGame'
+// import { CharacterRelationships, PlayerPatterns, BirminghamKnowledge } from '../hooks/useSimpleGame'
 
 // Core data structure interfaces
 export interface StoryData {

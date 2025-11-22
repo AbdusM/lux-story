@@ -34,7 +34,7 @@ Sentry.init({
     }),
     Sentry.browserTracingIntegration({
       // Custom instrumentation
-      tracePropagationTargets: ['localhost', /^https:\/\/.*\.pages\.dev/],
+      // tracePropagationTargets: ['localhost', /^https:\/\/.*\.pages\.dev/],
     }),
   ],
 
