@@ -290,30 +290,23 @@ Okay. Say I get the 10 people. What do I actually teach them? I can't teach *eve
     ]
   },
 
-  // ============= CURRICULUM DESIGN (The "Remove" Mechanic) =============
+  // ============= CURRICULUM DESIGN (Immersive Scenario) =============
   {
     nodeId: 'yaquin_curriculum_design',
     speaker: 'Yaquin',
     content: [
       {
-        text: `Okay. Let's look at this 'official' syllabus. It's got:
-
-1. History of Dentistry (1800-1950)
-2. molecular biology of enamel
-3. Office Reception etiquette
-4. Chairside Assisting
-
-If I only have 6 weeks to make them job-ready, what do I cut?`,
+        text: "*He slams the notebook onto the bench. A messy list of 20 topics fills the page.* \n\n**SYSTEM ACTIVE: CURRICULUM BUILDER v0.1** \n**CONSTRAINT:** 6 Weeks \n**GOAL:** Job Readiness \n\nI can't teach it all. I have to cut. \n\n*He hands you the red marker.* \n\nWhat goes? Be ruthless.",
         emotion: 'focused_work',
-        variation_id: 'curriculum_v1',
-        richEffectContext: 'thinking'
+        variation_id: 'curriculum_scenario_v1',
+        richEffectContext: 'warning' // Blueprint/Editor Mode
       }
     ],
     choices: [
       {
-        choiceId: 'cut_history_bio',
-        text: "Cut History and Bio. Focus 100% on Chairside Assisting.",
-        nextNodeId: 'yaquin_focused_curriculum',
+        choiceId: 'edit_cut_history',
+        text: "[ACTION] Cross out 'History of Dentistry (1800-1950)'. It's trivia, not a skill.",
+        nextNodeId: 'yaquin_focused_curriculum', // Re-using this node ID for the success state
         pattern: 'building',
         skills: ['creativity', 'criticalThinking'],
         consequence: {
@@ -323,8 +316,8 @@ If I only have 6 weeks to make them job-ready, what do I cut?`,
         }
       },
       {
-        choiceId: 'keep_etiquette',
-        text: "Keep Etiquette and Assisting. Soft skills get you hired, hard skills keep you hired.",
+        choiceId: 'edit_keep_soft',
+        text: "[ACTION] Circle 'Patient Etiquette'. Keep it. That's what gets them hired.",
         nextNodeId: 'yaquin_soft_skills_focus',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'adaptability'],
@@ -334,13 +327,14 @@ If I only have 6 weeks to make them job-ready, what do I cut?`,
         }
       },
       {
-        choiceId: 'teach_everything_fast',
-        text: "Don't cut. Just summarize the history quickly.",
+        choiceId: 'edit_condense',
+        text: "[ACTION] Draw an arrow merging 'Anatomy' and 'Assisting'. Teach them together.",
         nextNodeId: 'yaquin_overwhelmed_response',
-        pattern: 'patience', // Actually a trap choice in terms of efficacy, but shows patience
-        skills: ['criticalThinking']
+        pattern: 'analytical',
+        skills: ['problemSolving']
       }
-    ]
+    ],
+    tags: ['simulation', 'yaquin_arc', 'immersive_scenario']
   },
 
   {
@@ -348,11 +342,7 @@ If I only have 6 weeks to make them job-ready, what do I cut?`,
     speaker: 'Yaquin',
     content: [
       {
-        text: `You're right. The dentist doesn't care if they know who Pierre Fauchard is. They care if they can hand the composite gun without fumbling.
-
-**'The 6-Week Chairside Sprint.'** No fluff. Just the skills that make you indispensable.
-
-That's the product.`,
+        text: "*The red ink bleeds into the paper. Half the list is gone.* \n\nIt looks... clean. \n\n**'The 6-Week Chairside Sprint.'** \n\nNo fluff. Just the skills that make you indispensable. \n\nThat's the product.",
         emotion: 'excited_clarity',
         variation_id: 'focused_v1',
         richEffectContext: 'success'
