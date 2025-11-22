@@ -2,7 +2,6 @@
 
 import { memo } from 'react'
 import { Button } from '@/components/ui/button'
-// @ts-expect-error - framer-motion is an optional animation dependency
 import { motion } from 'framer-motion'
 
 interface Choice {

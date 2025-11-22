@@ -15,7 +15,6 @@
 
 import React, { useState, useEffect, useRef } from 'react'
 import { cn } from '@/lib/utils'
-// @ts-expect-error - framer-motion is an optional animation dependency
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 
 // Color themes for different states (kept for compatibility)
