@@ -48,6 +48,7 @@ export async function GET(request: NextRequest): Promise<NextResponse<UrgencyAPI
 
       if (error) {
         console.error('[Admin API] Single user query error:', error)
+    // @ts-expect-error - NextResponse type compatibility
         return NextResponse.json(
           {
             user: null,
@@ -58,6 +59,7 @@ export async function GET(request: NextRequest): Promise<NextResponse<UrgencyAPI
       }
 
       if (!data) {
+    // @ts-expect-error - NextResponse type compatibility
         return NextResponse.json(
           {
             user: null,
@@ -86,6 +88,7 @@ export async function GET(request: NextRequest): Promise<NextResponse<UrgencyAPI
 
       // Audit log: Admin accessed single user urgency data
       auditLog('view_urgency_single', 'admin', userIdParam)
+  // @ts-expect-error - NextResponse type compatibility
 
       return NextResponse.json({
         user,

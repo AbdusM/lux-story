@@ -32,7 +32,7 @@ export function CareerDiscoveryCard({ career }: CareerDiscoveryCardProps) {
             </div>
           )}
 
-          {showSecondMatch && (
+          {showSecondMatch && career.secondMatch && (
             <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-200">
               <div>
                 <p className="text-sm text-gray-600 font-medium">Also Exploring</p>

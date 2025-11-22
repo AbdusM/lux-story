@@ -28,8 +28,6 @@ export function RichTextExamples() {
               mode: 'typewriter',
               state: 'thinking',
               speed: 0.8,
-              duration: 300,
-              perCharColor: true
             }}
             className="text-lg"
           />
@@ -48,7 +46,6 @@ export function RichTextExamples() {
               mode: 'typewriter',
               state: 'executing',
               speed: 1.2,
-              duration: 300,
               flashing: true
             }}
             className="text-lg"
@@ -88,7 +85,6 @@ export function RichTextExamples() {
               rainbow: true,
               highlightWords: ['possibilities', 'discovering'],
               speed: 1.0,
-              duration: 300
             }}
             className="text-lg"
           />
@@ -108,7 +104,6 @@ export function RichTextExamples() {
               state: 'success',
               highlightWords: ['creativity', 'problem-solving', 'leadership'],
               flashing: true,
-              duration: 300
             }}
             className="text-lg"
           />
@@ -143,7 +138,6 @@ export function RichTextExamples() {
               mode: 'typewriter',
               state: 'default',
               highlightWords: ['performance', 'alignment', 'consistency', 'learning'],
-              duration: 300
             }}
             className="text-lg font-mono"
           />
