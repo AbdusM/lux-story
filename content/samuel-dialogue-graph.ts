@@ -572,6 +572,27 @@ export const samuelDialogueNodes: DialogueNode[] = [
         skills: ['leadership', 'communication']
       },
       {
+        choiceId: 'hub_corporate_innovation',
+        text: "I'm fighting to innovate inside a rigid system.",
+        nextNodeId: 'samuel_discovers_kai',
+        pattern: 'analytical',
+        skills: ['strategicThinking', 'resilience']
+      },
+      {
+        choiceId: 'hub_infrastructure',
+        text: "I'm tired of fake solutions. I want to know how things really work.",
+        nextNodeId: 'samuel_discovers_rohan',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'technicalLiteracy']
+      },
+      {
+        choiceId: 'hub_digital_refugee',
+        text: "I want to build something real. Something I can touch.",
+        nextNodeId: 'samuel_discovers_silas',
+        pattern: 'building',
+        skills: ['sustainability', 'systemsThinking']
+      },
+      {
         choiceId: 'hub_not_sure',
         text: "I'm not sure what I'm looking for yet.",
         nextNodeId: 'samuel_hub_fallback',
@@ -749,6 +770,102 @@ export const samuelDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'ask_about_others_yaquin',
+        text: "Who else is here?",
+        nextNodeId: 'samuel_other_travelers',
+        pattern: 'exploring',
+        skills: ['communication']
+      }
+    ]
+  },
+
+  // ============= DISCOVERY PATH: CORPORATE → KAI =============
+  {
+    nodeId: 'samuel_discovers_kai',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Platform 6. Glass walls, cold lighting. Kai is there.\n\nThey're an Instructional Architect at a Fortune 500. They know exactly how people learn, but they're paid to build compliance checklists.\n\nThey're holding a match, trying to decide whether to burn the rulebook.",
+        emotion: 'intrigued_respect',
+        variation_id: 'discovers_kai_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'meet_kai',
+        text: "I want to help them light it.",
+        nextNodeId: 'kai_introduction', // Links to new graph
+        pattern: 'building',
+        skills: ['leadership'],
+        consequence: {
+          addGlobalFlags: ['met_kai']
+        }
+      },
+      {
+        choiceId: 'ask_about_others_kai',
+        text: "Who else is here?",
+        nextNodeId: 'samuel_other_travelers',
+        pattern: 'exploring',
+        skills: ['communication']
+      }
+    ]
+  },
+
+  // ============= DISCOVERY PATH: INFRASTRUCTURE → ROHAN =============
+  {
+    nodeId: 'samuel_discovers_rohan',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Platform 7. The sub-basement. Rohan is there.\n\nHe's a Site Reliability Engineer at a bank. He hasn't slept in 30 hours. He's the only one who knows how the money actually moves.\n\nEveryone else is using AI to write code they don't understand. He's cleaning up the mess.",
+        emotion: 'grim_respect',
+        variation_id: 'discovers_rohan_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'meet_rohan',
+        text: "I want to see the machine.",
+        nextNodeId: 'rohan_introduction', // Links to new graph
+        pattern: 'analytical',
+        skills: ['systemsThinking', 'technicalLiteracy'],
+        consequence: {
+          addGlobalFlags: ['met_rohan']
+        }
+      },
+      {
+        choiceId: 'ask_about_others_rohan',
+        text: "Who else is here?",
+        nextNodeId: 'samuel_other_travelers',
+        pattern: 'exploring',
+        skills: ['communication']
+      }
+    ]
+  },
+
+  // ============= DISCOVERY PATH: GROUNDED TECH → SILAS =============
+  {
+    nodeId: 'samuel_discovers_silas',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Platform 8. The Greenhouse. Silas is there.\n\nHe used to be a Cloud Architect at Amazon. Now he uses drones to monitor soil microbiomes.\n\nHe realized that a farm is just a server cluster that breathes. He's debugging nature.",
+        emotion: 'warm_respect',
+        variation_id: 'discovers_silas_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'meet_silas',
+        text: "I want to get my hands dirty.",
+        nextNodeId: 'silas_introduction', // Links to new graph
+        pattern: 'building',
+        skills: ['sustainability'],
+        consequence: {
+          addGlobalFlags: ['met_silas']
+        }
+      },
+      {
+        choiceId: 'ask_about_others_silas',
         text: "Who else is here?",
         nextNodeId: 'samuel_other_travelers',
         pattern: 'exploring',
@@ -1639,6 +1756,165 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "It's a solid plan.",
         nextNodeId: 'samuel_hub_after_devon',
         pattern: 'analytical'
+      }
+    ]
+  },
+
+  // ============= KAI REFLECTION GATEWAY =============
+  {
+    nodeId: 'samuel_kai_reflection_gateway',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Kai just walked past. They weren't looking at their tablet. They looked like someone who just quit their job.\n\nLeaving the golden handcuffs is terrifying. You helped them see that safety was actually a trap.",
+        emotion: 'proud',
+        variation_id: 'kai_gateway_v1'
+      }
+    ],
+    requiredState: {
+      hasGlobalFlags: ['kai_arc_complete'],
+      lacksKnowledgeFlags: ['reflected_on_kai']
+    },
+    choices: [
+      {
+        choiceId: 'kai_chose_studio',
+        text: "They're going to build something real.",
+        nextNodeId: 'samuel_reflects_kai_studio',
+        pattern: 'building',
+        skills: ['entrepreneurship', 'visionaryThinking'],
+        visibleCondition: {
+          hasGlobalFlags: ['kai_chose_studio']
+        }
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'samuel',
+        addKnowledgeFlags: ['reflected_on_kai']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_reflects_kai_studio',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "A studio. That's the right vessel for their vision.\n\nYou helped them realize they couldn't change the system from the inside if the system was designed to reject change.\n\nSometimes you have to build the new model to make the old one obsolete.",
+        emotion: 'wise',
+        variation_id: 'kai_studio_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'kai_return_hub',
+        text: "They're ready.",
+        nextNodeId: 'samuel_hub_after_devon',
+        pattern: 'helping'
+      }
+    ]
+  },
+
+  // ============= ROHAN REFLECTION GATEWAY =============
+  {
+    nodeId: 'samuel_rohan_reflection_gateway',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Rohan just left. He looked tired, but different. Not exhausted. Determined.\n\nHe said he's done fixing bugs. He's going to fix the engineers.\n\nYou helped him see that his value isn't in his speed. It's in his understanding.",
+        emotion: 'deep_respect',
+        variation_id: 'rohan_gateway_v1'
+      }
+    ],
+    requiredState: {
+      hasGlobalFlags: ['rohan_arc_complete'],
+      lacksKnowledgeFlags: ['reflected_on_rohan']
+    },
+    choices: [
+      {
+        choiceId: 'rohan_foundation',
+        text: "He's a guardian of the truth.",
+        nextNodeId: 'samuel_reflects_rohan_truth',
+        pattern: 'analytical',
+        skills: ['integrity', 'mentorship']
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'samuel',
+        addKnowledgeFlags: ['reflected_on_rohan']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_reflects_rohan_truth',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "In a world of generated noise, the person who verifies the truth is the most important person in the room.\n\nYou helped him claim that title. Guardian.\n\nThat's a heavy mantle. But he can carry it.",
+        emotion: 'solemn',
+        variation_id: 'rohan_truth_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'rohan_return_hub',
+        text: "He will.",
+        nextNodeId: 'samuel_hub_after_devon',
+        pattern: 'patience'
+      }
+    ]
+  },
+
+  // ============= SILAS REFLECTION GATEWAY =============
+  {
+    nodeId: 'samuel_silas_reflection_gateway',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Silas just headed back to the greenhouse. He had dirt on his hands and a smile I haven't seen on an engineer in years.\n\nHe's done optimizing imaginary numbers. He's optimizing life.\n\nYou helped him see that leaving 'Big Tech' wasn't a retreat. It was an evolution.",
+        emotion: 'grounded',
+        variation_id: 'silas_gateway_v1'
+      }
+    ],
+    requiredState: {
+      hasGlobalFlags: ['silas_arc_complete'],
+      lacksKnowledgeFlags: ['reflected_on_silas']
+    },
+    choices: [
+      {
+        choiceId: 'silas_evolution',
+        text: "He's a Systems Gardener now.",
+        nextNodeId: 'samuel_reflects_silas_soil',
+        pattern: 'building',
+        skills: ['systemsThinking', 'wisdom']
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'samuel',
+        addKnowledgeFlags: ['reflected_on_silas']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_reflects_silas_soil',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Systems Gardener. I like that.\n\nHe needed someone to validate that his new path was just as complex, just as worthy, as the one he left.\n\nYou gave him permission to touch the soil without losing his mind.",
+        emotion: 'warm',
+        variation_id: 'silas_soil_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'silas_return_hub',
+        text: "He's happy.",
+        nextNodeId: 'samuel_hub_after_devon',
+        pattern: 'helping'
       }
     ]
   },
@@ -3882,6 +4158,15 @@ export const samuelEntryPoints = {
 
   /** Reflection gateway - return from Yaquin (validates creator economy) */
   YAQUIN_REFLECTION_GATEWAY: 'samuel_yaquin_reflection_gateway',
+
+  /** Reflection gateway - return from Kai (validates corporate innovation) */
+  KAI_REFLECTION_GATEWAY: 'samuel_kai_reflection_gateway',
+
+  /** Reflection gateway - return from Rohan (validates deep engineering) */
+  ROHAN_REFLECTION_GATEWAY: 'samuel_rohan_reflection_gateway',
+
+  /** Reflection gateway - return from Silas (validates grounded engineering) */
+  SILAS_REFLECTION_GATEWAY: 'samuel_silas_reflection_gateway',
 
   /** Samuel's backstory reveal (trust-gated) */
   BACKSTORY: 'samuel_backstory_intro',

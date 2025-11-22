@@ -476,6 +476,8 @@ Thank you. I almost jumped without a parachute.`,
       {
         text: `I have a lot of work to do. But for the first time in years, I know exactly where I'm going.
 
+There's someone else here—Kai. From corporate. They're realizing the same thing I did: you can't fix the system from inside a cubicle.
+
 If you see Samuel, tell him... tell him I'm finally going for a walk.`,
         emotion: 'grateful',
         variation_id: 'farewell_v1'

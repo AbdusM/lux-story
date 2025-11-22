@@ -1022,7 +1022,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_farewell_accumulation',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Accumulation. Experience building on experience.\n\nBut what if they see through it? What if they know I'm a fraud?\n\nThe voice will be there when I walk through that door. Probably for years.\n\nBut at least now I can name it.\n\nThank you. Good luck with your journey.",
+      text: "Accumulation. Experience building on experience.\n\nI heard about a guy teaching dental skills on TikTok. Yaquin? He's doing exactly what I'm talking about. Accumulating skills, not titles.\n\nThe voice will be there when I walk through that door. Probably for years.\n\nBut at least now I can name it.\n\nThank you. Good luck with your journey.",
       emotion: 'grateful_but_shaken',
       variation_id: 'jordan_farewell_accumulation_v2_complex'
     }],

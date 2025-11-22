@@ -30,7 +30,7 @@ export interface GameState {
   patterns: PlayerPatterns // Pattern tracking for final revelation
   lastSaved: number
   currentNodeId: string // Current position in dialogue graph
-  currentCharacterId: 'samuel' | 'maya' | 'devon' | 'jordan' | 'marcus' | 'tess' | 'yaquin' // Current character being talked to
+  currentCharacterId: 'samuel' | 'maya' | 'devon' | 'jordan' | 'marcus' | 'tess' | 'yaquin' | 'kai' | 'rohan' | 'silas' // Current character being talked to
 }
 
 /**
@@ -110,7 +110,7 @@ export interface SerializableGameState {
   patterns: PlayerPatterns
   lastSaved: number
   currentNodeId: string
-  currentCharacterId: 'samuel' | 'maya' | 'devon' | 'jordan' | 'marcus' | 'tess' | 'yaquin'
+  currentCharacterId: 'samuel' | 'maya' | 'devon' | 'jordan' | 'marcus' | 'tess' | 'yaquin' | 'kai' | 'rohan' | 'silas'
 }
 
 /**
@@ -243,7 +243,10 @@ export class GameStateUtils {
         ['jordan', this.createCharacterState('jordan')],
         ['marcus', this.createCharacterState('marcus')],
         ['tess', this.createCharacterState('tess')],
-        ['yaquin', this.createCharacterState('yaquin')]
+        ['yaquin', this.createCharacterState('yaquin')],
+        ['kai', this.createCharacterState('kai')],
+        ['rohan', this.createCharacterState('rohan')],
+        ['silas', this.createCharacterState('silas')]
       ]),
       globalFlags: new Set(),
       patterns: {
