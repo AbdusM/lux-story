@@ -73,7 +73,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "Don't just look at it. Run it.\n\n*He gestures to the air, and the scribbles seem to align into a glowing blue decision tree floating between you.*\n\n*Text scrolls across the projection:*\n\n\"System Active. Conversational Optimizer v1.4.\"\n\"Subject: Father.\"\n\"Input: 'I'm fine.'\"\n\"Status: Processing...",
+        text: "Don't just look at it. Run it.\n\n*The scribbles seem to align into a glowing blue decision tree floating between you.*\n\n*Text scrolls across the projection:*\n\n\"System Active. Conversational Optimizer v1.4.\"\n\"Subject: Father.\"\n\"Input: 'I'm fine.'\"\n\"Status: Processing...",
         emotion: 'clinical_simulation',
         variation_id: 'explains_scenario_v1',
         richEffectContext: 'warning', // Blueprint/Debug mode
