@@ -113,30 +113,35 @@ export function RichTextRenderer({
       return
     }
     
-    // Staggered reveal logic
+    // Instant reveal for short messages, fast stagger for longer ones
     if (mode === 'staggered') {
+      const totalLength = text.length
+
+      // Instant render for short messages (under 100 chars)
+      if (totalLength < 100) {
+        setVisibleChunks(chunks.length)
+        setIsComplete(true)
+        onComplete?.()
+        return
+      }
+
+      // Fast, consistent reveal for longer messages
       let currentChunk = 0
-      
       const revealNextChunk = () => {
         if (currentChunk < chunks.length) {
           setVisibleChunks(prev => prev + 1)
           currentChunk++
-          
-          // Calculate delay based on chunk length (reading time)
-          // Faster than real reading time, but proportional
-          // Base delay 300ms + 10ms per char, max 1.5s
-          const chunkLength = chunks[currentChunk - 1]?.length || 0
-          const delay = Math.min(1500, 300 + (chunkLength * 10))
-          
+
           if (currentChunk < chunks.length) {
-            setTimeout(revealNextChunk, delay)
+            // Consistent 100ms delay between chunks
+            setTimeout(revealNextChunk, 100)
           } else {
             setIsComplete(true)
             onComplete?.()
           }
         }
       }
-      
+
       // Start revealing immediately
       revealNextChunk()
     }
@@ -200,9 +205,9 @@ export function RichTextRenderer({
                 animate={{
                   opacity: index < visibleChunks ? 1 : 0
                 }}
-                transition={{ duration: 0.2, ease: "easeOut" }}
+                transition={{ duration: 0.12, ease: "easeOut" }}
                 className={cn(
-                  "leading-relaxed text-slate-700",
+                  "leading-loose text-slate-700",
                   // Hide chunks that shouldn't be visible yet to prevent layout jumps
                   index >= visibleChunks && "hidden"
                 )}
