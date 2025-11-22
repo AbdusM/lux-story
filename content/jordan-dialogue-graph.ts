@@ -491,14 +491,15 @@ export const jordanDialogueNodes: DialogueNode[] = [
     tags: ['job_revelation', 'jordan_arc']
   },
 
-  // ============= JOB REVEAL 7: UX Designer Current (Trust 8) - Part 1 =============
+  // ============= JOB REVEAL 7: UX Designer Current (Immersive Scenario) =============
   {
     nodeId: 'jordan_job_reveal_7',
     speaker: 'Jordan Packard',
     content: [{
-      text: "BJCC career fair, three years ago. Dropped off a passenger, wandered in.\n\nInnovation Depot booth. Health tech startup looking for a UX designer. I didn't know what UX meant.\n\nThen they explained it. Everything clicked.\n\nUser research? Customer service. Visual design? Graphic design. Motivation psych? Personal training.\n\nThey hired me that week.",
-      emotion: 'triumphant',
-      variation_id: 'jordan_job7_1_pt1'
+      text: "BJCC career fair. I stumbled into the Health Tech booth. They were looking for a UX designer. \n\n*She opens her laptop. A chaotic whiteboard app fills the screen.* \n\nLook at this. This is what I do now. It's a user journey for a diabetes management app. \n\n**SYSTEM ACTIVE: USER FLOW MAP** \n**DATA POINT:** User drops off at Day 3. \n**ERROR:** Retention failure. \n\nWhy are they quitting? Look at the data.",
+      emotion: 'focused_professional',
+      variation_id: 'job7_scenario_v1',
+      richEffectContext: 'warning' // UX Analysis Mode
     }],
     requiredState: {
       trust: { min: 8 },
@@ -507,9 +508,44 @@ export const jordanDialogueNodes: DialogueNode[] = [
     },
     choices: [
       {
-        choiceId: 'continue_job7',
-        text: "(Continue)",
-        nextNodeId: 'jordan_job_reveal_7_pt2',
+        choiceId: 'ux_debug_friction',
+        text: "[ACTION] Analyze the 'Day 3' screen. Too many data entry fields?",
+        nextNodeId: 'jordan_ux_insight',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'digitalLiteracy']
+      },
+      {
+        choiceId: 'ux_debug_empathy',
+        text: "[ACTION] Consider the user's state. Day 3 is when the reality of the diagnosis sets in.",
+        nextNodeId: 'jordan_ux_insight',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
+      },
+      {
+        choiceId: 'ux_debug_motivation',
+        text: "[ACTION] Check the reward loop. Are they getting positive feedback?",
+        nextNodeId: 'jordan_ux_insight',
+        pattern: 'building',
+        skills: ['systemsThinking']
+      }
+    ],
+    tags: ['simulation', 'jordan_arc', 'immersive_scenario']
+  },
+
+  {
+    nodeId: 'jordan_ux_insight',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: "Exactly. It wasn't a software bug. It was a *human* bug. \n\n*She taps the screen, highlighting the insight.* \n\nThey needed encouragement, not just data entry. \n\nThat's when I realized: \n\nUser research? That's just customer service listening. \nWireframing? That's graphic design. \nMotivation loops? That's personal training. \n\nI've been training for this job my whole life.",
+      emotion: 'triumphant',
+      variation_id: 'job7_insight_v1',
+      richEffectContext: 'success'
+    }],
+    choices: [
+      {
+        choiceId: 'continue_job7_insight',
+        text: "It all connects.",
+        nextNodeId: 'jordan_job_reveal_7_pt2', // Back to original flow
         pattern: 'patience'
       }
     ]
