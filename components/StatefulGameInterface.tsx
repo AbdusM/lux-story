@@ -196,7 +196,13 @@ export default function StatefulGameInterface() {
       gameState.currentNodeId = currentNode.nodeId
       gameState.currentCharacterId = actualCharacterId
 
-      const character = gameState.characters.get(actualCharacterId)!
+      // Ensure character exists, create if missing
+      let character = gameState.characters.get(actualCharacterId)
+      if (!character) {
+        character = GameStateUtils.createCharacterState(actualCharacterId)
+        gameState.characters.set(actualCharacterId, character)
+      }
+
       const content = DialogueGraphNavigator.selectContent(currentNode, character.conversationHistory)
       const choices = StateConditionEvaluator.evaluateChoices(currentNode, gameState, actualCharacterId).filter(c => c.visible)
 
