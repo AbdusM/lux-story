@@ -422,7 +422,7 @@ export class GrandCentralStateManager {
     try {
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.state))
     } catch (error) {
-      logger.warn('Failed to save state:', error)
+      logger.warn('Failed to save state:', { error })
     }
   }
   

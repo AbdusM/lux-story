@@ -1,4 +1,3 @@
-// @ts-expect-error - Legacy import from removed hooks
 /**
  * LuxStoryContext - Centralized Context System
  *
@@ -8,7 +7,7 @@
 
 import fs from 'fs'
 import path from 'path'
-// import { CharacterRelationships, PlayerPatterns, BirminghamKnowledge } from '../hooks/useSimpleGame'
+// Legacy types from removed useSimpleGame hook - no longer needed
 
 // Core data structure interfaces
 export interface StoryData {
@@ -54,7 +53,7 @@ export interface CharacterProfile {
   id: string
   name: string
   description: string
-  relationships: CharacterRelationships[keyof CharacterRelationships]
+  relationships: Record<string, any> // Legacy CharacterRelationships type
   scenes: string[]
   birminghamConnections: string[]
 }

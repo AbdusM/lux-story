@@ -204,7 +204,7 @@ export function parseBreakthroughMoments(profile: SkillProfile): BreakthroughMom
         characterName,
         quote: meaningfulQuote,
         scene: moment.scene,
-        timestamp: moment.timestamp ?? Date.now() || Date.now()
+        timestamp: (moment.timestamp ?? Date.now())
       })
     }
   })

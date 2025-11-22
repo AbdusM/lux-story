@@ -54,6 +54,7 @@ export interface KeySkillMoment {
   choice: string
   skillsDemonstrated: string[]
   insight: string
+  timestamp?: number
 }
 
 export interface SkillGap {

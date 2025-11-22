@@ -25,9 +25,9 @@ export function SyncStatusIndicator() {
       setShowStatus(true)
       setStatusMessage('Syncing...')
       setStatusColor('text-blue-500')
-    } else if (queueStats.pending > 0) {
+    } else if (queueStats.totalActions > 0) {
       setShowStatus(true)
-      setStatusMessage(`${queueStats.pending} pending`)
+      setStatusMessage(`${queueStats.totalActions} pending`)
       setStatusColor('text-amber-500')
     } else if (lastSyncResult && !lastSyncResult.success) {
       setShowStatus(true)

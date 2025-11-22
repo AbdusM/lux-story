@@ -75,7 +75,7 @@ export function autoChunkDialogue(
   if (sentences.length === 1 && sentences[0].length > cfg.maxChunkLength) {
     const commaSplit = sentences[0].split(/([,;]\s+)/)
     if (commaSplit.length > 1) {
-      sentences = commaSplit.filter(s => s.trim().length > 0)
+      sentences = commaSplit.filter(s => s.trim().length > 0) as RegExpMatchArray
     }
   }
   
@@ -143,7 +143,7 @@ export function autoChunkDialogue(
       }
     }
   }
-  sentences = smartBreakSentences
+  sentences = smartBreakSentences as RegExpMatchArray
 
   // Handle case where text has no sentence-ending punctuation
   if (sentences.length === 0) {
