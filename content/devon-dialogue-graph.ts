@@ -65,32 +65,114 @@ export const devonDialogueNodes: DialogueNode[] = [
     ]
   },
 
-  // ============= EXPLAINING THE SYSTEM =============
+  // ============= EXPLAINING THE SYSTEM (Immersive Scenario) =============
   {
     nodeId: 'devon_explains_system',
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "It's an optimization system. A conversational flowchart. You map inputs - what someone says - to outputs - appropriate responses. Like error handling in code, but for humans.\n\nI'm trying to reduce latency in communication. Make interactions more... efficient.",
-        emotion: 'matter-of-fact',
-        variation_id: 'explains_v1'
+        text: "Don't just look at it. Run it. \n\n*He gestures to the air, and the scribbles seem to align into a glowing blue decision tree floating between you.* \n\n**SYSTEM ACTIVE: CONVERSATIONAL OPTIMIZER v1.4** \n**SUBJECT:** FATHER \n**INPUT:** \"I'm fine.\" \n**STATUS:** PROCESSING...",
+        emotion: 'clinical_simulation',
+        variation_id: 'explains_scenario_v1',
+        richEffectContext: 'warning' // Blueprint/Debug mode
       }
     ],
     choices: [
       {
-        choiceId: 'ask_why_need',
-        text: "Why do you need a system for conversations?",
-        nextNodeId: 'devon_why_system',
-        pattern: 'exploring',
-        skills: ['communication', 'criticalThinking'],
-        consequence: {
-          characterId: 'devon',
-          trustChange: 1
-        }
+        choiceId: 'debug_literal',
+        text: "[DEBUG] Accept input literal: \"Fine\" = No distress. End conversation.",
+        nextNodeId: 'devon_debug_result_fail',
+        pattern: 'analytical',
+        skills: ['systemsThinking'] // Logical but wrong contextually
       },
       {
+        choiceId: 'debug_tone',
+        text: "[DEBUG] Analyze audio spectrum. Detect stress micro-tremors.",
+        nextNodeId: 'devon_debug_step_2', // Deeper analysis
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'digitalLiteracy']
+      },
+      {
+        choiceId: 'debug_emotional',
+        text: "[OVERRIDE] Ignore text. Query emotional state directly.",
+        nextNodeId: 'devon_debug_result_override',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
+      }
+    ],
+    tags: ['simulation', 'devon_arc', 'immersive_scenario']
+  },
+
+  {
+    nodeId: 'devon_debug_step_2',
+    speaker: 'SYSTEM ALERT',
+    content: [
+      {
+        text: "**ANALYSIS COMPLETE.** \n\nPitch flat. Volume low. \n\n**PROBABILITY OF DECEPTION: 88%** \n\nSuggested Output: \"Conversational Subroutine 4B: Gentle Probe.\"",
+        emotion: 'clinical_simulation',
+        variation_id: 'debug_step_2_v1',
+        richEffectContext: 'warning'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'execute_probe',
+        text: "[EXECUTE] Run Subroutine 4B: \"Are you sure you are okay?\"",
+        nextNodeId: 'devon_debug_result_fail', // This is the trap - probing logic vs feeling
+        pattern: 'building',
+        skills: ['systemsThinking']
+      },
+      {
+        choiceId: 'abort_script',
+        text: "[ABORT] The script is cold. Switch to manual.",
+        nextNodeId: 'devon_debug_result_override',
+        pattern: 'helping',
+        skills: ['adaptability']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'devon_debug_result_fail',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "*The blue lines flicker and turn red.* \n\n**ERROR: CONNECTION REFUSED** \n\nHe hung up. \n\n*Devon swipes the air, dismissing the visualization.* \n\nSee? The latency is too high. I optimized the response, but I lost the connection. I need better error handling.",
+        emotion: 'frustrated',
+        variation_id: 'debug_fail_v1',
+        richEffectContext: 'error'
+      }
+    ],
+    choices: [
+      {
         choiceId: 'ask_who_for',
-        text: "Who is this for?",
+        text: "Who are you trying to connect with?",
+        nextNodeId: 'devon_father_hint',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 2
+        }
+      }
+    ]
+  },
+
+  {
+    nodeId: 'devon_debug_result_override',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "*The system flashes: UNKNOWN VARIABLE.* \n\nYou went off script. \n\n*He looks at you, intrigued.* \n\nMy system creates a loop. You broke it. You ignored the data to find the... feeling. \n\nI can't code that.",
+        emotion: 'intrigued',
+        variation_id: 'debug_override_v1',
+        richEffectContext: 'thinking'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'ask_who_for_override',
+        text: "Who is this system for?",
         nextNodeId: 'devon_father_hint',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
