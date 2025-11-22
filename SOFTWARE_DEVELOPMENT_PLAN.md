@@ -104,11 +104,26 @@
 - **Location:** `docs/new_enhancement/Technical Systems Behind RPG Excellence.md`
 
 **Applicable Patterns for Lux Story:**
-1. **Osiris-style Facts Database** → Enhance global flags with timestamp/context tracking
+
+1. **Osiris-style Facts Database (BG3)** → Enhance global flags with timestamp/context tracking
+   - **Reference:** Lines 15-20 (Osiris event-driven consequence management)
+   - **Application:** Phase 2, Sprint 2.3 (Enhanced flag system)
+
 2. **Disco Elysium's Micro-reactivity** → Tag memorable moments with booleans for callbacks
+   - **Reference:** Lines 85-87 (Micro-reactivity at scale - 428 dialogue cards from 4 call signs)
+   - **Application:** Phase 2, Sprint 2.2 (Cross-reference callbacks)
+
 3. **Witcher 3's Delayed Consequences** → Implement "really delayed" consequences for career paths
+   - **Reference:** Lines 162-168 (Delayed consequence system design)
+   - **Application:** Phase 2, Sprint 2.1 (Failure consequence integration)
+
 4. **BG3's Systemic Consistency** → Apply narrative rules universally without special-casing
-5. **Articy:draft Pipeline** → Consider visual dialogue editor for content expansion (Phase 4)
+   - **Reference:** Lines 53 (Systemic design principle - no special cases)
+   - **Application:** Phase 3, Sprint 3.1 (Universal skill demonstration rules)
+
+5. **Articy:draft Pipeline (Disco Elysium)** → Consider visual dialogue editor for content expansion
+   - **Reference:** Lines 79-84 (articy:draft enabling non-technical writers)
+   - **Application:** Phase 4, Sprint 4.3 (Content expansion tooling)
 
 ---
 
@@ -430,7 +445,16 @@ export const useGameStore = create<GameState & GameActions>()(
 
 **Problem:** Failure flags are set but don't meaningfully alter career outcomes.
 
-**Solution:** Integrate failure states into career path gating and ending variations.
+**Solution:** Integrate failure states into career path gating using **Witcher 3's Delayed Consequence Pattern**.
+
+**Reference:** `docs/new_enhancement/Technical Systems Behind RPG Excellence.md` (Lines 162-168)
+> "Delayed and 'really delayed' consequences make the biggest impression on players... bringing back the results of an early in-game choice at a much later point, at the least expected time."
+
+**Implementation Pattern (from Witcher 3):**
+1. Early quest: Execute `FactsAdd('choice_X_made', 1)`
+2. Intermediate content: May check or ignore this fact
+3. Late-game consequence: `if FactsQuerySum('choice_X_made') == 1` → Branch to unique content
+4. **Visibility:** NPCs explicitly reference past decisions, world states visibly change
 
 **Architecture:**
 ```typescript
