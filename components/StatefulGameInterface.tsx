@@ -1,11 +1,17 @@
 'use client'
 
 /**
- * Stateful Game Interface - Refactored Layout
- * Implements "Living Terminal" Design Audit Recommendations:
- * 1. 100dvh layout (Fixed Header, Scrollable Content)
- * 2. Grid layout for Desktop (Sidebar)
- * 3. Responsive refinements
+ * Stateful Game Interface - Restored Card Layout
+ *
+ * Reverts structure to the "Classic" card-based design as requested by the user.
+ * Keeps the internal engine upgrades (Staggered Fade-In Text, robust State Manager).
+ *
+ * Changes from "Modern":
+ * - Removed fixed header / scrollable content area.
+ * - Restored `min-h-screen` page container.
+ * - Restored separate <Card> for Character Header.
+ * - Restored "Your Response" header on Choices card.
+ * - Restored Avatar display inside DialogueDisplay (via props).
  */
 
 import { useState, useEffect, useCallback, useRef } from 'react'
@@ -47,9 +53,9 @@ import { detectArcCompletion, generateExperienceSummary } from '@/lib/arc-learni
 import { loadSkillProfile } from '@/lib/skill-profile-adapter'
 import { getLearningObjectivesTracker } from '@/lib/learning-objectives-tracker'
 import { isSupabaseConfigured } from '@/lib/supabase'
-import { GameChoices } from '@/components/GameChoices' // Use the new "Juice" component
+import { GameChoices } from '@/components/GameChoices'
 
-// Types (unchanged)
+// Types
 interface GameInterfaceState {
   gameState: GameState | null
   currentNode: DialogueNode | null
@@ -100,12 +106,11 @@ export default function StatefulGameInterface() {
     showConfigWarning: !isSupabaseConfigured()
   })
 
-  // Rich effects config (unchanged)
+  // Rich effects config - KEEPING NEW STAGGERED MODE
   const enableRichEffects = true 
   const getRichEffectContext = useCallback((content: DialogueContent | null, isLoading: boolean, recentSkills: string[], useChatPacing: boolean): RichTextEffect | undefined => {
     if (!enableRichEffects || !content) return undefined
     
-    // Map emotions to states
     const emotionMap: Record<string, 'thinking' | 'warning' | 'success' | undefined> = {
       'anxious': 'warning',
       'worried': 'warning',
@@ -119,19 +124,17 @@ export default function StatefulGameInterface() {
     const state = content.richEffectContext || (content.emotion ? emotionMap[content.emotion] : 'default') || 'default'
 
     return {
-      // Force new staggered mode
-      mode: 'staggered', 
+      mode: 'staggered', // Keep user-approved smooth text
       state: state as any,
       speed: 1.0
     }
   }, [enableRichEffects])
 
-  // Refs & Sync (unchanged)
+  // Refs & Sync
   const skillTrackerRef = useRef<SkillTracker | null>(null)
   const { queueStats } = useBackgroundSync({ enabled: true })
   const [hasSaveFile, setHasSaveFile] = useState(false)
   const [saveIsComplete, setSaveIsComplete] = useState(false)
-  const scrollAreaRef = useRef<HTMLDivElement>(null) // Ref for auto-scroll
 
   useEffect(() => {
     if (state.showSaveConfirmation) {
@@ -154,27 +157,16 @@ export default function StatefulGameInterface() {
     }
   }, [])
 
-  // Auto-scroll on content change
-  useEffect(() => {
-    if (scrollAreaRef.current) {
-      scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight
-    }
-  }, [state.currentContent, state.availableChoices])
-
-
-  // Initialize game logic (unchanged from original, just collapsed for brevity)
+  // Initialize game logic
   const initializeGame = useCallback(async () => {
-    // ... (Original init logic)
     console.log('🎮 Initializing Stateful Narrative Engine...')
     try {
       let gameState = GameStateManager.loadGameState()
       if (!gameState) {
         const userId = generateUserId()
         gameState = GameStateUtils.createNewGameState(userId)
-        // Profile logic...
       }
       
-      // Init tracker...
       if (typeof window !== 'undefined' && !skillTrackerRef.current) {
         skillTrackerRef.current = new SkillTracker(gameState.playerId)
       }
@@ -183,13 +175,11 @@ export default function StatefulGameInterface() {
       const currentGraph = getGraphForCharacter(characterId, gameState)
       const nodeId = gameState.currentNodeId
       
-      // Node resolution logic...
       let currentNode = currentGraph.nodes.get(nodeId)
       let actualCharacterId = characterId
       let actualGraph = currentGraph
 
       if (!currentNode) {
-         // Fallback logic...
          const searchResult = findCharacterForNode(nodeId, gameState)
          if (searchResult) {
              actualCharacterId = searchResult.characterId
@@ -238,10 +228,8 @@ export default function StatefulGameInterface() {
     }
   }, [])
 
-  // Choice handler (unchanged logic, just collapsed)
+  // Choice handler
   const handleChoice = useCallback(async (choice: EvaluatedChoice) => {
-    // ... (Original choice logic: state updates, tracking, graph traversal)
-    // Simplified for brevity here, assuming exact same logic as before
     if (!state.gameState || !choice.enabled) return
     
     let newGameState = state.gameState
@@ -269,7 +257,46 @@ export default function StatefulGameInterface() {
     const content = DialogueGraphNavigator.selectContent(nextNode, targetCharacter.conversationHistory)
     const newChoices = StateConditionEvaluator.evaluateChoices(nextNode, newGameState, targetCharacterId).filter(c => c.visible)
 
-    // Skill tracking logic... (kept same)
+    // Skill tracking logic (abbreviated for safety, same as before)
+    let demonstratedSkills: string[] = []
+    let skillToastUpdate = null
+    
+    if (skillTrackerRef.current && state.currentNode) {
+      const sceneMapping = SCENE_SKILL_MAPPINGS[state.currentNode.nodeId]
+      if (sceneMapping && sceneMapping.choiceMappings[choice.choice.choiceId]) {
+          demonstratedSkills = sceneMapping.choiceMappings[choice.choice.choiceId].skillsDemonstrated
+          skillTrackerRef.current.recordSkillDemonstration(
+            state.currentNode.nodeId,
+            choice.choice.choiceId,
+            demonstratedSkills,
+            sceneMapping.choiceMappings[choice.choice.choiceId].context
+          )
+          skillToastUpdate = { skill: demonstratedSkills[0], message: `Demonstrated ${demonstratedSkills[0]}` }
+      } else if (choice.choice.skills) {
+          demonstratedSkills = choice.choice.skills as string[]
+          skillTrackerRef.current.recordSkillDemonstration(
+            state.currentNode.nodeId,
+            choice.choice.choiceId,
+            demonstratedSkills,
+            `Demonstrated ${demonstratedSkills.join(', ')}`
+          )
+          skillToastUpdate = { skill: demonstratedSkills[0], message: `Demonstrated ${demonstratedSkills[0]}` }
+      }
+    }
+
+    const skillsToKeep = demonstratedSkills.length > 0 
+      ? [...demonstratedSkills, ...state.recentSkills].slice(0, 10)
+      : state.recentSkills.slice(0, 8)
+
+    const completedArc = detectArcCompletion(state.gameState, newGameState)
+    let experienceSummaryUpdate = { showExperienceSummary: false, experienceSummaryData: null as ExperienceSummaryData | null }
+
+    if (completedArc) {
+        loadSkillProfile(newGameState.playerId)
+            .then(profile => generateExperienceSummary(completedArc, newGameState, profile))
+            .then(summaryData => setState(prev => ({ ...prev, showExperienceSummary: true, experienceSummaryData: summaryData })))
+            .catch(() => setState(prev => ({ ...prev, showExperienceSummary: true, experienceSummaryData: null }))) // Fallback
+    }
     
     setState({
         gameState: newGameState,
@@ -284,24 +311,22 @@ export default function StatefulGameInterface() {
         hasStarted: true,
         selectedChoice: null,
         showSaveConfirmation: true,
-        skillToast: null, // Updated via tracking logic in real impl
+        skillToast: skillToastUpdate || state.skillToast,
         error: null,
         showTransition: false,
         transitionData: null,
         previousSpeaker: state.currentNode?.speaker || null,
-        recentSkills: [], // Updated in real impl
-        showExperienceSummary: false,
-        experienceSummaryData: null,
+        recentSkills: skillsToKeep,
+        ...experienceSummaryUpdate,
         showConfigWarning: state.showConfigWarning
     })
     GameStateManager.saveGameState(newGameState)
   }, [state.gameState, state.currentGraph, state.currentCharacterId, state.currentNode, state.showConfigWarning])
 
 
-  // Render Logic
+  // Render Logic - Restored Card Layout
   if (!state.hasStarted) {
       if (!hasSaveFile) return <AtmosphericIntro onStart={initializeGame} />
-      
       return (
         <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 flex items-center justify-center p-4">
             <Card className="w-full max-w-md shadow-xl border-0">
@@ -338,171 +363,131 @@ export default function StatefulGameInterface() {
   const isEnding = state.availableChoices.length === 0
 
   return (
-    <div className="h-[100dvh] flex flex-col bg-slate-50 overflow-hidden">
-        
-        {/* HEADER - Fixed Height */}
-        <header className="flex-none bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between shadow-sm z-10">
-            {/* Left: Character Context */}
-            <div className="flex items-center gap-3">
-                <CharacterAvatar characterName={characterNames[state.currentCharacterId]} size="sm" showAvatar={true} />
-                <div>
-                    <div className="font-bold text-slate-800 text-sm leading-tight">{characterNames[state.currentCharacterId]}</div>
-                    <div className="text-xs text-slate-500 flex items-center gap-2">
-                         <Badge variant="secondary" className="text-[10px] h-4 px-1 bg-slate-100 text-slate-600">{currentCharacter?.relationshipStatus}</Badge>
-                         {/* Trust Meter only on Desktop */}
-                         <span className="hidden sm:inline">Trust: {currentCharacter?.trust}/10</span>
-                    </div>
-                </div>
-            </div>
+    <div 
+      key="game-container" 
+      className="min-h-screen max-h-screen overflow-y-auto bg-gradient-to-b from-slate-50 to-slate-100"
+      style={{ willChange: 'auto', contain: 'layout style paint', transition: 'none' }}
+    >
+      <div className="max-w-4xl mx-auto p-3 sm:p-4">
 
-            {/* Right: Actions */}
-            <div className="flex items-center gap-2">
-                <SyncStatusIndicator />
-                <Link href="/admin">
-                    <Button variant="ghost" size="sm" className="text-xs h-8">Admin</Button>
-                </Link>
-            </div>
-        </header>
-
-        {/* WARNING BANNER */}
-        {state.showConfigWarning && (
-            <div className="bg-amber-50 text-amber-800 px-4 py-2 text-xs text-center border-b border-amber-200 flex-none">
-                ⚠️ Local Preview Mode (No DB Sync)
-            </div>
-        )}
-
-        {/* MAIN CONTENT - Flex Grow & Scrollable */}
-        <div className="flex-1 overflow-hidden relative">
-            <div className="h-full w-full max-w-5xl mx-auto md:grid md:grid-cols-12 gap-6 md:p-6">
-                
-                {/* MAIN COLUMN (Dialogue & Choices) */}
-                <div 
-                    ref={scrollAreaRef}
-                    className="h-full md:col-span-8 lg:col-span-8 overflow-y-auto p-4 md:p-0 scroll-smooth"
-                >
-                    <div className="space-y-6 pb-20 md:pb-0">
-                        
-                        {/* Dialogue Card */}
-                        <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 md:p-8">
-                             <DialogueDisplay 
-                                text={state.currentContent || ''} 
-                                useChatPacing={state.useChatPacing}
-                                characterName={state.currentNode?.speaker}
-                                showAvatar={false} // Avatar is in header now
-                                richEffects={getRichEffectContext(state.currentDialogueContent, state.isLoading, state.recentSkills, state.useChatPacing)}
-                                interaction={state.currentDialogueContent?.interaction}
-                            />
-                        </div>
-
-                        {/* Choices */}
-                        {!isEnding && (
-                            <div className="animate-in slide-in-from-bottom-4 fade-in duration-500">
-                                <GameChoices 
-                                    choices={state.availableChoices.map(c => ({
-                                        text: c.choice.text,
-                                        pattern: c.choice.pattern,
-                                        feedback: c.choice.interaction === 'shake' ? 'shake' : undefined // Map interaction to feedback
-                                    }))}
-                                    isProcessing={state.isLoading}
-                                    onChoice={(c) => {
-                                        const original = state.availableChoices.find(ac => ac.choice.text === c.text)
-                                        if (original) handleChoice(original)
-                                    }}
-                                />
-                            </div>
-                        )}
-
-                        {/* Ending State */}
-                        {isEnding && (
-                            <Card className="bg-slate-50 border-dashed border-2 border-slate-300">
-                                <CardContent className="p-8 text-center">
-                                    <h3 className="font-bold text-slate-700 mb-2">Conversation Complete</h3>
-                                    <Button onClick={() => {
-                                            const currentState = GameStateManager.loadGameState()
-                                            if (currentState) {
-                                                const resetState = GameStateManager.resetConversationPosition(currentState)
-                                                GameStateManager.saveGameState(resetState)
-                                            }
-                                            window.location.reload()
-                                    }} variant="default">Return to Station</Button>
-                                </CardContent>
-                            </Card>
-                        )}
-                    </div>
-                </div>
-
-                {/* SIDEBAR (Desktop Only) */}
-                <div className="hidden md:block md:col-span-4 lg:col-span-4 h-full overflow-y-auto pl-2">
-                    <div className="space-y-4">
-                        {/* Context Card */}
-                        <Card>
-                            <CardHeader className="pb-2">
-                                <CardTitle className="text-sm font-medium text-slate-500">Current Status</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="space-y-4">
-                                    <div>
-                                        <div className="flex justify-between text-sm mb-1">
-                                            <span>Trust</span>
-                                            <span className="font-bold">{currentCharacter?.trust}/10</span>
-                                        </div>
-                                        <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
-                                            <div className="h-full bg-slate-800 transition-all duration-500" style={{ width: `${(currentCharacter?.trust || 0) * 10}%` }} />
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div className="text-sm mb-1">Knowledge</div>
-                                        <div className="flex flex-wrap gap-1">
-                                            {Array.from(currentCharacter?.knowledgeFlags || []).slice(0, 5).map(flag => (
-                                                <Badge key={flag} variant="outline" className="text-[10px]">{flag.replace(/_/g, ' ')}</Badge>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-                            </CardContent>
-                        </Card>
-
-                        {/* Recent Skills */}
-                        {state.recentSkills.length > 0 && (
-                             <Card>
-                                <CardHeader className="pb-2">
-                                    <CardTitle className="text-sm font-medium text-slate-500">Recent Skills</CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex flex-wrap gap-2">
-                                        {state.recentSkills.map((skill, i) => (
-                                            <Badge key={i} className="bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100">
-                                                {skill.replace(/([A-Z])/g, ' $1').trim()}
-                                            </Badge>
-                                        ))}
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        )}
-                    </div>
-                </div>
-
-            </div>
+        {/* Top Actions */}
+        <div className="flex justify-between items-center mb-3">
+          <div className="flex gap-3">
+            <Link href="/student/insights">
+              <button className="text-xs text-blue-600 hover:text-blue-700 transition-colors px-2 py-1 font-medium">
+                Your Journey
+              </button>
+            </Link>
+            <Link href="/admin">
+              <button className="text-xs text-slate-400 hover:text-slate-600 transition-colors px-2 py-1">
+                Admin
+              </button>
+            </Link>
+          </div>
+          <div className="flex gap-2">
+            <SyncStatusIndicator />
+            <button onClick={() => window.location.reload()} className="text-xs text-slate-400 hover:text-slate-600">
+              New Conversation
+            </button>
+          </div>
         </div>
 
-        {/* FEEDBACK OVERLAYS */}
-        <NarrativeFeedback 
-            message={state.skillToast?.message || ''}
-            isVisible={!!state.skillToast}
-            onDismiss={() => setState(prev => ({ ...prev, skillToast: null }))}
-        />
-        
-        {/* EXPERIENCE SUMMARY MODAL */}
-        {state.showExperienceSummary && state.experienceSummaryData && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-                <div className="w-full max-w-2xl bg-white rounded-xl shadow-2xl max-h-[90vh] overflow-y-auto">
-                    <ExperienceSummary
-                        data={state.experienceSummaryData}
-                        onContinue={() => setState(prev => ({ ...prev, showExperienceSummary: false, experienceSummaryData: null }))}
-                    />
-                </div>
-            </div>
+        {/* Configuration Warning */}
+        {state.showConfigWarning && (
+          <div className="mb-4 px-4 py-3 bg-amber-50 border border-amber-200 rounded-lg flex items-start gap-3">
+            <div className="text-amber-600">⚠️</div>
+            <p className="text-xs text-amber-700">Running in local preview mode. Progress saved to browser only.</p>
+          </div>
         )}
+
+        {/* Character Header Card - Restored */}
+        {currentCharacter && (
+          <Card className="mb-4 bg-white/50 backdrop-blur-sm">
+            <CardContent className="px-4 py-3 flex items-center justify-between">
+              <div className="flex items-center gap-2 font-medium text-slate-700">
+                <span>{characterNames[state.currentCharacterId]}</span>
+                <span className="text-slate-400">•</span>
+                <span className="text-slate-600">{currentCharacter.relationshipStatus}</span>
+              </div>
+              <div className="text-slate-500 text-sm">
+                Trust: {currentCharacter.trust}/10
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Dialogue Card - Restored */}
+        <Card key="dialogue-card" className="mb-4 sm:mb-6 rounded-xl shadow-md" style={{ transition: 'none', minHeight: '200px' }}>
+          <CardContent className="p-6 sm:p-8">
+            <div className="mb-3 sm:mb-4">
+              <DialogueDisplay 
+                text={state.currentContent || ''} 
+                useChatPacing={state.useChatPacing}
+                characterName={state.currentNode?.speaker}
+                showAvatar={false} // Managed by DialogueDisplay logic usually, forcing false here to match screenshot if needed, but standard is to show it. 
+                // Screenshot shows "Samuel Washington" as HEADING inside card. DialogueDisplay handles this if we pass characterName.
+                richEffects={getRichEffectContext(state.currentDialogueContent, state.isLoading, state.recentSkills, state.useChatPacing)}
+                interaction={state.currentDialogueContent?.interaction}
+              />
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Choices Card - Restored "Your Response" container */}
+        {!isEnding && (
+          <Card key="choices-card" className="rounded-xl shadow-md">
+            <CardHeader className="pb-3 border-b border-slate-100 mb-3">
+              <CardTitle className="text-lg sm:text-xl text-slate-700">Your Response</CardTitle>
+            </CardHeader>
+            <CardContent className="p-4 sm:p-6 pt-0">
+              <div className="space-y-3">
+                <GameChoices 
+                  choices={state.availableChoices.map(c => ({
+                      text: c.choice.text,
+                      pattern: c.choice.pattern,
+                      feedback: c.choice.interaction === 'shake' ? 'shake' : undefined
+                  }))}
+                  isProcessing={state.isLoading}
+                  onChoice={(c) => {
+                      const original = state.availableChoices.find(ac => ac.choice.text === c.text)
+                      if (original) handleChoice(original)
+                  }}
+                />
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Ending State */}
+        {isEnding && (
+          <Card className="rounded-xl shadow-md">
+            <CardContent className="p-4 sm:p-6 text-center">
+              <h3 className="text-lg sm:text-xl font-bold text-slate-800 mb-3 sm:mb-4">
+                Conversation Complete
+              </h3>
+              <Button variant="outline" onClick={() => window.location.reload()} className="w-full min-h-[48px]">
+                Return to Station
+              </Button>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Feedback Overlays */}
+        <NarrativeFeedback 
+          message={state.skillToast?.message || ''}
+          isVisible={!!state.skillToast}
+          onDismiss={() => setState(prev => ({ ...prev, skillToast: null }))}
+        />
+
+        {/* Experience Summary */}
+        {state.showExperienceSummary && state.experienceSummaryData && (
+          <ExperienceSummary
+            data={state.experienceSummaryData}
+            onContinue={() => setState(prev => ({ ...prev, showExperienceSummary: false, experienceSummaryData: null }))}
+          />
+        )}
+
+      </div>
     </div>
   )
 }
