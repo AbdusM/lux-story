@@ -34,7 +34,7 @@ interface EvidenceTimelineProps {
 
 export function EvidenceTimeline({ keySkillMoments, totalDemonstrations }: EvidenceTimelineProps) {
   // Sort moments by timestamp (most recent first)
-  const sortedMoments = [...keySkillMoments].sort((a, b) => b.timestamp - a.timestamp)
+  const sortedMoments = [...keySkillMoments].sort((a, b) => (b.timestamp ?? 0) - (a.timestamp ?? 0))
   
   // Group by scene for better organization
   const momentsByScene = sortedMoments.reduce((acc, moment) => {

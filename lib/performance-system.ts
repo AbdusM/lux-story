@@ -76,7 +76,7 @@ export class PerformanceSystem {
       }
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(toSave))
     } catch (error) {
-      logger.warn('Failed to save performance metrics:', error)
+      logger.warn('Failed to save performance metrics:', { error })
     }
   }
   

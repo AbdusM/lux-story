@@ -1,7 +1,8 @@
-// @ts-expect-error - Test file for removed component
+// Test file for removed GameInterface component - kept for reference
+// @ts-nocheck
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-// import { GameInterface } from '@/components/GameInterface'
+// GameInterface component was removed - these tests are disabled
 
 // Mock the hooks
 vi.mock('@/hooks/useMessageManager', () => ({
@@ -99,7 +100,7 @@ vi.mock('@/lib/grand-central-state', () => ({
   })
 }))
 
-describe('GameInterface', () => {
+describe.skip('GameInterface (DISABLED - component removed)', () => {
   beforeEach(() => {
     vi.clearAllMocks()
   })

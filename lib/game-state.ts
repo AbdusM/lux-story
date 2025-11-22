@@ -71,7 +71,7 @@ export class PatternTracker {
       
       return JSON.parse(saved)
     } catch (error) {
-      logger.warn('Failed to load pattern data:', error)
+      logger.warn('Failed to load pattern data:', { error })
       return null
     }
   }
@@ -86,7 +86,7 @@ export class PatternTracker {
         localStorage.setItem(STORAGE_KEYS.PATTERNS, JSON.stringify(this.patterns))
       }
     } catch (error) {
-      logger.warn('Failed to save pattern data:', error)
+      logger.warn('Failed to save pattern data:', { error })
     }
   }
 
@@ -220,7 +220,7 @@ export class GameStateManager {
         meditationCount: parsed.meditationCount || 0
       }
     } catch (error) {
-      logger.warn('Failed to load game state:', error)
+      logger.warn('Failed to load game state:', { error })
       return null
     }
   }
@@ -235,7 +235,7 @@ export class GameStateManager {
         localStorage.setItem(STORAGE_KEYS.GAME_STATE, JSON.stringify(this.state))
       }
     } catch (error) {
-      logger.warn('Failed to save game state:', error)
+      logger.warn('Failed to save game state:', { error })
     }
   }
 

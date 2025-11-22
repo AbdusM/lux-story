@@ -49,11 +49,12 @@ function sanitize(data: unknown): unknown {
  */
 function formatLog(level: LogLevel, message: string, context?: LogContext) {
   const timestamp = new Date().toISOString()
+  const sanitized = sanitize(context || {})
   const logData = {
     level,
     message,
     timestamp,
-    ...sanitize(context || {}),
+    ...(sanitized && typeof sanitized === 'object' ? sanitized : {}),
   }
 
   if (process.env.NODE_ENV === 'production') {

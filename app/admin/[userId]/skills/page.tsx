@@ -1,11 +1,8 @@
 'use client'
 
 // TODO: This page needs to fetch profile data and pass to components
-// @ts-expect-error - Placeholder page, needs implementation
 import { SkillsAnalysisCard } from '@/components/admin/SkillsAnalysisCard'
-// @ts-expect-error - Placeholder page, needs implementation
 import { SkillGapsAnalysis } from '@/components/admin/SkillGapsAnalysis'
-// @ts-expect-error - Placeholder page, needs implementation
 import { SkillProgressionChart } from '@/components/admin/SkillProgressionChart'
 import { PedagogicalImpactCard } from '@/components/admin/PedagogicalImpactCard'
 

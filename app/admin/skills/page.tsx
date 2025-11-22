@@ -131,7 +131,7 @@ function StudentDetailContent() {
         </Card>
 
         {/* Skills Analysis */}
-          // @ts-expect-error - Type conversion needed
+        {/* @ts-expect-error - Type conversion needed */}
         <SkillsAnalysisCard profile={insights} />
 
         {/* Skill Gaps Analysis - NEW FOCUS */}

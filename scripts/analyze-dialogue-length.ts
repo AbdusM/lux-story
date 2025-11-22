@@ -1,4 +1,3 @@
-// @ts-expect-error - ES2018 regex flag, configure tsconfig if needed
 /**
  * Dialogue Length Analyzer
  * 
@@ -47,6 +46,7 @@ function analyzeDialogueFile(filePath: string): LongNode[] {
     if (textLength >= LONG) {
       // Find nodeId by searching backwards from match position
       const beforeMatch = content.substring(0, match.index)
+      // @ts-expect-error - ES2018 dotAll flag (/s) is required here
       const nodeIdMatch = beforeMatch.match(/nodeId:\s*'([^']+)'(?!.*nodeId:)/s)
       const lineNumber = beforeMatch.split('\n').length
       
