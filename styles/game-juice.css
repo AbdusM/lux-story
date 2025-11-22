@@ -1,39 +1,25 @@
 /* Ultra-light Game Juice: CSS transforms instead of complex animation library */
 
-/* Button Juice - Reduced to prevent flashing */
+/* Button Juice - Minimal, modern */
 button {
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-  /* Prevent layout shifts */
-  will-change: transform, box-shadow;
+  transition: opacity 0.15s ease;
+  /* Remove will-change - only apply during animation */
 }
 
 button:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  opacity: 0.8;
 }
 
 button:active {
-  transform: translateY(0px);
+  opacity: 0.7;
   transition-duration: 0.05s;
 }
 
-/* Card Juice - Reduced to prevent flashing during updates */
+/* Card Juice - Removed for modern, minimal design */
 [class*="card"],
 [class*="Card"] {
-  /* Prevent any transitions during content updates - only on hover */
+  /* No transitions - clean, stable rendering */
   transition: none !important;
-  /* Prevent filter/opacity changes that cause flashing */
-  will-change: auto;
-  /* Ensure stable rendering */
-  contain: layout style paint;
-}
-
-[class*="card"]:hover,
-[class*="Card"]:hover {
-  /* Only apply transitions on hover */
-  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
 
 /* Progress Bar Juice */
@@ -57,14 +43,13 @@ button:active {
   }
 }
 
-/* Choice Hover Juice */
+/* Choice Hover Juice - Minimal */
 .choice-button {
-  transition: all 0.2s ease;
+  transition: opacity 0.15s ease;
 }
 
 .choice-button:hover:not(:disabled) {
-  transform: scale(1.02);
-  filter: brightness(1.1);
+  opacity: 0.85;
 }
 
 /* Companion Bounce */

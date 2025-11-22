@@ -19,12 +19,12 @@ interface GameChoicesProps {
   onChoice: (choice: Choice) => void
 }
 
-// Animation variants for juice
+// Animation variants - minimal, modern
 const buttonVariants = {
   initial: { opacity: 0 },
   animate: { opacity: 1 },
-  tap: { scale: 0.98 },
-  hover: { scale: 1.01, boxShadow: "0px 4px 12px rgba(0,0,0,0.1)" }
+  tap: { opacity: 0.7 },
+  hover: { opacity: 0.8 }
 }
 
 const shakeVariant = {
@@ -75,12 +75,12 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing }: {
         disabled={isProcessing}
         variant="ghost"
         className={`
-          w-full min-h-[52px] px-5 py-3.5
+          w-full min-h-[44px] px-4 py-2.5
           text-[15px] font-normal text-slate-700 text-left whitespace-normal leading-relaxed
-          border border-slate-200 bg-white
-          hover:bg-slate-50 hover:border-slate-300 hover:shadow-sm
-          transition-all duration-150 ease-out
-          rounded-lg
+          border-[0.5px] border-slate-200 bg-white
+          hover:bg-slate-50/50
+          transition-colors duration-150 ease-out
+          rounded-md
           ${choice.feedback === 'shake' ? 'border-red-300 bg-red-50/80' : ''}
           ${choice.feedback === 'glow' ? 'border-blue-300 bg-blue-50/80' : ''}
         `}
@@ -138,12 +138,12 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice }: GameChoice
         {nonEmptyGroups.map(([title, groupChoices]) => (
           <div key={title} className="space-y-3">
             {title !== 'Other' && (
-              <div className="flex items-center gap-2 mb-2">
-                <div className="h-px flex-1 bg-slate-200"></div>
-                <span className="text-xs font-medium text-slate-500 px-2">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="h-px flex-1 bg-slate-100"></div>
+                <span className="text-xs font-medium text-slate-400 px-2">
                   {title}
                 </span>
-                <div className="h-px flex-1 bg-slate-200"></div>
+                <div className="h-px flex-1 bg-slate-100"></div>
               </div>
             )}
             <div className={`grid gap-3 ${groupChoices.length > 1 ? 'md:grid-cols-2' : 'grid-cols-1'}`}>
