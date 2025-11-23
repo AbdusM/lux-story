@@ -10,7 +10,7 @@ interface ActionSectionProps {
   adminViewMode: 'family' | 'research'
 }
 
-export function ActionSection({ userId, profile, adminViewMode }: ActionSectionProps) {
+export function ActionSection({ userId: _userId, profile, adminViewMode }: ActionSectionProps) {
   const user = profile // Alias for consistency with original code
 
   return (
