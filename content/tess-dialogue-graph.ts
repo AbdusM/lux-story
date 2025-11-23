@@ -502,14 +502,613 @@ If you see Samuel, tell him... tell him I'm finally going for a walk.`,
         text: "Return to Samuel",
         nextNodeId: samuelEntryPoints.TESS_REFLECTION_GATEWAY,
         pattern: 'exploring'
+      },
+      {
+        choiceId: 'tess_ask_about_students',
+        text: "How's the program going with actual students?",
+        nextNodeId: 'tess_phase2_entry',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication'],
+        visibleCondition: {
+          hasGlobalFlags: ['tess_arc_complete']
+        }
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'tess',
+        addKnowledgeFlags: ['completed_arc'],
+        addGlobalFlags: ['tess_arc_complete']
       }
     ],
     tags: ['transition', 'tess_arc']
+  },
+
+  // ============= PHASE 2: FIRST STUDENT CRISIS + LEADERSHIP TEST =============
+
+  {
+    nodeId: 'tess_phase2_entry',
+    speaker: 'Tess',
+    content: [{
+      text: `*Six weeks later. Tess is in the Waiting Room again, but this time she's surrounded by incident reports, parental consent forms, and a laptop showing a wilderness trail map.*
+
+*She looks exhausted but energized.*
+
+I have eight students on the Appalachian Trail right now. Day 3 of a 5-day section hike.
+
+*She taps a form.*
+
+And I have three incident reports, twelve parent phone calls, and a school board meeting scheduled for Monday.
+
+*She looks up at you.*
+
+Welcome to education reform in practice.`,
+      emotion: 'exhausted_energized',
+      variation_id: 'p2_entry_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'p2_incident_reports',
+        text: "Incident reports? Is everyone safe?",
+        nextNodeId: 'tess_p2_crisis_reveal',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
+      },
+      {
+        choiceId: 'p2_parent_calls',
+        text: "Twelve parent calls doesn't sound good.",
+        nextNodeId: 'tess_p2_crisis_reveal',
+        pattern: 'analytical',
+        skills: ['criticalThinking']
+      }
+    ],
+    requiredState: {
+      hasGlobalFlags: ['tess_arc_complete']
+    },
+    tags: ['phase2', 'tess_arc', 'crisis']
+  },
+
+  {
+    nodeId: 'tess_p2_crisis_reveal',
+    speaker: 'Tess',
+    content: [{
+      text: `DeShawn—16, from Birmingham's inner city, first time camping—had a panic attack on Day 2.
+
+Complete darkness. No streetlights. Sounds he'd never heard. He couldn't breathe. Thought he was dying.
+
+*She rubs her eyes.*
+
+My wilderness guide talked him down. He's physically safe. But now two other students want to quit. And the parents...
+
+The parents are threatening to pull their kids and report me to the school board for "reckless endangerment."`,
+      emotion: 'worried',
+      variation_id: 'crisis_reveal_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'p2_deshawn_focus',
+        text: "Is DeShawn okay now?",
+        nextNodeId: 'tess_p2_ripple_effect',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'empathy']
+      },
+      {
+        choiceId: 'p2_program_risk',
+        text: "This could shut down your whole program.",
+        nextNodeId: 'tess_p2_ripple_effect',
+        pattern: 'analytical',
+        skills: ['riskManagement', 'strategicThinking']
+      }
+    ],
+    tags: ['phase2', 'tess_arc', 'crisis']
+  },
+
+  {
+    nodeId: 'tess_p2_ripple_effect',
+    speaker: 'Tess',
+    content: [{
+      text: `DeShawn is physically fine. But emotionally? He's humiliated. Thinks he "failed" the test.
+
+*She shows you her phone—messages from other students.*
+
+Riley: "I thought this would be fun. I want to come home."
+Jamie: Silent, but Jamie's parents called twice saying it's "too risky."
+
+*She sets down the phone.*
+
+This is exactly what the grant committee warned me about. "What happens when theory meets real students?"
+
+I'm about to find out if I'm a visionary or just reckless.`,
+      emotion: 'conflicted',
+      variation_id: 'ripple_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'p2_talk_to_deshawn',
+        text: "You need to talk to DeShawn first.",
+        nextNodeId: 'tess_p2_deshawn_conversation',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'leadership']
+      },
+      {
+        choiceId: 'p2_assess_program',
+        text: "Step back. Assess if the program design needs changing.",
+        nextNodeId: 'tess_p2_parent_calls',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'adaptability']
+      }
+    ],
+    tags: ['phase2', 'tess_arc', 'decision_point']
+  },
+
+  {
+    nodeId: 'tess_p2_deshawn_conversation',
+    speaker: 'Tess',
+    content: [{
+      text: `*She pulls up a video call. DeShawn appears—sitting in a tent, eyes red.*
+
+**DeShawn**: "Ms. Tess, I'm sorry. I ruined everything."
+
+*Tess's voice softens.*
+
+**Tess**: "DeShawn, you didn't ruin anything. You had a normal reaction to an extreme environment."
+
+**DeShawn**: "But everyone else is fine. I'm the weak one."
+
+*She looks at you—what do I say?*`,
+      emotion: 'compassionate',
+      variation_id: 'deshawn_talk_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'p2_deshawn_courage',
+        text: "Tell him: 'Facing fear is the actual test. You're still here.'",
+        nextNodeId: 'tess_p2_deshawn_decision',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'encouragement'],
+        consequence: {
+          characterId: 'tess',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'p2_deshawn_alternative',
+        text: "Offer him an alternative assignment—wilderness isn't for everyone.",
+        nextNodeId: 'tess_p2_deshawn_decision',
+        pattern: 'analytical',
+        skills: ['adaptability', 'pragmatism']
+      },
+      {
+        choiceId: 'p2_deshawn_choice',
+        text: "Ask him: 'Do you want to finish, or do you want to come home?'",
+        nextNodeId: 'tess_p2_deshawn_decision',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'respect']
+      }
+    ],
+    tags: ['phase2', 'tess_arc', 'mentorship']
+  },
+
+  {
+    nodeId: 'tess_p2_deshawn_decision',
+    speaker: 'Tess',
+    content: [{
+      text: `*DeShawn thinks for a long moment.*
+
+**DeShawn**: "I... I want to finish. But I need help. I need someone to tell me it's okay to be scared."
+
+*Tess nods.*
+
+**Tess**: "Okay. The guide will check in with you every hour. And when you finish those last two days, you're going to know something about yourself nobody can teach in a classroom."
+
+*DeShawn nods. The call ends.*
+
+*Tess exhales.*
+
+One down. Now the parents.`,
+      emotion: 'relieved',
+      variation_id: 'deshawn_commits_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'p2_parent_strategy',
+        text: "How are you going to handle the parent calls?",
+        nextNodeId: 'tess_p2_parent_strategy',
+        pattern: 'analytical',
+        skills: ['communication', 'strategicThinking']
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'tess',
+        addKnowledgeFlags: ['deshawn_continues']
+      }
+    ],
+    tags: ['phase2', 'tess_arc', 'resolution']
+  },
+
+  {
+    nodeId: 'tess_p2_parent_calls',
+    speaker: 'Tess',
+    content: [{
+      text: `*She shows you a list of voicemails.*
+
+**Riley's Mom**: "This is too much. Bring my child home NOW."
+
+**Jamie's Dad**: "We signed up for outdoor education, not survival training."
+
+**Another Parent**: "My lawyer says this violates duty of care."
+
+*Tess sets down the phone.*
+
+I have two options. I can defend the rigor—"This is exactly what wilderness education IS."
+
+Or I can modify the program—make it gentler, safer, more palatable.
+
+But if I cave, am I still teaching resilience? Or am I just babysitting in the woods?`,
+      emotion: 'frustrated',
+      variation_id: 'parent_calls_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'p2_defend_rigor',
+        text: "Defend the rigor. They signed up for a crucible.",
+        nextNodeId: 'tess_p2_parent_strategy',
+        pattern: 'building',
+        skills: ['courage', 'leadership'],
+        consequence: {
+          characterId: 'tess',
+          addKnowledgeFlags: ['defended_rigor']
+        }
+      },
+      {
+        choiceId: 'p2_two_track',
+        text: "Create two tracks—intense and modified. Let families choose.",
+        nextNodeId: 'tess_p2_program_adaptation',
+        pattern: 'analytical',
+        skills: ['adaptability', 'strategicThinking'],
+        consequence: {
+          characterId: 'tess',
+          addKnowledgeFlags: ['two_track_approach']
+        }
+      },
+      {
+        choiceId: 'p2_acknowledge_concerns',
+        text: "Acknowledge their concerns. Add more support, not less challenge.",
+        nextNodeId: 'tess_p2_program_adaptation',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication']
+      }
+    ],
+    tags: ['phase2', 'tess_arc', 'leadership']
+  },
+
+  {
+    nodeId: 'tess_p2_parent_strategy',
+    speaker: 'Tess',
+    content: [{
+      text: `I'm going to call each parent personally.
+
+Not defensive. Not apologetic. Educational.
+
+"Here's what happened. Here's why it matters. Here's what we're doing to support your child."
+
+*She pulls up her notes.*
+
+The truth is, DeShawn's panic attack IS the curriculum. The question is whether they can see that.`,
+      emotion: 'determined',
+      variation_id: 'strategy_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'p2_transparency',
+        text: "Be completely transparent. Share the incident report.",
+        nextNodeId: 'tess_p2_board_prep',
+        pattern: 'analytical',
+        skills: ['integrity', 'communication']
+      },
+      {
+        choiceId: 'p2_educational_frame',
+        text: "Frame it educationally. This is learning, not failure.",
+        nextNodeId: 'tess_p2_board_prep',
+        pattern: 'building',
+        skills: ['pedagogy', 'visionaryThinking']
+      }
+    ],
+    tags: ['phase2', 'tess_arc', 'communication']
+  },
+
+  {
+    nodeId: 'tess_p2_program_adaptation',
+    speaker: 'Tess',
+    content: [{
+      text: `Maybe I was naive thinking everyone would thrive in the same format.
+
+What if I offer scaling?
+
+**Level 1**: Supported wilderness (guide checks in frequently, shorter distances)
+**Level 2**: Standard immersion (what we're doing now)
+**Level 3**: Advanced challenge (for students who want more)
+
+Students choose their path. Parents feel heard. Program integrity stays intact.
+
+*She sketches it out.*
+
+Is this compromise, or is this good design?`,
+      emotion: 'thoughtful',
+      variation_id: 'adaptation_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'p2_good_design',
+        text: "It's good design. Differentiation is core pedagogy.",
+        nextNodeId: 'tess_p2_board_prep',
+        pattern: 'building',
+        skills: ['pedagogy', 'systemsThinking'],
+        consequence: {
+          characterId: 'tess',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'p2_dilution',
+        text: "It's dilution. The rigor is the point.",
+        nextNodeId: 'tess_p2_board_prep',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'integrity']
+      }
+    ],
+    tags: ['phase2', 'tess_arc', 'innovation']
+  },
+
+  {
+    nodeId: 'tess_p2_board_prep',
+    speaker: 'Tess',
+    content: [{
+      text: `The school board meeting is in 48 hours.
+
+They're going to ask:
+- "Is this program safe?"
+- "Are you qualified to run this?"
+- "What's your liability plan?"
+- "Why is this better than AP classes?"
+
+*She looks at you.*
+
+I can go in with data—completion rates, skill assessments, student testimonials.
+
+Or I can go in with vision—"Education is about becoming, not just learning."
+
+Or I can go in with both and hope I don't sound like a TED Talk.`,
+      emotion: 'nervous',
+      variation_id: 'board_prep_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'p2_data_driven',
+        text: "Lead with data. Numbers convince skeptics.",
+        nextNodeId: 'tess_p2_board_meeting',
+        pattern: 'analytical',
+        skills: ['informationLiteracy', 'strategicThinking']
+      },
+      {
+        choiceId: 'p2_vision_driven',
+        text: "Lead with vision. They need to see what you see.",
+        nextNodeId: 'tess_p2_board_meeting',
+        pattern: 'building',
+        skills: ['visionaryThinking', 'communication']
+      },
+      {
+        choiceId: 'p2_both',
+        text: "Both. Data proves it works, vision explains why it matters.",
+        nextNodeId: 'tess_p2_board_meeting',
+        pattern: 'helping',
+        skills: ['communication', 'leadership'],
+        consequence: {
+          characterId: 'tess',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['phase2', 'tess_arc', 'preparation']
+  },
+
+  {
+    nodeId: 'tess_p2_board_meeting',
+    speaker: 'Tess',
+    content: [{
+      text: `*Monday. Tess is standing in front of the school board—five skeptical faces.*
+
+**Board Member 1**: "Ms. Rodriguez, we've received complaints about student safety."
+
+*Tess takes a breath.*
+
+**Tess**: "You have. And I want to address them directly."
+
+*She pulls up her presentation.*
+
+**Tess**: "DeShawn had a panic attack. Not because the program is unsafe, but because it's working. He encountered real fear and chose to continue. That's resilience."
+
+**Board Member 2**: "So you're saying panic attacks are... good?"
+
+*Tess doesn't flinch.*
+
+How do I answer this?`,
+      emotion: 'focused',
+      variation_id: 'board_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'p2_reframe_fear',
+        text: "Reframe: 'Learning to manage fear is the skill. The woods are just the classroom.'",
+        nextNodeId: 'tess_p2_leadership_moment',
+        pattern: 'building',
+        skills: ['communication', 'pedagogy']
+      },
+      {
+        choiceId: 'p2_acknowledge_adapt',
+        text: "Acknowledge and adapt: 'You're right. I'm adding support tiers.'",
+        nextNodeId: 'tess_p2_leadership_moment',
+        pattern: 'analytical',
+        skills: ['adaptability', 'humility']
+      }
+    ],
+    tags: ['phase2', 'tess_arc', 'climax']
+  },
+
+  {
+    nodeId: 'tess_p2_leadership_moment',
+    speaker: 'Tess',
+    content: [{
+      text: `*The board members exchange glances.*
+
+**Board Member 3**: "What you're describing sounds... expensive. And risky. And unproven."
+
+*Tess nods.*
+
+**Tess**: "It is all of those things. It's also the future of education."
+
+*She leans forward.*
+
+**Tess**: "We can keep doing what we've always done—safe, measurable, forgettable. Or we can teach students to face the unknown."
+
+**Board Chair**: "And if more students quit?"
+
+*Tess meets their eyes.*
+
+**Tess**: "Then I'll have learned something. And I'll iterate. That's what builders do."
+
+*Silence.*
+
+**Board Chair**: "Continue the program. But submit monthly reports."
+
+*Tess exhales.*`,
+      emotion: 'triumphant',
+      variation_id: 'leadership_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'p2_resolution',
+        text: "You stood your ground.",
+        nextNodeId: 'tess_p2_resolution',
+        pattern: 'building',
+        skills: ['leadership']
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'tess',
+        trustChange: 2,
+        addKnowledgeFlags: ['board_approved']
+      }
+    ],
+    tags: ['phase2', 'tess_arc', 'victory']
+  },
+
+  {
+    nodeId: 'tess_p2_resolution',
+    speaker: 'Tess',
+    content: [{
+      text: `*Three days later. The students return from the trail.*
+
+*DeShawn steps off the bus. Muddy. Exhausted. Grinning.*
+
+**DeShawn**: "Ms. Tess, I did it. All five days."
+
+*Riley quit on Day 4. Jamie finished but their parents pulled them from the program.*
+
+*Tess watches DeShawn hug his mom.*
+
+Not everyone finished. Not everyone stayed.
+
+But the ones who did? They know something now.
+
+*She turns to you.*
+
+This is what founding looks like. It's messy. It's incomplete. And it's real.`,
+      emotion: 'fulfilled',
+      variation_id: 'resolution_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'p2_deshawn_outcome',
+        text: "DeShawn's transformation is the proof.",
+        nextNodeId: 'tess_p2_reflection',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
+      },
+      {
+        choiceId: 'p2_iteration',
+        text: "What are you changing for the next cohort?",
+        nextNodeId: 'tess_p2_reflection',
+        pattern: 'building',
+        skills: ['adaptability', 'learningAgility']
+      }
+    ],
+    tags: ['phase2', 'tess_arc', 'resolution']
+  },
+
+  {
+    nodeId: 'tess_p2_reflection',
+    speaker: 'Tess',
+    content: [{
+      text: `I'm adding three changes:
+
+1. Pre-program "exposure trips"—let students test the woods before committing
+2. Tiered difficulty paths—meet students where they are
+3. Parent education sessions—help them understand what we're doing
+
+*She smiles.*
+
+A month ago, I thought founding a school was about having the perfect curriculum.
+
+Now I know it's about leading through uncertainty. Every crisis is data. Every dropout is a lesson.
+
+I'm not a visionary. I'm a builder who's willing to break things to make them better.`,
+      emotion: 'wise',
+      variation_id: 'reflection_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'p2_complete',
+        text: "You're becoming the leader your students need.",
+        nextNodeId: 'tess_p2_complete',
+        pattern: 'helping',
+        skills: ['encouragement', 'leadership']
+      }
+    ],
+    tags: ['phase2', 'tess_arc', 'growth']
+  },
+
+  {
+    nodeId: 'tess_p2_complete',
+    speaker: 'Tess',
+    content: [{
+      text: `Thank you. For being here when it got hard.
+
+*She picks up her pack.*
+
+I have a new cohort starting next week. Fifteen students this time. Word is spreading.
+
+If you see Samuel, tell him... tell him I'm learning to lead by walking through the fire.`,
+      emotion: 'grateful',
+      variation_id: 'complete_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'return_to_samuel_tess_p2',
+        text: "Return to Samuel",
+        nextNodeId: samuelEntryPoints.TESS_REFLECTION_GATEWAY,
+        pattern: 'exploring'
+      }
+    ],
+    tags: ['phase2', 'tess_arc', 'completion']
   }
 ]
 
 export const tessEntryPoints = {
-  INTRODUCTION: 'tess_introduction'
+  INTRODUCTION: 'tess_introduction',
+  PHASE2_ENTRY: 'tess_phase2_entry'
 } as const
 
 export const tessDialogueGraph: DialogueGraph = {
