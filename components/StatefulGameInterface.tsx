@@ -321,7 +321,7 @@ export default function StatefulGameInterface() {
         showConfigWarning: state.showConfigWarning
     })
     GameStateManager.saveGameState(newGameState)
-  }, [state.gameState, state.currentGraph, state.currentCharacterId, state.currentNode, state.showConfigWarning])
+  }, [state.gameState, state.currentNode, state.showConfigWarning, state.recentSkills, state.skillToast])
 
 
   // Render Logic - Restored Card Layout
