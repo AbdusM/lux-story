@@ -19,16 +19,16 @@ export const marcusDialogueNodes: DialogueNode[] = [
     speaker: 'Marcus',
     content: [
       {
-        text: `*He's staring at his hands, holding them perfectly still in the air. His breathing is shallow, controlled.*
+        text: `Seventy-two beats. Flow rate stable.
 
-Seventy-two beats per minute. Flow rate 4.5 liters. Pressure stable.
-
-*He blinks, looking at you.*
-
-Don't bump the table. Please.`,
+...Don't bump the table.`,
         emotion: 'focused_tense',
+        interaction: 'shake',
         variation_id: 'marcus_intro_v1',
-        richEffectContext: 'warning' // High tension
+        richEffectContext: 'warning', // High tension
+
+        // TODO: [SFX] Faint heart monitor beeping in background
+        // TODO: [VFX] Marcus's hands glow/shimmer when speaking (medical visualization)
       }
     ],
     choices: [
@@ -72,13 +72,17 @@ Don't bump the table. Please.`,
     speaker: 'Marcus',
     content: [
       {
-        text: `I'm holding a life. Well, the machine that holds the life.
+        text: `I'm holding a life. The machine that holds the life.
 
-ECMO. Extracorporeal Membrane Oxygenation. It pulls blood out, oxygenates it, warms it, and pumps it back in.
+ECMO. Pulls blood out, adds oxygen, pumps it back in.
 
-For the last twelve hours, I was the only thing keeping a 40-year-old father alive while his heart waited for a transplant.`,
-        emotion: 'exhausted_proud',
-        variation_id: 'visualizes_machine_v1'
+Twelve hours. Just me and the machine. Keeping a father alive.`,
+        emotion: 'exhausted',
+        interaction: 'small',
+        variation_id: 'visualizes_machine_v1',
+
+        // TODO: [SFX] Subtle mechanical hum (ECMO machine sound)
+        // TODO: [VFX] Soft glow effect on "ECMO" - educational highlight
       }
     ],
     choices: [
@@ -104,13 +108,19 @@ For the last twelve hours, I was the only thing keeping a 40-year-old father ali
     speaker: 'Marcus',
     content: [
       {
-        text: `Me and the machine. We're a loop. I watch the flow dynamics, the hemolysis numbers, the clot risks.
+        text: `Me and the machine. We're a loop.
 
-People think nursing is just... comforting. And it is. But in the CVICU (Cardiovascular Intensive Care Unit), it's engineering. Fluid dynamics. Pressure regulation.
+Flow dynamics. Hemolysis. Clot risks.
 
-If I calculate the heparin drip wrong, he bleeds out. If I miss a clot, he strokes out.`,
+CVICU isn't just comfort. It's engineering.
+
+Wrong heparin calc? He bleeds. Missed clot? Stroke.`,
         emotion: 'proud',
-        variation_id: 'technical_pride_v1'
+        interaction: 'nod',
+        variation_id: 'technical_pride_v1',
+
+        // TODO: [SFX] Soft beeping (medical equipment ambience)
+        // TODO: [VFX] Technical terms glow subtly for educational emphasis
       }
     ],
     choices: [
@@ -141,17 +151,16 @@ If I calculate the heparin drip wrong, he bleeds out. If I miss a clot, he strok
     speaker: 'Marcus',
     content: [
       {
-        text: `But the real enemy? Air.
-
-One bubble. One tiny pocket of air in the return line. If it hits his brain? Stroke. If it hits his heart? Vapor lock. Death.
-
-Instant.
-
-Tonight... the alarm screamed. 'AIR IN LINE.'`,
-        emotion: 'tense',
+        text: `The real enemy? Air.|One bubble in the line.|Brain? Stroke. Heart? Death.|Instant.|Tonight... the alarm screamed.|'AIR IN LINE.'`,
+        emotion: 'critical',
+        interaction: 'shake',
         variation_id: 'the_bubble_v1',
         richEffectContext: 'warning',
-        useChatPacing: true
+        useChatPacing: true,
+
+        // TODO: [SFX] Sharp alarm sound on "AIR IN LINE"
+        // TODO: [VFX] Screen flash red on final line
+        // TODO: [SFX] Urgent beeping escalates throughout
       }
     ],
     requiredState: {
