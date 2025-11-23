@@ -154,7 +154,7 @@ export function RichTextRenderer({
       // Start revealing immediately
       revealNextChunk()
     }
-  }, [text, mode, chunks, onComplete])
+  }, [text, mode, chunks, onComplete, shouldReduceMotion, clickToComplete])
   
   // Click to skip
   const handleSkip = () => {
