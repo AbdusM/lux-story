@@ -5,8 +5,8 @@
  * and are available in the admin dashboard. No more piecemeal tracking.
  */
 
-import { queueSkillSummarySync, queueCareerExplorationSync } from './sync-queue'
-import { trackUserChoice, getSimpleAnalytics } from './simple-career-analytics'
+import { queueCareerExplorationSync } from './sync-queue'
+import { getSimpleAnalytics } from './simple-career-analytics'
 import { SkillTracker } from './skill-tracker'
 import { getPerformanceSystem } from './performance-system'
 import { ensureUserProfile } from './ensure-user-profile'
@@ -514,7 +514,7 @@ export class ComprehensiveUserTracker {
   /**
    * Get scene choices relevant to a career - REAL DATA
    */
-  private getSceneChoicesForCareer(careerName: string): string[] {
+  private getSceneChoicesForCareer(_careerName: string): string[] {
     // Re-use logic from skill demonstrations but focus on the choice text itself
     // and broaden to any scene that demonstrated relevant skills
     // Simple heuristic: Get choices that demonstrated "Critical Thinking" or "Problem Solving"
@@ -577,7 +577,7 @@ export class ComprehensiveUserTracker {
   /**
    * Track in career analytics
    */
-  private async trackInCareerAnalytics(choice: any): Promise<void> {
+  private async trackInCareerAnalytics(_choice: any): Promise<void> {
     // This is already handled by trackUserChoice
   }
 

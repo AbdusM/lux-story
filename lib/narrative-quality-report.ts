@@ -5,7 +5,7 @@
  */
 
 import { getNarrativeAnalysisSystem, StoryArc, CharacterJourney, NarrativeConsistency, PacingAnalysis } from './narrative-analysis-system'
-import { getHookIntegrationSystem, NarrativeHook, HookDeliveryAssessment, NaturalIntegration } from './hook-integration-system'
+import { getHookIntegrationSystem, HookDeliveryAssessment, NaturalIntegration } from './hook-integration-system'
 
 export interface NarrativeQualityReport {
   overallScore: number
@@ -66,8 +66,8 @@ export class NarrativeQualityReporter {
 
   calculateQualityMetrics(): QualityMetrics {
     const completionStatus = this.narrativeSystem.getNarrativeCompletionStatus()
-    const hooksNeedingAttention = this.hookSystem.getHooksNeedingAttention()
-    const redFlagsSummary = this.hookSystem.getRedFlagsSummary()
+    const _hooksNeedingAttention = this.hookSystem.getHooksNeedingAttention()
+    const _redFlagsSummary = this.hookSystem.getRedFlagsSummary()
 
     return {
       narrativeCompletion: completionStatus.overallCompletion,

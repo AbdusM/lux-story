@@ -451,7 +451,7 @@ export class EngagementQualityAnalyzer {
    */
   static generateDetailedReport(gameState: GameState): string {
     const metrics = this.analyze(gameState)
-    const checks = this.runBestPracticeChecks(gameState)
+    const _checks = this.runBestPracticeChecks(gameState)
     
     let report = `
 ╔══════════════════════════════════════════════════════╗

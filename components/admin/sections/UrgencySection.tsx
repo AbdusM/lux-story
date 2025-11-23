@@ -31,7 +31,7 @@ interface UrgencyData {
   relationshipsFormed: number
 }
 
-export function UrgencySection({ userId, profile, adminViewMode }: UrgencySectionProps) {
+export function UrgencySection({ userId, profile: _profile, adminViewMode }: UrgencySectionProps) {
   const [urgencyData, setUrgencyData] = useState<UrgencyData | null>(null)
   const [urgencyLoading, setUrgencyLoading] = useState(false)
   const [urgencyError, setUrgencyError] = useState<string | null>(null)

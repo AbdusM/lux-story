@@ -82,7 +82,7 @@ export function getAuthenticatedAdminClient(
   try {
     const client = getAdminSupabaseClient()
     return [client, null]
-  } catch (error) {
+  } catch (_error) {
     return [null, NextResponse.json(
       { error: 'Database configuration error' },
       { status: 500 }
