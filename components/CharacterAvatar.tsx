@@ -12,6 +12,7 @@
  */
 
 import { cn } from '@/lib/utils'
+import Image from 'next/image'
 
 interface CharacterAvatarProps {
   characterName: string
@@ -91,7 +92,7 @@ export function CharacterAvatar({
     <div
       className={cn(
         // Base styles
-        'flex-shrink-0 rounded-full overflow-hidden',
+        'relative flex-shrink-0 rounded-full overflow-hidden',
         'shadow-sm border-2 border-white/20',
         
         // Size
@@ -110,11 +111,12 @@ export function CharacterAvatar({
       role="img"
       aria-label={`${character.name} avatar`}
     >
-      <img
+      <Image
         src={avatarUrl}
         alt={`${character.name} avatar`}
-        className="w-full h-full object-cover"
-        loading="lazy"
+        fill
+        className="object-cover"
+        sizes="(max-width: 768px) 48px, 64px"
       />
     </div>
   )

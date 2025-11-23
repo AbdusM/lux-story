@@ -11,7 +11,7 @@
 import { cn } from "@/lib/utils"
 import { autoChunkDialogue } from "@/lib/auto-chunk-dialogue"
 import { ChatPacedDialogue } from "./ChatPacedDialogue"
-import { CharacterAvatar, shouldShowAvatar } from "./CharacterAvatar"
+import { shouldShowAvatar } from "./CharacterAvatar"
 import { RichTextRenderer, type RichTextEffect } from "./RichTextRenderer"
 
 // Parse markdown-style emphasis in text (from StoryMessage pattern)
