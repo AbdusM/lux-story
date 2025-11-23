@@ -504,7 +504,7 @@ export class FutureSkillsSystem {
   reset() {
     // Reset to default
     const defaultSkill = 0.5
-    // @ts-ignore - Efficient reset
+    // @ts-expect-error - Efficient reset using dynamic key access
     Object.keys(this.skills).forEach(key => this.skills[key] = defaultSkill)
     this.skillHistory = []
   }
