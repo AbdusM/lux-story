@@ -12,7 +12,7 @@ export function NarrativeAnalysisDisplay() {
     report,
     metrics,
     isAnalyzing,
-    getExecutiveSummary,
+    getExecutiveSummary: _getExecutiveSummary,
     getQualityInsights,
     getStrengths,
     getCriticalIssues,

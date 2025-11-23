@@ -46,13 +46,13 @@ export function ChatPacedDialogue({
   text,
   characterName,
   showAvatar = true,
-  chunkDelay = 1500,
+  chunkDelay: _chunkDelay = 1500,
   typingDuration = 800,
   onComplete,
   className = '',
   interaction,
   emotion,
-  playerPatterns
+  playerPatterns: _playerPatterns
 }: ChatPacedDialogueProps) {
   // Split text into chunks by | or \n\n
   const chunks = text
