@@ -17,7 +17,7 @@
 
 import React, { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { analyzeSkillPatterns, type SkillPattern } from '@/lib/admin-pattern-recognition'
+import { analyzeSkillPatterns } from '@/lib/admin-pattern-recognition'
 import type { SkillDemonstrations } from '@/lib/skill-profile-adapter'
 
 interface PatternRecognitionCardProps {

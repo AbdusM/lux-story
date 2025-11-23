@@ -13,7 +13,7 @@ import remarkGfm from 'remark-gfm';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Copy, Download, X } from 'lucide-react';
+import { Copy, Download } from 'lucide-react';
 import type { SkillProfile } from '@/lib/skill-profile-adapter';
 
 interface AdvisorBriefingModalProps {
@@ -101,31 +101,31 @@ export const AdvisorBriefingModal: React.FC<AdvisorBriefingModalProps> = ({
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               components={{
-                h2: ({ node, ...props }) => (
+                h2: ({ node: _node, ...props }) => (
                   <h2 className="text-xl font-bold mt-6 mb-3 text-blue-600 dark:text-blue-400" {...props} />
                 ),
-                h3: ({ node, ...props }) => (
+                h3: ({ node: _node, ...props }) => (
                   <h3 className="text-lg font-semibold mt-4 mb-2" {...props} />
                 ),
-                p: ({ node, ...props }) => (
+                p: ({ node: _node, ...props }) => (
                   <p className="mb-3 leading-relaxed" {...props} />
                 ),
-                strong: ({ node, ...props }) => (
+                strong: ({ node: _node, ...props }) => (
                   <strong className="font-semibold text-gray-900 dark:text-gray-100" {...props} />
                 ),
-                ul: ({ node, ...props }) => (
+                ul: ({ node: _node, ...props }) => (
                   <ul className="list-disc pl-6 mb-3 space-y-1" {...props} />
                 ),
-                ol: ({ node, ...props }) => (
+                ol: ({ node: _node, ...props }) => (
                   <ol className="list-decimal pl-6 mb-3 space-y-1" {...props} />
                 ),
-                li: ({ node, ...props }) => (
+                li: ({ node: _node, ...props }) => (
                   <li className="leading-relaxed" {...props} />
                 ),
-                blockquote: ({ node, ...props }) => (
+                blockquote: ({ node: _node, ...props }) => (
                   <blockquote className="border-l-4 border-blue-500 pl-4 italic my-4 text-gray-700 dark:text-gray-300" {...props} />
                 ),
-                code: ({ node, inline, ...props }: any) =>
+                code: ({ node: _node, inline, ...props }: any) =>
                   inline ? (
                     <code className="bg-gray-100 dark:bg-gray-800 rounded px-1 py-0.5 text-sm" {...props} />
                   ) : (
