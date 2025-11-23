@@ -34,6 +34,37 @@ function getServiceClient() {
 }
 
 /**
+ * Ensure player profile exists before inserting related records
+ * Prevents foreign key violations (error 23503)
+ */
+async function ensurePlayerProfile(userId: string) {
+  try {
+    const supabase = getServiceClient()
+
+    const { error } = await supabase
+      .from('player_profiles')
+      .upsert({
+        user_id: userId,
+        created_at: new Date().toISOString()
+      }, {
+        onConflict: 'user_id',
+        ignoreDuplicates: true
+      })
+
+    if (error) {
+      console.error('⚠️ [API:SkillSummaries] Failed to ensure player profile:', {
+        userId,
+        error: error instanceof Error ? error.message : "Unknown error"
+      })
+    } else {
+      console.log('✅ [API:SkillSummaries] Player profile ensured:', { userId })
+    }
+  } catch (error) {
+    console.error('⚠️ [API:SkillSummaries] ensurePlayerProfile error:', error)
+  }
+}
+
+/**
  * GET /api/user/skill-summaries?userId=X
  * Fetch all skill summaries for a user
  */
@@ -164,6 +195,10 @@ export async function POST(request: NextRequest) {
         })
       }
     }
+
+    // Ensure player profile exists BEFORE attempting to insert skill summary
+    // This prevents foreign key violations (error 23503)
+    await ensurePlayerProfile(user_id)
 
     const supabase = getServiceClient()
 

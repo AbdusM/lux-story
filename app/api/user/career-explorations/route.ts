@@ -42,6 +42,37 @@ function getServiceClient() {
 }
 
 /**
+ * Ensure player profile exists before inserting related records
+ * Prevents foreign key violations (error 23503)
+ */
+async function ensurePlayerProfile(userId: string) {
+  try {
+    const supabase = getServiceClient()
+
+    const { error } = await supabase
+      .from('player_profiles')
+      .upsert({
+        user_id: userId,
+        created_at: new Date().toISOString()
+      }, {
+        onConflict: 'user_id',
+        ignoreDuplicates: true
+      })
+
+    if (error) {
+      console.error('⚠️ [API:CareerExplorations] Failed to ensure player profile:', {
+        userId,
+        error: error instanceof Error ? error.message : "Unknown error"
+      })
+    } else {
+      console.log('✅ [API:CareerExplorations] Player profile ensured:', { userId })
+    }
+  } catch (error) {
+    console.error('⚠️ [API:CareerExplorations] ensurePlayerProfile error:', error)
+  }
+}
+
+/**
  * POST /api/user/career-explorations
  * Create or update career exploration records
  *
@@ -98,6 +129,10 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       )
     }
+
+    // Ensure player profile exists BEFORE attempting to insert career exploration
+    // This prevents foreign key violations (error 23503)
+    await ensurePlayerProfile(user_id)
 
     const supabase = getServiceClient()
 

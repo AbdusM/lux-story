@@ -35,6 +35,37 @@ function getServiceClient() {
 }
 
 /**
+ * Ensure player profile exists before inserting related records
+ * Prevents foreign key violations (error 23503)
+ */
+async function ensurePlayerProfile(userId: string) {
+  try {
+    const supabase = getServiceClient()
+
+    const { error } = await supabase
+      .from('player_profiles')
+      .upsert({
+        user_id: userId,
+        created_at: new Date().toISOString()
+      }, {
+        onConflict: 'user_id',
+        ignoreDuplicates: true
+      })
+
+    if (error) {
+      console.error('⚠️ [API:PatternDemonstrations] Failed to ensure player profile:', {
+        userId,
+        error: error instanceof Error ? error.message : "Unknown error"
+      })
+    } else {
+      console.log('✅ [API:PatternDemonstrations] Player profile ensured:', { userId })
+    }
+  } catch (error) {
+    console.error('⚠️ [API:PatternDemonstrations] ensurePlayerProfile error:', error)
+  }
+}
+
+/**
  * POST /api/user/pattern-demonstrations
  * Insert individual pattern demonstration record
  *
@@ -87,6 +118,10 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       )
     }
+
+    // Ensure player profile exists BEFORE attempting to insert pattern demonstration
+    // This prevents foreign key violations (error 23503)
+    await ensurePlayerProfile(user_id)
 
     const supabase = getServiceClient()
 
