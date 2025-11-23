@@ -170,7 +170,7 @@ export async function GET(request: NextRequest): Promise<NextResponse<UrgencyAPI
       timestamp: new Date().toISOString()
     } as UrgencyAPIResponse)
 
-  } catch (error: any) {
+  } catch (error) {
     // Log detailed error server-side
     console.error('[Admin API] Unexpected error:', error)
 
@@ -281,7 +281,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<Recalcula
       timestamp: new Date().toISOString()
     })
 
-  } catch (error: any) {
+  } catch (error) {
     // Log detailed error server-side
     console.error('[Admin API] Unexpected error during recalculation:', error)
 

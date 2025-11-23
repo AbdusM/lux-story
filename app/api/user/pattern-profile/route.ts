@@ -73,9 +73,9 @@ export async function GET(request: NextRequest) {
       mode: 'full',
       profile
     })
-  } catch (error: any) {
+  } catch (error) {
     console.error('[PatternProfile API] Unexpected error:', error)
-    const errorMessage = error?.message || 'Internal server error'
+    const errorMessage = error instanceof Error ? error.message : "Internal server error"
 
     // Handle Supabase connection errors gracefully
     if (errorMessage.includes('Missing Supabase environment variables')) {

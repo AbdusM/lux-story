@@ -74,7 +74,7 @@ export async function GET(request: NextRequest) {
     if (error) {
       console.error('❌ [Admin:SkillData] Supabase error:', {
         code: error.code,
-        message: error.message,
+        message: error instanceof Error ? error.message : "Unknown error",
         userId
       })
       return NextResponse.json(
@@ -105,7 +105,7 @@ export async function GET(request: NextRequest) {
       success: true,
       profile
     })
-  } catch (error: any) {
+  } catch (error) {
     // Log detailed error server-side
     console.error('[Admin:SkillData] Unexpected error:', error)
 

@@ -64,10 +64,10 @@ export async function GET(request: NextRequest) {
       },
       age_seconds: Math.floor((Date.now() - new Date(profile.created_at).getTime()) / 1000)
     })
-  } catch (error: any) {
+  } catch (error) {
     console.error('[Admin:CheckProfile] Unexpected error:', error)
     return NextResponse.json(
-      { error: 'Internal error', details: error.message },
+      { error: 'Internal error', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     )
   }

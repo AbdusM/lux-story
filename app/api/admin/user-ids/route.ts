@@ -36,7 +36,7 @@ export async function GET(request: NextRequest) {
     if (error) {
       console.error('❌ [Admin:UserIds] Supabase error:', {
         code: error.code,
-        message: error.message,
+        message: error instanceof Error ? error.message : "Unknown error",
       })
       return NextResponse.json(
         { error: 'Failed to fetch user IDs' },
@@ -55,7 +55,7 @@ export async function GET(request: NextRequest) {
       success: true,
       userIds
     })
-  } catch (error: any) {
+  } catch (error) {
     // Log detailed error server-side
     console.error('[Admin:UserIds] Unexpected error:', error)
 
