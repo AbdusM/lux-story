@@ -7,7 +7,7 @@ import { Progress } from '@/components/ui/progress'
 import { Brain, TrendingUp, Lightbulb, AlertCircle, CheckCircle2, Target } from 'lucide-react'
 import type { PatternProfile } from '@/lib/pattern-profile-adapter'
 import type { SkillProfile } from '@/lib/skill-profile-adapter'
-import { formatPatternName, getPatternDescription, getPatternBgClass } from '@/lib/patterns'
+import { formatPatternName, getPatternDescription } from '@/lib/patterns'
 
 interface PatternSectionProps {
   userId: string

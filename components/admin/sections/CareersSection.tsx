@@ -16,7 +16,7 @@ interface CareersSectionProps {
 export function CareersSection({ userId, profile, adminViewMode }: CareersSectionProps) {
   const user = profile // Alias for consistency with original code
   const [showMetRequirements, setShowMetRequirements] = useState(false)
-  const [highlightedCareer, setHighlightedCareer] = useState<string | null>(null)
+  const [highlightedCareer, _setHighlightedCareer] = useState<string | null>(null)
   const [evidenceData, setEvidenceData] = useState<any>(null)
   const [evidenceLoading, setEvidenceLoading] = useState(false)
 
