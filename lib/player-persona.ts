@@ -343,7 +343,7 @@ export class PlayerPersonaTracker {
     // Real-time monitoring
     logChoice(playerId, sceneId, skills, sceneId)
 
-    let persona = this.personas.get(playerId) || this.createBasePersona(playerId)
+    const persona = this.personas.get(playerId) || this.createBasePersona(playerId)
 
     // Update skill demonstrations
     skills.forEach(skill => {
@@ -457,7 +457,7 @@ export class PlayerPersonaTracker {
    * Call this on app mount or scene transitions to ensure persona is up-to-date
    */
   syncFromSkillTracker(playerId: string, skillTrackerData: any[]): PlayerPersona {
-    let persona = this.personas.get(playerId) || this.createBasePersona(playerId)
+    const persona = this.personas.get(playerId) || this.createBasePersona(playerId)
 
     // Reset skill demonstrations
     persona.skillDemonstrations = {}

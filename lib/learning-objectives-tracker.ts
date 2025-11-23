@@ -172,7 +172,7 @@ export class LearningObjectivesTracker {
 /**
  * Get learning objectives tracker instance for a user
  */
-let trackerInstances: Map<string, LearningObjectivesTracker> = new Map()
+const trackerInstances: Map<string, LearningObjectivesTracker> = new Map()
 
 export function getLearningObjectivesTracker(userId: string): LearningObjectivesTracker {
   if (!trackerInstances.has(userId)) {
