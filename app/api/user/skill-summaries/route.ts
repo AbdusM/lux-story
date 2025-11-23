@@ -63,7 +63,7 @@ export async function GET(request: NextRequest) {
     if (error) {
       console.error('❌ [API:SkillSummaries] Supabase error:', {
         code: error.code,
-        message: error.message,
+        message: error instanceof Error ? error.message : "Unknown error",
         userId
       })
       return NextResponse.json(
@@ -91,9 +91,9 @@ export async function GET(request: NextRequest) {
       success: true,
       summaries
     })
-  } catch (error: any) {
+  } catch (error) {
     console.error('[SkillSummaries API] Unexpected error:', error)
-    const errorMessage = error?.message || 'Internal server error'
+    const errorMessage = error instanceof Error ? error.message : "Internal server error"
     
     // If it's a missing env var error, return empty data gracefully
     if (errorMessage.includes('Missing Supabase environment variables')) {
@@ -183,7 +183,7 @@ export async function POST(request: NextRequest) {
     if (error) {
       console.error('❌ [API:SkillSummaries] Supabase upsert error:', {
         code: error.code,
-        message: error.message,
+        message: error instanceof Error ? error.message : "Unknown error",
         userId: user_id,
         skillName: skill_name
       })
@@ -200,9 +200,9 @@ export async function POST(request: NextRequest) {
     })
 
     return NextResponse.json({ success: true })
-  } catch (error: any) {
+  } catch (error) {
     console.error('[SkillSummaries API] Unexpected error:', error)
-    const errorMessage = error?.message || 'Internal server error'
+    const errorMessage = error instanceof Error ? error.message : "Internal server error"
     
     // If it's a missing env var error, return success but log warning
     if (errorMessage.includes('Missing Supabase environment variables')) {

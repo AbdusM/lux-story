@@ -129,7 +129,7 @@ Generate dialogue that feels like Samuel noticed something specific about THIS t
 /**
  * Build the specific dialogue generation prompt
  */
-function buildDialoguePrompt(nodeId: string, persona: PlayerPersona, context: DialogueContext): string {
+function buildDialoguePrompt(nodeId: string, persona: PlayerPersona, _context: DialogueContext): string {
   const topSkill = persona.topSkills[0]
   const skillContext = persona.skillDemonstrations[topSkill?.skill]?.latestContext || ''
 

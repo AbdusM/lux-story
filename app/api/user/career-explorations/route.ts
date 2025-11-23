@@ -81,8 +81,7 @@ export async function POST(request: NextRequest) {
       match_score,
       readiness_level,
       local_opportunities,
-      education_paths,
-      evidence
+      education_paths
     } = body
 
     console.log('🔵 [API:CareerExplorations] POST request:', {
@@ -121,7 +120,7 @@ export async function POST(request: NextRequest) {
     if (error) {
       console.error('❌ [API:CareerExplorations] Supabase upsert error:', {
         code: error.code,
-        message: error.message,
+        message: error instanceof Error ? error.message : "Unknown error",
         userId: user_id,
         careerName: career_name
       })
@@ -141,9 +140,9 @@ export async function POST(request: NextRequest) {
       success: true, 
       careerExploration: data?.[0] 
     })
-  } catch (error: any) {
+  } catch (error) {
     console.error('[CareerExplorations API] Unexpected error:', error)
-    const errorMessage = error?.message || 'Internal server error'
+    const errorMessage = error instanceof Error ? error.message : "Internal server error"
     
     // If it's a missing env var error, return success but log warning
     if (errorMessage.includes('Missing Supabase environment variables')) {
@@ -188,7 +187,7 @@ export async function GET(request: NextRequest) {
     if (error) {
       console.error('❌ [API:CareerExplorations] Supabase error:', {
         code: error.code,
-        message: error.message,
+        message: error instanceof Error ? error.message : "Unknown error",
         userId
       })
       return NextResponse.json(
@@ -206,9 +205,9 @@ export async function GET(request: NextRequest) {
       success: true,
       careerExplorations: data || []
     })
-  } catch (error: any) {
+  } catch (error) {
     console.error('[CareerExplorations API] Unexpected error:', error)
-    const errorMessage = error?.message || 'Internal server error'
+    const errorMessage = error instanceof Error ? error.message : "Internal server error"
     
     // If it's a missing env var error, return empty data gracefully
     if (errorMessage.includes('Missing Supabase environment variables')) {

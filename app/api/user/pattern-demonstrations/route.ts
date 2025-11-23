@@ -108,12 +108,12 @@ export async function POST(request: NextRequest) {
     if (error) {
       console.error('❌ [API:PatternDemonstrations] Supabase error:', {
         code: error.code,
-        message: error.message,
+        message: error instanceof Error ? error.message : "Unknown error",
         userId: user_id,
         patternName: pattern_name
       })
       return NextResponse.json(
-        { error: 'Failed to insert pattern demonstration', details: error.message },
+        { error: 'Failed to insert pattern demonstration', details: error instanceof Error ? error.message : "Unknown error" },
         { status: 500 }
       )
     }
@@ -129,9 +129,9 @@ export async function POST(request: NextRequest) {
       success: true,
       demonstration: data
     })
-  } catch (error: any) {
+  } catch (error) {
     console.error('[PatternDemonstrations API] Unexpected error:', error)
-    const errorMessage = error?.message || 'Internal server error'
+    const errorMessage = error instanceof Error ? error.message : "Internal server error"
 
     return NextResponse.json(
       { error: errorMessage },

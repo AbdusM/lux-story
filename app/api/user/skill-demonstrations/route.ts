@@ -92,7 +92,7 @@ export async function POST(request: NextRequest) {
     if (error) {
       console.error('❌ [API:SkillDemonstrations] Supabase error:', {
         code: error.code,
-        message: error.message,
+        message: error instanceof Error ? error.message : "Unknown error",
         userId: user_id,
         skillName: skill_name
       })
@@ -112,9 +112,9 @@ export async function POST(request: NextRequest) {
       success: true,
       demonstration: data
     })
-  } catch (error: any) {
+  } catch (error) {
     console.error('[SkillDemonstrations API] Unexpected error:', error)
-    const errorMessage = error?.message || 'Internal server error'
+    const errorMessage = error instanceof Error ? error.message : "Internal server error"
 
     return NextResponse.json(
       { error: errorMessage },

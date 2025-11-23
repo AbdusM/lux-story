@@ -58,7 +58,7 @@ export async function GET() {
     }
 
     // Test 2: Simple query
-    const { data, error: queryError } = await supabase
+    const { error: queryError } = await supabase
       .from('player_profiles')
       .select('user_id')
       .limit(1);
