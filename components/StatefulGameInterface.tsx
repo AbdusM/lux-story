@@ -419,44 +419,48 @@ export default function StatefulGameInterface() {
           </Card>
         )}
 
-        {/* Dialogue Card - Fixed height to prevent layout shifts */}
-        <Card key="dialogue-card" className="mb-4 sm:mb-6 rounded-xl shadow-md" style={{ transition: 'none' }} data-testid="dialogue-card">
-          <CardContent className="p-6 sm:p-8 min-h-[400px] max-h-[60vh] overflow-y-auto" data-testid="dialogue-content" data-speaker={state.currentNode?.speaker || ''}>
-            <DialogueDisplay
-              text={state.currentContent || ''}
-              useChatPacing={state.useChatPacing}
-              characterName={state.currentNode?.speaker}
-              showAvatar={false}
-              richEffects={getRichEffectContext(state.currentDialogueContent, state.isLoading, state.recentSkills, state.useChatPacing)}
-              interaction={state.currentDialogueContent?.interaction}
-            />
-          </CardContent>
-        </Card>
-
-        {/* Choices Card - Restored "Your Response" container */}
-        {!isEnding && (
-          <Card key="choices-card" className="rounded-xl shadow-md">
-            <CardHeader className="pb-3 border-b border-slate-100 mb-3">
-              <CardTitle className="text-lg sm:text-xl text-slate-700">Your Response</CardTitle>
-            </CardHeader>
-            <CardContent className="p-4 sm:p-6 pt-0">
-              <div className="space-y-3">
-                <GameChoices 
-                  choices={state.availableChoices.map(c => ({
-                      text: c.choice.text,
-                      pattern: c.choice.pattern,
-                      feedback: c.choice.interaction === 'shake' ? 'shake' : undefined
-                  }))}
-                  isProcessing={state.isLoading}
-                  onChoice={(c) => {
-                      const original = state.availableChoices.find(ac => ac.choice.text === c.text)
-                      if (original) handleChoice(original)
-                  }}
-                />
-              </div>
+        {/* Mobile-optimized split layout: narrative scrolls, choices fixed */}
+        {/* On mobile (< sm): Split 55/45, both visible. On desktop: Standard flow */}
+        <div className="sm:space-y-4">
+          {/* Dialogue Card - Scrollable narrative on mobile */}
+          <Card key="dialogue-card" className="mb-4 sm:mb-6 rounded-xl shadow-md" style={{ transition: 'none' }} data-testid="dialogue-card">
+            <CardContent className="p-4 sm:p-6 md:p-8 min-h-[200px] max-h-[55vh] sm:max-h-[60vh] overflow-y-auto" data-testid="dialogue-content" data-speaker={state.currentNode?.speaker || ''}>
+              <DialogueDisplay
+                text={state.currentContent || ''}
+                useChatPacing={state.useChatPacing}
+                characterName={state.currentNode?.speaker}
+                showAvatar={false}
+                richEffects={getRichEffectContext(state.currentDialogueContent, state.isLoading, state.recentSkills, state.useChatPacing)}
+                interaction={state.currentDialogueContent?.interaction}
+              />
             </CardContent>
           </Card>
-        )}
+
+          {/* Choices Card - Always visible, scrollable on mobile if many choices */}
+          {!isEnding && (
+            <Card key="choices-card" className="rounded-xl shadow-md">
+              <CardHeader className="pb-2 sm:pb-3 border-b border-slate-100 mb-2 sm:mb-3 px-4 sm:px-6 pt-3 sm:pt-6">
+                <CardTitle className="text-base sm:text-lg md:text-xl text-slate-700">Your Response</CardTitle>
+              </CardHeader>
+              <CardContent className="p-3 sm:p-4 md:p-6 pt-0 max-h-[35vh] sm:max-h-none overflow-y-auto">
+                <div className="space-y-2 sm:space-y-3">
+                  <GameChoices
+                    choices={state.availableChoices.map(c => ({
+                        text: c.choice.text,
+                        pattern: c.choice.pattern,
+                        feedback: c.choice.interaction === 'shake' ? 'shake' : undefined
+                    }))}
+                    isProcessing={state.isLoading}
+                    onChoice={(c) => {
+                        const original = state.availableChoices.find(ac => ac.choice.text === c.text)
+                        if (original) handleChoice(original)
+                    }}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+          )}
+        </div>
 
         {/* Ending State */}
         {isEnding && (
