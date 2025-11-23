@@ -91,7 +91,7 @@ function formatRelativeTime(date: Date, now: Date = new Date()): string {
  * Research mode: "October 3, 2025 at 10:59 PM"
  * Family mode: Same format (scientific accuracy needed)
  */
-function formatFullDate(date: Date, viewMode: ViewMode): string {
+function formatFullDate(date: Date, _viewMode: ViewMode): string {
   return date.toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
@@ -141,7 +141,7 @@ export function formatAdminDateWithLabel(
 export function formatDateRange(
   startDate: Date | string | number,
   endDate: Date | string | number,
-  viewMode: ViewMode = 'research'
+  _viewMode: ViewMode = 'research'
 ): string {
   const start = new Date(startDate);
   const end = new Date(endDate);

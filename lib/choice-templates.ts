@@ -303,7 +303,7 @@ export const CHOICE_TEMPLATES: ChoiceTemplate[] = [
 /**
  * Context detection from scene content
  */
-export function detectContext(sceneText: string, gameState: any): string[] {
+export function detectContext(sceneText: string, _gameState: any): string[] {
   const contexts: string[] = []
   const text = sceneText.toLowerCase()
 

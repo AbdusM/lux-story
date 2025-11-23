@@ -318,7 +318,7 @@ export class CareerAnalyticsEngine {
   /**
    * Generate next steps for a career path
    */
-  private generateNextSteps(careerPath: keyof CareerPathAffinities, affinity: number): string[] {
+  private generateNextSteps(careerPath: keyof CareerPathAffinities, _affinity: number): string[] {
     const baseSteps = [
       'Explore Birmingham opportunities in this field',
       'Connect with local professionals',
