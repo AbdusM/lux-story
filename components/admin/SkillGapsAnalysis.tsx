@@ -60,7 +60,7 @@ export function SkillGapsAnalysis({ skillGaps, totalDemonstrations }: SkillGapsA
               <h4 className="font-semibold text-red-900">Skills They're Working On</h4>
             </div>
             <div className="space-y-3">
-              {highPriorityGaps.map((gap, index) => (
+              {highPriorityGaps.map((gap) => (
                 <div key={gap.skill} className="border border-red-200 bg-red-50 rounded-lg p-4">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
@@ -113,7 +113,7 @@ export function SkillGapsAnalysis({ skillGaps, totalDemonstrations }: SkillGapsA
               <h4 className="font-semibold text-amber-900">Skills They're Exploring</h4>
             </div>
             <div className="space-y-2">
-              {mediumPriorityGaps.map((gap, index) => (
+              {mediumPriorityGaps.map((gap) => (
                 <div key={gap.skill} className="border border-amber-200 bg-amber-50 rounded-lg p-3">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
@@ -143,7 +143,7 @@ export function SkillGapsAnalysis({ skillGaps, totalDemonstrations }: SkillGapsA
               <h4 className="font-semibold text-green-900">Skills They're Already Strong In</h4>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-              {lowPriorityGaps.map((gap, index) => (
+              {lowPriorityGaps.map((gap) => (
                 <div key={gap.skill} className="border border-green-200 bg-green-50 rounded-lg p-3">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
