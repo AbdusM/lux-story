@@ -372,7 +372,7 @@ export async function loadSkillProfile(userId: string): Promise<SkillProfile | n
         console.log(`[SkillProfileAdapter] Loaded ${careerResult.careerExplorations.length} career explorations for ${userId}`)
       }
     }
-  } catch (careerError) {
+  } catch (_careerError) {
     console.warn(`[SkillProfileAdapter] Career explorations API failed for ${userId}`)
   }
 

@@ -164,7 +164,7 @@ export class GameStateUtils {
 
       // Trust changes
       if (change.trustChange !== undefined) {
-        const oldTrust = charState.trust
+        const _oldTrust = charState.trust
         charState.trust = Math.max(
           NARRATIVE_CONSTANTS.MIN_TRUST,
           Math.min(NARRATIVE_CONSTANTS.MAX_TRUST, charState.trust + change.trustChange)

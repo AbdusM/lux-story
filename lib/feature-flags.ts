@@ -16,7 +16,7 @@ const getFeatureFlag = (flag: string, defaultValue: boolean = false): boolean =>
     if (localOverride !== null) {
       return localOverride === 'true'
     }
-  } catch (e) {
+  } catch (_e) {
     // localStorage not available
   }
 

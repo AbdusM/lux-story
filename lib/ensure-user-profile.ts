@@ -84,17 +84,17 @@ export async function ensureUserProfile(
     return true
   } catch (error: any) {
     // Check if it's a network error (Supabase unreachable)
-    const isNetworkError = 
+    const isNetworkError =
       error?.message?.includes('Failed to fetch') ||
       error?.message?.includes('ERR_NAME_NOT_RESOLVED') ||
       error?.name === 'TypeError' ||
       error?.toString().includes('fetch')
-    
+
     if (isNetworkError) {
       // Silent fallback - don't spam console with network errors
       return true
     }
-    
+
     // Only log unexpected errors
     console.warn(`[EnsureUserProfile] Database unavailable for ${userId}:`, error)
     return true // Allow game to continue in local-only mode

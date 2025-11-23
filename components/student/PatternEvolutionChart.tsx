@@ -36,7 +36,7 @@ export function PatternEvolutionChart({ evolution }: PatternEvolutionChartProps)
   }
 
   // Calculate max for scaling
-  const maxCount = Math.max(
+  const _maxCount = Math.max(
     ...weeks.flatMap(week =>
       Object.values(weeklyData[week])
     ),
