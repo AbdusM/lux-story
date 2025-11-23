@@ -5,7 +5,6 @@ import { getSimpleAnalytics, type SimpleAnalytics } from '@/lib/simple-analytics
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 import { ChevronDown, ChevronUp, MapPin, Clock, Target } from 'lucide-react'
 
 interface SimpleAnalyticsDisplayProps {

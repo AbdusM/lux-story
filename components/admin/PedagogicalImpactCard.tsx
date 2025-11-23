@@ -4,7 +4,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Brain, Lightbulb, Target, CheckCircle2 } from 'lucide-react'
 import { useAdminDashboard } from '@/components/admin/AdminDashboardContext'
-import { getLearningObjectivesForArc } from '@/lib/learning-objectives-definitions'
 
 export function PedagogicalImpactCard() {
   const { profile } = useAdminDashboard()

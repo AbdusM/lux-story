@@ -7,7 +7,7 @@
  * for various contexts in the game (thinking, executing, warnings, etc.)
  */
 
-import { RichTextRenderer, RichTextEffect } from './RichTextRenderer'
+import { RichTextRenderer } from './RichTextRenderer'
 import { EnhancedDialogueDisplay } from './EnhancedDialogueDisplay'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
