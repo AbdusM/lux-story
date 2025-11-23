@@ -8,7 +8,6 @@
 import { getPersonaTracker } from './player-persona'
 import { getCareerAnalytics } from './career-analytics'
 import { getPlatformResonance } from './platform-resonance'
-import { getBirminghamOpportunities } from './birmingham-opportunities'
 
 export interface EngagementMetrics {
   playerId: string
@@ -401,7 +400,7 @@ export class EngagementMetricsEngine {
   /**
    * Helper: Calculate local engagement
    */
-  private calculateLocalEngagement(insights: any[], persona: any): number {
+  private calculateLocalEngagement(insights: any[], _persona: any): number {
     let engagement = 0.5 // Base score
 
     // Birmingham opportunities interest

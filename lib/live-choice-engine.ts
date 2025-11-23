@@ -6,7 +6,6 @@
  */
 
 import type { Choice } from './story-engine'
-import type { GameState } from './game-store'
 
 // Live Choice Engine now uses Next.js API routes for secure server-side generation
 // No direct API configuration needed - handled by /api/live-choices route

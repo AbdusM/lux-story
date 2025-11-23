@@ -421,7 +421,7 @@ export function analyzeChoiceForCareer(choice: Choice, _playerId: string): void 
   try {
     // Extract career-relevant patterns from choice consequence
     const patterns = choice.consequence.split('_')
-    const analytics = getCareerAnalytics()
+    const _analytics = getCareerAnalytics()
 
     // This will be automatically captured in the next snapshot
     console.log(`🎯 Career analysis: ${choice.text} → ${patterns.join(', ')}`)
