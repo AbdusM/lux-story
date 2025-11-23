@@ -21,9 +21,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { DialogueDisplay } from '@/components/DialogueDisplay'
 import type { RichTextEffect } from '@/components/RichTextRenderer'
 import { AtmosphericIntro } from '@/components/AtmosphericIntro'
-import { CharacterAvatar } from '@/components/CharacterAvatar'
-import { ErrorRecoveryState } from '@/components/ErrorRecoveryState'
-import { cn } from '@/lib/utils'
 import { GameState, GameStateUtils } from '@/lib/character-state'
 import { GameStateManager } from '@/lib/game-state-manager'
 import { useBackgroundSync } from '@/hooks/useBackgroundSync'
@@ -44,13 +41,11 @@ import {
 } from '@/lib/graph-registry'
 import { SkillTracker } from '@/lib/skill-tracker'
 import { SCENE_SKILL_MAPPINGS } from '@/lib/scene-skill-mappings'
-import { getComprehensiveTracker } from '@/lib/comprehensive-user-tracker'
 import { ExperienceSummary, type ExperienceSummaryData } from '@/components/ExperienceSummary'
 import { NarrativeFeedback } from '@/components/NarrativeFeedback'
 import { SyncStatusIndicator } from '@/components/SyncStatusIndicator'
 import { detectArcCompletion, generateExperienceSummary } from '@/lib/arc-learning-objectives'
 import { loadSkillProfile } from '@/lib/skill-profile-adapter'
-import { getLearningObjectivesTracker } from '@/lib/learning-objectives-tracker'
 import { isSupabaseConfigured } from '@/lib/supabase'
 import { GameChoices } from '@/components/GameChoices'
 
@@ -107,7 +102,7 @@ export default function StatefulGameInterface() {
 
   // Rich effects config - KEEPING NEW STAGGERED MODE
   const enableRichEffects = true 
-  const getRichEffectContext = useCallback((content: DialogueContent | null, isLoading: boolean, recentSkills: string[], useChatPacing: boolean): RichTextEffect | undefined => {
+  const getRichEffectContext = useCallback((content: DialogueContent | null, _isLoading: boolean, _recentSkills: string[], _useChatPacing: boolean): RichTextEffect | undefined => {
     if (!enableRichEffects || !content) return undefined
     
     const emotionMap: Record<string, 'thinking' | 'warning' | 'success' | undefined> = {
@@ -131,9 +126,9 @@ export default function StatefulGameInterface() {
 
   // Refs & Sync
   const skillTrackerRef = useRef<SkillTracker | null>(null)
-  const { queueStats } = useBackgroundSync({ enabled: true })
+  const { queueStats: _queueStats } = useBackgroundSync({ enabled: true })
   const [hasSaveFile, setHasSaveFile] = useState(false)
-  const [saveIsComplete, setSaveIsComplete] = useState(false)
+  const [_saveIsComplete, setSaveIsComplete] = useState(false)
 
   useEffect(() => {
     if (state.showSaveConfirmation) {
@@ -294,7 +289,7 @@ export default function StatefulGameInterface() {
       : state.recentSkills.slice(0, 8)
 
     const completedArc = detectArcCompletion(state.gameState, newGameState)
-    let experienceSummaryUpdate = { showExperienceSummary: false, experienceSummaryData: null as ExperienceSummaryData | null }
+    const experienceSummaryUpdate = { showExperienceSummary: false, experienceSummaryData: null as ExperienceSummaryData | null }
 
     if (completedArc) {
         loadSkillProfile(newGameState.playerId)
