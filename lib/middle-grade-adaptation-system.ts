@@ -338,7 +338,7 @@ export class MiddleGradeAdaptationSystem {
   /**
    * Check if text is age-appropriate
    */
-  isAgeAppropriate(text: string, targetAge: number = 16): boolean {
+  isAgeAppropriate(text: string, _targetAge: number = 16): boolean {
     // Simple heuristic - in practice, would use more sophisticated analysis
     const complexWords = ['paradigm', 'leverage', 'facilitate', 'implement', 'optimize']
     const hasComplexWords = complexWords.some(word => text.toLowerCase().includes(word))

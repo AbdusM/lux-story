@@ -124,7 +124,7 @@ export class SkillTracker {
 
     // 4. Update internal skill levels (for career matching only)
     demonstrations.forEach(demo => {
-      demo.skillsDemonstrated.forEach(skill => {
+      demo.skillsDemonstrated.forEach(() => {
         this.skillsSystem.analyzeChoiceForSkills(demo.choice, demo.scene)
       })
     })

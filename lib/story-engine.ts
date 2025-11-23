@@ -43,7 +43,7 @@ export class StoryEngine {
    * Get a scene by ID with optional dynamic choices
    */
   async getScene(sceneId: string, gameState?: GameState): Promise<Scene | null> {
-    const [chapterNum, sceneNum] = sceneId.split('-').map(Number)
+    const [chapterNum, _sceneNum] = sceneId.split('-').map(Number)
     const chapter = this.chapters.find(c => c.id === chapterNum)
     if (!chapter) return null
     

@@ -29,7 +29,7 @@ function getSupabaseClient(): SupabaseClient {
         // Don't chain for Promise-like behavior
         return undefined
       }
-      return (...args: any[]) => {
+      return (..._args: any[]) => {
         // Return another chainable mock for method chaining
         const result = createMockChain(reason)
         // Also make it awaitable with error

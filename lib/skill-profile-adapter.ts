@@ -157,7 +157,7 @@ function convertCareerPath(
  */
 function generateSkillEvolution(
   contexts: SkillContext[],
-  currentSkills: FutureSkills
+  _currentSkills: FutureSkills
 ): SkillEvolutionPoint[] {
   const evolution: SkillEvolutionPoint[] = []
 
@@ -189,7 +189,7 @@ function generateSkillEvolution(
   return evolution
 }
 
-function calculateSkillFromContexts(contexts: SkillContext[], skillType: keyof FutureSkills): number {
+function _calculateSkillFromContexts(contexts: SkillContext[], skillType: keyof FutureSkills): number {
   const relevantContexts = contexts.filter(c => c.skillType === skillType)
   if (relevantContexts.length === 0) return 0.5
 
@@ -237,7 +237,7 @@ function extractKeySkillMoments(contexts: SkillContext[]): KeySkillMoment[] {
  */
 function calculateSkillGaps(
   careerMatches: CareerMatch[],
-  currentSkills: FutureSkills
+  _currentSkills: FutureSkills
 ): SkillGap[] {
   const gaps: SkillGap[] = []
   const skillGapMap = new Map<string, { current: number; targets: number[]; paths: string[] }>()

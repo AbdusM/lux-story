@@ -6,7 +6,7 @@
  */
 
 import { getPersonaTracker, type PlayerPersona } from './player-persona'
-import { getCareerAnalytics, type CareerPathAffinities } from './career-analytics'
+import { getCareerAnalytics } from './career-analytics'
 import type { Choice } from './story-engine'
 
 export interface PlatformState {

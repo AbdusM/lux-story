@@ -136,12 +136,12 @@ export function getMemoryManager(): MemoryManager {
 }
 
 // Cleanup utility for React components
-export function useMemoryCleanup(cleanupFn: () => void, deps: any[] = []) {
+export function useMemoryCleanup(cleanupFn: () => void, _deps: any[] = []) {
   const memoryManager = getMemoryManager()
-  
+
   // Register cleanup function
   memoryManager.registerCleanup(cleanupFn)
-  
+
   // Return cleanup function for manual use
   return () => {
     memoryManager.registerCleanup(cleanupFn)
