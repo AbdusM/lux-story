@@ -10,7 +10,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { Award, ChevronDown, ArrowRight } from 'lucide-react'
 import { analyzeSkillPatterns, sortSkillPatterns, type SortMode } from '@/lib/admin-pattern-recognition'
 import { PatternRecognitionCard } from '@/components/admin/PatternRecognitionCard'
-import { formatSkillName, getRecencyIndicator, getCareersUsingSkill } from '@/lib/admin-dashboard-helpers'
+import { formatSkillName, getRecencyIndicator } from '@/lib/admin-dashboard-helpers'
 import { formatAdminDate, type ViewMode } from '@/lib/admin-date-formatting'
 import type { SkillProfile } from '@/lib/skill-profile-adapter'
 

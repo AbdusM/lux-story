@@ -3,7 +3,6 @@
  */
 
 import type { SkillProfile } from './skill-profile-adapter'
-import type { ViewMode } from './admin-date-formatting'
 
 export function getTopSkills(profile: SkillProfile): string[] {
   if (!profile.skillDemonstrations) return []
