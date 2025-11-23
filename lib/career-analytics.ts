@@ -6,7 +6,7 @@
  */
 
 import { getPersonaTracker, type PlayerPersona } from './player-persona'
-import { getBirminghamOpportunities, getPersonalizedOpportunities } from './birmingham-opportunities'
+import { getPersonalizedOpportunities } from './birmingham-opportunities'
 import type { Choice } from './story-engine'
 
 export interface CareerPathAffinities {
@@ -417,7 +417,7 @@ export function getCareerAnalytics(): CareerAnalyticsEngine {
 /**
  * Analyze choice for career implications and record insights
  */
-export function analyzeChoiceForCareer(choice: Choice, playerId: string): void {
+export function analyzeChoiceForCareer(choice: Choice, _playerId: string): void {
   try {
     // Extract career-relevant patterns from choice consequence
     const patterns = choice.consequence.split('_')
