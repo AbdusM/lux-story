@@ -4,7 +4,6 @@
  */
 
 import { ChoiceGenerator } from './choice-generator'
-import { generateContextualChoices } from './choice-templates'
 import type { Scene } from './story-engine'
 import type { GameState } from './game-store'
 

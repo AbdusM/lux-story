@@ -189,7 +189,7 @@ export function FutureSkillsSupport({
                 Career Paths That Match Your Skills
               </h3>
               <div className="space-y-4">
-                {matchingCareerPaths.slice(0, 3).map((path, index) => (
+                {matchingCareerPaths.slice(0, 3).map((path) => (
                   <div 
                     key={path.id} 
                     className="p-4 border rounded-lg hover:shadow-md transition-shadow cursor-pointer"

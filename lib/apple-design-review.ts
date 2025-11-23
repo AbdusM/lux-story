@@ -4,7 +4,7 @@
  * Based on Apple's core human interface principles
  */
 
-import { getAppleAestheticAgent, AestheticAssessment } from './apple-aesthetic-agent'
+import { getAppleAestheticAgent } from './apple-aesthetic-agent'
 
 export interface AppleDesignReview {
   overallScore: number
