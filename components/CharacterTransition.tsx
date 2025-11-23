@@ -7,10 +7,10 @@ interface CharacterTransitionProps {
   onComplete?: () => void
 }
 
-export function CharacterTransition({ 
-  nextPlatform, 
-  transitionMessage, 
-  onComplete 
+export function CharacterTransition({
+  nextPlatform,
+  transitionMessage,
+  onComplete: _onComplete
 }: CharacterTransitionProps) {
   return (
     <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center animate-fade-in">

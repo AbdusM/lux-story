@@ -73,7 +73,7 @@ export const AdvisorBriefingButton: React.FC<AdvisorBriefingButtonProps> = ({
   /**
    * Format skill name for display (critical_thinking → Critical Thinking)
    */
-  const formatSkillName = (skillName: string): string => {
+  const _formatSkillName = (skillName: string): string => {
     return skillName
       .split('_')
       .map(word => word.charAt(0).toUpperCase() + word.slice(1))

@@ -33,7 +33,7 @@ export function SkillsAnalysisCard({ profile }: SkillsAnalysisCardProps) {
   const topSkills = skillMetrics.slice(0, 5)
   
   // Skills with evidence (quotes/context)
-  const skillsWithEvidence = skillMetrics.filter(skill => skill.latestContext.length > 20)
+  const _skillsWithEvidence = skillMetrics.filter(skill => skill.latestContext.length > 20)
 
   return (
     <Card className="mb-6">
