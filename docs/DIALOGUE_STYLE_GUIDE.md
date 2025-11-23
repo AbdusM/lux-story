@@ -140,26 +140,99 @@ Yes."
 
 ## Emotion + Interaction Tags
 
-### Emotion Field (Avatar Expression)
-Use these to convey feelings without writing them:
-- `focused_tense` - High concentration, stress
-- `exhausted_proud` - Tired but accomplished
-- `anxious` - Worried, uncertain
-- `excited` - Energetic, hopeful
-- `defensive` - Guarded, protective
-- `vulnerable` - Open, emotionally exposed
-- `playful` - Light, teasing
-- `serious` - Grave, important
+### Emotion Field (Avatar Expression + Thinking States)
+
+These emotions control what "thinking" state appears during typing indicators. Each has character-specific variations.
+
+**✅ FULLY IMPLEMENTED:**
+
+- `anxious` / `nervous` - Worried, uncertain
+  - Marcus: "weighing carefully", "considering cautiously"
+  - Maya: "trying to process", "thinking carefully"
+
+- `excited` / `enthusiastic` - Energetic, hopeful
+  - Marcus: "considering with interest", "reflecting enthusiastically"
+  - Maya: "thinking excitedly", "processing with energy"
+
+- `vulnerable` / `raw` - Open, emotionally exposed
+  - Marcus: "carefully considering", "reflecting thoughtfully"
+  - Maya: "thinking carefully", "processing slowly"
+
+- `focused` / `tense` - High concentration, precision
+  - Marcus: "concentrating precisely", "calculating", "monitoring vitals"
+  - Maya: "analyzing deeply", "focusing intently"
+
+- `clinical` / `simulation` - Professional, technical mode
+  - Marcus: "in the zone", "running the simulation", "visualizing the procedure"
+  - Maya: "running diagnostics", "testing the system"
+
+- `critical` / `failure` - High-stakes crisis moments
+  - Marcus: "assessing the damage", "calculating next move"
+  - Maya: "troubleshooting urgently", "finding the fix"
+
+- `relieved` / `triumphant` - Success, relief, accomplishment
+  - Marcus: "breathing easier", "feeling the win"
+  - Maya: "celebrating quietly", "soaking it in"
+
+- `conflicted` / `torn` - Internal struggle, tough decisions
+  - Marcus: "weighing both sides", "wrestling with it"
+  - Maya: "seeing both angles", "struggling with it"
+
+- `inspired` / `motivated` - Energized, driven, passionate
+  - Marcus: "feeling the drive", "getting fired up"
+  - Maya: "getting excited", "feeling the spark"
+
+- `grateful` / `thankful` - Appreciation, warmth
+  - Marcus: "appreciating this", "feeling thankful"
+  - Maya: "grateful", "feeling warm"
+
+- `heavy` / `burdened` / `weighted` - Weight of responsibility, gravity
+  - Marcus: "feeling the weight", "carrying it"
+  - Maya: "feeling the gravity", "taking it seriously"
+
+- `proud` - Pride, accomplishment
+  - Marcus: "feeling proud", "standing tall"
+  - Maya: "proud of this", "feeling accomplished"
+
+- `exhausted` / `drained` - Tired but functioning
+  - Marcus: "pushing through tired", "running on fumes"
+  - Maya: "tired but focused", "exhausted but present"
+
+**Character Coverage:**
+- Marcus, Maya, Devon, Jordan, Samuel all have unique thinking states for each emotion
+- Falls back to generic "thinking", "considering", "processing" if character not specified
 
 ### Interaction Field (Visual Animation)
-Use these for physical reactions:
-- `shake` - Trembling, emphasis, anger
-- `nod` - Agreement, understanding
-- `jitter` - Nervous energy, excitement
-- `bloom` - Opening up, realization
-- `ripple` - Wave of emotion
-- `big` - Loud, dramatic moment
-- `small` - Quiet, intimate moment
+
+**✅ ALL 7 ANIMATIONS IMPLEMENTED:**
+
+- `shake` - Trembling, emphasis, urgency, anger
+  - **Animation**: Rapid horizontal shake (x: -5, 5, -5, 5, 0 over 0.5s)
+  - **Use for**: Urgent commands, strong emphasis, trembling, emotional intensity
+
+- `jitter` - Nervous energy, machines, excitement, twitchiness
+  - **Animation**: Rapid micro-movements in X and Y (±1px over 0.3s, repeats 2x)
+  - **Use for**: Nervous moments, mechanical sounds, restless energy
+
+- `nod` - Agreement, understanding, affirmation
+  - **Animation**: Vertical bounce (y: -5, 0, -5, 0 over 0.6s)
+  - **Use for**: Agreement, confirmation, understanding
+
+- `bloom` - Opening up, realization, emotional breakthrough
+  - **Animation**: Scale up + fade in (0.95 → 1.05 → 1, opacity 0.8 → 1)
+  - **Use for**: Moments of insight, emotional opening, realizations
+
+- `ripple` - Wave of emotion, spreading feeling
+  - **Animation**: Gentle scale pulse (1 → 1.02 → 1 over 0.8s, repeats 1x)
+  - **Use for**: Waves of emotion, spreading feelings, subtle reactions
+
+- `big` - Loud, dramatic moments, emphasis
+  - **Animation**: Scale pulse (1 → 1.1 → 1 over 0.4s)
+  - **Use for**: Dramatic moments, loud sounds, strong emphasis
+
+- `small` - Quiet, intimate, withdrawing
+  - **Animation**: Scale down + slight fade (1 → 0.95 → 1, opacity slightly reduced)
+  - **Use for**: Quiet moments, intimacy, pulling back emotionally
 
 ---
 
@@ -366,13 +439,17 @@ This keeps the dialogue file as the **source of truth** for all scene details, e
 
 | Element | Write it? | Show it how? |
 |---------|-----------|--------------|
-| Character emotion | ❌ No | `emotion` field |
-| Physical action | ⚠️ Sometimes | `interaction` field or critical beat |
-| Dialogue | ✅ Yes | Keep it punchy |
-| Technical info | ✅ Yes | Compress it |
+| Character emotion | ❌ No | `emotion` field (13 emotions implemented) |
+| Physical action | ⚠️ Sometimes | `interaction` field (7 animations) or critical beat |
+| Dialogue | ✅ Yes | Keep it punchy (10-30 words) |
+| Technical info | ✅ Yes | Compress it (remove redundancy) |
 | Setting/environment | ✅ Yes | First time only |
 | Sound effects | ❌ No | `// TODO: [SFX]` comment |
 | Visual effects | ❌ No | `// TODO: [VFX]` comment |
+
+**Available Emotions**: anxious, excited, vulnerable, focused/tense, clinical/simulation, critical/failure, relieved/triumphant, conflicted/torn, inspired/motivated, grateful/thankful, heavy/burdened, proud, exhausted/drained
+
+**Available Interactions**: shake, jitter, nod, bloom, ripple, big, small
 
 ---
 

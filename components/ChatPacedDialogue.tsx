@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { cn } from '@/lib/utils'
 import { CharacterAvatar } from './CharacterAvatar'
 import { RichTextRenderer, type RichTextEffect } from './RichTextRenderer'
+import { motion, type Variants } from 'framer-motion'
 
 interface ChatPacedDialogueProps {
   /** The dialogue text with chunks separated by | or \n\n */
@@ -29,6 +30,55 @@ interface ChatPacedDialogueProps {
     building?: number
     patience?: number
     exploring?: number
+  }
+}
+
+// Interaction animation variants for Pokémon-style visual feedback
+const interactionAnimations: Record<string, Variants> = {
+  shake: {
+    animate: {
+      x: [0, -5, 5, -5, 5, 0],
+      transition: { duration: 0.5, repeat: 1 }
+    }
+  },
+  jitter: {
+    animate: {
+      x: [0, -1, 1, -1, 1, 0],
+      y: [0, -1, 1, -1, 1, 0],
+      transition: { duration: 0.3, repeat: 2 }
+    }
+  },
+  nod: {
+    animate: {
+      y: [0, -5, 0, -5, 0],
+      transition: { duration: 0.6 }
+    }
+  },
+  bloom: {
+    animate: {
+      scale: [0.95, 1.05, 1],
+      opacity: [0.8, 1, 1],
+      transition: { duration: 0.5 }
+    }
+  },
+  ripple: {
+    animate: {
+      scale: [1, 1.02, 1, 1.02, 1],
+      transition: { duration: 0.8, repeat: 1 }
+    }
+  },
+  big: {
+    animate: {
+      scale: [1, 1.1, 1],
+      transition: { duration: 0.4 }
+    }
+  },
+  small: {
+    animate: {
+      scale: [1, 0.95, 1],
+      opacity: [1, 0.9, 1],
+      transition: { duration: 0.4 }
+    }
   }
 }
 
@@ -109,9 +159,111 @@ export function ChatPacedDialogue({
           'Jordan': ['carefully considering', 'reflecting thoughtfully', 'taking a moment'],
           'Maya': ['thinking carefully', 'processing slowly', 'working through gently'],
           'Samuel': ['considering deeply', 'reflecting with care'],
-          'Devon': ['processing thoughtfully', 'analyzing carefully']
+          'Devon': ['processing thoughtfully', 'analyzing carefully'],
+          'Marcus': ['measuring carefully', 'considering with precision', 'reflecting deeply']
         }
         const states = vulnerableStates[characterName] || baseStates
+        selectedState = states[Math.floor(Math.random() * states.length)]
+      } else if (emotionLower.includes('focused') || emotionLower.includes('tense')) {
+        // High concentration, precision states
+        const focusedStates: Record<string, string[]> = {
+          'Marcus': ['concentrating precisely', 'calculating', 'monitoring vitals', 'locked in'],
+          'Maya': ['analyzing deeply', 'focusing intently', 'computing', 'in the zone'],
+          'Devon': ['zeroing in', 'locking focus', 'dialing in', 'getting precise'],
+          'Jordan': ['focusing carefully', 'narrowing in', 'concentrating'],
+          'Samuel': ['paying close attention', 'tuning in', 'listening intently']
+        }
+        const states = focusedStates[characterName] || baseStates
+        selectedState = states[Math.floor(Math.random() * states.length)]
+      } else if (emotionLower.includes('clinical') || emotionLower.includes('simulation')) {
+        // Professional, technical mode
+        const clinicalStates: Record<string, string[]> = {
+          'Marcus': ['in the zone', 'running the simulation', 'visualizing the procedure', 'operating'],
+          'Maya': ['running diagnostics', 'testing the system', 'debugging'],
+          'Devon': ['checking the specs', 'running calculations', 'modeling it out'],
+          'Jordan': ['mapping it out', 'planning the approach', 'strategizing']
+        }
+        const states = clinicalStates[characterName] || baseStates
+        selectedState = states[Math.floor(Math.random() * states.length)]
+      } else if (emotionLower.includes('critical') || emotionLower.includes('failure')) {
+        // High-stakes crisis moments
+        const criticalStates: Record<string, string[]> = {
+          'Marcus': ['assessing the damage', 'calculating next move', 'staying focused'],
+          'Maya': ['troubleshooting urgently', 'finding the fix', 'working fast'],
+          'Devon': ['damage control', 'finding a workaround', 'pivoting quickly'],
+          'Jordan': ['regrouping', 'finding a path forward', 'staying steady']
+        }
+        const states = criticalStates[characterName] || baseStates
+        selectedState = states[Math.floor(Math.random() * states.length)]
+      } else if (emotionLower.includes('relieved') || emotionLower.includes('triumphant')) {
+        // Success, relief, accomplishment
+        const relievedStates: Record<string, string[]> = {
+          'Marcus': ['breathing easier', 'feeling the win', 'taking it in'],
+          'Maya': ['celebrating quietly', 'soaking it in', 'feeling proud'],
+          'Devon': ['riding the high', 'taking a victory lap', 'feeling it'],
+          'Jordan': ['smiling', 'feeling good', 'appreciating the moment']
+        }
+        const states = relievedStates[characterName] || baseStates
+        selectedState = states[Math.floor(Math.random() * states.length)]
+      } else if (emotionLower.includes('conflicted') || emotionLower.includes('torn')) {
+        // Internal struggle, tough decisions
+        const conflictedStates: Record<string, string[]> = {
+          'Marcus': ['weighing both sides', 'wrestling with it', 'torn'],
+          'Maya': ['seeing both angles', 'struggling with it', 'uncertain'],
+          'Devon': ['pulled both ways', 'not sure', 'grappling with it'],
+          'Jordan': ['feeling the tension', 'working through it', 'finding balance']
+        }
+        const states = conflictedStates[characterName] || baseStates
+        selectedState = states[Math.floor(Math.random() * states.length)]
+      } else if (emotionLower.includes('inspired') || emotionLower.includes('motivated')) {
+        // Energized, driven, passionate
+        const inspiredStates: Record<string, string[]> = {
+          'Marcus': ['feeling the drive', 'getting fired up', 'energized'],
+          'Maya': ['getting excited', 'feeling the spark', 'charged up'],
+          'Devon': ['pumped up', 'ready to go', 'feeling it'],
+          'Jordan': ['inspired', 'feeling hopeful', 'energized']
+        }
+        const states = inspiredStates[characterName] || baseStates
+        selectedState = states[Math.floor(Math.random() * states.length)]
+      } else if (emotionLower.includes('grateful') || emotionLower.includes('thankful')) {
+        // Appreciation, warmth
+        const gratefulStates: Record<string, string[]> = {
+          'Marcus': ['appreciating this', 'feeling thankful', 'touched'],
+          'Maya': ['grateful', 'feeling warm', 'appreciative'],
+          'Devon': ['thankful', 'feeling it', 'grateful'],
+          'Jordan': ['touched', 'appreciating this moment', 'feeling grateful']
+        }
+        const states = gratefulStates[characterName] || baseStates
+        selectedState = states[Math.floor(Math.random() * states.length)]
+      } else if (emotionLower.includes('heavy') || emotionLower.includes('burdened') || emotionLower.includes('weighted')) {
+        // Weight of responsibility, gravity
+        const heavyStates: Record<string, string[]> = {
+          'Marcus': ['feeling the weight', 'carrying it', 'bearing the responsibility'],
+          'Maya': ['feeling the gravity', 'taking it seriously', 'understanding the weight'],
+          'Devon': ['feeling it heavy', 'shouldering it', 'carrying the load'],
+          'Jordan': ['feeling the heaviness', 'taking it in', 'processing the weight']
+        }
+        const states = heavyStates[characterName] || baseStates
+        selectedState = states[Math.floor(Math.random() * states.length)]
+      } else if (emotionLower.includes('proud')) {
+        // Pride, accomplishment
+        const proudStates: Record<string, string[]> = {
+          'Marcus': ['feeling proud', 'standing tall', 'owning it'],
+          'Maya': ['proud of this', 'feeling accomplished', 'satisfied'],
+          'Devon': ['feeling good about it', 'proud', 'accomplished'],
+          'Jordan': ['proud', 'feeling accomplished', 'satisfied']
+        }
+        const states = proudStates[characterName] || baseStates
+        selectedState = states[Math.floor(Math.random() * states.length)]
+      } else if (emotionLower.includes('exhausted') || emotionLower.includes('drained')) {
+        // Tired but functioning
+        const exhaustedStates: Record<string, string[]> = {
+          'Marcus': ['pushing through tired', 'running on fumes', 'keeping it together'],
+          'Maya': ['tired but focused', 'exhausted but present', 'drained'],
+          'Devon': ['running low', 'pushing through it', 'tired'],
+          'Jordan': ['feeling drained', 'tired', 'pushing through']
+        }
+        const states = exhaustedStates[characterName] || baseStates
         selectedState = states[Math.floor(Math.random() * states.length)]
       } else {
         // Default: randomize from base states
@@ -170,7 +322,7 @@ export function ChatPacedDialogue({
           // Get interaction class if provided (applies to all chunks)
           const interactionClass = interaction ? `narrative-interaction-${interaction}` : null
 
-          return (
+          const bubbleContent = (
             <div
               key={index}
               className={cn("chat-bubble", interactionClass)}
@@ -183,6 +335,17 @@ export function ChatPacedDialogue({
               />
             </div>
           )
+
+          // Apply interaction animation if specified
+          if (interaction && interactionAnimations[interaction]) {
+            return (
+              <motion.div key={index} {...interactionAnimations[interaction]}>
+                {bubbleContent}
+              </motion.div>
+            )
+          }
+
+          return bubbleContent
         })}
 
         {/* Typing indicator with avatar */}
