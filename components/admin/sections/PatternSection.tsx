@@ -19,7 +19,7 @@ interface PatternSectionProps {
  * Pattern Analytics Section - Admin-facing pattern insights
  * Shows decision-making patterns, evolution, and recommendations for advisors
  */
-export function PatternSection({ userId, profile, adminViewMode }: PatternSectionProps) {
+export function PatternSection({ userId, profile: _profile, adminViewMode }: PatternSectionProps) {
   const [patternProfile, setPatternProfile] = useState<PatternProfile | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
