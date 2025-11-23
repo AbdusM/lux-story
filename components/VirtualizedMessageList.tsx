@@ -40,7 +40,7 @@ export const VirtualizedMessageList = memo(({
   }, [messages, visibleRange])
 
   // Calculate total height
-  const totalHeight = messages.length * itemHeight
+  const _totalHeight = messages.length * itemHeight
 
   // Handle scroll
   const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {

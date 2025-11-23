@@ -11,8 +11,8 @@ export function AppleDesignReviewDisplay() {
   const {
     review,
     isAnalyzing,
-    getExecutiveSummary,
-    getAgentAnalysis,
+    getExecutiveSummary: _getExecutiveSummary,
+    getAgentAnalysis: _getAgentAnalysis,
     getOverallScore,
     getAgentScores,
     getVerdicts,

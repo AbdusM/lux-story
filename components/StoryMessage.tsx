@@ -70,8 +70,8 @@ export function StoryMessage({ speaker, text, type = 'dialogue', messageWeight =
   const [displayedText, setDisplayedText] = useState(typewriter ? "" : text)
   const [showContinueIndicator, setShowContinueIndicator] = useState(false)
   
-  const isLux = speaker === 'Lux'
-  const isZippy = speaker === 'Zippy'
+  const _isLux = speaker === 'Lux'
+  const _isZippy = speaker === 'Zippy'
   const isNarration = type === 'narration'
   const isWhisper = type === 'whisper'
   const isSensation = type === 'sensation'
