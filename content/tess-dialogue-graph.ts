@@ -19,18 +19,12 @@ export const tessDialogueNodes: DialogueNode[] = [
     speaker: 'Tess',
     content: [
       {
-        text: `*She's pacing the Waiting Room, hiking boots clunking against the marble floor. She's wearing a blazer over a flannel shirt.*
-
-*She stops, staring at a corkboard covered in index cards.*
-
-'Not rigor. Resilience. No, that sounds too soft. Grit? No, that's overused.'
-
-*She turns to you, eyes wide.*
-
-Hey. You look like you've been outside recently. Does 'Wilderness Immersion' sound like a vacation or a crucible?`,
-        emotion: 'frantic_focused',
+        text: `*Pacing. Hiking boots on marble. Blazer over flannel.*|*Stops at corkboard of index cards.*|'Not rigor. Resilience? Too soft. Grit? Overused.'|*Turns, eyes wide.*|You look like you've been outside. 'Wilderness Immersion'—vacation or crucible?`,
+        emotion: 'passionate',
+        interaction: 'jitter',
         variation_id: 'tess_intro_v1',
-        richEffectContext: 'thinking'
+        richEffectContext: 'thinking',
+        useChatPacing: true
       }
     ],
     choices: [
@@ -74,11 +68,11 @@ Hey. You look like you've been outside recently. Does 'Wilderness Immersion' sou
     speaker: 'Tess',
     content: [
       {
-        text: `Exactly. It's not s'mores and ghost stories. It's twelve weeks on the Appalachian Trail with thirty pounds on your back and no phone.
-
-I'm trying to explain to a grant committee why that teaches you more than AP Calculus.`,
+        text: `Exactly. Not s'mores and ghost stories.|Twelve weeks on the Appalachian Trail. Thirty pounds on your back. No phone.|Grant committee needs to see why *this* teaches more than AP Calculus.`,
         emotion: 'passionate',
-        variation_id: 'crucible_v1'
+        interaction: 'nod',
+        variation_id: 'crucible_v1',
+        useChatPacing: true
       }
     ],
     choices: [
@@ -108,13 +102,11 @@ I'm trying to explain to a grant committee why that teaches you more than AP Cal
     speaker: 'Tess',
     content: [
       {
-        text: `See, that's the problem. That's what the investors hear. 'Camping.'
-
-They don't see the decision-making. The logistics. The conflict resolution when you're wet, hungry, and lost at 4,000 feet.
-
-I need to make them see the *curriculum* inside the chaos.`,
-        emotion: 'frustrated_determined',
-        variation_id: 'defends_v1'
+        text: `That's the problem. Investors hear 'camping.'|They miss the decision-making. Logistics. Conflict resolution at 4,000 feet—wet, hungry, lost.|Need to show the *curriculum* inside the chaos.`,
+        emotion: 'frustrated',
+        interaction: 'shake',
+        variation_id: 'defends_v1',
+        useChatPacing: true
       }
     ],
     choices: [
@@ -133,13 +125,11 @@ I need to make them see the *curriculum* inside the chaos.`,
     speaker: 'Tess',
     content: [
       {
-        text: `I'm trying to restart 'Walkabout.'
-
-It was this incredible program in Philly. Instead of senior year—sitting in rows, taking standardized tests—you went out. Hiked the trail. Did service projects. Built your own syllabus.
-
-I did it ten years ago. It changed my life. I learned more about leadership in those woods than I did in four years of college.`,
-        emotion: 'nostalgic_inspired',
-        variation_id: 'school_story_v1'
+        text: `Restarting 'Walkabout.' Program in Philly.|Instead of senior year—rows, tests—you went out. Trail. Service projects. Built your own syllabus.|Did it ten years ago. Changed my life.|Learned more about leadership in those woods than four years of college.`,
+        emotion: 'inspired',
+        interaction: 'bloom',
+        variation_id: 'school_story_v1',
+        useChatPacing: true
       }
     ],
     choices: [
@@ -165,13 +155,11 @@ I did it ten years ago. It changed my life. I learned more about leadership in t
     speaker: 'Tess',
     content: [
       {
-        text: `Defunded. 'Not enough measurable outcomes.' 'High liability.'
-
-They want spreadsheets. They want test scores. You can't put 'learned how to trust myself' on a scantron sheet.
-
-So I'm starting my own. 'The Apex Semester.' But I need $250,000 in seed funding, and my pitch deck is... well, it's messy.`,
-        emotion: 'determined_anxious',
-        variation_id: 'defunding_v1'
+        text: `Defunded. 'Not enough measurable outcomes.' 'High liability.'|They want spreadsheets. Test scores. Can't put 'learned to trust myself' on a scantron.|Starting my own. 'The Apex Semester.' Need $250K seed funding.|Pitch deck is... messy.`,
+        emotion: 'determined',
+        interaction: 'shake',
+        variation_id: 'defunding_v1',
+        useChatPacing: true
       }
     ],
     choices: [
@@ -194,13 +182,11 @@ So I'm starting my own. 'The Apex Semester.' But I need $250,000 in seed funding
     speaker: 'Tess',
     content: [
       {
-        text: `I have a safe job right now. Career Counselor at the high school. Pension. Health insurance. Summer break.
-
-But I see these kids... they're burnt out at 17. They don't need another AP class. They need to know they can survive something hard.
-
-If I do this, I quit the safe job. No net.`,
+        text: `Safe job now. Career Counselor. Pension, health insurance, summer break.|But these kids... burnt out at 17. Don't need another AP class.|They need to know they can survive something hard.|If I do this, I quit. No net.`,
         emotion: 'vulnerable',
-        variation_id: 'motivation_v1'
+        interaction: 'small',
+        variation_id: 'motivation_v1',
+        useChatPacing: true
       }
     ],
     choices: [
@@ -224,20 +210,11 @@ If I do this, I quit the safe job. No net.`,
     speaker: 'Tess',
     content: [
       {
-        text: `*She thrusts a tablet into your hands. The slide is a wall of text. Bullets, charts, paragraphs.* 
-
-"Look at this. 'The Pedagogical Benefits of Wilderness Immersion for Adolescent Neural Development.'"
-
-*She grimaces.*
-
-"I sound like a textbook. If I present this, they'll fall asleep before I ask for the money."
-
-*The cursor blinks at the headline.*
-
-"Fix it. Be ruthless. What are we actually selling?"`,
-        emotion: 'focused_work_mode',
+        text: `*Thrusts tablet. Slide: wall of text. Bullets, charts, paragraphs.*|'The Pedagogical Benefits of Wilderness Immersion for Adolescent Neural Development.'|*Grimaces.*|Sound like a textbook. They'll sleep before I ask for money.|*Cursor blinks.*|Fix it. Be ruthless. What are we *actually* selling?`,
+        emotion: 'focused',
+        interaction: 'shake',
         variation_id: 'pitch_scenario_v2',
-        richEffectContext: 'warning', // Editor Mode
+        richEffectContext: 'warning',
         useChatPacing: true
       }
     ],
@@ -276,16 +253,12 @@ If I do this, I quit the safe job. No net.`,
     speaker: 'Tess',
     content: [
       {
-        text: `*Tess reads the new headline. She sighs.*
-
-'Evidence-Based Outdoor Education.' It's accurate. It's professional.
-
-And it's boring. I can see the committee now. They'll nod, say 'interesting,' and fund another STEM lab because it's safer.
-
-If I can't make them *feel* the urgency, I've already lost.`,
+        text: `*Reads headline. Sighs.*|'Evidence-Based Outdoor Education.' Accurate. Professional.|Boring.|Committee will nod, say 'interesting,' fund another STEM lab. Safer.|Can't make them *feel* urgency? Already lost.`,
         emotion: 'deflated',
+        interaction: 'small',
         variation_id: 'pitch_fail_safe_v1',
-        richEffectContext: 'error'
+        richEffectContext: 'error',
+        useChatPacing: true
       }
     ],
     choices: [
@@ -313,13 +286,11 @@ If I can't make them *feel* the urgency, I've already lost.`,
     speaker: 'Tess',
     content: [
       {
-        text: `'Antifragile.' I like that. Investors love that word.
-
-So the hike isn't about nature. It's about... stress inoculation? Learning to thrive in chaos?
-
-Yes. 'We don't teach history; we teach how to make history when the map runs out.'`,
+        text: `'Antifragile.' Like that. Investors love that word.|Hike isn't about nature. Stress inoculation. Learning to thrive in chaos.|Yes. 'We don't teach history. We teach how to make history when the map runs out.'`,
         emotion: 'inspired',
-        variation_id: 'pitch_resilience_v1'
+        interaction: 'bloom',
+        variation_id: 'pitch_resilience_v1',
+        useChatPacing: true
       }
     ],
     choices: [
@@ -343,13 +314,11 @@ Yes. 'We don't teach history; we teach how to make history when the map runs out
     speaker: 'Tess',
     content: [
       {
-        text: `Burnout. God, yes. The suicide rates, the anxiety... schools are pressure cookers.
-
-So this isn't a gap year. It's a reset. 'Disconnect to Reconnect.'
-
-'We give students the one thing high school steals: Their agency.'`,
-        emotion: 'empathetic_determined',
-        variation_id: 'pitch_mental_health_v1'
+        text: `Burnout. Yes. Suicide rates, anxiety—schools are pressure cookers.|Not a gap year. A reset. 'Disconnect to Reconnect.'|'We give students what high school steals: Their agency.'`,
+        emotion: 'passionate',
+        interaction: 'nod',
+        variation_id: 'pitch_mental_health_v1',
+        useChatPacing: true
       }
     ],
     choices: [
@@ -374,14 +343,9 @@ So this isn't a gap year. It's a reset. 'Disconnect to Reconnect.'
     speaker: 'Tess',
     content: [
       {
-        text: `*She writes the headline on a card and pins it to the center of the board. She steps back, looking at the full picture.*
-
-It works. I can sell this. I know I can.
-
-But if I send this email... I'm resigning. I'm leaving the pension. The tenure track.
-
-If I fail, I'm just an unemployed hiker.`,
-        emotion: 'scared_excited',
+        text: `*Writes headline on card. Pins to center. Steps back.*|It works. Can sell this.|But this email... resignation. Leaving pension. Tenure track.|If I fail, just an unemployed hiker.`,
+        emotion: 'anxious',
+        interaction: 'shake',
         variation_id: 'climax_v1',
         richEffectContext: 'thinking',
         useChatPacing: true
@@ -420,18 +384,12 @@ If I fail, I'm just an unemployed hiker.`,
     speaker: 'Tess',
     content: [
       {
-        text: `*She takes a deep breath, her hand hovering over her phone.*
-
-You're right. I can't teach courage if I'm playing it safe.
-
-*She taps 'Send'.*
-
-It's done. Resignation sent. Grant application submitted.
-
-I'm terrifyingly free.`,
-        emotion: 'liberated',
+        text: `*Deep breath. Hand hovers over phone.*|Can't teach courage playing it safe.|*Taps 'Send.'*|Done. Resignation sent. Grant submitted.|Terrifyingly free.`,
+        emotion: 'excited',
+        interaction: 'bloom',
         variation_id: 'decision_made_v1',
-        richEffectContext: 'success'
+        richEffectContext: 'success',
+        useChatPacing: true
       }
     ],
     choices: [
@@ -456,13 +414,11 @@ I'm terrifyingly free.`,
     speaker: 'Tess',
     content: [
       {
-        text: `Maybe... maybe I can run a pilot program this summer. Keep the job, prove the concept.
-
-Yeah. That's smarter. I don't need to blow up my life to build a new one.
-
-Thank you. I almost jumped without a parachute.`,
+        text: `Maybe... pilot program this summer. Keep job, prove concept.|Smarter. Don't need to blow up my life to build a new one.|Thank you. Almost jumped without a parachute.`,
         emotion: 'relieved',
-        variation_id: 'decision_cautious_v1'
+        interaction: 'small',
+        variation_id: 'decision_cautious_v1',
+        useChatPacing: true
       }
     ],
     choices: [
@@ -487,13 +443,11 @@ Thank you. I almost jumped without a parachute.`,
     speaker: 'Tess',
     content: [
       {
-        text: `I have a lot of work to do. But for the first time in years, I know exactly where I'm going.
-
-There's someone else here—Kai. From corporate. They're realizing the same thing I did: you can't fix the system from inside a cubicle.
-
-If you see Samuel, tell him... tell him I'm finally going for a walk.`,
+        text: `Lot of work ahead. But first time in years, I know where I'm going.|Someone else here—Kai. Corporate. Realizing same thing: can't fix the system from inside a cubicle.|See Samuel? Tell him I'm finally going for a walk.`,
         emotion: 'grateful',
-        variation_id: 'farewell_v1'
+        interaction: 'nod',
+        variation_id: 'farewell_v1',
+        useChatPacing: true
       }
     ],
     choices: [
@@ -530,21 +484,11 @@ If you see Samuel, tell him... tell him I'm finally going for a walk.`,
     nodeId: 'tess_phase2_entry',
     speaker: 'Tess',
     content: [{
-      text: `*Six weeks later. Tess is in the Waiting Room again, but this time she's surrounded by incident reports, parental consent forms, and a laptop showing a wilderness trail map.*
-
-*She looks exhausted but energized.*
-
-I have eight students on the Appalachian Trail right now. Day 3 of a 5-day section hike.
-
-*She taps a form.*
-
-And I have three incident reports, twelve parent phone calls, and a school board meeting scheduled for Monday.
-
-*She looks up at you.*
-
-Welcome to education reform in practice.`,
-      emotion: 'exhausted_energized',
-      variation_id: 'p2_entry_v1'
+      text: `*Six weeks later. Surrounded by incident reports, consent forms, trail map on laptop.*|*Exhausted but energized.*|Eight students on Appalachian Trail. Day 3 of 5.|*Taps form.*|Three incident reports. Twelve parent calls. Board meeting Monday.|*Looks up.*|Welcome to education reform in practice.`,
+      emotion: 'exhausted',
+      interaction: 'shake',
+      variation_id: 'p2_entry_v1',
+      useChatPacing: true
     }],
     choices: [
       {
@@ -572,17 +516,11 @@ Welcome to education reform in practice.`,
     nodeId: 'tess_p2_crisis_reveal',
     speaker: 'Tess',
     content: [{
-      text: `DeShawn—16, from Birmingham's inner city, first time camping—had a panic attack on Day 2.
-
-Complete darkness. No streetlights. Sounds he'd never heard. He couldn't breathe. Thought he was dying.
-
-*She rubs her eyes.*
-
-My wilderness guide talked him down. He's physically safe. But now two other students want to quit. And the parents...
-
-The parents are threatening to pull their kids and report me to the school board for "reckless endangerment."`,
-      emotion: 'worried',
-      variation_id: 'crisis_reveal_v1'
+      text: `DeShawn—16, Birmingham inner city, first time camping—panic attack Day 2.|Complete darkness. No streetlights. Sounds he'd never heard. Couldn't breathe. Thought he was dying.|*Rubs eyes.*|Guide talked him down. Physically safe. But two others want to quit.|Parents threatening to pull kids, report me for 'reckless endangerment.'`,
+      emotion: 'anxious',
+      interaction: 'small',
+      variation_id: 'crisis_reveal_v1',
+      useChatPacing: true
     }],
     choices: [
       {
@@ -607,20 +545,11 @@ The parents are threatening to pull their kids and report me to the school board
     nodeId: 'tess_p2_ripple_effect',
     speaker: 'Tess',
     content: [{
-      text: `DeShawn is physically fine. But emotionally? He's humiliated. Thinks he "failed" the test.
-
-*She shows you her phone—messages from other students.*
-
-Riley: "I thought this would be fun. I want to come home."
-Jamie: Silent, but Jamie's parents called twice saying it's "too risky."
-
-*She sets down the phone.*
-
-This is exactly what the grant committee warned me about. "What happens when theory meets real students?"
-
-I'm about to find out if I'm a visionary or just reckless.`,
+      text: `DeShawn physically fine. Emotionally? Humiliated. Thinks he 'failed.'|*Shows phone—messages.*|Riley: 'I want to come home.' Jamie: Silent, but parents called twice. 'Too risky.'|*Sets phone down.*|Grant committee warned me. 'What happens when theory meets real students?'|Visionary or just reckless?`,
       emotion: 'conflicted',
-      variation_id: 'ripple_v1'
+      interaction: 'shake',
+      variation_id: 'ripple_v1',
+      useChatPacing: true
     }],
     choices: [
       {
@@ -645,19 +574,11 @@ I'm about to find out if I'm a visionary or just reckless.`,
     nodeId: 'tess_p2_deshawn_conversation',
     speaker: 'Tess',
     content: [{
-      text: `*She pulls up a video call. DeShawn appears—sitting in a tent, eyes red.*
-
-**DeShawn**: "Ms. Tess, I'm sorry. I ruined everything."
-
-*Tess's voice softens.*
-
-**Tess**: "DeShawn, you didn't ruin anything. You had a normal reaction to an extreme environment."
-
-**DeShawn**: "But everyone else is fine. I'm the weak one."
-
-*She looks at you—what do I say?*`,
-      emotion: 'compassionate',
-      variation_id: 'deshawn_talk_v1'
+      text: `*Video call. DeShawn in tent, eyes red.*|**DeShawn**: 'Ms. Tess, I'm sorry. Ruined everything.'|*Voice softens.*|**Tess**: 'You didn't ruin anything. Normal reaction to extreme environment.'|**DeShawn**: 'Everyone else is fine. I'm the weak one.'|*Looks at you—what do I say?*`,
+      emotion: 'vulnerable',
+      interaction: 'small',
+      variation_id: 'deshawn_talk_v1',
+      useChatPacing: true
     }],
     choices: [
       {
@@ -693,21 +614,11 @@ I'm about to find out if I'm a visionary or just reckless.`,
     nodeId: 'tess_p2_deshawn_decision',
     speaker: 'Tess',
     content: [{
-      text: `*DeShawn thinks for a long moment.*
-
-**DeShawn**: "I... I want to finish. But I need help. I need someone to tell me it's okay to be scared."
-
-*Tess nods.*
-
-**Tess**: "Okay. The guide will check in with you every hour. And when you finish those last two days, you're going to know something about yourself nobody can teach in a classroom."
-
-*DeShawn nods. The call ends.*
-
-*Tess exhales.*
-
-One down. Now the parents.`,
+      text: `*DeShawn thinks.*|**DeShawn**: 'I... I want to finish. But need help. Someone to say it's okay to be scared.'|*Nods.*|**Tess**: 'Guide checks in every hour. When you finish those two days, you'll know something no classroom can teach.'|*DeShawn nods. Call ends.*|*Exhales.*|One down. Now parents.`,
       emotion: 'relieved',
-      variation_id: 'deshawn_commits_v1'
+      interaction: 'nod',
+      variation_id: 'deshawn_commits_v1',
+      useChatPacing: true
     }],
     choices: [
       {
@@ -731,23 +642,11 @@ One down. Now the parents.`,
     nodeId: 'tess_p2_parent_calls',
     speaker: 'Tess',
     content: [{
-      text: `*She shows you a list of voicemails.*
-
-**Riley's Mom**: "This is too much. Bring my child home NOW."
-
-**Jamie's Dad**: "We signed up for outdoor education, not survival training."
-
-**Another Parent**: "My lawyer says this violates duty of care."
-
-*Tess sets down the phone.*
-
-I have two options. I can defend the rigor—"This is exactly what wilderness education IS."
-
-Or I can modify the program—make it gentler, safer, more palatable.
-
-But if I cave, am I still teaching resilience? Or am I just babysitting in the woods?`,
+      text: `*Shows voicemails.*|**Riley's Mom**: 'Bring my child home NOW.' **Jamie's Dad**: 'Outdoor education, not survival training.' **Another**: 'My lawyer says duty of care violation.'|*Sets phone down.*|Two options. Defend rigor—'This IS wilderness education.'|Or modify—gentler, safer, palatable.|If I cave, still teaching resilience? Or babysitting in the woods?`,
       emotion: 'frustrated',
-      variation_id: 'parent_calls_v1'
+      interaction: 'shake',
+      variation_id: 'parent_calls_v1',
+      useChatPacing: true
     }],
     choices: [
       {
@@ -787,17 +686,11 @@ But if I cave, am I still teaching resilience? Or am I just babysitting in the w
     nodeId: 'tess_p2_parent_strategy',
     speaker: 'Tess',
     content: [{
-      text: `I'm going to call each parent personally.
-
-Not defensive. Not apologetic. Educational.
-
-"Here's what happened. Here's why it matters. Here's what we're doing to support your child."
-
-*She pulls up her notes.*
-
-The truth is, DeShawn's panic attack IS the curriculum. The question is whether they can see that.`,
+      text: `Calling each parent personally.|Not defensive. Not apologetic. Educational.|'What happened. Why it matters. What we're doing to support your child.'|*Pulls up notes.*|Truth is, DeShawn's panic attack IS the curriculum. Can they see that?`,
       emotion: 'determined',
-      variation_id: 'strategy_v1'
+      interaction: 'nod',
+      variation_id: 'strategy_v1',
+      useChatPacing: true
     }],
     choices: [
       {
@@ -822,21 +715,11 @@ The truth is, DeShawn's panic attack IS the curriculum. The question is whether 
     nodeId: 'tess_p2_program_adaptation',
     speaker: 'Tess',
     content: [{
-      text: `Maybe I was naive thinking everyone would thrive in the same format.
-
-What if I offer scaling?
-
-**Level 1**: Supported wilderness (guide checks in frequently, shorter distances)
-**Level 2**: Standard immersion (what we're doing now)
-**Level 3**: Advanced challenge (for students who want more)
-
-Students choose their path. Parents feel heard. Program integrity stays intact.
-
-*She sketches it out.*
-
-Is this compromise, or is this good design?`,
-      emotion: 'thoughtful',
-      variation_id: 'adaptation_v1'
+      text: `Maybe naive thinking everyone thrives same format.|What if scaling?|**Level 1**: Supported (frequent check-ins, shorter distances) **Level 2**: Standard immersion **Level 3**: Advanced challenge|Students choose. Parents heard. Integrity intact.|*Sketches.*|Compromise or good design?`,
+      emotion: 'focused',
+      interaction: 'bloom',
+      variation_id: 'adaptation_v1',
+      useChatPacing: true
     }],
     choices: [
       {
@@ -865,23 +748,11 @@ Is this compromise, or is this good design?`,
     nodeId: 'tess_p2_board_prep',
     speaker: 'Tess',
     content: [{
-      text: `The school board meeting is in 48 hours.
-
-They're going to ask:
-- "Is this program safe?"
-- "Are you qualified to run this?"
-- "What's your liability plan?"
-- "Why is this better than AP classes?"
-
-*She looks at you.*
-
-I can go in with data—completion rates, skill assessments, student testimonials.
-
-Or I can go in with vision—"Education is about becoming, not just learning."
-
-Or I can go in with both and hope I don't sound like a TED Talk.`,
-      emotion: 'nervous',
-      variation_id: 'board_prep_v1'
+      text: `Board meeting in 48 hours.|Questions: Safe? Qualified? Liability? Better than AP classes?|*Looks at you.*|Go in with data—completion rates, assessments, testimonials.|Or vision—'Education is becoming, not just learning.'|Or both and risk sounding like a TED Talk.`,
+      emotion: 'anxious',
+      interaction: 'jitter',
+      variation_id: 'board_prep_v1',
+      useChatPacing: true
     }],
     choices: [
       {
@@ -917,25 +788,11 @@ Or I can go in with both and hope I don't sound like a TED Talk.`,
     nodeId: 'tess_p2_board_meeting',
     speaker: 'Tess',
     content: [{
-      text: `*Monday. Tess is standing in front of the school board—five skeptical faces.*
-
-**Board Member 1**: "Ms. Rodriguez, we've received complaints about student safety."
-
-*Tess takes a breath.*
-
-**Tess**: "You have. And I want to address them directly."
-
-*She pulls up her presentation.*
-
-**Tess**: "DeShawn had a panic attack. Not because the program is unsafe, but because it's working. He encountered real fear and chose to continue. That's resilience."
-
-**Board Member 2**: "So you're saying panic attacks are... good?"
-
-*Tess doesn't flinch.*
-
-How do I answer this?`,
+      text: `*Monday. School board—five skeptical faces.*|**Board Member 1**: 'Ms. Rodriguez, complaints about student safety.'|*Breath.*|**Tess**: 'I want to address them directly.'|*Pulls up presentation.*|'DeShawn had a panic attack. Not unsafe—working. Real fear. Chose to continue. That's resilience.'|**Board Member 2**: 'Panic attacks are... good?'|*Doesn't flinch.*|How do I answer?`,
       emotion: 'focused',
-      variation_id: 'board_v1'
+      interaction: 'big',
+      variation_id: 'board_v1',
+      useChatPacing: true
     }],
     choices: [
       {
@@ -960,31 +817,11 @@ How do I answer this?`,
     nodeId: 'tess_p2_leadership_moment',
     speaker: 'Tess',
     content: [{
-      text: `*The board members exchange glances.*
-
-**Board Member 3**: "What you're describing sounds... expensive. And risky. And unproven."
-
-*Tess nods.*
-
-**Tess**: "It is all of those things. It's also the future of education."
-
-*She leans forward.*
-
-**Tess**: "We can keep doing what we've always done—safe, measurable, forgettable. Or we can teach students to face the unknown."
-
-**Board Chair**: "And if more students quit?"
-
-*Tess meets their eyes.*
-
-**Tess**: "Then I'll have learned something. And I'll iterate. That's what builders do."
-
-*Silence.*
-
-**Board Chair**: "Continue the program. But submit monthly reports."
-
-*Tess exhales.*`,
-      emotion: 'triumphant',
-      variation_id: 'leadership_v1'
+      text: `*Board members exchange glances.*|**Member 3**: 'Expensive. Risky. Unproven.'|*Nods.*|**Tess**: 'All of those. Also the future of education.'|*Leans forward.*|'Keep doing what we've always done—safe, measurable, forgettable. Or teach students to face the unknown.'|**Chair**: 'If more quit?'|*Meets eyes.*|'Then I learn. Iterate. That's what builders do.'|*Silence.*|**Chair**: 'Continue. Monthly reports.'|*Exhales.*`,
+      emotion: 'proud',
+      interaction: 'big',
+      variation_id: 'leadership_v1',
+      useChatPacing: true
     }],
     choices: [
       {
@@ -1009,25 +846,11 @@ How do I answer this?`,
     nodeId: 'tess_p2_resolution',
     speaker: 'Tess',
     content: [{
-      text: `*Three days later. The students return from the trail.*
-
-*DeShawn steps off the bus. Muddy. Exhausted. Grinning.*
-
-**DeShawn**: "Ms. Tess, I did it. All five days."
-
-*Riley quit on Day 4. Jamie finished but their parents pulled them from the program.*
-
-*Tess watches DeShawn hug his mom.*
-
-Not everyone finished. Not everyone stayed.
-
-But the ones who did? They know something now.
-
-*She turns to you.*
-
-This is what founding looks like. It's messy. It's incomplete. And it's real.`,
-      emotion: 'fulfilled',
-      variation_id: 'resolution_v1'
+      text: `*Three days later. Students return.*|*DeShawn off bus. Muddy. Exhausted. Grinning.*|**DeShawn**: 'Ms. Tess, I did it. All five days.'|Riley quit Day 4. Jamie finished but parents pulled them.|*Watches DeShawn hug his mom.*|Not everyone finished. Not everyone stayed.|But the ones who did? They know something now.|*Turns.*|This is founding. Messy. Incomplete. Real.`,
+      emotion: 'grateful',
+      interaction: 'ripple',
+      variation_id: 'resolution_v1',
+      useChatPacing: true
     }],
     choices: [
       {
@@ -1052,21 +875,11 @@ This is what founding looks like. It's messy. It's incomplete. And it's real.`,
     nodeId: 'tess_p2_reflection',
     speaker: 'Tess',
     content: [{
-      text: `I'm adding three changes:
-
-1. Pre-program "exposure trips"—let students test the woods before committing
-2. Tiered difficulty paths—meet students where they are
-3. Parent education sessions—help them understand what we're doing
-
-*She smiles.*
-
-A month ago, I thought founding a school was about having the perfect curriculum.
-
-Now I know it's about leading through uncertainty. Every crisis is data. Every dropout is a lesson.
-
-I'm not a visionary. I'm a builder who's willing to break things to make them better.`,
-      emotion: 'wise',
-      variation_id: 'reflection_v1'
+      text: `Adding three changes:|1. Pre-program exposure trips—test woods before committing 2. Tiered paths—meet students where they are 3. Parent education—help them understand|*Smiles.*|Month ago, thought founding was perfect curriculum.|Now know it's leading through uncertainty. Every crisis is data. Every dropout a lesson.|Not a visionary. Builder willing to break things to make them better.`,
+      emotion: 'proud',
+      interaction: 'bloom',
+      variation_id: 'reflection_v1',
+      useChatPacing: true
     }],
     choices: [
       {
@@ -1084,15 +897,11 @@ I'm not a visionary. I'm a builder who's willing to break things to make them be
     nodeId: 'tess_p2_complete',
     speaker: 'Tess',
     content: [{
-      text: `Thank you. For being here when it got hard.
-
-*She picks up her pack.*
-
-I have a new cohort starting next week. Fifteen students this time. Word is spreading.
-
-If you see Samuel, tell him... tell him I'm learning to lead by walking through the fire.`,
+      text: `Thank you. For being here when it got hard.|*Picks up pack.*|New cohort next week. Fifteen students. Word spreading.|See Samuel? Tell him I'm learning to lead by walking through fire.`,
       emotion: 'grateful',
-      variation_id: 'complete_v1'
+      interaction: 'nod',
+      variation_id: 'complete_v1',
+      useChatPacing: true
     }],
     choices: [
       {
