@@ -157,11 +157,11 @@ export class DevelopmentalPsychologySystem {
     return { ...this.identityState }
   }
 
-  private updateIdentityExploration(metrics: DevelopmentalMetrics) {
+  private updateIdentityExploration(_metrics: DevelopmentalMetrics) {
     const recentMetrics = this.developmentalHistory.slice(-5)
     const avgExploration = recentMetrics.reduce((sum, m) => sum + m.explorationDepth, 0) / recentMetrics.length
     const avgCommitment = recentMetrics.reduce((sum, m) => sum + m.identityCommitment, 0) / recentMetrics.length
-    
+
     if (avgCommitment > 0.7) {
       this.identityState.identityExploration = 'committed'
     } else if (avgExploration > 0.6) {
@@ -173,13 +173,13 @@ export class DevelopmentalPsychologySystem {
     }
   }
 
-  private updateSelfConcept(metrics: DevelopmentalMetrics) {
+  private updateSelfConcept(_metrics: DevelopmentalMetrics) {
     const recentMetrics = this.developmentalHistory.slice(-5)
     const avgSelfEfficacy = recentMetrics.reduce((sum, m) => sum + m.selfEfficacy, 0) / recentMetrics.length
     const avgPurpose = recentMetrics.reduce((sum, m) => sum + m.purpose, 0) / recentMetrics.length
-    
+
     const coherenceScore = (avgSelfEfficacy + avgPurpose) / 2
-    
+
     if (coherenceScore > 0.8) {
       this.identityState.selfConcept = 'integrated'
     } else if (coherenceScore > 0.6) {
@@ -191,10 +191,10 @@ export class DevelopmentalPsychologySystem {
     }
   }
 
-  private updateCulturalIdentity(metrics: DevelopmentalMetrics) {
+  private updateCulturalIdentity(_metrics: DevelopmentalMetrics) {
     const recentMetrics = this.developmentalHistory.slice(-5)
     const avgCulturalAwareness = recentMetrics.reduce((sum, m) => sum + m.culturalAwareness, 0) / recentMetrics.length
-    
+
     if (avgCulturalAwareness > 0.7) {
       this.identityState.culturalIdentity = 'affirmed'
     } else if (avgCulturalAwareness > 0.5) {
@@ -206,13 +206,13 @@ export class DevelopmentalPsychologySystem {
     }
   }
 
-  private updateCareerIdentity(metrics: DevelopmentalMetrics) {
+  private updateCareerIdentity(_metrics: DevelopmentalMetrics) {
     const recentMetrics = this.developmentalHistory.slice(-5)
     const avgPurpose = recentMetrics.reduce((sum, m) => sum + m.purpose, 0) / recentMetrics.length
     const avgFuturePlanning = recentMetrics.reduce((sum, m) => sum + m.futurePlanning, 0) / recentMetrics.length
-    
+
     const careerClarity = (avgPurpose + avgFuturePlanning) / 2
-    
+
     if (careerClarity > 0.7) {
       this.identityState.careerIdentity = 'focused'
     } else if (careerClarity > 0.5) {
@@ -224,10 +224,10 @@ export class DevelopmentalPsychologySystem {
     }
   }
 
-  private updateSocialIdentity(metrics: DevelopmentalMetrics) {
+  private updateSocialIdentity(_metrics: DevelopmentalMetrics) {
     const recentMetrics = this.developmentalHistory.slice(-5)
     const avgSocialConnection = recentMetrics.reduce((sum, m) => sum + m.socialConnection, 0) / recentMetrics.length
-    
+
     if (avgSocialConnection > 0.7) {
       this.identityState.socialIdentity = 'contributing'
     } else if (avgSocialConnection > 0.5) {
@@ -239,13 +239,13 @@ export class DevelopmentalPsychologySystem {
     }
   }
 
-  private updateFutureOrientation(metrics: DevelopmentalMetrics) {
+  private updateFutureOrientation(_metrics: DevelopmentalMetrics) {
     const recentMetrics = this.developmentalHistory.slice(-5)
     const avgFuturePlanning = recentMetrics.reduce((sum, m) => sum + m.futurePlanning, 0) / recentMetrics.length
     const avgPurpose = recentMetrics.reduce((sum, m) => sum + m.purpose, 0) / recentMetrics.length
-    
+
     const futureIntegration = (avgFuturePlanning + avgPurpose) / 2
-    
+
     if (futureIntegration > 0.7) {
       this.identityState.futureOrientation = 'integrated'
     } else if (futureIntegration > 0.5) {

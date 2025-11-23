@@ -122,20 +122,20 @@ export class CognitiveDevelopmentSystem {
     return { ...this.state }
   }
 
-  private updateSkillLevel(metrics: LearningMetrics) {
+  private updateSkillLevel(_metrics: LearningMetrics) {
     const recentMetrics = this.learningHistory.slice(-5)
     const avgPatternRecognition = recentMetrics.reduce((sum, m) => sum + m.patternRecognition, 0) / recentMetrics.length
     const avgTransferAbility = recentMetrics.reduce((sum, m) => sum + m.transferAbility, 0) / recentMetrics.length
-    
+
     // Skill level increases with pattern recognition and transfer ability
     this.state.skillLevel = Math.min(1.0, (avgPatternRecognition + avgTransferAbility) / 2)
   }
 
-  private updateChallengeLevel(metrics: LearningMetrics) {
+  private updateChallengeLevel(_metrics: LearningMetrics) {
     const recentMetrics = this.learningHistory.slice(-5)
     const avgComplexity = recentMetrics.reduce((sum, m) => sum + m.choiceComplexity, 0) / recentMetrics.length
     const avgAbstraction = recentMetrics.reduce((sum, m) => sum + m.abstractionLevel, 0) / recentMetrics.length
-    
+
     // Challenge level based on complexity and abstraction
     this.state.challengeLevel = Math.min(1.0, (avgComplexity + avgAbstraction) / 2)
   }
@@ -154,10 +154,10 @@ export class CognitiveDevelopmentSystem {
     }
   }
 
-  private updateMetacognitiveAwareness(metrics: LearningMetrics) {
+  private updateMetacognitiveAwareness(_metrics: LearningMetrics) {
     const recentMetrics = this.learningHistory.slice(-10)
     const avgReflectionDepth = recentMetrics.reduce((sum, m) => sum + m.reflectionDepth, 0) / recentMetrics.length
-    
+
     if (avgReflectionDepth > 0.7) {
       this.state.metacognitiveAwareness = 'high'
     } else if (avgReflectionDepth > 0.4) {
@@ -167,14 +167,14 @@ export class CognitiveDevelopmentSystem {
     }
   }
 
-  private updateExecutiveFunction(metrics: LearningMetrics) {
+  private updateExecutiveFunction(_metrics: LearningMetrics) {
     const recentMetrics = this.learningHistory.slice(-10)
     const avgDecisionTime = recentMetrics.reduce((sum, m) => sum + m.decisionTime, 0) / recentMetrics.length
     const avgComplexity = recentMetrics.reduce((sum, m) => sum + m.choiceComplexity, 0) / recentMetrics.length
-    
+
     // Executive function improves with thoughtful decision-making
     const executiveScore = (avgComplexity * 0.6) + ((10000 - Math.min(avgDecisionTime, 10000)) / 10000 * 0.4)
-    
+
     if (executiveScore > 0.7) {
       this.state.executiveFunction = 'strong'
     } else if (executiveScore > 0.4) {
@@ -184,10 +184,10 @@ export class CognitiveDevelopmentSystem {
     }
   }
 
-  private updateWorkingMemory(metrics: LearningMetrics) {
+  private updateWorkingMemory(_metrics: LearningMetrics) {
     const recentMetrics = this.learningHistory.slice(-5)
     const avgComplexity = recentMetrics.reduce((sum, m) => sum + m.choiceComplexity, 0) / recentMetrics.length
-    
+
     if (avgComplexity > 0.7) {
       this.state.workingMemory = 'expanded'
     } else if (avgComplexity > 0.4) {
@@ -197,10 +197,10 @@ export class CognitiveDevelopmentSystem {
     }
   }
 
-  private updateAttentionSpan(metrics: LearningMetrics) {
+  private updateAttentionSpan(_metrics: LearningMetrics) {
     const recentMetrics = this.learningHistory.slice(-10)
     const avgDecisionTime = recentMetrics.reduce((sum, m) => sum + m.decisionTime, 0) / recentMetrics.length
-    
+
     if (avgDecisionTime > 8000) {
       this.state.attentionSpan = 'long'
     } else if (avgDecisionTime > 3000) {
@@ -210,13 +210,13 @@ export class CognitiveDevelopmentSystem {
     }
   }
 
-  private updateLearningStyle(metrics: LearningMetrics) {
+  private updateLearningStyle(_metrics: LearningMetrics) {
     // This would be determined by analyzing choice patterns
     // For now, we'll use a simple heuristic based on decision time and complexity
     const recentMetrics = this.learningHistory.slice(-10)
     const avgDecisionTime = recentMetrics.reduce((sum, m) => sum + m.decisionTime, 0) / recentMetrics.length
     const avgComplexity = recentMetrics.reduce((sum, m) => sum + m.choiceComplexity, 0) / recentMetrics.length
-    
+
     if (avgDecisionTime < 2000 && avgComplexity > 0.6) {
       this.state.learningStyle = 'kinesthetic' // Quick, complex decisions
     } else if (avgDecisionTime > 5000) {

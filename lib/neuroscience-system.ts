@@ -159,11 +159,11 @@ export class NeuroscienceSystem {
     return { ...this.neuralState }
   }
 
-  private updateAttentionNetwork(metrics: BrainMetrics) {
+  private updateAttentionNetwork(_metrics: BrainMetrics) {
     const recentMetrics = this.brainHistory.slice(-5)
     const avgAttention = recentMetrics.reduce((sum, m) => sum + m.attentionSustained, 0) / recentMetrics.length
     const avgFlexibility = recentMetrics.reduce((sum, m) => sum + m.cognitiveFlexibility, 0) / recentMetrics.length
-    
+
     if (avgAttention > 0.7 && avgFlexibility > 0.7) {
       this.neuralState.attentionNetwork = 'integrated'
     } else if (avgFlexibility > 0.5) {
@@ -175,11 +175,11 @@ export class NeuroscienceSystem {
     }
   }
 
-  private updateMemoryConsolidation(metrics: BrainMetrics) {
+  private updateMemoryConsolidation(_metrics: BrainMetrics) {
     const recentMetrics = this.brainHistory.slice(-5)
     const avgEncoding = recentMetrics.reduce((sum, m) => sum + m.memoryEncoding, 0) / recentMetrics.length
     const avgRetrieval = recentMetrics.reduce((sum, m) => sum + m.memoryRetrieval, 0) / recentMetrics.length
-    
+
     if (avgEncoding > 0.7 && avgRetrieval > 0.7) {
       this.neuralState.memoryConsolidation = 'integrated'
     } else if (avgRetrieval > 0.5) {
@@ -191,13 +191,13 @@ export class NeuroscienceSystem {
     }
   }
 
-  private updateNeuroplasticity(metrics: BrainMetrics) {
+  private updateNeuroplasticity(_metrics: BrainMetrics) {
     const recentMetrics = this.brainHistory.slice(-5)
     const avgConnectivity = recentMetrics.reduce((sum, m) => sum + m.neuralConnectivity, 0) / recentMetrics.length
     const avgFlexibility = recentMetrics.reduce((sum, m) => sum + m.cognitiveFlexibility, 0) / recentMetrics.length
-    
+
     const plasticityScore = (avgConnectivity + avgFlexibility) / 2
-    
+
     if (plasticityScore > 0.8) {
       this.neuralState.neuroplasticity = 'optimal'
     } else if (plasticityScore > 0.6) {
@@ -209,13 +209,13 @@ export class NeuroscienceSystem {
     }
   }
 
-  private updateDopamineLevel(metrics: BrainMetrics) {
+  private updateDopamineLevel(_metrics: BrainMetrics) {
     const recentMetrics = this.brainHistory.slice(-5)
     const avgProcessingSpeed = recentMetrics.reduce((sum, m) => sum + m.processingSpeed, 0) / recentMetrics.length
     const avgAttention = recentMetrics.reduce((sum, m) => sum + m.attentionSustained, 0) / recentMetrics.length
-    
+
     const dopamineScore = (avgProcessingSpeed + avgAttention) / 2
-    
+
     if (dopamineScore > 0.8) {
       this.neuralState.dopamineLevel = 'optimal'
     } else if (dopamineScore > 0.6) {
@@ -227,13 +227,13 @@ export class NeuroscienceSystem {
     }
   }
 
-  private updateStressResponse(metrics: BrainMetrics) {
+  private updateStressResponse(_metrics: BrainMetrics) {
     const recentMetrics = this.brainHistory.slice(-5)
     const avgWorkingMemory = recentMetrics.reduce((sum, m) => sum + m.workingMemoryLoad, 0) / recentMetrics.length
     const avgInhibitoryControl = recentMetrics.reduce((sum, m) => sum + m.inhibitoryControl, 0) / recentMetrics.length
-    
+
     const stressScore = (avgWorkingMemory + (1 - avgInhibitoryControl)) / 2
-    
+
     if (stressScore < 0.3) {
       this.neuralState.stressResponse = 'calm'
     } else if (stressScore < 0.5) {
@@ -245,13 +245,13 @@ export class NeuroscienceSystem {
     }
   }
 
-  private updateCognitiveLoad(metrics: BrainMetrics) {
+  private updateCognitiveLoad(_metrics: BrainMetrics) {
     const recentMetrics = this.brainHistory.slice(-5)
     const avgWorkingMemory = recentMetrics.reduce((sum, m) => sum + m.workingMemoryLoad, 0) / recentMetrics.length
     const avgProcessingSpeed = recentMetrics.reduce((sum, m) => sum + m.processingSpeed, 0) / recentMetrics.length
-    
+
     const loadScore = avgWorkingMemory + (1 - avgProcessingSpeed)
-    
+
     if (loadScore < 0.3) {
       this.neuralState.cognitiveLoad = 'low'
     } else if (loadScore < 0.5) {
@@ -263,13 +263,13 @@ export class NeuroscienceSystem {
     }
   }
 
-  private updateNeuralEfficiency(metrics: BrainMetrics) {
+  private updateNeuralEfficiency(_metrics: BrainMetrics) {
     const recentMetrics = this.brainHistory.slice(-5)
     const avgProcessingSpeed = recentMetrics.reduce((sum, m) => sum + m.processingSpeed, 0) / recentMetrics.length
     const avgConnectivity = recentMetrics.reduce((sum, m) => sum + m.neuralConnectivity, 0) / recentMetrics.length
-    
+
     const efficiencyScore = (avgProcessingSpeed + avgConnectivity) / 2
-    
+
     if (efficiencyScore > 0.8) {
       this.neuralState.neuralEfficiency = 'optimized'
     } else if (efficiencyScore > 0.6) {
