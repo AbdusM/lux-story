@@ -30,7 +30,7 @@ test.describe('Marcus Arc - Complete User Flow', () => {
 
     // Verify we start at the entry point (Marcus introduction)
     // Note: Marcus is the default entry point per recent commits
-    await expect(page.locator('[data-speaker]')).toContainText('Marcus', {
+    await expect(page.locator('[data-speaker="Marcus"]')).toBeVisible({
       timeout: 10000
     })
   })
@@ -71,7 +71,7 @@ test.describe('Marcus Arc - Complete User Flow', () => {
 
     // Get initial node ID from page state
     const initialNodeId = await page.evaluate(() => {
-      const state = JSON.parse(localStorage.getItem('lux-game-state') || '{}')
+      const state = JSON.parse(localStorage.getItem('grand-central-terminus-save') || '{}')
       return state.currentNodeId
     })
 
@@ -85,7 +85,7 @@ test.describe('Marcus Arc - Complete User Flow', () => {
 
     // Verify we've moved to a different node
     const newNodeId = await page.evaluate(() => {
-      const state = JSON.parse(localStorage.getItem('lux-game-state') || '{}')
+      const state = JSON.parse(localStorage.getItem('grand-central-terminus-save') || '{}')
       return state.currentNodeId
     })
 
@@ -93,21 +93,34 @@ test.describe('Marcus Arc - Complete User Flow', () => {
   })
 
   test('should persist state in localStorage', async ({ page }) => {
-    // Wait for game to initialize
+    // Wait for game to initialize and dialogue to render
     await page.waitForSelector('[data-testid="game-interface"]', {
       timeout: 10000
     })
 
+    // Wait for choices to appear (ensures game is fully initialized)
+    await page.waitForSelector('[data-testid="choice-button"]', {
+      timeout: 15000
+    })
+
+    // Make a choice to ensure state is persisted
+    const firstChoice = page.locator('[data-testid="choice-button"]').first()
+    await firstChoice.click()
+
+    // Wait for state to be saved after interaction
+    await page.waitForLoadState('networkidle')
+    await page.waitForTimeout(500)
+
     // Check that game state exists in localStorage
     const gameState = await page.evaluate(() => {
-      return localStorage.getItem('lux-game-state')
+      return localStorage.getItem('grand-central-terminus-save')
     })
 
     expect(gameState).not.toBeNull()
 
     // Verify state structure
     const parsedState = await page.evaluate(() => {
-      return JSON.parse(localStorage.getItem('lux-game-state') || '{}')
+      return JSON.parse(localStorage.getItem('grand-central-terminus-save') || '{}')
     })
 
     expect(parsedState).toHaveProperty('playerId')
@@ -137,7 +150,7 @@ test.describe('Marcus Arc - State Tracking', () => {
 
     // Get initial patterns
     const initialPatterns = await page.evaluate(() => {
-      const state = JSON.parse(localStorage.getItem('lux-game-state') || '{}')
+      const state = JSON.parse(localStorage.getItem('grand-central-terminus-save') || '{}')
       return state.patterns || {}
     })
 
@@ -152,7 +165,7 @@ test.describe('Marcus Arc - State Tracking', () => {
 
       // Verify pattern was tracked
       const newPatterns = await page.evaluate(() => {
-        const state = JSON.parse(localStorage.getItem('lux-game-state') || '{}')
+        const state = JSON.parse(localStorage.getItem('grand-central-terminus-save') || '{}')
         return state.patterns || {}
       })
 
