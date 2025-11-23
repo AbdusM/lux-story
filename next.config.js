@@ -1,3 +1,9 @@
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -11,6 +17,9 @@ const nextConfig = {
 
   // Ensure clean asset URLs
   basePath: '',
+
+  // Fix workspace root warning - specify correct project directory
+  outputFileTracingRoot: __dirname,
 
   // SYSTEMATIC FIX (Oct 17, 2025): Pragmatic validation approach
   // ESLint enabled, TypeScript warnings-only for logger type refactoring
