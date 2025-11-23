@@ -368,7 +368,7 @@ export function createPropertyDependentSelector<TState, TResult>(
 ): MemoizedSelector<TState, TResult> {
   return (state: TState) => {
     // Only recalculate if dependencies have changed
-    const depValues = dependencies.map(dep => state[dep]);
+    const _depValues = dependencies.map(dep => state[dep]);
     return selector(state);
   };
 }

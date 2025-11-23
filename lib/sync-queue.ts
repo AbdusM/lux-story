@@ -500,7 +500,7 @@ export class SyncQueue {
    */
   static getStats(): QueueStats {
     const queue = this.getQueue()
-    const now = Date.now()
+    const _now = Date.now()
 
     return {
       totalActions: queue.length,

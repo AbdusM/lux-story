@@ -152,7 +152,7 @@ export class PlayerPersonaTracker {
   /**
    * Analyze response speed pattern
    */
-  private analyzeResponseSpeed(responseTime: number, current: string): PlayerPersona['responseSpeed'] {
+  private analyzeResponseSpeed(responseTime: number, _current: string): PlayerPersona['responseSpeed'] {
     if (responseTime < 2000) return 'impulsive'
     if (responseTime < 5000) return 'quick'
     if (responseTime < 10000) return 'moderate'
@@ -162,7 +162,7 @@ export class PlayerPersonaTracker {
   /**
    * Analyze stress response from emotional state
    */
-  private analyzeStressResponse(emotionalState: any, current: string): PlayerPersona['stressResponse'] {
+  private analyzeStressResponse(emotionalState: any, _current: string): PlayerPersona['stressResponse'] {
     const stressLevel = emotionalState?.stressLevel || 'calm'
     const rapidClicks = emotionalState?.rapidClicks || 0
 
@@ -218,7 +218,7 @@ export class PlayerPersonaTracker {
   /**
    * Analyze cultural alignment based on choices
    */
-  private analyzeCulturalAlignment(choice: Choice, gameState: GameState): number {
+  private analyzeCulturalAlignment(choice: Choice, _gameState: GameState): number {
     // Simple heuristic - can be expanded with more sophisticated analysis
     let alignment = 0.5
 
@@ -434,7 +434,7 @@ export class PlayerPersonaTracker {
     summary += '. '
 
     // Add latest contexts for top 3 skills
-    topThree.forEach((topSkill, index) => {
+    topThree.forEach((topSkill) => {
       const skillData = persona.skillDemonstrations[topSkill.skill]
       if (skillData && skillData.latestContext) {
         const skillName = this.formatSkillName(topSkill.skill)

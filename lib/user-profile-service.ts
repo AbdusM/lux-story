@@ -43,7 +43,7 @@ export class UserProfileService {
 
     try {
       // Use upsert with onConflict to properly handle existing records
-      const { data, error } = await supabase
+      const { data: _data, error } = await supabase
         .from('player_profiles')
         .upsert({
           user_id: userId,
