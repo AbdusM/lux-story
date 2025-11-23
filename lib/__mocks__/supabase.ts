@@ -53,10 +53,10 @@ class MockQueryBuilder {
     return this
   }
 
-  upsert(data: unknown, options?: { onConflict?: string; ignoreDuplicates?: boolean }) {
+  upsert(_data: unknown, _options?: { onConflict?: string; ignoreDuplicates?: boolean }) {
     // For testing, we'll just insert
     // In real tests, you can customize this behavior
-    return this.insert(data)
+    return this.insert(_data)
   }
 
   eq(column: string, value: unknown) {

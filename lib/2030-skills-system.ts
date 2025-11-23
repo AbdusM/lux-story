@@ -372,7 +372,7 @@ export class FutureSkillsSystem {
     return Math.min(1, baseValue + (complexityFactor * 0.2))
   }
 
-  private getSkillContext(skillType: keyof FutureSkills, choiceText: string): string {
+  private getSkillContext(skillType: keyof FutureSkills, _choiceText: string): string {
     const contexts: Partial<Record<keyof FutureSkills, string>> = {
       criticalThinking: 'Analyzing and evaluating information',
       communication: 'Expressing ideas and sharing information',
@@ -390,7 +390,7 @@ export class FutureSkillsSystem {
     return contexts[skillType] || 'Developing important skills'
   }
 
-  private getSkillExplanation(skillType: keyof FutureSkills, value: number): string {
+  private getSkillExplanation(skillType: keyof FutureSkills, _value: number): string {
     const explanations: Partial<Record<keyof FutureSkills, string>> = {
       criticalThinking: 'You\'re developing strong analytical thinking skills that employers value.',
       communication: 'You\'re building communication skills that help in any career.',
