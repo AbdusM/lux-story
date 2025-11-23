@@ -324,7 +324,7 @@ export class EngagementQualityAnalyzer {
   private static generateRecommendations(
     checks: BestPracticeCheck[],
     flags: any,
-    depth: any
+    _depth: any
   ): string[] {
     const recommendations: string[] = []
     

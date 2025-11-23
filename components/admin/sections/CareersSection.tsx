@@ -283,7 +283,7 @@ export function CareersSection({ userId, profile, adminViewMode }: CareersSectio
 
                   {showMetRequirements && (
                     <div className="mt-3 space-y-2">
-                      {metSkills.map(([skill, data]) => {
+                      {metSkills.map(([skill, _data]) => {
                         const demoCount = user.skillDemonstrations[skill]?.length || 0
                         return (
                           <div key={skill} className="flex flex-col sm:flex-row sm:justify-between gap-1 text-sm bg-green-50 p-3 rounded-lg">

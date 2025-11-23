@@ -1,6 +1,5 @@
 import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
-import { getMemoryManager } from './memory-manager'
 
 // Core game state interfaces
 export interface GameState {

@@ -276,7 +276,7 @@ export class MiddleGradeAdaptationSystem {
     let adaptedText = text
 
     // Replace complex terms with familiar contexts
-    adaptation.familiarContexts.forEach(context => {
+    adaptation.familiarContexts.forEach(_context => {
       // This would be more sophisticated in practice
       adaptedText = adaptedText.replace(/workplace/g, 'job')
       adaptedText = adaptedText.replace(/professional/g, 'worker')

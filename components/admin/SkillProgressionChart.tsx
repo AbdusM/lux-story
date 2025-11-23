@@ -104,7 +104,7 @@ export function SkillProgressionChart({
   const pointRadius = 4
 
   // Custom Tooltip Component
-  const CustomTooltip = ({ point, index }: { point: TimelinePoint; index: number }) => {
+  const CustomTooltip = ({ point, _index }: { point: TimelinePoint; _index: number }) => {
     if (viewMode === 'family') {
       return (
         <div className="absolute z-50 bg-white p-3 border-2 border-blue-500 rounded-lg shadow-xl transform -translate-x-1/2 pointer-events-none"
@@ -270,7 +270,7 @@ export function SkillProgressionChart({
                         className="absolute bottom-full mb-2"
                         style={{ left: '50%' }}
                       >
-                        <CustomTooltip point={point} index={idx} />
+                        <CustomTooltip point={point} _index={idx} />
                       </div>
                     )}
 
