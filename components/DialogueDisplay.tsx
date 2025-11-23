@@ -13,6 +13,7 @@ import { autoChunkDialogue } from "@/lib/auto-chunk-dialogue"
 import { ChatPacedDialogue } from "./ChatPacedDialogue"
 import { shouldShowAvatar } from "./CharacterAvatar"
 import { RichTextRenderer, type RichTextEffect } from "./RichTextRenderer"
+import { motion, type Variants } from "framer-motion"
 
 // Parse markdown-style emphasis in text (from StoryMessage pattern)
 function parseEmphasisText(text: string): React.ReactNode[] {
@@ -52,6 +53,55 @@ function parseEmphasisText(text: string): React.ReactNode[] {
   }
 
   return parts.length > 0 ? parts : [text]
+}
+
+// Interaction animation variants for Pokémon-style visual feedback
+const interactionAnimations: Record<string, Variants> = {
+  shake: {
+    animate: {
+      x: [0, -5, 5, -5, 5, 0],
+      transition: { duration: 0.5, repeat: 1 }
+    }
+  },
+  jitter: {
+    animate: {
+      x: [0, -1, 1, -1, 1, 0],
+      y: [0, -1, 1, -1, 1, 0],
+      transition: { duration: 0.3, repeat: 2 }
+    }
+  },
+  nod: {
+    animate: {
+      y: [0, -5, 0, -5, 0],
+      transition: { duration: 0.6 }
+    }
+  },
+  bloom: {
+    animate: {
+      scale: [0.95, 1.05, 1],
+      opacity: [0.8, 1, 1],
+      transition: { duration: 0.5 }
+    }
+  },
+  ripple: {
+    animate: {
+      scale: [1, 1.02, 1, 1.02, 1],
+      transition: { duration: 0.8, repeat: 1 }
+    }
+  },
+  big: {
+    animate: {
+      scale: [1, 1.1, 1],
+      transition: { duration: 0.4 }
+    }
+  },
+  small: {
+    animate: {
+      scale: [1, 0.95, 1],
+      opacity: [1, 0.9, 1],
+      transition: { duration: 0.4 }
+    }
+  }
 }
 
 interface DialogueDisplayProps {
@@ -133,13 +183,23 @@ export function DialogueDisplay({
   // If richEffects is enabled, use RichTextRenderer for the entire text
   // This allows RichTextRenderer to control chunking internally
   if (richEffects) {
+    const content = (
+      <RichTextRenderer
+        text={chunkedText}
+        effects={richEffects}
+        className={cn("text-base text-slate-800 leading-relaxed", interactionClass)}
+      />
+    )
+
     return (
       <div className={cn("space-y-4 min-h-[120px]", className)} key="dialogue-chunks-container" style={{ transition: 'none' }}>
-        <RichTextRenderer
-          text={chunkedText}
-          effects={richEffects}
-          className={cn("text-base text-slate-800 leading-relaxed", interactionClass)}
-        />
+        {interaction && interactionAnimations[interaction] ? (
+          <motion.div {...interactionAnimations[interaction]}>
+            {content}
+          </motion.div>
+        ) : (
+          content
+        )}
       </div>
     )
   }
@@ -152,20 +212,28 @@ export function DialogueDisplay({
     return <div className={cn("space-y-4 min-h-[120px]", className)}></div>
   }
 
+  const content = chunks.map((chunk, index) => (
+    <p
+      key={`chunk-${chunk.slice(0, 20).replace(/\s/g, '-')}-${index}`}
+      className={cn(
+        "text-base text-slate-800 leading-relaxed whitespace-pre-wrap",
+        interactionClass
+      )}
+    >
+      {parseEmphasisText(chunk)}
+    </p>
+  ))
+
   return (
     <div className={cn("space-y-4 min-h-[120px]", className)} key="dialogue-chunks-container" style={{ transition: 'none' }}>
       {/* Dialogue Content - No inline avatars */}
-      {chunks.map((chunk, index) => (
-        <p
-          key={`chunk-${chunk.slice(0, 20).replace(/\s/g, '-')}-${index}`}
-          className={cn(
-            "text-base text-slate-800 leading-relaxed whitespace-pre-wrap",
-            interactionClass
-          )}
-        >
-          {parseEmphasisText(chunk)}
-        </p>
-      ))}
+      {interaction && interactionAnimations[interaction] ? (
+        <motion.div {...interactionAnimations[interaction]}>
+          {content}
+        </motion.div>
+      ) : (
+        content
+      )}
     </div>
   )
 }
