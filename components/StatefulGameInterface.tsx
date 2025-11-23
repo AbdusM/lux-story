@@ -160,7 +160,25 @@ export default function StatefulGameInterface() {
         const userId = generateUserId()
         gameState = GameStateUtils.createNewGameState(userId)
       }
-      
+
+      // Ensure player profile exists in database BEFORE any skill tracking
+      // This prevents foreign key violations (error 23503)
+      if (isSupabaseConfigured()) {
+        try {
+          await fetch('/api/user/profile', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              user_id: gameState.playerId,
+              created_at: new Date().toISOString()
+            })
+          })
+          console.log('✅ Player profile ensured:', gameState.playerId)
+        } catch (error) {
+          console.warn('⚠️ Failed to ensure player profile (will fallback to API route check):', error)
+        }
+      }
+
       if (typeof window !== 'undefined' && !skillTrackerRef.current) {
         skillTrackerRef.current = new SkillTracker(gameState.playerId)
       }
