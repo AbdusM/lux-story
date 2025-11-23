@@ -262,7 +262,7 @@ export class SyncQueue {
             let errorBody = ''
             try {
               errorBody = await response.text()
-            } catch (e) {
+            } catch (_e) {
               // Ignore if we can't read body
             }
             throw new Error(`Career analytics sync failed: ${response.status} ${response.statusText}${errorBody ? ` - ${errorBody.slice(0, 100)}` : ''}`)
@@ -293,7 +293,7 @@ export class SyncQueue {
             let errorBody = ''
             try {
               errorBody = await response.text()
-            } catch (e) {
+            } catch (_e) {
               // Ignore if we can't read body
             }
             throw new Error(`Skill summary sync failed: ${response.status} ${response.statusText}${errorBody ? ` - ${errorBody.slice(0, 100)}` : ''}`)
@@ -328,7 +328,7 @@ export class SyncQueue {
             let errorBody = ''
             try {
               errorBody = await response.text()
-            } catch (e) {
+            } catch (_e) {
               // Ignore if we can't read body
             }
             throw new Error(`Skill demonstration sync failed: ${response.status} ${response.statusText}${errorBody ? ` - ${errorBody.slice(0, 100)}` : ''}`)
@@ -363,7 +363,7 @@ export class SyncQueue {
             let errorBody = ''
             try {
               errorBody = await response.text()
-            } catch (e) {
+            } catch (_e) {
               // Ignore if we can't read body
             }
             throw new Error(`Career exploration sync failed: ${response.status} ${response.statusText}${errorBody ? ` - ${errorBody.slice(0, 100)}` : ''}`)
@@ -398,7 +398,7 @@ export class SyncQueue {
             let errorBody = ''
             try {
               errorBody = await response.text()
-            } catch (e) {
+            } catch (_e) {
               // Ignore if we can't read body
             }
             throw new Error(`Pattern demonstration sync failed: ${response.status} ${response.statusText}${errorBody ? ` - ${errorBody.slice(0, 100)}` : ''}`)
@@ -436,7 +436,7 @@ export class SyncQueue {
           try {
             errorMessage = JSON.stringify(error)
             errorDetails = error
-          } catch (e) {
+          } catch (_e) {
             errorMessage = 'Failed to stringify error object'
             errorDetails = { toString: String(error) }
           }
