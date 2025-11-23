@@ -12,7 +12,7 @@ import { CharacterAvatar } from '@/components/CharacterAvatar'
 import { RichTextRenderer } from '@/components/RichTextRenderer'
 import { motion } from 'framer-motion'
 
-type GameStyle = 'pokemon' | 'fire-emblem' | 'persona' | 'hades' | 'disco' | 'original'
+type GameStyle = 'pokemon' | 'fireEmblem' | 'persona' | 'hades' | 'disco' | 'original'
 
 const dialogueVariations = {
   // Original literary version for comparison
@@ -214,7 +214,7 @@ export default function GameStylesTest() {
               initial={{ opacity: 0 }}
               animate={{
                 opacity: 1,
-                x: currentDialogue.interaction === 'shake' ? [0, -2, 2, -2, 2, 0] : 0
+                x: (currentDialogue as any).interaction === 'shake' ? [0, -2, 2, -2, 2, 0] : 0
               }}
               transition={{
                 opacity: { duration: 0.3 },
@@ -303,7 +303,7 @@ export default function GameStylesTest() {
                       <span className="px-2 py-1 bg-green-100 rounded">
                         {compression}% compression
                       </span>
-                      {variant.interaction && (
+                      {(variant as any).interaction && (
                         <span className="px-2 py-1 bg-purple-100 rounded">
                           ✨ Visual effects
                         </span>
