@@ -18,16 +18,12 @@ export const yaquinDialogueNodes: DialogueNode[] = [
     speaker: 'Yaquin',
     content: [
       {
-        text: `*He's surrounded by dental models—sets of teeth, gum molds—and a ring light setup. He's talking to his phone.*
-
-"Okay, guys, forget the textbook. Chapter 4 is garbage. This is how you actually mix the alginate so it doesn't gag the patient."
-
-*He stops recording and sighs.*
-
-Is it garbage? Or am I just uneducated?`,
-        emotion: 'frustrated_passion',
+        text: `*Dental models everywhere. Ring light. Recording.*|"Forget the textbook. Chapter 4's garbage. Here's how you actually mix alginate without gagging patients."|*Stops. Sighs.*|Is it garbage? Or am I just uneducated?`,
+        emotion: 'conflicted',
+        interaction: 'shake',
         variation_id: 'yaquin_intro_v1',
-        richEffectContext: 'warning'
+        richEffectContext: 'warning',
+        useChatPacing: true
       }
     ],
     choices: [
@@ -71,13 +67,11 @@ Is it garbage? Or am I just uneducated?`,
     speaker: 'Yaquin',
     content: [
       {
-        text: `Right? It says 'mix for 45 seconds.' If you do that, it sets in the bowl. You ruin the mold.
-
-I've been a dental assistant for 8 years. I know the feel of the paste. I know the look in a patient's eyes when they're scared.
-
-The books don't teach that.`,
-        emotion: 'confident',
-        variation_id: 'textbook_v1'
+        text: `Says 'mix 45 seconds.' Do that—sets in the bowl. Mold ruined.|8 years experience. Know the paste feel. Know patient fear.|Books don't teach that.`,
+        emotion: 'focused',
+        interaction: 'nod',
+        variation_id: 'textbook_v1',
+        useChatPacing: true
       }
     ],
     choices: [
@@ -103,13 +97,11 @@ The books don't teach that.`,
     speaker: 'Yaquin',
     content: [
       {
-        text: `I'm 'just' an assistant. I didn't go to dental school.
-
-But the dentists ask *me* how to handle the difficult patients. They ask *me* to train the new hires.
-
-I'm doing the work, but I don't have the paper.`,
-        emotion: 'insecure',
-        variation_id: 'credential_v1'
+        text: `'Just' an assistant. No dental school.|But dentists ask me about difficult patients. Ask me to train new hires.|Doing the work. No paper.`,
+        emotion: 'vulnerable',
+        interaction: 'small',
+        variation_id: 'credential_v1',
+        useChatPacing: true
       }
     ],
     choices: [
@@ -128,17 +120,42 @@ I'm doing the work, but I don't have the paper.`,
   },
 
   {
+    nodeId: 'yaquin_creator_path',
+    speaker: 'Yaquin',
+    content: [
+      {
+        text: `Started six months ago. Phone videos. No plan.|"Here's what textbooks miss."|87 followers. Some dental assistants. Some students. Few actual dentists watching.|Real question—teaching online or shouting into void?`,
+        emotion: 'curious',
+        interaction: 'jitter',
+        variation_id: 'creator_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'yaquin_creator_continue',
+        text: "87 followers who found value. That's not nothing.",
+        nextNodeId: 'yaquin_curriculum_dream',
+        pattern: 'helping',
+        skills: ['encouragement'],
+        consequence: {
+          characterId: 'yaquin',
+          trustChange: 1
+        }
+      }
+    ]
+  },
+
+  {
     nodeId: 'yaquin_curriculum_dream',
     speaker: 'Yaquin',
     content: [
       {
-        text: `I want to build a course. 'The Real Dental Assistant.'
-
-Not theory. Reality. How to calm a crying kid. How to mix the paste. How to anticipate what the doctor needs before they ask.
-
-But I keep looking at the syllabus and thinking... I need to include the history of dentistry. And anatomy. And ethics.`,
-        emotion: 'overwhelmed',
-        variation_id: 'dream_v1'
+        text: `Want to build a course. 'The Real Dental Assistant.'|Reality—not theory. Calm crying kids. Mix paste. Anticipate doctor needs.|But the syllabus... keeps adding history. Anatomy. Ethics.`,
+        emotion: 'anxious',
+        interaction: 'jitter',
+        variation_id: 'dream_v1',
+        useChatPacing: true
       }
     ],
     choices: [
@@ -158,16 +175,13 @@ But I keep looking at the syllabus and thinking... I need to include the history
     speaker: 'Yaquin',
     content: [
       {
-        text: `*He slams a notebook onto the table. It's thick, messy, and covered in coffee stains.*
-
-"Look at this list. I'm trying to turn 8 years of instinct into a checklist. It's impossible."
-
-*He points to three potential modules.*
-
-"I only have time to film one pilot module this weekend. If I pick the wrong one, nobody watches, and I go back to cleaning spit valves."`,
-        emotion: 'frustrated_focused',
+        // TODO: [SFX] Heavy notebook slam, papers rustling
+        // TODO: [VFX] Camera shake on notebook slam
+        text: `*Slams notebook down. Thick. Coffee-stained.*|"This list. 8 years instinct → checklist. Impossible."|*Points to three modules.*|"One pilot this weekend. Pick wrong—nobody watches. Back to cleaning spit valves."`,
+        emotion: 'tense',
+        interaction: 'shake',
         variation_id: 'curriculum_setup_v2',
-        richEffectContext: 'warning', // Editor Mode
+        richEffectContext: 'warning',
         useChatPacing: true
       }
     ],
@@ -206,16 +220,12 @@ But I keep looking at the syllabus and thinking... I need to include the history
     speaker: 'Yaquin',
     content: [
       {
-        text: `*Yaquin films it. He watches the playback.*
-
-"Hello class. Today we will discuss 19th century forceps."
-
-*He puts his head in his hands.*
-
-"I'm bored. I'm literally bored watching myself. Nobody is going to pay $50 for this. I sound like the professors I hated."`,
-        emotion: 'defeated',
+        text: `*Films. Watches playback.*|"Hello class. Today—19th century forceps."|*Head in hands.*|"Bored watching myself. Nobody pays $50 for this. Sound like professors I hated."`,
+        emotion: 'heavy',
+        interaction: 'small',
         variation_id: 'fail_boring_v1',
-        richEffectContext: 'error'
+        richEffectContext: 'error',
+        useChatPacing: true
       }
     ],
     choices: [
@@ -243,16 +253,14 @@ But I keep looking at the syllabus and thinking... I need to include the history
     speaker: 'Yaquin',
     content: [
       {
-        text: `*He films it. Fast. Energetic. He mixes the paste on camera, making a mess, laughing.*
-
-"See? It's pink. It's goopy. And you have 30 seconds before it turns to stone. Go!"
-
-*He watches the playback, grinning.*
-
-"That's it. That's the energy. It's not a lecture. It's a cooking show for teeth."`,
+        // TODO: [SFX] Mixing sounds, laughter, timer ticking
+        // TODO: [VFX] Success glow on playback screen
+        text: `*Films fast. Mixes paste—messy, laughing.*|"Pink. Goopy. 30 seconds before stone. Go!"|*Watches playback. Grins.*|"That's it. Not lecture. Cooking show for teeth."`,
         emotion: 'excited',
+        interaction: 'bloom',
         variation_id: 'success_practical_v1',
-        richEffectContext: 'success'
+        richEffectContext: 'success',
+        useChatPacing: true
       }
     ],
     choices: [
@@ -276,16 +284,12 @@ But I keep looking at the syllabus and thinking... I need to include the history
     speaker: 'Yaquin',
     content: [
       {
-        text: `*He talks to the camera like it's a scared patient.*
-
-"I know you're nervous. I know the drill sounds loud. Watch my eyes. Breathe with me."
-
-*He stops recording.*
-
-"That's what I do all day. I don't fix teeth. I fix fear. That's what I'm selling."`,
+        text: `*Camera like scared patient.*|"You're nervous. Drill's loud. Watch my eyes. Breathe with me."|*Stops.*|"All day. Don't fix teeth—fix fear. That's what I'm selling."`,
         emotion: 'inspired',
+        interaction: 'bloom',
         variation_id: 'success_psych_v1',
-        richEffectContext: 'success'
+        richEffectContext: 'success',
+        useChatPacing: true
       }
     ],
     choices: [
@@ -310,13 +314,11 @@ But I keep looking at the syllabus and thinking... I need to include the history
     speaker: 'Yaquin',
     content: [
       {
-        text: `I have the video. I have the platform.
-
-But if I hit publish... the dentists I work for will see it. They might fire me. 'Who does this guy think he is?'
-
-But if I don't... I'm just a guy shouting at his phone in a basement.`,
-        emotion: 'nervous_energy',
-        variation_id: 'launch_v1'
+        text: `Video ready. Platform ready.|Publish—dentists see it. Might fire me. 'Who's this guy?'|Don't publish—guy shouting at phone in basement.`,
+        emotion: 'anxious',
+        interaction: 'jitter',
+        variation_id: 'launch_v1',
+        useChatPacing: true
       }
     ],
     requiredState: {
@@ -345,15 +347,14 @@ But if I don't... I'm just a guy shouting at his phone in a basement.`,
     speaker: 'Yaquin',
     content: [
       {
-        text: `*He hits the button.*
-
-It's live.
-
-First comment: 'Finally someone explains the mixing ratio!'
-
-I'm doing it. I'm actually doing it. I'm a teacher.`,
-        emotion: 'triumphant',
-        variation_id: 'launched_v1'
+        // TODO: [SFX] Button click, notification chime, heartbeat
+        // TODO: [VFX] Screen flash, comment notification pop
+        // TODO: [MUSIC] Triumphant swell, achievement fanfare
+        text: `*Hits button.*|Live.|First comment: 'Finally someone explains mixing ratio!'|Doing it. Actually doing it. Teacher.`,
+        emotion: 'excited',
+        interaction: 'big',
+        variation_id: 'launched_v1',
+        useChatPacing: true
       }
     ],
     choices: [
@@ -377,13 +378,11 @@ I'm doing it. I'm actually doing it. I'm a teacher.`,
     speaker: 'Yaquin',
     content: [
       {
-        text: `Smart. I'll create a brand name. 'The Dental Ninja.' Build trust, then sell the course.
-
-It's safer. But it's still moving forward.
-
-Thank you. You kept me from making a reckless mistake.`,
+        text: `Smart. Brand name—'Dental Ninja.' Build trust, then sell.|Safer. Still forward.|Thank you. Kept me from reckless mistake.`,
         emotion: 'relieved',
-        variation_id: 'audience_v1'
+        interaction: 'nod',
+        variation_id: 'audience_v1',
+        useChatPacing: true
       }
     ],
     choices: [
@@ -408,13 +407,11 @@ Thank you. You kept me from making a reckless mistake.`,
     speaker: 'Yaquin',
     content: [
       {
-        text: `Yeah. I should probably just go back to school. Get the degree. Then maybe people will listen.
-
-This was... a nice fantasy. But I'm just an assistant.
-
-Thanks for listening.`,
-        emotion: 'deflated',
-        variation_id: 'bad_ending_v1'
+        text: `Yeah. Back to school. Get degree. Maybe then people listen.|Nice fantasy. Just an assistant.|Thanks for listening.`,
+        emotion: 'heavy',
+        interaction: 'small',
+        variation_id: 'bad_ending_v1',
+        useChatPacing: true
       }
     ],
     choices: [
@@ -438,11 +435,11 @@ Thanks for listening.`,
     speaker: 'Yaquin',
     content: [
       {
-        text: `I have a lot of editing to do.
-
-If you see Samuel, tell him... tell him class is in session.`,
-        emotion: 'happy',
-        variation_id: 'farewell_v1'
+        text: `Lot of editing ahead.|See Samuel? Tell him—class is in session.`,
+        emotion: 'proud',
+        interaction: 'nod',
+        variation_id: 'farewell_v1',
+        useChatPacing: true
       }
     ],
     choices: [
@@ -479,21 +476,13 @@ If you see Samuel, tell him... tell him class is in session.`,
     nodeId: 'yaquin_phase2_entry',
     speaker: 'Yaquin',
     content: [{
-      text: `*Eight weeks later. Yaquin is surrounded by three laptops, all open to different tabs. Support tickets. Refund requests. Student progress dashboards.*
-
-*He looks exhausted.*
-
-127 students. I have 127 students in my dental assistant course.
-
-*He gestures at the screens.*
-
-And I have 47 unread support messages, 15 refund requests, a comment from a DDS calling my work "amateur hour," and three dental offices asking to license my course for bulk training.
-
-*He looks up.*
-
-Turns out teaching is the easy part. Running a course business? That's the real education.`,
-      emotion: 'overwhelmed',
-      variation_id: 'p2_entry_v1'
+      // TODO: [SFX] Multiple notification pings, keyboard typing, overwhelmed ambience
+      // TODO: [VFX] Screen overlays showing dashboards, red notification badges
+      text: `*Eight weeks later. Three laptops. Support tickets. Refunds. Dashboards.*|*Exhausted.*|127 students.|*Gestures at screens.*|47 unread messages. 15 refunds. DDS calling it "amateur hour." Three offices want licensing.|*Looks up.*|Teaching's easy. Running course business? Real education.`,
+      emotion: 'exhausted',
+      interaction: 'shake',
+      variation_id: 'p2_entry_v1',
+      useChatPacing: true
     }],
     choices: [
       {
@@ -521,23 +510,11 @@ Turns out teaching is the easy part. Running a course business? That's the real 
     nodeId: 'yaquin_p2_quality_crisis',
     speaker: 'Yaquin',
     content: [{
-      text: `Students are saying the self-paced format doesn't work for them.
-
-"I need live instruction."
-"The videos are too fast."
-"I can't stay motivated alone."
-
-*He pulls up a review.*
-
-"Great content, wrong format. I need a teacher, not a YouTube channel."
-
-*He rubs his eyes.*
-
-Half my students are career-switchers like me—motivated, self-directed. They're crushing it.
-
-The other half? Dental office employees sent by their bosses. They're struggling. And asking for refunds.`,
-      emotion: 'frustrated',
-      variation_id: 'quality_crisis_v1'
+      text: `Self-paced doesn't work.|"Need live instruction." "Videos too fast." "Can't stay motivated."|*Pulls up review.*|"Great content, wrong format. Need teacher, not YouTube."|*Rubs eyes.*|Half career-switchers—crushing it. Other half—boss-mandated. Struggling. Refunds.`,
+      emotion: 'tense',
+      interaction: 'shake',
+      variation_id: 'quality_crisis_v1',
+      useChatPacing: true
     }],
     choices: [
       {
@@ -562,19 +539,11 @@ The other half? Dental office employees sent by their bosses. They're struggling
     nodeId: 'yaquin_p2_dds_comment',
     speaker: 'Yaquin',
     content: [{
-      text: `*He shows you the comment.*
-
-**Dr. Sarah Chen, DDS**: "This is amateur hour. No credentials, no structure, no accountability. You're selling YouTube videos for $497. Dental assistants deserve real education, not shortcuts."
-
-*Yaquin sets down the phone.*
-
-She's not wrong about the credentials. I'm a dental assistant teaching dental assistants. No degree. No formal teaching training.
-
-*He looks at you.*
-
-Part of me wants to ignore her. Part of me wants to defend myself. Part of me thinks... maybe she's right.`,
-      emotion: 'insecure',
-      variation_id: 'dds_comment_v1'
+      text: `*Shows comment.*|**Dr. Sarah Chen, DDS**: "Amateur hour. No credentials, structure, accountability. YouTube videos for $497. Assistants deserve real education, not shortcuts."|*Sets phone down.*|Not wrong about credentials. Assistant teaching assistants. No degree. No training.|*Looks at you.*|Want to ignore her. Defend myself. Or... maybe she's right.`,
+      emotion: 'vulnerable',
+      interaction: 'small',
+      variation_id: 'dds_comment_v1',
+      useChatPacing: true
     }],
     choices: [
       {
@@ -599,24 +568,11 @@ Part of me wants to ignore her. Part of me wants to defend myself. Part of me th
     nodeId: 'yaquin_p2_refund_pressure',
     speaker: 'Yaquin',
     content: [{
-      text: `30-day money-back guarantee. No questions asked.
-
-I thought it was the right thing to do—stand behind the quality.
-
-*He scrolls through refund requests.*
-
-But now I'm getting requests like:
-- "My boss made me take this, I don't want to."
-- "Too hard, not what I expected."
-- "Didn't finish it, want my money back."
-
-*He looks conflicted.*
-
-If I honor every refund, I lose $7,500. If I get strict, I look like a scammer.
-
-And the worst part? I don't know if they're right. Maybe the course IS too hard. Maybe it IS "amateur hour."`,
+      text: `30-day guarantee. No questions.|Stand behind quality.|*Scrolls refund requests.*|"Boss made me." "Too hard." "Didn't finish, want money."|*Conflicted.*|Honor all—lose $7,500. Get strict—look like scammer.|Worst part? Don't know if they're right. Maybe IS too hard. Maybe IS "amateur hour."`,
       emotion: 'conflicted',
-      variation_id: 'refund_v1'
+      interaction: 'jitter',
+      variation_id: 'refund_v1',
+      useChatPacing: true
     }],
     choices: [
       {
@@ -652,19 +608,11 @@ And the worst part? I don't know if they're right. Maybe the course IS too hard.
     nodeId: 'yaquin_p2_credibility_response',
     speaker: 'Yaquin',
     content: [{
-      text: `I could ignore Dr. Chen. Or...
-
-*He thinks.*
-
-What if I invite her to review the course? Offer to add her as a credentialed advisor?
-
-Or I could respond publicly: "You're right—I'm not a DDS. I'm the person in the office 40 hours a week doing the actual work. Students need both perspectives."
-
-*He looks at you.*
-
-Do I defend my ground, or do I acknowledge the gap?`,
-      emotion: 'thoughtful',
-      variation_id: 'credibility_v1'
+      text: `Ignore Dr. Chen. Or...|*Thinks.*|Invite her to review? Add as credentialed advisor?|Or respond publicly: "Not a DDS. 40 hours/week doing actual work. Students need both perspectives."|*Looks at you.*|Defend ground or acknowledge gap?`,
+      emotion: 'analytical',
+      interaction: 'nod',
+      variation_id: 'credibility_v1',
+      useChatPacing: true
     }],
     choices: [
       {
@@ -694,24 +642,13 @@ Do I defend my ground, or do I acknowledge the gap?`,
     nodeId: 'yaquin_p2_format_decision',
     speaker: 'Yaquin',
     content: [{
-      text: `I'm looking at the data.
-
-**Self-motivated students**: 85% completion rate. Glowing reviews.
-**Boss-mandated students**: 32% completion rate. Most of the refund requests.
-
-*He sketches two paths.*
-
-**Option 1**: Pivot to cohort-based. Fewer students, live instruction, higher price.
-
-**Option 2**: Improve self-paced. Better async support, community forums, office hours.
-
-**Option 3**: Two-tier model. Self-paced ($497) + Cohort premium ($1,497).
-
-*He looks at you.*
-
-What would you do?`,
+      // TODO: [SFX] Pen scratching on paper, data visualization sounds
+      // TODO: [VFX] Animated charts/graphs showing completion rates, decision tree branches
+      text: `Data:|**Self-motivated**: 85% completion. Glowing reviews.|**Boss-mandated**: 32% completion. Most refunds.|*Sketches paths.*|**Option 1**: Cohort-based. Fewer students, live, higher price.|**Option 2**: Improve self-paced. Forums, office hours.|**Option 3**: Two-tier. Self-paced ($497) + Cohort ($1,497).|*Looks at you.*|What would you do?`,
       emotion: 'analytical',
-      variation_id: 'format_v1'
+      interaction: 'nod',
+      variation_id: 'format_v1',
+      useChatPacing: true
     }],
     choices: [
       {
@@ -751,23 +688,11 @@ What would you do?`,
     nodeId: 'yaquin_p2_scaling_offer',
     speaker: 'Yaquin',
     content: [{
-      text: `Three dental offices in Birmingham reached out this week.
-
-They want to license my course for their new hires. Bulk pricing. 50+ students.
-
-*He shows you the emails.*
-
-**Offer**: $15,000 per office, annual license. They handle onboarding, I provide the content.
-
-That's $45,000. Nine months of my dental assistant salary.
-
-*He leans back.*
-
-But if I do this, I'm not teaching anymore. I'm licensing content. I'm... a content creator, not an educator.
-
-Is that what I want?`,
-      emotion: 'tempted',
-      variation_id: 'scaling_v1'
+      text: `Three Birmingham offices reached out.|License course for new hires. 50+ students.|*Shows emails.*|**Offer**: $15K/office, annual. They onboard, I provide content.|$45K. Nine months salary.|*Leans back.*|But not teaching—licensing. Content creator, not educator.|That what I want?`,
+      emotion: 'conflicted',
+      interaction: 'small',
+      variation_id: 'scaling_v1',
+      useChatPacing: true
     }],
     choices: [
       {
@@ -803,23 +728,11 @@ Is that what I want?`,
     nodeId: 'yaquin_p2_scaling_choice',
     speaker: 'Yaquin',
     content: [{
-      text: `*He's sketching out a plan.*
-
-Here's what I'm thinking:
-
-Keep the self-paced course for motivated learners.
-
-Add a cohort-based "Dental Mastery Program"—8 weeks, live sessions, small groups.
-
-And maybe... maybe reach out to Dr. Chen. See if she'll co-teach the advanced modules.
-
-*He looks up.*
-
-This isn't about being perfect. It's about serving students where they are.
-
-Some need independence. Some need structure. Why not offer both?`,
-      emotion: 'determined',
-      variation_id: 'scaling_choice_v1'
+      text: `*Sketching plan.*|Keep self-paced for motivated learners.|Add cohort "Dental Mastery"—8 weeks, live, small groups.|Maybe reach out to Dr. Chen. Co-teach advanced modules.|*Looks up.*|Not about perfect. Serving students where they are.|Some need independence. Some need structure. Why not both?`,
+      emotion: 'focused',
+      interaction: 'nod',
+      variation_id: 'scaling_choice_v1',
+      useChatPacing: true
     }],
     choices: [
       {
@@ -837,22 +750,13 @@ Some need independence. Some need structure. Why not offer both?`,
     nodeId: 'yaquin_p2_implementation',
     speaker: 'Yaquin',
     content: [{
-      text: `*Two weeks later.*
-
-I implemented the changes.
-
-- Launched cohort-based program: 24 students enrolled at $1,497 each
-- Improved self-paced: Added weekly office hours, student forum
-- Refunds: Approved 8, denied 7 with clear reasoning
-- Dr. Chen: She agreed to review my curriculum (for a fee, of course)
-
-*He grins.*
-
-Revenue is up. Completion rates are up. Refund requests are down.
-
-But more importantly? I'm learning to run a business, not just teach a skill.`,
+      // TODO: [SFX] Success notification chimes, positive metrics sounds
+      // TODO: [VFX] Green upward arrows on metrics, growth visualization
+      text: `*Two weeks later.*|Implemented changes:|• Cohort program: 24 students @ $1,497|• Self-paced: office hours, forum|• Refunds: approved 8, denied 7|• Dr. Chen: reviewing curriculum (for fee)|*Grins.*|Revenue up. Completion up. Refunds down.|More important? Learning business, not just teaching skill.`,
       emotion: 'proud',
-      variation_id: 'implementation_v1'
+      interaction: 'bloom',
+      variation_id: 'implementation_v1',
+      useChatPacing: true
     }],
     choices: [
       {
@@ -870,21 +774,11 @@ But more importantly? I'm learning to run a business, not just teach a skill.`,
     nodeId: 'yaquin_p2_student_reactions',
     speaker: 'Yaquin',
     content: [{
-      text: `Mixed.
-
-Some students who got refunds left 1-star reviews: "Bait and switch. Changed the program after I enrolled."
-
-Some students who stayed are thriving: "Finally feels like real teaching, not just videos."
-
-*He pulls up a message.*
-
-**Student message**: "Yaquin, I almost quit. But the cohort program saved me. I'm getting hired next week because of what you taught me."
-
-*He looks at you.*
-
-That's why I'm doing this. Not the revenue. Not the validation. That message.`,
-      emotion: 'fulfilled',
-      variation_id: 'reactions_v1'
+      text: `Mixed.|Refunded students—1-star reviews: "Bait and switch."|Stayed students thriving: "Real teaching now, not just videos."|*Pulls up message.*|**Student**: "Almost quit. Cohort saved me. Getting hired next week because of you."|*Looks at you.*|That's why. Not revenue. Not validation. That message.`,
+      emotion: 'grateful',
+      interaction: 'small',
+      variation_id: 'reactions_v1',
+      useChatPacing: true
     }],
     choices: [
       {
@@ -902,25 +796,11 @@ That's why I'm doing this. Not the revenue. Not the validation. That message.`,
     nodeId: 'yaquin_p2_dds_outcome',
     speaker: 'Yaquin',
     content: [{
-      text: `*He laughs.*
-
-Dr. Chen reviewed my curriculum. Tore it apart. "This module is outdated. This technique is wrong. This explanation is too simplified."
-
-She was brutal.
-
-*He grins.*
-
-And she was right. I updated everything she flagged.
-
-Then she said: "You know what you're missing? The why. You teach the how, but students need to understand why we do it this way."
-
-*He nods.*
-
-So now she's a paid consultant. She reviews my content. I cite her as a clinical advisor.
-
-Critics can become collaborators if you're humble enough to listen.`,
-      emotion: 'wise',
-      variation_id: 'dds_outcome_v1'
+      text: `*Laughs.*|Dr. Chen reviewed curriculum. Tore apart. "Outdated. Wrong. Too simplified."|Brutal.|*Grins.*|She was right. Updated everything.|Then: "Missing the why. Teach how, but students need why."|*Nods.*|Now paid consultant. Reviews content. Cited as clinical advisor.|Critics → collaborators if humble enough to listen.`,
+      emotion: 'proud',
+      interaction: 'bloom',
+      variation_id: 'dds_outcome_v1',
+      useChatPacing: true
     }],
     choices: [
       {
@@ -938,23 +818,11 @@ Critics can become collaborators if you're humble enough to listen.`,
     nodeId: 'yaquin_p2_operational_wisdom',
     speaker: 'Yaquin',
     content: [{
-      text: `A month ago, I thought running a course was about great content.
-
-Now I know it's about:
-- Customer service (support tickets, refunds, communication)
-- Product iteration (v1 → v2 → v3)
-- Strategic execution (cohorts, licensing, scaling)
-- Operational systems (forums, office hours, feedback loops)
-
-*He looks at his setup.*
-
-I'm not just a teacher. I'm an educator-entrepreneur.
-
-Teaching is the craft. Running a course business is the skill.
-
-And the best part? Every problem is data. Every refund is a lesson. Every 1-star review tells me what to improve.`,
-      emotion: 'confident',
-      variation_id: 'wisdom_v1'
+      text: `Month ago—thought course was about content.|Now know it's:|• Customer service|• Product iteration|• Strategic execution|• Operational systems|*Looks at setup.*|Not just teacher. Educator-entrepreneur.|Teaching is craft. Running business is skill.|Best part? Every problem is data. Every refund—lesson. Every 1-star—what to improve.`,
+      emotion: 'analytical',
+      interaction: 'nod',
+      variation_id: 'wisdom_v1',
+      useChatPacing: true
     }],
     choices: [
       {
@@ -972,23 +840,11 @@ And the best part? Every problem is data. Every refund is a lesson. Every 1-star
     nodeId: 'yaquin_p2_reflection',
     speaker: 'Yaquin',
     content: [{
-      text: `When I started, I was a dental assistant who thought the textbooks were garbage.
-
-Now I'm a course creator who knows that great content is only 20% of the work.
-
-The other 80%? Operations. Strategy. Communication. Resilience.
-
-*He smiles.*
-
-I'm teaching 200+ students now. Some will finish. Some will quit. Some will leave bad reviews.
-
-And I'm okay with that.
-
-Because the ones who succeed? They'll know things the textbooks never taught them.
-
-Just like I did.`,
-      emotion: 'peaceful',
-      variation_id: 'reflection_v1'
+      text: `Started—assistant who thought textbooks garbage.|Now—creator who knows content is 20%.|Other 80%? Operations. Strategy. Communication. Resilience.|*Smiles.*|200+ students. Some finish. Some quit. Bad reviews.|Okay with that.|Because who succeed? Know things textbooks never taught.|Just like I did.`,
+      emotion: 'proud',
+      interaction: 'bloom',
+      variation_id: 'reflection_v1',
+      useChatPacing: true
     }],
     choices: [
       {
@@ -1006,15 +862,11 @@ Just like I did.`,
     nodeId: 'yaquin_p2_complete',
     speaker: 'Yaquin',
     content: [{
-      text: `Thank you. For being here when it got messy.
-
-*He starts packing up his recording equipment.*
-
-I have a cohort starting Monday. Twenty students. Live sessions. Real teaching.
-
-If you see Samuel, tell him... tell him I'm not just teaching skills anymore. I'm building a business that teaches.`,
+      text: `Thank you. For being here when messy.|*Packing equipment.*|Cohort Monday. Twenty students. Live sessions. Real teaching.|See Samuel? Tell him—not just teaching skills. Building business that teaches.`,
       emotion: 'grateful',
-      variation_id: 'complete_v1'
+      interaction: 'nod',
+      variation_id: 'complete_v1',
+      useChatPacing: true
     }],
     choices: [
       {
