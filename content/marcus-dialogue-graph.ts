@@ -190,18 +190,16 @@ Wrong heparin calc? He bleeds. Missed clot? Stroke.`,
     speaker: 'Marcus',
     content: [
       {
-        text: `I didn't think. I just moved. 
-
-I want you to see it. Close your eyes. Put your hands out.
-
-*He guides your hands into position. The air around you seems to hum with machinery.*
-
-*Marcus's voice becomes tight, mechanical.*
-
-"Monitor is screaming. Red strobe. Oxygen saturation dropping. 98... 95... 92. The bubble detector is flashing. It sees air in the arterial line."`,
-        emotion: 'clinical_simulation',
+        text: `I didn't think. Just moved.|Close your eyes. Hands out.|*Guides your hands into position*|Monitor screaming. Red strobe.|O2 dropping: 98... 95... 92.|Bubble detector flashing.|Air in the arterial line.`,
+        emotion: 'clinical',
+        interaction: 'shake',
         variation_id: 'sim_start_v2',
-        richEffectContext: 'warning' // Simulation UI feel
+        richEffectContext: 'warning',
+        useChatPacing: true,
+
+        // TODO: [SFX] Alarm escalating with each O2 drop
+        // TODO: [VFX] Red strobe effect on screen
+        // TODO: [SFX] Bubble detector beeping urgently
       }
     ],
     choices: [
@@ -228,16 +226,22 @@ I want you to see it. Close your eyes. Put your hands out.
     speaker: 'Marcus',
     content: [
       {
-        text: `*Marcus shakes his head, dropping his hands.*
+        text: `*Shakes head, drops hands*
 
-"Too slow. By the time the surgeon turned around, the bubble traveled 40cm. It hit the patient's carotid artery."
+Too slow.
 
-*He looks at you, eyes haunted.*
+Bubble traveled 40cm. Hit the carotid.
 
-"Flatline. Asystole. He's gone. You have 1.5 seconds. You can't wait for permission."`,
-        emotion: 'critical_failure',
+Flatline. Asystole. Gone.
+
+1.5 seconds. Can't wait for permission.`,
+        emotion: 'critical',
+        interaction: 'shake',
         variation_id: 'sim_fail_v2',
-        richEffectContext: 'error'
+        richEffectContext: 'error',
+
+        // TODO: [SFX] Flatline tone on "Asystole"
+        // TODO: [VFX] Screen goes dark/red on "Gone"
       }
     ],
     choices: [
@@ -256,18 +260,24 @@ I want you to see it. Close your eyes. Put your hands out.
     speaker: 'Marcus',
     content: [
       {
-        text: `*Marcus nods. He mimes clamping a heavy tubing.*
+        text: `*Nods, mimes clamping heavy tubing*
 
-"Good. Flow stopped. But look at the patient map."
+Good. Flow stopped.
 
-*He points to the invisible monitor.*
+*Points to invisible monitor*
 
-"Blood pressure crashing. He has no flow. You clamped his life support. The bubble is trapped right before the cannula."
+Blood pressure crashing. No flow. You clamped his life support.
 
-"What do you do?"`,
-        emotion: 'clinical_simulation',
+Bubble trapped before the cannula.
+
+What do you do?`,
+        emotion: 'clinical',
+        interaction: 'nod',
         variation_id: 'sim_step_2_v2',
-        richEffectContext: 'warning'
+        richEffectContext: 'warning',
+
+        // TODO: [SFX] BP alarm beeping urgently
+        // TODO: [VFX] Pressure gauge visual dropping
       }
     ],
     choices: [
@@ -294,16 +304,26 @@ I want you to see it. Close your eyes. Put your hands out.
     speaker: 'Marcus',
     content: [
       {
-        text: `*Marcus winces.*
+        text: `*Winces*
 
-"You unclamped. I saw the bubble enter the cannula. It's in him now."
+You unclamped. Bubble entered the cannula.
 
-*He looks down at his hands.*
+It's in him.
 
-"Vapor lock. Massive stroke. He's gone. You saved the flow, but you delivered the poison. Precision matters more than speed."`,
-        emotion: 'critical_failure',
+*Looks down at hands*
+
+Vapor lock. Massive stroke. Gone.
+
+Saved the flow. Delivered the poison.
+
+Precision over speed.`,
+        emotion: 'critical',
+        interaction: 'small',
         variation_id: 'sim_fail_air_v2',
-        richEffectContext: 'error'
+        richEffectContext: 'error',
+
+        // TODO: [SFX] Flatline after "Gone"
+        // TODO: [VFX] Red fade on screen
       }
     ],
     choices: [
@@ -322,16 +342,20 @@ I want you to see it. Close your eyes. Put your hands out.
     speaker: 'Marcus',
     content: [
       {
-        text: `*He mimics flicking the line. Hard.*
+        text: `*Mimics flicking the line. Hard.*
 
-"Bubble isolated. It's at the access port. You have a syringe."
+Bubble isolated. Access port. You have a syringe.
 
-"Patient O2 is dropping. 88... 85... 82..."
+Patient O2 dropping: 88... 85... 82...
 
-"He's becoming hypoxic. You have seconds."`,
-        emotion: 'clinical_simulation',
+Hypoxic. Seconds left.`,
+        emotion: 'clinical',
+        interaction: 'jitter',
         variation_id: 'sim_step_3_v2',
-        richEffectContext: 'warning'
+        richEffectContext: 'warning',
+
+        // TODO: [SFX] O2 alarm escalating
+        // TODO: [VFX] O2 numbers flashing red as they drop
       }
     ],
     choices: [
@@ -358,16 +382,22 @@ I want you to see it. Close your eyes. Put your hands out.
     speaker: 'Marcus',
     content: [
       {
-        text: `*Marcus sighs, a heavy sound.*
+        text: `*Heavy sigh*
 
-"You pushed against the pressure. You just drove the bubble further down the line."
+Pushed against pressure. Drove bubble further down.
 
-"Now it's impossible to retrieve. We have to change the whole circuit. He won't survive the changeover time."
+Impossible to retrieve now. Whole circuit change needed.
 
-"It's over."`,
-        emotion: 'critical_failure',
+Won't survive changeover time.
+
+It's over.`,
+        emotion: 'critical',
+        interaction: 'small',
         variation_id: 'sim_fail_push_v2',
-        richEffectContext: 'error'
+        richEffectContext: 'error',
+
+        // TODO: [SFX] Flatline
+        // TODO: [VFX] Screen darkens
       }
     ],
     choices: [
@@ -386,16 +416,22 @@ I want you to see it. Close your eyes. Put your hands out.
     speaker: 'Marcus',
     content: [
       {
-        text: `*The hum of the machine seems to settle into a steady rhythm.*
+        text: `*Machine hum settles to steady rhythm*
 
-"System stable. Patient O2 rising... 98%."
+System stable. Patient O2 rising... 98%.
 
-*Marcus opens his eyes. He looks exhausted but alive.*
+*Opens eyes, exhausted but alive*
 
-"You got it. Clean line. Flow restored. He wakes up tomorrow."`,
-        emotion: 'relieved_triumphant',
+You got it. Clean line. Flow restored.
+
+He wakes up tomorrow.`,
+        emotion: 'relieved',
+        interaction: 'bloom',
         variation_id: 'sim_success_v2',
-        richEffectContext: 'success'
+        richEffectContext: 'success',
+
+        // TODO: [SFX] Clean beep tone, steady rhythm
+        // TODO: [VFX] Green success glow
       }
     ],
     choices: [
@@ -430,13 +466,18 @@ I want you to see it. Close your eyes. Put your hands out.
     speaker: 'Marcus',
     content: [
       {
-        text: `That's the job. It's not just 'caring.' It's technical mastery.
+        text: `That's the job. Not just caring. Technical mastery.
 
-There's a whole world of this. Perfusionists run these machines in surgery. Biomedical engineers design them so they don't trap air in the first place. Healthcare software devs write the code that screams 'AIR IN LINE.'
+Whole world here. Perfusionists run these in surgery. Biomedical engineers design them bubble-free. Software devs code the alarms.
 
-I started as a nurse. But now? I'm thinking about designing the next machine.`,
+Started as a nurse.
+
+Now? Designing the next machine.`,
         emotion: 'inspired',
-        variation_id: 'career_bridge_v1'
+        interaction: 'bloom',
+        variation_id: 'career_bridge_v1',
+
+        // TODO: [VFX] Career pathway icons appear subtly (perfusion, biomed, software)
       }
     ],
     choices: [
@@ -471,11 +512,18 @@ I started as a nurse. But now? I'm thinking about designing the next machine.`,
     speaker: 'Marcus',
     content: [
       {
-        text: `Thanks. It felt good to walk someone else through it. Makes the weight a little lighter.
+        text: `Thanks. Felt good walking you through it.
 
-If you see Samuel... tell him the patient made it. The machine held.`,
+Makes the weight lighter.
+
+If you see Samuel... tell him the patient made it.
+
+The machine held.`,
         emotion: 'grateful',
-        variation_id: 'farewell_v1'
+        interaction: 'small',
+        variation_id: 'farewell_v1',
+
+        // TODO: [SFX] Soft, relieved exhale
       }
     ],
     choices: [
@@ -512,17 +560,14 @@ If you see Samuel... tell him the patient made it. The machine held.`,
     speaker: 'Marcus',
     content: [
       {
-        text: `*Three days later. Marcus is at the ECMO console again, but this time he's not alone.*
-
-*A young specialist in fresh scrubs stands next to him, eyes wide, hands trembling slightly.*
-
-This is Jordan. New to the CVICU. I'm supposed to show them the ropes.
-
-*Marcus glances at you, then back at the machine.*
-
-Funny you ask about teaching. I'm about to find out if I'm any good at it.`,
+        text: `*Three days later. ECMO console. Not alone.*|*Young specialist. Fresh scrubs. Wide eyes. Trembling hands.*|This is Jordan. New to CVICU. Showing them the ropes.|*Glances at you*|Funny you asked about teaching.|About to find out if I'm any good.`,
         emotion: 'focused',
-        variation_id: 'p2_entry_v1'
+        interaction: 'nod',
+        variation_id: 'p2_entry_v1',
+        useChatPacing: true,
+
+        // TODO: [SFX] ECMO machine humming in background
+        // TODO: [VFX] Jordan appears nervous (subtle animation)
       }
     ],
     choices: [
@@ -552,19 +597,14 @@ Funny you ask about teaching. I'm about to find out if I'm any good at it.`,
     speaker: 'Jordan',
     content: [
       {
-        text: `*Jordan swallows hard.*
-
-First week, actually. I've read the manuals. Watched the videos. But standing here next to the real thing...
-
-*They gesture at the ECMO circuit - tubes thick as garden hoses, pump humming steadily.*
-
-There's a person's blood in those lines. Their entire circulatory system running through that machine.
-
-*Voice drops to almost a whisper.*
-
-What if I mess up?`,
+        text: `*Swallows hard*|First week. Read manuals. Watched videos.|But standing here next to the real thing...|*Gestures at ECMO circuit - tubes thick as hoses, pump humming*|Person's blood in those lines. Entire circulatory system.|*Whispers*|What if I mess up?`,
         emotion: 'anxious',
-        variation_id: 'jordan_nervous_v1'
+        interaction: 'jitter',
+        variation_id: 'jordan_nervous_v1',
+        useChatPacing: true,
+
+        // TODO: [SFX] ECMO pump steady hum
+        // TODO: [VFX] Jordan's hand trembles slightly
       }
     ],
     choices: [
@@ -595,20 +635,16 @@ What if I mess up?`,
     speaker: 'Marcus',
     content: [
       {
-        text: `*Marcus looks at Jordan, then at the machine, then back.*
-
-Okay. Let's start simple. See that number? Flow rate. It tells you how many liters per minute the pump is moving.
-
-*He points to the display.*
-
-Normal cardiac output is 4 to 8 liters per minute. We're running at 4.5 right now for this patient because—
-
-*Suddenly, a sharp BEEP. An alert flashes on the console: CRITICAL SYSTEM MESSAGE.*
-
-*Marcus's phone buzzes. He glances at it, and his expression goes dark.*`,
-        emotion: 'tense',
+        text: `Start simple. See that number? Flow rate.|Liters per minute the pump moves.|Normal cardiac output: 4 to 8. We're at 4.5 because—|*Sharp BEEP*|CRITICAL SYSTEM MESSAGE|*Phone buzzes. Expression darkens.*`,
+        emotion: 'focused',
+        interaction: 'shake',
         variation_id: 'teaching_interrupted_v1',
-        richEffectContext: 'warning'
+        richEffectContext: 'warning',
+        useChatPacing: true,
+
+        // TODO: [SFX] Sharp alert beep cutting through
+        // TODO: [VFX] Red alert flash on screen
+        // TODO: [SFX] Phone vibration
       }
     ],
     choices: [
@@ -635,23 +671,16 @@ Normal cardiac output is 4 to 8 liters per minute. We're running at 4.5 right no
     speaker: 'Marcus',
     content: [
       {
-        text: `*Marcus reads the message aloud, voice tight.*
-
-"Equipment allocation crisis. Three ECMO machines available. Five patients requiring ECMO support within next 6 hours. Triage committee convening. Senior specialists to standby for recommendations."
-
-*He looks at Jordan, whose face has gone pale.*
-
-*Then to you.*
-
-Three machines. Five patients. Someone's not getting one.
-
-*The weight of it hangs in the air like smoke.*
-
-And they want my recommendation on who.`,
+        text: `*Reads message. Voice tight.*|"Equipment allocation crisis.|Three ECMO machines. Five patients need ECMO within 6 hours.|Triage committee convening.|Senior specialists standby for recommendations."|*Jordan goes pale.*|Three machines. Five patients.|Someone's not getting one.|They want my recommendation on who.`,
         emotion: 'heavy',
+        interaction: 'shake',
         variation_id: 'crisis_announcement_v1',
         richEffectContext: 'error',
-        useChatPacing: true
+        useChatPacing: true,
+
+        // TODO: [SFX] Phone notification sound
+        // TODO: [VFX] Screen flash red on "allocation crisis"
+        // TODO: [MUSIC] Tension builds
       }
     ],
     choices: [
@@ -684,25 +713,13 @@ And they want my recommendation on who.`,
     speaker: 'Marcus',
     content: [
       {
-        text: `*Marcus pulls up a tablet, hands it to you.*
-
-Here are the five cases. All critical. All need ECMO.
-
-**Patient A**: 45, heart failure, on transplant list, stable for now.
-**Patient B**: 28, motorcycle accident, severe lung damage, deteriorating fast.
-**Patient C**: 67, post-surgery complications, high mortality risk even with ECMO.
-**Patient D**: 52, COVID complications, showing slight improvement.
-**Patient E**: 19, sudden cardiac event, cause unknown, very unstable.
-
-*Jordan is frozen, staring at the list.*
-
-*Marcus looks at you.*
-
-The committee will want data. Survival probability. Resource utilization. But...
-
-*He trails off.*`,
+        text: `*Pulls up tablet. Hands it over.*|Five cases. All critical. All need ECMO.|**Patient A**: 45, heart failure, transplant list, stable.|**Patient B**: 28, motorcycle accident, lung damage, deteriorating fast.|**Patient C**: 67, post-surgery complications, high mortality even with ECMO.|**Patient D**: 52, COVID complications, slight improvement.|**Patient E**: 19, sudden cardiac event, unknown cause, unstable.|*Jordan frozen. Staring.*|Committee wants data. Survival probability. Resource utilization.|But...`,
         emotion: 'conflicted',
-        variation_id: 'cases_review_v1'
+        interaction: 'small',
+        variation_id: 'cases_review_v1',
+
+        // TODO: [VFX] Tablet screen glow with patient data
+        // TODO: [SFX] Quiet tension ambience
       }
     ],
     choices: [
@@ -736,23 +753,14 @@ The committee will want data. Survival probability. Resource utilization. But...
     speaker: 'Marcus',
     content: [
       {
-        text: `*Marcus nods slowly.*
-
-Survival probability. That's the cleanest metric. Evidence-based.
-
-Patient C has a 30% survival rate even with ECMO. Patient D is improving without it.
-
-That would prioritize A, B, and E.
-
-*He looks down.*
-
-Patient C has grandchildren visiting every day. Patient D is a single parent with three kids under 10.
-
-*His jaw tightens.*
-
-The data says one thing. The humans say another.`,
+        text: `*Nods slowly.*|Survival probability. Cleanest metric. Evidence-based.|Patient C: 30% survival even with ECMO.|Patient D: improving without it.|Prioritizes A, B, E.|*Looks down.*|Patient C has grandchildren visiting daily.|Patient D: single parent, three kids under 10.|*Jaw tightens.*|Data says one thing. Humans say another.`,
         emotion: 'conflicted',
-        variation_id: 'framework_survival_v1'
+        interaction: 'small',
+        variation_id: 'framework_survival_v1',
+        useChatPacing: true,
+
+        // TODO: [VFX] Data visualization vs family photos contrast
+        // TODO: [SFX] Soft tension music
       }
     ],
     choices: [
@@ -787,19 +795,14 @@ The data says one thing. The humans say another.`,
     speaker: 'Marcus',
     content: [
       {
-        text: `*Marcus looks at Patient E's file.*
-
-Nineteen years old. Entire life ahead of them.
-
-But Patient E's cardiac event has an unknown cause. Could happen again. High risk of complications.
-
-Patient B - the 28-year-old from the motorcycle accident - has reversible lung damage. Clear path to recovery.
-
-*He rubs his temples.*
-
-Years of life is one metric. Quality of those years is another. And who are we to decide whose future is worth more?`,
+        text: `*Looks at Patient E's file.*|Nineteen years old. Entire life ahead.|But cardiac event unknown cause. Could recur. High complication risk.|Patient B - 28, motorcycle accident - reversible lung damage. Clear recovery path.|*Rubs temples.*|Years of life: one metric. Quality of those years: another.|Who are we to decide whose future is worth more?`,
         emotion: 'heavy',
-        variation_id: 'framework_years_v1'
+        interaction: 'small',
+        variation_id: 'framework_years_v1',
+        useChatPacing: true,
+
+        // TODO: [VFX] Patient files highlighted on screen
+        // TODO: [SFX] Quiet ethical tension
       }
     ],
     choices: [
@@ -834,25 +837,14 @@ Years of life is one metric. Quality of those years is another. And who are we t
     speaker: 'Marcus',
     content: [
       {
-        text: `*Marcus sets down the tablet.*
-
-You're right. This isn't just a math problem.
-
-Medical criteria: survival probability, reversibility, resource utilization.
-
-Human factors: family impact, quality of life, patient values.
-
-System factors: bed availability, staffing, follow-up care capacity.
-
-*He pulls out a notebook, starts sketching a decision matrix.*
-
-We build a framework. Weight each factor. Score each patient. At least then the process is transparent.
-
-*He looks up.*
-
-Still doesn't make it easier. But it makes it defensible.`,
+        text: `*Sets down tablet.*|You're right. Not just math.|Medical criteria: survival probability, reversibility, resource utilization.|Human factors: family impact, quality of life, patient values.|System factors: bed availability, staffing, follow-up capacity.|*Pulls out notebook. Sketches decision matrix.*|Build a framework. Weight factors. Score patients.|Process becomes transparent.|*Looks up.*|Doesn't make it easier. Makes it defensible.`,
         emotion: 'focused',
-        variation_id: 'framework_holistic_v1'
+        interaction: 'nod',
+        variation_id: 'framework_holistic_v1',
+        useChatPacing: true,
+
+        // TODO: [VFX] Decision matrix visualization appearing
+        // TODO: [SFX] Pen scratching on paper
       }
     ],
     choices: [
@@ -889,20 +881,14 @@ Still doesn't make it easier. But it makes it defensible.`,
     speaker: 'Jordan',
     content: [
       {
-        text: `*Jordan has been silent this whole time, just listening. Now they speak, voice shaking.*
-
-Marcus... how do you live with this?
-
-I came into medicine to help people. To save lives.
-
-*They gesture at the tablet.*
-
-But this? Choosing who gets the machine and who doesn't... that's choosing who lives.
-
-How do you make that choice and then go home and sleep at night?`,
-        emotion: 'distressed',
+        text: `*Silent this whole time. Just listening. Now speaks. Voice shaking.*|Marcus... how do you live with this?|Came into medicine to help people. Save lives.|*Gestures at tablet.*|But this? Choosing who gets the machine...|That's choosing who lives.|How do you make that choice and go home and sleep?`,
+        emotion: 'anxious',
+        interaction: 'jitter',
         variation_id: 'jordan_question_v1',
-        useChatPacing: true
+        useChatPacing: true,
+
+        // TODO: [VFX] Jordan's hands trembling
+        // TODO: [SFX] Voice breaks slightly
       }
     ],
     choices: [
@@ -929,25 +915,15 @@ How do you make that choice and then go home and sleep at night?`,
     speaker: 'Marcus',
     content: [
       {
-        text: `*Marcus is quiet for a long moment. When he speaks, his voice is softer.*
+        text: `*Quiet. Long moment. Voice softer.*|Jordan, you don't sleep well. Not at first. Maybe not ever.|But here's what I learned:|You're not choosing who lives. You're doing triage with limited resources. There's a difference.|*Picks up tablet.*|Five machines? All five patients get them.|Shortage isn't your fault. Disease isn't. Accident isn't.|Your responsibility: best decision with available information.|*Looks at Jordan directly.*|Document reasoning. Consult colleagues. Follow ethical principles. Decide.|Yeah, it weighs on you. But that weight keeps you honest.|Day it doesn't bother you? Day you should quit.`,
+        emotion: 'focused',
+        interaction: 'nod',
+        variation_id: 'teaching_burden_v1',
+        useChatPacing: true,
 
-Jordan, you don't sleep well. Not at first. Maybe not ever.
-
-But here's what I learned: You're not choosing who lives. You're doing triage with limited resources. There's a difference.
-
-*He picks up the tablet again.*
-
-If we had five machines, all five patients would get them. The shortage isn't your fault. The disease isn't your fault. The accident isn't your fault.
-
-What IS your responsibility is making the best decision you can with the information you have.
-
-*He looks at Jordan directly.*
-
-You document your reasoning. You consult with colleagues. You follow ethical principles. And then you decide.
-
-And yeah, it weighs on you. But that weight? That's what keeps you honest. The day it doesn't bother you anymore is the day you should quit.`,
-        emotion: 'mentor',
-        variation_id: 'teaching_burden_v1'
+        // TODO: [VFX] Marcus's expression softens
+        // TODO: [SFX] Quiet mentorship moment
+        // TODO: [MUSIC] Reflective, gentle
       }
     ],
     choices: [
@@ -978,21 +954,14 @@ And yeah, it weighs on you. But that weight? That's what keeps you honest. The d
     speaker: 'Marcus',
     content: [
       {
-        text: `*Marcus checks his phone.*
+        text: `*Checks phone.*|Committee meets in 30 minutes. Need recommendations.|*Pauses.*|Protocol says involve ethics committee for allocation. Oversight. Shared responsibility.|But they're backlogged. By the time they review, Patient B might deteriorate beyond ECMO effectiveness.|*Looks conflicted.*|Medical decision now, or shared ethical decision later?`,
+        emotion: 'conflicted',
+        interaction: 'shake',
+        variation_id: 'ethics_decision_v1',
+        useChatPacing: true,
 
-The committee meets in 30 minutes. I need to present my recommendations.
-
-*He pauses.*
-
-Protocol says I should involve the ethics committee for allocation decisions. They'd provide oversight, spread the responsibility.
-
-But they're already backlogged with other cases. By the time they review and deliberate, Patient B might deteriorate beyond the point where ECMO would help.
-
-*He looks conflicted.*
-
-Medical decision now, or shared ethical decision later?`,
-        emotion: 'pressured',
-        variation_id: 'ethics_decision_v1'
+        // TODO: [SFX] Phone notification
+        // TODO: [VFX] Clock ticking visual
       }
     ],
     choices: [
@@ -1027,23 +996,15 @@ Medical decision now, or shared ethical decision later?`,
     speaker: 'Marcus',
     content: [
       {
-        text: `*Marcus takes a deep breath.*
-
-Okay. Decision framework is set. Now comes the harder part.
-
-*He looks at the patient list.*
-
-Families. They're all in the waiting room right now. Five families who don't know yet that they're in competition for three machines.
-
-How do I communicate this? Full transparency - "I'm sorry, but resources are limited"?
-
-Or frame it more gently - focus on the clinical picture without mentioning the shortage?
-
-*His voice drops.*
-
-What's more ethical: the harsh truth, or protecting them from the machinery of triage?`,
+        text: `*Deep breath.*|Decision framework set. Now the harder part.|*Looks at patient list.*|Families. All in waiting room now.|Five families who don't know they're in competition for three machines.|How to communicate?|Full transparency: "Resources are limited"?|Or frame gently - clinical picture without mentioning shortage?|*Voice drops.*|More ethical: harsh truth, or protecting them from triage machinery?`,
         emotion: 'conflicted',
-        variation_id: 'communication_v1'
+        interaction: 'small',
+        variation_id: 'communication_v1',
+        useChatPacing: true,
+
+        // TODO: [VFX] Waiting room visual in background
+        // TODO: [SFX] Muffled waiting room sounds
+        // TODO: [MUSIC] Ethical weight builds
       }
     ],
     choices: [
@@ -1079,23 +1040,15 @@ What's more ethical: the harsh truth, or protecting them from the machinery of t
     speaker: 'Marcus',
     content: [
       {
-        text: `*Two hours later.*
+        text: `*Two hours later.*|*Returns. Exhausted but composed.*|Machines allocated. Patients A, B, E got them.|Patient D improved enough - managing without ECMO now.|Patient C... family chose comfort care. Already considering it.|*Sits down heavily.*|No one died from my recommendation.|But that's luck as much as judgment.|*Looks at Jordan, observing everything.*|Still want to work in CVICU?`,
+        emotion: 'exhausted',
+        interaction: 'small',
+        variation_id: 'resolution_v1',
+        useChatPacing: true,
 
-*Marcus comes back, looking exhausted but composed.*
-
-Machines allocated. Patients A, B, and E got them.
-
-Patient D improved enough that they're managing without ECMO for now. Patient C... family decided on comfort care. They'd been considering it anyway.
-
-*He sits down heavily.*
-
-No one died because of my recommendation. But that's luck as much as judgment.
-
-*He looks at Jordan, who's been observing everything.*
-
-Still want to work in the CVICU?`,
-        emotion: 'exhausted_relieved',
-        variation_id: 'resolution_v1'
+        // TODO: [VFX] Time transition effect
+        // TODO: [SFX] Relieved exhale
+        // TODO: [MUSIC] Tension releases slightly
       }
     ],
     choices: [
@@ -1121,19 +1074,14 @@ Still want to work in the CVICU?`,
     speaker: 'Jordan',
     content: [
       {
-        text: `*Jordan nods slowly.*
+        text: `*Nods slowly.*|Yeah. I do.|If someone has to make these decisions... should be someone who loses sleep over them.|*Looks at ECMO machine, then Marcus.*|Teach me. Not just technical stuff. All of it.|The weight. The framework. How to carry it.`,
+        emotion: 'focused',
+        interaction: 'nod',
+        variation_id: 'jordan_reflection_v1',
+        useChatPacing: true,
 
-Yeah. I do.
-
-Because if someone has to make these decisions... it should be someone who loses sleep over them.
-
-*They look at the ECMO machine, then back at Marcus.*
-
-Teach me. Not just the technical stuff. All of it.
-
-The weight. The framework. How to carry it.`,
-        emotion: 'determined',
-        variation_id: 'jordan_reflection_v1'
+        // TODO: [VFX] Jordan's resolve strengthens
+        // TODO: [SFX] ECMO machine steady hum
       }
     ],
     choices: [
@@ -1164,25 +1112,15 @@ The weight. The framework. How to carry it.`,
     speaker: 'Marcus',
     content: [
       {
-        text: `*Marcus almost smiles.*
+        text: `*Almost smiles.*|Yeah. Maybe I am.|*Stands. Stretches.*|Was thinking about equipment design before. Machines that don't trap air bubbles.|But maybe another way to improve the system:|Teaching next generation to think critically about these machines. About the decisions around them.|*Hand on Jordan's shoulder.*|Same patience. Different kind of impact.|*Looks at you.*|Thanks. For helping me figure that out.`,
+        emotion: 'grateful',
+        interaction: 'bloom',
+        variation_id: 'p2_complete_v1',
+        useChatPacing: true,
 
-Yeah. Maybe I am.
-
-*He stands, stretches.*
-
-You know what? I was thinking about equipment design before. Making machines that don't trap air bubbles.
-
-But maybe there's another way to improve the system: teaching the next generation to think critically about these machines. About the decisions around them.
-
-*He puts a hand on Jordan's shoulder.*
-
-Same patient. Different kind of impact.
-
-*He looks at you.*
-
-Thanks. For helping me figure that out.`,
-        emotion: 'grateful_inspired',
-        variation_id: 'p2_complete_v1'
+        // TODO: [VFX] Warm resolution glow
+        // TODO: [SFX] Hopeful music swell
+        // TODO: [MUSIC] Inspiring, forward-looking
       }
     ],
     choices: [
