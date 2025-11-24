@@ -159,7 +159,7 @@ export function FutureSkillsSupport({
             <h3 className="text-lg font-semibold text-gray-800 mb-4">
               Your Skill Development
             </h3>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
               {Object.entries(skills).map(([skill, value]) => (
                 <div key={skill} className="p-3 bg-gray-50 rounded-lg">
                   <div className="flex items-center justify-between mb-2">
@@ -247,12 +247,16 @@ export function FutureSkillsSupport({
                   <strong>Salary Range:</strong> ${selectedCareerPath.salaryRange[0].toLocaleString()} - ${selectedCareerPath.salaryRange[1].toLocaleString()}
                 </div>
               </div>
-              <button
-                onClick={() => setSelectedCareerPath(null)}
-                className="mt-3 text-xs text-blue-600 hover:text-blue-800 underline"
-              >
-                Close details
-              </button>
+              <div className="mt-4 flex justify-end">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setSelectedCareerPath(null)}
+                  className="text-blue-600 hover:text-blue-800 hover:bg-blue-100"
+                >
+                  Close details
+                </Button>
+              </div>
             </div>
           )}
 

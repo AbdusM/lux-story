@@ -78,8 +78,8 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing }: {
         data-choice-text={choice.text}
         data-pattern={choice.pattern || ''}
         className={`
-          w-full min-h-[56px] px-6 py-4
-          text-base font-medium text-left whitespace-normal leading-relaxed
+          w-full min-h-[56px] h-auto px-6 py-4
+          text-base font-medium text-left justify-start break-words whitespace-normal leading-relaxed
           border border-slate-200 bg-white
           hover:bg-slate-50 hover:border-slate-300
           transition-colors duration-200 ease-out
