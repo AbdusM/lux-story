@@ -715,11 +715,13 @@ export const tessDialogueNodes: DialogueNode[] = [
     nodeId: 'tess_p2_program_adaptation',
     speaker: 'Tess',
     content: [{
-      text: `Maybe naive thinking everyone thrives same format.|What if scaling?|**Level 1**: Supported (frequent check-ins, shorter distances) **Level 2**: Standard immersion **Level 3**: Advanced challenge|Students choose. Parents heard. Integrity intact.|*Sketches.*|Compromise or good design?`,
+      text: `Maybe naive thinking everyone thrives same format.|What if scaling?|<bloom>**Level 1**: Supported (frequent check-ins, shorter distances) **Level 2**: Standard immersion **Level 3**: Advanced challenge</bloom>|Students choose. Parents heard. Integrity intact.|*Sketches.*|Compromise or good design?`,
       emotion: 'focused',
-      interaction: 'bloom',
       variation_id: 'adaptation_v1',
-      useChatPacing: true
+      useChatPacing: true,
+      // NOTE: Inline bloom applied only to the three-tier system solution itself,
+      // not to the preceding doubt or following reflection. This targets the
+      // epiphany moment of the differentiated design breakthrough.
     }],
     choices: [
       {
@@ -748,11 +750,13 @@ export const tessDialogueNodes: DialogueNode[] = [
     nodeId: 'tess_p2_board_prep',
     speaker: 'Tess',
     content: [{
-      text: `Board meeting in 48 hours.|Questions: Safe? Qualified? Liability? Better than AP classes?|*Looks at you.*|Go in with data—completion rates, assessments, testimonials.|Or vision—'Education is becoming, not just learning.'|Or both and risk sounding like a TED Talk.`,
+      text: `Board meeting in 48 hours.|<jitter>Questions: Safe? Qualified? Liability? Better than AP classes?</jitter>|*Looks at you.*|Go in with data—completion rates, assessments, testimonials.|Or vision—'Education is becoming, not just learning.'|Or both and risk sounding like a TED Talk.`,
       emotion: 'anxious',
-      interaction: 'jitter',
       variation_id: 'board_prep_v1',
-      useChatPacing: true
+      useChatPacing: true,
+      // NOTE: Inline jitter applied only to the rapid-fire board questions (anxiety peak),
+      // not to the surrounding setup or strategic options. This emphasizes the panic
+      // moment without affecting her composed strategizing that follows.
     }],
     choices: [
       {
@@ -817,11 +821,14 @@ export const tessDialogueNodes: DialogueNode[] = [
     nodeId: 'tess_p2_leadership_moment',
     speaker: 'Tess',
     content: [{
-      text: `*Board members exchange glances.*|**Member 3**: 'Expensive. Risky. Unproven.'|*Nods.*|**Tess**: 'All of those. Also the future of education.'|*Leans forward.*|'Keep doing what we've always done—safe, measurable, forgettable. Or teach students to face the unknown.'|**Chair**: 'If more quit?'|*Meets eyes.*|'Then I learn. Iterate. That's what builders do.'|*Silence.*|**Chair**: 'Continue. Monthly reports.'|*Exhales.*`,
+      text: `*Board members exchange glances.*|**Member 3**: 'Expensive. Risky. Unproven.'|*Nods.*|**Tess**: <big>'All of those. Also the future of education.'</big>|*Leans forward.*|<big>'Keep doing what we've always done—safe, measurable, forgettable. Or teach students to face the unknown.'</big>|**Chair**: 'If more quit?'|*Meets eyes.*|<big>'Then I learn. Iterate. That's what builders do.'</big>|*Silence.*|**Chair**: 'Continue. Monthly reports.'|*Exhales.*`,
       emotion: 'proud',
-      interaction: 'big',
       variation_id: 'leadership_v1',
-      useChatPacing: true
+      useChatPacing: true,
+      // NOTE: Inline big applied strategically to three core leadership assertions:
+      // (1) the future of education claim, (2) the dichotomy between safe/forgettable vs. brave,
+      // (3) the builder identity. These are the turning points that secure board approval,
+      // not the procedural dialogue or their concerns.
     }],
     choices: [
       {
@@ -875,11 +882,14 @@ export const tessDialogueNodes: DialogueNode[] = [
     nodeId: 'tess_p2_reflection',
     speaker: 'Tess',
     content: [{
-      text: `Adding three changes:|1. Pre-program exposure trips—test woods before committing 2. Tiered paths—meet students where they are 3. Parent education—help them understand|*Smiles.*|Month ago, thought founding was perfect curriculum.|Now know it's leading through uncertainty. Every crisis is data. Every dropout a lesson.|Not a visionary. Builder willing to break things to make them better.`,
+      text: `Adding three changes:|<bloom>1. Pre-program exposure trips—test woods before committing 2. Tiered paths—meet students where they are 3. Parent education—help them understand</bloom>|*Smiles.*|Month ago, thought founding was perfect curriculum.|Now know it's leading through uncertainty. Every crisis is data. Every dropout a lesson.|<bloom>Not a visionary. Builder willing to break things to make them better.</bloom>`,
       emotion: 'proud',
-      interaction: 'bloom',
       variation_id: 'reflection_v1',
-      useChatPacing: true
+      useChatPacing: true,
+      // NOTE: Inline bloom applied to two climactic epiphany moments:
+      // (1) the three concrete program improvements, and (2) the identity shift
+      // from "visionary" to "builder." These are the breakthrough realizations,
+      // not the surrounding narrative context.
     }],
     choices: [
       {
