@@ -6,6 +6,8 @@
  * NO LEGACY COMPATIBILITY. This is a clean, new system.
  */
 
+import { findCharacterForNode } from './graph-registry'
+
 /**
  * Core character relationship state
  * Tracks everything we know about a character's relationship with the player
@@ -343,6 +345,14 @@ export class StateValidation {
     )
   }
 
+  // Helper: Validate node ID existence
+  static isValidNodeId(nodeId: any): boolean {
+    if (typeof nodeId !== 'string') return false
+    // Check if node exists in registry
+    // We pass a dummy state because basic existence check doesn't need flags
+    return !!findCharacterForNode(nodeId, { globalFlags: new Set() } as any)
+  }
+
   static isValidGameState(obj: any): obj is GameState {
     return (
       obj &&
@@ -352,7 +362,7 @@ export class StateValidation {
       obj.globalFlags instanceof Set &&
       StateValidation.hasValidPatterns(obj.patterns) &&
       StateValidation.isValidNumber(obj.lastSaved) &&
-      typeof obj.currentNodeId === 'string' &&
+      StateValidation.isValidNodeId(obj.currentNodeId) &&
       typeof obj.currentCharacterId === 'string'
     )
   }
@@ -366,7 +376,7 @@ export class StateValidation {
       Array.isArray(obj.globalFlags) &&
       StateValidation.hasValidPatterns(obj.patterns) &&
       StateValidation.isValidNumber(obj.lastSaved) &&
-      typeof obj.currentNodeId === 'string' &&
+      StateValidation.isValidNodeId(obj.currentNodeId) &&
       typeof obj.currentCharacterId === 'string'
     )
   }
