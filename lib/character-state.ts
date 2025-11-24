@@ -326,6 +326,23 @@ export class GameStateUtils {
  * Type guards for runtime validation
  */
 export class StateValidation {
+  // Helper: Validate number is finite and not NaN
+  static isValidNumber(value: any): boolean {
+    return typeof value === 'number' && isFinite(value) && !isNaN(value)
+  }
+
+  // Helper: Validate all pattern scores
+  static hasValidPatterns(patterns: any): boolean {
+    return (
+      patterns &&
+      StateValidation.isValidNumber(patterns.analytical) &&
+      StateValidation.isValidNumber(patterns.helping) &&
+      StateValidation.isValidNumber(patterns.building) &&
+      StateValidation.isValidNumber(patterns.patience) &&
+      StateValidation.isValidNumber(patterns.exploring)
+    )
+  }
+
   static isValidGameState(obj: any): obj is GameState {
     return (
       obj &&
@@ -333,9 +350,8 @@ export class StateValidation {
       typeof obj.playerId === 'string' &&
       obj.characters instanceof Map &&
       obj.globalFlags instanceof Set &&
-      obj.patterns &&
-      typeof obj.patterns.analytical === 'number' &&
-      typeof obj.lastSaved === 'number' &&
+      StateValidation.hasValidPatterns(obj.patterns) &&
+      StateValidation.isValidNumber(obj.lastSaved) &&
       typeof obj.currentNodeId === 'string' &&
       typeof obj.currentCharacterId === 'string'
     )
@@ -348,9 +364,8 @@ export class StateValidation {
       typeof obj.playerId === 'string' &&
       Array.isArray(obj.characters) &&
       Array.isArray(obj.globalFlags) &&
-      obj.patterns &&
-      typeof obj.patterns.analytical === 'number' &&
-      typeof obj.lastSaved === 'number' &&
+      StateValidation.hasValidPatterns(obj.patterns) &&
+      StateValidation.isValidNumber(obj.lastSaved) &&
       typeof obj.currentNodeId === 'string' &&
       typeof obj.currentCharacterId === 'string'
     )

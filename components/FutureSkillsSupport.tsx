@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { FutureSkills, CareerPath2030 } from '@/lib/2030-skills-system'
+import { Button } from '@/components/ui/button'
 
 interface SkillData {
   name: string

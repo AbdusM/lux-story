@@ -359,11 +359,14 @@ export function SkillProgressionChart({
             <div className="text-center">
               <p className="text-2xl font-bold text-blue-600">
                 {sortedDemos.length > 1
-                  ? Math.round(
-                      (sortedDemos.length /
-                        ((sortedDemos[sortedDemos.length - 1].timestamp! - sortedDemos[0].timestamp!) /
-                        (1000 * 60 * 60 * 24))) * 10
-                    ) / 10
+                  ? (() => {
+                      const timeDiffMs = sortedDemos[sortedDemos.length - 1].timestamp! - sortedDemos[0].timestamp!
+                      const timeDiffDays = timeDiffMs / (1000 * 60 * 60 * 24)
+                      // Prevent division by zero if all demos on same day
+                      return timeDiffDays > 0
+                        ? Math.round((sortedDemos.length / timeDiffDays) * 10) / 10
+                        : sortedDemos.length
+                    })()
                   : '—'
                 }
               </p>

@@ -169,8 +169,12 @@ function calculateTrend(demonstrations: SkillDemonstration[]): TrendDirection {
   const recentThird = sorted.slice(0, Math.floor(sorted.length / 3))
   const earlierDemos = sorted.slice(Math.floor(sorted.length / 3))
 
-  const recentAvgValue = recentThird.reduce((sum, d) => sum + d.value, 0) / recentThird.length
-  const earlierAvgValue = earlierDemos.reduce((sum, d) => sum + d.value, 0) / earlierDemos.length
+  const recentAvgValue = recentThird.length > 0
+    ? recentThird.reduce((sum, d) => sum + d.value, 0) / recentThird.length
+    : 0
+  const earlierAvgValue = earlierDemos.length > 0
+    ? earlierDemos.reduce((sum, d) => sum + d.value, 0) / earlierDemos.length
+    : 0
 
   const difference = recentAvgValue - earlierAvgValue
 
