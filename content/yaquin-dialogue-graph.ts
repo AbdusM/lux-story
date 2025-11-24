@@ -180,9 +180,10 @@ export const yaquinDialogueNodes: DialogueNode[] = [
       {
         // TODO: [SFX] Heavy notebook slam, papers rustling
         // TODO: [VFX] Camera shake on notebook slam
+        // NOTE: Removed "slams" and "points" - showing environment and result, not choreography
         // NOTE: Strategic targeting - shake applied only to the high-stakes consequence statement.
         // Targets the climactic moment of pressure ("Back to cleaning spit valves"), not the setup.
-        text: `*Slams notebook down. Thick. Coffee-stained.*|"This list. 8 years instinct → checklist. Impossible."|*Points to three modules.*|<shake>"One pilot this weekend. Pick wrong—nobody watches. Back to cleaning spit valves."</shake>`,
+        text: `*Thick, coffee-stained notebook on table. Three module outlines.*|"This list. 8 years instinct → checklist. Impossible."|<shake>"One pilot this weekend. Pick wrong—nobody watches. Back to cleaning spit valves."</shake>`,
         emotion: 'tense',
         variation_id: 'curriculum_setup_v2',
         richEffectContext: 'warning',
@@ -224,7 +225,8 @@ export const yaquinDialogueNodes: DialogueNode[] = [
     speaker: 'Yaquin',
     content: [
       {
-        text: `*Films. Watches playback.*|"Hello class. Today—19th century forceps."|*Head in hands.*|"Bored watching myself. Nobody pays $50 for this. Sound like professors I hated."`,
+        // NOTE: Removed filming process and "head in hands" - dialogue carries the failure without choreography
+        text: `"Hello class. Today—19th century forceps."|"Bored watching myself. Nobody pays $50 for this. Sound like professors I hated."`,
         emotion: 'heavy',
         interaction: 'small',
         variation_id: 'fail_boring_v1',
@@ -259,7 +261,8 @@ export const yaquinDialogueNodes: DialogueNode[] = [
       {
         // TODO: [SFX] Mixing sounds, laughter, timer ticking
         // TODO: [VFX] Success glow on playback screen
-        text: `*Films fast. Mixes paste—messy, laughing.*|"Pink. Goopy. 30 seconds before stone. Go!"|*Watches playback. Grins.*|"That's it. Not lecture. Cooking show for teeth."`,
+        // NOTE: Removed filming process and "grins" - converted to audio cues only
+        text: `*Mixing sounds. Laughter.*|"Pink. Goopy. 30 seconds before stone. Go!"|"That's it. Not lecture. Cooking show for teeth."`,
         emotion: 'excited',
         interaction: 'bloom',
         variation_id: 'success_practical_v1',
@@ -355,7 +358,8 @@ export const yaquinDialogueNodes: DialogueNode[] = [
         // TODO: [SFX] Button click, notification chime, heartbeat
         // TODO: [VFX] Screen flash, comment notification pop
         // TODO: [MUSIC] Triumphant swell, achievement fanfare
-        text: `*Hits button.*|Live.|First comment: 'Finally someone explains mixing ratio!'|Doing it. Actually doing it. Teacher.`,
+        // NOTE: Removed "hits button" - action implicit from "Live"
+        text: `Live.|First comment: 'Finally someone explains mixing ratio!'|Doing it. Actually doing it. Teacher.`,
         emotion: 'excited',
         interaction: 'big',
         variation_id: 'launched_v1',

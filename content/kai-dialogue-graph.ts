@@ -18,13 +18,12 @@ export const kaiDialogueNodes: DialogueNode[] = [
     speaker: 'Kai',
     content: [
       {
-        text: `*Kai is staring at a tablet, swiping back and forth on the same slide. Their hand is shaking slightly. They look less like a corporate executive and more like a witness to a crime.*
+        // NOTE: Removed behavioral choreography - tablet and tension shown through dialogue only
+        text: `*Tablet. Same slide. Swiping back and forth.*
 
-*They whisper, voice tight.*
+*Whisper.*
 
 "Ensure the safety harness is secured. Click Next."
-
-*They look up at you, eyes wide and unblinking.*
 
 It was right there. Slide 14. "Ensure harness is secured." He clicked Next. He clicked it. I have the logs.
 
@@ -145,9 +144,8 @@ The scale is different. The guilt is the same.`,
     speaker: 'Kai',
     content: [
       {
-        text: `*Kai laughs, a brittle, snapping sound.*
-
-Legally covered. Yes. That's what my VP said. "Great work, Kai. The audit trail is perfect."
+        // NOTE: Removed "Kai laughs, a brittle, snapping sound" - anger conveyed through dialogue
+        text: `Legally covered. Yes. That's what my VP said. "Great work, Kai. The audit trail is perfect."
 
 He's in the hospital, and we're celebrating our audit trail.
 
@@ -173,13 +171,12 @@ I can't do this anymore. I can't build shields for the company that leave the pe
     speaker: 'Kai',
     content: [
       {
+        // NOTE: Removed "Kai turns" and "Kai taps" - showing screen result, not process
         text: `I deleted the module. The new one... I'm building it now. Secretly.
 
-*Kai turns the tablet. It's not a slide deck. It's a rough, grainy video feed simulation.*
+*Rough, grainy video feed simulation. Forklift Operator scenario. No text. No "Click Next."*
 
-It's a Forklift Operator scenario. But no text. No "Click Next."
-
-*Kai taps the screen. The view shakes.*
+*The view shakes.*
 
 You're in the cab. The load is unstable. The foreman is screaming at you to hurry up because the truck is waiting.
 
@@ -222,11 +219,10 @@ What do you do?`,
     speaker: 'Kai',
     content: [
       {
+        // NOTE: Removed "Kai stares at the black screen, face pale" - horror conveyed through result
         text: `*The screen goes black. A sickening crunch of metal on concrete.*
 
 *Red text floods the view: "FATAL ACCIDENT REPORTED."*
-
-*Kai stares at the black screen, face pale.*
 
 You listened to the boss. You got the job done. And you killed someone.
 
@@ -262,13 +258,12 @@ That's what the old training taught them. "Efficiency first."`,
     speaker: 'Kai',
     content: [
       {
+        // NOTE: Removed "Kai shakes their head" - frustration conveyed through teaching moment
         text: `*You tap the PDF icon. A 40-page document opens.*
 
 *While you're reading, the load shifts. The crate falls.*
 
 *The screen flashes red. "INJURY REPORTED."*
-
-*Kai shakes their head.*
 
 Nobody reads the PDF in a crisis. You hesitated. Real life doesn't pause for documentation.`,
         emotion: 'frustrated_teacher',
@@ -293,11 +288,10 @@ Nobody reads the PDF in a crisis. You hesitated. Real life doesn't pause for doc
     speaker: 'Kai',
     content: [
       {
+        // NOTE: Removed "Kai exhales, shoulders dropping" - relief conveyed through dialogue revelation
         text: `*The foreman screams in your face. The AI voice is deafening.*
 
 *But you stopped. The load wobbles, then settles. Safe.*
-
-*Kai exhales, shoulders dropping.*
 
 You stopped. You ignored the authority figure to save the human.
 
@@ -332,11 +326,12 @@ That's it. That's the skill. Not "harness safety." *Courage.*`,
     speaker: 'Kai',
     content: [
       {
+        // NOTE: Fixed continuity error - removed Rohan reference (character doesn't exist in this story)
         text: `I have to show this. Not to the VP—to the workers.
 
-I met a guy downstairs, Rohan. He said the code is broken. I think the training is broken too. We're both just trying to find the truth.
+The training is broken. I'm building checkmarks that hide the danger.
 
-If I stay, I'm complicit. I'm building the checkmarks that hide the danger.`,
+If I stay, I'm complicit. If I leave, I can build something that actually protects them.`,
         emotion: 'determined',
         variation_id: 'studio_v2'
       }

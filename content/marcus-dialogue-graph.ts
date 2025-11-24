@@ -226,9 +226,7 @@ Wrong heparin calc? He bleeds. Missed clot? Stroke.`,
     speaker: 'Marcus',
     content: [
       {
-        text: `*Shakes head, drops hands*
-
-Too slow.
+        text: `Too slow.
 
 Bubble traveled 40cm. Hit the carotid.
 
@@ -260,11 +258,7 @@ Bubble traveled 40cm. Hit the carotid.
     speaker: 'Marcus',
     content: [
       {
-        text: `*Nods, mimes clamping heavy tubing*
-
-Good. Flow stopped.
-
-*Points to invisible monitor*
+        text: `Good. Flow stopped.
 
 Blood pressure crashing. No flow. You clamped his life support.
 
@@ -304,13 +298,9 @@ What do you do?`,
     speaker: 'Marcus',
     content: [
       {
-        text: `*Winces*
-
-You unclamped. Bubble entered the cannula.
+        text: `You unclamped. Bubble entered the cannula.
 
 It's in him.
-
-*Looks down at hands*
 
 Vapor lock. Massive stroke. Gone.
 
@@ -342,9 +332,7 @@ Precision over speed.`,
     speaker: 'Marcus',
     content: [
       {
-        text: `*Mimics flicking the line. Hard.*
-
-Bubble isolated. Access port. You have a syringe.
+        text: `Bubble isolated. Access port. You have a syringe.
 
 <jitter>Patient O2 dropping: 88... 85... 82...</jitter>
 
@@ -382,9 +370,7 @@ Bubble isolated. Access port. You have a syringe.
     speaker: 'Marcus',
     content: [
       {
-        text: `*Heavy sigh*
-
-Pushed against pressure. Drove bubble further down.
+        text: `Pushed against pressure. Drove bubble further down.
 
 Impossible to retrieve now. Whole circuit change needed.
 
@@ -419,8 +405,6 @@ It's over.`,
         text: `*Machine hum settles to steady rhythm*
 
 System stable. Patient O2 rising... 98%.
-
-*Opens eyes, exhausted but alive*
 
 You got it. Clean line. Flow restored.
 
@@ -560,7 +544,7 @@ The machine held.`,
     speaker: 'Marcus',
     content: [
       {
-        text: `*Three days later. ECMO console. Not alone.*|*Young specialist. Fresh scrubs. Wide eyes. Trembling hands.*|This is Jordan. New to CVICU. Showing them the ropes.|*Glances at you*|Funny you asked about teaching.|About to find out if I'm any good.`,
+        text: `*Three days later. ECMO console. Not alone.*|This is Jordan. New to CVICU. First week. Showing them the ropes.|Funny you asked about teaching.|About to find out if I'm any good.`,
         emotion: 'focused',
         interaction: 'nod',
         variation_id: 'p2_entry_v1',
@@ -573,7 +557,7 @@ The machine held.`,
     choices: [
       {
         choiceId: 'p2_jordan_intro',
-        text: "*Nod to Jordan* First day on ECMO?",
+        text: "First day on ECMO?",
         nextNodeId: 'marcus_p2_jordan_nervous',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication']
@@ -635,7 +619,8 @@ The machine held.`,
     speaker: 'Marcus',
     content: [
       {
-        text: `Start simple. See that number? Flow rate.|Liters per minute the pump moves.|Normal cardiac output: 4 to 8. We're at 4.5 because—|<shake>*Sharp BEEP*</shake>|<shake>CRITICAL SYSTEM MESSAGE</shake>|*Phone buzzes. Expression darkens.*`,
+        // NOTE: Removed "*Phone buzzes. Expression darkens.*" - audio handled by system, emotion shown through dialogue disruption
+        text: `Start simple. See that number? Flow rate.|Liters per minute the pump moves.|Normal cardiac output: 4 to 8. We're at 4.5 because—|<shake>*Sharp BEEP*</shake>|<shake>CRITICAL SYSTEM MESSAGE</shake>`,
         emotion: 'focused',
         variation_id: 'teaching_interrupted_v1',
         richEffectContext: 'warning',

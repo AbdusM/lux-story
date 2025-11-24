@@ -523,11 +523,12 @@ And hundreds of conversations. Everyone's going somewhere.`,
     nodeId: 'jordan_job_reveal_7',
     speaker: 'Jordan Packard',
     content: [{
-      text: `BJCC career fair. I stumbled into the Health Tech booth. They were looking for a UX designer. 
+      // NOTE: Removed "She opens her laptop" - screen content shown, not process
+      text: `BJCC career fair. I stumbled into the Health Tech booth. They were looking for a UX designer.
 
-*She opens her laptop. A chaotic whiteboard app fills the screen.* 
+*Chaotic whiteboard app. User journey for a diabetes management app.*
 
-Look at this. This is what I do now. It's a user journey for a diabetes management app. 
+Look at this. This is what I do now.
 
 I'm seeing a retention failure at Day 3. Users download, setup... and then quit.`,
       emotion: 'focused_professional',
@@ -571,9 +572,8 @@ I'm seeing a retention failure at Day 3. Users download, setup... and then quit.
     nodeId: 'jordan_ux_fail_visuals',
     speaker: 'Jordan Packard',
     content: [{
-      text: `*Jordan sighs, deleting the color palette changes.* 
-
-We tried that. A/B tested ten different button styles. It didn't move the needle a single percent. 
+      // NOTE: Removed "Jordan sighs, deleting..." - frustration conveyed through dialogue
+      text: `We tried that. A/B tested ten different button styles. It didn't move the needle a single percent.
 
 It's not about the pixels. It's deeper than that. If I can't figure this out, maybe I really am just a graphic designer pretending to be UX.`,
       emotion: 'frustrated_doubt',
@@ -606,16 +606,15 @@ It's not about the pixels. It's deeper than that. If I can't figure this out, ma
     nodeId: 'jordan_ux_insight',
     speaker: 'Jordan Packard',
     content: [{
-      text: `Exactly. It wasn't a software bug. It was a *human* bug. 
+      // NOTE: Removed "She taps the screen" - insight emphasized through dialogue structure
+      text: `Exactly. It wasn't a software bug. It was a *human* bug.
 
-*She taps the screen, highlighting the insight.* 
+They needed encouragement, not just data entry.
 
-They needed encouragement, not just data entry. 
-
-That's when I realized: 
-User research? That's just customer service listening. 
-Wireframing? That's graphic design. 
-Motivation loops? That's personal training. 
+That's when I realized:
+User research? That's just customer service listening.
+Wireframing? That's graphic design.
+Motivation loops? That's personal training.
 
 I've been training for this job my whole life.`,
       emotion: 'triumphant',
