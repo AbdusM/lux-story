@@ -15,8 +15,8 @@ describe('GameStateUtils', () => {
 
       expect(newState.playerId).toBe('player-456')
       expect(newState.saveVersion).toBe(NARRATIVE_CONSTANTS.SAVE_VERSION)
-      expect(newState.currentNodeId).toBe('marcus_introduction')
-      expect(newState.currentCharacterId).toBe('marcus')
+      expect(newState.currentNodeId).toBe('samuel_introduction')
+      expect(newState.currentCharacterId).toBe('samuel')
       expect(newState.characters.size).toBeGreaterThan(0) // Initializes all character states
       expect(newState.globalFlags.size).toBe(0)
       expect(newState.patterns).toEqual({

@@ -196,8 +196,8 @@ export class GameStateManager {
   static resetConversationPosition(state: GameState): GameState {
     return {
       ...state,
-      currentNodeId: 'marcus_introduction', // Reset to Marcus for testing
-      currentCharacterId: 'marcus',
+      currentNodeId: 'samuel_introduction', // Reset to Samuel
+      currentCharacterId: 'samuel',
       lastSaved: Date.now()
     }
   }
