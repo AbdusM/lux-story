@@ -173,8 +173,8 @@ export function FrameworkInsights({ profile, onClose }: FrameworkInsightsProps) 
                 The science behind what you're learning and why it matters
               </CardDescription>
             </div>
-            <Button variant="ghost" size="sm" onClick={onClose} className="h-8 w-8 p-0">
-              <X className="h-4 w-4" />
+            <Button variant="ghost" size="sm" onClick={onClose} className="h-10 w-10 p-0">
+              <X className="h-5 w-5" />
             </Button>
           </div>
         </CardHeader>

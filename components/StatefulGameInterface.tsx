@@ -453,7 +453,7 @@ export default function StatefulGameInterface() {
           {/* Choices Card - Always visible, scrollable on mobile if many choices */}
           {!isEnding && (
             <Card key="choices-card" className="rounded-xl shadow-md">
-              <CardContent className="p-3 sm:p-4 md:p-6 max-h-[35vh] sm:max-h-none overflow-y-auto">
+              <CardContent className="p-4 sm:p-4 md:p-6 max-h-[35vh] sm:max-h-none overflow-y-auto">
                 <div className="space-y-2 sm:space-y-3">
                   <GameChoices
                     choices={state.availableChoices.map(c => ({
