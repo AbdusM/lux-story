@@ -16,6 +16,7 @@
 import React, { useState, useEffect } from 'react'
 import { cn } from '@/lib/utils'
 import { motion, useReducedMotion } from 'framer-motion'
+import { parseInlineInteractions, interactionAnimations } from '@/lib/interaction-parser'
 
 // Color themes for different states (kept for compatibility)
 const STATE_THEMES = {
@@ -165,16 +166,32 @@ export function RichTextRenderer({
     }
   }
   
-  // Helper to highlight words
+  // Helper to highlight words and render inline interactions
   const renderChunkWithHighlights = (chunkText: string) => {
-    if (!effects.highlightWords || effects.highlightWords.length === 0) {
-      // Simple markdown parsing (bold/italic)
-      return parseMarkdown(chunkText)
-    }
+    // First, parse interactions like <shake>text</shake>
+    const segments = parseInlineInteractions(chunkText)
     
-    // Highlight logic would go here
-    // For now, just return parsed markdown
-    return parseMarkdown(chunkText)
+    return segments.map((segment, index) => {
+      // Parse markdown within the segment content
+      const content = parseMarkdown(segment.content)
+      
+      if (segment.type === 'interaction' && segment.interaction) {
+        // If it's an interaction, wrap in motion.span
+        const animation = interactionAnimations[segment.interaction]
+        return (
+          <motion.span
+            key={`interaction-${index}`}
+            {...animation}
+            style={{ display: 'inline-block' }}
+          >
+            {content}
+          </motion.span>
+        )
+      }
+      
+      // Regular text segment
+      return <React.Fragment key={`text-${index}`}>{content}</React.Fragment>
+    })
   }
   
   // Simple markdown parser (bold ** and italic *)

@@ -14,7 +14,7 @@ import { ChatPacedDialogue } from "./ChatPacedDialogue"
 import { shouldShowAvatar } from "./CharacterAvatar"
 import { RichTextRenderer, type RichTextEffect } from "./RichTextRenderer"
 import { motion, type Variants } from "framer-motion"
-import { parseInlineInteractions, hasInlineInteractions } from "@/lib/interaction-parser"
+import { parseInlineInteractions, hasInlineInteractions, interactionAnimations, type InteractionType } from "@/lib/interaction-parser"
 
 // Parse markdown-style emphasis in text (from StoryMessage pattern)
 function parseEmphasisText(text: string): React.ReactNode[] {
@@ -81,53 +81,7 @@ function renderWithInlineInteractions(text: string): React.ReactNode {
 }
 
 // Interaction animation variants for Pokémon-style visual feedback
-const interactionAnimations: Record<string, Variants> = {
-  shake: {
-    animate: {
-      x: [0, -5, 5, -5, 5, 0],
-      transition: { duration: 0.5, repeat: 1 }
-    }
-  },
-  jitter: {
-    animate: {
-      x: [0, -1, 1, -1, 1, 0],
-      y: [0, -1, 1, -1, 1, 0],
-      transition: { duration: 0.3, repeat: 2 }
-    }
-  },
-  nod: {
-    animate: {
-      y: [0, -5, 0, -5, 0],
-      transition: { duration: 0.6 }
-    }
-  },
-  bloom: {
-    animate: {
-      scale: [0.95, 1.05, 1],
-      opacity: [0.8, 1, 1],
-      transition: { duration: 0.5 }
-    }
-  },
-  ripple: {
-    animate: {
-      scale: [1, 1.02, 1, 1.02, 1],
-      transition: { duration: 0.8, repeat: 1 }
-    }
-  },
-  big: {
-    animate: {
-      scale: [1, 1.1, 1],
-      transition: { duration: 0.4 }
-    }
-  },
-  small: {
-    animate: {
-      scale: [1, 0.95, 1],
-      opacity: [1, 0.9, 1],
-      transition: { duration: 0.4 }
-    }
-  }
-}
+// Moved to lib/interaction-parser.ts
 
 interface DialogueDisplayProps {
   text: string
@@ -137,7 +91,7 @@ interface DialogueDisplayProps {
   showAvatar?: boolean // Show character avatar
   isContinuedSpeaker?: boolean // Hide avatar if same speaker as previous
   richEffects?: RichTextEffect // Optional rich text effects (terminal-style animations)
-  interaction?: string // Visual interaction animation ('big', 'small', 'shake', 'nod', 'ripple', 'bloom', 'jitter')
+  interaction?: InteractionType // Visual interaction animation ('big', 'small', 'shake', 'nod', 'ripple', 'bloom', 'jitter')
   emotion?: string // Emotion tag for the dialogue (e.g., 'anxious', 'excited', 'vulnerable')
   playerPatterns?: {
     analytical?: number

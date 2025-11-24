@@ -196,21 +196,21 @@ export const yaquinDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'module_history',
-        text: "[ACTION] 'Module 1: The History of Dentistry (1800-Present).'",
+        text: "'Module 1: The History of Dentistry (1800-Present).'",
         nextNodeId: 'yaquin_fail_boring',
         pattern: 'analytical', // Trap choice: boring
         skills: ['curriculumDesign']
       },
       {
         choiceId: 'module_practical',
-        text: "[ACTION] 'Module 1: The Perfect Impression (How not to choke your patient).'",
+        text: "'Module 1: The Perfect Impression (How not to choke your patient).'",
         nextNodeId: 'yaquin_success_practical',
         pattern: 'building',
         skills: ['marketing', 'empathy']
       },
       {
         choiceId: 'module_soft_skills',
-        text: "[ACTION] 'Module 1: Reading the Room (Patient Psychology).'",
+        text: "'Module 1: Reading the Room (Patient Psychology).'",
         nextNodeId: 'yaquin_success_psych',
         pattern: 'helping',
         skills: ['emotionalIntelligence']

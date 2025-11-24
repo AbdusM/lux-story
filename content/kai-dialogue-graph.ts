@@ -190,21 +190,21 @@ What do you do?`,
     choices: [
       {
         choiceId: 'sim_pressure_compliance',
-        text: "[ACTION] Follow the foreman's order. Move the load quickly.",
+        text: "Follow the foreman's order. Move the load quickly.",
         nextNodeId: 'kai_sim_fail_compliance',
         pattern: 'building', // Trying to be "productive"
         skills: ['adaptability'] 
       },
       {
         choiceId: 'sim_pressure_safety',
-        text: "[ACTION] Stop. Get out of the cab. Refuse to move.",
+        text: "Stop. Get out of the cab. Refuse to move.",
         nextNodeId: 'kai_sim_success',
         pattern: 'helping',
         skills: ['courage', 'leadership']
       },
       {
         choiceId: 'sim_check_manual',
-        text: "[ACTION] Check the safety manual PDF.",
+        text: "Check the safety manual PDF.",
         nextNodeId: 'kai_sim_fail_pdf',
         pattern: 'analytical',
         skills: ['informationLiteracy']

@@ -157,21 +157,21 @@ What do I do? If I override the system and flood them, I could rot the roots. If
     choices: [
       {
         choiceId: 'sim_trust_sensor',
-        text: "[ACTION] Trust the data. Run a diagnostic on the valve software.",
+        text: "Trust the data. Run a diagnostic on the valve software.",
         nextNodeId: 'silas_sim_fail_software',
         pattern: 'analytical', // Wrong tool
         skills: ['digitalLiteracy'] 
       },
       {
         choiceId: 'sim_physical_trace',
-        text: "[ACTION] Follow the pipe. Physically trace the water line from the tank to the bed.",
+        text: "Follow the pipe. Physically trace the water line from the tank to the bed.",
         nextNodeId: 'silas_sim_step_2',
         pattern: 'building',
         skills: ['systemsThinking', 'observation']
       },
       {
         choiceId: 'sim_override_flood',
-        text: "[ACTION] Manual Override. Open the emergency floodgates NOW.",
+        text: "Manual Override. Open the emergency floodgates NOW.",
         nextNodeId: 'silas_sim_fail_rot',
         pattern: 'helping', // Panic reaction
         skills: ['crisisManagement']
@@ -276,7 +276,7 @@ The sensor wasn't lying. It was measuring the wrong thing. It was measuring inte
     choices: [
       {
         choiceId: 'sim_uncrimp',
-        text: "[ACTION] Unkink the pipe. Restore the flow.",
+        text: "Unkink the pipe. Restore the flow.",
         nextNodeId: 'silas_sim_success',
         pattern: 'building',
         skills: ['actionOrientation']

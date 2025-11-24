@@ -19,16 +19,16 @@ export const marcusDialogueNodes: DialogueNode[] = [
     speaker: 'Marcus',
     content: [
       {
-        text: `Seventy-two beats. Flow rate stable.
+        text: `*Night shift. 3:00 AM. The ICU is dark, except for the glow of monitors.*
+
+*Marcus stands by a bed, hands hovering in the air, miming a complex procedure. He is completely still.*
+
+Seventy-two beats. Flow rate stable.
 
 <shake>...Don't bump the table.</shake>`,
-        emotion: 'focused_tense',
-        // NOTE: Removed node-level 'shake' - using inline targeting for the final warning moment
+        emotion: 'focused',
         variation_id: 'marcus_intro_v1',
-        richEffectContext: 'warning', // High tension
-
-        // TODO: [SFX] Faint heart monitor beeping in background
-        // TODO: [VFX] Marcus's hands glow/shimmer when speaking (medical visualization)
+        richEffectContext: 'warning', 
       }
     ],
     choices: [
@@ -205,14 +205,14 @@ Wrong heparin calc? He bleeds. Missed clot? Stroke.`,
     choices: [
       {
         choiceId: 'sim_clamp_line',
-        text: "[ACTION] CLAMP THE LINE immediately to stop flow.",
+        text: "CLAMP THE LINE immediately to stop flow.",
         nextNodeId: 'marcus_sim_step_2',
         pattern: 'building',
         skills: ['problemSolving', 'criticalThinking']
       },
       {
         choiceId: 'sim_call_help',
-        text: "[ACTION] Yell for the surgeon.",
+        text: "Yell for the surgeon.",
         nextNodeId: 'marcus_sim_fail_slow',
         pattern: 'helping',
         skills: ['communication']
@@ -277,14 +277,14 @@ What do you do?`,
     choices: [
       {
         choiceId: 'sim_flick_line',
-        text: "[ACTION] Flick the tubing to dislodge the bubble back to the port.",
+        text: "Flick the tubing to dislodge the bubble back to the port.",
         nextNodeId: 'marcus_sim_step_3',
         pattern: 'building',
         skills: ['digitalLiteracy', 'problemSolving']
       },
       {
         choiceId: 'sim_unclamp',
-        text: "[ACTION] Unclamp. He needs blood flow!",
+        text: "Unclamp. He needs blood flow!",
         nextNodeId: 'marcus_sim_fail_air',
         pattern: 'helping',
         skills: ['emotionalIntelligence'] // Good intention, bad outcome
@@ -349,14 +349,14 @@ Precision over speed.`,
     choices: [
       {
         choiceId: 'sim_aspirate',
-        text: "[ACTION] Aspirate (suck out) the bubble with the syringe.",
+        text: "Aspirate (suck out) the bubble with the syringe.",
         nextNodeId: 'marcus_sim_success',
         pattern: 'analytical',
         skills: ['criticalThinking', 'digitalLiteracy']
       },
       {
         choiceId: 'sim_push_fluid',
-        text: "[ACTION] Push saline into the port.",
+        text: "Push saline into the port.",
         nextNodeId: 'marcus_sim_fail_push',
         pattern: 'building',
         skills: ['creativity'] // Creative but wrong
