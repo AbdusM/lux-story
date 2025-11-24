@@ -738,7 +738,8 @@ The machine held.`,
     speaker: 'Marcus',
     content: [
       {
-        text: `*Nods slowly.*|Survival probability. Cleanest metric. Evidence-based.|Patient C: 30% survival even with ECMO.|Patient D: improving without it.|Prioritizes A, B, E.|*Looks down.*|Patient C has grandchildren visiting daily.|Patient D: single parent, three kids under 10.|*Jaw tightens.*|Data says one thing. Humans say another.`,
+        // NOTE: Removed "*Nods slowly*", "*Looks down*", "*Jaw tightens*" - conflict conveyed through dialogue contrast
+        text: `Survival probability. Cleanest metric. Evidence-based.|Patient C: 30% survival even with ECMO.|Patient D: improving without it.|Prioritizes A, B, E.|Patient C has grandchildren visiting daily.|Patient D: single parent, three kids under 10.|Data says one thing. Humans say another.`,
         emotion: 'conflicted',
         interaction: 'small',
         variation_id: 'framework_survival_v1',
@@ -1059,7 +1060,8 @@ The machine held.`,
     speaker: 'Jordan',
     content: [
       {
-        text: `*Nods slowly.*|Yeah. I do.|If someone has to make these decisions... should be someone who loses sleep over them.|*Looks at ECMO machine, then Marcus.*|Teach me. Not just technical stuff. All of it.|The weight. The framework. How to carry it.`,
+        // NOTE: Removed "*Nods slowly*", "*Looks at ECMO machine, then Marcus*" - resolve shown through commitment in dialogue
+        text: `Yeah. I do.|If someone has to make these decisions... should be someone who loses sleep over them.|Teach me. Not just technical stuff. All of it.|The weight. The framework. How to carry it.`,
         emotion: 'focused',
         interaction: 'nod',
         variation_id: 'jordan_reflection_v1',
