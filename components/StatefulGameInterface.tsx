@@ -352,11 +352,8 @@ export default function StatefulGameInterface() {
                     <div className="space-y-3">
                         <Button onClick={initializeGame} size="lg" className="w-full bg-slate-900 hover:bg-slate-800">Continue</Button>
                         <Button onClick={() => {
-                            const currentState = GameStateManager.loadGameState()
-                            if (currentState) {
-                                const resetState = GameStateManager.resetConversationPosition(currentState)
-                                GameStateManager.saveGameState(resetState)
-                            }
+                            // Clear all save data for true reset
+                            GameStateManager.nuclearReset()
                             window.location.reload()
                         }} variant="outline" size="lg" className="w-full">Start Over</Button>
                     </div>
