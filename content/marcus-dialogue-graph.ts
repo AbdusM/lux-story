@@ -21,9 +21,9 @@ export const marcusDialogueNodes: DialogueNode[] = [
       {
         text: `Seventy-two beats. Flow rate stable.
 
-...Don't bump the table.`,
+<shake>...Don't bump the table.</shake>`,
         emotion: 'focused_tense',
-        interaction: 'shake',
+        // NOTE: Removed node-level 'shake' - using inline targeting for the final warning moment
         variation_id: 'marcus_intro_v1',
         richEffectContext: 'warning', // High tension
 
@@ -190,9 +190,8 @@ Wrong heparin calc? He bleeds. Missed clot? Stroke.`,
     speaker: 'Marcus',
     content: [
       {
-        text: `I didn't think. Just moved.|Close your eyes. Hands out.|*Guides your hands into position*|Monitor screaming. Red strobe.|O2 dropping: 98... 95... 92.|Bubble detector flashing.|Air in the arterial line.`,
+        text: `I didn't think. Just moved.|Close your eyes. Hands out.|*Guides your hands into position*|<shake>Monitor screaming. Red strobe.</shake>|<shake>O2 dropping: 98... 95... 92.</shake>|<shake>Bubble detector flashing.</shake>|<shake>Air in the arterial line.</shake>`,
         emotion: 'clinical',
-        interaction: 'shake',
         variation_id: 'sim_start_v2',
         richEffectContext: 'warning',
         useChatPacing: true,
@@ -200,6 +199,7 @@ Wrong heparin calc? He bleeds. Missed clot? Stroke.`,
         // TODO: [SFX] Alarm escalating with each O2 drop
         // TODO: [VFX] Red strobe effect on screen
         // TODO: [SFX] Bubble detector beeping urgently
+        // NOTE: Using inline shake targeting for alarm moments only, not calm setup
       }
     ],
     choices: [
@@ -232,16 +232,16 @@ Too slow.
 
 Bubble traveled 40cm. Hit the carotid.
 
-Flatline. Asystole. Gone.
+<shake>Flatline. Asystole. Gone.</shake>
 
 1.5 seconds. Can't wait for permission.`,
         emotion: 'critical',
-        interaction: 'shake',
         variation_id: 'sim_fail_v2',
         richEffectContext: 'error',
 
         // TODO: [SFX] Flatline tone on "Asystole"
         // TODO: [VFX] Screen goes dark/red on "Gone"
+        // NOTE: Inline shake on the death moment only, not the explanation
       }
     ],
     choices: [
@@ -346,11 +346,11 @@ Precision over speed.`,
 
 Bubble isolated. Access port. You have a syringe.
 
-Patient O2 dropping: 88... 85... 82...
+<jitter>Patient O2 dropping: 88... 85... 82...</jitter>
 
-Hypoxic. Seconds left.`,
+<jitter>Hypoxic. Seconds left.</jitter>`,
         emotion: 'clinical',
-        interaction: 'jitter',
+        // NOTE: Removed node-level 'jitter' - using inline targeting for O2 crisis moments
         variation_id: 'sim_step_3_v2',
         richEffectContext: 'warning',
 
@@ -597,9 +597,9 @@ The machine held.`,
     speaker: 'Jordan',
     content: [
       {
-        text: `*Swallows hard*|First week. Read manuals. Watched videos.|But standing here next to the real thing...|*Gestures at ECMO circuit - tubes thick as hoses, pump humming*|Person's blood in those lines. Entire circulatory system.|*Whispers*|What if I mess up?`,
+        text: `*Swallows hard*|First week. Read manuals. Watched videos.|But standing here next to the real thing...|*Gestures at ECMO circuit - tubes thick as hoses, pump humming*|Person's blood in those lines. Entire circulatory system.|*Whispers*|<jitter>What if I mess up?</jitter>`,
         emotion: 'anxious',
-        interaction: 'jitter',
+        // NOTE: Removed node-level 'jitter' - using inline targeting for the final fear moment
         variation_id: 'jordan_nervous_v1',
         useChatPacing: true,
 
@@ -635,9 +635,8 @@ The machine held.`,
     speaker: 'Marcus',
     content: [
       {
-        text: `Start simple. See that number? Flow rate.|Liters per minute the pump moves.|Normal cardiac output: 4 to 8. We're at 4.5 because—|*Sharp BEEP*|CRITICAL SYSTEM MESSAGE|*Phone buzzes. Expression darkens.*`,
+        text: `Start simple. See that number? Flow rate.|Liters per minute the pump moves.|Normal cardiac output: 4 to 8. We're at 4.5 because—|<shake>*Sharp BEEP*</shake>|<shake>CRITICAL SYSTEM MESSAGE</shake>|*Phone buzzes. Expression darkens.*`,
         emotion: 'focused',
-        interaction: 'shake',
         variation_id: 'teaching_interrupted_v1',
         richEffectContext: 'warning',
         useChatPacing: true,
@@ -645,6 +644,7 @@ The machine held.`,
         // TODO: [SFX] Sharp alert beep cutting through
         // TODO: [VFX] Red alert flash on screen
         // TODO: [SFX] Phone vibration
+        // NOTE: Inline shake on interruption only, teaching remains calm
       }
     ],
     choices: [
@@ -671,9 +671,8 @@ The machine held.`,
     speaker: 'Marcus',
     content: [
       {
-        text: `*Reads message. Voice tight.*|"Equipment allocation crisis.|Three ECMO machines. Five patients need ECMO within 6 hours.|Triage committee convening.|Senior specialists standby for recommendations."|*Jordan goes pale.*|Three machines. Five patients.|Someone's not getting one.|They want my recommendation on who.`,
+        text: `*Reads message. Voice tight.*|"Equipment allocation crisis.|<shake>Three ECMO machines. Five patients need ECMO within 6 hours.</shake>|Triage committee convening.|Senior specialists standby for recommendations."|*Jordan goes pale.*|<shake>Three machines. Five patients.</shake>|<shake>Someone's not getting one.</shake>|They want my recommendation on who.`,
         emotion: 'heavy',
-        interaction: 'shake',
         variation_id: 'crisis_announcement_v1',
         richEffectContext: 'error',
         useChatPacing: true,
@@ -681,6 +680,7 @@ The machine held.`,
         // TODO: [SFX] Phone notification sound
         // TODO: [VFX] Screen flash red on "allocation crisis"
         // TODO: [MUSIC] Tension builds
+        // NOTE: Inline shake on the impossible math (3 vs 5) and "someone's not getting one"
       }
     ],
     choices: [
@@ -881,9 +881,9 @@ The machine held.`,
     speaker: 'Jordan',
     content: [
       {
-        text: `*Silent this whole time. Just listening. Now speaks. Voice shaking.*|Marcus... how do you live with this?|Came into medicine to help people. Save lives.|*Gestures at tablet.*|But this? Choosing who gets the machine...|That's choosing who lives.|How do you make that choice and go home and sleep?`,
+        text: `*Silent this whole time. Just listening. Now speaks. Voice shaking.*|<jitter>Marcus... how do you live with this?</jitter>|Came into medicine to help people. Save lives.|*Gestures at tablet.*|<jitter>But this? Choosing who gets the machine...</jitter>|<jitter>That's choosing who lives.</jitter>|<jitter>How do you make that choice and go home and sleep?</jitter>`,
         emotion: 'anxious',
-        interaction: 'jitter',
+        // NOTE: Removed node-level 'jitter' - using inline targeting for emotional crescendo moments
         variation_id: 'jordan_question_v1',
         useChatPacing: true,
 
@@ -954,9 +954,9 @@ The machine held.`,
     speaker: 'Marcus',
     content: [
       {
-        text: `*Checks phone.*|Committee meets in 30 minutes. Need recommendations.|*Pauses.*|Protocol says involve ethics committee for allocation. Oversight. Shared responsibility.|But they're backlogged. By the time they review, Patient B might deteriorate beyond ECMO effectiveness.|*Looks conflicted.*|Medical decision now, or shared ethical decision later?`,
+        text: `*Checks phone.*|Committee meets in 30 minutes. Need recommendations.|*Pauses.*|Protocol says involve ethics committee for allocation. Oversight. Shared responsibility.|<shake>But they're backlogged. By the time they review, Patient B might deteriorate beyond ECMO effectiveness.</shake>|*Looks conflicted.*|<shake>Medical decision now, or shared ethical decision later?</shake>`,
         emotion: 'conflicted',
-        interaction: 'shake',
+        // NOTE: Removed node-level 'shake' - using inline targeting for the dilemma and time pressure moments
         variation_id: 'ethics_decision_v1',
         useChatPacing: true,
 

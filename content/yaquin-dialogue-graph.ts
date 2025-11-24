@@ -18,9 +18,10 @@ export const yaquinDialogueNodes: DialogueNode[] = [
     speaker: 'Yaquin',
     content: [
       {
-        text: `*Dental models everywhere. Ring light. Recording.*|"Forget the textbook. Chapter 4's garbage. Here's how you actually mix alginate without gagging patients."|*Stops. Sighs.*|Is it garbage? Or am I just uneducated?`,
+        // NOTE: Strategic targeting - shake applied only to the self-doubt question, not the confident teaching setup.
+        // This isolates the vulnerable moment of imposter syndrome, emphasizing the internal conflict.
+        text: `*Dental models everywhere. Ring light. Recording.*|"Forget the textbook. Chapter 4's garbage. Here's how you actually mix alginate without gagging patients."|*Stops. Sighs.*|<shake>Is it garbage? Or am I just uneducated?</shake>`,
         emotion: 'conflicted',
-        interaction: 'shake',
         variation_id: 'yaquin_intro_v1',
         richEffectContext: 'warning',
         useChatPacing: true
@@ -124,9 +125,10 @@ export const yaquinDialogueNodes: DialogueNode[] = [
     speaker: 'Yaquin',
     content: [
       {
-        text: `Started six months ago. Phone videos. No plan.|"Here's what textbooks miss."|87 followers. Some dental assistants. Some students. Few actual dentists watching.|Real question—teaching online or shouting into void?`,
+        // NOTE: Strategic targeting - jitter applied only to the anxious core question about validation and audience.
+        // Targets the existential doubt ("shouting into void?"), not the factual setup about followers.
+        text: `Started six months ago. Phone videos. No plan.|"Here's what textbooks miss."|87 followers. Some dental assistants. Some students. Few actual dentists watching.|<jitter>Real question—teaching online or shouting into void?</jitter>`,
         emotion: 'curious',
-        interaction: 'jitter',
         variation_id: 'creator_v1',
         useChatPacing: true
       }
@@ -151,9 +153,10 @@ export const yaquinDialogueNodes: DialogueNode[] = [
     speaker: 'Yaquin',
     content: [
       {
-        text: `Want to build a course. 'The Real Dental Assistant.'|Reality—not theory. Calm crying kids. Mix paste. Anticipate doctor needs.|But the syllabus... keeps adding history. Anatomy. Ethics.`,
+        // NOTE: Strategic targeting - jitter applied only to the anxiety about scope creep and fluff.
+        // Isolates the moment of panic ("keeps adding..."), not the vision statement.
+        text: `Want to build a course. 'The Real Dental Assistant.'|Reality—not theory. Calm crying kids. Mix paste. Anticipate doctor needs.|<jitter>But the syllabus... keeps adding history. Anatomy. Ethics.</jitter>`,
         emotion: 'anxious',
-        interaction: 'jitter',
         variation_id: 'dream_v1',
         useChatPacing: true
       }
@@ -177,9 +180,10 @@ export const yaquinDialogueNodes: DialogueNode[] = [
       {
         // TODO: [SFX] Heavy notebook slam, papers rustling
         // TODO: [VFX] Camera shake on notebook slam
-        text: `*Slams notebook down. Thick. Coffee-stained.*|"This list. 8 years instinct → checklist. Impossible."|*Points to three modules.*|"One pilot this weekend. Pick wrong—nobody watches. Back to cleaning spit valves."`,
+        // NOTE: Strategic targeting - shake applied only to the high-stakes consequence statement.
+        // Targets the climactic moment of pressure ("Back to cleaning spit valves"), not the setup.
+        text: `*Slams notebook down. Thick. Coffee-stained.*|"This list. 8 years instinct → checklist. Impossible."|*Points to three modules.*|<shake>"One pilot this weekend. Pick wrong—nobody watches. Back to cleaning spit valves."</shake>`,
         emotion: 'tense',
-        interaction: 'shake',
         variation_id: 'curriculum_setup_v2',
         richEffectContext: 'warning',
         useChatPacing: true
@@ -314,9 +318,10 @@ export const yaquinDialogueNodes: DialogueNode[] = [
     speaker: 'Yaquin',
     content: [
       {
-        text: `Video ready. Platform ready.|Publish—dentists see it. Might fire me. 'Who's this guy?'|Don't publish—guy shouting at phone in basement.`,
+        // NOTE: Strategic targeting - jitter applied only to the anxiety peaks about career consequences.
+        // Targets the panic about professional risk, not the factual readiness statement.
+        text: `Video ready. Platform ready.|<jitter>Publish—dentists see it. Might fire me. 'Who's this guy?'</jitter>|Don't publish—guy shouting at phone in basement.`,
         emotion: 'anxious',
-        interaction: 'jitter',
         variation_id: 'launch_v1',
         useChatPacing: true
       }
@@ -478,9 +483,10 @@ export const yaquinDialogueNodes: DialogueNode[] = [
     content: [{
       // TODO: [SFX] Multiple notification pings, keyboard typing, overwhelmed ambience
       // TODO: [VFX] Screen overlays showing dashboards, red notification badges
-      text: `*Eight weeks later. Three laptops. Support tickets. Refunds. Dashboards.*|*Exhausted.*|127 students.|*Gestures at screens.*|47 unread messages. 15 refunds. DDS calling it "amateur hour." Three offices want licensing.|*Looks up.*|Teaching's easy. Running course business? Real education.`,
+      // NOTE: Strategic targeting - shake applied only to the overwhelming cascade of problems and realizations.
+      // Targets the crescendo moment revealing the full scope of challenges.
+      text: `*Eight weeks later. Three laptops. Support tickets. Refunds. Dashboards.*|*Exhausted.*|127 students.|*Gestures at screens.*|<shake>47 unread messages. 15 refunds. DDS calling it "amateur hour." Three offices want licensing.</shake>|*Looks up.*|Teaching's easy. Running course business? Real education.`,
       emotion: 'exhausted',
-      interaction: 'shake',
       variation_id: 'p2_entry_v1',
       useChatPacing: true
     }],
@@ -510,9 +516,10 @@ export const yaquinDialogueNodes: DialogueNode[] = [
     nodeId: 'yaquin_p2_quality_crisis',
     speaker: 'Yaquin',
     content: [{
-      text: `Self-paced doesn't work.|"Need live instruction." "Videos too fast." "Can't stay motivated."|*Pulls up review.*|"Great content, wrong format. Need teacher, not YouTube."|*Rubs eyes.*|Half career-switchers—crushing it. Other half—boss-mandated. Struggling. Refunds.`,
+      // NOTE: Strategic targeting - shake applied only to the realization of the fundamental format problem.
+      // Targets the vulnerability moment of failure awareness ("Struggling. Refunds."), not the customer feedback.
+      text: `Self-paced doesn't work.|"Need live instruction." "Videos too fast." "Can't stay motivated."|*Pulls up review.*|"Great content, wrong format. Need teacher, not YouTube."|*Rubs eyes.*|<shake>Half career-switchers—crushing it. Other half—boss-mandated. Struggling. Refunds.</shake>`,
       emotion: 'tense',
-      interaction: 'shake',
       variation_id: 'quality_crisis_v1',
       useChatPacing: true
     }],
@@ -568,9 +575,10 @@ export const yaquinDialogueNodes: DialogueNode[] = [
     nodeId: 'yaquin_p2_refund_pressure',
     speaker: 'Yaquin',
     content: [{
-      text: `30-day guarantee. No questions.|Stand behind quality.|*Scrolls refund requests.*|"Boss made me." "Too hard." "Didn't finish, want money."|*Conflicted.*|Honor all—lose $7,500. Get strict—look like scammer.|Worst part? Don't know if they're right. Maybe IS too hard. Maybe IS "amateur hour."`,
+      // NOTE: Strategic targeting - jitter applied only to the core moment of self-doubt and uncertainty.
+      // Targets the anxiety about whether the criticism is valid ("Maybe IS..."), isolating the panic from policy discussion.
+      text: `30-day guarantee. No questions.|Stand behind quality.|*Scrolls refund requests.*|"Boss made me." "Too hard." "Didn't finish, want money."|*Conflicted.*|Honor all—lose $7,500. Get strict—look like scammer.|<jitter>Worst part? Don't know if they're right. Maybe IS too hard. Maybe IS "amateur hour."</jitter>`,
       emotion: 'conflicted',
-      interaction: 'jitter',
       variation_id: 'refund_v1',
       useChatPacing: true
     }],
