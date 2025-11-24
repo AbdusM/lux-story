@@ -19,7 +19,7 @@ export const tessDialogueNodes: DialogueNode[] = [
     speaker: 'Tess',
     content: [
       {
-        text: `*Pacing. Hiking boots on marble. Blazer over flannel.*|*Stops at corkboard of index cards.*|'Not rigor. Resilience? Too soft. Grit? Overused.'|*Turns, eyes wide.*|You look like you've been outside. 'Wilderness Immersion'—vacation or crucible?`,
+        text: `*Hiking boots on marble. Blazer over flannel. Corkboard of index cards.*|'Not rigor. Resilience? Too soft. Grit? Overused.'|You look like you've been outside. 'Wilderness Immersion'—vacation or crucible?`,
         emotion: 'passionate',
         interaction: 'jitter',
         variation_id: 'tess_intro_v1',
@@ -210,7 +210,7 @@ export const tessDialogueNodes: DialogueNode[] = [
     speaker: 'Tess',
     content: [
       {
-        text: `*Thrusts tablet. Slide: wall of text. Bullets, charts, paragraphs.*|'The Pedagogical Benefits of Wilderness Immersion for Adolescent Neural Development.'|*Grimaces.*|Sound like a textbook. They'll sleep before I ask for money.|*Cursor blinks.*|Fix it. Be ruthless. What are we *actually* selling?`,
+        text: `*Tablet slide: wall of text. Bullets, charts, paragraphs.*|'The Pedagogical Benefits of Wilderness Immersion for Adolescent Neural Development.'|Sound like a textbook. They'll sleep before I ask for money.|*Cursor blinks.*|Fix it. Be ruthless. What are we *actually* selling?`,
         emotion: 'focused',
         interaction: 'shake',
         variation_id: 'pitch_scenario_v2',
@@ -343,7 +343,7 @@ export const tessDialogueNodes: DialogueNode[] = [
     speaker: 'Tess',
     content: [
       {
-        text: `*Writes headline on card. Pins to center. Steps back.*|It works. Can sell this.|But this email... resignation. Leaving pension. Tenure track.|If I fail, just an unemployed hiker.`,
+        text: `*Card pinned to center.*|It works. Can sell this.|But this email... resignation. Leaving pension. Tenure track.|If I fail, just an unemployed hiker.`,
         emotion: 'anxious',
         interaction: 'shake',
         variation_id: 'climax_v1',
@@ -384,7 +384,8 @@ export const tessDialogueNodes: DialogueNode[] = [
     speaker: 'Tess',
     content: [
       {
-        text: `*Deep breath. Hand hovers over phone.*|Can't teach courage playing it safe.|*Taps 'Send.'*|Done. Resignation sent. Grant submitted.|Terrifyingly free.`,
+        // NOTE: Removed "*Phone notification sound*" - sound effects handled by UI/audio system, not text
+        text: `Can't teach courage playing it safe.|Done. Resignation sent. Grant submitted.|Terrifyingly free.`,
         emotion: 'excited',
         interaction: 'bloom',
         variation_id: 'decision_made_v1',

@@ -349,9 +349,8 @@ export default function StatefulGameInterface() {
         <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 flex items-center justify-center p-4">
             <Card className="w-full max-w-md shadow-xl border-0">
                 <CardContent className="p-8 text-center">
-                    <h1 className="text-3xl font-bold text-slate-800 mb-4">Welcome Back</h1>
                     <div className="space-y-3">
-                        <Button onClick={initializeGame} size="lg" className="w-full bg-slate-900 hover:bg-slate-800">Continue Journey</Button>
+                        <Button onClick={initializeGame} size="lg" className="w-full bg-slate-900 hover:bg-slate-800">Continue</Button>
                         <Button onClick={() => {
                             const currentState = GameStateManager.loadGameState()
                             if (currentState) {
@@ -359,7 +358,7 @@ export default function StatefulGameInterface() {
                                 GameStateManager.saveGameState(resetState)
                             }
                             window.location.reload()
-                        }} variant="outline" size="lg" className="w-full">Reset to Station</Button>
+                        }} variant="outline" size="lg" className="w-full">Start Over</Button>
                     </div>
                 </CardContent>
             </Card>
@@ -457,10 +456,7 @@ export default function StatefulGameInterface() {
           {/* Choices Card - Always visible, scrollable on mobile if many choices */}
           {!isEnding && (
             <Card key="choices-card" className="rounded-xl shadow-md">
-              <CardHeader className="pb-2 sm:pb-3 border-b border-slate-100 mb-2 sm:mb-3 px-4 sm:px-6 pt-3 sm:pt-6">
-                <CardTitle className="text-base sm:text-lg md:text-xl text-slate-700">Your Response</CardTitle>
-              </CardHeader>
-              <CardContent className="p-3 sm:p-4 md:p-6 pt-0 max-h-[35vh] sm:max-h-none overflow-y-auto">
+              <CardContent className="p-3 sm:p-4 md:p-6 max-h-[35vh] sm:max-h-none overflow-y-auto">
                 <div className="space-y-2 sm:space-y-3">
                   <GameChoices
                     choices={state.availableChoices.map(c => ({
