@@ -5,57 +5,7 @@ import { useCallback, useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { Typography } from "@/components/ui/typography"
-
-// Function to parse markdown-style emphasis in text
-// Returns a single React fragment to preserve whitespace structure
-function parseEmphasisText(text: string): React.ReactNode {
-  const parts: React.ReactNode[] = []
-  let currentIndex = 0
-
-  // Regex to match ***text***, **text**, or *text*
-  const emphasisRegex = /(\*{1,3})([^*]+?)\1/g
-  let match: RegExpExecArray | null
-
-  while ((match = emphasisRegex.exec(text)) !== null) {
-    // Add text before the match (wrap in Fragment to preserve whitespace)
-    if (match.index > currentIndex) {
-      parts.push(
-        <React.Fragment key={`text-${currentIndex}`}>
-          {text.slice(currentIndex, match.index)}
-        </React.Fragment>
-      )
-    }
-
-    const emphasisLevel = match[1].length
-    const content = match[2]
-
-    if (emphasisLevel === 3) {
-      // Triple asterisk: strong + em (urgent)
-      parts.push(<strong key={match.index}><em>{content}</em></strong>)
-    } else if (emphasisLevel === 2) {
-      // Double asterisk: strong
-      parts.push(<strong key={match.index}>{content}</strong>)
-    } else {
-      // Single asterisk: em
-      parts.push(<em key={match.index}>{content}</em>)
-    }
-
-    currentIndex = match.index + match[0].length
-  }
-
-  // Add remaining text (wrap in Fragment to preserve whitespace)
-  if (currentIndex < text.length) {
-    parts.push(
-      <React.Fragment key="text-end">
-        {text.slice(currentIndex)}
-      </React.Fragment>
-    )
-  }
-
-  // Return single fragment containing all parts
-  return parts.length > 0 ? <>{parts}</> : text
-}
+import { RichTextRenderer } from "../RichTextRenderer"
 
 // Character-specific styling with Birmingham-inspired colors
 const characterStyles = {
@@ -247,11 +197,10 @@ export function GameMessage({
         messageWeight === 'primary' && "border-slate-200 dark:border-slate-700",
         messageWeight === 'aside' && "border-slate-100 dark:border-slate-800 opacity-90",
         isUserMessage && "border-emerald-500 shadow-emerald-500/20",
-        typewriter && displayedText.length < text.length && "cursor-pointer",
+        typewriter && "cursor-pointer",
         // Pokemon-style box shadow
         "shadow-[0_2px_0_0_rgba(0,0,0,0.2),0_0_0_1px_rgba(0,0,0,0.2),inset_0_1px_0_0_#ffffff,inset_0_0_0_1px_rgba(0,0,0,0.2),0_4px_8px_rgba(0,0,0,0.3)]"
       )}
-      onClick={handleClick}
       role="article"
       aria-label={`Message from ${speaker}`}
       >
@@ -283,20 +232,17 @@ export function GameMessage({
               {/* Character Info */}
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-1">
-                  <Typography
-                    variant="large"
-                    font="mono"
-                    className={cn(
-                      "uppercase tracking-wider",
-                      characterColor
-                    )}
-                    style={{
-                      fontFamily: "'Courier New', monospace, 'Pokemon GB'",
-                      textShadow: "1px 1px 0px rgba(0,0,0,0.3)"
-                    }}
-                  >
+                  {/* Keep Typography here for the speaker name as it is small and standard */}
+                  <span className={cn(
+                    "text-lg font-mono uppercase tracking-wider font-bold",
+                    characterColor
+                  )}
+                  style={{
+                    fontFamily: "'Courier New', monospace, 'Pokemon GB'",
+                    textShadow: "1px 1px 0px rgba(0,0,0,0.3)"
+                  }}>
                     {speaker}
-                  </Typography>
+                  </span>
 
                   {/* Birmingham Role Badge for Samuel */}
                   {speaker === 'Samuel' && (
@@ -319,43 +265,35 @@ export function GameMessage({
         <CardContent className={cn(
           showCharacterAvatar ? "pt-0" : "pt-6"
         )}>
-          <Typography
-            variant={getTypographyVariant()}
-            color={getTypographyColor()}
-            align={isNarration ? "center" : "left"}
-            className={cn(
-              "whitespace-pre-wrap",
-              isWhisper && "opacity-90",
-              isSensation && "opacity-85 text-red-600 dark:text-red-400",
-              className?.includes('semantic-') ? className : "font-medium",
-              "text-base leading-relaxed"
+          <div className={cn(
+              "whitespace-pre-wrap font-medium text-base leading-relaxed",
+              isNarration && "text-center italic text-slate-600 dark:text-slate-400",
+              isWhisper && "opacity-90 italic",
+              isSensation && "opacity-85 text-red-600 dark:text-red-400 italic",
+              className?.includes('semantic-') && className
             )}
             style={{
               fontFamily: "'Inter', 'Pokemon GB', monospace",
               textShadow: className?.includes('semantic-') ? undefined : "0 1px 2px rgba(0,0,0,0.1)"
             }}
             aria-live={typewriter ? "polite" : "off"}
-            aria-busy={typewriter && displayedText.length < text.length}
           >
             {speaker === 'Memory' && <span className="text-2xl mr-2">💭</span>}
-            {parseEmphasisText(displayedText)}
-
-            {/* Typing cursor */}
-            {typewriter && displayedText.length < text.length && (
-              streamingMode === 'chatbot' ? (
-                <span className="animate-pulse text-gray-600 text-lg ml-1 opacity-70">▋</span>
-              ) : (
-                <span className="animate-pulse text-gray-600 text-2xl ml-1">|</span>
-              )
-            )}
-          </Typography>
+            
+            <RichTextRenderer
+              text={text}
+              effects={typewriter ? { mode: 'typewriter', speed: streamingMode === 'chatbot' ? 2.0 : 1.0 } : { mode: 'static' }}
+              onComplete={onComplete}
+              className="whitespace-pre-wrap"
+            />
+          </div>
 
           {/* Custom button text */}
           {(!typewriter || showContinueIndicator) && buttonText && (
             <div className="flex justify-center mt-6">
-              <Typography variant="small" color="muted" className="text-center">
+              <span className="text-sm text-muted-foreground text-center">
                 {buttonText}
-              </Typography>
+              </span>
             </div>
           )}
         </CardContent>
