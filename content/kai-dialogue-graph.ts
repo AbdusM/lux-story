@@ -150,7 +150,7 @@ The scale is different. The guilt is the same.`,
 He's in the hospital, and we're celebrating our audit trail.
 
 I can't do this anymore. I can't build shields for the company that leave the people exposed.`,
-        emotion: 'angry_despair',
+        emotion: 'angry',
         variation_id: 'compliance_v1'
       }
     ],
@@ -181,7 +181,7 @@ I can't do this anymore. I can't build shields for the company that leave the pe
 You're in the cab. The load is unstable. The foreman is screaming at you to hurry up because the truck is waiting.
 
 What do you do?`,
-        emotion: 'manic_focused',
+        emotion: 'intense',
         variation_id: 'sim_setup_v2',
         richEffectContext: 'thinking',
         useChatPacing: true
@@ -266,7 +266,7 @@ That's what the old training taught them. "Efficiency first."`,
 *The screen flashes red. "INJURY REPORTED."*
 
 Nobody reads the PDF in a crisis. You hesitated. Real life doesn't pause for documentation.`,
-        emotion: 'frustrated_teacher',
+        emotion: 'frustrated',
         variation_id: 'sim_fail_pdf_v1',
         richEffectContext: 'warning'
       }
@@ -296,7 +296,7 @@ Nobody reads the PDF in a crisis. You hesitated. Real life doesn't pause for doc
 You stopped. You ignored the authority figure to save the human.
 
 That's it. That's the skill. Not "harness safety." *Courage.*`,
-        emotion: 'awed_relief',
+        emotion: 'relieved',
         variation_id: 'sim_success_v2',
         richEffectContext: 'success'
       }
