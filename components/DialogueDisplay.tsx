@@ -14,6 +14,7 @@ import { ChatPacedDialogue } from "./ChatPacedDialogue"
 import { shouldShowAvatar } from "./CharacterAvatar"
 import { RichTextRenderer, type RichTextEffect } from "./RichTextRenderer"
 import { motion, type Variants } from "framer-motion"
+import { parseInlineInteractions, hasInlineInteractions } from "@/lib/interaction-parser"
 
 // Parse markdown-style emphasis in text (from StoryMessage pattern)
 function parseEmphasisText(text: string): React.ReactNode[] {
@@ -53,6 +54,30 @@ function parseEmphasisText(text: string): React.ReactNode[] {
   }
 
   return parts.length > 0 ? parts : [text]
+}
+
+// Render text with inline interaction tags
+function renderWithInlineInteractions(text: string): React.ReactNode {
+  const segments = parseInlineInteractions(text)
+
+  return segments.map((segment, index) => {
+    const content = parseEmphasisText(segment.content)
+
+    if (segment.type === 'interaction' && segment.interaction) {
+      const animation = interactionAnimations[segment.interaction]
+      return (
+        <motion.span
+          key={`interaction-${index}`}
+          {...animation}
+          style={{ display: 'inline-block' }}
+        >
+          {content}
+        </motion.span>
+      )
+    }
+
+    return <span key={`text-${index}`}>{content}</span>
+  })
 }
 
 // Interaction animation variants for Pokémon-style visual feedback
@@ -212,22 +237,27 @@ export function DialogueDisplay({
     return <div className={cn("space-y-4 min-h-[120px]", className)}></div>
   }
 
+  // Check if any chunk has inline interactions
+  const hasInline = chunks.some(chunk => hasInlineInteractions(chunk))
+
+  // If inline interactions exist, use inline system (node-level interaction is ignored)
   const content = chunks.map((chunk, index) => (
     <p
       key={`chunk-${chunk.slice(0, 20).replace(/\s/g, '-')}-${index}`}
       className={cn(
         "text-base text-slate-800 leading-relaxed whitespace-pre-wrap",
-        interactionClass
+        !hasInline && interactionClass // Only apply node-level class if no inline interactions
       )}
     >
-      {parseEmphasisText(chunk)}
+      {hasInline ? renderWithInlineInteractions(chunk) : parseEmphasisText(chunk)}
     </p>
   ))
 
   return (
     <div className={cn("space-y-4 min-h-[120px]", className)} key="dialogue-chunks-container" style={{ transition: 'none' }}>
       {/* Dialogue Content - No inline avatars */}
-      {interaction && interactionAnimations[interaction] ? (
+      {/* Only apply node-level interaction if no inline interactions present */}
+      {!hasInline && interaction && interactionAnimations[interaction] ? (
         <motion.div {...interactionAnimations[interaction]}>
           {content}
         </motion.div>
