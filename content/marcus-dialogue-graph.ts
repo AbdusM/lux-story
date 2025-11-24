@@ -151,9 +151,9 @@ Wrong heparin calc? He bleeds. Missed clot? Stroke.`,
     speaker: 'Marcus',
     content: [
       {
-        text: `The real enemy? Air.|One bubble in the line.|Brain? Stroke. Heart? Death.|Instant.|Tonight... the alarm screamed.|'AIR IN LINE.'`,
+        text: `The real enemy? Air.|One bubble in the line.|Brain? Stroke. Heart? Death.|Instant.|Tonight... the alarm screamed.|<shake>'AIR IN LINE.'</shake>`,
         emotion: 'critical',
-        interaction: 'shake',
+        // NOTE: Removed node-level 'shake' - using inline targeting for precision
         variation_id: 'the_bubble_v1',
         richEffectContext: 'warning',
         useChatPacing: true,
