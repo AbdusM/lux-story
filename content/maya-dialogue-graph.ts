@@ -789,22 +789,22 @@ export const mayaDialogueNodes: DialogueNode[] = [
     tags: ['early_ending', 'maya_arc']
   },
 
-  // ============= RECIPROCITY ASK (Placeholder for transition) =============
+  // ============= RECIPROCITY ASK (Transition to Decision) =============
   {
     nodeId: 'maya_reciprocity_ask',
     speaker: 'Maya Chen',
     content: [
       {
-        text: "You know so much about my struggle now. Can I ask you something personal?",
-        emotion: 'curious',
-        variation_id: 'reciprocity_ask_placeholder'
+        text: "It's strange. I've been terrified to say any of this out loud. But telling you... seeing it through your eyes... it makes the decision seem obvious.",
+        emotion: 'determined',
+        variation_id: 'reciprocity_transition_v1'
       }
     ],
     choices: [
       {
-        choiceId: 'go_to_farewell',
-        text: "Sure.",
-        nextNodeId: 'maya_farewell_robotics', // Simplified link for now
+        choiceId: 'ask_what_decision',
+        text: "What decision is that?",
+        nextNodeId: 'maya_farewell_robotics', 
         pattern: 'helping'
       }
     ]

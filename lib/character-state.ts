@@ -257,8 +257,8 @@ export class GameStateUtils {
         exploring: 0
       },
       lastSaved: Date.now(),
-      currentNodeId: 'marcus_introduction', // Start with Marcus (ECMO Simulation)
-      currentCharacterId: 'marcus' // Game begins with the Nurse
+      currentNodeId: 'samuel_introduction', // Start with Samuel (Hub)
+      currentCharacterId: 'samuel' // Game begins with the Station Keeper
     }
   }
 
