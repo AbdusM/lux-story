@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import { useCallback, useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
@@ -108,49 +107,10 @@ export function GameMessage({
   streamingMode = 'traditional',
   onComplete
 }: GameMessageProps) {
-  const [displayedText, setDisplayedText] = useState(typewriter ? "" : text)
-  const [showContinueIndicator, setShowContinueIndicator] = useState(false)
-
   const isNarration = type === 'narration'
   const isWhisper = type === 'whisper'
   const isSensation = type === 'sensation'
   const isUserMessage = speaker === 'You'
-
-  // Typewriter effect
-  useEffect(() => {
-    if (typewriter && text) {
-      let index = 0
-      let timer: NodeJS.Timeout
-
-      const typeNextChar = () => {
-        if (index < text.length) {
-          setDisplayedText(text.slice(0, index + 1))
-          index++
-          // Chatbot mode: ultra-fast for short chunks (15ms), Traditional: original speed (40ms)
-          const delay = streamingMode === 'chatbot' ? 15 : 40
-          timer = setTimeout(typeNextChar, delay)
-        } else {
-          setShowContinueIndicator(true)
-          onComplete?.() // Notify when complete
-        }
-      }
-
-      timer = setTimeout(typeNextChar, streamingMode === 'chatbot' ? 10 : 100) // Minimal initial delay for snappy feel
-      return () => clearTimeout(timer)
-    } else if (!typewriter) {
-      // Non-typewriter text is immediately complete
-      onComplete?.()
-    }
-  }, [text, typewriter, streamingMode, onComplete])
-
-  // Enhanced click to skip typewriter effect
-  const handleClick = useCallback(() => {
-    if (typewriter && displayedText.length < text.length) {
-      setDisplayedText(text)
-      setShowContinueIndicator(true)
-      onComplete?.() // Notify completion when skipped
-    }
-  }, [typewriter, displayedText.length, text, onComplete])
 
   // Determine if we should show character avatar
   const showCharacterAvatar = !isNarration && !isWhisper && !isSensation && !isUserMessage && !isContinuedSpeaker
@@ -162,24 +122,6 @@ export function GameMessage({
   const characterColor = characterStyles[normalizedSpeaker as keyof typeof characterStyles] || 'text-slate-800 dark:text-slate-200'
   const characterIcon = characterEmoji[normalizedSpeaker as keyof typeof characterEmoji] || '🌟'
   const avatarStyle = characterAvatarStyles[normalizedSpeaker as keyof typeof characterAvatarStyles] || 'bg-gradient-to-br from-slate-100 via-slate-200 to-slate-300 border-slate-600 dark:border-slate-400'
-
-  // Determine typography variant based on message type
-  const getTypographyVariant = () => {
-    if (isNarration) return 'narrator'
-    if (isWhisper) return 'whisper'
-    return 'dialogue'
-  }
-
-  // Determine typography color based on speaker
-  const getTypographyColor = () => {
-    const lowerSpeaker = speaker.toLowerCase()
-    if (lowerSpeaker === 'samuel') return 'samuel'
-    if (lowerSpeaker === 'maya') return 'maya'
-    if (lowerSpeaker === 'devon') return 'devon'
-    if (lowerSpeaker === 'jordan') return 'jordan'
-    if (lowerSpeaker === 'you') return 'you'
-    return 'default'
-  }
 
   return (
     <div className={cn(
@@ -289,7 +231,7 @@ export function GameMessage({
           </div>
 
           {/* Custom button text */}
-          {(!typewriter || showContinueIndicator) && buttonText && (
+          {buttonText && (
             <div className="flex justify-center mt-6">
               <span className="text-sm text-muted-foreground text-center">
                 {buttonText}
