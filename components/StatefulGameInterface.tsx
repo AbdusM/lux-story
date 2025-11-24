@@ -126,6 +126,7 @@ export default function StatefulGameInterface() {
 
   // Refs & Sync
   const skillTrackerRef = useRef<SkillTracker | null>(null)
+  const isProcessingChoiceRef = useRef(false) // Race condition guard
   const { queueStats: _queueStats } = useBackgroundSync({ enabled: true })
   const [hasSaveFile, setHasSaveFile] = useState(false)
   const [_saveIsComplete, setSaveIsComplete] = useState(false)
@@ -248,97 +249,106 @@ export default function StatefulGameInterface() {
 
   // Choice handler
   const handleChoice = useCallback(async (choice: EvaluatedChoice) => {
+    // Prevent race condition from rapid-fire clicks
+    if (isProcessingChoiceRef.current) return
     if (!state.gameState || !choice.enabled) return
-    
-    let newGameState = state.gameState
-    if (choice.choice.consequence) newGameState = GameStateUtils.applyStateChange(newGameState, choice.choice.consequence)
-    if (choice.choice.pattern) newGameState = GameStateUtils.applyStateChange(newGameState, { patternChanges: { [choice.choice.pattern]: 1 } })
 
-    const searchResult = findCharacterForNode(choice.choice.nextNodeId, newGameState)
-    if (!searchResult) return
+    isProcessingChoiceRef.current = true
 
-    const nextNode = searchResult.graph.nodes.get(choice.choice.nextNodeId)!
-    const targetGraph = searchResult.graph
-    const targetCharacterId = searchResult.characterId
+    try {
+      let newGameState = state.gameState
+      if (choice.choice.consequence) newGameState = GameStateUtils.applyStateChange(newGameState, choice.choice.consequence)
+      if (choice.choice.pattern) newGameState = GameStateUtils.applyStateChange(newGameState, { patternChanges: { [choice.choice.pattern]: 1 } })
 
-    if (nextNode.onEnter) {
-        for (const change of nextNode.onEnter) {
-            newGameState = GameStateUtils.applyStateChange(newGameState, change)
-        }
-    }
+      const searchResult = findCharacterForNode(choice.choice.nextNodeId, newGameState)
+      if (!searchResult) return
 
-    const targetCharacter = newGameState.characters.get(targetCharacterId)!
-    targetCharacter.conversationHistory.push(nextNode.nodeId)
-    newGameState.currentNodeId = nextNode.nodeId
-    newGameState.currentCharacterId = targetCharacterId
+      const nextNode = searchResult.graph.nodes.get(choice.choice.nextNodeId)!
+      const targetGraph = searchResult.graph
+      const targetCharacterId = searchResult.characterId
 
-    const content = DialogueGraphNavigator.selectContent(nextNode, targetCharacter.conversationHistory)
-    const newChoices = StateConditionEvaluator.evaluateChoices(nextNode, newGameState, targetCharacterId).filter(c => c.visible)
-
-    // Skill tracking logic (abbreviated for safety, same as before)
-    let demonstratedSkills: string[] = []
-    let skillToastUpdate = null
-    
-    if (skillTrackerRef.current && state.currentNode) {
-      const sceneMapping = SCENE_SKILL_MAPPINGS[state.currentNode.nodeId]
-      if (sceneMapping && sceneMapping.choiceMappings[choice.choice.choiceId]) {
-          demonstratedSkills = sceneMapping.choiceMappings[choice.choice.choiceId].skillsDemonstrated
-          skillTrackerRef.current.recordSkillDemonstration(
-            state.currentNode.nodeId,
-            choice.choice.choiceId,
-            demonstratedSkills,
-            sceneMapping.choiceMappings[choice.choice.choiceId].context
-          )
-          skillToastUpdate = { skill: demonstratedSkills[0], message: `Demonstrated ${demonstratedSkills[0]}` }
-      } else if (choice.choice.skills) {
-          demonstratedSkills = choice.choice.skills as string[]
-          skillTrackerRef.current.recordSkillDemonstration(
-            state.currentNode.nodeId,
-            choice.choice.choiceId,
-            demonstratedSkills,
-            `Demonstrated ${demonstratedSkills.join(', ')}`
-          )
-          skillToastUpdate = { skill: demonstratedSkills[0], message: `Demonstrated ${demonstratedSkills[0]}` }
+      if (nextNode.onEnter) {
+          for (const change of nextNode.onEnter) {
+              newGameState = GameStateUtils.applyStateChange(newGameState, change)
+          }
       }
-    }
 
-    const skillsToKeep = demonstratedSkills.length > 0 
-      ? [...demonstratedSkills, ...state.recentSkills].slice(0, 10)
-      : state.recentSkills.slice(0, 8)
+      const targetCharacter = newGameState.characters.get(targetCharacterId)!
+      targetCharacter.conversationHistory.push(nextNode.nodeId)
+      newGameState.currentNodeId = nextNode.nodeId
+      newGameState.currentCharacterId = targetCharacterId
 
-    const completedArc = detectArcCompletion(state.gameState, newGameState)
-    const experienceSummaryUpdate = { showExperienceSummary: false, experienceSummaryData: null as ExperienceSummaryData | null }
+      const content = DialogueGraphNavigator.selectContent(nextNode, targetCharacter.conversationHistory)
+      const newChoices = StateConditionEvaluator.evaluateChoices(nextNode, newGameState, targetCharacterId).filter(c => c.visible)
 
-    if (completedArc) {
-        loadSkillProfile(newGameState.playerId)
-            .then(profile => generateExperienceSummary(completedArc, newGameState, profile))
-            .then(summaryData => setState(prev => ({ ...prev, showExperienceSummary: true, experienceSummaryData: summaryData })))
-            .catch(() => setState(prev => ({ ...prev, showExperienceSummary: true, experienceSummaryData: null }))) // Fallback
-    }
+      // Skill tracking logic (abbreviated for safety, same as before)
+      let demonstratedSkills: string[] = []
+      let skillToastUpdate = null
+
+      if (skillTrackerRef.current && state.currentNode) {
+        const sceneMapping = SCENE_SKILL_MAPPINGS[state.currentNode.nodeId]
+        if (sceneMapping && sceneMapping.choiceMappings[choice.choice.choiceId]) {
+            demonstratedSkills = sceneMapping.choiceMappings[choice.choice.choiceId].skillsDemonstrated
+            skillTrackerRef.current.recordSkillDemonstration(
+              state.currentNode.nodeId,
+              choice.choice.choiceId,
+              demonstratedSkills,
+              sceneMapping.choiceMappings[choice.choice.choiceId].context
+            )
+            skillToastUpdate = { skill: demonstratedSkills[0], message: `Demonstrated ${demonstratedSkills[0]}` }
+        } else if (choice.choice.skills) {
+            demonstratedSkills = choice.choice.skills as string[]
+            skillTrackerRef.current.recordSkillDemonstration(
+              state.currentNode.nodeId,
+              choice.choice.choiceId,
+              demonstratedSkills,
+              `Demonstrated ${demonstratedSkills.join(', ')}`
+            )
+            skillToastUpdate = { skill: demonstratedSkills[0], message: `Demonstrated ${demonstratedSkills[0]}` }
+        }
+      }
+
+      const skillsToKeep = demonstratedSkills.length > 0
+        ? [...demonstratedSkills, ...state.recentSkills].slice(0, 10)
+        : state.recentSkills.slice(0, 8)
+
+      const completedArc = detectArcCompletion(state.gameState, newGameState)
+      const experienceSummaryUpdate = { showExperienceSummary: false, experienceSummaryData: null as ExperienceSummaryData | null }
+
+      if (completedArc) {
+          loadSkillProfile(newGameState.playerId)
+              .then(profile => generateExperienceSummary(completedArc, newGameState, profile))
+              .then(summaryData => setState(prev => ({ ...prev, showExperienceSummary: true, experienceSummaryData: summaryData })))
+              .catch(() => setState(prev => ({ ...prev, showExperienceSummary: true, experienceSummaryData: null }))) // Fallback
+      }
     
-    setState({
-        gameState: newGameState,
-        currentNode: nextNode,
-        currentGraph: targetGraph,
-        currentCharacterId: targetCharacterId,
-        availableChoices: newChoices,
-        currentContent: content.text,
-        currentDialogueContent: content,
-        useChatPacing: content.useChatPacing || false,
-        isLoading: false,
-        hasStarted: true,
-        selectedChoice: null,
-        showSaveConfirmation: true,
-        skillToast: skillToastUpdate || state.skillToast,
-        error: null,
-        showTransition: false,
-        transitionData: null,
-        previousSpeaker: state.currentNode?.speaker || null,
-        recentSkills: skillsToKeep,
-        ...experienceSummaryUpdate,
-        showConfigWarning: state.showConfigWarning
-    })
-    GameStateManager.saveGameState(newGameState)
+      setState({
+          gameState: newGameState,
+          currentNode: nextNode,
+          currentGraph: targetGraph,
+          currentCharacterId: targetCharacterId,
+          availableChoices: newChoices,
+          currentContent: content.text,
+          currentDialogueContent: content,
+          useChatPacing: content.useChatPacing || false,
+          isLoading: false,
+          hasStarted: true,
+          selectedChoice: null,
+          showSaveConfirmation: true,
+          skillToast: skillToastUpdate || state.skillToast,
+          error: null,
+          showTransition: false,
+          transitionData: null,
+          previousSpeaker: state.currentNode?.speaker || null,
+          recentSkills: skillsToKeep,
+          ...experienceSummaryUpdate,
+          showConfigWarning: state.showConfigWarning
+      })
+      GameStateManager.saveGameState(newGameState)
+    } finally {
+      // Always release the lock, even if there's an error
+      isProcessingChoiceRef.current = false
+    }
   }, [state.gameState, state.currentNode, state.showConfigWarning, state.recentSkills, state.skillToast])
 
 

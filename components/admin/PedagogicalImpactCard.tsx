@@ -77,7 +77,9 @@ export function PedagogicalImpactCard() {
           ).length
           
           const isActive = engagedCount > 0
-          const progressPercent = Math.min(100, (engagedCount / framework.relatedObjectives.length) * 100)
+          const progressPercent = framework.relatedObjectives.length > 0
+            ? Math.min(100, (engagedCount / framework.relatedObjectives.length) * 100)
+            : 0
 
           return (
             <div key={framework.id} className={`p-4 rounded-lg border ${isActive ? 'bg-purple-50 border-purple-200' : 'bg-slate-50 border-slate-200 opacity-60'}`}>

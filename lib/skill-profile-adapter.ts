@@ -127,7 +127,7 @@ function convertCareerPath(
 
   // Calculate average gap to determine readiness
   const totalGap = Object.values(requiredSkills).reduce((sum, skill) => sum + skill.gap, 0)
-  const avgGap = totalGap / path.requiredSkills.length
+  const avgGap = path.requiredSkills.length > 0 ? totalGap / path.requiredSkills.length : 0
 
   let readiness: CareerMatch['readiness']
   if (avgGap < 0.1) {

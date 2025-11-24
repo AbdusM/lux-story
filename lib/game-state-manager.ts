@@ -12,6 +12,7 @@ import {
   GameStateUtils,
   StateValidation
 } from './character-state'
+import { getGraphForCharacter } from './graph-registry'
 
 const STORAGE_KEY = 'grand-central-terminus-save'
 const BACKUP_STORAGE_KEY = 'grand-central-terminus-save-backup'
@@ -110,6 +111,22 @@ export class GameStateManager {
       // Final validation
       if (!StateValidation.isValidGameState(gameState)) {
         console.error('Deserialized state is invalid')
+        return null
+      }
+
+      // Verify currentNodeId exists in the graph
+      try {
+        const graph = getGraphForCharacter(
+          gameState.currentCharacterId as any,
+          gameState
+        )
+        if (!graph.nodes.has(gameState.currentNodeId)) {
+          console.error(`Save file references non-existent node: ${gameState.currentNodeId}`)
+          console.log('Save file corrupted - resetting to safe start')
+          return null
+        }
+      } catch (error) {
+        console.error('Failed to verify node exists:', error)
         return null
       }
 

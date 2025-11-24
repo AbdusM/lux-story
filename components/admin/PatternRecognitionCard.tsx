@@ -100,7 +100,7 @@ export function PatternRecognitionCard({
               <div className="space-y-2">
                 {sortedSceneTypes.map(([type, count]) => {
                   const total = Object.values(sceneTypeDistribution).reduce((a, b) => a + b, 0)
-                  const percentage = Math.round((count / total) * 100)
+                  const percentage = total > 0 ? Math.round((count / total) * 100) : 0
                   const barId = `scene-${type}`
                   const isHovered = hoveredBar === barId || touchedBar === barId
 
@@ -157,7 +157,7 @@ export function PatternRecognitionCard({
               <div className="space-y-2">
                 {sortedCharacters.map(([character, frequency]) => {
                   const total = Object.values(characterDistribution).reduce((a, b) => a + b, 0)
-                  const percentage = Math.round((frequency / total) * 100)
+                  const percentage = total > 0 ? Math.round((frequency / total) * 100) : 0
                   const barId = `char-${character}`
                   const isHovered = hoveredBar === barId || touchedBar === barId
 
