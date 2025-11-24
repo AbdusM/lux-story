@@ -2,56 +2,7 @@
 
 import React, { useCallback, useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
-
-// Function to parse markdown-style emphasis in text
-// Returns a single React fragment to preserve whitespace structure
-function parseEmphasisText(text: string): React.ReactNode {
-  const parts: React.ReactNode[] = []
-  let currentIndex = 0
-
-  // Regex to match ***text***, **text**, or *text*
-  const emphasisRegex = /(\*{1,3})([^*]+?)\1/g
-  let match: RegExpExecArray | null
-
-  while ((match = emphasisRegex.exec(text)) !== null) {
-    // Add text before the match (wrap in Fragment to preserve whitespace)
-    if (match.index > currentIndex) {
-      parts.push(
-        <React.Fragment key={`text-${currentIndex}`}>
-          {text.slice(currentIndex, match.index)}
-        </React.Fragment>
-      )
-    }
-
-    const emphasisLevel = match[1].length
-    const content = match[2]
-
-    if (emphasisLevel === 3) {
-      // Triple asterisk: strong + em (urgent)
-      parts.push(<strong key={match.index}><em>{content}</em></strong>)
-    } else if (emphasisLevel === 2) {
-      // Double asterisk: strong
-      parts.push(<strong key={match.index}>{content}</strong>)
-    } else {
-      // Single asterisk: em
-      parts.push(<em key={match.index}>{content}</em>)
-    }
-
-    currentIndex = match.index + match[0].length
-  }
-
-  // Add remaining text (wrap in Fragment to preserve whitespace)
-  if (currentIndex < text.length) {
-    parts.push(
-      <React.Fragment key="text-end">
-        {text.slice(currentIndex)}
-      </React.Fragment>
-    )
-  }
-
-  // Return single fragment containing all parts
-  return parts.length > 0 ? <>{parts}</> : text
-}
+import { RichTextRenderer } from "./RichTextRenderer"
 
 interface StoryMessageProps {
   speaker: string
@@ -143,41 +94,6 @@ export function StoryMessage({ speaker, text, type = 'dialogue', messageWeight =
     'Body': '❤️',
   }
   
-  useEffect(() => {
-    if (typewriter && text) {
-      let index = 0
-      let timer: NodeJS.Timeout
-      
-      const typeNextChar = () => {
-        if (index < text.length) {
-          setDisplayedText(text.slice(0, index + 1))
-          index++
-          // Chatbot mode: faster streaming (25ms), Traditional: original speed (40ms)
-          const delay = streamingMode === 'chatbot' ? 25 : 40
-          timer = setTimeout(typeNextChar, delay)
-        } else {
-          setShowContinueIndicator(true)
-          onComplete?.() // Notify when complete
-        }
-      }
-      
-      timer = setTimeout(typeNextChar, streamingMode === 'chatbot' ? 50 : 100) // Initial delay
-      return () => clearTimeout(timer)
-    } else if (!typewriter) {
-      // Non-typewriter text is immediately complete
-      onComplete?.()
-    }
-  }, [text, typewriter, streamingMode, onComplete])
-  
-  // Enhanced click to skip typewriter effect
-  const handleClick = useCallback(() => {
-    if (typewriter && displayedText.length < text.length) {
-      setDisplayedText(text)
-      setShowContinueIndicator(true)
-      onComplete?.() // Notify completion when skipped
-    }
-  }, [typewriter, displayedText.length, text, onComplete])
-  
   // Pokemon-style design - full width, game-like presentation
   const isUserMessage = speaker === 'You'
   const showCharacterAvatar = !isNarration && !isWhisper && !isSensation && !isUserMessage && !isContinuedSpeaker
@@ -201,7 +117,7 @@ export function StoryMessage({ speaker, text, type = 'dialogue', messageWeight =
           messageWeight === 'primary' && "message-primary", 
           messageWeight === 'aside' && "message-aside",
           speaker.toLowerCase() && `message-${speaker.toLowerCase()}`,
-          typewriter && displayedText.length < text.length && "cursor-pointer"
+          typewriter && "cursor-pointer"
         )} 
         style={{
           boxShadow: `
@@ -212,7 +128,6 @@ export function StoryMessage({ speaker, text, type = 'dialogue', messageWeight =
             0 4px 8px rgba(0, 0, 0, 0.3)
           `
         }}
-        onClick={handleClick}
       >
         
         {/* Character Section - Top of text box like Pokemon */}
@@ -284,22 +199,17 @@ export function StoryMessage({ speaker, text, type = 'dialogue', messageWeight =
           textShadow: className?.includes('semantic-') ? undefined : "0 1px 2px rgba(0,0,0,0.1)"
         }}>
           {speaker === 'Memory' && <span className="text-2xl mr-2">💭</span>}
-          <span className="whitespace-pre-wrap">
-            {parseEmphasisText(displayedText)}
-          </span>
           
-          {/* Typing cursor - different styles for different modes */}
-          {typewriter && displayedText.length < text.length && (
-            streamingMode === 'chatbot' ? (
-              <span className="animate-pulse text-gray-600 text-lg ml-1 opacity-70">▋</span>
-            ) : (
-              <span className="animate-pulse text-gray-600 text-2xl ml-1">|</span>
-            )
-          )}
+          <RichTextRenderer
+            text={text}
+            effects={typewriter ? { mode: 'typewriter', speed: streamingMode === 'chatbot' ? 2.0 : 1.0 } : { mode: 'static' }}
+            onComplete={onComplete}
+            className="whitespace-pre-wrap"
+          />
         </div>
         
         {/* Custom button text only (no arrow needed since we have Continue button) */}
-        {(!typewriter || showContinueIndicator) && buttonText && (
+        {buttonText && (
           <div className="flex justify-center mt-6">
             <div className="text-center">
               <div className="text-xs text-gray-500 mt-1 font-medium">
