@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { DialogueDisplay } from '@/components/DialogueDisplay'
 import { ChatPacedDialogue } from '@/components/ChatPacedDialogue'
+import type { InteractionType } from '@/lib/interaction-parser'
 
 // All 13 implemented emotions
 const emotions = [
@@ -43,7 +44,7 @@ const characters = ['Marcus Chen', 'Maya', 'Devon', 'Jordan']
 
 export default function EmotionsInteractionsTest() {
   const [selectedEmotion, setSelectedEmotion] = useState<string>('focused')
-  const [selectedInteraction, setSelectedInteraction] = useState<string>('shake')
+  const [selectedInteraction, setSelectedInteraction] = useState<InteractionType>('shake')
   const [selectedCharacter, setSelectedCharacter] = useState<string>('Marcus Chen')
   const [useChatPacing, setUseChatPacing] = useState(false)
   const [key, setKey] = useState(0) // For forcing re-render
@@ -118,7 +119,7 @@ export default function EmotionsInteractionsTest() {
                   {interactions.map((interaction) => (
                     <Button
                       key={interaction.id}
-                      onClick={() => setSelectedInteraction(interaction.id)}
+                      onClick={() => setSelectedInteraction(interaction.id as InteractionType)}
                       variant={selectedInteraction === interaction.id ? 'default' : 'outline'}
                       className="w-full justify-start text-left h-auto py-3"
                     >
