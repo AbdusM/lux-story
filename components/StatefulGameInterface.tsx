@@ -350,7 +350,7 @@ export default function StatefulGameInterface() {
             <Card className="w-full max-w-md shadow-xl border-0">
                 <CardContent className="p-8 text-center">
                     <div className="space-y-3">
-                        <Button onClick={initializeGame} size="lg" className="w-full bg-slate-900 hover:bg-slate-800">Continue</Button>
+                        <Button onClick={initializeGame} size="lg" className="w-full bg-slate-900 hover:bg-slate-800 text-white">Continue</Button>
                         <Button onClick={() => {
                             // Clear all save data for true reset
                             GameStateManager.nuclearReset()
