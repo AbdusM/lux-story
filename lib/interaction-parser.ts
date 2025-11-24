@@ -13,7 +13,64 @@ export interface TextSegment {
   interaction?: InteractionType
 }
 
+// Regex to match inline interaction tags: <shake>text</shake>, <jitter>text</jitter>, etc.
 const INTERACTION_REGEX = /<(shake|jitter|nod|bloom|ripple|big|small)>(.*?)<\/\1>/g
+
+export const interactionAnimations: Record<InteractionType, {
+  animate: {
+    x?: number[]
+    y?: number[]
+    scale?: number[]
+    opacity?: number[]
+    transition: { duration: number; repeat?: number }
+  }
+}> = {
+  shake: {
+    animate: {
+      x: [0, -5, 5, -5, 5, 0],
+      transition: { duration: 0.5, repeat: 1 }
+    }
+  },
+  jitter: {
+    animate: {
+      x: [0, -1, 1, -1, 1, 0],
+      y: [0, -1, 1, -1, 1, 0],
+      transition: { duration: 0.3, repeat: 2 }
+    }
+  },
+  nod: {
+    animate: {
+      y: [0, -5, 0, -5, 0],
+      transition: { duration: 0.6 }
+    }
+  },
+  bloom: {
+    animate: {
+      scale: [0.95, 1.05, 1],
+      opacity: [0.8, 1, 1],
+      transition: { duration: 0.5 }
+    }
+  },
+  ripple: {
+    animate: {
+      scale: [1, 1.02, 1, 1.02, 1],
+      transition: { duration: 0.8, repeat: 1 }
+    }
+  },
+  big: {
+    animate: {
+      scale: [1, 1.1, 1],
+      transition: { duration: 0.4 }
+    }
+  },
+  small: {
+    animate: {
+      scale: [1, 0.95, 1],
+      opacity: [1, 0.9, 1],
+      transition: { duration: 0.4 }
+    }
+  }
+}
 
 /**
  * Parse text for inline interaction tags

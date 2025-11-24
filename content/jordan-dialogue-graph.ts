@@ -544,21 +544,21 @@ I'm seeing a retention failure at Day 3. Users download, setup... and then quit.
     choices: [
       {
         choiceId: 'ux_debug_visuals',
-        text: "[ACTION] Make the buttons bigger. Improve the color contrast.",
+        text: "Make the buttons bigger. Improve the color contrast.",
         nextNodeId: 'jordan_ux_fail_visuals',
         pattern: 'analytical', // Surface level fix
         skills: ['digitalLiteracy']
       },
       {
         choiceId: 'ux_debug_empathy',
-        text: "[ACTION] Look at the user's state. Day 3 is when the diagnosis reality hits.",
+        text: "Look at the user's state. Day 3 is when the diagnosis reality hits.",
         nextNodeId: 'jordan_ux_insight',
         pattern: 'helping',
         skills: ['emotionalIntelligence']
       },
       {
         choiceId: 'ux_debug_motivation',
-        text: "[ACTION] Check the reward loop. Are they getting positive feedback?",
+        text: "Check the reward loop. Are they getting positive feedback?",
         nextNodeId: 'jordan_ux_insight', // This also works
         pattern: 'building',
         skills: ['systemsThinking']

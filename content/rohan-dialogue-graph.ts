@@ -203,21 +203,21 @@ If this runs, it will call a null pointer on 40 million people.`,
     choices: [
       {
         choiceId: 'sim_ask_ai',
-        text: "[ACTION] Ask the AI to 'fix the import error'.",
+        text: "Ask the AI to 'fix the import error'.",
         nextNodeId: 'rohan_sim_fail_hallucination',
         pattern: 'building',
         skills: ['digitalLiteracy'] // Relying on the tool that broke it
       },
       {
         choiceId: 'sim_manual_trace',
-        text: "[ACTION] Open the source code. Trace the `user_integrity_check` function manually.",
+        text: "Open the source code. Trace the `user_integrity_check` function manually.",
         nextNodeId: 'rohan_sim_step_2',
         pattern: 'analytical',
         skills: ['technicalLiteracy', 'deepWork']
       },
       {
         choiceId: 'sim_comment_out',
-        text: "[ACTION] Comment out line 402. Skip the check.",
+        text: "Comment out line 402. Skip the check.",
         nextNodeId: 'rohan_sim_fail_corruption',
         pattern: 'helping', // Trying to "help" by bypassing
         skills: ['pragmatism']
@@ -326,7 +326,7 @@ The AI saw the bypass and thought it was a feature. It's trying to import a hack
     choices: [
       {
         choiceId: 'sim_rewrite_modern',
-        text: "[ACTION] Rewrite the integrity check using modern libraries. No hallucinations. First principles.",
+        text: "Rewrite the integrity check using modern libraries. No hallucinations. First principles.",
         nextNodeId: 'rohan_sim_success',
         pattern: 'building',
         skills: ['coding', 'respect']

@@ -362,14 +362,14 @@ export const mayaDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'debug_force',
-        text: "[ACTION] Force the servo to zero position to reset the loop.",
+        text: "Force the servo to zero position to reset the loop.",
         nextNodeId: 'maya_robotics_fail_burnout', // FAILURE STATE INJECTION
         pattern: 'analytical',
         skills: ['problemSolving', 'technicalLiteracy']
       },
       {
         choiceId: 'debug_stabilize',
-        text: "[ACTION] Gently stabilize the joint with your hand to dampen the feedback loop.",
+        text: "Gently stabilize the joint with your hand to dampen the feedback loop.",
         nextNodeId: 'maya_robotics_debug_success',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'patience'],
@@ -380,7 +380,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'debug_isolate',
-        text: "[ACTION] Isolate the noisy signal in the control loop.",
+        text: "Isolate the noisy signal in the control loop.",
         nextNodeId: 'maya_robotics_debug_success',
         pattern: 'building',
         skills: ['systemsThinking', 'creativity'],

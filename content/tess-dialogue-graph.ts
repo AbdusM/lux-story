@@ -224,21 +224,21 @@ export const tessDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'pitch_resilience',
-        text: "[ACTION] Delete the paragraph. Type: 'FORGING ANTIFRAGILE LEADERS.'",
+        text: "Delete the paragraph. Type: 'FORGING ANTIFRAGILE LEADERS.'",
         nextNodeId: 'tess_pitch_resilience',
         pattern: 'building',
         skills: ['criticalThinking', 'communication', 'creativity']
       },
       {
         choiceId: 'pitch_mental_health',
-        text: "[ACTION] Highlight the burnout stats. Type: 'THE CURE FOR ACADEMIC EXHAUSTION.'",
+        text: "Highlight the burnout stats. Type: 'THE CURE FOR ACADEMIC EXHAUSTION.'",
         nextNodeId: 'tess_pitch_mental_health',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'emotionalIntelligence']
       },
       {
         choiceId: 'pitch_safe',
-        text: "[ACTION] Keep the academic tone but bold the key stats. 'Evidence-Based Outdoor Education.'",
+        text: "Keep the academic tone but bold the key stats. 'Evidence-Based Outdoor Education.'",
         nextNodeId: 'tess_pitch_fail_safe',
         pattern: 'analytical', // Trap choice: too safe
         skills: ['communication', 'culturalCompetence']
