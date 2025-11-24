@@ -531,7 +531,7 @@ And hundreds of conversations. Everyone's going somewhere.`,
 Look at this. This is what I do now.
 
 I'm seeing a retention failure at Day 3. Users download, setup... and then quit.`,
-      emotion: 'focused_professional',
+      emotion: 'focused',
       variation_id: 'job7_scenario_v2',
       richEffectContext: 'warning', // UX Analysis Mode
       useChatPacing: true
@@ -576,7 +576,7 @@ I'm seeing a retention failure at Day 3. Users download, setup... and then quit.
       text: `We tried that. A/B tested ten different button styles. It didn't move the needle a single percent.
 
 It's not about the pixels. It's deeper than that. If I can't figure this out, maybe I really am just a graphic designer pretending to be UX.`,
-      emotion: 'frustrated_doubt',
+      emotion: 'frustrated',
       variation_id: 'ux_fail_visuals_v1',
       richEffectContext: 'error'
     }],
