@@ -21,6 +21,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { DialogueDisplay } from '@/components/DialogueDisplay'
 import type { RichTextEffect } from '@/components/RichTextRenderer'
 import { AtmosphericIntro } from '@/components/AtmosphericIntro'
+import { getTrustLabel } from '@/lib/trust-labels'
 import { GameState, GameStateUtils } from '@/lib/character-state'
 import { GameStateManager } from '@/lib/game-state-manager'
 import { useBackgroundSync } from '@/hooks/useBackgroundSync'
@@ -436,8 +437,16 @@ export default function StatefulGameInterface() {
                 <span className="text-slate-400">•</span>
                 <span className="text-slate-600">{currentCharacter.relationshipStatus}</span>
               </div>
-              <div className="text-slate-500 text-sm">
-                Trust: {currentCharacter.trust}/10
+              <div className="flex flex-col items-end">
+                 {(() => {
+                    const { label, color, description } = getTrustLabel(currentCharacter.trust)
+                    return (
+                        <>
+                            <span className={`text-sm font-semibold ${color}`}>{label}</span>
+                            <span className="text-xs text-slate-400 hidden sm:inline-block">{description}</span>
+                        </>
+                    )
+                 })()}
               </div>
             </CardContent>
           </Card>

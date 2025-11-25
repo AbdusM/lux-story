@@ -121,19 +121,32 @@ export async function generateExperienceSummary(
 
   // Get actual skills developed during this arc from skill tracker
   // For now, use default skills (can be enhanced with actual tracked skills)
-  const skillsDeveloped = arcData.defaultSkills
-
-  // Determine dominant pattern from game state
-  const patterns = gameState.patterns
-  const patternEntries = Object.entries(patterns) as [keyof typeof patterns, number][]
-  const dominantPattern = patternEntries
-    .sort(([, a], [, b]) => b - a)[0]?.[0] || 'helping'
+  const skillsDeveloped = [...arcData.defaultSkills]
+  const keyInsights = [...arcData.defaultInsights]
 
   const characterNames: Record<string, string> = {
     maya: 'Maya Chen',
     devon: 'Devon Kumar',
     jordan: 'Jordan Packard'
   }
+
+  // DYNAMIC: Inject Trust/Relationship Building if trust is high
+  const trustLevel = character?.trust || 0
+  if (trustLevel >= 6) {
+    skillsDeveloped.unshift({
+      skill: 'relationshipBuilding',
+      howYouShowedIt: `You built a deep level of trust (${trustLevel}/10) with ${characterNames[characterArc]}, moving beyond surface-level interaction to genuine connection.`,
+      whyItMatters: 'The ability to build authentic trust quickly is a "dope" superpower—it unlocks opportunities, mentorship, and career paths that aren\'t listed on job boards.'
+    })
+
+    keyInsights.unshift('Building trust is a form of career exploration—it reveals paths you can\'t find on Google')
+  }
+
+  // Determine dominant pattern from game state
+  const patterns = gameState.patterns
+  const patternEntries = Object.entries(patterns) as [keyof typeof patterns, number][]
+  const dominantPattern = patternEntries
+    .sort(([, a], [, b]) => b - a)[0]?.[0] || 'helping'
 
   return {
     characterName: characterNames[characterArc],

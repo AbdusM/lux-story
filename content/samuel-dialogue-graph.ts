@@ -20,7 +20,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Welcome to Grand Central Terminus. I'm Samuel Washington, and I keep this station.\n\nYou have the look of someone standing at a crossroads. Not sure which way to turn, which path to take. The good news? You're in exactly the right place.",
+        text: "Welcome. I'm Samuel Washington. I've been helping people find their way in Birmingham for a long time.\n\nYou're here to figure some things out. Good. That's what this place is for.\n\nYou'll meet some folks, hear their stories, and make some choices. No tests, no grades. Just real conversations.\n\nWhat you discover about yourself? It helps us help the next person who walks through that door.",
         emotion: 'warm',
         variation_id: 'intro_v1'
       }
@@ -275,7 +275,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "I was a traveler once.\n\nThirty-five years ago. Same letter. Same choice.",
+        text: "Most people just ask about the trains. You asked about *me*.\n\nBecause you built that bridge, I'll tell you the truth I don't usually share.\n\nI was a traveler once. Thirty-five years ago. Same letter. Same choice.",
         emotion: 'vulnerable_opening',
         variation_id: 'traveler_origin_v1'
       }
@@ -1435,15 +1435,15 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Because the station remembers. If you'd tried to control her - 'You should be a doctor,' 'You should follow your passion' - her trust in you wouldn't have grown. But it did. The system doesn't lie.\n\nTrust is how the station measures genuine connection. And Maya trusted you because you listened without an agenda.",
+        text: "Because the station remembers. If you'd tried to force an answer, her trust wouldn't have grown. But it did.\n\nTrust is the only map that works here. You didn't find the path by analyzing her file. You found it by building a connection. That's how real exploration happens—person to person.",
         emotion: 'knowing',
         variation_id: 'systemic_proof_v1'
       }
     ],
     choices: [
       {
-        choiceId: 'trust_as_measurement',
-        text: "Trust as a measurement of authenticity.",
+        choiceId: 'trust_as_map',
+        text: "Connection is the map.",
         nextNodeId: 'samuel_maya_path_reflection',
         pattern: 'analytical',
         skills: ['criticalThinking', 'emotionalIntelligence'],
