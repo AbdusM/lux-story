@@ -2,6 +2,7 @@
 
 import { use } from 'react'
 import { SharedDashboardLayout } from '@/components/admin/SharedDashboardLayout'
+import { AdminErrorBoundary } from '@/components/admin/AdminErrorBoundary'
 
 interface AdminLayoutProps {
   children: React.ReactNode
@@ -10,10 +11,12 @@ interface AdminLayoutProps {
 
 export default function AdminUserLayout({ children, params }: AdminLayoutProps) {
   const { userId } = use(params)
-  
+
   return (
     <SharedDashboardLayout userId={userId}>
-      {children}
+      <AdminErrorBoundary>
+        {children}
+      </AdminErrorBoundary>
     </SharedDashboardLayout>
   )
 }
