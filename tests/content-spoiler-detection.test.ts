@@ -214,7 +214,7 @@ describe('Content Spoiler Detection', () => {
 
   describe('AtmosphericIntro - Specific Requirements', () => {
     const filePath = path.join(process.cwd(), 'components/AtmosphericIntro.tsx')
-    
+
     if (!fs.existsSync(filePath)) {
       it.skip('AtmosphericIntro.tsx not found', () => {})
       return
@@ -222,50 +222,32 @@ describe('Content Spoiler Detection', () => {
 
     const content = fs.readFileSync(filePath, 'utf-8')
 
-    it('THRESHOLD sequence should be generic and mysterious', () => {
-      const thresholdMatch = content.match(/location:\s*["']THRESHOLD["'][\s\S]*?text:\s*["']([^"']+)["']/i)
-      
-      if (!thresholdMatch) {
-        expect.fail('Could not find THRESHOLD sequence in AtmosphericIntro')
-      }
-
-      const thresholdText = thresholdMatch![1]
-
-      // Should NOT contain specific identifying details
+    it('should not contain character-specific spoilers', () => {
+      // The intro was simplified to a single-screen value proposition
+      // Check that no character-specific details leaked in
       const violations: string[] = []
-      
-      if (/medical|textbook|pre-?med/i.test(thresholdText)) {
-        violations.push('Contains Maya-specific details (medical/textbooks)')
-      }
-      if (/flowchart|algorithm|code/i.test(thresholdText)) {
-        violations.push('Contains Devon-specific details (flowcharts/code)')
-      }
-      if (/job calendar|seven jobs|career changes/i.test(thresholdText)) {
-        violations.push('Contains Jordan-specific details (job calendar)')
-      }
 
-      if (violations.length > 0) {
-        expect.fail(
-          `THRESHOLD sequence contains character spoilers:\n` +
-          violations.join('\n') +
-          `\n\nActual text: "${thresholdText}"`
-        )
+      if (/Maya|pre-?med|medical student/i.test(content)) {
+        violations.push('Contains Maya-specific details')
+      }
+      if (/Devon|flowchart|algorithm/i.test(content)) {
+        violations.push('Contains Devon-specific details')
+      }
+      if (/Jordan|seven jobs|job calendar/i.test(content)) {
+        violations.push('Contains Jordan-specific details')
       }
 
       expect(violations.length).toBe(0)
     })
 
-    it('should use generic descriptions for the three people', () => {
-      const thresholdMatch = content.match(/location:\s*["']THRESHOLD["'][\s\S]*?text:\s*["']([^"']+)["']/i)
-      const thresholdText = thresholdMatch![1]
-
-      // Should contain generic descriptions
-      const hasGenericDescriptions = (
-        /papers|phone|clutches|mutters|scrolls/i.test(thresholdText) &&
-        !/medical|flowchart|calendar/i.test(thresholdText)
+    it('should have generic value proposition text', () => {
+      // Should contain generic intro content
+      const hasGenericContent = (
+        /discover|interests|skills|values|play/i.test(content) ||
+        /Grand Central Terminus/i.test(content)
       )
 
-      expect(hasGenericDescriptions).toBe(true)
+      expect(hasGenericContent).toBe(true)
     })
   })
 
