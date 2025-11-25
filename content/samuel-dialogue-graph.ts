@@ -222,7 +222,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "I wanted to help people find their own blueprints. Not hand them answers. Create space for the right questions.\n\nThat's this station. I didn't build it. It was waiting for someone to keep it.\n\nTime works differently here. Long enough to see hundreds find their way.",
+        text: "I wanted to help people find their own blueprints. Not hand them answers. Create space for the right questions.\n\nThat's this station. Built somewhere between the old L&N Railroad depot and the dreams Birmingham hasn't realized yet. I didn't build it. It was waiting for someone to keep it.\n\nTime works differently here. Long enough to see hundreds find their way. Folks from Five Points, from Bessemer, from over in Homewood. All finding the same questions, just wearing different clothes.",
         emotion: 'warm',
         variation_id: 'purpose_v1'
       }
@@ -313,7 +313,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "VP of Engineering at Southern Company. Or stay technical.\n\nPower and money. Or do what I loved.",
+        text: "VP of Engineering at Southern Company. Corner office downtown, view of the Regions Tower. Or stay technical - keep my hands in the work, keep building the grid that powers every light from Irondale to Hoover.\n\nPower and money. Or do what I loved.",
         emotion: 'reflective',
         variation_id: 'origin_choice_v1'
       }
@@ -515,7 +515,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Three travelers tonight. Each at their own crossroads.\n\nBefore I tell you about them—when you think about your decision, what pulls at you most?",
+        text: "Three travelers tonight. Each at their own crossroads. This station's been busy since the old Terminal Station closed—seems like Birmingham keeps drawing folks who need to find their way.\n\nBefore I tell you about them—when you think about your decision, what pulls at you most?",
         emotion: 'curious',
         variation_id: 'hub_initial_v1'
       }
@@ -612,7 +612,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "That's a particular kind of struggle. When your heart knows what it wants but the path feels... complicated.\n\nThere's someone on Platform 1 who understands that. Maya Chen - brilliant pre-med student at UAB. She's supposed to become a doctor, and she's good enough.\n\nBut between what she's 'supposed' to do and what she dreams about, there's a gap that's tearing her apart.",
+        text: "That's a particular kind of struggle. When your heart knows what it wants but the path feels... complicated.\n\nThere's someone on Platform 1 who understands that. Maya Chen - brilliant pre-med student at UAB. Her parents run a Vietnamese restaurant over on 3rd Avenue—saved every penny to get their daughter into that medical school.\n\nShe's supposed to become a doctor, and she's good enough. But between what she's 'supposed' to do and what she dreams about, there's a gap that's tearing her apart.",
         emotion: 'knowing',
         variation_id: 'discovers_helping_v1'
       }
@@ -644,7 +644,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "The engineer's dilemma. You can map every system, but life throws you something that doesn't fit the flowchart.\n\nDevon Kumar is on Platform 3. UAB engineering student. He built a decision tree to help his grieving father. It failed catastrophically.\n\nNow he's trying to debug human connection.",
+        text: "The engineer's dilemma. You can map every system, but life throws you something that doesn't fit the flowchart.\n\nDevon Kumar is on Platform 3. UAB engineering student—got recruited from the robotics lab in the old Oxmoor Center. His mother's been gone two years now. He built a decision tree to help his grieving father. It failed catastrophically.\n\nNow he's trying to debug human connection.",
         emotion: 'understanding',
         variation_id: 'discovers_building_v1'
       }
@@ -688,7 +688,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Seven jobs in twelve years. Jordan Packard. Conference Room B, mentorship panel.\n\nShe's terrified thirty students will see chaos instead of evolution. Impostor syndrome while she's the expert.\n\nThe question isn't 'what should I become?' It's 'how do I own what I've been?'",
+        text: "Seven jobs in twelve years. Jordan Packard. She's down at Railroad Park, prepping for a mentorship panel at Innovation Depot.\n\nThirty students from Birmingham-Southern are gonna hear her story tomorrow. She's terrified they'll see chaos instead of evolution. Impostor syndrome while she's the expert.\n\nThe question isn't 'what should I become?' It's 'how do I own what I've been?'",
         emotion: 'amused_empathetic',
         variation_id: 'discovers_exploring_v1'
       }
@@ -720,7 +720,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "The system works for some, but fails many. Tess is in the Waiting Room. She's a Career Counselor who's realizing she can't counsel students into a broken world—she has to build a new one.\n\nShe's trying to start a school that counts 'hiking the Appalachian Trail' as senior year physics.",
+        text: "The system works for some, but fails many. Tess is over at the Pizitz Food Hall, sketchbook open, coffee cold.\n\nShe's a Career Counselor at Hoover High who's realizing she can't counsel students into a broken world—she has to build a new one.\n\nShe's trying to start a school in the old Woodlawn building that counts 'hiking Oak Mountain' as senior year physics.",
         emotion: 'intrigued',
         variation_id: 'discovers_tess_v1'
       }
@@ -752,7 +752,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Platform 5 is a bit louder. Yaquin is there. Dental assistant, frustrated with the old textbooks.\n\nHe's realized he knows more than the professors, but he doesn't know how to build a school. He's on the verge of inventing a new way to teach.",
+        text: "Platform 5 is a bit louder. Yaquin is there—dental assistant over at Aspen Dental on Highway 280, frustrated with the old textbooks.\n\nHe's realized he knows more than the professors at UAB's dental school, but he doesn't know how to build a school. He's on the verge of inventing a new way to teach.",
         emotion: 'amused_respect',
         variation_id: 'discovers_yaquin_v1'
       }
@@ -784,7 +784,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Platform 6. Glass walls, cold lighting. Kai is there.\n\nThey're an Instructional Architect at a Fortune 500. They know exactly how people learn, but they're paid to build compliance checklists.\n\nThey're holding a match, trying to decide whether to burn the rulebook.",
+        text: "Platform 6. Glass walls, cold lighting. Kai is there.\n\nThey're an Instructional Architect at Protective Life downtown—the big tower on Richard Arrington. They know exactly how people learn, but they're paid to build compliance checklists.\n\nThey're holding a match, trying to decide whether to burn the rulebook.",
         emotion: 'intrigued_respect',
         variation_id: 'discovers_kai_v1'
       }
@@ -816,7 +816,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Platform 7. The sub-basement. Rohan is there.\n\nHe's a Site Reliability Engineer at a bank. He hasn't slept in 30 hours. He's the only one who knows how the money actually moves.\n\nEveryone else is using AI to write code they don't understand. He's cleaning up the mess.",
+        text: "Platform 7. The sub-basement. Rohan is there.\n\nHe's a Site Reliability Engineer at Regions Bank—the main operations center out in Riverchase. Hasn't slept in 30 hours. He's the only one who knows how the money actually moves through Alabama.\n\nEveryone else is using AI to write code they don't understand. He's cleaning up the mess.",
         emotion: 'grim_respect',
         variation_id: 'discovers_rohan_v1'
       }
@@ -848,7 +848,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Platform 8. The Greenhouse. Silas is there.\n\nHe used to be a Cloud Architect at Amazon. Now he uses drones to monitor soil microbiomes.\n\nHe realized that a farm is just a server cluster that breathes. He's debugging nature.",
+        text: "Platform 8. The Greenhouse. Silas is there.\n\nHe used to be a Cloud Architect at Amazon—worked remote from his place in Avondale. Now he uses drones to monitor soil microbiomes on a farm out past Trussville.\n\nHe realized that a farm is just a server cluster that breathes. He's debugging nature.",
         emotion: 'warm_respect',
         variation_id: 'discovers_silas_v1'
       }
@@ -880,7 +880,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "That's honest. That's why you're here.\n\nTonight's travelers:\n\n**Maya Chen** - Platform 1. Pre-med who wants to help, but maybe differently.\n\n**Devon Kumar** - Platform 3. Engineer learning logic isn't enough.\n\n**Jordan Packard** - Conference Room B. Seven jobs. One question.\n\nWho speaks to you?",
+        text: "That's honest. That's why you're here.\n\nTonight's travelers:\n\n**Maya Chen** - Platform 1, near the old L&N waiting room. Pre-med at UAB who wants to help, but maybe differently.\n\n**Devon Kumar** - Platform 3, by the engineer's memorial. UAB engineering student learning logic isn't enough.\n\n**Jordan Packard** - Down at Railroad Park. Seven jobs in twelve years. One question.\n\nWho speaks to you?",
         emotion: 'gentle_guide',
         variation_id: 'fallback_v1'
       }
@@ -1136,7 +1136,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
 
   // ============= REFLECTION: Maya's Specific Choice =============
   {
-    nodeId: 'samuel_maya_path_reflection',
+    nodeId: 'samuel_maya_reflection_early_exit',
     speaker: 'Samuel Washington',
     content: [
       {
@@ -1168,7 +1168,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
 
   // NUANCE: Robotics + Patience
   {
-    nodeId: 'samuel_maya_path_reflection',
+    nodeId: 'samuel_maya_reflection_robotics_patience',
     speaker: 'Samuel Washington',
     content: [
       {
@@ -1203,7 +1203,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
 
   // NUANCE: Robotics + Analytical
   {
-    nodeId: 'samuel_maya_path_reflection',
+    nodeId: 'samuel_maya_reflection_robotics_analytical',
     speaker: 'Samuel Washington',
     content: [
       {
@@ -1237,7 +1237,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
   },
 
   {
-    nodeId: 'samuel_maya_path_reflection',
+    nodeId: 'samuel_maya_reflection_robotics',
     speaker: 'Samuel Washington',
     content: [
       {
@@ -1275,7 +1275,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
   },
 
   {
-    nodeId: 'samuel_maya_path_reflection',
+    nodeId: 'samuel_maya_reflection_hybrid',
     speaker: 'Samuel Washington',
     content: [
       {
@@ -1317,7 +1317,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
   },
 
   {
-    nodeId: 'samuel_maya_path_reflection',
+    nodeId: 'samuel_maya_reflection_self',
     speaker: 'Samuel Washington',
     content: [
       {
@@ -2477,7 +2477,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
 
   // NUANCE: Integration + Helping (Gentle Presence)
   {
-    nodeId: 'samuel_devon_path_reflection',
+    nodeId: 'samuel_devon_reflection_integration_helping',
     speaker: 'Samuel Washington',
     content: [
       {
@@ -2505,7 +2505,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
 
   // NUANCE: Integration + Analytical (Structural Insight)
   {
-    nodeId: 'samuel_devon_path_reflection',
+    nodeId: 'samuel_devon_reflection_integration_analytical',
     speaker: 'Samuel Washington',
     content: [
       {
@@ -2533,7 +2533,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
 
   // VARIATION 1: Integration Frame (Engineer AND Son)
   {
-    nodeId: 'samuel_devon_path_reflection',
+    nodeId: 'samuel_devon_reflection_integration',
     speaker: 'Samuel Washington',
     content: [
       {
@@ -2569,7 +2569,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
 
   // VARIATION 2: Heart Frame (Logic < Heart)
   {
-    nodeId: 'samuel_devon_path_reflection',
+    nodeId: 'samuel_devon_reflection_heart',
     speaker: 'Samuel Washington',
     content: [
       {
@@ -2605,7 +2605,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
 
   // VARIATION 3: Presence Frame (Just be there)
   {
-    nodeId: 'samuel_devon_path_reflection',
+    nodeId: 'samuel_devon_reflection_presence',
     speaker: 'Samuel Washington',
     content: [
       {
@@ -2910,7 +2910,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
 
   // VARIATION 1: Accumulation Frame
   {
-    nodeId: 'samuel_jordan_path_reflection',
+    nodeId: 'samuel_jordan_reflection_accumulation',
     speaker: 'Samuel Washington',
     content: [
       {
@@ -2953,7 +2953,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
 
   // VARIATION 2: Birmingham Frame - Part 1
   {
-    nodeId: 'samuel_jordan_path_reflection',
+    nodeId: 'samuel_jordan_reflection_birmingham',
     speaker: 'Samuel Washington',
     content: [
       {
@@ -3021,7 +3021,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
 
   // VARIATION 3: Internal Validation Frame
   {
-    nodeId: 'samuel_jordan_path_reflection',
+    nodeId: 'samuel_jordan_reflection_internal',
     speaker: 'Samuel Washington',
     content: [
       {
@@ -3277,6 +3277,62 @@ export const samuelDialogueNodes: DialogueNode[] = [
         nextNodeId: 'samuel_devon_intro',
         pattern: 'exploring',
         skills: ['communication', 'creativity']
+      },
+      // Pattern observation choices - route to pattern-specific nodes based on dominant style
+      {
+        choiceId: 'tell_me_pattern_analytical',
+        text: "What do you see in me?",
+        nextNodeId: 'samuel_pattern_observation_analytical',
+        pattern: 'patience',
+        skills: ["emotionalIntelligence","communication"],
+        visibleCondition: {
+          trust: { min: 3 },
+          patterns: { analytical: { min: 4 } }
+        }
+      },
+      {
+        choiceId: 'tell_me_pattern_helping',
+        text: "What do you see in me?",
+        nextNodeId: 'samuel_pattern_observation_helping',
+        pattern: 'patience',
+        skills: ["emotionalIntelligence","communication"],
+        visibleCondition: {
+          trust: { min: 3 },
+          patterns: { helping: { min: 4 } }
+        }
+      },
+      {
+        choiceId: 'tell_me_pattern_exploring',
+        text: "What do you see in me?",
+        nextNodeId: 'samuel_pattern_observation_exploring',
+        pattern: 'patience',
+        skills: ["emotionalIntelligence","communication"],
+        visibleCondition: {
+          trust: { min: 3 },
+          patterns: { exploring: { min: 4 } }
+        }
+      },
+      {
+        choiceId: 'tell_me_pattern_patience',
+        text: "What do you see in me?",
+        nextNodeId: 'samuel_pattern_observation_patience',
+        pattern: 'patience',
+        skills: ["emotionalIntelligence","communication"],
+        visibleCondition: {
+          trust: { min: 3 },
+          patterns: { patience: { min: 4 } }
+        }
+      },
+      {
+        choiceId: 'tell_me_pattern_building',
+        text: "What do you see in me?",
+        nextNodeId: 'samuel_pattern_observation_building',
+        pattern: 'patience',
+        skills: ["emotionalIntelligence","communication"],
+        visibleCondition: {
+          trust: { min: 3 },
+          patterns: { building: { min: 4 } }
+        }
       },
       {
         choiceId: 'tell_me_pattern',
@@ -3821,6 +3877,219 @@ export const samuelDialogueNodes: DialogueNode[] = [
   },
 
   // ============= PATTERN OBSERVATION (Trust-gated wisdom) =============
+  // These nodes are pattern-specific - players see the one matching their dominant play style
+
+  // ANALYTICAL pattern dominant (logic-driven, data-focused)
+  {
+    nodeId: 'samuel_pattern_observation_analytical',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "What do I see in you? A mind that dissects problems the way surgeons approach tissue - methodical, precise, seeking the underlying structure.\n\nYou asked Maya about her decision framework before her feelings. You looked for patterns in her words. That's not cold - that's clarity.\n\nPeople like you build systems that save lives. The trick is remembering that the data represents real people.",
+        emotion: 'knowing',
+        variation_id: 'pattern_analytical_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 3 },
+      patterns: { analytical: { min: 4 } }
+    },
+    choices: [
+      {
+        choiceId: 'what_about_my_path_analytical',
+        text: "How does that translate to a career?",
+        nextNodeId: 'samuel_your_path',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'communication'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'accept_analytical',
+        text: "I hadn't thought of analysis as a gift.",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'communication'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 2,
+          setRelationshipStatus: 'confidant'
+        }
+      }
+    ]
+  },
+
+  // HELPING pattern dominant (people-focused, supportive)
+  {
+    nodeId: 'samuel_pattern_observation_helping',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "What do I see in you? Someone who feels others' struggles like weather on their skin. You didn't just hear Maya's words - you felt the weight she was carrying.\n\nYou asked about her parents because you sensed the pull between duty and desire. That kind of empathy is both gift and burden.\n\nPeople like you become healers, teachers, counselors. The danger is forgetting to turn that compassion inward.",
+        emotion: 'knowing',
+        variation_id: 'pattern_helping_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 3 },
+      patterns: { helping: { min: 4 } }
+    },
+    choices: [
+      {
+        choiceId: 'what_about_my_path_helping',
+        text: "What about my own needs?",
+        nextNodeId: 'samuel_your_path',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'accept_helping',
+        text: "It does feel like a lot sometimes.",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'communication'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 2,
+          setRelationshipStatus: 'confidant'
+        }
+      }
+    ]
+  },
+
+  // EXPLORING pattern dominant (curious, discovery-oriented)
+  {
+    nodeId: 'samuel_pattern_observation_exploring',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "What do I see in you? A mind that can't stop asking 'what if?' You asked Maya about the station, about possibilities, about paths not yet traveled.\n\nYou're not afraid of uncertainty - you're energized by it. That's rare. Most people want to know where they're going before they take the first step.\n\nExplorers like you discover new territories. The challenge is knowing when to plant a flag and build something lasting.",
+        emotion: 'knowing',
+        variation_id: 'pattern_exploring_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 3 },
+      patterns: { exploring: { min: 4 } }
+    },
+    choices: [
+      {
+        choiceId: 'what_about_my_path_exploring',
+        text: "Is exploring enough on its own?",
+        nextNodeId: 'samuel_your_path',
+        pattern: 'exploring',
+        skills: ['communication', 'adaptability'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'accept_exploring',
+        text: "I've always wondered why I can't settle on one thing.",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'communication'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 2,
+          setRelationshipStatus: 'confidant'
+        }
+      }
+    ]
+  },
+
+  // PATIENCE pattern dominant (thoughtful, long-term thinking)
+  {
+    nodeId: 'samuel_pattern_observation_patience',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "What do I see in you? Someone who understands that meaningful change takes time. You didn't push Maya for quick answers - you gave her room to arrive at her own truth.\n\nIn a world of instant everything, patience is radical. It's also lonely. People want quick fixes, and you offer slow growth.\n\nBut the deepest transformations happen in the pauses between words.",
+        emotion: 'knowing',
+        variation_id: 'pattern_patience_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 3 },
+      patterns: { patience: { min: 4 } }
+    },
+    choices: [
+      {
+        choiceId: 'what_about_my_path_patience',
+        text: "Does patience have a place in careers?",
+        nextNodeId: 'samuel_your_path',
+        pattern: 'patience',
+        skills: ['communication', 'leadership'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'accept_patience',
+        text: "Sometimes I feel like the world moves too fast.",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'communication'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 2,
+          setRelationshipStatus: 'confidant'
+        }
+      }
+    ]
+  },
+
+  // BUILDING pattern dominant (creative, hands-on)
+  {
+    nodeId: 'samuel_pattern_observation_building',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "What do I see in you? Hands that itch to make things real. When Maya talked about her robotics projects, something lit up in you - recognition, maybe.\n\nYou think in blueprints and prototypes. Abstract ideas are nice, but you want to hold the finished thing.\n\nBuilders like you shape the physical world. The challenge is remembering that the best creations serve human needs.",
+        emotion: 'knowing',
+        variation_id: 'pattern_building_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 3 },
+      patterns: { building: { min: 4 } }
+    },
+    choices: [
+      {
+        choiceId: 'what_about_my_path_building',
+        text: "What should I build?",
+        nextNodeId: 'samuel_your_path',
+        pattern: 'building',
+        skills: ['creativity', 'communication'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'accept_building',
+        text: "I do love making things.",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'communication'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 2,
+          setRelationshipStatus: 'confidant'
+        }
+      }
+    ]
+  },
+
+  // Generic fallback (no dominant pattern yet)
   {
     nodeId: 'samuel_pattern_observation',
     speaker: 'Samuel Washington',

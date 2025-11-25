@@ -20,7 +20,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_introduction',
     speaker: 'Jordan Packard',
     content: [{
-      text: `Hey! Career Day at the coding bootcamp. Got here way too early. Classic overcompensation.
+      text: `Hey! Career Day at Covalence—the coding bootcamp over in Innovation Depot. Got here way too early. Classic overcompensation.
 
 I've rewritten this speech six times.
 
@@ -760,6 +760,19 @@ Which story should I tell them?`,
       lacksGlobalFlags: ['jordan_chose_shallow'] // Only if NOT failed
     },
     choices: [
+      // Pattern-enhanced: Helping players see mentorship framing
+      {
+        choiceId: 'jordan_crossroads_accumulation_helping',
+        text: "What if your past is exactly why you're the perfect mentor?",
+        nextNodeId: 'jordan_chooses_accumulation',
+        pattern: 'helping',
+        skills: ['creativity', 'criticalThinking', 'leadership'],
+        preview: "Reframe seven jobs as seven kinds of wisdom to share",
+        interaction: 'bloom',
+        visibleCondition: {
+          patterns: { helping: { min: 3 } }
+        }
+      },
       {
         choiceId: 'jordan_crossroads_accumulation',
         text: "What if your past is exactly why you're the perfect mentor?",
@@ -767,12 +780,38 @@ Which story should I tell them?`,
         pattern: 'helping',
         skills: ['creativity', 'criticalThinking', 'leadership']
       },
+      // Pattern-enhanced: Exploring players see adaptability as asset
+      {
+        choiceId: 'jordan_crossroads_birmingham_exploring',
+        text: "What if you're proof that Birmingham rewards people who adapt?",
+        nextNodeId: 'jordan_chooses_birmingham',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'adaptability', 'creativity'],
+        preview: "Connect their journey to the city's own transformation",
+        interaction: 'bloom',
+        visibleCondition: {
+          patterns: { exploring: { min: 3 } }
+        }
+      },
       {
         choiceId: 'jordan_crossroads_birmingham',
         text: "What if you're proof that Birmingham rewards people who adapt?",
         nextNodeId: 'jordan_chooses_birmingham',
         pattern: 'analytical',
         skills: ['criticalThinking', 'adaptability', 'creativity']
+      },
+      // Pattern-enhanced: Patience players see internal narrative power
+      {
+        choiceId: 'jordan_crossroads_internal_patience',
+        text: "What if the story you tell yourself is the only one that matters?",
+        nextNodeId: 'jordan_chooses_internal',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'leadership'],
+        preview: "Invite them to find meaning on their own terms",
+        interaction: 'bloom',
+        visibleCondition: {
+          patterns: { patience: { min: 3 } }
+        }
       },
       {
         choiceId: 'jordan_crossroads_internal',
@@ -786,7 +825,7 @@ Which story should I tell them?`,
       characterId: 'jordan',
       setRelationshipStatus: 'confidant'
     }],
-    tags: ['crossroads', 'jordan_arc']
+    tags: ['crossroads', 'jordan_arc', 'pattern_enhanced']
   },
 
   {

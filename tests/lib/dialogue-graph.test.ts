@@ -6,7 +6,7 @@ import {
   type DialogueGraph,
   type ConditionalChoice
 } from '@/lib/dialogue-graph'
-import { GameStateUtils, type GameState, type CharacterState } from '@/lib/character-state'
+import { GameStateUtils, type GameState, type CharacterState, type StateCondition } from '@/lib/character-state'
 
 describe('Dialogue Graph Logic', () => {
   let gameState: GameState
@@ -42,13 +42,13 @@ describe('Dialogue Graph Logic', () => {
     // --- Relationship Tests ---
     it('should pass if relationship matches', () => {
       gameState.characters.get('samuel')!.relationshipStatus = 'confidant'
-      const condition = { relationship: ['confidant', 'friend'] }
+      const condition: StateCondition = { relationship: ['confidant', 'acquaintance'] }
       expect(StateConditionEvaluator.evaluate(condition, gameState, 'samuel')).toBe(true)
     })
 
     it('should fail if relationship does not match', () => {
       gameState.characters.get('samuel')!.relationshipStatus = 'stranger'
-      const condition = { relationship: ['confidant'] }
+      const condition: StateCondition = { relationship: ['confidant'] }
       expect(StateConditionEvaluator.evaluate(condition, gameState, 'samuel')).toBe(false)
     })
 

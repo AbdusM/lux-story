@@ -641,6 +641,19 @@ export const mayaDialogueNodes: DialogueNode[] = [
       lacksGlobalFlags: ['maya_failed_robotics'] // Only available if NOT failed
     },
     choices: [
+      // Pattern-enhanced: Analytical players see problem-solving framing
+      {
+        choiceId: 'crossroads_robotics_analytical',
+        text: "What would it mean to choose robotics?",
+        nextNodeId: 'maya_chooses_robotics',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication'],
+        preview: "Help her analyze the robotics path",
+        interaction: 'bloom',
+        visibleCondition: {
+          patterns: { analytical: { min: 3 } }
+        }
+      },
       {
         choiceId: 'crossroads_robotics',
         text: "What would it mean to choose robotics?",
@@ -648,12 +661,38 @@ export const mayaDialogueNodes: DialogueNode[] = [
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication']
       },
+      // Pattern-enhanced: Building players see this as creation opportunity
+      {
+        choiceId: 'crossroads_hybrid_building',
+        text: "Could both paths honor what matters?",
+        nextNodeId: 'maya_chooses_hybrid',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'creativity', 'problemSolving'],
+        preview: "Help her build a bridge between worlds",
+        interaction: 'bloom',
+        visibleCondition: {
+          patterns: { building: { min: 3 } }
+        }
+      },
       {
         choiceId: 'crossroads_hybrid',
         text: "Could both paths honor what matters?",
         nextNodeId: 'maya_chooses_hybrid',
         pattern: 'analytical',
         skills: ['criticalThinking', 'creativity', 'problemSolving']
+      },
+      // Pattern-enhanced: Patience players see trust-building framing
+      {
+        choiceId: 'crossroads_support_patience',
+        text: "Whatever you choose, I believe in you.",
+        nextNodeId: 'maya_chooses_self',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'leadership'],
+        preview: "Give her the gift of unconditional support",
+        interaction: 'bloom',
+        visibleCondition: {
+          patterns: { patience: { min: 3 } }
+        }
       },
       {
         choiceId: 'crossroads_support',
@@ -663,7 +702,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         skills: ['emotionalIntelligence', 'leadership']
       }
     ],
-    tags: ['climax', 'maya_arc']
+    tags: ['climax', 'maya_arc', 'pattern_enhanced']
   },
 
   // ============= ENDINGS =============
