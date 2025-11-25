@@ -42,6 +42,14 @@ export const featureFlags = {
 
   // Global flag to enable all shadcn components
   useShadcnGlobal: () => getFeatureFlag('SHADCN_GLOBAL', false),
+
+  // Content feature flags - gate new content behind flags
+  // Use these when adding new dialogue nodes, character arcs, or narrative paths
+  useNewMayaContent: () => getFeatureFlag('CONTENT_MAYA_V2', false),
+  useNewDevonContent: () => getFeatureFlag('CONTENT_DEVON_V2', false),
+  useNewJordanContent: () => getFeatureFlag('CONTENT_JORDAN_V2', false),
+  usePatternBranching: () => getFeatureFlag('CONTENT_PATTERN_BRANCHING', false),
+  useBirminghamDetails: () => getFeatureFlag('CONTENT_BIRMINGHAM_DETAILS', false),
 }
 
 // Helper to check if any shadcn component is enabled
@@ -76,13 +84,23 @@ if (typeof window !== 'undefined') {
     },
     list: () => {
       console.log('📋 Feature Flags:')
-      console.log('  Typography:', featureFlags.useShadcnTypography())
-      console.log('  GameCard:', featureFlags.useShadcnGameCard())
-      console.log('  GameChoice:', featureFlags.useShadcnGameChoice())
-      console.log('  GameMessage:', featureFlags.useShadcnGameMessage())
-      console.log('  GameInterface:', featureFlags.useShadcnGameInterface())
-      console.log('  Global:', featureFlags.useShadcnGlobal())
-      console.log('\nUse featureFlags.enable("SHADCN_GAME_CARD") to test components')
+      console.log('\n  UI Components:')
+      console.log('    Typography:', featureFlags.useShadcnTypography())
+      console.log('    GameCard:', featureFlags.useShadcnGameCard())
+      console.log('    GameChoice:', featureFlags.useShadcnGameChoice())
+      console.log('    GameMessage:', featureFlags.useShadcnGameMessage())
+      console.log('    GameInterface:', featureFlags.useShadcnGameInterface())
+      console.log('    Global:', featureFlags.useShadcnGlobal())
+      console.log('\n  Content Flags:')
+      console.log('    MayaV2:', featureFlags.useNewMayaContent())
+      console.log('    DevonV2:', featureFlags.useNewDevonContent())
+      console.log('    JordanV2:', featureFlags.useNewJordanContent())
+      console.log('    PatternBranching:', featureFlags.usePatternBranching())
+      console.log('    BirminghamDetails:', featureFlags.useBirminghamDetails())
+      console.log('\nUsage:')
+      console.log('  featureFlags.enable("CONTENT_MAYA_V2")')
+      console.log('  featureFlags.disable("CONTENT_MAYA_V2")')
+      console.log('  featureFlags.reset("CONTENT_MAYA_V2")')
     }
   }
 
