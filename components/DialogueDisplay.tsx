@@ -92,13 +92,26 @@ export function DialogueDisplay({
   // Get interaction class if provided
   const interactionClass = interaction ? `narrative-interaction-${interaction}` : null
 
+  // Determine typography based on speaker (Voice Fonts)
+  const getVoiceClass = (name?: string) => {
+    if (!name) return "font-sans text-slate-800"
+    const lower = name.toLowerCase()
+    
+    if (lower.includes('samuel')) return "font-serif text-slate-900 tracking-wide"
+    if (lower.includes('narrator') || lower.includes('system') || lower === 'you') return "font-mono text-slate-500 italic text-sm border-l-2 border-slate-300 pl-4 py-1 bg-slate-50/50"
+    
+    return "font-sans text-slate-800" // Default for Maya, Devon, etc.
+  }
+
+  const voiceClass = getVoiceClass(characterName)
+
   // Use RichTextRenderer for all standard rendering (replacing legacy manual parsing)
   // It handles | splitting, inline interactions, and markdown internally
   const content = (
     <RichTextRenderer
       text={chunkedText}
       effects={richEffects || { mode: 'static' }}
-      className={cn("text-base text-slate-800 leading-relaxed", interactionClass)}
+      className={cn("text-base leading-relaxed", voiceClass, interactionClass)}
     />
   )
 
