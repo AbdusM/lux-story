@@ -96,12 +96,25 @@ export async function GET(
           acc[demo.skill_name] = (acc[demo.skill_name] || 0) + 1
           return acc
         }, {} as Record<string, number>)
-      ).map(([skill, count]) => ({
-        skill,
-        demonstrations: count,
-        lastContext: skillSummaries.find(s => s.skill_name === skill)?.latest_context || 'No context available',
-        scenes: skillSummaries.find(s => s.skill_name === skill)?.scenes_involved || []
-      }))
+      ).map(([skill, count]) => {
+        const summary = skillSummaries.find(s => s.skill_name === skill)
+        const skillSpecificDemos = skillDemos.filter(d => d.skill_name === skill)
+        // Get unique scene descriptions for this skill
+        const sceneDescriptions = Array.from(new Set(
+          skillSpecificDemos
+            .map(d => d.scene_description)
+            .filter(Boolean)
+        ))
+        return {
+          skill,
+          demonstrations: count,
+          lastContext: summary?.latest_context || 'No context available',
+          scenes: summary?.scenes_involved || [],
+          sceneDescriptions: sceneDescriptions.length > 0
+            ? sceneDescriptions
+            : (summary?.scene_descriptions || [])
+        }
+      })
     }
 
     // Framework 2: Career Readiness

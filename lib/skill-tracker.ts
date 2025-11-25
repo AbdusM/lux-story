@@ -163,6 +163,7 @@ export class SkillTracker {
           user_id: this.userId,
           skill_name: skill,
           scene_id: demo.scene,
+          scene_description: demo.sceneDescription, // Include readable scene context for admin
           choice_text: demo.choice,
           context: demo.context,
           demonstrated_at: new Date(demo.timestamp).toISOString()
@@ -172,14 +173,10 @@ export class SkillTracker {
 
         // Also queue aggregated summary every 3rd demonstration
         if (skillDemoCount % 3 === 0) {
-          // Get all scenes where this skill was demonstrated
-          const scenesInvolved = Array.from(
-            new Set(
-              this.demonstrations
-                .filter(d => d.skillsDemonstrated.includes(skill))
-                .map(d => d.scene)
-            )
-          )
+          // Get all scenes and descriptions where this skill was demonstrated
+          const skillDemos = this.demonstrations.filter(d => d.skillsDemonstrated.includes(skill))
+          const scenesInvolved = Array.from(new Set(skillDemos.map(d => d.scene)))
+          const sceneDescriptions = Array.from(new Set(skillDemos.map(d => d.sceneDescription).filter(Boolean)))
 
           // Queue sync to Supabase
           queueSkillSummarySync({
@@ -188,6 +185,7 @@ export class SkillTracker {
             demonstration_count: skillDemoCount,
             latest_context: demo.context, // Rich 100-150 word context
             scenes_involved: scenesInvolved,
+            scene_descriptions: sceneDescriptions, // Human-readable scene context
             last_demonstrated: new Date().toISOString()
           })
 
