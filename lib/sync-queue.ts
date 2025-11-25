@@ -560,6 +560,7 @@ export function queueSkillSummarySync(data: {
   demonstration_count: number
   latest_context: string
   scenes_involved: string[]
+  scene_descriptions?: string[]
   last_demonstrated?: string
 }): void {
   SyncQueue.addToQueue({
@@ -581,6 +582,7 @@ export function queueSkillDemonstrationSync(data: {
   user_id: string
   skill_name: string
   scene_id: string
+  scene_description?: string
   choice_text: string
   context: string
   demonstrated_at?: string
