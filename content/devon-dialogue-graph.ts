@@ -842,6 +842,19 @@ export const devonDialogueNodes: DialogueNode[] = [
       lacksGlobalFlags: ['devon_chose_logic'] // Only if not failed
     },
     choices: [
+      // Pattern-enhanced: Analytical players see integration as system upgrade
+      {
+        choiceId: 'crossroads_integrated_analytical',
+        text: "You don't have to choose between engineer and son. Be both.",
+        nextNodeId: 'devon_chooses_integration',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'creativity', 'emotionalIntelligence'],
+        preview: "Suggest an integrated approach - systems can hold emotion too",
+        interaction: 'bloom',
+        visibleCondition: {
+          patterns: { analytical: { min: 3 } }
+        }
+      },
       {
         choiceId: 'crossroads_integrated',
         text: "You don't have to choose between engineer and son. Be both.",
@@ -849,12 +862,38 @@ export const devonDialogueNodes: DialogueNode[] = [
         pattern: 'analytical',
         skills: ['criticalThinking', 'creativity', 'emotionalIntelligence']
       },
+      // Pattern-enhanced: Helping players see emotional connection
+      {
+        choiceId: 'crossroads_emotional_helping',
+        text: "Trust your heart. The flowchart can wait.",
+        nextNodeId: 'devon_chooses_heart',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        preview: "Encourage him to lead with feelings, not frameworks",
+        interaction: 'bloom',
+        visibleCondition: {
+          patterns: { helping: { min: 3 } }
+        }
+      },
       {
         choiceId: 'crossroads_emotional',
         text: "Trust your heart. The flowchart can wait.",
         nextNodeId: 'devon_chooses_heart',
         pattern: 'helping',
         skills: ['emotionalIntelligence']
+      },
+      // Pattern-enhanced: Patience players see supportive presence
+      {
+        choiceId: 'crossroads_support_patience',
+        text: "Whatever feels right. He just needs you there.",
+        nextNodeId: 'devon_chooses_presence',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'adaptability'],
+        preview: "Affirm that being present matters more than having answers",
+        interaction: 'bloom',
+        visibleCondition: {
+          patterns: { patience: { min: 3 } }
+        }
       },
       {
         choiceId: 'crossroads_support',
@@ -864,7 +903,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         skills: ['emotionalIntelligence', 'adaptability']
       }
     ],
-    tags: ['climax', 'devon_arc']
+    tags: ['climax', 'devon_arc', 'pattern_enhanced']
   },
 
   // ============= ENDINGS =============

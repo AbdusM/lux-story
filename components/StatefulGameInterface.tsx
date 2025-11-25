@@ -317,8 +317,11 @@ export default function StatefulGameInterface() {
       const experienceSummaryUpdate = { showExperienceSummary: false, experienceSummaryData: null as ExperienceSummaryData | null }
 
       if (completedArc) {
+          // Get actual skill demonstrations from tracker for personalized summary
+          const demonstrations = skillTrackerRef.current?.getAllDemonstrations() || []
+
           loadSkillProfile(newGameState.playerId)
-              .then(profile => generateExperienceSummary(completedArc, newGameState, profile))
+              .then(profile => generateExperienceSummary(completedArc, newGameState, profile, demonstrations))
               .then(summaryData => setState(prev => ({ ...prev, showExperienceSummary: true, experienceSummaryData: summaryData })))
               .catch(() => setState(prev => ({ ...prev, showExperienceSummary: true, experienceSummaryData: null }))) // Fallback
       }

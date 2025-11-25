@@ -1,6 +1,6 @@
 "use client"
 
-import { memo } from 'react'
+import { memo, useState, useEffect, useCallback, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { motion } from 'framer-motion'
 
@@ -17,6 +17,85 @@ interface GameChoicesProps {
   choices: Choice[]
   isProcessing: boolean
   onChoice: (choice: Choice) => void
+}
+
+/**
+ * Custom hook for keyboard navigation of choices
+ */
+function useKeyboardNavigation(
+  choices: Choice[],
+  isProcessing: boolean,
+  onChoice: (choice: Choice) => void
+) {
+  const [focusedIndex, setFocusedIndex] = useState(-1)
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  // Reset focus when choices change
+  useEffect(() => {
+    setFocusedIndex(-1)
+  }, [choices])
+
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (isProcessing || choices.length === 0) return
+
+    // Number keys 1-9 for direct selection
+    if (e.key >= '1' && e.key <= '9') {
+      const index = parseInt(e.key) - 1
+      if (index < choices.length) {
+        e.preventDefault()
+        onChoice(choices[index])
+      }
+      return
+    }
+
+    switch (e.key) {
+      case 'ArrowDown':
+      case 'j': // vim-style
+        e.preventDefault()
+        setFocusedIndex(prev => {
+          const next = prev < choices.length - 1 ? prev + 1 : 0
+          return next
+        })
+        break
+      case 'ArrowUp':
+      case 'k': // vim-style
+        e.preventDefault()
+        setFocusedIndex(prev => {
+          const next = prev > 0 ? prev - 1 : choices.length - 1
+          return next
+        })
+        break
+      case 'Enter':
+      case ' ':
+        if (focusedIndex >= 0 && focusedIndex < choices.length) {
+          e.preventDefault()
+          onChoice(choices[focusedIndex])
+        }
+        break
+      case 'Escape':
+        setFocusedIndex(-1)
+        break
+    }
+  }, [choices, focusedIndex, isProcessing, onChoice])
+
+  // Attach keyboard listener
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [handleKeyDown])
+
+  // Scroll focused choice into view
+  useEffect(() => {
+    if (focusedIndex >= 0 && containerRef.current) {
+      const buttons = containerRef.current.querySelectorAll('[data-choice-index]')
+      const focusedButton = buttons[focusedIndex] as HTMLElement | undefined
+      if (focusedButton) {
+        focusedButton.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+      }
+    }
+  }, [focusedIndex])
+
+  return { focusedIndex, setFocusedIndex, containerRef }
 }
 
 // Animation variants for juice
@@ -42,22 +121,30 @@ const glowVariant = {
 }
 
 // Memoized choice button component
-const ChoiceButton = memo(({ choice, index, onChoice, isProcessing }: {
+const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, showShortcut }: {
   choice: Choice
   index: number
   onChoice: (choice: Choice) => void
   isProcessing: boolean
+  isFocused?: boolean
+  showShortcut?: boolean
 }) => {
   // Combine standard variants with feedback variants
   const combinedVariants = {
     ...buttonVariants,
     shake: shakeVariant,
-    glow: glowVariant
+    glow: glowVariant,
+    focused: {
+      scale: 1.02,
+      boxShadow: "0px 0px 0px 2px rgba(59,130,246,0.5)",
+      transition: { duration: 0.15 }
+    }
   }
 
   // Determine which animation state to use
   // If feedback is active, use that variant name; otherwise use standard 'animate' entry
-  const animateState = choice.feedback ? choice.feedback : "animate"
+  let animateState = choice.feedback ? choice.feedback : "animate"
+  if (isFocused) animateState = "focused"
 
   return (
     <motion.div
@@ -68,6 +155,7 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing }: {
       variants={combinedVariants}
       custom={index}
       className="w-full"
+      data-choice-index={index}
     >
       <Button
         key={index}
@@ -77,6 +165,7 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing }: {
         data-testid="choice-button"
         data-choice-text={choice.text}
         data-pattern={choice.pattern || ''}
+        aria-label={`Choice ${index + 1}: ${choice.text}`}
         className={`
           w-full min-h-[56px] h-auto px-6 py-4
           text-base font-medium text-left justify-start break-words whitespace-normal leading-relaxed
@@ -86,9 +175,17 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing }: {
           rounded-xl shadow-sm
           ${choice.feedback === 'shake' ? 'border-red-200 bg-red-50' : ''}
           ${choice.feedback === 'glow' ? 'border-blue-300 bg-blue-50' : ''}
+          ${isFocused ? 'ring-2 ring-blue-500 ring-offset-1 border-blue-400 bg-blue-50/50' : ''}
         `}
       >
-        {choice.text}
+        <span className="flex items-start gap-3 w-full">
+          {showShortcut && index < 9 && (
+            <span className="inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-slate-500 bg-slate-100 rounded border border-slate-200 shrink-0 mt-0.5">
+              {index + 1}
+            </span>
+          )}
+          <span className="flex-1">{choice.text}</span>
+        </span>
       </Button>
     </motion.div>
   )
@@ -132,9 +229,17 @@ const groupChoices = (choices: Choice[]) => {
 
 /**
  * Game Choices Component
- * Displays choice buttons with optimized rendering, grouping, and "juice"
+ * Displays choice buttons with optimized rendering, grouping, keyboard navigation, and "juice"
+ *
+ * Keyboard shortcuts:
+ * - Arrow keys (or j/k): Navigate between choices
+ * - Enter/Space: Select focused choice
+ * - 1-9: Direct selection of choice by number
+ * - Escape: Clear focus
  */
 export const GameChoices = memo(({ choices, isProcessing, onChoice }: GameChoicesProps) => {
+  const { focusedIndex, containerRef } = useKeyboardNavigation(choices, isProcessing, onChoice)
+
   if (!choices || choices.length === 0) {
     return null
   }
@@ -142,39 +247,55 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice }: GameChoice
   // Determine layout strategy based on count
   const useGrid = choices.length > 2 // Use grid for 3+ choices on desktop
   const useGrouping = choices.length > 4 // Group if very many
+  const showShortcuts = choices.length <= 9 // Show number shortcuts for up to 9 choices
 
   if (useGrouping) {
     const groups = groupChoices(choices)
     const nonEmptyGroups = Object.entries(groups).filter(([_, groupChoices]) => groupChoices.length > 0)
 
+    // Track global index for keyboard navigation across groups
+    let globalIndex = 0
+
     return (
-      <div className="space-y-8">
+      <div className="space-y-8" ref={containerRef} role="listbox" aria-label="Choose your response">
         {nonEmptyGroups.map(([title, groupChoices]) => (
-          <div key={title} className="space-y-3">
+          <div key={title} className="space-y-3" role="group" aria-label={title}>
             {title !== 'Other' && (
               <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider px-1">
                 {title}
               </h4>
             )}
             <div className={`grid gap-3 ${groupChoices.length > 1 ? 'md:grid-cols-2' : 'grid-cols-1'}`}>
-              {groupChoices.map((choice, index) => (
-                <ChoiceButton
-                  key={`${title}-${index}`}
-                  choice={choice}
-                  index={index}
-                  onChoice={onChoice}
-                  isProcessing={isProcessing}
-                />
-              ))}
+              {groupChoices.map((choice, localIndex) => {
+                const currentGlobalIndex = globalIndex++
+                return (
+                  <ChoiceButton
+                    key={`${title}-${localIndex}`}
+                    choice={choice}
+                    index={currentGlobalIndex}
+                    onChoice={onChoice}
+                    isProcessing={isProcessing}
+                    isFocused={focusedIndex === currentGlobalIndex}
+                    showShortcut={showShortcuts}
+                  />
+                )
+              })}
             </div>
           </div>
         ))}
+        <KeyboardHint />
       </div>
     )
   }
 
   return (
-    <div className={`grid gap-3 ${useGrid ? 'md:grid-cols-2' : 'grid-cols-1'}`} data-testid="game-choices">
+    <div
+      ref={containerRef}
+      className={`grid gap-3 ${useGrid ? 'md:grid-cols-2' : 'grid-cols-1'}`}
+      data-testid="game-choices"
+      role="listbox"
+      aria-label="Choose your response"
+    >
       {choices.map((choice, index) => (
         <ChoiceButton
           key={index}
@@ -182,10 +303,29 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice }: GameChoice
           index={index}
           onChoice={onChoice}
           isProcessing={isProcessing}
+          isFocused={focusedIndex === index}
+          showShortcut={showShortcuts}
         />
       ))}
+      <KeyboardHint />
     </div>
   )
 })
 
 GameChoices.displayName = 'GameChoices'
+
+/**
+ * Subtle hint about keyboard navigation (appears only on desktop)
+ */
+const KeyboardHint = memo(() => (
+  <div className="hidden md:flex items-center justify-center gap-2 text-xs text-slate-400 mt-4 opacity-70">
+    <span className="px-1.5 py-0.5 bg-slate-100 rounded border border-slate-200 font-mono">↑↓</span>
+    <span>navigate</span>
+    <span className="px-1.5 py-0.5 bg-slate-100 rounded border border-slate-200 font-mono">Enter</span>
+    <span>select</span>
+    <span className="px-1.5 py-0.5 bg-slate-100 rounded border border-slate-200 font-mono">1-9</span>
+    <span>quick select</span>
+  </div>
+))
+
+KeyboardHint.displayName = 'KeyboardHint'

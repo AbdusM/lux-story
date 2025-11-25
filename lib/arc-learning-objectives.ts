@@ -108,21 +108,46 @@ export const ARC_LEARNING_OBJECTIVES: Record<'maya' | 'devon' | 'jordan', {
 }
 
 /**
+ * Skill demonstration from SkillTracker
+ */
+interface SkillDemonstration {
+  scene: string
+  sceneDescription: string
+  choice: string
+  skillsDemonstrated: string[]
+  context: string
+  timestamp: number
+}
+
+/**
+ * Map of skill names to their "why it matters" descriptions
+ */
+const SKILL_WHY_IT_MATTERS: Record<string, string> = {
+  emotionalIntelligence: 'Emotional intelligence helps you build authentic relationships, navigate workplace dynamics, and support colleagues through challenges.',
+  criticalThinking: 'Critical thinking enables you to evaluate complex situations, see through surface-level appearances, and make informed decisions.',
+  communication: 'Strong communication helps you express ideas clearly, ask powerful questions, and build understanding with diverse teams.',
+  problemSolving: 'Problem-solving skills let you break down complex challenges into manageable steps, essential in any career.',
+  leadership: 'Leadership skills help you guide projects, mentor others, and advance in your career—even without formal authority.',
+  creativity: 'Creativity helps you find innovative solutions and connect ideas across different domains.',
+  adaptability: 'Adaptability helps you thrive in changing environments and pivot when circumstances shift.',
+  collaboration: 'Collaboration skills help you work effectively with diverse teams and build on others\' strengths.',
+  culturalCompetence: 'Cultural competence helps you work effectively with diverse teams and understand different perspectives.',
+  relationshipBuilding: 'The ability to build authentic trust quickly unlocks opportunities, mentorship, and career paths that aren\'t listed on job boards.'
+}
+
+/**
  * Generate experience summary data from game state after arc completion
+ * Now supports actual skill demonstrations from gameplay
  */
 export async function generateExperienceSummary(
   characterArc: 'maya' | 'devon' | 'jordan',
   gameState: GameState,
-  profile?: import('@/lib/skill-profile-adapter').SkillProfile | null
+  profile?: import('@/lib/skill-profile-adapter').SkillProfile | null,
+  demonstrations?: SkillDemonstration[]
 ): Promise<ExperienceSummaryData> {
   const characterId = characterArc
   const character = gameState.characters.get(characterId)
   const arcData = ARC_LEARNING_OBJECTIVES[characterArc]
-
-  // Get actual skills developed during this arc from skill tracker
-  // For now, use default skills (can be enhanced with actual tracked skills)
-  const skillsDeveloped = [...arcData.defaultSkills]
-  const keyInsights = [...arcData.defaultInsights]
 
   const characterNames: Record<string, string> = {
     maya: 'Maya Chen',
@@ -130,14 +155,73 @@ export async function generateExperienceSummary(
     jordan: 'Jordan Packard'
   }
 
+  // Build skills from actual demonstrations if available
+  let skillsDeveloped: ArcLearningObjective[]
+
+  if (demonstrations && demonstrations.length > 0) {
+    // Filter demonstrations to this character arc
+    const arcDemonstrations = demonstrations.filter(d =>
+      d.scene.toLowerCase().includes(characterArc) ||
+      d.sceneDescription?.toLowerCase().includes(characterArc) ||
+      d.sceneDescription?.toLowerCase().includes(characterNames[characterArc].toLowerCase())
+    )
+
+    if (arcDemonstrations.length > 0) {
+      // Group demonstrations by skill, keeping the most informative context
+      const skillMap = new Map<string, { choices: string[], context: string, count: number }>()
+
+      for (const demo of arcDemonstrations) {
+        for (const skill of demo.skillsDemonstrated) {
+          const existing = skillMap.get(skill)
+          if (existing) {
+            existing.choices.push(demo.choice)
+            existing.count++
+            // Keep the longer/richer context
+            if (demo.context.length > existing.context.length) {
+              existing.context = demo.context
+            }
+          } else {
+            skillMap.set(skill, {
+              choices: [demo.choice],
+              context: demo.context,
+              count: 1
+            })
+          }
+        }
+      }
+
+      // Convert to ArcLearningObjective format
+      skillsDeveloped = Array.from(skillMap.entries())
+        .sort(([, a], [, b]) => b.count - a.count) // Sort by demonstration count
+        .slice(0, 5) // Top 5 skills
+        .map(([skill, data]) => ({
+          skill,
+          howYouShowedIt: data.context || `You demonstrated this skill ${data.count} time${data.count > 1 ? 's' : ''} through choices like: "${data.choices[0]}"`,
+          whyItMatters: SKILL_WHY_IT_MATTERS[skill] || `This skill is valuable for building authentic connections and navigating complex situations.`
+        }))
+    } else {
+      // No arc-specific demonstrations, use defaults
+      skillsDeveloped = [...arcData.defaultSkills]
+    }
+  } else {
+    // No demonstrations provided, use defaults
+    skillsDeveloped = [...arcData.defaultSkills]
+  }
+
+  const keyInsights = [...arcData.defaultInsights]
+
   // DYNAMIC: Inject Trust/Relationship Building if trust is high
   const trustLevel = character?.trust || 0
   if (trustLevel >= 6) {
-    skillsDeveloped.unshift({
-      skill: 'relationshipBuilding',
-      howYouShowedIt: `You built a deep level of trust (${trustLevel}/10) with ${characterNames[characterArc]}, moving beyond surface-level interaction to genuine connection.`,
-      whyItMatters: 'The ability to build authentic trust quickly is a "dope" superpower—it unlocks opportunities, mentorship, and career paths that aren\'t listed on job boards.'
-    })
+    // Only add if not already present
+    const hasRelationshipSkill = skillsDeveloped.some(s => s.skill === 'relationshipBuilding')
+    if (!hasRelationshipSkill) {
+      skillsDeveloped.unshift({
+        skill: 'relationshipBuilding',
+        howYouShowedIt: `You built a deep level of trust (${trustLevel}/10) with ${characterNames[characterArc]}, moving beyond surface-level interaction to genuine connection.`,
+        whyItMatters: SKILL_WHY_IT_MATTERS['relationshipBuilding']
+      })
+    }
 
     keyInsights.unshift('Building trust is a form of career exploration—it reveals paths you can\'t find on Google')
   }
@@ -153,7 +237,7 @@ export async function generateExperienceSummary(
     characterArc,
     arcTheme: arcData.theme,
     skillsDeveloped,
-    keyInsights: arcData.defaultInsights,
+    keyInsights,
     trustLevel: character?.trust || 0,
     relationshipStatus: character?.relationshipStatus || 'stranger',
     dominantPattern,

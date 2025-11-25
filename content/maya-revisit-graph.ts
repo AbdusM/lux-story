@@ -34,24 +34,57 @@ export const mayaRevisitNodes: DialogueNode[] = [
       hasGlobalFlags: ['maya_arc_complete']
     },
     choices: [
+      // Robotics path choices
       {
-        choiceId: 'ask_how_are_you',
+        choiceId: 'ask_how_are_you_robotics',
         text: "How have you been?",
-        nextNodeId: 'maya_revisit_update',
-        pattern: 'helping'
+        nextNodeId: 'maya_revisit_update_robotics',
+        pattern: 'helping',
+        visibleCondition: { hasKnowledgeFlags: ['chose_robotics'] }
       },
       {
-        choiceId: 'ask_about_decision',
+        choiceId: 'ask_about_decision_robotics',
         text: "How's your path going?",
-        nextNodeId: 'maya_revisit_update',
-        pattern: 'exploring'
+        nextNodeId: 'maya_revisit_update_robotics',
+        pattern: 'exploring',
+        visibleCondition: { hasKnowledgeFlags: ['chose_robotics'] }
+      },
+      // Hybrid path choices
+      {
+        choiceId: 'ask_how_are_you_hybrid',
+        text: "How have you been?",
+        nextNodeId: 'maya_revisit_update_hybrid',
+        pattern: 'helping',
+        visibleCondition: { hasKnowledgeFlags: ['chose_hybrid'] }
+      },
+      {
+        choiceId: 'ask_about_decision_hybrid',
+        text: "How's your path going?",
+        nextNodeId: 'maya_revisit_update_hybrid',
+        pattern: 'exploring',
+        visibleCondition: { hasKnowledgeFlags: ['chose_hybrid'] }
+      },
+      // Self-discovery path choices
+      {
+        choiceId: 'ask_how_are_you_self',
+        text: "How have you been?",
+        nextNodeId: 'maya_revisit_update_self',
+        pattern: 'helping',
+        visibleCondition: { hasKnowledgeFlags: ['chose_self'] }
+      },
+      {
+        choiceId: 'ask_about_decision_self',
+        text: "How's your path going?",
+        nextNodeId: 'maya_revisit_update_self',
+        pattern: 'exploring',
+        visibleCondition: { hasKnowledgeFlags: ['chose_self'] }
       }
     ]
   },
 
   // ============= UPDATE (Branches based on choice) =============
   {
-    nodeId: 'maya_revisit_update',
+    nodeId: 'maya_revisit_update_robotics',
     speaker: 'Maya Chen',
     content: [
       {
@@ -80,7 +113,7 @@ export const mayaRevisitNodes: DialogueNode[] = [
   },
 
   {
-    nodeId: 'maya_revisit_update',
+    nodeId: 'maya_revisit_update_hybrid',
     speaker: 'Maya Chen',
     content: [
       {
@@ -109,7 +142,7 @@ export const mayaRevisitNodes: DialogueNode[] = [
   },
 
   {
-    nodeId: 'maya_revisit_update',
+    nodeId: 'maya_revisit_update_self',
     speaker: 'Maya Chen',
     content: [
       {
