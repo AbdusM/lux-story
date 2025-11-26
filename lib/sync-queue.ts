@@ -475,8 +475,8 @@ export class SyncQueue {
       } catch (error) {
         const willRetry = action.retries < 3
         let errorMessage = 'Unknown error'
-        let errorDetails: { name: string; stack?: string; message: string } | null = null
-        
+        let errorDetails: Record<string, unknown> | null = null
+
         if (error instanceof Error) {
           errorMessage = error.message || 'Error object has no message'
           errorDetails = {
@@ -488,7 +488,7 @@ export class SyncQueue {
           // Handle non-Error objects (like API responses)
           try {
             errorMessage = JSON.stringify(error)
-            errorDetails = error
+            errorDetails = error as Record<string, unknown>
           } catch (_e) {
             errorMessage = 'Failed to stringify error object'
             errorDetails = { toString: String(error) }

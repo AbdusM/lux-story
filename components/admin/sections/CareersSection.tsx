@@ -6,38 +6,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { CheckCircle2, AlertTriangle, Lightbulb, ChevronRight, ArrowRight } from 'lucide-react'
+import type { SkillProfile, CareerMatch } from '@/lib/skill-profile-adapter'
 
-// Type definitions for career data
+// Type definitions for career data (extending from imported types)
 interface SkillRequirement {
   current: number
   required: number
   gap: number
-}
-
-interface CareerMatch {
-  id: string
-  name: string
-  matchScore: number
-  readiness: 'near_ready' | 'skill_gaps' | 'exploratory'
-  requiredSkills: Record<string, SkillRequirement>
-  salaryRange: [number, number]
-  educationPaths: string[]
-  localOpportunities: string[]
-  birminghamRelevance: number
-}
-
-interface SkillDemonstrationRecord {
-  scene: string
-  sceneDescription: string
-  context: string
-  timestamp: string
-}
-
-interface SkillProfile {
-  userName: string
-  totalDemonstrations: number
-  careerMatches: CareerMatch[]
-  skillDemonstrations: Record<string, SkillDemonstrationRecord[]>
 }
 
 interface CareerExplorationPath {
