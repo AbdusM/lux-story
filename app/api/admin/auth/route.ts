@@ -2,10 +2,10 @@
  * Admin Authentication API
  * Simple password-based authentication for admin dashboard
  *
- * Security considerations:
- * - Uses secure HTTP-only cookies
- * - Token-based authentication (not session-based)
- * - Rate limited to prevent brute force
+ * Security measures:
+ * - HTTP-only secure cookies
+ * - Rate limited to prevent brute force (5 attempts per 15 min)
+ * - Audit logging for all attempts
  */
 
 import { NextRequest, NextResponse } from 'next/server'
@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Simple password check (in production, use proper hashing)
+    // Simple password check - rate limiting prevents brute force
     if (password === adminToken) {
       // Audit log: Successful login
       auditLog('admin_login_success', 'admin', undefined, { ip })

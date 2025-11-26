@@ -7,57 +7,30 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import { getSupabaseServerClient } from '@/lib/supabase-server'
 
 // Mark as dynamic for Next.js static export compatibility
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
 
-// Server-side Supabase client with service role (bypasses RLS)
-function getServiceClient() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
-
-  if (!supabaseUrl || !serviceRoleKey) {
-    const missing = []
-    if (!supabaseUrl) missing.push('NEXT_PUBLIC_SUPABASE_URL or SUPABASE_URL')
-    if (!serviceRoleKey) missing.push('SUPABASE_SERVICE_ROLE_KEY')
-    throw new Error(`Missing Supabase environment variables: ${missing.join(', ')}`)
-  }
-
-  return createClient(supabaseUrl, serviceRoleKey, {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false
-    }
-  })
-}
-
 /**
  * POST /api/user/profile
  * Create or ensure player profile exists
- *
- * Body: {
- *   user_id: string,
- *   created_at?: ISO date string
- * }
  */
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
     const { user_id, created_at } = body
 
-    console.log('🔵 [API:Profile] POST request:', { userId: user_id })
-
+    // Simple validation - this is an internal API
     if (!user_id) {
-      console.error('❌ [API:Profile] Missing user_id')
       return NextResponse.json(
         { error: 'Missing user_id' },
         { status: 400 }
       )
     }
 
-    const supabase = getServiceClient()
+    const supabase = getSupabaseServerClient()
 
     // Use upsert to create profile if it doesn't exist, or do nothing if it does
     const { data, error } = await supabase
@@ -129,7 +102,7 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    const supabase = getServiceClient()
+    const supabase = getSupabaseServerClient()
 
     const { data, error } = await supabase
       .from('player_profiles')

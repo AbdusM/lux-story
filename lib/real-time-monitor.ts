@@ -89,7 +89,7 @@ class RealTimeMonitor {
   /**
    * Log Supabase sync
    */
-  logSync(userId: string, syncType: 'career_analytics' | 'skill_summary' | 'skill_demonstration' | 'career_exploration' | 'pattern_demonstration', success: boolean, error?: string) {
+  logSync(userId: string, syncType: 'career_analytics' | 'skill_summary' | 'skill_demonstration' | 'career_exploration' | 'pattern_demonstration' | 'relationship_progress' | 'platform_state', success: boolean, error?: string) {
     const activity: UserActivity = {
       timestamp: Date.now(),
       userId,
@@ -252,7 +252,7 @@ export const logSceneEnter = (userId: string, sceneId: string, context?: string)
 export const logSkillDemo = (userId: string, skill: string, count: number, willSync: boolean) =>
   monitor.logSkillDemo(userId, skill, count, willSync)
 
-export const logSync = (userId: string, syncType: 'career_analytics' | 'skill_summary' | 'skill_demonstration' | 'career_exploration' | 'pattern_demonstration', success: boolean, error?: string) =>
+export const logSync = (userId: string, syncType: 'career_analytics' | 'skill_summary' | 'skill_demonstration' | 'career_exploration' | 'pattern_demonstration' | 'relationship_progress' | 'platform_state', success: boolean, error?: string) =>
   monitor.logSync(userId, syncType, success, error)
 
 export const logError = (userId: string, errorType: string, message: string, context?: any) =>

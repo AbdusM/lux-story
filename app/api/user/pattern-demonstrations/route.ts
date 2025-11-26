@@ -7,32 +7,12 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import { getSupabaseServerClient } from '@/lib/supabase-server'
 import { PATTERN_TYPES } from '@/lib/patterns'
 
 // Mark as dynamic for Next.js static export compatibility
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
-
-// Server-side Supabase client with service role (bypasses RLS)
-function getServiceClient() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
-
-  if (!supabaseUrl || !serviceRoleKey) {
-    const missing = []
-    if (!supabaseUrl) missing.push('NEXT_PUBLIC_SUPABASE_URL or SUPABASE_URL')
-    if (!serviceRoleKey) missing.push('SUPABASE_SERVICE_ROLE_KEY')
-    throw new Error(`Missing Supabase environment variables: ${missing.join(', ')}`)
-  }
-
-  return createClient(supabaseUrl, serviceRoleKey, {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false
-    }
-  })
-}
 
 /**
  * Ensure player profile exists before inserting related records
@@ -40,7 +20,7 @@ function getServiceClient() {
  */
 async function ensurePlayerProfile(userId: string) {
   try {
-    const supabase = getServiceClient()
+    const supabase = getSupabaseServerClient()
 
     const { error } = await supabase
       .from('player_profiles')
@@ -123,7 +103,7 @@ export async function POST(request: NextRequest) {
     // This prevents foreign key violations (error 23503)
     await ensurePlayerProfile(user_id)
 
-    const supabase = getServiceClient()
+    const supabase = getSupabaseServerClient()
 
     const { data, error } = await supabase
       .from('pattern_demonstrations')
