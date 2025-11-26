@@ -20,7 +20,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { DialogueDisplay } from '@/components/DialogueDisplay'
 import { StateConditionEvaluator, DialogueNode } from '@/lib/dialogue-graph'
-import { GameStateUtils, GameState } from '@/lib/character-state'
+import { GameStateUtils, type GameState as _GameState } from '@/lib/character-state'
 
 // Import all dialogue graphs
 import { samuelDialogueNodes } from '@/content/samuel-dialogue-graph'

@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button'
 import { CharacterAvatar } from '@/components/CharacterAvatar'
 import { RichTextRenderer } from '@/components/RichTextRenderer'
 import { motion } from 'framer-motion'
-import { cn } from '@/lib/utils'
+import { cn as _cn } from '@/lib/utils'
 
 type DialogueStyle = 'literary' | 'game' | 'ace-attorney'
 

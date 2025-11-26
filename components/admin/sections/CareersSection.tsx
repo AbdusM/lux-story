@@ -7,9 +7,58 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { CheckCircle2, AlertTriangle, Lightbulb, ChevronRight, ArrowRight } from 'lucide-react'
 
+// Type definitions for career data
+interface SkillRequirement {
+  current: number
+  required: number
+  gap: number
+}
+
+interface CareerMatch {
+  id: string
+  name: string
+  matchScore: number
+  readiness: 'near_ready' | 'skill_gaps' | 'exploratory'
+  requiredSkills: Record<string, SkillRequirement>
+  salaryRange: [number, number]
+  educationPaths: string[]
+  localOpportunities: string[]
+  birminghamRelevance: number
+}
+
+interface SkillDemonstrationRecord {
+  scene: string
+  sceneDescription: string
+  context: string
+  timestamp: string
+}
+
+interface SkillProfile {
+  userName: string
+  totalDemonstrations: number
+  careerMatches: CareerMatch[]
+  skillDemonstrations: Record<string, SkillDemonstrationRecord[]>
+}
+
+interface CareerExplorationPath {
+  category?: string
+  description?: string
+  opportunities?: string[]
+}
+
+interface CareerExplorationData {
+  totalExplorations: number
+  skillsDemonstrated: number
+  paths?: CareerExplorationPath[]
+}
+
+interface EvidenceData {
+  careerExploration?: CareerExplorationData
+}
+
 interface CareersSectionProps {
   userId: string
-  profile: any // SkillProfile
+  profile: SkillProfile
   adminViewMode: 'family' | 'research'
 }
 
@@ -17,7 +66,7 @@ export function CareersSection({ userId, profile, adminViewMode }: CareersSectio
   const user = profile // Alias for consistency with original code
   const [showMetRequirements, setShowMetRequirements] = useState(false)
   const [highlightedCareer, _setHighlightedCareer] = useState<string | null>(null)
-  const [evidenceData, setEvidenceData] = useState<any>(null)
+  const [evidenceData, setEvidenceData] = useState<EvidenceData | null>(null)
   const [evidenceLoading, setEvidenceLoading] = useState(false)
 
   // Fetch Evidence frameworks data for career exploration
@@ -72,7 +121,7 @@ export function CareersSection({ userId, profile, adminViewMode }: CareersSectio
   }
 
   // Generate inline match explanation
-  const getMatchExplanation = (score: number, gapSkills: [string, any][]) => {
+  const getMatchExplanation = (score: number, gapSkills: [string, SkillRequirement][]) => {
     const gapNames = gapSkills.slice(0, 2).map(([skill]) =>
       skill.replace(/([A-Z])/g, ' $1').trim().toLowerCase()
     ).join(', ')
@@ -160,7 +209,7 @@ export function CareersSection({ userId, profile, adminViewMode }: CareersSectio
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {evidenceData.careerExploration.paths?.map((path: any, idx: number) => (
+              {evidenceData.careerExploration.paths?.map((path: CareerExplorationPath, idx: number) => (
                 <div key={idx} className="border-l-4 border-blue-500 pl-4 sm:pl-6 p-3 sm:p-4 bg-blue-50 rounded-r-lg">
                   <h3 className="font-semibold text-base sm:text-lg">{path.category || `Career Path ${idx + 1}`}</h3>
                   <p className="text-sm sm:text-base text-gray-600 mt-2 leading-relaxed">{path.description || 'Exploring your career opportunities'}</p>
@@ -176,10 +225,10 @@ export function CareersSection({ userId, profile, adminViewMode }: CareersSectio
         </Card>
       ) : user.careerMatches && user.careerMatches.length > 0 ? (
         <>
-        {user.careerMatches.map((career: any) => {
+        {user.careerMatches.map((career: CareerMatch) => {
           // Separate skills into gaps and met requirements
-          const gapSkills = Object.entries(career.requiredSkills).filter(([_, data]: [string, any]) => (data as any).gap > 0)
-          const metSkills = Object.entries(career.requiredSkills).filter(([_, data]: [string, any]) => (data as any).gap === 0)
+          const gapSkills = Object.entries(career.requiredSkills).filter(([, data]) => data.gap > 0) as [string, SkillRequirement][]
+          const metSkills = Object.entries(career.requiredSkills).filter(([, data]) => data.gap === 0) as [string, SkillRequirement][]
 
           return (
           <Card
@@ -227,11 +276,11 @@ export function CareersSection({ userId, profile, adminViewMode }: CareersSectio
                   <p className="text-sm sm:text-base font-medium mb-3">Skills to Develop:</p>
                   <div className="space-y-3">
                     {gapSkills
-                      .sort((a: any, b: any) => (b[1] as any).gap - (a[1] as any).gap) // Sort by largest gap first
-                      .map(([skill, data]: [string, any]) => {
+                      .sort((a, b) => b[1].gap - a[1].gap) // Sort by largest gap first
+                      .map(([skill, data]) => {
                         // Color-coded by demonstration count
                         const demoCount = user.skillDemonstrations[skill]?.length || 0
-                        const gapColor = getSkillGapColor((data as any).gap, demoCount)
+                        const gapColor = getSkillGapColor(data.gap, demoCount)
                         const bgColor = demoCount === 0 ? 'bg-red-50' : demoCount <= 2 ? 'bg-yellow-50' : 'bg-green-50'
 
                         return (
@@ -246,8 +295,8 @@ export function CareersSection({ userId, profile, adminViewMode }: CareersSectio
                             </button>
                             <span className={`text-xs sm:text-sm ${gapColor}`}>
                               {adminViewMode === 'family'
-                                ? `Need to develop (${Math.max(0, Math.min(100, Math.round((data as any).gap * 100)))}% gap, ${demoCount} shown)`
-                                : `Gap: ${Math.max(0, Math.min(100, Math.round((data as any).gap * 100)))}% (${demoCount} demonstrations)`
+                                ? `Need to develop (${Math.max(0, Math.min(100, Math.round(data.gap * 100)))}% gap, ${demoCount} shown)`
+                                : `Gap: ${Math.max(0, Math.min(100, Math.round(data.gap * 100)))}% (${demoCount} demonstrations)`
                               }
                             </span>
                           </div>
@@ -257,11 +306,11 @@ export function CareersSection({ userId, profile, adminViewMode }: CareersSectio
                                 className={`h-2 sm:h-3 rounded-full ${
                                   demoCount === 0 ? 'bg-red-500' : demoCount <= 2 ? 'bg-yellow-500' : 'bg-green-500'
                                 }`}
-                                style={{ width: `${Math.max(0, Math.min(100, ((data as any).current / (data as any).required) * 100))}%` }}
+                                style={{ width: `${Math.max(0, Math.min(100, (data.current / data.required) * 100))}%` }}
                               />
                             </div>
                             <span className="text-xs sm:text-sm text-muted-foreground w-16 sm:w-20 text-right">
-                              {Math.max(0, Math.round((data as any).current * 100))}/{Math.max(1, Math.round((data as any).required * 100))}
+                              {Math.max(0, Math.round(data.current * 100))}/{Math.max(1, Math.round(data.required * 100))}
                             </span>
                           </div>
                         </div>
