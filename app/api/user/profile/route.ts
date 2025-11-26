@@ -8,6 +8,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { getSupabaseServerClient } from '@/lib/supabase-server'
+import { logger } from '@/lib/logger'
 
 // Mark as dynamic for Next.js static export compatibility
 export const dynamic = 'force-dynamic'
@@ -46,9 +47,9 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (error) {
-      console.error('❌ [API:Profile] Supabase upsert error:', {
-        code: error.code,
-        message: error instanceof Error ? error.message : "Unknown error",
+      logger.error('Supabase upsert error', {
+        operation: 'profile.create',
+        errorCode: error.code,
         userId: user_id
       })
       return NextResponse.json(
@@ -57,7 +58,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    console.log('✅ [API:Profile] Profile ensured:', {
+    logger.debug('Profile ensured', {
+      operation: 'profile.create',
       userId: user_id,
       existed: !!data
     })
@@ -67,12 +69,12 @@ export async function POST(request: NextRequest) {
       profile: data
     })
   } catch (error) {
-    console.error('[Profile API] Unexpected error:', error)
     const errorMessage = error instanceof Error ? error.message : "Internal server error"
+    logger.error('Profile API unexpected error', { operation: 'profile.create' }, error instanceof Error ? error : undefined)
 
     // If it's a missing env var error, return success but log warning
     if (errorMessage.includes('Missing Supabase environment variables')) {
-      console.warn('⚠️ [Profile API] Missing Supabase config - operation skipped')
+      logger.warn('Missing Supabase config - operation skipped', { operation: 'profile.create' })
       return NextResponse.json({ success: true })
     }
 
@@ -92,10 +94,10 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const userId = searchParams.get('userId')
 
-    console.log('🔵 [API:Profile] GET request:', { userId })
+    logger.debug('Profile GET request', { operation: 'profile.get', userId })
 
     if (!userId) {
-      console.error('❌ [API:Profile] Missing userId parameter')
+      logger.warn('Missing userId parameter', { operation: 'profile.get' })
       return NextResponse.json(
         { error: 'Missing userId parameter' },
         { status: 400 }
@@ -113,16 +115,16 @@ export async function GET(request: NextRequest) {
     if (error) {
       // If profile doesn't exist, return null (not an error)
       if (error.code === 'PGRST116') {
-        console.log('ℹ️ [API:Profile] Profile not found:', { userId })
+        logger.debug('Profile not found', { operation: 'profile.get', userId })
         return NextResponse.json({
           success: true,
           profile: null
         })
       }
 
-      console.error('❌ [API:Profile] Supabase error:', {
-        code: error.code,
-        message: error instanceof Error ? error.message : "Unknown error",
+      logger.error('Supabase error', {
+        operation: 'profile.get',
+        errorCode: error.code,
         userId
       })
       return NextResponse.json(
@@ -131,19 +133,19 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    console.log('✅ [API:Profile] Retrieved profile:', { userId })
+    logger.debug('Retrieved profile', { operation: 'profile.get', userId })
 
     return NextResponse.json({
       success: true,
       profile: data
     })
   } catch (error) {
-    console.error('[Profile API] Unexpected error:', error)
     const errorMessage = error instanceof Error ? error.message : "Internal server error"
+    logger.error('Profile GET unexpected error', { operation: 'profile.get' }, error instanceof Error ? error : undefined)
 
     // If it's a missing env var error, return null profile gracefully
     if (errorMessage.includes('Missing Supabase environment variables')) {
-      console.warn('⚠️ [Profile API] Missing Supabase config - returning null')
+      logger.warn('Missing Supabase config - returning null', { operation: 'profile.get' })
       return NextResponse.json({
         success: true,
         profile: null
