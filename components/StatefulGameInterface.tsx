@@ -42,6 +42,8 @@ import {
 } from '@/lib/graph-registry'
 import { SkillTracker } from '@/lib/skill-tracker'
 import { SCENE_SKILL_MAPPINGS } from '@/lib/scene-skill-mappings'
+import { queueRelationshipSync, queuePlatformStateSync } from '@/lib/sync-queue'
+import { CHOICE_HANDLER_TIMEOUT_MS } from '@/lib/constants'
 import { ExperienceSummary, type ExperienceSummaryData } from '@/components/ExperienceSummary'
 import { NarrativeFeedback } from '@/components/NarrativeFeedback'
 import { SyncStatusIndicator } from '@/components/SyncStatusIndicator'
@@ -256,6 +258,14 @@ export default function StatefulGameInterface() {
 
     isProcessingChoiceRef.current = true
 
+    // Safety timeout: auto-reset lock if handler crashes or hangs
+    const safetyTimeout = setTimeout(() => {
+      if (isProcessingChoiceRef.current) {
+        console.error('[StatefulGameInterface] Choice handler timeout - auto-resetting lock')
+        isProcessingChoiceRef.current = false
+      }
+    }, CHOICE_HANDLER_TIMEOUT_MS)
+
     try {
       let newGameState = state.gameState
       if (choice.choice.consequence) newGameState = GameStateUtils.applyStateChange(newGameState, choice.choice.consequence)
@@ -349,8 +359,33 @@ export default function StatefulGameInterface() {
           showConfigWarning: state.showConfigWarning
       })
       GameStateManager.saveGameState(newGameState)
+
+      // Sync relationship progress and platform state to Supabase
+      // This ensures admin dashboard has real-time visibility into player progress
+      if (isSupabaseConfigured()) {
+        // Sync relationship progress for current character
+        const character = newGameState.characters.get(targetCharacterId)
+        if (character) {
+          queueRelationshipSync({
+            user_id: newGameState.playerId,
+            character_name: targetCharacterId,
+            trust_level: character.trust,
+            relationship_status: character.relationshipStatus,
+            interaction_count: character.conversationHistory.length
+          })
+        }
+
+        // Sync platform state (global flags and patterns)
+        queuePlatformStateSync({
+          user_id: newGameState.playerId,
+          current_scene: newGameState.currentNodeId,
+          global_flags: Array.from(newGameState.globalFlags),
+          patterns: newGameState.patterns
+        })
+      }
     } finally {
-      // Always release the lock, even if there's an error
+      // Clear safety timeout and release lock
+      clearTimeout(safetyTimeout)
       isProcessingChoiceRef.current = false
     }
   }, [state.gameState, state.currentNode, state.showConfigWarning, state.recentSkills, state.skillToast])

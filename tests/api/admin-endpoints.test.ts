@@ -51,6 +51,8 @@ vi.mock('@/lib/audit-logger', () => ({
   auditLog: vi.fn()
 }))
 
+// No need to mock admin-session anymore - using simple comparison
+
 // Helper to create request with cookies
 function createRequest(
   url: string,

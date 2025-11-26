@@ -7,7 +7,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import { getSupabaseServerClient } from '@/lib/supabase-server'
 import { rateLimit, getClientIp } from '@/lib/rate-limit'
 
 // Mark as dynamic for Next.js static export compatibility
@@ -20,34 +20,13 @@ const postLimiter = rateLimit({
   uniqueTokenPerInterval: 500,
 })
 
-// Server-side Supabase client with service role (bypasses RLS)
-function getServiceClient() {
-  // Use NEXT_PUBLIC_SUPABASE_URL for consistency with other routes
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
-
-  if (!supabaseUrl || !serviceRoleKey) {
-    const missing = []
-    if (!supabaseUrl) missing.push('NEXT_PUBLIC_SUPABASE_URL or SUPABASE_URL')
-    if (!serviceRoleKey) missing.push('SUPABASE_SERVICE_ROLE_KEY')
-    throw new Error(`Missing Supabase environment variables: ${missing.join(', ')}`)
-  }
-
-  return createClient(supabaseUrl, serviceRoleKey, {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false
-    }
-  })
-}
-
 /**
  * Ensure player profile exists before inserting related records
  * Prevents foreign key violations (error 23503)
  */
 async function ensurePlayerProfile(userId: string) {
   try {
-    const supabase = getServiceClient()
+    const supabase = getSupabaseServerClient()
 
     const { error } = await supabase
       .from('player_profiles')
@@ -134,7 +113,7 @@ export async function POST(request: NextRequest) {
     // This prevents foreign key violations (error 23503)
     await ensurePlayerProfile(user_id)
 
-    const supabase = getServiceClient()
+    const supabase = getSupabaseServerClient()
 
     // Upsert career exploration record
     const { data, error } = await supabase
@@ -211,7 +190,7 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    const supabase = getServiceClient()
+    const supabase = getSupabaseServerClient()
 
     const { data, error } = await supabase
       .from('career_explorations')

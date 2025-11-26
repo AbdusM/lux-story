@@ -7,28 +7,11 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import { getSupabaseServerClient } from '@/lib/supabase-server'
 
 // Mark as dynamic for Next.js static export compatibility
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
-
-// Server-side Supabase client with service role (bypasses RLS)
-function getServiceClient() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
-
-  if (!supabaseUrl || !serviceRoleKey) {
-    throw new Error('Missing Supabase environment variables')
-  }
-
-  return createClient(supabaseUrl, serviceRoleKey, {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false
-    }
-  })
-}
 
 /**
  * GET /api/user/career-analytics?userId=X
@@ -49,7 +32,7 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    const supabase = getServiceClient()
+    const supabase = getSupabaseServerClient()
 
     const { data, error } = await supabase
       .from('career_analytics')
@@ -148,7 +131,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const supabase = getServiceClient()
+    const supabase = getSupabaseServerClient()
 
     const { error } = await supabase
       .from('career_analytics')

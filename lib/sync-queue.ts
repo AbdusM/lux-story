@@ -414,6 +414,59 @@ export class SyncQueue {
           // Real-time monitoring
           logSync((action.data as { user_id?: string })?.user_id || 'unknown', 'pattern_demonstration', true)
 
+        } else if (action.type === 'relationship_progress') {
+          // Sync relationship progress to Supabase
+          let response: Response
+          try {
+            response = await fetch('/api/user/relationship-progress', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(action.data)
+            })
+          } catch (fetchError) {
+            throw new Error(`Network error syncing relationship progress: ${fetchError instanceof Error ? fetchError.message : String(fetchError)}`)
+          }
+
+          if (!response.ok) {
+            let errorBody = ''
+            try { errorBody = await response.text() } catch (_e) { /* ignore */ }
+            throw new Error(`Relationship progress sync failed: ${response.status} ${response.statusText}${errorBody ? ` - ${errorBody.slice(0, 100)}` : ''}`)
+          }
+
+          successfulIds.push(action.id)
+          console.log('✅ [SyncQueue] Action successful:', {
+            type: 'relationship_progress',
+            character: (action.data as { character_name?: string })?.character_name,
+            trust: (action.data as { trust_level?: number })?.trust_level
+          })
+          logSync((action.data as { user_id?: string })?.user_id || 'unknown', 'relationship_progress', true)
+
+        } else if (action.type === 'platform_state') {
+          // Sync platform state (global flags, patterns) to Supabase
+          let response: Response
+          try {
+            response = await fetch('/api/user/platform-state', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(action.data)
+            })
+          } catch (fetchError) {
+            throw new Error(`Network error syncing platform state: ${fetchError instanceof Error ? fetchError.message : String(fetchError)}`)
+          }
+
+          if (!response.ok) {
+            let errorBody = ''
+            try { errorBody = await response.text() } catch (_e) { /* ignore */ }
+            throw new Error(`Platform state sync failed: ${response.status} ${response.statusText}${errorBody ? ` - ${errorBody.slice(0, 100)}` : ''}`)
+          }
+
+          successfulIds.push(action.id)
+          console.log('✅ [SyncQueue] Action successful:', {
+            type: 'platform_state',
+            userId: (action.data as { user_id?: string })?.user_id
+          })
+          logSync((action.data as { user_id?: string })?.user_id || 'unknown', 'platform_state', true)
+
         } else {
           console.error(`❌ [SyncQueue] Unknown action type: ${action.type}`)
           failedActions.push({ ...action, retries: action.retries + 1 })
@@ -656,6 +709,63 @@ export function queuePatternDemonstrationSync(data: {
     userId: data.user_id,
     pattern: data.pattern_name,
     scene: data.scene_id
+  })
+}
+
+/**
+ * Helper: Queue relationship progress sync
+ * Called when trust level or relationship status changes with a character
+ */
+export function queueRelationshipSync(data: {
+  user_id: string
+  character_name: string
+  trust_level: number
+  relationship_status: 'stranger' | 'acquaintance' | 'confidant'
+  last_interaction?: string
+  interaction_count?: number
+}): void {
+  SyncQueue.addToQueue({
+    id: generateActionId(),
+    type: 'relationship_progress',
+    data: {
+      ...data,
+      last_interaction: data.last_interaction || new Date().toISOString()
+    },
+    timestamp: Date.now()
+  })
+
+  console.log('[SyncQueue] Queued relationship sync:', {
+    userId: data.user_id,
+    character: data.character_name,
+    trust: data.trust_level,
+    status: data.relationship_status
+  })
+}
+
+/**
+ * Helper: Queue platform state sync (global flags, patterns)
+ * Called on game save to sync aggregate game state
+ */
+export function queuePlatformStateSync(data: {
+  user_id: string
+  current_scene?: string
+  global_flags?: string[]
+  patterns?: {
+    analytical: number
+    helping: number
+    building: number
+    patience: number
+    exploring: number
+  }
+}): void {
+  SyncQueue.addToQueue({
+    id: generateActionId(),
+    type: 'platform_state',
+    data: {
+      ...data,
+      updated_at: new Date().toISOString()
+    },
+    timestamp: Date.now()
   })
 }
 
