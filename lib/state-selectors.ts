@@ -132,8 +132,9 @@ export function useSelector<TState, TResult>(
 export function useSelectorWithEquality<TState, TResult>(
   state: TState,
   selector: Selector<TState, TResult>,
-  equalityFn: (a: TResult, b: TResult) => boolean = shallowEqual
+  _equalityFn: (a: TResult, b: TResult) => boolean = shallowEqual
 ): TResult {
+  // Note: equalityFn reserved for future optimization with useSyncExternalStore
   return useMemo(() => selector(state), [state, selector]);
 }
 

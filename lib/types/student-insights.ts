@@ -41,6 +41,30 @@ export interface CareerInsight {
   decisionStyle: string
 }
 
+export interface SkillGap {
+  skillName: string
+  currentLevel: number
+  targetLevel: number
+  gap: number
+  recommendations: string[]
+}
+
+export interface KeySkillMoment {
+  skillName: string
+  sceneId: string
+  sceneDescription: string
+  choiceText: string
+  context: string
+  timestamp: number
+}
+
+export interface SkillEvolutionPoint {
+  skillName: string
+  timestamp: number
+  demonstrationCount: number
+  context: string
+}
+
 export interface StudentInsights {
   userId: string
   lastActive: number
@@ -49,10 +73,9 @@ export interface StudentInsights {
   characterRelationships: CharacterInsight[]
   breakthroughMoments: BreakthroughMoment[]
   careerDiscovery: CareerInsight
-  // NEW: Skill-focused data
-  skillGaps: any[] // Will be properly typed when we import SkillGap
-  keySkillMoments: any[] // Will be properly typed when we import KeySkillMoment
+  skillGaps: SkillGap[]
+  keySkillMoments: KeySkillMoment[]
   totalDemonstrations: number
-  skillEvolution: any[] // Will be properly typed when we import SkillEvolutionPoint
+  skillEvolution: SkillEvolutionPoint[]
 }
 

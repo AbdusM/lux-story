@@ -475,7 +475,7 @@ export class SyncQueue {
       } catch (error) {
         const willRetry = action.retries < 3
         let errorMessage = 'Unknown error'
-        let errorDetails: any = null
+        let errorDetails: { name: string; stack?: string; message: string } | null = null
         
         if (error instanceof Error) {
           errorMessage = error.message || 'Error object has no message'
