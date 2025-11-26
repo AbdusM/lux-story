@@ -94,7 +94,7 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const userId = searchParams.get('userId')
 
-    logger.debug('Profile GET request', { operation: 'profile.get', userId })
+    logger.debug('Profile GET request', { operation: 'profile.get', userId: userId ?? undefined })
 
     if (!userId) {
       logger.warn('Missing userId parameter', { operation: 'profile.get' })

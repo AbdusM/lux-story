@@ -1,7 +1,17 @@
 /**
  * Student Insights Types
  * Clean interfaces for parsed admin dashboard data
+ *
+ * NOTE: SkillGap, KeySkillMoment, and SkillEvolutionPoint are re-exported
+ * from skill-profile-adapter.ts to avoid type conflicts
  */
+
+// Re-export canonical types from skill-profile-adapter
+export type {
+  SkillGap,
+  KeySkillMoment,
+  SkillEvolutionPoint
+} from '@/lib/skill-profile-adapter'
 
 export interface ChoicePatternInsight {
   helping: number
@@ -41,30 +51,6 @@ export interface CareerInsight {
   decisionStyle: string
 }
 
-export interface SkillGap {
-  skillName: string
-  currentLevel: number
-  targetLevel: number
-  gap: number
-  recommendations: string[]
-}
-
-export interface KeySkillMoment {
-  skillName: string
-  sceneId: string
-  sceneDescription: string
-  choiceText: string
-  context: string
-  timestamp: number
-}
-
-export interface SkillEvolutionPoint {
-  skillName: string
-  timestamp: number
-  demonstrationCount: number
-  context: string
-}
-
 export interface StudentInsights {
   userId: string
   lastActive: number
@@ -73,9 +59,9 @@ export interface StudentInsights {
   characterRelationships: CharacterInsight[]
   breakthroughMoments: BreakthroughMoment[]
   careerDiscovery: CareerInsight
-  skillGaps: SkillGap[]
-  keySkillMoments: KeySkillMoment[]
+  skillGaps: import('@/lib/skill-profile-adapter').SkillGap[]
+  keySkillMoments: import('@/lib/skill-profile-adapter').KeySkillMoment[]
   totalDemonstrations: number
-  skillEvolution: SkillEvolutionPoint[]
+  skillEvolution: import('@/lib/skill-profile-adapter').SkillEvolutionPoint[]
 }
 
