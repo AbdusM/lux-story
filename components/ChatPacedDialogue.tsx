@@ -4,6 +4,7 @@ import { CharacterAvatar } from './CharacterAvatar'
 import { RichTextRenderer, type RichTextEffect } from './RichTextRenderer'
 import { motion } from 'framer-motion'
 import { interactionAnimations, type InteractionType } from '@/lib/interaction-parser'
+import { getVoiceClass } from '@/lib/voice-utils'
 
 interface ChatPacedDialogueProps {
   /** The dialogue text with chunks separated by | or \n\n */
@@ -234,6 +235,9 @@ export function ChatPacedDialogue({
 
   const stateText = getStateText()
 
+  // Get voice typography for this character
+  const voiceClass = getVoiceClass(characterName)
+
   useEffect(() => {
     // If text is empty (loading state), show thinking indicator indefinitely
     if (chunks.length === 0) {
@@ -286,7 +290,7 @@ export function ChatPacedDialogue({
               <RichTextRenderer
                 text={chunk}
                 effects={chatPacingEffect}
-                className="text-base leading-relaxed"
+                className={cn("text-base leading-relaxed", voiceClass)}
               />
             </div>
           )
