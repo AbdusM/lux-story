@@ -65,7 +65,7 @@ export function ExperienceSummary({ data, onContinue }: ExperienceSummaryProps) 
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/70 backdrop-blur-sm"
       onClick={() => {
         // Only close if no nested modals are open
         if (!showFrameworks && !showActionPlan) {
@@ -74,29 +74,29 @@ export function ExperienceSummary({ data, onContinue }: ExperienceSummaryProps) 
       }}
     >
       <Card
-        className={`max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border-2 ${colors.border} bg-white`}
+        className={`max-w-2xl w-full max-h-[85vh] sm:max-h-[90vh] overflow-y-auto shadow-2xl border-2 ${colors.border} bg-white rounded-xl`}
         onClick={(e) => e.stopPropagation()}
       >
-        <CardHeader className={`${colors.bg} border-b ${colors.border}`}>
-          <div className="flex items-start justify-between">
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-2">
-                <Award className={`w-6 h-6 ${colors.text}`} />
-                <CardTitle className={`text-2xl ${colors.text}`}>
+        <CardHeader className={`${colors.bg} border-b ${colors.border} p-4 sm:p-6`}>
+          <div className="flex items-start justify-between gap-2">
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-1 sm:mb-2">
+                <Award className={`w-5 h-5 sm:w-6 sm:h-6 ${colors.text} flex-shrink-0`} />
+                <CardTitle className={`text-lg sm:text-2xl ${colors.text} truncate`}>
                   Experience Summary: {data.characterName}
                 </CardTitle>
               </div>
-              <CardDescription className="text-base">
+              <CardDescription className="text-sm sm:text-base">
                 Here's what you learned through your journey with {data.characterName}
               </CardDescription>
             </div>
-            <Button variant="ghost" size="sm" onClick={onContinue} className="h-10 w-10 p-0">
+            <Button variant="ghost" size="sm" onClick={onContinue} className="h-10 w-10 p-0 flex-shrink-0 touch-manipulation">
               <X className="h-5 w-5" />
             </Button>
           </div>
         </CardHeader>
 
-        <CardContent className="p-6 space-y-6">
+        <CardContent className="p-4 sm:p-6 space-y-4 sm:space-y-6 pb-[env(safe-area-inset-bottom,16px)]">
           {/* Arc Theme */}
           <div className={`${colors.bg} rounded-lg p-4 border-l-4 ${colors.border}`}>
             <h3 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
@@ -186,7 +186,7 @@ export function ExperienceSummary({ data, onContinue }: ExperienceSummaryProps) 
           {data.profile && (
             <Button
               variant="outline"
-              className="w-full border-2"
+              className="w-full border-2 min-h-[48px] touch-manipulation"
               onClick={() => setShowFrameworks(true)}
               size="lg"
             >
@@ -199,7 +199,7 @@ export function ExperienceSummary({ data, onContinue }: ExperienceSummaryProps) 
           {data.profile && (
             <Button
               variant="outline"
-              className="w-full border-2 border-green-300 text-green-700 hover:bg-green-50"
+              className="w-full border-2 border-green-300 text-green-700 hover:bg-green-50 min-h-[48px] touch-manipulation"
               onClick={() => setShowActionPlan(true)}
               size="lg"
             >
@@ -209,8 +209,8 @@ export function ExperienceSummary({ data, onContinue }: ExperienceSummaryProps) 
           )}
 
           {/* Continue Button */}
-          <Button 
-            className={`w-full ${
+          <Button
+            className={`w-full min-h-[48px] touch-manipulation ${
               data.characterArc === 'maya' ? 'bg-purple-600 hover:bg-purple-700' :
               data.characterArc === 'devon' ? 'bg-blue-600 hover:bg-blue-700' :
               'bg-amber-600 hover:bg-amber-700'
