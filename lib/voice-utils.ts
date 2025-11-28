@@ -32,81 +32,81 @@ export type VoiceStyle = {
 export const CHARACTER_VOICES: Record<string, Partial<VoiceStyle>> = {
   'Samuel': {
     font: 'font-mono',
-    color: 'text-amber-900 dark:text-amber-100',
+    color: 'text-stone-800 dark:text-stone-200',
     tracking: 'tracking-normal',
     weight: 'font-normal',
   },
   'Maya': {
     font: 'font-mono',
-    color: 'text-blue-900 dark:text-blue-100',
+    color: 'text-stone-800 dark:text-stone-200',
     tracking: 'tracking-normal',
     weight: 'font-normal',
   },
   'Devon': {
     font: 'font-mono',
-    color: 'text-orange-900 dark:text-orange-100',
+    color: 'text-stone-800 dark:text-stone-200',
     tracking: 'tracking-normal',
     weight: 'font-normal',
   },
   'Kai': {
     font: 'font-mono',
-    color: 'text-purple-900 dark:text-purple-100',
+    color: 'text-stone-800 dark:text-stone-200',
     tracking: 'tracking-normal',
     weight: 'font-normal',
   },
   'Jordan': {
     font: 'font-mono',
-    color: 'text-teal-900 dark:text-teal-100',
+    color: 'text-stone-800 dark:text-stone-200',
     tracking: 'tracking-normal',
     weight: 'font-normal',
   },
   'Tess': {
     font: 'font-mono',
-    color: 'text-rose-900 dark:text-rose-100',
+    color: 'text-stone-800 dark:text-stone-200',
     tracking: 'tracking-normal',
     weight: 'font-normal',
   },
   'Rohan': {
     font: 'font-mono',
-    color: 'text-indigo-900 dark:text-indigo-100',
+    color: 'text-stone-800 dark:text-stone-200',
     tracking: 'tracking-normal',
     weight: 'font-normal',
   },
   'Silas': {
     font: 'font-mono',
-    color: 'text-emerald-900 dark:text-emerald-100',
+    color: 'text-stone-800 dark:text-stone-200',
     tracking: 'tracking-normal',
     weight: 'font-normal',
   },
   'Yaquin': {
     font: 'font-mono',
-    color: 'text-cyan-900 dark:text-cyan-100',
+    color: 'text-stone-800 dark:text-stone-200',
     tracking: 'tracking-normal',
     weight: 'font-normal',
   },
   'Narrator': {
     font: 'font-mono',
-    color: 'text-slate-500 dark:text-slate-400',
+    color: 'text-stone-600 dark:text-stone-400',
     tracking: 'tracking-normal',
     style: 'italic',
-    border: 'border-l-2 border-slate-300 pl-4',
+    border: 'border-l-2 border-stone-300 pl-4',
   },
   'System': {
     font: 'font-mono',
-    color: 'text-emerald-600 dark:text-emerald-400',
+    color: 'text-emerald-700 dark:text-emerald-400',
     tracking: 'tracking-normal',
     weight: 'font-bold',
-    background: 'bg-slate-50/50 dark:bg-slate-900/50 p-2 rounded',
+    background: 'bg-stone-100/50 dark:bg-stone-900/50 p-2 rounded',
   },
   'You': {
     font: 'font-mono',
-    color: 'text-slate-700 dark:text-slate-300',
+    color: 'text-stone-700 dark:text-stone-300',
     style: 'italic',
   }
 }
 
 export function getVoiceClass(characterName?: string): string {
-  if (!characterName) return "font-mono text-slate-800 dark:text-slate-200"
+  if (!characterName) return "font-mono text-stone-800 dark:text-stone-200"
   
   // Normalize
   const lower = characterName.toLowerCase()
