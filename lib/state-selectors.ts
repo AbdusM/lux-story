@@ -1,26 +1,30 @@
 /**
  * State Selectors for Performance Optimization
- * 
+ *
  * Provides memoized selectors to prevent unnecessary re-renders by ensuring
  * components only update when their specific data changes. Uses shallow
  * comparison and memoization to optimize React performance.
  */
 
 import { useMemo } from 'react';
+import type { GameState } from './game-store';
 
 // Simple shallow equality check
-function shallowEqual(a: any, b: any): boolean {
+function shallowEqual(a: unknown, b: unknown): boolean {
   if (a === b) return true;
   if (a == null || b == null) return false;
   if (typeof a !== 'object' || typeof b !== 'object') return false;
   
-  const keysA = Object.keys(a);
-  const keysB = Object.keys(b);
+  const objA = a as Record<string, unknown>;
+  const objB = b as Record<string, unknown>;
+  
+  const keysA = Object.keys(objA);
+  const keysB = Object.keys(objB);
   
   if (keysA.length !== keysB.length) return false;
   
   for (let i = 0; i < keysA.length; i++) {
-    if (a[keysA[i]] !== b[keysA[i]]) return false;
+    if (objA[keysA[i]] !== objB[keysA[i]]) return false;
   }
   
   return true;
@@ -33,8 +37,8 @@ export type MemoizedSelector<TState, TResult> = (state: TState) => TResult;
 /**
  * Create a memoized selector that only recalculates when dependencies change
  */
-export function createSelector<TState, TArgs extends any[], TResult>(
-  dependencies: Array<Selector<TState, any>>,
+export function createSelector<TState, TArgs extends unknown[], TResult>(
+  dependencies: Array<Selector<TState, unknown>>,
   resultFunc: (...args: TArgs) => TResult
 ): MemoizedSelector<TState, TResult> {
   let lastResult: TResult;
@@ -80,9 +84,9 @@ export function createMultiPropertySelector<TState, K extends keyof TState>(
 /**
  * Create a selector that transforms state data
  */
-export function createTransformSelector<TState, TResult>(
-  selector: Selector<TState, any>,
-  transform: (value: any) => TResult
+export function createTransformSelector<TState, TInput, TResult>(
+  selector: Selector<TState, TInput>,
+  transform: (value: TInput) => TResult
 ): MemoizedSelector<TState, TResult> {
   return (state: TState) => transform(selector(state));
 }
@@ -110,8 +114,8 @@ export function createSortSelector<TState, TItem>(
 /**
  * Create a selector that combines multiple selectors
  */
-export function createCombinedSelector<TState, TResults extends any[]>(
-  selectors: Array<Selector<TState, any>>
+export function createCombinedSelector<TState, TResults extends unknown[]>(
+  selectors: Array<Selector<TState, unknown>>
 ): MemoizedSelector<TState, TResults> {
   return (state: TState) => selectors.map(selector => selector(state)) as TResults;
 }
@@ -145,128 +149,88 @@ export function useSelectorWithEquality<TState, TResult>(
 // Game state selectors
 export const gameStateSelectors = {
   // Basic game state
-  currentScene: (state: any) => state.currentScene,
-  hasStarted: (state: any) => state.hasStarted,
-  isProcessing: (state: any) => state.isProcessing,
-  messages: (state: any) => state.messages,
-  performanceLevel: (state: any) => state.performanceLevel,
-  
+  currentScene: (state: GameState) => state.currentSceneId,
+  hasStarted: (state: GameState) => state.hasStarted,
+  isProcessing: (state: GameState) => state.isProcessing,
+  messages: (state: GameState) => state.messages,
+  performanceLevel: (state: GameState) => state.performanceLevel,
+
   // Emotional state
-  emotionalState: (state: any) => state.emotionalState,
-  stressLevel: (state: any) => state.emotionalState?.stressLevel,
-  rapidClicks: (state: any) => state.emotionalState?.rapidClicks || 0,
-  hesitationCount: (state: any) => state.emotionalState?.hesitationCount || 0,
-  
+  emotionalState: (state: GameState) => state.emotionalState,
+  stressLevel: (state: GameState) => state.emotionalState?.stressLevel,
+  rapidClicks: (state: GameState) => state.emotionalState?.rapidClicks || 0,
+  hesitationCount: (state: GameState) => state.emotionalState?.hesitationCount || 0,
+
   // Cognitive state
-  cognitiveState: (state: any) => state.cognitiveState,
-  flowState: (state: any) => state.cognitiveState?.flowState,
-  metacognitiveAwareness: (state: any) => state.cognitiveState?.metacognitiveAwareness || 0,
-  
+  cognitiveState: (state: GameState) => state.cognitiveState,
+  flowState: (state: GameState) => state.cognitiveState?.flowState,
+  metacognitiveAwareness: (state: GameState) => state.cognitiveState?.metacognitiveAwareness || 0,
+
   // Skills
-  skills: (state: any) => state.skills,
-  communication: (state: any) => state.skills?.communication || 0,
-  emotionalIntelligence: (state: any) => state.skills?.emotionalIntelligence || 0,
-  creativity: (state: any) => state.skills?.creativity || 0,
-  problemSolving: (state: any) => state.skills?.problemSolving || 0,
-  criticalThinking: (state: any) => state.skills?.criticalThinking || 0,
-  
+  skills: (state: GameState) => state.skills,
+  communication: (state: GameState) => state.skills?.communication || 0,
+  emotionalIntelligence: (state: GameState) => state.skills?.emotionalIntelligence || 0,
+  creativity: (state: GameState) => state.skills?.creativity || 0,
+  problemSolving: (state: GameState) => state.skills?.problemSolving || 0,
+  criticalThinking: (state: GameState) => state.skills?.criticalThinking || 0,
+
   // Patterns
-  patterns: (state: any) => state.patterns,
-  
-  // Trust system
-  trust: (state: any) => state.trust || 0,
-  trustLevel: (state: any) => {
-    const trust = state.trust || 0;
-    if (trust >= 0.8) return 'high';
-    if (trust >= 0.6) return 'medium';
-    if (trust >= 0.4) return 'low';
-    return 'very-low';
-  },
-  
-  // Relationships
-  relationships: (state: any) => state.relationships || {},
-  activeRelationships: (state: any) => {
-    const relationships = state.relationships || {};
-    return Object.values(relationships).filter((rel: any) => rel.active);
-  },
-  
-  // Platforms
-  platforms: (state: any) => state.platforms || {},
-  activePlatforms: (state: any) => {
-    const platforms = state.platforms || {};
-    return Object.values(platforms).filter((platform: any) => platform.active);
-  }
+  patterns: (state: GameState) => state.patterns,
+
+  // Character trust
+  characterTrust: (state: GameState) => state.characterTrust,
+
+  // Platform warmth
+  platformWarmth: (state: GameState) => state.platformWarmth,
+  platformAccessible: (state: GameState) => state.platformAccessible,
 };
 
 // Memoized selectors for performance
 export const memoizedGameSelectors = {
   // Basic game state (memoized)
-  currentScene: (state: any) => state.currentScene,
-  hasStarted: (state: any) => state.hasStarted,
-  isProcessing: (state: any) => state.isProcessing,
-  messages: (state: any) => state.messages,
-  performanceLevel: (state: any) => state.performanceLevel,
-  
+  currentScene: (state: GameState) => state.currentSceneId,
+  hasStarted: (state: GameState) => state.hasStarted,
+  isProcessing: (state: GameState) => state.isProcessing,
+  messages: (state: GameState) => state.messages,
+  performanceLevel: (state: GameState) => state.performanceLevel,
+
   // Emotional state (memoized)
-  emotionalState: (state: any) => state.emotionalState,
-  stressLevel: (state: any) => state.emotionalState?.stressLevel || 'neutral',
-  
+  emotionalState: (state: GameState) => state.emotionalState,
+  stressLevel: (state: GameState) => state.emotionalState?.stressLevel || 'neutral',
+
   // Cognitive state (memoized)
-  cognitiveState: (state: any) => state.cognitiveState,
-  flowState: (state: any) => state.cognitiveState?.flowState || 'neutral',
-  
+  cognitiveState: (state: GameState) => state.cognitiveState,
+  flowState: (state: GameState) => state.cognitiveState?.flowState || 'neutral',
+
   // Skills (memoized)
-  skills: (state: any) => state.skills,
-  skillLevels: (state: any) => {
+  skills: (state: GameState) => state.skills,
+  skillLevels: (state: GameState) => {
     const skills = state.skills || {};
     return Object.entries(skills).map(([name, level]) => ({ name, level }));
   },
-  
-  // Trust system (memoized)
-  trust: (state: any) => Math.max(0, Math.min(1, state.trust || 0)),
-  trustLevel: (state: any) => {
-    const trust = state.trust || 0;
-    if (trust >= 0.8) return 'high';
-    if (trust >= 0.6) return 'medium';
-    if (trust >= 0.4) return 'low';
-    return 'very-low';
-  },
-  
-  // Relationships (memoized)
-  relationships: (state: any) => state.relationships,
-  activeRelationships: (state: any) => {
-    const relationships = state.relationships || {};
-    return Object.values(relationships).filter((rel: any) => rel.active);
-  },
-  
-  // Platforms (memoized)
-  platforms: (state: any) => state.platforms,
-  activePlatforms: (state: any) => {
-    const platforms = state.platforms || {};
-    return Object.values(platforms).filter((platform: any) => platform.active);
-  },
-  
+
+  // Character trust
+  characterTrust: (state: GameState) => state.characterTrust,
+
   // Messages (memoized)
-  recentMessages: (state: any) => {
+  recentMessages: (state: GameState) => {
     const messages = state.messages || [];
     return messages.slice(-10); // Last 10 messages
   },
-  messageCount: (state: any) => {
+  messageCount: (state: GameState) => {
     const messages = state.messages || [];
     return messages.length;
   },
-  
+
   // Performance metrics (memoized)
-  performanceMetrics: (state: any) => {
+  performanceMetrics: (state: GameState) => {
     const metrics = {
       performanceLevel: state.performanceLevel || 0,
-      memoryUsage: state.memoryUsage || 0,
-      renderTime: state.renderTime || 0
     };
     return {
       ...metrics,
-      performanceGrade: metrics.performanceLevel >= 0.8 ? 'A' : 
-                       metrics.performanceLevel >= 0.6 ? 'B' : 
+      performanceGrade: metrics.performanceLevel >= 0.8 ? 'A' :
+                       metrics.performanceLevel >= 0.6 ? 'B' :
                        metrics.performanceLevel >= 0.4 ? 'C' : 'D'
     };
   }
@@ -278,72 +242,72 @@ export const memoizedGameSelectors = {
 
 // Hook for basic game state
 export function useGameStateSelector<TResult>(
-  state: any,
-  selector: Selector<any, TResult>
+  state: GameState,
+  selector: Selector<GameState, TResult>
 ): TResult {
   return useMemo(() => selector(state), [state, selector]);
 }
 
 // Hook for emotional state
 export function useEmotionalStateSelector<TResult>(
-  state: any,
-  selector: Selector<any, TResult>
+  state: GameState,
+  selector: Selector<GameState, TResult>
 ): TResult {
   return useMemo(() => selector(state), [state, selector]);
 }
 
 // Hook for cognitive state
 export function useCognitiveStateSelector<TResult>(
-  state: any,
-  selector: Selector<any, TResult>
+  state: GameState,
+  selector: Selector<GameState, TResult>
 ): TResult {
   return useMemo(() => selector(state), [state, selector]);
 }
 
 // Hook for skills
 export function useSkillsSelector<TResult>(
-  state: any,
-  selector: Selector<any, TResult>
+  state: GameState,
+  selector: Selector<GameState, TResult>
 ): TResult {
   return useMemo(() => selector(state), [state, selector]);
 }
 
 // Hook for trust system
 export function useTrustSelector<TResult>(
-  state: any,
-  selector: Selector<any, TResult>
+  state: GameState,
+  selector: Selector<GameState, TResult>
 ): TResult {
   return useMemo(() => selector(state), [state, selector]);
 }
 
 // Hook for relationships
 export function useRelationshipsSelector<TResult>(
-  state: any,
-  selector: Selector<any, TResult>
+  state: GameState,
+  selector: Selector<GameState, TResult>
 ): TResult {
   return useMemo(() => selector(state), [state, selector]);
 }
 
 // Hook for platforms
 export function usePlatformsSelector<TResult>(
-  state: any,
-  selector: Selector<any, TResult>
+  state: GameState,
+  selector: Selector<GameState, TResult>
 ): TResult {
   return useMemo(() => selector(state), [state, selector]);
 }
 
 // Hook for messages
 export function useMessagesSelector<TResult>(
-  state: any,
-  selector: Selector<any, TResult>
+  state: GameState,
+  selector: Selector<GameState, TResult>
 ): TResult {
   return useMemo(() => selector(state), [state, selector]);
 }
 
 // Hook for performance metrics
 export function usePerformanceSelector<TResult>(
-  state: any,
-  selector: Selector<any, TResult>
+  state: GameState,
+  selector: Selector<GameState, TResult>
 ): TResult {
   return useMemo(() => selector(state), [state, selector]);
 }
@@ -353,12 +317,12 @@ export function usePerformanceSelector<TResult>(
  */
 
 // Check if two values are equal using shallow comparison
-export function areEqual(a: any, b: any): boolean {
+export function areEqual(a: unknown, b: unknown): boolean {
   return shallowEqual(a, b);
 }
 
 // Check if two values are equal using deep comparison
-export function areDeepEqual(a: any, b: any): boolean {
+export function areDeepEqual(a: unknown, b: unknown): boolean {
   return JSON.stringify(a) === JSON.stringify(b);
 }
 

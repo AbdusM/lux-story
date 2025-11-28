@@ -25,7 +25,8 @@ function createTestGameState(profile: {
     characters: new Map(),
     globalFlags: new Set(profile.globalFlags),
     patterns: profile.patterns,
-    lastSaved: Date.now()
+    lastSaved: Date.now(),
+    thoughts: []
   }
   
   // Add characters

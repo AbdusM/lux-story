@@ -154,6 +154,12 @@ I can't do this anymore. I can't build shields for the company that leave the pe
         variation_id: 'compliance_v1'
       }
     ],
+    onEnter: [
+      {
+        characterId: 'kai',
+        thoughtId: 'industrial-legacy'
+      }
+    ],
     choices: [
       {
         choiceId: 'kai_move_to_sim',
@@ -219,16 +225,9 @@ What do you do?`,
     speaker: 'Kai',
     content: [
       {
-        // NOTE: Removed "Kai stares at the black screen, face pale" - horror conveyed through result
-        text: `*The screen goes black. A sickening crunch of metal on concrete.*
-
-*Red text floods the view: "FATAL ACCIDENT REPORTED."*
-
-You listened to the boss. You got the job done. And you killed someone.
-
-That's what the old training taught them. "Efficiency first."`,
-        emotion: 'horrified',
-        variation_id: 'sim_fail_compliance_v1',
+        text: "*The checklist completes. Every box green.*\n\n*Suddenly, the screen flashes red.*\n\nCRITICAL ERROR. SYSTEM <shake>CRASH</shake>.\n\nWe followed every rule. And the system still failed. Because the rules were designed to protect the company, not the people.",
+        emotion: 'shocked',
+        variation_id: 'fail_compliance_v1',
         richEffectContext: 'error'
       }
     ],
@@ -352,7 +351,7 @@ If I stay, I'm complicit. If I leave, I can build something that actually protec
     speaker: 'Kai',
     content: [
       {
-        text: `Kairos Learning Design. No certificates. Just survival.
+        text: `<bloom>Kairos Learning Design</bloom>. No certificates. Just survival.
 
 It's terrifying. I'm giving up the salary, the benefits... the green checkmarks.
 

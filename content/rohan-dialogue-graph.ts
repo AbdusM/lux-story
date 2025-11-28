@@ -323,6 +323,12 @@ The AI saw the bypass and thought it was a feature. It's trying to import a hack
         richEffectContext: 'thinking'
       }
     ],
+    onEnter: [
+      {
+        characterId: 'rohan',
+        thoughtId: 'analytical-eye'
+      }
+    ],
     choices: [
       {
         choiceId: 'sim_rewrite_modern',

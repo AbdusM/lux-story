@@ -5,7 +5,7 @@
  * Enables strategic, line-specific animation targeting
  */
 
-export type InteractionType = 'shake' | 'jitter' | 'nod' | 'bloom' | 'ripple' | 'big' | 'small'
+export type InteractionType = 'shake' | 'jitter' | 'nod' | 'bloom' | 'ripple' | 'big' | 'small' | 'glitch'
 
 export interface TextSegment {
   type: 'text' | 'interaction'
@@ -14,7 +14,7 @@ export interface TextSegment {
 }
 
 // Regex to match inline interaction tags: <shake>text</shake>, <jitter>text</jitter>, etc.
-const INTERACTION_REGEX = /<(shake|jitter|nod|bloom|ripple|big|small)>(.*?)<\/\1>/g
+const INTERACTION_REGEX = /<(shake|jitter|nod|bloom|ripple|big|small|glitch)>(.*?)<\/\1>/g
 
 export const interactionAnimations: Record<InteractionType, {
   animate: {
@@ -22,13 +22,23 @@ export const interactionAnimations: Record<InteractionType, {
     y?: number[]
     scale?: number[]
     opacity?: number[]
-    transition: { duration: number; repeat?: number }
+    skewX?: number[]
+    transition: { duration: number; repeat?: number; repeatType?: "reverse" | "loop" | "mirror" }
   }
 }> = {
   shake: {
     animate: {
       x: [0, -5, 5, -5, 5, 0],
       transition: { duration: 0.5, repeat: 1 }
+    }
+  },
+  glitch: {
+    animate: {
+      x: [0, -2, 2, -2, 2, 0],
+      y: [0, 2, -2, 2, -2, 0],
+      skewX: [0, 15, -15, 5, -5, 0],
+      opacity: [1, 0.8, 1, 0.9, 1],
+      transition: { duration: 0.3, repeat: Infinity, repeatType: "reverse" }
     }
   },
   jitter: {

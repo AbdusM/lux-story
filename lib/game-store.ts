@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
+import { ActiveThought, THOUGHT_REGISTRY } from '@/content/thoughts'
 
 // Core game state interfaces
 export interface GameState {
@@ -47,6 +48,9 @@ export interface GameState {
   
   // Skills tracking
   skills: FutureSkills
+
+  // Thought Cabinet
+  thoughts: ActiveThought[]
 }
 
 export interface GameMessage {
@@ -177,6 +181,11 @@ export interface GameActions {
   updateIdentityState: (state: Partial<IdentityState>) => void
   updateNeuralState: (state: Partial<NeuralState>) => void
   updateSkills: (skills: Partial<FutureSkills>) => void
+
+  // Thought Cabinet
+  addThought: (thoughtId: string) => void
+  updateThoughtProgress: (thoughtId: string, amount: number) => void
+  internalizeThought: (thoughtId: string) => void
   
   // Reset functions
   resetGame: () => void
@@ -291,7 +300,10 @@ const initialState: GameState = {
     financialLiteracy: 0,
     timeManagement: 0,
     problemSolving: 0
-  }
+  },
+
+  // Thought Cabinet
+  thoughts: []
 }
 
 
@@ -424,6 +436,53 @@ export const useGameStore = create<GameState & GameActions>()(
             skills: { ...state.skills, ...skills }
           }))
         },
+
+        // Thought Cabinet Actions
+        addThought: (thoughtId) => {
+          const registry = THOUGHT_REGISTRY[thoughtId]
+          if (!registry) return
+
+          set((state) => {
+            if (state.thoughts.some(t => t.id === thoughtId)) return state // Already exists
+
+            const newThought: ActiveThought = {
+              ...registry,
+              status: 'developing',
+              progress: 0,
+              addedAt: Date.now(),
+              lastUpdated: Date.now()
+            }
+            return { thoughts: [newThought, ...state.thoughts] }
+          })
+        },
+
+        updateThoughtProgress: (thoughtId, amount) => {
+          set((state) => ({
+            thoughts: state.thoughts.map(t => {
+              if (t.id !== thoughtId) return t
+              const newProgress = Math.min(100, Math.max(0, t.progress + amount))
+              return { 
+                ...t, 
+                progress: newProgress,
+                lastUpdated: Date.now()
+              }
+            })
+          }))
+        },
+
+        internalizeThought: (thoughtId) => {
+          set((state) => ({
+            thoughts: state.thoughts.map(t => {
+              if (t.id !== thoughtId) return t
+              return { 
+                ...t, 
+                status: 'internalized',
+                progress: 100,
+                lastUpdated: Date.now()
+              }
+            })
+          }))
+        },
         
         // Reset actions
         resetGame: () => set(initialState),
@@ -455,7 +514,8 @@ export const useGameStore = create<GameState & GameActions>()(
                 ...persistedState,
                 visitedScenes: Array.isArray(persistedState.visitedScenes) ? persistedState.visitedScenes : [],
                 choiceHistory: Array.isArray(persistedState.choiceHistory) ? persistedState.choiceHistory : [],
-                messages: [] // Don't persist messages
+                messages: [], // Don't persist messages
+                thoughts: persistedState.thoughts || [] // Migrate thoughts
               }
 
               return migratedState
@@ -482,7 +542,8 @@ export const useGameStore = create<GameState & GameActions>()(
           cognitiveState: state.cognitiveState,
           identityState: state.identityState,
           neuralState: state.neuralState,
-          skills: state.skills
+          skills: state.skills,
+          thoughts: state.thoughts
         })
       }
     ),
@@ -639,5 +700,8 @@ export const useGameSelectors = {
   useCognitiveState: () => useGameStore((state) => state.cognitiveState),
   useIdentityState: () => useGameStore((state) => state.identityState),
   useNeuralState: () => useGameStore((state) => state.neuralState),
-  useSkills: () => useGameStore((state) => state.skills)
+  useSkills: () => useGameStore((state) => state.skills),
+
+  // Thought Cabinet selectors
+  useThoughts: () => useGameStore((state) => state.thoughts)
 }

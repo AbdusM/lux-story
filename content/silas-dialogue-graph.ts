@@ -302,6 +302,12 @@ I spent all year coding dashboards to avoid crawling in the dirt. But the answer
         richEffectContext: 'success'
       }
     ],
+    onEnter: [
+      {
+        characterId: 'silas',
+        thoughtId: 'green-frontier'
+      }
+    ],
     choices: [
       {
         choiceId: 'silas_lesson',

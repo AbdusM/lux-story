@@ -15,6 +15,7 @@ import { shouldShowAvatar } from "./CharacterAvatar"
 import { RichTextRenderer, type RichTextEffect } from "./RichTextRenderer"
 import { motion } from "framer-motion"
 import { interactionAnimations, type InteractionType } from "@/lib/interaction-parser"
+import { getVoiceClass } from "@/lib/voice-utils"
 
 interface DialogueDisplayProps {
   text: string
@@ -93,16 +94,6 @@ export function DialogueDisplay({
   const interactionClass = interaction ? `narrative-interaction-${interaction}` : null
 
   // Determine typography based on speaker (Voice Fonts)
-  const getVoiceClass = (name?: string) => {
-    if (!name) return "font-sans text-slate-800"
-    const lower = name.toLowerCase()
-    
-    if (lower.includes('samuel')) return "font-serif text-slate-900 tracking-wide"
-    if (lower.includes('narrator') || lower.includes('system') || lower === 'you') return "font-mono text-slate-500 italic text-sm border-l-2 border-slate-300 pl-4 py-1 bg-slate-50/50"
-    
-    return "font-sans text-slate-800" // Default for Maya, Devon, etc.
-  }
-
   const voiceClass = getVoiceClass(characterName)
 
   // Use RichTextRenderer for all standard rendering (replacing legacy manual parsing)
