@@ -171,21 +171,21 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, s
         aria-label={`Choice ${index + 1}: ${choice.text}`}
         className={`
           w-full min-h-[56px] sm:min-h-[52px] h-auto px-4 sm:px-6 py-4 sm:py-3
-          text-base sm:text-sm font-medium text-left justify-start break-words whitespace-normal leading-relaxed
-          border border-slate-200 bg-white
-          hover:bg-slate-50 hover:border-slate-300
-          active:bg-slate-100 active:border-slate-400 active:scale-[0.99]
+          text-base sm:text-sm font-medium text-stone-700 text-left justify-start break-words whitespace-normal leading-relaxed
+          border border-stone-200 bg-white/80
+          hover:bg-stone-50 hover:border-stone-300
+          active:bg-stone-100 active:border-stone-400 active:scale-[0.99]
           transition-all duration-150 ease-out
           rounded-xl shadow-sm
           touch-manipulation select-none
           ${choice.feedback === 'shake' ? 'border-red-200 bg-red-50' : ''}
-          ${choice.feedback === 'glow' ? 'border-blue-300 bg-blue-50' : ''}
-          ${isFocused ? 'ring-2 ring-blue-500 ring-offset-1 border-blue-400 bg-blue-50/50' : ''}
+          ${choice.feedback === 'glow' ? 'border-amber-300 bg-amber-50' : ''}
+          ${isFocused ? 'ring-2 ring-amber-500 ring-offset-1 border-amber-400 bg-amber-50/50' : ''}
         `}
       >
         <span className="flex items-start gap-3 w-full">
           {showShortcut && index < 9 && (
-            <span className="inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-slate-500 bg-slate-100 rounded border border-slate-200 shrink-0 mt-0.5">
+            <span className="inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-stone-500 bg-stone-100 rounded border border-stone-200 shrink-0 mt-0.5">
               {index + 1}
             </span>
           )}

@@ -438,7 +438,7 @@ export default function StatefulGameInterface() {
   return (
     <div
       key="game-container"
-      className="h-screen h-[100dvh] flex flex-col bg-gradient-to-b from-slate-50 to-slate-100"
+      className="h-screen h-[100dvh] flex flex-col bg-stone-100"
       style={{
         willChange: 'auto',
         contain: 'layout style paint',
@@ -453,7 +453,7 @@ export default function StatefulGameInterface() {
       {/* ══════════════════════════════════════════════════════════════════
           FIXED HEADER - Always visible at top (Claude/ChatGPT pattern)
           ══════════════════════════════════════════════════════════════════ */}
-      <header className="flex-shrink-0 bg-white/80 backdrop-blur-md border-b border-slate-200 z-10">
+      <header className="flex-shrink-0 bg-stone-50/95 backdrop-blur-md border-b border-stone-200 z-10">
         <div className="max-w-4xl mx-auto px-3 sm:px-4">
           {/* Top Navigation Row */}
           <div className="flex justify-between items-center py-2">
@@ -489,7 +489,7 @@ export default function StatefulGameInterface() {
 
           {/* Character Info Row */}
           {currentCharacter && (
-            <div className="flex items-center justify-between py-2 border-t border-slate-100">
+            <div className="flex items-center justify-between py-2 border-t border-stone-200/50">
               <div className="flex items-center gap-2 font-medium text-slate-700 text-sm sm:text-base">
                 <span className="truncate max-w-[150px] sm:max-w-none">{characterNames[state.currentCharacterId]}</span>
                 <span className="text-slate-300">•</span>
@@ -532,12 +532,12 @@ export default function StatefulGameInterface() {
         <div className="max-w-4xl mx-auto px-3 sm:px-4 py-4">
           <Card
             key="dialogue-card"
-            className="rounded-xl shadow-md bg-white"
+            className="rounded-xl shadow-sm bg-amber-50/40 border-stone-200/60"
             style={{ transition: 'none' }}
             data-testid="dialogue-card"
           >
             <CardContent
-              className="p-4 sm:p-6 md:p-8"
+              className="p-5 sm:p-8 md:p-10 min-h-[200px] sm:min-h-[300px]"
               data-testid="dialogue-content"
               data-speaker={state.currentNode?.speaker || ''}
             >
@@ -576,7 +576,7 @@ export default function StatefulGameInterface() {
           FIXED CHOICES PANEL - Always visible at bottom (Claude/ChatGPT pattern)
           ══════════════════════════════════════════════════════════════════ */}
       {!isEnding && (
-        <footer className="flex-shrink-0 bg-white border-t border-slate-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+        <footer className="flex-shrink-0 bg-stone-50 border-t border-stone-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.03)]">
           <div className="max-w-4xl mx-auto px-3 sm:px-4 py-3 sm:py-4">
             {/* Scrollable choices container for many options */}
             <div className="max-h-[40vh] sm:max-h-[35vh] overflow-y-auto overscroll-contain rounded-lg" style={{ WebkitOverflowScrolling: 'touch' }}>
