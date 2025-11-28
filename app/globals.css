@@ -2,9 +2,79 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ══════════════════════════════════════════════════════════════════════════════
+   MOBILE-FIRST FOUNDATIONS
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* Use dvh (dynamic viewport height) for mobile Safari compatibility */
+/* Fallback to vh for older browsers */
+:root {
+  --vh-fallback: 100vh;
+  --dvh: 100dvh;
+}
+
+/* Prevent iOS Safari bounce/overscroll on body */
+html {
+  overflow: hidden;
+  height: 100%;
+  height: 100dvh;
+}
+
+body {
+  overflow: hidden;
+  height: 100%;
+  height: 100dvh;
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+}
+
 /* Prevent whole page flashing during updates */
 html, body {
   will-change: auto !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   TOUCH-FRIENDLY INTERACTIONS
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* Improve touch feedback on buttons */
+button, [role="button"], a {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Active state feedback for mobile */
+@media (hover: none) and (pointer: coarse) {
+  button:active, [role="button"]:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+  }
+}
+
+/* Ensure minimum touch target size (48x48px recommended by Apple/Google) */
+.touch-target {
+  min-height: 48px;
+  min-width: 48px;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   SCROLL BEHAVIOR
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* Smooth scrolling for scrollable containers */
+.scroll-smooth {
+  scroll-behavior: smooth;
+}
+
+/* Hide scrollbars on mobile but keep functionality */
+@media (max-width: 640px) {
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
 
 main {

@@ -436,80 +436,111 @@ export default function StatefulGameInterface() {
   const isEnding = state.availableChoices.length === 0
 
   return (
-    <div 
-      key="game-container" 
-      className="min-h-screen max-h-screen overflow-y-auto bg-gradient-to-b from-slate-50 to-slate-100"
-      style={{ willChange: 'auto', contain: 'layout style paint', transition: 'none' }}
+    <div
+      key="game-container"
+      className="h-screen h-[100dvh] flex flex-col bg-gradient-to-b from-slate-50 to-slate-100"
+      style={{
+        willChange: 'auto',
+        contain: 'layout style paint',
+        transition: 'none',
+        // Safe area insets for notched devices (iPhone X+)
+        paddingTop: 'env(safe-area-inset-top)',
+        paddingBottom: 'env(safe-area-inset-bottom)',
+        paddingLeft: 'env(safe-area-inset-left)',
+        paddingRight: 'env(safe-area-inset-right)'
+      }}
     >
-      <div className="max-w-4xl mx-auto p-3 sm:p-4" data-testid="game-interface">
-
-        {/* Top Actions */}
-        <div className="flex justify-between items-center mb-3">
-          <div className="flex gap-3 items-center">
-             <button
+      {/* ══════════════════════════════════════════════════════════════════
+          FIXED HEADER - Always visible at top (Claude/ChatGPT pattern)
+          ══════════════════════════════════════════════════════════════════ */}
+      <header className="flex-shrink-0 bg-white/80 backdrop-blur-md border-b border-slate-200 z-10">
+        <div className="max-w-4xl mx-auto px-3 sm:px-4">
+          {/* Top Navigation Row */}
+          <div className="flex justify-between items-center py-2">
+            <div className="flex gap-2 sm:gap-3 items-center">
+              <button
                 onClick={() => setState(prev => ({ ...prev, showThoughtCabinet: true }))}
-                className="p-1.5 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors text-slate-500"
+                className="p-2 rounded-full hover:bg-slate-100 active:bg-slate-200 transition-colors text-slate-500"
                 aria-label="Open Thought Cabinet"
               >
                 <Brain className="w-5 h-5" />
               </button>
-            <Link href="/student/insights">
-              <button className="text-xs text-blue-600 hover:text-blue-700 transition-colors px-2 py-1 font-medium">
-                Your Journey
+              <Link href="/student/insights">
+                <button className="text-xs sm:text-sm text-blue-600 hover:text-blue-700 active:text-blue-800 transition-colors px-2 py-1.5 font-medium rounded-md hover:bg-blue-50 active:bg-blue-100">
+                  Your Journey
+                </button>
+              </Link>
+              <Link href="/admin" className="hidden sm:block">
+                <button className="text-xs text-slate-400 hover:text-slate-600 transition-colors px-2 py-1">
+                  Admin
+                </button>
+              </Link>
+            </div>
+            <div className="flex gap-2 items-center">
+              <SyncStatusIndicator />
+              <button
+                onClick={() => window.location.reload()}
+                className="text-xs text-slate-400 hover:text-slate-600 active:text-slate-800 px-2 py-1.5 rounded-md hover:bg-slate-100 active:bg-slate-200"
+              >
+                New Conversation
               </button>
-            </Link>
-            <Link href="/admin">
-              <button className="text-xs text-slate-400 hover:text-slate-600 transition-colors px-2 py-1">
-                Admin
-              </button>
-            </Link>
+            </div>
           </div>
-          <div className="flex gap-2">
-            <SyncStatusIndicator />
-            <button onClick={() => window.location.reload()} className="text-xs text-slate-400 hover:text-slate-600">
-              New Conversation
-            </button>
-          </div>
-        </div>
 
-        {/* Configuration Warning */}
-        {state.showConfigWarning && (
-          <div className="mb-4 px-4 py-3 bg-amber-50 border border-amber-200 rounded-lg flex items-start gap-3">
-            <div className="text-amber-600">⚠️</div>
-            <p className="text-xs text-amber-700">Running in local preview mode. Progress saved to browser only.</p>
-          </div>
-        )}
-
-        {/* Character Header Card - Restored */}
-        {currentCharacter && (
-          <Card className="mb-4 bg-white/50 backdrop-blur-sm">
-            <CardContent className="px-4 py-3 flex items-center justify-between">
-              <div className="flex items-center gap-2 font-medium text-slate-700">
-                <span>{characterNames[state.currentCharacterId]}</span>
-                <span className="text-slate-400">•</span>
-                <span className="text-slate-600">{currentCharacter.relationshipStatus}</span>
+          {/* Character Info Row */}
+          {currentCharacter && (
+            <div className="flex items-center justify-between py-2 border-t border-slate-100">
+              <div className="flex items-center gap-2 font-medium text-slate-700 text-sm sm:text-base">
+                <span className="truncate max-w-[150px] sm:max-w-none">{characterNames[state.currentCharacterId]}</span>
+                <span className="text-slate-300">•</span>
+                <span className="text-slate-500 text-xs sm:text-sm">{currentCharacter.relationshipStatus}</span>
               </div>
               <div className="flex flex-col items-end">
-                 {(() => {
-                    const { label, color, description } = getTrustLabel(currentCharacter.trust)
-                    return (
-                        <>
-                            <span className={`text-sm font-semibold ${color}`}>{label}</span>
-                            <span className="text-xs text-slate-400 hidden sm:inline-block">{description}</span>
-                        </>
-                    )
-                 })()}
+                {(() => {
+                  const { label, color, description } = getTrustLabel(currentCharacter.trust)
+                  return (
+                    <>
+                      <span className={`text-xs sm:text-sm font-semibold ${color}`}>{label}</span>
+                      <span className="text-[10px] sm:text-xs text-slate-400 hidden sm:inline-block">{description}</span>
+                    </>
+                  )
+                })()}
               </div>
-            </CardContent>
-          </Card>
-        )}
+            </div>
+          )}
+        </div>
+      </header>
 
-        {/* Mobile-optimized split layout: narrative scrolls, choices fixed */}
-        {/* On mobile (< sm): Split 55/45, both visible. On desktop: Standard flow */}
-        <div className="sm:space-y-4">
-          {/* Dialogue Card - Scrollable narrative on mobile */}
-          <Card key="dialogue-card" className="mb-4 sm:mb-6 rounded-xl shadow-md" style={{ transition: 'none' }} data-testid="dialogue-card">
-            <CardContent className="p-4 sm:p-6 md:p-8 min-h-[200px] max-h-[55vh] sm:max-h-[60vh] overflow-y-auto" data-testid="dialogue-content" data-speaker={state.currentNode?.speaker || ''}>
+      {/* Configuration Warning - Collapsible on mobile */}
+      {state.showConfigWarning && (
+        <div className="flex-shrink-0 px-3 sm:px-4 py-2 bg-amber-50 border-b border-amber-200">
+          <div className="max-w-4xl mx-auto flex items-center gap-2">
+            <span className="text-amber-600 text-sm">⚠️</span>
+            <p className="text-xs text-amber-700 truncate sm:whitespace-normal">Local preview mode. Progress saved to browser only.</p>
+          </div>
+        </div>
+      )}
+
+      {/* ══════════════════════════════════════════════════════════════════
+          SCROLLABLE DIALOGUE AREA - Middle section (flex-1 takes remaining space)
+          ══════════════════════════════════════════════════════════════════ */}
+      <main
+        className="flex-1 overflow-y-auto overscroll-contain"
+        style={{ WebkitOverflowScrolling: 'touch' }}
+        data-testid="game-interface"
+      >
+        <div className="max-w-4xl mx-auto px-3 sm:px-4 py-4">
+          <Card
+            key="dialogue-card"
+            className="rounded-xl shadow-md bg-white"
+            style={{ transition: 'none' }}
+            data-testid="dialogue-card"
+          >
+            <CardContent
+              className="p-4 sm:p-6 md:p-8"
+              data-testid="dialogue-content"
+              data-speaker={state.currentNode?.speaker || ''}
+            >
               <DialogueDisplay
                 text={state.gameState ? TextProcessor.process(state.currentContent || '', state.gameState) : (state.currentContent || '')}
                 useChatPacing={state.useChatPacing}
@@ -521,65 +552,75 @@ export default function StatefulGameInterface() {
             </CardContent>
           </Card>
 
-          {/* Choices Card - Always visible, scrollable on mobile if many choices */}
-          {!isEnding && (
-            <Card key="choices-card" className="rounded-xl shadow-md">
-              <CardContent className="p-4 sm:p-4 md:p-6 max-h-[35vh] sm:max-h-none overflow-y-auto">
-                <div className="space-y-2 sm:space-y-3">
-                  <GameChoices
-                    choices={state.availableChoices.map(c => ({
-                        text: c.choice.text,
-                        pattern: c.choice.pattern,
-                        feedback: c.choice.interaction === 'shake' ? 'shake' : undefined
-                    }))}
-                    isProcessing={state.isLoading}
-                    onChoice={(c) => {
-                        const original = state.availableChoices.find(ac => ac.choice.text === c.text)
-                        if (original) handleChoice(original)
-                    }}
-                  />
-                </div>
+          {/* Ending State - Shows in scroll area when conversation complete */}
+          {isEnding && (
+            <Card className="mt-4 rounded-xl shadow-md">
+              <CardContent className="p-4 sm:p-6 text-center">
+                <h3 className="text-lg sm:text-xl font-bold text-slate-800 mb-3 sm:mb-4">
+                  Conversation Complete
+                </h3>
+                <Button
+                  variant="outline"
+                  onClick={() => window.location.reload()}
+                  className="w-full min-h-[48px] active:scale-[0.98] transition-transform"
+                >
+                  Return to Station
+                </Button>
               </CardContent>
             </Card>
           )}
         </div>
+      </main>
 
-        {/* Ending State */}
-        {isEnding && (
-          <Card className="rounded-xl shadow-md">
-            <CardContent className="p-4 sm:p-6 text-center">
-              <h3 className="text-lg sm:text-xl font-bold text-slate-800 mb-3 sm:mb-4">
-                Conversation Complete
-              </h3>
-              <Button variant="outline" onClick={() => window.location.reload()} className="w-full min-h-[48px]">
-                Return to Station
-              </Button>
-            </CardContent>
-          </Card>
-        )}
+      {/* ══════════════════════════════════════════════════════════════════
+          FIXED CHOICES PANEL - Always visible at bottom (Claude/ChatGPT pattern)
+          ══════════════════════════════════════════════════════════════════ */}
+      {!isEnding && (
+        <footer className="flex-shrink-0 bg-white border-t border-slate-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+          <div className="max-w-4xl mx-auto px-3 sm:px-4 py-3 sm:py-4">
+            {/* Scrollable choices container for many options */}
+            <div className="max-h-[40vh] sm:max-h-[35vh] overflow-y-auto overscroll-contain rounded-lg" style={{ WebkitOverflowScrolling: 'touch' }}>
+              <GameChoices
+                choices={state.availableChoices.map(c => ({
+                  text: c.choice.text,
+                  pattern: c.choice.pattern,
+                  feedback: c.choice.interaction === 'shake' ? 'shake' : undefined
+                }))}
+                isProcessing={state.isLoading}
+                onChoice={(c) => {
+                  const original = state.availableChoices.find(ac => ac.choice.text === c.text)
+                  if (original) handleChoice(original)
+                }}
+              />
+            </div>
+          </div>
+        </footer>
+      )}
 
-        {/* Feedback Overlays */}
-        <NarrativeFeedback 
-          message={state.skillToast?.message || ''}
-          isVisible={!!state.skillToast}
-          onDismiss={() => setState(prev => ({ ...prev, skillToast: null }))}
+      {/* ══════════════════════════════════════════════════════════════════
+          OVERLAYS & MODALS - Positioned above everything
+          ══════════════════════════════════════════════════════════════════ */}
+
+      {/* Feedback Overlays */}
+      <NarrativeFeedback
+        message={state.skillToast?.message || ''}
+        isVisible={!!state.skillToast}
+        onDismiss={() => setState(prev => ({ ...prev, skillToast: null }))}
+      />
+
+      {/* Experience Summary */}
+      {state.showExperienceSummary && state.experienceSummaryData && (
+        <ExperienceSummary
+          data={state.experienceSummaryData}
+          onContinue={() => setState(prev => ({ ...prev, showExperienceSummary: false, experienceSummaryData: null }))}
         />
+      )}
 
-        {/* Experience Summary */}
-        {state.showExperienceSummary && state.experienceSummaryData && (
-          <ExperienceSummary
-            data={state.experienceSummaryData}
-            onContinue={() => setState(prev => ({ ...prev, showExperienceSummary: false, experienceSummaryData: null }))}
-          />
-        )}
-
-        {/* Thought Cabinet */}
-        <ThoughtCabinet 
-            isOpen={state.showThoughtCabinet} 
-            onClose={() => setState(prev => ({ ...prev, showThoughtCabinet: false }))} 
-        />
-
-      </div>
+      {/* Thought Cabinet */}
+      <ThoughtCabinet
+        isOpen={state.showThoughtCabinet}
+        onClose={() => setState(prev => ({ ...prev, showThoughtCabinet: false }))}
+      />
     </div>
   )
 }

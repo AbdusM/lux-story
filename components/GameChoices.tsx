@@ -170,12 +170,14 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, s
         data-pattern={choice.pattern || ''}
         aria-label={`Choice ${index + 1}: ${choice.text}`}
         className={`
-          w-full min-h-[56px] h-auto px-6 py-4
-          text-base font-medium text-left justify-start break-words whitespace-normal leading-relaxed
+          w-full min-h-[56px] sm:min-h-[52px] h-auto px-4 sm:px-6 py-4 sm:py-3
+          text-base sm:text-sm font-medium text-left justify-start break-words whitespace-normal leading-relaxed
           border border-slate-200 bg-white
           hover:bg-slate-50 hover:border-slate-300
-          transition-colors duration-200 ease-out
+          active:bg-slate-100 active:border-slate-400 active:scale-[0.99]
+          transition-all duration-150 ease-out
           rounded-xl shadow-sm
+          touch-manipulation select-none
           ${choice.feedback === 'shake' ? 'border-red-200 bg-red-50' : ''}
           ${choice.feedback === 'glow' ? 'border-blue-300 bg-blue-50' : ''}
           ${isFocused ? 'ring-2 ring-blue-500 ring-offset-1 border-blue-400 bg-blue-50/50' : ''}
