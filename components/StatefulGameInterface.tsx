@@ -576,8 +576,8 @@ export default function StatefulGameInterface() {
           FIXED CHOICES PANEL - Always visible at bottom (Claude/ChatGPT pattern)
           ══════════════════════════════════════════════════════════════════ */}
       {!isEnding && (
-        <footer className="flex-shrink-0 bg-stone-50 border-t border-stone-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.03)]">
-          <div className="max-w-4xl mx-auto px-3 sm:px-4 py-3 sm:py-4">
+        <footer className="flex-shrink-0 bg-stone-50 border border-stone-200 shadow-lg mb-16 sm:mb-32 mx-3 sm:mx-auto sm:max-w-2xl rounded-2xl">
+          <div className="px-3 sm:px-4 py-3 sm:py-4">
             {/* Scrollable choices container for many options */}
             <div className="max-h-[40vh] sm:max-h-[35vh] overflow-y-auto overscroll-contain rounded-lg" style={{ WebkitOverflowScrolling: 'touch' }}>
               <GameChoices
