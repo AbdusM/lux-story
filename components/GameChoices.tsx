@@ -107,11 +107,13 @@ const buttonVariants = {
 }
 
 const shakeVariant = {
+  opacity: 1,
   x: [0, -5, 5, -5, 5, 0],
   transition: { duration: 0.4 }
 }
 
 const glowVariant = {
+  opacity: 1,
   boxShadow: [
     "0px 0px 0px rgba(59,130,246,0)",
     "0px 0px 15px rgba(59,130,246,0.5)",
@@ -135,6 +137,7 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, s
     shake: shakeVariant,
     glow: glowVariant,
     focused: {
+      opacity: 1,
       scale: 1.02,
       boxShadow: "0px 0px 0px 2px rgba(59,130,246,0.5)",
       transition: { duration: 0.15 }
