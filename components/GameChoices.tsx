@@ -123,13 +123,12 @@ const glowVariant = {
 }
 
 // Memoized choice button component
-const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, showShortcut }: {
+const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused }: {
   choice: Choice
   index: number
   onChoice: (choice: Choice) => void
   isProcessing: boolean
   isFocused?: boolean
-  showShortcut?: boolean
 }) => {
   // Combine standard variants with feedback variants
   const combinedVariants = {
@@ -183,14 +182,7 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, s
           ${isFocused ? 'ring-2 ring-amber-500 ring-offset-1 border-amber-400 bg-amber-50/50' : ''}
         `}
       >
-        <span className="flex items-start gap-3 w-full">
-          {showShortcut && index < 9 && (
-            <span className="inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-stone-500 bg-stone-100 rounded border border-stone-200 shrink-0 mt-0.5">
-              {index + 1}
-            </span>
-          )}
-          <span className="flex-1">{choice.text}</span>
-        </span>
+        <span className="flex-1">{choice.text}</span>
       </Button>
     </motion.div>
   )
@@ -252,7 +244,6 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice }: GameChoice
   // Determine layout strategy based on count
   const useGrid = choices.length > 2 // Use grid for 3+ choices on desktop
   const useGrouping = choices.length > 4 // Group if very many
-  const showShortcuts = choices.length <= 9 // Show number shortcuts for up to 9 choices
 
   if (useGrouping) {
     const groups = groupChoices(choices)
@@ -281,14 +272,12 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice }: GameChoice
                     onChoice={onChoice}
                     isProcessing={isProcessing}
                     isFocused={focusedIndex === currentGlobalIndex}
-                    showShortcut={showShortcuts}
                   />
                 )
               })}
             </div>
           </div>
         ))}
-        <KeyboardHint />
       </div>
     )
   }
@@ -309,28 +298,10 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice }: GameChoice
           onChoice={onChoice}
           isProcessing={isProcessing}
           isFocused={focusedIndex === index}
-          showShortcut={showShortcuts}
         />
       ))}
-      <KeyboardHint />
     </div>
   )
 })
 
 GameChoices.displayName = 'GameChoices'
-
-/**
- * Subtle hint about keyboard navigation (appears only on desktop)
- */
-const KeyboardHint = memo(() => (
-  <div className="hidden md:flex items-center justify-center gap-2 text-xs text-slate-400 mt-4 opacity-70">
-    <span className="px-1.5 py-0.5 bg-slate-100 rounded border border-slate-200 font-mono">↑↓</span>
-    <span>navigate</span>
-    <span className="px-1.5 py-0.5 bg-slate-100 rounded border border-slate-200 font-mono">Enter</span>
-    <span>select</span>
-    <span className="px-1.5 py-0.5 bg-slate-100 rounded border border-slate-200 font-mono">1-9</span>
-    <span>quick select</span>
-  </div>
-))
-
-KeyboardHint.displayName = 'KeyboardHint'
