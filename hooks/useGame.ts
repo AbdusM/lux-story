@@ -44,7 +44,8 @@ export function useGame() {
     platformWarmth,
     platformAccessible,
     characterTrust,
-    characterHelped
+    characterHelped,
+    thoughts
   } = gameStore
   
   // Actions
@@ -125,7 +126,8 @@ export function useGame() {
         cognitiveState,
         identityState,
         neuralState,
-        skills
+        skills,
+        thoughts
       }
 
       const scene = await storyEngine.getScene(currentSceneId, gameState)
@@ -332,7 +334,8 @@ export function useGame() {
         cognitiveState,
         identityState,
         neuralState,
-        skills
+        skills,
+        thoughts
       }
 
       personaTracker.updatePersona('player-main', choice, responseTime, gameState)

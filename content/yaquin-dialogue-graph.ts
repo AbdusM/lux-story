@@ -105,6 +105,12 @@ export const yaquinDialogueNodes: DialogueNode[] = [
         useChatPacing: true
       }
     ],
+    onEnter: [
+      {
+        characterId: 'yaquin',
+        thoughtId: 'community-heart'
+      }
+    ],
     choices: [
       {
         choiceId: 'yaquin_competence',
@@ -262,7 +268,7 @@ export const yaquinDialogueNodes: DialogueNode[] = [
         // TODO: [SFX] Mixing sounds, laughter, timer ticking
         // TODO: [VFX] Success glow on playback screen
         // NOTE: Removed filming process and "grins" - converted to audio cues only
-        text: `*Mixing sounds. Laughter.*|"Pink. Goopy. 30 seconds before stone. Go!"|"That's it. Not lecture. Cooking show for teeth."`,
+        text: `*Mixing sounds. Laughter.*|"Pink. Goopy. 30 seconds before stone. Go!"|"<bloom>That's it.</bloom> Not lecture. Cooking show for teeth."`,
         emotion: 'excited',
         interaction: 'bloom',
         variation_id: 'success_practical_v1',
@@ -830,10 +836,10 @@ export const yaquinDialogueNodes: DialogueNode[] = [
     nodeId: 'yaquin_p2_operational_wisdom',
     speaker: 'Yaquin',
     content: [{
-      text: `Month ago—thought course was about content.|Now know it's:|• Customer service|• Product iteration|• Strategic execution|• Operational systems|*Looks at setup.*|Not just teacher. Educator-entrepreneur.|Teaching is craft. Running business is skill.|Best part? Every problem is data. Every refund—lesson. Every 1-star—what to improve.`,
-      emotion: 'analytical',
+      text: `{{met_jordan:Jordan calls it 'user experience.' I call it survival.|I learned that from running the clinic floor.}}|If the student is confused, it's my fault. If the tool is hard to use, fix the tool.|Academics blame the student. I blame the design.`,
+      emotion: 'confident',
       interaction: 'nod',
-      variation_id: 'wisdom_v1',
+      variation_id: 'operational_wisdom_v1',
       useChatPacing: true
     }],
     choices: [

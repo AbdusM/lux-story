@@ -20,7 +20,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Welcome. I'm Samuel Washington. I've been helping people find their way in Birmingham for a long time.\n\nYou're here to figure some things out. Good. That's what this place is for.\n\nYou'll meet some folks, hear their stories, and make some choices. No tests, no grades. Just real conversations.\n\nWhat you discover about yourself? It helps us help the next person who walks through that door.",
+        text: "Welcome. I'm Samuel Washington. I've been helping people find their way in <bloom>Birmingham</bloom> for a long time.\n\nYou're here to figure some things out. Good. That's what this place is for.\n\nYou'll meet some folks, hear their stories, and make some choices. No tests, no grades. Just real conversations.\n\nWhat you discover about yourself? It helps us help the next person who walks through that door.",
         emotion: 'warm',
         variation_id: 'intro_v1'
       }
@@ -153,7 +153,8 @@ export const samuelDialogueNodes: DialogueNode[] = [
     onEnter: [
       {
         characterId: 'samuel',
-        addKnowledgeFlags: ['knows_backstory']
+        addKnowledgeFlags: ['knows_backstory'],
+        thoughtId: 'industrial-legacy'
       }
     ]
   },
@@ -163,7 +164,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "It was a good life. But it wasn't MY life.\n\nOne day, standing in front of Vulcan, looking down at Birmingham. Twenty-three years building other people's systems.\n\nI was good at it. But I'd never asked what I wanted to build.",
+        text: "It was a good life. But it <shake>wasn't MY life</shake>.\n\nOne day, standing in front of Vulcan, looking down at Birmingham. Twenty-three years building other people's systems.\n\nI was good at it. But I'd never asked what I wanted to build.",
         emotion: 'vulnerable',
         variation_id: 'revelation_v1'
       }
@@ -515,7 +516,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Three travelers tonight. Each at their own crossroads. This station's been busy since the old Terminal Station closed—seems like Birmingham keeps drawing folks who need to find their way.\n\nBefore I tell you about them—when you think about your decision, what pulls at you most?",
+        text: "{{knows_backstory:Like I said, I built other people's systems for years. These three are trying to build their own.|{{trust>2:It's good to see you settling in.|Three travelers tonight. Each at their own crossroads.}}}}\n\nThis station's been busy since the old Terminal Station closed—seems like Birmingham keeps drawing folks who need to find their way.\n\nBefore I tell you about them—when you think about your decision, what pulls at you most?",
         emotion: 'curious',
         variation_id: 'hub_initial_v1'
       }
@@ -880,7 +881,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "That's honest. That's why you're here.\n\nTonight's travelers:\n\n**Maya Chen** - Platform 1, near the old L&N waiting room. Pre-med at UAB who wants to help, but maybe differently.\n\n**Devon Kumar** - Platform 3, by the engineer's memorial. UAB engineering student learning logic isn't enough.\n\n**Jordan Packard** - Down at Railroad Park. Seven jobs in twelve years. One question.\n\nWho speaks to you?",
+        text: "{{trust>3:Honesty is the only currency that matters here.|That's honest. That's why you're here.}}\n\nTonight's travelers:\n\n**Maya Chen** - Platform 1, near the old L&N waiting room. Pre-med at UAB who wants to help, but maybe differently.\n\n**Devon Kumar** - Platform 3, by the engineer's memorial. UAB engineering student learning logic isn't enough.\n\n**Jordan Packard** - Down at Railroad Park. Seven jobs in twelve years. One question.\n\nWho speaks to you?",
         emotion: 'gentle_guide',
         variation_id: 'fallback_v1'
       }

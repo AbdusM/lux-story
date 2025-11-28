@@ -108,6 +108,13 @@ const config: Config = {
         'hud': ['0.75rem', { lineHeight: '1.4', letterSpacing: '0.05em' }],
         'celebration': ['1.5rem', { lineHeight: '1.3', letterSpacing: '0' }],
       },
+
+      fontFamily: {
+        sans: ["var(--font-inter)", "sans-serif"],
+        serif: ["var(--font-crimson-pro)", "serif"],
+        mono: ["var(--font-space-mono)", "monospace"],
+        slab: ["var(--font-roboto-slab)", "serif"],
+      },
       
       // Component Heights/Widths
       height: {
@@ -182,6 +189,7 @@ const config: Config = {
         'time-slow': 'time-slow 2s linear infinite',
         'helping-aura': 'helping-aura 5s ease-in-out infinite',
         'glow-pulse': 'glow-pulse 2s ease-in-out infinite',
+        'glitch': 'glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite',
       },
 
       // Keyframes for animations
@@ -206,6 +214,14 @@ const config: Config = {
         'glow-pulse': {
           '0%, 100%': { textShadow: '0 0 20px currentColor' },
           '50%': { textShadow: '0 0 40px currentColor, 0 0 60px currentColor' },
+        },
+        glitch: {
+          '0%': { transform: 'translate(0)' },
+          '20%': { transform: 'translate(-2px, 2px)' },
+          '40%': { transform: 'translate(-2px, -2px)' },
+          '60%': { transform: 'translate(2px, 2px)' },
+          '80%': { transform: 'translate(2px, -2px)' },
+          '100%': { transform: 'translate(0)' },
         },
       },
     },

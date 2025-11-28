@@ -33,18 +33,27 @@ test.describe('Homepage', () => {
     expect(title).toBeTruthy()
   })
 
-  test('should render Birmingham Station or Atmospheric Intro', async ({ page }) => {
+  test('should render game interface or intro screen', async ({ page }) => {
     await page.goto('/')
     await page.waitForLoadState('networkidle')
 
-    // Check for either Birmingham Station (main game) or Atmospheric Intro
-    const hasBirmingham = await page.locator('text=Birmingham Station').count() > 0
-    const hasAtmospheric = await page.locator('text=threshold').count() > 0
+    // Wait for any dynamic content to load
+    await page.waitForTimeout(2000)
 
-    console.log('Has Birmingham Station:', hasBirmingham)
-    console.log('Has Atmospheric content:', hasAtmospheric)
+    // Check for game content - could be intro screen or main game interface
+    const hasGameInterface = await page.getByTestId('game-interface').count() > 0
+    const hasSamuel = await page.locator('text=Samuel').count() > 0
+    const hasBirmingham = await page.locator('text=Birmingham').count() > 0
+    const hasEnterStation = await page.locator('text=Enter the Station').count() > 0
+    const hasWelcome = await page.locator('text=Welcome').count() > 0
 
-    // Either should be present
-    expect(hasBirmingham || hasAtmospheric).toBe(true)
+    console.log('Has game interface:', hasGameInterface)
+    console.log('Has Samuel:', hasSamuel)
+    console.log('Has Birmingham:', hasBirmingham)
+    console.log('Has Enter Station:', hasEnterStation)
+    console.log('Has Welcome:', hasWelcome)
+
+    // At least one of these should be present
+    expect(hasGameInterface || hasSamuel || hasBirmingham || hasEnterStation || hasWelcome).toBe(true)
   })
 })

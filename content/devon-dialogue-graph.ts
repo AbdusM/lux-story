@@ -166,7 +166,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     content: [
       {
         // NOTE: Removed "Devon reads" - the scripted line speaks for itself
-        text: "\"Dad, data suggests you are distressed. Are you sure you are okay?\"\n\n*Silence. Then a click.*\n\n*Red text blinks.* \"Error: Connection Refused.\"\n\nHe hung up. He heard the script. He heard me debugging him instead of talking to him.",
+        text: "\"Dad, data suggests you are distressed. Are you sure you are okay?\"\n\n*Silence. Then a click.*\n\n*Red text blinks.* \"SCRIPT <glitch>FAILED</glitch>. EXCEPTION: HUMAN_VARIANCE.\"\n\nHe hung up. He heard the script. He heard me debugging him instead of talking to him.",
         emotion: 'devastated',
         variation_id: 'debug_fail_script_v1',
         richEffectContext: 'error'
@@ -338,6 +338,12 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "Exactly. People are... non-deterministic. Same input, different outputs depending on state variables I can't observe. Emotional cache, historical context, unspoken expectations.\n\nSystems have specifications. People have... feelings. And I'm not good at debugging feelings.",
         emotion: 'frustrated',
         variation_id: 'people_problem_v1'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'devon',
+        thoughtId: 'analytical-eye'
       }
     ],
     choices: [
@@ -525,7 +531,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "He's an aerospace engineer at NASA Marshall.\n\nTwenty-five years debugging rocket systems. Guidance control, error detection, mission-critical protocols.\n\nHe can troubleshoot a spacecraft traveling 17,000 miles per hour, but he can't...\n\nHe can't debug his own grief.",
+        text: "{{trust>3:He's an aerospace engineer at NASA Marshall.|He's an engineer. Precision is everything.}}\n\nTwenty-five years debugging rocket systems. Guidance control, error detection, mission-critical protocols.\n\nHe can troubleshoot a spacecraft traveling 17,000 miles per hour, but he can't...\n\nHe can't debug his own grief.",
         emotion: 'frustrated_admiration',
         variation_id: 'father_aerospace_v1'
       }

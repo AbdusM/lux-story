@@ -132,6 +132,12 @@ export const tessDialogueNodes: DialogueNode[] = [
         useChatPacing: true
       }
     ],
+    onEnter: [
+      {
+        characterId: 'tess',
+        thoughtId: 'green-frontier'
+      }
+    ],
     choices: [
       {
         choiceId: 'tess_what_happened',
@@ -182,7 +188,7 @@ export const tessDialogueNodes: DialogueNode[] = [
     speaker: 'Tess',
     content: [
       {
-        text: `Safe job now. Career Counselor. Pension, health insurance, summer break.|But these kids... burnt out at 17. Don't need another AP class.|They need to know they can survive something hard.|If I do this, I quit. No net.`,
+        text: `Safe job now. Career Counselor. Pension, health insurance, summer break.|But these kids... burnt out at 17. Don't need another AP class.|They need to know they can survive something hard.|If I do this, I quit. <shake>No net.</shake>`,
         emotion: 'vulnerable',
         interaction: 'small',
         variation_id: 'motivation_v1',
@@ -444,7 +450,7 @@ export const tessDialogueNodes: DialogueNode[] = [
     speaker: 'Tess',
     content: [
       {
-        text: `Lot of work ahead. But first time in years, I know where I'm going.|Someone else here—Kai. Corporate. Realizing same thing: can't fix the system from inside a cubicle.|See Samuel? Tell him I'm finally going for a walk.`,
+        text: `{{met_kai:Kai is trying to change the system from within. I respect that. But I have to build outside it.|I'm building outside the system.}} I'm heading back to Woodlawn. I have a grant proposal to write.\n\nTell Samuel... tell him the classroom is everywhere.`,
         emotion: 'grateful',
         interaction: 'nod',
         variation_id: 'farewell_v1',

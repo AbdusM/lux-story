@@ -1,12 +1,5 @@
-/**
- * Character State System
- * The foundation of our stateful narrative engine
- *
- * CORE PRINCIPLE: Every interaction matters. Every choice changes relationships.
- * NO LEGACY COMPATIBILITY. This is a clean, new system.
- */
-
 import { findCharacterForNode } from './graph-registry'
+import { ActiveThought, THOUGHT_REGISTRY } from '@/content/thoughts'
 
 /**
  * Core character relationship state
@@ -33,6 +26,7 @@ export interface GameState {
   lastSaved: number
   currentNodeId: string // Current position in dialogue graph
   currentCharacterId: 'samuel' | 'maya' | 'devon' | 'jordan' | 'marcus' | 'tess' | 'yaquin' | 'kai' | 'rohan' | 'silas' // Current character being talked to
+  thoughts: ActiveThought[]
 }
 
 /**
@@ -92,6 +86,9 @@ export interface StateChange {
 
   // Pattern changes
   patternChanges?: Partial<PlayerPatterns>
+
+  // Thought Cabinet
+  thoughtId?: string
 }
 
 /**
@@ -113,6 +110,7 @@ export interface SerializableGameState {
   lastSaved: number
   currentNodeId: string
   currentCharacterId: 'samuel' | 'maya' | 'devon' | 'jordan' | 'marcus' | 'tess' | 'yaquin' | 'kai' | 'rohan' | 'silas'
+  thoughts: ActiveThought[]
 }
 
 /**
@@ -154,6 +152,21 @@ export class GameStateUtils {
           newState.patterns[pattern as keyof PlayerPatterns] += value
         }
       })
+    }
+
+    // Handle Thought Triggers (Direct State Mutation)
+    if (change.thoughtId) {
+      const registry = THOUGHT_REGISTRY[change.thoughtId]
+      // Only add if it doesn't exist
+      if (registry && !newState.thoughts.some(t => t.id === change.thoughtId)) {
+        newState.thoughts.push({
+          ...registry,
+          status: 'developing',
+          progress: 0,
+          addedAt: Date.now(),
+          lastUpdated: Date.now()
+        })
+      }
     }
 
     // Apply character-specific changes
@@ -227,7 +240,8 @@ export class GameStateUtils {
       patterns: { ...state.patterns },
       lastSaved: state.lastSaved,
       currentNodeId: state.currentNodeId,
-      currentCharacterId: state.currentCharacterId
+      currentCharacterId: state.currentCharacterId,
+      thoughts: [...state.thoughts]
     }
   }
 
@@ -260,7 +274,8 @@ export class GameStateUtils {
       },
       lastSaved: Date.now(),
       currentNodeId: 'samuel_introduction', // Start with Samuel (Hub)
-      currentCharacterId: 'samuel' // Game begins with the Station Keeper
+      currentCharacterId: 'samuel', // Game begins with the Station Keeper
+      thoughts: []
     }
   }
 
@@ -295,7 +310,8 @@ export class GameStateUtils {
       patterns: state.patterns,
       lastSaved: state.lastSaved,
       currentNodeId: state.currentNodeId,
-      currentCharacterId: state.currentCharacterId
+      currentCharacterId: state.currentCharacterId,
+      thoughts: state.thoughts
     }
   }
 
@@ -319,7 +335,8 @@ export class GameStateUtils {
       patterns: serialized.patterns,
       lastSaved: serialized.lastSaved,
       currentNodeId: serialized.currentNodeId,
-      currentCharacterId: serialized.currentCharacterId
+      currentCharacterId: serialized.currentCharacterId,
+      thoughts: serialized.thoughts || []
     }
   }
 }

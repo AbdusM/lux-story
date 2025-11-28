@@ -51,6 +51,9 @@ import { detectArcCompletion, generateExperienceSummary } from '@/lib/arc-learni
 import { loadSkillProfile } from '@/lib/skill-profile-adapter'
 import { isSupabaseConfigured } from '@/lib/supabase'
 import { GameChoices } from '@/components/GameChoices'
+import { Brain } from 'lucide-react'
+import { ThoughtCabinet } from '@/components/ThoughtCabinet'
+import { TextProcessor } from '@/lib/text-processor'
 
 // Types
 interface GameInterfaceState {
@@ -75,6 +78,7 @@ interface GameInterfaceState {
   showExperienceSummary: boolean
   experienceSummaryData: ExperienceSummaryData | null
   showConfigWarning: boolean
+  showThoughtCabinet: boolean
 }
 
 export default function StatefulGameInterface() {
@@ -100,7 +104,8 @@ export default function StatefulGameInterface() {
     recentSkills: [],
     showExperienceSummary: false,
     experienceSummaryData: null,
-    showConfigWarning: !isSupabaseConfigured()
+    showConfigWarning: !isSupabaseConfigured(),
+    showThoughtCabinet: false
   })
 
   // Rich effects config - KEEPING NEW STAGGERED MODE
@@ -243,7 +248,8 @@ export default function StatefulGameInterface() {
         recentSkills: [],
         showExperienceSummary: false,
         experienceSummaryData: null,
-        showConfigWarning: !isSupabaseConfigured()
+        showConfigWarning: !isSupabaseConfigured(),
+        showThoughtCabinet: false
       })
     } catch (error) {
         console.error('Init error', error)
@@ -356,7 +362,8 @@ export default function StatefulGameInterface() {
           previousSpeaker: state.currentNode?.speaker || null,
           recentSkills: skillsToKeep,
           ...experienceSummaryUpdate,
-          showConfigWarning: state.showConfigWarning
+          showConfigWarning: state.showConfigWarning,
+          showThoughtCabinet: state.showThoughtCabinet
       })
       GameStateManager.saveGameState(newGameState)
 
@@ -388,7 +395,7 @@ export default function StatefulGameInterface() {
       clearTimeout(safetyTimeout)
       isProcessingChoiceRef.current = false
     }
-  }, [state.gameState, state.currentNode, state.showConfigWarning, state.recentSkills, state.skillToast])
+  }, [state.gameState, state.currentNode, state.showConfigWarning, state.recentSkills, state.skillToast, state.showThoughtCabinet])
 
 
   // Render Logic - Restored Card Layout
@@ -438,7 +445,14 @@ export default function StatefulGameInterface() {
 
         {/* Top Actions */}
         <div className="flex justify-between items-center mb-3">
-          <div className="flex gap-3">
+          <div className="flex gap-3 items-center">
+             <button
+                onClick={() => setState(prev => ({ ...prev, showThoughtCabinet: true }))}
+                className="p-1.5 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors text-slate-500"
+                aria-label="Open Thought Cabinet"
+              >
+                <Brain className="w-5 h-5" />
+              </button>
             <Link href="/student/insights">
               <button className="text-xs text-blue-600 hover:text-blue-700 transition-colors px-2 py-1 font-medium">
                 Your Journey
@@ -497,7 +511,7 @@ export default function StatefulGameInterface() {
           <Card key="dialogue-card" className="mb-4 sm:mb-6 rounded-xl shadow-md" style={{ transition: 'none' }} data-testid="dialogue-card">
             <CardContent className="p-4 sm:p-6 md:p-8 min-h-[200px] max-h-[55vh] sm:max-h-[60vh] overflow-y-auto" data-testid="dialogue-content" data-speaker={state.currentNode?.speaker || ''}>
               <DialogueDisplay
-                text={state.currentContent || ''}
+                text={state.gameState ? TextProcessor.process(state.currentContent || '', state.gameState) : (state.currentContent || '')}
                 useChatPacing={state.useChatPacing}
                 characterName={state.currentNode?.speaker}
                 showAvatar={false}
@@ -558,6 +572,12 @@ export default function StatefulGameInterface() {
             onContinue={() => setState(prev => ({ ...prev, showExperienceSummary: false, experienceSummaryData: null }))}
           />
         )}
+
+        {/* Thought Cabinet */}
+        <ThoughtCabinet 
+            isOpen={state.showThoughtCabinet} 
+            onClose={() => setState(prev => ({ ...prev, showThoughtCabinet: false }))} 
+        />
 
       </div>
     </div>

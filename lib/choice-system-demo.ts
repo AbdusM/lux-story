@@ -89,24 +89,23 @@ const baseGameState: GameState = {
     neuralEfficiency: 0.6
   },
   skills: {
-    criticalThinking: 0.5,
-    communication: 0.5,
-    collaboration: 0.5,
-    creativity: 0.5,
-    adaptability: 0.5,
-    leadership: 0.3,
-    digitalLiteracy: 0.7,
-    emotionalIntelligence: 0.6,
-    culturalCompetence: 0.4,
-    financialLiteracy: 0.3,
-    timeManagement: 0.5,
-    problemSolving: 0.6
-  }
+    criticalThinking: 0,
+    communication: 0,
+    collaboration: 0,
+    creativity: 0,
+    adaptability: 0,
+    leadership: 0,
+    digitalLiteracy: 0,
+    emotionalIntelligence: 0,
+    culturalCompetence: 0,
+    financialLiteracy: 0,
+    timeManagement: 0,
+    problemSolving: 0
+  },
+  thoughts: []
 }
 
-/**
- * Test choice variety generation
- */
+// Demo scenes for testing choices
 export async function demonstrateChoiceVariety() {
   console.log('🎮 Dynamic Choice System Demo')
   console.log('===============================\n')

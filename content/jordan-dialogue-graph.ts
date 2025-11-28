@@ -24,7 +24,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
 
 I've rewritten this speech six times.
 
-UX Designer. Gym Manager. Marketing. Uber. Developer. Product Manager. Senior Designer.
+<jitter>UX Designer. Gym Manager. Marketing. Uber. Developer. Product Manager. Senior Designer.</jitter>
 
 Seven jobs. Twelve years.
 
@@ -842,7 +842,7 @@ I'm not a fraud. I'm a composite.
 
 Those students need to hear that nothing is wasted.
 
-I heard about a guy teaching dental skills on TikTok. Yaquin? He's doing exactly what I'm talking about. Accumulating skills, not titles.`,
+{{met_yaquin:I met a dental assistant, Yaquin. He gets it.|I heard about a guy teaching dental skills on TikTok. Yaquin? He gets it.}} Accumulating skills, not titles.`,
       emotion: 'empowered',
       variation_id: 'jordan_accumulation_1'
     }],
@@ -894,31 +894,21 @@ Thank you. Good luck with your journey.`,
   {
     nodeId: 'jordan_chooses_birmingham',
     speaker: 'Jordan Packard',
-    content: [{
-      text: `Birmingham. This city is the whole metaphor.
-
-Steel mills collapsed. The city could've died. Instead—UAB, Innovation Depot, startups. It adapted.
-
-I'm not an anomaly. I'm a Birmingham career path.
-
-Adaptability isn't failure here. It's survival.`,
-      emotion: 'grounded',
-      variation_id: 'jordan_birmingham_1'
-    }],
-    choices: [
+    content: [
       {
-        choiceId: 'jordan_birmingham_affirm',
-        text: "The parallel between you and the city—that's powerful.",
-        nextNodeId: 'jordan_farewell_birmingham',
-        pattern: 'helping',
-        skills: ["emotionalIntelligence","communication"]
+        text: "Exactly. Birmingham changed. Iron, then medical, now tech.|This city reinvents itself every twenty years. Why can't I?|Maybe my 'instability' is actually... adaptation.",
+        emotion: 'thoughtful',
+        variation_id: 'birmingham_v1',
+        richEffectContext: 'thinking'
       }
     ],
-    onEnter: [{
-      characterId: 'jordan',
-      addKnowledgeFlags: ['chose_birmingham', 'completed_arc'],
-      addGlobalFlags: ['jordan_arc_complete', 'jordan_chose_birmingham']
-    }],
+    onEnter: [
+      {
+        characterId: 'jordan',
+        thoughtId: 'industrial-legacy'
+      }
+    ],
+    choices: [],
     tags: ['ending', 'jordan_arc']
   },
 

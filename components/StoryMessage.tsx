@@ -3,6 +3,7 @@
 import React from "react"
 import { cn } from "@/lib/utils"
 import { RichTextRenderer } from "./RichTextRenderer"
+import { getVoiceClass } from "@/lib/voice-utils"
 
 interface StoryMessageProps {
   speaker: string
@@ -21,6 +22,9 @@ export function StoryMessage({ speaker, text, type = 'dialogue', messageWeight =
   const isNarration = type === 'narration'
   const isWhisper = type === 'whisper'
   const isSensation = type === 'sensation'
+  
+  // Get voice typography
+  const voiceClass = getVoiceClass(speaker)
   
   // Character-specific styling with Birmingham-inspired colors
   const characterStyles = {
@@ -180,8 +184,10 @@ export function StoryMessage({ speaker, text, type = 'dialogue', messageWeight =
         {/* Message Text - Enhanced with Semantic Hierarchy */}
         <div className={cn(
           "pokemon-text", // Base Pokemon text styling
+          // Voice typography from our utility
+          voiceClass,
           // Conditional Tailwind overrides based on semantic classes
-          !className?.includes('semantic-') && "text-base leading-[1.7] text-gray-900 dark:text-gray-800 font-medium",
+          !className?.includes('semantic-') && "text-base leading-[1.7]",
           isNarration && "text-center italic",
           isWhisper && "italic opacity-90 text-purple-700",
           isSensation && "italic opacity-85 text-red-600",
@@ -189,7 +195,6 @@ export function StoryMessage({ speaker, text, type = 'dialogue', messageWeight =
           messageWeight === 'critical' && "message-critical",
           className // Semantic styling classes take priority
         )} style={{
-          fontFamily: "'Inter', 'Pokemon GB', monospace",
           // Allow semantic classes to override text shadow
           textShadow: className?.includes('semantic-') ? undefined : "0 1px 2px rgba(0,0,0,0.1)"
         }}>

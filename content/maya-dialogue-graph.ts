@@ -347,7 +347,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*She hesitates, then reaches into her bag. She pulls out a sleek, 3D-printed skeletal hand. It's twitching violently, servos whining.* \n\nI... I build these. Or I try to. This is a prototype for pediatric grip assistance. \n\nBut look at it. The index actuator is oscillating. I've checked the code a thousand times. It won't stabilize. \n\n*The hand spasms, fingers clenching into a fist.* \n\nIt's fighting itself. Just like me.",
+        text: "*She hesitates, then reaches into her bag. She pulls out a sleek, 3D-printed skeletal hand. It's <jitter>twitching violently</jitter>, servos whining.* \n\nI... I build these. Or I try to. This is a prototype for pediatric grip assistance. \n\nBut look at it. The index actuator is oscillating. I've checked the code a thousand times. It won't stabilize. \n\n*The hand spasms, fingers clenching into a fist.* \n\nIt's fighting itself. Just like me.",
         emotion: 'vulnerable_focused',
         variation_id: 'robotics_scenario_v1',
         richEffectContext: 'warning', // Immersive "System Alert" feel
@@ -394,7 +394,8 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         characterId: 'maya',
         addKnowledgeFlags: ['knows_robotics'],
-        setRelationshipStatus: 'confidant'
+        setRelationshipStatus: 'confidant',
+        thoughtId: 'community-heart'
       }
     ],
     tags: ['major_reveal', 'trust_gate', 'maya_arc', 'immersive_scenario']
@@ -406,7 +407,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*You reach for the multimeter. As you touch the contacts, the servo emits a sharp POP and smoke curls up.* \n\nOh no. No no no. \n\n*Maya snatches the hand back, staring at the blackened circuit.* \n\nI fried it. Three months of work. Gone. \n\nMaybe... maybe this is a sign. I'm not an engineer. I should just stick to biology.",
+        text: "*You reach for the multimeter. As you touch the contacts, the servo emits a sharp <glitch>POP</glitch> and smoke curls up.* \n\nOh no. No no no. \n\n*Maya snatches the hand back, staring at the blackened circuit.* \n\nI fried it. Three months of work. Gone. \n\nMaybe... maybe this is a sign. I'm not an engineer. I should just stick to biology.",
         emotion: 'devastated',
         variation_id: 'robotics_fail_v1',
         richEffectContext: 'error'
