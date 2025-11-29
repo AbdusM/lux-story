@@ -3,7 +3,7 @@
 
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { X, Lock, CheckCircle, ArrowRight } from "lucide-react"
+import { X, Lock, CheckCircle } from "lucide-react"
 import { useGameStore } from "@/lib/game-store"
 import { getThoughtIcon } from "@/content/thoughts"
 import { cn } from "@/lib/utils"
@@ -20,7 +20,7 @@ export function ThoughtCabinet({ isOpen, onClose }: ThoughtCabinetProps) {
   const activeThoughts = thoughts.filter(t => t.status === 'developing')
   const internalizedThoughts = thoughts.filter(t => t.status === 'internalized')
 
-  const selectedThought = thoughts.find(t => t.id === selectedThoughtId)
+  const _selectedThought = thoughts.find(t => t.id === selectedThoughtId)
 
   // Animation variants
   const backdropVariants = {
@@ -61,9 +61,10 @@ export function ThoughtCabinet({ isOpen, onClose }: ThoughtCabinetProps) {
                 <h2 className="text-xl font-bold text-slate-900 dark:text-white font-serif">Internal Monologue</h2>
                 <p className="text-sm text-slate-500 dark:text-slate-400">Developing beliefs & worldview</p>
               </div>
-              <button 
+              <button
                 onClick={onClose}
-                className="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
+                className="min-w-[44px] min-h-[44px] p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors flex items-center justify-center"
+                aria-label="Close thought cabinet"
               >
                 <X className="w-5 h-5 text-slate-500" />
               </button>

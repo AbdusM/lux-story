@@ -13,7 +13,6 @@
 
 import { cn } from '@/lib/utils'
 import Image from 'next/image'
-import { useMemo } from 'react'
 
 export type AvatarEmotion = 'happy' | 'neutral' | 'concerned' | 'angry' | 'surprised' | 'tired' | 'excited'
 
@@ -88,7 +87,7 @@ const sizeClasses = {
 // Map emotions/trust to DiceBear API parameters
 function getExpressionParams(emotion?: AvatarEmotion, trustLevel?: number) {
   // Base defaults
-  let params = {
+  const params = {
     mouth: 'default',
     eyebrows: 'default',
     eyes: 'default'

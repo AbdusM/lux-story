@@ -1,0 +1,100 @@
+"use client"
+
+import { useMemo } from 'react'
+import { useGameStore } from '@/lib/game-store'
+import { cn } from '@/lib/utils'
+
+interface ProgressIndicatorProps {
+  className?: string
+}
+
+/**
+ * ProgressIndicator - Subtle progress visualization
+ *
+ * Shows overall journey progress based on:
+ * - Characters met
+ * - Patterns developed
+ * - Skills demonstrated
+ */
+export function ProgressIndicator({ className }: ProgressIndicatorProps) {
+  const characterTrust = useGameStore((state) => state.characterTrust)
+  const patterns = useGameStore((state) => state.patterns)
+  const skills = useGameStore((state) => state.skills)
+  const visitedScenes = useGameStore((state) => state.visitedScenes)
+
+  const progress = useMemo(() => {
+    // Characters met (count non-zero trust values)
+    const charactersMet = Object.values(characterTrust).filter(t => t !== 0).length
+    const maxCharacters = 9 // Total number of characters in the game
+
+    // Patterns developed (count patterns > 0)
+    const patternsActive = Object.values(patterns).filter(p => p > 0).length
+    const maxPatterns = 7 // Total patterns
+
+    // Skills demonstrated (count skills > 0)
+    const skillsShown = Object.values(skills).filter(s => s > 0).length
+    const maxSkills = 12 // Total skill areas
+
+    // Calculate weighted progress
+    const characterProgress = charactersMet / maxCharacters
+    const patternProgress = patternsActive / maxPatterns
+    const skillProgress = skillsShown / maxSkills
+
+    // Weight characters most heavily since that's the core interaction
+    const overall = (characterProgress * 0.5) + (patternProgress * 0.3) + (skillProgress * 0.2)
+
+    return {
+      charactersMet,
+      maxCharacters,
+      patternsActive,
+      skillsShown,
+      scenesVisited: visitedScenes.length,
+      overall: Math.round(overall * 100)
+    }
+  }, [characterTrust, patterns, skills, visitedScenes])
+
+  // Don't show if no progress yet
+  if (progress.overall === 0) return null
+
+  return (
+    <div className={cn("flex items-center gap-2", className)} title={`Journey Progress: ${progress.overall}%`}>
+      {/* Progress ring */}
+      <div className="relative w-7 h-7">
+        <svg className="w-full h-full transform -rotate-90" viewBox="0 0 32 32">
+          {/* Background circle */}
+          <circle
+            cx="16"
+            cy="16"
+            r="12"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="3"
+            className="text-slate-200"
+          />
+          {/* Progress arc */}
+          <circle
+            cx="16"
+            cy="16"
+            r="12"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeDasharray={`${progress.overall * 0.754} 75.4`}
+            className="text-amber-500 transition-all duration-1000"
+          />
+        </svg>
+        {/* Center text */}
+        <span className="absolute inset-0 flex items-center justify-center text-[8px] font-bold text-slate-500">
+          {progress.overall}%
+        </span>
+      </div>
+
+      {/* Stats breakdown (hidden on mobile for space) */}
+      <div className="hidden sm:flex gap-3 text-[10px] text-slate-400">
+        <span title="Characters met">{progress.charactersMet}/{progress.maxCharacters} 👤</span>
+        <span title="Scenes visited">{progress.scenesVisited} 📍</span>
+      </div>
+    </div>
+  )
+}
