@@ -107,5 +107,12 @@
     "ts-morph": "^27.0.0",
     "typescript": "^5.9.2",
     "vitest": "^3.2.4"
-  }
+  },
+  "browserslist": [
+    ">0.5%",
+    "last 2 versions",
+    "not dead",
+    "iOS >= 14",
+    "Android >= 8"
+  ]
 }
