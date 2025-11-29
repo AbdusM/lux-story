@@ -48,7 +48,7 @@ const baseGameState: GameState = {
     exploring: 0,
     helping: 0,
     building: 0,
-    analyzing: 0,
+    analytical: 0,
     patience: 0,
     rushing: 0,
     independence: 0
@@ -102,7 +102,8 @@ const baseGameState: GameState = {
     timeManagement: 0,
     problemSolving: 0
   },
-  thoughts: []
+  thoughts: [],
+  coreGameState: null // Required for GameState type compatibility
 }
 
 // Demo scenes for testing choices

@@ -1,6 +1,13 @@
 import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
 import { ActiveThought, THOUGHT_REGISTRY } from '@/content/thoughts'
+import {
+  GameState as CoreGameState,
+  SerializableGameState,
+  GameStateUtils,
+  StateChange,
+  CharacterState
+} from './character-state'
 
 // Core game state interfaces
 export interface GameState {
@@ -51,6 +58,13 @@ export interface GameState {
 
   // Thought Cabinet
   thoughts: ActiveThought[]
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // CORE GAME STATE: Single source of truth for dialogue/narrative system
+  // This is the SerializableGameState from character-state.ts
+  // All other fields (characterTrust, patterns) should be derived from this
+  // ═══════════════════════════════════════════════════════════════════════════
+  coreGameState: SerializableGameState | null
 }
 
 export interface GameMessage {
@@ -83,7 +97,7 @@ export interface PatternTracking {
   exploring: number
   helping: number
   building: number
-  analyzing: number
+  analytical: number  // Aligned with character-state.ts PlayerPatterns
   patience: number
   rushing: number
   independence: number
@@ -170,6 +184,7 @@ export interface GameActions {
   
   // Character relationships
   updateCharacterTrust: (characterId: string, trust: number) => void
+  setCharacterTrust: (trustRecord: Record<string, number>) => void
   updateCharacterHelped: (characterId: string, helped: number) => void
   
   // Pattern tracking
@@ -186,7 +201,16 @@ export interface GameActions {
   addThought: (thoughtId: string) => void
   updateThoughtProgress: (thoughtId: string, amount: number) => void
   internalizeThought: (thoughtId: string) => void
-  
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // CORE GAME STATE ACTIONS: Single source of truth operations
+  // ═══════════════════════════════════════════════════════════════════════════
+  setCoreGameState: (state: SerializableGameState) => void
+  updateCoreGameState: (updater: (state: SerializableGameState) => SerializableGameState) => void
+  applyCoreStateChange: (change: StateChange) => void
+  getCoreGameStateHydrated: () => CoreGameState | null
+  syncDerivedState: () => void  // Sync characterTrust/patterns from coreGameState
+
   // Reset functions
   resetGame: () => void
   resetEmotionalState: () => void
@@ -237,7 +261,7 @@ const initialState: GameState = {
     exploring: 0,
     helping: 0,
     building: 0,
-    analyzing: 0,
+    analytical: 0,  // Aligned with character-state.ts PlayerPatterns
     patience: 0,
     rushing: 0,
     independence: 0
@@ -303,7 +327,10 @@ const initialState: GameState = {
   },
 
   // Thought Cabinet
-  thoughts: []
+  thoughts: [],
+
+  // Core Game State (single source of truth)
+  coreGameState: null
 }
 
 
@@ -392,7 +419,14 @@ export const useGameStore = create<GameState & GameActions>()(
             characterTrust: { ...state.characterTrust, [characterId]: trust }
           }))
         },
-        
+
+        // Batch update character trust (for syncing from GameState)
+        setCharacterTrust: (trustRecord: Record<string, number>) => {
+          set((state) => ({
+            characterTrust: { ...state.characterTrust, ...trustRecord }
+          }))
+        },
+
         updateCharacterHelped: (characterId, helped) => {
           set((state) => ({
             characterHelped: { ...state.characterHelped, [characterId]: helped }
@@ -474,8 +508,8 @@ export const useGameStore = create<GameState & GameActions>()(
           set((state) => ({
             thoughts: state.thoughts.map(t => {
               if (t.id !== thoughtId) return t
-              return { 
-                ...t, 
+              return {
+                ...t,
                 status: 'internalized',
                 progress: 100,
                 lastUpdated: Date.now()
@@ -483,7 +517,89 @@ export const useGameStore = create<GameState & GameActions>()(
             })
           }))
         },
-        
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // CORE GAME STATE ACTIONS: Single source of truth operations
+        // ═══════════════════════════════════════════════════════════════════════════
+
+        // Set the entire core game state (used on load/init)
+        setCoreGameState: (state: SerializableGameState) => {
+          set({ coreGameState: state })
+          // Automatically sync derived state
+          get().syncDerivedState()
+        },
+
+        // Update core game state with a function (for complex updates)
+        updateCoreGameState: (updater) => {
+          const current = get().coreGameState
+          if (!current) return
+          const updated = updater(current)
+          set({ coreGameState: updated })
+          get().syncDerivedState()
+        },
+
+        // Apply a StateChange to the core game state
+        applyCoreStateChange: (change: StateChange) => {
+          const serialized = get().coreGameState
+          if (!serialized) return
+
+          // Convert to hydrated GameState, apply change, then serialize back
+          const hydrated = GameStateUtils.deserialize(serialized)
+          const updated = GameStateUtils.applyStateChange(hydrated, change)
+          const newSerialized = GameStateUtils.serialize(updated)
+
+          set({ coreGameState: newSerialized })
+          get().syncDerivedState()
+        },
+
+        // Get hydrated GameState (with Map/Set) for dialogue system
+        getCoreGameStateHydrated: () => {
+          const serialized = get().coreGameState
+          if (!serialized) return null
+          return GameStateUtils.deserialize(serialized)
+        },
+
+        // Sync derived state (characterTrust, patterns, thoughts) from coreGameState
+        syncDerivedState: () => {
+          const core = get().coreGameState
+          if (!core) return
+
+          // Sync characterTrust: SerializableGameState.characters[] → Record<string, number>
+          const trustRecord: Record<string, number> = {}
+          for (const char of core.characters) {
+            trustRecord[char.characterId] = char.trust
+          }
+
+          // Sync patterns (coreGameState uses same structure)
+          const patternUpdate: Partial<PatternTracking> = {
+            analytical: core.patterns.analytical || 0,
+            helping: core.patterns.helping || 0,
+            building: core.patterns.building || 0,
+            patience: core.patterns.patience || 0,
+            exploring: core.patterns.exploring || 0
+          }
+
+          // Sync thoughts
+          const thoughts = core.thoughts || []
+
+          // Sync visited scenes (derive from conversation history)
+          const visitedScenes: string[] = []
+          for (const char of core.characters) {
+            for (const nodeId of char.conversationHistory) {
+              if (!visitedScenes.includes(nodeId)) {
+                visitedScenes.push(nodeId)
+              }
+            }
+          }
+
+          set((state) => ({
+            characterTrust: { ...state.characterTrust, ...trustRecord },
+            patterns: { ...state.patterns, ...patternUpdate },
+            thoughts: thoughts,
+            visitedScenes: visitedScenes
+          }))
+        },
+
         // Reset actions
         resetGame: () => set(initialState),
         resetEmotionalState: () => set({ emotionalState: initialState.emotionalState }),
@@ -543,54 +659,55 @@ export const useGameStore = create<GameState & GameActions>()(
           identityState: state.identityState,
           neuralState: state.neuralState,
           skills: state.skills,
-          thoughts: state.thoughts
-        })
-      }
-    ),
-    {
-      name: 'grand-central-game-store',
-      storage: {
-        getItem: (name: string) => {
-          try {
-            const str = localStorage.getItem(name)
-            if (!str) return null
+          thoughts: state.thoughts,
+          // Core game state (single source of truth for dialogue system)
+          coreGameState: state.coreGameState
+        }),
+        // Custom storage with validation (moved into persist options per Zustand best practices)
+        storage: {
+          getItem: (name: string) => {
+            try {
+              const str = localStorage.getItem(name)
+              if (!str) return null
 
-            const parsed = JSON.parse(str)
+              const parsed = JSON.parse(str)
 
-            // Validate that the parsed data is serializable
-            if (parsed && typeof parsed === 'object') {
-              // Quick check for Set objects or other non-serializable data
-              const testSerialization = JSON.stringify(parsed)
-              JSON.parse(testSerialization) // Will throw if not properly serializable
+              // Validate that the parsed data is serializable
+              if (parsed && typeof parsed === 'object') {
+                // Quick check for Set objects or other non-serializable data
+                const testSerialization = JSON.stringify(parsed)
+                JSON.parse(testSerialization) // Will throw if not properly serializable
+              }
+
+              return parsed
+            } catch (error) {
+              console.warn('Failed to parse localStorage data, clearing corrupted state:', error)
+              localStorage.removeItem(name)
+              return null
             }
-
-            return parsed
-          } catch (error) {
-            console.warn('Failed to parse localStorage data, clearing corrupted state:', error)
-            localStorage.removeItem(name)
-            return null
-          }
-        },
-        setItem: (name: string, value: any) => {
-          try {
-            // Validate serializability before storing
-            const serialized = JSON.stringify(value)
-            JSON.parse(serialized) // Will throw if not properly serializable
-            localStorage.setItem(name, serialized)
-          } catch (error) {
-            console.error('Failed to store state, data not serializable:', error)
-            // Don't throw, just log the error to prevent app crashes
-          }
-        },
-        removeItem: (name: string) => {
-          try {
-            localStorage.removeItem(name)
-          } catch (error) {
-            console.warn('Failed to remove localStorage item:', error)
+          },
+          setItem: (name: string, value: unknown) => {
+            try {
+              // Validate serializability before storing
+              const serialized = JSON.stringify(value)
+              JSON.parse(serialized) // Will throw if not properly serializable
+              localStorage.setItem(name, serialized)
+            } catch (error) {
+              console.error('Failed to store state, data not serializable:', error)
+              // Don't throw, just log the error to prevent app crashes
+            }
+          },
+          removeItem: (name: string) => {
+            try {
+              localStorage.removeItem(name)
+            } catch (error) {
+              console.warn('Failed to remove localStorage item:', error)
+            }
           }
         }
       }
-    }
+    ),
+    { name: 'grand-central-game-store' } // devtools options - only needs name
   )
 )
 
@@ -703,5 +820,26 @@ export const useGameSelectors = {
   useSkills: () => useGameStore((state) => state.skills),
 
   // Thought Cabinet selectors
-  useThoughts: () => useGameStore((state) => state.thoughts)
+  useThoughts: () => useGameStore((state) => state.thoughts),
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // CORE GAME STATE SELECTORS: Single source of truth for dialogue system
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  // Get serialized core game state (for persistence/sync)
+  useCoreGameState: () => useGameStore((state) => state.coreGameState),
+
+  // Get hydrated core game state (with Map/Set restored - for dialogue engine)
+  useCoreGameStateHydrated: () => {
+    const serialized = useGameStore((state) => state.coreGameState)
+    if (!serialized) return null
+    return GameStateUtils.deserialize(serialized)
+  },
+
+  // Get specific character from core state
+  useCoreCharacter: (characterId: string) => {
+    const serialized = useGameStore((state) => state.coreGameState)
+    if (!serialized) return null
+    return serialized.characters.find(c => c.characterId === characterId) || null
+  }
 }

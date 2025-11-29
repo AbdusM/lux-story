@@ -301,25 +301,25 @@ function StudentCard({ student }: { student: StudentInsights }) {
   return (
     <Link href={`/admin/${student.userId}/urgency`}>
       <Card className="group hover:shadow-lg hover:border-blue-400 transition-all duration-200 cursor-pointer border-slate-200">
-        <CardContent className="p-6">
-          <div className="flex items-start justify-between gap-6">
+        <CardContent className="p-4 sm:p-6">
+          <div className="flex items-start justify-between gap-3 sm:gap-6">
             {/* Left: User Info */}
-            <div className="space-y-4 flex-1">
-            <div className="flex items-center gap-3">
-                <h3 className="text-xl font-semibold text-slate-900 group-hover:text-blue-600 transition-colors">
+            <div className="space-y-3 sm:space-y-4 flex-1 min-w-0">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                <h3 className="text-base sm:text-xl font-semibold text-slate-900 group-hover:text-blue-600 transition-colors truncate">
                   {formatUserIdShort(student.userId)}
-              </h3>
-                <span className="text-sm text-slate-500 bg-slate-100 px-2 py-1 rounded-full">
+                </h3>
+                <span className="text-xs sm:text-sm text-slate-500 bg-slate-100 px-2 py-1 rounded-full whitespace-nowrap">
                   {formatUserIdRelative(student.userId)}
-              </span>
-            </div>
+                </span>
+              </div>
 
               {/* Character Trust Levels */}
-              <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-sm">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm">
                 {characterRelationships.map(char => {
                   const shortName = char.characterName.split(' ')[0]
                   return (
-                    <div key={char.characterName} className="flex items-center gap-2">
+                    <div key={char.characterName} className="flex items-center gap-1 sm:gap-2">
                       <span className="text-slate-600 font-medium">{shortName}:</span>
                       <span className={`font-semibold ${char.met ? 'text-slate-900' : 'text-slate-400'}`}>
                         {char.trustLevel}/10
@@ -342,12 +342,12 @@ function StudentCard({ student }: { student: StudentInsights }) {
 
               {/* Current Activity */}
               <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
-                <p className="text-base text-slate-600 font-medium leading-relaxed">
+                <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse flex-shrink-0" />
+                <p className="text-sm sm:text-base text-slate-600 font-medium leading-relaxed">
                   {currentActivity}
                 </p>
               </div>
-          </div>
+            </div>
 
             {/* Right: View Details Arrow */}
             <div className="text-slate-400 group-hover:text-blue-600 transition-all duration-200 group-hover:translate-x-1">

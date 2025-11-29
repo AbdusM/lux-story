@@ -43,6 +43,7 @@ import {
 import { SkillTracker } from '@/lib/skill-tracker'
 import { SCENE_SKILL_MAPPINGS } from '@/lib/scene-skill-mappings'
 import { queueRelationshipSync, queuePlatformStateSync } from '@/lib/sync-queue'
+import { useGameStore } from '@/lib/game-store'
 import { CHOICE_HANDLER_TIMEOUT_MS } from '@/lib/constants'
 import { ExperienceSummary, type ExperienceSummaryData } from '@/components/ExperienceSummary'
 import { NarrativeFeedback } from '@/components/NarrativeFeedback'
@@ -260,6 +261,29 @@ export default function StatefulGameInterface() {
         showJournal: false,
         showConstellation: false
       })
+
+      // ═══════════════════════════════════════════════════════════════════════════
+      // SYNC BRIDGE: Hydrate Zustand with loaded/initial GameState
+      // This ensures ConstellationPanel, Journal, and other components show correct data
+      //
+      // We sync BOTH:
+      // 1. The full SerializableGameState (for complete state access)
+      // 2. Derived fields (for backward compatibility with existing selectors)
+      // ═══════════════════════════════════════════════════════════════════════════
+      const zustandStore = useGameStore.getState()
+
+      // Sync full CoreGameState to Zustand (single source of truth)
+      const serializedState = GameStateUtils.serialize(gameState)
+      zustandStore.setCoreGameState(serializedState)
+
+      // syncDerivedState is called automatically by setCoreGameState,
+      // but we also explicitly sync here for clarity and debugging
+      console.log('🔄 Zustand synced with CoreGameState:', {
+        characterCount: serializedState.characters.length,
+        patterns: serializedState.patterns,
+        currentNodeId: serializedState.currentNodeId
+      })
+
     } catch (error) {
         console.error('Init error', error)
     }
@@ -376,6 +400,29 @@ export default function StatefulGameInterface() {
       })
       GameStateManager.saveGameState(newGameState)
 
+      // ═══════════════════════════════════════════════════════════════════════════
+      // SYNC BRIDGE: Push GameState changes to Zustand for UI components
+      // This ensures ConstellationPanel, Journal, and other Zustand consumers
+      // see real-time updates from gameplay choices.
+      //
+      // We sync the full SerializableGameState, which automatically updates
+      // all derived fields (characterTrust, patterns, etc.) via syncDerivedState
+      // ═══════════════════════════════════════════════════════════════════════════
+      const zustandStore = useGameStore.getState()
+
+      // Sync full CoreGameState to Zustand (single source of truth)
+      const serializedState = GameStateUtils.serialize(newGameState)
+      zustandStore.setCoreGameState(serializedState)
+
+      // Additional explicit syncs for Journal (these use different data structures)
+      // Note: syncDerivedState handles characterTrust and patterns automatically
+      zustandStore.markSceneVisited(nextNode.nodeId)
+      zustandStore.addChoiceRecord({
+        sceneId: state.currentNode?.nodeId || '',
+        choice: choice.choice.text,
+        timestamp: Date.now()
+      })
+
       // Sync relationship progress and platform state to Supabase
       // This ensures admin dashboard has real-time visibility into player progress
       if (isSupabaseConfigured()) {
@@ -404,7 +451,7 @@ export default function StatefulGameInterface() {
       clearTimeout(safetyTimeout)
       isProcessingChoiceRef.current = false
     }
-  }, [state.gameState, state.currentNode, state.showConfigWarning, state.recentSkills, state.showThoughtCabinet])
+  }, [state.gameState, state.currentNode, state.showConfigWarning, state.recentSkills, state.showThoughtCabinet, state.showJournal, state.showConstellation])
 
 
   // Render Logic - Restored Card Layout
@@ -601,7 +648,10 @@ export default function StatefulGameInterface() {
           FIXED CHOICES PANEL - Always visible at bottom (Claude/ChatGPT pattern)
           ══════════════════════════════════════════════════════════════════ */}
       {!isEnding && (
-        <footer className="flex-shrink-0 bg-stone-50 border border-stone-200 shadow-lg mb-16 sm:mb-32 mx-3 sm:mx-auto sm:max-w-2xl rounded-2xl">
+        <footer
+          className="flex-shrink-0 bg-stone-50 border border-stone-200 shadow-lg mx-3 sm:mx-auto sm:max-w-2xl rounded-2xl"
+          style={{ marginBottom: 'calc(1rem + env(safe-area-inset-bottom, 4rem))' }}
+        >
           <div className="px-3 sm:px-4 py-3 sm:py-4">
             {/* Scrollable choices container for many options */}
             {/* scroll-snap + touch-action prevents accidental selections during scroll (Switch port failure lesson) */}

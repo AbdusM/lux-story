@@ -124,24 +124,24 @@ export function SharedDashboardLayout({ children, userId }: SharedDashboardLayou
           <>
             {/* Header */}
             <Card>
-              <CardHeader>
-                <div className="flex items-center justify-between">
+              <CardHeader className="p-4 sm:p-6">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                   <div>
-                    <CardTitle className="text-2xl">{profile.userName}</CardTitle>
-                    <CardDescription>Skills-Based Career Profile</CardDescription>
+                    <CardTitle className="text-xl sm:text-2xl">{profile.userName}</CardTitle>
+                    <CardDescription className="text-xs sm:text-sm">Skills-Based Career Profile</CardDescription>
                   </div>
-            <div className="flex items-center gap-3">
-              {profile.careerMatches && profile.careerMatches.length > 0 && (
-                <Badge variant={getReadinessDisplay(profile.careerMatches[0].readiness).variant} className="text-lg">
-                  {getReadinessDisplay(profile.careerMatches[0].readiness).text}
-                </Badge>
-              )}
-              <AdvisorBriefingButton profile={profile} variant="default" size="default" />
-              <ExportButton profile={profile} variant="outline" />
-            </div>
-          </div>
-        </CardHeader>
-      </Card>
+                  <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+                    {profile.careerMatches && profile.careerMatches.length > 0 && (
+                      <Badge variant={getReadinessDisplay(profile.careerMatches[0].readiness).variant} className="text-sm sm:text-lg">
+                        {getReadinessDisplay(profile.careerMatches[0].readiness).text}
+                      </Badge>
+                    )}
+                    <AdvisorBriefingButton profile={profile} variant="default" size="default" />
+                    <ExportButton profile={profile} variant="outline" />
+                  </div>
+                </div>
+              </CardHeader>
+            </Card>
 
       {/* Quick Summary Bar */}
       <Card className="bg-gradient-to-r from-slate-50 to-blue-50 border-blue-200">
@@ -247,7 +247,7 @@ export function SharedDashboardLayout({ children, userId }: SharedDashboardLayou
             <span className="text-blue-600 font-medium capitalize">{currentSection}</span>
           </div>
           
-          <nav className="grid grid-cols-2 sm:grid-cols-6 gap-2">
+          <nav className="grid grid-cols-4 sm:grid-cols-7 gap-1 sm:gap-2">
             {NAV_SECTIONS.map((section) => {
               const isActive = currentSection === section.path
               // Validate userId before creating href
@@ -259,7 +259,7 @@ export function SharedDashboardLayout({ children, userId }: SharedDashboardLayou
                 <Link key={section.id} href={href}>
                   <Button
                     variant={isActive ? 'default' : 'ghost'}
-                    className={`w-full ${isActive ? 'bg-blue-50 border-t-2 border-t-blue-600 font-semibold' : ''}`}
+                    className={`w-full text-xs sm:text-sm px-1 sm:px-3 min-h-[40px] ${isActive ? 'bg-blue-50 border-t-2 border-t-blue-600 font-semibold' : ''}`}
                   >
                     {section.label}
                   </Button>
