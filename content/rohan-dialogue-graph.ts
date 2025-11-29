@@ -168,7 +168,200 @@ If the code lies about its own existence, and we deploy it because we're too laz
     ]
   },
 
-  // ============= THE SIMULATION: THE GHOST IN THE MACHINE =============
+  // ============= SCENE 3: ROHAN'S ORIGIN =============
+  {
+    nodeId: 'rohan_philosophy_trap',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: `"If it works, does it matter?"
+
+That's what my CS professor said. Twenty years ago. He was wrong then, and he's wrong now.
+
+Do you know what a cargo cult is? Pacific Islanders built fake runways after WWII, hoping planes would return with goods. They copied the form without understanding the function.
+
+That's us. We're cargo-culting code. The AI writes something that looks like a solution, and we deploy it because we can't tell the difference.`,
+        emotion: 'passionate_teaching',
+        variation_id: 'philosophy_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'rohan_origin_ask',
+        text: "How did you learn to see the difference?",
+        nextNodeId: 'rohan_origin_david',
+        pattern: 'helping',
+        skills: ['curiosity', 'emotionalIntelligence'],
+        consequence: {
+          characterId: 'rohan',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'rohan_pragmatic_push',
+        text: "But businesses need solutions now, not philosophy lectures.",
+        nextNodeId: 'rohan_pragmatic_response',
+        pattern: 'analytical',
+        skills: ['pragmatism']
+      }
+    ],
+    tags: ['rohan_arc', 'philosophy']
+  },
+
+  {
+    nodeId: 'rohan_pragmatic_response',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: `You sound like the VCs.
+
+Fine. Here's the business case: That hallucinated library? If it deploys to production, it will crash. Crash costs money. Downtime, data recovery, lawsuits.
+
+But there's a deeper cost. Every engineer who learns from that broken code will propagate the error. It's technical debt that compounds across generations.
+
+The philosophy isn't a luxury. It's the only thing that scales.`,
+        emotion: 'frustrated_patience',
+        variation_id: 'pragmatic_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'rohan_pragmatic_learn',
+        text: "Teach me how you learned to see it.",
+        nextNodeId: 'rohan_origin_david',
+        pattern: 'helping',
+        skills: ['humility', 'learningAgility']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'rohan_origin_david',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: `David Vaughn. My first mentor at this company.
+
+I came in hot. Top of my bootcamp class. Could spin up a CRUD app in four hours. I thought I was a genius.
+
+David looked at my code and said: "You've built a house. But you don't know what a nail is."
+
+He made me spend six months writing in assembly. No frameworks. No abstractions. Just metal.`,
+        emotion: 'reverent',
+        variation_id: 'origin_david_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'rohan_david_more',
+        text: "What did six months of assembly teach you?",
+        nextNodeId: 'rohan_david_lesson',
+        pattern: 'helping',
+        skills: ['curiosity', 'patience']
+      },
+      {
+        choiceId: 'rohan_david_whereabouts',
+        text: "Where is David now?",
+        nextNodeId: 'rohan_david_gone',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
+      }
+    ],
+    tags: ['rohan_arc', 'backstory']
+  },
+
+  {
+    nodeId: 'rohan_david_lesson',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: `Everything is a choice.
+
+When you write in assembly, you see the cost of every decision. A loop isn't magic—it's instructions. Memory isn't infinite—it's addresses. Every abstraction you've ever used was someone's opinion about tradeoffs.
+
+The frameworks hide those choices. The AI hides them even more. And when you can't see the choices, you can't understand the consequences.`,
+        emotion: 'teaching_intensity',
+        variation_id: 'david_lesson_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'rohan_lesson_continue',
+        text: "And David? Is he still teaching?",
+        nextNodeId: 'rohan_david_gone',
+        pattern: 'helping',
+        skills: ['empathy']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'rohan_david_gone',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: `He retired last year. ALS.
+
+His hands don't work anymore. Can't type. Can barely hold a coffee cup.
+
+But his mind... his mind is still sharp. We video call every week. He can't write code, but he can still see it. He reads what I show him and finds the bugs in seconds.
+
+That knowledge doesn't disappear because a machine can type faster. It's not about the typing.`,
+        emotion: 'grief_determination',
+        variation_id: 'david_gone_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'rohan_honor_david',
+        text: "You want to honor what he taught you.",
+        nextNodeId: 'rohan_honor_path',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'wisdom'],
+        consequence: {
+          characterId: 'rohan',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'rohan_preserve',
+        text: "That's knowledge that could be lost. Someone needs to preserve it.",
+        nextNodeId: 'rohan_honor_path',
+        pattern: 'building',
+        skills: ['strategicThinking']
+      }
+    ],
+    tags: ['rohan_arc', 'emotional_core']
+  },
+
+  {
+    nodeId: 'rohan_honor_path',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: `That's why I'm still here. In this cold server room at 2 AM.
+
+Everyone thinks I'm the janitor. "Rohan maintains the legacy systems." They say it like I'm cleaning toilets.
+
+But someone has to understand what's underneath. Someone has to remember why the code was written, not just what it does.
+
+Let me show you what I found today.`,
+        emotion: 'quiet_resolve',
+        variation_id: 'honor_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'rohan_show_ghost',
+        text: "Show me.",
+        nextNodeId: 'rohan_simulation_setup',
+        pattern: 'analytical',
+        skills: ['curiosity', 'deepWork']
+      }
+    ]
+  },
+
+  // ============= SCENE 5: THE SIMULATION: THE GHOST IN THE MACHINE =============
   {
     nodeId: 'rohan_simulation_setup',
     speaker: 'Rohan',
@@ -365,7 +558,7 @@ That's not janitorial work. That's... communion.`,
       {
         choiceId: 'rohan_new_purpose',
         text: "We need people who can talk to the ghosts.",
-        nextNodeId: 'rohan_climax_decision',
+        nextNodeId: 'rohan_academy_vision',
         pattern: 'helping',
         skills: ['wisdom']
       }
@@ -373,7 +566,192 @@ That's not janitorial work. That's... communion.`,
     tags: ['simulation_complete', 'rohan_arc']
   },
 
-  // ============= THE TURN =============
+  // ============= SCENE 7: THE ACADEMY VISION =============
+  {
+    nodeId: 'rohan_academy_vision',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: `I've been thinking about this for years. David and I sketched it out before his diagnosis.
+
+Not a bootcamp. Those are factories. They produce developers who can use tools but don't understand them.
+
+We want to build something different. A place where people learn why before they learn how.`,
+        emotion: 'visionary',
+        variation_id: 'academy_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'rohan_academy_how',
+        text: "What would the curriculum look like?",
+        nextNodeId: 'rohan_curriculum_design',
+        pattern: 'analytical',
+        skills: ['curiosity', 'instructionalDesign']
+      },
+      {
+        choiceId: 'rohan_academy_who',
+        text: "Who would teach? You can't scale David.",
+        nextNodeId: 'rohan_teacher_challenge',
+        pattern: 'building',
+        skills: ['strategicThinking', 'pragmatism']
+      }
+    ],
+    tags: ['rohan_arc', 'vision']
+  },
+
+  {
+    nodeId: 'rohan_curriculum_design',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: `Year one: No computers.
+
+I'm serious. You learn Boolean logic with physical switches. You build a half-adder with relays. You understand what a bit is before you ever type 'int'.
+
+Year two: Assembly. Write a calculator. Write a text editor. Feel every byte.
+
+Year three: Finally, you get a framework. And by then, you'll hate it. Because you'll see all the choices it's making for you.`,
+        emotion: 'teaching_fire',
+        variation_id: 'curriculum_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'rohan_curriculum_time',
+        text: "Three years? Bootcamps promise jobs in twelve weeks.",
+        nextNodeId: 'rohan_quality_argument',
+        pattern: 'analytical',
+        skills: ['criticalThinking']
+      },
+      {
+        choiceId: 'rohan_curriculum_trust',
+        text: "That's radical. I love it.",
+        nextNodeId: 'rohan_teacher_challenge',
+        pattern: 'helping',
+        skills: ['encouragement', 'courage']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'rohan_quality_argument',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: `And what jobs do they get? Junior developer. Build CRUD apps. Get replaced by AI in five years.
+
+Our graduates? They'll be the ones the AI can't replace. The ones who debug the AI. The ones who understand what's actually happening inside the black box.
+
+The market for people who can type code is going to zero. The market for people who understand code is infinite.`,
+        emotion: 'confident',
+        variation_id: 'quality_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'rohan_quality_continue',
+        text: "You're building guardians, not coders.",
+        nextNodeId: 'rohan_teacher_challenge',
+        pattern: 'helping',
+        skills: ['wisdom']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'rohan_teacher_challenge',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: `Teachers. That's the hard part.
+
+David was one of a kind. But there are others. Old-timers who got pushed out when companies decided experience was too expensive.
+
+I've been keeping a list. Retired engineers who still care. Database architects who remember why we have normalization. Network engineers who understand packets.
+
+They're out there. They're just been told they're obsolete.`,
+        emotion: 'hopeful_determined',
+        variation_id: 'teacher_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'rohan_funding_question',
+        text: "How do you fund something like this?",
+        nextNodeId: 'rohan_funding_reality',
+        pattern: 'analytical',
+        skills: ['financialLiteracy', 'pragmatism']
+      },
+      {
+        choiceId: 'rohan_start_small',
+        text: "Start with one student. Prove it works.",
+        nextNodeId: 'rohan_first_student',
+        pattern: 'building',
+        skills: ['strategicThinking', 'pragmatism']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'rohan_funding_reality',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: `VCs won't touch it. Three years to first placement? No "scalable" model? They'd laugh.
+
+But David has connections. Alumni from his classes who became CTOs. Companies that are starting to realize their AI-dependent junior devs can't debug production issues.
+
+One company already offered to sponsor five students. Not because they're charitable—because they need people who actually understand the systems.`,
+        emotion: 'practical_hope',
+        variation_id: 'funding_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'rohan_funding_continue',
+        text: "The market will catch up to you.",
+        nextNodeId: 'rohan_climax_decision',
+        pattern: 'helping',
+        skills: ['strategicThinking', 'encouragement']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'rohan_first_student',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: `Actually... I already have one.
+
+There's a kid—well, she's 28, but she feels like a kid—who works in QA downstairs. She found a memory leak that our entire senior team missed.
+
+When I asked how, she said: "I drew a diagram of every allocation. Took me a weekend."
+
+Everyone else just ran the profiler. She understood.
+
+I've been teaching her after hours. She's year one now. Building logic gates with LEDs.`,
+        emotion: 'quiet_pride',
+        variation_id: 'first_student_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'rohan_student_impact',
+        text: "One student who really understands is worth a hundred who can only copy.",
+        nextNodeId: 'rohan_climax_decision',
+        pattern: 'helping',
+        skills: ['wisdom', 'mentorship'],
+        consequence: {
+          characterId: 'rohan',
+          trustChange: 2
+        }
+      }
+    ]
+  },
+
+  // ============= SCENE 8: THE TURN =============
   {
     nodeId: 'rohan_climax_decision',
     speaker: 'Rohan',
@@ -392,11 +770,50 @@ We're going to teach people how to read the metal. How to know what is real.`,
     ],
     choices: [
       {
-        choiceId: 'rohan_farewell',
-        text: "The world needs guardians.",
+        choiceId: 'rohan_ask_why',
+        text: "What do you want people to remember about you?",
+        nextNodeId: 'rohan_legacy_question',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'wisdom']
+      },
+      {
+        choiceId: 'rohan_farewell_direct',
+        text: "The world needs guardians. Go build them.",
         nextNodeId: 'rohan_farewell',
         pattern: 'building',
         skills: ['encouragement']
+      }
+    ],
+    tags: ['rohan_arc']
+  },
+
+  {
+    nodeId: 'rohan_legacy_question',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: `*Rohan is quiet for a long moment. The servers hum.*
+
+I don't want them to remember me. I want them to remember the feeling.
+
+That moment when you finally understand how something works. When the abstraction dissolves and you see the machinery underneath. When you realize that every system was built by people, and you can build too.
+
+David gave me that feeling. I want to pass it on.`,
+        emotion: 'profound',
+        variation_id: 'legacy_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'rohan_legacy_farewell',
+        text: "That's a legacy worth building.",
+        nextNodeId: 'rohan_farewell',
+        pattern: 'helping',
+        skills: ['wisdom', 'encouragement'],
+        consequence: {
+          characterId: 'rohan',
+          trustChange: 3
+        }
       }
     ],
     onEnter: [

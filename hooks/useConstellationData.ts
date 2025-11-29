@@ -1,0 +1,94 @@
+/**
+ * Hook for aggregating constellation data from game state
+ * Combines characterTrust and skill demonstrations for both views
+ */
+
+import { useMemo } from 'react'
+import { useGameStore } from '@/lib/game-store'
+import { CHARACTER_NODES, type CharacterId, type CharacterNodeData } from '@/lib/constellation/character-positions'
+import { SKILL_NODES, getSkillState, type SkillState, type SkillNodeData } from '@/lib/constellation/skill-positions'
+
+export interface CharacterWithState extends CharacterNodeData {
+  trust: number
+  hasMet: boolean
+  trustState: 'unmet' | 'met' | 'connected' | 'trusted'
+}
+
+export interface SkillWithState extends SkillNodeData {
+  demonstrationCount: number
+  state: SkillState
+}
+
+export interface ConstellationData {
+  characters: CharacterWithState[]
+  skills: SkillWithState[]
+  metCharacterIds: CharacterId[]
+  demonstratedSkillIds: string[]
+}
+
+// Get trust state based on trust value
+function getTrustState(trust: number): CharacterWithState['trustState'] {
+  if (trust === 0) return 'unmet'
+  if (trust <= 3) return 'met'
+  if (trust <= 7) return 'connected'
+  return 'trusted'
+}
+
+export function useConstellationData(): ConstellationData {
+  const characterTrust = useGameStore(state => state.characterTrust)
+  const skills = useGameStore(state => state.skills)
+
+  const characters = useMemo<CharacterWithState[]>(() => {
+    return CHARACTER_NODES.map(node => {
+      const trust = characterTrust[node.id] || 0
+      return {
+        ...node,
+        trust,
+        hasMet: trust > 0,
+        trustState: getTrustState(trust)
+      }
+    })
+  }, [characterTrust])
+
+  const skillsWithState = useMemo<SkillWithState[]>(() => {
+    return SKILL_NODES.map(node => {
+      // Skills are stored as 0-1 values, convert to demonstration count approximation
+      // 0 = 0 demos, 0.1 = 1 demo, 0.5 = 5 demos, 1.0 = 10+ demos
+      const rawValue = (skills as unknown as Record<string, number>)[node.id] || 0
+      const demonstrationCount = Math.round(rawValue * 10)
+
+      return {
+        ...node,
+        demonstrationCount,
+        state: getSkillState(demonstrationCount)
+      }
+    })
+  }, [skills])
+
+  const metCharacterIds = useMemo(() => {
+    return characters.filter(c => c.hasMet).map(c => c.id)
+  }, [characters])
+
+  const demonstratedSkillIds = useMemo(() => {
+    return skillsWithState.filter(s => s.state !== 'dormant').map(s => s.id)
+  }, [skillsWithState])
+
+  return {
+    characters,
+    skills: skillsWithState,
+    metCharacterIds,
+    demonstratedSkillIds
+  }
+}
+
+// Selector for individual character
+export function useCharacterTrust(characterId: CharacterId): number {
+  return useGameStore(state => state.characterTrust[characterId] || 0)
+}
+
+// Selector for individual skill
+export function useSkillDemonstrations(skillId: string): number {
+  const skills = useGameStore(state => state.skills)
+  const rawValue = (skills as unknown as Record<string, number>)[skillId] || 0
+  return Math.round(rawValue * 10)
+}

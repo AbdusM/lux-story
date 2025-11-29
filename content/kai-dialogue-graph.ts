@@ -89,14 +89,14 @@ We designed a green checkmark. We didn't design safety.`,
       {
         choiceId: 'kai_accountability',
         text: "You feel responsible because you designed the checkmark.",
-        nextNodeId: 'kai_simulation_setup',
+        nextNodeId: 'kai_origin_story',
         pattern: 'helping',
         skills: ['emotionalIntelligence']
       },
       {
         choiceId: 'kai_system_fail',
         text: "The system worked for the company. It failed the human.",
-        nextNodeId: 'kai_simulation_setup',
+        nextNodeId: 'kai_origin_story',
         pattern: 'analytical',
         skills: ['systemsThinking']
       },
@@ -171,7 +171,238 @@ I can't do this anymore. I can't build shields for the company that leave the pe
     ]
   },
 
-  // ============= THE SIMULATION: THE SAFETY DRILL =============
+  // ============= SCENE 3: KAI'S ORIGIN STORY =============
+  {
+    nodeId: 'kai_origin_story',
+    speaker: 'Kai',
+    content: [
+      {
+        text: `You want to know why I do this?
+
+My dad worked at Sloss Furnaces. Well, what became of it. Thirty years making pipe fittings. He came home smelling like iron and machine oil.
+
+When I was twelve, he almost lost his hand. The guard was broken. Everyone knew it was broken. But production quotas don't wait for safety repairs.`,
+        emotion: 'reflective',
+        variation_id: 'origin_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'kai_origin_father',
+        text: "What happened to your dad?",
+        nextNodeId: 'kai_father_outcome',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'empathy'],
+        consequence: {
+          characterId: 'kai',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'kai_origin_training',
+        text: "So you went into training to fix that system.",
+        nextNodeId: 'kai_training_choice',
+        pattern: 'analytical',
+        skills: ['criticalThinking']
+      }
+    ],
+    tags: ['kai_arc', 'backstory']
+  },
+
+  {
+    nodeId: 'kai_father_outcome',
+    speaker: 'Kai',
+    content: [
+      {
+        text: `He kept the hand. Lost two fingers. The company paid for surgery and called it "workplace wellness."
+
+He never complained. Said it was part of the job. But every time I saw him struggle to hold a coffee cup, I thought: someone designed that training. Someone signed off on it.
+
+That someone is now me.`,
+        emotion: 'determined',
+        variation_id: 'father_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'kai_father_to_training',
+        text: "You wanted to make sure it didn't happen to anyone else.",
+        nextNodeId: 'kai_training_choice',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'kai_training_choice',
+    speaker: 'Kai',
+    content: [
+      {
+        text: `I thought I could change things from the inside. Get a degree in instructional design. Join a big company with resources. Build something better.
+
+But you know what they taught me in school? "Engaging content." "Gamification." "Learner analytics."
+
+Not a single class on how to keep someone alive.`,
+        emotion: 'frustrated',
+        variation_id: 'training_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'kai_corporate_reality',
+        text: "What did you find when you got inside?",
+        nextNodeId: 'kai_corporate_truth',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'observation']
+      }
+    ]
+  },
+
+  // ============= SCENE 4: CORPORATE REALITY =============
+  {
+    nodeId: 'kai_corporate_truth',
+    speaker: 'Kai',
+    content: [
+      {
+        text: `The VP pulled me aside on my first week. You know what she said?
+
+"Kai, your job is to make the lawyers happy. The slides are legal documentation. If someone gets hurt, we show the completion certificate. That's the training."
+
+I thought she was exaggerating. She wasn't.`,
+        emotion: 'disillusioned',
+        variation_id: 'corporate_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'kai_vp_pushback',
+        text: "Did you ever push back?",
+        nextNodeId: 'kai_pushback_story',
+        pattern: 'helping',
+        skills: ['courage', 'leadership']
+      },
+      {
+        choiceId: 'kai_vp_system',
+        text: "The system rewards compliance, not competence.",
+        nextNodeId: 'kai_compliance_revelation',
+        pattern: 'analytical',
+        skills: ['systemsThinking', 'criticalThinking']
+      }
+    ],
+    tags: ['kai_arc', 'corporate_conflict']
+  },
+
+  {
+    nodeId: 'kai_pushback_story',
+    speaker: 'Kai',
+    content: [
+      {
+        text: `Once. I proposed a simulation-based module for hazmat handling. Real scenarios, real consequences, no "Click Next."
+
+The VP ran the numbers. "This costs 40 hours per employee. The current module is 45 minutes."
+
+She didn't even look at the injury data. Just the time-to-completion metrics.`,
+        emotion: 'bitter',
+        variation_id: 'pushback_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'kai_pushback_continue',
+        text: "And now someone is in the hospital.",
+        nextNodeId: 'kai_hospital_connection',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'kai_compliance_revelation',
+    speaker: 'Kai',
+    content: [
+      {
+        text: `Exactly. The metrics are designed to measure the wrong thing.
+
+Completion rate: 98%. Average quiz score: 92%. Injury rate: "Not our department."
+
+We're optimizing for numbers that don't matter while people get hurt.`,
+        emotion: 'analytical_anger',
+        variation_id: 'compliance_rev_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'kai_compliance_continue',
+        text: "Until it became personal.",
+        nextNodeId: 'kai_hospital_connection',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
+      }
+    ]
+  },
+
+  // ============= SCENE 5: HOSPITAL VISIT =============
+  {
+    nodeId: 'kai_hospital_connection',
+    speaker: 'Kai',
+    content: [
+      {
+        text: `I visited him. Marcus—not the nurse, the worker. Same name, different person.
+
+He's 22. Two kids. The doctors say he'll walk again, but warehouse work? Probably not.
+
+His wife looked at me and asked: "Did you design the training he took?"`,
+        emotion: 'guilt_shame',
+        variation_id: 'hospital_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'kai_hospital_truth',
+        text: "What did you tell her?",
+        nextNodeId: 'kai_wife_confession',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'courage']
+      },
+      {
+        choiceId: 'kai_hospital_avoid',
+        text: "That must have been unbearable.",
+        nextNodeId: 'kai_wife_confession',
+        pattern: 'helping',
+        skills: ['empathy']
+      }
+    ],
+    tags: ['kai_arc', 'emotional_core']
+  },
+
+  {
+    nodeId: 'kai_wife_confession',
+    speaker: 'Kai',
+    content: [
+      {
+        text: `I said yes. And I apologized. Not the corporate apology—the real one.
+
+She didn't yell. She didn't threaten to sue. She just said: "Fix it. So this doesn't happen to someone else's husband."
+
+That's when I started building. Secretly. After hours.`,
+        emotion: 'determined_quiet',
+        variation_id: 'confession_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'kai_building_start',
+        text: "Show me what you're building.",
+        nextNodeId: 'kai_simulation_setup',
+        pattern: 'building',
+        skills: ['curiosity', 'problemSolving']
+      }
+    ]
+  },
+
+  // ============= SCENE 6: THE SIMULATION: THE SAFETY DRILL =============
   {
     nodeId: 'kai_simulation_setup',
     speaker: 'Kai',
@@ -304,14 +535,14 @@ That's it. That's the skill. Not "harness safety." *Courage.*`,
       {
         choiceId: 'kai_teach_courage',
         text: "You can't teach courage with a slide deck.",
-        nextNodeId: 'kai_studio_realization',
+        nextNodeId: 'kai_real_test',
         pattern: 'helping',
         skills: ['leadership', 'instructionalDesign']
       },
       {
         choiceId: 'kai_sim_power',
         text: "I felt that fear. I'll remember it.",
-        nextNodeId: 'kai_studio_realization',
+        nextNodeId: 'kai_real_test',
         pattern: 'building',
         skills: ['emotionalIntelligence']
       }
@@ -319,13 +550,128 @@ That's it. That's the skill. Not "harness safety." *Courage.*`,
     tags: ['simulation_complete', 'kai_arc']
   },
 
-  // ============= THE REALIZATION =============
+  // ============= SCENE 7: TESTING WITH WORKERS =============
+  {
+    nodeId: 'kai_real_test',
+    speaker: 'Kai',
+    content: [
+      {
+        text: `I ran the simulation with three warehouse workers last night. Off the clock. Confidential.
+
+The first one—DeShawn, 15 years on the floor—he failed the forklift scenario three times. On the fourth try, he stopped the load.
+
+You know what he said? "I've never done that. Never stopped. I always just finished the job."`,
+        emotion: 'hopeful',
+        variation_id: 'real_test_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'kai_test_impact',
+        text: "That's real learning. Not a checkbox.",
+        nextNodeId: 'kai_worker_feedback',
+        pattern: 'helping',
+        skills: ['instructionalDesign', 'emotionalIntelligence']
+      },
+      {
+        choiceId: 'kai_test_data',
+        text: "Three workers isn't a large sample size, but it's proof of concept.",
+        nextNodeId: 'kai_worker_feedback',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'pragmatism']
+      }
+    ],
+    tags: ['kai_arc', 'validation']
+  },
+
+  {
+    nodeId: 'kai_worker_feedback',
+    speaker: 'Kai',
+    content: [
+      {
+        text: `Maria, she's a shift supervisor, she said something that broke me.
+
+"Twenty years I've been doing this job. Not once has anyone asked me what I actually need to know. They just send the slides and wait for the green check."
+
+These are the people I'm supposed to protect. And I've been hiding behind PDFs.`,
+        emotion: 'revelation',
+        variation_id: 'feedback_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'kai_scale_problem',
+        text: "Can you scale this? One simulation for 50,000 employees?",
+        nextNodeId: 'kai_scale_challenge',
+        pattern: 'analytical',
+        skills: ['strategicThinking', 'problemSolving']
+      },
+      {
+        choiceId: 'kai_impact_problem',
+        text: "What matters is impact, not scale. Start with the most dangerous jobs.",
+        nextNodeId: 'kai_impact_focus',
+        pattern: 'helping',
+        skills: ['pragmatism', 'triage']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'kai_scale_challenge',
+    speaker: 'Kai',
+    content: [
+      {
+        text: `No. Not in the corporate structure. The VP would never approve the time investment.
+
+But here's what I realized: I don't need to train 50,000 people. I need to train the right 50 people first.
+
+Supervisors. Safety leads. The ones who can actually stop a dangerous situation before it starts.`,
+        emotion: 'strategic',
+        variation_id: 'scale_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'kai_continue_realization',
+        text: "Multiply through influence, not compliance.",
+        nextNodeId: 'kai_studio_realization',
+        pattern: 'building',
+        skills: ['leadership', 'strategicThinking']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'kai_impact_focus',
+    speaker: 'Kai',
+    content: [
+      {
+        text: `Exactly. Forklifts. Heights. Chemical handling. The jobs where a mistake means someone doesn't go home.
+
+If I can prove the simulation reduces real injuries—not just compliance metrics—then maybe someone will listen.
+
+Or maybe I just do it anyway. Without permission.`,
+        emotion: 'determined',
+        variation_id: 'impact_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'kai_continue_impact',
+        text: "Sometimes the right thing doesn't need permission.",
+        nextNodeId: 'kai_studio_realization',
+        pattern: 'helping',
+        skills: ['courage', 'integrity']
+      }
+    ]
+  },
+
+  // ============= SCENE 8: THE REALIZATION =============
   {
     nodeId: 'kai_studio_realization',
     speaker: 'Kai',
     content: [
       {
-        // NOTE: Fixed continuity error - removed Rohan reference (character doesn't exist in this story)
         text: `I have to show this. Not to the VP—to the workers.
 
 The training is broken. I'm building checkmarks that hide the danger.
@@ -339,11 +685,92 @@ If I stay, I'm complicit. If I leave, I can build something that actually protec
       {
         choiceId: 'kai_leave',
         text: "Leave. Build the studio that saves lives.",
-        nextNodeId: 'kai_climax_decision',
+        nextNodeId: 'kai_final_choice',
         pattern: 'building',
         skills: ['entrepreneurship', 'courage']
+      },
+      {
+        choiceId: 'kai_stay_change',
+        text: "What if you stayed and fought from inside?",
+        nextNodeId: 'kai_insider_path',
+        pattern: 'analytical',
+        skills: ['strategicThinking', 'pragmatism']
       }
     ]
+  },
+
+  {
+    nodeId: 'kai_insider_path',
+    speaker: 'Kai',
+    content: [
+      {
+        text: `I thought about that. Change from within. But you know how long it takes to change a corporate culture?
+
+Marcus—the worker in the hospital—he can't wait five years for me to get promoted to the right level. His kids need their dad healthy now.
+
+Sometimes the system is too slow. Sometimes you have to step outside it.`,
+        emotion: 'resolved',
+        variation_id: 'insider_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'kai_accept_outside',
+        text: "You're right. Build it outside.",
+        nextNodeId: 'kai_final_choice',
+        pattern: 'helping',
+        skills: ['wisdom', 'courage']
+      }
+    ]
+  },
+
+  // ============= SCENE 9: FINAL CHOICE =============
+  {
+    nodeId: 'kai_final_choice',
+    speaker: 'Kai',
+    content: [
+      {
+        text: `Before I go, I want to ask you something.
+
+I've been building training for years. Thousands of slides. Millions of checkmarks.
+
+What do you think matters more—reaching more people, or reaching people more deeply?`,
+        emotion: 'reflective',
+        variation_id: 'final_choice_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'kai_choose_depth',
+        text: "Depth. One person who really learns is worth a thousand who just click through.",
+        nextNodeId: 'kai_climax_decision',
+        pattern: 'helping',
+        skills: ['wisdom', 'instructionalDesign'],
+        consequence: {
+          characterId: 'kai',
+          trustChange: 3
+        }
+      },
+      {
+        choiceId: 'kai_choose_reach',
+        text: "Reach. You can't save everyone, but you can give everyone a chance.",
+        nextNodeId: 'kai_climax_decision',
+        pattern: 'building',
+        skills: ['pragmatism', 'strategicThinking']
+      },
+      {
+        choiceId: 'kai_choose_both',
+        text: "Both. Start deep, then find ways to scale what works.",
+        nextNodeId: 'kai_climax_decision',
+        pattern: 'analytical',
+        skills: ['systemsThinking', 'leadership'],
+        consequence: {
+          characterId: 'kai',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['kai_arc', 'philosophical_choice']
   },
 
   {

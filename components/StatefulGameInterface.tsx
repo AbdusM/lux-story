@@ -51,8 +51,11 @@ import { detectArcCompletion, generateExperienceSummary } from '@/lib/arc-learni
 import { loadSkillProfile } from '@/lib/skill-profile-adapter'
 import { isSupabaseConfigured } from '@/lib/supabase'
 import { GameChoices } from '@/components/GameChoices'
-import { Brain } from 'lucide-react'
+import { Brain, BookOpen, Stars } from 'lucide-react'
 import { ThoughtCabinet } from '@/components/ThoughtCabinet'
+import { Journal } from '@/components/Journal'
+import { ProgressIndicator } from '@/components/ProgressIndicator'
+import { ConstellationPanel } from '@/components/constellation'
 import { TextProcessor } from '@/lib/text-processor'
 
 // Types
@@ -79,6 +82,8 @@ interface GameInterfaceState {
   experienceSummaryData: ExperienceSummaryData | null
   showConfigWarning: boolean
   showThoughtCabinet: boolean
+  showJournal: boolean
+  showConstellation: boolean
 }
 
 export default function StatefulGameInterface() {
@@ -105,7 +110,9 @@ export default function StatefulGameInterface() {
     showExperienceSummary: false,
     experienceSummaryData: null,
     showConfigWarning: !isSupabaseConfigured(),
-    showThoughtCabinet: false
+    showThoughtCabinet: false,
+    showJournal: false,
+    showConstellation: false
   })
 
   // Rich effects config - KEEPING NEW STAGGERED MODE
@@ -249,7 +256,9 @@ export default function StatefulGameInterface() {
         showExperienceSummary: false,
         experienceSummaryData: null,
         showConfigWarning: !isSupabaseConfigured(),
-        showThoughtCabinet: false
+        showThoughtCabinet: false,
+        showJournal: false,
+        showConstellation: false
       })
     } catch (error) {
         console.error('Init error', error)
@@ -363,7 +372,9 @@ export default function StatefulGameInterface() {
           recentSkills: skillsToKeep,
           ...experienceSummaryUpdate,
           showConfigWarning: state.showConfigWarning,
-          showThoughtCabinet: state.showThoughtCabinet
+          showThoughtCabinet: state.showThoughtCabinet,
+          showJournal: state.showJournal,
+          showConstellation: state.showConstellation
       })
       GameStateManager.saveGameState(newGameState)
 
@@ -460,11 +471,25 @@ export default function StatefulGameInterface() {
             <div className="flex gap-1 sm:gap-2 items-center">
               {/* All buttons must be 44px minimum touch target (Apple HIG, Android MD) */}
               <button
+                onClick={() => setState(prev => ({ ...prev, showJournal: true }))}
+                className="min-w-[44px] min-h-[44px] p-2.5 rounded-full hover:bg-slate-100 active:bg-slate-200 transition-colors text-slate-500 flex items-center justify-center"
+                aria-label="Open Journal"
+              >
+                <BookOpen className="w-5 h-5" />
+              </button>
+              <button
                 onClick={() => setState(prev => ({ ...prev, showThoughtCabinet: true }))}
                 className="min-w-[44px] min-h-[44px] p-2.5 rounded-full hover:bg-slate-100 active:bg-slate-200 transition-colors text-slate-500 flex items-center justify-center"
                 aria-label="Open Thought Cabinet"
               >
                 <Brain className="w-5 h-5" />
+              </button>
+              <button
+                onClick={() => setState(prev => ({ ...prev, showConstellation: true }))}
+                className="min-w-[44px] min-h-[44px] p-2.5 rounded-full hover:bg-slate-100 active:bg-slate-200 transition-colors text-slate-500 flex items-center justify-center"
+                aria-label="Open Skill Constellation"
+              >
+                <Stars className="w-5 h-5" />
               </button>
               <Link href="/student/insights">
                 <button className="min-h-[44px] text-xs sm:text-sm text-blue-600 hover:text-blue-700 active:text-blue-800 transition-colors px-3 py-2 font-medium rounded-md hover:bg-blue-50 active:bg-blue-100">
@@ -478,6 +503,7 @@ export default function StatefulGameInterface() {
               </Link>
             </div>
             <div className="flex gap-1 sm:gap-2 items-center">
+              <ProgressIndicator />
               <SyncStatusIndicator />
               <button
                 onClick={() => window.location.reload()}
@@ -629,6 +655,18 @@ export default function StatefulGameInterface() {
       <ThoughtCabinet
         isOpen={state.showThoughtCabinet}
         onClose={() => setState(prev => ({ ...prev, showThoughtCabinet: false }))}
+      />
+
+      {/* Journal */}
+      <Journal
+        isOpen={state.showJournal}
+        onClose={() => setState(prev => ({ ...prev, showJournal: false }))}
+      />
+
+      {/* Constellation */}
+      <ConstellationPanel
+        isOpen={state.showConstellation}
+        onClose={() => setState(prev => ({ ...prev, showConstellation: false }))}
       />
     </div>
   )
