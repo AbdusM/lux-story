@@ -174,8 +174,8 @@ export function SkillsView({ skills, onOpenDetail }: SkillsViewProps) {
                 y1={fromPos.y}
                 x2={toPos.x}
                 y2={toPos.y}
-                stroke={bothDemonstrated ? 'rgba(251, 191, 36, 0.3)' : 'rgba(71, 85, 105, 0.2)'}
-                strokeWidth="0.3"
+                stroke={bothDemonstrated ? 'rgba(251, 191, 36, 0.5)' : 'rgba(71, 85, 105, 0.35)'}
+                strokeWidth="0.5"
                 strokeDasharray={bothDemonstrated ? '0' : '1 1'}
                 initial={{ pathLength: 0, opacity: 0 }}
                 animate={{ pathLength: 1, opacity: isFiltered ? 0.2 : 1 }}
@@ -202,11 +202,11 @@ export function SkillsView({ skills, onOpenDetail }: SkillsViewProps) {
                 aria-label={`${skill.name}. ${skill.state === 'dormant' ? 'Not yet demonstrated' : `${skill.state}, ${skill.demonstrationCount} demonstrations`}. ${isSelected ? 'Selected' : 'Tap to select'}`}
                 aria-pressed={isSelected}
               >
-                {/* Invisible hit area */}
+                {/* Invisible hit area (44px equivalent in viewbox units) */}
                 <circle
                   cx={skill.position.x}
                   cy={skill.position.y}
-                  r={6}
+                  r={11}
                   fill="transparent"
                   className="touch-manipulation"
                 />

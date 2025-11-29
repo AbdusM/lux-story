@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { X, Users, MapPin, Compass, TrendingUp } from "lucide-react"
 import { useGameStore } from "@/lib/game-store"
@@ -40,6 +40,16 @@ type TabId = 'relationships' | 'journey' | 'patterns'
 export function Journal({ isOpen, onClose }: JournalProps) {
   const [activeTab, setActiveTab] = useState<TabId>('relationships')
 
+  // Escape key handler
+  useEffect(() => {
+    if (!isOpen) return
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', handleEscape)
+    return () => window.removeEventListener('keydown', handleEscape)
+  }, [isOpen, onClose])
+
   const characterTrust = useGameStore((state) => state.characterTrust)
   const visitedScenes = useGameStore((state) => state.visitedScenes)
   const choiceHistory = useGameStore((state) => state.choiceHistory)
@@ -57,7 +67,7 @@ export function Journal({ isOpen, onClose }: JournalProps) {
   }
 
   const tabs: { id: TabId; label: string; icon: typeof Users }[] = [
-    { id: 'relationships', label: 'People', icon: Users },
+    { id: 'relationships', label: 'Relationships', icon: Users },
     { id: 'journey', label: 'Journey', icon: MapPin },
     { id: 'patterns', label: 'Patterns', icon: Compass },
   ]
@@ -106,12 +116,18 @@ export function Journal({ isOpen, onClose }: JournalProps) {
             onClick={onClose}
           />
 
-          {/* Slide-over Panel (from left) */}
+          {/* Slide-over Panel (from left) - swipe left to close */}
           <motion.div
             initial="hidden"
             animate="visible"
             exit="hidden"
             variants={panelVariants}
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={{ left: 0.2, right: 0 }}
+            onDragEnd={(_, info) => {
+              if (info.offset.x < -100) onClose()
+            }}
             className="fixed left-0 top-0 bottom-0 w-full max-w-md bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 shadow-2xl z-[100] flex flex-col"
           >
             {/* Header */}
@@ -159,8 +175,8 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                   {characterEntries.length === 0 ? (
                     <div className="p-8 text-center border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-lg">
                       <Users className="w-8 h-8 text-slate-300 mx-auto mb-3" />
-                      <p className="text-slate-400 italic text-sm">You haven't met anyone yet.</p>
-                      <p className="text-slate-400 text-xs mt-1">Explore the station to meet characters.</p>
+                      <p className="text-slate-400 italic text-sm">Talk to Samuel at the station to meet your first character.</p>
+                      <p className="text-slate-400 text-xs mt-1">Each conversation builds trust and reveals new connections.</p>
                     </div>
                   ) : (
                     <div className="space-y-3">
@@ -219,7 +235,8 @@ export function Journal({ isOpen, onClose }: JournalProps) {
 
                     {visitedScenes.length === 0 ? (
                       <div className="p-4 text-center border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-lg">
-                        <p className="text-slate-400 italic text-sm">Your journey is just beginning.</p>
+                        <p className="text-slate-400 italic text-sm">Your journey begins at the station.</p>
+                        <p className="text-slate-400 text-xs mt-1">Start a conversation to explore new locations.</p>
                       </div>
                     ) : (
                       <div className="space-y-2">
@@ -254,7 +271,8 @@ export function Journal({ isOpen, onClose }: JournalProps) {
 
                     {choiceHistory.length === 0 ? (
                       <div className="p-4 text-center border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-lg">
-                        <p className="text-slate-400 italic text-sm">No decisions recorded yet.</p>
+                        <p className="text-slate-400 italic text-sm">Your choices shape your story.</p>
+                        <p className="text-slate-400 text-xs mt-1">Make decisions in conversations to see them recorded here.</p>
                       </div>
                     ) : (
                       <div className="space-y-2">
@@ -287,8 +305,8 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                   {activePatterns.length === 0 ? (
                     <div className="p-8 text-center border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-lg">
                       <Compass className="w-8 h-8 text-slate-300 mx-auto mb-3" />
-                      <p className="text-slate-400 italic text-sm">No patterns detected yet.</p>
-                      <p className="text-slate-400 text-xs mt-1">Keep making choices to reveal your tendencies.</p>
+                      <p className="text-slate-400 italic text-sm">Your patterns emerge through your choices.</p>
+                      <p className="text-slate-400 text-xs mt-1">Continue your conversations to reveal your natural tendencies.</p>
                     </div>
                   ) : (
                     <div className="space-y-3">

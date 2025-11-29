@@ -1,7 +1,7 @@
 
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { X, Lock, CheckCircle } from "lucide-react"
 import { useGameStore } from "@/lib/game-store"
@@ -16,6 +16,16 @@ interface ThoughtCabinetProps {
 export function ThoughtCabinet({ isOpen, onClose }: ThoughtCabinetProps) {
   const thoughts = useGameStore((state) => state.thoughts)
   const [selectedThoughtId, setSelectedThoughtId] = useState<string | null>(null)
+
+  // Escape key handler
+  useEffect(() => {
+    if (!isOpen) return
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', handleEscape)
+    return () => window.removeEventListener('keydown', handleEscape)
+  }, [isOpen, onClose])
 
   const activeThoughts = thoughts.filter(t => t.status === 'developing')
   const internalizedThoughts = thoughts.filter(t => t.status === 'internalized')

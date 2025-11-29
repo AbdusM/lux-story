@@ -78,8 +78,8 @@ export function PeopleView({ characters, onOpenDetail }: PeopleViewProps) {
                 y1={fromPos.y}
                 x2={toPos.x}
                 y2={toPos.y}
-                stroke="rgba(148, 163, 184, 0.3)"
-                strokeWidth="0.3"
+                stroke="rgba(148, 163, 184, 0.5)"
+                strokeWidth="0.5"
                 initial={{ pathLength: 0, opacity: 0 }}
                 animate={{ pathLength: 1, opacity: 1 }}
                 transition={{ duration: 1, delay: 0.5 }}
@@ -110,7 +110,7 @@ export function PeopleView({ characters, onOpenDetail }: PeopleViewProps) {
                 <circle
                   cx={char.position.x}
                   cy={char.position.y}
-                  r={8}
+                  r={11}
                   fill="transparent"
                   className="touch-manipulation"
                 />

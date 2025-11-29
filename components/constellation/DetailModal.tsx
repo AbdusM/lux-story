@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Lock, User, Sparkles } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -36,6 +37,16 @@ const backdropVariants = {
 }
 
 export function DetailModal({ item, type, onClose }: DetailModalProps) {
+  // Escape key handler
+  useEffect(() => {
+    if (!item) return
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', handleEscape)
+    return () => window.removeEventListener('keydown', handleEscape)
+  }, [item, onClose])
+
   if (!item) return null
 
   const isCharacter = type === 'character'

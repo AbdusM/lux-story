@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence, LazyMotion, domAnimation } from 'framer-motion'
 import { X, Users, Sparkles } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -53,6 +53,16 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
   const [detailItem, setDetailItem] = useState<DetailItem>(null)
   const data = useConstellationData()
 
+  // Escape key handler
+  useEffect(() => {
+    if (!isOpen) return
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', handleEscape)
+    return () => window.removeEventListener('keydown', handleEscape)
+  }, [isOpen, onClose])
+
   const handleOpenCharacterDetail = (character: CharacterWithState) => {
     setDetailItem({ type: 'character', item: character })
   }
@@ -85,12 +95,18 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
               onClick={onClose}
             />
 
-            {/* Panel */}
+            {/* Panel - swipe right to close */}
             <motion.div
               initial="hidden"
               animate="visible"
               exit="hidden"
               variants={panelVariants}
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={{ left: 0, right: 0.2 }}
+              onDragEnd={(_, info) => {
+                if (info.offset.x > 100) onClose()
+              }}
               className="fixed right-0 top-0 bottom-0 w-full max-w-lg bg-slate-900 border-l border-slate-700 shadow-2xl z-[100] flex flex-col"
               role="dialog"
               aria-modal="true"
