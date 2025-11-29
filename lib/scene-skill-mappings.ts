@@ -69,6 +69,113 @@ export const SCENE_SKILL_MAPPINGS: Record<string, SceneSkillMapping> = {
       }
     }
   },
+  'kai_introduction': {
+    sceneId: 'kai_introduction',
+    characterArc: 'kai',
+    sceneDescription: 'First encounter with Kai - haunted by a workplace accident caused by inadequate training',
+    choiceMappings: {
+      'kai_intro_accident': {
+        skillsDemonstrated: ['emotionalIntelligence', 'crisisManagement', 'empathy'],
+        context: 'Showed empathy by asking what happened. Demonstrated crisis management awareness.',
+        intensity: 'high'
+      },
+      'kai_intro_design': {
+        skillsDemonstrated: ['criticalThinking', 'curriculumDesign'],
+        context: 'Identified the root cause - clicking is not learning. Critical instructional design insight.',
+        intensity: 'high'
+      },
+      'kai_intro_defensive': {
+        skillsDemonstrated: ['riskManagement'],
+        context: 'Focused on legal coverage over human impact. Risk management without empathy.',
+        intensity: 'low'
+      }
+    }
+  },
+  'kai_accident_reveal': {
+    sceneId: 'kai_accident_reveal',
+    characterArc: 'kai',
+    sceneDescription: 'Kai reveals the warehouse accident - a 22-year-old with broken pelvis',
+    choiceMappings: {
+      'kai_accountability': {
+        skillsDemonstrated: ['emotionalIntelligence', 'accountability'],
+        context: 'Recognized the weight of designing systems that protect or fail people.',
+        intensity: 'high'
+      },
+      'kai_system_fail': {
+        skillsDemonstrated: ['systemsThinking', 'criticalThinking'],
+        context: 'Identified systemic failure - the system served the company, not the human.',
+        intensity: 'high'
+      },
+      'kai_marcus_connection': {
+        skillsDemonstrated: ['collaboration', 'empathy'],
+        context: 'Connected Kais experience to Marcus the nurse - recognizing shared ethical struggles.',
+        intensity: 'high'
+      }
+    }
+  },
+  'kai_origin_story': {
+    sceneId: 'kai_origin_story',
+    characterArc: 'kai',
+    sceneDescription: 'Kai shares his origin - fathers hand injury at Sloss Furnaces',
+    choiceMappings: {
+      'kai_origin_father': {
+        skillsDemonstrated: ['emotionalIntelligence', 'empathy'],
+        context: 'Showed deep empathy by asking about his fathers outcome. Built trust through caring.',
+        intensity: 'high'
+      },
+      'kai_origin_training': {
+        skillsDemonstrated: ['criticalThinking', 'systemsThinking'],
+        context: 'Connected personal trauma to systemic change motivation.',
+        intensity: 'high'
+      }
+    }
+  },
+  'kai_corporate_truth': {
+    sceneId: 'kai_corporate_truth',
+    characterArc: 'kai',
+    sceneDescription: 'Kai reveals corporate training is about legal protection, not actual safety',
+    choiceMappings: {
+      'kai_vp_pushback': {
+        skillsDemonstrated: ['courage', 'leadership'],
+        context: 'Asked about challenging authority. Recognized the courage required.',
+        intensity: 'high'
+      },
+      'kai_vp_system': {
+        skillsDemonstrated: ['systemsThinking', 'criticalThinking'],
+        context: 'Identified the perverse incentive - compliance rewarded over competence.',
+        intensity: 'high'
+      }
+    }
+  },
+  'kai_hospital_connection': {
+    sceneId: 'kai_hospital_connection',
+    characterArc: 'kai',
+    sceneDescription: 'Kai visits the injured worker Marcus in the hospital - faces his wifes question',
+    choiceMappings: {
+      'kai_hospital_truth': {
+        skillsDemonstrated: ['emotionalIntelligence', 'courage', 'integrity'],
+        context: 'Asked about facing the truth. Recognized the courage to admit responsibility.',
+        intensity: 'high'
+      },
+      'kai_hospital_avoid': {
+        skillsDemonstrated: ['empathy', 'emotionalIntelligence'],
+        context: 'Acknowledged the emotional weight without pressing for details.',
+        intensity: 'high'
+      }
+    }
+  },
+  'kai_wife_confession': {
+    sceneId: 'kai_wife_confession',
+    characterArc: 'kai',
+    sceneDescription: 'Kai confesses to the workers wife and she asks him to fix the training',
+    choiceMappings: {
+      'kai_building_start': {
+        skillsDemonstrated: ['curiosity', 'problemSolving', 'actionOrientation'],
+        context: 'Moved from guilt to action. Asked to see the solution being built.',
+        intensity: 'high'
+      }
+    }
+  },
 
   // ============= ROHAN ARC (Deep Tech) =============
   'rohan_simulation_setup': {
@@ -101,6 +208,108 @@ export const SCENE_SKILL_MAPPINGS: Record<string, SceneSkillMapping> = {
       'rohan_retry_manual': {
         skillsDemonstrated: ['humility', 'resilience'],
         context: 'Acknowledged the limitation of the AI tool and pivoted to manual verification. Demonstrated humility and adaptability.',
+        intensity: 'medium'
+      }
+    }
+  },
+  'rohan_introduction': {
+    sceneId: 'rohan_introduction',
+    characterArc: 'rohan',
+    sceneDescription: 'First encounter with Rohan - terrified by AI-generated code that calls nonexistent libraries',
+    choiceMappings: {
+      'rohan_intro_fear': {
+        skillsDemonstrated: ['emotionalIntelligence', 'empathy'],
+        context: 'Recognized the fear behind the technical observation. Built trust through emotional attunement.',
+        intensity: 'high'
+      },
+      'rohan_intro_tech': {
+        skillsDemonstrated: ['technicalLiteracy', 'riskManagement', 'informationLiteracy'],
+        context: 'Identified security implications of hallucinated dependencies. Technical depth and information verification.',
+        intensity: 'high'
+      },
+      'rohan_intro_wonder': {
+        skillsDemonstrated: ['criticalThinking', 'curiosity'],
+        context: 'Asked the philosophical question - does authorship matter if code works?',
+        intensity: 'medium'
+      }
+    }
+  },
+  'rohan_erasure_reveal': {
+    sceneId: 'rohan_erasure_reveal',
+    characterArc: 'rohan',
+    sceneDescription: 'Rohan reveals his existential fear - AI making human expertise obsolete',
+    choiceMappings: {
+      'rohan_value_human': {
+        skillsDemonstrated: ['wisdom', 'leadership'],
+        context: 'Reframed value from speed to understanding. Wisdom about what matters.',
+        intensity: 'high'
+      },
+      'rohan_defense': {
+        skillsDemonstrated: ['criticalThinking', 'encouragement'],
+        context: 'Pointed out that Rohan found the bug - the human verification matters.',
+        intensity: 'high'
+      },
+      'rohan_tess_connection': {
+        skillsDemonstrated: ['collaboration', 'empathy'],
+        context: 'Connected to Tesss experience - building bridges between characters.',
+        intensity: 'high'
+      }
+    }
+  },
+  'rohan_philosophy_trap': {
+    sceneId: 'rohan_philosophy_trap',
+    characterArc: 'rohan',
+    sceneDescription: 'Rohan teaches about cargo cults - copying form without understanding function',
+    choiceMappings: {
+      'rohan_origin_ask': {
+        skillsDemonstrated: ['curiosity', 'emotionalIntelligence', 'humility'],
+        context: 'Asked how Rohan learned to see the difference. Showed humility and desire to learn.',
+        intensity: 'high'
+      },
+      'rohan_pragmatic_push': {
+        skillsDemonstrated: ['pragmatism', 'criticalThinking'],
+        context: 'Challenged with business reality. Practical questioning of philosophy.',
+        intensity: 'medium'
+      }
+    }
+  },
+  'rohan_pragmatic_response': {
+    sceneId: 'rohan_pragmatic_response',
+    characterArc: 'rohan',
+    sceneDescription: 'Rohan defends philosophy as the only thing that scales',
+    choiceMappings: {
+      'rohan_pragmatic_learn': {
+        skillsDemonstrated: ['humility', 'learningAgility'],
+        context: 'Acknowledged the wisdom and asked to learn. Demonstrated learning agility.',
+        intensity: 'high'
+      }
+    }
+  },
+  'rohan_origin_david': {
+    sceneId: 'rohan_origin_david',
+    characterArc: 'rohan',
+    sceneDescription: 'Rohan shares his origin - mentor David who taught him assembly',
+    choiceMappings: {
+      'rohan_david_more': {
+        skillsDemonstrated: ['curiosity', 'patience', 'deepWork'],
+        context: 'Asked about the slow, deep learning process. Valued depth over speed.',
+        intensity: 'high'
+      },
+      'rohan_david_whereabouts': {
+        skillsDemonstrated: ['emotionalIntelligence', 'empathy'],
+        context: 'Asked about the person, not just the lesson. Showed care for relationships.',
+        intensity: 'high'
+      }
+    }
+  },
+  'rohan_david_lesson': {
+    sceneId: 'rohan_david_lesson',
+    characterArc: 'rohan',
+    sceneDescription: 'Rohan explains what assembly taught him - seeing the cost of every choice',
+    choiceMappings: {
+      'rohan_lesson_continue': {
+        skillsDemonstrated: ['empathy', 'curiosity'],
+        context: 'Continued interest in both the technical and human story.',
         intensity: 'medium'
       }
     }
@@ -141,6 +350,120 @@ export const SCENE_SKILL_MAPPINGS: Record<string, SceneSkillMapping> = {
       }
     }
   },
+  'silas_introduction': {
+    sceneId: 'silas_introduction',
+    characterArc: 'silas',
+    sceneDescription: 'First encounter with Silas - the engineer kneeling in dirt while his dashboard lies',
+    choiceMappings: {
+      'silas_intro_reality': {
+        skillsDemonstrated: ['wisdom', 'criticalThinking'],
+        context: 'Recognized that data abstraction can mask ground truth. Wisdom about the limits of measurement.',
+        intensity: 'high'
+      },
+      'silas_intro_tech': {
+        skillsDemonstrated: ['technicalLiteracy', 'problemSolving'],
+        context: 'Identified potential technical cause - sensor calibration drift.',
+        intensity: 'medium'
+      },
+      'silas_intro_empathy': {
+        skillsDemonstrated: ['emotionalIntelligence', 'empathy'],
+        context: 'Saw the fear behind the technical problem. Built trust through emotional attunement.',
+        intensity: 'high'
+      }
+    }
+  },
+  'silas_bankruptcy_reveal': {
+    sceneId: 'silas_bankruptcy_reveal',
+    characterArc: 'silas',
+    sceneDescription: 'Silas reveals the stakes - his entire savings invested in this farm',
+    choiceMappings: {
+      'silas_stakes_high': {
+        skillsDemonstrated: ['actionOrientation', 'courage'],
+        context: 'Pushed toward action instead of paralysis. Recognized the need to move.',
+        intensity: 'high'
+      },
+      'silas_fear_paralysis': {
+        skillsDemonstrated: ['emotionalIntelligence', 'criticalThinking'],
+        context: 'Named the psychological trap - trusting data over senses because data has an API.',
+        intensity: 'high'
+      }
+    }
+  },
+  'silas_amazon_story': {
+    sceneId: 'silas_amazon_story',
+    characterArc: 'silas',
+    sceneDescription: 'Silas shares his origin - Principal Engineer at AWS who never touched what he built',
+    choiceMappings: {
+      'silas_amazon_why_leave': {
+        skillsDemonstrated: ['curiosity', 'emotionalIntelligence'],
+        context: 'Asked about motivation for change. Showed interest in personal journey.',
+        intensity: 'high'
+      },
+      'silas_amazon_farming': {
+        skillsDemonstrated: ['curiosity', 'adaptability'],
+        context: 'Recognized the dramatic career pivot. Curiosity about non-linear paths.',
+        intensity: 'medium'
+      }
+    }
+  },
+  'silas_burnout_story': {
+    sceneId: 'silas_burnout_story',
+    characterArc: 'silas',
+    sceneDescription: 'Silas describes the outage that broke him - fixed servers, couldnt save a tomato',
+    choiceMappings: {
+      'silas_burnout_continue': {
+        skillsDemonstrated: ['empathy', 'emotionalIntelligence'],
+        context: 'Recognized the turning point moment. Showed understanding of burnout.',
+        intensity: 'high'
+      }
+    }
+  },
+  'silas_learning_soil': {
+    sceneId: 'silas_learning_soil',
+    characterArc: 'silas',
+    sceneDescription: 'Silas describes learning from old farmer Hawkins who never used sensors',
+    choiceMappings: {
+      'silas_hawkins_teach': {
+        skillsDemonstrated: ['curiosity', 'patience', 'humility', 'deepWork', 'respect'],
+        context: 'Asked about the mentorship. Showed value for slow, deep learning and respect for traditional knowledge.',
+        intensity: 'high'
+      },
+      'silas_hawkins_tech': {
+        skillsDemonstrated: ['criticalThinking', 'systemsThinking'],
+        context: 'Identified the hubris - trying to encode tacit knowledge into software.',
+        intensity: 'high'
+      }
+    }
+  },
+  'silas_hawkins_lesson': {
+    sceneId: 'silas_hawkins_lesson',
+    characterArc: 'silas',
+    sceneDescription: 'Silas admits he thought he could scale Mr Hawkins wisdom into software',
+    choiceMappings: {
+      'silas_scale_mistake': {
+        skillsDemonstrated: ['wisdom', 'systemsThinking'],
+        context: 'Recognized that some knowledge doesnt scale. Wisdom about limits of technology.',
+        intensity: 'high'
+      }
+    }
+  },
+  'silas_strawberry_detail': {
+    sceneId: 'silas_strawberry_detail',
+    characterArc: 'silas',
+    sceneDescription: 'Silas describes the strawberry disaster - sensor in wrong spot, $40K loss',
+    choiceMappings: {
+      'silas_strawberry_lesson': {
+        skillsDemonstrated: ['systemsThinking', 'criticalThinking'],
+        context: 'Identified the measurement error - truth at one point isnt truth everywhere.',
+        intensity: 'high'
+      },
+      'silas_strawberry_feel': {
+        skillsDemonstrated: ['empathy', 'emotionalIntelligence'],
+        context: 'Acknowledged the emotional impact of failure. Built trust through empathy.',
+        intensity: 'high'
+      }
+    }
+  },
 
   // ============= MARCUS ARC (Medical Tech) =============
   'marcus_simulation_start': {
@@ -149,7 +472,7 @@ export const SCENE_SKILL_MAPPINGS: Record<string, SceneSkillMapping> = {
     sceneDescription: 'The "Air Bubble" Simulation - ECMO Crisis',
     choiceMappings: {
       'sim_clamp_line': {
-        skillsDemonstrated: ['problemSolving', 'criticalThinking', 'crisisManagement'],
+        skillsDemonstrated: ['problemSolving', 'criticalThinking', 'crisisManagement', 'urgency'],
         context: 'Identified the immediate physical threat (air) and acted decisively to stop flow. Prioritized mechanics over communication in a sub-second crisis.',
         intensity: 'high'
       },
@@ -177,6 +500,398 @@ export const SCENE_SKILL_MAPPINGS: Record<string, SceneSkillMapping> = {
       }
     }
   },
+  'marcus_introduction': {
+    sceneId: 'marcus_introduction',
+    characterArc: 'marcus',
+    sceneDescription: 'First encounter with Marcus - the ECMO nurse at 3 AM',
+    choiceMappings: {
+      'marcus_intro_sorry': {
+        skillsDemonstrated: ['adaptability', 'emotionalIntelligence', 'patience'],
+        context: 'Showed respect for the high-stakes environment. Adapted behavior to the situation.',
+        intensity: 'high'
+      },
+      'marcus_intro_curious': {
+        skillsDemonstrated: ['communication', 'criticalThinking', 'curiosity'],
+        context: 'Asked thoughtful questions about Marcus\'s mental visualization of the ECMO system.',
+        intensity: 'high'
+      },
+      'marcus_intro_check': {
+        skillsDemonstrated: ['emotionalIntelligence', 'observation'],
+        context: 'Observed the unusual behavior and noted it with empathy rather than judgment.',
+        intensity: 'medium'
+      }
+    }
+  },
+  'marcus_visualizes_machine': {
+    sceneId: 'marcus_visualizes_machine',
+    characterArc: 'marcus',
+    sceneDescription: 'Marcus explains the ECMO machine and its life-support role',
+    choiceMappings: {
+      'marcus_high_stakes': {
+        skillsDemonstrated: ['emotionalIntelligence', 'empathy'],
+        context: 'Acknowledged the emotional weight of keeping someone alive through a machine.',
+        intensity: 'high'
+      },
+      'marcus_machine_mechanics': {
+        skillsDemonstrated: ['criticalThinking', 'digitalLiteracy', 'technicalLiteracy'],
+        context: 'Showed interest in the technical operation, demonstrating curiosity about systems.',
+        intensity: 'high'
+      }
+    }
+  },
+  'marcus_technical_pride': {
+    sceneId: 'marcus_technical_pride',
+    characterArc: 'marcus',
+    sceneDescription: 'Marcus reveals the engineering complexity of CVICU work',
+    choiceMappings: {
+      'marcus_engineering_mindset': {
+        skillsDemonstrated: ['criticalThinking', 'problemSolving', 'observation'],
+        context: 'Recognized the engineering mindset required for medical technology work.',
+        intensity: 'high'
+      },
+      'marcus_heavy_burden': {
+        skillsDemonstrated: ['emotionalIntelligence', 'empathy'],
+        context: 'Acknowledged the psychological weight of life-or-death precision.',
+        intensity: 'high'
+      }
+    }
+  },
+  'marcus_the_bubble': {
+    sceneId: 'marcus_the_bubble',
+    characterArc: 'marcus',
+    sceneDescription: 'Marcus reveals the air bubble crisis - the real enemy',
+    choiceMappings: {
+      'marcus_what_did_you_do': {
+        skillsDemonstrated: ['problemSolving', 'curiosity', 'criticalThinking', 'urgency'],
+        context: 'Sought to understand the crisis response methodology under time pressure.',
+        intensity: 'high'
+      },
+      'marcus_panic_check': {
+        skillsDemonstrated: ['emotionalIntelligence', 'empathy'],
+        context: 'Focused on the human emotional response during crisis.',
+        intensity: 'medium'
+      }
+    }
+  },
+  'marcus_sim_step_3': {
+    sceneId: 'marcus_sim_step_3',
+    characterArc: 'marcus',
+    sceneDescription: 'Final simulation step - aspirating the bubble',
+    choiceMappings: {
+      'sim_aspirate': {
+        skillsDemonstrated: ['criticalThinking', 'digitalLiteracy', 'problemSolving', 'urgency'],
+        context: 'Applied correct technical procedure to remove the air bubble safely under extreme time pressure.',
+        intensity: 'high'
+      },
+      'sim_push_fluid': {
+        skillsDemonstrated: ['creativity'],
+        context: 'Creative but incorrect approach - demonstrates problem-solving attempt.',
+        intensity: 'low'
+      }
+    }
+  },
+  'marcus_sim_success': {
+    sceneId: 'marcus_sim_success',
+    characterArc: 'marcus',
+    sceneDescription: 'Successfully completing the ECMO simulation',
+    choiceMappings: {
+      'marcus_post_sim_reaction': {
+        skillsDemonstrated: ['emotionalIntelligence', 'resilience'],
+        context: 'Processed the emotional intensity of the simulation experience.',
+        intensity: 'high'
+      },
+      'marcus_post_sim_tech': {
+        skillsDemonstrated: ['criticalThinking', 'problemSolving', 'technicalLiteracy'],
+        context: 'Recognized the engineering precision required in medical technology.',
+        intensity: 'high'
+      }
+    }
+  },
+  'marcus_career_bridge': {
+    sceneId: 'marcus_career_bridge',
+    characterArc: 'marcus',
+    sceneDescription: 'Marcus reveals his career evolution and future paths',
+    choiceMappings: {
+      'marcus_biomed_path': {
+        skillsDemonstrated: ['creativity', 'leadership', 'strategicThinking'],
+        context: 'Encouraged Marcus toward equipment design based on his failure analysis expertise.',
+        intensity: 'high'
+      },
+      'marcus_perfusion_path': {
+        skillsDemonstrated: ['adaptability', 'encouragement'],
+        context: 'Validated Marcus\'s current expertise and operating room potential.',
+        intensity: 'medium'
+      }
+    }
+  },
+  'marcus_farewell': {
+    sceneId: 'marcus_farewell',
+    characterArc: 'marcus',
+    sceneDescription: 'Marcus expresses gratitude and sends message to Samuel',
+    choiceMappings: {
+      'return_to_samuel': {
+        skillsDemonstrated: ['communication', 'collaboration'],
+        context: 'Agreed to carry Marcus\'s message, connecting the network.',
+        intensity: 'medium'
+      },
+      'marcus_ask_about_teaching': {
+        skillsDemonstrated: ['leadership', 'communication', 'mentorship'],
+        context: 'Prompted Marcus to consider his teaching potential.',
+        intensity: 'high'
+      }
+    }
+  },
+  // Marcus Phase 2 - Crisis Management & Mentorship
+  'marcus_phase2_entry': {
+    sceneId: 'marcus_phase2_entry',
+    characterArc: 'marcus',
+    sceneDescription: 'Marcus is now mentoring Jordan, a new CVICU nurse',
+    choiceMappings: {
+      'p2_jordan_intro': {
+        skillsDemonstrated: ['emotionalIntelligence', 'communication', 'respect'],
+        context: 'Engaged respectfully with the new trainee, showing interpersonal awareness.',
+        intensity: 'medium'
+      },
+      'p2_marcus_check': {
+        skillsDemonstrated: ['emotionalIntelligence', 'empathy'],
+        context: 'Checked in on Marcus\'s transition to teaching role.',
+        intensity: 'medium'
+      }
+    }
+  },
+  'marcus_p2_jordan_nervous': {
+    sceneId: 'marcus_p2_jordan_nervous',
+    characterArc: 'marcus',
+    sceneDescription: 'Jordan expresses fear about the responsibility',
+    choiceMappings: {
+      'p2_jordan_reassure': {
+        skillsDemonstrated: ['emotionalIntelligence', 'encouragement', 'mentorship', 'respect'],
+        context: 'Reassured the anxious trainee with respect and confidence in their teacher.',
+        intensity: 'high'
+      },
+      'p2_jordan_real_talk': {
+        skillsDemonstrated: ['criticalThinking', 'integrity'],
+        context: 'Acknowledged the stakes honestly rather than minimizing them.',
+        intensity: 'high'
+      }
+    }
+  },
+  'marcus_p2_teaching_moment': {
+    sceneId: 'marcus_p2_teaching_moment',
+    characterArc: 'marcus',
+    sceneDescription: 'Teaching interrupted by critical alert',
+    choiceMappings: {
+      'p2_whats_wrong': {
+        skillsDemonstrated: ['problemSolving', 'crisisManagement', 'curiosity', 'urgency'],
+        context: 'Immediately sought to understand the nature of the crisis with appropriate urgency.',
+        intensity: 'high'
+      },
+      'p2_stay_calm': {
+        skillsDemonstrated: ['emotionalIntelligence', 'leadership', 'resilience'],
+        context: 'Modeled calm leadership during crisis escalation.',
+        intensity: 'high'
+      }
+    }
+  },
+  'marcus_p2_equipment_crisis': {
+    sceneId: 'marcus_p2_equipment_crisis',
+    characterArc: 'marcus',
+    sceneDescription: 'Triage crisis - 3 machines for 5 patients',
+    choiceMappings: {
+      'p2_medical_criteria': {
+        skillsDemonstrated: ['criticalThinking', 'problemSolving', 'systemsThinking', 'triage'],
+        context: 'Sought objective framework for resource allocation and triage decisions.',
+        intensity: 'high'
+      },
+      'p2_impossible_choice': {
+        skillsDemonstrated: ['emotionalIntelligence', 'empathy'],
+        context: 'Acknowledged the impossible human weight of triage decisions.',
+        intensity: 'high'
+      }
+    }
+  },
+  'marcus_p2_cases_review': {
+    sceneId: 'marcus_p2_cases_review',
+    characterArc: 'marcus',
+    sceneDescription: 'Reviewing the five patient cases for allocation',
+    choiceMappings: {
+      'p2_survival_focus': {
+        skillsDemonstrated: ['criticalThinking', 'informationLiteracy', 'systemsThinking', 'triage'],
+        context: 'Prioritized evidence-based survival probability analysis.',
+        intensity: 'high'
+      },
+      'p2_years_focus': {
+        skillsDemonstrated: ['emotionalIntelligence', 'integrity', 'fairness'],
+        context: 'Considered life-years remaining as an ethical factor.',
+        intensity: 'high'
+      },
+      'p2_holistic': {
+        skillsDemonstrated: ['systemsThinking', 'leadership', 'wisdom'],
+        context: 'Advocated for multi-dimensional decision framework.',
+        intensity: 'high'
+      }
+    }
+  },
+  'marcus_p2_framework_survival': {
+    sceneId: 'marcus_p2_framework_survival',
+    characterArc: 'marcus',
+    sceneDescription: 'Debating data-driven vs human factors in triage',
+    choiceMappings: {
+      'p2_stick_to_data': {
+        skillsDemonstrated: ['criticalThinking', 'pragmatism'],
+        context: 'Committed to objective data-driven decision making.',
+        intensity: 'high'
+      },
+      'p2_human_factors': {
+        skillsDemonstrated: ['emotionalIntelligence', 'wisdom'],
+        context: 'Advocated for human context in life-death decisions.',
+        intensity: 'high'
+      }
+    }
+  },
+  'marcus_p2_framework_years': {
+    sceneId: 'marcus_p2_framework_years',
+    characterArc: 'marcus',
+    sceneDescription: 'Discussing age-based vs recovery-based prioritization',
+    choiceMappings: {
+      'p2_youngest_first': {
+        skillsDemonstrated: ['integrity', 'fairness'],
+        context: 'Chose defensible age-based prioritization principle.',
+        intensity: 'high'
+      },
+      'p2_recovery_path': {
+        skillsDemonstrated: ['criticalThinking', 'pragmatism'],
+        context: 'Focused on medical outcomes regardless of demographics.',
+        intensity: 'high'
+      }
+    }
+  },
+  'marcus_p2_framework_holistic': {
+    sceneId: 'marcus_p2_framework_holistic',
+    characterArc: 'marcus',
+    sceneDescription: 'Building a systematic triage decision matrix',
+    choiceMappings: {
+      'p2_build_matrix': {
+        skillsDemonstrated: ['systemsThinking', 'problemSolving', 'leadership'],
+        context: 'Created systematic framework for transparent decision-making.',
+        intensity: 'high'
+      },
+      'p2_trust_judgment': {
+        skillsDemonstrated: ['leadership', 'emotionalIntelligence', 'wisdom'],
+        context: 'Balanced systematic thinking with human judgment.',
+        intensity: 'high'
+      }
+    }
+  },
+  'marcus_p2_jordan_question': {
+    sceneId: 'marcus_p2_jordan_question',
+    characterArc: 'marcus',
+    sceneDescription: 'Jordan asks how Marcus lives with these decisions',
+    choiceMappings: {
+      'p2_marcus_answer_honest': {
+        skillsDemonstrated: ['emotionalIntelligence', 'empathy'],
+        context: 'Created space for Marcus to share his coping mechanism.',
+        intensity: 'high'
+      },
+      'p2_marcus_answer_redirect': {
+        skillsDemonstrated: ['communication', 'leadership', 'mentorship'],
+        context: 'Framed the question as a teaching opportunity.',
+        intensity: 'high'
+      }
+    }
+  },
+  'marcus_p2_teaching_burden': {
+    sceneId: 'marcus_p2_teaching_burden',
+    characterArc: 'marcus',
+    sceneDescription: 'Marcus teaches Jordan about carrying ethical weight',
+    choiceMappings: {
+      'p2_good_answer': {
+        skillsDemonstrated: ['emotionalIntelligence', 'wisdom'],
+        context: 'Validated the importance of experience-based wisdom.',
+        intensity: 'high'
+      },
+      'p2_systematic_approach': {
+        skillsDemonstrated: ['systemsThinking', 'criticalThinking'],
+        context: 'Recognized how frameworks reduce cognitive burden.',
+        intensity: 'medium'
+      }
+    }
+  },
+  'marcus_p2_ethics_decision': {
+    sceneId: 'marcus_p2_ethics_decision',
+    characterArc: 'marcus',
+    sceneDescription: 'Deciding between ethics committee and medical urgency',
+    choiceMappings: {
+      'p2_wait_for_ethics': {
+        skillsDemonstrated: ['integrity', 'collaboration', 'patience', 'accountability'],
+        context: 'Prioritized shared ethical responsibility and accountability over speed.',
+        intensity: 'high'
+      },
+      'p2_make_call': {
+        skillsDemonstrated: ['leadership', 'actionOrientation', 'courage'],
+        context: 'Took ownership of urgent medical decision.',
+        intensity: 'high'
+      }
+    }
+  },
+  'marcus_p2_communication': {
+    sceneId: 'marcus_p2_communication',
+    characterArc: 'marcus',
+    sceneDescription: 'Deciding how to communicate with families',
+    choiceMappings: {
+      'p2_full_transparency': {
+        skillsDemonstrated: ['communication', 'integrity', 'courage'],
+        context: 'Chose radical honesty about resource allocation.',
+        intensity: 'high'
+      },
+      'p2_gentle_framing': {
+        skillsDemonstrated: ['emotionalIntelligence', 'communication', 'empathy'],
+        context: 'Protected families from triage machinery details.',
+        intensity: 'high'
+      }
+    }
+  },
+  'marcus_p2_resolution': {
+    sceneId: 'marcus_p2_resolution',
+    characterArc: 'marcus',
+    sceneDescription: 'Crisis resolved - Marcus reports outcomes',
+    choiceMappings: {
+      'p2_jordan_responds': {
+        skillsDemonstrated: ['emotionalIntelligence', 'patience'],
+        context: 'Gave space for Jordan to process the experience.',
+        intensity: 'medium'
+      }
+    }
+  },
+  'marcus_p2_jordan_reflection': {
+    sceneId: 'marcus_p2_jordan_reflection',
+    characterArc: 'marcus',
+    sceneDescription: 'Jordan commits to the work despite the weight',
+    choiceMappings: {
+      'p2_final_teaching': {
+        skillsDemonstrated: ['emotionalIntelligence', 'leadership', 'mentorship'],
+        context: 'Acknowledged Marcus\'s natural teaching ability.',
+        intensity: 'high'
+      },
+      'p2_proud_moment': {
+        skillsDemonstrated: ['leadership', 'encouragement'],
+        context: 'Validated Jordan\'s commitment to the difficult path.',
+        intensity: 'high'
+      }
+    }
+  },
+  'marcus_p2_complete': {
+    sceneId: 'marcus_p2_complete',
+    characterArc: 'marcus',
+    sceneDescription: 'Marcus realizes his path - teaching the next generation',
+    choiceMappings: {
+      'p2_return_to_samuel': {
+        skillsDemonstrated: ['communication', 'collaboration'],
+        context: 'Connecting the network by sharing Marcus\'s growth with Samuel.',
+        intensity: 'medium'
+      }
+    }
+  },
 
   // ============= TESS ARC (Education Founder) =============
   'tess_the_pitch_setup': {
@@ -185,19 +900,216 @@ export const SCENE_SKILL_MAPPINGS: Record<string, SceneSkillMapping> = {
     sceneDescription: 'The "Grant Proposal" Simulation - Pitch Deck Tone',
     choiceMappings: {
       'pitch_resilience': {
-        skillsDemonstrated: ['leadership', 'creativity', 'communication'],
-        context: 'Framed the program around "Antifragility," connecting educational outcomes to modern resilience needs. Strong visionary leadership.',
+        skillsDemonstrated: ['leadership', 'creativity', 'communication', 'marketing'],
+        context: 'Framed the program around "Antifragility," connecting educational outcomes to modern resilience needs. Strong visionary leadership and persuasive marketing.',
         intensity: 'high'
       },
       'pitch_mental_health': {
-        skillsDemonstrated: ['emotionalIntelligence', 'leadership'],
-        context: 'Framed the program as a mental health intervention ("Disconnect to Reconnect"). Strong empathetic leadership.',
+        skillsDemonstrated: ['emotionalIntelligence', 'leadership', 'marketing'],
+        context: 'Framed the program as a mental health intervention ("Disconnect to Reconnect"). Strong empathetic leadership and emotional marketing.',
         intensity: 'high'
       },
       'pitch_safe': {
         skillsDemonstrated: ['communication'],
         context: 'Chose a safe, academic tone ("Evidence-Based"), failing to capture the urgency or emotion required for funding.',
         intensity: 'low'
+      }
+    }
+  },
+  'tess_introduction': {
+    sceneId: 'tess_introduction',
+    characterArc: 'tess',
+    sceneDescription: 'First encounter with Tess - the visionary founder struggling to name her educational philosophy',
+    choiceMappings: {
+      'tess_intro_crucible': {
+        skillsDemonstrated: ['communication', 'criticalThinking', 'observation'],
+        context: 'Understood the transformative intent behind wilderness education. Demonstrated observation skills by reading the situation.',
+        intensity: 'high'
+      },
+      'tess_intro_vacation': {
+        skillsDemonstrated: ['criticalThinking', 'observation'],
+        context: 'Challenged the concept - forced Tess to articulate the rigor. Observation of what outsiders see.',
+        intensity: 'medium'
+      },
+      'tess_intro_curious': {
+        skillsDemonstrated: ['criticalThinking', 'communication', 'curiosity'],
+        context: 'Asked the right question to understand the deeper vision. Curiosity driving exploration.',
+        intensity: 'medium'
+      }
+    }
+  },
+  'tess_explains_school': {
+    sceneId: 'tess_explains_school',
+    characterArc: 'tess',
+    sceneDescription: 'Tess shares the origin story of Walkabout and why experiential learning matters',
+    choiceMappings: {
+      'tess_what_happened': {
+        skillsDemonstrated: ['criticalThinking', 'curiosity'],
+        context: 'Sought root cause of program failure. Critical inquiry into systems.',
+        intensity: 'medium'
+      },
+      'tess_why_founder': {
+        skillsDemonstrated: ['emotionalIntelligence', 'observation'],
+        context: 'Recognized the personal stakes and emotional investment. Observed the founder identity.',
+        intensity: 'high'
+      }
+    }
+  },
+  'tess_founder_motivation': {
+    sceneId: 'tess_founder_motivation',
+    characterArc: 'tess',
+    sceneDescription: 'Tess reveals the tension between job security and founder calling',
+    choiceMappings: {
+      'tess_risk_validation': {
+        skillsDemonstrated: ['emotionalIntelligence', 'encouragement', 'observation'],
+        context: 'Validated the courage required to leave safety. Observed the internal struggle.',
+        intensity: 'high'
+      }
+    }
+  },
+  'tess_defunding_reveal': {
+    sceneId: 'tess_defunding_reveal',
+    characterArc: 'tess',
+    sceneDescription: 'Tess explains how the original program was defunded for "unmeasurable outcomes"',
+    choiceMappings: {
+      'tess_help_pitch': {
+        skillsDemonstrated: ['collaboration', 'communication', 'creativity'],
+        context: 'Offered to help with the pitch - collaborative problem-solving with creative intent.',
+        intensity: 'high'
+      }
+    }
+  },
+  'tess_pitch_climax': {
+    sceneId: 'tess_pitch_climax',
+    characterArc: 'tess',
+    sceneDescription: 'The climactic decision - Tess must choose between security and her vision',
+    choiceMappings: {
+      'tess_commit_leap': {
+        skillsDemonstrated: ['leadership', 'adaptability', 'emotionalIntelligence', 'courage'],
+        context: 'Encouraged the leap of faith. Demonstrated understanding of authentic leadership.',
+        intensity: 'high'
+      },
+      'tess_commit_safety': {
+        skillsDemonstrated: ['problemSolving', 'criticalThinking', 'observation'],
+        context: 'Offered a pragmatic middle path. Observed the risk-reward tradeoff.',
+        intensity: 'medium'
+      },
+      'tess_commit_belief': {
+        skillsDemonstrated: ['emotionalIntelligence', 'encouragement', 'observation'],
+        context: 'Connected the personal mission to student needs. Observed the deeper purpose.',
+        intensity: 'high'
+      }
+    }
+  },
+  'tess_p2_crisis_reveal': {
+    sceneId: 'tess_p2_crisis_reveal',
+    characterArc: 'tess',
+    sceneDescription: 'Phase 2: DeShawn has a panic attack on the trail - the first major crisis',
+    choiceMappings: {
+      'p2_deshawn_focus': {
+        skillsDemonstrated: ['emotionalIntelligence', 'empathy', 'observation'],
+        context: 'Prioritized student wellbeing over program concerns. Observed the human impact.',
+        intensity: 'high'
+      },
+      'p2_program_risk': {
+        skillsDemonstrated: ['riskManagement', 'strategicThinking', 'observation'],
+        context: 'Identified systemic risk to the program. Strategic observation of consequences.',
+        intensity: 'high'
+      }
+    }
+  },
+  'tess_p2_ripple_effect': {
+    sceneId: 'tess_p2_ripple_effect',
+    characterArc: 'tess',
+    sceneDescription: 'The crisis spreads - other students want to quit, parents are furious',
+    choiceMappings: {
+      'p2_talk_to_deshawn': {
+        skillsDemonstrated: ['emotionalIntelligence', 'leadership', 'observation'],
+        context: 'Prioritized direct student support. Leadership through presence.',
+        intensity: 'high'
+      },
+      'p2_assess_program': {
+        skillsDemonstrated: ['criticalThinking', 'adaptability', 'observation'],
+        context: 'Stepped back for systemic assessment. Observation of program design flaws.',
+        intensity: 'high'
+      }
+    }
+  },
+  'tess_p2_deshawn_conversation': {
+    sceneId: 'tess_p2_deshawn_conversation',
+    characterArc: 'tess',
+    sceneDescription: 'Video call with DeShawn who feels like he failed',
+    choiceMappings: {
+      'p2_deshawn_courage': {
+        skillsDemonstrated: ['emotionalIntelligence', 'encouragement', 'observation'],
+        context: 'Reframed failure as courage. Observed the growth opportunity.',
+        intensity: 'high'
+      },
+      'p2_deshawn_alternative': {
+        skillsDemonstrated: ['adaptability', 'pragmatism', 'observation'],
+        context: 'Offered flexible path. Observed individual needs over program ideology.',
+        intensity: 'medium'
+      },
+      'p2_deshawn_choice': {
+        skillsDemonstrated: ['emotionalIntelligence', 'respect', 'observation'],
+        context: 'Gave agency back to the student. Observed the importance of choice.',
+        intensity: 'high'
+      }
+    }
+  },
+  'tess_p2_parent_calls': {
+    sceneId: 'tess_p2_parent_calls',
+    characterArc: 'tess',
+    sceneDescription: 'Angry parents threatening lawsuits and pulling students',
+    choiceMappings: {
+      'p2_defend_rigor': {
+        skillsDemonstrated: ['courage', 'leadership', 'observation'],
+        context: 'Stood ground on educational philosophy. Observed the need for conviction.',
+        intensity: 'high'
+      },
+      'p2_two_track': {
+        skillsDemonstrated: ['adaptability', 'strategicThinking', 'observation'],
+        context: 'Designed tiered approach. Observed diverse stakeholder needs.',
+        intensity: 'high'
+      },
+      'p2_acknowledge_concerns': {
+        skillsDemonstrated: ['emotionalIntelligence', 'communication', 'observation'],
+        context: 'Validated parent concerns while maintaining vision. Observed the bridge-building opportunity.',
+        intensity: 'high'
+      }
+    }
+  },
+  'tess_p2_board_prep': {
+    sceneId: 'tess_p2_board_prep',
+    characterArc: 'tess',
+    sceneDescription: 'Preparing for the board meeting that will decide the programs fate',
+    choiceMappings: {
+      'p2_data_driven': {
+        skillsDemonstrated: ['informationLiteracy', 'strategicThinking', 'observation'],
+        context: 'Chose evidence-based approach for skeptics. Observed what convinces boards.',
+        intensity: 'high'
+      },
+      'p2_vision_driven': {
+        skillsDemonstrated: ['creativity', 'communication', 'observation'],
+        context: 'Chose inspirational approach. Observed the power of vision over data.',
+        intensity: 'high'
+      },
+      'p2_both': {
+        skillsDemonstrated: ['communication', 'leadership', 'strategicThinking', 'observation'],
+        context: 'Synthesized data and vision. Observed the need for balanced persuasion.',
+        intensity: 'high'
+      }
+    }
+  },
+  'tess_p2_reflection': {
+    sceneId: 'tess_p2_reflection',
+    characterArc: 'tess',
+    sceneDescription: 'Tess reflects on what shes learned about founding and leadership',
+    choiceMappings: {
+      'p2_complete': {
+        skillsDemonstrated: ['encouragement', 'leadership', 'observation'],
+        context: 'Affirmed the growth journey. Observed the transformation from visionary to builder.',
+        intensity: 'high'
       }
     }
   },
@@ -221,6 +1133,215 @@ export const SCENE_SKILL_MAPPINGS: Record<string, SceneSkillMapping> = {
       'module_soft_skills': {
         skillsDemonstrated: ['emotionalIntelligence', 'leadership'],
         context: 'Chose "Reading the Room," validating the emotional labor of the role. Strong empathetic leadership.',
+        intensity: 'high'
+      }
+    }
+  },
+  'yaquin_introduction': {
+    sceneId: 'yaquin_introduction',
+    characterArc: 'yaquin',
+    sceneDescription: 'First encounter with Yaquin - confronting imposter syndrome as a self-taught educator',
+    choiceMappings: {
+      'yaquin_intro_garbage': {
+        skillsDemonstrated: ['criticalThinking', 'wisdom'],
+        context: 'Validated practical experience over theory - recognizing that real-world effectiveness matters more than formal credentials.',
+        intensity: 'high'
+      },
+      'yaquin_intro_authority': {
+        skillsDemonstrated: ['emotionalIntelligence', 'empathy'],
+        context: 'Explored the emotional root of imposter syndrome rather than surface-level problem. Deep empathetic questioning.',
+        intensity: 'high'
+      },
+      'yaquin_intro_content': {
+        skillsDemonstrated: ['digitalLiteracy', 'curiosity', 'marketing', 'financialLiteracy'],
+        context: 'Showed interest in the creator economy pathway, online education landscape, and sustainable monetization.',
+        intensity: 'medium'
+      }
+    }
+  },
+  'yaquin_textbook_problem': {
+    sceneId: 'yaquin_textbook_problem',
+    characterArc: 'yaquin',
+    sceneDescription: 'Yaquin explains the gap between textbook theory and practical reality',
+    choiceMappings: {
+      'yaquin_tacit_knowledge': {
+        skillsDemonstrated: ['criticalThinking', 'wisdom'],
+        context: 'Recognized and named the concept of tacit knowledge - wisdom that can only come from experience.',
+        intensity: 'high'
+      },
+      'yaquin_teach_that': {
+        skillsDemonstrated: ['leadership', 'encouragement'],
+        context: 'Encouraged action and confidence - pushing Yaquin to teach what he actually knows.',
+        intensity: 'high'
+      }
+    }
+  },
+  'yaquin_credential_gap': {
+    sceneId: 'yaquin_credential_gap',
+    characterArc: 'yaquin',
+    sceneDescription: 'Yaquin reveals vulnerability about being "just an assistant" without formal credentials',
+    choiceMappings: {
+      'yaquin_competence': {
+        skillsDemonstrated: ['encouragement', 'wisdom', 'emotionalIntelligence'],
+        context: 'Affirmed that demonstrated competence outweighs paper credentials - wisdom about what truly matters.',
+        intensity: 'high'
+      }
+    }
+  },
+  'yaquin_creator_path': {
+    sceneId: 'yaquin_creator_path',
+    characterArc: 'yaquin',
+    sceneDescription: 'Yaquin questions whether teaching online is meaningful with only 87 followers',
+    choiceMappings: {
+      'yaquin_creator_continue': {
+        skillsDemonstrated: ['encouragement', 'wisdom', 'emotionalIntelligence'],
+        context: 'Reframed small audience as validation rather than failure - wisdom about impact vs. scale.',
+        intensity: 'high'
+      }
+    }
+  },
+  'yaquin_launch_decision': {
+    sceneId: 'yaquin_launch_decision',
+    characterArc: 'yaquin',
+    sceneDescription: 'The climactic moment - Yaquin must decide whether to publish or stay hidden',
+    choiceMappings: {
+      'launch_now': {
+        skillsDemonstrated: ['courage', 'entrepreneurship', 'actionOrientation'],
+        context: 'Encouraged bold action over analysis paralysis. Demonstrated entrepreneurial mindset and bias toward action.',
+        intensity: 'high'
+      },
+      'launch_wait': {
+        skillsDemonstrated: ['strategicThinking', 'riskManagement'],
+        context: 'Chose measured approach - build proof of concept before full exposure. Strategic risk management.',
+        intensity: 'high'
+      }
+    }
+  },
+  'yaquin_p2_quality_crisis': {
+    sceneId: 'yaquin_p2_quality_crisis',
+    characterArc: 'yaquin',
+    sceneDescription: 'Phase 2: Yaquin faces refunds and realizes format mismatch between student types',
+    choiceMappings: {
+      'p2_two_student_types': {
+        skillsDemonstrated: ['criticalThinking', 'strategicThinking', 'wisdom'],
+        context: 'Identified root cause of failure - not content quality but format mismatch. Strategic systems thinking.',
+        intensity: 'high'
+      },
+      'p2_refund_policy': {
+        skillsDemonstrated: ['pragmatism', 'entrepreneurship', 'financialLiteracy'],
+        context: 'Focused on business mechanics and financial sustainability rather than emotional response. Practical entrepreneurial thinking.',
+        intensity: 'medium'
+      }
+    }
+  },
+  'yaquin_p2_dds_comment': {
+    sceneId: 'yaquin_p2_dds_comment',
+    characterArc: 'yaquin',
+    sceneDescription: 'Yaquin faces public criticism from a credentialed dentist calling his course "amateur hour"',
+    choiceMappings: {
+      'p2_credentials_matter': {
+        skillsDemonstrated: ['encouragement', 'emotionalIntelligence', 'wisdom'],
+        context: 'Affirmed that experience is a valid credential. Provided emotional support during vulnerability.',
+        intensity: 'high'
+      },
+      'p2_take_feedback': {
+        skillsDemonstrated: ['learningAgility', 'humility', 'wisdom'],
+        context: 'Encouraged growth mindset - using criticism as fuel for improvement rather than defense.',
+        intensity: 'high'
+      }
+    }
+  },
+  'yaquin_p2_refund_pressure': {
+    sceneId: 'yaquin_p2_refund_pressure',
+    characterArc: 'yaquin',
+    sceneDescription: 'Ethical dilemma: Honor all refunds or hold firm on policy?',
+    choiceMappings: {
+      'p2_generous_refunds': {
+        skillsDemonstrated: ['integrity', 'patience', 'wisdom'],
+        context: 'Prioritized long-term reputation over short-term revenue. Wisdom about building trust.',
+        intensity: 'high'
+      },
+      'p2_firm_policy': {
+        skillsDemonstrated: ['accountability', 'courage'],
+        context: 'Held boundaries against exploitation. Courage to maintain standards despite pressure.',
+        intensity: 'high'
+      },
+      'p2_case_by_case': {
+        skillsDemonstrated: ['emotionalIntelligence', 'fairness', 'wisdom'],
+        context: 'Chose nuanced approach - understanding each situation rather than blanket policy. Wisdom in judgment.',
+        intensity: 'high'
+      }
+    }
+  },
+  'yaquin_p2_credibility_response': {
+    sceneId: 'yaquin_p2_credibility_response',
+    characterArc: 'yaquin',
+    sceneDescription: 'Strategic choice: Defend expertise or invite critic as collaborator?',
+    choiceMappings: {
+      'p2_invite_advisor': {
+        skillsDemonstrated: ['collaboration', 'strategicThinking', 'wisdom'],
+        context: 'Transformed opponent into ally. Wisdom about building coalitions and leveraging criticism.',
+        intensity: 'high'
+      },
+      'p2_defend_experience': {
+        skillsDemonstrated: ['courage', 'integrity', 'wisdom'],
+        context: 'Stood ground on the value of practical expertise. Integrity in defending authentic credential.',
+        intensity: 'high'
+      }
+    }
+  },
+  'yaquin_p2_format_decision': {
+    sceneId: 'yaquin_p2_format_decision',
+    characterArc: 'yaquin',
+    sceneDescription: 'Product strategy: Choose cohort-based, improve self-paced, or two-tier model?',
+    choiceMappings: {
+      'p2_cohort_based': {
+        skillsDemonstrated: ['curriculumDesign', 'wisdom'],
+        context: 'Chose quality over quantity. Wisdom about sustainable teaching models.',
+        intensity: 'high'
+      },
+      'p2_improve_self_paced': {
+        skillsDemonstrated: ['learningAgility', 'resilience'],
+        context: 'Chose iteration over pivot. Resilience to improve rather than abandon.',
+        intensity: 'medium'
+      },
+      'p2_two_tier': {
+        skillsDemonstrated: ['strategicThinking', 'entrepreneurship', 'wisdom'],
+        context: 'Designed product for multiple customer segments. Strategic market segmentation wisdom.',
+        intensity: 'high'
+      }
+    }
+  },
+  'yaquin_p2_scaling_offer': {
+    sceneId: 'yaquin_p2_scaling_offer',
+    characterArc: 'yaquin',
+    sceneDescription: 'Business opportunity: License course to dental offices for guaranteed income',
+    choiceMappings: {
+      'p2_take_license': {
+        skillsDemonstrated: ['pragmatism', 'entrepreneurship', 'financialLiteracy'],
+        context: 'Chose sustainable income stream. Financial literacy in building recurring revenue.',
+        intensity: 'high'
+      },
+      'p2_stay_direct': {
+        skillsDemonstrated: ['integrity', 'wisdom'],
+        context: 'Prioritized mission over money. Wisdom about staying true to purpose.',
+        intensity: 'high'
+      },
+      'p2_both': {
+        skillsDemonstrated: ['strategicThinking', 'adaptability', 'entrepreneurship'],
+        context: 'Found way to serve both goals. Strategic synthesis of impact and sustainability.',
+        intensity: 'high'
+      }
+    }
+  },
+  'yaquin_p2_operational_wisdom': {
+    sceneId: 'yaquin_p2_operational_wisdom',
+    characterArc: 'yaquin',
+    sceneDescription: 'Yaquin shares hard-won insight: blame the design, not the student',
+    choiceMappings: {
+      'p2_reflection': {
+        skillsDemonstrated: ['emotionalIntelligence', 'wisdom', 'culturalCompetence'],
+        context: 'Recognized growth journey from creator to business operator. Wisdom about the 80/20 of success.',
         intensity: 'high'
       }
     }
