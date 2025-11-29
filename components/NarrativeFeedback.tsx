@@ -36,7 +36,9 @@ export function NarrativeFeedback({ message, isVisible, onDismiss }: NarrativeFe
   return (
     <div
       className={cn(
-        "fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50",
+        // Position above choices panel (which has mb-16 sm:mb-32)
+        // Research: "notifications pushed to screen center near text"
+        "fixed bottom-36 sm:bottom-44 left-1/2 transform -translate-x-1/2 z-50",
         "transition-all duration-500 ease-in-out",
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
       )}

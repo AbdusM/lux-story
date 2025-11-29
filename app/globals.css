@@ -13,6 +13,33 @@
   --dvh: 100dvh;
 }
 
+/* ══════════════════════════════════════════════════════════════════════════════
+   FONT SCALING - Respect user's system preferences (Dynamic Type / iOS)
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* Base size respects browser/system settings - WCAG 1.4.4 compliance */
+html {
+  font-size: 100%; /* 16px default, scales with browser zoom and system preferences */
+  -webkit-text-size-adjust: 100%; /* Prevent iOS auto text size adjustment */
+  text-size-adjust: 100%;
+}
+
+/* iOS Dynamic Type support */
+@supports (font: -apple-system-body) {
+  html {
+    font: -apple-system-body;
+    font-family: var(--font-space-mono), ui-monospace, monospace;
+  }
+}
+
+/* Ensure text remains readable when scaled up to 200% - WCAG requirement */
+@media (min-resolution: 1.5dppx) {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
 /* Prevent iOS Safari bounce/overscroll on body */
 html {
   overflow: hidden;

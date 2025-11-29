@@ -158,6 +158,7 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused }:
       custom={index}
       className="w-full"
       data-choice-index={index}
+      style={{ scrollSnapAlign: 'start' }} // Snap to choice boundaries during scroll
     >
       <Button
         key={index}
