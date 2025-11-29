@@ -457,30 +457,31 @@ export default function StatefulGameInterface() {
         <div className="max-w-4xl mx-auto px-3 sm:px-4">
           {/* Top Navigation Row */}
           <div className="flex justify-between items-center py-2">
-            <div className="flex gap-2 sm:gap-3 items-center">
+            <div className="flex gap-1 sm:gap-2 items-center">
+              {/* All buttons must be 44px minimum touch target (Apple HIG, Android MD) */}
               <button
                 onClick={() => setState(prev => ({ ...prev, showThoughtCabinet: true }))}
-                className="p-2 rounded-full hover:bg-slate-100 active:bg-slate-200 transition-colors text-slate-500"
+                className="min-w-[44px] min-h-[44px] p-2.5 rounded-full hover:bg-slate-100 active:bg-slate-200 transition-colors text-slate-500 flex items-center justify-center"
                 aria-label="Open Thought Cabinet"
               >
                 <Brain className="w-5 h-5" />
               </button>
               <Link href="/student/insights">
-                <button className="text-xs sm:text-sm text-blue-600 hover:text-blue-700 active:text-blue-800 transition-colors px-2 py-1.5 font-medium rounded-md hover:bg-blue-50 active:bg-blue-100">
+                <button className="min-h-[44px] text-xs sm:text-sm text-blue-600 hover:text-blue-700 active:text-blue-800 transition-colors px-3 py-2 font-medium rounded-md hover:bg-blue-50 active:bg-blue-100">
                   Your Journey
                 </button>
               </Link>
               <Link href="/admin" className="hidden sm:block">
-                <button className="text-xs text-slate-400 hover:text-slate-600 transition-colors px-2 py-1">
+                <button className="min-h-[44px] text-xs text-slate-400 hover:text-slate-600 transition-colors px-3 py-2 rounded-md hover:bg-slate-100">
                   Admin
                 </button>
               </Link>
             </div>
-            <div className="flex gap-2 items-center">
+            <div className="flex gap-1 sm:gap-2 items-center">
               <SyncStatusIndicator />
               <button
                 onClick={() => window.location.reload()}
-                className="text-xs text-slate-400 hover:text-slate-600 active:text-slate-800 px-2 py-1.5 rounded-md hover:bg-slate-100 active:bg-slate-200"
+                className="min-h-[44px] text-xs text-slate-400 hover:text-slate-600 active:text-slate-800 px-3 py-2 rounded-md hover:bg-slate-100 active:bg-slate-200"
               >
                 New Conversation
               </button>
@@ -579,7 +580,15 @@ export default function StatefulGameInterface() {
         <footer className="flex-shrink-0 bg-stone-50 border border-stone-200 shadow-lg mb-16 sm:mb-32 mx-3 sm:mx-auto sm:max-w-2xl rounded-2xl">
           <div className="px-3 sm:px-4 py-3 sm:py-4">
             {/* Scrollable choices container for many options */}
-            <div className="max-h-[40vh] sm:max-h-[35vh] overflow-y-auto overscroll-contain rounded-lg" style={{ WebkitOverflowScrolling: 'touch' }}>
+            {/* scroll-snap + touch-action prevents accidental selections during scroll (Switch port failure lesson) */}
+            <div
+              className="max-h-[40vh] sm:max-h-[35vh] overflow-y-auto overscroll-contain rounded-lg scroll-smooth"
+              style={{
+                WebkitOverflowScrolling: 'touch',
+                scrollSnapType: 'y proximity', // Gentle snap to choices
+                touchAction: 'pan-y', // Only allow vertical pan, not tap during scroll
+              }}
+            >
               <GameChoices
                 choices={state.availableChoices.map(c => ({
                   text: c.choice.text,
