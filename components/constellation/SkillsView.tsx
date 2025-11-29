@@ -1,10 +1,11 @@
 "use client"
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import type { SkillWithState } from '@/hooks/useConstellationData'
-import { SKILL_CONNECTIONS, SKILL_CLUSTERS } from '@/lib/constellation/skill-positions'
+import { SKILL_CONNECTIONS, SKILL_CLUSTERS, type SkillCluster } from '@/lib/constellation/skill-positions'
+import { ClusterFilterChips, type ClusterFilter } from './ClusterFilterChips'
 
 interface SkillsViewProps {
   skills: SkillWithState[]
@@ -39,21 +40,108 @@ const itemVariants: import('framer-motion').Variants = {
   }
 }
 
+// Skill-to-character development hints
+const SKILL_CHARACTER_HINTS: Record<string, string[]> = {
+  leadership: ['Maya', 'Samuel'],
+  courage: ['Kai', 'Maya'],
+  criticalThinking: ['Rohan', 'Kai'],
+  problemSolving: ['Devon', 'Rohan'],
+  systemsThinking: ['Silas', 'Rohan'],
+  crisisManagement: ['Silas', 'Kai'],
+  triage: ['Silas'],
+  digitalLiteracy: ['Rohan', 'Kai'],
+  technicalLiteracy: ['Rohan'],
+  adaptability: ['Kai', 'Jordan'],
+  resilience: ['Kai', 'Jordan'],
+  learningAgility: ['Rohan', 'Maya'],
+  emotionalIntelligence: ['Devon', 'Maya', 'Jordan'],
+  empathy: ['Jordan', 'Devon'],
+  patience: ['Samuel', 'Jordan'],
+  culturalCompetence: ['Jordan', 'Yaquin'],
+  creativity: ['Maya', 'Tess'],
+  marketing: ['Maya'],
+  communication: ['Samuel', 'Maya', 'Devon'],
+  collaboration: ['Devon', 'Jordan'],
+  humility: ['Rohan', 'Jordan'],
+  fairness: ['Silas', 'Jordan'],
+  pragmatism: ['Rohan', 'Samuel'],
+  deepWork: ['Rohan'],
+  timeManagement: ['Samuel', 'Kai'],
+  curriculumDesign: ['Kai'],
+  mentorship: ['Samuel'],
+  wisdom: ['Samuel', 'Yaquin'],
+  observation: ['Tess'],
+  curiosity: ['Tess', 'Rohan'],
+  integrity: ['Samuel', 'Silas'],
+  accountability: ['Kai', 'Samuel'],
+  financialLiteracy: ['Devon'],
+  actionOrientation: ['Kai', 'Maya'],
+  riskManagement: ['Silas', 'Kai'],
+  urgency: ['Silas'],
+  encouragement: ['Jordan', 'Samuel'],
+  respect: ['Samuel', 'Jordan'],
+  informationLiteracy: ['Rohan'],
+  strategicThinking: ['Maya', 'Silas']
+}
+
 export function SkillsView({ skills, onOpenDetail }: SkillsViewProps) {
   const [selectedId, setSelectedId] = useState<string | null>(null)
+  const [activeFilter, setActiveFilter] = useState<ClusterFilter>('all')
   const selectedSkill = skills.find(s => s.id === selectedId)
 
-  // Get skill position by ID
+  // Calculate skill counts per cluster (demonstrated only)
+  const skillCounts = useMemo(() => {
+    const counts: Record<ClusterFilter, number> = {
+      all: skills.filter(s => s.state !== 'dormant').length,
+      mind: 0,
+      heart: 0,
+      voice: 0,
+      hands: 0,
+      compass: 0,
+      craft: 0,
+      center: 0
+    }
+    skills.forEach(s => {
+      if (s.state !== 'dormant') {
+        counts[s.cluster]++
+      }
+    })
+    return counts
+  }, [skills])
+
+  // Filter skills based on active cluster
+  const filteredSkills = useMemo(() => {
+    if (activeFilter === 'all') return skills
+    return skills.filter(s => s.cluster === activeFilter)
+  }, [skills, activeFilter])
+
+  // Get skill position by ID (from filtered or all skills)
   const getSkillPos = (id: string) => skills.find(s => s.id === id)?.position
 
-  // Filter connections to only show demonstrated skills
+  // Filter connections to only show demonstrated skills within filter
   const demonstratedIds = new Set(skills.filter(s => s.state !== 'dormant').map(s => s.id))
+  const filteredIds = new Set(filteredSkills.map(s => s.id))
   const visibleConnections = SKILL_CONNECTIONS.filter(
-    ([from, to]) => demonstratedIds.has(from) || demonstratedIds.has(to)
+    ([from, to]) => {
+      // At least one skill must be in filtered view
+      const inFilter = filteredIds.has(from) || filteredIds.has(to)
+      // At least one skill must be demonstrated
+      const hasDemonstrated = demonstratedIds.has(from) || demonstratedIds.has(to)
+      return inFilter && hasDemonstrated
+    }
   )
 
   return (
     <div className="h-full flex flex-col">
+      {/* Cluster Filter Chips */}
+      <div className="flex-shrink-0 border-b border-slate-700/50">
+        <ClusterFilterChips
+          activeFilter={activeFilter}
+          onFilterChange={setActiveFilter}
+          skillCounts={skillCounts}
+        />
+      </div>
+
       {/* SVG Constellation */}
       <div className="flex-1 relative p-4">
         <motion.svg
@@ -63,7 +151,7 @@ export function SkillsView({ skills, onOpenDetail }: SkillsViewProps) {
           animate="visible"
           variants={containerVariants}
           role="img"
-          aria-label={`Skill constellation showing ${skills.filter(s => s.state !== 'dormant').length} of ${skills.length} skills demonstrated`}
+          aria-label={`Skill constellation showing ${filteredSkills.filter(s => s.state !== 'dormant').length} of ${filteredSkills.length} skills${activeFilter !== 'all' ? ` in ${SKILL_CLUSTERS[activeFilter as SkillCluster]?.name || activeFilter} cluster` : ''}`}
         >
           {/* Connection lines */}
           {visibleConnections.map(([from, to]) => {
@@ -74,6 +162,10 @@ export function SkillsView({ skills, onOpenDetail }: SkillsViewProps) {
             const fromSkill = skills.find(s => s.id === from)
             const toSkill = skills.find(s => s.id === to)
             const bothDemonstrated = fromSkill?.state !== 'dormant' && toSkill?.state !== 'dormant'
+            // Dim connections when filtering to a different cluster
+            const isFiltered = activeFilter !== 'all' &&
+              fromSkill?.cluster !== activeFilter &&
+              toSkill?.cluster !== activeFilter
 
             return (
               <motion.line
@@ -86,14 +178,14 @@ export function SkillsView({ skills, onOpenDetail }: SkillsViewProps) {
                 strokeWidth="0.3"
                 strokeDasharray={bothDemonstrated ? '0' : '1 1'}
                 initial={{ pathLength: 0, opacity: 0 }}
-                animate={{ pathLength: 1, opacity: 1 }}
+                animate={{ pathLength: 1, opacity: isFiltered ? 0.2 : 1 }}
                 transition={{ duration: 0.8, delay: 0.3 }}
               />
             )
           })}
 
           {/* Skill nodes */}
-          {skills.map((skill) => {
+          {filteredSkills.map((skill) => {
             const isSelected = selectedId === skill.id
             const baseSize = skill.id === 'communication' ? 5 : 3.5 // Hub is larger
             const size = skill.state === 'mastered' ? baseSize * 1.2 : baseSize
@@ -150,6 +242,7 @@ export function SkillsView({ skills, onOpenDetail }: SkillsViewProps) {
                     filter: skill.state === 'dormant' ? 'grayscale(100%)' : 'none'
                   }}
                   variants={stateVariants}
+                  initial="dormant"
                   animate={skill.state}
                 />
 
@@ -207,13 +300,22 @@ export function SkillsView({ skills, onOpenDetail }: SkillsViewProps) {
             const pos = labelPositions[clusterId]
             if (!pos) return null
 
+            // Highlight label when filtered to this cluster
+            const isActiveCluster = activeFilter === clusterId
+            const isDimmed = activeFilter !== 'all' && !isActiveCluster
+
             return (
               <text
                 key={clusterId}
                 x={pos.x}
                 y={pos.y}
                 textAnchor="middle"
-                className="text-[2.5px] font-medium fill-slate-500 uppercase tracking-wider"
+                className={cn(
+                  "text-[2.5px] font-medium uppercase tracking-wider transition-all",
+                  isActiveCluster && "text-[3px] font-bold",
+                  isDimmed ? "fill-slate-700" : "fill-slate-500"
+                )}
+                style={isActiveCluster ? { fill: cluster.color } : undefined}
               >
                 {cluster.name}
               </text>
@@ -284,9 +386,28 @@ export function SkillsView({ skills, onOpenDetail }: SkillsViewProps) {
             </div>
           )}
 
+          {/* Character development hints */}
+          {SKILL_CHARACTER_HINTS[selectedSkill.id] && (
+            <div className="mt-3 pt-3 border-t border-slate-700/50">
+              <p className="text-xs text-slate-500 mb-1.5">
+                {selectedSkill.state === 'dormant' ? 'Develop with:' : 'Continue developing with:'}
+              </p>
+              <div className="flex flex-wrap gap-1.5">
+                {SKILL_CHARACTER_HINTS[selectedSkill.id].map(name => (
+                  <span
+                    key={name}
+                    className="text-xs px-2 py-1 rounded-full bg-slate-700/50 text-slate-300"
+                  >
+                    {name}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
           {selectedSkill.state === 'dormant' ? (
-            <p className="text-sm text-slate-500 text-center italic">
-              Make choices that demonstrate this skill to unlock it
+            <p className="mt-3 text-sm text-slate-500 text-center italic">
+              Explore conversations to discover this skill
             </p>
           ) : onOpenDetail && (
             <button
