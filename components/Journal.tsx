@@ -131,10 +131,10 @@ export function Journal({ isOpen, onClose }: JournalProps) {
             className="fixed left-0 top-0 bottom-0 w-full max-w-md bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 shadow-2xl z-[100] flex flex-col"
           >
             {/* Header */}
-            <div className="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-900/50">
+            <div className="p-4 sm:p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-900/50">
               <div>
-                <h2 className="text-xl font-bold text-slate-900 dark:text-white font-serif">Journal</h2>
-                <p className="text-sm text-slate-500 dark:text-slate-400">Your story so far</p>
+                <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white font-serif">Journal</h2>
+                <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Your story so far</p>
               </div>
               <button
                 onClick={onClose}

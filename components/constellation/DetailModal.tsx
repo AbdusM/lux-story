@@ -74,6 +74,7 @@ export function DetailModal({ item, type, onClose }: DetailModalProps) {
             exit="exit"
             variants={modalVariants}
             className="fixed bottom-0 left-0 right-0 z-[120] max-h-[80vh] overflow-hidden rounded-t-2xl bg-slate-900 border-t border-slate-700 shadow-2xl"
+            style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
             onClick={(e) => e.stopPropagation()}
             role="dialog"
             aria-modal="true"
@@ -104,7 +105,7 @@ function CharacterDetail({ character, onClose }: { character: CharacterWithState
   const colors = CHARACTER_COLORS[character.color]
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
       {/* Header */}
       <div className="flex items-start gap-4">
         <div
@@ -204,7 +205,7 @@ function SkillDetail({ skill, onClose }: { skill: SkillWithState; onClose: () =>
   const isDormant = skill.state === 'dormant'
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
       {/* Header */}
       <div className="flex items-start gap-4">
         <div

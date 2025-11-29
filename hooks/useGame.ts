@@ -127,7 +127,8 @@ export function useGame() {
         identityState,
         neuralState,
         skills,
-        thoughts
+        thoughts,
+        coreGameState: null // Included for type compatibility
       }
 
       const scene = await storyEngine.getScene(currentSceneId, gameState)
@@ -288,7 +289,7 @@ export function useGame() {
       patternUpdates.building = (patterns.building || 0) + 1
     }
     if (choiceText.includes('analyze') || choiceText.includes('think')) {
-      patternUpdates.analyzing = (patterns.analyzing || 0) + 1
+      patternUpdates.analytical = (patterns.analytical || 0) + 1
     }
     if (choiceText.includes('wait') || choiceText.includes('patience')) {
       patternUpdates.patience = (patterns.patience || 0) + 1
@@ -335,7 +336,8 @@ export function useGame() {
         identityState,
         neuralState,
         skills,
-        thoughts
+        thoughts,
+        coreGameState: null // Included for type compatibility
       }
 
       personaTracker.updatePersona('player-main', choice, responseTime, gameState)
