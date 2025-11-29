@@ -17,6 +17,23 @@ import { motion } from "framer-motion"
 import { interactionAnimations, type InteractionType } from "@/lib/interaction-parser"
 import { getVoiceClass } from "@/lib/voice-utils"
 
+/**
+ * Speaker color map for visual differentiation
+ * Research: Roadwarden's #1 player complaint was lack of speaker labels
+ */
+const SPEAKER_COLORS: Record<string, string> = {
+  'Samuel': 'text-amber-700',
+  'Maya': 'text-blue-600',
+  'Devon': 'text-orange-600',
+  'Jordan': 'text-purple-600',
+  'Kai': 'text-teal-600',
+  'Tess': 'text-rose-600',
+  'Rohan': 'text-indigo-600',
+  'Silas': 'text-slate-600',
+  'Yaquin': 'text-emerald-600',
+  'Narrator': 'text-stone-500 italic',
+}
+
 interface DialogueDisplayProps {
   text: string
   className?: string
@@ -107,7 +124,30 @@ export function DialogueDisplay({
   )
 
   return (
-    <div className={cn("space-y-4 min-h-[120px]", className)} key="dialogue-chunks-container" style={{ transition: 'none' }}>
+    <div
+      className={cn(
+        "space-y-4 min-h-[120px]",
+        "max-w-prose", // 65ch line length - optimal for reading (Bringhurst, WCAG)
+        className
+      )}
+      key="dialogue-chunks-container"
+      style={{ transition: 'none' }}
+    >
+      {/* Speaker Label - visual differentiation per Roadwarden research */}
+      {characterName && !isContinuedSpeaker && characterName !== 'Narrator' && (
+        <div className="mb-1">
+          <span
+            className={cn(
+              "text-sm font-semibold uppercase tracking-wider",
+              SPEAKER_COLORS[characterName] || 'text-stone-600'
+            )}
+            data-testid="speaker-label"
+          >
+            {characterName}
+          </span>
+        </div>
+      )}
+
       {interaction && interactionAnimations[interaction] ? (
         <motion.div {...interactionAnimations[interaction]}>
           {content}
