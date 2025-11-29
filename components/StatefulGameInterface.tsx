@@ -308,8 +308,8 @@ export default function StatefulGameInterface() {
       const newChoices = StateConditionEvaluator.evaluateChoices(nextNode, newGameState, targetCharacterId).filter(c => c.visible)
 
       // Skill tracking logic (abbreviated for safety, same as before)
+      // Note: Toast removed as user found it intrusive. Skills still tracked silently.
       let demonstratedSkills: string[] = []
-      let skillToastUpdate = null
 
       if (skillTrackerRef.current && state.currentNode) {
         const sceneMapping = SCENE_SKILL_MAPPINGS[state.currentNode.nodeId]
@@ -321,7 +321,6 @@ export default function StatefulGameInterface() {
               demonstratedSkills,
               sceneMapping.choiceMappings[choice.choice.choiceId].context
             )
-            skillToastUpdate = { skill: demonstratedSkills[0], message: `Demonstrated ${demonstratedSkills[0]}` }
         } else if (choice.choice.skills) {
             demonstratedSkills = choice.choice.skills as string[]
             skillTrackerRef.current.recordSkillDemonstration(
@@ -330,7 +329,6 @@ export default function StatefulGameInterface() {
               demonstratedSkills,
               `Demonstrated ${demonstratedSkills.join(', ')}`
             )
-            skillToastUpdate = { skill: demonstratedSkills[0], message: `Demonstrated ${demonstratedSkills[0]}` }
         }
       }
 
@@ -364,7 +362,7 @@ export default function StatefulGameInterface() {
           hasStarted: true,
           selectedChoice: null,
           showSaveConfirmation: true,
-          skillToast: skillToastUpdate || state.skillToast,
+          skillToast: null, // Disabled - skills tracked silently
           error: null,
           showTransition: false,
           transitionData: null,
@@ -406,7 +404,7 @@ export default function StatefulGameInterface() {
       clearTimeout(safetyTimeout)
       isProcessingChoiceRef.current = false
     }
-  }, [state.gameState, state.currentNode, state.showConfigWarning, state.recentSkills, state.skillToast, state.showThoughtCabinet])
+  }, [state.gameState, state.currentNode, state.showConfigWarning, state.recentSkills, state.showThoughtCabinet])
 
 
   // Render Logic - Restored Card Layout
