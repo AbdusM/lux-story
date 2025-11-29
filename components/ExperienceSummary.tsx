@@ -74,7 +74,7 @@ export function ExperienceSummary({ data, onContinue }: ExperienceSummaryProps) 
       }}
     >
       <Card
-        className={`max-w-2xl w-full max-h-[85vh] sm:max-h-[90vh] overflow-y-auto shadow-2xl border-2 ${colors.border} bg-white rounded-xl`}
+        className={`max-w-2xl w-full max-h-[85vh] sm:max-h-[90vh] overflow-y-auto scroll-pt-20 shadow-2xl border-2 ${colors.border} bg-white rounded-xl`}
         onClick={(e) => e.stopPropagation()}
       >
         <CardHeader className={`${colors.bg} border-b ${colors.border} p-4 sm:p-6`}>
@@ -98,7 +98,7 @@ export function ExperienceSummary({ data, onContinue }: ExperienceSummaryProps) 
 
         <CardContent className="p-4 sm:p-6 space-y-4 sm:space-y-6 pb-[env(safe-area-inset-bottom,16px)]">
           {/* Arc Theme */}
-          <div className={`${colors.bg} rounded-lg p-4 border-l-4 ${colors.border}`}>
+          <div className={`${colors.bg} rounded-lg p-4 border-l-2 ${colors.border}`}>
             <h3 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
               <Target className={`w-5 h-5 ${colors.text}`} />
               The Journey
@@ -150,8 +150,8 @@ export function ExperienceSummary({ data, onContinue }: ExperienceSummaryProps) 
           {/* Relationship Summary */}
           <div className="bg-gray-50 rounded-lg p-4">
             <h3 className="font-semibold text-gray-900 mb-2">Your Relationship</h3>
-            <div className="flex items-center gap-4">
-              <div>
+            <div className="flex flex-wrap items-center gap-4">
+              <div className="flex-1 min-w-0">
                 <span className="text-sm text-gray-600">Trust Level:</span>
                 <div className="flex items-center gap-1 mt-1">
                   {Array.from({ length: 10 }, (_, i) => (
@@ -165,9 +165,9 @@ export function ExperienceSummary({ data, onContinue }: ExperienceSummaryProps) 
                   <span className="ml-2 text-sm font-medium text-gray-700">{data.trustLevel}/10</span>
                 </div>
               </div>
-              <div>
+              <div className="flex-shrink-0">
                 <span className="text-sm text-gray-600">Status:</span>
-                <Badge className={`ml-2 ${colors.badge}`}>
+                <Badge className={`ml-2 whitespace-nowrap ${colors.badge}`}>
                   {data.relationshipStatus}
                 </Badge>
               </div>
@@ -175,7 +175,7 @@ export function ExperienceSummary({ data, onContinue }: ExperienceSummaryProps) 
           </div>
 
           {/* Encouragement */}
-          <div className={`${colors.bg} rounded-lg p-4 border-l-4 ${colors.border}`}>
+          <div className={`${colors.bg} rounded-lg p-4 border-l-2 ${colors.border}`}>
             <p className="text-sm text-gray-700 italic">
               Every conversation is a chance to grow. The skills you've developed here are real, 
               and they matter for your future career journey.
@@ -191,7 +191,7 @@ export function ExperienceSummary({ data, onContinue }: ExperienceSummaryProps) 
               size="lg"
             >
               <BookOpen className="w-4 h-4 mr-2" />
-              Learn How Research Explains This
+              The Science
             </Button>
           )}
 
