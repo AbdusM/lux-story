@@ -125,7 +125,251 @@ They *can't* be wrong. Because if they're wrong, then I don't know anything. I'm
     ]
   },
 
-  // ============= THE SIMULATION: THE DROUGHT =============
+  // ============= SCENE 3: SILAS'S ORIGIN =============
+  {
+    nodeId: 'silas_amazon_story',
+    speaker: 'Silas',
+    content: [
+      {
+        text: `You want to know how I got here?
+
+Ten years at Amazon Web Services. Principal Engineer. I designed infrastructure that handled Black Friday traffic. Millions of requests per second, and I made them flow.
+
+I was good at it. Really good. But I never touched what I was building. It was all abstractions.`,
+        emotion: 'reflective',
+        variation_id: 'amazon_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'silas_amazon_why_leave',
+        text: "Why did you leave?",
+        nextNodeId: 'silas_burnout_story',
+        pattern: 'helping',
+        skills: ['curiosity', 'emotionalIntelligence']
+      },
+      {
+        choiceId: 'silas_amazon_farming',
+        text: "From AWS to farming. That's quite a pivot.",
+        nextNodeId: 'silas_pivot_reason',
+        pattern: 'analytical',
+        skills: ['curiosity']
+      }
+    ],
+    tags: ['silas_arc', 'backstory']
+  },
+
+  {
+    nodeId: 'silas_burnout_story',
+    speaker: 'Silas',
+    content: [
+      {
+        text: `There was an outage. Big one. Three hours of downtime. Cost the company millions.
+
+We fixed it. I stayed up for 36 hours straight, tracing the bug through layers of abstraction. Found it in a race condition in a service I'd never heard of.
+
+When it was over, I went home, sat in my backyard, and looked at a tomato plant my neighbor had given me. It was dying. I didn't know how to save it.
+
+I could orchestrate a million servers, but I couldn't keep one plant alive.`,
+        emotion: 'humbled_realization',
+        variation_id: 'burnout_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'silas_burnout_continue',
+        text: "That's when you decided to change.",
+        nextNodeId: 'silas_learning_soil',
+        pattern: 'helping',
+        skills: ['empathy']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'silas_pivot_reason',
+    speaker: 'Silas',
+    content: [
+      {
+        text: `I thought I understood systems. Turns out I only understood one kind.
+
+Cloud infrastructure is forgiving. You can roll back. You can restart. You can scale horizontally.
+
+A plant? If you kill it, it's dead. No rollbacks. No retries. Just consequences.
+
+I wanted to learn the kind of system that doesn't forgive.`,
+        emotion: 'determined',
+        variation_id: 'pivot_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'silas_pivot_continue',
+        text: "Did you find someone to teach you?",
+        nextNodeId: 'silas_learning_soil',
+        pattern: 'helping',
+        skills: ['curiosity']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'silas_learning_soil',
+    speaker: 'Silas',
+    content: [
+      {
+        text: `There was an old farmer at the market. Mr. Hawkins. Eighty years old, hands like tree bark.
+
+I asked him: "How do you know when to water?"
+
+He looked at me like I was crazy. "I look at the plant. I touch the soil. I smell the air."
+
+No sensors. No dashboard. Just... attention.`,
+        emotion: 'reverent',
+        variation_id: 'learning_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'silas_hawkins_teach',
+        text: "Did he teach you?",
+        nextNodeId: 'silas_hawkins_lesson',
+        pattern: 'helping',
+        skills: ['curiosity', 'patience'],
+        consequence: {
+          characterId: 'silas',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'silas_hawkins_tech',
+        text: "And you thought technology could replace that attention?",
+        nextNodeId: 'silas_tech_hubris',
+        pattern: 'analytical',
+        skills: ['criticalThinking']
+      }
+    ],
+    tags: ['silas_arc', 'mentor']
+  },
+
+  {
+    nodeId: 'silas_hawkins_lesson',
+    speaker: 'Silas',
+    content: [
+      {
+        text: `Every Saturday for two years. He'd wake up at 4 AM, and I'd be there.
+
+He never used a single sensor. Never even had a thermometer. He'd stick his finger in the dirt and tell you the moisture content within 5%.
+
+"The soil talks," he'd say. "You just have to learn its language."
+
+I thought I could encode that language into software. I thought I could scale Mr. Hawkins.`,
+        emotion: 'nostalgic_guilt',
+        variation_id: 'hawkins_lesson_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'silas_scale_mistake',
+        text: "But some things don't scale.",
+        nextNodeId: 'silas_strawberry_detail',
+        pattern: 'analytical',
+        skills: ['wisdom']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'silas_tech_hubris',
+    speaker: 'Silas',
+    content: [
+      {
+        text: `I thought I could improve it. Engineer around the human limitation.
+
+Mr. Hawkins could only tend one farm. My sensors could tend thousands. That was the pitch to myself.
+
+But I forgot something. Mr. Hawkins never lost a crop. Not once in sixty years.
+
+I've been farming for two years and I've lost three.`,
+        emotion: 'chastened',
+        variation_id: 'hubris_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'silas_failures_detail',
+        text: "Tell me about the failures.",
+        nextNodeId: 'silas_strawberry_detail',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'courage']
+      }
+    ]
+  },
+
+  // ============= SCENE 4: THE STRAWBERRY DISASTER =============
+  {
+    nodeId: 'silas_strawberry_detail',
+    speaker: 'Silas',
+    content: [
+      {
+        text: `The strawberries. That was the worst.
+
+The pH sensor said 6.5—perfect for strawberries. But the sensor was in the wrong spot. Edge of the bed, where the water pooled.
+
+The center of the bed was at 5.2. Too acidic. The plants couldn't absorb iron.
+
+They looked healthy for weeks. Green leaves, good structure. Then one morning—yellow. Chlorosis. Iron deficiency. Dead in 48 hours.`,
+        emotion: 'haunted',
+        variation_id: 'strawberry_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'silas_strawberry_lesson',
+        text: "The sensor told you what was true at one point. Not what was true everywhere.",
+        nextNodeId: 'silas_sensor_problem',
+        pattern: 'analytical',
+        skills: ['systemsThinking', 'criticalThinking']
+      },
+      {
+        choiceId: 'silas_strawberry_feel',
+        text: "That must have been devastating.",
+        nextNodeId: 'silas_sensor_problem',
+        pattern: 'helping',
+        skills: ['empathy']
+      }
+    ],
+    tags: ['silas_arc', 'failure_story']
+  },
+
+  {
+    nodeId: 'silas_sensor_problem',
+    speaker: 'Silas',
+    content: [
+      {
+        text: `Exactly. A sensor gives you one number. One point in space, one moment in time.
+
+Mr. Hawkins would walk the whole field. Touch soil in twenty spots. Smell it. Taste it sometimes.
+
+He had a mental model of the whole system. I had a dashboard with green checkmarks.
+
+The checkmarks were true. They just weren't complete.`,
+        emotion: 'understanding',
+        variation_id: 'sensor_problem_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'silas_current_crisis',
+        text: "And now the basil?",
+        nextNodeId: 'silas_simulation_start',
+        pattern: 'building',
+        skills: ['problemSolving']
+      }
+    ]
+  },
+
+  // ============= SCENE 5: THE SIMULATION: THE DROUGHT =============
   {
     nodeId: 'silas_simulation_start',
     speaker: 'Silas',
@@ -339,7 +583,18 @@ We teach engineers how to touch grass. Real grass. How to listen to a system tha
     ],
     choices: [
       {
-        choiceId: 'silas_farewell',
+        choiceId: 'silas_feral_more',
+        text: "Tell me more about this Feral Lab.",
+        nextNodeId: 'silas_feral_concept',
+        pattern: 'exploring',
+        skills: ['curiosity'],
+        consequence: {
+          characterId: 'silas',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'silas_farewell_quick',
         text: "Touch grass, Silas.",
         nextNodeId: 'silas_farewell',
         pattern: 'helping',
@@ -349,11 +604,320 @@ We teach engineers how to touch grass. Real grass. How to listen to a system tha
     onEnter: [
       {
         characterId: 'silas',
-        addKnowledgeFlags: ['silas_chose_soil'],
-        addGlobalFlags: ['silas_arc_complete']
+        addKnowledgeFlags: ['silas_chose_soil']
       }
     ],
     tags: ['ending', 'silas_arc']
+  },
+
+  // ============= SCENE 6: THE FERAL LAB VISION =============
+  {
+    nodeId: 'silas_feral_concept',
+    speaker: 'Silas',
+    content: [
+      {
+        text: `*His eyes light up. He wipes dirt on his jeans and pulls out a worn notebook.*
+
+I've been sketching this for months. The "Feral Lab."
+
+Not a coding bootcamp. Not an accelerator. A deceleration program.
+
+We take burnt-out engineers—people like I was—and we put them in a greenhouse. No WiFi. No Slack. Just seeds, soil, and time.`,
+        emotion: 'excited',
+        variation_id: 'feral_concept_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'silas_feral_why',
+        text: "Why 'feral'?",
+        nextNodeId: 'silas_feral_name',
+        pattern: 'exploring',
+        skills: ['curiosity']
+      },
+      {
+        choiceId: 'silas_feral_works',
+        text: "Has anyone actually done this?",
+        nextNodeId: 'silas_first_workshop',
+        pattern: 'analytical',
+        skills: ['criticalThinking']
+      }
+    ],
+    tags: ['silas_arc', 'feral_lab']
+  },
+
+  {
+    nodeId: 'silas_feral_name',
+    speaker: 'Silas',
+    content: [
+      {
+        text: `Feral: wild, having escaped domestication.
+
+Tech workers are domesticated. We've been trained to respond to notifications, to measure our worth in metrics, to fear uncertainty.
+
+Feral means rewilding. Teaching people to trust their senses again. To be comfortable not knowing.
+
+Mr. Hawkins never googled anything. He just... watched. For sixty years. And he knew more about soil than any PhD I've met.`,
+        emotion: 'philosophical',
+        variation_id: 'feral_name_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'silas_feral_tried',
+        text: "Have you tested this idea?",
+        nextNodeId: 'silas_first_workshop',
+        pattern: 'analytical',
+        skills: ['pragmatism']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'silas_first_workshop',
+    speaker: 'Silas',
+    content: [
+      {
+        text: `Three months ago, I ran a pilot. Six engineers from the tech park downtown. One weekend.
+
+One guy, Marcus—not the paramedic, different Marcus—came in with three phones. Product manager at a startup. Couldn't sit still for ten minutes.
+
+By Sunday, he was talking to a tomato plant. Not ironically. He'd realized the plant's leaves were telling him it was thirsty before any sensor could.`,
+        emotion: 'proud',
+        variation_id: 'first_workshop_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'silas_workshop_changed',
+        text: "Did it stick? Did he change?",
+        nextNodeId: 'silas_workshop_result',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
+      },
+      {
+        choiceId: 'silas_workshop_curriculum',
+        text: "What's the actual curriculum?",
+        nextNodeId: 'silas_curriculum_design',
+        pattern: 'analytical',
+        skills: ['curriculumDesign']
+      }
+    ],
+    tags: ['silas_arc', 'feral_lab']
+  },
+
+  {
+    nodeId: 'silas_workshop_result',
+    speaker: 'Silas',
+    content: [
+      {
+        text: `He quit his startup three weeks later. Started a consulting practice. Works half the hours.
+
+But here's the thing—he's not less productive. He's more productive. He just stopped confusing activity with progress.
+
+Last week he sent me a photo. His company built a meditation garden at their office. He's teaching his team to debug their minds before they debug code.`,
+        emotion: 'satisfied',
+        variation_id: 'workshop_result_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'silas_ground_truth_ask',
+        text: "Is that what 'ground truth' really means?",
+        nextNodeId: 'silas_ground_truth_philosophy',
+        pattern: 'exploring',
+        skills: ['wisdom']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'silas_curriculum_design',
+    speaker: 'Silas',
+    content: [
+      {
+        text: `*He flips through the notebook. Handwritten pages, some with dirt smudges.*
+
+Week One: Observation. No phones. You sit in the greenhouse and draw what you see. Every day, the same plant. You notice things change.
+
+Week Two: Failure. You grow something that will definitely die. You watch it die. You learn that death isn't a bug—it's part of the system.
+
+Week Three: Integration. You design a sensor. But the rule is: the sensor can only confirm what you already suspected from looking. It's a check, not a crutch.`,
+        emotion: 'pedagogical',
+        variation_id: 'curriculum_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'silas_curriculum_works',
+        text: "What do people learn by week three?",
+        nextNodeId: 'silas_integration_lesson',
+        pattern: 'exploring',
+        skills: ['learningAgility']
+      }
+    ],
+    tags: ['silas_arc', 'feral_lab']
+  },
+
+  {
+    nodeId: 'silas_integration_lesson',
+    speaker: 'Silas',
+    content: [
+      {
+        text: `That technology should amplify human judgment, not replace it.
+
+By week three, they've developed intuition. The sensor becomes a tool for calibrating that intuition—not a substitute for it.
+
+One woman, a data scientist, said something that stuck with me: "I used to think dashboards showed me reality. Now I know they show me someone's decision about what to measure."
+
+That's the shift. Sensors don't lie—they just answer the question you asked. The wisdom is in asking the right question.`,
+        emotion: 'teaching',
+        variation_id: 'integration_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'silas_philosophy_deeper',
+        text: "What's the deeper philosophy here?",
+        nextNodeId: 'silas_ground_truth_philosophy',
+        pattern: 'analytical',
+        skills: ['systemsThinking']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'silas_ground_truth_philosophy',
+    speaker: 'Silas',
+    content: [
+      {
+        text: `*He sets down the notebook and looks at his hands. They're calloused now.*
+
+Ground truth. It's a surveying term. The actual measurement from the field, not the model.
+
+But I think it's bigger than that. Ground truth is what happens when you stop mediating reality through screens and actually touch it.
+
+Mr. Hawkins had ground truth. He could feel a storm coming before the barometer dropped. Not magic—just sixty years of paying attention to things that don't have notification sounds.`,
+        emotion: 'reverent',
+        variation_id: 'philosophy_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'silas_hawkins_now',
+        text: "Where is Mr. Hawkins now?",
+        nextNodeId: 'silas_hawkins_death',
+        pattern: 'helping',
+        skills: ['empathy']
+      },
+      {
+        choiceId: 'silas_future_vision',
+        text: "Where do you see this going?",
+        nextNodeId: 'silas_final_vision',
+        pattern: 'exploring',
+        skills: ['strategicThinking']
+      }
+    ],
+    tags: ['silas_arc', 'philosophy']
+  },
+
+  {
+    nodeId: 'silas_hawkins_death',
+    speaker: 'Silas',
+    content: [
+      {
+        text: `*He's quiet for a moment.*
+
+He passed last spring. In his garden. His daughter found him kneeling in the strawberry bed.
+
+At his funeral, there were no PowerPoints. No eulogies. People just told stories about things he'd taught them. How to read clouds. When to plant by the moon. How to make compost that smelled like coffee instead of rot.
+
+He left me his trowel. It's 50 years old. The handle is worn smooth from his hands.`,
+        emotion: 'grief_gratitude',
+        variation_id: 'hawkins_death_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'silas_legacy',
+        text: "He's why you're doing this.",
+        nextNodeId: 'silas_final_vision',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
+      }
+    ],
+    tags: ['silas_arc', 'mentor']
+  },
+
+  {
+    nodeId: 'silas_final_vision',
+    speaker: 'Silas',
+    content: [
+      {
+        text: `I want to scale Mr. Hawkins. But not through software.
+
+One workshop at a time. One burnt-out engineer learning to feel the difference between wet soil and dry. One product manager realizing that "move fast and break things" doesn't work when the thing you break is alive.
+
+The goal isn't to reject technology. It's to remember that we're the sensors. We're the real-time processing. The dashboards should serve us, not the other way around.
+
+*He picks up the basil plant. It's already perking up, the water finally reaching its roots.*
+
+Ground truth. It's not just about farming. It's about how we know what we know.`,
+        emotion: 'resolved_peaceful',
+        variation_id: 'final_vision_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'silas_farewell_deep',
+        text: "Keep growing, Silas.",
+        nextNodeId: 'silas_farewell_good',
+        pattern: 'helping',
+        skills: ['encouragement'],
+        consequence: {
+          characterId: 'silas',
+          trustChange: 2
+        }
+      }
+    ],
+    onEnter: [
+      {
+        addGlobalFlags: ['silas_full_arc_complete']
+      }
+    ],
+    tags: ['silas_arc', 'ending']
+  },
+
+  {
+    nodeId: 'silas_farewell_good',
+    speaker: 'Silas',
+    content: [
+      {
+        text: `*He smiles—maybe the first genuine smile you've seen from him.*
+
+I will. And hey—if you ever burn out, come find me.
+
+I'll teach you how to grow something. Something that can't be debugged. Something that just... grows.
+
+Tell Samuel I said thanks. For building a station where people like me can find people like you.`,
+        emotion: 'warm',
+        variation_id: 'farewell_good_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'return_to_samuel_silas_good',
+        text: "Return to Samuel",
+        nextNodeId: samuelEntryPoints.SILAS_REFLECTION_GATEWAY,
+        pattern: 'exploring'
+      }
+    ],
+    onEnter: [
+      {
+        addGlobalFlags: ['silas_arc_complete']
+      }
+    ],
+    tags: ['transition', 'silas_arc', 'good_ending']
   },
 
   // ============= BAD ENDING =============
