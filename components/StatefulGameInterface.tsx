@@ -51,7 +51,7 @@ import { detectArcCompletion, generateExperienceSummary } from '@/lib/arc-learni
 import { loadSkillProfile } from '@/lib/skill-profile-adapter'
 import { isSupabaseConfigured } from '@/lib/supabase'
 import { GameChoices } from '@/components/GameChoices'
-import { Brain, BookOpen, Stars } from 'lucide-react'
+import { Brain, BookOpen, Stars, RefreshCw } from 'lucide-react'
 import { ThoughtCabinet } from '@/components/ThoughtCabinet'
 import { Journal } from '@/components/Journal'
 import { ProgressIndicator } from '@/components/ProgressIndicator'
@@ -505,9 +505,11 @@ export default function StatefulGameInterface() {
               <SyncStatusIndicator />
               <button
                 onClick={() => window.location.reload()}
-                className="min-h-[44px] text-xs text-slate-400 hover:text-slate-600 active:text-slate-800 px-3 py-2 rounded-md hover:bg-slate-100 active:bg-slate-200"
+                className="min-w-[44px] min-h-[44px] text-xs text-slate-400 hover:text-slate-600 active:text-slate-800 px-2 sm:px-3 py-2 rounded-md hover:bg-slate-100 active:bg-slate-200 flex items-center gap-1"
+                aria-label="New Conversation"
               >
-                New Conversation
+                <RefreshCw className="w-4 h-4" />
+                <span className="hidden sm:inline">New</span>
               </button>
             </div>
           </div>
@@ -517,8 +519,6 @@ export default function StatefulGameInterface() {
             <div className="flex items-center justify-between py-2 border-t border-stone-200/50">
               <div className="flex items-center gap-2 font-medium text-slate-700 text-sm sm:text-base">
                 <span className="truncate max-w-[150px] sm:max-w-none">{characterNames[state.currentCharacterId]}</span>
-                <span className="text-slate-300">•</span>
-                <span className="text-slate-500 text-xs sm:text-sm">{currentCharacter.relationshipStatus}</span>
               </div>
               <div className="flex flex-col items-end">
                 {(() => {

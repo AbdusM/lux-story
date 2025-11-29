@@ -190,6 +190,7 @@ export function PeopleView({ characters, onOpenDetail }: PeopleViewProps) {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}
           className="flex-shrink-0 p-4 bg-slate-800/80 border-t border-slate-700"
+          style={{ paddingBottom: 'max(16px, env(safe-area-inset-bottom))' }}
         >
           <div className="flex items-center gap-3 mb-3">
             <div

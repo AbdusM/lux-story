@@ -43,16 +43,18 @@ export function SyncStatusIndicator() {
   }, [queueStats, isProcessing, lastSyncResult])
 
   return (
-    <div className={cn(
-      "flex items-center gap-1.5 text-[10px] font-medium transition-opacity duration-300",
-      showStatus ? "opacity-100" : "opacity-0"
-    )}>
+    <div
+      className="flex items-center"
+      title={statusMessage}
+      aria-label={statusMessage}
+    >
       <div className={cn(
-        "w-1.5 h-1.5 rounded-full",
-        isProcessing ? "bg-blue-500 animate-pulse" :
-        statusColor.replace('text-', 'bg-')
+        "w-2 h-2 rounded-full transition-colors duration-300",
+        isProcessing ? "bg-blue-400 animate-pulse" :
+        lastSyncResult && !lastSyncResult.success ? "bg-red-400" :
+        queueStats && queueStats.totalActions > 0 ? "bg-amber-400" :
+        "bg-emerald-400"
       )} />
-      <span className={statusColor}>{statusMessage}</span>
     </div>
   )
 }
