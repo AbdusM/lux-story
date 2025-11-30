@@ -20,7 +20,9 @@ export const yaquinDialogueNodes: DialogueNode[] = [
       {
         // NOTE: Strategic targeting - shake applied only to the self-doubt question, not the confident teaching setup.
         // This isolates the vulnerable moment of imposter syndrome, emphasizing the internal conflict.
-        text: `*Dental models everywhere. Ring light. Recording.*|"Forget the textbook. Chapter 4's garbage. Here's how you actually mix alginate without gagging patients."|*Stops. Sighs.*|<shake>Is it garbage? Or am I just uneducated?</shake>`,
+        text: `Forget the textbook. Chapter 4's garbage. Here's how you actually mix alginate without gagging patients.
+
+<shake>Is it garbage? Or am I just uneducated?</shake>`,
         emotion: 'conflicted',
         variation_id: 'yaquin_intro_v1',
         richEffectContext: 'warning',
@@ -189,7 +191,9 @@ export const yaquinDialogueNodes: DialogueNode[] = [
         // NOTE: Removed "slams" and "points" - showing environment and result, not choreography
         // NOTE: Strategic targeting - shake applied only to the high-stakes consequence statement.
         // Targets the climactic moment of pressure ("Back to cleaning spit valves"), not the setup.
-        text: `*Thick, coffee-stained notebook on table. Three module outlines.*|"This list. 8 years instinct → checklist. Impossible."|<shake>"One pilot this weekend. Pick wrong—nobody watches. Back to cleaning spit valves."</shake>`,
+        text: `This list. 8 years instinct → checklist. Impossible.
+
+<shake>One pilot this weekend. Pick wrong—nobody watches. Back to cleaning spit valves.</shake>`,
         emotion: 'tense',
         variation_id: 'curriculum_setup_v2',
         richEffectContext: 'warning',
@@ -268,7 +272,9 @@ export const yaquinDialogueNodes: DialogueNode[] = [
         // TODO: [SFX] Mixing sounds, laughter, timer ticking
         // TODO: [VFX] Success glow on playback screen
         // NOTE: Removed filming process and "grins" - converted to audio cues only
-        text: `*Mixing sounds. Laughter.*|"Pink. Goopy. 30 seconds before stone. Go!"|"<bloom>That's it.</bloom> Not lecture. Cooking show for teeth."`,
+        text: `Pink. Goopy. 30 seconds before stone. Go!
+
+<bloom>That's it.</bloom> Not lecture. Cooking show for teeth.`,
         emotion: 'excited',
         interaction: 'bloom',
         variation_id: 'success_practical_v1',
@@ -297,7 +303,9 @@ export const yaquinDialogueNodes: DialogueNode[] = [
     speaker: 'Yaquin',
     content: [
       {
-        text: `*Camera like scared patient.*|"You're nervous. Drill's loud. Watch my eyes. Breathe with me."|*Stops.*|"All day. Don't fix teeth—fix fear. That's what I'm selling."`,
+        text: `You're nervous. Drill's loud. Watch my eyes. Breathe with me.
+
+All day. Don't fix teeth—fix fear. That's what I'm selling.`,
         emotion: 'inspired',
         interaction: 'bloom',
         variation_id: 'success_psych_v1',
@@ -495,7 +503,13 @@ export const yaquinDialogueNodes: DialogueNode[] = [
       // TODO: [VFX] Screen overlays showing dashboards, red notification badges
       // NOTE: Strategic targeting - shake applied only to the overwhelming cascade of problems and realizations.
       // Targets the crescendo moment revealing the full scope of challenges.
-      text: `*Eight weeks later. Three laptops. Support tickets. Refunds. Dashboards.*|*Exhausted.*|127 students.|*Gestures at screens.*|<shake>47 unread messages. 15 refunds. DDS calling it "amateur hour." Three offices want licensing.</shake>|*Looks up.*|Teaching's easy. Running course business? Real education.`,
+      text: `Eight weeks later. Three laptops. Support tickets. Refunds. Dashboards.
+
+127 students.
+
+<shake>47 unread messages. 15 refunds. DDS calling it "amateur hour." Three offices want licensing.</shake>
+
+Teaching's easy. Running course business? Real education.`,
       emotion: 'exhausted',
       variation_id: 'p2_entry_v1',
       useChatPacing: true
@@ -528,7 +542,11 @@ export const yaquinDialogueNodes: DialogueNode[] = [
     content: [{
       // NOTE: Strategic targeting - shake applied only to the realization of the fundamental format problem.
       // Targets the vulnerability moment of failure awareness ("Struggling. Refunds."), not the customer feedback.
-      text: `Self-paced doesn't work.|"Need live instruction." "Videos too fast." "Can't stay motivated."|*Pulls up review.*|"Great content, wrong format. Need teacher, not YouTube."|*Rubs eyes.*|<shake>Half career-switchers—crushing it. Other half—boss-mandated. Struggling. Refunds.</shake>`,
+      text: `Self-paced doesn't work. Need live instruction. Videos too fast. Can't stay motivated.
+
+Great content, wrong format. Need teacher, not YouTube.
+
+<shake>Half career-switchers—crushing it. Other half—boss-mandated. Struggling. Refunds.</shake>`,
       emotion: 'tense',
       variation_id: 'quality_crisis_v1',
       useChatPacing: true
@@ -556,7 +574,11 @@ export const yaquinDialogueNodes: DialogueNode[] = [
     nodeId: 'yaquin_p2_dds_comment',
     speaker: 'Yaquin',
     content: [{
-      text: `*Shows comment.*|**Dr. Sarah Chen, DDS**: "Amateur hour. No credentials, structure, accountability. YouTube videos for $497. Assistants deserve real education, not shortcuts."|*Sets phone down.*|Not wrong about credentials. Assistant teaching assistants. No degree. No training.|*Looks at you.*|Want to ignore her. Defend myself. Or... maybe she's right.`,
+      text: `**Dr. Sarah Chen, DDS**: "Amateur hour. No credentials, structure, accountability. YouTube videos for $497. Assistants deserve real education, not shortcuts."
+
+Not wrong about credentials. Assistant teaching assistants. No degree. No training.
+
+Want to ignore her. Defend myself. Or... maybe she's right.`,
       emotion: 'vulnerable',
       interaction: 'small',
       variation_id: 'dds_comment_v1',
@@ -587,7 +609,13 @@ export const yaquinDialogueNodes: DialogueNode[] = [
     content: [{
       // NOTE: Strategic targeting - jitter applied only to the core moment of self-doubt and uncertainty.
       // Targets the anxiety about whether the criticism is valid ("Maybe IS..."), isolating the panic from policy discussion.
-      text: `30-day guarantee. No questions.|Stand behind quality.|*Scrolls refund requests.*|"Boss made me." "Too hard." "Didn't finish, want money."|*Conflicted.*|Honor all—lose $7,500. Get strict—look like scammer.|<jitter>Worst part? Don't know if they're right. Maybe IS too hard. Maybe IS "amateur hour."</jitter>`,
+      text: `30-day guarantee. No questions. Stand behind quality.
+
+Boss made me. Too hard. Didn't finish, want money.
+
+Honor all—lose $7,500. Get strict—look like scammer.
+
+<jitter>Worst part? Don't know if they're right. Maybe IS too hard. Maybe IS "amateur hour."</jitter>`,
       emotion: 'conflicted',
       variation_id: 'refund_v1',
       useChatPacing: true
@@ -626,7 +654,13 @@ export const yaquinDialogueNodes: DialogueNode[] = [
     nodeId: 'yaquin_p2_credibility_response',
     speaker: 'Yaquin',
     content: [{
-      text: `Ignore Dr. Chen. Or...|*Thinks.*|Invite her to review? Add as credentialed advisor?|Or respond publicly: "Not a DDS. 40 hours/week doing actual work. Students need both perspectives."|*Looks at you.*|Defend ground or acknowledge gap?`,
+      text: `Ignore Dr. Chen. Or...
+
+Invite her to review? Add as credentialed advisor?
+
+Or respond publicly: "Not a DDS. 40 hours/week doing actual work. Students need both perspectives."
+
+Defend ground or acknowledge gap?`,
       emotion: 'analytical',
       interaction: 'nod',
       variation_id: 'credibility_v1',
@@ -662,7 +696,15 @@ export const yaquinDialogueNodes: DialogueNode[] = [
     content: [{
       // TODO: [SFX] Pen scratching on paper, data visualization sounds
       // TODO: [VFX] Animated charts/graphs showing completion rates, decision tree branches
-      text: `Data:|**Self-motivated**: 85% completion. Glowing reviews.|**Boss-mandated**: 32% completion. Most refunds.|*Sketches paths.*|**Option 1**: Cohort-based. Fewer students, live, higher price.|**Option 2**: Improve self-paced. Forums, office hours.|**Option 3**: Two-tier. Self-paced ($497) + Cohort ($1,497).|*Looks at you.*|What would you do?`,
+      text: `Data:
+**Self-motivated**: 85% completion. Glowing reviews.
+**Boss-mandated**: 32% completion. Most refunds.
+
+**Option 1**: Cohort-based. Fewer students, live, higher price.
+**Option 2**: Improve self-paced. Forums, office hours.
+**Option 3**: Two-tier. Self-paced ($497) + Cohort ($1,497).
+
+What would you do?`,
       emotion: 'analytical',
       interaction: 'nod',
       variation_id: 'format_v1',
