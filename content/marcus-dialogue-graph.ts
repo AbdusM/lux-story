@@ -32,7 +32,7 @@ Night shift. 3:00 AM. The ICU is dark, except for the glow of monitors.`,
     choices: [
       {
         choiceId: 'marcus_intro_sorry',
-        text: "*Step back carefully* I won't touch anything.",
+        text: "I won't touch anything.",
         nextNodeId: 'marcus_visualizes_machine',
         pattern: 'patience',
         skills: ['adaptability', 'emotionalIntelligence'],
@@ -188,7 +188,15 @@ Wrong heparin calc? He bleeds. Missed clot? Stroke.`,
     speaker: 'Marcus',
     content: [
       {
-        text: `I didn't think. Just moved.|Close your eyes. Hands out.|*Guides your hands into position*|<shake>Monitor screaming. Red strobe.</shake>|<shake>O2 dropping: 98... 95... 92.</shake>|<shake>Bubble detector flashing.</shake>|<shake>Air in the arterial line.</shake>`,
+        text: `I didn't think. Just moved. Close your eyes. Hands out.
+
+<shake>Monitor screaming. Red strobe.</shake>
+
+<shake>O2 dropping: 98... 95... 92.</shake>
+
+<shake>Bubble detector flashing.</shake>
+
+<shake>Air in the arterial line.</shake>`,
         emotion: 'clinical',
         variation_id: 'sim_start_v2',
         richEffectContext: 'warning',
@@ -400,7 +408,7 @@ It's over.`,
     speaker: 'Marcus',
     content: [
       {
-        text: `*Machine hum settles to steady rhythm*
+        text: `Machine hum settles to steady rhythm.
 
 System stable. Patient O2 rising... 98%.
 
@@ -579,7 +587,13 @@ The machine held.`,
     speaker: 'Jordan',
     content: [
       {
-        text: `*Swallows hard*|First week. Read manuals. Watched videos.|But standing here next to the real thing...|*Gestures at ECMO circuit - tubes thick as hoses, pump humming*|Person's blood in those lines. Entire circulatory system.|*Whispers*|<jitter>What if I mess up?</jitter>`,
+        text: `First week. Read manuals. Watched videos.
+
+But standing here next to the real thing...
+
+Person's blood in those lines. Entire circulatory system.
+
+<jitter>What if I mess up?</jitter>`,
         emotion: 'anxious',
         // NOTE: Removed node-level 'jitter' - using inline targeting for the final fear moment
         variation_id: 'jordan_nervous_v1',
@@ -640,7 +654,7 @@ The machine held.`,
       },
       {
         choiceId: 'p2_stay_calm',
-        text: "*Keep voice steady* Talk us through it.",
+        text: "Talk us through it.",
         nextNodeId: 'marcus_p2_equipment_crisis',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'leadership']
@@ -654,7 +668,17 @@ The machine held.`,
     speaker: 'Marcus',
     content: [
       {
-        text: `*Reads message. Voice tight.*|"Equipment allocation crisis.|<shake>Three ECMO machines. Five patients need ECMO within 6 hours.</shake>|Triage committee convening.|Senior specialists standby for recommendations."|*Jordan goes pale.*|<shake>Three machines. Five patients.</shake>|<shake>Someone's not getting one.</shake>|They want my recommendation on who.`,
+        text: `Equipment allocation crisis.
+
+<shake>Three ECMO machines. Five patients need ECMO within 6 hours.</shake>
+
+Triage committee convening. Senior specialists standby for recommendations.
+
+<shake>Three machines. Five patients.</shake>
+
+<shake>Someone's not getting one.</shake>
+
+They want my recommendation on who.`,
         emotion: 'heavy',
         variation_id: 'crisis_announcement_v1',
         richEffectContext: 'error',
@@ -696,7 +720,17 @@ The machine held.`,
     speaker: 'Marcus',
     content: [
       {
-        text: `*Pulls up tablet. Hands it over.*|Five cases. All critical. All need ECMO.|**Patient A**: 45, heart failure, transplant list, stable.|**Patient B**: 28, motorcycle accident, lung damage, deteriorating fast.|**Patient C**: 67, post-surgery complications, high mortality even with ECMO.|**Patient D**: 52, COVID complications, slight improvement.|**Patient E**: 19, sudden cardiac event, unknown cause, unstable.|*Jordan frozen. Staring.*|Committee wants data. Survival probability. Resource utilization.|But...`,
+        text: `Five cases. All critical. All need ECMO.
+
+**Patient A**: 45, heart failure, transplant list, stable.
+**Patient B**: 28, motorcycle accident, lung damage, deteriorating fast.
+**Patient C**: 67, post-surgery complications, high mortality even with ECMO.
+**Patient D**: 52, COVID complications, slight improvement.
+**Patient E**: 19, sudden cardiac event, unknown cause, unstable.
+
+Committee wants data. Survival probability. Resource utilization.
+
+But...`,
         emotion: 'conflicted',
         interaction: 'small',
         variation_id: 'cases_review_v1',
@@ -779,7 +813,15 @@ The machine held.`,
     speaker: 'Marcus',
     content: [
       {
-        text: `*Looks at Patient E's file.*|Nineteen years old. Entire life ahead.|But cardiac event unknown cause. Could recur. High complication risk.|Patient B - 28, motorcycle accident - reversible lung damage. Clear recovery path.|*Rubs temples.*|Years of life: one metric. Quality of those years: another.|Who are we to decide whose future is worth more?`,
+        text: `Nineteen years old. Entire life ahead.
+
+But cardiac event unknown cause. Could recur. High complication risk.
+
+Patient B - 28, motorcycle accident - reversible lung damage. Clear recovery path.
+
+Years of life: one metric. Quality of those years: another.
+
+Who are we to decide whose future is worth more?`,
         emotion: 'heavy',
         interaction: 'small',
         variation_id: 'framework_years_v1',
@@ -821,7 +863,19 @@ The machine held.`,
     speaker: 'Marcus',
     content: [
       {
-        text: `*Sets down tablet.*|You're right. Not just math.|Medical criteria: survival probability, reversibility, resource utilization.|Human factors: family impact, quality of life, patient values.|System factors: bed availability, staffing, follow-up capacity.|*Pulls out notebook. Sketches decision matrix.*|Build a framework. Weight factors. Score patients.|Process becomes transparent.|*Looks up.*|Doesn't make it easier. Makes it defensible.`,
+        text: `You're right. Not just math.
+
+Medical criteria: survival probability, reversibility, resource utilization.
+
+Human factors: family impact, quality of life, patient values.
+
+System factors: bed availability, staffing, follow-up capacity.
+
+Build a framework. Weight factors. Score patients.
+
+Process becomes transparent.
+
+Doesn't make it easier. Makes it defensible.`,
         emotion: 'focused',
         interaction: 'nod',
         variation_id: 'framework_holistic_v1',
@@ -865,7 +919,15 @@ The machine held.`,
     speaker: 'Jordan',
     content: [
       {
-        text: `*Silent this whole time. Just listening. Now speaks. Voice shaking.*|<jitter>Marcus... how do you live with this?</jitter>|Came into medicine to help people. Save lives.|*Gestures at tablet.*|<jitter>But this? Choosing who gets the machine...</jitter>|<jitter>That's choosing who lives.</jitter>|<jitter>How do you make that choice and go home and sleep?</jitter>`,
+        text: `<jitter>Marcus... how do you live with this?</jitter>
+
+Came into medicine to help people. Save lives.
+
+<jitter>But this? Choosing who gets the machine...</jitter>
+
+<jitter>That's choosing who lives.</jitter>
+
+<jitter>How do you make that choice and go home and sleep?</jitter>`,
         emotion: 'anxious',
         // NOTE: Removed node-level 'jitter' - using inline targeting for emotional crescendo moments
         variation_id: 'jordan_question_v1',
@@ -878,7 +940,7 @@ The machine held.`,
     choices: [
       {
         choiceId: 'p2_marcus_answer_honest',
-        text: "*Look to Marcus* That's a fair question.",
+        text: "That's a fair question.",
         nextNodeId: 'marcus_p2_teaching_burden',
         pattern: 'helping',
         skills: ['emotionalIntelligence']
