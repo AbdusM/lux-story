@@ -102,14 +102,14 @@ export function DialogueDisplay({
     <RichTextRenderer
       text={chunkedText}
       effects={richEffects || { mode: 'static' }}
-      className={cn("text-base leading-relaxed", voiceClass, interactionClass)}
+      className={cn("text-base leading-loose", voiceClass, interactionClass)} // Changed from leading-relaxed to leading-loose for better readability
     />
   )
 
   return (
     <div
       className={cn(
-        "space-y-4 min-h-[120px]",
+        "space-y-6 min-h-[120px]", // Increased from space-y-4 to space-y-6 for better breathing room
         "max-w-prose", // 65ch line length - optimal for reading (Bringhurst, WCAG)
         className
       )}
