@@ -28,7 +28,7 @@ export const mayaRevisitNodes: DialogueNode[] = [
         // Deep callbacks to specific moments from the first arc
         text: `Hey! It's so good to see you again.
 
-I've been thinking about our conversation a lot.{{noticed_contradiction: You saw right through me that day—when I said my parents were proud, and you caught the thing I wasn't saying.|}}{{player_gave_space: The way you gave me room to breathe instead of pushing... that meant more than you know.|}}{{shared_parent_failure: When you opened up about your own family stuff, I realized I wasn't as alone as I thought.|}}{{challenged_expectations: You were the first person to ask what *I* wanted, not what I should want.|}}\n\nIt really changed things for me.`,
+I've been thinking about our conversation a lot.{{noticed_contradiction: You saw right through me that day—when I said my parents were proud, and you caught the thing I wasn't saying.|}}{{player_gave_space: The way you gave me room to breathe instead of pushing... that meant more than you know.|}}{{shared_parent_failure: When you opened up about your own family stuff, I realized I wasn't as alone as I thought.|}}{{challenged_expectations: You were the first person to ask what I wanted, not what I should want.|}}\n\nIt really changed things for me.`,
         emotion: 'warm',
         variation_id: 'revisit_welcome_v2_callbacks'
       }
@@ -161,7 +161,7 @@ No more panic attacks either. Turns out when you stop fighting yourself, the anx
 
 You showed me that was okay—that not having all the answers right now isn't failure. You gave me that gift.|}}\n\nI've been talking to professors, visiting different labs, even sitting in on a biomedical engineering class.{{knows_robotics: I finally let myself admit I love building things. That was scary to say out loud before.|}}{{challenged_expectations:
 
-You asked me what *I* wanted, and I didn't have an answer then. Now I'm actually looking for one—that's progress.|}}\n\nYour belief that I could choose for myself - that's what gave me permission to explore.`,
+You asked me what I wanted, and I didn't have an answer then. Now I'm actually looking for one—that's progress.|}}\n\nYour belief that I could choose for myself - that's what gave me permission to explore.`,
         emotion: 'reflective',
         variation_id: 'update_self_v2_callbacks'
       }
