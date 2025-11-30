@@ -361,11 +361,11 @@ Let me show you what I found today.`,
     speaker: 'Rohan',
     content: [
       {
-        text: `Look. The screen is a wall of white text on black. A single cursor blinks.`
+        text: `Look. The screen is a wall of white text on black. A single cursor blinks.
 
-**SYSTEM:** PROD_DB_MIGRATION_SCRIPT.py
-**AUTHOR:** CoPilot-v6
-**STATUS:** RUNNING (DRY RUN)
+SYSTEM: PROD_DB_MIGRATION_SCRIPT.py
+AUTHOR: CoPilot-v6
+STATUS: RUNNING (DRY RUN)`
 
 It looks perfect. It's migrating 40 million user records.
 
@@ -457,7 +457,7 @@ You're treating it like a colleague. It's a parrot. We're done.`,
 
 You skipped the integrity check.
 
-The database migrated. But every user with a special character in their name just got deleted.`
+The database migrated. But every user with a special character in their name just got deleted.
 
 My name is Rohan. It's fine.
 My mother's name is Zoë. She's gone.
