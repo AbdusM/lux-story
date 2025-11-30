@@ -104,7 +104,7 @@ You look like you've been outside. Wilderness Immersion—vacation or crucible?`
     speaker: 'Tess',
     content: [
       {
-        text: `That's the problem. Investors hear 'camping.'|They miss the decision-making. Logistics. Conflict resolution at 4,000 feet—wet, hungry, lost.|Need to show the *curriculum* inside the chaos.`,
+        text: `That's the problem. Investors hear 'camping.' They miss the decision-making. Logistics. Conflict resolution at 4,000 feet—wet, hungry, lost. Need to show the curriculum inside the chaos.`,
         emotion: 'frustrated',
         interaction: 'shake',
         variation_id: 'defends_v1',
@@ -218,7 +218,11 @@ You look like you've been outside. Wilderness Immersion—vacation or crucible?`
     speaker: 'Tess',
     content: [
       {
-        text: `*Tablet slide: wall of text. Bullets, charts, paragraphs.*|'The Pedagogical Benefits of Wilderness Immersion for Adolescent Neural Development.'|Sound like a textbook. They'll sleep before I ask for money.|*Cursor blinks.*|Fix it. Be ruthless. What are we *actually* selling?`,
+        text: `The Pedagogical Benefits of Wilderness Immersion for Adolescent Neural Development.
+
+Sound like a textbook. They'll sleep before I ask for money.
+
+Fix it. Be ruthless. What are we actually selling?`,
         emotion: 'focused',
         interaction: 'shake',
         variation_id: 'pitch_scenario_v2',
@@ -261,7 +265,13 @@ You look like you've been outside. Wilderness Immersion—vacation or crucible?`
     speaker: 'Tess',
     content: [
       {
-        text: `*Reads headline. Sighs.*|'Evidence-Based Outdoor Education.' Accurate. Professional.|Boring.|Committee will nod, say 'interesting,' fund another STEM lab. Safer.|Can't make them *feel* urgency? Already lost.`,
+        text: `Evidence-Based Outdoor Education. Accurate. Professional.
+
+Boring.
+
+Committee will nod, say 'interesting,' fund another STEM lab. Safer.
+
+Can't make them feel urgency? Already lost.`,
         emotion: 'deflated',
         interaction: 'small',
         variation_id: 'pitch_fail_safe_v1',
@@ -352,7 +362,11 @@ You look like you've been outside. Wilderness Immersion—vacation or crucible?`
     speaker: 'Tess',
     content: [
       {
-        text: `*Card pinned to center.*|It works. Can sell this.|But this email... resignation. Leaving pension. Tenure track.|If I fail, just an unemployed hiker.`,
+        text: `It works. Can sell this.
+
+But this email... resignation. Leaving pension. Tenure track.
+
+If I fail, just an unemployed hiker.`,
         emotion: 'anxious',
         interaction: 'shake',
         variation_id: 'climax_v1',
@@ -501,7 +515,13 @@ You look like you've been outside. Wilderness Immersion—vacation or crucible?`
     nodeId: 'tess_phase2_entry',
     speaker: 'Tess',
     content: [{
-      text: `*Six weeks later. Surrounded by incident reports, consent forms, trail map on laptop.*|*Exhausted but energized.*|Eight students on Appalachian Trail. Day 3 of 5.|*Taps form.*|Three incident reports. Twelve parent calls. Board meeting Monday.|*Looks up.*|Welcome to education reform in practice.`,
+      text: `Six weeks later. Surrounded by incident reports, consent forms, trail map on laptop.
+
+Eight students on Appalachian Trail. Day 3 of 5.
+
+Three incident reports. Twelve parent calls. Board meeting Monday.
+
+Welcome to education reform in practice.`,
       emotion: 'exhausted',
       interaction: 'shake',
       variation_id: 'p2_entry_v1',
@@ -533,7 +553,11 @@ You look like you've been outside. Wilderness Immersion—vacation or crucible?`
     nodeId: 'tess_p2_crisis_reveal',
     speaker: 'Tess',
     content: [{
-      text: `DeShawn—16, Birmingham inner city, first time camping—panic attack Day 2.|Complete darkness. No streetlights. Sounds he'd never heard. Couldn't breathe. Thought he was dying.|*Rubs eyes.*|Guide talked him down. Physically safe. But two others want to quit.|Parents threatening to pull kids, report me for 'reckless endangerment.'`,
+      text: `DeShawn—16, Birmingham inner city, first time camping—panic attack Day 2. Complete darkness. No streetlights. Sounds he'd never heard. Couldn't breathe. Thought he was dying.
+
+Guide talked him down. Physically safe. But two others want to quit.
+
+Parents threatening to pull kids, report me for 'reckless endangerment.'`,
       emotion: 'anxious',
       interaction: 'small',
       variation_id: 'crisis_reveal_v1',
@@ -562,7 +586,13 @@ You look like you've been outside. Wilderness Immersion—vacation or crucible?`
     nodeId: 'tess_p2_ripple_effect',
     speaker: 'Tess',
     content: [{
-      text: `DeShawn physically fine. Emotionally? Humiliated. Thinks he 'failed.'|*Shows phone—messages.*|Riley: 'I want to come home.' Jamie: Silent, but parents called twice. 'Too risky.'|*Sets phone down.*|Grant committee warned me. 'What happens when theory meets real students?'|Visionary or just reckless?`,
+      text: `DeShawn physically fine. Emotionally? Humiliated. Thinks he 'failed.'
+
+Riley: 'I want to come home.' Jamie: Silent, but parents called twice. 'Too risky.'
+
+Grant committee warned me. 'What happens when theory meets real students?'
+
+Visionary or just reckless?`,
       emotion: 'conflicted',
       interaction: 'shake',
       variation_id: 'ripple_v1',
@@ -591,7 +621,13 @@ You look like you've been outside. Wilderness Immersion—vacation or crucible?`
     nodeId: 'tess_p2_deshawn_conversation',
     speaker: 'Tess',
     content: [{
-      text: `*Video call. DeShawn in tent, eyes red.*|**DeShawn**: 'Ms. Tess, I'm sorry. Ruined everything.'|*Voice softens.*|**Tess**: 'You didn't ruin anything. Normal reaction to extreme environment.'|**DeShawn**: 'Everyone else is fine. I'm the weak one.'|*Looks at you—what do I say?*`,
+      text: `**DeShawn**: 'Ms. Tess, I'm sorry. Ruined everything.'
+
+**Tess**: 'You didn't ruin anything. Normal reaction to extreme environment.'
+
+**DeShawn**: 'Everyone else is fine. I'm the weak one.'
+
+What do I say?`,
       emotion: 'vulnerable',
       interaction: 'small',
       variation_id: 'deshawn_talk_v1',
@@ -631,7 +667,11 @@ You look like you've been outside. Wilderness Immersion—vacation or crucible?`
     nodeId: 'tess_p2_deshawn_decision',
     speaker: 'Tess',
     content: [{
-      text: `*DeShawn thinks.*|**DeShawn**: 'I... I want to finish. But need help. Someone to say it's okay to be scared.'|*Nods.*|**Tess**: 'Guide checks in every hour. When you finish those two days, you'll know something no classroom can teach.'|*DeShawn nods. Call ends.*|*Exhales.*|One down. Now parents.`,
+      text: `**DeShawn**: 'I... I want to finish. But need help. Someone to say it's okay to be scared.'
+
+**Tess**: 'Guide checks in every hour. When you finish those two days, you'll know something no classroom can teach.'
+
+One down. Now parents.`,
       emotion: 'relieved',
       interaction: 'nod',
       variation_id: 'deshawn_commits_v1',
@@ -659,7 +699,13 @@ You look like you've been outside. Wilderness Immersion—vacation or crucible?`
     nodeId: 'tess_p2_parent_calls',
     speaker: 'Tess',
     content: [{
-      text: `*Shows voicemails.*|**Riley's Mom**: 'Bring my child home NOW.' **Jamie's Dad**: 'Outdoor education, not survival training.' **Another**: 'My lawyer says duty of care violation.'|*Sets phone down.*|Two options. Defend rigor—'This IS wilderness education.'|Or modify—gentler, safer, palatable.|If I cave, still teaching resilience? Or babysitting in the woods?`,
+      text: `**Riley's Mom**: 'Bring my child home NOW.' **Jamie's Dad**: 'Outdoor education, not survival training.' **Another**: 'My lawyer says duty of care violation.'
+
+Two options. Defend rigor—'This IS wilderness education.'
+
+Or modify—gentler, safer, palatable.
+
+If I cave, still teaching resilience? Or babysitting in the woods?`,
       emotion: 'frustrated',
       interaction: 'shake',
       variation_id: 'parent_calls_v1',
@@ -703,7 +749,11 @@ You look like you've been outside. Wilderness Immersion—vacation or crucible?`
     nodeId: 'tess_p2_parent_strategy',
     speaker: 'Tess',
     content: [{
-      text: `Calling each parent personally.|Not defensive. Not apologetic. Educational.|'What happened. Why it matters. What we're doing to support your child.'|*Pulls up notes.*|Truth is, DeShawn's panic attack IS the curriculum. Can they see that?`,
+      text: `Calling each parent personally. Not defensive. Not apologetic. Educational.
+
+What happened. Why it matters. What we're doing to support your child.
+
+Truth is, DeShawn's panic attack IS the curriculum. Can they see that?`,
       emotion: 'determined',
       interaction: 'nod',
       variation_id: 'strategy_v1',
@@ -732,7 +782,13 @@ You look like you've been outside. Wilderness Immersion—vacation or crucible?`
     nodeId: 'tess_p2_program_adaptation',
     speaker: 'Tess',
     content: [{
-      text: `Maybe naive thinking everyone thrives same format.|What if scaling?|<bloom>**Level 1**: Supported (frequent check-ins, shorter distances) **Level 2**: Standard immersion **Level 3**: Advanced challenge</bloom>|Students choose. Parents heard. Integrity intact.|*Sketches.*|Compromise or good design?`,
+      text: `Maybe naive thinking everyone thrives same format. What if scaling?
+
+<bloom>**Level 1**: Supported (frequent check-ins, shorter distances) **Level 2**: Standard immersion **Level 3**: Advanced challenge</bloom>
+
+Students choose. Parents heard. Integrity intact.
+
+Compromise or good design?`,
       emotion: 'focused',
       variation_id: 'adaptation_v1',
       useChatPacing: true,
@@ -767,7 +823,15 @@ You look like you've been outside. Wilderness Immersion—vacation or crucible?`
     nodeId: 'tess_p2_board_prep',
     speaker: 'Tess',
     content: [{
-      text: `Board meeting in 48 hours.|<jitter>Questions: Safe? Qualified? Liability? Better than AP classes?</jitter>|*Looks at you.*|Go in with data—completion rates, assessments, testimonials.|Or vision—'Education is becoming, not just learning.'|Or both and risk sounding like a TED Talk.`,
+      text: `Board meeting in 48 hours.
+
+<jitter>Questions: Safe? Qualified? Liability? Better than AP classes?</jitter>
+
+Go in with data—completion rates, assessments, testimonials.
+
+Or vision—'Education is becoming, not just learning.'
+
+Or both and risk sounding like a TED Talk.`,
       emotion: 'anxious',
       variation_id: 'board_prep_v1',
       useChatPacing: true,
@@ -809,7 +873,17 @@ You look like you've been outside. Wilderness Immersion—vacation or crucible?`
     nodeId: 'tess_p2_board_meeting',
     speaker: 'Tess',
     content: [{
-      text: `*Monday. School board—five skeptical faces.*|**Board Member 1**: 'Ms. Rodriguez, complaints about student safety.'|*Breath.*|**Tess**: 'I want to address them directly.'|*Pulls up presentation.*|'DeShawn had a panic attack. Not unsafe—working. Real fear. Chose to continue. That's resilience.'|**Board Member 2**: 'Panic attacks are... good?'|*Doesn't flinch.*|How do I answer?`,
+      text: `Monday. School board—five skeptical faces.
+
+**Board Member 1**: 'Ms. Rodriguez, complaints about student safety.'
+
+**Tess**: 'I want to address them directly.'
+
+DeShawn had a panic attack. Not unsafe—working. Real fear. Chose to continue. That's resilience.
+
+**Board Member 2**: 'Panic attacks are... good?'
+
+How do I answer?`,
       emotion: 'focused',
       interaction: 'big',
       variation_id: 'board_v1',
