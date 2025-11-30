@@ -24,7 +24,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
 
 I've rewritten this speech six times.{{helping>=3:
 
-*Behind the friendly smile, you sense the familiar weight of someone who's had to explain themselves too many times.*|}}
+}}
 
 <jitter>UX Designer. Gym Manager. Marketing. Uber. Developer. Product Manager. Senior Designer.</jitter>
 
@@ -528,7 +528,7 @@ And hundreds of conversations. Everyone's going somewhere.`,
       // NOTE: Removed "She opens her laptop" - screen content shown, not process
       text: `BJCC career fair. I stumbled into the Health Tech booth. They were looking for a UX designer.
 
-*Chaotic whiteboard app. User journey for a diabetes management app.*
+Chaotic whiteboard app. User journey for a diabetes management app.
 
 Look at this. This is what I do now.
 
