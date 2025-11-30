@@ -2,6 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Safe area padding for main content on mobile */
+@layer utilities {
+  .pb-safe-mobile {
+    padding-bottom: calc(6rem + env(safe-area-inset-bottom, 0px));
+  }
+  
+  @media (min-width: 640px) {
+    .pb-safe-mobile {
+      padding-bottom: calc(8rem + env(safe-area-inset-bottom, 0px));
+    }
+  }
+}
+
 /* ══════════════════════════════════════════════════════════════════════════════
    MOBILE-FIRST FOUNDATIONS
    ══════════════════════════════════════════════════════════════════════════════ */
