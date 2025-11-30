@@ -897,7 +897,7 @@ You've been helping me figure out what I want to build. But what about you? What
     speaker: 'Rohan',
     content: [
       {
-        text: `*Rohan looks at the screen, defeat in his eyes.*
+        text: `
 
 Yeah. Let it run. If it breaks, they'll just hire another AI to fix it.
 
