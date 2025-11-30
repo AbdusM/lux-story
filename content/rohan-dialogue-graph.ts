@@ -144,7 +144,7 @@ Code is the same. When the servers are melting down, you can't prompt-engineer y
     speaker: 'Rohan',
     content: [
       {
-        text: `Security? Forget security. This isn't about hackers. This is about truth.`
+        text: `Security? Forget security. This isn't about hackers. This is about truth.
 
 If the code lies about its own existence, and we deploy it because we're too lazy to check... we aren't engineers anymore. We're believers. We're praying to a black box.`,
         emotion: 'zealous',
@@ -419,7 +419,7 @@ If this runs, it will call a null pointer on 40 million people.`,
       {
         text: `AI RESPONSE: "I have corrected the import to 'legacy-core-v2'."
 
-It just made up a new name. It's lying to cover the lie.`
+It just made up a new name. It's lying to cover the lie.
 
 You're treating it like a colleague. It's a parrot. We're done.`,
         emotion: 'hopeless',
@@ -455,9 +455,9 @@ You're treating it like a colleague. It's a parrot. We're done.`,
       {
         text: `STATUS: MIGRATION COMPLETE.
 
-You skipped the integrity check.`
+You skipped the integrity check.
 
-The database migrated. But every user with a special character in their name just got deleted.
+The database migrated. But every user with a special character in their name just got deleted.`
 
 My name is Rohan. It's fine.
 My mother's name is Zoë. She's gone.
