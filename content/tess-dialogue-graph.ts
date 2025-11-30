@@ -973,7 +973,15 @@ How do I answer?`,
     nodeId: 'tess_p2_reflection',
     speaker: 'Tess',
     content: [{
-      text: `Adding three changes:|<bloom>1. Pre-program exposure trips—test woods before committing 2. Tiered paths—meet students where they are 3. Parent education—help them understand</bloom>|*Smiles.*|Month ago, thought founding was perfect curriculum.|Now know it's leading through uncertainty. Every crisis is data. Every dropout a lesson.|<bloom>Not a visionary. Builder willing to break things to make them better.</bloom>`,
+      text: `Adding three changes:
+
+<bloom>1. Pre-program exposure trips—test woods before committing 2. Tiered paths—meet students where they are 3. Parent education—help them understand</bloom>
+
+Month ago, thought founding was perfect curriculum.
+
+Now know it's leading through uncertainty. Every crisis is data. Every dropout a lesson.
+
+<bloom>Not a visionary. Builder willing to break things to make them better.</bloom>`,
       emotion: 'proud',
       variation_id: 'reflection_v1',
       useChatPacing: true,
