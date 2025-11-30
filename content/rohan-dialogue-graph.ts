@@ -485,7 +485,7 @@ You fixed the code. You broke the people.`,
     speaker: 'Rohan',
     content: [
       {
-        text: `*You open the file viewer. The file isn't there. You check the git history.*
+        text: `You open the file viewer. The file isn't there. You check the git history.
 
 **LAST MODIFIED:** 3 years ago by [David_V].
 **COMMIT MESSAGE:** "Temporary bypass. Fix before 2025."
