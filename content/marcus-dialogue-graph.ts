@@ -19,13 +19,11 @@ export const marcusDialogueNodes: DialogueNode[] = [
     speaker: 'Marcus',
     content: [
       {
-        text: `*Night shift. 3:00 AM. The ICU is dark, except for the glow of monitors.*
+        text: `Seventy-two beats. Flow rate stable.
 
-*Marcus stands by a bed, hands hovering in the air, miming a complex procedure. He is completely still.*
+<shake>...Don't bump the table.</shake>
 
-Seventy-two beats. Flow rate stable.
-
-<shake>...Don't bump the table.</shake>`,
+Night shift. 3:00 AM. The ICU is dark, except for the glow of monitors.`,
         emotion: 'focused',
         variation_id: 'marcus_intro_v1',
         richEffectContext: 'warning', 
