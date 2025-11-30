@@ -961,7 +961,21 @@ Came into medicine to help people. Save lives.
     speaker: 'Marcus',
     content: [
       {
-        text: `*Quiet. Long moment. Voice softer.*|Jordan, you don't sleep well. Not at first. Maybe not ever.|But here's what I learned:|You're not choosing who lives. You're doing triage with limited resources. There's a difference.|*Picks up tablet.*|Five machines? All five patients get them.|Shortage isn't your fault. Disease isn't. Accident isn't.|Your responsibility: best decision with available information.|*Looks at Jordan directly.*|Document reasoning. Consult colleagues. Follow ethical principles. Decide.|Yeah, it weighs on you. But that weight keeps you honest.|Day it doesn't bother you? Day you should quit.`,
+        text: `Jordan, you don't sleep well. Not at first. Maybe not ever.
+
+But here's what I learned: You're not choosing who lives. You're doing triage with limited resources. There's a difference.
+
+Five machines? All five patients get them.
+
+Shortage isn't your fault. Disease isn't. Accident isn't.
+
+Your responsibility: best decision with available information.
+
+Document reasoning. Consult colleagues. Follow ethical principles. Decide.
+
+Yeah, it weighs on you. But that weight keeps you honest.
+
+Day it doesn't bother you? Day you should quit.`,
         emotion: 'focused',
         interaction: 'nod',
         variation_id: 'teaching_burden_v1',
