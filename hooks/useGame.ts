@@ -33,21 +33,18 @@ export function useGame() {
   const skills = useGameSelectors.useSkills()
   const patterns = useGameSelectors.usePatterns()
 
-  // Additional state from store
-  const gameStore = useGameStore()
-  const {
-    showIntro,
-    choiceStartTime,
-    messageId,
-    visitedScenes,
-    choiceHistory,
-    platformWarmth,
-    platformAccessible,
-    characterTrust,
-    characterHelped,
-    thoughts
-  } = gameStore
-  
+  // Additional state from store - using granular selectors for render optimization
+  const showIntro = useGameSelectors.useShowIntro()
+  const choiceStartTime = useGameSelectors.useChoiceStartTime()
+  const messageId = useGameSelectors.useMessageId()
+  const visitedScenes = useGameSelectors.useVisitedScenes()
+  const choiceHistory = useGameSelectors.useChoiceHistory()
+  const platformWarmth = useGameSelectors.usePlatformWarmthAll()
+  const platformAccessible = useGameSelectors.usePlatformAccessibleAll()
+  const characterTrust = useGameSelectors.useCharacterTrustAll()
+  const characterHelped = useGameSelectors.useCharacterHelpedAll()
+  const thoughts = useGameSelectors.useThoughts()
+
   // Actions
   const {
     setCurrentScene: setCurrentSceneId,
@@ -128,7 +125,9 @@ export function useGame() {
         neuralState,
         skills,
         thoughts,
-        coreGameState: null // Included for type compatibility
+        triggeredModules: [],
+        coreGameState: null, // Included for type compatibility
+        unlockedAchievements: []
       }
 
       const scene = await storyEngine.getScene(currentSceneId, gameState)
@@ -337,7 +336,9 @@ export function useGame() {
         neuralState,
         skills,
         thoughts,
-        coreGameState: null // Included for type compatibility
+        triggeredModules: [],
+        coreGameState: null, // Included for type compatibility
+        unlockedAchievements: []
       }
 
       personaTracker.updatePersona('player-main', choice, responseTime, gameState)

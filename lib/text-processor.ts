@@ -43,27 +43,74 @@ export class TextProcessor {
       return true
     }
 
-    // 2. Check Knowledge Flags for current character (e.g. "knows_secret")
+    // 2. Check Knowledge Flags for current character first (e.g. "knows_secret")
     const currentCharacter = gameState.characters.get(gameState.currentCharacterId)
     if (currentCharacter && currentCharacter.knowledgeFlags.has(condition)) {
       return true
+    }
+
+    // 2b. Check Knowledge Flags for ALL characters (for revisit callbacks)
+    // This ensures flags set on a character are accessible when revisiting them
+    for (const [, character] of gameState.characters) {
+      if (character.knowledgeFlags.has(condition)) {
+        return true
+      }
     }
 
     // 3. Check Trust (e.g. "trust>5")
     if (condition.startsWith('trust')) {
       const operator = condition.match(/([><=]+)/)?.[0]
       const value = parseInt(condition.match(/(\d+)/)?.[0] || '0', 10)
-      
+
       if (currentCharacter && operator && !isNaN(value)) {
         switch (operator) {
           case '>': return currentCharacter.trust > value
           case '>=': return currentCharacter.trust >= value
           case '<': return currentCharacter.trust < value
           case '<=': return currentCharacter.trust <= value
-          case '=': 
+          case '=':
           case '==': return currentCharacter.trust === value
         }
       }
+    }
+
+    // 4. Check Pattern Values (e.g. "analytical>5", "helping>=3")
+    // Pattern Voice Activation - lets dominant patterns "speak" at threshold moments
+    const patternNames = ['analytical', 'helping', 'building', 'patience', 'exploring']
+    for (const patternName of patternNames) {
+      if (condition.startsWith(patternName)) {
+        const operator = condition.match(/([><=]+)/)?.[0]
+        const value = parseInt(condition.match(/(\d+)/)?.[0] || '0', 10)
+        const patternValue = gameState.patterns[patternName as keyof typeof gameState.patterns] || 0
+
+        if (operator && !isNaN(value)) {
+          switch (operator) {
+            case '>': return patternValue > value
+            case '>=': return patternValue >= value
+            case '<': return patternValue < value
+            case '<=': return patternValue <= value
+            case '=':
+            case '==': return patternValue === value
+          }
+        }
+      }
+    }
+
+    // 5. Check dominant pattern (e.g. "dominant_analytical", "dominant_helping")
+    if (condition.startsWith('dominant_')) {
+      const patternName = condition.replace('dominant_', '')
+
+      // Find the highest pattern value
+      let maxPattern = ''
+      let maxValue = 0
+      for (const [key, val] of Object.entries(gameState.patterns)) {
+        if (val > maxValue) {
+          maxValue = val
+          maxPattern = key
+        }
+      }
+
+      return maxPattern === patternName && maxValue > 0
     }
 
     return false

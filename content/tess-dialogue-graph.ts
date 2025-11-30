@@ -310,7 +310,8 @@ export const tessDialogueNodes: DialogueNode[] = [
     ],
     onEnter: [
       {
-        addGlobalFlags: ['tess_pitch_resilience']
+        addGlobalFlags: ['tess_pitch_resilience'],
+        thoughtId: 'steady-hand'
       }
     ]
   },

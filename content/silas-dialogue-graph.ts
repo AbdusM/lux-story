@@ -22,7 +22,9 @@ export const silasDialogueNodes: DialogueNode[] = [
 
 *He looks at a tablet propped up on a crate. It displays a cheerful green checkmark: "MOISTURE OPTIMAL."*
 
-*He squeezes the soil. It crumbles into dust. Bone dry.*
+*He squeezes the soil. It crumbles into dust. Bone dry.*{{exploring>=3:
+
+*Your curiosity sparks—something's broken between the data and reality. You want to dig deeper.*|}}
 
 The dashboard says we're fine. The dashboard says I'm a genius.
 

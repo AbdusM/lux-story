@@ -69,7 +69,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Yes, pre-med at UAB. Second year. Organic chemistry is... it's going great. Really great.\n\nMy parents are so proud.",
+        text: "Yes, pre-med at UAB. Second year. Organic chemistry is... it's going great. Really great.\n\nMy parents are so proud.{{analytical>=3:\n\n*Something catches your attention—she said 'my parents are proud,' not 'I am proud.'*|}}",
         emotion: 'deflecting',
         variation_id: 'studies_v2_clean'
       }
@@ -237,6 +237,12 @@ export const mayaDialogueNodes: DialogueNode[] = [
     requiredState: {
       trust: { min: 2 }
     },
+    onEnter: [
+      {
+        characterId: 'maya',
+        thoughtId: 'empathy-bridge'
+      }
+    ],
     choices: [
       {
         choiceId: 'anxiety_no_judgment',

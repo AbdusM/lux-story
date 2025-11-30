@@ -25,9 +25,12 @@ export const mayaRevisitNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Hey! It's so good to see you again.\n\nI've been thinking about our conversation a lot. It really changed things for me.",
+        // Deep callbacks to specific moments from the first arc
+        text: `Hey! It's so good to see you again.
+
+I've been thinking about our conversation a lot.{{noticed_contradiction: You saw right through me that day—when I said my parents were proud, and you caught the thing I wasn't saying.|}}{{player_gave_space: The way you gave me room to breathe instead of pushing... that meant more than you know.|}}{{shared_parent_failure: When you opened up about your own family stuff, I realized I wasn't as alone as I thought.|}}{{challenged_expectations: You were the first person to ask what *I* wanted, not what I should want.|}}\n\nIt really changed things for me.`,
         emotion: 'warm',
-        variation_id: 'revisit_welcome_v1'
+        variation_id: 'revisit_welcome_v2_callbacks'
       }
     ],
     requiredState: {
@@ -88,9 +91,13 @@ export const mayaRevisitNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "I spoke to my parents about the robotics program. It wasn't easy - there were tears, some yelling, a lot of confusion.\n\nBut I explained how surgical robots save lives, how I could still help people, just in a different way. They're... processing. It's a start.",
+        text: `I spoke to my parents about the robotics program. It wasn't easy - there were tears, some yelling, a lot of confusion.
+
+But I explained how surgical robots save lives, how I could still help people, just in a different way.{{knows_anxiety: I told them about the panic attacks too. Finally.|}} They're... processing. It's a start.{{tried_parent_conversation:
+
+Remember when I said I'd try talking to them? That conversation you encouraged me to have—this was it.|}}\n\nI kept thinking about what you said about engineering being about solving real problems. That's the angle that finally got through to my dad.`,
         emotion: 'hopeful',
-        variation_id: 'update_robotics_v1'
+        variation_id: 'update_robotics_v2_callbacks'
       }
     ],
     requiredState: {
@@ -117,9 +124,13 @@ export const mayaRevisitNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "I submitted my application to UAB's biomedical engineering program. It's perfect - surgical robots, prosthetics, diagnostic devices.\n\nMy parents are actually proud. They keep telling relatives their daughter will be a 'medical engineer.' It's close enough to doctor for them. And I get to build things.",
+        text: `I submitted my application to UAB's biomedical engineering program. It's perfect - surgical robots, prosthetics, diagnostic devices.{{knows_biomedical_engineering:
+
+You were the one who told me about it, remember? That there's a whole field that's medicine AND engineering? That literally changed everything.|}}\n\nMy parents are actually proud. They keep telling relatives their daughter will be a 'medical engineer.' It's close enough to doctor for them. And I get to build things.{{knows_anxiety:
+
+No more panic attacks either. Turns out when you stop fighting yourself, the anxiety gets quieter.|}}\n\nBest of both worlds. Thanks to you.`,
         emotion: 'excited',
-        variation_id: 'update_hybrid_v1'
+        variation_id: 'update_hybrid_v2_callbacks'
       }
     ],
     requiredState: {
@@ -146,9 +157,13 @@ export const mayaRevisitNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "I'm still figuring it out, honestly. But I'm taking my time with the decision now instead of rushing into pre-med on autopilot.\n\nI've been talking to professors, visiting different labs, even sitting in on a biomedical engineering class. Your belief that I could choose for myself - that's what gave me permission to explore.",
+        text: `I'm still figuring it out, honestly. But I'm taking my time with the decision now instead of rushing into pre-med on autopilot.{{player_gave_space:
+
+You showed me that was okay—that not having all the answers right now isn't failure. You gave me that gift.|}}\n\nI've been talking to professors, visiting different labs, even sitting in on a biomedical engineering class.{{knows_robotics: I finally let myself admit I love building things. That was scary to say out loud before.|}}{{challenged_expectations:
+
+You asked me what *I* wanted, and I didn't have an answer then. Now I'm actually looking for one—that's progress.|}}\n\nYour belief that I could choose for myself - that's what gave me permission to explore.`,
         emotion: 'reflective',
-        variation_id: 'update_self_v1'
+        variation_id: 'update_self_v2_callbacks'
       }
     ],
     requiredState: {

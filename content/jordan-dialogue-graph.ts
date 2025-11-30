@@ -22,7 +22,9 @@ export const jordanDialogueNodes: DialogueNode[] = [
     content: [{
       text: `Hey! Career Day at Covalence—the coding bootcamp over in Innovation Depot. Got here way too early. Classic overcompensation.
 
-I've rewritten this speech six times.
+I've rewritten this speech six times.{{helping>=3:
+
+*Behind the friendly smile, you sense the familiar weight of someone who's had to explain themselves too many times.*|}}
 
 <jitter>UX Designer. Gym Manager. Marketing. Uber. Developer. Product Manager. Senior Designer.</jitter>
 
@@ -621,6 +623,12 @@ I've been training for this job my whole life.`,
       variation_id: 'job7_insight_v1',
       richEffectContext: 'success'
     }],
+    onEnter: [
+      {
+        characterId: 'jordan',
+        thoughtId: 'hidden-connections'
+      }
+    ],
     choices: [
       {
         choiceId: 'continue_job7_insight',

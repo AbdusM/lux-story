@@ -59,6 +59,12 @@ export interface GameState {
   // Thought Cabinet
   thoughts: ActiveThought[]
 
+  // Floating Modules (tracked for oneShot behavior)
+  triggeredModules: string[]
+
+  // Meta-Achievements (hidden recognitions for consistent play patterns)
+  unlockedAchievements: string[]
+
   // ═══════════════════════════════════════════════════════════════════════════
   // CORE GAME STATE: Single source of truth for dialogue/narrative system
   // This is the SerializableGameState from character-state.ts
@@ -202,6 +208,10 @@ export interface GameActions {
   updateThoughtProgress: (thoughtId: string, amount: number) => void
   internalizeThought: (thoughtId: string) => void
 
+  // Floating Modules
+  markModuleTriggered: (moduleId: string) => void
+  getTriggeredModulesSet: () => Set<string>
+
   // ═══════════════════════════════════════════════════════════════════════════
   // CORE GAME STATE ACTIONS: Single source of truth operations
   // ═══════════════════════════════════════════════════════════════════════════
@@ -210,6 +220,9 @@ export interface GameActions {
   applyCoreStateChange: (change: StateChange) => void
   getCoreGameStateHydrated: () => CoreGameState | null
   syncDerivedState: () => void  // Sync characterTrust/patterns from coreGameState
+
+  // Meta-Achievements
+  unlockAchievements: (achievementIds: string[]) => void
 
   // Reset functions
   resetGame: () => void
@@ -328,6 +341,12 @@ const initialState: GameState = {
 
   // Thought Cabinet
   thoughts: [],
+
+  // Floating Modules (IDs of modules that have been shown)
+  triggeredModules: [],
+
+  // Meta-Achievements
+  unlockedAchievements: [],
 
   // Core Game State (single source of truth)
   coreGameState: null
@@ -518,6 +537,18 @@ export const useGameStore = create<GameState & GameActions>()(
           }))
         },
 
+        // Floating Module Actions
+        markModuleTriggered: (moduleId) => {
+          set((state) => {
+            if (state.triggeredModules.includes(moduleId)) return state
+            return { triggeredModules: [...state.triggeredModules, moduleId] }
+          })
+        },
+
+        getTriggeredModulesSet: () => {
+          return new Set(get().triggeredModules)
+        },
+
         // ═══════════════════════════════════════════════════════════════════════════
         // CORE GAME STATE ACTIONS: Single source of truth operations
         // ═══════════════════════════════════════════════════════════════════════════
@@ -598,6 +629,17 @@ export const useGameStore = create<GameState & GameActions>()(
             thoughts: thoughts,
             visitedScenes: visitedScenes
           }))
+        },
+
+        // Meta-Achievements - unlock new achievements (dedupes automatically)
+        unlockAchievements: (achievementIds: string[]) => {
+          set((state) => {
+            const newUnlocks = achievementIds.filter(id => !state.unlockedAchievements.includes(id))
+            if (newUnlocks.length === 0) return state
+            return {
+              unlockedAchievements: [...state.unlockedAchievements, ...newUnlocks]
+            }
+          })
         },
 
         // Reset actions
@@ -821,6 +863,17 @@ export const useGameSelectors = {
 
   // Thought Cabinet selectors
   useThoughts: () => useGameStore((state) => state.thoughts),
+
+  // Additional state selectors (for useGame hook optimization)
+  useShowIntro: () => useGameStore((state) => state.showIntro),
+  useChoiceStartTime: () => useGameStore((state) => state.choiceStartTime),
+  useMessageId: () => useGameStore((state) => state.messageId),
+  useVisitedScenes: () => useGameStore((state) => state.visitedScenes),
+  useChoiceHistory: () => useGameStore((state) => state.choiceHistory),
+  usePlatformWarmthAll: () => useGameStore((state) => state.platformWarmth),
+  usePlatformAccessibleAll: () => useGameStore((state) => state.platformAccessible),
+  useCharacterTrustAll: () => useGameStore((state) => state.characterTrust),
+  useCharacterHelpedAll: () => useGameStore((state) => state.characterHelped),
 
   // ═══════════════════════════════════════════════════════════════════════════
   // CORE GAME STATE SELECTORS: Single source of truth for dialogue system

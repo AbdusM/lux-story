@@ -27,7 +27,9 @@ export const kaiDialogueNodes: DialogueNode[] = [
 
 It was right there. Slide 14. "Ensure harness is secured." He clicked Next. He clicked it. I have the logs.
 
-But he didn't secure the harness.`,
+But he didn't secure the harness.{{building>=3:
+
+*You've always known this—reading about something isn't the same as doing it. Muscle memory matters.*|}}`,
         emotion: 'haunted',
         variation_id: 'kai_intro_v2',
         richEffectContext: 'warning'
@@ -221,6 +223,12 @@ He never complained. Said it was part of the job. But every time I saw him strug
 That someone is now me.`,
         emotion: 'determined',
         variation_id: 'father_v1'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'kai',
+        thoughtId: 'long-game'
       }
     ],
     choices: [
@@ -529,6 +537,12 @@ That's it. That's the skill. Not "harness safety." *Courage.*`,
         emotion: 'relieved',
         variation_id: 'sim_success_v2',
         richEffectContext: 'success'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'kai',
+        thoughtId: 'hands-on-truth'
       }
     ],
     choices: [

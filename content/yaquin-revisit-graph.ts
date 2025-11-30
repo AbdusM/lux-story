@@ -17,15 +17,20 @@ export const yaquinRevisitNodes: DialogueNode[] = [
     speaker: 'Yaquin',
     content: [
       {
+        // Deep callbacks to specific moments from the first arc
         text: `*He's pacing again, but this time with a tablet. He looks tired but electric.*
 
-It happened. It actually happened.
+It happened. It actually happened.{{yaquin_chose_practical:
 
-The 'Alginate Mixing Hack' video? 400,000 views. I have 12,000 subscribers. My inbox is full of people asking for the course.
+Remember when you said to just start small? A mini-course instead of the whole thing? That's exactly what I did.|}}{{yaquin_chose_psych:
+
+That psychology angle you pushed me toward—understanding *why* dental assistants struggle, not just what they struggle with—that's what resonated.|}}{{generous_refunds:
+
+And the generous refund policy you suggested? Zero refund requests. People trust me because I trusted them first.|}}\n\nThe 'Alginate Mixing Hack' video? 400,000 views. I have 12,000 subscribers. My inbox is full of people asking for the course.
 
 I... I don't know what to do.`,
         emotion: 'overwhelmed_excited',
-        variation_id: 'revisit_intro_v1',
+        variation_id: 'revisit_intro_v2_callbacks',
         richEffectContext: 'thinking'
       }
     ],
@@ -223,13 +228,22 @@ It feels like selling out a little, but it's actually buying my freedom.`,
     speaker: 'Yaquin',
     content: [
       {
-        text: `Thanks. Again. 
+        // Deep callbacks to both original arc choices and this revisit's choices
+        text: `Thanks. Again.{{yaquin_chose_practical:
 
-First you helped me start. Now you're helping me scale.
+You told me to start small. I did. Now I'm scaling big.|}}{{yaquin_chose_psych:
 
-I guess this is what a Founder's journey looks like. It never stops being scary, does it?`,
+You pushed me to understand the psychology, not just the technique. That's why the community stuck around.|}}{{credentialed_advisor:
+
+Getting that advisor you suggested? Best decision I made. She's helped me avoid so many beginner mistakes.|}}\n\nFirst you helped me start. Now you're helping me scale.{{yaquin_chose_course:
+
+A real course. A real product. My product.|}}{{yaquin_chose_membership:
+
+A real community. Not just viewers—a tribe.|}}{{yaquin_chose_sponsorship:
+
+The sponsorship money is buying me freedom to build something real.|}}\n\nI guess this is what a Founder's journey looks like. It never stops being scary, does it?`,
         emotion: 'grateful_mature',
-        variation_id: 'revisit_farewell_v1'
+        variation_id: 'revisit_farewell_v2_callbacks'
       }
     ],
     choices: [
