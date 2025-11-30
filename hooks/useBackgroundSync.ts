@@ -51,9 +51,8 @@ export function useBackgroundSync(
    * Core sync function - processes the queue
    */
   const triggerSync = useCallback(async () => {
-    // Prevent concurrent sync attempts
+    // Prevent concurrent sync attempts (silent skip to reduce spam)
     if (syncInProgressRef.current) {
-      console.log('[useBackgroundSync] Sync already in progress, skipping')
       return
     }
 
@@ -113,7 +112,7 @@ export function useBackgroundSync(
     if (!enabled || !syncOnFocus) return
 
     const handleFocus = () => {
-      console.log('[useBackgroundSync] Window focused, triggering sync')
+      // Silent sync on focus - no logging to reduce console spam
       triggerSync()
     }
 
@@ -128,7 +127,7 @@ export function useBackgroundSync(
     if (!enabled || !syncOnOnline) return
 
     const handleOnline = () => {
-      console.log('[useBackgroundSync] Network online, triggering sync')
+      // Silent sync on reconnect - no logging to reduce console spam
       triggerSync()
     }
 

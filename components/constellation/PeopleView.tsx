@@ -55,7 +55,7 @@ export function PeopleView({ characters, onOpenDetail }: PeopleViewProps) {
   return (
     <div className="h-full flex flex-col">
       {/* SVG Constellation */}
-      <div className="flex-1 relative p-4">
+      <div className="flex-1 relative p-4 bg-gradient-to-b from-slate-900 via-slate-900/95 to-slate-800/90 rounded-lg">
         <motion.svg
           viewBox="0 0 100 100"
           className="w-full h-full max-h-[400px] mx-auto"
@@ -65,6 +65,95 @@ export function PeopleView({ characters, onOpenDetail }: PeopleViewProps) {
           role="img"
           aria-label={`Character constellation showing ${characters.filter(c => c.hasMet).length} of ${characters.length} characters met`}
         >
+          {/* Subtle starfield background */}
+          <defs>
+            <radialGradient id="starGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="white" stopOpacity="0.8" />
+              <stop offset="100%" stopColor="white" stopOpacity="0" />
+            </radialGradient>
+            <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="1" result="coloredBlur"/>
+              <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+            {/* 3D Orb gradients for each character color */}
+            <radialGradient id="orb-amber" cx="30%" cy="30%" r="70%">
+              <stop offset="0%" stopColor="#FEF3C7" />
+              <stop offset="40%" stopColor="#FBBF24" />
+              <stop offset="100%" stopColor="#92400E" />
+            </radialGradient>
+            <radialGradient id="orb-blue" cx="30%" cy="30%" r="70%">
+              <stop offset="0%" stopColor="#DBEAFE" />
+              <stop offset="40%" stopColor="#3B82F6" />
+              <stop offset="100%" stopColor="#1E3A8A" />
+            </radialGradient>
+            <radialGradient id="orb-emerald" cx="30%" cy="30%" r="70%">
+              <stop offset="0%" stopColor="#D1FAE5" />
+              <stop offset="40%" stopColor="#10B981" />
+              <stop offset="100%" stopColor="#064E3B" />
+            </radialGradient>
+            <radialGradient id="orb-purple" cx="30%" cy="30%" r="70%">
+              <stop offset="0%" stopColor="#EDE9FE" />
+              <stop offset="40%" stopColor="#8B5CF6" />
+              <stop offset="100%" stopColor="#4C1D95" />
+            </radialGradient>
+            <radialGradient id="orb-rose" cx="30%" cy="30%" r="70%">
+              <stop offset="0%" stopColor="#FFE4E6" />
+              <stop offset="40%" stopColor="#F43F5E" />
+              <stop offset="100%" stopColor="#881337" />
+            </radialGradient>
+            <radialGradient id="orb-orange" cx="30%" cy="30%" r="70%">
+              <stop offset="0%" stopColor="#FFEDD5" />
+              <stop offset="40%" stopColor="#F97316" />
+              <stop offset="100%" stopColor="#7C2D12" />
+            </radialGradient>
+            <radialGradient id="orb-teal" cx="30%" cy="30%" r="70%">
+              <stop offset="0%" stopColor="#CCFBF1" />
+              <stop offset="40%" stopColor="#14B8A6" />
+              <stop offset="100%" stopColor="#134E4A" />
+            </radialGradient>
+            <radialGradient id="orb-indigo" cx="30%" cy="30%" r="70%">
+              <stop offset="0%" stopColor="#E0E7FF" />
+              <stop offset="40%" stopColor="#6366F1" />
+              <stop offset="100%" stopColor="#312E81" />
+            </radialGradient>
+            <radialGradient id="orb-slate" cx="30%" cy="30%" r="70%">
+              <stop offset="0%" stopColor="#E2E8F0" />
+              <stop offset="40%" stopColor="#64748B" />
+              <stop offset="100%" stopColor="#1E293B" />
+            </radialGradient>
+            <radialGradient id="orb-cyan" cx="30%" cy="30%" r="70%">
+              <stop offset="0%" stopColor="#CFFAFE" />
+              <stop offset="40%" stopColor="#06B6D4" />
+              <stop offset="100%" stopColor="#164E63" />
+            </radialGradient>
+            <radialGradient id="orb-unmet" cx="30%" cy="30%" r="70%">
+              <stop offset="0%" stopColor="#475569" stopOpacity="0.4" />
+              <stop offset="40%" stopColor="#334155" stopOpacity="0.3" />
+              <stop offset="100%" stopColor="#1E293B" stopOpacity="0.2" />
+            </radialGradient>
+          </defs>
+          {/* Background stars with twinkling */}
+          {[...Array(20)].map((_, i) => (
+            <motion.circle
+              key={`star-${i}`}
+              cx={10 + (i * 37) % 80}
+              cy={5 + (i * 47) % 90}
+              r={0.3 + (i % 3) * 0.2}
+              fill="white"
+              initial={{ opacity: 0.1 + (i % 5) * 0.05 }}
+              animate={{
+                opacity: [0.1 + (i % 5) * 0.05, 0.3 + (i % 3) * 0.1, 0.1 + (i % 5) * 0.05]
+              }}
+              transition={{
+                duration: 2 + (i % 3),
+                repeat: Infinity,
+                delay: i * 0.2
+              }}
+            />
+          ))}
           {/* Connection lines (behind nodes) */}
           {visibleConnections.map(([from, to]) => {
             const fromPos = getCharPos(from)
@@ -78,8 +167,9 @@ export function PeopleView({ characters, onOpenDetail }: PeopleViewProps) {
                 y1={fromPos.y}
                 x2={toPos.x}
                 y2={toPos.y}
-                stroke="rgba(148, 163, 184, 0.5)"
-                strokeWidth="0.5"
+                stroke="rgba(251, 191, 36, 0.3)"
+                strokeWidth="0.8"
+                strokeLinecap="round"
                 initial={{ pathLength: 0, opacity: 0 }}
                 animate={{ pathLength: 1, opacity: 1 }}
                 transition={{ duration: 1, delay: 0.5 }}
@@ -136,17 +226,38 @@ export function PeopleView({ characters, onOpenDetail }: PeopleViewProps) {
                   />
                 )}
 
-                {/* Main circle */}
+                {/* Dashed mystery ring for unmet characters */}
+                {!char.hasMet && (
+                  <motion.circle
+                    cx={char.position.x}
+                    cy={char.position.y}
+                    r={size + 1.5}
+                    fill="none"
+                    stroke="rgba(148, 163, 184, 0.3)"
+                    strokeWidth="0.3"
+                    strokeDasharray="1.5 1"
+                    animate={{
+                      rotate: [0, 360]
+                    }}
+                    transition={{
+                      duration: 20,
+                      repeat: Infinity,
+                      ease: 'linear'
+                    }}
+                    style={{ transformOrigin: `${char.position.x}px ${char.position.y}px` }}
+                  />
+                )}
+
+                {/* Main circle - 3D Orb */}
                 <motion.circle
                   cx={char.position.x}
                   cy={char.position.y}
                   r={size}
-                  className={cn(
-                    char.hasMet ? colors.bg : 'fill-slate-700',
-                    'transition-colors duration-300'
-                  )}
+                  fill={char.hasMet ? `url(#orb-${char.color})` : 'url(#orb-unmet)'}
+                  stroke={char.hasMet ? 'none' : 'rgba(148, 163, 184, 0.4)'}
+                  strokeWidth={char.hasMet ? 0 : 0.5}
                   style={{
-                    filter: char.hasMet ? 'none' : 'grayscale(100%)'
+                    filter: char.hasMet ? 'url(#glow)' : 'none'
                   }}
                   variants={nodeVariants}
                 />
@@ -172,10 +283,10 @@ export function PeopleView({ characters, onOpenDetail }: PeopleViewProps) {
                   textAnchor="middle"
                   className={cn(
                     "text-[3px] font-medium",
-                    char.hasMet ? "fill-slate-300" : "fill-slate-600"
+                    char.hasMet ? "fill-slate-300" : "fill-slate-500"
                   )}
                 >
-                  {char.name}
+                  {char.hasMet ? char.name : '???'}
                 </text>
               </motion.g>
             )

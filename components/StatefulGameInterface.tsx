@@ -727,7 +727,7 @@ export default function StatefulGameInterface() {
         style={{ WebkitOverflowScrolling: 'touch' }}
         data-testid="game-interface"
       >
-        <div className="max-w-4xl mx-auto px-3 sm:px-4 py-4">
+        <div className="max-w-4xl mx-auto px-3 sm:px-4 py-4 md:pt-12 lg:pt-16">
           <Card
             key="dialogue-card"
             className="rounded-xl shadow-sm bg-amber-50/40 border-stone-200/60"
@@ -776,7 +776,7 @@ export default function StatefulGameInterface() {
       {!isEnding && (
         <footer
           className="flex-shrink-0 bg-stone-50 border border-stone-200 shadow-lg mx-3 sm:mx-auto sm:max-w-2xl rounded-2xl"
-          style={{ marginBottom: 'calc(1rem + env(safe-area-inset-bottom, 4rem))' }}
+          style={{ marginBottom: 'calc(6rem + env(safe-area-inset-bottom, 0px))' }}
         >
           <div className="px-3 sm:px-4 py-3 sm:py-4">
             {/* Scrollable choices container for many options */}
@@ -827,7 +827,7 @@ export default function StatefulGameInterface() {
       {/* Meta-Achievement Notification - Subtle recognition, not gamified */}
       {state.achievementNotification && (
         <div
-          className="fixed bottom-24 left-1/2 -translate-x-1/2 z-40 animate-fade-in"
+          className="fixed bottom-44 left-1/2 -translate-x-1/2 z-40 animate-fade-in"
           onClick={() => setState(prev => ({ ...prev, achievementNotification: null }))}
         >
           <div className="bg-gradient-to-r from-amber-900/90 to-stone-900/90 backdrop-blur-sm rounded-xl px-5 py-3 shadow-xl border border-amber-600/30 max-w-sm">

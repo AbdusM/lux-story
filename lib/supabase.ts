@@ -10,6 +10,7 @@ import { getSupabaseConfig } from './env'
 
 let _supabaseInstance: SupabaseClient | null = null
 let _networkFailureDetected = false
+let _configWarningLogged = false
 
 /**
  * Lazy-initialized Supabase client singleton
@@ -56,9 +57,11 @@ function getSupabaseClient(): SupabaseClient {
   }
 
   if (!config.isConfigured) {
-    console.warn('[Supabase] Missing environment variables. Check .env.local configuration.')
-    console.warn('[Supabase] Expected: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY')
-    console.warn('[Supabase] Current config:', { url: !!config.url, anonKey: !!config.anonKey })
+    // Only log warning once to prevent console spam
+    if (!_configWarningLogged) {
+      _configWarningLogged = true
+      console.warn('[Supabase] Missing environment variables. Running in local-only mode.')
+    }
 
     const mockClient = createMockChain('not configured')
     _supabaseInstance = mockClient as unknown as SupabaseClient

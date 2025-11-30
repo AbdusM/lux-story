@@ -98,12 +98,12 @@ function useKeyboardNavigation(
   return { focusedIndex, setFocusedIndex, containerRef }
 }
 
-// Animation variants for juice
+// Animation variants for juice - clean, subtle effects
 const buttonVariants = {
   initial: { opacity: 0 },
   animate: { opacity: 1 },
   tap: { scale: 0.98 },
-  hover: { scale: 1.01, boxShadow: "0px 4px 12px rgba(0,0,0,0.1)" }
+  hover: { scale: 1.005 } // Subtle scale only, shadow handled by CSS
 }
 
 const shakeVariant = {
@@ -172,11 +172,11 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused }:
         className={`
           w-full min-h-[56px] sm:min-h-[52px] h-auto px-4 sm:px-6 py-4 sm:py-3
           text-base sm:text-sm font-medium text-stone-700 text-left justify-start break-words whitespace-normal leading-relaxed
-          border border-stone-200 bg-white/80
-          hover:bg-stone-50 hover:border-stone-300
-          active:bg-stone-100 active:border-stone-400 active:scale-[0.99]
-          transition-all duration-150 ease-out
-          rounded-xl shadow-sm
+          border border-stone-200 bg-white
+          hover:bg-stone-100 hover:border-stone-300
+          active:bg-stone-200 active:scale-[0.99]
+          transition-colors duration-100 ease-out
+          rounded-xl
           touch-manipulation select-none
           ${choice.feedback === 'shake' ? 'border-red-200 bg-red-50' : ''}
           ${choice.feedback === 'glow' ? 'border-amber-300 bg-amber-50' : ''}
