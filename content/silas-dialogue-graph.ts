@@ -447,7 +447,7 @@ What do I do? If I override the system and flood them, I could rot the roots. If
 
 A green checkmark appears: "NO ERRORS FOUND."
 
-*Silas stares at the screen. A leaf falls off the basil plant next to him. It crunches when it hits the floor.*
+A leaf falls off the basil plant next to him. It crunches when it hits the floor.
 
 The software says we're fine. The plant is dead.
 
@@ -801,9 +801,9 @@ That's the shift. Sensors don't lie—they just answer the question you asked. T
     speaker: 'Silas',
     content: [
       {
-        text: `*He sets down the notebook and looks at his hands. They're calloused now.*
+        text: `Ground truth. It's a surveying term. The actual measurement from the field, not the model.
 
-Ground truth. It's a surveying term. The actual measurement from the field, not the model.
+My hands are calloused now.
 
 But I think it's bigger than that. Ground truth is what happens when you stop mediating reality through screens and actually touch it.
 
