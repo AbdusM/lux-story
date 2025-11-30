@@ -490,7 +490,6 @@ You fixed the code. You broke the people.`,
 **LAST MODIFIED:** 3 years ago by [David_V].
 **COMMIT MESSAGE:** "Temporary bypass. Fix before 2025."
 
-*Rohan traces the screen.*
 
 David. He knew. He wrote a bypass because the legacy system couldn't handle UTF-8 characters.
 
@@ -523,12 +522,12 @@ The AI saw the bypass and thought it was a feature. It's trying to import a hack
     speaker: 'Rohan',
     content: [
       {
-        text: `*You type the new function. You verify the inputs. You write a test case for "Zoë".*
+        text: `You type the new function. You verify the inputs. You write a test case for "Zoë".
 
 **TEST PASSED.**
 **MIGRATION SUCCESSFUL.**
 
-*Rohan closes the laptop slowly. The hum of the servers seems to quiet.*
+The hum of the servers seems to quiet.
 
 You talked to the ghosts. You didn't just prompt. You listened to what David was trying to tell us.
 
@@ -840,7 +839,7 @@ David gave me that feeling. I want to pass it on.`,
     speaker: 'Rohan',
     content: [
       {
-        text: `*Looks at you directly.*
+        text: `
         
 You've been helping me figure out what I want to build. But what about you? What do you want people to remember about you? What feeling do you want to pass on?`,
         emotion: 'curious_reciprocal',

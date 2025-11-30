@@ -389,16 +389,15 @@ The checkmarks were true. They just weren't complete.`,
     speaker: 'Silas',
     content: [
       {
-        text: `*He shoves the tablet at you.*
+        text: `
 
-*The screen displays a readout:*
+The screen displays a readout:
 "SYSTEM STATUS: ZONE 4 - 65% HUMIDITY (OPTIMAL)"
 "FLOW RATE: 2.5 L/MIN"
 "VALVE STATE: OPEN"
 
 It says the water is flowing. It says everything is fine.
 
-*He points to the wilted plants.*
 
 But look at them. They're gasping.
 
@@ -444,9 +443,9 @@ What do I do? If I override the system and flood them, I could rot the roots. If
     speaker: 'Silas',
     content: [
       {
-        text: `*You run the diagnostic. A loading bar spins.*
+        text: `You run the diagnostic. A loading bar spins.
 
-*A green checkmark appears: "NO ERRORS FOUND."*
+A green checkmark appears: "NO ERRORS FOUND."
 
 *Silas stares at the screen. A leaf falls off the basil plant next to him. It crunches when it hits the floor.*
 
@@ -484,13 +483,12 @@ I... I can't do this. I'm going back to cloud computing. At least there, when it
     speaker: 'Silas',
     content: [
       {
-        text: `*You yank the manual lever. Water roars into the bed.*
+        text: `You yank the manual lever. Water roars into the bed.
 
-*The dry soil turns to mud instantly. But the water doesn't drain. It sits there, stagnating.*
+The dry soil turns to mud instantly. But the water doesn't drain. It sits there, stagnating.
 
-*The tablet flashes: "ALERT: ROOT ANOXIA DETECTED."*
+The tablet flashes: "ALERT: ROOT ANOXIA DETECTED."
 
-*Silas groans.*
 
 We drowned them. The soil was compacted. It couldn't drain. Now they'll rot before morning.
 
