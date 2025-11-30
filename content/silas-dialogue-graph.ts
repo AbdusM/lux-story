@@ -836,9 +836,7 @@ Mr. Hawkins had ground truth. He could feel a storm coming before the barometer 
     speaker: 'Silas',
     content: [
       {
-        text: `*He's quiet for a moment.*
-
-He passed last spring. In his garden. His daughter found him kneeling in the strawberry bed.
+        text: `He passed last spring. In his garden. His daughter found him kneeling in the strawberry bed.
 
 At his funeral, there were no PowerPoints. No eulogies. People just told stories about things he'd taught them. How to read clouds. When to plant by the moon. How to make compost that smelled like coffee instead of rot.
 

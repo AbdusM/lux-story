@@ -143,7 +143,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     content: [
       {
         // NOTE: Removed "Devon swipes" and "looks at phone, pained" - dialogue carries the regret
-        text: "*The tree goes dark.*\n\n*A robotic voice confirms:* \"Conversation Ended.\"\n\nI accepted the input. I hung up.\n\nHe was waiting for me to push back. I failed the test because I passed the logic check.",
+        text: "The tree goes dark.\n\nA robotic voice confirms: \"Conversation Ended.\"\n\nI accepted the input. I hung up.\n\nHe was waiting for me to push back. I failed the test because I passed the logic check.",
         emotion: 'regretful',
         variation_id: 'debug_fail_literal_v1',
         richEffectContext: 'error'
@@ -166,7 +166,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     content: [
       {
         // NOTE: Removed "Devon reads" - the scripted line speaks for itself
-        text: "\"Dad, data suggests you are distressed. Are you sure you are okay?\"\n\n*Silence. Then a click.*\n\n*Red text blinks.* \"SCRIPT <glitch>FAILED</glitch>. EXCEPTION: HUMAN_VARIANCE.\"\n\nHe hung up. He heard the script. He heard me debugging him instead of talking to him.",
+        text: "\"Dad, data suggests you are distressed. Are you sure you are okay?\"\n\nSilence. Then a click.\n\nRed text blinks. \"SCRIPT <glitch>FAILED</glitch>. EXCEPTION: HUMAN_VARIANCE.\"\n\nHe hung up. He heard the script. He heard me debugging him instead of talking to him.",
         emotion: 'devastated',
         variation_id: 'debug_fail_script_v1',
         richEffectContext: 'error'
@@ -199,7 +199,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     content: [
       {
         // NOTE: Removed "Devon looks at you, intrigued" - emotion conveyed through dialogue
-        text: "*The system flashes.* \"Unknown Variable.\"\n\nYou went off script.\n\nMy system creates a loop. You broke it. You ignored the data to find the... feeling.\n\nI can't code that.",
+        text: "The system flashes. \"Unknown Variable.\"\n\nYou went off script.\n\nMy system creates a loop. You broke it. You ignored the data to find the... feeling.\n\nI can't code that.",
         emotion: 'intrigued',
         variation_id: 'debug_override_v1',
         richEffectContext: 'thinking'
