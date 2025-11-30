@@ -225,21 +225,30 @@ export function RichTextRenderer({
       onClick={handleSkip}
     >
       {chunks.map((chunk, index) => (
-        <motion.div
-          key={`${text.substring(0, 10)}-${index}`}
-          initial={{ opacity: 0 }}
-          animate={{
-            opacity: index < visibleChunks ? 1 : 0
-          }}
-          transition={{ duration: 0.2, ease: "easeOut" }}
-          className={cn(
-            "leading-relaxed text-slate-700",
-            // Hide chunks that shouldn't be visible yet to prevent layout jumps
-            index >= visibleChunks && "hidden"
+        <React.Fragment key={`${text.substring(0, 10)}-${index}`}>
+          {/* Subtle visual divider between chunks (Instagram-style) */}
+          {index > 0 && index < visibleChunks && (
+            <div className="flex items-center justify-center py-4" aria-hidden="true">
+              <div className="w-12 h-px bg-slate-300/40" />
+              <span className="px-2 text-slate-400 text-xs">·</span>
+              <div className="w-12 h-px bg-slate-300/40" />
+            </div>
           )}
-        >
-          {renderChunkWithHighlights(chunk)}
-        </motion.div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{
+              opacity: index < visibleChunks ? 1 : 0
+            }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className={cn(
+              "leading-relaxed text-slate-700",
+              // Hide chunks that shouldn't be visible yet to prevent layout jumps
+              index >= visibleChunks && "hidden"
+            )}
+          >
+            {renderChunkWithHighlights(chunk)}
+          </motion.div>
+        </React.Fragment>
       ))}
       
       {/* Thinking indicator (pulsing block) if processing */}

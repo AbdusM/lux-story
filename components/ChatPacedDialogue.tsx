@@ -268,7 +268,7 @@ export function ChatPacedDialogue({
   return (
     <div className={`chat-paced-dialogue ${className}`}>
       {/* No inline avatars - handled by top bar */}
-      <div className="space-y-3">
+      <div className="space-y-6 sm:space-y-8">
         {/* Visible chunks - fade-in for clean text introduction */}
         {visibleChunks.map((chunk, index) => {
           // Use fade-in for clean, elegant text introduction (not typewriter)
