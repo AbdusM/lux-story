@@ -835,7 +835,7 @@ export default function StatefulGameInterface() {
         style={{ WebkitOverflowScrolling: 'touch' }}
         data-testid="game-interface"
       >
-        <div className="max-w-4xl mx-auto px-3 sm:px-4 py-4 md:pt-12 lg:pt-16">
+        <div className="max-w-4xl mx-auto px-3 sm:px-4 py-4 md:pt-12 lg:pt-16 pb-24 sm:pb-32">
           <Card
             key="dialogue-card"
             className="rounded-xl shadow-sm bg-amber-50/40 border-stone-200/60"
