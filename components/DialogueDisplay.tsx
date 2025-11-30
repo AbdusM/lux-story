@@ -133,20 +133,9 @@ export function DialogueDisplay({
       key="dialogue-chunks-container"
       style={{ transition: 'none' }}
     >
-      {/* Speaker Label - visual differentiation per Roadwarden research */}
-      {characterName && !isContinuedSpeaker && characterName !== 'Narrator' && (
-        <div className="mb-1">
-          <span
-            className={cn(
-              "text-sm font-semibold uppercase tracking-wider",
-              SPEAKER_COLORS[characterName] || 'text-stone-600'
-            )}
-            data-testid="speaker-label"
-          >
-            {characterName}
-          </span>
-        </div>
-      )}
+      {/* Speaker Label - DISABLED: Now shown in header instead (removes duplicate)
+          Original: Roadwarden research showed need for speaker labels
+          Current: Header shows character name, so this is redundant */}
 
       {interaction && interactionAnimations[interaction] ? (
         <motion.div {...interactionAnimations[interaction]}>

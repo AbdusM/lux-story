@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { X, Users, MapPin, Compass, TrendingUp } from "lucide-react"
+import { X, Users, Compass, TrendingUp } from "lucide-react"
 import { useGameStore } from "@/lib/game-store"
 import { cn } from "@/lib/utils"
 
@@ -51,7 +51,6 @@ export function Journal({ isOpen, onClose }: JournalProps) {
   }, [isOpen, onClose])
 
   const characterTrust = useGameStore((state) => state.characterTrust)
-  const visitedScenes = useGameStore((state) => state.visitedScenes)
   const choiceHistory = useGameStore((state) => state.choiceHistory)
   const patterns = useGameStore((state) => state.patterns)
 
@@ -67,9 +66,9 @@ export function Journal({ isOpen, onClose }: JournalProps) {
   }
 
   const tabs: { id: TabId; label: string; icon: typeof Users }[] = [
-    { id: 'relationships', label: 'Relationships', icon: Users },
-    { id: 'journey', label: 'Journey', icon: MapPin },
-    { id: 'patterns', label: 'Patterns', icon: Compass },
+    { id: 'relationships', label: 'Friends', icon: Users },
+    { id: 'journey', label: 'Choices', icon: TrendingUp },
+    { id: 'patterns', label: 'Your Style', icon: Compass },
   ]
 
   // Get characters with trust levels
@@ -82,14 +81,14 @@ export function Journal({ isOpen, onClose }: JournalProps) {
     .filter(([_, value]) => value > 0)
     .sort(([, a], [, b]) => b - a)
 
-  // Format scene names for display
-  const formatSceneName = (sceneId: string): string => {
-    return sceneId
-      .replace(/-/g, ' ')
-      .replace(/_/g, ' ')
-      .split(' ')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ')
+  // Format character name from scene ID for choice context
+  const getCharacterFromScene = (sceneId: string): string | null => {
+    const match = sceneId.match(/^(samuel|maya|devon|jordan|kai|tess|rohan|silas|yaquin)/i)
+    if (match) {
+      const name = match[1].toLowerCase()
+      return CHARACTER_INFO[name]?.name || name.charAt(0).toUpperCase() + name.slice(1)
+    }
+    return null
   }
 
   // Get trust level description
@@ -223,75 +222,44 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                 </div>
               )}
 
-              {/* Journey Tab */}
+              {/* Journey Tab - Just show meaningful choices */}
               {activeTab === 'journey' && (
-                <div className="space-y-6">
-                  {/* Visited Scenes */}
-                  <section>
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
-                      <MapPin className="w-3 h-3" />
-                      Places Visited
-                    </h3>
+                <div className="space-y-4">
+                  {choiceHistory.length === 0 ? (
+                    <div className="p-8 text-center border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-lg">
+                      <TrendingUp className="w-8 h-8 text-slate-300 mx-auto mb-3" />
+                      <p className="text-slate-400 italic text-sm">Your choices shape your story.</p>
+                      <p className="text-slate-400 text-xs mt-1">Make decisions in conversations to see them here.</p>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      {choiceHistory.slice(-8).map((record, idx) => {
+                        const character = getCharacterFromScene(record.sceneId)
+                        const charInfo = character ? CHARACTER_INFO[character.toLowerCase()] : null
 
-                    {visitedScenes.length === 0 ? (
-                      <div className="p-4 text-center border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-lg">
-                        <p className="text-slate-400 italic text-sm">Your journey begins at the station.</p>
-                        <p className="text-slate-400 text-xs mt-1">Start a conversation to explore new locations.</p>
-                      </div>
-                    ) : (
-                      <div className="space-y-2">
-                        {visitedScenes.slice(-10).reverse().map((sceneId, idx) => (
-                          <div
-                            key={`${sceneId}-${idx}`}
-                            className="flex items-center gap-3 p-3 rounded-lg bg-slate-50 dark:bg-slate-800/50"
-                          >
-                            <div className="w-6 h-6 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
-                              <span className="text-xs font-mono text-amber-600">{visitedScenes.length - idx}</span>
-                            </div>
-                            <span className="text-sm text-slate-700 dark:text-slate-300">
-                              {formatSceneName(sceneId)}
-                            </span>
-                          </div>
-                        ))}
-                        {visitedScenes.length > 10 && (
-                          <p className="text-xs text-slate-400 text-center mt-2">
-                            +{visitedScenes.length - 10} more locations
-                          </p>
-                        )}
-                      </div>
-                    )}
-                  </section>
-
-                  {/* Recent Choices */}
-                  <section>
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
-                      <TrendingUp className="w-3 h-3" />
-                      Recent Decisions
-                    </h3>
-
-                    {choiceHistory.length === 0 ? (
-                      <div className="p-4 text-center border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-lg">
-                        <p className="text-slate-400 italic text-sm">Your choices shape your story.</p>
-                        <p className="text-slate-400 text-xs mt-1">Make decisions in conversations to see them recorded here.</p>
-                      </div>
-                    ) : (
-                      <div className="space-y-2">
-                        {choiceHistory.slice(-5).reverse().map((record) => (
+                        return (
                           <div
                             key={`${record.sceneId}-${record.timestamp}`}
-                            className="p-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800"
+                            className="p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800"
                           >
                             <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
                               "{record.choice}"
                             </p>
-                            <p className="text-xs text-slate-400 mt-1">
-                              at {formatSceneName(record.sceneId)}
-                            </p>
+                            {character && (
+                              <p className={cn("text-xs mt-2", charInfo?.color || "text-slate-400")}>
+                                — talking to {character}
+                              </p>
+                            )}
                           </div>
-                        ))}
-                      </div>
-                    )}
-                  </section>
+                        )
+                      })}
+                      {choiceHistory.length > 8 && (
+                        <p className="text-xs text-slate-400 text-center">
+                          {choiceHistory.length} choices made
+                        </p>
+                      )}
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -299,7 +267,7 @@ export function Journal({ isOpen, onClose }: JournalProps) {
               {activeTab === 'patterns' && (
                 <div className="space-y-4">
                   <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
-                    Your choices reveal your natural inclinations.
+                    This shows what kind of choices you tend to make!
                   </p>
 
                   {activePatterns.length === 0 ? (

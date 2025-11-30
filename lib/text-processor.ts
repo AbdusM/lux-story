@@ -17,21 +17,32 @@ import { GameState } from './character-state'
 export class TextProcessor {
   /**
    * Process text and inject dynamic content based on game state
+   * Supports nested conditionals by processing inside-out
    */
   static process(text: string, gameState: GameState): string {
     if (!text) return ''
 
-    // Regex to find {{condition:true_text|false_text}} patterns
-    // Captures:
-    // 1. Condition (flag name)
-    // 2. True Text
-    // 3. False Text (optional)
-    const pattern = /\{\{([^:}]+):([^|}]*)(?:\|([^}]*))?\}\}/g
+    // Process from innermost conditionals outward
+    // Use a non-greedy pattern that matches the innermost {{...}} first
+    // Pattern matches {{condition:trueText}} or {{condition:trueText|falseText}}
+    // where trueText and falseText cannot contain {{ or }}
+    const pattern = /\{\{([^:{}]+):([^{}|]*)(?:\|([^{}]*))?\}\}/g
 
-    return text.replace(pattern, (match, condition, trueText, falseText) => {
-      const isMet = this.evaluateCondition(condition.trim(), gameState)
-      return isMet ? trueText : (falseText || '')
-    })
+    let result = text
+    let iterations = 0
+    const maxIterations = 10 // Prevent infinite loops
+
+    // Keep processing until no more conditionals are found
+    while (pattern.test(result) && iterations < maxIterations) {
+      pattern.lastIndex = 0 // Reset regex state
+      result = result.replace(pattern, (match, condition, trueText, falseText) => {
+        const isMet = this.evaluateCondition(condition.trim(), gameState)
+        return isMet ? trueText : (falseText || '')
+      })
+      iterations++
+    }
+
+    return result
   }
 
   /**
