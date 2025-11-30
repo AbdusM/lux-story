@@ -23,7 +23,7 @@ export const FLOATING_MODULES: FloatingModule[] = [
     speaker: 'Narrator',
     content: [
       {
-        text: `*A quiet shift. You've started noticing the patterns between patterns.*
+        text: `A quiet shift. You've started noticing the patterns between patterns.
 
 Not just what people say—but why. Not just the words—but the gaps between them.
 
