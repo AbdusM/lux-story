@@ -365,11 +365,11 @@ Let me show you what I found today.`,
 
 SYSTEM: PROD_DB_MIGRATION_SCRIPT.py
 AUTHOR: CoPilot-v6
-STATUS: RUNNING (DRY RUN)`
+STATUS: RUNNING (DRY RUN)
 
 It looks perfect. It's migrating 40 million user records.
 
-But look at line 402.
+But look at line 402.`
 
 'import { user_integrity_check } from "legacy-core"'
 
