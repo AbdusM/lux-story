@@ -369,11 +369,11 @@ STATUS: RUNNING (DRY RUN)
 
 It looks perfect. It's migrating 40 million user records.
 
-But look at line 402.`
+But look at line 402.
 
 'import { user_integrity_check } from "legacy-core"'
 
-'legacy-core' doesn't exist. I deleted it three years ago. The AI remembers a ghost.
+'legacy-core' doesn't exist. I deleted it three years ago. The AI remembers a ghost.`
 
 If this runs, it will call a null pointer on 40 million people.`,
         emotion: 'quiet_intensity',
