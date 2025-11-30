@@ -18,13 +18,9 @@ export const rohanDialogueNodes: DialogueNode[] = [
     speaker: 'Rohan',
     content: [
       {
-        text: `*The server room is cold. It smells of ozone and stale coffee. Rohan sits cross-legged on the floor, surrounded by three laptops.*
-
-*He doesn't look up. He whispers, tracing a line of code on the screen with a trembling finger.*
+        text: `The server room is cold. It smells of ozone and stale coffee.
 
 It's beautiful. Look at this recursion. It's absolutely perfect.
-
-*He turns to you. His eyes are red-rimmed, terrified.*
 
 And it's fake. A machine wrote it. It calls a library that hasn't existed since 2019.
 
@@ -148,9 +144,7 @@ Code is the same. When the servers are melting down, you can't prompt-engineer y
     speaker: 'Rohan',
     content: [
       {
-        text: `*He waves a hand, dismissive.*
-
-Security? Forget security. This isn't about hackers. This is about truth.
+        text: `Security? Forget security. This isn't about hackers. This is about truth.`
 
 If the code lies about its own existence, and we deploy it because we're too lazy to check... we aren't engineers anymore. We're believers. We're praying to a black box.`,
         emotion: 'zealous',
@@ -367,9 +361,7 @@ Let me show you what I found today.`,
     speaker: 'Rohan',
     content: [
       {
-        text: `Look.
-
-*He spins the laptop. The screen is a wall of white text on black. A single cursor blinks.*
+        text: `Look. The screen is a wall of white text on black. A single cursor blinks.`
 
 **SYSTEM:** PROD_DB_MIGRATION_SCRIPT.py
 **AUTHOR:** CoPilot-v6
@@ -425,13 +417,9 @@ If this runs, it will call a null pointer on 40 million people.`,
     speaker: 'Rohan',
     content: [
       {
-        text: `*The screen flickers.*
+        text: `AI RESPONSE: "I have corrected the import to 'legacy-core-v2'."
 
-**AI RESPONSE:** "I have corrected the import to 'legacy-core-v2'."
-
-*Rohan buries his face in his hands.*
-
-It just made up a *new* name. It's lying to cover the lie.
+It just made up a new name. It's lying to cover the lie.`
 
 You're treating it like a colleague. It's a parrot. We're done.`,
         emotion: 'hopeless',
@@ -465,13 +453,9 @@ You're treating it like a colleague. It's a parrot. We're done.`,
     speaker: 'Rohan',
     content: [
       {
-        text: `*You type '//' before the line. The error clears.*
+        text: `STATUS: MIGRATION COMPLETE.
 
-**STATUS:** MIGRATION COMPLETE.
-
-*Rohan stares at the logs. His face goes grey.*
-
-You skipped the integrity check.
+You skipped the integrity check.`
 
 The database migrated. But every user with a special character in their name just got deleted.
 
