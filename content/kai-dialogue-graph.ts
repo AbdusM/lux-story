@@ -496,7 +496,7 @@ What do you do?`,
     content: [
       {
         // NOTE: Removed "Kai shakes their head" - frustration conveyed through teaching moment
-        text: `*You tap the PDF icon. A 40-page document opens.*
+        text: `A 40-page document opens.
 
 While you're reading, the load shifts. The crate falls.
 
