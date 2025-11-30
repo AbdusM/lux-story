@@ -748,7 +748,15 @@ What would you do?`,
     nodeId: 'yaquin_p2_scaling_offer',
     speaker: 'Yaquin',
     content: [{
-      text: `Three Birmingham offices reached out.|License course for new hires. 50+ students.|*Shows emails.*|**Offer**: $15K/office, annual. They onboard, I provide content.|$45K. Nine months salary.|*Leans back.*|But not teaching—licensing. Content creator, not educator.|That what I want?`,
+      text: `Three Birmingham offices reached out. License course for new hires. 50+ students.
+
+**Offer**: $15K/office, annual. They onboard, I provide content.
+
+$45K. Nine months salary.
+
+But not teaching—licensing. Content creator, not educator.
+
+That what I want?`,
       emotion: 'conflicted',
       interaction: 'small',
       variation_id: 'scaling_v1',
@@ -788,7 +796,9 @@ What would you do?`,
     nodeId: 'yaquin_p2_scaling_choice',
     speaker: 'Yaquin',
     content: [{
-      text: `*Sketching plan.*|Keep self-paced for motivated learners.|Add cohort "Dental Mastery"—8 weeks, live, small groups.|Maybe reach out to Dr. Chen. Co-teach advanced modules.|*Looks up.*|Not about perfect. Serving students where they are.|Some need independence. Some need structure. Why not both?`,
+      text: `Keep self-paced for motivated learners. Add cohort "Dental Mastery"—8 weeks, live, small groups. Maybe reach out to Dr. Chen. Co-teach advanced modules.
+
+Not about perfect. Serving students where they are. Some need independence. Some need structure. Why not both?`,
       emotion: 'focused',
       interaction: 'nod',
       variation_id: 'scaling_choice_v1',
@@ -812,7 +822,15 @@ What would you do?`,
     content: [{
       // TODO: [SFX] Success notification chimes, positive metrics sounds
       // TODO: [VFX] Green upward arrows on metrics, growth visualization
-      text: `*Two weeks later.*|Implemented changes:|• Cohort program: 24 students @ $1,497|• Self-paced: office hours, forum|• Refunds: approved 8, denied 7|• Dr. Chen: reviewing curriculum (for fee)|*Grins.*|Revenue up. Completion up. Refunds down.|More important? Learning business, not just teaching skill.`,
+      text: `Two weeks later. Implemented changes:
+• Cohort program: 24 students @ $1,497
+• Self-paced: office hours, forum
+• Refunds: approved 8, denied 7
+• Dr. Chen: reviewing curriculum (for fee)
+
+Revenue up. Completion up. Refunds down.
+
+More important? Learning business, not just teaching skill.`,
       emotion: 'proud',
       interaction: 'bloom',
       variation_id: 'implementation_v1',
@@ -834,7 +852,11 @@ What would you do?`,
     nodeId: 'yaquin_p2_student_reactions',
     speaker: 'Yaquin',
     content: [{
-      text: `Mixed.|Refunded students—1-star reviews: "Bait and switch."|Stayed students thriving: "Real teaching now, not just videos."|*Pulls up message.*|**Student**: "Almost quit. Cohort saved me. Getting hired next week because of you."|*Looks at you.*|That's why. Not revenue. Not validation. That message.`,
+      text: `Mixed. Refunded students—1-star reviews: "Bait and switch." Stayed students thriving: "Real teaching now, not just videos."
+
+**Student**: "Almost quit. Cohort saved me. Getting hired next week because of you."
+
+That's why. Not revenue. Not validation. That message.`,
       emotion: 'grateful',
       interaction: 'small',
       variation_id: 'reactions_v1',
@@ -856,7 +878,15 @@ What would you do?`,
     nodeId: 'yaquin_p2_dds_outcome',
     speaker: 'Yaquin',
     content: [{
-      text: `*Laughs.*|Dr. Chen reviewed curriculum. Tore apart. "Outdated. Wrong. Too simplified."|Brutal.|*Grins.*|She was right. Updated everything.|Then: "Missing the why. Teach how, but students need why."|*Nods.*|Now paid consultant. Reviews content. Cited as clinical advisor.|Critics → collaborators if humble enough to listen.`,
+      text: `Dr. Chen reviewed curriculum. Tore apart. "Outdated. Wrong. Too simplified." Brutal.
+
+She was right. Updated everything.
+
+Then: "Missing the why. Teach how, but students need why."
+
+Now paid consultant. Reviews content. Cited as clinical advisor.
+
+Critics → collaborators if humble enough to listen.`,
       emotion: 'proud',
       interaction: 'bloom',
       variation_id: 'dds_outcome_v1',
