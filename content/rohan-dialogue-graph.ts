@@ -781,7 +781,7 @@ We're going to teach people how to read the metal. How to know what is real.`,
     speaker: 'Rohan',
     content: [
       {
-        text: `*Rohan is quiet for a long moment. The servers hum.*
+        text: `The servers hum.
 
 I don't want them to remember me. I want them to remember the feeling.
 
