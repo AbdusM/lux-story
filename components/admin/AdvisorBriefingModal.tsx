@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Copy, Download } from 'lucide-react';
 import type { SkillProfile } from '@/lib/skill-profile-adapter';
+import { logger } from '@/lib/logger';
 
 interface AdvisorBriefingModalProps {
   briefing: string;
@@ -55,7 +56,7 @@ export const AdvisorBriefingModal: React.FC<AdvisorBriefingModalProps> = ({
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
 
-      console.log('[AdvisorBriefing] Downloaded:', filename);
+      logger.debug('Downloaded briefing', { operation: 'advisor-briefing.download', filename });
     } catch (error) {
       console.error('Failed to download:', error);
       alert('Failed to download briefing');
@@ -125,7 +126,7 @@ export const AdvisorBriefingModal: React.FC<AdvisorBriefingModalProps> = ({
                 blockquote: ({ node: _node, ...props }) => (
                   <blockquote className="border-l-4 border-blue-500 pl-4 italic my-4 text-gray-700 dark:text-gray-300" {...props} />
                 ),
-                code: ({ node: _node, inline, ...props }: any) =>
+                code: ({ node: _node, inline, ...props }: React.ComponentPropsWithoutRef<'code'> & { node?: unknown; inline?: boolean }) =>
                   inline ? (
                     <code className="bg-gray-100 dark:bg-gray-800 rounded px-1 py-0.5 text-sm" {...props} />
                   ) : (

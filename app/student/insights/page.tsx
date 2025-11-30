@@ -14,6 +14,7 @@ import { CareerExplorationSection } from '@/components/student/sections/CareerEx
 import { NextStepsSection } from '@/components/student/sections/NextStepsSection'
 import { FrameworkInsights } from '@/components/FrameworkInsights'
 import { ActionPlanBuilder } from '@/components/ActionPlanBuilder'
+import { logger } from '@/lib/logger'
 
 export default function StudentInsightsPage() {
   const router = useRouter()
@@ -225,7 +226,7 @@ export default function StudentInsightsPage() {
             if (typeof window !== 'undefined' && userId) {
               localStorage.setItem(`action_plan_${userId}`, JSON.stringify(plan))
             }
-            console.log('Action plan saved:', plan)
+            logger.debug('Action plan saved', { operation: 'student-insights.save-plan', plan: typeof plan === 'object' ? Object.keys(plan) : 'unknown' })
           }}
         />
       )}

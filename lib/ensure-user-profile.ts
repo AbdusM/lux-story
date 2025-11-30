@@ -10,6 +10,7 @@
  */
 
 import { getAdminSupabaseClient } from './admin-supabase-client'
+import { logger } from './logger'
 
 export interface UserProfileData {
   user_id: string
@@ -80,15 +81,16 @@ export async function ensureUserProfile(
       return true // Allow game to continue even if database fails
     }
 
-    console.log(`[EnsureUserProfile] ✅ Profile ensured for ${userId}`)
+    logger.debug('Profile ensured', { operation: 'ensure-user-profile.success', userId })
     return true
-  } catch (error: any) {
+  } catch (error: unknown) {
     // Check if it's a network error (Supabase unreachable)
+    const err = error as Error & { code?: string; details?: string }
     const isNetworkError =
-      error?.message?.includes('Failed to fetch') ||
-      error?.message?.includes('ERR_NAME_NOT_RESOLVED') ||
-      error?.name === 'TypeError' ||
-      error?.toString().includes('fetch')
+      err?.message?.includes('Failed to fetch') ||
+      err?.message?.includes('ERR_NAME_NOT_RESOLVED') ||
+      err?.name === 'TypeError' ||
+      String(error).includes('fetch')
 
     if (isNetworkError) {
       // Silent fallback - don't spam console with network errors
@@ -117,7 +119,7 @@ export async function ensureUserProfilesBatch(
     failedUserIds: [] as string[]
   }
 
-  console.log(`[EnsureUserProfile] Batch processing ${userIds.length} user profiles...`)
+  logger.debug('Batch processing user profiles', { operation: 'ensure-user-profile.batch', count: userIds.length })
 
   for (const userId of userIds) {
     const success = await ensureUserProfile(userId)
@@ -129,11 +131,7 @@ export async function ensureUserProfilesBatch(
     }
   }
 
-  console.log(`[EnsureUserProfile] Batch complete:`, {
-    total: userIds.length,
-    success: results.success,
-    failed: results.failed
-  })
+  logger.debug('Batch complete', { operation: 'ensure-user-profile.batch-complete', total: userIds.length, success: results.success, failed: results.failed })
 
   return results
 }

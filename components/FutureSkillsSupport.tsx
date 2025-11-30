@@ -218,7 +218,7 @@ export function FutureSkillsSupport({
                       </div>
                       <div className="ml-4 text-right">
                         <div className="text-sm font-medium text-blue-600">
-                          {Math.round((path as any).matchScore * 100)}% match
+                          {Math.round(('matchScore' in path && typeof (path as { matchScore?: number }).matchScore === 'number' ? (path as { matchScore: number }).matchScore : 0) * 100)}% match
                         </div>
                       </div>
                     </div>

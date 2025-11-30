@@ -16,6 +16,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { requireAdminAuth, getAdminSupabaseClient } from '@/lib/admin-supabase-client'
 import type { UrgencyAPIResponse, RecalculationResponse, UrgencyLevel } from '@/lib/types/admin'
 import { auditLog } from '@/lib/audit-logger'
+import { logger } from '@/lib/logger'
 
 /**
  * GET /api/admin/urgency
@@ -37,7 +38,7 @@ export async function GET(request: NextRequest): Promise<NextResponse<UrgencyAPI
 
     // Single user lookup - optimized path
     if (userIdParam) {
-      console.log(`[Admin API] Fetching urgency data for user: ${userIdParam}`)
+      logger.debug('Fetching urgency data for user', { operation: 'admin.urgency.single', userId: userIdParam })
       
       const { data, error } = await supabase
         .from('urgent_students')
@@ -109,7 +110,7 @@ export async function GET(request: NextRequest): Promise<NextResponse<UrgencyAPI
       ? (levelParam as UrgencyLevel)
       : 'all'
 
-    console.log(`[Admin API] Fetching urgent students: level=${level}, limit=${limit}`)
+    logger.debug('Fetching urgent students', { operation: 'admin.urgency.list', level, limit })
 
     // Query urgent_students materialized view
     let query = supabase
@@ -136,7 +137,7 @@ export async function GET(request: NextRequest): Promise<NextResponse<UrgencyAPI
       )
     }
 
-    console.log(`[Admin API] Successfully fetched ${data?.length || 0} urgent students`)
+    logger.debug('Successfully fetched urgent students', { operation: 'admin.urgency.list-success', count: data?.length || 0 })
 
     // Transform snake_case to camelCase for TypeScript frontend
     const students = (data || []).map((row: Record<string, unknown>) => ({
@@ -201,7 +202,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<Recalcula
   if (authError) return authError as NextResponse<RecalculationResponse>
 
   try {
-    console.log('[Admin API] Starting urgency recalculation for all players...')
+    logger.debug('Starting urgency recalculation for all players', { operation: 'admin.urgency.recalculate-start' })
 
     const supabase = getAdminSupabaseClient()
 
@@ -232,7 +233,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<Recalcula
       })
     }
 
-    console.log(`[Admin API] Calculating urgency for ${players.length} players...`)
+    logger.debug('Calculating urgency for players', { operation: 'admin.urgency.recalculate', playerCount: players.length })
 
     // Calculate urgency for each player
     // Note: This is sequential for simplicity. Could be parallelized with Promise.all
@@ -258,10 +259,10 @@ export async function POST(request: NextRequest): Promise<NextResponse<Recalcula
       }
     }
 
-    console.log(`[Admin API] Urgency calculation complete: ${successCount} success, ${errorCount} errors`)
+    logger.debug('Urgency calculation complete', { operation: 'admin.urgency.recalculate-complete', successCount, errorCount })
 
     // Refresh materialized view to reflect new scores
-    console.log('[Admin API] Refreshing urgent_students materialized view...')
+    logger.debug('Refreshing urgent_students materialized view', { operation: 'admin.urgency.refresh-view' })
     const { error: refreshError } = await supabase.rpc('refresh_urgent_students_view')
 
     if (refreshError) {

@@ -3,6 +3,8 @@
  * Tracks Core Web Vitals and performance metrics
  */
 
+import { logger } from './logger'
+
 interface PerformanceMetrics {
   // Core Web Vitals
   lcp: number | null // Largest Contentful Paint
@@ -96,7 +98,7 @@ class PerformanceMonitor {
     try {
       const observer = new PerformanceObserver((list) => {
         const entries = list.getEntries()
-        const lastEntry = entries[entries.length - 1] as any
+        const lastEntry = entries[entries.length - 1]
         this.metrics.lcp = lastEntry.startTime
         this.logMetric('LCP', lastEntry.startTime, this.budget.lcp)
       })
@@ -114,9 +116,13 @@ class PerformanceMonitor {
     try {
       const observer = new PerformanceObserver((list) => {
         const entries = list.getEntries()
-        entries.forEach((entry: any) => {
-          this.metrics.fid = entry.processingStart - entry.startTime
-          this.logMetric('FID', this.metrics.fid, this.budget.fid)
+        entries.forEach((entry: PerformanceEntry) => {
+          // Type guard or cast for PerformanceEventTiming properties
+          const evt = entry as PerformanceEntry & { processingStart: number }
+          if (typeof evt.processingStart === 'number') {
+            this.metrics.fid = evt.processingStart - evt.startTime
+            this.logMetric('FID', this.metrics.fid, this.budget.fid)
+          }
         })
       })
       
@@ -134,9 +140,11 @@ class PerformanceMonitor {
       let clsValue = 0
       const observer = new PerformanceObserver((list) => {
         const entries = list.getEntries()
-        entries.forEach((entry: any) => {
-          if (!entry.hadRecentInput) {
-            clsValue += entry.value
+        entries.forEach((entry: PerformanceEntry) => {
+          // Cast for LayoutShift properties
+          const layoutShift = entry as PerformanceEntry & { hadRecentInput: boolean; value: number }
+          if (!layoutShift.hadRecentInput) {
+            clsValue += layoutShift.value
           }
         })
         this.metrics.cls = clsValue
@@ -156,7 +164,7 @@ class PerformanceMonitor {
     try {
       const observer = new PerformanceObserver((list) => {
         const entries = list.getEntries()
-        entries.forEach((entry: any) => {
+        entries.forEach((entry) => {
           this.metrics.fcp = entry.startTime
           this.logMetric('FCP', entry.startTime, this.budget.fcp)
         })
@@ -175,8 +183,10 @@ class PerformanceMonitor {
     try {
       const observer = new PerformanceObserver((list) => {
         const entries = list.getEntries()
-        entries.forEach((entry: any) => {
-          this.metrics.ttfb = entry.responseStart - entry.requestStart
+        entries.forEach((entry: PerformanceEntry) => {
+          // Cast for PerformanceNavigationTiming properties
+          const nav = entry as PerformanceEntry & { responseStart: number; requestStart: number }
+          this.metrics.ttfb = nav.responseStart - nav.requestStart
           this.logMetric('TTFB', this.metrics.ttfb, this.budget.ttfb)
         })
       })
@@ -194,7 +204,7 @@ class PerformanceMonitor {
     try {
       const observer = new PerformanceObserver((list) => {
         const entries = list.getEntries()
-        entries.forEach((entry: any) => {
+        entries.forEach((entry: PerformanceEntry) => {
           if (entry.name === 'first-meaningful-paint') {
             this.metrics.fmp = entry.startTime
             this.logMetric('FMP', entry.startTime, 1800) // 1.8s budget
@@ -215,10 +225,10 @@ class PerformanceMonitor {
     try {
       const observer = new PerformanceObserver((list) => {
         const entries = list.getEntries()
-        entries.forEach((entry: any) => {
+        entries.forEach((entry: PerformanceEntry) => {
           if (entry.name === 'speed-index') {
-            this.metrics.si = entry.value
-            this.logMetric('SI', entry.value, 3000) // 3s budget
+            this.metrics.si = (entry as unknown as { value: number }).value
+            this.logMetric('SI', (entry as unknown as { value: number }).value, 3000) // 3s budget
           }
         })
       })
@@ -237,7 +247,7 @@ class PerformanceMonitor {
       let tbt = 0
       const observer = new PerformanceObserver((list) => {
         const entries = list.getEntries()
-        entries.forEach((entry: any) => {
+        entries.forEach((entry: PerformanceEntry) => {
           if (entry.duration > 50) {
             tbt += entry.duration - 50
           }
@@ -265,7 +275,7 @@ class PerformanceMonitor {
   private trackMemoryUsage() {
     if ('memory' in performance) {
       const updateMemoryUsage = () => {
-        const memory = (performance as any).memory
+        const memory = (performance as unknown as { memory: { usedJSHeapSize: number } }).memory
         this.metrics.memoryUsage = memory.usedJSHeapSize / 1024 / 1024 // MB
         this.logMetric('Memory Usage', this.metrics.memoryUsage, 100) // 100MB budget (more realistic for React app)
       }
@@ -276,14 +286,14 @@ class PerformanceMonitor {
   }
 
   private logMetric(name: string, value: number, budget: number) {
-    const status = value <= budget ? '✅' : '⚠️'
+    const _status = value <= budget ? '✅' : '⚠️'
     const percentage = ((value / budget) * 100).toFixed(1)
     
-    console.log(`${status} ${name}: ${value.toFixed(2)}ms (${percentage}% of budget)`)
+    logger.debug('Performance metric', { operation: 'performance-monitor.metric', name, value: value.toFixed(2), percentage, status: value <= budget ? 'ok' : 'warning' })
     
     // Report to analytics if available
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', 'performance_metric', {
+    if (typeof window !== 'undefined' && (window as unknown as { gtag: (...args: unknown[]) => void }).gtag) {
+      (window as unknown as { gtag: (...args: unknown[]) => void }).gtag('event', 'performance_metric', {
         metric_name: name,
         metric_value: value,
         budget_value: budget,

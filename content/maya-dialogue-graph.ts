@@ -841,17 +841,39 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "It's strange. I've been terrified to say any of this out loud. But telling you... seeing it through your eyes... it makes the decision seem obvious.",
-        emotion: 'determined',
+        text: "It's strange. I've been terrified to say any of this out loud. But telling you... seeing it through your eyes... it makes the decision seem obvious.\n\nBefore I go, can I ask you something? You've been so patient with me, asking the right questions. But what about you? How do you know when you're making the right choice for yourself?",
+        emotion: 'curious_reciprocal',
         variation_id: 'reciprocity_transition_v1'
       }
     ],
     choices: [
       {
-        choiceId: 'ask_what_decision',
-        text: "What decision is that?",
-        nextNodeId: 'maya_farewell_robotics', 
-        pattern: 'helping'
+        choiceId: 'player_trust_instinct',
+        text: "I try to trust my gut. When something feels right, even if it's scary, I know it's probably the path I need to take.",
+        nextNodeId: 'maya_farewell_robotics',
+        pattern: 'exploring',
+        skills: ['emotionalIntelligence', 'adaptability']
+      },
+      {
+        choiceId: 'player_weigh_options',
+        text: "I think through all the options. Make lists, consider consequences. But sometimes I get stuck in analysis and never actually choose.",
+        nextNodeId: 'maya_farewell_robotics',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'emotionalIntelligence']
+      },
+      {
+        choiceId: 'player_ask_others',
+        text: "I talk to people I trust. See what they think. But I'm learning that ultimately, I have to choose for myself, not for them.",
+        nextNodeId: 'maya_farewell_robotics',
+        pattern: 'helping',
+        skills: ['collaboration', 'emotionalIntelligence']
+      },
+      {
+        choiceId: 'player_still_figuring',
+        text: "Honestly? I'm still figuring that out. That's part of why I'm here—to learn how to trust myself enough to make those choices.",
+        nextNodeId: 'maya_farewell_robotics',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'adaptability']
       }
     ]
   },

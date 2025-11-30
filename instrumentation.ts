@@ -13,12 +13,14 @@ export async function register() {
   // This prevents the server from starting with missing/invalid configuration
   if (process.env.NEXT_RUNTIME === 'nodejs') {
     try {
-      console.log('🔍 Validating environment configuration...')
+      // Environment validation happens silently - errors are thrown and caught
       validateEnv('server')
-      console.log('✅ Environment validation passed')
     } catch (error) {
+      // In production, exit on validation failure
+      // In development, Next.js will show the error page
+      const errorMessage = error instanceof Error ? error.message : String(error)
       console.error('❌ Environment validation failed:')
-      console.error((error as Error).message)
+      console.error(errorMessage)
       console.error('\nServer startup aborted. Please fix the configuration errors above.')
       // In development, we log the error but continue (Next.js will show the error page)
       // In production, we should exit to prevent broken deployments

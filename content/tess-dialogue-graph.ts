@@ -451,14 +451,21 @@ export const tessDialogueNodes: DialogueNode[] = [
     speaker: 'Tess',
     content: [
       {
-        text: `{{met_kai:Kai is trying to change the system from within. I respect that. But I have to build outside it.|I'm building outside the system.}} I'm heading back to Woodlawn. I have a grant proposal to write.\n\nTell Samuel... tell him the classroom is everywhere.`,
-        emotion: 'grateful',
+        text: `{{met_kai:Kai is trying to change the system from within. I respect that. But I have to build outside it.|I'm building outside the system.}} I'm heading back to Woodlawn. I have a grant proposal to write.\n\nBefore I go—you've been helping me figure out how to build this. But what about you? What are you building? What's your vision?`,
+        emotion: 'curious_reciprocal',
         interaction: 'nod',
         variation_id: 'farewell_v1',
         useChatPacing: true
       }
     ],
     choices: [
+      {
+        choiceId: 'tess_asks_before_leave',
+        text: "What are you building?",
+        nextNodeId: 'tess_asks_player',
+        pattern: 'helping',
+        skills: ['communication', 'curiosity']
+      },
       {
         choiceId: 'return_to_samuel_tess',
         text: "Return to Samuel",
@@ -923,6 +930,13 @@ export const tessDialogueNodes: DialogueNode[] = [
     }],
     choices: [
       {
+        choiceId: 'tess_p2_asks_before_leave',
+        text: "Before you go—what's your biggest challenge?",
+        nextNodeId: 'tess_p2_asks_player',
+        pattern: 'helping',
+        skills: ['communication', 'curiosity']
+      },
+      {
         choiceId: 'return_to_samuel_tess_p2',
         text: "Return to Samuel",
         nextNodeId: samuelEntryPoints.TESS_REFLECTION_GATEWAY,
@@ -930,6 +944,132 @@ export const tessDialogueNodes: DialogueNode[] = [
       }
     ],
     tags: ['phase2', 'tess_arc', 'completion']
+  },
+  // ============= RECIPROCITY: TESS ASKS PLAYER (Phase 1) =============
+  {
+    nodeId: 'tess_asks_player',
+    speaker: 'Tess',
+    content: [{
+      text: `*Stops. Looks at you.*|What building?|*Thinks.*|You helping me build this. But what you building for yourself?|What vision you chasing?`,
+      emotion: 'curious_reciprocal',
+      interaction: 'nod',
+      variation_id: 'tess_reciprocity_v1',
+      useChatPacing: true
+    }],
+    choices: [
+      {
+        choiceId: 'player_building_helping',
+        text: "I'm building connections. Helping people see possibilities they couldn't see before. That feels like my purpose—creating space for others to grow, even when I'm still growing myself.",
+        nextNodeId: 'tess_reciprocity_response',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'emotionalIntelligence']
+      },
+      {
+        choiceId: 'player_building_systems',
+        text: "I'm building systems. Ways to help more people, scale what works. But I'm still figuring out what that looks like—how to reach more without losing what makes it meaningful.",
+        nextNodeId: 'tess_reciprocity_response',
+        pattern: 'building',
+        skills: ['emotionalIntelligence', 'systemsThinking']
+      },
+      {
+        choiceId: 'player_building_understanding',
+        text: "I'm building understanding. Learning how people work, how to help them grow. But I'm still learning myself—still figuring out my own path while trying to help others find theirs.",
+        nextNodeId: 'tess_reciprocity_response',
+        pattern: 'analytical',
+        skills: ['emotionalIntelligence', 'criticalThinking']
+      },
+      {
+        choiceId: 'player_still_figuring',
+        text: "I don't know yet. That's part of why I'm here—to figure out what I'm building, what I want to create. To stop pretending I have it all figured out.",
+        nextNodeId: 'tess_reciprocity_response',
+        pattern: 'exploring',
+        skills: ['emotionalIntelligence', 'adaptability']
+      }
+    ],
+    tags: ['reciprocity', 'player_reflection', 'tess_arc']
+  },
+  {
+    nodeId: 'tess_reciprocity_response',
+    speaker: 'Tess',
+    content: [{
+      text: `*Nods.*|That's it.|Building something.|Even if not sure what yet.|*Shoulders pack.*|Keep building. See where it goes.|Tell Samuel classroom is everywhere.`,
+      emotion: 'affirming',
+      interaction: 'nod',
+      variation_id: 'tess_response_v1',
+      useChatPacing: true
+    }],
+    choices: [
+      {
+        choiceId: 'return_to_samuel_tess_after',
+        text: "Return to Samuel",
+        nextNodeId: samuelEntryPoints.TESS_REFLECTION_GATEWAY,
+        pattern: 'exploring'
+      }
+    ],
+    tags: ['reciprocity', 'tess_arc']
+  },
+  // ============= RECIPROCITY: TESS ASKS PLAYER (Phase 2) =============
+  {
+    nodeId: 'tess_p2_asks_player',
+    speaker: 'Tess',
+    content: [{
+      text: `*Pauses. Looks at you.*|Biggest challenge?|*Thinks.*|Mine—scaling without losing rigor. Balancing safety with growth.|But you?|What challenge you facing?|How you handle when things get messy?`,
+      emotion: 'curious_reciprocal',
+      interaction: 'nod',
+      variation_id: 'tess_p2_reciprocity_v1',
+      useChatPacing: true
+    }],
+    choices: [
+      {
+        choiceId: 'player_challenge_balance',
+        text: "My challenge is balance. I want to help everyone, but I can't. I have to choose, and that feels like failing the ones I can't reach. Every choice feels like a betrayal of someone who needs help.",
+        nextNodeId: 'tess_p2_reciprocity_response',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'emotionalIntelligence']
+      },
+      {
+        choiceId: 'player_challenge_quality',
+        text: "My challenge is maintaining quality. I want to scale, to reach more people, but I'm afraid of diluting what makes it meaningful. How do you grow without losing what made it special?",
+        nextNodeId: 'tess_p2_reciprocity_response',
+        pattern: 'building',
+        skills: ['emotionalIntelligence', 'criticalThinking']
+      },
+      {
+        choiceId: 'player_challenge_uncertainty',
+        text: "My challenge is uncertainty. When things get messy, I don't always know the right call. I make decisions and hope they're right, but the weight of getting it wrong is heavy.",
+        nextNodeId: 'tess_p2_reciprocity_response',
+        pattern: 'analytical',
+        skills: ['emotionalIntelligence', 'adaptability']
+      },
+      {
+        choiceId: 'player_challenge_patience',
+        text: "My challenge is patience. When things get messy, I want to fix them immediately. But some problems need time, and I struggle with that—with not being able to solve everything right now.",
+        nextNodeId: 'tess_p2_reciprocity_response',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'emotionalIntelligence']
+      }
+    ],
+    tags: ['reciprocity', 'player_reflection', 'tess_arc', 'phase2']
+  },
+  {
+    nodeId: 'tess_p2_reciprocity_response',
+    speaker: 'Tess',
+    content: [{
+      text: `*Nods.*|Know that feeling.|But you here. Showing up when messy.|That's leadership.|*Picks up pack.*|Keep showing up. See Samuel. Tell him I'm learning.`,
+      emotion: 'affirming',
+      interaction: 'nod',
+      variation_id: 'tess_p2_response_v1',
+      useChatPacing: true
+    }],
+    choices: [
+      {
+        choiceId: 'return_to_samuel_tess_p2_after',
+        text: "Return to Samuel",
+        nextNodeId: samuelEntryPoints.TESS_REFLECTION_GATEWAY,
+        pattern: 'exploring'
+      }
+    ],
+    tags: ['reciprocity', 'tess_arc', 'phase2']
   }
 ]
 

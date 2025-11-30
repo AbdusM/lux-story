@@ -1,15 +1,17 @@
 /**
  * Real-Time User Activity Monitor
- * Sends critical events to console for live debugging during demos
+ * Sends critical events to logger for live debugging during demos
  *
  * Usage: Import and call monitor functions throughout the app
  */
+
+import { logger } from './logger'
 
 export interface UserActivity {
   timestamp: number
   userId: string
   activityType: 'choice' | 'scene_enter' | 'skill_demo' | 'sync' | 'error' | 'page_load'
-  data: Record<string, any>
+  data: Record<string, unknown>
 }
 
 class RealTimeMonitor {
@@ -34,7 +36,8 @@ class RealTimeMonitor {
 
     this.addActivity(activity)
 
-    console.log('👤 [USER ACTIVITY] Choice made:', {
+    logger.debug('Choice made', {
+      operation: 'real-time-monitor.choice',
       userId: this.anonymize(userId),
       choiceId,
       skills: skills.join(', '),
@@ -56,7 +59,8 @@ class RealTimeMonitor {
 
     this.addActivity(activity)
 
-    console.log('🎬 [USER ACTIVITY] Scene entered:', {
+    logger.debug('Scene entered', {
+      operation: 'real-time-monitor.scene',
       userId: this.anonymize(userId),
       sceneId,
       context: context?.substring(0, 50),
@@ -77,11 +81,12 @@ class RealTimeMonitor {
 
     this.addActivity(activity)
 
-    console.log('⭐ [USER ACTIVITY] Skill demonstrated:', {
+    logger.debug('Skill demonstrated', {
+      operation: 'real-time-monitor.skill',
       userId: this.anonymize(userId),
       skill,
       count,
-      willSync: willSync ? '🔄 SYNCING TO SUPABASE' : '💾 Local only',
+      willSync: willSync ? 'SYNCING TO SUPABASE' : 'Local only',
       timestamp: new Date().toLocaleTimeString()
     })
   }
@@ -99,8 +104,8 @@ class RealTimeMonitor {
 
     this.addActivity(activity)
 
-    const emoji = success ? '✅' : '❌'
-    console.log(`${emoji} [USER ACTIVITY] Supabase sync:`, {
+    logger.debug('Supabase sync', {
+      operation: 'real-time-monitor.sync',
       userId: this.anonymize(userId),
       syncType,
       success,
@@ -112,7 +117,7 @@ class RealTimeMonitor {
   /**
    * Log errors that affect user
    */
-  logError(userId: string, errorType: string, message: string, context?: any) {
+  logError(userId: string, errorType: string, message: string, context?: unknown) {
     const activity: UserActivity = {
       timestamp: Date.now(),
       userId,
@@ -144,7 +149,8 @@ class RealTimeMonitor {
 
     this.addActivity(activity)
 
-    console.log('📄 [USER ACTIVITY] Page loaded:', {
+    logger.debug('Page loaded', {
+      operation: 'real-time-monitor.page-load',
       userId: this.anonymize(userId),
       page,
       loadTime: loadTime ? `${loadTime}ms` : 'N/A',
@@ -190,22 +196,22 @@ class RealTimeMonitor {
   printDashboard() {
     const users = [...new Set(this.activities.map(a => a.userId))]
 
-    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
-    console.log('📊 REAL-TIME USER ACTIVITY DASHBOARD')
-    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
-    console.log(`Active users: ${users.length}`)
-    console.log(`Total activities: ${this.activities.length}`)
-    console.log('')
-
-    users.forEach(userId => {
-      const summary = this.getUserSummary(userId)
-      console.log(`👤 User: ${this.anonymize(userId)}`)
-      console.log(`   Choices: ${summary.choicesMade} | Skills: ${summary.skillsDemonstrated} | Syncs: ${summary.syncOperations} | Errors: ${summary.errors}`)
-      console.log(`   Last activity: ${summary.lastActivity?.toLocaleTimeString() || 'N/A'}`)
-      console.log('')
+    logger.debug('Real-time user activity dashboard', {
+      operation: 'real-time-monitor.dashboard',
+      activeUsers: users.length,
+      totalActivities: this.activities.length,
+      userSummaries: users.map(userId => {
+        const summary = this.getUserSummary(userId)
+        return {
+          userId: this.anonymize(userId),
+          choices: summary.choicesMade,
+          skills: summary.skillsDemonstrated,
+          syncs: summary.syncOperations,
+          errors: summary.errors,
+          lastActivity: summary.lastActivity?.toLocaleTimeString() || 'N/A'
+        }
+      })
     })
-
-    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
   }
 
   /**
@@ -233,7 +239,7 @@ class RealTimeMonitor {
    */
   clear() {
     this.activities = []
-    console.log('🧹 [MONITOR] Activity log cleared')
+    logger.debug('Activity log cleared', { operation: 'real-time-monitor.clear' })
   }
 }
 
@@ -255,7 +261,7 @@ export const logSkillDemo = (userId: string, skill: string, count: number, willS
 export const logSync = (userId: string, syncType: 'career_analytics' | 'skill_summary' | 'skill_demonstration' | 'career_exploration' | 'pattern_demonstration' | 'relationship_progress' | 'platform_state', success: boolean, error?: string) =>
   monitor.logSync(userId, syncType, success, error)
 
-export const logError = (userId: string, errorType: string, message: string, context?: any) =>
+export const logError = (userId: string, errorType: string, message: string, context?: unknown) =>
   monitor.logError(userId, errorType, message, context)
 
 export const logPageLoad = (userId: string, page: string, loadTime?: number) =>
@@ -269,12 +275,12 @@ export const getRecentActivities = (limit?: number) => monitor.getRecentActiviti
 
 // Make dashboard available globally for console debugging
 if (typeof window !== 'undefined') {
-  (window as any).userMonitor = {
+  (window as unknown as Record<string, unknown>).userMonitor = {
     dashboard: printDashboard,
     summary: getUserSummary,
     recent: getRecentActivities,
     clear: () => monitor.clear()
   }
 
-  console.log('💡 Tip: Type userMonitor.dashboard() in console for real-time activity dashboard')
+  // Tip available via userMonitor.dashboard() in console
 }

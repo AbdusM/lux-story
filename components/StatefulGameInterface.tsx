@@ -40,16 +40,16 @@ import {
   findCharacterForNode,
   getSafeStart
 } from '@/lib/graph-registry'
+import { samuelEntryPoints } from '@/content/samuel-dialogue-graph'
 import { SkillTracker } from '@/lib/skill-tracker'
 import { SCENE_SKILL_MAPPINGS } from '@/lib/scene-skill-mappings'
 import { queueRelationshipSync, queuePlatformStateSync } from '@/lib/sync-queue'
 import { useGameStore } from '@/lib/game-store'
 import { CHOICE_HANDLER_TIMEOUT_MS } from '@/lib/constants'
-import { ExperienceSummary, type ExperienceSummaryData } from '@/components/ExperienceSummary'
-import { NarrativeFeedback } from '@/components/NarrativeFeedback'
+import { logger } from '@/lib/logger'
+import { type ExperienceSummaryData } from '@/components/ExperienceSummary'
 import { SyncStatusIndicator } from '@/components/SyncStatusIndicator'
-import { detectArcCompletion, generateExperienceSummary } from '@/lib/arc-learning-objectives'
-import { loadSkillProfile } from '@/lib/skill-profile-adapter'
+import { detectArcCompletion } from '@/lib/arc-learning-objectives'
 import { isSupabaseConfigured } from '@/lib/supabase'
 import { GameChoices } from '@/components/GameChoices'
 import { Brain, BookOpen, Stars, RefreshCw, Compass } from 'lucide-react'
@@ -62,33 +62,9 @@ import { FloatingModuleEvaluator } from '@/lib/floating-module-evaluator'
 import type { FloatingModule } from '@/lib/dialogue-graph'
 import { JourneySummary } from '@/components/JourneySummary'
 import { generateJourneyNarrative, isJourneyComplete, type JourneyNarrative } from '@/lib/journey-narrative-generator'
-import { evaluateAchievements, getAchievement, type MetaAchievement } from '@/lib/meta-achievements'
+import { evaluateAchievements, type MetaAchievement } from '@/lib/meta-achievements'
 
-// Trust feedback messages - Telltale-style "X will remember that"
-const TRUST_FEEDBACK_MESSAGES = {
-  positive: [
-    "appreciates your understanding.",
-    "feels more comfortable with you.",
-    "opened up a little.",
-    "trusts you a bit more."
-  ],
-  negative: [
-    "seems more guarded now.",
-    "pulled back slightly.",
-    "isn't quite sure about you."
-  ]
-}
-
-function generateTrustFeedback(characterName: string, trustChange: number): string | null {
-  if (trustChange === 0) return null
-
-  const messages = trustChange > 0 ? TRUST_FEEDBACK_MESSAGES.positive : TRUST_FEEDBACK_MESSAGES.negative
-  const message = messages[Math.floor(Math.random() * messages.length)]
-
-  // Use first name only for intimacy
-  const firstName = characterName.split(' ')[0]
-  return `${firstName} ${message}`
-}
+// Trust feedback disabled - notifications were obtrusive
 
 // Types
 interface GameInterfaceState {
@@ -176,7 +152,7 @@ export default function StatefulGameInterface() {
 
     return {
       mode: 'staggered', // Keep user-approved smooth text
-      state: state as any,
+      state: (state || 'default') as 'thinking' | 'executing' | 'warning' | 'error' | 'success' | 'default',
       speed: 1.0
     }
   }, [enableRichEffects])
@@ -188,20 +164,8 @@ export default function StatefulGameInterface() {
   const [hasSaveFile, setHasSaveFile] = useState(false)
   const [_saveIsComplete, setSaveIsComplete] = useState(false)
 
-  useEffect(() => {
-    if (state.showSaveConfirmation) {
-      const timer = setTimeout(() => setState(prev => ({ ...prev, showSaveConfirmation: false })), 2000)
-      return () => clearTimeout(timer)
-    }
-  }, [state.showSaveConfirmation])
-
-  // Auto-hide achievement notification after 5 seconds
-  useEffect(() => {
-    if (state.achievementNotification) {
-      const timer = setTimeout(() => setState(prev => ({ ...prev, achievementNotification: null })), 5000)
-      return () => clearTimeout(timer)
-    }
-  }, [state.achievementNotification])
+  // Save confirmation disabled - saves happen silently without interruption
+  // Achievement notifications disabled - no longer needed
 
   useEffect(() => {
     const exists = GameStateManager.hasSaveFile()
@@ -219,7 +183,7 @@ export default function StatefulGameInterface() {
 
   // Initialize game logic
   const initializeGame = useCallback(async () => {
-    console.log('🎮 Initializing Stateful Narrative Engine...')
+    logger.debug('Initializing Stateful Narrative Engine', { operation: 'game-interface.init' })
     try {
       let gameState = GameStateManager.loadGameState()
       if (!gameState) {
@@ -239,7 +203,7 @@ export default function StatefulGameInterface() {
               created_at: new Date().toISOString()
             })
           })
-          console.log('✅ Player profile ensured:', gameState.playerId)
+          logger.debug('Player profile ensured', { operation: 'game-interface.profile', playerId: gameState.playerId })
         } catch (error) {
           console.warn('⚠️ Failed to ensure player profile (will fallback to API route check):', error)
         }
@@ -332,7 +296,8 @@ export default function StatefulGameInterface() {
 
       // syncDerivedState is called automatically by setCoreGameState,
       // but we also explicitly sync here for clarity and debugging
-      console.log('🔄 Zustand synced with CoreGameState:', {
+      logger.debug('Zustand synced with CoreGameState', {
+        operation: 'game-interface.zustand-sync',
         characterCount: serializedState.characters.length,
         patterns: serializedState.patterns,
         currentNodeId: serializedState.currentNodeId
@@ -431,28 +396,23 @@ export default function StatefulGameInterface() {
         ? [...demonstratedSkills, ...state.recentSkills].slice(0, 10)
         : state.recentSkills.slice(0, 8)
 
-      // Generate trust feedback for Telltale-style consequence visibility
-      let consequenceFeedback: { message: string } | null = null
-      const trustChange = choice.choice.consequence?.trustChange
-      if (trustChange && trustChange !== 0 && nextNode.speaker) {
-        const feedbackMessage = generateTrustFeedback(nextNode.speaker, trustChange)
-        if (feedbackMessage) {
-          consequenceFeedback = { message: feedbackMessage }
-        }
-      }
+      // Trust feedback disabled - notifications were obtrusive
+      // Trust changes are tracked silently in the background
+      const consequenceFeedback: { message: string } | null = null
+
 
       const completedArc = detectArcCompletion(state.gameState, newGameState)
       const experienceSummaryUpdate = { showExperienceSummary: false, experienceSummaryData: null as ExperienceSummaryData | null }
 
-      if (completedArc) {
-          // Get actual skill demonstrations from tracker for personalized summary
-          const demonstrations = skillTrackerRef.current?.getAllDemonstrations() || []
-
-          loadSkillProfile(newGameState.playerId)
-              .then(profile => generateExperienceSummary(completedArc, newGameState, profile, demonstrations))
-              .then(summaryData => setState(prev => ({ ...prev, showExperienceSummary: true, experienceSummaryData: summaryData })))
-              .catch(() => setState(prev => ({ ...prev, showExperienceSummary: true, experienceSummaryData: null }))) // Fallback
-      }
+      // Arc completion summary disabled - breaks immersion
+      // Experience summaries available in admin dashboard/journey summary (menus/maps)
+      // if (completedArc) {
+      //   const demonstrations = skillTrackerRef.current?.getAllDemonstrations() || []
+      //   loadSkillProfile(newGameState.playerId)
+      //       .then(profile => generateExperienceSummary(completedArc, newGameState, profile, demonstrations))
+      //       .then(summaryData => setState(prev => ({ ...prev, showExperienceSummary: true, experienceSummaryData: summaryData })))
+      //       .catch(() => setState(prev => ({ ...prev, showExperienceSummary: true, experienceSummaryData: null })))
+      // }
     
       // Check for arc_transition floating modules when arc is completed
       if (completedArc && !pendingFloatingModule) {
@@ -467,15 +427,15 @@ export default function StatefulGameInterface() {
       }
 
       // Evaluate meta-achievements after state changes
-      let achievementNotification: MetaAchievement | null = null
+      // Achievements are tracked silently - no obtrusive notifications
       const existingUnlocks = zustandStore.unlockedAchievements || []
       const newAchievements = evaluateAchievements(newGameState, existingUnlocks)
       if (newAchievements.length > 0) {
-        // Unlock the new achievements in Zustand
+        // Unlock the new achievements in Zustand (still tracked, just no popup)
         zustandStore.unlockAchievements(newAchievements)
-        // Show notification for the first new achievement
-        achievementNotification = getAchievement(newAchievements[0]) || null
+        // Notification disabled - obtrusive on mobile, achievements visible in admin dashboard
       }
+      const achievementNotification: MetaAchievement | null = null
 
       setState({
           gameState: newGameState,
@@ -489,7 +449,7 @@ export default function StatefulGameInterface() {
           isLoading: false,
           hasStarted: true,
           selectedChoice: null,
-          showSaveConfirmation: true,
+          showSaveConfirmation: false, // Disabled - save happens silently, no interruption
           skillToast: null, // Disabled - skills tracked silently
           consequenceFeedback,
           error: null,
@@ -560,7 +520,155 @@ export default function StatefulGameInterface() {
       clearTimeout(safetyTimeout)
       isProcessingChoiceRef.current = false
     }
-  }, [state.gameState, state.currentNode, state.showConfigWarning, state.recentSkills, state.showThoughtCabinet, state.showJournal, state.showConstellation])
+  }, [state.gameState, state.currentNode, state.showConfigWarning, state.recentSkills, state.showThoughtCabinet, state.showJournal, state.showConstellation, state.journeyNarrative, state.showJourneySummary])
+
+  /**
+   * Navigate back to Samuel's hub after completing a conversation
+   * Determines the appropriate entry point based on completed arcs
+   */
+  const handleReturnToStation = useCallback(async () => {
+    if (!state.gameState) return
+
+    // Determine which Samuel entry point to use based on completed arcs
+    let targetNodeId: string = samuelEntryPoints.INTRODUCTION
+
+    // Check for character-specific reflection gateways
+    const globalFlags = Array.from(state.gameState.globalFlags)
+    if (globalFlags.includes('kai_arc_complete')) {
+      targetNodeId = samuelEntryPoints.KAI_REFLECTION_GATEWAY
+    } else if (globalFlags.includes('maya_arc_complete') && !globalFlags.includes('devon_arc_complete')) {
+      targetNodeId = samuelEntryPoints.HUB_AFTER_MAYA
+    } else if (globalFlags.includes('devon_arc_complete')) {
+      targetNodeId = samuelEntryPoints.HUB_AFTER_DEVON
+    } else if (globalFlags.includes('marcus_arc_complete')) {
+      targetNodeId = samuelEntryPoints.MARCUS_REFLECTION_GATEWAY
+    } else if (globalFlags.includes('jordan_arc_complete')) {
+      targetNodeId = samuelEntryPoints.JORDAN_REFLECTION_GATEWAY
+    } else if (globalFlags.includes('tess_arc_complete')) {
+      targetNodeId = samuelEntryPoints.TESS_REFLECTION_GATEWAY
+    } else if (globalFlags.includes('yaquin_arc_complete')) {
+      targetNodeId = samuelEntryPoints.YAQUIN_REFLECTION_GATEWAY
+    } else if (globalFlags.includes('rohan_arc_complete')) {
+      targetNodeId = samuelEntryPoints.ROHAN_REFLECTION_GATEWAY
+    } else if (globalFlags.includes('silas_arc_complete')) {
+      targetNodeId = samuelEntryPoints.SILAS_REFLECTION_GATEWAY
+    } else if (globalFlags.includes('maya_arc_complete')) {
+      targetNodeId = samuelEntryPoints.MAYA_REFLECTION_GATEWAY
+    } else {
+      // Default to initial hub or introduction
+      targetNodeId = samuelEntryPoints.HUB_INITIAL || samuelEntryPoints.INTRODUCTION
+    }
+
+    // Find the character and graph for the target node
+    const searchResult = findCharacterForNode(targetNodeId, state.gameState)
+    if (!searchResult) {
+      console.error('Failed to find Samuel hub node:', targetNodeId)
+      // Fallback: reset to introduction
+      const samuelGraph = getGraphForCharacter('samuel', state.gameState)
+      const introNode = samuelGraph.nodes.get(samuelEntryPoints.INTRODUCTION)
+      if (introNode) {
+        const newGameState = { ...state.gameState }
+        newGameState.currentNodeId = introNode.nodeId
+        newGameState.currentCharacterId = 'samuel'
+        const samuelChar = newGameState.characters.get('samuel') || GameStateUtils.createCharacterState('samuel')
+        newGameState.characters.set('samuel', samuelChar)
+        const content = DialogueGraphNavigator.selectContent(introNode, samuelChar.conversationHistory)
+        const choices = StateConditionEvaluator.evaluateChoices(introNode, newGameState, 'samuel').filter(c => c.visible)
+        
+        setState(prev => ({
+          ...prev,
+          gameState: newGameState,
+          currentNode: introNode,
+          currentGraph: samuelGraph,
+          currentCharacterId: 'samuel',
+          availableChoices: choices,
+          currentContent: content.text,
+          currentDialogueContent: content,
+          useChatPacing: content.useChatPacing || false,
+          isLoading: false
+        }))
+        GameStateManager.saveGameState(newGameState)
+        const zustandStore = useGameStore.getState()
+        zustandStore.setCoreGameState(GameStateUtils.serialize(newGameState))
+        return
+      }
+      return
+    }
+
+    const targetNode = searchResult.graph.nodes.get(targetNodeId)
+    if (!targetNode) {
+      console.error('Target node not found:', targetNodeId)
+      return
+    }
+
+    // Navigate to the target node (similar to handleChoice but without choice consequences)
+    let newGameState = state.gameState
+    const targetCharacterId = searchResult.characterId
+    const targetGraph = searchResult.graph
+
+    // Apply onEnter effects if any
+    if (targetNode.onEnter) {
+      for (const change of targetNode.onEnter) {
+        newGameState = GameStateUtils.applyStateChange(newGameState, change)
+      }
+    }
+
+    // Ensure character exists
+    if (!newGameState.characters.has(targetCharacterId)) {
+      const newChar = GameStateUtils.createCharacterState(targetCharacterId)
+      newGameState.characters.set(targetCharacterId, newChar)
+    }
+    
+    const targetCharacter = newGameState.characters.get(targetCharacterId)!
+    if (!targetCharacter.conversationHistory.includes(targetNode.nodeId)) {
+      targetCharacter.conversationHistory.push(targetNode.nodeId)
+    }
+    newGameState.currentNodeId = targetNode.nodeId
+    newGameState.currentCharacterId = targetCharacterId
+
+    const content = DialogueGraphNavigator.selectContent(targetNode, targetCharacter.conversationHistory)
+    const choices = StateConditionEvaluator.evaluateChoices(targetNode, newGameState, targetCharacterId).filter(c => c.visible)
+
+    setState(prev => ({
+      ...prev,
+      gameState: newGameState,
+      currentNode: targetNode,
+      currentGraph: targetGraph,
+      currentCharacterId: targetCharacterId,
+      availableChoices: choices,
+      currentContent: content.text,
+      currentDialogueContent: content,
+      useChatPacing: content.useChatPacing || false,
+      isLoading: false
+    }))
+
+    GameStateManager.saveGameState(newGameState)
+    
+    // Sync to Zustand
+    const zustandStore = useGameStore.getState()
+    zustandStore.setCoreGameState(GameStateUtils.serialize(newGameState))
+    zustandStore.markSceneVisited(targetNode.nodeId)
+
+    // Sync to Supabase
+    if (isSupabaseConfigured()) {
+      const character = newGameState.characters.get(targetCharacterId)
+      if (character) {
+        queueRelationshipSync({
+          user_id: newGameState.playerId,
+          character_name: targetCharacterId,
+          trust_level: character.trust,
+          relationship_status: character.relationshipStatus,
+          interaction_count: character.conversationHistory.length
+        })
+      }
+      queuePlatformStateSync({
+        user_id: newGameState.playerId,
+        current_scene: newGameState.currentNodeId,
+        global_flags: Array.from(newGameState.globalFlags),
+        patterns: newGameState.patterns
+      })
+    }
+  }, [state.gameState])
 
 
   // Render Logic - Restored Card Layout
@@ -759,7 +867,7 @@ export default function StatefulGameInterface() {
                 </h3>
                 <Button
                   variant="outline"
-                  onClick={() => window.location.reload()}
+                  onClick={handleReturnToStation}
                   className="w-full min-h-[48px] active:scale-[0.98] transition-transform"
                 >
                   Return to Station
@@ -810,49 +918,14 @@ export default function StatefulGameInterface() {
           OVERLAYS & MODALS - Positioned above everything
           ══════════════════════════════════════════════════════════════════ */}
 
-      {/* Feedback Overlays */}
-      <NarrativeFeedback
-        message={state.skillToast?.message || ''}
-        isVisible={!!state.skillToast}
-        onDismiss={() => setState(prev => ({ ...prev, skillToast: null }))}
-      />
+      {/* Feedback Overlays - Disabled to avoid blocking content */}
+      {/* Trust and skill changes are tracked silently in the background */}
 
-      {/* Trust/Consequence Feedback - Telltale-style "X will remember that" */}
-      <NarrativeFeedback
-        message={state.consequenceFeedback?.message || ''}
-        isVisible={!!state.consequenceFeedback}
-        onDismiss={() => setState(prev => ({ ...prev, consequenceFeedback: null }))}
-      />
+      {/* Achievement notifications disabled - obtrusive on mobile */}
+      {/* Achievements are still tracked and visible in admin dashboard/journey summary */}
 
-      {/* Meta-Achievement Notification - Subtle recognition, not gamified */}
-      {state.achievementNotification && (
-        <div
-          className="fixed bottom-44 left-1/2 -translate-x-1/2 z-40 animate-fade-in"
-          onClick={() => setState(prev => ({ ...prev, achievementNotification: null }))}
-        >
-          <div className="bg-gradient-to-r from-amber-900/90 to-stone-900/90 backdrop-blur-sm rounded-xl px-5 py-3 shadow-xl border border-amber-600/30 max-w-sm">
-            <div className="flex items-center gap-3">
-              <span className="text-2xl">{state.achievementNotification.icon || '✨'}</span>
-              <div>
-                <p className="text-amber-200 text-xs uppercase tracking-wide font-medium">
-                  {state.achievementNotification.name}
-                </p>
-                <p className="text-stone-300 text-sm italic">
-                  {state.achievementNotification.description}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Experience Summary */}
-      {state.showExperienceSummary && state.experienceSummaryData && (
-        <ExperienceSummary
-          data={state.experienceSummaryData}
-          onContinue={() => setState(prev => ({ ...prev, showExperienceSummary: false, experienceSummaryData: null }))}
-        />
-      )}
+      {/* Experience Summary disabled - breaks immersion, available in menus/maps */}
+      {/* Users can view arc summaries in admin dashboard or journey summary when they choose */}
 
       {/* Thought Cabinet */}
       <ThoughtCabinet

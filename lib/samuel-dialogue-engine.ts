@@ -10,6 +10,7 @@
  */
 
 import type { PlayerPersona } from './player-persona'
+import { logger } from './logger'
 
 export interface SamuelDialogueRequest {
   nodeId: string
@@ -53,7 +54,8 @@ export class SamuelDialogueEngine {
     // Generate cache key from node ID and top skills
     const cacheKey = this.getCacheKey(nodeId, playerPersona)
 
-    console.log('💬 [SamuelDialogue] Generating dialogue:', {
+    logger.debug('Generating dialogue', {
+      operation: 'samuel-dialogue.generate',
       nodeId,
       cacheKey: cacheKey.substring(0, 50) + '...',
       topSkills: playerPersona.topSkills.slice(0, 3).map(s => s.skill),
@@ -64,7 +66,8 @@ export class SamuelDialogueEngine {
     const cached = this.cache.get(cacheKey)
     if (cached) {
       const cacheAge = Date.now() - cached.generatedAt
-      console.log('⚡ [SamuelDialogue] Cache HIT:', {
+      logger.debug('Cache HIT', {
+        operation: 'samuel-dialogue.cache-hit',
         nodeId,
         ageSeconds: Math.floor(cacheAge / 1000)
       })
@@ -74,11 +77,11 @@ export class SamuelDialogueEngine {
     // Check if request already in progress
     const inProgress = this.requestInProgress.get(cacheKey)
     if (inProgress) {
-      console.log('⏳ [SamuelDialogue] Request in progress, waiting...')
+      logger.debug('Request in progress, waiting', { operation: 'samuel-dialogue.wait', nodeId })
       return inProgress
     }
 
-    console.log('🌐 [SamuelDialogue] Fetching from API:', { nodeId, cacheKey: cacheKey.substring(0, 30) })
+    logger.debug('Fetching from API', { operation: 'samuel-dialogue.fetch', nodeId, cacheKey: cacheKey.substring(0, 30) })
 
     // Start new request
     const requestPromise = this.generateDialogueInternal(nodeId, playerPersona, gameContext)
@@ -90,7 +93,8 @@ export class SamuelDialogueEngine {
       // Cache successful responses
       if (!response.error && response.confidence > 0.7) {
         this.cache.set(cacheKey, response)
-        console.log('💾 [SamuelDialogue] Response cached:', {
+        logger.debug('Response cached', {
+          operation: 'samuel-dialogue.cache',
           nodeId,
           confidence: response.confidence
         })
@@ -141,7 +145,8 @@ export class SamuelDialogueEngine {
       const data: SamuelDialogueResponse = await response.json()
       const generationTime = Date.now() - startTime
 
-      console.log('✅ [SamuelDialogue] Dialogue generated:', {
+      logger.debug('Dialogue generated', {
+        operation: 'samuel-dialogue.generated',
         nodeId,
         dialogueLength: data.dialogue.length,
         emotion: data.emotion,
@@ -213,7 +218,7 @@ export class SamuelDialogueEngine {
    */
   clearCache() {
     this.cache.clear()
-    console.log('[SamuelDialogue] Cache cleared')
+    logger.debug('Cache cleared', { operation: 'samuel-dialogue.clear-cache' })
   }
 
   /**
@@ -244,7 +249,7 @@ export class SamuelDialogueEngine {
       'samuel_pattern_observation'
     ]
 
-    console.log('[SamuelDialogue] Preloading', commonNodes.length, 'common nodes')
+    logger.debug('Preloading common nodes', { operation: 'samuel-dialogue.preload', count: commonNodes.length })
 
     // Generate in parallel
     const promises = commonNodes.map(nodeId =>
@@ -256,7 +261,7 @@ export class SamuelDialogueEngine {
 
     await Promise.all(promises)
 
-    console.log('[SamuelDialogue] Preload complete')
+    logger.debug('Preload complete', { operation: 'samuel-dialogue.preload-complete' })
   }
 }
 
@@ -413,7 +418,8 @@ export async function testSamuelDialogue() {
     currentLocation: 'samuel_hub'
   }
 
-  console.log('\n=== TESTING SAMUEL SKILL-AWARE DIALOGUE ===\n')
+  // eslint-disable-next-line no-console
+  logger.debug('Testing Samuel skill-aware dialogue', { operation: 'samuel-dialogue-engine.test' })
 
   // Test each profile
   for (const [profileName, profile] of [
@@ -421,7 +427,8 @@ export async function testSamuelDialogue() {
     ['Analyzer (Critical Thinking)', analyzerProfile],
     ['Explorer (Creativity)', explorerProfile]
   ] as Array<[string, PlayerPersona]>) {
-    console.log(`\n--- Testing ${profileName} Profile ---`)
+    // eslint-disable-next-line no-console
+    logger.debug(`Testing profile`, { operation: 'samuel-dialogue-engine.test-profile', profileName })
 
     try {
       const response = await engine.generateDialogue(
@@ -430,13 +437,16 @@ export async function testSamuelDialogue() {
         gameContext
       )
 
-      console.log('\nSamuel\'s Response:')
-      console.log(`"${response.dialogue}"`)
-      console.log(`\nEmotion: ${response.emotion}`)
-      console.log(`Confidence: ${response.confidence}`)
+      logger.debug('Samuel response', {
+        operation: 'samuel-dialogue-engine.test-response',
+        dialogue: response.dialogue,
+        emotion: response.emotion,
+        confidence: response.confidence
+      })
 
       if (response.note) {
-        console.log(`Note: ${response.note}`)
+        // eslint-disable-next-line no-console
+        logger.debug('Samuel response note', { operation: 'samuel-dialogue-engine.test-note', note: response.note })
       }
 
     } catch (error) {
@@ -444,5 +454,6 @@ export async function testSamuelDialogue() {
     }
   }
 
-  console.log('\n=== TEST COMPLETE ===\n')
+  // eslint-disable-next-line no-console
+  logger.debug('Test complete', { operation: 'samuel-dialogue-engine.test-complete' })
 }

@@ -2,8 +2,8 @@
   "extends": ["next/core-web-vitals", "next/typescript"],
   "rules": {
     // SYSTEMATIC FIX (Oct 17, 2025): Pragmatic linting rules
-    // Allow 'any' type in specific contexts where TypeScript inference is limited
-    "@typescript-eslint/no-explicit-any": ["warn", {
+    // Error on 'any' type - enforce proper typing
+    "@typescript-eslint/no-explicit-any": ["error", {
       "fixToUnknown": false,
       "ignoreRestArgs": true  // Allow ...rest: any[] patterns
     }],
@@ -19,8 +19,8 @@
     "react-hooks/exhaustive-deps": "warn",
     "react-hooks/rules-of-hooks": "error",
     
-    // Allow console in development (caught by pre-commit hooks in production)
-    "no-console": "off",
+    // Error on console.log, allow console.warn and console.error
+    "no-console": ["error", { "allow": ["warn", "error"] }],
     
     // Allow unescaped entities in JSX - natural dialogue should use real quotes
     "react/no-unescaped-entities": "off",

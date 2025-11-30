@@ -85,7 +85,7 @@ class MemoryManagerImpl implements MemoryManager {
   // Memory usage monitoring
   getMemoryUsage(): { used: number; total: number; percentage: number } {
     if (typeof window !== 'undefined' && 'memory' in performance) {
-      const memory = (performance as any).memory
+      const memory = (performance as unknown as { memory: { usedJSHeapSize: number; totalJSHeapSize: number } }).memory
       return {
         used: memory.usedJSHeapSize,
         total: memory.totalJSHeapSize,
@@ -136,7 +136,7 @@ export function getMemoryManager(): MemoryManager {
 }
 
 // Cleanup utility for React components
-export function useMemoryCleanup(cleanupFn: () => void, _deps: any[] = []) {
+export function useMemoryCleanup(cleanupFn: () => void, _deps: unknown[] = []) {
   const memoryManager = getMemoryManager()
 
   // Register cleanup function
@@ -154,7 +154,7 @@ export function createDebouncedStorage(key: string, delay: number = 1000) {
   const memoryManager = getMemoryManager()
   
   return {
-    set: (value: any) => {
+    set: (value: unknown) => {
       if (timeout) {
         clearTimeout(timeout)
       }
@@ -199,7 +199,7 @@ export function createDebouncedStorage(key: string, delay: number = 1000) {
 }
 
 // Memory-efficient data compression
-export function compressData(data: any): string {
+export function compressData(data: unknown): string {
   try {
     return JSON.stringify(data)
   } catch (error) {
@@ -208,7 +208,7 @@ export function compressData(data: any): string {
   }
 }
 
-export function decompressData(compressed: string): any {
+export function decompressData(compressed: string): unknown {
   try {
     return JSON.parse(compressed)
   } catch (error) {

@@ -13,6 +13,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
 import type { SkillProfile } from '@/lib/skill-profile-adapter'
+import { logger } from '@/lib/logger'
 
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY
 
@@ -214,10 +215,13 @@ export async function POST(request: NextRequest) {
     // 4. Build master prompt with WEF 2030 skills data
     const masterPrompt = buildMasterPrompt(profile, skillsData)
 
-    console.log('[AdvisorBriefing] Generating briefing for user:', profile.userId)
-    console.log('[AdvisorBriefing] Demonstrations:', profile.totalDemonstrations)
-    console.log('[AdvisorBriefing] WEF 2030 Skills:', skillsData?.length || 0)
-    console.log('[AdvisorBriefing] Prompt length:', masterPrompt.length, 'chars')
+    logger.debug('Generating briefing', {
+      operation: 'advisor-briefing.generate',
+      userId: profile.userId,
+      totalDemonstrations: profile.totalDemonstrations,
+      wefSkillsCount: skillsData?.length || 0,
+      promptLength: masterPrompt.length
+    })
 
     // 5. Call Claude API
     let briefingText: string | null = null
@@ -264,7 +268,11 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    console.log('[AdvisorBriefing] Success! Generated', briefingText.length, 'chars,', tokensUsed, 'tokens')
+    logger.debug('Briefing generated successfully', {
+      operation: 'advisor-briefing.success',
+      briefingLength: briefingText.length,
+      tokensUsed
+    })
 
     // 8. Return structured response
     const response: AdvisorBriefingResponse = {
@@ -277,15 +285,15 @@ export async function POST(request: NextRequest) {
 
   } catch (error: unknown) {
     console.error('[AdvisorBriefing] Error:', error)
-    const err = error as { message?: string; error?: { message?: string } }
+    const err = error as { message?: string; error?: { message?: string } } | null
 
     // Handle insufficient credits by generating a realistic fallback
     if (err?.message?.includes('credit balance') || err?.error?.message?.includes('credit balance')) {
-      console.log('[AdvisorBriefing] Handling insufficient credits with data-driven fallback')
+      logger.debug('Handling insufficient credits with data-driven fallback', { operation: 'advisor-briefing.fallback' })
 
       // Extract actual data from the profile
       const topSkills = Object.entries(profile.skillDemonstrations)
-        .sort(([, a], [, b]) => b.length - a.length)
+        .sort(([, a], [, b]: [string, unknown[]]) => (Array.isArray(b) ? b.length : 0) - (Array.isArray(a) ? a.length : 0))
         .slice(0, 3)
 
       const topCareer = profile.careerMatches[0]

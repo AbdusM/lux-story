@@ -8,6 +8,8 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { getSupabaseServerClient } from '@/lib/supabase-server'
+import { validateUserId } from '@/lib/user-id-validation'
+import { logger } from '@/lib/logger'
 
 // Mark as dynamic for Next.js static export compatibility
 export const dynamic = 'force-dynamic'
@@ -32,15 +34,21 @@ async function ensurePlayerProfile(userId: string) {
       })
 
     if (error) {
-      console.error('⚠️ [API:SkillSummaries] Failed to ensure player profile:', {
+      logger.warn('Failed to ensure player profile', {
+        operation: 'skill-summaries.ensure-profile',
         userId,
-        error: error instanceof Error ? error.message : "Unknown error"
+        error: error instanceof Error ? error.message : String(error)
       })
     } else {
-      console.log('✅ [API:SkillSummaries] Player profile ensured:', { userId })
+      logger.debug('Player profile ensured', {
+        operation: 'skill-summaries.ensure-profile',
+        userId
+      })
     }
   } catch (error) {
-    console.error('⚠️ [API:SkillSummaries] ensurePlayerProfile error:', error)
+    logger.error('ensurePlayerProfile error', {
+      operation: 'skill-summaries.ensure-profile'
+    }, error instanceof Error ? error : undefined)
   }
 }
 
@@ -53,12 +61,20 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const userId = searchParams.get('userId')
 
-    console.log('🔵 [API:SkillSummaries] GET request:', { userId })
+    logger.debug('Skill summaries GET request', { operation: 'skill-summaries.get', userId: userId ?? undefined })
 
     if (!userId) {
-      console.error('❌ [API:SkillSummaries] Missing userId parameter')
+      logger.warn('Missing userId parameter', { operation: 'skill-summaries.get' })
       return NextResponse.json(
         { error: 'Missing userId parameter' },
+        { status: 400 }
+      )
+    }
+
+    const validation = validateUserId(userId)
+    if (!validation.valid) {
+      return NextResponse.json(
+        { error: validation.error },
         { status: 400 }
       )
     }
@@ -72,11 +88,11 @@ export async function GET(request: NextRequest) {
       .order('last_demonstrated', { ascending: false })
 
     if (error) {
-      console.error('❌ [API:SkillSummaries] Supabase error:', {
-        code: error.code,
-        message: error instanceof Error ? error.message : "Unknown error",
+      logger.error('Supabase error fetching skill summaries', {
+        operation: 'skill-summaries.get',
+        errorCode: error.code,
         userId
-      })
+      }, error instanceof Error ? error : undefined)
       return NextResponse.json(
         { error: 'Failed to fetch skill summaries' },
         { status: 500 }
@@ -92,10 +108,10 @@ export async function GET(request: NextRequest) {
       lastDemonstrated: row.last_demonstrated
     }))
 
-    console.log('✅ [API:SkillSummaries] Retrieved summaries:', {
+    logger.debug('Retrieved skill summaries', {
+      operation: 'skill-summaries.get',
       userId,
-      count: summaries.length,
-      skills: summaries.slice(0, 5).map(s => `${s.skillName}:${s.demonstrationCount}`)
+      count: summaries.length
     })
 
     return NextResponse.json({
@@ -103,12 +119,16 @@ export async function GET(request: NextRequest) {
       summaries
     })
   } catch (error) {
-    console.error('[SkillSummaries API] Unexpected error:', error)
+    logger.error('Unexpected error in skill summaries GET', {
+      operation: 'skill-summaries.get'
+    }, error instanceof Error ? error : undefined)
     const errorMessage = error instanceof Error ? error.message : "Internal server error"
     
     // If it's a missing env var error, return empty data gracefully
     if (errorMessage.includes('Missing Supabase environment variables')) {
-      console.warn('⚠️ [SkillSummaries API] Missing Supabase config - returning empty data')
+      logger.warn('Missing Supabase config - returning empty data', {
+        operation: 'skill-summaries.get'
+      })
       return NextResponse.json({
         success: true,
         summaries: []
@@ -148,18 +168,24 @@ export async function POST(request: NextRequest) {
       last_demonstrated
     } = body
 
-    console.log('🔵 [API:SkillSummaries] POST request:', {
+    logger.debug('Skill summaries POST request', {
+      operation: 'skill-summaries.post',
       userId: user_id,
-      skillName: skill_name,
-      demonstrationCount: demonstration_count,
-      contextLength: latest_context?.length || 0,
-      scenesCount: scenes_involved?.length || 0
+      skillName: skill_name
     })
 
     if (!user_id || !skill_name) {
-      console.error('❌ [API:SkillSummaries] Missing required fields')
+      logger.warn('Missing required fields', { operation: 'skill-summaries.post' })
       return NextResponse.json(
         { error: 'Missing user_id or skill_name' },
+        { status: 400 }
+      )
+    }
+
+    const validation = validateUserId(user_id)
+    if (!validation.valid) {
+      return NextResponse.json(
+        { error: validation.error },
         { status: 400 }
       )
     }
@@ -196,32 +222,36 @@ export async function POST(request: NextRequest) {
       })
 
     if (error) {
-      console.error('❌ [API:SkillSummaries] Supabase upsert error:', {
-        code: error.code,
-        message: error instanceof Error ? error.message : "Unknown error",
+      logger.error('Supabase upsert error', {
+        operation: 'skill-summaries.post',
+        errorCode: error.code,
         userId: user_id,
         skillName: skill_name
-      })
+      }, error instanceof Error ? error : undefined)
       return NextResponse.json(
         { error: 'Failed to save skill summary' },
         { status: 500 }
       )
     }
 
-    console.log('✅ [API:SkillSummaries] Upsert successful:', {
+    logger.debug('Skill summary upsert successful', {
+      operation: 'skill-summaries.post',
       userId: user_id,
-      skillName: skill_name,
-      demonstrationCount: demonstration_count
+      skillName: skill_name
     })
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('[SkillSummaries API] Unexpected error:', error)
+    logger.error('Unexpected error in skill summaries POST', {
+      operation: 'skill-summaries.post'
+    }, error instanceof Error ? error : undefined)
     const errorMessage = error instanceof Error ? error.message : "Internal server error"
     
     // If it's a missing env var error, return success but log warning
     if (errorMessage.includes('Missing Supabase environment variables')) {
-      console.warn('⚠️ [SkillSummaries API] Missing Supabase config - operation skipped')
+      logger.warn('Missing Supabase config - operation skipped', {
+        operation: 'skill-summaries.post'
+      })
       return NextResponse.json({ success: true })
     }
     

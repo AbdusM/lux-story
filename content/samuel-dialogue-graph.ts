@@ -3257,15 +3257,18 @@ export const samuelDialogueNodes: DialogueNode[] = [
         variation_id: 'hub_after_maya_v3_clean'
       }
     ],
-    requiredState: {
-      hasGlobalFlags: ['maya_arc_complete'],
-      lacksGlobalFlags: ['devon_arc_complete']
-    },
     choices: [
+      {
+        choiceId: 'meet_devon_from_maya',
+        text: "Tell me about Devon.",
+        nextNodeId: 'samuel_devon_intro',
+        pattern: 'exploring',
+        skills: ['communication', 'creativity']
+      },
       {
         choiceId: 'return_to_maya',
         text: "I'd like to talk to Maya again.",
-        nextNodeId: mayaRevisitEntryPoints.WELCOME, // Type-safe revisit navigation ✅
+        nextNodeId: mayaRevisitEntryPoints.WELCOME,
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'collaboration'],
         visibleCondition: {
@@ -3273,158 +3276,70 @@ export const samuelDialogueNodes: DialogueNode[] = [
         }
       },
       {
-        choiceId: 'meet_devon',
-        text: "Tell me about Devon.",
-        nextNodeId: 'samuel_devon_intro',
+        choiceId: 'show_all_from_maya',
+        text: "Who else is here tonight? Show me everyone.",
+        nextNodeId: 'samuel_comprehensive_hub',
         pattern: 'exploring',
-        skills: ['communication', 'creativity']
-      },
-      // Pattern observation choices - route to pattern-specific nodes based on dominant style
-      {
-        choiceId: 'tell_me_pattern_analytical',
-        text: "What do you see in me?",
-        nextNodeId: 'samuel_pattern_observation_analytical',
-        pattern: 'patience',
-        skills: ["emotionalIntelligence","communication"],
-        visibleCondition: {
-          trust: { min: 3 },
-          patterns: { analytical: { min: 4 } }
-        }
-      },
-      {
-        choiceId: 'tell_me_pattern_helping',
-        text: "What do you see in me?",
-        nextNodeId: 'samuel_pattern_observation_helping',
-        pattern: 'patience',
-        skills: ["emotionalIntelligence","communication"],
-        visibleCondition: {
-          trust: { min: 3 },
-          patterns: { helping: { min: 4 } }
-        }
-      },
-      {
-        choiceId: 'tell_me_pattern_exploring',
-        text: "What do you see in me?",
-        nextNodeId: 'samuel_pattern_observation_exploring',
-        pattern: 'patience',
-        skills: ["emotionalIntelligence","communication"],
-        visibleCondition: {
-          trust: { min: 3 },
-          patterns: { exploring: { min: 4 } }
-        }
-      },
-      {
-        choiceId: 'tell_me_pattern_patience',
-        text: "What do you see in me?",
-        nextNodeId: 'samuel_pattern_observation_patience',
-        pattern: 'patience',
-        skills: ["emotionalIntelligence","communication"],
-        visibleCondition: {
-          trust: { min: 3 },
-          patterns: { patience: { min: 4 } }
-        }
-      },
-      {
-        choiceId: 'tell_me_pattern_building',
-        text: "What do you see in me?",
-        nextNodeId: 'samuel_pattern_observation_building',
-        pattern: 'patience',
-        skills: ["emotionalIntelligence","communication"],
-        visibleCondition: {
-          trust: { min: 3 },
-          patterns: { building: { min: 4 } }
-        }
+        skills: ['communication', 'collaboration']
       },
       {
         choiceId: 'tell_me_pattern',
         text: "What do you see in me?",
         nextNodeId: 'samuel_pattern_observation',
         pattern: 'patience',
-        skills: ["emotionalIntelligence","communication"],
+        skills: ['communication', 'emotionalIntelligence'],
         visibleCondition: {
           trust: { min: 3 }
         }
-      },
-      // Reciprocity Engine reflection triggers
+      }
+    ],
+    requiredState: {
+      hasGlobalFlags: ['maya_arc_complete'],
+      lacksGlobalFlags: ['devon_arc_complete']
+    }
+  },
+
+  // ============= YAQUIN REFLECTION GATEWAY =============
+  {
+    nodeId: 'samuel_yaquin_reflection_gateway',
+    speaker: 'Samuel Washington',
+    content: [
       {
-        choiceId: 'reflect_stable_parents',
-        text: "You mentioned understanding where my patience comes from...",
-        nextNodeId: 'samuel_reflects_stable_parents',
-        pattern: 'patience',
-        skills: ["emotionalIntelligence","communication"],
+        text: "Yaquin just sprinted past with a notebook full of diagrams. He said he's launching a 'beta cohort.'\n\nYou helped him realize he doesn't need permission to teach. That's a powerful shift.",
+        emotion: 'proud',
+        variation_id: 'yaquin_gateway_v1'
+      }
+    ],
+    requiredState: {
+      hasGlobalFlags: ['yaquin_arc_complete'],
+      lacksKnowledgeFlags: ['reflected_on_yaquin']
+    },
+    choices: [
+      {
+        choiceId: 'yaquin_launched_now',
+        text: "He stopped waiting for perfect and started building.",
+        nextNodeId: 'samuel_reflects_yaquin_launch',
+        pattern: 'building',
+        skills: ['problemSolving', 'adaptability'],
         visibleCondition: {
-          hasGlobalFlags: ['player_revealed_stable_parents'],
-          lacksKnowledgeFlags: ['closed_reciprocity_loop'],
-          trust: { min: 5 }
+          hasGlobalFlags: ['yaquin_launched']
         }
       },
       {
-        choiceId: 'reflect_entrepreneur_parents',
-        text: "You said something about how I see possibilities...",
-        nextNodeId: 'samuel_reflects_entrepreneur_parents',
-        pattern: 'exploring',
-        skills: ["communication","criticalThinking"],
-        visibleCondition: {
-          hasGlobalFlags: ['player_revealed_entrepreneur_parents'],
-          lacksKnowledgeFlags: ['closed_reciprocity_loop'],
-          trust: { min: 5 }
-        }
-      },
-      {
-        choiceId: 'reflect_struggling_parents',
-        text: "I've been thinking about what I shared with Maya...",
-        nextNodeId: 'samuel_reflects_struggling_parents',
-        pattern: 'patience',
-        skills: ["emotionalIntelligence","communication"],
-        visibleCondition: {
-          hasGlobalFlags: ['player_revealed_struggling_parents'],
-          lacksKnowledgeFlags: ['closed_reciprocity_loop'],
-          trust: { min: 5 }
-        }
-      },
-      {
-        choiceId: 'reflect_absent_parents',
-        text: "What you said about presence over performance...",
-        nextNodeId: 'samuel_reflects_absent_parents',
-        pattern: 'patience',
-        skills: ["emotionalIntelligence","communication"],
-        visibleCondition: {
-          hasGlobalFlags: ['player_revealed_absent_parents'],
-          lacksKnowledgeFlags: ['closed_reciprocity_loop'],
-          trust: { min: 5 }
-        }
-      },
-      {
-        choiceId: 'reflect_boundaries',
-        text: "Maya mentioned something about boundaries?",
-        nextNodeId: 'samuel_reflects_boundaries',
+        choiceId: 'yaquin_building_audience',
+        text: "He's building trust first. Playing the long game.",
+        nextNodeId: 'samuel_reflects_yaquin_audience',
         pattern: 'analytical',
-        skills: ["criticalThinking","communication"],
+        skills: ['collaboration'],
         visibleCondition: {
-          hasGlobalFlags: ['player_set_boundary'],
-          lacksKnowledgeFlags: ['closed_reciprocity_loop'],
-          trust: { min: 5 }
+          hasGlobalFlags: ['yaquin_building_audience']
         }
-      },
+      }
+    ],
+    onEnter: [
       {
-        choiceId: 'acknowledge_robotics_share',
-        text: "Did you notice Maya opened up about robotics?",
-        nextNodeId: 'samuel_acknowledges_robotics',
-        pattern: 'exploring',
-        skills: ["communication","criticalThinking"],
-        visibleCondition: {
-          hasGlobalFlags: ['maya_arc_complete']
-        }
-      },
-      {
-        choiceId: 'acknowledge_family_share',
-        text: "She told me about her family's expectations.",
-        nextNodeId: 'samuel_acknowledges_family',
-        pattern: 'patience',
-        skills: ["emotionalIntelligence","communication"],
-        visibleCondition: {
-          hasGlobalFlags: ['maya_arc_complete']
-        }
+        characterId: 'samuel',
+        addKnowledgeFlags: ['reflected_on_yaquin']
       }
     ]
   },
@@ -3841,6 +3756,13 @@ export const samuelDialogueNodes: DialogueNode[] = [
         skills: ['communication', 'collaboration']
       },
       {
+        choiceId: 'show_all_travelers',
+        text: "Who else is here tonight? Show me everyone.",
+        nextNodeId: 'samuel_comprehensive_hub',
+        pattern: 'exploring',
+        skills: ['communication', 'collaboration']
+      },
+      {
         choiceId: 'tell_me_pattern_2',
         text: "What pattern do you see in me now?",
         nextNodeId: 'samuel_pattern_observation',
@@ -3875,6 +3797,116 @@ export const samuelDialogueNodes: DialogueNode[] = [
         }
       }
     ]
+  },
+
+  // ============= COMPREHENSIVE HUB: ALL CHARACTERS =============
+  // Shows all available characters for efficient navigation
+  {
+    nodeId: 'samuel_comprehensive_hub',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Tonight's travelers:\n\n**Maya Chen** - Platform 1. Pre-med student choosing between family expectations and robotics dreams.\n\n**Devon Kumar** - Platform 3. Engineering student learning that logic isn't enough.\n\n**Jordan Packard** - Conference Room B. Seven jobs, one question: qualified or fraudulent?\n\n**Marcus** - Platform 4. CVICU nurse realizing machines matter as much as medicine.\n\n**Tess** - Pizitz Food Hall. Career counselor building a new kind of school.\n\n**Yaquin** - Platform 5. Dental assistant teaching what universities won't.\n\n**Kai** - Platform 6. Instructional architect choosing depth over compliance.\n\n**Rohan** - Platform 7. Site reliability engineer guarding the systems that matter.\n\n**Silas** - Platform 8. Former cloud architect now debugging nature.\n\nWho would you like to meet?",
+        emotion: 'comprehensive_guide',
+        variation_id: 'comprehensive_hub_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'comprehensive_meet_maya',
+        text: "Maya - Platform 1",
+        nextNodeId: 'maya_introduction',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'collaboration'],
+        visibleCondition: {
+          lacksGlobalFlags: ['maya_arc_complete']
+        }
+      },
+      {
+        choiceId: 'comprehensive_revisit_maya',
+        text: "Maya - Platform 1 (revisit)",
+        nextNodeId: mayaRevisitEntryPoints.WELCOME,
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'collaboration'],
+        visibleCondition: {
+          hasGlobalFlags: ['maya_arc_complete']
+        }
+      },
+      {
+        choiceId: 'comprehensive_meet_devon',
+        text: "Devon - Platform 3",
+        nextNodeId: 'devon_introduction',
+        pattern: 'building',
+        skills: ['criticalThinking', 'collaboration'],
+        visibleCondition: {
+          lacksGlobalFlags: ['devon_arc_complete']
+        }
+      },
+      {
+        choiceId: 'comprehensive_meet_jordan',
+        text: "Jordan - Conference Room B",
+        nextNodeId: 'jordan_introduction',
+        pattern: 'exploring',
+        skills: ['adaptability', 'collaboration'],
+        visibleCondition: {
+          lacksGlobalFlags: ['jordan_arc_complete']
+        }
+      },
+      {
+        choiceId: 'comprehensive_meet_marcus',
+        text: "Marcus - Platform 4 (Medical Bay)",
+        nextNodeId: 'samuel_marcus_intro',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        visibleCondition: {
+          hasGlobalFlags: ['met_devon'],
+          lacksGlobalFlags: ['marcus_arc_complete']
+        }
+      },
+      {
+        choiceId: 'comprehensive_meet_tess',
+        text: "Tess - Pizitz Food Hall",
+        nextNodeId: 'samuel_discovers_tess',
+        pattern: 'building',
+        skills: ['creativity', 'communication']
+      },
+      {
+        choiceId: 'comprehensive_meet_yaquin',
+        text: "Yaquin - Platform 5",
+        nextNodeId: 'samuel_discovers_yaquin',
+        pattern: 'building',
+        skills: ['leadership', 'communication']
+      },
+      {
+        choiceId: 'comprehensive_meet_kai',
+        text: "Kai - Platform 6",
+        nextNodeId: 'samuel_discovers_kai',
+        pattern: 'analytical',
+        skills: ['strategicThinking', 'resilience']
+      },
+      {
+        choiceId: 'comprehensive_meet_rohan',
+        text: "Rohan - Platform 7",
+        nextNodeId: 'samuel_discovers_rohan',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'technicalLiteracy']
+      },
+      {
+        choiceId: 'comprehensive_meet_silas',
+        text: "Silas - Platform 8",
+        nextNodeId: 'samuel_discovers_silas',
+        pattern: 'building',
+        skills: ['sustainability', 'systemsThinking']
+      },
+      {
+        choiceId: 'comprehensive_back',
+        text: "Actually, let me think about it.",
+        nextNodeId: 'samuel_hub_after_devon',
+        pattern: 'patience',
+        skills: ['communication']
+      }
+    ],
+    tags: ['comprehensive_hub', 'navigation', 'samuel_arc']
   },
 
   // ============= PATTERN OBSERVATION (Trust-gated wisdom) =============

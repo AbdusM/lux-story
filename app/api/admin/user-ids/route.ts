@@ -9,6 +9,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAdminAuth, getAdminSupabaseClient } from '@/lib/admin-supabase-client'
 import { auditLog } from '@/lib/audit-logger'
+import { logger } from '@/lib/logger'
 
 // Mark as dynamic for Next.js static export compatibility
 export const dynamic = 'force-dynamic'
@@ -46,7 +47,7 @@ export async function GET(request: NextRequest) {
 
     const userIds = (profiles || []).map(p => p.user_id)
 
-    console.log(`✅ [Admin:UserIds] Retrieved ${userIds.length} user IDs`)
+    logger.debug('Retrieved user IDs', { operation: 'admin.user-ids', count: userIds.length })
 
     // Audit log: Admin accessed user ID list
     auditLog('view_user_list', 'admin', undefined, { count: userIds.length })

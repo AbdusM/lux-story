@@ -3,10 +3,11 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Briefcase, CheckCircle2, Lightbulb } from 'lucide-react'
+import type { SkillProfile, KeySkillMoment } from '@/lib/skill-profile-adapter'
 
 interface ActionSectionProps {
   userId: string
-  profile: any // SkillProfile
+  profile: SkillProfile
   adminViewMode: 'family' | 'research'
 }
 
@@ -169,7 +170,7 @@ export function ActionSection({ userId: _userId, profile, adminViewMode }: Actio
         <CardContent className="space-y-3 text-sm sm:text-base">
           {user.keySkillMoments && user.keySkillMoments.length > 0 ? (
             <>
-              {user.keySkillMoments.slice(0, 5).map((moment: any, idx: number) => (
+              {user.keySkillMoments.slice(0, 5).map((moment: KeySkillMoment, idx: number) => (
                 <div key={idx} className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg">
                   <span className="text-blue-600 text-lg font-bold">#{idx + 1}</span>
                   <div className="flex-1">

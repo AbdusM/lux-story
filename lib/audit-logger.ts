@@ -42,6 +42,7 @@ export function auditLog(
   }
 
   // Log as JSON for structured logging systems (Vercel, CloudWatch, etc.)
+  // eslint-disable-next-line no-console
   console.log(JSON.stringify(entry))
 }
 

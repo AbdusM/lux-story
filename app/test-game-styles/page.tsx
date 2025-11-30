@@ -214,7 +214,7 @@ export default function GameStylesTest() {
               initial={{ opacity: 0 }}
               animate={{
                 opacity: 1,
-                x: (currentDialogue as any).interaction === 'shake' ? [0, -2, 2, -2, 2, 0] : 0
+                x: ('interaction' in currentDialogue && currentDialogue.interaction === 'shake') ? [0, -2, 2, -2, 2, 0] : 0
               }}
               transition={{
                 opacity: { duration: 0.3 },
@@ -303,7 +303,7 @@ export default function GameStylesTest() {
                       <span className="px-2 py-1 bg-green-100 rounded">
                         {compression}% compression
                       </span>
-                      {(variant as any).interaction && (
+                      {('interaction' in variant && variant.interaction) && (
                         <span className="px-2 py-1 bg-purple-100 rounded">
                           ✨ Visual effects
                         </span>

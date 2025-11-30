@@ -89,6 +89,20 @@ interface Milestone {
   reachedAt: Date
 }
 
+export interface LocalPlayerData {
+  currentScene?: string;
+  totalDemonstrations?: number;
+  lastActivity?: string;
+  skillDemonstrations?: Array<{ skill: string; scene: string; choice: string; context: string; timestamp: string }>;
+  careerExplorations?: Array<{ name: string; matchScore: number; readiness: string; localOpportunities: string[]; educationPaths: string[]; exploredAt: string }>;
+  relationships?: Record<string, { trust: number; lastInteraction: string; keyMoments: Array<{ scene: string; choice: string; timestamp: Date }> }>;
+  visitedScenes?: string[];
+  choiceHistory?: Array<{ sceneId: string; choiceId: string; choiceText: string; chosenAt: string }>;
+  patterns?: Record<string, { value: number; demonstrationCount: number; updatedAt: string }>;
+  behavioralProfile?: BehavioralProfile;
+  milestones?: Array<{ milestoneType: string; milestoneContext?: string; reachedAt: string }>;
+}
+
 /**
  * Database Service
  * Provides unified interface for data operations
@@ -345,8 +359,10 @@ export class DatabaseService {
   // ============================================================================
 
   private getPlayerProfileFromLocalStorage(userId: string): PlayerProfile | null {
-    const data = getStoredPlayerData(userId)
-    if (!data) return null
+    const data = getStoredPlayerData(userId) || {}
+
+    // If data is an empty object or doesn't have necessary properties, return null
+    if (Object.keys(data).length === 0 && !data.currentScene) return null
 
     return {
       userId,
@@ -367,7 +383,7 @@ export class DatabaseService {
   }
 
   private addSkillDemoToLocalStorage(demo: SkillDemonstration): void {
-    const data = getStoredPlayerData(demo.userId) || {}
+    const data: Partial<LocalPlayerData> = getStoredPlayerData(demo.userId) || {}
     const demonstrations = data.skillDemonstrations || []
 
     demonstrations.push({
@@ -385,7 +401,7 @@ export class DatabaseService {
   }
 
   private getSkillDemosFromLocalStorage(userId: string): SkillDemonstration[] {
-    const data = getStoredPlayerData(userId)
+    const data: Partial<LocalPlayerData> = getStoredPlayerData(userId) || {}
     if (!data?.skillDemonstrations) return []
 
     return data.skillDemonstrations.map((demo: {
@@ -405,7 +421,7 @@ export class DatabaseService {
   }
 
   private addCareerToLocalStorage(exploration: CareerExploration): void {
-    const data = getStoredPlayerData(exploration.userId) || {}
+    const data: Partial<LocalPlayerData> = getStoredPlayerData(exploration.userId) || {}
     const careers = data.careerExplorations || []
 
     careers.push({
@@ -424,7 +440,7 @@ export class DatabaseService {
   }
 
   private updateRelationshipInLocalStorage(relationship: RelationshipProgress): void {
-    const data = getStoredPlayerData(relationship.userId) || {}
+    const data: Partial<LocalPlayerData> = getStoredPlayerData(relationship.userId) || {}
     const relationships = data.relationships || {}
 
     relationships[relationship.characterName] = {
@@ -444,7 +460,7 @@ export class DatabaseService {
   // ============================================================================
 
   private recordSceneVisitToLocalStorage(userId: string, sceneId: string): void {
-    const data = getStoredPlayerData(userId) || {}
+    const data: Partial<LocalPlayerData> = getStoredPlayerData(userId) || {}
     const visitedScenes = new Set<string>(data.visitedScenes || [])
     visitedScenes.add(sceneId)
 
@@ -455,7 +471,7 @@ export class DatabaseService {
   }
 
   private recordChoiceToLocalStorage(userId: string, sceneId: string, choiceId: string, choiceText: string): void {
-    const data = getStoredPlayerData(userId) || {}
+    const data: Partial<LocalPlayerData> = getStoredPlayerData(userId) || {}
     const choiceHistory = data.choiceHistory || []
 
     choiceHistory.push({
@@ -472,12 +488,12 @@ export class DatabaseService {
   }
 
   private getVisitedScenesFromLocalStorage(userId: string): string[] {
-    const data = getStoredPlayerData(userId)
+    const data: Partial<LocalPlayerData> = getStoredPlayerData(userId) || {}
     return data?.visitedScenes || []
   }
 
   private getChoiceHistoryFromLocalStorage(userId: string): Choice[] {
-    const data = getStoredPlayerData(userId)
+    const data: Partial<LocalPlayerData> = getStoredPlayerData(userId) || {}
     if (!data?.choiceHistory) return []
 
     return data.choiceHistory
@@ -496,7 +512,7 @@ export class DatabaseService {
   }
 
   private updatePatternInLocalStorage(userId: string, patternName: string, value: number, demonstrationCount: number): void {
-    const data = getStoredPlayerData(userId) || {}
+    const data: Partial<LocalPlayerData> = getStoredPlayerData(userId) || {}
     const patterns = data.patterns || {}
 
     patterns[patternName] = {
@@ -512,7 +528,7 @@ export class DatabaseService {
   }
 
   private getPatternsFromLocalStorage(userId: string): Record<string, number> {
-    const data = getStoredPlayerData(userId)
+    const data: Partial<LocalPlayerData> = getStoredPlayerData(userId) || {}
     if (!data?.patterns) return {}
 
     const result: Record<string, number> = {}
@@ -523,7 +539,7 @@ export class DatabaseService {
   }
 
   private updateBehavioralProfileInLocalStorage(userId: string, profile: BehavioralProfile): void {
-    const data = getStoredPlayerData(userId) || {}
+    const data: Partial<LocalPlayerData> = getStoredPlayerData(userId) || {}
 
     savePlayerData(userId, {
       ...data,
@@ -535,12 +551,12 @@ export class DatabaseService {
   }
 
   private getBehavioralProfileFromLocalStorage(userId: string): BehavioralProfile | null {
-    const data = getStoredPlayerData(userId)
+    const data: Partial<LocalPlayerData> = getStoredPlayerData(userId) || {}
     return data?.behavioralProfile || null
   }
 
   private recordMilestoneToLocalStorage(userId: string, milestoneType: string, context?: string): void {
-    const data = getStoredPlayerData(userId) || {}
+    const data: Partial<LocalPlayerData> = getStoredPlayerData(userId) || {}
     const milestones = data.milestones || []
 
     milestones.push({
@@ -556,16 +572,16 @@ export class DatabaseService {
   }
 
   private getMilestonesFromLocalStorage(userId: string): Milestone[] {
-    const data = getStoredPlayerData(userId)
+    const data: Partial<LocalPlayerData> = getStoredPlayerData(userId) || {}
     if (!data?.milestones) return []
 
     return data.milestones
       .map((milestone: {
-        milestoneType: Milestone['milestoneType']
+        milestoneType: string // Temporarily cast to string
         milestoneContext?: string
         reachedAt: string
       }) => ({
-        milestoneType: milestone.milestoneType,
+        milestoneType: milestone.milestoneType as Milestone['milestoneType'],
         milestoneContext: milestone.milestoneContext,
         reachedAt: new Date(milestone.reachedAt)
       }))

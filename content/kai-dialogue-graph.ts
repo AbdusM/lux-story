@@ -756,7 +756,7 @@ What do you think matters more—reaching more people, or reaching people more d
     choices: [
       {
         choiceId: 'kai_choose_depth',
-        text: "Depth. One person who really learns is worth a thousand who just click through.",
+        text: "Depth. One person who really learns is worth a thousand who just click through. I'd rather change one life completely than touch a thousand superficially.",
         nextNodeId: 'kai_climax_decision',
         pattern: 'helping',
         skills: ['wisdom', 'instructionalDesign'],
@@ -767,17 +767,24 @@ What do you think matters more—reaching more people, or reaching people more d
       },
       {
         choiceId: 'kai_choose_reach',
-        text: "Reach. You can't save everyone, but you can give everyone a chance.",
+        text: "Reach. You can't save everyone, but you can give everyone a chance. Sometimes access matters more than perfection.",
         nextNodeId: 'kai_climax_decision',
         pattern: 'building',
         skills: ['pragmatism', 'strategicThinking']
       },
       {
         choiceId: 'kai_choose_both',
-        text: "Both. Start deep, then find ways to scale what works.",
+        text: "Both. Start deep, then find ways to scale what works. But honestly? I struggle with that balance. I want to do both and end up doing neither well.",
         nextNodeId: 'kai_climax_decision',
         pattern: 'analytical',
-        skills: ['systemsThinking', 'leadership'],
+        skills: ['systemsThinking', 'leadership', 'emotionalIntelligence']
+      },
+      {
+        choiceId: 'kai_choose_uncertain',
+        text: "I don't know. That's the question I'm wrestling with too. How do you measure impact? How do you know you're making a difference?",
+        nextNodeId: 'kai_climax_decision',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'criticalThinking'],
         consequence: {
           characterId: 'kai',
           trustChange: 2
@@ -863,12 +870,19 @@ Thanks for trying.`,
       {
         text: `Thank you. You didn't just help me fix a module. You helped me stop lying to myself.
 
-If you see Samuel... tell him I'm done with compliance. I'm in the business of reality now.`,
-        emotion: 'grateful',
+Before I go—I've been asking you about depth vs. reach. But what about you? What are you building? What's your reality?`,
+        emotion: 'curious_reciprocal',
         variation_id: 'farewell_v2'
       }
     ],
     choices: [
+      {
+        choiceId: 'kai_asks_before_leave',
+        text: "What are you building?",
+        nextNodeId: 'kai_asks_player',
+        pattern: 'helping',
+        skills: ['communication', 'curiosity']
+      },
       {
         choiceId: 'return_to_samuel_kai',
         text: "Return to Samuel",
@@ -877,6 +891,91 @@ If you see Samuel... tell him I'm done with compliance. I'm in the business of r
       }
     ],
     tags: ['transition', 'kai_arc']
+  },
+  // ============= RECIPROCITY: KAI ASKS PLAYER =============
+  {
+    nodeId: 'kai_asks_player',
+    speaker: 'Kai',
+    content: [
+      {
+        text: `*Looks at you directly.*
+        
+I've been building training for years. Thousands of slides. Millions of checkmarks.
+
+But what about you? What are you building? What's your reality? What do you want to create?`,
+        emotion: 'curious_reciprocal',
+        variation_id: 'kai_reciprocity_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'player_building_helping',
+        text: "I'm building connections. Helping people see possibilities they couldn't see before. That feels like my purpose—creating space for others to grow.",
+        nextNodeId: 'kai_reciprocity_response',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'emotionalIntelligence'],
+        consequence: {
+          characterId: 'kai',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'player_building_systems',
+        text: "I'm building systems. Ways to help more people, scale what works. But I'm still figuring out how to do that without losing what makes it meaningful.",
+        nextNodeId: 'kai_reciprocity_response',
+        pattern: 'building',
+        skills: ['emotionalIntelligence', 'systemsThinking'],
+        consequence: {
+          characterId: 'kai',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'player_building_understanding',
+        text: "I'm building understanding. Learning how people work, how to help them grow. But I'm still learning myself—still figuring out my own path.",
+        nextNodeId: 'kai_reciprocity_response',
+        pattern: 'analytical',
+        skills: ['emotionalIntelligence', 'criticalThinking']
+      },
+      {
+        choiceId: 'player_still_figuring',
+        text: "I don't know yet. That's why I'm here—to figure out what I'm building, what I want to create. To stop lying to myself about what I'm actually doing.",
+        nextNodeId: 'kai_reciprocity_response',
+        pattern: 'exploring',
+        skills: ['emotionalIntelligence', 'adaptability'],
+        consequence: {
+          characterId: 'kai',
+          trustChange: 3
+        }
+      }
+    ],
+    tags: ['reciprocity', 'player_reflection', 'kai_arc']
+  },
+  {
+    nodeId: 'kai_reciprocity_response',
+    speaker: 'Kai',
+    content: [
+      {
+        text: `*Nods slowly.*
+        
+That's it. That's the question.
+
+Keep asking it. Keep building. Even if you don't know what it is yet.
+
+If you see Samuel... tell him I'm done with compliance. I'm in the business of reality now.`,
+        emotion: 'affirming',
+        variation_id: 'kai_response_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'return_to_samuel_kai_after',
+        text: "Return to Samuel",
+        nextNodeId: samuelEntryPoints.KAI_REFLECTION_GATEWAY,
+        pattern: 'exploring'
+      }
+    ],
+    tags: ['reciprocity', 'kai_arc']
   }
 ]
 

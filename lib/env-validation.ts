@@ -12,6 +12,7 @@ import {
   isPlaceholderSupabaseServiceKey,
   isPlaceholderSupabaseUrl
 } from './env-placeholders'
+import { logger } from './logger'
 
 export interface EnvConfig {
   // Next.js
@@ -289,11 +290,6 @@ export function isEnvConfigured(context: 'server' | 'client' = 'server'): boolea
  * Useful for debugging and deployment verification
  */
 export function printEnvStatus(): void {
-  console.log('Environment Configuration Status:')
-  console.log('─'.repeat(50))
-  console.log(`NODE_ENV: ${process.env.NODE_ENV || 'development'}`)
-  console.log('')
-
   const checks = [
     { name: 'Supabase URL', value: process.env.NEXT_PUBLIC_SUPABASE_URL },
     { name: 'Supabase Anon Key', value: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY },
@@ -304,11 +300,14 @@ export function printEnvStatus(): void {
     { name: 'Sentry DSN', value: process.env.SENTRY_DSN },
   ]
 
+  const statusMap: Record<string, boolean> = {}
   checks.forEach(({ name, value }) => {
-    const status = value ? '✅' : '❌'
-    const display = value ? `${value.substring(0, 20)}...` : 'NOT SET'
-    console.log(`${status} ${name}: ${display}`)
+    statusMap[name] = !!value
   })
 
-  console.log('─'.repeat(50))
+  logger.debug('Environment Configuration Status', {
+    operation: 'env-validation.status',
+    nodeEnv: process.env.NODE_ENV || 'development',
+    checks: statusMap
+  })
 }

@@ -10,16 +10,32 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import { AlertTriangle, ArrowRight } from 'lucide-react'
 import { SparklineTrend } from '@/components/admin/SparklineTrend'
 import { formatAdminDateWithLabel, type ViewMode } from '@/lib/admin-date-formatting'
+import type { SkillProfile, SkillGap } from '@/lib/skill-profile-adapter'
+
+interface SkillSummary {
+  skill_name: string
+  demonstration_count: number
+  last_demonstrated: string
+  latest_context?: string
+  scenes_involved?: string[]
+}
+
+interface EvidenceData {
+  skillSummaries?: SkillSummary[]
+  careerExploration?: {
+    totalExplorations: number
+  }
+}
 
 interface GapsSectionProps {
   userId: string
-  profile: any // SkillProfile
+  profile: SkillProfile
   adminViewMode: 'family' | 'research'
 }
 
 export function GapsSection({ userId, profile, adminViewMode }: GapsSectionProps) {
   const user = profile // Alias for consistency with original code
-  const [evidenceData, setEvidenceData] = useState<any>(null)
+  const [evidenceData, setEvidenceData] = useState<EvidenceData | null>(null)
   const [evidenceLoading, setEvidenceLoading] = useState(false)
 
   // Fetch Evidence frameworks data for career exploration and skill summaries
@@ -77,12 +93,12 @@ export function GapsSection({ userId, profile, adminViewMode }: GapsSectionProps
               )}
             </div>
             {user.skillGaps
-              .sort((a: any, b: any) => {
+              .sort((a: SkillGap, b: SkillGap) => {
                 const priorityOrder: Record<string, number> = { high: 3, medium: 2, low: 1 }
                 return priorityOrder[b.priority] - priorityOrder[a.priority]
               })
               .slice(0, 3)
-              .map((gap: any, idx: number) => (
+              .map((gap: SkillGap, idx: number) => (
                 <div key={idx} className="border-l-4 border-orange-400 pl-3 sm:pl-4 p-3 sm:p-4 bg-orange-25 rounded-r-lg">
                   <div className="flex items-center justify-between mb-2">
                     <div className="font-semibold text-orange-900 capitalize text-sm sm:text-base">
@@ -122,7 +138,7 @@ export function GapsSection({ userId, profile, adminViewMode }: GapsSectionProps
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {evidenceData.skillSummaries.map((skill: any, idx: number) => (
+              {evidenceData.skillSummaries.map((skill, idx) => (
                 <Card key={idx} className="p-3 sm:p-4">
                   <CardContent className="p-0 space-y-3">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
@@ -169,11 +185,11 @@ export function GapsSection({ userId, profile, adminViewMode }: GapsSectionProps
           <CardContent>
             <div className="space-y-4">
               {user.skillGaps
-                .sort((a: any, b: any) => {
+                .sort((a: SkillGap, b: SkillGap) => {
                   const priorityOrder: Record<string, number> = { high: 3, medium: 2, low: 1 }
                   return priorityOrder[b.priority] - priorityOrder[a.priority]
                 })
-                .map((gap: any, idx: number) => (
+                .map((gap: SkillGap, idx: number) => (
                   <Card key={idx} className="p-3 sm:p-4">
                     <CardContent className="p-0 space-y-3">
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">

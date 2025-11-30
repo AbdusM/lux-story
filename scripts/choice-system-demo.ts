@@ -3,9 +3,10 @@
  * This demonstrates how choices change based on context and game state
  */
 
-import { ChoiceGenerator } from './choice-generator'
-import type { Scene } from './story-engine'
-import type { GameState } from './game-store'
+import { ChoiceGenerator } from '../lib/choice-generator'
+import type { Scene } from '../lib/story-engine'
+import type { GameState } from '../lib/game-store'
+import { logger } from '../lib/logger'
 
 // Sample scene to test with
 const sampleScene: Scene = {
@@ -110,36 +111,31 @@ const baseGameState: GameState = {
 
 // Demo scenes for testing choices
 export async function demonstrateChoiceVariety() {
-  console.log('🎮 Dynamic Choice System Demo')
-  console.log('===============================\n')
-
-  console.log('📝 Original repetitive choices:')
-  sampleScene.choices?.forEach((choice, i) => {
-    console.log(`  ${i + 1}. ${choice.text}`)
+  logger.debug('Dynamic Choice System Demo', { operation: 'choice-system-demo' })
+  
+  logger.debug('Original repetitive choices', {
+    operation: 'choice-system-demo',
+    choices: sampleScene.choices?.map(c => c.text) || []
   })
-
-  console.log('\n🔄 Dynamic choices (5 generations):')
 
   for (let i = 1; i <= 5; i++) {
     const dynamicChoices = await ChoiceGenerator.generateChoices(sampleScene, baseGameState)
-    console.log(`\n  Generation ${i}:`)
-    dynamicChoices.forEach((choice, j) => {
-      console.log(`    ${j + 1}. ${choice.text}`)
+    logger.debug(`Generation ${i}`, {
+      operation: 'choice-system-demo',
+      choices: dynamicChoices.map(c => c.text)
     })
   }
 
   // Test with different contexts
-  console.log('\n🎭 Context-aware variations:')
-
   const mysteryScene: Scene = {
     ...sampleScene,
     text: 'Something strange is happening at Platform 7. The number keeps flickering. What catches your attention as you move forward?'
   }
 
   const mysteryChoices = await ChoiceGenerator.generateChoices(mysteryScene, baseGameState)
-  console.log('\n  Mystery context:')
-  mysteryChoices.forEach((choice, i) => {
-    console.log(`    ${i + 1}. ${choice.text}`)
+  logger.debug('Mystery context', {
+    operation: 'choice-system-demo',
+    choices: mysteryChoices.map(c => c.text)
   })
 
   const characterScene: Scene = {
@@ -148,9 +144,9 @@ export async function demonstrateChoiceVariety() {
   }
 
   const characterChoices = await ChoiceGenerator.generateChoices(characterScene, baseGameState)
-  console.log('\n  Character interaction context:')
-  characterChoices.forEach((choice, i) => {
-    console.log(`    ${i + 1}. ${choice.text}`)
+  logger.debug('Character interaction context', {
+    operation: 'choice-system-demo',
+    choices: characterChoices.map(c => c.text)
   })
 
   // Test with high trust character
@@ -166,35 +162,33 @@ export async function demonstrateChoiceVariety() {
   }
 
   const trustChoices = await ChoiceGenerator.generateChoices(samuelScene, highTrustState)
-  console.log('\n  High trust character context:')
-  trustChoices.forEach((choice, i) => {
-    console.log(`    ${i + 1}. ${choice.text}`)
+  logger.debug('High trust character context', {
+    operation: 'choice-system-demo',
+    choices: trustChoices.map(c => c.text)
   })
 
-  console.log('\n✅ Demo complete! The system generates contextual, varied choices while preserving psychological measurement accuracy.')
+  logger.debug('Demo complete', { operation: 'choice-system-demo' })
 }
 
 /**
  * Verify consequence mapping accuracy
  */
 export async function verifyConsequenceAccuracy() {
-  console.log('\n🔬 Consequence Mapping Verification')
-  console.log('===================================\n')
+  logger.debug('Consequence Mapping Verification', { operation: 'choice-system-demo' })
 
   const dynamicChoices = await ChoiceGenerator.generateChoices(sampleScene, baseGameState)
 
-  console.log('Verifying that dynamic choices maintain psychological patterns:')
   dynamicChoices.forEach((choice, i) => {
-    console.log(`\n  Choice ${i + 1}: "${choice.text}"`)
-    console.log(`    Consequence: ${choice.consequence}`)
-    console.log(`    Pattern: ${choice.consequence.split('_')[0]}`)
-
-    if (choice.stateChanges) {
-      console.log(`    State changes: ${JSON.stringify(choice.stateChanges, null, 6)}`)
-    }
+    logger.debug(`Choice ${i + 1}`, {
+      operation: 'choice-system-demo.verify',
+      text: choice.text,
+      consequence: choice.consequence,
+      pattern: choice.consequence.split('_')[0],
+      stateChanges: choice.stateChanges
+    })
   })
 
-  console.log('\n✅ All choices maintain proper consequence mapping for psychological measurement.')
+  logger.debug('All choices maintain proper consequence mapping', { operation: 'choice-system-demo.verify' })
 }
 
 // Export for potential runtime testing

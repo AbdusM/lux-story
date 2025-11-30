@@ -92,9 +92,10 @@ export default function AdminPage() {
           setError(null)
           setIsSupabaseUnreachable(false)
         }
-      } catch (error: any) {
+      } catch (error: unknown) {
         console.error('Failed to load student data:', error)
-        setError(error?.message || 'Failed to load student data')
+        const errorMessage = error instanceof Error ? error.message : 'Failed to load student data'
+        setError(errorMessage)
         setIsSupabaseUnreachable(true)
       } finally {
         setLoading(false)

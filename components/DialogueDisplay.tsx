@@ -17,23 +17,6 @@ import { motion } from "framer-motion"
 import { interactionAnimations, type InteractionType } from "@/lib/interaction-parser"
 import { getVoiceClass } from "@/lib/voice-utils"
 
-/**
- * Speaker color map for visual differentiation
- * Research: Roadwarden's #1 player complaint was lack of speaker labels
- */
-const SPEAKER_COLORS: Record<string, string> = {
-  'Samuel': 'text-amber-700',
-  'Maya': 'text-blue-600',
-  'Devon': 'text-orange-600',
-  'Jordan': 'text-purple-600',
-  'Kai': 'text-teal-600',
-  'Tess': 'text-rose-600',
-  'Rohan': 'text-indigo-600',
-  'Silas': 'text-slate-600',
-  'Yaquin': 'text-emerald-600',
-  'Narrator': 'text-stone-500 italic',
-}
-
 interface DialogueDisplayProps {
   text: string
   className?: string

@@ -8,6 +8,8 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { getSupabaseServerClient } from '@/lib/supabase-server'
+import { validateUserId } from '@/lib/user-id-validation'
+import { logger } from '@/lib/logger'
 
 // Mark as dynamic for Next.js static export compatibility
 export const dynamic = 'force-dynamic'
@@ -43,17 +45,23 @@ export async function POST(request: NextRequest) {
       updated_at
     } = body
 
-    console.log('🔵 [API:PlatformState] POST request:', {
-      userId: user_id,
-      currentScene: current_scene,
-      flagCount: global_flags?.length || 0,
-      hasPatterns: !!patterns
+    logger.debug('Platform state POST request', {
+      operation: 'platform-state.post',
+      userId: user_id
     })
 
     if (!user_id) {
-      console.error('❌ [API:PlatformState] Missing user_id')
+      logger.warn('Missing user_id', { operation: 'platform-state.post' })
       return NextResponse.json(
         { error: 'Missing required field: user_id' },
+        { status: 400 }
+      )
+    }
+
+    const validation = validateUserId(user_id)
+    if (!validation.valid) {
+      return NextResponse.json(
+        { error: validation.error },
         { status: 400 }
       )
     }
@@ -89,21 +97,20 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (error) {
-      console.error('❌ [API:PlatformState] Supabase error:', {
-        code: error.code,
-        message: error instanceof Error ? error.message : "Unknown error",
+      logger.error('Supabase error', {
+        operation: 'platform-state.post',
+        errorCode: error.code,
         userId: user_id
-      })
+      }, error instanceof Error ? error : undefined)
       return NextResponse.json(
         { error: 'Failed to upsert platform state' },
         { status: 500 }
       )
     }
 
-    console.log('✅ [API:PlatformState] Upserted:', {
-      userId: user_id,
-      currentScene: current_scene,
-      flagCount: global_flags?.length || 0
+    logger.debug('Platform state upserted', {
+      operation: 'platform-state.post',
+      userId: user_id
     })
 
     return NextResponse.json({
@@ -111,7 +118,9 @@ export async function POST(request: NextRequest) {
       state: data
     })
   } catch (error) {
-    console.error('[PlatformState API] Unexpected error:', error)
+    logger.error('Unexpected error in platform state POST', {
+      operation: 'platform-state.post'
+    }, error instanceof Error ? error : undefined)
     const errorMessage = error instanceof Error ? error.message : "Internal server error"
 
     return NextResponse.json(
@@ -131,8 +140,17 @@ export async function GET(request: NextRequest) {
     const userId = searchParams.get('userId')
 
     if (!userId) {
+      logger.warn('Missing userId parameter', { operation: 'platform-state.get' })
       return NextResponse.json(
         { error: 'Missing userId parameter' },
+        { status: 400 }
+      )
+    }
+
+    const validation = validateUserId(userId)
+    if (!validation.valid) {
+      return NextResponse.json(
+        { error: validation.error },
         { status: 400 }
       )
     }
@@ -146,7 +164,11 @@ export async function GET(request: NextRequest) {
       .single()
 
     if (error && error.code !== 'PGRST116') { // PGRST116 = no rows returned
-      console.error('❌ [API:PlatformState] Supabase error:', error)
+      logger.error('Supabase error', {
+        operation: 'platform-state.get',
+        errorCode: error.code,
+        userId
+      }, error instanceof Error ? error : undefined)
       return NextResponse.json(
         { error: 'Failed to fetch platform state' },
         { status: 500 }
@@ -158,7 +180,9 @@ export async function GET(request: NextRequest) {
       state: data || null
     })
   } catch (error) {
-    console.error('[PlatformState API] Unexpected error:', error)
+    logger.error('Unexpected error in platform state GET', {
+      operation: 'platform-state.get'
+    }, error instanceof Error ? error : undefined)
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

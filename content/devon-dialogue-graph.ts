@@ -1132,8 +1132,90 @@ export const devonDialogueNodes: DialogueNode[] = [
        }
     ]
   },
-  // [SKIPPING RECIPROCITY & BONUS NODES FOR BREVITY - ASSUMING THEY ARE UNCHANGED]
-  // In a real deployment I would include them all.
+  // ============= RECIPROCITY: DEVON ASKS PLAYER =============
+  {
+    nodeId: 'devon_asks_player',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "I've been trying to debug my relationship with my dad. But... I realize I've been asking you questions this whole time.\n\nWhat about you? How do you handle relationships when logic doesn't work? When someone you care about is hurting and you can't fix it?",
+        emotion: 'curious_vulnerable',
+        variation_id: 'devon_reciprocity_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'player_try_to_fix',
+        text: "I try to fix it anyway. Offer solutions, try to make it better. Sometimes I make it worse because I can't just... be there.",
+        nextNodeId: 'devon_crossroads',
+        pattern: 'building',
+        skills: ['emotionalIntelligence', 'communication']
+      },
+      {
+        choiceId: 'player_listen_first',
+        text: "I try to listen first. Not solve, just understand. But it's hard—I want to help so badly that I jump to solutions.",
+        nextNodeId: 'devon_crossroads',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication']
+      },
+      {
+        choiceId: 'player_analyze_patterns',
+        text: "I look for patterns. What's worked before? What hasn't? I treat it like a problem to solve, even though I know emotions don't work that way.",
+        nextNodeId: 'devon_crossroads',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'communication']
+      },
+      {
+        choiceId: 'player_feel_helpless',
+        text: "Honestly? I feel helpless. I want to do something, anything, but sometimes there's nothing to do except be present. That feels like not enough.",
+        nextNodeId: 'devon_crossroads',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'communication']
+      }
+    ],
+    tags: ['reciprocity', 'player_reflection', 'devon_arc']
+  },
+  {
+    nodeId: 'devon_crossroads',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "That's... that's exactly what I've been doing. Trying to fix. Trying to solve. But grief isn't a bug to debug.\n\nMaybe I need to just... be there. Like you've been here for me.",
+        emotion: 'realization',
+        variation_id: 'devon_crossroads_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'devon_support',
+        text: "You're already doing it. Just by asking him about his work, you're showing up differently.",
+        nextNodeId: 'devon_farewell',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication']
+      }
+    ],
+    tags: ['crossroads', 'devon_arc']
+  },
+  {
+    nodeId: 'devon_farewell',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "Thank you. For listening. For not trying to fix me.\n\nI think I know what to do now. Not a solution—just a different approach.\n\nSamuel's waiting. Good luck with your own journey.",
+        emotion: 'grateful_resolved',
+        variation_id: 'devon_farewell_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'return_to_samuel',
+        text: "Return to Samuel",
+        nextNodeId: samuelEntryPoints.HUB_AFTER_DEVON,
+        pattern: 'exploring'
+      }
+    ],
+    tags: ['farewell', 'devon_arc']
+  }
 ]
 
 export const devonEntryPoints = {

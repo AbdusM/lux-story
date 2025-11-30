@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     color: '#555',
   },
   badge: {
-    display: 'inline-block' as any,
+    display: 'flex',
     padding: '3 8',
     backgroundColor: '#000',
     color: '#fff',

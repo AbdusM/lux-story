@@ -812,7 +812,7 @@ David gave me that feeling. I want to pass it on.`,
     choices: [
       {
         choiceId: 'rohan_legacy_farewell',
-        text: "That's a legacy worth building.",
+        text: "That's a legacy worth building. Passing on that feeling—that's what teaching really is.",
         nextNodeId: 'rohan_farewell',
         pattern: 'helping',
         skills: ['wisdom', 'encouragement'],
@@ -820,6 +820,24 @@ David gave me that feeling. I want to pass it on.`,
           characterId: 'rohan',
           trustChange: 3
         }
+      },
+      {
+        choiceId: 'rohan_legacy_reflect',
+        text: "I hope someone remembers that feeling about me too. That moment when I helped them see something they couldn't see before.",
+        nextNodeId: 'rohan_farewell',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'emotionalIntelligence'],
+        consequence: {
+          characterId: 'rohan',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'rohan_legacy_question_back',
+        text: "What do you want people to remember about you?",
+        nextNodeId: 'rohan_asks_player',
+        pattern: 'exploring',
+        skills: ['communication', 'curiosity']
       }
     ],
     onEnter: [
@@ -830,6 +848,64 @@ David gave me that feeling. I want to pass it on.`,
       }
     ],
     tags: ['ending', 'rohan_arc']
+  },
+
+  // ============= RECIPROCITY: ROHAN ASKS PLAYER =============
+  {
+    nodeId: 'rohan_asks_player',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: `*Looks at you directly.*
+        
+You've been helping me figure out what I want to build. But what about you? What do you want people to remember about you? What feeling do you want to pass on?`,
+        emotion: 'curious_reciprocal',
+        variation_id: 'rohan_reciprocity_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'player_remember_helping',
+        text: "I want them to remember that I helped them see something in themselves they couldn't see. That moment of clarity, of possibility.",
+        nextNodeId: 'rohan_farewell',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'emotionalIntelligence'],
+        consequence: {
+          characterId: 'rohan',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'player_remember_teaching',
+        text: "I want them to remember the feeling of understanding. When something finally clicks, and they realize they can build things too.",
+        nextNodeId: 'rohan_farewell',
+        pattern: 'building',
+        skills: ['emotionalIntelligence', 'communication'],
+        consequence: {
+          characterId: 'rohan',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'player_remember_presence',
+        text: "I want them to remember that I was there. That I listened. That I didn't try to fix everything, just... showed up.",
+        nextNodeId: 'rohan_farewell',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'emotionalIntelligence'],
+        consequence: {
+          characterId: 'rohan',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'player_uncertain_legacy',
+        text: "I don't know yet. That's part of why I'm here—to figure out what I want my impact to be. What I want to pass on.",
+        nextNodeId: 'rohan_farewell',
+        pattern: 'exploring',
+        skills: ['emotionalIntelligence', 'adaptability']
+      }
+    ],
+    tags: ['reciprocity', 'player_reflection', 'rohan_arc']
   },
 
   // ============= BAD ENDING =============

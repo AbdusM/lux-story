@@ -533,7 +533,7 @@ export class PlatformResonanceEngine {
   /**
    * Export platform analytics data
    */
-  exportPlatformData(playerId?: string): any {
+  exportPlatformData(playerId?: string): Record<string, unknown> {
     if (playerId) {
       return {
         platforms: Object.fromEntries(this.getPlayerPlatforms(playerId)),
@@ -543,7 +543,7 @@ export class PlatformResonanceEngine {
     }
 
     // Export all data
-    const allData: any = {}
+    const allData: Record<string, unknown> = {}
     for (const [id, platforms] of this.playerPlatforms) {
       allData[id] = {
         platforms: Object.fromEntries(platforms),

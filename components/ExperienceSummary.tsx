@@ -9,6 +9,7 @@ import { useState, useEffect } from 'react'
 import { FrameworkInsights } from '@/components/FrameworkInsights'
 import { ActionPlanBuilder } from '@/components/ActionPlanBuilder'
 import type { SkillProfile } from '@/lib/skill-profile-adapter'
+import { logger } from '@/lib/logger'
 
 export interface ArcLearningObjective {
   skill: string
@@ -236,7 +237,7 @@ export function ExperienceSummary({ data, onContinue }: ExperienceSummaryProps) 
             if (typeof window !== 'undefined') {
               localStorage.setItem(`action_plan_${data.profile?.userId || 'default'}`, JSON.stringify(plan))
             }
-            console.log('Action plan saved:', plan)
+            logger.debug('Action plan saved', { operation: 'experience-summary.save-plan', plan: typeof plan === 'object' ? Object.keys(plan) : 'unknown' })
           }}
         />
       )}

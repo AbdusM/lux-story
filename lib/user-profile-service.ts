@@ -68,7 +68,10 @@ export class UserProfileService {
         return false
       }
 
-      console.log(`[UserProfileService] ✅ Profile ensured for ${userId}`)
+      // Profile ensured successfully (no logging needed in production)
+      if (process.env.NODE_ENV === 'development') {
+        console.warn(`[UserProfileService] ✅ Profile ensured for ${userId}`)
+      }
       this.profileCache.set(userId, { created: true, timestamp: Date.now() })
       return true
     } catch (error) {
@@ -94,7 +97,10 @@ export class UserProfileService {
       failedUserIds: [] as string[]
     }
 
-    console.log(`[UserProfileService] Batch processing ${userIds.length} user profiles...`)
+    // Batch processing (no logging needed in production)
+    if (process.env.NODE_ENV === 'development') {
+      console.warn(`[UserProfileService] Batch processing ${userIds.length} user profiles...`)
+    }
 
     // Process in parallel with Promise.all for better performance
     const promises = userIds.map(async (userId) => {
@@ -113,11 +119,14 @@ export class UserProfileService {
       }
     })
 
-    console.log(`[UserProfileService] Batch complete:`, {
-      total: userIds.length,
-      success: results.success,
-      failed: results.failed
-    })
+    // Batch complete (no logging needed in production)
+    if (process.env.NODE_ENV === 'development') {
+      console.warn(`[UserProfileService] Batch complete:`, {
+        total: userIds.length,
+        success: results.success,
+        failed: results.failed
+      })
+    }
 
     return results
   }
@@ -190,7 +199,10 @@ export class UserProfileService {
         return false
       }
 
-      console.log(`[UserProfileService] Profile updated for ${userId}`)
+      // Profile updated (no logging needed in production)
+      if (process.env.NODE_ENV === 'development') {
+        console.warn(`[UserProfileService] Profile updated for ${userId}`)
+      }
       return true
     } catch (error) {
       console.error(`[UserProfileService] Unexpected update error for ${userId}:`, error)
@@ -203,7 +215,10 @@ export class UserProfileService {
    */
   static clearCache(): void {
     this.profileCache.clear()
-    console.log('[UserProfileService] Cache cleared')
+    // Cache cleared (no logging needed in production)
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('[UserProfileService] Cache cleared')
+    }
   }
 
   /**

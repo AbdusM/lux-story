@@ -1,12 +1,14 @@
 // Service Worker Registration
 // Registers the service worker for PWA functionality
 
+import { logger } from './logger'
+
 export function registerServiceWorker() {
   if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('/sw.js')
         .then((registration) => {
-          console.log('Service Worker registered successfully:', registration.scope)
+          logger.debug('Service Worker registered successfully', { operation: 'service-worker.register', scope: registration.scope })
           
           // Check for updates
           registration.addEventListener('updatefound', () => {
@@ -15,7 +17,7 @@ export function registerServiceWorker() {
               newWorker.addEventListener('statechange', () => {
                 if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
                   // New content available, prompt user to refresh
-                  console.log('New content available, please refresh')
+                  logger.debug('New content available, please refresh', { operation: 'service-worker.update' })
                   // Could show a notification here
                 }
               })
@@ -35,7 +37,7 @@ export function unregisterServiceWorker() {
     navigator.serviceWorker.getRegistrations().then((registrations) => {
       registrations.forEach((registration) => {
         registration.unregister()
-        console.log('Service Worker unregistered')
+        logger.debug('Service Worker unregistered', { operation: 'service-worker.unregister' })
       })
     })
   }

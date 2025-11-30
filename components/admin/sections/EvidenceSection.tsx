@@ -8,10 +8,69 @@ import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { AlertCircle, RefreshCw, ArrowRight } from 'lucide-react'
 import { SamuelQuotesSection } from './SamuelQuotesSection'
+import type { SkillProfile } from '@/lib/skill-profile-adapter'
+
+interface SkillEvidence {
+  uniqueSkills: number
+  hasRealData: boolean
+  totalDemonstrations: number
+  skillBreakdown?: Array<{ skill: string; demonstrations: number }>
+}
+
+interface CareerReadiness {
+  exploredCareers: number
+  hasRealData: boolean
+  topMatch?: {
+    career_name: string
+    match_score: number
+    readiness_level: string
+  }
+  birminghamOpportunities?: unknown[]
+}
+
+interface PatternRecognition {
+  hasRealData: boolean
+  totalChoices: number
+  patternConsistency: number
+  behavioralTrends?: string[]
+}
+
+interface TimeInvestment {
+  hasRealData: boolean
+  totalDays: number
+  averageDemosPerDay: number
+  consistencyScore: number
+}
+
+interface RelationshipFramework {
+  hasRealData: boolean
+  totalRelationships: number
+  averageTrust: number
+  relationshipDetails?: Array<{ character: string; trust: number }>
+}
+
+interface BehavioralConsistency {
+  hasRealData: boolean
+  focusScore: number
+  explorationScore: number
+  platformAlignment: number
+  topThreeSkills: Array<{ count: number }>
+}
+
+interface EvidenceData {
+  frameworks: {
+    skillEvidence: SkillEvidence
+    careerReadiness: CareerReadiness
+    patternRecognition: PatternRecognition
+    timeInvestment: TimeInvestment
+    relationshipFramework: RelationshipFramework
+    behavioralConsistency: BehavioralConsistency
+  }
+}
 
 interface EvidenceSectionProps {
   userId: string
-  profile: any // SkillProfile
+  profile: SkillProfile
   adminViewMode: 'family' | 'research'
 }
 
@@ -48,7 +107,7 @@ function DataSourceBadge({
 
 export function EvidenceSection({ userId, profile, adminViewMode }: EvidenceSectionProps) {
   const user = profile // Alias for consistency with original code
-  const [evidenceData, setEvidenceData] = useState<any>(null)
+  const [evidenceData, setEvidenceData] = useState<EvidenceData | null>(null)
   const [evidenceLoading, setEvidenceLoading] = useState(false)
   const [evidenceError, setEvidenceError] = useState<string | null>(null)
 
@@ -201,7 +260,7 @@ export function EvidenceSection({ userId, profile, adminViewMode }: EvidenceSect
                     <div className="space-y-2 text-xs sm:text-sm">
                       <p>• Total Choices Aligned with Skills: <strong>{Math.max(0, evidenceData.frameworks.skillEvidence.totalDemonstrations)}</strong></p>
                       <p>• Unique Skills: <strong>{Math.max(0, evidenceData.frameworks.skillEvidence.uniqueSkills)}</strong></p>
-                      {evidenceData.frameworks.skillEvidence.skillBreakdown?.slice(0, 3).map((skill: any) => (
+                      {evidenceData.frameworks.skillEvidence.skillBreakdown?.slice(0, 3).map((skill) => (
                         <p key={skill.skill}>
                           • {skill.skill || 'Unknown Skill'}: {Math.max(0, skill.demonstrations || 0)} choices aligned
                         </p>
@@ -390,7 +449,7 @@ export function EvidenceSection({ userId, profile, adminViewMode }: EvidenceSect
                     <p className="font-medium mb-2 text-sm sm:text-base">Your Relationships:</p>
                     <div className="space-y-2 text-xs sm:text-sm">
                       <p>• Average Trust: <strong>{Math.max(0, Math.min(10, evidenceData.frameworks.relationshipFramework.averageTrust)).toFixed(1)}/10</strong></p>
-                      {evidenceData.frameworks.relationshipFramework.relationshipDetails?.slice(0, 3).map((rel: any) => (
+                      {evidenceData.frameworks.relationshipFramework.relationshipDetails?.slice(0, 3).map((rel) => (
                         <p key={rel.character}>• {rel.character || 'Unknown Character'}: Trust {Math.max(0, Math.min(10, rel.trust || 0))}/10</p>
                       )) || <p>• No relationship data available yet</p>}
                     </div>
@@ -413,7 +472,7 @@ export function EvidenceSection({ userId, profile, adminViewMode }: EvidenceSect
                       <DataSourceBadge
                         hasRealData={evidenceData.frameworks.behavioralConsistency.hasRealData}
                         minDemonstrations={20}
-                        actualDemonstrations={evidenceData.frameworks.behavioralConsistency.topThreeSkills.reduce((sum: number, s: any) => sum + s.count, 0)}
+                        actualDemonstrations={evidenceData.frameworks.behavioralConsistency.topThreeSkills.reduce((sum, s) => sum + s.count, 0)}
                       />
                     </div>
                   </div>

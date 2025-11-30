@@ -23,7 +23,12 @@ export const SimpleAnalyticsDisplay = memo(({
   onToggle 
 }: SimpleAnalyticsDisplayProps) => {
   const [analytics, setAnalytics] = useState<SimpleAnalytics | null>(null)
-  const [insights, setInsights] = useState<any>(null)
+  const [insights, setInsights] = useState<{
+    primaryInterest: string
+    confidence: number
+    birminghamOpportunities: string[]
+    nextSteps?: string[]
+  } | null>(null)
   const [isExpanded, setIsExpanded] = useState(false)
 
   // Load analytics data

@@ -737,11 +737,31 @@ What do you do with that feeling?`,
       {
         choiceId: 'player_trust_process',
         text: "I try to trust that even wrong turns teach me something.",
-        nextNodeId: 'jordan_crossroads', // Simplified link for brevity in update
+        nextNodeId: 'jordan_crossroads',
         pattern: 'exploring',
         skills: ['adaptability', 'criticalThinking']
+      },
+      {
+        choiceId: 'player_analyze_options',
+        text: "I break it down. Research every option, weigh pros and cons. Sometimes I get paralyzed by too much information.",
+        nextNodeId: 'jordan_crossroads',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'problemSolving']
+      },
+      {
+        choiceId: 'player_ask_others',
+        text: "I talk to people. See how they handled similar situations. Their stories help me see possibilities I couldn't see alone.",
+        nextNodeId: 'jordan_crossroads',
+        pattern: 'helping',
+        skills: ['collaboration', 'communication']
+      },
+      {
+        choiceId: 'player_feel_stuck',
+        text: "Honestly? I freeze. The uncertainty feels heavy, and I end up not choosing anything. That's probably worse than choosing wrong.",
+        nextNodeId: 'jordan_crossroads',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'communication']
       }
-      // [Leaving full reciprocity logic for brevity, but linking to Crossroads]
     ],
     tags: ['reciprocity', 'player_reflection', 'jordan_arc']
   },

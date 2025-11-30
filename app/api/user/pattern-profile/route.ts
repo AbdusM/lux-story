@@ -8,6 +8,8 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { getPatternProfile, getPatternSummaryQuick } from '@/lib/pattern-profile-adapter'
+import { validateUserId } from '@/lib/user-id-validation'
+import { logger } from '@/lib/logger'
 
 // Mark as dynamic for Next.js static export compatibility
 export const dynamic = 'force-dynamic'
@@ -27,15 +29,24 @@ export async function GET(request: NextRequest) {
     const userId = searchParams.get('userId')
     const mode = searchParams.get('mode') || 'full'
 
-    console.log('🔵 [API:PatternProfile] GET request:', {
-      userId,
+    logger.debug('Pattern profile GET request', {
+      operation: 'pattern-profile.get',
+      userId: userId ?? undefined,
       mode
     })
 
     if (!userId) {
-      console.error('❌ [API:PatternProfile] Missing userId parameter')
+      logger.warn('Missing userId parameter', { operation: 'pattern-profile.get' })
       return NextResponse.json(
         { error: 'Missing required parameter: userId' },
+        { status: 400 }
+      )
+    }
+
+    const validation = validateUserId(userId)
+    if (!validation.valid) {
+      return NextResponse.json(
+        { error: validation.error },
         { status: 400 }
       )
     }
@@ -44,10 +55,10 @@ export async function GET(request: NextRequest) {
     if (mode === 'quick') {
       const summary = await getPatternSummaryQuick(userId)
 
-      console.log('✅ [API:PatternProfile] Quick summary retrieved:', {
+      logger.debug('Quick summary retrieved', {
+        operation: 'pattern-profile.get',
         userId,
-        totalDemonstrations: summary.totalDemonstrations,
-        decisionStyle: summary.decisionStyle
+        totalDemonstrations: summary.totalDemonstrations
       })
 
       return NextResponse.json({
@@ -60,12 +71,10 @@ export async function GET(request: NextRequest) {
     // Full mode - comprehensive profile
     const profile = await getPatternProfile(userId)
 
-    console.log('✅ [API:PatternProfile] Full profile retrieved:', {
+    logger.debug('Full profile retrieved', {
+      operation: 'pattern-profile.get',
       userId,
-      totalDemonstrations: profile.totalDemonstrations,
-      summariesCount: profile.summaries.length,
-      hasDecisionStyle: !!profile.decisionStyle,
-      diversityScore: profile.diversityScore.score
+      totalDemonstrations: profile.totalDemonstrations
     })
 
     return NextResponse.json({
@@ -74,7 +83,9 @@ export async function GET(request: NextRequest) {
       profile
     })
   } catch (error) {
-    console.error('[PatternProfile API] Unexpected error:', error)
+    logger.error('Unexpected error in pattern profile GET', {
+      operation: 'pattern-profile.get'
+    }, error instanceof Error ? error : undefined)
     const errorMessage = error instanceof Error ? error.message : "Internal server error"
 
     // Handle Supabase connection errors gracefully

@@ -346,55 +346,75 @@ export class GameStateUtils {
  */
 export class StateValidation {
   // Helper: Validate number is finite and not NaN
-  static isValidNumber(value: any): boolean {
+  static isValidNumber(value: unknown): boolean {
     return typeof value === 'number' && isFinite(value) && !isNaN(value)
   }
 
   // Helper: Validate all pattern scores
-  static hasValidPatterns(patterns: any): boolean {
+  static hasValidPatterns(patterns: unknown): boolean {
+    if (typeof patterns !== 'object' || patterns === null) return false
+    const patternsObj = patterns as Record<string, unknown>
     return (
-      patterns &&
-      StateValidation.isValidNumber(patterns.analytical) &&
-      StateValidation.isValidNumber(patterns.helping) &&
-      StateValidation.isValidNumber(patterns.building) &&
-      StateValidation.isValidNumber(patterns.patience) &&
-      StateValidation.isValidNumber(patterns.exploring)
+      StateValidation.isValidNumber(patternsObj.analytical) &&
+      StateValidation.isValidNumber(patternsObj.helping) &&
+      StateValidation.isValidNumber(patternsObj.building) &&
+      StateValidation.isValidNumber(patternsObj.patience) &&
+      StateValidation.isValidNumber(patternsObj.exploring)
     )
   }
 
   // Helper: Validate node ID existence
-  static isValidNodeId(nodeId: any): boolean {
+  static isValidNodeId(nodeId: unknown): boolean {
     if (typeof nodeId !== 'string') return false
     // Check if node exists in registry
-    // We pass a dummy state because basic existence check doesn't need flags
-    return !!findCharacterForNode(nodeId, { globalFlags: new Set() } as any)
+    // We pass a minimal state because basic existence check doesn't need full state
+    const minimalState: GameState = {
+      saveVersion: '1.0.0',
+      playerId: 'validation',
+      characters: new Map(),
+      globalFlags: new Set(),
+      patterns: {
+        analytical: 0,
+        helping: 0,
+        building: 0,
+        patience: 0,
+        exploring: 0
+      },
+      lastSaved: Date.now(),
+      currentNodeId: '',
+      currentCharacterId: 'samuel',
+      thoughts: []
+    }
+    return !!findCharacterForNode(nodeId, minimalState)
   }
 
-  static isValidGameState(obj: any): obj is GameState {
+  static isValidGameState(obj: unknown): obj is GameState {
+    if (typeof obj !== 'object' || obj === null) return false
+    const objRecord = obj as Record<string, unknown>
     return (
-      obj &&
-      typeof obj.saveVersion === 'string' &&
-      typeof obj.playerId === 'string' &&
-      obj.characters instanceof Map &&
-      obj.globalFlags instanceof Set &&
-      StateValidation.hasValidPatterns(obj.patterns) &&
-      StateValidation.isValidNumber(obj.lastSaved) &&
-      StateValidation.isValidNodeId(obj.currentNodeId) &&
-      typeof obj.currentCharacterId === 'string'
+      typeof objRecord.saveVersion === 'string' &&
+      typeof objRecord.playerId === 'string' &&
+      objRecord.characters instanceof Map &&
+      objRecord.globalFlags instanceof Set &&
+      StateValidation.hasValidPatterns(objRecord.patterns) &&
+      StateValidation.isValidNumber(objRecord.lastSaved) &&
+      StateValidation.isValidNodeId(objRecord.currentNodeId) &&
+      typeof objRecord.currentCharacterId === 'string'
     )
   }
 
-  static isValidSerializableGameState(obj: any): obj is SerializableGameState {
+  static isValidSerializableGameState(obj: unknown): obj is SerializableGameState {
+    if (typeof obj !== 'object' || obj === null) return false
+    const objRecord = obj as Record<string, unknown>
     return (
-      obj &&
-      typeof obj.saveVersion === 'string' &&
-      typeof obj.playerId === 'string' &&
-      Array.isArray(obj.characters) &&
-      Array.isArray(obj.globalFlags) &&
-      StateValidation.hasValidPatterns(obj.patterns) &&
-      StateValidation.isValidNumber(obj.lastSaved) &&
-      StateValidation.isValidNodeId(obj.currentNodeId) &&
-      typeof obj.currentCharacterId === 'string'
+      typeof objRecord.saveVersion === 'string' &&
+      typeof objRecord.playerId === 'string' &&
+      Array.isArray(objRecord.characters) &&
+      Array.isArray(objRecord.globalFlags) &&
+      StateValidation.hasValidPatterns(objRecord.patterns) &&
+      StateValidation.isValidNumber(objRecord.lastSaved) &&
+      StateValidation.isValidNodeId(objRecord.currentNodeId) &&
+      typeof objRecord.currentCharacterId === 'string'
     )
   }
 }

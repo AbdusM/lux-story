@@ -13,6 +13,9 @@ import {
   StateValidation
 } from './character-state'
 import { getGraphForCharacter } from './graph-registry'
+import { logger } from './logger'
+
+type CharacterId = GameState['currentCharacterId'];
 
 const STORAGE_KEY = 'grand-central-terminus-save'
 const BACKUP_STORAGE_KEY = 'grand-central-terminus-save-backup'
@@ -58,7 +61,7 @@ export class GameStateManager {
         return false
       }
 
-      console.log(`Game saved successfully (${json.length} bytes)`)
+      logger.debug('Game saved successfully', { operation: 'game-state-manager.save', bytes: json.length })
       return true
 
     } catch (error) {
@@ -82,7 +85,7 @@ export class GameStateManager {
     try {
       const json = localStorage.getItem(STORAGE_KEY)
       if (!json) {
-        console.log('No save file found')
+        logger.debug('No save file found', { operation: 'game-state-manager.load' })
         return null
       }
 
@@ -95,7 +98,7 @@ export class GameStateManager {
         // Try backup
         const backup = this.loadBackupState()
         if (backup) {
-          console.log('Restored from backup')
+          logger.debug('Restored from backup', { operation: 'game-state-manager.load-backup' })
           return backup
         }
 
@@ -117,12 +120,12 @@ export class GameStateManager {
       // Verify currentNodeId exists in the graph
       try {
         const graph = getGraphForCharacter(
-          gameState.currentCharacterId as any,
+          gameState.currentCharacterId as CharacterId,
           gameState
         )
         if (!graph.nodes.has(gameState.currentNodeId)) {
           console.error(`Save file references non-existent node: ${gameState.currentNodeId}`)
-          console.log('Save file corrupted - resetting to safe start')
+          logger.warn('Save file corrupted - resetting to safe start', { operation: 'game-state-manager.corrupted', nodeId: gameState.currentNodeId })
           return null
         }
       } catch (error) {
@@ -130,7 +133,7 @@ export class GameStateManager {
         return null
       }
 
-      console.log(`Game loaded successfully (v${gameState.saveVersion})`)
+      logger.debug('Game loaded successfully', { operation: 'game-state-manager.load', version: gameState.saveVersion })
       return gameState
 
     } catch (error) {
@@ -139,7 +142,7 @@ export class GameStateManager {
       // Try backup
       const backup = this.loadBackupState()
       if (backup) {
-        console.log('Main save corrupted, restored from backup')
+        logger.warn('Main save corrupted, restored from backup', { operation: 'game-state-manager.load-backup-fallback' })
         return backup
       }
 
@@ -194,7 +197,7 @@ export class GameStateManager {
       return save // No migration needed
     }
 
-    console.log(`Migrating save from v${save.saveVersion} to v${currentVersion}`)
+    logger.debug('Migrating save', { operation: 'game-state-manager.migrate', fromVersion: save.saveVersion, toVersion: currentVersion })
 
     // Future migration logic goes here
     // For now, we'll just update the version
@@ -228,7 +231,7 @@ export class GameStateManager {
     try {
       localStorage.removeItem(STORAGE_KEY)
       localStorage.removeItem(BACKUP_STORAGE_KEY)
-      console.log('⚠️ NUCLEAR RESET: All save data deleted')
+      logger.warn('NUCLEAR RESET: All save data deleted', { operation: 'game-state-manager.nuclear-reset' })
     } catch (error) {
       console.error('Failed to reset game state:', error)
     }
@@ -315,7 +318,7 @@ export class GameStateManager {
       // Import new save
       localStorage.setItem(STORAGE_KEY, json)
 
-      console.log('Save imported successfully')
+      logger.debug('Save imported successfully', { operation: 'game-state-manager.import' })
       return true
 
     } catch (error) {
@@ -345,17 +348,21 @@ export class GameStateManager {
     try {
       const json = localStorage.getItem(STORAGE_KEY)
       if (!json) {
+        // eslint-disable-next-line no-console
         console.log('No save file exists')
         return
       }
 
       const parsed = JSON.parse(json)
+      // eslint-disable-next-line no-console
       console.log('Current save state:', parsed)
+      // eslint-disable-next-line no-console
       console.log('Save size:', json.length, 'bytes')
 
       // Check backup
       const backup = localStorage.getItem(BACKUP_STORAGE_KEY)
       if (backup) {
+        // eslint-disable-next-line no-console
         console.log('Backup size:', backup.length, 'bytes')
       }
 

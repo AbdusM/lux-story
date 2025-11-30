@@ -15,6 +15,7 @@
 import { useEffect, useState, useCallback, useRef } from 'react'
 import { SyncQueue, SyncResult, QueueStats } from '@/lib/sync-queue'
 import { db } from '@/lib/database-service'
+import { logger } from '@/lib/logger'
 
 interface UseBackgroundSyncOptions {
   enabled?: boolean
@@ -74,7 +75,7 @@ export function useBackgroundSync(
 
       // Log results
       if (result.processed > 0) {
-        console.log(`[useBackgroundSync] Synced ${result.processed} actions`)
+        logger.debug('Synced actions', { operation: 'use-background-sync.sync', processed: result.processed })
       }
       if (result.failed > 0) {
         console.warn(`[useBackgroundSync] ${result.failed} actions failed`)
