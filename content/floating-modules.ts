@@ -45,7 +45,7 @@ Something in you has sharpened.`,
     speaker: 'Narrator',
     content: [
       {
-        text: `*Something settles in your chest.*
+        text: `Something settles in your chest.
 
 The weight isn't burden—it's purpose. You've stopped asking "why should I help?" and started asking "how can I help better?"
 
@@ -67,7 +67,7 @@ People see it. They open up faster now.`,
     speaker: 'Narrator',
     content: [
       {
-        text: `*Your hands remember things your mind forgets.*
+        text: `Your hands remember things your mind forgets.
 
 Every problem is a system now. Every system has components. Every component can be improved.
 
@@ -89,7 +89,7 @@ You don't just see solutions—you feel them.`,
     speaker: 'Narrator',
     content: [
       {
-        text: `*Time moves differently for you now.*
+        text: `Time moves differently for you now.
 
 Not slower—just less urgent. You've learned that rushing rarely helps, and that silence often says more than words.
 
@@ -111,7 +111,7 @@ Some doors only open when you stop pushing.`,
     speaker: 'Narrator',
     content: [
       {
-        text: `*The unknown stopped being scary.*
+        text: `The unknown stopped being scary.
 
 Every dead end is data. Every failure is feedback. You've stopped fearing wrong turns because you've realized—there are no wrong turns. Just longer routes to the same understanding.`,
         variation_id: 'exploring_v1'
@@ -135,7 +135,7 @@ Every dead end is data. Every failure is feedback. You've stopped fearing wrong 
     emotion: 'proud',
     content: [
       {
-        text: `*Samuel looks at you differently now.*
+        text: `Samuel looks at you differently now.
 
 "First conversation's always the hardest. Not because of what you say—because of what you learn to hear."
 
@@ -161,7 +161,7 @@ He nods, just once.
     emotion: 'reflective',
     content: [
       {
-        text: `*Samuel is watching the station, but his attention is on you.*
+        text: `Samuel is watching the station, but his attention is on you.
 
 "Three stories. Three crossroads. You've been part of all of them."
 
@@ -169,7 +169,7 @@ He turns.
 
 "What patterns are you starting to see?"
 
-*The question doesn't need an answer. Not yet.*`,
+The question doesn't need an answer. Not yet.`,
         variation_id: 'three_arcs_v1'
       }
     ],
@@ -190,7 +190,7 @@ He turns.
     speaker: 'Narrator',
     content: [
       {
-        text: `*The station feels different after Maya.*
+        text: `The station feels different after Maya.
 
 The clock still ticks. The departure boards still flicker. But something in the air has changed.
 
@@ -212,7 +212,7 @@ You helped someone find their direction. That changes you too.`,
     speaker: 'Narrator',
     content: [
       {
-        text: `*You've noticed something.*
+        text: `You've noticed something.
 
 Some people open up immediately. Others take longer. The difference isn't them—it's you. The questions you ask. The patience you show.
 
