@@ -19,9 +19,8 @@ export const kaiDialogueNodes: DialogueNode[] = [
     content: [
       {
         // NOTE: Removed behavioral choreography - tablet and tension shown through dialogue only
-        text: `*Tablet. Same slide. Swiping back and forth.*
+        text: `Same slide. Swiping back and forth.
 
-*Whisper.*
 
 "Ensure the safety harness is secured. Click Next."
 
@@ -29,7 +28,7 @@ It was right there. Slide 14. "Ensure harness is secured." He clicked Next. He c
 
 But he didn't secure the harness.{{building>=3:
 
-*You've always known this—reading about something isn't the same as doing it. Muscle memory matters.*|}}`,
+}}`,
         emotion: 'haunted',
         variation_id: 'kai_intro_v2',
         richEffectContext: 'warning'
@@ -419,7 +418,7 @@ That's when I started building. Secretly. After hours.`,
         // NOTE: Removed "Kai turns" and "Kai taps" - showing screen result, not process
         text: `I deleted the module. The new one... I'm building it now. Secretly.
 
-*Rough, grainy video feed simulation. Forklift Operator scenario. No text. No "Click Next."*
+Rough, grainy video feed simulation. Forklift Operator scenario. No text. No "Click Next."
 
 *The view shakes.*
 
@@ -464,7 +463,7 @@ What do you do?`,
     speaker: 'Kai',
     content: [
       {
-        text: "*The checklist completes. Every box green.*\n\n*Suddenly, the screen flashes red.*\n\nCRITICAL ERROR. SYSTEM <shake>CRASH</shake>.\n\nWe followed every rule. And the system still failed. Because the rules were designed to protect the company, not the people.",
+        text: "The checklist completes. Every box green.\n\nSuddenly, the screen flashes red.\n\nCRITICAL ERROR. SYSTEM <shake>CRASH</shake>.\n\nWe followed every rule. And the system still failed. Because the rules were designed to protect the company, not the people.",
         emotion: 'shocked',
         variation_id: 'fail_compliance_v1',
         richEffectContext: 'error'
@@ -499,9 +498,9 @@ What do you do?`,
         // NOTE: Removed "Kai shakes their head" - frustration conveyed through teaching moment
         text: `*You tap the PDF icon. A 40-page document opens.*
 
-*While you're reading, the load shifts. The crate falls.*
+While you're reading, the load shifts. The crate falls.
 
-*The screen flashes red. "INJURY REPORTED."*
+The screen flashes red. "INJURY REPORTED."
 
 Nobody reads the PDF in a crisis. You hesitated. Real life doesn't pause for documentation.`,
         emotion: 'frustrated',
@@ -527,9 +526,9 @@ Nobody reads the PDF in a crisis. You hesitated. Real life doesn't pause for doc
     content: [
       {
         // NOTE: Removed "Kai exhales, shoulders dropping" - relief conveyed through dialogue revelation
-        text: `*The foreman screams in your face. The AI voice is deafening.*
+        text: `The foreman screams in your face. The AI voice is deafening.
 
-*But you stopped. The load wobbles, then settles. Safe.*
+But you stopped. The load wobbles, then settles. Safe.
 
 You stopped. You ignored the authority figure to save the human.
 
@@ -836,7 +835,7 @@ But I'll never have to click 'Next' again.`,
     speaker: 'Kai',
     content: [
       {
-        text: `*Kai closes the tablet. The screen goes dark.*
+        text: `The screen goes dark.
 
 Yeah. You're right. It's too risky. The VP will never approve it.
 
@@ -956,7 +955,7 @@ But what about you? What are you building? What's your reality? What do you want
     speaker: 'Kai',
     content: [
       {
-        text: `*Nods slowly.*
+        text: `
         
 That's it. That's the question.
 
