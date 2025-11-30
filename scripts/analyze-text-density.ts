@@ -202,7 +202,7 @@ async function main() {
   console.log('─'.repeat(80))
   console.log(`Total nodes analyzed: ${totalNodes}`)
   console.log(`Average words per node: ${avgWordCount.toFixed(1)}`)
-  console.log(`Nodes >80 words: ${nodesWithStageDirections} (${((nodesOver80 / totalNodes) * 100).toFixed(1)}%)`)
+  console.log(`Nodes >80 words: ${nodesOver80} (${((nodesOver80 / totalNodes) * 100).toFixed(1)}%)`)
   console.log(`Nodes with stage directions: ${nodesWithStageDirections} (${((nodesWithStageDirections / totalNodes) * 100).toFixed(1)}%)`)
   console.log(`Nodes with abstract language: ${nodesWithAbstract} (${((nodesWithAbstract / totalNodes) * 100).toFixed(1)}%)`)
   
