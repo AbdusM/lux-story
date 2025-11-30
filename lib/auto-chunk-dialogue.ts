@@ -24,10 +24,10 @@ export interface ChunkConfig {
 }
 
 const DEFAULT_CONFIG: Required<ChunkConfig> = {
-  maxChunkLength: 75,  // Reduced for better mobile readability (was 100)
-  minChunkLength: 30,   // Prevent tiny fragments
+  maxChunkLength: 65,  // Twitter-like: ~12-15 words per chunk (was 75)
+  minChunkLength: 25,   // Prevent tiny fragments (was 30)
   enabled: true,
-  activationThreshold: 75,  // Aggressive chunking: chunk text >75 characters (was 200, reduced for text density reduction)
+  activationThreshold: 65,  // Chunk text >65 characters for Twitter-like bite-sized pieces (was 75)
 }
 
 /**

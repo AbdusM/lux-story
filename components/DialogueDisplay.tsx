@@ -69,10 +69,10 @@ export function DialogueDisplay({
   // Determine if avatar should be displayed
   const displayAvatar = showAvatar && shouldShowAvatar(characterName, isContinuedSpeaker, false)
   
-  // Auto-enable chat pacing ONLY if explicitly set (useChatPacing: true)
-  // Removed auto-activation to prevent breaking choice flow
-  // Future: can re-enable with very conservative heuristics if needed
-  const shouldUseChatPacing = useChatPacing || false
+  // Auto-enable chat pacing for nodes >40 words (Twitter-like threshold)
+  // Twitter max is ~50 words, so 40 words creates engaging progressive reveal
+  const wordCount = text.split(/\s+/).length
+  const shouldUseChatPacing = useChatPacing || (wordCount > 40 && characterName)
   
   // If chat pacing is enabled, use ChatPacedDialogue for sequential reveal
   if (shouldUseChatPacing && characterName) {
@@ -109,7 +109,7 @@ export function DialogueDisplay({
   return (
     <div
       className={cn(
-        "space-y-6 min-h-[120px]", // Increased from space-y-4 to space-y-6 for better breathing room
+        "space-y-8 sm:space-y-10 min-h-[120px]", // Increased spacing for Twitter/Instagram-like breathing room (was space-y-6)
         "max-w-prose", // 65ch line length - optimal for reading (Bringhurst, WCAG)
         className
       )}
