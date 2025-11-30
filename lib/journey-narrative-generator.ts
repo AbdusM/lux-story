@@ -108,7 +108,7 @@ const CHARACTER_NAMES: Record<string, string> = {
 /**
  * Generate the opening paragraph based on journey context
  */
-function generateOpening(stats: JourneyStats, gameState: GameState | SerializableGameState): string {
+function generateOpening(stats: JourneyStats, _gameState: GameState | SerializableGameState): string {
   const arcsText = stats.arcsCompleted === 1
     ? 'one person'
     : stats.arcsCompleted === 2

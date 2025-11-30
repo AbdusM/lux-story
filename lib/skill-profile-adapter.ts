@@ -6,9 +6,10 @@
 
 import { SkillTracker, type SkillProfile as TrackerSkillProfile, type SamuelQuote } from './skill-tracker'
 import { FutureSkills, SkillContext, CareerPath2030 } from './2030-skills-system'
+import { logger } from './logger'
 
 // Cache for profile loads to prevent duplicate requests
-const profileCache = new Map<string, { profile: any; timestamp: number }>()
+const profileCache = new Map<string, { profile: SkillProfile | null; timestamp: number }>()
 const CACHE_TTL = 5000 // 5 seconds cache
 
 export interface SkillDemonstration {
@@ -18,6 +19,7 @@ export interface SkillDemonstration {
   context: string  // Analysis/explanation of what was demonstrated
   value: number
   timestamp?: number  // For temporal analysis
+  [key: string]: unknown // Add index signature
 }
 
 export interface SkillDemonstrations {
@@ -327,7 +329,7 @@ export async function loadSkillProfile(userId: string): Promise<SkillProfile | n
   // Check cache first to prevent duplicate requests
   const cached = profileCache.get(userId)
   if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
-    console.log(`[SkillProfileAdapter] Using cached profile for ${userId}`)
+    logger.debug('Using cached profile', { operation: 'skill-profile-adapter.load', userId })
     return cached.profile
   }
 
@@ -343,7 +345,7 @@ export async function loadSkillProfile(userId: string): Promise<SkillProfile | n
     if (response.ok) {
       const result = await response.json()
       if (result.success && result.profile) {
-        console.log(`[SkillProfileAdapter] Loaded user ${userId} from admin API`)
+        logger.debug('Loaded user from admin API', { operation: 'skill-profile-adapter.load', userId })
         const profile = convertSupabaseProfileToDashboard(result.profile)
         profileCache.set(userId, { profile, timestamp: Date.now() })
         return profile
@@ -354,10 +356,10 @@ export async function loadSkillProfile(userId: string): Promise<SkillProfile | n
       const errorText = await response.text().catch(() => 'Unable to read error response')
       console.warn(`[SkillProfileAdapter] Admin API returned ${response.status} for ${userId}:`, errorText.substring(0, 200))
     }
-  } catch (apiError: any) {
+  } catch (apiError: unknown) {
     console.warn(`[SkillProfileAdapter] Admin API failed for ${userId}:`, {
-      message: apiError?.message || 'Network or fetch error',
-      name: apiError?.name
+      message: (apiError as Error)?.message || 'Network or fetch error',
+      name: (apiError as Error)?.name
     })
   }
 
@@ -369,7 +371,11 @@ export async function loadSkillProfile(userId: string): Promise<SkillProfile | n
     if (careerResponse.ok) {
       const careerResult = await careerResponse.json()
       if (careerResult.success && careerResult.careerExplorations) {
-        console.log(`[SkillProfileAdapter] Loaded ${careerResult.careerExplorations.length} career explorations for ${userId}`)
+        logger.debug('Loaded career explorations', {
+          operation: 'skill-profile-adapter.load',
+          userId,
+          count: careerResult.careerExplorations.length
+        })
       }
     }
   } catch (_careerError) {
@@ -414,30 +420,31 @@ export async function loadSkillProfile(userId: string): Promise<SkillProfile | n
           })
         }
       } else if (profile) {
-        console.log(`[SkillProfileAdapter] Loaded user ${userId} from Supabase (direct)`)
+        logger.debug('Loaded user from Supabase', { operation: 'skill-profile-adapter.load', userId })
         const dashboardProfile = convertSupabaseProfileToDashboard(profile)
         profileCache.set(userId, { profile: dashboardProfile, timestamp: Date.now() })
         return dashboardProfile
       }
-    } catch (supabaseError: any) {
+    } catch (supabaseError: unknown) {
       // Check if it's a network error (Supabase unreachable)
+      const error = supabaseError instanceof Error ? supabaseError : new Error(String(supabaseError))
       const isNetworkError = 
-        supabaseError?.message?.includes('Failed to fetch') ||
-        supabaseError?.message?.includes('ERR_NAME_NOT_RESOLVED') ||
-        supabaseError?.name === 'TypeError' ||
-        supabaseError?.toString().includes('fetch')
+        error.message?.includes('Failed to fetch') ||
+        error.message?.includes('ERR_NAME_NOT_RESOLVED') ||
+        error.name === 'TypeError' ||
+        String(supabaseError).includes('fetch')
       
       if (!isNetworkError) {
         // Only log unexpected errors
         console.warn(`[SkillProfileAdapter] Supabase connection error for ${userId}:`, {
-          message: supabaseError?.message || 'Unknown error',
-          name: supabaseError?.name
+          message: error.message || 'Unknown error',
+          name: error.name
         })
       }
     }
 
     // Fallback to localStorage
-    console.log(`[SkillProfileAdapter] Supabase empty for ${userId}, checking localStorage`)
+    logger.debug('Supabase empty, checking localStorage', { operation: 'skill-profile-adapter.load', userId })
     const tracker = new SkillTracker(userId)
     const trackerProfile = tracker.exportSkillProfile()
 
@@ -457,66 +464,93 @@ export async function loadSkillProfile(userId: string): Promise<SkillProfile | n
 /**
  * Convert Supabase profile to dashboard-compatible format
  */
-function convertSupabaseProfileToDashboard(supabaseProfile: any): SkillProfile {
-  const userId = supabaseProfile.user_id
+function convertSupabaseProfileToDashboard(supabaseProfile: Record<string, unknown>): SkillProfile {
+  const userId = typeof supabaseProfile.user_id === 'string' ? supabaseProfile.user_id : ''
   
   // Convert skill demonstrations from skill_summaries
   const skillDemonstrations: SkillDemonstrations = {}
-  if (supabaseProfile.skill_summaries) {
-    supabaseProfile.skill_summaries.forEach((summary: any) => {
-      if (!skillDemonstrations[summary.skill_name]) {
-        skillDemonstrations[summary.skill_name] = []
-      }
-      
-      // Create demonstration entries based on demonstration_count
-      for (let i = 0; i < summary.demonstration_count; i++) {
-        skillDemonstrations[summary.skill_name].push({
-          scene: summary.scenes_involved?.[0] || 'unknown_scene',
-          choice: 'Your choice',
-          sceneDescription: (summary.scenes_involved?.[0] || 'unknown_scene').replace(/_/g, ' ').replace(/^\w/, (c: string) => c.toUpperCase()),
-          context: summary.latest_context || 'Skill demonstration',
-          value: 1,
-          timestamp: new Date(summary.last_demonstrated).getTime()
-        })
-      }
-    })
-  }
+  const skillSummaries = Array.isArray(supabaseProfile.skill_summaries) ? supabaseProfile.skill_summaries : []
+  skillSummaries.forEach((summary: unknown) => {
+    if (typeof summary !== 'object' || summary === null) return
+    const summaryObj = summary as Record<string, unknown>
+    const skillName = typeof summaryObj.skill_name === 'string' ? summaryObj.skill_name : ''
+    if (!skillName) return
+    
+    if (!skillDemonstrations[skillName]) {
+      skillDemonstrations[skillName] = []
+    }
+    
+    const count = typeof summaryObj.demonstration_count === 'number' ? summaryObj.demonstration_count : 0
+    const scenes = Array.isArray(summaryObj.scenes_involved) ? summaryObj.scenes_involved : []
+    const firstScene = typeof scenes[0] === 'string' ? scenes[0] : 'unknown_scene'
+    const latestContext = typeof summaryObj.latest_context === 'string' ? summaryObj.latest_context : 'Skill demonstration'
+    const lastDemonstrated = typeof summaryObj.last_demonstrated === 'string' ? summaryObj.last_demonstrated : new Date().toISOString()
+    
+    // Create demonstration entries based on demonstration_count
+    for (let i = 0; i < count; i++) {
+      skillDemonstrations[skillName].push({
+        scene: firstScene,
+        choice: 'Your choice',
+        sceneDescription: firstScene.replace(/_/g, ' ').replace(/^\w/, (c: string) => c.toUpperCase()),
+        context: latestContext,
+        value: 1,
+        timestamp: new Date(lastDemonstrated).getTime()
+      })
+    }
+  })
   
   // Also include any legacy skill_demonstrations data
-  if (supabaseProfile.skill_demonstrations) {
-    supabaseProfile.skill_demonstrations.forEach((demo: any) => {
-      if (!skillDemonstrations[demo.skill_name]) {
-        skillDemonstrations[demo.skill_name] = []
-      }
-      skillDemonstrations[demo.skill_name].push({
-        scene: demo.scene_id,
-        choice: demo.choice_text || 'Your choice',
-        sceneDescription: demo.scene_id.replace(/_/g, ' ').replace(/^\w/, (c: string) => c.toUpperCase()),
-        context: demo.context,
-        value: 1,
-        timestamp: new Date(demo.demonstrated_at).getTime()
-      })
+  const skillDemos = Array.isArray(supabaseProfile.skill_demonstrations) ? supabaseProfile.skill_demonstrations : []
+  skillDemos.forEach((demo: unknown) => {
+    if (typeof demo !== 'object' || demo === null) return
+    const demoObj = demo as Record<string, unknown>
+    const skillName = typeof demoObj.skill_name === 'string' ? demoObj.skill_name : ''
+    if (!skillName) return
+    
+    if (!skillDemonstrations[skillName]) {
+      skillDemonstrations[skillName] = []
+    }
+    const sceneId = typeof demoObj.scene_id === 'string' ? demoObj.scene_id : 'unknown_scene'
+    const choiceText = typeof demoObj.choice_text === 'string' ? demoObj.choice_text : 'Your choice'
+    const context = typeof demoObj.context === 'string' ? demoObj.context : 'Skill demonstration'
+    const demonstratedAt = typeof demoObj.demonstrated_at === 'string' ? demoObj.demonstrated_at : new Date().toISOString()
+    
+    skillDemonstrations[skillName].push({
+      scene: sceneId,
+      choice: choiceText,
+      sceneDescription: sceneId.replace(/_/g, ' ').replace(/^\w/, (c: string) => c.toUpperCase()),
+      context,
+      value: 1,
+      timestamp: new Date(demonstratedAt).getTime()
     })
-  }
+  })
 
   // Convert career matches
   const careerMatches: CareerMatch[] = []
-  if (supabaseProfile.career_explorations) {
-    supabaseProfile.career_explorations.forEach((career: any) => {
-      careerMatches.push({
-        id: career.id,
-        name: career.career_name,
-        matchScore: career.match_score,
-        requiredSkills: {}, // Would need to be populated from career data
-        salaryRange: [40000, 80000] as [number, number], // Add required field
-        educationPaths: career.education_paths || [], // Renamed from educationPathways
-        localOpportunities: career.local_opportunities || [],
-        birminghamRelevance: 0.8, // Default value
-        growthProjection: 'high' as const, // Fix: use correct type
-        readiness: (career.readiness_level || 'exploratory') as CareerMatch['readiness'] // Renamed from readinessLevel
-      })
+  const careerExplorations = Array.isArray(supabaseProfile.career_explorations) ? supabaseProfile.career_explorations : []
+  careerExplorations.forEach((career: unknown) => {
+    if (typeof career !== 'object' || career === null) return
+    const careerObj = career as Record<string, unknown>
+    const id = typeof careerObj.id === 'string' ? careerObj.id : ''
+    const name = typeof careerObj.career_name === 'string' ? careerObj.career_name : ''
+    const matchScore = typeof careerObj.match_score === 'number' ? careerObj.match_score : 0
+    const educationPaths = Array.isArray(careerObj.education_paths) ? careerObj.education_paths.map(p => String(p)) : []
+    const localOpportunities = Array.isArray(careerObj.local_opportunities) ? careerObj.local_opportunities.map(o => String(o)) : []
+    const readinessLevel = typeof careerObj.readiness_level === 'string' ? careerObj.readiness_level : 'exploratory'
+    
+    careerMatches.push({
+      id,
+      name,
+      matchScore,
+      requiredSkills: {}, // Would need to be populated from career data
+      salaryRange: [40000, 80000] as [number, number], // Add required field
+      educationPaths,
+      localOpportunities,
+      birminghamRelevance: 0.8, // Default value
+      growthProjection: 'high' as const, // Fix: use correct type
+      readiness: readinessLevel as CareerMatch['readiness']
     })
-  }
+  })
 
   // Convert milestones (would need to be stored in Supabase)
   const milestones: string[] = []
@@ -582,9 +616,15 @@ function convertSupabaseProfileToDashboard(supabaseProfile: any): SkillProfile {
   })
 
   // Calculate total demonstrations from skill_summaries
-  const totalDemonstrations = supabaseProfile.skill_summaries 
-    ? supabaseProfile.skill_summaries.reduce((sum: number, summary: any) => sum + (summary.demonstration_count || 0), 0)
-    : (supabaseProfile.total_demonstrations || 0)
+  const skillSummariesArray = Array.isArray(supabaseProfile.skill_summaries) ? supabaseProfile.skill_summaries : []
+  const totalDemonstrations = skillSummariesArray.length > 0
+    ? skillSummariesArray.reduce((sum: number, summary: unknown) => {
+        if (typeof summary !== 'object' || summary === null) return sum
+        const summaryObj = summary as Record<string, unknown>
+        const count = typeof summaryObj.demonstration_count === 'number' ? summaryObj.demonstration_count : 0
+        return sum + count
+      }, 0)
+    : (typeof supabaseProfile.total_demonstrations === 'number' ? supabaseProfile.total_demonstrations : 0)
 
   return {
     userId,
@@ -830,7 +870,7 @@ export async function getAllUserIds(): Promise<string[]> {
       if (response.ok) {
         const result = await response.json()
         if (result.success && result.userIds) {
-          console.log(`[SkillProfileAdapter] Loaded ${result.userIds.length} user IDs from admin API`)
+          logger.debug('Loaded user IDs from admin API', { operation: 'skill-profile-adapter.load-user-ids', count: result.userIds.length })
           return result.userIds
         }
       } else {
@@ -843,22 +883,26 @@ export async function getAllUserIds(): Promise<string[]> {
           console.warn(`[SkillProfileAdapter] Admin user-ids API returned ${response.status}:`, errorText.substring(0, 200))
         }
       }
-    } catch (apiError: any) {
+    } catch (apiError: unknown) {
       // Network errors, CORS issues, etc.
-      console.warn(`[SkillProfileAdapter] Admin user-ids API request failed:`, {
-        message: apiError?.message || 'Network or fetch error',
-        name: apiError?.name,
-        stack: apiError?.stack?.substring(0, 200)
+      const error = apiError instanceof Error ? apiError : new Error(String(apiError))
+      logger.warn('Admin user-ids API request failed', {
+        operation: 'skill-profile-adapter.getAllUserIds',
+        message: error.message,
+        name: error.name
       })
       // Don't throw - fall through to localStorage fallback
     }
 
     // Fallback to localStorage
-    console.log('[SkillProfileAdapter] Admin API failed or returned no data, checking localStorage')
+    logger.debug('Admin API failed, checking localStorage', { operation: 'skill-profile-adapter.getAllUserIds' })
     const keys = Object.keys(localStorage)
     const trackerKeys = keys.filter(k => k.startsWith('skill_tracker_'))
     const userIds = trackerKeys.map(k => k.replace('skill_tracker_', ''))
-    console.log('[SkillProfileAdapter] Found', userIds.length, 'users in localStorage')
+    logger.debug('Found users in localStorage', {
+      operation: 'skill-profile-adapter.getAllUserIds',
+      count: userIds.length
+    })
 
     // Filter to only users with actual demonstration data
     return userIds.filter(userId => {

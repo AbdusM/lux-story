@@ -8,6 +8,8 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { getSupabaseServerClient } from '@/lib/supabase-server'
+import { validateUserId } from '@/lib/user-id-validation'
+import { logger } from '@/lib/logger'
 
 // Mark as dynamic for Next.js static export compatibility
 export const dynamic = 'force-dynamic'
@@ -24,8 +26,17 @@ export async function POST(request: NextRequest) {
 
     // Simple validation - this is an internal API called by our code
     if (!user_id || !skill_name || !scene_id) {
+      logger.warn('Missing required fields', { operation: 'skill-demonstrations.post' })
       return NextResponse.json(
         { error: 'Missing required fields: user_id, skill_name, scene_id' },
+        { status: 400 }
+      )
+    }
+
+    const validation = validateUserId(user_id)
+    if (!validation.valid) {
+      return NextResponse.json(
+        { error: validation.error },
         { status: 400 }
       )
     }
@@ -47,10 +58,11 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (error) {
-      console.error('[API:SkillDemonstrations] Supabase error:', {
-        code: error.code,
-        message: error instanceof Error ? error.message : "Unknown error"
-      })
+      logger.error('Supabase error', {
+        operation: 'skill-demonstrations.post',
+        errorCode: error.code,
+        userId: user_id
+      }, error instanceof Error ? error : undefined)
       return NextResponse.json(
         { error: 'Failed to insert skill demonstration' },
         { status: 500 }
@@ -62,7 +74,9 @@ export async function POST(request: NextRequest) {
       demonstration: data
     })
   } catch (error) {
-    console.error('[SkillDemonstrations API] Unexpected error:', error)
+    logger.error('Unexpected error in skill demonstrations POST', {
+      operation: 'skill-demonstrations.post'
+    }, error instanceof Error ? error : undefined)
     const errorMessage = error instanceof Error ? error.message : "Internal server error"
 
     return NextResponse.json(

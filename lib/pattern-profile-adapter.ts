@@ -154,16 +154,16 @@ async function fetchPatternSummaries(userId: string): Promise<PatternSummary[]> 
   if (!data) return []
 
   // Calculate total for percentages
-  const total = data.reduce((sum: number, row: any) => sum + (row.demonstration_count || 0), 0)
+  const total = data.reduce((sum: number, row: Record<string, unknown>) => sum + ((row.demonstration_count as number) || 0), 0)
 
-  return data.map((row: any) => ({
+  return data.map((row: Record<string, unknown>) => ({
     patternName: row.pattern_name as PatternType,
-    demonstrationCount: row.demonstration_count || 0,
-    percentage: total > 0 ? ((row.demonstration_count || 0) / total) * 100 : 0,
-    lastDemonstrated: row.last_demonstrated,
-    firstDemonstrated: row.first_demonstrated,
-    scenesInvolved: row.scenes_involved || [],
-    charactersInvolved: row.characters_involved || []
+    demonstrationCount: (row.demonstration_count as number) || 0,
+    percentage: total > 0 ? (((row.demonstration_count as number) || 0) / total) * 100 : 0,
+    lastDemonstrated: row.last_demonstrated as string | null,
+    firstDemonstrated: row.first_demonstrated as string | null,
+    scenesInvolved: (row.scenes_involved as string[]) || [],
+    charactersInvolved: (row.characters_involved as string[]) || []
   })).sort((a: PatternSummary, b: PatternSummary) => b.demonstrationCount - a.demonstrationCount)
 }
 
@@ -186,10 +186,10 @@ async function fetchPatternEvolution(userId: string): Promise<PatternEvolutionPo
 
   if (!data) return []
 
-  return data.map((row: any) => ({
-    weekStart: row.week_start,
+  return data.map((row: Record<string, unknown>) => ({
+    weekStart: row.week_start as string,
     patternName: row.pattern_name as PatternType,
-    weeklyCount: row.weekly_count || 0
+    weeklyCount: (row.weekly_count as number) || 0
   }))
 }
 

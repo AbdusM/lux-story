@@ -1,12 +1,11 @@
 import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
-import { ActiveThought, THOUGHT_REGISTRY } from '@/content/thoughts'
+import { ActiveThought, ThoughtStatus, THOUGHT_REGISTRY } from '@/content/thoughts'
 import {
   GameState as CoreGameState,
   SerializableGameState,
   GameStateUtils,
-  StateChange,
-  CharacterState
+  StateChange
 } from './character-state'
 
 // Core game state interfaces
@@ -433,10 +432,28 @@ export const useGameStore = create<GameState & GameActions>()(
         },
         
         // Character relationship actions
+        // NOTE: This should ideally update through coreGameState, but kept for backward compatibility
+        // The main trust updates should go through coreGameState via setCoreGameState()
+        // This function is primarily used for syncing from coreGameState, not for direct updates
         updateCharacterTrust: (characterId, trust) => {
           set((state) => ({
             characterTrust: { ...state.characterTrust, [characterId]: trust }
           }))
+          // Also sync to coreGameState if it exists
+          const core = get().coreGameState
+          if (core) {
+            const updated = {
+              ...core,
+              characters: core.characters.map(char =>
+                char.characterId === characterId
+                  ? { ...char, trust }
+                  : char
+              )
+            }
+            set({ coreGameState: updated })
+            // Note: syncDerivedState would overwrite characterTrust, so we don't call it here
+            // This is a temporary bridge - ideally all updates should go through setCoreGameState()
+          }
         },
 
         // Batch update character trust (for syncing from GameState)
@@ -453,10 +470,26 @@ export const useGameStore = create<GameState & GameActions>()(
         },
         
         // Pattern tracking actions
+        // NOTE: This should ideally update through coreGameState, but kept for backward compatibility
+        // The main pattern updates should go through coreGameState via setCoreGameState()
         updatePatterns: (patterns) => {
           set((state) => ({
             patterns: { ...state.patterns, ...patterns }
           }))
+          // Also sync to coreGameState if it exists
+          const core = get().coreGameState
+          if (core) {
+            const updated = {
+              ...core,
+              patterns: {
+                ...core.patterns,
+                ...patterns
+              }
+            }
+            set({ coreGameState: updated })
+            // Note: syncDerivedState would overwrite patterns, so we don't call it here
+            // This is a temporary bridge - ideally all updates should go through setCoreGameState()
+          }
         },
         
         // State update actions
@@ -484,6 +517,9 @@ export const useGameStore = create<GameState & GameActions>()(
           }))
         },
         
+        // Skills tracking actions
+        // NOTE: Skills are not part of coreGameState (they're tracked separately)
+        // This is OK to update directly as skills are not synced from coreGameState
         updateSkills: (skills) => {
           set((state) => ({
             skills: { ...state.skills, ...skills }
@@ -491,6 +527,8 @@ export const useGameStore = create<GameState & GameActions>()(
         },
 
         // Thought Cabinet Actions
+        // NOTE: Thoughts are synced from coreGameState via syncDerivedState()
+        // These functions should also update coreGameState to maintain consistency
         addThought: (thoughtId) => {
           const registry = THOUGHT_REGISTRY[thoughtId]
           if (!registry) return
@@ -505,13 +543,26 @@ export const useGameStore = create<GameState & GameActions>()(
               addedAt: Date.now(),
               lastUpdated: Date.now()
             }
-            return { thoughts: [newThought, ...state.thoughts] }
+            const updatedThoughts = [newThought, ...state.thoughts]
+            
+            // Also sync to coreGameState if it exists
+            const core = get().coreGameState
+            if (core) {
+              set({
+                coreGameState: {
+                  ...core,
+                  thoughts: updatedThoughts
+                }
+              })
+            }
+            
+            return { thoughts: updatedThoughts }
           })
         },
 
         updateThoughtProgress: (thoughtId, amount) => {
-          set((state) => ({
-            thoughts: state.thoughts.map(t => {
+          set((state) => {
+            const updatedThoughts = state.thoughts.map(t => {
               if (t.id !== thoughtId) return t
               const newProgress = Math.min(100, Math.max(0, t.progress + amount))
               return { 
@@ -520,21 +571,47 @@ export const useGameStore = create<GameState & GameActions>()(
                 lastUpdated: Date.now()
               }
             })
-          }))
+            
+            // Also sync to coreGameState if it exists
+            const core = get().coreGameState
+            if (core) {
+              set({
+                coreGameState: {
+                  ...core,
+                  thoughts: updatedThoughts
+                }
+              })
+            }
+            
+            return { thoughts: updatedThoughts }
+          })
         },
 
         internalizeThought: (thoughtId) => {
-          set((state) => ({
-            thoughts: state.thoughts.map(t => {
+          set((state) => {
+            const updatedThoughts: ActiveThought[] = state.thoughts.map(t => {
               if (t.id !== thoughtId) return t
               return {
                 ...t,
-                status: 'internalized',
+                status: 'internalized' as ThoughtStatus,
                 progress: 100,
                 lastUpdated: Date.now()
               }
             })
-          }))
+            
+            // Also sync to coreGameState if it exists
+            const core = get().coreGameState
+            if (core) {
+              set({
+                coreGameState: {
+                  ...core,
+                  thoughts: updatedThoughts
+                }
+              })
+            }
+            
+            return { thoughts: updatedThoughts }
+          })
         },
 
         // Floating Module Actions
@@ -653,27 +730,28 @@ export const useGameStore = create<GameState & GameActions>()(
       {
         name: 'grand-central-game-store',
         version: 1, // Add version for migrations
-        migrate: (persistedState: any, version: number) => {
+        migrate: (persistedState: unknown, version: number) => {
           // Handle migration from corrupted Set data to Arrays
           if (version === 0 && persistedState) {
             try {
+              const persistedObj = typeof persistedState === 'object' && persistedState !== null ? persistedState as Record<string, unknown> : {}
               // Fix visitedScenes if it's corrupted Set data
-              if (persistedState.visitedScenes && typeof persistedState.visitedScenes === 'object') {
+              if (persistedObj.visitedScenes && typeof persistedObj.visitedScenes === 'object') {
                 // If it's not an array, try to convert or reset
-                if (!Array.isArray(persistedState.visitedScenes)) {
+                if (!Array.isArray(persistedObj.visitedScenes)) {
                   console.warn('Migrating corrupted visitedScenes from Set to Array')
-                  persistedState.visitedScenes = []
+                  persistedObj.visitedScenes = []
                 }
               }
 
               // Ensure all required fields exist with proper types
               const migratedState = {
                 ...initialState,
-                ...persistedState,
-                visitedScenes: Array.isArray(persistedState.visitedScenes) ? persistedState.visitedScenes : [],
-                choiceHistory: Array.isArray(persistedState.choiceHistory) ? persistedState.choiceHistory : [],
+                ...persistedObj,
+                visitedScenes: Array.isArray(persistedObj.visitedScenes) ? persistedObj.visitedScenes : [],
+                choiceHistory: Array.isArray(persistedObj.choiceHistory) ? persistedObj.choiceHistory : [],
                 messages: [], // Don't persist messages
-                thoughts: persistedState.thoughts || [] // Migrate thoughts
+                thoughts: Array.isArray(persistedObj.thoughts) ? persistedObj.thoughts : [] // Migrate thoughts
               }
 
               return migratedState
@@ -709,6 +787,7 @@ export const useGameStore = create<GameState & GameActions>()(
         storage: {
           getItem: (name: string) => {
             try {
+              if (typeof window === 'undefined') return null
               const str = localStorage.getItem(name)
               if (!str) return null
 
@@ -724,7 +803,9 @@ export const useGameStore = create<GameState & GameActions>()(
               return parsed
             } catch (error) {
               console.warn('Failed to parse localStorage data, clearing corrupted state:', error)
-              localStorage.removeItem(name)
+              if (typeof window !== 'undefined') {
+                localStorage.removeItem(name)
+              }
               return null
             }
           },
@@ -733,17 +814,25 @@ export const useGameStore = create<GameState & GameActions>()(
               // Validate serializability before storing
               const serialized = JSON.stringify(value)
               JSON.parse(serialized) // Will throw if not properly serializable
-              localStorage.setItem(name, serialized)
+              if (typeof window !== 'undefined') {
+                localStorage.setItem(name, serialized)
+              }
             } catch (error) {
-              console.error('Failed to store state, data not serializable:', error)
+              if (typeof window !== 'undefined') {
+                console.error('Failed to store state, data not serializable:', error)
+              }
               // Don't throw, just log the error to prevent app crashes
             }
           },
           removeItem: (name: string) => {
             try {
-              localStorage.removeItem(name)
+              if (typeof window !== 'undefined') {
+                localStorage.removeItem(name)
+              }
             } catch (error) {
-              console.warn('Failed to remove localStorage item:', error)
+              if (typeof window !== 'undefined') {
+                console.warn('Failed to remove localStorage item:', error)
+              }
             }
           }
         }
@@ -754,8 +843,15 @@ export const useGameStore = create<GameState & GameActions>()(
 )
 
 // Validation utilities for serialization
-export function validateGameState(state: any): { isValid: boolean; errors: string[] } {
+export function validateGameState(state: unknown): { isValid: boolean; errors: string[] } {
   const errors: string[] = []
+  
+  if (typeof state !== 'object' || state === null) {
+    errors.push('State must be an object')
+    return { isValid: false, errors }
+  }
+  
+  const stateObj = state as Record<string, unknown>
 
   try {
     // Test JSON serialization
@@ -763,22 +859,22 @@ export function validateGameState(state: any): { isValid: boolean; errors: strin
     const deserialized = JSON.parse(serialized)
 
     // Check that visitedScenes is an array
-    if (state.visitedScenes && !Array.isArray(state.visitedScenes)) {
+    if (stateObj.visitedScenes && !Array.isArray(stateObj.visitedScenes)) {
       errors.push('visitedScenes must be an array')
     }
 
     // Check that choiceHistory is an array
-    if (state.choiceHistory && !Array.isArray(state.choiceHistory)) {
+    if (stateObj.choiceHistory && !Array.isArray(stateObj.choiceHistory)) {
       errors.push('choiceHistory must be an array')
     }
 
     // Check that messages is an array
-    if (state.messages && !Array.isArray(state.messages)) {
+    if (stateObj.messages && !Array.isArray(stateObj.messages)) {
       errors.push('messages must be an array')
     }
 
     // Validate that all numeric values are actually numbers
-    if (typeof state.performanceLevel !== 'number') {
+    if (typeof stateObj.performanceLevel !== 'number') {
       errors.push('performanceLevel must be a number')
     }
 
@@ -809,7 +905,9 @@ export function clearCorruptedStorage() {
 
       if (!validation.isValid) {
         console.warn('Clearing corrupted localStorage:', validation.errors)
-        localStorage.removeItem(storageKey)
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem(storageKey)
+        }
         return true
       }
     }
@@ -817,7 +915,9 @@ export function clearCorruptedStorage() {
     return false
   } catch (error) {
     console.warn('Error checking localStorage, clearing it:', error)
-    localStorage.removeItem('grand-central-game-store')
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('grand-central-game-store')
+    }
     return true
   }
 }

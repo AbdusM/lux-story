@@ -8,6 +8,7 @@ import { getLiveChoiceEngine, type LiveChoiceRequest } from './live-choice-engin
 import { getPersonaTracker } from './player-persona'
 import type { Choice, Scene } from './story-engine'
 import type { GameState } from './game-store'
+import { logger } from './logger'
 
 /**
  * Simple string similarity using Levenshtein distance
@@ -56,9 +57,9 @@ function levenshteinDistance(str1: string, str2: string): number {
  * Simple choice deduplication without ML models
  */
 function filterSimilarChoicesSimple(
-  choices: { text: string; [key: string]: any }[],
+  choices: { text: string; [key: string]: unknown }[],
   threshold: number = 0.85
-): { text: string; [key: string]: any }[] {
+): { text: string; [key: string]: unknown }[] {
   const filtered: typeof choices = []
 
   for (const candidate of choices) {
@@ -67,14 +68,14 @@ function filterSimilarChoicesSimple(
     for (const accepted of filtered) {
       const similarity = simpleStringSimilarity(candidate.text, accepted.text)
       if (similarity >= threshold) {
-        console.log(`❌ Filtered similar choice: "${candidate.text}" (${similarity.toFixed(3)} similarity to "${accepted.text}")`)
+        logger.debug('Filtered similar choice', { operation: 'choice-generator.filter', similarity: similarity.toFixed(3), candidate: candidate.text.substring(0, 50), accepted: accepted.text.substring(0, 50) })
         isSimilar = true
         break
       }
     }
 
     if (!isSimilar) {
-      console.log(`✅ Accepted choice: "${candidate.text}"`)
+      logger.debug('Accepted choice', { operation: 'choice-generator.accept', text: candidate.text.substring(0, 50) })
       filtered.push(candidate)
     }
   }
@@ -193,14 +194,14 @@ export class ChoiceGenerator {
 
     // Layer 3: Semantic Similarity Filtering (only if enabled)
     if (process.env.ENABLE_SEMANTIC_SIMILARITY !== 'false' && choices.length > 1) {
-      console.log(`🔍 Applying semantic similarity filter to ${choices.length} choices...`)
+      logger.debug('Applying semantic similarity filter', { operation: 'choice-generator.semantic-filter', choiceCount: choices.length })
       const threshold = parseFloat(process.env.CHOICE_SIMILARITY_THRESHOLD || '0.85')
 
       try {
         const filteredChoices = filterSimilarChoicesSimple(choices, threshold)
 
         if (filteredChoices.length < choices.length) {
-          console.log(`📊 Semantic filter: ${choices.length} → ${filteredChoices.length} choices`)
+          logger.debug('Semantic filter applied', { operation: 'choice-generator.semantic-result', before: choices.length, after: filteredChoices.length })
         }
 
         return filteredChoices as Choice[]
@@ -209,7 +210,7 @@ export class ChoiceGenerator {
         return choices
       }
     } else if (process.env.ENABLE_SEMANTIC_SIMILARITY === 'false') {
-      console.log('📄 Semantic similarity disabled, skipping filter')
+      logger.debug('Semantic similarity disabled, skipping filter', { operation: 'choice-generator.semantic-skip' })
     }
 
     return choices
@@ -382,11 +383,11 @@ export class ChoiceGenerator {
     const shouldTrigger = Math.random() < augmentationChance || choices.length < 3
 
     if (!shouldTrigger) {
-      console.log('🎯 Live augmentation skipped this time (probabilistic)')
+      logger.debug('Live augmentation skipped this time (probabilistic)', { operation: 'choice-generator.live-skip' })
       return
     }
 
-    console.log('🚀 Triggering live augmentation...')
+    logger.debug('Triggering live augmentation', { operation: 'choice-generator.live-augment' })
 
     // Get player persona
     const persona = personaTracker.getPersona(options.playerId!)
@@ -436,9 +437,9 @@ export class ChoiceGenerator {
         // Add to review queue
         liveEngine.addToReviewQueue(request, liveResponse)
 
-        console.log('✨ Live choice generated:', liveResponse.text, `(confidence: ${liveResponse.confidenceScore})`)
+        logger.debug('Live choice generated', { operation: 'choice-generator.live-generated', text: liveResponse.text.substring(0, 50), confidence: liveResponse.confidenceScore })
       } else {
-        console.log('⚠️ Live generation confidence too low or failed')
+        logger.debug('Live generation confidence too low or failed', { operation: 'choice-generator.live-failed' })
       }
     } catch (error) {
       console.error('❌ Live augmentation failed:', error)

@@ -15,28 +15,11 @@ export function middleware(request: NextRequest) {
     const authToken = request.cookies.get('admin_auth_token')?.value
     const expectedToken = process.env.ADMIN_API_TOKEN
 
-    // Debug logging (remove in production)
-    if (process.env.NODE_ENV === 'development') {
-      console.log('[Middleware] Checking admin route:', {
-        pathname,
-        hasAuthToken: !!authToken,
-        hasExpectedToken: !!expectedToken,
-        tokensMatch: authToken === expectedToken
-      })
-    }
-
     // If no token or invalid token, redirect to login
     if (!authToken || !expectedToken || authToken !== expectedToken) {
-      if (process.env.NODE_ENV === 'development') {
-        console.log('[Middleware] Redirecting to login - missing or invalid token')
-      }
       const loginUrl = new URL('/admin/login', request.url)
       loginUrl.searchParams.set('redirect', pathname)
       return NextResponse.redirect(loginUrl)
-    }
-
-    if (process.env.NODE_ENV === 'development') {
-      console.log('[Middleware] Admin authentication passed')
     }
   }
 

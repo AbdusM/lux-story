@@ -177,9 +177,9 @@ export function PeopleView({ characters, onOpenDetail }: PeopleViewProps) {
             )
           })}
 
-          {/* Character nodes */}
-          {characters.map((char) => {
-            const colors = CHARACTER_COLORS[char.color]
+          {/* Character nodes - only show met characters to reduce clutter */}
+          {characters.filter(char => char.hasMet).map((char) => {
+            const _colors = CHARACTER_COLORS[char.color]
             const isSelected = selectedId === char.id
             const size = char.isMajor ? 7 : 5
 
@@ -226,38 +226,14 @@ export function PeopleView({ characters, onOpenDetail }: PeopleViewProps) {
                   />
                 )}
 
-                {/* Dashed mystery ring for unmet characters */}
-                {!char.hasMet && (
-                  <motion.circle
-                    cx={char.position.x}
-                    cy={char.position.y}
-                    r={size + 1.5}
-                    fill="none"
-                    stroke="rgba(148, 163, 184, 0.3)"
-                    strokeWidth="0.3"
-                    strokeDasharray="1.5 1"
-                    animate={{
-                      rotate: [0, 360]
-                    }}
-                    transition={{
-                      duration: 20,
-                      repeat: Infinity,
-                      ease: 'linear'
-                    }}
-                    style={{ transformOrigin: `${char.position.x}px ${char.position.y}px` }}
-                  />
-                )}
-
-                {/* Main circle - 3D Orb */}
+                {/* Main circle - 3D Orb (only met characters shown) */}
                 <motion.circle
                   cx={char.position.x}
                   cy={char.position.y}
                   r={size}
-                  fill={char.hasMet ? `url(#orb-${char.color})` : 'url(#orb-unmet)'}
-                  stroke={char.hasMet ? 'none' : 'rgba(148, 163, 184, 0.4)'}
-                  strokeWidth={char.hasMet ? 0 : 0.5}
+                  fill={`url(#orb-${char.color})`}
                   style={{
-                    filter: char.hasMet ? 'url(#glow)' : 'none'
+                    filter: 'url(#glow)'
                   }}
                   variants={nodeVariants}
                 />
@@ -276,17 +252,14 @@ export function PeopleView({ characters, onOpenDetail }: PeopleViewProps) {
                   />
                 )}
 
-                {/* Initial/name text */}
+                {/* Initial/name text (only met characters shown) */}
                 <text
                   x={char.position.x}
                   y={char.position.y + (char.isMajor ? 12 : 10)}
                   textAnchor="middle"
-                  className={cn(
-                    "text-[3px] font-medium",
-                    char.hasMet ? "fill-slate-300" : "fill-slate-500"
-                  )}
+                  className="text-[3px] font-medium fill-slate-300"
                 >
-                  {char.hasMet ? char.name : '???'}
+                  {char.name}
                 </text>
               </motion.g>
             )

@@ -87,14 +87,18 @@ class MockQueryBuilder {
 
     // Apply filters
     for (const filter of this.filters) {
-      data = data.filter((item: any) => item[filter.column] === filter.value)
+      data = data.filter((item: unknown): item is Record<string, unknown> => {
+        return typeof item === 'object' && item !== null && filter.column in item && (item as Record<string, unknown>)[filter.column] === filter.value
+      })
     }
 
     // Apply ordering
     if (this.orderByField) {
-      data = [...data].sort((a: any, b: any) => {
-        const aVal = a[this.orderByField!]
-        const bVal = b[this.orderByField!]
+      data = [...data].sort((a: unknown, b: unknown) => {
+        const aItem = a as Record<string, unknown>
+        const bItem = b as Record<string, unknown>
+        const aVal = aItem[this.orderByField!] as string | number
+        const bVal = bItem[this.orderByField!] as string | number
         if (aVal < bVal) return this.orderByAscending ? -1 : 1
         if (aVal > bVal) return this.orderByAscending ? 1 : -1
         return 0

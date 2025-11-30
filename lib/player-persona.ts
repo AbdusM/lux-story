@@ -8,6 +8,7 @@
 import type { GameState } from './game-store'
 import type { Choice } from './story-engine'
 import { logChoice } from './real-time-monitor'
+import { logger } from './logger'
 
 export interface SkillDemonstrationSummary {
   count: number
@@ -162,9 +163,10 @@ export class PlayerPersonaTracker {
   /**
    * Analyze stress response from emotional state
    */
-  private analyzeStressResponse(emotionalState: any, _current: string): PlayerPersona['stressResponse'] {
-    const stressLevel = emotionalState?.stressLevel || 'calm'
-    const rapidClicks = emotionalState?.rapidClicks || 0
+  private analyzeStressResponse(emotionalState: unknown, _current: string): PlayerPersona['stressResponse'] {
+    const state = typeof emotionalState === 'object' && emotionalState !== null ? emotionalState as Record<string, unknown> : {}
+    const stressLevel = typeof state.stressLevel === 'string' ? state.stressLevel : 'calm'
+    const rapidClicks = typeof state.rapidClicks === 'number' ? state.rapidClicks : 0
 
     if (stressLevel === 'overwhelmed' || rapidClicks > 5) return 'overwhelmed'
     if (stressLevel === 'anxious' || rapidClicks > 2) return 'reactive'
@@ -333,7 +335,8 @@ export class PlayerPersonaTracker {
     context: string,
     sceneId: string
   ): PlayerPersona {
-    console.log('🎯 [PlayerPersona] Adding skill demonstration:', {
+    logger.debug('Adding skill demonstration', {
+      operation: 'player-persona.add-skill',
       playerId,
       skills,
       sceneId,
@@ -382,7 +385,8 @@ export class PlayerPersonaTracker {
     this.personas.set(playerId, persona)
     this.savePersonas()
 
-    console.log('✅ [PlayerPersona] Updated persona:', {
+    logger.debug('Updated persona', {
+      operation: 'player-persona.update-complete',
       recentSkills: persona.recentSkills,
       topSkills: persona.topSkills.slice(0, 3).map(s => `${s.skill}:${s.count}`),
       totalDemonstrations: Object.keys(persona.skillDemonstrations).length
@@ -419,7 +423,7 @@ export class PlayerPersonaTracker {
   getSkillSummaryForAI(playerId: string): string {
     const persona = this.personas.get(playerId)
     if (!persona || persona.topSkills.length === 0) {
-      console.log('📊 [PlayerPersona] No skill demonstrations yet for:', playerId)
+      logger.debug('No skill demonstrations yet', { operation: 'player-persona.no-skills', playerId })
       return 'No skill demonstrations yet.'
     }
 
@@ -442,7 +446,8 @@ export class PlayerPersonaTracker {
       }
     })
 
-    console.log('📊 [PlayerPersona] AI Summary generated:', {
+    logger.debug('AI Summary generated', {
+      operation: 'player-persona.summary',
       playerId,
       summaryLength: summary.length,
       topSkills: topThree.map(s => s.skill),
@@ -456,7 +461,7 @@ export class PlayerPersonaTracker {
    * Sync skill demonstrations from SkillTracker
    * Call this on app mount or scene transitions to ensure persona is up-to-date
    */
-  syncFromSkillTracker(playerId: string, skillTrackerData: any[]): PlayerPersona {
+  syncFromSkillTracker(playerId: string, skillTrackerData: unknown[]): PlayerPersona {
     const persona = this.personas.get(playerId) || this.createBasePersona(playerId)
 
     // Reset skill demonstrations
@@ -465,7 +470,11 @@ export class PlayerPersonaTracker {
 
     // Build skill demonstrations from SkillTracker data
     skillTrackerData.forEach(demo => {
-      demo.skillsDemonstrated.forEach((skill: string) => {
+      if (typeof demo !== 'object' || demo === null) return
+      const demoObj = demo as Record<string, unknown>
+      const skills = Array.isArray(demoObj.skillsDemonstrated) ? demoObj.skillsDemonstrated : []
+      skills.forEach((skill: unknown) => {
+        if (typeof skill !== 'string') return
         if (!persona.skillDemonstrations[skill]) {
           persona.skillDemonstrations[skill] = {
             count: 0,
@@ -478,23 +487,30 @@ export class PlayerPersonaTracker {
         persona.skillDemonstrations[skill].count++
 
         // Keep the most recent context
-        if (demo.timestamp > persona.skillDemonstrations[skill].timestamp) {
-          persona.skillDemonstrations[skill].latestContext = demo.context
-          persona.skillDemonstrations[skill].latestScene = demo.scene
-          persona.skillDemonstrations[skill].timestamp = demo.timestamp
+        const timestamp = typeof demoObj.timestamp === 'number' ? demoObj.timestamp : 0
+        if (timestamp > persona.skillDemonstrations[skill].timestamp) {
+          persona.skillDemonstrations[skill].latestContext = typeof demoObj.context === 'string' ? demoObj.context : ''
+          persona.skillDemonstrations[skill].latestScene = typeof demoObj.scene === 'string' ? demoObj.scene : ''
+          persona.skillDemonstrations[skill].timestamp = timestamp
         }
       })
     })
 
     // Calculate recent skills from most recent demonstrations
     const recentDemos = skillTrackerData
-      .sort((a, b) => b.timestamp - a.timestamp)
+      .filter((demo): demo is Record<string, unknown> => typeof demo === 'object' && demo !== null)
+      .sort((a, b) => {
+        const aTime = typeof a.timestamp === 'number' ? a.timestamp : 0
+        const bTime = typeof b.timestamp === 'number' ? b.timestamp : 0
+        return bTime - aTime
+      })
       .slice(0, 10) // Look at last 10 demonstrations
 
     const recentSkillsSet = new Set<string>()
     recentDemos.forEach(demo => {
-      demo.skillsDemonstrated.forEach((skill: string) => {
-        if (recentSkillsSet.size < 5) {
+      const skills = Array.isArray(demo.skillsDemonstrated) ? demo.skillsDemonstrated : []
+      skills.forEach((skill: unknown) => {
+        if (typeof skill === 'string' && recentSkillsSet.size < 5) {
           recentSkillsSet.add(skill)
         }
       })

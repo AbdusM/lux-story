@@ -5,6 +5,8 @@
  * before transitioning to the next story beat
  */
 
+import { logger } from './logger'
+
 /**
  * Interface for bridge text generation
  */
@@ -28,7 +30,7 @@ export async function generateBridgeText(request: BridgeTextRequest): Promise<st
   const prompt = createBridgePrompt(request);
 
   try {
-    console.log('🌉 Generating bridge text for choice:', request.userChoiceText);
+    logger.debug('Generating bridge text for choice', { operation: 'narrative-bridge.generate', choiceText: request.userChoiceText.substring(0, 50) });
 
     const response = await fetch('/api/live-choices/bridge', {
       method: 'POST',
@@ -47,7 +49,7 @@ export async function generateBridgeText(request: BridgeTextRequest): Promise<st
     }
 
     const data = await response.json();
-    console.log('✅ Bridge text generated:', data.bridgeText);
+    logger.debug('Bridge text generated', { operation: 'narrative-bridge.success', bridgeText: data.bridgeText.substring(0, 50) });
 
     return data.bridgeText;
 

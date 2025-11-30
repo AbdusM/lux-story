@@ -90,6 +90,16 @@ interface RelationshipState {
   shared_story: boolean  // Did they reveal their background
 }
 
+interface ChoiceEffects {
+  time?: number | 'slowing'
+  patterns?: Record<string, number>
+  careerValues?: Record<string, number>
+  relationships?: Record<string, Record<string, unknown>>
+  platforms?: Record<string, Record<string, unknown>>
+  mysteries?: Record<string, unknown>
+  items?: Record<string, unknown>
+}
+
 export class GrandCentralStateManager {
   private state: GrandCentralState
   private readonly STORAGE_KEY = 'grand-central-state'
@@ -152,11 +162,11 @@ export class GrandCentralStateManager {
       }
     }
   }
-  
+
   /**
    * Apply state changes from a choice
    */
-  applyChoiceEffects(changes: any): void {
+  applyChoiceEffects(changes: ChoiceEffects): void {
     // Update time
     if (changes.time !== undefined) {
       if (changes.time === 'slowing') {
@@ -171,7 +181,7 @@ export class GrandCentralStateManager {
     if (changes.patterns) {
       Object.entries(changes.patterns).forEach(([pattern, value]) => {
         if (pattern in this.state.patterns) {
-          this.state.patterns[pattern as keyof typeof this.state.patterns] += value as number
+          this.state.patterns[pattern as keyof typeof this.state.patterns] += value
         }
       })
     }
@@ -180,7 +190,7 @@ export class GrandCentralStateManager {
     if (changes.careerValues) {
       Object.entries(changes.careerValues).forEach(([value, amount]) => {
         if (value in this.state.careerValues) {
-          this.state.careerValues[value as keyof typeof this.state.careerValues] += amount as number
+          this.state.careerValues[value as keyof typeof this.state.careerValues] += amount
         }
       })
     }
@@ -199,7 +209,7 @@ export class GrandCentralStateManager {
     if (changes.mysteries) {
       Object.entries(changes.mysteries).forEach(([mystery, value]) => {
         if (mystery in this.state.mysteries) {
-          (this.state.mysteries as any)[mystery] = value
+          (this.state.mysteries as Record<string, unknown>)[mystery] = value
         }
       })
     }
@@ -207,7 +217,7 @@ export class GrandCentralStateManager {
     // Update items
     if (changes.items) {
       Object.entries(changes.items).forEach(([item, value]) => {
-        (this.state.items as any)[item] = value
+        (this.state.items as Record<string, unknown>)[item] = value
       })
     }
     
@@ -228,32 +238,33 @@ export class GrandCentralStateManager {
     this.state.time.current = `${hours}:${minutes.toString().padStart(2, '0')} PM`
   }
   
-  private updateRelationships(changes: any): void {
+  private updateRelationships(changes: Record<string, Record<string, unknown>>): void {
     Object.entries(changes).forEach(([character, updates]) => {
       if (character in this.state.relationships && typeof updates === 'object' && updates !== null) {
         const relationship = this.state.relationships[character as keyof typeof this.state.relationships]
-        Object.entries(updates as Record<string, any>).forEach(([key, value]) => {
-          (relationship as any)[key] = value
+        Object.entries(updates).forEach(([key, value]) => {
+          (relationship as unknown as Record<string, unknown>)[key] = value
         })
         // Meeting someone always sets met to true
-        if ((updates as any).trust !== undefined && (updates as any).trust > 0) {
+        if (updates.trust !== undefined && (updates.trust as number) > 0) {
           relationship.met = true
         }
       }
     })
   }
   
-  private updatePlatforms(changes: any): void {
+  private updatePlatforms(changes: Record<string, Record<string, unknown>>): void {
     Object.entries(changes).forEach(([platform, updates]) => {
       if (platform in this.state.platforms && typeof updates === 'object' && updates !== null) {
         const plat = this.state.platforms[platform as keyof typeof this.state.platforms]
-        Object.entries(updates as Record<string, any>).forEach(([key, value]) => {
-          (plat as any)[key] = value
+        Object.entries(updates).forEach(([key, value]) => {
+          (plat as unknown as Record<string, unknown>)[key] = value
         })
         // Warmth affects accessibility
-        if (plat.warmth < -3) {
+        const warmth = plat.warmth
+        if (warmth < -3) {
           plat.accessible = false
-        } else if (plat.warmth > 3) {
+        } else if (warmth > 3) {
           plat.accessible = true
           plat.discovered = true
         }

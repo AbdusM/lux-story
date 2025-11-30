@@ -1112,6 +1112,13 @@ The machine held.`,
     ],
     choices: [
       {
+        choiceId: 'marcus_asks_before_leave',
+        text: "Before you go—how do you know when you're making the right choice?",
+        nextNodeId: 'marcus_asks_player',
+        pattern: 'helping',
+        skills: ['communication', 'curiosity']
+      },
+      {
         choiceId: 'p2_return_to_samuel',
         text: "Samuel will want to hear about this.",
         nextNodeId: samuelEntryPoints.MARCUS_REFLECTION_GATEWAY,
@@ -1126,6 +1133,73 @@ The machine held.`,
       }
     ],
     tags: ['phase2_complete', 'marcus_arc', 'mentorship']
+  },
+  // ============= RECIPROCITY: MARCUS ASKS PLAYER =============
+  {
+    nodeId: 'marcus_asks_player',
+    speaker: 'Marcus',
+    content: [
+      {
+        text: `*Pauses. Looks at you.*|How know right choice?|*Thinks.*|For me—when decision feels heavy. When I lose sleep.|Means I care.|But you?|How you know?|When helping others, how you know you helping right way?`,
+        emotion: 'curious_reciprocal',
+        interaction: 'nod',
+        variation_id: 'marcus_reciprocity_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'player_know_by_feeling',
+        text: "I trust my gut. When something feels right, even if it's hard, I know it's the path I need to take. But sometimes I second-guess that feeling.",
+        nextNodeId: 'marcus_reciprocity_response',
+        pattern: 'exploring',
+        skills: ['emotionalIntelligence', 'adaptability']
+      },
+      {
+        choiceId: 'player_know_by_impact',
+        text: "I look at the impact. Are people better off? Are they more capable? But it's hard to measure that in the moment—you only see it later.",
+        nextNodeId: 'marcus_reciprocity_response',
+        pattern: 'analytical',
+        skills: ['emotionalIntelligence', 'criticalThinking']
+      },
+      {
+        choiceId: 'player_know_by_connection',
+        text: "I know by the connection. When someone opens up, when they feel safe enough to be vulnerable—that's how I know I'm helping the right way.",
+        nextNodeId: 'marcus_reciprocity_response',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'emotionalIntelligence']
+      },
+      {
+        choiceId: 'player_dont_always_know',
+        text: "Honestly? I don't always know. I make choices and hope they're right. Sometimes I only know in hindsight, and sometimes I never know for sure.",
+        nextNodeId: 'marcus_reciprocity_response',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'communication']
+      }
+    ],
+    tags: ['reciprocity', 'player_reflection', 'marcus_arc']
+  },
+  {
+    nodeId: 'marcus_reciprocity_response',
+    speaker: 'Marcus',
+    content: [
+      {
+        text: `*Nods slowly.*|That's it.|Not knowing for sure.|But showing up anyway.|That's what matters.|*Looks at Jordan.*|Teaching her that.|You teaching me that.|*Turns back.*|Samuel waiting. Tell him Marcus says thank you.`,
+        emotion: 'grateful',
+        interaction: 'nod',
+        variation_id: 'marcus_response_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'return_to_samuel_marcus_after',
+        text: "Return to Samuel",
+        nextNodeId: samuelEntryPoints.MARCUS_REFLECTION_GATEWAY,
+        pattern: 'patience'
+      }
+    ],
+    tags: ['reciprocity', 'marcus_arc']
   }
 ]
 

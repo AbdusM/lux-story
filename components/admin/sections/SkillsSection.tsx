@@ -42,23 +42,23 @@ export function SkillsSection({ userId, profile, adminViewMode }: SkillsSectionP
         if (demonstrations && demonstrations.length > 0) {
           // Get the most recent demonstration for latest context
           const sorted = [...demonstrations].sort((a, b) => {
-            const aTime = (a as any).timestamp || 0
-            const bTime = (b as any).timestamp || 0
+            const aTime = a.timestamp || 0
+            const bTime = b.timestamp || 0
             return bTime - aTime
           })
           const latest = sorted[0]
           
           // Get unique scenes involved
-          const sceneValues = demonstrations.map((d: any) => d.scene || d.sceneDescription || 'unknown')
+          const sceneValues = demonstrations.map(d => d.scene || d.sceneDescription || 'unknown')
           const scenes = Array.from(new Set(sceneValues))
           
           summaries.push({
             skillName,
             demonstrationCount: demonstrations.length,
-            latestContext: (latest as any)?.context || `${skillName} indicated through narrative choices`,
+            latestContext: latest?.context || `${skillName} indicated through narrative choices`,
             scenesInvolved: scenes,
-            lastDemonstrated: latest && (latest as any).timestamp 
-              ? new Date((latest as any).timestamp).toISOString() 
+            lastDemonstrated: latest && latest.timestamp 
+              ? new Date(latest.timestamp).toISOString() 
               : new Date().toISOString()
           })
         }
@@ -174,7 +174,7 @@ export function SkillsSection({ userId, profile, adminViewMode }: SkillsSectionP
                 const demonstrations = profile.skillDemonstrations[pattern.skillName] || []
                 const isExpanded = expandedCoreSkill === pattern.skillName
                 const recentDemos = demonstrations
-                  .sort((a, b) => ((b as any).timestamp || 0) - ((a as any).timestamp || 0))
+                  .sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0))
                   .slice(0, 3)
                 const recency = getRecencyIndicator(pattern.lastDemonstrated ? new Date(pattern.lastDemonstrated).getTime() : undefined)
 
@@ -222,8 +222,8 @@ export function SkillsSection({ userId, profile, adminViewMode }: SkillsSectionP
                       <div className="px-4 pb-4 space-y-3 border-t bg-gray-50">
                         <p className="text-sm font-semibold text-gray-600 mt-3">Evidence:</p>
                         {recentDemos.map((demo, idx) => {
-                          const timestamp = (demo as any).timestamp
-                          const choiceText = (demo as any).choice || demo.context.substring(0, 60)
+                          const timestamp = demo.timestamp
+                          const choiceText = demo.choice || demo.context.substring(0, 60)
                           return (
                             <div key={idx} className="text-sm space-y-2 pl-4 border-l-2 border-blue-300">
                               <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1">

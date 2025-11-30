@@ -888,6 +888,13 @@ export const yaquinDialogueNodes: DialogueNode[] = [
     }],
     choices: [
       {
+        choiceId: 'yaquin_asks_before_leave',
+        text: "Before you go—what's your biggest challenge right now?",
+        nextNodeId: 'yaquin_asks_player',
+        pattern: 'helping',
+        skills: ['communication', 'curiosity']
+      },
+      {
         choiceId: 'return_to_samuel_yaquin_p2',
         text: "Return to Samuel",
         nextNodeId: samuelEntryPoints.YAQUIN_REFLECTION_GATEWAY,
@@ -895,6 +902,69 @@ export const yaquinDialogueNodes: DialogueNode[] = [
       }
     ],
     tags: ['phase2', 'yaquin_arc', 'completion']
+  },
+  // ============= RECIPROCITY: YAQUIN ASKS PLAYER =============
+  {
+    nodeId: 'yaquin_asks_player',
+    speaker: 'Yaquin',
+    content: [{
+      text: `*Stops packing. Looks at you.*|Biggest challenge?|*Thinks.*|Scaling. How teach 200 students same quality as 20?|But you—what's your challenge?|You help people. But who helps you figure out your path?`,
+      emotion: 'curious_reciprocal',
+      interaction: 'nod',
+      variation_id: 'yaquin_reciprocity_v1',
+      useChatPacing: true
+    }],
+    choices: [
+      {
+        choiceId: 'player_challenge_uncertainty',
+        text: "My challenge is uncertainty. I help others find their path, but I'm still searching for mine. It's hard to guide when you're lost yourself—sometimes I feel like a fraud, pointing directions I haven't walked.",
+        nextNodeId: 'yaquin_reciprocity_response',
+        pattern: 'exploring',
+        skills: ['emotionalIntelligence', 'communication']
+      },
+      {
+        choiceId: 'player_challenge_balance',
+        text: "My challenge is balance. I want to help everyone, but I can't. I have to choose who to focus on, and that feels like abandoning others. Every choice feels like a failure.",
+        nextNodeId: 'yaquin_reciprocity_response',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'emotionalIntelligence']
+      },
+      {
+        choiceId: 'player_challenge_impostor',
+        text: "My challenge is feeling like I don't know enough. How can I help others when I'm still figuring things out myself? I'm afraid they'll see through me and realize I'm just as lost.",
+        nextNodeId: 'yaquin_reciprocity_response',
+        pattern: 'analytical',
+        skills: ['emotionalIntelligence', 'criticalThinking']
+      },
+      {
+        choiceId: 'player_challenge_patience',
+        text: "My challenge is patience. I want to see results, to know I'm making a difference. But change takes time, and I struggle with that. I get frustrated when I can't see immediate impact.",
+        nextNodeId: 'yaquin_reciprocity_response',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'emotionalIntelligence']
+      }
+    ],
+    tags: ['reciprocity', 'player_reflection', 'yaquin_arc']
+  },
+  {
+    nodeId: 'yaquin_reciprocity_response',
+    speaker: 'Yaquin',
+    content: [{
+      text: `*Nods.*|Know that feeling.|But you here. Helping. That's path.|Not about having all answers.|About showing up when messy.|*Resumes packing.*|You doing that.|See Samuel. Tell him Yaquin says you ready.`,
+      emotion: 'affirming',
+      interaction: 'nod',
+      variation_id: 'yaquin_response_v1',
+      useChatPacing: true
+    }],
+    choices: [
+      {
+        choiceId: 'return_to_samuel_yaquin_after',
+        text: "Return to Samuel",
+        nextNodeId: samuelEntryPoints.YAQUIN_REFLECTION_GATEWAY,
+        pattern: 'exploring'
+      }
+    ],
+    tags: ['reciprocity', 'yaquin_arc']
   }
 ]
 

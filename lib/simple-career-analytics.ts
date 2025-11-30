@@ -9,6 +9,7 @@
 
 import { queueCareerAnalyticsSync } from './sync-queue'
 import { safeStorage } from './safe-storage'
+import { logger } from './logger'
 
 // Essential interfaces only
 export interface SimpleCareerMetrics {
@@ -107,7 +108,7 @@ export class SimpleCareerAnalytics {
         // Also save to localStorage for offline access
         this.saveToLocalStorage(userId)
 
-        console.log('[SimpleCareerAnalytics] Hydrated from Supabase:', userId)
+        logger.debug('Hydrated from Supabase', { operation: 'simple-career-analytics.hydrate', userId })
       } else {
         // No Supabase data, try localStorage
         this.loadFromLocalStorage(userId)
@@ -134,7 +135,7 @@ export class SimpleCareerAnalytics {
       try {
         const data = JSON.parse(stored)
         this.metrics.set(userId, data)
-        console.log('[SimpleCareerAnalytics] Loaded from localStorage:', userId)
+        logger.debug('Loaded from localStorage', { operation: 'simple-career-analytics.load', userId })
       } catch (error) {
         console.error('[SimpleCareerAnalytics] Failed to parse localStorage data:', error)
       }
@@ -177,13 +178,11 @@ export class SimpleCareerAnalytics {
         birmingham_opportunities: metrics.birminghamOpportunities
       })
 
-      console.log(
-        `[SimpleCareerAnalytics] Queued sync for ${userId} (update #${counter})`
-      )
+      logger.debug('Queued sync', { operation: 'simple-career-analytics.queue-sync', userId, updateNumber: counter })
     }
   }
 
-  trackChoice(userId: string, choice: any) {
+  trackChoice(userId: string, choice: Record<string, unknown> & { text?: string }) {
     const userMetrics = this.getUserMetrics(userId)
     userMetrics.choicesMade++
 
@@ -206,7 +205,7 @@ export class SimpleCareerAnalytics {
     const localKeywords = ['birmingham', 'uab', 'depot', 'railroad', 'magic city', 'bessemer', 'homewood', 'local']
     if (localKeywords.some(keyword => choiceText.includes(keyword))) {
       userMetrics.localAffinity = (userMetrics.localAffinity || 0) + 1
-      console.log(`🏙️ Local Affinity Increased: ${userMetrics.localAffinity}`)
+      logger.debug('Local Affinity Increased', { operation: 'simple-career-analytics.local-affinity', userId, affinity: userMetrics.localAffinity })
     }
 
     // Persist and sync
@@ -271,7 +270,7 @@ export class SimpleCareerAnalytics {
     }
   }
 
-  private getUserMetrics(userId: string): SimpleCareerMetrics {
+  public getUserMetrics(userId: string): SimpleCareerMetrics {
     if (!this.metrics.has(userId)) {
       this.metrics.set(userId, {
         sectionsViewed: [],
@@ -324,7 +323,7 @@ export function getSimpleAnalytics(): SimpleCareerAnalytics {
 }
 
 // Helper functions for easy integration
-export function trackUserChoice(userId: string, choice: any) {
+export function trackUserChoice(userId: string, choice: Record<string, unknown> & { text?: string }) {
   getSimpleAnalytics().trackChoice(userId, choice)
 }
 

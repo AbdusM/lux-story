@@ -67,19 +67,47 @@ export class ErrorBoundary extends Component<Props, State> {
     // Update state with error info
     this.setState({ errorInfo })
 
-    // Report to error tracking service (if available)
-    interface WindowWithGtag extends Window {
-      gtag?: (event: string, action: string, params: Record<string, unknown>) => void
-    }
-
-    if (typeof window !== 'undefined' && (window as WindowWithGtag).gtag) {
-      (window as WindowWithGtag).gtag!('event', 'exception', {
-        description: error.message,
-        fatal: false,
-        custom_map: {
-          error_id: errorId
+    // Report to error tracking services (if available)
+    if (typeof window !== 'undefined') {
+      // Sentry integration
+      try {
+        // @ts-expect-error - Sentry may not be available
+        if (window.Sentry) {
+          // @ts-expect-error - Sentry types may not be loaded
+          window.Sentry.captureException(error, {
+            contexts: {
+              react: {
+                componentStack: errorInfo.componentStack,
+              },
+              custom: {
+                errorId,
+                errorBoundary: 'ErrorBoundary'
+              }
+            },
+            tags: {
+              errorBoundary: 'ErrorBoundary'
+            }
+          })
         }
-      })
+      } catch (sentryError) {
+        // Silently fail if Sentry is not available
+        console.warn('Sentry not available:', sentryError)
+      }
+
+      // Google Analytics integration (legacy)
+      interface WindowWithGtag extends Window {
+        gtag?: (event: string, action: string, params: Record<string, unknown>) => void
+      }
+
+      if ((window as WindowWithGtag).gtag) {
+        (window as WindowWithGtag).gtag!('event', 'exception', {
+          description: error.message,
+          fatal: false,
+          custom_map: {
+            error_id: errorId
+          }
+        })
+      }
     }
   }
 

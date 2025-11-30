@@ -10,7 +10,7 @@ interface SkillDemo {
   scene: string
   context: string
   timestamp?: number
-  [key: string]: any // Allow additional properties
+  [key: string]: unknown // Allow additional properties
 }
 
 interface SkillProgressionChartProps {

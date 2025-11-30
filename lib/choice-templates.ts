@@ -303,7 +303,7 @@ export const CHOICE_TEMPLATES: ChoiceTemplate[] = [
 /**
  * Context detection from scene content
  */
-export function detectContext(sceneText: string, _gameState: any): string[] {
+export function detectContext(sceneText: string, _gameState: unknown): string[] {
   const contexts: string[] = []
   const text = sceneText.toLowerCase()
 
@@ -347,7 +347,7 @@ export function detectContext(sceneText: string, _gameState: any): string[] {
  */
 export function generateContextualChoices(
   sceneText: string,
-  gameState: any,
+  gameState: unknown,
   requiredPatterns?: string[]
 ): Choice[] {
   const contexts = detectContext(sceneText, gameState)

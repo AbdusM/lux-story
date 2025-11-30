@@ -3,6 +3,8 @@
  * Provides robust error handling and retry logic for network operations
  */
 
+import { logger } from './logger'
+
 export interface RetryOptions {
   maxRetries?: number
   initialDelay?: number // ms
@@ -40,7 +42,7 @@ class CircuitBreaker {
     if (this.state === 'open') {
       const timeSinceLastFailure = Date.now() - this.lastFailureTime
       if (timeSinceLastFailure >= this.resetTimeout) {
-        console.log('[CircuitBreaker] Attempting half-open state')
+        logger.debug('Attempting half-open state', { operation: 'retry-utility.circuit-breaker' })
         this.state = 'half-open'
         return true
       }
@@ -54,7 +56,7 @@ class CircuitBreaker {
   recordSuccess(): void {
     this.failureCount = 0
     this.state = 'closed'
-    console.log('[CircuitBreaker] Circuit closed (success)')
+    logger.debug('Circuit closed (success)', { operation: 'retry-utility.circuit-breaker' })
   }
 
   recordFailure(): void {
@@ -138,10 +140,13 @@ export async function retryWithBackoff<T>(
         maxDelay
       )
 
-      console.log(
-        `[Retry] Attempt ${attempt + 1}/${maxRetries} failed. Retrying in ${delay}ms...`,
-        lastError.message
-      )
+      logger.debug('Retry attempt failed', {
+        operation: 'retry-utility.retry',
+        attempt: attempt + 1,
+        maxRetries,
+        delay,
+        error: lastError.message
+      })
 
       await new Promise(resolve => setTimeout(resolve, delay))
     }
@@ -205,7 +210,7 @@ export function resetCircuitBreaker(key: string): boolean {
   const breaker = circuitBreakers.get(key)
   if (breaker) {
     breaker.reset()
-    console.log(`[CircuitBreaker] Reset: ${key}`)
+    logger.debug('Circuit breaker reset', { operation: 'retry-utility.reset', key })
     return true
   }
   return false
@@ -233,13 +238,13 @@ export function isNetworkError(error: Error): boolean {
 /**
  * Common retry predicate for server errors (5xx)
  */
-export function isServerError(error: any): boolean {
-  return error.status >= 500 && error.status < 600
+export function isServerError(error: unknown): boolean {
+  return typeof error === 'object' && error !== null && 'status' in error && (error as { status: number }).status >= 500 && (error as { status: number }).status < 600
 }
 
 /**
  * Combined predicate for retryable errors
  */
-export function isRetryable(error: any): boolean {
-  return isNetworkError(error) || isServerError(error)
+export function isRetryable(error: unknown): boolean {
+  return (error instanceof Error && isNetworkError(error)) || isServerError(error)
 }

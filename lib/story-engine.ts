@@ -31,6 +31,7 @@ export interface Choice {
   nextScene: string
   /** State changes to apply when choice is made */
   stateChanges?: unknown
+  [key: string]: unknown // Add index signature
 }
 
 /**
@@ -96,8 +97,11 @@ export class StoryEngine {
     // First, try to find the current scene and check if it has an explicit nextScene
     for (const chapter of this.chapters) {
       const scene = chapter.scenes.find(s => s.id === currentSceneId)
-      if (scene && (scene as any).nextScene) {
-        return (scene as any).nextScene
+      if (scene && typeof scene === 'object' && scene !== null) {
+        const sceneObj = scene as Record<string, unknown>
+        if (typeof sceneObj.nextScene === 'string') {
+          return sceneObj.nextScene
+        }
       }
     }
     

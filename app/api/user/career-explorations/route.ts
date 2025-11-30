@@ -9,6 +9,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSupabaseServerClient } from '@/lib/supabase-server'
 import { rateLimit, getClientIp } from '@/lib/rate-limit'
+import { validateUserId } from '@/lib/user-id-validation'
+import { logger } from '@/lib/logger'
 
 // Mark as dynamic for Next.js static export compatibility
 export const dynamic = 'force-dynamic'
@@ -39,15 +41,21 @@ async function ensurePlayerProfile(userId: string) {
       })
 
     if (error) {
-      console.error('⚠️ [API:CareerExplorations] Failed to ensure player profile:', {
+      logger.warn('Failed to ensure player profile', {
+        operation: 'career-explorations.ensure-profile',
         userId,
-        error: error instanceof Error ? error.message : "Unknown error"
+        error: error instanceof Error ? error.message : String(error)
       })
     } else {
-      console.log('✅ [API:CareerExplorations] Player profile ensured:', { userId })
+      logger.debug('Player profile ensured', {
+        operation: 'career-explorations.ensure-profile',
+        userId
+      })
     }
   } catch (error) {
-    console.error('⚠️ [API:CareerExplorations] ensurePlayerProfile error:', error)
+    logger.error('ensurePlayerProfile error', {
+      operation: 'career-explorations.ensure-profile'
+    }, error instanceof Error ? error : undefined)
   }
 }
 
@@ -94,17 +102,24 @@ export async function POST(request: NextRequest) {
       education_paths
     } = body
 
-    console.log('🔵 [API:CareerExplorations] POST request:', {
+    logger.debug('Career explorations POST request', {
+      operation: 'career-explorations.post',
       userId: user_id,
-      careerName: career_name,
-      matchScore: match_score,
-      readinessLevel: readiness_level
+      careerName: career_name
     })
 
     if (!user_id || !career_name) {
-      console.error('❌ [API:CareerExplorations] Missing required fields')
+      logger.warn('Missing required fields', { operation: 'career-explorations.post' })
       return NextResponse.json(
         { error: 'Missing user_id or career_name' },
+        { status: 400 }
+      )
+    }
+
+    const validation = validateUserId(user_id)
+    if (!validation.valid) {
+      return NextResponse.json(
+        { error: validation.error },
         { status: 400 }
       )
     }
@@ -132,22 +147,22 @@ export async function POST(request: NextRequest) {
       .select()
 
     if (error) {
-      console.error('❌ [API:CareerExplorations] Supabase upsert error:', {
-        code: error.code,
-        message: error instanceof Error ? error.message : "Unknown error",
+      logger.error('Supabase upsert error', {
+        operation: 'career-explorations.post',
+        errorCode: error.code,
         userId: user_id,
         careerName: career_name
-      })
+      }, error instanceof Error ? error : undefined)
       return NextResponse.json(
         { error: 'Failed to save career exploration' },
         { status: 500 }
       )
     }
 
-    console.log('✅ [API:CareerExplorations] Upsert successful:', {
+    logger.debug('Career exploration upsert successful', {
+      operation: 'career-explorations.post',
       userId: user_id,
-      careerName: career_name,
-      matchScore: match_score
+      careerName: career_name
     })
 
     return NextResponse.json({ 
@@ -155,12 +170,16 @@ export async function POST(request: NextRequest) {
       careerExploration: data?.[0] 
     })
   } catch (error) {
-    console.error('[CareerExplorations API] Unexpected error:', error)
+    logger.error('Unexpected error in career explorations POST', {
+      operation: 'career-explorations.post'
+    }, error instanceof Error ? error : undefined)
     const errorMessage = error instanceof Error ? error.message : "Internal server error"
     
     // If it's a missing env var error, return success but log warning
     if (errorMessage.includes('Missing Supabase environment variables')) {
-      console.warn('⚠️ [CareerExplorations API] Missing Supabase config - operation skipped')
+      logger.warn('Missing Supabase config - operation skipped', {
+        operation: 'career-explorations.post'
+      })
       return NextResponse.json({ success: true })
     }
     
@@ -180,12 +199,20 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const userId = searchParams.get('userId')
 
-    console.log('🔵 [API:CareerExplorations] GET request:', { userId })
+    logger.debug('Career explorations GET request', { operation: 'career-explorations.get', userId: userId ?? undefined })
 
     if (!userId) {
-      console.error('❌ [API:CareerExplorations] Missing userId parameter')
+      logger.warn('Missing userId parameter', { operation: 'career-explorations.get' })
       return NextResponse.json(
         { error: 'Missing userId parameter' },
+        { status: 400 }
+      )
+    }
+
+    const validation = validateUserId(userId)
+    if (!validation.valid) {
+      return NextResponse.json(
+        { error: validation.error },
         { status: 400 }
       )
     }
@@ -199,18 +226,19 @@ export async function GET(request: NextRequest) {
       .order('match_score', { ascending: false })
 
     if (error) {
-      console.error('❌ [API:CareerExplorations] Supabase error:', {
-        code: error.code,
-        message: error instanceof Error ? error.message : "Unknown error",
+      logger.error('Supabase error', {
+        operation: 'career-explorations.get',
+        errorCode: error.code,
         userId
-      })
+      }, error instanceof Error ? error : undefined)
       return NextResponse.json(
         { error: 'Failed to fetch career explorations' },
         { status: 500 }
       )
     }
 
-    console.log('✅ [API:CareerExplorations] Retrieved explorations:', {
+    logger.debug('Retrieved career explorations', {
+      operation: 'career-explorations.get',
       userId,
       count: data?.length || 0
     })
@@ -220,12 +248,16 @@ export async function GET(request: NextRequest) {
       careerExplorations: data || []
     })
   } catch (error) {
-    console.error('[CareerExplorations API] Unexpected error:', error)
+    logger.error('Unexpected error in career explorations GET', {
+      operation: 'career-explorations.get'
+    }, error instanceof Error ? error : undefined)
     const errorMessage = error instanceof Error ? error.message : "Internal server error"
     
     // If it's a missing env var error, return empty data gracefully
     if (errorMessage.includes('Missing Supabase environment variables')) {
-      console.warn('⚠️ [CareerExplorations API] Missing Supabase config - returning empty data')
+      logger.warn('Missing Supabase config - returning empty data', {
+        operation: 'career-explorations.get'
+      })
       return NextResponse.json({
         success: true,
         careerExplorations: []

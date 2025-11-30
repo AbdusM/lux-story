@@ -8,6 +8,7 @@
 import { getPersonaTracker, type PlayerPersona } from './player-persona'
 import { getPersonalizedOpportunities } from './birmingham-opportunities'
 import type { Choice } from './story-engine'
+import { logger } from './logger'
 
 export interface CareerPathAffinities {
   healthcare: number
@@ -384,7 +385,7 @@ export class CareerAnalyticsEngine {
   /**
    * Export analytics data for external analysis
    */
-  exportAnalytics(playerId?: string): any {
+  exportAnalytics(playerId?: string): unknown {
     if (playerId) {
       return {
         playerId,
@@ -395,7 +396,7 @@ export class CareerAnalyticsEngine {
     }
 
     // Export all data
-    const allData: any = {}
+    const allData: Record<string, unknown> = {}
     for (const [id, snapshots] of this.snapshots.entries()) {
       allData[id] = {
         snapshots,
@@ -424,7 +425,7 @@ export function analyzeChoiceForCareer(choice: Choice, _playerId: string): void 
     const _analytics = getCareerAnalytics()
 
     // This will be automatically captured in the next snapshot
-    console.log(`🎯 Career analysis: ${choice.text} → ${patterns.join(', ')}`)
+    logger.debug('Career analysis', { operation: 'career-analytics.analyze', choiceText: choice.text.substring(0, 50), patterns: patterns.join(', ') })
 
   } catch (error) {
     console.error('Career analysis error:', error)

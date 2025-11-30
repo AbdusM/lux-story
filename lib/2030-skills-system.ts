@@ -451,7 +451,7 @@ export class FutureSkillsSystem {
   /**
    * Get skills summary for career profile
    */
-  getSkillsSummary(): Record<string, any> {
+  getSkillsSummary(): Record<string, unknown> {
     const topSkills = Object.entries(this.skills)
       .sort(([,a], [,b]) => b - a)
       .slice(0, 5)

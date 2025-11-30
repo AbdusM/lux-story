@@ -15,6 +15,7 @@
 import { safeStorage } from './safe-storage'
 import { logSync } from './real-time-monitor'
 import { ensureUserProfile } from './ensure-user-profile'
+import { logger } from './logger'
 
 const SYNC_QUEUE_KEY = 'lux-sync-queue'
 const MAX_QUEUE_SIZE = 500 // Prevent unbounded growth
@@ -122,13 +123,15 @@ export class SyncQueue {
       return acc
     }, {} as Record<string, number>)
 
-    console.log('🚀 [SyncQueue] Processing queue:', {
+    logger.debug('Processing queue', {
+      operation: 'sync-queue.process',
       totalActions: queue.length,
       actionTypes,
       oldestAction: queue.length > 0 ? new Date(queue[0].timestamp).toISOString() : null
     })
 
     const successfulIds: string[] = []
+    const permanentErrorIds: string[] = [] // Actions with permanent errors (405, 404, etc.) that should be removed
     const failedActions: QueuedAction[] = []
 
     // Track user IDs we've already ensured exist to avoid duplicate checks
@@ -178,7 +181,8 @@ export class SyncQueue {
       }
       
       const actionAge = Date.now() - (action.timestamp || Date.now())
-      console.log('⏳ [SyncQueue] Processing action:', {
+      logger.debug('Processing action', {
+        operation: 'sync-queue.process-action',
         type: action.type,
         id: action.id ? action.id.substring(0, 8) : 'no-id',
         retries: action.retries || 0,
@@ -202,10 +206,10 @@ export class SyncQueue {
           const cachedExists = getCachedProfileExists(userId)
 
           if (cachedExists === true) {
-            console.log(`⚡ [SyncQueue] Profile cached for ${userId}, skipping check`)
+            logger.debug('Profile cached, skipping check', { operation: 'sync-queue.profile-check', userId })
             ensuredUserIds.add(userId)
           } else {
-            console.log(`🔒 [SyncQueue] Ensuring profile exists for ${userId}...`)
+            logger.debug('Ensuring profile exists', { operation: 'sync-queue.ensure-profile', userId })
             const profileEnsured = await ensureUserProfile(userId)
 
             if (!profileEnsured) {
@@ -216,7 +220,7 @@ export class SyncQueue {
 
             ensuredUserIds.add(userId)
             setCachedProfileExists(userId, true)
-            console.log(`✅ [SyncQueue] Profile ensured and cached for ${userId}`)
+            logger.debug('Profile ensured and cached', { operation: 'sync-queue.ensure-profile', userId })
           }
         }
 
@@ -238,7 +242,7 @@ export class SyncQueue {
 
           await method.apply(db, action.args as unknown[])
           successfulIds.push(action.id)
-          console.log('✅ [SyncQueue] Action successful:', { type: 'db_method', method: action.method })
+          logger.debug('Action successful', { operation: 'sync-queue.action', type: 'db_method', method: action.method })
 
           // Real-time monitoring
           logSync((action.data as { user_id?: string })?.user_id || 'unknown', 'career_analytics', true)
@@ -269,7 +273,7 @@ export class SyncQueue {
           }
 
           successfulIds.push(action.id)
-          console.log('✅ [SyncQueue] Action successful:', { type: 'career_analytics', userId: (action.data as { user_id?: string })?.user_id })
+          logger.debug('Action successful', { operation: 'sync-queue.action', type: 'career_analytics', userId: (action.data as { user_id?: string })?.user_id })
 
           // Real-time monitoring
           logSync((action.data as { user_id?: string })?.user_id || 'unknown', 'career_analytics', true)
@@ -300,10 +304,10 @@ export class SyncQueue {
           }
 
           successfulIds.push(action.id)
-          console.log('✅ [SyncQueue] Action successful:', {
+          logger.debug('Action successful', {
+            operation: 'sync-queue.action',
             type: 'skill_summary',
-            skill: (action.data as { skill_name?: string })?.skill_name,
-            count: (action.data as { demonstration_count?: number })?.demonstration_count
+            skill: (action.data as { skill_name?: string })?.skill_name
           })
 
           // Real-time monitoring
@@ -335,10 +339,10 @@ export class SyncQueue {
           }
 
           successfulIds.push(action.id)
-          console.log('✅ [SyncQueue] Action successful:', {
+          logger.debug('Action successful', {
+            operation: 'sync-queue.action',
             type: 'skill_demonstration',
-            skill: (action.data as { skill_name?: string })?.skill_name,
-            scene: (action.data as { scene_id?: string })?.scene_id
+            skill: (action.data as { skill_name?: string })?.skill_name
           })
 
           // Real-time monitoring
@@ -370,10 +374,10 @@ export class SyncQueue {
           }
 
           successfulIds.push(action.id)
-          console.log('✅ [SyncQueue] Action successful:', {
+          logger.debug('Action successful', {
+            operation: 'sync-queue.action',
             type: 'career_exploration',
-            career: (action.data as { career_name?: string })?.career_name,
-            matchScore: (action.data as { match_score?: number })?.match_score
+            career: (action.data as { career_name?: string })?.career_name
           })
 
           // Real-time monitoring
@@ -405,10 +409,10 @@ export class SyncQueue {
           }
 
           successfulIds.push(action.id)
-          console.log('✅ [SyncQueue] Action successful:', {
+          logger.debug('Action successful', {
+            operation: 'sync-queue.action',
             type: 'pattern_demonstration',
-            pattern: (action.data as { pattern_name?: string })?.pattern_name,
-            scene: (action.data as { scene_id?: string })?.scene_id
+            pattern: (action.data as { pattern_name?: string })?.pattern_name
           })
 
           // Real-time monitoring
@@ -434,10 +438,10 @@ export class SyncQueue {
           }
 
           successfulIds.push(action.id)
-          console.log('✅ [SyncQueue] Action successful:', {
+          logger.debug('Action successful', {
+            operation: 'sync-queue.action',
             type: 'relationship_progress',
-            character: (action.data as { character_name?: string })?.character_name,
-            trust: (action.data as { trust_level?: number })?.trust_level
+            character: (action.data as { character_name?: string })?.character_name
           })
           logSync((action.data as { user_id?: string })?.user_id || 'unknown', 'relationship_progress', true)
 
@@ -461,7 +465,8 @@ export class SyncQueue {
           }
 
           successfulIds.push(action.id)
-          console.log('✅ [SyncQueue] Action successful:', {
+          logger.debug('Action successful', {
+            operation: 'sync-queue.action',
             type: 'platform_state',
             userId: (action.data as { user_id?: string })?.user_id
           })
@@ -473,9 +478,9 @@ export class SyncQueue {
         }
 
       } catch (error) {
-        const willRetry = action.retries < 3
         let errorMessage = 'Unknown error'
         let errorDetails: Record<string, unknown> | null = null
+        let httpStatus: number | null = null
 
         if (error instanceof Error) {
           errorMessage = error.message || 'Error object has no message'
@@ -483,6 +488,11 @@ export class SyncQueue {
             name: error.name,
             stack: error.stack,
             message: error.message
+          }
+          // Extract HTTP status code from error message (e.g., "sync failed: 405 Method Not Allowed")
+          const statusMatch = errorMessage.match(/(\d{3})\s/)
+          if (statusMatch) {
+            httpStatus = parseInt(statusMatch[1], 10)
           }
         } else if (error && typeof error === 'object') {
           // Handle non-Error objects (like API responses)
@@ -495,17 +505,28 @@ export class SyncQueue {
           }
         } else if (typeof error === 'string') {
           errorMessage = error
+          const statusMatch = errorMessage.match(/(\d{3})\s/)
+          if (statusMatch) {
+            httpStatus = parseInt(statusMatch[1], 10)
+          }
         } else if (error === null || error === undefined) {
           errorMessage = 'Error is null or undefined'
         } else {
           errorMessage = `Unexpected error type: ${typeof error}`
           errorDetails = { value: String(error) }
         }
+
+        // Permanent errors that should not be retried:
+        // 400 (Bad Request), 404 (Not Found), 405 (Method Not Allowed), 422 (Unprocessable Entity)
+        const isPermanentError = httpStatus !== null && [400, 404, 405, 422].includes(httpStatus)
+        const willRetry = !isPermanentError && action.retries < 3
         
         console.error('❌ [SyncQueue] Action failed:', {
           type: action.type,
           id: action.id?.substring(0, 8) || 'unknown',
           error: errorMessage,
+          httpStatus,
+          isPermanentError,
           errorDetails,
           retries: action.retries || 0,
           willRetry,
@@ -517,14 +538,44 @@ export class SyncQueue {
         const userId = typeof action.data?.user_id === 'string' ? action.data.user_id : 'unknown'
         logSync(userId, syncType, false, errorMessage)
 
-        failedActions.push({ ...action, retries: action.retries + 1 })
+        if (isPermanentError) {
+          // Remove permanent errors from queue - they won't succeed on retry
+          console.warn(`⚠️ [SyncQueue] Removing permanent error (${httpStatus}) from queue:`, {
+            type: action.type,
+            id: action.id?.substring(0, 8) || 'unknown'
+          })
+          permanentErrorIds.push(action.id)
+          // Don't add to failedActions - it will be removed from queue
+        } else if (willRetry) {
+          // Transient error - will retry
+          failedActions.push({ ...action, retries: action.retries + 1 })
+        } else {
+          // Max retries reached - remove from queue
+          console.warn(`⚠️ [SyncQueue] Max retries reached, removing from queue:`, {
+            type: action.type,
+            id: action.id?.substring(0, 8) || 'unknown',
+            retries: action.retries
+          })
+        }
       }
     }
 
-    // Remove successful actions from queue
-    if (successfulIds.length > 0) {
-      this.removeFromQueue(successfulIds)
-      console.log(`🎉 [SyncQueue] Successfully synced ${successfulIds.length} actions`)
+    // Remove successful actions and permanent errors from queue
+    const actionsToRemove = [...successfulIds, ...permanentErrorIds]
+    if (actionsToRemove.length > 0) {
+      this.removeFromQueue(actionsToRemove)
+      if (successfulIds.length > 0) {
+        logger.debug('Successfully synced actions', {
+          operation: 'sync-queue.complete',
+          count: successfulIds.length
+        })
+      }
+      if (permanentErrorIds.length > 0) {
+        logger.debug('Removed permanent errors from queue', {
+          operation: 'sync-queue.complete',
+          count: permanentErrorIds.length
+        })
+      }
     }
 
     // Update retry counts for failed actions
@@ -543,7 +594,10 @@ export class SyncQueue {
       failed: failedActions.length
     }
 
-    console.log('🎉 [SyncQueue] Queue processing complete:', result)
+    logger.debug('Queue processing complete', {
+      operation: 'sync-queue.complete',
+      ...result
+    })
 
     return result
   }
@@ -674,10 +728,10 @@ export function queueCareerExplorationSync(data: {
     timestamp: Date.now()
   })
 
-  console.log('[SyncQueue] Queued career exploration sync:', {
+  logger.debug('Queued career exploration sync', {
+    operation: 'sync-queue.queue',
     userId: data.user_id,
-    careerName: data.career_name,
-    matchScore: data.match_score
+    careerName: data.career_name
   })
 }
 
@@ -705,7 +759,8 @@ export function queuePatternDemonstrationSync(data: {
     timestamp: Date.now()
   })
 
-  console.log('[SyncQueue] Queued pattern demonstration sync:', {
+  logger.debug('Queued pattern demonstration sync', {
+    operation: 'sync-queue.queue',
     userId: data.user_id,
     pattern: data.pattern_name,
     scene: data.scene_id
@@ -734,7 +789,8 @@ export function queueRelationshipSync(data: {
     timestamp: Date.now()
   })
 
-  console.log('[SyncQueue] Queued relationship sync:', {
+  logger.debug('Queued relationship sync', {
+    operation: 'sync-queue.queue',
     userId: data.user_id,
     character: data.character_name,
     trust: data.trust_level,

@@ -16,6 +16,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import type { PlayerPersona } from '@/lib/player-persona'
+import { logger } from '@/lib/logger'
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY
 
@@ -178,9 +179,7 @@ function formatSkillName(skill: string): string {
 export async function POST(request: NextRequest) {
   const startTime = Date.now()
 
-  console.log('🔵 [API:SamuelDialogue] Request received:', {
-    timestamp: new Date().toISOString()
-  })
+  logger.debug('Request received', { operation: 'api.samuel-dialogue', timestamp: new Date().toISOString() })
 
   try {
     // 1. Validate API key
@@ -196,7 +195,8 @@ export async function POST(request: NextRequest) {
     const body: SamuelDialogueRequest = await request.json()
     const { nodeId, playerPersona, gameContext } = body
 
-    console.log('📥 [API:SamuelDialogue] Request body:', {
+    logger.debug('Request body', {
+      operation: 'api.samuel-dialogue.request',
       nodeId,
       hasPersona: !!playerPersona,
       topSkills: playerPersona?.topSkills?.slice(0, 3).map(s => `${s.skill}:${s.count}`),
@@ -214,7 +214,7 @@ export async function POST(request: NextRequest) {
 
     // 3. Validate persona has skill data
     if (!playerPersona.topSkills || playerPersona.topSkills.length === 0) {
-      console.log('ℹ️ [API:SamuelDialogue] No skill demonstrations yet, using generic dialogue')
+      logger.debug('No skill demonstrations yet, using generic dialogue', { operation: 'api.samuel-dialogue.generic' })
       // Return generic Samuel dialogue for new players
       return NextResponse.json({
         dialogue: "Every traveler starts somewhere. Take your time exploring the platforms. The right path reveals itself through experience, not overthinking.",
@@ -229,7 +229,8 @@ export async function POST(request: NextRequest) {
     const systemPrompt = buildSamuelSystemPrompt(playerPersona, gameContext)
     const dialoguePrompt = buildDialoguePrompt(nodeId, playerPersona, gameContext)
 
-    console.log('🤖 [API:SamuelDialogue] Calling Gemini:', {
+    logger.debug('Calling Gemini', {
+      operation: 'api.samuel-dialogue.gemini-call',
       model: 'gemini-1.5-flash',
       promptLength: systemPrompt.length + dialoguePrompt.length,
       temperature: 0.8
@@ -259,7 +260,8 @@ export async function POST(request: NextRequest) {
     const dialogue = response.text().trim()
     const generationTime = Date.now() - startTime
 
-    console.log('✅ [API:SamuelDialogue] Gemini response:', {
+    logger.debug('Gemini response', {
+      operation: 'api.samuel-dialogue.gemini-response',
       dialogueLength: dialogue.length,
       generationTimeMs: generationTime,
       preview: dialogue.substring(0, 50) + '...'
@@ -302,7 +304,8 @@ export async function POST(request: NextRequest) {
       generatedAt: Date.now()
     }
 
-    console.log('📤 [API:SamuelDialogue] Sending response:', {
+    logger.debug('Sending response', {
+      operation: 'api.samuel-dialogue.response',
       success: true,
       emotion,
       confidence: responseData.confidence,

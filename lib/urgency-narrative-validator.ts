@@ -208,13 +208,15 @@ export function logValidationResults(narrative: string, level: UrgencyLevel): vo
   const validation = validateNarrative(narrative, level)
   const limits = WORD_COUNT_LIMITS[level]
 
-  console.group(`🔍 Urgency Narrative Validation - ${level.toUpperCase()}`)
-  console.log('Narrative:', narrative)
-  console.log('Word Count:', validation.wordCount, `(${limits.min}-${limits.max})`)
-  console.log('Valid:', validation.valid ? '✅ PASS' : '❌ FAIL')
-  if (validation.errors.length > 0) {
-    console.log('Errors:')
-    validation.errors.forEach((error) => console.log(`  - ${error}`))
+  // Use console.warn for development debugging (allowed by ESLint)
+  if (process.env.NODE_ENV === 'development') {
+    console.warn(`🔍 Urgency Narrative Validation - ${level.toUpperCase()}`)
+    console.warn('Narrative:', narrative)
+    console.warn('Word Count:', validation.wordCount, `(${limits.min}-${limits.max})`)
+    console.warn('Valid:', validation.valid ? '✅ PASS' : '❌ FAIL')
+    if (validation.errors.length > 0) {
+      console.warn('Errors:')
+      validation.errors.forEach((error) => console.warn(`  - ${error}`))
+    }
   }
-  console.groupEnd()
 }

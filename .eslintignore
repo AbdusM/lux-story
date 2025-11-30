@@ -1,0 +1,6 @@
+# Development scripts - not production code
+scripts/
+
+# Build output
+.next/
+node_modules/

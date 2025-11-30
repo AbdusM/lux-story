@@ -16,11 +16,12 @@
 import { FutureSkillsSystem } from './2030-skills-system'
 import { safeStorage } from './safe-storage'
 import { SCENE_SKILL_MAPPINGS, type SceneSkillMapping } from './scene-skill-mappings'
+import { logger } from './logger'
 
 // Legacy SimpleGameState type (from removed useSimpleGame hook)
 interface SimpleGameState {
   choiceHistory?: Array<{ text: string; nodeId?: string }>
-  characterRelationships?: Record<string, any>
+  characterRelationships?: Record<string, unknown>
 }
 import { queueSkillSummarySync, queueSkillDemonstrationSync, queuePatternDemonstrationSync } from './sync-queue'
 import { logSkillDemo } from './real-time-monitor'
@@ -189,9 +190,11 @@ export class SkillTracker {
             last_demonstrated: new Date().toISOString()
           })
 
-          console.log(
-            `[SkillTracker] Queued summary sync for ${skill} (${skillDemoCount} demonstrations)`
-          )
+          logger.debug('Queued summary sync', {
+            operation: 'skill-tracker.queue-summary',
+            skill,
+            count: skillDemoCount
+          })
         }
       })
     })
@@ -207,7 +210,8 @@ export class SkillTracker {
     skills: string[],
     context: string
   ): void {
-    console.log('📝 [SkillTracker] Recording skill demonstration:', {
+    logger.debug('Recording skill demonstration', {
+      operation: 'skill-tracker.record',
       userId: this.userId,
       sceneId,
       skills,
@@ -242,7 +246,8 @@ export class SkillTracker {
     skills.forEach(skill => {
       const skillDemoCount = this.getSkillDemonstrationCount(skill)
 
-      console.log('📊 [SkillTracker] Skill demonstration count:', {
+      logger.debug('Skill demonstration count', {
+        operation: 'skill-tracker.count',
         skill,
         count: skillDemoCount,
         willSync: skillDemoCount % 3 === 0
@@ -272,7 +277,8 @@ export class SkillTracker {
           last_demonstrated: new Date().toISOString()
         })
 
-        console.log('🔄 [SkillTracker] Queued Supabase sync:', {
+        logger.debug('Queued Supabase sync', {
+          operation: 'skill-tracker.sync',
           skill,
           demonstrationCount: skillDemoCount,
           scenesInvolved: scenesInvolved.length,
@@ -353,7 +359,8 @@ export class SkillTracker {
       context: context
     })
 
-    console.log('📊 [SkillTracker] Queued pattern demonstration sync:', {
+    logger.debug('Queued pattern demonstration sync', {
+      operation: 'skill-tracker.pattern-sync',
       pattern: patternName,
       scene: sceneId,
       character: characterId
@@ -507,16 +514,19 @@ export class SkillTracker {
 
     // Add relationship context if relevant
     const relationships = gameState.characterRelationships
-    if (characterArc === 'Maya' && relationships?.maya) {
-      if (relationships.maya.confidence > 5) {
+    if (characterArc === 'Maya' && relationships?.maya && typeof relationships.maya === 'object' && relationships.maya !== null) {
+      const maya = relationships.maya as Record<string, unknown>
+      if (typeof maya.confidence === 'number' && maya.confidence > 5) {
         context += ' (building confidence)'
       }
-    } else if (characterArc === 'Samuel' && relationships?.samuel) {
-      if (relationships.samuel.trust > 5) {
+    } else if (characterArc === 'Samuel' && relationships?.samuel && typeof relationships.samuel === 'object' && relationships.samuel !== null) {
+      const samuel = relationships.samuel as Record<string, unknown>
+      if (typeof samuel.trust === 'number' && samuel.trust > 5) {
         context += ' (earning trust)'
       }
-    } else if (characterArc === 'Devon' && relationships?.devon) {
-      if (relationships.devon.socialComfort > 3) {
+    } else if (characterArc === 'Devon' && relationships?.devon && typeof relationships.devon === 'object' && relationships.devon !== null) {
+      const devon = relationships.devon as Record<string, unknown>
+      if (typeof devon.socialComfort === 'number' && devon.socialComfort > 3) {
         context += ' (improving social comfort)'
       }
     }
@@ -587,7 +597,9 @@ export class SkillTracker {
 
       requiredSkills.forEach((skillKey: string) => {
         const required = match.skillLevels?.[skillKey as keyof typeof match.skillLevels] || 0.7
-        const current = (internalSkills as any)[skillKey] || 0.5
+        const current = (typeof internalSkills === 'object' && internalSkills !== null && skillKey in internalSkills)
+          ? (internalSkills as Record<string, number>)[skillKey] || 0.5
+          : 0.5
         const gap = Math.max(0, required - current)
 
         requiredSkillsObj[skillKey] = { current, required, gap }
@@ -726,7 +738,8 @@ export class SkillTracker {
    */
   private handleSaveSuccess(): void {
     if (this.saveErrorCount > 0) {
-      console.info('SkillTracker: Save recovered after errors', {
+      logger.info('Save recovered after errors', {
+        operation: 'skill-tracker.save-recovered',
         previousFailures: this.saveErrorCount
       })
     }
@@ -785,9 +798,12 @@ export class SkillTracker {
       this.demonstrations = [...olderToKeep, ...recent]
     }
 
-    console.info(
-      `SkillTracker: Trimmed ${excess} demonstrations (${recent.length} recent, ${this.demonstrations.length - recent.length} older kept)`
-    )
+    logger.info('Trimmed demonstrations', {
+      operation: 'skill-tracker.trim',
+      excess,
+      recentCount: recent.length,
+      olderKept: this.demonstrations.length - recent.length
+    })
   }
 
   /**
@@ -834,15 +850,13 @@ export class SkillTracker {
     const demosTrimmed = originalDemoCount - this.demonstrations.length
     const milestonesTrimmed = originalMilestoneCount - this.milestones.length
 
-    console.info(
-      'SkillTracker: Performed aggressive cleanup',
-      {
-        demonstrationsTrimmed: demosTrimmed,
-        demonstrationsKept: this.demonstrations.length,
-        milestonesTrimmed,
-        milestonesKept: this.milestones.length
-      }
-    )
+    logger.info('Performed aggressive cleanup', {
+      operation: 'skill-tracker.aggressive-cleanup',
+      demonstrationsTrimmed: demosTrimmed,
+      demonstrationsKept: this.demonstrations.length,
+      milestonesTrimmed,
+      milestonesKept: this.milestones.length
+    })
   }
 
   /**
@@ -995,13 +1009,11 @@ export class SkillTracker {
         success = safeStorage.setItem(key, cleanedData)
 
         if (success) {
-          console.info(
-            'SkillTracker: Save succeeded after cleanup',
-            {
-              dataSize: cleanedData.length,
-              demonstrationCount: this.demonstrations.length
-            }
-          )
+          logger.info('Save succeeded after cleanup', {
+            operation: 'skill-tracker.save-after-cleanup',
+            dataSize: cleanedData.length,
+            demonstrationCount: this.demonstrations.length
+          })
         } else {
           console.error(
             'SkillTracker: Save failed even after cleanup - data loss may occur',

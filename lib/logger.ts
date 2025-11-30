@@ -68,15 +68,19 @@ function formatLog(level: LogLevel, message: string, context?: LogContext) {
   }
 }
 
+// Note: console.log/console.info statements below are intentional - this is the logger utility
+
 export const logger = {
   debug: (message: string, context?: LogContext) => {
     if (DEBUG) {
+      // eslint-disable-next-line no-console
       console.log(formatLog('debug', message, context))
     }
   },
 
   info: (message: string, context?: LogContext) => {
     if (DEBUG) {
+      // eslint-disable-next-line no-console
       console.info(formatLog('info', message, context))
     }
   },
@@ -92,8 +96,9 @@ export const logger = {
     if (process.env.NODE_ENV === 'production' && error) {
       try {
         // Sentry will be initialized if available
-        if (typeof window !== 'undefined' && (window as any).Sentry) {
-          (window as any).Sentry.captureException(error, {
+        const win = window as unknown as { Sentry: { captureException: (err: Error, ctx: unknown) => void } }
+        if (typeof window !== 'undefined' && win.Sentry) {
+          win.Sentry.captureException(error, {
             contexts: {
               custom: sanitize(context || {}),
             },
@@ -107,6 +112,7 @@ export const logger = {
 
   verbose: (message: string, context?: LogContext) => {
     if (VERBOSE) {
+      // eslint-disable-next-line no-console
       console.log(formatLog('debug', message, context))
     }
   },

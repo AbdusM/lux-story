@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/button';
 import { Sparkles, Loader2, AlertCircle } from 'lucide-react';
 import type { SkillProfile } from '@/lib/skill-profile-adapter';
 import { AdvisorBriefingModal } from './AdvisorBriefingModal';
+import { logger } from '@/lib/logger';
 
 interface AdvisorBriefingButtonProps {
   profile: SkillProfile;
@@ -43,7 +44,7 @@ export const AdvisorBriefingButton: React.FC<AdvisorBriefingButtonProps> = ({
    * Fetch skill summaries from Supabase API
    */
   const fetchSkillsData = async (userId: string): Promise<SkillSummary[]> => {
-    console.log('🔍 [AdvisorBriefing] Fetching skills:', { userId })
+    logger.debug('Fetching skills', { operation: 'advisor-briefing.fetch-skills', userId })
 
     try {
       const response = await fetch(`/api/user/skill-summaries?userId=${userId}`);
@@ -57,10 +58,11 @@ export const AdvisorBriefingButton: React.FC<AdvisorBriefingButtonProps> = ({
 
       const data = await response.json();
 
-      console.log('✅ [AdvisorBriefing] Skills loaded:', {
+      logger.debug('Skills loaded', {
+        operation: 'advisor-briefing.skills-loaded',
         userId,
         skillCount: data.summaries?.length || 0,
-        topSkills: data.summaries?.slice(0, 3).map((s: any) => s.skillName)
+        topSkills: data.summaries?.slice(0, 3).map((s: SkillSummary) => s.skillName)
       })
 
       return data.summaries || [];
@@ -87,7 +89,8 @@ export const AdvisorBriefingButton: React.FC<AdvisorBriefingButtonProps> = ({
       setIsGenerating(true);
       setError(null);
 
-      console.log('📝 [AdvisorBriefing] Generating briefing:', {
+      logger.debug('Generating briefing', {
+        operation: 'advisor-briefing.generate',
         userId: profile.userId,
         totalDemonstrations: profile.totalDemonstrations
       })
@@ -115,7 +118,8 @@ export const AdvisorBriefingButton: React.FC<AdvisorBriefingButtonProps> = ({
       const data = await response.json();
       const generationTime = Date.now() - startTime
 
-      console.log('✅ [AdvisorBriefing] Briefing generated:', {
+      logger.debug('Briefing generated', {
+        operation: 'advisor-briefing.success',
         userId: profile.userId,
         briefingLength: data.briefing?.length || 0,
         tokensUsed: data.tokensUsed,

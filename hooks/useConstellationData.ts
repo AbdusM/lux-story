@@ -37,18 +37,33 @@ function getTrustState(trust: number): CharacterWithState['trustState'] {
 export function useConstellationData(): ConstellationData {
   const characterTrust = useGameStore(state => state.characterTrust)
   const skills = useGameStore(state => state.skills)
+  const coreGameState = useGameStore(state => state.coreGameState)
 
   const characters = useMemo<CharacterWithState[]>(() => {
+    // Build map of character conversation history lengths
+    const characterConversations = new Map<string, number>()
+    
+    if (coreGameState) {
+      for (const char of coreGameState.characters) {
+        characterConversations.set(char.characterId, char.conversationHistory.length)
+      }
+    }
+    
     return CHARACTER_NODES.map(node => {
       const trust = characterTrust[node.id] || 0
+      const conversationCount = characterConversations.get(node.id) || 0
+      // Character is "met" if they have trust > 0 OR if they have conversation history
+      // This ensures characters appear in the constellation after any interaction, even if trust is still 0
+      const hasMet = trust > 0 || conversationCount > 0
+      
       return {
         ...node,
         trust,
-        hasMet: trust > 0,
+        hasMet,
         trustState: getTrustState(trust)
       }
     })
-  }, [characterTrust])
+  }, [characterTrust, coreGameState])
 
   const skillsWithState = useMemo<SkillWithState[]>(() => {
     return SKILL_NODES.map(node => {

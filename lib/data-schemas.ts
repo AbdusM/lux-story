@@ -66,7 +66,7 @@ export interface SceneInteraction extends BaseEntity {
   cognitiveState: string
   outcome: 'positive' | 'negative' | 'neutral'
   timestamp: number
-  context: Record<string, any>
+  context: Record<string, unknown>
 }
 
 // Skill development schema
@@ -100,7 +100,7 @@ export interface GameSession extends BaseEntity {
     hesitationCount: number
     flowState: string
   }
-  context: Record<string, any>
+  context: Record<string, unknown>
 }
 
 // Normalized data store interface

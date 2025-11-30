@@ -2,6 +2,7 @@
 
 import { useMemo } from 'react'
 import { useGameStore } from '@/lib/game-store'
+import { useConstellationData } from '@/hooks/useConstellationData'
 import { cn } from '@/lib/utils'
 
 interface ProgressIndicatorProps {
@@ -17,14 +18,14 @@ interface ProgressIndicatorProps {
  * - Skills demonstrated
  */
 export function ProgressIndicator({ className }: ProgressIndicatorProps) {
-  const characterTrust = useGameStore((state) => state.characterTrust)
+  const { characters } = useConstellationData() // Use hook that checks both trust and conversation history
   const patterns = useGameStore((state) => state.patterns)
   const skills = useGameStore((state) => state.skills)
   const visitedScenes = useGameStore((state) => state.visitedScenes)
 
   const progress = useMemo(() => {
-    // Characters met (count non-zero trust values)
-    const charactersMet = Object.values(characterTrust).filter(t => t !== 0).length
+    // Characters met (using hasMet which checks both trust > 0 OR conversation history > 0)
+    const charactersMet = characters.filter(c => c.hasMet).length
     const maxCharacters = 9 // Total number of characters in the game
 
     // Patterns developed (count patterns > 0)
@@ -51,7 +52,7 @@ export function ProgressIndicator({ className }: ProgressIndicatorProps) {
       scenesVisited: visitedScenes.length,
       overall: Math.round(overall * 100)
     }
-  }, [characterTrust, patterns, skills, visitedScenes])
+  }, [characters, patterns, skills, visitedScenes])
 
   // Don't show if no progress yet
   if (progress.overall === 0) return null

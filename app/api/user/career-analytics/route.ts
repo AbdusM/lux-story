@@ -8,6 +8,8 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { getSupabaseServerClient } from '@/lib/supabase-server'
+import { validateUserId } from '@/lib/user-id-validation'
+import { logger } from '@/lib/logger'
 
 // Mark as dynamic for Next.js static export compatibility
 export const dynamic = 'force-dynamic'
@@ -22,12 +24,20 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const userId = searchParams.get('userId')
 
-    console.log('🔵 [API:CareerAnalytics] GET request:', { userId })
+    logger.debug('Career analytics GET request', { operation: 'career-analytics.get', userId: userId ?? undefined })
 
     if (!userId) {
-      console.error('❌ [API:CareerAnalytics] Missing userId parameter')
+      logger.warn('Missing userId parameter', { operation: 'career-analytics.get' })
       return NextResponse.json(
         { error: 'Missing userId parameter' },
+        { status: 400 }
+      )
+    }
+
+    const validation = validateUserId(userId)
+    if (!validation.valid) {
+      return NextResponse.json(
+        { error: validation.error },
         { status: 400 }
       )
     }
@@ -43,26 +53,24 @@ export async function GET(request: NextRequest) {
     if (error) {
       // If no data exists, return exists: false (not an error)
       if (error.code === 'PGRST116') {
-        console.log('ℹ️ [API:CareerAnalytics] No data found for user:', userId)
+        logger.debug('No data found for user', { operation: 'career-analytics.get', userId })
         return NextResponse.json({ exists: false })
       }
 
-      console.error('❌ [API:CareerAnalytics] Supabase error:', {
-        code: error.code,
-        message: error.message,
+      logger.error('Supabase error', {
+        operation: 'career-analytics.get',
+        errorCode: error.code,
         userId
-      })
+      }, error instanceof Error ? error : undefined)
       return NextResponse.json(
         { error: 'Failed to fetch career analytics' },
         { status: 500 }
       )
     }
 
-    console.log('✅ [API:CareerAnalytics] Retrieved analytics:', {
-      userId,
-      platformsExplored: data.platforms_explored?.length || 0,
-      careerInterests: data.career_interests?.length || 0,
-      choicesMade: data.choices_made || 0
+    logger.debug('Retrieved career analytics', {
+      operation: 'career-analytics.get',
+      userId
     })
 
     // Transform database format to application format
@@ -79,7 +87,9 @@ export async function GET(request: NextRequest) {
       }
     })
   } catch (error) {
-    console.error('[CareerAnalytics API] Unexpected error:', error)
+    logger.error('Unexpected error in career analytics GET', {
+      operation: 'career-analytics.get'
+    }, error instanceof Error ? error : undefined)
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -115,18 +125,23 @@ export async function POST(request: NextRequest) {
       birmingham_opportunities
     } = body
 
-    console.log('🔵 [API:CareerAnalytics] POST request:', {
-      userId: user_id,
-      platformsCount: platforms_explored?.length || 0,
-      careerInterestsCount: career_interests?.length || 0,
-      choicesMade: choices_made || 0,
-      timeSpentMinutes: Math.floor((time_spent_seconds || 0) / 60)
+    logger.debug('Career analytics POST request', {
+      operation: 'career-analytics.post',
+      userId: user_id
     })
 
     if (!user_id) {
-      console.error('❌ [API:CareerAnalytics] Missing user_id')
+      logger.warn('Missing user_id', { operation: 'career-analytics.post' })
       return NextResponse.json(
         { error: 'Missing user_id' },
+        { status: 400 }
+      )
+    }
+
+    const validation = validateUserId(user_id)
+    if (!validation.valid) {
+      return NextResponse.json(
+        { error: validation.error },
         { status: 400 }
       )
     }
@@ -149,25 +164,27 @@ export async function POST(request: NextRequest) {
       })
 
     if (error) {
-      console.error('❌ [API:CareerAnalytics] Supabase upsert error:', {
-        code: error.code,
-        message: error.message,
+      logger.error('Supabase upsert error', {
+        operation: 'career-analytics.post',
+        errorCode: error.code,
         userId: user_id
-      })
+      }, error instanceof Error ? error : undefined)
       return NextResponse.json(
         { error: 'Failed to save career analytics' },
         { status: 500 }
       )
     }
 
-    console.log('✅ [API:CareerAnalytics] Upsert successful:', {
-      userId: user_id,
-      choicesMade: choices_made
+    logger.debug('Career analytics upsert successful', {
+      operation: 'career-analytics.post',
+      userId: user_id
     })
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('[CareerAnalytics API] Unexpected error:', error)
+    logger.error('Unexpected error in career analytics POST', {
+      operation: 'career-analytics.post'
+    }, error instanceof Error ? error : undefined)
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

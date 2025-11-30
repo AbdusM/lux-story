@@ -4,9 +4,8 @@
  * Never shown to actual players
  */
 
-import { getPatternTracker } from './game-state'
-
-import { logger } from '@/lib/logger'
+import { getPatternTracker } from '../lib/game-state'
+import { logger } from '../lib/logger'
 /**
  * Show pattern analysis in console (for demo only)
  */
@@ -18,7 +17,7 @@ export function showDemoPatterns() {
   
   // Count theme frequencies
   const themeCounts: Record<string, number> = {}
-  patterns.choiceThemes.forEach(theme => {
+  patterns.choiceThemes.forEach((theme: string) => {
     themeCounts[theme] = (themeCounts[theme] || 0) + 1
   })
   

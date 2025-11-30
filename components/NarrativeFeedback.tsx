@@ -36,16 +36,15 @@ export function NarrativeFeedback({ message, isVisible, onDismiss }: NarrativeFe
   return (
     <div
       className={cn(
-        // Position above choices panel (which has mb-16 sm:mb-32)
-        // Research: "notifications pushed to screen center near text"
-        "fixed bottom-36 sm:bottom-44 left-1/2 transform -translate-x-1/2 z-50",
-        "transition-all duration-500 ease-in-out",
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
+        // Non-obtrusive: top-right corner, small, low z-index
+        "fixed top-4 right-4 z-30 max-w-[200px] sm:max-w-[240px]",
+        "transition-all duration-300 ease-in-out",
+        isVisible ? "opacity-70 translate-y-0" : "opacity-0 translate-y-[-10px]"
       )}
     >
-      <div className="bg-slate-800/90 text-slate-50 px-4 py-2 rounded-full text-sm font-medium shadow-lg backdrop-blur-sm border border-slate-700/50 flex items-center gap-2">
-        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-        {message}
+      <div className="bg-slate-800/80 text-slate-50 px-2.5 py-1.5 rounded-lg text-xs font-medium shadow-md backdrop-blur-sm border border-slate-700/40 flex items-center gap-1.5">
+        <span className="w-1 h-1 rounded-full bg-emerald-400" />
+        <span className="truncate">{message}</span>
       </div>
     </div>
   )

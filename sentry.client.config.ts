@@ -26,16 +26,20 @@ Sentry.init({
   replaysSessionSampleRate: 0.1, // 10% of sessions
   replaysOnErrorSampleRate: 1.0, // 100% of sessions with errors
 
-  // Integrations
+  // Integrations - conditionally add if available
   integrations: [
-    Sentry.replayIntegration({
-      maskAllText: true,
-      blockAllMedia: true,
-    }),
-    Sentry.browserTracingIntegration({
-      // Custom instrumentation
-      // tracePropagationTargets: ['localhost', /^https:\/\/.*\.pages\.dev/],
-    }),
+    ...(typeof Sentry.replayIntegration === 'function' 
+      ? [Sentry.replayIntegration({
+          maskAllText: true,
+          blockAllMedia: true,
+        })]
+      : []),
+    ...(typeof Sentry.browserTracingIntegration === 'function'
+      ? [Sentry.browserTracingIntegration({
+          // Custom instrumentation
+          // tracePropagationTargets: ['localhost', /^https:\/\/.*\.pages\.dev/],
+        })]
+      : []),
   ],
 
   // Filter out sensitive data

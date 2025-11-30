@@ -9,6 +9,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSupabaseServerClient } from '@/lib/supabase-server'
 import { PATTERN_TYPES } from '@/lib/patterns'
+import { validateUserId } from '@/lib/user-id-validation'
+import { logger } from '@/lib/logger'
 
 // Mark as dynamic for Next.js static export compatibility
 export const dynamic = 'force-dynamic'
@@ -33,15 +35,21 @@ async function ensurePlayerProfile(userId: string) {
       })
 
     if (error) {
-      console.error('⚠️ [API:PatternDemonstrations] Failed to ensure player profile:', {
+      logger.warn('Failed to ensure player profile', {
+        operation: 'pattern-demonstrations.ensure-profile',
         userId,
-        error: error instanceof Error ? error.message : "Unknown error"
+        error: error instanceof Error ? error.message : String(error)
       })
     } else {
-      console.log('✅ [API:PatternDemonstrations] Player profile ensured:', { userId })
+      logger.debug('Player profile ensured', {
+        operation: 'pattern-demonstrations.ensure-profile',
+        userId
+      })
     }
   } catch (error) {
-    console.error('⚠️ [API:PatternDemonstrations] ensurePlayerProfile error:', error)
+    logger.error('ensurePlayerProfile error', {
+      operation: 'pattern-demonstrations.ensure-profile'
+    }, error instanceof Error ? error : undefined)
   }
 }
 
@@ -75,24 +83,34 @@ export async function POST(request: NextRequest) {
       demonstrated_at
     } = body
 
-    console.log('🔵 [API:PatternDemonstrations] POST request:', {
+    logger.debug('Pattern demonstrations POST request', {
+      operation: 'pattern-demonstrations.post',
       userId: user_id,
-      patternName: pattern_name,
-      sceneId: scene_id,
-      characterId: character_id
+      patternName: pattern_name
     })
 
     if (!user_id || !pattern_name || !choice_id) {
-      console.error('❌ [API:PatternDemonstrations] Missing required fields')
+      logger.warn('Missing required fields', { operation: 'pattern-demonstrations.post' })
       return NextResponse.json(
         { error: 'Missing required fields: user_id, pattern_name, choice_id' },
         { status: 400 }
       )
     }
 
+    const validation = validateUserId(user_id)
+    if (!validation.valid) {
+      return NextResponse.json(
+        { error: validation.error },
+        { status: 400 }
+      )
+    }
+
     // Validate pattern_name against CHECK constraint
     if (!PATTERN_TYPES.includes(pattern_name)) {
-      console.error('❌ [API:PatternDemonstrations] Invalid pattern name:', pattern_name)
+      logger.warn('Invalid pattern name', {
+        operation: 'pattern-demonstrations.post',
+        patternName: pattern_name
+      })
       return NextResponse.json(
         { error: `Invalid pattern_name. Must be one of: ${PATTERN_TYPES.join(', ')}` },
         { status: 400 }
@@ -121,23 +139,22 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (error) {
-      console.error('❌ [API:PatternDemonstrations] Supabase error:', {
-        code: error.code,
-        message: error instanceof Error ? error.message : "Unknown error",
+      logger.error('Supabase error', {
+        operation: 'pattern-demonstrations.post',
+        errorCode: error.code,
         userId: user_id,
         patternName: pattern_name
-      })
+      }, error instanceof Error ? error : undefined)
       return NextResponse.json(
         { error: 'Failed to insert pattern demonstration', details: error instanceof Error ? error.message : "Unknown error" },
         { status: 500 }
       )
     }
 
-    console.log('✅ [API:PatternDemonstrations] Inserted:', {
+    logger.debug('Pattern demonstration inserted', {
+      operation: 'pattern-demonstrations.post',
       userId: user_id,
-      patternName: pattern_name,
-      sceneId: scene_id,
-      characterId: character_id
+      patternName: pattern_name
     })
 
     return NextResponse.json({
@@ -145,7 +162,9 @@ export async function POST(request: NextRequest) {
       demonstration: data
     })
   } catch (error) {
-    console.error('[PatternDemonstrations API] Unexpected error:', error)
+    logger.error('Unexpected error in pattern demonstrations POST', {
+      operation: 'pattern-demonstrations.post'
+    }, error instanceof Error ? error : undefined)
     const errorMessage = error instanceof Error ? error.message : "Internal server error"
 
     return NextResponse.json(

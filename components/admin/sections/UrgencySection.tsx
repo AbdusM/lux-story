@@ -9,10 +9,11 @@ import { Button } from '@/components/ui/button'
 import { AlertTriangle, RefreshCw, ArrowRight } from 'lucide-react'
 import { getUrgencyClasses } from '@/lib/admin-urgency-classes'
 import { formatAdminDate, type ViewMode } from '@/lib/admin-date-formatting'
+import type { SkillProfile } from '@/lib/skill-profile-adapter'
 
 interface UrgencySectionProps {
   userId: string
-  profile: any // SkillProfile
+  profile: SkillProfile
   adminViewMode: 'family' | 'research'
 }
 

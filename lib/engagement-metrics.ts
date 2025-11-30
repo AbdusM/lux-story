@@ -6,7 +6,7 @@
  */
 
 import { getPersonaTracker } from './player-persona'
-import { getCareerAnalytics } from './career-analytics'
+import { getCareerAnalytics, type CareerInsight } from './career-analytics'
 import { getPlatformResonance } from './platform-resonance'
 
 export interface EngagementMetrics {
@@ -346,7 +346,7 @@ export class EngagementMetricsEngine {
   /**
    * Export comprehensive analytics data
    */
-  exportAnalyticsData(playerId?: string): any {
+  exportAnalyticsData(playerId?: string): Record<string, unknown> {
     if (playerId) {
       const metrics = this.calculateEngagementMetrics(playerId)
       const insights = this.generateEngagementInsights(playerId)
@@ -400,12 +400,16 @@ export class EngagementMetricsEngine {
   /**
    * Helper: Calculate local engagement
    */
-  private calculateLocalEngagement(insights: any[], _persona: any): number {
+  private calculateLocalEngagement(insights: unknown[], _persona: unknown): number {
     let engagement = 0.5 // Base score
 
     // Birmingham opportunities interest
-    const birminghamOpps = insights.reduce((sum, insight) =>
-      sum + (insight.personalizedOpportunities?.length || 0), 0)
+    const birminghamOpps = insights.reduce((sum: number, insight: unknown) => {
+      if (typeof insight !== 'object' || insight === null) return sum
+      const insightObj = insight as Record<string, unknown>
+      const opps = Array.isArray(insightObj.personalizedOpportunities) ? insightObj.personalizedOpportunities.length : 0
+      return sum + opps
+    }, 0)
 
     if (birminghamOpps > 0) engagement += 0.3
     if (birminghamOpps > 3) engagement += 0.2
@@ -428,10 +432,14 @@ export class EngagementMetricsEngine {
   /**
    * Helper: Calculate recommendation alignment
    */
-  private calculateRecommendationAlignment(persona: any, insights: any[]): number {
+  private calculateRecommendationAlignment(persona: unknown, insights: unknown[]): number {
     if (insights.length === 0) return 0.5
 
-    const strongInsights = insights.filter(i => i.confidence > 60)
+    const strongInsights = insights.filter((i: unknown) => {
+      if (typeof i !== 'object' || i === null) return false
+      const insightObj = i as Record<string, unknown>
+      return typeof insightObj.confidence === 'number' && insightObj.confidence > 60
+    })
     return Math.min(1, strongInsights.length / insights.length)
   }
 
@@ -458,17 +466,20 @@ export class EngagementMetricsEngine {
   /**
    * Helper: Detect pattern evolution
    */
-  private detectPatternEvolution(persona: any): boolean {
+  private detectPatternEvolution(persona: unknown): boolean {
     // Simple heuristic - if dominant patterns are diverse, suggests evolution
-    return persona.dominantPatterns.length > 2
+    if (typeof persona !== 'object' || persona === null) return false
+    const personaObj = persona as Record<string, unknown>
+    const patterns = Array.isArray(personaObj.dominantPatterns) ? personaObj.dominantPatterns : []
+    return patterns.length > 2
   }
 
   /**
    * Helper: Determine goal orientation
    */
-  private determineGoalOrientation(persona: any, insights: any[]): 'discovery' | 'validation' | 'planning' | 'action' {
-    const choiceCount = persona.totalChoices || 0
-    const insightStrength = insights.reduce((sum, i) => sum + i.confidence, 0) / insights.length || 0
+  private determineGoalOrientation(persona: unknown, insights: CareerInsight[]): 'discovery' | 'validation' | 'planning' | 'action' {
+    const choiceCount = (persona as { totalChoices: number }).totalChoices || 0
+    const insightStrength = insights.reduce((sum, i) => sum + (i.confidence || 0), 0) / insights.length || 0
 
     if (choiceCount < 10) return 'discovery'
     if (insightStrength < 50) return 'validation'

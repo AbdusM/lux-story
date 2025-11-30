@@ -3,8 +3,18 @@
 import { memo, useMemo, useRef, useEffect, useState, useCallback } from 'react'
 import { StoryMessage } from './StoryMessage'
 
+interface Message {
+  id: string
+  speaker: string
+  text: string
+  type?: 'narration' | 'dialogue' | 'whisper' | 'sensation'
+  messageWeight?: 'primary' | 'critical' | 'aside'
+  className?: string
+  [key: string]: unknown
+}
+
 interface VirtualizedMessageListProps {
-  messages: any[]
+  messages: Message[]
   height?: number
   itemHeight?: number
   overscan?: number
@@ -97,7 +107,7 @@ export const VirtualizedMessageList = memo(({
               speaker={message.speaker}
               text={message.text}
               type={message.type}
-              messageWeight={message.messageWeight}
+              messageWeight={message.messageWeight as 'primary' | 'critical' | 'aside' | undefined}
               className={message.className}
               isContinuedSpeaker={actualIndex > 0 && messages[actualIndex - 1].speaker === message.speaker}
             />

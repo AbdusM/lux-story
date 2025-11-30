@@ -263,12 +263,15 @@ export class EngagementQualityAnalyzer {
    */
   private static calculateEngagementTier(
     checks: BestPracticeCheck[],
-    flags: any,
-    depth: any
+    flags: Record<string, unknown>,
+    depth: Record<string, unknown>
   ): 'surface' | 'moderate' | 'deep' | 'exceptional' {
     const practicesFollowed = checks.filter(c => c.present).length
     const flagsRaised = Object.values(flags).filter(f => f === true).length
-    const maxTrust = Math.max(...(Object.values(depth.trustLevelsReached) as number[]))
+    const trustLevels = typeof depth.trustLevelsReached === 'object' && depth.trustLevelsReached !== null
+      ? Object.values(depth.trustLevelsReached).filter((v): v is number => typeof v === 'number')
+      : []
+    const maxTrust = trustLevels.length > 0 ? Math.max(...trustLevels) : 0
     
     // Exceptional: 5-6 practices, 0-1 red flags, trust 7+
     if (practicesFollowed >= 5 && flagsRaised <= 1 && maxTrust >= 7) {
@@ -294,8 +297,8 @@ export class EngagementQualityAnalyzer {
    */
   private static calculateQualityScore(
     checks: BestPracticeCheck[],
-    flags: any,
-    depth: any
+    flags: Record<string, unknown>,
+    depth: Record<string, unknown>
   ): number {
     let score = 50 // Start at baseline
     
@@ -308,11 +311,15 @@ export class EngagementQualityAnalyzer {
     score -= flagsRaised * 10
     
     // Bonus for high trust (up to +20)
-    const maxTrust = Math.max(...(Object.values(depth.trustLevelsReached) as number[]))
+    const trustLevels = typeof depth.trustLevelsReached === 'object' && depth.trustLevelsReached !== null
+      ? Object.values(depth.trustLevelsReached).filter((v): v is number => typeof v === 'number')
+      : []
+    const maxTrust = trustLevels.length > 0 ? Math.max(...trustLevels) : 0
     score += Math.min(20, maxTrust * 2)
     
     // Bonus for optional content (+5 per scene, up to +15)
-    score += Math.min(15, depth.optionalContentAccessed * 5)
+    const optionalContent = typeof depth.optionalContentAccessed === 'number' ? depth.optionalContentAccessed : 0
+    score += Math.min(15, optionalContent * 5)
     
     // Clamp to 0-100
     return Math.max(0, Math.min(100, score))
@@ -323,8 +330,8 @@ export class EngagementQualityAnalyzer {
    */
   private static generateRecommendations(
     checks: BestPracticeCheck[],
-    flags: any,
-    _depth: any
+    flags: Record<string, unknown>,
+    _depth: unknown
   ): string[] {
     const recommendations: string[] = []
     

@@ -175,7 +175,7 @@ export class SimpleAnalyticsEngine {
   /**
    * Export analytics data
    */
-  exportAnalytics(playerId?: string): any {
+  exportAnalytics(playerId?: string): unknown {
     if (playerId) {
       return {
         analytics: this.analytics.get(playerId),
@@ -185,7 +185,7 @@ export class SimpleAnalyticsEngine {
     }
 
     // Export all data
-    const allData: any = {}
+    const allData: Record<string, unknown> = {}
     for (const [id, analytics] of this.analytics) {
       allData[id] = {
         analytics,

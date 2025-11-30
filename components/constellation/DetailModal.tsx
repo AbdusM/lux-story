@@ -73,7 +73,7 @@ export function DetailModal({ item, type, onClose }: DetailModalProps) {
             animate="visible"
             exit="exit"
             variants={modalVariants}
-            className="fixed bottom-0 left-0 right-0 z-[120] max-h-[80vh] overflow-hidden rounded-t-2xl bg-slate-900 border-t border-slate-700 shadow-2xl"
+            className="fixed bottom-0 left-0 right-0 z-[120] max-h-[50vh] sm:max-h-[60vh] overflow-hidden rounded-t-2xl bg-slate-900 border-t border-slate-700 shadow-2xl"
             style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
             onClick={(e) => e.stopPropagation()}
             role="dialog"
@@ -86,7 +86,7 @@ export function DetailModal({ item, type, onClose }: DetailModalProps) {
             </div>
 
             {/* Content */}
-            <div className="overflow-y-auto max-h-[calc(80vh-40px)]">
+            <div className="overflow-y-auto max-h-[calc(50vh-40px)] sm:max-h-[calc(60vh-40px)]">
               {isCharacter && character && (
                 <CharacterDetail character={character} onClose={onClose} />
               )}

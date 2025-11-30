@@ -6,6 +6,7 @@
  */
 
 import type { Choice } from './story-engine'
+import { logger } from './logger'
 
 // Live Choice Engine now uses Next.js API routes for secure server-side generation
 // No direct API configuration needed - handled by /api/live-choices route
@@ -88,7 +89,7 @@ export class LiveChoiceEngine {
    */
   async generateChoice(request: LiveChoiceRequest): Promise<LiveChoiceResponse | null> {
     try {
-      console.log('🚀 Calling internal API for choice generation...')
+      logger.debug('Calling internal API for choice generation', { operation: 'live-choice-engine.generate' })
 
       const response = await fetch('/api/live-choices', {
         method: 'POST',
@@ -106,8 +107,7 @@ export class LiveChoiceEngine {
 
       const generatedData = await response.json()
 
-      console.log('✨ Choice generated successfully:', generatedData.text)
-      console.log('🎯 Confidence:', generatedData.confidenceScore)
+      logger.debug('Choice generated successfully', { operation: 'live-choice-engine.success', text: generatedData.text.substring(0, 50), confidence: generatedData.confidenceScore })
 
       return generatedData
 
@@ -134,7 +134,7 @@ export class LiveChoiceEngine {
     this.reviewQueue.push(entry)
     this.saveReviewQueue()
 
-    console.log('📝 Added to review queue:', entry.id)
+    logger.debug('Added to review queue', { operation: 'live-choice-engine.review-queue', entryId: entry.id })
     return entry.id
   }
 
@@ -170,7 +170,7 @@ export class LiveChoiceEngine {
     this.saveApprovedChoices()
     this.saveReviewQueue()
 
-    console.log('✅ Choice approved and cached:', finalText)
+    logger.debug('Choice approved and cached', { operation: 'live-choice-engine.approve', text: finalText.substring(0, 50) })
     return true
   }
 
@@ -185,7 +185,7 @@ export class LiveChoiceEngine {
     entry.reviewedAt = Date.now()
     this.saveReviewQueue()
 
-    console.log('❌ Choice rejected:', entry.response.text)
+    logger.debug('Choice rejected', { operation: 'live-choice-engine.reject', text: entry.response.text.substring(0, 50) })
     return true
   }
 

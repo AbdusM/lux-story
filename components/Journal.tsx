@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { X, Users, Compass, TrendingUp } from "lucide-react"
 import { useGameStore } from "@/lib/game-store"
+import { useConstellationData } from "@/hooks/useConstellationData"
 import { cn } from "@/lib/utils"
 
 interface JournalProps {
@@ -50,7 +51,7 @@ export function Journal({ isOpen, onClose }: JournalProps) {
     return () => window.removeEventListener('keydown', handleEscape)
   }, [isOpen, onClose])
 
-  const characterTrust = useGameStore((state) => state.characterTrust)
+  const { characters } = useConstellationData() // Use hook that checks both trust and conversation history
   const choiceHistory = useGameStore((state) => state.choiceHistory)
   const patterns = useGameStore((state) => state.patterns)
 
@@ -71,9 +72,10 @@ export function Journal({ isOpen, onClose }: JournalProps) {
     { id: 'patterns', label: 'Your Style', icon: Compass },
   ]
 
-  // Get characters with trust levels
-  const characterEntries = Object.entries(characterTrust)
-    .filter(([_, trust]) => trust !== 0)
+  // Get characters with trust levels (using hasMet which checks both trust > 0 OR conversation history > 0)
+  const characterEntries = characters
+    .filter(c => c.hasMet)
+    .map(c => [c.id, c.trust] as [string, number])
     .sort(([, a], [, b]) => b - a)
 
   // Get active patterns (non-zero)
@@ -233,7 +235,7 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                     </div>
                   ) : (
                     <div className="space-y-3">
-                      {choiceHistory.slice(-8).map((record, idx) => {
+                      {choiceHistory.slice(-8).map((record) => {
                         const character = getCharacterFromScene(record.sceneId)
                         const charInfo = character ? CHARACTER_INFO[character.toLowerCase()] : null
 

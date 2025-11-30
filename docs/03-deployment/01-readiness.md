@@ -147,6 +147,20 @@ VERCEL_URL=https://lux-story.linkdap.com npm run verify:admin:prod
 | `GEMINI_API_KEY` | Skill-aware dialogue | **Yes** | aistudio.google.com/app/apikey |
 | `ADMIN_API_TOKEN` | Admin dashboard login | **Yes** | Use: `admin` |
 
+### Optional - Production Monitoring (Recommended)
+| Variable | Purpose | Secret? | Where to Get |
+|----------|---------|---------|--------------|
+| `SENTRY_DSN` | Server-side error tracking | No | Sentry.io → Project Settings → Client Keys (DSN) |
+| `NEXT_PUBLIC_SENTRY_DSN` | Client-side error tracking | No | Same as SENTRY_DSN |
+
+**Sentry Setup Instructions:**
+1. Create account at https://sentry.io
+2. Create a new project (select Next.js)
+3. Copy the DSN from project settings
+4. Set both `SENTRY_DSN` and `NEXT_PUBLIC_SENTRY_DSN` to the same DSN value
+5. Sentry will automatically capture errors from ErrorBoundary components
+6. Session replay is enabled for 10% of sessions and 100% of error sessions
+
 ---
 
 ## 📊 Current System Status

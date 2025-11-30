@@ -9,6 +9,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSupabaseServerClient } from '@/lib/supabase-server'
 import { logger } from '@/lib/logger'
+import { validateUserId } from '@/lib/user-id-validation'
 
 // Mark as dynamic for Next.js static export compatibility
 export const dynamic = 'force-dynamic'
@@ -27,6 +28,14 @@ export async function POST(request: NextRequest) {
     if (!user_id) {
       return NextResponse.json(
         { error: 'Missing user_id' },
+        { status: 400 }
+      )
+    }
+
+    const validation = validateUserId(user_id)
+    if (!validation.valid) {
+      return NextResponse.json(
+        { error: validation.error },
         { status: 400 }
       )
     }
@@ -70,7 +79,10 @@ export async function POST(request: NextRequest) {
     })
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : "Internal server error"
-    logger.error('Profile API unexpected error', { operation: 'profile.create' }, error instanceof Error ? error : undefined)
+    logger.error('Profile API unexpected error', {
+      operation: 'profile.create',
+      error: error instanceof Error ? error.message : String(error)
+    }, error instanceof Error ? error : undefined)
 
     // If it's a missing env var error, return success but log warning
     if (errorMessage.includes('Missing Supabase environment variables')) {
@@ -100,6 +112,14 @@ export async function GET(request: NextRequest) {
       logger.warn('Missing userId parameter', { operation: 'profile.get' })
       return NextResponse.json(
         { error: 'Missing userId parameter' },
+        { status: 400 }
+      )
+    }
+
+    const validation = validateUserId(userId)
+    if (!validation.valid) {
+      return NextResponse.json(
+        { error: validation.error },
         { status: 400 }
       )
     }
@@ -141,7 +161,10 @@ export async function GET(request: NextRequest) {
     })
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : "Internal server error"
-    logger.error('Profile GET unexpected error', { operation: 'profile.get' }, error instanceof Error ? error : undefined)
+    logger.error('Profile GET unexpected error', {
+      operation: 'profile.get',
+      error: error instanceof Error ? error.message : String(error)
+    }, error instanceof Error ? error : undefined)
 
     // If it's a missing env var error, return null profile gracefully
     if (errorMessage.includes('Missing Supabase environment variables')) {

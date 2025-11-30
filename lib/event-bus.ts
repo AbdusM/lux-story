@@ -6,12 +6,14 @@
  * asynchronous event handling with proper cleanup and memory management.
  */
 
-export type EventHandler<T = any> = (data: T) => void | Promise<void>;
-export type EventMap = Record<string, any>;
+import { logger } from './logger'
+
+export type EventHandler<T = unknown> = (data: T) => void | Promise<void>;
+export type EventMap = Record<string, unknown>;
 
 interface EventSubscription {
   id: string;
-  handler: EventHandler;
+  handler: EventHandler<unknown>;
   once?: boolean;
   priority?: number;
 }
@@ -64,7 +66,7 @@ export class EventBus<TEventMap extends EventMap = EventMap> {
     const subscriptionId = `sub_${++this.subscriptionId}`;
     const subscription: EventSubscription = {
       id: subscriptionId,
-      handler,
+      handler: handler as EventHandler<unknown>, // Cast to EventHandler<unknown> for compatibility
       once: options.once,
       priority: options.priority ?? 0
     };
@@ -85,7 +87,7 @@ export class EventBus<TEventMap extends EventMap = EventMap> {
     this.metrics.subscriptions++;
 
     if (this.config.enableLogging) {
-      console.log(`EventBus: Subscribed to "${String(event)}" with ID ${subscriptionId}`);
+      logger.debug('EventBus subscribed', { operation: 'event-bus.subscribe', event: String(event), subscriptionId });
     }
 
     return subscriptionId;
@@ -115,7 +117,7 @@ export class EventBus<TEventMap extends EventMap = EventMap> {
         this.metrics.unsubscriptions++;
 
         if (this.config.enableLogging) {
-          console.log(`EventBus: Unsubscribed from "${String(event)}" with ID ${subscriptionId}`);
+          logger.debug('EventBus unsubscribed', { operation: 'event-bus.unsubscribe', event: String(event), subscriptionId });
         }
         return true;
       }
@@ -131,7 +133,7 @@ export class EventBus<TEventMap extends EventMap = EventMap> {
     const eventListeners = this.listeners.get(event);
     if (!eventListeners || eventListeners.size === 0) {
       if (this.config.enableLogging) {
-        console.log(`EventBus: No listeners for event "${String(event)}"`);
+        logger.debug('EventBus: No listeners for event', { operation: 'event-bus.no-listeners', event: String(event) });
       }
       return;
     }
@@ -143,7 +145,7 @@ export class EventBus<TEventMap extends EventMap = EventMap> {
     const toRemove: EventSubscription[] = [];
 
     if (this.config.enableLogging) {
-      console.log(`EventBus: Emitting "${String(event)}" to ${sortedListeners.length} listeners`);
+      logger.debug('EventBus emitting', { operation: 'event-bus.emit', event: String(event), listenerCount: sortedListeners.length });
     }
 
     // Execute listeners
@@ -258,28 +260,29 @@ export class EventBus<TEventMap extends EventMap = EventMap> {
 
 // Game-specific event types
 export interface GameEventMap {
+  [key: string]: unknown; // Add string index signature
   // Game state events
   'game:state:changed': { state: string; previousState?: string };
   'game:scene:transition': { from: string; to: string; duration?: number };
-  'game:message:received': { message: any; timestamp: number };
-  'game:message:streaming': { message: any; isComplete: boolean };
-  'game:presence:updated': { presence: any };
+  'game:message:received': { message: unknown; timestamp: number };
+  'game:message:streaming': { message: unknown; isComplete: boolean };
+  'game:presence:updated': { presence: unknown };
   'game:trust:changed': { trust: number; delta: number };
-  'game:relationship:updated': { relationship: any };
-  'game:platform:updated': { platform: any };
-  'game:pattern:updated': { pattern: any };
+  'game:relationship:updated': { relationship: unknown };
+  'game:platform:updated': { platform: unknown };
+  'game:pattern:updated': { pattern: unknown };
   
   // Game interaction events
-  'game:choice:made': { choice: any; timestamp: number; emotionalState: string; cognitiveState: string };
+  'game:choice:made': { choice: unknown; timestamp: number; emotionalState: string; cognitiveState: string };
   'game:emotional:stress': { level: string; trigger: string };
   'game:emotional:calm': { level: string; trigger: string };
   'game:cognitive:flow': { state: string; awareness: number };
-  'game:skills:updated': { skills: any; totalSkills: any };
+  'game:skills:updated': { skills: unknown; totalSkills: unknown };
 
   // UI events
-  'ui:message:show': { message: any; duration?: number };
+  'ui:message:show': { message: unknown; duration?: number };
   'ui:message:hide': { messageId: string };
-  'ui:scene:show': { scene: string; data?: any };
+  'ui:scene:show': { scene: string; data?: unknown };
   'ui:scene:hide': { scene: string };
   'ui:animation:start': { animation: string; element?: HTMLElement };
   'ui:animation:complete': { animation: string; element?: HTMLElement };

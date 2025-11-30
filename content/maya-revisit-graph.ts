@@ -287,21 +287,31 @@ You asked me what *I* wanted, and I didn't have an answer then. Now I'm actually
     choices: [
       {
         choiceId: 'reflect_still_searching',
-        text: "I'm still searching.",
+        text: "I'm still searching. Talking to people like you helps me see possibilities, but I haven't found my answer yet.",
         nextNodeId: 'maya_revisit_reflection_searching',
-        pattern: 'exploring'
+        pattern: 'exploring',
+        skills: ['emotionalIntelligence', 'adaptability']
       },
       {
         choiceId: 'reflect_helping_others',
-        text: "Helping others is my path.",
+        text: "I'm helping others find their path. Maybe that IS my path—being the person who asks the right questions, who creates space for people to figure things out.",
         nextNodeId: 'maya_revisit_reflection_helping',
-        pattern: 'helping'
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication']
       },
       {
         choiceId: 'deflect',
-        text: "This isn't about me.",
+        text: "I'd rather not talk about it. My own uncertainty feels too raw to put into words right now.",
         nextNodeId: 'maya_revisit_deflection',
-        pattern: 'patience'
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'emotionalIntelligence']
+      },
+      {
+        choiceId: 'reflect_seeing_patterns',
+        text: "I'm starting to see patterns in how I show up for people. Maybe my path isn't about finding one thing—it's about how I approach everything.",
+        nextNodeId: 'maya_revisit_reflection_helping',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'emotionalIntelligence']
       }
     ]
   },

@@ -24,17 +24,22 @@ function getSupabaseClient(): SupabaseClient {
   const config = getSupabaseConfig()
 
   // Return mock client that prevents crashes and supports chaining
-  const createMockChain = (reason: string = 'not configured'): any => new Proxy({}, {
-    get: (target, prop) => {
+  interface MockChain {
+    then?: (resolve: (value: { data: null; error: { message: string; code: string } }) => void) => Promise<void>
+    [key: string]: unknown
+  }
+  
+  const createMockChain = (reason: string = 'not configured'): MockChain => new Proxy({} as MockChain, {
+    get: (_target, prop) => {
       if (prop === 'then' || prop === 'catch') {
         // Don't chain for Promise-like behavior
         return undefined
       }
-      return (..._args: any[]) => {
+      return (..._args: unknown[]) => {
         // Return another chainable mock for method chaining
         const result = createMockChain(reason)
         // Also make it awaitable with error
-        result.then = (resolve: any) => {
+        result.then = (resolve: (value: { data: null; error: { message: string; code: string } }) => void) => {
           resolve({ 
             data: null, 
             error: { 
@@ -85,22 +90,23 @@ function getSupabaseClient(): SupabaseClient {
 function wrapWithNetworkErrorDetection(client: SupabaseClient): SupabaseClient {
   return new Proxy(client, {
     get(target, prop) {
-      const value = (target as any)[prop]
+      const value = (target as unknown as Record<string, unknown>)[prop as string]
       
       if (typeof value === 'function') {
-        return function(...args: any[]) {
+        return function(...args: unknown[]) {
           const result = value.apply(target, args)
           
           // If it's a promise-like (query builder result), wrap it
           if (result && typeof result.then === 'function') {
-            return result.catch((error: any) => {
+            return result.catch((error: unknown) => {
               // Detect network errors
+              const errorObj = error instanceof Error ? error : { message: String(error), name: 'UnknownError' }
               const isNetworkError = 
-                error?.message?.includes('Failed to fetch') ||
-                error?.message?.includes('ERR_NAME_NOT_RESOLVED') ||
-                error?.name === 'TypeError' ||
-                (!error?.code && !error?.message) ||
-                error?.toString().includes('fetch')
+                errorObj.message?.includes('Failed to fetch') ||
+                errorObj.message?.includes('ERR_NAME_NOT_RESOLVED') ||
+                errorObj.name === 'TypeError' ||
+                (typeof error === 'object' && error !== null && !('code' in error) && !('message' in error)) ||
+                String(error).includes('fetch')
               
               if (isNetworkError && !_networkFailureDetected) {
                 _networkFailureDetected = true
@@ -110,11 +116,12 @@ function wrapWithNetworkErrorDetection(client: SupabaseClient): SupabaseClient {
               }
               
               // Return error response compatible with Supabase format
+              const errorCode = (error && typeof error === 'object' && 'code' in error) ? String(error.code) : 'UNKNOWN_ERROR'
               return Promise.resolve({
                 data: null,
                 error: {
-                  message: isNetworkError ? 'Network unreachable. Running in local-only mode.' : error.message,
-                  code: isNetworkError ? 'NETWORK_ERROR' : error.code
+                  message: isNetworkError ? 'Network unreachable. Running in local-only mode.' : errorObj.message || 'Unknown error',
+                  code: isNetworkError ? 'NETWORK_ERROR' : errorCode
                 }
               })
             })
@@ -136,7 +143,7 @@ function wrapWithNetworkErrorDetection(client: SupabaseClient): SupabaseClient {
 export const supabase = new Proxy({} as SupabaseClient, {
   get(_target, prop) {
     const client = getSupabaseClient()
-    const value = (client as any)[prop]
+    const value = (client as unknown as Record<string, unknown>)[prop as string]
     if (typeof value === 'function') {
       return value.bind(client)
     }

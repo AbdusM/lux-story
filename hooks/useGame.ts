@@ -10,6 +10,7 @@ import { generateBridgeText } from '@/lib/narrative-bridge'
 import { analyzeChoiceForCareer, getCareerAnalytics } from '@/lib/career-analytics'
 import { updatePlatformResonance, getPlatformResonance } from '@/lib/platform-resonance'
 import { createSkillTracker } from '@/lib/skill-tracker'
+import { logger } from '@/lib/logger'
 
 /**
  * Simplified Game Hook
@@ -266,9 +267,10 @@ export function useGame() {
 
       // Log platform resonance changes for development
       if (resonanceEvents.length > 0) {
-        console.log('🏗️ Platform resonance updates:', resonanceEvents.map(event =>
-          `${event.platformId}: ${event.type} (${event.intensity.toFixed(2)})`
-        ).join(', '))
+        logger.debug('Platform resonance updates', {
+          operation: 'use-game.platform-resonance',
+          events: resonanceEvents.map(event => `${event.platformId}: ${event.type} (${event.intensity.toFixed(2)})`).join(', ')
+        })
       }
     } catch (error) {
       console.warn('Platform resonance update failed:', error)
@@ -300,8 +302,26 @@ export function useGame() {
       patternUpdates.independence = (patterns.independence || 0) + 1
     }
     
+    // Update patterns through coreGameState to ensure consistency
+    // Direct updatePatterns() bypasses coreGameState and gets overwritten by syncDerivedState()
     if (Object.keys(patternUpdates).length > 0) {
-      updatePatterns(patternUpdates)
+      const zustandStore = useGameStore.getState()
+      const coreState = zustandStore.coreGameState
+      if (coreState) {
+        const updated = {
+          ...coreState,
+          patterns: {
+            ...coreState.patterns,
+            ...patternUpdates
+          }
+        }
+        zustandStore.setCoreGameState(updated)
+        // syncDerivedState is called automatically by setCoreGameState
+      } else {
+        // Fallback: if coreGameState doesn't exist yet, use direct update
+        // This should only happen during initialization
+        updatePatterns(patternUpdates)
+      }
     }
     
     // Update performance metrics
@@ -342,7 +362,7 @@ export function useGame() {
       }
 
       personaTracker.updatePersona('player-main', choice, responseTime, gameState)
-      console.log('🧠 Player persona updated')
+      logger.debug('Player persona updated', { operation: 'use-game.persona-update' })
     } catch (error) {
       console.warn('Persona tracking failed:', error)
     }

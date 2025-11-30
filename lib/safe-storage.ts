@@ -64,11 +64,11 @@ export function generateUserId(): string {
 }
 
 // Safe progress storage
-export function saveProgress(data: any): boolean {
+export function saveProgress(data: unknown): boolean {
   return safeStorage.setItem('lux-story-progress', JSON.stringify(data))
 }
 
-export function loadProgress(): any {
+export function loadProgress(): unknown {
   const stored = safeStorage.getItem('lux-story-progress')
   if (!stored) return null
 
@@ -81,11 +81,11 @@ export function loadProgress(): any {
 }
 
 // Simple metrics persistence
-export function saveMetrics(userId: string, metrics: any): boolean {
+export function saveMetrics(userId: string, metrics: unknown): boolean {
   return safeStorage.setItem(`lux-metrics-${userId}`, JSON.stringify(metrics))
 }
 
-export function loadMetrics(userId: string): any {
+export function loadMetrics(userId: string): unknown {
   const stored = safeStorage.getItem(`lux-metrics-${userId}`)
   if (!stored) return null
 
@@ -97,21 +97,23 @@ export function loadMetrics(userId: string): any {
   }
 }
 
+import type { LocalPlayerData } from './database-service' // Import the defined interface
+
 // Player data storage (for DatabaseService compatibility)
-export function getStoredPlayerData(userId: string): any | null {
+export function getStoredPlayerData(userId: string): Partial<LocalPlayerData> | null {
   const key = `lux-player-data-${userId}`
   const stored = safeStorage.getItem(key)
   if (!stored) return null
 
   try {
-    return JSON.parse(stored)
+    return JSON.parse(stored) as Partial<LocalPlayerData>
   } catch (error) {
     console.warn('Failed to parse player data:', error)
     return null
   }
 }
 
-export function savePlayerData(userId: string, data: any): boolean {
+export function savePlayerData(userId: string, data: unknown): boolean {
   const key = `lux-player-data-${userId}`
   return safeStorage.setItem(key, JSON.stringify(data))
 }

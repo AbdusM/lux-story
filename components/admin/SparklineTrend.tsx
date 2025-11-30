@@ -204,7 +204,7 @@ export function SparklineTrend({
   }
 
   return (
-    <Component {...interactiveProps as any}>
+    <Component {...(interactiveProps as React.HTMLAttributes<HTMLElement> & { type?: "button" | "submit" | "reset" })}>
       <Tooltip />
 
       {/* Sparkline SVG */}

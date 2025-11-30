@@ -173,7 +173,7 @@ export class NarrativeQualityReporter {
 
   private identifyCriticalIssues(
     consistencyIssues: NarrativeConsistency[],
-    hooksNeedingAttention: any
+    hooksNeedingAttention: { redFlags: unknown[] }
   ): string[] {
     const criticalIssues: string[] = []
 
@@ -234,7 +234,7 @@ export class NarrativeQualityReporter {
 
   private categorizePriorityFixes(
     consistencyIssues: NarrativeConsistency[],
-    hooksNeedingAttention: any
+    hooksNeedingAttention: { tooExplicit: unknown[]; tooBuried: unknown[] }
   ): {
     immediate: string[]
     shortTerm: string[]

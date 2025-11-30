@@ -6,17 +6,18 @@
  */
 
 import { queueCareerExplorationSync } from './sync-queue'
-import { getSimpleAnalytics } from './simple-career-analytics'
+import { getSimpleAnalytics, type SimpleCareerAnalytics, type SimpleCareerMetrics } from './simple-career-analytics'
 import { SkillTracker } from './skill-tracker'
-import { getPerformanceSystem } from './performance-system'
+import { getPerformanceSystem, type PerformanceSystem } from './performance-system'
 import { ensureUserProfile } from './ensure-user-profile'
+import { logger } from './logger'
 
 // Comprehensive interaction data structure
 export interface UserInteraction {
   userId: string
   timestamp: number
   type: 'choice' | 'scene_visit' | 'character_interaction' | 'skill_demonstration' | 'platform_exploration'
-  data: any
+  data: Record<string, unknown>
   context: {
     sceneId: string
     characterId?: string
@@ -65,11 +66,18 @@ export interface PerformanceMetricsData {
   character_interactions: string[]
 }
 
+interface TrackedChoice {
+  text: string
+  consequence: string
+  nextScene: string
+  stateChanges: unknown
+}
+
 export class ComprehensiveUserTracker {
   private interactions: UserInteraction[] = []
   private skillTracker: SkillTracker
-  private performanceSystem: any
-  private careerAnalytics: any
+  private performanceSystem: PerformanceSystem
+  private careerAnalytics: SimpleCareerAnalytics
   private userId: string
   private profileEnsured: boolean = false
 
@@ -100,7 +108,7 @@ export class ComprehensiveUserTracker {
         throw new Error(`Profile creation failed for ${this.userId} - cannot proceed with database writes`)
       }
       
-      console.log(`[ComprehensiveTracker] ✅ Profile verified/created for ${this.userId}`)
+      logger.debug('Profile verified/created', { operation: 'comprehensive-tracker.profile', userId: this.userId })
     } catch (error) {
       console.error(`[ComprehensiveTracker] ❌ CRITICAL: Error ensuring profile:`, error)
       throw error // Propagate error to prevent writes without profile
@@ -113,12 +121,12 @@ export class ComprehensiveUserTracker {
    */
   async trackChoice(
     userId: string,
-    choice: any,
+    choice: TrackedChoice,
     sceneId: string,
     characterId?: string,
     timeToChoose?: number
   ): Promise<void> {
-    console.log(`[ComprehensiveTracker] trackChoice called for ${userId} in ${sceneId}`)
+    logger.debug('trackChoice called', { operation: 'comprehensive-tracker.choice', userId, sceneId })
     
     // CRITICAL FIX: Block until profile exists before proceeding
     await this.ensureProfile()
@@ -141,7 +149,7 @@ export class ComprehensiveUserTracker {
     }
 
     this.interactions.push(interaction)
-    console.log(`[ComprehensiveTracker] Added interaction, total: ${this.interactions.length}`)
+    logger.debug('Added interaction', { operation: 'comprehensive-tracker.interaction', userId, total: this.interactions.length })
 
     // Track in all systems (profile is now guaranteed to exist)
     try {
@@ -151,7 +159,7 @@ export class ComprehensiveUserTracker {
         this.trackInPerformanceSystem(choice, sceneId, timeToChoose || 0),
         this.trackInGameState(choice, sceneId)
       ])
-      console.log(`[ComprehensiveTracker] All tracking systems completed for ${userId}`)
+      logger.debug('All tracking systems completed', { operation: 'comprehensive-tracker.complete', userId })
     } catch (error) {
       console.error(`[ComprehensiveTracker] Error in tracking systems:`, error)
       // Don't throw - tracking errors shouldn't break the game
@@ -160,7 +168,7 @@ export class ComprehensiveUserTracker {
     // Generate career explorations if conditions are met
     try {
       await this.generateCareerExplorations(userId)
-      console.log(`[ComprehensiveTracker] Career exploration generation completed for ${userId}`)
+      logger.debug('Career exploration generation completed', { operation: 'comprehensive-tracker.career', userId })
     } catch (error) {
       console.error(`[ComprehensiveTracker] Error in career exploration generation:`, error)
     }
@@ -263,7 +271,9 @@ export class ComprehensiveUserTracker {
   private async generateCareerExplorations(userId: string): Promise<void> {
     const userMetrics = this.careerAnalytics.getUserMetrics(userId)
 
-    console.log(`[ComprehensiveTracker] Checking career generation for ${userId}:`, {
+    logger.debug('Checking career generation', {
+      operation: 'comprehensive-tracker.career-check',
+      userId,
       careerInterests: userMetrics.careerInterests.length,
       choicesMade: userMetrics.choicesMade,
       platformsExplored: userMetrics.platformsExplored.length
@@ -273,13 +283,13 @@ export class ComprehensiveUserTracker {
     const shouldGenerate = userMetrics.choicesMade % 5 === 0
 
     if (!shouldGenerate) {
-      console.log(`[ComprehensiveTracker] Skipping career generation (choice ${userMetrics.choicesMade}, waiting for multiple of 5)`)
+      logger.debug('Skipping career generation', { operation: 'comprehensive-tracker.career-skip', userId, choice: userMetrics.choicesMade })
       return
     }
 
     // Generate career explorations if user has sufficient data
     if (userMetrics.careerInterests.length > 0 || userMetrics.choicesMade >= 3) {
-      console.log(`[ComprehensiveTracker] Generating career explorations for ${userId} (choice ${userMetrics.choicesMade})`)
+      logger.debug('Generating career explorations', { operation: 'comprehensive-tracker.career-generate', userId, choice: userMetrics.choicesMade })
 
       const careerExplorations = this.mapInteractionsToCareers(userId, userMetrics)
 
@@ -288,7 +298,7 @@ export class ComprehensiveUserTracker {
         await this.queueCareerExplorationSync(exploration)
       }
     } else {
-      console.log(`[ComprehensiveTracker] Insufficient data for career generation: ${userId}`)
+      logger.debug('Insufficient data for career generation', { operation: 'comprehensive-tracker.career-insufficient', userId })
     }
   }
 
@@ -297,7 +307,7 @@ export class ComprehensiveUserTracker {
    */
   private mapInteractionsToCareers(
     userId: string,
-    userMetrics: any
+    userMetrics: SimpleCareerMetrics
   ): CareerExplorationData[] {
     const explorations: CareerExplorationData[] = []
     
@@ -337,7 +347,7 @@ export class ComprehensiveUserTracker {
       }
     } else {
       // If no specific interests, generate general career explorations based on engagement
-      console.log(`[ComprehensiveTracker] No specific interests, generating general careers for ${userId}`)
+      logger.debug('No specific interests, generating general careers', { operation: 'comprehensive-tracker.career-general', userId })
       
       // Generate 2-3 general career explorations based on user engagement
       const generalCareers = [
@@ -351,7 +361,7 @@ export class ComprehensiveUserTracker {
       }
     }
 
-    console.log(`[ComprehensiveTracker] Generated ${explorations.length} career explorations for ${userId}`)
+    logger.debug('Generated career explorations', { operation: 'comprehensive-tracker.career-generated', userId, count: explorations.length })
     return explorations
   }
 
@@ -361,7 +371,7 @@ export class ComprehensiveUserTracker {
   private createCareerExploration(
     userId: string,
     career: { name: string; baseScore: number; readiness: string },
-    userMetrics: any
+    userMetrics: SimpleCareerMetrics
   ): CareerExplorationData {
     // Calculate match score based on interactions
     let matchScore = career.baseScore
@@ -380,7 +390,7 @@ export class ComprehensiveUserTracker {
       user_id: userId,
       career_name: career.name,
       match_score: matchScore,
-      readiness_level: career.readiness as any,
+      readiness_level: career.readiness as CareerExplorationData['readiness_level'],
       local_opportunities: birminghamData.localOpportunities,
       education_paths: birminghamData.educationPaths,
       evidence: {
@@ -539,7 +549,7 @@ export class ComprehensiveUserTracker {
    * Now uses reliable sync queue instead of direct API call
    */
   private async queueCareerExplorationSync(exploration: CareerExplorationData): Promise<void> {
-    console.log(`[ComprehensiveTracker] Queuing career exploration: ${exploration.career_name}`)
+    logger.debug('Queuing career exploration', { operation: 'comprehensive-tracker.career-queue', userId: this.userId, careerName: exploration.career_name })
 
     // Use the sync queue for reliability (same as skill demonstrations)
     queueCareerExplorationSync({
@@ -561,23 +571,23 @@ export class ComprehensiveUserTracker {
     interactionType: string
   ): Promise<void> {
     // This would update the relationship_progress table
-    console.log(`[ComprehensiveTracker] Updating relationship: ${characterId} - ${interactionType}`)
+    logger.debug('Updating relationship', { operation: 'comprehensive-tracker.relationship', userId, characterId, interactionType })
   }
 
   /**
    * Track in skill tracker
    */
-  private async trackInSkillTracker(choice: any, sceneId: string): Promise<void> {
+  private async trackInSkillTracker(choice: TrackedChoice, sceneId: string): Promise<void> {
     if (this.skillTracker) {
       // Create minimal game state - recordChoice only uses it for pattern extraction
-      this.skillTracker.recordChoice(choice, sceneId, {} as any)
+      this.skillTracker.recordChoice(choice, sceneId, {} as Record<string, unknown>)
     }
   }
 
   /**
    * Track in career analytics
    */
-  private async trackInCareerAnalytics(_choice: any): Promise<void> {
+  private async trackInCareerAnalytics(_choice: unknown): Promise<void> {
     // This is already handled by trackUserChoice
   }
 
@@ -585,7 +595,7 @@ export class ComprehensiveUserTracker {
    * Track in performance system
    */
   private async trackInPerformanceSystem(
-    choice: any,
+    choice: TrackedChoice,
     sceneId: string,
     timeToChoose: number
   ): Promise<void> {
@@ -601,9 +611,9 @@ export class ComprehensiveUserTracker {
   /**
    * Track in game state
    */
-  private async trackInGameState(choice: any, sceneId: string): Promise<void> {
+  private async trackInGameState(choice: unknown, sceneId: string): Promise<void> {
     // This would update the game state manager
-    console.log(`[ComprehensiveTracker] Updating game state for choice in ${sceneId}`)
+    logger.debug('Updating game state for choice', { operation: 'comprehensive-tracker.game-state', userId: this.userId, sceneId })
   }
 
   /**
@@ -659,7 +669,7 @@ function cleanupStaleTrackers(): void {
 
   toDelete.forEach(userId => {
     trackerInstances.delete(userId)
-    console.log(`[ComprehensiveTracker] Cleaned up stale tracker for ${userId}`)
+    logger.debug('Cleaned up stale tracker', { operation: 'comprehensive-tracker.cleanup', userId })
   })
 
   // Also enforce max trackers limit (LRU eviction)
@@ -670,7 +680,7 @@ function cleanupStaleTrackers(): void {
     const toEvict = sorted.slice(0, trackerInstances.size - MAX_TRACKERS)
     toEvict.forEach(([userId]) => {
       trackerInstances.delete(userId)
-      console.log(`[ComprehensiveTracker] Evicted tracker for ${userId} (LRU)`)
+      logger.debug('Evicted tracker (LRU)', { operation: 'comprehensive-tracker.evict', userId })
     })
   }
 }
@@ -702,7 +712,7 @@ export function getComprehensiveTracker(userId: string): ComprehensiveUserTracke
  */
 export function resetAllTrackers(): void {
   trackerInstances.clear()
-  console.log('[ComprehensiveTracker] All trackers cleared')
+  logger.debug('All trackers cleared', { operation: 'comprehensive-tracker.clear-all' })
 }
 
 /**

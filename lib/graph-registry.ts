@@ -23,6 +23,7 @@ import { rohanDialogueGraph } from '@/content/rohan-dialogue-graph'
 import { silasDialogueGraph } from '@/content/silas-dialogue-graph'
 import { DialogueGraph } from './dialogue-graph'
 import { GameState } from './character-state'
+import { logger } from './logger'
 
 /**
  * All dialogue graphs in the system
@@ -68,25 +69,25 @@ export function getGraphForCharacter(
 ): DialogueGraph {
   // MAYA: Use revisit graph if arc is complete
   if (characterId === 'maya' && gameState.globalFlags.has('maya_arc_complete')) {
-    console.log('📖 Loading Maya revisit graph (arc completed)')
+    logger.debug('Loading Maya revisit graph (arc completed)', { operation: 'graph-registry.maya-revisit' })
     return DIALOGUE_GRAPHS.maya_revisit
   }
 
   // YAQUIN: Revisit logic (triggered by arc completion)
   if (characterId === 'yaquin' && gameState.globalFlags.has('yaquin_arc_complete')) {
-    console.log('📖 Loading Yaquin revisit graph (arc completed)')
+    logger.debug('Loading Yaquin revisit graph (arc completed)', { operation: 'graph-registry.yaquin-revisit' })
     return DIALOGUE_GRAPHS.yaquin_revisit
   }
 
   // DEVON: Future revisit logic
   // if (characterId === 'devon' && gameState.globalFlags.has('devon_arc_complete')) {
-  //   console.log('📖 Loading Devon revisit graph (arc completed)')
+  //   logger.debug('Loading Devon revisit graph (arc completed)', { operation: 'graph-registry.devon-revisit' })
   //   return DIALOGUE_GRAPHS.devon_revisit
   // }
 
   // JORDAN: Future revisit logic
   // if (characterId === 'jordan' && gameState.globalFlags.has('jordan_arc_complete')) {
-  //   console.log('📖 Loading Jordan revisit graph (arc completed)')
+  //   logger.debug('Loading Jordan revisit graph (arc completed)', { operation: 'graph-registry.jordan-revisit' })
   //   return DIALOGUE_GRAPHS.jordan_revisit
   // }
 

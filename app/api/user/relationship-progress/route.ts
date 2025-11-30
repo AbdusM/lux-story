@@ -8,6 +8,8 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { getSupabaseServerClient } from '@/lib/supabase-server'
+import { validateUserId } from '@/lib/user-id-validation'
+import { logger } from '@/lib/logger'
 
 // Mark as dynamic for Next.js static export compatibility
 export const dynamic = 'force-dynamic'
@@ -39,17 +41,24 @@ export async function POST(request: NextRequest) {
       interaction_count
     } = body
 
-    console.log('🔵 [API:RelationshipProgress] POST request:', {
+    logger.debug('Relationship progress POST request', {
+      operation: 'relationship-progress.post',
       userId: user_id,
-      character: character_name,
-      trustLevel: trust_level,
-      status: relationship_status
+      character: character_name
     })
 
     if (!user_id || !character_name || trust_level === undefined) {
-      console.error('❌ [API:RelationshipProgress] Missing required fields')
+      logger.warn('Missing required fields', { operation: 'relationship-progress.post' })
       return NextResponse.json(
         { error: 'Missing required fields: user_id, character_name, trust_level' },
+        { status: 400 }
+      )
+    }
+
+    const validation = validateUserId(user_id)
+    if (!validation.valid) {
+      return NextResponse.json(
+        { error: validation.error },
         { status: 400 }
       )
     }
@@ -76,22 +85,22 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (error) {
-      console.error('❌ [API:RelationshipProgress] Supabase error:', {
-        code: error.code,
-        message: error instanceof Error ? error.message : "Unknown error",
+      logger.error('Supabase error', {
+        operation: 'relationship-progress.post',
+        errorCode: error.code,
         userId: user_id,
         character: character_name
-      })
+      }, error instanceof Error ? error : undefined)
       return NextResponse.json(
         { error: 'Failed to upsert relationship progress' },
         { status: 500 }
       )
     }
 
-    console.log('✅ [API:RelationshipProgress] Upserted:', {
+    logger.debug('Relationship progress upserted', {
+      operation: 'relationship-progress.post',
       userId: user_id,
-      character: character_name,
-      trustLevel: trust_level
+      character: character_name
     })
 
     return NextResponse.json({
@@ -99,7 +108,9 @@ export async function POST(request: NextRequest) {
       relationship: data
     })
   } catch (error) {
-    console.error('[RelationshipProgress API] Unexpected error:', error)
+    logger.error('Unexpected error in relationship progress POST', {
+      operation: 'relationship-progress.post'
+    }, error instanceof Error ? error : undefined)
     const errorMessage = error instanceof Error ? error.message : "Internal server error"
 
     return NextResponse.json(
@@ -119,8 +130,17 @@ export async function GET(request: NextRequest) {
     const userId = searchParams.get('userId')
 
     if (!userId) {
+      logger.warn('Missing userId parameter', { operation: 'relationship-progress.get' })
       return NextResponse.json(
         { error: 'Missing userId parameter' },
+        { status: 400 }
+      )
+    }
+
+    const validation = validateUserId(userId)
+    if (!validation.valid) {
+      return NextResponse.json(
+        { error: validation.error },
         { status: 400 }
       )
     }
@@ -134,7 +154,11 @@ export async function GET(request: NextRequest) {
       .order('trust_level', { ascending: false })
 
     if (error) {
-      console.error('❌ [API:RelationshipProgress] Supabase error:', error)
+      logger.error('Supabase error', {
+        operation: 'relationship-progress.get',
+        errorCode: error.code,
+        userId
+      }, error instanceof Error ? error : undefined)
       return NextResponse.json(
         { error: 'Failed to fetch relationship progress' },
         { status: 500 }
@@ -146,7 +170,9 @@ export async function GET(request: NextRequest) {
       relationships: data || []
     })
   } catch (error) {
-    console.error('[RelationshipProgress API] Unexpected error:', error)
+    logger.error('Unexpected error in relationship progress GET', {
+      operation: 'relationship-progress.get'
+    }, error instanceof Error ? error : undefined)
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

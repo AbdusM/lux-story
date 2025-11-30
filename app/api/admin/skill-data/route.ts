@@ -9,6 +9,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAdminAuth, getAdminSupabaseClient } from '@/lib/admin-supabase-client'
 import { auditLog } from '@/lib/audit-logger'
+import { logger } from '@/lib/logger'
 
 // Mark as dynamic for Next.js static export compatibility
 export const dynamic = 'force-dynamic'
@@ -27,7 +28,7 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const userId = searchParams.get('userId')
 
-    console.log('🔵 [Admin:SkillData] GET request:', { userId })
+    logger.debug('GET request', { operation: 'admin.skill-data', userId: userId || undefined })
 
     if (!userId) {
       console.error('❌ [Admin:SkillData] Missing userId parameter')
@@ -64,7 +65,7 @@ export async function GET(request: NextRequest) {
     if (careerError) {
       console.warn('❌ [Admin Skill Data API] Career explorations error:', careerError)
     } else if (careerExplorations && careerExplorations.length > 0) {
-      console.log(`✅ [Admin Skill Data API] Found ${careerExplorations.length} career explorations for ${userId}`)
+      logger.debug('Found career explorations', { operation: 'admin.skill-data.career-explorations', userId, count: careerExplorations.length })
       // Merge career explorations into profile
       if (profile) {
         profile.career_explorations = careerExplorations
@@ -84,14 +85,15 @@ export async function GET(request: NextRequest) {
     }
 
     if (!profile) {
-      console.log('⚠️ [Admin:SkillData] No profile found for user:', userId)
+      logger.warn('No profile found for user', { operation: 'admin.skill-data.not-found', userId })
       return NextResponse.json(
         { error: 'User not found' },
         { status: 404 }
       )
     }
 
-    console.log('✅ [Admin:SkillData] Retrieved profile:', {
+    logger.debug('Retrieved profile', {
+      operation: 'admin.skill-data.success',
       userId,
       skillSummaries: profile.skill_summaries?.length || 0,
       skillDemonstrations: profile.skill_demonstrations?.length || 0,
