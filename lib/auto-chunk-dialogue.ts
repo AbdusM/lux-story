@@ -24,10 +24,10 @@ export interface ChunkConfig {
 }
 
 const DEFAULT_CONFIG: Required<ChunkConfig> = {
-  maxChunkLength: 100,  // Allow complete sentences (increased from 60)
-  minChunkLength: 30,   // Prevent tiny fragments (increased from 20)
+  maxChunkLength: 75,  // Reduced for better mobile readability (was 100)
+  minChunkLength: 30,   // Prevent tiny fragments
   enabled: true,
-  activationThreshold: 200,  // Only chunk longer paragraphs (increased from 150 to prevent over-chunking)
+  activationThreshold: 75,  // Aggressive chunking: chunk text >75 characters (was 200, reduced for text density reduction)
 }
 
 /**
