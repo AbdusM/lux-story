@@ -18,17 +18,11 @@ export const silasDialogueNodes: DialogueNode[] = [
     speaker: 'Silas',
     content: [
       {
-        text: `*Silas is kneeling in the dirt. Not digging—shaking. He's holding a clump of soil like it's a live grenade.*
+        text: `The dashboard says we're fine. The dashboard says I'm a genius.
 
-*He looks at a tablet propped up on a crate. It displays a cheerful green checkmark: "MOISTURE OPTIMAL."*
+But the basil is dying.
 
-*He squeezes the soil. It crumbles into dust. Bone dry.*{{exploring>=3:
-
-*Your curiosity sparks—something's broken between the data and reality. You want to dig deeper.*|}}
-
-The dashboard says we're fine. The dashboard says I'm a genius.
-
-But the basil is dying.`,
+I'm holding this soil. It crumbles into dust. Bone dry. The tablet says "MOISTURE OPTIMAL." The tablet lies.`,
         emotion: 'fearful_disbelief',
         variation_id: 'silas_intro_v2',
         richEffectContext: 'warning'
@@ -738,9 +732,7 @@ Last week he sent me a photo. His company built a meditation garden at their off
     speaker: 'Silas',
     content: [
       {
-        text: `*He flips through the notebook. Handwritten pages, some with dirt smudges.*
-
-Week One: Observation. No phones. You sit in the greenhouse and draw what you see. Every day, the same plant. You notice things change.
+        text: `Week One: Observation. No phones. You sit in the greenhouse and draw what you see. Every day, the same plant. You notice things change.
 
 Week Two: Failure. You grow something that will definitely die. You watch it die. You learn that death isn't a bug—it's part of the system.
 
@@ -862,7 +854,7 @@ One workshop at a time. One burnt-out engineer learning to feel the difference b
 
 The goal isn't to reject technology. It's to remember that we're the sensors. We're the real-time processing. The dashboards should serve us, not the other way around.
 
-*He picks up the basil plant. It's already perking up, the water finally reaching its roots.*
+The basil is already perking up. The water finally reached its roots.
 
 Ground truth. It's not just about farming. It's about how we know what we know.`,
         emotion: 'resolved_peaceful',

@@ -73,7 +73,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "Don't just look at it. Run it.\n\n*The scribbles seem to align into a glowing blue decision tree floating between you.*\n\n*Text scrolls across the projection:*\n\n\"System Active. Conversational Optimizer v1.4.\"\n\"Subject: Father.\"\n\"Input: 'I'm fine.'\"\n\"Status: Processing...",
+        text: "Don't just look at it. Run it.\n\nSystem Active. Conversational Optimizer v1.4.\nSubject: Father.\nInput: 'I'm fine.'\nStatus: Processing...",
         emotion: 'focused',
         variation_id: 'explains_scenario_v1',
         richEffectContext: 'warning', // Blueprint/Debug mode
@@ -112,7 +112,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     content: [
       {
         // NOTE: Removed "Devon taps" - environmental result only, not choreography
-        text: "*A waveform spikes red.*\n\nLook at that. 140Hz tremor. Pitch flat. Volume low.\n\n*The analyzer flashes red.*\n\n\"Probability of Deception: 88%.\"\n\nThe machine sees it. He's lying. He's not fine.\n\nSuggested Output: \"Conversational Subroutine 4B: Gentle Probe.\"",
+        text: "Look at that. 140Hz tremor. Pitch flat. Volume low.\n\nProbability of Deception: 88%.\n\nThe machine sees it. He's lying. He's not fine.\n\nSuggested Output: Conversational Subroutine 4B: Gentle Probe.",
         emotion: 'focused',
         variation_id: 'debug_step_2_v1',
         richEffectContext: 'warning'

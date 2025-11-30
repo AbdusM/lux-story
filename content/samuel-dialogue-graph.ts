@@ -20,9 +20,9 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Welcome. I'm Samuel Washington. I've been helping people find their way in <bloom>Birmingham</bloom> for a long time.\n\nYou're here to figure some things out. Good. That's what this place is for.\n\nYou'll meet some folks, hear their stories, and make some choices. No tests, no grades. Just real conversations.{{patience>=3:\n\n*Something settles in you—finally, a place where you can take your time.*|}}\n\nWhat you discover about yourself? It helps us help the next person who walks through that door.",
+        text: "Welcome. I'm Samuel Washington.",
         emotion: 'warm',
-        variation_id: 'intro_v1'
+        variation_id: 'intro_v1_part1'
       }
     ],
     choices: [
@@ -58,6 +58,100 @@ export const samuelDialogueNodes: DialogueNode[] = [
           characterId: 'samuel',
           trustChange: 2
         }
+      },
+      {
+        choiceId: 'continue_intro',
+        text: "[Continue]",
+        nextNodeId: 'samuel_introduction_2',
+        pattern: 'patience',
+        skills: ['communication']
+      }
+    ]
+  },
+  {
+    nodeId: 'samuel_introduction_2',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "I've been helping people find their way in <bloom>Birmingham</bloom> for a long time. Longer than I expected.",
+        emotion: 'warm',
+        variation_id: 'intro_v1_part2'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'ask_what_is_this_2',
+        text: "What is this place?",
+        nextNodeId: 'samuel_explains_station',
+        pattern: 'exploring',
+        skills: ['communication', 'adaptability']
+      },
+      {
+        choiceId: 'ask_about_platforms_2',
+        text: "I see platforms. Where do they lead?",
+        nextNodeId: 'samuel_explains_platforms',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'communication']
+      },
+      {
+        choiceId: 'continue_intro_2',
+        text: "[Continue]",
+        nextNodeId: 'samuel_introduction_3',
+        pattern: 'patience',
+        skills: ['communication']
+      }
+    ]
+  },
+  {
+    nodeId: 'samuel_introduction_3',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You're here to figure some things out. Good. That's what this place is for. No tests, no grades. Just real conversations.",
+        emotion: 'warm',
+        variation_id: 'intro_v1_part3'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'ask_what_is_this_3',
+        text: "What is this place?",
+        nextNodeId: 'samuel_explains_station',
+        pattern: 'exploring',
+        skills: ['communication', 'adaptability'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'ask_about_platforms_3',
+        text: "I see platforms. Where do they lead?",
+        nextNodeId: 'samuel_explains_platforms',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'communication'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'ask_who_are_you_3',
+        text: "Who are you, really?",
+        nextNodeId: 'samuel_backstory_intro',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'communication'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'ready_to_explore_intro',
+        text: "I'm ready to explore.",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'exploring',
+        skills: ['communication']
       }
     ]
   },
@@ -223,9 +317,9 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "I wanted to help people find their own blueprints. Not hand them answers. Create space for the right questions.\n\nThat's this station. Built somewhere between the old L&N Railroad depot and the dreams Birmingham hasn't realized yet. I didn't build it. It was waiting for someone to keep it.\n\nTime works differently here. Long enough to see hundreds find their way. Folks from Five Points, from Bessemer, from over in Homewood. All finding the same questions, just wearing different clothes.",
+        text: "I wanted to help people find their own blueprints. Not hand them answers. Create space for the right questions.",
         emotion: 'warm',
-        variation_id: 'purpose_v1'
+        variation_id: 'purpose_v1_part1'
       }
     ],
     choices: [
@@ -260,12 +354,102 @@ export const samuelDialogueNodes: DialogueNode[] = [
           characterId: 'samuel',
           trustChange: 1
         }
+      },
+      {
+        choiceId: 'continue_purpose',
+        text: "[Continue]",
+        nextNodeId: 'samuel_purpose_found_2',
+        pattern: 'patience',
+        skills: ['communication']
       }
     ],
     onEnter: [
       {
         characterId: 'samuel',
         addKnowledgeFlags: ['knows_purpose']
+      }
+    ]
+  },
+  {
+    nodeId: 'samuel_purpose_found_2',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "That's this station. Built somewhere between the old L&N Railroad depot and the dreams Birmingham hasn't realized yet. I didn't build it. It was waiting for someone to keep it.",
+        emotion: 'warm',
+        variation_id: 'purpose_v1_part2'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'beautiful_2',
+        text: "That's a beautiful purpose.",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'ready_for_my_blueprint_2',
+        text: "I'm ready to find my blueprint.",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'exploring',
+        skills: ['communication']
+      },
+      {
+        choiceId: 'continue_purpose_2',
+        text: "[Continue]",
+        nextNodeId: 'samuel_purpose_found_3',
+        pattern: 'patience',
+        skills: ['communication']
+      }
+    ]
+  },
+  {
+    nodeId: 'samuel_purpose_found_3',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Time works differently here. Long enough to see hundreds find their way. Folks from Five Points, from Bessemer, from over in Homewood. All finding the same questions, just wearing different clothes.",
+        emotion: 'warm',
+        variation_id: 'purpose_v1_part3'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'beautiful_3',
+        text: "That's a beautiful purpose.",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'ready_for_my_blueprint_3',
+        text: "I'm ready to find my blueprint.",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'exploring',
+        skills: ['communication']
+      },
+      {
+        choiceId: 'how_did_you_find_station_3',
+        text: "How did you find the station?",
+        nextNodeId: 'samuel_traveler_origin',
+        pattern: 'exploring',
+        skills: ['communication', 'creativity'],
+        visibleCondition: {
+          trust: { min: 5 }
+        },
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
       }
     ]
   },
@@ -613,9 +797,49 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "That's a particular kind of struggle. When your heart knows what it wants but the path feels... complicated.\n\nThere's someone on Platform 1 who understands that. Maya Chen - brilliant pre-med student at UAB. Her parents run a Vietnamese restaurant over on 3rd Avenue—saved every penny to get their daughter into that medical school.\n\nShe's supposed to become a doctor, and she's good enough. But between what she's 'supposed' to do and what she dreams about, there's a gap that's tearing her apart.",
+        text: "That's a particular kind of struggle. When your heart knows what it wants but the path feels... complicated.",
         emotion: 'knowing',
-        variation_id: 'discovers_helping_v1'
+        variation_id: 'discovers_helping_v1_part1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_helping_discover',
+        text: "[Continue]",
+        nextNodeId: 'samuel_discovers_helping_2',
+        pattern: 'patience',
+        skills: ['communication']
+      }
+    ]
+  },
+  {
+    nodeId: 'samuel_discovers_helping_2',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "There's someone on Platform 1 who understands that. Maya Chen - brilliant pre-med student at UAB. Her parents run a Vietnamese restaurant over on 3rd Avenue—saved every penny to get their daughter into that medical school.",
+        emotion: 'knowing',
+        variation_id: 'discovers_helping_v1_part2'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_helping_discover_2',
+        text: "[Continue]",
+        nextNodeId: 'samuel_discovers_helping_3',
+        pattern: 'patience',
+        skills: ['communication']
+      }
+    ]
+  },
+  {
+    nodeId: 'samuel_discovers_helping_3',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "She's supposed to become a doctor, and she's good enough. But between what she's 'supposed' to do and what she dreams about, there's a gap that's tearing her apart.",
+        emotion: 'knowing',
+        variation_id: 'discovers_helping_v1_part3'
       }
     ],
     choices: [
@@ -4226,9 +4450,61 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You approach encounters systematically. I've noticed.\n\nLet me share something from my therapeutic practice. I tracked patterns across 847 client sessions before I arrived here. Looking for the algorithms of human change.\n\nThe data revealed something surprising: Insight doesn't cause transformation. It's a correlation, not causation. People change when they feel safe enough to act on what they already know.\n\nYou analyze carefully—Maya's contradiction, Devon's grief patterns, Jordan's career trajectory. But you also know when analysis ends and presence begins.\n\nThat's wisdom. Knowing that some problems need frameworks, others need witnessing.\n\nIn your own journey, how do you balance systematic thinking with intuitive knowing?",
+        text: "You approach encounters systematically. I've noticed.\n\nLet me share something from my therapeutic practice. I tracked patterns across 847 client sessions before I arrived here. Looking for the algorithms of human change.",
         emotion: 'wise_analytical',
-        variation_id: 'analytical_bonus_v1'
+        variation_id: 'analytical_bonus_v1_part1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_analytical',
+        text: "[Continue]",
+        nextNodeId: 'samuel_analytical_bonus_2',
+        pattern: 'patience',
+        skills: ['communication']
+      }
+    ],
+    requiredState: {
+      trust: { min: 4 },
+      patterns: {
+        analytical: { min: 5 }
+      }
+    }
+  },
+  {
+    nodeId: 'samuel_analytical_bonus_2',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "The data revealed something surprising: Insight doesn't cause transformation. It's a correlation, not causation. People change when they feel safe enough to act on what they already know.\n\nYou analyze carefully—Maya's contradiction, Devon's grief patterns, Jordan's career trajectory. But you also know when analysis ends and presence begins.",
+        emotion: 'wise_analytical',
+        variation_id: 'analytical_bonus_v1_part2'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_analytical_2',
+        text: "[Continue]",
+        nextNodeId: 'samuel_analytical_bonus_3',
+        pattern: 'patience',
+        skills: ['communication']
+      }
+    ],
+    requiredState: {
+      trust: { min: 4 },
+      patterns: {
+        analytical: { min: 5 }
+      }
+    }
+  },
+  {
+    nodeId: 'samuel_analytical_bonus_3',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "That's wisdom. Knowing that some problems need frameworks, others need witnessing.\n\nIn your own journey, how do you balance systematic thinking with intuitive knowing?",
+        emotion: 'wise_analytical',
+        variation_id: 'analytical_bonus_v1_part3'
       }
     ],
     requiredState: {
@@ -4261,9 +4537,61 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*He settles into stillness, his presence expanding*\n\nYou understand patience. Not the passive kind—the active kind.\n\nIn therapy, I learned that patience isn't waiting. It's creating space for emergence. Not rushing the client's process. Not solving before they're ready.\n\nI see you doing this. With Maya's anxiety, Devon's grief, Jordan's doubt. You don't force resolution. You hold space for their unfolding.\n\nThat's a rare gift. Most people can't tolerate another's struggle without trying to fix it.\n\nYou can.\n\nI spent thirty years developing that capacity. You seem to carry it naturally.\n\nOr perhaps you've learned it through your own necessary waiting. Which is it?",
+        text: "You understand patience. Not the passive kind—the active kind.\n\nIn therapy, I learned that patience isn't waiting. It's creating space for emergence. Not rushing the client's process. Not solving before they're ready.",
         emotion: 'deeply_present',
-        variation_id: 'patience_bonus_v1'
+        variation_id: 'patience_bonus_v1_part1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_patience',
+        text: "[Continue]",
+        nextNodeId: 'samuel_patience_bonus_2',
+        pattern: 'patience',
+        skills: ['communication']
+      }
+    ],
+    requiredState: {
+      trust: { min: 5 },
+      patterns: {
+        patience: { min: 5 }
+      }
+    }
+  },
+  {
+    nodeId: 'samuel_patience_bonus_2',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "I see you doing this. With Maya's anxiety, Devon's grief, Jordan's doubt. You don't force resolution. You hold space for their unfolding.\n\nThat's a rare gift. Most people can't tolerate another's struggle without trying to fix it.\n\nYou can.",
+        emotion: 'deeply_present',
+        variation_id: 'patience_bonus_v1_part2'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_patience_2',
+        text: "[Continue]",
+        nextNodeId: 'samuel_patience_bonus_3',
+        pattern: 'patience',
+        skills: ['communication']
+      }
+    ],
+    requiredState: {
+      trust: { min: 5 },
+      patterns: {
+        patience: { min: 5 }
+      }
+    }
+  },
+  {
+    nodeId: 'samuel_patience_bonus_3',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "I spent thirty years developing that capacity. You seem to carry it naturally.\n\nOr perhaps you've learned it through your own necessary waiting. Which is it?",
+        emotion: 'deeply_present',
+        variation_id: 'patience_bonus_v1_part3'
       }
     ],
     requiredState: {
@@ -4303,9 +4631,61 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You ask questions that open doors. That's your gift.\n\nIn my practice, I learned to distinguish between questions that narrow (diagnostic) and questions that expand (therapeutic). \n\n'What's wrong?' narrows.\n'What else is possible?' expands.\n\nYou naturally ask the expansive kind. With Maya: 'What if you could bridge both?' With Jordan: 'What patterns connect your jobs?' With Devon: 'What would presence look like?'\n\nYou're not gathering information—you're creating possibility space.\n\nBirmingham needs that. Not more answers, more possibilities. Career paths nobody's named yet. Combinations that don't fit the boxes.\n\nHow did you develop that exploratory approach? Were you taught, or did necessity force you to find alternatives?",
+        text: "You ask questions that open doors. That's your gift.\n\nIn my practice, I learned to distinguish between questions that narrow (diagnostic) and questions that expand (therapeutic). \n\n'What's wrong?' narrows.\n'What else is possible?' expands.",
         emotion: 'recognizing_kindred',
-        variation_id: 'exploring_bonus_v1'
+        variation_id: 'exploring_bonus_v1_part1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_exploring',
+        text: "[Continue]",
+        nextNodeId: 'samuel_exploring_bonus_2',
+        pattern: 'patience',
+        skills: ['communication']
+      }
+    ],
+    requiredState: {
+      trust: { min: 3 },
+      patterns: {
+        exploring: { min: 5 }
+      }
+    }
+  },
+  {
+    nodeId: 'samuel_exploring_bonus_2',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You naturally ask the expansive kind. With Maya: 'What if you could bridge both?' With Jordan: 'What patterns connect your jobs?' With Devon: 'What would presence look like?'\n\nYou're not gathering information—you're creating possibility space.",
+        emotion: 'recognizing_kindred',
+        variation_id: 'exploring_bonus_v1_part2'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_exploring_2',
+        text: "[Continue]",
+        nextNodeId: 'samuel_exploring_bonus_3',
+        pattern: 'patience',
+        skills: ['communication']
+      }
+    ],
+    requiredState: {
+      trust: { min: 3 },
+      patterns: {
+        exploring: { min: 5 }
+      }
+    }
+  },
+  {
+    nodeId: 'samuel_exploring_bonus_3',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Birmingham needs that. Not more answers, more possibilities. Career paths nobody's named yet. Combinations that don't fit the boxes.\n\nHow did you develop that exploratory approach? Were you taught, or did necessity force you to find alternatives?",
+        emotion: 'recognizing_kindred',
+        variation_id: 'exploring_bonus_v1_part3'
       }
     ],
     requiredState: {
@@ -4345,9 +4725,61 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*His eyes glisten slightly—the first time you've seen emotion break through*\n\nYou help by witnessing. That's the highest form.\n\nI watched you tonight. Maya needed to be seen beyond her parents' expectations. Devon needed someone to hold him while he held everyone else. Jordan needed her competence reflected back.\n\nYou didn't fix them. You didn't advise them. You just... saw them fully.\n\nThat's what I tried to do for thirty years as a therapist. Some clinicians solve problems. Others bear witness to the humanity beneath the problems.\n\nYou're the latter kind. Naturally.\n\nI need you to know something: This station appeared for you too. Not just for Maya and Devon and Jordan.\n\nYou're not just a helper. You're also a traveler who needs to be helped.\n\nWho witnesses you?",
+        text: "You help by witnessing. That's the highest form.\n\nI watched you tonight. Maya needed to be seen beyond her parents' expectations. Devon needed someone to hold him while he held everyone else. Jordan needed her competence reflected back.",
         emotion: 'vulnerable_profound',
-        variation_id: 'helping_bonus_v1'
+        variation_id: 'helping_bonus_v1_part1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_helping',
+        text: "[Continue]",
+        nextNodeId: 'samuel_helping_bonus_2',
+        pattern: 'patience',
+        skills: ['communication']
+      }
+    ],
+    requiredState: {
+      trust: { min: 6 },
+      patterns: {
+        helping: { min: 5 }
+      }
+    }
+  },
+  {
+    nodeId: 'samuel_helping_bonus_2',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You didn't fix them. You didn't advise them. You just... saw them fully.\n\nThat's what I tried to do for thirty years as a therapist. Some clinicians solve problems. Others bear witness to the humanity beneath the problems.\n\nYou're the latter kind. Naturally.",
+        emotion: 'vulnerable_profound',
+        variation_id: 'helping_bonus_v1_part2'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_helping_2',
+        text: "[Continue]",
+        nextNodeId: 'samuel_helping_bonus_3',
+        pattern: 'patience',
+        skills: ['communication']
+      }
+    ],
+    requiredState: {
+      trust: { min: 6 },
+      patterns: {
+        helping: { min: 5 }
+      }
+    }
+  },
+  {
+    nodeId: 'samuel_helping_bonus_3',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "I need you to know something: This station appeared for you too. Not just for Maya and Devon and Jordan.\n\nYou're not just a helper. You're also a traveler who needs to be helped.\n\nWho witnesses you?",
+        emotion: 'vulnerable_profound',
+        variation_id: 'helping_bonus_v1_part3'
       }
     ],
     requiredState: {
@@ -4387,9 +4819,61 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You build bridges between people and their possibilities. That's what I've observed.\n\nLet me tell you about the last structure I built before arriving here. Not physical—conceptual. A framework for career resilience I developed with Birmingham educators.\n\nWe were trying to help students in neighborhoods with 40% unemployment. Traditional career counseling wasn't working. 'Find your passion' means nothing when you're worried about survival.\n\nSo we built something new: Career as construction project. You work with available materials—skills, connections, constraints. You build what's possible now, not what's ideal someday.\n\nMaya's building her robotics prototype with borrowed equipment. Devon's building meaning from his mother's legacy. Jordan's building a career cathedral from seven different quarries.\n\nYou helped them see themselves as builders, not failures.\n\nWhat are you building with your own available materials?",
+        text: "You build bridges between people and their possibilities. That's what I've observed.\n\nLet me tell you about the last structure I built before arriving here. Not physical—conceptual. A framework for career resilience I developed with Birmingham educators.",
         emotion: 'wise_constructive',
-        variation_id: 'building_bonus_v1'
+        variation_id: 'building_bonus_v1_part1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_building',
+        text: "[Continue]",
+        nextNodeId: 'samuel_building_bonus_2',
+        pattern: 'patience',
+        skills: ['communication']
+      }
+    ],
+    requiredState: {
+      trust: { min: 4 },
+      patterns: {
+        building: { min: 5 }
+      }
+    }
+  },
+  {
+    nodeId: 'samuel_building_bonus_2',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "We were trying to help students in neighborhoods with 40% unemployment. Traditional career counseling wasn't working. 'Find your passion' means nothing when you're worried about survival.\n\nSo we built something new: Career as construction project. You work with available materials—skills, connections, constraints. You build what's possible now, not what's ideal someday.",
+        emotion: 'wise_constructive',
+        variation_id: 'building_bonus_v1_part2'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_building_2',
+        text: "[Continue]",
+        nextNodeId: 'samuel_building_bonus_3',
+        pattern: 'patience',
+        skills: ['communication']
+      }
+    ],
+    requiredState: {
+      trust: { min: 4 },
+      patterns: {
+        building: { min: 5 }
+      }
+    }
+  },
+  {
+    nodeId: 'samuel_building_bonus_3',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Maya's building her robotics prototype with borrowed equipment. Devon's building meaning from his mother's legacy. Jordan's building a career cathedral from seven different quarries.\n\nYou helped them see themselves as builders, not failures.\n\nWhat are you building with your own available materials?",
+        emotion: 'wise_constructive',
+        variation_id: 'building_bonus_v1_part3'
       }
     ],
     requiredState: {

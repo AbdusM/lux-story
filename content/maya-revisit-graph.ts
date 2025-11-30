@@ -361,7 +361,7 @@ You asked me what *I* wanted, and I didn't have an answer then. Now I'm actually
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*smiles gently*\n\nOkay, I won't push. Just know that you've already made a difference in at least one person's life. That counts for something.\n\nWhenever you're ready to talk about your journey, I'll listen the way you listened to me.",
+        text: "Okay, I won't push. Just know that you've already made a difference in at least one person's life. That counts for something.\n\nWhenever you're ready to talk about your journey, I'll listen the way you listened to me.",
         emotion: 'warm',
         variation_id: 'deflection_v1'
       }

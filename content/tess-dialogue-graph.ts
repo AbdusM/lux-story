@@ -19,7 +19,9 @@ export const tessDialogueNodes: DialogueNode[] = [
     speaker: 'Tess',
     content: [
       {
-        text: `*Hiking boots on marble. Blazer over flannel. Corkboard of index cards.*|'Not rigor. Resilience? Too soft. Grit? Overused.'|You look like you've been outside. 'Wilderness Immersion'—vacation or crucible?`,
+        text: `Not rigor. Resilience? Too soft. Grit? Overused.
+
+You look like you've been outside. Wilderness Immersion—vacation or crucible?`,
         emotion: 'passionate',
         interaction: 'jitter',
         variation_id: 'tess_intro_v1',

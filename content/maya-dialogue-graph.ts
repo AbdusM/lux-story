@@ -69,7 +69,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Yes, pre-med at UAB. Second year. Organic chemistry is... it's going great. Really great.\n\nMy parents are so proud.{{analytical>=3:\n\n*Something catches your attention—she said 'my parents are proud,' not 'I am proud.'*|}}",
+        text: "Yes, pre-med at UAB. Second year. Organic chemistry is... it's going great. Really great.\n\nMy parents are so proud.",
         emotion: 'deflecting',
         variation_id: 'studies_v2_clean'
       }
@@ -353,7 +353,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*She hesitates, then reaches into her bag. She pulls out a sleek, 3D-printed skeletal hand. It's <jitter>twitching violently</jitter>, servos whining.* \n\nI... I build these. Or I try to. This is a prototype for pediatric grip assistance. \n\nBut look at it. The index actuator is oscillating. I've checked the code a thousand times. It won't stabilize. \n\n*The hand spasms, fingers clenching into a fist.* \n\nIt's fighting itself. Just like me.",
+        text: "I... I build these. Or I try to. This is a prototype for pediatric grip assistance.\n\nLook at it. The index actuator is oscillating. I've checked the code a thousand times. It won't stabilize.\n\nThe hand spasms. Fingers clench into a fist.\n\nIt's fighting itself. Just like me.",
         emotion: 'vulnerable_focused',
         variation_id: 'robotics_scenario_v1',
         richEffectContext: 'warning', // Immersive "System Alert" feel
@@ -413,7 +413,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*You reach for the multimeter. As you touch the contacts, the servo emits a sharp <glitch>POP</glitch> and smoke curls up.* \n\nOh no. No no no. \n\n*Maya snatches the hand back, staring at the blackened circuit.* \n\nI fried it. Three months of work. Gone. \n\nMaybe... maybe this is a sign. I'm not an engineer. I should just stick to biology.",
+        text: "Oh no. No no no.\n\nThe servo just popped. Smoke. The circuit is blackened.\n\nI fried it. Three months of work. Gone.\n\nMaybe... maybe this is a sign. I'm not an engineer. I should just stick to biology.",
         emotion: 'devastated',
         variation_id: 'robotics_fail_v1',
         richEffectContext: 'error'
@@ -445,7 +445,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*She shoves the broken hand deep into her bag.* \n\nIt's fine. Really. It was just a hobby anyway. \n\nLet's just... talk about school. Or something normal.",
+        text: "It's fine. Really. It was just a hobby anyway.\n\nLet's just... talk about school. Or something normal.",
         emotion: 'closed_off',
         variation_id: 'retreat_v1'
       }
@@ -467,7 +467,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*The whining stops. The fingers relax, then curl gently, perfectly smooth.* \n\nYou fixed it. \n\n*She looks from the machine to you, eyes wide.* \n\nMy parents see a doctor when they look at me. You saw... an engineer. \n\nThat's the first time anyone has helped me with the machine instead of telling me to put it away.",
+        text: "The whining stopped. The fingers relaxed. Curled gently. Perfectly smooth.\n\nYou fixed it.\n\nMy parents see a doctor when they look at me. You saw... an engineer.\n\nThat's the first time anyone has helped me with the machine instead of telling me to put it away.",
         emotion: 'awed_grateful',
         variation_id: 'robotics_debug_success_v1',
         richEffectContext: 'success'
