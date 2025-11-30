@@ -162,13 +162,31 @@ I was good at it. Really good. But I never touched what I was building. It was a
       {
         text: `There was an outage. Big one. Three hours of downtime. Cost the company millions.
 
-We fixed it. I stayed up for 36 hours straight, tracing the bug through layers of abstraction. Found it in a race condition in a service I'd never heard of.
-
-When it was over, I went home, sat in my backyard, and looked at a tomato plant my neighbor had given me. It was dying. I didn't know how to save it.
+We fixed it. I stayed up for 36 hours straight, tracing the bug through layers of abstraction. Found it in a race condition in a service I'd never heard of.`,
+        emotion: 'humbled_realization',
+        variation_id: 'burnout_v1_part1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_burnout',
+        text: "[Continue]",
+        nextNodeId: 'silas_burnout_story_2',
+        pattern: 'patience',
+        skills: ['communication']
+      }
+    ]
+  },
+  {
+    nodeId: 'silas_burnout_story_2',
+    speaker: 'Silas',
+    content: [
+      {
+        text: `When it was over, I went home, sat in my backyard, and looked at a tomato plant my neighbor had given me. It was dying. I didn't know how to save it.
 
 I could orchestrate a million servers, but I couldn't keep one plant alive.`,
         emotion: 'humbled_realization',
-        variation_id: 'burnout_v1'
+        variation_id: 'burnout_v1_part2'
       }
     ],
     choices: [
@@ -850,15 +868,51 @@ He left me his trowel. It's 50 years old. The handle is worn smooth from his han
       {
         text: `I want to scale Mr. Hawkins. But not through software.
 
-One workshop at a time. One burnt-out engineer learning to feel the difference between wet soil and dry. One product manager realizing that "move fast and break things" doesn't work when the thing you break is alive.
-
-The goal isn't to reject technology. It's to remember that we're the sensors. We're the real-time processing. The dashboards should serve us, not the other way around.
-
-The basil is already perking up. The water finally reached its roots.
-
-Ground truth. It's not just about farming. It's about how we know what we know.`,
+One workshop at a time. One burnt-out engineer learning to feel the difference between wet soil and dry. One product manager realizing that "move fast and break things" doesn't work when the thing you break is alive.`,
         emotion: 'resolved_peaceful',
-        variation_id: 'final_vision_v1'
+        variation_id: 'final_vision_v1_part1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_final_vision',
+        text: "[Continue]",
+        nextNodeId: 'silas_final_vision_2',
+        pattern: 'patience',
+        skills: ['communication']
+      }
+    ]
+  },
+  {
+    nodeId: 'silas_final_vision_2',
+    speaker: 'Silas',
+    content: [
+      {
+        text: `The goal isn't to reject technology. It's to remember that we're the sensors. We're the real-time processing. The dashboards should serve us, not the other way around.
+
+The basil is already perking up. The water finally reached its roots.`,
+        emotion: 'resolved_peaceful',
+        variation_id: 'final_vision_v1_part2'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_final_vision_2',
+        text: "[Continue]",
+        nextNodeId: 'silas_final_vision_3',
+        pattern: 'patience',
+        skills: ['communication']
+      }
+    ]
+  },
+  {
+    nodeId: 'silas_final_vision_3',
+    speaker: 'Silas',
+    content: [
+      {
+        text: `Ground truth. It's not just about farming. It's about how we know what we know.`,
+        emotion: 'resolved_peaceful',
+        variation_id: 'final_vision_v1_part3'
       }
     ],
     choices: [
