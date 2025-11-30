@@ -20,7 +20,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Welcome. I'm Samuel Washington. I've been helping people find their way in <bloom>Birmingham</bloom> for a long time.\n\nYou're here to figure some things out. Good. That's what this place is for.\n\nYou'll meet some folks, hear their stories, and make some choices. No tests, no grades. Just real conversations.\n\nWhat you discover about yourself? It helps us help the next person who walks through that door.",
+        text: "Welcome. I'm Samuel Washington. I've been helping people find their way in <bloom>Birmingham</bloom> for a long time.\n\nYou're here to figure some things out. Good. That's what this place is for.\n\nYou'll meet some folks, hear their stories, and make some choices. No tests, no grades. Just real conversations.{{patience>=3:\n\n*Something settles in you—finally, a place where you can take your time.*|}}\n\nWhat you discover about yourself? It helps us help the next person who walks through that door.",
         emotion: 'warm',
         variation_id: 'intro_v1'
       }

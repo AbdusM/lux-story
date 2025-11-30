@@ -554,6 +554,12 @@ That's not janitorial work. That's... communion.`,
         richEffectContext: 'success'
       }
     ],
+    onEnter: [
+      {
+        characterId: 'rohan',
+        thoughtId: 'curious-wanderer'
+      }
+    ],
     choices: [
       {
         choiceId: 'rohan_new_purpose',

@@ -103,7 +103,9 @@ const baseGameState: GameState = {
     problemSolving: 0
   },
   thoughts: [],
-  coreGameState: null // Required for GameState type compatibility
+  triggeredModules: [],
+  coreGameState: null, // Required for GameState type compatibility
+  unlockedAchievements: []
 }
 
 // Demo scenes for testing choices

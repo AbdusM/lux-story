@@ -52,12 +52,43 @@ import { detectArcCompletion, generateExperienceSummary } from '@/lib/arc-learni
 import { loadSkillProfile } from '@/lib/skill-profile-adapter'
 import { isSupabaseConfigured } from '@/lib/supabase'
 import { GameChoices } from '@/components/GameChoices'
-import { Brain, BookOpen, Stars, RefreshCw } from 'lucide-react'
+import { Brain, BookOpen, Stars, RefreshCw, Compass } from 'lucide-react'
 import { ThoughtCabinet } from '@/components/ThoughtCabinet'
 import { Journal } from '@/components/Journal'
 import { ProgressIndicator } from '@/components/ProgressIndicator'
 import { ConstellationPanel } from '@/components/constellation'
 import { TextProcessor } from '@/lib/text-processor'
+import { FloatingModuleEvaluator } from '@/lib/floating-module-evaluator'
+import type { FloatingModule } from '@/lib/dialogue-graph'
+import { JourneySummary } from '@/components/JourneySummary'
+import { generateJourneyNarrative, isJourneyComplete, type JourneyNarrative } from '@/lib/journey-narrative-generator'
+import { evaluateAchievements, getAchievement, type MetaAchievement } from '@/lib/meta-achievements'
+
+// Trust feedback messages - Telltale-style "X will remember that"
+const TRUST_FEEDBACK_MESSAGES = {
+  positive: [
+    "appreciates your understanding.",
+    "feels more comfortable with you.",
+    "opened up a little.",
+    "trusts you a bit more."
+  ],
+  negative: [
+    "seems more guarded now.",
+    "pulled back slightly.",
+    "isn't quite sure about you."
+  ]
+}
+
+function generateTrustFeedback(characterName: string, trustChange: number): string | null {
+  if (trustChange === 0) return null
+
+  const messages = trustChange > 0 ? TRUST_FEEDBACK_MESSAGES.positive : TRUST_FEEDBACK_MESSAGES.negative
+  const message = messages[Math.floor(Math.random() * messages.length)]
+
+  // Use first name only for intimacy
+  const firstName = characterName.split(' ')[0]
+  return `${firstName} ${message}`
+}
 
 // Types
 interface GameInterfaceState {
@@ -74,6 +105,7 @@ interface GameInterfaceState {
   selectedChoice: string | null
   showSaveConfirmation: boolean
   skillToast: { skill: string; message: string } | null
+  consequenceFeedback: { message: string } | null
   error: { title: string; message: string; severity: 'error' | 'warning' | 'info' } | null
   showTransition: boolean
   transitionData: { platform: number; message: string } | null
@@ -85,6 +117,10 @@ interface GameInterfaceState {
   showThoughtCabinet: boolean
   showJournal: boolean
   showConstellation: boolean
+  pendingFloatingModule: FloatingModule | null
+  showJourneySummary: boolean
+  journeyNarrative: JourneyNarrative | null
+  achievementNotification: MetaAchievement | null
 }
 
 export default function StatefulGameInterface() {
@@ -104,6 +140,7 @@ export default function StatefulGameInterface() {
     selectedChoice: null,
     showSaveConfirmation: false,
     skillToast: null,
+    consequenceFeedback: null,
     error: null,
     showTransition: false,
     transitionData: null,
@@ -113,7 +150,11 @@ export default function StatefulGameInterface() {
     showConfigWarning: !isSupabaseConfigured(),
     showThoughtCabinet: false,
     showJournal: false,
-    showConstellation: false
+    showConstellation: false,
+    pendingFloatingModule: null,
+    showJourneySummary: false,
+    journeyNarrative: null,
+    achievementNotification: null
   })
 
   // Rich effects config - KEEPING NEW STAGGERED MODE
@@ -153,6 +194,14 @@ export default function StatefulGameInterface() {
       return () => clearTimeout(timer)
     }
   }, [state.showSaveConfirmation])
+
+  // Auto-hide achievement notification after 5 seconds
+  useEffect(() => {
+    if (state.achievementNotification) {
+      const timer = setTimeout(() => setState(prev => ({ ...prev, achievementNotification: null })), 5000)
+      return () => clearTimeout(timer)
+    }
+  }, [state.achievementNotification])
 
   useEffect(() => {
     const exists = GameStateManager.hasSaveFile()
@@ -249,6 +298,7 @@ export default function StatefulGameInterface() {
         selectedChoice: null,
         showSaveConfirmation: false,
         skillToast: null,
+        consequenceFeedback: null,
         error: null,
         showTransition: false,
         transitionData: null,
@@ -259,7 +309,11 @@ export default function StatefulGameInterface() {
         showConfigWarning: !isSupabaseConfigured(),
         showThoughtCabinet: false,
         showJournal: false,
-        showConstellation: false
+        showConstellation: false,
+        pendingFloatingModule: null,
+        showJourneySummary: false,
+        journeyNarrative: null,
+        achievementNotification: null
       })
 
       // ═══════════════════════════════════════════════════════════════════════════
@@ -307,8 +361,25 @@ export default function StatefulGameInterface() {
 
     try {
       let newGameState = state.gameState
+      const previousPatterns = { ...state.gameState.patterns } // Store for threshold detection
+
       if (choice.choice.consequence) newGameState = GameStateUtils.applyStateChange(newGameState, choice.choice.consequence)
       if (choice.choice.pattern) newGameState = GameStateUtils.applyStateChange(newGameState, { patternChanges: { [choice.choice.pattern]: 1 } })
+
+      // Check for pattern threshold floating modules
+      let pendingFloatingModule: FloatingModule | null = null
+      const zustandStore = useGameStore.getState()
+      const triggeredModulesSet = zustandStore.getTriggeredModulesSet()
+
+      const patternResult = FloatingModuleEvaluator.checkPatternThresholds(
+        newGameState,
+        previousPatterns,
+        triggeredModulesSet
+      )
+      if (patternResult.module) {
+        pendingFloatingModule = patternResult.module
+        zustandStore.markModuleTriggered(patternResult.module.moduleId)
+      }
 
       const searchResult = findCharacterForNode(choice.choice.nextNodeId, newGameState)
       if (!searchResult) return
@@ -360,6 +431,16 @@ export default function StatefulGameInterface() {
         ? [...demonstratedSkills, ...state.recentSkills].slice(0, 10)
         : state.recentSkills.slice(0, 8)
 
+      // Generate trust feedback for Telltale-style consequence visibility
+      let consequenceFeedback: { message: string } | null = null
+      const trustChange = choice.choice.consequence?.trustChange
+      if (trustChange && trustChange !== 0 && nextNode.speaker) {
+        const feedbackMessage = generateTrustFeedback(nextNode.speaker, trustChange)
+        if (feedbackMessage) {
+          consequenceFeedback = { message: feedbackMessage }
+        }
+      }
+
       const completedArc = detectArcCompletion(state.gameState, newGameState)
       const experienceSummaryUpdate = { showExperienceSummary: false, experienceSummaryData: null as ExperienceSummaryData | null }
 
@@ -373,6 +454,29 @@ export default function StatefulGameInterface() {
               .catch(() => setState(prev => ({ ...prev, showExperienceSummary: true, experienceSummaryData: null }))) // Fallback
       }
     
+      // Check for arc_transition floating modules when arc is completed
+      if (completedArc && !pendingFloatingModule) {
+        const arcResult = FloatingModuleEvaluator.checkArcTransitionModules(
+          newGameState,
+          triggeredModulesSet
+        )
+        if (arcResult.module) {
+          pendingFloatingModule = arcResult.module
+          zustandStore.markModuleTriggered(arcResult.module.moduleId)
+        }
+      }
+
+      // Evaluate meta-achievements after state changes
+      let achievementNotification: MetaAchievement | null = null
+      const existingUnlocks = zustandStore.unlockedAchievements || []
+      const newAchievements = evaluateAchievements(newGameState, existingUnlocks)
+      if (newAchievements.length > 0) {
+        // Unlock the new achievements in Zustand
+        zustandStore.unlockAchievements(newAchievements)
+        // Show notification for the first new achievement
+        achievementNotification = getAchievement(newAchievements[0]) || null
+      }
+
       setState({
           gameState: newGameState,
           currentNode: nextNode,
@@ -387,6 +491,7 @@ export default function StatefulGameInterface() {
           selectedChoice: null,
           showSaveConfirmation: true,
           skillToast: null, // Disabled - skills tracked silently
+          consequenceFeedback,
           error: null,
           showTransition: false,
           transitionData: null,
@@ -396,7 +501,11 @@ export default function StatefulGameInterface() {
           showConfigWarning: state.showConfigWarning,
           showThoughtCabinet: state.showThoughtCabinet,
           showJournal: state.showJournal,
-          showConstellation: state.showConstellation
+          showConstellation: state.showConstellation,
+          pendingFloatingModule,
+          showJourneySummary: state.showJourneySummary,
+          journeyNarrative: state.journeyNarrative,
+          achievementNotification
       })
       GameStateManager.saveGameState(newGameState)
 
@@ -408,7 +517,7 @@ export default function StatefulGameInterface() {
       // We sync the full SerializableGameState, which automatically updates
       // all derived fields (characterTrust, patterns, etc.) via syncDerivedState
       // ═══════════════════════════════════════════════════════════════════════════
-      const zustandStore = useGameStore.getState()
+      // Note: zustandStore was declared earlier for floating module evaluation
 
       // Sync full CoreGameState to Zustand (single source of truth)
       const serializedState = GameStateUtils.serialize(newGameState)
@@ -536,6 +645,23 @@ export default function StatefulGameInterface() {
               >
                 <Stars className="w-5 h-5" />
               </button>
+              {/* Journey Summary - only show if journey is complete enough */}
+              {state.gameState && isJourneyComplete(state.gameState) && (
+                <button
+                  onClick={() => {
+                    if (state.gameState) {
+                      const demonstrations = skillTrackerRef.current?.getAllDemonstrations() || []
+                      const narrative = generateJourneyNarrative(state.gameState, demonstrations)
+                      setState(prev => ({ ...prev, showJourneySummary: true, journeyNarrative: narrative }))
+                    }
+                  }}
+                  className="min-w-[44px] min-h-[44px] p-2.5 rounded-full hover:bg-amber-100 active:bg-amber-200 transition-colors text-amber-600 flex items-center justify-center"
+                  aria-label="View Journey Summary"
+                  title="View your complete journey summary"
+                >
+                  <Compass className="w-5 h-5" />
+                </button>
+              )}
               <Link href="/student/insights">
                 <button className="min-h-[44px] text-xs sm:text-sm text-blue-600 hover:text-blue-700 active:text-blue-800 transition-colors px-3 py-2 font-medium rounded-md hover:bg-blue-50 active:bg-blue-100">
                   Your Journey
@@ -691,6 +817,35 @@ export default function StatefulGameInterface() {
         onDismiss={() => setState(prev => ({ ...prev, skillToast: null }))}
       />
 
+      {/* Trust/Consequence Feedback - Telltale-style "X will remember that" */}
+      <NarrativeFeedback
+        message={state.consequenceFeedback?.message || ''}
+        isVisible={!!state.consequenceFeedback}
+        onDismiss={() => setState(prev => ({ ...prev, consequenceFeedback: null }))}
+      />
+
+      {/* Meta-Achievement Notification - Subtle recognition, not gamified */}
+      {state.achievementNotification && (
+        <div
+          className="fixed bottom-24 left-1/2 -translate-x-1/2 z-40 animate-fade-in"
+          onClick={() => setState(prev => ({ ...prev, achievementNotification: null }))}
+        >
+          <div className="bg-gradient-to-r from-amber-900/90 to-stone-900/90 backdrop-blur-sm rounded-xl px-5 py-3 shadow-xl border border-amber-600/30 max-w-sm">
+            <div className="flex items-center gap-3">
+              <span className="text-2xl">{state.achievementNotification.icon || '✨'}</span>
+              <div>
+                <p className="text-amber-200 text-xs uppercase tracking-wide font-medium">
+                  {state.achievementNotification.name}
+                </p>
+                <p className="text-stone-300 text-sm italic">
+                  {state.achievementNotification.description}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Experience Summary */}
       {state.showExperienceSummary && state.experienceSummaryData && (
         <ExperienceSummary
@@ -716,6 +871,59 @@ export default function StatefulGameInterface() {
         isOpen={state.showConstellation}
         onClose={() => setState(prev => ({ ...prev, showConstellation: false }))}
       />
+
+      {/* Floating Module Interlude - Pattern/Milestone awakening moments */}
+      {state.pendingFloatingModule && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm animate-fade-in"
+          onClick={() => setState(prev => ({ ...prev, pendingFloatingModule: null }))}
+        >
+          <div
+            className="mx-4 max-w-lg bg-gradient-to-b from-amber-50 to-stone-50 rounded-2xl shadow-2xl border border-amber-200/50 overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Module Header */}
+            <div className="px-6 py-4 bg-gradient-to-r from-amber-100/80 to-stone-100/80 border-b border-amber-200/30">
+              <p className="text-xs font-medium text-amber-700 tracking-wider uppercase">
+                {state.pendingFloatingModule.tags?.includes('pattern_voice') ? 'Inner Voice' : 'A Moment of Clarity'}
+              </p>
+            </div>
+
+            {/* Module Content */}
+            <div className="px-6 py-6 sm:px-8 sm:py-8">
+              <div className="prose prose-slate prose-sm max-w-none">
+                {state.pendingFloatingModule.content.map((content, idx) => (
+                  <p
+                    key={idx}
+                    className="text-slate-700 leading-relaxed whitespace-pre-wrap"
+                    style={{ fontFamily: 'Georgia, serif' }}
+                  >
+                    {state.gameState ? TextProcessor.process(content.text, state.gameState) : content.text}
+                  </p>
+                ))}
+              </div>
+            </div>
+
+            {/* Dismiss Button */}
+            <div className="px-6 pb-6 sm:px-8 sm:pb-8">
+              <Button
+                onClick={() => setState(prev => ({ ...prev, pendingFloatingModule: null }))}
+                className="w-full bg-slate-800 hover:bg-slate-700 text-white min-h-[48px] active:scale-[0.98] transition-transform"
+              >
+                Continue
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Journey Summary - Samuel's narrative of the complete journey */}
+      {state.showJourneySummary && state.journeyNarrative && (
+        <JourneySummary
+          narrative={state.journeyNarrative}
+          onClose={() => setState(prev => ({ ...prev, showJourneySummary: false, journeyNarrative: null }))}
+        />
+      )}
     </div>
   )
 }
