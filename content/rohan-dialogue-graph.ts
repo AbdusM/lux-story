@@ -77,7 +77,7 @@ My mentor, David, spent 40 years mastering memory management. He treated every b
 
 This thing? It generated David's life's work in 400 milliseconds. And it added a bug that David would never have made.
 
-If we accept this... David didn't matter. *I* don't matter. We're just slow, buggy biological bootloaders for the machine.`,
+If we accept this... David didn't matter. I don't matter. We're just slow, buggy biological bootloaders for the machine.`,
         emotion: 'existential_dread',
         variation_id: 'erasure_v1'
       }
