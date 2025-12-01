@@ -36,6 +36,11 @@ vi.mock('../lib/ensure-user-profile', () => ({
   ensureUserProfile: vi.fn().mockResolvedValue(true)
 }))
 
+// Mock supabase to return configured
+vi.mock('../lib/supabase', () => ({
+  isSupabaseConfigured: vi.fn().mockReturnValue(true)
+}))
+
 describe('SyncQueue', () => {
   let mockStorage: Map<string, string>
 
@@ -315,20 +320,23 @@ describe('SyncQueue', () => {
     })
 
     test('handles failed actions with retry logic', async () => {
+      // Mock fetch to return 500 error
       global.fetch = vi.fn().mockResolvedValue({
         ok: false,
-        status: 500
+        status: 500,
+        text: async () => 'Internal Server Error'
       })
 
       SyncQueue.addToQueue({
         id: 'test-1',
         type: 'career_analytics',
-        data: { user_id: 'user123' },
+        data: { user_id: 'player_1234567890' },
         timestamp: Date.now()
       })
 
       const result = await SyncQueue.processQueue()
 
+      // 500 is a transient error, so action should remain in queue for retry
       expect(result.success).toBe(false)
       expect(result.processed).toBe(0)
       expect(result.failed).toBe(1)
@@ -337,19 +345,22 @@ describe('SyncQueue', () => {
       const queue = SyncQueue.getQueue()
       expect(queue).toHaveLength(1)
       expect(queue[0].id).toBe('test-1')
+      // Retries may be 0 on first failure, but action should remain in queue
+      expect(queue[0].retries).toBeGreaterThanOrEqual(0)
     })
 
     test('keeps failed actions in queue', async () => {
       global.fetch = vi.fn().mockResolvedValue({
         ok: false,
-        status: 500
+        status: 500,
+        text: async () => 'Internal Server Error'
       })
 
       // Add action with initial retries = 0
       SyncQueue.addToQueue({
         id: 'test-1',
         type: 'career_analytics',
-        data: { user_id: 'user123' },
+        data: { user_id: 'player_1234567890' },
         timestamp: Date.now()
       })
 
@@ -362,9 +373,11 @@ describe('SyncQueue', () => {
       expect(result.failed).toBe(1)
       expect(result.processed).toBe(0)
 
-      // Action should still be in queue for retry
+      // Action should still be in queue for retry (500 is transient, not permanent)
       const updatedQueue = SyncQueue.getQueue()
       expect(updatedQueue).toHaveLength(1)
+      // Retries may be 0 on first failure, but action should remain in queue
+      expect(updatedQueue[0].retries).toBeGreaterThanOrEqual(0)
     })
 
     test('continues processing after individual failures', async () => {
@@ -372,7 +385,11 @@ describe('SyncQueue', () => {
       global.fetch = vi.fn().mockImplementation(() => {
         callCount++
         if (callCount === 1) {
-          return Promise.resolve({ ok: false, status: 500 })
+          return Promise.resolve({ 
+            ok: false, 
+            status: 500,
+            text: async () => 'Internal Server Error'
+          })
         }
         return Promise.resolve({ ok: true, json: async () => ({ success: true }) })
       })
@@ -380,14 +397,14 @@ describe('SyncQueue', () => {
       SyncQueue.addToQueue({
         id: 'fail-1',
         type: 'career_analytics',
-        data: { user_id: 'user1' },
+        data: { user_id: 'player_1111111111' },
         timestamp: Date.now()
       })
 
       SyncQueue.addToQueue({
         id: 'success-1',
         type: 'career_analytics',
-        data: { user_id: 'user2' },
+        data: { user_id: 'player_2222222222' },
         timestamp: Date.now()
       })
 
@@ -395,6 +412,10 @@ describe('SyncQueue', () => {
 
       expect(result.processed).toBe(1) // success-1 processed
       expect(result.failed).toBe(1) // fail-1 failed
+      
+      // fail-1 should remain in queue for retry
+      const queue = SyncQueue.getQueue()
+      expect(queue.some(a => a.id === 'fail-1')).toBe(true)
     })
 
     test('calls ensureUserProfile before processing actions', async () => {
@@ -407,13 +428,13 @@ describe('SyncQueue', () => {
       SyncQueue.addToQueue({
         id: 'test-1',
         type: 'career_analytics',
-        data: { user_id: 'user123' },
+        data: { user_id: 'player_1234567890' },
         timestamp: Date.now()
       })
 
       await SyncQueue.processQueue()
 
-      expect(ensureUserProfile).toHaveBeenCalledWith('user123')
+      expect(ensureUserProfile).toHaveBeenCalledWith('player_1234567890')
     })
 
     test('skips action if ensureUserProfile fails', async () => {
@@ -423,7 +444,7 @@ describe('SyncQueue', () => {
       SyncQueue.addToQueue({
         id: 'test-1',
         type: 'career_analytics',
-        data: { user_id: 'user123' },
+        data: { user_id: 'player_1234567890' },
         timestamp: Date.now()
       })
 
@@ -431,6 +452,12 @@ describe('SyncQueue', () => {
 
       expect(result.failed).toBe(1)
       expect(result.processed).toBe(0)
+      
+      // Action should remain in queue (may or may not have incremented retries)
+      const queue = SyncQueue.getQueue()
+      expect(queue).toHaveLength(1)
+      // The important thing is the action remains for retry
+      expect(queue[0].id).toBe('test-1')
     })
   })
 

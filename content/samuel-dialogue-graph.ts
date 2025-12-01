@@ -20,7 +20,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Welcome. I'm Samuel Washington.",
+        text: "Welcome. I'm the conductor.",
         emotion: 'warm',
         variation_id: 'intro_v1_part1'
       }
@@ -1278,7 +1278,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'what_did_maya_choose',
         text: "What path did she choose?",
-        nextNodeId: 'samuel_maya_path_reflection',
+        nextNodeId: 'samuel_hub_after_maya',
         pattern: 'exploring',
         skills: ['communication', 'creativity']
       },
@@ -1292,7 +1292,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'accept_insight',
         text: "That distinction matters.",
-        nextNodeId: 'samuel_maya_path_reflection',
+        nextNodeId: 'samuel_hub_after_maya',
         pattern: 'patience',
         skills: ['criticalThinking', 'emotionalIntelligence'],
         consequence: {
@@ -1345,7 +1345,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'what_path_did_she_choose',
         text: "Which path did she choose?",
-        nextNodeId: 'samuel_maya_path_reflection',
+        nextNodeId: 'samuel_hub_after_maya',
         pattern: 'exploring',
         skills: ['communication']
       },
@@ -1669,7 +1669,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'trust_as_map',
         text: "Connection is the map.",
-        nextNodeId: 'samuel_maya_path_reflection',
+        nextNodeId: 'samuel_hub_after_maya',
         pattern: 'analytical',
         skills: ['criticalThinking', 'emotionalIntelligence'],
         consequence: {
@@ -1696,7 +1696,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'witness_not_lead',
         text: "Witness, not lead.",
-        nextNodeId: 'samuel_maya_path_reflection',
+        nextNodeId: 'samuel_hub_after_maya',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'leadership'],
         consequence: {
@@ -2682,14 +2682,14 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'what_did_he_choose',
         text: "He made a choice about how to talk to his dad.",
-        nextNodeId: 'samuel_devon_path_reflection',
+        nextNodeId: 'samuel_hub_after_devon',
         pattern: 'exploring',
         skills: ['communication']
       },
       {
         choiceId: 'systems_can_hold_grief',
         text: "I think he realized systems can hold grief too.",
-        nextNodeId: 'samuel_devon_path_reflection',
+        nextNodeId: 'samuel_hub_after_devon',
         pattern: 'analytical',
         skills: ['criticalThinking', 'creativity'],
         consequence: {
@@ -3108,14 +3108,14 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'offered_mirror',
         text: "I tried to show her what she couldn't see in herself.",
-        nextNodeId: 'samuel_jordan_path_reflection',
+        nextNodeId: 'samuel_hub_after_devon',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication', 'leadership']
       },
       {
         choiceId: 'asked_questions',
         text: "I asked questions. Let her find her own answers.",
-        nextNodeId: 'samuel_jordan_path_reflection',
+        nextNodeId: 'samuel_hub_after_devon',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'communication', 'leadership'],
         consequence: {
@@ -3126,7 +3126,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'just_listened',
         text: "Just listened. Sometimes that's enough.",
-        nextNodeId: 'samuel_jordan_path_reflection',
+        nextNodeId: 'samuel_hub_after_devon',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'communication', 'communication']
       }
@@ -3523,52 +3523,8 @@ export const samuelDialogueNodes: DialogueNode[] = [
     }
   },
 
-  // ============= YAQUIN REFLECTION GATEWAY =============
-  {
-    nodeId: 'samuel_yaquin_reflection_gateway',
-    speaker: 'Samuel Washington',
-    content: [
-      {
-        text: "Yaquin just sprinted past with a notebook full of diagrams. He said he's launching a 'beta cohort.'\n\nYou helped him realize he doesn't need permission to teach. That's a powerful shift.",
-        emotion: 'proud',
-        variation_id: 'yaquin_gateway_v1'
-      }
-    ],
-    requiredState: {
-      hasGlobalFlags: ['yaquin_arc_complete'],
-      lacksKnowledgeFlags: ['reflected_on_yaquin']
-    },
-    choices: [
-      {
-        choiceId: 'yaquin_launched_now',
-        text: "He stopped waiting for perfect and started building.",
-        nextNodeId: 'samuel_reflects_yaquin_launch',
-        pattern: 'building',
-        skills: ['problemSolving', 'adaptability'],
-        visibleCondition: {
-          hasGlobalFlags: ['yaquin_launched']
-        }
-      },
-      {
-        choiceId: 'yaquin_building_audience',
-        text: "He's building trust first. Playing the long game.",
-        nextNodeId: 'samuel_reflects_yaquin_audience',
-        pattern: 'analytical',
-        skills: ['collaboration'],
-        visibleCondition: {
-          hasGlobalFlags: ['yaquin_building_audience']
-        }
-      }
-    ],
-    onEnter: [
-      {
-        characterId: 'samuel',
-        addKnowledgeFlags: ['reflected_on_yaquin']
-      }
-    ]
-  },
-
   // ============= TRUST MILESTONE ACKNOWLEDGMENTS =============
+  // NOTE: Duplicate samuel_yaquin_reflection_gateway removed (original at line 1905)
   {
     nodeId: 'samuel_acknowledges_robotics',
     speaker: 'Samuel Washington',
@@ -4517,14 +4473,14 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'analytical_balance',
         text: "Analysis provides structure. Intuition provides direction.",
-        nextNodeId: 'samuel_structure_direction',
+        nextNodeId: 'samuel_your_path',
         pattern: 'analytical',
         skills: ['criticalThinking', 'emotionalIntelligence']
       },
       {
         choiceId: 'analytical_limits',
         text: "I'm learning when analysis becomes avoidance.",
-        nextNodeId: 'samuel_analysis_avoidance',
+        nextNodeId: 'samuel_your_path',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'adaptability']
       }
@@ -4604,21 +4560,21 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'patience_learned',
         text: "Learned. Through waiting I didn't choose.",
-        nextNodeId: 'samuel_necessary_waiting',
+        nextNodeId: 'samuel_hub_after_maya',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'adaptability']
       },
       {
         choiceId: 'patience_practice',
         text: "Still practicing. Every encounter teaches me.",
-        nextNodeId: 'samuel_practice_patience',
+        nextNodeId: 'samuel_hub_after_maya',
         pattern: 'exploring',
         skills: ['adaptability', 'communication']
       },
       {
         choiceId: 'patience_natural',
         text: "Maybe both. Some things are native, some cultivated.",
-        nextNodeId: 'samuel_native_cultivated',
+        nextNodeId: 'samuel_hub_after_maya',
         pattern: 'analytical',
         skills: ['criticalThinking', 'emotionalIntelligence']
       }
@@ -4698,21 +4654,21 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'exploring_necessity',
         text: "Necessity. Traditional paths didn't fit me.",
-        nextNodeId: 'samuel_paths_not_fit',
+        nextNodeId: 'samuel_hub_after_maya',
         pattern: 'exploring',
         skills: ['adaptability', 'creativity']
       },
       {
         choiceId: 'exploring_curiosity',
         text: "Curiosity. I can't help asking 'what if?'",
-        nextNodeId: 'samuel_native_curiosity',
+        nextNodeId: 'samuel_hub_after_maya',
         pattern: 'exploring',
         skills: ['creativity', 'criticalThinking']
       },
       {
         choiceId: 'exploring_learned',
         text: "Learned from watching closed doors create suffering.",
-        nextNodeId: 'samuel_closed_doors',
+        nextNodeId: 'samuel_hub_after_maya',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'creativity']
       }
@@ -4792,21 +4748,21 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'helping_question',
         text: "That's... a question I avoid asking.",
-        nextNodeId: 'samuel_avoiding_question',
+        nextNodeId: 'samuel_hub_after_maya',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'communication']
       },
       {
         choiceId: 'helping_mutual',
         text: "Maybe we witness each other. Right now.",
-        nextNodeId: 'samuel_mutual_witnessing',
+        nextNodeId: 'samuel_hub_after_maya',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'collaboration']
       },
       {
         choiceId: 'helping_role',
         text: "I'm more comfortable in the helper role.",
-        nextNodeId: 'samuel_comfortable_role',
+        nextNodeId: 'samuel_hub_after_maya',
         pattern: 'analytical',
         skills: ['criticalThinking', 'emotionalIntelligence']
       }
@@ -4886,21 +4842,21 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'building_still_discovering',
         text: "Still discovering what materials I have.",
-        nextNodeId: 'samuel_inventory_phase',
+        nextNodeId: 'samuel_hub_after_maya',
         pattern: 'exploring',
         skills: ['adaptability', 'creativity']
       },
       {
         choiceId: 'building_framework',
         text: "Maybe a framework for helping others build.",
-        nextNodeId: 'samuel_helper_framework',
+        nextNodeId: 'samuel_hub_after_maya',
         pattern: 'building',
         skills: ['creativity', 'leadership']
       },
       {
         choiceId: 'building_between',
         text: "Bridges between people and their potential.",
-        nextNodeId: 'samuel_bridge_builder',
+        nextNodeId: 'samuel_hub_after_maya',
         pattern: 'helping',
         skills: ['collaboration', 'communication']
       }

@@ -933,10 +933,19 @@ Thank you. Good luck with your journey.`,
     onEnter: [
       {
         characterId: 'jordan',
-        thoughtId: 'industrial-legacy'
+        thoughtId: 'industrial-legacy',
+        addGlobalFlags: ['jordan_arc_complete', 'jordan_chose_birmingham']
       }
     ],
-    choices: [],
+    choices: [
+      {
+        choiceId: 'jordan_birmingham_farewell',
+        text: "Good luck with your speech.",
+        nextNodeId: samuelEntryPoints.JORDAN_REFLECTION_GATEWAY,
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication']
+      }
+    ],
     tags: ['ending', 'jordan_arc']
   },
 

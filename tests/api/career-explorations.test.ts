@@ -75,7 +75,7 @@ describe('Career Explorations API - POST', () => {
 
   test('creates career exploration record successfully', async () => {
     const requestBody = {
-      user_id: 'user123',
+      user_id: 'player_1234567890',
       career_name: 'Software Engineer',
       match_score: 0.85,
       readiness_level: 'near_ready',
@@ -98,7 +98,7 @@ describe('Career Explorations API - POST', () => {
 
   test('creates record with default values when optional fields missing', async () => {
     const requestBody = {
-      user_id: 'user123',
+      user_id: 'player_1234567890',
       career_name: 'Healthcare Professional'
     }
 
@@ -155,7 +155,7 @@ describe('Career Explorations API - POST', () => {
     } as any
 
     const requestBody = {
-      user_id: 'user123',
+      user_id: 'player_1234567890',
       career_name: 'Software Engineer'
     }
 
@@ -178,7 +178,7 @@ describe('Career Explorations API - POST', () => {
     expect(rateLimit).toBeDefined()
 
     const requestBody = {
-      user_id: 'user123',
+      user_id: 'player_1234567890',
       career_name: 'Software Engineer'
     }
 
@@ -206,7 +206,7 @@ describe('Career Explorations API - POST', () => {
 
   test('upserts existing career exploration', async () => {
     const requestBody = {
-      user_id: 'user123',
+      user_id: 'player_1234567890',
       career_name: 'Software Engineer',
       match_score: 0.85
     }
@@ -249,19 +249,19 @@ describe('Career Explorations API - GET', () => {
   test('fetches career explorations for user successfully', async () => {
     mockSupabaseData['career_explorations'] = [
       {
-        user_id: 'user123',
+        user_id: 'player_1234567890',
         career_name: 'Software Engineer',
         match_score: 0.85
       },
       {
-        user_id: 'user123',
+        user_id: 'player_1234567890',
         career_name: 'Data Scientist',
         match_score: 0.78
       }
     ]
 
     const request = new NextRequest(
-      'http://localhost:3000/api/user/career-explorations?userId=user123'
+      'http://localhost:3000/api/user/career-explorations?userId=player_1234567890'
     )
 
     const response = await GET(request)
@@ -276,7 +276,7 @@ describe('Career Explorations API - GET', () => {
     mockSupabaseData['career_explorations'] = []
 
     const request = new NextRequest(
-      'http://localhost:3000/api/user/career-explorations?userId=user123'
+      'http://localhost:3000/api/user/career-explorations?userId=player_1234567890'
     )
 
     const response = await GET(request)
@@ -306,7 +306,7 @@ describe('Career Explorations API - GET', () => {
     } as any
 
     const request = new NextRequest(
-      'http://localhost:3000/api/user/career-explorations?userId=user123'
+      'http://localhost:3000/api/user/career-explorations?userId=player_1234567890'
     )
 
     const response = await GET(request)
@@ -319,17 +319,17 @@ describe('Career Explorations API - GET', () => {
   test('filters results by userId correctly', async () => {
     mockSupabaseData['career_explorations'] = [
       {
-        user_id: 'user123',
+        user_id: 'player_1234567890',
         career_name: 'Software Engineer'
       },
       {
-        user_id: 'user456',
+        user_id: 'player_9876543210',
         career_name: 'Designer'
       }
     ]
 
     const request = new NextRequest(
-      'http://localhost:3000/api/user/career-explorations?userId=user123'
+      'http://localhost:3000/api/user/career-explorations?userId=player_1234567890'
     )
 
     const response = await GET(request)
@@ -337,7 +337,7 @@ describe('Career Explorations API - GET', () => {
 
     expect(response.status).toBe(200)
     expect(data.careerExplorations).toHaveLength(1)
-    expect(data.careerExplorations[0].user_id).toBe('user123')
+    expect(data.careerExplorations[0].user_id).toBe('player_1234567890')
   })
 })
 

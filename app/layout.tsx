@@ -36,14 +36,47 @@ const robotoSlab = Roboto_Slab({
   display: 'swap',
 })
 
+// Helper to safely create URL for metadataBase
+function getMetadataBase(): URL {
+  try {
+    const url = process.env.NEXT_PUBLIC_SITE_URL || 'https://lux-story.com'
+    return new URL(url)
+  } catch {
+    // Fallback if URL parsing fails
+    return new URL('https://lux-story.com')
+  }
+}
+
 export const metadata: Metadata = {
-  title: "Grand Central Terminus - Birmingham Career Exploration",
-  description: 'A contemplative career exploration game for Birmingham youth',
+  metadataBase: getMetadataBase(),
+  title: "Lux Story - Career Exploration Game",
+  description: 'A contemplative career exploration game. Discover your path through calm choices with Lux, a sloth in a digital forest.',
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'Grand Central Terminus'
+    title: 'Lux Story'
+  },
+  openGraph: {
+    title: 'Lux Story - Career Exploration Game',
+    description: 'A contemplative career exploration game. Discover your path through calm choices.',
+    type: 'website',
+    url: 'https://lux-story.com',
+    siteName: 'Lux Story',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Lux Story - Career Exploration Game'
+      }
+    ]
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Lux Story - Career Exploration Game',
+    description: 'A contemplative career exploration game. Discover your path through calm choices.',
+    images: ['/og-image.png']
   }
 }
 

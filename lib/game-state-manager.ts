@@ -12,10 +12,8 @@ import {
   GameStateUtils,
   StateValidation
 } from './character-state'
-import { getGraphForCharacter } from './graph-registry'
+import { getGraphForCharacter, findCharacterForNode, getSafeStart, type CharacterId } from './graph-registry'
 import { logger } from './logger'
-
-type CharacterId = GameState['currentCharacterId'];
 
 const STORAGE_KEY = 'grand-central-terminus-save'
 const BACKUP_STORAGE_KEY = 'grand-central-terminus-save-backup'
@@ -124,13 +122,32 @@ export class GameStateManager {
           gameState
         )
         if (!graph.nodes.has(gameState.currentNodeId)) {
-          console.error(`Save file references non-existent node: ${gameState.currentNodeId}`)
-          logger.warn('Save file corrupted - resetting to safe start', { operation: 'game-state-manager.corrupted', nodeId: gameState.currentNodeId })
-          return null
+          // ATTEMPT RECOVERY instead of returning null
+          const recovered = this.recoverMissingNode(gameState)
+          if (recovered) {
+            logger.info('Recovered from missing node', { 
+              operation: 'game-state-manager.recovery',
+              oldNode: gameState.currentNodeId, 
+              newNode: recovered.currentNodeId,
+              character: recovered.currentCharacterId
+            })
+            return recovered
+          }
+          // Only reset if recovery impossible
+          logger.warn('Node missing, resetting to hub', { 
+            operation: 'game-state-manager.reset-to-hub',
+            nodeId: gameState.currentNodeId 
+          })
+          return this.resetToHub(gameState) // Preserves trust/flags/patterns
         }
       } catch (error) {
         console.error('Failed to verify node exists:', error)
-        return null
+        // Attempt recovery even on error
+        const recovered = this.recoverMissingNode(gameState)
+        if (recovered) {
+          return recovered
+        }
+        return this.resetToHub(gameState)
       }
 
       logger.debug('Game loaded successfully', { operation: 'game-state-manager.load', version: gameState.saveVersion })
@@ -206,6 +223,82 @@ export class GameStateManager {
     return {
       ...save,
       saveVersion: currentVersion
+    }
+  }
+
+  /**
+   * Attempt to recover from a missing node by finding an equivalent location
+   * Recovery strategies (in order):
+   * 1. Check if node moved to different character graph
+   * 2. Find character's hub node (e.g., samuel_hub_initial)
+   * 3. Fallback to Samuel introduction (preserves all state)
+   */
+  private static recoverMissingNode(gameState: GameState): GameState | null {
+    const missingNodeId = gameState.currentNodeId
+    const currentCharacterId = gameState.currentCharacterId
+
+    // Strategy 1: Check if node moved to different character graph
+    const searchResult = findCharacterForNode(missingNodeId, gameState)
+    if (searchResult && searchResult.graph.nodes.has(missingNodeId)) {
+      // Node found in a different graph - update character and continue
+      return {
+        ...gameState,
+        currentCharacterId: searchResult.characterId,
+        currentNodeId: missingNodeId,
+        lastSaved: Date.now()
+      }
+    }
+
+    // Strategy 2: Try to find character's hub node
+    const characterGraph = getGraphForCharacter(currentCharacterId, gameState)
+    
+    // For Samuel, try common hub nodes
+    if (currentCharacterId === 'samuel') {
+      const hubNodes = ['samuel_hub_initial', 'samuel_hub_after_maya', 'samuel_hub_after_devon', 'samuel_comprehensive_hub']
+      for (const hubNodeId of hubNodes) {
+        if (characterGraph.nodes.has(hubNodeId)) {
+          return {
+            ...gameState,
+            currentNodeId: hubNodeId,
+            currentCharacterId: 'samuel',
+            lastSaved: Date.now()
+          }
+        }
+      }
+    }
+
+    // Strategy 3: Fallback to safe start (Samuel introduction)
+    // This preserves all state (trust, flags, patterns)
+    const safeStart = getSafeStart()
+    const safeNodeId = safeStart.graph.startNodeId || 'samuel_introduction'
+    
+    if (safeStart.graph.nodes.has(safeNodeId)) {
+      return {
+        ...gameState,
+        currentNodeId: safeNodeId,
+        currentCharacterId: safeStart.characterId,
+        lastSaved: Date.now()
+      }
+    }
+
+    // Recovery failed
+    return null
+  }
+
+  /**
+   * Reset to hub while preserving all player progress
+   * Preserves: trust levels, flags, patterns, character relationships
+   * Only resets: current node position
+   */
+  private static resetToHub(gameState: GameState): GameState {
+    const safeStart = getSafeStart()
+    const safeNodeId = safeStart.graph.startNodeId || 'samuel_introduction'
+    
+    return {
+      ...gameState,
+      currentNodeId: safeNodeId,
+      currentCharacterId: safeStart.characterId,
+      lastSaved: Date.now()
     }
   }
 

@@ -180,7 +180,7 @@ describe('Platform State API (/api/user/platform-state)', () => {
       const { GET } = await import('@/app/api/user/platform-state/route')
 
       const url = new URL('http://localhost:3000/api/user/platform-state')
-      url.searchParams.set('userId', 'non_existent_user')
+      url.searchParams.set('userId', 'player_9999999999')
       const request = createRequest(url.toString())
 
       const response = await GET(request)
@@ -405,7 +405,7 @@ describe('Profile API (/api/user/profile)', () => {
       const { GET } = await import('@/app/api/user/profile/route')
 
       const url = new URL('http://localhost:3000/api/user/profile')
-      url.searchParams.set('userId', 'non_existent')
+      url.searchParams.set('userId', 'player_9999999999')
       const request = createRequest(url.toString())
 
       const response = await GET(request)

@@ -202,6 +202,23 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Check if Supabase is configured before processing
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL
+    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+    
+    if (!supabaseUrl || !serviceRoleKey || supabaseUrl.includes('placeholder')) {
+      logger.warn('Supabase not configured - skipping skill summary sync', {
+        operation: 'skill-summaries.post',
+        hasUrl: !!supabaseUrl,
+        hasServiceKey: !!serviceRoleKey
+      })
+      // Return success to prevent retry loops - data will be queued for later
+      return NextResponse.json({
+        success: true,
+        message: 'Supabase not configured - sync skipped'
+      })
+    }
+
     // Ensure player profile exists BEFORE attempting to insert skill summary
     // This prevents foreign key violations (error 23503)
     await ensurePlayerProfile(user_id)

@@ -31,13 +31,22 @@ export async function register() {
   }
 
   // Only initialize Sentry in production or when explicitly enabled
+  // Skip in development to avoid ESM/CommonJS conflicts with Prisma instrumentation
   if (process.env.NODE_ENV === 'production' || process.env.ENABLE_SENTRY === 'true') {
-    if (process.env.NEXT_RUNTIME === 'nodejs') {
-      // Server-side initialization
-      await import('./sentry.server.config');
-    } else if (process.env.NEXT_RUNTIME === 'edge') {
-      // Edge runtime initialization
-      await import('./sentry.edge.config');
+    try {
+      if (process.env.NEXT_RUNTIME === 'nodejs') {
+        // Server-side initialization
+        await import('./sentry.server.config');
+      } else if (process.env.NEXT_RUNTIME === 'edge') {
+        // Edge runtime initialization
+        await import('./sentry.edge.config');
+      }
+    } catch (error) {
+      // Silently fail if Sentry can't be initialized (e.g., ESM/CommonJS conflicts)
+      // This prevents the server from crashing due to Sentry configuration issues
+      if (process.env.NODE_ENV === 'development') {
+        console.warn('⚠️ Sentry initialization skipped in development:', error instanceof Error ? error.message : String(error));
+      }
     }
   }
 }

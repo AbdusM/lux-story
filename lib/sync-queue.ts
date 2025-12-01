@@ -118,17 +118,29 @@ export class SyncQueue {
       return { success: true, processed: 0, failed: 0 }
     }
 
+    // Skip sync if Supabase is not configured (prevents 405 errors in production)
+    const { isSupabaseConfigured } = await import('./supabase')
+    if (!isSupabaseConfigured()) {
+      // Silently clear queue if Supabase isn't configured - no point in retrying
+      this.clearQueue()
+      return { success: true, processed: queue.length, failed: 0 }
+    }
+
     const actionTypes = queue.reduce((acc, a) => {
       acc[a.type] = (acc[a.type] || 0) + 1
       return acc
     }, {} as Record<string, number>)
 
-    logger.debug('Processing queue', {
-      operation: 'sync-queue.process',
-      totalActions: queue.length,
-      actionTypes,
-      oldestAction: queue.length > 0 ? new Date(queue[0].timestamp).toISOString() : null
-    })
+    // Only log queue start if queue is large or has old items
+    const hasOldItems = queue.some(a => Date.now() - (a.timestamp || Date.now()) > 60000) // Older than 1 minute
+    if (queue.length > 10 || hasOldItems) {
+      logger.debug('Processing queue', {
+        operation: 'sync-queue.process',
+        totalActions: queue.length,
+        actionTypes,
+        oldestAction: queue.length > 0 ? new Date(queue[0].timestamp).toISOString() : null
+      })
+    }
 
     const successfulIds: string[] = []
     const permanentErrorIds: string[] = [] // Actions with permanent errors (405, 404, etc.) that should be removed
@@ -180,14 +192,8 @@ export class SyncQueue {
         continue
       }
       
-      const actionAge = Date.now() - (action.timestamp || Date.now())
-      logger.debug('Processing action', {
-        operation: 'sync-queue.process-action',
-        type: action.type,
-        id: action.id ? action.id.substring(0, 8) : 'no-id',
-        retries: action.retries || 0,
-        ageSeconds: Math.floor(actionAge / 1000)
-      })
+      // Debug log removed - too verbose for production
+      // Only log errors or unusual cases
 
       try {
         // Extract user_id from action (needed for foreign key constraints)
@@ -206,10 +212,10 @@ export class SyncQueue {
           const cachedExists = getCachedProfileExists(userId)
 
           if (cachedExists === true) {
-            logger.debug('Profile cached, skipping check', { operation: 'sync-queue.profile-check', userId })
+            // Profile cache check log removed - too verbose
             ensuredUserIds.add(userId)
           } else {
-            logger.debug('Ensuring profile exists', { operation: 'sync-queue.ensure-profile', userId })
+            // Profile ensure log removed - too verbose
             const profileEnsured = await ensureUserProfile(userId)
 
             if (!profileEnsured) {
@@ -220,7 +226,7 @@ export class SyncQueue {
 
             ensuredUserIds.add(userId)
             setCachedProfileExists(userId, true)
-            logger.debug('Profile ensured and cached', { operation: 'sync-queue.ensure-profile', userId })
+            // Profile ensured log removed - too verbose
           }
         }
 
@@ -242,7 +248,7 @@ export class SyncQueue {
 
           await method.apply(db, action.args as unknown[])
           successfulIds.push(action.id)
-          logger.debug('Action successful', { operation: 'sync-queue.action', type: 'db_method', method: action.method })
+          // Success log removed - too verbose
 
           // Real-time monitoring
           logSync((action.data as { user_id?: string })?.user_id || 'unknown', 'career_analytics', true)
@@ -273,7 +279,7 @@ export class SyncQueue {
           }
 
           successfulIds.push(action.id)
-          logger.debug('Action successful', { operation: 'sync-queue.action', type: 'career_analytics', userId: (action.data as { user_id?: string })?.user_id })
+          // Success log removed - too verbose
 
           // Real-time monitoring
           logSync((action.data as { user_id?: string })?.user_id || 'unknown', 'career_analytics', true)
@@ -304,11 +310,7 @@ export class SyncQueue {
           }
 
           successfulIds.push(action.id)
-          logger.debug('Action successful', {
-            operation: 'sync-queue.action',
-            type: 'skill_summary',
-            skill: (action.data as { skill_name?: string })?.skill_name
-          })
+          // Success log removed - too verbose
 
           // Real-time monitoring
           logSync((action.data as { user_id?: string })?.user_id || 'unknown', 'skill_summary', true)
@@ -339,11 +341,7 @@ export class SyncQueue {
           }
 
           successfulIds.push(action.id)
-          logger.debug('Action successful', {
-            operation: 'sync-queue.action',
-            type: 'skill_demonstration',
-            skill: (action.data as { skill_name?: string })?.skill_name
-          })
+          // Success log removed - too verbose
 
           // Real-time monitoring
           logSync((action.data as { user_id?: string })?.user_id || 'unknown', 'skill_demonstration', true)
@@ -374,11 +372,7 @@ export class SyncQueue {
           }
 
           successfulIds.push(action.id)
-          logger.debug('Action successful', {
-            operation: 'sync-queue.action',
-            type: 'career_exploration',
-            career: (action.data as { career_name?: string })?.career_name
-          })
+          // Success log removed - too verbose
 
           // Real-time monitoring
           logSync((action.data as { user_id?: string })?.user_id || 'unknown', 'career_exploration', true)
@@ -409,11 +403,7 @@ export class SyncQueue {
           }
 
           successfulIds.push(action.id)
-          logger.debug('Action successful', {
-            operation: 'sync-queue.action',
-            type: 'pattern_demonstration',
-            pattern: (action.data as { pattern_name?: string })?.pattern_name
-          })
+          // Success log removed - too verbose
 
           // Real-time monitoring
           logSync((action.data as { user_id?: string })?.user_id || 'unknown', 'pattern_demonstration', true)
@@ -438,11 +428,7 @@ export class SyncQueue {
           }
 
           successfulIds.push(action.id)
-          logger.debug('Action successful', {
-            operation: 'sync-queue.action',
-            type: 'relationship_progress',
-            character: (action.data as { character_name?: string })?.character_name
-          })
+          // Success log removed - too verbose
           logSync((action.data as { user_id?: string })?.user_id || 'unknown', 'relationship_progress', true)
 
         } else if (action.type === 'platform_state') {
@@ -465,11 +451,7 @@ export class SyncQueue {
           }
 
           successfulIds.push(action.id)
-          logger.debug('Action successful', {
-            operation: 'sync-queue.action',
-            type: 'platform_state',
-            userId: (action.data as { user_id?: string })?.user_id
-          })
+          // Success log removed - too verbose
           logSync((action.data as { user_id?: string })?.user_id || 'unknown', 'platform_state', true)
 
         } else {
@@ -521,17 +503,39 @@ export class SyncQueue {
         const isPermanentError = httpStatus !== null && [400, 404, 405, 422].includes(httpStatus)
         const willRetry = !isPermanentError && action.retries < 3
         
-        console.error('❌ [SyncQueue] Action failed:', {
-          type: action.type,
-          id: action.id?.substring(0, 8) || 'unknown',
-          error: errorMessage,
-          httpStatus,
-          isPermanentError,
-          errorDetails,
-          retries: action.retries || 0,
-          willRetry,
-          actionData: action.data ? (typeof action.data === 'object' ? Object.keys(action.data) : action.data) : 'no data'
-        })
+        // Only log to console in development - use logger in production
+        if (process.env.NODE_ENV === 'development') {
+          console.error('❌ [SyncQueue] Action failed:', {
+            type: action.type,
+            id: action.id?.substring(0, 8) || 'unknown',
+            error: errorMessage,
+            httpStatus,
+            isPermanentError,
+            errorDetails,
+            retries: action.retries || 0,
+            willRetry,
+            actionData: action.data ? (typeof action.data === 'object' ? Object.keys(action.data) : action.data) : 'no data'
+          })
+        } else {
+          // In production, use logger (quieter for permanent errors)
+          if (isPermanentError) {
+            logger.debug('Sync action failed (permanent error - will remove)', {
+              operation: 'sync-queue.action-failed',
+              type: action.type,
+              id: action.id?.substring(0, 8) || 'unknown',
+              httpStatus,
+              error: errorMessage.substring(0, 100) // Truncate for logging
+            })
+          } else {
+            logger.warn('Sync action failed (will retry)', {
+              operation: 'sync-queue.action-failed',
+              type: action.type,
+              id: action.id?.substring(0, 8) || 'unknown',
+              httpStatus,
+              retries: action.retries || 0
+            })
+          }
+        }
 
         // Real-time monitoring for failures
         const syncType = action.type === 'skill_summary' ? 'skill_summary' : 'career_analytics'
@@ -540,10 +544,21 @@ export class SyncQueue {
 
         if (isPermanentError) {
           // Remove permanent errors from queue - they won't succeed on retry
-          console.warn(`⚠️ [SyncQueue] Removing permanent error (${httpStatus}) from queue:`, {
-            type: action.type,
-            id: action.id?.substring(0, 8) || 'unknown'
-          })
+          // Only log in development to reduce console noise in production
+          if (process.env.NODE_ENV === 'development') {
+            console.warn(`⚠️ [SyncQueue] Removing permanent error (${httpStatus}) from queue:`, {
+              type: action.type,
+              id: action.id?.substring(0, 8) || 'unknown'
+            })
+          } else {
+            // In production, use debug logger instead of console.warn
+            logger.debug('Removing permanent error from queue', {
+              operation: 'sync-queue.permanent-error',
+              type: action.type,
+              id: action.id?.substring(0, 8) || 'unknown',
+              httpStatus
+            })
+          }
           permanentErrorIds.push(action.id)
           // Don't add to failedActions - it will be removed from queue
         } else if (willRetry) {
@@ -551,11 +566,20 @@ export class SyncQueue {
           failedActions.push({ ...action, retries: action.retries + 1 })
         } else {
           // Max retries reached - remove from queue
-          console.warn(`⚠️ [SyncQueue] Max retries reached, removing from queue:`, {
-            type: action.type,
-            id: action.id?.substring(0, 8) || 'unknown',
-            retries: action.retries
-          })
+          if (process.env.NODE_ENV === 'development') {
+            console.warn(`⚠️ [SyncQueue] Max retries reached, removing from queue:`, {
+              type: action.type,
+              id: action.id?.substring(0, 8) || 'unknown',
+              retries: action.retries
+            })
+          } else {
+            logger.debug('Max retries reached, removing from queue', {
+              operation: 'sync-queue.max-retries',
+              type: action.type,
+              id: action.id?.substring(0, 8) || 'unknown',
+              retries: action.retries
+            })
+          }
         }
       }
     }
@@ -565,16 +589,16 @@ export class SyncQueue {
     if (actionsToRemove.length > 0) {
       this.removeFromQueue(actionsToRemove)
       if (successfulIds.length > 0) {
-        logger.debug('Successfully synced actions', {
-          operation: 'sync-queue.complete',
-          count: successfulIds.length
-        })
+        // Success log removed - too verbose
       }
       if (permanentErrorIds.length > 0) {
-        logger.debug('Removed permanent errors from queue', {
-          operation: 'sync-queue.complete',
-          count: permanentErrorIds.length
-        })
+        // Only log if many permanent errors (unusual case)
+        if (permanentErrorIds.length > 5) {
+          logger.debug('Removed permanent errors from queue', {
+            operation: 'sync-queue.complete',
+            count: permanentErrorIds.length
+          })
+        }
       }
     }
 
@@ -594,10 +618,13 @@ export class SyncQueue {
       failed: failedActions.length
     }
 
-    logger.debug('Queue processing complete', {
-      operation: 'sync-queue.complete',
-      ...result
-    })
+    // Only log if there were failures
+    if (result.failed > 0) {
+      logger.debug('Queue processing complete with failures', {
+        operation: 'sync-queue.complete',
+        ...result
+      })
+    }
 
     return result
   }

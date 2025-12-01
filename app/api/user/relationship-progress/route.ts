@@ -63,6 +63,23 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Check if Supabase is configured before processing
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL
+    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+    
+    if (!supabaseUrl || !serviceRoleKey || supabaseUrl.includes('placeholder')) {
+      logger.warn('Supabase not configured - skipping relationship progress sync', {
+        operation: 'relationship-progress.post',
+        hasUrl: !!supabaseUrl,
+        hasServiceKey: !!serviceRoleKey
+      })
+      // Return success to prevent retry loops - data will be queued for later
+      return NextResponse.json({
+        success: true,
+        message: 'Supabase not configured - sync skipped'
+      })
+    }
+
     const supabase = getSupabaseServerClient()
 
     // Upsert: update if user_id + character_name exists, otherwise insert

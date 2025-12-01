@@ -63,6 +63,7 @@ import type { FloatingModule } from '@/lib/dialogue-graph'
 import { JourneySummary } from '@/components/JourneySummary'
 import { generateJourneyNarrative, isJourneyComplete, type JourneyNarrative } from '@/lib/journey-narrative-generator'
 import { evaluateAchievements, type MetaAchievement } from '@/lib/meta-achievements'
+// Share prompts removed - too obtrusive
 
 // Trust feedback disabled - notifications were obtrusive
 
@@ -159,6 +160,8 @@ export default function StatefulGameInterface() {
 
   // Refs & Sync
   const skillTrackerRef = useRef<SkillTracker | null>(null)
+  
+  // Share prompts disabled - too obtrusive
   const isProcessingChoiceRef = useRef(false) // Race condition guard
   const { queueStats: _queueStats } = useBackgroundSync({ enabled: true })
   const [hasSaveFile, setHasSaveFile] = useState(false)
@@ -305,6 +308,15 @@ export default function StatefulGameInterface() {
 
     } catch (error) {
         console.error('Init error', error)
+        setState(prev => ({
+          ...prev,
+          error: {
+            title: 'Initialization Error',
+            message: error instanceof Error ? error.message : 'Failed to initialize game. Please refresh the page.',
+            severity: 'error' as const
+          },
+          isLoading: false
+        }))
     }
   }, [])
 
@@ -347,9 +359,40 @@ export default function StatefulGameInterface() {
       }
 
       const searchResult = findCharacterForNode(choice.choice.nextNodeId, newGameState)
-      if (!searchResult) return
+      if (!searchResult) {
+        console.error('[StatefulGameInterface] Could not find character graph for node:', choice.choice.nextNodeId)
+        setState(prev => ({
+          ...prev,
+          error: {
+            title: 'Navigation Error',
+            message: `Could not find node "${choice.choice.nextNodeId}". Please refresh the page to restart.`,
+            severity: 'error' as const
+          },
+          isLoading: false
+        }))
+        return
+      }
 
-      const nextNode = searchResult.graph.nodes.get(choice.choice.nextNodeId)!
+      const nextNode = searchResult.graph.nodes.get(choice.choice.nextNodeId)
+      if (!nextNode) {
+        console.error('[StatefulGameInterface] Node not found in graph:', {
+          nodeId: choice.choice.nextNodeId,
+          characterId: searchResult.characterId,
+          graphName: searchResult.graph.metadata?.title || 'unknown'
+        })
+        setState(prev => ({
+          ...prev,
+          error: {
+            title: 'Navigation Error',
+            message: `Node "${choice.choice.nextNodeId}" not found in ${searchResult.characterId}'s graph.`,
+            severity: 'error' as const
+          },
+          isLoading: false
+        }))
+        isProcessingChoiceRef.current = false
+        return
+      }
+
       const targetGraph = searchResult.graph
       const targetCharacterId = searchResult.characterId
 
@@ -366,6 +409,16 @@ export default function StatefulGameInterface() {
 
       const content = DialogueGraphNavigator.selectContent(nextNode, targetCharacter.conversationHistory)
       const newChoices = StateConditionEvaluator.evaluateChoices(nextNode, newGameState, targetCharacterId).filter(c => c.visible)
+
+      // Only log if content seems wrong (character changed but content didn't)
+      if (targetCharacterId !== state.currentCharacterId && content.text === state.currentContent) {
+        console.warn('[StatefulGameInterface] Character changed but content unchanged', {
+          fromCharacter: state.currentCharacterId,
+          toCharacter: targetCharacterId,
+          nodeId: nextNode.nodeId,
+          contentPreview: content.text.substring(0, 50)
+        })
+      }
 
       // Skill tracking logic (abbreviated for safety, same as before)
       // Note: Toast removed as user found it intrusive. Skills still tracked silently.
@@ -492,6 +545,8 @@ export default function StatefulGameInterface() {
         timestamp: Date.now()
       })
 
+      // Share prompts removed - too obtrusive
+
       // Sync relationship progress and platform state to Supabase
       // This ensures admin dashboard has real-time visibility into player progress
       if (isSupabaseConfigured()) {
@@ -529,144 +584,176 @@ export default function StatefulGameInterface() {
   const handleReturnToStation = useCallback(async () => {
     if (!state.gameState) return
 
-    // Determine which Samuel entry point to use based on completed arcs
-    let targetNodeId: string = samuelEntryPoints.INTRODUCTION
+    try {
+      // Determine which Samuel entry point to use based on completed arcs
+      let targetNodeId: string = samuelEntryPoints.INTRODUCTION
 
-    // Check for character-specific reflection gateways
-    const globalFlags = Array.from(state.gameState.globalFlags)
-    if (globalFlags.includes('kai_arc_complete')) {
-      targetNodeId = samuelEntryPoints.KAI_REFLECTION_GATEWAY
-    } else if (globalFlags.includes('maya_arc_complete') && !globalFlags.includes('devon_arc_complete')) {
-      targetNodeId = samuelEntryPoints.HUB_AFTER_MAYA
-    } else if (globalFlags.includes('devon_arc_complete')) {
-      targetNodeId = samuelEntryPoints.HUB_AFTER_DEVON
-    } else if (globalFlags.includes('marcus_arc_complete')) {
-      targetNodeId = samuelEntryPoints.MARCUS_REFLECTION_GATEWAY
-    } else if (globalFlags.includes('jordan_arc_complete')) {
-      targetNodeId = samuelEntryPoints.JORDAN_REFLECTION_GATEWAY
-    } else if (globalFlags.includes('tess_arc_complete')) {
-      targetNodeId = samuelEntryPoints.TESS_REFLECTION_GATEWAY
-    } else if (globalFlags.includes('yaquin_arc_complete')) {
-      targetNodeId = samuelEntryPoints.YAQUIN_REFLECTION_GATEWAY
-    } else if (globalFlags.includes('rohan_arc_complete')) {
-      targetNodeId = samuelEntryPoints.ROHAN_REFLECTION_GATEWAY
-    } else if (globalFlags.includes('silas_arc_complete')) {
-      targetNodeId = samuelEntryPoints.SILAS_REFLECTION_GATEWAY
-    } else if (globalFlags.includes('maya_arc_complete')) {
-      targetNodeId = samuelEntryPoints.MAYA_REFLECTION_GATEWAY
-    } else {
-      // Default to initial hub or introduction
-      targetNodeId = samuelEntryPoints.HUB_INITIAL || samuelEntryPoints.INTRODUCTION
-    }
+      // Check for character-specific reflection gateways
+      const globalFlags = Array.from(state.gameState.globalFlags)
+      if (globalFlags.includes('kai_arc_complete')) {
+        targetNodeId = samuelEntryPoints.KAI_REFLECTION_GATEWAY
+      } else if (globalFlags.includes('maya_arc_complete') && !globalFlags.includes('devon_arc_complete')) {
+        targetNodeId = samuelEntryPoints.HUB_AFTER_MAYA
+      } else if (globalFlags.includes('devon_arc_complete')) {
+        targetNodeId = samuelEntryPoints.HUB_AFTER_DEVON
+      } else if (globalFlags.includes('marcus_arc_complete')) {
+        targetNodeId = samuelEntryPoints.MARCUS_REFLECTION_GATEWAY
+      } else if (globalFlags.includes('jordan_arc_complete')) {
+        targetNodeId = samuelEntryPoints.JORDAN_REFLECTION_GATEWAY
+      } else if (globalFlags.includes('tess_arc_complete')) {
+        targetNodeId = samuelEntryPoints.TESS_REFLECTION_GATEWAY
+      } else if (globalFlags.includes('yaquin_arc_complete')) {
+        targetNodeId = samuelEntryPoints.YAQUIN_REFLECTION_GATEWAY
+      } else if (globalFlags.includes('rohan_arc_complete')) {
+        targetNodeId = samuelEntryPoints.ROHAN_REFLECTION_GATEWAY
+      } else if (globalFlags.includes('silas_arc_complete')) {
+        targetNodeId = samuelEntryPoints.SILAS_REFLECTION_GATEWAY
+      } else if (globalFlags.includes('maya_arc_complete')) {
+        targetNodeId = samuelEntryPoints.MAYA_REFLECTION_GATEWAY
+      } else {
+        // Default to initial hub or introduction
+        targetNodeId = samuelEntryPoints.HUB_INITIAL || samuelEntryPoints.INTRODUCTION
+      }
 
-    // Find the character and graph for the target node
-    const searchResult = findCharacterForNode(targetNodeId, state.gameState)
-    if (!searchResult) {
-      console.error('Failed to find Samuel hub node:', targetNodeId)
-      // Fallback: reset to introduction
-      const samuelGraph = getGraphForCharacter('samuel', state.gameState)
-      const introNode = samuelGraph.nodes.get(samuelEntryPoints.INTRODUCTION)
-      if (introNode) {
-        const newGameState = { ...state.gameState }
-        newGameState.currentNodeId = introNode.nodeId
-        newGameState.currentCharacterId = 'samuel'
-        const samuelChar = newGameState.characters.get('samuel') || GameStateUtils.createCharacterState('samuel')
-        newGameState.characters.set('samuel', samuelChar)
-        const content = DialogueGraphNavigator.selectContent(introNode, samuelChar.conversationHistory)
-        const choices = StateConditionEvaluator.evaluateChoices(introNode, newGameState, 'samuel').filter(c => c.visible)
-        
+      // Find the character and graph for the target node
+      const searchResult = findCharacterForNode(targetNodeId, state.gameState)
+      if (!searchResult) {
+        console.error('Failed to find Samuel hub node:', targetNodeId)
+        // Fallback: reset to introduction
+        const samuelGraph = getGraphForCharacter('samuel', state.gameState)
+        const introNode = samuelGraph.nodes.get(samuelEntryPoints.INTRODUCTION)
+        if (introNode) {
+          const newGameState = { ...state.gameState }
+          newGameState.currentNodeId = introNode.nodeId
+          newGameState.currentCharacterId = 'samuel'
+          const samuelChar = newGameState.characters.get('samuel') || GameStateUtils.createCharacterState('samuel')
+          newGameState.characters.set('samuel', samuelChar)
+          const content = DialogueGraphNavigator.selectContent(introNode, samuelChar.conversationHistory)
+          const choices = StateConditionEvaluator.evaluateChoices(introNode, newGameState, 'samuel').filter(c => c.visible)
+          
+          setState(prev => ({
+            ...prev,
+            gameState: newGameState,
+            currentNode: introNode,
+            currentGraph: samuelGraph,
+            currentCharacterId: 'samuel',
+            availableChoices: choices,
+            currentContent: content.text,
+            currentDialogueContent: content,
+            useChatPacing: content.useChatPacing || false,
+            isLoading: false
+          }))
+          GameStateManager.saveGameState(newGameState)
+          const zustandStore = useGameStore.getState()
+          zustandStore.setCoreGameState(GameStateUtils.serialize(newGameState))
+          return
+        }
+        // If fallback also fails, show error
         setState(prev => ({
           ...prev,
-          gameState: newGameState,
-          currentNode: introNode,
-          currentGraph: samuelGraph,
-          currentCharacterId: 'samuel',
-          availableChoices: choices,
-          currentContent: content.text,
-          currentDialogueContent: content,
-          useChatPacing: content.useChatPacing || false,
+          error: {
+            title: 'Navigation Error',
+            message: `Could not find hub node "${targetNodeId}" or fallback introduction. Please refresh the page.`,
+            severity: 'error' as const
+          },
           isLoading: false
         }))
-        GameStateManager.saveGameState(newGameState)
-        const zustandStore = useGameStore.getState()
-        zustandStore.setCoreGameState(GameStateUtils.serialize(newGameState))
         return
       }
-      return
-    }
 
-    const targetNode = searchResult.graph.nodes.get(targetNodeId)
-    if (!targetNode) {
-      console.error('Target node not found:', targetNodeId)
-      return
-    }
-
-    // Navigate to the target node (similar to handleChoice but without choice consequences)
-    let newGameState = state.gameState
-    const targetCharacterId = searchResult.characterId
-    const targetGraph = searchResult.graph
-
-    // Apply onEnter effects if any
-    if (targetNode.onEnter) {
-      for (const change of targetNode.onEnter) {
-        newGameState = GameStateUtils.applyStateChange(newGameState, change)
+      const targetNode = searchResult.graph.nodes.get(targetNodeId)
+      if (!targetNode) {
+        console.error('Target node not found:', targetNodeId)
+        setState(prev => ({
+          ...prev,
+          error: {
+            title: 'Navigation Error',
+            message: `Target node "${targetNodeId}" not found in graph. Please refresh the page.`,
+            severity: 'error' as const
+          },
+          isLoading: false
+        }))
+        return
       }
-    }
 
-    // Ensure character exists
-    if (!newGameState.characters.has(targetCharacterId)) {
-      const newChar = GameStateUtils.createCharacterState(targetCharacterId)
-      newGameState.characters.set(targetCharacterId, newChar)
-    }
-    
-    const targetCharacter = newGameState.characters.get(targetCharacterId)!
-    if (!targetCharacter.conversationHistory.includes(targetNode.nodeId)) {
-      targetCharacter.conversationHistory.push(targetNode.nodeId)
-    }
-    newGameState.currentNodeId = targetNode.nodeId
-    newGameState.currentCharacterId = targetCharacterId
+      // Navigate to the target node (similar to handleChoice but without choice consequences)
+      let newGameState = state.gameState
+      const targetCharacterId = searchResult.characterId
+      const targetGraph = searchResult.graph
 
-    const content = DialogueGraphNavigator.selectContent(targetNode, targetCharacter.conversationHistory)
-    const choices = StateConditionEvaluator.evaluateChoices(targetNode, newGameState, targetCharacterId).filter(c => c.visible)
+      // Apply onEnter effects if any
+      if (targetNode.onEnter) {
+        for (const change of targetNode.onEnter) {
+          newGameState = GameStateUtils.applyStateChange(newGameState, change)
+        }
+      }
 
-    setState(prev => ({
-      ...prev,
-      gameState: newGameState,
-      currentNode: targetNode,
-      currentGraph: targetGraph,
-      currentCharacterId: targetCharacterId,
-      availableChoices: choices,
-      currentContent: content.text,
-      currentDialogueContent: content,
-      useChatPacing: content.useChatPacing || false,
-      isLoading: false
-    }))
+      // Ensure character exists
+      if (!newGameState.characters.has(targetCharacterId)) {
+        const newChar = GameStateUtils.createCharacterState(targetCharacterId)
+        newGameState.characters.set(targetCharacterId, newChar)
+      }
+      
+      const targetCharacter = newGameState.characters.get(targetCharacterId)!
+      if (!targetCharacter.conversationHistory.includes(targetNode.nodeId)) {
+        targetCharacter.conversationHistory.push(targetNode.nodeId)
+      }
+      newGameState.currentNodeId = targetNode.nodeId
+      newGameState.currentCharacterId = targetCharacterId
 
-    GameStateManager.saveGameState(newGameState)
-    
-    // Sync to Zustand
-    const zustandStore = useGameStore.getState()
-    zustandStore.setCoreGameState(GameStateUtils.serialize(newGameState))
-    zustandStore.markSceneVisited(targetNode.nodeId)
+      const content = DialogueGraphNavigator.selectContent(targetNode, targetCharacter.conversationHistory)
+      const choices = StateConditionEvaluator.evaluateChoices(targetNode, newGameState, targetCharacterId).filter(c => c.visible)
 
-    // Sync to Supabase
-    if (isSupabaseConfigured()) {
-      const character = newGameState.characters.get(targetCharacterId)
-      if (character) {
-        queueRelationshipSync({
+      setState(prev => ({
+        ...prev,
+        gameState: newGameState,
+        currentNode: targetNode,
+        currentGraph: targetGraph,
+        currentCharacterId: targetCharacterId,
+        availableChoices: choices,
+        currentContent: content.text,
+        currentDialogueContent: content,
+        useChatPacing: content.useChatPacing || false,
+        isLoading: false
+      }))
+
+      GameStateManager.saveGameState(newGameState)
+      
+      // Sync to Zustand
+      const zustandStore = useGameStore.getState()
+      zustandStore.setCoreGameState(GameStateUtils.serialize(newGameState))
+      zustandStore.markSceneVisited(targetNode.nodeId)
+
+      // Sync to Supabase
+      if (isSupabaseConfigured()) {
+        const character = newGameState.characters.get(targetCharacterId)
+        if (character) {
+          queueRelationshipSync({
+            user_id: newGameState.playerId,
+            character_name: targetCharacterId,
+            trust_level: character.trust,
+            relationship_status: character.relationshipStatus,
+            interaction_count: character.conversationHistory.length
+          })
+        }
+        queuePlatformStateSync({
           user_id: newGameState.playerId,
-          character_name: targetCharacterId,
-          trust_level: character.trust,
-          relationship_status: character.relationshipStatus,
-          interaction_count: character.conversationHistory.length
+          current_scene: newGameState.currentNodeId,
+          global_flags: Array.from(newGameState.globalFlags),
+          patterns: newGameState.patterns
         })
       }
-      queuePlatformStateSync({
-        user_id: newGameState.playerId,
-        current_scene: newGameState.currentNodeId,
-        global_flags: Array.from(newGameState.globalFlags),
-        patterns: newGameState.patterns
-      })
+    } catch (error) {
+      console.error('[StatefulGameInterface] Error in handleReturnToStation:', error)
+      setState(prev => ({
+        ...prev,
+        error: {
+          title: 'Navigation Error',
+          message: error instanceof Error ? error.message : 'Failed to return to station. Please refresh the page.',
+          severity: 'error' as const
+        },
+        isLoading: false
+      }))
     }
   }, [state.gameState])
 
@@ -711,7 +798,7 @@ export default function StatefulGameInterface() {
   return (
     <div
       key="game-container"
-      className="h-screen h-[100dvh] flex flex-col bg-stone-100"
+      className="h-[100dvh] flex flex-col bg-stone-100"
       style={{
         willChange: 'auto',
         contain: 'layout style paint',
@@ -775,6 +862,7 @@ export default function StatefulGameInterface() {
                   Your Journey
                 </button>
               </Link>
+              {/* Share button removed - too obtrusive */}
               <Link href="/admin" className="hidden sm:block">
                 <button className="min-h-[44px] text-xs text-slate-400 hover:text-slate-600 transition-colors px-3 py-2 rounded-md hover:bg-slate-100">
                   Admin
@@ -837,10 +925,12 @@ export default function StatefulGameInterface() {
       >
         <div className="max-w-4xl mx-auto px-3 sm:px-4 py-4 md:pt-12 lg:pt-16 pb-safe-mobile">
           <Card
-            key="dialogue-card"
+            key={`dialogue-${state.gameState?.currentNodeId || 'none'}-${state.currentCharacterId}`}
             className="rounded-xl shadow-sm bg-amber-50/40 border-stone-200/60 mb-8 sm:mb-12"
             style={{ transition: 'none' }}
             data-testid="dialogue-card"
+            data-node-id={state.gameState?.currentNodeId || ''}
+            data-character-id={state.currentCharacterId}
           >
             <CardContent
               className="p-5 sm:p-8 md:p-10 min-h-[200px] sm:min-h-[300px]"
@@ -848,6 +938,7 @@ export default function StatefulGameInterface() {
               data-speaker={state.currentNode?.speaker || ''}
             >
               <DialogueDisplay
+                key={`dialogue-display-${state.gameState?.currentNodeId || 'none'}-${state.currentCharacterId}-${state.currentContent?.substring(0, 20) || ''}`}
                 text={state.gameState ? TextProcessor.process(state.currentContent || '', state.gameState) : (state.currentContent || '')}
                 useChatPacing={state.useChatPacing}
                 characterName={state.currentNode?.speaker}
@@ -912,6 +1003,37 @@ export default function StatefulGameInterface() {
             </div>
           </div>
         </footer>
+      )}
+
+      {/* Share prompts removed - too obtrusive */}
+
+      {/* Error Display */}
+      {state.error && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm animate-fade-in">
+          <div className="mx-4 max-w-md bg-white rounded-xl shadow-xl border border-red-200 overflow-hidden">
+            <div className="px-6 py-4 bg-red-50 border-b border-red-200">
+              <h3 className="text-lg font-semibold text-red-800">{state.error.title}</h3>
+            </div>
+            <div className="px-6 py-4">
+              <p className="text-slate-700 mb-4">{state.error.message}</p>
+              <div className="flex gap-3">
+                <Button
+                  onClick={() => window.location.reload()}
+                  className="flex-1 bg-red-600 hover:bg-red-700 text-white"
+                >
+                  Refresh Page
+                </Button>
+                <Button
+                  onClick={() => setState(prev => ({ ...prev, error: null }))}
+                  variant="outline"
+                  className="flex-1"
+                >
+                  Dismiss
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
 
       {/* ══════════════════════════════════════════════════════════════════
