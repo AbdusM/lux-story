@@ -433,16 +433,26 @@ class DialogueGraphValidator {
     for (const graph of graphs) {
       for (const node of graph.nodes) {
         for (const choice of node.choices) {
+          if (!choice.nextNodeId) continue // Already validated in validateNode
+          
           // If the reference is external (not in this graph) but also doesn't exist anywhere
           const existsInThisGraph = graph.nodes.some(n => n.nodeId === choice.nextNodeId)
           const existsAnywhere = allNodeIds.has(choice.nextNodeId)
 
           if (!existsInThisGraph && !existsAnywhere) {
-            // Already reported as error in validateNode
+            // Cross-graph reference that doesn't exist - report as error
+            this.errors.push({
+              severity: 'error',
+              graph: graph.name,
+              nodeId: node.nodeId,
+              choiceId: choice.choiceId,
+              message: `Choice points to non-existent node: "${choice.nextNodeId}"`,
+              suggestion: `Create node "${choice.nextNodeId}" in the appropriate graph or fix the reference`
+            })
           } else if (!existsInThisGraph && existsAnywhere) {
-            // Valid cross-graph reference - just info
+            // Valid cross-graph reference - just info (no warning needed)
             const targetGraph = nodeToGraph.get(choice.nextNodeId)
-            // Don't warn - cross-graph references are intentional for Samuel
+            // Cross-graph references are intentional (e.g., Samuel → character introductions)
           }
         }
       }

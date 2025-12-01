@@ -245,7 +245,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'validate_approach',
         text: "That's actually brilliant. Systems make sense.",
-        nextNodeId: 'devon_validated',
+        nextNodeId: 'devon_technical_response',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
         consequence: {
@@ -350,7 +350,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'suggest_empathy',
         text: "Maybe feelings aren't bugs to fix?",
-        nextNodeId: 'devon_validated',
+        nextNodeId: 'devon_technical_response',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'criticalThinking'],
         consequence: {
@@ -551,7 +551,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'devon_grief_recognition',
         text: "Grief can't be debugged. It can only be felt.",
-        nextNodeId: 'devon_realizes_parallel',
+        nextNodeId: 'devon_father_aerospace',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
         consequence: {
@@ -562,7 +562,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'comment_on_similarity',
         text: "You're doing what he does - trying to debug systems.",
-        nextNodeId: 'devon_realizes_parallel',
+        nextNodeId: 'devon_father_aerospace',
         pattern: 'analytical',
         skills: ['criticalThinking', 'emotionalIntelligence'],
         consequence: {
@@ -1176,7 +1176,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     tags: ['reciprocity', 'player_reflection', 'devon_arc']
   },
   {
-    nodeId: 'devon_crossroads',
+    nodeId: 'devon_crossroads_alt',
     speaker: 'Devon Kumar',
     content: [
       {

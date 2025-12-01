@@ -1,0 +1,16 @@
+#!/bin/sh
+# Pre-commit hook to validate dialogue graphs before commit
+# Prevents broken content from entering codebase
+
+# Check if any dialogue graph files are being committed
+if git diff --cached --name-only | grep -q "content/.*-dialogue-graph.ts"; then
+  echo "🔍 Validating dialogue graphs..."
+  npm run validate-graphs
+  
+  if [ $? -ne 0 ]; then
+    echo "❌ Dialogue graph validation failed. Please fix errors before committing."
+    exit 1
+  fi
+  
+  echo "✅ Dialogue graphs validated successfully"
+fi

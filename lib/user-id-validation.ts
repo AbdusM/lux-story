@@ -7,7 +7,8 @@
  */
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
-const PLAYER_ID_REGEX = /^player_\d+$/
+const PLAYER_ID_REGEX = /^player[-_]\d+[-_][a-z0-9]+$/i  // Matches: player-{timestamp}-{random} or player_{timestamp}_{random}
+const PLAYER_ID_LEGACY_REGEX = /^player_\d+$/  // Legacy format: player_1234567890
 
 export interface ValidationResult {
   valid: boolean
@@ -35,15 +36,20 @@ export function validateUserId(userId: string | null | undefined): ValidationRes
     return { valid: true }
   }
 
-  // Check for player_ prefix format (legacy support)
+  // Check for player-{timestamp}-{random} format (current format from generateUserId)
   if (PLAYER_ID_REGEX.test(trimmed)) {
+    return { valid: true }
+  }
+
+  // Check for legacy player_{number} format
+  if (PLAYER_ID_LEGACY_REGEX.test(trimmed)) {
     return { valid: true }
   }
 
   // Reject invalid formats
   return { 
     valid: false, 
-    error: 'Invalid userId format. Must be a UUID or player_ prefixed ID.' 
+    error: 'Invalid userId format. Must be a UUID, player-{timestamp}-{random}, or player_{number} format.' 
   }
 }
 

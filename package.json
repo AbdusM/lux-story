@@ -17,6 +17,8 @@
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:debug": "playwright test --debug",
     "test:e2e:headed": "playwright test --headed",
+    "qa": "npx tsx scripts/run-qa.ts",
+    "qa:quick": "npm run type-check && npm run test:run",
     "validate-graphs": "npx tsx scripts/validate-dialogue-graphs.ts",
     "analyze-text-density": "npx tsx scripts/analyze-text-density.ts",
     "validate-skills": "npx tsx scripts/validate-skills-system.ts",

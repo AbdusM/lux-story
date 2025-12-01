@@ -1,12 +1,17 @@
 // Web Share API for Progress Sharing
 // Allows users to share their career exploration progress
 
+import { generateShareCard, formatShareText, type ShareCardType, type ShareCardData } from './share-result-generator'
+
 export class WebShare {
-  private static instance: WebShare
+  private static instance: WebShare | null = null
   private isSupported: boolean = false
 
-  constructor() {
-    this.isSupported = this.checkSupport()
+  private constructor() {
+    // Only check support in browser environment
+    if (typeof window !== 'undefined') {
+      this.isSupported = this.checkSupport()
+    }
   }
 
   static getInstance(): WebShare {
@@ -20,7 +25,7 @@ export class WebShare {
     if (typeof window === 'undefined') return false
     
     // Check for Web Share API support
-    return 'share' in navigator
+    return typeof navigator !== 'undefined' && 'share' in navigator
   }
 
   // Share current game progress
@@ -124,6 +129,41 @@ export class WebShare {
     }
   }
 
+  // Share result card (TikTok-optimized)
+  async shareResultCard(
+    cardType: ShareCardType,
+    cardData: ShareCardData,
+    includeUrl: boolean = true,
+    includeHashtags: boolean = false
+  ): Promise<boolean> {
+    try {
+      const shareText = generateShareCard(cardType, cardData)
+      const formattedText = formatShareText(shareText, includeUrl, includeHashtags)
+      
+      if (!this.isSupported) {
+        return this.fallbackToClipboard(cardType, formattedText)
+      }
+
+      const shareData = {
+        title: 'Lux Story - Career Exploration',
+        text: formattedText,
+        url: window.location.href
+      }
+
+      await navigator.share(shareData)
+      return true
+    } catch (error) {
+      if (error instanceof Error && error.name === 'AbortError') {
+        return false
+      }
+      
+      console.warn('Web Share failed, falling back to clipboard:', error)
+      const shareText = generateShareCard(cardType, cardData)
+      const formattedText = formatShareText(shareText, includeUrl, includeHashtags)
+      return this.fallbackToClipboard(cardType, formattedText)
+    }
+  }
+
   // Check if Web Share API is supported
   getSupported(): boolean {
     return this.isSupported
@@ -135,5 +175,33 @@ export class WebShare {
   }
 }
 
-// Export singleton instance
-export const webShare = WebShare.getInstance()
+// Export singleton instance - lazy initialization for SSR safety
+let webShareInstance: WebShare | null = null
+
+function getWebShareInstance(): WebShare {
+  if (!webShareInstance) {
+    webShareInstance = WebShare.getInstance()
+  }
+  return webShareInstance
+}
+
+export const webShare = {
+  async shareProgress(sceneId: string, sceneText: string): Promise<boolean> {
+    return getWebShareInstance().shareProgress(sceneId, sceneText)
+  },
+  async shareResultCard(
+    cardType: ShareCardType,
+    cardData: ShareCardData,
+    includeUrl: boolean = true,
+    includeHashtags: boolean = false
+  ): Promise<boolean> {
+    return getWebShareInstance().shareResultCard(cardType, cardData, includeUrl, includeHashtags)
+  },
+  getSupported(): boolean {
+    if (typeof window === 'undefined') return false
+    return getWebShareInstance().getSupported()
+  },
+  getShareButtonText(): string {
+    return getWebShareInstance().getShareButtonText()
+  }
+}
