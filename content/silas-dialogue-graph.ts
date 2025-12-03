@@ -389,19 +389,13 @@ The checkmarks were true. They just weren't complete.`,
     speaker: 'Silas',
     content: [
       {
-        text: `
+        text: `Look at this dashboard. Zone 4: 65% humidity. Optimal. Flow rate: 2.5 liters. Valve open.
 
-The screen displays a readout:
-"SYSTEM STATUS: ZONE 4 - 65% HUMIDITY (OPTIMAL)"
-"FLOW RATE: 2.5 L/MIN"
-"VALVE STATE: OPEN"
-
-It says the water is flowing. It says everything is fine.
-
+Everything is fine. According to this.
 
 But look at them. They're gasping.
 
-What do I do? If I override the system and flood them, I could rot the roots. If I do nothing, they dry out by morning.`,
+I override and flood them? Rot the roots. Do nothing? Dried out by morning.`,
         emotion: 'paralyzed',
         variation_id: 'sim_start_v2',
         richEffectContext: 'warning',

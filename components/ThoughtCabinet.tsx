@@ -64,6 +64,7 @@ export function ThoughtCabinet({ isOpen, onClose }: ThoughtCabinetProps) {
             exit="hidden"
             variants={panelVariants}
             className="fixed right-0 top-0 bottom-0 w-full max-w-md bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 shadow-2xl z-[100] flex flex-col"
+            style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
           >
             {/* Header */}
             <div className="p-4 sm:p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-900/50">
@@ -193,7 +194,10 @@ export function ThoughtCabinet({ isOpen, onClose }: ThoughtCabinetProps) {
             </div>
             
             {/* Footer Tip */}
-            <div className="p-4 bg-slate-50 dark:bg-slate-950 text-center border-t border-slate-200 dark:border-slate-800">
+            <div
+              className="flex-shrink-0 p-4 bg-slate-50 dark:bg-slate-950 text-center border-t border-slate-200 dark:border-slate-800"
+              style={{ paddingBottom: 'max(1rem, env(safe-area-inset-bottom, 0px))' }}
+            >
                <p className="text-xs text-slate-400">Thoughts shape your dialogue options.</p>
             </div>
 

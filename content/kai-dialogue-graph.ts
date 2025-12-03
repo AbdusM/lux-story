@@ -12,53 +12,49 @@ import { DialogueNode, DialogueGraph } from '../lib/dialogue-graph'
 import { samuelEntryPoints } from './samuel-dialogue-graph'
 
 export const kaiDialogueNodes: DialogueNode[] = [
-  // ============= INTRODUCTION =============
+  // ============= INTRODUCTION (Gradual Reveal) =============
   {
     nodeId: 'kai_introduction',
     speaker: 'Kai',
     content: [
       {
-        // NOTE: Removed behavioral choreography - tablet and tension shown through dialogue only
-        text: `Same slide. Swiping back and forth.
+        // Stage 1: Show corporate frustration first (matches Samuel's "burning the rulebook" setup)
+        text: `Protective Life training office. Fluorescent lights. Late shift.
 
+Fifteen slides. Fifteen "Click Next" buttons. That's safety training here.
 
-"Ensure the safety harness is secured. Click Next."
+Three hours on this module. "Ensure harness is secured." Click Next. "Report hazards." Click Next.
 
-It was right there. Slide 14. "Ensure harness is secured." He clicked Next. He clicked it. I have the logs.
-
-But he didn't secure the harness.{{building>=3:
-
-}}`,
-        emotion: 'haunted',
-        variation_id: 'kai_intro_v2',
-        richEffectContext: 'warning'
+Nobody clicks the actual harness.`,
+        emotion: 'frustrated',
+        variation_id: 'kai_intro_v3'
       }
     ],
     choices: [
       {
-        choiceId: 'kai_intro_accident',
-        text: "What happened?",
-        nextNodeId: 'kai_accident_reveal',
+        choiceId: 'kai_intro_systemic',
+        text: "Compliance theater. The company gets liability protection, workers get a checkbox.",
+        nextNodeId: 'kai_system_frustration',
+        pattern: 'analytical',
+        skills: ['systemsThinking', 'criticalThinking']
+      },
+      {
+        choiceId: 'kai_intro_curious',
+        text: "Why does that matter to you personally?",
+        nextNodeId: 'kai_accident_hint',
         pattern: 'helping',
-        skills: ['emotionalIntelligence', 'crisisManagement'],
+        skills: ['emotionalIntelligence'],
         consequence: {
           characterId: 'kai',
-          trustChange: 2
+          trustChange: 1
         }
       },
       {
-        choiceId: 'kai_intro_design',
-        text: "Clicking isn't learning. You know that.",
-        nextNodeId: 'kai_accident_reveal',
-        pattern: 'analytical',
-        skills: ['instructionalDesign', 'criticalThinking']
-      },
-      {
-        choiceId: 'kai_intro_defensive',
-        text: "If he clicked it, you're legally covered. That's the job.",
-        nextNodeId: 'kai_compliance_trap',
+        choiceId: 'kai_intro_practical',
+        text: "So redesign it. Make something better.",
+        nextNodeId: 'kai_system_frustration',
         pattern: 'building',
-        skills: ['riskManagement']
+        skills: ['leadership', 'creativity']
       }
     ],
     onEnter: [
@@ -71,11 +67,84 @@ But he didn't secure the harness.{{building>=3:
   },
 
   {
+    // Stage 2: Bridge node - shows the systemic problem
+    nodeId: 'kai_system_frustration',
+    speaker: 'Kai',
+    content: [
+      {
+        text: `That's exactly it. I know how people actually learn. I have a master's in instructional design. I could build simulations, scenarios, real practice.
+
+But that costs money. "Click Next" costs nothing.
+
+So I build green checkmarks. Legal shields. And last week...`,
+        emotion: 'bitter',
+        variation_id: 'system_frustration_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'kai_what_happened',
+        text: "What happened last week?",
+        nextNodeId: 'kai_accident_reveal',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'kai',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'kai_knew_coming',
+        text: "Something went wrong. You saw it coming.",
+        nextNodeId: 'kai_accident_reveal',
+        pattern: 'analytical',
+        skills: ['criticalThinking']
+      }
+    ]
+  },
+
+  {
+    // Stage 2 (alternate): More direct path to the hint
+    nodeId: 'kai_accident_hint',
+    speaker: 'Kai',
+    content: [
+      {
+        text: `Because three days ago, someone got hurt. Someone who clicked every button. Watched every video. Passed every quiz.
+
+And none of it mattered when he was standing twenty feet up without checking his harness.`,
+        emotion: 'pained',
+        variation_id: 'accident_hint_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'kai_tell_more',
+        text: "Tell me what happened.",
+        nextNodeId: 'kai_accident_reveal',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'empathy'],
+        consequence: {
+          characterId: 'kai',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'kai_your_fault',
+        text: "You designed the training. You feel responsible.",
+        nextNodeId: 'kai_accident_reveal',
+        pattern: 'analytical',
+        skills: ['emotionalIntelligence']
+      }
+    ]
+  },
+
+  {
+    // Stage 3: Full reveal (now feels earned after buildup)
     nodeId: 'kai_accident_reveal',
     speaker: 'Kai',
     content: [
       {
-        text: `Warehouse accident. Three days ago. Broken pelvis.
+        text: `Warehouse accident. Broken pelvis.
 
 He's 22. Same age as my little brother.
 

@@ -101,7 +101,9 @@ export async function POST(request: NextRequest) {
       .select()
       .single()
 
-    if (error) {
+    // PGRST204 means "no content" - upsert succeeded but RLS prevents select
+    // This is normal when service role upserts but user RLS prevents reading back
+    if (error && error.code !== 'PGRST204') {
       logger.error('Supabase error', {
         operation: 'relationship-progress.post',
         errorCode: error.code,

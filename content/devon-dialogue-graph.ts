@@ -17,7 +17,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "If input is 'I'm fine,' then route to conversational branch 4.B, sub-routine 'gentle_probe.' | No, no, the latency on that is too high... | Oh. I didn't see you. | This is a... closed system. Are you a variable I need to account for?",
+        text: "Avondale coffee shop. Back booth. 2 AM.\n\nIf input is 'I'm fine,' route to branch 4.B, sub-routine 'gentle probe.' | No, latency's too high. | Oh. Didn't see you. | Closed system. Are you a variable I need to account for?",
         emotion: 'guarded',
         variation_id: 'intro_v1'
       }
@@ -244,8 +244,8 @@ export const devonDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'validate_approach',
-        text: "That's actually brilliant. Systems make sense.",
-        nextNodeId: 'devon_technical_response',
+        text: "Systems make sense. People don't.",
+        nextNodeId: 'devon_father_hint',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
         consequence: {
@@ -350,7 +350,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'suggest_empathy',
         text: "Maybe feelings aren't bugs to fix?",
-        nextNodeId: 'devon_technical_response',
+        nextNodeId: 'devon_father_hint',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'criticalThinking'],
         consequence: {

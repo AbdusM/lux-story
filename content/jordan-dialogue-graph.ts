@@ -679,11 +679,11 @@ I've been training for this job my whole life.`,
     nodeId: 'jordan_mentor_context',
     speaker: 'Jordan Packard',
     content: [{
-      text: `When I look at that story, I don't see a pattern.
+      text: `You see the pattern. I can see it too. Intellectually.
 
-Seven jobs. Twelve years. Someone who couldn't stick. Couldn't commit.
+But when I'm alone? Seven jobs. Twelve years. Someone who couldn't stick.
 
-Everyone else building careers. Me collecting participation trophies?`,
+The story makes sense. The feeling doesn't match.`,
       emotion: 'vulnerable',
       variation_id: 'jordan_mentor_1_pt1',
       richEffectContext: 'thinking'
@@ -703,9 +703,9 @@ Everyone else building careers. Me collecting participation trophies?`,
     nodeId: 'jordan_mentor_context_pt2',
     speaker: 'Jordan Packard',
     content: [{
-      text: `And now I'm supposed to stand in front of thirty people who are making a huge bet on themselves—time, money, hope—and tell them what?
+      text: `Thirty people at Career Day. Making huge bets on themselves. Time. Money. Hope.
 
-That it's okay to fail six times first?`,
+What do I tell them? That it's okay to fail six times first?`,
       emotion: 'vulnerable',
       variation_id: 'jordan_mentor_1_pt2'
     }],

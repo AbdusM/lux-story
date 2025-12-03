@@ -16,7 +16,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Oh. Hi. Sorry, I—were you watching me?\n\nI know it's weird. Biochemistry notes and robotics parts spread everywhere. I'm not usually this... scattered.\n\nOr maybe I am. I don't know anymore.",
+        text: "Sterne Library. Third floor. The table nobody wants.\n\nOh. Hi. Were you watching me?\n\nBiochemistry notes. Robotics parts. Everywhere. I'm not usually this scattered.\n\nOr maybe I am.",
         emotion: 'anxious_scattered',
         variation_id: 'intro_v2_clean',
         richEffectContext: 'warning'
@@ -190,10 +190,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "What if safe isn't right for you?",
         nextNodeId: 'maya_anxiety_reveal',
         pattern: 'helping',
-        skills: ['emotionalIntelligence', 'communication'],
-        visibleCondition: {
-          trust: { min: 2 }
-        }
+        skills: ['emotionalIntelligence', 'communication']
       },
       {
         choiceId: 'deflect_understand',
@@ -201,9 +198,6 @@ export const mayaDialogueNodes: DialogueNode[] = [
         nextNodeId: 'maya_family_pressure',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'culturalCompetence'],
-        visibleCondition: {
-          trust: { min: 2 }
-        },
         consequence: {
           characterId: 'maya',
           trustChange: 1
@@ -211,7 +205,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'deflect_respect',
-        text: "[Nod quietly in understanding]",
+        text: "[Nod quietly]",
         nextNodeId: 'maya_early_gratitude',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'adaptability'],
@@ -223,20 +217,17 @@ export const mayaDialogueNodes: DialogueNode[] = [
     ]
   },
 
-  // ============= ANXIETY PATH (Trust Gate) =============
+  // ============= ANXIETY PATH =============
   {
     nodeId: 'maya_anxiety_check',
     speaker: 'Maya Chen',
     content: [
       {
-        text: "I... how did you know? Is it that obvious?",
+        text: "How did you know? Is it that obvious?",
         emotion: 'vulnerable',
         variation_id: 'anxiety_check_v1'
       }
     ],
-    requiredState: {
-      trust: { min: 2 }
-    },
     onEnter: [
       {
         characterId: 'maya',
@@ -265,13 +256,13 @@ export const mayaDialogueNodes: DialogueNode[] = [
     ]
   },
 
-  // ============= ANXIETY REVEAL (Important) =============
+  // ============= ANXIETY REVEAL =============
   {
     nodeId: 'maya_anxiety_reveal',
     speaker: 'Maya Chen',
     content: [
       {
-        text: "I'm fine. Everyone sees me as this perfect pre-med student. Good grades, clear path.\n\nBut late at night, when I'm memorizing anatomy, I'm actually... doing something else.",
+        text: "Everyone sees this perfect pre-med student. Good grades. Clear path.\n\nBut late at night? When I should be memorizing anatomy? I'm doing something else.",
         emotion: 'anxious_deflecting',
         variation_id: 'anxiety_reveal_v2_clean',
         useChatPacing: true,
@@ -279,7 +270,6 @@ export const mayaDialogueNodes: DialogueNode[] = [
       }
     ],
     requiredState: {
-      trust: { min: 2 },
       lacksKnowledgeFlags: ['knows_secret']
     },
     choices: [
@@ -367,26 +357,26 @@ export const mayaDialogueNodes: DialogueNode[] = [
     },
     choices: [
       {
-        choiceId: 'debug_force',
-        text: "Force the servo to zero position to reset the loop.",
-        nextNodeId: 'maya_robotics_fail_burnout', // FAILURE STATE INJECTION
-        pattern: 'analytical',
-        skills: ['problemSolving', 'technicalLiteracy']
-      },
-      {
-        choiceId: 'debug_stabilize',
-        text: "Gently stabilize the joint with your hand to dampen the feedback loop.",
+        choiceId: 'debug_metaphor',
+        text: "Fighting itself. Like you said. What if it needs support, not force?",
         nextNodeId: 'maya_robotics_debug_success',
         pattern: 'helping',
-        skills: ['emotionalIntelligence', 'patience'],
+        skills: ['emotionalIntelligence', 'communication'],
         consequence: {
           characterId: 'maya',
           trustChange: 2
         }
       },
       {
+        choiceId: 'debug_force',
+        text: "Force reset the servo.",
+        nextNodeId: 'maya_robotics_fail_burnout',
+        pattern: 'analytical',
+        skills: ['problemSolving', 'technicalLiteracy']
+      },
+      {
         choiceId: 'debug_isolate',
-        text: "Isolate the noisy signal in the control loop.",
+        text: "Isolate the noisy signal.",
         nextNodeId: 'maya_robotics_debug_success',
         pattern: 'building',
         skills: ['systemsThinking', 'creativity'],
@@ -598,6 +588,16 @@ export const mayaDialogueNodes: DialogueNode[] = [
         visibleCondition: {
           trust: { min: 5 }
         }
+      },
+      {
+        // Fallback for lower trust - still progresses but simpler prompt
+        choiceId: 'reframes_continue',
+        text: "That sounds like real growth.",
+        nextNodeId: 'maya_crossroads',
+        pattern: 'patience',
+        visibleCondition: {
+          trust: { max: 4 }
+        }
       }
     ]
   },
@@ -622,6 +622,16 @@ export const mayaDialogueNodes: DialogueNode[] = [
         skills: ['communication', 'emotionalIntelligence'],
         visibleCondition: {
           trust: { min: 5 }
+        }
+      },
+      {
+        // Fallback for lower trust - still progresses
+        choiceId: 'rebellion_continue',
+        text: "You're already showing courage by asking that question.",
+        nextNodeId: 'maya_crossroads',
+        pattern: 'patience',
+        visibleCondition: {
+          trust: { max: 4 }
         }
       }
     ]

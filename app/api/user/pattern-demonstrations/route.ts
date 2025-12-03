@@ -138,7 +138,8 @@ export async function POST(request: NextRequest) {
       .select()
       .single()
 
-    if (error) {
+    // PGRST204 means "no content" - insert succeeded but RLS prevents select
+    if (error && error.code !== 'PGRST204') {
       logger.error('Supabase error', {
         operation: 'pattern-demonstrations.post',
         errorCode: error.code,
