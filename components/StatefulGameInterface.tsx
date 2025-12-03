@@ -576,7 +576,7 @@ export default function StatefulGameInterface() {
       clearTimeout(safetyTimeout)
       isProcessingChoiceRef.current = false
     }
-  }, [state.gameState, state.currentNode, state.showConfigWarning, state.recentSkills, state.showThoughtCabinet, state.showJournal, state.showConstellation, state.journeyNarrative, state.showJourneySummary])
+  }, [state.gameState, state.currentNode, state.showConfigWarning, state.recentSkills, state.showThoughtCabinet, state.showJournal, state.showConstellation, state.journeyNarrative, state.showJourneySummary, state.currentCharacterId, state.currentContent])
 
   /**
    * Navigate back to Samuel's hub after completing a conversation
