@@ -26,6 +26,7 @@ interface SimpleGameState {
 import { queueSkillSummarySync, queueSkillDemonstrationSync, queuePatternDemonstrationSync } from './sync-queue'
 import { logSkillDemo } from './real-time-monitor'
 import { PATTERN_SKILL_MAP, getPatternContextDescription, isValidPattern } from './patterns'
+import { syncSkillToZustand, initializeSkillSync } from './skill-zustand-bridge'
 
 export interface SkillDemonstration {
   scene: string
@@ -107,6 +108,10 @@ export class SkillTracker {
     this.userId = userId
     this.skillsSystem = new FutureSkillsSystem()
     this.loadFromStorage()
+
+    // Sync existing localStorage skill data to Zustand for constellation UI
+    // This ensures skills appear immediately without page refresh
+    initializeSkillSync(userId)
   }
 
   /**
@@ -171,6 +176,9 @@ export class SkillTracker {
         })
 
         const skillDemoCount = this.getSkillDemonstrationCount(skill)
+
+        // Sync to Zustand for constellation UI (real-time, every demonstration)
+        syncSkillToZustand(skill, skillDemoCount)
 
         // Also queue aggregated summary every 3rd demonstration
         if (skillDemoCount % 3 === 0) {
@@ -256,6 +264,9 @@ export class SkillTracker {
       // Real-time monitoring
       const willSync = skillDemoCount % 3 === 0
       logSkillDemo(this.userId, skill, skillDemoCount, willSync)
+
+      // Sync to Zustand for constellation UI (real-time, every demonstration)
+      syncSkillToZustand(skill, skillDemoCount)
 
       if (skillDemoCount % 3 === 0) {
         // Get all scenes where this skill was demonstrated
