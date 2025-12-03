@@ -2,44 +2,21 @@
 
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { X, Users, Compass, TrendingUp } from "lucide-react"
-import { useGameStore } from "@/lib/game-store"
+import { X, Users, Compass, TrendingUp, Sparkles } from "lucide-react"
+import { useInsights } from "@/hooks/useInsights"
 import { useConstellationData } from "@/hooks/useConstellationData"
 import { cn } from "@/lib/utils"
+import { PATTERN_METADATA, type PatternType } from "@/lib/patterns"
 
 interface JournalProps {
   isOpen: boolean
   onClose: () => void
 }
 
-// Character display names and colors
-const CHARACTER_INFO: Record<string, { name: string; color: string; role: string }> = {
-  'samuel': { name: 'Samuel', color: 'text-amber-600', role: 'Station Master' },
-  'maya': { name: 'Maya', color: 'text-blue-600', role: 'Tech Innovator' },
-  'devon': { name: 'Devon', color: 'text-orange-600', role: 'Community Builder' },
-  'jordan': { name: 'Jordan', color: 'text-purple-600', role: 'Creative Spirit' },
-  'kai': { name: 'Kai', color: 'text-teal-600', role: 'Problem Solver' },
-  'tess': { name: 'Tess', color: 'text-rose-600', role: 'Mentor' },
-  'rohan': { name: 'Rohan', color: 'text-indigo-600', role: 'Analyst' },
-  'silas': { name: 'Silas', color: 'text-slate-600', role: 'Historian' },
-  'yaquin': { name: 'Yaquin', color: 'text-emerald-600', role: 'Guide' },
-}
-
-// Pattern display names
-const PATTERN_LABELS: Record<string, string> = {
-  exploring: 'Exploration',
-  helping: 'Helping Others',
-  building: 'Building & Creating',
-  analyzing: 'Analysis',
-  patience: 'Patience',
-  rushing: 'Quick Decisions',
-  independence: 'Independence',
-}
-
-type TabId = 'relationships' | 'journey' | 'patterns'
+type TabId = 'style' | 'connections' | 'patterns'
 
 export function Journal({ isOpen, onClose }: JournalProps) {
-  const [activeTab, setActiveTab] = useState<TabId>('relationships')
+  const [activeTab, setActiveTab] = useState<TabId>('style')
 
   // Escape key handler
   useEffect(() => {
@@ -51,9 +28,9 @@ export function Journal({ isOpen, onClose }: JournalProps) {
     return () => window.removeEventListener('keydown', handleEscape)
   }, [isOpen, onClose])
 
-  const { characters } = useConstellationData() // Use hook that checks both trust and conversation history
-  const choiceHistory = useGameStore((state) => state.choiceHistory)
-  const patterns = useGameStore((state) => state.patterns)
+  // Get insights from the insights engine
+  const insights = useInsights()
+  const { characters } = useConstellationData()
 
   // Animation variants
   const backdropVariants = {
@@ -67,41 +44,16 @@ export function Journal({ isOpen, onClose }: JournalProps) {
   }
 
   const tabs: { id: TabId; label: string; icon: typeof Users }[] = [
-    { id: 'relationships', label: 'Friends', icon: Users },
-    { id: 'journey', label: 'Choices', icon: TrendingUp },
-    { id: 'patterns', label: 'Your Style', icon: Compass },
+    { id: 'style', label: 'Your Style', icon: Compass },
+    { id: 'connections', label: 'Bonds', icon: Users },
+    { id: 'patterns', label: 'Insights', icon: TrendingUp },
   ]
 
-  // Get characters with trust levels (using hasMet which checks both trust > 0 OR conversation history > 0)
+  // Get characters with trust levels
   const characterEntries = characters
     .filter(c => c.hasMet)
     .map(c => [c.id, c.trust] as [string, number])
     .sort(([, a], [, b]) => b - a)
-
-  // Get active patterns (non-zero)
-  const activePatterns = Object.entries(patterns)
-    .filter(([_, value]) => value > 0)
-    .sort(([, a], [, b]) => b - a)
-
-  // Format character name from scene ID for choice context
-  const getCharacterFromScene = (sceneId: string): string | null => {
-    const match = sceneId.match(/^(samuel|maya|devon|jordan|kai|tess|rohan|silas|yaquin)/i)
-    if (match) {
-      const name = match[1].toLowerCase()
-      return CHARACTER_INFO[name]?.name || name.charAt(0).toUpperCase() + name.slice(1)
-    }
-    return null
-  }
-
-  // Get trust level description
-  const getTrustDescription = (trust: number): string => {
-    if (trust >= 8) return 'Deep trust'
-    if (trust >= 5) return 'Growing connection'
-    if (trust >= 2) return 'Getting acquainted'
-    if (trust > 0) return 'Just met'
-    if (trust < -2) return 'Tension'
-    return 'Neutral'
-  }
 
   return (
     <AnimatePresence>
@@ -130,12 +82,15 @@ export function Journal({ isOpen, onClose }: JournalProps) {
               if (info.offset.x < -100) onClose()
             }}
             className="fixed left-0 top-0 bottom-0 w-full max-w-md bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 shadow-2xl z-[100] flex flex-col"
+            style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
           >
             {/* Header */}
             <div className="p-4 sm:p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-900/50">
               <div>
                 <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white font-serif">Journal</h2>
-                <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Your story so far</p>
+                <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+                  {insights.journey.stageLabel} Journey
+                </p>
               </div>
               <button
                 onClick={onClose}
@@ -170,135 +125,137 @@ export function Journal({ isOpen, onClose }: JournalProps) {
             {/* Scrollable Content */}
             <div className="flex-1 overflow-y-auto p-6">
 
-              {/* Relationships Tab */}
-              {activeTab === 'relationships' && (
+              {/* Your Style Tab - Decision Making Profile */}
+              {activeTab === 'style' && (
+                <div className="space-y-6">
+                  {/* Primary Pattern */}
+                  {insights.decisionStyle.primaryPattern ? (
+                    <div className="space-y-4">
+                      <div
+                        className={cn(
+                          "p-5 rounded-xl border-2",
+                          `border-${getPatternColorClass(insights.decisionStyle.primaryPattern.type)}`
+                        )}
+                        style={{
+                          borderColor: PATTERN_METADATA[insights.decisionStyle.primaryPattern.type]?.color || '#f59e0b',
+                          backgroundColor: `${PATTERN_METADATA[insights.decisionStyle.primaryPattern.type]?.color}10`
+                        }}
+                      >
+                        <div className="flex items-center gap-3 mb-3">
+                          <Sparkles
+                            className="w-6 h-6"
+                            style={{ color: PATTERN_METADATA[insights.decisionStyle.primaryPattern.type]?.color }}
+                          />
+                          <div>
+                            <h3 className="font-bold text-slate-900 dark:text-white">
+                              {insights.decisionStyle.primaryPattern.label}
+                            </h3>
+                            <p className="text-xs text-slate-500">
+                              {insights.decisionStyle.primaryPattern.percentage}% of your choices
+                            </p>
+                          </div>
+                        </div>
+                        <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                          {insights.decisionStyle.primaryPattern.description}
+                        </p>
+                      </div>
+
+                      {/* Secondary Pattern */}
+                      {insights.decisionStyle.secondaryPattern && (
+                        <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
+                          <p className="text-sm text-slate-600 dark:text-slate-300">
+                            <span className="font-medium">Also strong in: </span>
+                            {insights.decisionStyle.secondaryPattern.label}
+                            <span className="text-slate-400 ml-1">
+                              ({insights.decisionStyle.secondaryPattern.percentage}%)
+                            </span>
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="p-8 text-center border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-lg">
+                      <Compass className="w-8 h-8 text-slate-300 mx-auto mb-3" />
+                      <p className="text-slate-400 italic text-sm">Your decision style is forming...</p>
+                      <p className="text-slate-400 text-xs mt-1">Make more choices to reveal your natural approach.</p>
+                    </div>
+                  )}
+
+                  {/* Choice Patterns */}
+                  {insights.choicePatterns.length > 0 && (
+                    <div className="space-y-3">
+                      <h4 className="text-xs font-medium uppercase tracking-wider text-slate-400">
+                        What We Notice
+                      </h4>
+                      {insights.choicePatterns.map((pattern, idx) => (
+                        <div
+                          key={idx}
+                          className="p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800"
+                        >
+                          <h5 className="font-medium text-slate-700 dark:text-slate-200 text-sm">
+                            {pattern.pattern}
+                          </h5>
+                          <p className="text-xs text-slate-500 mt-1">
+                            {pattern.description}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Connections Tab - Relationships */}
+              {activeTab === 'connections' && (
                 <div className="space-y-4">
+                  {/* Relationship Pattern Insight */}
+                  {insights.relationshipPattern && (
+                    <div className="p-4 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 mb-4">
+                      <p className="text-sm font-medium text-amber-800 dark:text-amber-200">
+                        {insights.relationshipPattern.pattern}
+                      </p>
+                      <p className="text-xs text-amber-600 dark:text-amber-300 mt-1">
+                        {insights.relationshipPattern.description}
+                      </p>
+                    </div>
+                  )}
+
                   {characterEntries.length === 0 ? (
                     <div className="p-8 text-center border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-lg">
                       <Users className="w-8 h-8 text-slate-300 mx-auto mb-3" />
-                      <p className="text-slate-400 italic text-sm">Talk to Samuel at the station to meet your first character.</p>
-                      <p className="text-slate-400 text-xs mt-1">Each conversation builds trust and reveals new connections.</p>
+                      <p className="text-slate-400 italic text-sm">Talk to Samuel to meet your first character.</p>
+                      <p className="text-slate-400 text-xs mt-1">Each conversation reveals new connections.</p>
                     </div>
                   ) : (
                     <div className="space-y-3">
-                      {characterEntries.map(([charId, trust]) => {
-                        const info = CHARACTER_INFO[charId.toLowerCase()] || {
-                          name: charId.charAt(0).toUpperCase() + charId.slice(1),
-                          color: 'text-slate-600',
-                          role: 'Character'
-                        }
-
-                        return (
-                          <div
-                            key={charId}
-                            className="p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800"
-                          >
-                            <div className="flex items-center justify-between mb-2">
-                              <div>
-                                <h4 className={cn("font-bold", info.color)}>{info.name}</h4>
-                                <p className="text-xs text-slate-400">{info.role}</p>
-                              </div>
-                              <div className="text-right">
-                                <div className="text-sm font-mono text-slate-600 dark:text-slate-300">
-                                  {trust > 0 ? '+' : ''}{trust}
-                                </div>
-                                <p className="text-xs text-slate-400">{getTrustDescription(trust)}</p>
-                              </div>
-                            </div>
-
-                            {/* Trust bar */}
-                            <div className="h-1.5 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
-                              <div
-                                className={cn(
-                                  "h-full transition-all duration-500 rounded-full",
-                                  trust > 0 ? "bg-emerald-400" : "bg-rose-400"
-                                )}
-                                style={{ width: `${Math.min(100, Math.abs(trust) * 10)}%` }}
-                              />
-                            </div>
-                          </div>
-                        )
-                      })}
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* Journey Tab - Just show meaningful choices */}
-              {activeTab === 'journey' && (
-                <div className="space-y-4">
-                  {choiceHistory.length === 0 ? (
-                    <div className="p-8 text-center border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-lg">
-                      <TrendingUp className="w-8 h-8 text-slate-300 mx-auto mb-3" />
-                      <p className="text-slate-400 italic text-sm">Your choices shape your story.</p>
-                      <p className="text-slate-400 text-xs mt-1">Make decisions in conversations to see them here.</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-3">
-                      {choiceHistory.slice(-8).map((record) => {
-                        const character = getCharacterFromScene(record.sceneId)
-                        const charInfo = character ? CHARACTER_INFO[character.toLowerCase()] : null
-
-                        return (
-                          <div
-                            key={`${record.sceneId}-${record.timestamp}`}
-                            className="p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800"
-                          >
-                            <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
-                              "{record.choice}"
-                            </p>
-                            {character && (
-                              <p className={cn("text-xs mt-2", charInfo?.color || "text-slate-400")}>
-                                — talking to {character}
-                              </p>
-                            )}
-                          </div>
-                        )
-                      })}
-                      {choiceHistory.length > 8 && (
-                        <p className="text-xs text-slate-400 text-center">
-                          {choiceHistory.length} choices made
-                        </p>
-                      )}
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* Patterns Tab */}
-              {activeTab === 'patterns' && (
-                <div className="space-y-4">
-                  <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
-                    This shows what kind of choices you tend to make!
-                  </p>
-
-                  {activePatterns.length === 0 ? (
-                    <div className="p-8 text-center border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-lg">
-                      <Compass className="w-8 h-8 text-slate-300 mx-auto mb-3" />
-                      <p className="text-slate-400 italic text-sm">Your patterns emerge through your choices.</p>
-                      <p className="text-slate-400 text-xs mt-1">Continue your conversations to reveal your natural tendencies.</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-3">
-                      {activePatterns.map(([patternId, value]) => (
+                      {insights.topRelationships.map((rel) => (
                         <div
-                          key={patternId}
+                          key={rel.characterId}
                           className="p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800"
                         >
                           <div className="flex items-center justify-between mb-2">
-                            <h4 className="font-semibold text-slate-700 dark:text-slate-200">
-                              {PATTERN_LABELS[patternId] || patternId}
-                            </h4>
-                            <span className="text-sm font-mono text-amber-600">
-                              {value}
-                            </span>
+                            <div>
+                              <h4 className={cn("font-bold", rel.color)}>{rel.name}</h4>
+                              <p className="text-xs text-slate-400">{rel.trustLabel}</p>
+                            </div>
+                            <div className="text-sm font-mono text-slate-600 dark:text-slate-300">
+                              {rel.trust > 0 ? '+' : ''}{rel.trust}
+                            </div>
                           </div>
 
-                          {/* Pattern bar */}
-                          <div className="h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+                          {/* What they teach */}
+                          <p className="text-xs text-slate-500 italic">
+                            {rel.name} {rel.description}
+                          </p>
+
+                          {/* Trust bar */}
+                          <div className="h-1.5 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden mt-3">
                             <div
-                              className="h-full bg-gradient-to-r from-amber-400 to-amber-500 transition-all duration-500 rounded-full"
-                              style={{ width: `${Math.min(100, value * 10)}%` }}
+                              className={cn(
+                                "h-full transition-all duration-500 rounded-full",
+                                rel.trust > 0 ? "bg-emerald-400" : "bg-rose-400"
+                              )}
+                              style={{ width: `${Math.min(100, Math.abs(rel.trust) * 10)}%` }}
                             />
                           </div>
                         </div>
@@ -307,11 +264,101 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                   )}
                 </div>
               )}
+
+              {/* Insights Tab - Journey & Patterns */}
+              {activeTab === 'patterns' && (
+                <div className="space-y-6">
+                  {/* Journey Progress */}
+                  <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className={cn(
+                        "w-10 h-10 rounded-full flex items-center justify-center",
+                        insights.journey.stage === 'early' && "bg-blue-100 text-blue-600",
+                        insights.journey.stage === 'developing' && "bg-amber-100 text-amber-600",
+                        insights.journey.stage === 'experienced' && "bg-emerald-100 text-emerald-600"
+                      )}>
+                        <TrendingUp className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h4 className="font-medium text-slate-700 dark:text-slate-200">
+                          {insights.journey.stageLabel} Journey
+                        </h4>
+                        <p className="text-xs text-slate-500">
+                          {insights.journey.choiceCount} choices made
+                        </p>
+                      </div>
+                    </div>
+                    <p className="text-sm text-slate-600 dark:text-slate-300">
+                      {insights.journey.description}
+                    </p>
+                  </div>
+
+                  {/* Pattern Distribution */}
+                  {insights.hasEnoughData && (
+                    <div className="space-y-3">
+                      <h4 className="text-xs font-medium uppercase tracking-wider text-slate-400">
+                        Your Approach Distribution
+                      </h4>
+                      {(Object.entries(insights.raw.patterns) as [string, number][])
+                        .filter(([key, value]) =>
+                          value > 0 &&
+                          ['analytical', 'patience', 'exploring', 'helping', 'building'].includes(key)
+                        )
+                        .sort(([, a], [, b]) => b - a)
+                        .slice(0, 5)
+                        .map(([patternId, value]) => {
+                          const metadata = PATTERN_METADATA[patternId as PatternType]
+                          if (!metadata) return null
+
+                          const total = (Object.entries(insights.raw.patterns) as [string, number][])
+                            .filter(([k]) => ['analytical', 'patience', 'exploring', 'helping', 'building'].includes(k))
+                            .reduce((sum, [, v]) => sum + v, 0)
+                          const percentage = total > 0 ? Math.round((value / total) * 100) : 0
+
+                          return (
+                            <div
+                              key={patternId}
+                              className="p-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800"
+                            >
+                              <div className="flex items-center justify-between mb-2">
+                                <span className="text-sm font-medium text-slate-700 dark:text-slate-200">
+                                  {metadata.shortLabel}
+                                </span>
+                                <span className="text-xs text-slate-500">
+                                  {percentage}%
+                                </span>
+                              </div>
+                              <div className="h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+                                <div
+                                  className="h-full rounded-full transition-all duration-500"
+                                  style={{
+                                    width: `${percentage}%`,
+                                    backgroundColor: metadata.color
+                                  }}
+                                />
+                              </div>
+                            </div>
+                          )
+                        })}
+                    </div>
+                  )}
+
+                  {!insights.hasEnoughData && (
+                    <div className="p-6 text-center border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-lg">
+                      <TrendingUp className="w-8 h-8 text-slate-300 mx-auto mb-3" />
+                      <p className="text-slate-400 italic text-sm">Keep exploring to see more insights.</p>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
 
             {/* Footer */}
-            <div className="p-4 bg-slate-50 dark:bg-slate-950 text-center border-t border-slate-200 dark:border-slate-800">
-              <p className="text-xs text-slate-400">Your choices shape who you become.</p>
+            <div
+              className="flex-shrink-0 p-4 bg-slate-50 dark:bg-slate-950 text-center border-t border-slate-200 dark:border-slate-800"
+              style={{ paddingBottom: 'max(1rem, env(safe-area-inset-bottom, 0px))' }}
+            >
+              <p className="text-xs text-slate-400">Your choices reveal who you are.</p>
             </div>
 
           </motion.div>
@@ -319,4 +366,16 @@ export function Journal({ isOpen, onClose }: JournalProps) {
       )}
     </AnimatePresence>
   )
+}
+
+// Helper to get Tailwind color class from pattern type
+function getPatternColorClass(pattern: PatternType): string {
+  const colorMap: Record<PatternType, string> = {
+    analytical: 'blue-500',
+    patience: 'green-500',
+    exploring: 'purple-500',
+    helping: 'pink-500',
+    building: 'amber-500'
+  }
+  return colorMap[pattern] || 'amber-500'
 }
