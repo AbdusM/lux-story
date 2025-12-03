@@ -778,6 +778,13 @@ export const samuelDialogueNodes: DialogueNode[] = [
         skills: ['sustainability', 'systemsThinking']
       },
       {
+        choiceId: 'hub_healthcare_tech',
+        text: "I'm drawn to healthcare, but I think the technology matters as much as the medicine.",
+        nextNodeId: 'samuel_discovers_marcus',
+        pattern: 'helping',
+        skills: ['technicalLiteracy', 'emotionalIntelligence']
+      },
+      {
         choiceId: 'hub_not_sure',
         text: "I'm not sure what I'm looking for yet.",
         nextNodeId: 'samuel_hub_fallback',
@@ -1099,15 +1106,47 @@ export const samuelDialogueNodes: DialogueNode[] = [
     ]
   },
 
+  // ============= DISCOVERY PATH: HEALTHCARE TECH → MARCUS =============
+  {
+    nodeId: 'samuel_discovers_marcus',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Platform 4, near the Medical Bay. That's Marcus.\n\nCVICU Nurse at UAB Hospital—the kind who keeps people alive through the night shift. But he's realizing the machines he uses are just as important as the medicine.\n\nHe's standing there like he's still on shift. Carries the weight of every patient. Go gently.",
+        emotion: 'respectful',
+        variation_id: 'discovers_marcus_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'meet_marcus',
+        text: "I understand that weight. I'll talk to him.",
+        nextNodeId: 'marcus_introduction',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          addGlobalFlags: ['met_marcus']
+        }
+      },
+      {
+        choiceId: 'ask_about_others_marcus',
+        text: "Who else is here?",
+        nextNodeId: 'samuel_other_travelers',
+        pattern: 'exploring',
+        skills: ['communication']
+      }
+    ]
+  },
+
   // ============= FALLBACK: UNSURE → GUIDED CHOICE =============
   {
     nodeId: 'samuel_hub_fallback',
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "{{trust>3:Honesty is the only currency that matters here.|That's honest. That's why you're here.}}\n\nTonight's travelers:\n\n**Maya Chen** - Platform 1, near the old L&N waiting room. Pre-med at UAB who wants to help, but maybe differently.\n\n**Devon Kumar** - Platform 3, by the engineer's memorial. UAB engineering student learning logic isn't enough.\n\n**Jordan Packard** - Down at Railroad Park. Seven jobs in twelve years. One question.\n\nWho speaks to you?",
+        text: "{{trust>3:Honesty is the only currency that matters here.|That's honest. That's why you're here.}}\n\nTonight's travelers:\n\n**Maya Chen** - Platform 1. Pre-med student choosing between expectations and dreams.\n\n**Devon Kumar** - Platform 3. Engineer learning logic isn't enough.\n\n**Jordan Packard** - Railroad Park. Seven jobs. One question.\n\n**Marcus** - Platform 4. CVICU nurse where machines meet medicine.\n\n**Tess** - Pizitz Food Hall. Building a school that counts hiking as physics.\n\n**Yaquin** - Platform 5. Teaching what universities won't.\n\n**Kai** - Platform 6. Fighting to innovate inside rigid systems.\n\n**Rohan** - Platform 7. Guarding infrastructure that matters.\n\n**Silas** - Platform 8. Debugging nature itself.\n\nWho speaks to you?",
         emotion: 'gentle_guide',
-        variation_id: 'fallback_v1'
+        variation_id: 'fallback_v2'
       }
     ],
     choices: [
@@ -1140,6 +1179,48 @@ export const samuelDialogueNodes: DialogueNode[] = [
         consequence: {
           addGlobalFlags: ['met_jordan']
         }
+      },
+      {
+        choiceId: 'choose_marcus',
+        text: "Marcus - where healthcare meets technology.",
+        nextNodeId: 'samuel_discovers_marcus',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'technicalLiteracy']
+      },
+      {
+        choiceId: 'choose_tess',
+        text: "Tess - reimagining education.",
+        nextNodeId: 'samuel_discovers_tess',
+        pattern: 'building',
+        skills: ['creativity', 'leadership']
+      },
+      {
+        choiceId: 'choose_yaquin',
+        text: "Yaquin - teaching outside the system.",
+        nextNodeId: 'samuel_discovers_yaquin',
+        pattern: 'building',
+        skills: ['leadership', 'creativity']
+      },
+      {
+        choiceId: 'choose_kai',
+        text: "Kai - innovation within constraints.",
+        nextNodeId: 'samuel_discovers_kai',
+        pattern: 'analytical',
+        skills: ['strategicThinking', 'resilience']
+      },
+      {
+        choiceId: 'choose_rohan',
+        text: "Rohan - the infrastructure guardian.",
+        nextNodeId: 'samuel_discovers_rohan',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'technicalLiteracy']
+      },
+      {
+        choiceId: 'choose_silas',
+        text: "Silas - debugging nature.",
+        nextNodeId: 'samuel_discovers_silas',
+        pattern: 'building',
+        skills: ['sustainability', 'systemsThinking']
       }
     ]
   },
@@ -1150,9 +1231,9 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "The full picture:\n\n**Maya Chen** - Platform 1. Pre-med brilliance, family expectations, robotics dreams.\n\n**Devon Kumar** - Platform 3. Systems engineer who tried to debug grief.\n\n**Jordan Packard** - Conference Room B. Seven careers. Adaptability or chaos?\n\nWho do you want to meet?",
+        text: "The full picture:\n\n**Maya Chen** - Platform 1. Pre-med brilliance, robotics dreams.\n\n**Devon Kumar** - Platform 3. Engineer debugging grief.\n\n**Jordan Packard** - Railroad Park. Seven careers. One question.\n\n**Marcus** - Platform 4. CVICU nurse. Machines meet medicine.\n\n**Tess** - Pizitz Food Hall. Building a new kind of school.\n\n**Yaquin** - Platform 5. Teaching outside the system.\n\n**Kai** - Platform 6. Innovation within constraints.\n\n**Rohan** - Platform 7. Infrastructure guardian.\n\n**Silas** - Platform 8. Debugging nature.\n\nWho do you want to meet?",
         emotion: 'patient_informative',
-        variation_id: 'other_travelers_v1'
+        variation_id: 'other_travelers_v2'
       }
     ],
     choices: [
@@ -1178,13 +1259,55 @@ export const samuelDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'meet_jordan_alt',
-        text: "Jordan in Conference Room B.",
+        text: "Jordan at Railroad Park.",
         nextNodeId: 'jordan_introduction',
         pattern: 'exploring',
         skills: ['adaptability', 'collaboration'],
         consequence: {
           addGlobalFlags: ['met_jordan']
         }
+      },
+      {
+        choiceId: 'meet_marcus_alt',
+        text: "Marcus on Platform 4.",
+        nextNodeId: 'samuel_discovers_marcus',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'technicalLiteracy']
+      },
+      {
+        choiceId: 'meet_tess_alt',
+        text: "Tess at Pizitz Food Hall.",
+        nextNodeId: 'samuel_discovers_tess',
+        pattern: 'building',
+        skills: ['creativity', 'leadership']
+      },
+      {
+        choiceId: 'meet_yaquin_alt',
+        text: "Yaquin on Platform 5.",
+        nextNodeId: 'samuel_discovers_yaquin',
+        pattern: 'building',
+        skills: ['leadership', 'creativity']
+      },
+      {
+        choiceId: 'meet_kai_alt',
+        text: "Kai on Platform 6.",
+        nextNodeId: 'samuel_discovers_kai',
+        pattern: 'analytical',
+        skills: ['strategicThinking', 'resilience']
+      },
+      {
+        choiceId: 'meet_rohan_alt',
+        text: "Rohan on Platform 7.",
+        nextNodeId: 'samuel_discovers_rohan',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'technicalLiteracy']
+      },
+      {
+        choiceId: 'meet_silas_alt',
+        text: "Silas on Platform 8.",
+        nextNodeId: 'samuel_discovers_silas',
+        pattern: 'building',
+        skills: ['sustainability', 'systemsThinking']
       }
     ]
   },
@@ -1355,230 +1478,6 @@ export const samuelDialogueNodes: DialogueNode[] = [
         nextNodeId: 'samuel_station_keeper_truth',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'communication']
-      }
-    ]
-  },
-
-  // ============= REFLECTION: Maya's Specific Choice =============
-  {
-    nodeId: 'samuel_maya_reflection_early_exit',
-    speaker: 'Samuel Washington',
-    content: [
-      {
-        text: "She went back to studying. Sometimes the timing isn't right. Or maybe we pushed too hard, too fast.\n\nRespecting someone's 'no' is just as important as encouraging their 'yes'. You gave her space. That counts.",
-        emotion: 'gentle_truth',
-        variation_id: 'early_exit_v1'
-      }
-    ],
-    requiredState: {
-      hasKnowledgeFlags: ['early_connection_made']
-    },
-    choices: [
-      {
-        choiceId: 'wish_i_could_do_more',
-        text: "I wish I could have done more.",
-        nextNodeId: 'samuel_patience_wisdom',
-        pattern: 'helping',
-        skills: ['emotionalIntelligence']
-      },
-      {
-        choiceId: 'timing_matters',
-        text: "Timing matters.",
-        nextNodeId: 'samuel_contemplation_offer',
-        pattern: 'patience',
-        skills: ['adaptability', 'timeManagement']
-      }
-    ]
-  },
-
-  // NUANCE: Robotics + Patience
-  {
-    nodeId: 'samuel_maya_reflection_robotics_patience',
-    speaker: 'Samuel Washington',
-    content: [
-      {
-        text: "She's choosing robotics. But what struck me was how she got there.\n\nYou didn't push. You waited. You let the silence do the work.\n\nThat's the difference between forcing a flower open and letting it bloom. She chose this because she felt safe, not because she was persuaded.",
-        emotion: 'deep_respect',
-        variation_id: 'robotics_patience_v1'
-      }
-    ],
-    requiredState: {
-      hasKnowledgeFlags: ['chose_robotics'],
-      patterns: {
-        patience: { min: 5 }
-      }
-    },
-    choices: [
-      {
-        choiceId: 'patience_was_key',
-        text: "The silence felt necessary.",
-        nextNodeId: 'samuel_contemplation_offer',
-        pattern: 'patience',
-        skills: ['emotionalIntelligence', 'adaptability']
-      },
-      {
-        choiceId: 'she_needed_space',
-        text: "She just needed room to breathe.",
-        nextNodeId: 'samuel_contemplation_offer',
-        pattern: 'helping',
-        skills: ['emotionalIntelligence', 'communication']
-      }
-    ]
-  },
-
-  // NUANCE: Robotics + Analytical
-  {
-    nodeId: 'samuel_maya_reflection_robotics_analytical',
-    speaker: 'Samuel Washington',
-    content: [
-      {
-        text: "She's choosing robotics. You helped her see the logic of it - that UAB has a program, that it's a valid field.\n\nSometimes passion needs a scaffold. You built that for her. You took a dream that felt impossible and gave it structure.",
-        emotion: 'affirming_analytical',
-        variation_id: 'robotics_analytical_v1'
-      }
-    ],
-    requiredState: {
-      hasKnowledgeFlags: ['chose_robotics'],
-      patterns: {
-        analytical: { min: 5 }
-      }
-    },
-    choices: [
-      {
-        choiceId: 'structure_supports_dreams',
-        text: "Dreams need foundations.",
-        nextNodeId: 'samuel_contemplation_offer',
-        pattern: 'analytical',
-        skills: ['criticalThinking', 'problemSolving']
-      },
-      {
-        choiceId: 'logic_validated_feeling',
-        text: "The facts helped her trust her feelings.",
-        nextNodeId: 'samuel_contemplation_offer',
-        pattern: 'helping',
-        skills: ['emotionalIntelligence', 'communication']
-      }
-    ]
-  },
-
-  {
-    nodeId: 'samuel_maya_reflection_robotics',
-    speaker: 'Samuel Washington',
-    content: [
-      {
-        text: "She's choosing robotics. The path she's been afraid to name out loud because it felt like betraying twenty years of her parents' sacrifice.\n\nYou helped her see that honoring their love doesn't require abandoning herself. That's wisdom most people spend decades learning.",
-        emotion: 'reflective',
-        variation_id: 'robotics_path_v1'
-      }
-    ],
-    requiredState: {
-      hasKnowledgeFlags: ['chose_robotics']
-    },
-    choices: [
-      {
-        choiceId: 'how_do_you_know_robotics',
-        text: "How do you know that's what she'll choose?",
-        nextNodeId: 'samuel_station_sees_all',
-        pattern: 'analytical',
-        skills: ['criticalThinking', 'communication']
-      },
-      {
-        choiceId: 'glad_she_found_it',
-        text: "I'm glad she found that clarity.",
-        nextNodeId: 'samuel_contemplation_offer',
-        pattern: 'helping',
-        skills: ['emotionalIntelligence', 'communication']
-      },
-      {
-        choiceId: 'what_about_me',
-        text: "What about my path?",
-        nextNodeId: 'samuel_your_pattern_emerges',
-        pattern: 'exploring',
-        skills: ['adaptability', 'criticalThinking']
-      }
-    ]
-  },
-
-  {
-    nodeId: 'samuel_maya_reflection_hybrid',
-    speaker: 'Samuel Washington',
-    content: [
-      {
-        text: "She's choosing the hybrid path - biomedical engineering. The road where she doesn't have to choose between her parents' dreams and her own.\n\nYou helped her see both paths could honor her family. You showed her that 'and' is sometimes more powerful than 'or.' That takes someone who understands complexity, not just solutions.",
-        emotion: 'appreciative',
-        variation_id: 'hybrid_path_v1'
-      }
-    ],
-    requiredState: {
-      hasKnowledgeFlags: ['chose_hybrid']
-    },
-    choices: [
-      {
-        choiceId: 'perfect_solution',
-        text: "It does seem like the perfect solution.",
-        nextNodeId: 'samuel_contemplation_offer',
-        pattern: 'analytical',
-        skills: ['criticalThinking', 'communication']
-      },
-      {
-        choiceId: 'she_found_her_bridge',
-        text: "She found her own bridge.",
-        nextNodeId: 'samuel_contemplation_offer',
-        pattern: 'patience',
-        skills: ['emotionalIntelligence', 'communication'],
-        consequence: {
-          characterId: 'samuel',
-          trustChange: 1
-        }
-      },
-      {
-        choiceId: 'what_pattern_am_i_showing',
-        text: "What pattern am I showing?",
-        nextNodeId: 'samuel_your_pattern_emerges',
-        pattern: 'exploring',
-        skills: ['communication', 'criticalThinking']
-      }
-    ]
-  },
-
-  {
-    nodeId: 'samuel_maya_reflection_self',
-    speaker: 'Samuel Washington',
-    content: [
-      {
-        text: "She's choosing to keep exploring. Not rushing the decision, not forcing clarity before it's ready to emerge.\n\nYou gave her permission to not know yet. In a world that demands immediate answers, that's a profound gift. That takes someone comfortable with ambiguity - someone patient.",
-        emotion: 'knowing',
-        variation_id: 'self_path_v1'
-      }
-    ],
-    requiredState: {
-      hasKnowledgeFlags: ['chose_self']
-    },
-    choices: [
-      {
-        choiceId: 'is_that_okay',
-        text: "Is it okay that she doesn't have an answer yet?",
-        nextNodeId: 'samuel_patience_wisdom',
-        pattern: 'helping',
-        skills: ['emotionalIntelligence', 'communication']
-      },
-      {
-        choiceId: 'recognize_the_gift',
-        text: "Sometimes not knowing is the answer.",
-        nextNodeId: 'samuel_contemplation_offer',
-        pattern: 'patience',
-        skills: ['emotionalIntelligence', 'adaptability'],
-        consequence: {
-          characterId: 'samuel',
-          trustChange: 1
-        }
-      },
-      {
-        choiceId: 'what_does_that_say',
-        text: "What does that say about me?",
-        nextNodeId: 'samuel_your_pattern_emerges',
-        pattern: 'exploring',
-        skills: ['communication', 'emotionalIntelligence']
       }
     ]
   },
@@ -1935,6 +1834,17 @@ export const samuelDialogueNodes: DialogueNode[] = [
         visibleCondition: {
           hasGlobalFlags: ['yaquin_building_audience']
         }
+      },
+      {
+        // Fallback choice if neither specific flag is set (defensive)
+        choiceId: 'yaquin_general_reflection',
+        text: "I'm glad I could help him find clarity.",
+        nextNodeId: 'samuel_hub_comprehensive',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        visibleCondition: {
+          lacksGlobalFlags: ['yaquin_launched', 'yaquin_building_audience']
+        }
       }
     ],
     onEnter: [
@@ -2009,6 +1919,17 @@ export const samuelDialogueNodes: DialogueNode[] = [
         skills: ['entrepreneurship', 'visionaryThinking'],
         visibleCondition: {
           hasGlobalFlags: ['kai_chose_studio']
+        }
+      },
+      {
+        // Fallback choice if specific flag is not set (defensive)
+        choiceId: 'kai_general_reflection',
+        text: "They're finally free to create what matters.",
+        nextNodeId: 'samuel_hub_comprehensive',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        visibleCondition: {
+          lacksGlobalFlags: ['kai_chose_studio']
         }
       }
     ],
@@ -2161,233 +2082,6 @@ export const samuelDialogueNodes: DialogueNode[] = [
         nextNodeId: mayaRevisitEntryPoints.WELCOME,
         pattern: 'helping',
         skills: ["emotionalIntelligence","communication"]
-      }
-    ]
-  },
-
-  // ============= RECIPROCITY ENGINE: SAMUEL REFLECTIONS =============
-  // These nodes close the feedback loop when player shares personal information with NPCs
-  {
-    nodeId: 'samuel_reflects_stable_parents',
-    speaker: 'Samuel Washington',
-    content: [
-      {
-        text: "What you told Maya. About your parents' stable careers.\n\nThat explains your patience. Solid foundation. You've never had to rush because you've never had to run.\n\nThe station shows me patterns. Your patience is an inheritance.",
-        emotion: 'insightful',
-        variation_id: 'stable_parents_reflection_v1'
-      }
-    ],
-    requiredState: {
-      hasGlobalFlags: ['player_revealed_stable_parents'],
-      lacksKnowledgeFlags: ['closed_reciprocity_loop'],
-      trust: { min: 5 }
-    },
-    choices: [
-      {
-        choiceId: 'never_thought_of_it',
-        text: "I never thought of patience as inherited.",
-        nextNodeId: 'samuel_inheritance_wisdom',
-        pattern: 'exploring',
-        skills: ['communication', 'criticalThinking']
-      },
-      {
-        choiceId: 'makes_sense',
-        text: "That actually makes a lot of sense.",
-        nextNodeId: 'samuel_pattern_confirmation',
-        pattern: 'patience',
-        skills: ['emotionalIntelligence', 'communication']
-      }
-    ],
-    onEnter: [
-      {
-        characterId: 'samuel',
-        addKnowledgeFlags: ['discussed_player_background', 'closed_reciprocity_loop']
-      }
-    ]
-  },
-
-  {
-    nodeId: 'samuel_reflects_entrepreneur_parents',
-    speaker: 'Samuel Washington',
-    content: [
-      {
-        text: "What you told Maya. Parents always building something new.\n\nThat explains your exploring pattern. You see opportunities, not closed doors. Risk feels like possibility.\n\nThe station called you here because you help others see possibility where they see walls.",
-        emotion: 'appreciative',
-        variation_id: 'entrepreneur_parents_reflection_v1'
-      }
-    ],
-    requiredState: {
-      hasGlobalFlags: ['player_revealed_entrepreneur_parents'],
-      lacksKnowledgeFlags: ['closed_reciprocity_loop'],
-      trust: { min: 5 }
-    },
-    choices: [
-      {
-        choiceId: 'pattern_recognition',
-        text: "You really do see the patterns, don't you?",
-        nextNodeId: 'samuel_pattern_wisdom',
-        pattern: 'analytical',
-        skills: ['criticalThinking', 'communication']
-      },
-      {
-        choiceId: 'helping_see_possibility',
-        text: "I try to help people see what's possible.",
-        nextNodeId: 'samuel_possibility_keeper',
-        pattern: 'helping',
-        skills: ['emotionalIntelligence', 'communication', 'leadership']
-      }
-    ],
-    onEnter: [
-      {
-        characterId: 'samuel',
-        addKnowledgeFlags: ['discussed_player_background', 'closed_reciprocity_loop']
-      }
-    ]
-  },
-
-  {
-    nodeId: 'samuel_reflects_struggling_parents',
-    speaker: 'Samuel Washington',
-    content: [
-      {
-        text: "Maya mentioned you shared something difficult with her. About watching your parents struggle.\n\nThat kind of witnessing changes you. Makes you see need before it's spoken. Makes you hold space before it's asked for.",
-        emotion: 'deep_respect',
-        variation_id: 'struggling_parents_reflection_v1_pt1'
-      }
-    ],
-    requiredState: {
-      hasGlobalFlags: ['player_revealed_struggling_parents'],
-      lacksKnowledgeFlags: ['closed_reciprocity_loop'],
-      trust: { min: 5 }
-    },
-    choices: [
-      {
-        choiceId: 'continue_struggling_parents_reflection',
-        text: "(Continue)",
-        nextNodeId: 'samuel_reflects_struggling_parents_pt2',
-        pattern: 'patience'
-      }
-    ],
-    onEnter: [
-      {
-        characterId: 'samuel',
-        addKnowledgeFlags: ['discussed_player_background', 'closed_reciprocity_loop'],
-        trustChange: 1
-      }
-    ]
-  },
-
-  {
-    nodeId: 'samuel_reflects_struggling_parents_pt2',
-    speaker: 'Samuel Washington',
-    content: [
-      {
-        text: "You have the helper pattern not because you chose it, but because life taught you early what it means to need help. That's not a burden. That's wisdom.\n\nThe station recognizes servants who serve from understanding, not obligation.",
-        emotion: 'deep_respect',
-        variation_id: 'struggling_parents_reflection_v1_pt2'
-      }
-    ],
-    requiredState: {
-      hasGlobalFlags: ['player_revealed_struggling_parents'],
-      lacksKnowledgeFlags: ['closed_reciprocity_loop'],
-      trust: { min: 5 }
-    },
-    choices: [
-      {
-        choiceId: 'wisdom_from_struggle',
-        text: "I never saw it as wisdom before.",
-        nextNodeId: 'samuel_struggle_transformation',
-        pattern: 'patience',
-        skills: ['emotionalIntelligence', 'communication']
-      },
-      {
-        choiceId: 'understanding_not_obligation',
-        text: "Understanding, not obligation. I like that framing.",
-        nextNodeId: 'samuel_service_philosophy',
-        pattern: 'helping',
-        skills: ['emotionalIntelligence', 'communication']
-      }
-    ]
-  },
-
-  {
-    nodeId: 'samuel_reflects_absent_parents',
-    speaker: 'Samuel Washington',
-    content: [
-      {
-        text: "What you shared with Maya. Success and absence in your family.\n\nYou learned achievement can become a disappearing act. That's why you're patient. You know where rushing leads.\n\nThe station brought you here because you understand: presence matters more than performance.",
-        emotion: 'understanding',
-        variation_id: 'absent_parents_reflection_v1'
-      }
-    ],
-    requiredState: {
-      hasGlobalFlags: ['player_revealed_absent_parents'],
-      lacksKnowledgeFlags: ['closed_reciprocity_loop'],
-      trust: { min: 5 }
-    },
-    choices: [
-      {
-        choiceId: 'presence_over_performance',
-        text: "Presence over performance. Still learning that.",
-        nextNodeId: 'samuel_presence_teaching',
-        pattern: 'patience',
-        skills: ['emotionalIntelligence', 'adaptability']
-      },
-      {
-        choiceId: 'hollow_success',
-        text: "I've seen what hollow success looks like.",
-        nextNodeId: 'samuel_hollow_wisdom',
-        pattern: 'analytical',
-        skills: ['criticalThinking', 'emotionalIntelligence']
-      }
-    ],
-    onEnter: [
-      {
-        characterId: 'samuel',
-        addKnowledgeFlags: ['discussed_player_background', 'closed_reciprocity_loop']
-      }
-    ]
-  },
-
-  {
-    nodeId: 'samuel_reflects_boundaries',
-    speaker: 'Samuel Washington',
-    content: [
-      {
-        text: "Maya told me you chose NOT to share when she asked.\n\nRare. Most people perform vulnerability to earn connection. You set a boundary. Kindly but firmly.\n\nThat's mastery. Maya's trust grew because of your 'no,' not despite it.",
-        emotion: 'profound_respect',
-        variation_id: 'boundaries_reflection_v1'
-      }
-    ],
-    requiredState: {
-      hasGlobalFlags: ['player_set_boundary'],
-      lacksKnowledgeFlags: ['closed_reciprocity_loop'],
-      trust: { min: 5 }
-    },
-    choices: [
-      {
-        choiceId: 'didnt_feel_like_mastery',
-        text: "It didn't feel like mastery. Just honesty.",
-        nextNodeId: 'samuel_honesty_mastery',
-        pattern: 'patience',
-        skills: ['emotionalIntelligence', 'communication'],
-        consequence: {
-          characterId: 'samuel',
-          trustChange: 2
-        }
-      },
-      {
-        choiceId: 'walls_vs_boundaries',
-        text: "Walls and boundaries - that's an important distinction.",
-        nextNodeId: 'samuel_boundary_philosophy',
-        pattern: 'analytical',
-        skills: ["criticalThinking","communication"]
-      }
-    ],
-    onEnter: [
-      {
-        characterId: 'samuel',
-        addKnowledgeFlags: ['recognized_boundary_wisdom', 'closed_reciprocity_loop']
       }
     ]
   },
@@ -2700,166 +2394,6 @@ export const samuelDialogueNodes: DialogueNode[] = [
     ]
   },
 
-  // NUANCE: Integration + Helping (Gentle Presence)
-  {
-    nodeId: 'samuel_devon_reflection_integration_helping',
-    speaker: 'Samuel Washington',
-    content: [
-      {
-        text: "He's choosing integration. But more importantly, he's choosing it because he feels safe.\n\nYou approached his logic with so much gentleness. You didn't try to break his system; you helped him expand it to include himself.\n\nThat's how you help a rigid mind become flexible. Warmth melts structure.",
-        emotion: 'warm_approval',
-        variation_id: 'devon_integration_helping_v1'
-      }
-    ],
-    requiredState: {
-      hasKnowledgeFlags: ['chose_integration'],
-      patterns: {
-        helping: { min: 5 }
-      }
-    },
-    choices: [
-      {
-        choiceId: 'gentleness_is_strength',
-        text: "He just needed to know he wasn't broken.",
-        nextNodeId: 'samuel_devon_systems_wisdom',
-        pattern: 'helping',
-        skills: ['emotionalIntelligence', 'communication']
-      }
-    ]
-  },
-
-  // NUANCE: Integration + Analytical (Structural Insight)
-  {
-    nodeId: 'samuel_devon_reflection_integration_analytical',
-    speaker: 'Samuel Washington',
-    content: [
-      {
-        text: "He's choosing integration. You spoke his language perfectly.\n\nYou helped him see that emotions are variables, not errors. That was the key. You didn't ask him to stop being an engineer; you helped him become a better one.\n\nThat's systemic change.",
-        emotion: 'respectful_analytical',
-        variation_id: 'devon_integration_analytical_v1'
-      }
-    ],
-    requiredState: {
-      hasKnowledgeFlags: ['chose_integration'],
-      patterns: {
-        analytical: { min: 5 }
-      }
-    },
-    choices: [
-      {
-        choiceId: 'better_system',
-        text: "It's a more robust system now.",
-        nextNodeId: 'samuel_devon_systems_wisdom',
-        pattern: 'analytical',
-        skills: ['criticalThinking', 'problemSolving']
-      }
-    ]
-  },
-
-  // VARIATION 1: Integration Frame (Engineer AND Son)
-  {
-    nodeId: 'samuel_devon_reflection_integration',
-    speaker: 'Samuel Washington',
-    content: [
-      {
-        text: "He's choosing integration. Not abandoning his analytical mind, but using it to serve his heart.\n\nThat's rare. Most people swing like a pendulum - all logic or all emotion. You helped him find the synthesis.\n\n'Engineer and Son.' That's a powerful identity.",
-        emotion: 'affirming',
-        variation_id: 'devon_integration_reflection_v1'
-      }
-    ],
-    requiredState: {
-      hasKnowledgeFlags: ['chose_integration']
-    },
-    choices: [
-      {
-        choiceId: 'hope_it_works',
-        text: "It won't be easy, but it's honest.",
-        nextNodeId: 'samuel_devon_systems_wisdom',
-        pattern: 'patience',
-        skills: ['emotionalIntelligence', 'communication']
-      },
-      {
-        choiceId: 'he_needed_permission',
-        text: "He just needed to know he didn't have to amputate parts of himself.",
-        nextNodeId: 'samuel_hub_after_devon',
-        pattern: 'helping',
-        skills: ['emotionalIntelligence', 'leadership'],
-        consequence: {
-          characterId: 'samuel',
-          trustChange: 1
-        }
-      }
-    ]
-  },
-
-  // VARIATION 2: Heart Frame (Logic < Heart)
-  {
-    nodeId: 'samuel_devon_reflection_heart',
-    speaker: 'Samuel Washington',
-    content: [
-      {
-        text: "He's putting the flowchart away. Leading with vulnerability.\n\nThat takes courage for someone wired like him. To walk into a conversation without a script? That's free-fall.\n\nYou gave him the parachute.",
-        emotion: 'respectful',
-        variation_id: 'devon_heart_reflection_v1'
-      }
-    ],
-    requiredState: {
-      hasKnowledgeFlags: ['chose_heart']
-    },
-    choices: [
-      {
-        choiceId: 'vulnerability_is_strength',
-        text: "Vulnerability is data too.",
-        nextNodeId: 'samuel_devon_heart_wisdom',
-        pattern: 'analytical',
-        skills: ['criticalThinking', 'emotionalIntelligence']
-      },
-      {
-        choiceId: 'he_was_ready',
-        text: "He was ready. He just needed a nudge.",
-        nextNodeId: 'samuel_hub_after_devon',
-        pattern: 'patience',
-        skills: ['emotionalIntelligence', 'communication'],
-        consequence: {
-          characterId: 'samuel',
-          trustChange: 1
-        }
-      }
-    ]
-  },
-
-  // VARIATION 3: Presence Frame (Just be there)
-  {
-    nodeId: 'samuel_devon_reflection_presence',
-    speaker: 'Samuel Washington',
-    content: [
-      {
-        text: "He's choosing simply to be there. No agenda. No optimization.\n\nThat's the hardest path for a fixer. To sit with broken things and not reach for the glue.\n\nYou taught him that presence is an action. That's profound.",
-        emotion: 'deep_knowing',
-        variation_id: 'devon_presence_reflection_v1'
-      }
-    ],
-    requiredState: {
-      hasKnowledgeFlags: ['chose_presence']
-    },
-    choices: [
-      {
-        choiceId: 'presence_is_hard',
-        text: "It's the hardest thing to do.",
-        nextNodeId: 'samuel_hub_after_devon',
-        pattern: 'patience',
-        skills: ['emotionalIntelligence', 'adaptability']
-      },
-      {
-        choiceId: 'mom_legacy',
-        text: "He realized that's what his mother did.",
-        nextNodeId: 'samuel_devon_systems_wisdom',
-        pattern: 'helping',
-        skills: ['emotionalIntelligence', 'communication']
-      }
-    ]
-  },
-
   // Follow-up wisdom nodes for Devon
   {
     nodeId: 'samuel_devon_systems_wisdom',
@@ -3133,160 +2667,6 @@ export const samuelDialogueNodes: DialogueNode[] = [
     ]
   },
 
-  // VARIATION 1: Accumulation Frame
-  {
-    nodeId: 'samuel_jordan_reflection_accumulation',
-    speaker: 'Samuel Washington',
-    content: [
-      {
-        text: "She walked into that classroom and told them the truth: every job that felt like failure was building her foundation.\n\nMarketing taught user empathy. Startup taught shipping under pressure. Agency refined her craft. Seven years. Seven teachers.\n\nYou helped her see accumulation isn't collecting baggage - it's gathering wisdom.",
-        emotion: 'affirming',
-        variation_id: 'accumulation_reflection_v1'
-      }
-    ],
-    requiredState: {
-      hasGlobalFlags: ['jordan_chose_accumulation']
-    },
-    choices: [
-      {
-        choiceId: 'will_she_believe_it',
-        text: "Do you think she believed it? Or just needed to hear it?",
-        nextNodeId: 'samuel_jordan_belief_wisdom',
-        pattern: 'analytical',
-        skills: ['criticalThinking', 'communication']
-      },
-      {
-        choiceId: 'gave_permission',
-        text: "She gave those students permission to be imperfect.",
-        nextNodeId: 'samuel_jordan_hub_return',
-        pattern: 'patience',
-        skills: ['emotionalIntelligence', 'communication', 'leadership'],
-        consequence: {
-          characterId: 'samuel',
-          trustChange: 1
-        }
-      },
-      {
-        choiceId: 'wonder_future',
-        text: "I wonder what she'll do with that frame after today.",
-        nextNodeId: 'samuel_jordan_future_wisdom',
-        pattern: 'exploring',
-        skills: ["communication","criticalThinking"]
-      }
-    ]
-  },
-
-  // VARIATION 2: Birmingham Frame - Part 1
-  {
-    nodeId: 'samuel_jordan_reflection_birmingham',
-    speaker: 'Samuel Washington',
-    content: [
-      {
-        text: "She stood before those students and claimed her place in this city's story.\n\nBirmingham - where reinvention isn't weakness, it's the foundation.\n\nThis city transformed from steel mills to medical research, railroads to tech hubs. Jordan moved through seven companies in a place that rewards people who pivot.\n\nShe wasn't failing - she was adapting faster than most.",
-        emotion: 'proud',
-        variation_id: 'birmingham_reflection_v1_pt1'
-      }
-    ],
-    requiredState: {
-      hasGlobalFlags: ['jordan_chose_birmingham']
-    },
-    choices: [
-      {
-        choiceId: 'continue_birmingham_reflection',
-        text: "(Continue)",
-        nextNodeId: 'samuel_jordan_path_reflection_pt2',
-        pattern: 'patience',
-        skills: ['communication']
-      }
-    ]
-  },
-
-  // VARIATION 2: Birmingham Frame - Part 2
-  {
-    nodeId: 'samuel_jordan_path_reflection_pt2',
-    speaker: 'Samuel Washington',
-    content: [
-      {
-        text: "You helped her see that she's not a fraud. She's proof that Birmingham values evolution over staying still.\n\nThose students needed to hear that career paths don't have to be straight lines - not in this city.",
-        emotion: 'proud',
-        variation_id: 'birmingham_reflection_v1_pt2'
-      }
-    ],
-    requiredState: {
-      hasGlobalFlags: ['jordan_chose_birmingham']
-    },
-    choices: [
-      {
-        choiceId: 'city_rewards_reinvention',
-        text: "This city really does reward reinvention, doesn't it?",
-        nextNodeId: 'samuel_jordan_city_wisdom',
-        pattern: 'analytical',
-        skills: ['criticalThinking', 'communication']
-      },
-      {
-        choiceId: 'part_of_story',
-        text: "She's part of Birmingham's next chapter now.",
-        nextNodeId: 'samuel_jordan_hub_return',
-        pattern: 'patience',
-        skills: ['emotionalIntelligence', 'communication'],
-        consequence: {
-          characterId: 'samuel',
-          trustChange: 1
-        }
-      },
-      {
-        choiceId: 'ripple_effect',
-        text: "I wonder how many students will take a winding path because of her.",
-        nextNodeId: 'samuel_jordan_ripple_wisdom',
-        pattern: 'helping',
-        skills: ['emotionalIntelligence', 'criticalThinking', 'communication']
-      }
-    ]
-  },
-
-  // VARIATION 3: Internal Validation Frame
-  {
-    nodeId: 'samuel_jordan_reflection_internal',
-    speaker: 'Samuel Washington',
-    content: [
-      {
-        text: "She walked in with a different story. Not seven failures - seven chapters.\n\nYou gave her permission to rewrite the narrative. Impostor syndrome lives in the gap between others' definitions and the story we're living. Jordan closed that gap.\n\nThe most powerful thing you can give someone? They control the frame.",
-        emotion: 'contemplative',
-        variation_id: 'internal_reflection_v1'
-      }
-    ],
-    requiredState: {
-      hasGlobalFlags: ['jordan_chose_internal']
-    },
-    choices: [
-      {
-        choiceId: 'story_might_change',
-        text: "But what if the story she tells herself changes again?",
-        nextNodeId: 'samuel_jordan_narrative_wisdom',
-        pattern: 'analytical',
-        skills: ['criticalThinking', 'communication']
-      },
-      {
-        choiceId: 'needed_authorship',
-        text: "She just needed permission to author her own story.",
-        nextNodeId: 'samuel_jordan_hub_return',
-        pattern: 'patience',
-        skills: ['emotionalIntelligence', 'communication', 'leadership'],
-        consequence: {
-          characterId: 'samuel',
-          trustChange: 1
-        }
-      },
-      {
-        choiceId: 'lonely_frame',
-        text: "Isn't 'only your story matters' lonely?",
-        nextNodeId: 'samuel_jordan_sovereignty_wisdom',
-        pattern: 'helping',
-        skills: ['criticalThinking', 'emotionalIntelligence', 'communication']
-      }
-    ]
-  },
-
   // Follow-up wisdom nodes
   {
     nodeId: 'samuel_jordan_belief_wisdom',
@@ -3524,49 +2904,6 @@ export const samuelDialogueNodes: DialogueNode[] = [
   },
 
   // ============= TRUST MILESTONE ACKNOWLEDGMENTS =============
-  // NOTE: Duplicate samuel_yaquin_reflection_gateway removed (original at line 1905)
-  {
-    nodeId: 'samuel_acknowledges_robotics',
-    speaker: 'Samuel Washington',
-    content: [
-      {
-        text: "I did. Maya doesn't share that with many people. She's been building robots since high school, but she guards that passion like a secret shame.\n\nWhatever you said, whatever space you held - it created safety for her to name what she loves. Trust like that is earned through presence, not technique.",
-        emotion: 'recognizing_achievement',
-        variation_id: 'ack_robotics_v1'
-      }
-    ],
-    requiredState: {
-      hasGlobalFlags: ['maya_arc_complete']
-    },
-    choices: [
-      {
-        choiceId: 'how_did_you_know',
-        text: "How did you know she loves robotics?",
-        nextNodeId: 'samuel_station_knows_passions',
-        pattern: 'exploring',
-        skills: ['communication', 'criticalThinking']
-      },
-      {
-        choiceId: 'accept_acknowledgment',
-        text: "I just listened.",
-        nextNodeId: 'samuel_listening_wisdom',
-        pattern: 'patience',
-        skills: ['emotionalIntelligence', 'communication'],
-        consequence: {
-          characterId: 'samuel',
-          trustChange: 1
-        }
-      },
-      {
-        choiceId: 'back_to_hub',
-        text: "What about the other travelers?",
-        nextNodeId: 'samuel_hub_after_maya',
-        pattern: 'exploring',
-        skills: ['communication', 'collaboration']
-      }
-    ]
-  },
-
   {
     nodeId: 'samuel_acknowledges_family',
     speaker: 'Samuel Washington',
@@ -4039,7 +3376,6 @@ export const samuelDialogueNodes: DialogueNode[] = [
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
         visibleCondition: {
-          hasGlobalFlags: ['met_devon'],
           lacksGlobalFlags: ['marcus_arc_complete']
         }
       },

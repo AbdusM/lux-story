@@ -21,6 +21,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { DialogueDisplay } from '@/components/DialogueDisplay'
 import type { RichTextEffect } from '@/components/RichTextRenderer'
 import { AtmosphericIntro } from '@/components/AtmosphericIntro'
+import { CharacterAvatar } from '@/components/CharacterAvatar'
 import { getTrustLabel } from '@/lib/trust-labels'
 import { GameState, GameStateUtils } from '@/lib/character-state'
 import { GameStateManager } from '@/lib/game-state-manager'
@@ -887,6 +888,10 @@ export default function StatefulGameInterface() {
           {currentCharacter && (
             <div className="flex items-center justify-between py-2 border-t border-stone-200/50">
               <div className="flex items-center gap-2 font-medium text-slate-700 text-sm sm:text-base">
+                <CharacterAvatar
+                  characterName={characterNames[state.currentCharacterId]}
+                  size="sm"
+                />
                 <span className="truncate max-w-[150px] sm:max-w-none">{characterNames[state.currentCharacterId]}</span>
               </div>
               <div className="flex flex-col items-end">
@@ -974,8 +979,8 @@ export default function StatefulGameInterface() {
           ══════════════════════════════════════════════════════════════════ */}
       {!isEnding && (
         <footer
-          className="flex-shrink-0 bg-stone-50 border border-stone-200 shadow-lg mx-3 sm:mx-auto sm:max-w-2xl rounded-2xl"
-          style={{ marginBottom: 'calc(6rem + env(safe-area-inset-bottom, 0px))' }}
+          className="flex-shrink-0 bg-stone-50 border border-stone-200 shadow-lg mx-3 sm:mx-auto sm:max-w-2xl rounded-2xl mb-4"
+          style={{ marginBottom: 'calc(1rem + env(safe-area-inset-bottom, 0px))' }}
         >
           <div className="px-3 sm:px-4 py-3 sm:py-4">
             {/* Scrollable choices container for many options */}

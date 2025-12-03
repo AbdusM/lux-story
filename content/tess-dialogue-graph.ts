@@ -19,9 +19,11 @@ export const tessDialogueNodes: DialogueNode[] = [
     speaker: 'Tess',
     content: [
       {
-        text: `Not rigor. Resilience? Too soft. Grit? Overused.
+        text: `Woodlawn High guidance office. Grant applications everywhere.
 
-You look like you've been outside. Wilderness Immersion—vacation or crucible?`,
+Not rigor. Resilience? Too soft. Grit? Overused.
+
+You look like you've been outside. Wilderness Immersion. Vacation or crucible?`,
         emotion: 'passionate',
         interaction: 'jitter',
         variation_id: 'tess_intro_v1',

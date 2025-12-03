@@ -17,7 +17,7 @@
 import { DialogueNode } from '../lib/dialogue-graph'
 
 // Import all dialogue graphs
-import { samuelDialogueNodes } from '../content/samuel-dialogue-graph'
+import { samuelDialogueNodes, samuelEntryPoints } from '../content/samuel-dialogue-graph'
 import { mayaDialogueNodes } from '../content/maya-dialogue-graph'
 import { devonDialogueNodes } from '../content/devon-dialogue-graph'
 import { jordanDialogueNodes } from '../content/jordan-dialogue-graph'
@@ -126,10 +126,17 @@ class DialogueGraphValidator {
 
     // Find orphaned nodes
     const orphanedNodes: string[] = []
+    // Cross-graph entry points - these are intentionally reachable from OTHER graphs
+    const crossGraphEntryPoints = new Set<string>(Object.values(samuelEntryPoints))
+
     for (const nodeId of nodeMap.keys()) {
       if (!reachableFromStart.has(nodeId) && nodeId !== startNodeId) {
         // Check if it's referenced as a target but just unreachable from start
         if (!allTargetNodeIds.has(nodeId)) {
+          // Skip cross-graph entry points (they're linked from character graphs)
+          if (crossGraphEntryPoints.has(nodeId)) {
+            continue
+          }
           orphanedNodes.push(nodeId)
           this.warnings.push({
             severity: 'warning',

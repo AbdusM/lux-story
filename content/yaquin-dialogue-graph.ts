@@ -20,7 +20,9 @@ export const yaquinDialogueNodes: DialogueNode[] = [
       {
         // NOTE: Strategic targeting - shake applied only to the self-doubt question, not the confident teaching setup.
         // This isolates the vulnerable moment of imposter syndrome, emphasizing the internal conflict.
-        text: `Forget the textbook. Chapter 4's garbage. Here's how you actually mix alginate without gagging patients.
+        text: `Home office in Hoover. Ring light on. Camera rolling.
+
+Forget the textbook. Chapter 4's garbage. Here's how you actually mix alginate without gagging patients.
 
 <shake>Is it garbage? Or am I just uneducated?</shake>`,
         emotion: 'conflicted',
@@ -503,13 +505,13 @@ All day. Don't fix teeth—fix fear. That's what I'm selling.`,
       // TODO: [VFX] Screen overlays showing dashboards, red notification badges
       // NOTE: Strategic targeting - shake applied only to the overwhelming cascade of problems and realizations.
       // Targets the crescendo moment revealing the full scope of challenges.
-      text: `Eight weeks later. Three laptops. Support tickets. Refunds. Dashboards.
+      text: `It worked. The course launched. 127 students enrolled.
 
-127 students.
+Eight weeks later. Three laptops. Support tickets. Dashboards.
 
-<shake>47 unread messages. 15 refunds. DDS calling it "amateur hour." Three offices want licensing.</shake>
+<shake>47 unread messages. 15 refunds. DDS calling it "amateur hour."</shake>
 
-Teaching's easy. Running course business? Real education.`,
+Teaching? Easy. Running a course business? That's the real education.`,
       emotion: 'exhausted',
       variation_id: 'p2_entry_v1',
       useChatPacing: true
