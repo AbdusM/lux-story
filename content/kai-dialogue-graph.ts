@@ -946,7 +946,7 @@ Before I go—I've been asking you about depth vs. reach. But what about you? Wh
     choices: [
       {
         choiceId: 'kai_asks_before_leave',
-        text: "What are you building?",
+        text: "I'll tell you what I'm building...",
         nextNodeId: 'kai_asks_player',
         pattern: 'helping',
         skills: ['communication', 'curiosity']

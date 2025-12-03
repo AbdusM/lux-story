@@ -479,7 +479,7 @@ If I fail, just an unemployed hiker.`,
     choices: [
       {
         choiceId: 'tess_asks_before_leave',
-        text: "What are you building?",
+        text: "I'll tell you what I'm building...",
         nextNodeId: 'tess_asks_player',
         pattern: 'helping',
         skills: ['communication', 'curiosity']
