@@ -1,9 +1,9 @@
 // Service Worker for Grand Central Terminus
 // Provides offline capability and caching
 
-const CACHE_NAME = 'gct-v1.0.0'
-const STATIC_CACHE = 'gct-static-v1.0.0'
-const DYNAMIC_CACHE = 'gct-dynamic-v1.0.0'
+const CACHE_NAME = 'gct-v2.0.0'
+const STATIC_CACHE = 'gct-static-v2.0.0'
+const DYNAMIC_CACHE = 'gct-dynamic-v2.0.0'
 
 // Files to cache for offline use
 const STATIC_FILES = [
