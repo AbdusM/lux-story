@@ -7,6 +7,26 @@ import { useInsights } from "@/hooks/useInsights"
 import { useConstellationData } from "@/hooks/useConstellationData"
 import { cn } from "@/lib/utils"
 import { PATTERN_METADATA, type PatternType } from "@/lib/patterns"
+import { springs, viewport, stagger } from "@/lib/animations"
+
+// Scroll reveal animation for content cards
+const scrollReveal = {
+  hidden: { opacity: 0, y: 12 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: springs.gentle
+  }
+}
+
+// Stagger container for lists
+const listContainer = {
+  hidden: { opacity: 1 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: stagger.fast }
+  }
+}
 
 interface JournalProps {
   isOpen: boolean
@@ -101,8 +121,8 @@ export function Journal({ isOpen, onClose }: JournalProps) {
               </button>
             </div>
 
-            {/* Tabs */}
-            <div className="flex border-b border-slate-200 dark:border-slate-800" role="tablist">
+            {/* Tabs with animated underline */}
+            <div className="flex border-b border-slate-200 dark:border-slate-800 relative" role="tablist">
               {tabs.map(tab => (
                 <button
                   key={tab.id}
@@ -110,94 +130,94 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                   role="tab"
                   aria-selected={activeTab === tab.id}
                   className={cn(
-                    "flex-1 py-3 px-4 text-sm font-medium transition-colors flex items-center justify-center gap-2 min-h-[44px]",
+                    "flex-1 py-3 px-4 text-sm font-medium transition-colors flex items-center justify-center gap-2 min-h-[44px] relative",
                     activeTab === tab.id
-                      ? "text-amber-600 border-b-2 border-amber-500 bg-amber-50/50 dark:bg-amber-950/20"
+                      ? "text-amber-600"
                       : "text-slate-500 hover:text-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800"
                   )}
                 >
                   <tab.icon className="w-4 h-4" />
                   {tab.label}
+                  {activeTab === tab.id && (
+                    <motion.div
+                      layoutId="journal-tab-indicator"
+                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-amber-500"
+                      transition={springs.snappy}
+                    />
+                  )}
                 </button>
               ))}
             </div>
 
-            {/* Scrollable Content */}
-            <div className="flex-1 overflow-y-auto p-6">
-
-              {/* Your Style Tab - Decision Making Profile */}
+            {/* Scrollable Content - Compact padding */}
+            <div className="flex-1 overflow-y-auto p-4">
+              {/* Your Style Tab - Compact */}
               {activeTab === 'style' && (
-                <div className="space-y-6">
-                  {/* Primary Pattern */}
+                <div className="space-y-3">
+                  {/* Primary Pattern - Game-like stat card */}
                   {insights.decisionStyle.primaryPattern ? (
-                    <div className="space-y-4">
+                    <>
                       <div
-                        className={cn(
-                          "p-5 rounded-xl border-2",
-                          `border-${getPatternColorClass(insights.decisionStyle.primaryPattern.type)}`
-                        )}
+                        className="p-3 rounded-lg border-l-4"
                         style={{
-                          borderColor: PATTERN_METADATA[insights.decisionStyle.primaryPattern.type]?.color || '#f59e0b',
-                          backgroundColor: `${PATTERN_METADATA[insights.decisionStyle.primaryPattern.type]?.color}10`
+                          borderLeftColor: PATTERN_METADATA[insights.decisionStyle.primaryPattern.type]?.color || '#f59e0b',
+                          backgroundColor: `${PATTERN_METADATA[insights.decisionStyle.primaryPattern.type]?.color}08`
                         }}
                       >
-                        <div className="flex items-center gap-3 mb-3">
-                          <Sparkles
-                            className="w-6 h-6"
-                            style={{ color: PATTERN_METADATA[insights.decisionStyle.primaryPattern.type]?.color }}
-                          />
-                          <div>
-                            <h3 className="font-bold text-slate-900 dark:text-white">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <Sparkles
+                              className="w-4 h-4"
+                              style={{ color: PATTERN_METADATA[insights.decisionStyle.primaryPattern.type]?.color }}
+                            />
+                            <span className="font-bold text-slate-900 dark:text-white text-sm">
                               {insights.decisionStyle.primaryPattern.label}
-                            </h3>
-                            <p className="text-xs text-slate-500">
-                              {insights.decisionStyle.primaryPattern.percentage}% of your choices
-                            </p>
+                            </span>
                           </div>
+                          <span className="text-xs font-mono text-slate-500">
+                            {insights.decisionStyle.primaryPattern.percentage}%
+                          </span>
                         </div>
-                        <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                        <p className="text-xs text-slate-500 mt-1.5 leading-snug">
                           {insights.decisionStyle.primaryPattern.description}
                         </p>
                       </div>
 
-                      {/* Secondary Pattern */}
+                      {/* Secondary Pattern - inline */}
                       {insights.decisionStyle.secondaryPattern && (
-                        <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
-                          <p className="text-sm text-slate-600 dark:text-slate-300">
-                            <span className="font-medium">Also strong in: </span>
+                        <div className="flex items-center gap-2 text-xs text-slate-500 px-1">
+                          <span>Secondary:</span>
+                          <span className="font-medium text-slate-700 dark:text-slate-300">
                             {insights.decisionStyle.secondaryPattern.label}
-                            <span className="text-slate-400 ml-1">
-                              ({insights.decisionStyle.secondaryPattern.percentage}%)
-                            </span>
-                          </p>
+                          </span>
+                          <span className="font-mono">
+                            {insights.decisionStyle.secondaryPattern.percentage}%
+                          </span>
                         </div>
                       )}
-                    </div>
+                    </>
                   ) : (
-                    <div className="p-8 text-center border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-lg">
-                      <Compass className="w-8 h-8 text-slate-300 mx-auto mb-3" />
-                      <p className="text-slate-400 italic text-sm">Your decision style is forming...</p>
-                      <p className="text-slate-400 text-xs mt-1">Make more choices to reveal your natural approach.</p>
+                    <div className="p-4 text-center border border-dashed border-slate-300 dark:border-slate-700 rounded-lg">
+                      <Compass className="w-5 h-5 text-slate-300 mx-auto mb-2" />
+                      <p className="text-slate-400 text-xs">Make choices to reveal your style</p>
                     </div>
                   )}
 
-                  {/* Choice Patterns */}
+                  {/* Choice Patterns - Compact list */}
                   {insights.choicePatterns.length > 0 && (
-                    <div className="space-y-3">
-                      <h4 className="text-xs font-medium uppercase tracking-wider text-slate-400">
-                        What We Notice
+                    <div className="space-y-2 pt-2 border-t border-slate-200 dark:border-slate-700">
+                      <h4 className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
+                        Observations
                       </h4>
                       {insights.choicePatterns.map((pattern, idx) => (
                         <div
                           key={idx}
-                          className="p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800"
+                          className="p-2 rounded bg-slate-50 dark:bg-slate-800/50 text-xs"
                         >
-                          <h5 className="font-medium text-slate-700 dark:text-slate-200 text-sm">
+                          <span className="font-medium text-slate-700 dark:text-slate-200">
                             {pattern.pattern}
-                          </h5>
-                          <p className="text-xs text-slate-500 mt-1">
-                            {pattern.description}
-                          </p>
+                          </span>
+                          <span className="text-slate-500 ml-1">— {pattern.description}</span>
                         </div>
                       ))}
                     </div>
@@ -205,56 +225,42 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                 </div>
               )}
 
-              {/* Connections Tab - Relationships */}
+              {/* Connections Tab - Compact */}
               {activeTab === 'connections' && (
-                <div className="space-y-4">
-                  {/* Relationship Pattern Insight */}
+                <div className="space-y-2">
+                  {/* Relationship Pattern Insight - Compact */}
                   {insights.relationshipPattern && (
-                    <div className="p-4 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 mb-4">
-                      <p className="text-sm font-medium text-amber-800 dark:text-amber-200">
+                    <div className="p-2 rounded bg-amber-50 dark:bg-amber-950/30 border-l-2 border-amber-400 text-xs mb-3">
+                      <span className="font-medium text-amber-800 dark:text-amber-200">
                         {insights.relationshipPattern.pattern}
-                      </p>
-                      <p className="text-xs text-amber-600 dark:text-amber-300 mt-1">
-                        {insights.relationshipPattern.description}
-                      </p>
+                      </span>
                     </div>
                   )}
 
                   {characterEntries.length === 0 ? (
-                    <div className="p-8 text-center border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-lg">
-                      <Users className="w-8 h-8 text-slate-300 mx-auto mb-3" />
-                      <p className="text-slate-400 italic text-sm">Talk to Samuel to meet your first character.</p>
-                      <p className="text-slate-400 text-xs mt-1">Each conversation reveals new connections.</p>
+                    <div className="p-4 text-center border border-dashed border-slate-300 dark:border-slate-700 rounded-lg">
+                      <Users className="w-5 h-5 text-slate-300 mx-auto mb-2" />
+                      <p className="text-slate-400 text-xs">Talk to characters to build bonds</p>
                     </div>
                   ) : (
-                    <div className="space-y-3">
+                    <div className="space-y-2">
                       {insights.topRelationships.map((rel) => (
                         <div
                           key={rel.characterId}
-                          className="p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800"
+                          className="p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800"
                         >
-                          <div className="flex items-center justify-between mb-2">
-                            <div>
-                              <h4 className={cn("font-bold", rel.color)}>{rel.name}</h4>
-                              <p className="text-xs text-slate-400">{rel.trustLabel}</p>
-                            </div>
-                            <div className="text-sm font-mono text-slate-600 dark:text-slate-300">
+                          <div className="flex items-center gap-2">
+                            <h4 className={cn("font-bold text-sm flex-1", rel.color)}>{rel.name}</h4>
+                            <span className="text-[10px] text-slate-400 uppercase">{rel.trustLabel}</span>
+                            <span className="text-xs font-mono text-slate-600 dark:text-slate-300 w-6 text-right">
                               {rel.trust > 0 ? '+' : ''}{rel.trust}
-                            </div>
+                            </span>
                           </div>
-
-                          {/* What they teach */}
-                          <p className="text-xs text-slate-500 italic">
-                            {rel.name} {rel.description}
-                          </p>
-
-                          {/* Trust bar */}
-                          <div className="h-1.5 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden mt-3">
+                          <p className="text-[11px] text-slate-500 mt-1 italic">{rel.description}</p>
+                          {/* Compact trust bar */}
+                          <div className="h-1 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden mt-2">
                             <div
-                              className={cn(
-                                "h-full transition-all duration-500 rounded-full",
-                                rel.trust > 0 ? "bg-emerald-400" : "bg-rose-400"
-                              )}
+                              className={cn("h-full rounded-full", rel.trust > 0 ? "bg-emerald-400" : "bg-rose-400")}
                               style={{ width: `${Math.min(100, Math.abs(rel.trust) * 10)}%` }}
                             />
                           </div>
@@ -265,39 +271,39 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                 </div>
               )}
 
-              {/* Insights Tab - Journey & Patterns */}
+              {/* Insights Tab - Compact */}
               {activeTab === 'patterns' && (
-                <div className="space-y-6">
-                  {/* Journey Progress */}
-                  <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
-                    <div className="flex items-center gap-3 mb-3">
+                <div className="space-y-3">
+                  {/* Journey Progress - Compact */}
+                  <div className="p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
+                    <div className="flex items-center gap-2">
                       <div className={cn(
-                        "w-10 h-10 rounded-full flex items-center justify-center",
+                        "w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0",
                         insights.journey.stage === 'early' && "bg-blue-100 text-blue-600",
                         insights.journey.stage === 'developing' && "bg-amber-100 text-amber-600",
                         insights.journey.stage === 'experienced' && "bg-emerald-100 text-emerald-600"
                       )}>
-                        <TrendingUp className="w-5 h-5" />
+                        <TrendingUp className="w-3.5 h-3.5" />
                       </div>
-                      <div>
-                        <h4 className="font-medium text-slate-700 dark:text-slate-200">
-                          {insights.journey.stageLabel} Journey
-                        </h4>
-                        <p className="text-xs text-slate-500">
-                          {insights.journey.choiceCount} choices made
-                        </p>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between">
+                          <span className="font-medium text-slate-700 dark:text-slate-200 text-sm">
+                            {insights.journey.stageLabel}
+                          </span>
+                          <span className="text-xs font-mono text-slate-400">
+                            {insights.journey.choiceCount} choices
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-slate-500 truncate">{insights.journey.description}</p>
                       </div>
                     </div>
-                    <p className="text-sm text-slate-600 dark:text-slate-300">
-                      {insights.journey.description}
-                    </p>
                   </div>
 
-                  {/* Pattern Distribution */}
+                  {/* Pattern Distribution - Compact */}
                   {insights.hasEnoughData && (
-                    <div className="space-y-3">
-                      <h4 className="text-xs font-medium uppercase tracking-wider text-slate-400">
-                        Your Approach Distribution
+                    <div className="space-y-1.5">
+                      <h4 className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
+                        Approach
                       </h4>
                       {(Object.entries(insights.raw.patterns) as [string, number][])
                         .filter(([key, value]) =>
@@ -316,27 +322,19 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                           const percentage = total > 0 ? Math.round((value / total) * 100) : 0
 
                           return (
-                            <div
-                              key={patternId}
-                              className="p-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800"
-                            >
-                              <div className="flex items-center justify-between mb-2">
-                                <span className="text-sm font-medium text-slate-700 dark:text-slate-200">
-                                  {metadata.shortLabel}
-                                </span>
-                                <span className="text-xs text-slate-500">
-                                  {percentage}%
-                                </span>
-                              </div>
-                              <div className="h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+                            <div key={patternId} className="flex items-center gap-2">
+                              <span className="text-xs text-slate-600 dark:text-slate-300 w-20 truncate">
+                                {metadata.shortLabel}
+                              </span>
+                              <div className="flex-1 h-1.5 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
                                 <div
-                                  className="h-full rounded-full transition-all duration-500"
-                                  style={{
-                                    width: `${percentage}%`,
-                                    backgroundColor: metadata.color
-                                  }}
+                                  className="h-full rounded-full"
+                                  style={{ width: `${percentage}%`, backgroundColor: metadata.color }}
                                 />
                               </div>
+                              <span className="text-[10px] font-mono text-slate-400 w-8 text-right">
+                                {percentage}%
+                              </span>
                             </div>
                           )
                         })}
@@ -344,9 +342,8 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                   )}
 
                   {!insights.hasEnoughData && (
-                    <div className="p-6 text-center border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-lg">
-                      <TrendingUp className="w-8 h-8 text-slate-300 mx-auto mb-3" />
-                      <p className="text-slate-400 italic text-sm">Keep exploring to see more insights.</p>
+                    <div className="p-3 text-center border border-dashed border-slate-300 dark:border-slate-700 rounded-lg">
+                      <p className="text-slate-400 text-xs">Keep playing to see insights</p>
                     </div>
                   )}
                 </div>

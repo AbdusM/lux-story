@@ -3,8 +3,10 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
+import { springs, stagger } from '@/lib/animations'
 import type { CharacterWithState } from '@/hooks/useConstellationData'
 import { CHARACTER_CONNECTIONS, CHARACTER_COLORS } from '@/lib/constellation/character-positions'
+import { ResizablePanel } from '@/components/ResizablePanel'
 
 interface PeopleViewProps {
   characters: CharacterWithState[]
@@ -24,7 +26,7 @@ const containerVariants = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.05,
+      staggerChildren: stagger.fast,
       delayChildren: 0.1
     }
   }
@@ -35,7 +37,7 @@ const itemVariants: import('framer-motion').Variants = {
   visible: {
     opacity: 1,
     scale: 1,
-    transition: { type: 'spring', stiffness: 300, damping: 25 }
+    transition: springs.snappy
   }
 }
 
@@ -267,60 +269,61 @@ export function PeopleView({ characters, onOpenDetail }: PeopleViewProps) {
         </motion.svg>
       </div>
 
-      {/* Selected character detail panel */}
+      {/* Selected character detail panel - compact */}
       {selectedCharacter && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}
-          className="flex-shrink-0 p-4 bg-slate-800/80 border-t border-slate-700"
+          className="flex-shrink-0 bg-slate-800/80 border-t border-slate-700"
           style={{ paddingBottom: 'max(16px, env(safe-area-inset-bottom))' }}
         >
-          <div className="flex items-center gap-3 mb-3">
-            <div
-              className={cn(
-                "w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg",
-                CHARACTER_COLORS[selectedCharacter.color].bg
-              )}
-            >
-              {selectedCharacter.name[0]}
-            </div>
-            <div>
-              <h3 className="text-lg font-bold text-white">{selectedCharacter.fullName}</h3>
-              <p className="text-sm text-slate-400">{selectedCharacter.role}</p>
-            </div>
-            <div className="ml-auto text-right">
-              <div className="text-sm font-mono text-amber-400">
-                Trust: {selectedCharacter.trust}/10
+          <ResizablePanel
+            customKey={selectedCharacter.id}
+            transition="crossFade"
+            innerClassName="p-3 pr-6"
+          >
+            {/* Compact header row */}
+            <div className="flex items-center gap-2 mb-2">
+              <div
+                className={cn(
+                  "w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0",
+                  CHARACTER_COLORS[selectedCharacter.color].bg
+                )}
+              >
+                {selectedCharacter.name[0]}
               </div>
-              <div className="text-xs text-slate-500 capitalize">
-                {selectedCharacter.trustState}
+              <div className="flex-1 min-w-0">
+                <h3 className="text-sm font-bold text-white truncate">{selectedCharacter.fullName}</h3>
+                <p className="text-[10px] text-slate-400 uppercase tracking-wide">{selectedCharacter.role}</p>
+              </div>
+              <div className="text-right flex-shrink-0">
+                <span className="text-xs font-mono text-amber-400">{selectedCharacter.trust}/10</span>
               </div>
             </div>
-          </div>
 
-          {/* Trust bar */}
-          <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
-            <motion.div
-              className="h-full bg-gradient-to-r from-amber-500 to-amber-400 rounded-full"
-              initial={{ width: 0 }}
-              animate={{ width: `${selectedCharacter.trust * 10}%` }}
-              transition={{ duration: 0.5, ease: 'easeOut' }}
-            />
-          </div>
+            {/* Trust bar - compact */}
+            <div className="h-1 bg-slate-700 rounded-full overflow-hidden mb-2">
+              <motion.div
+                className="h-full bg-gradient-to-r from-amber-500 to-amber-400 rounded-full"
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: selectedCharacter.trust / 10 }}
+                transition={springs.smooth}
+                style={{ originX: 0, width: '100%' }}
+              />
+            </div>
 
-          {!selectedCharacter.hasMet ? (
-            <p className="text-sm text-slate-500 mt-3 text-center italic">
-              You haven't met {selectedCharacter.name} yet
-            </p>
-          ) : onOpenDetail && (
-            <button
-              onClick={() => onOpenDetail(selectedCharacter)}
-              className="mt-3 w-full py-2.5 px-4 rounded-lg bg-amber-500/20 text-amber-400 text-sm font-medium hover:bg-amber-500/30 transition-colors min-h-[44px]"
-            >
-              View {selectedCharacter.name}'s Story
-            </button>
-          )}
+            {!selectedCharacter.hasMet ? (
+              <p className="text-xs text-slate-500 italic">Not yet met</p>
+            ) : onOpenDetail && (
+              <button
+                onClick={() => onOpenDetail(selectedCharacter)}
+                className="w-full py-2 px-3 rounded-lg bg-amber-500/20 text-amber-400 text-xs font-medium hover:bg-amber-500/30 transition-colors min-h-[36px]"
+              >
+                View Story →
+              </button>
+            )}
+          </ResizablePanel>
         </motion.div>
       )}
     </div>

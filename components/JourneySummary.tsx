@@ -7,6 +7,7 @@
  */
 
 import { useState, useEffect, useCallback } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -21,6 +22,8 @@ import {
 } from 'lucide-react'
 import type { JourneyNarrative } from '@/lib/journey-narrative-generator'
 import { formatSkillName } from '@/lib/admin-dashboard-helpers'
+import { springs } from '@/lib/animations'
+import { ResizablePanel } from '@/components/ResizablePanel'
 
 interface JourneySummaryProps {
   narrative: JourneyNarrative
@@ -304,27 +307,42 @@ export function JourneySummary({ narrative, onClose }: JourneySummaryProps) {
             </Button>
           </div>
 
-          {/* Section Dots */}
+          {/* Section Dots with animated indicator */}
           <div className="flex justify-center gap-2 mt-4">
             {sections.map((_, idx) => (
               <button
                 key={idx}
                 onClick={() => setCurrentSection(idx)}
-                className={`w-2 h-2 rounded-full transition-all ${
-                  idx === currentSection
-                    ? 'bg-amber-400 w-6'
-                    : idx < currentSection
+                className="relative h-2"
+              >
+                <div
+                  className={`w-2 h-2 rounded-full transition-colors ${
+                    idx < currentSection
                       ? 'bg-slate-400'
                       : 'bg-slate-600'
-                }`}
-              />
+                  }`}
+                />
+                {idx === currentSection && (
+                  <motion.div
+                    layoutId="journey-section-indicator"
+                    className="absolute inset-0 w-6 h-2 bg-amber-400 rounded-full -left-2"
+                    transition={springs.snappy}
+                  />
+                )}
+              </button>
             ))}
           </div>
         </CardHeader>
 
-        {/* Content */}
-        <CardContent className="p-4 sm:p-6 overflow-y-auto max-h-[60vh]">
-          {renderSection()}
+        {/* Content with smooth height + cross-fade transitions */}
+        <CardContent className="p-0 overflow-y-auto max-h-[60vh]">
+          <ResizablePanel
+            customKey={`section-${currentSection}`}
+            transition="slideLeft"
+            innerClassName="p-4 sm:p-6"
+          >
+            {renderSection()}
+          </ResizablePanel>
         </CardContent>
 
         {/* Navigation Footer */}

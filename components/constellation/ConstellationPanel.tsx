@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence, LazyMotion, domAnimation } from 'framer-motion'
 import { X, Users, Sparkles } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { springs } from '@/lib/animations'
 import { useConstellationData, type CharacterWithState, type SkillWithState } from '@/hooks/useConstellationData'
 import { PeopleView } from './PeopleView'
 import { SkillsView } from './SkillsView'
@@ -34,7 +35,7 @@ const contentVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.2 }
+    transition: springs.gentle
   },
   exit: {
     opacity: 0,
@@ -108,7 +109,10 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
                 if (info.offset.x > 100) onClose()
               }}
               className="fixed right-0 top-0 bottom-0 w-full max-w-lg bg-slate-900 border-l border-slate-700 shadow-2xl z-[100] flex flex-col"
-              style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
+              style={{
+                paddingBottom: 'env(safe-area-inset-bottom, 0px)',
+                paddingRight: 'env(safe-area-inset-right, 0px)'
+              }}
               role="dialog"
               aria-modal="true"
               aria-label="Your Journey - Character and Skill Progress"
@@ -128,8 +132,8 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
                 </button>
               </div>
 
-              {/* Tabs */}
-              <div className="flex-shrink-0 flex border-b border-slate-700" role="tablist">
+              {/* Tabs with animated indicator */}
+              <div className="flex-shrink-0 flex border-b border-slate-700 relative" role="tablist">
                 {tabs.map(tab => (
                   <button
                     key={tab.id}
@@ -137,9 +141,9 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
                     role="tab"
                     aria-selected={activeTab === tab.id}
                     className={cn(
-                      "flex-1 py-3 px-4 text-sm font-medium transition-colors flex items-center justify-center gap-2 min-h-[44px]",
+                      "flex-1 py-3 px-4 text-sm font-medium transition-colors flex items-center justify-center gap-2 min-h-[44px] relative",
                       activeTab === tab.id
-                        ? "text-amber-400 border-b-2 border-amber-400 bg-slate-800/50"
+                        ? "text-amber-400"
                         : "text-slate-400 hover:text-slate-300 hover:bg-slate-800/30"
                     )}
                   >
@@ -155,12 +159,19 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
                         {tab.count}
                       </span>
                     )}
+                    {activeTab === tab.id && (
+                      <motion.div
+                        layoutId="constellation-tab-indicator"
+                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-amber-400"
+                        transition={springs.snappy}
+                      />
+                    )}
                   </button>
                 ))}
               </div>
 
               {/* Content */}
-              <div className="flex-1 overflow-hidden" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
+              <div className="flex-1 overflow-y-auto overflow-x-hidden" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
                 <AnimatePresence mode="wait">
                   {activeTab === 'people' ? (
                     <motion.div
