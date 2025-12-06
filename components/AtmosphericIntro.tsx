@@ -31,15 +31,15 @@ export function AtmosphericIntro({ onStart }: AtmosphericIntroProps) {
         {/* Value proposition */}
         <div className="bg-white border border-slate-200 rounded-lg p-6 sm:p-8 shadow-sm mb-8">
           <p className="text-lg sm:text-xl text-slate-800 leading-relaxed mb-6">
-            Discover your interests, skills, and values through play.
+            Play. Learn what moves you.
           </p>
 
           <p className="text-base text-slate-600 leading-relaxed mb-6">
-            Built on research. Designed by people who do this work.
+            Research-backed. Practitioner-built.
           </p>
 
           <p className="text-base text-slate-600 leading-relaxed">
-            What you learn helps the next explorer, and the people working to create opportunity for them.
+            What you find lights the way for others.
           </p>
         </div>
 
