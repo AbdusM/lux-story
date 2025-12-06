@@ -43,6 +43,12 @@ export function AtmosphericIntro({ onStart }: AtmosphericIntroProps) {
           </p>
         </div>
 
+        {/* Franklin Quote */}
+        <p className="text-sm italic text-slate-500 mb-6">
+          "Hide not your talents, they for use were made. What's a sundial in the shade?"
+          <span className="block mt-1 not-italic">— Benjamin Franklin</span>
+        </p>
+
         {/* CTA Button - Fox Theatre Marquee */}
         <Button
           onClick={onStart}
