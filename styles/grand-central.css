@@ -747,3 +747,169 @@
     text-shadow: none;
   }
 }
+
+/* ============================================
+   INTRO SCREEN MARQUEE
+   Opening title and CTA with theatre effect
+   ============================================ */
+
+/* Intro Title - Underline sweep effect */
+[data-testid="intro-title"] {
+  position: relative;
+  display: inline-block;
+  --marquee-color: 255, 200, 100; /* Warm gold for theatre entrance */
+}
+
+[data-testid="intro-title"]::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(var(--marquee-color), 0.2) 10%,
+    rgba(var(--marquee-color), 0.8) 50%,
+    rgba(var(--marquee-color), 0.2) 90%,
+    transparent 100%
+  );
+  animation: title-sweep 3s ease-in-out infinite;
+}
+
+@keyframes title-sweep {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scaleX(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+/* Intro CTA Button - Full marquee border */
+[data-testid="intro-cta"] {
+  position: relative;
+  --marquee-color: 255, 200, 100;
+  --btn-bg: rgb(30, 41, 59); /* slate-800 */
+  border: 2px solid transparent !important;
+  background:
+    linear-gradient(var(--btn-bg), var(--btn-bg)) padding-box,
+    conic-gradient(
+      from var(--border-angle, 0turn),
+      rgba(var(--marquee-color), 0.2) 0%,
+      rgba(var(--marquee-color), 0.6) 10%,
+      rgba(var(--marquee-color), 1) 15%,
+      rgba(var(--marquee-color), 0.6) 20%,
+      rgba(var(--marquee-color), 0.2) 25%,
+      transparent 30%,
+      transparent 100%
+    ) border-box;
+  animation: border-spin 2.5s linear infinite;
+  box-shadow: 0 0 20px rgba(var(--marquee-color), 0.3);
+}
+
+/* ============================================
+   NAVIGATION BUTTONS MARQUEE
+   Subtle sweep on hover, glow when active
+   ============================================ */
+
+/* Nav buttons - Base state with subtle underline */
+[data-testid^="nav-"] {
+  position: relative;
+  --nav-color: 180, 180, 180; /* Neutral grey */
+  overflow: hidden;
+}
+
+/* Sweep effect on hover */
+[data-testid^="nav-"]::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: -100%;
+  width: 80%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(var(--nav-color), 0.4) 30%,
+    rgba(var(--nav-color), 0.8) 50%,
+    rgba(var(--nav-color), 0.4) 70%,
+    transparent 100%
+  );
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+[data-testid^="nav-"]:hover::after {
+  opacity: 1;
+  animation: nav-sweep 0.6s ease-out forwards;
+}
+
+@keyframes nav-sweep {
+  0% { left: -80%; }
+  100% { left: 100%; }
+}
+
+/* Specific nav button colors */
+[data-testid="nav-journal"] { --nav-color: 180, 140, 80; } /* Amber/journal color */
+[data-testid="nav-thoughts"] { --nav-color: 140, 100, 180; } /* Purple/brain color */
+[data-testid="nav-constellation"] { --nav-color: 100, 160, 220; } /* Blue/star color */
+[data-testid="nav-journey"] { --nav-color: 220, 160, 60; } /* Gold/compass color */
+
+/* ============================================
+   PIVOTAL CHOICE BUTTONS MARQUEE
+   Strategic marquee on important decisions
+   ============================================ */
+
+/* Pivotal choices - Full chasing border */
+[data-testid="choice-button"][data-pivotal="true"] {
+  position: relative;
+  --choice-color: 220, 180, 80; /* Decision gold */
+  --choice-bg: rgb(255, 255, 255);
+  border: 2px solid transparent !important;
+  background:
+    linear-gradient(var(--choice-bg), var(--choice-bg)) padding-box,
+    conic-gradient(
+      from var(--border-angle, 0turn),
+      rgba(var(--choice-color), 0.1) 0%,
+      rgba(var(--choice-color), 0.4) 8%,
+      rgba(var(--choice-color), 0.9) 12%,
+      rgba(var(--choice-color), 0.4) 16%,
+      rgba(var(--choice-color), 0.1) 20%,
+      transparent 25%,
+      transparent 100%
+    ) border-box;
+  animation: border-spin 2s linear infinite;
+  box-shadow: 0 0 15px rgba(var(--choice-color), 0.2);
+}
+
+/* Hover state for pivotal - intensify */
+[data-testid="choice-button"][data-pivotal="true"]:hover {
+  box-shadow: 0 0 25px rgba(var(--choice-color), 0.4);
+}
+
+/* Accessibility: Reduced motion fallbacks for new elements */
+@media (prefers-reduced-motion: reduce) {
+  [data-testid="intro-title"]::after,
+  [data-testid="intro-cta"],
+  [data-testid^="nav-"]::after,
+  [data-testid="choice-button"][data-pivotal="true"] {
+    animation: none !important;
+  }
+
+  /* Static fallback for intro CTA */
+  [data-testid="intro-cta"] {
+    border: 2px solid rgba(var(--marquee-color), 0.5) !important;
+    background: var(--btn-bg, rgb(30, 41, 59)) !important;
+  }
+
+  /* Static fallback for pivotal choices */
+  [data-testid="choice-button"][data-pivotal="true"] {
+    border: 2px solid rgba(var(--choice-color), 0.5) !important;
+    background: var(--choice-bg, white) !important;
+    box-shadow: 0 0 10px rgba(var(--choice-color), 0.15);
+  }
+}

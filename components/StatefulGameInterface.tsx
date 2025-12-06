@@ -824,6 +824,7 @@ export default function StatefulGameInterface() {
                 onClick={() => setState(prev => ({ ...prev, showJournal: true }))}
                 className="min-w-[44px] min-h-[44px] p-2.5 rounded-full hover:bg-slate-100 active:bg-slate-200 transition-colors text-slate-500 flex items-center justify-center"
                 aria-label="Open Journal"
+                data-testid="nav-journal"
               >
                 <BookOpen className="w-5 h-5" />
               </button>
@@ -831,6 +832,7 @@ export default function StatefulGameInterface() {
                 onClick={() => setState(prev => ({ ...prev, showThoughtCabinet: true }))}
                 className="min-w-[44px] min-h-[44px] p-2.5 rounded-full hover:bg-slate-100 active:bg-slate-200 transition-colors text-slate-500 flex items-center justify-center"
                 aria-label="Open Thought Cabinet"
+                data-testid="nav-thoughts"
               >
                 <Brain className="w-5 h-5" />
               </button>
@@ -838,6 +840,7 @@ export default function StatefulGameInterface() {
                 onClick={() => setState(prev => ({ ...prev, showConstellation: true }))}
                 className="min-w-[44px] min-h-[44px] p-2.5 rounded-full hover:bg-slate-100 active:bg-slate-200 transition-colors text-slate-500 flex items-center justify-center"
                 aria-label="Open Skill Constellation"
+                data-testid="nav-constellation"
               >
                 <Stars className="w-5 h-5" />
               </button>
@@ -854,6 +857,7 @@ export default function StatefulGameInterface() {
                   className="min-w-[44px] min-h-[44px] p-2.5 rounded-full hover:bg-amber-100 active:bg-amber-200 transition-colors text-amber-600 flex items-center justify-center"
                   aria-label="View Journey Summary"
                   title="View your complete journey summary"
+                  data-testid="nav-journey"
                 >
                   <Compass className="w-5 h-5" />
                 </button>
@@ -1013,11 +1017,19 @@ export default function StatefulGameInterface() {
               }}
             >
               <GameChoices
-                choices={state.availableChoices.map(c => ({
-                  text: c.choice.text,
-                  pattern: c.choice.pattern,
-                  feedback: c.choice.interaction === 'shake' ? 'shake' : undefined
-                }))}
+                choices={state.availableChoices.map(c => {
+                  // Detect pivotal moments for marquee effect
+                  const nodeTags = state.currentNode?.tags || []
+                  const isPivotal = nodeTags.some(tag =>
+                    ['pivotal', 'defining_moment', 'final_choice', 'climax', 'revelation', 'introduction'].includes(tag)
+                  )
+                  return {
+                    text: c.choice.text,
+                    pattern: c.choice.pattern,
+                    feedback: c.choice.interaction === 'shake' ? 'shake' : undefined,
+                    pivotal: isPivotal
+                  }
+                })}
                 isProcessing={state.isLoading}
                 onChoice={(c) => {
                   const original = state.availableChoices.find(ac => ac.choice.text === c.text)

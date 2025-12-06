@@ -20,8 +20,11 @@ export function AtmosphericIntro({ onStart }: AtmosphericIntroProps) {
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 p-3 sm:p-4 flex items-center justify-center">
       <div className="max-w-2xl mx-auto text-center">
 
-        {/* Header */}
-        <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-8">
+        {/* Header - Fox Theatre Marquee Title */}
+        <h1
+          className="text-3xl sm:text-4xl font-bold text-slate-900 mb-8"
+          data-testid="intro-title"
+        >
           Grand Central Terminus
         </h1>
 
@@ -40,13 +43,14 @@ export function AtmosphericIntro({ onStart }: AtmosphericIntroProps) {
           </p>
         </div>
 
-        {/* CTA Button */}
+        {/* CTA Button - Fox Theatre Marquee */}
         <Button
           onClick={onStart}
           variant="default"
           size="lg"
           className="w-full sm:w-auto min-h-[48px] px-8"
           aria-label="Begin your journey at Grand Central Terminus"
+          data-testid="intro-cta"
         >
           Enter the Station
         </Button>
