@@ -818,10 +818,12 @@
   position: relative;
   --marquee-color: 255, 200, 100;
   --btn-bg: rgb(30, 41, 59); /* slate-800 */
-  border: 2px solid rgba(var(--marquee-color), 0.6) !important;
+  background: var(--btn-bg) !important;
+  color: rgb(255, 255, 255) !important; /* White text for contrast */
+  border: 3px solid rgba(var(--marquee-color), 0.8) !important;
   /* Fallback: pulsing glow for browsers without @property support */
   animation: cta-glow-pulse 2s ease-in-out infinite;
-  box-shadow: 0 0 20px rgba(var(--marquee-color), 0.4);
+  box-shadow: 0 0 25px rgba(var(--marquee-color), 0.5);
 }
 
 /* Enhanced effect for browsers supporting @property (Chrome, Safari 16.4+) */
