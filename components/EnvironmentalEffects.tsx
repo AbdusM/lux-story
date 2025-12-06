@@ -2,9 +2,18 @@
 
 import { useEffect, useMemo } from 'react'
 import { getGrandCentralState } from '@/lib/grand-central-state'
+import { useGameStore } from '@/lib/game-store'
+
+// Extract character ID from scene ID (e.g., "samuel_introduction" -> "samuel")
+function getCharacterFromScene(sceneId: string | null): string {
+  if (!sceneId) return 'samuel'
+  const match = sceneId.match(/^(samuel|maya|devon|jordan|marcus|kai|tess|yaquin)/i)
+  return match ? match[1].toLowerCase() : 'samuel'
+}
 
 export function EnvironmentalEffects() {
   const grandCentralState = useMemo(() => getGrandCentralState(), [])
+  const currentSceneId = useGameStore((state) => state.currentSceneId)
   
   useEffect(() => {
     const updateEnvironmentalClasses = () => {
@@ -86,12 +95,34 @@ export function EnvironmentalEffects() {
         body.classList.add('shadow-cold')
         body.classList.remove('shadow-warm')
       }
-      
+
       // Environmental particles
       if (patterns.helping > 6) {
         body.classList.add('particles-helping')
       } else if (patterns.building > 6) {
         body.classList.add('particles-building')
+      }
+
+      // ═══════════════════════════════════════════════════════════════
+      // FOX THEATRE ATMOSPHERIC EFFECTS
+      // ═══════════════════════════════════════════════════════════════
+
+      // Clear previous Fox Theatre classes
+      body.className = body.className.replace(/character-\S+/g, '')
+      body.className = body.className.replace(/theatre-\S+/g, '')
+      body.classList.remove('character-atmosphere')
+
+      // Character atmosphere - vignette color based on current character
+      const characterId = getCharacterFromScene(currentSceneId)
+      body.classList.add('character-atmosphere')
+      body.classList.add(`character-${characterId}`)
+
+      // Theatre stars - always on for prominent Fox Theatre effect
+      body.classList.add('theatre-stars')
+
+      // Theatre clouds - activate when not rushing (contemplative mood)
+      if (patterns.rushing < 5) {
+        body.classList.add('theatre-clouds')
       }
       
       // Object responsiveness
@@ -105,9 +136,9 @@ export function EnvironmentalEffects() {
     // Update on state changes
     const interval = setInterval(updateEnvironmentalClasses, 1000)
     updateEnvironmentalClasses() // Initial update
-    
+
     return () => clearInterval(interval)
-  }, [grandCentralState])
+  }, [grandCentralState, currentSceneId])
   
   return null // This component only manages body classes
 }
