@@ -998,21 +998,21 @@ Critics → collaborators if humble enough to listen.`,
       },
       {
         choiceId: 'player_challenge_balance',
-        text: "My challenge is balance. I want to help everyone, but I can't. I have to choose who to focus on, and that feels like abandoning others. Every choice feels like a failure.",
+        text: "Holding everyone's stories. Each person's struggle. I carry them home. Some nights they're heavy.",
         nextNodeId: 'yaquin_reciprocity_response',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'emotionalIntelligence']
       },
       {
         choiceId: 'player_challenge_impostor',
-        text: "My challenge is feeling like I don't know enough. How can I help others when I'm still figuring things out myself? I'm afraid they'll see through me and realize I'm just as lost.",
+        text: "Standing in front of people who've been here longer. Who know more. Wondering why they listen to me.",
         nextNodeId: 'yaquin_reciprocity_response',
         pattern: 'analytical',
         skills: ['emotionalIntelligence', 'criticalThinking']
       },
       {
         choiceId: 'player_challenge_patience',
-        text: "My challenge is patience. I want to see results, to know I'm making a difference. But change takes time, and I struggle with that. I get frustrated when I can't see immediate impact.",
+        text: "Planting seeds I won't see grow. Community takes generations. I want to see it bloom now.",
         nextNodeId: 'yaquin_reciprocity_response',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'emotionalIntelligence']
