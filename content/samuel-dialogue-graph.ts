@@ -920,7 +920,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Seven jobs in twelve years. Jordan Packard. She's down at Railroad Park, prepping for a mentorship panel at Innovation Depot.\n\nThirty students from Birmingham-Southern are gonna hear her story tomorrow. She's terrified they'll see chaos instead of evolution. Impostor syndrome while she's the expert.\n\nThe question isn't 'what should I become?' It's 'how do I own what I've been?'",
+        text: "There's someone here you should meet.\n\nSeven jobs in twelve years. Jordan Packard. She's down at Railroad Park, prepping for a mentorship panel at Innovation Depot.\n\nThirty students from Birmingham-Southern are gonna hear her story tomorrow. She's terrified they'll see chaos instead of evolution. Impostor syndrome while she's the expert.\n\nThe question isn't 'what should I become?' It's 'how do I own what I've been?'",
         emotion: 'amused_empathetic',
         variation_id: 'discovers_exploring_v1'
       }
