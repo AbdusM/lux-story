@@ -9,13 +9,25 @@
 
 "use client"
 
+import { useMemo } from 'react'
 import { Button } from '@/components/ui/button'
+
+const quotes = [
+  { text: "Hide not your talents, they for use were made. What's a sundial in the shade?", author: "Benjamin Franklin" },
+  { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
+  { text: "Knowing yourself is the beginning of all wisdom.", author: "Aristotle" },
+  { text: "What lies behind us and what lies before us are tiny matters compared to what lies within us.", author: "Ralph Waldo Emerson" },
+  { text: "The privilege of a lifetime is to become who you truly are.", author: "Carl Jung" },
+  { text: "Your work is to discover your work and then with all your heart to give yourself to it.", author: "Buddha" },
+]
 
 interface AtmosphericIntroProps {
   onStart: () => void
 }
 
 export function AtmosphericIntro({ onStart }: AtmosphericIntroProps) {
+  const quote = useMemo(() => quotes[Math.floor(Math.random() * quotes.length)], [])
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 p-3 sm:p-4 flex items-center justify-center">
       <div className="max-w-2xl mx-auto text-center">
@@ -43,10 +55,10 @@ export function AtmosphericIntro({ onStart }: AtmosphericIntroProps) {
           </p>
         </div>
 
-        {/* Franklin Quote */}
+        {/* Rotating Quote */}
         <p className="text-sm italic text-slate-500 mb-6">
-          "Hide not your talents, they for use were made. What's a sundial in the shade?"
-          <span className="block mt-1 not-italic">— Benjamin Franklin</span>
+          {quote.text}
+          <span className="block mt-1 not-italic">— {quote.author}</span>
         </p>
 
         {/* CTA Button - Fox Theatre Marquee */}
