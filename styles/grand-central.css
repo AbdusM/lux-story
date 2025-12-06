@@ -580,6 +580,70 @@
   }
 }
 
+/* ============================================
+   FOX THEATRE CHARACTER ATMOSPHERE
+   Dynamic color vignette based on current character
+   ============================================ */
+
+.character-atmosphere {
+  position: relative;
+}
+
+.character-atmosphere::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(
+    ellipse 120% 80% at 50% 100%,
+    hsla(var(--character-hue, 0), var(--character-sat, 0%), 15%, 0.25) 0%,
+    transparent 55%
+  );
+  transition: background 2s ease-in-out;
+}
+
+/* Character-specific color atmospheres */
+.character-samuel {
+  --character-hue: 0;
+  --character-sat: 0%;
+}
+
+.character-maya {
+  --character-hue: 210;
+  --character-sat: 40%;
+}
+
+.character-devon {
+  --character-hue: 35;
+  --character-sat: 50%;
+}
+
+.character-jordan {
+  --character-hue: 280;
+  --character-sat: 35%;
+}
+
+.character-marcus {
+  --character-hue: 140;
+  --character-sat: 30%;
+}
+
+.character-kai {
+  --character-hue: 195;
+  --character-sat: 35%;
+}
+
+.character-tess {
+  --character-hue: 25;
+  --character-sat: 45%;
+}
+
+.character-yaquin {
+  --character-hue: 45;
+  --character-sat: 40%;
+}
+
 /* Accessibility: Respect user's motion preferences */
 @media (prefers-reduced-motion: reduce) {
   .platform-cold,
@@ -594,7 +658,8 @@
   .platform-7-half,
   .high-rushing,
   .high-patience,
-  .bench-safe-spot {
+  .bench-safe-spot,
+  .character-atmosphere::after {
     animation: none !important;
   }
 
