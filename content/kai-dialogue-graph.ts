@@ -978,7 +978,7 @@ But what about you? What are you building? What's your reality? What do you want
     choices: [
       {
         choiceId: 'player_building_helping',
-        text: "I'm building connections. Helping people see possibilities they couldn't see before. That feels like my purpose—creating space for others to grow.",
+        text: "Depth. Real conversations that change something. One person at a time, but done right.",
         nextNodeId: 'kai_reciprocity_response',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'emotionalIntelligence'],
@@ -989,7 +989,7 @@ But what about you? What are you building? What's your reality? What do you want
       },
       {
         choiceId: 'player_building_systems',
-        text: "I'm building systems. Ways to help more people, scale what works. But I'm still figuring out how to do that without losing what makes it meaningful.",
+        text: "Reach. Finding ways to help more people. Still figuring out how to scale without losing the soul.",
         nextNodeId: 'kai_reciprocity_response',
         pattern: 'building',
         skills: ['emotionalIntelligence', 'systemsThinking'],
@@ -1000,14 +1000,14 @@ But what about you? What are you building? What's your reality? What do you want
       },
       {
         choiceId: 'player_building_understanding',
-        text: "I'm building understanding. Learning how people work, how to help them grow. But I'm still learning myself—still figuring out my own path.",
+        text: "Understanding. How people actually learn. What makes change stick versus slide off.",
         nextNodeId: 'kai_reciprocity_response',
         pattern: 'analytical',
         skills: ['emotionalIntelligence', 'criticalThinking']
       },
       {
         choiceId: 'player_still_figuring',
-        text: "I don't know yet. That's why I'm here—to figure out what I'm building, what I want to create. To stop lying to myself about what I'm actually doing.",
+        text: "Figuring that out. That's why I'm here. To stop lying to myself about what I'm actually doing.",
         nextNodeId: 'kai_reciprocity_response',
         pattern: 'exploring',
         skills: ['emotionalIntelligence', 'adaptability'],

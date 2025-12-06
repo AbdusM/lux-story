@@ -3518,7 +3518,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "What do I see in you? A mind that can't stop asking 'what if?' You asked Maya about the station, about possibilities, about paths not yet traveled.\n\nYou're not afraid of uncertainty - you're energized by it. That's rare. Most people want to know where they're going before they take the first step.\n\nExplorers like you discover new territories. The challenge is knowing when to plant a flag and build something lasting.",
+        text: "What do I see in you? A mind that can't stop asking 'what if?'\n\nMost people want the map before they walk. You walk to make the map.",
         emotion: 'knowing',
         variation_id: 'pattern_exploring_v1'
       }
@@ -3560,7 +3560,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "What do I see in you? Someone who understands that meaningful change takes time. You didn't push Maya for quick answers - you gave her room to arrive at her own truth.\n\nIn a world of instant everything, patience is radical. It's also lonely. People want quick fixes, and you offer slow growth.\n\nBut the deepest transformations happen in the pauses between words.",
+        text: "What do I see in you? Someone who understands that change takes time.\n\nThe deepest transformations happen in the pauses between words. You know how to wait.",
         emotion: 'knowing',
         variation_id: 'pattern_patience_v1'
       }
@@ -3602,7 +3602,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "What do I see in you? Hands that itch to make things real. When Maya talked about her robotics projects, something lit up in you - recognition, maybe.\n\nYou think in blueprints and prototypes. Abstract ideas are nice, but you want to hold the finished thing.\n\nBuilders like you shape the physical world. The challenge is remembering that the best creations serve human needs.",
+        text: "What do I see in you? Hands that itch to make things real.\n\nIdeas are nice. You want to hold the finished thing.",
         emotion: 'knowing',
         variation_id: 'pattern_building_v1'
       }

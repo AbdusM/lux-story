@@ -1045,28 +1045,28 @@ Now know it's leading through uncertainty. Every crisis is data. Every dropout a
     choices: [
       {
         choiceId: 'player_building_helping',
-        text: "I'm building connections. Helping people see possibilities they couldn't see before. That feels like my purpose—creating space for others to grow, even when I'm still growing myself.",
+        text: "Opening doors. Showing people resources they didn't know existed. That's what I want—to be the person who says 'here, this might help.'",
         nextNodeId: 'tess_reciprocity_response',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'emotionalIntelligence']
       },
       {
         choiceId: 'player_building_systems',
-        text: "I'm building systems. Ways to help more people, scale what works. But I'm still figuring out what that looks like—how to reach more without losing what makes it meaningful.",
+        text: "Building maps. Ways to find what you need faster. The information exists—someone just has to organize it.",
         nextNodeId: 'tess_reciprocity_response',
         pattern: 'building',
         skills: ['emotionalIntelligence', 'systemsThinking']
       },
       {
         choiceId: 'player_building_understanding',
-        text: "I'm building understanding. Learning how people work, how to help them grow. But I'm still learning myself—still figuring out my own path while trying to help others find theirs.",
+        text: "Learning what people actually need. Not what they say they need—what they're really looking for underneath.",
         nextNodeId: 'tess_reciprocity_response',
         pattern: 'analytical',
         skills: ['emotionalIntelligence', 'criticalThinking']
       },
       {
         choiceId: 'player_still_figuring',
-        text: "I don't know yet. That's part of why I'm here—to figure out what I'm building, what I want to create. To stop pretending I have it all figured out.",
+        text: "Still looking. Like everyone who ends up here. Maybe that's the point—you find by searching.",
         nextNodeId: 'tess_reciprocity_response',
         pattern: 'exploring',
         skills: ['emotionalIntelligence', 'adaptability']
@@ -1108,28 +1108,28 @@ Now know it's leading through uncertainty. Every crisis is data. Every dropout a
     choices: [
       {
         choiceId: 'player_challenge_balance',
-        text: "My challenge is balance. I want to help everyone, but I can't. I have to choose, and that feels like failing the ones I can't reach. Every choice feels like a betrayal of someone who needs help.",
+        text: "Knowing which door to open first. Ten people need ten different resources. I can only point to one at a time.",
         nextNodeId: 'tess_p2_reciprocity_response',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'emotionalIntelligence']
       },
       {
         choiceId: 'player_challenge_quality',
-        text: "My challenge is maintaining quality. I want to scale, to reach more people, but I'm afraid of diluting what makes it meaningful. How do you grow without losing what made it special?",
+        text: "Keeping the map accurate. Information changes. Resources disappear. What I told someone yesterday might be wrong today.",
         nextNodeId: 'tess_p2_reciprocity_response',
         pattern: 'building',
         skills: ['emotionalIntelligence', 'criticalThinking']
       },
       {
         choiceId: 'player_challenge_uncertainty',
-        text: "My challenge is uncertainty. When things get messy, I don't always know the right call. I make decisions and hope they're right, but the weight of getting it wrong is heavy.",
+        text: "Not knowing if the path I pointed to was right. They walk off. I never know if they found what they needed.",
         nextNodeId: 'tess_p2_reciprocity_response',
         pattern: 'analytical',
         skills: ['emotionalIntelligence', 'adaptability']
       },
       {
         choiceId: 'player_challenge_patience',
-        text: "My challenge is patience. When things get messy, I want to fix them immediately. But some problems need time, and I struggle with that—with not being able to solve everything right now.",
+        text: "Waiting. Someone needs help now. The resource exists. But the process takes time. Forms. Waitlists. I just want to cut through.",
         nextNodeId: 'tess_p2_reciprocity_response',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'emotionalIntelligence']
