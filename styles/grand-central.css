@@ -580,6 +580,130 @@
   }
 }
 
+/* ============================================
+   FOX THEATRE MARQUEE LIGHTS
+   Chasing light border effect on key containers
+   ============================================ */
+
+/* Dialogue Card - Default subtle state */
+[data-testid="dialogue-card"] {
+  position: relative;
+  --marquee-color: 255, 220, 150;
+  --card-bg: rgb(254, 253, 248);
+  /* Default: subtle colored border, no animation */
+  border: 2px solid rgba(var(--marquee-color), 0.25) !important;
+  background: var(--card-bg);
+  transition: border-color 0.3s ease, box-shadow 0.5s ease;
+}
+
+/* STRATEGIC: Full marquee effect for impactful moments */
+[data-testid="dialogue-card"].marquee-active,
+[data-testid="dialogue-card"][data-emotional-beat="true"],
+[data-testid="dialogue-card"][data-scene-type="introduction"],
+[data-testid="dialogue-card"][data-scene-type="revelation"],
+[data-testid="dialogue-card"][data-scene-type="climax"],
+[data-testid="dialogue-card"][data-trust-milestone="true"] {
+  border: 3px solid transparent !important;
+  background:
+    linear-gradient(var(--card-bg), var(--card-bg)) padding-box,
+    conic-gradient(
+      from var(--border-angle, 0turn),
+      rgba(var(--marquee-color), 0.1) 0%,
+      rgba(var(--marquee-color), 0.4) 10%,
+      rgba(var(--marquee-color), 1) 15%,
+      rgba(var(--marquee-color), 0.4) 20%,
+      rgba(var(--marquee-color), 0.1) 25%,
+      transparent 30%,
+      transparent 100%
+    ) border-box;
+  animation: border-spin 2s linear infinite;
+  box-shadow: 0 0 30px rgba(var(--marquee-color), 0.3);
+}
+
+@keyframes border-spin {
+  to { --border-angle: 1turn; }
+}
+
+@property --border-angle {
+  syntax: '<angle>';
+  initial-value: 0turn;
+  inherits: false;
+}
+
+/* Character-specific marquee colors - vibrant for Fox Theatre effect */
+[data-character-id="samuel"][data-testid="dialogue-card"] {
+  --marquee-color: 255, 215, 120; /* Warm gold/amber for the Conductor */
+}
+
+[data-character-id="maya"][data-testid="dialogue-card"] {
+  --marquee-color: 70, 130, 220; /* Rich blue */
+}
+
+[data-character-id="devon"][data-testid="dialogue-card"] {
+  --marquee-color: 240, 150, 60; /* Warm orange */
+}
+
+[data-character-id="jordan"][data-testid="dialogue-card"] {
+  --marquee-color: 180, 90, 220; /* Rich purple */
+}
+
+[data-character-id="marcus"][data-testid="dialogue-card"] {
+  --marquee-color: 80, 190, 100; /* Vibrant green */
+}
+
+[data-character-id="kai"][data-testid="dialogue-card"] {
+  --marquee-color: 50, 180, 210; /* Vibrant cyan/teal */
+}
+
+[data-character-id="tess"][data-testid="dialogue-card"] {
+  --marquee-color: 230, 120, 70; /* Rich coral/orange */
+}
+
+[data-character-id="yaquin"][data-testid="dialogue-card"] {
+  --marquee-color: 220, 190, 80; /* Golden yellow */
+}
+
+/* Character Header - Sweeping underline light */
+[data-testid="character-header"] {
+  position: relative;
+  --marquee-color: 255, 220, 150;
+  border-bottom: 2px solid rgba(var(--marquee-color), 0.15) !important;
+  overflow: hidden;
+}
+
+[data-testid="character-header"]::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: -100%;
+  width: 60%;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(var(--marquee-color), 0.3) 20%,
+    rgba(var(--marquee-color), 0.9) 50%,
+    rgba(var(--marquee-color), 0.3) 80%,
+    transparent 100%
+  );
+  animation: header-sweep 2s ease-in-out infinite;
+}
+
+@keyframes header-sweep {
+  0% { left: -60%; }
+  100% { left: 100%; }
+}
+
+/* Character-specific header colors */
+[data-character-id="samuel"][data-testid="character-header"] { --marquee-color: 255, 215, 120; }
+[data-character-id="maya"][data-testid="character-header"] { --marquee-color: 70, 130, 220; }
+[data-character-id="devon"][data-testid="character-header"] { --marquee-color: 240, 150, 60; }
+[data-character-id="jordan"][data-testid="character-header"] { --marquee-color: 180, 90, 220; }
+[data-character-id="marcus"][data-testid="character-header"] { --marquee-color: 80, 190, 100; }
+[data-character-id="kai"][data-testid="character-header"] { --marquee-color: 50, 180, 210; }
+[data-character-id="tess"][data-testid="character-header"] { --marquee-color: 230, 120, 70; }
+[data-character-id="yaquin"][data-testid="character-header"] { --marquee-color: 220, 190, 80; }
+
 /* Accessibility: Respect user's motion preferences */
 @media (prefers-reduced-motion: reduce) {
   .platform-cold,
@@ -594,8 +718,25 @@
   .platform-7-half,
   .high-rushing,
   .high-patience,
-  .bench-safe-spot {
+  .bench-safe-spot,
+  [data-testid="dialogue-card"],
+  [data-testid="character-header"] {
     animation: none !important;
+  }
+
+  /* Static fallback for marquee - keep subtle border, disable strategic animation */
+  [data-testid="dialogue-card"].marquee-active,
+  [data-testid="dialogue-card"][data-emotional-beat="true"],
+  [data-testid="dialogue-card"][data-scene-type] {
+    animation: none !important;
+    border: 2px solid rgba(var(--marquee-color), 0.5) !important;
+    background: var(--card-bg, rgb(254, 253, 248)) !important;
+    box-shadow: 0 0 15px rgba(var(--marquee-color), 0.2);
+  }
+
+  /* Static fallback for header - solid underline */
+  [data-testid="character-header"]::after {
+    background: rgba(var(--marquee-color), 0.5) !important;
   }
 
   .choice-button:hover {

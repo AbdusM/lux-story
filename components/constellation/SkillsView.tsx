@@ -3,9 +3,11 @@
 import { useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
+import { springs, stagger } from '@/lib/animations'
 import type { SkillWithState } from '@/hooks/useConstellationData'
 import { SKILL_CONNECTIONS, SKILL_CLUSTERS, type SkillCluster } from '@/lib/constellation/skill-positions'
 import { ClusterFilterChips, type ClusterFilter } from './ClusterFilterChips'
+import { ResizablePanel } from '@/components/ResizablePanel'
 
 interface SkillsViewProps {
   skills: SkillWithState[]
@@ -25,7 +27,7 @@ const containerVariants = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.03,
+      staggerChildren: stagger.fast,
       delayChildren: 0.1
     }
   }
@@ -36,7 +38,7 @@ const itemVariants: import('framer-motion').Variants = {
   visible: {
     opacity: 1,
     scale: 1,
-    transition: { type: 'spring', stiffness: 300, damping: 25 }
+    transition: springs.snappy
   }
 }
 
@@ -324,104 +326,81 @@ export function SkillsView({ skills, onOpenDetail }: SkillsViewProps) {
         </motion.svg>
       </div>
 
-      {/* Selected skill detail panel */}
+      {/* Selected skill detail panel - with smooth height transitions */}
       {selectedSkill && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}
-          className="flex-shrink-0 p-4 bg-slate-800/80 border-t border-slate-700"
+          className="flex-shrink-0 bg-slate-800/80 border-t border-slate-700"
           style={{ paddingBottom: 'max(16px, env(safe-area-inset-bottom))' }}
         >
-          <div className="flex items-center gap-3 mb-3">
-            <div
-              className="w-12 h-12 rounded-full flex items-center justify-center"
-              style={{ backgroundColor: selectedSkill.color }}
-            >
-              <span className="text-white font-bold text-lg">
+          <ResizablePanel
+            customKey={selectedSkill.id}
+            transition="crossFade"
+            innerClassName="p-3 pr-6"
+          >
+            {/* Compact header row */}
+            <div className="flex items-center gap-2 mb-2">
+              <div
+                className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold text-sm"
+                style={{ backgroundColor: selectedSkill.color }}
+              >
                 {selectedSkill.demonstrationCount}
-              </span>
-            </div>
-            <div className="flex-1">
-              <h3 className="text-lg font-bold text-white">{selectedSkill.name}</h3>
-              <p className="text-sm text-slate-400">
-                {SKILL_CLUSTERS[selectedSkill.cluster].description}
-              </p>
-            </div>
-            <div className="text-right">
-              <div className={cn(
-                "text-sm font-medium capitalize px-2 py-1 rounded",
+              </div>
+              <h3 className="text-base font-bold text-white flex-1 truncate">{selectedSkill.name}</h3>
+              <span className={cn(
+                "text-[10px] font-semibold uppercase tracking-wide px-1.5 py-0.5 rounded flex-shrink-0",
                 selectedSkill.state === 'mastered' && 'bg-amber-500/20 text-amber-400',
                 selectedSkill.state === 'strong' && 'bg-emerald-500/20 text-emerald-400',
                 selectedSkill.state === 'developing' && 'bg-blue-500/20 text-blue-400',
                 selectedSkill.state === 'awakening' && 'bg-purple-500/20 text-purple-400',
                 selectedSkill.state === 'dormant' && 'bg-slate-700 text-slate-400'
               )}>
-                {selectedSkill.state}
-              </div>
+                {selectedSkill.state === 'developing' ? 'DEV' :
+                 selectedSkill.state === 'awakening' ? 'NEW' :
+                 selectedSkill.state === 'mastered' ? '★' :
+                 selectedSkill.state === 'strong' ? 'STR' : '—'}
+              </span>
             </div>
-          </div>
 
-          {/* Progress to next state */}
-          {selectedSkill.state !== 'dormant' && selectedSkill.state !== 'mastered' && (
-            <div className="space-y-1">
-              <div className="flex justify-between text-xs text-slate-500">
-                <span>{selectedSkill.demonstrationCount} demonstrations</span>
-                <span>
-                  {selectedSkill.state === 'awakening' && '5 for Strong'}
-                  {selectedSkill.state === 'developing' && `${5 - selectedSkill.demonstrationCount} more for Strong`}
-                  {selectedSkill.state === 'strong' && `${10 - selectedSkill.demonstrationCount} more for Mastery`}
-                </span>
-              </div>
-              <div className="h-1.5 bg-slate-700 rounded-full overflow-hidden">
+            {/* Progress bar - no text labels, just visual */}
+            {selectedSkill.state !== 'dormant' && (
+              <div className="h-1 bg-slate-700 rounded-full overflow-hidden mb-2">
                 <motion.div
                   className="h-full rounded-full"
-                  style={{ backgroundColor: selectedSkill.color }}
-                  initial={{ width: 0 }}
-                  animate={{
-                    width: `${Math.min(100, selectedSkill.demonstrationCount * 10)}%`
-                  }}
-                  transition={{ duration: 0.5 }}
+                  style={{ backgroundColor: selectedSkill.color, width: '100%', originX: 0 }}
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: selectedSkill.demonstrationCount / 10 }}
+                  transition={springs.smooth}
                 />
               </div>
-            </div>
-          )}
+            )}
 
-          {/* Character development hints */}
-          {SKILL_CHARACTER_HINTS[selectedSkill.id] && (
-            <div className="mt-3 pt-3 border-t border-slate-700/50">
-              <p className="text-xs text-slate-500 mb-1.5">
-                {selectedSkill.state === 'dormant' ? 'Develop with:' : 'Continue developing with:'}
-              </p>
-              <div className="flex flex-wrap gap-1.5">
+            {/* Character hints - compact inline */}
+            {SKILL_CHARACTER_HINTS[selectedSkill.id] && (
+              <div className="flex items-center gap-1.5 text-xs text-slate-400">
+                <span className="text-slate-500">Train:</span>
                 {SKILL_CHARACTER_HINTS[selectedSkill.id].map(name => (
-                  <span
-                    key={name}
-                    className="text-xs px-2 py-1 rounded-full bg-slate-700/50 text-slate-300"
-                  >
+                  <span key={name} className="px-1.5 py-0.5 rounded bg-slate-700/50 text-slate-300">
                     {name}
                   </span>
                 ))}
               </div>
-            </div>
-          )}
+            )}
 
-          {selectedSkill.state === 'dormant' ? (
-            <p className="mt-3 text-sm text-slate-500 text-center italic">
-              Explore conversations to discover this skill
-            </p>
-          ) : onOpenDetail && (
-            <button
-              onClick={() => onOpenDetail(selectedSkill)}
-              className="mt-3 w-full py-2.5 px-4 rounded-lg text-sm font-medium hover:opacity-80 transition-opacity min-h-[44px]"
-              style={{
-                backgroundColor: `${selectedSkill.color}30`,
-                color: selectedSkill.color
-              }}
-            >
-              View {selectedSkill.name} Details
-            </button>
-          )}
+            {selectedSkill.state === 'dormant' ? (
+              <p className="mt-2 text-xs text-slate-500 italic">Undiscovered</p>
+            ) : onOpenDetail && (
+              <button
+                onClick={() => onOpenDetail(selectedSkill)}
+                className="mt-2 w-full py-2 px-3 rounded-lg text-xs font-medium hover:opacity-80 transition-opacity min-h-[36px]"
+                style={{ backgroundColor: `${selectedSkill.color}20`, color: selectedSkill.color }}
+              >
+                View Details →
+              </button>
+            )}
+          </ResizablePanel>
         </motion.div>
       )}
     </div>

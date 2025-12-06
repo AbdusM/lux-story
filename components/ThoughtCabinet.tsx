@@ -7,6 +7,56 @@ import { X, Lock, CheckCircle } from "lucide-react"
 import { useGameStore } from "@/lib/game-store"
 import { getThoughtIcon } from "@/content/thoughts"
 import { cn } from "@/lib/utils"
+import { springs, stagger } from "@/lib/animations"
+import { useMeasure } from "@/hooks/useMeasure"
+
+// =============================================================================
+// ACCORDION CONTENT - Smooth measured height animation for expand/collapse
+// =============================================================================
+
+interface AccordionContentProps {
+  isOpen: boolean
+  children: React.ReactNode
+}
+
+function AccordionContent({ isOpen, children }: AccordionContentProps) {
+  const { ref, bounds } = useMeasure<HTMLDivElement>()
+
+  return (
+    <motion.div
+      initial={false}
+      animate={{
+        height: isOpen ? bounds.height : 0,
+        opacity: isOpen ? 1 : 0
+      }}
+      transition={springs.smooth}
+      className="overflow-hidden"
+    >
+      <div ref={ref}>
+        {children}
+      </div>
+    </motion.div>
+  )
+}
+
+// Stagger container for thought lists
+const listContainer = {
+  hidden: { opacity: 1 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: stagger.fast }
+  }
+}
+
+// Individual thought card animation
+const thoughtCard = {
+  hidden: { opacity: 0, y: 8 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: springs.snappy
+  }
+}
 
 interface ThoughtCabinetProps {
   isOpen: boolean
@@ -96,22 +146,33 @@ export function ThoughtCabinet({ isOpen, onClose }: ThoughtCabinetProps) {
                     <p className="text-slate-400 italic text-sm">No thoughts are currently forming.</p>
                   </div>
                 ) : (
-                  <div className="grid gap-4">
+                  <motion.div
+                    className="grid gap-4"
+                    variants={listContainer}
+                    initial="hidden"
+                    animate="visible"
+                  >
                     {activeThoughts.map(thought => (
-                      <div 
+                      <motion.div
                         key={thought.id}
+                        variants={thoughtCard}
+                        whileHover={{ scale: 1.01 }}
+                        whileTap={{ scale: 0.99 }}
                         onClick={() => setSelectedThoughtId(thought.id === selectedThoughtId ? null : thought.id)}
                         className={cn(
-                          "p-4 rounded-xl border-2 transition-all cursor-pointer relative overflow-hidden group",
-                          selectedThoughtId === thought.id 
-                            ? "border-amber-400 bg-amber-50 dark:bg-amber-950/20 dark:border-amber-600" 
+                          "p-4 rounded-xl border-2 transition-colors cursor-pointer relative overflow-hidden group",
+                          selectedThoughtId === thought.id
+                            ? "border-amber-400 bg-amber-50 dark:bg-amber-950/20 dark:border-amber-600"
                             : "border-slate-200 hover:border-amber-300 dark:border-slate-700 bg-white dark:bg-slate-800"
                         )}
                       >
-                        {/* Progress Bar Background */}
-                        <div 
-                          className="absolute bottom-0 left-0 h-1 bg-amber-400 transition-all duration-1000" 
-                          style={{ width: `${thought.progress}%` }}
+                        {/* Progress Bar - animated with spring */}
+                        <motion.div
+                          className="absolute bottom-0 left-0 h-1 bg-amber-400"
+                          initial={{ scaleX: 0 }}
+                          animate={{ scaleX: thought.progress / 100 }}
+                          transition={springs.smooth}
+                          style={{ originX: 0, width: '100%' }}
                         />
                         
                         <div className="flex items-start gap-4 relative z-10">
@@ -131,30 +192,21 @@ export function ThoughtCabinet({ isOpen, onClose }: ThoughtCabinetProps) {
                               {thought.progress}% Formed
                             </p>
                             
-                            {/* Expanded Details */}
-                            <AnimatePresence>
-                              {selectedThoughtId === thought.id && (
-                                <motion.div
-                                  initial={{ height: 0, opacity: 0 }}
-                                  animate={{ height: "auto", opacity: 1 }}
-                                  exit={{ height: 0, opacity: 0 }}
-                                  className="overflow-hidden"
-                                >
-                                  <p className="text-sm text-slate-600 dark:text-slate-300 mt-3 leading-relaxed">
-                                    {thought.description}
-                                  </p>
-                                  <div className="mt-3 flex items-center gap-2 text-xs text-amber-600 font-medium">
-                                    <Lock className="w-3 h-3" />
-                                    <span>Continue exploring this path to internalize</span>
-                                  </div>
-                                </motion.div>
-                              )}
-                            </AnimatePresence>
+                            {/* Expanded Details - Measured height animation */}
+                            <AccordionContent isOpen={selectedThoughtId === thought.id}>
+                              <p className="text-sm text-slate-600 dark:text-slate-300 mt-3 leading-relaxed">
+                                {thought.description}
+                              </p>
+                              <div className="mt-3 flex items-center gap-2 text-xs text-amber-600 font-medium">
+                                <Lock className="w-3 h-3" />
+                                <span>Continue exploring this path to internalize</span>
+                              </div>
+                            </AccordionContent>
                           </div>
                         </div>
-                      </div>
+                      </motion.div>
                     ))}
-                  </div>
+                  </motion.div>
                 )}
               </section>
 

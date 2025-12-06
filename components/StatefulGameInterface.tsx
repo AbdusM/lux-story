@@ -886,7 +886,11 @@ export default function StatefulGameInterface() {
 
           {/* Character Info Row */}
           {currentCharacter && (
-            <div className="flex items-center justify-between py-2 border-t border-stone-200/50">
+            <div
+              className="flex items-center justify-between py-2 border-t border-stone-200/50"
+              data-testid="character-header"
+              data-character-id={state.currentCharacterId}
+            >
               <div className="flex items-center gap-2 font-medium text-slate-700 text-sm sm:text-base">
                 <CharacterAvatar
                   characterName={characterNames[state.currentCharacterId]}
@@ -936,6 +940,21 @@ export default function StatefulGameInterface() {
             data-testid="dialogue-card"
             data-node-id={state.gameState?.currentNodeId || ''}
             data-character-id={state.currentCharacterId}
+            data-emotional-beat={
+              state.currentDialogueContent?.interaction === 'ripple' ||
+              state.currentDialogueContent?.interaction === 'bloom' ||
+              state.currentDialogueContent?.interaction === 'shake' ||
+              state.currentNode?.tags?.includes('emotional_beat') ||
+              state.currentNode?.tags?.includes('revelation')
+                ? 'true'
+                : undefined
+            }
+            data-scene-type={
+              state.currentNode?.tags?.includes('introduction') ? 'introduction' :
+              state.currentNode?.tags?.includes('climax') ? 'climax' :
+              state.currentNode?.tags?.includes('revelation') ? 'revelation' :
+              undefined
+            }
           >
             <CardContent
               className="p-5 sm:p-8 md:p-10 min-h-[200px] sm:min-h-[300px]"

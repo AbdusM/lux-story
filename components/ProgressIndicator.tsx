@@ -1,9 +1,11 @@
 "use client"
 
 import { useMemo } from 'react'
+import { motion } from 'framer-motion'
 import { useGameStore } from '@/lib/game-store'
 import { useConstellationData } from '@/hooks/useConstellationData'
 import { cn } from '@/lib/utils'
+import { springs } from '@/lib/animations'
 
 interface ProgressIndicatorProps {
   className?: string
@@ -72,8 +74,8 @@ export function ProgressIndicator({ className }: ProgressIndicatorProps) {
             strokeWidth="3"
             className="text-slate-200"
           />
-          {/* Progress arc */}
-          <circle
+          {/* Progress arc - animated with spring */}
+          <motion.circle
             cx="16"
             cy="16"
             r="12"
@@ -81,8 +83,10 @@ export function ProgressIndicator({ className }: ProgressIndicatorProps) {
             stroke="currentColor"
             strokeWidth="3"
             strokeLinecap="round"
-            strokeDasharray={`${progress.overall * 0.754} 75.4`}
-            className="text-amber-500 transition-all duration-1000"
+            className="text-amber-500"
+            initial={{ strokeDasharray: "0 75.4" }}
+            animate={{ strokeDasharray: `${progress.overall * 0.754} 75.4` }}
+            transition={springs.smooth}
           />
         </svg>
         {/* Center text */}

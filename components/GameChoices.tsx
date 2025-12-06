@@ -3,6 +3,7 @@
 import { memo, useState, useEffect, useCallback, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { motion } from 'framer-motion'
+import { springs, stagger } from '@/lib/animations'
 
 interface Choice {
   text: string
@@ -98,12 +99,28 @@ function useKeyboardNavigation(
   return { focusedIndex, setFocusedIndex, containerRef }
 }
 
-// Animation variants for juice - clean, subtle effects
+// Stagger container for sequential button reveals
+const containerVariants = {
+  hidden: { opacity: 1 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: stagger.normal,
+      delayChildren: 0.05,
+    },
+  },
+}
+
+// Individual button animation (used with stagger)
 const buttonVariants = {
-  initial: { opacity: 0 },
-  animate: { opacity: 1 },
+  hidden: { opacity: 0, y: 8 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: springs.snappy
+  },
   tap: { scale: 0.98 },
-  hover: { scale: 1.005 } // Subtle scale only, shadow handled by CSS
+  hover: { scale: 1.01, y: -1 }
 }
 
 const shakeVariant = {
@@ -137,6 +154,7 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused }:
     glow: glowVariant,
     focused: {
       opacity: 1,
+      y: 0,
       scale: 1.02,
       boxShadow: "0px 0px 0px 2px rgba(59,130,246,0.5)",
       transition: { duration: 0.15 }
@@ -144,21 +162,20 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused }:
   }
 
   // Determine which animation state to use
-  // If feedback is active, use that variant name; otherwise use standard 'animate' entry
-  let animateState = choice.feedback ? choice.feedback : "animate"
+  // Stagger uses "visible" as base state, then apply feedback or focus
+  let animateState: string = "visible"
+  if (choice.feedback) animateState = choice.feedback
   if (isFocused) animateState = "focused"
 
   return (
     <motion.div
-      initial="initial"
-      animate={animateState}
+      variants={combinedVariants}
       whileHover="hover"
       whileTap="tap"
-      variants={combinedVariants}
       custom={index}
       className="w-full"
       data-choice-index={index}
-      style={{ scrollSnapAlign: 'start' }} // Snap to choice boundaries during scroll
+      style={{ scrollSnapAlign: 'start' }}
     >
       <Button
         key={index}
@@ -254,7 +271,16 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice }: GameChoice
     let globalIndex = 0
 
     return (
-      <div className="space-y-8" ref={containerRef} role="listbox" aria-label="Choose your response">
+      <motion.div
+        className="space-y-8"
+        ref={containerRef}
+        role="listbox"
+        aria-label="Choose your response"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        key={choices.map(c => c.text).join(',')} // Re-trigger animation on choice change
+      >
         {nonEmptyGroups.map(([title, groupChoices]) => (
           <div key={title} className="space-y-3" role="group" aria-label={title}>
             {title !== 'Other' && (
@@ -279,17 +305,21 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice }: GameChoice
             </div>
           </div>
         ))}
-      </div>
+      </motion.div>
     )
   }
 
   return (
-    <div
+    <motion.div
       ref={containerRef}
       className={`grid gap-3 ${useGrid ? 'md:grid-cols-2' : 'grid-cols-1'}`}
       data-testid="game-choices"
       role="listbox"
       aria-label="Choose your response"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      key={choices.map(c => c.text).join(',')} // Re-trigger animation on choice change
     >
       {choices.map((choice, index) => (
         <ChoiceButton
@@ -301,7 +331,7 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice }: GameChoice
           isFocused={focusedIndex === index}
         />
       ))}
-    </div>
+    </motion.div>
   )
 })
 
