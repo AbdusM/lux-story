@@ -12,6 +12,8 @@ interface Choice {
   pattern?: string // Used for grouping
   /** Visual feedback type */
   feedback?: 'shake' | 'glow' | 'pulse'
+  /** Pivotal choice - triggers marquee effect */
+  pivotal?: boolean
 }
 
 interface GameChoicesProps {
@@ -185,6 +187,7 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused }:
         data-testid="choice-button"
         data-choice-text={choice.text}
         data-pattern={choice.pattern || ''}
+        data-pivotal={choice.pivotal ? 'true' : undefined}
         aria-label={`Choice ${index + 1}: ${choice.text}`}
         className={`
           w-full min-h-[56px] sm:min-h-[52px] h-auto px-4 sm:px-6 py-4 sm:py-3
