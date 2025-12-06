@@ -597,27 +597,51 @@
 }
 
 /* STRATEGIC: Full marquee effect for impactful moments */
+/* Base fallback: pulsing border glow for all browsers */
 [data-testid="dialogue-card"].marquee-active,
 [data-testid="dialogue-card"][data-emotional-beat="true"],
 [data-testid="dialogue-card"][data-scene-type="introduction"],
 [data-testid="dialogue-card"][data-scene-type="revelation"],
 [data-testid="dialogue-card"][data-scene-type="climax"],
 [data-testid="dialogue-card"][data-trust-milestone="true"] {
-  border: 3px solid transparent !important;
-  background:
-    linear-gradient(var(--card-bg), var(--card-bg)) padding-box,
-    conic-gradient(
-      from var(--border-angle, 0turn),
-      rgba(var(--marquee-color), 0.1) 0%,
-      rgba(var(--marquee-color), 0.4) 10%,
-      rgba(var(--marquee-color), 1) 15%,
-      rgba(var(--marquee-color), 0.4) 20%,
-      rgba(var(--marquee-color), 0.1) 25%,
-      transparent 30%,
-      transparent 100%
-    ) border-box;
-  animation: border-spin 2s linear infinite;
-  box-shadow: 0 0 30px rgba(var(--marquee-color), 0.3);
+  border: 3px solid rgba(var(--marquee-color), 0.5) !important;
+  animation: dialogue-glow-pulse 2s ease-in-out infinite;
+  box-shadow: 0 0 25px rgba(var(--marquee-color), 0.3);
+}
+
+/* Enhanced: Rotating conic gradient for @property-supporting browsers */
+@supports (background: conic-gradient(from 0turn, red, blue)) {
+  [data-testid="dialogue-card"].marquee-active,
+  [data-testid="dialogue-card"][data-emotional-beat="true"],
+  [data-testid="dialogue-card"][data-scene-type="introduction"],
+  [data-testid="dialogue-card"][data-scene-type="revelation"],
+  [data-testid="dialogue-card"][data-scene-type="climax"],
+  [data-testid="dialogue-card"][data-trust-milestone="true"] {
+    border: 3px solid transparent !important;
+    background:
+      linear-gradient(var(--card-bg), var(--card-bg)) padding-box,
+      conic-gradient(
+        from var(--border-angle, 0turn),
+        rgba(var(--marquee-color), 0.1) 0%,
+        rgba(var(--marquee-color), 0.4) 10%,
+        rgba(var(--marquee-color), 1) 15%,
+        rgba(var(--marquee-color), 0.4) 20%,
+        rgba(var(--marquee-color), 0.1) 25%,
+        transparent 30%,
+        transparent 100%
+      ) border-box;
+    animation: border-spin 2s linear infinite, dialogue-glow-pulse 2s ease-in-out infinite;
+  }
+}
+
+/* Fallback glow pulse for dialogue cards */
+@keyframes dialogue-glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(var(--marquee-color), 0.2);
+  }
+  50% {
+    box-shadow: 0 0 35px rgba(var(--marquee-color), 0.5), 0 0 50px rgba(var(--marquee-color), 0.2);
+  }
 }
 
 @keyframes border-spin {
@@ -794,21 +818,40 @@
   position: relative;
   --marquee-color: 255, 200, 100;
   --btn-bg: rgb(30, 41, 59); /* slate-800 */
-  border: 2px solid transparent !important;
-  background:
-    linear-gradient(var(--btn-bg), var(--btn-bg)) padding-box,
-    conic-gradient(
-      from var(--border-angle, 0turn),
-      rgba(var(--marquee-color), 0.2) 0%,
-      rgba(var(--marquee-color), 0.6) 10%,
-      rgba(var(--marquee-color), 1) 15%,
-      rgba(var(--marquee-color), 0.6) 20%,
-      rgba(var(--marquee-color), 0.2) 25%,
-      transparent 30%,
-      transparent 100%
-    ) border-box;
-  animation: border-spin 2.5s linear infinite;
-  box-shadow: 0 0 20px rgba(var(--marquee-color), 0.3);
+  border: 2px solid rgba(var(--marquee-color), 0.6) !important;
+  /* Fallback: pulsing glow for browsers without @property support */
+  animation: cta-glow-pulse 2s ease-in-out infinite;
+  box-shadow: 0 0 20px rgba(var(--marquee-color), 0.4);
+}
+
+/* Enhanced effect for browsers supporting @property (Chrome, Safari 16.4+) */
+@supports (background: conic-gradient(from 0turn, red, blue)) {
+  [data-testid="intro-cta"] {
+    border: 2px solid transparent !important;
+    background:
+      linear-gradient(var(--btn-bg), var(--btn-bg)) padding-box,
+      conic-gradient(
+        from var(--border-angle, 0turn),
+        rgba(var(--marquee-color), 0.2) 0%,
+        rgba(var(--marquee-color), 0.6) 10%,
+        rgba(var(--marquee-color), 1) 15%,
+        rgba(var(--marquee-color), 0.6) 20%,
+        rgba(var(--marquee-color), 0.2) 25%,
+        transparent 30%,
+        transparent 100%
+      ) border-box;
+    animation: border-spin 2.5s linear infinite, cta-glow-pulse 2s ease-in-out infinite;
+  }
+}
+
+/* Fallback glow pulse animation - works everywhere */
+@keyframes cta-glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(var(--marquee-color), 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(var(--marquee-color), 0.6), 0 0 60px rgba(var(--marquee-color), 0.3);
+  }
 }
 
 /* ============================================
