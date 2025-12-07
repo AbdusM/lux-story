@@ -110,6 +110,17 @@ So I build green checkmarks. Legal shields. And last week...`,
         nextNodeId: 'kai_accident_reveal',
         pattern: 'analytical',
         skills: ['criticalThinking']
+      },
+      {
+        choiceId: 'kai_system_exploring',
+        text: "What would real learning look like? If you could redesign it from scratch?",
+        nextNodeId: 'kai_accident_reveal',
+        pattern: 'exploring',
+        skills: ['curiosity', 'creativity'],
+        consequence: {
+          characterId: 'kai',
+          trustChange: 1
+        }
       }
     ]
   },
@@ -145,6 +156,17 @@ And none of it mattered when he was standing twenty feet up without checking his
         nextNodeId: 'kai_accident_reveal',
         pattern: 'analytical',
         skills: ['emotionalIntelligence']
+      },
+      {
+        choiceId: 'kai_hint_exploring',
+        text: "What would it take to actually prepare someone? Not just check a box?",
+        nextNodeId: 'kai_accident_reveal',
+        pattern: 'exploring',
+        skills: ['curiosity', 'criticalThinking'],
+        consequence: {
+          characterId: 'kai',
+          trustChange: 1
+        }
       }
     ]
   },
@@ -189,6 +211,17 @@ We designed a green checkmark. We didn't design safety.`,
         skills: ['collaboration'],
         visibleCondition: {
           hasGlobalFlags: ['marcus_arc_complete']
+        }
+      },
+      {
+        choiceId: 'kai_reveal_exploring',
+        text: "What did that moment teach you? When the system passed but the person failed?",
+        nextNodeId: 'kai_origin_story',
+        pattern: 'exploring',
+        skills: ['curiosity', 'criticalThinking'],
+        consequence: {
+          characterId: 'kai',
+          trustChange: 1
         }
       }
     ]

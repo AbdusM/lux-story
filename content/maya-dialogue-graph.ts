@@ -146,6 +146,17 @@ export const mayaDialogueNodes: DialogueNode[] = [
           characterId: 'maya',
           trustChange: 1
         }
+      },
+      {
+        choiceId: 'why_build_clarity',
+        text: "Sometimes crossroads are where we build something new. What would you construct if you could?",
+        nextNodeId: 'maya_deflect_passion',
+        pattern: 'building',
+        skills: ['creativity', 'communication'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
       }
     ]
   },
@@ -233,6 +244,17 @@ export const mayaDialogueNodes: DialogueNode[] = [
         consequence: {
           characterId: 'maya',
           trustChange: 1
+        }
+      },
+      {
+        choiceId: 'deflect_build_both',
+        text: "What if you could build a path that honors both? Duty and desire aren't always opposites.",
+        nextNodeId: 'maya_anxiety_reveal',
+        pattern: 'building',
+        skills: ['creativity', 'systemsThinking'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2
         }
       }
     ]
