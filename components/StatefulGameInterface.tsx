@@ -64,6 +64,8 @@ import type { FloatingModule } from '@/lib/dialogue-graph'
 import { JourneySummary } from '@/components/JourneySummary'
 import { generateJourneyNarrative, isJourneyComplete, type JourneyNarrative } from '@/lib/journey-narrative-generator'
 import { evaluateAchievements, type MetaAchievement } from '@/lib/meta-achievements'
+import { selectAmbientEvent, IDLE_CONFIG, type AmbientEvent } from '@/lib/ambient-events'
+import { PATTERN_TYPES, type PatternType, getPatternSensation, isValidPattern } from '@/lib/patterns'
 // Share prompts removed - too obtrusive
 
 // Trust feedback disabled - notifications were obtrusive
@@ -99,6 +101,8 @@ interface GameInterfaceState {
   showJourneySummary: boolean
   journeyNarrative: JourneyNarrative | null
   achievementNotification: MetaAchievement | null
+  ambientEvent: AmbientEvent | null  // Station breathing - idle atmosphere
+  patternSensation: string | null    // Brief feedback when pattern triggered
 }
 
 export default function StatefulGameInterface() {
@@ -132,7 +136,9 @@ export default function StatefulGameInterface() {
     pendingFloatingModule: null,
     showJourneySummary: false,
     journeyNarrative: null,
-    achievementNotification: null
+    achievementNotification: null,
+    ambientEvent: null,
+    patternSensation: null
   })
 
   // Rich effects config - KEEPING NEW STAGGERED MODE
@@ -184,6 +190,85 @@ export default function StatefulGameInterface() {
       }
     }
   }, [])
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // AMBIENT EVENTS - "The Station Breathes"
+  // When the player pauses to think, life continues around them.
+  // ═══════════════════════════════════════════════════════════════════════════
+  const idleTimerRef = useRef<NodeJS.Timeout | null>(null)
+  const idleCountRef = useRef(0)  // Track how many ambient events shown this idle period
+  const lastChoiceTimeRef = useRef(Date.now())
+
+  // Helper to get dominant pattern
+  const getDominantPattern = useCallback((): PatternType | undefined => {
+    if (!state.gameState) return undefined
+    const patterns = state.gameState.patterns
+    let maxPattern: PatternType | undefined
+    let maxValue = 0
+    for (const p of PATTERN_TYPES) {
+      const value = patterns[p] || 0
+      if (value > maxValue) {
+        maxValue = value
+        maxPattern = p
+      }
+    }
+    return maxValue >= 3 ? maxPattern : undefined  // Only if pattern is strong enough
+  }, [state.gameState])
+
+  // Start/reset idle timer
+  const resetIdleTimer = useCallback(() => {
+    // Clear any existing timer
+    if (idleTimerRef.current) {
+      clearTimeout(idleTimerRef.current)
+    }
+
+    // Reset idle count when player acts
+    idleCountRef.current = 0
+    lastChoiceTimeRef.current = Date.now()
+
+    // Clear any showing ambient event
+    setState(prev => prev.ambientEvent ? { ...prev, ambientEvent: null } : prev)
+
+    // Don't start timer if game not active or no choices available
+    if (!state.hasStarted || state.availableChoices.length === 0) return
+
+    const scheduleAmbientEvent = () => {
+      const delay = idleCountRef.current === 0
+        ? IDLE_CONFIG.FIRST_IDLE_MS
+        : IDLE_CONFIG.SUBSEQUENT_IDLE_MS
+
+      idleTimerRef.current = setTimeout(() => {
+        // Don't show if max events reached or modals open
+        if (idleCountRef.current >= IDLE_CONFIG.MAX_IDLE_EVENTS) return
+        if (state.showJournal || state.showThoughtCabinet || state.showConstellation || state.showJourneySummary) return
+
+        const dominantPattern = getDominantPattern()
+        const event = selectAmbientEvent(state.currentCharacterId, dominantPattern)
+
+        if (event) {
+          idleCountRef.current++
+          setState(prev => ({ ...prev, ambientEvent: event }))
+
+          // Schedule next event if not at max
+          if (idleCountRef.current < IDLE_CONFIG.MAX_IDLE_EVENTS) {
+            scheduleAmbientEvent()
+          }
+        }
+      }, delay)
+    }
+
+    scheduleAmbientEvent()
+  }, [state.hasStarted, state.availableChoices.length, state.currentCharacterId, state.showJournal, state.showThoughtCabinet, state.showConstellation, state.showJourneySummary, getDominantPattern])
+
+  // Reset timer when choices change (player made a choice)
+  useEffect(() => {
+    resetIdleTimer()
+    return () => {
+      if (idleTimerRef.current) {
+        clearTimeout(idleTimerRef.current)
+      }
+    }
+  }, [state.currentNode?.nodeId, resetIdleTimer])
 
   // Initialize game logic
   const initializeGame = useCallback(async () => {
@@ -281,7 +366,9 @@ export default function StatefulGameInterface() {
         pendingFloatingModule: null,
         showJourneySummary: false,
         journeyNarrative: null,
-        achievementNotification: null
+        achievementNotification: null,
+        ambientEvent: null,
+        patternSensation: null
       })
 
       // ═══════════════════════════════════════════════════════════════════════════
@@ -343,6 +430,13 @@ export default function StatefulGameInterface() {
 
       if (choice.choice.consequence) newGameState = GameStateUtils.applyStateChange(newGameState, choice.choice.consequence)
       if (choice.choice.pattern) newGameState = GameStateUtils.applyStateChange(newGameState, { patternChanges: { [choice.choice.pattern]: 1 } })
+
+      // Generate pattern sensation if pattern was triggered
+      // Only show occasionally (30% chance) to avoid being obtrusive
+      let patternSensation: string | null = null
+      if (choice.choice.pattern && isValidPattern(choice.choice.pattern) && Math.random() < 0.3) {
+        patternSensation = getPatternSensation(choice.choice.pattern)
+      }
 
       // Check for pattern threshold floating modules
       let pendingFloatingModule: FloatingModule | null = null
@@ -519,7 +613,9 @@ export default function StatefulGameInterface() {
           pendingFloatingModule,
           showJourneySummary: state.showJourneySummary,
           journeyNarrative: state.journeyNarrative,
-          achievementNotification
+          achievementNotification,
+          ambientEvent: null,  // Clear ambient event when player acts
+          patternSensation     // Show pattern feedback if triggered
       })
       GameStateManager.saveGameState(newGameState)
 
@@ -977,20 +1073,94 @@ export default function StatefulGameInterface() {
             </CardContent>
           </Card>
 
+          {/* ════════════════════════════════════════════════════════════════════
+              PATTERN SENSATION - Brief feedback when patterns are triggered
+              ════════════════════════════════════════════════════════════════════ */}
+          {state.patternSensation && (
+            <div
+              className="text-center text-sm italic text-slate-500 px-4 py-2 mb-2"
+              style={{
+                animation: 'fadeIn 0.8s ease-in-out, fadeOut 0.8s ease-in-out 2.5s forwards',
+              }}
+              data-testid="pattern-sensation"
+            >
+              {state.patternSensation}
+            </div>
+          )}
+
+          {/* ════════════════════════════════════════════════════════════════════
+              AMBIENT EVENTS - The Station Breathes
+              Subtle atmospheric moments when the player pauses to think.
+              ════════════════════════════════════════════════════════════════════ */}
+          {state.ambientEvent && (
+            <div
+              className="text-center text-sm italic text-slate-400 px-4 py-3 animate-fade-in"
+              style={{
+                animation: 'fadeIn 1.5s ease-in-out',
+              }}
+              data-testid="ambient-event"
+            >
+              {state.ambientEvent.text}
+            </div>
+          )}
+
           {/* Ending State - Shows in scroll area when conversation complete */}
           {isEnding && (
-            <Card className="mt-4 rounded-xl shadow-md">
+            <Card className={`mt-4 rounded-xl shadow-md ${
+              state.gameState && isJourneyComplete(state.gameState)
+                ? 'bg-gradient-to-b from-amber-50 to-white border-amber-200'
+                : ''
+            }`}>
               <CardContent className="p-4 sm:p-6 text-center">
-                <h3 className="text-lg sm:text-xl font-bold text-slate-800 mb-3 sm:mb-4">
-                  Conversation Complete
-                </h3>
-                <Button
-                  variant="outline"
-                  onClick={handleReturnToStation}
-                  className="w-full min-h-[48px] active:scale-[0.98] transition-transform"
-                >
-                  Return to Station
-                </Button>
+                {state.gameState && isJourneyComplete(state.gameState) ? (
+                  <>
+                    {/* Journey Complete - Full celebration */}
+                    <div className="mb-4">
+                      <Compass className="w-10 h-10 mx-auto text-amber-600 mb-2" />
+                      <h3 className="text-xl sm:text-2xl font-bold text-slate-800 mb-2">
+                        The Station Knows You Now
+                      </h3>
+                      <p className="text-sm text-slate-600 italic mb-4">
+                        Your journey through Grand Central Terminus is complete.
+                      </p>
+                    </div>
+                    <div className="space-y-3">
+                      <Button
+                        onClick={() => {
+                          if (state.gameState) {
+                            const demonstrations = skillTrackerRef.current?.getAllDemonstrations() || []
+                            const narrative = generateJourneyNarrative(state.gameState, demonstrations)
+                            setState(prev => ({ ...prev, showJourneySummary: true, journeyNarrative: narrative }))
+                          }
+                        }}
+                        className="w-full min-h-[48px] bg-amber-600 hover:bg-amber-700 text-white"
+                      >
+                        See Your Journey
+                      </Button>
+                      <Button
+                        variant="outline"
+                        onClick={handleReturnToStation}
+                        className="w-full min-h-[48px] active:scale-[0.98] transition-transform"
+                      >
+                        Continue Exploring
+                      </Button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    {/* Conversation Complete - but journey continues */}
+                    <h3 className="text-lg sm:text-xl font-bold text-slate-800 mb-3 sm:mb-4">
+                      Conversation Complete
+                    </h3>
+                    <Button
+                      variant="outline"
+                      onClick={handleReturnToStation}
+                      className="w-full min-h-[48px] active:scale-[0.98] transition-transform"
+                    >
+                      Return to Station
+                    </Button>
+                  </>
+                )}
               </CardContent>
             </Card>
           )}

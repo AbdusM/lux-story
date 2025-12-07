@@ -189,3 +189,48 @@ export function getPatternSkills(pattern: PatternType | string): string[] {
 export function isValidPattern(pattern: string): pattern is PatternType {
   return PATTERN_TYPES.includes(pattern as PatternType)
 }
+
+/**
+ * Pattern Sensations - Subtle feedback when player leans into a pattern
+ * These are atmospheric, not informational. The station notices you.
+ */
+export const PATTERN_SENSATIONS: Record<PatternType, string[]> = {
+  analytical: [
+    'You pause to consider the angles.',
+    'Something clicks into place.',
+    'The pattern emerges.',
+    'Your mind traces the connections.',
+  ],
+  patience: [
+    'You let the moment breathe.',
+    'There\'s no rush. You know that now.',
+    'Silence has its own answers.',
+    'You wait. The station waits with you.',
+  ],
+  exploring: [
+    'Curiosity pulls at you.',
+    'There\'s more here. You feel it.',
+    'Questions beget questions.',
+    'The unknown beckons.',
+  ],
+  helping: [
+    'Something in you reaches out.',
+    'Connection matters. You know this.',
+    'Their story becomes part of yours.',
+    'You lean in, listening.',
+  ],
+  building: [
+    'Your hands itch to make it real.',
+    'The shape of it forms in your mind.',
+    'Creation stirs.',
+    'You see what could be.',
+  ],
+}
+
+/**
+ * Get a random sensation for a pattern
+ */
+export function getPatternSensation(pattern: PatternType): string {
+  const sensations = PATTERN_SENSATIONS[pattern]
+  return sensations[Math.floor(Math.random() * sensations.length)]
+}
