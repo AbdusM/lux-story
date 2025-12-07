@@ -247,6 +247,17 @@ The philosophy isn't a luxury. It's the only thing that scales.`,
         nextNodeId: 'rohan_origin_david',
         pattern: 'helping',
         skills: ['humility', 'learningAgility']
+      },
+      {
+        choiceId: 'rohan_pragmatic_building',
+        text: "So build the alternative. What would real training look like?",
+        nextNodeId: 'rohan_origin_david',
+        pattern: 'building',
+        skills: ['creativity', 'systemsThinking'],
+        consequence: {
+          characterId: 'rohan',
+          trustChange: 1
+        }
       }
     ]
   },
@@ -395,6 +406,17 @@ Let me show you what I found today.`,
         nextNodeId: 'rohan_simulation_setup',
         pattern: 'analytical',
         skills: ['curiosity', 'deepWork']
+      },
+      {
+        choiceId: 'rohan_honor_building',
+        text: "Then build something that preserves what David taught. Make it last.",
+        nextNodeId: 'rohan_simulation_setup',
+        pattern: 'building',
+        skills: ['systemsThinking', 'leadership'],
+        consequence: {
+          characterId: 'rohan',
+          trustChange: 1
+        }
       }
     ]
   },
@@ -650,6 +672,17 @@ We want to build something different. A place where people learn why before they
         nextNodeId: 'rohan_teacher_challenge',
         pattern: 'building',
         skills: ['strategicThinking', 'pragmatism']
+      },
+      {
+        choiceId: 'rohan_academy_building_framework',
+        text: "Start with a framework. What's the first principle you'd teach?",
+        nextNodeId: 'rohan_curriculum_design',
+        pattern: 'building',
+        skills: ['systemsThinking', 'creativity'],
+        consequence: {
+          characterId: 'rohan',
+          trustChange: 1
+        }
       }
     ],
     tags: ['rohan_arc', 'vision']

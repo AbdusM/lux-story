@@ -99,6 +99,17 @@ Twelve hours. Just me and the machine. Keeping a father alive.`,
         skills: ['criticalThinking', 'digitalLiteracy']
       },
       {
+        choiceId: 'marcus_visualizes_exploring',
+        text: "What does it feel like? Being the connection between the machine and the person?",
+        nextNodeId: 'marcus_technical_pride',
+        pattern: 'exploring',
+        skills: ['curiosity', 'emotionalIntelligence'],
+        consequence: {
+          characterId: 'marcus',
+          trustChange: 1
+        }
+      },
+      {
         choiceId: 'marcus_let_breathe',
         text: "[Let the weight of that settle. No need to fill the silence.]",
         nextNodeId: 'marcus_the_bubble',
@@ -152,6 +163,17 @@ Wrong heparin calc? He bleeds. Missed clot? Stroke.`,
         skills: ['emotionalIntelligence']
       },
       {
+        choiceId: 'marcus_technical_exploring',
+        text: "How did you learn to think that way? Where does that precision come from?",
+        nextNodeId: 'marcus_the_bubble',
+        pattern: 'exploring',
+        skills: ['curiosity', 'communication'],
+        consequence: {
+          characterId: 'marcus',
+          trustChange: 1
+        }
+      },
+      {
         choiceId: 'marcus_respect_silence',
         text: "[Nod. Sometimes precision speaks for itself.]",
         nextNodeId: 'marcus_the_bubble',
@@ -200,6 +222,17 @@ Wrong heparin calc? He bleeds. Missed clot? Stroke.`,
         nextNodeId: 'marcus_simulation_start',
         pattern: 'helping',
         skills: ['emotionalIntelligence']
+      },
+      {
+        choiceId: 'marcus_bubble_exploring',
+        text: "What happens in your mind in that moment? Between alarm and action?",
+        nextNodeId: 'marcus_simulation_start',
+        pattern: 'exploring',
+        skills: ['curiosity', 'emotionalIntelligence'],
+        consequence: {
+          characterId: 'marcus',
+          trustChange: 1
+        }
       }
     ]
   },

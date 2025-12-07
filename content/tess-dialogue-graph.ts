@@ -108,6 +108,17 @@ You look like you've been outside. Wilderness Immersion. Vacation or crucible?`,
           characterId: 'tess',
           trustChange: 1
         }
+      },
+      {
+        choiceId: 'tess_crucible_exploring',
+        text: "What happens to students at the end of twelve weeks? Who do they become?",
+        nextNodeId: 'tess_explains_school',
+        pattern: 'exploring',
+        skills: ['curiosity', 'criticalThinking'],
+        consequence: {
+          characterId: 'tess',
+          trustChange: 1
+        }
       }
     ]
   },
@@ -167,6 +178,17 @@ You look like you've been outside. Wilderness Immersion. Vacation or crucible?`,
         nextNodeId: 'tess_founder_motivation',
         pattern: 'helping',
         skills: ['emotionalIntelligence']
+      },
+      {
+        choiceId: 'tess_school_exploring',
+        text: "What did you discover about yourself out there? What shifted?",
+        nextNodeId: 'tess_founder_motivation',
+        pattern: 'exploring',
+        skills: ['curiosity', 'emotionalIntelligence'],
+        consequence: {
+          characterId: 'tess',
+          trustChange: 1
+        }
       }
     ]
   },
@@ -217,6 +239,17 @@ You look like you've been outside. Wilderness Immersion. Vacation or crucible?`,
         nextNodeId: 'tess_defunding_reveal',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'problemSolving'],
+        consequence: {
+          characterId: 'tess',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'tess_motivation_exploring',
+        text: "What would happen to you if you didn't try? What would that cost?",
+        nextNodeId: 'tess_defunding_reveal',
+        pattern: 'exploring',
+        skills: ['curiosity', 'emotionalIntelligence'],
         consequence: {
           characterId: 'tess',
           trustChange: 1
