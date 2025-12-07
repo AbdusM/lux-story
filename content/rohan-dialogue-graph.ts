@@ -55,6 +55,17 @@ It's hallucinating reality, and it's doing it better than I ever could.`,
         nextNodeId: 'rohan_philosophy_trap',
         pattern: 'exploring',
         skills: ['criticalThinking']
+      },
+      {
+        choiceId: 'rohan_intro_patience',
+        text: "[Stay quiet. Let the awe and dread coexist without comment.]",
+        nextNodeId: 'rohan_erasure_reveal',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'adaptability'],
+        consequence: {
+          characterId: 'rohan',
+          trustChange: 1
+        }
       }
     ],
     onEnter: [
@@ -109,6 +120,17 @@ If we accept this... David didn't matter. I don't matter. We're just slow, buggy
         skills: ['collaboration'],
         visibleCondition: {
           hasGlobalFlags: ['tess_arc_complete']
+        }
+      },
+      {
+        choiceId: 'rohan_erasure_patience',
+        text: "[Let the weight of David's legacy settle. Some grief speaks louder in silence.]",
+        nextNodeId: 'rohan_simulation_setup',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'adaptability'],
+        consequence: {
+          characterId: 'rohan',
+          trustChange: 2
         }
       }
     ],
@@ -259,6 +281,17 @@ He made me spend six months writing in assembly. No frameworks. No abstractions.
         nextNodeId: 'rohan_david_gone',
         pattern: 'helping',
         skills: ['emotionalIntelligence']
+      },
+      {
+        choiceId: 'rohan_david_patience',
+        text: "[Nod slowly. That kind of mentorship deserves reverent silence.]",
+        nextNodeId: 'rohan_david_lesson',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'adaptability'],
+        consequence: {
+          characterId: 'rohan',
+          trustChange: 1
+        }
       }
     ],
     tags: ['rohan_arc', 'backstory']
@@ -323,6 +356,17 @@ That knowledge doesn't disappear because a machine can type faster. It's not abo
         nextNodeId: 'rohan_honor_path',
         pattern: 'building',
         skills: ['strategicThinking']
+      },
+      {
+        choiceId: 'rohan_gone_patience',
+        text: "[Hold the moment. This grief has been waiting for someone to witness it.]",
+        nextNodeId: 'rohan_honor_path',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'adaptability'],
+        consequence: {
+          characterId: 'rohan',
+          trustChange: 2
+        }
       }
     ],
     tags: ['rohan_arc', 'emotional_core']

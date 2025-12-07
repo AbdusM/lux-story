@@ -69,6 +69,17 @@ What do you tell students when your path looks like this?`,
           trustChange: 1,
           addKnowledgeFlags: ['noticed_uncertainty']
         }
+      },
+      {
+        choiceId: 'jordan_intro_patience',
+        text: "[Let the silence hold. She's still figuring out how to begin.]",
+        nextNodeId: 'jordan_career_question',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'adaptability'],
+        consequence: {
+          characterId: 'jordan',
+          trustChange: 1
+        }
       }
     ],
     onEnter: [{
@@ -187,6 +198,18 @@ Twenty years old, back with my mom. She kept asking when I'd go back to school.`
           trustChange: 1,
           addKnowledgeFlags: ['knows_job_1']
         }
+      },
+      {
+        choiceId: 'jordan_job1_patience',
+        text: "[Nod quietly. That's a hard thing to share.]",
+        nextNodeId: 'jordan_job_reveal_2',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'adaptability'],
+        consequence: {
+          characterId: 'jordan',
+          trustChange: 1,
+          addKnowledgeFlags: ['knows_job_1']
+        }
       }
     ],
     tags: ['job_revelation', 'jordan_arc']
@@ -240,6 +263,18 @@ Customer service is applied empathy.`,
         nextNodeId: 'jordan_job_reveal_3',
         pattern: 'analytical',
         skills: ['criticalThinking', 'creativity', 'communication'],
+        consequence: {
+          characterId: 'jordan',
+          trustChange: 1,
+          addKnowledgeFlags: ['knows_job_2']
+        }
+      },
+      {
+        choiceId: 'jordan_job2_patience',
+        text: "[Stay present. Let her find her rhythm in the telling.]",
+        nextNodeId: 'jordan_job_reveal_3',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'adaptability'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,

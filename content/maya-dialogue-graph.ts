@@ -52,6 +52,17 @@ export const mayaDialogueNodes: DialogueNode[] = [
         nextNodeId: 'maya_why_here',
         pattern: 'exploring',
         skills: ['communication', 'criticalThinking']
+      },
+      {
+        choiceId: 'intro_patience',
+        text: "[Let her settle. The scattered energy needs room to breathe.]",
+        nextNodeId: 'maya_anxiety_check',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'adaptability'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
       }
     ],
     onEnter: [
@@ -168,6 +179,17 @@ export const mayaDialogueNodes: DialogueNode[] = [
         nextNodeId: 'maya_deflect_passion',
         pattern: 'exploring',
         skills: ['communication', 'criticalThinking']
+      },
+      {
+        choiceId: 'family_let_weight_settle',
+        text: "[Let the weight of that land. Some things don't need immediate response.]",
+        nextNodeId: 'maya_deflect_passion',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'culturalCompetence'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
       }
     ]
   },
