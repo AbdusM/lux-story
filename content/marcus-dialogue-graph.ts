@@ -97,6 +97,17 @@ Twelve hours. Just me and the machine. Keeping a father alive.`,
         nextNodeId: 'marcus_technical_pride',
         pattern: 'analytical',
         skills: ['criticalThinking', 'digitalLiteracy']
+      },
+      {
+        choiceId: 'marcus_let_breathe',
+        text: "[Let the weight of that settle. No need to fill the silence.]",
+        nextNodeId: 'marcus_the_bubble',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'adaptability'],
+        consequence: {
+          characterId: 'marcus',
+          trustChange: 2
+        }
       }
     ]
   },
@@ -139,6 +150,17 @@ Wrong heparin calc? He bleeds. Missed clot? Stroke.`,
         nextNodeId: 'marcus_the_bubble',
         pattern: 'helping',
         skills: ['emotionalIntelligence']
+      },
+      {
+        choiceId: 'marcus_respect_silence',
+        text: "[Nod. Sometimes precision speaks for itself.]",
+        nextNodeId: 'marcus_the_bubble',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'adaptability'],
+        consequence: {
+          characterId: 'marcus',
+          trustChange: 1
+        }
       }
     ]
   },
@@ -222,6 +244,17 @@ Wrong heparin calc? He bleeds. Missed clot? Stroke.`,
         nextNodeId: 'marcus_sim_fail_slow',
         pattern: 'helping',
         skills: ['communication']
+      },
+      {
+        choiceId: 'sim_assess_first',
+        text: "[Pause. Breathe. Read the monitors before acting.]",
+        nextNodeId: 'marcus_sim_step_2',
+        pattern: 'patience',
+        skills: ['criticalThinking', 'adaptability'],
+        consequence: {
+          characterId: 'marcus',
+          trustChange: 1
+        }
       }
     ],
     tags: ['simulation', 'marcus_arc', 'interactive_episode']
@@ -470,6 +503,38 @@ Now? Designing the next machine.`,
         // TODO: [VFX] Career pathway icons appear subtly (perfusion, biomed, software)
       }
     ],
+    patternReflection: [
+      {
+        pattern: 'building',
+        minLevel: 5,
+        altText: `You get it. The making of things that matter. That's the job. Not just caring. Technical mastery.
+
+Whole world here. Perfusionists run these in surgery. Biomedical engineers design them bubble-free. Software devs code the alarms.
+
+Started as a nurse. Now? Designing the next machine.`,
+        altEmotion: 'kindred_inspired'
+      },
+      {
+        pattern: 'analytical',
+        minLevel: 5,
+        altText: `You think in systems. I saw that when you worked the simulation. That's the job. Not just caring. Technical mastery.
+
+Whole world here. Perfusionists run these in surgery. Biomedical engineers design them bubble-free. Software devs code the alarms.
+
+Started as a nurse. Now? Designing the next machine.`,
+        altEmotion: 'recognized_inspired'
+      },
+      {
+        pattern: 'helping',
+        minLevel: 5,
+        altText: `You showed up when it mattered. That's what this work is. That's the job. Not just caring. Technical mastery.
+
+Whole world here. Perfusionists run these in surgery. Biomedical engineers design them bubble-free. Software devs code the alarms.
+
+Started as a nurse. Now? Designing the next machine.`,
+        altEmotion: 'grateful_inspired'
+      }
+    ],
     choices: [
       {
         choiceId: 'marcus_biomed_path',
@@ -514,6 +579,32 @@ The machine held.`,
         variation_id: 'farewell_v1',
 
         // TODO: [SFX] Soft, relieved exhale
+      }
+    ],
+    patternReflection: [
+      {
+        pattern: 'helping',
+        minLevel: 5,
+        altText: `Thanks. Felt good walking you through it. You were here when it mattered—that's rare.
+
+Makes the weight lighter.
+
+If you see Samuel... tell him the patient made it.
+
+The machine held.`,
+        altEmotion: 'deep_grateful'
+      },
+      {
+        pattern: 'building',
+        minLevel: 5,
+        altText: `Thanks. Felt good walking you through it. You think like an engineer—I saw that.
+
+Makes the weight lighter.
+
+If you see Samuel... tell him the patient made it.
+
+The machine held.`,
+        altEmotion: 'kindred_grateful'
       }
     ],
     choices: [
@@ -1215,7 +1306,7 @@ Day it doesn't bother you? Day you should quit.`,
     content: [
       {
         text: `*Pauses. Looks at you.*|How know right choice?|*Thinks.*|For me—when decision feels heavy. When I lose sleep.|Means I care.|But you?|How you know?|When helping others, how you know you helping right way?`,
-        emotion: 'curious_reciprocal',
+        emotion: 'curious_engaged',
         interaction: 'nod',
         variation_id: 'marcus_reciprocity_v1',
         useChatPacing: true

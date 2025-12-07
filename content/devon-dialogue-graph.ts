@@ -101,6 +101,17 @@ export const devonDialogueNodes: DialogueNode[] = [
         nextNodeId: 'devon_debug_result_override',
         pattern: 'helping',
         skills: ['emotionalIntelligence']
+      },
+      {
+        choiceId: 'debug_wait',
+        text: "[WAIT] Don't respond yet. Let the silence hold.",
+        nextNodeId: 'devon_debug_result_override',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'adaptability'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1
+        }
       }
     ],
     tags: ['simulation', 'devon_arc', 'immersive_scenario']
@@ -187,6 +198,17 @@ export const devonDialogueNodes: DialogueNode[] = [
         pattern: 'analytical',
         consequence: {
           addGlobalFlags: ['devon_chose_logic'] // BAD ENDING
+        }
+      },
+      {
+        choiceId: 'sit_with_failure',
+        text: "Sometimes we just need to sit with failure. Let's take a breath.",
+        nextNodeId: 'devon_explains_system',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'adaptability'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 2
         }
       }
     ]
@@ -368,6 +390,17 @@ export const devonDialogueNodes: DialogueNode[] = [
           characterId: 'devon',
           trustChange: 1
         }
+      },
+      {
+        choiceId: 'let_devon_process',
+        text: "[Nod slowly. Give them space to think.]",
+        nextNodeId: 'devon_father_hint',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'adaptability'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 2
+        }
       }
     ]
   },
@@ -536,6 +569,17 @@ export const devonDialogueNodes: DialogueNode[] = [
         nextNodeId: 'devon_system_failure',
         pattern: 'analytical',
         skills: ['criticalThinking']
+      },
+      {
+        choiceId: 'hold_space_grief',
+        text: "[Stay quiet. Some things need space, not words.]",
+        nextNodeId: 'devon_system_failure',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'adaptability'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 2
+        }
       }
     ]
   },
