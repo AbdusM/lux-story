@@ -13,13 +13,13 @@ interface PeopleViewProps {
   onOpenDetail?: (character: CharacterWithState) => void
 }
 
-// Animation variants
+// Animation variants - all states must have consistent properties
 const nodeVariants = {
   unmet: { scale: 0.85, opacity: 0.4 },
   met: { scale: 1, opacity: 0.7 },
   connected: { scale: 1, opacity: 0.9 },
   trusted: { scale: 1.05, opacity: 1 },
-  selected: { scale: 1.15 }
+  selected: { scale: 1.15, opacity: 1 }
 }
 
 const containerVariants = {
@@ -238,6 +238,8 @@ export function PeopleView({ characters, onOpenDetail }: PeopleViewProps) {
                     filter: 'url(#glow)'
                   }}
                   variants={nodeVariants}
+                  initial={char.trustState}
+                  animate={isSelected ? 'selected' : char.trustState}
                 />
 
                 {/* Selection ring */}
