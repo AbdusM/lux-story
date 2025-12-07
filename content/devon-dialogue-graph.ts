@@ -243,8 +243,8 @@ export const devonDialogueNodes: DialogueNode[] = [
         choiceId: 'ask_who_for_override',
         text: "Who is this system for?",
         nextNodeId: 'devon_father_hint',
-        pattern: 'helping',
-        skills: ['emotionalIntelligence', 'communication'],
+        pattern: 'exploring',
+        skills: ['curiosity', 'communication'],
         consequence: {
           characterId: 'devon',
           trustChange: 2

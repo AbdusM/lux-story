@@ -584,8 +584,8 @@ Started as a nurse. Now? Designing the next machine.`,
         choiceId: 'marcus_perfusion_path',
         text: "The operating room needs people like you running the console.",
         nextNodeId: 'marcus_farewell',
-        pattern: 'helping',
-        skills: ['adaptability'],
+        pattern: 'building',
+        skills: ['leadership'],
         consequence: {
           characterId: 'marcus',
           trustChange: 1
@@ -826,8 +826,8 @@ They want my recommendation on who.`,
         choiceId: 'p2_impossible_choice',
         text: "How do you even make that choice?",
         nextNodeId: 'marcus_p2_cases_review',
-        pattern: 'helping',
-        skills: ['emotionalIntelligence']
+        pattern: 'exploring',
+        skills: ['curiosity']
       }
     ],
     onEnter: [
