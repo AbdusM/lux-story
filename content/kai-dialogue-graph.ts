@@ -844,8 +844,8 @@ Sometimes the system is too slow. Sometimes you have to step outside it.`,
         choiceId: 'kai_accept_outside',
         text: "You're right. Build it outside.",
         nextNodeId: 'kai_final_choice',
-        pattern: 'helping',
-        skills: ['wisdom', 'courage']
+        pattern: 'building',
+        skills: ['creativity', 'courage']
       }
     ]
   },
@@ -960,8 +960,8 @@ But I'll never have to click 'Next' again.`,
         choiceId: 'kai_farewell',
         text: "Go build it.",
         nextNodeId: 'kai_farewell',
-        pattern: 'helping',
-        skills: ['encouragement']
+        pattern: 'building',
+        skills: ['leadership']
       }
     ],
     onEnter: [

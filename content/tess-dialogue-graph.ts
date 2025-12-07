@@ -474,8 +474,8 @@ If I fail, just an unemployed hiker.`,
         choiceId: 'tess_commit_belief',
         text: "The students need this. They need you to be brave first.",
         nextNodeId: 'tess_decision_made',
-        pattern: 'helping',
-        skills: ['emotionalIntelligence', 'emotionalIntelligence']
+        pattern: 'building',
+        skills: ['leadership', 'courage']
       }
     ]
   },
@@ -830,8 +830,8 @@ If I cave, still teaching resilience? Or babysitting in the woods?`,
         choiceId: 'p2_acknowledge_concerns',
         text: "Acknowledge their concerns. Add more support, not less challenge.",
         nextNodeId: 'tess_p2_program_adaptation',
-        pattern: 'helping',
-        skills: ['emotionalIntelligence', 'communication']
+        pattern: 'building',
+        skills: ['systemsThinking', 'communication']
       }
     ],
     tags: ['phase2', 'tess_arc', 'leadership']
