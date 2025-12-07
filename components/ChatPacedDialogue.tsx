@@ -270,7 +270,13 @@ export function ChatPacedDialogue({
   }, [currentChunkIndex, chunks, typingDuration, onComplete])
 
   return (
-    <div className={`chat-paced-dialogue ${className}`}>
+    <div
+      className={`chat-paced-dialogue ${className}`}
+      role="log"
+      aria-live="polite"
+      aria-atomic="false"
+      aria-label={`${characterName} is speaking`}
+    >
       {/* No inline avatars - handled by top bar */}
       <div className="space-y-6 sm:space-y-8">
         {/* Visible chunks - fade-in for clean text introduction */}

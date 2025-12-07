@@ -694,15 +694,36 @@ export const samuelDialogueNodes: DialogueNode[] = [
     tags: ['fridge_logic_fix', 'samuel_arc']
   },
 
-  // ============= HUB: INITIAL (Discovery-based character routing) =============
+  // ============= HUB: INITIAL (Conversational 3-step character routing) =============
+  // Step 1: Broad category selection (3 choices - best practice compliant)
   {
     nodeId: 'samuel_hub_initial',
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "{{knows_backstory:Like I said, I built other people's systems for years. These three are trying to build their own.|{{trust>2:It's good to see you settling in.|Three travelers tonight. Each at their own crossroads.}}}}\n\nThis station's been busy since the old Terminal Station closed—seems like Birmingham keeps drawing folks who need to find their way.\n\nBefore I tell you about them—when you think about your decision, what pulls at you most?",
+        text: "{{knows_backstory:Like I said, I built other people's systems for years. These travelers are trying to build their own.|{{trust>2:It's good to see you settling in.|Several travelers tonight. Each at their own crossroads.}}}}\n\nThere's someone you should meet. But first—what draws you here?",
         emotion: 'curious',
-        variation_id: 'hub_initial_v1'
+        variation_id: 'hub_initial_v1',
+        patternReflection: [
+          {
+            pattern: 'analytical',
+            minLevel: 5,
+            altText: "{{knows_backstory:Like I said, I built other people's systems for years. These travelers are trying to build their own.|Several travelers tonight. Each at their own crossroads.}}\n\nYou think things through. I can see it in how you move through this place. There's someone here who might appreciate that.",
+            altEmotion: 'knowing'
+          },
+          {
+            pattern: 'helping',
+            minLevel: 5,
+            altText: "{{knows_backstory:Like I said, I built other people's systems for years. These travelers are trying to build their own.|Several travelers tonight. Each at their own crossroads.}}\n\nYou lead with care. I've seen how you listen. There's someone here who needs that.",
+            altEmotion: 'warm'
+          },
+          {
+            pattern: 'building',
+            minLevel: 5,
+            altText: "{{knows_backstory:Like I said, I built other people's systems for years. These travelers are trying to build their own.|Several travelers tonight. Each at their own crossroads.}}\n\nYou're a builder. I see it in your eyes—the way you look at problems like possibilities. Someone here shares that fire.",
+            altEmotion: 'knowing'
+          }
+        ]
       }
     ],
     requiredState: {
@@ -710,21 +731,21 @@ export const samuelDialogueNodes: DialogueNode[] = [
     },
     choices: [
       {
-        choiceId: 'hub_helping_others',
-        text: "Wanting to help people, but not sure I'm on the right path for it.",
-        nextNodeId: 'samuel_discovers_helping',
+        choiceId: 'hub_category_heart',
+        text: "I want to help people, but I'm not sure how.",
+        nextNodeId: 'samuel_hub_heart_travelers',
         pattern: 'helping',
-        skills: ['communication', 'emotionalIntelligence'],
+        skills: ['emotionalIntelligence', 'communication'],
         consequence: {
           characterId: 'samuel',
           addKnowledgeFlags: ['player_values_helping']
         }
       },
       {
-        choiceId: 'hub_systems_logic',
-        text: "I like solving problems logically, but I feel like something's missing.",
-        nextNodeId: 'samuel_discovers_building',
-        pattern: 'building',
+        choiceId: 'hub_category_mind',
+        text: "I want to understand how things work—really work.",
+        nextNodeId: 'samuel_hub_mind_travelers',
+        pattern: 'analytical',
         skills: ['criticalThinking', 'communication'],
         consequence: {
           characterId: 'samuel',
@@ -732,68 +753,143 @@ export const samuelDialogueNodes: DialogueNode[] = [
         }
       },
       {
-        choiceId: 'hub_multiple_paths',
-        text: "I've tried different things and I'm not sure if that's okay.",
-        nextNodeId: 'samuel_discovers_exploring',
-        pattern: 'exploring',
-        skills: ['adaptability', 'communication'],
+        choiceId: 'hub_category_hands',
+        text: "I want to build something real.",
+        nextNodeId: 'samuel_hub_hands_travelers',
+        pattern: 'building',
+        skills: ['creativity', 'communication'],
         consequence: {
           characterId: 'samuel',
-          addKnowledgeFlags: ['player_values_adaptability']
+          addKnowledgeFlags: ['player_values_building']
         }
+      }
+    ]
+  },
+
+  // Step 2a: Heart travelers (helping-focused)
+  {
+    nodeId: 'samuel_hub_heart_travelers',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "The station remembers... people who lead with care are rare. There are two travelers here who might understand that pull.\n\nMaya Chen is on Platform 1. Pre-med student at UAB. Her parents sacrificed everything for her education—but she's building robots in secret.\n\nOr there's Marcus, down by Platform 2. Works in the ICU. The machines keeping patients alive? He runs them. But he's wondering if being good at something means it's his calling.",
+        emotion: 'knowing',
+        variation_id: 'hub_heart_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'meet_maya_from_heart',
+        text: "Tell me more about Maya.",
+        nextNodeId: 'samuel_discovers_helping',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
       },
       {
-        choiceId: 'hub_education_reform',
-        text: "I'm interested in education and leadership, but the system feels broken.",
-        nextNodeId: 'samuel_discovers_tess',
-        pattern: 'building',
-        skills: ['creativity', 'communication']
-      },
-      {
-        choiceId: 'hub_creator_economy',
-        text: "I have skills I want to teach, but I don't fit in a traditional classroom.",
-        nextNodeId: 'samuel_discovers_yaquin',
-        pattern: 'building',
-        skills: ['leadership', 'communication']
-      },
-      {
-        choiceId: 'hub_corporate_innovation',
-        text: "I'm fighting to innovate inside a rigid system.",
-        nextNodeId: 'samuel_discovers_kai',
-        pattern: 'analytical',
-        skills: ['strategicThinking', 'resilience']
-      },
-      {
-        choiceId: 'hub_infrastructure',
-        text: "I'm tired of fake solutions. I want to know how things really work.",
-        nextNodeId: 'samuel_discovers_rohan',
-        pattern: 'analytical',
-        skills: ['criticalThinking', 'technicalLiteracy']
-      },
-      {
-        choiceId: 'hub_digital_refugee',
-        text: "I want to build something real. Something I can touch.",
-        nextNodeId: 'samuel_discovers_silas',
-        pattern: 'building',
-        skills: ['sustainability', 'systemsThinking']
-      },
-      {
-        choiceId: 'hub_healthcare_tech',
-        text: "I'm drawn to healthcare, but I think the technology matters as much as the medicine.",
+        choiceId: 'meet_marcus_from_heart',
+        text: "I'd like to meet Marcus.",
         nextNodeId: 'samuel_discovers_marcus',
         pattern: 'helping',
-        skills: ['technicalLiteracy', 'emotionalIntelligence']
+        skills: ['emotionalIntelligence']
       },
       {
-        choiceId: 'hub_not_sure',
-        text: "I'm not sure what I'm looking for yet.",
-        nextNodeId: 'samuel_hub_fallback',
-        pattern: 'patience',
-        skills: ["emotionalIntelligence","communication"],
-        consequence: {
-          characterId: 'samuel',
-          addKnowledgeFlags: ['player_uncertain']
-        }
+        choiceId: 'hub_heart_other',
+        text: "[Consider other paths]",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'patience'
+      }
+    ]
+  },
+
+  // Step 2b: Mind travelers (analytical-focused)
+  {
+    nodeId: 'samuel_hub_mind_travelers',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "The station remembers... people who see patterns others miss. Three travelers here think in systems.\n\nDevon Kumar sits in the coffee shop. Systems engineer. Built a decision tree to talk to his grieving father.\n\nKai is over in the training office. Instructional designer. Fighting corporate safety theater after someone got hurt.\n\nOr Rohan—he's questioning the foundations. Wondering if understanding how things break teaches you how they should work.",
+        emotion: 'knowing',
+        variation_id: 'hub_mind_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'meet_devon_from_mind',
+        text: "Tell me about Devon.",
+        nextNodeId: 'samuel_discovers_building',
+        pattern: 'analytical',
+        skills: ['criticalThinking']
+      },
+      {
+        choiceId: 'meet_kai_from_mind',
+        text: "I want to hear Kai's story.",
+        nextNodeId: 'samuel_discovers_kai',
+        pattern: 'analytical',
+        skills: ['strategicThinking']
+      },
+      {
+        choiceId: 'meet_rohan_from_mind',
+        text: "Rohan sounds interesting.",
+        nextNodeId: 'samuel_discovers_rohan',
+        pattern: 'analytical',
+        skills: ['criticalThinking']
+      }
+    ]
+  },
+
+  // Step 2c: Hands travelers (building-focused)
+  {
+    nodeId: 'samuel_hub_hands_travelers',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "The station remembers... builders carry a special weight. They see what could be.\n\nJordan's been through seven careers. Still mapping possibilities. Wonders if the winding path is the path.\n\nTess is a school counselor with a radical dream. Wants to prove that hiking the Appalachian Trail teaches more than AP Calculus.\n\nSilas farms hydroponic basil. His sensors say everything's fine. His plants say otherwise.\n\nOr Yaquin—dental assistant turned online educator. Knows things textbooks get wrong.",
+        emotion: 'knowing',
+        variation_id: 'hub_hands_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'meet_jordan_from_hands',
+        text: "Tell me about Jordan.",
+        nextNodeId: 'samuel_discovers_exploring',
+        pattern: 'exploring',
+        skills: ['adaptability']
+      },
+      {
+        choiceId: 'meet_tess_from_hands',
+        text: "Tess's dream sounds bold.",
+        nextNodeId: 'samuel_discovers_tess',
+        pattern: 'building',
+        skills: ['leadership']
+      },
+      {
+        choiceId: 'meet_silas_from_hands',
+        text: "What's happening with Silas?",
+        nextNodeId: 'samuel_discovers_silas',
+        pattern: 'building',
+        skills: ['sustainability']
+      }
+    ]
+  },
+
+  // Legacy hub fallback for "not sure" responses
+  {
+    nodeId: 'samuel_hub_fallback_legacy',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "That's honest. Not knowing is the first step to finding out.\n\nWhy don't you wander? See who catches your attention. Sometimes the right conversation finds you.",
+        emotion: 'warm',
+        variation_id: 'hub_fallback_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'hub_fallback_explore',
+        text: "I'll look around.",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'exploring'
       }
     ]
   },
