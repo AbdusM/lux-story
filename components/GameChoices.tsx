@@ -165,9 +165,9 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused }:
 
   // Determine which animation state to use
   // Stagger uses "visible" as base state, then apply feedback or focus
-  let animateState: string = "visible"
-  if (choice.feedback) animateState = choice.feedback
-  if (isFocused) animateState = "focused"
+  let _animateState: string = "visible"
+  if (choice.feedback) _animateState = choice.feedback
+  if (isFocused) _animateState = "focused"
 
   return (
     <motion.div

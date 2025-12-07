@@ -384,8 +384,8 @@ export function Journal({ isOpen, onClose }: JournalProps) {
   )
 }
 
-// Helper to get Tailwind color class from pattern type
-function getPatternColorClass(pattern: PatternType): string {
+// Helper to get Tailwind color class from pattern type (currently unused but kept for future use)
+function _getPatternColorClass(pattern: PatternType): string {
   const colorMap: Record<PatternType, string> = {
     analytical: 'blue-500',
     patience: 'green-500',
