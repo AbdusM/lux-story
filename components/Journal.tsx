@@ -7,24 +7,20 @@ import { useInsights } from "@/hooks/useInsights"
 import { useConstellationData } from "@/hooks/useConstellationData"
 import { cn } from "@/lib/utils"
 import { PATTERN_METADATA, type PatternType } from "@/lib/patterns"
-import { springs, viewport, stagger } from "@/lib/animations"
+import { springs, durations } from "@/lib/animations"
 
-// Scroll reveal animation for content cards
-const scrollReveal = {
-  hidden: { opacity: 0, y: 12 },
+// Tab content transition variants
+const tabContentVariants = {
+  hidden: { opacity: 0, y: 10 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: springs.gentle
-  }
-}
-
-// Stagger container for lists
-const listContainer = {
-  hidden: { opacity: 1 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: stagger.fast }
+    transition: { duration: durations.normal, ease: [0.25, 0.46, 0.45, 0.94] as const }
+  },
+  exit: {
+    opacity: 0,
+    y: -10,
+    transition: { duration: durations.fast }
   }
 }
 
@@ -151,9 +147,17 @@ export function Journal({ isOpen, onClose }: JournalProps) {
 
             {/* Scrollable Content - Compact padding */}
             <div className="flex-1 overflow-y-auto p-4">
+              <AnimatePresence mode="wait">
               {/* Your Style Tab - Compact */}
               {activeTab === 'style' && (
-                <div className="space-y-3">
+                <motion.div
+                  key="style-tab"
+                  variants={tabContentVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  className="space-y-3"
+                >
                   {/* Primary Pattern - Game-like stat card */}
                   {insights.decisionStyle.primaryPattern ? (
                     <>
@@ -222,12 +226,19 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                       ))}
                     </div>
                   )}
-                </div>
+                </motion.div>
               )}
 
               {/* Connections Tab - Compact */}
               {activeTab === 'connections' && (
-                <div className="space-y-2">
+                <motion.div
+                  key="connections-tab"
+                  variants={tabContentVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  className="space-y-2"
+                >
                   {/* Relationship Pattern Insight - Compact */}
                   {insights.relationshipPattern && (
                     <div className="p-2 rounded bg-amber-50 dark:bg-amber-950/30 border-l-2 border-amber-400 text-xs mb-3">
@@ -268,12 +279,19 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                       ))}
                     </div>
                   )}
-                </div>
+                </motion.div>
               )}
 
               {/* Insights Tab - Compact */}
               {activeTab === 'patterns' && (
-                <div className="space-y-3">
+                <motion.div
+                  key="patterns-tab"
+                  variants={tabContentVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  className="space-y-3"
+                >
                   {/* Journey Progress - Compact */}
                   <div className="p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
                     <div className="flex items-center gap-2">
@@ -346,8 +364,9 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                       <p className="text-slate-400 text-xs">Keep playing to see insights</p>
                     </div>
                   )}
-                </div>
+                </motion.div>
               )}
+              </AnimatePresence>
             </div>
 
             {/* Footer */}
