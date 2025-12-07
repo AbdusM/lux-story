@@ -137,6 +137,17 @@ I've rewritten this speech six times. What do you tell people when your path loo
           characterId: 'jordan',
           trustChange: 1
         }
+      },
+      {
+        choiceId: 'jordan_career_structure',
+        text: "What if you structured it differently? Build from the outcome backward.",
+        nextNodeId: 'jordan_job_reveal_1',
+        pattern: 'building',
+        skills: ['systemsThinking', 'creativity'],
+        consequence: {
+          characterId: 'jordan',
+          trustChange: 1
+        }
       }
     ],
     onEnter: [{
@@ -336,6 +347,18 @@ Wasn't great at first. But I learned visual hierarchy. How eyes move. How color 
           trustChange: 1,
           addKnowledgeFlags: ['knows_job_3']
         }
+      },
+      {
+        choiceId: 'jordan_job3_building_toolkit',
+        text: "You were building a toolkit. Each skill was a tool you'd need later.",
+        nextNodeId: 'jordan_pattern_acknowledgment',
+        pattern: 'building',
+        skills: ['systemsThinking', 'creativity'],
+        consequence: {
+          characterId: 'jordan',
+          trustChange: 1,
+          addKnowledgeFlags: ['knows_job_3']
+        }
       }
     ],
     tags: ['job_revelation', 'jordan_arc']
@@ -487,6 +510,18 @@ Experience design. User motivation. I just didn't have the language yet.`,
         nextNodeId: 'jordan_job_reveal_6',
         pattern: 'analytical',
         skills: ['criticalThinking', 'creativity', 'communication'],
+        consequence: {
+          characterId: 'jordan',
+          trustChange: 1,
+          addKnowledgeFlags: ['knows_job_5']
+        }
+      },
+      {
+        choiceId: 'jordan_job5_building_experiences',
+        text: "You were always building experiences. Gyms, apps, client relationships—all the same craft.",
+        nextNodeId: 'jordan_job_reveal_6',
+        pattern: 'building',
+        skills: ['systemsThinking', 'creativity'],
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -705,6 +740,13 @@ I've been training for this job my whole life.`,
         nextNodeId: 'jordan_mentor_context',
         pattern: 'analytical',
         skills: ['criticalThinking', 'creativity']
+      },
+      {
+        choiceId: 'jordan_job7_building_composite',
+        text: "You built yourself into something new. A composite that couldn't exist any other way.",
+        nextNodeId: 'jordan_mentor_context',
+        pattern: 'building',
+        skills: ['systemsThinking', 'creativity', 'leadership']
       }
     ],
     tags: ['job_revelation', 'jordan_arc']
