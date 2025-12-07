@@ -287,9 +287,9 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice }: GameChoice
         {nonEmptyGroups.map(([title, groupChoices]) => (
           <div key={title} className="space-y-3" role="group" aria-label={title}>
             {title !== 'Other' && (
-              <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider px-1">
+              <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider px-1" aria-label={`${title} options`}>
                 {title}
-              </h4>
+              </h3>
             )}
             <div className={`grid gap-3 ${groupChoices.length > 1 ? 'md:grid-cols-2' : 'grid-cols-1'}`}>
               {groupChoices.map((choice, localIndex) => {
