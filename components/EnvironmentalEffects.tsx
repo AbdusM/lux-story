@@ -17,6 +17,8 @@ export function EnvironmentalEffects() {
       body.className = body.className.replace(/resonance-level-\S+/g, '')
       body.className = body.className.replace(/\S+-environment/g, '')
       body.className = body.className.replace(/\S+-high/g, '')
+      body.className = body.className.replace(/character-\S+/g, '')
+      body.className = body.className.replace(/theatre-\S+/g, '')
       
       // Platform warmth effects
       const platforms = state.platforms || {}
@@ -86,7 +88,26 @@ export function EnvironmentalEffects() {
         body.classList.add('shadow-cold')
         body.classList.remove('shadow-warm')
       }
-      
+
+      // Fox Theatre character atmosphere
+      // Derive active character from relationships (highest trust level)
+      const relationships = state.relationships || {}
+      let activeCharacter = 'samuel' // Default
+      let highestTrust = 0
+      Object.entries(relationships).forEach(([charId, rel]) => {
+        if (rel && typeof rel.trust === 'number' && rel.trust > highestTrust) {
+          highestTrust = rel.trust
+          activeCharacter = charId
+        }
+      })
+      body.classList.add('character-atmosphere')
+      body.classList.add(`character-${activeCharacter}`)
+
+      // Theatre stars when resonance is high (> 3)
+      if (dominantPlatform && platforms[dominantPlatform as keyof typeof platforms]?.resonance > 3) {
+        body.classList.add('theatre-stars')
+      }
+
       // Environmental particles
       if (patterns.helping > 6) {
         body.classList.add('particles-helping')

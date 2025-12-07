@@ -986,3 +986,46 @@
 .animate-fade-in {
   animation: fadeIn 1s ease-in-out;
 }
+
+/* ============================================
+   FOX THEATRE CHARACTER ATMOSPHERE
+   Subtle vignette overlay based on active character
+   ============================================ */
+
+/* Character atmosphere - vignette overlay */
+.character-atmosphere {
+  position: relative;
+}
+
+.character-atmosphere::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(
+    ellipse 120% 80% at 50% 100%,
+    hsla(var(--character-hue, 0), var(--character-sat, 0%), 15%, 0.25) 0%,
+    transparent 60%
+  );
+  transition: background 2s ease-in-out;
+}
+
+/* Character-specific hue and saturation values */
+.character-samuel { --character-hue: 40; --character-sat: 30%; } /* Warm wisdom */
+.character-maya { --character-hue: 210; --character-sat: 35%; } /* Cool analytical blue */
+.character-devon { --character-hue: 35; --character-sat: 45%; } /* Amber builder */
+.character-jordan { --character-hue: 280; --character-sat: 30%; } /* Creative purple */
+.character-marcus { --character-hue: 140; --character-sat: 25%; } /* Steady green */
+.character-kai { --character-hue: 200; --character-sat: 30%; } /* Present cyan */
+.character-tess { --character-hue: 25; --character-sat: 40%; } /* Organized coral */
+.character-yaquin { --character-hue: 45; --character-sat: 35%; } /* Artistic gold */
+.character-rohan { --character-hue: 0; --character-sat: 25%; } /* Direct red */
+.character-silas { --character-hue: 260; --character-sat: 20%; } /* Mysterious deep purple */
+
+/* Reduced motion: static vignette */
+@media (prefers-reduced-motion: reduce) {
+  .character-atmosphere::after {
+    transition: none;
+  }
+}
