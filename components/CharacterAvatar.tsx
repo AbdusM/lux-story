@@ -27,17 +27,21 @@ interface CharacterAvatarProps {
 }
 
 // Character-specific avatar configuration mapping names to animal types
+// Updated Dec 2024: Correct character-to-animal mappings per design spec
 const characterAvatars: Record<string, { animal: AnimalType; name: string }> = {
-  'Devon': { animal: 'fox', name: 'Devon' },
-  'Rohan': { animal: 'owl', name: 'Rohan' },
-  'Maya': { animal: 'raccoon', name: 'Maya' },
-  'Tess': { animal: 'bear', name: 'Tess' },
+  'Samuel': { animal: 'owl', name: 'Samuel Washington' },    // The conductor - wise owl
+  'Maya': { animal: 'cat', name: 'Maya' },                   // Clever, resourceful - gray tabby cat
+  'Tess': { animal: 'fox', name: 'Tess' },                   // Warm, guiding - red fox
+  'Devon': { animal: 'deer', name: 'Devon' },                // Gentle, thoughtful - deer
+  'Marcus': { animal: 'bear', name: 'Marcus' },              // Warm, nurturing - brown bear
+  'Rohan': { animal: 'raven', name: 'Rohan' },               // Mysterious, introspective - raven
+  'Yaquin': { animal: 'rabbit', name: 'Yaquin' },            // Gentle, curious - cream rabbit
+  'Lira': { animal: 'butterfly', name: 'Lira' },             // Ethereal, transformative - butterfly
+  // Legacy mappings for backwards compatibility
   'Jordan': { animal: 'chameleon', name: 'Jordan' },
   'Kai': { animal: 'dog', name: 'Kai' },
   'Silas': { animal: 'mouse', name: 'Silas' },
-  'Yaquin': { animal: 'parrot', name: 'Yaquin' },
-  'Samuel': { animal: 'owl', name: 'Samuel Washington' }, // The conductor - wise owl
-  'You': { animal: 'fox', name: 'You' } // Player - hidden anyway
+  'You': { animal: 'fox', name: 'You' }                      // Player - hidden anyway
 }
 
 // Helper to find partial matches (e.g. "Devon Kumar" -> "Devon")
