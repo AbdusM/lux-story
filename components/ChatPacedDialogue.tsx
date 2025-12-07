@@ -5,6 +5,7 @@ import { RichTextRenderer, type RichTextEffect } from './RichTextRenderer'
 import { motion } from 'framer-motion'
 import { interactionAnimations, type InteractionType } from '@/lib/interaction-parser'
 import { getVoiceClass } from '@/lib/voice-utils'
+import { getCharacterTyping } from '@/lib/character-typing'
 
 interface ChatPacedDialogueProps {
   /** The dialogue text with chunks separated by | or \n\n */
@@ -53,13 +54,16 @@ export function ChatPacedDialogue({
   characterName,
   showAvatar = true,
   chunkDelay: _chunkDelay = 1500,
-  typingDuration = 800,
+  typingDuration: typingDurationProp,
   onComplete,
   className = '',
   interaction,
   emotion,
   playerPatterns: _playerPatterns
 }: ChatPacedDialogueProps) {
+  // Get character-specific typing config
+  const characterTyping = getCharacterTyping(characterName)
+  const typingDuration = typingDurationProp ?? characterTyping.typingDuration
   // Split text into chunks by | or \n\n
   const chunks = text
     .split(/\||\n\n/)

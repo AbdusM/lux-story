@@ -78,6 +78,12 @@ export const CHARACTER_VOICES: Record<string, Partial<VoiceStyle>> = {
     tracking: 'tracking-normal',
     weight: 'font-normal',
   },
+  'Marcus': {
+    font: 'font-mono',
+    color: 'text-stone-800 dark:text-stone-200',
+    tracking: 'tracking-normal',
+    weight: 'font-normal',
+  },
   'Yaquin': {
     font: 'font-mono',
     color: 'text-stone-800 dark:text-stone-200',
@@ -100,8 +106,30 @@ export const CHARACTER_VOICES: Record<string, Partial<VoiceStyle>> = {
   },
   'You': {
     font: 'font-mono',
-    color: 'text-stone-700 dark:text-stone-300',
+    color: 'text-stone-500 dark:text-stone-400',
     style: 'italic',
+    tracking: 'tracking-tight',
+  },
+  // Internal monologue - player's inner thoughts, distinct from choices
+  'Internal': {
+    font: 'font-mono',
+    color: 'text-stone-500 dark:text-stone-400',
+    style: 'italic text-[0.95em]',
+    tracking: 'tracking-tight',
+  },
+  // Pattern sensation - brief atmospheric feedback after pattern choices
+  'Sensation': {
+    font: 'font-serif',
+    color: 'text-amber-600/80 dark:text-amber-400/80',
+    style: 'italic text-sm',
+    tracking: 'tracking-normal',
+  },
+  // Ambient event - station atmosphere, 3rd person limited
+  'Ambient': {
+    font: 'font-serif',
+    color: 'text-stone-500/90 dark:text-stone-400/90',
+    style: 'italic text-sm',
+    tracking: 'tracking-normal',
   }
 }
 

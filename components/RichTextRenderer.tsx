@@ -17,6 +17,7 @@ import React, { useState, useEffect } from 'react'
 import { cn } from '@/lib/utils'
 import { motion, useReducedMotion } from 'framer-motion'
 import { parseInlineInteractions, interactionAnimations } from '@/lib/interaction-parser'
+import { calculateChunkDelay } from '@/lib/character-typing'
 
 // Color themes for different states (kept for compatibility)
 const STATE_THEMES = {
@@ -79,6 +80,8 @@ interface RichTextRendererProps {
   onComplete?: () => void
   /** Enable click to skip animations */
   clickToComplete?: boolean
+  /** Character name for timing personality (affects chunk reveal speed) */
+  characterName?: string
 }
 
 export function RichTextRenderer({
@@ -86,7 +89,8 @@ export function RichTextRenderer({
   effects = {},
   className,
   onComplete,
-  clickToComplete = true
+  clickToComplete = true,
+  characterName
 }: RichTextRendererProps) {
   const [isComplete, setIsComplete] = useState(false)
   const [visibleChunks, setVisibleChunks] = useState<number>(0)
@@ -137,11 +141,10 @@ export function RichTextRenderer({
           setVisibleChunks(prev => prev + 1)
           currentChunk++
           
-          // Calculate delay based on chunk length (reading time)
-          // Faster than real reading time, but proportional
-          // Base delay 300ms + 10ms per char, max 1.5s
+          // Calculate delay based on chunk length and character personality
+          // Uses character-specific timing from lib/character-typing.ts
           const chunkLength = chunks[currentChunk - 1]?.length || 0
-          const delay = Math.min(1500, 300 + (chunkLength * 10))
+          const delay = calculateChunkDelay(characterName, chunkLength)
           
           if (currentChunk < chunks.length) {
             setTimeout(revealNextChunk, delay)
@@ -155,7 +158,7 @@ export function RichTextRenderer({
       // Start revealing immediately
       revealNextChunk()
     }
-  }, [text, mode, chunks, onComplete, shouldReduceMotion, clickToComplete])
+  }, [text, mode, chunks, onComplete, shouldReduceMotion, clickToComplete, characterName])
   
   // Click to skip
   const handleSkip = () => {
