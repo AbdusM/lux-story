@@ -55,6 +55,17 @@ Nobody clicks the actual harness.`,
         nextNodeId: 'kai_system_frustration',
         pattern: 'building',
         skills: ['leadership', 'creativity']
+      },
+      {
+        choiceId: 'kai_intro_patience',
+        text: "[Let the silence hold. They'll continue when ready.]",
+        nextNodeId: 'kai_system_frustration',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'adaptability'],
+        consequence: {
+          characterId: 'kai',
+          trustChange: 1
+        }
       }
     ],
     onEnter: [
@@ -72,7 +83,7 @@ Nobody clicks the actual harness.`,
     speaker: 'Kai',
     content: [
       {
-        text: `That's exactly it. I know how people actually learn. I have a master's in instructional design. I could build simulations, scenarios, real practice.
+        text: `Between us... that's exactly it. I know how people actually learn. I have a master's in instructional design. I could build simulations, scenarios, real practice.
 
 But that costs money. "Click Next" costs nothing.
 
@@ -876,6 +887,38 @@ But I'll never have to click 'Next' again.`,
         variation_id: 'climax_v2'
       }
     ],
+    patternReflection: [
+      {
+        pattern: 'building',
+        minLevel: 5,
+        altText: `You understand. You're a builder too—I can tell by how you think. <bloom>Kairos Learning Design</bloom>. No certificates. Just survival.
+
+It's terrifying. I'm giving up the salary, the benefits... the green checkmarks.
+
+But I'll never have to click 'Next' again.`,
+        altEmotion: 'kindred_liberated'
+      },
+      {
+        pattern: 'helping',
+        minLevel: 5,
+        altText: `You've been helping me see what I couldn't see alone. That's real teaching. <bloom>Kairos Learning Design</bloom>. No certificates. Just survival.
+
+It's terrifying. I'm giving up the salary, the benefits... the green checkmarks.
+
+But I'll never have to click 'Next' again.`,
+        altEmotion: 'grateful_liberated'
+      },
+      {
+        pattern: 'analytical',
+        minLevel: 5,
+        altText: `You cut through the noise—straight to what matters. That's the skill I need to teach. <bloom>Kairos Learning Design</bloom>. No certificates. Just survival.
+
+It's terrifying. I'm giving up the salary, the benefits... the green checkmarks.
+
+But I'll never have to click 'Next' again.`,
+        altEmotion: 'recognized_liberated'
+      }
+    ],
     requiredState: {
       lacksGlobalFlags: ['kai_chose_safety']
     },
@@ -938,9 +981,27 @@ Thanks for trying.`,
       {
         text: `Thank you. You didn't just help me fix a module. You helped me stop lying to myself.
 
-Before I go—I've been asking you about depth vs. reach. But what about you? What are you building? What's your reality?`,
-        emotion: 'curious_reciprocal',
+Before I go—between us, I've laid all my cards out. What about yours? What are you building? What connection matters most to you?`,
+        emotion: 'curious_engaged',
         variation_id: 'farewell_v2'
+      }
+    ],
+    patternReflection: [
+      {
+        pattern: 'building',
+        minLevel: 5,
+        altText: `Thank you. You didn't just help me fix a module. You helped me stop lying to myself.
+
+Between us... you're a builder. I recognized that the moment you started thinking in systems. What are you building next?`,
+        altEmotion: 'kindred_curious'
+      },
+      {
+        pattern: 'helping',
+        minLevel: 5,
+        altText: `Thank you. You didn't just help me fix a module. You helped me stop lying to myself.
+
+Between us... you care deeply about people. I saw it in every question you asked. What impact do you want to have?`,
+        altEmotion: 'grateful_curious'
       }
     ],
     choices: [
@@ -967,11 +1028,11 @@ Before I go—I've been asking you about depth vs. reach. But what about you? Wh
     content: [
       {
         text: `*Looks at you directly.*
-        
+
 I've been building training for years. Thousands of slides. Millions of checkmarks.
 
-But what about you? What are you building? What's your reality? What do you want to create?`,
-        emotion: 'curious_reciprocal',
+Between us—I've shared my whole journey. Now I want to hear yours. What are you building? What connection are you trying to create?`,
+        emotion: 'curious_engaged',
         variation_id: 'kai_reciprocity_v1'
       }
     ],

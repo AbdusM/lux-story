@@ -783,8 +783,40 @@ Which story should I tell them?`,
       useChatPacing: true,
       richEffectContext: 'thinking'
     }],
+    patternReflection: [
+      {
+        pattern: 'helping',
+        minLevel: 5,
+        altText: `Twenty minutes before that room fills up. You've been here with me the whole time—patient, listening. That's rare.
+
+I keep rewriting this speech. Which version is true?
+
+Past as liability? Past as asset? Or I define what it means?`,
+        altEmotion: 'grateful_desperate'
+      },
+      {
+        pattern: 'exploring',
+        minLevel: 5,
+        altText: `Twenty minutes before that room fills up. You ask questions like you're building a map of me. I see that.
+
+I keep rewriting this speech. Which version is true?
+
+Past as liability? Past as asset? Or I define what it means?`,
+        altEmotion: 'seen_desperate'
+      },
+      {
+        pattern: 'analytical',
+        minLevel: 5,
+        altText: `Twenty minutes before that room fills up. You connected the dots in my story I couldn't see myself.
+
+I keep rewriting this speech. Which version is true?
+
+Past as liability? Past as asset? Or I define what it means?`,
+        altEmotion: 'recognized_desperate'
+      }
+    ],
     requiredState: {
-      trust: { min: 8 },
+      trust: { min: 6 },  // Reduced from 8 to prevent forced perfect-replay loop
       lacksGlobalFlags: ['jordan_chose_shallow'] // Only if NOT failed
     },
     choices: [
@@ -907,6 +939,36 @@ Thank you. Good luck with your journey.`,
       emotion: 'grateful_but_shaken',
       variation_id: 'jordan_farewell_accumulation_v2_complex'
     }],
+    patternReflection: [
+      {
+        pattern: 'helping',
+        minLevel: 5,
+        altText: `Accumulation. Experience building on experience.
+
+But what if they see through it? What if they know I'm a fraud?
+
+The voice will be there when I walk through that door. Probably for years.
+
+But you listened. Really listened. That's what I needed.
+
+Thank you. Good luck with your journey.`,
+        altEmotion: 'grateful_seen'
+      },
+      {
+        pattern: 'exploring',
+        minLevel: 5,
+        altText: `Accumulation. Experience building on experience.
+
+But what if they see through it? What if they know I'm a fraud?
+
+The voice will be there when I walk through that door. Probably for years.
+
+You asked questions that helped me see my own story differently.
+
+Thank you. Good luck with your journey.`,
+        altEmotion: 'grateful_clarified'
+      }
+    ],
     choices: [
       {
         choiceId: 'jordan_farewell_accumulation_end',

@@ -66,9 +66,10 @@ import { generateJourneyNarrative, isJourneyComplete, type JourneyNarrative } fr
 import { evaluateAchievements, type MetaAchievement } from '@/lib/meta-achievements'
 import { selectAmbientEvent, IDLE_CONFIG, type AmbientEvent } from '@/lib/ambient-events'
 import { PATTERN_TYPES, type PatternType, getPatternSensation, isValidPattern } from '@/lib/patterns'
+import { getConsequenceEcho, checkPatternThreshold as checkPatternEchoThreshold, getPatternRecognitionEcho, getVoicedChoiceText, applyPatternReflection, type ConsequenceEcho } from '@/lib/consequence-echoes'
 // Share prompts removed - too obtrusive
 
-// Trust feedback disabled - notifications were obtrusive
+// Trust feedback now dialogue-based via consequence echoes
 
 // Types
 interface GameInterfaceState {
@@ -103,6 +104,7 @@ interface GameInterfaceState {
   achievementNotification: MetaAchievement | null
   ambientEvent: AmbientEvent | null  // Station breathing - idle atmosphere
   patternSensation: string | null    // Brief feedback when pattern triggered
+  consequenceEcho: ConsequenceEcho | null  // Dialogue-based trust feedback
 }
 
 export default function StatefulGameInterface() {
@@ -138,7 +140,8 @@ export default function StatefulGameInterface() {
     journeyNarrative: null,
     achievementNotification: null,
     ambientEvent: null,
-    patternSensation: null
+    patternSensation: null,
+    consequenceEcho: null
   })
 
   // Rich effects config - KEEPING NEW STAGGERED MODE
@@ -337,14 +340,24 @@ export default function StatefulGameInterface() {
       const content = DialogueGraphNavigator.selectContent(currentNode, character.conversationHistory)
       const choices = StateConditionEvaluator.evaluateChoices(currentNode, gameState, actualCharacterId).filter(c => c.visible)
 
+      // Apply pattern reflection to NPC dialogue based on player's patterns
+      // Node-level patternReflection takes precedence over content-level
+      const mergedPatternReflection = currentNode.patternReflection || content.patternReflection
+      const reflected = applyPatternReflection(
+        content.text,
+        content.emotion,
+        mergedPatternReflection,
+        gameState.patterns
+      )
+
       setState({
         gameState,
         currentNode,
         currentGraph: actualGraph,
         currentCharacterId: actualCharacterId,
         availableChoices: choices,
-        currentContent: content.text,
-        currentDialogueContent: content,
+        currentContent: reflected.text,
+        currentDialogueContent: { ...content, text: reflected.text, emotion: reflected.emotion },
         useChatPacing: content.useChatPacing || false,
         isLoading: false,
         hasStarted: true,
@@ -368,7 +381,8 @@ export default function StatefulGameInterface() {
         journeyNarrative: null,
         achievementNotification: null,
         ambientEvent: null,
-        patternSensation: null
+        patternSensation: null,
+        consequenceEcho: null
       })
 
       // ═══════════════════════════════════════════════════════════════════════════
@@ -428,14 +442,34 @@ export default function StatefulGameInterface() {
       let newGameState = state.gameState
       const previousPatterns = { ...state.gameState.patterns } // Store for threshold detection
 
+      // Track trust before change for echo generation
+      const trustBefore = state.gameState.characters.get(state.currentCharacterId)?.trust ?? 0
+
       if (choice.choice.consequence) newGameState = GameStateUtils.applyStateChange(newGameState, choice.choice.consequence)
       if (choice.choice.pattern) newGameState = GameStateUtils.applyStateChange(newGameState, { patternChanges: { [choice.choice.pattern]: 1 } })
+
+      // Calculate trust change for consequence echo
+      const trustAfter = newGameState.characters.get(state.currentCharacterId)?.trust ?? 0
+      const trustDelta = trustAfter - trustBefore
 
       // Generate pattern sensation if pattern was triggered
       // Only show occasionally (30% chance) to avoid being obtrusive
       let patternSensation: string | null = null
       if (choice.choice.pattern && isValidPattern(choice.choice.pattern) && Math.random() < 0.3) {
         patternSensation = getPatternSensation(choice.choice.pattern)
+      }
+
+      // Generate consequence echo for trust changes (dialogue-based feedback)
+      let consequenceEcho: ConsequenceEcho | null = null
+      if (trustDelta !== 0) {
+        consequenceEcho = getConsequenceEcho(state.currentCharacterId, trustDelta)
+      }
+
+      // Also check for pattern recognition echos (when player crosses a threshold)
+      const crossedPattern = checkPatternEchoThreshold(previousPatterns, newGameState.patterns, 5)
+      if (crossedPattern && !consequenceEcho) {
+        // Pattern recognition takes precedence over trust echo if no trust change
+        consequenceEcho = getPatternRecognitionEcho(state.currentCharacterId, crossedPattern)
       }
 
       // Check for pattern threshold floating modules
@@ -505,13 +539,23 @@ export default function StatefulGameInterface() {
       const content = DialogueGraphNavigator.selectContent(nextNode, targetCharacter.conversationHistory)
       const newChoices = StateConditionEvaluator.evaluateChoices(nextNode, newGameState, targetCharacterId).filter(c => c.visible)
 
+      // Apply pattern reflection to NPC dialogue based on player's patterns
+      // Node-level patternReflection takes precedence over content-level
+      const mergedPatternReflection = nextNode.patternReflection || content.patternReflection
+      const reflected = applyPatternReflection(
+        content.text,
+        content.emotion,
+        mergedPatternReflection,
+        newGameState.patterns
+      )
+
       // Only log if content seems wrong (character changed but content didn't)
-      if (targetCharacterId !== state.currentCharacterId && content.text === state.currentContent) {
+      if (targetCharacterId !== state.currentCharacterId && reflected.text === state.currentContent) {
         console.warn('[StatefulGameInterface] Character changed but content unchanged', {
           fromCharacter: state.currentCharacterId,
           toCharacter: targetCharacterId,
           nodeId: nextNode.nodeId,
-          contentPreview: content.text.substring(0, 50)
+          contentPreview: reflected.text.substring(0, 50)
         })
       }
 
@@ -591,8 +635,8 @@ export default function StatefulGameInterface() {
           currentGraph: targetGraph,
           currentCharacterId: targetCharacterId,
           availableChoices: newChoices,
-          currentContent: content.text,
-          currentDialogueContent: content,
+          currentContent: reflected.text,
+          currentDialogueContent: { ...content, text: reflected.text, emotion: reflected.emotion },
           useChatPacing: content.useChatPacing || false,
           isLoading: false,
           hasStarted: true,
@@ -615,7 +659,8 @@ export default function StatefulGameInterface() {
           journeyNarrative: state.journeyNarrative,
           achievementNotification,
           ambientEvent: null,  // Clear ambient event when player acts
-          patternSensation     // Show pattern feedback if triggered
+          patternSensation,    // Show pattern feedback if triggered
+          consequenceEcho      // Dialogue-based trust feedback
       })
       GameStateManager.saveGameState(newGameState)
 
@@ -727,7 +772,15 @@ export default function StatefulGameInterface() {
           newGameState.characters.set('samuel', samuelChar)
           const content = DialogueGraphNavigator.selectContent(introNode, samuelChar.conversationHistory)
           const choices = StateConditionEvaluator.evaluateChoices(introNode, newGameState, 'samuel').filter(c => c.visible)
-          
+
+          // Apply pattern reflection
+          const reflected = applyPatternReflection(
+            content.text,
+            content.emotion,
+            content.patternReflection,
+            newGameState.patterns
+          )
+
           setState(prev => ({
             ...prev,
             gameState: newGameState,
@@ -735,8 +788,8 @@ export default function StatefulGameInterface() {
             currentGraph: samuelGraph,
             currentCharacterId: 'samuel',
             availableChoices: choices,
-            currentContent: content.text,
-            currentDialogueContent: content,
+            currentContent: reflected.text,
+            currentDialogueContent: { ...content, text: reflected.text, emotion: reflected.emotion },
             useChatPacing: content.useChatPacing || false,
             isLoading: false
           }))
@@ -801,6 +854,14 @@ export default function StatefulGameInterface() {
       const content = DialogueGraphNavigator.selectContent(targetNode, targetCharacter.conversationHistory)
       const choices = StateConditionEvaluator.evaluateChoices(targetNode, newGameState, targetCharacterId).filter(c => c.visible)
 
+      // Apply pattern reflection
+      const reflected = applyPatternReflection(
+        content.text,
+        content.emotion,
+        content.patternReflection,
+        newGameState.patterns
+      )
+
       setState(prev => ({
         ...prev,
         gameState: newGameState,
@@ -808,8 +869,8 @@ export default function StatefulGameInterface() {
         currentGraph: targetGraph,
         currentCharacterId: targetCharacterId,
         availableChoices: choices,
-        currentContent: content.text,
-        currentDialogueContent: content,
+        currentContent: reflected.text,
+        currentDialogueContent: { ...content, text: reflected.text, emotion: reflected.emotion },
         useChatPacing: content.useChatPacing || false,
         isLoading: false
       }))
@@ -1061,6 +1122,16 @@ export default function StatefulGameInterface() {
               data-testid="dialogue-content"
               data-speaker={state.currentNode?.speaker || ''}
             >
+              {/* Consequence Echo - NPC micro-reaction before their main line */}
+              {state.consequenceEcho && (
+                <div
+                  className="text-slate-500 italic text-sm mb-4 animate-fade-in"
+                  data-testid="consequence-echo"
+                  style={{ fontFamily: 'Georgia, serif' }}
+                >
+                  {state.consequenceEcho.text}
+                </div>
+              )}
               <DialogueDisplay
                 key={`dialogue-display-${state.gameState?.currentNodeId || 'none'}-${state.currentCharacterId}-${state.currentContent?.substring(0, 20) || ''}`}
                 text={state.gameState ? TextProcessor.process(state.currentContent || '', state.gameState) : (state.currentContent || '')}
@@ -1187,22 +1258,32 @@ export default function StatefulGameInterface() {
               }}
             >
               <GameChoices
-                choices={state.availableChoices.map(c => {
+                choices={state.availableChoices.map((c, index) => {
                   // Detect pivotal moments for marquee effect
                   const nodeTags = state.currentNode?.tags || []
                   const isPivotal = nodeTags.some(tag =>
                     ['pivotal', 'defining_moment', 'final_choice', 'climax', 'revelation', 'introduction'].includes(tag)
                   )
+                  // Apply voice variation based on player's dominant pattern
+                  const voicedText = state.gameState ? getVoicedChoiceText(
+                    c.choice.text,
+                    c.choice.voiceVariations,
+                    state.gameState.patterns
+                  ) : c.choice.text
                   return {
-                    text: c.choice.text,
+                    text: voicedText,
                     pattern: c.choice.pattern,
                     feedback: c.choice.interaction === 'shake' ? 'shake' : undefined,
-                    pivotal: isPivotal
+                    pivotal: isPivotal,
+                    // Track index for finding the original choice
+                    next: String(index)
                   }
                 })}
                 isProcessing={state.isLoading}
                 onChoice={(c) => {
-                  const original = state.availableChoices.find(ac => ac.choice.text === c.text)
+                  // Use index to find the original choice (stored in 'next' field)
+                  const index = parseInt(c.next || '0', 10)
+                  const original = state.availableChoices[index]
                   if (original) handleChoice(original)
                 }}
               />

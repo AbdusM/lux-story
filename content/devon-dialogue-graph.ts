@@ -73,7 +73,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "Don't just look at it. Run it.\n\nSystem Active. Conversational Optimizer v1.4.\nSubject: Father.\nInput: 'I'm fine.'\nStatus: Processing...",
+        text: "Technically speaking... don't just look at it. Run it.\n\nSystem Active. Conversational Optimizer v1.4.\nSubject: Father.\nInput: 'I'm fine.'\nStatus: Processing...",
         emotion: 'focused',
         variation_id: 'explains_scenario_v1',
         richEffectContext: 'warning', // Blueprint/Debug mode
@@ -426,6 +426,20 @@ export const devonDialogueNodes: DialogueNode[] = [
         variation_id: 'father_reveal_v1',
         richEffectContext: 'thinking',
         useChatPacing: true
+      }
+    ],
+    patternReflection: [
+      {
+        pattern: 'helping',
+        minLevel: 5,
+        altText: "My dad. He lives up in Huntsville. Since mom died six months ago, every phone call is... an exception error.\n\nI don't know why I'm telling you this. Maybe because you actually listen—not many people do.\n\nHe says he's fine. But his voice has this... lag. Like packet loss. I don't know how to debug grief.",
+        altEmotion: 'grateful_vulnerable'
+      },
+      {
+        pattern: 'patience',
+        minLevel: 5,
+        altText: "My dad. He lives up in Huntsville. Since mom died six months ago, every phone call is... an exception error.\n\nThe way you wait... you give space. That's rare. Most people rush to fill silence.\n\nHe says he's fine. But his voice has this... lag. Like packet loss. I don't know how to debug grief.",
+        altEmotion: 'seen_vulnerable'
       }
     ],
     choices: [
@@ -842,6 +856,26 @@ export const devonDialogueNodes: DialogueNode[] = [
         richEffectContext: 'thinking'
       }
     ],
+    patternReflection: [
+      {
+        pattern: 'analytical',
+        minLevel: 5,
+        altText: "You think like I do—in systems, patterns, frameworks. But you also see what I was missing... You helped me see emotions as data. Now I can work with them.\n\nI need to call him. But differently. No flowchart. Just... me, talking to my dad.",
+        altEmotion: 'recognized'
+      },
+      {
+        pattern: 'patience',
+        minLevel: 5,
+        altText: "The way you waited... you gave me space to process. That's what my dad needs, isn't it? You helped me see emotions as data. Now I can work with them.\n\nI need to call him. But differently. No flowchart. Just... me, talking to my dad.",
+        altEmotion: 'grateful_ready'
+      },
+      {
+        pattern: 'helping',
+        minLevel: 5,
+        altText: "You've been debugging me this whole time—but gently. Not fixing, just... being here. You helped me see emotions as data. Now I can work with them.\n\nI need to call him. But differently. No flowchart. Just... me, talking to my dad.",
+        altEmotion: 'warm_ready'
+      }
+    ],
     requiredState: {
       trust: { min: 6 },
       hasKnowledgeFlags: ['system_failed'],
@@ -1038,6 +1072,20 @@ export const devonDialogueNodes: DialogueNode[] = [
         variation_id: 'farewell_integration_v2_complex'
       }
     ],
+    patternReflection: [
+      {
+        pattern: 'analytical',
+        minLevel: 5,
+        altText: "I'm going to call him. Engineer and son. Both.\n\nBut I'm terrified I'll optimize again. Fall back into solution mode.\n\nYou think systematically too—but you showed me there's room for both. Thank you.\n\nSamuel's waiting.",
+        altEmotion: 'kindred_fragile'
+      },
+      {
+        pattern: 'patience',
+        minLevel: 5,
+        altText: "I'm going to call him. Engineer and son. Both.\n\nBut I'm terrified I'll optimize again. Fall back into solution mode.\n\nThe way you waited for me to process... that's what I need to do for him. Thank you.\n\nSamuel's waiting.",
+        altEmotion: 'grateful_fragile'
+      }
+    ],
     choices: [
       {
         choiceId: 'return_to_samuel_integration',
@@ -1138,7 +1186,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "I've been trying to debug my relationship with my dad. But... I realize I've been asking you questions this whole time.\n\nWhat about you? How do you handle relationships when logic doesn't work? When someone you care about is hurting and you can't fix it?",
+        text: "I've been trying to debug my relationship with my dad. But... I realize I've been asking you questions this whole time.\n\nTechnically speaking, that's asymmetric. So: how do you handle relationships when logic doesn't work? When someone you care about is hurting and you can't fix it?",
         emotion: 'curious_vulnerable',
         variation_id: 'devon_reciprocity_v1'
       }

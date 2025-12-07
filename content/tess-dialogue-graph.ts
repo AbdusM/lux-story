@@ -56,6 +56,17 @@ You look like you've been outside. Wilderness Immersion. Vacation or crucible?`,
         nextNodeId: 'tess_explains_school',
         pattern: 'exploring',
         skills: ['criticalThinking', 'communication']
+      },
+      {
+        choiceId: 'tess_intro_patient_listen',
+        text: "[Wait. Let her work through it.]",
+        nextNodeId: 'tess_explains_school',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'adaptability'],
+        consequence: {
+          characterId: 'tess',
+          trustChange: 1
+        }
       }
     ],
     onEnter: [
@@ -72,7 +83,7 @@ You look like you've been outside. Wilderness Immersion. Vacation or crucible?`,
     speaker: 'Tess',
     content: [
       {
-        text: `Exactly. Not s'mores and ghost stories.|Twelve weeks on the Appalachian Trail. Thirty pounds on your back. No phone.|Grant committee needs to see why *this* teaches more than AP Calculus.`,
+        text: `Exactly. Not s'mores and ghost stories.|Twelve weeks on the Appalachian Trail. Thirty pounds on your back. No phone.|Here's the play: Grant committee needs to see why *this* teaches more than AP Calculus.`,
         emotion: 'passionate',
         interaction: 'nod',
         variation_id: 'crucible_v1',
@@ -376,6 +387,38 @@ If I fail, just an unemployed hiker.`,
         useChatPacing: true
       }
     ],
+    patternReflection: [
+      {
+        pattern: 'building',
+        minLevel: 5,
+        altText: `It works. Can sell this. You helped me see it—you're a builder, I can tell.
+
+But this email... resignation. Leaving pension. Tenure track.
+
+If I fail, just an unemployed hiker.`,
+        altEmotion: 'kindred_anxious'
+      },
+      {
+        pattern: 'helping',
+        minLevel: 5,
+        altText: `It works. Can sell this. The way you listened... you made space for me to find my own answer.
+
+But this email... resignation. Leaving pension. Tenure track.
+
+If I fail, just an unemployed hiker.`,
+        altEmotion: 'grateful_anxious'
+      },
+      {
+        pattern: 'exploring',
+        minLevel: 5,
+        altText: `It works. Can sell this. You're curious about the world—I see it in your questions.
+
+But this email... resignation. Leaving pension. Tenure track.
+
+If I fail, just an unemployed hiker.`,
+        altEmotion: 'recognized_anxious'
+      }
+    ],
     requiredState: {
       trust: { min: 2 }
     },
@@ -469,11 +512,25 @@ If I fail, just an unemployed hiker.`,
     speaker: 'Tess',
     content: [
       {
-        text: `{{met_kai:Kai is trying to change the system from within. I respect that. But I have to build outside it.|I'm building outside the system.}} I'm heading back to Woodlawn. I have a grant proposal to write.\n\nBefore I go—you've been helping me figure out how to build this. But what about you? What are you building? What's your vision?`,
-        emotion: 'curious_reciprocal',
+        text: `{{met_kai:Kai is trying to change the system from within. I respect that. But I have to build outside it.|I'm building outside the system.}} I'm heading back to Woodlawn. I have a grant proposal to write.\n\nBefore I go—here's the play: I showed my hand. Your turn. What are you building? What's your move?`,
+        emotion: 'curious_engaged',
         interaction: 'nod',
         variation_id: 'farewell_v1',
         useChatPacing: true
+      }
+    ],
+    patternReflection: [
+      {
+        pattern: 'building',
+        minLevel: 5,
+        altText: `{{met_kai:Kai is trying to change the system from within. I respect that. But I have to build outside it.|I'm building outside the system.}} I'm heading back to Woodlawn. I have a grant proposal to write.\n\nHere's the play: you're a builder too. I saw it in how you think. What are you building next?`,
+        altEmotion: 'kindred_curious'
+      },
+      {
+        pattern: 'exploring',
+        minLevel: 5,
+        altText: `{{met_kai:Kai is trying to change the system from within. I respect that. But I have to build outside it.|I'm building outside the system.}} I'm heading back to Woodlawn. I have a grant proposal to write.\n\nHere's the play: you're an explorer. Your curiosity is contagious. Where does that curiosity lead next?`,
+        altEmotion: 'recognized_curious'
       }
     ],
     choices: [
@@ -1037,7 +1094,7 @@ Now know it's leading through uncertainty. Every crisis is data. Every dropout a
     speaker: 'Tess',
     content: [{
       text: `*Stops. Looks at you.*|What building?|*Thinks.*|You helping me build this. But what you building for yourself?|What vision you chasing?`,
-      emotion: 'curious_reciprocal',
+      emotion: 'curious_engaged',
       interaction: 'nod',
       variation_id: 'tess_reciprocity_v1',
       useChatPacing: true
@@ -1100,7 +1157,7 @@ Now know it's leading through uncertainty. Every crisis is data. Every dropout a
     speaker: 'Tess',
     content: [{
       text: `*Pauses. Looks at you.*|Biggest challenge?|*Thinks.*|Mine—scaling without losing rigor. Balancing safety with growth.|But you?|What challenge you facing?|How you handle when things get messy?`,
-      emotion: 'curious_reciprocal',
+      emotion: 'curious_engaged',
       interaction: 'nod',
       variation_id: 'tess_p2_reciprocity_v1',
       useChatPacing: true
