@@ -211,8 +211,8 @@ export const samuelDialogueNodes: DialogueNode[] = [
         choiceId: 'ready_to_meet',
         text: "I'd like to meet someone.",
         nextNodeId: 'samuel_hub_initial',
-        pattern: 'helping',
-        skills: ['communication']
+        pattern: 'exploring',
+        skills: ['curiosity', 'communication']
       }
     ]
   },

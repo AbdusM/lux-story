@@ -206,7 +206,7 @@ That's us. We're cargo-culting code. The AI writes something that looks like a s
         choiceId: 'rohan_origin_ask',
         text: "How did you learn to see the difference?",
         nextNodeId: 'rohan_origin_david',
-        pattern: 'helping',
+        pattern: 'exploring',
         skills: ['curiosity', 'emotionalIntelligence'],
         consequence: {
           characterId: 'rohan',
@@ -245,8 +245,8 @@ The philosophy isn't a luxury. It's the only thing that scales.`,
         choiceId: 'rohan_pragmatic_learn',
         text: "Teach me how you learned to see it.",
         nextNodeId: 'rohan_origin_david',
-        pattern: 'helping',
-        skills: ['humility', 'learningAgility']
+        pattern: 'exploring',
+        skills: ['curiosity', 'learningAgility']
       },
       {
         choiceId: 'rohan_pragmatic_building',
@@ -741,8 +741,8 @@ The market for people who can type code is going to zero. The market for people 
         choiceId: 'rohan_quality_continue',
         text: "You're building guardians, not coders.",
         nextNodeId: 'rohan_teacher_challenge',
-        pattern: 'helping',
-        skills: ['wisdom']
+        pattern: 'building',
+        skills: ['leadership']
       }
     ]
   },
@@ -928,8 +928,8 @@ David gave me that feeling. I want to pass it on.`,
         choiceId: 'rohan_legacy_farewell',
         text: "That's a legacy worth building. Passing on that feeling—that's what teaching really is.",
         nextNodeId: 'rohan_farewell',
-        pattern: 'helping',
-        skills: ['wisdom', 'encouragement'],
+        pattern: 'building',
+        skills: ['leadership', 'wisdom'],
         consequence: {
           characterId: 'rohan',
           trustChange: 3
