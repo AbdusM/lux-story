@@ -275,6 +275,17 @@ export const devonDialogueNodes: DialogueNode[] = [
           trustChange: 2,
           setRelationshipStatus: 'acquaintance'
         }
+      },
+      {
+        choiceId: 'technical_building',
+        text: "What if you built in emotional states as first-class variables?",
+        nextNodeId: 'devon_father_hint',
+        pattern: 'building',
+        skills: ['systemsThinking', 'creativity'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1
+        }
       }
     ]
   },
@@ -401,6 +412,17 @@ export const devonDialogueNodes: DialogueNode[] = [
           characterId: 'devon',
           trustChange: 2
         }
+      },
+      {
+        choiceId: 'people_building_framework',
+        text: "What if you built a framework that accounts for uncertainty instead of eliminating it?",
+        nextNodeId: 'devon_father_hint',
+        pattern: 'building',
+        skills: ['systemsThinking', 'creativity'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1
+        }
       }
     ]
   },
@@ -444,6 +466,17 @@ export const devonDialogueNodes: DialogueNode[] = [
         nextNodeId: 'devon_system_failure',
         pattern: 'analytical',
         skills: ['criticalThinking']
+      },
+      {
+        choiceId: 'father_hint_building_bridge',
+        text: "Maybe instead of fixing the conversation, you could build a bridge to them.",
+        nextNodeId: 'devon_father_reveal',
+        pattern: 'building',
+        skills: ['systemsThinking', 'emotionalIntelligence'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 2
+        }
       }
     ]
   },
@@ -492,8 +525,8 @@ export const devonDialogueNodes: DialogueNode[] = [
         choiceId: 'ask_about_system',
         text: "So you built this flowchart to help him?",
         nextNodeId: 'devon_pause_after_father_reveal',
-        pattern: 'analytical',
-        skills: ['criticalThinking', 'communication'],
+        pattern: 'building',
+        skills: ['systemsThinking', 'communication'],
         consequence: {
           characterId: 'devon',
           trustChange: 1,
