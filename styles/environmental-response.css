@@ -260,24 +260,22 @@
 }
 
 /* Environmental particles based on choices */
-.particles-helping {
-  background-image: radial-gradient(
-    2px 2px at 20% 30%,
-    hsla(35, 70%, 60%, 0.3),
-    transparent
-  ),
-  radial-gradient(
-    2px 2px at 60% 70%,
-    hsla(35, 70%, 60%, 0.2),
-    transparent
-  ),
-  radial-gradient(
-    1px 1px at 90% 10%,
-    hsla(35, 70%, 60%, 0.2),
-    transparent
-  );
+/* Enhanced with Fox Theatre twinkling star field */
+.particles-helping,
+.theatre-stars {
+  background-image:
+    /* Slow twinkle layer - warm star colors */
+    radial-gradient(1.5px 1.5px at 10% 15%, rgba(255, 248, 220, 0.6), transparent),
+    radial-gradient(1px 1px at 85% 25%, rgba(255, 248, 220, 0.5), transparent),
+    radial-gradient(2px 2px at 45% 8%, rgba(255, 248, 220, 0.4), transparent),
+    radial-gradient(1px 1px at 70% 60%, rgba(255, 248, 220, 0.5), transparent),
+    radial-gradient(1.5px 1.5px at 25% 80%, rgba(255, 248, 220, 0.4), transparent),
+    /* Medium twinkle layer */
+    radial-gradient(1px 1px at 55% 35%, rgba(255, 255, 240, 0.7), transparent),
+    radial-gradient(1px 1px at 15% 55%, rgba(255, 255, 240, 0.6), transparent),
+    radial-gradient(1px 1px at 90% 75%, rgba(255, 255, 240, 0.5), transparent);
   background-size: 200% 200%;
-  animation: particle-drift 20s linear infinite;
+  animation: star-twinkle 8s ease-in-out infinite, particle-drift 20s linear infinite;
 }
 
 .particles-building {
@@ -290,25 +288,34 @@
   animation: particle-drift 15s linear infinite;
 }
 
-/* Quiet Hour enhanced effects */
-.quiet-hour-active {
+/* Quiet Hour enhanced effects - Fox Theatre clouds */
+.quiet-hour-active,
+.theatre-clouds {
   position: relative;
   overflow: hidden;
 }
 
-.quiet-hour-active::before {
+.quiet-hour-active::before,
+.theatre-clouds::before {
   content: '';
   position: absolute;
   inset: -50%;
-  background: conic-gradient(
-    from 0deg at 50% 50%,
-    transparent 0deg,
-    hsla(280, 50%, 50%, 0.05) 90deg,
-    transparent 180deg,
-    hsla(280, 50%, 50%, 0.05) 270deg,
-    transparent 360deg
-  );
-  animation: quiet-rotation 60s linear infinite;
+  background:
+    /* Cloud layer 1 - slow drift left to right */
+    radial-gradient(ellipse 40% 15% at 20% 20%, rgba(200, 200, 220, 0.08), transparent),
+    /* Cloud layer 2 - slower drift right to left */
+    radial-gradient(ellipse 35% 12% at 70% 45%, rgba(180, 180, 200, 0.06), transparent),
+    /* Original conic gradient for rotation */
+    conic-gradient(
+      from 0deg at 50% 50%,
+      transparent 0deg,
+      hsla(280, 50%, 50%, 0.05) 90deg,
+      transparent 180deg,
+      hsla(280, 50%, 50%, 0.05) 270deg,
+      transparent 360deg
+    );
+  background-size: 200% 100%, 200% 100%, 100% 100%;
+  animation: cloud-drift 90s linear infinite, quiet-rotation 60s linear infinite;
   pointer-events: none;
 }
 
@@ -435,6 +442,19 @@
   }
 }
 
+/* Fox Theatre star twinkle - subtle opacity variation */
+@keyframes star-twinkle {
+  0%, 100% { opacity: 0.4; }
+  33% { opacity: 0.7; }
+  66% { opacity: 0.5; }
+}
+
+/* Fox Theatre cloud drift - very slow horizontal movement */
+@keyframes cloud-drift {
+  from { background-position: 0% 0%, 100% 0%, center; }
+  to { background-position: 200% 0%, -100% 0%, center; }
+}
+
 @keyframes quiet-rotation {
   from {
     transform: rotate(0deg);
@@ -477,7 +497,9 @@
   .station-breathing,
   .particles-helping,
   .particles-building,
-  .quiet-hour-active::before {
+  .theatre-stars,
+  .quiet-hour-active::before,
+  .theatre-clouds::before {
     animation: none !important;
   }
 
