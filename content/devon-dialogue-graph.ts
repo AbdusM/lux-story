@@ -166,6 +166,17 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "Reset. Don't take 'fine' as an answer.",
         nextNodeId: 'devon_explains_system',
         pattern: 'patience'
+      },
+      {
+        choiceId: 'explore_failed_assumption',
+        text: "What made you think 'fine' was ever literal?",
+        nextNodeId: 'devon_explains_system',
+        pattern: 'exploring',
+        skills: ['curiosity', 'criticalThinking'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1
+        }
       }
     ]
   },
@@ -736,6 +747,17 @@ export const devonDialogueNodes: DialogueNode[] = [
           characterId: 'devon',
           trustChange: 1
         }
+      },
+      {
+        choiceId: 'explore_irony_further',
+        text: "What would it mean to debug your own emotions the way you debug code?",
+        nextNodeId: 'devon_system_failure',
+        pattern: 'exploring',
+        skills: ['curiosity', 'criticalThinking'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1
+        }
       }
     ]
   },
@@ -811,6 +833,17 @@ export const devonDialogueNodes: DialogueNode[] = [
         nextNodeId: 'devon_reframe',
         pattern: 'building',
         skills: ['creativity', 'criticalThinking', 'emotionalIntelligence'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'explore_other_ways',
+        text: "What would it look like if helping wasn't fixing? What else could it be?",
+        nextNodeId: 'devon_reframe',
+        pattern: 'exploring',
+        skills: ['curiosity', 'emotionalIntelligence'],
         consequence: {
           characterId: 'devon',
           trustChange: 2

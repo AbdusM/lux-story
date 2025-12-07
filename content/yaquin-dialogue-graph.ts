@@ -104,6 +104,17 @@ Forget the textbook. Chapter 4's garbage. Here's how you actually mix alginate w
         nextNodeId: 'yaquin_curriculum_setup',
         pattern: 'building',
         skills: ['leadership']
+      },
+      {
+        choiceId: 'yaquin_explore_patient_fear',
+        text: "Tell me about the patient fear. What do you see that textbooks miss?",
+        nextNodeId: 'yaquin_curriculum_dream',
+        pattern: 'exploring',
+        skills: ['curiosity', 'emotionalIntelligence'],
+        consequence: {
+          characterId: 'yaquin',
+          trustChange: 1
+        }
       }
     ]
   },
@@ -137,6 +148,28 @@ Forget the textbook. Chapter 4's garbage. Here's how you actually mix alginate w
           characterId: 'yaquin',
           trustChange: 1
         }
+      },
+      {
+        choiceId: 'yaquin_explore_credential_meaning',
+        text: "What does 'educated' mean to you? Who decides?",
+        nextNodeId: 'yaquin_curriculum_dream',
+        pattern: 'exploring',
+        skills: ['curiosity', 'criticalThinking'],
+        consequence: {
+          characterId: 'yaquin',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'yaquin_build_own_credential',
+        text: "What if you built your own credential? Made your students the proof?",
+        nextNodeId: 'yaquin_curriculum_dream',
+        pattern: 'building',
+        skills: ['creativity', 'leadership'],
+        consequence: {
+          characterId: 'yaquin',
+          trustChange: 1
+        }
       }
     ]
   },
@@ -161,6 +194,28 @@ Forget the textbook. Chapter 4's garbage. Here's how you actually mix alginate w
         nextNodeId: 'yaquin_curriculum_dream',
         pattern: 'helping',
         skills: ['encouragement'],
+        consequence: {
+          characterId: 'yaquin',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'yaquin_explore_who_watches',
+        text: "Those dentists watching—what draws them? What are they looking for?",
+        nextNodeId: 'yaquin_curriculum_dream',
+        pattern: 'exploring',
+        skills: ['curiosity', 'communication'],
+        consequence: {
+          characterId: 'yaquin',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'yaquin_build_community',
+        text: "87 is a tribe. What if you built with them, not just for them?",
+        nextNodeId: 'yaquin_curriculum_dream',
+        pattern: 'building',
+        skills: ['leadership', 'collaboration'],
         consequence: {
           characterId: 'yaquin',
           trustChange: 1
