@@ -295,6 +295,17 @@ export const mayaDialogueNodes: DialogueNode[] = [
         nextNodeId: 'maya_anxiety_reveal',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'adaptability']
+      },
+      {
+        choiceId: 'anxiety_curious_explore',
+        text: "What does that struggle feel like? When you're caught between two selves?",
+        nextNodeId: 'maya_anxiety_reveal',
+        pattern: 'exploring',
+        skills: ['curiosity', 'emotionalIntelligence'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
       }
     ]
   },
@@ -482,6 +493,17 @@ export const mayaDialogueNodes: DialogueNode[] = [
         consequence: {
           addGlobalFlags: ['maya_failed_robotics'] // LOCKS ROBOTICS ENDING
         }
+      },
+      {
+        choiceId: 'fail_rebuild_learning',
+        text: "Three months isn't lost—it's learning. You know what NOT to do now. That's how builders improve.",
+        nextNodeId: 'maya_retreat_to_safety',
+        pattern: 'building',
+        skills: ['creativity', 'adaptability'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
       }
     ],
     tags: ['scenario_failure', 'maya_arc']
@@ -566,6 +588,17 @@ export const mayaDialogueNodes: DialogueNode[] = [
         skills: ['emotionalIntelligence', 'communication'],
         visibleCondition: {
           trust: { min: 5 }
+        }
+      },
+      {
+        choiceId: 'encouraged_build_visibility',
+        text: "What if you built this secret into something people could see? Something undeniable?",
+        nextNodeId: 'maya_crossroads',
+        pattern: 'building',
+        skills: ['creativity', 'leadership'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
         }
       }
     ]
@@ -1026,6 +1059,17 @@ export const mayaDialogueNodes: DialogueNode[] = [
         nextNodeId: 'maya_robotics_passion',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication', 'leadership'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'support_explore_feeling',
+        text: "When you imagine healing AND building—what does that future look like?",
+        nextNodeId: 'maya_considers_hybrid',
+        pattern: 'exploring',
+        skills: ['curiosity', 'creativity'],
         consequence: {
           characterId: 'maya',
           trustChange: 1
