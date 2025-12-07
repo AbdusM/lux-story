@@ -56,6 +56,17 @@ Forget the textbook. Chapter 4's garbage. Here's how you actually mix alginate w
         nextNodeId: 'yaquin_creator_path',
         pattern: 'exploring',
         skills: ['digitalLiteracy']
+      },
+      {
+        choiceId: 'yaquin_intro_patience',
+        text: "[Let the self-doubt sit. He's working something out.]",
+        nextNodeId: 'yaquin_credential_gap',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'adaptability'],
+        consequence: {
+          characterId: 'yaquin',
+          trustChange: 1
+        }
       }
     ],
     onEnter: [
@@ -72,7 +83,7 @@ Forget the textbook. Chapter 4's garbage. Here's how you actually mix alginate w
     speaker: 'Yaquin',
     content: [
       {
-        text: `Says 'mix 45 seconds.' Do that—sets in the bowl. Mold ruined.|8 years experience. Know the paste feel. Know patient fear.|Books don't teach that.`,
+        text: `Imagine... the textbook says 'mix 45 seconds.' Do that—sets in the bowl. Mold ruined.|8 years experience. Know the paste feel. Know patient fear.|Books don't teach that.`,
         emotion: 'focused',
         interaction: 'nod',
         variation_id: 'textbook_v1',
@@ -178,6 +189,17 @@ Forget the textbook. Chapter 4's garbage. Here's how you actually mix alginate w
         nextNodeId: 'yaquin_curriculum_setup',
         pattern: 'building',
         skills: ['instructionalDesign']
+      },
+      {
+        choiceId: 'yaquin_dream_patience',
+        text: "[Let him talk through the anxiety. Sometimes the spiral needs to complete.]",
+        nextNodeId: 'yaquin_curriculum_setup',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'adaptability'],
+        consequence: {
+          characterId: 'yaquin',
+          trustChange: 1
+        }
       }
     ]
   },
@@ -345,6 +367,26 @@ All day. Don't fix teeth—fix fear. That's what I'm selling.`,
         useChatPacing: true
       }
     ],
+    patternReflection: [
+      {
+        pattern: 'building',
+        minLevel: 5,
+        altText: `Video ready. Platform ready. You're a builder—I can tell from how you approached this.|<jitter>Publish—dentists see it. Might fire me. 'Who's this guy?'</jitter>|Don't publish—guy shouting at phone in basement.`,
+        altEmotion: 'kindred_anxious'
+      },
+      {
+        pattern: 'helping',
+        minLevel: 5,
+        altText: `Video ready. Platform ready. You've been here with me through all of this. That means something.|<jitter>Publish—dentists see it. Might fire me. 'Who's this guy?'</jitter>|Don't publish—guy shouting at phone in basement.`,
+        altEmotion: 'grateful_anxious'
+      },
+      {
+        pattern: 'analytical',
+        minLevel: 5,
+        altText: `Video ready. Platform ready. You helped me see the data clearly—the path forward.|<jitter>Publish—dentists see it. Might fire me. 'Who's this guy?'</jitter>|Don't publish—guy shouting at phone in basement.`,
+        altEmotion: 'recognized_anxious'
+      }
+    ],
     requiredState: {
       trust: { min: 2 }
     },
@@ -362,6 +404,17 @@ All day. Don't fix teeth—fix fear. That's what I'm selling.`,
         nextNodeId: 'yaquin_audience_first',
         pattern: 'analytical',
         skills: ['strategy']
+      },
+      {
+        choiceId: 'launch_patience',
+        text: "[Let the decision breathe. This isn't a choice to rush.]",
+        nextNodeId: 'yaquin_audience_first',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'adaptability'],
+        consequence: {
+          characterId: 'yaquin',
+          trustChange: 1
+        }
       }
     ]
   },
@@ -465,6 +518,20 @@ All day. Don't fix teeth—fix fear. That's what I'm selling.`,
         interaction: 'nod',
         variation_id: 'farewell_v1',
         useChatPacing: true
+      }
+    ],
+    patternReflection: [
+      {
+        pattern: 'building',
+        minLevel: 5,
+        altText: `Lot of editing ahead. You're a builder too—saw it in how you helped.|See Samuel? Tell him—class is in session.`,
+        altEmotion: 'kindred_proud'
+      },
+      {
+        pattern: 'helping',
+        minLevel: 5,
+        altText: `Lot of editing ahead. You care about people learning—really learning. Saw that.|See Samuel? Tell him—class is in session.`,
+        altEmotion: 'grateful_proud'
       }
     ],
     choices: [
@@ -687,6 +754,17 @@ Defend ground or acknowledge gap?`,
         nextNodeId: 'yaquin_p2_scaling_offer',
         pattern: 'helping',
         skills: ['courage', 'integrity']
+      },
+      {
+        choiceId: 'p2_credibility_patience',
+        text: "[Sit with the criticism. Not every wound needs immediate defense.]",
+        nextNodeId: 'yaquin_p2_scaling_offer',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'adaptability'],
+        consequence: {
+          characterId: 'yaquin',
+          trustChange: 1
+        }
       }
     ],
     tags: ['phase2', 'yaquin_arc', 'credibility']
@@ -983,7 +1061,7 @@ Critics → collaborators if humble enough to listen.`,
     speaker: 'Yaquin',
     content: [{
       text: `*Stops packing. Looks at you.*|Biggest challenge?|*Thinks.*|Scaling. How teach 200 students same quality as 20?|But you—what's your challenge?|You help people. But who helps you figure out your path?`,
-      emotion: 'curious_reciprocal',
+      emotion: 'curious_engaged',
       interaction: 'nod',
       variation_id: 'yaquin_reciprocity_v1',
       useChatPacing: true
