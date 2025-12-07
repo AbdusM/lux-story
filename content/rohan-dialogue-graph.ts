@@ -570,6 +570,28 @@ We want to build something different. A place where people learn why before they
         variation_id: 'academy_v1'
       }
     ],
+    patternReflection: [
+      {
+        pattern: 'building',
+        minLevel: 5,
+        altText: `I've been thinking about this for years. David and I sketched it out before his diagnosis.
+
+You're a builder—I can tell by how you engage with problems. You understand what it means to create something from first principles.
+
+We want to build something different. A place where people learn why before they learn how.`,
+        altEmotion: 'kindred_visionary'
+      },
+      {
+        pattern: 'analytical',
+        minLevel: 5,
+        altText: `I've been thinking about this for years. David and I sketched it out before his diagnosis.
+
+You think deeply. That's rare. Most people want the quick answer—you want to understand.
+
+We want to build something different. A place where people learn why before they learn how.`,
+        altEmotion: 'recognized_visionary'
+      }
+    ],
     choices: [
       {
         choiceId: 'rohan_academy_how',
@@ -757,6 +779,38 @@ We're going to teach people how to read the metal. How to know what is real.`,
         variation_id: 'climax_v2'
       }
     ],
+    patternReflection: [
+      {
+        pattern: 'analytical',
+        minLevel: 5,
+        altText: `I'm not quitting. I can't quit. You think like David did—seeing through the surface to what's underneath.
+
+There's an instructional designer upstairs, Kai. They're burning their slide decks. Good. We need to burn it all down to build it right.
+
+I'm going to start an academy. Not 'Coding Bootcamp.' 'First Principles.'`,
+        altEmotion: 'kindred_resolved'
+      },
+      {
+        pattern: 'building',
+        minLevel: 5,
+        altText: `I'm not quitting. I can't quit. You're a builder—you understand why foundations matter.
+
+There's an instructional designer upstairs, Kai. They're burning their slide decks. Good. We need to burn it all down to build it right.
+
+I'm going to start an academy. Not 'Coding Bootcamp.' 'First Principles.'`,
+        altEmotion: 'recognized_resolved'
+      },
+      {
+        pattern: 'patience',
+        minLevel: 5,
+        altText: `I'm not quitting. I can't quit. The way you waited, listened—that's rare. Most people want the quick answer.
+
+There's an instructional designer upstairs, Kai. They're burning their slide decks. Good. We need to burn it all down to build it right.
+
+I'm going to start an academy. Not 'Coding Bootcamp.' 'First Principles.'`,
+        altEmotion: 'grateful_resolved'
+      }
+    ],
     choices: [
       {
         choiceId: 'rohan_ask_why',
@@ -840,9 +894,9 @@ David gave me that feeling. I want to pass it on.`,
     content: [
       {
         text: `
-        
-You've been helping me figure out what I want to build. But what about you? What do you want people to remember about you? What feeling do you want to pass on?`,
-        emotion: 'curious_reciprocal',
+
+You've been helping me figure out what I want to build. Imagine we're sitting here years from now, looking back—what do you want people to remember about you? What feeling do you want to pass on?`,
+        emotion: 'curious_engaged',
         variation_id: 'rohan_reciprocity_v1'
       }
     ],
@@ -934,6 +988,24 @@ Goodbye.`,
 If you see Samuel, tell him... tell him I'm staying. Someone has to keep the lights on.`,
         emotion: 'grateful_solemn',
         variation_id: 'farewell_v2'
+      }
+    ],
+    patternReflection: [
+      {
+        pattern: 'analytical',
+        minLevel: 5,
+        altText: `You heard the hum, didn't you? The noise underneath the noise. You think like David did—that's rare.
+
+If you see Samuel, tell him... tell him I'm staying. Someone has to keep the lights on.`,
+        altEmotion: 'kindred_solemn'
+      },
+      {
+        pattern: 'patience',
+        minLevel: 5,
+        altText: `You heard the hum, didn't you? The noise underneath the noise. The way you waited, listened—that's what the old-timers had.
+
+If you see Samuel, tell him... tell him I'm staying. Someone has to keep the lights on.`,
+        altEmotion: 'recognized_solemn'
       }
     ],
     choices: [

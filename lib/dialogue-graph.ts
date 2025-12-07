@@ -39,9 +39,23 @@ export interface DialogueNode {
   // Metadata for content management
   tags?: string[] // e.g., ['maya_arc', 'trust_gate', 'birmingham']
   priority?: number // For sorting when multiple nodes are available
-  
+
   // Learning objectives addressed in this node
   learningObjectives?: string[] // IDs of learning objectives covered
+
+  /**
+   * Pattern-reflective NPC responses at the node level.
+   * When player has a dominant pattern (>= minLevel), NPC's dialogue changes
+   * to acknowledge who the player is becoming. Makes the player feel SEEN.
+   *
+   * This is at the node level so it applies regardless of content variation.
+   */
+  patternReflection?: Array<{
+    pattern: 'analytical' | 'helping' | 'building' | 'patience' | 'exploring'
+    minLevel: number
+    altText: string
+    altEmotion?: string
+  }>
 }
 
 /**
@@ -58,7 +72,7 @@ export interface DialogueContent {
    * Visual interaction animation to apply to this content.
    * One-shot animations that enhance emphasis without looping.
    * Applied to all chunks from this DialogueContent.
-   * 
+   *
    * Options:
    * - 'big': Scale up with fade (emphasis, importance)
    * - 'small': Scale down with fade (subtle, quiet)
@@ -69,6 +83,26 @@ export interface DialogueContent {
    * - 'jitter': Multi-directional micro-movements (nervousness, tension)
    */
   interaction?: 'big' | 'small' | 'shake' | 'nod' | 'ripple' | 'bloom' | 'jitter'
+
+  /**
+   * Pattern-reflective NPC responses.
+   * When player has a dominant pattern (>= minLevel), NPC's dialogue changes
+   * to acknowledge who the player is becoming. Makes the player feel SEEN.
+   *
+   * @example
+   * patternReflection: [{
+   *   pattern: 'analytical',
+   *   minLevel: 5,
+   *   altText: "You think things through, don't you? I can see it in how you frame questions.",
+   *   altEmotion: 'knowing'
+   * }]
+   */
+  patternReflection?: Array<{
+    pattern: 'analytical' | 'helping' | 'building' | 'patience' | 'exploring'
+    minLevel: number
+    altText: string
+    altEmotion?: string
+  }>
 }
 
 /**
@@ -100,6 +134,20 @@ export interface ConditionalChoice {
 
   // Preview text shown on hover (optional)
   preview?: string
+
+  /**
+   * Voice variations - alternate choice text based on player's dominant pattern.
+   * Makes the player's voice consistent with who they're becoming.
+   * If player has a dominant pattern (>= 5), uses that pattern's text variant.
+   *
+   * @example
+   * voiceVariations: {
+   *   analytical: "Walk me through the details.",
+   *   helping: "That sounds hard. What happened?",
+   *   patience: "Take your time. I'm listening."
+   * }
+   */
+  voiceVariations?: Partial<Record<'analytical' | 'helping' | 'building' | 'patience' | 'exploring', string>>
 
   /**
    * Visual interaction animation to apply to this choice button.

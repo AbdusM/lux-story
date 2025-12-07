@@ -96,9 +96,8 @@ export const mayaDialogueNodes: DialogueNode[] = [
         nextNodeId: 'maya_deflect_passion',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
-        visibleCondition: {
-          trust: { min: 2 }
-        },
+        // Removed visibleCondition trust conflict - node already gates at max: 2
+        // This empathetic choice should always be available when node is visible
         consequence: {
           characterId: 'maya',
           trustChange: 2
@@ -348,6 +347,20 @@ export const mayaDialogueNodes: DialogueNode[] = [
         variation_id: 'robotics_scenario_v1',
         richEffectContext: 'warning', // Immersive "System Alert" feel
         useChatPacing: true
+      }
+    ],
+    patternReflection: [
+      {
+        pattern: 'building',
+        minLevel: 5,
+        altText: "I... I build these. Or I try to. This is a prototype for pediatric grip assistance.\n\nYou're a builder too, aren't you? I can tell by how you look at it.\n\nThe hand spasms. Fingers clench into a fist.\n\nIt's fighting itself. Just like me.",
+        altEmotion: 'kindred_vulnerable'
+      },
+      {
+        pattern: 'analytical',
+        minLevel: 5,
+        altText: "I... I build these. Or I try to. This is a prototype for pediatric grip assistance.\n\nYou think systematically—I noticed. Maybe you can see what I'm missing.\n\nThe hand spasms. Fingers clench into a fist.\n\nIt's fighting itself. Just like me.",
+        altEmotion: 'hopeful_vulnerable'
       }
     ],
     requiredState: {
@@ -651,6 +664,26 @@ export const mayaDialogueNodes: DialogueNode[] = [
         richEffectContext: 'thinking'
       }
     ],
+    patternReflection: [
+      {
+        pattern: 'helping',
+        minLevel: 5,
+        altText: "You've been so patient with me. I can tell you understand what it means to carry other people's hopes... I've been accepted to UAB's biomedical engineering program. I could transfer. But I also got into the traditional pre-med track my parents expect.",
+        altEmotion: 'grateful_anxious'
+      },
+      {
+        pattern: 'analytical',
+        minLevel: 5,
+        altText: "You see patterns others miss—I noticed that about you. Maybe you can see a path I can't... I've been accepted to UAB's biomedical engineering program. I could transfer. But I also got into the traditional pre-med track my parents expect.",
+        altEmotion: 'hopeful_anxious'
+      },
+      {
+        pattern: 'building',
+        minLevel: 5,
+        altText: "You understand what it means to make things, don't you? That pull to create... I've been accepted to UAB's biomedical engineering program. I could transfer. But I also got into the traditional pre-med track my parents expect.",
+        altEmotion: 'kindred_anxious'
+      }
+    ],
     requiredState: {
       trust: { min: 5 },
       hasKnowledgeFlags: ['knows_robotics', 'knows_family'],
@@ -851,8 +884,8 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "It's strange. I've been terrified to say any of this out loud. But telling you... seeing it through your eyes... it makes the decision seem obvious.\n\nBefore I go, can I ask you something? You've been so patient with me, asking the right questions. But what about you? How do you know when you're making the right choice for yourself?",
-        emotion: 'curious_reciprocal',
+        text: "It's strange. I've been terrified to say any of this out loud. But telling you... seeing it through your eyes... it makes the decision seem obvious.\n\nBefore I go, can I ask you something? It's like... you've been painting my story with me this whole time. But what colors are on your canvas? How do you know when you're making the right choice for yourself?",
+        emotion: 'curious_engaged',
         variation_id: 'reciprocity_transition_v1'
       }
     ],
@@ -898,6 +931,20 @@ export const mayaDialogueNodes: DialogueNode[] = [
         emotion: 'bittersweet_resolve',
         variation_id: 'farewell_robotics_v2_complex',
         useChatPacing: true // Emotional farewell moment
+      }
+    ],
+    patternReflection: [
+      {
+        pattern: 'helping',
+        minLevel: 5,
+        altText: "I'm going to apply to the robotics program. Call my parents tonight.\n\nThey'll be heartbroken. But I can't live their dream anymore.\n\nYou listened without trying to fix me. That's rare. Thank you.\n\nSamuel's waiting. Good luck.",
+        altEmotion: 'grateful_resolve'
+      },
+      {
+        pattern: 'building',
+        minLevel: 5,
+        altText: "I'm going to apply to the robotics program. Call my parents tonight.\n\nThey'll be heartbroken. But I can't live their dream anymore.\n\nYou understand what it means to make things. I saw that. Thank you.\n\nSamuel's waiting. Good luck.",
+        altEmotion: 'kindred_resolve'
       }
     ],
     choices: [
