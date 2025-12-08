@@ -21,7 +21,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { DialogueDisplay } from '@/components/DialogueDisplay'
 import type { RichTextEffect } from '@/components/RichTextRenderer'
 import { AtmosphericIntro } from '@/components/AtmosphericIntro'
-import { CharacterAvatar } from '@/components/CharacterAvatar'
+import { CharacterAvatar, PlayerAvatar } from '@/components/CharacterAvatar'
 import { getTrustLabel } from '@/lib/trust-labels'
 import { GameState, GameStateUtils } from '@/lib/character-state'
 import { GameStateManager } from '@/lib/game-state-manager'
@@ -1247,10 +1247,10 @@ export default function StatefulGameInterface() {
           style={{ marginBottom: 'calc(1rem + env(safe-area-inset-bottom, 0px))' }}
         >
           <div className="px-3 sm:px-4 py-3 sm:py-4">
-            {/* Scrollable choices container for many options */}
-            {/* scroll-snap + touch-action prevents accidental selections during scroll (Switch port failure lesson) */}
+            {/* Scrollable choices container - fixed height for visual consistency */}
+            {/* scroll-snap + touch-action prevents accidental selections during scroll */}
             <div
-              className="max-h-[40vh] sm:max-h-[35vh] overflow-y-auto overscroll-contain rounded-lg scroll-smooth"
+              className="h-[140px] sm:h-[120px] overflow-y-auto overscroll-contain rounded-lg scroll-smooth"
               style={{
                 WebkitOverflowScrolling: 'touch',
                 scrollSnapType: 'y proximity', // Gentle snap to choices

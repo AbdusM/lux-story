@@ -2,7 +2,7 @@
 
 import { useMemo } from 'react'
 
-export type AnimalType = 'fox' | 'owl' | 'raccoon' | 'bear' | 'chameleon' | 'dog' | 'mouse' | 'parrot' | 'raven' | 'rabbit' | 'butterfly' | 'deer' | 'cat'
+export type AnimalType = 'fox' | 'owl' | 'raccoon' | 'bear' | 'chameleon' | 'dog' | 'mouse' | 'parrot' | 'raven' | 'rabbit' | 'butterfly' | 'deer' | 'cat' | 'player'
 
 interface PixelAvatarProps {
   animal: AnimalType
@@ -125,6 +125,19 @@ const PALETTES: Record<AnimalType, Record<string, string>> = {
     'H': '#FFFFFF',  // Highlight
     'Y': '#FFD700',  // Yellow (accents)
     'E': '#1A1A1A',  // Eyes
+  },
+  // Player - Human silhouette (gender-neutral, warm tones)
+  player: {
+    '.': 'transparent',
+    'B': '#1A1A1A',  // Black (outline, eyes)
+    'S': '#D4A574',  // Skin tone (warm neutral)
+    's': '#C49464',  // Skin shadow
+    'H': '#5C4033',  // Hair (brown)
+    'h': '#4A3429',  // Hair shadow
+    'W': '#F5F5F5',  // Eye whites
+    'E': '#FFFFFF',  // Eye highlight
+    'C': '#6366F1',  // Clothing (indigo - matches app theme)
+    'c': '#4F46E5',  // Clothing shadow
   },
   // Legacy mappings for backwards compatibility
   raccoon: {
@@ -466,6 +479,41 @@ const SPRITES: Record<AnimalType, string[]> = {
     "................................",  // 23
     "................................",  // 24
     "................................",  // 25
+    "................................",  // 26
+    "................................",  // 27
+    "................................",  // 28
+    "................................",  // 29
+    "................................",  // 30
+    "................................",  // 31
+  ],
+  // Player - Human silhouette (gender-neutral, friendly)
+  player: [
+    "................................",  // 0
+    "................................",  // 1
+    "..........HHHHHH...............",  // 2: Hair top
+    ".........HHHHHHHH..............",  // 3
+    "........HHHhHHHHHH.............",  // 4
+    "........HHhHHHHHHH.............",  // 5
+    ".......HHhSSSSSSHHH............",  // 6: Hair meets face
+    ".......HhSSSSSSSShH............",  // 7
+    ".......HSSSSSSSSSSH............",  // 8
+    ".......HSSSSSSSSSSH............",  // 9
+    ".......SSSsSSSsSSSS............",  // 10
+    ".......SSsSSSSSsSSS............",  // 11
+    ".......SsSSSSSSSsSS............",  // 12
+    ".......SsWEBSBEWsSS............",  // 13: Eyes
+    ".......SsWWBSBWWsSS............",  // 14
+    ".......SsSSSSSSSsSS............",  // 15
+    "........SsSSSSsSS..............",  // 16: Cheeks
+    "........SsSSSSSsS..............",  // 17
+    ".........SsSSsSS...............",  // 18
+    ".........SsSsSS................",  // 19: Chin
+    "..........sSsS.................",  // 20
+    "..........CCCC.................",  // 21: Neck/collar
+    ".........CCCCCC................",  // 22
+    "........CCCcCCCC...............",  // 23: Shoulders
+    ".......CCCccCCCCC..............",  // 24
+    "......CCCCccCCCCCC.............",  // 25
     "................................",  // 26
     "................................",  // 27
     "................................",  // 28
