@@ -5,10 +5,12 @@ import { motion, AnimatePresence } from "framer-motion"
 import { X, Users, Compass, TrendingUp, Sparkles } from "lucide-react"
 import { useInsights } from "@/hooks/useInsights"
 import { useConstellationData } from "@/hooks/useConstellationData"
+import { useOrbs } from "@/hooks/useOrbs"
 import { cn } from "@/lib/utils"
 import { PATTERN_METADATA, type PatternType } from "@/lib/patterns"
 import { springs, durations } from "@/lib/animations"
 import { PlayerAvatar } from "@/components/CharacterAvatar"
+import { OrbBalanceMini } from "@/components/orbs"
 
 // Tab content transition variants
 const tabContentVariants = {
@@ -48,6 +50,7 @@ export function Journal({ isOpen, onClose }: JournalProps) {
   // Get insights from the insights engine
   const insights = useInsights()
   const { characters } = useConstellationData()
+  const { balance: orbBalance } = useOrbs()
 
   // Animation variants
   const backdropVariants = {
@@ -106,7 +109,12 @@ export function Journal({ isOpen, onClose }: JournalProps) {
               <div className="flex items-center gap-3">
                 <PlayerAvatar size="lg" />
                 <div>
-                  <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white font-serif">Your Journal</h2>
+                  <div className="flex items-center gap-2">
+                    <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white font-serif">Your Journal</h2>
+                    {orbBalance.totalEarned > 0 && (
+                      <OrbBalanceMini balance={orbBalance} />
+                    )}
+                  </div>
                   <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
                     {insights.journey.stageLabel} Journey
                   </p>
