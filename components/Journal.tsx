@@ -8,6 +8,7 @@ import { useConstellationData } from "@/hooks/useConstellationData"
 import { cn } from "@/lib/utils"
 import { PATTERN_METADATA, type PatternType } from "@/lib/patterns"
 import { springs, durations } from "@/lib/animations"
+import { PlayerAvatar } from "@/components/CharacterAvatar"
 
 // Tab content transition variants
 const tabContentVariants = {
@@ -102,11 +103,14 @@ export function Journal({ isOpen, onClose }: JournalProps) {
           >
             {/* Header */}
             <div className="p-4 sm:p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-900/50">
-              <div>
-                <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white font-serif">Journal</h2>
-                <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-                  {insights.journey.stageLabel} Journey
-                </p>
+              <div className="flex items-center gap-3">
+                <PlayerAvatar size="lg" />
+                <div>
+                  <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white font-serif">Your Journal</h2>
+                  <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+                    {insights.journey.stageLabel} Journey
+                  </p>
+                </div>
               </div>
               <button
                 onClick={onClose}

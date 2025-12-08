@@ -41,7 +41,8 @@ const characterAvatars: Record<string, { animal: AnimalType; name: string }> = {
   'Jordan': { animal: 'chameleon', name: 'Jordan' },
   'Kai': { animal: 'dog', name: 'Kai' },
   'Silas': { animal: 'mouse', name: 'Silas' },
-  'You': { animal: 'fox', name: 'You' }                      // Player - hidden anyway
+  'You': { animal: 'player', name: 'You' },                   // Player avatar
+  'Player': { animal: 'player', name: 'Player' }              // Player avatar alias
 }
 
 // Helper to find partial matches (e.g. "Devon Kumar" -> "Devon")
@@ -136,5 +137,39 @@ export function shouldShowAvatar(
   
   // Check if valid character exists (fuzzy match)
   return !!getCharacterConfig(characterName)
+}
+
+/**
+ * PlayerAvatar Component
+ * Displays the player's own avatar (human silhouette)
+ */
+interface PlayerAvatarProps {
+  size?: 'sm' | 'md' | 'lg' | 'xl'
+  className?: string
+}
+
+export function PlayerAvatar({
+  size = 'md',
+  className,
+}: PlayerAvatarProps) {
+  const pixelSize = sizeMap[size]
+
+  return (
+    <div
+      className={cn(
+        'relative flex-shrink-0',
+        'transition-all duration-300 ease-out',
+        'motion-reduce:transition-none',
+        className
+      )}
+      role="img"
+      aria-label="Your avatar"
+    >
+      <PixelAvatar
+        animal="player"
+        size={pixelSize}
+      />
+    </div>
+  )
 }
 

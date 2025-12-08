@@ -73,6 +73,7 @@ export function ChatPacedDialogue({
   const [visibleChunks, setVisibleChunks] = useState<string[]>([])
   const [isTyping, setIsTyping] = useState(false)
   const [currentChunkIndex, setCurrentChunkIndex] = useState(0)
+  const [hasShownThinking, setHasShownThinking] = useState(false)
 
   // Character-specific mental states with contextual synonyms
   // Show various thinking/processing states instead of physical actions
@@ -256,18 +257,32 @@ export function ChatPacedDialogue({
       return
     }
 
-    // Show typing indicator
-    setIsTyping(true)
-    
-    const typingTimer = setTimeout(() => {
-      setIsTyping(false)
-      // Add the next chunk
-      setVisibleChunks(prev => [...prev, chunks[currentChunkIndex]])
-      setCurrentChunkIndex(prev => prev + 1)
-    }, typingDuration)
+    // Only show thinking indicator for the FIRST chunk (less is more)
+    // Subsequent chunks flow naturally without interruption
+    const shouldShowThinking = currentChunkIndex === 0 && !hasShownThinking
 
-    return () => clearTimeout(typingTimer)
-  }, [currentChunkIndex, chunks, typingDuration, onComplete])
+    if (shouldShowThinking) {
+      setIsTyping(true)
+      setHasShownThinking(true)
+
+      const typingTimer = setTimeout(() => {
+        setIsTyping(false)
+        // Add the first chunk
+        setVisibleChunks(prev => [...prev, chunks[currentChunkIndex]])
+        setCurrentChunkIndex(prev => prev + 1)
+      }, typingDuration)
+
+      return () => clearTimeout(typingTimer)
+    } else {
+      // For subsequent chunks, just add them with a natural pause (no thinking indicator)
+      const pauseTimer = setTimeout(() => {
+        setVisibleChunks(prev => [...prev, chunks[currentChunkIndex]])
+        setCurrentChunkIndex(prev => prev + 1)
+      }, 600) // Shorter natural pause between lines
+
+      return () => clearTimeout(pauseTimer)
+    }
+  }, [currentChunkIndex, chunks, typingDuration, onComplete, hasShownThinking])
 
   return (
     <div
