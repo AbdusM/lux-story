@@ -1194,36 +1194,7 @@ export default function StatefulGameInterface() {
             </CardContent>
           </Card>
 
-          {/* ════════════════════════════════════════════════════════════════════
-              PATTERN SENSATION - Brief feedback when patterns are triggered
-              ════════════════════════════════════════════════════════════════════ */}
-          {state.patternSensation && (
-            <div
-              className="text-center text-sm italic text-slate-500 px-4 py-2 mb-2"
-              style={{
-                animation: 'fadeIn 0.8s ease-in-out, fadeOut 0.8s ease-in-out 2.5s forwards',
-              }}
-              data-testid="pattern-sensation"
-            >
-              {state.patternSensation}
-            </div>
-          )}
-
-          {/* ════════════════════════════════════════════════════════════════════
-              AMBIENT EVENTS - The Station Breathes
-              Subtle atmospheric moments when the player pauses to think.
-              ════════════════════════════════════════════════════════════════════ */}
-          {state.ambientEvent && (
-            <div
-              className="text-center text-sm italic text-slate-400 px-4 py-3 animate-fade-in"
-              style={{
-                animation: 'fadeIn 1.5s ease-in-out',
-              }}
-              data-testid="ambient-event"
-            >
-              {state.ambientEvent.text}
-            </div>
-          )}
+          {/* Pattern sensations and ambient events removed - keeping UI clean */}
 
           {/* Ending State - Shows in scroll area when conversation complete */}
           {isEnding && (
