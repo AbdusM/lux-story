@@ -3,11 +3,10 @@
 import { useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
-import { springs, stagger } from '@/lib/animations'
+import { stagger, springs } from '@/lib/animations'
 import type { SkillWithState } from '@/hooks/useConstellationData'
 import { SKILL_CONNECTIONS, SKILL_CLUSTERS, type SkillCluster } from '@/lib/constellation/skill-positions'
 import { ClusterFilterChips, type ClusterFilter } from './ClusterFilterChips'
-import { ResizablePanel } from '@/components/ResizablePanel'
 
 interface SkillsViewProps {
   skills: SkillWithState[]
@@ -326,81 +325,38 @@ export function SkillsView({ skills, onOpenDetail }: SkillsViewProps) {
         </motion.svg>
       </div>
 
-      {/* Selected skill detail panel - with smooth height transitions */}
+      {/* Selected skill detail panel - simplified */}
       {selectedSkill && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}
-          className="flex-shrink-0 bg-slate-800/80 border-t border-slate-700"
-          style={{ paddingBottom: 'max(16px, env(safe-area-inset-bottom))' }}
+          className="flex-shrink-0 bg-slate-800/80 border-t border-slate-700 p-3"
+          style={{ paddingBottom: 'max(12px, env(safe-area-inset-bottom))' }}
         >
-          <ResizablePanel
-            customKey={selectedSkill.id}
-            transition="crossFade"
-            innerClassName="p-3 pr-6"
-          >
-            {/* Compact header row */}
-            <div className="flex items-center gap-2 mb-2">
-              <div
-                className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold text-sm"
-                style={{ backgroundColor: selectedSkill.color }}
-              >
-                {selectedSkill.demonstrationCount}
-              </div>
-              <h3 className="text-base font-bold text-white flex-1 truncate">{selectedSkill.name}</h3>
-              <span className={cn(
-                "text-[10px] font-semibold uppercase tracking-wide px-1.5 py-0.5 rounded flex-shrink-0",
-                selectedSkill.state === 'mastered' && 'bg-amber-500/20 text-amber-400',
-                selectedSkill.state === 'strong' && 'bg-emerald-500/20 text-emerald-400',
-                selectedSkill.state === 'developing' && 'bg-blue-500/20 text-blue-400',
-                selectedSkill.state === 'awakening' && 'bg-purple-500/20 text-purple-400',
-                selectedSkill.state === 'dormant' && 'bg-slate-700 text-slate-400'
-              )}>
-                {selectedSkill.state === 'developing' ? 'DEV' :
-                 selectedSkill.state === 'awakening' ? 'NEW' :
-                 selectedSkill.state === 'mastered' ? '★' :
-                 selectedSkill.state === 'strong' ? 'STR' : '—'}
-              </span>
+          {/* Simple: name + count + characters who teach it */}
+          <div className="flex items-center gap-3">
+            <div
+              className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold"
+              style={{ backgroundColor: selectedSkill.state === 'dormant' ? '#374151' : selectedSkill.color }}
+            >
+              {selectedSkill.state === 'dormant' ? '?' : selectedSkill.demonstrationCount}
             </div>
-
-            {/* Progress bar - no text labels, just visual */}
-            {selectedSkill.state !== 'dormant' && (
-              <div className="h-1 bg-slate-700 rounded-full overflow-hidden mb-2">
-                <motion.div
-                  className="h-full rounded-full"
-                  style={{ backgroundColor: selectedSkill.color, width: '100%', originX: 0 }}
-                  initial={{ scaleX: 0 }}
-                  animate={{ scaleX: selectedSkill.demonstrationCount / 10 }}
-                  transition={springs.smooth}
-                />
-              </div>
-            )}
-
-            {/* Character hints - compact inline */}
-            {SKILL_CHARACTER_HINTS[selectedSkill.id] && (
-              <div className="flex items-center gap-1.5 text-xs text-slate-400">
-                <span className="text-slate-500">Train:</span>
-                {SKILL_CHARACTER_HINTS[selectedSkill.id].map(name => (
-                  <span key={name} className="px-1.5 py-0.5 rounded bg-slate-700/50 text-slate-300">
-                    {name}
-                  </span>
-                ))}
-              </div>
-            )}
-
-            {selectedSkill.state === 'dormant' ? (
-              <p className="mt-2 text-xs text-slate-500 italic">Undiscovered</p>
-            ) : onOpenDetail && (
-              <button
-                onClick={() => onOpenDetail(selectedSkill)}
-                className="mt-2 w-full py-2 px-3 rounded-lg text-xs font-medium hover:opacity-80 transition-opacity min-h-[36px]"
-                style={{ backgroundColor: `${selectedSkill.color}20`, color: selectedSkill.color }}
-              >
-                View Details →
-              </button>
-            )}
-          </ResizablePanel>
+            <div className="flex-1 min-w-0">
+              <h3 className="text-sm font-bold text-white truncate">{selectedSkill.name}</h3>
+              {selectedSkill.state === 'dormant' ? (
+                <p className="text-xs text-slate-500">Not yet demonstrated</p>
+              ) : SKILL_CHARACTER_HINTS[selectedSkill.id] ? (
+                <p className="text-xs text-slate-400">
+                  Learn from: {SKILL_CHARACTER_HINTS[selectedSkill.id].join(', ')}
+                </p>
+              ) : (
+                <p className="text-xs text-slate-400">
+                  {selectedSkill.demonstrationCount} demonstration{selectedSkill.demonstrationCount !== 1 ? 's' : ''}
+                </p>
+              )}
+            </div>
+          </div>
         </motion.div>
       )}
     </div>

@@ -201,118 +201,51 @@ function CharacterDetail({ character, onClose }: { character: CharacterWithState
 }
 
 function SkillDetail({ skill, onClose }: { skill: SkillWithState; onClose: () => void }) {
-  const cluster = SKILL_CLUSTERS[skill.cluster]
   const isDormant = skill.state === 'dormant'
 
   return (
-    <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
-      {/* Header */}
-      <div className="flex items-start gap-4">
+    <div className="p-4 sm:p-6">
+      {/* Simple Header */}
+      <div className="flex items-center gap-3 mb-4">
         <div
-          className="w-16 h-16 rounded-full flex items-center justify-center"
+          className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
           style={{
             backgroundColor: isDormant ? '#374151' : skill.color,
             opacity: isDormant ? 0.5 : 1
           }}
         >
           {isDormant ? (
-            <Lock className="w-7 h-7 text-slate-500" />
+            <Lock className="w-5 h-5 text-slate-500" />
           ) : (
-            <span className="text-white text-xl font-bold">
+            <span className="text-white text-lg font-bold">
               {skill.demonstrationCount}
             </span>
           )}
         </div>
-        <div className="flex-1">
-          <h2 className="text-xl font-bold text-white">{skill.name}</h2>
-          <p className="text-slate-400">{cluster.description}</p>
-          <div className="flex items-center gap-2 mt-2">
-            <span
-              className="text-sm font-medium capitalize px-2 py-0.5 rounded"
-              style={{
-                backgroundColor: isDormant ? '#374151' : `${skill.color}30`,
-                color: isDormant ? '#9CA3AF' : skill.color
-              }}
-            >
-              {skill.state}
-            </span>
-          </div>
+        <div className="flex-1 min-w-0">
+          <h2 className="text-lg font-bold text-white">{skill.name}</h2>
+          {!isDormant && (
+            <p className="text-sm text-slate-400">
+              Demonstrated {skill.demonstrationCount} time{skill.demonstrationCount !== 1 ? 's' : ''}
+            </p>
+          )}
         </div>
         <button
           onClick={onClose}
-          className="min-w-[44px] min-h-[44px] p-2 rounded-full hover:bg-slate-800 transition-colors flex items-center justify-center"
+          className="min-w-[44px] min-h-[44px] p-2 rounded-full hover:bg-slate-800 transition-colors flex items-center justify-center flex-shrink-0"
           aria-label="Close"
         >
           <X className="w-5 h-5 text-slate-400" />
         </button>
       </div>
 
-      {/* Progress section */}
-      {!isDormant && (
-        <div className="space-y-2">
-          <div className="flex justify-between text-xs text-slate-500">
-            <span>{skill.demonstrationCount} demonstrations</span>
-            <span>{getNextMilestone(skill.state)}</span>
-          </div>
-          <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
-            <motion.div
-              className="h-full rounded-full"
-              style={{ backgroundColor: skill.color }}
-              initial={{ width: 0 }}
-              animate={{ width: `${Math.min(100, skill.demonstrationCount * 10)}%` }}
-              transition={{ duration: 0.8, ease: 'easeOut' }}
-            />
-          </div>
-        </div>
-      )}
-
-      {/* State-based content */}
-      {isDormant ? (
-        <div className="p-8 text-center rounded-xl bg-slate-800/50 border border-slate-700">
-          <Lock className="w-12 h-12 mx-auto text-slate-600 mb-4" />
-          <p className="text-slate-400 font-medium">Skill not yet demonstrated</p>
-          <p className="text-sm text-slate-500 mt-2">
-            Make choices that demonstrate {skill.name.toLowerCase()} to unlock this skill
-          </p>
-        </div>
-      ) : (
-        <div className="space-y-4">
-          <h3 className="text-sm font-medium text-slate-400 uppercase tracking-wider flex items-center gap-2">
-            <Sparkles className="w-4 h-4" />
-            Skill Progress
-          </h3>
-
-          {/* State progression */}
-          <div className="flex gap-1">
-            {['awakening', 'developing', 'strong', 'mastered'].map((state) => {
-              const isActive = getStateOrder(skill.state) >= getStateOrder(state)
-              return (
-                <div
-                  key={state}
-                  className={cn(
-                    "flex-1 p-2 rounded-lg text-center text-xs capitalize transition-colors",
-                    isActive
-                      ? "text-white"
-                      : "bg-slate-800 text-slate-500"
-                  )}
-                  style={{
-                    backgroundColor: isActive ? skill.color : undefined
-                  }}
-                >
-                  {state}
-                </div>
-              )
-            })}
-          </div>
-
-          {/* Description */}
-          <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700">
-            <p className="text-slate-300 text-sm leading-relaxed">
-              {getSkillDescription(skill.id)}
-            </p>
-          </div>
-        </div>
-      )}
+      {/* Simple description */}
+      <p className="text-slate-300 text-sm leading-relaxed">
+        {isDormant
+          ? `Make choices that demonstrate ${skill.name.toLowerCase()} to develop this skill.`
+          : getSkillDescription(skill.id)
+        }
+      </p>
     </div>
   )
 }
