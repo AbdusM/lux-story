@@ -110,7 +110,7 @@ export const THOUGHT_REGISTRY: Record<string, ThoughtDefinition> = {
   'empathy-bridge': {
     id: 'empathy-bridge',
     title: 'The Empathy Bridge',
-    description: 'Understanding someone else\'s struggle isn\'t weakness—it\'s the first step to making real change.',
+    description: 'Understanding someone else\'s struggle isn\'t weakness. it\'s the first step to making real change.',
     iconName: 'Heart',
     color: 'rose',
     maxProgress: 100

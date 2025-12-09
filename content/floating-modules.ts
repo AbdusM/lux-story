@@ -25,7 +25,7 @@ export const FLOATING_MODULES: FloatingModule[] = [
       {
         text: `A quiet shift. You've started noticing the patterns between patterns.
 
-Not just what people say—but why. Not just the words—but the gaps between them.
+Not just what people say. but why. Not just the words. but the gaps between them.
 
 Something in you has sharpened.`,
         variation_id: 'analytical_v1'
@@ -47,7 +47,7 @@ Something in you has sharpened.`,
       {
         text: `Something settles in your chest.
 
-The weight isn't burden—it's purpose. You've stopped asking "why should I help?" and started asking "how can I help better?"
+The weight isn't burden. it's purpose. You've stopped asking "why should I help?" and started asking "how can I help better?"
 
 People see it. They open up faster now.`,
         variation_id: 'helping_v1'
@@ -71,7 +71,7 @@ People see it. They open up faster now.`,
 
 Every problem is a system now. Every system has components. Every component can be improved.
 
-You don't just see solutions—you feel them.`,
+You don't just see solutions. you feel them.`,
         variation_id: 'building_v1'
       }
     ],
@@ -91,7 +91,7 @@ You don't just see solutions—you feel them.`,
       {
         text: `Time moves differently for you now.
 
-Not slower—just less urgent. You've learned that rushing rarely helps, and that silence often says more than words.
+Not slower. just less urgent. You've learned that rushing rarely helps, and that silence often says more than words.
 
 Some doors only open when you stop pushing.`,
         variation_id: 'patience_v1'
@@ -113,7 +113,7 @@ Some doors only open when you stop pushing.`,
       {
         text: `The unknown stopped being scary.
 
-Every dead end is data. Every failure is feedback. You've stopped fearing wrong turns because you've realized—there are no wrong turns. Just longer routes to the same understanding.`,
+Every dead end is data. Every failure is feedback. You've stopped fearing wrong turns because you've realized. there are no wrong turns. Just longer routes to the same understanding.`,
         variation_id: 'exploring_v1'
       }
     ],
@@ -137,7 +137,7 @@ Every dead end is data. Every failure is feedback. You've stopped fearing wrong 
       {
         text: `Samuel looks at you differently now.
 
-"First conversation's always the hardest. Not because of what you say—because of what you learn to hear."
+"First conversation's always the hardest. Not because of what you say. because of what you learn to hear."
 
 He nods, just once.
 
@@ -214,7 +214,7 @@ You helped someone find their direction. That changes you too.`,
       {
         text: `You've noticed something.
 
-Some people open up immediately. Others take longer. The difference isn't them—it's you. The questions you ask. The patience you show.
+Some people open up immediately. Others take longer. The difference isn't them. it's you. The questions you ask. The patience you show.
 
 Trust is earned in small moments.`,
         variation_id: 'trust_contrast_v1'
@@ -229,6 +229,135 @@ Trust is earned in small moments.`,
     oneShot: true,
     priority: 4,
     tags: ['trust', 'meta']
+  },
+
+  // ============= SAMUEL OBSERVATION MODULES =============
+  // Samuel notices when patterns grow during character arcs
+  // Makes him feel like he's watching the player's journey
+
+  {
+    moduleId: 'samuel_notices_helper',
+    speaker: 'Samuel Washington',
+    emotion: 'knowing',
+    content: [
+      {
+        text: `Samuel catches your eye as you return.
+
+"You've been listening closely. Not just hearing. listening."
+
+He pauses.
+
+"People feel that. When someone actually wants to understand, not just respond. That's rarer than you think."`,
+        variation_id: 'samuel_helper_v1'
+      }
+    ],
+    triggerCondition: {
+      patterns: { helping: { min: 6 } }
+    },
+    insertAfter: 'hub_return',
+    oneShot: true,
+    priority: 7,
+    tags: ['samuel', 'pattern_observation', 'helping']
+  },
+
+  {
+    moduleId: 'samuel_notices_patience',
+    speaker: 'Samuel Washington',
+    emotion: 'impressed',
+    content: [
+      {
+        text: `Samuel is watching the departure board, but he's been waiting for you.
+
+"You take your time. Most people rush to fill silences. You let them breathe."
+
+He turns.
+
+"That's how you find what's underneath."`,
+        variation_id: 'samuel_patience_v1'
+      }
+    ],
+    triggerCondition: {
+      patterns: { patience: { min: 6 } }
+    },
+    insertAfter: 'hub_return',
+    oneShot: true,
+    priority: 7,
+    tags: ['samuel', 'pattern_observation', 'patience']
+  },
+
+  {
+    moduleId: 'samuel_notices_builder',
+    speaker: 'Samuel Washington',
+    emotion: 'thoughtful',
+    content: [
+      {
+        text: `Samuel looks at you like he's seeing something new.
+
+"You don't just see what is. You see what could be."
+
+He nods slowly.
+
+"That's builder thinking. Some people tear down. Others repair. You? You imagine what hasn't been made yet."`,
+        variation_id: 'samuel_builder_v1'
+      }
+    ],
+    triggerCondition: {
+      patterns: { building: { min: 6 } }
+    },
+    insertAfter: 'hub_return',
+    oneShot: true,
+    priority: 7,
+    tags: ['samuel', 'pattern_observation', 'building']
+  },
+
+  {
+    moduleId: 'samuel_notices_analyst',
+    speaker: 'Samuel Washington',
+    emotion: 'appreciative',
+    content: [
+      {
+        text: `Samuel's watching you with that quiet attention he reserves for things that matter.
+
+"You see the patterns. The connections other people miss."
+
+A slight smile.
+
+"Some call it overthinking. I call it seeing clearly."`,
+        variation_id: 'samuel_analyst_v1'
+      }
+    ],
+    triggerCondition: {
+      patterns: { analytical: { min: 6 } }
+    },
+    insertAfter: 'hub_return',
+    oneShot: true,
+    priority: 7,
+    tags: ['samuel', 'pattern_observation', 'analytical']
+  },
+
+  {
+    moduleId: 'samuel_notices_explorer',
+    speaker: 'Samuel Washington',
+    emotion: 'warm',
+    content: [
+      {
+        text: `Samuel catches you looking around the station, curious as always.
+
+"You can't help it, can you? Always asking questions. Always wondering what's around the next corner."
+
+He chuckles.
+
+"Never lose that. The curious ones are the ones who find what no one else is looking for."`,
+        variation_id: 'samuel_explorer_v1'
+      }
+    ],
+    triggerCondition: {
+      patterns: { exploring: { min: 6 } }
+    },
+    insertAfter: 'hub_return',
+    oneShot: true,
+    priority: 7,
+    tags: ['samuel', 'pattern_observation', 'exploring']
   }
 ]
 

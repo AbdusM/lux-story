@@ -24,7 +24,7 @@ It happened. It actually happened.{{yaquin_chose_practical:
 
 Remember when you said to just start small? A mini-course instead of the whole thing? That's exactly what I did.|}}{{yaquin_chose_psych:
 
-That psychology angle you pushed me toward—understanding *why* dental assistants struggle, not just what they struggle with—that's what resonated.|}}{{generous_refunds:
+That psychology angle you pushed me toward. understanding *why* dental assistants struggle, not just what they struggle with. that's what resonated.|}}{{generous_refunds:
 
 And the generous refund policy you suggested? Zero refund requests. People trust me because I trusted them first.|}}\n\nThe 'Alginate Mixing Hack' video? 400,000 views. I have 12,000 subscribers. My inbox is full of people asking for the course.
 
@@ -239,7 +239,7 @@ Getting that advisor you suggested? Best decision I made. She's helped me avoid 
 
 A real course. A real product. My product.|}}{{yaquin_chose_membership:
 
-A real community. Not just viewers—a tribe.|}}{{yaquin_chose_sponsorship:
+A real community. Not just viewers. a tribe.|}}{{yaquin_chose_sponsorship:
 
 The sponsorship money is buying me freedom to build something real.|}}\n\nI guess this is what a Founder's journey looks like. It never stops being scary, does it?`,
         emotion: 'grateful_mature',

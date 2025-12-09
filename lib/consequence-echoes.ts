@@ -1,0 +1,578 @@
+/**
+ * Consequence Echoes System
+ *
+ * Provides dialogue-based feedback for state changes (trust, patterns).
+ * Instead of silent stat changes, NPCs respond through dialogue.
+ *
+ * Based on BG3 insight: "Choices have palpable emotional consequences
+ * that the player must face - not toast notifications."
+ */
+
+import type { PlayerPatterns } from './character-state'
+
+export type EchoIntensity = 'subtle' | 'noticeable' | 'significant'
+export type EchoDirection = 'up' | 'down'
+
+export interface ConsequenceEcho {
+  text: string
+  emotion?: string
+  /** Timing: immediate = same turn, delayed = next node */
+  timing: 'immediate' | 'delayed'
+}
+
+/**
+ * Character-specific echo templates
+ * Each character has distinct ways of showing trust changes through dialogue
+ */
+export const CHARACTER_ECHOES: Record<string, {
+  trustUp: Record<EchoIntensity, ConsequenceEcho[]>
+  trustDown: Record<EchoIntensity, ConsequenceEcho[]>
+  patternRecognition: Record<string, ConsequenceEcho[]>
+}> = {
+  samuel: {
+    trustUp: {
+      subtle: [
+        { text: "Samuel nods slowly.", emotion: 'warm', timing: 'immediate' },
+        { text: "\"Mm.\" Something in his expression softens.", emotion: 'warm', timing: 'immediate' },
+        { text: "Samuel's eyes crinkle at the corners.", emotion: 'warm', timing: 'immediate' }
+      ],
+      noticeable: [
+        { text: "\"You see things clearly.\" Samuel sounds almost surprised.", emotion: 'warm', timing: 'immediate' },
+        { text: "Samuel leans back, studying you differently now.", emotion: 'knowing', timing: 'immediate' },
+        { text: "\"That's... that's the right question.\"", emotion: 'warm', timing: 'immediate' }
+      ],
+      significant: [
+        { text: "Samuel goes quiet for a moment. \"You remind me of myself. Before I found this place.\"", emotion: 'vulnerable', timing: 'immediate' },
+        { text: "\"Not many people get that.\" His voice is softer now.", emotion: 'warm', timing: 'immediate' },
+        { text: "Something shifts in how Samuel looks at you. Like you've passed a test he didn't tell you about.", emotion: 'knowing', timing: 'immediate' }
+      ]
+    },
+    trustDown: {
+      subtle: [
+        { text: "Samuel's gaze drifts to the departures board.", emotion: 'neutral', timing: 'immediate' },
+        { text: "A pause. Just slightly too long.", emotion: 'neutral', timing: 'immediate' },
+        { text: "Samuel nods, but the warmth dims slightly.", emotion: 'neutral', timing: 'immediate' }
+      ],
+      noticeable: [
+        { text: "\"Mm.\" Samuel's jaw tightens almost imperceptibly.", emotion: 'guarded', timing: 'immediate' },
+        { text: "Something closes behind Samuel's eyes.", emotion: 'guarded', timing: 'immediate' },
+        { text: "Samuel glances at the clock. \"Time moves differently for everyone.\"", emotion: 'neutral', timing: 'immediate' }
+      ],
+      significant: [
+        { text: "Samuel exhales slowly. \"I've seen that path before. It's harder than it looks.\"", emotion: 'concerned', timing: 'immediate' },
+        { text: "\"You can always come back when you're ready.\" His voice is kind, but distant.", emotion: 'guarded', timing: 'immediate' }
+      ]
+    },
+    patternRecognition: {
+      analytical: [
+        { text: "\"You think through things. I can see it in how you ask questions.\"", emotion: 'knowing', timing: 'delayed' }
+      ],
+      helping: [
+        { text: "\"You lead with care. That's not something you can fake.\"", emotion: 'warm', timing: 'delayed' }
+      ],
+      building: [
+        { text: "\"You're a maker. I can tell. You see possibility where others see problems.\"", emotion: 'warm', timing: 'delayed' }
+      ],
+      patience: [
+        { text: "\"You don't rush to fill silences. That's rare these days.\"", emotion: 'knowing', timing: 'delayed' }
+      ],
+      exploring: [
+        { text: "\"Curious, aren't you? Good. Curiosity is how people find their path.\"", emotion: 'warm', timing: 'delayed' }
+      ]
+    }
+  },
+
+  maya: {
+    trustUp: {
+      subtle: [
+        { text: "Maya's pen stops moving for just a second.", emotion: 'thoughtful', timing: 'immediate' },
+        { text: "Something flickers across Maya's face. surprise, maybe.", emotion: 'curious', timing: 'immediate' },
+        { text: "Maya looks up from her notebook.", emotion: 'open', timing: 'immediate' }
+      ],
+      noticeable: [
+        { text: "\"Huh.\" Maya sets down her pen. \"I wasn't expecting you to say that.\"", emotion: 'surprised', timing: 'immediate' },
+        { text: "Maya tilts her head, really looking at you now.", emotion: 'curious', timing: 'immediate' },
+        { text: "\"That's... yeah. That's exactly it.\" Her voice catches slightly.", emotion: 'vulnerable', timing: 'immediate' }
+      ],
+      significant: [
+        { text: "Maya closes her notebook. \"I don't usually tell people this stuff.\" She doesn't look away.", emotion: 'vulnerable', timing: 'immediate' },
+        { text: "\"You get it.\" Maya sounds almost relieved. \"Most people don't get it.\"", emotion: 'grateful', timing: 'immediate' },
+        { text: "For a moment, Maya looks like she might cry. Then she laughs instead. \"Sorry. It's just. nobody asks the right questions.\"", emotion: 'vulnerable', timing: 'immediate' }
+      ]
+    },
+    trustDown: {
+      subtle: [
+        { text: "Maya's hand moves to cover her notebook.", emotion: 'guarded', timing: 'immediate' },
+        { text: "She looks back at her sketch.", emotion: 'neutral', timing: 'immediate' },
+        { text: "\"Yeah.\" Maya's voice goes flat.", emotion: 'guarded', timing: 'immediate' }
+      ],
+      noticeable: [
+        { text: "Maya's jaw tightens. \"Right. Sure.\"", emotion: 'defensive', timing: 'immediate' },
+        { text: "Something shutters behind Maya's eyes.", emotion: 'guarded', timing: 'immediate' },
+        { text: "\"Anyway.\" Maya flips to a new page. Conversation over.", emotion: 'dismissive', timing: 'immediate' }
+      ],
+      significant: [
+        { text: "Maya stands up. \"I should probably. \" She doesn't finish the sentence.", emotion: 'hurt', timing: 'immediate' },
+        { text: "\"You sound like my parents.\" Maya's voice is cold now.", emotion: 'angry', timing: 'immediate' }
+      ]
+    },
+    patternRecognition: {
+      analytical: [
+        { text: "\"You're like a detective.\" Maya sounds more curious than critical.", emotion: 'curious', timing: 'delayed' }
+      ],
+      helping: [
+        { text: "\"You actually care what people say. That's... rare.\"", emotion: 'surprised', timing: 'delayed' }
+      ],
+      exploring: [
+        { text: "\"You're curious about everything, aren't you? I like that.\"", emotion: 'warm', timing: 'delayed' }
+      ]
+    }
+  },
+
+  devon: {
+    trustUp: {
+      subtle: [
+        { text: "Devon's typing slows.", emotion: 'thoughtful', timing: 'immediate' },
+        { text: "A micro-pause. Devon processes something.", emotion: 'neutral', timing: 'immediate' },
+        { text: "Devon's posture shifts. slightly more open.", emotion: 'open', timing: 'immediate' }
+      ],
+      noticeable: [
+        { text: "\"That's... a valid point.\" Devon sounds almost surprised at their own admission.", emotion: 'surprised', timing: 'immediate' },
+        { text: "Devon stops typing entirely. \"Go on.\"", emotion: 'curious', timing: 'immediate' },
+        { text: "\"Huh.\" Devon removes their headphones. Full attention.", emotion: 'engaged', timing: 'immediate' }
+      ],
+      significant: [
+        { text: "\"Nobody's ever framed it that way before.\" Devon looks at you differently now.", emotion: 'vulnerable', timing: 'immediate' },
+        { text: "Devon closes their laptop. \"Okay. I'm listening. Really listening.\"", emotion: 'open', timing: 'immediate' },
+        { text: "\"I... appreciate that.\" Devon's voice cracks slightly on 'appreciate.'", emotion: 'vulnerable', timing: 'immediate' }
+      ]
+    },
+    trustDown: {
+      subtle: [
+        { text: "Devon's typing resumes at double speed.", emotion: 'dismissive', timing: 'immediate' },
+        { text: "\"Noted.\" Devon doesn't look up.", emotion: 'neutral', timing: 'immediate' },
+        { text: "Devon reaches for their headphones.", emotion: 'guarded', timing: 'immediate' }
+      ],
+      noticeable: [
+        { text: "\"That's statistically unlikely to help.\" Devon's voice is flat.", emotion: 'dismissive', timing: 'immediate' },
+        { text: "Devon's screen reflects in their glasses. They're already somewhere else.", emotion: 'distant', timing: 'immediate' }
+      ],
+      significant: [
+        { text: "\"I have to. \" Devon grabs their laptop. \"I should go.\"", emotion: 'upset', timing: 'immediate' },
+        { text: "\"I thought you were different.\" Devon won't meet your eyes.", emotion: 'hurt', timing: 'immediate' }
+      ]
+    },
+    patternRecognition: {
+      analytical: [
+        { text: "\"You think in systems. I respect that.\"", emotion: 'approving', timing: 'delayed' }
+      ],
+      patience: [
+        { text: "\"You don't rush to conclusions. That's... unusual. In a good way.\"", emotion: 'surprised', timing: 'delayed' }
+      ],
+      building: [
+        { text: "\"You want to fix things. Actually fix them. Not just talk about it.\"", emotion: 'approving', timing: 'delayed' }
+      ]
+    }
+  },
+
+  jordan: {
+    trustUp: {
+      subtle: [
+        { text: "Jordan's smile reaches their eyes.", emotion: 'warm', timing: 'immediate' },
+        { text: "Something relaxes in Jordan's shoulders.", emotion: 'open', timing: 'immediate' },
+        { text: "Jordan nods slowly, thoughtfully.", emotion: 'reflective', timing: 'immediate' }
+      ],
+      noticeable: [
+        { text: "\"Now that's the real question.\" Jordan looks impressed.", emotion: 'warm', timing: 'immediate' },
+        { text: "Jordan stops walking. \"Say more about that.\"", emotion: 'curious', timing: 'immediate' },
+        { text: "\"You're finding your way. I can see it.\"", emotion: 'knowing', timing: 'immediate' }
+      ],
+      significant: [
+        { text: "Jordan sits down on a nearby bench. \"I don't tell everyone this story.\"", emotion: 'vulnerable', timing: 'immediate' },
+        { text: "\"You remind me why I started doing this.\" Jordan's voice is quiet.", emotion: 'moved', timing: 'immediate' }
+      ]
+    },
+    trustDown: {
+      subtle: [
+        { text: "Jordan's pace quickens slightly.", emotion: 'neutral', timing: 'immediate' },
+        { text: "\"Mm.\" Jordan's attention drifts to the arrivals board.", emotion: 'distant', timing: 'immediate' }
+      ],
+      noticeable: [
+        { text: "Jordan's smile becomes professional. Polite.", emotion: 'guarded', timing: 'immediate' },
+        { text: "\"That's one way to look at it.\" Jordan doesn't offer another.", emotion: 'distant', timing: 'immediate' }
+      ],
+      significant: [
+        { text: "Jordan stops. \"Everyone has to find their own path.\" It sounds like goodbye.", emotion: 'sad', timing: 'immediate' }
+      ]
+    },
+    patternRecognition: {
+      exploring: [
+        { text: "\"You're a seeker. I knew it the moment you asked that first question.\"", emotion: 'knowing', timing: 'delayed' }
+      ],
+      patience: [
+        { text: "\"You understand that some journeys take time. Not everyone does.\"", emotion: 'warm', timing: 'delayed' }
+      ]
+    }
+  },
+
+  marcus: {
+    trustUp: {
+      subtle: [
+        { text: "Marcus sets down his tool. Full attention.", emotion: 'open', timing: 'immediate' },
+        { text: "A genuine nod. \"Alright then.\"", emotion: 'approving', timing: 'immediate' },
+        { text: "Marcus's hands stop moving. He's listening.", emotion: 'engaged', timing: 'immediate' }
+      ],
+      noticeable: [
+        { text: "\"Now you're talking.\" Marcus grins.", emotion: 'warm', timing: 'immediate' },
+        { text: "\"That's the real work right there.\" He sounds impressed.", emotion: 'approving', timing: 'immediate' },
+        { text: "Marcus pulls up a second stool. \"Sit. Tell me more.\"", emotion: 'warm', timing: 'immediate' }
+      ],
+      significant: [
+        { text: "Marcus stops working entirely. \"My daughter asked me the same thing once.\" His voice is rough.", emotion: 'vulnerable', timing: 'immediate' },
+        { text: "\"You get it. The thing about building. it's never just about the thing you're building.\"", emotion: 'moved', timing: 'immediate' }
+      ]
+    },
+    trustDown: {
+      subtle: [
+        { text: "Marcus turns back to his work.", emotion: 'neutral', timing: 'immediate' },
+        { text: "\"Mm-hm.\" He doesn't look up.", emotion: 'dismissive', timing: 'immediate' }
+      ],
+      noticeable: [
+        { text: "\"Lot of people say that.\" Marcus sounds tired.", emotion: 'disappointed', timing: 'immediate' },
+        { text: "Marcus picks up a different tool. The conversation has moved on.", emotion: 'distant', timing: 'immediate' }
+      ],
+      significant: [
+        { text: "\"I got work to do.\" Marcus's back is already turned.", emotion: 'dismissive', timing: 'immediate' }
+      ]
+    },
+    patternRecognition: {
+      building: [
+        { text: "\"You're a builder. I can always tell. It's in how you look at problems.\"", emotion: 'warm', timing: 'delayed' }
+      ],
+      helping: [
+        { text: "\"You build things for people. Not just things for things' sake.\"", emotion: 'approving', timing: 'delayed' }
+      ]
+    }
+  },
+
+  kai: {
+    trustUp: {
+      subtle: [
+        { text: "Kai's smile widens.", emotion: 'warm', timing: 'immediate' },
+        { text: "Something lights up in Kai's expression.", emotion: 'happy', timing: 'immediate' },
+        { text: "Kai leans in slightly.", emotion: 'engaged', timing: 'immediate' }
+      ],
+      noticeable: [
+        { text: "\"Yes! That's exactly. \" Kai catches themselves, laughs. \"Sorry. I get excited.\"", emotion: 'excited', timing: 'immediate' },
+        { text: "\"You really see that?\" Kai looks genuinely touched.", emotion: 'grateful', timing: 'immediate' },
+        { text: "Kai grabs your arm lightly. \"You have to meet someone.\"", emotion: 'excited', timing: 'immediate' }
+      ],
+      significant: [
+        { text: "Kai goes quiet for a moment. \"Not many people... thank you. For getting it.\"", emotion: 'moved', timing: 'immediate' },
+        { text: "\"Between us? You're going to do something meaningful. I can feel it.\"", emotion: 'warm', timing: 'immediate' }
+      ]
+    },
+    trustDown: {
+      subtle: [
+        { text: "Kai's energy dims slightly.", emotion: 'neutral', timing: 'immediate' },
+        { text: "\"Oh.\" Kai's smile becomes polite.", emotion: 'guarded', timing: 'immediate' }
+      ],
+      noticeable: [
+        { text: "Kai takes a small step back.", emotion: 'disappointed', timing: 'immediate' },
+        { text: "\"Right, yeah. That makes sense.\" It clearly doesn't.", emotion: 'hurt', timing: 'immediate' }
+      ],
+      significant: [
+        { text: "\"I thought. \" Kai stops. \"Never mind. I should go check on someone.\"", emotion: 'hurt', timing: 'immediate' }
+      ]
+    },
+    patternRecognition: {
+      helping: [
+        { text: "\"You're a connector. Like me. You see how people fit together.\"", emotion: 'excited', timing: 'delayed' }
+      ],
+      exploring: [
+        { text: "\"You want to understand everyone. I love that about you.\"", emotion: 'warm', timing: 'delayed' }
+      ]
+    }
+  },
+
+  tess: {
+    trustUp: {
+      subtle: [
+        { text: "Tess's eyes narrow approvingly.", emotion: 'interested', timing: 'immediate' },
+        { text: "A flicker of respect crosses Tess's face.", emotion: 'approving', timing: 'immediate' },
+        { text: "Tess shifts her stance. Reassessing.", emotion: 'curious', timing: 'immediate' }
+      ],
+      noticeable: [
+        { text: "\"Okay. That's a move.\" Tess sounds almost impressed.", emotion: 'approving', timing: 'immediate' },
+        { text: "\"Here's the play. \" Tess stops. \"Actually, what's your play?\"", emotion: 'curious', timing: 'immediate' },
+        { text: "Tess laughs. a real one, not her usual sharp smile. \"Didn't see that coming.\"", emotion: 'surprised', timing: 'immediate' }
+      ],
+      significant: [
+        { text: "\"You're smarter than you let on.\" Tess's guard drops completely. \"So am I. Let me tell you something real.\"", emotion: 'vulnerable', timing: 'immediate' },
+        { text: "\"Most people play defense. You play offense. I respect that.\"", emotion: 'warm', timing: 'immediate' }
+      ]
+    },
+    trustDown: {
+      subtle: [
+        { text: "Tess's smile sharpens.", emotion: 'guarded', timing: 'immediate' },
+        { text: "\"Mm.\" Tess checks her phone.", emotion: 'dismissive', timing: 'immediate' }
+      ],
+      noticeable: [
+        { text: "\"That's a defensive play.\" Tess sounds bored.", emotion: 'disappointed', timing: 'immediate' },
+        { text: "Tess's walls go back up. Click.", emotion: 'guarded', timing: 'immediate' }
+      ],
+      significant: [
+        { text: "\"I had you wrong.\" Tess's voice is ice. \"My mistake.\"", emotion: 'cold', timing: 'immediate' }
+      ]
+    },
+    patternRecognition: {
+      analytical: [
+        { text: "\"You see the board. Most people only see the pieces in front of them.\"", emotion: 'approving', timing: 'delayed' }
+      ],
+      building: [
+        { text: "\"You're building something. I can tell. What's the endgame?\"", emotion: 'curious', timing: 'delayed' }
+      ]
+    }
+  },
+
+  yaquin: {
+    trustUp: {
+      subtle: [
+        { text: "Yaquin's gaze sharpens with interest.", emotion: 'curious', timing: 'immediate' },
+        { text: "A small smile plays at Yaquin's lips.", emotion: 'amused', timing: 'immediate' },
+        { text: "Yaquin tilts their head, considering.", emotion: 'thoughtful', timing: 'immediate' }
+      ],
+      noticeable: [
+        { text: "\"Imagine...\" Yaquin pauses, delighted. \"You already see it, don't you?\"", emotion: 'excited', timing: 'immediate' },
+        { text: "\"Most people don't ask that.\" Yaquin sounds genuinely surprised.", emotion: 'surprised', timing: 'immediate' },
+        { text: "Yaquin puts away their phone. Full presence.", emotion: 'engaged', timing: 'immediate' }
+      ],
+      significant: [
+        { text: "\"You see the poetry in it.\" Yaquin's voice goes soft. \"I thought I was the only one.\"", emotion: 'moved', timing: 'immediate' },
+        { text: "\"Let me show you something. Something I don't show everyone.\"", emotion: 'trusting', timing: 'immediate' }
+      ]
+    },
+    trustDown: {
+      subtle: [
+        { text: "Yaquin's eyes drift to the window.", emotion: 'distant', timing: 'immediate' },
+        { text: "\"Ah.\" Yaquin's energy recedes.", emotion: 'neutral', timing: 'immediate' }
+      ],
+      noticeable: [
+        { text: "Yaquin's smile becomes wistful. \"Not everyone can see it.\"", emotion: 'sad', timing: 'immediate' },
+        { text: "\"Perhaps the trains speak differently to you.\" It sounds like goodbye.", emotion: 'resigned', timing: 'immediate' }
+      ],
+      significant: [
+        { text: "\"I imagined you might...\" Yaquin trails off. \"No matter. Safe travels.\"", emotion: 'disappointed', timing: 'immediate' }
+      ]
+    },
+    patternRecognition: {
+      exploring: [
+        { text: "\"You're a traveler in the truest sense. Not just of places. of ideas.\"", emotion: 'warm', timing: 'delayed' }
+      ],
+      patience: [
+        { text: "\"You understand that some things can't be rushed. That's wisdom.\"", emotion: 'approving', timing: 'delayed' }
+      ]
+    }
+  }
+}
+
+/**
+ * Get an appropriate echo for a trust change
+ */
+export function getConsequenceEcho(
+  characterId: string,
+  trustChange: number,
+): ConsequenceEcho | null {
+  const echoes = CHARACTER_ECHOES[characterId]
+  if (!echoes) return null
+
+  // Determine direction and intensity
+  const direction: EchoDirection = trustChange > 0 ? 'up' : 'down'
+  const absChange = Math.abs(trustChange)
+
+  let intensity: EchoIntensity
+  if (absChange >= 3) {
+    intensity = 'significant'
+  } else if (absChange >= 2) {
+    intensity = 'noticeable'
+  } else {
+    intensity = 'subtle'
+  }
+
+  const pool = direction === 'up' ? echoes.trustUp[intensity] : echoes.trustDown[intensity]
+  if (!pool || pool.length === 0) return null
+
+  // Random selection from pool
+  return pool[Math.floor(Math.random() * pool.length)]
+}
+
+/**
+ * Get a pattern recognition echo when player crosses a threshold
+ */
+export function getPatternRecognitionEcho(
+  characterId: string,
+  pattern: string
+): ConsequenceEcho | null {
+  const echoes = CHARACTER_ECHOES[characterId]
+  if (!echoes?.patternRecognition?.[pattern]) return null
+
+  const pool = echoes.patternRecognition[pattern]
+  return pool[Math.floor(Math.random() * pool.length)]
+}
+
+/**
+ * Pattern reflection type for dialogue content
+ */
+export interface PatternReflection {
+  pattern: keyof PlayerPatterns
+  minLevel: number
+  altText: string
+  altEmotion?: string
+}
+
+/**
+ * Apply pattern reflection to dialogue content.
+ * If player has a dominant pattern that matches a reflection, returns modified content.
+ * Otherwise returns the original text.
+ */
+export function applyPatternReflection(
+  baseText: string,
+  baseEmotion: string | undefined,
+  reflections: PatternReflection[] | undefined,
+  patterns: PlayerPatterns
+): { text: string; emotion?: string } {
+  if (!reflections || reflections.length === 0) {
+    return { text: baseText, emotion: baseEmotion }
+  }
+
+  // Check each reflection in order
+  for (const reflection of reflections) {
+    const patternValue = patterns[reflection.pattern] || 0
+    if (patternValue >= reflection.minLevel) {
+      return {
+        text: reflection.altText,
+        emotion: reflection.altEmotion || baseEmotion
+      }
+    }
+  }
+
+  return { text: baseText, emotion: baseEmotion }
+}
+
+/**
+ * Get the dominant pattern from player patterns
+ * Returns the pattern with the highest value, or null if none >= threshold
+ */
+export function getDominantPattern(
+  patterns: PlayerPatterns,
+  threshold: number = 5
+): keyof PlayerPatterns | null {
+  const patternKeys: (keyof PlayerPatterns)[] = ['analytical', 'helping', 'building', 'patience', 'exploring']
+
+  let dominant: keyof PlayerPatterns | null = null
+  let maxValue = threshold - 1 // Must be >= threshold
+
+  for (const pattern of patternKeys) {
+    const value = patterns[pattern] || 0
+    if (value >= threshold && value > maxValue) {
+      maxValue = value
+      dominant = pattern
+    }
+  }
+
+  return dominant
+}
+
+/**
+ * Get the voiced choice text based on player's dominant pattern
+ * Falls back to base text if no voice variation available
+ */
+export function getVoicedChoiceText(
+  baseText: string,
+  voiceVariations: Partial<Record<keyof PlayerPatterns, string>> | undefined,
+  patterns: PlayerPatterns
+): string {
+  if (!voiceVariations) return baseText
+
+  const dominant = getDominantPattern(patterns)
+  if (!dominant) return baseText
+
+  return voiceVariations[dominant] || baseText
+}
+
+/**
+ * Determine if a pattern threshold has been crossed
+ * Returns the pattern name if threshold crossed, null otherwise
+ */
+export function checkPatternThreshold(
+  oldPatterns: PlayerPatterns,
+  newPatterns: PlayerPatterns,
+  threshold: number = 5
+): string | null {
+  const patternKeys: (keyof PlayerPatterns)[] = ['analytical', 'helping', 'building', 'patience', 'exploring']
+
+  for (const pattern of patternKeys) {
+    const oldValue = oldPatterns[pattern] || 0
+    const newValue = newPatterns[pattern] || 0
+    if (oldValue < threshold && newValue >= threshold) {
+      return pattern
+    }
+  }
+  return null
+}
+
+/**
+ * Orb milestone echoes - Samuel acknowledges growth through dialogue
+ * These are subtle acknowledgments that don't break immersion.
+ * The player discovers their orbs in the Journal; Samuel just notices.
+ */
+export const ORB_MILESTONE_ECHOES: Record<string, ConsequenceEcho[]> = {
+  // First orb earned - subtle welcome (dialogue-only, no narrative)
+  firstOrb: [
+    { text: "\"You're finding your way. Good.\"", emotion: 'warm', timing: 'delayed' },
+    { text: "\"Something's shifting. You can feel it too, can't you?\"", emotion: 'knowing', timing: 'delayed' }
+  ],
+  // Reaching 'emerging' tier (10+ orbs)
+  tierEmerging: [
+    { text: "\"You've been busy. The choices you make. they're becoming a pattern.\"", emotion: 'warm', timing: 'delayed' },
+    { text: "\"I see you differently now. Something's taking shape.\"", emotion: 'knowing', timing: 'delayed' }
+  ],
+  // Reaching 'developing' tier (25+ orbs)
+  tierDeveloping: [
+    { text: "\"You know what you're doing now. Not everyone gets this far.\"", emotion: 'warm', timing: 'delayed' },
+    { text: "\"The path you're walking. it's becoming yours. Uniquely yours.\"", emotion: 'knowing', timing: 'delayed' }
+  ],
+  // Reaching 'flourishing' tier (50+ orbs)
+  tierFlourishing: [
+    { text: "\"I've watched a lot of travelers. You're different. You're actually listening.\"", emotion: 'moved', timing: 'delayed' },
+    { text: "\"Most people rush through. But you... you're really building something.\"", emotion: 'warm', timing: 'delayed' }
+  ],
+  // Reaching 'mastered' tier (100+ orbs)
+  tierMastered: [
+    { text: "\"You've done the work. Real work. The kind that changes you.\"", emotion: 'proud', timing: 'delayed' },
+    { text: "\"When I started here, I wondered if anyone would really get it. You do.\"", emotion: 'vulnerable', timing: 'delayed' }
+  ],
+  // Streak achievements
+  streak3: [
+    { text: "\"You're finding your rhythm.\"", emotion: 'warm', timing: 'delayed' }
+  ],
+  streak5: [
+    { text: "\"A strong streak. That kind of consistency. it means something.\"", emotion: 'knowing', timing: 'delayed' }
+  ],
+  streak10: [
+    { text: "\"Ten in a row. That's not luck. That's who you are.\"", emotion: 'proud', timing: 'delayed' }
+  ]
+}
+
+/**
+ * Get an orb milestone echo for Samuel to deliver
+ * Only returns if the milestone hasn't been acknowledged before
+ */
+export function getOrbMilestoneEcho(
+  milestone: keyof typeof ORB_MILESTONE_ECHOES
+): ConsequenceEcho | null {
+  const pool = ORB_MILESTONE_ECHOES[milestone]
+  if (!pool || pool.length === 0) return null
+
+  return pool[Math.floor(Math.random() * pool.length)]
+}

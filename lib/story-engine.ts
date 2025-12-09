@@ -20,6 +20,16 @@ export interface Scene {
 }
 
 /**
+ * Orb fill requirement for gated choices (KOTOR-style)
+ */
+export interface OrbRequirement {
+  /** Pattern that must reach the threshold */
+  pattern: 'analytical' | 'patience' | 'exploring' | 'helping' | 'building'
+  /** Fill percentage required (0-100) */
+  threshold: number
+}
+
+/**
  * Represents a player choice option - no costs, just text
  */
 export interface Choice {
@@ -31,6 +41,8 @@ export interface Choice {
   nextScene: string
   /** State changes to apply when choice is made */
   stateChanges?: unknown
+  /** Orb fill requirement - choice is locked until met (KOTOR-style) */
+  requiredOrbFill?: OrbRequirement
   [key: string]: unknown // Add index signature
 }
 

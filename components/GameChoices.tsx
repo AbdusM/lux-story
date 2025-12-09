@@ -4,6 +4,16 @@ import { memo, useState, useEffect, useCallback, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { motion } from 'framer-motion'
 import { springs, stagger } from '@/lib/animations'
+import { Lock } from 'lucide-react'
+import { type PatternType, PATTERN_METADATA } from '@/lib/patterns'
+
+/**
+ * Orb fill requirement for gated choices (KOTOR-style)
+ */
+interface OrbRequirement {
+  pattern: PatternType
+  threshold: number
+}
 
 interface Choice {
   text: string
@@ -14,12 +24,27 @@ interface Choice {
   feedback?: 'shake' | 'glow' | 'pulse'
   /** Pivotal choice - triggers marquee effect */
   pivotal?: boolean
+  /** Orb fill requirement - choice is locked until met (KOTOR-style) */
+  requiredOrbFill?: OrbRequirement
+}
+
+/**
+ * Current orb fill levels for checking locked choices
+ */
+interface OrbFillLevels {
+  analytical: number
+  patience: number
+  exploring: number
+  helping: number
+  building: number
 }
 
 interface GameChoicesProps {
   choices: Choice[]
   isProcessing: boolean
   onChoice: (choice: Choice) => void
+  /** Current orb fill percentages for gating choices */
+  orbFillLevels?: OrbFillLevels
 }
 
 /**
@@ -141,13 +166,33 @@ const glowVariant = {
   transition: { duration: 1.5, repeat: Infinity }
 }
 
+/**
+ * Check if a choice is locked based on orb requirements
+ */
+function isChoiceLocked(choice: Choice, orbFillLevels?: OrbFillLevels): boolean {
+  if (!choice.requiredOrbFill || !orbFillLevels) return false
+  const { pattern, threshold } = choice.requiredOrbFill
+  return orbFillLevels[pattern] < threshold
+}
+
+/**
+ * Get lock message for a locked choice
+ */
+function getLockMessage(choice: Choice): string {
+  if (!choice.requiredOrbFill) return ''
+  const { pattern, threshold } = choice.requiredOrbFill
+  const label = PATTERN_METADATA[pattern].label
+  return `${label} ${threshold}%`
+}
+
 // Memoized choice button component
-const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused }: {
+const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, isLocked }: {
   choice: Choice
   index: number
   onChoice: (choice: Choice) => void
   isProcessing: boolean
   isFocused?: boolean
+  isLocked?: boolean
 }) => {
   // Combine standard variants with feedback variants
   const combinedVariants = {
@@ -160,6 +205,11 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused }:
       scale: 1.02,
       boxShadow: "0px 0px 0px 2px rgba(59,130,246,0.5)",
       transition: { duration: 0.15 }
+    },
+    locked: {
+      opacity: 0.6,
+      y: 0,
+      transition: springs.snappy
     }
   }
 
@@ -168,6 +218,40 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused }:
   let _animateState: string = "visible"
   if (choice.feedback) _animateState = choice.feedback
   if (isFocused) _animateState = "focused"
+  if (isLocked) _animateState = "locked"
+
+  // Locked choice styling
+  if (isLocked) {
+    return (
+      <motion.div
+        variants={combinedVariants}
+        custom={index}
+        className="w-full"
+        data-choice-index={index}
+        style={{ scrollSnapAlign: 'start' }}
+      >
+        <div
+          className={`
+            w-full min-h-[56px] sm:min-h-[52px] h-auto px-4 sm:px-6 py-4 sm:py-3
+            text-base sm:text-sm font-medium text-stone-400 text-left
+            border border-stone-200 bg-stone-50
+            rounded-xl
+            flex items-center gap-3
+            cursor-not-allowed
+          `}
+          aria-label={`Locked choice: ${choice.text}. Requires ${getLockMessage(choice)}`}
+          role="button"
+          aria-disabled="true"
+        >
+          <Lock className="w-4 h-4 flex-shrink-0 text-stone-400" />
+          <span className="flex-1 line-clamp-2">{choice.text}</span>
+          <span className="text-xs text-stone-400 flex-shrink-0 whitespace-nowrap">
+            {getLockMessage(choice)}
+          </span>
+        </div>
+      </motion.div>
+    )
+  }
 
   return (
     <motion.div
@@ -255,7 +339,7 @@ const groupChoices = (choices: Choice[]) => {
  * - 1-9: Direct selection of choice by number
  * - Escape: Clear focus
  */
-export const GameChoices = memo(({ choices, isProcessing, onChoice }: GameChoicesProps) => {
+export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevels }: GameChoicesProps) => {
   const { focusedIndex, containerRef } = useKeyboardNavigation(choices, isProcessing, onChoice)
 
   if (!choices || choices.length === 0) {
@@ -264,7 +348,7 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice }: GameChoice
 
   // Determine layout strategy based on count
   const useGrid = choices.length > 2 // Use grid for 3+ choices on desktop
-  const useGrouping = choices.length > 4 // Group if very many
+  const useGrouping = choices.length > 6 // Group only if many choices (6+) to avoid clutter
 
   if (useGrouping) {
     const groups = groupChoices(choices)
@@ -302,6 +386,7 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice }: GameChoice
                     onChoice={onChoice}
                     isProcessing={isProcessing}
                     isFocused={focusedIndex === currentGlobalIndex}
+                    isLocked={isChoiceLocked(choice, orbFillLevels)}
                   />
                 )
               })}
@@ -332,6 +417,7 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice }: GameChoice
           onChoice={onChoice}
           isProcessing={isProcessing}
           isFocused={focusedIndex === index}
+          isLocked={isChoiceLocked(choice, orbFillLevels)}
         />
       ))}
     </motion.div>

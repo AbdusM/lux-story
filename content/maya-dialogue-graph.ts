@@ -271,6 +271,20 @@ export const mayaDialogueNodes: DialogueNode[] = [
         variation_id: 'anxiety_check_v1'
       }
     ],
+    patternReflection: [
+      {
+        pattern: 'exploring',
+        minLevel: 5,
+        altText: "You see things, don't you? Most people just look. You actually notice.\n\nHow did you know? Is it that obvious?",
+        altEmotion: 'curious_vulnerable'
+      },
+      {
+        pattern: 'helping',
+        minLevel: 5,
+        altText: "There's something about you. Like you actually want to understand, not just hear.\n\nHow did you know? Is it that obvious?",
+        altEmotion: 'trusting_vulnerable'
+      }
+    ],
     onEnter: [
       {
         characterId: 'maya',
@@ -378,6 +392,20 @@ export const mayaDialogueNodes: DialogueNode[] = [
         variation_id: 'fills_silence_v1_clean'
       }
     ],
+    patternReflection: [
+      {
+        pattern: 'patience',
+        minLevel: 5,
+        altText: "...\n\nRobotics. I'm building robots when I should be studying.\n\nYou have this way about you. Patient. Like you've learned that some things can't be rushed. It's rare. Thank you.",
+        altEmotion: 'deeply_grateful'
+      },
+      {
+        pattern: 'helping',
+        minLevel: 5,
+        altText: "...\n\nRobotics. I'm building robots when I should be studying.\n\nYou didn't push. You just... cared. I can tell you actually want to help. Thank you for that.",
+        altEmotion: 'seen_grateful'
+      }
+    ],
     choices: [
       {
         choiceId: 'continue_after_silence',
@@ -414,7 +442,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         pattern: 'analytical',
         minLevel: 5,
-        altText: "I... I build these. Or I try to. This is a prototype for pediatric grip assistance.\n\nYou think systematically—I noticed. Maybe you can see what I'm missing.\n\nThe hand spasms. Fingers clench into a fist.\n\nIt's fighting itself. Just like me.",
+        altText: "I... I build these. Or I try to. This is a prototype for pediatric grip assistance.\n\nYou think systematically. I noticed. Maybe you can see what I'm missing.\n\nThe hand spasms. Fingers clench into a fist.\n\nIt's fighting itself. Just like me.",
         altEmotion: 'hopeful_vulnerable'
       }
     ],
@@ -496,7 +524,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'fail_rebuild_learning',
-        text: "Three months isn't lost—it's learning. You know what NOT to do now. That's how builders improve.",
+        text: "Three months isn't lost. it's learning. You know what NOT to do now. That's how builders improve.",
         nextNodeId: 'maya_retreat_to_safety',
         pattern: 'building',
         skills: ['creativity', 'adaptability'],
@@ -751,7 +779,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         pattern: 'analytical',
         minLevel: 5,
-        altText: "You see patterns others miss—I noticed that about you. Maybe you can see a path I can't... I've been accepted to UAB's biomedical engineering program. I could transfer. But I also got into the traditional pre-med track my parents expect.",
+        altText: "You see patterns others miss. I noticed that about you. Maybe you can see a path I can't... I've been accepted to UAB's biomedical engineering program. I could transfer. But I also got into the traditional pre-med track my parents expect.",
         altEmotion: 'hopeful_anxious'
       },
       {
@@ -990,7 +1018,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'player_still_figuring',
-        text: "Honestly? I'm still figuring that out. That's part of why I'm here—to learn how to trust myself enough to make those choices.",
+        text: "Honestly? I'm still figuring that out. That's part of why I'm here. to learn how to trust myself enough to make those choices.",
         nextNodeId: 'maya_farewell_robotics',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'adaptability']
@@ -1066,7 +1094,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'support_explore_feeling',
-        text: "When you imagine healing AND building—what does that future look like?",
+        text: "When you imagine healing AND building. what does that future look like?",
         nextNodeId: 'maya_considers_hybrid',
         pattern: 'exploring',
         skills: ['curiosity', 'creativity'],

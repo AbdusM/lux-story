@@ -315,7 +315,7 @@ He made me spend six months writing in assembly. No frameworks. No abstractions.
       {
         text: `Everything is a choice.
 
-When you write in assembly, you see the cost of every decision. A loop isn't magic—it's instructions. Memory isn't infinite—it's addresses. Every abstraction you've ever used was someone's opinion about tradeoffs.
+When you write in assembly, you see the cost of every decision. A loop isn't magic. it's instructions. Memory isn't infinite. it's addresses. Every abstraction you've ever used was someone's opinion about tradeoffs.
 
 The frameworks hide those choices. The AI hides them even more. And when you can't see the choices, you can't understand the consequences.`,
         emotion: 'teaching_intensity',
@@ -642,7 +642,7 @@ We want to build something different. A place where people learn why before they
         minLevel: 5,
         altText: `I've been thinking about this for years. David and I sketched it out before his diagnosis.
 
-You're a builder—I can tell by how you engage with problems. You understand what it means to create something from first principles.
+You're a builder. I can tell by how you engage with problems. You understand what it means to create something from first principles.
 
 We want to build something different. A place where people learn why before they learn how.`,
         altEmotion: 'kindred_visionary'
@@ -652,7 +652,7 @@ We want to build something different. A place where people learn why before they
         minLevel: 5,
         altText: `I've been thinking about this for years. David and I sketched it out before his diagnosis.
 
-You think deeply. That's rare. Most people want the quick answer—you want to understand.
+You think deeply. That's rare. Most people want the quick answer. you want to understand.
 
 We want to build something different. A place where people learn why before they learn how.`,
         altEmotion: 'recognized_visionary'
@@ -790,7 +790,7 @@ They're out there. They're just been told they're obsolete.`,
 
 But David has connections. Alumni from his classes who became CTOs. Companies that are starting to realize their AI-dependent junior devs can't debug production issues.
 
-One company already offered to sponsor five students. Not because they're charitable—because they need people who actually understand the systems.`,
+One company already offered to sponsor five students. Not because they're charitable. because they need people who actually understand the systems.`,
         emotion: 'practical_hope',
         variation_id: 'funding_v1'
       }
@@ -813,7 +813,7 @@ One company already offered to sponsor five students. Not because they're charit
       {
         text: `Actually... I already have one.
 
-There's a kid—well, she's 28, but she feels like a kid—who works in QA downstairs. She found a memory leak that our entire senior team missed.
+There's a kid. well, she's 28, but she feels like a kid. who works in QA downstairs. She found a memory leak that our entire senior team missed.
 
 When I asked how, she said: "I drew a diagram of every allocation. Took me a weekend."
 
@@ -860,7 +860,7 @@ We're going to teach people how to read the metal. How to know what is real.`,
       {
         pattern: 'analytical',
         minLevel: 5,
-        altText: `I'm not quitting. I can't quit. You think like David did—seeing through the surface to what's underneath.
+        altText: `I'm not quitting. I can't quit. You think like David did. seeing through the surface to what's underneath.
 
 There's an instructional designer upstairs, Kai. They're burning their slide decks. Good. We need to burn it all down to build it right.
 
@@ -870,7 +870,7 @@ I'm going to start an academy. Not 'Coding Bootcamp.' 'First Principles.'`,
       {
         pattern: 'building',
         minLevel: 5,
-        altText: `I'm not quitting. I can't quit. You're a builder—you understand why foundations matter.
+        altText: `I'm not quitting. I can't quit. You're a builder. you understand why foundations matter.
 
 There's an instructional designer upstairs, Kai. They're burning their slide decks. Good. We need to burn it all down to build it right.
 
@@ -880,7 +880,7 @@ I'm going to start an academy. Not 'Coding Bootcamp.' 'First Principles.'`,
       {
         pattern: 'patience',
         minLevel: 5,
-        altText: `I'm not quitting. I can't quit. The way you waited, listened—that's rare. Most people want the quick answer.
+        altText: `I'm not quitting. I can't quit. The way you waited, listened. that's rare. Most people want the quick answer.
 
 There's an instructional designer upstairs, Kai. They're burning their slide decks. Good. We need to burn it all down to build it right.
 
@@ -926,7 +926,7 @@ David gave me that feeling. I want to pass it on.`,
     choices: [
       {
         choiceId: 'rohan_legacy_farewell',
-        text: "That's a legacy worth building. Passing on that feeling—that's what teaching really is.",
+        text: "That's a legacy worth building. Passing on that feeling. that's what teaching really is.",
         nextNodeId: 'rohan_farewell',
         pattern: 'building',
         skills: ['leadership', 'wisdom'],
@@ -972,7 +972,7 @@ David gave me that feeling. I want to pass it on.`,
       {
         text: `
 
-You've been helping me figure out what I want to build. Imagine we're sitting here years from now, looking back—what do you want people to remember about you? What feeling do you want to pass on?`,
+You've been helping me figure out what I want to build. Imagine we're sitting here years from now, looking back. what do you want people to remember about you? What feeling do you want to pass on?`,
         emotion: 'curious_engaged',
         variation_id: 'rohan_reciprocity_v1'
       }
@@ -1013,7 +1013,7 @@ You've been helping me figure out what I want to build. Imagine we're sitting he
       },
       {
         choiceId: 'player_uncertain_legacy',
-        text: "I don't know yet. That's part of why I'm here—to figure out what I want my impact to be. What I want to pass on.",
+        text: "I don't know yet. That's part of why I'm here. to figure out what I want my impact to be. What I want to pass on.",
         nextNodeId: 'rohan_farewell',
         pattern: 'exploring',
         skills: ['emotionalIntelligence', 'adaptability']
@@ -1071,7 +1071,7 @@ If you see Samuel, tell him... tell him I'm staying. Someone has to keep the lig
       {
         pattern: 'analytical',
         minLevel: 5,
-        altText: `You heard the hum, didn't you? The noise underneath the noise. You think like David did—that's rare.
+        altText: `You heard the hum, didn't you? The noise underneath the noise. You think like David did. that's rare.
 
 If you see Samuel, tell him... tell him I'm staying. Someone has to keep the lights on.`,
         altEmotion: 'kindred_solemn'
@@ -1079,7 +1079,7 @@ If you see Samuel, tell him... tell him I'm staying. Someone has to keep the lig
       {
         pattern: 'patience',
         minLevel: 5,
-        altText: `You heard the hum, didn't you? The noise underneath the noise. The way you waited, listened—that's what the old-timers had.
+        altText: `You heard the hum, didn't you? The noise underneath the noise. The way you waited, listened. that's what the old-timers had.
 
 If you see Samuel, tell him... tell him I'm staying. Someone has to keep the lights on.`,
         altEmotion: 'recognized_solemn'

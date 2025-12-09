@@ -34,9 +34,9 @@ export function FoxTheatreGlow({
     <div className={cn("relative", className)}>
       {/* Chase light ring */}
       <motion.div
-        className="absolute inset-[-3px] rounded-full pointer-events-none"
+        className="absolute inset-[-4px] rounded-full pointer-events-none"
         style={{
-          background: `conic-gradient(from 0deg, transparent 0%, ${color}66 15%, transparent 30%)`,
+          background: `conic-gradient(from 0deg, transparent 0%, ${color}99 20%, transparent 40%)`,
         }}
         animate={{
           rotate: 360
@@ -48,15 +48,14 @@ export function FoxTheatreGlow({
         }}
       />
 
-      {/* Subtle glow backdrop */}
+      {/* Persistent glow ring - always visible */}
       <motion.div
-        className="absolute inset-[-2px] rounded-full pointer-events-none"
+        className="absolute inset-[-3px] rounded-full pointer-events-none"
         style={{
-          background: `radial-gradient(circle, ${color}22 0%, transparent 70%)`,
+          boxShadow: `0 0 6px 2px ${color}88, inset 0 0 2px 1px ${color}44`,
         }}
         animate={{
-          opacity: [0.5, 0.8, 0.5],
-          scale: [1, 1.1, 1]
+          opacity: [0.7, 1, 0.7],
         }}
         transition={{
           duration: 1.5,

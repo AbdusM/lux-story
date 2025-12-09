@@ -509,7 +509,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         pattern: 'helping',
         minLevel: 5,
-        altText: "My dad. He lives up in Huntsville. Since mom died six months ago, every phone call is... an exception error.\n\nI don't know why I'm telling you this. Maybe because you actually listen—not many people do.\n\nHe says he's fine. But his voice has this... lag. Like packet loss. I don't know how to debug grief.",
+        altText: "My dad. He lives up in Huntsville. Since mom died six months ago, every phone call is... an exception error.\n\nI don't know why I'm telling you this. Maybe because you actually listen. not many people do.\n\nHe says he's fine. But his voice has this... lag. Like packet loss. I don't know how to debug grief.",
         altEmotion: 'grateful_vulnerable'
       },
       {
@@ -970,7 +970,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         pattern: 'analytical',
         minLevel: 5,
-        altText: "You think like I do—in systems, patterns, frameworks. But you also see what I was missing... You helped me see emotions as data. Now I can work with them.\n\nI need to call him. But differently. No flowchart. Just... me, talking to my dad.",
+        altText: "You think like I do. in systems, patterns, frameworks. But you also see what I was missing... You helped me see emotions as data. Now I can work with them.\n\nI need to call him. But differently. No flowchart. Just... me, talking to my dad.",
         altEmotion: 'recognized'
       },
       {
@@ -982,7 +982,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         pattern: 'helping',
         minLevel: 5,
-        altText: "You've been debugging me this whole time—but gently. Not fixing, just... being here. You helped me see emotions as data. Now I can work with them.\n\nI need to call him. But differently. No flowchart. Just... me, talking to my dad.",
+        altText: "You've been debugging me this whole time. but gently. Not fixing, just... being here. You helped me see emotions as data. Now I can work with them.\n\nI need to call him. But differently. No flowchart. Just... me, talking to my dad.",
         altEmotion: 'warm_ready'
       }
     ],
@@ -1186,7 +1186,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         pattern: 'analytical',
         minLevel: 5,
-        altText: "I'm going to call him. Engineer and son. Both.\n\nBut I'm terrified I'll optimize again. Fall back into solution mode.\n\nYou think systematically too—but you showed me there's room for both. Thank you.\n\nSamuel's waiting.",
+        altText: "I'm going to call him. Engineer and son. Both.\n\nBut I'm terrified I'll optimize again. Fall back into solution mode.\n\nYou think systematically too. but you showed me there's room for both. Thank you.\n\nSamuel's waiting.",
         altEmotion: 'kindred_fragile'
       },
       {
@@ -1234,7 +1234,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "I'm going to call him. Be present. No agenda.\n\nMom knew how to be both. Present and helpful. I only knew helpful.\n\nLearning to just exist with someone's pain—everything in me screams to act.\n\nBut maybe that's growth.\n\nThank you. Samuel's waiting.",
+        text: "I'm going to call him. Be present. No agenda.\n\nMom knew how to be both. Present and helpful. I only knew helpful.\n\nLearning to just exist with someone's pain. everything in me screams to act.\n\nBut maybe that's growth.\n\nThank you. Samuel's waiting.",
         emotion: 'raw_courage',
         variation_id: 'farewell_presence_v2_complex'
       }
@@ -1311,7 +1311,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'player_listen_first',
-        text: "I try to listen first. Not solve, just understand. But it's hard—I want to help so badly that I jump to solutions.",
+        text: "I try to listen first. Not solve, just understand. But it's hard. I want to help so badly that I jump to solutions.",
         nextNodeId: 'devon_crossroads',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication']
@@ -1359,7 +1359,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "Thank you. For listening. For not trying to fix me.\n\nI think I know what to do now. Not a solution—just a different approach.\n\nSamuel's waiting. Good luck with your own journey.",
+        text: "Thank you. For listening. For not trying to fix me.\n\nI think I know what to do now. Not a solution. just a different approach.\n\nSamuel's waiting. Good luck with your own journey.",
         emotion: 'grateful_resolved',
         variation_id: 'devon_farewell_v1'
       }

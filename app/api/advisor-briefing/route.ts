@@ -307,11 +307,11 @@ export async function POST(request: NextRequest) {
       // Generate realistic briefing using actual data
       const fallbackBriefing = `## 1. The Authentic Story
 
-This is a bridge-builder who creates connections through patience and understanding. Their choice to say "${firstChoice}" reveals someone who leads with empathy while maintaining analytical depth. They're learning that their superpower isn't choosing between logic and emotion—it's integrating both.
+This is a bridge-builder who creates connections through patience and understanding. Their choice to say "${firstChoice}" reveals someone who leads with empathy while maintaining analytical depth. They're learning that their superpower isn't choosing between logic and emotion. it's integrating both.
 
 ## 2. Top Strengths
 
-**${topSkills[0][0]}**: When faced with a critical moment, they chose "${firstChoice}"—demonstrating rare emotional maturity and ability to validate without rushing to fix.
+**${topSkills[0][0]}**: When faced with a critical moment, they chose "${firstChoice}". demonstrating rare emotional maturity and ability to validate without rushing to fix.
 
 **${topSkills[1]?.[0] || 'Communication'}**: Their response "${secondChoice}" shows vulnerability and directness, creating authentic dialogue that builds trust.
 
@@ -319,7 +319,7 @@ This is a bridge-builder who creates connections through patience and understand
 
 ## 3. The Primary Blocker
 
-The **${Math.round((topGap?.gap || 0.65) * 100)}% gap in ${topGap?.skill || 'Leadership'}** is blocking ${topCareer?.name || 'Healthcare Innovation'}. Without demonstrated ${topGap?.skill || 'leadership'} experience, they can't transition from helper to guide—critical for ${topCareer?.name || 'career advancement'}.
+The **${Math.round((topGap?.gap || 0.65) * 100)}% gap in ${topGap?.skill || 'Leadership'}** is blocking ${topCareer?.name || 'Healthcare Innovation'}. Without demonstrated ${topGap?.skill || 'leadership'} experience, they can't transition from helper to guide. critical for ${topCareer?.name || 'career advancement'}.
 
 ## 4. The Strategic Recommendation
 
@@ -327,7 +327,7 @@ The **${Math.round((topGap?.gap || 0.65) * 100)}% gap in ${topGap?.skill || 'Lea
 
 ## 5. The Conversation Starter
 
-"I was impressed when you said '${firstChoice}.' That ${topSkills[0][0].toLowerCase()} is exactly what ${topCareer?.localOpportunities?.[0] || 'UAB Innovation Lab'} looks for in their emerging leaders program—they need people who can bridge technical and human systems."
+"I was impressed when you said '${firstChoice}.' That ${topSkills[0][0].toLowerCase()} is exactly what ${topCareer?.localOpportunities?.[0] || 'UAB Innovation Lab'} looks for in their emerging leaders program. they need people who can bridge technical and human systems."
 
 ---
 *Note: Generated using fallback due to API credit limitations. Based on actual user data.*`
