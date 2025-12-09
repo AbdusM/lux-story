@@ -34,7 +34,7 @@ You look like you've been outside. Wilderness Immersion. Vacation or crucible?`,
     choices: [
       {
         choiceId: 'tess_intro_crucible',
-        text: "It sounds like hard work. A crucible.",
+        text: "Sounds like you're being tested.",
         nextNodeId: 'tess_validates_crucible',
         pattern: 'building',
         skills: ['communication', 'criticalThinking'],
@@ -100,7 +100,7 @@ You look like you've been outside. Wilderness Immersion. Vacation or crucible?`,
       },
       {
         choiceId: 'tess_relate_learning',
-        text: "Real learning happens when you're uncomfortable.",
+        text: "Sounds like it pushes people. Hard.",
         nextNodeId: 'tess_explains_school',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'adaptability'],
@@ -235,7 +235,7 @@ You look like you've been outside. Wilderness Immersion. Vacation or crucible?`,
     choices: [
       {
         choiceId: 'tess_risk_validation',
-        text: "The safe path isn't always the right path.",
+        text: "You don't sound like someone who wants safe.",
         nextNodeId: 'tess_defunding_reveal',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'problemSolving'],
@@ -246,7 +246,7 @@ You look like you've been outside. Wilderness Immersion. Vacation or crucible?`,
       },
       {
         choiceId: 'tess_motivation_exploring',
-        text: "What would happen to you if you didn't try? What would that cost?",
+        text: "What happens if you don't try?",
         nextNodeId: 'tess_defunding_reveal',
         pattern: 'exploring',
         skills: ['curiosity', 'emotionalIntelligence'],
@@ -282,14 +282,14 @@ Fix it. Be ruthless. What are we actually selling?`,
     choices: [
       {
         choiceId: 'pitch_resilience',
-        text: "Delete the paragraph. Type: 'FORGING ANTIFRAGILE LEADERS.'",
+        text: "Scrap it. What are you actually building?",
         nextNodeId: 'tess_pitch_resilience',
         pattern: 'building',
         skills: ['criticalThinking', 'communication', 'creativity']
       },
       {
         choiceId: 'pitch_mental_health',
-        text: "Highlight the burnout stats. Type: 'THE CURE FOR ACADEMIC EXHAUSTION.'",
+        text: "Lead with the burnout numbers. That's the problem you're solving.",
         nextNodeId: 'tess_pitch_mental_health',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'emotionalIntelligence']
@@ -360,7 +360,7 @@ Can't make them feel urgency? Already lost.`,
     choices: [
       {
         choiceId: 'pitch_resilience_affirm',
-        text: "Exactly. You're building leaders, not hikers.",
+        text: "Now that sounds like something worth funding.",
         nextNodeId: 'tess_pitch_climax',
         pattern: 'building',
         skills: ['leadership', 'creativity']
@@ -389,7 +389,7 @@ Can't make them feel urgency? Already lost.`,
     choices: [
       {
         choiceId: 'pitch_mental_health_affirm',
-        text: "That's the mission. Wellness is the foundation of success.",
+        text: "Agency. That's what you're selling.",
         nextNodeId: 'tess_pitch_climax',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'leadership']
@@ -412,7 +412,7 @@ Can't make them feel urgency? Already lost.`,
 
 But this email... resignation. Leaving pension. Tenure track.
 
-If I fail, just an unemployed hiker.`,
+If I fail, I'm an unemployed hiker.`,
         emotion: 'anxious',
         interaction: 'shake',
         variation_id: 'climax_v1',
@@ -424,31 +424,31 @@ If I fail, just an unemployed hiker.`,
       {
         pattern: 'building',
         minLevel: 5,
-        altText: `It works. Can sell this. You helped me see it. you're a builder, I can tell.
+        altText: `It works. Can sell this. You helped me see it—you're a builder too.
 
 But this email... resignation. Leaving pension. Tenure track.
 
-If I fail, just an unemployed hiker.`,
+Fail, and I'm nobody.`,
         altEmotion: 'kindred_anxious'
       },
       {
         pattern: 'helping',
         minLevel: 5,
-        altText: `It works. Can sell this. The way you listened... you made space for me to find my own answer.
+        altText: `It works. Can sell this. The way you listened—you made space for me to find my own answer.
 
 But this email... resignation. Leaving pension. Tenure track.
 
-If I fail, just an unemployed hiker.`,
+Everything I've built. Gone.`,
         altEmotion: 'grateful_anxious'
       },
       {
         pattern: 'exploring',
         minLevel: 5,
-        altText: `It works. Can sell this. You're curious about the world. I see it in your questions.
+        altText: `It works. Can sell this. You're curious about the world—I see it in your questions.
 
 But this email... resignation. Leaving pension. Tenure track.
 
-If I fail, just an unemployed hiker.`,
+What if I'm wrong about all of it?`,
         altEmotion: 'recognized_anxious'
       }
     ],
@@ -458,7 +458,7 @@ If I fail, just an unemployed hiker.`,
     choices: [
       {
         choiceId: 'tess_commit_leap',
-        text: "You can't lead a 'Walkabout' if you're afraid to leave the path.",
+        text: "You're asking students to take a leap. Can you?",
         nextNodeId: 'tess_decision_made',
         pattern: 'building',
         skills: ['leadership', 'adaptability', 'emotionalIntelligence']
@@ -472,7 +472,7 @@ If I fail, just an unemployed hiker.`,
       },
       {
         choiceId: 'tess_commit_belief',
-        text: "The students need this. They need you to be brave first.",
+        text: "What would you tell a student in this moment?",
         nextNodeId: 'tess_decision_made',
         pattern: 'building',
         skills: ['leadership', 'courage']
@@ -526,7 +526,7 @@ If I fail, just an unemployed hiker.`,
     choices: [
       {
         choiceId: 'tess_farewell_cautious',
-        text: "Smart growth is still growth.",
+        text: "You'll know when you're ready.",
         nextNodeId: 'tess_farewell',
         pattern: 'analytical',
         skills: ['criticalThinking']
@@ -728,7 +728,7 @@ What do I say?`,
     choices: [
       {
         choiceId: 'p2_deshawn_courage',
-        text: "Tell him: 'Facing fear is the actual test. You're still here.'",
+        text: "He's still there. That already says something.",
         nextNodeId: 'tess_p2_deshawn_decision',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'encouragement'],
@@ -806,7 +806,7 @@ If I cave, still teaching resilience? Or babysitting in the woods?`,
     choices: [
       {
         choiceId: 'p2_defend_rigor',
-        text: "Defend the rigor. They signed up for a crucible.",
+        text: "Stand firm. They knew what they signed up for.",
         nextNodeId: 'tess_p2_parent_strategy',
         pattern: 'building',
         skills: ['courage', 'leadership'],
@@ -861,7 +861,7 @@ Truth is, DeShawn's panic attack IS the curriculum. Can they see that?`,
       },
       {
         choiceId: 'p2_educational_frame',
-        text: "Frame it educationally. This is learning, not failure.",
+        text: "Help them see what happened differently.",
         nextNodeId: 'tess_p2_board_prep',
         pattern: 'building',
         skills: ['pedagogy', 'visionaryThinking']
@@ -891,7 +891,7 @@ Compromise or good design?`,
     choices: [
       {
         choiceId: 'p2_good_design',
-        text: "It's good design. Differentiation is core pedagogy.",
+        text: "Meeting people where they are isn't compromise.",
         nextNodeId: 'tess_p2_board_prep',
         pattern: 'building',
         skills: ['pedagogy', 'systemsThinking'],
@@ -941,7 +941,7 @@ Or both and risk sounding like a TED Talk.`,
       },
       {
         choiceId: 'p2_vision_driven',
-        text: "Lead with vision. They need to see what you see.",
+        text: "Show them what this could become.",
         nextNodeId: 'tess_p2_board_meeting',
         pattern: 'building',
         skills: ['visionaryThinking', 'communication']
@@ -984,7 +984,7 @@ How do I answer?`,
     choices: [
       {
         choiceId: 'p2_reframe_fear',
-        text: "Reframe: 'Learning to manage fear is the skill. The woods are just the classroom.'",
+        text: "He learned something about himself out there. That's the point.",
         nextNodeId: 'tess_p2_leadership_moment',
         pattern: 'building',
         skills: ['communication', 'pedagogy']
@@ -1045,7 +1045,7 @@ How do I answer?`,
     choices: [
       {
         choiceId: 'p2_deshawn_outcome',
-        text: "DeShawn's transformation is the proof.",
+        text: "Look at DeShawn's face.",
         nextNodeId: 'tess_p2_reflection',
         pattern: 'helping',
         skills: ['emotionalIntelligence']
@@ -1085,7 +1085,7 @@ Now know it's leading through uncertainty. Every crisis is data. Every dropout a
     choices: [
       {
         choiceId: 'p2_complete',
-        text: "You're becoming the leader your students need.",
+        text: "You're figuring it out as you go. That's real.",
         nextNodeId: 'tess_p2_complete',
         pattern: 'helping',
         skills: ['encouragement', 'leadership']
@@ -1142,14 +1142,14 @@ Now know it's leading through uncertainty. Every crisis is data. Every dropout a
       },
       {
         choiceId: 'player_building_systems',
-        text: "Building maps. Ways to find what you need faster. The information exists. someone just has to organize it.",
+        text: "Building maps. Ways to find what you need faster. The information exists—someone has to organize it.",
         nextNodeId: 'tess_reciprocity_response',
         pattern: 'building',
         skills: ['emotionalIntelligence', 'systemsThinking']
       },
       {
         choiceId: 'player_building_understanding',
-        text: "Learning what people actually need. Not what they say they need. what they're really looking for underneath.",
+        text: "Learning what people need. Not what they say—what they're looking for underneath.",
         nextNodeId: 'tess_reciprocity_response',
         pattern: 'analytical',
         skills: ['emotionalIntelligence', 'criticalThinking']
@@ -1219,7 +1219,7 @@ Now know it's leading through uncertainty. Every crisis is data. Every dropout a
       },
       {
         choiceId: 'player_challenge_patience',
-        text: "Waiting. Someone needs help now. The resource exists. But the process takes time. Forms. Waitlists. I just want to cut through.",
+        text: "Waiting. Someone needs help now. The resource exists. But forms. Waitlists. I want to cut through.",
         nextNodeId: 'tess_p2_reciprocity_response',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'emotionalIntelligence']

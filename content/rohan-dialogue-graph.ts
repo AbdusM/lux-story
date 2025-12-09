@@ -51,7 +51,7 @@ It's hallucinating reality, and it's doing it better than I ever could.`,
       },
       {
         choiceId: 'rohan_intro_wonder',
-        text: "If it works, does it matter who wrote it?",
+        text: "If it works, who cares how it got written?",
         nextNodeId: 'rohan_philosophy_trap',
         pattern: 'exploring',
         skills: ['criticalThinking']
@@ -96,14 +96,14 @@ If we accept this... David didn't matter. I don't matter. We're just slow, buggy
     choices: [
       {
         choiceId: 'rohan_value_human',
-        text: "Speed isn't the only metric. Understanding is the metric.",
+        text: "Understanding matters more than speed.",
         nextNodeId: 'rohan_simulation_setup',
         pattern: 'building',
         skills: ['wisdom', 'leadership']
       },
       {
         choiceId: 'rohan_defense',
-        text: "You're the one who found the bug. The machine didn't.",
+        text: "The machine missed the bug. You didn't.",
         nextNodeId: 'rohan_simulation_setup',
         pattern: 'analytical',
         skills: ['criticalThinking'],
@@ -352,7 +352,7 @@ That knowledge doesn't disappear because a machine can type faster. It's not abo
     choices: [
       {
         choiceId: 'rohan_honor_david',
-        text: "You want to honor what he taught you.",
+        text: "David matters to you.",
         nextNodeId: 'rohan_honor_path',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'wisdom'],
@@ -503,7 +503,7 @@ You're treating it like a colleague. It's a parrot. We're done.`,
       },
       {
         choiceId: 'rohan_give_up',
-        text: "It's too complex. Maybe we should just let it run.",
+        text: "It's too complex. Maybe we should let it run.",
         nextNodeId: 'rohan_bad_ending',
         pattern: 'analytical',
         consequence: {
@@ -827,7 +827,7 @@ I've been teaching her after hours. She's year one now. Building logic gates wit
     choices: [
       {
         choiceId: 'rohan_student_impact',
-        text: "One student who really understands is worth a hundred who can only copy.",
+        text: "If one person actually gets it... doesn't that change things?",
         nextNodeId: 'rohan_climax_decision',
         pattern: 'helping',
         skills: ['wisdom', 'mentorship'],
@@ -1002,7 +1002,7 @@ You've been helping me figure out what I want to build. Imagine we're sitting he
       },
       {
         choiceId: 'player_remember_presence',
-        text: "I want them to remember that I was there. That I listened. That I didn't try to fix everything, just... showed up.",
+        text: "I want them to remember I was there. That I listened. That I showed up.",
         nextNodeId: 'rohan_farewell',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'emotionalIntelligence'],

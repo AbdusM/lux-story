@@ -338,7 +338,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "You... just waited. Most people fill silences. They're uncomfortable with latency. But you let the system complete its processing.\n\nThis flowchart - it's not for an engineering class. It's for someone important to me.",
+        text: "You waited. Most people fill silences. They're uncomfortable with latency. But you let the system complete its processing.\n\nThis flowchart—it's not for an engineering class. It's for someone important to me.",
         emotion: 'grateful',
         variation_id: 'opens_up_v1'
       }
@@ -426,7 +426,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'people_building_framework',
-        text: "What if you built a framework that accounts for uncertainty instead of eliminating it?",
+        text: "What would a system look like that doesn't try to control everything?",
         nextNodeId: 'devon_father_hint',
         pattern: 'building',
         skills: ['systemsThinking', 'creativity'],
@@ -462,7 +462,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'devon_recognize_care',
-        text: "You care deeply about them. That's not a failure.",
+        text: "The caring is obvious. Even if the conversations aren't working.",
         nextNodeId: 'devon_father_reveal',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
@@ -480,7 +480,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'father_hint_building_bridge',
-        text: "Maybe instead of fixing the conversation, you could build a bridge to them.",
+        text: "What if the conversation isn't the thing that needs fixing?",
         nextNodeId: 'devon_father_reveal',
         pattern: 'building',
         skills: ['systemsThinking', 'emotionalIntelligence'],
@@ -739,7 +739,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'acknowledge_realization',
-        text: "Sounds like you're learning what your system can't teach.",
+        text: "There's something your system can't map.",
         nextNodeId: 'devon_system_failure',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'communication'],
@@ -829,7 +829,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'reframe_empathy',
-        text: "Maybe empathy IS a kind of data.",
+        text: "What if understanding someone is its own kind of information?",
         nextNodeId: 'devon_reframe',
         pattern: 'building',
         skills: ['creativity', 'criticalThinking', 'emotionalIntelligence'],
@@ -890,7 +890,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'confirm',
-        text: "Exactly. You're not broken. Your framework just needed updating.",
+        text: "Exactly. Your framework needed updating, not replacing.",
         nextNodeId: 'devon_pause_before_crossroads',
         pattern: 'helping',
         skills: ["emotionalIntelligence","communication"],
@@ -959,7 +959,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "You helped me see emotions as data. Now I can work with them.\n\nI need to call him. But differently. No flowchart. Just... me, talking to my dad. Listening for what I've been filtering out. The pauses. The pain. The love underneath the 'I'm fine.'\n\nWhat if I just... let the conversation be what it needs to be?",
+        text: "You helped me see emotions as data. Now I can work with them.\n\nI need to call him. Differently. No flowchart. Me, talking to my dad. Listening for what I've been filtering out. The pauses. The pain. The love underneath the 'I'm fine.'\n\nWhat if I let the conversation be what it needs to be?",
         emotion: 'ready',
         variation_id: 'crossroads_reframe',
         useChatPacing: true,
@@ -970,7 +970,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         pattern: 'analytical',
         minLevel: 5,
-        altText: "You think like I do. in systems, patterns, frameworks. But you also see what I was missing... You helped me see emotions as data. Now I can work with them.\n\nI need to call him. But differently. No flowchart. Just... me, talking to my dad.",
+        altText: "You think like I do—systems, patterns, frameworks. But you also see what I was missing. You helped me see emotions as data.\n\nI need to call him. Differently. No flowchart. Me, talking to my dad.",
         altEmotion: 'recognized'
       },
       {
@@ -995,7 +995,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       // Pattern-enhanced: Analytical players see integration as system upgrade
       {
         choiceId: 'crossroads_integrated_analytical',
-        text: "You don't have to choose between engineer and son. Be both.",
+        text: "What if you don't have to pick?",
         nextNodeId: 'devon_chooses_integration',
         pattern: 'analytical',
         skills: ['criticalThinking', 'creativity', 'emotionalIntelligence'],
@@ -1007,7 +1007,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'crossroads_integrated',
-        text: "You don't have to choose between engineer and son. Be both.",
+        text: "What if you don't have to pick?",
         nextNodeId: 'devon_chooses_integration',
         pattern: 'analytical',
         skills: ['criticalThinking', 'creativity', 'emotionalIntelligence']
@@ -1015,7 +1015,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       // Pattern-enhanced: Helping players see emotional connection
       {
         choiceId: 'crossroads_emotional_helping',
-        text: "Trust your heart. The flowchart can wait.",
+        text: "What does your gut say?",
         nextNodeId: 'devon_chooses_heart',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
@@ -1027,7 +1027,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'crossroads_emotional',
-        text: "Trust your heart. The flowchart can wait.",
+        text: "What does your gut say?",
         nextNodeId: 'devon_chooses_heart',
         pattern: 'helping',
         skills: ['emotionalIntelligence']
@@ -1035,7 +1035,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       // Pattern-enhanced: Patience players see supportive presence
       {
         choiceId: 'crossroads_support_patience',
-        text: "Whatever feels right. He just needs you there.",
+        text: "Whatever feels right. He needs you there.",
         nextNodeId: 'devon_chooses_presence',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'adaptability'],
@@ -1047,7 +1047,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'crossroads_support',
-        text: "Whatever feels right. He just needs you there.",
+        text: "Whatever feels right. He needs you there.",
         nextNodeId: 'devon_chooses_presence',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'adaptability']
@@ -1150,7 +1150,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "You're right. Emotions are just noise. I was foolish to think I could integrate them.\n\nI'm going back to the flowchart. I just need to refine the error handling. If he hangs up, I'll just call back with a different script.\n\nPeople are just systems. I just haven't cracked the code yet.",
+        text: "You're right. Emotions are noise. I was foolish to think I could integrate them.\n\nI'm going back to the flowchart. I need to refine the error handling. If he hangs up, I'll call back with a different script.\n\nPeople are systems. I haven't cracked the code yet.",
         emotion: 'cold_robotic',
         variation_id: 'bad_ending_v1'
       }
@@ -1234,7 +1234,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "I'm going to call him. Be present. No agenda.\n\nMom knew how to be both. Present and helpful. I only knew helpful.\n\nLearning to just exist with someone's pain. everything in me screams to act.\n\nBut maybe that's growth.\n\nThank you. Samuel's waiting.",
+        text: "I'm going to call him. Be present. No agenda.\n\nMom knew how to be both. Present and helpful. I only knew helpful.\n\nLearning to exist with someone's pain—everything in me screams to act.\n\nBut maybe that's growth.\n\nSamuel's waiting.",
         emotion: 'raw_courage',
         variation_id: 'farewell_presence_v2_complex'
       }
@@ -1276,7 +1276,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
        {
-         text: "Thank you. I've been so focused on fixing the conversation. I forgot we could just have one.",
+         text: "I've been so focused on fixing the conversation. I forgot we could have one.",
          emotion: 'grateful',
          variation_id: 'grateful_insight_v1'
        }
@@ -1311,7 +1311,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'player_listen_first',
-        text: "I try to listen first. Not solve, just understand. But it's hard. I want to help so badly that I jump to solutions.",
+        text: "I try to listen first. Understand, not solve. But I want to help, so I jump to solutions.",
         nextNodeId: 'devon_crossroads',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication']
@@ -1346,7 +1346,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'devon_support',
-        text: "You're already doing it. Just by asking him about his work, you're showing up differently.",
+        text: "Asking about his work. That's showing up.",
         nextNodeId: 'devon_farewell',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication']
@@ -1359,7 +1359,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "Thank you. For listening. For not trying to fix me.\n\nI think I know what to do now. Not a solution. just a different approach.\n\nSamuel's waiting. Good luck with your own journey.",
+        text: "For listening. For not trying to fix me.\n\nI think I know what to do now. Not a solution—a different approach.\n\nSamuel's waiting. Good luck with your own journey.",
         emotion: 'grateful_resolved',
         variation_id: 'devon_farewell_v1'
       }

@@ -93,7 +93,7 @@ Forget the textbook. Chapter 4's garbage. Here's how you actually mix alginate w
     choices: [
       {
         choiceId: 'yaquin_tacit_knowledge',
-        text: "That's called tacit knowledge. It's valuable.",
+        text: "That's knowledge nobody else can teach.",
         nextNodeId: 'yaquin_curriculum_dream',
         pattern: 'analytical',
         skills: ['pedagogy']
@@ -140,7 +140,7 @@ Forget the textbook. Chapter 4's garbage. Here's how you actually mix alginate w
     choices: [
       {
         choiceId: 'yaquin_competence',
-        text: "Competence matters more than paper.",
+        text: "Eight years doing the work. That's the credential.",
         nextNodeId: 'yaquin_curriculum_dream',
         pattern: 'helping',
         skills: ['encouragement'],
@@ -162,7 +162,7 @@ Forget the textbook. Chapter 4's garbage. Here's how you actually mix alginate w
       },
       {
         choiceId: 'yaquin_build_own_credential',
-        text: "What if you built your own credential? Made your students the proof?",
+        text: "What if your students are the proof?",
         nextNodeId: 'yaquin_curriculum_dream',
         pattern: 'building',
         skills: ['creativity', 'leadership'],
@@ -395,7 +395,7 @@ All day. Don't fix teeth. fix fear. That's what I'm selling.`,
     choices: [
       {
         choiceId: 'confirm_psych',
-        text: "You're teaching emotional intelligence, not just dentistry.",
+        text: "That's not dentistry. That's something else.",
         nextNodeId: 'yaquin_launch_decision',
         pattern: 'helping',
         skills: ['emotionalIntelligence']
@@ -1087,7 +1087,7 @@ Critics → collaborators if humble enough to listen.`,
     nodeId: 'yaquin_p2_complete',
     speaker: 'Yaquin',
     content: [{
-      text: `Thank you. For being here when messy.|*Packing equipment.*|Cohort Monday. Twenty students. Live sessions. Real teaching.|See Samuel? Tell him. not just teaching skills. Building business that teaches.`,
+      text: `For being here when messy.|*Packing equipment.*|Cohort Monday. Twenty students. Live sessions. Real teaching.|See Samuel? Tell him. building business that teaches.`,
       emotion: 'grateful',
       interaction: 'nod',
       variation_id: 'complete_v1',

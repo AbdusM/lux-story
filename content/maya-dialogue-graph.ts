@@ -186,7 +186,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'family_dreams',
-        text: "But what are YOUR dreams?",
+        text: "I want to hear what you want.",
         nextNodeId: 'maya_deflect_passion',
         pattern: 'exploring',
         skills: ['communication', 'criticalThinking']
@@ -219,7 +219,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'deflect_safe',
-        text: "What if safe isn't right for you?",
+        text: "You don't sound happy with that.",
         nextNodeId: 'maya_anxiety_reveal',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication']
@@ -248,7 +248,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'deflect_build_both',
-        text: "What if you could build a path that honors both? Duty and desire aren't always opposites.",
+        text: "Is there a version where you don't have to choose?",
         nextNodeId: 'maya_anxiety_reveal',
         pattern: 'building',
         skills: ['creativity', 'systemsThinking'],
@@ -275,13 +275,13 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         pattern: 'exploring',
         minLevel: 5,
-        altText: "You see things, don't you? Most people just look. You actually notice.\n\nHow did you know? Is it that obvious?",
+        altText: "You see things, don't you? Most people look. You notice.\n\nHow did you know? Is it that obvious?",
         altEmotion: 'curious_vulnerable'
       },
       {
         pattern: 'helping',
         minLevel: 5,
-        altText: "There's something about you. Like you actually want to understand, not just hear.\n\nHow did you know? Is it that obvious?",
+        altText: "There's something about you. Like you want to understand, not hear.\n\nHow did you know? Is it that obvious?",
         altEmotion: 'trusting_vulnerable'
       }
     ],
@@ -499,7 +499,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Oh no. No no no.\n\nThe servo just popped. Smoke. The circuit is blackened.\n\nI fried it. Three months of work. Gone.\n\nMaybe... maybe this is a sign. I'm not an engineer. I should just stick to biology.",
+        text: "Oh no. No no no.\n\nThe servo popped. Smoke. The circuit is blackened.\n\nI fried it. Three months of work. Gone.\n\nMaybe this is a sign. I'm not an engineer. I should stick to biology.",
         emotion: 'devastated',
         variation_id: 'robotics_fail_v1',
         richEffectContext: 'error'
@@ -542,7 +542,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "It's fine. Really. It was just a hobby anyway.\n\nLet's just... talk about school. Or something normal.",
+        text: "It's fine. It was a hobby anyway.\n\nLet's talk about school. Or something normal.",
         emotion: 'closed_off',
         variation_id: 'retreat_v1'
       }
@@ -580,7 +580,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'scenario_bridge',
-        text: "See? You're already healing people. Just with circuits.",
+        text: "Circuits that help people. That counts.",
         nextNodeId: 'maya_encouraged',
         pattern: 'analytical',
         skills: ['criticalThinking', 'creativity']
@@ -655,7 +655,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'family_understanding',
-        text: "What if they sacrificed for your happiness, not just a title?",
+        text: "What if they sacrificed for your happiness, not a title?",
         nextNodeId: 'maya_reframes_sacrifice',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'culturalCompetence', 'criticalThinking'],
@@ -691,7 +691,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "I... I never thought of it that way. They sacrificed for my happiness, not just for a title. Maybe telling them about my real passion would honor their sacrifice, not betray it.",
+        text: "I never thought of it that way. They sacrificed for my happiness, not a title. Maybe telling them about my real passion would honor their sacrifice, not betray it.",
         emotion: 'revelatory',
         variation_id: 'reframes_v1'
       }
@@ -726,7 +726,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "You're right. I've been so afraid of disappointing them that I was ready to disappoint myself forever. That's not living, that's just... existing. But how do I find the courage to choose my own path?",
+        text: "I've been so afraid of disappointing them that I was ready to disappoint myself forever. That's not living—that's existing.\n\nBut how do I find the courage to choose my own path?",
         emotion: 'determined',
         variation_id: 'rebellion_v1'
       }
@@ -866,7 +866,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "You're right. Robotics engineering. I'll make my parents understand healing takes many forms.\n\nMaybe my robots will save lives too. Just differently.\n\nThank you for believing in my real dream.",
+        text: "Robotics engineering. I'll help my parents understand healing takes many forms.\n\nMaybe my robots will save lives too. Differently.",
         emotion: 'confident',
         variation_id: 'ending_robotics_v1'
       }
@@ -955,7 +955,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Thank you for listening. Really. I've been carrying this alone for so long.\n\nI'm not sure what I'll do yet, but... talking to you helped me see things differently. That matters more than you know.\n\nI should get back to studying. But maybe we'll talk again?",
+        text: "I've been carrying this alone for so long.\n\nI'm not sure what I'll do yet, but talking to you helped me see things differently.\n\nI should get back to studying. Maybe we'll talk again?",
         emotion: 'grateful',
         variation_id: 'early_gratitude_v1'
       }
@@ -1068,7 +1068,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Thank you for saying that. I... I've never thought of it that way. Maybe there's room for both worlds in my future. Maybe I don't have to choose between healing and building.",
+        text: "I've never thought of it that way. Maybe there's room for both worlds. Maybe I don't have to choose between healing and building.",
         emotion: 'hopeful',
         variation_id: 'grateful_v1'
       }
@@ -1076,7 +1076,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'support_explore',
-        text: "What would combining both look like?",
+        text: "Is there a way to do both?",
         nextNodeId: 'maya_considers_hybrid',
         pattern: 'analytical',
         skills: ['criticalThinking', 'creativity']
@@ -1157,7 +1157,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'birmingham_dream_recognition',
-        text: "Your dreams matter just as much as their expectations.",
+        text: "Your dreams matter as much as their expectations.",
         nextNodeId: 'maya_encouraged',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],

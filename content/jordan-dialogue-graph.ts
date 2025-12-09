@@ -338,7 +338,7 @@ Wasn't great at first. But I learned visual hierarchy. How eyes move. How color 
       },
       {
         choiceId: 'jordan_job3_pattern_skills',
-        text: "Skills like puzzle pieces. what's the picture?",
+        text: "Each skill was a piece. What were you building?",
         nextNodeId: 'jordan_pattern_acknowledgment',
         pattern: 'analytical',
         skills: ['criticalThinking', 'creativity', 'communication'],
@@ -470,7 +470,7 @@ It was fine. But I liked making things more than talking about other people's th
 
 Hear me out. Trainers are motivation psychologists. Designing experiences that make people believe they can do hard things.
 
-Experience design. User motivation. I just didn't have the language yet.`,
+Experience design. User motivation. I didn't have the language yet.`,
       emotion: 'animated',
       variation_id: 'jordan_job5_1'
     }],
@@ -506,7 +506,7 @@ Experience design. User motivation. I just didn't have the language yet.`,
       },
       {
         choiceId: 'jordan_job5_pattern_thread',
-        text: "You've been doing UX design this whole time. You just kept changing the medium.",
+        text: "You've been doing UX design this whole time. You kept changing the medium.",
         nextNodeId: 'jordan_job_reveal_6',
         pattern: 'analytical',
         skills: ['criticalThinking', 'creativity', 'communication'],
@@ -564,7 +564,7 @@ And hundreds of conversations. Everyone's going somewhere.`,
       },
       {
         choiceId: 'jordan_job6_validate_learning',
-        text: "Most people would just see that as survival work. You made it an education.",
+        text: "Most people would see that as survival work. You made it an education.",
         nextNodeId: 'jordan_job_reveal_7',
         pattern: 'building',
         skills: ['creativity', 'criticalThinking', 'communication'],
@@ -647,7 +647,7 @@ I'm seeing a retention failure at Day 3. Users download, setup... and then quit.
       // NOTE: Removed "Jordan sighs, deleting..." - frustration conveyed through dialogue
       text: `We tried that. A/B tested ten different button styles. It didn't move the needle a single percent.
 
-It's not about the pixels. It's deeper than that. If I can't figure this out, maybe I really am just a graphic designer pretending to be UX.`,
+It's not about the pixels. It's deeper than that. If I can't figure this out, maybe I'm a graphic designer pretending to be UX.`,
       emotion: 'frustrated',
       variation_id: 'ux_fail_visuals_v1',
       richEffectContext: 'error'
@@ -662,7 +662,7 @@ It's not about the pixels. It's deeper than that. If I can't figure this out, ma
       },
       {
         choiceId: 'ux_give_up',
-        text: "Maybe the app just isn't good.",
+        text: "Maybe the app isn't good.",
         nextNodeId: 'jordan_bad_ending',
         pattern: 'patience',
         consequence: {
@@ -681,10 +681,10 @@ It's not about the pixels. It's deeper than that. If I can't figure this out, ma
       // NOTE: Removed "She taps the screen" - insight emphasized through dialogue structure
       text: `Exactly. It wasn't a software bug. It was a *human* bug.
 
-They needed encouragement, not just data entry.
+They needed encouragement, not data entry.
 
 That's when I realized:
-User research? That's just customer service listening.
+User research? That's customer service listening.
 Wireframing? That's graphic design.
 Motivation loops? That's personal training.
 
@@ -1170,7 +1170,7 @@ Good luck with your journey.`,
     nodeId: 'jordan_bad_ending',
     speaker: 'Jordan Packard',
     content: [{
-      text: `You know what? You're right. It's safer to just stick to the script.
+      text: `You're right. It's safer to stick to the script.
 
 I'll talk about 'agile methodology' and 'design systems.' The stuff they want to hear.
 
