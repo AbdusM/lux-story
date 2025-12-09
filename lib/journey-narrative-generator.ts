@@ -133,7 +133,7 @@ function generatePatternReflection(stats: JourneyStats): string {
   const primary = PATTERN_NARRATIVES[stats.dominantPattern] || PATTERN_NARRATIVES.helping
   const secondary = PATTERN_NARRATIVES[stats.secondaryPattern] || PATTERN_NARRATIVES.analytical
 
-  return `"They call it '${primary.name}' in some circles. Not a title—more like a way of moving through the world. You've got some '${secondary.name}' in you too. Most interesting people have a mix."
+  return `"They call it '${primary.name}' in some circles. Not a title. more like a way of moving through the world. You've got some '${secondary.name}' in you too. Most interesting people have a mix."
 
 *He leans forward.*
 
@@ -161,13 +161,13 @@ function generateRelationshipReflections(gameState: GameState | SerializableGame
     let narrativeText: string
 
     if (trust >= 8) {
-      narrativeText = `"${characterName}... they opened up to you in ways I've rarely seen. That kind of trust isn't given—it's earned, one honest moment at a time. Whatever you said to them? It mattered."`
+      narrativeText = `"${characterName}... they opened up to you in ways I've rarely seen. That kind of trust isn't given. it's earned, one honest moment at a time. Whatever you said to them? It mattered."`
     } else if (trust >= 6) {
       narrativeText = `"${characterName} felt comfortable with you. That's not nothing. Some people spend years trying to make connections like that."`
     } else if (trust >= 4) {
       narrativeText = `"You and ${characterName} found some common ground. Maybe not everything, but enough to understand each other a little better."`
     } else {
-      narrativeText = `"${characterName}—you two circled each other a bit. Sometimes the most important conversations are the ones we're still figuring out how to have."`
+      narrativeText = `"${characterName}. you two circled each other a bit. Sometimes the most important conversations are the ones we're still figuring out how to have."`
     }
 
     reflections.push({
@@ -219,12 +219,12 @@ function generateSkillHighlights(demonstrations: SkillDemonstration[]): SkillHig
     .slice(0, 3)
 
   const skillSignificance: Record<string, string> = {
-    emotionalIntelligence: 'Being able to read people—really read them—opens doors that qualifications alone never will.',
+    emotionalIntelligence: 'Being able to read people. really read them. opens doors that qualifications alone never will.',
     criticalThinking: 'Most people accept the first answer. You dig deeper. That\'s rare.',
     communication: 'Saying the right thing at the right time? That\'s a superpower in any room.',
-    problemSolving: 'Breaking down complexity into steps—that\'s how impossible things get done.',
+    problemSolving: 'Breaking down complexity into steps. that\'s how impossible things get done.',
     leadership: 'Leading isn\'t about being in charge. It\'s about helping others find their way.',
-    creativity: 'Seeing connections others miss—that\'s where innovation lives.',
+    creativity: 'Seeing connections others miss. that\'s where innovation lives.',
     adaptability: 'Changing direction without losing your footing. That\'s survival and success.',
     collaboration: 'Making others feel heard and valued? Teams are built on that.',
     culturalCompetence: 'Understanding where people come from helps you meet them where they are.',
@@ -245,11 +245,11 @@ function generateClosingWisdom(stats: JourneyStats): string {
   const closings = [
     `"Here's what I know after all these years at this station: the people who figure out their path aren't the ones with all the answers. They're the ones willing to have the conversations. You had yours."`,
 
-    `"I've seen a lot of people pass through here. Some rush through, some linger. But the ones who grow? They're the ones who show up—really show up—for the people they meet. You did that."`,
+    `"I've seen a lot of people pass through here. Some rush through, some linger. But the ones who grow? They're the ones who show up. really show up. for the people they meet. You did that."`,
 
-    `"Career counselors will give you assessments and percentages. But what I saw here? That's evidence. Not what you think you might do—what you actually did when it mattered."`,
+    `"Career counselors will give you assessments and percentages. But what I saw here? That's evidence. Not what you think you might do. what you actually did when it mattered."`,
 
-    `"Don't let anyone tell you these conversations were just a game. The way you listened, the choices you made—that's who you are when you're not performing for an interview. That's the real you."`
+    `"Don't let anyone tell you these conversations were just a game. The way you listened, the choices you made. that's who you are when you're not performing for an interview. That's the real you."`
   ]
 
   // Select based on a hash of the journey stats for consistency

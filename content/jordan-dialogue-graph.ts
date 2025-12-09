@@ -20,7 +20,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_introduction',
     speaker: 'Jordan Packard',
     content: [{
-      text: `Hey! Career Day at Covalence—the coding bootcamp over in Innovation Depot. Got here way too early. Classic overcompensation.
+      text: `Hey! Career Day at Covalence. the coding bootcamp over in Innovation Depot. Got here way too early. Classic overcompensation.
 
 I've rewritten this speech six times.{{helping>=3:
 
@@ -258,7 +258,7 @@ Customer service is applied empathy.`,
       },
       {
         choiceId: 'jordan_job2_validate_skill',
-        text: "That's actually a really valuable skill—reading people that quickly.",
+        text: "That's actually a really valuable skill. reading people that quickly.",
         nextNodeId: 'jordan_job_reveal_3',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
@@ -300,7 +300,7 @@ Customer service is applied empathy.`,
     nodeId: 'jordan_job_reveal_3',
     speaker: 'Jordan Packard',
     content: [{
-      text: `Got restless. Taught myself graphic design. YouTube, library books. Freelance work—logos, flyers.
+      text: `Got restless. Taught myself graphic design. YouTube, library books. Freelance work. logos, flyers.
 
 Wasn't great at first. But I learned visual hierarchy. How eyes move. How color creates emotion.`,
       emotion: 'nostalgic',
@@ -338,7 +338,7 @@ Wasn't great at first. But I learned visual hierarchy. How eyes move. How color 
       },
       {
         choiceId: 'jordan_job3_pattern_skills',
-        text: "Skills like puzzle pieces—what's the picture?",
+        text: "Skills like puzzle pieces. what's the picture?",
         nextNodeId: 'jordan_pattern_acknowledgment',
         pattern: 'analytical',
         skills: ['criticalThinking', 'creativity', 'communication'],
@@ -368,7 +368,7 @@ Wasn't great at first. But I learned visual hierarchy. How eyes move. How color 
     nodeId: 'jordan_pattern_acknowledgment',
     speaker: 'Jordan Packard',
     content: [{
-      text: `You're really following along. Most people zone out by job three—eyes glaze over, polite nods. But you're actually listening.
+      text: `You're really following along. Most people zone out by job three. eyes glaze over, polite nods. But you're actually listening.
 
 That means a lot. Thank you.`,
       emotion: 'appreciative',
@@ -494,7 +494,7 @@ Experience design. User motivation. I just didn't have the language yet.`,
       },
       {
         choiceId: 'jordan_job5_validate_insight',
-        text: "That's actually brilliant—seeing the deeper pattern underneath the job title.",
+        text: "That's actually brilliant. seeing the deeper pattern underneath the job title.",
         nextNodeId: 'jordan_job_reveal_6',
         pattern: 'exploring',
         skills: ['curiosity', 'communication'],
@@ -518,7 +518,7 @@ Experience design. User motivation. I just didn't have the language yet.`,
       },
       {
         choiceId: 'jordan_job5_building_experiences',
-        text: "You were always building experiences. Gyms, apps, client relationships—all the same craft.",
+        text: "You were always building experiences. Gyms, apps, client relationships. all the same craft.",
         nextNodeId: 'jordan_job_reveal_6',
         pattern: 'building',
         skills: ['systemsThinking', 'creativity'],
@@ -715,7 +715,7 @@ I've been training for this job my whole life.`,
     nodeId: 'jordan_job_reveal_7_pt2',
     speaker: 'Jordan Packard',
     content: [{
-      text: `Now I lead a team, teach at the bootcamp, and finally—FINALLY—my mom tells people what I do without apologizing first.`,
+      text: `Now I lead a team, teach at the bootcamp, and finally. FINALLY. my mom tells people what I do without apologizing first.`,
       emotion: 'triumphant',
       variation_id: 'jordan_job7_1_pt2'
     }],
@@ -864,7 +864,7 @@ Which story should I tell them?`,
       {
         pattern: 'helping',
         minLevel: 5,
-        altText: `Twenty minutes before that room fills up. You've been here with me the whole time—patient, listening. That's rare.
+        altText: `Twenty minutes before that room fills up. You've been here with me the whole time. patient, listening. That's rare.
 
 I keep rewriting this speech. Which version is true?
 

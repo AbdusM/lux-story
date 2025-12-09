@@ -45,7 +45,7 @@ export const META_ACHIEVEMENTS: MetaAchievement[] = [
     id: 'the_listener',
     name: 'The Listener',
     description: 'Consistently chose patience across multiple characters',
-    samuelQuote: '"You have a rare gift—the ability to sit with silence until it speaks."',
+    samuelQuote: '"You have a rare gift. the ability to sit with silence until it speaks."',
     rarity: 'uncommon',
     category: 'pattern',
     icon: '👂'
@@ -110,7 +110,7 @@ export const META_ACHIEVEMENTS: MetaAchievement[] = [
     id: 'deep_connection',
     name: 'Deep Connection',
     description: 'Reached maximum trust with any character',
-    samuelQuote: '"What you built with them—that\'s not something that fades."',
+    samuelQuote: '"What you built with them. that\'s not something that fades."',
     rarity: 'rare',
     category: 'relationship',
     icon: '💫'
@@ -159,7 +159,7 @@ export const META_ACHIEVEMENTS: MetaAchievement[] = [
     id: 'the_returner',
     name: 'The Returner',
     description: 'Revisited a character after completing their arc',
-    samuelQuote: '"Coming back—that\'s not about finishing. That\'s about caring."',
+    samuelQuote: '"Coming back. that\'s not about finishing. That\'s about caring."',
     rarity: 'uncommon',
     category: 'hidden',
     icon: '🔙'

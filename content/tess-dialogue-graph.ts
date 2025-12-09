@@ -128,7 +128,7 @@ You look like you've been outside. Wilderness Immersion. Vacation or crucible?`,
     speaker: 'Tess',
     content: [
       {
-        text: `That's the problem. Investors hear 'camping.' They miss the decision-making. Logistics. Conflict resolution at 4,000 feet—wet, hungry, lost. Need to show the curriculum inside the chaos.`,
+        text: `That's the problem. Investors hear 'camping.' They miss the decision-making. Logistics. Conflict resolution at 4,000 feet. wet, hungry, lost. Need to show the curriculum inside the chaos.`,
         emotion: 'frustrated',
         interaction: 'shake',
         variation_id: 'defends_v1',
@@ -151,7 +151,7 @@ You look like you've been outside. Wilderness Immersion. Vacation or crucible?`,
     speaker: 'Tess',
     content: [
       {
-        text: `Restarting 'Walkabout.' Program in Philly.|Instead of senior year—rows, tests—you went out. Trail. Service projects. Built your own syllabus.|Did it ten years ago. Changed my life.|Learned more about leadership in those woods than four years of college.`,
+        text: `Restarting 'Walkabout.' Program in Philly.|Instead of senior year. rows, tests. you went out. Trail. Service projects. Built your own syllabus.|Did it ten years ago. Changed my life.|Learned more about leadership in those woods than four years of college.`,
         emotion: 'inspired',
         interaction: 'bloom',
         variation_id: 'school_story_v1',
@@ -379,7 +379,7 @@ Can't make them feel urgency? Already lost.`,
     speaker: 'Tess',
     content: [
       {
-        text: `Burnout. Yes. Suicide rates, anxiety—schools are pressure cookers.|Not a gap year. A reset. 'Disconnect to Reconnect.'|'We give students what high school steals: Their agency.'`,
+        text: `Burnout. Yes. Suicide rates, anxiety. schools are pressure cookers.|Not a gap year. A reset. 'Disconnect to Reconnect.'|'We give students what high school steals: Their agency.'`,
         emotion: 'passionate',
         interaction: 'nod',
         variation_id: 'pitch_mental_health_v1',
@@ -424,7 +424,7 @@ If I fail, just an unemployed hiker.`,
       {
         pattern: 'building',
         minLevel: 5,
-        altText: `It works. Can sell this. You helped me see it—you're a builder, I can tell.
+        altText: `It works. Can sell this. You helped me see it. you're a builder, I can tell.
 
 But this email... resignation. Leaving pension. Tenure track.
 
@@ -444,7 +444,7 @@ If I fail, just an unemployed hiker.`,
       {
         pattern: 'exploring',
         minLevel: 5,
-        altText: `It works. Can sell this. You're curious about the world—I see it in your questions.
+        altText: `It works. Can sell this. You're curious about the world. I see it in your questions.
 
 But this email... resignation. Leaving pension. Tenure track.
 
@@ -545,7 +545,7 @@ If I fail, just an unemployed hiker.`,
     speaker: 'Tess',
     content: [
       {
-        text: `{{met_kai:Kai is trying to change the system from within. I respect that. But I have to build outside it.|I'm building outside the system.}} I'm heading back to Woodlawn. I have a grant proposal to write.\n\nBefore I go—here's the play: I showed my hand. Your turn. What are you building? What's your move?`,
+        text: `{{met_kai:Kai is trying to change the system from within. I respect that. But I have to build outside it.|I'm building outside the system.}} I'm heading back to Woodlawn. I have a grant proposal to write.\n\nBefore I go. here's the play: I showed my hand. Your turn. What are you building? What's your move?`,
         emotion: 'curious_engaged',
         interaction: 'nod',
         variation_id: 'farewell_v1',
@@ -645,7 +645,7 @@ Welcome to education reform in practice.`,
     nodeId: 'tess_p2_crisis_reveal',
     speaker: 'Tess',
     content: [{
-      text: `DeShawn—16, Birmingham inner city, first time camping—panic attack Day 2. Complete darkness. No streetlights. Sounds he'd never heard. Couldn't breathe. Thought he was dying.
+      text: `DeShawn. 16, Birmingham inner city, first time camping. panic attack Day 2. Complete darkness. No streetlights. Sounds he'd never heard. Couldn't breathe. Thought he was dying.
 
 Guide talked him down. Physically safe. But two others want to quit.
 
@@ -739,7 +739,7 @@ What do I say?`,
       },
       {
         choiceId: 'p2_deshawn_alternative',
-        text: "Offer him an alternative assignment—wilderness isn't for everyone.",
+        text: "Offer him an alternative assignment. wilderness isn't for everyone.",
         nextNodeId: 'tess_p2_deshawn_decision',
         pattern: 'analytical',
         skills: ['adaptability', 'pragmatism']
@@ -793,9 +793,9 @@ One down. Now parents.`,
     content: [{
       text: `**Riley's Mom**: 'Bring my child home NOW.' **Jamie's Dad**: 'Outdoor education, not survival training.' **Another**: 'My lawyer says duty of care violation.'
 
-Two options. Defend rigor—'This IS wilderness education.'
+Two options. Defend rigor. 'This IS wilderness education.'
 
-Or modify—gentler, safer, palatable.
+Or modify. gentler, safer, palatable.
 
 If I cave, still teaching resilience? Or babysitting in the woods?`,
       emotion: 'frustrated',
@@ -817,7 +817,7 @@ If I cave, still teaching resilience? Or babysitting in the woods?`,
       },
       {
         choiceId: 'p2_two_track',
-        text: "Create two tracks—intense and modified. Let families choose.",
+        text: "Create two tracks. intense and modified. Let families choose.",
         nextNodeId: 'tess_p2_program_adaptation',
         pattern: 'analytical',
         skills: ['adaptability', 'strategicThinking'],
@@ -919,9 +919,9 @@ Compromise or good design?`,
 
 <jitter>Questions: Safe? Qualified? Liability? Better than AP classes?</jitter>
 
-Go in with data—completion rates, assessments, testimonials.
+Go in with data. completion rates, assessments, testimonials.
 
-Or vision—'Education is becoming, not just learning.'
+Or vision. 'Education is becoming, not just learning.'
 
 Or both and risk sounding like a TED Talk.`,
       emotion: 'anxious',
@@ -965,13 +965,13 @@ Or both and risk sounding like a TED Talk.`,
     nodeId: 'tess_p2_board_meeting',
     speaker: 'Tess',
     content: [{
-      text: `Monday. School board—five skeptical faces.
+      text: `Monday. School board. five skeptical faces.
 
 **Board Member 1**: 'Ms. Rodriguez, complaints about student safety.'
 
 **Tess**: 'I want to address them directly.'
 
-DeShawn had a panic attack. Not unsafe—working. Real fear. Chose to continue. That's resilience.
+DeShawn had a panic attack. Not unsafe. working. Real fear. Chose to continue. That's resilience.
 
 **Board Member 2**: 'Panic attacks are... good?'
 
@@ -1004,7 +1004,7 @@ How do I answer?`,
     nodeId: 'tess_p2_leadership_moment',
     speaker: 'Tess',
     content: [{
-      text: `*Board members exchange glances.*|**Member 3**: 'Expensive. Risky. Unproven.'|*Nods.*|**Tess**: <big>'All of those. Also the future of education.'</big>|*Leans forward.*|<big>'Keep doing what we've always done—safe, measurable, forgettable. Or teach students to face the unknown.'</big>|**Chair**: 'If more quit?'|*Meets eyes.*|<big>'Then I learn. Iterate. That's what builders do.'</big>|*Silence.*|**Chair**: 'Continue. Monthly reports.'|*Exhales.*`,
+      text: `*Board members exchange glances.*|**Member 3**: 'Expensive. Risky. Unproven.'|*Nods.*|**Tess**: <big>'All of those. Also the future of education.'</big>|*Leans forward.*|<big>'Keep doing what we've always done. safe, measurable, forgettable. Or teach students to face the unknown.'</big>|**Chair**: 'If more quit?'|*Meets eyes.*|<big>'Then I learn. Iterate. That's what builders do.'</big>|*Silence.*|**Chair**: 'Continue. Monthly reports.'|*Exhales.*`,
       emotion: 'proud',
       variation_id: 'leadership_v1',
       useChatPacing: true,
@@ -1067,7 +1067,7 @@ How do I answer?`,
     content: [{
       text: `Adding three changes:
 
-<bloom>1. Pre-program exposure trips—test woods before committing 2. Tiered paths—meet students where they are 3. Parent education—help them understand</bloom>
+<bloom>1. Pre-program exposure trips. test woods before committing 2. Tiered paths. meet students where they are 3. Parent education. help them understand</bloom>
 
 Month ago, thought founding was perfect curriculum.
 
@@ -1107,7 +1107,7 @@ Now know it's leading through uncertainty. Every crisis is data. Every dropout a
     choices: [
       {
         choiceId: 'tess_p2_asks_before_leave',
-        text: "Before you go—what's your biggest challenge?",
+        text: "Before you go. what's your biggest challenge?",
         nextNodeId: 'tess_p2_asks_player',
         pattern: 'helping',
         skills: ['communication', 'curiosity']
@@ -1135,28 +1135,28 @@ Now know it's leading through uncertainty. Every crisis is data. Every dropout a
     choices: [
       {
         choiceId: 'player_building_helping',
-        text: "Opening doors. Showing people resources they didn't know existed. That's what I want—to be the person who says 'here, this might help.'",
+        text: "Opening doors. Showing people resources they didn't know existed. That's what I want. to be the person who says 'here, this might help.'",
         nextNodeId: 'tess_reciprocity_response',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'emotionalIntelligence']
       },
       {
         choiceId: 'player_building_systems',
-        text: "Building maps. Ways to find what you need faster. The information exists—someone just has to organize it.",
+        text: "Building maps. Ways to find what you need faster. The information exists. someone just has to organize it.",
         nextNodeId: 'tess_reciprocity_response',
         pattern: 'building',
         skills: ['emotionalIntelligence', 'systemsThinking']
       },
       {
         choiceId: 'player_building_understanding',
-        text: "Learning what people actually need. Not what they say they need—what they're really looking for underneath.",
+        text: "Learning what people actually need. Not what they say they need. what they're really looking for underneath.",
         nextNodeId: 'tess_reciprocity_response',
         pattern: 'analytical',
         skills: ['emotionalIntelligence', 'criticalThinking']
       },
       {
         choiceId: 'player_still_figuring',
-        text: "Still looking. Like everyone who ends up here. Maybe that's the point—you find by searching.",
+        text: "Still looking. Like everyone who ends up here. Maybe that's the point. you find by searching.",
         nextNodeId: 'tess_reciprocity_response',
         pattern: 'exploring',
         skills: ['emotionalIntelligence', 'adaptability']
@@ -1189,7 +1189,7 @@ Now know it's leading through uncertainty. Every crisis is data. Every dropout a
     nodeId: 'tess_p2_asks_player',
     speaker: 'Tess',
     content: [{
-      text: `*Pauses. Looks at you.*|Biggest challenge?|*Thinks.*|Mine—scaling without losing rigor. Balancing safety with growth.|But you?|What challenge you facing?|How you handle when things get messy?`,
+      text: `*Pauses. Looks at you.*|Biggest challenge?|*Thinks.*|Mine. scaling without losing rigor. Balancing safety with growth.|But you?|What challenge you facing?|How you handle when things get messy?`,
       emotion: 'curious_engaged',
       interaction: 'nod',
       variation_id: 'tess_p2_reciprocity_v1',

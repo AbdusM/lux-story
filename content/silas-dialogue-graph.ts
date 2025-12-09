@@ -328,11 +328,11 @@ I've been farming for two years and I've lost three.`,
       {
         text: `The strawberries. That was the worst.
 
-The pH sensor said 6.5—perfect for strawberries. But the sensor was in the wrong spot. Edge of the bed, where the water pooled.
+The pH sensor said 6.5. perfect for strawberries. But the sensor was in the wrong spot. Edge of the bed, where the water pooled.
 
 The center of the bed was at 5.2. Too acidic. The plants couldn't absorb iron.
 
-They looked healthy for weeks. Green leaves, good structure. Then one morning—yellow. Chlorosis. Iron deficiency. Dead in 48 hours.`,
+They looked healthy for weeks. Green leaves, good structure. Then one morning. yellow. Chlorosis. Iron deficiency. Dead in 48 hours.`,
         emotion: 'haunted',
         variation_id: 'strawberry_v1'
       }
@@ -509,7 +509,7 @@ I panicked. I broke the system because I was scared.`,
     speaker: 'Silas',
     content: [
       {
-        text: `*You crawl under the rack. You trace the PVC pipe. It vibrates—there's water inside.*
+        text: `*You crawl under the rack. You trace the PVC pipe. It vibrates. there's water inside.*
 
 *But right before the nozzle... a kink. A physical crimp in the line.*
 
@@ -628,7 +628,7 @@ I've been sketching this for months. The "Feral Lab."
 
 Not a coding bootcamp. Not an accelerator. A deceleration program.
 
-We take burnt-out engineers—people like I was—and we put them in a greenhouse. No WiFi. No Slack. Just seeds, soil, and time.`,
+We take burnt-out engineers. people like I was. and we put them in a greenhouse. No WiFi. No Slack. Just seeds, soil, and time.`,
         emotion: 'excited',
         variation_id: 'feral_concept_v1'
       }
@@ -686,7 +686,7 @@ Mr. Hawkins never googled anything. He just... watched. For sixty years. And he 
       {
         text: `Three months ago, I ran a pilot. Six engineers from the tech park downtown. One weekend.
 
-One guy, Marcus—not the paramedic, different Marcus—came in with three phones. Product manager at a startup. Couldn't sit still for ten minutes.
+One guy, Marcus. not the paramedic, different Marcus. came in with three phones. Product manager at a startup. Couldn't sit still for ten minutes.
 
 By Sunday, he was talking to a tomato plant. Not ironically. He'd realized the plant's leaves were telling him it was thirsty before any sensor could.`,
         emotion: 'proud',
@@ -719,7 +719,7 @@ By Sunday, he was talking to a tomato plant. Not ironically. He'd realized the p
       {
         text: `He quit his startup three weeks later. Started a consulting practice. Works half the hours.
 
-But here's the thing—he's not less productive. He's more productive. He just stopped confusing activity with progress.
+But here's the thing. he's not less productive. He's more productive. He just stopped confusing activity with progress.
 
 Last week he sent me a photo. His company built a meditation garden at their office. He's teaching his team to debug their minds before they debug code.`,
         emotion: 'satisfied',
@@ -744,7 +744,7 @@ Last week he sent me a photo. His company built a meditation garden at their off
       {
         text: `Week One: Observation. No phones. You sit in the greenhouse and draw what you see. Every day, the same plant. You notice things change.
 
-Week Two: Failure. You grow something that will definitely die. You watch it die. You learn that death isn't a bug—it's part of the system.
+Week Two: Failure. You grow something that will definitely die. You watch it die. You learn that death isn't a bug. it's part of the system.
 
 Week Three: Integration. You design a sensor. But the rule is: the sensor can only confirm what you already suspected from looking. It's a check, not a crutch.`,
         emotion: 'pedagogical',
@@ -770,11 +770,11 @@ Week Three: Integration. You design a sensor. But the rule is: the sensor can on
       {
         text: `That technology should amplify human judgment, not replace it.
 
-By week three, they've developed intuition. The sensor becomes a tool for calibrating that intuition—not a substitute for it.
+By week three, they've developed intuition. The sensor becomes a tool for calibrating that intuition. not a substitute for it.
 
 One woman, a data scientist, said something that stuck with me: "I used to think dashboards showed me reality. Now I know they show me someone's decision about what to measure."
 
-That's the shift. Sensors don't lie—they just answer the question you asked. The wisdom is in asking the right question.`,
+That's the shift. Sensors don't lie. they just answer the question you asked. The wisdom is in asking the right question.`,
         emotion: 'teaching',
         variation_id: 'integration_v1'
       }
@@ -801,7 +801,7 @@ My hands are calloused now.
 
 But I think it's bigger than that. Ground truth is what happens when you stop mediating reality through screens and actually touch it.
 
-Mr. Hawkins had ground truth. He could feel a storm coming before the barometer dropped. Not magic—just sixty years of paying attention to things that don't have notification sounds.`,
+Mr. Hawkins had ground truth. He could feel a storm coming before the barometer dropped. Not magic. just sixty years of paying attention to things that don't have notification sounds.`,
         emotion: 'reverent',
         variation_id: 'philosophy_v1'
       }
@@ -931,9 +931,9 @@ The basil is already perking up. The water finally reached its roots.`,
     speaker: 'Silas',
     content: [
       {
-        text: `*He smiles—maybe the first genuine smile you've seen from him.*
+        text: `*He smiles. maybe the first genuine smile you've seen from him.*
 
-I will. And hey—if you ever burn out, come find me.
+I will. And hey. if you ever burn out, come find me.
 
 I'll teach you how to grow something. Something that can't be debugged. Something that just... grows.
 

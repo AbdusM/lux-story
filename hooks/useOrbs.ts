@@ -50,10 +50,14 @@ interface UseOrbsReturn {
   // Actions (silent - no UI feedback)
   earnOrb: (pattern: PatternType) => void
   earnBonusOrbs: (pattern: PatternType, amount: number) => void
+  markOrbsViewed: () => void  // Call when Journal is opened
+  getUnacknowledgedMilestone: () => keyof OrbMilestones | null  // Get next milestone for Samuel to acknowledge
+  acknowledgeMilestone: (milestone: keyof OrbMilestones) => void  // Mark milestone as acknowledged
 
   // Computed
   tier: ReturnType<typeof getOrbTier>
   hasOrbs: boolean
+  hasNewOrbs: boolean  // True if new orbs since last Journal view
   dominantPattern: OrbType | null
 }
 
@@ -77,6 +81,18 @@ export function useOrbs(): UseOrbsReturn {
       streak5: false,
       streak10: false
     }
+  )
+
+  // Track last viewed total for FoxTheatreGlow discovery prompt
+  const [lastViewedTotal, setLastViewedTotal] = useLocalStorage<number>(
+    'lux-orb-last-viewed',
+    0
+  )
+
+  // Track which milestones Samuel has acknowledged (so he doesn't repeat)
+  const [acknowledgedMilestones, setAcknowledgedMilestones] = useLocalStorage<Partial<OrbMilestones>>(
+    'lux-orb-acknowledged',
+    {}
   )
 
   /**
@@ -142,10 +158,58 @@ export function useOrbs(): UseOrbsReturn {
     }))
   }, [setBalance])
 
+  /**
+   * Mark orbs as viewed - call when Journal is opened
+   * This clears the FoxTheatreGlow "new orbs" indicator
+   */
+  const markOrbsViewed = useCallback(() => {
+    setLastViewedTotal(balance.totalEarned)
+  }, [setLastViewedTotal, balance.totalEarned])
+
+  /**
+   * Get the next unacknowledged milestone for Samuel to recognize
+   * Returns null if no new milestones to acknowledge
+   * Priority order: tiers first, then streaks
+   */
+  const getUnacknowledgedMilestone = useCallback((): keyof OrbMilestones | null => {
+    // Priority order for acknowledgment
+    const orderedMilestones: (keyof OrbMilestones)[] = [
+      'firstOrb',
+      'tierEmerging',
+      'tierDeveloping',
+      'tierFlourishing',
+      'tierMastered',
+      'streak3',
+      'streak5',
+      'streak10'
+    ]
+
+    for (const milestone of orderedMilestones) {
+      if (milestones[milestone] && !acknowledgedMilestones[milestone]) {
+        return milestone
+      }
+    }
+
+    return null
+  }, [milestones, acknowledgedMilestones])
+
+  /**
+   * Mark a milestone as acknowledged by Samuel
+   */
+  const acknowledgeMilestone = useCallback((milestone: keyof OrbMilestones) => {
+    setAcknowledgedMilestones(prev => ({
+      ...prev,
+      [milestone]: true
+    }))
+  }, [setAcknowledgedMilestones])
+
   // Computed values
   const tier = useMemo(() => getOrbTier(balance.totalEarned), [balance.totalEarned])
 
   const hasOrbs = balance.totalEarned > 0
+
+  // Check if there are new orbs since last Journal view
+  const hasNewOrbs = balance.totalEarned > lastViewedTotal
 
   const dominantPattern = useMemo((): OrbType | null => {
     const types: OrbType[] = ['analytical', 'patience', 'exploring', 'helping', 'building']
@@ -167,8 +231,12 @@ export function useOrbs(): UseOrbsReturn {
     milestones,
     earnOrb,
     earnBonusOrbs,
+    markOrbsViewed,
+    getUnacknowledgedMilestone,
+    acknowledgeMilestone,
     tier,
     hasOrbs,
+    hasNewOrbs,
     dominantPattern
   }
 }

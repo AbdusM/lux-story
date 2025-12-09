@@ -19,6 +19,11 @@ const quotes = [
   { text: "What lies behind us and what lies before us are tiny matters compared to what lies within us.", author: "Ralph Waldo Emerson" },
   { text: "The privilege of a lifetime is to become who you truly are.", author: "Carl Jung" },
   { text: "Your work is to discover your work and then with all your heart to give yourself to it.", author: "Buddha" },
+  { text: "The best way to predict the future is to create it.", author: "Peter Drucker" },
+  { text: "It is never too late to be what you might have been.", author: "George Eliot" },
+  { text: "The future belongs to those who believe in the beauty of their dreams.", author: "Eleanor Roosevelt" },
+  { text: "We are what we repeatedly do. Excellence, then, is not an act, but a habit.", author: "Aristotle" },
+  { text: "The mind is not a vessel to be filled, but a fire to be kindled.", author: "Plutarch" },
 ]
 
 interface AtmosphericIntroProps {

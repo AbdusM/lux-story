@@ -994,5 +994,19 @@ export const useGameSelectors = {
     const serialized = useGameStore((state) => state.coreGameState)
     if (!serialized) return null
     return serialized.characters.find(c => c.characterId === characterId) || null
+  },
+
+  // Check if a global flag is set
+  useHasGlobalFlag: (flag: string) => {
+    const serialized = useGameStore((state) => state.coreGameState)
+    if (!serialized) return false
+    return serialized.globalFlags.includes(flag)
+  },
+
+  // Get all global flags
+  useGlobalFlags: () => {
+    const serialized = useGameStore((state) => state.coreGameState)
+    if (!serialized) return []
+    return serialized.globalFlags
   }
 }

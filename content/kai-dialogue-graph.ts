@@ -469,7 +469,7 @@ We're optimizing for numbers that don't matter while people get hurt.`,
     speaker: 'Kai',
     content: [
       {
-        text: `I visited him. Marcus—not the nurse, the worker. Same name, different person.
+        text: `I visited him. Marcus. not the nurse, the worker. Same name, different person.
 
 He's 22. Two kids. The doctors say he'll walk again, but warehouse work? Probably not.
 
@@ -502,7 +502,7 @@ His wife looked at me and asked: "Did you design the training he took?"`,
     speaker: 'Kai',
     content: [
       {
-        text: `I said yes. And I apologized. Not the corporate apology—the real one.
+        text: `I said yes. And I apologized. Not the corporate apology. the real one.
 
 She didn't yell. She didn't threaten to sue. She just said: "Fix it. So this doesn't happen to someone else's husband."
 
@@ -684,7 +684,7 @@ That's it. That's the skill. Not "harness safety." *Courage.*`,
       {
         text: `I ran the simulation with three warehouse workers last night. Off the clock. Confidential.
 
-The first one—DeShawn, 15 years on the floor—he failed the forklift scenario three times. On the fourth try, he stopped the load.
+The first one. DeShawn, 15 years on the floor. he failed the forklift scenario three times. On the fourth try, he stopped the load.
 
 You know what he said? "I've never done that. Never stopped. I always just finished the job."`,
         emotion: 'hopeful',
@@ -774,7 +774,7 @@ Supervisors. Safety leads. The ones who can actually stop a dangerous situation 
       {
         text: `Exactly. Forklifts. Heights. Chemical handling. The jobs where a mistake means someone doesn't go home.
 
-If I can prove the simulation reduces real injuries—not just compliance metrics—then maybe someone will listen.
+If I can prove the simulation reduces real injuries. not just compliance metrics. then maybe someone will listen.
 
 Or maybe I just do it anyway. Without permission.`,
         emotion: 'determined',
@@ -798,7 +798,7 @@ Or maybe I just do it anyway. Without permission.`,
     speaker: 'Kai',
     content: [
       {
-        text: `I have to show this. Not to the VP—to the workers.
+        text: `I have to show this. Not to the VP. to the workers.
 
 The training is broken. I'm building checkmarks that hide the danger.
 
@@ -832,7 +832,7 @@ If I stay, I'm complicit. If I leave, I can build something that actually protec
       {
         text: `I thought about that. Change from within. But you know how long it takes to change a corporate culture?
 
-Marcus—the worker in the hospital—he can't wait five years for me to get promoted to the right level. His kids need their dad healthy now.
+Marcus. the worker in the hospital. he can't wait five years for me to get promoted to the right level. His kids need their dad healthy now.
 
 Sometimes the system is too slow. Sometimes you have to step outside it.`,
         emotion: 'resolved',
@@ -860,7 +860,7 @@ Sometimes the system is too slow. Sometimes you have to step outside it.`,
 
 I've been building training for years. Thousands of slides. Millions of checkmarks.
 
-What do you think matters more—reaching more people, or reaching people more deeply?`,
+What do you think matters more. reaching more people, or reaching people more deeply?`,
         emotion: 'reflective',
         variation_id: 'final_choice_v1'
       }
@@ -924,7 +924,7 @@ But I'll never have to click 'Next' again.`,
       {
         pattern: 'building',
         minLevel: 5,
-        altText: `You understand. You're a builder too—I can tell by how you think. <bloom>Kairos Learning Design</bloom>. No certificates. Just survival.
+        altText: `You understand. You're a builder too. I can tell by how you think. <bloom>Kairos Learning Design</bloom>. No certificates. Just survival.
 
 It's terrifying. I'm giving up the salary, the benefits... the green checkmarks.
 
@@ -944,7 +944,7 @@ But I'll never have to click 'Next' again.`,
       {
         pattern: 'analytical',
         minLevel: 5,
-        altText: `You cut through the noise—straight to what matters. That's the skill I need to teach. <bloom>Kairos Learning Design</bloom>. No certificates. Just survival.
+        altText: `You cut through the noise. straight to what matters. That's the skill I need to teach. <bloom>Kairos Learning Design</bloom>. No certificates. Just survival.
 
 It's terrifying. I'm giving up the salary, the benefits... the green checkmarks.
 
@@ -1014,7 +1014,7 @@ Thanks for trying.`,
       {
         text: `Thank you. You didn't just help me fix a module. You helped me stop lying to myself.
 
-Before I go—between us, I've laid all my cards out. What about yours? What are you building? What connection matters most to you?`,
+Before I go. between us, I've laid all my cards out. What about yours? What are you building? What connection matters most to you?`,
         emotion: 'curious_engaged',
         variation_id: 'farewell_v2'
       }
@@ -1064,7 +1064,7 @@ Between us... you care deeply about people. I saw it in every question you asked
 
 I've been building training for years. Thousands of slides. Millions of checkmarks.
 
-Between us—I've shared my whole journey. Now I want to hear yours. What are you building? What connection are you trying to create?`,
+Between us. I've shared my whole journey. Now I want to hear yours. What are you building? What connection are you trying to create?`,
         emotion: 'curious_engaged',
         variation_id: 'kai_reciprocity_v1'
       }

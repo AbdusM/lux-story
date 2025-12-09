@@ -149,7 +149,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'ready_to_explore_intro',
         text: "I'm ready to explore.",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_orb_introduction',
         pattern: 'exploring',
         skills: ['communication']
       }
@@ -178,7 +178,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'ready_to_explore',
         text: "I'm ready to explore the platforms.",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_orb_introduction',
         pattern: 'exploring',
         skills: ['communication']
       }
@@ -190,7 +190,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Each platform leads somewhere different.\n\nPlatform 1—The Care Line. People who heal, teach, help others grow.\n\nPlatform 3—The Builder's Track. Engineers, makers, creators.\n\nYou don't choose by logic alone. Talk to travelers. See which resonates.\n\nYour path reveals itself through connection.",
+        text: "Each platform leads somewhere different.\n\nPlatform 1. The Care Line. People who heal, teach, help others grow.\n\nPlatform 3. The Builder's Track. Engineers, makers, creators.\n\nYou don't choose by logic alone. Talk to travelers. See which resonates.\n\nYour path reveals itself through connection.",
         emotion: 'reflective',
         variation_id: 'platforms_v1'
       }
@@ -210,7 +210,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'ready_to_meet',
         text: "I'd like to meet someone.",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_orb_introduction',
         pattern: 'exploring',
         skills: ['curiosity', 'communication']
       }
@@ -326,7 +326,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'beautiful',
         text: "That's a beautiful purpose.",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_orb_introduction',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
         consequence: {
@@ -337,7 +337,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'ready_for_my_blueprint',
         text: "I'm ready to find my blueprint.",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_orb_introduction',
         pattern: 'exploring',
         skills: ['communication']
       },
@@ -384,7 +384,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'beautiful_2',
         text: "That's a beautiful purpose.",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_orb_introduction',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
         consequence: {
@@ -395,7 +395,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'ready_for_my_blueprint_2',
         text: "I'm ready to find my blueprint.",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_orb_introduction',
         pattern: 'exploring',
         skills: ['communication']
       },
@@ -422,7 +422,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'beautiful_3',
         text: "That's a beautiful purpose.",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_orb_introduction',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
         consequence: {
@@ -433,7 +433,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'ready_for_my_blueprint_3',
         text: "I'm ready to find my blueprint.",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_orb_introduction',
         pattern: 'exploring',
         skills: ['communication']
       },
@@ -624,7 +624,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Biomedical engineer at the CDC. Designs diagnostic systems.\n\nCalls every Sunday. Still thanks me for bringing her here.\n\nShe could have been a lawyer. That's what I wanted.\n\nBut she boarded her own train.\n\nWatching her find that—that's when I knew.",
+        text: "Biomedical engineer at the CDC. Designs diagnostic systems.\n\nCalls every Sunday. Still thanks me for bringing her here.\n\nShe could have been a lawyer. That's what I wanted.\n\nBut she boarded her own train.\n\nWatching her find that. That's when I knew.",
         emotion: 'paternal_pride',
         variation_id: 'daughter_v1'
       }
@@ -694,6 +694,124 @@ export const samuelDialogueNodes: DialogueNode[] = [
     tags: ['fridge_logic_fix', 'samuel_arc']
   },
 
+  // ============= ORB INTRODUCTION (First-time gift from Samuel) =============
+  // This scene triggers only once - when player first reaches the hub
+  // Samuel narratively introduces orbs as "echoes of who you're becoming"
+  {
+    nodeId: 'samuel_orb_introduction',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Before you go further... take this.",
+        emotion: 'warm',
+        variation_id: 'orb_intro_v1',
+        interaction: 'bloom'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'orb_what_is_it',
+        text: "What is it?",
+        nextNodeId: 'samuel_orb_explanation',
+        pattern: 'exploring',
+        visibleCondition: {
+          lacksGlobalFlags: ['orbs_introduced']
+        }
+      },
+      {
+        choiceId: 'orb_accept_quietly',
+        text: "(Accept it)",
+        nextNodeId: 'samuel_orb_explanation',
+        pattern: 'patience',
+        visibleCondition: {
+          lacksGlobalFlags: ['orbs_introduced']
+        }
+      },
+      {
+        // Fallback skip choice if orbs already introduced
+        choiceId: 'orb_skip_already_introduced',
+        text: "[Continue]",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'patience',
+        visibleCondition: {
+          hasGlobalFlags: ['orbs_introduced']
+        }
+      }
+    ],
+    tags: ['orb_introduction', 'tutorial', 'samuel_arc']
+  },
+  {
+    nodeId: 'samuel_orb_explanation',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "The station has a way of... <bloom>remembering</bloom>. Every choice you make leaves an echo. Over time, those echoes gather. They become something you can see.\n\nThink of it as a mirror. Not of what you've done, but of <ripple>who you're becoming</ripple>.",
+        emotion: 'knowing',
+        variation_id: 'orb_explanation_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'orb_understand',
+        text: "I think I understand.",
+        nextNodeId: 'samuel_orb_gift_complete',
+        pattern: 'patience'
+      },
+      {
+        choiceId: 'orb_ask_more',
+        text: "How does it work?",
+        nextNodeId: 'samuel_orb_mechanics',
+        pattern: 'analytical'
+      }
+    ],
+    tags: ['orb_introduction', 'tutorial']
+  },
+  {
+    nodeId: 'samuel_orb_mechanics',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You'll see five patterns emerge. <shake>Analytical minds</shake> that see through problems. <nod>Patient souls</nod> who know when to wait. <bloom>Explorers</bloom> who seek new paths. Those who <ripple>help others</ripple> find their way. And <big>builders</big>, who turn possibilities into real things.\n\nWatch for them. They'll tell you something about yourself.",
+        emotion: 'warm',
+        variation_id: 'orb_mechanics_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'orb_mechanics_continue',
+        text: "I'll pay attention.",
+        nextNodeId: 'samuel_orb_gift_complete',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['orb_introduction', 'tutorial']
+  },
+  {
+    nodeId: 'samuel_orb_gift_complete',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Good. Your journal will show you what the station remembers. Check it when you're curious.\n\nNow. Let's find you someone to talk to.",
+        emotion: 'warm',
+        variation_id: 'orb_gift_complete_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'orb_to_hub',
+        text: "[Continue]",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'patience'
+      }
+    ],
+    onEnter: [
+      {
+        addGlobalFlags: ['orbs_introduced']
+      }
+    ],
+    tags: ['orb_introduction', 'tutorial']
+  },
+
   // ============= HUB: INITIAL (Conversational 3-step character routing) =============
   // Step 1: Broad category selection (3 choices - best practice compliant)
   {
@@ -701,7 +819,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "{{knows_backstory:Like I said, I built other people's systems for years. These travelers are trying to build their own.|{{trust>2:It's good to see you settling in.|Several travelers tonight. Each at their own crossroads.}}}}\n\nThere's someone you should meet. But first—what draws you here?",
+        text: "{{knows_backstory:Like I said, I built other people's systems for years. These travelers are trying to build their own.|{{trust>2:It's good to see you settling in.|Several travelers tonight. Each at their own crossroads.}}}}\n\nThere's someone you should meet. But first, what draws you here?",
         emotion: 'curious',
         variation_id: 'hub_initial_v1',
         patternReflection: [
@@ -720,7 +838,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
           {
             pattern: 'building',
             minLevel: 5,
-            altText: "{{knows_backstory:Like I said, I built other people's systems for years. These travelers are trying to build their own.|Several travelers tonight. Each at their own crossroads.}}\n\nYou're a builder. I see it in your eyes—the way you look at problems like possibilities. Someone here shares that fire.",
+            altText: "{{knows_backstory:Like I said, I built other people's systems for years. These travelers are trying to build their own.|Several travelers tonight. Each at their own crossroads.}}\n\nYou're a builder. I see it in your eyes, the way you look at problems like possibilities. Someone here shares that fire.",
             altEmotion: 'knowing'
           }
         ]
@@ -743,7 +861,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'hub_category_mind',
-        text: "I want to understand how things work—really work.",
+        text: "I want to understand how things work. Really work.",
         nextNodeId: 'samuel_hub_mind_travelers',
         pattern: 'analytical',
         skills: ['criticalThinking', 'communication'],
@@ -772,7 +890,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "The station remembers... people who lead with care are rare. There are two travelers here who might understand that pull.\n\nMaya Chen is on Platform 1. Pre-med student at UAB. Her parents sacrificed everything for her education—but she's building robots in secret.\n\nOr there's Marcus, down by Platform 2. Works in the ICU. The machines keeping patients alive? He runs them. But he's wondering if being good at something means it's his calling.",
+        text: "The station remembers... people who lead with care are rare. There are two travelers here who might understand that pull.\n\nMaya Chen is on Platform 1. Pre-med student at UAB. Her parents sacrificed everything for her education, but she's building robots in secret.\n\nOr there's Marcus, down by Platform 2. Works in the ICU. The machines keeping patients alive? He runs them. But he's wondering if being good at something means it's his calling.",
         emotion: 'knowing',
         variation_id: 'hub_heart_v1'
       }
@@ -807,7 +925,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "The station remembers... people who see patterns others miss. Three travelers here think in systems.\n\nDevon Kumar sits in the coffee shop. Systems engineer. Built a decision tree to talk to his grieving father.\n\nKai is over in the training office. Instructional designer. Fighting corporate safety theater after someone got hurt.\n\nOr Rohan—he's questioning the foundations. Wondering if understanding how things break teaches you how they should work.",
+        text: "The station remembers... people who see patterns others miss. Three travelers here think in systems.\n\nDevon Kumar sits in the coffee shop. Systems engineer. Built a decision tree to talk to his grieving father.\n\nKai is over in the training office. Instructional designer. Fighting corporate safety theater after someone got hurt.\n\nOr Rohan. He's questioning the foundations. Wondering if understanding how things break teaches you how they should work.",
         emotion: 'knowing',
         variation_id: 'hub_mind_v1'
       }
@@ -843,7 +961,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "The station remembers... builders carry a special weight. They see what could be.\n\nJordan's been through seven careers. Still mapping possibilities. Wonders if the winding path is the path.\n\nTess is a school counselor with a radical dream. Wants to prove that hiking the Appalachian Trail teaches more than AP Calculus.\n\nSilas farms hydroponic basil. His sensors say everything's fine. His plants say otherwise.\n\nOr Yaquin—dental assistant turned online educator. Knows things textbooks get wrong.",
+        text: "The station remembers... builders carry a special weight. They see what could be.\n\nJordan's been through seven careers. Still mapping possibilities. Wonders if the winding path is the path.\n\nTess is a school counselor with a radical dream. Wants to prove that hiking the Appalachian Trail teaches more than AP Calculus.\n\nSilas farms hydroponic basil. His sensors say everything's fine. His plants say otherwise.\n\nOr Yaquin. Dental assistant turned online educator. Knows things textbooks get wrong.",
         emotion: 'knowing',
         variation_id: 'hub_hands_v1'
       }
@@ -920,7 +1038,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "There's someone on Platform 1 who understands that. Maya Chen - brilliant pre-med student at UAB. Her parents run a Vietnamese restaurant over on 3rd Avenue—saved every penny to get their daughter into that medical school.",
+        text: "There's someone on Platform 1 who understands that. Maya Chen, brilliant pre-med student at UAB. Her parents run a Vietnamese restaurant over on 3rd Avenue. Saved every penny to get their daughter into that medical school.",
         emotion: 'knowing',
         variation_id: 'discovers_helping_v1_part2'
       }
@@ -972,7 +1090,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "The engineer's dilemma. You can map every system, but life throws you something that doesn't fit the flowchart.\n\nDevon Kumar is on Platform 3. UAB engineering student—got recruited from the robotics lab in the old Oxmoor Center. His mother's been gone two years now. He built a decision tree to help his grieving father. It failed catastrophically.\n\nNow he's trying to debug human connection.",
+        text: "The engineer's dilemma. You can map every system, but life throws you something that doesn't fit the flowchart.\n\nDevon Kumar is on Platform 3. UAB engineering student. Got recruited from the robotics lab in the old Oxmoor Center. His mother's been gone two years now. He built a decision tree to help his grieving father. It failed catastrophically.\n\nNow he's trying to debug human connection.",
         emotion: 'understanding',
         variation_id: 'discovers_building_v1'
       }
@@ -1048,7 +1166,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "The system works for some, but fails many. Tess is over at the Pizitz Food Hall, sketchbook open, coffee cold.\n\nShe's a Career Counselor at Hoover High who's realizing she can't counsel students into a broken world—she has to build a new one.\n\nShe's trying to start a school in the old Woodlawn building that counts 'hiking Oak Mountain' as senior year physics.",
+        text: "The system works for some, but fails many. Tess is over at the Pizitz Food Hall, sketchbook open, coffee cold.\n\nShe's a Career Counselor at Hoover High who's realizing she can't counsel students into a broken world. She has to build a new one.\n\nShe's trying to start a school in the old Woodlawn building that counts 'hiking Oak Mountain' as senior year physics.",
         emotion: 'intrigued',
         variation_id: 'discovers_tess_v1'
       }
@@ -1080,7 +1198,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Platform 5 is a bit louder. Yaquin is there—dental assistant over at Aspen Dental on Highway 280, frustrated with the old textbooks.\n\nHe's realized he knows more than the professors at UAB's dental school, but he doesn't know how to build a school. He's on the verge of inventing a new way to teach.",
+        text: "Platform 5 is a bit louder. Yaquin is there. Dental assistant over at Aspen Dental on Highway 280, frustrated with the old textbooks.\n\nHe's realized he knows more than the professors at UAB's dental school, but he doesn't know how to build a school. He's on the verge of inventing a new way to teach.",
         emotion: 'amused_respect',
         variation_id: 'discovers_yaquin_v1'
       }
@@ -1112,7 +1230,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Platform 6. Glass walls, cold lighting. Kai is there.\n\nThey're an Instructional Architect at Protective Life downtown—the big tower on Richard Arrington. They know exactly how people learn, but they're paid to build compliance checklists.\n\nThey're holding a match, trying to decide whether to burn the rulebook.",
+        text: "Platform 6. Glass walls, cold lighting. Kai is there.\n\nThey're an Instructional Architect at Protective Life downtown, the big tower on Richard Arrington. They know exactly how people learn, but they're paid to build compliance checklists.\n\nThey're holding a match, trying to decide whether to burn the rulebook.",
         emotion: 'intrigued_respect',
         variation_id: 'discovers_kai_v1'
       }
@@ -1144,7 +1262,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Platform 7. The sub-basement. Rohan is there.\n\nHe's a Site Reliability Engineer at Regions Bank—the main operations center out in Riverchase. Hasn't slept in 30 hours. He's the only one who knows how the money actually moves through Alabama.\n\nEveryone else is using AI to write code they don't understand. He's cleaning up the mess.",
+        text: "Platform 7. The sub-basement. Rohan is there.\n\nHe's a Site Reliability Engineer at Regions Bank, the main operations center out in Riverchase. Hasn't slept in 30 hours. He's the only one who knows how the money actually moves through Alabama.\n\nEveryone else is using AI to write code they don't understand. He's cleaning up the mess.",
         emotion: 'grim_respect',
         variation_id: 'discovers_rohan_v1'
       }
@@ -1176,7 +1294,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Platform 8. The Greenhouse. Silas is there.\n\nHe used to be a Cloud Architect at Amazon—worked remote from his place in Avondale. Now he uses drones to monitor soil microbiomes on a farm out past Trussville.\n\nHe realized that a farm is just a server cluster that breathes. He's debugging nature.",
+        text: "Platform 8. The Greenhouse. Silas is there.\n\nHe used to be a Cloud Architect at Amazon. Worked remote from his place in Avondale. Now he uses drones to monitor soil microbiomes on a farm out past Trussville.\n\nHe realized that a farm is just a server cluster that breathes. He's debugging nature.",
         emotion: 'warm_respect',
         variation_id: 'discovers_silas_v1'
       }
@@ -1208,7 +1326,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Platform 4, near the Medical Bay. That's Marcus.\n\nCVICU Nurse at UAB Hospital—the kind who keeps people alive through the night shift. But he's realizing the machines he uses are just as important as the medicine.\n\nHe's standing there like he's still on shift. Carries the weight of every patient. Go gently.",
+        text: "Platform 4, near the Medical Bay. That's Marcus.\n\nCVICU Nurse at UAB Hospital. The kind who keeps people alive through the night shift. But he's realizing the machines he uses are just as important as the medicine.\n\nHe's standing there like he's still on shift. Carries the weight of every patient. Go gently.",
         emotion: 'respectful',
         variation_id: 'discovers_marcus_v1'
       }
@@ -1655,7 +1773,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Because the station remembers. If you'd tried to force an answer, her trust wouldn't have grown. But it did.\n\nTrust is the only map that works here. You didn't find the path by analyzing her file. You found it by building a connection. That's how real exploration happens—person to person.",
+        text: "Because the station remembers. If you'd tried to force an answer, her trust wouldn't have grown. But it did.\n\nTrust is the only map that works here. You didn't find the path by analyzing her file. You found it by building a connection. That's how real exploration happens. Person to person.",
         emotion: 'knowing',
         variation_id: 'systemic_proof_v1'
       }
@@ -2577,7 +2695,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "High stakes clarify things. In that simulation, there was no room for doubt. You had to act.\n\nThat decisiveness you showed? That's a skill. Not everyone can move when the alarm screams.\n\nYou helped Marcus see that his work isn't just care—it's precision engineering. You built a bridge between his identity as a nurse and his potential as an innovator.",
+        text: "High stakes clarify things. In that simulation, there was no room for doubt. You had to act.\n\nThat decisiveness you showed? That's a skill. Not everyone can move when the alarm screams.\n\nYou helped Marcus see that his work isn't just care. it's precision engineering. You built a bridge between his identity as a nurse and his potential as an innovator.",
         emotion: 'proud',
         variation_id: 'marcus_stakes_v1'
       }
@@ -3298,7 +3416,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Impostor syndrome doesn't care about résumés.\n\nJordan's built real skills but feels like a fraud.\n\nYou help people see frames they can't see. Jordan needs to see her winding path isn't a liability—it's what makes her valuable.\n\nThose students need someone who's lived it.",
+        text: "Impostor syndrome doesn't care about résumés.\n\nJordan's built real skills but feels like a fraud.\n\nYou help people see frames they can't see. Jordan needs to see her winding path isn't a liability. it's what makes her valuable.\n\nThose students need someone who's lived it.",
         emotion: 'teaching',
         variation_id: 'why_jordan_v1'
       }
@@ -3864,7 +3982,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "The data revealed something surprising: Insight doesn't cause transformation. It's a correlation, not causation. People change when they feel safe enough to act on what they already know.\n\nYou analyze carefully—Maya's contradiction, Devon's grief patterns, Jordan's career trajectory. But you also know when analysis ends and presence begins.",
+        text: "The data revealed something surprising: Insight doesn't cause transformation. It's a correlation, not causation. People change when they feel safe enough to act on what they already know.\n\nYou analyze carefully. Maya's contradiction, Devon's grief patterns, Jordan's career trajectory. But you also know when analysis ends and presence begins.",
         emotion: 'wise_analytical',
         variation_id: 'analytical_bonus_v1_part2'
       }
@@ -3925,7 +4043,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You understand patience. Not the passive kind—the active kind.\n\nIn therapy, I learned that patience isn't waiting. It's creating space for emergence. Not rushing the client's process. Not solving before they're ready.",
+        text: "You understand patience. Not the passive kind. the active kind.\n\nIn therapy, I learned that patience isn't waiting. It's creating space for emergence. Not rushing the client's process. Not solving before they're ready.",
         emotion: 'deeply_present',
         variation_id: 'patience_bonus_v1_part1'
       }
@@ -4045,7 +4163,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You naturally ask the expansive kind. With Maya: 'What if you could bridge both?' With Jordan: 'What patterns connect your jobs?' With Devon: 'What would presence look like?'\n\nYou're not gathering information—you're creating possibility space.",
+        text: "You naturally ask the expansive kind. With Maya: 'What if you could bridge both?' With Jordan: 'What patterns connect your jobs?' With Devon: 'What would presence look like?'\n\nYou're not gathering information. you're creating possibility space.",
         emotion: 'recognizing_kindred',
         variation_id: 'exploring_bonus_v1_part2'
       }
@@ -4207,7 +4325,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You build bridges between people and their possibilities. That's what I've observed.\n\nLet me tell you about the last structure I built before arriving here. Not physical—conceptual. A framework for career resilience I developed with Birmingham educators.",
+        text: "You build bridges between people and their possibilities. That's what I've observed.\n\nLet me tell you about the last structure I built before arriving here. Not physical. conceptual. A framework for career resilience I developed with Birmingham educators.",
         emotion: 'wise_constructive',
         variation_id: 'building_bonus_v1_part1'
       }
@@ -4233,7 +4351,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "We were trying to help students in neighborhoods with 40% unemployment. Traditional career counseling wasn't working. 'Find your passion' means nothing when you're worried about survival.\n\nSo we built something new: Career as construction project. You work with available materials—skills, connections, constraints. You build what's possible now, not what's ideal someday.",
+        text: "We were trying to help students in neighborhoods with 40% unemployment. Traditional career counseling wasn't working. 'Find your passion' means nothing when you're worried about survival.\n\nSo we built something new: Career as construction project. You work with available materials. skills, connections, constraints. You build what's possible now, not what's ideal someday.",
         emotion: 'wise_constructive',
         variation_id: 'building_bonus_v1_part2'
       }
@@ -4294,6 +4412,395 @@ export const samuelDialogueNodes: DialogueNode[] = [
       }
     ],
     tags: ['pattern_bonus', 'building', 'framework_creation', 'samuel_arc']
+  },
+
+  // ============= ORB-GATED DIALOGUE: DEEPER CONVERSATIONS =============
+  // These unlock only after players have demonstrated significant patterns
+  // Design: Reward exploration with deeper Samuel backstory and insights
+
+  // Pattern Mastery Conversations - unlock at 10+ orbs in a pattern
+  {
+    nodeId: 'samuel_orb_analytical_mastery',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You think things through. I've watched you. the way you break problems apart, find the pieces that don't fit.\n\nI used to be like that. Spent years at Southern Company running numbers, optimizing systems. Good at it, too.",
+        emotion: 'reflective',
+        variation_id: 'analytical_mastery_v1'
+      }
+    ],
+    requiredState: {
+      patterns: {
+        analytical: { min: 10 }
+      }
+    },
+    choices: [
+      {
+        choiceId: 'analytical_ask_more',
+        text: "What changed?",
+        nextNodeId: 'samuel_orb_analytical_reveal',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'communication']
+      },
+      {
+        choiceId: 'analytical_relate',
+        text: "Sometimes logic is the only thing that makes sense.",
+        nextNodeId: 'samuel_orb_analytical_affirm',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'communication']
+      }
+    ],
+    tags: ['orb_gated', 'analytical', 'samuel_backstory', 'mastery_tier']
+  },
+  {
+    nodeId: 'samuel_orb_analytical_reveal',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "What changed? I realized systems are just tools. The real work is knowing what you're building them for.\n\nYou've got the analysis down. The question now is: what will you use it for?",
+        emotion: 'knowing',
+        variation_id: 'analytical_reveal_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'analytical_continue',
+        text: "I'm still figuring that out.",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'patience',
+        skills: ['communication']
+      }
+    ],
+    tags: ['orb_gated', 'analytical', 'samuel_backstory', 'mastery_tier']
+  },
+  {
+    nodeId: 'samuel_orb_analytical_affirm',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Logic is a good foundation. But some things only make sense after you've built on it for a while.\n\nKeep thinking. Keep questioning. That's how you find what's worth building.",
+        emotion: 'warm',
+        variation_id: 'analytical_affirm_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'analytical_affirm_continue',
+        text: "Thanks, Samuel.",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'patience',
+        skills: ['communication']
+      }
+    ],
+    tags: ['orb_gated', 'analytical', 'samuel_backstory', 'mastery_tier']
+  },
+
+  // Helping Mastery
+  {
+    nodeId: 'samuel_orb_helping_mastery',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You lead with care. Not everyone does. Most people... they're so busy with their own path, they forget to look around.\n\nBut you see people. Really see them.",
+        emotion: 'warm',
+        variation_id: 'helping_mastery_v1'
+      }
+    ],
+    requiredState: {
+      patterns: {
+        helping: { min: 10 }
+      }
+    },
+    choices: [
+      {
+        choiceId: 'helping_ask_samuel',
+        text: "Is that why you stay here? To help people?",
+        nextNodeId: 'samuel_orb_helping_reveal',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'communication']
+      },
+      {
+        choiceId: 'helping_humble',
+        text: "I just try to listen.",
+        nextNodeId: 'samuel_orb_helping_affirm',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication']
+      }
+    ],
+    tags: ['orb_gated', 'helping', 'samuel_backstory', 'mastery_tier']
+  },
+  {
+    nodeId: 'samuel_orb_helping_reveal',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "That's part of it. But truth is. I stay because watching people find their way... it reminds me why any of this matters.\n\nEvery person you help, you're building something. Not systems. Something bigger.",
+        emotion: 'vulnerable',
+        variation_id: 'helping_reveal_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'helping_continue',
+        text: "I think I understand.",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'helping',
+        skills: ['communication', 'emotionalIntelligence']
+      }
+    ],
+    tags: ['orb_gated', 'helping', 'samuel_backstory', 'mastery_tier']
+  },
+  {
+    nodeId: 'samuel_orb_helping_affirm',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "That's the work. Most people think helping means having answers. But the real help? It's just being there. Listening.\n\nYou already know that.",
+        emotion: 'warm',
+        variation_id: 'helping_affirm_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'helping_affirm_continue',
+        text: "[Nod]",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'patience',
+        skills: ['communication']
+      }
+    ],
+    tags: ['orb_gated', 'helping', 'samuel_backstory', 'mastery_tier']
+  },
+
+  // Building Mastery
+  {
+    nodeId: 'samuel_orb_building_mastery',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You're a maker. I can tell. You look at things differently. like everything's a problem waiting to be solved.\n\nI built things my whole life. Power systems, infrastructure. Things that kept cities running.",
+        emotion: 'knowing',
+        variation_id: 'building_mastery_v1'
+      }
+    ],
+    requiredState: {
+      patterns: {
+        building: { min: 10 }
+      }
+    },
+    choices: [
+      {
+        choiceId: 'building_ask_regret',
+        text: "Do you miss it?",
+        nextNodeId: 'samuel_orb_building_reveal',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'communication']
+      },
+      {
+        choiceId: 'building_relate',
+        text: "There's nothing like making something that works.",
+        nextNodeId: 'samuel_orb_building_affirm',
+        pattern: 'building',
+        skills: ['creativity', 'communication']
+      }
+    ],
+    tags: ['orb_gated', 'building', 'samuel_backstory', 'mastery_tier']
+  },
+  {
+    nodeId: 'samuel_orb_building_reveal',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Miss it? Every day. But I'm still building. Just... different things now.\n\nThe best builders? They know when to shift what they're making. You'll figure that out too.",
+        emotion: 'reflective',
+        variation_id: 'building_reveal_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'building_continue',
+        text: "I hope so.",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'building',
+        skills: ['communication']
+      }
+    ],
+    tags: ['orb_gated', 'building', 'samuel_backstory', 'mastery_tier']
+  },
+  {
+    nodeId: 'samuel_orb_building_affirm',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Nothing like it. That feeling when pieces click together... when something you made actually does what it's supposed to.\n\nHold onto that. It'll carry you further than you know.",
+        emotion: 'warm',
+        variation_id: 'building_affirm_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'building_affirm_continue',
+        text: "Thanks, Samuel.",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'patience',
+        skills: ['communication']
+      }
+    ],
+    tags: ['orb_gated', 'building', 'samuel_backstory', 'mastery_tier']
+  },
+
+  // Explorer Mastery
+  {
+    nodeId: 'samuel_orb_exploring_mastery',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Curiosity. That's what I see in you. You want to understand everything. not just the answers, but the questions.\n\nThis station? It was built for people like you.",
+        emotion: 'knowing',
+        variation_id: 'exploring_mastery_v1'
+      }
+    ],
+    requiredState: {
+      patterns: {
+        exploring: { min: 10 }
+      }
+    },
+    choices: [
+      {
+        choiceId: 'exploring_ask_station',
+        text: "Who built it?",
+        nextNodeId: 'samuel_orb_exploring_reveal',
+        pattern: 'exploring',
+        skills: ['criticalThinking', 'communication']
+      },
+      {
+        choiceId: 'exploring_wonder',
+        text: "I just want to see what's out there.",
+        nextNodeId: 'samuel_orb_exploring_affirm',
+        pattern: 'exploring',
+        skills: ['adaptability', 'communication']
+      }
+    ],
+    tags: ['orb_gated', 'exploring', 'samuel_backstory', 'mastery_tier']
+  },
+  {
+    nodeId: 'samuel_orb_exploring_reveal',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Who built it? That's the question, isn't it.\n\nBest I can tell. it builds itself. From the questions people bring. Each traveler adds something.\n\nIncluding you.",
+        emotion: 'mysterious',
+        variation_id: 'exploring_reveal_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'exploring_continue',
+        text: "That's... a lot to think about.",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'patience',
+        skills: ['communication']
+      }
+    ],
+    tags: ['orb_gated', 'exploring', 'samuel_backstory', 'mastery_tier']
+  },
+  {
+    nodeId: 'samuel_orb_exploring_affirm',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Good. Keep that. The world's too full of people who stopped wondering.\n\nYou'll find things others miss. That's not a skill. that's who you are.",
+        emotion: 'warm',
+        variation_id: 'exploring_affirm_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'exploring_affirm_continue',
+        text: "I'll keep looking.",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'exploring',
+        skills: ['adaptability', 'communication']
+      }
+    ],
+    tags: ['orb_gated', 'exploring', 'samuel_backstory', 'mastery_tier']
+  },
+
+  // Patience Mastery
+  {
+    nodeId: 'samuel_orb_patience_mastery',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You don't rush. I've noticed. While others push forward, you wait. Listen. Think.\n\nThat's rare. Especially these days.",
+        emotion: 'knowing',
+        variation_id: 'patience_mastery_v1'
+      }
+    ],
+    requiredState: {
+      patterns: {
+        patience: { min: 10 }
+      }
+    },
+    choices: [
+      {
+        choiceId: 'patience_ask_samuel',
+        text: "Did you learn patience, or were you always like this?",
+        nextNodeId: 'samuel_orb_patience_reveal',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'communication']
+      },
+      {
+        choiceId: 'patience_humble',
+        text: "Sometimes waiting is all you can do.",
+        nextNodeId: 'samuel_orb_patience_affirm',
+        pattern: 'patience',
+        skills: ['communication']
+      }
+    ],
+    tags: ['orb_gated', 'patience', 'samuel_backstory', 'mastery_tier']
+  },
+  {
+    nodeId: 'samuel_orb_patience_reveal',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Learned it. The hard way.\n\nSpent years trying to force things. Plans, timelines, deadlines. Took a long time to realize. some things unfold when they're ready. Not before.\n\nYou already understand that.",
+        emotion: 'reflective',
+        variation_id: 'patience_reveal_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'patience_continue',
+        text: "Some things can't be rushed.",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'patience',
+        skills: ['communication']
+      }
+    ],
+    tags: ['orb_gated', 'patience', 'samuel_backstory', 'mastery_tier']
+  },
+  {
+    nodeId: 'samuel_orb_patience_affirm',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "True. But knowing when to wait and when to act. that's the real skill.\n\nYou've got good instincts. Trust them.",
+        emotion: 'warm',
+        variation_id: 'patience_affirm_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'patience_affirm_continue',
+        text: "[Nod]",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'patience',
+        skills: ['communication']
+      }
+    ],
+    tags: ['orb_gated', 'patience', 'samuel_backstory', 'mastery_tier']
   }
 ]
 
@@ -4346,7 +4853,14 @@ export const samuelEntryPoints = {
   BACKSTORY: 'samuel_backstory_intro',
 
   /** Pattern observation (trust ≥3 required) */
-  PATTERN_OBSERVATION: 'samuel_pattern_observation'
+  PATTERN_OBSERVATION: 'samuel_pattern_observation',
+
+  /** Orb-gated mastery conversations (10+ orbs in pattern required) */
+  ANALYTICAL_MASTERY: 'samuel_orb_analytical_mastery',
+  HELPING_MASTERY: 'samuel_orb_helping_mastery',
+  BUILDING_MASTERY: 'samuel_orb_building_mastery',
+  EXPLORING_MASTERY: 'samuel_orb_exploring_mastery',
+  PATIENCE_MASTERY: 'samuel_orb_patience_mastery'
 } as const
 
 // Type export for TypeScript autocomplete

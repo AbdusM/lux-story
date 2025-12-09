@@ -44,7 +44,7 @@ export function useAdaptiveNarrative() {
       }
       
       // Time markers - moderate emphasis
-      if (/(almost|nearly|midnight|dawn|dusk|— |tonight|today)/i.test(cleanSentence)) {
+      if (/(almost|nearly|midnight|dawn|dusk|.  |tonight|today)/i.test(cleanSentence)) {
         return { text: cleanSentence, type: 'time-marker', priority: 3 }
       }
       
@@ -86,7 +86,7 @@ export function useAdaptiveNarrative() {
       // Add breaks before conjunctions that start new ideas
       .replace(/ (But|However|Meanwhile|Suddenly|Then|Now) /g, '\n\n$1 ')
       // Add spacing around em dashes for emphasis
-      .replace(/ - /g, '\n\n— ')
+      .replace(/ - /g, '\n\n.  ')
       // Break up long descriptions with commas into separate lines for better readability
       .replace(/, ([a-z][^,]{25,})/g, ',\n$1')
     

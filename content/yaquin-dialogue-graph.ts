@@ -83,7 +83,7 @@ Forget the textbook. Chapter 4's garbage. Here's how you actually mix alginate w
     speaker: 'Yaquin',
     content: [
       {
-        text: `Imagine... the textbook says 'mix 45 seconds.' Do that—sets in the bowl. Mold ruined.|8 years experience. Know the paste feel. Know patient fear.|Books don't teach that.`,
+        text: `Imagine... the textbook says 'mix 45 seconds.' Do that. sets in the bowl. Mold ruined.|8 years experience. Know the paste feel. Know patient fear.|Books don't teach that.`,
         emotion: 'focused',
         interaction: 'nod',
         variation_id: 'textbook_v1',
@@ -181,7 +181,7 @@ Forget the textbook. Chapter 4's garbage. Here's how you actually mix alginate w
       {
         // NOTE: Strategic targeting - jitter applied only to the anxious core question about validation and audience.
         // Targets the existential doubt ("shouting into void?"), not the factual setup about followers.
-        text: `Started six months ago. Phone videos. No plan.|"Here's what textbooks miss."|87 followers. Some dental assistants. Some students. Few actual dentists watching.|<jitter>Real question—teaching online or shouting into void?</jitter>`,
+        text: `Started six months ago. Phone videos. No plan.|"Here's what textbooks miss."|87 followers. Some dental assistants. Some students. Few actual dentists watching.|<jitter>Real question. teaching online or shouting into void?</jitter>`,
         emotion: 'curious',
         variation_id: 'creator_v1',
         useChatPacing: true
@@ -201,7 +201,7 @@ Forget the textbook. Chapter 4's garbage. Here's how you actually mix alginate w
       },
       {
         choiceId: 'yaquin_explore_who_watches',
-        text: "Those dentists watching—what draws them? What are they looking for?",
+        text: "Those dentists watching. what draws them? What are they looking for?",
         nextNodeId: 'yaquin_curriculum_dream',
         pattern: 'exploring',
         skills: ['curiosity', 'communication'],
@@ -231,7 +231,7 @@ Forget the textbook. Chapter 4's garbage. Here's how you actually mix alginate w
       {
         // NOTE: Strategic targeting - jitter applied only to the anxiety about scope creep and fluff.
         // Isolates the moment of panic ("keeps adding..."), not the vision statement.
-        text: `Want to build a course. 'The Real Dental Assistant.'|Reality—not theory. Calm crying kids. Mix paste. Anticipate doctor needs.|<jitter>But the syllabus... keeps adding history. Anatomy. Ethics.</jitter>`,
+        text: `Want to build a course. 'The Real Dental Assistant.'|Reality. not theory. Calm crying kids. Mix paste. Anticipate doctor needs.|<jitter>But the syllabus... keeps adding history. Anatomy. Ethics.</jitter>`,
         emotion: 'anxious',
         variation_id: 'dream_v1',
         useChatPacing: true
@@ -272,7 +272,7 @@ Forget the textbook. Chapter 4's garbage. Here's how you actually mix alginate w
         // Targets the climactic moment of pressure ("Back to cleaning spit valves"), not the setup.
         text: `This list. 8 years instinct → checklist. Impossible.
 
-<shake>One pilot this weekend. Pick wrong—nobody watches. Back to cleaning spit valves.</shake>`,
+<shake>One pilot this weekend. Pick wrong. nobody watches. Back to cleaning spit valves.</shake>`,
         emotion: 'tense',
         variation_id: 'curriculum_setup_v2',
         richEffectContext: 'warning',
@@ -315,7 +315,7 @@ Forget the textbook. Chapter 4's garbage. Here's how you actually mix alginate w
     content: [
       {
         // NOTE: Removed filming process and "head in hands" - dialogue carries the failure without choreography
-        text: `"Hello class. Today—19th century forceps."|"Bored watching myself. Nobody pays $50 for this. Sound like professors I hated."`,
+        text: `"Hello class. Today. 19th century forceps."|"Bored watching myself. Nobody pays $50 for this. Sound like professors I hated."`,
         emotion: 'heavy',
         interaction: 'small',
         variation_id: 'fail_boring_v1',
@@ -384,7 +384,7 @@ Forget the textbook. Chapter 4's garbage. Here's how you actually mix alginate w
       {
         text: `You're nervous. Drill's loud. Watch my eyes. Breathe with me.
 
-All day. Don't fix teeth—fix fear. That's what I'm selling.`,
+All day. Don't fix teeth. fix fear. That's what I'm selling.`,
         emotion: 'inspired',
         interaction: 'bloom',
         variation_id: 'success_psych_v1',
@@ -416,7 +416,7 @@ All day. Don't fix teeth—fix fear. That's what I'm selling.`,
       {
         // NOTE: Strategic targeting - jitter applied only to the anxiety peaks about career consequences.
         // Targets the panic about professional risk, not the factual readiness statement.
-        text: `Video ready. Platform ready.|<jitter>Publish—dentists see it. Might fire me. 'Who's this guy?'</jitter>|Don't publish—guy shouting at phone in basement.`,
+        text: `Video ready. Platform ready.|<jitter>Publish. dentists see it. Might fire me. 'Who's this guy?'</jitter>|Don't publish. guy shouting at phone in basement.`,
         emotion: 'anxious',
         variation_id: 'launch_v1',
         useChatPacing: true
@@ -426,19 +426,19 @@ All day. Don't fix teeth—fix fear. That's what I'm selling.`,
       {
         pattern: 'building',
         minLevel: 5,
-        altText: `Video ready. Platform ready. You're a builder—I can tell from how you approached this.|<jitter>Publish—dentists see it. Might fire me. 'Who's this guy?'</jitter>|Don't publish—guy shouting at phone in basement.`,
+        altText: `Video ready. Platform ready. You're a builder. I can tell from how you approached this.|<jitter>Publish. dentists see it. Might fire me. 'Who's this guy?'</jitter>|Don't publish. guy shouting at phone in basement.`,
         altEmotion: 'kindred_anxious'
       },
       {
         pattern: 'helping',
         minLevel: 5,
-        altText: `Video ready. Platform ready. You've been here with me through all of this. That means something.|<jitter>Publish—dentists see it. Might fire me. 'Who's this guy?'</jitter>|Don't publish—guy shouting at phone in basement.`,
+        altText: `Video ready. Platform ready. You've been here with me through all of this. That means something.|<jitter>Publish. dentists see it. Might fire me. 'Who's this guy?'</jitter>|Don't publish. guy shouting at phone in basement.`,
         altEmotion: 'grateful_anxious'
       },
       {
         pattern: 'analytical',
         minLevel: 5,
-        altText: `Video ready. Platform ready. You helped me see the data clearly—the path forward.|<jitter>Publish—dentists see it. Might fire me. 'Who's this guy?'</jitter>|Don't publish—guy shouting at phone in basement.`,
+        altText: `Video ready. Platform ready. You helped me see the data clearly. the path forward.|<jitter>Publish. dentists see it. Might fire me. 'Who's this guy?'</jitter>|Don't publish. guy shouting at phone in basement.`,
         altEmotion: 'recognized_anxious'
       }
     ],
@@ -511,7 +511,7 @@ All day. Don't fix teeth—fix fear. That's what I'm selling.`,
     speaker: 'Yaquin',
     content: [
       {
-        text: `Smart. Brand name—'Dental Ninja.' Build trust, then sell.|Safer. Still forward.|Thank you. Kept me from reckless mistake.`,
+        text: `Smart. Brand name. 'Dental Ninja.' Build trust, then sell.|Safer. Still forward.|Thank you. Kept me from reckless mistake.`,
         emotion: 'relieved',
         interaction: 'nod',
         variation_id: 'audience_v1',
@@ -568,7 +568,7 @@ All day. Don't fix teeth—fix fear. That's what I'm selling.`,
     speaker: 'Yaquin',
     content: [
       {
-        text: `Lot of editing ahead.|See Samuel? Tell him—class is in session.`,
+        text: `Lot of editing ahead.|See Samuel? Tell him. class is in session.`,
         emotion: 'proud',
         interaction: 'nod',
         variation_id: 'farewell_v1',
@@ -579,13 +579,13 @@ All day. Don't fix teeth—fix fear. That's what I'm selling.`,
       {
         pattern: 'building',
         minLevel: 5,
-        altText: `Lot of editing ahead. You're a builder too—saw it in how you helped.|See Samuel? Tell him—class is in session.`,
+        altText: `Lot of editing ahead. You're a builder too. saw it in how you helped.|See Samuel? Tell him. class is in session.`,
         altEmotion: 'kindred_proud'
       },
       {
         pattern: 'helping',
         minLevel: 5,
-        altText: `Lot of editing ahead. You care about people learning—really learning. Saw that.|See Samuel? Tell him—class is in session.`,
+        altText: `Lot of editing ahead. You care about people learning. really learning. Saw that.|See Samuel? Tell him. class is in session.`,
         altEmotion: 'grateful_proud'
       }
     ],
@@ -670,7 +670,7 @@ Teaching? Easy. Running a course business? That's the real education.`,
 
 Great content, wrong format. Need teacher, not YouTube.
 
-<shake>Half career-switchers—crushing it. Other half—boss-mandated. Struggling. Refunds.</shake>`,
+<shake>Half career-switchers. crushing it. Other half. boss-mandated. Struggling. Refunds.</shake>`,
       emotion: 'tense',
       variation_id: 'quality_crisis_v1',
       useChatPacing: true
@@ -737,7 +737,7 @@ Want to ignore her. Defend myself. Or... maybe she's right.`,
 
 Boss made me. Too hard. Didn't finish, want money.
 
-Honor all—lose $7,500. Get strict—look like scammer.
+Honor all. lose $7,500. Get strict. look like scammer.
 
 <jitter>Worst part? Don't know if they're right. Maybe IS too hard. Maybe IS "amateur hour."</jitter>`,
       emotion: 'conflicted',
@@ -889,7 +889,7 @@ What would you do?`,
 
 $45K. Nine months salary.
 
-But not teaching—licensing. Content creator, not educator.
+But not teaching. licensing. Content creator, not educator.
 
 That what I want?`,
       emotion: 'conflicted',
@@ -931,7 +931,7 @@ That what I want?`,
     nodeId: 'yaquin_p2_scaling_choice',
     speaker: 'Yaquin',
     content: [{
-      text: `Keep self-paced for motivated learners. Add cohort "Dental Mastery"—8 weeks, live, small groups. Maybe reach out to Dr. Chen. Co-teach advanced modules.
+      text: `Keep self-paced for motivated learners. Add cohort "Dental Mastery". 8 weeks, live, small groups. Maybe reach out to Dr. Chen. Co-teach advanced modules.
 
 Not about perfect. Serving students where they are. Some need independence. Some need structure. Why not both?`,
       emotion: 'focused',
@@ -987,7 +987,7 @@ More important? Learning business, not just teaching skill.`,
     nodeId: 'yaquin_p2_student_reactions',
     speaker: 'Yaquin',
     content: [{
-      text: `Mixed. Refunded students—1-star reviews: "Bait and switch." Stayed students thriving: "Real teaching now, not just videos."
+      text: `Mixed. Refunded students. 1-star reviews: "Bait and switch." Stayed students thriving: "Real teaching now, not just videos."
 
 **Student**: "Almost quit. Cohort saved me. Getting hired next week because of you."
 
@@ -1065,7 +1065,7 @@ Critics → collaborators if humble enough to listen.`,
     nodeId: 'yaquin_p2_reflection',
     speaker: 'Yaquin',
     content: [{
-      text: `Started—assistant who thought textbooks garbage.|Now—creator who knows content is 20%.|Other 80%? Operations. Strategy. Communication. Resilience.|*Smiles.*|200+ students. Some finish. Some quit. Bad reviews.|Okay with that.|Because who succeed? Know things textbooks never taught.|Just like I did.`,
+      text: `Started. assistant who thought textbooks garbage.|Now. creator who knows content is 20%.|Other 80%? Operations. Strategy. Communication. Resilience.|*Smiles.*|200+ students. Some finish. Some quit. Bad reviews.|Okay with that.|Because who succeed? Know things textbooks never taught.|Just like I did.`,
       emotion: 'proud',
       interaction: 'bloom',
       variation_id: 'reflection_v1',
@@ -1087,7 +1087,7 @@ Critics → collaborators if humble enough to listen.`,
     nodeId: 'yaquin_p2_complete',
     speaker: 'Yaquin',
     content: [{
-      text: `Thank you. For being here when messy.|*Packing equipment.*|Cohort Monday. Twenty students. Live sessions. Real teaching.|See Samuel? Tell him—not just teaching skills. Building business that teaches.`,
+      text: `Thank you. For being here when messy.|*Packing equipment.*|Cohort Monday. Twenty students. Live sessions. Real teaching.|See Samuel? Tell him. not just teaching skills. Building business that teaches.`,
       emotion: 'grateful',
       interaction: 'nod',
       variation_id: 'complete_v1',
@@ -1096,7 +1096,7 @@ Critics → collaborators if humble enough to listen.`,
     choices: [
       {
         choiceId: 'yaquin_asks_before_leave',
-        text: "Before you go—what's your biggest challenge right now?",
+        text: "Before you go. what's your biggest challenge right now?",
         nextNodeId: 'yaquin_asks_player',
         pattern: 'helping',
         skills: ['communication', 'curiosity']
@@ -1115,7 +1115,7 @@ Critics → collaborators if humble enough to listen.`,
     nodeId: 'yaquin_asks_player',
     speaker: 'Yaquin',
     content: [{
-      text: `*Stops packing. Looks at you.*|Biggest challenge?|*Thinks.*|Scaling. How teach 200 students same quality as 20?|But you—what's your challenge?|You help people. But who helps you figure out your path?`,
+      text: `*Stops packing. Looks at you.*|Biggest challenge?|*Thinks.*|Scaling. How teach 200 students same quality as 20?|But you. what's your challenge?|You help people. But who helps you figure out your path?`,
       emotion: 'curious_engaged',
       interaction: 'nod',
       variation_id: 'yaquin_reciprocity_v1',
@@ -1124,7 +1124,7 @@ Critics → collaborators if humble enough to listen.`,
     choices: [
       {
         choiceId: 'player_challenge_uncertainty',
-        text: "My challenge is uncertainty. I help others find their path, but I'm still searching for mine. It's hard to guide when you're lost yourself—sometimes I feel like a fraud, pointing directions I haven't walked.",
+        text: "My challenge is uncertainty. I help others find their path, but I'm still searching for mine. It's hard to guide when you're lost yourself. sometimes I feel like a fraud, pointing directions I haven't walked.",
         nextNodeId: 'yaquin_reciprocity_response',
         pattern: 'exploring',
         skills: ['emotionalIntelligence', 'communication']

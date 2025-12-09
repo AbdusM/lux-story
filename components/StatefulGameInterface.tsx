@@ -14,7 +14,7 @@
  * - Restored Avatar display inside DialogueDisplay (via props).
  */
 
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -66,7 +66,9 @@ import { generateJourneyNarrative, isJourneyComplete, type JourneyNarrative } fr
 import { evaluateAchievements, type MetaAchievement } from '@/lib/meta-achievements'
 import { selectAmbientEvent, IDLE_CONFIG, type AmbientEvent } from '@/lib/ambient-events'
 import { PATTERN_TYPES, type PatternType, getPatternSensation, isValidPattern } from '@/lib/patterns'
-import { getConsequenceEcho, checkPatternThreshold as checkPatternEchoThreshold, getPatternRecognitionEcho, getVoicedChoiceText, applyPatternReflection, type ConsequenceEcho } from '@/lib/consequence-echoes'
+import { getConsequenceEcho, checkPatternThreshold as checkPatternEchoThreshold, getPatternRecognitionEcho, getVoicedChoiceText, applyPatternReflection, getOrbMilestoneEcho, type ConsequenceEcho } from '@/lib/consequence-echoes'
+import { useOrbs } from '@/hooks/useOrbs'
+import { FoxTheatreGlow } from '@/components/FoxTheatreGlow'
 // Share prompts removed - too obtrusive
 
 // Trust feedback now dialogue-based via consequence echoes
@@ -109,6 +111,20 @@ interface GameInterfaceState {
 
 export default function StatefulGameInterface() {
   const safeStart = getSafeStart()
+
+  // Orb earning - SILENT during gameplay (discovery in Journal)
+  const { earnOrb, earnBonusOrbs, hasNewOrbs, markOrbsViewed, getUnacknowledgedMilestone, acknowledgeMilestone, balance: orbBalance } = useOrbs()
+
+  // Compute orb fill percentages for KOTOR-style locked choices
+  const MAX_ORB_COUNT = 100
+  const orbFillLevels = useMemo(() => ({
+    analytical: Math.min(100, Math.round((orbBalance.analytical / MAX_ORB_COUNT) * 100)),
+    patience: Math.min(100, Math.round((orbBalance.patience / MAX_ORB_COUNT) * 100)),
+    exploring: Math.min(100, Math.round((orbBalance.exploring / MAX_ORB_COUNT) * 100)),
+    helping: Math.min(100, Math.round((orbBalance.helping / MAX_ORB_COUNT) * 100)),
+    building: Math.min(100, Math.round((orbBalance.building / MAX_ORB_COUNT) * 100)),
+  }), [orbBalance])
+
   const [state, setState] = useState<GameInterfaceState>({
     gameState: null,
     currentNode: null,
@@ -448,6 +464,11 @@ export default function StatefulGameInterface() {
       if (choice.choice.consequence) newGameState = GameStateUtils.applyStateChange(newGameState, choice.choice.consequence)
       if (choice.choice.pattern) newGameState = GameStateUtils.applyStateChange(newGameState, { patternChanges: { [choice.choice.pattern]: 1 } })
 
+      // Earn orb for pattern choice - SILENT (no toast, discovery in Journal)
+      if (choice.choice.pattern && isValidPattern(choice.choice.pattern)) {
+        earnOrb(choice.choice.pattern)
+      }
+
       // Calculate trust change for consequence echo
       const trustAfter = newGameState.characters.get(state.currentCharacterId)?.trust ?? 0
       const trustDelta = trustAfter - trustBefore
@@ -470,6 +491,18 @@ export default function StatefulGameInterface() {
       if (crossedPattern && !consequenceEcho) {
         // Pattern recognition takes precedence over trust echo if no trust change
         consequenceEcho = getPatternRecognitionEcho(state.currentCharacterId, crossedPattern)
+      }
+
+      // Check for orb milestone echoes - Samuel acknowledges growth
+      // Only shows when talking to Samuel and there's an unacknowledged milestone
+      if (!consequenceEcho && state.currentCharacterId === 'samuel') {
+        const unacknowledgedMilestone = getUnacknowledgedMilestone()
+        if (unacknowledgedMilestone) {
+          consequenceEcho = getOrbMilestoneEcho(unacknowledgedMilestone)
+          if (consequenceEcho) {
+            acknowledgeMilestone(unacknowledgedMilestone)
+          }
+        }
       }
 
       // Check for pattern threshold floating modules
@@ -596,6 +629,18 @@ export default function StatefulGameInterface() {
       const completedArc = detectArcCompletion(state.gameState, newGameState)
       const experienceSummaryUpdate = { showExperienceSummary: false, experienceSummaryData: null as ExperienceSummaryData | null }
 
+      // Award bonus orbs for arc completion - SILENT (no notification)
+      // Gives bonus based on dominant pattern during this arc
+      if (completedArc) {
+        const patterns = newGameState.patterns
+        const patternEntries = Object.entries(patterns) as [PatternType, number][]
+        const dominantPattern = patternEntries.reduce((max, curr) =>
+          curr[1] > max[1] ? curr : max, patternEntries[0])?.[0]
+        if (dominantPattern && isValidPattern(dominantPattern)) {
+          earnBonusOrbs(dominantPattern, 5) // ORB_EARNINGS.arcCompletion
+        }
+      }
+
       // Arc completion summary disabled - breaks immersion
       // Experience summaries available in admin dashboard/journey summary (menus/maps)
       // if (completedArc) {
@@ -717,7 +762,7 @@ export default function StatefulGameInterface() {
       clearTimeout(safetyTimeout)
       isProcessingChoiceRef.current = false
     }
-  }, [state.gameState, state.currentNode, state.showConfigWarning, state.recentSkills, state.showThoughtCabinet, state.showJournal, state.showConstellation, state.journeyNarrative, state.showJourneySummary, state.currentCharacterId, state.currentContent])
+  }, [state.gameState, state.currentNode, state.showConfigWarning, state.recentSkills, state.showThoughtCabinet, state.showJournal, state.showConstellation, state.journeyNarrative, state.showJourneySummary, state.currentCharacterId, state.currentContent, earnOrb, earnBonusOrbs, getUnacknowledgedMilestone, acknowledgeMilestone])
 
   /**
    * Navigate back to Samuel's hub after completing a conversation
@@ -978,12 +1023,17 @@ export default function StatefulGameInterface() {
             <div className="flex gap-1 sm:gap-2 items-center">
               {/* All buttons must be 44px minimum touch target (Apple HIG, Android MD) */}
               <button
-                onClick={() => setState(prev => ({ ...prev, showJournal: true }))}
+                onClick={() => {
+                  markOrbsViewed() // Clear "new orbs" indicator
+                  setState(prev => ({ ...prev, showJournal: true }))
+                }}
                 className="min-w-[44px] min-h-[44px] p-2.5 rounded-full hover:bg-slate-100 active:bg-slate-200 transition-colors text-slate-500 flex items-center justify-center"
                 aria-label="Open Journal"
                 data-testid="nav-journal"
               >
-                <BookOpen className="w-5 h-5" />
+                <FoxTheatreGlow active={hasNewOrbs}>
+                  <BookOpen className="w-5 h-5" />
+                </FoxTheatreGlow>
               </button>
               <button
                 onClick={() => setState(prev => ({ ...prev, showThoughtCabinet: true }))}
@@ -1243,20 +1293,21 @@ export default function StatefulGameInterface() {
           ══════════════════════════════════════════════════════════════════ */}
       {!isEnding && (
         <footer
-          className="flex-shrink-0 bg-stone-50 border border-stone-200 shadow-lg mx-3 sm:mx-auto sm:max-w-2xl rounded-2xl mb-4"
-          style={{ marginBottom: 'calc(1rem + env(safe-area-inset-bottom, 0px))' }}
+          className="flex-shrink-0 bg-stone-50 border border-stone-200 shadow-lg mx-3 sm:mx-auto sm:max-w-2xl rounded-2xl"
+          style={{ marginBottom: 'max(1rem, calc(2rem + env(safe-area-inset-bottom, 0px)))' }}
         >
           <div className="px-3 sm:px-4 py-3 sm:py-4">
-            {/* Scrollable choices container - fixed height for visual consistency */}
+            {/* Scrollable choices container with visual overflow indicator */}
             {/* scroll-snap + touch-action prevents accidental selections during scroll */}
-            <div
-              className="h-[140px] sm:h-[120px] overflow-y-auto overscroll-contain rounded-lg scroll-smooth"
-              style={{
-                WebkitOverflowScrolling: 'touch',
-                scrollSnapType: 'y proximity', // Gentle snap to choices
-                touchAction: 'pan-y', // Only allow vertical pan, not tap during scroll
-              }}
-            >
+            <div className="relative">
+              <div
+                className="max-h-[200px] overflow-y-auto overscroll-contain rounded-lg scroll-smooth"
+                style={{
+                  WebkitOverflowScrolling: 'touch',
+                  scrollSnapType: 'y proximity', // Gentle snap to choices
+                  touchAction: 'pan-y', // Only allow vertical pan, not tap during scroll
+                }}
+              >
               <GameChoices
                 choices={state.availableChoices.map((c, index) => {
                   // Detect pivotal moments for marquee effect
@@ -1275,11 +1326,14 @@ export default function StatefulGameInterface() {
                     pattern: c.choice.pattern,
                     feedback: c.choice.interaction === 'shake' ? 'shake' : undefined,
                     pivotal: isPivotal,
+                    // KOTOR-style orb requirement (if set on choice)
+                    requiredOrbFill: c.choice.requiredOrbFill,
                     // Track index for finding the original choice
                     next: String(index)
                   }
                 })}
                 isProcessing={state.isLoading}
+                orbFillLevels={orbFillLevels}
                 onChoice={(c) => {
                   // Use index to find the original choice (stored in 'next' field)
                   const index = parseInt(c.next || '0', 10)
@@ -1287,6 +1341,7 @@ export default function StatefulGameInterface() {
                   if (original) handleChoice(original)
                 }}
               />
+              </div>
             </div>
           </div>
         </footer>

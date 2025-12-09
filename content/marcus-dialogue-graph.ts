@@ -618,7 +618,7 @@ The machine held.`,
       {
         pattern: 'helping',
         minLevel: 5,
-        altText: `Thanks. Felt good walking you through it. You were here when it mattered—that's rare.
+        altText: `Thanks. Felt good walking you through it. You were here when it mattered. that's rare.
 
 Makes the weight lighter.
 
@@ -630,7 +630,7 @@ The machine held.`,
       {
         pattern: 'building',
         minLevel: 5,
-        altText: `Thanks. Felt good walking you through it. You think like an engineer—I saw that.
+        altText: `Thanks. Felt good walking you through it. You think like an engineer. I saw that.
 
 Makes the weight lighter.
 
@@ -756,7 +756,7 @@ Person's blood in those lines. Entire circulatory system.
     content: [
       {
         // NOTE: Removed "*Phone buzzes. Expression darkens.*" - audio handled by system, emotion shown through dialogue disruption
-        text: `Start simple. See that number? Flow rate.|Liters per minute the pump moves.|Normal cardiac output: 4 to 8. We're at 4.5 because—|<shake>*Sharp BEEP*</shake>|<shake>CRITICAL SYSTEM MESSAGE</shake>`,
+        text: `Start simple. See that number? Flow rate.|Liters per minute the pump moves.|Normal cardiac output: 4 to 8. We're at 4.5 because. |<shake>*Sharp BEEP*</shake>|<shake>CRITICAL SYSTEM MESSAGE</shake>`,
         emotion: 'focused',
         variation_id: 'teaching_interrupted_v1',
         richEffectContext: 'warning',
@@ -1311,7 +1311,7 @@ Day it doesn't bother you? Day you should quit.`,
     choices: [
       {
         choiceId: 'marcus_asks_before_leave',
-        text: "Before you go—how do you know when you're making the right choice?",
+        text: "Before you go. how do you know when you're making the right choice?",
         nextNodeId: 'marcus_asks_player',
         pattern: 'helping',
         skills: ['communication', 'curiosity']
@@ -1338,7 +1338,7 @@ Day it doesn't bother you? Day you should quit.`,
     speaker: 'Marcus',
     content: [
       {
-        text: `*Pauses. Looks at you.*|How know right choice?|*Thinks.*|For me—when decision feels heavy. When I lose sleep.|Means I care.|But you?|How you know?|When helping others, how you know you helping right way?`,
+        text: `*Pauses. Looks at you.*|How know right choice?|*Thinks.*|For me. when decision feels heavy. When I lose sleep.|Means I care.|But you?|How you know?|When helping others, how you know you helping right way?`,
         emotion: 'curious_engaged',
         interaction: 'nod',
         variation_id: 'marcus_reciprocity_v1',
@@ -1355,14 +1355,14 @@ Day it doesn't bother you? Day you should quit.`,
       },
       {
         choiceId: 'player_know_by_impact',
-        text: "I look at the impact. Are people better off? Are they more capable? But it's hard to measure that in the moment—you only see it later.",
+        text: "I look at the impact. Are people better off? Are they more capable? But it's hard to measure that in the moment. you only see it later.",
         nextNodeId: 'marcus_reciprocity_response',
         pattern: 'analytical',
         skills: ['emotionalIntelligence', 'criticalThinking']
       },
       {
         choiceId: 'player_know_by_connection',
-        text: "I know by the connection. When someone opens up, when they feel safe enough to be vulnerable—that's how I know I'm helping the right way.",
+        text: "I know by the connection. When someone opens up, when they feel safe enough to be vulnerable. that's how I know I'm helping the right way.",
         nextNodeId: 'marcus_reciprocity_response',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'emotionalIntelligence']

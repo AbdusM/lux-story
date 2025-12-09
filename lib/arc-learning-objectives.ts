@@ -127,7 +127,7 @@ const SKILL_WHY_IT_MATTERS: Record<string, string> = {
   criticalThinking: 'Critical thinking enables you to evaluate complex situations, see through surface-level appearances, and make informed decisions.',
   communication: 'Strong communication helps you express ideas clearly, ask powerful questions, and build understanding with diverse teams.',
   problemSolving: 'Problem-solving skills let you break down complex challenges into manageable steps, essential in any career.',
-  leadership: 'Leadership skills help you guide projects, mentor others, and advance in your career—even without formal authority.',
+  leadership: 'Leadership skills help you guide projects, mentor others, and advance in your career. even without formal authority.',
   creativity: 'Creativity helps you find innovative solutions and connect ideas across different domains.',
   adaptability: 'Adaptability helps you thrive in changing environments and pivot when circumstances shift.',
   collaboration: 'Collaboration skills help you work effectively with diverse teams and build on others\' strengths.',
@@ -223,7 +223,7 @@ export async function generateExperienceSummary(
       })
     }
 
-    keyInsights.unshift('Building trust is a form of career exploration—it reveals paths you can\'t find on Google')
+    keyInsights.unshift('Building trust is a form of career exploration. it reveals paths you can\'t find on Google')
   }
 
   // Determine dominant pattern from game state

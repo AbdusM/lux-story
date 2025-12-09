@@ -152,7 +152,7 @@ export interface ConditionalChoice {
   /**
    * Visual interaction animation to apply to this choice button.
    * One-shot animations that enhance emphasis when the choice appears.
-   * 
+   *
    * Options:
    * - 'big': Scale up with fade (important choice, emphasis)
    * - 'small': Scale down with fade (subtle option)
@@ -163,6 +163,20 @@ export interface ConditionalChoice {
    * - 'jitter': Multi-directional micro-movements (tension)
    */
   interaction?: 'big' | 'small' | 'shake' | 'nod' | 'ripple' | 'bloom' | 'jitter'
+
+  /**
+   * KOTOR-style orb fill requirement.
+   * Choice is shown but locked (grayed out) until player's orb fill level meets threshold.
+   * This creates aspirational choices that encourage building specific patterns.
+   *
+   * @example
+   * requiredOrbFill: { pattern: 'analytical', threshold: 25 }
+   * // Choice appears but is locked until player has 25% analytical orb fill
+   */
+  requiredOrbFill?: {
+    pattern: 'analytical' | 'helping' | 'building' | 'patience' | 'exploring'
+    threshold: number // 0-100 fill percentage required
+  }
 }
 
 /**

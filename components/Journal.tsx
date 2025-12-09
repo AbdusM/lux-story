@@ -2,15 +2,18 @@
 
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { X, Users, Compass, TrendingUp, Sparkles } from "lucide-react"
+import { X, Users, Compass, TrendingUp, Sparkles, Zap, ChevronDown, ChevronUp } from "lucide-react"
 import { useInsights } from "@/hooks/useInsights"
 import { useConstellationData } from "@/hooks/useConstellationData"
 import { useOrbs } from "@/hooks/useOrbs"
+import { usePatternUnlocks, type OrbState } from "@/hooks/usePatternUnlocks"
+import { useGameSelectors } from "@/lib/game-store"
 import { cn } from "@/lib/utils"
 import { PATTERN_METADATA, type PatternType } from "@/lib/patterns"
 import { springs, durations } from "@/lib/animations"
 import { PlayerAvatar } from "@/components/CharacterAvatar"
 import { OrbBalanceMini } from "@/components/orbs"
+import { getUnlocksForPattern } from "@/lib/pattern-unlocks"
 
 // Tab content transition variants
 const tabContentVariants = {
@@ -32,10 +35,15 @@ interface JournalProps {
   onClose: () => void
 }
 
-type TabId = 'style' | 'connections' | 'patterns'
+type TabId = 'orbs' | 'style' | 'connections' | 'patterns'
 
 export function Journal({ isOpen, onClose }: JournalProps) {
-  const [activeTab, setActiveTab] = useState<TabId>('style')
+  // Check if orbs have been introduced narratively
+  const orbsIntroduced = useGameSelectors.useHasGlobalFlag('orbs_introduced')
+
+  // Default to 'style' tab if orbs not yet introduced, otherwise 'orbs'
+  const [activeTab, setActiveTab] = useState<TabId>(orbsIntroduced ? 'orbs' : 'style')
+  const [expandedOrb, setExpandedOrb] = useState<PatternType | null>(null)
 
   // Escape key handler
   useEffect(() => {
@@ -51,6 +59,7 @@ export function Journal({ isOpen, onClose }: JournalProps) {
   const insights = useInsights()
   const { characters } = useConstellationData()
   const { balance: orbBalance } = useOrbs()
+  const { orbs: patternOrbs, totalProgress } = usePatternUnlocks()
 
   // Animation variants
   const backdropVariants = {
@@ -63,8 +72,11 @@ export function Journal({ isOpen, onClose }: JournalProps) {
     visible: { x: 0, transition: { type: "spring", stiffness: 300, damping: 30 } }
   }
 
+  // Tabs - Orbs only shown after narrative introduction
   const tabs: { id: TabId; label: string; icon: typeof Users }[] = [
-    { id: 'style', label: 'Your Style', icon: Compass },
+    // Only show Orbs tab after Samuel has introduced the concept
+    ...(orbsIntroduced ? [{ id: 'orbs' as TabId, label: 'Orbs', icon: Zap }] : []),
+    { id: 'style', label: 'Style', icon: Compass },
     { id: 'connections', label: 'Bonds', icon: Users },
     { id: 'patterns', label: 'Insights', icon: TrendingUp },
   ]
@@ -160,6 +172,40 @@ export function Journal({ isOpen, onClose }: JournalProps) {
             {/* Scrollable Content - Compact padding */}
             <div className="flex-1 overflow-y-auto p-4">
               <AnimatePresence mode="wait">
+
+              {/* Pattern Orbs Tab - 5 filling orbs */}
+              {activeTab === 'orbs' && (
+                <motion.div
+                  key="orbs-tab"
+                  variants={tabContentVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  className="space-y-3"
+                >
+                  {/* Overall Progress */}
+                  <div className="text-center mb-4">
+                    <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">Overall Progress</p>
+                    <p className="text-2xl font-bold text-amber-600">{totalProgress}%</p>
+                  </div>
+
+                  {/* 5 Pattern Orbs */}
+                  {patternOrbs.map((orb) => (
+                    <OrbCard
+                      key={orb.pattern}
+                      orb={orb}
+                      isExpanded={expandedOrb === orb.pattern}
+                      onToggle={() => setExpandedOrb(expandedOrb === orb.pattern ? null : orb.pattern)}
+                    />
+                  ))}
+
+                  {/* Hint at bottom */}
+                  <p className="text-[10px] text-slate-400 text-center pt-2 italic">
+                    Make choices to fill your orbs and unlock abilities
+                  </p>
+                </motion.div>
+              )}
+
               {/* Your Style Tab - Compact */}
               {activeTab === 'style' && (
                 <motion.div
@@ -406,4 +452,151 @@ function _getPatternColorClass(pattern: PatternType): string {
     building: 'amber-500'
   }
   return colorMap[pattern] || 'amber-500'
+}
+
+/**
+ * OrbCard - Displays a single pattern orb with fill progress and unlocks
+ */
+function OrbCard({ orb, isExpanded, onToggle }: {
+  orb: OrbState
+  isExpanded: boolean
+  onToggle: () => void
+}) {
+  const allUnlocks = getUnlocksForPattern(orb.pattern)
+
+  return (
+    <div
+      className="rounded-xl border overflow-hidden transition-all"
+      style={{
+        borderColor: `${orb.color}40`,
+        backgroundColor: `${orb.color}08`,
+      }}
+    >
+      {/* Header - Always visible, clickable */}
+      <button
+        onClick={onToggle}
+        className="w-full p-3 flex items-center gap-3 min-h-[60px] hover:bg-white/30 transition-colors"
+      >
+        {/* Orb Symbol */}
+        <div
+          className="w-10 h-10 rounded-full flex items-center justify-center text-2xl font-bold flex-shrink-0"
+          style={{
+            background: `linear-gradient(135deg, ${orb.color}20, ${orb.color}40)`,
+            boxShadow: orb.fillPercent > 0 ? `0 0 12px ${orb.color}40` : 'none',
+          }}
+        >
+          <span style={{ color: orb.color }}>{orb.symbol}</span>
+        </div>
+
+        {/* Label + Progress */}
+        <div className="flex-1 text-left min-w-0">
+          <div className="flex items-center justify-between">
+            <span className="font-semibold text-slate-800 dark:text-slate-200 text-sm">
+              {orb.label}
+            </span>
+            <span className="text-xs font-mono text-slate-500">
+              {orb.fillPercent}%
+            </span>
+          </div>
+          {/* Progress Bar */}
+          <div className="h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full mt-1 overflow-hidden">
+            <motion.div
+              className="h-full rounded-full"
+              style={{ backgroundColor: orb.color }}
+              initial={{ width: 0 }}
+              animate={{ width: `${orb.fillPercent}%` }}
+              transition={{ duration: 0.5, ease: 'easeOut' }}
+            />
+          </div>
+          <p className="text-[10px] text-slate-400 mt-0.5">{orb.tierLabel}</p>
+        </div>
+
+        {/* Expand indicator */}
+        <div className="text-slate-400">
+          {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+        </div>
+      </button>
+
+      {/* Expanded content - Unlocks */}
+      <AnimatePresence>
+        {isExpanded && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="overflow-hidden"
+          >
+            <div className="px-3 pb-3 space-y-2 border-t border-slate-200/50 dark:border-slate-700/50 pt-2">
+              {/* Tagline */}
+              <p className="text-xs italic text-slate-500 mb-2">"{orb.tagline}"</p>
+
+              {/* Unlocks List */}
+              {allUnlocks.map((unlock) => {
+                const isUnlocked = orb.fillPercent >= unlock.threshold
+                const isNext = orb.nextUnlock?.id === unlock.id
+
+                return (
+                  <div
+                    key={unlock.id}
+                    className={cn(
+                      "flex items-start gap-2 p-2 rounded-lg text-xs",
+                      isUnlocked
+                        ? "bg-white/50 dark:bg-slate-800/50"
+                        : isNext
+                        ? "bg-slate-100/50 dark:bg-slate-800/30"
+                        : "opacity-40"
+                    )}
+                  >
+                    {/* Status Icon - only show if unlocked or next */}
+                    <span className="text-sm flex-shrink-0 w-4 text-center" style={{ color: isUnlocked ? orb.color : undefined }}>
+                      {isUnlocked ? '✓' : isNext ? '◎' : ''}
+                    </span>
+
+                    {/* Content */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between">
+                        <span className={cn(
+                          "font-medium",
+                          isUnlocked ? "text-slate-800 dark:text-slate-200" : isNext ? "text-slate-600" : "text-slate-400"
+                        )}>
+                          {unlock.name}
+                        </span>
+                        {!isUnlocked && (
+                          <span className="text-[10px] text-slate-400">
+                            {unlock.threshold}%
+                          </span>
+                        )}
+                      </div>
+                      {isUnlocked && (
+                        <p className="text-slate-500 dark:text-slate-400 mt-0.5">
+                          {unlock.description}
+                        </p>
+                      )}
+                      {isNext && (
+                        <div className="mt-1">
+                          <div className="h-1 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                            <div
+                              className="h-full rounded-full"
+                              style={{
+                                width: `${orb.progressToNext}%`,
+                                backgroundColor: orb.color,
+                              }}
+                            />
+                          </div>
+                          <p className="text-[10px] text-slate-400 mt-0.5">
+                            Reach {orb.nextUnlock?.threshold}% to unlock
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  )
 }
