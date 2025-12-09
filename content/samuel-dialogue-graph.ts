@@ -14,6 +14,28 @@ import {
 import { mayaRevisitEntryPoints } from './maya-revisit-graph'
 
 export const samuelDialogueNodes: DialogueNode[] = [
+  // ============= ATMOSPHERIC ARRIVAL =============
+  {
+    nodeId: 'station_arrival',
+    speaker: '', // No speaker - purely atmospheric
+    content: [
+      {
+        text: "The train slows. Through fogged windows, a station emerges—arched ceilings, warm light, the distant murmur of conversation.\n\nSomewhere ahead, a figure waits on the platform.",
+        emotion: 'atmospheric',
+        variation_id: 'arrival_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'step_onto_platform',
+        text: "[Step onto the platform]",
+        nextNodeId: 'samuel_introduction',
+        pattern: 'exploring',
+        skills: ['adaptability']
+      }
+    ]
+  },
+
   // ============= INTRODUCTION =============
   {
     nodeId: 'samuel_introduction',
@@ -162,8 +184,8 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "This station exists for people at a turning point. Not on any map. You can't find it unless you need it.\n\nEvery platform represents a different path. The travelers here? All asking the same question: 'What am I supposed to do?'",
-        emotion: 'knowing',
+        text: "Fox Theatre Station. Been here since 1929, same as the theatre upstairs.\n\nEach platform connects to different parts of the city—and the people who work there. You'll meet them. Figure out where you fit.",
+        emotion: 'warm',
         variation_id: 'explains_v1'
       }
     ],
@@ -4810,7 +4832,10 @@ export const samuelDialogueNodes: DialogueNode[] = [
 // This provides compile-time safety and refactor protection.
 
 export const samuelEntryPoints = {
-  /** Initial entry point - game starts here */
+  /** Atmospheric arrival - game starts here */
+  ARRIVAL: 'station_arrival',
+
+  /** Samuel's introduction - after stepping onto platform */
   INTRODUCTION: 'samuel_introduction',
 
   /** Hub shown when player first arrives (only Maya available) */
@@ -4869,7 +4894,7 @@ export type SamuelEntryPoint = typeof samuelEntryPoints[keyof typeof samuelEntry
 export const samuelDialogueGraph: DialogueGraph = {
   version: '1.0.0',
   nodes: new Map(samuelDialogueNodes.map(node => [node.nodeId, node])),
-  startNodeId: samuelEntryPoints.INTRODUCTION,
+  startNodeId: samuelEntryPoints.ARRIVAL,
   metadata: {
     title: "Samuel's Guidance",
     author: 'Guided Generation (Build-Time)',
