@@ -86,7 +86,7 @@ Twelve hours. Just me and the machine. Keeping a father alive.`,
     choices: [
       {
         choiceId: 'marcus_high_stakes',
-        text: "That sounds incredibly high-stakes.",
+        text: "That sounds intense.",
         nextNodeId: 'marcus_the_bubble',
         pattern: 'helping',
         skills: ['emotionalIntelligence']
@@ -157,7 +157,7 @@ Wrong heparin calc? He bleeds. Missed clot? Stroke.`,
       },
       {
         choiceId: 'marcus_heavy_burden',
-        text: "That's a terrifying amount of responsibility.",
+        text: "That's a lot to carry.",
         nextNodeId: 'marcus_the_bubble',
         pattern: 'helping',
         skills: ['emotionalIntelligence']
@@ -493,7 +493,7 @@ He wakes up tomorrow.`,
     choices: [
       {
         choiceId: 'marcus_post_sim_reaction',
-        text: "That was... intense.",
+        text: "That was real.",
         nextNodeId: 'marcus_career_bridge',
         pattern: 'helping',
         skills: ['emotionalIntelligence']
@@ -522,13 +522,11 @@ He wakes up tomorrow.`,
     speaker: 'Marcus',
     content: [
       {
-        text: `That's the job. Not just caring. Technical mastery.
+        text: `That's the job. Caring AND technical mastery.
 
 Whole world here. Perfusionists run these in surgery. Biomedical engineers design them bubble-free. Software devs code the alarms.
 
-Started as a nurse.
-
-Now? Designing the next machine.`,
+Started as a nurse. Now? Designing the next machine.`,
         emotion: 'inspired',
         interaction: 'bloom',
         variation_id: 'career_bridge_v1',
@@ -540,9 +538,9 @@ Now? Designing the next machine.`,
       {
         pattern: 'building',
         minLevel: 5,
-        altText: `You get it. The making of things that matter. That's the job. Not just caring. Technical mastery.
+        altText: `You get it. Making things that matter. Heart and precision, together.
 
-Whole world here. Perfusionists run these in surgery. Biomedical engineers design them bubble-free. Software devs code the alarms.
+Whole world here. Perfusionists, biomedical engineers, software devs. All building.
 
 Started as a nurse. Now? Designing the next machine.`,
         altEmotion: 'kindred_inspired'
@@ -550,9 +548,9 @@ Started as a nurse. Now? Designing the next machine.`,
       {
         pattern: 'analytical',
         minLevel: 5,
-        altText: `You think in systems. I saw that when you worked the simulation. That's the job. Not just caring. Technical mastery.
+        altText: `You think in systems. I saw that when you worked the simulation. That's what this takes—seeing how parts connect.
 
-Whole world here. Perfusionists run these in surgery. Biomedical engineers design them bubble-free. Software devs code the alarms.
+Whole world here. Perfusionists, engineers, devs. Systems within systems.
 
 Started as a nurse. Now? Designing the next machine.`,
         altEmotion: 'recognized_inspired'
@@ -560,9 +558,9 @@ Started as a nurse. Now? Designing the next machine.`,
       {
         pattern: 'helping',
         minLevel: 5,
-        altText: `You showed up when it mattered. That's what this work is. That's the job. Not just caring. Technical mastery.
+        altText: `You showed up when it mattered. That's what this work is—presence when it counts.
 
-Whole world here. Perfusionists run these in surgery. Biomedical engineers design them bubble-free. Software devs code the alarms.
+Whole world here. Perfusionists, engineers, devs. People who stay.
 
 Started as a nurse. Now? Designing the next machine.`,
         altEmotion: 'grateful_inspired'
@@ -919,7 +917,7 @@ But...`,
       },
       {
         choiceId: 'p2_human_factors',
-        text: "The human context matters too. This isn't just numbers.",
+        text: "The human context matters. Not just numbers.",
         nextNodeId: 'marcus_p2_jordan_question',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
@@ -987,7 +985,7 @@ Who are we to decide whose future is worth more?`,
     speaker: 'Marcus',
     content: [
       {
-        text: `You're right. Not just math.
+        text: `Not just math.
 
 Medical criteria: survival probability, reversibility, resource utilization.
 
@@ -1024,7 +1022,7 @@ Doesn't make it easier. Makes it defensible.`,
       },
       {
         choiceId: 'p2_trust_judgment',
-        text: "The framework helps, but you still have to use judgment.",
+        text: "Numbers guide you. But something else decides.",
         nextNodeId: 'marcus_p2_jordan_question',
         pattern: 'patience',
         skills: ['leadership', 'emotionalIntelligence'],
@@ -1362,7 +1360,7 @@ Day it doesn't bother you? Day you should quit.`,
       },
       {
         choiceId: 'player_know_by_connection',
-        text: "I know by the connection. When someone opens up, when they feel safe enough to be vulnerable. that's how I know I'm helping the right way.",
+        text: "When someone feels safe enough to be vulnerable. That's how I know.",
         nextNodeId: 'marcus_reciprocity_response',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'emotionalIntelligence']

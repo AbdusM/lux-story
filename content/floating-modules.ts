@@ -23,9 +23,9 @@ export const FLOATING_MODULES: FloatingModule[] = [
     speaker: 'Narrator',
     content: [
       {
-        text: `A quiet shift. You've started noticing the patterns between patterns.
+        text: `A quiet shift. You've started noticing patterns between patterns.
 
-Not just what people say. but why. Not just the words. but the gaps between them.
+You see why, not just what. The gaps matter more than the words.
 
 Something in you has sharpened.`,
         variation_id: 'analytical_v1'
@@ -69,9 +69,9 @@ People see it. They open up faster now.`,
       {
         text: `Your hands remember things your mind forgets.
 
-Every problem is a system now. Every system has components. Every component can be improved.
+Every problem is a system. Every system has components. Every component can be improved.
 
-You don't just see solutions. you feel them.`,
+You don't just see solutions—you feel them.`,
         variation_id: 'building_v1'
       }
     ],
@@ -91,7 +91,7 @@ You don't just see solutions. you feel them.`,
       {
         text: `Time moves differently for you now.
 
-Not slower. just less urgent. You've learned that rushing rarely helps, and that silence often says more than words.
+Not slower—less urgent. Rushing breaks things. Silence reveals them.
 
 Some doors only open when you stop pushing.`,
         variation_id: 'patience_v1'
@@ -113,7 +113,7 @@ Some doors only open when you stop pushing.`,
       {
         text: `The unknown stopped being scary.
 
-Every dead end is data. Every failure is feedback. You've stopped fearing wrong turns because you've realized. there are no wrong turns. Just longer routes to the same understanding.`,
+Every dead end is data. Every failure is feedback. There are no wrong turns—just longer routes to understanding.`,
         variation_id: 'exploring_v1'
       }
     ],
@@ -137,11 +137,9 @@ Every dead end is data. Every failure is feedback. You've stopped fearing wrong 
       {
         text: `Samuel looks at you differently now.
 
-"First conversation's always the hardest. Not because of what you say. because of what you learn to hear."
+"First conversation's always the hardest. Not what you say—what you learn to hear."
 
-He nods, just once.
-
-"You're starting to understand."`,
+He nods. "You're starting to understand."`,
         variation_id: 'first_arc_v1'
       }
     ],
@@ -161,15 +159,11 @@ He nods, just once.
     emotion: 'reflective',
     content: [
       {
-        text: `Samuel is watching the station, but his attention is on you.
+        text: `Samuel watches the station, but his attention is on you.
 
 "Three stories. Three crossroads. You've been part of all of them."
 
-He turns.
-
-"What patterns are you starting to see?"
-
-The question doesn't need an answer. Not yet.`,
+He turns. "What patterns are you starting to see?"`,
         variation_id: 'three_arcs_v1'
       }
     ],
@@ -214,9 +208,7 @@ You helped someone find their direction. That changes you too.`,
       {
         text: `You've noticed something.
 
-Some people open up immediately. Others take longer. The difference isn't them. it's you. The questions you ask. The patience you show.
-
-Trust is earned in small moments.`,
+Some people open up immediately. Others take longer. The difference is you—the questions you ask, the patience you show.`,
         variation_id: 'trust_contrast_v1'
       }
     ],
@@ -243,11 +235,9 @@ Trust is earned in small moments.`,
       {
         text: `Samuel catches your eye as you return.
 
-"You've been listening closely. Not just hearing. listening."
+"You've been listening. Not hearing—listening."
 
-He pauses.
-
-"People feel that. When someone actually wants to understand, not just respond. That's rarer than you think."`,
+"People feel that. When someone wants to understand, not respond. That's rare."`,
         variation_id: 'samuel_helper_v1'
       }
     ],
@@ -270,8 +260,6 @@ He pauses.
 
 "You take your time. Most people rush to fill silences. You let them breathe."
 
-He turns.
-
 "That's how you find what's underneath."`,
         variation_id: 'samuel_patience_v1'
       }
@@ -291,13 +279,13 @@ He turns.
     emotion: 'thoughtful',
     content: [
       {
-        text: `Samuel looks at you like he's seeing something new.
+        text: `Samuel looks at you differently now.
 
-"You don't just see what is. You see what could be."
+"You see what could be, not just what is."
 
-He nods slowly.
+He nods.
 
-"That's builder thinking. Some people tear down. Others repair. You? You imagine what hasn't been made yet."`,
+"Builder thinking. Some tear down. Others repair. You imagine what hasn't been made yet."`,
         variation_id: 'samuel_builder_v1'
       }
     ],
@@ -316,9 +304,9 @@ He nods slowly.
     emotion: 'appreciative',
     content: [
       {
-        text: `Samuel's watching you with that quiet attention he reserves for things that matter.
+        text: `Samuel's watching you with quiet attention.
 
-"You see the patterns. The connections other people miss."
+"You see patterns. Connections others miss."
 
 A slight smile.
 
@@ -341,13 +329,13 @@ A slight smile.
     emotion: 'warm',
     content: [
       {
-        text: `Samuel catches you looking around the station, curious as always.
+        text: `Samuel catches you looking around the station.
 
-"You can't help it, can you? Always asking questions. Always wondering what's around the next corner."
+"You can't help it, can you? Always asking. Always wondering what's around the next corner."
 
 He chuckles.
 
-"Never lose that. The curious ones are the ones who find what no one else is looking for."`,
+"Never lose that. The curious ones find what no one else is looking for."`,
         variation_id: 'samuel_explorer_v1'
       }
     ],

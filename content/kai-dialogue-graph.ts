@@ -198,7 +198,7 @@ We designed a green checkmark. We didn't design safety.`,
       },
       {
         choiceId: 'kai_system_fail',
-        text: "The system worked for the company. It failed the human.",
+        text: "The paperwork protected them. Not him.",
         nextNodeId: 'kai_origin_story',
         pattern: 'analytical',
         skills: ['systemsThinking']
@@ -592,7 +592,7 @@ What do you do?`,
       },
       {
         choiceId: 'kai_give_up_compliance',
-        text: "It's too hard. Maybe just stick to the slides.",
+        text: "It's too hard. Stick to the slides.",
         nextNodeId: 'kai_bad_ending',
         pattern: 'analytical',
         consequence: {
@@ -660,7 +660,7 @@ That's it. That's the skill. Not "harness safety." *Courage.*`,
     choices: [
       {
         choiceId: 'kai_teach_courage',
-        text: "You can't teach courage with a slide deck.",
+        text: "Slides can't teach courage.",
         nextNodeId: 'kai_real_test',
         pattern: 'helping',
         skills: ['leadership', 'instructionalDesign']
@@ -717,7 +717,7 @@ You know what he said? "I've never done that. Never stopped. I always just finis
       {
         text: `Maria, she's a shift supervisor, she said something that broke me.
 
-"Twenty years I've been doing this job. Not once has anyone asked me what I actually need to know. They just send the slides and wait for the green check."
+"Twenty years I've been doing this job. Not once has anyone asked me what I need to know. They send the slides and wait for the green check."
 
 These are the people I'm supposed to protect. And I've been hiding behind PDFs.`,
         emotion: 'revelation',
@@ -774,9 +774,9 @@ Supervisors. Safety leads. The ones who can actually stop a dangerous situation 
       {
         text: `Exactly. Forklifts. Heights. Chemical handling. The jobs where a mistake means someone doesn't go home.
 
-If I can prove the simulation reduces real injuries. not just compliance metrics. then maybe someone will listen.
+If I can prove the simulation reduces real injuries—not compliance metrics—maybe someone will listen.
 
-Or maybe I just do it anyway. Without permission.`,
+Or maybe I do it anyway. Without permission.`,
         emotion: 'determined',
         variation_id: 'impact_v1'
       }
@@ -868,7 +868,7 @@ What do you think matters more. reaching more people, or reaching people more de
     choices: [
       {
         choiceId: 'kai_choose_depth',
-        text: "Depth. One person who really learns is worth a thousand who just click through. I'd rather change one life completely than touch a thousand superficially.",
+        text: "Depth. One person who learns beats a thousand who click through.",
         nextNodeId: 'kai_climax_decision',
         pattern: 'helping',
         skills: ['wisdom', 'instructionalDesign'],
@@ -1012,9 +1012,9 @@ Thanks for trying.`,
     speaker: 'Kai',
     content: [
       {
-        text: `Thank you. You didn't just help me fix a module. You helped me stop lying to myself.
+        text: `You helped me stop lying to myself.
 
-Before I go. between us, I've laid all my cards out. What about yours? What are you building? What connection matters most to you?`,
+Before I go—I've laid all my cards out. What about you? What are you building? What connection matters most?`,
         emotion: 'curious_engaged',
         variation_id: 'farewell_v2'
       }
@@ -1023,7 +1023,7 @@ Before I go. between us, I've laid all my cards out. What about yours? What are 
       {
         pattern: 'building',
         minLevel: 5,
-        altText: `Thank you. You didn't just help me fix a module. You helped me stop lying to myself.
+        altText: `You helped me stop lying to myself.
 
 Between us... you're a builder. I recognized that the moment you started thinking in systems. What are you building next?`,
         altEmotion: 'kindred_curious'
@@ -1031,7 +1031,7 @@ Between us... you're a builder. I recognized that the moment you started thinkin
       {
         pattern: 'helping',
         minLevel: 5,
-        altText: `Thank you. You didn't just help me fix a module. You helped me stop lying to myself.
+        altText: `You helped me stop lying to myself.
 
 Between us... you care deeply about people. I saw it in every question you asked. What impact do you want to have?`,
         altEmotion: 'grateful_curious'
