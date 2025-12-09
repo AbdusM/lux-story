@@ -72,10 +72,9 @@ export function Journal({ isOpen, onClose }: JournalProps) {
     visible: { x: 0, transition: { type: "spring", stiffness: 300, damping: 30 } }
   }
 
-  // Tabs - Orbs only shown after narrative introduction
+  // Tabs - Orbs always visible (accessible) but shows "not yet achieved" state before introduction
   const tabs: { id: TabId; label: string; icon: typeof Users }[] = [
-    // Only show Orbs tab after Samuel has introduced the concept
-    ...(orbsIntroduced ? [{ id: 'orbs' as TabId, label: 'Orbs', icon: Zap }] : []),
+    { id: 'orbs', label: 'Orbs', icon: Zap },
     { id: 'style', label: 'Style', icon: Compass },
     { id: 'connections', label: 'Bonds', icon: Users },
     { id: 'patterns', label: 'Insights', icon: TrendingUp },
@@ -183,26 +182,43 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                   exit="exit"
                   className="space-y-3"
                 >
-                  {/* Overall Progress */}
-                  <div className="text-center mb-4">
-                    <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">Overall Progress</p>
-                    <p className="text-2xl font-bold text-amber-600">{totalProgress}%</p>
-                  </div>
+                  {orbsIntroduced ? (
+                    <>
+                      {/* Overall Progress */}
+                      <div className="text-center mb-4">
+                        <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">Overall Progress</p>
+                        <p className="text-2xl font-bold text-amber-600">{totalProgress}%</p>
+                      </div>
 
-                  {/* 5 Pattern Orbs */}
-                  {patternOrbs.map((orb) => (
-                    <OrbCard
-                      key={orb.pattern}
-                      orb={orb}
-                      isExpanded={expandedOrb === orb.pattern}
-                      onToggle={() => setExpandedOrb(expandedOrb === orb.pattern ? null : orb.pattern)}
-                    />
-                  ))}
+                      {/* 5 Pattern Orbs */}
+                      {patternOrbs.map((orb) => (
+                        <OrbCard
+                          key={orb.pattern}
+                          orb={orb}
+                          isExpanded={expandedOrb === orb.pattern}
+                          onToggle={() => setExpandedOrb(expandedOrb === orb.pattern ? null : orb.pattern)}
+                        />
+                      ))}
 
-                  {/* Hint at bottom */}
-                  <p className="text-[10px] text-slate-400 text-center pt-2 italic">
-                    Make choices to fill your orbs and unlock abilities
-                  </p>
+                      {/* Hint at bottom */}
+                      <p className="text-[10px] text-slate-400 text-center pt-2 italic">
+                        Make choices to fill your orbs and unlock abilities
+                      </p>
+                    </>
+                  ) : (
+                    /* Not Yet Achieved State */
+                    <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
+                      <div className="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-4">
+                        <Zap className="w-8 h-8 text-slate-300 dark:text-slate-600" />
+                      </div>
+                      <h3 className="text-lg font-semibold text-slate-600 dark:text-slate-400 mb-2">
+                        Not Yet Discovered
+                      </h3>
+                      <p className="text-sm text-slate-400 dark:text-slate-500 max-w-xs">
+                        Continue your journey at Grand Central Terminus to discover what orbs await you.
+                      </p>
+                    </div>
+                  )}
                 </motion.div>
               )}
 
