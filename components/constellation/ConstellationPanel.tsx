@@ -170,8 +170,8 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
                 ))}
               </div>
 
-              {/* Content */}
-              <div className="flex-1 overflow-y-auto overflow-x-hidden" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
+              {/* Content - with spacing from header for mobile touch */}
+              <div className="flex-1 overflow-y-auto overflow-x-hidden pt-2" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
                 <AnimatePresence mode="wait">
                   {activeTab === 'people' ? (
                     <motion.div

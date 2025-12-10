@@ -273,7 +273,7 @@ export class GameStateUtils {
         exploring: 0
       },
       lastSaved: Date.now(),
-      currentNodeId: 'samuel_introduction', // Start with Samuel (Hub)
+      currentNodeId: 'station_arrival', // Start with atmospheric intro before Samuel
       currentCharacterId: 'samuel', // Game begins with the Station Keeper
       thoughts: []
     }

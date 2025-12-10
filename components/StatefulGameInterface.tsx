@@ -1018,87 +1018,10 @@ export default function StatefulGameInterface() {
           ══════════════════════════════════════════════════════════════════ */}
       <header className="flex-shrink-0 bg-stone-50/95 backdrop-blur-md border-b border-stone-200 z-10">
         <div className="max-w-4xl mx-auto px-3 sm:px-4">
-          {/* Top Navigation Row */}
-          <div className="flex justify-between items-center py-2">
-            <div className="flex gap-1 sm:gap-2 items-center">
-              {/* All buttons must be 44px minimum touch target (Apple HIG, Android MD) */}
-              <button
-                onClick={() => {
-                  markOrbsViewed() // Clear "new orbs" indicator
-                  setState(prev => ({ ...prev, showJournal: true }))
-                }}
-                className="min-w-[44px] min-h-[44px] p-2.5 rounded-full hover:bg-slate-100 active:bg-slate-200 transition-colors text-slate-500 flex items-center justify-center"
-                aria-label="Open Journal"
-                data-testid="nav-journal"
-              >
-                <FoxTheatreGlow active={hasNewOrbs}>
-                  <BookOpen className="w-5 h-5" />
-                </FoxTheatreGlow>
-              </button>
-              <button
-                onClick={() => setState(prev => ({ ...prev, showThoughtCabinet: true }))}
-                className="min-w-[44px] min-h-[44px] p-2.5 rounded-full hover:bg-slate-100 active:bg-slate-200 transition-colors text-slate-500 flex items-center justify-center"
-                aria-label="Open Thought Cabinet"
-                data-testid="nav-thoughts"
-              >
-                <Brain className="w-5 h-5" />
-              </button>
-              <button
-                onClick={() => setState(prev => ({ ...prev, showConstellation: true }))}
-                className="min-w-[44px] min-h-[44px] p-2.5 rounded-full hover:bg-slate-100 active:bg-slate-200 transition-colors text-slate-500 flex items-center justify-center"
-                aria-label="Open Skill Constellation"
-                data-testid="nav-constellation"
-              >
-                <Stars className="w-5 h-5" />
-              </button>
-              {/* Journey Summary - only show if journey is complete enough */}
-              {state.gameState && isJourneyComplete(state.gameState) && (
-                <button
-                  onClick={() => {
-                    if (state.gameState) {
-                      const demonstrations = skillTrackerRef.current?.getAllDemonstrations() || []
-                      const narrative = generateJourneyNarrative(state.gameState, demonstrations)
-                      setState(prev => ({ ...prev, showJourneySummary: true, journeyNarrative: narrative }))
-                    }
-                  }}
-                  className="min-w-[44px] min-h-[44px] p-2.5 rounded-full hover:bg-amber-100 active:bg-amber-200 transition-colors text-amber-600 flex items-center justify-center"
-                  aria-label="View Journey Summary"
-                  title="View your complete journey summary"
-                  data-testid="nav-journey"
-                >
-                  <Compass className="w-5 h-5" />
-                </button>
-              )}
-              <Link href="/student/insights">
-                <button className="min-h-[44px] text-xs sm:text-sm text-blue-600 hover:text-blue-700 active:text-blue-800 transition-colors px-3 py-2 font-medium rounded-md hover:bg-blue-50 active:bg-blue-100">
-                  Your Journey
-                </button>
-              </Link>
-              {/* Share button removed - too obtrusive */}
-              <Link href="/admin" className="hidden sm:block">
-                <button className="min-h-[44px] text-xs text-slate-400 hover:text-slate-600 transition-colors px-3 py-2 rounded-md hover:bg-slate-100">
-                  Admin
-                </button>
-              </Link>
-            </div>
-            <div className="flex gap-1 sm:gap-2 items-center">
-              <ProgressIndicator />
-              <SyncStatusIndicator />
-              <button
-                onClick={() => window.location.reload()}
-                className="min-w-[44px] min-h-[44px] text-xs text-slate-400 hover:text-slate-600 active:text-slate-800 px-2 sm:px-3 py-2 rounded-md hover:bg-slate-100 active:bg-slate-200 flex items-center gap-1"
-                aria-label="New Conversation"
-              >
-                <RefreshCw className="w-4 h-4" />
-                <span className="hidden sm:inline">New</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Character Info Row */}
+          {/* Character Info Row - extra vertical padding for mobile touch */}
           {currentCharacter && (
             <div
-              className="flex items-center justify-between py-2 border-t border-stone-200/50"
+              className="flex items-center justify-between py-3 sm:py-2"
               data-testid="character-header"
               data-character-id={state.currentCharacterId}
             >

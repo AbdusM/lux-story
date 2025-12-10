@@ -56,8 +56,8 @@ export function PeopleView({ characters, onOpenDetail }: PeopleViewProps) {
 
   return (
     <div className="h-full flex flex-col">
-      {/* SVG Constellation */}
-      <div className="flex-1 relative p-4 bg-gradient-to-b from-slate-900 via-slate-900/95 to-slate-800/90 rounded-lg">
+      {/* SVG Constellation - extra padding top for mobile spacing */}
+      <div className="flex-1 relative p-4 pt-6 bg-gradient-to-b from-slate-900 via-slate-900/95 to-slate-800/90 rounded-lg">
         <motion.svg
           viewBox="0 0 100 100"
           className="w-full h-full max-h-[400px] mx-auto"
@@ -320,7 +320,7 @@ export function PeopleView({ characters, onOpenDetail }: PeopleViewProps) {
             ) : onOpenDetail && (
               <button
                 onClick={() => onOpenDetail(selectedCharacter)}
-                className="w-full py-2 px-3 rounded-lg bg-amber-500/20 text-amber-400 text-xs font-medium hover:bg-amber-500/30 transition-colors min-h-[36px]"
+                className="w-full py-3 px-4 rounded-lg bg-amber-500/20 text-amber-400 text-sm font-medium hover:bg-amber-500/30 active:bg-amber-500/40 transition-colors min-h-[44px] touch-manipulation"
               >
                 View Story →
               </button>

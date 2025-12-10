@@ -143,8 +143,8 @@ export function SkillsView({ skills, onOpenDetail }: SkillsViewProps) {
         />
       </div>
 
-      {/* SVG Constellation */}
-      <div className="flex-1 relative p-4">
+      {/* SVG Constellation - extra padding top for mobile spacing from tabs */}
+      <div className="flex-1 relative p-4 pt-6">
         <motion.svg
           viewBox="0 0 100 100"
           className="w-full h-full max-h-[400px] mx-auto"
