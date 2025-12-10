@@ -45,10 +45,6 @@ export function SkillGrowthSection({ profile }: SkillGrowthSectionProps) {
           </div>
         ) : (
           <>
-            <p className="text-sm text-gray-600 mb-4">
-              These are skills your choices have been aligned with. The more you explore, 
-              the more you'll see these grow.
-            </p>
             <div className="space-y-3">
               {skills.map(({ skillName, count, latestContext }) => {
                 const percentage = (count / maxCount) * 100
@@ -73,12 +69,6 @@ export function SkillGrowthSection({ profile }: SkillGrowthSectionProps) {
                   </div>
                 )
               })}
-            </div>
-            <div className="mt-6 bg-blue-50 rounded-lg p-4 border-l-4 border-blue-400">
-              <p className="text-sm text-gray-700">
-                <strong>Remember:</strong> These aren't test scores—they're evidence of skills 
-                you've shown through your choices. Every interaction is a chance to grow.
-              </p>
             </div>
           </>
         )}

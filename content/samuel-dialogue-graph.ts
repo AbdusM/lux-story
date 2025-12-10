@@ -20,7 +20,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: '', // No speaker - purely atmospheric
     content: [
       {
-        text: "The train slows. Through fogged windows, a station emerges—arched ceilings, warm light, the distant murmur of conversation.\n\nSomewhere ahead, a figure waits on the platform.",
+        text: "The train slows. Through fogged windows, a station emerges. Arched ceilings, warm light, the distant murmur of conversation.\n\nSomewhere ahead, a figure waits on the platform.",
         emotion: 'atmospheric',
         variation_id: 'arrival_v1'
       }

@@ -73,15 +73,15 @@ export function NextStepsSection({ profile }: NextStepsSectionProps) {
           <ul className="space-y-2 text-sm text-gray-700">
             <li className="flex items-start gap-2">
               <span className="text-blue-600 mt-1">•</span>
-              <span>Continue exploring different characters' stories</span>
+              <span>Research one career from your matches this week</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-blue-600 mt-1">•</span>
-              <span>Try making choices that feel different from your usual approach</span>
+              <span>Talk to someone who works in a field that interests you</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-blue-600 mt-1">•</span>
-              <span>Talk to a counselor about the career paths you're discovering</span>
+              <span>Look for local internships or shadowing opportunities</span>
             </li>
           </ul>
         </div>
