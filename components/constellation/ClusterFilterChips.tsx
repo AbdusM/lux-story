@@ -37,12 +37,13 @@ export function ClusterFilterChips({
             key={clusterId}
             onClick={() => onFilterChange(clusterId)}
             className={cn(
-              "flex-shrink-0 min-h-[44px] px-4 py-2 rounded-full text-sm font-medium",
-              "transition-all duration-200 flex items-center gap-2",
+              "flex-shrink-0 min-w-[44px] min-h-[44px] px-4 py-2.5 rounded-full text-sm font-medium",
+              "transition-all duration-200 flex items-center justify-center gap-2",
               "focus:outline-none focus:ring-2 focus:ring-amber-400/50",
+              "touch-manipulation active:scale-95",
               isActive
                 ? "text-white shadow-lg"
-                : "text-slate-300 hover:text-white bg-slate-800/50 hover:bg-slate-700/50"
+                : "text-slate-300 hover:text-white bg-slate-800/50 hover:bg-slate-700/50 active:bg-slate-600/50"
             )}
             style={isActive ? {
               backgroundColor: color,
