@@ -19,7 +19,7 @@ export const tessDialogueNodes: DialogueNode[] = [
     speaker: 'Tess',
     content: [
       {
-        text: `Woodlawn High guidance office. Grant applications everywhere.
+        text: `Eastgate High guidance office. Grant applications everywhere.
 
 Not rigor. Resilience? Too soft. Grit? Overused.
 
@@ -83,7 +83,7 @@ You look like you've been outside. Wilderness Immersion. Vacation or crucible?`,
     speaker: 'Tess',
     content: [
       {
-        text: `Exactly. Not s'mores and ghost stories.|Twelve weeks on the Appalachian Trail. Thirty pounds on your back. No phone.|Here's the play: Grant committee needs to see why *this* teaches more than AP Calculus.`,
+        text: `Exactly. Not s'mores and ghost stories.|Twelve weeks in the backcountry. Thirty pounds on your back. No phone.|Here's the play: Grant committee needs to see why *this* teaches more than AP Calculus.`,
         emotion: 'passionate',
         interaction: 'nod',
         variation_id: 'crucible_v1',
@@ -151,7 +151,7 @@ You look like you've been outside. Wilderness Immersion. Vacation or crucible?`,
     speaker: 'Tess',
     content: [
       {
-        text: `Restarting 'Walkabout.' Program in Philly.|Instead of senior year. rows, tests. you went out. Trail. Service projects. Built your own syllabus.|Did it ten years ago. Changed my life.|Learned more about leadership in those woods than four years of college.`,
+        text: `Restarting 'Semester in the Wild.' Program out east.|Instead of senior year. rows, tests. you went out. Trail. Service projects. Built your own syllabus.|Did it ten years ago. Changed my life.|Learned more about leadership in those woods than four years of college.`,
         emotion: 'inspired',
         interaction: 'bloom',
         variation_id: 'school_story_v1',
@@ -545,7 +545,7 @@ What if I'm wrong about all of it?`,
     speaker: 'Tess',
     content: [
       {
-        text: `{{met_kai:Kai is trying to change the system from within. I respect that. But I have to build outside it.|I'm building outside the system.}} I'm heading back to Woodlawn. I have a grant proposal to write.\n\nBefore I go. here's the play: I showed my hand. Your turn. What are you building? What's your move?`,
+        text: `{{met_kai:Kai is trying to change the system from within. I respect that. But I have to build outside it.|I'm building outside the system.}} I'm heading back to Eastgate. I have a grant proposal to write.\n\nBefore I go. here's the play: I showed my hand. Your turn. What are you building? What's your move?`,
         emotion: 'curious_engaged',
         interaction: 'nod',
         variation_id: 'farewell_v1',
@@ -556,13 +556,13 @@ What if I'm wrong about all of it?`,
       {
         pattern: 'building',
         minLevel: 5,
-        altText: `{{met_kai:Kai is trying to change the system from within. I respect that. But I have to build outside it.|I'm building outside the system.}} I'm heading back to Woodlawn. I have a grant proposal to write.\n\nHere's the play: you're a builder too. I saw it in how you think. What are you building next?`,
+        altText: `{{met_kai:Kai is trying to change the system from within. I respect that. But I have to build outside it.|I'm building outside the system.}} I'm heading back to Eastgate. I have a grant proposal to write.\n\nHere's the play: you're a builder too. I saw it in how you think. What are you building next?`,
         altEmotion: 'kindred_curious'
       },
       {
         pattern: 'exploring',
         minLevel: 5,
-        altText: `{{met_kai:Kai is trying to change the system from within. I respect that. But I have to build outside it.|I'm building outside the system.}} I'm heading back to Woodlawn. I have a grant proposal to write.\n\nHere's the play: you're an explorer. Your curiosity is contagious. Where does that curiosity lead next?`,
+        altText: `{{met_kai:Kai is trying to change the system from within. I respect that. But I have to build outside it.|I'm building outside the system.}} I'm heading back to Eastgate. I have a grant proposal to write.\n\nHere's the play: you're an explorer. Your curiosity is contagious. Where does that curiosity lead next?`,
         altEmotion: 'recognized_curious'
       }
     ],
@@ -609,7 +609,7 @@ What if I'm wrong about all of it?`,
     content: [{
       text: `Six weeks later. Surrounded by incident reports, consent forms, trail map on laptop.
 
-Eight students on Appalachian Trail. Day 3 of 5.
+Eight students on the backcountry trail. Day 3 of 5.
 
 Three incident reports. Twelve parent calls. Board meeting Monday.
 

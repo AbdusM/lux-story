@@ -98,7 +98,7 @@ export function PatternInsightsSection({ userId }: PatternInsightsSectionProps) 
             {error || 'Make some choices in the game to discover your decision-making style!'}
           </p>
           <p className="text-sm text-gray-500">
-            As you interact with Maya, Samuel, Devon, and Jordan, we'll identify patterns in how you think and decide.
+            Your decision-making patterns will appear here as you progress.
           </p>
         </CardContent>
       </Card>
@@ -241,13 +241,6 @@ export function PatternInsightsSection({ userId }: PatternInsightsSectionProps) 
           </div>
         )}
 
-        {/* Insight Box */}
-        <div className="bg-blue-50 rounded-lg p-4 border-l-4 border-blue-400">
-          <p className="text-sm text-gray-700">
-            <strong>Remember:</strong> Your decision-making style isn't fixed—it evolves as you
-            explore different choices. There's no "best" style; each approach has unique strengths!
-          </p>
-        </div>
       </CardContent>
     </Card>
 

@@ -41,8 +41,7 @@ export function YourJourneySection({ profile }: YourJourneySectionProps) {
             <h3 className="text-lg font-semibold text-gray-900">Your Growth</h3>
           </div>
           <p className="text-gray-700 leading-relaxed mb-4">
-            Through your choices, you've been developing skills that matter for your future. 
-            Every interaction with Maya, Devon, Jordan, and Samuel has been a chance to grow.
+            Your strongest skills so far:
           </p>
           <div className="flex flex-wrap gap-2">
             {topSkills.slice(0, 3).map(({ skill }) => (
@@ -69,13 +68,6 @@ export function YourJourneySection({ profile }: YourJourneySectionProps) {
           </div>
         )}
 
-        {/* Encouragement */}
-        <div className="bg-gradient-to-r from-amber-50 to-yellow-50 rounded-lg p-4 border-l-4 border-amber-400">
-          <p className="text-sm text-gray-700 italic">
-            "The journey of a thousand miles begins with a single step." Every choice you make 
-            is building toward your future. Keep exploring, keep growing.
-          </p>
-        </div>
       </CardContent>
     </Card>
   )
