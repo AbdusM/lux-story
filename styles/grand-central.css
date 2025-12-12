@@ -375,8 +375,7 @@
 }
 
 .choice-button.consequence-independence {
-  border-left: 3px solid rgba(200, 200, 200, 0.4);
-  border-style: dashed;
+  border-left: 3px dashed rgba(200, 200, 200, 0.4);
 }
 
 .choice-button.consequence-independence:hover {

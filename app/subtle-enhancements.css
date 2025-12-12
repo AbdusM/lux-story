@@ -222,48 +222,7 @@
   }
 }
 
-/* New speaker styles for neuroscience-informed narrative */
-.story-message.inner-voice {
-  color: rgb(147, 51, 234);  /* Purple for intuition */
-  font-style: italic;
-  opacity: 0.9;
-  margin-left: 0.5rem;
-}
-
-.story-message.memory {
-  margin-left: 1.5rem;
-  padding-left: 1rem;
-  border-left: 2px solid rgb(229, 231, 235);
-  font-size: 0.875rem;
-  opacity: 0.85;
-  color: rgb(107, 114, 128);
-}
-
-.story-message.forest {
-  color: rgb(34, 197, 94);  /* Green for nature */
-  text-align: center;
-  margin: 1rem 0;
-  font-weight: 500;
-}
-
-.story-message.body {
-  color: rgb(239, 68, 68);  /* Warm red for physical awareness */
-  font-style: italic;
-  margin-left: 0.5rem;
-  opacity: 0.85;
-}
-
-/* Message type styles */
-.story-message[data-type="whisper"] {
-  opacity: 0.8;
-  font-size: 0.9rem;
-}
-
-.story-message[data-type="sensation"] {
-  background: linear-gradient(90deg, transparent, rgba(239, 68, 68, 0.05), transparent);
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
-}
+/* Message type styles removed - dialogue should be clean and undecorated */
 
 /* Accessibility Overrides */
 @media (prefers-reduced-motion: reduce) {
