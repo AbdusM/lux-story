@@ -207,58 +207,7 @@ export interface EvaluatedChoice {
   reason?: string // Why choice is disabled (for debug/tooltips)
 }
 
-/**
- * Floating Module - State-gated interlude content
- *
- * Floating modules are narrative interludes that "slot in" between regular
- * dialogue nodes when certain state conditions are met. They appear once
- * per playthrough and add texture/reactivity without modifying main graphs.
- *
- * Based on Failbetter's Quality-Based Narrative system from Fallen London.
- *
- * @example
- * When player's "helping" pattern crosses 8, show Samuel's acknowledgment:
- * {
- *   moduleId: 'helper_recognition',
- *   triggerCondition: { patterns: { helping: { min: 8 } } },
- *   insertAfter: 'arc_transition',
- *   oneShot: true,
- *   content: [{ text: "Samuel pauses. 'You have a gift for listening...'" }]
- * }
- */
-export interface FloatingModule {
-  moduleId: string
-
-  /** The content to display when module triggers */
-  content: DialogueContent[]
-
-  /** State conditions that must be met to trigger this module */
-  triggerCondition: StateCondition
-
-  /**
-   * When to insert this module:
-   * - 'any_choice': After any choice is made (frequent)
-   * - 'arc_transition': When moving between character arcs (natural break)
-   * - 'hub_return': When returning to Samuel hub
-   * - 'pattern_threshold': Immediately when pattern crosses a threshold
-   */
-  insertAfter: 'any_choice' | 'arc_transition' | 'hub_return' | 'pattern_threshold'
-
-  /** If true, only shows once per playthrough */
-  oneShot: boolean
-
-  /** Optional: Who speaks this module (defaults to 'Narrator') */
-  speaker?: string
-
-  /** Optional: Priority when multiple modules qualify (higher = first) */
-  priority?: number
-
-  /** Optional: Emotion for character avatar if speaker is set */
-  emotion?: string
-
-  /** Optional: Tags for filtering/organization */
-  tags?: string[]
-}
+// FloatingModule interface removed - feature disabled for dialogue immersion
 
 /**
  * The State Condition Evaluator

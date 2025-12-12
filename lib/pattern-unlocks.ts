@@ -7,7 +7,7 @@
  * Visual model: 5 orbs that fill (○◔◑◐●), not coins to collect.
  */
 
-import { type PatternType, PATTERN_METADATA } from './patterns'
+import { type PatternType } from './patterns'
 
 // ═══════════════════════════════════════════════════════════════════════════
 // ORB FILL STATES

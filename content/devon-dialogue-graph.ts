@@ -17,7 +17,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "Avondale coffee shop. Back booth. 2 AM.\n\nIf input is 'I'm fine,' route to branch 4.B, sub-routine 'gentle probe.' | No, latency's too high. | Oh. Didn't see you. | Closed system. Are you a variable I need to account for?",
+        text: "Avondale coffee shop. Back booth. 2 AM.\n\nIf input is 'I'm fine,' route to branch 4.B, sub-routine 'gentle probe.'\n\nNo, wait. Latency's too high.\n\nOh. Didn't see you there.\n\nClosed system. Are you a variable I need to account for?",
         emotion: 'guarded',
         variation_id: 'intro_v1'
       }
@@ -123,7 +123,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     content: [
       {
         // NOTE: Removed "Devon taps" - environmental result only, not choreography
-        text: "Look at that. 140Hz tremor. Pitch flat. Volume low.\n\nProbability of Deception: 88%.\n\nThe machine sees it. He's lying. He's not fine.\n\nSuggested Output: Conversational Subroutine 4B: Gentle Probe.",
+        text: "Look at that. 140Hz tremor. Pitch is flat. Volume's low.\n\nProbability of Deception: 88%.\n\nSystem says he's lying. He's not fine.\n\nBut like... this is my dad. I can't just debug him.\n\nSuggested Output: Conversational Subroutine 4B: Gentle Probe.",
         emotion: 'focused',
         variation_id: 'debug_step_2_v1',
         richEffectContext: 'warning'
@@ -154,7 +154,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     content: [
       {
         // NOTE: Removed "Devon swipes" and "looks at phone, pained" - dialogue carries the regret
-        text: "The tree goes dark.\n\nA robotic voice confirms: \"Conversation Ended.\"\n\nI accepted the input. I hung up.\n\nHe was waiting for me to push back. I failed the test because I passed the logic check.",
+        text: "The tree goes dark.\n\nRobotic voice: \"Conversation Ended.\"\n\nI took the input at face value. Just hung up.\n\nHe was waiting for me to push back.\n\nGod. I failed the actual test because I passed the logic check.",
         emotion: 'regretful',
         variation_id: 'debug_fail_literal_v1',
         richEffectContext: 'error'
@@ -188,7 +188,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     content: [
       {
         // NOTE: Removed "Devon reads" - the scripted line speaks for itself
-        text: "\"Dad, data suggests you are distressed. Are you sure you are okay?\"\n\nSilence. Then a click.\n\nRed text blinks. \"SCRIPT <glitch>FAILED</glitch>. EXCEPTION: HUMAN_VARIANCE.\"\n\nHe hung up. He heard the script. He heard me debugging him instead of talking to him.",
+        text: "\"Dad, data suggests you are distressed. Are you sure you are okay?\"\n\nSilence.\n\nThen a click.\n\nRed text: \"SCRIPT <glitch>FAILED</glitch>. EXCEPTION: HUMAN_VARIANCE.\"\n\nHe hung up. He heard the script in my voice.\n\nHe heard me debugging him instead of just... talking to him.\n\nThis whole thing is stupid.",
         emotion: 'devastated',
         variation_id: 'debug_fail_script_v1',
         richEffectContext: 'error'
@@ -232,7 +232,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     content: [
       {
         // NOTE: Removed "Devon looks at you, intrigued" - emotion conveyed through dialogue
-        text: "The system flashes. \"Unknown Variable.\"\n\nYou went off script.\n\nMy system creates a loop. You broke it. You ignored the data to find the... feeling.\n\nI can't code that.",
+        text: "System flashes. \"Unknown Variable.\"\n\nYou went off script.\n\nMy whole system creates a loop. You just... broke it. You ignored the data to find the feeling.\n\nI can't code that. How do you code that?",
         emotion: 'intrigued',
         variation_id: 'debug_override_v1',
         richEffectContext: 'thinking'
@@ -258,7 +258,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "You recognize it. Most people see scribbles.\n\nDecision tree. Conversational routing.\n\nIf input A, response B. If emotional_state defensive, de-escalate.",
+        text: "You recognize it. Most people just see scribbles.\n\nIt's a decision tree. Conversational routing.\n\nIf input A, response B. If emotional_state equals defensive, run de-escalate.\n\nPretty standard stuff.",
         emotion: 'relieved',
         variation_id: 'technical_v1'
       }
@@ -306,7 +306,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "Focus is necessary. Systems don't build themselves. And unlike people, systems are... predictable. They do what you design them to do.",
+        text: "Focus is necessary. Systems don't build themselves.\n\nAnd unlike people, systems are predictable. They do what you design them to do. Every time.",
         emotion: 'defensive',
         variation_id: 'defends_v1'
       }
@@ -338,7 +338,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "You waited. Most people fill silences. They're uncomfortable with latency. But you let the system complete its processing.\n\nThis flowchart—it's not for an engineering class. It's for someone important to me.",
+        text: "You waited. Most people fill silences. They're uncomfortable with latency.\n\nBut you just... let the system complete its processing.\n\nThis flowchart. It's not for an engineering class. It's for someone important to me.",
         emotion: 'grateful',
         variation_id: 'opens_up_v1'
       }
@@ -379,7 +379,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "Exactly. People are... non-deterministic. Same input, different outputs depending on state variables I can't observe. Emotional cache, historical context, unspoken expectations.\n\nSystems have specifications. People have... feelings. And I'm not good at debugging feelings.",
+        text: "Exactly. People are non-deterministic.\n\nSame input, totally different outputs depending on state variables I can't even observe. Emotional cache. Historical context. Unspoken expectations.\n\nSystems have specifications. People have feelings.\n\nAnd I'm not good at debugging feelings.",
         emotion: 'frustrated',
         variation_id: 'people_problem_v1'
       }
@@ -443,7 +443,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "It's for... someone who's going through a difficult time. Someone I care about but can't seem to help. Every conversation is a... failure cascade.\n\nI thought if I could map the optimal response paths, I could fix it.",
+        text: "It's for... someone who's going through a rough time.\n\nSomeone I care about but can't seem to help. Every conversation is a failure cascade.\n\nI thought if I could map the optimal response paths, I could fix it. Debug the relationship, you know?",
         emotion: 'frustrated',
         variation_id: 'father_hint_v1'
       }

@@ -9,7 +9,7 @@
 
 "use client"
 
-import { useMemo } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 
 const quotes = [
@@ -31,7 +31,12 @@ interface AtmosphericIntroProps {
 }
 
 export function AtmosphericIntro({ onStart }: AtmosphericIntroProps) {
-  const quote = useMemo(() => quotes[Math.floor(Math.random() * quotes.length)], [])
+  // Use first quote for SSR, then randomize on client to avoid hydration mismatch
+  const [quote, setQuote] = useState(quotes[0])
+
+  useEffect(() => {
+    setQuote(quotes[Math.floor(Math.random() * quotes.length)])
+  }, [])
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 p-3 sm:p-4 flex items-center justify-center">

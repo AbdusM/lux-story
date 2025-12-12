@@ -3,7 +3,7 @@
 import { memo, useState, useEffect, useCallback, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { motion } from 'framer-motion'
-import { springs, stagger } from '@/lib/animations'
+import { springs } from '@/lib/animations'
 import { Lock } from 'lucide-react'
 import { type PatternType, PATTERN_METADATA } from '@/lib/patterns'
 
@@ -127,27 +127,28 @@ function useKeyboardNavigation(
 }
 
 // Stagger container for sequential button reveals
+// Mobile-optimized: faster stagger, no y-offset to prevent layout shift
 const containerVariants = {
   hidden: { opacity: 1 },
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: stagger.normal,
-      delayChildren: 0.05,
+      staggerChildren: 0.04, // Faster stagger for snappier feel on mobile
+      delayChildren: 0.02,
     },
   },
 }
 
 // Individual button animation (used with stagger)
+// Mobile-optimized: opacity-only animation prevents layout shift during reveal
 const buttonVariants = {
-  hidden: { opacity: 0, y: 8 },
+  hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    y: 0,
-    transition: springs.snappy
+    transition: { duration: 0.15, ease: [0.25, 0.1, 0.25, 1] as const } // easeOut cubic-bezier
   },
   tap: { scale: 0.98 },
-  hover: { scale: 1.01, y: -1 }
+  hover: { scale: 1.01 }
 }
 
 const shakeVariant = {
