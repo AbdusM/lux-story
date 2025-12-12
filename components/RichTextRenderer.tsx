@@ -245,8 +245,9 @@ export function RichTextRenderer({
             transition={{ duration: 0.2, ease: "easeOut" }}
             className={cn(
               "leading-relaxed text-slate-700",
-              // Hide chunks that shouldn't be visible yet to prevent layout jumps
-              index >= visibleChunks && "hidden"
+              // Use invisible (not hidden) to reserve layout space and prevent CLS
+              // This keeps the container height stable as chunks reveal
+              index >= visibleChunks && "invisible pointer-events-none"
             )}
           >
             {renderChunkWithHighlights(chunk)}

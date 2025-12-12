@@ -2,11 +2,11 @@
 
 import { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Lock, User, Sparkles } from 'lucide-react'
+import { X, Lock, User } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { CharacterWithState, SkillWithState } from '@/hooks/useConstellationData'
 import { CHARACTER_COLORS } from '@/lib/constellation/character-positions'
-import { SKILL_CLUSTERS } from '@/lib/constellation/skill-positions'
+// SKILL_CLUSTERS import removed - unused
 
 interface DetailModalProps {
   item: CharacterWithState | SkillWithState | null
@@ -251,26 +251,8 @@ function SkillDetail({ skill, onClose }: { skill: SkillWithState; onClose: () =>
 }
 
 // Helper functions
-function getStateOrder(state: string): number {
-  const order: Record<string, number> = {
-    dormant: 0,
-    awakening: 1,
-    developing: 2,
-    strong: 3,
-    mastered: 4
-  }
-  return order[state] || 0
-}
 
-function getNextMilestone(state: string): string {
-  switch (state) {
-    case 'awakening': return '5 for Strong'
-    case 'developing': return 'Building to Strong'
-    case 'strong': return '10 for Mastery'
-    case 'mastered': return 'Mastered!'
-    default: return ''
-  }
-}
+// getStateOrder and getNextMilestone removed - unused
 
 function getCharacterDescription(id: string): string {
   const descriptions: Record<string, string> = {

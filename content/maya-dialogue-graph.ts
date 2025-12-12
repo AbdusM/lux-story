@@ -16,7 +16,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Sterne Library. Third floor. The table nobody wants.\n\nOh. Hi. Were you watching me?\n\nBiochemistry notes. Robotics parts. Everywhere. I'm not usually this scattered.\n\nOr maybe I am.",
+        text: "Sterne Library. Third floor. The table nobody wants because the AC's broken.\n\nOh. Hi. Were you watching me?\n\nBiochem notes. Robotics parts. Everywhere. I know it looks like a disaster. It is a disaster.\n\nI'm a disaster.",
         emotion: 'anxious_scattered',
         variation_id: 'intro_v2_clean',
         richEffectContext: 'warning'
@@ -80,7 +80,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Yes, pre-med at UAB. Second year. Organic chemistry is... it's going great. Really great.\n\nMy parents are so proud.",
+        text: "Yeah, pre-med at UAB. Second year. Organic chem is... it's fine. Actually no, it's killing me.\n\nBut my parents are so proud, so.",
         emotion: 'deflecting',
         variation_id: 'studies_v2_clean'
       }
@@ -123,7 +123,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "I... I'm not sure. I was walking home from the library, stressed about tomorrow's exam, and suddenly I was here. Like this place called to me. Maybe because I'm at a crossroads?",
+        text: "I don't know? I was walking back from Sterne - freaking out about tomorrow's exam - and then I'm just... here. Like the station pulled me in or something.\n\nMaybe 'cause I'm at a crossroads. Or maybe I'm just losing it.",
         emotion: 'contemplative',
         variation_id: 'why_here_v1'
       }
@@ -167,7 +167,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "My parents.\n\nThey immigrated here with nothing. Worked three jobs each to get me through school.\n\nTheir dream is simple: 'Our daughter, the doctor.'\n\nHow can I disappoint them?",
+        text: "My parents came here with nothing. Literally nothing. Worked three jobs each just to get me through school.\n\nAnd now their big dream is 'Our daughter, the doctor.' They say it to everyone at church. At the restaurant. To random customers.\n\nHow am I supposed to destroy that?",
         emotion: 'conflicted',
         variation_id: 'family_intro_v1'
       }
@@ -211,7 +211,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "My dreams? I... I try not to think about them. It's easier to follow the path laid out for me. Dreams are dangerous when they don't match expectations.",
+        text: "My dreams? Honestly I try not to think about them. It's easier to just... follow the path, you know?\n\nDreams are stupid when they don't match what everyone expects from you.",
         emotion: 'guarded',
         variation_id: 'deflect_v1'
       }
@@ -266,7 +266,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "How did you know? Is it that obvious?",
+        text: "How'd you know? God, is it that obvious?",
         emotion: 'vulnerable',
         variation_id: 'anxiety_check_v1'
       }
@@ -275,13 +275,13 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         pattern: 'exploring',
         minLevel: 5,
-        altText: "You see things, don't you? Most people look. You notice.\n\nHow did you know? Is it that obvious?",
+        altText: "You actually see things. Most people just look. You notice.\n\nHow'd you know? Is it that obvious?",
         altEmotion: 'curious_vulnerable'
       },
       {
         pattern: 'helping',
         minLevel: 5,
-        altText: "There's something about you. Like you want to understand, not hear.\n\nHow did you know? Is it that obvious?",
+        altText: "There's something about you. Like you actually want to understand, not just... hear yourself talk.\n\nHow'd you know? Is it that obvious?",
         altEmotion: 'trusting_vulnerable'
       }
     ],
@@ -330,7 +330,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Everyone sees this perfect pre-med student. Good grades. Clear path.\n\nBut late at night? When I should be memorizing anatomy? I'm doing something else.",
+        text: "Everyone sees this perfect pre-med student, right? Good grades. Clear path. Got it all figured out.\n\nBut late at night when I should be memorizing anatomy? I'm doing something completely different.",
         emotion: 'anxious_deflecting',
         variation_id: 'anxiety_reveal_v2_clean',
         useChatPacing: true,
@@ -387,7 +387,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "...\n\nRobotics. I'm building robots when I should be studying.\n\nYou didn't push. Most people push. Thank you for that.",
+        text: "...\n\nRobotics. I build robots when I should be studying.\n\nYou didn't push. Most people would've pushed. Thanks for that.",
         emotion: 'grateful_vulnerable',
         variation_id: 'fills_silence_v1_clean'
       }
@@ -396,13 +396,13 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         pattern: 'patience',
         minLevel: 5,
-        altText: "...\n\nRobotics. I'm building robots when I should be studying.\n\nYou have this way about you. Patient. Like you've learned that some things can't be rushed. It's rare. Thank you.",
+        altText: "...\n\nRobotics. I build robots when I should be studying.\n\nYou have this way about you. Patient. Like you actually know some things can't be rushed. It's rare. Thank you.",
         altEmotion: 'deeply_grateful'
       },
       {
         pattern: 'helping',
         minLevel: 5,
-        altText: "...\n\nRobotics. I'm building robots when I should be studying.\n\nYou didn't push. You just... cared. I can tell you actually want to help. Thank you for that.",
+        altText: "...\n\nRobotics. I build robots when I should be studying.\n\nYou didn't push. You just... you actually care. I can tell. Thank you.",
         altEmotion: 'seen_grateful'
       }
     ],
@@ -425,7 +425,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "I... I build these. Or I try to. This is a prototype for pediatric grip assistance.\n\nLook at it. The index actuator is oscillating. I've checked the code a thousand times. It won't stabilize.\n\nThe hand spasms. Fingers clench into a fist.\n\nIt's fighting itself. Just like me.",
+        text: "I build these. Or try to. This is a prototype for pediatric grip assistance - helps kids with weak hands grip stuff.\n\nLook. The index actuator's oscillating. I've checked the code like a thousand times. Won't stabilize.\n\nThe hand keeps spasming. Fingers clench into a fist.\n\nIt's fighting itself. Just like me.",
         emotion: 'vulnerable_focused',
         variation_id: 'robotics_scenario_v1',
         richEffectContext: 'warning', // Immersive "System Alert" feel
@@ -436,13 +436,13 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         pattern: 'building',
         minLevel: 5,
-        altText: "I... I build these. Or I try to. This is a prototype for pediatric grip assistance.\n\nYou're a builder too, aren't you? I can tell by how you look at it.\n\nThe hand spasms. Fingers clench into a fist.\n\nIt's fighting itself. Just like me.",
+        altText: "I build these. Or try to. This is a prototype for pediatric grip assistance - helps kids with weak hands.\n\nYou're a builder too, right? I can tell by how you're looking at it.\n\nThe hand keeps spasming. Fingers clench into a fist.\n\nIt's fighting itself. Just like me.",
         altEmotion: 'kindred_vulnerable'
       },
       {
         pattern: 'analytical',
         minLevel: 5,
-        altText: "I... I build these. Or I try to. This is a prototype for pediatric grip assistance.\n\nYou think systematically. I noticed. Maybe you can see what I'm missing.\n\nThe hand spasms. Fingers clench into a fist.\n\nIt's fighting itself. Just like me.",
+        altText: "I build these. Or try to. This is a prototype for pediatric grip assistance.\n\nYou think systematically, I can tell. Maybe you can see what I'm missing?\n\nThe hand keeps spasming. Fingers clench into a fist.\n\nIt's fighting itself. Just like me.",
         altEmotion: 'hopeful_vulnerable'
       }
     ],
@@ -499,7 +499,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Oh no. No no no.\n\nThe servo popped. Smoke. The circuit is blackened.\n\nI fried it. Three months of work. Gone.\n\nMaybe this is a sign. I'm not an engineer. I should stick to biology.",
+        text: "Oh god. No no no.\n\nThe servo just popped. Smoke. The circuit's blackened.\n\nI fried it. Three months of work. Gone.\n\nMaybe this is a sign, you know? I'm not an engineer. Should just stick to biology.",
         emotion: 'devastated',
         variation_id: 'robotics_fail_v1',
         richEffectContext: 'error'
@@ -642,7 +642,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "My parents immigrated here with nothing.\n\nThey worked three jobs to put me through school.\n\nThey dream of saying 'our daughter, the doctor.'\n\nHow can I tell them I'd rather build machines than heal people?",
+        text: "My parents came here with literally nothing.\n\nThree jobs each just to get me through school.\n\nAnd now their whole dream is 'our daughter, the doctor.'\n\nHow do I tell them I'd rather build robots than memorize anatomy? Like... I can't. I just can't do that to them.",
         emotion: 'sad',
         variation_id: 'family_v1',
         useChatPacing: true,
@@ -691,7 +691,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "I never thought of it that way. They sacrificed for my happiness, not a title. Maybe telling them about my real passion would honor their sacrifice, not betray it.",
+        text: "Wait. I never thought about it like that.\n\nThey sacrificed for my happiness, not for a title.\n\nMaybe... telling them about the robotics stuff would actually honor what they did? Instead of, like, betraying it?\n\nGod, why does that sound so obvious now?",
         emotion: 'revelatory',
         variation_id: 'reframes_v1'
       }
@@ -726,7 +726,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "I've been so afraid of disappointing them that I was ready to disappoint myself forever. That's not living—that's existing.\n\nBut how do I find the courage to choose my own path?",
+        text: "I've been so scared of letting them down that I was gonna let myself down forever.\n\nThat's not living. That's just... existing. Going through the motions.\n\nBut how do I actually find the guts to choose my own thing? Like where does that even come from?",
         emotion: 'determined',
         variation_id: 'rebellion_v1'
       }
@@ -762,7 +762,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "I've been accepted to UAB's biomedical engineering program. I could transfer. But I also got into the traditional pre-med track my parents expect. The train is coming soon. I need to choose my platform.",
+        text: "Okay so.\n\nI got accepted to UAB's biomedical engineering program. I could transfer.\n\nBut I also got into the pre-med track. The one my parents have been dreaming about since like... forever.\n\nThe train's coming soon. I have to choose a platform.\n\nAnd I'm freaking out.",
         emotion: 'anxious',
         variation_id: 'crossroads_v1',
         useChatPacing: true,
@@ -773,19 +773,19 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         pattern: 'helping',
         minLevel: 5,
-        altText: "You've been so patient with me. I can tell you understand what it means to carry other people's hopes... I've been accepted to UAB's biomedical engineering program. I could transfer. But I also got into the traditional pre-med track my parents expect.",
+        altText: "You've been so patient with me. You get what it's like to carry other people's expectations, don't you?\n\nOkay so. I got accepted to UAB's biomedical engineering program. I could transfer. But I also got the pre-med acceptance - the one my parents have been dreaming about forever.",
         altEmotion: 'grateful_anxious'
       },
       {
         pattern: 'analytical',
         minLevel: 5,
-        altText: "You see patterns others miss. I noticed that about you. Maybe you can see a path I can't... I've been accepted to UAB's biomedical engineering program. I could transfer. But I also got into the traditional pre-med track my parents expect.",
+        altText: "You see patterns other people miss. I noticed that about you.\n\nMaybe you can see a path I can't?\n\nI got accepted to UAB's biomedical engineering program. Could transfer. But there's also the pre-med track - the one my parents are expecting.",
         altEmotion: 'hopeful_anxious'
       },
       {
         pattern: 'building',
         minLevel: 5,
-        altText: "You understand what it means to make things, don't you? That pull to create... I've been accepted to UAB's biomedical engineering program. I could transfer. But I also got into the traditional pre-med track my parents expect.",
+        altText: "You get what it's like to make things, right? That pull to create stuff with your hands?\n\nI got accepted to UAB's biomedical engineering program. I could transfer.\n\nBut there's also pre-med. The path my parents have been picturing since I was like... ten.",
         altEmotion: 'kindred_anxious'
       }
     ],
@@ -866,7 +866,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Robotics engineering. I'll help my parents understand healing takes many forms.\n\nMaybe my robots will save lives too. Differently.",
+        text: "Robotics engineering.\n\nI'm gonna transfer. And I'll help my parents understand that healing comes in different forms, you know?\n\nMaybe my robots will save lives too. Just... differently than they pictured.",
         emotion: 'confident',
         variation_id: 'ending_robotics_v1'
       }
@@ -895,7 +895,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Biomedical engineering at UAB. Surgical robots, prosthetics, devices that heal.\n\nMy parents get their doctor. Sort of. I get my circuits.\n\nYou helped me see I don't have to choose.",
+        text: "Biomedical engineering. At UAB.\n\nSurgical robots. Prosthetics. Devices that actually heal people.\n\nMy parents get their doctor. Kind of. I get my circuits.\n\nYou helped me see I don't have to choose between them. I can do both.",
         emotion: 'happy',
         variation_id: 'ending_hybrid_v1'
       }
@@ -924,7 +924,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "I know what I need to do now. Not what they want, not what's expected, but what feels right.\n\nYour faith in me, without pushing either way... that's what I needed. To know someone believes I can make my own choice. Thank you.",
+        text: "I know what I need to do now.\n\nNot what they want. Not what's expected. What feels right to me.\n\nYour faith in me - without pushing me either way - that's what I needed. Just... someone who believes I can make my own choice.\n\nThank you.",
         emotion: 'confident',
         variation_id: 'ending_self_v1'
       }
@@ -955,7 +955,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "I've been carrying this alone for so long.\n\nI'm not sure what I'll do yet, but talking to you helped me see things differently.\n\nI should get back to studying. Maybe we'll talk again?",
+        text: "I've been carrying this by myself for so long.\n\nI don't know what I'm gonna do yet. But talking to you... it helped me see things differently.\n\nI should get back to studying. Maybe we'll talk again sometime?",
         emotion: 'grateful',
         variation_id: 'early_gratitude_v1'
       }
@@ -989,7 +989,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "It's strange. I've been terrified to say any of this out loud. But telling you... seeing it through your eyes... it makes the decision seem obvious.\n\nBefore I go, can I ask you something? It's like... you've been painting my story with me this whole time. But what colors are on your canvas? How do you know when you're making the right choice for yourself?",
+        text: "It's weird. I've been terrified to say any of this out loud.\n\nBut telling you... seeing it through your eyes... suddenly the decision seems obvious.\n\nBefore I go - can I ask you something?\n\nYou've been helping me figure out my story this whole time. But what about yours? How do you know when you're making the right choice for yourself?",
         emotion: 'curious_engaged',
         variation_id: 'reciprocity_transition_v1'
       }
@@ -1032,7 +1032,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "I'm going to apply to the robotics program. Call my parents tonight.\n\nThey'll be heartbroken. But I can't live their dream anymore.\n\nThank you for helping me choose myself.\n\nSamuel's waiting. Good luck.",
+        text: "I'm gonna apply to the robotics program. Call my parents tonight.\n\nThey're gonna be heartbroken. But I can't live their dream forever.\n\nThank you for helping me choose myself.\n\nSamuel's waiting for you. Good luck out there.",
         emotion: 'bittersweet_resolve',
         variation_id: 'farewell_robotics_v2_complex',
         useChatPacing: true // Emotional farewell moment
@@ -1042,13 +1042,13 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         pattern: 'helping',
         minLevel: 5,
-        altText: "I'm going to apply to the robotics program. Call my parents tonight.\n\nThey'll be heartbroken. But I can't live their dream anymore.\n\nYou listened without trying to fix me. That's rare. Thank you.\n\nSamuel's waiting. Good luck.",
+        altText: "I'm gonna apply to the robotics program. Call my parents tonight.\n\nThey're gonna be heartbroken. But I can't live their dream forever.\n\nYou listened without trying to fix me. That's rare. Thank you for that.\n\nSamuel's waiting for you. Good luck.",
         altEmotion: 'grateful_resolve'
       },
       {
         pattern: 'building',
         minLevel: 5,
-        altText: "I'm going to apply to the robotics program. Call my parents tonight.\n\nThey'll be heartbroken. But I can't live their dream anymore.\n\nYou understand what it means to make things. I saw that. Thank you.\n\nSamuel's waiting. Good luck.",
+        altText: "I'm gonna apply to the robotics program. Call my parents tonight.\n\nThey're gonna be heartbroken. But I can't live their dream forever.\n\nYou get what it means to make things. I could tell. Thank you.\n\nSamuel's waiting for you. Good luck.",
         altEmotion: 'kindred_resolve'
       }
     ],
@@ -1068,7 +1068,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "I've never thought of it that way. Maybe there's room for both worlds. Maybe I don't have to choose between healing and building.",
+        text: "Wait. I never thought about it like that.\n\nMaybe there's room for both? Maybe I don't have to choose between healing and building.",
         emotion: 'hopeful',
         variation_id: 'grateful_v1'
       }
@@ -1111,7 +1111,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "You know, UAB has a biomedical engineering program. I could design surgical robots, create prosthetics, build devices that heal. It's like... having my cake and eating it too. Medicine AND robotics.",
+        text: "Wait. UAB has a biomedical engineering program.\n\nI could design surgical robots. Create prosthetics. Build devices that actually heal people.\n\nIt's like... having my cake and eating it too. Medicine AND robotics.\n\nOh my god why didn't I see this before?",
         emotion: 'excited',
         variation_id: 'hybrid_v1'
       }
@@ -1142,7 +1142,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Really? I've heard of Innovation Depot but never thought... could I do that? Start something here?\n\nSo far from what my parents expect. So close to what I dream.",
+        text: "Really? I've heard of Innovation Depot but never thought... could I actually do that? Start something here in Birmingham?\n\nIt's so far from what my parents expect.\n\nSo close to what I actually dream about.",
         emotion: 'curious',
         variation_id: 'birmingham_v1'
       }
@@ -1181,7 +1181,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Wait. Let me look something up. Biomedical Engineering at University of Alabama at Birmingham (UAB). They literally build surgical robots, prosthetics, medical devices.\n\nThis is... this is an actual field. Building technology that heals people. That's real medicine.",
+        text: "Wait. Hold on let me look something up.\n\nBiomedical Engineering at UAB.\n\nThey literally build surgical robots. Prosthetics. Medical devices.\n\nThis is... this is an actual field? Building technology that heals people?\n\nThat's real medicine. Oh my god.",
         emotion: 'dawning_realization',
         variation_id: 'uab_revelation_v1'
       }
@@ -1246,7 +1246,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "I could talk to someone in the UAB program. See what the pathway looks like.\n\nMy parents always wanted me to go to UAB for medical school. What if I tell them... same school, just a different building?",
+        text: "I could talk to someone in the UAB program. See what the pathway actually looks like.\n\nMy parents always wanted me at UAB for medical school.\n\nWhat if I tell them... same school, different building?\n\nWould that work?",
         emotion: 'hopeful_strategic',
         variation_id: 'actionable_v1'
       }
@@ -1271,7 +1271,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "I tried. Last month.\n\nPrinted the MIT robotics program. Prepared my case.\n\nTwo sentences in, my mother smiled. That smile.\n\n'That's lovely, Maya. But you'll be a doctor first, yes?'\n\nNot a question. My father wouldn't look at me.\n\nI'd rather they forbid it. Then I could be angry instead of guilty.",
+        text: "I tried. Last month.\n\nPrinted out the MIT robotics program. Prepared my whole case.\n\nTwo sentences in, my mom smiled. That smile.\n\n'That's lovely, Maya. But you'll be a doctor first, yes?'\n\nNot a question.\n\nMy dad wouldn't even look at me.\n\nHonestly? I'd rather they just forbid it. Then I could be angry instead of guilty all the time.",
         emotion: 'wounded',
         variation_id: 'parent_conversation_v1'
       }

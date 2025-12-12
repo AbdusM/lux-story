@@ -20,18 +20,32 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: '', // No speaker - purely atmospheric
     content: [
       {
-        text: "The train slows. Through fogged windows, a station emerges. Arched ceilings, warm light, the distant murmur of conversation.\n\nSomewhere ahead, a figure waits on the platform.",
+        text: "Train slows down. Through fogged windows, you catch your first glimpse of the station. High ceilings, warm light spillin' through old glass, sounds of folks talkin' somewhere up ahead.\n\nA figure's waitin' on the platform. Older man, patient stance. Like he's been expectin' you.",
         emotion: 'atmospheric',
         variation_id: 'arrival_v1'
       }
     ],
     choices: [
       {
-        choiceId: 'step_onto_platform',
-        text: "[Step onto the platform]",
+        choiceId: 'step_forward_confident',
+        text: "Step off the train",
         nextNodeId: 'samuel_introduction',
         pattern: 'exploring',
         skills: ['adaptability']
+      },
+      {
+        choiceId: 'observe_first',
+        text: "Take a moment to look around first",
+        nextNodeId: 'samuel_introduction',
+        pattern: 'patience',
+        skills: ['criticalThinking']
+      },
+      {
+        choiceId: 'check_others',
+        text: "See if anyone else is getting off",
+        nextNodeId: 'samuel_introduction',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
       }
     ]
   },
@@ -42,7 +56,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Welcome. I'm the conductor.",
+        text: "Hey there. Welcome to Grand Central.\n\nI'm Samuel. Been helpin' folks find their way around here for... well, longer than I expected, honestly. You look like you got questions. Most people do when they first show up.",
         emotion: 'warm',
         variation_id: 'intro_v1_part1'
       }
@@ -50,7 +64,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'ask_what_is_this',
-        text: "What is this place?",
+        text: "What is this place exactly?",
         nextNodeId: 'samuel_explains_station',
         pattern: 'exploring',
         skills: ['communication', 'adaptability'],
@@ -61,7 +75,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'ask_about_platforms',
-        text: "I see platforms. Where do they lead?",
+        text: "I noticed the different platforms. Where do they all go?",
         nextNodeId: 'samuel_explains_platforms',
         pattern: 'analytical',
         skills: ['criticalThinking', 'communication'],
@@ -72,7 +86,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'ask_who_are_you',
-        text: "Who are you, really?",
+        text: "How'd you end up working here?",
         nextNodeId: 'samuel_backstory_intro',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'communication'],
@@ -82,10 +96,10 @@ export const samuelDialogueNodes: DialogueNode[] = [
         }
       },
       {
-        choiceId: 'continue_intro',
-        text: "[Continue]",
-        nextNodeId: 'samuel_introduction_2',
-        pattern: 'patience',
+        choiceId: 'ready_to_explore_intro',
+        text: "I'm ready to look around",
+        nextNodeId: 'samuel_orb_introduction',
+        pattern: 'exploring',
         skills: ['communication']
       }
     ]
@@ -184,7 +198,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Fox Theatre Station. Been here since 1929, same as the theatre upstairs.\n\nEach platform connects to different parts of the city—and the people who work there. You'll meet them. Figure out where you fit.",
+        text: "Fox Theatre Station. Been here since 1929, y'know, same as the theatre upstairs. Beautiful old building.\n\nEach platform connects you to different folks around the city. People figuring out their own stuff, just like you. You talk to 'em, see what clicks.",
         emotion: 'warm',
         variation_id: 'explains_v1'
       }
@@ -192,14 +206,14 @@ export const samuelDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'ask_your_story',
-        text: "Were you a traveler once?",
+        text: "You been doing this long?",
         nextNodeId: 'samuel_backstory_intro',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'communication']
       },
       {
         choiceId: 'ready_to_explore',
-        text: "I'm ready to explore the platforms.",
+        text: "Alright, let me check out the platforms",
         nextNodeId: 'samuel_orb_introduction',
         pattern: 'exploring',
         skills: ['communication']
@@ -212,7 +226,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Each platform leads somewhere different.\n\nPlatform 1. The Care Line. People who heal, teach, help others grow.\n\nPlatform 3. The Builder's Track. Engineers, makers, creators.\n\nYou don't choose by logic alone. Talk to travelers. See which resonates.\n\nYour path reveals itself through connection.",
+        text: "Yeah, so each platform's got different folks.\n\nSome people who heal, teach, take care of others. Some who build things, make stuff with their hands. Engineers, creators, that whole world.\n\nHonestly? You don't figure this out by thinking real hard about it. You gotta talk to people. See who makes sense to you.",
         emotion: 'reflective',
         variation_id: 'platforms_v1'
       }
@@ -220,7 +234,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'ask_backstory',
-        text: "What's your story? How did you become the Station Keeper?",
+        text: "What about you? How'd you end up here?",
         nextNodeId: 'samuel_backstory_intro',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'communication'],
@@ -231,7 +245,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'ready_to_meet',
-        text: "I'd like to meet someone.",
+        text: "I'm ready to meet somebody",
         nextNodeId: 'samuel_orb_introduction',
         pattern: 'exploring',
         skills: ['curiosity', 'communication']
@@ -245,7 +259,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You want to know my story? Fair question.\n\nI was an engineer at Southern Company for twenty-three years. Power plants, electrical grids, the infrastructure that keeps Birmingham running. Good job, stable, respected. My father was proud - first in our family to work in an office instead of at Sloss Furnaces.",
+        text: "My story? Yeah, alright.\n\nWorked at Southern Company for twenty-three years. Power plants, electrical grids - the stuff that keeps the lights on in Birmingham. Good job. Stable. My daddy was real proud. First in our family to work in an office instead of out at Sloss Furnaces.",
         emotion: 'reflective',
         variation_id: 'backstory_v1'
       }
@@ -253,14 +267,14 @@ export const samuelDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'ask_why_leave',
-        text: "Why did you leave?",
+        text: "So why'd you leave?",
         nextNodeId: 'samuel_backstory_revelation',
         pattern: 'exploring',
         skills: ['communication']
       },
       {
         choiceId: 'acknowledge',
-        text: "That sounds like a good life.",
+        text: "Sounds like a solid life",
         nextNodeId: 'samuel_backstory_revelation',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'communication']
@@ -280,7 +294,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "It was a good life. But it <shake>wasn't MY life</shake>.\n\nOne day, standing in front of Vulcan, looking down at Birmingham. Twenty-three years building other people's systems.\n\nI was good at it. But I'd never asked what I wanted to build.",
+        text: "It was solid. But it <shake>wasn't mine</shake>, you know?\n\nOne day I'm standin' up at Vulcan, lookin' down at the whole city. Twenty-three years buildin' other people's systems.\n\nI was good at it. Real good. But I'd never once asked myself what I actually wanted to build.",
         emotion: 'vulnerable',
         variation_id: 'revelation_v1'
       }
@@ -288,7 +302,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'what_did_you_want',
-        text: "What did you want to build?",
+        text: "So what did you want to build?",
         nextNodeId: 'samuel_pause_after_backstory',
         pattern: 'exploring',
         skills: ['communication', 'criticalThinking'],
@@ -318,7 +332,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "That was a lifetime ago. But it still matters.",
+        text: "Long time ago now. But some things stick with you, y'know?",
         emotion: 'thoughtful',
         variation_id: 'pause_backstory_v1'
       }
@@ -339,7 +353,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "I wanted to help people find their own blueprints. Not hand them answers. Create space for the right questions.",
+        text: "I wanted to help folks figure out their own path, y'know? Not hand 'em answers - that never works. But help 'em find the right questions? That I can do.",
         emotion: 'warm',
         variation_id: 'purpose_v1_part1'
       }
@@ -347,7 +361,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'beautiful',
-        text: "That's a beautiful purpose.",
+        text: "I respect that.",
         nextNodeId: 'samuel_orb_introduction',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
@@ -397,7 +411,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "That's this station. Built somewhere between the old L&N Railroad depot and the dreams Birmingham hasn't realized yet. I didn't build it. It was waiting for someone to keep it.",
+        text: "That's this place. Sits right between what Birmingham was and what it's still becomin'. I didn't build it - it was already here. Just needed someone to look after it.",
         emotion: 'warm',
         variation_id: 'purpose_v1_part2'
       }
@@ -435,7 +449,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Time works differently here. Long enough to see hundreds find their way. Folks from Five Points, from Bessemer, from over in Homewood. All finding the same questions, just wearing different clothes.",
+        text: "Been doin' this a while now. Seen folks from all over - Five Points, Bessemer, Homewood, you name it. Different backgrounds, different clothes, but honestly? Same questions underneath it all.",
         emotion: 'warm',
         variation_id: 'purpose_v1_part3'
       }
@@ -482,7 +496,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Most people just ask about the trains. You asked about *me*.\n\nBecause you built that bridge, I'll tell you the truth I don't usually share.\n\nI was a traveler once. Thirty-five years ago. Same letter. Same choice.",
+        text: "Huh. Most folks just wanna know about the platforms. You asked about me.\n\nAlright. Since you took the time... I'll tell you somethin' I don't share much.\n\nI was standin' where you are. Thirty-five years ago. Got the same letter. Had to make the same choice.",
         emotion: 'vulnerable_opening',
         variation_id: 'traveler_origin_v1'
       }
@@ -520,7 +534,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "VP of Engineering at Southern Company. Corner office downtown, view of the Regions Tower. Or stay technical - keep my hands in the work, keep building the grid that powers every light from Irondale to Hoover.\n\nPower and money. Or do what I loved.",
+        text: "VP of Engineering at Southern Company. Corner office downtown, nice view of the Regions Tower. Or stay technical - keep my hands in the work, keep buildin' the grid that powers every light from Irondale to Hoover.\n\nBig money and a fancy title. Or doin' what I actually loved.",
         emotion: 'reflective',
         variation_id: 'origin_choice_v1'
       }
@@ -542,7 +556,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Management. Twenty years in meetings about meetings.\n\nEvery promotion moved me further from why I became an engineer.",
+        text: "Management. *sighs* Twenty years of meetin's about meetin's.\n\nEvery promotion pushed me further from why I got into engineerin' in the first place.",
         emotion: 'regretful',
         variation_id: 'wrong_train_v1'
       }
@@ -564,7 +578,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "My daughter. Nineteen, at her own crossroads.\n\nI brought her here. Saw the relief in her eyes when she boarded her train.",
+        text: "My daughter. Nineteen, goin' through the same thing I went through.\n\nBrought her here. Watched her face when she figured out her path. The relief in her eyes...",
         emotion: 'bittersweet',
         variation_id: 'daughter_moment_v1'
       }
@@ -597,7 +611,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "I'd been on the wrong train for twenty years.\n\nCame back through. Chose differently.\n\nI chose to stay. To help others avoid my mistakes.",
+        text: "Hit me like a ton of bricks. I'd been on the wrong path for twenty years.\n\nCame back through here. Made a different choice this time.\n\nDecided to stay. Help folks avoid makin' the same mistakes I did.",
         emotion: 'purposeful',
         variation_id: 'keeper_choice_v1'
       }
@@ -646,7 +660,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Biomedical engineer at the CDC. Designs diagnostic systems.\n\nCalls every Sunday. Still thanks me for bringing her here.\n\nShe could have been a lawyer. That's what I wanted.\n\nBut she boarded her own train.\n\nWatching her find that. That's when I knew.",
+        text: "Biomedical engineer at the CDC now. Designs diagnostic systems - saves lives, really.\n\nCalls me every Sunday. Still thanks me for bringin' her here.\n\nI wanted her to be a lawyer, honestly. Good money, stable. But she found her own way.\n\nWatchin' her figure that out... that's when I knew what I was supposed to do.",
         emotion: 'paternal_pride',
         variation_id: 'daughter_v1'
       }
@@ -686,7 +700,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "I write one every night. To someone whose name comes to me.\n\nLike you knew [character] needed your perspective. The station speaks through us.\n\nAfter thirty-five years, you learn to trust what you can't explain.",
+        text: "I write one every night. Name just... comes to me, y'know? Can't really explain it.\n\nLike how you knew somebody here needed to hear what you had to say. Station has a way of connectin' people.\n\nAfter thirty-five years, you stop questionin' it and just go with it.",
         emotion: 'mystical_acceptance',
         variation_id: 'letter_system_v1'
       }
@@ -724,7 +738,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Before you go further... take this.",
+        text: "Hey, before you head off... here, take this.",
         emotion: 'warm',
         variation_id: 'orb_intro_v1',
         interaction: 'bloom'
@@ -735,29 +749,15 @@ export const samuelDialogueNodes: DialogueNode[] = [
         choiceId: 'orb_what_is_it',
         text: "What is it?",
         nextNodeId: 'samuel_orb_explanation',
-        pattern: 'exploring',
-        visibleCondition: {
-          lacksGlobalFlags: ['orbs_introduced']
-        }
+        pattern: 'exploring'
+        // No visibleCondition - always available as primary option
       },
       {
         choiceId: 'orb_accept_quietly',
         text: "(Accept it)",
         nextNodeId: 'samuel_orb_explanation',
-        pattern: 'patience',
-        visibleCondition: {
-          lacksGlobalFlags: ['orbs_introduced']
-        }
-      },
-      {
-        // Fallback skip choice if orbs already introduced
-        choiceId: 'orb_skip_already_introduced',
-        text: "[Continue]",
-        nextNodeId: 'samuel_hub_initial',
-        pattern: 'patience',
-        visibleCondition: {
-          hasGlobalFlags: ['orbs_introduced']
-        }
+        pattern: 'patience'
+        // No visibleCondition - always available
       }
     ],
     tags: ['orb_introduction', 'tutorial', 'samuel_arc']
@@ -767,7 +767,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "The station has a way of... <bloom>remembering</bloom>. Every choice you make leaves an echo. Over time, those echoes gather. They become something you can see.\n\nThink of it as a mirror. Not of what you've done, but of <ripple>who you're becoming</ripple>.",
+        text: "Station's got a way of <bloom>rememberin'</bloom>. Every choice you make, leaves a little echo behind. Over time, those add up. Start to show you somethin'.\n\nThink of it like a mirror, kinda. Not what you've done, but <ripple>who you're becomin'</ripple>.",
         emotion: 'knowing',
         variation_id: 'orb_explanation_v1'
       }
@@ -793,7 +793,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You'll see five patterns emerge. <shake>Analytical minds</shake> that see through problems. <nod>Patient souls</nod> who know when to wait. <bloom>Explorers</bloom> who seek new paths. Those who <ripple>help others</ripple> find their way. And <big>builders</big>, who turn possibilities into real things.\n\nWatch for them. They'll tell you something about yourself.",
+        text: "You'll start seein' five patterns show up. <shake>Analytical folks</shake> who see through problems. <nod>Patient ones</nod> who know when to wait. <bloom>Explorers</bloom> who gotta find new paths. People who <ripple>help others</ripple> find their way. And <big>builders</big> - turn ideas into real things.\n\nJust pay attention. They'll tell you somethin' about yourself.",
         emotion: 'warm',
         variation_id: 'orb_mechanics_v1'
       }
@@ -813,7 +813,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Good. Your journal will show you what the station remembers. Check it when you're curious.\n\nNow. Let's find you someone to talk to.",
+        text: "Good deal. Your journal'll show you what the station remembers. Check it whenever you want.\n\nAlright. Let's find you somebody to talk to.",
         emotion: 'warm',
         variation_id: 'orb_gift_complete_v1'
       }
@@ -841,26 +841,26 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "{{knows_backstory:Like I said, I built other people's systems for years. These travelers are trying to build their own.|{{trust>2:It's good to see you settling in.|Several travelers tonight. Each at their own crossroads.}}}}\n\nThere's someone you should meet. But first, what draws you here?",
+        text: "{{knows_backstory:Like I was sayin', I spent years buildin' other people's systems. These folks here? They're tryin' to build their own.|{{trust>2:Good to see you gettin' comfortable.|Got a few travelers tonight. Each one at their own crossroads.}}}}\n\nSomebody here you should meet. But first - what's pullin' at you?",
         emotion: 'curious',
         variation_id: 'hub_initial_v1',
         patternReflection: [
           {
             pattern: 'analytical',
             minLevel: 5,
-            altText: "{{knows_backstory:Like I said, I built other people's systems for years. These travelers are trying to build their own.|Several travelers tonight. Each at their own crossroads.}}\n\nYou think things through. I can see it in how you move through this place. There's someone here who might appreciate that.",
+            altText: "{{knows_backstory:Like I was sayin', I spent years buildin' other people's systems. These folks? They're tryin' to build their own.|Got a few travelers tonight. Each one at their own crossroads.}}\n\nYou think things through, I can tell. See it in how you move through this place. Somebody here might appreciate that.",
             altEmotion: 'knowing'
           },
           {
             pattern: 'helping',
             minLevel: 5,
-            altText: "{{knows_backstory:Like I said, I built other people's systems for years. These travelers are trying to build their own.|Several travelers tonight. Each at their own crossroads.}}\n\nYou lead with care. I've seen how you listen. There's someone here who needs that.",
+            altText: "{{knows_backstory:Like I was sayin', I spent years buildin' other people's systems. These folks? They're tryin' to build their own.|Got a few travelers tonight. Each one at their own crossroads.}}\n\nYou lead with care. I've seen how you listen to people. There's someone here who needs that.",
             altEmotion: 'warm'
           },
           {
             pattern: 'building',
             minLevel: 5,
-            altText: "{{knows_backstory:Like I said, I built other people's systems for years. These travelers are trying to build their own.|Several travelers tonight. Each at their own crossroads.}}\n\nYou're a builder. I see it in your eyes, the way you look at problems like possibilities. Someone here shares that fire.",
+            altText: "{{knows_backstory:Like I was sayin', I spent years buildin' other people's systems. These folks? They're tryin' to build their own.|Got a few travelers tonight. Each one at their own crossroads.}}\n\nYou're a builder. I can see it - way you look at problems like they're possibilities. Someone here's got that same fire.",
             altEmotion: 'knowing'
           }
         ]
@@ -912,7 +912,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "The station remembers... people who lead with care are rare. There are two travelers here who might understand that pull.\n\nMaya Chen is on Platform 1. Pre-med student at UAB. Her parents sacrificed everything for her education, but she's building robots in secret.\n\nOr there's Marcus, down by Platform 2. Works in the ICU. The machines keeping patients alive? He runs them. But he's wondering if being good at something means it's his calling.",
+        text: "Folks who lead with care... that's rarer than you'd think. Got two travelers here who might get where you're comin' from.\n\nMaya Chen's over on Platform 1. Pre-med at UAB. Her parents gave up everything for her education, but she's been buildin' robots on the side. Secret project.\n\nOr Marcus, down by Platform 2. Works the ICU - runs all the machines keepin' people alive. But he's wonderin' if bein' good at somethin' means it's really his thing.",
         emotion: 'knowing',
         variation_id: 'hub_heart_v1'
       }
@@ -947,7 +947,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "The station remembers... people who see patterns others miss. Three travelers here think in systems.\n\nDevon Kumar sits in the coffee shop. Systems engineer. Built a decision tree to talk to his grieving father.\n\nKai is over in the training office. Instructional designer. Fighting corporate safety theater after someone got hurt.\n\nOr Rohan. He's questioning the foundations. Wondering if understanding how things break teaches you how they should work.",
+        text: "Folks who see patterns others miss... got a few of those here tonight.\n\nDevon Kumar's in the coffee shop. Systems engineer - actually built a decision tree to figure out how to talk to his grieving dad.\n\nKai's over in the training office. Instructional designer, fightin' corporate safety theater after somebody got hurt on the job.\n\nAlex runs workshops on Platform 8. Used to teach bootcamp - 'six weeks to six figures' kinda stuff. Now they're questionin' everything they taught.\n\nAnd Rohan... he's down in the basement. Questionin' the foundations. Wonderin' if understandin' how things break teaches you how they should work.",
         emotion: 'knowing',
         variation_id: 'hub_mind_v1'
       }
@@ -968,6 +968,13 @@ export const samuelDialogueNodes: DialogueNode[] = [
         skills: ['strategicThinking']
       },
       {
+        choiceId: 'meet_alex_from_mind',
+        text: "What happened with Alex?",
+        nextNodeId: 'samuel_discovers_alex',
+        pattern: 'analytical',
+        skills: ['criticalThinking']
+      },
+      {
         choiceId: 'meet_rohan_from_mind',
         text: "Rohan sounds interesting.",
         nextNodeId: 'samuel_discovers_rohan',
@@ -983,7 +990,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "The station remembers... builders carry a special weight. They see what could be.\n\nJordan's been through seven careers. Still mapping possibilities. Wonders if the winding path is the path.\n\nTess is a school counselor with a radical dream. Wants to prove that hiking the Appalachian Trail teaches more than AP Calculus.\n\nSilas farms hydroponic basil. His sensors say everything's fine. His plants say otherwise.\n\nOr Yaquin. Dental assistant turned online educator. Knows things textbooks get wrong.",
+        text: "Builders carry a different kind of weight. They see what could be.\n\nJordan's been through seven careers, still figurin' it out. Wonders if maybe the winding path IS the path.\n\nTess is a school counselor with this wild idea - wants to prove that hikin' the Appalachian Trail teaches more than AP Calculus.\n\nSilas farms hydroponic basil out past Trussville. His sensors say everything's fine. His plants say otherwise.\n\nAnd Yaquin - dental assistant turned online educator. Knows stuff the textbooks get wrong.",
         emotion: 'knowing',
         variation_id: 'hub_hands_v1'
       }
@@ -1019,7 +1026,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "That's honest. Not knowing is the first step to finding out.\n\nWhy don't you wander? See who catches your attention. Sometimes the right conversation finds you.",
+        text: "Hey, that's honest. Not knowin' is the first step to figurin' it out.\n\nWhy don't you just wander a bit? See who catches your attention. Sometimes the right conversation finds you.",
         emotion: 'warm',
         variation_id: 'hub_fallback_v1'
       }
@@ -1040,7 +1047,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "That's a particular kind of struggle. When your heart knows what it wants but the path feels... complicated.",
+        text: "Yeah, that's a tough one. When your heart knows what it wants but the path to get there feels... complicated.",
         emotion: 'knowing',
         variation_id: 'discovers_helping_v1_part1'
       }
@@ -1060,7 +1067,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "There's someone on Platform 1 who understands that. Maya Chen, brilliant pre-med student at UAB. Her parents run a Vietnamese restaurant over on 3rd Avenue. Saved every penny to get their daughter into that medical school.",
+        text: "There's somebody on Platform 1 who gets that. Maya Chen - super smart pre-med student at UAB. Her parents run a Vietnamese place over on 3rd Avenue. Saved every penny they had to get their daughter into medical school.",
         emotion: 'knowing',
         variation_id: 'discovers_helping_v1_part2'
       }
@@ -1080,7 +1087,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "She's supposed to become a doctor, and she's good enough. But between what she's 'supposed' to do and what she dreams about, there's a gap that's tearing her apart.",
+        text: "She's supposed to become a doctor, and honestly she's good enough. But between what she's 'supposed' to do and what she actually dreams about... that gap is tearin' her up inside.",
         emotion: 'knowing',
         variation_id: 'discovers_helping_v1_part3'
       }
@@ -1112,7 +1119,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "The engineer's dilemma. You can map every system, but life throws you something that doesn't fit the flowchart.\n\nDevon Kumar is on Platform 3. UAB engineering student. Got recruited from the robotics lab in the old Oxmoor Center. His mother's been gone two years now. He built a decision tree to help his grieving father. It failed catastrophically.\n\nNow he's trying to debug human connection.",
+        text: "The engineer's problem, y'know? You can map out every system, but then life throws somethin' at you that doesn't fit the flowchart.\n\nDevon Kumar's on Platform 3. UAB engineering student, got recruited from the robotics lab in the old Oxmoor Center. His mom's been gone two years now. He actually built a decision tree to try and help his grievin' dad. Didn't work out.\n\nNow he's tryin' to debug human connection.",
         emotion: 'understanding',
         variation_id: 'discovers_building_v1'
       }
@@ -1156,7 +1163,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "There's someone here you should meet.\n\nSeven jobs in twelve years. Jordan Packard. She's down at Railroad Park, prepping for a mentorship panel at Innovation Depot.\n\nThirty students from Birmingham-Southern are gonna hear her story tomorrow. She's terrified they'll see chaos instead of evolution. Impostor syndrome while she's the expert.\n\nThe question isn't 'what should I become?' It's 'how do I own what I've been?'",
+        text: "Got somebody you should meet.\n\nSeven jobs in twelve years - Jordan Packard. She's down at Railroad Park, preppin' for a mentorship panel at Innovation Depot.\n\nThirty students from Birmingham-Southern gonna hear her story tomorrow. She's scared they'll see chaos instead of evolution. Got impostor syndrome while she's literally the expert.\n\nHer question ain't 'what should I become?' It's 'how do I own what I've been?'",
         emotion: 'amused_empathetic',
         variation_id: 'discovers_exploring_v1'
       }
@@ -1188,7 +1195,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "The system works for some, but fails many. Tess is over at the Pizitz Food Hall, sketchbook open, coffee cold.\n\nShe's a Career Counselor at Hoover High who's realizing she can't counsel students into a broken world. She has to build a new one.\n\nShe's trying to start a school in the old Woodlawn building that counts 'hiking Oak Mountain' as senior year physics.",
+        text: "The system works for some folks, but it fails a lot of 'em. Tess is over at the Pizitz Food Hall, sketchbook out, coffee gone cold.\n\nShe's a career counselor at Hoover High who's realizin' she can't counsel students into a broken world. Gotta build a new one.\n\nShe's tryin' to start a school in the old Woodlawn building - one where hikin' Oak Mountain counts as senior year physics.",
         emotion: 'intrigued',
         variation_id: 'discovers_tess_v1'
       }
@@ -1220,7 +1227,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Platform 5 is a bit louder. Yaquin is there. Dental assistant over at Aspen Dental on Highway 280, frustrated with the old textbooks.\n\nHe's realized he knows more than the professors at UAB's dental school, but he doesn't know how to build a school. He's on the verge of inventing a new way to teach.",
+        text: "Platform 5's a bit louder. Yaquin's over there - dental assistant at Aspen Dental on Highway 280, frustrated with the outdated textbooks.\n\nHe's figured out he knows more than some professors at UAB's dental school, but he doesn't know how to build a school. He's right on the edge of inventin' a whole new way to teach.",
         emotion: 'amused_respect',
         variation_id: 'discovers_yaquin_v1'
       }
@@ -1252,7 +1259,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Platform 6. Glass walls, cold lighting. Kai is there.\n\nThey're an Instructional Architect at Protective Life downtown, the big tower on Richard Arrington. They know exactly how people learn, but they're paid to build compliance checklists.\n\nThey're holding a match, trying to decide whether to burn the rulebook.",
+        text: "Platform 6. Glass walls, cold lightin'. That's where Kai is.\n\nInstructional Architect at Protective Life downtown - you know, the big tower on Richard Arrington. They know exactly how people learn, but they're gettin' paid to build compliance checklists.\n\nThey're holdin' a match, tryin' to decide whether to burn the whole rulebook.",
         emotion: 'intrigued_respect',
         variation_id: 'discovers_kai_v1'
       }
@@ -1278,13 +1285,45 @@ export const samuelDialogueNodes: DialogueNode[] = [
     ]
   },
 
+  // ============= DISCOVERY PATH: CREDENTIAL SKEPTICISM → ALEX =============
+  {
+    nodeId: 'samuel_discovers_alex',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "The Learning Loop - Platform 8, west wing. That's where Alex is.\n\nUsed to run the bootcamp circuit. Taught thousands how to code. 'Six weeks to a six-figure salary' - they believed it too, once upon a time.\n\nNow they run free workshops for folks who already tried everything else. Askin' hard questions about what credentials actually mean.",
+        emotion: 'knowing',
+        variation_id: 'discovers_alex_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'meet_alex',
+        text: "I want to understand what they learned.",
+        nextNodeId: 'alex_introduction',
+        pattern: 'analytical',
+        skills: ['criticalThinking'],
+        consequence: {
+          addGlobalFlags: ['met_alex']
+        }
+      },
+      {
+        choiceId: 'ask_about_others_alex',
+        text: "Who else is here?",
+        nextNodeId: 'samuel_other_travelers',
+        pattern: 'exploring',
+        skills: ['communication']
+      }
+    ]
+  },
+
   // ============= DISCOVERY PATH: INFRASTRUCTURE → ROHAN =============
   {
     nodeId: 'samuel_discovers_rohan',
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Platform 7. The sub-basement. Rohan is there.\n\nHe's a Site Reliability Engineer at Regions Bank, the main operations center out in Riverchase. Hasn't slept in 30 hours. He's the only one who knows how the money actually moves through Alabama.\n\nEveryone else is using AI to write code they don't understand. He's cleaning up the mess.",
+        text: "Platform 7. The sub-basement. Rohan's down there.\n\nSite Reliability Engineer at Regions Bank - main operations center out in Riverchase. Hasn't slept in 30 hours. He's the only one who actually knows how money moves through Alabama.\n\nEverybody else is usin' AI to write code they don't understand. He's cleanin' up the mess.",
         emotion: 'grim_respect',
         variation_id: 'discovers_rohan_v1'
       }
@@ -1316,7 +1355,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Platform 8. The Greenhouse. Silas is there.\n\nHe used to be a Cloud Architect at Amazon. Worked remote from his place in Avondale. Now he uses drones to monitor soil microbiomes on a farm out past Trussville.\n\nHe realized that a farm is just a server cluster that breathes. He's debugging nature.",
+        text: "Platform 8. The Greenhouse. Silas is over there.\n\nUsed to be a Cloud Architect at Amazon - worked remote from his place in Avondale. Now he uses drones to monitor soil microbiomes on a farm out past Trussville.\n\nFigured out a farm is basically a server cluster that breathes. He's debuggin' nature now.",
         emotion: 'warm_respect',
         variation_id: 'discovers_silas_v1'
       }
@@ -1348,7 +1387,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Platform 4, near the Medical Bay. That's Marcus.\n\nCVICU Nurse at UAB Hospital. The kind who keeps people alive through the night shift. But he's realizing the machines he uses are just as important as the medicine.\n\nHe's standing there like he's still on shift. Carries the weight of every patient. Go gently.",
+        text: "Platform 4, near the Medical Bay. That's Marcus.\n\nCVICU Nurse at UAB Hospital - the kind who keeps people alive through those long night shifts. But he's realizin' the machines he uses are just as important as the medicine.\n\nStandin' there like he's still on duty. Carries the weight of every patient with him. Go easy.",
         emotion: 'respectful',
         variation_id: 'discovers_marcus_v1'
       }
@@ -1380,7 +1419,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "{{trust>3:Honesty is the only currency that matters here.|That's honest. That's why you're here.}}\n\nTonight's travelers:\n\n**Maya Chen** - Platform 1. Pre-med student choosing between expectations and dreams.\n\n**Devon Kumar** - Platform 3. Engineer learning logic isn't enough.\n\n**Jordan Packard** - Railroad Park. Seven jobs. One question.\n\n**Marcus** - Platform 4. CVICU nurse where machines meet medicine.\n\n**Tess** - Pizitz Food Hall. Building a school that counts hiking as physics.\n\n**Yaquin** - Platform 5. Teaching what universities won't.\n\n**Kai** - Platform 6. Fighting to innovate inside rigid systems.\n\n**Rohan** - Platform 7. Guarding infrastructure that matters.\n\n**Silas** - Platform 8. Debugging nature itself.\n\nWho speaks to you?",
+        text: "{{trust>3:Hey, honesty's the only thing that matters here.|That's honest. That's why you showed up.}}\n\nHere's who's around tonight:\n\n**Maya Chen** - Platform 1. Pre-med student stuck between expectations and dreams.\n\n**Devon Kumar** - Platform 3. Engineer learnin' logic ain't always enough.\n\n**Jordan Packard** - Railroad Park. Seven jobs. Still figurin' it out.\n\n**Marcus** - Platform 4. CVICU nurse where machines meet medicine.\n\n**Tess** - Pizitz Food Hall. Buildin' a school that counts hikin' as physics.\n\n**Yaquin** - Platform 5. Teachin' what universities won't.\n\n**Kai** - Platform 6. Tryin' to innovate inside rigid systems.\n\n**Rohan** - Platform 7. Guardin' infrastructure that matters.\n\n**Silas** - Platform 8. Debuggin' nature itself.\n\nWho speaks to you?",
         emotion: 'gentle_guide',
         variation_id: 'fallback_v2'
       }
@@ -1467,7 +1506,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "The full picture:\n\n**Maya Chen** - Platform 1. Pre-med brilliance, robotics dreams.\n\n**Devon Kumar** - Platform 3. Engineer debugging grief.\n\n**Jordan Packard** - Railroad Park. Seven careers. One question.\n\n**Marcus** - Platform 4. CVICU nurse. Machines meet medicine.\n\n**Tess** - Pizitz Food Hall. Building a new kind of school.\n\n**Yaquin** - Platform 5. Teaching outside the system.\n\n**Kai** - Platform 6. Innovation within constraints.\n\n**Rohan** - Platform 7. Infrastructure guardian.\n\n**Silas** - Platform 8. Debugging nature.\n\nWho do you want to meet?",
+        text: "Alright, here's everybody:\n\n**Maya Chen** - Platform 1. Pre-med brilliance, secret robotics dreams.\n\n**Devon Kumar** - Platform 3. Engineer tryin' to debug grief.\n\n**Jordan Packard** - Railroad Park. Seven careers. Still askin' the same question.\n\n**Marcus** - Platform 4. CVICU nurse. Where machines meet medicine.\n\n**Tess** - Pizitz Food Hall. Buildin' a whole new kind of school.\n\n**Yaquin** - Platform 5. Teachin' outside the system.\n\n**Kai** - Platform 6. Innovation within constraints.\n\n**Rohan** - Platform 7. Infrastructure guardian.\n\n**Silas** - Platform 8. Debuggin' nature.\n\nWho you wanna meet?",
         emotion: 'patient_informative',
         variation_id: 'other_travelers_v2'
       }
@@ -1555,7 +1594,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Welcome back. I can see the conversation went deep - Maya has that effect on people who really listen to her.\n\nHow are you feeling about what just happened between you two?",
+        text: "Hey, welcome back. I can tell that conversation went deep - Maya has that effect on people who really listen to her.\n\nHow you feelin' about what just happened?",
         emotion: 'warm_observant',
         variation_id: 'reflection_gateway_v3_clean'
       }
@@ -1602,7 +1641,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You did help her. But not in the way most people think 'helping' works.\n\nYou didn't fix her problem. You created space for her to see options she couldn't see before.\n\nYou've got the helper instinct - what drives UAB resident advisors and Birmingham guidance counselors.",
+        text: "You did help her. But not the way most people think 'helpin'' works.\n\nYou didn't fix her problem. You made space for her to see options she couldn't see before.\n\nYou got that helper instinct - same thing that drives UAB resident advisors and guidance counselors all over Birmingham.",
         emotion: 'teaching',
         variation_id: 'influence_v1_pt1'
       }
@@ -1628,7 +1667,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "But I learned at Southern Company: the best mentors help people find their own answers, not just feel supported.\n\nThese reflection skills you're using right now? They're the foundation of counseling, coaching, teaching. Real careers in Birmingham that value this exact capacity.",
+        text: "Learned somethin' at Southern Company though - best mentors help people find their own answers, not just feel supported.\n\nThese reflection skills you're usin' right now? That's the foundation of counselin', coachin', teachin'. Real careers here in Birmingham that value exactly what you're doin'.",
         emotion: 'teaching',
         variation_id: 'influence_v1_pt2'
       }
@@ -1668,7 +1707,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Exactly. She made her own choice. That's the most important thing.\n\nYou understand agency. That's advanced.\n\nTook me fifteen years to learn I can't engineer people's decisions. We illuminate paths. Travelers choose.",
+        text: "Exactly. She made her own choice. That's the most important thing.\n\nYou understand agency. That's... honestly, that's advanced.\n\nTook me fifteen years to learn I can't engineer people's decisions. We light up the paths. Travelers choose.",
         emotion: 'proud',
         variation_id: 'agency_v1_pt1'
       }
@@ -1695,7 +1734,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Innovation Depot (Birmingham's startup hub) mentors do exactly what you just did: ask questions, hold space, let the founder discover their path. That's facilitator instinct - a professional skill that drives leadership development, organizational psychology, HR careers across this city.",
+        text: "Mentors over at Innovation Depot do exactly what you just did - ask questions, hold space, let people discover their own path. That's facilitator instinct. Real professional skill that drives leadership development, organizational psychology, HR careers all across Birmingham.",
         emotion: 'proud',
         variation_id: 'agency_v1_pt2'
       }
@@ -1820,7 +1859,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "I don't give directions. I help them see what they already know.\n\nI followed other people's blueprints for twenty-three years. Now I help people draw their own.\n\nThe best guides don't lead. They witness.",
+        text: "I don't give directions. I help 'em see what they already know.\n\nSpent twenty-three years followin' other people's blueprints. Now I help people draw their own.\n\nBest guides don't lead. They witness.",
         emotion: 'vulnerable_wisdom',
         variation_id: 'keeper_truth_v1',
         useChatPacing: true,
@@ -1876,7 +1915,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "'What specifically should I do?' That keeps people stuck.\n\nThe pattern is bigger than any role. You hold space. Ask questions that matter. Meet people in uncertainty.\n\nThose skills work everywhere. The form will emerge.\n\nTrust the pattern.",
+        text: "'What exactly should I do?' That question keeps people stuck.\n\nThe pattern's bigger than any one job. You hold space. Ask questions that matter. Meet people in uncertainty.\n\nThose skills work everywhere. The specific form'll come.\n\nTrust the pattern.",
         emotion: 'patient_wisdom',
         variation_id: 'specificity_trap_v1',
         useChatPacing: true,
@@ -1903,7 +1942,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "We can keep talking about Maya. There's value in sitting with an experience.\n\nOr, if you're ready, there are other travelers. Each one will show you something different.",
+        text: "We can keep talkin' about Maya if you want. There's value in sittin' with an experience.\n\nOr, if you're ready, there's other travelers around. Each one'll show you somethin' different.",
         emotion: 'offering_space',
         variation_id: 'contemplation_offer_v1'
       }
@@ -2075,7 +2114,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         // Fallback choice if neither specific flag is set (defensive)
         choiceId: 'yaquin_general_reflection',
         text: "I'm glad I could help him find clarity.",
-        nextNodeId: 'samuel_hub_comprehensive',
+        nextNodeId: 'samuel_hub_after_devon',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
         visibleCondition: {
@@ -2161,7 +2200,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         // Fallback choice if specific flag is not set (defensive)
         choiceId: 'kai_general_reflection',
         text: "They're finally free to create what matters.",
-        nextNodeId: 'samuel_hub_comprehensive',
+        nextNodeId: 'samuel_hub_after_devon',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
         visibleCondition: {
@@ -2297,6 +2336,58 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "He's happy.",
         nextNodeId: 'samuel_hub_after_devon',
         pattern: 'helping'
+      }
+    ]
+  },
+
+  // ============= ALEX REFLECTION GATEWAY =============
+  {
+    nodeId: 'samuel_alex_reflection_gateway',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Alex just headed back to their workshop. Less tired than when they arrived.\n\nYou know, they used to sell certainty for a living. Now they're teaching people to sit with doubt.\n\nYou helped them see that the best teachers aren't the ones with all the answers. They're the ones who ask better questions.",
+        emotion: 'knowing',
+        variation_id: 'alex_gateway_v1'
+      }
+    ],
+    requiredState: {
+      hasGlobalFlags: ['alex_arc_complete'],
+      lacksKnowledgeFlags: ['reflected_on_alex']
+    },
+    choices: [
+      {
+        choiceId: 'alex_curiosity',
+        text: "They stayed curious longer than scared.",
+        nextNodeId: 'samuel_reflects_alex_learning',
+        pattern: 'exploring',
+        skills: ['criticalThinking', 'adaptability']
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'samuel',
+        addKnowledgeFlags: ['reflected_on_alex']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_reflects_alex_learning',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Curiosity over fear. That's the whole game, isn't it?\n\nAlex spent years selling shortcuts. Now they understand—there are no shortcuts to becoming yourself.\n\nYou reminded them why they started teaching in the first place.",
+        emotion: 'warm',
+        variation_id: 'alex_learning_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'alex_return_hub',
+        text: "They'll figure it out.",
+        nextNodeId: 'samuel_comprehensive_hub',
+        pattern: 'patience'
       }
     ]
   },
@@ -3468,10 +3559,8 @@ export const samuelDialogueNodes: DialogueNode[] = [
         variation_id: 'hub_after_devon_v3_clean'
       }
     ],
-    requiredState: {
-      hasGlobalFlags: ['devon_arc_complete'],
-      lacksGlobalFlags: ['jordan_arc_complete']
-    },
+    // Note: No requiredState - this hub is a universal return point for all reflection gateways
+    // Previously required devon_arc_complete, but that blocked non-linear play paths
     choices: [
       {
         choiceId: 'meet_marcus',
@@ -3559,7 +3648,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Tonight's travelers:\n\n**Maya Chen** - Platform 1. Pre-med student choosing between family expectations and robotics dreams.\n\n**Devon Kumar** - Platform 3. Engineering student learning that logic isn't enough.\n\n**Jordan Packard** - Conference Room B. Seven jobs, one question: qualified or fraudulent?\n\n**Marcus** - Platform 4. CVICU nurse realizing machines matter as much as medicine.\n\n**Tess** - Pizitz Food Hall. Career counselor building a new kind of school.\n\n**Yaquin** - Platform 5. Dental assistant teaching what universities won't.\n\n**Kai** - Platform 6. Instructional architect choosing depth over compliance.\n\n**Rohan** - Platform 7. Site reliability engineer guarding the systems that matter.\n\n**Silas** - Platform 8. Former cloud architect now debugging nature.\n\nWho would you like to meet?",
+        text: "Tonight's travelers:\n\n**Maya Chen** - Platform 1. Pre-med student choosing between family expectations and robotics dreams.\n\n**Devon Kumar** - Platform 3. Engineering student learning that logic isn't enough.\n\n**Jordan Packard** - Conference Room B. Seven jobs, one question: qualified or fraudulent?\n\n**Marcus** - Platform 4. CVICU nurse realizing machines matter as much as medicine.\n\n**Tess** - Pizitz Food Hall. Career counselor building a new kind of school.\n\n**Yaquin** - Platform 5. Dental assistant teaching what universities won't.\n\n**Kai** - Platform 6. Instructional architect choosing depth over compliance.\n\n**Rohan** - Platform 7. Site reliability engineer guarding the systems that matter.\n\n**Silas** - Platform 8 (Greenhouse). Former cloud architect now debugging nature.\n\n**Alex** - Platform 8 (Learning Loop). Former bootcamp instructor questioning everything they taught.\n\nWho would you like to meet?",
         emotion: 'comprehensive_guide',
         variation_id: 'comprehensive_hub_v1'
       }
@@ -3645,15 +3734,25 @@ export const samuelDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'comprehensive_meet_silas',
-        text: "Silas - Platform 8",
+        text: "Silas - Platform 8 (Greenhouse)",
         nextNodeId: 'samuel_discovers_silas',
         pattern: 'building',
         skills: ['sustainability', 'systemsThinking']
       },
       {
+        choiceId: 'comprehensive_meet_alex',
+        text: "Alex - Platform 8 (Learning Loop)",
+        nextNodeId: 'samuel_discovers_alex',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'adaptability'],
+        visibleCondition: {
+          lacksGlobalFlags: ['alex_arc_complete']
+        }
+      },
+      {
         choiceId: 'comprehensive_back',
         text: "Actually, let me think about it.",
-        nextNodeId: 'samuel_hub_after_devon',
+        nextNodeId: 'samuel_hub_initial',
         pattern: 'patience',
         skills: ['communication']
       }
@@ -4873,6 +4972,9 @@ export const samuelEntryPoints = {
 
   /** Reflection gateway - return from Silas (validates grounded engineering) */
   SILAS_REFLECTION_GATEWAY: 'samuel_silas_reflection_gateway',
+
+  /** Reflection gateway - return from Alex (validates learning to learn) */
+  ALEX_REFLECTION_GATEWAY: 'samuel_alex_reflection_gateway',
 
   /** Samuel's backstory reveal (trust-gated) */
   BACKSTORY: 'samuel_backstory_intro',

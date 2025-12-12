@@ -40,6 +40,7 @@ const characterAvatars: Record<string, { animal: AnimalType; name: string }> = {
   // Legacy mappings for backwards compatibility
   'Jordan': { animal: 'chameleon', name: 'Jordan' },
   'Kai': { animal: 'dog', name: 'Kai' },
+  'Alex': { animal: 'raccoon', name: 'Alex' },                // Credential skeptic - clever raccoon
   'Silas': { animal: 'mouse', name: 'Silas' },
   'You': { animal: 'player', name: 'You' },                   // Player avatar
   'Player': { animal: 'player', name: 'Player' }              // Player avatar alias

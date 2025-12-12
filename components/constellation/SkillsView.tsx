@@ -85,7 +85,7 @@ const SKILL_CHARACTER_HINTS: Record<string, string[]> = {
   strategicThinking: ['Maya', 'Silas']
 }
 
-export function SkillsView({ skills, onOpenDetail }: SkillsViewProps) {
+export function SkillsView({ skills, onOpenDetail: _onOpenDetail }: SkillsViewProps) {
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [activeFilter, setActiveFilter] = useState<ClusterFilter>('all')
   const selectedSkill = skills.find(s => s.id === selectedId)
