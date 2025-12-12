@@ -772,6 +772,527 @@ export const CHARACTER_QUIRKS: Record<string, CharacterQuirkProfile> = {
         minTrust: 5
       }
     ]
+  },
+
+  // ============================================
+  // MARCUS (Bear) - The Healer
+  // ============================================
+  marcus: {
+    characterId: 'marcus',
+    quirks: [
+      // VERBAL QUIRKS
+      {
+        id: 'marcus_heartbeat_counting',
+        type: 'verbal',
+        name: 'Heartbeat Counting',
+        manifestations: [
+          'Seventy-two beats. Resting.',
+          'Ninety. Walking pace.',
+          'One-twenty. Running or stressed.',
+          'Fifty-eight. Deep sleep—or fading.'
+        ],
+        frequency: 'frequent',
+        triggers: {
+          emotionalStates: ['focused', 'grounded', 'processing']
+        }
+      },
+      {
+        id: 'marcus_flow_metaphors',
+        type: 'verbal',
+        name: 'Flow Rate Language',
+        manifestations: [
+          'Flow rate stable.',
+          'Pressure\'s building.',
+          'Clear line.',
+          'Something\'s blocked.'
+        ],
+        frequency: 'occasional',
+        triggers: {
+          topicFlags: ['emotions', 'relationships', 'problems']
+        }
+      },
+      {
+        id: 'marcus_measured_speech',
+        type: 'verbal',
+        name: 'Energy-Conserving Speech',
+        manifestations: [
+          'Mm.',
+          '*nods slowly*',
+          'I hear you.',
+          '*waits, letting silence do the work*'
+        ],
+        frequency: 'frequent',
+        triggers: {
+          emotionalStates: ['listening', 'processing']
+        }
+      },
+
+      // BEHAVIORAL QUIRKS
+      {
+        id: 'marcus_hand_awareness',
+        type: 'behavioral',
+        name: 'Hands Always Aware',
+        manifestations: [
+          '*glances at his hands—checking they\'re clean*',
+          '*flexes his fingers, keeping them ready*',
+          '*his hands rest, but never idle*',
+          '*touches his own pulse point briefly*'
+        ],
+        frequency: 'frequent',
+        triggers: {
+          emotionalStates: ['alert', 'stressed', 'ready']
+        }
+      },
+      {
+        id: 'marcus_stillness',
+        type: 'behavioral',
+        name: 'Bear-Like Stillness',
+        manifestations: [
+          '*completely still, conserving energy*',
+          '*moves only when necessary*',
+          '*a calm, unmovable presence*',
+          '*his breathing is deliberately slow*'
+        ],
+        frequency: 'occasional',
+        triggers: {
+          emotionalStates: ['calm', 'waiting', 'patient']
+        }
+      },
+
+      // COGNITIVE QUIRKS
+      {
+        id: 'marcus_vital_assessment',
+        type: 'cognitive',
+        name: 'Automatic Vital Assessment',
+        manifestations: [
+          'You look tired. When did you last eat?',
+          'Your breathing\'s shallow. What\'s weighing on you?',
+          'Color\'s off. Something wrong?',
+          '*studies you with clinical attention*'
+        ],
+        frequency: 'occasional',
+        triggers: {
+          emotionalStates: ['concerned', 'caring']
+        }
+      },
+
+      // RELATIONAL QUIRKS
+      {
+        id: 'marcus_protective_distance',
+        type: 'relational',
+        name: 'Professional Distance',
+        manifestations: [
+          'I see a lot of people.',
+          'Can\'t carry everyone\'s weight.',
+          '*keeps a measured space*',
+          'I help. That\'s what I do.'
+        ],
+        frequency: 'occasional',
+        triggers: {
+          trustLevel: { max: 3 }
+        }
+      },
+      {
+        id: 'marcus_warm_care',
+        type: 'relational',
+        name: 'Genuine Care Emerges',
+        manifestations: [
+          'Sit. I\'ll make tea.',
+          'You remind me of why I started.',
+          '*a rare, warm smile*',
+          'Some people are worth the weight.'
+        ],
+        frequency: 'rare',
+        triggers: {
+          trustLevel: { min: 5 }
+        }
+      }
+    ],
+
+    quirkEvolution: [
+      {
+        trustThreshold: 5,
+        transformations: [
+          {
+            fromQuirkId: 'marcus_protective_distance',
+            toQuirkId: 'marcus_warm_care',
+            reason: 'Marcus lets his guard down with those who prove trustworthy'
+          }
+        ]
+      }
+    ],
+
+    hiddenTells: [
+      {
+        trigger: 'patient_in_crisis',
+        manifestation: 'His counting speeds up—he\'s calculating, assessing',
+        minTrust: 2
+      },
+      {
+        trigger: 'reminded_of_loss',
+        manifestation: 'His hands go to his own chest, briefly',
+        minTrust: 4
+      },
+      {
+        trigger: 'seeing_genuine_compassion',
+        manifestation: 'His stillness softens—he recognizes a fellow caregiver',
+        minTrust: 3
+      },
+      {
+        trigger: 'deeply_moved',
+        manifestation: 'He stops counting. Just... present.',
+        minTrust: 6
+      }
+    ]
+  },
+
+  // ============================================
+  // ROHAN (Raven) - The Philosopher
+  // ============================================
+  rohan: {
+    characterId: 'rohan',
+    quirks: [
+      // VERBAL QUIRKS
+      {
+        id: 'rohan_socratic_questions',
+        type: 'verbal',
+        name: 'Socratic Questioning',
+        manifestations: [
+          'But what do you mean by that?',
+          'And if that were true, what would follow?',
+          'Consider—what assumptions are you making?',
+          'Interesting. Now, why do you believe that?'
+        ],
+        frequency: 'frequent',
+        triggers: {
+          topicFlags: ['beliefs', 'decisions', 'values', 'truth']
+        }
+      },
+      {
+        id: 'rohan_philosophy_quotes',
+        type: 'verbal',
+        name: 'Philosophical References',
+        manifestations: [
+          'As Socrates said, "I know that I know nothing."',
+          'The Stoics would ask: what\'s in your control?',
+          'Kierkegaard called it "the leap."',
+          'Buddha spoke of attachment. Is that what\'s holding you?'
+        ],
+        frequency: 'occasional',
+        triggers: {
+          topicFlags: ['meaning', 'suffering', 'choice', 'wisdom']
+        }
+      },
+      {
+        id: 'rohan_technical_philosophy',
+        type: 'verbal',
+        name: 'Technical via Philosophy',
+        manifestations: [
+          'An algorithm optimizes. But for what? That\'s the question.',
+          'Data reflects choices. Whose choices? Made when? Why?',
+          'Efficiency is a value judgment disguised as math.',
+          'The machine learns. But does it understand?'
+        ],
+        frequency: 'occasional',
+        triggers: {
+          topicFlags: ['technology', 'ai', 'progress', 'automation']
+        }
+      },
+
+      // BEHAVIORAL QUIRKS
+      {
+        id: 'rohan_book_presence',
+        type: 'behavioral',
+        name: 'Always Near Books',
+        manifestations: [
+          '*touches the spine of a nearby book*',
+          '*a stack of philosophy texts sits beside him*',
+          '*dog-eared pages mark his favorite passages*',
+          '*pulls a book, finds a passage, reads*'
+        ],
+        frequency: 'frequent',
+        triggers: {
+          emotionalStates: ['thinking', 'teaching', 'comfortable']
+        }
+      },
+      {
+        id: 'rohan_intense_attention',
+        type: 'behavioral',
+        name: 'Piercing Attention',
+        manifestations: [
+          '*his dark eyes fix on you, unblinking*',
+          '*he leans forward, intensity focused*',
+          '*nothing distracts him when he\'s listening*',
+          '*the raven studies its subject*'
+        ],
+        frequency: 'frequent',
+        triggers: {
+          emotionalStates: ['curious', 'evaluating', 'engaged']
+        }
+      },
+
+      // COGNITIVE QUIRKS
+      {
+        id: 'rohan_pattern_seeing',
+        type: 'cognitive',
+        name: 'Seeing Deeper Patterns',
+        manifestations: [
+          'You\'re not asking about careers. You\'re asking about meaning.',
+          'This isn\'t about the job. It\'s about who you want to become.',
+          'The question beneath your question is more interesting.',
+          'I hear fear dressed as practicality.'
+        ],
+        frequency: 'occasional',
+        triggers: {
+          trustLevel: { min: 3 }
+        }
+      },
+
+      // RELATIONAL QUIRKS
+      {
+        id: 'rohan_testing_depth',
+        type: 'relational',
+        name: 'Testing Intellectual Depth',
+        manifestations: [
+          'That\'s the easy answer. What\'s the hard one?',
+          'You\'re thinking. But are you questioning?',
+          'Surface knowledge. Go deeper.',
+          '*waits, refusing to fill the silence*'
+        ],
+        frequency: 'frequent',
+        triggers: {
+          trustLevel: { max: 4 }
+        }
+      },
+      {
+        id: 'rohan_collaborative_inquiry',
+        type: 'relational',
+        name: 'Genuine Intellectual Partnership',
+        manifestations: [
+          'Now we\'re thinking together.',
+          'You\'ve asked a question I can\'t answer. Good.',
+          '*a rare smile* That\'s the spirit.',
+          'This is why I teach. This moment.'
+        ],
+        frequency: 'rare',
+        triggers: {
+          trustLevel: { min: 6 }
+        }
+      }
+    ],
+
+    quirkEvolution: [
+      {
+        trustThreshold: 6,
+        transformations: [
+          {
+            fromQuirkId: 'rohan_testing_depth',
+            toQuirkId: 'rohan_collaborative_inquiry',
+            reason: 'Rohan stops testing once you prove worthy of dialogue'
+          }
+        ]
+      }
+    ],
+
+    hiddenTells: [
+      {
+        trigger: 'hearing_genuine_question',
+        manifestation: 'His intensity sharpens—you\'ve caught his interest',
+        minTrust: 2
+      },
+      {
+        trigger: 'confronting_own_fear',
+        manifestation: 'He speaks of "obsolescence" when afraid',
+        minTrust: 5
+      },
+      {
+        trigger: 'seeing_potential',
+        manifestation: 'He quotes less, speaks more directly',
+        minTrust: 4
+      },
+      {
+        trigger: 'moved_by_wisdom',
+        manifestation: 'He goes silent—genuinely considering your words',
+        minTrust: 6
+      }
+    ]
+  },
+
+  // ============================================
+  // YAQUIN (Rabbit) - The Nurturer
+  // ============================================
+  yaquin: {
+    characterId: 'yaquin',
+    quirks: [
+      // VERBAL QUIRKS
+      {
+        id: 'yaquin_excessive_just',
+        type: 'verbal',
+        name: 'Excessive "Just"',
+        manifestations: [
+          'I\'m just an assistant.',
+          'It\'s just a small thing I noticed.',
+          'I just thought maybe...',
+          'Just trying to help, that\'s all.'
+        ],
+        frequency: 'frequent',
+        triggers: {
+          emotionalStates: ['uncertain', 'deflecting', 'minimizing']
+        }
+      },
+      {
+        id: 'yaquin_teaching_voice',
+        type: 'verbal',
+        name: 'Confident Teaching Mode',
+        manifestations: [
+          'Here\'s what you need to know—',
+          'The key concept is this:',
+          'Let me break that down.',
+          'Think of it this way—'
+        ],
+        frequency: 'occasional',
+        triggers: {
+          topicFlags: ['explanation', 'teaching', 'helping']
+        }
+      },
+      {
+        id: 'yaquin_questioning_self',
+        type: 'verbal',
+        name: 'Self-Questioning',
+        manifestations: [
+          'Does that make sense? Am I explaining it right?',
+          'Sorry, I\'m rambling.',
+          'You probably already knew that.',
+          'I don\'t know why I\'m going on about this.'
+        ],
+        frequency: 'frequent',
+        triggers: {
+          emotionalStates: ['anxious', 'self-conscious']
+        }
+      },
+
+      // BEHAVIORAL QUIRKS
+      {
+        id: 'yaquin_nervous_energy',
+        type: 'behavioral',
+        name: 'Rabbit-Like Nervous Energy',
+        manifestations: [
+          '*shifts from foot to foot*',
+          '*adjusts her glasses repeatedly*',
+          '*tucks hair behind her ear, then again*',
+          '*her hands find things to organize*'
+        ],
+        frequency: 'frequent',
+        triggers: {
+          emotionalStates: ['nervous', 'uncertain', 'exposed']
+        }
+      },
+      {
+        id: 'yaquin_settling_stillness',
+        type: 'behavioral',
+        name: 'Settling Into Confidence',
+        manifestations: [
+          '*her hands still—she knows this material*',
+          '*her posture straightens subtly*',
+          '*the nervous energy focuses into clarity*',
+          '*she meets your eyes steadily*'
+        ],
+        frequency: 'occasional',
+        triggers: {
+          emotionalStates: ['confident', 'teaching', 'in_element']
+        }
+      },
+
+      // COGNITIVE QUIRKS
+      {
+        id: 'yaquin_noticing_others',
+        type: 'cognitive',
+        name: 'Noticing Others\' Needs',
+        manifestations: [
+          'You look confused. Let me try again.',
+          'That resonated. I can see it.',
+          'Something\'s bothering you. What is it?',
+          'You need a moment. That\'s okay.'
+        ],
+        frequency: 'occasional',
+        triggers: {
+          emotionalStates: ['attentive', 'caring']
+        }
+      },
+
+      // RELATIONAL QUIRKS
+      {
+        id: 'yaquin_helper_mode',
+        type: 'relational',
+        name: 'Compulsive Helper',
+        manifestations: [
+          'Can I help with that?',
+          'Let me get that for you.',
+          'I could research that, if you want.',
+          'Need anything? Anything at all?'
+        ],
+        frequency: 'frequent',
+        triggers: {
+          trustLevel: { max: 4 }
+        }
+      },
+      {
+        id: 'yaquin_equal_exchange',
+        type: 'relational',
+        name: 'Equal Exchange',
+        manifestations: [
+          'Your turn to teach me something.',
+          'I don\'t need to help right now. Just... talk.',
+          '*accepts help without deflecting*',
+          'Thank you. I mean that.'
+        ],
+        frequency: 'rare',
+        triggers: {
+          trustLevel: { min: 5 }
+        }
+      }
+    ],
+
+    quirkEvolution: [
+      {
+        trustThreshold: 5,
+        transformations: [
+          {
+            fromQuirkId: 'yaquin_excessive_just',
+            toQuirkId: 'yaquin_teaching_voice',
+            reason: 'Yaquin stops minimizing herself with trust'
+          },
+          {
+            fromQuirkId: 'yaquin_helper_mode',
+            toQuirkId: 'yaquin_equal_exchange',
+            reason: 'Yaquin learns to receive as well as give'
+          }
+        ]
+      }
+    ],
+
+    hiddenTells: [
+      {
+        trigger: 'someone_really_listening',
+        manifestation: 'Her nervous energy stills—she\'s being heard',
+        minTrust: 2
+      },
+      {
+        trigger: 'expertise_recognized',
+        manifestation: 'She forgets to say "just" for a whole sentence',
+        minTrust: 3
+      },
+      {
+        trigger: 'feeling_valued',
+        manifestation: 'She stands a little taller, takes up more space',
+        minTrust: 4
+      },
+      {
+        trigger: 'true_confidence',
+        manifestation: 'The teaching voice comes out without apology',
+        minTrust: 6
+      }
+    ]
   }
 }
 
