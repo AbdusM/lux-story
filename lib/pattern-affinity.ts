@@ -173,7 +173,204 @@ export const CHARACTER_PATTERN_AFFINITIES: Record<string, CharacterPatternAffini
       }
     ],
 
-    patternUnlocks: []
+    patternUnlocks: [
+      {
+        pattern: 'analytical',
+        threshold: 40,
+        unlockedNodeId: 'devon_optimizer_demo',
+        description: 'Devon shows you his Conversation Optimizer'
+      },
+      {
+        pattern: 'patience',
+        threshold: 60,
+        unlockedNodeId: 'devon_father_story',
+        description: 'Devon opens up about his father'
+      }
+    ]
+  },
+
+  tess: {
+    characterId: 'tess',
+    primary: 'building',         // Tess respects creators and makers
+    secondary: 'analytical',     // She appreciates those who dig deep
+    neutral: ['patience', 'helping'],
+    friction: 'exploring',       // Surface curiosity without depth annoys her
+
+    resonanceDescriptions: [
+      {
+        pattern: 'building',
+        description: 'Tess sees a fellow creator in you. The record flipping slows.'
+      },
+      {
+        pattern: 'analytical',
+        description: 'Tess respects that you want to understand, not just consume.'
+      },
+      {
+        pattern: 'patience',
+        description: 'Tess notices you don\'t rush. Good. The real stuff takes time.'
+      },
+      {
+        pattern: 'helping',
+        description: 'Tess wonders if you actually want to help or just feel helpful.'
+      },
+      {
+        pattern: 'exploring',
+        description: 'Tess\'s eyes narrow slightly. Curiosity without commitment is tourism.'
+      }
+    ],
+
+    patternUnlocks: [
+      {
+        pattern: 'building',
+        threshold: 50,
+        unlockedNodeId: 'tess_demo_tape_story',
+        description: 'Tess tells you about the demo tape that changed her life'
+      },
+      {
+        pattern: 'analytical',
+        threshold: 40,
+        unlockedNodeId: 'tess_industry_truth',
+        description: 'Tess shares her unfiltered views on the music industry'
+      }
+    ]
+  },
+
+  marcus: {
+    characterId: 'marcus',
+    primary: 'helping',          // Marcus values those who care for others
+    secondary: 'patience',       // He respects measured, calm approaches
+    neutral: ['exploring', 'building'],
+    friction: 'analytical',      // Pure logic feels cold to him
+
+    resonanceDescriptions: [
+      {
+        pattern: 'helping',
+        description: 'Marcus recognizes compassion in you. His measured manner warms.'
+      },
+      {
+        pattern: 'patience',
+        description: 'Marcus appreciates that you don\'t rush. Lives depend on getting it right.'
+      },
+      {
+        pattern: 'exploring',
+        description: 'Marcus finds your curiosity refreshing—not everyone asks.'
+      },
+      {
+        pattern: 'building',
+        description: 'Marcus respects makers. The machines he tends were built by someone.'
+      },
+      {
+        pattern: 'analytical',
+        description: 'Marcus stiffens slightly. Numbers are important, but people aren\'t data.'
+      }
+    ],
+
+    patternUnlocks: [
+      {
+        pattern: 'helping',
+        threshold: 40,
+        unlockedNodeId: 'marcus_first_patient_story',
+        description: 'Marcus shares the story of his first patient'
+      },
+      {
+        pattern: 'patience',
+        threshold: 50,
+        unlockedNodeId: 'marcus_night_shift_wisdom',
+        description: 'Marcus opens up about what the night shifts taught him'
+      }
+    ]
+  },
+
+  rohan: {
+    characterId: 'rohan',
+    primary: 'patience',         // Rohan values deep thought over quick answers
+    secondary: 'exploring',      // He appreciates genuine curiosity
+    neutral: ['analytical', 'building'],
+    friction: 'helping',         // He distrusts those who want to "save" people
+
+    resonanceDescriptions: [
+      {
+        pattern: 'patience',
+        description: 'Rohan\'s intensity softens. You understand that truth takes time.'
+      },
+      {
+        pattern: 'exploring',
+        description: 'Rohan sees genuine curiosity in you, not just surface interest.'
+      },
+      {
+        pattern: 'analytical',
+        description: 'Rohan appreciates systematic thinking, even if he questions its limits.'
+      },
+      {
+        pattern: 'building',
+        description: 'Rohan respects creation, though he wonders what gets lost in progress.'
+      },
+      {
+        pattern: 'helping',
+        description: 'Rohan\'s guard goes up. He\'s seen how "help" can become control.'
+      }
+    ],
+
+    patternUnlocks: [
+      {
+        pattern: 'patience',
+        threshold: 50,
+        unlockedNodeId: 'rohan_algorithm_warning',
+        description: 'Rohan shares his fears about algorithmic thinking'
+      },
+      {
+        pattern: 'exploring',
+        threshold: 60,
+        unlockedNodeId: 'rohan_philosophy_deep',
+        description: 'Rohan engages you in genuine philosophical dialogue'
+      }
+    ]
+  },
+
+  yaquin: {
+    characterId: 'yaquin',
+    primary: 'exploring',        // Yaquin connects with curious minds
+    secondary: 'patience',       // She values those who take time to understand
+    neutral: ['helping', 'analytical'],
+    friction: 'building',        // "Move fast and build things" overwhelms her
+
+    resonanceDescriptions: [
+      {
+        pattern: 'exploring',
+        description: 'Yaquin\'s eyes light up. A fellow curious soul.'
+      },
+      {
+        pattern: 'patience',
+        description: 'Yaquin relaxes. You don\'t rush her, and she appreciates that.'
+      },
+      {
+        pattern: 'helping',
+        description: 'Yaquin appreciates kindness, though she\'s still learning to accept it.'
+      },
+      {
+        pattern: 'analytical',
+        description: 'Yaquin finds your thoughtfulness grounding.'
+      },
+      {
+        pattern: 'building',
+        description: 'Yaquin feels a little overwhelmed. Not everyone moves at builder speed.'
+      }
+    ],
+
+    patternUnlocks: [
+      {
+        pattern: 'exploring',
+        threshold: 40,
+        unlockedNodeId: 'yaquin_teaching_passion',
+        description: 'Yaquin shares why she loves teaching'
+      },
+      {
+        pattern: 'patience',
+        threshold: 50,
+        unlockedNodeId: 'yaquin_doubt_confession',
+        description: 'Yaquin confesses her private doubts'
+      }
+    ]
   }
 }
 

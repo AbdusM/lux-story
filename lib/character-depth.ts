@@ -302,9 +302,409 @@ export const CHARACTER_DEPTH: Record<string, CharacterDepthProfile> = {
         }
       }
     ]
-  }
+  },
 
-  // Additional characters will be added after Maya proves the system
+  // ============================================
+  // SAMUEL - The Station Keeper
+  // ============================================
+  samuel: {
+    characterId: 'samuel',
+
+    vulnerabilities: [
+      {
+        id: 'samuel_past_failure',
+        topic: 'past_mistakes',
+        displayName: 'A Train He Missed',
+        description: 'Samuel once failed to help a traveler who needed him—this still haunts him.',
+
+        triggerPhrases: [
+          'failed', 'mistake', 'regret', 'couldn\'t help',
+          'wrong', 'missed', 'too late'
+        ],
+
+        discoveryConditions: {
+          trustMin: 5,
+          patternRequirements: [{ pattern: 'patience', min: 3 }]
+        },
+
+        responses: {
+          earlyTrust: '*a long pause* Some trains... some trains leave without us.',
+          midTrust: 'I\'ve been doing this a long time. Long enough to have regrets.',
+          highTrust: 'There was a young man, years ago. I saw the signs—the weight he carried. I thought he needed space. He needed someone to stop him from boarding that train alone. I still wonder where he ended up.'
+        },
+
+        rewards: {
+          knowledgeFlag: 'knows_samuel_regret',
+          unlockedDialogueNodes: ['samuel_past_deep_dive', 'samuel_redemption'],
+          trustBonus: 2
+        }
+      },
+
+      {
+        id: 'samuel_loneliness',
+        topic: 'isolation',
+        displayName: 'The Lonely Station Keeper',
+        description: 'Samuel guides countless travelers but has no journey of his own.',
+
+        triggerPhrases: [
+          'alone', 'lonely', 'journey', 'your story',
+          'what about you', 'your path'
+        ],
+
+        discoveryConditions: {
+          trustMin: 6,
+          requiredFlags: ['met_multiple_characters']
+        },
+
+        responses: {
+          earlyTrust: '*deflects with a smile* This station is my journey.',
+          midTrust: 'The keeper watches the trains. The keeper doesn\'t board them.',
+          highTrust: 'Everyone who comes through here is going somewhere. I help them find their way. But sometimes, late at night, I wonder... where would I go? If I could still choose?'
+        },
+
+        rewards: {
+          knowledgeFlag: 'knows_samuel_lonely',
+          unlockedDialogueNodes: ['samuel_own_story', 'samuel_before_station'],
+          trustBonus: 2
+        }
+      }
+    ],
+
+    strengths: [
+      {
+        id: 'samuel_pattern_sight',
+        domain: 'seeing_patterns',
+        displayName: 'Pattern Sight',
+        description: 'Samuel can see connections between people and paths that others miss.',
+
+        demonstrationTopics: ['connections', 'relationships', 'paths', 'choices'],
+
+        revealConditions: {
+          trustMin: 3
+        },
+
+        helpDialogue: {
+          offerHelp: 'Let me show you how your thread connects to theirs.',
+          successFeedback: 'You see it now, don\'t you? The pattern was always there.',
+          recognitionResponse: '*nods slowly* The station shows me things. After this many years, you learn to see.'
+        },
+
+        ability: {
+          id: 'samuel_connection_reveal',
+          name: 'Samuel\'s Insight',
+          description: 'Ask Samuel to reveal connections between characters',
+          usableInContexts: ['relationship_questions', 'character_introduction', 'story_connection']
+        }
+      },
+
+      {
+        id: 'samuel_patient_wisdom',
+        domain: 'wisdom_through_waiting',
+        displayName: 'Wisdom of Waiting',
+        description: 'Samuel knows when to speak and when to let silence teach.',
+
+        demonstrationTopics: ['uncertainty', 'rushing', 'decisions', 'patience'],
+
+        revealConditions: {
+          trustMin: 4
+        },
+
+        helpDialogue: {
+          offerHelp: 'Sometimes the best thing to do is wait.',
+          successFeedback: 'See? The answer was already there. It just needed time to arrive.',
+          recognitionResponse: 'Patience isn\'t doing nothing. It\'s doing nothing until the right moment.'
+        }
+      }
+    ],
+
+    growthArcs: []
+  },
+
+  // ============================================
+  // DEVON - The Systems Thinker
+  // ============================================
+  devon: {
+    characterId: 'devon',
+
+    vulnerabilities: [
+      {
+        id: 'devon_father_distance',
+        topic: 'father_relationship',
+        displayName: 'The Distance Call',
+        description: 'Devon\'s father is struggling with health issues, and Devon can\'t connect.',
+
+        triggerPhrases: [
+          'father', 'dad', 'family', 'home', 'call',
+          'distance', 'health', 'sick'
+        ],
+
+        discoveryConditions: {
+          trustMin: 4,
+          patternRequirements: [{ pattern: 'patience', min: 2 }]
+        },
+
+        responses: {
+          earlyTrust: '*checks phone* Family stuff. It\'s fine.',
+          midTrust: 'My dad... he\'s not doing well. I built him this app to track symptoms, but...',
+          highTrust: 'He doesn\'t want my app. He wants me to visit. To just... sit with him. I don\'t know how to do that. I don\'t have code for "be present."'
+        },
+
+        rewards: {
+          knowledgeFlag: 'knows_devon_father',
+          unlockedDialogueNodes: ['devon_father_deep', 'devon_family_call'],
+          trustBonus: 2
+        }
+      },
+
+      {
+        id: 'devon_connection_fear',
+        topic: 'emotional_vulnerability',
+        displayName: 'Error Handling for Emotions',
+        description: 'Devon uses systems thinking because real connection terrifies him.',
+
+        triggerPhrases: [
+          'feel', 'emotion', 'vulnerable', 'connect',
+          'love', 'afraid', 'scared'
+        ],
+
+        discoveryConditions: {
+          trustMin: 6,
+          requiredFlags: ['knows_devon_father']
+        },
+
+        responses: {
+          earlyTrust: 'I prefer systems. They\'re predictable.',
+          midTrust: 'The optimizer tells me what to say. Without it, I might say the wrong thing.',
+          highTrust: 'Scripts don\'t hang up. Scripts don\'t cry. Scripts don\'t say "I\'m fine" when they\'re drowning. But my dad doesn\'t want an algorithm. He wants his son.'
+        },
+
+        rewards: {
+          knowledgeFlag: 'knows_devon_fear',
+          unlockedDialogueNodes: ['devon_breakthrough', 'devon_authentic'],
+          trustBonus: 3,
+          thoughtId: 'analytical-eye'
+        }
+      }
+    ],
+
+    strengths: [
+      {
+        id: 'devon_system_analysis',
+        domain: 'systems_thinking',
+        displayName: 'Systems Analysis',
+        description: 'Devon can break down any problem into components and dependencies.',
+
+        demonstrationTopics: ['problems', 'decisions', 'optimization', 'structure'],
+
+        revealConditions: {
+          trustMin: 2
+        },
+
+        helpDialogue: {
+          offerHelp: 'Let me map out the dependencies. There\'s always a structure.',
+          successFeedback: 'See? Once you isolate the variables, the solution becomes clear.',
+          recognitionResponse: '*slight smile* Systems are my language.'
+        },
+
+        ability: {
+          id: 'devon_breakdown',
+          name: 'Devon\'s Analysis',
+          description: 'Ask Devon to systematically analyze a problem',
+          usableInContexts: ['complex_decision', 'technical_problem', 'career_planning']
+        }
+      },
+
+      {
+        id: 'devon_human_connection',
+        domain: 'earned_vulnerability',
+        displayName: 'Real Connection',
+        description: 'Devon can connect authentically once he drops the algorithm.',
+
+        demonstrationTopics: ['honesty', 'vulnerability', 'connection', 'real_talk'],
+
+        revealConditions: {
+          trustMin: 7,
+          requiredFlags: ['knows_devon_fear']
+        },
+
+        helpDialogue: {
+          offerHelp: 'No optimizer for this one. Just... me.',
+          successFeedback: 'That wasn\'t so hard. Maybe I don\'t need the script.',
+          recognitionResponse: 'I guess some things can\'t be debugged. They just have to be felt.'
+        }
+      }
+    ],
+
+    growthArcs: [
+      {
+        vulnerabilityId: 'devon_connection_fear',
+        strengthId: 'devon_human_connection',
+        transformationDialogue: [
+          '*The simulation fades. Devon looks at his hands.*',
+          'I keep building scripts because scripts don\'t hang up.',
+          'Scripts don\'t cry.',
+          'Scripts don\'t say "I\'m fine" when they\'re drowning.',
+          '*A long pause.*',
+          'But my dad doesn\'t want an algorithm.',
+          '*Devon\'s voice cracks.*',
+          'He wants his son.'
+        ],
+        conditions: {
+          trustMin: 8,
+          requiredFlags: ['knows_devon_fear', 'devon_optimizer_tested']
+        },
+        result: {
+          globalFlagsSet: ['devon_transformation_complete', 'devon_human_connection'],
+          newStrengthUnlocked: 'devon_human_connection'
+        }
+      }
+    ]
+  },
+
+  // ============================================
+  // TESS - The Curator
+  // ============================================
+  tess: {
+    characterId: 'tess',
+
+    vulnerabilities: [
+      {
+        id: 'tess_corporate_past',
+        topic: 'selling_out',
+        displayName: 'The Corporate Years',
+        description: 'Tess spent years at a major label doing exactly what she now despises.',
+
+        triggerPhrases: [
+          'corporate', 'label', 'sellout', 'past',
+          'before', 'industry', 'executive'
+        ],
+
+        discoveryConditions: {
+          trustMin: 4,
+          patternRequirements: [{ pattern: 'analytical', min: 2 }]
+        },
+
+        responses: {
+          earlyTrust: '*flips a record* Everyone starts somewhere.',
+          midTrust: 'I know how the algorithm works because I helped build it. At Universal. For eight years.',
+          highTrust: 'I signed artists to contracts I knew would bury them. Told myself I was "helping them get heard." I was helping the machine get fed.'
+        },
+
+        rewards: {
+          knowledgeFlag: 'knows_tess_corporate',
+          unlockedDialogueNodes: ['tess_label_days', 'tess_why_she_left'],
+          trustBonus: 2
+        }
+      },
+
+      {
+        id: 'tess_artist_guilt',
+        topic: 'failed_artist',
+        displayName: 'The Demo She Never Made',
+        description: 'Tess was a musician once. She chose the safe path and regrets it.',
+
+        triggerPhrases: [
+          'your music', 'play', 'perform', 'stage',
+          'your art', 'dream', 'gave up'
+        ],
+
+        discoveryConditions: {
+          trustMin: 6,
+          requiredFlags: ['knows_tess_corporate']
+        },
+
+        responses: {
+          earlyTrust: '*doesn\'t answer, keeps flipping records*',
+          midTrust: 'I had a band. We had a sound. I got a "real job" instead.',
+          highTrust: 'We had something real. I watched that demo tape until it warped. Then I took the label job because it was "smart." Been wondering ever since what would have happened if I\'d been brave instead of smart.'
+        },
+
+        rewards: {
+          knowledgeFlag: 'knows_tess_artist',
+          unlockedDialogueNodes: ['tess_band_story', 'tess_what_if'],
+          trustBonus: 2
+        }
+      }
+    ],
+
+    strengths: [
+      {
+        id: 'tess_authenticity_detection',
+        domain: 'reading_people',
+        displayName: 'BS Detector',
+        description: 'Tess can tell when someone is performing versus being real.',
+
+        demonstrationTopics: ['truth', 'honesty', 'authenticity', 'real'],
+
+        revealConditions: {
+          trustMin: 2
+        },
+
+        helpDialogue: {
+          offerHelp: 'Let me tell you what I hear when they talk.',
+          successFeedback: 'See? The truth has a different sound.',
+          recognitionResponse: 'Twenty years of listening. You learn what\'s real.'
+        },
+
+        ability: {
+          id: 'tess_truth_reading',
+          name: 'Tess\'s Reading',
+          description: 'Ask Tess to evaluate someone\'s authenticity',
+          usableInContexts: ['character_evaluation', 'trust_decision', 'authenticity_check']
+        }
+      },
+
+      {
+        id: 'tess_curation_wisdom',
+        domain: 'finding_value',
+        displayName: 'Curation',
+        description: 'Tess can find the signal in the noise—the real among the fake.',
+
+        demonstrationTopics: ['choice', 'quality', 'direction', 'taste'],
+
+        revealConditions: {
+          trustMin: 5,
+          requiredFlags: ['knows_tess_corporate']
+        },
+
+        helpDialogue: {
+          offerHelp: 'I\'ve heard ten thousand demos. Let me help you find yours.',
+          successFeedback: 'That\'s the one. That\'s you.',
+          recognitionResponse: 'Curation isn\'t about taste. It\'s about recognition.'
+        },
+
+        ability: {
+          id: 'tess_curation',
+          name: 'Tess\'s Curation',
+          description: 'Ask Tess to help identify what matters most',
+          usableInContexts: ['priority_decision', 'values_clarification', 'path_choice']
+        }
+      }
+    ],
+
+    growthArcs: [
+      {
+        vulnerabilityId: 'tess_artist_guilt',
+        strengthId: 'tess_curation_wisdom',
+        transformationDialogue: [
+          '*Tess puts down the record she\'s holding*',
+          'I spent years regretting not making that demo.',
+          'But you know what?',
+          'Maybe my instrument was never the guitar.',
+          'Maybe it was always this—',
+          '*gestures at the shop*',
+          'Finding the ones who ARE brave enough. And making sure they get heard.'
+        ],
+        conditions: {
+          trustMin: 8,
+          requiredFlags: ['knows_tess_artist', 'tess_helped_player']
+        },
+        result: {
+          globalFlagsSet: ['tess_transformation_complete', 'tess_peace_with_past']
+        }
+      }
+    ]
+  }
 }
 
 /**
