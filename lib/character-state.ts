@@ -1,5 +1,7 @@
 import { findCharacterForNode } from './graph-registry'
 import { ActiveThought, THOUGHT_REGISTRY } from '@/content/thoughts'
+import { calculateResonantTrustChange, getDominantPattern } from './pattern-affinity'
+import { PatternType } from './patterns'
 
 /**
  * Core character relationship state
@@ -25,7 +27,7 @@ export interface GameState {
   patterns: PlayerPatterns // Pattern tracking for final revelation
   lastSaved: number
   currentNodeId: string // Current position in dialogue graph
-  currentCharacterId: 'samuel' | 'maya' | 'devon' | 'jordan' | 'marcus' | 'tess' | 'yaquin' | 'kai' | 'rohan' | 'silas' // Current character being talked to
+  currentCharacterId: 'samuel' | 'maya' | 'devon' | 'jordan' | 'marcus' | 'tess' | 'yaquin' | 'kai' | 'alex' | 'rohan' | 'silas' // Current character being talked to
   thoughts: ActiveThought[]
 }
 
@@ -109,7 +111,7 @@ export interface SerializableGameState {
   patterns: PlayerPatterns
   lastSaved: number
   currentNodeId: string
-  currentCharacterId: 'samuel' | 'maya' | 'devon' | 'jordan' | 'marcus' | 'tess' | 'yaquin' | 'kai' | 'rohan' | 'silas'
+  currentCharacterId: 'samuel' | 'maya' | 'devon' | 'jordan' | 'marcus' | 'tess' | 'yaquin' | 'kai' | 'alex' | 'rohan' | 'silas'
   thoughts: ActiveThought[]
 }
 
@@ -177,14 +179,32 @@ export class GameStateUtils {
         return newState
       }
 
-      // Trust changes
+      // Trust changes with pattern-character resonance
       if (change.trustChange !== undefined) {
         const _oldTrust = charState.trust
+
+        // Calculate resonant trust change based on player's pattern affinity
+        // This makes certain characters connect better with certain play styles
+        const { modifiedTrust, resonanceTriggered, resonanceDescription } =
+          calculateResonantTrustChange(
+            change.trustChange,
+            change.characterId,
+            newState.patterns as Record<PatternType, number>,
+            change.patternChanges
+              ? (Object.keys(change.patternChanges)[0] as PatternType)
+              : undefined
+          )
+
         charState.trust = Math.max(
           NARRATIVE_CONSTANTS.MIN_TRUST,
-          Math.min(NARRATIVE_CONSTANTS.MAX_TRUST, charState.trust + change.trustChange)
+          Math.min(NARRATIVE_CONSTANTS.MAX_TRUST, charState.trust + modifiedTrust)
         )
-        
+
+        // Log resonance for debugging (can be used for consequence echoes later)
+        if (resonanceTriggered && resonanceDescription) {
+          console.log(`[Resonance] ${change.characterId}: ${resonanceDescription}`)
+        }
+
         // Auto-update relationship status based on trust level
         // Only if not explicitly set in this change
         if (!change.setRelationshipStatus) {
@@ -261,6 +281,7 @@ export class GameStateUtils {
         ['tess', this.createCharacterState('tess')],
         ['yaquin', this.createCharacterState('yaquin')],
         ['kai', this.createCharacterState('kai')],
+        ['alex', this.createCharacterState('alex')],
         ['rohan', this.createCharacterState('rohan')],
         ['silas', this.createCharacterState('silas')]
       ]),
