@@ -704,6 +704,443 @@ export const CHARACTER_DEPTH: Record<string, CharacterDepthProfile> = {
         }
       }
     ]
+  },
+
+  // ============================================
+  // MARCUS - The Healer
+  // ============================================
+  marcus: {
+    characterId: 'marcus',
+
+    vulnerabilities: [
+      {
+        id: 'marcus_weight_of_lives',
+        topic: 'emotional_burden',
+        displayName: 'The Weight',
+        description: 'Marcus carries the cumulative weight of every patient—saved and lost.',
+
+        triggerPhrases: [
+          'heavy', 'hard', 'burden', 'carry',
+          'tired', 'weight', 'too much', 'loss'
+        ],
+
+        discoveryConditions: {
+          trustMin: 4,
+          patternRequirements: [{ pattern: 'helping', min: 2 }]
+        },
+
+        responses: {
+          earlyTrust: 'The job is the job. You do what needs doing.',
+          midTrust: 'Seventy-two beats at rest. I hear that number in my sleep sometimes.',
+          highTrust: 'Every code blue I call, I wonder—did I do enough? Did I catch it fast enough? Was there something, some moment where I could have—and I didn\'t?'
+        },
+
+        rewards: {
+          knowledgeFlag: 'knows_marcus_weight',
+          unlockedDialogueNodes: ['marcus_burden', 'marcus_coping'],
+          trustBonus: 2
+        }
+      },
+
+      {
+        id: 'marcus_first_loss',
+        topic: 'first_patient_death',
+        displayName: 'Patient Zero',
+        description: 'Marcus\'s first patient death still haunts him—a child named Elena.',
+
+        triggerPhrases: [
+          'first time', 'remember', 'beginning', 'start',
+          'child', 'kid', 'young', 'lost'
+        ],
+
+        discoveryConditions: {
+          trustMin: 6,
+          requiredFlags: ['knows_marcus_weight']
+        },
+
+        responses: {
+          earlyTrust: '*his hands go still for a moment*',
+          midTrust: 'Her name was Elena. Six years old. Leukemia. I was her nurse for eleven months.',
+          highTrust: 'I told her I\'d see her tomorrow. She believed me. She was gone by morning. I still don\'t know if I lied to her or to myself.'
+        },
+
+        rewards: {
+          knowledgeFlag: 'knows_marcus_first_patient',
+          unlockedDialogueNodes: ['marcus_elena', 'marcus_why_he_stays'],
+          trustBonus: 3
+        }
+      }
+    ],
+
+    strengths: [
+      {
+        id: 'marcus_steady_presence',
+        domain: 'calm_under_pressure',
+        displayName: 'Steady Hands',
+        description: 'Marcus remains calm when everyone else panics. His presence grounds people.',
+
+        demonstrationTopics: ['crisis', 'panic', 'emergency', 'chaos'],
+
+        revealConditions: {
+          trustMin: 2
+        },
+
+        helpDialogue: {
+          offerHelp: 'Breathe. I\'m here. Nothing\'s happening faster than we can handle.',
+          successFeedback: 'See? One thing at a time.',
+          recognitionResponse: 'Panic doesn\'t save lives. Presence does.'
+        },
+
+        ability: {
+          id: 'marcus_grounding',
+          name: 'Marcus\'s Grounding',
+          description: 'Marcus can help calm a crisis and provide steady presence',
+          usableInContexts: ['crisis_management', 'panic_response', 'stress_reduction']
+        }
+      },
+
+      {
+        id: 'marcus_care_wisdom',
+        domain: 'compassionate_care',
+        displayName: 'The Art of Care',
+        description: 'Marcus knows that healing isn\'t just physical—it\'s about making people feel human.',
+
+        demonstrationTopics: ['care', 'comfort', 'healing', 'support'],
+
+        revealConditions: {
+          trustMin: 5,
+          requiredFlags: ['knows_marcus_weight']
+        },
+
+        helpDialogue: {
+          offerHelp: 'Sometimes people don\'t need solutions. They need someone to sit with them.',
+          successFeedback: 'You don\'t have to fix everything. Just be here.',
+          recognitionResponse: 'Care isn\'t about curing. It\'s about presence.'
+        },
+
+        ability: {
+          id: 'marcus_care',
+          name: 'Marcus\'s Care',
+          description: 'Marcus can teach the art of being present with someone in pain',
+          usableInContexts: ['comfort_guidance', 'presence_teaching', 'care_approach']
+        }
+      }
+    ],
+
+    growthArcs: [
+      {
+        vulnerabilityId: 'marcus_first_loss',
+        strengthId: 'marcus_care_wisdom',
+        transformationDialogue: [
+          '*Marcus stops counting for a moment*',
+          'I used to think I failed Elena because I couldn\'t save her.',
+          'But I was there. Every day for eleven months.',
+          'She knew she wasn\'t alone.',
+          '*He looks at his hands*',
+          'Maybe that\'s not failure. Maybe that\'s exactly what care looks like.',
+          'Being there until you can\'t be anymore.'
+        ],
+        conditions: {
+          trustMin: 8,
+          requiredFlags: ['knows_marcus_first_patient', 'marcus_helped_player']
+        },
+        result: {
+          globalFlagsSet: ['marcus_transformation_complete', 'marcus_peace_with_elena']
+        }
+      }
+    ]
+  },
+
+  // ============================================
+  // ROHAN - The Philosopher
+  // ============================================
+  rohan: {
+    characterId: 'rohan',
+
+    vulnerabilities: [
+      {
+        id: 'rohan_obsolescence_fear',
+        topic: 'becoming_irrelevant',
+        displayName: 'The Obsolescence',
+        description: 'Rohan secretly fears that deep thinking will become obsolete in an algorithmic world.',
+
+        triggerPhrases: [
+          'old', 'outdated', 'useless', 'replace',
+          'AI', 'algorithm', 'efficiency', 'obsolete'
+        ],
+
+        discoveryConditions: {
+          trustMin: 4,
+          patternRequirements: [{ pattern: 'exploring', min: 2 }]
+        },
+
+        responses: {
+          earlyTrust: 'The question is always more interesting than the answer.',
+          midTrust: 'Sometimes I wonder if anyone has time for questions anymore. Optimization doesn\'t pause for wisdom.',
+          highTrust: 'What if I\'ve spent my life cultivating something no one needs? What if deep thought is a luxury humanity is about to decide it can\'t afford?'
+        },
+
+        rewards: {
+          knowledgeFlag: 'knows_rohan_algorithm_fear',
+          unlockedDialogueNodes: ['rohan_future_fear', 'rohan_wisdom_value'],
+          trustBonus: 2
+        }
+      },
+
+      {
+        id: 'rohan_student_failure',
+        topic: 'failed_to_reach',
+        displayName: 'The One He Lost',
+        description: 'Rohan had a brilliant student who chose algorithmic thinking and abandoned depth.',
+
+        triggerPhrases: [
+          'student', 'teach', 'failed', 'lost',
+          'gave up', 'disappointed', 'abandoned'
+        ],
+
+        discoveryConditions: {
+          trustMin: 6,
+          requiredFlags: ['knows_rohan_algorithm_fear']
+        },
+
+        responses: {
+          earlyTrust: '*adjusts a book on his shelf*',
+          midTrust: 'I had a student once. Brilliant. She wrote the best questions I\'d ever read.',
+          highTrust: 'She got a job optimizing ad placement. Said philosophy was "beautiful but impractical." I still have her dissertation. Unfinished. I keep wondering if I failed her somehow.'
+        },
+
+        rewards: {
+          knowledgeFlag: 'knows_rohan_student',
+          unlockedDialogueNodes: ['rohan_sarah', 'rohan_teaching_purpose'],
+          trustBonus: 3
+        }
+      }
+    ],
+
+    strengths: [
+      {
+        id: 'rohan_deep_questioning',
+        domain: 'finding_truth',
+        displayName: 'The Deeper Question',
+        description: 'Rohan can see past the surface to the real question underneath.',
+
+        demonstrationTopics: ['meaning', 'purpose', 'truth', 'why'],
+
+        revealConditions: {
+          trustMin: 2
+        },
+
+        helpDialogue: {
+          offerHelp: 'Before we answer, let\'s make sure we\'re asking the right question.',
+          successFeedback: 'Now you\'re asking what matters.',
+          recognitionResponse: 'The answer you need is often hiding in a question you haven\'t asked.'
+        },
+
+        ability: {
+          id: 'rohan_questioning',
+          name: 'Rohan\'s Inquiry',
+          description: 'Rohan can help find the question beneath the question',
+          usableInContexts: ['decision_clarity', 'meaning_exploration', 'truth_seeking']
+        }
+      },
+
+      {
+        id: 'rohan_wisdom_synthesis',
+        domain: 'integrating_knowledge',
+        displayName: 'The Long View',
+        description: 'Rohan can connect your situation to centuries of human wisdom.',
+
+        demonstrationTopics: ['history', 'patterns', 'wisdom', 'perspective'],
+
+        revealConditions: {
+          trustMin: 5,
+          requiredFlags: ['knows_rohan_algorithm_fear']
+        },
+
+        helpDialogue: {
+          offerHelp: 'This isn\'t new. Let me show you how others have faced it.',
+          successFeedback: 'You\'re part of a conversation that\'s been going on for millennia.',
+          recognitionResponse: 'Wisdom isn\'t about having answers. It\'s about knowing which questions have been asked before.'
+        },
+
+        ability: {
+          id: 'rohan_wisdom',
+          name: 'Rohan\'s Wisdom',
+          description: 'Rohan can provide historical and philosophical perspective',
+          usableInContexts: ['perspective_gaining', 'historical_context', 'wisdom_application']
+        }
+      }
+    ],
+
+    growthArcs: [
+      {
+        vulnerabilityId: 'rohan_student_failure',
+        strengthId: 'rohan_wisdom_synthesis',
+        transformationDialogue: [
+          '*Rohan sets down Sarah\'s unfinished dissertation*',
+          'I kept blaming myself for losing her.',
+          'But the Stoics would remind me—',
+          '*a wry smile*',
+          'I can teach. I can inspire. I can\'t choose for anyone.',
+          'Maybe Sarah needed to optimize ads for a while.',
+          'Maybe she\'ll come back to the questions when she\'s ready.',
+          'My job is to make sure the questions are still here when she does.'
+        ],
+        conditions: {
+          trustMin: 8,
+          requiredFlags: ['knows_rohan_student', 'rohan_helped_player']
+        },
+        result: {
+          globalFlagsSet: ['rohan_transformation_complete', 'rohan_peace_with_sarah']
+        }
+      }
+    ]
+  },
+
+  // ============================================
+  // YAQUIN - The Nurturer
+  // ============================================
+  yaquin: {
+    characterId: 'yaquin',
+
+    vulnerabilities: [
+      {
+        id: 'yaquin_imposter_syndrome',
+        topic: 'not_good_enough',
+        displayName: 'Just an Assistant',
+        description: 'Yaquin constantly minimizes her expertise and doubts her value.',
+
+        triggerPhrases: [
+          'expert', 'know', 'smart', 'qualified',
+          'real', 'deserve', 'worthy', 'enough'
+        ],
+
+        discoveryConditions: {
+          trustMin: 3,
+          patternRequirements: [{ pattern: 'exploring', min: 2 }]
+        },
+
+        responses: {
+          earlyTrust: 'Oh, I just help out. The real experts are...',
+          midTrust: 'I know things, I guess. I just... I always feel like someone\'s about to catch me. Find out I don\'t really belong.',
+          highTrust: 'Every time someone asks for my opinion, there\'s this voice: "Who are you to say? You\'re just..." I don\'t know when I started believing I was "just" anything.'
+        },
+
+        rewards: {
+          knowledgeFlag: 'knows_yaquin_doubt',
+          unlockedDialogueNodes: ['yaquin_self_doubt', 'yaquin_origins'],
+          trustBonus: 2
+        }
+      },
+
+      {
+        id: 'yaquin_mother_voice',
+        topic: 'inherited_fear',
+        displayName: 'Mother\'s Warning',
+        description: 'Yaquin\'s self-doubt traces back to her mother\'s protective fears.',
+
+        triggerPhrases: [
+          'family', 'mother', 'parents', 'grew up',
+          'taught', 'learned', 'always been', 'childhood'
+        ],
+
+        discoveryConditions: {
+          trustMin: 5,
+          requiredFlags: ['knows_yaquin_doubt']
+        },
+
+        responses: {
+          earlyTrust: '*adjusts her glasses nervously*',
+          midTrust: 'My mom used to say "Don\'t aim too high, m\'ija." I thought she was being wise.',
+          highTrust: 'She was scared. Her whole life, scared. Scared for herself, scared for me. And somewhere along the way, I inherited her fear and thought it was humility.'
+        },
+
+        rewards: {
+          knowledgeFlag: 'knows_yaquin_mother',
+          unlockedDialogueNodes: ['yaquin_family_story', 'yaquin_breaking_pattern'],
+          trustBonus: 3
+        }
+      }
+    ],
+
+    strengths: [
+      {
+        id: 'yaquin_genuine_teaching',
+        domain: 'making_complex_simple',
+        displayName: 'The Gift of Clarity',
+        description: 'Yaquin has an exceptional ability to make complex things understandable.',
+
+        demonstrationTopics: ['explain', 'understand', 'learn', 'help'],
+
+        revealConditions: {
+          trustMin: 2
+        },
+
+        helpDialogue: {
+          offerHelp: 'Let me try explaining it differently—',
+          successFeedback: '*her eyes light up* You\'ve got it!',
+          recognitionResponse: 'I just... I just see where people get stuck. That\'s all.'
+        },
+
+        ability: {
+          id: 'yaquin_teaching',
+          name: 'Yaquin\'s Teaching',
+          description: 'Yaquin can break down complex concepts into understandable pieces',
+          usableInContexts: ['learning_assistance', 'concept_clarification', 'skill_building']
+        }
+      },
+
+      {
+        id: 'yaquin_emotional_attunement',
+        domain: 'sensing_needs',
+        displayName: 'Quiet Perception',
+        description: 'Yaquin notices what others need before they ask—sometimes before they know.',
+
+        demonstrationTopics: ['feel', 'need', 'sense', 'notice'],
+
+        revealConditions: {
+          trustMin: 4,
+          requiredFlags: ['knows_yaquin_doubt']
+        },
+
+        helpDialogue: {
+          offerHelp: 'You seem like you need... here.',
+          successFeedback: 'I could tell. It\'s okay.',
+          recognitionResponse: 'I just pay attention. People tell you what they need if you listen.'
+        },
+
+        ability: {
+          id: 'yaquin_attunement',
+          name: 'Yaquin\'s Attunement',
+          description: 'Yaquin can sense what someone needs emotionally or practically',
+          usableInContexts: ['emotional_support', 'need_identification', 'care_planning']
+        }
+      }
+    ],
+
+    growthArcs: [
+      {
+        vulnerabilityId: 'yaquin_mother_voice',
+        strengthId: 'yaquin_genuine_teaching',
+        transformationDialogue: [
+          '*Yaquin stands a little taller*',
+          'I spent so long being careful. Being small. Not taking up space.',
+          'But teaching isn\'t about being small.',
+          '*she smiles, surprised*',
+          'It\'s about making space for others to grow.',
+          'Maybe my mom was wrong.',
+          'Maybe I can aim high AND land soft.',
+          'Maybe I already have.'
+        ],
+        conditions: {
+          trustMin: 7,
+          requiredFlags: ['knows_yaquin_mother', 'yaquin_helped_player']
+        },
+        result: {
+          globalFlagsSet: ['yaquin_transformation_complete', 'yaquin_found_voice']
+        }
+      }
+    ]
   }
 }
 
