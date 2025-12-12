@@ -421,6 +421,730 @@ export const CROSSROADS_MOMENTS: CrossroadsMoment[] = [
       ],
       nextNodeId: 'devon_post_crossroads'
     }
+  },
+
+  // ============================================
+  // TESS'S CROSSROADS: The Record Deal
+  // ============================================
+  {
+    id: 'tess_record_offer',
+    characterId: 'tess',
+    name: "Tess's Second Chance",
+
+    stakes: "A label has found Tess's old demo tape. They want to release it—but with 'modern production updates.'",
+
+    setup: [
+      "*Tess is holding a letter. Her hands are completely still—no record flipping.*",
+      "\"Some intern found my '87 demo tape. Uploaded it to their CEO.\"",
+      "*She laughs, but it sounds hollow.*",
+      "\"They want to release it. 'Updated for modern audiences.'\"",
+      "\"Thirty-seven years I've been saying no to these people.\"",
+      "*She looks at you.*",
+      "\"So why am I not crumpling this up?\""
+    ],
+
+    triggerConditions: {
+      trustMin: 6,
+      requiredFlags: ['knows_tess_corporate_past', 'tess_transformation_complete']
+    },
+
+    approaches: [
+      {
+        id: 'building_approach',
+        label: "Suggest she produce it herself",
+        description: "She has the skills. She has the studio. She could release it on her own terms.",
+
+        requirements: {
+          pattern: 'building',
+          patternMin: 30
+        },
+
+        outcome: {
+          characterResponse: [
+            "*Tess goes very still.*",
+            "\"Produce it... myself.\"",
+            "*She looks around her shop—at the equipment, the connections, the decades of expertise.*",
+            "\"I've been so busy gatekeeping other people's music...\"",
+            "*A slow, wondering laugh.*",
+            "\"I forgot I could gatekeep my own.\"",
+            "\"No label. No 'updates.' Just... me. Finally.\""
+          ],
+          emotionArc: ['frozen', 'considering', 'wondering', 'realizing', 'determined'],
+          trustChange: 3,
+          globalFlagsSet: ['tess_building_support', 'tess_self_release'],
+          unlockedContent: "Tess will self-produce and release her demo as-is"
+        }
+      },
+
+      {
+        id: 'analytical_approach',
+        label: "Walk through what 'modern updates' really means",
+        description: "Make her confront exactly what they'd change. Let the specifics decide for her.",
+
+        requirements: {
+          pattern: 'analytical',
+          patternMin: 30
+        },
+
+        outcome: {
+          characterResponse: [
+            "\"Fine. Let's be specific.\"",
+            "*She reads the letter more carefully.*",
+            "\"'Contemporary production...' That means auto-tune. 'Updated arrangements...' That means drum machines.\"",
+            "*Her jaw tightens.*",
+            "\"'Modern vocal processing...' That means making me sound like everyone else.\"",
+            "*She sets the letter down.*",
+            "\"I walked away in '87 because they wanted to erase me. Nothing's changed.\""
+          ],
+          emotionArc: ['defensive', 'analytical', 'angry', 'certain'],
+          trustChange: 2,
+          globalFlagsSet: ['tess_analytical_support', 'tess_refuses_again'],
+          unlockedContent: "Tess rejects the offer with clarity, not just stubbornness"
+        }
+      },
+
+      {
+        id: 'patience_approach',
+        label: "Ask what 23-year-old Tess would want",
+        description: "Not industry Tess. Not curator Tess. The girl who made the tape.",
+
+        requirements: {
+          pattern: 'patience',
+          patternMin: 30
+        },
+
+        outcome: {
+          characterResponse: [
+            "*Tess closes her eyes.*",
+            "\"She wanted people to hear it. That's all. Just... hear it.\"",
+            "*A long pause.*",
+            "\"She didn't care about production quality or market trends.\"",
+            "\"She just wanted to know she wasn't singing into the void.\"",
+            "*She opens her eyes, something softer there now.*",
+            "\"Maybe it doesn't matter how it sounds. Maybe it just matters that it exists.\""
+          ],
+          emotionArc: ['guarded', 'remembering', 'tender', 'peaceful'],
+          trustChange: 3,
+          globalFlagsSet: ['tess_patience_support', 'tess_releases_for_young_self'],
+          unlockedContent: "Tess agrees to a release, honoring her younger self's wish to be heard"
+        }
+      },
+
+      {
+        id: 'exploring_approach',
+        label: "Ask why she kept the tape all these years",
+        description: "If she was really done with it, wouldn't she have destroyed it?",
+
+        requirements: {
+          pattern: 'exploring',
+          patternMin: 30
+        },
+
+        outcome: {
+          characterResponse: [
+            "*Tess's hand moves unconsciously to a shelf—an old cassette rack.*",
+            "\"I have a copy. Still. In the back.\"",
+            "*She looks at it like she's seeing it for the first time.*",
+            "\"If I'd really given up... I would have burned it. Wouldn't I?\"",
+            "\"Maybe part of me was always waiting.\"",
+            "*A strange, complicated smile.*",
+            "\"Guess I need to figure out what I was waiting for.\""
+          ],
+          emotionArc: ['deflecting', 'realizing', 'vulnerable', 'questioning'],
+          trustChange: 2,
+          globalFlagsSet: ['tess_exploring_support', 'tess_confronts_hope'],
+          unlockedContent: "Tess admits she never fully let go of her dream"
+        }
+      }
+    ],
+
+    defaultApproach: {
+      id: 'default_approach',
+      label: "Remind her she doesn't owe anyone an answer",
+      description: "It's her music. Her decision. She doesn't have to decide today.",
+
+      outcome: {
+        characterResponse: [
+          "*Tess exhales.*",
+          "\"You're right. Thirty-seven years. What's another week?\"",
+          "*She folds the letter carefully, doesn't throw it away.*",
+          "\"I've made a career of telling others what their music is worth.\"",
+          "\"Turns out I still don't know what mine is worth.\""
+        ],
+        emotionArc: ['tense', 'releasing', 'reflective'],
+        trustChange: 1,
+        globalFlagsSet: ['tess_default_support'],
+        unlockedContent: "Standard progression through Tess's arc"
+      }
+    },
+
+    resolution: {
+      sharedDialogue: [
+        "*Tess puts on a record. Something old, scratchy, real.*",
+        "\"Whatever I decide... thanks for not telling me what to do.\"",
+        "*The music plays.*",
+        "\"Everyone's always got opinions about other people's dreams.\""
+      ],
+      nextNodeId: 'tess_post_crossroads'
+    }
+  },
+
+  // ============================================
+  // SAMUEL'S CROSSROADS: The Final Advice
+  // ============================================
+  {
+    id: 'samuel_final_counsel',
+    characterId: 'samuel',
+    name: "Samuel's Final Counsel",
+
+    stakes: "You're about to leave the station—choose your platform. Samuel has one last thing to say.",
+
+    setup: [
+      "*Samuel finds you at the intersection of all platforms.*",
+      "\"So. You've seen the paths. Met the travelers.\"",
+      "*His owl eyes are knowing but kind.*",
+      "\"Before you board... I need to tell you something.\"",
+      "\"Something I don't say. To anyone.\"",
+      "*He gestures at the empty bench beside him.*",
+      "\"Sit with me?\""
+    ],
+
+    triggerConditions: {
+      trustMin: 7,
+      requiredFlags: ['samuel_transformation_complete', 'characters_met_3_plus']
+    },
+
+    approaches: [
+      {
+        id: 'patience_approach',
+        label: "Sit in comfortable silence",
+        description: "He'll speak when he's ready. He always does.",
+
+        requirements: {
+          pattern: 'patience',
+          patternMin: 35
+        },
+
+        outcome: {
+          characterResponse: [
+            "*You sit. The station hums around you.*",
+            "*Samuel doesn't speak. Not yet.*",
+            "*Minutes pass. The departure board flickers.*",
+            "\"You know why I like you?\"",
+            "*He smiles.*",
+            "\"You don't fill silence with noise.\"",
+            "\"That's rare. That's... valuable.\""
+          ],
+          emotionArc: ['contemplative', 'waiting', 'peaceful', 'warm'],
+          trustChange: 2,
+          globalFlagsSet: ['samuel_patience_valued'],
+          unlockedContent: "Samuel's deepest wisdom comes through silence"
+        }
+      },
+
+      {
+        id: 'exploring_approach',
+        label: "Ask about the platforms you haven't visited",
+        description: "There might be paths you haven't considered. What hasn't he shown you?",
+
+        requirements: {
+          pattern: 'exploring',
+          patternMin: 35
+        },
+
+        outcome: {
+          characterResponse: [
+            "*Samuel's eyes crinkle.*",
+            "\"Always curious. Good.\"",
+            "\"There are platforms that don't appear on the board.\"",
+            "\"Paths that only exist when you create them.\"",
+            "*He gestures at the empty space between platforms.*",
+            "\"Sometimes the train you need... hasn't been built yet.\"",
+            "\"And you're the one who has to build it.\""
+          ],
+          emotionArc: ['pleased', 'mysterious', 'profound', 'encouraging'],
+          trustChange: 2,
+          globalFlagsSet: ['samuel_hidden_paths_revealed'],
+          unlockedContent: "Samuel reveals that some paths must be created, not chosen"
+        }
+      },
+
+      {
+        id: 'helping_approach',
+        label: "Ask if there's anything you can do for him",
+        description: "He's helped so many. Does anyone ever help him?",
+
+        requirements: {
+          pattern: 'helping',
+          patternMin: 35
+        },
+
+        outcome: {
+          characterResponse: [
+            "*Samuel goes very still.*",
+            "\"Do for... me?\"",
+            "*A long pause.*",
+            "\"No one's asked me that in... I don't know how long.\"",
+            "*He looks at the station around him.*",
+            "\"I stay because I chose to. But sometimes...\"",
+            "*He doesn't finish. He doesn't have to.*",
+            "\"Thank you. For asking.\""
+          ],
+          emotionArc: ['surprised', 'touched', 'vulnerable', 'grateful'],
+          trustChange: 3,
+          globalFlagsSet: ['samuel_helper_helped', 'samuel_loneliness_acknowledged'],
+          unlockedContent: "Samuel's loneliness is acknowledged—deepest connection"
+        }
+      }
+    ],
+
+    defaultApproach: {
+      id: 'default_approach',
+      label: "Listen to his advice",
+      description: "He's guided you this far. Hear him out.",
+
+      outcome: {
+        characterResponse: [
+          "*Samuel nods.*",
+          "\"Every path has its price. Its gifts. Its losses.\"",
+          "\"The only wrong choice is the one you make out of fear.\"",
+          "\"Or the one you never make at all.\"",
+          "*He looks at you steadily.*",
+          "\"Choose, and then become the person who chose well.\""
+        ],
+        emotionArc: ['wise', 'warm', 'encouraging'],
+        trustChange: 1,
+        globalFlagsSet: ['samuel_final_wisdom'],
+        unlockedContent: "Samuel's core advice for life choices"
+      }
+    },
+
+    resolution: {
+      sharedDialogue: [
+        "*The departure board chimes.*",
+        "*Samuel stands, offering his hand.*",
+        "\"Safe travels. Whatever platform you choose.\"",
+        "*His grip is warm, steady.*",
+        "\"The station will always be here. If you need it.\""
+      ],
+      nextNodeId: 'samuel_farewell'
+    }
+  },
+
+  // ============================================
+  // MARCUS'S CROSSROADS: The Night Shift Decision
+  // ============================================
+  {
+    id: 'marcus_overtime_choice',
+    characterId: 'marcus',
+    name: "Marcus's Balance",
+
+    stakes: "Marcus has been offered a promotion—but it means more night shifts, more codes, more weight.",
+
+    setup: [
+      "*Marcus is staring at a schedule, unmoving.*",
+      "\"They want to make me shift supervisor.\"",
+      "*He doesn't look up.*",
+      "\"More money. More responsibility. More nights like tonight.\"",
+      "*His hands are clasped, knuckles white.*",
+      "\"I save more lives this way. But what about my own?\""
+    ],
+
+    triggerConditions: {
+      trustMin: 6,
+      requiredFlags: ['marcus_transformation_complete', 'knows_marcus_first_patient']
+    },
+
+    approaches: [
+      {
+        id: 'helping_approach',
+        label: "Remind him why he started",
+        description: "Before the weight, before the counting—why did he choose this?",
+
+        requirements: {
+          pattern: 'helping',
+          patternMin: 30
+        },
+
+        outcome: {
+          characterResponse: [
+            "*Marcus's eyes close.*",
+            "\"My grandmother. Her dialysis nurse held her hand every session.\"",
+            "\"Made her laugh. Made her feel human, not just a patient.\"",
+            "*He opens his eyes.*",
+            "\"I wanted to be that person. For someone.\"",
+            "\"But supervisor... that's managing schedules. Not holding hands.\""
+          ],
+          emotionArc: ['remembering', 'tender', 'conflicted'],
+          trustChange: 2,
+          globalFlagsSet: ['marcus_helping_support', 'marcus_remembers_origin'],
+          unlockedContent: "Marcus reconnects with his original calling"
+        }
+      },
+
+      {
+        id: 'analytical_approach',
+        label: "Help him weigh the trade-offs",
+        description: "More patients helped indirectly vs. fewer patients helped directly.",
+
+        requirements: {
+          pattern: 'analytical',
+          patternMin: 30
+        },
+
+        outcome: {
+          characterResponse: [
+            "*Marcus nods slowly.*",
+            "\"Direct care: maybe twenty patients a shift. Personal.\"",
+            "\"Supervisor: influence over hundreds. But through policy, not presence.\"",
+            "*He looks at his hands.*",
+            "\"I count heartbeats because I need to feel them.\"",
+            "\"How do you feel a heartbeat through a spreadsheet?\""
+          ],
+          emotionArc: ['analytical', 'calculating', 'uncertain', 'lost'],
+          trustChange: 1,
+          globalFlagsSet: ['marcus_analytical_support'],
+          unlockedContent: "Marcus sees the math but it doesn't answer the question"
+        }
+      },
+
+      {
+        id: 'patience_approach',
+        label: "Ask what his body is telling him",
+        description: "He tracks everyone's vital signs. What are his own saying?",
+
+        requirements: {
+          pattern: 'patience',
+          patternMin: 30
+        },
+
+        outcome: {
+          characterResponse: [
+            "*Marcus goes very quiet.*",
+            "*Then his hand goes to his own wrist.*",
+            "\"...Ninety-two. Higher than it should be.\"",
+            "\"My blood pressure's been elevated for months.\"",
+            "*A hollow laugh.*",
+            "\"I monitor everyone else. I stopped monitoring myself.\"",
+            "\"Maybe the answer isn't more. Maybe it's... sustainable.\""
+          ],
+          emotionArc: ['still', 'checking', 'surprised', 'realizing'],
+          trustChange: 3,
+          globalFlagsSet: ['marcus_patience_support', 'marcus_self_care_realization'],
+          unlockedContent: "Marcus realizes he's been neglecting his own vital signs"
+        }
+      }
+    ],
+
+    defaultApproach: {
+      id: 'default_approach',
+      label: "Tell him there's no wrong answer",
+      description: "Both paths save lives. Just in different ways.",
+
+      outcome: {
+        characterResponse: [
+          "*Marcus sighs.*",
+          "\"That's the problem. Both are right. Both cost something.\"",
+          "*He looks at the schedule again.*",
+          "\"Maybe I just need more time to figure it out.\"",
+          "\"Time's the one thing we never have enough of.\""
+        ],
+        emotionArc: ['heavy', 'resigned', 'uncertain'],
+        trustChange: 1,
+        globalFlagsSet: ['marcus_default_support'],
+        unlockedContent: "Standard progression through Marcus's arc"
+      }
+    },
+
+    resolution: {
+      sharedDialogue: [
+        "*Marcus puts the schedule away.*",
+        "\"Whatever I decide... I won't decide scared.\"",
+        "*He almost smiles.*",
+        "\"That's something, right?\""
+      ],
+      nextNodeId: 'marcus_post_crossroads'
+    }
+  },
+
+  // ============================================
+  // ROHAN'S CROSSROADS: The Algorithm Debate
+  // ============================================
+  {
+    id: 'rohan_public_debate',
+    characterId: 'rohan',
+    name: "Rohan's Stand",
+
+    stakes: "Rohan's been invited to a public debate: 'Should AI replace human educators?' He's terrified.",
+
+    setup: [
+      "*Rohan is holding an invitation, his hands trembling.*",
+      "\"They want me to defend human education. Against an AI optimist.\"",
+      "\"Thousands of people watching.\"",
+      "*He sets it down.*",
+      "\"What if I'm wrong? What if I've been wrong all along?\"",
+      "\"What if I'm just... obsolete, fighting to stay relevant?\""
+    ],
+
+    triggerConditions: {
+      trustMin: 7,
+      requiredFlags: ['rohan_transformation_complete', 'knows_rohan_algorithm_fear']
+    },
+
+    approaches: [
+      {
+        id: 'exploring_approach',
+        label: "Ask him what he's actually afraid of",
+        description: "Is it being wrong? Or being right and it not mattering?",
+
+        requirements: {
+          pattern: 'exploring',
+          patternMin: 30
+        },
+
+        outcome: {
+          characterResponse: [
+            "*Rohan's face shifts.*",
+            "\"Being right and it not mattering.\"",
+            "*He says it immediately, like he's been waiting to admit it.*",
+            "\"I could prove every point. Win every argument.\"",
+            "\"And still watch as humanity chooses convenience over wisdom.\"",
+            "*A bitter smile.*",
+            "\"That's the real fear. Not being obsolete. Being irrelevant.\""
+          ],
+          emotionArc: ['defensive', 'realizing', 'raw', 'despairing'],
+          trustChange: 3,
+          globalFlagsSet: ['rohan_exploring_support', 'rohan_core_fear_named'],
+          unlockedContent: "Rohan names his deepest fear—irrelevance despite being right"
+        }
+      },
+
+      {
+        id: 'patience_approach',
+        label: "Remind him that some truths take generations",
+        description: "Philosophers aren't judged by immediate impact. They plant seeds.",
+
+        requirements: {
+          pattern: 'patience',
+          patternMin: 35
+        },
+
+        outcome: {
+          characterResponse: [
+            "*Rohan's breathing slows.*",
+            "\"Plato didn't see democracy flourish. Kant didn't see human rights enshrined.\"",
+            "*He's almost talking to himself now.*",
+            "\"They planted. Others harvested.\"",
+            "*A long silence.*",
+            "\"Maybe my job isn't to win debates.\"",
+            "\"Maybe it's to ask the questions that won't be answered for decades.\""
+          ],
+          emotionArc: ['anxious', 'thinking', 'calming', 'accepting'],
+          trustChange: 2,
+          globalFlagsSet: ['rohan_patience_support', 'rohan_long_view'],
+          unlockedContent: "Rohan finds peace in the generational view of wisdom"
+        }
+      },
+
+      {
+        id: 'analytical_approach',
+        label: "Help him prepare his strongest arguments",
+        description: "What are the weaknesses in the AI position? What can't algorithms replicate?",
+
+        requirements: {
+          pattern: 'analytical',
+          patternMin: 30
+        },
+
+        outcome: {
+          characterResponse: [
+            "*Rohan straightens.*",
+            "\"Right. Arguments. Let's think.\"",
+            "\"AI can't model doubt. Can't demonstrate intellectual humility.\"",
+            "\"Can't say 'I don't know' and mean it.\"",
+            "*He's pacing now, energized.*",
+            "\"The Socratic method isn't about answers. It's about teaching people to sit with uncertainty.\"",
+            "\"That's not optimizable. That's human.\""
+          ],
+          emotionArc: ['anxious', 'focusing', 'sharpening', 'confident'],
+          trustChange: 2,
+          globalFlagsSet: ['rohan_analytical_support', 'rohan_arguments_prepared'],
+          unlockedContent: "Rohan crystallizes his strongest defense of human education"
+        }
+      }
+    ],
+
+    defaultApproach: {
+      id: 'default_approach',
+      label: "Tell him his fear proves his point",
+      description: "An algorithm wouldn't be afraid. That fear is human wisdom.",
+
+      outcome: {
+        characterResponse: [
+          "*Rohan blinks.*",
+          "\"The fear... proves the point.\"",
+          "\"An optimizer would just calculate odds. Win or lose.\"",
+          "*A strange laugh.*",
+          "\"But I'm afraid because I care. About truth. About consequences.\"",
+          "\"That's exactly what I'm trying to defend.\""
+        ],
+        emotionArc: ['confused', 'realizing', 'surprised', 'steadier'],
+        trustChange: 1,
+        globalFlagsSet: ['rohan_default_support'],
+        unlockedContent: "Standard progression through Rohan's arc"
+      }
+    },
+
+    resolution: {
+      sharedDialogue: [
+        "*Rohan picks up the invitation again.*",
+        "\"I'll do it.\"",
+        "*His hands are steadier now.*",
+        "\"Win or lose... at least I'll have asked the questions.\""
+      ],
+      nextNodeId: 'rohan_post_crossroads'
+    }
+  },
+
+  // ============================================
+  // YAQUIN'S CROSSROADS: The Job Offer
+  // ============================================
+  {
+    id: 'yaquin_promotion_offer',
+    characterId: 'yaquin',
+    name: "Yaquin's Opportunity",
+
+    stakes: "Yaquin's been offered a lead teaching position—but it means stepping into the spotlight she's avoided.",
+
+    setup: [
+      "*Yaquin is sitting very still, a letter in her hands.*",
+      "\"They want me to lead the new curriculum program.\"",
+      "\"My name on the materials. My face in the meetings.\"",
+      "*She looks up, eyes wide.*",
+      "\"I'm 'just an assistant.' That's what I keep telling myself.\"",
+      "\"But they don't see 'just.' They see... me.\""
+    ],
+
+    triggerConditions: {
+      trustMin: 5,
+      requiredFlags: ['yaquin_transformation_complete', 'knows_yaquin_doubt']
+    },
+
+    approaches: [
+      {
+        id: 'exploring_approach',
+        label: "Ask who told her she was 'just' anything",
+        description: "That word didn't come from nowhere. Where did it start?",
+
+        requirements: {
+          pattern: 'exploring',
+          patternMin: 30
+        },
+
+        outcome: {
+          characterResponse: [
+            "*Yaquin's breath catches.*",
+            "\"My... my mother. She meant well.\"",
+            "\"'Don't aim too high, m'ija. You'll only fall harder.'\"",
+            "*She looks at the letter.*",
+            "\"I thought she was protecting me.\"",
+            "\"Maybe she was just... scared. For herself. Not for me.\"",
+            "*Quieter now.*",
+            "\"I don't have to carry her fear.\""
+          ],
+          emotionArc: ['startled', 'remembering', 'understanding', 'releasing'],
+          trustChange: 3,
+          globalFlagsSet: ['yaquin_exploring_support', 'yaquin_mother_fear_understood'],
+          unlockedContent: "Yaquin traces her self-doubt to its source"
+        }
+      },
+
+      {
+        id: 'helping_approach',
+        label: "Offer to help her practice saying yes",
+        description: "Sometimes you have to hear yourself say the words out loud.",
+
+        requirements: {
+          pattern: 'helping',
+          patternMin: 30
+        },
+
+        outcome: {
+          characterResponse: [
+            "*Yaquin laughs nervously.*",
+            "\"Practice saying yes?\"",
+            "*She takes a breath.*",
+            "\"I... I accept the position.\"",
+            "*Another breath, stronger.*",
+            "\"I accept the position.\"",
+            "*Her eyes are bright now.*",
+            "\"It sounds real when I say it. It sounds... mine.\""
+          ],
+          emotionArc: ['nervous', 'trying', 'surprised', 'growing'],
+          trustChange: 2,
+          globalFlagsSet: ['yaquin_helping_support', 'yaquin_practiced_yes'],
+          unlockedContent: "Yaquin practices owning her success"
+        }
+      },
+
+      {
+        id: 'patience_approach',
+        label: "Remind her she doesn't have to decide now",
+        description: "Growth can be gradual. She can step forward without leaping.",
+
+        requirements: {
+          pattern: 'patience',
+          patternMin: 30
+        },
+
+        outcome: {
+          characterResponse: [
+            "*Yaquin's shoulders drop—releasing tension.*",
+            "\"I keep thinking it's all or nothing.\"",
+            "\"But I could... start small. See how it feels.\"",
+            "*She folds the letter carefully.*",
+            "\"Ask to shadow the current lead first. Learn before I leap.\"",
+            "*A small smile.*",
+            "\"That's not saying no. It's saying... not yet. And that's okay.\""
+          ],
+          emotionArc: ['tense', 'softening', 'thinking', 'peaceful'],
+          trustChange: 2,
+          globalFlagsSet: ['yaquin_patience_support', 'yaquin_gradual_growth'],
+          unlockedContent: "Yaquin chooses measured growth over dramatic leap"
+        }
+      }
+    ],
+
+    defaultApproach: {
+      id: 'default_approach',
+      label: "Tell her you believe in her",
+      description: "Sometimes that's what someone needs to hear.",
+
+      outcome: {
+        characterResponse: [
+          "*Yaquin looks at you, searching for something.*",
+          "\"You mean that.\"",
+          "*It's not a question.*",
+          "\"I can see you mean that.\"",
+          "*She looks at the letter again.*",
+          "\"Maybe if someone else believes it... I can learn to.\""
+        ],
+        emotionArc: ['doubtful', 'searching', 'touched', 'hopeful'],
+        trustChange: 1,
+        globalFlagsSet: ['yaquin_default_support'],
+        unlockedContent: "Standard progression through Yaquin's arc"
+      }
+    },
+
+    resolution: {
+      sharedDialogue: [
+        "*Yaquin stands a little taller.*",
+        "\"Whatever I decide... I'm going to stop apologizing for it.\"",
+        "*She smiles—small, but real.*",
+        "\"That's the hardest part, isn't it? Believing you deserve the space you take up.\""
+      ],
+      nextNodeId: 'yaquin_post_crossroads'
+    }
   }
 ]
 
