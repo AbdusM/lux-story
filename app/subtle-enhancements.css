@@ -160,16 +160,7 @@
   background-color: rgba(0, 0, 0, 0.3);
 }
 
-.story-message.narrator {
-  font-style: italic;
-}
-
-.story-message.lux::before {
-  content: '🧘';
-  position: absolute;
-  left: -1.5rem;
-  animation: float-subtle 3s var(--anim-ease-default) infinite;
-}
+/* Narrator/Lux special styles removed - dialogue stays clean */
 
 /* Scene Transition Effects */
 .scene-transition {
