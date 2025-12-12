@@ -576,3 +576,205 @@ export function getOrbMilestoneEcho(
 
   return pool[Math.floor(Math.random() * pool.length)]
 }
+
+// ============================================
+// PATTERN-CHARACTER RESONANCE ECHOES
+// ============================================
+
+/**
+ * Echoes that show when player's dominant pattern resonates with a character
+ * These appear subtly in dialogue to show the connection building
+ */
+export const RESONANCE_ECHOES: Record<string, {
+  high: ConsequenceEcho[]      // Primary pattern resonance
+  secondary: ConsequenceEcho[] // Secondary pattern resonance
+  friction: ConsequenceEcho[]  // Friction pattern (tension, not hostility)
+}> = {
+  maya: {
+    high: [
+      // Building resonance - Maya connects with fellow makers
+      { text: "Maya's eyes light up. 'You get it. Most people don't get it.'", emotion: 'excited', timing: 'immediate' },
+      { text: "Something shifts in Maya's posture. You're speaking her language.", emotion: 'open', timing: 'immediate' },
+      { text: "'You're a maker too, aren't you?' Maya sounds hopeful.", emotion: 'curious', timing: 'immediate' }
+    ],
+    secondary: [
+      // Analytical resonance
+      { text: "Maya nods slowly. 'You think things through. I like that.'", emotion: 'approving', timing: 'immediate' },
+      { text: "'That's... actually a really good point.' Maya looks at you differently.", emotion: 'surprised', timing: 'immediate' }
+    ],
+    friction: [
+      // Helping friction - Maya bristles at being "helped"
+      { text: "Maya's shoulders tense slightly. 'I don't need—' She stops herself.", emotion: 'guarded', timing: 'immediate' },
+      { text: "Something flickers in Maya's expression. Resistance, maybe.", emotion: 'defensive', timing: 'immediate' },
+      { text: "'Thanks, but I can figure it out myself.' Maya's voice is polite but firm.", emotion: 'guarded', timing: 'immediate' }
+    ]
+  },
+
+  devon: {
+    high: [
+      // Analytical resonance
+      { text: "Devon's posture relaxes. You speak his language.", emotion: 'open', timing: 'immediate' },
+      { text: "'Finally. Someone who thinks in systems.' Devon almost smiles.", emotion: 'approving', timing: 'immediate' },
+      { text: "Devon stops typing. Full attention. 'Go on.'", emotion: 'engaged', timing: 'immediate' }
+    ],
+    secondary: [
+      // Building resonance
+      { text: "'You make things. I can tell.' Devon sounds almost curious.", emotion: 'interested', timing: 'immediate' },
+      { text: "Devon nods. 'You understand the build process.'", emotion: 'approving', timing: 'immediate' }
+    ],
+    friction: [
+      // Helping friction - direct emotional support makes Devon uncomfortable
+      { text: "Devon shifts uncomfortably. 'I appreciate the sentiment, but...'", emotion: 'awkward', timing: 'immediate' },
+      { text: "'I don't really do the... feelings thing.' Devon looks away.", emotion: 'guarded', timing: 'immediate' },
+      { text: "Devon's walls go up. Not hostile, just... protected.", emotion: 'distant', timing: 'immediate' }
+    ]
+  },
+
+  samuel: {
+    high: [
+      // Patience resonance
+      { text: "Samuel nods slowly, appreciatively. 'You understand that some things can't be rushed.'", emotion: 'warm', timing: 'immediate' },
+      { text: "'Patience.' Samuel's voice carries weight. 'That's rare these days.'", emotion: 'approving', timing: 'immediate' }
+    ],
+    secondary: [
+      // Helping resonance
+      { text: "'You lead with care.' Samuel sounds almost moved. 'I see that.'", emotion: 'warm', timing: 'immediate' },
+      { text: "Samuel studies you differently. 'You're a guide too, in your way.'", emotion: 'knowing', timing: 'immediate' }
+    ],
+    friction: [
+      // Building friction - wary of quick fixes
+      { text: "Samuel pauses. 'Not everything needs to be fixed, you know.'", emotion: 'thoughtful', timing: 'immediate' },
+      { text: "'Some journeys take time.' Samuel's voice is gentle but firm.", emotion: 'neutral', timing: 'immediate' }
+    ]
+  }
+}
+
+/**
+ * Get a resonance echo for a character based on player's pattern
+ */
+export function getResonanceEcho(
+  characterId: string,
+  resonanceType: 'high' | 'secondary' | 'friction'
+): ConsequenceEcho | null {
+  const echoes = RESONANCE_ECHOES[characterId]
+  if (!echoes) return null
+
+  const pool = echoes[resonanceType]
+  if (!pool || pool.length === 0) return null
+
+  return pool[Math.floor(Math.random() * pool.length)]
+}
+
+// ============================================
+// VULNERABILITY DISCOVERY HINTS
+// ============================================
+
+/**
+ * Subtle hints that appear before vulnerabilities are fully discovered
+ * These guide observant players toward deeper conversations
+ */
+export const DISCOVERY_HINTS: Record<string, {
+  vulnerability: string
+  hints: ConsequenceEcho[]
+  trustRange: { min: number; max: number }  // When these hints appear
+}[]> = {
+  maya: [
+    {
+      vulnerability: 'family_expectations',
+      trustRange: { min: 2, max: 4 },
+      hints: [
+        { text: "Maya glances at her phone. 'My mom texted again.' She doesn't open it.", emotion: 'conflicted', timing: 'immediate' },
+        { text: "There's something she's not saying about her parents.", emotion: 'curious', timing: 'delayed' },
+        { text: "'Supposedly.' Maya uses that word a lot when talking about her future.", emotion: 'thoughtful', timing: 'delayed' }
+      ]
+    },
+    {
+      vulnerability: 'imposter_syndrome',
+      trustRange: { min: 4, max: 6 },
+      hints: [
+        { text: "Maya deflects your compliment about her robot. 'It's nothing serious.'", emotion: 'guarded', timing: 'immediate' },
+        { text: "She compares herself to Devon a lot. And not favorably.", emotion: 'thoughtful', timing: 'delayed' },
+        { text: "'Real engineers' - Maya uses that phrase. As if she's not one.", emotion: 'curious', timing: 'delayed' }
+      ]
+    },
+    {
+      vulnerability: 'unsent_email',
+      trustRange: { min: 5, max: 7 },
+      hints: [
+        { text: "Maya mentions Innovation Depot. Then quickly changes the subject.", emotion: 'guarded', timing: 'immediate' },
+        { text: "There's a story there. About an opportunity not taken.", emotion: 'thoughtful', timing: 'delayed' },
+        { text: "'I almost...' Maya trails off. 'Never mind.'", emotion: 'vulnerable', timing: 'immediate' }
+      ]
+    }
+  ],
+
+  devon: [
+    {
+      vulnerability: 'father_disconnect',
+      trustRange: { min: 3, max: 5 },
+      hints: [
+        { text: "Devon's jaw tightens at the mention of family calls.", emotion: 'guarded', timing: 'immediate' },
+        { text: "The Conversation Optimizer project seems... personal somehow.", emotion: 'curious', timing: 'delayed' },
+        { text: "'I'm fine.' Devon says it like he's heard it too many times.", emotion: 'thoughtful', timing: 'delayed' }
+      ]
+    }
+  ]
+}
+
+/**
+ * Get a discovery hint for a character's vulnerability
+ */
+export function getDiscoveryHint(
+  characterId: string,
+  vulnerabilityId: string,
+  trust: number
+): ConsequenceEcho | null {
+  const characterHints = DISCOVERY_HINTS[characterId]
+  if (!characterHints) return null
+
+  const vulnHints = characterHints.find(h => h.vulnerability === vulnerabilityId)
+  if (!vulnHints) return null
+
+  // Check if trust is in range
+  if (trust < vulnHints.trustRange.min || trust > vulnHints.trustRange.max) {
+    return null
+  }
+
+  const pool = vulnHints.hints
+  return pool[Math.floor(Math.random() * pool.length)]
+}
+
+// ============================================
+// VULNERABILITY REVELATION ECHOES
+// ============================================
+
+/**
+ * Echoes for when a vulnerability is actually discovered
+ * These mark significant relationship moments
+ */
+export const VULNERABILITY_REVELATION_ECHOES: Record<string, ConsequenceEcho[]> = {
+  maya_family_guilt: [
+    { text: "Maya goes quiet for a moment. You've touched something real.", emotion: 'vulnerable', timing: 'immediate' },
+    { text: "She didn't mean to say that much. But she's not taking it back.", emotion: 'open', timing: 'immediate' }
+  ],
+  maya_imposter_syndrome: [
+    { text: "Maya's walls crumble, just a little. 'I don't usually admit that.'", emotion: 'vulnerable', timing: 'immediate' },
+    { text: "'You're the first person who's asked the right question.'", emotion: 'grateful', timing: 'immediate' }
+  ],
+  maya_unsent_email: [
+    { text: "The weight of the unsent email hangs between you. A path not taken.", emotion: 'melancholy', timing: 'immediate' },
+    { text: "Maya looks at you differently now. Like you've seen something private.", emotion: 'vulnerable', timing: 'immediate' }
+  ]
+}
+
+/**
+ * Get a revelation echo for discovering a vulnerability
+ */
+export function getVulnerabilityRevelationEcho(
+  vulnerabilityId: string
+): ConsequenceEcho | null {
+  const pool = VULNERABILITY_REVELATION_ECHOES[vulnerabilityId]
+  if (!pool || pool.length === 0) return null
+
+  return pool[Math.floor(Math.random() * pool.length)]
+}

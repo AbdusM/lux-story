@@ -64,6 +64,9 @@ export interface GameState {
   // Meta-Achievements (hidden recognitions for consistent play patterns)
   unlockedAchievements: string[]
 
+  // Character Transformations (witnessed transformation moments)
+  witnessedTransformations: string[]
+
   // ═══════════════════════════════════════════════════════════════════════════
   // CORE GAME STATE: Single source of truth for dialogue/narrative system
   // This is the SerializableGameState from character-state.ts
@@ -223,6 +226,10 @@ export interface GameActions {
   // Meta-Achievements
   unlockAchievements: (achievementIds: string[]) => void
 
+  // Character Transformations
+  markTransformationWitnessed: (transformationId: string) => void
+  getWitnessedTransformations: () => string[]
+
   // Reset functions
   resetGame: () => void
   resetEmotionalState: () => void
@@ -346,6 +353,9 @@ const initialState: GameState = {
 
   // Meta-Achievements
   unlockedAchievements: [],
+
+  // Character Transformations
+  witnessedTransformations: [],
 
   // Core Game State (single source of truth)
   coreGameState: null
@@ -719,6 +729,20 @@ export const useGameStore = create<GameState & GameActions>()(
           })
         },
 
+        // Character Transformations - mark a transformation as witnessed
+        markTransformationWitnessed: (transformationId: string) => {
+          set((state) => {
+            if (state.witnessedTransformations.includes(transformationId)) return state
+            return {
+              witnessedTransformations: [...state.witnessedTransformations, transformationId]
+            }
+          })
+        },
+
+        getWitnessedTransformations: () => {
+          return get().witnessedTransformations
+        },
+
         // Reset actions
         resetGame: () => set(initialState),
         resetEmotionalState: () => set({ emotionalState: initialState.emotionalState }),
@@ -780,6 +804,8 @@ export const useGameStore = create<GameState & GameActions>()(
           neuralState: state.neuralState,
           skills: state.skills,
           thoughts: state.thoughts,
+          // Character transformations
+          witnessedTransformations: state.witnessedTransformations,
           // Core game state (single source of truth for dialogue system)
           coreGameState: state.coreGameState
         }),
@@ -1008,5 +1034,10 @@ export const useGameSelectors = {
     const serialized = useGameStore((state) => state.coreGameState)
     if (!serialized) return []
     return serialized.globalFlags
-  }
+  },
+
+  // Character Transformations
+  useWitnessedTransformations: () => useGameStore((state) => state.witnessedTransformations),
+  useHasWitnessedTransformation: (transformationId: string) =>
+    useGameStore((state) => state.witnessedTransformations.includes(transformationId))
 }
