@@ -285,6 +285,236 @@ export const CHARACTER_RELATIONSHIP_WEB: CharacterRelationshipEdge[] = [
       trustMin: 4,
       charactersMet: ['maya']
     }
+  },
+
+  // ============================================
+  // SAMUEL AS HUB - Additional Connections
+  // ============================================
+
+  // Samuel → Marcus (Recognizes quiet strength)
+  {
+    fromCharacterId: 'samuel',
+    toCharacterId: 'marcus',
+    type: 'ally',
+    intensity: 7,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Marcus? He keeps people alive. That\'s a calling, not a job.',
+      privateOpinion: 'He counts heartbeats like I count arrivals. We both know that every number is a person. Every pause could be the last.',
+      memories: [
+        'The night he told me about the code blue that made him certain. His hands were steady, but his voice shook.'
+      ]
+    },
+    revealConditions: {
+      trustMin: 4,
+      charactersMet: ['marcus']
+    }
+  },
+
+  // Samuel → Rohan (Philosophical kinship)
+  {
+    fromCharacterId: 'samuel',
+    toCharacterId: 'rohan',
+    type: 'ally',
+    intensity: 6,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Rohan asks the questions most people are afraid to ask.',
+      privateOpinion: 'He sees what the machines are doing to human connection. I see what they\'re doing to human direction. We\'re both watching something precious slip away.',
+      memories: [
+        'That debate about whether technology liberates or traps us. We agreed more than we disagreed.'
+      ]
+    },
+    revealConditions: {
+      trustMin: 5,
+      charactersMet: ['rohan']
+    }
+  },
+
+  // Samuel → Yaquin (Protective concern)
+  {
+    fromCharacterId: 'samuel',
+    toCharacterId: 'yaquin',
+    type: 'mentor',
+    intensity: 6,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Yaquin? She teaches because she cares. Not everyone in education can say that.',
+      privateOpinion: 'She gives so much of herself to her students. I worry she forgets to save some for herself. Familiar pattern.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 3,
+      charactersMet: ['yaquin']
+    }
+  },
+
+  // ============================================
+  // MARCUS'S RELATIONSHIPS
+  // ============================================
+
+  // Marcus → Samuel (Respects the keeper)
+  {
+    fromCharacterId: 'marcus',
+    toCharacterId: 'samuel',
+    type: 'mentor',
+    intensity: 5,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Samuel sees things. Not like doctors see—differently. Deeper.',
+      privateOpinion: 'He helped me once, years ago. Didn\'t even know he was doing it. Just said the right thing at the right time.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 4
+    }
+  },
+
+  // Marcus → Maya (Biomedical connection)
+  {
+    fromCharacterId: 'marcus',
+    toCharacterId: 'maya',
+    type: 'parallel',
+    intensity: 4,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'The engineering student? She asks good questions about the equipment.',
+      privateOpinion: 'She looks at the dialysis machines like they\'re puzzles to solve. Not many people see the beauty in medical technology. I do.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 3,
+      charactersMet: ['maya']
+    },
+    dynamicRules: [
+      {
+        triggerFlags: ['maya_considers_biomedical'],
+        newType: 'ally',
+        newIntensity: 6,
+        newPublicOpinion: 'Maya and I have been talking about biomedical engineering. She sees what I see—where medicine meets machines.',
+        newPrivateOpinion: 'She could build the tools that save lives. That\'s not abandoning medicine. That\'s expanding it.'
+      }
+    ]
+  },
+
+  // ============================================
+  // ROHAN'S RELATIONSHIPS
+  // ============================================
+
+  // Rohan → Devon (Philosophical tension)
+  {
+    fromCharacterId: 'rohan',
+    toCharacterId: 'devon',
+    type: 'rival',
+    intensity: 5,
+    opinions: {
+      sentiment: 'conflicted',
+      publicOpinion: 'Devon? Brilliant. But he thinks everything can be optimized.',
+      privateOpinion: 'He represents everything I worry about—reducing human connection to algorithms. But he\'s not doing it maliciously. He\'s doing it because he\'s scared of the alternative.',
+      memories: [
+        'Our debate about whether AI could ever understand emotion. He said yes. I said it could simulate understanding. Neither of us won.'
+      ]
+    },
+    revealConditions: {
+      trustMin: 5,
+      charactersMet: ['devon']
+    }
+  },
+
+  // Rohan → Samuel (Philosophical respect)
+  {
+    fromCharacterId: 'rohan',
+    toCharacterId: 'samuel',
+    type: 'ally',
+    intensity: 7,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Samuel? He understands time differently than most people.',
+      privateOpinion: 'He\'s the only one here who doesn\'t try to rush toward answers. In a world obsessed with efficiency, that\'s revolutionary.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 4
+    }
+  },
+
+  // ============================================
+  // YAQUIN'S RELATIONSHIPS
+  // ============================================
+
+  // Yaquin → Samuel (Looks up to)
+  {
+    fromCharacterId: 'yaquin',
+    toCharacterId: 'samuel',
+    type: 'protege',
+    intensity: 5,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Samuel always knows what to say. I wish I had that certainty.',
+      privateOpinion: 'He makes guiding people look easy. I\'m still learning. Maybe I\'ll never be that calm.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 3
+    }
+  },
+
+  // Yaquin → Maya (Sees herself)
+  {
+    fromCharacterId: 'yaquin',
+    toCharacterId: 'maya',
+    type: 'parallel',
+    intensity: 5,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Maya reminds me of some of my students. Talented, but unsure.',
+      privateOpinion: 'She\'s caught between what she wants and what she thinks she should want. I know that feeling. I still know it.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 4,
+      charactersMet: ['maya']
+    }
+  },
+
+  // ============================================
+  // DEVON'S ADDITIONAL RELATIONSHIPS
+  // ============================================
+
+  // Devon → Rohan (Intellectual friction)
+  {
+    fromCharacterId: 'devon',
+    toCharacterId: 'rohan',
+    type: 'rival',
+    intensity: 4,
+    opinions: {
+      sentiment: 'conflicted',
+      publicOpinion: 'Rohan thinks technology is the problem. I think it\'s the solution.',
+      privateOpinion: 'He makes good points. Frustratingly good. Sometimes I wonder if he\'s right—if I\'m just building elaborate ways to avoid being human.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 5,
+      charactersMet: ['rohan']
+    }
+  },
+
+  // Devon → Marcus (Respects different intelligence)
+  {
+    fromCharacterId: 'devon',
+    toCharacterId: 'marcus',
+    type: 'parallel',
+    intensity: 3,
+    opinions: {
+      sentiment: 'neutral',
+      publicOpinion: 'Marcus works with complex systems. Medical ones. Different domain, same principles.',
+      privateOpinion: 'He makes life-or-death decisions without an algorithm. That terrifies me. Also impresses me.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 4,
+      charactersMet: ['marcus']
+    }
   }
 ]
 
