@@ -440,8 +440,10 @@ Probably wouldn't make any money.`,
         }
       }
     ],
-    tags: ['alex_arc']
-  },
+    tags: ['alex_arc'],
+    metadata: {
+      sessionBoundary: true  // Session 1: Introduction complete
+    }  },
 
   {
     nodeId: 'alex_takes_time',

@@ -534,7 +534,10 @@ export const mayaDialogueNodes: DialogueNode[] = [
         }
       }
     ],
-    tags: ['scenario_failure', 'maya_arc']
+    tags: ['scenario_failure', 'maya_arc'],
+    metadata: {
+      sessionBoundary: true  // Session 1: Introduction complete
+    }
   },
 
   {
@@ -945,7 +948,10 @@ export const mayaDialogueNodes: DialogueNode[] = [
         addGlobalFlags: ['maya_arc_complete']
       }
     ],
-    tags: ['ending', 'maya_arc']
+    tags: ['ending', 'maya_arc'],
+    metadata: {
+      sessionBoundary: true  // Session 2: Crossroads complete
+    }
   },
 
   // ============= EARLY GRATITUDE (Low Trust Closure) =============
@@ -1310,7 +1316,10 @@ export const mayaDialogueNodes: DialogueNode[] = [
         addKnowledgeFlags: ['tried_parent_conversation']
       }
     ],
-    tags: ['emotional_incident', 'maya_arc', 'bg3_depth']
+    tags: ['emotional_incident', 'maya_arc', 'bg3_depth'],
+    metadata: {
+      sessionBoundary: true  // Session 3: Deep vulnerability revealed
+    }
   }
 ]
 

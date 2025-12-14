@@ -587,8 +587,10 @@ And hundreds of conversations. Everyone's going somewhere.`,
         }
       }
     ],
-    tags: ['job_revelation', 'jordan_arc']
-  },
+    tags: ['job_revelation', 'jordan_arc'],
+    metadata: {
+      sessionBoundary: true  // Session 1: Introduction complete
+    }  },
 
   // ============= JOB REVEAL 7: UX Designer Current (Immersive Scenario) =============
   {
@@ -1055,8 +1057,10 @@ Thank you. Good luck with your journey.`,
         skills: ["emotionalIntelligence","communication"]
       }
     ],
-    tags: ['transition', 'jordan_arc', 'bittersweet']
-  },
+    tags: ['transition', 'jordan_arc', 'bittersweet'],
+    metadata: {
+      sessionBoundary: true  // Session 2: Arc complete
+    }  },
 
   {
     nodeId: 'jordan_chooses_birmingham',

@@ -513,8 +513,10 @@ He wakes up tomorrow.`,
         addGlobalFlags: ['marcus_sim_complete']
       }
     ],
-    tags: ['simulation_complete', 'marcus_arc']
-  },
+    tags: ['simulation_complete', 'marcus_arc'],
+    metadata: {
+      sessionBoundary: true  // Session 1: Introduction complete
+    }  },
 
   // ... [CAREER BRIDGE & ENDING - UNCHANGED] ...
   {
@@ -977,8 +979,10 @@ Who are we to decide whose future is worth more?`,
         }
       }
     ],
-    tags: ['phase2', 'marcus_arc']
-  },
+    tags: ['phase2', 'marcus_arc'],
+    metadata: {
+      sessionBoundary: true  // Session 2: Crossroads complete
+    }  },
 
   {
     nodeId: 'marcus_p2_framework_holistic',

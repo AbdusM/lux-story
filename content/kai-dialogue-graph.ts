@@ -410,8 +410,10 @@ I thought she was exaggerating. She wasn't.`,
         skills: ['systemsThinking', 'criticalThinking']
       }
     ],
-    tags: ['kai_arc', 'corporate_conflict']
-  },
+    tags: ['kai_arc', 'corporate_conflict'],
+    metadata: {
+      sessionBoundary: true  // Session 1: Introduction complete
+    }  },
 
   {
     nodeId: 'kai_pushback_story',
@@ -903,8 +905,10 @@ What do you think matters more. reaching more people, or reaching people more de
         }
       }
     ],
-    tags: ['kai_arc', 'philosophical_choice']
-  },
+    tags: ['kai_arc', 'philosophical_choice'],
+    metadata: {
+      sessionBoundary: true  // Session 2: Crossroads complete
+    }  },
 
   {
     nodeId: 'kai_climax_decision',

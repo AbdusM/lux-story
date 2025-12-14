@@ -474,8 +474,10 @@ If this runs, it will call a null pointer on 40 million people.`,
         skills: ['pragmatism']
       }
     ],
-    tags: ['simulation', 'rohan_arc', 'immersive_scenario']
-  },
+    tags: ['simulation', 'rohan_arc', 'immersive_scenario'],
+    metadata: {
+      sessionBoundary: true  // Session 1: Introduction complete
+    }  },
 
   // --- FAILURE STATE 1: HALLUCINATION LOOP ---
   {
@@ -904,8 +906,10 @@ I'm going to start an academy. Not 'Coding Bootcamp.' 'First Principles.'`,
         skills: ['encouragement']
       }
     ],
-    tags: ['rohan_arc']
-  },
+    tags: ['rohan_arc'],
+    metadata: {
+      sessionBoundary: true  // Session 2: Crossroads complete
+    }  },
 
   {
     nodeId: 'rohan_legacy_question',

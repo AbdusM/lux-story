@@ -571,8 +571,10 @@ export const devonDialogueNodes: DialogueNode[] = [
         pattern: 'patience'
       }
     ],
-    tags: ['scene_break', 'pacing', 'devon_arc']
-  },
+    tags: ['scene_break', 'pacing', 'devon_arc'],
+    metadata: {
+      sessionBoundary: true  // Session 1: Introduction complete
+    }  },
 
   {
     nodeId: 'devon_accepts_sympathy',
@@ -906,8 +908,10 @@ export const devonDialogueNodes: DialogueNode[] = [
         addKnowledgeFlags: ['empathy_reframe', 'devon_reframe_insight']
       }
     ],
-    tags: ['simulation', 'devon_arc']
-  },
+    tags: ['simulation', 'devon_arc'],
+    metadata: {
+      sessionBoundary: true  // Session 2: Crossroads complete
+    }  },
 
   {
     nodeId: 'devon_realizes_connection',
@@ -1226,8 +1230,10 @@ export const devonDialogueNodes: DialogueNode[] = [
         pattern: 'helping'
       }
     ],
-    tags: ['transition', 'devon_arc', 'bittersweet']
-  },
+    tags: ['transition', 'devon_arc', 'bittersweet'],
+    metadata: {
+      sessionBoundary: true  // Session 3: Resolution reached
+    }  },
 
   {
     nodeId: 'devon_farewell_presence',
