@@ -767,7 +767,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Station's got a way of <bloom>rememberin'</bloom>. Every choice you make, leaves a little echo behind. Over time, those add up. Start to show you somethin'.\n\nThink of it like a mirror, kinda. Not what you've done, but <ripple>who you're becomin'</ripple>.",
+        text: "Noticed those patterns already, didn't you? <bloom>Curious things</bloom>, aren't they?\n\nStation's got a way of rememberin'. Every choice you make leaves an echo. Those orbs you're seein'? They're mirrors—not what you've done, but <ripple>who you're becomin'</ripple>.",
         emotion: 'knowing',
         variation_id: 'orb_explanation_v1'
       }
