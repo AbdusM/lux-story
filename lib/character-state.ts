@@ -201,9 +201,9 @@ export class GameStateUtils {
         )
 
         // Log resonance for debugging (can be used for consequence echoes later)
-        if (resonanceTriggered && resonanceDescription) {
-          console.log(`[Resonance] ${change.characterId}: ${resonanceDescription}`)
-        }
+        // if (resonanceTriggered && resonanceDescription) {
+        //   console.log(`[Resonance] ${change.characterId}: ${resonanceDescription}`)
+        // }
 
         // Auto-update relationship status based on trust level
         // Only if not explicitly set in this change

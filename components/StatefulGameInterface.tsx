@@ -70,6 +70,7 @@ import { selectAmbientEvent, IDLE_CONFIG, type AmbientEvent } from '@/lib/ambien
 import { PATTERN_TYPES, type PatternType, getPatternSensation, isValidPattern } from '@/lib/patterns'
 import { getConsequenceEcho, checkPatternThreshold as checkPatternEchoThreshold, getPatternRecognitionEcho, getVoicedChoiceText, applyPatternReflection, getOrbMilestoneEcho, type ConsequenceEcho } from '@/lib/consequence-echoes'
 import { useOrbs } from '@/hooks/useOrbs'
+import { ProgressToast } from '@/components/ProgressToast'
 // FoxTheatreGlow import removed - unused
 // Share prompts removed - too obtrusive
 
@@ -109,6 +110,7 @@ interface GameInterfaceState {
   ambientEvent: AmbientEvent | null  // Station breathing - idle atmosphere
   patternSensation: string | null    // Brief feedback when pattern triggered
   consequenceEcho: ConsequenceEcho | null  // Dialogue-based trust feedback
+  patternToast: PatternType | null   // Minimal toast for pattern earned (Pokemon: Low HP beep principle)
 }
 
 export default function StatefulGameInterface() {
@@ -159,7 +161,8 @@ export default function StatefulGameInterface() {
     achievementNotification: null,
     ambientEvent: null,
     patternSensation: null,
-    consequenceEcho: null
+    consequenceEcho: null,
+    patternToast: null
   })
 
   // Rich effects config - KEEPING NEW STAGGERED MODE
@@ -400,7 +403,8 @@ export default function StatefulGameInterface() {
         achievementNotification: null,
         ambientEvent: null,
         patternSensation: null,
-        consequenceEcho: null
+        consequenceEcho: null,
+        patternToast: null
       })
 
       // ═══════════════════════════════════════════════════════════════════════════
@@ -466,9 +470,16 @@ export default function StatefulGameInterface() {
       if (choice.choice.consequence) newGameState = GameStateUtils.applyStateChange(newGameState, choice.choice.consequence)
       if (choice.choice.pattern) newGameState = GameStateUtils.applyStateChange(newGameState, { patternChanges: { [choice.choice.pattern]: 1 } })
 
-      // Earn orb for pattern choice - SILENT (no toast, discovery in Journal)
+      // Earn orb for pattern choice - Show minimal toast (Pokemon: Low HP beep principle)
       if (choice.choice.pattern && isValidPattern(choice.choice.pattern)) {
-        earnOrb(choice.choice.pattern)
+        const earnedPattern = choice.choice.pattern
+        earnOrb(earnedPattern)
+
+        // Show pattern toast (minimal, bottom placement, fades after 1.5s)
+        setState(prev => ({ ...prev, patternToast: earnedPattern }))
+        setTimeout(() => {
+          setState(prev => ({ ...prev, patternToast: null }))
+        }, 1500)
       }
 
       // Calculate trust change for consequence echo
@@ -685,7 +696,8 @@ export default function StatefulGameInterface() {
           achievementNotification,
           ambientEvent: null,  // Clear ambient event when player acts
           patternSensation,    // Show pattern feedback if triggered
-          consequenceEcho      // Dialogue-based trust feedback
+          consequenceEcho,     // Dialogue-based trust feedback
+          patternToast: state.patternToast  // Preserve pattern toast (set earlier in choice handling)
       })
       GameStateManager.saveGameState(newGameState)
 
@@ -1360,6 +1372,9 @@ export default function StatefulGameInterface() {
           onClose={() => setState(prev => ({ ...prev, showJourneySummary: false, journeyNarrative: null }))}
         />
       )}
+
+      {/* Pattern Toast - Minimal feedback (Pokemon: Low HP beep principle) */}
+      <ProgressToast pattern={state.patternToast} />
     </div>
   )
 }
