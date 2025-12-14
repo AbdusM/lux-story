@@ -31,6 +31,7 @@ export interface GameState {
   thoughts: ActiveThought[]
   episodeNumber: number  // Track which episode the player is on
   sessionStartTime: number  // When current session started (for episode timer)
+  sessionBoundariesCrossed: number  // Simple counter for session boundaries (used for announcement variety)
 }
 
 /**
@@ -117,6 +118,7 @@ export interface SerializableGameState {
   thoughts: ActiveThought[]
   episodeNumber: number
   sessionStartTime: number
+  sessionBoundariesCrossed: number
 }
 
 /**
@@ -267,7 +269,8 @@ export class GameStateUtils {
       currentCharacterId: state.currentCharacterId,
       thoughts: [...state.thoughts],
       episodeNumber: state.episodeNumber,
-      sessionStartTime: state.sessionStartTime
+      sessionStartTime: state.sessionStartTime,
+      sessionBoundariesCrossed: state.sessionBoundariesCrossed
     }
   }
 
@@ -304,7 +307,8 @@ export class GameStateUtils {
       currentCharacterId: 'samuel', // Game begins with the Station Keeper
       thoughts: [],
       episodeNumber: 1,  // Start at episode 1
-      sessionStartTime: Date.now()  // Track when session started
+      sessionStartTime: Date.now(),  // Track when session started
+      sessionBoundariesCrossed: 0  // Start with no boundaries crossed
     }
   }
 
@@ -342,7 +346,8 @@ export class GameStateUtils {
       currentCharacterId: state.currentCharacterId,
       thoughts: state.thoughts,
       episodeNumber: state.episodeNumber,
-      sessionStartTime: state.sessionStartTime
+      sessionStartTime: state.sessionStartTime,
+      sessionBoundariesCrossed: state.sessionBoundariesCrossed
     }
   }
 
@@ -369,7 +374,8 @@ export class GameStateUtils {
       currentCharacterId: serialized.currentCharacterId,
       thoughts: serialized.thoughts || [],
       episodeNumber: serialized.episodeNumber || 1,  // Default to episode 1 for old saves
-      sessionStartTime: serialized.sessionStartTime || Date.now()  // Default to now for old saves
+      sessionStartTime: serialized.sessionStartTime || Date.now(),  // Default to now for old saves
+      sessionBoundariesCrossed: serialized.sessionBoundariesCrossed || 0  // Default to 0 for old saves
     }
   }
 }
