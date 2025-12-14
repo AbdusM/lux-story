@@ -208,6 +208,8 @@ export interface GameActions {
   // Thought Cabinet
   addThought: (thoughtId: string) => void
   updateThoughtProgress: (thoughtId: string, amount: number) => void
+  updateThought: (thoughtId: string, updates: Partial<ActiveThought>) => void
+  removeThought: (thoughtId: string) => void
   internalizeThought: (thoughtId: string) => void
 
   // Floating Modules
@@ -597,6 +599,51 @@ export const useGameStore = create<GameState & GameActions>()(
           })
         },
 
+        updateThought: (thoughtId, updates) => {
+          set((state) => {
+            const updatedThoughts = state.thoughts.map(t => {
+              if (t.id !== thoughtId) return t
+              return {
+                ...t,
+                ...updates,
+                lastUpdated: Date.now()
+              }
+            })
+
+            // Also sync to coreGameState if it exists
+            const core = get().coreGameState
+            if (core) {
+              set({
+                coreGameState: {
+                  ...core,
+                  thoughts: updatedThoughts
+                }
+              })
+            }
+
+            return { thoughts: updatedThoughts }
+          })
+        },
+
+        removeThought: (thoughtId) => {
+          set((state) => {
+            const updatedThoughts = state.thoughts.filter(t => t.id !== thoughtId)
+
+            // Also sync to coreGameState if it exists
+            const core = get().coreGameState
+            if (core) {
+              set({
+                coreGameState: {
+                  ...core,
+                  thoughts: updatedThoughts
+                }
+              })
+            }
+
+            return { thoughts: updatedThoughts }
+          })
+        },
+
         internalizeThought: (thoughtId) => {
           set((state) => {
             const updatedThoughts: ActiveThought[] = state.thoughts.map(t => {
@@ -608,7 +655,7 @@ export const useGameStore = create<GameState & GameActions>()(
                 lastUpdated: Date.now()
               }
             })
-            
+
             // Also sync to coreGameState if it exists
             const core = get().coreGameState
             if (core) {
@@ -619,7 +666,7 @@ export const useGameStore = create<GameState & GameActions>()(
                 }
               })
             }
-            
+
             return { thoughts: updatedThoughts }
           })
         },

@@ -473,13 +473,22 @@ export default function StatefulGameInterface() {
       // Earn orb for pattern choice - Show minimal toast (Pokemon: Low HP beep principle)
       if (choice.choice.pattern && isValidPattern(choice.choice.pattern)) {
         const earnedPattern = choice.choice.pattern
-        earnOrb(earnedPattern)
+        const { crossedThreshold5 } = earnOrb(earnedPattern)
 
         // Show pattern toast (minimal, bottom placement, fades after 1.5s)
         setState(prev => ({ ...prev, patternToast: earnedPattern }))
         setTimeout(() => {
           setState(prev => ({ ...prev, patternToast: null }))
         }, 1500)
+
+        // Identity offering at threshold 5 (Disco Elysium: "Is this who you are?")
+        // Pokemon four-move limit philosophy: Constraint forces identity
+        if (crossedThreshold5) {
+          const identityThoughtId = `identity-${earnedPattern}` as const
+          newGameState = GameStateUtils.applyStateChange(newGameState, {
+            thoughtId: identityThoughtId
+          })
+        }
       }
 
       // Calculate trust change for consequence echo

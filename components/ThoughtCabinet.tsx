@@ -65,6 +65,8 @@ interface ThoughtCabinetProps {
 
 export function ThoughtCabinet({ isOpen, onClose }: ThoughtCabinetProps) {
   const thoughts = useGameStore((state) => state.thoughts)
+  const updateThought = useGameStore((state) => state.updateThought)
+  const removeThought = useGameStore((state) => state.removeThought)
   const [selectedThoughtId, setSelectedThoughtId] = useState<string | null>(null)
 
   // Escape key handler
@@ -77,10 +79,28 @@ export function ThoughtCabinet({ isOpen, onClose }: ThoughtCabinetProps) {
     return () => window.removeEventListener('keydown', handleEscape)
   }, [isOpen, onClose])
 
+  // Handle internalizing an identity thought
+  const handleInternalize = (thoughtId: string) => {
+    updateThought(thoughtId, {
+      status: 'internalized',
+      progress: 100
+    })
+    setSelectedThoughtId(null)
+  }
+
+  // Handle discarding an identity thought
+  const handleDiscard = (thoughtId: string) => {
+    removeThought(thoughtId)
+    setSelectedThoughtId(null)
+  }
+
   const activeThoughts = thoughts.filter(t => t.status === 'developing')
   const internalizedThoughts = thoughts.filter(t => t.status === 'internalized')
 
   const _selectedThought = thoughts.find(t => t.id === selectedThoughtId)
+
+  // Check if a thought is an identity offering (starts with 'identity-')
+  const isIdentityThought = (thoughtId: string) => thoughtId.startsWith('identity-')
 
   // Animation variants
   const backdropVariants = {
@@ -200,13 +220,40 @@ export function ThoughtCabinet({ isOpen, onClose }: ThoughtCabinetProps) {
                             
                             {/* Expanded Details - Measured height animation */}
                             <AccordionContent isOpen={selectedThoughtId === thought.id}>
-                              <p className="text-sm text-slate-600 dark:text-slate-300 mt-3 leading-relaxed">
+                              <p className="text-sm text-slate-600 dark:text-slate-300 mt-3 leading-relaxed whitespace-pre-line">
                                 {thought.description}
                               </p>
-                              <div className="mt-3 flex items-center gap-2 text-xs text-amber-600 font-medium">
-                                <Lock className="w-3 h-3" />
-                                <span>Continue exploring this path to internalize</span>
-                              </div>
+
+                              {/* Identity offering buttons - Disco Elysium style choice */}
+                              {isIdentityThought(thought.id) ? (
+                                <div className="mt-4 flex flex-col gap-2">
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation()
+                                      handleInternalize(thought.id)
+                                    }}
+                                    className="w-full px-4 py-3 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm transition-colors flex items-center justify-center gap-2"
+                                  >
+                                    <CheckCircle className="w-4 h-4" />
+                                    INTERNALIZE - Accept this identity
+                                  </button>
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation()
+                                      handleDiscard(thought.id)
+                                    }}
+                                    className="w-full px-4 py-3 rounded-lg bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-medium text-sm transition-colors flex items-center justify-center gap-2"
+                                  >
+                                    <X className="w-4 h-4" />
+                                    DISCARD - Stay flexible
+                                  </button>
+                                </div>
+                              ) : (
+                                <div className="mt-3 flex items-center gap-2 text-xs text-amber-600 font-medium">
+                                  <Lock className="w-3 h-3" />
+                                  <span>Continue exploring this path to internalize</span>
+                                </div>
+                              )}
                             </AccordionContent>
                           </div>
                         </div>

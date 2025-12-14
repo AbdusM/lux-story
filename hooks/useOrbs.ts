@@ -48,7 +48,7 @@ interface UseOrbsReturn {
   milestones: OrbMilestones
 
   // Actions (silent - no UI feedback)
-  earnOrb: (pattern: PatternType) => void
+  earnOrb: (pattern: PatternType) => { crossedThreshold5: boolean }  // Returns whether pattern crossed threshold 5
   earnBonusOrbs: (pattern: PatternType, amount: number) => void
   markOrbsViewed: () => void  // Call when Journal is opened
   getUnacknowledgedMilestone: () => keyof OrbMilestones | null  // Get next milestone for Samuel to acknowledge
@@ -98,10 +98,12 @@ export function useOrbs(): UseOrbsReturn {
   /**
    * Earn orb from a choice - SILENT, no UI feedback
    */
-  const earnOrb = useCallback((pattern: PatternType) => {
+  const earnOrb = useCallback((pattern: PatternType): { crossedThreshold5: boolean } => {
     const orbType = pattern as OrbType
+    let crossedThreshold5 = false
 
     setBalance(prev => {
+      const previousCount = prev[orbType]  // Store count before earning
       let amount = ORB_EARNINGS.choice
 
       // Check for streak
@@ -119,6 +121,12 @@ export function useOrbs(): UseOrbsReturn {
       }
 
       const newTotal = prev.totalEarned + amount
+      const newCount = previousCount + amount
+
+      // Check if crossed threshold 5 (for identity offering)
+      if (previousCount < 5 && newCount >= 5) {
+        crossedThreshold5 = true
+      }
 
       // Update milestones (for dialogue system to check)
       const newTier = getOrbTier(newTotal)
@@ -143,6 +151,8 @@ export function useOrbs(): UseOrbsReturn {
         bestStreak: Math.max(prev.bestStreak, newStreak)
       }
     })
+
+    return { crossedThreshold5 }
   }, [setBalance, setMilestones])
 
   /**
