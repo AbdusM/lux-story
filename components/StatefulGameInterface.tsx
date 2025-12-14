@@ -632,11 +632,36 @@ export default function StatefulGameInterface() {
 
       if (skillTrackerRef.current && state.currentNode && choice.choice.skills) {
         demonstratedSkills = choice.choice.skills as string[]
+
+        // Generate rich context for skill demonstrations (2-3 sentences)
+        // Uses available dialogue data instead of manual mappings
+        const speaker = state.currentNode.speaker
+        const choiceText = choice.choice.text.length > 60
+          ? choice.choice.text.substring(0, 57) + '...'
+          : choice.choice.text
+        const pattern = choice.choice.pattern || 'exploring'
+
+        // Build context with character, choice, and skills
+        let context = `In conversation with ${speaker}, `
+        context += `the player chose "${choiceText}" `
+        context += `(${pattern} pattern), `
+        context += `demonstrating ${demonstratedSkills.join(', ')}. `
+
+        // Add relationship/pattern depth if available
+        const dominantPattern = Object.entries(state.gameState.patterns)
+          .reduce((max, curr) => curr[1] > max[1] ? curr : max, ['exploring', 0])
+        if (dominantPattern[1] >= 5) {
+          context += `This aligns with their emerging ${dominantPattern[0]} identity. `
+        }
+
+        // Add scene context
+        context += `[${state.currentNode.nodeId}]`
+
         skillTrackerRef.current.recordSkillDemonstration(
           state.currentNode.nodeId,
           choice.choice.choiceId,
           demonstratedSkills,
-          `Demonstrated ${demonstratedSkills.join(', ')}`
+          context
         )
       }
 
