@@ -68,9 +68,11 @@ import { generateJourneyNarrative, isJourneyComplete, type JourneyNarrative } fr
 import { evaluateAchievements, type MetaAchievement } from '@/lib/meta-achievements'
 import { selectAmbientEvent, IDLE_CONFIG, type AmbientEvent } from '@/lib/ambient-events'
 import { PATTERN_TYPES, type PatternType, getPatternSensation, isValidPattern } from '@/lib/patterns'
+import { calculatePatternGain } from '@/lib/identity-system'
 import { getConsequenceEcho, checkPatternThreshold as checkPatternEchoThreshold, getPatternRecognitionEcho, getVoicedChoiceText, applyPatternReflection, getOrbMilestoneEcho, type ConsequenceEcho } from '@/lib/consequence-echoes'
 import { useOrbs } from '@/hooks/useOrbs'
 import { ProgressToast } from '@/components/ProgressToast'
+import { selectAnnouncement } from '@/lib/platform-announcements'
 // FoxTheatreGlow import removed - unused
 // Share prompts removed - too obtrusive
 
@@ -358,8 +360,23 @@ export default function StatefulGameInterface() {
         gameState.characters.set(actualCharacterId, character)
       }
 
-      const content = DialogueGraphNavigator.selectContent(currentNode, character.conversationHistory)
+      let content = DialogueGraphNavigator.selectContent(currentNode, character.conversationHistory)
       const choices = StateConditionEvaluator.evaluateChoices(currentNode, gameState, actualCharacterId).filter(c => c.visible)
+
+      // Session Boundary Detection (clean, minimal)
+      // If this node is marked as a session boundary, show atmospheric announcement
+      if (currentNode.metadata?.sessionBoundary === true) {
+        const announcement = selectAnnouncement(gameState.sessionBoundariesCrossed)
+        // Replace content with atmospheric announcement
+        content = {
+          ...content,
+          text: announcement,
+          emotion: 'atmospheric'
+        }
+        // Increment counter for next boundary
+        gameState.sessionBoundariesCrossed += 1
+        // Track silently in PostHog (analytics handled separately)
+      }
 
       // Apply pattern reflection to NPC dialogue based on player's patterns
       // Node-level patternReflection takes precedence over content-level
@@ -468,7 +485,15 @@ export default function StatefulGameInterface() {
       const trustBefore = state.gameState.characters.get(state.currentCharacterId)?.trust ?? 0
 
       if (choice.choice.consequence) newGameState = GameStateUtils.applyStateChange(newGameState, choice.choice.consequence)
-      if (choice.choice.pattern) newGameState = GameStateUtils.applyStateChange(newGameState, { patternChanges: { [choice.choice.pattern]: 1 } })
+
+      // Apply pattern change with identity bonus (if internalized)
+      if (choice.choice.pattern) {
+        const baseGain = 1
+        const modifiedGain = calculatePatternGain(baseGain, choice.choice.pattern, newGameState)
+        newGameState = GameStateUtils.applyStateChange(newGameState, {
+          patternChanges: { [choice.choice.pattern]: modifiedGain }
+        })
+      }
 
       // Earn orb for pattern choice - Show minimal toast (Pokemon: Low HP beep principle)
       if (choice.choice.pattern && isValidPattern(choice.choice.pattern)) {
