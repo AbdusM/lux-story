@@ -29,6 +29,8 @@ export interface GameState {
   currentNodeId: string // Current position in dialogue graph
   currentCharacterId: 'samuel' | 'maya' | 'devon' | 'jordan' | 'marcus' | 'tess' | 'yaquin' | 'kai' | 'alex' | 'rohan' | 'silas' // Current character being talked to
   thoughts: ActiveThought[]
+  episodeNumber: number  // Track which episode the player is on
+  sessionStartTime: number  // When current session started (for episode timer)
 }
 
 /**
@@ -113,6 +115,8 @@ export interface SerializableGameState {
   currentNodeId: string
   currentCharacterId: 'samuel' | 'maya' | 'devon' | 'jordan' | 'marcus' | 'tess' | 'yaquin' | 'kai' | 'alex' | 'rohan' | 'silas'
   thoughts: ActiveThought[]
+  episodeNumber: number
+  sessionStartTime: number
 }
 
 /**
@@ -261,7 +265,9 @@ export class GameStateUtils {
       lastSaved: state.lastSaved,
       currentNodeId: state.currentNodeId,
       currentCharacterId: state.currentCharacterId,
-      thoughts: [...state.thoughts]
+      thoughts: [...state.thoughts],
+      episodeNumber: state.episodeNumber,
+      sessionStartTime: state.sessionStartTime
     }
   }
 
@@ -296,7 +302,9 @@ export class GameStateUtils {
       lastSaved: Date.now(),
       currentNodeId: 'station_arrival', // Start with atmospheric intro before Samuel
       currentCharacterId: 'samuel', // Game begins with the Station Keeper
-      thoughts: []
+      thoughts: [],
+      episodeNumber: 1,  // Start at episode 1
+      sessionStartTime: Date.now()  // Track when session started
     }
   }
 
@@ -332,7 +340,9 @@ export class GameStateUtils {
       lastSaved: state.lastSaved,
       currentNodeId: state.currentNodeId,
       currentCharacterId: state.currentCharacterId,
-      thoughts: state.thoughts
+      thoughts: state.thoughts,
+      episodeNumber: state.episodeNumber,
+      sessionStartTime: state.sessionStartTime
     }
   }
 
@@ -357,7 +367,9 @@ export class GameStateUtils {
       lastSaved: serialized.lastSaved,
       currentNodeId: serialized.currentNodeId,
       currentCharacterId: serialized.currentCharacterId,
-      thoughts: serialized.thoughts || []
+      thoughts: serialized.thoughts || [],
+      episodeNumber: serialized.episodeNumber || 1,  // Default to episode 1 for old saves
+      sessionStartTime: serialized.sessionStartTime || Date.now()  // Default to now for old saves
     }
   }
 }
@@ -404,7 +416,9 @@ export class StateValidation {
       lastSaved: Date.now(),
       currentNodeId: '',
       currentCharacterId: 'samuel',
-      thoughts: []
+      thoughts: [],
+      episodeNumber: 1,
+      sessionStartTime: Date.now()
     }
     return !!findCharacterForNode(nodeId, minimalState)
   }
