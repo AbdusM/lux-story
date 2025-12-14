@@ -503,8 +503,10 @@ All day. Don't fix teeth. fix fear. That's what I'm selling.`,
         addGlobalFlags: ['yaquin_arc_complete', 'yaquin_launched']
       }
     ],
-    tags: ['ending', 'yaquin_arc']
-  },
+    tags: ['ending', 'yaquin_arc'],
+    metadata: {
+      sessionBoundary: true  // Session 1: Introduction complete
+    }  },
 
   {
     nodeId: 'yaquin_audience_first',
@@ -876,8 +878,10 @@ What would you do?`,
         }
       }
     ],
-    tags: ['phase2', 'yaquin_arc', 'product_strategy']
-  },
+    tags: ['phase2', 'yaquin_arc', 'product_strategy'],
+    metadata: {
+      sessionBoundary: true  // Session 2: Crossroads complete
+    }  },
 
   {
     nodeId: 'yaquin_p2_scaling_offer',

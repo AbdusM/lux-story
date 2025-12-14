@@ -543,8 +543,10 @@ But at least it means something.`,
         }
       }
     ],
-    tags: ['tess_arc', 'climax']
-  },
+    tags: ['tess_arc', 'climax'],
+    metadata: {
+      sessionBoundary: true  // Session 1: Introduction complete
+    }  },
 
   // ============= DECISIONS =============
   {
@@ -925,8 +927,10 @@ This time it's real.`,
         skills: ['emotionalIntelligence']
       }
     ],
-    tags: ['phase2', 'tess_arc']
-  },
+    tags: ['phase2', 'tess_arc'],
+    metadata: {
+      sessionBoundary: true  // Session 2: Arc complete
+    }  },
 
   {
     nodeId: 'tess_p2_resolution',

@@ -353,8 +353,10 @@ They looked healthy for weeks. Green leaves, good structure. Then one morning. y
         skills: ['empathy']
       }
     ],
-    tags: ['silas_arc', 'failure_story']
-  },
+    tags: ['silas_arc', 'failure_story'],
+    metadata: {
+      sessionBoundary: true  // Session 1: Introduction complete
+    }  },
 
   {
     nodeId: 'silas_sensor_problem',
@@ -709,8 +711,10 @@ By Sunday, he was talking to a tomato plant. Not ironically. He'd realized the p
         skills: ['curriculumDesign']
       }
     ],
-    tags: ['silas_arc', 'feral_lab']
-  },
+    tags: ['silas_arc', 'feral_lab'],
+    metadata: {
+      sessionBoundary: true  // Session 2: Crossroads complete
+    }  },
 
   {
     nodeId: 'silas_workshop_result',
@@ -955,8 +959,10 @@ Tell Samuel I said thanks. For building a station where people like me can find 
         addGlobalFlags: ['silas_arc_complete']
       }
     ],
-    tags: ['transition', 'silas_arc', 'good_ending']
-  },
+    tags: ['transition', 'silas_arc', 'good_ending'],
+    metadata: {
+      sessionBoundary: true  // Session 3: Resolution reached
+    }  },
 
   // ============= BAD ENDING =============
   {

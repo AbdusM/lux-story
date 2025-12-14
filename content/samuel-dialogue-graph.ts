@@ -527,8 +527,10 @@ export const samuelDialogueNodes: DialogueNode[] = [
         addKnowledgeFlags: ['knows_samuel_was_traveler']
       }
     ],
-    tags: ['backstory', 'fridge_logic_fix', 'samuel_arc']
-  },
+    tags: ['backstory', 'fridge_logic_fix', 'samuel_arc'],
+    metadata: {
+      sessionBoundary: true  // Session 1: Introduction complete
+    }  },
 
   {
     nodeId: 'samuel_origin_choice',
@@ -761,8 +763,10 @@ export const samuelDialogueNodes: DialogueNode[] = [
         // No visibleCondition - always available
       }
     ],
-    tags: ['orb_introduction', 'tutorial', 'samuel_arc']
-  },
+    tags: ['orb_introduction', 'tutorial', 'samuel_arc'],
+    metadata: {
+      sessionBoundary: true  // Session 2: Deeper engagement
+    }  },
   {
     nodeId: 'samuel_orb_explanation',
     speaker: 'Samuel Washington',
@@ -3764,8 +3768,10 @@ export const samuelDialogueNodes: DialogueNode[] = [
         skills: ['communication']
       }
     ],
-    tags: ['comprehensive_hub', 'navigation', 'samuel_arc']
-  },
+    tags: ['comprehensive_hub', 'navigation', 'samuel_arc'],
+    metadata: {
+      sessionBoundary: true  // Session 3: Pattern revelation
+    }  },
 
   // ============= PATTERN OBSERVATION (Trust-gated wisdom) =============
   // These nodes are pattern-specific - players see the one matching their dominant play style
