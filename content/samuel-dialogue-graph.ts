@@ -12,6 +12,7 @@ import {
   DialogueGraph
 } from '@/lib/dialogue-graph'
 import { mayaRevisitEntryPoints } from './maya-revisit-graph'
+import { samuelIdentityNodes } from './samuel-identity-nodes'
 
 export const samuelDialogueNodes: DialogueNode[] = [
   // ============= ATMOSPHERIC ARRIVAL =============
@@ -917,6 +918,9 @@ export const samuelDialogueNodes: DialogueNode[] = [
         variation_id: 'hub_heart_v1'
       }
     ],
+    metadata: {
+      sessionBoundary: true  // Session 1 complete: Samuel intro → Gateway to other characters
+    },
     choices: [
       {
         choiceId: 'meet_maya_from_heart',
@@ -1814,6 +1818,9 @@ export const samuelDialogueNodes: DialogueNode[] = [
         variation_id: 'patience_wisdom_v1_pt2'
       }
     ],
+    metadata: {
+      sessionBoundary: true  // Session 2 complete: Deeper pattern reflection
+    },
     choices: [
       {
         choiceId: 'continue_from_patience',
@@ -4922,7 +4929,12 @@ export const samuelDialogueNodes: DialogueNode[] = [
       }
     ],
     tags: ['orb_gated', 'patience', 'samuel_backstory', 'mastery_tier']
-  }
+  },
+
+  // ============= IDENTITY DIALOGUES =============
+  // Triggered when patterns cross threshold 5
+  // Samuel notices emerging identity and creates space for reflection
+  ...samuelIdentityNodes
 ]
 
 // ============= PUBLIC API: EXPORTED ENTRY POINTS =============
@@ -4987,7 +4999,14 @@ export const samuelEntryPoints = {
   HELPING_MASTERY: 'samuel_orb_helping_mastery',
   BUILDING_MASTERY: 'samuel_orb_building_mastery',
   EXPLORING_MASTERY: 'samuel_orb_exploring_mastery',
-  PATIENCE_MASTERY: 'samuel_orb_patience_mastery'
+  PATIENCE_MASTERY: 'samuel_orb_patience_mastery',
+
+  /** Identity dialogues (pattern threshold 5 - Disco Elysium mechanic) */
+  IDENTITY_ANALYTICAL: 'samuel_identity_analytical',
+  IDENTITY_PATIENCE: 'samuel_identity_patience',
+  IDENTITY_EXPLORING: 'samuel_identity_exploring',
+  IDENTITY_HELPING: 'samuel_identity_helping',
+  IDENTITY_BUILDING: 'samuel_identity_building'
 } as const
 
 // Type export for TypeScript autocomplete
