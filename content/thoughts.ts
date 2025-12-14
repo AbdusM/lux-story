@@ -148,6 +148,50 @@ export const THOUGHT_REGISTRY: Record<string, ThoughtDefinition> = {
     iconName: 'Shield',
     color: 'purple',
     maxProgress: 100
+  },
+
+  // ============= IDENTITY OFFERING THOUGHTS (Threshold 5) =============
+  // These auto-trigger when pattern crosses threshold 5
+  // Disco Elysium principle: "Is this who you are?"
+  'identity-analytical': {
+    id: 'identity-analytical',
+    title: 'The Analytical Observer',
+    description: 'You notice yourself counting the rivets on the platform railing. Cataloging. Measuring. Analyzing patterns in the rust.\n\nIs this who you are?\n\nINTERNALIZE: Embrace your analytical nature. Future analytical gains +20%. Characters acknowledge your chosen path.\n\nDISCARD: Stay flexible. No identity lock-in. Continue developing other patterns.',
+    iconName: 'Brain',
+    color: 'blue',
+    maxProgress: 100
+  },
+  'identity-patience': {
+    id: 'identity-patience',
+    title: 'The Patient Observer',
+    description: 'The train arrives when it arrives. You find yourself settling into the bench, watching others rush past. You\'ve learned that some things can\'t be hurried.\n\nIs this who you are?\n\nINTERNALIZE: Embrace your patient nature. Future patience gains +20%. Characters notice your calm presence.\n\nDISCARD: Stay flexible. No identity lock-in. Continue developing other patterns.',
+    iconName: 'Shield',
+    color: 'purple',
+    maxProgress: 100
+  },
+  'identity-exploring': {
+    id: 'identity-exploring',
+    title: 'The Curious Wanderer',
+    description: 'You\'ve walked every platform at least twice. Checked every alcove. Asked questions others didn\'t think to ask. The unknown pulls at you like gravity.\n\nIs this who you are?\n\nINTERNALIZE: Embrace your curious nature. Future exploring gains +20%. Characters recognize your adventurous spirit.\n\nDISCARD: Stay flexible. No identity lock-in. Continue developing other patterns.',
+    iconName: 'Leaf',
+    color: 'emerald',
+    maxProgress: 100
+  },
+  'identity-helping': {
+    id: 'identity-helping',
+    title: 'The Compassionate Heart',
+    description: 'When Maya looked scattered, you didn\'t see a problem to solve. You saw a person who needed someone to listen. Your chest tightens when others struggle.\n\nIs this who you are?\n\nINTERNALIZE: Embrace your compassionate nature. Future helping gains +20%. Characters feel your genuine care.\n\nDISCARD: Stay flexible. No identity lock-in. Continue developing other patterns.',
+    iconName: 'Heart',
+    color: 'rose',
+    maxProgress: 100
+  },
+  'identity-building': {
+    id: 'identity-building',
+    title: 'The Creative Builder',
+    description: 'Your hands itch when you see something broken. Not to fix it back to what it was, but to make it better. Every problem feels like a project waiting to be built.\n\nIs this who you are?\n\nINTERNALIZE: Embrace your builder nature. Future building gains +20%. Characters rely on your constructive approach.\n\nDISCARD: Stay flexible. No identity lock-in. Continue developing other patterns.',
+    iconName: 'Hammer',
+    color: 'amber',
+    maxProgress: 100
   }
 }
 
