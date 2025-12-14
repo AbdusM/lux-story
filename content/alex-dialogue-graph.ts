@@ -321,11 +321,11 @@ Weird, right? We spend all this time on syntax and none on "why should anyone ca
     ],
     choices: [
       {
-        choiceId: 'to_turn_from_success',
-        text: "That changes how I think about learning.",
-        nextNodeId: 'alex_turn',
-        pattern: 'analytical',
-        skills: ['criticalThinking']
+        choiceId: 'alex_success_to_breaking',
+        text: "What made you realize that?",
+        nextNodeId: 'alex_bootcamp_breaking_point',
+        pattern: 'exploring',
+        skills: ['emotionalIntelligence', 'criticalThinking']
       }
     ],
     tags: ['alex_arc']
@@ -353,9 +353,9 @@ I got tired of pretending I had answers I didn't have.`,
     ],
     choices: [
       {
-        choiceId: 'to_turn_from_cares',
-        text: "Honesty is rare. That matters.",
-        nextNodeId: 'alex_turn',
+        choiceId: 'alex_cares_to_breaking',
+        text: "What was the moment you knew you had to stop?",
+        nextNodeId: 'alex_bootcamp_breaking_point',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
         consequence: {
@@ -389,11 +389,11 @@ It's dumb. It won't look good on a resume. But it's the first thing that's felt 
     ],
     choices: [
       {
-        choiceId: 'to_turn_from_learning',
-        text: "That doesn't sound dumb at all.",
-        nextNodeId: 'alex_turn',
+        choiceId: 'alex_learning_to_project',
+        text: "Tell me more about what you're building.",
+        nextNodeId: 'alex_llm_project_reveal',
         pattern: 'exploring',
-        skills: ['emotionalIntelligence'],
+        skills: ['emotionalIntelligence', 'communication'],
         consequence: {
           characterId: 'alex',
           trustChange: 1
@@ -429,9 +429,9 @@ Probably wouldn't make any money.`,
     ],
     choices: [
       {
-        choiceId: 'to_turn_from_no_watching',
-        text: "That sounds worth building.",
-        nextNodeId: 'alex_turn',
+        choiceId: 'alex_no_watching_to_project',
+        text: "Have you started building it?",
+        nextNodeId: 'alex_llm_project_reveal',
         pattern: 'building',
         skills: ['creativity', 'leadership'],
         consequence: {
@@ -467,14 +467,482 @@ Sometimes the slow realization is the only honest one. The quick pivots, the "fa
     ],
     choices: [
       {
-        choiceId: 'to_turn_from_time',
+        choiceId: 'alex_time_to_breaking',
         text: "What was the real question?",
-        nextNodeId: 'alex_turn',
+        nextNodeId: 'alex_bootcamp_breaking_point',
         pattern: 'patience',
-        skills: ['emotionalIntelligence']
+        skills: ['emotionalIntelligence', 'criticalThinking']
       }
     ],
     tags: ['alex_arc']
+  },
+
+  // ============= EXPANSION: BOOTCAMP BACKSTORY =============
+  {
+    nodeId: 'alex_bootcamp_breaking_point',
+    speaker: 'Alex',
+    content: [
+      {
+        text: `*Sets down coffee. Long pause.*
+
+Cohort 3. Final presentations.
+
+One student—brilliant kid, genuinely talented—built this beautiful accessibility tool for blind coders. Screen reader integration, custom keyboard shortcuts, the whole thing.
+
+*Voice quiet.*
+
+They couldn't get past the resume screen. No CS degree. "Insufficient experience." Meanwhile, another student who copy-pasted tutorial projects got three offers because they had "Full-Stack Developer" in the right font on LinkedIn.
+
+I realized I was teaching people to play a game I didn't understand and couldn't win.`,
+        emotion: 'haunted',
+        interaction: 'shake',
+        variation_id: 'breaking_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'alex_breaking_student',
+        text: "What happened to the student with the accessibility tool?",
+        nextNodeId: 'alex_student_failure_story',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication'],
+        consequence: {
+          characterId: 'alex',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'alex_breaking_game',
+        text: "The game is broken. That's not on you.",
+        nextNodeId: 'alex_moral_injury',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'emotionalIntelligence'],
+        consequence: {
+          characterId: 'alex',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['alex_arc', 'backstory']
+  },
+
+  {
+    nodeId: 'alex_student_failure_story',
+    speaker: 'Alex',
+    content: [
+      {
+        text: `*Looks away.*
+
+Last I heard? Working retail. Still coding on weekends. Still applying.
+
+They messaged me six months later asking if I thought they should do another bootcamp. A different one. "Maybe this time."
+
+*Bitter.*
+
+I didn't know what to tell them. "Keep trying" felt like a lie. "Give up" felt worse.
+
+So I told them to take a break. Figure out what they actually wanted. And I started wondering if I should take my own advice.`,
+        emotion: 'regretful',
+        interaction: 'nod',
+        variation_id: 'failure_story_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'alex_student_to_hype',
+        text: "Is it different now? With AI?",
+        nextNodeId: 'alex_ai_hype_cycle',
+        pattern: 'exploring',
+        skills: ['criticalThinking', 'adaptability']
+      }
+    ],
+    tags: ['alex_arc', 'backstory']
+  },
+
+  {
+    nodeId: 'alex_moral_injury',
+    speaker: 'Alex',
+    content: [
+      {
+        text: `Maybe. But I was the one standing in front of them saying "This will change your life."
+
+Charging them money. Promising outcomes I couldn't guarantee. Watching them blame themselves when the system failed them.
+
+*Quiet.*
+
+You ever hear the term "moral injury"? It's when you're complicit in something that violates your values. Even if you didn't create the system.
+
+That's what teaching bootcamps felt like. I became part of the machine that grinds people up.`,
+        emotion: 'vulnerable_angry',
+        interaction: 'shake',
+        variation_id: 'moral_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'alex_moral_to_hype',
+        text: "So you left. And now?",
+        nextNodeId: 'alex_ai_hype_cycle',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'adaptability'],
+        consequence: {
+          characterId: 'alex',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['alex_arc', 'backstory']
+  },
+
+  // ============= EXPANSION: CREDENTIAL TRAP DEEPENING =============
+  {
+    nodeId: 'alex_ai_hype_cycle',
+    speaker: 'Alex',
+    content: [
+      {
+        text: `*Laughs darkly.*
+
+Now I write documentation for AI tools and watch the exact same cycle.
+
+"Learn prompt engineering!" "No wait, prompt engineering is dead!" "Actually, you need to understand transformers!" "Just use Claude/GPT/whatever's new this week!"
+
+*Shakes head.*
+
+Same treadmill. New branding. Same people selling courses. Same people panicking they're falling behind.
+
+The tools change every six months. The anxiety stays the same.`,
+        emotion: 'cynical_knowing',
+        interaction: 'shake',
+        variation_id: 'hype_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'alex_hype_exhausting',
+        text: "Doesn't that get exhausting? Constantly relearning?",
+        nextNodeId: 'alex_learning_treadmill',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'adaptability'],
+        consequence: {
+          characterId: 'alex',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'alex_hype_leverage',
+        text: "But someone has to understand the tools, right?",
+        nextNodeId: 'alex_learning_treadmill',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'adaptability']
+      }
+    ],
+    tags: ['alex_arc', 'credential_critique']
+  },
+
+  {
+    nodeId: 'alex_learning_treadmill',
+    speaker: 'Alex',
+    content: [
+      {
+        text: `*Leans back.*
+
+Here's the thing nobody says out loud:
+
+You can't keep up. The treadmill is designed so you can't keep up.
+
+Because if you ever felt "done," you'd stop buying courses. Stop clicking ads. Stop refreshing LinkedIn wondering if you're obsolete.
+
+*Quieter.*
+
+The system needs you anxious. Anxious people are profitable.
+
+I was selling that anxiety for three years. Now I'm writing docs for tools that perpetuate it.
+
+<bloom>But</bloom>—and here's where it gets interesting—I'm also finally learning stuff I actually care about again.`,
+        emotion: 'revealing',
+        interaction: 'bloom',
+        variation_id: 'treadmill_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'alex_treadmill_care',
+        text: "What are you learning that you care about?",
+        nextNodeId: 'alex_llm_project_reveal',
+        pattern: 'exploring',
+        skills: ['emotionalIntelligence', 'communication']
+      }
+    ],
+    tags: ['alex_arc', 'credential_critique'],
+    metadata: {
+      sessionBoundary: true  // Session 2: Deeper revelation
+    }
+  },
+
+  // ============= EXPANSION: GENUINE LEARNING REDISCOVERY =============
+  {
+    nodeId: 'alex_llm_project_reveal',
+    speaker: 'Alex',
+    content: [
+      {
+        text: `*Shifts laptop so you can see the screen.*
+
+I'm building a... I don't even know what to call it. A conversation tool? An anti-curriculum?
+
+It asks you questions about what you're curious about. Not what job you want. Not what salary. Just—what makes you want to learn more?
+
+Then it helps you figure out <bloom>how you like to learn</bloom>. Not which course to buy. How your brain actually works.
+
+*Self-conscious.*
+
+It's messy. Unmonetizable. Probably nobody needs it. But it's the first thing I've built in years that feels honest.`,
+        emotion: 'vulnerable_proud',
+        interaction: 'bloom',
+        variation_id: 'project_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'alex_project_why',
+        text: "Why does that feel different than the bootcamp?",
+        nextNodeId: 'alex_curiosity_rekindled',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'emotionalIntelligence'],
+        consequence: {
+          characterId: 'alex',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'alex_project_unmonetizable',
+        text: "Maybe unmonetizable means you're onto something real.",
+        nextNodeId: 'alex_curiosity_rekindled',
+        pattern: 'building',
+        skills: ['creativity', 'leadership'],
+        consequence: {
+          characterId: 'alex',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['alex_arc', 'transformation']
+  },
+
+  {
+    nodeId: 'alex_curiosity_rekindled',
+    speaker: 'Alex',
+    content: [
+      {
+        text: `*Small smile.*
+
+Because I'm not selling an outcome.
+
+Bootcamps sell the promise: "Do this, get that." Linear. Guaranteed. Except it's not.
+
+This? This is just... exploration. Following curiosity. Asking questions nobody asked me to answer.
+
+*Looks at screen.*
+
+I've been up till 2am three nights this week. Not because of a deadline. Not because someone's paying me.
+
+Because I forgot what happened next in my own code and had to find out.
+
+That's the feeling. That's what we should be chasing. Not certificates. <ripple>That.</ripple>`,
+        emotion: 'illuminated',
+        interaction: 'bloom',
+        variation_id: 'curiosity_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'alex_curiosity_to_player',
+        text: "How do I figure out what 'that' is for me?",
+        nextNodeId: 'alex_player_learning_pattern',
+        pattern: 'exploring',
+        skills: ['adaptability', 'criticalThinking']
+      }
+    ],
+    tags: ['alex_arc', 'transformation']
+  },
+
+  // ============= EXPANSION: PLAYER APPLICATION =============
+  {
+    nodeId: 'alex_player_learning_pattern',
+    speaker: 'Alex',
+    content: [
+      {
+        text: `*Thoughtful.*
+
+Okay. Real talk. Forget what I taught at bootcamps. Forget the curriculum. Here's what actually matters:
+
+Notice what you do when nobody's watching.
+
+What Wikipedia rabbit holes do you fall into? What YouTube videos do you watch at 1am? What do you explain to people even when they didn't ask?
+
+*Gestures.*
+
+That's your pattern. That's the shape of your curiosity.
+
+Most people try to force themselves into "marketable skills." But the people who actually break through? They find the overlap between what fascinates them and what's useful.
+
+You've been making choices this whole conversation. What patterns are you seeing in yourself?`,
+        emotion: 'teaching_honest',
+        interaction: 'nod',
+        variation_id: 'player_pattern_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'alex_pattern_analytical',
+        text: "I like understanding how things work. Systems. Causes.",
+        nextNodeId: 'alex_crossroads_moment',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'adaptability']
+      },
+      {
+        choiceId: 'alex_pattern_helping',
+        text: "I care about people. What helps them. What hurts them.",
+        nextNodeId: 'alex_crossroads_moment',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication']
+      },
+      {
+        choiceId: 'alex_pattern_exploring',
+        text: "I'm always asking 'what if?' Connecting dots others miss.",
+        nextNodeId: 'alex_crossroads_moment',
+        pattern: 'exploring',
+        skills: ['creativity', 'adaptability']
+      },
+      {
+        choiceId: 'alex_pattern_building',
+        text: "I want to make things. Ship things. See them exist in the world.",
+        nextNodeId: 'alex_crossroads_moment',
+        pattern: 'building',
+        skills: ['creativity', 'leadership']
+      },
+      {
+        choiceId: 'alex_pattern_patience',
+        text: "I take my time. Let things develop. Notice what others rush past.",
+        nextNodeId: 'alex_crossroads_moment',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'adaptability']
+      }
+    ],
+    tags: ['alex_arc', 'player_reflection']
+  },
+
+  {
+    nodeId: 'alex_crossroads_moment',
+    speaker: 'Alex',
+    content: [
+      {
+        text: `*Nods slowly.*
+
+Yeah. I see it. The pattern is there.
+
+Most people never stop to notice it. They just keep chasing what they're "supposed to" learn.
+
+But here's the crossroads:
+
+You can use that pattern to chase credentials—get really good at gaming the system, collecting the right keywords, playing the LinkedIn game.
+
+Or you can use it to chase genuine mastery—following what actually fascinates you, even when it's not trending.
+
+*Serious.*
+
+Both are valid. Both can work. But only one of them will still matter to you in five years.
+
+Which one pulls you?`,
+        emotion: 'challenging',
+        interaction: 'nod',
+        variation_id: 'crossroads_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'alex_crossroads_mastery',
+        text: "I want the real thing. Even if it's harder.",
+        nextNodeId: 'alex_final_synthesis',
+        pattern: 'building',
+        skills: ['leadership', 'adaptability'],
+        consequence: {
+          characterId: 'alex',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'alex_crossroads_pragmatic',
+        text: "I need to be practical. Bills don't pay themselves.",
+        nextNodeId: 'alex_final_synthesis',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'adaptability'],
+        consequence: {
+          characterId: 'alex',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'alex_crossroads_both',
+        text: "Can it be both? Practical AND meaningful?",
+        nextNodeId: 'alex_final_synthesis',
+        pattern: 'patience',
+        skills: ['criticalThinking', 'emotionalIntelligence'],
+        consequence: {
+          characterId: 'alex',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['alex_arc', 'pivotal', 'decision']
+  },
+
+  {
+    nodeId: 'alex_final_synthesis',
+    speaker: 'Alex',
+    content: [
+      {
+        text: `*Leans forward.*
+
+Listen. The real answer is this:
+
+The credentials will come if you get good at something that matters. But you only get good at things you can sustain caring about.
+
+I watched hundreds of students burn out chasing skills they didn't care about. The ones who made it? They found the thing they'd do for free and figured out how to get paid for it.
+
+*Gestures around Platform 8.*
+
+This whole station—it's not about finding the "right path." It's about learning to recognize your own signal in all the noise.
+
+You're doing that. Right now. Keep doing it.
+
+And be suspicious of anyone—<bloom>including me</bloom>—who makes it sound simple.`,
+        emotion: 'knowing_warm',
+        interaction: 'bloom',
+        variation_id: 'synthesis_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'alex_synthesis_to_turn',
+        text: "[Continue]",
+        nextNodeId: 'alex_turn',
+        pattern: 'exploring'
+      }
+    ],
+    tags: ['alex_arc', 'synthesis'],
+    metadata: {
+      sessionBoundary: true  // Session 3: Transformation complete
+    }
   },
 
   // ============= SCENE 3: THE TURN =============
@@ -556,32 +1024,200 @@ Some things need time. Some things need you to stop waiting and act. The wisdom 
     ],
     choices: [
       {
-        choiceId: 'alex_final_both',
+        choiceId: 'alex_turn_practical',
+        text: "Okay, but practically—what do I do tomorrow?",
+        nextNodeId: 'alex_practical_advice',
+        pattern: 'building',
+        skills: ['adaptability', 'leadership']
+      },
+      {
+        choiceId: 'alex_turn_fear',
         text: "What if I'm both curious AND scared?",
-        nextNodeId: 'alex_closing_both',
+        nextNodeId: 'alex_fear_acknowledgment',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'adaptability']
       },
       {
-        choiceId: 'alex_final_enough',
-        text: "How do I know when I've learned enough?",
-        nextNodeId: 'alex_closing_enough',
+        choiceId: 'alex_turn_balance',
+        text: "How do I balance credentials and genuine learning?",
+        nextNodeId: 'alex_credential_wisdom',
         pattern: 'analytical',
-        skills: ['criticalThinking']
+        skills: ['criticalThinking', 'adaptability']
+      }
+    ],
+    tags: ['alex_arc', 'climax', 'revelation']
+  },
+
+  // ============= EXPANSION: PRACTICAL APPLICATION =============
+  {
+    nodeId: 'alex_practical_advice',
+    speaker: 'Alex',
+    content: [
+      {
+        text: `*Straightens.*
+
+Tomorrow? Here's what I'd do if I were starting over:
+
+<bloom>One:</bloom> Pick something small you're actually curious about. Not "marketable." Curious.
+
+<bloom>Two:</bloom> Build something with it. Doesn't matter if it's useful. Doesn't matter if it's been done. Build it anyway.
+
+<bloom>Three:</bloom> When you get stuck—and you will—resist the urge to buy a course. Struggle first. The struggle is where learning happens.
+
+<bloom>Four:</bloom> Share what you made. Not for likes. To practice explaining your thinking.
+
+*Shrugs.*
+
+That's it. Repeat until you've built enough things you can see your own patterns. Then you'll know what to learn next.
+
+No curriculum required.`,
+        emotion: 'direct_practical',
+        interaction: 'nod',
+        variation_id: 'practical_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'alex_practical_to_platform',
+        text: "Is that what Platform 8 teaches?",
+        nextNodeId: 'alex_platform_8_meaning',
+        pattern: 'exploring',
+        skills: ['criticalThinking', 'communication']
+      }
+    ],
+    tags: ['alex_arc', 'practical']
+  },
+
+  {
+    nodeId: 'alex_fear_acknowledgment',
+    speaker: 'Alex',
+    content: [
+      {
+        text: `*Laughs.*
+
+Both is the only honest answer.
+
+Anyone who says they're not scared is either lying or not paying attention.
+
+I'm scared right now. Scared this side project won't lead anywhere. Scared I wasted three years teaching bootcamps. Scared I'm wrong about all of this.
+
+*Quieter.*
+
+But here's the thing: the fear doesn't go away when you find the "right path."
+
+The fear goes away when you stop needing the path to be right and start being okay with figuring it out.
+
+<bloom>Curiosity is how you live with the fear.</bloom> Not how you eliminate it.`,
+        emotion: 'vulnerable_warm',
+        interaction: 'bloom',
+        variation_id: 'fear_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'alex_fear_to_platform',
+        text: "That's what this place is about, isn't it?",
+        nextNodeId: 'alex_platform_8_meaning',
+        pattern: 'exploring',
+        skills: ['emotionalIntelligence', 'communication']
+      }
+    ],
+    tags: ['alex_arc', 'emotional']
+  },
+
+  {
+    nodeId: 'alex_credential_wisdom',
+    speaker: 'Alex',
+    content: [
+      {
+        text: `*Thoughtful.*
+
+You don't have to choose between them. But you do have to know which one you're optimizing for at any given moment.
+
+If you need a job next month? Get the credentials. Play the game. Use the keywords. Do what you have to do.
+
+But don't confuse survival strategy with actual learning.
+
+*Gestures.*
+
+The credentials are <bloom>signaling</bloom>. The learning is <bloom>substance</bloom>.
+
+You need both. But if you only chase signals, you end up hollow. And if you only chase substance, you might starve while you're learning.
+
+The wisdom is knowing when to do which.
+
+*Small smile.*
+
+And being honest about it. That's the part most people skip.`,
+        emotion: 'balanced_wise',
+        interaction: 'nod',
+        variation_id: 'wisdom_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'alex_wisdom_to_platform',
+        text: "How does Platform 8 fit into all this?",
+        nextNodeId: 'alex_platform_8_meaning',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'communication']
+      }
+    ],
+    tags: ['alex_arc', 'wisdom']
+  },
+
+  {
+    nodeId: 'alex_platform_8_meaning',
+    speaker: 'Alex',
+    content: [
+      {
+        text: `*Looks around at the screens, the frozen progress bars, the cycling headlines.*
+
+Platform 8. "The Learning Loop."
+
+Samuel set it up as a mirror. A place where you see all the noise—the hype cycles, the anxiety, the treadmill—and decide whether you want to keep running.
+
+Most travelers come through, panic, and leave. They want me to tell them which course to take.
+
+But you? You stayed. You asked different questions.
+
+*Meets your eyes.*
+
+That's the loop. Not the courses. Not the credentials.
+
+The loop is: <bloom>Learn. Reflect. Choose. Repeat.</bloom>
+
+You're already doing it. Platform 8 just gave you permission to notice.`,
+        emotion: 'affirming_profound',
+        interaction: 'bloom',
+        variation_id: 'platform_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'alex_platform_both',
+        text: "Thank you. This helped.",
+        nextNodeId: 'alex_closing_both',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication']
       },
       {
-        choiceId: 'alex_final_next',
+        choiceId: 'alex_platform_next',
         text: "What's next for you?",
         nextNodeId: 'alex_closing_next',
         pattern: 'exploring',
-        skills: ['emotionalIntelligence', 'communication'],
+        skills: ['communication'],
         consequence: {
           characterId: 'alex',
           trustChange: 1
         }
       }
     ],
-    tags: ['alex_arc', 'climax', 'revelation']
+    tags: ['alex_arc', 'revelation', 'meta']
   },
 
   // ============= SCENE 4: THE REFRAME / CLOSING =============
