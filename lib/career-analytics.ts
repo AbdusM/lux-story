@@ -6,7 +6,7 @@
  */
 
 import { getPersonaTracker, type PlayerPersona } from './player-persona'
-import { getPersonalizedOpportunities } from './birmingham-opportunities'
+import { getPersonalizedOpportunities } from '../content/birmingham-opportunities'
 import type { Choice } from './story-engine'
 import { logger } from './logger'
 
