@@ -56,6 +56,14 @@ export interface DialogueNode {
     altText: string
     altEmotion?: string
   }>
+
+  /**
+   * Node metadata for system features
+   * sessionBoundary: Marks this node as a natural pause point in the narrative
+   */
+  metadata?: {
+    sessionBoundary?: boolean
+  }
 }
 
 /**

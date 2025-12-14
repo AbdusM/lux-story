@@ -424,7 +424,8 @@ export class StateValidation {
       currentCharacterId: 'samuel',
       thoughts: [],
       episodeNumber: 1,
-      sessionStartTime: Date.now()
+      sessionStartTime: Date.now(),
+      sessionBoundariesCrossed: 0
     }
     return !!findCharacterForNode(nodeId, minimalState)
   }

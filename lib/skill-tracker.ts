@@ -15,7 +15,6 @@
 
 import { FutureSkillsSystem } from './2030-skills-system'
 import { safeStorage } from './safe-storage'
-import { SCENE_SKILL_MAPPINGS, type SceneSkillMapping } from './scene-skill-mappings'
 import { logger } from './logger'
 
 // Legacy SimpleGameState type (from removed useSimpleGame hook)
@@ -227,9 +226,8 @@ export class SkillTracker {
       totalDemonstrations: this.demonstrations.length
     })
 
-    // Look up scene mapping for rich context
-    const sceneMapping = SCENE_SKILL_MAPPINGS[sceneId]
-    const sceneDescription = sceneMapping?.sceneDescription || `Scene: ${sceneId}`
+    // Simple scene description (detailed mappings removed to reduce bloat)
+    const sceneDescription = `Scene: ${sceneId}`
 
     // Create demonstration record
     const demonstration: SkillDemonstration = {
@@ -379,34 +377,14 @@ export class SkillTracker {
   }
 
   /**
-   * Extract demonstrations - PRIORITY: Rich scene mappings, FALLBACK: Pattern detection
+   * Extract demonstrations - Pattern-based skill detection
    */
   private extractDemonstrations(
     choice: { text: string; pattern?: string; id?: string },
     scene: string,
     gameState: SimpleGameState
   ): SkillDemonstration[] {
-    // PRIORITY 1: Check for scene-specific mapping with rich context
-    const sceneMapping = SCENE_SKILL_MAPPINGS[scene]
-
-    if (sceneMapping) {
-      // Try to find matching choice in scene mappings
-      const choiceMapping = this.findChoiceMapping(sceneMapping, choice)
-
-      if (choiceMapping) {
-        // Use rich context from scene mapping
-        return [{
-          scene,
-          sceneDescription: sceneMapping.sceneDescription,
-          choice: choice.text,
-          skillsDemonstrated: choiceMapping.skillsDemonstrated,
-          context: choiceMapping.context, // Rich 100-150 word context!
-          timestamp: Date.now()
-        }]
-      }
-    }
-
-    // FALLBACK: Pattern-based detection if no scene mapping
+    // Pattern-based detection
     const skills = this.detectSkillsFromPattern(choice)
 
     // Add scene-specific skill additions
@@ -423,32 +401,6 @@ export class SkillTracker {
       context: this.generateContext(choice, scene, gameState),
       timestamp: Date.now()
     }]
-  }
-
-  /**
-   * Find matching choice in scene mappings
-   * Matches by choice ID or text similarity
-   */
-  private findChoiceMapping(
-    sceneMapping: SceneSkillMapping,
-    choice: { text: string; pattern?: string; id?: string }
-  ): { skillsDemonstrated: string[]; context: string } | null {
-    // Try exact match by choice ID first
-    if (choice.id && sceneMapping.choiceMappings[choice.id]) {
-      return sceneMapping.choiceMappings[choice.id]
-    }
-
-    // Try fuzzy match by choice text
-    const choiceText = choice.text.toLowerCase()
-    for (const [choiceId, mapping] of Object.entries(sceneMapping.choiceMappings)) {
-      // Simple substring match (can be improved with string similarity)
-      if (choiceText.includes(choiceId.toLowerCase()) ||
-          choiceId.toLowerCase().includes(choiceText.substring(0, 20))) {
-        return mapping
-      }
-    }
-
-    return null
   }
 
   /**
@@ -940,13 +892,7 @@ export class SkillTracker {
   }
 
   private getSceneDescription(scene: string): string {
-    // Use rich description from scene mapping if available
-    const sceneMapping = SCENE_SKILL_MAPPINGS[scene]
-    if (sceneMapping) {
-      return sceneMapping.sceneDescription
-    }
-
-    // Fallback to simple formatting
+    // Simple formatting: convert underscores to spaces and capitalize
     return scene.replace(/_/g, ' ').replace(/^\w/, c => c.toUpperCase())
   }
 

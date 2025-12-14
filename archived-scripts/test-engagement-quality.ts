@@ -28,7 +28,8 @@ function createTestGameState(profile: {
     lastSaved: Date.now(),
     thoughts: [],
     episodeNumber: 1,
-    sessionStartTime: Date.now()
+    sessionStartTime: Date.now(),
+    sessionBoundariesCrossed: 0
   }
   
   // Add characters

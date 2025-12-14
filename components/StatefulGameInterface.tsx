@@ -44,7 +44,6 @@ import {
 } from '@/lib/graph-registry'
 import { samuelEntryPoints } from '@/content/samuel-dialogue-graph'
 import { SkillTracker } from '@/lib/skill-tracker'
-import { SCENE_SKILL_MAPPINGS } from '@/lib/scene-skill-mappings'
 import { queueRelationshipSync, queuePlatformStateSync } from '@/lib/sync-queue'
 import { useGameStore } from '@/lib/game-store'
 import { CHOICE_HANDLER_TIMEOUT_MS } from '@/lib/constants'
@@ -631,25 +630,14 @@ export default function StatefulGameInterface() {
       // Note: Toast removed as user found it intrusive. Skills still tracked silently.
       let demonstratedSkills: string[] = []
 
-      if (skillTrackerRef.current && state.currentNode) {
-        const sceneMapping = SCENE_SKILL_MAPPINGS[state.currentNode.nodeId]
-        if (sceneMapping && sceneMapping.choiceMappings[choice.choice.choiceId]) {
-            demonstratedSkills = sceneMapping.choiceMappings[choice.choice.choiceId].skillsDemonstrated
-            skillTrackerRef.current.recordSkillDemonstration(
-              state.currentNode.nodeId,
-              choice.choice.choiceId,
-              demonstratedSkills,
-              sceneMapping.choiceMappings[choice.choice.choiceId].context
-            )
-        } else if (choice.choice.skills) {
-            demonstratedSkills = choice.choice.skills as string[]
-            skillTrackerRef.current.recordSkillDemonstration(
-              state.currentNode.nodeId,
-              choice.choice.choiceId,
-              demonstratedSkills,
-              `Demonstrated ${demonstratedSkills.join(', ')}`
-            )
-        }
+      if (skillTrackerRef.current && state.currentNode && choice.choice.skills) {
+        demonstratedSkills = choice.choice.skills as string[]
+        skillTrackerRef.current.recordSkillDemonstration(
+          state.currentNode.nodeId,
+          choice.choice.choiceId,
+          demonstratedSkills,
+          `Demonstrated ${demonstratedSkills.join(', ')}`
+        )
       }
 
       const skillsToKeep = demonstratedSkills.length > 0
