@@ -32,8 +32,16 @@ export interface JourneyNarrative {
   patternReflection: string
   relationshipReflections: RelationshipReflection[]
   skillHighlights: SkillHighlight[]
+  careerInsights?: CareerPathInsight[]
   closingWisdom: string
   journeyStats: JourneyStats
+}
+
+interface CareerPathInsight {
+  careerArea: string
+  confidence: number
+  reason: string
+  birminghamOpportunities: string[]
 }
 
 interface RelationshipReflection {
@@ -265,6 +273,74 @@ ${closings[index]}
 }
 
 /**
+ * Generate career path insights from behavioral patterns
+ * Maps patterns → career clusters with Birmingham opportunities
+ */
+function generateCareerInsights(stats: JourneyStats): CareerPathInsight[] {
+  const insights: CareerPathInsight[] = []
+
+  const { dominantPattern, secondaryPattern } = stats
+
+  // Pattern → Career mapping with Birmingham-specific opportunities
+  const patternCareerMap: Record<string, { area: string; confidence: number; reason: string; birmingham: string[] }> = {
+    helping: {
+      area: 'Healthcare & Service',
+      confidence: 75,
+      reason: 'Your helping pattern shows you gravitate toward roles where you support others directly.',
+      birmingham: ['UAB Medical Center - Nursing Programs', 'Children\'s of Alabama - Volunteer Opportunities', 'Community Foundation - Service Programs']
+    },
+    analytical: {
+      area: 'Technology & Research',
+      confidence: 70,
+      reason: 'Your analytical approach suggests careers where data-driven thinking matters.',
+      birmingham: ['Regions Bank - IT Programs', 'UAB Informatics - Health Tech', 'BBVA Innovation Center']
+    },
+    building: {
+      area: 'Engineering & Making',
+      confidence: 80,
+      reason: 'Your building pattern shows you enjoy creating tangible solutions.',
+      birmingham: ['Southern Company - Engineering Programs', 'Nucor Steel - Manufacturing', 'Innovation Depot - Maker Space']
+    },
+    patience: {
+      area: 'Education & Mentorship',
+      confidence: 65,
+      reason: 'Your patient approach suggests teaching or guiding others could fit.',
+      birmingham: ['Birmingham City Schools - Teaching', 'UAB Education Programs', 'Community Education Partners']
+    },
+    exploring: {
+      area: 'Creative & Adaptive Roles',
+      confidence: 60,
+      reason: 'Your exploratory style suggests roles with variety and discovery.',
+      birmingham: ['REV Birmingham - Community Development', 'Birmingham Arts District', 'Velocity Accelerator - Startups']
+    }
+  }
+
+  // Add primary career match
+  const primaryMatch = patternCareerMap[dominantPattern]
+  if (primaryMatch) {
+    insights.push({
+      careerArea: primaryMatch.area,
+      confidence: primaryMatch.confidence,
+      reason: primaryMatch.reason,
+      birminghamOpportunities: primaryMatch.birmingham
+    })
+  }
+
+  // Add secondary match (lower confidence)
+  const secondaryMatch = patternCareerMap[secondaryPattern]
+  if (secondaryMatch && secondaryPattern !== dominantPattern) {
+    insights.push({
+      careerArea: secondaryMatch.area,
+      confidence: Math.floor(secondaryMatch.confidence * 0.7), // 70% of primary confidence
+      reason: secondaryMatch.reason,
+      birminghamOpportunities: secondaryMatch.birmingham.slice(0, 2) // Show fewer for secondary
+    })
+  }
+
+  return insights
+}
+
+/**
  * Calculate journey statistics from game state
  */
 function calculateStats(gameState: GameState | SerializableGameState): JourneyStats {
@@ -324,6 +400,7 @@ export function generateJourneyNarrative(
     patternReflection: generatePatternReflection(stats),
     relationshipReflections: generateRelationshipReflections(gameState),
     skillHighlights: generateSkillHighlights(demonstrations || []),
+    careerInsights: generateCareerInsights(stats),
     closingWisdom: generateClosingWisdom(stats),
     journeyStats: stats
   }

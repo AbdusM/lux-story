@@ -51,6 +51,7 @@ export function JourneySummary({ narrative, onClose }: JourneySummaryProps) {
     { id: 'patterns', title: 'Your Patterns', icon: Sparkles },
     { id: 'relationships', title: 'Connections Made', icon: Heart },
     { id: 'skills', title: 'Skills Demonstrated', icon: BookOpen },
+    { id: 'careers', title: 'Career Paths', icon: Compass },
     { id: 'closing', title: 'Samuel\'s Wisdom', icon: Compass }
   ]
 
@@ -222,6 +223,59 @@ export function JourneySummary({ narrative, onClose }: JourneySummaryProps) {
                 </div>
               ))}
             </div>
+          </div>
+        )
+
+      case 'careers':
+        return (
+          <div className="space-y-6">
+            <p className="text-slate-600" style={{ fontFamily: 'Georgia, serif' }}>
+              *Samuel pulls out a map of Birmingham, marked with possibilities.*
+            </p>
+
+            <p className="text-slate-700" style={{ fontFamily: 'Georgia, serif' }}>
+              "Based on how you moved through these conversations, here's where I see you fitting in Birmingham:"
+            </p>
+
+            {narrative.careerInsights && narrative.careerInsights.length > 0 ? (
+              <div className="space-y-4">
+                {narrative.careerInsights.map((insight, idx) => (
+                  <div
+                    key={idx}
+                    className="bg-gradient-to-r from-emerald-50 to-white border border-emerald-200 rounded-lg p-4 space-y-3"
+                  >
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-medium text-emerald-900">{insight.careerArea}</h4>
+                      <Badge className="bg-emerald-100 text-emerald-800 border-emerald-300">
+                        {insight.confidence}% match
+                      </Badge>
+                    </div>
+
+                    <p className="text-slate-700 text-sm italic">
+                      "{insight.reason}"
+                    </p>
+
+                    <div className="pt-2 border-t border-emerald-100">
+                      <p className="text-xs font-medium text-emerald-700 uppercase tracking-wide mb-2">
+                        Birmingham Opportunities
+                      </p>
+                      <ul className="space-y-1">
+                        {insight.birminghamOpportunities.map((opp, oppIdx) => (
+                          <li key={oppIdx} className="text-sm text-slate-600 flex items-start">
+                            <span className="mr-2">•</span>
+                            <span>{opp}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-slate-500 italic">
+                "Keep exploring. The more conversations you have, the clearer the path becomes."
+              </p>
+            )}
           </div>
         )
 
