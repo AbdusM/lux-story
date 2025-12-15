@@ -790,13 +790,162 @@ What do I tell them? That it's okay to fail six times first?`,
     }],
     choices: [
       {
-        choiceId: 'jordan_continue_to_reciprocity',
+        choiceId: 'jordan_to_student_question',
+        text: "What would they ask you?",
+        nextNodeId: 'jordan_student_question',
+        pattern: 'exploring',
+        skills: ['communication', 'emotionalIntelligence']
+      }
+    ],
+    tags: ['vulnerability', 'jordan_arc']
+  },
+
+  // EXPANSION: Student question
+  {
+    nodeId: 'jordan_student_question',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: `Last year. Different bootcamp. Student raised her hand.
+
+"How do you know when to quit versus when to push through?"
+
+*Quiet.*
+
+I froze. Because I still don't know.`,
+      emotion: 'haunted',
+      variation_id: 'student_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'jordan_student_to_voice',
+        text: "What did you say?",
+        nextNodeId: 'jordan_impostor_voice',
+        pattern: 'exploring',
+        skills: ['communication']
+      }
+    ],
+    tags: ['jordan_arc', 'student_interaction']
+  },
+
+  // EXPANSION: Impostor voice
+  {
+    nodeId: 'jordan_impostor_voice',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: `Said something about trusting your gut. Sounded wise.
+
+Felt like a fraud.
+
+*Looks at speech notes.*
+
+Voice in my head: "Who are you to teach? You couldn't even keep one job."`,
+      emotion: 'raw',
+      variation_id: 'impostor_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'jordan_voice_to_taught',
+        text: "But you did learn something. From all seven.",
+        nextNodeId: 'jordan_what_jobs_taught',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication'],
+        consequence: {
+          characterId: 'jordan',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['jordan_arc', 'impostor_syndrome']
+  },
+
+  // EXPANSION: What jobs taught
+  {
+    nodeId: 'jordan_what_jobs_taught',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: `*Pause.*
+
+Yeah. I did.
+
+UX taught me people lie about what they want. Watch what they do.
+
+Gym taught me motivation beats talent.
+
+Marketing taught me stories matter more than features.
+
+*Looks up.*
+
+Seven jobs. Same lesson different ways: Pay attention. Adapt. Keep going.`,
+      emotion: 'realizing',
+      variation_id: 'taught_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'jordan_taught_to_clarity',
+        text: "That IS the speech.",
+        nextNodeId: 'jordan_moment_clarity',
+        pattern: 'building',
+        skills: ['communication', 'leadership']
+      }
+    ],
+    tags: ['jordan_arc', 'insight']
+  },
+
+  // EXPANSION: Moment of clarity
+  {
+    nodeId: 'jordan_moment_clarity',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: `*Stands. Paces.*
+
+Wait.
+
+Those students. They're not betting on one path.
+
+They're betting on themselves. To figure it out. To adapt when it doesn't work.
+
+Maybe that's what I tell them.`,
+      emotion: 'energized',
+      variation_id: 'clarity_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'jordan_clarity_to_question',
+        text: "You just answered your own question.",
+        nextNodeId: 'jordan_final_doubt',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
+      }
+    ],
+    tags: ['jordan_arc', 'breakthrough']
+  },
+
+  // EXPANSION: Final doubt before crossroads
+  {
+    nodeId: 'jordan_final_doubt',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: `Still scared though.
+
+Thirty faces. Hoping I have answers.
+
+*Checks time.*
+
+Speech in twenty minutes.
+
+Which version of this story do I tell?`,
+      emotion: 'determined_anxious',
+      variation_id: 'doubt_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'jordan_doubt_to_ask',
         text: "(Continue)",
         nextNodeId: 'jordan_asks_player',
         pattern: 'patience'
       }
     ],
-    tags: ['vulnerability', 'jordan_arc']
+    tags: ['jordan_arc', 'transition']
   },
 
   // ... [RECIPROCITY, CROSSROADS, ENDINGS - STANDARD] ...
