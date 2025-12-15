@@ -1,9 +1,12 @@
 /**
- * Orb System - Insight Currency for Lux Story
+ * Orb System - Pattern Progress for Lux Story
  *
  * Orbs represent self-knowledge earned through choices.
- * Players earn orbs by making choices that demonstrate patterns,
- * and can allocate them to unlock career insights and dialogue options.
+ * Players earn orbs by making choices that demonstrate patterns.
+ * Orb fill levels track progress and unlock achievement milestones.
+ *
+ * Note: Orbs are earned-only. No allocation/spending mechanism exists.
+ * The "availableToAllocate" field is vestigial from early design.
  *
  * Inspired by LinkDap's orb economy and Diablo's attribute system.
  */
