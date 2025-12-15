@@ -18,7 +18,7 @@ interface BirminghamTooltipProps {
   className?: string
 }
 
-export function BirminghamTooltip({ location, context, children, className }: BirminghamTooltipProps) {
+export function BirminghamTooltip({ location: _location, context, children, className }: BirminghamTooltipProps) {
   const [isOpen, setIsOpen] = useState(false)
 
   return (

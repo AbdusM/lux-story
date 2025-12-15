@@ -1,6 +1,6 @@
 import { findCharacterForNode } from './graph-registry'
 import { ActiveThought, THOUGHT_REGISTRY } from '@/content/thoughts'
-import { calculateResonantTrustChange, getDominantPattern } from './pattern-affinity'
+import { calculateResonantTrustChange } from './pattern-affinity'
 import { PatternType } from './patterns'
 
 /**
@@ -191,7 +191,7 @@ export class GameStateUtils {
 
         // Calculate resonant trust change based on player's pattern affinity
         // This makes certain characters connect better with certain play styles
-        const { modifiedTrust, resonanceTriggered, resonanceDescription } =
+        const { modifiedTrust, resonanceTriggered: _resonanceTriggered, resonanceDescription: _resonanceDescription } =
           calculateResonantTrustChange(
             change.trustChange,
             change.characterId,

@@ -9,7 +9,7 @@
  * should work without requiring authenticated user context.
  */
 
-import { getAdminSupabaseClient } from './admin-supabase-client'
+import { getAdminSupabaseClientOrNull } from './admin-supabase-client'
 import { logger } from './logger'
 
 export interface UserProfileData {
@@ -38,7 +38,16 @@ export async function ensureUserProfile(
 
   try {
     // Use admin client to bypass RLS - profile creation should always work
-    const supabase = getAdminSupabaseClient()
+    const supabase = getAdminSupabaseClientOrNull()
+
+    // If Supabase isn't configured, return success to allow game to continue
+    if (!supabase) {
+      logger.debug('Supabase not configured - skipping profile ensure', {
+        operation: 'ensure-user-profile.skip',
+        userId
+      })
+      return true // Allow game to continue in local-only mode
+    }
 
     // Use upsert for idempotency - only inserts if record doesn't exist
     const { error } = await supabase
@@ -148,7 +157,12 @@ export async function userProfileExists(userId: string): Promise<boolean> {
   }
 
   try {
-    const supabase = getAdminSupabaseClient()
+    const supabase = getAdminSupabaseClientOrNull()
+    if (!supabase) {
+      // Supabase not configured - assume profile doesn't exist but allow game to continue
+      return false
+    }
+
     const { data, error } = await supabase
       .from('player_profiles')
       .select('user_id')

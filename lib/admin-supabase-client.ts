@@ -32,6 +32,9 @@ export function requireAdminAuth(request: NextRequest): NextResponse | null {
   return null // Auth passed
 }
 
+// Cache whether we've already logged the missing env var warning
+let _missingEnvWarningLogged = false
+
 /**
  * Get authenticated admin Supabase client
  *
@@ -49,6 +52,36 @@ export function getAdminSupabaseClient() {
     if (!supabaseUrl) missing.push('NEXT_PUBLIC_SUPABASE_URL or SUPABASE_URL')
     if (!serviceRoleKey) missing.push('SUPABASE_SERVICE_ROLE_KEY')
     throw new Error(`Missing Supabase environment variables: ${missing.join(', ')}`)
+  }
+
+  return createClient(supabaseUrl, serviceRoleKey, {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false
+    }
+  })
+}
+
+/**
+ * Get admin Supabase client or null if not configured
+ * Use this for optional database operations that should gracefully degrade
+ *
+ * @returns Supabase client or null if env vars are missing
+ */
+export function getAdminSupabaseClientOrNull() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+
+  if (!supabaseUrl || !serviceRoleKey) {
+    // Only log warning once to prevent console spam
+    if (!_missingEnvWarningLogged) {
+      _missingEnvWarningLogged = true
+      const missing = []
+      if (!supabaseUrl) missing.push('SUPABASE_URL')
+      if (!serviceRoleKey) missing.push('SUPABASE_SERVICE_ROLE_KEY')
+      console.warn(`[AdminSupabase] Missing env vars: ${missing.join(', ')}. Database operations will be skipped.`)
+    }
+    return null
   }
 
   return createClient(supabaseUrl, serviceRoleKey, {

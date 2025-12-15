@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "PORT=3005 next dev",
+    "prebuild": "node scripts/validate-build-config.cjs",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
