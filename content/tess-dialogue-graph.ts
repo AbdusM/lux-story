@@ -145,6 +145,17 @@ This isn't a store. It's where real gets discovered before the algorithm buries 
     ],
     choices: [
       {
+        choiceId: 'tess_shop_story',
+        text: "Tell me about someone this place changed.",
+        nextNodeId: 'tess_customer_moment',
+        pattern: 'exploring',
+        skills: ['communication', 'emotionalIntelligence'],
+        consequence: {
+          characterId: 'tess',
+          trustChange: 2
+        }
+      },
+      {
         choiceId: 'tess_shop_romantic',
         text: "That matters. But can it pay the bills?",
         nextNodeId: 'tess_the_numbers',
@@ -254,6 +265,43 @@ That's what this place does. Was. Is supposed to.`,
     ]
   },
 
+  // EXPANSION: Customer story
+  {
+    nodeId: 'tess_customer_moment',
+    speaker: 'Tess',
+    content: [
+      {
+        text: `Kid came in last week. Sixteen. Headphones generation.
+
+Said her mom used to come here. Before she died.
+
+Spent three hours listening. Crying. Finding pieces of her mom in the grooves.
+
+*Quiet.*
+
+Can't do that on Spotify.`,
+        emotion: 'moved',
+        interaction: 'small',
+        variation_id: 'customer_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'tess_customer_to_numbers',
+        text: "That's why this matters.",
+        nextNodeId: 'tess_the_numbers',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'tess',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['tess_arc', 'story']
+  },
+
   {
     nodeId: 'tess_the_numbers',
     speaker: 'Tess',
@@ -261,7 +309,7 @@ That's what this place does. Was. Is supposed to.`,
       {
         text: `Here's reality. Vinyl sales cover rent. Barely.
 
-Shows used to pay the rest. But venues closing everywhere. Competition with living rooms and headphones.
+Shows used to pay the rest. Venues closing everywhere.
 
 Last three months. Red. Red. Red.
 
@@ -274,6 +322,17 @@ Developer's offer sits on my desk like a loaded question.`,
     ],
     choices: [
       {
+        choiceId: 'tess_numbers_fear',
+        text: "What scares you most? Selling or staying?",
+        nextNodeId: 'tess_real_fear',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication'],
+        consequence: {
+          characterId: 'tess',
+          trustChange: 2
+        }
+      },
+      {
         choiceId: 'tess_numbers_pivot',
         text: "What if you pivoted? Changed the model?",
         nextNodeId: 'tess_the_pitch_setup',
@@ -281,7 +340,7 @@ Developer's offer sits on my desk like a loaded question.`,
         skills: ['problemSolving', 'creativity'],
         consequence: {
           characterId: 'tess',
-          trustChange: 2
+          trustChange: 1
         }
       },
       {
@@ -290,16 +349,42 @@ Developer's offer sits on my desk like a loaded question.`,
         nextNodeId: 'tess_decision_cautious_path',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'adaptability']
-      },
-      {
-        choiceId: 'tess_numbers_explore',
-        text: "What options have you considered?",
-        nextNodeId: 'tess_the_pitch_setup',
-        pattern: 'exploring',
-        skills: ['criticalThinking', 'communication']
       }
     ],
     tags: ['tess_arc', 'decision_point']
+  },
+
+  // EXPANSION: Real fear
+  {
+    nodeId: 'tess_real_fear',
+    speaker: 'Tess',
+    content: [
+      {
+        text: `Selling? I'd survive. Get a condo. Retire early.
+
+Staying? I might fail. Lose everything anyway.
+
+*Pause.*
+
+But the real fear? Becoming what I left corporate for.
+
+Phony. Safe. Optimized.`,
+        emotion: 'raw',
+        interaction: 'shake',
+        variation_id: 'fear_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'tess_fear_to_pitch',
+        text: "Then let's find a way that stays real.",
+        nextNodeId: 'tess_the_pitch_setup',
+        pattern: 'building',
+        skills: ['problemSolving', 'emotionalIntelligence']
+      }
+    ],
+    tags: ['tess_arc', 'vulnerability']
   },
 
   // ============= THE PITCH (Reinvention Scenario) =============
@@ -516,7 +601,7 @@ But at least it means something.`,
       {
         choiceId: 'climax_bold',
         text: "Do it. Call the developer. Tell them no.",
-        nextNodeId: 'tess_decision_made',
+        nextNodeId: 'tess_moment_before',
         pattern: 'building',
         skills: ['problemSolving', 'adaptability'],
         consequence: {
@@ -527,14 +612,14 @@ But at least it means something.`,
       {
         choiceId: 'climax_time',
         text: "Take a week. Let it settle.",
-        nextNodeId: 'tess_decision_made',
+        nextNodeId: 'tess_moment_before',
         pattern: 'patience',
         skills: ['leadership', 'emotionalIntelligence']
       },
       {
         choiceId: 'climax_explore',
         text: "What's the first step? Start there.",
-        nextNodeId: 'tess_decision_made',
+        nextNodeId: 'tess_moment_before',
         pattern: 'exploring',
         skills: ['problemSolving', 'criticalThinking'],
         consequence: {
@@ -547,6 +632,36 @@ But at least it means something.`,
     metadata: {
       sessionBoundary: true  // Session 1: Introduction complete
     }  },
+
+  // EXPANSION: Moment before
+  {
+    nodeId: 'tess_moment_before',
+    speaker: 'Tess',
+    content: [
+      {
+        text: `*Looks at the wall of photos. Twelve years.*
+
+Every artist up there. Before anyone cared.
+
+*Turns back.*
+
+Yeah. I'm calling.`,
+        emotion: 'resolute',
+        interaction: 'nod',
+        variation_id: 'moment_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'moment_to_decision',
+        text: "[Watch]",
+        nextNodeId: 'tess_decision_made',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['tess_arc', 'decision']
+  },
 
   // ============= DECISIONS =============
   {
@@ -902,9 +1017,9 @@ Developer again. Raised the offer.`,
 
 You're right. Can't catch anything if I fall first.
 
-Know what's funny? I left corporate because it felt fake. Now I'm building my own business. Same pressure. But different.
+Know what's funny? I left corporate because it felt fake. Now I'm building my own business. Same pressure.
 
-This time it's real.`,
+But different. This time it's real.`,
         emotion: 'determined',
         interaction: 'nod',
         variation_id: 'p2_solution_v1',
@@ -913,24 +1028,84 @@ This time it's real.`,
     ],
     choices: [
       {
-        choiceId: 'p2_next',
-        text: "What's the first thing you'll change?",
-        nextNodeId: 'tess_p2_resolution',
+        choiceId: 'p2_solution_action',
+        text: "So what's the first move?",
+        nextNodeId: 'tess_p2_first_hire',
         pattern: 'building',
-        skills: ['problemSolving']
-      },
-      {
-        choiceId: 'p2_reflect',
-        text: "Real matters more.",
-        nextNodeId: 'tess_p2_resolution',
-        pattern: 'helping',
-        skills: ['emotionalIntelligence']
+        skills: ['problemSolving', 'leadership']
       }
     ],
     tags: ['phase2', 'tess_arc'],
     metadata: {
-      sessionBoundary: true  // Session 2: Arc complete
-    }  },
+      sessionBoundary: true  // Session 2: Crossroads complete
+    }
+  },
+
+  // EXPANSION: First hire
+  {
+    nodeId: 'tess_p2_first_hire',
+    speaker: 'Tess',
+    content: [
+      {
+        text: `Posted for help yesterday. Barista slash music lover. Part-time.
+
+Applications flooded in. People want to be part of this.
+
+*Shows phone.*
+
+One girl. Sixteen. Same kid from before. Her mom's old record shop.
+
+She gets it. Hired her this morning.`,
+        emotion: 'hopeful',
+        interaction: 'bloom',
+        variation_id: 'p2_hire_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'p2_hire_to_community',
+        text: "That's a full circle.",
+        nextNodeId: 'tess_p2_community_proof',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
+      }
+    ],
+    tags: ['phase2', 'tess_arc']
+  },
+
+  // EXPANSION: Community proof
+  {
+    nodeId: 'tess_p2_community_proof',
+    speaker: 'Tess',
+    content: [
+      {
+        text: `Artist came in last night. Said she found her sound here. Listening party, three months ago.
+
+Signed to a label last week. Independent. Small. Real.
+
+First thing she did? Booked a show here. "Where it started."
+
+*Quiet.*
+
+This is why. Not money. This.`,
+        emotion: 'moved',
+        interaction: 'bloom',
+        variation_id: 'p2_community_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'p2_community_to_resolution',
+        text: "You're building something that lasts.",
+        nextNodeId: 'tess_p2_resolution',
+        pattern: 'building',
+        skills: ['emotionalIntelligence', 'communication']
+      }
+    ],
+    tags: ['phase2', 'tess_arc']
+  },
 
   {
     nodeId: 'tess_p2_resolution',
