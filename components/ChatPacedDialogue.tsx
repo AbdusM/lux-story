@@ -6,12 +6,19 @@ import { motion } from 'framer-motion'
 import { interactionAnimations, type InteractionType } from '@/lib/interaction-parser'
 import { getVoiceClass } from '@/lib/voice-utils'
 import { getCharacterTyping } from '@/lib/character-typing'
+import { useUnlockEffects } from '@/hooks/useUnlockEffects'
+import { EmotionTag, TrustDisplay, Subtext } from './unlock-enhancements'
+import type { GameState } from '@/lib/character-state'
 
 interface ChatPacedDialogueProps {
   /** The dialogue text with chunks separated by | or \n\n */
   text: string
   /** Character name for the typing indicator */
   characterName: string
+  /** Character ID for unlock effects (trust display, etc.) */
+  characterId?: string
+  /** Game state for unlock effects */
+  gameState?: GameState
   /** Show character avatar */
   showAvatar?: boolean
   /** Delay between chunks in milliseconds (default: 1500) */
@@ -52,6 +59,8 @@ interface ChatPacedDialogueProps {
 export function ChatPacedDialogue({
   text,
   characterName,
+  characterId,
+  gameState,
   showAvatar = true,
   chunkDelay: _chunkDelay = 1500,
   typingDuration: typingDurationProp,
@@ -61,6 +70,9 @@ export function ChatPacedDialogue({
   emotion,
   playerPatterns: _playerPatterns
 }: ChatPacedDialogueProps) {
+  // Get unlock-based content enhancements
+  const enhancements = useUnlockEffects(text, emotion, characterId, characterName, gameState)
+
   // Get character-specific typing config
   const characterTyping = getCharacterTyping(characterName)
   const typingDuration = typingDurationProp ?? characterTyping.typingDuration
@@ -336,8 +348,8 @@ export function ChatPacedDialogue({
         {isTyping && (
           <div className="flex items-center gap-2 chat-typing-indicator">
             {showAvatar && (
-              <CharacterAvatar 
-                characterName={characterName} 
+              <CharacterAvatar
+                characterName={characterName}
                 size="sm"
                 isTyping={true}
                 showAvatar={showAvatar}
@@ -353,6 +365,31 @@ export function ChatPacedDialogue({
                 <span className="dot">.</span>
               </div>
             </div>
+          </div>
+        )}
+
+        {/* Unlock-based content enhancements - shown after all chunks displayed */}
+        {!isTyping && visibleChunks.length > 0 && (
+          <div className="space-y-2 mt-3">
+            {/* Emotion tag (Analytical unlock) */}
+            {enhancements.showEmotionTag && emotion && (
+              <div className="flex items-center gap-2">
+                <EmotionTag emotion={emotion} />
+              </div>
+            )}
+
+            {/* Trust level display (Helping unlock) */}
+            {enhancements.showTrustLevel && enhancements.trustValue !== undefined && (
+              <TrustDisplay
+                trust={enhancements.trustValue}
+                characterName={characterName}
+              />
+            )}
+
+            {/* Analytical subtext hints */}
+            {enhancements.subtextHint && (
+              <Subtext text={enhancements.subtextHint} />
+            )}
           </div>
         )}
       </div>

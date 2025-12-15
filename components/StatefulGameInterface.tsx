@@ -72,6 +72,9 @@ import { getConsequenceEcho, checkPatternThreshold as checkPatternEchoThreshold,
 import { useOrbs } from '@/hooks/useOrbs'
 import { ProgressToast } from '@/components/ProgressToast'
 import { selectAnnouncement } from '@/lib/platform-announcements'
+import { checkSessionBoundary, incrementBoundaryCounter, type SessionAnnouncement } from '@/lib/session-structure'
+import { SessionBoundaryAnnouncement } from '@/components/SessionBoundaryAnnouncement'
+import { OnboardingScreen } from '@/components/OnboardingScreen'
 // FoxTheatreGlow import removed - unused
 // Share prompts removed - too obtrusive
 
@@ -112,6 +115,9 @@ interface GameInterfaceState {
   patternSensation: string | null    // Brief feedback when pattern triggered
   consequenceEcho: ConsequenceEcho | null  // Dialogue-based trust feedback
   patternToast: PatternType | null   // Minimal toast for pattern earned (Pokemon: Low HP beep principle)
+  sessionBoundary: SessionAnnouncement | null  // Session boundary announcement
+  previousTotalNodes: number  // Track total nodes for boundary calculation
+  showOnboarding: boolean  // Show onboarding screen for new players
 }
 
 export default function StatefulGameInterface() {
@@ -163,7 +169,10 @@ export default function StatefulGameInterface() {
     ambientEvent: null,
     patternSensation: null,
     consequenceEcho: null,
-    patternToast: null
+    patternToast: null,
+    sessionBoundary: null,
+    previousTotalNodes: 0,
+    showOnboarding: false
   })
 
   // Rich effects config - KEEPING NEW STAGGERED MODE
@@ -223,6 +232,15 @@ export default function StatefulGameInterface() {
   const idleTimerRef = useRef<NodeJS.Timeout | null>(null)
   const idleCountRef = useRef(0)  // Track how many ambient events shown this idle period
   const lastChoiceTimeRef = useRef(Date.now())
+
+  // Helper to calculate total nodes visited across all characters
+  const getTotalNodesVisited = (gameState: GameState): number => {
+    let total = 0
+    gameState.characters.forEach(char => {
+      total += char.conversationHistory.length
+    })
+    return total
+  }
 
   // Helper to get dominant pattern
   const getDominantPattern = useCallback((): PatternType | undefined => {
@@ -294,6 +312,32 @@ export default function StatefulGameInterface() {
       }
     }
   }, [state.currentNode?.nodeId, resetIdleTimer])
+
+  // Handle atmospheric intro start - check for onboarding
+  const handleAtmosphericIntroStart = useCallback(() => {
+    // Check if onboarding has been seen
+    if (typeof window !== 'undefined') {
+      const hasSeenOnboarding = localStorage.getItem('lux-story-onboarding-seen')
+      if (!hasSeenOnboarding && !hasSaveFile) {
+        // Show onboarding for new players
+        setState(prev => ({ ...prev, showOnboarding: true }))
+        return
+      }
+    }
+    // If onboarding has been seen or is a returning player, start game directly
+    initializeGame()
+  }, [])
+
+  // Handle onboarding dismissal
+  const handleOnboardingDismiss = useCallback(() => {
+    // Mark onboarding as seen
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('lux-story-onboarding-seen', 'true')
+    }
+    setState(prev => ({ ...prev, showOnboarding: false }))
+    // Start the game
+    initializeGame()
+  }, [])
 
   // Initialize game logic
   const initializeGame = useCallback(async () => {
@@ -420,7 +464,10 @@ export default function StatefulGameInterface() {
         ambientEvent: null,
         patternSensation: null,
         consequenceEcho: null,
-        patternToast: null
+        patternToast: null,
+        sessionBoundary: null,
+        previousTotalNodes: getTotalNodesVisited(gameState),
+        showOnboarding: false
       })
 
       // ═══════════════════════════════════════════════════════════════════════════
@@ -603,6 +650,16 @@ export default function StatefulGameInterface() {
       newGameState.currentNodeId = nextNode.nodeId
       newGameState.currentCharacterId = targetCharacterId
 
+      // Check for session boundary (every 8-12 nodes)
+      const boundary = checkSessionBoundary(newGameState, state.previousTotalNodes)
+      let sessionBoundaryAnnouncement: SessionAnnouncement | null = null
+
+      if (boundary.shouldShow && boundary.announcement) {
+        sessionBoundaryAnnouncement = boundary.announcement
+        // Increment boundary counter in game state
+        newGameState = incrementBoundaryCounter(newGameState)
+      }
+
       const content = DialogueGraphNavigator.selectContent(nextNode, targetCharacter.conversationHistory)
       const newChoices = StateConditionEvaluator.evaluateChoices(nextNode, newGameState, targetCharacterId).filter(c => c.visible)
 
@@ -744,7 +801,10 @@ export default function StatefulGameInterface() {
           ambientEvent: null,  // Clear ambient event when player acts
           patternSensation,    // Show pattern feedback if triggered
           consequenceEcho,     // Dialogue-based trust feedback
-          patternToast: state.patternToast  // Preserve pattern toast (set earlier in choice handling)
+          patternToast: state.patternToast,  // Preserve pattern toast (set earlier in choice handling)
+          sessionBoundary: sessionBoundaryAnnouncement,  // Session boundary announcement if triggered
+          previousTotalNodes: getTotalNodesVisited(newGameState),  // Track for next boundary check
+          showOnboarding: state.showOnboarding  // Preserve onboarding state
       })
       GameStateManager.saveGameState(newGameState)
 
@@ -1002,7 +1062,12 @@ export default function StatefulGameInterface() {
 
   // Render Logic - Restored Card Layout
   if (!state.hasStarted) {
-      if (!hasSaveFile) return <AtmosphericIntro onStart={initializeGame} />
+      // Show onboarding screen for new players
+      if (state.showOnboarding) {
+        return <OnboardingScreen onDismiss={handleOnboardingDismiss} isVisible={true} />
+      }
+
+      if (!hasSaveFile) return <AtmosphericIntro onStart={handleAtmosphericIntroStart} />
       return (
         <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 flex items-center justify-center p-4">
             <Card className="w-full max-w-md shadow-xl border-0">
@@ -1101,7 +1166,8 @@ export default function StatefulGameInterface() {
             </div>
           </div>
           {/* Character Info Row - extra vertical padding for mobile touch */}
-          {currentCharacter && (
+          {/* Only show if current node has a speaker (hide for atmospheric narration) */}
+          {currentCharacter && state.currentNode?.speaker && (
             <div
               className="flex items-center justify-between py-3 sm:py-2"
               data-testid="character-header"
@@ -1162,11 +1228,16 @@ export default function StatefulGameInterface() {
               }}
             >
               <Card
-                className="rounded-xl shadow-sm bg-amber-50/40 border-stone-200/60"
+                className={`rounded-xl shadow-sm ${
+                  state.currentNode?.speaker
+                    ? 'bg-amber-50/40 border-stone-200/60'  // Character dialogue - warm, conversational
+                    : 'bg-slate-100/50 border-slate-300/60'  // Atmospheric narration - cooler, environmental
+                }`}
                 style={{ transition: 'none' }}
                 data-testid="dialogue-card"
                 data-node-id={state.gameState?.currentNodeId || ''}
                 data-character-id={state.currentCharacterId}
+                data-is-narration={state.currentNode?.speaker ? undefined : 'true'}
                 data-emotional-beat={
                   state.currentDialogueContent?.interaction === 'ripple' ||
                   state.currentDialogueContent?.interaction === 'bloom' ||
@@ -1184,10 +1255,22 @@ export default function StatefulGameInterface() {
                 }
               >
                 <CardContent
-                  className="p-5 sm:p-8 md:p-10 min-h-[200px] sm:min-h-[300px]"
+                  className={`p-5 sm:p-8 md:p-10 min-h-[200px] sm:min-h-[300px] ${
+                    state.currentNode?.speaker ? '' : 'text-center'  // Center narration text
+                  }`}
                   data-testid="dialogue-content"
                   data-speaker={state.currentNode?.speaker || ''}
                 >
+                  {/* Session Boundary Announcement - Platform pause point */}
+                  {state.sessionBoundary && (
+                    <div className="mb-6">
+                      <SessionBoundaryAnnouncement
+                        announcement={state.sessionBoundary}
+                        onDismiss={() => setState(prev => ({ ...prev, sessionBoundary: null }))}
+                      />
+                    </div>
+                  )}
+
                   {/* Consequence Echo - NPC micro-reaction before their main line */}
                   {state.consequenceEcho && (
                     <div
@@ -1203,9 +1286,12 @@ export default function StatefulGameInterface() {
                     text={state.gameState ? TextProcessor.process(state.currentContent || '', state.gameState) : (state.currentContent || '')}
                     useChatPacing={state.useChatPacing}
                     characterName={state.currentNode?.speaker}
+                    characterId={state.currentCharacterId}
+                    gameState={state.gameState ?? undefined}
                     showAvatar={false}
                     richEffects={getRichEffectContext(state.currentDialogueContent, state.isLoading, state.recentSkills, state.useChatPacing)}
                     interaction={state.currentDialogueContent?.interaction}
+                    emotion={state.currentDialogueContent?.emotion}
                   />
                 </CardContent>
               </Card>

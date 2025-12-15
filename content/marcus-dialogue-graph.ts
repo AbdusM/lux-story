@@ -572,7 +572,7 @@ Started as a nurse. Now? Designing the next machine.`,
       {
         choiceId: 'marcus_biomed_path',
         text: "You'd be amazing at designing them. You know exactly how they fail.",
-        nextNodeId: 'marcus_farewell',
+        nextNodeId: 'marcus_crossroads_3',
         pattern: 'building',
         skills: ['creativity', 'leadership'],
         consequence: {
@@ -583,7 +583,7 @@ Started as a nurse. Now? Designing the next machine.`,
       {
         choiceId: 'marcus_perfusion_path',
         text: "The operating room needs people like you running the console.",
-        nextNodeId: 'marcus_farewell',
+        nextNodeId: 'marcus_crossroads_3',
         pattern: 'building',
         skills: ['leadership'],
         consequence: {
@@ -593,6 +593,308 @@ Started as a nurse. Now? Designing the next machine.`,
       }
     ],
     tags: ['career_bridge', 'marcus_arc']
+  },
+
+  // ============= EXPANSION: Healthcare + Making Journey (7 nodes) =============
+
+  {
+    nodeId: 'marcus_crossroads_3',
+    speaker: 'Marcus',
+    content: [
+      {
+        text: `Designing them. Yeah.
+
+Problem is... the system's broken.
+
+I see patients get readmitted. Same issue. Same machine. Nobody fixed the root cause.
+
+Insurance denies the equipment we need. Use the cheaper version. Doesn't work as well. Patients suffer.
+
+Makes me want to build something better.`,
+        emotion: 'frustrated',
+        variation_id: 'crossroads_3_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'marcus_crossroads_validate',
+        text: "You want to fix it from the inside.",
+        nextNodeId: 'marcus_making_discovery',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication']
+      },
+      {
+        choiceId: 'marcus_crossroads_build',
+        text: "What would you build if you could?",
+        nextNodeId: 'marcus_making_discovery',
+        pattern: 'building',
+        skills: ['creativity', 'problemSolving']
+      }
+    ],
+    tags: ['marcus_arc', 'crossroads', 'healthcare_critique']
+  },
+
+  {
+    nodeId: 'marcus_making_discovery',
+    speaker: 'Marcus',
+    content: [
+      {
+        text: `Six months ago. Patient needed a heart model. For surgery planning.
+
+Surgeon wanted to practice the incision on something real. Something they could hold.
+
+Hospital doesn't have those. Too expensive.
+
+Friend of mine runs a makerspace in Woodlawn. 3D printers. CNC machines.
+
+Brought him the CT scans. He printed a heart. Perfect replica. Silicone.
+
+Surgeon practiced. Surgery went clean.
+
+*Stares at hands.*
+
+I made that happen.`,
+        emotion: 'dawning_realization',
+        interaction: 'bloom',
+        variation_id: 'making_discovery_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'marcus_discovery_both',
+        text: "You're both a nurse and a maker.",
+        nextNodeId: 'marcus_biodesign_realization',
+        pattern: 'analytical',
+        skills: ['systemsThinking', 'communication'],
+        consequence: {
+          characterId: 'marcus',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'marcus_discovery_impact',
+        text: "You saved that patient twice. Once with care, once with making.",
+        nextNodeId: 'marcus_patient_story',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication']
+      }
+    ],
+    tags: ['marcus_arc', 'maker_crossover', 'birmingham']
+  },
+
+  {
+    nodeId: 'marcus_biodesign_realization',
+    speaker: 'Marcus',
+    content: [
+      {
+        text: `Biodesign.
+
+*Looks up.*
+
+UAB has a program. Biomedical Engineering. Design medical devices. 3D-printed prosthetics. Custom surgical tools.
+
+Nursing gives you the clinical knowledge. Making gives you the build skills.
+
+Together? You design things that actually work. Because you know what fails.`,
+        emotion: 'illuminated',
+        variation_id: 'biodesign_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'marcus_biodesign_uab',
+        text: "UAB is right here in Birmingham. You could do this.",
+        nextNodeId: 'marcus_uab_connection',
+        pattern: 'building',
+        skills: ['leadership', 'creativity']
+      },
+      {
+        choiceId: 'marcus_biodesign_why',
+        text: "Why does this matter to you?",
+        nextNodeId: 'marcus_patient_story',
+        pattern: 'exploring',
+        skills: ['communication', 'emotionalIntelligence']
+      }
+    ],
+    tags: ['marcus_arc', 'career_revelation', 'biodesign']
+  },
+
+  {
+    nodeId: 'marcus_uab_connection',
+    speaker: 'Marcus',
+    content: [
+      {
+        text: `UAB. Children's of Alabama. The whole medical district.
+
+Birmingham's got this whole ecosystem. Hospitals. Research labs. Makerspaces.
+
+Could design a device at UAB. Test it at Children's. Build prototypes at Woodlawn makerspace.
+
+All within five miles.
+
+*Small smile.*
+
+Never thought of Birmingham as a medical tech hub. But... it is.`,
+        emotion: 'hopeful',
+        interaction: 'nod',
+        variation_id: 'uab_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'marcus_uab_local',
+        text: "You don't have to leave to do groundbreaking work.",
+        nextNodeId: 'marcus_mentorship_moment',
+        pattern: 'helping',
+        skills: ['encouragement', 'culturalCompetence']
+      },
+      {
+        choiceId: 'marcus_uab_community',
+        text: "You could build for the community you already serve.",
+        nextNodeId: 'marcus_mentorship_moment',
+        pattern: 'building',
+        skills: ['leadership', 'communication'],
+        consequence: {
+          characterId: 'marcus',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['marcus_arc', 'birmingham_opportunity']
+  },
+
+  {
+    nodeId: 'marcus_patient_story',
+    speaker: 'Marcus',
+    content: [
+      {
+        text: `Eight-year-old girl. Cardiac arrest. We got her back, but her heart's weak.
+
+Needs a ventricular assist device. Pediatric-sized. Custom fit.
+
+Standard one's too big. Insurance won't cover custom. Hospital says wait.
+
+She's waiting. Still.
+
+*Quiet.*
+
+I want to build devices that fit her. Not the other way around.
+
+That's why this matters.`,
+        emotion: 'raw_conviction',
+        variation_id: 'patient_story_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'marcus_patient_validate',
+        text: "She's why you're doing this.",
+        nextNodeId: 'marcus_mentorship_moment',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication'],
+        consequence: {
+          characterId: 'marcus',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'marcus_patient_action',
+        text: "You could design that device. You know what she needs.",
+        nextNodeId: 'marcus_biodesign_realization',
+        pattern: 'building',
+        skills: ['problemSolving', 'leadership']
+      }
+    ],
+    tags: ['marcus_arc', 'emotional_anchor', 'patient_care']
+  },
+
+  {
+    nodeId: 'marcus_mentorship_moment',
+    speaker: 'Marcus',
+    content: [
+      {
+        text: `Met a kid at the makerspace last week. Seventeen. Wants to be a nurse.
+
+Showed him how to read an ECG. How to spot arrhythmias.
+
+Then showed him the 3D printer. How to model a stent from CT data.
+
+His eyes lit up.
+
+*Small laugh.*
+
+He didn't know you could do both. Be clinical and technical. Heart and hands.
+
+Now he does.`,
+        emotion: 'warm',
+        interaction: 'small',
+        variation_id: 'mentorship_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'marcus_mentorship_legacy',
+        text: "You're showing him a path you're still discovering yourself.",
+        nextNodeId: 'marcus_arc_synthesis',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'leadership']
+      },
+      {
+        choiceId: 'marcus_mentorship_bridge',
+        text: "You're the bridge between two worlds.",
+        nextNodeId: 'marcus_arc_synthesis',
+        pattern: 'building',
+        skills: ['communication', 'leadership'],
+        consequence: {
+          characterId: 'marcus',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['marcus_arc', 'mentorship', 'teaching']
+  },
+
+  {
+    nodeId: 'marcus_arc_synthesis',
+    speaker: 'Marcus',
+    content: [
+      {
+        text: `Healthcare plus making. Clinical knowledge plus build skills.
+
+It's not two careers. It's one path.
+
+Biomedical engineering. Medical device design. Clinical engineering.
+
+And I don't have to choose. I get to merge them.
+
+*Looks at you.*
+
+Thanks. For walking through this with me. Helped me see it.`,
+        emotion: 'confident',
+        interaction: 'bloom',
+        variation_id: 'synthesis_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'marcus_synthesis_complete',
+        text: "You're going to change lives with this.",
+        nextNodeId: 'marcus_farewell',
+        pattern: 'helping',
+        skills: ['encouragement', 'communication']
+      },
+      {
+        choiceId: 'marcus_synthesis_build',
+        text: "Go build what the world needs.",
+        nextNodeId: 'marcus_farewell',
+        pattern: 'building',
+        skills: ['leadership']
+      }
+    ],
+    tags: ['marcus_arc', 'synthesis', 'career_clarity'],
+    metadata: {
+      sessionBoundary: true  // Session 3: Career synthesis complete
+    }
   },
 
   {
@@ -1313,7 +1615,7 @@ Day it doesn't bother you? Day you should quit.`,
     choices: [
       {
         choiceId: 'marcus_asks_before_leave',
-        text: "Before you go. how do you know when you're making the right choice?",
+        text: "Before you go, how do you know when you're making the right choice?",
         nextNodeId: 'marcus_asks_player',
         pattern: 'helping',
         skills: ['communication', 'curiosity']
@@ -1357,7 +1659,7 @@ Day it doesn't bother you? Day you should quit.`,
       },
       {
         choiceId: 'player_know_by_impact',
-        text: "I look at the impact. Are people better off? Are they more capable? But it's hard to measure that in the moment. you only see it later.",
+        text: "I look at the impact. Are people better off? Are they more capable? But it's hard to measure that in the moment. You only see it later.",
         nextNodeId: 'marcus_reciprocity_response',
         pattern: 'analytical',
         skills: ['emotionalIntelligence', 'criticalThinking']

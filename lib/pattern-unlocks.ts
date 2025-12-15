@@ -74,7 +74,7 @@ export interface PatternUnlock {
 
 /**
  * All pattern unlocks organized by pattern
- * Each pattern has 3 unlock tiers at 25%, 50%, and 85%
+ * Each pattern has 3 unlock tiers at 10%, 50%, and 85%
  */
 export const PATTERN_UNLOCKS: PatternUnlock[] = [
   // ───────────────────────────────────────────────────────────────────────────
@@ -85,7 +85,7 @@ export const PATTERN_UNLOCKS: PatternUnlock[] = [
     pattern: 'analytical',
     name: 'Read Between Lines',
     description: 'See subtext hints in character dialogue',
-    threshold: 25,
+    threshold: 10,
     icon: '🔬',
   },
   {
@@ -113,7 +113,7 @@ export const PATTERN_UNLOCKS: PatternUnlock[] = [
     pattern: 'patience',
     name: 'Take Your Time',
     description: '"Wait and observe" choices appear',
-    threshold: 25,
+    threshold: 10,
     icon: '⏳',
   },
   {
@@ -141,7 +141,7 @@ export const PATTERN_UNLOCKS: PatternUnlock[] = [
     pattern: 'exploring',
     name: 'Curiosity Rewarded',
     description: 'Extra worldbuilding details appear',
-    threshold: 25,
+    threshold: 10,
     icon: '🔍',
   },
   {
@@ -169,7 +169,7 @@ export const PATTERN_UNLOCKS: PatternUnlock[] = [
     pattern: 'helping',
     name: 'Empathy Sense',
     description: 'See emotional state hints on characters',
-    threshold: 25,
+    threshold: 10,
     icon: '💗',
   },
   {
@@ -197,7 +197,7 @@ export const PATTERN_UNLOCKS: PatternUnlock[] = [
     pattern: 'building',
     name: 'See the Structure',
     description: 'Reference your earlier decisions',
-    threshold: 25,
+    threshold: 10,
     icon: '🏗️',
   },
   {

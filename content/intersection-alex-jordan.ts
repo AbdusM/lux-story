@@ -173,7 +173,10 @@ ALEX: "That's the speech."`,
         skills: ['emotionalIntelligence', 'communication']
       }
     ],
-    tags: ['intersection', 'alex_jordan', 'insight']
+    tags: ['intersection', 'alex_jordan', 'insight'],
+    metadata: {
+      sessionBoundary: true  // Mid-point: Navigation insight
+    }
   },
 
   {
