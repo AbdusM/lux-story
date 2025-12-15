@@ -9,24 +9,21 @@
 import { validateEnv } from './lib/env-validation'
 
 export async function register() {
-  // Fail-fast: Validate environment variables on startup
-  // This prevents the server from starting with missing/invalid configuration
+  // Validate environment variables on startup
+  // Log warnings for missing config but allow server to start with degraded functionality
   if (process.env.NEXT_RUNTIME === 'nodejs') {
     try {
       // Environment validation happens silently - errors are thrown and caught
       validateEnv('server')
     } catch (error) {
-      // In production, exit on validation failure
-      // In development, Next.js will show the error page
+      // Log the error but DON'T exit - allow server to start with degraded functionality
+      // This enables graceful degradation when optional services (AI, monitoring) aren't configured
       const errorMessage = error instanceof Error ? error.message : String(error)
-      console.error('❌ Environment validation failed:')
-      console.error(errorMessage)
-      console.error('\nServer startup aborted. Please fix the configuration errors above.')
-      // In development, we log the error but continue (Next.js will show the error page)
-      // In production, we should exit to prevent broken deployments
-      if (process.env.NODE_ENV === 'production') {
-        process.exit(1)
-      }
+      console.warn('⚠️ Environment validation warning:')
+      console.warn(errorMessage)
+      console.warn('\nServer starting with degraded functionality. Some features may be unavailable.')
+      // IMPORTANT: Do NOT call process.exit(1) - this kills serverless functions
+      // The app should continue running with available services
     }
   }
 
