@@ -45,13 +45,17 @@ export interface EnvConfig {
 
 /**
  * Required environment variables by context
+ *
+ * NOTE: Only truly required vars are listed here.
+ * AI keys (Anthropic, Gemini) and monitoring (Sentry) are OPTIONAL.
+ * The core game works with pre-written dialogue - no AI needed.
  */
 const REQUIRED_ENV_VARS = {
   server: [
+    // Database - required for saving progress
     'SUPABASE_URL',
     'SUPABASE_ANON_KEY',
-    'ANTHROPIC_API_KEY',
-    'GEMINI_API_KEY',
+    // Admin access
     'ADMIN_API_TOKEN',
   ],
   client: [
@@ -59,8 +63,7 @@ const REQUIRED_ENV_VARS = {
     'NEXT_PUBLIC_SUPABASE_ANON_KEY',
   ],
   production: [
-    'SENTRY_DSN',
-    'NEXT_PUBLIC_SENTRY_DSN',
+    // Nothing strictly required - Sentry is optional monitoring
   ],
 }
 
@@ -158,26 +161,6 @@ export function validateEnv(context: 'server' | 'client' = 'server'): EnvConfig 
     }
 
     try {
-      config.anthropicApiKey = validateRequired(
-        'ANTHROPIC_API_KEY',
-        process.env.ANTHROPIC_API_KEY,
-        'Live choice generation (Claude API)'
-      )
-    } catch (e) {
-      errors.push((e as Error).message)
-    }
-
-    try {
-      config.geminiApiKey = validateRequired(
-        'GEMINI_API_KEY',
-        process.env.GEMINI_API_KEY,
-        'Skill-aware dialogue (Gemini API)'
-      )
-    } catch (e) {
-      errors.push((e as Error).message)
-    }
-
-    try {
       config.adminApiToken = validateRequired(
         'ADMIN_API_TOKEN',
         process.env.ADMIN_API_TOKEN,
@@ -187,18 +170,15 @@ export function validateEnv(context: 'server' | 'client' = 'server'): EnvConfig 
       errors.push((e as Error).message)
     }
 
-    // Service role key (optional in development)
-    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
-    if (serviceRoleKey) {
-      if (isPlaceholderSupabaseServiceKey(serviceRoleKey)) {
-        errors.push(formatPlaceholderMessage('SUPABASE_SERVICE_ROLE_KEY'))
-      } else {
-        config.supabaseServiceRoleKey = serviceRoleKey
-      }
-    }
+    // Optional: AI keys (only needed for AI-enhanced features)
+    // Core game works without these - uses pre-written dialogue
+    config.anthropicApiKey = process.env.ANTHROPIC_API_KEY
+    config.geminiApiKey = process.env.GEMINI_API_KEY
 
-    if (process.env.NODE_ENV === 'production' && !config.supabaseServiceRoleKey) {
-      errors.push('Missing SUPABASE_SERVICE_ROLE_KEY (required in production for migrations)')
+    // Optional: Service role key (for admin operations)
+    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+    if (serviceRoleKey && !isPlaceholderSupabaseServiceKey(serviceRoleKey)) {
+      config.supabaseServiceRoleKey = serviceRoleKey
     }
   }
 
@@ -227,18 +207,10 @@ export function validateEnv(context: 'server' | 'client' = 'server'): EnvConfig 
     errors.push((e as Error).message)
   }
 
-  // Production monitoring
-  if (process.env.NODE_ENV === 'production') {
-    config.sentryDsn = process.env.SENTRY_DSN
-    config.publicSentryDsn = process.env.NEXT_PUBLIC_SENTRY_DSN
-
-    if (!config.sentryDsn) {
-      errors.push('Missing SENTRY_DSN (recommended for production error tracking)')
-    }
-    if (!config.publicSentryDsn) {
-      errors.push('Missing NEXT_PUBLIC_SENTRY_DSN (recommended for production error tracking)')
-    }
-  }
+  // Optional: Monitoring (Sentry)
+  // Not required - app works fine without error tracking
+  config.sentryDsn = process.env.SENTRY_DSN
+  config.publicSentryDsn = process.env.NEXT_PUBLIC_SENTRY_DSN
 
   // Optional variables with defaults
   config.enableSemanticSimilarity =
