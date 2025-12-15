@@ -315,22 +315,55 @@ He made me spend six months writing in assembly. No frameworks. No abstractions.
       {
         text: `Everything is a choice.
 
-When you write in assembly, you see the cost of every decision. A loop isn't magic. it's instructions. Memory isn't infinite. it's addresses. Every abstraction you've ever used was someone's opinion about tradeoffs.
+When you write in assembly, you see the cost of every decision. A loop isn't magic. it's instructions. Memory isn't infinite. it's addresses.
 
-The frameworks hide those choices. The AI hides them even more. And when you can't see the choices, you can't understand the consequences.`,
+Every abstraction you've ever used was someone's opinion about tradeoffs.
+
+The frameworks hide those choices. The AI hides them even more.`,
         emotion: 'teaching_intensity',
         variation_id: 'david_lesson_v1'
       }
     ],
     choices: [
       {
-        choiceId: 'rohan_lesson_continue',
-        text: "And David? Is he still teaching?",
+        choiceId: 'rohan_lesson_moment',
+        text: "Did David show you something specific?",
+        nextNodeId: 'rohan_david_moment',
+        pattern: 'exploring',
+        skills: ['curiosity']
+      }
+    ]
+  },
+
+  // EXPANSION: David teaching moment
+  {
+    nodeId: 'rohan_david_moment',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: `Week three. I'd written a sorting function. Proud of it. Eleven lines.
+
+David showed me his version. Sixty-three lines. Comments explaining why each choice mattered.
+
+"Fast code is worthless if the next person can't fix it."
+
+*Quiet.*
+
+He spent more time on the comments than the code.`,
+        emotion: 'reverent',
+        variation_id: 'moment_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'rohan_moment_to_gone',
+        text: "Is he still teaching?",
         nextNodeId: 'rohan_david_gone',
         pattern: 'helping',
         skills: ['empathy']
       }
-    ]
+    ],
+    tags: ['rohan_arc', 'teaching']
   },
 
   {
@@ -613,14 +646,79 @@ That's not janitorial work. That's... communion.`,
     ],
     choices: [
       {
-        choiceId: 'rohan_new_purpose',
-        text: "We need people who can talk to the ghosts.",
-        nextNodeId: 'rohan_academy_vision',
-        pattern: 'helping',
-        skills: ['wisdom']
+        choiceId: 'rohan_to_taught',
+        text: "What did this teach you?",
+        nextNodeId: 'rohan_ghost_lesson',
+        pattern: 'exploring',
+        skills: ['curiosity']
       }
     ],
     tags: ['simulation_complete', 'rohan_arc']
+  },
+
+  // EXPANSION: Ghost lesson
+  {
+    nodeId: 'rohan_ghost_lesson',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: `The AI saw a function call. I saw David's intention.
+
+Same code. Different questions.
+
+AI asks: "What does this do?"
+
+I ask: "Why did David write it this way?"
+
+*Pause.*
+
+That difference? That's what we're losing.`,
+        emotion: 'clear',
+        variation_id: 'lesson_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'rohan_lesson_to_why',
+        text: "Why does that matter to you?",
+        nextNodeId: 'rohan_personal_why',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
+      }
+    ],
+    tags: ['rohan_arc', 'insight']
+  },
+
+  // EXPANSION: Personal why
+  {
+    nodeId: 'rohan_personal_why',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: `My dad was a machinist. Factory in India.
+
+He could hear when a lathe was half a degree off. Trained his whole life.
+
+Factory bought CNC machines. Didn't need him anymore.
+
+*Quiet.*
+
+David's knowledge. Dad's ears. Same story.
+
+I'm not letting it happen again.`,
+        emotion: 'fierce',
+        variation_id: 'why_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'rohan_why_to_academy',
+        text: "(Continue)",
+        nextNodeId: 'rohan_academy_vision',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['rohan_arc', 'personal']
   },
 
   // ============= SCENE 7: THE ACADEMY VISION =============
@@ -828,8 +926,40 @@ I've been teaching her after hours. She's year one now. Building logic gates wit
     ],
     choices: [
       {
-        choiceId: 'rohan_student_impact',
-        text: "If one person actually gets it... doesn't that change things?",
+        choiceId: 'rohan_student_moment',
+        text: "What did she say when she understood?",
+        nextNodeId: 'rohan_student_breakthrough',
+        pattern: 'exploring',
+        skills: ['curiosity', 'emotionalIntelligence']
+      }
+    ]
+  },
+
+  // EXPANSION: Student breakthrough
+  {
+    nodeId: 'rohan_student_breakthrough',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: `Week four. Logic gates. She built an AND gate wrong. Output stuck high.
+
+Stared at it. Twenty minutes.
+
+Then: "Wait. The resistor. It's not about the LED. It's about current flow."
+
+*Pause.*
+
+"Everything's about current flow, isn't it?"
+
+She got it. Not the circuit. The principle underneath.`,
+        emotion: 'proud',
+        variation_id: 'breakthrough_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'rohan_breakthrough_to_decision',
+        text: "That's what David did for you.",
         nextNodeId: 'rohan_climax_decision',
         pattern: 'helping',
         skills: ['wisdom', 'mentorship'],
@@ -838,7 +968,8 @@ I've been teaching her after hours. She's year one now. Building logic gates wit
           trustChange: 2
         }
       }
-    ]
+    ],
+    tags: ['rohan_arc', 'teaching']
   },
 
   // ============= SCENE 8: THE TURN =============
