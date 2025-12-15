@@ -53,7 +53,8 @@ import { SyncStatusIndicator } from '@/components/SyncStatusIndicator'
 import { detectArcCompletion } from '@/lib/arc-learning-objectives'
 import { isSupabaseConfigured } from '@/lib/supabase'
 import { GameChoices } from '@/components/GameChoices'
-import { Brain, BookOpen, Stars, Compass } from 'lucide-react'
+import { BookOpen, Stars, Compass } from 'lucide-react'
+// Brain icon removed - ThoughtCabinet feature is orphaned (see SIDE_MENUS_COMPREHENSIVE_AUDIT.md)
 import { ThoughtCabinet } from '@/components/ThoughtCabinet'
 import { Journal } from '@/components/Journal'
 // ProgressIndicator import removed - unused
@@ -1129,6 +1130,8 @@ export default function StatefulGameInterface() {
               Grand Central Terminus
             </Link>
             <div className="flex items-center gap-1">
+              {/* ThoughtCabinet button removed - feature is orphaned (not wired to dialogue)
+                  See SIDE_MENUS_COMPREHENSIVE_AUDIT.md for details
               <Button
                 variant="ghost"
                 size="sm"
@@ -1138,6 +1141,7 @@ export default function StatefulGameInterface() {
               >
                 <Brain className="h-4 w-4" />
               </Button>
+              */}
               <Button
                 variant="ghost"
                 size="sm"
