@@ -18,8 +18,38 @@ import { ensureUserProfile } from './ensure-user-profile'
 import { logger } from './logger'
 
 const SYNC_QUEUE_KEY = 'lux-sync-queue'
+const STATIC_EXPORT_DETECTED_KEY = 'lux-static-export-detected'
 const MAX_QUEUE_SIZE = 500 // Prevent unbounded growth
 const MAX_RETRY_AGE_MS = 7 * 24 * 60 * 60 * 1000 // 7 days
+
+/**
+ * Detect if we're running in static export mode
+ * Static export doesn't support API routes - they return 405
+ * We cache this detection to avoid repeated failing API calls
+ */
+function isStaticExportMode(): boolean {
+  const cached = safeStorage.getItem(STATIC_EXPORT_DETECTED_KEY)
+  return cached === 'true'
+}
+
+/**
+ * Mark that static export mode was detected
+ * This prevents the sync queue from continuously retrying API calls that will never work
+ */
+function markStaticExportDetected(): void {
+  safeStorage.setItem(STATIC_EXPORT_DETECTED_KEY, 'true')
+  logger.warn('Static export mode detected', {
+    operation: 'sync-queue.static-export-detected',
+    message: 'API routes are not available. Queue will be cleared.'
+  })
+}
+
+/**
+ * Clear static export detection (useful if deployment is fixed)
+ */
+export function clearStaticExportDetection(): void {
+  safeStorage.removeItem(STATIC_EXPORT_DETECTED_KEY)
+}
 
 export interface QueuedAction {
   id: string // UUID for idempotency
@@ -116,6 +146,13 @@ export class SyncQueue {
 
     if (queue.length === 0) {
       return { success: true, processed: 0, failed: 0 }
+    }
+
+    // Skip sync if static export mode was previously detected
+    // Static export doesn't support API routes - they return 405
+    if (isStaticExportMode()) {
+      this.clearQueue()
+      return { success: true, processed: queue.length, failed: 0 }
     }
 
     // Skip sync if Supabase is not configured (prevents 405 errors in production)
@@ -502,6 +539,19 @@ export class SyncQueue {
         // 400 (Bad Request), 404 (Not Found), 405 (Method Not Allowed), 422 (Unprocessable Entity)
         const isPermanentError = httpStatus !== null && [400, 404, 405, 422].includes(httpStatus)
         const willRetry = !isPermanentError && action.retries < 3
+
+        // 405 specifically indicates static export mode - API routes don't exist
+        // Mark this so we stop trying all API calls, not just this one
+        if (httpStatus === 405) {
+          markStaticExportDetected()
+          // Clear entire queue and return - no point continuing
+          this.clearQueue()
+          return {
+            success: true, // Not a failure - just a configuration issue
+            processed: successfulIds.length,
+            failed: 0
+          }
+        }
         
         // Only log to console in development - use logger in production
         if (process.env.NODE_ENV === 'development') {
