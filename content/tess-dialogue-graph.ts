@@ -1299,7 +1299,10 @@ Go on. Samuel's waiting. Tell him The B-Side is still standing.`,
         pattern: 'exploring'
       }
     ],
-    tags: ['reciprocity', 'tess_arc', 'phase2']
+    tags: ['reciprocity', 'tess_arc', 'phase2'],
+    metadata: {
+      sessionBoundary: true  // Session 3: Arc complete
+    }
   }
 ]
 

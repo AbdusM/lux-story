@@ -372,11 +372,478 @@ Not a single class on how to keep someone alive.`,
       {
         choiceId: 'kai_corporate_reality',
         text: "What did you find when you got inside?",
-        nextNodeId: 'kai_corporate_truth',
+        nextNodeId: 'kai_vocational_path',
         pattern: 'analytical',
         skills: ['criticalThinking', 'observation']
+      },
+      {
+        choiceId: 'kai_why_not_factory',
+        text: "Why didn't you just work in the factory like your dad?",
+        nextNodeId: 'kai_intro_extended',
+        pattern: 'exploring',
+        skills: ['communication', 'curiosity']
       }
     ]
+  },
+
+  // ============= EXPANSION: Manufacturing Background (12 nodes) =============
+
+  {
+    nodeId: 'kai_intro_extended',
+    speaker: 'Kai',
+    content: [
+      {
+        text: `I did. Two summers during high school. Nucor Steel Birmingham. Rebar production.
+
+110 degrees on the factory floor. Safety goggles fogging up. Molten steel running through channels.
+
+Learned more about systems in two months than four years of college.
+
+But my mom... she didn't want me to end up like my dad. Missing fingers. Bad back. Retiring at 60 with nothing.
+
+"You're smart, Kai. Get the degree. Get the office job."`,
+        emotion: 'conflicted',
+        variation_id: 'extended_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'kai_factory_learning',
+        text: "What did you learn on the factory floor?",
+        nextNodeId: 'kai_systems_revelation',
+        pattern: 'exploring',
+        skills: ['curiosity', 'observation']
+      },
+      {
+        choiceId: 'kai_mom_pressure',
+        text: "Your mom wanted better for you.",
+        nextNodeId: 'kai_college_pressure',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'culturalCompetence'],
+        consequence: {
+          characterId: 'kai',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['kai_arc', 'manufacturing_background', 'birmingham']
+  },
+
+  {
+    nodeId: 'kai_vocational_path',
+    speaker: 'Kai',
+    content: [
+      {
+        text: `Before the degree, I went to Lawson State Community College. Welding program.
+
+My dad was proud. Thought I'd follow his path. Make things with my hands.
+
+But every time I picked up the torch, I kept thinking: who designed this safety protocol? Who wrote the training manual that nobody reads?
+
+I didn't want to just be good at the work. I wanted to fix why the work was dangerous.`,
+        emotion: 'reflective',
+        variation_id: 'vocational_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'kai_welding_skill',
+        text: "Can you still weld?",
+        nextNodeId: 'kai_first_weld',
+        pattern: 'exploring',
+        skills: ['curiosity']
+      },
+      {
+        choiceId: 'kai_systems_mind',
+        text: "You saw the system, not just the task.",
+        nextNodeId: 'kai_systems_revelation',
+        pattern: 'analytical',
+        skills: ['systemsThinking', 'criticalThinking']
+      }
+    ],
+    tags: ['kai_arc', 'vocational_training', 'birmingham']
+  },
+
+  {
+    nodeId: 'kai_first_weld',
+    speaker: 'Kai',
+    content: [
+      {
+        text: `*Smiles slightly.*
+
+Yeah. TIG welding. Aluminum, stainless, mild steel.
+
+There's something about it. Watching the puddle form. Controlling the heat. Building something that holds.
+
+My instructor used to say: "A good weld is stronger than the metal itself."
+
+That's when I understood. The connection matters more than the parts.
+
+Same with teaching. The learning matters more than the certificate.`,
+        emotion: 'warm',
+        interaction: 'small',
+        variation_id: 'weld_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'kai_weld_to_teaching',
+        text: "You brought that precision into training design.",
+        nextNodeId: 'kai_hands_on_wisdom',
+        pattern: 'analytical',
+        skills: ['systemsThinking', 'communication']
+      },
+      {
+        choiceId: 'kai_weld_miss_it',
+        text: "Do you miss working with your hands?",
+        nextNodeId: 'kai_hands_on_wisdom',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'kai',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['kai_arc', 'skill_moment', 'hands_on']
+  },
+
+  {
+    nodeId: 'kai_systems_revelation',
+    speaker: 'Kai',
+    content: [
+      {
+        text: `The factory floor is all systems. Input, process, output.
+
+Steel comes in as scrap. Gets melted in the arc furnace. Poured into molds. Cooled. Cut. Shipped.
+
+But the real system? The people.
+
+The crane operator who signals the pour. The quality inspector who checks the specs. The maintenance crew who fixes the torch before it breaks.
+
+If anyone fails, the whole line stops. Or worse, someone gets hurt.
+
+That's what I learned: safety isn't a checklist. It's how the system works together.`,
+        emotion: 'illuminated',
+        interaction: 'bloom',
+        variation_id: 'systems_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'kai_systems_to_training',
+        text: "And training is how you teach the system to work.",
+        nextNodeId: 'kai_hybrid_path',
+        pattern: 'analytical',
+        skills: ['systemsThinking', 'leadership']
+      },
+      {
+        choiceId: 'kai_systems_college',
+        text: "Is that when you decided to go to college?",
+        nextNodeId: 'kai_college_pressure',
+        pattern: 'exploring',
+        skills: ['communication']
+      }
+    ],
+    tags: ['kai_arc', 'systems_thinking', 'revelation']
+  },
+
+  {
+    nodeId: 'kai_college_pressure',
+    speaker: 'Kai',
+    content: [
+      {
+        text: `My mom didn't give me a choice. "You're going to UAB. You're getting the degree. No son of mine is losing fingers."
+
+My dad didn't say anything. Just looked at his hand.
+
+So I went. Instructional design. Educational technology. Learning sciences.
+
+Everyone in my cohort wanted to design corporate onboarding. Build apps for schools.
+
+I wanted to keep my dad's coworkers alive.
+
+*Quiet.*
+
+They thought I was weird.`,
+        emotion: 'isolated',
+        variation_id: 'college_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'kai_college_validate',
+        text: "You weren't weird. You cared about something that mattered.",
+        nextNodeId: 'kai_birmingham_steel',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'encouragement'],
+        consequence: {
+          characterId: 'kai',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'kai_college_unique',
+        text: "That perspective made you unique. You understood both sides.",
+        nextNodeId: 'kai_hybrid_path',
+        pattern: 'analytical',
+        skills: ['systemsThinking', 'communication']
+      }
+    ],
+    tags: ['kai_arc', 'college_dilemma', 'family_pressure']
+  },
+
+  {
+    nodeId: 'kai_birmingham_steel',
+    speaker: 'Kai',
+    content: [
+      {
+        text: `You know what's funny? Birmingham's still got manufacturing.
+
+Nucor Steel. Mercedes-Benz U.S. International in Tuscaloosa. Lots of small fabrication shops.
+
+They're hiring. Good pay. Union benefits. Real skills.
+
+But nobody talks about it. Everyone pushes college. "Get out of Birmingham. Get a tech job."
+
+Meanwhile, the factory jobs pay better than half the office jobs I've seen.
+
+And they're building things that matter. Cars. Steel beams. Infrastructure.
+
+Not... slideshows.`,
+        emotion: 'frustrated',
+        variation_id: 'birmingham_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'kai_birmingham_both',
+        text: "What if you could do both? Manufacturing expertise + training design.",
+        nextNodeId: 'kai_hybrid_path',
+        pattern: 'building',
+        skills: ['creativity', 'problemSolving']
+      },
+      {
+        choiceId: 'kai_birmingham_mentor',
+        text: "Have you worked with any of those companies?",
+        nextNodeId: 'kai_mentorship',
+        pattern: 'exploring',
+        skills: ['curiosity']
+      }
+    ],
+    tags: ['kai_arc', 'birmingham_opportunity', 'manufacturing']
+  },
+
+  {
+    nodeId: 'kai_mentorship',
+    speaker: 'Kai',
+    content: [
+      {
+        text: `Last year. Nucor asked me to redesign their safety onboarding.
+
+I spent a week on the factory floor. Shadowing Tommy, a 30-year veteran machinist.
+
+He showed me how to read a blueprint. How to set up a CNC mill. How to spot when a tool's about to fail.
+
+Then he showed me their training manual. "This is garbage," he said. "Nobody reads it. We just show the new guys what to do."
+
+*Small laugh.*
+
+That's when I knew. The manual wasn't the training. Tommy was.
+
+I designed a mentorship program instead of a PDF. Paired every new hire with a veteran.
+
+Injury rate dropped 40% in six months.`,
+        emotion: 'proud',
+        interaction: 'bloom',
+        variation_id: 'mentorship_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'kai_mentorship_impact',
+        text: "You created real change there.",
+        nextNodeId: 'kai_automation_fear',
+        pattern: 'helping',
+        skills: ['encouragement', 'leadership']
+      },
+      {
+        choiceId: 'kai_mentorship_scale',
+        text: "Could that model work in other industries?",
+        nextNodeId: 'kai_career_synthesis',
+        pattern: 'building',
+        skills: ['systemsThinking', 'entrepreneurship']
+      }
+    ],
+    tags: ['kai_arc', 'mentorship', 'impact_story']
+  },
+
+  {
+    nodeId: 'kai_automation_fear',
+    speaker: 'Kai',
+    content: [
+      {
+        text: `Tommy retired last month. Sixty-two. Bad knees. Good pension.
+
+The CNC machines can do most of what he did. Faster. More precise. No sick days.
+
+But they can't teach. Can't spot when something's wrong by the sound. Can't mentor the kid who's scared of the mill.
+
+Nucor replaced Tommy with a robotic arm. Kept the safety program I built... for now.
+
+*Looks at hands.*
+
+That's the future. Machines making things. Humans making sure the machines don't kill anyone.`,
+        emotion: 'uncertain',
+        variation_id: 'automation_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'kai_automation_human',
+        text: "The human expertise becomes more valuable, not less.",
+        nextNodeId: 'kai_hybrid_path',
+        pattern: 'helping',
+        skills: ['encouragement', 'criticalThinking']
+      },
+      {
+        choiceId: 'kai_automation_adapt',
+        text: "Then you train people to work WITH the machines.",
+        nextNodeId: 'kai_hybrid_path',
+        pattern: 'analytical',
+        skills: ['adaptability', 'systemsThinking']
+      }
+    ],
+    tags: ['kai_arc', 'automation', 'future_of_work']
+  },
+
+  {
+    nodeId: 'kai_hybrid_path',
+    speaker: 'Kai',
+    content: [
+      {
+        text: `That's what I'm building toward. Hybrid path.
+
+Trade skills + systems thinking. Hands-on work + digital literacy.
+
+The welder who understands robotics. The machinist who can program the CNC. The safety officer who builds VR simulations.
+
+Birmingham needs that. The manufacturing jobs aren't going away. They're just changing.
+
+And someone needs to teach people how to navigate that change.
+
+*Looks up.*
+
+Maybe that someone is me.`,
+        emotion: 'determined',
+        interaction: 'nod',
+        variation_id: 'hybrid_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'kai_hybrid_vision',
+        text: "That's the path forward. You're bridging two worlds.",
+        nextNodeId: 'kai_hands_on_wisdom',
+        pattern: 'helping',
+        skills: ['encouragement', 'leadership']
+      },
+      {
+        choiceId: 'kai_hybrid_build',
+        text: "What would that training look like?",
+        nextNodeId: 'kai_career_synthesis',
+        pattern: 'building',
+        skills: ['creativity', 'problemSolving']
+      }
+    ],
+    tags: ['kai_arc', 'hybrid_path', 'career_vision']
+  },
+
+  {
+    nodeId: 'kai_hands_on_wisdom',
+    speaker: 'Kai',
+    content: [
+      {
+        text: `You know what I miss most about factory work?
+
+The feedback loop. You weld a joint, you test it, you see if it holds. Immediate. Real.
+
+In corporate training? I build a module. Someone clicks through it. I get a completion metric. Did they learn? Who knows.
+
+But when I'm teaching someone to weld, I watch their hands. I see the bead form. I know if they got it.
+
+That's the kind of learning I want to design. Where you can see the result. Where failure teaches you before it kills you.`,
+        emotion: 'passionate',
+        interaction: 'bloom',
+        variation_id: 'wisdom_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'kai_wisdom_simulation',
+        text: "That's why you're building simulations. Safe failure.",
+        nextNodeId: 'kai_career_synthesis',
+        pattern: 'analytical',
+        skills: ['systemsThinking', 'communication']
+      },
+      {
+        choiceId: 'kai_wisdom_real',
+        text: "You want learning to feel real.",
+        nextNodeId: 'kai_career_synthesis',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication']
+      }
+    ],
+    tags: ['kai_arc', 'learning_philosophy', 'hands_on']
+  },
+
+  {
+    nodeId: 'kai_career_synthesis',
+    speaker: 'Kai',
+    content: [
+      {
+        text: `Manufacturing + instructional design. That's my path.
+
+Not compliance training. Not corporate checkboxes.
+
+Safety simulations for industrial workers. Built by someone who understands both the factory floor and the learning science.
+
+Birmingham-based. Serving the companies that kept this city alive. Nucor. Mercedes. The fabrication shops in Bessemer.
+
+Training that actually protects people.
+
+*Quiet confidence.*
+
+That's what I'm building.`,
+        emotion: 'resolved',
+        interaction: 'bloom',
+        variation_id: 'synthesis_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'kai_synthesis_to_corporate',
+        text: "So what are you still doing at Protective Life?",
+        nextNodeId: 'kai_corporate_truth',
+        pattern: 'exploring',
+        skills: ['communication', 'criticalThinking']
+      },
+      {
+        choiceId: 'kai_synthesis_validation',
+        text: "That's exactly what the world needs.",
+        nextNodeId: 'kai_corporate_truth',
+        pattern: 'helping',
+        skills: ['encouragement', 'leadership'],
+        consequence: {
+          characterId: 'kai',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['kai_arc', 'career_synthesis', 'manufacturing_design'],
+    metadata: {
+      sessionBoundary: true  // Session 2: Career vision crystallized
+    }
   },
 
   // ============= SCENE 4: CORPORATE REALITY =============

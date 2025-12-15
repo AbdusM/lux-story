@@ -16,12 +16,17 @@ import { RichTextRenderer, type RichTextEffect } from "./RichTextRenderer"
 import { motion } from "framer-motion"
 import { interactionAnimations, type InteractionType } from "@/lib/interaction-parser"
 import { getVoiceClass } from "@/lib/voice-utils"
+import { useUnlockEffects } from "@/hooks/useUnlockEffects"
+import { EmotionTag, TrustDisplay, Subtext } from "./unlock-enhancements"
+import type { GameState } from "@/lib/character-state"
 
 interface DialogueDisplayProps {
   text: string
   className?: string
   useChatPacing?: boolean // Enable sequential reveal with typing indicators
   characterName?: string // Required if useChatPacing is true
+  characterId?: string // Character ID for unlock effects (trust display, etc.)
+  gameState?: GameState // Game state for unlock effects
   showAvatar?: boolean // Show character avatar
   isContinuedSpeaker?: boolean // Hide avatar if same speaker as previous
   richEffects?: RichTextEffect // Optional rich text effects (terminal-style animations)
@@ -50,6 +55,8 @@ export function DialogueDisplay({
   className,
   useChatPacing,
   characterName,
+  characterId,
+  gameState,
   showAvatar = true,
   isContinuedSpeaker = false,
   richEffects,
@@ -57,6 +64,8 @@ export function DialogueDisplay({
   emotion,
   playerPatterns
 }: DialogueDisplayProps) {
+  // Get unlock-based content enhancements
+  const enhancements = useUnlockEffects(text, emotion, characterId, characterName, gameState)
   // Auto-chunk long text ONLY if NOT using richEffects
   // When richEffects is enabled, respect the original text structure completely
   const chunkedText = richEffects
@@ -80,6 +89,8 @@ export function DialogueDisplay({
       <ChatPacedDialogue
         text={chunkedText}
         characterName={characterName}
+        characterId={characterId}
+        gameState={gameState}
         showAvatar={displayAvatar}
         className={className}
         interaction={interaction}
@@ -127,6 +138,29 @@ export function DialogueDisplay({
       ) : (
         content
       )}
+
+      {/* Unlock-based content enhancements */}
+      <div className="space-y-2 mt-3">
+        {/* Emotion tag (Analytical unlock) */}
+        {enhancements.showEmotionTag && emotion && (
+          <div className="flex items-center gap-2">
+            <EmotionTag emotion={emotion} />
+          </div>
+        )}
+
+        {/* Trust level display (Helping unlock) */}
+        {enhancements.showTrustLevel && enhancements.trustValue !== undefined && (
+          <TrustDisplay
+            trust={enhancements.trustValue}
+            characterName={characterName}
+          />
+        )}
+
+        {/* Analytical subtext hints */}
+        {enhancements.subtextHint && (
+          <Subtext text={enhancements.subtextHint} />
+        )}
+      </div>
     </div>
   )
 }

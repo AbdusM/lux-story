@@ -819,7 +819,11 @@ Year three: Finally, you get a framework. And by then, you'll hate it. Because y
         pattern: 'helping',
         skills: ['encouragement', 'courage']
       }
-    ]
+    ],
+    tags: ['rohan_arc', 'vision'],
+    metadata: {
+      sessionBoundary: true  // Session 2: Academy vision revealed
+    }
   },
 
   {

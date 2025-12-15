@@ -505,6 +505,9 @@ export const mayaDialogueNodes: DialogueNode[] = [
         richEffectContext: 'error'
       }
     ],
+    metadata: {
+      sessionBoundary: true  // Session 1: Maya's crisis revealed
+    },
     choices: [
       {
         choiceId: 'fail_comfort',
@@ -534,10 +537,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         }
       }
     ],
-    tags: ['scenario_failure', 'maya_arc'],
-    metadata: {
-      sessionBoundary: true  // Session 1: Introduction complete
-    }
+    tags: ['scenario_failure', 'maya_arc']
   },
 
   {
@@ -932,6 +932,9 @@ export const mayaDialogueNodes: DialogueNode[] = [
         variation_id: 'ending_self_v1'
       }
     ],
+    metadata: {
+      sessionBoundary: true  // Session 2: Maya's choice made
+    },
     choices: [
       {
         choiceId: 'continue_after_self',
@@ -948,10 +951,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         addGlobalFlags: ['maya_arc_complete']
       }
     ],
-    tags: ['ending', 'maya_arc'],
-    metadata: {
-      sessionBoundary: true  // Session 2: Crossroads complete
-    }
+    tags: ['ending', 'maya_arc']
   },
 
   // ============= EARLY GRATITUDE (Low Trust Closure) =============

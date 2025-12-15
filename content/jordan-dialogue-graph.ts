@@ -917,7 +917,10 @@ Maybe that's what I tell them.`,
         skills: ['emotionalIntelligence']
       }
     ],
-    tags: ['jordan_arc', 'breakthrough']
+    tags: ['jordan_arc', 'breakthrough'],
+    metadata: {
+      sessionBoundary: true  // Session 2: Breakthrough moment
+    }
   },
 
   // EXPANSION: Final doubt before crossroads

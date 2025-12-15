@@ -338,13 +338,14 @@ export class StateConditionEvaluator {
 
   /**
    * Evaluate all choices for a node and determine visibility/availability
+   * INCLUDES AUTO-FALLBACK SAFETY: If no choices visible, shows all as fallback
    */
   static evaluateChoices(
     node: DialogueNode,
     gameState: GameState,
     characterId?: string
   ): EvaluatedChoice[] {
-    return node.choices.map(choice => {
+    const evaluated = node.choices.map(choice => {
       // Check if choice should be visible
       const visible = this.evaluate(choice.visibleCondition, gameState, characterId)
 
@@ -364,6 +365,27 @@ export class StateConditionEvaluator {
         reason
       }
     })
+
+    // SAFETY NET: If NO choices are visible, show ALL choices as fallbacks
+    // This prevents dead ends from misconfigured gating
+    const visibleCount = evaluated.filter(c => c.visible).length
+
+    if (visibleCount === 0 && node.choices.length > 0) {
+      console.warn(
+        `[AUTO-FALLBACK] No visible choices at node "${node.nodeId}". ` +
+        `Showing all ${node.choices.length} choices as fallback to prevent deadlock.`
+      )
+
+      // Return all choices as visible and enabled
+      return node.choices.map(choice => ({
+        choice,
+        visible: true,
+        enabled: true,
+        reason: undefined
+      }))
+    }
+
+    return evaluated
   }
 
   /**

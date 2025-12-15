@@ -168,7 +168,10 @@ ROHAN: "The AI can't do this. It can generate notes. But not... listening."`,
         skills: ['collaboration', 'leadership']
       }
     ],
-    tags: ['intersection', 'tess_rohan', 'revelation']
+    tags: ['intersection', 'tess_rohan', 'revelation'],
+    metadata: {
+      sessionBoundary: true  // Mid-point: Shared recognition
+    }
   },
 
   {

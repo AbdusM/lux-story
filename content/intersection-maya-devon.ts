@@ -149,7 +149,10 @@ DEVON: "They're not. They're the same problem."`,
         }
       }
     ],
-    tags: ['intersection', 'maya_devon', 'collaboration']
+    tags: ['intersection', 'maya_devon', 'collaboration'],
+    metadata: {
+      sessionBoundary: true  // Mid-point: Discovery moment
+    }
   },
 
   {
