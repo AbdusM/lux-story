@@ -3396,7 +3396,39 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         text: "Platform 3 has another traveler tonight. Devon Kumar - engineering student. Builds systems to avoid dealing with emotions. Reminds me of myself at that age, if I'm honest.\n\nOr you can return to Maya if you'd like. The choice is yours.",
         emotion: 'reflective',
-        variation_id: 'hub_after_maya_v3_clean'
+        variation_id: 'hub_after_maya_v3_clean',
+        patternReflection: [
+          {
+            pattern: 'helping',
+            minLevel: 4,
+            altText: "Saw how you were with Maya. You lead with empathy—that's not somethin' you can teach.\n\nPlatform 3 has Devon Kumar. Engineering student. Builds systems to avoid dealing with emotions. Could use someone who knows how to reach past walls.",
+            altEmotion: 'knowing'
+          },
+          {
+            pattern: 'analytical',
+            minLevel: 4,
+            altText: "You asked Maya the right questions. Dug deeper than most would.\n\nPlatform 3 has Devon Kumar. Engineering student like yourself—well, like the way you think. Builds systems to make sense of chaos. You two might understand each other.",
+            altEmotion: 'knowing'
+          },
+          {
+            pattern: 'patience',
+            minLevel: 4,
+            altText: "You gave Maya space to find her own answers. That patience? Real gift.\n\nPlatform 3 has Devon Kumar. Engineering student who builds walls faster than bridges. Someone patient might help him slow down.",
+            altEmotion: 'warm'
+          },
+          {
+            pattern: 'building',
+            minLevel: 4,
+            altText: "You helped Maya see what she could build. Creator recognizes creator.\n\nPlatform 3 has Devon Kumar. Engineering student who builds systems to avoid feelings. He's got the technical side covered—could use someone to help him build the human side.",
+            altEmotion: 'knowing'
+          },
+          {
+            pattern: 'exploring',
+            minLevel: 4,
+            altText: "You weren't afraid to explore the hard parts with Maya. That curiosity serves you.\n\nPlatform 3 has Devon Kumar. Engineering student with more locked doors than he knows. Someone curious might find what's behind them.",
+            altEmotion: 'knowing'
+          }
+        ]
       }
     ],
     choices: [
@@ -3767,7 +3799,39 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         text: "Maya's on Platform 1. Devon's on Platform 3, building his bridges.\n\nJordan's by the conference rooms. Guest instructor. Wrestling with whether seven jobs makes her qualified or fraudulent.\n\nTwenty minutes before she speaks.\n\nWhere does your attention pull you?",
         emotion: 'offering_space',
-        variation_id: 'hub_after_devon_v3_clean'
+        variation_id: 'hub_after_devon_v3_clean',
+        patternReflection: [
+          {
+            pattern: 'analytical',
+            minLevel: 5,
+            altText: "You're startin' to see how this station works, aren't you? The patterns. The connections.\n\nMaya's still processin'. Devon's building bridges he didn't know he needed. Jordan's about to face a room full of people.\n\nYour analytical eye—where does it tell you to go?",
+            altEmotion: 'knowing'
+          },
+          {
+            pattern: 'helping',
+            minLevel: 5,
+            altText: "You got a way with people. I've watched you with these travelers. They open up to you.\n\nMaya found some peace. Devon started building bridges. Jordan's about to face her biggest fear.\n\nWho needs you most right now?",
+            altEmotion: 'warm'
+          },
+          {
+            pattern: 'building',
+            minLevel: 5,
+            altText: "You're a builder, through and through. Not just things—futures.\n\nMaya's designing her path. Devon's constructing connection. Jordan's rebuilding her confidence.\n\nWhat do you want to help build next?",
+            altEmotion: 'knowing'
+          },
+          {
+            pattern: 'patience',
+            minLevel: 5,
+            altText: "You take your time. That's rare in this station—everyone's in such a hurry to their next platform.\n\nMaya needed space. Devon needed someone who wouldn't rush him. Jordan needs someone who can sit with uncertainty.\n\nYour patience opens doors, friend.",
+            altEmotion: 'appreciative'
+          },
+          {
+            pattern: 'exploring',
+            minLevel: 5,
+            altText: "You follow questions, not answers. I respect that.\n\nMaya showed you her secret world. Devon let you past his walls. Jordan's about to reveal something too.\n\nWhat question is pulling you now?",
+            altEmotion: 'curious'
+          }
+        ]
       }
     ],
     // Note: No requiredState - this hub is a universal return point for all reflection gateways

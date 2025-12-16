@@ -70,6 +70,7 @@ import { selectAmbientEvent, IDLE_CONFIG, type AmbientEvent } from '@/lib/ambien
 import { PATTERN_TYPES, type PatternType, getPatternSensation, isValidPattern } from '@/lib/patterns'
 import { calculatePatternGain } from '@/lib/identity-system'
 import { getConsequenceEcho, checkPatternThreshold as checkPatternEchoThreshold, getPatternRecognitionEcho, getVoicedChoiceText, applyPatternReflection, getOrbMilestoneEcho, type ConsequenceEcho } from '@/lib/consequence-echoes'
+import { checkTransformationEligible, type TransformationMoment } from '@/lib/character-transformations'
 import { useOrbs } from '@/hooks/useOrbs'
 import { ProgressToast } from '@/components/ProgressToast'
 import { selectAnnouncement } from '@/lib/platform-announcements'
@@ -542,6 +543,25 @@ export default function StatefulGameInterface() {
         })
       }
 
+      // Track skills demonstrated by this choice
+      // Skills increment by 0.1 per demonstration (905 skill attributions in choices)
+      if (choice.choice.skills && choice.choice.skills.length > 0) {
+        const skillUpdates: Partial<Record<string, number>> = {}
+        const currentSkills = useGameStore.getState().skills
+        for (const skill of choice.choice.skills) {
+          // Only track the 12 core skills that exist in FutureSkills
+          if (skill in currentSkills) {
+            const currentValue = currentSkills[skill as keyof typeof currentSkills] || 0
+            // Increment by 0.1 with diminishing returns at higher levels
+            const increment = 0.1 * (1 - currentValue * 0.5) // Slower growth as skill increases
+            skillUpdates[skill] = Math.min(1, currentValue + increment)
+          }
+        }
+        if (Object.keys(skillUpdates).length > 0) {
+          useGameStore.getState().updateSkills(skillUpdates)
+        }
+      }
+
       // Earn orb for pattern choice - Show minimal toast (Pokemon: Low HP beep principle)
       if (choice.choice.pattern && isValidPattern(choice.choice.pattern)) {
         const earnedPattern = choice.choice.pattern
@@ -595,6 +615,46 @@ export default function StatefulGameInterface() {
           consequenceEcho = getOrbMilestoneEcho(unacknowledgedMilestone)
           if (consequenceEcho) {
             acknowledgeMilestone(unacknowledgedMilestone)
+          }
+        }
+      }
+
+      // Check for character transformation eligibility (dramatic reveal moments)
+      // Transformations trigger when trust + flags + patterns align
+      let eligibleTransformation: TransformationMoment | null = null
+      if (trustDelta > 0) { // Only check when trust increases
+        const zustandState = useGameStore.getState()
+        const characterData = newGameState.characters.get(state.currentCharacterId)
+        if (characterData) {
+          eligibleTransformation = checkTransformationEligible(
+            state.currentCharacterId,
+            {
+              trust: characterData.trust,
+              knowledgeFlags: characterData.knowledgeFlags,
+              globalFlags: newGameState.globalFlags,
+              patterns: newGameState.patterns as Record<PatternType, number>,
+              witnessedTransformations: zustandState.witnessedTransformations
+            }
+          )
+
+          // If transformation is eligible, mark it as witnessed and apply consequences
+          if (eligibleTransformation) {
+            zustandState.markTransformationWitnessed(eligibleTransformation.id)
+
+            // Apply transformation consequences (set global flags)
+            for (const flag of eligibleTransformation.consequences.globalFlagsSet) {
+              newGameState.globalFlags.add(flag)
+            }
+
+            // Show transformation as a special consequence echo
+            // The first line of transformation dialogue becomes the echo
+            if (eligibleTransformation.transformation.triggerDialogue.length > 0) {
+              consequenceEcho = {
+                text: eligibleTransformation.transformation.triggerDialogue[0],
+                emotion: eligibleTransformation.transformation.emotionArc[0],
+                timing: 'immediate'
+              }
+            }
           }
         }
       }
@@ -1329,7 +1389,8 @@ export default function StatefulGameInterface() {
                         onClick={() => {
                           if (state.gameState) {
                             const demonstrations = skillTrackerRef.current?.getAllDemonstrations() || []
-                            const narrative = generateJourneyNarrative(state.gameState, demonstrations)
+                            const trackedSkills = useGameStore.getState().skills // Get tracked skills from game store
+                            const narrative = generateJourneyNarrative(state.gameState, demonstrations, trackedSkills)
                             setState(prev => ({ ...prev, showJourneySummary: true, journeyNarrative: narrative }))
                           }
                         }}

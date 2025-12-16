@@ -624,7 +624,7 @@ The tools change every six months. The anxiety stays the same.`,
       {
         choiceId: 'alex_hype_exhausting',
         text: "Doesn't that get exhausting? Constantly relearning?",
-        nextNodeId: 'alex_learning_treadmill',
+        nextNodeId: 'alex_hype_exhaustion_response',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'adaptability'],
         consequence: {
@@ -635,9 +635,70 @@ The tools change every six months. The anxiety stays the same.`,
       {
         choiceId: 'alex_hype_leverage',
         text: "But someone has to understand the tools, right?",
-        nextNodeId: 'alex_learning_treadmill',
+        nextNodeId: 'alex_hype_leverage_response',
         pattern: 'analytical',
         skills: ['criticalThinking', 'adaptability']
+      }
+    ],
+    tags: ['alex_arc', 'credential_critique']
+  },
+
+  // ============= DIVERGENT RESPONSES TO HYPE CYCLE =============
+  {
+    nodeId: 'alex_hype_exhaustion_response',
+    speaker: 'Alex',
+    content: [
+      {
+        text: `*Stops mid-gesture.*
+
+You're the first person to ask that. Everyone else just wants to know "what should I learn next?"
+
+*Quieter.*
+
+Yeah. It's exhausting. The constant feeling that whatever you know is about to be obsolete. That you're always one update behind.
+
+But you asking that—asking about the *feeling*, not the strategy—that's different.`,
+        emotion: 'surprised_vulnerable',
+        variation_id: 'exhaustion_response_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_treadmill_empathy',
+        text: "[Continue]",
+        nextNodeId: 'alex_learning_treadmill',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['alex_arc', 'credential_critique']
+  },
+
+  {
+    nodeId: 'alex_hype_leverage_response',
+    speaker: 'Alex',
+    content: [
+      {
+        text: `*Tilts head.*
+
+Logical. And you're not wrong.
+
+Someone does need to understand the tools. The documentation I write? It matters. People rely on it.
+
+*Considers.*
+
+But the question is whether "someone" has to be the same person forever. Or whether you can be the bridge without becoming the bridge's foundation.`,
+        emotion: 'thoughtful',
+        variation_id: 'leverage_response_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_treadmill_analytical',
+        text: "[Continue]",
+        nextNodeId: 'alex_learning_treadmill',
+        pattern: 'patience'
       }
     ],
     tags: ['alex_arc', 'credential_critique']
