@@ -191,7 +191,7 @@ Forget the textbook. Chapter 4's garbage. Here's how you actually mix alginate w
       {
         choiceId: 'yaquin_creator_continue',
         text: "87 followers who found value. That's not nothing.",
-        nextNodeId: 'yaquin_curriculum_dream',
+        nextNodeId: 'yaquin_creator_encouraged',
         pattern: 'helping',
         skills: ['encouragement'],
         consequence: {
@@ -202,7 +202,7 @@ Forget the textbook. Chapter 4's garbage. Here's how you actually mix alginate w
       {
         choiceId: 'yaquin_explore_who_watches',
         text: "Those dentists watching. what draws them? What are they looking for?",
-        nextNodeId: 'yaquin_curriculum_dream',
+        nextNodeId: 'yaquin_creator_explored',
         pattern: 'exploring',
         skills: ['curiosity', 'communication'],
         consequence: {
@@ -213,13 +213,92 @@ Forget the textbook. Chapter 4's garbage. Here's how you actually mix alginate w
       {
         choiceId: 'yaquin_build_community',
         text: "87 is a tribe. What if you built with them, not just for them?",
-        nextNodeId: 'yaquin_curriculum_dream',
+        nextNodeId: 'yaquin_creator_community',
         pattern: 'building',
         skills: ['leadership', 'collaboration'],
         consequence: {
           characterId: 'yaquin',
           trustChange: 1
         }
+      }
+    ]
+  },
+
+  // ============= DIVERGENT RESPONSES TO CREATOR PATH =============
+  {
+    nodeId: 'yaquin_creator_encouraged',
+    speaker: 'Yaquin',
+    content: [
+      {
+        text: `87... right.|Before the videos? Zero. Eight years doing the work. Nobody asking questions. Nobody learning from the mistakes I already made.|Now 87 people want to know what I know.`,
+        emotion: 'reflective',
+        variation_id: 'encouraged_v1',
+        useChatPacing: true
+      },
+      {
+        text: `Maybe that's not shouting into void. Maybe that's... building something.`,
+        emotion: 'hopeful',
+        variation_id: 'encouraged_v2'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_encouraged',
+        text: "[Continue]",
+        nextNodeId: 'yaquin_curriculum_dream',
+        pattern: 'patience'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'yaquin_creator_explored',
+    speaker: 'Yaquin',
+    content: [
+      {
+        text: `The dentists? Good question.|They watch but don't comment. Think they're embarrassed? Like admitting they don't know something basic.`,
+        emotion: 'curious',
+        variation_id: 'explored_v1',
+        useChatPacing: true
+      },
+      {
+        text: `Or maybe... they see what I see. The gap between textbook and chair. What you're supposed to know versus what actually works.|That gap? Eight years of filling it. Maybe that's what they want.`,
+        emotion: 'realizing',
+        variation_id: 'explored_v2'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_explored',
+        text: "[Continue]",
+        nextNodeId: 'yaquin_curriculum_dream',
+        pattern: 'patience'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'yaquin_creator_community',
+    speaker: 'Yaquin',
+    content: [
+      {
+        text: `Build WITH them?|Never thought of it like that. Always felt like... I teach, they learn. One direction.`,
+        emotion: 'surprised',
+        variation_id: 'community_v1',
+        useChatPacing: true
+      },
+      {
+        text: `But you're right. Some of them been doing this longer than me. Different clinics. Different problems. Different solutions.|What if the course isn't me telling them things... but us figuring it out together?`,
+        emotion: 'excited',
+        variation_id: 'community_v2'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_community',
+        text: "[Continue]",
+        nextNodeId: 'yaquin_curriculum_dream',
+        pattern: 'patience'
       }
     ]
   },

@@ -27,6 +27,7 @@ import { marcusDialogueNodes } from '../content/marcus-dialogue-graph'
 import { tessDialogueNodes } from '../content/tess-dialogue-graph'
 import { rohanDialogueNodes } from '../content/rohan-dialogue-graph'
 import { yaquinDialogueNodes } from '../content/yaquin-dialogue-graph'
+import { alexDialogueNodes } from '../content/alex-dialogue-graph'
 import { mayaRevisitNodes } from '../content/maya-revisit-graph'
 import { yaquinRevisitNodes } from '../content/yaquin-revisit-graph'
 
@@ -51,6 +52,8 @@ interface GraphStats {
   maxDepth: number
   trustGatedNodes: number
   flagGatedNodes: number
+  fakeChoiceClusters: number
+  patternCounts: Record<string, number>
 }
 
 interface ValidationResult {
@@ -91,6 +94,14 @@ class DialogueGraphValidator {
     const nodeMap = new Map<string, DialogueNode>()
     const allTargetNodeIds = new Set<string>()
     const reachableFromStart = new Set<string>()
+    const patternCounts: Record<string, number> = {
+      analytical: 0,
+      helping: 0,
+      building: 0,
+      patience: 0,
+      exploring: 0
+    }
+    let fakeChoiceClusters = 0
 
     // Build node map and check for duplicates
     for (const node of nodes) {
@@ -106,9 +117,49 @@ class DialogueGraphValidator {
       nodeMap.set(node.nodeId, node)
     }
 
-    // Validate each node
+    // Validate each node and detect fake choice clusters
     for (const node of nodes) {
       this.validateNode(name, node, nodeMap, allTargetNodeIds)
+
+      // Count patterns
+      for (const choice of node.choices) {
+        if (choice.pattern && patternCounts[choice.pattern] !== undefined) {
+          patternCounts[choice.pattern]++
+        }
+      }
+
+      // Detect fake choice clusters (2+ choices → same destination)
+      // Exclude explicit [Continue] choices which are intentional
+      const nonContinueChoices = node.choices.filter(c =>
+        !c.text.toLowerCase().includes('[continue]') &&
+        !c.text.toLowerCase().includes('continue') &&
+        c.text.trim() !== '...'
+      )
+
+      if (nonContinueChoices.length >= 2) {
+        // Group by destination
+        const destinationGroups = new Map<string, typeof nonContinueChoices>()
+        for (const choice of nonContinueChoices) {
+          const existing = destinationGroups.get(choice.nextNodeId) || []
+          existing.push(choice)
+          destinationGroups.set(choice.nextNodeId, existing)
+        }
+
+        // Flag clusters of 2+ choices to same destination
+        for (const [dest, choices] of destinationGroups) {
+          if (choices.length >= 2) {
+            fakeChoiceClusters++
+            const choiceTexts = choices.map(c => `"${c.text.substring(0, 40)}..."`).join(', ')
+            this.warnings.push({
+              severity: 'warning',
+              graph: name,
+              nodeId: node.nodeId,
+              message: `FAKE CHOICE: ${choices.length} choices all lead to "${dest}"`,
+              suggestion: `Choices: ${choiceTexts}. Create divergent paths or different acknowledgment.`
+            })
+          }
+        }
+      }
     }
 
     // Check start node exists
@@ -159,9 +210,27 @@ class DialogueGraphValidator {
       brokenReferences: this.errors.filter(e => e.graph === name && e.message.includes('points to non-existent')).length,
       maxDepth: this.calculateMaxDepth(startNodeId, nodeMap),
       trustGatedNodes: nodes.filter(n => n.requiredState?.trust).length,
-      flagGatedNodes: nodes.filter(n => n.requiredState?.hasGlobalFlags || n.requiredState?.hasKnowledgeFlags).length
+      flagGatedNodes: nodes.filter(n => n.requiredState?.hasGlobalFlags || n.requiredState?.hasKnowledgeFlags).length,
+      fakeChoiceClusters,
+      patternCounts
     }
     this.stats.push(stats)
+
+    // Warn about pattern imbalance (if any pattern has <10% share)
+    const totalPatterns = Object.values(patternCounts).reduce((a, b) => a + b, 0)
+    if (totalPatterns >= 10) { // Only check if there are enough patterns to be meaningful
+      for (const [pattern, count] of Object.entries(patternCounts)) {
+        const share = count / totalPatterns
+        if (share < 0.1 && count > 0) {
+          this.warnings.push({
+            severity: 'warning',
+            graph: name,
+            message: `Pattern imbalance: "${pattern}" only has ${(share * 100).toFixed(1)}% of choices (${count}/${totalPatterns})`,
+            suggestion: 'Consider adding more choices with this pattern for balance'
+          })
+        }
+      }
+    }
   }
 
   private validateNode(
@@ -339,7 +408,7 @@ class DialogueGraphValidator {
     // Known cross-graph entry points (Samuel references other character arcs)
     const externalPatterns = [
       'maya_', 'devon_', 'jordan_', 'kai_', 'silas_',
-      'marcus_', 'tess_', 'rohan_', 'yaquin_',
+      'marcus_', 'tess_', 'rohan_', 'yaquin_', 'alex_',
       'samuel_' // Samuel can reference himself across files
     ]
 
@@ -485,6 +554,7 @@ function main(): void {
     { name: 'tess', nodes: tessDialogueNodes, startNodeId: 'tess_introduction' },
     { name: 'rohan', nodes: rohanDialogueNodes, startNodeId: 'rohan_introduction' },
     { name: 'yaquin', nodes: yaquinDialogueNodes, startNodeId: 'yaquin_introduction' },
+    { name: 'alex', nodes: alexDialogueNodes, startNodeId: 'alex_introduction' },
     { name: 'yaquin-revisit', nodes: yaquinRevisitNodes, startNodeId: 'yaquin_revisit_welcome' },
   ]
 
@@ -513,6 +583,18 @@ function main(): void {
     }
     if (stat.brokenReferences > 0) {
       console.log(`  ❌ Broken refs: ${stat.brokenReferences}`)
+    }
+    if (stat.fakeChoiceClusters > 0) {
+      console.log(`  🎭 Fake choices: ${stat.fakeChoiceClusters} clusters`)
+    }
+    // Show pattern distribution
+    const totalP = Object.values(stat.patternCounts).reduce((a, b) => a + b, 0)
+    if (totalP > 0) {
+      const dist = Object.entries(stat.patternCounts)
+        .filter(([, v]) => v > 0)
+        .map(([k, v]) => `${k.charAt(0).toUpperCase()}:${v}`)
+        .join(' ')
+      console.log(`  📊 Patterns: ${dist}`)
     }
   }
 
