@@ -37,21 +37,221 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'observe_first',
         text: "Take a moment to look around first",
-        nextNodeId: 'samuel_introduction',
+        nextNodeId: 'station_observation',
         pattern: 'patience',
         skills: ['criticalThinking']
       },
       {
         choiceId: 'check_others',
         text: "See if anyone else is getting off",
-        nextNodeId: 'samuel_introduction',
+        nextNodeId: 'observe_passengers',
         pattern: 'helping',
         skills: ['emotionalIntelligence']
       }
     ]
   },
 
-  // ============= INTRODUCTION =============
+  // ============= OBSERVATION BRANCHES =============
+  // Player chose to look around - reward their patience with atmosphere
+  {
+    nodeId: 'station_observation',
+    speaker: '', // Atmospheric narration
+    content: [
+      {
+        text: "You pause at the train door, taking it in.\n\nThe station's bigger than it looked from outside. Vaulted ceilings stretch up into shadow, old ironwork catching the light. Platform signs point to places you half-recognize—some you don't. The air smells like old wood and something faintly electric, like possibility.\n\nA few travelers drift past, each heading somewhere with quiet purpose.\n\nThe older man on the platform notices you looking. He smiles, patient. No rush.",
+        emotion: 'atmospheric',
+        variation_id: 'observation_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'step_off_after_looking',
+        text: "Step off and approach him",
+        nextNodeId: 'samuel_introduction_patient',
+        pattern: 'exploring',
+        skills: ['adaptability']
+      },
+      {
+        choiceId: 'ask_about_platforms',
+        text: "Those platform signs... where do they all go?",
+        nextNodeId: 'samuel_introduction_curious',
+        pattern: 'analytical',
+        skills: ['criticalThinking']
+      }
+    ]
+  },
+
+  // Player chose to notice others - reward their awareness
+  {
+    nodeId: 'observe_passengers',
+    speaker: '', // Atmospheric narration
+    content: [
+      {
+        text: "You glance down the train car. A few other passengers are gathering their things—a young woman with paint-stained fingers, a guy in scrubs looking exhausted but focused, someone your age staring out the window like they're working up courage.\n\nEach of them alone. Each of them here for something.\n\nOn the platform, the older man waits. His eyes move across all of you, but when they land on you, something shifts. Recognition, maybe. Or just welcome.",
+        emotion: 'atmospheric',
+        variation_id: 'passengers_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'step_off_noticed',
+        text: "Step off the train",
+        nextNodeId: 'samuel_introduction_noticed',
+        pattern: 'exploring',
+        skills: ['adaptability']
+      },
+      {
+        choiceId: 'wait_for_others',
+        text: "Let the others go first",
+        nextNodeId: 'samuel_introduction_humble',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence']
+      }
+    ]
+  },
+
+  // Samuel's intro variants based on how player arrived
+  {
+    nodeId: 'samuel_introduction_patient',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You took your time. Good.\n\nMost folks rush off the train like they're late for somethin'. But you... you looked first. That's smart.\n\nI'm Samuel. Been helpin' folks find their way around here for longer than I expected. You look like you got questions—and that's exactly what this place is for.",
+        emotion: 'warm',
+        variation_id: 'intro_patient_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'ask_what_is_this_patient',
+        text: "What is this place exactly?",
+        nextNodeId: 'samuel_explains_station',
+        pattern: 'exploring',
+        skills: ['communication', 'adaptability']
+      },
+      {
+        choiceId: 'ask_about_platforms_patient',
+        text: "The platforms—where do they lead?",
+        nextNodeId: 'samuel_explains_platforms',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'communication']
+      },
+      {
+        choiceId: 'ask_who_are_you_patient',
+        text: "How'd you end up here?",
+        nextNodeId: 'samuel_backstory_intro',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'communication']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_introduction_curious',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Ha! Straight to the big questions. I like that.\n\nI'm Samuel. And those platforms? They go to different... let's call 'em possibilities. Each one's got folks who've walked paths you might want to walk. Or might not. That's the thing about this place—it don't tell you what to choose. Just helps you see clearer.\n\nBut we can get to all that. First—welcome to Grand Central.",
+        emotion: 'warm',
+        variation_id: 'intro_curious_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'tell_me_more_platforms',
+        text: "Tell me more about the platforms",
+        nextNodeId: 'samuel_explains_platforms',
+        pattern: 'exploring',
+        skills: ['communication', 'adaptability']
+      },
+      {
+        choiceId: 'who_are_you_curious',
+        text: "And you help people... how?",
+        nextNodeId: 'samuel_backstory_intro',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'communication']
+      },
+      {
+        choiceId: 'ready_to_explore_curious',
+        text: "I'm ready to look around",
+        nextNodeId: 'samuel_orb_introduction',
+        pattern: 'exploring',
+        skills: ['communication']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_introduction_noticed',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You noticed the others. That's good—means you're payin' attention.\n\nEvery person on that train's got their own story, their own reason for being here. Some know it. Some don't yet. That's what this place helps with.\n\nI'm Samuel. Been here a while. And you... you look like you see more than most. That's gonna serve you well.",
+        emotion: 'warm',
+        variation_id: 'intro_noticed_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'ask_about_others',
+        text: "Who were those other passengers?",
+        nextNodeId: 'samuel_explains_platforms',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication']
+      },
+      {
+        choiceId: 'ask_about_self',
+        text: "What's my reason for being here?",
+        nextNodeId: 'samuel_explains_station',
+        pattern: 'analytical',
+        skills: ['criticalThinking']
+      },
+      {
+        choiceId: 'samuel_story_noticed',
+        text: "You said you've been here a while...",
+        nextNodeId: 'samuel_backstory_intro',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'communication']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_introduction_humble',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You let them go first. Watched 'em find their footing.\n\nThat's a rare thing, you know? Most folks are so caught up in their own journey, they forget everyone else is on one too. But you... you see people.\n\nI'm Samuel. And I think you and I are gonna get along just fine. Welcome to Grand Central.",
+        emotion: 'warm',
+        variation_id: 'intro_humble_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'ask_what_is_this_humble',
+        text: "What is this place?",
+        nextNodeId: 'samuel_explains_station',
+        pattern: 'exploring',
+        skills: ['communication']
+      },
+      {
+        choiceId: 'ask_about_others_humble',
+        text: "Will I see those other travelers again?",
+        nextNodeId: 'samuel_explains_platforms',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
+      },
+      {
+        choiceId: 'why_get_along',
+        text: "Why do you say we'll get along?",
+        nextNodeId: 'samuel_backstory_intro',
+        pattern: 'patience',
+        skills: ['communication', 'emotionalIntelligence']
+      }
+    ]
+  },
+
+  // ============= ORIGINAL INTRODUCTION (for direct step-off) =============
   {
     nodeId: 'samuel_introduction',
     speaker: 'Samuel Washington',
