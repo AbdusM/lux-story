@@ -1,7 +1,8 @@
-import { findCharacterForNode } from './graph-registry'
+import { findCharacterForNode, isValidCharacterId } from './graph-registry'
 import { ActiveThought, THOUGHT_REGISTRY } from '@/content/thoughts'
 import { calculateResonantTrustChange } from './pattern-affinity'
-import { PatternType } from './patterns'
+import { PatternType, isValidPattern } from './patterns'
+import { MAX_TRUST, MIN_TRUST, INITIAL_TRUST } from './constants'
 
 /**
  * Core character relationship state
@@ -94,6 +95,7 @@ export interface StateChange {
 
   // Thought Cabinet
   thoughtId?: string
+  internalizeThought?: boolean // If true and thoughtId is set, internalize the thought (identity system)
 }
 
 /**
@@ -123,11 +125,12 @@ export interface SerializableGameState {
 
 /**
  * Constants for the narrative system
+ * Uses centralized values from lib/constants.ts
  */
 export const NARRATIVE_CONSTANTS = {
-  MAX_TRUST: 10,
-  MIN_TRUST: 0,
-  DEFAULT_TRUST: 0,
+  MAX_TRUST,
+  MIN_TRUST,
+  DEFAULT_TRUST: INITIAL_TRUST,
   DEFAULT_RELATIONSHIP: 'stranger' as const,
   SAVE_VERSION: '1.0.0'
 } as const
@@ -142,6 +145,22 @@ export class GameStateUtils {
    * Returns a new GameState object (immutable pattern)
    */
   static applyStateChange(gameState: GameState, change: StateChange): GameState {
+    // Validate character ID if provided
+    if (change.characterId && !isValidCharacterId(change.characterId)) {
+      console.error(`[Validation] Invalid characterId: ${change.characterId}`)
+      return gameState // Return unchanged
+    }
+
+    // Validate pattern changes
+    if (change.patternChanges) {
+      for (const pattern of Object.keys(change.patternChanges)) {
+        if (!isValidPattern(pattern)) {
+          console.warn(`[Validation] Invalid pattern "${pattern}" in patternChanges, skipping`)
+          delete change.patternChanges[pattern as keyof typeof change.patternChanges]
+        }
+      }
+    }
+
     // Deep clone the game state
     const newState = this.cloneGameState(gameState)
 
@@ -165,15 +184,39 @@ export class GameStateUtils {
     // Handle Thought Triggers (Direct State Mutation)
     if (change.thoughtId) {
       const registry = THOUGHT_REGISTRY[change.thoughtId]
-      // Only add if it doesn't exist
-      if (registry && !newState.thoughts.some(t => t.id === change.thoughtId)) {
-        newState.thoughts.push({
-          ...registry,
-          status: 'developing',
-          progress: 0,
-          addedAt: Date.now(),
-          lastUpdated: Date.now()
-        })
+      const existingThoughtIndex = newState.thoughts.findIndex(t => t.id === change.thoughtId)
+
+      if (change.internalizeThought) {
+        // Identity internalization - mark as internalized immediately
+        if (existingThoughtIndex >= 0) {
+          // Update existing thought to internalized
+          newState.thoughts[existingThoughtIndex] = {
+            ...newState.thoughts[existingThoughtIndex],
+            status: 'internalized',
+            progress: 100,
+            lastUpdated: Date.now()
+          }
+        } else if (registry) {
+          // Add as already internalized
+          newState.thoughts.push({
+            ...registry,
+            status: 'internalized',
+            progress: 100,
+            addedAt: Date.now(),
+            lastUpdated: Date.now()
+          })
+        }
+      } else {
+        // Normal thought trigger - add as developing
+        if (registry && existingThoughtIndex < 0) {
+          newState.thoughts.push({
+            ...registry,
+            status: 'developing',
+            progress: 0,
+            addedAt: Date.now(),
+            lastUpdated: Date.now()
+          })
+        }
       }
     }
 

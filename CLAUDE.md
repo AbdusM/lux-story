@@ -126,6 +126,26 @@ hooks/
 - Interaction animations (shake, nod, bloom, etc.)
 - Voice typography per character
 
+### UI State Nuances
+Clean, simple UI nuances indicate different situations without words:
+
+**Container Differentiation:**
+- NPC dialogue: Standard container (rgba white, subtle border)
+- Narrative text: Slightly different color + marquee shimmer effect + larger font
+- No center-justification for narrative—keep left-aligned for readability
+
+**Attention Direction (Game Research Pattern):**
+- When player earns something → Nav bar button highlights with marquee shimmer
+- Visual cue says "navigate here to see what changed"
+- When they navigate there → They discover the change
+- Reinforces: action → visual feedback → discovery loop
+
+**Animation Philosophy:**
+- Synchronized symmetrical disposition for shimmer effects
+- Two-layer marquee (forward + reverse) creates depth/reverberation
+- Subtle enough to attract attention, not distract from gameplay
+- Respects `prefers-reduced-motion` for accessibility
+
 ---
 
 ## Development Commands
@@ -138,14 +158,54 @@ vercel --prod        # Deploy to production
 ```
 
 ### Testing
-- Playwright for browser automation
+```bash
+npm test                        # Run all tests
+npm test tests/lib              # Run lib tests only
+npm test -- --watch             # Watch mode
+```
+
+- Vitest for unit testing
+- Playwright for E2E browser automation
 - Test page: `/test-pixels` for avatar verification
+
+---
+
+## State Architecture
+
+See `lib/STATE_ARCHITECTURE.md` for full documentation.
+
+### Core State (`lib/character-state.ts`)
+- `GameState` - Master state container
+- `GameStateUtils.applyStateChange()` - Immutable state transformations
+
+### Type Validation
+- `lib/patterns.ts` - `isValidPattern()`, `PatternType`
+- `lib/emotions.ts` - `isValidEmotion()`, `EmotionType`
+- `lib/graph-registry.ts` - `isValidCharacterId()`, `CharacterId`
+
+### Constants (`lib/constants.ts`)
+All magic numbers centralized:
+- Trust bounds: `MAX_TRUST=10`, `MIN_TRUST=0`
+- Identity threshold: `IDENTITY_THRESHOLD=5`
+- Internalization bonus: `INTERNALIZE_BONUS=0.20`
+
+### Archived Code (`lib/archive/`)
+Deprecated code preserved for reference:
+- `game-state.legacy.ts` - Sprint 1 state system
+- `orb-allocation-design.ts` - Unused allocation mechanics
 
 ---
 
 ## Current Status (December 2024)
 
 ### Recently Completed (December 2024)
+- **Polish Sprint** (86% → 95%)
+  - Type safety: `PatternType`, `EmotionType` enforced
+  - Centralized constants in `lib/constants.ts`
+  - Complete consequence echoes for all 11 characters
+  - Validation layer with bounds checking
+  - State architecture documented
+  - Test coverage for core systems (33 tests)
 - Documentation consolidation (120 docs → 10 docs)
 - Philosophy Foundation document
 - Engineering Synthesis document (comprehensive SDP)

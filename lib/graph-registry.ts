@@ -56,6 +56,18 @@ export const DIALOGUE_GRAPHS = {
 export type CharacterId = 'samuel' | 'maya' | 'devon' | 'jordan' | 'marcus' | 'tess' | 'yaquin' | 'kai' | 'alex' | 'rohan' | 'silas'
 
 /**
+ * All valid character IDs as an array for validation
+ */
+export const CHARACTER_IDS: CharacterId[] = ['samuel', 'maya', 'devon', 'jordan', 'marcus', 'tess', 'yaquin', 'kai', 'alex', 'rohan', 'silas']
+
+/**
+ * Validate if a string is a valid character ID
+ */
+export function isValidCharacterId(id: string): id is CharacterId {
+  return CHARACTER_IDS.includes(id as CharacterId)
+}
+
+/**
  * Get the correct dialogue graph for a character based on current game state
  *
  * CRITICAL: This is the ONLY place where routing rules should be defined
