@@ -11,6 +11,7 @@
  */
 
 import type { GameState, SerializableGameState } from './character-state'
+import type { FutureSkills } from './game-store'
 
 /**
  * Skill demonstration record from gameplay
@@ -23,6 +24,11 @@ interface SkillDemonstration {
   context: string
   timestamp: number
 }
+
+/**
+ * Tracked skills from game store (0-1 scale)
+ */
+type TrackedSkills = Partial<FutureSkills>
 
 /**
  * Journey narrative data structure
@@ -191,9 +197,63 @@ function generateRelationshipReflections(gameState: GameState | SerializableGame
 }
 
 /**
- * Generate skill highlights from demonstrations
+ * Generate skill highlights from tracked skills and demonstrations
+ * Now uses the game store skills (0-1 scale) for more accurate tracking
  */
-function generateSkillHighlights(demonstrations: SkillDemonstration[]): SkillHighlight[] {
+function generateSkillHighlights(
+  demonstrations: SkillDemonstration[],
+  trackedSkills?: TrackedSkills
+): SkillHighlight[] {
+  const skillSignificance: Record<string, string> = {
+    emotionalIntelligence: 'Being able to read people—really read them—opens doors that qualifications alone never will.',
+    criticalThinking: 'Most people accept the first answer. You dig deeper. That\'s rare.',
+    communication: 'Saying the right thing at the right time? That\'s a superpower in any room.',
+    problemSolving: 'Breaking down complexity into steps—that\'s how impossible things get done.',
+    leadership: 'Leading isn\'t about being in charge. It\'s about helping others find their way.',
+    creativity: 'Seeing connections others miss—that\'s where innovation lives.',
+    adaptability: 'Changing direction without losing your footing. That\'s survival and success.',
+    collaboration: 'Making others feel heard and valued? Teams are built on that.',
+    culturalCompetence: 'Understanding where people come from helps you meet them where they are.',
+    financialLiteracy: 'Understanding money and value? That wisdom serves you in every decision.',
+    timeManagement: 'Knowing when to act and when to wait. Timing is everything.',
+    digitalLiteracy: 'Navigating digital tools like second nature. That\'s the new baseline.'
+  }
+
+  const skillDescriptions: Record<string, string> = {
+    emotionalIntelligence: 'You showed real empathy when others needed it.',
+    criticalThinking: 'You questioned assumptions and dug for the truth.',
+    communication: 'You found the right words when they mattered most.',
+    problemSolving: 'You broke complex situations into solvable pieces.',
+    leadership: 'You stepped up when someone needed guidance.',
+    creativity: 'You saw possibilities others missed.',
+    adaptability: 'You adjusted your approach when circumstances changed.',
+    collaboration: 'You brought people together and made them feel heard.',
+    culturalCompetence: 'You showed awareness of different perspectives.',
+    financialLiteracy: 'You considered the practical value of decisions.',
+    timeManagement: 'You knew when to act and when to be patient.',
+    digitalLiteracy: 'You navigated technology to solve problems.'
+  }
+
+  // If we have tracked skills from the game store, use those for accuracy
+  if (trackedSkills && Object.keys(trackedSkills).length > 0) {
+    const skillEntries = Object.entries(trackedSkills)
+      .filter(([, value]) => value !== undefined && value > 0.05) // Only show skills with meaningful progress
+      .sort(([, a], [, b]) => (b ?? 0) - (a ?? 0))
+      .slice(0, 4) // Top 4 skills
+
+    if (skillEntries.length > 0) {
+      return skillEntries.map(([skill, value]) => {
+        const level = (value ?? 0) > 0.3 ? 'consistently' : 'several times'
+        return {
+          skill,
+          demonstration: skillDescriptions[skill] || `You demonstrated ${skill} ${level} throughout your journey.`,
+          significance: skillSignificance[skill] || 'That\'s a real skill, even if it doesn\'t fit on a resume.'
+        }
+      })
+    }
+  }
+
+  // Fallback to demonstration-based tracking (legacy)
   if (!demonstrations || demonstrations.length === 0) {
     return [
       {
@@ -225,19 +285,6 @@ function generateSkillHighlights(demonstrations: SkillDemonstration[]): SkillHig
   const topSkills = Array.from(skillCounts.entries())
     .sort(([, a], [, b]) => b.count - a.count)
     .slice(0, 3)
-
-  const skillSignificance: Record<string, string> = {
-    emotionalIntelligence: 'Being able to read people. really read them. opens doors that qualifications alone never will.',
-    criticalThinking: 'Most people accept the first answer. You dig deeper. That\'s rare.',
-    communication: 'Saying the right thing at the right time? That\'s a superpower in any room.',
-    problemSolving: 'Breaking down complexity into steps. that\'s how impossible things get done.',
-    leadership: 'Leading isn\'t about being in charge. It\'s about helping others find their way.',
-    creativity: 'Seeing connections others miss. that\'s where innovation lives.',
-    adaptability: 'Changing direction without losing your footing. That\'s survival and success.',
-    collaboration: 'Making others feel heard and valued? Teams are built on that.',
-    culturalCompetence: 'Understanding where people come from helps you meet them where they are.',
-    relationshipBuilding: 'Trust is currency in any career. You know how to earn it.'
-  }
 
   return topSkills.map(([skill, data]) => ({
     skill,
@@ -391,7 +438,8 @@ function calculateStats(gameState: GameState | SerializableGameState): JourneySt
  */
 export function generateJourneyNarrative(
   gameState: GameState | SerializableGameState,
-  demonstrations?: SkillDemonstration[]
+  demonstrations?: SkillDemonstration[],
+  trackedSkills?: TrackedSkills
 ): JourneyNarrative {
   const stats = calculateStats(gameState)
 
@@ -399,7 +447,7 @@ export function generateJourneyNarrative(
     openingParagraph: generateOpening(stats, gameState),
     patternReflection: generatePatternReflection(stats),
     relationshipReflections: generateRelationshipReflections(gameState),
-    skillHighlights: generateSkillHighlights(demonstrations || []),
+    skillHighlights: generateSkillHighlights(demonstrations || [], trackedSkills),
     careerInsights: generateCareerInsights(stats),
     closingWisdom: generateClosingWisdom(stats),
     journeyStats: stats

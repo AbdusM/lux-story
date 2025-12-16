@@ -209,7 +209,7 @@ Next morning I quit. Everyone thought I lost my mind.`,
       {
         choiceId: 'tess_backstory_risk',
         text: "That took guts.",
-        nextNodeId: 'tess_the_numbers',
+        nextNodeId: 'tess_backstory_courage_response',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
         consequence: {
@@ -220,9 +220,68 @@ Next morning I quit. Everyone thought I lost my mind.`,
       {
         choiceId: 'tess_backstory_reality',
         text: "And now?",
-        nextNodeId: 'tess_the_numbers',
+        nextNodeId: 'tess_backstory_reality_response',
         pattern: 'patience',
         skills: ['communication']
+      }
+    ]
+  },
+
+  // ============= DIVERGENT RESPONSES TO BACKSTORY =============
+  {
+    nodeId: 'tess_backstory_courage_response',
+    speaker: 'Tess',
+    content: [
+      {
+        text: `*Pauses. Surprised.*
+
+Most people call it reckless. Or lucky. You're the first to call it guts.
+
+*Looks around the shop.*
+
+Maybe it was both. Reckless enough to jump. Lucky enough to land somewhere that matters.
+
+But courage... yeah. I'll take that.`,
+        emotion: 'touched',
+        variation_id: 'courage_response_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_numbers_courage',
+        text: "[Continue]",
+        nextNodeId: 'tess_the_numbers',
+        pattern: 'patience'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'tess_backstory_reality_response',
+    speaker: 'Tess',
+    content: [
+      {
+        text: `*Short laugh.*
+
+Now? Now I'm standing in my own shop wondering if I traded one kind of fake for another kind of broke.
+
+*Quieter.*
+
+At least when I couldn't sleep in the corporate job, it was because I felt hollow. Now when I can't sleep, it's because I feel everything.
+
+Not sure which is worse. But at least this is mine.`,
+        emotion: 'wry',
+        variation_id: 'reality_response_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_numbers_reality',
+        text: "[Continue]",
+        nextNodeId: 'tess_the_numbers',
+        pattern: 'patience'
       }
     ]
   },
@@ -251,16 +310,79 @@ That's what this place does. Was. Is supposed to.`,
       {
         choiceId: 'tess_phoniness_fight',
         text: "So fight for it.",
-        nextNodeId: 'tess_the_numbers',
+        nextNodeId: 'tess_phoniness_fight_response',
         pattern: 'building',
         skills: ['emotionalIntelligence', 'problemSolving']
       },
       {
         choiceId: 'tess_phoniness_how',
         text: "But how? When the numbers don't work?",
-        nextNodeId: 'tess_the_numbers',
+        nextNodeId: 'tess_phoniness_how_response',
         pattern: 'analytical',
         skills: ['criticalThinking']
+      }
+    ]
+  },
+
+  // ============= DIVERGENT RESPONSES TO PHONINESS =============
+  {
+    nodeId: 'tess_phoniness_fight_response',
+    speaker: 'Tess',
+    content: [
+      {
+        text: `*Looks at you sharply.*
+
+Fight for it. Like it's simple.
+
+*But then something shifts.*
+
+You know what? You're right. Everyone tells me to be practical. Be realistic. Take the money.
+
+No one's said "fight for it" in months.
+
+*Nods slowly.*
+
+Maybe that's the problem.`,
+        emotion: 'fierce',
+        variation_id: 'fight_response_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_numbers_fight',
+        text: "[Continue]",
+        nextNodeId: 'tess_the_numbers',
+        pattern: 'patience'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'tess_phoniness_how_response',
+    speaker: 'Tess',
+    content: [
+      {
+        text: `*Sighs.*
+
+That's the question, isn't it? "How" is where dreams go to die.
+
+Passion says keep going. Math says sell.
+
+*Looks at the books on her desk.*
+
+Every month I solve that equation differently. Some months passion wins. Lately, math's been catching up.`,
+        emotion: 'tired',
+        variation_id: 'how_response_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_numbers_how',
+        text: "[Continue]",
+        nextNodeId: 'tess_the_numbers',
+        pattern: 'patience'
       }
     ]
   },
