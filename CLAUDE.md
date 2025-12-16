@@ -83,17 +83,20 @@ hooks/
 └── useGameState.ts             # Core game state management
 ```
 
-### Characters (8 Main)
+### Characters (11 Total)
 | Character | Animal | Role |
 |-----------|--------|------|
-| Samuel | Owl | Station keeper, wise mentor |
-| Maya | Cat | Pre-med student, family pressure |
-| Tess | Fox | Warm guide |
-| Devon | Deer | Engineering student, systems thinker |
-| Marcus | Bear | Healthcare, nurturing |
-| Rohan | Raven | Mysterious, introspective |
-| Yaquin | Rabbit | Gentle, curious |
-| Lira | Butterfly | Ethereal, transformative |
+| Samuel | Owl | Station keeper, wise mentor (Hub) |
+| Maya | Cat | Tech Innovator, family pressure |
+| Devon | Deer | Systems Thinker, engineering |
+| Jordan | — | Career Navigator |
+| Marcus | Bear | Medical Tech, healthcare |
+| Tess | Fox | Education Founder |
+| Yaquin | Rabbit | EdTech Creator |
+| Kai | — | Safety Specialist |
+| Rohan | Raven | Deep Tech, introspective |
+| Alex | — | Extra character |
+| Silas | — | Crisis Manager |
 
 ### Pattern System
 5 behavioral patterns tracked through choices:
@@ -142,12 +145,14 @@ vercel --prod        # Deploy to production
 
 ## Current Status (December 2024)
 
-### Recently Completed
-- 32×32 pixel avatar upgrade for all 8 characters
-- Player avatar in Journal panel
-- Fixed choice container height
-- Reduced thinking indicator frequency
-- Pattern choice rebalancing (HELPING → BUILDING/EXPLORING)
+### Recently Completed (December 2024)
+- Documentation consolidation (120 docs → 10 docs)
+- Philosophy Foundation document
+- Engineering Synthesis document (comprehensive SDP)
+- ISP Analysis (dormant capabilities, syntheses, futures)
+- Fake choice audit and fixes
+- 32×32 pixel avatar upgrade for all characters
+- UI consolidation (7 elements max)
 
 ### Production
 - URL: https://lux-story.vercel.app
