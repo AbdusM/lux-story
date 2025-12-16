@@ -91,7 +91,9 @@ export interface OrbBalance {
 
   // Totals
   totalEarned: number
+  /** @deprecated Vestigial - Allocation system not implemented. Always 0. See lib/archive/orb-allocation-design.ts */
   totalAllocated: number
+  /** @deprecated Vestigial - Allocation system not implemented. Always 0. See lib/archive/orb-allocation-design.ts */
   availableToAllocate: number
 
   // Streaks (consecutive choices of same pattern)
@@ -119,7 +121,8 @@ export interface OrbTransaction {
 }
 
 /**
- * Allocation target - where orbs can be spent
+ * @deprecated Vestigial - Allocation system was designed but not implemented.
+ * Keeping for backwards compatibility. See lib/archive/orb-allocation-design.ts
  */
 export interface AllocationTarget {
   id: string

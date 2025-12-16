@@ -17,6 +17,11 @@
 import { PatternType } from './patterns'
 import { ActiveThought } from '@/content/thoughts'
 import { GameState } from './character-state'
+import {
+  IDENTITY_THRESHOLD,
+  INTERNALIZE_BONUS,
+  DISCARD_PENALTY
+} from './constants'
 
 /**
  * Identity offering - the moment of choice
@@ -39,12 +44,12 @@ export interface InternalizedIdentity {
 }
 
 /**
- * Constants for identity system
+ * Constants for identity system - re-exported from centralized constants
  */
 export const IDENTITY_CONSTANTS = {
-  OFFERING_THRESHOLD: 5, // Pattern level when identity is offered
-  INTERNALIZE_BONUS: 0.20, // +20% to future gains
-  DISCARD_PENALTY: 0 // No penalty for discarding
+  OFFERING_THRESHOLD: IDENTITY_THRESHOLD,
+  INTERNALIZE_BONUS: INTERNALIZE_BONUS,
+  DISCARD_PENALTY: DISCARD_PENALTY
 } as const
 
 /**
@@ -82,14 +87,28 @@ export function createIdentityOffer(pattern: PatternType): IdentityOffer {
  * These are thoughts with status='internalized' that start with 'identity-'
  */
 export function getInternalizedIdentities(gameState: GameState): InternalizedIdentity[] {
-  return gameState.thoughts
-    .filter(t => t.status === 'internalized' && isIdentityThought(t.id))
-    .map(t => ({
-      pattern: extractPatternFromIdentity(t.id)!,
-      thoughtId: t.id,
-      internalizedAt: t.lastUpdated,
+  const results: InternalizedIdentity[] = []
+
+  for (const thought of gameState.thoughts) {
+    if (thought.status !== 'internalized' || !isIdentityThought(thought.id)) {
+      continue
+    }
+
+    const pattern = extractPatternFromIdentity(thought.id)
+    if (!pattern) {
+      console.warn(`[Identity System] Invalid identity thought ID: ${thought.id}`)
+      continue
+    }
+
+    results.push({
+      pattern,
+      thoughtId: thought.id,
+      internalizedAt: thought.lastUpdated,
       bonus: IDENTITY_CONSTANTS.INTERNALIZE_BONUS
-    }))
+    })
+  }
+
+  return results
 }
 
 /**

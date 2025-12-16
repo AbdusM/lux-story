@@ -11,6 +11,9 @@ import {
   StateChange
 } from './character-state'
 import { FutureSkills } from './2030-skills-system'
+import { PatternType } from './patterns'
+// Note: Emotions use string type to support compound emotions like 'anxious_hopeful'
+// Use isValidEmotion() from lib/emotions.ts for runtime validation of core emotions
 
 /**
  * A single dialogue node in the narrative graph
@@ -51,7 +54,7 @@ export interface DialogueNode {
    * This is at the node level so it applies regardless of content variation.
    */
   patternReflection?: Array<{
-    pattern: 'analytical' | 'helping' | 'building' | 'patience' | 'exploring'
+    pattern: PatternType
     minLevel: number
     altText: string
     altEmotion?: string
@@ -72,7 +75,7 @@ export interface DialogueNode {
  */
 export interface DialogueContent {
   text: string
-  emotion?: string // Emotion tag for the dialogue (e.g., 'neutral', 'anxious', 'hopeful', 'vulnerable', etc.)
+  emotion?: string // Emotion tag - supports compound emotions like 'anxious_hopeful'
   variation_id: string // For tracking which variation was shown
   useChatPacing?: boolean // If true, use ChatPacedDialogue component for sequential reveal (use sparingly!)
   richEffectContext?: 'thinking' | 'warning' | 'success' | 'executing' | 'error' // Optional context for rich text effects
@@ -106,7 +109,7 @@ export interface DialogueContent {
    * }]
    */
   patternReflection?: Array<{
-    pattern: 'analytical' | 'helping' | 'building' | 'patience' | 'exploring'
+    pattern: PatternType
     minLevel: number
     altText: string
     altEmotion?: string
@@ -129,7 +132,7 @@ export interface ConditionalChoice {
   enabledCondition?: StateCondition
 
   // Pattern this choice represents (for tracking)
-  pattern?: 'analytical' | 'helping' | 'building' | 'patience' | 'exploring'
+  pattern?: PatternType
 
   // WEF 2030 Skills demonstrated by this choice (for Samuel's personalization)
   skills?: (keyof FutureSkills)[]
@@ -155,7 +158,7 @@ export interface ConditionalChoice {
    *   patience: "Take your time. I'm listening."
    * }
    */
-  voiceVariations?: Partial<Record<'analytical' | 'helping' | 'building' | 'patience' | 'exploring', string>>
+  voiceVariations?: Partial<Record<PatternType, string>>
 
   /**
    * Visual interaction animation to apply to this choice button.
@@ -182,7 +185,7 @@ export interface ConditionalChoice {
    * // Choice appears but is locked until player has 25% analytical orb fill
    */
   requiredOrbFill?: {
-    pattern: 'analytical' | 'helping' | 'building' | 'patience' | 'exploring'
+    pattern: PatternType
     threshold: number // 0-100 fill percentage required
   }
 }
