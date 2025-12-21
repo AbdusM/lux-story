@@ -560,7 +560,7 @@ export default function StatefulGameInterface() {
           currentNode: null,
           currentGraph: safeStart.graph,
           currentCharacterId: safeStart.characterId,
-          currentNodeId: safeStart.nodeId,
+          currentNodeId: safeStart.graph.startNodeId,
           availableChoices: [],
           currentContent: '',
           showReport: false,
