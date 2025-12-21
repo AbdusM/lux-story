@@ -24,6 +24,13 @@
 :root {
   --vh-fallback: 100vh;
   --dvh: 100dvh;
+
+  /* Shadow colors for consistent styling */
+  --shadow-amber-dark: #92400e;
+  --shadow-amber-glow: rgba(146, 64, 14, 0.3);
+
+  /* Safe area fallback */
+  --safe-area-bottom: max(16px, env(safe-area-inset-bottom, 0px));
 }
 
 /* ══════════════════════════════════════════════════════════════════════════════
@@ -197,6 +204,146 @@ main {
 
 .animate-progress {
   animation: progress 1s ease-out;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   NAV BAR ATTENTION MARQUEE - Visual feedback when player earns something
+   Philosophy: Clean UI nuances indicate different situations
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* Shimmer marquee effect for nav buttons with new content */
+.nav-attention-marquee {
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-attention-marquee::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(251, 191, 36, 0.15) 25%,
+    rgba(251, 191, 36, 0.3) 50%,
+    rgba(251, 191, 36, 0.15) 75%,
+    transparent 100%
+  );
+  animation: navMarqueeShimmer 2s ease-in-out infinite;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* Second layer - offset for symmetrical disposition */
+.nav-attention-marquee::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 100%;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(
+    270deg,
+    transparent 0%,
+    rgba(245, 158, 11, 0.1) 25%,
+    rgba(245, 158, 11, 0.2) 50%,
+    rgba(245, 158, 11, 0.1) 75%,
+    transparent 100%
+  );
+  animation: navMarqueeShimmerReverse 2s ease-in-out infinite;
+  animation-delay: 1s;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+@keyframes navMarqueeShimmer {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes navMarqueeShimmerReverse {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+/* Gentle border pulse for extra visibility - Amber (Journal/Orbs) */
+.nav-attention-border {
+  animation: navBorderPulse 2s ease-in-out infinite;
+}
+
+@keyframes navBorderPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.4), 0 0 12px rgba(251, 191, 36, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.6), 0 0 20px rgba(251, 191, 36, 0.5);
+  }
+}
+
+/* Purple variant for Constellation/Trust changes */
+.nav-attention-border-purple {
+  animation: navBorderPulsePurple 2s ease-in-out infinite;
+}
+
+@keyframes navBorderPulsePurple {
+  0%, 100% {
+    box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.4), 0 0 12px rgba(139, 92, 246, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.6), 0 0 20px rgba(139, 92, 246, 0.5);
+  }
+}
+
+/* Purple shimmer variant for Constellation marquee */
+.nav-attention-marquee-purple::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(139, 92, 246, 0.15) 25%,
+    rgba(139, 92, 246, 0.3) 50%,
+    rgba(139, 92, 246, 0.15) 75%,
+    transparent 100%
+  );
+  animation: navMarqueeShimmer 2s ease-in-out infinite;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* Mobile: slower animations for battery/performance */
+@media (max-width: 640px) {
+  .nav-attention-marquee::before,
+  .nav-attention-marquee::after,
+  .nav-attention-marquee-purple::before {
+    animation-duration: 3s;
+  }
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .nav-attention-marquee::before,
+  .nav-attention-marquee::after,
+  .nav-attention-marquee-purple::before,
+  .nav-attention-border,
+  .nav-attention-border-purple {
+    animation: none;
+  }
 }
 
 /* Trust celebration when reaching 10/10 */

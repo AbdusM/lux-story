@@ -15,6 +15,8 @@ import { PatternType } from './patterns'
 // Note: Emotions use string type to support compound emotions like 'anxious_hopeful'
 // Use isValidEmotion() from lib/emotions.ts for runtime validation of core emotions
 
+import { calculateGravity, GravityResult } from './narrative-gravity'
+
 /**
  * A single dialogue node in the narrative graph
  * Can have multiple content variations for replayability
@@ -216,6 +218,7 @@ export interface EvaluatedChoice {
   visible: boolean
   enabled: boolean
   reason?: string // Why choice is disabled (for debug/tooltips)
+  gravity?: GravityResult // ISP: Narrative Gravity Weight
 }
 
 // FloatingModule interface removed - feature disabled for dialogue immersion
@@ -361,11 +364,18 @@ export class StateConditionEvaluator {
         reason = this.generateDisabledReason(choice.enabledCondition, gameState, characterId)
       }
 
+      // ISP UPDATE: Calculate Narrative Gravity
+      // The Physics of Emotion (Sympathetic pulls Analytical, etc.)
+      const gravity = characterId
+        ? calculateGravity(choice.pattern, gameState, characterId)
+        : undefined
+
       return {
         choice,
         visible,
         enabled,
-        reason
+        reason,
+        gravity
       }
     })
 

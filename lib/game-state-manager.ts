@@ -125,18 +125,18 @@ export class GameStateManager {
           // ATTEMPT RECOVERY instead of returning null
           const recovered = this.recoverMissingNode(gameState)
           if (recovered) {
-            logger.info('Recovered from missing node', { 
+            logger.info('Recovered from missing node', {
               operation: 'game-state-manager.recovery',
-              oldNode: gameState.currentNodeId, 
+              oldNode: gameState.currentNodeId,
               newNode: recovered.currentNodeId,
               character: recovered.currentCharacterId
             })
             return recovered
           }
           // Only reset if recovery impossible
-          logger.warn('Node missing, resetting to hub', { 
+          logger.warn('Node missing, resetting to hub', {
             operation: 'game-state-manager.reset-to-hub',
-            nodeId: gameState.currentNodeId 
+            nodeId: gameState.currentNodeId
           })
           return this.resetToHub(gameState) // Preserves trust/flags/patterns
         }
@@ -251,7 +251,7 @@ export class GameStateManager {
 
     // Strategy 2: Try to find character's hub node
     const characterGraph = getGraphForCharacter(currentCharacterId, gameState)
-    
+
     // For Samuel, try common hub nodes
     if (currentCharacterId === 'samuel') {
       const hubNodes = ['samuel_hub_initial', 'samuel_hub_after_maya', 'samuel_hub_after_devon', 'samuel_comprehensive_hub']
@@ -271,7 +271,7 @@ export class GameStateManager {
     // This preserves all state (trust, flags, patterns)
     const safeStart = getSafeStart()
     const safeNodeId = safeStart.graph.startNodeId || 'samuel_introduction'
-    
+
     if (safeStart.graph.nodes.has(safeNodeId)) {
       return {
         ...gameState,
@@ -293,7 +293,7 @@ export class GameStateManager {
   private static resetToHub(gameState: GameState): GameState {
     const safeStart = getSafeStart()
     const safeNodeId = safeStart.graph.startNodeId || 'samuel_introduction'
-    
+
     return {
       ...gameState,
       currentNodeId: safeNodeId,
@@ -324,6 +324,15 @@ export class GameStateManager {
     try {
       localStorage.removeItem(STORAGE_KEY)
       localStorage.removeItem(BACKUP_STORAGE_KEY)
+      localStorage.removeItem('grand-central-game-store') // Clear Zustand store
+
+      // Clear Skill Tracker data (find all keys starting with skill_tracker_)
+      Object.keys(localStorage).forEach(key => {
+        if (key.startsWith('skill_tracker_')) {
+          localStorage.removeItem(key)
+        }
+      })
+
       logger.warn('NUCLEAR RESET: All save data deleted', { operation: 'game-state-manager.nuclear-reset' })
     } catch (error) {
       console.error('Failed to reset game state:', error)
@@ -434,6 +443,7 @@ export class GameStateManager {
     }
   }
 
+  /**
   /**
    * Debug helper - log current save state
    */

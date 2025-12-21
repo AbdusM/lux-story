@@ -250,6 +250,15 @@ export function playSound(sound: SoundType, modulation?: StateModulation): void 
     oscillator.type = config.type
     oscillator.frequency.setValueAtTime(config.frequency, ctx.currentTime)
 
+    // ISP UPDATE: Neural Detune (Micro-reactivity)
+    // If modulation is present, detune the oscillator for "organic" feel
+    // 100 cents = 1 semitone. High anxiety = slightly out of tune.
+    if (modulation?.anxiety) {
+      // Detune up to 50 cents based on anxiety (0-1)
+      const detuneAmount = modulation.anxiety * 50
+      oscillator.detune.setValueAtTime(detuneAmount, ctx.currentTime)
+    }
+
     // Create gain node for envelope
     const gainNode = ctx.createGain()
     const now = ctx.currentTime
@@ -326,10 +335,15 @@ export function playEpisodeSound(): void {
 /**
  * Audio settings management
  */
+// Audio enabled by default for "The Pulse"
 let audioEnabled = true
 
 export function setAudioEnabled(enabled: boolean): void {
   audioEnabled = enabled
+  if (!enabled) {
+    musicManager.stopAll()
+    // Also silence current track context if needed
+  }
 }
 
 export function isAudioEnabled(): boolean {
@@ -354,5 +368,94 @@ export function initializeAudio(): void {
   if (ctx?.state === 'suspended') {
     ctx.resume()
   }
+}
+
+/**
+ * Music Manager - Handles Polyvagal State Audio Loops
+ * Uses salvaged GothicVania tracks for atmospheric states
+ */
+const AMBIENT_TRACKS = {
+  ventral_vagal: null, // Silence / Nature (Default)
+  sympathetic: null, // Legacy OGG disabled - using GenerativeScore
+  dorsal_vagal: null // Legacy OGG disabled - using GenerativeScore
+}
+
+class MusicManager {
+  private currentTrack: HTMLAudioElement | null = null
+  private currentUrl: string | null = null
+  private fadeInterval: ReturnType<typeof setInterval> | null = null
+
+  playState(state: import('./emotions').NervousSystemState) {
+    if (!audioEnabled) return
+
+    const targetUrl = AMBIENT_TRACKS[state]
+
+    // If already playing this track, do nothing
+    if (this.currentUrl === targetUrl) return
+
+    // If switching to silence
+    if (!targetUrl) {
+      this.fadeOutAndStop()
+      return
+    }
+
+    // Crossfade or switch
+    this.fadeOutAndStop(() => {
+      this.currentTrack = new Audio(targetUrl)
+      this.currentTrack.loop = true
+      this.currentTrack.volume = 0
+      this.currentTrack.play().catch(e => console.warn('Audio autoplay blocked', e))
+      this.fadeIn()
+      this.currentUrl = targetUrl
+    })
+  }
+
+  private fadeOutAndStop(onComplete?: () => void) {
+    if (!this.currentTrack) {
+      if (onComplete) onComplete()
+      return
+    }
+
+    const track = this.currentTrack
+    this.currentTrack = null // Detach immediately
+    this.currentUrl = null
+
+    // Simple fade out
+    let vol = track.volume
+    const fade = setInterval(() => {
+      vol = Math.max(0, vol - 0.1)
+      track.volume = vol
+      if (vol <= 0) {
+        clearInterval(fade)
+        track.pause()
+        if (onComplete) onComplete()
+      }
+    }, 100)
+  }
+
+  private fadeIn() {
+    if (!this.currentTrack) return
+    let vol = 0
+    const track = this.currentTrack
+    const fade = setInterval(() => {
+      if (!this.currentTrack || this.currentTrack !== track) {
+        clearInterval(fade)
+        return
+      }
+      vol = Math.min(0.3, vol + 0.05) // Max volume 0.3 for background
+      track.volume = vol
+      if (vol >= 0.3) clearInterval(fade)
+    }, 100)
+  }
+
+  stopAll() {
+    this.fadeOutAndStop()
+  }
+}
+
+export const musicManager = new MusicManager()
+
+export function updateAmbientMusic(state: import('./emotions').NervousSystemState) {
+  musicManager.playState(state)
 }
 

@@ -42,20 +42,23 @@ export function useConstellationData(): ConstellationData {
   const characters = useMemo<CharacterWithState[]>(() => {
     // Build map of character conversation history lengths
     const characterConversations = new Map<string, number>()
-    
+
     if (coreGameState) {
       for (const char of coreGameState.characters) {
         characterConversations.set(char.characterId, char.conversationHistory.length)
       }
     }
-    
+
     return CHARACTER_NODES.map(node => {
       const trust = characterTrust[node.id] || 0
       const conversationCount = characterConversations.get(node.id) || 0
-      // Character is "met" if they have trust > 0 OR if they have conversation history
+
+      // Character is "met" if they have trust > 0 OR if they have conversation history OR if the explicit flag exists
       // This ensures characters appear in the constellation after any interaction, even if trust is still 0
-      const hasMet = trust > 0 || conversationCount > 0
-      
+      const flagId = `met_${node.id}`
+      const hasMetFlag = coreGameState?.globalFlags.includes(flagId) || false
+      const hasMet = trust > 0 || conversationCount > 0 || hasMetFlag
+
       return {
         ...node,
         trust,

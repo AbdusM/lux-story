@@ -2,7 +2,9 @@ import { findCharacterForNode, isValidCharacterId } from './graph-registry'
 import { ActiveThought, THOUGHT_REGISTRY } from '@/content/thoughts'
 import { calculateResonantTrustChange } from './pattern-affinity'
 import { PatternType, isValidPattern } from './patterns'
-import { MAX_TRUST, MIN_TRUST, INITIAL_TRUST, TRUST_THRESHOLDS, IDENTITY_THRESHOLD, INTERNALIZE_BONUS, NARRATIVE_CONSTANTS as GLOBAL_NARRATIVE_CONSTANTS } from './constants'
+import { INITIAL_TRUST, TRUST_THRESHOLDS, NARRATIVE_CONSTANTS as GLOBAL_NARRATIVE_CONSTANTS } from './constants'
+import { NervousSystemState, determineNervousSystemState, ChemicalReaction } from './emotions'
+import { calculateReaction } from './chemistry'
 
 /**
  * Core character relationship state
@@ -11,9 +13,63 @@ import { MAX_TRUST, MIN_TRUST, INITIAL_TRUST, TRUST_THRESHOLDS, IDENTITY_THRESHO
 export interface CharacterState {
   characterId: string
   trust: number // 0-10 scale, affects available dialogue options
+  anxiety: number // 0-100 scale. 0=Calm, 100=Panic.
+  nervousSystemState: NervousSystemState // Derived biological state
+  lastReaction: ChemicalReaction | null // ISP: The Chemistry Engine result (Visual feedback)
   knowledgeFlags: Set<string> // What this character knows about the player
   relationshipStatus: 'stranger' | 'acquaintance' | 'confidant'
   conversationHistory: string[] // Node IDs visited with this character
+}
+
+/**
+ * Platform state - tracking the status of different platforms
+ */
+export interface PlatformState {
+  id: string
+  warmth: number        // -5 to 5, affects visual and accessibility
+  accessible: boolean   // Can player access this platform
+  discovered: boolean   // Has player found this platform
+  resonance: number    // 0-10, how aligned with player patterns
+}
+
+/**
+ * Career values - deeper motivational tracking
+ */
+export interface CareerValues {
+  directImpact: number     // Helping people directly, immediate service
+  systemsThinking: number  // Optimizing how things work, process improvement
+  dataInsights: number     // Finding patterns, security, research
+  futureBuilding: number   // Emerging fields, growth sectors, innovation
+  independence: number     // Creating new approaches, hybrid careers
+}
+
+/**
+ * Mystery states - tracking narrative investigations
+ */
+export interface MysteryState {
+  letterSender: 'unknown' | 'investigating' | 'trusted' | 'rejected' | 'samuel_knows' | 'self_revealed'
+  platformSeven: 'stable' | 'flickering' | 'error' | 'denied' | 'revealed'
+  samuelsPast: 'hidden' | 'hinted' | 'revealed'
+  stationNature: 'unknown' | 'sensing' | 'understanding' | 'mastered'
+}
+
+/**
+ * Time state - tracking temporal flow
+ */
+export interface TimeState {
+  currentDisplay: string     // Current time display string
+  minutesRemaining: number     // Minutes until midnight
+  flowRate: number       // Time flow rate (1.0 normal, <1 slower, 0 stopped)
+  isStopped: boolean    // Quiet Hour active
+}
+
+/**
+ * Quiet Hour state - special temporal events
+ */
+export interface QuietHourState {
+  potential: boolean  // Can trigger
+  experienced: string[]  // Which quiet hours seen
+  triggeredBy?: string  // What caused current quiet hour
 }
 
 /**
@@ -33,6 +89,18 @@ export interface GameState {
   episodeNumber: number  // Track which episode the player is on
   sessionStartTime: number  // When current session started (for episode timer)
   sessionBoundariesCrossed: number  // Simple counter for session boundaries (used for announcement variety)
+
+  // Grand Central Migration Fields
+  platforms: Record<string, PlatformState>
+  careerValues: CareerValues
+  mysteries: MysteryState
+  time: TimeState
+  quietHour: QuietHourState
+  items: {
+    letter: 'kept' | 'torn' | 'shown' | 'burned'
+    safeSpot?: string
+    discoveredPaths: string[]
+  }
 }
 
 /**
@@ -108,6 +176,9 @@ export interface SerializableGameState {
   characters: Array<{
     characterId: string
     trust: number
+    anxiety: number
+    nervousSystemState: NervousSystemState
+    lastReaction: ChemicalReaction | null
     knowledgeFlags: string[]
     relationshipStatus: 'stranger' | 'acquaintance' | 'confidant'
     conversationHistory: string[]
@@ -121,6 +192,16 @@ export interface SerializableGameState {
   episodeNumber: number
   sessionStartTime: number
   sessionBoundariesCrossed: number
+  platforms: Record<string, PlatformState>
+  careerValues: CareerValues
+  mysteries: MysteryState
+  time: TimeState
+  quietHour: QuietHourState
+  items: {
+    letter: 'kept' | 'torn' | 'shown' | 'burned'
+    safeSpot?: string
+    discoveredPaths: string[]
+  }
 }
 
 
@@ -250,6 +331,39 @@ export class GameStateUtils {
           Math.min(NARRATIVE_CONSTANTS.MAX_TRUST, charState.trust + modifiedTrust)
         )
 
+        // Limbic System Update: Recalculate biological state
+        // Higher trust buffers anxiety. For now, anxiety inversely mirrors trust unless explicitly set.
+        // ISP UPDATE: Added skill context (patterns) to the calculation "Neuro-Link"
+        charState.anxiety = (10 - charState.trust) * 10
+
+        charState.nervousSystemState = determineNervousSystemState(
+          charState.anxiety,
+          charState.trust,
+          newState.patterns as unknown as Record<string, number> // The "Neuro-Link": Patterns -> Skills -> Biology
+        )
+
+        // ISP UPDATE: The Chemistry Engine
+        // Calculate dynamic reaction based on new state + skills
+        charState.lastReaction = calculateReaction(
+          charState.nervousSystemState,
+          newState.patterns as unknown as Record<string, number>,
+          charState.trust
+        )
+
+        // ISP UPDATE: Telemetry Feed (CEO Dashboard)
+        // Emit the bio-state change immediately
+        if (typeof window !== 'undefined') {
+          import('@/lib/telemetry/dashboard-feed').then(({ dashboard }) => {
+            dashboard.emit('BIO_STATE_CHANGE', {
+              characterId: change.characterId,
+              state: charState.nervousSystemState,
+              reaction: charState.lastReaction, // Telemetry now sees the "Chemical Reaction"
+              trust: charState.trust,
+              anxiety: charState.anxiety
+            }, newState)
+          })
+        }
+
         // Log resonance for debugging (can be used for consequence echoes later)
         // if (resonanceTriggered && resonanceDescription) {
         //   console.log(`[Resonance] ${change.characterId}: ${resonanceDescription}`)
@@ -300,6 +414,9 @@ export class GameStateUtils {
           {
             characterId: char.characterId,
             trust: char.trust,
+            anxiety: char.anxiety,
+            nervousSystemState: char.nervousSystemState,
+            lastReaction: char.lastReaction,
             knowledgeFlags: new Set(char.knowledgeFlags),
             relationshipStatus: char.relationshipStatus,
             conversationHistory: [...char.conversationHistory]
@@ -314,7 +431,13 @@ export class GameStateUtils {
       thoughts: [...state.thoughts],
       episodeNumber: state.episodeNumber,
       sessionStartTime: state.sessionStartTime,
-      sessionBoundariesCrossed: state.sessionBoundariesCrossed
+      sessionBoundariesCrossed: state.sessionBoundariesCrossed,
+      platforms: { ...state.platforms },
+      careerValues: { ...state.careerValues },
+      mysteries: { ...state.mysteries },
+      time: { ...state.time },
+      quietHour: { ...state.quietHour },
+      items: { ...state.items }
     }
   }
 
@@ -352,7 +475,43 @@ export class GameStateUtils {
       thoughts: [],
       episodeNumber: 1,  // Start at episode 1
       sessionStartTime: Date.now(),  // Track when session started
-      sessionBoundariesCrossed: 0  // Start with no boundaries crossed
+      sessionBoundariesCrossed: 0,  // Start with no boundaries crossed
+
+      // Initial Grand Central State
+      platforms: {
+        p1: { id: 'p1', warmth: 0, accessible: true, discovered: false, resonance: 0 },
+        p3: { id: 'p3', warmth: 0, accessible: true, discovered: false, resonance: 0 },
+        p7: { id: 'p7', warmth: 0, accessible: true, discovered: false, resonance: 0 },
+        p9: { id: 'p9', warmth: 0, accessible: true, discovered: false, resonance: 0 },
+        forgotten: { id: 'forgotten', warmth: 0, accessible: false, discovered: false, resonance: 0 }
+      },
+      careerValues: {
+        directImpact: 0,
+        systemsThinking: 0,
+        dataInsights: 0,
+        futureBuilding: 0,
+        independence: 0
+      },
+      mysteries: {
+        letterSender: 'unknown',
+        platformSeven: 'flickering',
+        samuelsPast: 'hidden',
+        stationNature: 'unknown'
+      },
+      time: {
+        currentDisplay: "11:47 PM",
+        minutesRemaining: 13,
+        flowRate: 1.0,
+        isStopped: false
+      },
+      quietHour: {
+        potential: false,
+        experienced: []
+      },
+      items: {
+        letter: 'kept',
+        discoveredPaths: []
+      }
     }
   }
 
@@ -363,6 +522,13 @@ export class GameStateUtils {
     return {
       characterId,
       trust: NARRATIVE_CONSTANTS.DEFAULT_TRUST,
+      anxiety: (10 - NARRATIVE_CONSTANTS.DEFAULT_TRUST) * 10,
+      nervousSystemState: determineNervousSystemState(
+        (10 - NARRATIVE_CONSTANTS.DEFAULT_TRUST) * 10,
+        NARRATIVE_CONSTANTS.DEFAULT_TRUST,
+        {} // No patterns for initial state
+      ),
+      lastReaction: null,
       knowledgeFlags: new Set(),
       relationshipStatus: NARRATIVE_CONSTANTS.DEFAULT_RELATIONSHIP,
       conversationHistory: []
@@ -379,6 +545,9 @@ export class GameStateUtils {
       characters: Array.from(state.characters.values()).map(char => ({
         characterId: char.characterId,
         trust: char.trust,
+        anxiety: char.anxiety,
+        nervousSystemState: char.nervousSystemState,
+        lastReaction: char.lastReaction,
         knowledgeFlags: Array.from(char.knowledgeFlags),
         relationshipStatus: char.relationshipStatus,
         conversationHistory: char.conversationHistory
@@ -391,7 +560,13 @@ export class GameStateUtils {
       thoughts: state.thoughts,
       episodeNumber: state.episodeNumber,
       sessionStartTime: state.sessionStartTime,
-      sessionBoundariesCrossed: state.sessionBoundariesCrossed
+      sessionBoundariesCrossed: state.sessionBoundariesCrossed,
+      platforms: state.platforms,
+      careerValues: state.careerValues,
+      mysteries: state.mysteries,
+      time: state.time,
+      quietHour: state.quietHour,
+      items: state.items
     }
   }
 
@@ -407,6 +582,15 @@ export class GameStateUtils {
           char.characterId,
           {
             ...char,
+            anxiety: char.anxiety ?? (10 - char.trust) * 10,
+            // ISP UPDATE: Added empty pattern object fallback; deserialization occurs before pattern load usually, 
+            // but for safety we default to empty. Realtime updates will correct this.
+            nervousSystemState: char.nervousSystemState ?? determineNervousSystemState(
+              (10 - char.trust) * 10,
+              char.trust,
+              serialized.patterns as unknown as Record<string, number>
+            ),
+            lastReaction: char.lastReaction || null,
             knowledgeFlags: new Set(char.knowledgeFlags)
           }
         ])
@@ -419,7 +603,43 @@ export class GameStateUtils {
       thoughts: serialized.thoughts || [],
       episodeNumber: serialized.episodeNumber || 1,  // Default to episode 1 for old saves
       sessionStartTime: serialized.sessionStartTime || Date.now(),  // Default to now for old saves
-      sessionBoundariesCrossed: serialized.sessionBoundariesCrossed || 0  // Default to 0 for old saves
+      sessionBoundariesCrossed: serialized.sessionBoundariesCrossed || 0,  // Default to 0 for old saves
+
+      // Defaults for migration
+      platforms: serialized.platforms || {
+        p1: { id: 'p1', warmth: 0, accessible: true, discovered: false, resonance: 0 },
+        p3: { id: 'p3', warmth: 0, accessible: true, discovered: false, resonance: 0 },
+        p7: { id: 'p7', warmth: 0, accessible: true, discovered: false, resonance: 0 },
+        p9: { id: 'p9', warmth: 0, accessible: true, discovered: false, resonance: 0 },
+        forgotten: { id: 'forgotten', warmth: 0, accessible: false, discovered: false, resonance: 0 }
+      },
+      careerValues: serialized.careerValues || {
+        directImpact: 0,
+        systemsThinking: 0,
+        dataInsights: 0,
+        futureBuilding: 0,
+        independence: 0
+      },
+      mysteries: serialized.mysteries || {
+        letterSender: 'unknown',
+        platformSeven: 'flickering',
+        samuelsPast: 'hidden',
+        stationNature: 'unknown'
+      },
+      time: serialized.time || {
+        currentDisplay: "11:47 PM",
+        minutesRemaining: 13,
+        flowRate: 1.0,
+        isStopped: false
+      },
+      quietHour: serialized.quietHour || {
+        potential: false,
+        experienced: []
+      },
+      items: serialized.items || {
+        letter: 'kept',
+        discoveredPaths: []
+      }
     }
   }
 }
@@ -469,8 +689,36 @@ export class StateValidation {
       thoughts: [],
       episodeNumber: 1,
       sessionStartTime: Date.now(),
-      sessionBoundariesCrossed: 0
-    }
+      sessionBoundariesCrossed: 0,
+      platforms: {},
+      careerValues: {
+        directImpact: 0,
+        systemsThinking: 0,
+        dataInsights: 0,
+        futureBuilding: 0,
+        independence: 0
+      },
+      mysteries: {
+        letterSender: 'unknown',
+        platformSeven: 'flickering',
+        samuelsPast: 'hidden',
+        stationNature: 'unknown'
+      },
+      time: {
+        currentDisplay: "12:00 PM",
+        minutesRemaining: 10,
+        flowRate: 1,
+        isStopped: false
+      },
+      quietHour: {
+        potential: false,
+        experienced: []
+      },
+      items: {
+        letter: 'kept',
+        discoveredPaths: []
+      }
+    } as GameState
     return !!findCharacterForNode(nodeId, minimalState)
   }
 

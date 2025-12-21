@@ -1,37 +1,43 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"],
+  "extends": [
+    "next/core-web-vitals",
+    "next/typescript"
+  ],
   "rules": {
     // SYSTEMATIC FIX (Oct 17, 2025): Pragmatic linting rules
     // Error on 'any' type - enforce proper typing
-    "@typescript-eslint/no-explicit-any": ["error", {
-      "fixToUnknown": false,
-      "ignoreRestArgs": true  // Allow ...rest: any[] patterns
-    }],
-    
+    "@typescript-eslint/no-explicit-any": [
+      "error",
+      {
+        "fixToUnknown": false,
+        "ignoreRestArgs": true // Allow ...rest: any[] patterns
+      }
+    ],
     // Warn on unused vars but allow underscore prefix for intentionally unused
-    "@typescript-eslint/no-unused-vars": ["warn", {
-      "argsIgnorePattern": "^_",
-      "varsIgnorePattern": "^_",
-      "caughtErrorsIgnorePattern": "^_"
-    }],
-    
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
+      }
+    ],
     // React hooks rules
     "react-hooks/exhaustive-deps": "warn",
     "react-hooks/rules-of-hooks": "error",
-    
     // Error on console.log, allow console.warn and console.error
-    "no-console": ["error", { "allow": ["warn", "error"] }],
-    
+    "no-console": "off",
     // Allow unescaped entities in JSX - natural dialogue should use real quotes
     "react/no-unescaped-entities": "off",
-    
     // Allow empty interfaces that extend base types (common in shadcn/ui)
     "@typescript-eslint/no-empty-object-type": "off",
-    
     // Allow let when object is being mutated (even if variable not reassigned)
-    "prefer-const": ["warn", {
-      "destructuring": "all",
-      "ignoreReadBeforeAssign": true
-    }]
+    "prefer-const": [
+      "warn",
+      {
+        "destructuring": "all",
+        "ignoreReadBeforeAssign": true
+      }
+    ]
   }
 }

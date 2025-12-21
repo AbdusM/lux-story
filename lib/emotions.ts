@@ -159,3 +159,90 @@ export const EMOTION_METADATA: Partial<Record<EmotionType, {
   warm: { label: 'Warm', color: 'text-rose-400' },
   serious: { label: 'Serious', color: 'text-slate-600' }
 }
+
+/**
+ * Polyvagal Nervous System States
+ * Based on the "ActualizeMe" Limbic Learning Framework
+ */
+export const NERVOUS_SYSTEM_STATES = [
+  'ventral_vagal', // Safe, Social, Connected (Low Anxiety)
+  'sympathetic',   // Mobilized, Anxious, Flight/Fight (High Anxiety)
+  'dorsal_vagal'   // Shutdown, Disconnected, Numb (Overwhelmed)
+] as const
+
+export type NervousSystemState = typeof NERVOUS_SYSTEM_STATES[number]
+
+/**
+ * WEF 2030 Skill Mapping to Nervous System Regulation
+ * Strategy: "Bounded Accuracy" (Skills act as emotional armor)
+ */
+export const NEURO_SKILL_MAPPING = {
+  // Ventral Regulation (Calm/Social)
+  resilience: { target: 'ventral_vagal', power: 0.5 }, // Strong stabilizer
+  helping: { target: 'ventral_vagal', power: 0.3 },    // Social connection stabilizer
+
+  // Sympathetic Regulation (Focus/Action)
+  analytical: { target: 'sympathetic', power: 0.4 },   // Transforms anxiety into focus
+  building: { target: 'sympathetic', power: 0.3 },     // Channels energy into action
+
+  // Dorsal Prevention (Anti-Shutdown)
+  patience: { target: 'dorsal_vagal', power: 0.4 },    // Prevents overwhelm/shutdown
+  exploring: { target: 'dorsal_vagal', power: 0.2 }    // Maintains curiosity against apathy
+} as const
+
+/**
+ * Maps anxiety, trust, and SKILLS to a biological nervous system state.
+ * @param anxiety 0-100 scale (or 0-10, will normalize)
+ * @param trust 0-10 scale
+ * @param skills Optional map of current player skill/pattern levels (0-10)
+ */
+export function determineNervousSystemState(
+  anxiety: number,
+  trust: number,
+  skills?: Record<string, number>
+): NervousSystemState {
+  // Normalize anxiety to 0-100 if it seems small
+  const normalizedAnxiety = anxiety <= 10 ? anxiety * 10 : anxiety
+
+  // 1. Social Safety Buffer (Trust)
+  // A trust of 10 gives a 20 point reduction in effective anxiety
+  const trustBuffer = trust * 2
+
+  // 2. Skill Regulation Buffer (The "Neuro-Link")
+  let skillBuffer = 0
+  if (skills) {
+    // Resilience strongly buffers anxiety (pushes towards Ventral)
+    if (skills.resilience) skillBuffer += skills.resilience * 5 // Max 50 point buffer!
+
+    // Analytical thinking helps manage high anxiety (keeps it "Sympathetic" not "Dorsal")
+    // We treat this as a "cap" prevention in a more complex system, but here simple buffer works
+    if (skills.analytical) skillBuffer += skills.analytical * 2
+  }
+
+  const effectiveAnxiety = Math.max(0, normalizedAnxiety - trustBuffer - skillBuffer)
+
+  if (effectiveAnxiety > 80) return 'dorsal_vagal'     // Total shutdown
+  if (effectiveAnxiety > 40) return 'sympathetic'      // Mobilized/Anxious
+  return 'ventral_vagal'                               // Safe/Social
+}
+
+/**
+ * ISP Phase 2: The Chemistry Engine
+ * "Emergent reactions when Biology meets Skill"
+ */
+export const CHEMICAL_REACTIONS = [
+  'resonance',    // Sympathetic + Empathy = Vulnerable Connection (Steam)
+  'cold_fusion',  // Sympathetic + Analysis = Hyper-Focus (Blue Flame)
+  'volatility',   // Sympathetic + Sympathetic Pattern = Explosion (Sparks)
+  'deep_rooting', // Dorsal + Patience = Stabilized Grounding (Moss)
+  'shutdown'      // Dorsal + No Buffer = Void (Grey)
+] as const
+
+export type ChemicalReactionType = typeof CHEMICAL_REACTIONS[number]
+
+export interface ChemicalReaction {
+  type: ChemicalReactionType
+  intensity: number // 0-1.0
+  description: string
+}
+

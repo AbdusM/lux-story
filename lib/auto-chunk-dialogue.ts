@@ -24,10 +24,10 @@ export interface ChunkConfig {
 }
 
 const DEFAULT_CONFIG: Required<ChunkConfig> = {
-  maxChunkLength: 65,  // Twitter-like: ~12-15 words per chunk (was 75)
-  minChunkLength: 25,   // Prevent tiny fragments (was 30)
+  maxChunkLength: 55,  // Shorten chunks for cognitive ease (7+/-2 rhythm)
+  minChunkLength: 20,   // Allow smaller distinct thoughts
   enabled: true,
-  activationThreshold: 65,  // Chunk text >65 characters for Twitter-like bite-sized pieces (was 75)
+  activationThreshold: 55,  // Chunk text >55 characters to force pacing
 }
 
 /**
@@ -70,7 +70,7 @@ export function autoChunkDialogue(
   // Regex: Match sentence-ending punctuation followed by space or end-of-string
   const sentenceRegex = /([^.!?]+[.!?]+(?:\s|$))/g
   let sentences = text.match(sentenceRegex) || [text]
-  
+
   // If no sentence boundaries found, try to split at commas and semicolons
   if (sentences.length === 1 && sentences[0].length > cfg.maxChunkLength) {
     const commaSplit = sentences[0].split(/([,;]\s+)/)
@@ -78,11 +78,11 @@ export function autoChunkDialogue(
       sentences = commaSplit.filter(s => s.trim().length > 0) as RegExpMatchArray
     }
   }
-  
+
   // IMPROVED: Further split long sentences at natural breaks
   // Priority: Complete sentences > natural clause boundaries > avoid mid-phrase breaks
   const smartBreakSentences: string[] = []
-  
+
   for (const sentence of sentences) {
     if (sentence.length <= cfg.maxChunkLength) {
       // Sentence is short enough, keep it whole
@@ -91,18 +91,18 @@ export function autoChunkDialogue(
       // Sentence is moderately long - try to split at commas before conjunctions
       const conjunctionPattern = /,\s+(and|but|or|so|yet|for|nor)\s+/gi
       const parts = sentence.split(conjunctionPattern)
-      
+
       if (parts.length > 1) {
         let currentFragment = ''
         for (let i = 0; i < parts.length; i++) {
           const part = parts[i]
           const nextPart = parts[i + 1]
-          
+
           // Reconstruct with conjunction if it was captured
-          const fragment = nextPart && /^(and|but|or|so|yet|for|nor)$/i.test(part) 
-            ? `, ${part} ` 
+          const fragment = nextPart && /^(and|but|or|so|yet|for|nor)$/i.test(part)
+            ? `, ${part} `
             : part
-          
+
           if (currentFragment.length + fragment.length <= cfg.maxChunkLength) {
             currentFragment += fragment
           } else {
@@ -123,11 +123,11 @@ export function autoChunkDialogue(
       // Very long sentence - split at any comma/semicolon, ensuring minimum lengths
       const clauseSplit = sentence.split(/([,;]\s+)/)
       let currentFragment = ''
-      
+
       for (let i = 0; i < clauseSplit.length; i++) {
         const part = clauseSplit[i]
         const proposedLength = currentFragment.length + part.length
-        
+
         // Only break if both fragments would be substantial
         if (proposedLength <= cfg.maxChunkLength || currentFragment.length < cfg.minChunkLength) {
           currentFragment += part

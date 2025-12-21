@@ -22,7 +22,7 @@ export function Subtext({ text, className }: SubtextProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.3, duration: 0.3, ease: 'easeOut' }}
       className={cn(
-        'text-xs italic text-slate-500 mt-2 leading-relaxed',
+        'text-xs italic text-slate-600 dark:text-slate-400 mt-2 leading-relaxed',
         className
       )}
     >

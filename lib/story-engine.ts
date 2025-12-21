@@ -38,7 +38,7 @@ export interface Choice {
   /** Consequence tag for tracking */
   consequence: string
   /** Scene ID to transition to after choice */
-  nextScene: string
+  nextScene?: string
   /** State changes to apply when choice is made */
   stateChanges?: unknown
   /** Orb fill requirement - choice is locked until met (KOTOR-style) */
@@ -51,7 +51,7 @@ export interface Choice {
  */
 export class StoryEngine {
   private chapters = storyData.chapters
-  
+
   /**
    * Get a scene by ID with optional dynamic choices
    */
@@ -59,10 +59,10 @@ export class StoryEngine {
     const [chapterNum, _sceneNum] = sceneId.split('-').map(Number)
     const chapter = this.chapters.find(c => c.id === chapterNum)
     if (!chapter) return null
-    
+
     const scene = chapter.scenes.find(s => s.id === sceneId)
     if (!scene) return null
-    
+
     // Create base scene
     const baseScene: Scene = {
       id: scene.id,
@@ -72,7 +72,7 @@ export class StoryEngine {
       choices: scene.choices?.map(c => ({
         text: c.text,
         consequence: c.consequence,
-        nextScene: c.nextScene,
+        nextScene: c.nextScene || '',
         stateChanges: (c as { stateChanges?: unknown }).stateChanges
       }))
     }
@@ -101,7 +101,7 @@ export class StoryEngine {
 
     return baseScene
   }
-  
+
   /**
    * Get the next scene ID in sequence
    */
@@ -116,24 +116,24 @@ export class StoryEngine {
         }
       }
     }
-    
+
     // Fallback to pattern-based logic for scenes without explicit nextScene
     // Extract chapter and scene number (handles patterns like 2-3a1, 2-9a-12, etc.)
     const match = currentSceneId.match(/^(\d+)-(\d+)([a-z]?)(?:-(\d+))?(\d*)$/)
     if (!match) {
       return null
     }
-    
+
     const [, chapterNum, sceneNum, letter, dashNum, suffixNum] = match
     const chapter = parseInt(chapterNum)
     const scene = parseInt(sceneNum)
-    
+
     // Get all scene IDs for this chapter
     const currentChapter = this.chapters.find(c => c.id === chapter)
     if (!currentChapter) return null
-    
+
     const allSceneIds = currentChapter.scenes.map(s => s.id)
-    
+
     // For simple numeric scenes (like 1-1), try the next number (1-2)
     if (!letter && !dashNum && !suffixNum) {
       const nextSimpleId = `${chapter}-${scene + 1}`
@@ -141,7 +141,7 @@ export class StoryEngine {
         return nextSimpleId
       }
     }
-    
+
     // For scenes like 2-3a1 -> 2-3a2
     if (letter && suffixNum) {
       const nextSuffixId = `${chapter}-${scene}${letter}${parseInt(suffixNum) + 1}`
@@ -149,7 +149,7 @@ export class StoryEngine {
         return nextSuffixId
       }
     }
-    
+
     // For scenes like 2-9a-11 -> 2-9a-12
     if (letter && dashNum && suffixNum) {
       const nextDashId = `${chapter}-${scene}${letter}-${dashNum}${parseInt(suffixNum) + 1}`
@@ -157,7 +157,7 @@ export class StoryEngine {
         return nextDashId
       }
     }
-    
+
     // For lettered scenes (like 1-3a), try with number (1-3a -> 1-4a if exists, or next sequence)
     if (letter && !suffixNum && !dashNum) {
       // Try next number with same letter first
@@ -165,23 +165,23 @@ export class StoryEngine {
       if (allSceneIds.includes(nextLetteredId)) {
         return nextLetteredId
       }
-      
+
       // Try next simple number
       const nextSimpleId = `${chapter}-${scene + 1}`
       if (allSceneIds.includes(nextSimpleId)) {
         return nextSimpleId
       }
     }
-    
+
     // If we're at the end of a chapter, move to the next chapter
     const nextChapter = this.chapters.find(c => c.id === chapter + 1)
     if (nextChapter && nextChapter.scenes.length > 0) {
       return nextChapter.scenes[0].id
     }
-    
+
     return null
   }
-  
+
   /**
    * Get all available chapters
    */

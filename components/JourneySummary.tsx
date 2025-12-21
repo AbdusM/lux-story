@@ -6,7 +6,7 @@
  * Based on IF audit recommendation: "Procedural Journey Summary"
  */
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -18,12 +18,14 @@ import {
   Compass,
   Heart,
   Sparkles,
-  BookOpen
+  BookOpen,
+  Star
 } from 'lucide-react'
 import type { JourneyNarrative } from '@/lib/journey-narrative-generator'
 import { formatSkillName } from '@/lib/admin-dashboard-helpers'
 import { springs } from '@/lib/animations'
 import { ResizablePanel } from '@/components/ResizablePanel'
+import { playMilestoneSound, playEpisodeSound } from '@/lib/audio-feedback'
 
 interface JourneySummaryProps {
   narrative: JourneyNarrative
@@ -44,6 +46,22 @@ const PATTERN_COLORS: Record<string, string> = {
 
 export function JourneySummary({ narrative, onClose }: JourneySummaryProps) {
   const [currentSection, setCurrentSection] = useState(0)
+  const hasPlayedEntrySound = useRef(false)
+
+  // Play ceremonial sound on mount
+  useEffect(() => {
+    if (!hasPlayedEntrySound.current) {
+      playMilestoneSound()
+      hasPlayedEntrySound.current = true
+    }
+  }, [])
+
+  // Handle ceremonial close with sound
+  const handleCeremonialClose = useCallback(() => {
+    playEpisodeSound()
+    // Small delay to let sound play
+    setTimeout(onClose, 300)
+  }, [onClose])
 
   // Sections of the narrative
   const sections = [
@@ -282,42 +300,101 @@ export function JourneySummary({ narrative, onClose }: JourneySummaryProps) {
       case 'closing':
         return (
           <div className="space-y-6">
+            {/* Ceremonial header */}
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-center pb-4 border-b border-amber-200"
+            >
+              <div className="flex justify-center gap-2 mb-2">
+                <Star className="w-5 h-5 text-amber-500" />
+                <Star className="w-5 h-5 text-amber-400" />
+                <Star className="w-5 h-5 text-amber-500" />
+              </div>
+              <p className="text-sm text-amber-700 uppercase tracking-widest font-medium">
+                Journey Complete
+              </p>
+            </motion.div>
+
             <div
               className="prose prose-slate prose-lg max-w-none"
               style={{ fontFamily: 'Georgia, serif' }}
             >
               {narrative.closingWisdom.split('\n\n').map((para, idx) => (
-                <p
+                <motion.p
                   key={idx}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: idx * 0.2 }}
                   className={para.startsWith('*') ? 'text-slate-500 italic' : 'text-slate-700'}
                 >
                   {para.replace(/^\*|\*$/g, '')}
-                </p>
+                </motion.p>
               ))}
             </div>
 
-            {/* Final Stats */}
-            <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg p-6 border border-amber-200">
-              <h4 className="text-amber-800 font-medium mb-3">Your Journey at a Glance</h4>
+            {/* Final Stats - More ceremonial */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.5 }}
+              className="bg-gradient-to-br from-amber-50 via-orange-50 to-amber-100 rounded-xl p-6 border border-amber-300 shadow-inner"
+            >
+              <h4 className="text-amber-900 font-semibold mb-4 text-center flex items-center justify-center gap-2">
+                <Sparkles className="w-4 h-4" />
+                Your Journey at a Glance
+                <Sparkles className="w-4 h-4" />
+              </h4>
               <div className="grid grid-cols-2 gap-4 text-sm">
-                <div>
-                  <span className="text-amber-600">Arcs Completed</span>
-                  <p className="text-amber-900 font-bold text-lg">{narrative.journeyStats.arcsCompleted}</p>
-                </div>
-                <div>
-                  <span className="text-amber-600">Choices Made</span>
-                  <p className="text-amber-900 font-bold text-lg">{narrative.journeyStats.totalChoices}</p>
-                </div>
-                <div>
-                  <span className="text-amber-600">Dominant Pattern</span>
-                  <p className="text-amber-900 font-bold capitalize">{narrative.journeyStats.dominantPattern}</p>
-                </div>
-                <div>
-                  <span className="text-amber-600">Average Trust</span>
-                  <p className="text-amber-900 font-bold">{narrative.journeyStats.averageTrust}/10</p>
-                </div>
+                <motion.div
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.6 }}
+                  className="text-center p-3 bg-white/50 rounded-lg"
+                >
+                  <span className="text-amber-600 text-xs uppercase tracking-wide">Arcs Completed</span>
+                  <p className="text-amber-900 font-bold text-2xl">{narrative.journeyStats.arcsCompleted}</p>
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, x: 10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.7 }}
+                  className="text-center p-3 bg-white/50 rounded-lg"
+                >
+                  <span className="text-amber-600 text-xs uppercase tracking-wide">Choices Made</span>
+                  <p className="text-amber-900 font-bold text-2xl">{narrative.journeyStats.totalChoices}</p>
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.8 }}
+                  className="text-center p-3 bg-white/50 rounded-lg"
+                >
+                  <span className="text-amber-600 text-xs uppercase tracking-wide">Dominant Pattern</span>
+                  <p className="text-amber-900 font-bold capitalize text-lg">{narrative.journeyStats.dominantPattern}</p>
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, x: 10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.9 }}
+                  className="text-center p-3 bg-white/50 rounded-lg"
+                >
+                  <span className="text-amber-600 text-xs uppercase tracking-wide">Average Trust</span>
+                  <p className="text-amber-900 font-bold text-2xl">{narrative.journeyStats.averageTrust}/10</p>
+                </motion.div>
               </div>
-            </div>
+            </motion.div>
+
+            {/* Final blessing */}
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.2 }}
+              className="text-center text-slate-500 italic text-sm pt-4"
+              style={{ fontFamily: 'Georgia, serif' }}
+            >
+              "The trains will always be here, waiting for your next crossing."
+            </motion.p>
           </div>
         )
 
@@ -424,12 +501,20 @@ export function JourneySummary({ narrative, onClose }: JourneySummaryProps) {
               <ChevronRight className="w-4 h-4 ml-1" />
             </Button>
           ) : (
-            <Button
-              onClick={onClose}
-              className="min-h-[44px] bg-amber-600 hover:bg-amber-500"
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.2 }}
             >
-              Complete Journey
-            </Button>
+              <Button
+                onClick={handleCeremonialClose}
+                className="min-h-[44px] bg-gradient-to-r from-amber-600 to-orange-500 hover:from-amber-500 hover:to-orange-400 shadow-lg"
+              >
+                <Star className="w-4 h-4 mr-2" />
+                Complete Journey
+                <Star className="w-4 h-4 ml-2" />
+              </Button>
+            </motion.div>
           )}
         </div>
       </Card>

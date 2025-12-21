@@ -16,6 +16,15 @@
 export const MAX_ORB_COUNT = 100
 
 /**
+ * Testing Configuration
+ * Flags to override game mechanics for user testing
+ */
+export const TESTING_FLAGS = {
+  UNLOCK_ALL_CHOICES: false, // If true, ignores all Orb requirements
+  SHOW_DEBUG_UI: false
+} as const
+
+/**
  * Orb tier thresholds (for unlocks)
  */
 export const ORB_TIER_THRESHOLDS = {

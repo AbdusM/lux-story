@@ -332,7 +332,7 @@ export function SkillsView({ skills, onOpenDetail: _onOpenDetail }: SkillsViewPr
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}
           className="flex-shrink-0 bg-slate-800/80 border-t border-slate-700 p-3"
-          style={{ paddingBottom: 'max(12px, env(safe-area-inset-bottom))' }}
+          style={{ paddingBottom: 'max(16px, env(safe-area-inset-bottom, 0px))' }}
         >
           {/* Simple: name + count + characters who teach it */}
           <div className="flex items-center gap-3">

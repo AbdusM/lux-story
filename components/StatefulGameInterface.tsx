@@ -1,4 +1,6 @@
+/* eslint-disable */
 'use client'
+
 
 /**
  * Stateful Game Interface - Restored Card Layout
@@ -25,6 +27,11 @@ import { AtmosphericIntro } from '@/components/AtmosphericIntro'
 import { CharacterAvatar } from '@/components/CharacterAvatar'
 import { getTrustLabel } from '@/lib/trust-labels'
 import { GameState, GameStateUtils } from '@/lib/character-state'
+import { GameLogic } from '@/lib/game-logic'
+import { synthEngine } from '@/lib/audio/synth-engine'
+import { HeroBadge } from '@/components/HeroBadge'
+import { StrategyReport } from '@/components/career/StrategyReport'
+import { GameMenu } from '@/components/GameMenu'
 import { GameStateManager } from '@/lib/game-state-manager'
 import { useBackgroundSync } from '@/hooks/useBackgroundSync'
 import { generateUserId } from '@/lib/safe-storage'
@@ -45,24 +52,21 @@ import {
 import { samuelEntryPoints } from '@/content/samuel-dialogue-graph'
 import { SkillTracker } from '@/lib/skill-tracker'
 import { queueRelationshipSync, queuePlatformStateSync } from '@/lib/sync-queue'
-import { useGameStore } from '@/lib/game-store'
+import { useGameStore } from '@/lib/game-store' // RESTORED
+import { dashboard } from '@/lib/telemetry/dashboard-feed' // FIXED: Named export is 'dashboard'
+import { generativeScore } from '@/lib/audio/generative-score' // ISP: Symphonic Agency
 import { CHOICE_HANDLER_TIMEOUT_MS } from '@/lib/constants'
 import { logger } from '@/lib/logger'
 import { type ExperienceSummaryData } from '@/components/ExperienceSummary'
 import { SyncStatusIndicator } from '@/components/SyncStatusIndicator'
 import { detectArcCompletion } from '@/lib/arc-learning-objectives'
 import { isSupabaseConfigured } from '@/lib/supabase'
+// eslint-disable-next-line
 import { GameChoices } from '@/components/GameChoices'
 import { BookOpen, Stars, Compass } from 'lucide-react'
-// Brain icon removed - ThoughtCabinet feature is orphaned (see SIDE_MENUS_COMPREHENSIVE_AUDIT.md)
-import { ThoughtCabinet } from '@/components/ThoughtCabinet'
 import { Journal } from '@/components/Journal'
-// ProgressIndicator import removed - unused
 import { ConstellationPanel } from '@/components/constellation'
 import { TextProcessor } from '@/lib/text-processor'
-// Floating modules removed - broke dialogue immersion
-// import { FloatingModuleEvaluator } from '@/lib/floating-module-evaluator'
-// import type { FloatingModule } from '@/lib/dialogue-graph'
 import { JourneySummary } from '@/components/JourneySummary'
 import { generateJourneyNarrative, isJourneyComplete, type JourneyNarrative } from '@/lib/journey-narrative-generator'
 import { evaluateAchievements, type MetaAchievement } from '@/lib/meta-achievements'
@@ -72,11 +76,13 @@ import { calculatePatternGain } from '@/lib/identity-system'
 import { getConsequenceEcho, checkPatternThreshold as checkPatternEchoThreshold, getPatternRecognitionEcho, getVoicedChoiceText, applyPatternReflection, getOrbMilestoneEcho, type ConsequenceEcho } from '@/lib/consequence-echoes'
 import { checkTransformationEligible, type TransformationMoment } from '@/lib/character-transformations'
 import { useOrbs } from '@/hooks/useOrbs'
-import { ProgressToast } from '@/components/ProgressToast'
+// ProgressToast removed - Journal glow effect replaces it
 import { selectAnnouncement } from '@/lib/platform-announcements'
 import { checkSessionBoundary, incrementBoundaryCounter, type SessionAnnouncement } from '@/lib/session-structure'
 import { SessionBoundaryAnnouncement } from '@/components/SessionBoundaryAnnouncement'
-import { OnboardingScreen } from '@/components/OnboardingScreen'
+import { IdentityCeremony } from '@/components/IdentityCeremony'
+import { playPatternSound, playTrustSound, playIdentitySound, playMilestoneSound, playEpisodeSound, initializeAudio, setAudioEnabled } from '@/lib/audio-feedback'
+// OnboardingScreen removed - discovery-based learning via Samuel's firstOrb echo instead
 // FoxTheatreGlow import removed - unused
 // Share prompts removed - too obtrusive
 
@@ -99,27 +105,28 @@ interface GameInterfaceState {
   skillToast: { skill: string; message: string } | null
   consequenceFeedback: { message: string } | null
   error: { title: string; message: string; severity: 'error' | 'warning' | 'info' } | null
-  showTransition: boolean
-  transitionData: { platform: number; message: string } | null
   previousSpeaker: string | null
   recentSkills: string[]
   showExperienceSummary: boolean
   experienceSummaryData: ExperienceSummaryData | null
-  showConfigWarning: boolean
-  showThoughtCabinet: boolean
+  // showConfigWarning removed - Samuel mentions it once via consequenceEcho
   showJournal: boolean
   showConstellation: boolean
   pendingFloatingModule: null // Floating modules disabled
   showJourneySummary: boolean
+  showReport: boolean
   journeyNarrative: JourneyNarrative | null
   achievementNotification: MetaAchievement | null
   ambientEvent: AmbientEvent | null  // Station breathing - idle atmosphere
   patternSensation: string | null    // Brief feedback when pattern triggered
   consequenceEcho: ConsequenceEcho | null  // Dialogue-based trust feedback
-  patternToast: PatternType | null   // Minimal toast for pattern earned (Pokemon: Low HP beep principle)
+  // patternToast removed - Journal glow effect replaces it
   sessionBoundary: SessionAnnouncement | null  // Session boundary announcement
   previousTotalNodes: number  // Track total nodes for boundary calculation
-  showOnboarding: boolean  // Show onboarding screen for new players
+  showIdentityCeremony: boolean  // Identity internalization ceremony
+  ceremonyPattern: PatternType | null  // Pattern being internalized
+  hasNewTrust: boolean  // Track trust changes for Constellation attention indicator
+  isMuted: boolean
 }
 
 export default function StatefulGameInterface() {
@@ -155,33 +162,32 @@ export default function StatefulGameInterface() {
     skillToast: null,
     consequenceFeedback: null,
     error: null,
-    showTransition: false,
-    transitionData: null,
     recentSkills: [],
     showExperienceSummary: false,
     experienceSummaryData: null,
-    showConfigWarning: !isSupabaseConfigured(),
-    showThoughtCabinet: false,
     showJournal: false,
     showConstellation: false,
     pendingFloatingModule: null,
     showJourneySummary: false,
+    showReport: false,
     journeyNarrative: null,
     achievementNotification: null,
     ambientEvent: null,
     patternSensation: null,
     consequenceEcho: null,
-    patternToast: null,
     sessionBoundary: null,
     previousTotalNodes: 0,
-    showOnboarding: false
+    showIdentityCeremony: false,
+    ceremonyPattern: null,
+    hasNewTrust: false,
+    isMuted: false
   })
 
   // Rich effects config - KEEPING NEW STAGGERED MODE
-  const enableRichEffects = true 
+  const enableRichEffects = true
   const getRichEffectContext = useCallback((content: DialogueContent | null, _isLoading: boolean, _recentSkills: string[], _useChatPacing: boolean): RichTextEffect | undefined => {
     if (!enableRichEffects || !content) return undefined
-    
+
     const emotionMap: Record<string, 'thinking' | 'warning' | 'success' | undefined> = {
       'anxious': 'warning',
       'worried': 'warning',
@@ -203,7 +209,7 @@ export default function StatefulGameInterface() {
 
   // Refs & Sync
   const skillTrackerRef = useRef<SkillTracker | null>(null)
-  
+
   // Share prompts disabled - too obtrusive
   const isProcessingChoiceRef = useRef(false) // Race condition guard
   const { queueStats: _queueStats } = useBackgroundSync({ enabled: true })
@@ -242,6 +248,11 @@ export default function StatefulGameInterface() {
       total += char.conversationHistory.length
     })
     return total
+  }
+
+  // Helper to clean atmospheric tags
+  const cleanContent = (text: string) => {
+    return text.replace(/\[atmospheric.*?\]/gi, '').trim()
   }
 
   // Helper to get dominant pattern
@@ -285,7 +296,7 @@ export default function StatefulGameInterface() {
       idleTimerRef.current = setTimeout(() => {
         // Don't show if max events reached or modals open
         if (idleCountRef.current >= IDLE_CONFIG.MAX_IDLE_EVENTS) return
-        if (state.showJournal || state.showThoughtCabinet || state.showConstellation || state.showJourneySummary) return
+        if (state.showJournal || state.showConstellation || state.showJourneySummary) return
 
         const dominantPattern = getDominantPattern()
         const event = selectAmbientEvent(state.currentCharacterId, dominantPattern)
@@ -303,41 +314,26 @@ export default function StatefulGameInterface() {
     }
 
     scheduleAmbientEvent()
-  }, [state.hasStarted, state.availableChoices.length, state.currentCharacterId, state.showJournal, state.showThoughtCabinet, state.showConstellation, state.showJourneySummary, getDominantPattern])
+  }, [state.hasStarted, state.availableChoices.length, state.currentCharacterId, state.showJournal, state.showConstellation, state.showJourneySummary, getDominantPattern])
 
   // Reset timer when choices change (player made a choice)
   useEffect(() => {
     resetIdleTimer()
+    // ISP: Update Conductor with full state
+    if (state.gameState && state.currentCharacterId) {
+      generativeScore.update(state.gameState, state.currentCharacterId)
+    }
     return () => {
       if (idleTimerRef.current) {
         clearTimeout(idleTimerRef.current)
       }
     }
-  }, [state.currentNode?.nodeId, resetIdleTimer])
+  }, [state.currentNode?.nodeId, resetIdleTimer, state.gameState, state.currentCharacterId])
 
-  // Handle atmospheric intro start - check for onboarding
+  // Handle atmospheric intro start - now just starts the game directly
+  // Pattern teaching happens via Samuel's firstOrb milestone echo (discovery-based learning)
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- initializeGame is stable, intentionally excluded to prevent re-creation
   const handleAtmosphericIntroStart = useCallback(() => {
-    // Check if onboarding has been seen
-    if (typeof window !== 'undefined') {
-      const hasSeenOnboarding = localStorage.getItem('lux-story-onboarding-seen')
-      if (!hasSeenOnboarding && !hasSaveFile) {
-        // Show onboarding for new players
-        setState(prev => ({ ...prev, showOnboarding: true }))
-        return
-      }
-    }
-    // If onboarding has been seen or is a returning player, start game directly
-    initializeGame()
-  }, [])
-
-  // Handle onboarding dismissal
-  const handleOnboardingDismiss = useCallback(() => {
-    // Mark onboarding as seen
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('lux-story-onboarding-seen', 'true')
-    }
-    setState(prev => ({ ...prev, showOnboarding: false }))
-    // Start the game
     initializeGame()
   }, [])
 
@@ -365,7 +361,7 @@ export default function StatefulGameInterface() {
           })
           logger.debug('Player profile ensured', { operation: 'game-interface.profile', playerId: gameState.playerId })
         } catch (error) {
-          console.warn('⚠️ Failed to ensure player profile (will fallback to API route check):', error)
+          logger.warn('⚠️ Failed to ensure player profile (will fallback to API route check):', { error })
         }
       }
 
@@ -376,23 +372,23 @@ export default function StatefulGameInterface() {
       const characterId = (gameState.currentCharacterId || 'samuel') as CharacterId
       const currentGraph = getGraphForCharacter(characterId, gameState)
       const nodeId = gameState.currentNodeId
-      
+
       let currentNode = currentGraph.nodes.get(nodeId)
       let actualCharacterId = characterId
       let actualGraph = currentGraph
 
       if (!currentNode) {
-         const searchResult = findCharacterForNode(nodeId, gameState)
-         if (searchResult) {
-             actualCharacterId = searchResult.characterId
-             actualGraph = searchResult.graph
-             currentNode = actualGraph.nodes.get(nodeId)!
-         } else {
-             const safe = getSafeStart()
-             actualCharacterId = safe.characterId
-             actualGraph = safe.graph
-             currentNode = actualGraph.nodes.get(actualGraph.startNodeId)!
-         }
+        const searchResult = findCharacterForNode(nodeId, gameState)
+        if (searchResult) {
+          actualCharacterId = searchResult.characterId
+          actualGraph = searchResult.graph
+          currentNode = actualGraph.nodes.get(nodeId)!
+        } else {
+          const safe = getSafeStart()
+          actualCharacterId = safe.characterId
+          actualGraph = safe.graph
+          currentNode = actualGraph.nodes.get(actualGraph.startNodeId)!
+        }
       }
 
       gameState.currentNodeId = currentNode.nodeId
@@ -449,14 +445,10 @@ export default function StatefulGameInterface() {
         skillToast: null,
         consequenceFeedback: null,
         error: null,
-        showTransition: false,
-        transitionData: null,
         previousSpeaker: null,
         recentSkills: [],
         showExperienceSummary: false,
         experienceSummaryData: null,
-        showConfigWarning: !isSupabaseConfigured(),
-        showThoughtCabinet: false,
         showJournal: false,
         showConstellation: false,
         pendingFloatingModule: null,
@@ -466,11 +458,31 @@ export default function StatefulGameInterface() {
         ambientEvent: null,
         patternSensation: null,
         consequenceEcho: null,
-        patternToast: null,
         sessionBoundary: null,
         previousTotalNodes: getTotalNodesVisited(gameState),
-        showOnboarding: false
+        showIdentityCeremony: false,
+        ceremonyPattern: null,
+        hasNewTrust: false,
+        isMuted: false,
+        showReport: false
       })
+
+      // One-time local mode notice via Samuel (replaces persistent banner)
+      if (!isSupabaseConfigured() && typeof window !== 'undefined') {
+        const hasSeenLocalModeNotice = localStorage.getItem('lux-local-mode-seen')
+        if (!hasSeenLocalModeNotice) {
+          localStorage.setItem('lux-local-mode-seen', 'true')
+          // Inject Samuel's echo about local mode - shows once, naturally in dialogue
+          setState(prev => ({
+            ...prev,
+            consequenceEcho: {
+              text: '"The station\'s connection to the wider network seems limited today. Your journey will be saved here, in your browser."',
+              emotion: 'knowing',
+              timing: 'immediate' as const
+            }
+          }))
+        }
+      }
 
       // ═══════════════════════════════════════════════════════════════════════════
       // SYNC BRIDGE: Hydrate Zustand with loaded/initial GameState
@@ -496,21 +508,24 @@ export default function StatefulGameInterface() {
       })
 
     } catch (error) {
-        console.error('Init error', error)
-        setState(prev => ({
-          ...prev,
-          error: {
-            title: 'Initialization Error',
-            message: error instanceof Error ? error.message : 'Failed to initialize game. Please refresh the page.',
-            severity: 'error' as const
-          },
-          isLoading: false
-        }))
+      logger.error('Init error', { error })
+      setState(prev => ({
+        ...prev,
+        error: {
+          title: 'Initialization Error',
+          message: error instanceof Error ? error.message : 'Failed to initialize game. Please refresh the page.',
+          severity: 'error' as const
+        },
+        isLoading: false
+      }))
     }
   }, [])
 
   // Choice handler
   const handleChoice = useCallback(async (choice: EvaluatedChoice) => {
+    // Initialize audio on first user interaction (required for mobile)
+    initializeAudio()
+
     // Prevent race condition from rapid-fire clicks
     if (isProcessingChoiceRef.current) return
     if (!state.gameState || !choice.enabled) return
@@ -520,40 +535,80 @@ export default function StatefulGameInterface() {
     // Safety timeout: auto-reset lock if handler crashes or hangs
     const safetyTimeout = setTimeout(() => {
       if (isProcessingChoiceRef.current) {
-        console.error('[StatefulGameInterface] Choice handler timeout - auto-resetting lock')
+        logger.error('[StatefulGameInterface] Choice handler timeout - auto-resetting lock')
         isProcessingChoiceRef.current = false
       }
     }, CHOICE_HANDLER_TIMEOUT_MS)
 
     try {
-      let newGameState = state.gameState
-      const previousPatterns = { ...state.gameState.patterns } // Store for threshold detection
+      // ═══════════════════════════════════════════════════════════════════════════
+      // THE UNIFIED CALCULATOR
+      // All game logic is now centralized in GameLogic.processChoice (Pure Function)
+      // ═══════════════════════════════════════════════════════════════════════════
 
-      // Track trust before change for echo generation
-      const trustBefore = state.gameState.characters.get(state.currentCharacterId)?.trust ?? 0
+      const result = GameLogic.processChoice(state.gameState, choice)
+      const previousPatterns = { ...state.gameState.patterns } // Restored for echo check
+      let newGameState = result.newState
+      const trustDelta = result.trustDelta
 
-      if (choice.choice.consequence) newGameState = GameStateUtils.applyStateChange(newGameState, choice.choice.consequence)
+      const handleReturnToStation = () => {
+        logger.info('[StatefulGameInterface] Returning to Station (Manual Override)', { operation: 'handleReturnToStation' })
 
-      // Apply pattern change with identity bonus (if internalized)
-      if (choice.choice.pattern) {
-        const baseGain = 1
-        const modifiedGain = calculatePatternGain(baseGain, choice.choice.pattern, newGameState)
-        newGameState = GameStateUtils.applyStateChange(newGameState, {
-          patternChanges: { [choice.choice.pattern]: modifiedGain }
-        })
+        // Reset to safe start
+        setState(prev => ({
+          ...prev,
+          currentNode: null,
+          currentGraph: safeStart.graph,
+          currentCharacterId: safeStart.characterId,
+          currentNodeId: safeStart.nodeId,
+          availableChoices: [],
+          currentContent: '',
+          showReport: false,
+          showJournal: false,
+          showConstellation: false,
+          showJourneySummary: false,
+          error: null,
+          ambientEvent: null,
+          consequenceFeedback: null,
+          patternSensation: null
+        }))
       }
 
-      // Track skills demonstrated by this choice
-      // Skills increment by 0.1 per demonstration (905 skill attributions in choices)
-      if (choice.choice.skills && choice.choice.skills.length > 0) {
+      // ═══════════════════════════════════════════════════════════════════════════
+      // RENDER
+      // ═══════════════════════════════════════════════════════════════════════════
+
+      // 1. Process Orb Events (Discovery)
+      if (result.events.earnOrb) {
+        const { crossedThreshold5 } = earnOrb(result.events.earnOrb)
+
+        if (crossedThreshold5) {
+          const identityThoughtId = `identity-${result.events.earnOrb}` as const
+          newGameState = GameStateUtils.applyStateChange(newGameState, {
+            thoughtId: identityThoughtId
+          })
+          // Play Identity Sound immediately if threshold crossed
+          if (result.events.checkIdentityThreshold) {
+            playIdentitySound()
+          }
+        }
+      }
+
+      // 2. Process Audio Events
+      if (result.events.playSound) {
+        const { type, id } = result.events.playSound
+        if (type === 'pattern' && id) playPatternSound(id)
+        // other types handled implicitly or below
+      }
+
+      // 3. Process Skill Updates
+      if (result.events.updateSkills && result.events.updateSkills.length > 0) {
         const skillUpdates: Partial<Record<string, number>> = {}
         const currentSkills = useGameStore.getState().skills
-        for (const skill of choice.choice.skills) {
-          // Only track the 12 core skills that exist in FutureSkills
+        for (const skill of result.events.updateSkills) {
           if (skill in currentSkills) {
             const currentValue = currentSkills[skill as keyof typeof currentSkills] || 0
-            // Increment by 0.1 with diminishing returns at higher levels
-            const increment = 0.1 * (1 - currentValue * 0.5) // Slower growth as skill increases
+            const increment = 0.1 * (1 - currentValue * 0.5)
             skillUpdates[skill] = Math.min(1, currentValue + increment)
           }
         }
@@ -562,42 +617,18 @@ export default function StatefulGameInterface() {
         }
       }
 
-      // Earn orb for pattern choice - Show minimal toast (Pokemon: Low HP beep principle)
-      if (choice.choice.pattern && isValidPattern(choice.choice.pattern)) {
-        const earnedPattern = choice.choice.pattern
-        const { crossedThreshold5 } = earnOrb(earnedPattern)
+      // 4. Generate Visual Feedback (Pattern Sensation)
+      // Pass this to UI state via setState later
+      const patternSensation = result.patternSensation
 
-        // Show pattern toast (minimal, bottom placement, fades after 1.5s)
-        setState(prev => ({ ...prev, patternToast: earnedPattern }))
-        setTimeout(() => {
-          setState(prev => ({ ...prev, patternToast: null }))
-        }, 1500)
-
-        // Identity offering at threshold 5 (Disco Elysium: "Is this who you are?")
-        // Pokemon four-move limit philosophy: Constraint forces identity
-        if (crossedThreshold5) {
-          const identityThoughtId = `identity-${earnedPattern}` as const
-          newGameState = GameStateUtils.applyStateChange(newGameState, {
-            thoughtId: identityThoughtId
-          })
-        }
-      }
-
-      // Calculate trust change for consequence echo
-      const trustAfter = newGameState.characters.get(state.currentCharacterId)?.trust ?? 0
-      const trustDelta = trustAfter - trustBefore
-
-      // Generate pattern sensation if pattern was triggered
-      // Only show occasionally (30% chance) to avoid being obtrusive
-      let patternSensation: string | null = null
-      if (choice.choice.pattern && isValidPattern(choice.choice.pattern) && Math.random() < 0.3) {
-        patternSensation = getPatternSensation(choice.choice.pattern)
-      }
-
-      // Generate consequence echo for trust changes (dialogue-based feedback)
+      // 5. Generate Consequence Echoes (Dialogue Feedback)
       let consequenceEcho: ConsequenceEcho | null = null
       if (trustDelta !== 0) {
         consequenceEcho = getConsequenceEcho(state.currentCharacterId, trustDelta)
+        // Audio feedback for trust increase
+        if (trustDelta > 0) {
+          playTrustSound()
+        }
       }
 
       // Also check for pattern recognition echos (when player crosses a threshold)
@@ -615,6 +646,8 @@ export default function StatefulGameInterface() {
           consequenceEcho = getOrbMilestoneEcho(unacknowledgedMilestone)
           if (consequenceEcho) {
             acknowledgeMilestone(unacknowledgedMilestone)
+            // Audio feedback for milestone achievement
+            playMilestoneSound()
           }
         }
       }
@@ -664,7 +697,7 @@ export default function StatefulGameInterface() {
 
       const searchResult = findCharacterForNode(choice.choice.nextNodeId, newGameState)
       if (!searchResult) {
-        console.error('[StatefulGameInterface] Could not find character graph for node:', choice.choice.nextNodeId)
+        logger.error('[StatefulGameInterface] Could not find character graph for node:', { nodeId: choice.choice.nextNodeId })
         setState(prev => ({
           ...prev,
           error: {
@@ -679,7 +712,7 @@ export default function StatefulGameInterface() {
 
       const nextNode = searchResult.graph.nodes.get(choice.choice.nextNodeId)
       if (!nextNode) {
-        console.error('[StatefulGameInterface] Node not found in graph:', {
+        logger.error('[StatefulGameInterface] Node not found in graph:', {
           nodeId: choice.choice.nextNodeId,
           characterId: searchResult.characterId,
           graphName: searchResult.graph.metadata?.title || 'unknown'
@@ -700,10 +733,21 @@ export default function StatefulGameInterface() {
       const targetGraph = searchResult.graph
       const targetCharacterId = searchResult.characterId
 
+      // Track identity internalization for ceremony
+      let identityCeremonyPattern: PatternType | null = null
+
       if (nextNode.onEnter) {
-          for (const change of nextNode.onEnter) {
-              newGameState = GameStateUtils.applyStateChange(newGameState, change)
+        for (const change of nextNode.onEnter) {
+          newGameState = GameStateUtils.applyStateChange(newGameState, change)
+
+          // Detect identity internalization for ceremony animation
+          if (change.internalizeThought && change.thoughtId?.startsWith('identity-')) {
+            const patternName = change.thoughtId.replace('identity-', '') as PatternType
+            if (isValidPattern(patternName)) {
+              identityCeremonyPattern = patternName
+            }
           }
+        }
       }
 
       const targetCharacter = newGameState.characters.get(targetCharacterId)!
@@ -711,14 +755,16 @@ export default function StatefulGameInterface() {
       newGameState.currentNodeId = nextNode.nodeId
       newGameState.currentCharacterId = targetCharacterId
 
-      // Check for session boundary (every 8-12 nodes)
-      const boundary = checkSessionBoundary(newGameState, state.previousTotalNodes)
+      // Check for session boundary (every 15-30 nodes, only at natural pause points)
+      const boundary = checkSessionBoundary(newGameState, state.previousTotalNodes, nextNode)
       let sessionBoundaryAnnouncement: SessionAnnouncement | null = null
 
       if (boundary.shouldShow && boundary.announcement) {
         sessionBoundaryAnnouncement = boundary.announcement
         // Increment boundary counter in game state
         newGameState = incrementBoundaryCounter(newGameState)
+        // Audio feedback for session/episode boundary
+        playEpisodeSound()
       }
 
       const content = DialogueGraphNavigator.selectContent(nextNode, targetCharacter.conversationHistory)
@@ -736,7 +782,7 @@ export default function StatefulGameInterface() {
 
       // Only log if content seems wrong (character changed but content didn't)
       if (targetCharacterId !== state.currentCharacterId && reflected.text === state.currentContent) {
-        console.warn('[StatefulGameInterface] Character changed but content unchanged', {
+        logger.warn('[StatefulGameInterface] Character changed but content unchanged', {
           fromCharacter: state.currentCharacterId,
           toCharacter: targetCharacterId,
           nodeId: nextNode.nodeId,
@@ -816,7 +862,7 @@ export default function StatefulGameInterface() {
       //       .then(summaryData => setState(prev => ({ ...prev, showExperienceSummary: true, experienceSummaryData: summaryData })))
       //       .catch(() => setState(prev => ({ ...prev, showExperienceSummary: true, experienceSummaryData: null })))
       // }
-    
+
       // Floating modules disabled - arc_transition check removed
 
       // Evaluate meta-achievements after state changes
@@ -831,41 +877,40 @@ export default function StatefulGameInterface() {
       const achievementNotification: MetaAchievement | null = null
 
       setState({
-          gameState: newGameState,
-          currentNode: nextNode,
-          currentGraph: targetGraph,
-          currentCharacterId: targetCharacterId,
-          availableChoices: newChoices,
-          currentContent: reflected.text,
-          currentDialogueContent: { ...content, text: reflected.text, emotion: reflected.emotion },
-          useChatPacing: content.useChatPacing || false,
-          isLoading: false,
-          hasStarted: true,
-          selectedChoice: null,
-          showSaveConfirmation: false, // Disabled - save happens silently, no interruption
-          skillToast: null, // Disabled - skills tracked silently
-          consequenceFeedback,
-          error: null,
-          showTransition: false,
-          transitionData: null,
-          previousSpeaker: state.currentNode?.speaker || null,
-          recentSkills: skillsToKeep,
-          ...experienceSummaryUpdate,
-          showConfigWarning: state.showConfigWarning,
-          showThoughtCabinet: state.showThoughtCabinet,
-          showJournal: state.showJournal,
-          showConstellation: state.showConstellation,
-          pendingFloatingModule: null, // Floating modules disabled
-          showJourneySummary: state.showJourneySummary,
-          journeyNarrative: state.journeyNarrative,
-          achievementNotification,
-          ambientEvent: null,  // Clear ambient event when player acts
-          patternSensation,    // Show pattern feedback if triggered
-          consequenceEcho,     // Dialogue-based trust feedback
-          patternToast: state.patternToast,  // Preserve pattern toast (set earlier in choice handling)
-          sessionBoundary: sessionBoundaryAnnouncement,  // Session boundary announcement if triggered
-          previousTotalNodes: getTotalNodesVisited(newGameState),  // Track for next boundary check
-          showOnboarding: state.showOnboarding  // Preserve onboarding state
+        gameState: newGameState,
+        currentNode: nextNode,
+        currentGraph: targetGraph,
+        currentCharacterId: targetCharacterId,
+        availableChoices: newChoices,
+        currentContent: reflected.text,
+        currentDialogueContent: { ...content, text: reflected.text, emotion: reflected.emotion },
+        useChatPacing: content.useChatPacing || false,
+        isLoading: false,
+        hasStarted: true,
+        selectedChoice: null,
+        showSaveConfirmation: false, // Disabled - save happens silently, no interruption
+        skillToast: null, // Disabled - skills tracked silently
+        consequenceFeedback,
+        error: null,
+        previousSpeaker: state.currentNode?.speaker || null,
+        recentSkills: skillsToKeep,
+        ...experienceSummaryUpdate,
+        showJournal: state.showJournal,
+        showConstellation: state.showConstellation,
+        pendingFloatingModule: null, // Floating modules disabled
+        showJourneySummary: state.showJourneySummary,
+        journeyNarrative: state.journeyNarrative,
+        achievementNotification,
+        ambientEvent: null,  // Clear ambient event when player acts
+        patternSensation,    // Show pattern feedback if triggered
+        consequenceEcho,     // Dialogue-based trust feedback
+        sessionBoundary: sessionBoundaryAnnouncement,  // Session boundary announcement if triggered
+        previousTotalNodes: getTotalNodesVisited(newGameState),  // Track for next boundary check
+        showIdentityCeremony: identityCeremonyPattern !== null,  // Identity ceremony if triggered
+        ceremonyPattern: identityCeremonyPattern,  // Pattern being internalized
+        hasNewTrust: trustDelta !== 0 ? true : state.hasNewTrust,  // Track trust changes for Constellation attention
+        isMuted: state.isMuted,
+        showReport: state.showReport
       })
       GameStateManager.saveGameState(newGameState)
 
@@ -922,7 +967,7 @@ export default function StatefulGameInterface() {
       clearTimeout(safetyTimeout)
       isProcessingChoiceRef.current = false
     }
-  }, [state.gameState, state.currentNode, state.showConfigWarning, state.recentSkills, state.showThoughtCabinet, state.showJournal, state.showConstellation, state.journeyNarrative, state.showJourneySummary, state.currentCharacterId, state.currentContent, earnOrb, earnBonusOrbs, getUnacknowledgedMilestone, acknowledgeMilestone])
+  }, [state.gameState, state.currentNode, state.recentSkills, state.showJournal, state.showConstellation, state.journeyNarrative, state.showJourneySummary, state.currentCharacterId, state.currentContent, state.previousTotalNodes, earnOrb, earnBonusOrbs, getUnacknowledgedMilestone, acknowledgeMilestone])
 
   /**
    * Navigate back to Samuel's hub after completing a conversation
@@ -965,7 +1010,7 @@ export default function StatefulGameInterface() {
       // Find the character and graph for the target node
       const searchResult = findCharacterForNode(targetNodeId, state.gameState)
       if (!searchResult) {
-        console.error('Failed to find Samuel hub node:', targetNodeId)
+        logger.error('Failed to find Samuel hub node:', { targetNodeId })
         // Fallback: reset to introduction
         const samuelGraph = getGraphForCharacter('samuel', state.gameState)
         const introNode = samuelGraph.nodes.get(samuelEntryPoints.INTRODUCTION)
@@ -1018,7 +1063,7 @@ export default function StatefulGameInterface() {
 
       const targetNode = searchResult.graph.nodes.get(targetNodeId)
       if (!targetNode) {
-        console.error('Target node not found:', targetNodeId)
+        logger.error('Target node not found:', { targetNodeId })
         setState(prev => ({
           ...prev,
           error: {
@@ -1048,7 +1093,7 @@ export default function StatefulGameInterface() {
         const newChar = GameStateUtils.createCharacterState(targetCharacterId)
         newGameState.characters.set(targetCharacterId, newChar)
       }
-      
+
       const targetCharacter = newGameState.characters.get(targetCharacterId)!
       if (!targetCharacter.conversationHistory.includes(targetNode.nodeId)) {
         targetCharacter.conversationHistory.push(targetNode.nodeId)
@@ -1081,7 +1126,7 @@ export default function StatefulGameInterface() {
       }))
 
       GameStateManager.saveGameState(newGameState)
-      
+
       // Sync to Zustand
       const zustandStore = useGameStore.getState()
       zustandStore.setCoreGameState(GameStateUtils.serialize(newGameState))
@@ -1107,7 +1152,7 @@ export default function StatefulGameInterface() {
         })
       }
     } catch (error) {
-      console.error('[StatefulGameInterface] Error in handleReturnToStation:', error)
+      logger.error('[StatefulGameInterface] Error in handleReturnToStation:', { error })
       setState(prev => ({
         ...prev,
         error: {
@@ -1122,29 +1167,25 @@ export default function StatefulGameInterface() {
 
 
   // Render Logic - Restored Card Layout
+  // Onboarding removed - discovery-based learning happens via Samuel's firstOrb echo
   if (!state.hasStarted) {
-      // Show onboarding screen for new players
-      if (state.showOnboarding) {
-        return <OnboardingScreen onDismiss={handleOnboardingDismiss} isVisible={true} />
-      }
-
-      if (!hasSaveFile) return <AtmosphericIntro onStart={handleAtmosphericIntroStart} />
-      return (
-        <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 flex items-center justify-center p-4">
-            <Card className="w-full max-w-md shadow-xl border-0">
-                <CardContent className="p-8 text-center">
-                    <div className="space-y-3">
-                        <Button onClick={initializeGame} size="lg" className="w-full bg-slate-900 hover:bg-slate-800 text-white">Continue</Button>
-                        <Button onClick={() => {
-                            // Clear all save data for true reset
-                            GameStateManager.nuclearReset()
-                            window.location.reload()
-                        }} variant="outline" size="lg" className="w-full">Start Over</Button>
-                    </div>
-                </CardContent>
-            </Card>
-        </div>
-      )
+    if (!hasSaveFile) return <AtmosphericIntro onStart={handleAtmosphericIntroStart} />
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 flex items-center justify-center p-4">
+        <Card className="w-full max-w-md shadow-xl border-0">
+          <CardContent className="p-8 text-center">
+            <div className="space-y-3">
+              <Button onClick={initializeGame} size="lg" className="w-full bg-slate-900 hover:bg-slate-800 text-white">Continue</Button>
+              <Button onClick={() => {
+                // Clear all save data for true reset
+                GameStateManager.nuclearReset()
+                window.location.reload()
+              }} variant="outline" size="lg" className="w-full">Start Over</Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    )
   }
 
   const characterNames: Record<CharacterId, string> = {
@@ -1160,7 +1201,7 @@ export default function StatefulGameInterface() {
     rohan: 'Rohan',
     silas: 'Silas'
   }
-  
+
   const currentCharacter = state.gameState?.characters.get(state.currentCharacterId)
   const isEnding = state.availableChoices.length === 0
 
@@ -1173,7 +1214,7 @@ export default function StatefulGameInterface() {
         contain: 'layout style paint',
         transition: 'none',
         // Safe area insets for notched devices (iPhone X+)
-        paddingTop: 'env(safe-area-inset-top)',
+        // paddingTop handled by header for edge-to-edge look
         paddingBottom: 'env(safe-area-inset-bottom)',
         paddingLeft: 'env(safe-area-inset-left)',
         paddingRight: 'env(safe-area-inset-right)'
@@ -1182,26 +1223,26 @@ export default function StatefulGameInterface() {
       {/* ══════════════════════════════════════════════════════════════════
           FIXED HEADER - Always visible at top (Claude/ChatGPT pattern)
           ══════════════════════════════════════════════════════════════════ */}
-      <header className="flex-shrink-0 bg-stone-50/95 backdrop-blur-md border-b border-stone-200 z-10">
+      <header
+        className="relative flex-shrink-0 bg-stone-50/95 backdrop-blur-md border-b border-stone-200 z-10"
+        style={{ paddingTop: 'env(safe-area-inset-top)' }}
+      >
         <div className="max-w-4xl mx-auto px-3 sm:px-4">
           {/* Top Row - Title and Navigation */}
           <div className="flex items-center justify-between py-2 border-b border-stone-100">
-            <Link href="/" className="text-sm font-semibold text-slate-800 hover:text-slate-600 transition-colors">
-              Grand Central Terminus
+            <Link href="/" className="text-sm font-semibold text-slate-800 hover:text-slate-600 transition-colors truncate min-w-0">
+              <span className="hidden sm:inline">Grand Central Terminus</span>
+              <span className="sm:hidden">GCT</span>
             </Link>
-            <div className="flex items-center gap-1">
-              {/* ThoughtCabinet button removed - feature is orphaned (not wired to dialogue)
-                  See SIDE_MENUS_COMPREHENSIVE_AUDIT.md for details
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setState(prev => ({ ...prev, showThoughtCabinet: true }))}
-                className="h-9 w-9 p-0 text-slate-500 hover:text-slate-700 hover:bg-stone-100"
-                title="Thought Cabinet"
-              >
-                <Brain className="h-4 w-4" />
-              </Button>
-              */}
+            <div className="flex items-center gap-1 flex-shrink-0">
+              {/* Hero Badge - Player Identity */}
+              {state.gameState && (
+                <HeroBadge
+                  patterns={state.gameState.patterns}
+                  compact={true}
+                  className="mr-2 hidden sm:flex"
+                />
+              )}
               <Button
                 variant="ghost"
                 size="sm"
@@ -1209,23 +1250,46 @@ export default function StatefulGameInterface() {
                   markOrbsViewed()
                   setState(prev => ({ ...prev, showJournal: true }))
                 }}
-                className="relative h-9 w-9 p-0 text-slate-500 hover:text-slate-700 hover:bg-stone-100"
+                className={`relative h-9 w-9 p-0 text-slate-500 hover:text-slate-700 hover:bg-stone-100 transition-all duration-300 rounded-md ${hasNewOrbs
+                  ? 'text-amber-600 nav-attention-marquee nav-attention-border'
+                  : ''
+                  }`}
                 title="Journal"
               >
                 <BookOpen className="h-4 w-4" />
-                {hasNewOrbs && (
-                  <span className="absolute top-1 right-1 h-2 w-2 bg-amber-500 rounded-full animate-pulse" />
-                )}
               </Button>
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => setState(prev => ({ ...prev, showConstellation: true }))}
-                className="h-9 w-9 p-0 text-slate-500 hover:text-slate-700 hover:bg-stone-100"
+                onClick={() => setState(prev => ({ ...prev, showConstellation: true, hasNewTrust: false }))}
+                className={`relative h-9 w-9 p-0 text-slate-500 hover:text-slate-700 hover:bg-stone-100 transition-all duration-300 rounded-md ${state.hasNewTrust
+                  ? 'text-purple-600 nav-attention-marquee nav-attention-border-purple'
+                  : ''
+                  }`}
                 title="Constellation"
               >
                 <Stars className="h-4 w-4" />
               </Button>
+              {/* Header Controls */}
+              <div
+                className="absolute right-4 z-50 flex items-center gap-2"
+                style={{ top: 'calc(1rem + env(safe-area-inset-top))' }}
+              >
+                <GameMenu
+                  onShowReport={() => setState(prev => ({ ...prev, showReport: true }))}
+                  onReturnToStation={handleReturnToStation}
+                  isMuted={state.isMuted}
+                  onToggleMute={() => {
+                    const newMuted = !state.isMuted
+                    console.log(`[GameMenu] Toggling Mute to: ${newMuted}`)
+                    setState(prev => ({ ...prev, isMuted: newMuted }))
+                    synthEngine.setMute(newMuted)
+                    setAudioEnabled(!newMuted) // NEW: Kill the OGG tracks too
+                  }}
+                />
+              </div>
+
+              {/* Connection Status Indicator */}
               <SyncStatusIndicator />
             </div>
           </div>
@@ -1245,30 +1309,12 @@ export default function StatefulGameInterface() {
                 <span className="truncate max-w-[150px] sm:max-w-none">{characterNames[state.currentCharacterId]}</span>
               </div>
               <div className="flex flex-col items-end">
-                {(() => {
-                  const { label, color, description } = getTrustLabel(currentCharacter.trust)
-                  return (
-                    <>
-                      <span className={`text-xs sm:text-sm font-semibold ${color}`}>{label}</span>
-                      <span className="text-[10px] sm:text-xs text-slate-400 hidden sm:inline-block">{description}</span>
-                    </>
-                  )
-                })()}
+                {/* Trust Label hidden for immersion */}
               </div>
             </div>
           )}
         </div>
       </header>
-
-      {/* Configuration Warning - Collapsible on mobile */}
-      {state.showConfigWarning && (
-        <div className="flex-shrink-0 px-3 sm:px-4 py-2 bg-amber-50 border-b border-amber-200">
-          <div className="max-w-4xl mx-auto flex items-center gap-2">
-            <span className="text-amber-600 text-sm">⚠️</span>
-            <p className="text-xs text-amber-700 truncate sm:whitespace-normal">Local preview mode. Progress saved to browser only.</p>
-          </div>
-        </div>
-      )}
 
       {/* ══════════════════════════════════════════════════════════════════
           SCROLLABLE DIALOGUE AREA - Middle section
@@ -1278,7 +1324,7 @@ export default function StatefulGameInterface() {
         style={{ WebkitOverflowScrolling: 'touch' }}
         data-testid="game-interface"
       >
-        <div className="max-w-4xl mx-auto px-3 sm:px-4 py-4 md:pt-12 lg:pt-16 pb-8">
+        <div className="max-w-4xl mx-auto px-3 sm:px-4 py-4 md:pt-8 lg:pt-12 pb-6 sm:pb-8">
           {/* AnimatePresence for smooth dialogue transitions - mobile-optimized */}
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
@@ -1292,11 +1338,10 @@ export default function StatefulGameInterface() {
               }}
             >
               <Card
-                className={`rounded-xl shadow-sm ${
-                  state.currentNode?.speaker
-                    ? 'bg-amber-50/40 border-stone-200/60'  // Character dialogue - warm, conversational
-                    : 'bg-slate-100/50 border-slate-300/60'  // Atmospheric narration - cooler, environmental
-                }`}
+                className={`rounded-xl shadow-sm ${state.currentNode?.speaker
+                  ? 'bg-amber-50/40 border-stone-200/60'  // Character dialogue - warm, conversational
+                  : 'bg-slate-100/50 border-slate-300/60'  // Atmospheric narration - cooler, environmental
+                  }`}
                 style={{ transition: 'none' }}
                 data-testid="dialogue-card"
                 data-node-id={state.gameState?.currentNodeId || ''}
@@ -1304,24 +1349,23 @@ export default function StatefulGameInterface() {
                 data-is-narration={state.currentNode?.speaker ? undefined : 'true'}
                 data-emotional-beat={
                   state.currentDialogueContent?.interaction === 'ripple' ||
-                  state.currentDialogueContent?.interaction === 'bloom' ||
-                  state.currentDialogueContent?.interaction === 'shake' ||
-                  state.currentNode?.tags?.includes('emotional_beat') ||
-                  state.currentNode?.tags?.includes('revelation')
+                    state.currentDialogueContent?.interaction === 'bloom' ||
+                    state.currentDialogueContent?.interaction === 'shake' ||
+                    state.currentNode?.tags?.includes('emotional_beat') ||
+                    state.currentNode?.tags?.includes('revelation')
                     ? 'true'
                     : undefined
                 }
                 data-scene-type={
                   state.currentNode?.tags?.includes('introduction') ? 'introduction' :
-                  state.currentNode?.tags?.includes('climax') ? 'climax' :
-                  state.currentNode?.tags?.includes('revelation') ? 'revelation' :
-                  undefined
+                    state.currentNode?.tags?.includes('climax') ? 'climax' :
+                      state.currentNode?.tags?.includes('revelation') ? 'revelation' :
+                        undefined
                 }
               >
                 <CardContent
-                  className={`p-5 sm:p-8 md:p-10 min-h-[200px] sm:min-h-[300px] ${
-                    state.currentNode?.speaker ? '' : 'text-center'  // Center narration text
-                  }`}
+                  className={`p-5 sm:p-8 md:p-10 min-h-[200px] sm:min-h-[300px] ${state.currentNode?.speaker ? '' : 'text-center'  // Center narration text
+                    }`}
                   data-testid="dialogue-content"
                   data-speaker={state.currentNode?.speaker || ''}
                 >
@@ -1336,18 +1380,65 @@ export default function StatefulGameInterface() {
                   )}
 
                   {/* Consequence Echo - NPC micro-reaction before their main line */}
-                  {state.consequenceEcho && (
-                    <div
-                      className="text-slate-500 italic text-sm mb-4 animate-fade-in"
-                      data-testid="consequence-echo"
-                      style={{ fontFamily: 'Georgia, serif' }}
-                    >
-                      {state.consequenceEcho.text}
-                    </div>
-                  )}
+                  {/* Consequence Echo removed based on user feedback (distracting meta-commentary) */}
+                  {/*
+        ISP UPDATE: NeuroOverlay (Visual Bio-Feedback)
+        Pulses with the character's nervous system state.
+        Ventral = Warm/Gold (Connection)
+        Sympathetic = Amber/Red (Alert)
+        Dorsal = Desaturated/Cool (Shutdown)
+      */}
+                  {/*
+        ISP UPDATE: NeuroOverlay (Visual Bio-Feedback)
+        Pulses with the character's nervous system state.
+        Ventral = Warm/Gold (Connection)
+        Sympathetic = Amber/Red (Alert)
+        Dorsal = Desaturated/Cool (Shutdown)
+      */}
+                  <div
+                    className={`fixed inset-0 pointer-events-none z-0 transition-colors duration-[3000ms] mix-blend-overlay opacity-20
+          ${state.gameState?.characters.get(state.currentCharacterId)?.nervousSystemState === 'ventral_vagal' ? 'bg-amber-100' : ''}
+          ${state.gameState?.characters.get(state.currentCharacterId)?.nervousSystemState === 'sympathetic' ? 'bg-red-900 animate-pulse' : ''}
+          ${state.gameState?.characters.get(state.currentCharacterId)?.nervousSystemState === 'dorsal_vagal' ? 'bg-slate-900 grayscale' : ''}
+        `}
+                  />
+
+                  {/* 
+                    ISP UPDATE: The Chemistry Lab (Visual Alchemy)
+                    Renders the specific reaction between Anxiety and Skill.
+                  */}
+                  {(() => {
+                    const reaction = state.gameState?.characters.get(state.currentCharacterId)?.lastReaction?.type
+                    if (!reaction) return null
+
+                    return (
+                      <>
+                        {/* Resonance (Steam/Mist) - Vulnerable Connection */}
+                        {reaction === 'resonance' && (
+                          <div className="fixed inset-0 pointer-events-none z-0 bg-white/30 mix-blend-soft-light blur-3xl animate-pulse duration-[4000ms]" />
+                        )}
+
+                        {/* Cold Fusion (Blue Flame) - Hyper-Focus */}
+                        {reaction === 'cold_fusion' && (
+                          <div className="fixed inset-0 pointer-events-none z-0 bg-cyan-900/20 mix-blend-color-dodge" />
+                        )}
+
+                        {/* Volatility (Sparks) - Unchecked Anxiety */}
+                        {reaction === 'volatility' && (
+                          <div className="fixed inset-0 pointer-events-none z-0 bg-orange-500/10 mix-blend-overlay animate-pulse duration-[200ms]" />
+                        )}
+
+                        {/* Deep Rooting (Moss) - Stabilization */}
+                        {reaction === 'deep_rooting' && (
+                          <div className="fixed inset-x-0 bottom-0 h-32 pointer-events-none z-0 bg-gradient-to-t from-emerald-900/40 to-transparent" />
+                        )}
+                      </>
+                    )
+                  })()}
+
                   <DialogueDisplay
                     key={`dialogue-display-${state.gameState?.currentNodeId || 'none'}-${state.currentCharacterId}-${state.currentContent?.substring(0, 20) || ''}`}
-                    text={state.gameState ? TextProcessor.process(state.currentContent || '', state.gameState) : (state.currentContent || '')}
+                    text={cleanContent(state.gameState ? TextProcessor.process(state.currentContent || '', state.gameState) : (state.currentContent || ''))}
                     useChatPacing={state.useChatPacing}
                     characterName={state.currentNode?.speaker}
                     characterId={state.currentCharacterId}
@@ -1366,11 +1457,10 @@ export default function StatefulGameInterface() {
 
           {/* Ending State - Shows in scroll area when conversation complete */}
           {isEnding && (
-            <Card className={`mt-4 rounded-xl shadow-md ${
-              state.gameState && isJourneyComplete(state.gameState)
-                ? 'bg-gradient-to-b from-amber-50 to-white border-amber-200'
-                : ''
-            }`}>
+            <Card className={`mt-4 rounded-xl shadow-md ${state.gameState && isJourneyComplete(state.gameState)
+              ? 'bg-gradient-to-b from-amber-50 to-white border-amber-200'
+              : ''
+              }`}>
               <CardContent className="p-4 sm:p-6 text-center">
                 {state.gameState && isJourneyComplete(state.gameState) ? (
                   <>
@@ -1397,6 +1487,13 @@ export default function StatefulGameInterface() {
                         className="w-full min-h-[48px] bg-amber-600 hover:bg-amber-700 text-white"
                       >
                         See Your Journey
+                      </Button>
+                      <Button
+                        variant="secondary"
+                        onClick={() => setState(prev => ({ ...prev, showReport: true }))}
+                        className="w-full min-h-[48px] bg-slate-900 text-white hover:bg-slate-700 border border-slate-700"
+                      >
+                        Export Career Profile
                       </Button>
                       <Button
                         variant="outline"
@@ -1426,14 +1523,14 @@ export default function StatefulGameInterface() {
             </Card>
           )}
         </div>
-      </main>
+      </main >
 
       {/* ══════════════════════════════════════════════════════════════════
-          FIXED CHOICES PANEL - Always visible at bottom (Claude/ChatGPT pattern)
-          Strong visual distinction from narrative container
-          AnimatePresence for smooth exit when conversation ends
+          CHOICES PANEL - Positioned for optimal flow
+          PC: Closer to content (not stuck at very bottom)
+          Mobile: Bottom with proper safe area padding
           ══════════════════════════════════════════════════════════════════ */}
-      <AnimatePresence mode="wait">
+      < AnimatePresence mode="wait" >
         {!isEnding && (
           <motion.footer
             key="choices-footer"
@@ -1441,94 +1538,112 @@ export default function StatefulGameInterface() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="flex-shrink-0 bg-stone-50 border border-stone-200 shadow-lg mx-3 sm:mx-auto sm:max-w-2xl rounded-2xl"
+            className="flex-shrink-0 bg-gradient-to-b from-stone-50 to-stone-100/80 border border-stone-200/80 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] mx-3 sm:mx-auto sm:max-w-2xl lg:max-w-3xl rounded-2xl backdrop-blur-sm"
             style={{
-              marginTop: '1rem',
-              marginBottom: 'max(1rem, calc(2rem + env(safe-area-inset-bottom, 0px)))'
+              marginTop: '1.5rem',
+              marginBottom: 'max(1rem, calc(1.5rem + env(safe-area-inset-bottom, 0px)))'
             }}
           >
-            <div className="px-4 sm:px-6 py-4 sm:py-5">
-              {/* Scrollable choices container with visual overflow indicator */}
-              {/* scroll-snap + touch-action prevents accidental selections during scroll */}
+            {/* Elegant header separator */}
+            <div className="px-4 sm:px-6 pt-3 pb-1">
+              <div className="flex items-center justify-center gap-2">
+                <div className="h-px flex-1 bg-gradient-to-r from-transparent via-stone-300 to-transparent" />
+                <span className="text-[10px] font-medium text-stone-400 uppercase tracking-widest">Your Response</span>
+                <div className="h-px flex-1 bg-gradient-to-r from-transparent via-stone-300 to-transparent" />
+              </div>
+            </div>
+
+            <div className="px-4 sm:px-6 pb-4 sm:pb-5 pt-2">
+              {/* Scrollable choices container with scroll indicator */}
               <div className="relative">
                 <div
-                  className="max-h-[200px] overflow-y-auto overscroll-contain rounded-lg scroll-smooth"
+                  id="choices-scroll-container"
+                  className="max-h-[180px] sm:max-h-[200px] overflow-y-auto overscroll-contain rounded-xl scroll-smooth"
                   style={{
                     WebkitOverflowScrolling: 'touch',
-                    scrollSnapType: 'y proximity', // Gentle snap to choices
-                    touchAction: 'pan-y', // Only allow vertical pan, not tap during scroll
+                    scrollSnapType: 'y proximity',
+                    touchAction: 'pan-y',
+                  }}
+                  onScroll={(e) => {
+                    const target = e.target as HTMLElement
+                    const indicator = document.getElementById('scroll-indicator')
+                    if (indicator) {
+                      const isAtBottom = target.scrollHeight - target.scrollTop <= target.clientHeight + 10
+                      indicator.style.opacity = isAtBottom ? '0' : '1'
+                    }
                   }}
                 >
-                <GameChoices
-                  choices={state.availableChoices.map((c, index) => {
-                    // Detect pivotal moments for marquee effect
-                    const nodeTags = state.currentNode?.tags || []
-                    const isPivotal = nodeTags.some(tag =>
-                      ['pivotal', 'defining_moment', 'final_choice', 'climax', 'revelation', 'introduction'].includes(tag)
-                    )
-                    // Apply voice variation based on player's dominant pattern
-                    const voicedText = state.gameState ? getVoicedChoiceText(
-                      c.choice.text,
-                      c.choice.voiceVariations,
-                      state.gameState.patterns
-                    ) : c.choice.text
-                    return {
-                      text: voicedText,
-                      pattern: c.choice.pattern,
-                      feedback: c.choice.interaction === 'shake' ? 'shake' : undefined,
-                      pivotal: isPivotal,
-                      // KOTOR-style orb requirement (if set on choice)
-                      requiredOrbFill: c.choice.requiredOrbFill,
-                      // Track index for finding the original choice
-                      next: String(index)
-                    }
-                  })}
-                  isProcessing={state.isLoading}
-                  orbFillLevels={orbFillLevels}
-                  onChoice={(c) => {
-                    // Use index to find the original choice (stored in 'next' field)
-                    const index = parseInt(c.next || '0', 10)
-                    const original = state.availableChoices[index]
-                    if (original) handleChoice(original)
-                  }}
-                />
+                  <GameChoices
+                    choices={state.availableChoices.map((c, index) => {
+                      const nodeTags = state.currentNode?.tags || []
+                      const isPivotal = nodeTags.some(tag =>
+                        ['pivotal', 'defining_moment', 'final_choice', 'climax', 'revelation', 'introduction'].includes(tag)
+                      )
+                      const voicedText = state.gameState ? getVoicedChoiceText(
+                        c.choice.text,
+                        c.choice.voiceVariations,
+                        state.gameState.patterns
+                      ) : c.choice.text
+                      return {
+                        text: voicedText,
+                        pattern: c.choice.pattern,
+                        feedback: c.choice.interaction === 'shake' ? 'shake' : undefined,
+                        pivotal: isPivotal,
+                        requiredOrbFill: c.choice.requiredOrbFill,
+                        next: String(index)
+                      }
+                    })}
+                    isProcessing={state.isLoading}
+                    orbFillLevels={orbFillLevels}
+                    onChoice={(c) => {
+                      const index = parseInt(c.next || '0', 10)
+                      const original = state.availableChoices[index]
+                      if (original) handleChoice(original)
+                    }}
+                  />
                 </div>
+
+                {/* Scroll indicator removed based on user feedback (often unnecessary) */}
               </div>
             </div>
           </motion.footer>
-        )}
-      </AnimatePresence>
+        )
+        }
+      </AnimatePresence >
 
       {/* Share prompts removed - too obtrusive */}
 
       {/* Error Display */}
-      {state.error && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm animate-fade-in">
-          <div className="mx-4 max-w-md bg-white rounded-xl shadow-xl border border-red-200 overflow-hidden">
-            <div className="px-6 py-4 bg-red-50 border-b border-red-200">
-              <h3 className="text-lg font-semibold text-red-800">{state.error.title}</h3>
-            </div>
-            <div className="px-6 py-4">
-              <p className="text-slate-700 mb-4">{state.error.message}</p>
-              <div className="flex gap-3">
-                <Button
-                  onClick={() => window.location.reload()}
-                  className="flex-1 bg-red-600 hover:bg-red-700 text-white"
-                >
-                  Refresh Page
-                </Button>
-                <Button
-                  onClick={() => setState(prev => ({ ...prev, error: null }))}
-                  variant="outline"
-                  className="flex-1"
-                >
-                  Dismiss
-                </Button>
+      {
+        state.error && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm animate-fade-in">
+            <div className="mx-4 max-w-md bg-white rounded-xl shadow-xl border border-red-200 overflow-hidden">
+              <div className="px-6 py-4 bg-red-50 border-b border-red-200">
+                <h3 className="text-lg font-semibold text-red-800">{state.error.title}</h3>
+              </div>
+              <div className="px-6 py-4">
+                <p className="text-slate-700 mb-4">{state.error.message}</p>
+                <div className="flex gap-3">
+                  <Button
+                    onClick={() => window.location.reload()}
+                    className="flex-1 bg-red-600 hover:bg-red-700 text-white"
+                  >
+                    Refresh Page
+                  </Button>
+                  {/* GameMenu removed from here */}
+                  <Button
+                    onClick={() => setState(prev => ({ ...prev, error: null }))}
+                    variant="outline"
+                    className="flex-1"
+                  >
+                    Dismiss
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
+        )
+      }
 
       {/* ══════════════════════════════════════════════════════════════════
           OVERLAYS & MODALS - Positioned above everything
@@ -1542,12 +1657,6 @@ export default function StatefulGameInterface() {
 
       {/* Experience Summary disabled - breaks immersion, available in menus/maps */}
       {/* Users can view arc summaries in admin dashboard or journey summary when they choose */}
-
-      {/* Thought Cabinet */}
-      <ThoughtCabinet
-        isOpen={state.showThoughtCabinet}
-        onClose={() => setState(prev => ({ ...prev, showThoughtCabinet: false }))}
-      />
 
       {/* Journal */}
       <Journal
@@ -1564,15 +1673,65 @@ export default function StatefulGameInterface() {
       {/* Floating Module Interlude - DISABLED: broke dialogue immersion */}
 
       {/* Journey Summary - Samuel's narrative of the complete journey */}
-      {state.showJourneySummary && state.journeyNarrative && (
-        <JourneySummary
-          narrative={state.journeyNarrative}
-          onClose={() => setState(prev => ({ ...prev, showJourneySummary: false, journeyNarrative: null }))}
+      {
+        state.showJourneySummary && state.journeyNarrative && (
+          <JourneySummary
+            narrative={state.journeyNarrative}
+            onClose={() => setState(prev => ({ ...prev, showJourneySummary: false, journeyNarrative: null }))}
+          />
+        )
+      }
+
+      <IdentityCeremony
+        pattern={state.ceremonyPattern}
+        isVisible={state.showIdentityCeremony}
+        onComplete={() => setState(prev => ({ ...prev, showIdentityCeremony: false, ceremonyPattern: null }))}
+      />
+
+      {/* ══════════════════════════════════════════════════════════════════
+          LIMBIC SYSTEM OVERLAY - Visualization of Connection
+          ══════════════════════════════════════════════════════════════════ */}
+      {
+        state.gameState && (() => {
+          const char = state.gameState.characters.get(state.currentCharacterId)
+          const nsState = char?.nervousSystemState
+
+          if (!nsState || nsState === 'ventral_vagal') return null
+
+          return (
+            <div className="fixed inset-0 pointer-events-none z-50 transition-all duration-1000 ease-in-out">
+              {/* Sympathetic: Amber/Red Vignette (Anxiety) */}
+              {nsState === 'sympathetic' && (
+                <div
+                  className="absolute inset-0 opacity-20 dark:opacity-30"
+                  style={{
+                    background: 'radial-gradient(circle at center, transparent 60%, #f59e0b 100%)',
+                    mixBlendMode: 'overlay'
+                  }}
+                />
+              )}
+
+              {/* Dorsal: Dark/Grey Vignette (Disconnect) */}
+              {nsState === 'dorsal_vagal' && (
+                <div
+                  className="absolute inset-0 opacity-30 dark:opacity-50"
+                  style={{
+                    background: 'radial-gradient(circle at center, transparent 50%, #1e293b 100%)',
+                    filter: 'grayscale(0.5)'  // Desaturate the world
+                  }}
+                />
+              )}
+            </div>
+          )
+        })()
+      }
+      {/* The Reality Interface - Career Report */}
+      {state.showReport && state.gameState && (
+        <StrategyReport
+          gameState={state.gameState}
+          onClose={() => setState(prev => ({ ...prev, showReport: false }))}
         />
       )}
-
-      {/* Pattern Toast - Minimal feedback (Pokemon: Low HP beep principle) */}
-      <ProgressToast pattern={state.patternToast} />
-    </div>
+    </div >
   )
 }

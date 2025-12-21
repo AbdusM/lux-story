@@ -218,7 +218,7 @@ describe('Urban Chamber Pilot Readiness', () => {
       patterns.forEach(pattern => {
         const state = GameStateUtils.createNewGameState(`${pattern}-test`)
         state.globalFlags.add('maya_arc_complete')
-        state.patterns = { [pattern]: 10 }
+        state.patterns = { ...state.patterns, [pattern]: 10 }
 
         const narrative = generateJourneyNarrative(state)
         const insights = narrative.careerInsights || []

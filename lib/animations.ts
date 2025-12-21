@@ -51,6 +51,9 @@ export const stagger = {
   slow: 0.12,
 }
 
+// Alias for backwards compatibility
+export const STAGGER_DELAY = stagger
+
 // =============================================================================
 // REUSABLE VARIANTS
 // =============================================================================
@@ -171,7 +174,7 @@ export const viewport = {
 }
 
 // =============================================================================
-// PANEL ANIMATIONS (Consistent across Journal, Constellation, ThoughtCabinet)
+// PANEL ANIMATIONS (Consistent across Journal, Constellation)
 // =============================================================================
 
 export const panelFromRight: Variants = {
@@ -220,13 +223,13 @@ export const backdrop: Variants = {
 // PROGRESS BAR ANIMATION
 // =============================================================================
 
+// Note: Uses width instead of scaleX to prevent rendering artifacts
 export const progressBar = {
-  initial: { scaleX: 0 },
+  initial: { width: 0 },
   animate: (progress: number) => ({
-    scaleX: progress,
+    width: `${progress * 100}%`,
     transition: springs.smooth
   }),
-  style: { originX: 0 }, // Scale from left
 }
 
 // =============================================================================

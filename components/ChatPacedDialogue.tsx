@@ -255,6 +255,9 @@ export function ChatPacedDialogue({
   // Get voice typography for this character
   const voiceClass = getVoiceClass(characterName)
 
+  // Check if this is narrative (narrator/system) vs NPC dialogue
+  const isNarrative = characterName === 'Narrator' || characterName === 'System'
+
   useEffect(() => {
     // If text is empty (loading state), show thinking indicator indefinitely
     if (chunks.length === 0) {
@@ -321,13 +324,20 @@ export function ChatPacedDialogue({
           const bubbleContent = (
             <div
               key={index}
-              className={cn("chat-bubble", interactionClass)}
+              className={cn(
+                "chat-bubble",
+                isNarrative && "chat-bubble-narrative",
+                interactionClass
+              )}
               style={{ transition: 'none' }}
             >
               <RichTextRenderer
                 text={chunk}
                 effects={chatPacingEffect}
-                className={cn("text-base leading-relaxed", voiceClass)}
+                className={cn(
+                  isNarrative ? "text-lg leading-relaxed" : "text-base leading-relaxed",
+                  voiceClass
+                )}
               />
             </div>
           )
@@ -369,29 +379,7 @@ export function ChatPacedDialogue({
         )}
 
         {/* Unlock-based content enhancements - shown after all chunks displayed */}
-        {!isTyping && visibleChunks.length > 0 && (
-          <div className="space-y-2 mt-3">
-            {/* Emotion tag (Analytical unlock) */}
-            {enhancements.showEmotionTag && emotion && (
-              <div className="flex items-center gap-2">
-                <EmotionTag emotion={emotion} />
-              </div>
-            )}
-
-            {/* Trust level display (Helping unlock) */}
-            {enhancements.showTrustLevel && enhancements.trustValue !== undefined && (
-              <TrustDisplay
-                trust={enhancements.trustValue}
-                characterName={characterName}
-              />
-            )}
-
-            {/* Analytical subtext hints */}
-            {enhancements.subtextHint && (
-              <Subtext text={enhancements.subtextHint} />
-            )}
-          </div>
-        )}
+        {/* Unlock-based content enhancements - VISUALLY HIDDEN for immersion */}
       </div>
 
       <style jsx>{`
@@ -401,6 +389,73 @@ export function ChatPacedDialogue({
           padding: 0.75rem 1rem;
           border-radius: 0.5rem;
           margin-bottom: 0.5rem;
+        }
+
+        /* Narrative container - slightly different color with reverberation effect */
+        .chat-bubble-narrative {
+          background: rgba(180, 160, 220, 0.08);
+          border-left: 2px solid rgba(180, 160, 220, 0.35);
+          position: relative;
+          overflow: hidden;
+        }
+
+        /* Subtle animated gradient shimmer for narrative - synchronized symmetrical reverberation */
+        .chat-bubble-narrative::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 200%;
+          height: 100%;
+          background: linear-gradient(
+            90deg,
+            transparent 0%,
+            rgba(180, 160, 220, 0.04) 25%,
+            rgba(200, 180, 240, 0.08) 50%,
+            rgba(180, 160, 220, 0.04) 75%,
+            transparent 100%
+          );
+          animation: narrativeShimmer 4s ease-in-out infinite;
+          pointer-events: none;
+        }
+
+        /* Second shimmer layer - offset for symmetrical disposition */
+        .chat-bubble-narrative::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 100%;
+          width: 200%;
+          height: 100%;
+          background: linear-gradient(
+            270deg,
+            transparent 0%,
+            rgba(160, 140, 200, 0.03) 25%,
+            rgba(180, 160, 220, 0.06) 50%,
+            rgba(160, 140, 200, 0.03) 75%,
+            transparent 100%
+          );
+          animation: narrativeShimmerReverse 4s ease-in-out infinite;
+          animation-delay: 2s;
+          pointer-events: none;
+        }
+
+        @keyframes narrativeShimmer {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(100%);
+          }
+        }
+
+        @keyframes narrativeShimmerReverse {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-100%);
+          }
         }
 
         @keyframes fadeIn {
@@ -451,6 +506,26 @@ export function ChatPacedDialogue({
           }
           30% {
             opacity: 1;
+          }
+        }
+
+        /* Mobile responsive - ensure effect works on smaller screens */
+        @media (max-width: 640px) {
+          .chat-bubble-narrative {
+            padding: 0.625rem 0.875rem;
+          }
+
+          .chat-bubble-narrative::before,
+          .chat-bubble-narrative::after {
+            animation-duration: 5s;
+          }
+        }
+
+        /* Reduce motion preference support */
+        @media (prefers-reduced-motion: reduce) {
+          .chat-bubble-narrative::before,
+          .chat-bubble-narrative::after {
+            animation: none;
           }
         }
       `}</style>

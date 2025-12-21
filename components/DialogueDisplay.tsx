@@ -71,18 +71,18 @@ export function DialogueDisplay({
   const chunkedText = richEffects
     ? text  // Let RichTextRenderer handle chunking via \n\n splits
     : autoChunkDialogue(text, {
-        activationThreshold: 200,
-        maxChunkLength: 100
-      })
-  
+      activationThreshold: 200,
+      maxChunkLength: 100
+    })
+
   // Determine if avatar should be displayed
   const displayAvatar = showAvatar && shouldShowAvatar(characterName, isContinuedSpeaker, false)
-  
+
   // Auto-enable chat pacing for nodes >40 words (Twitter-like threshold)
   // Twitter max is ~50 words, so 40 words creates engaging progressive reveal
   const wordCount = text.split(/\s+/).length
   const shouldUseChatPacing = useChatPacing || (wordCount > 40 && characterName)
-  
+
   // If chat pacing is enabled, use ChatPacedDialogue for sequential reveal
   if (shouldUseChatPacing && characterName) {
     return (
@@ -141,20 +141,20 @@ export function DialogueDisplay({
 
       {/* Unlock-based content enhancements */}
       <div className="space-y-2 mt-3">
-        {/* Emotion tag (Analytical unlock) */}
-        {enhancements.showEmotionTag && emotion && (
+        {/* Emotion tag (Analytical unlock) - Hidden for immersion */}
+        {/* {enhancements.showEmotionTag && emotion && (
           <div className="flex items-center gap-2">
             <EmotionTag emotion={emotion} />
           </div>
-        )}
+        )} */}
 
-        {/* Trust level display (Helping unlock) */}
-        {enhancements.showTrustLevel && enhancements.trustValue !== undefined && (
+        {/* Trust level display (Helping unlock) - Hidden for immersion */}
+        {/* {enhancements.showTrustLevel && enhancements.trustValue !== undefined && (
           <TrustDisplay
             trust={enhancements.trustValue}
             characterName={characterName}
           />
-        )}
+        )} */}
 
         {/* Analytical subtext hints */}
         {enhancements.subtextHint && (

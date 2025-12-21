@@ -52,16 +52,12 @@ export function AtmosphericIntro({ onStart }: AtmosphericIntroProps) {
 
         {/* Value proposition */}
         <div className="bg-white border border-slate-200 rounded-lg p-6 sm:p-8 shadow-sm mb-8">
-          <p className="text-lg sm:text-xl text-slate-800 leading-relaxed mb-6">
+          <p className="text-lg sm:text-xl text-slate-800 leading-relaxed mb-4">
             Play. Learn what moves you.
           </p>
 
-          <p className="text-base text-slate-600 leading-relaxed mb-6">
-            Research-backed. Practitioner-built.
-          </p>
-
           <p className="text-base text-slate-600 leading-relaxed">
-            What you find lights the way for others.
+            What you discover lights the way for others.
           </p>
         </div>
 

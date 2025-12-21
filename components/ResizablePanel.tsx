@@ -142,8 +142,8 @@ export function ResizablePanel({
           animate="animate"
           exit="exit"
           transition={{
-            ...springs.gentle,
-            duration: 0.2 * duration
+            ...springs.smooth,
+            duration: 0.3 * duration
           }}
           // Absolute positioning for cross-fade effect
           // Switch to relative before measurement for accurate sizing

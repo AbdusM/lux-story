@@ -32,8 +32,36 @@ function createMockGameState(overrides: Partial<GameState> = {}): GameState {
     episodeNumber: 1,
     sessionStartTime: Date.now(),
     sessionBoundariesCrossed: 0,
+    platforms: {},
+    careerValues: {
+      directImpact: 0,
+      systemsThinking: 0,
+      dataInsights: 0,
+      futureBuilding: 0,
+      independence: 0
+    },
+    mysteries: {
+      letterSender: 'unknown',
+      platformSeven: 'flickering',
+      samuelsPast: 'hidden',
+      stationNature: 'unknown'
+    },
+    time: {
+      currentDisplay: "12:00 PM",
+      minutesRemaining: 10,
+      flowRate: 1,
+      isStopped: false
+    },
+    quietHour: {
+      potential: false,
+      experienced: []
+    },
+    items: {
+      letter: 'kept',
+      discoveredPaths: []
+    },
     ...overrides
-  }
+  } as GameState
 }
 
 describe('Identity System', () => {
@@ -69,7 +97,7 @@ describe('Identity System', () => {
   describe('createIdentityOffer', () => {
     it('should create valid identity offer', () => {
       const offer = createIdentityOffer('analytical')
-      
+
       expect(offer.pattern).toBe('analytical')
       expect(offer.thoughtId).toBe('identity-analytical')
       expect(offer.internalizeBonus).toBe(IDENTITY_CONSTANTS.INTERNALIZE_BONUS)
@@ -90,10 +118,10 @@ describe('Identity System', () => {
           id: 'identity-analytical',
           status: 'internalized',
           lastUpdated: Date.now(),
-          developmentProgress: 100
-        }]
+          progress: 100
+        } as any]
       })
-      
+
       const gain = calculatePatternGain(1, 'analytical', state)
       expect(gain).toBe(1 * (1 + IDENTITY_CONSTANTS.INTERNALIZE_BONUS))
       expect(gain).toBe(1.2) // 1 + 20%
@@ -105,10 +133,10 @@ describe('Identity System', () => {
           id: 'identity-analytical',
           status: 'internalized',
           lastUpdated: Date.now(),
-          developmentProgress: 100
-        }]
+          progress: 100
+        } as any]
       })
-      
+
       // Patience pattern should not get analytical bonus
       const gain = calculatePatternGain(1, 'patience', state)
       expect(gain).toBe(1)
@@ -120,10 +148,10 @@ describe('Identity System', () => {
           id: 'identity-analytical',
           status: 'developing', // Not internalized yet
           lastUpdated: Date.now(),
-          developmentProgress: 50
-        }]
+          progress: 50
+        } as any]
       })
-      
+
       const gain = calculatePatternGain(1, 'analytical', state)
       expect(gain).toBe(1) // No bonus
     })
