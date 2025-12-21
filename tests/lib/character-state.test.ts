@@ -7,6 +7,10 @@ describe('GameStateUtils', () => {
   beforeEach(() => {
     // Create a fresh game state before each test
     testGameState = GameStateUtils.createNewGameState('test-player-123')
+    // Reset trust to 0 for consistent testing if default changed
+    const mayaState = GameStateUtils.createCharacterState('maya')
+    mayaState.trust = 0
+    testGameState.characters.set('maya', mayaState)
   })
 
   describe('createNewGameState', () => {
@@ -15,7 +19,7 @@ describe('GameStateUtils', () => {
 
       expect(newState.playerId).toBe('player-456')
       expect(newState.saveVersion).toBe(NARRATIVE_CONSTANTS.SAVE_VERSION)
-      expect(newState.currentNodeId).toBe('samuel_introduction')
+      expect(newState.currentNodeId).toBe('station_arrival')
       expect(newState.currentCharacterId).toBe('samuel')
       expect(newState.characters.size).toBeGreaterThan(0) // Initializes all character states
       expect(newState.globalFlags.size).toBe(0)

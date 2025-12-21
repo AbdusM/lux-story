@@ -2,7 +2,7 @@ import { findCharacterForNode, isValidCharacterId } from './graph-registry'
 import { ActiveThought, THOUGHT_REGISTRY } from '@/content/thoughts'
 import { calculateResonantTrustChange } from './pattern-affinity'
 import { PatternType, isValidPattern } from './patterns'
-import { MAX_TRUST, MIN_TRUST, INITIAL_TRUST } from './constants'
+import { MAX_TRUST, MIN_TRUST, INITIAL_TRUST, TRUST_THRESHOLDS, IDENTITY_THRESHOLD, INTERNALIZE_BONUS, NARRATIVE_CONSTANTS as GLOBAL_NARRATIVE_CONSTANTS } from './constants'
 
 /**
  * Core character relationship state
@@ -123,13 +123,14 @@ export interface SerializableGameState {
   sessionBoundariesCrossed: number
 }
 
+
+
 /**
  * Constants for the narrative system
  * Uses centralized values from lib/constants.ts
  */
 export const NARRATIVE_CONSTANTS = {
-  MAX_TRUST,
-  MIN_TRUST,
+  ...GLOBAL_NARRATIVE_CONSTANTS,
   DEFAULT_TRUST: INITIAL_TRUST,
   DEFAULT_RELATIONSHIP: 'stranger' as const,
   SAVE_VERSION: '1.0.0'
@@ -258,9 +259,9 @@ export class GameStateUtils {
         // Only if not explicitly set in this change
         if (!change.setRelationshipStatus) {
           const newTrust = charState.trust
-          if (newTrust >= 8) {
+          if (newTrust >= TRUST_THRESHOLDS.close) {
             charState.relationshipStatus = 'confidant'
-          } else if (newTrust >= 4) {
+          } else if (newTrust >= TRUST_THRESHOLDS.friendly) {
             charState.relationshipStatus = 'acquaintance'
           } else {
             charState.relationshipStatus = 'stranger'

@@ -152,3 +152,18 @@ export const THINKING_INDICATOR_DURATION = 800
  * Choice handler timeout - safety net for stuck states (ms)
  */
 export const CHOICE_HANDLER_TIMEOUT_MS = 10000
+
+// ═══════════════════════════════════════════════════════════════════════════
+// AGGREGATE EXPORT
+// ═══════════════════════════════════════════════════════════════════════════
+
+/**
+ * Aggregated narrative constants for easy import
+ */
+export const NARRATIVE_CONSTANTS = {
+  MAX_TRUST,
+  MIN_TRUST,
+  DEFAULT_TRUST: INITIAL_TRUST,
+  DEFAULT_RELATIONSHIP: 'stranger' as const,
+  SAVE_VERSION: '1.0.0'
+} as const
