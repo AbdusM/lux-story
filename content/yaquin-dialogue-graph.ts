@@ -28,7 +28,12 @@ Forget the textbook. Chapter 4's garbage. Here's how you actually mix alginate w
         emotion: 'conflicted',
         variation_id: 'yaquin_intro_v1',
         richEffectContext: 'warning',
-        useChatPacing: true
+        useChatPacing: true,
+        patternReflection: [
+          { pattern: 'building', minLevel: 4, altText: "Home office in Hoover. Ring light on. Camera rolling.\n\nForget the textbook. Chapter 4's garbage. Here's how you actually do it.\n\nYou build things too, don't you? You know the gap between theory and making it work.", altEmotion: 'curious' },
+          { pattern: 'helping', minLevel: 4, altText: "Home office in Hoover. Ring light on. Camera rolling.\n\nForget the textbook. Here's how you actually mix alginate without gagging patients.\n\n<shake>Is it garbage? Or am I just uneducated?</shake>\n\nYou have kind eyes. Most people would judge. You're listening.", altEmotion: 'vulnerable' },
+          { pattern: 'analytical', minLevel: 4, altText: "Home office in Hoover. Ring light on. Camera rolling.\n\nForget the textbook. Chapter 4's garbage—I tested it.\n\nYou're already evaluating, aren't you? You understand the difference between what's written and what works.", altEmotion: 'conflicted' }
+        ]
       }
     ],
     choices: [
@@ -128,7 +133,12 @@ Forget the textbook. Chapter 4's garbage. Here's how you actually mix alginate w
         emotion: 'vulnerable',
         interaction: 'small',
         variation_id: 'credential_v1',
-        useChatPacing: true
+        useChatPacing: true,
+        patternReflection: [
+          { pattern: 'helping', minLevel: 4, altText: "'Just' an assistant. No dental school.\n\nBut dentists ask me about difficult patients. Ask me to train new hires.\n\nYou get it, don't you? The gap between what you do and what you're called.", altEmotion: 'vulnerable' },
+          { pattern: 'building', minLevel: 4, altText: "'Just' an assistant. No dental school.\n\nBut dentists ask me to train new hires. I built my skills through doing.\n\nYou build things. You know competence isn't about paper.", altEmotion: 'reflective' },
+          { pattern: 'patience', minLevel: 4, altText: "'Just' an assistant. No dental school.\n\nBut dentists ask me about difficult patients. Eight years.\n\nYou're not jumping to reassure me. That's... good. I need to sit with this.", altEmotion: 'grateful' }
+        ]
       }
     ],
     onEnter: [
@@ -144,6 +154,9 @@ Forget the textbook. Chapter 4's garbage. Here's how you actually mix alginate w
         nextNodeId: 'yaquin_curriculum_dream',
         pattern: 'helping',
         skills: ['encouragement'],
+        visibleCondition: {
+          patterns: { helping: { min: 3 } }
+        },
         consequence: {
           characterId: 'yaquin',
           trustChange: 1
@@ -155,6 +168,9 @@ Forget the textbook. Chapter 4's garbage. Here's how you actually mix alginate w
         nextNodeId: 'yaquin_curriculum_dream',
         pattern: 'exploring',
         skills: ['curiosity', 'criticalThinking'],
+        visibleCondition: {
+          patterns: { exploring: { min: 3 } }
+        },
         consequence: {
           characterId: 'yaquin',
           trustChange: 1
@@ -166,6 +182,9 @@ Forget the textbook. Chapter 4's garbage. Here's how you actually mix alginate w
         nextNodeId: 'yaquin_curriculum_dream',
         pattern: 'building',
         skills: ['creativity', 'leadership'],
+        visibleCondition: {
+          patterns: { building: { min: 4 } }
+        },
         consequence: {
           characterId: 'yaquin',
           trustChange: 1

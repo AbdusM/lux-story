@@ -32,7 +32,12 @@ Seven jobs. Twelve years.
 
 What do you tell students when your path looks like this?`,
       emotion: 'friendly_but_anxious',
-      variation_id: 'jordan_intro_v2_visual_hook'
+      variation_id: 'jordan_intro_v2_visual_hook',
+      patternReflection: [
+        { pattern: 'exploring', minLevel: 5, altText: "Hey! Career Day at Covalence—the coding bootcamp at Innovation Depot.\n\nSeven jobs. Twelve years. I've explored everything.\n\nYou have that same look, you know. Like you want to see what's around every corner.\n\nWhat do you tell students when your path looks like this?", altEmotion: 'warm' },
+        { pattern: 'patience', minLevel: 5, altText: "Hey! Career Day at Covalence. Got here way too early.\n\nI've rewritten this speech six times. Seven jobs. Twelve years.\n\nYou're calm. That's nice. Most people get anxious just looking at my resume.", altEmotion: 'grateful' },
+        { pattern: 'building', minLevel: 5, altText: "Hey! Career Day at Covalence—the coding bootcamp.\n\nUX Designer. Product Manager. Senior Designer. I've built things in every one of those roles.\n\nYou build things too, don't you? I can tell.\n\nWhat do you tell students when your path looks like this?", altEmotion: 'curious' }
+      ]
     }],
     choices: [
       {
@@ -99,7 +104,11 @@ Sounds simple. Until you sit down to write it.
 
 I've rewritten this speech six times. What do you tell people when your path looks like mine?`,
       emotion: 'uncertain',
-      variation_id: 'jordan_career_1'
+      variation_id: 'jordan_career_1',
+      patternReflection: [
+        { pattern: 'helping', minLevel: 4, altText: "Mentorship panel. Thirty students trying to break into tech.\n\nShare my 'journey' and give advice. Sounds simple.\n\nYou actually want to help, don't you? I can tell. Most people just want to hear themselves talk.", altEmotion: 'grateful' },
+        { pattern: 'patience', minLevel: 4, altText: "Mentorship panel. Thirty students.\n\nI've rewritten this speech six times. You're not rushing me to get to the point.\n\nThat's... actually helpful. The silence lets me think.", altEmotion: 'reflective' }
+      ]
     }],
     requiredState: {
       trust: { min: 1 }
@@ -167,7 +176,11 @@ Folded in eight months. No degree, no job, no plan.
 
 Twenty years old, back with my mom. She kept asking when I'd go back to school.`,
       emotion: 'rueful',
-      variation_id: 'jordan_job1_1'
+      variation_id: 'jordan_job1_1',
+      patternReflection: [
+        { pattern: 'exploring', minLevel: 4, altText: "Alabama A&M. One semester, then got recruited by a startup. 'The next big thing.'\n\nFolded in eight months. You understand that, right? The leap into something unknown. The crash.\n\nTwenty years old, back with my mom.", altEmotion: 'rueful' },
+        { pattern: 'building', minLevel: 4, altText: "Alabama A&M. Computer science major. One semester.\n\nThe startup folded in eight months. You've built things that failed too, haven't you? You know the feeling.\n\nNo degree, no job, no plan.", altEmotion: 'vulnerable' }
+      ]
     }],
     requiredState: {
       trust: { min: 2 },
@@ -204,6 +217,9 @@ Twenty years old, back with my mom. She kept asking when I'd go back to school.`
         nextNodeId: 'jordan_job_reveal_2',
         pattern: 'analytical',
         skills: ['criticalThinking', 'adaptability', 'communication'],
+        visibleCondition: {
+          patterns: { analytical: { min: 4 } }
+        },
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -216,6 +232,9 @@ Twenty years old, back with my mom. She kept asking when I'd go back to school.`
         nextNodeId: 'jordan_job_reveal_2',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'adaptability'],
+        visibleCondition: {
+          patterns: { patience: { min: 3 } }
+        },
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -274,6 +293,9 @@ Customer service is applied empathy.`,
         nextNodeId: 'jordan_job_reveal_3',
         pattern: 'analytical',
         skills: ['criticalThinking', 'creativity', 'communication'],
+        visibleCondition: {
+          patterns: { analytical: { min: 3 } }
+        },
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -330,6 +352,9 @@ Wasn't great at first. But I learned visual hierarchy. How eyes move. How color 
         nextNodeId: 'jordan_pattern_acknowledgment',
         pattern: 'building',
         skills: ['adaptability', 'communication', 'leadership'],
+        visibleCondition: {
+          patterns: { building: { min: 3 } }
+        },
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -342,6 +367,9 @@ Wasn't great at first. But I learned visual hierarchy. How eyes move. How color 
         nextNodeId: 'jordan_pattern_acknowledgment',
         pattern: 'analytical',
         skills: ['criticalThinking', 'creativity', 'communication'],
+        visibleCondition: {
+          patterns: { analytical: { min: 5 } }
+        },
         consequence: {
           characterId: 'jordan',
           trustChange: 1,

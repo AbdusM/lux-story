@@ -118,7 +118,11 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         text: "You took your time. Good.\n\nMost folks rush off the train like they're late for somethin'. But you... you looked first. That's smart.\n\nI'm Samuel. Been helpin' folks find their way around here for longer than I expected. You look like you got questions—and that's exactly what this place is for.",
         emotion: 'warm',
-        variation_id: 'intro_patient_v1'
+        variation_id: 'intro_patient_v1',
+        patternReflection: [
+          { pattern: 'patience', minLevel: 4, altText: "You took your time. Good.\n\nI can tell that's not new for you—you're someone who looks before they leap. That's wisdom some folks never learn.\n\nI'm Samuel. You're gonna do well here.", altEmotion: 'knowing' },
+          { pattern: 'analytical', minLevel: 4, altText: "You took your time. Good.\n\nI see you taking it all in, processing. That's exactly the kind of mind this place rewards.\n\nI'm Samuel. Welcome to Grand Central.", altEmotion: 'warm' }
+        ]
       }
     ],
     choices: [
@@ -223,7 +227,11 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         text: "You let them go first. Watched 'em find their footing.\n\nThat's a rare thing, you know? Most folks are so caught up in their own journey, they forget everyone else is on one too. But you... you see people.\n\nI'm Samuel. And I think you and I are gonna get along just fine. Welcome to Grand Central.",
         emotion: 'warm',
-        variation_id: 'intro_humble_v1'
+        variation_id: 'intro_humble_v1',
+        patternReflection: [
+          { pattern: 'helping', minLevel: 4, altText: "You let them go first. Watched 'em find their footing.\n\nThat's who you are, isn't it? Someone who makes room for others. I've been watching people arrive here for years, and that quality... it's rarer than you'd think.\n\nI'm Samuel. Welcome home.", altEmotion: 'knowing' },
+          { pattern: 'patience', minLevel: 4, altText: "You let them go first. No rush.\n\nI know that kind of patience. It's not passive—it's watching, understanding. That's a strength, even if the world doesn't always see it that way.\n\nI'm Samuel. Welcome to Grand Central.", altEmotion: 'warm' }
+        ]
       }
     ],
     choices: [
@@ -259,7 +267,12 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         text: "Hey there. Welcome to Grand Central.\n\nI'm Samuel. Been helpin' folks find their way around here for... well, longer than I expected, honestly. You look like you got questions. Most people do when they first show up.",
         emotion: 'warm',
-        variation_id: 'intro_v1_part1'
+        variation_id: 'intro_v1_part1',
+        patternReflection: [
+          { pattern: 'analytical', minLevel: 5, altText: "Hey there. Welcome to Grand Central.\n\nI'm Samuel. Been helpin' folks find their way around here for... well, longer than I expected. You look like someone who thinks things through. That's good—questions are how you find what matters.", altEmotion: 'knowing' },
+          { pattern: 'helping', minLevel: 5, altText: "Hey there. Welcome to Grand Central.\n\nI'm Samuel. Been helpin' folks find their way around here for a long time. You look like someone who notices people. That's rare, and it's gonna serve you well here.", altEmotion: 'warm' },
+          { pattern: 'exploring', minLevel: 5, altText: "Hey there. Welcome to Grand Central.\n\nI'm Samuel. Been helpin' folks find their way around here longer than I expected. You look like someone who's ready to discover things. Good—this place rewards curiosity.", altEmotion: 'warm' }
+        ]
       }
     ],
     choices: [
@@ -401,7 +414,12 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         text: "Fox Theatre Station. Been here since 1929, y'know, same as the theatre upstairs. Beautiful old building.\n\nEach platform connects you to different folks around the city. People figuring out their own stuff, just like you. You talk to 'em, see what clicks.",
         emotion: 'warm',
-        variation_id: 'explains_v1'
+        variation_id: 'explains_v1',
+        patternReflection: [
+          { pattern: 'analytical', minLevel: 5, altText: "Fox Theatre Station. Been here since 1929, same as the theatre upstairs. Beautiful old building.\n\nEach platform connects you to different folks. You seem like the type who wants to understand how it all fits together—that's exactly how you figure this place out.", altEmotion: 'knowing' },
+          { pattern: 'building', minLevel: 5, altText: "Fox Theatre Station. Been here since 1929, same as the theatre upstairs. Beautiful old building—took real craftsmanship to make this.\n\nEach platform connects to different folks. You seem like someone who builds things. You'll find kindred spirits here.", altEmotion: 'warm' },
+          { pattern: 'patience', minLevel: 5, altText: "Fox Theatre Station. Been here since 1929. This place takes its time with folks, and I can tell you do too.\n\nEach platform connects to different people. No rush. The right conversations happen when they're supposed to.", altEmotion: 'warm' }
+        ]
       }
     ],
     choices: [
@@ -429,7 +447,12 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         text: "Yeah, so each platform's got different folks.\n\nSome people who heal, teach, take care of others. Some who build things, make stuff with their hands. Engineers, creators, that whole world.\n\nHonestly? You don't figure this out by thinking real hard about it. You gotta talk to people. See who makes sense to you.",
         emotion: 'reflective',
-        variation_id: 'platforms_v1'
+        variation_id: 'platforms_v1',
+        patternReflection: [
+          { pattern: 'helping', minLevel: 5, altText: "Each platform's got different folks.\n\nSome people who heal, teach, take care of others—folks like you, who lead with compassion. Some who build things, create with their hands.\n\nYou figure this out by connecting with people. That's already your strength.", altEmotion: 'warm' },
+          { pattern: 'analytical', minLevel: 5, altText: "Each platform's got different folks.\n\nHealers, teachers, builders, engineers. You're already mapping it out in your head, aren't you? Good—but the map's not the territory. Go talk to people. See what clicks.", altEmotion: 'knowing' },
+          { pattern: 'exploring', minLevel: 5, altText: "Each platform's got different folks.\n\nHealers, builders, creators—all kinds. You've got that look, like you want to see everything. Good. Go explore. This place rewards the curious.", altEmotion: 'warm' }
+        ]
       }
     ],
     choices: [
@@ -462,7 +485,12 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         text: "My story? Yeah, alright.\n\nWorked at Southern Company for twenty-three years. Power plants, electrical grids - the stuff that keeps the lights on in Birmingham. Good job. Stable. My daddy was real proud. First in our family to work in an office instead of out at Sloss Furnaces.",
         emotion: 'reflective',
-        variation_id: 'backstory_v1'
+        variation_id: 'backstory_v1',
+        patternReflection: [
+          { pattern: 'building', minLevel: 5, altText: "My story? Yeah, alright.\n\nWorked at Southern Company for twenty-three years. Power plants, electrical grids—you know, the real infrastructure that keeps Birmingham running. You've got builder hands yourself, don't you? I can tell.", altEmotion: 'warm' },
+          { pattern: 'patience', minLevel: 5, altText: "My story? Yeah, alright. You're the first person in a while to actually ask.\n\nWorked at Southern Company for twenty-three years. Power plants, electrical grids. My daddy was real proud—first in our family to work in an office instead of out at Sloss Furnaces.", altEmotion: 'reflective' },
+          { pattern: 'helping', minLevel: 5, altText: "My story? Yeah, you actually want to hear it. That's kind.\n\nWorked at Southern Company for twenty-three years. Power plants, electrical grids—keeping the lights on for people. That mattered to me. My daddy was real proud.", altEmotion: 'warm' }
+        ]
       }
     ],
     choices: [
@@ -497,7 +525,12 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         text: "It was solid. But it <shake>wasn't mine</shake>, you know?\n\nOne day I'm standin' up at Vulcan, lookin' down at the whole city. Twenty-three years buildin' other people's systems.\n\nI was good at it. Real good. But I'd never once asked myself what I actually wanted to build.",
         emotion: 'vulnerable',
-        variation_id: 'revelation_v1'
+        variation_id: 'revelation_v1',
+        patternReflection: [
+          { pattern: 'building', minLevel: 4, altText: "It was solid. But it <shake>wasn't mine</shake>, you know?\n\nTwenty-three years buildin' other people's systems. You understand that, don't you? The difference between making something because you're told to, and building something because it's yours.", altEmotion: 'knowing' },
+          { pattern: 'exploring', minLevel: 4, altText: "It was solid. But it <shake>wasn't mine</shake>.\n\nI see that same restlessness in you—the need to find your own thing, not just accept what's handed to you. That's not easy. But it's necessary.", altEmotion: 'warm' },
+          { pattern: 'patience', minLevel: 4, altText: "It was solid. But it <shake>wasn't mine</shake>.\n\nTook me twenty-three years to figure that out. You listening like this—you're doing it faster than I did. That's good.", altEmotion: 'reflective' }
+        ]
       }
     ],
     choices: [
@@ -556,7 +589,12 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         text: "I wanted to help folks figure out their own path, y'know? Not hand 'em answers - that never works. But help 'em find the right questions? That I can do.",
         emotion: 'warm',
-        variation_id: 'purpose_v1_part1'
+        variation_id: 'purpose_v1_part1',
+        patternReflection: [
+          { pattern: 'helping', minLevel: 4, altText: "I wanted to help folks figure out their own path. Not hand 'em answers—that never works. But help 'em find the right questions?\n\nYou understand that, don't you? It's why you listen the way you do.", altEmotion: 'knowing' },
+          { pattern: 'exploring', minLevel: 4, altText: "I wanted to help folks find their own path. The right questions, not the easy answers.\n\nYou're already asking good questions. That's the whole point.", altEmotion: 'warm' },
+          { pattern: 'analytical', minLevel: 4, altText: "I wanted to help folks figure out their own path. Help 'em find the right questions—because the right question does most of the work.\n\nYou think that way too, I can tell.", altEmotion: 'knowing' }
+        ]
       }
     ],
     choices: [
@@ -699,7 +737,11 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         text: "Huh. Most folks just wanna know about the platforms. You asked about me.\n\nAlright. Since you took the time... I'll tell you somethin' I don't share much.\n\nI was standin' where you are. Thirty-five years ago. Got the same letter. Had to make the same choice.",
         emotion: 'vulnerable_opening',
-        variation_id: 'traveler_origin_v1'
+        variation_id: 'traveler_origin_v1',
+        patternReflection: [
+          { pattern: 'patience', minLevel: 4, altText: "Huh. Most folks rush to the platforms. You asked about me.\n\nYou take your time with people. That's who you are.\n\nAlright. Since you earned it... I was standin' where you are. Thirty-five years ago.", altEmotion: 'grateful' },
+          { pattern: 'helping', minLevel: 4, altText: "Huh. Most folks just wanna know about the platforms. You asked about me.\n\nYou care about people. Really care. I can tell.\n\nI was standin' where you are. Thirty-five years ago.", altEmotion: 'warm' }
+        ]
       }
     ],
     requiredState: {
@@ -739,7 +781,11 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         text: "VP of Engineering at Southern Company. Corner office downtown, nice view of the Regions Tower. Or stay technical - keep my hands in the work, keep buildin' the grid that powers every light from Irondale to Hoover.\n\nBig money and a fancy title. Or doin' what I actually loved.",
         emotion: 'reflective',
-        variation_id: 'origin_choice_v1'
+        variation_id: 'origin_choice_v1',
+        patternReflection: [
+          { pattern: 'building', minLevel: 4, altText: "VP of Engineering. Corner office. Or stay technical—keep my hands in the work.\n\nYou build things. You understand that choice. The difference between managing builders and being one.\n\nBig money and a fancy title. Or doin' what I actually loved.", altEmotion: 'reflective' },
+          { pattern: 'exploring', minLevel: 4, altText: "VP of Engineering. Or stay technical—keep buildin' the grid that powers Birmingham.\n\nYou're curious about paths not taken, aren't you? That's the right question.\n\nBig money. Or doin' what I actually loved.", altEmotion: 'knowing' }
+        ]
       }
     ],
     choices: [
@@ -1815,14 +1861,14 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'hope_i_helped',
         text: "I hope I helped her.",
-        nextNodeId: 'samuel_reflect_on_influence',
+        nextNodeId: 'samuel_reflect_helped_response',
         pattern: 'helping',
         skills: ['emotionalIntelligence']
       },
       {
         choiceId: 'unsure_what_i_did',
         text: "I'm not sure what I actually did.",
-        nextNodeId: 'samuel_reflect_on_influence',
+        nextNodeId: 'samuel_reflect_unsure_response',
         pattern: 'exploring',
         skills: ['criticalThinking', 'adaptability']
       },
@@ -1842,7 +1888,48 @@ export const samuelDialogueNodes: DialogueNode[] = [
     ]
   },
 
-  // ============= REFLECTION: Understanding Influence vs. Agency - Part 1 =============
+  // ============= DIVERGENT RESPONSES TO MAYA REFLECTION =============
+  {
+    nodeId: 'samuel_reflect_helped_response',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*Nods slowly.*\n\nYou did. But not the way most people think 'helpin'' works.\n\nYou didn't fix her problem. You made space for her to see options she couldn't see before.\n\nThat helper instinct? Same thing that drives UAB resident advisors and guidance counselors all over Birmingham. Real valuable.",
+        emotion: 'affirming',
+        variation_id: 'helped_response_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_helped',
+        text: "[Continue]",
+        nextNodeId: 'samuel_reflect_on_influence_pt2',
+        pattern: 'patience'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_reflect_unsure_response',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*Chuckles softly.*\n\nThat uncertainty? That's actually wisdom.\n\nMost people walk away from conversations thinkin' they gave great advice. You're askin' what really happened. That's the difference between talkin' at someone and actually connectin'.\n\nYou explored her world instead of mappin' your own onto it.",
+        emotion: 'appreciative',
+        variation_id: 'unsure_response_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_unsure',
+        text: "[Continue]",
+        nextNodeId: 'samuel_reflect_on_influence_pt2',
+        pattern: 'patience'
+      }
+    ]
+  },
+
+  // ============= REFLECTION: Understanding Influence vs. Agency - Part 1 (Legacy) =============
   {
     nodeId: 'samuel_reflect_on_influence',
     learningObjectives: ['samuel_reflective_observation'],
@@ -2873,21 +2960,21 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'helped_him_integrate',
         text: "I helped him see that logic and emotion aren't enemies.",
-        nextNodeId: 'samuel_reflects_devon_systems',
+        nextNodeId: 'samuel_devon_integrate_response',
         pattern: 'analytical',
         skills: ['criticalThinking', 'emotionalIntelligence']
       },
       {
         choiceId: 'focused_on_connection',
         text: "We focused on connection instead of fixing.",
-        nextNodeId: 'samuel_reflects_devon_systems',
+        nextNodeId: 'samuel_devon_connection_response',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication']
       },
       {
         choiceId: 'just_listened_devon',
         text: "I just let him talk until he found his own answer.",
-        nextNodeId: 'samuel_reflects_devon_systems',
+        nextNodeId: 'samuel_devon_listened_response',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'communication']
       }
@@ -2896,6 +2983,67 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         characterId: 'samuel',
         addKnowledgeFlags: ['reflected_on_devon']
+      }
+    ]
+  },
+
+  // ============= DIVERGENT RESPONSES TO DEVON REFLECTION =============
+  {
+    nodeId: 'samuel_devon_integrate_response',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*Nods appreciatively.*\n\nIntegration. That's the engineering word for it, ain't it? Making separate systems work as one.\n\nDevon's been runnin' emotion and logic on separate tracks his whole life. You showed him they can share the same rail.\n\nThat's systems thinking at its best - applied to the self.",
+        emotion: 'impressed',
+        variation_id: 'devon_integrate_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_devon_integrate',
+        text: "[Continue]",
+        nextNodeId: 'samuel_reflects_devon_systems',
+        pattern: 'patience'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_devon_connection_response',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*Leans back.*\n\nConnection instead of fixin'. That's somethin' most folks never learn.\n\nEverybody wants to solve everybody else's problems. You gave Devon somethin' rarer - presence. Attention without agenda.\n\nThat's what his dad needs too. Not solutions. Company.",
+        emotion: 'warm',
+        variation_id: 'devon_connection_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_devon_connection',
+        text: "[Continue]",
+        nextNodeId: 'samuel_reflects_devon_systems',
+        pattern: 'patience'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_devon_listened_response',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*Quiet smile.*\n\nJust listened. Three simple words that most people never learn to do.\n\nDevon's spent his life solvin' problems. Racing to the answer. You gave him permission to not know. To sit in the question.\n\nSometimes the best thing we can do is hold space while someone finds their own way.",
+        emotion: 'approving',
+        variation_id: 'devon_listened_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_devon_listened',
+        text: "[Continue]",
+        nextNodeId: 'samuel_reflects_devon_systems',
+        pattern: 'patience'
       }
     ]
   },
@@ -2914,20 +3062,61 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'what_did_he_choose',
         text: "He made a choice about how to talk to his dad.",
-        nextNodeId: 'samuel_hub_after_devon',
+        nextNodeId: 'samuel_devon_choice_response',
         pattern: 'exploring',
         skills: ['communication']
       },
       {
         choiceId: 'systems_can_hold_grief',
         text: "I think he realized systems can hold grief too.",
-        nextNodeId: 'samuel_hub_after_devon',
+        nextNodeId: 'samuel_devon_systems_response',
         pattern: 'analytical',
         skills: ['criticalThinking', 'creativity'],
         consequence: {
           characterId: 'samuel',
           trustChange: 1
         }
+      }
+    ]
+  },
+
+  // ============= DIVERGENT RESPONSES TO DEVON SYSTEMS =============
+  {
+    nodeId: 'samuel_devon_choice_response',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*Nods.*\n\nA choice. After months of avoidance and algorithms. That's what matters.\n\nDoesn't matter if the conversation goes perfectly. What matters is he's showin' up. Present. Ready to be human instead of efficient.",
+        emotion: 'hopeful',
+        variation_id: 'devon_choice_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub_choice',
+        text: "[Continue]",
+        nextNodeId: 'samuel_hub_after_devon',
+        pattern: 'patience'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_devon_systems_response',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*Eyes light up.*\n\nNow that's insight. Systems can hold grief. Structure can create space for feeling.\n\nMost people think you gotta abandon logic to feel. Devon's learnin' you can build a framework FOR emotion. A container for the chaos.\n\nThat's engineer wisdom applied to the heart.",
+        emotion: 'delighted',
+        variation_id: 'devon_systems_r_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub_systems',
+        text: "[Continue]",
+        nextNodeId: 'samuel_hub_after_devon',
+        pattern: 'patience'
       }
     ]
   },
@@ -3139,21 +3328,21 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'seemed_lost',
         text: "She seemed lost, searching for solid ground.",
-        nextNodeId: 'samuel_jordan_mentorship_reflection',
+        nextNodeId: 'samuel_jordan_lost_response',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication']
       },
       {
         choiceId: 'was_building',
         text: "She was building something, even if she didn't realize it.",
-        nextNodeId: 'samuel_jordan_mentorship_reflection',
+        nextNodeId: 'samuel_jordan_building_response',
         pattern: 'analytical',
         skills: ['criticalThinking', 'communication']
       },
       {
         choiceId: 'reminded_me',
         text: "She reminded me of myself.",
-        nextNodeId: 'samuel_jordan_mentorship_reflection',
+        nextNodeId: 'samuel_jordan_resonance_response',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'emotionalIntelligence', 'communication']
       }
@@ -3163,6 +3352,50 @@ export const samuelDialogueNodes: DialogueNode[] = [
         characterId: 'samuel',
         addKnowledgeFlags: ['reflected_on_jordan']
       }
+    ]
+  },
+
+  // Divergent responses for Jordan reflection gateway
+  {
+    nodeId: 'samuel_jordan_lost_response',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*Considers this.*\n\nMost people are. The difference is whether they admit it.\n\nJordan wore her searching openly. That takes courage. The ones who pretend they have it figured out? They're the truly lost ones - can't find something you won't acknowledge you're looking for.",
+        emotion: 'thoughtful',
+        variation_id: 'jordan_lost_v1'
+      }
+    ],
+    choices: [
+      { choiceId: 'continue_lost', text: "[Continue]", nextNodeId: 'samuel_jordan_mentorship_reflection' }
+    ]
+  },
+  {
+    nodeId: 'samuel_jordan_building_response',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*Eyes brighten.*\n\nNow that's a systems thinker's observation. You saw accumulation where others saw chaos.\n\nSeven jobs isn't instability when each one adds a new tool to the kit. Jordan was building a Swiss Army knife while everyone else thought she was just collecting broken pieces.",
+        emotion: 'impressed',
+        variation_id: 'jordan_building_v1'
+      }
+    ],
+    choices: [
+      { choiceId: 'continue_building', text: "[Continue]", nextNodeId: 'samuel_jordan_mentorship_reflection' }
+    ]
+  },
+  {
+    nodeId: 'samuel_jordan_resonance_response',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*Pauses, something shifting in his expression.*\n\nThat recognition... it matters. When we see ourselves in someone's struggle, we can offer understanding no manual provides.\n\nThe station brought you here for a reason. Perhaps it knew you'd understand journeys that don't follow straight lines.",
+        emotion: 'knowing',
+        variation_id: 'jordan_resonance_v1'
+      }
+    ],
+    choices: [
+      { choiceId: 'continue_resonance', text: "[Continue]", nextNodeId: 'samuel_jordan_mentorship_reflection' }
     ]
   },
 
@@ -3180,14 +3413,14 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'offered_mirror',
         text: "I tried to show her what she couldn't see in herself.",
-        nextNodeId: 'samuel_hub_after_devon',
+        nextNodeId: 'samuel_jordan_mirror_response',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication', 'leadership']
       },
       {
         choiceId: 'asked_questions',
         text: "I asked questions. Let her find her own answers.",
-        nextNodeId: 'samuel_hub_after_devon',
+        nextNodeId: 'samuel_jordan_questions_response',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'communication', 'leadership'],
         consequence: {
@@ -3198,10 +3431,54 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'just_listened',
         text: "Just listened. Sometimes that's enough.",
-        nextNodeId: 'samuel_hub_after_devon',
+        nextNodeId: 'samuel_jordan_listened_response',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'communication', 'communication']
       }
+    ]
+  },
+
+  // Divergent responses for Jordan mentorship reflection
+  {
+    nodeId: 'samuel_jordan_mirror_response',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*Nods slowly.*\n\nMirrors are tricky tools. Hold one up and people might see their flaws first.\n\nBut you didn't show her what was wrong - you showed her what was hidden. The experience she'd been discounting. The skills she'd been calling 'just survival.'\n\nThat kind of reflecting? It's an act of faith.",
+        emotion: 'affirming',
+        variation_id: 'jordan_mirror_v1'
+      }
+    ],
+    choices: [
+      { choiceId: 'continue_mirror', text: "[Continue]", nextNodeId: 'samuel_hub_after_devon' }
+    ]
+  },
+  {
+    nodeId: 'samuel_jordan_questions_response',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*A quiet smile.*\n\nThe Socratic approach. Oldest teaching method there is - and the hardest.\n\nAnyone can give answers. But questions? Questions let people own their discoveries. Jordan didn't walk out of there with your wisdom. She walked out with her own.\n\nThat's the difference between a lecture and a conversation.",
+        emotion: 'wise',
+        variation_id: 'jordan_questions_v1'
+      }
+    ],
+    choices: [
+      { choiceId: 'continue_questions', text: "[Continue]", nextNodeId: 'samuel_hub_after_devon' }
+    ]
+  },
+  {
+    nodeId: 'samuel_jordan_listened_response',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*Closes his eyes briefly, as if remembering something.*\n\nMmm. The rarest gift.\n\nMost people listen just long enough to plan their response. But true listening - the kind that holds space without filling it - that's where people find their own answers.\n\nJordan probably talked herself into courage. You just gave her the room.",
+        emotion: 'reverent',
+        variation_id: 'jordan_listened_v1'
+      }
+    ],
+    choices: [
+      { choiceId: 'continue_listened', text: "[Continue]", nextNodeId: 'samuel_hub_after_devon' }
     ]
   },
 
@@ -3463,7 +3740,8 @@ export const samuelDialogueNodes: DialogueNode[] = [
         pattern: 'patience',
         skills: ['communication', 'emotionalIntelligence'],
         visibleCondition: {
-          trust: { min: 3 }
+          trust: { min: 3 },
+          patterns: { patience: { min: 3 } }
         }
       }
     ],
@@ -3670,7 +3948,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'go_to_devon',
         text: "I'll go meet Devon.",
-        nextNodeId: 'devon_introduction',
+        nextNodeId: 'samuel_devon_eager_response',
         pattern: 'exploring',
         skills: ['communication'],
         consequence: {
@@ -3680,7 +3958,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'devon_understand',
         text: "Hearts are harder than mechanics. I understand that struggle.",
-        nextNodeId: 'devon_introduction',
+        nextNodeId: 'samuel_devon_empathy_response',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
         consequence: {
@@ -3695,6 +3973,46 @@ export const samuelDialogueNodes: DialogueNode[] = [
         nextNodeId: 'samuel_why_devon',
         pattern: 'analytical',
         skills: ['criticalThinking']
+      }
+    ]
+  },
+
+  // Divergent responses for Devon intro
+  {
+    nodeId: 'samuel_devon_eager_response',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*Gestures toward Platform 3.*\n\nDirect. I appreciate that.\n\nSome people need to overthink every connection before they make one. But sometimes the best way to understand someone is to just... show up.\n\nHe's probably deep in some schematic. Don't let that fool you - there's a lot going on under the surface.",
+        emotion: 'encouraging',
+        variation_id: 'devon_eager_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'go_platform_eager',
+        text: "[Go to Platform 3]",
+        nextNodeId: 'devon_introduction',
+        consequence: { addGlobalFlags: ['met_devon'] }
+      }
+    ]
+  },
+  {
+    nodeId: 'samuel_devon_empathy_response',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*Something shifts in his eyes - recognition.*\n\nThen you might be exactly who he needs to meet.\n\nDevon's built walls out of logic. It's safer to think than to feel. But you... you just showed you know what it costs to let those walls down.\n\nGo easy with him. But don't let him hide behind his blueprints.",
+        emotion: 'meaningful',
+        variation_id: 'devon_empathy_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'go_platform_empathy',
+        text: "[Go to Platform 3]",
+        nextNodeId: 'devon_introduction',
+        consequence: { addGlobalFlags: ['met_devon'] }
       }
     ]
   },
@@ -3797,7 +4115,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Maya's on Platform 1. Devon's on Platform 3, building his bridges.\n\nJordan's by the conference rooms. Guest instructor. Wrestling with whether seven jobs makes her qualified or fraudulent.\n\nTwenty minutes before she speaks.\n\nWhere does your attention pull you?",
+        text: "{{maya_arc_complete:Maya's on Platform 1, still finding her path.|}}{{devon_arc_complete:Devon's on Platform 3, building his bridges.|}}{{maya_arc_complete:{{devon_arc_complete:\n\n|}}\n\n|}}Jordan's by the conference rooms. Guest instructor. Wrestling with whether seven jobs makes her qualified or fraudulent.\n\nTwenty minutes before she speaks.\n\nWhere does your attention pull you?",
         emotion: 'offering_space',
         variation_id: 'hub_after_devon_v3_clean',
         patternReflection: [
@@ -4070,7 +4388,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'accept_analytical',
         text: "I hadn't thought of analysis as a gift.",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_after_devon',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'communication'],
         consequence: {
@@ -4112,7 +4430,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'accept_helping',
         text: "It does feel like a lot sometimes.",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_after_devon',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'communication'],
         consequence: {
@@ -4154,7 +4472,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'accept_exploring',
         text: "I've always wondered why I can't settle on one thing.",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_after_devon',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'communication'],
         consequence: {
@@ -4196,7 +4514,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'accept_patience',
         text: "Sometimes I feel like the world moves too fast.",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_after_devon',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'communication'],
         consequence: {
@@ -4238,7 +4556,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'accept_building',
         text: "I do love making things.",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_after_devon',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'communication'],
         consequence: {
@@ -4279,7 +4597,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'accept',
         text: "Thank you for seeing that.",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_after_devon',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'communication'],
         consequence: {

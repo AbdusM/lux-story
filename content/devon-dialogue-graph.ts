@@ -19,7 +19,12 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         text: "Avondale coffee shop. Back booth. 2 AM.\n\nIf input is 'I'm fine,' route to branch 4.B, sub-routine 'gentle probe.'\n\nNo, wait. Latency's too high.\n\nOh. Didn't see you there.\n\nClosed system. Are you a variable I need to account for?",
         emotion: 'guarded',
-        variation_id: 'intro_v1'
+        variation_id: 'intro_v1',
+        patternReflection: [
+          { pattern: 'analytical', minLevel: 5, altText: "Avondale coffee shop. Back booth. 2 AM.\n\nIf input is 'I'm fine,' route to branch 4.B, sub-routine 'gentle probe.'\n\nOh. You're reading the logic flow, aren't you? Most people don't even see it.\n\nClosed system. But maybe you understand closed systems.", altEmotion: 'curious' },
+          { pattern: 'building', minLevel: 5, altText: "Avondale coffee shop. Back booth. 2 AM.\n\nDecision tree. Flowchart. You've built things like this before, haven't you?\n\nMost people don't recognize the architecture. But you do.", altEmotion: 'interested' },
+          { pattern: 'patience', minLevel: 5, altText: "Avondale coffee shop. Back booth. 2 AM.\n\nIf input is 'I'm fine,' route to branch 4.B...\n\nOh. You're just... waiting. Not rushing me. That's. Different.\n\nClosed system. Are you a variable I need to account for?", altEmotion: 'guarded' }
+        ]
       }
     ],
     choices: [
@@ -76,8 +81,13 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "Technically speaking... don't just look at it. Run it.\n\nSystem Active. Conversational Optimizer v1.4.\nSubject: Father.\nInput: 'I'm fine.'\nStatus: Processing...",
         emotion: 'focused',
         variation_id: 'explains_scenario_v1',
-        richEffectContext: 'warning', // Blueprint/Debug mode
-        useChatPacing: true
+        richEffectContext: 'warning',
+        useChatPacing: true,
+        patternReflection: [
+          { pattern: 'analytical', minLevel: 5, altText: "Technically speaking... don't just look at it. Run it. You'll understand the architecture.\n\nSystem Active. Conversational Optimizer v1.4.\nSubject: Father.\nInput: 'I'm fine.'\nStatus: Processing...\n\nYou think in systems too. I can tell.", altEmotion: 'focused' },
+          { pattern: 'helping', minLevel: 5, altText: "Technically speaking... run it. But you're already seeing past the code, aren't you?\n\nSystem Active. Conversational Optimizer v1.4.\nSubject: Father.\n\nIt's about my dad. About reaching someone who won't talk.", altEmotion: 'vulnerable' },
+          { pattern: 'building', minLevel: 5, altText: "Technically speaking... run it. I built this whole thing.\n\nSystem Active. Conversational Optimizer v1.4.\nSubject: Father.\n\nYou build things too. You know how it feels when the thing you built doesn't work for the one reason that matters.", altEmotion: 'vulnerable' }
+        ]
       }
     ],
     choices: [
@@ -157,7 +167,11 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "The tree goes dark.\n\nRobotic voice: \"Conversation Ended.\"\n\nI took the input at face value. Just hung up.\n\nHe was waiting for me to push back.\n\nGod. I failed the actual test because I passed the logic check.",
         emotion: 'regretful',
         variation_id: 'debug_fail_literal_v1',
-        richEffectContext: 'error'
+        richEffectContext: 'error',
+        patternReflection: [
+          { pattern: 'analytical', minLevel: 4, altText: "The tree goes dark.\n\n\"Conversation Ended.\"\n\nI took the input at face value. You see it, right? The logic was perfect. The outcome was wrong.\n\nPerfect logic can still miss everything that matters.", altEmotion: 'regretful' },
+          { pattern: 'helping', minLevel: 4, altText: "The tree goes dark.\n\nI took the input at face value. Just hung up.\n\nYou wouldn't have done that, would you? You would have heard what he wasn't saying.", altEmotion: 'vulnerable' }
+        ]
       }
     ],
     choices: [
@@ -217,6 +231,9 @@ export const devonDialogueNodes: DialogueNode[] = [
         nextNodeId: 'devon_explains_system',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'adaptability'],
+        visibleCondition: {
+          patterns: { patience: { min: 4 } }
+        },
         consequence: {
           characterId: 'devon',
           trustChange: 2
@@ -235,7 +252,11 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "System flashes. \"Unknown Variable.\"\n\nYou went off script.\n\nMy whole system creates a loop. You just... broke it. You ignored the data to find the feeling.\n\nI can't code that. How do you code that?",
         emotion: 'intrigued',
         variation_id: 'debug_override_v1',
-        richEffectContext: 'thinking'
+        richEffectContext: 'thinking',
+        patternReflection: [
+          { pattern: 'helping', minLevel: 4, altText: "System flashes. \"Unknown Variable.\"\n\nYou went off script. You saw a person, not a problem.\n\nMy whole system creates a loop. You just... broke it with empathy.\n\nI can't code that. But you do it naturally.", altEmotion: 'vulnerable' },
+          { pattern: 'patience', minLevel: 4, altText: "System flashes. \"Unknown Variable.\"\n\nYou didn't rush. You let the silence hold instead of filling it with the next step.\n\nMy whole system assumes action. You just proved stillness is also an answer.", altEmotion: 'intrigued' }
+        ]
       }
     ],
     choices: [
@@ -293,6 +314,9 @@ export const devonDialogueNodes: DialogueNode[] = [
         nextNodeId: 'devon_father_hint',
         pattern: 'building',
         skills: ['systemsThinking', 'creativity'],
+        visibleCondition: {
+          patterns: { building: { min: 3 }, analytical: { min: 2 } }
+        },
         consequence: {
           characterId: 'devon',
           trustChange: 1
@@ -318,6 +342,9 @@ export const devonDialogueNodes: DialogueNode[] = [
         nextNodeId: 'devon_opens_up',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'adaptability'],
+        visibleCondition: {
+          patterns: { patience: { min: 3 } }
+        },
         consequence: {
           characterId: 'devon',
           trustChange: 2
@@ -655,7 +682,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'devon_grief_recognition',
         text: "Grief can't be debugged. It can only be felt.",
-        nextNodeId: 'devon_father_aerospace',
+        nextNodeId: 'devon_grief_felt_response',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
         consequence: {
@@ -666,7 +693,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'comment_on_similarity',
         text: "You're doing what he does - trying to debug systems.",
-        nextNodeId: 'devon_father_aerospace',
+        nextNodeId: 'devon_debug_parallel_response',
         pattern: 'analytical',
         skills: ['criticalThinking', 'emotionalIntelligence'],
         consequence: {
@@ -680,6 +707,48 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         characterId: 'devon',
         addKnowledgeFlags: ['father_aerospace_engineer']
+      }
+    ]
+  },
+
+  // Divergent responses for father aerospace
+  {
+    nodeId: 'devon_grief_felt_response',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "*He stops. Completely stops.*\n\n*For a moment, his hands don't fidget. His eyes aren't scanning for the next problem to solve.*\n\n...Nobody's ever said that to me before.\n\nEveryone says 'time heals' or 'stay busy' or 'process it logically.' Nobody's ever said... just feel it.",
+        emotion: 'vulnerable',
+        variation_id: 'grief_felt_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'feeling_as_data',
+        text: "Feeling is its own kind of data.",
+        nextNodeId: 'devon_uab_systems_engineering',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
+      }
+    ]
+  },
+  {
+    nodeId: 'devon_debug_parallel_response',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "*He laughs - short, sharp, surprised.*\n\nOh god. You're right. I'm running the same subroutine he does.\n\nProblem detected → isolate variables → test solutions → repeat until fixed.\n\nExcept feelings aren't... they don't have error codes. There's no stack trace for sadness.",
+        emotion: 'self_aware',
+        variation_id: 'debug_parallel_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'thats_okay',
+        text: "Maybe that's okay.",
+        nextNodeId: 'devon_uab_systems_engineering',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence']
       }
     ]
   },
@@ -1014,7 +1083,10 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "What if you don't have to pick?",
         nextNodeId: 'devon_chooses_integration',
         pattern: 'analytical',
-        skills: ['criticalThinking', 'creativity', 'emotionalIntelligence']
+        skills: ['criticalThinking', 'creativity', 'emotionalIntelligence'],
+        visibleCondition: {
+          patterns: { analytical: { max: 2 } }  // Only show when enhanced version doesn't
+        }
       },
       // Pattern-enhanced: Helping players see emotional connection
       {
@@ -1034,7 +1106,10 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "What does your gut say?",
         nextNodeId: 'devon_chooses_heart',
         pattern: 'helping',
-        skills: ['emotionalIntelligence']
+        skills: ['emotionalIntelligence'],
+        visibleCondition: {
+          patterns: { helping: { max: 2 } }  // Only show when enhanced version doesn't
+        }
       },
       // Pattern-enhanced: Patience players see supportive presence
       {
@@ -1054,7 +1129,10 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "Whatever feels right. He needs you there.",
         nextNodeId: 'devon_chooses_presence',
         pattern: 'patience',
-        skills: ['emotionalIntelligence', 'adaptability']
+        skills: ['emotionalIntelligence', 'adaptability'],
+        visibleCondition: {
+          patterns: { patience: { max: 2 } }  // Only show when enhanced version doesn't
+        }
       }
     ],
     tags: ['climax', 'devon_arc', 'pattern_enhanced']

@@ -25,14 +25,19 @@ But the basil is dying.
 I'm holding this soil. It crumbles into dust. Bone dry. The tablet says "MOISTURE OPTIMAL." The tablet lies.`,
         emotion: 'fearful_disbelief',
         variation_id: 'silas_intro_v2',
-        richEffectContext: 'warning'
+        richEffectContext: 'warning',
+        patternReflection: [
+          { pattern: 'analytical', minLevel: 5, altText: "The dashboard says we're fine. The dashboard says I'm a genius.\n\nBut the basil is dying.\n\nYou're already seeing the gap, aren't you? Data says one thing. Reality says another.\n\nThe tablet says 'MOISTURE OPTIMAL.' The tablet lies.", altEmotion: 'bitter' },
+          { pattern: 'building', minLevel: 5, altText: "The dashboard says we're fine. I built that dashboard.\n\nBut the basil is dying.\n\nYou build things too. You know what it feels like when something you made fails the one test that matters.", altEmotion: 'vulnerable' },
+          { pattern: 'patience', minLevel: 5, altText: "The dashboard says we're fine.\n\nBut the basil is dying.\n\nYou're not jumping to solutions. Good. This isn't a quick fix problem.\n\nThe soil is bone dry. The tablet says 'MOISTURE OPTIMAL.' The tablet lies.", altEmotion: 'exhausted' }
+        ]
       }
     ],
     choices: [
       {
         choiceId: 'silas_intro_reality',
         text: "The map isn't the territory.",
-        nextNodeId: 'silas_bankruptcy_reveal',
+        nextNodeId: 'silas_map_territory_response',
         pattern: 'analytical',
         skills: ['wisdom'],
         consequence: {
@@ -50,7 +55,7 @@ I'm holding this soil. It crumbles into dust. Bone dry. The tablet says "MOISTUR
       {
         choiceId: 'silas_intro_empathy',
         text: "You look terrified.",
-        nextNodeId: 'silas_bankruptcy_reveal',
+        nextNodeId: 'silas_fear_seen_response',
         pattern: 'helping',
         skills: ['emotionalIntelligence']
       }
@@ -62,6 +67,50 @@ I'm holding this soil. It crumbles into dust. Bone dry. The tablet says "MOISTUR
       }
     ],
     tags: ['introduction', 'silas_arc']
+  },
+
+  // Divergent responses for intro
+  {
+    nodeId: 'silas_map_territory_response',
+    speaker: 'Silas',
+    content: [
+      {
+        text: `*He freezes. Stares at you.*
+
+That's... yeah. That's exactly it.
+
+I spent fifteen years building systems that abstract reality into data. Clean numbers. Dashboards. KPIs. And now I'm standing here realizing the abstraction has a gap wide enough to kill my basil.`,
+        emotion: 'stunned_recognition',
+        variation_id: 'map_territory_v1'
+      }
+    ],
+    choices: [
+      { choiceId: 'tell_gap', text: "Tell me more about that gap.", nextNodeId: 'silas_bankruptcy_reveal' }
+    ]
+  },
+  {
+    nodeId: 'silas_fear_seen_response',
+    speaker: 'Silas',
+    content: [
+      {
+        text: `*He looks up. Something cracks in his composure.*
+
+...Yeah. I am.
+
+Most people look at this setup and see innovation. High-tech farming, the future of food security. They don't see a terrified man holding dying plants while his tablet tells him everything is perfect.
+
+You saw it immediately.`,
+        emotion: 'vulnerable',
+        variation_id: 'fear_seen_v1',
+        patternReflection: [
+          { pattern: 'helping', minLevel: 4, altText: "*He looks up. Something cracks in his composure.*\n\n...Yeah. I am.\n\nYou have this way of seeing through the surface. Most people don't look past the innovation. You saw the fear.\n\nThat's... rare.", altEmotion: 'grateful' },
+          { pattern: 'patience', minLevel: 4, altText: "*He looks up. Something cracks in his composure.*\n\n...Yeah. I am.\n\nYou didn't rush to fix it. You just... named it. That's harder than solutions sometimes.\n\nYou saw it immediately.", altEmotion: 'vulnerable' }
+        ]
+      }
+    ],
+    choices: [
+      { choiceId: 'fear_not_wrong', text: "Fear doesn't mean you're wrong.", nextNodeId: 'silas_bankruptcy_reveal' }
+    ]
   },
 
   {
@@ -77,24 +126,76 @@ Last quarter, the sensors said the pH was perfect. I lost the entire strawberry 
 
 If this basil dies, I lose the farm. I lose my house.`,
         emotion: 'desperate',
-        variation_id: 'bankruptcy_v1'
+        variation_id: 'bankruptcy_v1',
+        patternReflection: [
+          { pattern: 'building', minLevel: 4, altText: "I should be.\n\nI cashed out my Amazon stock options. All of it. Built this from nothing.\n\nYou build things. You know what it's like to watch something you made fail. $40,000 gone in a weekend.\n\nIf this basil dies, I lose everything I built.", altEmotion: 'desperate' },
+          { pattern: 'exploring', minLevel: 4, altText: "I should be.\n\nI cashed out my Amazon stock options. Took the leap. You understand that, don't you? The curiosity that leads you somewhere unknown.\n\nBut sometimes the unknown has cliffs.\n\nIf this basil dies, I lose the farm.", altEmotion: 'desperate' }
+        ]
       }
     ],
     choices: [
       {
         choiceId: 'silas_stakes_high',
         text: "So why are you staring at the tablet?",
-        nextNodeId: 'silas_simulation_start',
+        nextNodeId: 'silas_action_challenge_response',
         pattern: 'building',
-        skills: ['actionOrientation']
+        skills: ['actionOrientation'],
+        visibleCondition: {
+          patterns: { building: { min: 4 } }
+        }
       },
       {
         choiceId: 'silas_fear_paralysis',
         text: "You're afraid to trust your eyes because they don't have an API.",
-        nextNodeId: 'silas_simulation_start',
+        nextNodeId: 'silas_api_trust_response',
         pattern: 'analytical',
-        skills: ['psychology']
+        skills: ['psychology'],
+        visibleCondition: {
+          patterns: { analytical: { min: 5 } }
+        }
       }
+    ]
+  },
+
+  // Divergent responses for bankruptcy reveal
+  {
+    nodeId: 'silas_action_challenge_response',
+    speaker: 'Silas',
+    content: [
+      {
+        text: `*He blinks. Looks down at the tablet in his hand. Then at the soil.*
+
+Because... because the tablet is supposed to know. That's why I bought it. That's why I built this whole system.
+
+*He sets the tablet down slowly.*
+
+But the tablet doesn't know, does it? The basil knows. My hands know. The tablet just... measures.`,
+        emotion: 'dawning_realization',
+        variation_id: 'action_challenge_v1'
+      }
+    ],
+    choices: [
+      { choiceId: 'hands_tell', text: "So what do your hands tell you?", nextNodeId: 'silas_simulation_start' }
+    ]
+  },
+  {
+    nodeId: 'silas_api_trust_response',
+    speaker: 'Silas',
+    content: [
+      {
+        text: `*He laughs - bitter, sharp.*
+
+God. That's it, isn't it?
+
+Fifteen years at Amazon. Every decision backed by data. Every insight validated by metrics. I forgot how to trust anything that doesn't come with a confidence interval.
+
+The soil is telling me something. And I keep looking for a JSON payload to confirm it.`,
+        emotion: 'self_aware_pain',
+        variation_id: 'api_trust_v1'
+      }
+    ],
+    choices: [
+      { choiceId: 'listen_soil', text: "What if you just... listened to the soil?", nextNodeId: 'silas_simulation_start' }
     ]
   },
 

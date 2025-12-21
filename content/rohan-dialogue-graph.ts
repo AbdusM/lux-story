@@ -27,14 +27,19 @@ And it's fake. A machine wrote it. It calls a library that hasn't existed since 
 It's hallucinating reality, and it's doing it better than I ever could.`,
         emotion: 'terrified_awe',
         variation_id: 'rohan_intro_v2',
-        richEffectContext: 'warning'
+        richEffectContext: 'warning',
+        patternReflection: [
+          { pattern: 'analytical', minLevel: 5, altText: "The server room is cold. Smells of ozone and stale coffee.\n\nLook at this recursion. Perfect structure. And it's fake.\n\nYou're reading it, aren't you? You see what I see. The elegant lie.\n\nIt calls a library that hasn't existed since 2019. A hallucination.", altEmotion: 'curious' },
+          { pattern: 'building', minLevel: 5, altText: "The server room is cold.\n\nLook at this recursion. Beautiful architecture. And it's fake.\n\nYou build things too. You know what it means when the foundation is a ghost.\n\nIt calls a library that doesn't exist. The machine hallucinated it.", altEmotion: 'concerned' },
+          { pattern: 'patience', minLevel: 5, altText: "The server room is cold.\n\nIt's beautiful. Look at this recursion. Perfect. And fake.\n\nYou're not rushing to conclusions. Good. This deserves time to understand.\n\nThe machine hallucinated a library. And it's doing it better than I ever could.", altEmotion: 'reflective' }
+        ]
       }
     ],
     choices: [
       {
         choiceId: 'rohan_intro_fear',
         text: "You sound afraid of it.",
-        nextNodeId: 'rohan_erasure_reveal',
+        nextNodeId: 'rohan_fear_acknowledged',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
         consequence: {
@@ -59,7 +64,7 @@ It's hallucinating reality, and it's doing it better than I ever could.`,
       {
         choiceId: 'rohan_intro_patience',
         text: "[Stay quiet. Let the awe and dread coexist without comment.]",
-        nextNodeId: 'rohan_erasure_reveal',
+        nextNodeId: 'rohan_silence_acknowledged',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'adaptability'],
         consequence: {
@@ -75,6 +80,52 @@ It's hallucinating reality, and it's doing it better than I ever could.`,
       }
     ],
     tags: ['introduction', 'rohan_arc']
+  },
+
+  // Divergent responses for intro
+  {
+    nodeId: 'rohan_fear_acknowledged',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: `*He turns to look at you, surprised anyone noticed.*
+
+Most people don't see past the technical marvel. They see code appearing like magic and think it's progress.
+
+You saw the terror underneath. That's... rare.`,
+        emotion: 'vulnerable',
+        variation_id: 'fear_acknowledged_v1',
+        patternReflection: [
+          { pattern: 'helping', minLevel: 4, altText: "*He turns to look at you, surprised anyone noticed.*\n\nMost people don't see past the technical marvel. You saw the person behind the code.\n\nYou saw the terror underneath. That's... thank you for that.", altEmotion: 'grateful' },
+          { pattern: 'analytical', minLevel: 4, altText: "*He turns to look at you, surprised.*\n\nMost people see code appearing like magic. You're analyzing the implications.\n\nYou saw the terror underneath the elegance. That's rare.", altEmotion: 'respectful' }
+        ]
+      }
+    ],
+    choices: [
+      { choiceId: 'tell_me_why', text: "Tell me why.", nextNodeId: 'rohan_erasure_reveal' }
+    ]
+  },
+  {
+    nodeId: 'rohan_silence_acknowledged',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: `*He glances at you. Notes your stillness.*
+
+You're not rushing to have an opinion. Everyone else does. "It's amazing!" or "It's dangerous!" - always binary.
+
+You're just... holding both. Like you understand some truths can't be collapsed into a stance.`,
+        emotion: 'appreciative',
+        variation_id: 'silence_acknowledged_v1',
+        patternReflection: [
+          { pattern: 'patience', minLevel: 4, altText: "*He glances at you. Notes your stillness.*\n\nYou're not rushing. That's who you are, isn't it? Someone who holds space.\n\nEveryone else wants binary. 'Amazing!' or 'Dangerous!' You understand complexity.", altEmotion: 'respectful' },
+          { pattern: 'exploring', minLevel: 4, altText: "*He glances at you. Notes your stillness.*\n\nYou're observing. Taking it in before forming conclusions.\n\nThat's rare. Most people need to name things immediately. You're comfortable in the unknown.", altEmotion: 'appreciative' }
+        ]
+      }
+    ],
+    choices: [
+      { choiceId: 'continue_watching', text: "[Continue watching]", nextNodeId: 'rohan_erasure_reveal' }
+    ]
   },
 
   {
@@ -97,16 +148,22 @@ If we accept this... David didn't matter. I don't matter. We're just slow, buggy
       {
         choiceId: 'rohan_value_human',
         text: "Understanding matters more than speed.",
-        nextNodeId: 'rohan_simulation_setup',
+        nextNodeId: 'rohan_understanding_response',
         pattern: 'building',
-        skills: ['wisdom', 'leadership']
+        skills: ['wisdom', 'leadership'],
+        visibleCondition: {
+          patterns: { building: { min: 3 } }
+        }
       },
       {
         choiceId: 'rohan_defense',
         text: "The machine missed the bug. You didn't.",
-        nextNodeId: 'rohan_simulation_setup',
+        nextNodeId: 'rohan_bug_defense_response',
         pattern: 'analytical',
         skills: ['criticalThinking'],
+        visibleCondition: {
+          patterns: { analytical: { min: 4 } }
+        },
         consequence: {
           characterId: 'rohan',
           trustChange: 1
@@ -125,9 +182,12 @@ If we accept this... David didn't matter. I don't matter. We're just slow, buggy
       {
         choiceId: 'rohan_erasure_patience',
         text: "[Let the weight of David's legacy settle. Some grief speaks louder in silence.]",
-        nextNodeId: 'rohan_simulation_setup',
+        nextNodeId: 'rohan_silence_for_david',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'adaptability'],
+        visibleCondition: {
+          patterns: { patience: { min: 4 } }
+        },
         consequence: {
           characterId: 'rohan',
           trustChange: 2
@@ -135,6 +195,68 @@ If we accept this... David didn't matter. I don't matter. We're just slow, buggy
       }
     ],
     tags: ['rohan_arc']
+  },
+
+  // Divergent responses for erasure reveal
+  {
+    nodeId: 'rohan_understanding_response',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: `*He pauses, considering your words like debugging a claim.*
+
+Understanding...
+
+The machine can generate correct code. But it can't explain why it's correct. It can't teach. It can't pass down the intuition that lets you feel when something's wrong before you know why.
+
+David could do that. That's not replaceable.`,
+        emotion: 'hopeful',
+        variation_id: 'understanding_response_v1'
+      }
+    ],
+    choices: [
+      { choiceId: 'show_understanding', text: "Show me what understanding looks like.", nextNodeId: 'rohan_simulation_setup' }
+    ]
+  },
+  {
+    nodeId: 'rohan_bug_defense_response',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: `*His eyes sharpen. A small crack in the despair.*
+
+That's... that's true.
+
+I saw the bug in 3 seconds. The machine didn't see it at all. It generated code that looked perfect but would have corrupted memory on every third call.
+
+Maybe... maybe the value isn't in writing the code. Maybe it's in knowing when the code lies.`,
+        emotion: 'analytical_hope',
+        variation_id: 'bug_defense_v1'
+      }
+    ],
+    choices: [
+      { choiceId: 'teach_seeing', text: "Can you teach someone to see that?", nextNodeId: 'rohan_simulation_setup' }
+    ]
+  },
+  {
+    nodeId: 'rohan_silence_for_david',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: `*The silence stretches. You don't fill it.*
+
+*After a long moment, he exhales.*
+
+Most people would try to fix this. Offer solutions. Argue philosophy.
+
+You just... let it be heavy. David would have liked that. He always said real understanding starts with sitting in the discomfort.`,
+        emotion: 'grateful',
+        variation_id: 'silence_for_david_v1'
+      }
+    ],
+    choices: [
+      { choiceId: 'let_him_lead', text: "[Let him lead when he's ready]", nextNodeId: 'rohan_simulation_setup' }
+    ]
   },
 
   {
