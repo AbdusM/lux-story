@@ -52,7 +52,8 @@ const EMOTION_COLORS: Record<string, string> = {
 }
 
 export function EmotionTag({ emotion, className }: EmotionTagProps) {
-  const colorClass = EMOTION_COLORS[emotion.toLowerCase()] || 'text-slate-700 bg-slate-100/80 border-slate-200'
+  const cleanEmotion = emotion.replace(/[\[\]]/g, '')
+  const colorClass = EMOTION_COLORS[cleanEmotion.toLowerCase()] || 'text-slate-700 bg-slate-100/80 border-slate-200'
 
   return (
     <motion.span
@@ -66,7 +67,7 @@ export function EmotionTag({ emotion, className }: EmotionTagProps) {
       )}
       title={`Character is feeling ${emotion}`}
     >
-      [{emotion}]
+      {cleanEmotion}
     </motion.span>
   )
 }

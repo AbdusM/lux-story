@@ -127,7 +127,7 @@ export function GameMessage({
     <div className={cn(
       "w-full",
       isContinuedSpeaker ? "mb-3" : "mb-6", // Tighter spacing for continued speakers
-      "animate-in slide-in-from-bottom-4 duration-700",
+      "animate-in slide-in-from-bottom-4 duration-300",
       speaker.toLowerCase().replace(' ', '-'),
       isContinuedSpeaker && "continued-speaker",
       className
@@ -151,15 +151,15 @@ export function GameMessage({
         {showCharacterAvatar && (
           <CardHeader className="pb-4">
             <div className="flex items-center gap-4">
-              {/* Character Avatar */}
+              {/* Character Avatar - responsive sizing */}
               <Avatar className={cn(
-                "w-16 h-16 border-4 shadow-lg relative",
+                "w-12 h-12 sm:w-16 sm:h-16 border-4 shadow-lg relative",
                 avatarStyle,
                 "before:content-[''] before:absolute before:inset-1 before:bg-gradient-to-br before:from-white/40 before:to-transparent before:rounded-full"
               )} style={{
                 boxShadow: `
-                  0 2px 0 0 #92400e,
-                  0 4px 8px rgba(146, 64, 14, 0.3),
+                  0 2px 0 0 var(--shadow-amber-dark, #92400e),
+                  0 4px 8px var(--shadow-amber-glow, rgba(146, 64, 14, 0.3)),
                   inset 0 2px 4px rgba(255, 255, 255, 0.3)
                 `
               }}

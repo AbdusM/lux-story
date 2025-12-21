@@ -3,7 +3,7 @@
  * Positions are normalized 0-100 coordinates, scaled at render time
  */
 
-export type CharacterId = 'samuel' | 'maya' | 'jordan' | 'devon' | 'kai' | 'tess' | 'rohan' | 'silas' | 'marcus' | 'yaquin'
+export type CharacterId = 'samuel' | 'maya' | 'jordan' | 'devon' | 'kai' | 'tess' | 'rohan' | 'silas' | 'marcus' | 'kael' | 'omari'
 
 export interface CharacterNodeData {
   id: CharacterId
@@ -97,20 +97,29 @@ export const CHARACTER_NODES: CharacterNodeData[] = [
   {
     id: 'marcus',
     name: 'Marcus',
-    fullName: 'Marcus',
+    fullName: 'Marcus Vance',
     position: { x: 30, y: 85 },
     isMajor: false,
     color: 'cyan',
-    role: 'Medical Tech'
+    role: 'Sonic Architect'
   },
   {
-    id: 'yaquin',
-    name: 'Yaquin',
-    fullName: 'Yaquin',
+    id: 'kael',
+    name: 'Kael',
+    fullName: 'Kael Thorne',
     position: { x: 70, y: 85 },
     isMajor: false,
     color: 'emerald',
-    role: 'EdTech Creator'
+    role: 'Deep Sea Welder'
+  },
+  {
+    id: 'omari',
+    name: 'Omari',
+    fullName: 'Omari West',
+    position: { x: 50, y: 75 },
+    isMajor: false,
+    color: 'indigo',
+    role: 'Impact Strategist'
   }
 ]
 
@@ -124,7 +133,8 @@ export const CHARACTER_CONNECTIONS: [CharacterId, CharacterId][] = [
   ['samuel', 'rohan'],
   ['samuel', 'silas'],
   ['samuel', 'marcus'],
-  ['samuel', 'yaquin']
+  ['samuel', 'kael'],
+  ['samuel', 'omari']
 ]
 
 // Helper to get character by ID

@@ -1,12 +1,14 @@
 "use client"
 
 import * as React from "react"
+import { motion, useReducedMotion } from "framer-motion"
 import { ChevronRight } from "lucide-react"
 import { LoadingDots } from "@/components/ui/loading-dots"
 import { cn } from "@/lib/utils"
+import { springs, STAGGER_DELAY } from "@/lib/animations"
 
 export interface GameChoiceProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onAnimationStart' | 'onDrag' | 'onDragStart' | 'onDragEnd'> {
   choice: {
     text: string
     subtext?: string
@@ -33,17 +35,38 @@ const GameChoice = React.forwardRef<HTMLButtonElement, GameChoiceProps>(
     disabled,
     ...props
   }, ref) => {
+    const prefersReducedMotion = useReducedMotion()
+
+    // Animation variants
+    const variants = {
+      hidden: { opacity: 0, y: 8 },
+      visible: {
+        opacity: 1,
+        y: 0,
+        transition: {
+          delay: prefersReducedMotion ? 0 : index * STAGGER_DELAY.normal,
+          ...springs.gentle
+        }
+      }
+    }
+
     return (
-      <button
+      <motion.button
         ref={ref}
         onClick={onSelect}
         disabled={disabled || loading || isSelected}
+        initial={animated && !prefersReducedMotion ? "hidden" : false}
+        animate="visible"
+        variants={variants}
         className={cn(
           // Base styles - clean and minimal
           "w-full text-left",
           "px-4 py-3.5",
           "rounded-xl",
-          "transition-all duration-200 ease-out",
+          "transition-colors duration-200 ease-out",
+
+          // Touch target - Apple HIG minimum
+          "min-h-[44px]",
 
           // Typography - optimal readability
           "text-[17px] leading-relaxed",
@@ -65,15 +88,8 @@ const GameChoice = React.forwardRef<HTMLButtonElement, GameChoiceProps>(
           // Layout
           "flex items-center justify-between group",
 
-          // Animation
-          animated && "animate-in fade-in slide-in-from-bottom-2",
-
           className
         )}
-        style={{
-          animationDelay: animated ? `${index * 50}ms` : undefined,
-          animationDuration: "200ms"
-        }}
         {...props}
       >
         <div className="flex-1 pr-3">
@@ -95,7 +111,7 @@ const GameChoice = React.forwardRef<HTMLButtonElement, GameChoiceProps>(
             "group-hover:translate-x-0.5"
           )} />
         )}
-      </button>
+      </motion.button>
     )
   }
 )

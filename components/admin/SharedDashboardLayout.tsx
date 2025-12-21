@@ -13,6 +13,7 @@ import { AdvisorBriefingButton } from '@/components/admin/AdvisorBriefingButton'
 import { ExportButton } from '@/components/admin/ExportButton'
 import { getTopSkills, getReadinessPercentage, getReadinessDisplay } from '@/lib/admin-dashboard-helpers'
 import { AdminDashboardProvider } from '@/components/admin/AdminDashboardContext'
+import { DashboardSkeleton } from '@/components/admin/skeletons'
 import type { SkillProfile } from '@/lib/skill-profile-adapter'
 
 interface SharedDashboardLayoutProps {
@@ -101,14 +102,7 @@ export function SharedDashboardLayout({ children, userId }: SharedDashboardLayou
       <div className="w-full max-w-2xl mx-auto p-4 space-y-4">
         {/* Show loading state if profile not loaded */}
         {(!mounted || loading) ? (
-          <Card>
-            <CardContent className="p-12 text-center">
-              <div className="space-y-4">
-                <div className="animate-spin rounded-full h-12 w-12 border-2 border-slate-200 border-t-blue-600 mx-auto" />
-                <p className="text-gray-600">Loading student profile...</p>
-              </div>
-            </CardContent>
-          </Card>
+          <DashboardSkeleton />
         ) : !profile ? (
           <Card className="border-red-300 bg-red-50">
             <CardContent className="p-12 text-center">

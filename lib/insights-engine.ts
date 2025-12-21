@@ -302,8 +302,8 @@ export function generateChoicePatternInsights(
   const questionPercentage = Math.round((questionCount / choiceTexts.length) * 100)
   if (questionPercentage > 30) {
     insights.push({
-      pattern: 'Curious Questioner',
-      description: 'You consistently ask questions to understand before acting.',
+      pattern: 'Seeker of Truths',
+      description: 'You do not accept the surface reality. You dig until you find the root.',
       percentage: questionPercentage
     })
   }
@@ -319,8 +319,8 @@ export function generateChoicePatternInsights(
   const helpingPercentage = Math.round((helpingCount / choiceTexts.length) * 100)
   if (helpingPercentage > 25) {
     insights.push({
-      pattern: 'Consistent Helper',
-      description: 'You often choose to support and assist others.',
+      pattern: 'Guardian of Others',
+      description: 'Your instinct is to shield and uplift. You are the safety net.',
       percentage: helpingPercentage
     })
   }
@@ -337,8 +337,8 @@ export function generateChoicePatternInsights(
   const cautiousPercentage = Math.round((cautiousCount / choiceTexts.length) * 100)
   if (cautiousPercentage > 20) {
     insights.push({
-      pattern: 'Thoughtful Deliberator',
-      description: 'You take time to consider before committing to action.',
+      pattern: 'Watcher at the Gate',
+      description: 'You measure the cost before paying the price. Wisdom is your shield.',
       percentage: cautiousPercentage
     })
   }
@@ -355,8 +355,8 @@ export function generateChoicePatternInsights(
   const actionPercentage = Math.round((actionCount / choiceTexts.length) * 100)
   if (actionPercentage > 30) {
     insights.push({
-      pattern: 'Action-Oriented',
-      description: 'You prefer taking initiative and trying things out.',
+      pattern: 'Spark of Motion',
+      description: 'You are the catalyst. When the world freezes, you ignite it.',
       percentage: actionPercentage
     })
   }

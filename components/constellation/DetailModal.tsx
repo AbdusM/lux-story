@@ -86,7 +86,10 @@ export function DetailModal({ item, type, onClose }: DetailModalProps) {
             </div>
 
             {/* Content */}
-            <div className="overflow-y-auto max-h-[calc(50vh-40px)] sm:max-h-[calc(60vh-40px)]">
+            <div
+              className="overflow-y-auto max-h-[calc(50vh-40px)] sm:max-h-[calc(60vh-40px)]"
+              style={{ scrollbarGutter: 'stable' }}
+            >
               {isCharacter && character && (
                 <CharacterDetail character={character} onClose={onClose} />
               )}
@@ -265,7 +268,8 @@ function getCharacterDescription(id: string): string {
     rohan: "Rohan's deep technical focus shows the value of understanding fundamentals rather than relying on tools. He embodies 'ground truth' thinking.",
     silas: "Silas manages complex systems under pressure. He teaches triage, dependency recognition, and maintaining calm when everything is failing.",
     marcus: "Marcus makes split-second decisions in medical emergencies. He demonstrates that sometimes the right choice has to come before full understanding.",
-    yaquin: "Yaquin creates educational experiences that reach learners where they are. She combines curriculum design with market awareness and emotional labor."
+    kael: "Kael works in the silence of the deep ocean. He teaches that true focus isn't just about concentration—it's about finding stillness in the most hostile environments.",
+    omari: "Omari navigates the high-stakes world of venture capital and social impact. He teaches how to build bridges between resources and need, proving that profit and purpose can scale together."
   }
   return descriptions[id] || "A unique perspective on career and growth."
 }

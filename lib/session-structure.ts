@@ -11,6 +11,7 @@
  */
 
 import type { GameState } from './character-state'
+import type { DialogueNode } from './dialogue-graph'
 
 // ═══════════════════════════════════════════════════════════════
 // TYPES
@@ -38,16 +39,19 @@ export interface SessionAnnouncement {
   suggestion?: string
 
   /** Type of announcement */
-  type: 'time_check' | 'progress_milestone' | 'pause_suggestion'
+  type: 'time_check' | 'progress_milestone' | 'pause_suggestion' | 'resolution'
 }
 
 // ═══════════════════════════════════════════════════════════════
 // CONFIGURATION
 // ═══════════════════════════════════════════════════════════════
 
-/** Show boundary every 8-12 nodes (randomized for variety) */
-const MIN_NODES_BETWEEN_BOUNDARIES = 8
-const MAX_NODES_BETWEEN_BOUNDARIES = 12
+/** Show boundary every 15-30 nodes (randomized for variety)
+ * Increased from 8-12 to reduce interruption frequency
+ * Per sprint task: boundaries should feel natural, not arbitrary
+ */
+const MIN_NODES_BETWEEN_BOUNDARIES = 15
+const MAX_NODES_BETWEEN_BOUNDARIES = 30
 
 /** Session duration thresholds (in minutes) */
 const SESSION_THRESHOLDS = {
@@ -135,6 +139,27 @@ const TIME_ANNOUNCEMENTS: Record<keyof typeof SESSION_THRESHOLDS, SessionAnnounc
   }
 }
 
+/**
+ * Resolution-type announcements - used when player reaches a natural story resolution
+ * These feel earned rather than arbitrary
+ */
+const RESOLUTION_ANNOUNCEMENTS: SessionAnnouncement[] = [
+  {
+    text: "Something has shifted. A moment of clarity in the station's hum.",
+    suggestion: "This is a good place to rest if you need to.",
+    type: 'resolution'
+  },
+  {
+    text: "The conversation settles. A natural pause in the station's rhythm.",
+    type: 'resolution'
+  },
+  {
+    text: "You've reached a moment of understanding. The platform feels quieter now.",
+    suggestion: "Your progress is saved. Return when you're ready.",
+    type: 'resolution'
+  }
+]
+
 // ═══════════════════════════════════════════════════════════════
 // SESSION BOUNDARY DETECTION
 // ═══════════════════════════════════════════════════════════════
@@ -220,26 +245,49 @@ function checkTimeThreshold(
  *
  * This is called when navigating to a new node.
  * Returns boundary info including whether to show an announcement.
+ *
+ * PHILOSOPHY:
+ * - Boundaries only at nodes with metadata.sessionBoundary: true
+ * - Never during vulnerability reveals or high-emotion moments
+ * - Prefer 'resolution' type announcements (feel earned, not arbitrary)
+ * - Min 15 nodes, max 30 nodes between boundaries
  */
 export function checkSessionBoundary(
   gameState: GameState,
-  previousTotalNodes: number
+  previousTotalNodes: number,
+  currentNode?: DialogueNode | null
 ): SessionBoundary {
   const currentTotalNodes = getTotalNodesVisited(gameState)
   const nodesSinceBoundary = currentTotalNodes - (previousTotalNodes || 0)
   const sessionDurationMinutes = getSessionDurationMinutes(gameState)
 
-  // Determine if we should show a boundary
-  const boundaryInterval = getNextBoundaryInterval()
-  const shouldShowNodeBoundary = nodesSinceBoundary >= boundaryInterval
+  // Check if current node allows boundaries
+  const nodeAllowsBoundary = currentNode?.metadata?.sessionBoundary === true
+  const isVulnerabilityNode = currentNode?.tags?.some(tag =>
+    tag.includes('vulnerability') || tag.includes('reveal') || tag.includes('emotional')
+  ) ?? false
 
-  // Check for time-based announcement (takes precedence)
+  // Never show boundary during vulnerability moments
+  if (isVulnerabilityNode) {
+    return {
+      shouldShow: false,
+      nodesSinceBoundary,
+      sessionDurationMinutes
+    }
+  }
+
+  // Determine if we should show a boundary based on node count
+  const boundaryInterval = getNextBoundaryInterval()
+  const metNodeThreshold = nodesSinceBoundary >= boundaryInterval
+
+  // Check for time-based announcement (takes precedence, but still respects node)
   const timeAnnouncement = checkTimeThreshold(
     sessionDurationMinutes,
     0 // We'll need to track last announcement time in game state
   )
 
-  if (timeAnnouncement) {
+  // If node explicitly allows boundary OR we've hit time threshold
+  if (timeAnnouncement && (nodeAllowsBoundary || metNodeThreshold)) {
     return {
       shouldShow: true,
       announcement: timeAnnouncement,
@@ -248,9 +296,18 @@ export function checkSessionBoundary(
     }
   }
 
-  // Show node-based boundary if threshold reached
-  if (shouldShowNodeBoundary) {
-    const announcement = selectAnnouncement(gameState.sessionBoundariesCrossed)
+  // Show node-based boundary only if:
+  // 1. Node explicitly allows it (preferred), OR
+  // 2. We've exceeded MAX threshold and node doesn't forbid it
+  const shouldShowBoundary =
+    (nodeAllowsBoundary && metNodeThreshold) ||
+    (nodesSinceBoundary >= MAX_NODES_BETWEEN_BOUNDARIES && currentNode?.metadata?.sessionBoundary !== false)
+
+  if (shouldShowBoundary) {
+    // Prefer resolution announcements when node explicitly allows boundary
+    const announcement = nodeAllowsBoundary
+      ? RESOLUTION_ANNOUNCEMENTS[Math.floor(Math.random() * RESOLUTION_ANNOUNCEMENTS.length)]
+      : selectAnnouncement(gameState.sessionBoundariesCrossed)
 
     return {
       shouldShow: true,

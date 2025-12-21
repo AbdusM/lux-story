@@ -236,3 +236,180 @@ When analyzing the game, use Five Lenses:
 - Would two players make different choices?
 - Watch someone play silently—where do they hesitate?
 - What will players remember a year from now?
+
+---
+
+## Quick Orientation (New Session)
+
+### Key Directories
+```
+components/
+├── game/                    # Core gameplay (game-choice, game-message)
+├── constellation/           # Character/skill constellation views
+├── admin/                   # Admin dashboard sections
+│   └── skeletons/           # Loading skeleton components
+└── ui/                      # shadcn/ui components
+
+lib/
+├── animations.ts            # Framer Motion springs, stagger, variants
+├── ui-constants.ts          # Design tokens (spacing, touch targets, colors)
+├── springs.ts               # Additional spring configs
+└── admin-*.ts               # Admin dashboard helpers
+
+app/
+├── globals.css              # CSS variables, safe areas, fonts
+└── (routes)                 # Next.js app router pages
+```
+
+### Important Files for UI Work
+- `lib/ui-constants.ts` - Centralized design tokens
+- `lib/animations.ts` - All animation constants (springs, stagger, variants)
+- `app/globals.css` - CSS variables, safe areas
+- `SOFTWARE-DEVELOPMENT-PLAN.md` - UI stability implementation plan
+
+---
+
+## UI Best Practices (December 2024)
+
+### Layout Stability
+**Prevent layout shift during data loading:**
+```tsx
+// Use min-height on containers
+<CardContent className="min-h-[300px]">
+  {loading ? <Skeleton /> : <Content />}
+</CardContent>
+
+// Use skeleton components during load
+import { DashboardSkeleton } from '@/components/admin/skeletons'
+```
+
+### Animation Patterns
+**Use Framer Motion with springs (not Tailwind animate-in):**
+```tsx
+import { motion, useReducedMotion } from 'framer-motion'
+import { springs, STAGGER_DELAY } from '@/lib/animations'
+
+const prefersReducedMotion = useReducedMotion()
+
+<motion.div
+  initial={!prefersReducedMotion ? { opacity: 0, y: 8 } : false}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ delay: index * STAGGER_DELAY.normal, ...springs.gentle }}
+>
+```
+
+**Progress bars - use width, not scaleX:**
+```tsx
+// ✅ Correct - no rendering artifacts
+<motion.div
+  initial={{ width: 0 }}
+  animate={{ width: `${progress * 100}%` }}
+  transition={springs.smooth}
+/>
+
+// ❌ Avoid - can cause subpixel artifacts
+initial={{ scaleX: 0 }}
+animate={{ scaleX: progress }}
+style={{ originX: 0 }}
+```
+
+**Expand/collapse animations:**
+```tsx
+<AnimatePresence>
+  {isExpanded && (
+    <motion.div
+      initial={{ height: 0, opacity: 0 }}
+      animate={{ height: 'auto', opacity: 1 }}
+      exit={{ height: 0, opacity: 0 }}
+      transition={springs.smooth}
+      className="overflow-hidden"
+    >
+      {content}
+    </motion.div>
+  )}
+</AnimatePresence>
+```
+
+### Touch Targets
+**Apple HIG: 44px minimum for touch targets:**
+```tsx
+// Use the constant
+import { BUTTON_HEIGHT } from '@/lib/ui-constants'
+
+<button className={cn("...", BUTTON_HEIGHT.md)}>
+
+// Or inline
+<button className="min-h-[44px] min-w-[44px]">
+```
+
+### Safe Areas (Mobile)
+**Use consistent safe area padding:**
+```tsx
+// Standard pattern
+style={{ paddingBottom: 'max(16px, env(safe-area-inset-bottom, 0px))' }}
+
+// Or use CSS variable from globals.css
+style={{ paddingBottom: 'var(--safe-area-bottom)' }}
+```
+
+### Scrollbar Stability
+**Prevent layout shift when scrollbar appears:**
+```tsx
+<div
+  className="overflow-y-auto"
+  style={{ scrollbarGutter: 'stable' }}
+>
+```
+
+### Responsive Patterns
+**Mobile-first sizing:**
+```tsx
+// Avatar: 48px mobile, 64px tablet+
+className="w-12 h-12 sm:w-16 sm:h-16"
+
+// SVG: wrap in aspect-ratio container
+<div className="aspect-square w-full max-w-[400px] mx-auto">
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+```
+
+### Animation Durations (Consistency)
+| Use Case | Spring | Duration |
+|----------|--------|----------|
+| Buttons, micro-interactions | `springs.snappy` | ~150ms |
+| Panels, modals | `springs.smooth` | ~300ms |
+| Fades, reveals | `springs.gentle` | ~250ms |
+| Stagger delay | `STAGGER_DELAY.normal` | 80ms between items |
+
+### CSS Variables (globals.css)
+```css
+:root {
+  --shadow-amber-dark: #92400e;
+  --shadow-amber-glow: rgba(146, 64, 14, 0.3);
+  --safe-area-bottom: max(16px, env(safe-area-inset-bottom, 0px));
+}
+```
+
+---
+
+## Admin Dashboard Architecture
+
+### Section Components (`components/admin/sections/`)
+Each section follows the pattern:
+```tsx
+interface SectionProps {
+  userId: string
+  profile: SkillProfile
+  adminViewMode: 'family' | 'research'
+}
+```
+
+### View Modes
+- **family** - Friendly language for parents/guardians
+- **research** - Technical language with raw data
+
+### Shared Layout
+`SharedDashboardLayout.tsx` provides:
+- Profile loading with skeleton
+- Navigation between sections
+- View mode toggle
+- Context provider for child sections

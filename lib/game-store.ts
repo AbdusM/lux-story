@@ -7,6 +7,7 @@ import {
   GameStateUtils,
   StateChange
 } from './character-state'
+import { updateAmbientMusic } from './audio-feedback'
 
 // Core game state interfaces
 export interface GameState {
@@ -16,42 +17,42 @@ export interface GameState {
   showIntro: boolean
   isProcessing: boolean
   choiceStartTime: number | null
-  
+
   // Message management
   messages: GameMessage[]
   messageId: number
-  
+
   // Game progress
   visitedScenes: string[]
   choiceHistory: ChoiceRecord[]
-  
+
   // Performance tracking
   performanceLevel: number
   performanceMetrics: PerformanceMetrics
-  
+
   // Platform relationships
   platformWarmth: Record<string, number>
   platformAccessible: Record<string, boolean>
-  
+
   // Character relationships
   characterTrust: Record<string, number>
   characterHelped: Record<string, number>
-  
+
   // Pattern tracking
   patterns: PatternTracking
-  
+
   // Emotional state
   emotionalState: EmotionalState
-  
+
   // Cognitive state
   cognitiveState: CognitiveState
-  
+
   // Developmental state
   identityState: IdentityState
-  
+
   // Neural state
   neuralState: NeuralState
-  
+
   // Skills tracking
   skills: FutureSkills
 
@@ -172,32 +173,32 @@ export interface GameActions {
   startGame: () => void
   setProcessing: (processing: boolean) => void
   setChoiceStartTime: (time: number | null) => void
-  
+
   // Message management
   addMessage: (message: Omit<GameMessage, 'id' | 'timestamp'>) => void
   addStreamingMessage: (message: Omit<GameMessage, 'id' | 'timestamp'>) => void
   clearMessages: () => void
-  
+
   // Game progress
   markSceneVisited: (sceneId: string) => void
   addChoiceRecord: (record: ChoiceRecord) => void
-  
+
   // Performance tracking
   updatePerformance: (metrics: Partial<PerformanceMetrics>) => void
   calculatePerformanceLevel: () => void
-  
+
   // Platform relationships
   updatePlatformWarmth: (platformId: string, warmth: number) => void
   setPlatformAccessible: (platformId: string, accessible: boolean) => void
-  
+
   // Character relationships
   updateCharacterTrust: (characterId: string, trust: number) => void
   setCharacterTrust: (trustRecord: Record<string, number>) => void
   updateCharacterHelped: (characterId: string, helped: number) => void
-  
+
   // Pattern tracking
   updatePatterns: (patterns: Partial<PatternTracking>) => void
-  
+
   // State updates
   updateEmotionalState: (state: Partial<EmotionalState>) => void
   updateCognitiveState: (state: Partial<CognitiveState>) => void
@@ -249,15 +250,15 @@ const initialState: GameState = {
   showIntro: true,
   isProcessing: false,
   choiceStartTime: null,
-  
+
   // Message management
   messages: [],
   messageId: 0,
-  
+
   // Game progress
   visitedScenes: [],
   choiceHistory: [],
-  
+
   // Performance tracking
   performanceLevel: 0,
   performanceMetrics: {
@@ -268,15 +269,15 @@ const initialState: GameState = {
     anxiety: 0,
     rushing: 0
   },
-  
+
   // Platform relationships
   platformWarmth: {},
   platformAccessible: {},
-  
+
   // Character relationships
   characterTrust: {},
   characterHelped: {},
-  
+
   // Pattern tracking
   patterns: {
     exploring: 0,
@@ -287,7 +288,7 @@ const initialState: GameState = {
     rushing: 0,
     independence: 0
   },
-  
+
   // Emotional state
   emotionalState: {
     stressLevel: 'calm',
@@ -299,7 +300,7 @@ const initialState: GameState = {
     themeJumping: false,
     emotionalIntensity: 0.5
   },
-  
+
   // Cognitive state
   cognitiveState: {
     flowState: 'struggle',
@@ -311,7 +312,7 @@ const initialState: GameState = {
     attentionSpan: 0.5,
     learningStyle: 'mixed'
   },
-  
+
   // Identity state
   identityState: {
     identityExploration: 'early',
@@ -319,7 +320,7 @@ const initialState: GameState = {
     culturalValues: [],
     languageAdaptation: 0.5
   },
-  
+
   // Neural state
   neuralState: {
     attentionNetwork: 'alerting',
@@ -330,7 +331,7 @@ const initialState: GameState = {
     cognitiveLoad: 0.5,
     neuralEfficiency: 0.5
   },
-  
+
   // Skills tracking
   skills: {
     criticalThinking: 0,
@@ -370,13 +371,13 @@ export const useGameStore = create<GameState & GameActions>()(
     persist(
       (set, get) => ({
         ...initialState,
-        
+
         // Scene management actions
         setCurrentScene: (sceneId) => set({ currentSceneId: sceneId }),
         startGame: () => set({ hasStarted: true, showIntro: false }),
         setProcessing: (processing) => set({ isProcessing: processing }),
         setChoiceStartTime: (time) => set({ choiceStartTime: time }),
-        
+
         // Message management actions
         addMessage: (message) => {
           const id = `msg-${get().messageId}`
@@ -386,7 +387,7 @@ export const useGameStore = create<GameState & GameActions>()(
             messageId: state.messageId + 1
           }))
         },
-        
+
         addStreamingMessage: (message) => {
           const id = `stream-${get().messageId}`
           const timestamp = Date.now()
@@ -395,22 +396,22 @@ export const useGameStore = create<GameState & GameActions>()(
             messageId: state.messageId + 1
           }))
         },
-        
+
         clearMessages: () => set({ messages: [], messageId: 0 }),
-        
+
         // Game progress actions
         markSceneVisited: (sceneId) => {
           set((state) => ({
             visitedScenes: [...(state.visitedScenes || []), sceneId].filter((id, index, arr) => arr.indexOf(id) === index)
           }))
         },
-        
+
         addChoiceRecord: (record) => {
           set((state) => ({
             choiceHistory: [...(state.choiceHistory || []), record]
           }))
         },
-        
+
         // Performance tracking actions
         updatePerformance: (metrics) => {
           set((state) => ({
@@ -418,31 +419,31 @@ export const useGameStore = create<GameState & GameActions>()(
           }))
           get().calculatePerformanceLevel()
         },
-        
+
         calculatePerformanceLevel: () => {
           const { performanceMetrics } = get()
           const { alignment, consistency, learning, patience, anxiety, rushing } = performanceMetrics
-          
+
           // Performance equation: (Alignment × Consistency) + (Learning × Patience) - (Anxiety × Rushing)
           const performance = (alignment * consistency) + (learning * patience) - (anxiety * rushing)
           const normalizedPerformance = Math.max(0, Math.min(1, (performance + 1) / 2))
-          
+
           set({ performanceLevel: normalizedPerformance })
         },
-        
+
         // Platform relationship actions
         updatePlatformWarmth: (platformId, warmth) => {
           set((state) => ({
             platformWarmth: { ...state.platformWarmth, [platformId]: warmth }
           }))
         },
-        
+
         setPlatformAccessible: (platformId, accessible) => {
           set((state) => ({
             platformAccessible: { ...state.platformAccessible, [platformId]: accessible }
           }))
         },
-        
+
         // Character relationship actions
         // NOTE: This should ideally update through coreGameState, but kept for backward compatibility
         // The main trust updates should go through coreGameState via setCoreGameState()
@@ -480,7 +481,7 @@ export const useGameStore = create<GameState & GameActions>()(
             characterHelped: { ...state.characterHelped, [characterId]: helped }
           }))
         },
-        
+
         // Pattern tracking actions
         // NOTE: This should ideally update through coreGameState, but kept for backward compatibility
         // The main pattern updates should go through coreGameState via setCoreGameState()
@@ -503,32 +504,32 @@ export const useGameStore = create<GameState & GameActions>()(
             // This is a temporary bridge - ideally all updates should go through setCoreGameState()
           }
         },
-        
+
         // State update actions
         updateEmotionalState: (state) => {
           set((currentState) => ({
             emotionalState: { ...currentState.emotionalState, ...state }
           }))
         },
-        
+
         updateCognitiveState: (state) => {
           set((currentState) => ({
             cognitiveState: { ...currentState.cognitiveState, ...state }
           }))
         },
-        
+
         updateIdentityState: (state) => {
           set((currentState) => ({
             identityState: { ...currentState.identityState, ...state }
           }))
         },
-        
+
         updateNeuralState: (state) => {
           set((currentState) => ({
             neuralState: { ...currentState.neuralState, ...state }
           }))
         },
-        
+
         // Skills tracking actions
         // NOTE: Skills are not part of coreGameState (they're tracked separately)
         // This is OK to update directly as skills are not synced from coreGameState
@@ -556,7 +557,7 @@ export const useGameStore = create<GameState & GameActions>()(
               lastUpdated: Date.now()
             }
             const updatedThoughts = [newThought, ...state.thoughts]
-            
+
             // Also sync to coreGameState if it exists
             const core = get().coreGameState
             if (core) {
@@ -567,7 +568,7 @@ export const useGameStore = create<GameState & GameActions>()(
                 }
               })
             }
-            
+
             return { thoughts: updatedThoughts }
           })
         },
@@ -577,13 +578,13 @@ export const useGameStore = create<GameState & GameActions>()(
             const updatedThoughts = state.thoughts.map(t => {
               if (t.id !== thoughtId) return t
               const newProgress = Math.min(100, Math.max(0, t.progress + amount))
-              return { 
-                ...t, 
+              return {
+                ...t,
                 progress: newProgress,
                 lastUpdated: Date.now()
               }
             })
-            
+
             // Also sync to coreGameState if it exists
             const core = get().coreGameState
             if (core) {
@@ -594,7 +595,7 @@ export const useGameStore = create<GameState & GameActions>()(
                 }
               })
             }
-            
+
             return { thoughts: updatedThoughts }
           })
         },
@@ -763,6 +764,18 @@ export const useGameStore = create<GameState & GameActions>()(
             thoughts: thoughts,
             visitedScenes: visitedScenes
           }))
+
+          // Update Ambient Music based on Current Character's Nervous System State
+          // This creates the "Limbic Connection" between the NPC's state and the Player's Environment
+          const currentCharacter = core.characters.find(c => c.characterId === core.currentCharacterId)
+          if (currentCharacter) {
+            const nsState = currentCharacter.nervousSystemState || 'ventral_vagal'
+            try {
+              updateAmbientMusic(nsState)
+            } catch (e) {
+              console.warn('[Limbic Audio] Failed to update ambient music', e)
+            }
+          }
         },
 
         // Meta-Achievements - unlock new achievements (dedupes automatically)
@@ -918,12 +931,12 @@ export const useGameStore = create<GameState & GameActions>()(
 // Validation utilities for serialization
 export function validateGameState(state: unknown): { isValid: boolean; errors: string[] } {
   const errors: string[] = []
-  
+
   if (typeof state !== 'object' || state === null) {
     errors.push('State must be an object')
     return { isValid: false, errors }
   }
-  
+
   const stateObj = state as Record<string, unknown>
 
   try {
@@ -1001,32 +1014,32 @@ export const useGameSelectors = {
   useCurrentScene: () => useGameStore((state) => state.currentSceneId),
   useGameStarted: () => useGameStore((state) => state.hasStarted),
   useIsProcessing: () => useGameStore((state) => state.isProcessing),
-  
+
   // Message selectors
   useMessages: () => useGameStore((state) => state.messages),
   useMessageCount: () => useGameStore((state) => state.messages.length),
-  
+
   // Performance selectors
   usePerformanceLevel: () => useGameStore((state) => state.performanceLevel),
   usePerformanceMetrics: () => useGameStore((state) => state.performanceMetrics),
-  
+
   // Platform selectors
-  usePlatformWarmth: (platformId: string) => 
+  usePlatformWarmth: (platformId: string) =>
     useGameStore((state) => state.platformWarmth[platformId] || 0),
-  usePlatformAccessible: (platformId: string) => 
+  usePlatformAccessible: (platformId: string) =>
     useGameStore((state) => state.platformAccessible[platformId] || false),
-  
+
   // Character selectors
-  useCharacterTrust: (characterId: string) => 
+  useCharacterTrust: (characterId: string) =>
     useGameStore((state) => state.characterTrust[characterId] || 0),
-  useCharacterHelped: (characterId: string) => 
+  useCharacterHelped: (characterId: string) =>
     useGameStore((state) => state.characterHelped[characterId] || 0),
-  
+
   // Pattern selectors
   usePatterns: () => useGameStore((state) => state.patterns),
-  usePatternValue: (pattern: keyof PatternTracking) => 
+  usePatternValue: (pattern: keyof PatternTracking) =>
     useGameStore((state) => state.patterns[pattern]),
-  
+
   // State selectors
   useEmotionalState: () => useGameStore((state) => state.emotionalState),
   useCognitiveState: () => useGameStore((state) => state.cognitiveState),

@@ -1,314 +1,114 @@
-
 "use client"
 
-import { useState, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { X, Lock, CheckCircle } from "lucide-react"
 import { useGameStore } from "@/lib/game-store"
-import { getThoughtIcon } from "@/content/thoughts"
-import { cn } from "@/lib/utils"
-import { springs, stagger } from "@/lib/animations"
-import { useMeasure } from "@/hooks/useMeasure"
+import { motion } from "framer-motion"
+import { Brain } from "lucide-react"
 
-// =============================================================================
-// ACCORDION CONTENT - Smooth measured height animation for expand/collapse
-// =============================================================================
+/**
+ * Thought Cabinet
+ * Replaces "Mind" tab.
+ * 
+ * Concept: An incubator for ideas.
+ * Implementation: Grid of thoughts that progress from 0% to 100% (Internalized).
+ * Mobile First: Swipeable cards or compact grid.
+ */
+export function ThoughtCabinet() {
+    const thoughts = useGameStore(state => state.thoughts)
 
-interface AccordionContentProps {
-  isOpen: boolean
-  children: React.ReactNode
-}
+    // Sort: Internalized (Complete) -> Developing (Active) -> Unknown
+    const sortedThoughts = [...thoughts].sort((a, b) => b.progress - a.progress)
 
-function AccordionContent({ isOpen, children }: AccordionContentProps) {
-  const { ref, bounds } = useMeasure<HTMLDivElement>()
+    return (
+        <div className="p-4 space-y-6">
 
-  return (
-    <motion.div
-      initial={false}
-      animate={{
-        height: isOpen ? bounds.height : 0,
-        opacity: isOpen ? 1 : 0
-      }}
-      transition={springs.smooth}
-      className="overflow-hidden"
-    >
-      <div ref={ref}>
-        {children}
-      </div>
-    </motion.div>
-  )
-}
-
-// Stagger container for thought lists
-const listContainer = {
-  hidden: { opacity: 1 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: stagger.fast }
-  }
-}
-
-// Individual thought card animation
-const thoughtCard = {
-  hidden: { opacity: 0, y: 8 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: springs.snappy
-  }
-}
-
-interface ThoughtCabinetProps {
-  isOpen: boolean
-  onClose: () => void
-}
-
-export function ThoughtCabinet({ isOpen, onClose }: ThoughtCabinetProps) {
-  const thoughts = useGameStore((state) => state.thoughts)
-  const updateThought = useGameStore((state) => state.updateThought)
-  const removeThought = useGameStore((state) => state.removeThought)
-  const [selectedThoughtId, setSelectedThoughtId] = useState<string | null>(null)
-
-  // Escape key handler
-  useEffect(() => {
-    if (!isOpen) return
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose()
-    }
-    window.addEventListener('keydown', handleEscape)
-    return () => window.removeEventListener('keydown', handleEscape)
-  }, [isOpen, onClose])
-
-  // Handle internalizing an identity thought
-  const handleInternalize = (thoughtId: string) => {
-    updateThought(thoughtId, {
-      status: 'internalized',
-      progress: 100
-    })
-    setSelectedThoughtId(null)
-  }
-
-  // Handle discarding an identity thought
-  const handleDiscard = (thoughtId: string) => {
-    removeThought(thoughtId)
-    setSelectedThoughtId(null)
-  }
-
-  const activeThoughts = thoughts.filter(t => t.status === 'developing')
-  const internalizedThoughts = thoughts.filter(t => t.status === 'internalized')
-
-  const _selectedThought = thoughts.find(t => t.id === selectedThoughtId)
-
-  // Check if a thought is an identity offering (starts with 'identity-')
-  const isIdentityThought = (thoughtId: string) => thoughtId.startsWith('identity-')
-
-  // Animation variants
-  const backdropVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1 }
-  }
-
-  const panelVariants: import("framer-motion").Variants = {
-    hidden: { x: "100%" },
-    visible: { x: 0, transition: { type: "spring", stiffness: 300, damping: 30 } }
-  }
-
-  return (
-    <AnimatePresence>
-      {isOpen && (
-        <>
-          {/* Backdrop */}
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
-            variants={backdropVariants}
-            className="fixed inset-0 bg-black/40 z-[90] backdrop-blur-sm"
-            onClick={onClose}
-          />
-
-          {/* Slide-over Panel (from right) - swipe right to close */}
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
-            variants={panelVariants}
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={{ left: 0, right: 0.2 }}
-            onDragEnd={(_, info) => {
-              if (info.offset.x > 100) onClose()
-            }}
-            className="fixed right-0 top-0 bottom-0 w-full max-w-md bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 shadow-2xl z-[100] flex flex-col"
-            style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
-          >
-            {/* Header */}
-            <div className="p-4 sm:p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-900/50">
-              <div>
-                <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white font-serif">Internal Monologue</h2>
-                <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Developing beliefs & worldview</p>
-              </div>
-              <button
-                onClick={onClose}
-                className="min-w-[44px] min-h-[44px] p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors flex items-center justify-center"
-                aria-label="Close thought cabinet"
-              >
-                <X className="w-5 h-5 text-slate-500" />
-              </button>
+            {/* Header Stats */}
+            <div className="flex items-center justify-between text-xs text-slate-500 font-medium px-1">
+                <span>{thoughts.length} Synapses Active</span>
+                <span>{thoughts.filter(t => t.status === 'internalized').length} Internalized</span>
             </div>
 
-            {/* Scrollable Content */}
-            <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 sm:space-y-8">
-              
-              {/* Active Thoughts Section */}
-              <section className="space-y-4">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
-                  Developing Thoughts
-                </h3>
-                
-                {activeThoughts.length === 0 ? (
-                  <div className="p-8 text-center border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-lg">
-                    <p className="text-slate-400 italic text-sm">No thoughts are currently forming.</p>
-                  </div>
+            {/* Grid */}
+            <div className="grid grid-cols-1 gap-4">
+                {sortedThoughts.length === 0 ? (
+                    <div className="py-12 border border-dashed border-slate-300 dark:border-slate-700 rounded-xl flex flex-col items-center text-center p-6 text-slate-400">
+                        <Brain className="w-8 h-8 mb-3 opacity-50" />
+                        <p className="text-sm">Your mind is clear.</p>
+                        <p className="text-xs mt-1">Make complex choices to form thoughts.</p>
+                    </div>
                 ) : (
-                  <motion.div
-                    className="grid gap-4"
-                    variants={listContainer}
-                    initial="hidden"
-                    animate="visible"
-                  >
-                    {activeThoughts.map(thought => (
-                      <motion.div
-                        key={thought.id}
-                        variants={thoughtCard}
-                        whileHover={{ scale: 1.01 }}
-                        whileTap={{ scale: 0.99 }}
-                        onClick={() => setSelectedThoughtId(thought.id === selectedThoughtId ? null : thought.id)}
-                        className={cn(
-                          "p-4 rounded-xl border-2 transition-colors cursor-pointer relative overflow-hidden group",
-                          selectedThoughtId === thought.id
-                            ? "border-amber-400 bg-amber-50 dark:bg-amber-950/20 dark:border-amber-600"
-                            : "border-slate-200 hover:border-amber-300 dark:border-slate-700 bg-white dark:bg-slate-800"
-                        )}
-                      >
-                        {/* Progress Bar - animated with spring */}
-                        <motion.div
-                          className="absolute bottom-0 left-0 h-1 bg-amber-400"
-                          initial={{ scaleX: 0 }}
-                          animate={{ scaleX: thought.progress / 100 }}
-                          transition={springs.smooth}
-                          style={{ originX: 0, width: '100%' }}
-                        />
-                        
-                        <div className="flex items-start gap-4 relative z-10">
-                          <div className={cn(
-                            "p-3 rounded-lg",
-                            "bg-amber-100 text-amber-600 dark:bg-amber-900/50 dark:text-amber-400"
-                          )}>
-                            {(() => {
-                              const Icon = getThoughtIcon(thought.iconName)
-                              return <Icon className="w-5 h-5" />
-                            })()}
-                          </div>
-                          
-                          <div className="flex-1">
-                            <h4 className="font-bold text-slate-900 dark:text-white">{thought.title}</h4>
-                            <p className="text-xs text-slate-500 mt-1 font-mono">
-                              {thought.progress}% Formed
-                            </p>
-                            
-                            {/* Expanded Details - Measured height animation */}
-                            <AccordionContent isOpen={selectedThoughtId === thought.id}>
-                              <p className="text-sm text-slate-600 dark:text-slate-300 mt-3 leading-relaxed whitespace-pre-line">
-                                {thought.description}
-                              </p>
+                    sortedThoughts.map((thought) => (
+                        <ThoughtNode key={thought.id} thought={thought} />
+                    ))
+                )}
+            </div>
 
-                              {/* Identity offering buttons - Disco Elysium style choice */}
-                              {isIdentityThought(thought.id) ? (
-                                <div className="mt-4 flex flex-col gap-2">
-                                  <button
-                                    onClick={(e) => {
-                                      e.stopPropagation()
-                                      handleInternalize(thought.id)
-                                    }}
-                                    className="w-full px-4 py-3 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm transition-colors flex items-center justify-center gap-2"
-                                  >
-                                    <CheckCircle className="w-4 h-4" />
-                                    INTERNALIZE - Accept this identity
-                                  </button>
-                                  <button
-                                    onClick={(e) => {
-                                      e.stopPropagation()
-                                      handleDiscard(thought.id)
-                                    }}
-                                    className="w-full px-4 py-3 rounded-lg bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-medium text-sm transition-colors flex items-center justify-center gap-2"
-                                  >
-                                    <X className="w-4 h-4" />
-                                    DISCARD - Stay flexible
-                                  </button>
-                                </div>
-                              ) : (
-                                <div className="mt-3 flex items-center gap-2 text-xs text-amber-600 font-medium">
-                                  <Lock className="w-3 h-3" />
-                                  <span>Continue exploring this path to internalize</span>
-                                </div>
-                              )}
-                            </AccordionContent>
-                          </div>
+        </div>
+    )
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function ThoughtNode({ thought }: { thought: any }) {
+    const isInternalized = thought.status === 'internalized'
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className={`
+                relative overflow-hidden rounded-xl p-4 border transition-all
+                ${isInternalized
+                    ? 'bg-amber-50 dark:bg-amber-900/10 border-amber-200 dark:border-amber-800/30'
+                    : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800'
+                }
+            `}
+        >
+            {/* Progress Bar Background */}
+            <div className="absolute bottom-0 left-0 right-0 h-1 bg-slate-100 dark:bg-slate-800">
+                <motion.div
+                    className={`h-full ${isInternalized ? 'bg-amber-500' : 'bg-blue-500'}`}
+                    initial={{ width: 0 }}
+                    animate={{ width: `${thought.progress}%` }}
+                />
+            </div>
+
+            <div className="flex items-start gap-4">
+                {/* Icon */}
+                <div
+                    className={`
+                        w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 text-xl
+                        ${isInternalized ? 'bg-amber-100 text-amber-600' : 'bg-slate-100 text-slate-500'}
+                    `}
+                >
+                    {thought.icon || '💡'}
+                </div>
+
+                {/* Content */}
+                <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between mb-1">
+                        <h4 className={`text-sm font-bold ${isInternalized ? 'text-amber-900 dark:text-amber-100' : 'text-slate-700 dark:text-slate-200'}`}>
+                            {thought.title}
+                        </h4>
+                        <span className="text-[10px] font-mono opacity-60">
+                            {thought.progress}%
+                        </span>
+                    </div>
+
+                    <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                        {isInternalized ? thought.internalizedText || thought.description : thought.description}
+                    </p>
+
+                    {/* Bonuses */}
+                    {isInternalized && thought.bonuses && (
+                        <div className="mt-3 flex flex-wrap gap-2">
+                            {thought.bonuses.map((bonus: string, i: number) => (
+                                <span key={i} className="text-[10px] px-1.5 py-0.5 bg-amber-200/50 text-amber-800 rounded">
+                                    {bonus}
+                                </span>
+                            ))}
                         </div>
-                      </motion.div>
-                    ))}
-                  </motion.div>
-                )}
-              </section>
-
-              {/* Internalized Section */}
-              <section className="space-y-4 opacity-80">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
-                  <CheckCircle className="w-3 h-3" />
-                  Core Beliefs
-                </h3>
-                
-                {internalizedThoughts.length === 0 ? (
-                  <div className="p-4 text-center rounded-lg bg-slate-50 dark:bg-slate-800/50">
-                    <p className="text-slate-400 text-xs">No core beliefs established yet.</p>
-                  </div>
-                ) : (
-                  <div className="grid gap-3">
-                    {internalizedThoughts.map(thought => (
-                      <div 
-                        key={thought.id}
-                        className="p-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 flex items-center gap-3"
-                      >
-                         <div className="p-2 rounded-md bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400">
-                            {(() => {
-                              const Icon = getThoughtIcon(thought.iconName)
-                              return <Icon className="w-4 h-4" />
-                            })()}
-                          </div>
-                          <div>
-                            <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-200">{thought.title}</h4>
-                            <p className="text-[10px] text-slate-400 uppercase tracking-wide">Internalized</p>
-                          </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </section>
+                    )}
+                </div>
             </div>
-            
-            {/* Footer Tip */}
-            <div
-              className="flex-shrink-0 p-4 bg-slate-50 dark:bg-slate-950 text-center border-t border-slate-200 dark:border-slate-800"
-              style={{ paddingBottom: 'max(1rem, env(safe-area-inset-bottom, 0px))' }}
-            >
-               <p className="text-xs text-slate-400">Thoughts shape your dialogue options.</p>
-            </div>
-
-          </motion.div>
-        </>
-      )}
-    </AnimatePresence>
-  )
+        </motion.div>
+    )
 }

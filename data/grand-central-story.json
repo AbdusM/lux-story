@@ -766,54 +766,57 @@
           "nextScene": "1-4a",
           "choices": [
             {
-              "text": "Build something",
-              "consequence": "building_1",
-              "nextScene": "1-4a",
+              "text": "Follow the neon pulse to Atlanta",
+              "consequence": "path_marcus",
+              "nextScene": "scenario_marcus_1",
               "stateChanges": {
                 "patterns": {
-                  "building": 1
+                  "building": 1,
+                  "helping": 1
                 },
                 "careerValues": {
-                  "building": 0.6047663057294452
+                  "building": 0.8,
+                  "helping": 0.8
                 }
               }
             },
             {
-              "text": "Create something new",
-              "consequence": "building_2",
-              "nextScene": "1-4a",
+              "text": "Descend into the crushing dark",
+              "consequence": "path_kael",
+              "nextScene": "scenario_kael_1",
               "stateChanges": {
                 "patterns": {
-                  "building": 1
+                  "patience": 1,
+                  "analytical": 1
                 },
                 "careerValues": {
-                  "building": 0.8650200532914508
+                  "patience": 0.9,
+                  "analytical": 0.9
                 }
               }
             },
             {
-              "text": "Design a solution",
-              "consequence": "building_3",
-              "nextScene": "1-4a",
+              "text": "Navigate the maze of funding and legacy",
+              "consequence": "path_omari",
+              "nextScene": "scenario_omari_1",
               "stateChanges": {
                 "patterns": {
-                  "building": 1
+                  "building": 1,
+                  "helping": 1
                 },
                 "careerValues": {
-                  "building": 0.5280929508466623
+                  "building": 0.8,
+                  "helping": 0.9
                 }
               }
             },
             {
-              "text": "Make it better",
-              "consequence": "building_4",
+              "text": "Stay on the main concourse",
+              "consequence": "path_standard",
               "nextScene": "1-4a",
               "stateChanges": {
                 "patterns": {
-                  "building": 1
-                },
-                "careerValues": {
-                  "building": 0.8214824237155437
+                  "exploring": 1
                 }
               }
             }
@@ -14783,6 +14786,228 @@
           "type": "narration",
           "text": "The Grand Central Terminus begins to fade around you, but the clarity remains. You're not the same person who found that letter under their door. \n\nYou have direction. You have next steps. You have Birmingham.\n\nThe station whispers one final truth: the trains were always running. You just needed to know which platform to stand on.\n\nYour journey begins now.",
           "isEnding": true
+        },
+        {
+          "id": "scenario_marcus_1",
+          "type": "choice",
+          "text": "ATLANTA, 2028.\n\nThe humidity hits you first - thick and sweet. You're in a repurposed warehouse in Cabbagetown. To your left, a server rack humming with your proprietary audio-spatialization code. To your right, a recording booth where 'The Geometrics' are tuning up.\n\nYour partner, Marcus, looks at you. 'We can optimize the streaming algorithm to save bandwidth, or we can push the fidelity to rival the analog masters. What's the move?'",
+          "nextScene": "scenario_marcus_2",
+          "choices": [
+            {
+              "text": "Optimize the Code (Scale)",
+              "consequence": "neon_scale",
+              "nextScene": "scenario_marcus_2",
+              "stateChanges": {
+                "patterns": {
+                  "building": 1,
+                  "analytical": 1
+                },
+                "careerValues": {
+                  "building": 0.8
+                }
+              }
+            },
+            {
+              "text": "Push the Fidelity (Soul)",
+              "consequence": "neon_soul",
+              "nextScene": "scenario_marcus_2",
+              "stateChanges": {
+                "patterns": {
+                  "helping": 1,
+                  "exploring": 1
+                },
+                "careerValues": {
+                  "helping": 0.8
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "scenario_marcus_2",
+          "type": "choice",
+          "text": "Six months later. The platform, 'Resonance', is live. UMG has noticed. They offer a buyout - enough cash to never work again, but they want to dismantle the artist-ownership model you built.\n\nMarcus is torn. 'They'll crush us if we say no. But if we say yes, we're just another cog.'",
+          "nextScene": "scenario_marcus_3",
+          "choices": [
+            {
+              "text": "Refuse and Fight (Build the new system)",
+              "consequence": "neon_rebel",
+              "nextScene": "scenario_marcus_3",
+              "stateChanges": {
+                "patterns": {
+                  "building": 2
+                },
+                "items": {
+                  "neon_legacy": true
+                }
+              }
+            },
+            {
+              "text": "Take the Deal and infiltrate (Strategic pivot)",
+              "consequence": "neon_corporate",
+              "nextScene": "scenario_marcus_3",
+              "stateChanges": {
+                "patterns": {
+                  "analytical": 1,
+                  "patience": 1
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "scenario_marcus_3",
+          "type": "narration",
+          "text": "The decision echoes in the warehouse silence. You realize that whether you fight from the outside or the inside, the music hasn't stopped. It's just a different tempo now.\n\nThe warehouse fades. The hum of servers turns into the click-clack of the mechanical departure board...",
+          "nextScene": "1-4a"
+        },
+        {
+          "id": "scenario_kael_1",
+          "type": "choice",
+          "text": "NORTH SEA, 150 METERS DOWN.\n\nThe silence is total. Just the rhythm of your own breath in the rebreather. You're welding a structural fissure on the Piper Alpha rig legs. The pressure is immense - 16 atmospheres crushing in from all sides.\n\nYour HUD flashes a warning: 'Oxygen mix imbalance. CO2 scrubbing at 85%.' It's workable, but risky.",
+          "nextScene": "scenario_kael_2",
+          "choices": [
+            {
+              "text": "Abort and Ascend (Safety First)",
+              "consequence": "abyss_safety",
+              "nextScene": "scenario_kael_2",
+              "stateChanges": {
+                "patterns": {
+                  "analytical": 1
+                },
+                "careerValues": {
+                  "building": 0.5
+                }
+              }
+            },
+            {
+              "text": "Stay and Finish the Weld (The Job Matters)",
+              "consequence": "abyss_risk",
+              "nextScene": "scenario_kael_2",
+              "stateChanges": {
+                "patterns": {
+                  "patience": 2
+                },
+                "careerValues": {
+                  "patience": 0.9
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "scenario_kael_2",
+          "type": "choice",
+          "text": "You hold your line. The arc torch lights up the murky water like a supernova. Suddenly, the current shifts. A piece of debris slams into your tether, pinning you against the pylon. You can't move your arm to free it.",
+          "nextScene": "scenario_kael_3",
+          "choices": [
+            {
+              "text": "Panic and thrash (Instinct)",
+              "consequence": "abyss_panic",
+              "nextScene": "scenario_kael_3",
+              "stateChanges": {
+                "patterns": {
+                  "exploring": 1
+                },
+                "time": -5
+              }
+            },
+            {
+              "text": "Slow your breathing. Calculate the leverage. (Focus)",
+              "consequence": "abyss_focus",
+              "stateChanges": {
+                "patterns": {
+                  "patience": 2,
+                  "analytical": 1
+                },
+                "items": {
+                  "abyssal_focus": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "scenario_omari_1",
+          "type": "choice",
+          "text": "DURHAM, NC, 2026.\n\nThe boardroom table is polished mahogany, but the tension is jagged. You're sitting across from the VC firm that wants to lead your Series B. They love the metrics. They hate the 'distraction' of your side project - a pipeline connecting HBCU engineering departments to federal SBIR grants.\n\n'Focus, Omari,' the lead partner says. 'You can build a unicorn, or you can run a charity. You can't do both.'",
+          "nextScene": "scenario_omari_2",
+          "choices": [
+            {
+              "text": "Agree. Drop the pipeline. (Focus on the Unicorn)",
+              "consequence": "omari_unicorn",
+              "nextScene": "scenario_omari_2",
+              "stateChanges": {
+                "patterns": {
+                  "building": 2,
+                  "analytical": 1
+                },
+                "careerValues": {
+                  "building": 1.0
+                }
+              }
+            },
+            {
+              "text": "Push back. The pipeline IS the talent strategy. (Integrate the Mission)",
+              "consequence": "omari_mission",
+              "nextScene": "scenario_omari_2",
+              "stateChanges": {
+                "patterns": {
+                  "helping": 2,
+                  "building": 1
+                },
+                "careerValues": {
+                  "helping": 0.9
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "scenario_omari_2",
+          "type": "choice",
+          "text": "Three months later. The decision has rippled out. You're standing on stage at a tech summit. A student from NC A&T approaches you. She looks exactly like you did ten years ago - hungry, brilliant, blocked by invisible gates.\n\nShe asks, 'Is there really space for us in there? Or do we have to build our own?'",
+          "nextScene": "scenario_omari_3",
+          "choices": [
+            {
+              "text": "'We build our own. Let me show you how.' (Mentorship)",
+              "consequence": "omari_mentor",
+              "nextScene": "scenario_omari_3",
+              "stateChanges": {
+                "patterns": {
+                  "helping": 2
+                },
+                "careerValues": {
+                  "helping": 1.0
+                }
+              }
+            },
+            {
+              "text": "'We take the space. We make them move.' (Disruption)",
+              "consequence": "omari_disrupt",
+              "nextScene": "scenario_omari_3",
+              "stateChanges": {
+                "patterns": {
+                  "building": 1,
+                  "analytical": 1
+                },
+                "items": {
+                  "omari_legacy": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "scenario_omari_3",
+          "type": "narration",
+          "text": "Her eyes light up. You realize the unicorn wasn't the company. It was the bridge you just built for her.\n\nThe summit lights fade. The murmur of the crowd turns into the announcement chimes of the station...",
+          "nextScene": "1-4a"
+        },
+        {
+          "id": "scenario_kael_3",
+          "type": "narration",
+          "nextScene": "1-4a"
         }
       ]
     }

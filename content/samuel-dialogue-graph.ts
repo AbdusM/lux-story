@@ -13,8 +13,10 @@ import {
 } from '@/lib/dialogue-graph'
 import { mayaRevisitEntryPoints } from './maya-revisit-graph'
 import { samuelIdentityNodes } from './samuel-identity-nodes'
+import { systemicCalibrationNodes } from './systemic-calibration' // ISP: The Grand Convergence
 
 export const samuelDialogueNodes: DialogueNode[] = [
+  ...systemicCalibrationNodes, // Inject Calibration nodes first
   // ============= ATMOSPHERIC ARRIVAL =============
   {
     nodeId: 'station_arrival',
@@ -129,14 +131,14 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'ask_what_is_this_patient',
         text: "What is this place exactly?",
-        nextNodeId: 'samuel_explains_station',
+        nextNodeId: 'systemic_calibration_start', // ISP: Reroute to Calibration
         pattern: 'exploring',
         skills: ['communication', 'adaptability']
       },
       {
         choiceId: 'ask_about_platforms_patient',
         text: "The platforms—where do they lead?",
-        nextNodeId: 'samuel_explains_platforms',
+        nextNodeId: 'systemic_calibration_start', // ISP: Reroute to Calibration
         pattern: 'analytical',
         skills: ['criticalThinking', 'communication']
       },
@@ -279,7 +281,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'ask_what_is_this',
         text: "What is this place exactly?",
-        nextNodeId: 'samuel_explains_station',
+        nextNodeId: 'systemic_calibration_start', // ISP: Reroute to Calibration
         pattern: 'exploring',
         skills: ['communication', 'adaptability'],
         consequence: {
@@ -445,14 +447,9 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Yeah, so each platform's got different folks.\n\nSome people who heal, teach, take care of others. Some who build things, make stuff with their hands. Engineers, creators, that whole world.\n\nHonestly? You don't figure this out by thinking real hard about it. You gotta talk to people. See who makes sense to you.",
-        emotion: 'reflective',
-        variation_id: 'platforms_v1',
-        patternReflection: [
-          { pattern: 'helping', minLevel: 5, altText: "Each platform's got different folks.\n\nSome people who heal, teach, take care of others—folks like you, who lead with compassion. Some who build things, create with their hands.\n\nYou figure this out by connecting with people. That's already your strength.", altEmotion: 'warm' },
-          { pattern: 'analytical', minLevel: 5, altText: "Each platform's got different folks.\n\nHealers, teachers, builders, engineers. You're already mapping it out in your head, aren't you? Good—but the map's not the territory. Go talk to people. See what clicks.", altEmotion: 'knowing' },
-          { pattern: 'exploring', minLevel: 5, altText: "Each platform's got different folks.\n\nHealers, builders, creators—all kinds. You've got that look, like you want to see everything. Good. Go explore. This place rewards the curious.", altEmotion: 'warm' }
-        ]
+        text: "There's Platform 3, heading towards the medical centers. Platform 9 for the tech districts. But there's also the rare lines... \n\nI've seen a coder from Atlanta, a deep-sea welder off the Scottish coast. And just yesterday, a young brother torn between his own startup and helping HBCUs get their fair share of federal funding. \n\nThe question ain't where they're going. It's which song you're trying to hear.",
+        emotion: 'thoughtful',
+        variation_id: 'platforms_explained_v3'
       }
     ],
     choices: [
@@ -772,7 +769,8 @@ export const samuelDialogueNodes: DialogueNode[] = [
     tags: ['backstory', 'fridge_logic_fix', 'samuel_arc'],
     metadata: {
       sessionBoundary: true  // Session 1: Introduction complete
-    }  },
+    }
+  },
 
   {
     nodeId: 'samuel_origin_choice',
@@ -1012,7 +1010,8 @@ export const samuelDialogueNodes: DialogueNode[] = [
     tags: ['orb_introduction', 'tutorial', 'samuel_arc'],
     metadata: {
       sessionBoundary: true  // Session 2: Deeper engagement
-    }  },
+    }
+  },
   {
     nodeId: 'samuel_orb_explanation',
     speaker: 'Samuel Washington',
@@ -2118,7 +2117,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "That's a different kind of strength.",
         nextNodeId: 'samuel_contemplation_offer',
         pattern: 'patience',
-        skills: ["emotionalIntelligence","communication"],
+        skills: ["emotionalIntelligence", "communication"],
         consequence: {
           characterId: 'samuel',
           trustChange: 1
@@ -2326,7 +2325,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "I think I'm ready for the next platform.",
         nextNodeId: 'samuel_hub_after_maya',
         pattern: 'exploring',
-        skills: ["communication","criticalThinking"]
+        skills: ["communication", "criticalThinking"]
       }
     ]
   },
@@ -2367,7 +2366,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "Thank you for seeing that.",
         nextNodeId: 'samuel_hub_after_maya',
         pattern: 'patience',
-        skills: ["emotionalIntelligence","communication"]
+        skills: ["emotionalIntelligence", "communication"]
       }
     ]
   },
@@ -2706,7 +2705,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "Take me to Platform 1.",
         nextNodeId: mayaRevisitEntryPoints.WELCOME,
         pattern: 'helping',
-        skills: ["emotionalIntelligence","communication"]
+        skills: ["emotionalIntelligence", "communication"]
       }
     ]
   },
@@ -3354,8 +3353,6 @@ export const samuelDialogueNodes: DialogueNode[] = [
       }
     ]
   },
-
-  // Divergent responses for Jordan reflection gateway
   {
     nodeId: 'samuel_jordan_lost_response',
     speaker: 'Samuel Washington',
@@ -4033,7 +4030,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "I'll go find Devon.",
         nextNodeId: 'devon_introduction', // Cross-graph (future)
         pattern: 'helping',
-        skills: ["emotionalIntelligence","communication"],
+        skills: ["emotionalIntelligence", "communication"],
         consequence: {
           addGlobalFlags: ['met_devon']
         }
@@ -4101,7 +4098,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "I'll go find her.",
         nextNodeId: 'jordan_introduction',
         pattern: 'helping',
-        skills: ["emotionalIntelligence","communication"],
+        skills: ["emotionalIntelligence", "communication"],
         consequence: {
           addGlobalFlags: ['met_jordan']
         }
@@ -4353,7 +4350,8 @@ export const samuelDialogueNodes: DialogueNode[] = [
     tags: ['comprehensive_hub', 'navigation', 'samuel_arc'],
     metadata: {
       sessionBoundary: true  // Session 3: Pattern revelation
-    }  },
+    }
+  },
 
   // ============= PATTERN OBSERVATION (Trust-gated wisdom) =============
   // These nodes are pattern-specific - players see the one matching their dominant play style

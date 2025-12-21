@@ -125,7 +125,7 @@ export function UrgencySection({ userId, profile: _profile, adminViewMode }: Urg
             </Button>
           </div>
         </CardHeader>
-        <CardContent>
+        <CardContent className="min-h-[280px]">
           {urgencyLoading ? (
             <div className="text-center py-12 text-gray-500">
               Loading urgency data...

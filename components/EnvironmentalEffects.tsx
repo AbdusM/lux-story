@@ -1,112 +1,67 @@
 "use client"
 
-import { useEffect, useMemo } from 'react'
-import { getGrandCentralState } from '@/lib/grand-central-state'
+import { useEffect } from 'react'
+import { GameStateManager } from '@/lib/game-state-manager'
+import { GameState } from '@/lib/character-state'
 
 export function EnvironmentalEffects() {
-  const grandCentralState = useMemo(() => getGrandCentralState(), [])
-  
+
   useEffect(() => {
     const updateEnvironmentalClasses = () => {
-      const state = grandCentralState.getState()
+      // Use loadGameState as fallback since we are outside React context tree root
+      // This is a "Game Juice" component that runs on interval, so reading LS is acceptable
+      const state = GameStateManager.loadGameState()
+      if (!state) return
+
       const body = document.body
-      
+
       // Clear previous environmental classes
-      body.className = body.className.replace(/platform-warmth-\S+/g, '')
-      body.className = body.className.replace(/time-speed-\S+/g, '')
-      body.className = body.className.replace(/resonance-level-\S+/g, '')
-      body.className = body.className.replace(/\S+-environment/g, '')
-      body.className = body.className.replace(/\S+-high/g, '')
-      body.className = body.className.replace(/character-\S+/g, '')
-      body.className = body.className.replace(/theatre-\S+/g, '')
-      
-      // Platform warmth effects
-      const platforms = state.platforms || {}
-      let dominantWarmth = 0
-      let dominantPlatform = ''
-      
-      Object.entries(platforms).forEach(([key, platform]) => {
-        if (platform?.discovered && platform.warmth > dominantWarmth) {
-          dominantWarmth = platform.warmth
-          dominantPlatform = key
-        }
-      })
-      
-      // Apply warmth class
-      const warmthClass = `platform-warmth-${Math.round(dominantWarmth)}`
-      body.classList.add(warmthClass)
-      
-      // Time speed effects
-      const timeSpeed = state.time?.speed || 1.0
-      const timeClass = `time-speed-${timeSpeed.toString().replace('.', '-')}`
-      body.classList.add(timeClass)
-      
-      // Pattern-based environmental changes
+      // Using a safer regex approach for class removal
+      body.className = body.className
+        .split(' ')
+        .filter(c => !c.match(/^(platform-|time-|resonance-|.*-environment|.*-high|character-|theatre-|station-|shadow-|particles-|objects-)/))
+        .join(' ')
+
+      // Note: State accessors changed from GrandCentralState structure to GameState structure
+      // Many environmental features (Time Speed, Platforms) were specific to GrandCentralState
+      // and are not fully present in the core GameState.
+      // We will map what we can (Patterns, Trust) and stub the rest to prevent crashes.
+
+      // Map Patterns
       const patterns = state.patterns || {}
-      const dominantPattern = Object.entries(patterns).reduce(
-        (max, [key, value]) => value > max.value ? { key, value } : max,
-        { key: '', value: 0 }
-      )
-      
-      if (dominantPattern.value > 5) {
-        body.classList.add(`${dominantPattern.key}-environment`)
+      const dominantPatternKey = Object.entries(patterns).reduce((a, b) => a[1] > b[1] ? a : b)[0]
+      const dominantPatternValue = patterns[dominantPatternKey as keyof typeof patterns] || 0
+
+      if (dominantPatternValue > 5) {
+        body.classList.add(`${dominantPatternKey}-environment`)
       }
-      
-      // Career value manifestations
-      const careerValues = state.careerValues || {}
-      Object.entries(careerValues).forEach(([key, value]) => {
-        if (value > 5) {
-          const className = key.replace(/([A-Z])/g, '-$1').toLowerCase()
-          body.classList.add(`${className}-high`)
-        }
-      })
-      
-      // Platform resonance
-      if (dominantPlatform) {
-        const resonance = platforms[dominantPlatform as keyof typeof platforms].resonance
-        const resonanceClass = `resonance-level-${Math.min(10, Math.round(resonance))}`
-        body.classList.add(resonanceClass)
-      }
-      
-      // Special states
-      if (state.time?.stopped) {
-        body.classList.add('quiet-hour-active')
-      } else {
-        body.classList.remove('quiet-hour-active')
-      }
-      
-      // Station breathing effect
+
+      // Station breathing effect (Patience)
       if (patterns.patience > 7) {
         body.classList.add('station-breathing')
       }
-      
+
       // Shadow effects based on helping
-      if (patterns.helping > patterns.rushing) {
+      if (patterns.helping > 5) {
         body.classList.add('shadow-warm')
-        body.classList.remove('shadow-cold')
-      } else if (patterns.rushing > patterns.helping) {
-        body.classList.add('shadow-cold')
-        body.classList.remove('shadow-warm')
       }
 
       // Fox Theatre character atmosphere
       // Derive active character from relationships (highest trust level)
-      const relationships = state.relationships || {}
+      // GameState uses Map, so we iterate differently
       let activeCharacter = 'samuel' // Default
       let highestTrust = 0
-      Object.entries(relationships).forEach(([charId, rel]) => {
-        if (rel && typeof rel.trust === 'number' && rel.trust > highestTrust) {
-          highestTrust = rel.trust
-          activeCharacter = charId
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      state.characters.forEach((char: any) => {
+        if (char.trust > highestTrust) {
+          highestTrust = char.trust
+          activeCharacter = char.characterId
         }
       })
+
       body.classList.add('character-atmosphere')
       body.classList.add(`character-${activeCharacter}`)
-
-      // Theatre stars when resonance is high (> 3)
-      if (dominantPlatform && platforms[dominantPlatform as keyof typeof platforms]?.resonance > 3) {
-        body.classList.add('theatre-stars')
-      }
 
       // Environmental particles
       if (patterns.helping > 6) {
@@ -114,7 +69,7 @@ export function EnvironmentalEffects() {
       } else if (patterns.building > 6) {
         body.classList.add('particles-building')
       }
-      
+
       // Object responsiveness
       if (patterns.building > 4) {
         body.classList.add('objects-responsive', 'building-nearby')
@@ -122,13 +77,14 @@ export function EnvironmentalEffects() {
         body.classList.add('objects-responsive', 'growth-minded')
       }
     }
-    
-    // Update on state changes
+
+    // Update on state changes - now polling for simplicity, ideally would subscribe
+    // But since this is purely cosmetic CSS on body, polling 1s is fine and consistent with previous
     const interval = setInterval(updateEnvironmentalClasses, 1000)
     updateEnvironmentalClasses() // Initial update
-    
+
     return () => clearInterval(interval)
-  }, [grandCentralState])
-  
+  }, [])
+
   return null // This component only manages body classes
 }

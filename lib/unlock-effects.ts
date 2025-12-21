@@ -233,10 +233,10 @@ function evaluatePatienceUnlocks(ctx: UnlockContext): Partial<ContentEnhancement
 
   // Level 1 (25%): Take Your Time - Show timing cues
   if (ctx.hasUnlock('patience-1')) {
-    // Detect pauses in dialogue
-    if (ctx.dialogueText.includes('pause') || ctx.dialogueText.includes('silence')) {
-      enhancement.subtextHint = '[You notice they\'re taking time to consider...]'
-    }
+    // Subtext hint removed per user feedback (too distracting)
+    // if (ctx.dialogueText.includes('pause') || ctx.dialogueText.includes('silence')) {
+    //   enhancement.subtextHint = '[You notice they\'re taking time to consider...]'
+    // }
   }
 
   // Level 3 (85%): Measured Response - Highlight patience choices

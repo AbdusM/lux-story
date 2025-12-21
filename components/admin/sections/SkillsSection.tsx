@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -12,6 +13,7 @@ import { analyzeSkillPatterns, sortSkillPatterns, type SortMode } from '@/lib/ad
 import { PatternRecognitionCard } from '@/components/admin/PatternRecognitionCard'
 import { formatSkillName, getRecencyIndicator } from '@/lib/admin-dashboard-helpers'
 import { formatAdminDate, type ViewMode } from '@/lib/admin-date-formatting'
+import { springs } from '@/lib/animations'
 import type { SkillProfile } from '@/lib/skill-profile-adapter'
 
 interface SkillsSectionProps {
@@ -144,7 +146,7 @@ export function SkillsSection({ userId, profile, adminViewMode }: SkillsSectionP
           </div>
         </CardHeader>
 
-        <CardContent className="space-y-2">
+        <CardContent className="space-y-2 min-h-[300px]">
           {sortedPatterns.length === 0 ? (
             <div className="text-center py-12">
               {adminViewMode === 'family' ? (
@@ -218,36 +220,46 @@ export function SkillsSection({ userId, profile, adminViewMode }: SkillsSectionP
                       </div>
                     </button>
 
-                    {isExpanded && (
-                      <div className="px-4 pb-4 space-y-3 border-t bg-gray-50">
-                        <p className="text-sm font-semibold text-gray-600 mt-3">Evidence:</p>
-                        {recentDemos.map((demo, idx) => {
-                          const timestamp = demo.timestamp
-                          const choiceText = demo.choice || demo.context.substring(0, 60)
-                          return (
-                            <div key={idx} className="text-sm space-y-2 pl-4 border-l-2 border-blue-300">
-                              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1">
-                                <span className="font-medium text-gray-800">{demo.scene}</span>
-                                {timestamp && (
-                                  <span className="text-gray-600 text-xs">
-                                    {formatAdminDate(timestamp, 'activity', adminViewMode as ViewMode)}
-                                  </span>
-                                )}
-                              </div>
-                              {choiceText && (
-                                <p className="text-gray-600 italic text-sm">"{choiceText}"</p>
-                              )}
-                              <p className="text-gray-700 text-sm leading-relaxed">{demo.context}</p>
-                            </div>
-                          )
-                        })}
-                        {demonstrations.length > 3 && (
-                          <p className="text-sm text-gray-500 italic pt-2">
-                            + {demonstrations.length - 3} more demonstrations
-                          </p>
-                        )}
-                      </div>
-                    )}
+                    <AnimatePresence>
+                      {isExpanded && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={springs.smooth}
+                          className="overflow-hidden"
+                        >
+                          <div className="px-4 pb-4 space-y-3 border-t bg-gray-50">
+                            <p className="text-sm font-semibold text-gray-600 mt-3">Evidence:</p>
+                            {recentDemos.map((demo, idx) => {
+                              const timestamp = demo.timestamp
+                              const choiceText = demo.choice || demo.context.substring(0, 60)
+                              return (
+                                <div key={idx} className="text-sm space-y-2 pl-4 border-l-2 border-blue-300">
+                                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1">
+                                    <span className="font-medium text-gray-800">{demo.scene}</span>
+                                    {timestamp && (
+                                      <span className="text-gray-600 text-xs">
+                                        {formatAdminDate(timestamp, 'activity', adminViewMode as ViewMode)}
+                                      </span>
+                                    )}
+                                  </div>
+                                  {choiceText && (
+                                    <p className="text-gray-600 italic text-sm">"{choiceText}"</p>
+                                  )}
+                                  <p className="text-gray-700 text-sm leading-relaxed">{demo.context}</p>
+                                </div>
+                              )
+                            })}
+                            {demonstrations.length > 3 && (
+                              <p className="text-sm text-gray-500 italic pt-2">
+                                + {demonstrations.length - 3} more demonstrations
+                              </p>
+                            )}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
                 )
               })}
