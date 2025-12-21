@@ -29,7 +29,12 @@ Offering to buy the building. "Prime real estate." Like it's just square footage
         interaction: 'shake',
         variation_id: 'tess_intro_v1',
         richEffectContext: 'thinking',
-        useChatPacing: true
+        useChatPacing: true,
+        patternReflection: [
+          { pattern: 'patience', minLevel: 5, altText: "The B-Side. Vinyl crates, concert posters. Phone rings. She ignores it.\n\n*Flipping through records.*\n\nYou're not rushing me. That's nice. Most people want the quick version.\n\nThat phone. Developer again. Wants to buy the building.", altEmotion: 'grateful' },
+          { pattern: 'building', minLevel: 5, altText: "The B-Side. Vinyl crates. Concert posters I designed myself.\n\n*Flipping through records.*\n\nYou look like someone who makes things. This whole place—I built it from nothing.\n\nNow developers want to buy it. 'Prime real estate.'", altEmotion: 'conflicted' },
+          { pattern: 'exploring', minLevel: 5, altText: "The B-Side. Vinyl crates, concert posters. Phone rings. She ignores it.\n\nYou're looking around. Good. Most people don't even see what's here.\n\nThat phone. Developer again. Wants to turn this into something... else.", altEmotion: 'curious' }
+        ]
       }
     ],
     choices: [
@@ -92,7 +97,11 @@ My accountant thinks I'm insane for even hesitating.`,
         emotion: 'conflicted',
         interaction: 'nod',
         variation_id: 'offer_v1',
-        useChatPacing: true
+        useChatPacing: true,
+        patternReflection: [
+          { pattern: 'analytical', minLevel: 4, altText: "Enough to retire. Buy a condo somewhere warm. Never worry about rent again.\n\nYou're running the numbers in your head, aren't you? I can see it.\n\nMy accountant thinks I'm insane for hesitating. He's probably right.", altEmotion: 'conflicted' },
+          { pattern: 'building', minLevel: 4, altText: "Enough to retire. Never worry about rent again.\n\nBut this place... I built it. You understand that, don't you? The difference between a smart deal and something you created.\n\nMy accountant thinks I'm insane for hesitating.", altEmotion: 'vulnerable' }
+        ]
       }
     ],
     choices: [
@@ -134,7 +143,11 @@ This isn't a store. It's where real gets discovered before the algorithm buries 
         emotion: 'passionate',
         interaction: 'bloom',
         variation_id: 'shop_v1',
-        useChatPacing: true
+        useChatPacing: true,
+        patternReflection: [
+          { pattern: 'building', minLevel: 4, altText: "Started this place twelve years ago. Just me, two crates, and a dream.\n\nYou build things. You understand what it means to make something from nothing.\n\n*Points to wall of photos.*\n\nThat kid there. Selling out arenas now. First gig was here.", altEmotion: 'proud' },
+          { pattern: 'helping', minLevel: 4, altText: "Know how many artists played their first show here? Before anyone knew their names?\n\nYou care about people. I can tell. This place is about giving people a chance.\n\nThat kid right there. Selling out arenas now.", altEmotion: 'passionate' }
+        ]
       }
     ],
     onEnter: [
@@ -150,6 +163,9 @@ This isn't a store. It's where real gets discovered before the algorithm buries 
         nextNodeId: 'tess_customer_moment',
         pattern: 'exploring',
         skills: ['communication', 'emotionalIntelligence'],
+        visibleCondition: {
+          patterns: { exploring: { min: 4 } }
+        },
         consequence: {
           characterId: 'tess',
           trustChange: 2
@@ -160,7 +176,10 @@ This isn't a store. It's where real gets discovered before the algorithm buries 
         text: "That matters. But can it pay the bills?",
         nextNodeId: 'tess_the_numbers',
         pattern: 'building',
-        skills: ['criticalThinking', 'communication']
+        skills: ['criticalThinking', 'communication'],
+        visibleCondition: {
+          patterns: { building: { min: 3 } }
+        }
       },
       {
         choiceId: 'tess_shop_curious',
@@ -179,6 +198,9 @@ This isn't a store. It's where real gets discovered before the algorithm buries 
         nextNodeId: 'tess_phoniness',
         pattern: 'analytical',
         skills: ['criticalThinking', 'culturalCompetence'],
+        visibleCondition: {
+          patterns: { analytical: { min: 3 } }
+        },
         consequence: {
           characterId: 'tess',
           trustChange: 1

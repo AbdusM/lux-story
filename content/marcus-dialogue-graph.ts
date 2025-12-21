@@ -26,7 +26,12 @@ export const marcusDialogueNodes: DialogueNode[] = [
 Night shift. 3:00 AM. The ICU is dark, except for the glow of monitors.`,
         emotion: 'focused',
         variation_id: 'marcus_intro_v1',
-        richEffectContext: 'warning', 
+        richEffectContext: 'warning',
+        patternReflection: [
+          { pattern: 'patience', minLevel: 5, altText: "Seventy-two beats. Flow rate stable.\n\n...Don't bump the table.\n\nNight shift. 3:00 AM. The ICU is dark.\n\nYou're waiting. Good. Most people rush in. You understand stillness.", altEmotion: 'appreciative' },
+          { pattern: 'analytical', minLevel: 5, altText: "Seventy-two beats. Flow rate stable.\n\n...Don't bump the table.\n\nYou're reading the numbers already, aren't you? Heart rate, flow rate. You think in systems.", altEmotion: 'curious' },
+          { pattern: 'helping', minLevel: 5, altText: "Seventy-two beats. Flow rate stable.\n\n...Don't bump the table.\n\nNight shift. 3:00 AM.\n\nYou have kind energy. That matters here. This job needs people who care.", altEmotion: 'warm' }
+        ]
       }
     ],
     choices: [
@@ -78,7 +83,11 @@ Twelve hours. Just me and the machine. Keeping a father alive.`,
         emotion: 'exhausted',
         interaction: 'small',
         variation_id: 'visualizes_machine_v1',
-
+        patternReflection: [
+          { pattern: 'building', minLevel: 5, altText: "I'm holding a life. The machine that holds the life.\n\nECMO. Pulls blood out, adds oxygen, pumps it back in. Engineering meets medicine.\n\nYou build things. You'd appreciate what this machine does.", altEmotion: 'reflective' },
+          { pattern: 'helping', minLevel: 5, altText: "I'm holding a life. The machine that holds the life.\n\nTwelve hours. Just me and the machine. Keeping a father alive so he can see his kids again.\n\nThat's why you're here too, isn't it? You want to help people.", altEmotion: 'vulnerable' },
+          { pattern: 'patience', minLevel: 5, altText: "I'm holding a life. The machine that holds the life.\n\nTwelve hours. Just me and the machine.\n\nYou understand waiting. This whole job is waiting—watching, being present, not rushing.", altEmotion: 'tired' }
+        ]
         // TODO: [SFX] Subtle mechanical hum (ECMO machine sound)
         // TODO: [VFX] Soft glow effect on "ECMO" - educational highlight
       }
@@ -138,6 +147,10 @@ Wrong heparin calc? He bleeds. Missed clot? Stroke.`,
         emotion: 'proud',
         interaction: 'nod',
         variation_id: 'technical_pride_v1',
+        patternReflection: [
+          { pattern: 'analytical', minLevel: 4, altText: "Me and the machine. We're a loop.\n\nFlow dynamics. Hemolysis. Clot risks. You're following the logic, aren't you?\n\nCVICU isn't just comfort. It's engineering. You understand that.", altEmotion: 'proud' },
+          { pattern: 'building', minLevel: 4, altText: "Me and the machine. We're a loop.\n\nFlow dynamics. Hemolysis. Clot risks. This is real building—just biological instead of digital.\n\nYou build things too. Different materials, same precision.", altEmotion: 'knowing' }
+        ],
 
         // TODO: [SFX] Soft beeping (medical equipment ambience)
         // TODO: [VFX] Technical terms glow subtly for educational emphasis
@@ -150,6 +163,9 @@ Wrong heparin calc? He bleeds. Missed clot? Stroke.`,
         nextNodeId: 'marcus_the_bubble',
         pattern: 'analytical',
         skills: ['criticalThinking', 'problemSolving'],
+        visibleCondition: {
+          patterns: { analytical: { min: 3 } }
+        },
         consequence: {
           characterId: 'marcus',
           trustChange: 1
@@ -179,6 +195,9 @@ Wrong heparin calc? He bleeds. Missed clot? Stroke.`,
         nextNodeId: 'marcus_the_bubble',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'adaptability'],
+        visibleCondition: {
+          patterns: { patience: { min: 3 } }
+        },
         consequence: {
           characterId: 'marcus',
           trustChange: 1
@@ -199,6 +218,10 @@ Wrong heparin calc? He bleeds. Missed clot? Stroke.`,
         variation_id: 'the_bubble_v1',
         richEffectContext: 'warning',
         useChatPacing: true,
+        patternReflection: [
+          { pattern: 'patience', minLevel: 4, altText: "The real enemy? Air.|One bubble in the line.|Brain? Stroke. Heart? Death.|Instant.|Tonight... the alarm screamed.|<shake>'AIR IN LINE.'</shake>\n\nYou're not flinching. Good. Panic doesn't help in these moments.", altEmotion: 'critical' },
+          { pattern: 'analytical', minLevel: 4, altText: "The real enemy? Air. One bubble in the line.|Brain? Stroke. Heart? Death. The logic is simple. The stakes aren't.|Tonight... the alarm screamed.|<shake>'AIR IN LINE.'</shake>", altEmotion: 'critical' }
+        ],
 
         // TODO: [SFX] Sharp alarm sound on "AIR IN LINE"
         // TODO: [VFX] Screen flash red on final line
@@ -229,6 +252,9 @@ Wrong heparin calc? He bleeds. Missed clot? Stroke.`,
         nextNodeId: 'marcus_simulation_start',
         pattern: 'exploring',
         skills: ['curiosity', 'emotionalIntelligence'],
+        visibleCondition: {
+          patterns: { exploring: { min: 4 } }
+        },
         consequence: {
           characterId: 'marcus',
           trustChange: 1

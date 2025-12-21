@@ -19,7 +19,12 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "Sterne Library. Third floor. The table nobody wants because the AC's broken.\n\nOh. Hi. Were you watching me?\n\nBiochem notes. Robotics parts. Everywhere. I know it looks like a disaster. It is a disaster.\n\nI'm a disaster.",
         emotion: 'anxious_scattered',
         variation_id: 'intro_v2_clean',
-        richEffectContext: 'warning'
+        richEffectContext: 'warning',
+        patternReflection: [
+          { pattern: 'helping', minLevel: 5, altText: "Sterne Library. Third floor. The table nobody wants because the AC's broken.\n\nOh. Hi. Were you... you have kind eyes. Sorry. I'm scattered.\n\nBiochem notes. Robotics parts. Everywhere. I know it looks like a disaster. It is a disaster.\n\nI'm a disaster.", altEmotion: 'vulnerable' },
+          { pattern: 'analytical', minLevel: 5, altText: "Sterne Library. Third floor. The table nobody wants because the AC's broken.\n\nOh. Hi. You're taking this all in, aren't you? The chaos?\n\nBiochem notes. Robotics parts. Yes, there's a system. Sort of. I'm trying to be two different people at the same table.", altEmotion: 'anxious_scattered' },
+          { pattern: 'building', minLevel: 5, altText: "Sterne Library. Third floor. The table nobody wants because the AC's broken.\n\nOh. Hi. You noticed the robot parts? Most people don't even see them under all the biochem stuff.\n\nI know it looks like chaos. But there's something I'm building here. Something real.", altEmotion: 'hopeful' }
+        ]
       }
     ],
     choices: [
@@ -125,7 +130,11 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         text: "I don't know? I was walking back from Sterne - freaking out about tomorrow's exam - and then I'm just... here. Like the station pulled me in or something.\n\nMaybe 'cause I'm at a crossroads. Or maybe I'm just losing it.",
         emotion: 'contemplative',
-        variation_id: 'why_here_v1'
+        variation_id: 'why_here_v1',
+        patternReflection: [
+          { pattern: 'exploring', minLevel: 4, altText: "I don't know? I was walking back from Sterne and then I'm just... here. Like the station pulled me in.\n\nYou seem curious about this place too. Like you're looking for something.", altEmotion: 'curious' },
+          { pattern: 'analytical', minLevel: 4, altText: "I don't know? I was freaking out about tomorrow's exam and then I'm just... here.\n\nYou're trying to figure this out, aren't you? The logic of it? There might not be any.", altEmotion: 'uncertain' }
+        ]
       }
     ],
     choices: [
@@ -169,7 +178,12 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         text: "My parents came here with nothing. Literally nothing. Worked three jobs each just to get me through school.\n\nAnd now their big dream is 'Our daughter, the doctor.' They say it to everyone at church. At the restaurant. To random customers.\n\nHow am I supposed to destroy that?",
         emotion: 'conflicted',
-        variation_id: 'family_intro_v1'
+        variation_id: 'family_intro_v1',
+        patternReflection: [
+          { pattern: 'helping', minLevel: 5, altText: "My parents came here with nothing. Literally nothing. Worked three jobs each just to get me through school.\n\nYou get it, don't you? You have that look—like you understand what it means to carry someone else's hopes.\n\nTheir big dream is 'Our daughter, the doctor.' How am I supposed to destroy that?", altEmotion: 'vulnerable' },
+          { pattern: 'patience', minLevel: 5, altText: "My parents came here with nothing. Literally nothing. Worked three jobs each.\n\nYou're just... listening. Not jumping to tell me what to do. I appreciate that.\n\nTheir big dream is 'Our daughter, the doctor.' They say it to everyone. And I don't know how to be anything else.", altEmotion: 'conflicted' },
+          { pattern: 'building', minLevel: 5, altText: "My parents came here with nothing. Literally nothing. They built this life from scratch.\n\nAnd their big dream is 'Our daughter, the doctor.' But I build things too—different things. Robot parts and circuits.\n\nHow do I tell them my dream looks different from theirs?", altEmotion: 'conflicted' }
+        ]
       }
     ],
     choices: [
@@ -213,7 +227,12 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         text: "My dreams? Honestly I try not to think about them. It's easier to just... follow the path, you know?\n\nDreams are stupid when they don't match what everyone expects from you.",
         emotion: 'guarded',
-        variation_id: 'deflect_v1'
+        variation_id: 'deflect_v1',
+        patternReflection: [
+          { pattern: 'building', minLevel: 4, altText: "My dreams? Honestly I try not to think about them. It's easier to just... follow the path.\n\nBut you build things, don't you? You understand what it's like to have something you want to make, but can't.", altEmotion: 'vulnerable' },
+          { pattern: 'patience', minLevel: 4, altText: "My dreams? I try not to think about them.\n\nYou're not rushing to fix me. That's... nice. Most people want to solve me like a problem.", altEmotion: 'grateful' },
+          { pattern: 'exploring', minLevel: 4, altText: "My dreams? I try not to think about them. But you keep asking these questions that make me think anyway.\n\nDreams are stupid when they don't match what everyone expects.", altEmotion: 'conflicted' }
+        ]
       }
     ],
     choices: [
@@ -252,6 +271,9 @@ export const mayaDialogueNodes: DialogueNode[] = [
         nextNodeId: 'maya_anxiety_reveal',
         pattern: 'building',
         skills: ['creativity', 'systemsThinking'],
+        visibleCondition: {
+          patterns: { building: { min: 3 } }
+        },
         consequence: {
           characterId: 'maya',
           trustChange: 2
@@ -334,7 +356,12 @@ export const mayaDialogueNodes: DialogueNode[] = [
         emotion: 'anxious_deflecting',
         variation_id: 'anxiety_reveal_v2_clean',
         useChatPacing: true,
-        richEffectContext: 'thinking'
+        richEffectContext: 'thinking',
+        patternReflection: [
+          { pattern: 'building', minLevel: 5, altText: "Everyone sees this perfect pre-med student, right? Good grades. Clear path.\n\nBut late at night when I should be memorizing anatomy? I'm building things. Circuits. Code. Real things with my hands.\n\nYou probably get that, don't you? The need to make something?", altEmotion: 'vulnerable' },
+          { pattern: 'patience', minLevel: 5, altText: "Everyone sees this perfect pre-med student. Got it all figured out.\n\nBut late at night? I'm doing something completely different.\n\nThanks for not rushing me. Most people want the short version. This isn't the short version.", altEmotion: 'trusting' },
+          { pattern: 'exploring', minLevel: 5, altText: "Everyone sees this perfect pre-med student, right?\n\nBut late at night when I should be memorizing anatomy? I'm exploring something completely different. Something that feels more like me.\n\nYou probably understand that pull, don't you? Toward the unknown?", altEmotion: 'curious_vulnerable' }
+        ]
       }
     ],
     requiredState: {
@@ -476,6 +503,9 @@ export const mayaDialogueNodes: DialogueNode[] = [
         nextNodeId: 'maya_robotics_debug_success',
         pattern: 'building',
         skills: ['systemsThinking', 'creativity'],
+        visibleCondition: {
+          patterns: { building: { min: 4 } }
+        },
         consequence: {
           characterId: 'maya',
           trustChange: 1
@@ -531,6 +561,9 @@ export const mayaDialogueNodes: DialogueNode[] = [
         nextNodeId: 'maya_retreat_to_safety',
         pattern: 'building',
         skills: ['creativity', 'adaptability'],
+        visibleCondition: {
+          patterns: { building: { min: 5 } }
+        },
         consequence: {
           characterId: 'maya',
           trustChange: 1
@@ -618,7 +651,8 @@ export const mayaDialogueNodes: DialogueNode[] = [
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
         visibleCondition: {
-          trust: { min: 5 }
+          trust: { min: 5 },
+          patterns: { helping: { min: 4 } }
         }
       },
       {

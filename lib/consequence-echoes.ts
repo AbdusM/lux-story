@@ -9,6 +9,8 @@
  */
 
 import type { PlayerPatterns } from './character-state'
+import type { SoundType } from './audio-feedback'
+
 // Note: Using string for emotion to support compound emotions in dialogue content
 
 export type EchoIntensity = 'subtle' | 'noticeable' | 'significant'
@@ -19,6 +21,8 @@ export interface ConsequenceEcho {
   emotion?: string
   /** Timing: immediate = same turn, delayed = next node */
   timing: 'immediate' | 'delayed'
+  /** ISP Upgrade: Associated sound for multi-sensory feedback */
+  soundCue?: SoundType
 }
 
 /**
@@ -264,14 +268,14 @@ export const CHARACTER_ECHOES: Record<string, {
         { text: "A brief nod. Acknowledgment.", emotion: 'approving', timing: 'immediate' }
       ],
       noticeable: [
-        { text: "\"Solid,\" Kai says. High praise from him.", emotion: 'approving', timing: 'immediate' },
+        { text: "\"Solid,\" Kai says. High praise from him.", emotion: 'approving', timing: 'immediate', soundCue: 'echo-kai' },
         { text: "He actually makes eye contact. Holds it.", emotion: 'engaged', timing: 'immediate' },
-        { text: "\"You've thought this through. I respect that.\"", emotion: 'warm', timing: 'immediate' }
+        { text: "\"You've thought this through. I respect that.\"", emotion: 'warm', timing: 'immediate', soundCue: 'trust' }
       ],
       significant: [
-        { text: "Kai grins—full and genuine. \"Now we're talking.\"", emotion: 'warm', timing: 'immediate' },
-        { text: "\"You'd make a good safety officer,\" he says. \"That's not nothing.\"", emotion: 'approving', timing: 'immediate' },
-        { text: "He extends his hand. \"Partners on this one?\"", emotion: 'trusting', timing: 'immediate' }
+        { text: "Kai grins—full and genuine. \"Now we're talking.\"", emotion: 'warm', timing: 'immediate', soundCue: 'trust' },
+        { text: "\"You'd make a good safety officer,\" he says. \"That's not nothing.\"", emotion: 'approving', timing: 'immediate', soundCue: 'echo-kai' },
+        { text: "He extends his hand. \"Partners on this one?\"", emotion: 'trusting', timing: 'immediate', soundCue: 'trust' }
       ]
     },
     trustDown: {
@@ -290,19 +294,19 @@ export const CHARACTER_ECHOES: Record<string, {
     },
     patternRecognition: {
       analytical: [
-        { text: "\"You assess risk properly. That's rare.\"", emotion: 'approving', timing: 'delayed' }
+        { text: "\"You assess risk properly. That's rare.\"", emotion: 'approving', timing: 'delayed', soundCue: 'pattern-analytical' }
       ],
       patience: [
-        { text: "\"Good. Don't rush into danger,\" he approves.", emotion: 'warm', timing: 'delayed' }
+        { text: "\"Good. Don't rush into danger,\" he approves.", emotion: 'warm', timing: 'delayed', soundCue: 'pattern-patience' }
       ],
       exploring: [
-        { text: "He's wary of your curiosity. But intrigued too.", emotion: 'curious', timing: 'delayed' }
+        { text: "He's wary of your curiosity. But intrigued too.", emotion: 'curious', timing: 'delayed', soundCue: 'pattern-exploring' }
       ],
       helping: [
-        { text: "\"Wanting to help is step one. Step two is not making it worse.\"", emotion: 'knowing', timing: 'delayed' }
+        { text: "\"Wanting to help is step one. Step two is not making it worse.\"", emotion: 'knowing', timing: 'delayed', soundCue: 'pattern-helping' }
       ],
       building: [
-        { text: "\"Build it safe or don't build it. Simple.\"", emotion: 'approving', timing: 'delayed' }
+        { text: "\"Build it safe or don't build it. Simple.\"", emotion: 'approving', timing: 'delayed', soundCue: 'pattern-building' }
       ]
     }
   },
@@ -310,18 +314,18 @@ export const CHARACTER_ECHOES: Record<string, {
   rohan: {
     trustUp: {
       subtle: [
-        { text: "Rohan's gaze lingers a moment longer.", emotion: 'curious', timing: 'immediate' },
+        { text: "Rohan's gaze lingers a moment longer.", emotion: 'curious', timing: 'immediate', soundCue: 'echo-rohan' },
         { text: "Something shifts behind those dark eyes.", emotion: 'thoughtful', timing: 'immediate' },
         { text: "He nods—barely, but you catch it.", emotion: 'approving', timing: 'immediate' }
       ],
       noticeable: [
-        { text: "Rohan sets down his coffee. Gives you his full attention.", emotion: 'engaged', timing: 'immediate' },
-        { text: "\"Interesting,\" he says. From him, that's a standing ovation.", emotion: 'warm', timing: 'immediate' },
+        { text: "Rohan sets down his coffee. Gives you his full attention.", emotion: 'engaged', timing: 'immediate', soundCue: 'trust' },
+        { text: "\"Interesting,\" he says. From him, that's a standing ovation.", emotion: 'warm', timing: 'immediate', soundCue: 'echo-rohan' },
         { text: "The corner of his mouth twitches. Almost a smile.", emotion: 'amused', timing: 'immediate' }
       ],
       significant: [
-        { text: "Rohan actually laughs. The sound surprises both of you.", emotion: 'warm', timing: 'immediate' },
-        { text: "\"You see things clearly,\" he says. \"That's rare.\"", emotion: 'approving', timing: 'immediate' },
+        { text: "Rohan actually laughs. The sound surprises both of you.", emotion: 'warm', timing: 'immediate', soundCue: 'trust' },
+        { text: "\"You see things clearly,\" he says. \"That's rare.\"", emotion: 'approving', timing: 'immediate', soundCue: 'echo-rohan' },
         { text: "He leans back, genuinely impressed. \"Keep going.\"", emotion: 'open', timing: 'immediate' }
       ]
     },
@@ -341,19 +345,19 @@ export const CHARACTER_ECHOES: Record<string, {
     },
     patternRecognition: {
       analytical: [
-        { text: "Rohan notices your precision. It mirrors his own.", emotion: 'approving', timing: 'delayed' }
+        { text: "Rohan notices your precision. It mirrors his own.", emotion: 'approving', timing: 'delayed', soundCue: 'pattern-analytical' }
       ],
       patience: [
-        { text: "He appreciates that you didn't rush to fill the silence.", emotion: 'warm', timing: 'delayed' }
+        { text: "He appreciates that you didn't rush to fill the silence.", emotion: 'warm', timing: 'delayed', soundCue: 'pattern-patience' }
       ],
       exploring: [
-        { text: "\"Curious mind,\" he observes. Not quite approval. But close.", emotion: 'curious', timing: 'delayed' }
+        { text: "\"Curious mind,\" he observes. Not quite approval. But close.", emotion: 'curious', timing: 'delayed', soundCue: 'pattern-exploring' }
       ],
       helping: [
-        { text: "Your concern seems to unsettle him. He's not used to it.", emotion: 'guarded', timing: 'delayed' }
+        { text: "Your concern seems to unsettle him. He's not used to it.", emotion: 'guarded', timing: 'delayed', soundCue: 'pattern-helping' }
       ],
       building: [
-        { text: "He watches you construct the idea. Nods slowly.", emotion: 'approving', timing: 'delayed' }
+        { text: "He watches you construct the idea. Nods slowly.", emotion: 'approving', timing: 'delayed', soundCue: 'pattern-building' }
       ]
     }
   },
@@ -366,12 +370,12 @@ export const CHARACTER_ECHOES: Record<string, {
         { text: "Tess shifts her stance. Reassessing.", emotion: 'curious', timing: 'immediate' }
       ],
       noticeable: [
-        { text: "\"Okay. That's a move.\" Tess sounds almost impressed.", emotion: 'approving', timing: 'immediate' },
+        { text: "\"Okay. That's a move.\" Tess sounds almost impressed.", emotion: 'approving', timing: 'immediate', soundCue: 'trust' },
         { text: "\"Here's the play. \" Tess stops. \"Actually, what's your play?\"", emotion: 'curious', timing: 'immediate' },
         { text: "Tess laughs. a real one, not her usual sharp smile. \"Didn't see that coming.\"", emotion: 'surprised', timing: 'immediate' }
       ],
       significant: [
-        { text: "\"You're smarter than you let on.\" Tess's guard drops completely. \"So am I. Let me tell you something real.\"", emotion: 'vulnerable', timing: 'immediate' },
+        { text: "\"You're smarter than you let on.\" Tess's guard drops completely. \"So am I. Let me tell you something real.\"", emotion: 'vulnerable', timing: 'immediate', soundCue: 'trust' },
         { text: "\"Most people play defense. You play offense. I respect that.\"", emotion: 'warm', timing: 'immediate' }
       ]
     },
@@ -390,10 +394,10 @@ export const CHARACTER_ECHOES: Record<string, {
     },
     patternRecognition: {
       analytical: [
-        { text: "\"You see the board. Most people only see the pieces in front of them.\"", emotion: 'approving', timing: 'delayed' }
+        { text: "\"You see the board. Most people only see the pieces in front of them.\"", emotion: 'approving', timing: 'delayed', soundCue: 'pattern-analytical' }
       ],
       building: [
-        { text: "\"You're building something. I can tell. What's the endgame?\"", emotion: 'curious', timing: 'delayed' }
+        { text: "\"You're building something. I can tell. What's the endgame?\"", emotion: 'curious', timing: 'delayed', soundCue: 'pattern-building' }
       ]
     }
   },
@@ -401,18 +405,18 @@ export const CHARACTER_ECHOES: Record<string, {
   yaquin: {
     trustUp: {
       subtle: [
-        { text: "Yaquin's gaze sharpens with interest.", emotion: 'curious', timing: 'immediate' },
+        { text: "Yaquin's gaze sharpens with interest.", emotion: 'curious', timing: 'immediate', soundCue: 'echo-yaquin' },
         { text: "A small smile plays at Yaquin's lips.", emotion: 'amused', timing: 'immediate' },
         { text: "Yaquin tilts their head, considering.", emotion: 'thoughtful', timing: 'immediate' }
       ],
       noticeable: [
-        { text: "\"Imagine...\" Yaquin pauses, delighted. \"You already see it, don't you?\"", emotion: 'excited', timing: 'immediate' },
-        { text: "\"Most people don't ask that.\" Yaquin sounds genuinely surprised.", emotion: 'surprised', timing: 'immediate' },
+        { text: "\"Imagine...\" Yaquin pauses, delighted. \"You already see it, don't you?\"", emotion: 'excited', timing: 'immediate', soundCue: 'echo-yaquin' },
+        { text: "\"Most people don't ask that.\" Yaquin sounds genuinely surprised.", emotion: 'surprised', timing: 'immediate', soundCue: 'trust' },
         { text: "Yaquin puts away their phone. Full presence.", emotion: 'engaged', timing: 'immediate' }
       ],
       significant: [
-        { text: "\"You see the poetry in it.\" Yaquin's voice goes soft. \"I thought I was the only one.\"", emotion: 'moved', timing: 'immediate' },
-        { text: "\"Let me show you something. Something I don't show everyone.\"", emotion: 'trusting', timing: 'immediate' }
+        { text: "\"You see the poetry in it.\" Yaquin's voice goes soft. \"I thought I was the only one.\"", emotion: 'moved', timing: 'immediate', soundCue: 'trust' },
+        { text: "\"Let me show you something. Something I don't show everyone.\"", emotion: 'trusting', timing: 'immediate', soundCue: 'identity' }
       ]
     },
     trustDown: {
@@ -430,19 +434,19 @@ export const CHARACTER_ECHOES: Record<string, {
     },
     patternRecognition: {
       analytical: [
-        { text: "\"You decode the rhythms. See the patterns others miss.\"", emotion: 'curious', timing: 'delayed' }
+        { text: "\"You decode the rhythms. See the patterns others miss.\"", emotion: 'curious', timing: 'delayed', soundCue: 'pattern-analytical' }
       ],
       patience: [
-        { text: "\"You understand that some things can't be rushed. That's wisdom.\"", emotion: 'approving', timing: 'delayed' }
+        { text: "\"You understand that some things can't be rushed. That's wisdom.\"", emotion: 'approving', timing: 'delayed', soundCue: 'pattern-patience' }
       ],
       exploring: [
-        { text: "\"You're a traveler in the truest sense. Not just of places. of ideas.\"", emotion: 'warm', timing: 'delayed' }
+        { text: "\"You're a traveler in the truest sense. Not just of places. of ideas.\"", emotion: 'warm', timing: 'delayed', soundCue: 'pattern-exploring' }
       ],
       helping: [
-        { text: "\"Your kindness makes her eyes shine.\"", emotion: 'warm', timing: 'delayed' }
+        { text: "\"Your kindness makes her eyes shine.\"", emotion: 'warm', timing: 'delayed', soundCue: 'pattern-helping' }
       ],
       building: [
-        { text: "\"She loves watching you create. It inspires her.\"", emotion: 'moved', timing: 'delayed' }
+        { text: "\"She loves watching you create. It inspires her.\"", emotion: 'moved', timing: 'delayed', soundCue: 'pattern-building' }
       ]
     }
   }

@@ -95,7 +95,16 @@ export const samuelIdentityNodes: DialogueNode[] = [
         pattern: 'patience',
         skills: ['emotionalIntelligence']
       }
-    ]
+    ],
+    onEnter: [
+      {
+        thoughtId: 'identity-analytical',
+        internalizeThought: true
+      }
+    ],
+    metadata: {
+      sessionBoundary: true // Natural pause point after identity choice
+    }
   },
 
   {
@@ -211,7 +220,16 @@ export const samuelIdentityNodes: DialogueNode[] = [
         pattern: 'patience',
         skills: ['emotionalIntelligence']
       }
-    ]
+    ],
+    onEnter: [
+      {
+        thoughtId: 'identity-patience',
+        internalizeThought: true
+      }
+    ],
+    metadata: {
+      sessionBoundary: true
+    }
   },
 
   {
@@ -327,7 +345,16 @@ export const samuelIdentityNodes: DialogueNode[] = [
         pattern: 'exploring',
         skills: ['adaptability']
       }
-    ]
+    ],
+    onEnter: [
+      {
+        thoughtId: 'identity-exploring',
+        internalizeThought: true
+      }
+    ],
+    metadata: {
+      sessionBoundary: true
+    }
   },
 
   {
@@ -443,7 +470,16 @@ export const samuelIdentityNodes: DialogueNode[] = [
         pattern: 'helping',
         skills: ['emotionalIntelligence']
       }
-    ]
+    ],
+    onEnter: [
+      {
+        thoughtId: 'identity-helping',
+        internalizeThought: true
+      }
+    ],
+    metadata: {
+      sessionBoundary: true
+    }
   },
 
   {
@@ -559,7 +595,16 @@ export const samuelIdentityNodes: DialogueNode[] = [
         pattern: 'building',
         skills: ['creativity']
       }
-    ]
+    ],
+    onEnter: [
+      {
+        thoughtId: 'identity-building',
+        internalizeThought: true
+      }
+    ],
+    metadata: {
+      sessionBoundary: true
+    }
   },
 
   {

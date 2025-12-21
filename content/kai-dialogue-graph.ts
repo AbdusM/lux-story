@@ -27,14 +27,19 @@ Three hours on this module. "Ensure harness is secured." Click Next. "Report haz
 
 Nobody clicks the actual harness.`,
         emotion: 'frustrated',
-        variation_id: 'kai_intro_v3'
+        variation_id: 'kai_intro_v3',
+        patternReflection: [
+          { pattern: 'analytical', minLevel: 5, altText: "Protective Life training office. Fluorescent lights. Late shift.\n\nFifteen slides. Fifteen 'Click Next' buttons.\n\nYou're already analyzing the system, aren't you? You can see the gap between compliance and actual safety.", altEmotion: 'interested' },
+          { pattern: 'building', minLevel: 5, altText: "Protective Life training office. Late shift.\n\nFifteen slides. Fifteen 'Click Next' buttons. That's what passes for safety training.\n\nYou look like someone who builds things. You know this could be designed better.", altEmotion: 'frustrated' },
+          { pattern: 'helping', minLevel: 5, altText: "Protective Life training office. Fluorescent lights.\n\nFifteen slides. 'Ensure harness is secured.' Click Next.\n\nYou've got kind eyes. You're probably wondering why this matters to me so much.", altEmotion: 'vulnerable' }
+        ]
       }
     ],
     choices: [
       {
         choiceId: 'kai_intro_systemic',
         text: "Compliance theater. The company gets liability protection, workers get a checkbox.",
-        nextNodeId: 'kai_system_frustration',
+        nextNodeId: 'kai_systemic_response',
         pattern: 'analytical',
         skills: ['systemsThinking', 'criticalThinking']
       },
@@ -52,14 +57,14 @@ Nobody clicks the actual harness.`,
       {
         choiceId: 'kai_intro_practical',
         text: "So redesign it. Make something better.",
-        nextNodeId: 'kai_system_frustration',
+        nextNodeId: 'kai_practical_response',
         pattern: 'building',
         skills: ['leadership', 'creativity']
       },
       {
         choiceId: 'kai_intro_patience',
         text: "[Let the silence hold. They'll continue when ready.]",
-        nextNodeId: 'kai_system_frustration',
+        nextNodeId: 'kai_patience_response',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'adaptability'],
         consequence: {
@@ -75,6 +80,74 @@ Nobody clicks the actual harness.`,
       }
     ],
     tags: ['introduction', 'kai_arc']
+  },
+
+  // Divergent responses for intro
+  {
+    nodeId: 'kai_systemic_response',
+    speaker: 'Kai',
+    content: [
+      {
+        text: `*They pause, a sharp look crossing their face.*
+
+You get it. Most people see a checkbox and think "safety." You see the gap between the policy and the practice.
+
+That's rare. Usually I have to explain why "completing training" and "being trained" aren't the same thing.`,
+        emotion: 'surprised_respect',
+        variation_id: 'systemic_response_v1',
+        patternReflection: [
+          { pattern: 'analytical', minLevel: 4, altText: "*They pause, a sharp look crossing their face.*\n\nYou get it. You see systems the way I do—not just the outputs, but the logic failures hiding inside.\n\nMost people see a checkbox and think 'safety.' You see the gap.", altEmotion: 'impressed' },
+          { pattern: 'building', minLevel: 4, altText: "*They pause.*\n\nYou get it. You're already thinking about how to fix it, aren't you?\n\nMost people stop at 'this is broken.' You see what it could be.", altEmotion: 'hopeful' }
+        ]
+      }
+    ],
+    choices: [
+      { choiceId: 'tell_gap', text: "Tell me more about that gap.", nextNodeId: 'kai_system_frustration' }
+    ]
+  },
+  {
+    nodeId: 'kai_practical_response',
+    speaker: 'Kai',
+    content: [
+      {
+        text: `*They laugh - but it's hollow.*
+
+Redesign it. Yeah. I have a master's degree in exactly that. Instructional design. UAB, 2022.
+
+You want to know what my capstone was? A VR safety simulation for manufacturing floors. Haptic feedback, real scenarios, actual muscle memory.
+
+It's sitting on a hard drive. Never deployed. Too expensive.`,
+        emotion: 'bitter_amusement',
+        variation_id: 'practical_response_v1',
+        patternReflection: [
+          { pattern: 'building', minLevel: 4, altText: "*They laugh - but it's hollow.*\n\nRedesign it. Yeah. I have a master's degree in exactly that.\n\nYou build things. You know what it's like to create something good that never gets used. VR safety simulation. Haptic feedback. Real scenarios.\n\nSitting on a hard drive. Too expensive.", altEmotion: 'vulnerable' },
+          { pattern: 'exploring', minLevel: 4, altText: "*They laugh - but it's hollow.*\n\nRedesign it. I have a master's degree in exactly that. UAB, 2022.\n\nYou're curious about the gap, aren't you? Between what's possible and what gets deployed.\n\nMy capstone is sitting on a hard drive. Never deployed.", altEmotion: 'bitter_amusement' }
+        ]
+      }
+    ],
+    choices: [
+      { choiceId: 'sounds_frustrating', text: "That sounds frustrating.", nextNodeId: 'kai_system_frustration' }
+    ]
+  },
+  {
+    nodeId: 'kai_patience_response',
+    speaker: 'Kai',
+    content: [
+      {
+        text: `*They take a breath. The fluorescent lights hum.*
+
+*After a moment, they continue - but their voice is quieter now.*
+
+Between us... you're the first person who hasn't tried to fix it with advice. Everyone else wants to solve me like I'm a problem to debug.
+
+Sometimes you just need someone to sit in the frustration with you.`,
+        emotion: 'grateful',
+        variation_id: 'patience_response_v1'
+      }
+    ],
+    choices: [
+      { choiceId: 'stay_quiet', text: "[Stay quiet. Let them continue.]", nextNodeId: 'kai_system_frustration' }
+    ]
   },
 
   {
@@ -117,6 +190,9 @@ So I build green checkmarks. Legal shields. And last week...`,
         nextNodeId: 'kai_accident_reveal',
         pattern: 'exploring',
         skills: ['curiosity', 'creativity'],
+        visibleCondition: {
+          patterns: { exploring: { min: 3 } }
+        },
         consequence: {
           characterId: 'kai',
           trustChange: 1
@@ -145,6 +221,9 @@ And none of it mattered when he was standing twenty feet up without checking his
         nextNodeId: 'kai_accident_reveal',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'empathy'],
+        visibleCondition: {
+          patterns: { helping: { min: 4 } }
+        },
         consequence: {
           characterId: 'kai',
           trustChange: 2
@@ -163,6 +242,9 @@ And none of it mattered when he was standing twenty feet up without checking his
         nextNodeId: 'kai_accident_reveal',
         pattern: 'exploring',
         skills: ['curiosity', 'criticalThinking'],
+        visibleCondition: {
+          patterns: { exploring: { min: 4 }, building: { min: 2 } }
+        },
         consequence: {
           characterId: 'kai',
           trustChange: 1
