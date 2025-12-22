@@ -1300,7 +1300,7 @@ export default function StatefulGameInterface() {
               </Button>
               {/* Header Controls */}
               {/* Menu Button - Positioned in top-right with safe area awareness */}
-              <div className="absolute top-4 right-4 pt-[env(safe-area-inset-top)] pr-[env(safe-area-inset-right)] sm:top-6 sm:right-6 z-40">
+              <div className="absolute top-2 right-4 pt-[env(safe-area-inset-top)] pr-[env(safe-area-inset-right)] sm:top-6 sm:right-6 z-40">
                 <GameMenu
                   onShowReport={() => setState(prev => ({ ...prev, showReport: true }))}
                   onReturnToStation={currentState === 'dialogue' ? handleReturnToStation : undefined}
