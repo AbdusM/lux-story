@@ -711,6 +711,10 @@ export default function StatefulGameInterface() {
         }
       }
 
+      // 6. SYNC TO ZUSTAND (Critical for Side Menus)
+      // Ensure Journal and Constellation get the latest state immediately
+      useGameStore.getState().setCoreGameState(GameStateUtils.serialize(newGameState))
+
       // Floating modules disabled - broke dialogue immersion
       const zustandStore = useGameStore.getState()
 
