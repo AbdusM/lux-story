@@ -536,9 +536,9 @@ export default function StatefulGameInterface() {
     }
   }, [])
 
-  // Navigation Handler
-  const handleReturnToStation = useCallback(() => {
-    logger.info('[StatefulGameInterface] Returning to Station (Manual Override)', { operation: 'handleReturnToStation' })
+  // Emergency Reset Handler (used by choice logic)
+  const emergencyReset = useCallback(() => {
+    logger.info('[StatefulGameInterface] Emergency Reset to Station', { operation: 'emergencyReset' })
 
     // Reset to safe start
     setState(prev => ({
