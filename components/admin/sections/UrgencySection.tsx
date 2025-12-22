@@ -10,6 +10,7 @@ import { AlertTriangle, RefreshCw, ArrowRight } from 'lucide-react'
 import { getUrgencyClasses } from '@/lib/admin-urgency-classes'
 import { formatAdminDate, type ViewMode } from '@/lib/admin-date-formatting'
 import type { SkillProfile } from '@/lib/skill-profile-adapter'
+import { InterventionTriggers } from '@/components/admin/InterventionTriggers'
 
 interface UrgencySectionProps {
   userId: string
@@ -170,6 +171,9 @@ export function UrgencySection({ userId, profile: _profile, adminViewMode }: Urg
                   {urgencyData.urgencyNarrative || "No narrative generated yet."}
                 </p>
               </div>
+
+              {/* MIVA 2.0 Intervention Triggers */}
+              <InterventionTriggers profile={_profile} adminViewMode={adminViewMode} />
 
               {/* Contributing Factors */}
               <div className="space-y-4">

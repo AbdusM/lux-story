@@ -35,6 +35,8 @@ export function Journal({ isOpen, onClose }: JournalProps) {
 
   // ... (hooks)
   const { characters, skills } = useConstellationData()
+  const insights = useInsights()
+
 
   // Reset detail view when tab changes
   useEffect(() => {

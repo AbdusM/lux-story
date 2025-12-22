@@ -4,6 +4,7 @@ export interface SkillDefinition {
     superpowerName: string
     definition: string
     manifesto: string
+    tacticalScenario?: string
 }
 
 export const SKILL_DEFINITIONS: Record<string, SkillDefinition> = {
@@ -298,6 +299,51 @@ export const SKILL_DEFINITIONS: Record<string, SkillDefinition> = {
         title: 'Communication',
         superpowerName: 'Radical Clarity',
         definition: 'Transmitting complex ideas with zero signal loss.',
-        manifesto: 'If they didn\'t understand, you didn\'t communicate. Simplicity is your sword.'
+        manifesto: 'If they didn\'t understand, you didn\'t communicate. Simplicity is your sword.',
+        tacticalScenario: 'Use when team alignment is fracturing. Cut through jargon and ambiguity to realign everyone on the singular objective.'
     }
+}
+
+// Skill-to-character development hints (Moved from SkillsView)
+export const SKILL_CHARACTER_HINTS: Record<string, string[]> = {
+    leadership: ['Maya', 'Samuel'],
+    courage: ['Kai', 'Maya'],
+    criticalThinking: ['Rohan', 'Kai'],
+    problemSolving: ['Devon', 'Rohan'],
+    systemsThinking: ['Silas', 'Rohan'],
+    crisisManagement: ['Silas', 'Kai'],
+    triage: ['Silas'],
+    digitalLiteracy: ['Rohan', 'Kai'],
+    technicalLiteracy: ['Rohan'],
+    adaptability: ['Kai', 'Jordan'],
+    resilience: ['Kai', 'Jordan'],
+    learningAgility: ['Rohan', 'Maya'],
+    emotionalIntelligence: ['Devon', 'Maya', 'Jordan'],
+    empathy: ['Jordan', 'Devon'],
+    patience: ['Samuel', 'Jordan'],
+    culturalCompetence: ['Jordan', 'Yaquin'],
+    creativity: ['Maya', 'Tess'],
+    marketing: ['Maya'],
+    communication: ['Samuel', 'Maya', 'Devon'],
+    collaboration: ['Devon', 'Jordan'],
+    humility: ['Rohan', 'Jordan'],
+    fairness: ['Silas', 'Jordan'],
+    pragmatism: ['Rohan', 'Samuel'],
+    deepWork: ['Rohan'],
+    timeManagement: ['Samuel', 'Kai'],
+    curriculumDesign: ['Kai'],
+    mentorship: ['Samuel'],
+    wisdom: ['Samuel', 'Yaquin'],
+    observation: ['Tess'],
+    curiosity: ['Tess', 'Rohan'],
+    integrity: ['Samuel', 'Silas'],
+    accountability: ['Kai', 'Samuel'],
+    financialLiteracy: ['Devon'],
+    actionOrientation: ['Kai', 'Maya'],
+    riskManagement: ['Silas', 'Kai'],
+    urgency: ['Silas'],
+    encouragement: ['Jordan', 'Samuel'],
+    respect: ['Samuel', 'Jordan'],
+    informationLiteracy: ['Rohan'],
+    strategicThinking: ['Maya', 'Silas']
 }
