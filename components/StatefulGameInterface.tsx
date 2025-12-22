@@ -185,6 +185,9 @@ export default function StatefulGameInterface() {
     isProcessing: false
   })
 
+  // Derived State for UI Logic
+  const currentState = state.gameState ? 'dialogue' : 'station'
+
   // Rich effects config - KEEPING NEW STAGGERED MODE
   const enableRichEffects = true
   const getRichEffectContext = useCallback((content: DialogueContent | null, _isLoading: boolean, _recentSkills: string[], _useChatPacing: boolean): RichTextEffect | undefined => {
@@ -533,6 +536,30 @@ export default function StatefulGameInterface() {
     }
   }, [])
 
+  // Navigation Handler
+  const handleReturnToStation = useCallback(() => {
+    logger.info('[StatefulGameInterface] Returning to Station (Manual Override)', { operation: 'handleReturnToStation' })
+
+    // Reset to safe start
+    setState(prev => ({
+      ...prev,
+      currentNode: null,
+      currentGraph: safeStart.graph,
+      currentCharacterId: safeStart.characterId,
+      currentNodeId: safeStart.graph.startNodeId,
+      availableChoices: [],
+      currentContent: '',
+      showReport: false,
+      showJournal: false,
+      showConstellation: false,
+      showJourneySummary: false,
+      error: null,
+      ambientEvent: null,
+      consequenceFeedback: null,
+      patternSensation: null
+    }))
+  }, [safeStart.graph, safeStart.characterId])
+
   // Choice handler
   const handleChoice = useCallback(async (choice: EvaluatedChoice) => {
     // Initialize audio on first user interaction (required for mobile)
@@ -565,29 +592,6 @@ export default function StatefulGameInterface() {
       const previousPatterns = { ...state.gameState.patterns } // Restored for echo check
       let newGameState = result.newState
       const trustDelta = result.trustDelta
-
-      const handleReturnToStation = () => {
-        logger.info('[StatefulGameInterface] Returning to Station (Manual Override)', { operation: 'handleReturnToStation' })
-
-        // Reset to safe start
-        setState(prev => ({
-          ...prev,
-          currentNode: null,
-          currentGraph: safeStart.graph,
-          currentCharacterId: safeStart.characterId,
-          currentNodeId: safeStart.graph.startNodeId,
-          availableChoices: [],
-          currentContent: '',
-          showReport: false,
-          showJournal: false,
-          showConstellation: false,
-          showJourneySummary: false,
-          error: null,
-          ambientEvent: null,
-          consequenceFeedback: null,
-          patternSensation: null
-        }))
-      }
 
       // ═══════════════════════════════════════════════════════════════════════════
       // RENDER
