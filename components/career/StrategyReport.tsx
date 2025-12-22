@@ -43,12 +43,12 @@ export function StrategyReport({ gameState, onClose }: StrategyReportProps) {
                 {/* Header */}
                 <header className="border-b-2 border-slate-900 pb-6 mb-8">
                     <h1 className="text-4xl font-bold text-slate-900 uppercase tracking-tight mb-2">
-                        Independent Narrative Analysis
+                        Core Signal Analysis
                     </h1>
                     <div className="flex justify-between items-end">
                         <div>
-                            <p className="text-lg font-medium text-slate-600">Candidate Profile</p>
-                            <p className="text-sm text-slate-400 mt-1">Generated via Lux Story Simulation</p>
+                            <p className="text-lg font-medium text-slate-600">Operator Designation</p>
+                            <p className="text-sm text-slate-400 mt-1">Origin: Lux Story Simulation</p>
                         </div>
                         <div className="text-right">
                             <p className="text-2xl font-bold text-slate-900">{profile.strategicRole}</p>
