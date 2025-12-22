@@ -81,7 +81,10 @@ export function DialogueDisplay({
   // Auto-enable chat pacing for nodes >40 words (Twitter-like threshold)
   // Twitter max is ~50 words, so 40 words creates engaging progressive reveal
   const wordCount = text.split(/\s+/).length
-  const shouldUseChatPacing = useChatPacing || (wordCount > 40 && characterName)
+  // DISABLED: ChatPacedDialogue has critical rendering bugs (blank screen).
+  // We are forcing this to false globally to ensure content is always visible via RichTextRenderer.
+  // This overrides both the auto-detection and explicit content flags.
+  const shouldUseChatPacing = false // useChatPacing || (wordCount > 40 && characterName)
 
   // If chat pacing is enabled, use ChatPacedDialogue for sequential reveal
   if (shouldUseChatPacing && characterName) {
