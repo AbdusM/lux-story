@@ -2,140 +2,193 @@
 
 import { useMemo } from "react"
 import { motion } from "framer-motion"
-import { useInsights } from "@/hooks/useInsights"
-import { PATTERN_METADATA } from "@/lib/patterns"
+import { useConstellationData } from "@/hooks/useConstellationData"
+import { SKILL_CLUSTERS, type SkillCluster } from "@/lib/constellation/skill-positions"
+import { cn } from "@/lib/utils"
 
 /**
- * Essence Sigil
- * Replaces the "Style" tab.
+ * Essence Sigil (The Soul Radar)
+ * Visualizes the user's capability profile across the 6 dimensions.
  * 
- * Concept: Your Soul has a shape.
- * Implementation: A generative SVG that morphs based on your dominant patterns.
- * - Analytical: Sharp angles, geometric precision.
- * - Patience: Smooth curves, concentric circles.
- * - Helping: Radiating lines, open shapes.
- * - Exploring: Asymmetry, wandering paths.
- * - Building: Solid blocks, constructive foundations.
+ * Geometry: Hexagon
+ * Vertices:
+ * - Top: Mind (-90°)
+ * - Top-Right: Voice (-30°)
+ * - Bottom-Right: Compass (30°)
+ * - Bottom: Craft (90°)
+ * - Bottom-Left: Hands (150°)
+ * - Top-Left: Heart (210°)
  */
+
+const ORDERED_CLUSTERS: SkillCluster[] = ['mind', 'voice', 'compass', 'craft', 'hands', 'heart']
+
+const CENTER = { x: 150, y: 150 }
+const RADIUS = 100
+
 export function EssenceSigil() {
-    const { raw, decisionStyle } = useInsights()
-    const patterns = raw.patterns
+    const { skills } = useConstellationData()
 
-    // Calculate parameters for the generative art
-    const params = useMemo(() => {
-        const total = Object.values(patterns).reduce((a, b) => a + b, 0) || 1
+    // Calculate scores per cluster (0 to 1)
+    const clusterScores = useMemo(() => {
+        const scores: Record<string, number> = {}
 
-        // Normalize weights (0-1)
-        return {
-            sharpness: (patterns.analytical + patterns.building) / total, // 0 = round, 1 = sharp
-            complexity: (patterns.exploring + patterns.analytical) / total, // line density
-            radiance: (patterns.helping + patterns.exploring) / total, // outer glow/rays
-            stability: (patterns.patience + patterns.building) / total, // rotation speed (inverse)
-            color: PATTERN_METADATA[decisionStyle.primaryPattern?.type || 'patience'].color
-        }
-    }, [patterns, decisionStyle])
+        ORDERED_CLUSTERS.forEach(cluster => {
+            const clusterSkills = skills.filter(s => s.cluster === cluster)
+            if (clusterSkills.length === 0) {
+                scores[cluster] = 0.1 // Base presence
+                return
+            }
+            // Count "awakened" skills (demonstrationCount > 0)
+            const unlocked = clusterSkills.filter(s => s.state !== 'dormant').length
+            const total = clusterSkills.length
+            // Base score: % of skills unlocked. 
+            // Cap minimum at 0.1 so the shape doesn't collapse to a dot.
+            scores[cluster] = Math.max(0.15, unlocked / total)
+        })
+        return scores
+    }, [skills])
+
+    // Generate Path Data
+    const generatePath = (scaleFunction: (cluster: string) => number) => {
+        return ORDERED_CLUSTERS.map((cluster, i) => {
+            const angleDeg = -90 + (i * 60)
+            const angleRad = (angleDeg * Math.PI) / 180
+            const r = RADIUS * scaleFunction(cluster)
+            const x = CENTER.x + r * Math.cos(angleRad)
+            const y = CENTER.y + r * Math.sin(angleRad)
+            return `${i === 0 ? 'M' : 'L'} ${x.toFixed(1)} ${y.toFixed(1)}`
+        }).join(" ") + " Z"
+    }
+
+    const fullHexagonPath = generatePath(() => 1) // Full potential (radius 100%)
+    const soulPath = generatePath((c) => clusterScores[c]) // Actual capability
+
+    // Calculate total progress for label
+    const totalUnlocked = skills.filter(s => s.state !== 'dormant').length
+    const totalSkills = skills.length
+    const resonanceLevel = Math.round((totalUnlocked / totalSkills) * 100)
 
     return (
-        <div className="flex flex-col items-center justify-center py-12 space-y-8 min-h-[400px]">
+        <div className="flex flex-col items-center justify-center py-8 space-y-6 min-h-[400px]">
 
-            {/* The Sigil */}
-            <div className="relative w-64 h-64 flex items-center justify-center">
-                {/* Generative SVG */}
-                <motion.svg
-                    viewBox="0 0 200 200"
-                    className="w-full h-full drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]"
-                    animate={{ rotate: 360 }}
-                    transition={{
-                        duration: 60 * (1 - params.stability) + 20, // 20s (unstable) to 80s (stable)
-                        repeat: Infinity,
-                        ease: "linear"
-                    }}
-                >
+            {/* The Radar */}
+            <div className="relative w-[300px] h-[300px]">
+                <svg viewBox="0 0 300 300" className="w-full h-full overflow-visible">
                     <defs>
-                        <radialGradient id="sigilGlow" cx="50%" cy="50%" r="50%">
-                            <stop offset="0%" stopColor={params.color} stopOpacity="0.4" />
-                            <stop offset="100%" stopColor={params.color} stopOpacity="0" />
+                        <radialGradient id="soulGradient" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" stopColor="#8B5CF6" stopOpacity="0.3" /> {/* Violet Center */}
+                            <stop offset="100%" stopColor="#3B82F6" stopOpacity="0.1" /> {/* Blue Edge */}
                         </radialGradient>
                     </defs>
 
-                    {/* Background Glow */}
-                    <circle cx="100" cy="100" r="80" fill="url(#sigilGlow)" />
-
-                    {/* Core Shape - Morphs between Circle (Patience) and Square/Poly (Analytical) */}
-                    <motion.path
-                        d={generateCorePath(params.sharpness)}
-                        fill="none"
-                        stroke={params.color}
-                        strokeWidth="2"
-                        initial={{ pathLength: 0 }}
-                        animate={{ pathLength: 1 }}
-                        transition={{ duration: 2, ease: "easeInOut" }}
-                    />
-
-                    {/* Radiating Lines (Helping/Exploring) */}
-                    {Array.from({ length: 8 }).map((_, i) => (
-                        <motion.line
+                    {/* 1. Background Grid (Web) */}
+                    {[0.25, 0.5, 0.75, 1].map((scale, i) => (
+                        <path
                             key={i}
-                            x1="100" y1="100"
-                            x2={100 + Math.cos(i * Math.PI / 4) * (50 + params.radiance * 40)}
-                            y2={100 + Math.sin(i * Math.PI / 4) * (50 + params.radiance * 40)}
-                            stroke={params.color}
-                            strokeWidth="1"
-                            opacity={params.radiance}
-                            strokeDasharray="4 4"
-                            animate={{
-                                opacity: [0.2, params.radiance, 0.2],
-                                strokeDashoffset: [0, 10]
-                            }}
-                            transition={{ duration: 3, repeat: Infinity, delay: i * 0.1 }}
+                            d={generatePath(() => scale)}
+                            fill="none"
+                            stroke="currentColor"
+                            strokeOpacity={i === 3 ? 0.3 : 0.1}
+                            className="text-slate-300 dark:text-slate-600"
                         />
                     ))}
 
-                    {/* Complexity Orbits */}
-                    {params.complexity > 0.3 && (
-                        <ellipse cx="100" cy="100" rx={40 + params.complexity * 20} ry={40 - params.complexity * 10}
-                            stroke={params.color} strokeWidth="0.5" fill="none" opacity="0.5"
-                        />
-                    )}
+                    {/* 2. Axis Lines */}
+                    {ORDERED_CLUSTERS.map((_, i) => {
+                        const angleDeg = -90 + (i * 60)
+                        const angleRad = (angleDeg * Math.PI) / 180
+                        const x = CENTER.x + RADIUS * Math.cos(angleRad)
+                        const y = CENTER.y + RADIUS * Math.sin(angleRad)
+                        return (
+                            <line
+                                key={i}
+                                x1={CENTER.x} y1={CENTER.y}
+                                x2={x} y2={y}
+                                stroke="currentColor"
+                                strokeOpacity="0.1"
+                                className="text-slate-300 dark:text-slate-600"
+                            />
+                        )
+                    })}
 
-                </motion.svg>
+                    {/* 3. The Soul Shape (Dynamic) */}
+                    <motion.path
+                        d={soulPath}
+                        fill="url(#soulGradient)"
+                        stroke="#8B5CF6"
+                        strokeWidth="2"
+                        initial={{ d: generatePath(() => 0.1) }}
+                        animate={{ d: soulPath }}
+                        transition={{ duration: 1.5, type: "spring", bounce: 0.2 }}
+                        className="drop-shadow-[0_0_8px_rgba(139,92,246,0.3)]"
+                    />
 
-                {/* Center Anchor */}
-                <div className="absolute w-4 h-4 rounded-full bg-white shadow-[0_0_10px_white]" />
+                    {/* 4. Vertices (Dots) */}
+                    {ORDERED_CLUSTERS.map((cluster, i) => {
+                        const score = clusterScores[cluster]
+                        const angleDeg = -90 + (i * 60)
+                        const angleRad = (angleDeg * Math.PI) / 180
+                        const r = RADIUS * score
+                        const x = CENTER.x + r * Math.cos(angleRad)
+                        const y = CENTER.y + r * Math.sin(angleRad)
+
+                        // Label Position (pushed out slightly)
+                        const labelR = RADIUS + 25
+                        const labelX = CENTER.x + labelR * Math.cos(angleRad)
+                        const labelY = CENTER.y + labelR * Math.sin(angleRad)
+
+                        return (
+                            <g key={cluster}>
+                                {/* Data Dot */}
+                                <motion.circle
+                                    cx={x} cy={y}
+                                    r={4}
+                                    fill={SKILL_CLUSTERS[cluster].color}
+                                    initial={{ scale: 0 }}
+                                    animate={{ scale: 1, cx: x, cy: y }}
+                                    transition={{ delay: 0.5 + i * 0.1 }}
+                                />
+
+                                {/* Label Group */}
+                                <g transform={`translate(${labelX}, ${labelY})`}>
+                                    <text
+                                        textAnchor="middle"
+                                        dominantBaseline="middle"
+                                        className="text-[10px] font-bold uppercase tracking-widest fill-slate-500 dark:fill-slate-400 font-sans"
+                                    >
+                                        {SKILL_CLUSTERS[cluster].name}
+                                    </text>
+                                    <text
+                                        y={12}
+                                        textAnchor="middle"
+                                        dominantBaseline="middle"
+                                        className="text-[8px] fill-slate-400 dark:fill-slate-500 font-mono"
+                                    >
+                                        {Math.round(score * 100)}%
+                                    </text>
+                                </g>
+                            </g>
+                        )
+                    })}
+                </svg>
             </div>
 
-            {/* Description */}
-            <div className="text-center max-w-xs space-y-2">
-                <h3 className="font-serif text-xl font-bold" style={{ color: params.color }}>
-                    {decisionStyle.primaryPattern?.label || "The Void"}
+            {/* Status Footer */}
+            <div className="text-center space-y-2">
+                <h3 className="text-sm font-serif italic text-slate-500 dark:text-slate-400">
+                    "The shape of your resonance."
                 </h3>
-                <p className="text-xs text-slate-500 font-medium leading-relaxed">
-                    {decisionStyle.primaryPattern?.description}
-                </p>
-
-                {decisionStyle.secondaryPattern && (
-                    <p className="text-[10px] text-slate-400 mt-2">
-                        Tempered by <span className="font-semibold">{decisionStyle.secondaryPattern.label}</span>
-                    </p>
-                )}
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-full border border-slate-200 dark:border-slate-700">
+                    <div className="w-1.5 h-1.5 rounded-full bg-violet-500 animate-pulse" />
+                    <span className="text-[10px] uppercase tracking-widest font-bold text-slate-600 dark:text-slate-300">
+                        Total Symmetry: {resonanceLevel}%
+                    </span>
+                </div>
             </div>
-
         </div>
     )
 }
 
-// Helper to morph shape smoothly
-// Reverted to Distinct Geometric Shapes for Craftsmanship
-// We want crisp, intentional forms.
 function generateCorePath(sharpness: number): string {
-    if (sharpness > 0.6) {
-        // The Diamond (Sharp, Analytical)
-        return "M 100 20 L 180 100 L 100 180 L 20 100 Z"
-    } else if (sharpness > 0.3) {
-        // The Hexagon (Building, Structured)
-        return "M 100 20 L 170 60 L 170 140 L 100 180 L 30 140 L 30 60 Z"
-    } else {
-        // The Circle (Patience, Flow)
-        return "M 100 20 A 80 80 0 1 1 99.9 20 Z"
-    }
+    return "" // Deprecated
 }
