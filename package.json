@@ -1,6 +1,6 @@
 {
   "name": "lux-story",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "type": "module",
   "description": "Performance-based career exploration platform using contemplative storytelling and behavioral psychology",
   "main": "index.js",
