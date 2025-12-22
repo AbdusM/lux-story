@@ -1299,14 +1299,12 @@ export default function StatefulGameInterface() {
                 <Stars className="h-4 w-4" />
               </Button>
               {/* Header Controls */}
-              <div
-                className="absolute right-4 z-50 flex items-center gap-2"
-                style={{ top: 'calc(1rem + env(safe-area-inset-top))' }}
-              >
+              {/* Menu Button - Positioned in top-right with safe area awareness */}
+              <div className="absolute top-4 right-4 pt-[env(safe-area-inset-top)] pr-[env(safe-area-inset-right)] sm:top-6 sm:right-6 z-40">
                 <GameMenu
                   onShowReport={() => setState(prev => ({ ...prev, showReport: true }))}
-                  onReturnToStation={handleReturnToStation}
-                  onShowConstellation={() => setState(prev => ({ ...prev, showConstellation: true, showJournal: false }))}
+                  onReturnToStation={currentState === 'dialogue' ? handleReturnToStation : undefined}
+                  onShowConstellation={() => setState(prev => ({ ...prev, showConstellation: true }))}
                   isMuted={state.isMuted}
                   onToggleMute={() => {
                     const newMuted = !state.isMuted
