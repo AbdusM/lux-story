@@ -61,15 +61,19 @@ function HarmonicOrb({ orb, index }: { orb: OrbState; index: number }) {
         // Trigger Haptic
         triggerHaptic('light')
 
-        // Visual Jolt
-        x.set(Math.random() * 20 - 10)
-        y.set(Math.random() * 20 - 10)
+        // Visual Jolt - Spring Physics
+        // We set a target, then quickly release it to let spring dampen it
+        const joltX = (Math.random() - 0.5) * 40
+        const joltY = (Math.random() - 0.5) * 40
 
-        // Recover quickly
-        setTimeout(() => {
-            x.set(0)
-            y.set(0)
-        }, 100)
+        x.set(joltX) // Instant displacement (plucking the string)
+        y.set(joltY)
+
+        // The spring hook naturally wants to go to '0' (passed in hook)
+        // actually useSpring(0) sets the *goal* to 0. 
+        // .set() forcefully updates the *current value*.
+        // So setting it to 20 means "I am now at 20, go to 0".
+        // This creates a perfect organic recoil.
     }
 
     return (
