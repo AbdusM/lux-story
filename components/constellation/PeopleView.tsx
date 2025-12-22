@@ -15,7 +15,7 @@ export function PeopleView({ characters, onOpenDetail }: PeopleViewProps) {
   return (
     <div className="h-full flex flex-col">
       {/* Dynamic Force Graph - extra padding top for mobile spacing */}
-      <div className="flex-1 relative bg-gradient-to-b from-slate-900 via-slate-900/95 to-slate-800/90 rounded-lg overflow-hidden">
+      <div className="flex-1 relative rounded-lg overflow-hidden bg-slate-900">
         <ConstellationGraph
           characters={characters}
           onOpenDetail={handleOpenDetail}

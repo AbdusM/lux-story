@@ -6,6 +6,7 @@ import { X, Lock, User } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { CharacterWithState, SkillWithState } from '@/hooks/useConstellationData'
 import { CHARACTER_COLORS } from '@/lib/constellation/character-positions'
+import { SKILL_DEFINITIONS, SKILL_CHARACTER_HINTS } from '@/lib/skill-definitions'
 // SKILL_CLUSTERS import removed - unused
 
 interface DetailModalProps {
@@ -205,50 +206,108 @@ function CharacterDetail({ character, onClose }: { character: CharacterWithState
 
 function SkillDetail({ skill, onClose }: { skill: SkillWithState; onClose: () => void }) {
   const isDormant = skill.state === 'dormant'
+  const def = SKILL_DEFINITIONS[skill.id]
 
   return (
     <div className="p-4 sm:p-6">
-      {/* Simple Header */}
-      <div className="flex items-center gap-3 mb-4">
+      {/* Rich Header */}
+      <div className="flex items-start gap-4 mb-6">
         <div
-          className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
+          className="w-14 h-14 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg"
           style={{
-            backgroundColor: isDormant ? '#374151' : skill.color,
-            opacity: isDormant ? 0.5 : 1
+            backgroundColor: isDormant ? '#334155' : skill.color,
+            boxShadow: isDormant ? 'none' : `0 0 20px ${skill.color}40`
           }}
         >
           {isDormant ? (
-            <Lock className="w-5 h-5 text-slate-500" />
+            <Lock className="w-6 h-6 text-slate-500" />
           ) : (
-            <span className="text-white text-lg font-bold">
+            <span className="text-white text-xl font-bold font-mono">
               {skill.demonstrationCount}
             </span>
           )}
         </div>
-        <div className="flex-1 min-w-0">
-          <h2 className="text-lg font-bold text-white">{skill.name}</h2>
-          {!isDormant && (
-            <p className="text-sm text-slate-400">
-              Demonstrated {skill.demonstrationCount} time{skill.demonstrationCount !== 1 ? 's' : ''}
+
+        <div className="flex-1 min-w-0 pt-1">
+          <h2 className="text-2xl font-bold text-white tracking-tight">{skill.name}</h2>
+          {def && (
+            <p className="text-amber-400 font-mono text-xs uppercase tracking-widest mt-1">
+              {def.superpowerName}
             </p>
           )}
         </div>
+
         <button
           onClick={onClose}
           className="min-w-[44px] min-h-[44px] p-2 rounded-full hover:bg-slate-800 transition-colors flex items-center justify-center flex-shrink-0"
           aria-label="Close"
         >
-          <X className="w-5 h-5 text-slate-400" />
+          <X className="w-6 h-6 text-slate-400" />
         </button>
       </div>
 
-      {/* Simple description */}
-      <p className="text-slate-300 text-sm leading-relaxed">
-        {isDormant
-          ? `Make choices that demonstrate ${skill.name.toLowerCase()} to develop this skill.`
-          : getSkillDescription(skill.id)
-        }
-      </p>
+      {/* Content */}
+      <div className="space-y-6">
+        {isDormant && (
+          <div className="p-3 rounded-lg bg-slate-800/50 border border-slate-700 text-center mb-4">
+            <p className="text-slate-400 italic text-sm">
+              "This capability is currently dormant. Demonstrate it to unlock its full potential."
+            </p>
+          </div>
+        )}
+
+        {/* Definition & Scenario (Always Visible) */}
+        {def && (
+          <div className={cn("space-y-6", isDormant && "opacity-75 grayscale-[0.3]")}>
+            <div>
+              <h4 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">
+                Core Function
+              </h4>
+              <p className="text-slate-300 text-base leading-relaxed font-light">
+                {def.definition}
+              </p>
+            </div>
+
+            {/* TACTICAL SCENARIO (Video Game Style Application) */}
+            {def.tacticalScenario && (
+              <div className="bg-slate-800/80 rounded-lg p-4 border-l-2 border-amber-500">
+                <h4 className="text-[10px] font-bold text-amber-500 uppercase tracking-widest mb-1 flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+                  Tactical Application
+                </h4>
+                <p className="text-slate-200 text-sm italic">
+                  "{def.tacticalScenario}"
+                </p>
+              </div>
+            )}
+
+            <div>
+              <h4 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">
+                The Manifesto
+              </h4>
+              <p className="text-slate-400 italic text-sm border-l-2 border-slate-700 pl-4 py-1">
+                "{def.manifesto}"
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Teaching Characters (Only if unlocked? Or always? Let's show always for help) */}
+        {SKILL_CHARACTER_HINTS[skill.id] && (
+          <div className="pt-4 border-t border-slate-800">
+            <p className="text-xs text-slate-500 uppercase tracking-widest mb-3">
+              Practitioners
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {SKILL_CHARACTER_HINTS[skill.id].map(name => (
+                <span key={name} className="px-2 py-1 rounded bg-slate-800 text-slate-300 text-xs">
+                  {name}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   )
 }
@@ -269,7 +328,8 @@ function getCharacterDescription(id: string): string {
     silas: "Silas manages complex systems under pressure. He teaches triage, dependency recognition, and maintaining calm when everything is failing.",
     marcus: "Marcus makes split-second decisions in medical emergencies. He demonstrates that sometimes the right choice has to come before full understanding.",
     kael: "Kael works in the silence of the deep ocean. He teaches that true focus isn't just about concentration—it's about finding stillness in the most hostile environments.",
-    omari: "Omari navigates the high-stakes world of venture capital and social impact. He teaches how to build bridges between resources and need, proving that profit and purpose can scale together."
+    omari: "Omari navigates the high-stakes world of venture capital and social impact. He teaches how to build bridges between resources and need, proving that profit and purpose can scale together.",
+    yaquin: "Yaquin harmonizes the ancient with the futuristic. Through his study of cultural patterns, he teaches that true innovation requires a deep respect for the human history that preceded it."
   }
   return descriptions[id] || "A unique perspective on career and growth."
 }

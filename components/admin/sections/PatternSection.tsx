@@ -8,6 +8,7 @@ import { Brain, TrendingUp, Lightbulb, AlertCircle, CheckCircle2, Target } from 
 import type { PatternProfile } from '@/lib/pattern-profile-adapter'
 import type { SkillProfile } from '@/lib/skill-profile-adapter'
 import { formatPatternName, getPatternDescription } from '@/lib/patterns'
+import { SkillAcquisitionTimeline } from '@/components/admin/SkillAcquisitionTimeline'
 
 interface PatternSectionProps {
   userId: string
@@ -192,6 +193,11 @@ export function PatternSection({ userId, profile: _profile, adminViewMode }: Pat
         </CardContent>
       </Card>
 
+      {/* MIVA 2.0 Velocity Timeline */}
+      {_profile.skillEvolution && _profile.skillEvolution.length > 0 && (
+        <SkillAcquisitionTimeline data={_profile.skillEvolution} adminViewMode={adminViewMode} />
+      )}
+
       {/* Diversity & Skills Card */}
       <Card className="shadow-md">
         <CardHeader>
@@ -207,11 +213,10 @@ export function PatternSection({ userId, profile: _profile, adminViewMode }: Pat
               <div className="flex-1">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="font-semibold text-gray-900">Decision Diversity</h3>
-                  <Badge className={`${
-                    diversityScore.score >= 70 ? 'bg-green-600' :
+                  <Badge className={`${diversityScore.score >= 70 ? 'bg-green-600' :
                     diversityScore.score >= 40 ? 'bg-amber-600' :
-                    'bg-red-600'
-                  } text-white`}>
+                      'bg-red-600'
+                    } text-white`}>
                     {diversityScore.score}/100
                   </Badge>
                 </div>

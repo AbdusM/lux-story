@@ -1306,6 +1306,7 @@ export default function StatefulGameInterface() {
                 <GameMenu
                   onShowReport={() => setState(prev => ({ ...prev, showReport: true }))}
                   onReturnToStation={handleReturnToStation}
+                  onShowConstellation={() => setState(prev => ({ ...prev, showConstellation: true, showJournal: false }))}
                   isMuted={state.isMuted}
                   onToggleMute={() => {
                     const newMuted = !state.isMuted
@@ -1314,6 +1315,7 @@ export default function StatefulGameInterface() {
                     synthEngine.setMute(newMuted)
                     setAudioEnabled(!newMuted) // NEW: Kill the OGG tracks too
                   }}
+                  playerId={state.gameState?.playerId}
                 />
               </div>
 
