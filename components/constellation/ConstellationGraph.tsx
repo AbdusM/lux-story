@@ -1,11 +1,10 @@
 "use client"
 
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import * as d3 from 'd3-force'
 import { cn } from '@/lib/utils'
 import type { CharacterWithState } from '@/hooks/useConstellationData'
-import { CHARACTER_CONNECTIONS, CHARACTER_COLORS } from '@/lib/constellation/character-positions'
+import { CHARACTER_CONNECTIONS, CHARACTER_COLORS, getCharacterById } from '@/lib/constellation/character-positions'
 
 interface ConstellationGraphProps {
     characters: CharacterWithState[]
@@ -14,122 +13,19 @@ interface ConstellationGraphProps {
     height?: number
 }
 
-// Force graph node extension
-interface SimulationNode extends d3.SimulationNodeDatum {
-    id: string
-    character: CharacterWithState
-    r: number
-}
-
-interface SimulationLink extends d3.SimulationLinkDatum<SimulationNode> {
-    source: string | SimulationNode
-    target: string | SimulationNode
-}
-
-export function ConstellationGraph({ characters, onOpenDetail, width = 400, height = 400 }: ConstellationGraphProps) {
-    const svgRef = useRef<SVGSVGElement>(null)
-    const [nodes, setNodes] = useState<SimulationNode[]>([])
-    const [links, setLinks] = useState<SimulationLink[]>([])
-    const [selectedId, setSelectedId] = useState<string | null>(null)
+export function ConstellationGraph({ characters, onOpenDetail }: ConstellationGraphProps) {
     const [hoveredId, setHoveredId] = useState<string | null>(null)
+    const [selectedId, setSelectedId] = useState<string | null>(null)
 
-    // Initialize simulation data
-    useEffect(() => {
-        if (!characters.length) return
-
-        // Create nodes only for met characters (or all if desired, but strictly filtered for now)
-        const metCharacters = characters.filter(c => c.hasMet)
-
-        const newNodes: SimulationNode[] = metCharacters.map(char => ({
-            id: char.id,
-            character: char,
-            r: char.isMajor ? 25 : 18, // Visual radius
-            x: char.position.x * (width / 100), // Initial position from static map
-            y: char.position.y * (height / 100)
-        }))
-
-        // Create links based on connections between met characters
-        const metIds = new Set(metCharacters.map(c => c.id))
-        const newLinks: SimulationLink[] = CHARACTER_CONNECTIONS
-            .filter(([from, to]) => metIds.has(from) && metIds.has(to))
-            .map(([from, to]) => ({
-                source: from,
-                target: to
-            }))
-
-        setNodes(newNodes)
-        setLinks(newLinks)
-    }, [characters, width, height])
-
-    // D3 Simulation
-    useEffect(() => {
-        if (!nodes.length || !svgRef.current) return
-
-        const simulation = d3.forceSimulation<SimulationNode>(nodes)
-            .force('link', d3.forceLink<SimulationNode, SimulationLink>(links).id(d => d.id).distance(80))
-            .force('charge', d3.forceManyBody().strength(-200)) // Repulsion
-            .force('center', d3.forceCenter(width / 2, height / 2).strength(0.05)) // Gentle centering
-            .force('collide', d3.forceCollide<SimulationNode>().radius(d => d.r * 1.5).iterations(2))
-
-        // Magnetic Cursor Force
-        const canvas = svgRef.current
-        const handleMouseMove = (event: MouseEvent | TouchEvent) => {
-            // Get mouse/touch position relative to SVG
-            let clientX, clientY;
-            if ('touches' in event) {
-                clientX = event.touches[0].clientX
-                clientY = event.touches[0].clientY
-            } else {
-                clientX = (event as MouseEvent).clientX
-                clientY = (event as MouseEvent).clientY
-            }
-
-            const rect = canvas.getBoundingClientRect()
-            const x = clientX - rect.left
-            const y = clientY - rect.top
-
-            // Custom simple force: if node is close to mouse, push it away
-            simulation.alphaTarget(0.1).restart() // Keep simulation warm
-
-            nodes.forEach(node => {
-                if (typeof node.x !== 'number' || typeof node.y !== 'number') return
-
-                const dx = node.x - x
-                const dy = node.y - y
-                const distance = Math.sqrt(dx * dx + dy * dy)
-                const repulsionRadius = 100 // Radius of magnetic effect
-
-                if (distance < repulsionRadius) {
-                    const force = (repulsionRadius - distance) / repulsionRadius // 0 to 1
-                    const strength = 2 // pixels per tick push
-                    // Apply velocity directly for responsiveness
-                    node.vx = (node.vx || 0) + (dx / distance) * force * strength
-                    node.vy = (node.vy || 0) + (dy / distance) * force * strength
-                }
-            })
-        }
-
-        canvas.addEventListener('mousemove', handleMouseMove)
-        canvas.addEventListener('touchmove', handleMouseMove, { passive: false })
-        canvas.addEventListener('mouseleave', () => simulation.alphaTarget(0))
-
-        simulation.on('tick', () => {
-            setNodes([...nodes])
-        })
-
-        // Cleanup
-        return () => {
-            simulation.stop()
-            canvas.removeEventListener('mousemove', handleMouseMove)
-            canvas.removeEventListener('touchmove', handleMouseMove)
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [nodes.length, links.length, width, height])
+    // Helper to get character state (since we need to look up connection targets)
+    const getCharState = (id: string) => characters.find(c => c.id === id)
 
     // Interaction Handlers
-    const handleNodeClick = (node: SimulationNode) => {
-        const isSelected = selectedId === node.id
-        setSelectedId(isSelected ? null : node.id)
+    const handleNodeClick = (char: CharacterWithState) => {
+        if (!char.hasMet) return // Ignore clicks on ghost nodes
+
+        const isSelected = selectedId === char.id
+        setSelectedId(isSelected ? null : char.id)
         if (!isSelected) {
             // Small haptic if available
             if (typeof navigator !== 'undefined' && navigator.vibrate) {
@@ -138,21 +34,18 @@ export function ConstellationGraph({ characters, onOpenDetail, width = 400, heig
         }
     }
 
-    const handleNodeDoubleClick = (node: SimulationNode) => {
-        if (onOpenDetail) onOpenDetail(node.character)
+    const handleNodeDoubleClick = (char: CharacterWithState) => {
+        if (char.hasMet && onOpenDetail) onOpenDetail(char)
     }
 
-    // Drag behavior (conceptually - simpler to implement with mouse events for now)
-    // implementing full d3 drag in React is verbose, using click/hover for "Magnetic" feel first
-
-    const selectedNode = nodes.find(n => n.id === selectedId)
+    const selectedChar = characters.find(c => c.id === selectedId)
 
     return (
-        <div className="relative w-full h-full flex items-center justify-center">
+        <div className="relative w-full h-full flex items-center justify-center bg-slate-50/50 dark:bg-slate-900/0">
+            {/* SVG Container - Uses 0-100 coordinate space for easy responsive scaling */}
             <svg
-                ref={svgRef}
-                viewBox={`0 0 ${width} ${height}`}
-                className="w-full h-full max-w-[500px] max-h-[500px] touch-none"
+                viewBox="0 0 100 100"
+                className="w-full h-full max-w-[600px] max-h-[600px] touch-none select-none"
                 style={{ overflow: 'visible' }}
             >
                 <defs>
@@ -161,133 +54,184 @@ export function ConstellationGraph({ characters, onOpenDetail, width = 400, heig
                         <stop offset="100%" stopColor="white" stopOpacity="0" />
                     </radialGradient>
                     <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-                        <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+                        <feGaussianBlur stdDeviation="1.5" result="coloredBlur" />
                         <feMerge>
                             <feMergeNode in="coloredBlur" />
                             <feMergeNode in="SourceGraphic" />
                         </feMerge>
                     </filter>
-
                     {/* Node Gradients */}
-                    <radialGradient id="node-gradient-emerald" cx="30%" cy="30%" r="70%">
-                        <stop offset="0%" stopColor="#34d399" stopOpacity="0.8" />
-                        <stop offset="100%" stopColor="#059669" stopOpacity="0.4" />
-                    </radialGradient>
-                    <radialGradient id="node-gradient-blue" cx="30%" cy="30%" r="70%">
-                        <stop offset="0%" stopColor="#60a5fa" stopOpacity="0.8" />
-                        <stop offset="100%" stopColor="#2563eb" stopOpacity="0.4" />
-                    </radialGradient>
-                    <radialGradient id="node-gradient-amber" cx="30%" cy="30%" r="70%">
-                        <stop offset="0%" stopColor="#fbbf24" stopOpacity="0.8" />
-                        <stop offset="100%" stopColor="#d97706" stopOpacity="0.4" />
-                    </radialGradient>
-                    <radialGradient id="node-gradient-slate" cx="30%" cy="30%" r="70%">
-                        <stop offset="0%" stopColor="#94a3b8" stopOpacity="0.8" />
-                        <stop offset="100%" stopColor="#475569" stopOpacity="0.4" />
-                    </radialGradient>
+                    {Object.entries(CHARACTER_COLORS).map(([name, colors]) => (
+                        <radialGradient key={name} id={`grad-${name}`} cx="30%" cy="30%" r="70%">
+                            {/* Extract hex colors would be better, but approximating with CSS vars or safe fallbacks */}
+                            {/* Since we can't easily map Tailwind classes to SVG stops without a helper, 
+                                we'll use a specific set of colors or let the class handles it. 
+                                Actually, for "Mass Effect" style, simple geometric fills often look cleaner. 
+                                We'll use the 'fill-current' approach with text classes.
+                            */}
+                        </radialGradient>
+                    ))}
                 </defs>
 
-                {/* Links */}
-                <g className="links">
-                    {links.map((link) => {
-                        const source = link.source as SimulationNode
-                        const target = link.target as SimulationNode
+                {/* --- CONNECTIONS LAYER (Bottom) --- */}
+                <g className="links opacity-80">
+                    {CHARACTER_CONNECTIONS.map(([sourceId, targetId]) => {
+                        const source = getCharState(sourceId)
+                        const target = getCharState(targetId)
+
+                        // If either end doesn't exist in our data (shouldn't happen), skip
+                        if (!source || !target) return null
+
+                        // Constellation Logic:
+                        // - If both MET: Bright, solid line
+                        // - If one MET: Faint, dashed line (hinting at connection)
+                        // - If neither MET: Invisible or extremely faint
+
+                        const bothMet = source.hasMet && target.hasMet
+                        const oneMet = source.hasMet || target.hasMet
+
+                        if (!oneMet) return null // Hide completely if neither is known
+
                         return (
-                            <line
-                                key={`${source.id}-${target.id}`}
-                                x1={source.x}
-                                y1={source.y}
-                                x2={target.x}
-                                y2={target.y}
-                                stroke="rgba(251, 191, 36, 0.2)"
-                                strokeWidth="1"
+                            <motion.line
+                                key={`${sourceId}-${targetId}`}
+                                x1={source.position.x}
+                                y1={source.position.y}
+                                x2={target.position.x}
+                                y2={target.position.y}
+                                stroke="currentColor"
+                                strokeWidth={bothMet ? "0.4" : "0.2"}
+                                className={cn(
+                                    "transition-colors duration-500",
+                                    bothMet ? "text-amber-400/60 dark:text-amber-300/60 drop-shadow-sm" : "text-slate-300/20 dark:text-slate-700/30 dashed"
+                                )}
+                                strokeDasharray={bothMet ? "0" : "2 1"}
+                                initial={{ pathLength: 0, opacity: 0 }}
+                                animate={{ pathLength: 1, opacity: 1 }}
+                                transition={{ duration: 1.5, ease: "easeOut" }}
                             />
                         )
                     })}
                 </g>
 
-                {/* Nodes */}
+                {/* --- NODES LAYER (Top) --- */}
                 <g className="nodes">
-                    {nodes.map(node => {
-                        const char = node.character
-                        const isSelected = selectedId === node.id
-                        const isHovered = hoveredId === node.id
+                    {characters.map((char) => {
+                        const isSelected = selectedId === char.id
+                        const isHovered = hoveredId === char.id
                         const colors = CHARACTER_COLORS[char.color]
+
+                        // "Fog of War" styling
+                        // Unmet: Grayscale, small, low opacity
+                        // Met: Full color, normal size, glowing
+                        const radius = char.isMajor ? 4 : 2.5
 
                         return (
                             <g
-                                key={node.id}
-                                transform={`translate(${node.x},${node.y})`}
-                                onClick={() => handleNodeClick(node)}
-                                onDoubleClick={() => handleNodeDoubleClick(node)}
-                                onMouseEnter={() => setHoveredId(node.id)}
+                                key={char.id}
+                                transform={`translate(${char.position.x},${char.position.y})`}
+                                onClick={() => handleNodeClick(char)}
+                                onDoubleClick={() => handleNodeDoubleClick(char)}
+                                onMouseEnter={() => setHoveredId(char.id)}
                                 onMouseLeave={() => setHoveredId(null)}
-                                className="cursor-pointer transition-transform duration-200"
-                                style={{ scale: isSelected ? 1.1 : isHovered ? 1.05 : 1 }}
+                                className={cn(
+                                    "transition-all duration-500 ease-out cursor-pointer",
+                                    !char.hasMet && "opacity-30 grayscale cursor-not-allowed hover:opacity-40"
+                                )}
+                                style={{
+                                    opacity: char.hasMet ? 1 : 0.2
+                                }}
                             >
-                                {/* Hit Area */}
-                                <circle r={node.r * 1.5} fill="transparent" />
+                                {/* Hit Area (invisible, larger) */}
+                                <circle r={8} fill="transparent" />
 
-                                {/* Glow Ring */}
-                                {(isSelected || char.trustState === 'trusted') && (
-                                    <circle
-                                        r={node.r + 4}
+                                {/* Selection Ring */}
+                                {(isSelected || isHovered) && char.hasMet && (
+                                    <motion.circle
+                                        r={radius + 3}
                                         fill="none"
-                                        stroke={colors.ring}
-                                        strokeWidth="1"
-                                        className={cn(isSelected && "animate-pulse")}
-                                        opacity={0.6}
+                                        stroke={colors.ring} // Utilizing tailwind ring color mapped roughly
+                                        strokeWidth="0.5"
+                                        initial={{ scale: 0.8, opacity: 0 }}
+                                        animate={{ scale: 1, opacity: 1 }}
+                                        className={cn(isSelected && "animate-pulse")} // Simple pulse
+                                    // Since we can't easily use Tailwind colors in SVG stroke without 'currentColor', 
+                                    // we relies on the class or inline style if needed. 
+                                    // Ideally, pass specific hex. For now, using 'currentColor' with text class on parent group if possible
+                                    // actually we can just use the class on the circle if we whitelist them or use style.
                                     />
                                 )}
 
-                                {/* Main Orb */}
+                                {/* Main Star Node */}
+                                {/* We use foreignObject or just simplified SVG styling. 
+                                    For reliability, let's use direct fill with Tailwind color classes mapped to styles or specific hexes?
+                                    Actually, we can use `className={colors.text}` and `fill="currentColor"`
+                                */}
                                 <circle
-                                    r={node.r}
-                                    fill={`url(#node-gradient-${colors.bg.replace('bg-', '') === 'slate-500' ? 'slate' : colors.bg.replace('bg-', '').split('-')[0]})`}
-                                    className={cn("transition-colors duration-300")}
-                                    stroke={colors.ring}
-                                    strokeWidth="2"
-                                    filter="url(#glow)"
+                                    r={radius}
+                                    fill="currentColor"
+                                    className={cn(
+                                        "transition-all duration-300",
+                                        colors.text, // This sets the currentColor
+                                        char.hasMet && "filter drop-shadow-[0_0_8px_currentColor]"
+                                    )}
                                 />
 
-                                {/* Initial */}
-                                <text
-                                    dy=".3em"
-                                    textAnchor="middle"
-                                    className={cn("text-xs font-bold pointer-events-none fill-white")}
-                                    style={{ fontSize: node.r * 0.8 }}
-                                >
-                                    {char.name[0]}
-                                </text>
+                                {/* Center Hub Indicator */}
+                                {char.id === 'samuel' && char.hasMet && (
+                                    <circle r={radius + 6} fill="none" stroke="currentColor" strokeWidth="0.2" className="text-amber-500/30 animate-[spin_10s_linear_infinite]" />
+                                )}
 
-                                {/* Floating Label on Hover/Select */}
+                                {/* Label */}
                                 <AnimatePresence>
-                                    {(isHovered || isSelected) && (
+                                    {(isHovered || isSelected || char.isMajor) && char.hasMet && (
                                         <motion.g
-                                            initial={{ opacity: 0, y: 10 }}
+                                            initial={{ opacity: 0, y: 2 }}
                                             animate={{ opacity: 1, y: 0 }}
-                                            exit={{ opacity: 0, y: 5 }}
+                                            exit={{ opacity: 0, y: 1 }}
+                                            className="pointer-events-none"
                                         >
                                             <text
-                                                y={node.r + 15}
+                                                y={radius + 5}
                                                 textAnchor="middle"
-                                                className="text-[10px] fill-white font-medium uppercase tracking-widest pointer-events-none shadow-black drop-shadow-md"
+                                                className="fill-slate-800 dark:fill-slate-200 text-[3px] font-bold uppercase tracking-widest font-sans"
+                                                style={{ fontSize: '3px' }} // SVG font size unitless = user units
                                             >
                                                 {char.name}
+                                            </text>
+                                            <text
+                                                y={radius + 7.5}
+                                                textAnchor="middle"
+                                                className="fill-slate-400 text-[2px]"
+                                                style={{ fontSize: '2px' }}
+                                            >
+                                                {char.role}
                                             </text>
                                         </motion.g>
                                     )}
                                 </AnimatePresence>
+
+                                {/* Ghost Label (Question Mark) */}
+                                {!char.hasMet && isHovered && (
+                                    <text
+                                        y={0.5}
+                                        textAnchor="middle"
+                                        className="fill-slate-600 dark:fill-slate-400 text-[3px] font-bold"
+                                        style={{ fontSize: '3px' }}
+                                    >
+                                        ?
+                                    </text>
+                                )}
                             </g>
                         )
                     })}
                 </g>
             </svg>
 
-            {/* Interaction Hint */}
-            <div className="absolute bottom-4 text-center pointer-events-none opacity-50">
-                <p className="text-[10px] text-slate-400">
-                    {selectedNode ? "Double-tap to view story" : "Drag to explore • Tap to identify"}
+            {/* Empty State / Hint */}
+            <div className="absolute bottom-6 text-center pointer-events-none opacity-40">
+                <p className="text-[10px] text-slate-400 font-mono tracking-widest uppercase">
+                    {selectedChar ? `Signal Lock: ${selectedChar.name}` : "Scanning Constellation..."}
                 </p>
             </div>
         </div>

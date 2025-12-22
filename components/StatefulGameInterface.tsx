@@ -127,6 +127,7 @@ interface GameInterfaceState {
   ceremonyPattern: PatternType | null  // Pattern being internalized
   hasNewTrust: boolean  // Track trust changes for Constellation attention indicator
   isMuted: boolean
+  isProcessing: boolean
 }
 
 export default function StatefulGameInterface() {
@@ -180,7 +181,8 @@ export default function StatefulGameInterface() {
     showIdentityCeremony: false,
     ceremonyPattern: null,
     hasNewTrust: false,
-    isMuted: false
+    isMuted: false,
+    isProcessing: false
   })
 
   // Rich effects config - KEEPING NEW STAGGERED MODE
@@ -319,6 +321,15 @@ export default function StatefulGameInterface() {
   // Reset timer when choices change (player made a choice)
   useEffect(() => {
     resetIdleTimer()
+    // ISP FIX: Release choice lock here, once the new node is actually rendered
+    // This prevents race conditions where lock is released before state update
+    if (isProcessingChoiceRef.current) {
+      // Small delay to ensure render cycle completes
+      setTimeout(() => {
+        isProcessingChoiceRef.current = false
+      }, 100)
+    }
+
     // ISP: Update Conductor with full state
     if (state.gameState && state.currentCharacterId) {
       generativeScore.update(state.gameState, state.currentCharacterId)
@@ -439,6 +450,7 @@ export default function StatefulGameInterface() {
         currentDialogueContent: { ...content, text: reflected.text, emotion: reflected.emotion },
         useChatPacing: content.useChatPacing || false,
         isLoading: false,
+        isProcessing: false,
         hasStarted: true,
         selectedChoice: null,
         showSaveConfirmation: false,
@@ -530,13 +542,16 @@ export default function StatefulGameInterface() {
     if (isProcessingChoiceRef.current) return
     if (!state.gameState || !choice.enabled) return
 
+    // LOCK: Immediate ref lock + UI state update
     isProcessingChoiceRef.current = true
+    setState(prev => ({ ...prev, isProcessing: true }))
 
     // Safety timeout: auto-reset lock if handler crashes or hangs
     const safetyTimeout = setTimeout(() => {
       if (isProcessingChoiceRef.current) {
         logger.error('[StatefulGameInterface] Choice handler timeout - auto-resetting lock')
         isProcessingChoiceRef.current = false
+        setState(prev => ({ ...prev, isProcessing: false }))
       }
     }, CHOICE_HANDLER_TIMEOUT_MS)
 
@@ -910,7 +925,8 @@ export default function StatefulGameInterface() {
         ceremonyPattern: identityCeremonyPattern,  // Pattern being internalized
         hasNewTrust: trustDelta !== 0 ? true : state.hasNewTrust,  // Track trust changes for Constellation attention
         isMuted: state.isMuted,
-        showReport: state.showReport
+        showReport: state.showReport,
+        isProcessing: false // ISP FIX: Unlock UI
       })
       GameStateManager.saveGameState(newGameState)
 
@@ -962,10 +978,18 @@ export default function StatefulGameInterface() {
           patterns: newGameState.patterns
         })
       }
+    } catch (error) {
+      console.error('Choice handling failed:', error)
+      isProcessingChoiceRef.current = false // Release lock if error
+      setState(prev => ({ ...prev, isProcessing: false }))
     } finally {
-      // Clear safety timeout and release lock
+      // Clear safety timeout
       clearTimeout(safetyTimeout)
-      isProcessingChoiceRef.current = false
+
+      // CRITICAL RACE CONDITION FIX:
+      // Do NOT release isProcessingChoiceRef.current here!
+      // We wait for the useEffect on nodeId change to release it.
+      // This ensures we don't accept clicks while the old node is still rendered.
     }
   }, [state.gameState, state.currentNode, state.recentSkills, state.showJournal, state.showConstellation, state.journeyNarrative, state.showJourneySummary, state.currentCharacterId, state.currentContent, state.previousTotalNodes, earnOrb, earnBonusOrbs, getUnacknowledgedMilestone, acknowledgeMilestone])
 
@@ -1041,7 +1065,8 @@ export default function StatefulGameInterface() {
             currentContent: reflected.text,
             currentDialogueContent: { ...content, text: reflected.text, emotion: reflected.emotion },
             useChatPacing: content.useChatPacing || false,
-            isLoading: false
+            isLoading: false,
+            isProcessing: false
           }))
           GameStateManager.saveGameState(newGameState)
           const zustandStore = useGameStore.getState()
@@ -1056,7 +1081,8 @@ export default function StatefulGameInterface() {
             message: `Could not find hub node "${targetNodeId}" or fallback introduction. Please refresh the page.`,
             severity: 'error' as const
           },
-          isLoading: false
+          isLoading: false,
+          isProcessing: false
         }))
         return
       }
@@ -1071,7 +1097,8 @@ export default function StatefulGameInterface() {
             message: `Target node "${targetNodeId}" not found in graph. Please refresh the page.`,
             severity: 'error' as const
           },
-          isLoading: false
+          isLoading: false,
+          isProcessing: false
         }))
         return
       }
@@ -1122,7 +1149,8 @@ export default function StatefulGameInterface() {
         currentContent: reflected.text,
         currentDialogueContent: { ...content, text: reflected.text, emotion: reflected.emotion },
         useChatPacing: content.useChatPacing || false,
-        isLoading: false
+        isLoading: false,
+        isProcessing: false
       }))
 
       GameStateManager.saveGameState(newGameState)
@@ -1339,8 +1367,8 @@ export default function StatefulGameInterface() {
             >
               <Card
                 className={`rounded-xl shadow-sm ${state.currentNode?.speaker
-                  ? 'bg-amber-50/40 border-stone-200/60'  // Character dialogue - warm, conversational
-                  : 'bg-slate-100/50 border-slate-300/60'  // Atmospheric narration - cooler, environmental
+                  ? 'bg-amber-50/95 border-stone-200'  // Character dialogue - OPAQUE for readability
+                  : 'bg-slate-100/95 border-slate-300'  // Atmospheric narration - OPAQUE for readability
                   }`}
                 style={{ transition: 'none' }}
                 data-testid="dialogue-card"
@@ -1538,10 +1566,11 @@ export default function StatefulGameInterface() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="flex-shrink-0 bg-gradient-to-b from-stone-50 to-stone-100/80 border border-stone-200/80 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] mx-3 sm:mx-auto sm:max-w-2xl lg:max-w-3xl rounded-2xl backdrop-blur-sm"
+            className="flex-shrink-0 bg-gradient-to-b from-stone-50 to-stone-100/80 border border-stone-200/80 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] mx-3 sm:mx-auto sm:max-w-2xl lg:max-w-3xl rounded-2xl backdrop-blur-sm z-20"
             style={{
               marginTop: '1.5rem',
-              marginBottom: 'max(1rem, calc(1.5rem + env(safe-area-inset-bottom, 0px)))'
+              // PC: Raise higher (2.5rem base), Mobile: Keep safe (calc)
+              marginBottom: 'max(1rem, calc(2.5rem + env(safe-area-inset-bottom, 0px)))'
             }}
           >
             {/* Elegant header separator */}
@@ -1593,7 +1622,7 @@ export default function StatefulGameInterface() {
                         next: String(index)
                       }
                     })}
-                    isProcessing={state.isLoading}
+                    isProcessing={state.isProcessing}
                     orbFillLevels={orbFillLevels}
                     onChoice={(c) => {
                       const index = parseInt(c.next || '0', 10)
@@ -1726,12 +1755,14 @@ export default function StatefulGameInterface() {
         })()
       }
       {/* The Reality Interface - Career Report */}
-      {state.showReport && state.gameState && (
-        <StrategyReport
-          gameState={state.gameState}
-          onClose={() => setState(prev => ({ ...prev, showReport: false }))}
-        />
-      )}
+      {
+        state.showReport && state.gameState && (
+          <StrategyReport
+            gameState={state.gameState}
+            onClose={() => setState(prev => ({ ...prev, showReport: false }))}
+          />
+        )
+      }
     </div >
   )
 }

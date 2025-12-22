@@ -124,22 +124,18 @@ export function EssenceSigil() {
     )
 }
 
-// Helper to morph shape
+// Helper to morph shape smoothly
+// Reverted to Distinct Geometric Shapes for Craftsmanship
+// We want crisp, intentional forms.
 function generateCorePath(sharpness: number): string {
-    // 0 = Circle, 1 = Diamond/Squareish
-    // M 100 20 ...
-
-    // Using a simpler approach: Just returning a path string.
-    // Ideally we'd calculate points.
-
     if (sharpness > 0.6) {
-        // Diamond / Star
-        return "M 100 10 L 190 100 L 100 190 L 10 100 Z"
+        // The Diamond (Sharp, Analytical)
+        return "M 100 20 L 180 100 L 100 180 L 20 100 Z"
     } else if (sharpness > 0.3) {
-        // Hexagon-ish
-        return "M 100 10 L 180 50 L 180 150 L 100 190 L 20 150 L 20 50 Z"
+        // The Hexagon (Building, Structured)
+        return "M 100 20 L 170 60 L 170 140 L 100 180 L 30 140 L 30 60 Z"
     } else {
-        // Circle (via arcs)
-        return "M 100 10 A 90 90 0 1 1 99.9 10 Z"
+        // The Circle (Patience, Flow)
+        return "M 100 20 A 80 80 0 1 1 99.9 20 Z"
     }
 }

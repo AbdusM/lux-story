@@ -70,7 +70,7 @@ export function Journal({ isOpen, onClose }: JournalProps) {
   const tabs: { id: TabId; label: string; icon: typeof Users }[] = [
     { id: 'harmonics', label: 'Harmonics', icon: Zap }, // Was Orbs
     { id: 'essence', label: 'Essence', icon: Compass }, // Was Style
-    { id: 'constellation', label: 'Constellation', icon: Users }, // Was Connections
+    // Constellation REMOVED (Redundant with Right Menu)
     { id: 'mind', label: 'Mind', icon: TrendingUp }, // Was Insights
     { id: 'stars', label: 'Stars', icon: Sparkles }, // New
   ]
@@ -101,7 +101,7 @@ export function Journal({ isOpen, onClose }: JournalProps) {
             onDragEnd={(_, info) => {
               if (info.offset.x < -100) onClose()
             }}
-            className="fixed left-0 top-0 bottom-0 w-full max-w-md bg-white/90 dark:bg-slate-900/90 border-r border-slate-200 dark:border-slate-800 shadow-2xl z-[100] flex flex-col backdrop-blur-xl"
+            className="fixed left-0 top-0 bottom-0 w-full max-w-md bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 shadow-2xl z-[100] flex flex-col"
             style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
           >
             {/* Prism Header */}
@@ -167,7 +167,7 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                 >
                   {activeTab === 'harmonics' && <HarmonicsView />}
                   {activeTab === 'essence' && <EssenceSigil />}
-                  {activeTab === 'constellation' && <ConstellationGraph characters={characters} />}
+                  {/* Constellation Logic Removed */}
                   {activeTab === 'mind' && <ThoughtCabinet />}
                   {activeTab === 'stars' && <AchievementStars />}
                 </motion.div>
