@@ -62,19 +62,7 @@ export function GameMenu({ onShowReport, onReturnToStation, isMuted = false, onT
                         </Button>
                     )}
 
-                    {onReturnToStation && (
-                        <Button
-                            onClick={onReturnToStation}
-                            variant="outline"
-                            className="flex items-center justify-start gap-4 h-14"
-                        >
-                            <Home className="w-5 h-5 text-slate-500" />
-                            <div className="flex flex-col items-start">
-                                <span className="font-semibold text-slate-900">Return to Station</span>
-                                <span className="text-xs text-slate-500">Go back to the main hub</span>
-                            </div>
-                        </Button>
-                    )}
+                    {/* Return to Station Removed for Simplicity (Jobsian Focus) */}
                 </div>
             </DialogContent>
         </Dialog>

@@ -19,17 +19,18 @@ export interface CareerProfile {
 }
 
 const ROLE_MAPPINGS: Record<PatternType, string> = {
-    analytical: 'Strategic Systems Architect',
-    building: 'Solutions Engineer',
-    exploring: 'Innovation Lead',
-    helping: 'Engagement Director',
-    patience: 'Operations Strategist'
+    analytical: 'The Systems Weaver',
+    building: 'The World Builder',
+    exploring: 'The Horizon Seeker',
+    helping: 'The Resonance Engine',
+    patience: 'The Deep Anchor'
 }
 
 /**
  * Generates the full career profile from game state
  */
 export function generateCareerProfile(state: GameState): CareerProfile {
+    // ... (unchanged logic)
     // 1. Determine Dominant Pattern
     const entries = Object.entries(state.patterns) as [PatternType, number][]
     const dominantPattern = entries.reduce((a, b) => (a[1] > b[1] ? a : b))[0]
@@ -58,29 +59,29 @@ export function generateCareerProfile(state: GameState): CareerProfile {
 
 function generateSummary(state: GameState, pattern: PatternType): string {
     const leadershipStyle = {
-        analytical: "Data-driven decision making with a focus on systemic efficiency.",
-        building: "Practical problem-solving emphasizing tangible results and rapid prototyping.",
-        exploring: "Adaptive strategy focused on uncovering new market opportunities.",
-        helping: "Consensus-building leadership prioritizing team cohesion and stakeholder alignment.",
-        patience: "Long-term strategic planning with high resilience in high-pressure environments."
+        analytical: "You do not just solve problems; you dissolve them. You see the invisible architecture that governs reality.",
+        building: "You act while others debate. You understand that the only way to predict the future is to build it yourself.",
+        exploring: "You are allergic to the status quo. You find the edges of the map and push past them because that is where the truth lives.",
+        helping: "You enable the genius of others. You are the invisible glue that turns a group of individuals into a unified force.",
+        patience: "You possess the strength to wait. In a world of noise, your silence is the loudest signal."
     }[pattern]
 
-    return `A ${leadershipStyle} Demonstrated ability to navigate complex, ambiguous environments (Grand Central Terminus simulation) while maintaining operational continuity.`
+    return `${leadershipStyle} The simulation confirms: you are a high-order strategic asset.`
 }
 
 function formatSkill(skillKey: string): string {
-    // Map internal keys to Resume-speak
+    // Map internal keys to Visionary Superpowers
     const dictionary: Record<string, string> = {
-        criticalThinking: 'Strategic Analysis',
-        problemSolving: 'Complex Problem Solving',
-        digitalLiteracy: 'Digital Fluency',
-        timeManagement: 'Resource Optimization',
-        adaptability: 'Adaptive Strategy',
-        emotionalIntelligence: 'Stakeholder Management',
-        creativity: 'Innovation Strategy',
-        collaboration: 'Cross-functional Leadership',
-        communication: 'Executive Communication',
-        leadership: 'Team Leadership'
+        criticalThinking: 'Piercing Insight',
+        problemSolving: 'Reality Architecture',
+        digitalLiteracy: 'Technological Intuition',
+        timeManagement: 'Temporal Mastery',
+        adaptability: 'Fluid Dynamics',
+        emotionalIntelligence: 'Human Resonance',
+        creativity: 'Impossible Design',
+        collaboration: 'Force Multiplication',
+        communication: 'Radical Clarity',
+        leadership: 'Vision Generation'
     }
     return dictionary[skillKey] || skillKey
 }
