@@ -116,7 +116,7 @@ export function DialogueDisplay({
     <RichTextRenderer
       text={chunkedText}
       effects={richEffects || { mode: 'static' }}
-      className={cn("text-base leading-loose", voiceClass, interactionClass)} // Changed from leading-relaxed to leading-loose for better readability
+      className={cn("text-lg leading-loose text-stone-100 narrative-text", voiceClass, interactionClass)} // Increased: contrast (text-stone-100), size (text-lg), shadow (narrative-text)
     />
   )
 

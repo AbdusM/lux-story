@@ -1,6 +1,6 @@
 "use client"
 
-import { motion, useSpring, useTransform } from "framer-motion"
+import { motion, useSpring, useTransform, useReducedMotion } from "framer-motion"
 import { usePatternUnlocks, type OrbState } from "@/hooks/usePatternUnlocks"
 import { playPatternSound } from "@/lib/audio-feedback"
 import { Microscope, Brain, Compass, Heart, Hammer } from "lucide-react"
@@ -32,10 +32,10 @@ export function HarmonicsView() {
         <div className="p-4 space-y-8 min-h-[500px] flex flex-col items-center">
             {/* Header */}
             <div className="text-center space-y-1">
-                <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400">
+                <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-slate-300">
                     Resonance Field
                 </h3>
-                <p className="text-[10px] text-slate-500">
+                <p className="text-[10px] text-slate-400">
                     Your patterns echoing in the void
                 </p>
             </div>
@@ -55,6 +55,9 @@ export function HarmonicsView() {
 }
 
 function HarmonicOrb({ orb, index }: { orb: OrbState; index: number }) {
+    // Accessibility
+    const prefersReducedMotion = useReducedMotion()
+
     // Physics-light: Spring animations for "floating" feel
     const x = useSpring(0, { stiffness: 100, damping: 10 })
     const y = useSpring(0, { stiffness: 100, damping: 10 })
@@ -62,6 +65,9 @@ function HarmonicOrb({ orb, index }: { orb: OrbState; index: number }) {
     // Size based on fill
     const baseSize = 60 + (orb.fillPercent * 0.4) // 60px -> 100px
     const fillSpring = useSpring(orb.fillPercent, { stiffness: 50, damping: 20 })
+
+    // Breathing animation for dormant orbs - shows life/potential (respects reduced motion)
+    const isDormant = orb.fillPercent === 0 && !prefersReducedMotion
 
     const handleInteraction = () => {
         // Trigger Sound
@@ -101,8 +107,19 @@ function HarmonicOrb({ orb, index }: { orb: OrbState; index: number }) {
             whileTap={{ scale: 0.95 }}
             onClick={handleInteraction}
             initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: index * 0.1, type: "spring" }}
+            animate={isDormant
+                ? { opacity: [0.6, 0.85, 0.6], scale: [1, 1.03, 1] }  // Breathing for dormant
+                : { opacity: 1, scale: 1 }  // Static for active
+            }
+            transition={isDormant
+                ? {
+                    delay: index * 0.1,
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }
+                : { delay: index * 0.1, type: "spring" }
+            }
         >
             {/* Core - The "Pupil" representing the pattern code */}
             <div

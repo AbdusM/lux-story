@@ -1,7 +1,7 @@
 "use client"
 
 import { useMemo } from "react"
-import { motion } from "framer-motion"
+import { motion, useReducedMotion } from "framer-motion"
 import { useConstellationData } from "@/hooks/useConstellationData"
 import { SKILL_CLUSTERS, type SkillCluster } from "@/lib/constellation/skill-positions"
 
@@ -26,6 +26,7 @@ const RADIUS = 100
 
 export function EssenceSigil() {
     const { skills } = useConstellationData()
+    const prefersReducedMotion = useReducedMotion()
 
     // Calculate scores per cluster (0 to 1) - must be before any early returns (React hooks rules)
     const clusterScores = useMemo(() => {
@@ -83,6 +84,10 @@ export function EssenceSigil() {
     const _fullHexagonPath = generatePath(() => 1) // Full potential (radius 100%) - reserved for future use
     const soulPath = generatePath((c) => clusterScores[c]) // Actual capability
 
+    // Show ghost hexagon when player is new (all clusters below 20%)
+    const showPotentialGuide = Object.values(clusterScores).every(s => s < 0.2)
+    const potentialPath = generatePath(() => 0.15) // Ghost showing potential shape
+
     // Calculate total progress for label
     const totalUnlocked = skills.filter(s => s.state !== 'dormant').length
     const totalSkills = skills.length
@@ -131,7 +136,22 @@ export function EssenceSigil() {
                         )
                     })}
 
-                    {/* 3. The Soul Shape (Dynamic) */}
+                    {/* 3a. Ghost Hexagon - Shows potential shape when player is new */}
+                    {showPotentialGuide && (
+                        <motion.path
+                            d={potentialPath}
+                            fill="none"
+                            stroke="#8B5CF6"
+                            strokeWidth="1"
+                            strokeDasharray="4 4"
+                            strokeOpacity="0.25"
+                            initial={prefersReducedMotion ? false : { opacity: 0 }}
+                            animate={prefersReducedMotion ? { opacity: 0.25 } : { opacity: [0.15, 0.3, 0.15] }}
+                            transition={prefersReducedMotion ? {} : { duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                        />
+                    )}
+
+                    {/* 3b. The Soul Shape (Dynamic) */}
                     <motion.path
                         d={soulPath}
                         fill="url(#soulGradient)"
@@ -152,8 +172,9 @@ export function EssenceSigil() {
                         const x = CENTER.x + r * Math.cos(angleRad)
                         const y = CENTER.y + r * Math.sin(angleRad)
 
-                        // Label Position (pushed out slightly)
-                        const labelR = RADIUS + 25
+                        // Label Position (pushed out slightly, more for cramped left side)
+                        // HANDS and HEART are at 150° and 210° - push them further out
+                        const labelR = RADIUS + (cluster === 'hands' || cluster === 'heart' ? 32 : 25)
                         const labelX = CENTER.x + labelR * Math.cos(angleRad)
                         const labelY = CENTER.y + labelR * Math.sin(angleRad)
 
@@ -174,7 +195,7 @@ export function EssenceSigil() {
                                     <text
                                         textAnchor="middle"
                                         dominantBaseline="middle"
-                                        className="text-[10px] font-bold uppercase tracking-widest fill-slate-500 dark:fill-slate-400 font-sans"
+                                        className="text-[10px] font-bold uppercase tracking-widest fill-slate-400 dark:fill-slate-300 font-sans"
                                     >
                                         {SKILL_CLUSTERS[cluster].name}
                                     </text>

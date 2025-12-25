@@ -2,46 +2,39 @@
 
 /**
  * useLocalStorage - Persist state to localStorage with SSR safety
+ * Updated to use SafeStorage manager for versioning and error handling
  */
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
+import { SafeStorage } from '@/lib/persistence/storage-manager'
 
 export function useLocalStorage<T>(
   key: string,
   initialValue: T
 ): [T, (value: T | ((prev: T) => T)) => void] {
+  // Ref to capture initial value once (avoids infinite loop from object references)
+  const initialValueRef = useRef(initialValue)
+
   // State to store our value
+  // We initialize with initialValue to match server render, then hydrate
   const [storedValue, setStoredValue] = useState<T>(initialValue)
   const [isHydrated, setIsHydrated] = useState(false)
 
-  // Hydrate from localStorage on mount
+  // Hydrate from SafeStorage on mount (only depends on key, not initialValue)
   useEffect(() => {
-    if (typeof window === 'undefined') return
-
-    try {
-      const item = window.localStorage.getItem(key)
-      if (item) {
-        setStoredValue(JSON.parse(item))
-      }
-    } catch (error) {
-      console.warn(`Error reading localStorage key "${key}":`, error)
-    }
-
+    // SafeStorage.get handles validation, version check, and fallback
+    const value = SafeStorage.get<T>(key, initialValueRef.current)
+    setStoredValue(value)
     setIsHydrated(true)
-  }, [key])
+  }, [key]) // Removed initialValue - use ref instead to avoid infinite loop
 
-  // Save to localStorage when value changes
+  // Save to SafeStorage when value changes
   const setValue = useCallback((value: T | ((prev: T) => T)) => {
     setStoredValue(prev => {
       const valueToStore = value instanceof Function ? value(prev) : value
 
-      if (typeof window !== 'undefined') {
-        try {
-          window.localStorage.setItem(key, JSON.stringify(valueToStore))
-        } catch (error) {
-          console.warn(`Error setting localStorage key "${key}":`, error)
-        }
-      }
+      // SafeStorage.set handles serialization and Quota errors
+      SafeStorage.set(key, valueToStore)
 
       return valueToStore
     })
