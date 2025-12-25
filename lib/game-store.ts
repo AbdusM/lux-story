@@ -725,30 +725,15 @@ export const useGameStore = create<GameState & GameActions>()(
           return GameStateUtils.deserialize(serialized)
         },
 
-        // Sync derived state (characterTrust, patterns, thoughts) from coreGameState
+        // Sync derived state from coreGameState
+        // NOTE: characterTrust, patterns, thoughts are now derived via selectors (single source of truth)
+        // This function only handles: visitedScenes derivation and ambient music updates
         syncDerivedState: () => {
           const core = get().coreGameState
           if (!core) return
 
-          // Sync characterTrust: SerializableGameState.characters[] → Record<string, number>
-          const trustRecord: Record<string, number> = {}
-          for (const char of core.characters) {
-            trustRecord[char.characterId] = char.trust
-          }
-
-          // Sync patterns (coreGameState uses same structure)
-          const patternUpdate: Partial<PatternTracking> = {
-            analytical: core.patterns.analytical || 0,
-            helping: core.patterns.helping || 0,
-            building: core.patterns.building || 0,
-            patience: core.patterns.patience || 0,
-            exploring: core.patterns.exploring || 0
-          }
-
-          // Sync thoughts
-          const thoughts = core.thoughts || []
-
-          // Sync visited scenes (derive from conversation history)
+          // Derive visited scenes from conversation history
+          // (This is still needed because visitedScenes has a different structure than coreGameState)
           const visitedScenes: string[] = []
           for (const char of core.characters) {
             for (const nodeId of char.conversationHistory) {
@@ -758,12 +743,7 @@ export const useGameStore = create<GameState & GameActions>()(
             }
           }
 
-          set((state) => ({
-            characterTrust: { ...state.characterTrust, ...trustRecord },
-            patterns: { ...state.patterns, ...patternUpdate },
-            thoughts: thoughts,
-            visitedScenes: visitedScenes
-          }))
+          set({ visitedScenes })
 
           // Update Ambient Music based on Current Character's Nervous System State
           // This creates the "Limbic Connection" between the NPC's state and the Player's Environment
@@ -813,9 +793,9 @@ export const useGameStore = create<GameState & GameActions>()(
       }),
       {
         name: 'grand-central-game-store',
-        version: 1, // Add version for migrations
+        version: 2, // Version 2: Single source of truth (characterTrust, patterns, thoughts in coreGameState only)
         migrate: (persistedState: unknown, version: number) => {
-          // Handle migration from corrupted Set data to Arrays
+          // Handle migration from corrupted Set data to Arrays (version 0 → 1)
           if (version === 0 && persistedState) {
             try {
               const persistedObj = typeof persistedState === 'object' && persistedState !== null ? persistedState as Record<string, unknown> : {}
@@ -844,6 +824,63 @@ export const useGameStore = create<GameState & GameActions>()(
               return initialState
             }
           }
+
+          // Version 1 → 2: Migrate to single source of truth
+          // Old state had characterTrust, patterns, thoughts as separate fields
+          // New state derives them from coreGameState
+          if (version === 1 && persistedState) {
+            try {
+              const old = persistedState as Record<string, unknown>
+              const coreGameState = old.coreGameState as SerializableGameState | null
+
+              if (coreGameState) {
+                // Merge old top-level characterTrust into coreGameState.characters
+                const oldTrust = old.characterTrust as Record<string, number> | undefined
+                if (oldTrust) {
+                  coreGameState.characters = coreGameState.characters.map(char => ({
+                    ...char,
+                    trust: oldTrust[char.characterId] ?? char.trust
+                  }))
+                }
+
+                // Merge old patterns into coreGameState.patterns
+                const oldPatterns = old.patterns as Record<string, number> | undefined
+                if (oldPatterns) {
+                  coreGameState.patterns = {
+                    ...coreGameState.patterns,
+                    analytical: oldPatterns.analytical ?? coreGameState.patterns.analytical,
+                    helping: oldPatterns.helping ?? coreGameState.patterns.helping,
+                    building: oldPatterns.building ?? coreGameState.patterns.building,
+                    patience: oldPatterns.patience ?? coreGameState.patterns.patience,
+                    exploring: oldPatterns.exploring ?? coreGameState.patterns.exploring
+                  }
+                }
+
+                // Merge old thoughts into coreGameState.thoughts
+                const oldThoughts = old.thoughts as ActiveThought[] | undefined
+                if (oldThoughts && oldThoughts.length > 0) {
+                  // Use old thoughts if coreGameState has none, otherwise prefer coreGameState
+                  if (!coreGameState.thoughts || coreGameState.thoughts.length === 0) {
+                    coreGameState.thoughts = oldThoughts
+                  }
+                }
+              }
+
+              console.log('[Migration v1→v2] Migrated to single source of truth')
+              return {
+                ...old,
+                coreGameState,
+                // Keep empty/default values for legacy fields (they're derived now)
+                characterTrust: {},
+                patterns: initialState.patterns,
+                thoughts: []
+              }
+            } catch (error) {
+              console.warn('State migration v1→v2 failed:', error)
+              return persistedState
+            }
+          }
+
           return persistedState
         },
         partialize: (state) => ({
@@ -855,18 +892,19 @@ export const useGameStore = create<GameState & GameActions>()(
           performanceMetrics: state.performanceMetrics,
           platformWarmth: state.platformWarmth,
           platformAccessible: state.platformAccessible,
-          characterTrust: state.characterTrust,
+          // REMOVED: characterTrust - now derived from coreGameState.characters
           characterHelped: state.characterHelped,
-          patterns: state.patterns,
+          // REMOVED: patterns - now derived from coreGameState.patterns
           emotionalState: state.emotionalState,
           cognitiveState: state.cognitiveState,
           identityState: state.identityState,
           neuralState: state.neuralState,
           skills: state.skills,
-          thoughts: state.thoughts,
+          // REMOVED: thoughts - now derived from coreGameState.thoughts
           // Character transformations
           witnessedTransformations: state.witnessedTransformations,
-          // Core game state (single source of truth for dialogue system)
+          // Core game state (SINGLE SOURCE OF TRUTH)
+          // characterTrust, patterns, thoughts are all stored here
           coreGameState: state.coreGameState
         }),
         // Custom storage with validation (moved into persist options per Zustand best practices)
@@ -1029,16 +1067,43 @@ export const useGameSelectors = {
   usePlatformAccessible: (platformId: string) =>
     useGameStore((state) => state.platformAccessible[platformId] || false),
 
-  // Character selectors
+  // Character selectors - DERIVED FROM coreGameState (single source of truth)
   useCharacterTrust: (characterId: string) =>
-    useGameStore((state) => state.characterTrust[characterId] || 0),
+    useGameStore((state) => {
+      // Derive from coreGameState (single source of truth)
+      if (state.coreGameState) {
+        const char = state.coreGameState.characters.find(c => c.characterId === characterId)
+        if (char) return char.trust
+      }
+      // Fallback to legacy field during migration
+      return state.characterTrust[characterId] || 0
+    }),
   useCharacterHelped: (characterId: string) =>
     useGameStore((state) => state.characterHelped[characterId] || 0),
 
-  // Pattern selectors
-  usePatterns: () => useGameStore((state) => state.patterns),
+  // Pattern selectors - DERIVED FROM coreGameState (single source of truth)
+  usePatterns: () => useGameStore((state) => {
+    // Derive from coreGameState (single source of truth)
+    if (state.coreGameState?.patterns) {
+      return {
+        ...state.patterns, // Keep legacy fields like rushing, independence
+        analytical: state.coreGameState.patterns.analytical || 0,
+        helping: state.coreGameState.patterns.helping || 0,
+        building: state.coreGameState.patterns.building || 0,
+        patience: state.coreGameState.patterns.patience || 0,
+        exploring: state.coreGameState.patterns.exploring || 0
+      }
+    }
+    return state.patterns
+  }),
   usePatternValue: (pattern: keyof PatternTracking) =>
-    useGameStore((state) => state.patterns[pattern]),
+    useGameStore((state) => {
+      // Derive from coreGameState for core patterns
+      if (state.coreGameState?.patterns && pattern in state.coreGameState.patterns) {
+        return (state.coreGameState.patterns as Record<string, number>)[pattern] || 0
+      }
+      return state.patterns[pattern]
+    }),
 
   // State selectors
   useEmotionalState: () => useGameStore((state) => state.emotionalState),
@@ -1047,8 +1112,14 @@ export const useGameSelectors = {
   useNeuralState: () => useGameStore((state) => state.neuralState),
   useSkills: () => useGameStore((state) => state.skills),
 
-  // Thought Cabinet selectors
-  useThoughts: () => useGameStore((state) => state.thoughts),
+  // Thought Cabinet selectors - DERIVED FROM coreGameState (single source of truth)
+  useThoughts: () => useGameStore((state) => {
+    // Derive from coreGameState (single source of truth)
+    if (state.coreGameState?.thoughts) {
+      return state.coreGameState.thoughts
+    }
+    return state.thoughts
+  }),
 
   // Additional state selectors (for useGame hook optimization)
   useShowIntro: () => useGameStore((state) => state.showIntro),
@@ -1058,7 +1129,17 @@ export const useGameSelectors = {
   useChoiceHistory: () => useGameStore((state) => state.choiceHistory),
   usePlatformWarmthAll: () => useGameStore((state) => state.platformWarmth),
   usePlatformAccessibleAll: () => useGameStore((state) => state.platformAccessible),
-  useCharacterTrustAll: () => useGameStore((state) => state.characterTrust),
+  // DERIVED FROM coreGameState (single source of truth)
+  useCharacterTrustAll: () => useGameStore((state) => {
+    if (state.coreGameState) {
+      const trustRecord: Record<string, number> = {}
+      for (const char of state.coreGameState.characters) {
+        trustRecord[char.characterId] = char.trust
+      }
+      return trustRecord
+    }
+    return state.characterTrust
+  }),
   useCharacterHelpedAll: () => useGameStore((state) => state.characterHelped),
 
   // ═══════════════════════════════════════════════════════════════════════════
