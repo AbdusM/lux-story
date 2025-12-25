@@ -36,7 +36,7 @@ export function SwipeablePanel({
         isDraggingRef.current = true
     }
 
-    const handleDragEnd = async (_: any, info: PanInfo) => {
+    const handleDragEnd = async (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
         isDraggingRef.current = false
         const { offset, velocity } = info
 

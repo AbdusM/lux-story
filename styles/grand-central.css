@@ -110,6 +110,8 @@
   margin-bottom: 1.2em;
   white-space: pre-wrap;
   word-wrap: break-word;
+  /* Default dialogue color - WCAG AA compliant */
+  color: var(--text-dialogue, rgba(235, 205, 160, 0.93));
 }
 
 .story-text.career-dialogue {

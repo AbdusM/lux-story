@@ -4,7 +4,6 @@ import { useMemo } from "react"
 import { motion } from "framer-motion"
 import { useConstellationData } from "@/hooks/useConstellationData"
 import { SKILL_CLUSTERS, type SkillCluster } from "@/lib/constellation/skill-positions"
-import { cn } from "@/lib/utils"
 
 /**
  * Essence Sigil (The Soul Radar)
@@ -28,8 +27,17 @@ const RADIUS = 100
 export function EssenceSigil() {
     const { skills } = useConstellationData()
 
-    // Calculate scores per cluster (0 to 1)
+    // Calculate scores per cluster (0 to 1) - must be before any early returns (React hooks rules)
     const clusterScores = useMemo(() => {
+        // Handle null/empty skills case
+        if (!skills || skills.length === 0) {
+            const scores: Record<string, number> = {}
+            ORDERED_CLUSTERS.forEach(cluster => {
+                scores[cluster] = 0.1 // Base presence for loading state
+            })
+            return scores
+        }
+
         const scores: Record<string, number> = {}
 
         ORDERED_CLUSTERS.forEach(cluster => {
@@ -41,12 +49,24 @@ export function EssenceSigil() {
             // Count "awakened" skills (demonstrationCount > 0)
             const unlocked = clusterSkills.filter(s => s.state !== 'dormant').length
             const total = clusterSkills.length
-            // Base score: % of skills unlocked. 
-            // Cap minimum at 0.1 so the shape doesn't collapse to a dot.
-            scores[cluster] = Math.max(0.15, unlocked / total)
+            // Base score: % of skills unlocked.
+            // Show true 0% for dormant clusters - let the shape collapse to show growth potential
+            scores[cluster] = unlocked / total
         })
         return scores
     }, [skills])
+
+    // Null guard: show loading state if skills not yet available
+    if (!skills || skills.length === 0) {
+        return (
+            <div className="flex flex-col items-center justify-center py-8 space-y-6 min-h-[400px]">
+                <div className="relative w-[300px] h-[300px] flex items-center justify-center">
+                    <div className="w-24 h-24 rounded-full border-2 border-dashed border-slate-600 animate-pulse" />
+                </div>
+                <p className="text-xs text-slate-500 animate-pulse">Essence forming...</p>
+            </div>
+        )
+    }
 
     // Generate Path Data
     const generatePath = (scaleFunction: (cluster: string) => number) => {
@@ -60,13 +80,13 @@ export function EssenceSigil() {
         }).join(" ") + " Z"
     }
 
-    const fullHexagonPath = generatePath(() => 1) // Full potential (radius 100%)
+    const _fullHexagonPath = generatePath(() => 1) // Full potential (radius 100%) - reserved for future use
     const soulPath = generatePath((c) => clusterScores[c]) // Actual capability
 
     // Calculate total progress for label
     const totalUnlocked = skills.filter(s => s.state !== 'dormant').length
     const totalSkills = skills.length
-    const resonanceLevel = Math.round((totalUnlocked / totalSkills) * 100)
+    const _resonanceLevel = Math.round((totalUnlocked / totalSkills) * 100) // Reserved for future use
 
     return (
         <div className="flex flex-col items-center justify-center py-8 space-y-6 min-h-[400px]">
@@ -178,17 +198,13 @@ export function EssenceSigil() {
                 <h3 className="text-sm font-serif italic text-slate-500 dark:text-slate-400">
                     "The shape of your resonance."
                 </h3>
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-full border border-slate-200 dark:border-slate-700">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-slate-800/50 backdrop-blur-sm rounded-full border border-slate-700/50">
                     <div className="w-1.5 h-1.5 rounded-full bg-violet-500 animate-pulse" />
-                    <span className="text-[10px] uppercase tracking-widest font-bold text-slate-600 dark:text-slate-300">
-                        Total Symmetry: {resonanceLevel}%
+                    <span className="text-[10px] uppercase tracking-widest font-bold text-slate-300">
+                        Skills Unlocked: {totalUnlocked}/{totalSkills}
                     </span>
                 </div>
             </div>
         </div>
     )
-}
-
-function generateCorePath(sharpness: number): string {
-    return "" // Deprecated
 }

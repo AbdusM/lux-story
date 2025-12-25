@@ -338,28 +338,52 @@ export function createPropertyDependentSelector<TState, TResult>(
   };
 }
 
-// Create a selector that debounces updates
+/**
+ * Create a selector that debounces updates
+ * @deprecated This function has design issues (returns stale/undefined results).
+ * Use throttling at the component level instead (e.g., useDeferredValue).
+ * Keeping for backwards compatibility but should not be used in new code.
+ */
 export function createDebouncedSelector<TState, TResult>(
   selector: Selector<TState, TResult>,
   delay: number = 100
 ): MemoizedSelector<TState, TResult> {
-  let timeoutId: NodeJS.Timeout;
-  let lastResult: TResult;
-  let lastState: TState;
+  let timeoutId: ReturnType<typeof setTimeout> | null = null
+  let lastResult: TResult | undefined
+  let lastState: TState | undefined
+  let initialized = false
 
-  return (state: TState): TResult => {
-    if (lastState === state) {
-      return lastResult;
+  const debouncedSelector = (state: TState): TResult => {
+    // Return cached result if state unchanged
+    if (initialized && lastState === state && lastResult !== undefined) {
+      return lastResult
     }
 
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => {
-      lastState = state;
-      lastResult = selector(state);
-    }, delay);
+    // Clear any pending timeout
+    if (timeoutId) {
+      clearTimeout(timeoutId)
+    }
 
-    return lastResult;
-  };
+    // On first call, compute immediately to avoid undefined
+    if (!initialized) {
+      initialized = true
+      lastState = state
+      lastResult = selector(state)
+      return lastResult
+    }
+
+    // Schedule debounced update
+    timeoutId = setTimeout(() => {
+      lastState = state
+      lastResult = selector(state)
+      timeoutId = null
+    }, delay)
+
+    // Return previous result while debouncing
+    return lastResult as TResult
+  }
+
+  return debouncedSelector
 }
 
 // Export all selectors for easy access

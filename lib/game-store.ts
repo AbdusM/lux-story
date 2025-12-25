@@ -1100,7 +1100,7 @@ export const useGameSelectors = {
     useGameStore((state) => {
       // Derive from coreGameState for core patterns
       if (state.coreGameState?.patterns && pattern in state.coreGameState.patterns) {
-        return (state.coreGameState.patterns as Record<string, number>)[pattern] || 0
+        return (state.coreGameState.patterns as unknown as Record<string, number>)[pattern] || 0
       }
       return state.patterns[pattern]
     }),

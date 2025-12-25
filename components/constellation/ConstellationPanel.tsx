@@ -162,7 +162,7 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
                     {activeTab === tab.id && (
                       <motion.div
                         layoutId="constellation-tab-indicator"
-                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-amber-400"
+                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-amber-500 to-purple-600"
                         transition={springs.snappy}
                       />
                     )}

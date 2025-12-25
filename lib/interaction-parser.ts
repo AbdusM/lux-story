@@ -5,7 +5,19 @@
  * Enables strategic, line-specific animation targeting
  */
 
-export type InteractionType = 'shake' | 'jitter' | 'nod' | 'bloom' | 'ripple' | 'big' | 'small' | 'glitch'
+// Motion-based interactions (Framer Motion animations)
+export type MotionInteractionType = 'shake' | 'jitter' | 'nod' | 'bloom' | 'ripple' | 'big' | 'small' | 'glitch'
+
+// Kinetic typography interactions (KineticText component)
+export type KineticInteractionType = 'wave' | 'shadow' | 'weight' | 'spacing'
+
+// Combined type for all interactions
+export type InteractionType = MotionInteractionType | KineticInteractionType
+
+// Helper to check if interaction is kinetic (needs KineticText component)
+export function isKineticInteraction(type: InteractionType): type is KineticInteractionType {
+  return ['wave', 'shadow', 'weight', 'spacing'].includes(type)
+}
 
 export interface TextSegment {
   type: 'text' | 'interaction'
@@ -14,9 +26,12 @@ export interface TextSegment {
 }
 
 // Regex to match inline interaction tags: <shake>text</shake>, <jitter>text</jitter>, etc.
-const INTERACTION_REGEX = /<(shake|jitter|nod|bloom|ripple|big|small|glitch)>(.*?)<\/\1>/g
+// Includes both motion-based and kinetic typography tags
+const INTERACTION_REGEX = /<(shake|jitter|nod|bloom|ripple|big|small|glitch|wave|shadow|weight|spacing)>(.*?)<\/\1>/g
 
-export const interactionAnimations: Record<InteractionType, {
+// Motion-based animation configs (used by Framer Motion in RichTextRenderer)
+// Kinetic interactions use the KineticText component instead
+export const interactionAnimations: Record<MotionInteractionType, {
   animate: {
     x?: number[]
     y?: number[]

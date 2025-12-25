@@ -7,6 +7,7 @@ import { springs } from '@/lib/animations'
 import { Lock } from 'lucide-react'
 import { type PatternType, PATTERN_METADATA, isValidPattern } from '@/lib/patterns'
 import { type GravityResult } from '@/lib/narrative-gravity'
+import { useMagneticElement } from '@/hooks/useMagneticElement'
 
 /**
  * Pattern-specific hover colors for choice buttons
@@ -59,6 +60,56 @@ const DEFAULT_HOVER_STYLE = {
 }
 
 /**
+ * Glass mode hover styles for dark theme
+ * Pattern-specific glows with canonical colors from lib/patterns.ts
+ */
+const PATTERN_GLASS_STYLES: Record<PatternType, {
+  bg: string
+  border: string
+  shadow: string
+  activeBg: string
+}> = {
+  analytical: {
+    bg: 'hover:bg-white/10',
+    border: 'hover:border-blue-400/40',
+    shadow: 'hover:shadow-[0_0_20px_rgba(59,130,246,0.25)]',
+    activeBg: 'active:bg-white/15'
+  },
+  patience: {
+    bg: 'hover:bg-white/10',
+    border: 'hover:border-green-400/40',
+    shadow: 'hover:shadow-[0_0_20px_rgba(16,185,129,0.25)]',
+    activeBg: 'active:bg-white/15'
+  },
+  exploring: {
+    bg: 'hover:bg-white/10',
+    border: 'hover:border-purple-400/40',
+    shadow: 'hover:shadow-[0_0_20px_rgba(139,92,246,0.25)]',
+    activeBg: 'active:bg-white/15'
+  },
+  helping: {
+    bg: 'hover:bg-white/10',
+    border: 'hover:border-pink-400/40',
+    shadow: 'hover:shadow-[0_0_20px_rgba(236,72,153,0.25)]',
+    activeBg: 'active:bg-white/15'
+  },
+  building: {
+    bg: 'hover:bg-white/10',
+    border: 'hover:border-amber-400/40',
+    shadow: 'hover:shadow-[0_0_20px_rgba(245,158,11,0.25)]',
+    activeBg: 'active:bg-white/15'
+  }
+}
+
+// Default glass hover style when no pattern specified
+const DEFAULT_GLASS_STYLE = {
+  bg: 'hover:bg-white/10',
+  border: 'hover:border-white/20',
+  shadow: 'hover:shadow-[0_0_20px_rgba(255,255,255,0.1)]',
+  activeBg: 'active:bg-white/15'
+}
+
+/**
  * Orb fill requirement for gated choices (KOTOR-style)
  */
 interface OrbRequirement {
@@ -98,6 +149,8 @@ interface GameChoicesProps {
   onChoice: (choice: Choice) => void
   /** Current orb fill percentages for gating choices */
   orbFillLevels?: OrbFillLevels
+  /** Use glass morphism styling for dark theme */
+  glass?: boolean
 }
 
 /**
@@ -229,7 +282,9 @@ function isChoiceLocked(choice: Choice, orbFillLevels?: OrbFillLevels): boolean 
   if (TESTING_FLAGS.UNLOCK_ALL_CHOICES) return false
   if (!choice.requiredOrbFill || !orbFillLevels) return false
   const { pattern, threshold } = choice.requiredOrbFill
-  return orbFillLevels[pattern] < threshold
+  // Default to 0 if pattern key missing to prevent undefined comparison
+  const currentLevel = orbFillLevels[pattern] ?? 0
+  return currentLevel < threshold
 }
 
 /**
@@ -243,14 +298,22 @@ function getLockMessage(choice: Choice): string {
 }
 
 // Memoized choice button component
-const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, isLocked }: {
+const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, isLocked, glass }: {
   choice: Choice
   index: number
   onChoice: (choice: Choice) => void
   isProcessing: boolean
   isFocused?: boolean
   isLocked?: boolean
+  glass?: boolean
 }) => {
+  // Magnetic cursor effect (desktop-only, respects reduced motion)
+  // Subtle attraction toward cursor for playful, premium feel
+  const magnetic = useMagneticElement<HTMLDivElement>({
+    strength: 0.25,
+    maxDistance: 12
+  })
+
   // Combine standard variants with feedback variants
   const combinedVariants = {
     ...buttonVariants,
@@ -298,83 +361,101 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
   // Locked choice styling
   if (isLocked) {
     return (
+      <div ref={magnetic.ref} style={magnetic.style} className="w-full">
+        <motion.div
+          variants={combinedVariants}
+          custom={index}
+          className="w-full"
+          data-choice-index={index}
+          style={{ scrollSnapAlign: 'start' }}
+        >
+          <div
+            className={`
+              w-full min-h-[56px] sm:min-h-[52px] h-auto px-4 sm:px-6 py-4 sm:py-3
+              text-base sm:text-sm font-medium text-stone-400 text-left
+              border border-stone-200 bg-stone-50
+              rounded-[14px]
+              flex items-center gap-3
+              cursor-not-allowed
+            `}
+            aria-label={`Locked choice: ${choice.text}. Requires ${getLockMessage(choice)}`}
+            role="button"
+            aria-disabled="true"
+          >
+            <Lock className="w-4 h-4 flex-shrink-0 text-stone-400" />
+            <span className="flex-1 line-clamp-2">{choice.text}</span>
+            <span className="text-xs text-stone-400 flex-shrink-0 whitespace-nowrap">
+              {getLockMessage(choice)}
+            </span>
+          </div>
+        </motion.div>
+      </div>
+    )
+  }
+
+  return (
+    <div ref={magnetic.ref} style={magnetic.style} className="w-full">
       <motion.div
         variants={combinedVariants}
+        whileHover="hover"
+        whileTap="tap"
+        animate={_animateState} // ISP FIX: Prop moved to motion.div
         custom={index}
         className="w-full"
         data-choice-index={index}
         style={{ scrollSnapAlign: 'start' }}
       >
-        <div
+        <Button
+          key={index}
+          onClick={() => onChoice(choice)}
+          disabled={isProcessing}
+          variant="ghost"
+          data-testid="choice-button"
+          data-choice-text={choice.text}
+          data-pattern={choice.pattern || ''}
+          data-pivotal={choice.pivotal ? 'true' : undefined}
+          aria-label={`Choice ${index + 1}: ${choice.text}`}
           className={`
-            w-full min-h-[56px] sm:min-h-[52px] h-auto px-4 sm:px-6 py-4 sm:py-3
-            text-base sm:text-sm font-medium text-stone-400 text-left
-            border border-stone-200 bg-stone-50
-            rounded-xl
-            flex items-center gap-3
-            cursor-not-allowed
+            w-full min-h-[60px] sm:min-h-[56px] h-auto px-5 py-4
+            text-base sm:text-[15px] font-medium text-left justify-start break-words whitespace-normal leading-relaxed
+            ${glass
+              ? 'text-slate-100 border border-white/[0.08] bg-[rgba(30,30,35,0.8)] shadow-[0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.05)]'
+              : 'text-stone-600 border border-transparent bg-white/80 backdrop-blur-sm shadow-sm'
+            }
+            ${(() => {
+              const pattern = choice.pattern
+              if (glass) {
+                const styles = pattern && isValidPattern(pattern) ? PATTERN_GLASS_STYLES[pattern] : DEFAULT_GLASS_STYLE
+                return `${styles.bg} ${styles.border} ${styles.shadow} ${styles.activeBg}`
+              } else {
+                const styles = pattern && isValidPattern(pattern) ? PATTERN_HOVER_STYLES[pattern] : DEFAULT_HOVER_STYLE
+                return `${styles.bg} hover:border-black/5 ${styles.shadow} ${styles.activeBg}`
+              }
+            })()}
+            ${glass ? 'hover:text-white' : 'hover:text-stone-900'}
+            hover:-translate-y-0.5
+            active:scale-[0.98] active:translate-y-0 active:shadow-none
+            transition-all duration-200 ease-out
+            rounded-[14px]
+            touch-manipulation select-none
+            ${choice.feedback === 'shake' ? (glass ? 'border-red-400/40 bg-red-900/20' : 'border-red-200 bg-red-50') : ''}
+            ${choice.feedback === 'glow' ? (glass ? 'border-amber-400/40 bg-amber-900/20' : 'border-amber-300 bg-amber-50') : ''}
+            ${isFocused ? (glass
+              ? 'ring-2 ring-white/30 ring-offset-2 ring-offset-transparent border-white/30 bg-white/15'
+              : 'ring-2 ring-stone-900/10 ring-offset-2 border-stone-300 bg-stone-50') : ''}
+            ${/* Gravity Repulsion Styling - Dimmed Text */ ''}
+            ${choice.gravity?.effect === 'repel' && !isFocused && !isLocked
+              ? (glass ? 'text-slate-400 bg-white/[0.02] shadow-none' : 'text-stone-400 bg-stone-50/50 shadow-none')
+              : ''}
+            ${choice.gravity?.effect === 'attract' && !isFocused && !isLocked
+              ? (glass ? 'border-emerald-400/30 bg-emerald-900/20 shadow-[0_0_20px_rgba(16,185,129,0.2)]' : 'border-emerald-200/50 bg-emerald-50/40 shadow-emerald-100')
+              : ''}
           `}
-          aria-label={`Locked choice: ${choice.text}. Requires ${getLockMessage(choice)}`}
-          role="button"
-          aria-disabled="true"
         >
-          <Lock className="w-4 h-4 flex-shrink-0 text-stone-400" />
-          <span className="flex-1 line-clamp-2">{choice.text}</span>
-          <span className="text-xs text-stone-400 flex-shrink-0 whitespace-nowrap">
-            {getLockMessage(choice)}
-          </span>
-        </div>
+          <span className="flex-1 line-clamp-4">{choice.text}</span>
+        </Button>
       </motion.div>
-    )
-  }
-
-  return (
-    <motion.div
-      variants={combinedVariants}
-      whileHover="hover"
-      whileTap="tap"
-      animate={_animateState} // ISP FIX: Prop moved to motion.div
-      custom={index}
-      className="w-full"
-      data-choice-index={index}
-      style={{ scrollSnapAlign: 'start' }}
-    >
-      <Button
-        key={index}
-        onClick={() => onChoice(choice)}
-        disabled={isProcessing}
-        variant="ghost"
-        data-testid="choice-button"
-        data-choice-text={choice.text}
-        data-pattern={choice.pattern || ''}
-        data-pivotal={choice.pivotal ? 'true' : undefined}
-        aria-label={`Choice ${index + 1}: ${choice.text}`}
-        className={`
-          w-full min-h-[60px] sm:min-h-[56px] h-auto px-6 py-4
-          text-base sm:text-[15px] font-medium text-stone-600 text-left justify-start break-words whitespace-normal leading-relaxed
-          border border-transparent bg-white/80 backdrop-blur-sm shadow-sm
-          ${(() => {
-            const pattern = choice.pattern
-            const styles = pattern && isValidPattern(pattern) ? PATTERN_HOVER_STYLES[pattern] : DEFAULT_HOVER_STYLE
-            return `${styles.bg} hover:border-black/5 ${styles.shadow} ${styles.activeBg}`
-          })()}
-          hover:text-stone-900
-          hover:-translate-y-0.5
-          active:scale-[0.98] active:translate-y-0 active:shadow-none
-          transition-all duration-200 ease-out
-          rounded-2xl
-          touch-manipulation select-none
-          ${choice.feedback === 'shake' ? 'border-red-200 bg-red-50' : ''}
-          ${choice.feedback === 'glow' ? 'border-amber-300 bg-amber-50' : ''}
-          ${isFocused ? 'ring-2 ring-stone-900/10 ring-offset-2 border-stone-300 bg-stone-50' : ''}
-          ${/* Gravity Repulsion Styling - Dimmed Text */ ''}
-          ${choice.gravity?.effect === 'repel' && !isFocused && !isLocked ? 'text-stone-400 bg-stone-50/50 shadow-none' : ''}
-          ${choice.gravity?.effect === 'attract' && !isFocused && !isLocked ? 'border-emerald-200/50 bg-emerald-50/40 shadow-emerald-100' : ''}
-        `}
-      >
-        <span className="flex-1">{choice.text}</span>
-      </Button>
-    </motion.div>
+    </div>
   )
 })
 
@@ -424,7 +505,7 @@ const groupChoices = (choices: Choice[]) => {
  * - 1-9: Direct selection of choice by number
  * - Escape: Clear focus
  */
-export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevels }: GameChoicesProps) => {
+export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevels, glass = false }: GameChoicesProps) => {
   const { focusedIndex, containerRef } = useKeyboardNavigation(choices, isProcessing, onChoice)
 
   if (!choices || choices.length === 0) {
@@ -441,7 +522,9 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
   })
 
   // Determine layout strategy based on count
-  const useGrid = sortedChoices.length > 2 // Use grid for 3+ choices on desktop
+  // Smart column logic: avoid orphan on 3 choices (use single column)
+  // 1-3 choices: single column, 4+ choices: 2 columns (pairs work better)
+  const useGrid = sortedChoices.length >= 4
   const useGrouping = sortedChoices.length > 6 // Group only if many choices (6+) to avoid clutter
 
   if (useGrouping) {
@@ -486,7 +569,7 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
                 {title}
               </h3>
             )}
-            <div className={`grid gap-3 ${groupChoices.length > 1 ? 'md:grid-cols-2' : 'grid-cols-1'}`}>
+            <div className={`grid gap-3 ${groupChoices.length >= 4 ? 'md:grid-cols-2' : 'grid-cols-1'}`}>
               {groupChoices.map((choice, localIndex) => {
                 const currentGlobalIndex = globalIndex++
                 // Apply lock unless it's the mercy override
@@ -501,6 +584,7 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
                     isProcessing={isProcessing}
                     isFocused={focusedIndex === currentGlobalIndex}
                     isLocked={isLocked}
+                    glass={glass}
                   />
                 )
               })}
@@ -548,6 +632,7 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
               isProcessing={isProcessing}
               isFocused={focusedIndex === index}
               isLocked={isLocked}
+              glass={glass}
             />
           )
         })

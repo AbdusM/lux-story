@@ -6,6 +6,7 @@
 interface MemoryManager {
   cleanup: () => void
   registerCleanup: (cleanupFn: () => void) => void
+  unregisterCleanup: (cleanupFn: () => void) => void
   isRegistered: (cleanupFn: () => void) => boolean
   clearAll: () => void
   getMemoryUsage: () => { used: number; total: number; percentage: number }
@@ -23,6 +24,10 @@ class MemoryManagerImpl implements MemoryManager {
 
   registerCleanup(cleanupFn: () => void): void {
     this.cleanupFunctions.add(cleanupFn)
+  }
+
+  unregisterCleanup(cleanupFn: () => void): void {
+    this.cleanupFunctions.delete(cleanupFn)
   }
 
   isRegistered(cleanupFn: () => void): boolean {
@@ -135,16 +140,20 @@ export function getMemoryManager(): MemoryManager {
   return memoryManager
 }
 
-// Cleanup utility for React components
+/**
+ * Cleanup utility for React components
+ * Registers a cleanup function with the memory manager
+ * Returns an unregister function for manual cleanup
+ */
 export function useMemoryCleanup(cleanupFn: () => void, _deps: unknown[] = []) {
   const memoryManager = getMemoryManager()
 
   // Register cleanup function
   memoryManager.registerCleanup(cleanupFn)
 
-  // Return cleanup function for manual use
+  // Return unregister function for manual cleanup (e.g., in useEffect cleanup)
   return () => {
-    memoryManager.registerCleanup(cleanupFn)
+    memoryManager.unregisterCleanup(cleanupFn)
   }
 }
 

@@ -14,7 +14,7 @@ import { ChatPacedDialogue } from "./ChatPacedDialogue"
 import { shouldShowAvatar } from "./CharacterAvatar"
 import { RichTextRenderer, type RichTextEffect } from "./RichTextRenderer"
 import { motion } from "framer-motion"
-import { interactionAnimations, type InteractionType } from "@/lib/interaction-parser"
+import { interactionAnimations, isKineticInteraction, type InteractionType, type MotionInteractionType } from "@/lib/interaction-parser"
 import { getVoiceClass } from "@/lib/voice-utils"
 import { useUnlockEffects } from "@/hooks/useUnlockEffects"
 import { EmotionTag, TrustDisplay, Subtext } from "./unlock-enhancements"
@@ -134,8 +134,9 @@ export function DialogueDisplay({
           Original: Roadwarden research showed need for speaker labels
           Current: Header shows character name, so this is redundant */}
 
-      {interaction && interactionAnimations[interaction] ? (
-        <motion.div {...interactionAnimations[interaction]}>
+      {/* Motion-based interactions only - kinetic types handled by RichTextRenderer */}
+      {interaction && !isKineticInteraction(interaction) && interactionAnimations[interaction as MotionInteractionType] ? (
+        <motion.div {...interactionAnimations[interaction as MotionInteractionType]}>
           {content}
         </motion.div>
       ) : (

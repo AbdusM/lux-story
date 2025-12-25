@@ -420,7 +420,7 @@ class MusicManager {
     this.currentTrack = null // Detach immediately
     this.currentUrl = null
 
-    // Simple fade out
+    // Simple fade out with guaranteed cleanup
     let vol = track.volume
     const fade = setInterval(() => {
       vol = Math.max(0, vol - 0.1)
@@ -431,21 +431,41 @@ class MusicManager {
         if (onComplete) onComplete()
       }
     }, 100)
+
+    // Safety timeout: force cleanup after 2 seconds max (in case fade stalls)
+    setTimeout(() => {
+      clearInterval(fade)
+      track.pause()
+    }, 2000)
   }
 
   private fadeIn() {
     if (!this.currentTrack) return
     let vol = 0
     const track = this.currentTrack
+    let cleared = false
     const fade = setInterval(() => {
+      if (cleared) return
       if (!this.currentTrack || this.currentTrack !== track) {
         clearInterval(fade)
+        cleared = true
         return
       }
       vol = Math.min(0.3, vol + 0.05) // Max volume 0.3 for background
       track.volume = vol
-      if (vol >= 0.3) clearInterval(fade)
+      if (vol >= 0.3) {
+        clearInterval(fade)
+        cleared = true
+      }
     }, 100)
+
+    // Safety timeout: force cleanup after 2 seconds max
+    setTimeout(() => {
+      if (!cleared) {
+        clearInterval(fade)
+        cleared = true
+      }
+    }, 2000)
   }
 
   stopAll() {
