@@ -5,16 +5,50 @@ import { NextRequest, NextResponse } from 'next/server'
  * Protects ADMIN_API_TOKEN from client bundle exposure
  *
  * Security: Only accessible to authenticated admin users
+ *
+ * SECURITY FIX (Dec 25, 2025):
+ * - Removed dynamic host header usage to prevent SSRF attacks
+ * - Base URL now comes from environment variable only
  */
 
-// Simple auth helper to verify admin cookie
-function requireAdminAuth(request: NextRequest): NextResponse | null {
-  const authToken = request.cookies.get('admin_auth_token')?.value
-  const expectedToken = process.env.ADMIN_API_TOKEN
+/**
+ * Get the base URL for internal API calls
+ * NEVER use request headers to construct URLs (SSRF risk)
+ */
+function getInternalBaseUrl(): string {
+  // In production, use the configured URL
+  if (process.env.NEXT_PUBLIC_BASE_URL) {
+    return process.env.NEXT_PUBLIC_BASE_URL
+  }
+  // In Vercel, use the VERCEL_URL
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`
+  }
+  // Fallback for local development
+  return 'http://localhost:3005'
+}
 
-  if (!authToken || !expectedToken || authToken !== expectedToken) {
+import { validateSession } from '@/lib/auth-utils'
+
+/**
+ * Verify admin session token
+ * SECURITY FIX: Previously compared raw password, now validates session token
+ */
+function requireAdminAuth(request: NextRequest): NextResponse | null {
+  const sessionToken = request.cookies.get('admin_auth_token')?.value
+
+  if (!sessionToken) {
     return NextResponse.json(
       { error: 'Unauthorized - Admin access required' },
+      { status: 401 }
+    )
+  }
+
+  // Validate session token (not password comparison!)
+  const userId = validateSession(sessionToken)
+  if (!userId) {
+    return NextResponse.json(
+      { error: 'Session expired - Please log in again' },
       { status: 401 }
     )
   }
@@ -44,9 +78,9 @@ export async function GET(request: NextRequest) {
       }
 
       // Query urgency API for single user
-      const protocol = request.headers.get('x-forwarded-proto') || 'http'
-      const host = request.headers.get('host') || 'localhost:3003'
-      const apiUrl = `${protocol}://${host}/api/admin/urgency?userId=${encodeURIComponent(userId)}`
+      // SECURITY: Use hardcoded base URL, never trust request headers
+      const baseUrl = getInternalBaseUrl()
+      const apiUrl = `${baseUrl}/api/admin/urgency?userId=${encodeURIComponent(userId)}`
 
       const response = await fetch(apiUrl, {
         headers: {
@@ -133,10 +167,9 @@ export async function GET(request: NextRequest) {
 
   // Forward request to actual urgency API with server-side token
   try {
-    // Dynamic host detection - works in dev (localhost) and prod (Vercel)
-    const protocol = request.headers.get('x-forwarded-proto') || 'http'
-    const host = request.headers.get('host') || 'localhost:3003'
-    const apiUrl = `${protocol}://${host}/api/admin/urgency?level=${level}&limit=${limit}`
+    // SECURITY: Use hardcoded base URL, never trust request headers
+    const baseUrl = getInternalBaseUrl()
+    const apiUrl = `${baseUrl}/api/admin/urgency?level=${level}&limit=${limit}`
 
     const response = await fetch(apiUrl, {
       headers: {
@@ -176,10 +209,9 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    // Dynamic host detection - works in dev (localhost) and prod (Vercel)
-    const protocol = request.headers.get('x-forwarded-proto') || 'http'
-    const host = request.headers.get('host') || 'localhost:3003'
-    const apiUrl = `${protocol}://${host}/api/admin/urgency`
+    // SECURITY: Use hardcoded base URL, never trust request headers
+    const baseUrl = getInternalBaseUrl()
+    const apiUrl = `${baseUrl}/api/admin/urgency`
 
     const response = await fetch(apiUrl, {
       method: 'POST',

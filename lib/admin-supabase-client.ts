@@ -9,22 +9,35 @@
  * - Always checks admin cookie auth before returning client
  * - Uses service role key (bypasses RLS) - handle with care
  * - Single source of truth for admin database access
+ *
+ * SECURITY FIX (Dec 25, 2025):
+ * - Replaced plaintext password comparison with session validation
  */
 
 import { createClient } from '@supabase/supabase-js'
 import { NextRequest, NextResponse } from 'next/server'
+import { validateSession } from '@/lib/auth-utils'
 
 /**
- * Verify admin authentication via cookie
+ * Verify admin authentication via session token
+ * SECURITY FIX: Previously compared raw password, now validates session token
  * Returns error response if unauthorized, null if authorized
  */
 export function requireAdminAuth(request: NextRequest): NextResponse | null {
-  const authToken = request.cookies.get('admin_auth_token')?.value
-  const expectedToken = process.env.ADMIN_API_TOKEN
+  const sessionToken = request.cookies.get('admin_auth_token')?.value
 
-  if (!authToken || !expectedToken || authToken !== expectedToken) {
+  if (!sessionToken) {
     return NextResponse.json(
       { error: 'Unauthorized - Admin access required' },
+      { status: 401 }
+    )
+  }
+
+  // Validate session token (not password comparison!)
+  const userId = validateSession(sessionToken)
+  if (!userId) {
+    return NextResponse.json(
+      { error: 'Session expired - Please log in again' },
       { status: 401 }
     )
   }
