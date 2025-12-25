@@ -1,17 +1,32 @@
 /**
  * Admin Authentication API
- * Simple password-based authentication for admin dashboard
+ * Secure password-based authentication for admin dashboard
  *
  * Security measures:
  * - HTTP-only secure cookies
  * - Rate limited to prevent brute force (5 attempts per 15 min)
  * - Audit logging for all attempts
+ * - Constant-time password comparison (prevents timing attacks)
+ * - Session tokens (password not stored in cookie)
+ * - 4-hour session lifetime (reduced from 7 days)
+ *
+ * SECURITY FIX (Dec 25, 2025):
+ * - Replaced plaintext password comparison with constant-time compare
+ * - Session tokens instead of storing password in cookie
+ * - Reduced session lifetime from 7 days to 4 hours
  */
 
 import { NextRequest, NextResponse } from 'next/server'
 import { rateLimit } from '@/lib/rate-limit'
 import { z } from 'zod'
 import { auditLog } from '@/lib/audit-logger'
+import {
+  verifyAdminPassword,
+  createSession,
+  validateSession,
+  invalidateSession,
+  SESSION_DURATION_SECONDS
+} from '@/lib/auth-utils'
 
 // Rate limiter: 5 attempts per 15 minutes per IP
 const loginLimiter = rateLimit({
@@ -51,30 +66,25 @@ export async function POST(request: NextRequest) {
 
     const { password } = result.data
 
-    // Verify password against environment variable
-    const adminToken = process.env.ADMIN_API_TOKEN
-    if (!adminToken) {
-      console.error('[Admin Auth] ADMIN_API_TOKEN not configured')
-      return NextResponse.json(
-        { error: 'Authentication not configured' },
-        { status: 500 }
-      )
-    }
-
-    // Simple password check - rate limiting prevents brute force
-    if (password === adminToken) {
+    // Verify password using constant-time comparison
+    // SECURITY: This prevents timing attacks
+    if (verifyAdminPassword(password)) {
       // Audit log: Successful login
       auditLog('admin_login_success', 'admin', undefined, { ip })
+
+      // Create session token (NOT the password!)
+      const sessionToken = createSession('admin')
 
       // Create response with secure cookie
       const response = NextResponse.json({ success: true })
 
-      // Set HTTP-only cookie with auth token
-      response.cookies.set('admin_auth_token', adminToken, {
+      // Set HTTP-only cookie with SESSION TOKEN (not password)
+      // SECURITY FIX: Previously stored plaintext password in cookie
+      response.cookies.set('admin_auth_token', sessionToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'strict',
-        maxAge: 60 * 60 * 24 * 7, // 7 days
+        maxAge: SESSION_DURATION_SECONDS, // 4 hours (reduced from 7 days)
         path: '/',
       })
 
@@ -102,6 +112,12 @@ export async function DELETE(request: NextRequest) {
   // Audit log: Logout
   const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown'
   auditLog('admin_logout', 'admin', undefined, { ip })
+
+  // Invalidate the session
+  const sessionToken = request.cookies.get('admin_auth_token')?.value
+  if (sessionToken) {
+    invalidateSession(sessionToken)
+  }
 
   const response = NextResponse.json({ success: true })
 
