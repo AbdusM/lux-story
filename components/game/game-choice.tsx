@@ -52,7 +52,7 @@ const GameChoice = React.forwardRef<HTMLButtonElement, GameChoiceProps>(
     loading = false,
     index = 0,
     animated = true,
-    glass = true,
+    glass = false, // Default to standard styling for backwards compatibility
     disabled,
     ...props
   }, ref) => {
@@ -92,7 +92,7 @@ const GameChoice = React.forwardRef<HTMLButtonElement, GameChoiceProps>(
           // Touch target - Apple HIG minimum
           "min-h-[44px]",
 
-          // Glass morphism styling (when enabled)
+          // Glass morphism styling (dark theme, when enabled)
           glass && [
             "bg-white/5",
             "border border-white/10",
@@ -100,27 +100,34 @@ const GameChoice = React.forwardRef<HTMLButtonElement, GameChoiceProps>(
             "hover:bg-white/10",
             "hover:border-white/15",
             "active:bg-white/15",
+            "text-slate-100",
           ],
 
-          // Non-glass fallback styling
+          // Standard styling (light theme, default)
           !glass && [
             "hover:bg-slate-50 dark:hover:bg-slate-800",
             "active:bg-slate-100 dark:active:bg-slate-700",
+            "text-slate-900 dark:text-slate-100",
           ],
 
           // Typography - optimal readability
           "text-[17px] leading-relaxed",
-          "text-slate-100",
           "font-normal",
 
           // Focus state - accessible
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
+          "focus-visible:outline-none focus-visible:ring-2",
+          glass
+            ? "focus-visible:ring-violet-400/50 focus-visible:ring-offset-transparent"
+            : "focus-visible:ring-slate-400 focus-visible:ring-offset-2",
 
-          // Pattern glow on hover
-          patternGlow,
+          // Pattern glow on hover (glass mode only)
+          glass && patternGlow,
 
-          // Selected state - subtle highlight
-          isSelected && "bg-white/15 border-white/20",
+          // Selected state
+          isSelected && (glass
+            ? "bg-white/15 border-white/20"
+            : "bg-slate-100 dark:bg-slate-800"
+          ),
 
           // Disabled/Loading state
           (disabled || loading || isSelected) && "cursor-not-allowed",
