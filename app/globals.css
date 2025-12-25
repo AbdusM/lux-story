@@ -516,7 +516,7 @@ main {
    GLASS MORPHISM COMPONENTS
    ══════════════════════════════════════════════════════════════════════════════ */
 
-/* Base glass panel */
+/* Base glass panel - STABLE: No transitions to prevent color jumping */
 .glass-panel {
   position: relative;
   background: var(--glass-bg);
@@ -529,9 +529,7 @@ main {
     inset 1px 1px 0 rgba(255, 255, 255, 0.1),
     inset -1px -1px 0 rgba(255, 255, 255, 0.05),
     var(--glass-shadow);
-  transition:
-    border-color var(--transition-fast) ease,
-    box-shadow var(--transition-medium) ease;
+  /* Transitions REMOVED - they caused color jumping during state changes */
 }
 
 /* Noise texture overlay (5-6% opacity for frosted feel) */
@@ -555,10 +553,10 @@ main {
   box-shadow: var(--glass-shadow);
 }
 
-/* Glass panel hover state */
-.glass-panel:hover {
+/* Glass panel hover state - DISABLED: caused visual inconsistency */
+/* .glass-panel:hover {
   border-color: var(--glass-border-hover);
-}
+} */
 
 /* Glass panel with pattern glow - using canonical colors from lib/patterns.ts */
 .glass-panel[data-pattern="analytical"] {
@@ -605,7 +603,7 @@ main {
   position: fixed;
   inset: 0;
   z-index: -1;
-  transition: background-color var(--atmosphere-transition) ease;
+  /* Transition REMOVED - character color changes were distracting */
   background-color: var(--atmosphere-void);
 }
 

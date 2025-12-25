@@ -1391,21 +1391,11 @@ export default function StatefulGameInterface() {
         data-testid="game-interface"
       >
         <div className="max-w-4xl mx-auto px-3 sm:px-4 py-4 md:pt-8 lg:pt-12 pb-6 sm:pb-8">
-          {/* AnimatePresence for smooth dialogue transitions - mobile-optimized */}
-          <AnimatePresence mode="wait" initial={false}>
-            <motion.div
-              key={`dialogue-${state.gameState?.currentNodeId || 'none'}-${state.currentCharacterId}`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{
-                duration: 0.15,
-                ease: "easeOut"
-              }}
-            >
+          {/* Dialogue container - STABLE: no animations to prevent layout shifts */}
+          <div key={`dialogue-${state.gameState?.currentNodeId || 'none'}-${state.currentCharacterId}`}>
               <Card
-                className="glass-panel !bg-transparent text-slate-100"
-                style={{ transition: 'none' }}
+                className="glass-panel text-white"
+                style={{ transition: 'none', background: 'rgba(10, 12, 16, 0.85)' }}
                 data-testid="dialogue-card"
                 data-node-id={state.gameState?.currentNodeId || ''}
                 data-character-id={state.currentCharacterId}
@@ -1442,62 +1432,8 @@ export default function StatefulGameInterface() {
                     </div>
                   )}
 
-                  {/* Consequence Echo - NPC micro-reaction before their main line */}
                   {/* Consequence Echo removed based on user feedback (distracting meta-commentary) */}
-                  {/*
-        ISP UPDATE: NeuroOverlay (Visual Bio-Feedback)
-        Pulses with the character's nervous system state.
-        Ventral = Warm/Gold (Connection)
-        Sympathetic = Amber/Red (Alert)
-        Dorsal = Desaturated/Cool (Shutdown)
-      */}
-                  {/*
-        ISP UPDATE: NeuroOverlay (Visual Bio-Feedback)
-        Pulses with the character's nervous system state.
-        Ventral = Warm/Gold (Connection)
-        Sympathetic = Amber/Red (Alert)
-        Dorsal = Desaturated/Cool (Shutdown)
-      */}
-                  <div
-                    className={`fixed inset-0 pointer-events-none z-0 transition-colors duration-[3000ms] mix-blend-overlay opacity-20
-          ${state.gameState?.characters.get(state.currentCharacterId)?.nervousSystemState === 'ventral_vagal' ? 'bg-amber-100' : ''}
-          ${state.gameState?.characters.get(state.currentCharacterId)?.nervousSystemState === 'sympathetic' ? 'bg-red-900 animate-pulse' : ''}
-          ${state.gameState?.characters.get(state.currentCharacterId)?.nervousSystemState === 'dorsal_vagal' ? 'bg-slate-900 grayscale' : ''}
-        `}
-                  />
-
-                  {/* 
-                    ISP UPDATE: The Chemistry Lab (Visual Alchemy)
-                    Renders the specific reaction between Anxiety and Skill.
-                  */}
-                  {(() => {
-                    const reaction = state.gameState?.characters.get(state.currentCharacterId)?.lastReaction?.type
-                    if (!reaction) return null
-
-                    return (
-                      <>
-                        {/* Resonance (Steam/Mist) - Vulnerable Connection */}
-                        {reaction === 'resonance' && (
-                          <div className="fixed inset-0 pointer-events-none z-0 bg-white/30 mix-blend-soft-light blur-3xl animate-pulse duration-[4000ms]" />
-                        )}
-
-                        {/* Cold Fusion (Blue Flame) - Hyper-Focus */}
-                        {reaction === 'cold_fusion' && (
-                          <div className="fixed inset-0 pointer-events-none z-0 bg-cyan-900/20 mix-blend-color-dodge" />
-                        )}
-
-                        {/* Volatility (Sparks) - Unchecked Anxiety */}
-                        {reaction === 'volatility' && (
-                          <div className="fixed inset-0 pointer-events-none z-0 bg-orange-500/10 mix-blend-overlay animate-pulse duration-[200ms]" />
-                        )}
-
-                        {/* Deep Rooting (Moss) - Stabilization */}
-                        {reaction === 'deep_rooting' && (
-                          <div className="fixed inset-x-0 bottom-0 h-32 pointer-events-none z-0 bg-gradient-to-t from-emerald-900/40 to-transparent" />
-                        )}
-                      </>
-                    )
-                  })()}
+                  {/* NeuroOverlay and Chemistry Lab REMOVED - caused distracting color flashing */}
 
                   <DialogueDisplay
                     key={`dialogue-display-${state.gameState?.currentNodeId || 'none'}-${state.currentCharacterId}-${state.currentContent?.substring(0, 20) || ''}`}
@@ -1513,8 +1449,7 @@ export default function StatefulGameInterface() {
                   />
                 </CardContent>
               </Card>
-            </motion.div>
-          </AnimatePresence>
+          </div>
 
           {/* Pattern sensations and ambient events removed - keeping UI clean */}
 
@@ -1595,12 +1530,7 @@ export default function StatefulGameInterface() {
           ══════════════════════════════════════════════════════════════════ */}
       < AnimatePresence mode="wait" >
         {!isEnding && (
-          <motion.footer
-            key="choices-footer"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
+          <footer
             className="flex-shrink-0 glass-panel mx-3 sm:mx-auto sm:max-w-2xl lg:max-w-3xl z-20"
             style={{
               marginTop: '1.5rem',
@@ -1669,10 +1599,9 @@ export default function StatefulGameInterface() {
                 {/* Scroll indicator removed based on user feedback (often unnecessary) */}
               </div>
             </div>
-          </motion.footer>
-        )
-        }
-      </AnimatePresence >
+          </footer>
+        )}
+      </AnimatePresence>
 
       {/* Share prompts removed - too obtrusive */}
 
@@ -1751,43 +1680,7 @@ export default function StatefulGameInterface() {
         onComplete={() => setState(prev => ({ ...prev, showIdentityCeremony: false, ceremonyPattern: null }))}
       />
 
-      {/* ══════════════════════════════════════════════════════════════════
-          LIMBIC SYSTEM OVERLAY - Visualization of Connection
-          ══════════════════════════════════════════════════════════════════ */}
-      {
-        state.gameState && (() => {
-          const char = state.gameState.characters.get(state.currentCharacterId)
-          const nsState = char?.nervousSystemState
-
-          if (!nsState || nsState === 'ventral_vagal') return null
-
-          return (
-            <div className="fixed inset-0 pointer-events-none z-50 transition-all duration-1000 ease-in-out">
-              {/* Sympathetic: Amber/Red Vignette (Anxiety) */}
-              {nsState === 'sympathetic' && (
-                <div
-                  className="absolute inset-0 opacity-20 dark:opacity-30"
-                  style={{
-                    background: 'radial-gradient(circle at center, transparent 60%, #f59e0b 100%)',
-                    mixBlendMode: 'overlay'
-                  }}
-                />
-              )}
-
-              {/* Dorsal: Dark/Grey Vignette (Disconnect) */}
-              {nsState === 'dorsal_vagal' && (
-                <div
-                  className="absolute inset-0 opacity-30 dark:opacity-50"
-                  style={{
-                    background: 'radial-gradient(circle at center, transparent 50%, #1e293b 100%)',
-                    filter: 'grayscale(0.5)'  // Desaturate the world
-                  }}
-                />
-              )}
-            </div>
-          )
-        })()
-      }
+      {/* Limbic System Overlay REMOVED - caused distracting color flashing */}
       {/* The Reality Interface - Career Report */}
       {
         state.showReport && state.gameState && (

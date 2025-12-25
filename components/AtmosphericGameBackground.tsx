@@ -47,39 +47,14 @@ export function AtmosphericGameBackground({
 
   return (
     <div className={cn("relative min-h-screen", className)}>
-      {/* Atmospheric Background Layer */}
-      <motion.div
+      {/* Atmospheric Background Layer - STABLE: No animations */}
+      <div
         className="atmosphere"
         data-character={characterId}
-        data-processing={isProcessing ? "true" : undefined}
-        initial={false}
-        animate={{
-          opacity: isProcessing ? 0.95 : 1
-        }}
-        transition={{
-          duration: prefersReducedMotion ? 0 : 0.8,
-          ease: "easeInOut"
-        }}
         aria-hidden="true"
       />
 
-      {/* Processing Pulse Overlay (subtle) */}
-      {isProcessing && !prefersReducedMotion && (
-        <motion.div
-          className="fixed inset-0 z-0 pointer-events-none"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: [0, 0.03, 0] }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-          style={{
-            background: "radial-gradient(circle at center, var(--pattern-patience, #8b5cf6) 0%, transparent 70%)"
-          }}
-          aria-hidden="true"
-        />
-      )}
+      {/* Processing Pulse REMOVED - was distracting */}
 
       {/* Content Layer */}
       <div className="relative z-10">
