@@ -7,7 +7,8 @@ button {
   will-change: transform, box-shadow;
 }
 
-button:hover:not(:disabled) {
+/* Exclude choice buttons - they use Framer Motion for transforms */
+button:hover:not(:disabled):not([data-testid="choice-button"]) {
   transform: translateY(-1px);
   box-shadow: 0 0 12px rgba(251, 191, 36, 0.35);
 }
@@ -62,10 +63,12 @@ button:active {
   transition: all 0.2s ease;
 }
 
+/* REMOVED: Conflicts with Framer Motion transforms in GameChoices.tsx
 .choice-button:hover:not(:disabled) {
   transform: scale(1.02);
   filter: brightness(1.1);
 }
+*/
 
 /* Companion Bounce */
 .companion-avatar:hover {
