@@ -433,10 +433,10 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
               }
             })()}
             ${glass ? 'hover:text-white' : 'hover:text-stone-900'}
-            active:scale-[0.98] active:shadow-none
-            transition-all duration-200 ease-out
+            active:shadow-none
+            transition-colors duration-200
             rounded-[14px]
-            touch-manipulation select-none overflow-hidden
+            touch-manipulation select-none
             ${choice.feedback === 'shake' ? (glass ? 'border-red-400/40 bg-red-900/20' : 'border-red-200 bg-red-50') : ''}
             ${choice.feedback === 'glow' ? (glass ? 'border-amber-400/40 bg-amber-900/20' : 'border-amber-300 bg-amber-50') : ''}
             ${isFocused ? (glass
@@ -568,7 +568,7 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
                 {title}
               </h3>
             )}
-            <div className={`grid gap-3 ${groupChoices.length >= 4 ? 'md:grid-cols-2' : 'grid-cols-1'}`}>
+            <div className={`grid gap-3 p-2 ${groupChoices.length >= 4 ? 'md:grid-cols-2' : 'grid-cols-1'}`}>
               {groupChoices.map((choice, localIndex) => {
                 const currentGlobalIndex = globalIndex++
                 // Apply lock unless it's the mercy override
@@ -597,7 +597,7 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
   return (
     <motion.div
       ref={containerRef}
-      className={`grid gap-3 ${useGrid ? 'md:grid-cols-2' : 'grid-cols-1'}`}
+      className={`grid gap-3 p-2 ${useGrid ? 'md:grid-cols-2' : 'grid-cols-1'}`}
       data-testid="game-choices"
       role="listbox"
       aria-label="Choose your response"

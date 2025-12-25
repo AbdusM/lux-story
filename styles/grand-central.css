@@ -312,11 +312,11 @@
 }
 
 .choice-button:hover {
-  background: linear-gradient(135deg, 
-    rgba(255,255,255,0.08) 0%, 
+  background: linear-gradient(135deg,
+    rgba(255,255,255,0.08) 0%,
     rgba(255,255,255,0.04) 100%);
   border-color: rgba(255,255,255,0.2);
-  transform: translateY(-2px);
+  /* transform: translateY(-2px); -- REMOVED: Framer Motion handles transforms */
   box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
@@ -396,7 +396,7 @@
 }
 
 .choice-button.career-values-choice:hover {
-  transform: translateX(4px) translateY(-2px);
+  /* transform: translateX(4px) translateY(-2px); -- REMOVED: Framer Motion handles transforms */
 }
 
 /* Keyframe animations */
