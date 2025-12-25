@@ -21,7 +21,7 @@ import { springs } from "@/lib/animations"
 import { type PatternType, getPatternColor } from "@/lib/patterns"
 
 export interface SentientGlassCardProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onDrag' | 'onDragStart' | 'onDragEnd' | 'onAnimationStart'> {
   /** Entrance animation direction */
   entrance?: "bottom" | "left" | "right" | "scale" | "none"
   /** Pattern glow effect */

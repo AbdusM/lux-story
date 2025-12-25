@@ -35,22 +35,27 @@ function getTrustState(trust: number): CharacterWithState['trustState'] {
 }
 
 export function useConstellationData(): ConstellationData {
-  const characterTrust = useGameStore(state => state.characterTrust)
-  const skills = useGameStore(state => state.skills)
+  // Derive all data from coreGameState (single source of truth)
   const coreGameState = useGameStore(state => state.coreGameState)
+  const skills = useGameStore(state => state.skills)
+  // Fallback to legacy characterTrust only if coreGameState not available
+  const legacyCharacterTrust = useGameStore(state => state.characterTrust)
 
   const characters = useMemo<CharacterWithState[]>(() => {
-    // Build map of character conversation history lengths
+    // Build maps from coreGameState for trust and conversation history
+    const characterTrustMap = new Map<string, number>()
     const characterConversations = new Map<string, number>()
 
     if (coreGameState) {
       for (const char of coreGameState.characters) {
+        characterTrustMap.set(char.characterId, char.trust)
         characterConversations.set(char.characterId, char.conversationHistory.length)
       }
     }
 
     return CHARACTER_NODES.map(node => {
-      const trust = characterTrust[node.id] || 0
+      // Prefer coreGameState trust, fallback to legacy
+      const trust = characterTrustMap.get(node.id) ?? legacyCharacterTrust[node.id] ?? 0
       const conversationCount = characterConversations.get(node.id) || 0
 
       // Character is "met" if they have trust > 0 OR if they have conversation history OR if the explicit flag exists
@@ -66,7 +71,7 @@ export function useConstellationData(): ConstellationData {
         trustState: getTrustState(trust)
       }
     })
-  }, [characterTrust, coreGameState])
+  }, [coreGameState, legacyCharacterTrust])
 
   const skillsWithState = useMemo<SkillWithState[]>(() => {
     return SKILL_NODES.map(node => {

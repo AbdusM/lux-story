@@ -1,19 +1,20 @@
 "use client"
 
-import { useGameStore } from "@/lib/game-store"
+import { useGameSelectors } from "@/lib/game-store"
 import { motion } from "framer-motion"
 import { Brain } from "lucide-react"
 
 /**
  * Thought Cabinet
  * Replaces "Mind" tab.
- * 
+ *
  * Concept: An incubator for ideas.
  * Implementation: Grid of thoughts that progress from 0% to 100% (Internalized).
  * Mobile First: Swipeable cards or compact grid.
  */
 export function ThoughtCabinet() {
-    const thoughts = useGameStore(state => state.thoughts)
+    // Use selector that derives from coreGameState (single source of truth)
+    const thoughts = useGameSelectors.useThoughts()
 
     // Sort: Internalized (Complete) -> Developing (Active) -> Unknown
     const sortedThoughts = [...thoughts].sort((a, b) => b.progress - a.progress)
@@ -23,17 +24,17 @@ export function ThoughtCabinet() {
 
             {/* Header Stats */}
             <div className="flex items-center justify-between text-xs text-slate-500 font-medium px-1">
-                <span>{thoughts.length} Synapses Active</span>
+                <span>{thoughts.length} Thought{thoughts.length !== 1 ? 's' : ''} Active</span>
                 <span>{thoughts.filter(t => t.status === 'internalized').length} Internalized</span>
             </div>
 
             {/* Grid */}
             <div className="grid grid-cols-1 gap-4">
                 {sortedThoughts.length === 0 ? (
-                    <div className="py-12 border border-dashed border-slate-300 dark:border-slate-700 rounded-xl flex flex-col items-center text-center p-6 text-slate-400">
-                        <Brain className="w-8 h-8 mb-3 opacity-50" />
+                    <div className="py-6 border border-dashed border-slate-300 dark:border-slate-700 rounded-xl flex flex-col items-center text-center px-4 text-slate-400 max-h-[120px]">
+                        <Brain className="w-6 h-6 mb-2 opacity-50" />
                         <p className="text-sm">Your mind is clear.</p>
-                        <p className="text-xs mt-1">Make complex choices to form thoughts.</p>
+                        <p className="text-xs mt-1 text-slate-500">Choices spark thoughts</p>
                     </div>
                 ) : (
                     sortedThoughts.map((thought) => (

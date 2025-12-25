@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils"
 import { useConstellationData } from "@/hooks/useConstellationData"
 import { useInsights } from "@/hooks/useInsights"
 import { PlayerAvatar } from "./CharacterAvatar"
+import { PatternOrb } from "./PatternOrb"
 import { HarmonicsView } from "./HarmonicsView"
 import { EssenceSigil } from "./EssenceSigil"
 import { ThoughtCabinet } from "./ThoughtCabinet"
@@ -65,35 +66,45 @@ export function Journal({ isOpen, onClose }: JournalProps) {
           {/* ... (Backdrop & Panel code unchanged until Content Area) ... */}
           <motion.div
             // ... (Panel attributes)
-            className="fixed left-0 top-0 bottom-0 w-full max-w-md bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 shadow-2xl z-[100] flex flex-col"
+            className="!fixed left-0 top-0 bottom-0 w-full max-w-md glass-panel !rounded-none border-r border-white/10 shadow-2xl z-[100] flex flex-col"
           // ...
           >
             {/* ... (Header & Tabs unchanged) ... */}
 
             {/* Header Code ... */}
-            <div className="p-4 sm:p-6 border-b border-slate-200/50 dark:border-slate-800/50 flex items-center justify-between">
+            <div className="p-4 sm:p-6 border-b border-white/10 flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <PlayerAvatar size="lg" />
                 <div>
                   <h2 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-amber-500 to-purple-600 font-serif">
                     The Prism
                   </h2>
-                  <p className="text-xs text-slate-500 font-medium tracking-wide">
-                    {insights.journey.stageLabel} Resonance
+                  <p className="text-xs text-slate-400 font-medium tracking-wide">
+                    {insights?.journey?.stageLabel || 'Beginning'} Resonance
                   </p>
                 </div>
               </div>
-              <button
-                onClick={onClose}
-                className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                aria-label="Close prism"
-              >
-                <X className="w-5 h-5 text-slate-500" />
-              </button>
+              <div className="flex items-center gap-3">
+                {/* Dominant Pattern Orb - shows player's current tendency */}
+                {insights?.decisionStyle?.primaryPattern && (
+                  <PatternOrb
+                    pattern={insights.decisionStyle.primaryPattern.type}
+                    size="sm"
+                    celebrate={false}
+                  />
+                )}
+                <button
+                  onClick={onClose}
+                  className="p-2 rounded-full hover:bg-white/10 transition-colors"
+                  aria-label="Close prism"
+                >
+                  <X className="w-5 h-5 text-slate-400" />
+                </button>
+              </div>
             </div>
 
             {/* Navigation Tabs */}
-            <div className="flex border-b border-slate-200/50 dark:border-slate-800/50 overflow-x-auto no-scrollbar">
+            <div className="flex border-b border-white/10 overflow-x-auto no-scrollbar">
               {tabs.map(tab => (
                 <button
                   key={tab.id}
@@ -101,8 +112,8 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                   className={cn(
                     "flex-1 py-4 px-3 text-xs font-medium transition-colors flex flex-col items-center gap-1.5 min-w-[64px] relative",
                     activeTab === tab.id
-                      ? "text-slate-900 dark:text-white"
-                      : "text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+                      ? "text-white"
+                      : "text-slate-500 hover:text-slate-300"
                   )}
                 >
                   <tab.icon className={cn("w-5 h-5 transition-transform", activeTab === tab.id && "scale-110")} />
@@ -119,9 +130,9 @@ export function Journal({ isOpen, onClose }: JournalProps) {
             </div>
 
             {/* Content Area */}
-            <div className="flex-1 overflow-y-auto overflow-x-hidden relative bg-slate-50/30 dark:bg-slate-900/30">
+            <div className="flex-1 overflow-y-auto overflow-x-hidden relative bg-black/20">
               {/* Background Grid */}
-              <div className="absolute inset-0 bg-grid-slate-200/20 dark:bg-grid-slate-800/20 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] pointer-events-none" />
+              <div className="absolute inset-0 bg-grid-slate-800/20 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] pointer-events-none" />
 
               <AnimatePresence mode="wait">
                 {activeTab === 'stars' && detailSkillId ? (
@@ -129,13 +140,13 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                   <SwipeablePanel
                     key="skill-detail"
                     onClose={() => setDetailSkillId(null)}
-                    className="absolute inset-0 bg-white dark:bg-slate-900 z-10 p-6 overflow-y-auto cursor-grab active:cursor-grabbing"
+                    className="absolute inset-0 bg-slate-900/95 z-10 p-6 overflow-y-auto cursor-grab active:cursor-grabbing"
                   >
                     <button
                       onClick={() => setDetailSkillId(null)}
-                      className="group flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 transition-colors mb-6"
+                      className="group flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-400 hover:text-slate-200 transition-colors mb-6"
                     >
-                      <div className="w-6 h-6 rounded-full border border-slate-200 dark:border-slate-700 flex items-center justify-center group-hover:border-amber-500 group-hover:bg-amber-50 dark:group-hover:bg-amber-900/20 transition-all">
+                      <div className="w-6 h-6 rounded-full border border-slate-700 flex items-center justify-center group-hover:border-amber-500 group-hover:bg-amber-900/20 transition-all">
                         <span className="text-sm font-sans relative top-px">←</span>
                       </div>
                       Return to Academy
@@ -145,26 +156,26 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                       <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 select-none">
                         {/* Header */}
                         <div>
-                          <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-2">{activeSkillDef.title}</h2>
-                          <p className="text-lg font-serif italic text-amber-600 dark:text-amber-400">
+                          <h2 className="text-3xl font-bold text-slate-100 mb-2">{activeSkillDef.title}</h2>
+                          <p className="text-lg font-serif italic text-amber-400">
                             "{activeSkillDef.superpowerName}"
                           </p>
                         </div>
 
                         {/* Level Badge */}
-                        <div className="flex items-center gap-4 p-4 bg-slate-50 dark:bg-slate-800 rounded-lg border border-slate-100 dark:border-slate-700">
+                        <div className="flex items-center gap-4 p-4 bg-slate-800/50 rounded-lg border border-slate-700">
                           <div className="text-center">
-                            <div className="text-2xl font-bold text-slate-800 dark:text-slate-200">
+                            <div className="text-2xl font-bold text-slate-200">
                               {activeSkillState?.demonstrationCount || 0}
                             </div>
                             <div className="text-[10px] text-slate-400 uppercase">Level</div>
                           </div>
-                          <div className="h-8 w-px bg-slate-200 dark:bg-slate-600" />
+                          <div className="h-8 w-px bg-slate-600" />
                           <div className="flex-1">
-                            <div className="text-xs font-medium text-slate-600 dark:text-slate-300 mb-1">
+                            <div className="text-xs font-medium text-slate-300 mb-1">
                               Mastery Progress
                             </div>
-                            <div className="h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                            <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
                               <div
                                 className="h-full bg-amber-500 transition-all duration-1000"
                                 style={{ width: `${Math.min(((activeSkillState?.demonstrationCount || 0) / 10) * 100, 100)}%` }}
@@ -174,9 +185,9 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                         </div>
 
                         {/* Definition */}
-                        <div className="prose dark:prose-invert">
+                        <div className="prose prose-invert">
                           <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Definition</h3>
-                          <p className="text-slate-700 dark:text-slate-300 leading-relaxed text-sm">
+                          <p className="text-slate-300 leading-relaxed text-sm">
                             {activeSkillDef.definition}
                           </p>
                         </div>
@@ -212,14 +223,14 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                       <div className="flex-1 flex flex-col">
                         {/* Mode Toggle */}
                         <div className="flex justify-center p-4">
-                          <div className="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-full">
+                          <div className="flex bg-slate-800/50 p-1 rounded-full">
                             <button
                               onClick={() => setConstellationMode('social')}
                               className={cn(
                                 "px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider transition-all",
                                 constellationMode === 'social'
-                                  ? "bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm"
-                                  : "text-slate-400 hover:text-slate-600"
+                                  ? "bg-slate-700 text-white shadow-sm"
+                                  : "text-slate-400 hover:text-slate-300"
                               )}
                             >
                               Social
@@ -229,8 +240,8 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                               className={cn(
                                 "px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider transition-all",
                                 constellationMode === 'academy'
-                                  ? "bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm"
-                                  : "text-slate-400 hover:text-slate-600"
+                                  ? "bg-slate-700 text-white shadow-sm"
+                                  : "text-slate-400 hover:text-slate-300"
                               )}
                             >
                               Academy
@@ -257,11 +268,11 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                         </div>
 
                         <div className="p-4 text-center space-y-1">
-                          <p className="text-[10px] text-slate-400 font-mono uppercase tracking-widest">
+                          <p className="text-[10px] text-slate-500 font-mono uppercase tracking-widest">
                             {constellationMode === 'social' ? "Network Topology" : "Skill Matrix"}
                           </p>
                           {constellationMode === 'academy' && (
-                            <p className="text-[9px] text-slate-300 dark:text-slate-600">
+                            <p className="text-[9px] text-slate-500">
                               Unlocked: {skills.filter(s => s.state !== 'dormant').length} / {skills.length}
                             </p>
                           )}
@@ -273,12 +284,11 @@ export function Journal({ isOpen, onClose }: JournalProps) {
               </AnimatePresence>
             </div>
 
-            {/* Footer */}
-            <div className="p-3 border-t border-slate-200/50 dark:border-slate-800/50 bg-slate-50/50 dark:bg-slate-900/50 text-center">
-              <div className="flex items-center justify-center gap-2 text-[10px] text-slate-400 uppercase tracking-widest">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                System Nominal
-              </div>
+            {/* Footer - minimal branding */}
+            <div className="p-2 border-t border-white/10 bg-black/20">
+              <p className="text-[9px] text-center text-slate-600 font-mono tracking-wider">
+                THE PRISM
+              </p>
             </div>
 
           </motion.div>

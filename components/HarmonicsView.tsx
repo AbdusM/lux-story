@@ -19,6 +19,15 @@ const triggerHaptic = (style: 'light' | 'medium' | 'heavy') => {
 export function HarmonicsView() {
     const { orbs: patternOrbs } = usePatternUnlocks()
 
+    // Null guard: show loading state if orbs not yet available
+    if (!patternOrbs || patternOrbs.length === 0) {
+        return (
+            <div className="p-4 space-y-8 min-h-[500px] flex flex-col items-center justify-center">
+                <p className="text-xs text-slate-500 animate-pulse">Patterns forming...</p>
+            </div>
+        )
+    }
+
     return (
         <div className="p-4 space-y-8 min-h-[500px] flex flex-col items-center">
             {/* Header */}
@@ -31,14 +40,14 @@ export function HarmonicsView() {
                 </p>
             </div>
 
-            {/* The Totem - Vertical Stacking for Mobile */}
-            <div className="flex-1 flex flex-col items-center justify-center gap-6 w-full max-w-[280px]">
+            {/* The Totem - Vertical Stacking for Mobile (gap accounts for labels) */}
+            <div className="flex-1 flex flex-col items-center justify-center gap-12 w-full max-w-[280px]">
                 {patternOrbs.map((orb, index) => (
                     <HarmonicOrb key={orb.pattern} orb={orb} index={index} />
                 ))}
             </div>
 
-            <p className="text-[9px] text-slate-300 dark:text-slate-600 font-mono text-center">
+            <p className="text-[9px] text-slate-500 font-mono text-center">
                 Tap orbs to listen • Tilt device to disturb
             </p>
         </div>
@@ -113,14 +122,14 @@ function HarmonicOrb({ orb, index }: { orb: OrbState; index: number }) {
             />
 
             {/* Symbol */}
-            <PatternIcon pattern={orb.pattern} className="w-6 h-6" />
+            <PatternIcon pattern={orb.pattern} className="w-6 h-6" style={{ color: orb.color }} />
 
-            {/* Label (Floating outside) */}
-            <div className="absolute -right-24 text-left w-20 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
-                <p className="text-[10px] font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider">
+            {/* Label (Always visible below orb) */}
+            <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-center pointer-events-none whitespace-nowrap">
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
                     {orb.label}
                 </p>
-                <p className="text-[9px] text-slate-400">
+                <p className="text-[9px] text-slate-500 font-mono">
                     {orb.fillPercent}%
                 </p>
             </div>
@@ -129,13 +138,13 @@ function HarmonicOrb({ orb, index }: { orb: OrbState; index: number }) {
     )
 }
 
-function PatternIcon({ pattern, className }: { pattern: string; className?: string }) {
+function PatternIcon({ pattern, className, style }: { pattern: string; className?: string; style?: React.CSSProperties }) {
     switch (pattern) {
-        case 'analytical': return <Microscope className={className} />
-        case 'patience': return <Brain className={className} />
-        case 'exploring': return <Compass className={className} />
-        case 'helping': return <Heart className={className} />
-        case 'building': return <Hammer className={className} />
-        default: return <Compass className={className} />
+        case 'analytical': return <Microscope className={className} style={style} />
+        case 'patience': return <Brain className={className} style={style} />
+        case 'exploring': return <Compass className={className} style={style} />
+        case 'helping': return <Heart className={className} style={style} />
+        case 'building': return <Hammer className={className} style={style} />
+        default: return <Compass className={className} style={style} />
     }
 }

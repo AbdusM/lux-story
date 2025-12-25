@@ -64,6 +64,7 @@ class PerformanceMonitor {
   }
 
   private observers: Map<string, PerformanceObserver> = new Map()
+  private memoryIntervalId: ReturnType<typeof setInterval> | null = null
   private isInitialized = false
 
   constructor() {
@@ -281,7 +282,8 @@ class PerformanceMonitor {
       }
 
       updateMemoryUsage()
-      setInterval(updateMemoryUsage, 10000) // Update every 10 seconds
+      // Store interval ID for cleanup
+      this.memoryIntervalId = setInterval(updateMemoryUsage, 10000) // Update every 10 seconds
     }
   }
 
@@ -348,10 +350,17 @@ class PerformanceMonitor {
   }
 
   public cleanup() {
+    // Clear performance observers
     this.observers.forEach((observer) => {
       observer.disconnect()
     })
     this.observers.clear()
+
+    // Clear memory tracking interval
+    if (this.memoryIntervalId) {
+      clearInterval(this.memoryIntervalId)
+      this.memoryIntervalId = null
+    }
   }
 }
 

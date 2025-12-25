@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils'
 import { CharacterAvatar } from './CharacterAvatar'
 import { RichTextRenderer, type RichTextEffect } from './RichTextRenderer'
 import { motion } from 'framer-motion'
-import { interactionAnimations, type InteractionType } from '@/lib/interaction-parser'
+import { interactionAnimations, isKineticInteraction, type InteractionType, type MotionInteractionType } from '@/lib/interaction-parser'
 import { getVoiceClass } from '@/lib/voice-utils'
 import { getCharacterTyping } from '@/lib/character-typing'
 import { useUnlockEffects } from '@/hooks/useUnlockEffects'
@@ -342,13 +342,17 @@ export function ChatPacedDialogue({
             </div>
           )
 
-          // Apply interaction animation if specified
-          if (interaction && interactionAnimations[interaction]) {
-            return (
-              <motion.div key={index} {...interactionAnimations[interaction]}>
-                {bubbleContent}
-              </motion.div>
-            )
+          // Apply interaction animation if specified (motion-based only)
+          // Kinetic interactions (wave, shadow, weight, spacing) are handled by RichTextRenderer
+          if (interaction && !isKineticInteraction(interaction)) {
+            const animation = interactionAnimations[interaction as MotionInteractionType]
+            if (animation) {
+              return (
+                <motion.div key={index} {...animation}>
+                  {bubbleContent}
+                </motion.div>
+              )
+            }
           }
 
           return bubbleContent

@@ -3,6 +3,7 @@ import { Inter, Crimson_Pro, Space_Mono, Roboto_Slab } from 'next/font/google'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { EnvironmentalEffects } from '@/components/EnvironmentalEffects'
 import { ServiceWorkerProvider } from '@/components/ServiceWorkerProvider'
+import { SVGFilterProvider } from '@/lib/svg-filters'
 import '@/sentry.client.config'
 import './globals.css'
 import '../styles/accessibility.css'
@@ -93,9 +94,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${inter.variable} ${crimsonPro.variable} ${spaceMono.variable} ${robotoSlab.variable}`}>
-      <body className="grand-central-terminus" style={{ 
+      <body className="grand-central-terminus" style={{
         fontSize: 'var(--font-size-base, 1rem)'
       }}>
+        {/* Global SVG filter definitions for gooey/glow effects */}
+        <SVGFilterProvider />
         <ServiceWorkerProvider>
           <EnvironmentalEffects />
           <ErrorBoundary>

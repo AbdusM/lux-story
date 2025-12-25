@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Bleeding-edge UI effects */
+@import '../styles/scroll-animations.css';
+@import '../styles/kinetic-typography.css';
+
 /* Safe area padding for main content on mobile */
 @layer utilities {
   .pb-safe-mobile {
@@ -305,6 +309,53 @@ main {
   }
 }
 
+/* ══════════════════════════════════════════════════════════════════════════════
+   BLUR HALO ENHANCEMENT - Enhanced attention-grab with backdrop blur
+   Used in combination with nav-attention-marquee for dark theme
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* Amber blur halo (Journal/Orbs) */
+.nav-attention-halo {
+  position: relative;
+}
+
+.nav-attention-halo::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 12px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(251, 191, 36, 0.15) 0%,
+    rgba(251, 191, 36, 0.08) 40%,
+    transparent 70%
+  );
+  animation: haloGlow 2s ease-in-out infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Purple blur halo (Constellation/Trust) */
+.nav-attention-halo-purple::before {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(139, 92, 246, 0.15) 0%,
+    rgba(139, 92, 246, 0.08) 40%,
+    transparent 70%
+  );
+}
+
+@keyframes haloGlow {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
 /* Purple shimmer variant for Constellation marquee */
 .nav-attention-marquee-purple::before {
   content: '';
@@ -425,13 +476,16 @@ main {
   --atmosphere-alex: #080d0a;      /* Fresh green - discovery */
 
   /* Glass Panel Properties */
-  --glass-bg: rgba(10, 12, 16, 0.75);
+  --glass-bg: rgba(10, 12, 16, 0.60); /* Reduced from 0.75 for visible blur */
   --glass-bg-solid: rgba(10, 12, 16, 0.92);
   --glass-border: rgba(255, 255, 255, 0.08);
   --glass-border-hover: rgba(255, 255, 255, 0.12);
-  --glass-blur: 16px;
-  --glass-radius: 16px;
+  --glass-blur: 20px; /* Increased from 16px for perceptible glass effect */
+  --glass-radius: 14px; /* Unified from 16px */
   --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+
+  /* Dialogue text - WCAG AA compliant (8:1 on dark bg) */
+  --text-dialogue: rgba(235, 205, 160, 0.93);
 
   /* Pattern Colors - MUST match lib/patterns.ts canonical source */
   --pattern-analytical: #3B82F6;   /* Blue - The Weaver */
@@ -459,15 +513,33 @@ main {
 
 /* Base glass panel */
 .glass-panel {
+  position: relative;
   background: var(--glass-bg);
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
   border: 1px solid var(--glass-border);
   border-radius: var(--glass-radius);
-  box-shadow: var(--glass-shadow);
+  /* Specular highlights: inner edge lighting for depth */
+  box-shadow:
+    inset 1px 1px 0 rgba(255, 255, 255, 0.1),
+    inset -1px -1px 0 rgba(255, 255, 255, 0.05),
+    var(--glass-shadow);
   transition:
     border-color var(--transition-fast) ease,
     box-shadow var(--transition-medium) ease;
+}
+
+/* Noise texture overlay (5-6% opacity for frosted feel) */
+.glass-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.05;
+  pointer-events: none;
+  border-radius: inherit;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 180px;
 }
 
 /* Glass panel without blur (for low-end devices) */
@@ -483,21 +555,41 @@ main {
   border-color: var(--glass-border-hover);
 }
 
-/* Glass panel with pattern glow */
+/* Glass panel with pattern glow - using canonical colors from lib/patterns.ts */
 .glass-panel[data-pattern="analytical"] {
-  box-shadow: var(--glass-shadow), 0 0 40px rgba(99, 102, 241, 0.1);
+  box-shadow:
+    inset 1px 1px 0 rgba(255, 255, 255, 0.1),
+    inset -1px -1px 0 rgba(255, 255, 255, 0.05),
+    var(--glass-shadow),
+    0 0 40px rgba(59, 130, 246, 0.15); /* #3B82F6 - The Weaver */
 }
 .glass-panel[data-pattern="helping"] {
-  box-shadow: var(--glass-shadow), 0 0 40px rgba(16, 185, 129, 0.1);
+  box-shadow:
+    inset 1px 1px 0 rgba(255, 255, 255, 0.1),
+    inset -1px -1px 0 rgba(255, 255, 255, 0.05),
+    var(--glass-shadow),
+    0 0 40px rgba(236, 72, 153, 0.15); /* #EC4899 - The Harmonic */
 }
 .glass-panel[data-pattern="building"] {
-  box-shadow: var(--glass-shadow), 0 0 40px rgba(234, 179, 8, 0.1);
+  box-shadow:
+    inset 1px 1px 0 rgba(255, 255, 255, 0.1),
+    inset -1px -1px 0 rgba(255, 255, 255, 0.05),
+    var(--glass-shadow),
+    0 0 40px rgba(245, 158, 11, 0.15); /* #F59E0B - The Architect */
 }
 .glass-panel[data-pattern="patience"] {
-  box-shadow: var(--glass-shadow), 0 0 40px rgba(139, 92, 246, 0.1);
+  box-shadow:
+    inset 1px 1px 0 rgba(255, 255, 255, 0.1),
+    inset -1px -1px 0 rgba(255, 255, 255, 0.05),
+    var(--glass-shadow),
+    0 0 40px rgba(16, 185, 129, 0.15); /* #10B981 - The Anchor */
 }
 .glass-panel[data-pattern="exploring"] {
-  box-shadow: var(--glass-shadow), 0 0 40px rgba(245, 158, 11, 0.1);
+  box-shadow:
+    inset 1px 1px 0 rgba(255, 255, 255, 0.1),
+    inset -1px -1px 0 rgba(255, 255, 255, 0.05),
+    var(--glass-shadow),
+    0 0 40px rgba(139, 92, 246, 0.15); /* #8B5CF6 - The Voyager */
 }
 
 /* ══════════════════════════════════════════════════════════════════════════════

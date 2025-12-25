@@ -16,8 +16,9 @@
 import React, { useState, useEffect } from 'react'
 import { cn } from '@/lib/utils'
 import { motion, useReducedMotion } from 'framer-motion'
-import { parseInlineInteractions, interactionAnimations } from '@/lib/interaction-parser'
+import { parseInlineInteractions, interactionAnimations, isKineticInteraction, type MotionInteractionType, type KineticInteractionType } from '@/lib/interaction-parser'
 import { calculateChunkDelay } from '@/lib/character-typing'
+import { KineticText, type KineticEffect } from '@/components/KineticText'
 
 // Color themes for different states (kept for compatibility)
 const STATE_THEMES = {
@@ -171,27 +172,44 @@ export function RichTextRenderer({
   
   // Helper to highlight words and render inline interactions
   const renderChunkWithHighlights = (chunkText: string) => {
-    // First, parse interactions like <shake>text</shake>
+    // First, parse interactions like <shake>text</shake> or <wave>text</wave>
     const segments = parseInlineInteractions(chunkText)
-    
+
     return segments.map((segment, index) => {
       // Parse markdown within the segment content
       const content = parseMarkdown(segment.content)
-      
+
       if (segment.type === 'interaction' && segment.interaction) {
-        // If it's an interaction, wrap in motion.span
-        const animation = interactionAnimations[segment.interaction]
-        return (
-          <motion.span
-            key={`interaction-${index}`}
-            {...animation}
-            style={{ display: 'inline-block' }}
-          >
-            {content}
-          </motion.span>
-        )
+        // Check if it's a kinetic typography effect (wave, shadow, weight, spacing)
+        if (isKineticInteraction(segment.interaction)) {
+          // Map interaction type to KineticEffect
+          const kineticEffect = segment.interaction as KineticEffect
+          return (
+            <KineticText
+              key={`kinetic-${index}`}
+              effect={kineticEffect}
+              delay={0.1 * index} // Stagger kinetic effects slightly
+            >
+              {segment.content}
+            </KineticText>
+          )
+        }
+
+        // Motion-based interaction (shake, jitter, nod, bloom, ripple, big, small, glitch)
+        const animation = interactionAnimations[segment.interaction as MotionInteractionType]
+        if (animation) {
+          return (
+            <motion.span
+              key={`interaction-${index}`}
+              {...animation}
+              style={{ display: 'inline-block' }}
+            >
+              {content}
+            </motion.span>
+          )
+        }
       }
-      
+
       // Regular text segment
       return <React.Fragment key={`text-${index}`}>{content}</React.Fragment>
     })
@@ -229,13 +247,9 @@ export function RichTextRenderer({
     >
       {chunks.map((chunk, index) => (
         <React.Fragment key={`${text.substring(0, 10)}-${index}`}>
-          {/* Subtle visual divider between chunks (Instagram-style) */}
+          {/* Whitespace divider between chunks - let spacing do the work */}
           {index > 0 && index < visibleChunks && (
-            <div className="flex items-center justify-center py-4" aria-hidden="true">
-              <div className="w-12 h-px bg-slate-300/40" />
-              <span className="px-2 text-slate-400 text-xs">·</span>
-              <div className="w-12 h-px bg-slate-300/40" />
-            </div>
+            <div className="h-6" aria-hidden="true" />
           )}
           <motion.div
             initial={{ opacity: 0 }}

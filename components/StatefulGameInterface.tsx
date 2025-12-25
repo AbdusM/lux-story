@@ -24,6 +24,9 @@ import { Card, CardContent } from '@/components/ui/card'
 import { DialogueDisplay } from '@/components/DialogueDisplay'
 import type { RichTextEffect } from '@/components/RichTextRenderer'
 import { AtmosphericIntro } from '@/components/AtmosphericIntro'
+import { AtmosphericGameBackground } from '@/components/AtmosphericGameBackground'
+import { PatternOrb } from '@/components/PatternOrb'
+import { GooeyPatternOrbs, patternScoresToWeights } from '@/components/GooeyPatternOrbs'
 import { CharacterAvatar } from '@/components/CharacterAvatar'
 import { getTrustLabel } from '@/lib/trust-labels'
 import { GameState, GameStateUtils } from '@/lib/character-state'
@@ -51,7 +54,7 @@ import {
 } from '@/lib/graph-registry'
 import { samuelEntryPoints } from '@/content/samuel-dialogue-graph'
 import { SkillTracker } from '@/lib/skill-tracker'
-import { queueRelationshipSync, queuePlatformStateSync } from '@/lib/sync-queue'
+import { queueRelationshipSync, queuePlatformStateSync, queueSkillDemonstrationSync, queuePatternDemonstrationSync } from '@/lib/sync-queue'
 import { useGameStore } from '@/lib/game-store' // RESTORED
 import { dashboard } from '@/lib/telemetry/dashboard-feed' // FIXED: Named export is 'dashboard'
 import { generativeScore } from '@/lib/audio/generative-score' // ISP: Symphonic Agency
@@ -597,9 +600,20 @@ export default function StatefulGameInterface() {
       // RENDER
       // ═══════════════════════════════════════════════════════════════════════════
 
-      // 1. Process Orb Events (Discovery)
+      // 1. Process Orb Events (Discovery) + Persist Pattern to DB
       if (result.events.earnOrb) {
         const { crossedThreshold5 } = earnOrb(result.events.earnOrb)
+
+        // Persist pattern demonstration to database via sync queue
+        queuePatternDemonstrationSync({
+          user_id: newGameState.playerId,
+          pattern_name: result.events.earnOrb,
+          choice_id: choice.choice.choiceId || `${state.currentNode?.nodeId || 'node'}-${Date.now()}`,
+          choice_text: choice.choice.text.substring(0, 200),
+          scene_id: state.currentNode?.nodeId || 'unknown',
+          character_id: state.currentCharacterId || 'station',
+          context: `Made ${result.events.earnOrb} choice with ${state.currentCharacterId || 'the station'}`
+        })
 
         if (crossedThreshold5) {
           const identityThoughtId = `identity-${result.events.earnOrb}` as const
@@ -633,6 +647,17 @@ export default function StatefulGameInterface() {
         }
         if (Object.keys(skillUpdates).length > 0) {
           useGameStore.getState().updateSkills(skillUpdates)
+
+          // Persist each skill demonstration to database via sync queue
+          for (const skill of result.events.updateSkills) {
+            queueSkillDemonstrationSync({
+              user_id: newGameState.playerId,
+              skill_name: skill,
+              scene_id: state.currentNode?.nodeId || 'unknown',
+              choice_text: choice.choice.text.substring(0, 200),
+              context: `Demonstrated ${skill} while interacting with ${state.currentCharacterId || 'the station'}`
+            })
+          }
         }
       }
 
@@ -1242,31 +1267,36 @@ export default function StatefulGameInterface() {
   const isEnding = state.availableChoices.length === 0
 
   return (
-    <div
-      key="game-container"
-      className="h-[100dvh] flex flex-col bg-gradient-to-b from-slate-50 to-slate-100"
-      style={{
-        willChange: 'auto',
-        contain: 'layout style paint',
-        transition: 'none',
-        // Safe area insets for notched devices (iPhone X+)
-        // paddingTop handled by header for edge-to-edge look
-        paddingBottom: 'env(safe-area-inset-bottom)',
-        paddingLeft: 'env(safe-area-inset-left)',
-        paddingRight: 'env(safe-area-inset-right)'
-      }}
+    <AtmosphericGameBackground
+      characterId={state.currentCharacterId}
+      isProcessing={state.isProcessing}
+      className="h-[100dvh]"
     >
+      <div
+        key="game-container"
+        className="h-full flex flex-col"
+        style={{
+          willChange: 'auto',
+          contain: 'layout style paint',
+          transition: 'none',
+          // Safe area insets for notched devices (iPhone X+)
+          // paddingTop handled by header for edge-to-edge look
+          paddingBottom: 'env(safe-area-inset-bottom)',
+          paddingLeft: 'env(safe-area-inset-left)',
+          paddingRight: 'env(safe-area-inset-right)'
+        }}
+      >
       {/* ══════════════════════════════════════════════════════════════════
           FIXED HEADER - Always visible at top (Claude/ChatGPT pattern)
           ══════════════════════════════════════════════════════════════════ */}
       <header
-        className="relative flex-shrink-0 bg-stone-50/95 backdrop-blur-md border-b border-stone-200 z-10"
+        className="relative flex-shrink-0 glass-panel border-b border-white/10 z-10"
         style={{ paddingTop: 'env(safe-area-inset-top)' }}
       >
         <div className="max-w-4xl mx-auto px-3 sm:px-4">
           {/* Top Row - Title and Navigation */}
-          <div className="flex items-center justify-between py-2 border-b border-stone-100">
-            <Link href="/" className="text-sm font-semibold text-slate-800 hover:text-slate-600 transition-colors truncate min-w-0">
+          <div className="flex items-center justify-between py-2 border-b border-white/5">
+            <Link href="/" className="text-sm font-semibold text-slate-100 hover:text-white transition-colors truncate min-w-0">
               <span className="hidden sm:inline">Grand Central Terminus</span>
               <span className="sm:hidden">GCT</span>
             </Link>
@@ -1286,8 +1316,8 @@ export default function StatefulGameInterface() {
                   markOrbsViewed()
                   setState(prev => ({ ...prev, showJournal: true }))
                 }}
-                className={`relative h-9 w-9 p-0 text-slate-500 hover:text-slate-700 hover:bg-stone-100 transition-all duration-300 rounded-md ${hasNewOrbs
-                  ? 'text-amber-600 nav-attention-marquee nav-attention-border'
+                className={`relative h-9 w-9 p-0 text-slate-300 hover:text-white hover:bg-white/10 transition-all duration-300 rounded-md ${hasNewOrbs
+                  ? 'text-amber-400 nav-attention-marquee nav-attention-border nav-attention-halo'
                   : ''
                   }`}
                 title="Journal"
@@ -1298,8 +1328,8 @@ export default function StatefulGameInterface() {
                 variant="ghost"
                 size="sm"
                 onClick={() => setState(prev => ({ ...prev, showConstellation: true, hasNewTrust: false }))}
-                className={`relative h-9 w-9 p-0 text-slate-500 hover:text-slate-700 hover:bg-stone-100 transition-all duration-300 rounded-md ${state.hasNewTrust
-                  ? 'text-purple-600 nav-attention-marquee nav-attention-border-purple'
+                className={`relative h-9 w-9 p-0 text-slate-300 hover:text-white hover:bg-white/10 transition-all duration-300 rounded-md ${state.hasNewTrust
+                  ? 'text-purple-400 nav-attention-marquee nav-attention-border-purple nav-attention-halo nav-attention-halo-purple'
                   : ''
                   }`}
                 title="Constellation"
@@ -1337,7 +1367,7 @@ export default function StatefulGameInterface() {
               data-testid="character-header"
               data-character-id={state.currentCharacterId}
             >
-              <div className="flex items-center gap-2 font-medium text-slate-700 text-sm sm:text-base">
+              <div className="flex items-center gap-2 font-medium text-slate-200 text-sm sm:text-base">
                 <CharacterAvatar
                   characterName={characterNames[state.currentCharacterId]}
                   size="sm"
@@ -1374,10 +1404,7 @@ export default function StatefulGameInterface() {
               }}
             >
               <Card
-                className={`rounded-xl shadow-sm ${state.currentNode?.speaker
-                  ? 'bg-amber-50/95 border-stone-200'  // Character dialogue - OPAQUE for readability
-                  : 'bg-slate-100/95 border-slate-300'  // Atmospheric narration - OPAQUE for readability
-                  }`}
+                className="glass-panel !bg-transparent text-slate-100"
                 style={{ transition: 'none' }}
                 data-testid="dialogue-card"
                 data-node-id={state.gameState?.currentNodeId || ''}
@@ -1574,20 +1601,18 @@ export default function StatefulGameInterface() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="flex-shrink-0 bg-gradient-to-b from-stone-50 to-stone-100/80 border border-stone-200/80 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] mx-3 sm:mx-auto sm:max-w-2xl lg:max-w-3xl rounded-2xl backdrop-blur-sm z-20"
+            className="flex-shrink-0 glass-panel mx-3 sm:mx-auto sm:max-w-2xl lg:max-w-3xl z-20"
             style={{
               marginTop: '1.5rem',
               // PC: Raise higher (2.5rem base), Mobile: Keep safe (calc)
               marginBottom: 'max(1rem, calc(2.5rem + env(safe-area-inset-bottom, 0px)))'
             }}
           >
-            {/* Elegant header separator */}
-            <div className="px-4 sm:px-6 pt-3 pb-1">
-              <div className="flex items-center justify-center gap-2">
-                <div className="h-px flex-1 bg-gradient-to-r from-transparent via-stone-300 to-transparent" />
-                <span className="text-[10px] font-medium text-stone-400 uppercase tracking-widest">Your Response</span>
-                <div className="h-px flex-1 bg-gradient-to-r from-transparent via-stone-300 to-transparent" />
-              </div>
+            {/* Response label - clean, modern styling */}
+            <div className="px-4 sm:px-6 pt-3 pb-1 text-center">
+              <span className="text-[11px] font-medium text-slate-500 uppercase tracking-[0.1em]">
+                Your Response
+              </span>
             </div>
 
             <div className="px-4 sm:px-6 pb-4 sm:pb-5 pt-2">
@@ -1637,6 +1662,7 @@ export default function StatefulGameInterface() {
                       const original = state.availableChoices[index]
                       if (original) handleChoice(original)
                     }}
+                    glass={true}
                   />
                 </div>
 
@@ -1771,6 +1797,9 @@ export default function StatefulGameInterface() {
           />
         )
       }
-    </div >
+
+      {/* PatternOrb moved to Journal panel for cleaner main game view */}
+      </div>
+    </AtmosphericGameBackground>
   )
 }

@@ -2,24 +2,8 @@
 
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { useState } from 'react'
 
 export function LandingPage() {
-  const [email, setEmail] = useState('')
-  const [submitted, setSubmitted] = useState(false)
-
-  const handleEmailSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    // TODO: Integrate with your email service (Mailchimp, ConvertKit, etc.)
-    // Email signup logic will be implemented later
-    setSubmitted(true)
-    // Reset after 3 seconds
-    setTimeout(() => {
-      setSubmitted(false)
-      setEmail('')
-    }, 3000)
-  }
-
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100">
       {/* Hero Section */}
@@ -71,55 +55,40 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* Email Signup Section */}
+      {/* Play Now CTA Section */}
       <section className="container mx-auto px-4 py-16 bg-white">
         <div className="max-w-2xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-4 text-slate-900">
-            Coming to Steam
+            Ready to Explore?
           </h2>
           <p className="text-lg text-slate-600 mb-8">
-            Get notified when we launch on Steam + receive exclusive updates
+            Start your journey through Grand Central Terminus today
           </p>
-          
-          <form onSubmit={handleEmailSubmit} className="max-w-md mx-auto">
-            <div className="flex gap-2">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="your@email.com"
-                required
-                className="flex-1 px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-900"
-              />
-              <Button 
-                type="submit" 
-                size="lg"
-                className="bg-slate-900 hover:bg-slate-800"
-                disabled={submitted}
-              >
-                {submitted ? '✓' : 'Notify Me'}
-              </Button>
-            </div>
-            {submitted && (
-              <p className="mt-4 text-green-600">Thanks! We'll be in touch.</p>
-            )}
-          </form>
+
+          <Link href="/play">
+            <Button size="lg" className="text-lg px-12 py-6 bg-slate-900 hover:bg-slate-800">
+              Begin Your Journey
+            </Button>
+          </Link>
         </div>
       </section>
 
-      {/* Screenshots Section (Placeholder) */}
+      {/* Features Section */}
       <section className="container mx-auto px-4 py-16">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl font-bold mb-8 text-center text-slate-900">
-            See It In Action
+            What Awaits You
           </h2>
           <div className="grid md:grid-cols-2 gap-6">
-            {/* Placeholder for screenshots */}
-            <div className="bg-slate-200 rounded-lg aspect-video flex items-center justify-center text-slate-500">
-              Screenshot 1
+            <div className="bg-gradient-to-br from-slate-100 to-slate-200 rounded-lg p-8 border border-slate-200">
+              <div className="text-4xl mb-4">🚂</div>
+              <h3 className="font-semibold text-lg mb-2">Mysterious Platforms</h3>
+              <p className="text-slate-600">Each platform reveals a different career path through immersive storytelling</p>
             </div>
-            <div className="bg-slate-200 rounded-lg aspect-video flex items-center justify-center text-slate-500">
-              Screenshot 2
+            <div className="bg-gradient-to-br from-slate-100 to-slate-200 rounded-lg p-8 border border-slate-200">
+              <div className="text-4xl mb-4">✨</div>
+              <h3 className="font-semibold text-lg mb-2">Pattern Discovery</h3>
+              <p className="text-slate-600">Your choices reveal your natural strengths and decision-making style</p>
             </div>
           </div>
         </div>
