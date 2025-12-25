@@ -18,7 +18,7 @@ import * as React from "react"
 import { motion, useReducedMotion, type Variants } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { springs } from "@/lib/animations"
-import type { PatternType } from "@/lib/patterns"
+import { type PatternType, getPatternColor } from "@/lib/patterns"
 
 export interface SentientGlassCardProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -64,12 +64,24 @@ const entranceVariants: Record<string, Variants> = {
   }
 }
 
-const PATTERN_GLOW_COLORS: Record<PatternType, string> = {
-  analytical: "rgba(99, 102, 241, 0.15)",
-  helping: "rgba(16, 185, 129, 0.15)",
-  building: "rgba(234, 179, 8, 0.15)",
-  patience: "rgba(139, 92, 246, 0.15)",
-  exploring: "rgba(245, 158, 11, 0.15)"
+/**
+ * Convert hex color to rgba with opacity
+ * Uses canonical colors from lib/patterns.ts
+ */
+function hexToRgba(hex: string, alpha: number): string {
+  const r = parseInt(hex.slice(1, 3), 16)
+  const g = parseInt(hex.slice(3, 5), 16)
+  const b = parseInt(hex.slice(5, 7), 16)
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`
+}
+
+/**
+ * Get pattern glow color with opacity
+ * Derives from canonical pattern colors
+ */
+function getPatternGlowColor(pattern: PatternType): string {
+  const color = getPatternColor(pattern)
+  return hexToRgba(color, 0.15)
 }
 
 const SentientGlassCard = React.forwardRef<HTMLDivElement, SentientGlassCardProps>(
@@ -85,8 +97,8 @@ const SentientGlassCard = React.forwardRef<HTMLDivElement, SentientGlassCardProp
   }, ref) => {
     const prefersReducedMotion = useReducedMotion()
 
-    // Determine glow effect
-    const patternGlow = pattern ? PATTERN_GLOW_COLORS[pattern] : undefined
+    // Determine glow effect from canonical pattern colors
+    const patternGlow = pattern ? getPatternGlowColor(pattern) : undefined
     const effectiveGlow = glowColor || patternGlow
 
     // Build box-shadow with optional glow

@@ -17,7 +17,7 @@
 import * as React from "react"
 import { motion, useReducedMotion, AnimatePresence } from "framer-motion"
 import { cn } from "@/lib/utils"
-import type { PatternType } from "@/lib/patterns"
+import { type PatternType, getPatternColor } from "@/lib/patterns"
 import { springs } from "@/lib/animations"
 
 export interface PatternOrbProps {
@@ -29,15 +29,6 @@ export interface PatternOrbProps {
   celebrate?: boolean
   /** Additional class names */
   className?: string
-}
-
-// Pattern colors matching CSS variables
-const PATTERN_COLORS: Record<PatternType, string> = {
-  analytical: "#6366f1", // Indigo
-  helping: "#10b981",    // Emerald
-  building: "#eab308",   // Gold
-  patience: "#8b5cf6",   // Violet
-  exploring: "#f59e0b",  // Amber
 }
 
 // Size configurations
@@ -71,8 +62,8 @@ export function PatternOrb({
     }
   }, [celebrate])
 
-  // Get color for current pattern
-  const orbColor = pattern ? PATTERN_COLORS[pattern] : "#64748b" // Default slate
+  // Get color from canonical source (lib/patterns.ts)
+  const orbColor = pattern ? getPatternColor(pattern) : "#64748b" // Default slate
   const dimensions = SIZE_MAP[size]
 
   return (
@@ -213,7 +204,7 @@ export function PatternOrbIndicator({
   size?: "sm" | "md" | "lg"
   className?: string
 }) {
-  const orbColor = pattern ? PATTERN_COLORS[pattern] : "#64748b"
+  const orbColor = pattern ? getPatternColor(pattern) : "#64748b"
 
   return (
     <div className={cn("flex items-center gap-2", className)}>

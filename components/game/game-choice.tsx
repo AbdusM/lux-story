@@ -14,15 +14,26 @@ import { motion, useReducedMotion } from "framer-motion"
 import { LoadingDots } from "@/components/ui/loading-dots"
 import { cn } from "@/lib/utils"
 import { springs, STAGGER_DELAY } from "@/lib/animations"
-import type { PatternType } from "@/lib/patterns"
+import { type PatternType, getPatternColor } from "@/lib/patterns"
 
-// Pattern glow colors - subtle feedback for pattern-aligned choices
-const PATTERN_GLOW: Record<PatternType, string> = {
-  analytical: "hover:shadow-[0_0_20px_rgba(99,102,241,0.15)]",
-  helping: "hover:shadow-[0_0_20px_rgba(16,185,129,0.15)]",
-  building: "hover:shadow-[0_0_20px_rgba(234,179,8,0.15)]",
-  patience: "hover:shadow-[0_0_20px_rgba(139,92,246,0.15)]",
-  exploring: "hover:shadow-[0_0_20px_rgba(245,158,11,0.15)]"
+/**
+ * Convert hex color to rgba with opacity
+ * Matches lib/patterns.ts canonical colors
+ */
+function hexToRgba(hex: string, alpha: number): string {
+  const r = parseInt(hex.slice(1, 3), 16)
+  const g = parseInt(hex.slice(3, 5), 16)
+  const b = parseInt(hex.slice(5, 7), 16)
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`
+}
+
+/**
+ * Get pattern glow shadow for hover effect
+ * Uses canonical colors from lib/patterns.ts
+ */
+function getPatternGlowShadow(pattern: PatternType): string {
+  const color = getPatternColor(pattern)
+  return `0 0 20px ${hexToRgba(color, 0.2)}`
 }
 
 export interface GameChoiceProps
@@ -58,8 +69,10 @@ const GameChoice = React.forwardRef<HTMLButtonElement, GameChoiceProps>(
   }, ref) => {
     const prefersReducedMotion = useReducedMotion()
 
-    // Get pattern-specific glow class
-    const patternGlow = choice.pattern ? PATTERN_GLOW[choice.pattern] : ""
+    // Get pattern glow shadow using canonical colors from lib/patterns.ts
+    const patternGlowShadow = glass && choice.pattern
+      ? getPatternGlowShadow(choice.pattern)
+      : undefined
 
     // Animation variants - spring from bottom
     const variants = {
@@ -82,6 +95,7 @@ const GameChoice = React.forwardRef<HTMLButtonElement, GameChoiceProps>(
         initial={animated && !prefersReducedMotion ? "hidden" : false}
         animate="visible"
         variants={variants}
+        whileHover={patternGlowShadow ? { boxShadow: patternGlowShadow } : undefined}
         className={cn(
           // Base styles - clean and minimal
           "w-full text-left",
@@ -119,9 +133,6 @@ const GameChoice = React.forwardRef<HTMLButtonElement, GameChoiceProps>(
           glass
             ? "focus-visible:ring-violet-400/50 focus-visible:ring-offset-transparent"
             : "focus-visible:ring-slate-400 focus-visible:ring-offset-2",
-
-          // Pattern glow on hover (glass mode only)
-          glass && patternGlow,
 
           // Selected state
           isSelected && (glass
