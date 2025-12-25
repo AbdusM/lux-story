@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 import { Users, Zap, Compass, TrendingUp, Sparkles, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useConstellationData } from "@/hooks/useConstellationData"
 import { useInsights } from "@/hooks/useInsights"
+import { useOrbs } from "@/hooks/useOrbs"
+import { useGameSelectors } from "@/lib/game-store"
 import { PlayerAvatar } from "./CharacterAvatar"
 import { PatternOrb } from "./PatternOrb"
 import { HarmonicsView } from "./HarmonicsView"
@@ -34,9 +36,42 @@ export function Journal({ isOpen, onClose }: JournalProps) {
   const [constellationMode, setConstellationMode] = useState<'social' | 'academy'>('social')
   const [detailSkillId, setDetailSkillId] = useState<string | null>(null)
 
-  // ... (hooks)
+  // Accessibility
+  const prefersReducedMotion = useReducedMotion()
+
+  // Data hooks
   const { characters, skills } = useConstellationData()
   const insights = useInsights()
+  const { hasNewOrbs, markOrbsViewed } = useOrbs()
+  const thoughts = useGameSelectors.useThoughts()
+
+  // Tab badge indicators
+  const hasNewPatterns = hasNewOrbs
+  const hasNewSkills = skills.filter(s => s.state !== 'dormant').length > 0
+  const hasActiveThoughts = thoughts.length > 0
+  const hasMetCharacters = characters.filter(c => c.hasMet).length > 1 // More than just Samuel
+
+  // Track which tabs have been viewed this session
+  const [viewedTabs, setViewedTabs] = useState<Set<TabId>>(new Set(['harmonics']))
+
+  // Mark tab as viewed when selected
+  const handleTabSelect = (tabId: TabId) => {
+    setActiveTab(tabId)
+    setViewedTabs(prev => new Set([...prev, tabId]))
+
+    // Clear orb notification when viewing Harmonics
+    if (tabId === 'harmonics' && hasNewOrbs) {
+      markOrbsViewed()
+    }
+  }
+
+  // Compute badge visibility (show if has content AND not yet viewed)
+  const tabBadges: Record<TabId, boolean> = {
+    harmonics: hasNewPatterns && !viewedTabs.has('harmonics'),
+    essence: hasNewSkills && !viewedTabs.has('essence'),
+    mind: hasActiveThoughts && !viewedTabs.has('mind'),
+    stars: hasMetCharacters && !viewedTabs.has('stars')
+  }
 
 
   // Reset detail view when tab changes
@@ -108,7 +143,7 @@ export function Journal({ isOpen, onClose }: JournalProps) {
               {tabs.map(tab => (
                 <button
                   key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
+                  onClick={() => handleTabSelect(tab.id)}
                   className={cn(
                     "flex-1 py-4 px-3 text-xs font-medium transition-colors flex flex-col items-center gap-1.5 min-w-[64px] relative",
                     activeTab === tab.id
@@ -118,6 +153,16 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                 >
                   <tab.icon className={cn("w-5 h-5 transition-transform", activeTab === tab.id && "scale-110")} />
                   <span>{tab.label}</span>
+
+                  {/* Badge indicator for new content */}
+                  {tabBadges[tab.id] && (
+                    <motion.div
+                      initial={prefersReducedMotion ? false : { scale: 0 }}
+                      animate={{ scale: 1 }}
+                      className="absolute top-2 right-2 w-2 h-2 rounded-full bg-amber-500"
+                      style={prefersReducedMotion ? {} : { animation: 'pulse 2s infinite' }}
+                    />
+                  )}
 
                   {activeTab === tab.id && (
                     <motion.div

@@ -54,7 +54,7 @@ const PATTERN_HOVER_STYLES: Record<PatternType, {
 // Default hover style when no pattern specified
 const DEFAULT_HOVER_STYLE = {
   bg: 'hover:bg-amber-50',
-  border: 'hover:border-amber-300',
+  border: 'hover:border-amber-300 border-transparent', // Added transparent border to prevent shift
   shadow: 'hover:shadow-[0_4px_12px_rgba(251,191,36,0.15),0_2px_4px_rgba(0,0,0,0.05)]',
   activeBg: 'active:bg-amber-100'
 }
@@ -429,7 +429,7 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
                 return `${styles.bg} ${styles.border} ${styles.shadow} ${styles.activeBg}`
               } else {
                 const styles = pattern && isValidPattern(pattern) ? PATTERN_HOVER_STYLES[pattern] : DEFAULT_HOVER_STYLE
-                return `${styles.bg} hover:border-black/5 ${styles.shadow} ${styles.activeBg}`
+                return `${styles.bg} border border-transparent ${styles.shadow} ${styles.activeBg}` // Enforce transparent border
               }
             })()}
             ${glass ? 'hover:text-white' : 'hover:text-stone-900'}
@@ -437,7 +437,7 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
             active:scale-[0.98] active:translate-y-0 active:shadow-none
             transition-all duration-200 ease-out
             rounded-[14px]
-            touch-manipulation select-none
+            touch-manipulation select-none overflow-hidden
             ${choice.feedback === 'shake' ? (glass ? 'border-red-400/40 bg-red-900/20' : 'border-red-200 bg-red-50') : ''}
             ${choice.feedback === 'glow' ? (glass ? 'border-amber-400/40 bg-amber-900/20' : 'border-amber-300 bg-amber-50') : ''}
             ${isFocused ? (glass

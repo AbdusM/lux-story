@@ -11,11 +11,16 @@
   .pb-safe-mobile {
     padding-bottom: calc(6rem + env(safe-area-inset-bottom, 0px));
   }
-  
+
   @media (min-width: 640px) {
     .pb-safe-mobile {
       padding-bottom: calc(8rem + env(safe-area-inset-bottom, 0px));
     }
+  }
+
+  /* Narrative text styling - lifts text off dark backgrounds for readability */
+  .narrative-text {
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
   }
 }
 
