@@ -433,8 +433,7 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
               }
             })()}
             ${glass ? 'hover:text-white' : 'hover:text-stone-900'}
-            hover:-translate-y-0.5
-            active:scale-[0.98] active:translate-y-0 active:shadow-none
+            active:scale-[0.98] active:shadow-none
             transition-all duration-200 ease-out
             rounded-[14px]
             touch-manipulation select-none overflow-hidden

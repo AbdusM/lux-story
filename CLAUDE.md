@@ -391,6 +391,71 @@ className="w-12 h-12 sm:w-16 sm:h-16"
 
 ---
 
+## Glass Morphic Stability Rules (December 2024)
+
+**Core principle:** Beautiful AND stable. The Sentient Glass design system must not sacrifice usability for aesthetics.
+
+### What to KEEP (Localized Effects)
+| Effect | Where | Why OK |
+|--------|-------|--------|
+| Marquee shimmer | Nav buttons (Journal/Constellation) | Localized, doesn't affect layout |
+| Border pulse | Nav badges for new content | Small area, attention-grabbing |
+| Pattern glow | Choice button hover | User-initiated, immediate feedback |
+| Breathing animation | Dormant orbs in Journal | Background only, respect reduced-motion |
+| Glass blur/shadow | All glass-panel elements | Core aesthetic, no layout impact |
+
+### What to AVOID (Full-Screen Effects)
+| Effect | Problem | Alternative |
+|--------|---------|-------------|
+| Full-screen color overlays | Distracting, "flashing" | Use localized glows |
+| Animated background transitions | "Fading" confusion | Instant color change |
+| Position animations on containers | Layout jumping | Opacity-only transitions |
+| Processing pulses | Battery drain, distraction | Static or localized indicator |
+| Container color transitions | Color jumping | No transitions on containers |
+
+### Container Rules (Claude/ChatGPT Pattern)
+```
+┌─────────────────────────────────────────┐
+│ HEADER (flex-shrink-0) - Never moves    │
+├─────────────────────────────────────────┤
+│ MAIN (flex-1, overflow-y-auto)          │
+│   └─ Dialogue Card: solid bg (85%+)     │
+├─────────────────────────────────────────┤
+│ FOOTER (flex-shrink-0) - Never moves    │
+└─────────────────────────────────────────┘
+```
+
+### Animation Rules
+```tsx
+// ✅ ALLOWED
+initial={{ opacity: 0 }}           // Opacity fade
+animate={{ opacity: 1 }}
+whileTap={{ scale: 0.98 }}         // Scale on interaction
+// Localized glows/pulses on hover
+
+// ❌ NOT ALLOWED
+initial={{ y: 20 }}                // Position changes on containers
+animate={{ y: 0 }}
+transition={{ background: '2s' }}  // Background color transitions
+// Full-screen overlays
+```
+
+### Glass Panel Best Practices
+```tsx
+// Dialogue containers need solid backgrounds for readability
+<Card
+  className="glass-panel"
+  style={{ background: 'rgba(10, 12, 16, 0.85)' }}  // 85%+ opacity
+>
+  <p className="text-white">Readable text</p>
+</Card>
+
+// No transitions on glass-panel (prevents color jumping)
+// Pattern glow via data-pattern attribute on hover only
+```
+
+---
+
 ## Admin Dashboard Architecture
 
 ### Section Components (`components/admin/sections/`)
