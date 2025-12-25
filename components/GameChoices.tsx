@@ -3,7 +3,7 @@
 import { memo, useState, useEffect, useCallback, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { motion } from 'framer-motion'
-import { springs } from '@/lib/animations'
+import { springs, stagger } from '@/lib/animations'
 import { Lock } from 'lucide-react'
 import { type PatternType, PATTERN_METADATA, isValidPattern } from '@/lib/patterns'
 import { type GravityResult } from '@/lib/narrative-gravity'
@@ -239,7 +239,7 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.04, // Faster stagger for snappier feel on mobile
+      staggerChildren: stagger.fast, // 50ms - from lib/animations.ts
       delayChildren: 0.02,
     },
   },

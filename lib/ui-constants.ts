@@ -98,12 +98,8 @@ export const ANIMATION_DURATION = {
   page: 500,
 } as const;
 
-// Stagger delay for sequential animations
-export const STAGGER_DELAY = {
-  fast: 0.03,    // 30ms between items
-  normal: 0.05,  // 50ms between items
-  slow: 0.1,     // 100ms between items
-} as const;
+// Stagger delay - USE lib/animations.ts stagger instead
+// Removed duplicate: import { stagger } from '@/lib/animations'
 
 // =============================================================================
 // MIN HEIGHTS (LAYOUT STABILITY)
