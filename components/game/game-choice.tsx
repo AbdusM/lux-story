@@ -1,11 +1,29 @@
 "use client"
 
+/**
+ * GameChoice - Glass Morphism Choice Button
+ *
+ * Philosophy: "Less is More" (JARVIS Commandment #10)
+ * - Removed chevron icons (visual noise)
+ * - Glass morphism styling with subtle glow
+ * - Pattern-aligned choices have subtle glow feedback
+ */
+
 import * as React from "react"
 import { motion, useReducedMotion } from "framer-motion"
-import { ChevronRight } from "lucide-react"
 import { LoadingDots } from "@/components/ui/loading-dots"
 import { cn } from "@/lib/utils"
 import { springs, STAGGER_DELAY } from "@/lib/animations"
+import type { PatternType } from "@/lib/patterns"
+
+// Pattern glow colors - subtle feedback for pattern-aligned choices
+const PATTERN_GLOW: Record<PatternType, string> = {
+  analytical: "hover:shadow-[0_0_20px_rgba(99,102,241,0.15)]",
+  helping: "hover:shadow-[0_0_20px_rgba(16,185,129,0.15)]",
+  building: "hover:shadow-[0_0_20px_rgba(234,179,8,0.15)]",
+  patience: "hover:shadow-[0_0_20px_rgba(139,92,246,0.15)]",
+  exploring: "hover:shadow-[0_0_20px_rgba(245,158,11,0.15)]"
+}
 
 export interface GameChoiceProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onAnimationStart' | 'onDrag' | 'onDragStart' | 'onDragEnd'> {
@@ -14,13 +32,15 @@ export interface GameChoiceProps
     subtext?: string
     next?: string
     consequence?: string
-    pattern?: "helping" | "analytical" | "building" | "patience" | "exploring"
+    pattern?: PatternType
   }
   onSelect?: () => void
   isSelected?: boolean
   loading?: boolean
   index?: number
   animated?: boolean
+  /** Use glass morphism styling */
+  glass?: boolean
 }
 
 const GameChoice = React.forwardRef<HTMLButtonElement, GameChoiceProps>(
@@ -32,14 +52,18 @@ const GameChoice = React.forwardRef<HTMLButtonElement, GameChoiceProps>(
     loading = false,
     index = 0,
     animated = true,
+    glass = true,
     disabled,
     ...props
   }, ref) => {
     const prefersReducedMotion = useReducedMotion()
 
-    // Animation variants
+    // Get pattern-specific glow class
+    const patternGlow = choice.pattern ? PATTERN_GLOW[choice.pattern] : ""
+
+    // Animation variants - spring from bottom
     const variants = {
-      hidden: { opacity: 0, y: 8 },
+      hidden: { opacity: 0, y: 12 },
       visible: {
         opacity: 1,
         y: 0,
@@ -63,53 +87,61 @@ const GameChoice = React.forwardRef<HTMLButtonElement, GameChoiceProps>(
           "w-full text-left",
           "px-4 py-3.5",
           "rounded-xl",
-          "transition-colors duration-200 ease-out",
+          "transition-all duration-200 ease-out",
 
           // Touch target - Apple HIG minimum
           "min-h-[44px]",
 
+          // Glass morphism styling (when enabled)
+          glass && [
+            "bg-white/5",
+            "border border-white/10",
+            "backdrop-blur-sm",
+            "hover:bg-white/10",
+            "hover:border-white/15",
+            "active:bg-white/15",
+          ],
+
+          // Non-glass fallback styling
+          !glass && [
+            "hover:bg-slate-50 dark:hover:bg-slate-800",
+            "active:bg-slate-100 dark:active:bg-slate-700",
+          ],
+
           // Typography - optimal readability
           "text-[17px] leading-relaxed",
-          "text-slate-900 dark:text-slate-100",
+          "text-slate-100",
           "font-normal",
 
-          // Interactive states - clear feedback
-          "hover:bg-slate-50 dark:hover:bg-slate-800",
-          "active:bg-slate-100 dark:active:bg-slate-700",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2",
+          // Focus state - accessible
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
 
-          // Selected state
-          isSelected && "bg-slate-100 dark:bg-slate-800",
+          // Pattern glow on hover
+          patternGlow,
+
+          // Selected state - subtle highlight
+          isSelected && "bg-white/15 border-white/20",
 
           // Disabled/Loading state
           (disabled || loading || isSelected) && "cursor-not-allowed",
           loading && "opacity-60",
 
-          // Layout
-          "flex items-center justify-between group",
-
           className
         )}
+        data-pattern={choice.pattern}
         {...props}
       >
-        <div className="flex-1 pr-3">
+        <div className="flex-1">
           <div>{choice.text}</div>
           {choice.subtext && (
-            <div className="text-[15px] text-slate-500 dark:text-slate-400 mt-0.5">
+            <div className="text-[15px] text-slate-400 mt-0.5">
               {choice.subtext}
             </div>
           )}
         </div>
 
-        {loading ? (
-          <LoadingDots size="sm" className="mr-1" />
-        ) : !isSelected && (
-          <ChevronRight className={cn(
-            "w-5 h-5 text-slate-300 dark:text-slate-600",
-            "transition-all duration-200",
-            "group-hover:text-slate-500 dark:group-hover:text-slate-400",
-            "group-hover:translate-x-0.5"
-          )} />
+        {loading && (
+          <LoadingDots size="sm" className="ml-2" />
         )}
       </motion.button>
     )
