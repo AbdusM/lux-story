@@ -98,11 +98,21 @@ export function Journal({ isOpen, onClose }: JournalProps) {
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* ... (Backdrop & Panel code unchanged until Content Area) ... */}
+          {/* Backdrop */}
           <motion.div
-            // ... (Panel attributes)
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[99]"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+          />
+          {/* Panel */}
+          <motion.div
             className="!fixed left-0 top-0 bottom-0 w-full max-w-md glass-panel !rounded-none border-r border-white/10 shadow-2xl z-[100] flex flex-col"
-          // ...
+            initial={{ x: '-100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '-100%' }}
+            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
           >
             {/* ... (Header & Tabs unchanged) ... */}
 
