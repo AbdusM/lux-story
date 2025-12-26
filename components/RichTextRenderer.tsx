@@ -258,7 +258,7 @@ export function RichTextRenderer({
             }}
             transition={{ duration: 0.2, ease: "easeOut" }}
             className={cn(
-              "leading-relaxed text-slate-700",
+              "leading-relaxed",  // Color inherited from parent className (--text-dialogue)
               // Use invisible (not hidden) to reserve layout space and prevent CLS
               // This keeps the container height stable as chunks reveal
               index >= visibleChunks && "invisible pointer-events-none"

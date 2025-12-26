@@ -78,8 +78,8 @@ function HarmonicOrb({ orb, index }: { orb: OrbState; index: number }) {
 
         // Visual Jolt - Spring Physics
         // We set a target, then quickly release it to let spring dampen it
-        const joltX = (Math.random() - 0.5) * 40
-        const joltY = (Math.random() - 0.5) * 40
+        const joltX = (Math.random() - 0.5) * 16  // ±8px (reduced from ±20px for subtler feedback)
+        const joltY = (Math.random() - 0.5) * 16
 
         x.set(joltX) // Instant displacement (plucking the string)
         y.set(joltY)

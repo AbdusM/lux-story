@@ -1547,10 +1547,10 @@ export default function StatefulGameInterface() {
 
             <div className="px-4 sm:px-6 pb-4 sm:pb-5 pt-2">
               {/* Scrollable choices container with scroll indicator */}
-              <div className="relative">
+              <div className="relative w-full">
                 <div
                   id="choices-scroll-container"
-                  className="max-h-[180px] sm:max-h-[200px] overflow-y-auto overscroll-contain scroll-smooth"
+                  className="max-h-[180px] sm:max-h-[200px] overflow-y-auto overflow-x-hidden overscroll-contain scroll-smooth w-full"
                   style={{
                     WebkitOverflowScrolling: 'touch',
                     scrollSnapType: 'y proximity',

@@ -23,7 +23,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: '', // No speaker - purely atmospheric
     content: [
       {
-        text: "Train slows down. Through fogged windows, you catch your first glimpse of the station. High ceilings, warm light spillin' through old glass, sounds of folks talkin' somewhere up ahead.\n\nA figure's waitin' on the platform. Older man, patient stance. Like he's been expectin' you.",
+        text: "The train slows down. Through fogged windows, you catch your first glimpse of the station. High ceilings, warm light spillin' through old glass, sounds of folks talkin' somewhere up ahead.\n\nA figure's waitin' on the platform. Older man, patient stance. Like he's been expectin' you.",
         emotion: 'atmospheric',
         variation_id: 'arrival_v1'
       }
