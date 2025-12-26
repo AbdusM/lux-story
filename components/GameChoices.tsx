@@ -568,7 +568,7 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
                 {title}
               </h3>
             )}
-            <div className={`grid gap-3 p-2 ${groupChoices.length >= 4 ? 'md:grid-cols-2' : 'grid-cols-1'}`}>
+            <div className={`grid gap-3 p-2 w-full ${groupChoices.length >= 4 ? 'md:grid-cols-2' : 'grid-cols-1'}`}>
               {groupChoices.map((choice, localIndex) => {
                 const currentGlobalIndex = globalIndex++
                 // Apply lock unless it's the mercy override
@@ -597,7 +597,7 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
   return (
     <motion.div
       ref={containerRef}
-      className={`grid gap-3 p-2 ${useGrid ? 'md:grid-cols-2' : 'grid-cols-1'}`}
+      className={`grid gap-3 p-2 w-full ${useGrid ? 'md:grid-cols-2' : 'grid-cols-1'}`}
       data-testid="game-choices"
       role="listbox"
       aria-label="Choose your response"
