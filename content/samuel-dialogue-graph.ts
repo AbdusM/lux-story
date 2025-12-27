@@ -267,13 +267,13 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Hey there. Welcome to Grand Central.\n\nI'm Samuel. Been helpin' folks find their way around here for... well, longer than I expected, honestly. You look like you got questions. Most people do when they first show up.\n\nEvery choice you make here... the station pays attention. But we can get to that.",
+        text: "Hey there. Welcome to Grand Central.\n\nI'm Samuel. Been helpin' folks find their way around here for... well, longer than I expected, honestly. Lot more travelers lately too. World's movin' fast out there.\n\nYou look like you got questions. Most people do when they first show up. Every choice you make here... the station pays attention. But we can get to that.",
         emotion: 'warm',
         variation_id: 'intro_v1_part1',
         patternReflection: [
-          { pattern: 'analytical', minLevel: 5, altText: "Hey there. Welcome to Grand Central.\n\nI'm Samuel. Been helpin' folks find their way around here for... well, longer than I expected. You look like someone who thinks things through. That's good—questions are how you find what matters.", altEmotion: 'knowing' },
-          { pattern: 'helping', minLevel: 5, altText: "Hey there. Welcome to Grand Central.\n\nI'm Samuel. Been helpin' folks find their way around here for a long time. You look like someone who notices people. That's rare, and it's gonna serve you well here.", altEmotion: 'warm' },
-          { pattern: 'exploring', minLevel: 5, altText: "Hey there. Welcome to Grand Central.\n\nI'm Samuel. Been helpin' folks find their way around here longer than I expected. You look like someone who's ready to discover things. Good—this place rewards curiosity.", altEmotion: 'warm' }
+          { pattern: 'analytical', minLevel: 5, altText: "Hey there. Welcome to Grand Central.\n\nI'm Samuel. Been helpin' folks find their way around here for... well, longer than I expected. Lot more travelers lately—world's changin' fast. You look like someone who thinks things through. That's gonna matter more than ever.", altEmotion: 'knowing' },
+          { pattern: 'helping', minLevel: 5, altText: "Hey there. Welcome to Grand Central.\n\nI'm Samuel. Been helpin' folks find their way around here for a long time. More people arrivin' every day now. You look like someone who notices people. That's rare, and it's gonna serve you well here.", altEmotion: 'warm' },
+          { pattern: 'exploring', minLevel: 5, altText: "Hey there. Welcome to Grand Central.\n\nI'm Samuel. Been helpin' folks find their way around here longer than I expected. Lot more travelers lately. You look like someone who's ready to discover things. Good—this place rewards curiosity.", altEmotion: 'warm' }
         ]
       }
     ],
@@ -312,6 +312,17 @@ export const samuelDialogueNodes: DialogueNode[] = [
         }
       },
       {
+        choiceId: 'ask_whats_happening',
+        text: "You said more travelers lately. What's happening out there?",
+        nextNodeId: 'samuel_changing_world',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'curiosity'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      },
+      {
         choiceId: 'ready_to_explore_intro',
         text: "I'm ready to look around",
         nextNodeId: 'samuel_orb_introduction',
@@ -320,6 +331,106 @@ export const samuelDialogueNodes: DialogueNode[] = [
       }
     ]
   },
+
+  // ============= ECONOMIC CONTEXT (Optional Branch) =============
+  {
+    nodeId: 'samuel_changing_world',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*Samuel pauses, looking out at the platforms.*\n\nWorld's changin'. Always has been, but... feels faster now. Machines doin' what people used to do. Jobs that were steady for generations, gone in a decade.\n\nBut here's what I've learned: the work might change, but what people need don't. Someone to fix things when they break. Someone to care for folks when they're vulnerable. Someone to teach the young ones.\n\nThat's why patterns matter more than job titles. You figure out how you're built to contribute, you'll find your place—even when everything else is shiftin'.",
+        emotion: 'wise',
+        variation_id: 'changing_world_v1',
+        patternReflection: [
+          { pattern: 'analytical', minLevel: 4, altText: "*Samuel pauses, looking out at the platforms.*\n\nWorld's changin'. Always has been, but faster now. You can see it in the numbers—automation, AI, industries shrinkin'. But here's what the data don't tell you: the skills underneath stay valuable. Problem-solvin'. Seein' systems. Figurin' out what's really broken.\n\nThat's why patterns matter more than job titles. You figure out how you think, you'll find where you fit.", altEmotion: 'knowing' },
+          { pattern: 'building', minLevel: 4, altText: "*Samuel pauses, looking out at the platforms.*\n\nWorld's changin'. Jobs that were steady for generations, gone. But here's what I've learned watchin' folks come through here: people who build things, fix things, make things with their hands—that work's solid ground.\n\nMachines can automate a lot, but they can't replace someone who knows how to solve a problem they've never seen before. That's a builder's gift.", altEmotion: 'warm' },
+          { pattern: 'helping', minLevel: 4, altText: "*Samuel pauses, looking out at the platforms.*\n\nWorld's changin'. Lot of scared folks comin' through these days. But here's what I've noticed: the jobs that need real human connection, they're not goin' nowhere.\n\nCarin' for people. Teachin'. Healin'. Machines can do a lot, but they can't sit with someone who's hurtin'. That kind of presence... that's always gonna matter.", altEmotion: 'warm' }
+        ]
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'trades_wisdom',
+        text: "What about people who work with their hands? Factory workers, welders?",
+        nextNodeId: 'samuel_trades_wisdom',
+        pattern: 'building',
+        skills: ['curiosity', 'communication'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'patterns_survival',
+        text: "How do patterns help when everything's uncertain?",
+        nextNodeId: 'samuel_pattern_survival',
+        pattern: 'analytical',
+        skills: ['criticalThinking']
+      },
+      {
+        choiceId: 'back_to_exploring',
+        text: "Thanks. I'd like to look around now.",
+        nextNodeId: 'samuel_orb_introduction',
+        pattern: 'exploring'
+      }
+    ],
+    tags: ['economic_context', 'samuel_arc']
+  },
+
+  {
+    nodeId: 'samuel_trades_wisdom',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*A flicker of something crosses his face—respect.*\n\nThose folks? They're gonna be alright. Not because nothin's changin' for them—it is. But because they know how to do things that matter.\n\nMy daddy was a welder at Sloss Furnaces. Sixty years ago, folks said that work was dyin'. Still needs welders today. Different machines, same hands.\n\nKai on Platform 6... they came from factory work. Nucor Steel. Knows what it means to build something that holds. Talk to 'em if you want to understand how the old ways and new ways can fit together.",
+        emotion: 'warm',
+        variation_id: 'trades_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'visit_kai_from_trades',
+        text: "I'd like to meet Kai.",
+        nextNodeId: 'samuel_orb_introduction',
+        pattern: 'building'
+      },
+      {
+        choiceId: 'more_about_patterns',
+        text: "Tell me more about patterns.",
+        nextNodeId: 'samuel_pattern_survival',
+        pattern: 'analytical'
+      }
+    ],
+    tags: ['trades', 'samuel_arc', 'economic_context']
+  },
+
+  {
+    nodeId: 'samuel_pattern_survival',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Patterns are how you're built. Not what job you have—that can change. But how you naturally think and act when things get hard.\n\nSome folks analyze. Break problems down. See what others miss.\nSome folks build. Make things real. Fix what's broken.\nSome folks help. Notice when someone's strugglin'. Know what to say.\nSome folks explore. Find new paths when old ones close.\nSome folks wait. Take their time. See the long game.\n\nMachines can't do that. They follow instructions. You... you adapt. That's what makes you human.\n\nWhatever's comin'—you figure out your pattern, you'll find your way through.",
+        emotion: 'wise',
+        variation_id: 'pattern_survival_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'ready_after_wisdom',
+        text: "I'm ready to start exploring.",
+        nextNodeId: 'samuel_orb_introduction',
+        pattern: 'exploring'
+      },
+      {
+        choiceId: 'who_should_i_meet',
+        text: "Who should I talk to first?",
+        nextNodeId: 'samuel_explains_platforms',
+        pattern: 'helping'
+      }
+    ],
+    tags: ['patterns', 'samuel_arc', 'economic_context']
+  },
+
   {
     nodeId: 'samuel_introduction_2',
     speaker: 'Samuel Washington',
@@ -414,13 +525,13 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Fox Theatre Station. Been here since 1929, y'know, same as the theatre upstairs. Beautiful old building.\n\nEach platform connects you to different folks around the city. People figuring out their own stuff, just like you. You talk to 'em, see what clicks.",
+        text: "Fox Theatre Station. Been here since 1929, y'know, same as the theatre upstairs. Beautiful old building.\n\nEach platform connects you to different folks around the city. People figuring out their own stuff, just like you. Lot of 'em came here because things changed faster than they expected.\n\nYou talk to 'em, see what clicks. That's how you find solid ground when everything's shifting.",
         emotion: 'warm',
         variation_id: 'explains_v1',
         patternReflection: [
-          { pattern: 'analytical', minLevel: 5, altText: "Fox Theatre Station. Been here since 1929, same as the theatre upstairs. Beautiful old building.\n\nEach platform connects you to different folks. You seem like the type who wants to understand how it all fits together—that's exactly how you figure this place out.", altEmotion: 'knowing' },
-          { pattern: 'building', minLevel: 5, altText: "Fox Theatre Station. Been here since 1929, same as the theatre upstairs. Beautiful old building—took real craftsmanship to make this.\n\nEach platform connects to different folks. You seem like someone who builds things. You'll find kindred spirits here.", altEmotion: 'warm' },
-          { pattern: 'patience', minLevel: 5, altText: "Fox Theatre Station. Been here since 1929. This place takes its time with folks, and I can tell you do too.\n\nEach platform connects to different people. No rush. The right conversations happen when they're supposed to.", altEmotion: 'warm' }
+          { pattern: 'analytical', minLevel: 5, altText: "Fox Theatre Station. Been here since 1929, same as the theatre upstairs. Beautiful old building.\n\nEach platform connects you to different folks. Lot of 'em came here because the world moved faster than they expected. You seem like the type who wants to understand how it all fits together—that's exactly how you find your footing.", altEmotion: 'knowing' },
+          { pattern: 'building', minLevel: 5, altText: "Fox Theatre Station. Been here since 1929, same as the theatre upstairs. Beautiful old building—took real craftsmanship to make this.\n\nEach platform connects to different folks. People who build things, fix things, make things. You seem like one of 'em. That kind of work... it's solid ground.", altEmotion: 'warm' },
+          { pattern: 'patience', minLevel: 5, altText: "Fox Theatre Station. Been here since 1929. This place takes its time with folks, and I can tell you do too.\n\nEach platform connects to different people. World's rushin', but some things can't be rushed. The right conversations happen when they're supposed to.", altEmotion: 'warm' }
         ]
       }
     ],
