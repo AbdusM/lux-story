@@ -9,11 +9,19 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSupabaseServerClient } from '@/lib/supabase-server'
 import { logger } from '@/lib/logger'
-import { validateUserId } from '@/lib/user-id-validation'
+import {
+  extractAndValidateUserIdFromQuery,
+  validateUserIdFromBody,
+  supabaseErrorResponse,
+  handleApiError
+} from '@/lib/api/api-utils'
 
 // Mark as dynamic for Next.js static export compatibility
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
+
+const OPERATION_POST = 'profile.create'
+const OPERATION_GET = 'profile.get'
 
 /**
  * POST /api/user/profile
@@ -24,20 +32,10 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { user_id, created_at } = body
 
-    // Simple validation - this is an internal API
-    if (!user_id) {
-      return NextResponse.json(
-        { error: 'Missing user_id' },
-        { status: 400 }
-      )
-    }
-
-    const validation = validateUserId(user_id)
+    // Validate userId using shared helper
+    const validation = validateUserIdFromBody(user_id, OPERATION_POST)
     if (!validation.valid) {
-      return NextResponse.json(
-        { error: validation.error },
-        { status: 400 }
-      )
+      return validation.response
     }
 
     const supabase = getSupabaseServerClient()
@@ -56,19 +54,11 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (error) {
-      logger.error('Supabase upsert error', {
-        operation: 'profile.create',
-        errorCode: error.code,
-        userId: user_id
-      })
-      return NextResponse.json(
-        { error: 'Failed to create/update player profile' },
-        { status: 500 }
-      )
+      return supabaseErrorResponse(OPERATION_POST, error.code, 'Failed to create/update player profile', user_id)
     }
 
     logger.debug('Profile ensured', {
-      operation: 'profile.create',
+      operation: OPERATION_POST,
       userId: user_id,
       existed: !!data
     })
@@ -78,22 +68,7 @@ export async function POST(request: NextRequest) {
       profile: data
     })
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : "Internal server error"
-    logger.error('Profile API unexpected error', {
-      operation: 'profile.create',
-      error: error instanceof Error ? error.message : String(error)
-    }, error instanceof Error ? error : undefined)
-
-    // If it's a missing env var error, return success but log warning
-    if (errorMessage.includes('Missing Supabase environment variables')) {
-      logger.warn('Missing Supabase config - operation skipped', { operation: 'profile.create' })
-      return NextResponse.json({ success: true })
-    }
-
-    return NextResponse.json(
-      { error: errorMessage },
-      { status: 500 }
-    )
+    return handleApiError(error, OPERATION_POST, 'POST')
   }
 }
 
@@ -103,26 +78,12 @@ export async function POST(request: NextRequest) {
  */
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url)
-    const userId = searchParams.get('userId')
-
-    logger.debug('Profile GET request', { operation: 'profile.get', userId: userId ?? undefined })
-
-    if (!userId) {
-      logger.warn('Missing userId parameter', { operation: 'profile.get' })
-      return NextResponse.json(
-        { error: 'Missing userId parameter' },
-        { status: 400 }
-      )
-    }
-
-    const validation = validateUserId(userId)
+    // Extract and validate userId using shared helper
+    const validation = extractAndValidateUserIdFromQuery(request, OPERATION_GET)
     if (!validation.valid) {
-      return NextResponse.json(
-        { error: validation.error },
-        { status: 400 }
-      )
+      return validation.response
     }
+    const { userId } = validation
 
     const supabase = getSupabaseServerClient()
 
@@ -135,49 +96,23 @@ export async function GET(request: NextRequest) {
     if (error) {
       // If profile doesn't exist, return null (not an error)
       if (error.code === 'PGRST116') {
-        logger.debug('Profile not found', { operation: 'profile.get', userId })
+        logger.debug('Profile not found', { operation: OPERATION_GET, userId })
         return NextResponse.json({
           success: true,
           profile: null
         })
       }
 
-      logger.error('Supabase error', {
-        operation: 'profile.get',
-        errorCode: error.code,
-        userId
-      })
-      return NextResponse.json(
-        { error: 'Failed to fetch player profile' },
-        { status: 500 }
-      )
+      return supabaseErrorResponse(OPERATION_GET, error.code, 'Failed to fetch player profile', userId)
     }
 
-    logger.debug('Retrieved profile', { operation: 'profile.get', userId })
+    logger.debug('Retrieved profile', { operation: OPERATION_GET, userId })
 
     return NextResponse.json({
       success: true,
       profile: data
     })
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : "Internal server error"
-    logger.error('Profile GET unexpected error', {
-      operation: 'profile.get',
-      error: error instanceof Error ? error.message : String(error)
-    }, error instanceof Error ? error : undefined)
-
-    // If it's a missing env var error, return null profile gracefully
-    if (errorMessage.includes('Missing Supabase environment variables')) {
-      logger.warn('Missing Supabase config - returning null', { operation: 'profile.get' })
-      return NextResponse.json({
-        success: true,
-        profile: null
-      })
-    }
-
-    return NextResponse.json(
-      { error: errorMessage },
-      { status: 500 }
-    )
+    return handleApiError(error, OPERATION_GET, 'GET')
   }
 }
