@@ -8,14 +8,22 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { getSupabaseServerClient } from '@/lib/supabase-server'
-import { validateUserId } from '@/lib/user-id-validation'
 import { logger } from '@/lib/logger'
 import { ensurePlayerProfile } from '@/lib/api/ensure-player-profile'
+import {
+  extractAndValidateUserIdFromQuery,
+  validateUserIdFromBody,
+  supabaseErrorResponse,
+  handleApiError,
+  checkSupabaseConfigured
+} from '@/lib/api/api-utils'
 
 // Mark as dynamic for Next.js static export compatibility
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
 
+const OPERATION_GET = 'skill-summaries.get'
+const OPERATION_POST = 'skill-summaries.post'
 
 /**
  * GET /api/user/skill-summaries?userId=X
@@ -23,26 +31,11 @@ export const runtime = 'nodejs'
  */
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url)
-    const userId = searchParams.get('userId')
-
-    logger.debug('Skill summaries GET request', { operation: 'skill-summaries.get', userId: userId ?? undefined })
-
-    if (!userId) {
-      logger.warn('Missing userId parameter', { operation: 'skill-summaries.get' })
-      return NextResponse.json(
-        { error: 'Missing userId parameter' },
-        { status: 400 }
-      )
-    }
-
-    const validation = validateUserId(userId)
+    const validation = extractAndValidateUserIdFromQuery(request, OPERATION_GET)
     if (!validation.valid) {
-      return NextResponse.json(
-        { error: validation.error },
-        { status: 400 }
-      )
+      return validation.response
     }
+    const { userId } = validation
 
     const supabase = getSupabaseServerClient()
 
@@ -53,15 +46,7 @@ export async function GET(request: NextRequest) {
       .order('last_demonstrated', { ascending: false })
 
     if (error) {
-      logger.error('Supabase error fetching skill summaries', {
-        operation: 'skill-summaries.get',
-        errorCode: error.code,
-        userId
-      }, error instanceof Error ? error : undefined)
-      return NextResponse.json(
-        { error: 'Failed to fetch skill summaries' },
-        { status: 500 }
-      )
+      return supabaseErrorResponse(OPERATION_GET, error.code, 'Failed to fetch skill summaries', userId)
     }
 
     // Transform database format to application format
@@ -74,7 +59,7 @@ export async function GET(request: NextRequest) {
     }))
 
     logger.debug('Retrieved skill summaries', {
-      operation: 'skill-summaries.get',
+      operation: OPERATION_GET,
       userId,
       count: summaries.length
     })
@@ -84,26 +69,7 @@ export async function GET(request: NextRequest) {
       summaries
     })
   } catch (error) {
-    logger.error('Unexpected error in skill summaries GET', {
-      operation: 'skill-summaries.get'
-    }, error instanceof Error ? error : undefined)
-    const errorMessage = error instanceof Error ? error.message : "Internal server error"
-    
-    // If it's a missing env var error, return empty data gracefully
-    if (errorMessage.includes('Missing Supabase environment variables')) {
-      logger.warn('Missing Supabase config - returning empty data', {
-        operation: 'skill-summaries.get'
-      })
-      return NextResponse.json({
-        success: true,
-        summaries: []
-      })
-    }
-    
-    return NextResponse.json(
-      { error: errorMessage },
-      { status: 500 }
-    )
+    return handleApiError(error, OPERATION_GET, 'GET', 'summaries')
   }
 }
 
@@ -123,69 +89,34 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
+    const { user_id, skill_name, demonstration_count, latest_context, scenes_involved, last_demonstrated } = body
 
-    const {
-      user_id,
-      skill_name,
-      demonstration_count,
-      latest_context,
-      scenes_involved,
-      last_demonstrated
-    } = body
+    logger.debug('Skill summaries POST request', { operation: OPERATION_POST, userId: user_id, skillName: skill_name })
 
-    logger.debug('Skill summaries POST request', {
-      operation: 'skill-summaries.post',
-      userId: user_id,
-      skillName: skill_name
-    })
-
-    if (!user_id || !skill_name) {
-      logger.warn('Missing required fields', { operation: 'skill-summaries.post' })
-      return NextResponse.json(
-        { error: 'Missing user_id or skill_name' },
-        { status: 400 }
-      )
+    // Validate required fields
+    if (!skill_name) {
+      logger.warn('Missing skill_name', { operation: OPERATION_POST })
+      return NextResponse.json({ error: 'Missing skill_name' }, { status: 400 })
     }
 
-    const validation = validateUserId(user_id)
+    const validation = validateUserIdFromBody(user_id, OPERATION_POST)
     if (!validation.valid) {
-      return NextResponse.json(
-        { error: validation.error },
-        { status: 400 }
-      )
+      return validation.response
     }
 
     // Validate context length (should be 100-150 words)
     if (latest_context) {
       const wordCount = latest_context.split(/\s+/).length
       if (wordCount < 50 || wordCount > 200) {
-        console.warn('⚠️ [API:SkillSummaries] Context length warning:', {
-          skillName: skill_name,
-          wordCount,
-          expected: '100-150 words'
-        })
+        logger.warn('Context length warning', { operation: OPERATION_POST, skillName: skill_name, wordCount, expected: '100-150 words' })
       }
     }
 
     // Check if Supabase is configured before processing
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL
-    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
-    
-    if (!supabaseUrl || !serviceRoleKey || supabaseUrl.includes('placeholder')) {
-      logger.warn('Supabase not configured - skipping skill summary sync', {
-        operation: 'skill-summaries.post',
-        hasUrl: !!supabaseUrl,
-        hasServiceKey: !!serviceRoleKey
-      })
-      // Return success to prevent retry loops - data will be queued for later
-      return NextResponse.json({
-        success: true,
-        message: 'Supabase not configured - sync skipped'
-      })
-    }
+    const skipResponse = checkSupabaseConfigured(OPERATION_POST)
+    if (skipResponse) return skipResponse
 
     // Ensure player profile exists BEFORE attempting to insert skill summary
-    // This prevents foreign key violations (error 23503)
     await ensurePlayerProfile(user_id, 'skill-summaries')
 
     const supabase = getSupabaseServerClient()
@@ -204,42 +135,13 @@ export async function POST(request: NextRequest) {
       })
 
     if (error) {
-      logger.error('Supabase upsert error', {
-        operation: 'skill-summaries.post',
-        errorCode: error.code,
-        userId: user_id,
-        skillName: skill_name
-      }, error instanceof Error ? error : undefined)
-      return NextResponse.json(
-        { error: 'Failed to save skill summary' },
-        { status: 500 }
-      )
+      return supabaseErrorResponse(OPERATION_POST, error.code, 'Failed to save skill summary', user_id)
     }
 
-    logger.debug('Skill summary upsert successful', {
-      operation: 'skill-summaries.post',
-      userId: user_id,
-      skillName: skill_name
-    })
+    logger.debug('Skill summary upsert successful', { operation: OPERATION_POST, userId: user_id, skillName: skill_name })
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    logger.error('Unexpected error in skill summaries POST', {
-      operation: 'skill-summaries.post'
-    }, error instanceof Error ? error : undefined)
-    const errorMessage = error instanceof Error ? error.message : "Internal server error"
-    
-    // If it's a missing env var error, return success but log warning
-    if (errorMessage.includes('Missing Supabase environment variables')) {
-      logger.warn('Missing Supabase config - operation skipped', {
-        operation: 'skill-summaries.post'
-      })
-      return NextResponse.json({ success: true })
-    }
-    
-    return NextResponse.json(
-      { error: errorMessage },
-      { status: 500 }
-    )
+    return handleApiError(error, OPERATION_POST, 'POST')
   }
 }
