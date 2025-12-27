@@ -273,11 +273,13 @@ components/Journal.tsx - tabContentVariants uses different animation params
 ## Verification Checklist
 
 After implementation:
-- [ ] `npm run lint` passes
-- [ ] `npm run build` succeeds
-- [ ] No new TypeScript errors
-- [ ] `npm test` passes
+- [x] `npm run lint` passes ✅
+- [x] `npm run build` succeeds ✅ (29 static pages generated)
+- [x] No new TypeScript errors ✅
+- [x] `npm test` - 247/253 tests pass (6 failures are pre-existing admin mock issues, unrelated to Phase 1)
 - [ ] Manual smoke test: game loads and plays
+
+**Commit:** `refactor(core): Phase 1 architectural cleanup - centralize utilities, consolidate animations`
 
 ---
 
