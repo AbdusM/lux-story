@@ -794,9 +794,123 @@ That's the future. Machines making things. Humans making sure the machines don't
         nextNodeId: 'kai_hybrid_path',
         pattern: 'analytical',
         skills: ['adaptability', 'systemsThinking']
+      },
+      {
+        choiceId: 'kai_automation_workers',
+        text: "What happens to the workers? The ones who can't retire yet?",
+        nextNodeId: 'kai_retraining_reality',
+        pattern: 'helping',
+        skills: ['empathy', 'criticalThinking'],
+        consequence: {
+          characterId: 'kai',
+          trustChange: 1
+        }
       }
     ],
     tags: ['kai_arc', 'automation', 'future_of_work']
+  },
+
+  // ============= ECONOMIC CONSEQUENCES (New Branch) =============
+  {
+    nodeId: 'kai_retraining_reality',
+    speaker: 'Kai',
+    content: [
+      {
+        text: `*Quiet for a moment.*
+
+Half the people I trained over the past year are looking for new work now. Not because they failed—because their jobs got automated.
+
+DeShawn. Forty-three. Twenty years running the arc furnace. Company offered him "retraining"—eight weeks of computer classes. Then nothing.
+
+Maria. Shift supervisor. They told her to "reskill into tech." She's got three kids and no time to go back to school for two years.
+
+*Voice drops.*
+
+That's what no one talks about. The retraining sounds good in a press release. But who's paying the mortgage while you learn to code?`,
+        emotion: 'frustrated',
+        variation_id: 'retraining_v1',
+        patternReflection: [
+          { pattern: 'helping', minLevel: 4, altText: "*Quiet for a moment.*\n\nHalf the people I trained are looking for new work. Not because they failed—because their jobs got automated.\n\nDeShawn. Twenty years at the furnace. Maria. Three kids, shift supervisor.\n\n*Voice drops.*\n\nYou asked about them. Most people don't. They talk about 'the workforce' like it's a spreadsheet, not people with families.", altEmotion: 'vulnerable' },
+          { pattern: 'analytical', minLevel: 4, altText: "*Quiet for a moment.*\n\nHalf the people I trained are looking for new work. The data's clear—automation displaces faster than retraining scales.\n\nCompanies promise 'reskilling' because it's cheaper than severance. But eight weeks of computer classes doesn't replace twenty years of expertise.\n\nThe economics are brutal. Who pays the mortgage while someone learns to code?", altEmotion: 'analytical_bitter' }
+        ]
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'kai_what_works',
+        text: "So what actually works? What helps people adapt?",
+        nextNodeId: 'kai_what_actually_works',
+        pattern: 'analytical',
+        skills: ['problemSolving', 'criticalThinking']
+      },
+      {
+        choiceId: 'kai_despair',
+        text: "That sounds... hopeless.",
+        nextNodeId: 'kai_not_hopeless',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence']
+      }
+    ],
+    tags: ['kai_arc', 'economic_reality', 'retraining']
+  },
+
+  {
+    nodeId: 'kai_what_actually_works',
+    speaker: 'Kai',
+    content: [
+      {
+        text: `Building on what they already know. Not starting over.
+
+DeShawn doesn't need to become a software engineer. He needs to learn how to work WITH the robotic arm. His twenty years of metallurgy? That's still valuable. The machine can't tell good steel from bad by the color of the pour.
+
+That's what I'm building. Training that bridges—not replaces. Show a machinist how to program the CNC. Show a welder how to operate the automated torch. Meet people where they are.
+
+The companies that figure this out? They'll have workers who actually know what they're doing. The ones that don't? They'll have expensive robots and nobody who knows how to fix them when they break.`,
+        emotion: 'determined',
+        variation_id: 'what_works_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'kai_back_to_hybrid',
+        text: "That's the hybrid path you mentioned.",
+        nextNodeId: 'kai_hybrid_path',
+        pattern: 'analytical'
+      }
+    ],
+    tags: ['kai_arc', 'practical_solution', 'economic_reality']
+  },
+
+  {
+    nodeId: 'kai_not_hopeless',
+    speaker: 'Kai',
+    content: [
+      {
+        text: `*Small shake of the head.*
+
+Not hopeless. Just... honest.
+
+The jobs aren't all disappearing. They're changing. Healthcare needs people—can't automate wiping someone's tears. Construction needs people—can't robot your way through a renovation in a 100-year-old building. Education needs people—kids don't learn from screens.
+
+The question isn't whether there's work. It's whether people can get to it. And right now? The bridge is broken.
+
+That's why I'm here. Building better bridges. One simulation at a time.`,
+        emotion: 'resolved',
+        variation_id: 'not_hopeless_v1',
+        patternReflection: [
+          { pattern: 'helping', minLevel: 4, altText: "*Small shake of the head.*\n\nNot hopeless. Just honest.\n\nThe caring jobs aren't going anywhere. Healthcare. Teaching. Elder care. You can't automate sitting with someone who's scared.\n\nThe question is whether people can get to those jobs. Right now, the bridge is broken. That's why I'm building better bridges.", altEmotion: 'determined' }
+        ]
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'kai_continue_to_hybrid',
+        text: "So you're building that bridge.",
+        nextNodeId: 'kai_hybrid_path',
+        pattern: 'building'
+      }
+    ],
+    tags: ['kai_arc', 'hope', 'economic_reality']
   },
 
   {
