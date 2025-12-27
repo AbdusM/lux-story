@@ -1423,7 +1423,8 @@ export default function StatefulGameInterface() {
                 }
               >
                 <CardContent
-                  className={`p-5 sm:p-8 md:p-10 min-h-[200px] sm:min-h-[300px]`}
+                  className={`p-5 sm:p-8 md:p-10 min-h-[200px] sm:min-h-[300px] max-h-[50vh] sm:max-h-[55vh] overflow-y-auto`}
+                  style={{ WebkitOverflowScrolling: 'touch' }}
                   // Note: Removed text-center for narration - left-align is easier to read (eye hunts for line starts when centered)
                   data-testid="dialogue-content"
                   data-speaker={state.currentNode?.speaker || ''}
