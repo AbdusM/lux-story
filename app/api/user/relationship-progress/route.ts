@@ -8,134 +8,74 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { getSupabaseServerClient } from '@/lib/supabase-server'
-import { validateUserId } from '@/lib/user-id-validation'
 import { logger } from '@/lib/logger'
+import {
+  extractAndValidateUserIdFromQuery,
+  validateUserIdFromBody,
+  supabaseErrorResponse,
+  handleApiError,
+  checkSupabaseConfigured
+} from '@/lib/api/api-utils'
 
 // Mark as dynamic for Next.js static export compatibility
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
 
+const OPERATION_GET = 'relationship-progress.get'
+const OPERATION_POST = 'relationship-progress.post'
+
 /**
  * POST /api/user/relationship-progress
- * Upsert relationship progress record (update if exists, insert if new)
- *
- * Body: {
- *   user_id: string,
- *   character_name: string,
- *   trust_level: number (0-100),
- *   relationship_status: 'stranger' | 'acquaintance' | 'confidant',
- *   last_interaction?: string (ISO date),
- *   interaction_count?: number
- * }
+ * Upsert relationship progress record
  */
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
+    const { user_id, character_name, trust_level, relationship_status, last_interaction, interaction_count } = body
 
-    const {
-      user_id,
-      character_name,
-      trust_level,
-      relationship_status,
-      last_interaction,
-      interaction_count
-    } = body
+    logger.debug('Relationship progress POST request', { operation: OPERATION_POST, userId: user_id, character: character_name })
 
-    logger.debug('Relationship progress POST request', {
-      operation: 'relationship-progress.post',
-      userId: user_id,
-      character: character_name
-    })
-
-    if (!user_id || !character_name || trust_level === undefined) {
-      logger.warn('Missing required fields', { operation: 'relationship-progress.post' })
-      return NextResponse.json(
-        { error: 'Missing required fields: user_id, character_name, trust_level' },
-        { status: 400 }
-      )
+    // Validate required fields
+    if (!character_name || trust_level === undefined) {
+      logger.warn('Missing required fields', { operation: OPERATION_POST })
+      return NextResponse.json({ error: 'Missing required fields: character_name, trust_level' }, { status: 400 })
     }
 
-    const validation = validateUserId(user_id)
+    const validation = validateUserIdFromBody(user_id, OPERATION_POST)
     if (!validation.valid) {
-      return NextResponse.json(
-        { error: validation.error },
-        { status: 400 }
-      )
+      return validation.response
     }
 
-    // Check if Supabase is configured before processing
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL
-    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
-    
-    if (!supabaseUrl || !serviceRoleKey || supabaseUrl.includes('placeholder')) {
-      logger.warn('Supabase not configured - skipping relationship progress sync', {
-        operation: 'relationship-progress.post',
-        hasUrl: !!supabaseUrl,
-        hasServiceKey: !!serviceRoleKey
-      })
-      // Return success to prevent retry loops - data will be queued for later
-      return NextResponse.json({
-        success: true,
-        message: 'Supabase not configured - sync skipped'
-      })
-    }
+    const skipResponse = checkSupabaseConfigured(OPERATION_POST)
+    if (skipResponse) return skipResponse
 
     const supabase = getSupabaseServerClient()
 
-    // Upsert: update if user_id + character_name exists, otherwise insert
     const { data, error } = await supabase
       .from('relationship_progress')
-      .upsert(
-        {
-          user_id,
-          character_name,
-          trust_level,
-          relationship_status: relationship_status || 'stranger',
-          last_interaction: last_interaction || new Date().toISOString(),
-          interaction_count: interaction_count || 1
-        },
-        {
-          onConflict: 'user_id,character_name'
-        }
-      )
+      .upsert({
+        user_id,
+        character_name,
+        trust_level,
+        relationship_status: relationship_status || 'stranger',
+        last_interaction: last_interaction || new Date().toISOString(),
+        interaction_count: interaction_count || 1
+      }, {
+        onConflict: 'user_id,character_name'
+      })
       .select()
       .single()
 
-    // PGRST204 means "no content" - upsert succeeded but RLS prevents select
-    // This is normal when service role upserts but user RLS prevents reading back
+    // PGRST204 = upsert succeeded but RLS prevents select
     if (error && error.code !== 'PGRST204') {
-      logger.error('Supabase error', {
-        operation: 'relationship-progress.post',
-        errorCode: error.code,
-        userId: user_id,
-        character: character_name
-      }, error instanceof Error ? error : undefined)
-      return NextResponse.json(
-        { error: 'Failed to upsert relationship progress' },
-        { status: 500 }
-      )
+      return supabaseErrorResponse(OPERATION_POST, error.code, 'Failed to upsert relationship progress', user_id)
     }
 
-    logger.debug('Relationship progress upserted', {
-      operation: 'relationship-progress.post',
-      userId: user_id,
-      character: character_name
-    })
+    logger.debug('Relationship progress upserted', { operation: OPERATION_POST, userId: user_id, character: character_name })
 
-    return NextResponse.json({
-      success: true,
-      relationship: data
-    })
+    return NextResponse.json({ success: true, relationship: data })
   } catch (error) {
-    logger.error('Unexpected error in relationship progress POST', {
-      operation: 'relationship-progress.post'
-    }, error instanceof Error ? error : undefined)
-    const errorMessage = error instanceof Error ? error.message : "Internal server error"
-
-    return NextResponse.json(
-      { error: errorMessage },
-      { status: 500 }
-    )
+    return handleApiError(error, OPERATION_POST, 'POST')
   }
 }
 
@@ -145,24 +85,11 @@ export async function POST(request: NextRequest) {
  */
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url)
-    const userId = searchParams.get('userId')
-
-    if (!userId) {
-      logger.warn('Missing userId parameter', { operation: 'relationship-progress.get' })
-      return NextResponse.json(
-        { error: 'Missing userId parameter' },
-        { status: 400 }
-      )
-    }
-
-    const validation = validateUserId(userId)
+    const validation = extractAndValidateUserIdFromQuery(request, OPERATION_GET)
     if (!validation.valid) {
-      return NextResponse.json(
-        { error: validation.error },
-        { status: 400 }
-      )
+      return validation.response
     }
+    const { userId } = validation
 
     const supabase = getSupabaseServerClient()
 
@@ -173,28 +100,11 @@ export async function GET(request: NextRequest) {
       .order('trust_level', { ascending: false })
 
     if (error) {
-      logger.error('Supabase error', {
-        operation: 'relationship-progress.get',
-        errorCode: error.code,
-        userId
-      }, error instanceof Error ? error : undefined)
-      return NextResponse.json(
-        { error: 'Failed to fetch relationship progress' },
-        { status: 500 }
-      )
+      return supabaseErrorResponse(OPERATION_GET, error.code, 'Failed to fetch relationship progress', userId)
     }
 
-    return NextResponse.json({
-      success: true,
-      relationships: data || []
-    })
+    return NextResponse.json({ success: true, relationships: data || [] })
   } catch (error) {
-    logger.error('Unexpected error in relationship progress GET', {
-      operation: 'relationship-progress.get'
-    }, error instanceof Error ? error : undefined)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return handleApiError(error, OPERATION_GET, 'GET', 'relationships')
   }
 }
