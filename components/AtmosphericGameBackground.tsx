@@ -39,11 +39,11 @@ export interface AtmosphericGameBackgroundProps {
  */
 export function AtmosphericGameBackground({
   characterId,
-  isProcessing = false,
+  isProcessing: _isProcessing = false,
   children,
   className
 }: AtmosphericGameBackgroundProps) {
-  const prefersReducedMotion = useReducedMotion()
+  const _prefersReducedMotion = useReducedMotion()
 
   return (
     <div className={cn("relative min-h-screen", className)}>

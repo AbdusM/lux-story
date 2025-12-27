@@ -4,10 +4,11 @@ import { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Lock, User } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { backdrop } from '@/lib/animations'
 import type { CharacterWithState, SkillWithState } from '@/hooks/useConstellationData'
 import { CHARACTER_COLORS } from '@/lib/constellation/character-positions'
 import { SKILL_DEFINITIONS, SKILL_CHARACTER_HINTS } from '@/lib/skill-definitions'
-// SKILL_CLUSTERS import removed - unused
+import { SKILL_CLUSTERS } from '@/lib/constellation/skill-positions'
 
 interface DetailModalProps {
   item: CharacterWithState | SkillWithState | null
@@ -15,6 +16,7 @@ interface DetailModalProps {
   onClose: () => void
 }
 
+// modalVariants kept local - has unique y:50 motion that scaleFade lacks
 const modalVariants: import('framer-motion').Variants = {
   hidden: { opacity: 0, y: 50, scale: 0.95 },
   visible: {
@@ -31,11 +33,7 @@ const modalVariants: import('framer-motion').Variants = {
   }
 }
 
-const backdropVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1 },
-  exit: { opacity: 0 }
-}
+// Using shared backdrop variant from lib/animations.ts
 
 export function DetailModal({ item, type, onClose }: DetailModalProps) {
   // Escape key handler
@@ -63,7 +61,7 @@ export function DetailModal({ item, type, onClose }: DetailModalProps) {
             initial="hidden"
             animate="visible"
             exit="exit"
-            variants={backdropVariants}
+            variants={backdrop}
             className="fixed inset-0 bg-black/60 z-[110]"
             onClick={onClose}
           />
@@ -207,11 +205,27 @@ function CharacterDetail({ character, onClose }: { character: CharacterWithState
 function SkillDetail({ skill, onClose }: { skill: SkillWithState; onClose: () => void }) {
   const isDormant = skill.state === 'dormant'
   const def = SKILL_DEFINITIONS[skill.id]
+  const clusterInfo = SKILL_CLUSTERS[skill.cluster]
+
+  // State labels with meaning
+  const stateLabels: Record<string, { label: string; description: string }> = {
+    dormant: { label: 'Dormant', description: 'Not yet demonstrated' },
+    awakening: { label: 'Awakening', description: 'First spark' },
+    developing: { label: 'Developing', description: 'Building foundation' },
+    strong: { label: 'Strong', description: 'Consistent practice' },
+    mastered: { label: 'Mastered', description: 'Fully integrated' }
+  }
+
+  // Next level calculation
+  const LEVEL_THRESHOLDS = [1, 2, 5, 10]
+  const nextThreshold = LEVEL_THRESHOLDS.find(t => t > skill.demonstrationCount) || 10
+  const remaining = nextThreshold - skill.demonstrationCount
+  const nextLevelName = nextThreshold === 1 ? 'Awakening' : nextThreshold === 2 ? 'Developing' : nextThreshold === 5 ? 'Strong' : 'Mastery'
 
   return (
     <div className="p-4 sm:p-6">
       {/* Rich Header */}
-      <div className="flex items-start gap-4 mb-6">
+      <div className="flex items-start gap-4 mb-4">
         <div
           className="w-14 h-14 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg"
           style={{
@@ -235,6 +249,24 @@ function SkillDetail({ skill, onClose }: { skill: SkillWithState; onClose: () =>
               {def.superpowerName}
             </p>
           )}
+          {/* Cluster Badge */}
+          <div className="flex items-center gap-2 mt-2">
+            <span
+              className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase"
+              style={{
+                backgroundColor: `${clusterInfo.color}20`,
+                color: clusterInfo.color
+              }}
+            >
+              {clusterInfo.name}
+            </span>
+            <span
+              className="text-xs"
+              style={{ color: isDormant ? '#64748b' : skill.color }}
+            >
+              {stateLabels[skill.state]?.label || skill.state}
+            </span>
+          </div>
         </div>
 
         <button
@@ -246,12 +278,45 @@ function SkillDetail({ skill, onClose }: { skill: SkillWithState; onClose: () =>
         </button>
       </div>
 
+      {/* Mastery Progress Bar */}
+      <div className="space-y-2 mb-6">
+        <div className="flex justify-between text-xs text-slate-500">
+          <span>{stateLabels[skill.state]?.description || 'Unknown state'}</span>
+          <span>{skill.demonstrationCount}/10</span>
+        </div>
+        <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
+          <motion.div
+            className="h-full rounded-full"
+            style={{ backgroundColor: isDormant ? '#475569' : skill.color }}
+            initial={{ width: 0 }}
+            animate={{ width: `${Math.min(skill.demonstrationCount * 10, 100)}%` }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
+          />
+        </div>
+        {/* Next Level Indicator */}
+        {!isDormant && remaining > 0 && (
+          <p className="text-xs text-slate-500">
+            {remaining} more demonstration{remaining !== 1 ? 's' : ''} to reach {nextLevelName}
+          </p>
+        )}
+      </div>
+
       {/* Content */}
       <div className="space-y-6">
-        {isDormant && (
-          <div className="p-3 rounded-lg bg-slate-800/50 border border-slate-700 text-center mb-4">
+        {/* Smart Unlock Hints for Dormant Skills */}
+        {isDormant && SKILL_CHARACTER_HINTS[skill.id] && (
+          <div className="p-3 rounded-lg bg-amber-900/20 border border-amber-500/30">
+            <p className="text-amber-400 text-sm">
+              <span className="font-bold">How to unlock:</span> Develop through conversations with{' '}
+              {SKILL_CHARACTER_HINTS[skill.id].join(' or ')}.
+            </p>
+          </div>
+        )}
+
+        {isDormant && !SKILL_CHARACTER_HINTS[skill.id] && (
+          <div className="p-3 rounded-lg bg-slate-800/50 border border-slate-700 text-center">
             <p className="text-slate-400 italic text-sm">
-              "This capability is currently dormant. Demonstrate it to unlock its full potential."
+              This capability is currently dormant. Demonstrate it through your choices.
             </p>
           </div>
         )}
@@ -292,19 +357,32 @@ function SkillDetail({ skill, onClose }: { skill: SkillWithState; onClose: () =>
           </div>
         )}
 
-        {/* Teaching Characters (Only if unlocked? Or always? Let's show always for help) */}
+        {/* Character Synergy Hint (for unlocked skills) + Practitioners */}
         {SKILL_CHARACTER_HINTS[skill.id] && (
           <div className="pt-4 border-t border-slate-800">
             <p className="text-xs text-slate-500 uppercase tracking-widest mb-3">
-              Practitioners
+              {isDormant ? 'Practitioners' : 'Deepen With'}
             </p>
             <div className="flex flex-wrap gap-2">
               {SKILL_CHARACTER_HINTS[skill.id].map(name => (
-                <span key={name} className="px-2 py-1 rounded bg-slate-800 text-slate-300 text-xs">
+                <span
+                  key={name}
+                  className={cn(
+                    "px-2 py-1 rounded text-xs",
+                    isDormant
+                      ? "bg-slate-800 text-slate-300"
+                      : "bg-slate-800/80 text-slate-200 border border-slate-700"
+                  )}
+                >
                   {name}
                 </span>
               ))}
             </div>
+            {!isDormant && (
+              <p className="text-xs text-slate-500 mt-2 italic">
+                These characters can help you develop this skill further
+              </p>
+            )}
           </div>
         )}
       </div>
@@ -334,49 +412,3 @@ function getCharacterDescription(id: string): string {
   return descriptions[id] || "A unique perspective on career and growth."
 }
 
-function getSkillDescription(id: string): string {
-  const descriptions: Record<string, string> = {
-    criticalThinking: "The ability to analyze situations objectively, question assumptions, and form judgments based on evidence rather than emotion or bias.",
-    communication: "Expressing ideas clearly, listening actively, and adapting your message to different audiences and contexts.",
-    collaboration: "Working effectively with others, contributing to team goals, and navigating different working styles and perspectives.",
-    creativity: "Generating novel ideas, making unexpected connections, and approaching problems from unconventional angles.",
-    leadership: "Guiding others toward shared goals, making difficult decisions, and taking responsibility for outcomes.",
-    emotionalIntelligence: "Recognizing and managing your own emotions while understanding and responding appropriately to others' feelings.",
-    adaptability: "Adjusting your approach when circumstances change, learning from setbacks, and staying effective in uncertain situations.",
-    problemSolving: "Identifying issues, analyzing causes, generating solutions, and implementing fixes systematically.",
-    resilience: "Recovering from difficulties, maintaining effectiveness under stress, and growing stronger through challenges.",
-    courage: "Acting on your values even when it's difficult, speaking up when needed, and taking calculated risks.",
-    empathy: "Understanding others' experiences and perspectives, even when different from your own.",
-    patience: "Maintaining composure and persistence when progress is slow or obstacles arise.",
-    digitalLiteracy: "Understanding and effectively using digital tools, evaluating online information, and navigating digital environments.",
-    technicalLiteracy: "Grasping technical concepts, understanding how systems work, and communicating with technical specialists.",
-    systemsThinking: "Seeing how parts connect to form wholes, understanding feedback loops, and anticipating ripple effects.",
-    crisisManagement: "Staying calm under pressure, prioritizing rapidly, and coordinating responses to emergencies.",
-    triage: "Quickly assessing situations to determine priorities and allocate limited resources effectively.",
-    learningAgility: "Picking up new skills quickly, applying lessons from one domain to another, and staying curious.",
-    humility: "Recognizing your limitations, being open to feedback, and valuing others' contributions.",
-    fairness: "Treating people equitably, considering multiple perspectives, and making principled decisions.",
-    pragmatism: "Balancing idealism with practical constraints, finding workable solutions, and knowing when good enough is enough.",
-    deepWork: "Focusing intensely on cognitively demanding tasks without distraction for extended periods.",
-    timeManagement: "Prioritizing tasks, allocating time effectively, and maintaining productivity across competing demands.",
-    culturalCompetence: "Understanding and respecting cultural differences, and adapting behavior appropriately across cultural contexts.",
-    marketing: "Understanding audiences, crafting compelling messages, and positioning ideas or products effectively.",
-    curriculumDesign: "Structuring learning experiences, sequencing content appropriately, and designing for different learner needs.",
-    // New skills (14 additions)
-    informationLiteracy: "Evaluating sources critically, distinguishing reliable information from misinformation, and synthesizing knowledge from multiple sources.",
-    strategicThinking: "Planning for long-term goals, anticipating future challenges, and aligning actions with broader objectives.",
-    mentorship: "Guiding others through their development, sharing wisdom from experience, and creating space for growth.",
-    encouragement: "Providing support and motivation, recognizing others' efforts, and fostering confidence in their abilities.",
-    respect: "Honoring others' dignity, valuing diverse perspectives, and treating people with consideration regardless of differences.",
-    wisdom: "Applying accumulated knowledge and experience thoughtfully, seeing beyond surface issues to deeper truths.",
-    curiosity: "Actively seeking to understand, asking questions, and maintaining openness to new ideas and perspectives.",
-    observation: "Noticing details others miss, reading situations accurately, and gathering information through careful attention.",
-    actionOrientation: "Moving from planning to execution, taking initiative, and maintaining momentum toward goals.",
-    riskManagement: "Identifying potential threats, evaluating their likelihood and impact, and developing mitigation strategies.",
-    urgency: "Recognizing when speed matters, acting decisively under time pressure, and distinguishing urgent from important.",
-    integrity: "Aligning actions with values, maintaining consistency between words and deeds, and being honest even when difficult.",
-    accountability: "Taking ownership of outcomes, acknowledging mistakes, and following through on commitments.",
-    financialLiteracy: "Understanding money management, budgeting effectively, and making informed financial decisions for career and life."
-  }
-  return descriptions[id] || "A valuable skill for future success."
-}

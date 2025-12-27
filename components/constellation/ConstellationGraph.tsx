@@ -1,10 +1,9 @@
 "use client"
 
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import type { CharacterWithState } from '@/hooks/useConstellationData'
-import { CHARACTER_CONNECTIONS, CHARACTER_COLORS, getCharacterById } from '@/lib/constellation/character-positions'
+import { CHARACTER_CONNECTIONS, CHARACTER_COLORS } from '@/lib/constellation/character-positions'
 
 interface ConstellationGraphProps {
     characters: CharacterWithState[]

@@ -1438,7 +1438,6 @@ export default function StatefulGameInterface() {
                   <DialogueDisplay
                     key={`dialogue-display-${state.gameState?.currentNodeId || 'none'}-${state.currentCharacterId}-${state.currentContent?.substring(0, 20) || ''}`}
                     text={cleanContent(state.gameState ? TextProcessor.process(state.currentContent || '', state.gameState) : (state.currentContent || ''))}
-                    useChatPacing={state.useChatPacing}
                     characterName={state.currentNode?.speaker}
                     characterId={state.currentCharacterId}
                     gameState={state.gameState ?? undefined}
@@ -1531,7 +1530,7 @@ export default function StatefulGameInterface() {
       < AnimatePresence mode="wait" >
         {!isEnding && (
           <footer
-            className="flex-shrink-0 glass-panel mx-3 sm:mx-auto sm:max-w-2xl lg:max-w-3xl z-20"
+            className="flex-shrink-0 glass-panel mx-3 sm:mx-auto sm:max-w-3xl lg:max-w-4xl z-20"
             style={{
               marginTop: '1.5rem',
               // PC: Raise higher (2.5rem base), Mobile: Keep safe (calc)

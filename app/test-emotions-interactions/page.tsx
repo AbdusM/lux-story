@@ -9,7 +9,7 @@ import { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { DialogueDisplay } from '@/components/DialogueDisplay'
-import { ChatPacedDialogue } from '@/components/ChatPacedDialogue'
+// ChatPacedDialogue DISABLED: Critical rendering bugs. Code preserved in .DISABLED.tsx
 import type { InteractionType } from '@/lib/interaction-parser'
 
 // All 13 implemented emotions
@@ -46,7 +46,7 @@ export default function EmotionsInteractionsTest() {
   const [selectedEmotion, setSelectedEmotion] = useState<string>('focused')
   const [selectedInteraction, setSelectedInteraction] = useState<InteractionType>('shake')
   const [selectedCharacter, setSelectedCharacter] = useState<string>('Marcus Chen')
-  const [useChatPacing, setUseChatPacing] = useState(false)
+  // ChatPacedDialogue mode disabled - critical rendering bugs
   const [key, setKey] = useState(0) // For forcing re-render
 
   const handleTest = () => {
@@ -60,8 +60,6 @@ export default function EmotionsInteractionsTest() {
   const sampleText = `Seventy-two beats. Flow rate stable.
 
 ...Don't bump the table.`
-
-  const chatPacedText = `Seventy-two beats per minute.|Flow rate 4.5 liters.|Pressure stable.|Don't bump the table. Please.`
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-4 sm:p-8">
@@ -155,30 +153,15 @@ export default function EmotionsInteractionsTest() {
               </CardContent>
             </Card>
 
-            {/* Display Mode */}
-            <Card>
+            {/* Display Mode - ChatPacedDialogue disabled due to rendering bugs */}
+            <Card className="bg-amber-50 border-amber-200">
               <CardHeader>
                 <CardTitle className="text-lg">Display Mode</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="flex gap-2">
-                  <Button
-                    onClick={() => setUseChatPacing(false)}
-                    variant={!useChatPacing ? 'default' : 'outline'}
-                    className="flex-1"
-                  >
-                    Instant
-                  </Button>
-                  <Button
-                    onClick={() => setUseChatPacing(true)}
-                    variant={useChatPacing ? 'default' : 'outline'}
-                    className="flex-1"
-                  >
-                    Chat Paced
-                  </Button>
-                </div>
-                <p className="text-xs text-slate-500 mt-2">
-                  Chat pacing shows emotion states during typing indicators
+                <p className="text-sm text-amber-700">
+                  Chat Pacing mode is currently disabled due to critical rendering bugs.
+                  Code preserved in ChatPacedDialogue.DISABLED.tsx for future debugging.
                 </p>
               </CardContent>
             </Card>
@@ -219,21 +202,12 @@ export default function EmotionsInteractionsTest() {
               </CardHeader>
               <CardContent>
                 <div key={key} className="min-h-[200px]">
-                  {useChatPacing ? (
-                    <ChatPacedDialogue
-                      text={chatPacedText}
-                      characterName={selectedCharacter}
-                      emotion={selectedEmotion}
-                      interaction={selectedInteraction}
-                      showAvatar={true}
-                    />
-                  ) : (
-                    <DialogueDisplay
-                      text={sampleText}
-                      emotion={selectedEmotion}
-                      interaction={selectedInteraction}
-                    />
-                  )}
+                  <DialogueDisplay
+                    text={sampleText}
+                    characterName={selectedCharacter}
+                    emotion={selectedEmotion}
+                    interaction={selectedInteraction}
+                  />
                 </div>
 
                 <Button
@@ -267,8 +241,8 @@ export default function EmotionsInteractionsTest() {
                 <div className="mt-4 p-3 bg-white rounded border border-green-300">
                   <div className="text-xs font-semibold mb-2">Files Modified:</div>
                   <ul className="text-xs space-y-1 text-slate-600">
-                    <li>✅ components/ChatPacedDialogue.tsx (emotion handlers)</li>
                     <li>✅ components/DialogueDisplay.tsx (interaction animations)</li>
+                    <li>⚠️ components/ChatPacedDialogue.DISABLED.tsx (archived - bugs)</li>
                     <li>✅ docs/DIALOGUE_STYLE_GUIDE.md (documentation)</li>
                   </ul>
                 </div>

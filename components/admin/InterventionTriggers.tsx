@@ -1,7 +1,7 @@
 'use client'
 
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert'
-import { AlertTriangle, TrendingDown, Lock, Clock } from 'lucide-react'
+import { TrendingDown, Lock, Clock } from 'lucide-react'
 import type { SkillProfile } from '@/lib/skill-profile-adapter'
 
 interface InterventionTriggersProps {

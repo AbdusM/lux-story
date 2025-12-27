@@ -10,21 +10,22 @@
 
 import { cn } from "@/lib/utils"
 import { autoChunkDialogue } from "@/lib/auto-chunk-dialogue"
-import { ChatPacedDialogue } from "./ChatPacedDialogue"
+// ChatPacedDialogue DISABLED: Critical rendering bugs (blank screen).
+// Code preserved in ChatPacedDialogue.DISABLED.tsx for future debugging.
 import { shouldShowAvatar } from "./CharacterAvatar"
 import { RichTextRenderer, type RichTextEffect } from "./RichTextRenderer"
 import { motion } from "framer-motion"
 import { interactionAnimations, isKineticInteraction, type InteractionType, type MotionInteractionType } from "@/lib/interaction-parser"
 import { getVoiceClass } from "@/lib/voice-utils"
 import { useUnlockEffects } from "@/hooks/useUnlockEffects"
-import { EmotionTag, TrustDisplay, Subtext } from "./unlock-enhancements"
+import { Subtext } from "./unlock-enhancements"
 import type { GameState } from "@/lib/character-state"
 
 interface DialogueDisplayProps {
   text: string
   className?: string
-  useChatPacing?: boolean // Enable sequential reveal with typing indicators
-  characterName?: string // Required if useChatPacing is true
+  // useChatPacing removed - feature disabled due to rendering bugs
+  characterName?: string
   characterId?: string // Character ID for unlock effects (trust display, etc.)
   gameState?: GameState // Game state for unlock effects
   showAvatar?: boolean // Show character avatar
@@ -48,12 +49,13 @@ interface DialogueDisplayProps {
  * - Parses | separator into line breaks with breathing room
  * - Handles markdown-style emphasis (**bold**, *italic*)
  * - Consistent typography rhythm across all narrative text
- * - Optional sequential reveal with typing indicators (ChatPacedDialogue)
+ *
+ * NOTE: ChatPacedDialogue (sequential reveal) disabled due to rendering bugs.
+ * Code preserved in ChatPacedDialogue.DISABLED.tsx for future debugging.
  */
 export function DialogueDisplay({
   text,
   className,
-  useChatPacing,
   characterName,
   characterId,
   gameState,
@@ -62,7 +64,7 @@ export function DialogueDisplay({
   richEffects,
   interaction,
   emotion,
-  playerPatterns
+  playerPatterns: _playerPatterns
 }: DialogueDisplayProps) {
   // Get unlock-based content enhancements
   const enhancements = useUnlockEffects(text, emotion, characterId, characterName, gameState)
@@ -75,35 +77,8 @@ export function DialogueDisplay({
       maxChunkLength: 100
     })
 
-  // Determine if avatar should be displayed
-  const displayAvatar = showAvatar && shouldShowAvatar(characterName, isContinuedSpeaker, false)
-
-  // Auto-enable chat pacing for nodes >40 words (Twitter-like threshold)
-  // Twitter max is ~50 words, so 40 words creates engaging progressive reveal
-  const wordCount = text.split(/\s+/).length
-  // DISABLED: ChatPacedDialogue has critical rendering bugs (blank screen).
-  // We are forcing this to false globally to ensure content is always visible via RichTextRenderer.
-  // This overrides both the auto-detection and explicit content flags.
-  const shouldUseChatPacing = false // useChatPacing || (wordCount > 40 && characterName)
-
-  // If chat pacing is enabled, use ChatPacedDialogue for sequential reveal
-  if (shouldUseChatPacing && characterName) {
-    return (
-      <ChatPacedDialogue
-        text={chunkedText}
-        characterName={characterName}
-        characterId={characterId}
-        gameState={gameState}
-        showAvatar={displayAvatar}
-        className={className}
-        interaction={interaction}
-        emotion={emotion}
-        playerPatterns={playerPatterns}
-      />
-    )
-  }
-
-  // Otherwise, use standard instant display
+  // Determine if avatar should be displayed (reserved for future use)
+  const _displayAvatar = showAvatar && shouldShowAvatar(characterName, isContinuedSpeaker, false)
   // Get interaction class if provided
   const interactionClass = interaction ? `narrative-interaction-${interaction}` : null
 
@@ -143,28 +118,12 @@ export function DialogueDisplay({
         content
       )}
 
-      {/* Unlock-based content enhancements */}
-      <div className="space-y-2 mt-3">
-        {/* Emotion tag (Analytical unlock) - Hidden for immersion */}
-        {/* {enhancements.showEmotionTag && emotion && (
-          <div className="flex items-center gap-2">
-            <EmotionTag emotion={emotion} />
-          </div>
-        )} */}
-
-        {/* Trust level display (Helping unlock) - Hidden for immersion */}
-        {/* {enhancements.showTrustLevel && enhancements.trustValue !== undefined && (
-          <TrustDisplay
-            trust={enhancements.trustValue}
-            characterName={characterName}
-          />
-        )} */}
-
-        {/* Analytical subtext hints */}
-        {enhancements.subtextHint && (
+      {/* Subtext hints - surfaced through text per Expedition 33 design */}
+      {enhancements.subtextHint && (
+        <div className="mt-3">
           <Subtext text={enhancements.subtextHint} />
-        )}
-      </div>
+        </div>
+      )}
     </div>
   )
 }

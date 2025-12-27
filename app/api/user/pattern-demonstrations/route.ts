@@ -11,47 +11,11 @@ import { getSupabaseServerClient } from '@/lib/supabase-server'
 import { PATTERN_TYPES } from '@/lib/patterns'
 import { validateUserId } from '@/lib/user-id-validation'
 import { logger } from '@/lib/logger'
+import { ensurePlayerProfile } from '@/lib/api/ensure-player-profile'
 
 // Mark as dynamic for Next.js static export compatibility
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
-
-/**
- * Ensure player profile exists before inserting related records
- * Prevents foreign key violations (error 23503)
- */
-async function ensurePlayerProfile(userId: string) {
-  try {
-    const supabase = getSupabaseServerClient()
-
-    const { error } = await supabase
-      .from('player_profiles')
-      .upsert({
-        user_id: userId,
-        created_at: new Date().toISOString()
-      }, {
-        onConflict: 'user_id',
-        ignoreDuplicates: true
-      })
-
-    if (error) {
-      logger.warn('Failed to ensure player profile', {
-        operation: 'pattern-demonstrations.ensure-profile',
-        userId,
-        error: error instanceof Error ? error.message : String(error)
-      })
-    } else {
-      logger.debug('Player profile ensured', {
-        operation: 'pattern-demonstrations.ensure-profile',
-        userId
-      })
-    }
-  } catch (error) {
-    logger.error('ensurePlayerProfile error', {
-      operation: 'pattern-demonstrations.ensure-profile'
-    }, error instanceof Error ? error : undefined)
-  }
-}
 
 /**
  * POST /api/user/pattern-demonstrations
@@ -119,7 +83,7 @@ export async function POST(request: NextRequest) {
 
     // Ensure player profile exists BEFORE attempting to insert pattern demonstration
     // This prevents foreign key violations (error 23503)
-    await ensurePlayerProfile(user_id)
+    await ensurePlayerProfile(user_id, 'pattern-demonstrations')
 
     const supabase = getSupabaseServerClient()
 

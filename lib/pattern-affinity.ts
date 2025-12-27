@@ -371,6 +371,208 @@ export const CHARACTER_PATTERN_AFFINITIES: Record<string, CharacterPatternAffini
         description: 'Yaquin confesses her private doubts'
       }
     ]
+  },
+
+  jordan: {
+    characterId: 'jordan',
+    primary: 'exploring',        // Jordan helps people discover their paths
+    secondary: 'helping',        // Naturally supportive, validates others' journeys
+    neutral: ['building', 'patience'],
+    friction: 'analytical',      // Pure logic misses the human element of career choices
+
+    resonanceDescriptions: [
+      {
+        pattern: 'exploring',
+        description: 'Jordan lights up. You\'re a fellow seeker—someone who understands that paths aren\'t straight lines.'
+      },
+      {
+        pattern: 'helping',
+        description: 'Jordan recognizes a kindred spirit. Someone who sees people, not just problems.'
+      },
+      {
+        pattern: 'building',
+        description: 'Jordan respects your drive to create. That energy can move mountains.'
+      },
+      {
+        pattern: 'patience',
+        description: 'Jordan appreciates that you don\'t rush. Good decisions need room to breathe.'
+      },
+      {
+        pattern: 'analytical',
+        description: 'Jordan\'s smile tightens slightly. Not everything can be optimized. Some things you just have to feel.'
+      }
+    ],
+
+    patternUnlocks: [
+      {
+        pattern: 'exploring',
+        threshold: 40,
+        unlockedNodeId: 'jordan_seven_jobs_story',
+        description: 'Jordan opens up about their seven jobs in four years'
+      },
+      {
+        pattern: 'helping',
+        threshold: 50,
+        unlockedNodeId: 'jordan_impostor_reveal',
+        description: 'Jordan confides about their impostor syndrome'
+      },
+      {
+        pattern: 'exploring',
+        threshold: 70,
+        unlockedNodeId: 'jordan_unexpected_paths',
+        description: 'Jordan shares the crossroads moment that changed everything'
+      }
+    ]
+  },
+
+  kai: {
+    characterId: 'kai',
+    primary: 'building',         // Kai creates safety systems, proactive protection
+    secondary: 'analytical',     // Critical thinking, risk assessment
+    neutral: ['helping', 'exploring'],
+    friction: 'patience',        // In crisis, waiting can cost lives
+
+    resonanceDescriptions: [
+      {
+        pattern: 'building',
+        description: 'Kai nods approvingly. You understand that safety is built, not found.'
+      },
+      {
+        pattern: 'analytical',
+        description: 'Kai\'s posture shifts—you speak the language of risk assessment.'
+      },
+      {
+        pattern: 'helping',
+        description: 'Kai recognizes your care for others. That\'s the heart of the work.'
+      },
+      {
+        pattern: 'exploring',
+        description: 'Kai appreciates your curiosity, though some doors are closed for good reason.'
+      },
+      {
+        pattern: 'patience',
+        description: 'Kai\'s jaw tightens. "Sometimes waiting is the most dangerous choice."'
+      }
+    ],
+
+    patternUnlocks: [
+      {
+        pattern: 'building',
+        threshold: 40,
+        unlockedNodeId: 'kai_safety_protocol_story',
+        description: 'Kai shows you a safety protocol they designed'
+      },
+      {
+        pattern: 'analytical',
+        threshold: 50,
+        unlockedNodeId: 'kai_risk_matrix',
+        description: 'Kai explains how they think about risk'
+      },
+      {
+        pattern: 'building',
+        threshold: 70,
+        unlockedNodeId: 'kai_prevention_philosophy',
+        description: 'Kai shares their philosophy of prevention over reaction'
+      }
+    ]
+  },
+
+  alex: {
+    characterId: 'alex',
+    primary: 'exploring',        // Alex experiments, tries new approaches
+    secondary: 'building',       // Creates, makes things happen
+    neutral: ['analytical', 'helping'],
+    friction: 'patience',        // Prefers action to waiting
+
+    resonanceDescriptions: [
+      {
+        pattern: 'exploring',
+        description: 'Alex grins. A fellow adventurer. Someone who asks "what if?"'
+      },
+      {
+        pattern: 'building',
+        description: 'Alex respects your maker energy. Talk is cheap—you actually build.'
+      },
+      {
+        pattern: 'analytical',
+        description: 'Alex appreciates your thinking, even if they prefer to learn by doing.'
+      },
+      {
+        pattern: 'helping',
+        description: 'Alex softens. They don\'t always know what to do with kindness.'
+      },
+      {
+        pattern: 'patience',
+        description: 'Alex shifts restlessly. "Life\'s too short to wait for the perfect moment."'
+      }
+    ],
+
+    patternUnlocks: [
+      {
+        pattern: 'exploring',
+        threshold: 40,
+        unlockedNodeId: 'alex_creative_process',
+        description: 'Alex shows you how they approach creative problems'
+      },
+      {
+        pattern: 'building',
+        threshold: 50,
+        unlockedNodeId: 'alex_first_project',
+        description: 'Alex tells you about their first real project'
+      }
+    ]
+  },
+
+  silas: {
+    characterId: 'silas',
+    primary: 'analytical',       // Systems thinker, sees the patterns in crisis
+    secondary: 'patience',       // Deliberate, doesn\'t panic
+    neutral: ['building', 'exploring'],
+    friction: 'helping',         // Has seen "help" become exploitation in crisis
+
+    resonanceDescriptions: [
+      {
+        pattern: 'analytical',
+        description: 'Silas\'s guarded expression eases. You see the systems, not just the symptoms.'
+      },
+      {
+        pattern: 'patience',
+        description: 'Silas respects your steadiness. Panic helps no one.'
+      },
+      {
+        pattern: 'building',
+        description: 'Silas appreciates makers—people who do more than diagnose.'
+      },
+      {
+        pattern: 'exploring',
+        description: 'Silas watches your curiosity with interest. Just be careful where it leads.'
+      },
+      {
+        pattern: 'helping',
+        description: 'Silas\'s walls go up. "I\'ve seen too many helpers who helped themselves first."'
+      }
+    ],
+
+    patternUnlocks: [
+      {
+        pattern: 'analytical',
+        threshold: 40,
+        unlockedNodeId: 'silas_systems_breakdown',
+        description: 'Silas explains how systems fail in crisis'
+      },
+      {
+        pattern: 'patience',
+        threshold: 50,
+        unlockedNodeId: 'silas_farm_story',
+        description: 'Silas opens up about the farm crisis'
+      },
+      {
+        pattern: 'analytical',
+        threshold: 70,
+        unlockedNodeId: 'silas_triage_philosophy',
+        description: 'Silas shares their philosophy of triage and hard choices'
+      }
+    ]
   }
 }
 

@@ -8,7 +8,7 @@ import {
     DialogTrigger,
     DialogDescription,
 } from '@/components/ui/dialog'
-import { Settings, FileText, Home, Volume2, VolumeX, Brain, Stars } from 'lucide-react'
+import { Settings, FileText, Volume2, VolumeX, Brain, Stars } from 'lucide-react'
 
 interface GameMenuProps {
     onShowReport: () => void
@@ -19,7 +19,7 @@ interface GameMenuProps {
     playerId?: string
 }
 
-export function GameMenu({ onShowReport, onReturnToStation, onShowConstellation, isMuted = false, onToggleMute, playerId }: GameMenuProps) {
+export function GameMenu({ onShowReport, onReturnToStation: _onReturnToStation, onShowConstellation, isMuted = false, onToggleMute, playerId }: GameMenuProps) {
     return (
         <Dialog>
             <DialogTrigger asChild>

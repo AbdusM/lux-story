@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence, LazyMotion, domAnimation } from 'framer-motion'
 import { X, Users, Sparkles } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { springs } from '@/lib/animations'
+import { springs, backdrop, panelFromRight } from '@/lib/animations'
 import { useConstellationData, type CharacterWithState, type SkillWithState } from '@/hooks/useConstellationData'
 import { PeopleView } from './PeopleView'
 import { SkillsView } from './SkillsView'
@@ -17,18 +17,7 @@ interface ConstellationPanelProps {
 
 type TabId = 'people' | 'skills'
 
-const backdropVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1 }
-}
-
-const panelVariants: import('framer-motion').Variants = {
-  hidden: { x: '100%' },
-  visible: {
-    x: 0,
-    transition: { type: 'spring', stiffness: 300, damping: 30 }
-  }
-}
+// Using shared animation variants from lib/animations.ts: backdrop, panelFromRight
 
 const contentVariants = {
   hidden: { opacity: 0, y: 10 },
@@ -91,7 +80,7 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
               initial="hidden"
               animate="visible"
               exit="hidden"
-              variants={backdropVariants}
+              variants={backdrop}
               className="fixed inset-0 bg-black/50 z-[90] backdrop-blur-sm"
               onClick={onClose}
             />
@@ -101,7 +90,7 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
               initial="hidden"
               animate="visible"
               exit="hidden"
-              variants={panelVariants}
+              variants={panelFromRight}
               drag="x"
               dragConstraints={{ left: 0, right: 0 }}
               dragElastic={{ left: 0, right: 0.2 }}
