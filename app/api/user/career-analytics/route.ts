@@ -8,12 +8,20 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { getSupabaseServerClient } from '@/lib/supabase-server'
-import { validateUserId } from '@/lib/user-id-validation'
 import { logger } from '@/lib/logger'
+import {
+  extractAndValidateUserIdFromQuery,
+  validateUserIdFromBody,
+  supabaseErrorResponse,
+  handleApiError
+} from '@/lib/api/api-utils'
 
 // Mark as dynamic for Next.js static export compatibility
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
+
+const OPERATION_GET = 'career-analytics.get'
+const OPERATION_POST = 'career-analytics.post'
 
 /**
  * GET /api/user/career-analytics?userId=X
@@ -21,26 +29,11 @@ export const runtime = 'nodejs'
  */
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url)
-    const userId = searchParams.get('userId')
-
-    logger.debug('Career analytics GET request', { operation: 'career-analytics.get', userId: userId ?? undefined })
-
-    if (!userId) {
-      logger.warn('Missing userId parameter', { operation: 'career-analytics.get' })
-      return NextResponse.json(
-        { error: 'Missing userId parameter' },
-        { status: 400 }
-      )
-    }
-
-    const validation = validateUserId(userId)
+    const validation = extractAndValidateUserIdFromQuery(request, OPERATION_GET)
     if (!validation.valid) {
-      return NextResponse.json(
-        { error: validation.error },
-        { status: 400 }
-      )
+      return validation.response
     }
+    const { userId } = validation
 
     const supabase = getSupabaseServerClient()
 
@@ -53,25 +46,13 @@ export async function GET(request: NextRequest) {
     if (error) {
       // If no data exists, return exists: false (not an error)
       if (error.code === 'PGRST116') {
-        logger.debug('No data found for user', { operation: 'career-analytics.get', userId })
+        logger.debug('No data found for user', { operation: OPERATION_GET, userId })
         return NextResponse.json({ exists: false })
       }
-
-      logger.error('Supabase error', {
-        operation: 'career-analytics.get',
-        errorCode: error.code,
-        userId
-      }, error instanceof Error ? error : undefined)
-      return NextResponse.json(
-        { error: 'Failed to fetch career analytics' },
-        { status: 500 }
-      )
+      return supabaseErrorResponse(OPERATION_GET, error.code, 'Failed to fetch career analytics', userId)
     }
 
-    logger.debug('Retrieved career analytics', {
-      operation: 'career-analytics.get',
-      userId
-    })
+    logger.debug('Retrieved career analytics', { operation: OPERATION_GET, userId })
 
     // Transform database format to application format
     return NextResponse.json({
@@ -87,63 +68,24 @@ export async function GET(request: NextRequest) {
       }
     })
   } catch (error) {
-    logger.error('Unexpected error in career analytics GET', {
-      operation: 'career-analytics.get'
-    }, error instanceof Error ? error : undefined)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return handleApiError(error, OPERATION_GET, 'GET')
   }
 }
 
 /**
  * POST /api/user/career-analytics
  * Upsert career analytics data
- *
- * Body: {
- *   user_id: string,
- *   platforms_explored: string[],
- *   career_interests: string[],
- *   choices_made: number,
- *   time_spent_seconds: number,
- *   sections_viewed: string[],
- *   birmingham_opportunities: string[]
- * }
  */
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
+    const { user_id, platforms_explored, career_interests, choices_made, time_spent_seconds, sections_viewed, birmingham_opportunities } = body
 
-    const {
-      user_id,
-      platforms_explored,
-      career_interests,
-      choices_made,
-      time_spent_seconds,
-      sections_viewed,
-      birmingham_opportunities
-    } = body
+    logger.debug('Career analytics POST request', { operation: OPERATION_POST, userId: user_id })
 
-    logger.debug('Career analytics POST request', {
-      operation: 'career-analytics.post',
-      userId: user_id
-    })
-
-    if (!user_id) {
-      logger.warn('Missing user_id', { operation: 'career-analytics.post' })
-      return NextResponse.json(
-        { error: 'Missing user_id' },
-        { status: 400 }
-      )
-    }
-
-    const validation = validateUserId(user_id)
+    const validation = validateUserIdFromBody(user_id, OPERATION_POST)
     if (!validation.valid) {
-      return NextResponse.json(
-        { error: validation.error },
-        { status: 400 }
-      )
+      return validation.response
     }
 
     const supabase = getSupabaseServerClient()
@@ -159,35 +101,16 @@ export async function POST(request: NextRequest) {
         sections_viewed: sections_viewed || [],
         birmingham_opportunities: birmingham_opportunities || [],
         last_updated: new Date().toISOString()
-      }, {
-        onConflict: 'user_id'
-      })
+      }, { onConflict: 'user_id' })
 
     if (error) {
-      logger.error('Supabase upsert error', {
-        operation: 'career-analytics.post',
-        errorCode: error.code,
-        userId: user_id
-      }, error instanceof Error ? error : undefined)
-      return NextResponse.json(
-        { error: 'Failed to save career analytics' },
-        { status: 500 }
-      )
+      return supabaseErrorResponse(OPERATION_POST, error.code, 'Failed to save career analytics', user_id)
     }
 
-    logger.debug('Career analytics upsert successful', {
-      operation: 'career-analytics.post',
-      userId: user_id
-    })
+    logger.debug('Career analytics upsert successful', { operation: OPERATION_POST, userId: user_id })
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    logger.error('Unexpected error in career analytics POST', {
-      operation: 'career-analytics.post'
-    }, error instanceof Error ? error : undefined)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return handleApiError(error, OPERATION_POST, 'POST')
   }
 }

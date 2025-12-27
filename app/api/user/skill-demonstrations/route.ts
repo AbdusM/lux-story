@@ -8,12 +8,18 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { getSupabaseServerClient } from '@/lib/supabase-server'
-import { validateUserId } from '@/lib/user-id-validation'
 import { logger } from '@/lib/logger'
+import {
+  validateUserIdFromBody,
+  supabaseErrorResponse,
+  handleApiError
+} from '@/lib/api/api-utils'
 
 // Mark as dynamic for Next.js static export compatibility
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
+
+const OPERATION_POST = 'skill-demonstrations.post'
 
 /**
  * POST /api/user/skill-demonstrations
@@ -24,21 +30,15 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { user_id, skill_name, scene_id, scene_description, choice_text, context, demonstrated_at } = body
 
-    // Simple validation - this is an internal API called by our code
-    if (!user_id || !skill_name || !scene_id) {
-      logger.warn('Missing required fields', { operation: 'skill-demonstrations.post' })
-      return NextResponse.json(
-        { error: 'Missing required fields: user_id, skill_name, scene_id' },
-        { status: 400 }
-      )
+    // Validate required fields
+    if (!skill_name || !scene_id) {
+      logger.warn('Missing required fields', { operation: OPERATION_POST })
+      return NextResponse.json({ error: 'Missing required fields: skill_name, scene_id' }, { status: 400 })
     }
 
-    const validation = validateUserId(user_id)
+    const validation = validateUserIdFromBody(user_id, OPERATION_POST)
     if (!validation.valid) {
-      return NextResponse.json(
-        { error: validation.error },
-        { status: 400 }
-      )
+      return validation.response
     }
 
     const supabase = getSupabaseServerClient()
@@ -57,32 +57,13 @@ export async function POST(request: NextRequest) {
       .select()
       .single()
 
-    // PGRST204 means "no content" - insert succeeded but RLS prevents select
+    // PGRST204 = insert succeeded but RLS prevents select
     if (error && error.code !== 'PGRST204') {
-      logger.error('Supabase error', {
-        operation: 'skill-demonstrations.post',
-        errorCode: error.code,
-        userId: user_id
-      }, error instanceof Error ? error : undefined)
-      return NextResponse.json(
-        { error: 'Failed to insert skill demonstration' },
-        { status: 500 }
-      )
+      return supabaseErrorResponse(OPERATION_POST, error.code, 'Failed to insert skill demonstration', user_id)
     }
 
-    return NextResponse.json({
-      success: true,
-      demonstration: data
-    })
+    return NextResponse.json({ success: true, demonstration: data })
   } catch (error) {
-    logger.error('Unexpected error in skill demonstrations POST', {
-      operation: 'skill-demonstrations.post'
-    }, error instanceof Error ? error : undefined)
-    const errorMessage = error instanceof Error ? error.message : "Internal server error"
-
-    return NextResponse.json(
-      { error: errorMessage },
-      { status: 500 }
-    )
+    return handleApiError(error, OPERATION_POST, 'POST')
   }
 }
