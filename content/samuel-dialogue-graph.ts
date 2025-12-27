@@ -409,15 +409,16 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Patterns are how you're built. Not what job you have—that can change. But how you naturally think and act when things get hard.\n\nSome folks analyze. Break problems down. See what others miss.\nSome folks build. Make things real. Fix what's broken.\nSome folks help. Notice when someone's strugglin'. Know what to say.\nSome folks explore. Find new paths when old ones close.\nSome folks wait. Take their time. See the long game.\n\nMachines can't do that. They follow instructions. You... you adapt. That's what makes you human.\n\nWhatever's comin'—you figure out your pattern, you'll find your way through.",
+        text: "*He looks at you for a long moment.*\n\nPatterns ain't about what job you have. Jobs change. Always have.\n\nIt's about how you move through the world when things get hard. Some folks think their way through. Some folks build their way through. Some folks help others find the way.\n\nMachines can follow instructions. But they can't adapt when the instructions don't fit anymore. You can.\n\nThat's not somethin' you learn from a slide deck.",
         emotion: 'wise',
-        variation_id: 'pattern_survival_v1'
+        variation_id: 'pattern_survival_v1',
+        interaction: 'nod'
       }
     ],
     choices: [
       {
         choiceId: 'ready_after_wisdom',
-        text: "I'm ready to start exploring.",
+        text: "I think I understand.",
         nextNodeId: 'samuel_orb_introduction',
         pattern: 'exploring'
       },

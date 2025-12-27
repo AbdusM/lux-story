@@ -828,6 +828,7 @@ Maria. Shift supervisor. They told her to "reskill into tech." She's got three k
 
 That's what no one talks about. The retraining sounds good in a press release. But who's paying the mortgage while you learn to code?`,
         emotion: 'frustrated',
+        interaction: 'small',
         variation_id: 'retraining_v1',
         patternReflection: [
           { pattern: 'helping', minLevel: 4, altText: "*Quiet for a moment.*\n\nHalf the people I trained are looking for new work. Not because they failed—because their jobs got automated.\n\nDeShawn. Twenty years at the furnace. Maria. Three kids, shift supervisor.\n\n*Voice drops.*\n\nYou asked about them. Most people don't. They talk about 'the workforce' like it's a spreadsheet, not people with families.", altEmotion: 'vulnerable' },
@@ -867,6 +868,7 @@ That's what I'm building. Training that bridges—not replaces. Show a machinist
 
 The companies that figure this out? They'll have workers who actually know what they're doing. The ones that don't? They'll have expensive robots and nobody who knows how to fix them when they break.`,
         emotion: 'determined',
+        interaction: 'bloom',
         variation_id: 'what_works_v1'
       }
     ],
