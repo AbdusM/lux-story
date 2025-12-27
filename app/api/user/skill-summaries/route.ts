@@ -10,47 +10,12 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getSupabaseServerClient } from '@/lib/supabase-server'
 import { validateUserId } from '@/lib/user-id-validation'
 import { logger } from '@/lib/logger'
+import { ensurePlayerProfile } from '@/lib/api/ensure-player-profile'
 
 // Mark as dynamic for Next.js static export compatibility
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
 
-/**
- * Ensure player profile exists before inserting related records
- * Prevents foreign key violations (error 23503)
- */
-async function ensurePlayerProfile(userId: string) {
-  try {
-    const supabase = getSupabaseServerClient()
-
-    const { error } = await supabase
-      .from('player_profiles')
-      .upsert({
-        user_id: userId,
-        created_at: new Date().toISOString()
-      }, {
-        onConflict: 'user_id',
-        ignoreDuplicates: true
-      })
-
-    if (error) {
-      logger.warn('Failed to ensure player profile', {
-        operation: 'skill-summaries.ensure-profile',
-        userId,
-        error: error instanceof Error ? error.message : String(error)
-      })
-    } else {
-      logger.debug('Player profile ensured', {
-        operation: 'skill-summaries.ensure-profile',
-        userId
-      })
-    }
-  } catch (error) {
-    logger.error('ensurePlayerProfile error', {
-      operation: 'skill-summaries.ensure-profile'
-    }, error instanceof Error ? error : undefined)
-  }
-}
 
 /**
  * GET /api/user/skill-summaries?userId=X
@@ -221,7 +186,7 @@ export async function POST(request: NextRequest) {
 
     // Ensure player profile exists BEFORE attempting to insert skill summary
     // This prevents foreign key violations (error 23503)
-    await ensurePlayerProfile(user_id)
+    await ensurePlayerProfile(user_id, 'skill-summaries')
 
     const supabase = getSupabaseServerClient()
 

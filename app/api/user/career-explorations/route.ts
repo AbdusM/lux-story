@@ -11,6 +11,7 @@ import { getSupabaseServerClient } from '@/lib/supabase-server'
 import { rateLimit, getClientIp } from '@/lib/rate-limit'
 import { validateUserId } from '@/lib/user-id-validation'
 import { logger } from '@/lib/logger'
+import { ensurePlayerProfile } from '@/lib/api/ensure-player-profile'
 
 // Mark as dynamic for Next.js static export compatibility
 export const dynamic = 'force-dynamic'
@@ -21,43 +22,6 @@ const postLimiter = rateLimit({
   interval: 60 * 1000, // 1 minute
   uniqueTokenPerInterval: 500,
 })
-
-/**
- * Ensure player profile exists before inserting related records
- * Prevents foreign key violations (error 23503)
- */
-async function ensurePlayerProfile(userId: string) {
-  try {
-    const supabase = getSupabaseServerClient()
-
-    const { error } = await supabase
-      .from('player_profiles')
-      .upsert({
-        user_id: userId,
-        created_at: new Date().toISOString()
-      }, {
-        onConflict: 'user_id',
-        ignoreDuplicates: true
-      })
-
-    if (error) {
-      logger.warn('Failed to ensure player profile', {
-        operation: 'career-explorations.ensure-profile',
-        userId,
-        error: error instanceof Error ? error.message : String(error)
-      })
-    } else {
-      logger.debug('Player profile ensured', {
-        operation: 'career-explorations.ensure-profile',
-        userId
-      })
-    }
-  } catch (error) {
-    logger.error('ensurePlayerProfile error', {
-      operation: 'career-explorations.ensure-profile'
-    }, error instanceof Error ? error : undefined)
-  }
-}
 
 /**
  * POST /api/user/career-explorations
@@ -126,7 +90,7 @@ export async function POST(request: NextRequest) {
 
     // Ensure player profile exists BEFORE attempting to insert career exploration
     // This prevents foreign key violations (error 23503)
-    await ensurePlayerProfile(user_id)
+    await ensurePlayerProfile(user_id, 'career-explorations')
 
     const supabase = getSupabaseServerClient()
 

@@ -6,8 +6,6 @@ import { motion } from 'framer-motion'
 import { interactionAnimations, isKineticInteraction, type InteractionType, type MotionInteractionType } from '@/lib/interaction-parser'
 import { getVoiceClass } from '@/lib/voice-utils'
 import { getCharacterTyping } from '@/lib/character-typing'
-import { useUnlockEffects } from '@/hooks/useUnlockEffects'
-import { EmotionTag, TrustDisplay, Subtext } from './unlock-enhancements'
 import type { GameState } from '@/lib/character-state'
 
 interface ChatPacedDialogueProps {
@@ -59,8 +57,8 @@ interface ChatPacedDialogueProps {
 export function ChatPacedDialogue({
   text,
   characterName,
-  characterId,
-  gameState,
+  characterId: _characterId,
+  gameState: _gameState,
   showAvatar = true,
   chunkDelay: _chunkDelay = 1500,
   typingDuration: typingDurationProp,
@@ -70,9 +68,6 @@ export function ChatPacedDialogue({
   emotion,
   playerPatterns: _playerPatterns
 }: ChatPacedDialogueProps) {
-  // Get unlock-based content enhancements
-  const enhancements = useUnlockEffects(text, emotion, characterId, characterName, gameState)
-
   // Get character-specific typing config
   const characterTyping = getCharacterTyping(characterName)
   const typingDuration = typingDurationProp ?? characterTyping.typingDuration
@@ -382,8 +377,6 @@ export function ChatPacedDialogue({
           </div>
         )}
 
-        {/* Unlock-based content enhancements - shown after all chunks displayed */}
-        {/* Unlock-based content enhancements - VISUALLY HIDDEN for immersion */}
       </div>
 
       <style jsx>{`

@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import type { SkillWithState } from '@/hooks/useConstellationData'
-import { SKILL_CONNECTIONS, SKILL_CLUSTERS, getSkillById } from '@/lib/constellation/skill-positions'
+import { SKILL_CONNECTIONS } from '@/lib/constellation/skill-positions'
 
 interface SkillConstellationGraphProps {
     skills: SkillWithState[]
@@ -34,7 +34,7 @@ export function SkillConstellationGraph({ skills, onOpenDetail }: SkillConstella
         }
     }
 
-    const selectedSkill = skills.find(s => s.id === selectedId)
+    const _selectedSkill = skills.find(s => s.id === selectedId)
 
     return (
         <div className="relative w-full h-full flex items-center justify-center bg-slate-50/50 dark:bg-slate-900/0">

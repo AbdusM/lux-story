@@ -16,7 +16,7 @@
 import React, { useState, useEffect } from 'react'
 import { cn } from '@/lib/utils'
 import { motion, useReducedMotion } from 'framer-motion'
-import { parseInlineInteractions, interactionAnimations, isKineticInteraction, type MotionInteractionType, type KineticInteractionType } from '@/lib/interaction-parser'
+import { parseInlineInteractions, interactionAnimations, isKineticInteraction, type MotionInteractionType } from '@/lib/interaction-parser'
 import { calculateChunkDelay } from '@/lib/character-typing'
 import { KineticText, type KineticEffect } from '@/components/KineticText'
 

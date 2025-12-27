@@ -23,7 +23,6 @@ import { auditLog } from '@/lib/audit-logger'
 import {
   verifyAdminPassword,
   createSession,
-  validateSession,
   invalidateSession,
   SESSION_DURATION_SECONDS
 } from '@/lib/auth-utils'

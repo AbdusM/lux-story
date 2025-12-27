@@ -13,7 +13,7 @@
  * Mobile-safe: Uses transform and opacity only.
  */
 
-import { motion, useReducedMotion, type Variants } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { useMemo } from 'react'
 import { getPatternColor, type PatternType } from '@/lib/patterns'
 

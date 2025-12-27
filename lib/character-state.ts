@@ -164,6 +164,9 @@ export interface StateChange {
   // Thought Cabinet
   thoughtId?: string
   internalizeThought?: boolean // If true and thoughtId is set, internalize the thought (identity system)
+
+  // Mystery progression
+  mysteryChanges?: Partial<MysteryState>
 }
 
 /**
@@ -394,6 +397,14 @@ export class GameStateUtils {
       }
       if (change.removeKnowledgeFlags) {
         change.removeKnowledgeFlags.forEach(flag => charState.knowledgeFlags.delete(flag))
+      }
+    }
+
+    // Apply mystery state changes
+    if (change.mysteryChanges) {
+      newState.mysteries = {
+        ...newState.mysteries,
+        ...change.mysteryChanges
       }
     }
 

@@ -16,17 +16,17 @@ import { autoChunkDialogue } from '@/lib/auto-chunk-dialogue'
 interface EnhancedDialogueDisplayProps {
   text: string
   className?: string
-  useChatPacing?: boolean
+  // useChatPacing removed - feature disabled due to rendering bugs
   characterName?: string
   showAvatar?: boolean
   isContinuedSpeaker?: boolean
-  
+
   /** Enable rich text effects (terminal-style animations) */
   enableRichEffects?: boolean
-  
+
   /** Rich text effect configuration */
   richEffects?: RichTextEffect
-  
+
   /** Context for automatic effect selection */
   context?: 'thinking' | 'speaking' | 'action' | 'warning' | 'success'
 }
@@ -43,7 +43,6 @@ interface EnhancedDialogueDisplayProps {
 export function EnhancedDialogueDisplay({
   text,
   className,
-  useChatPacing,
   characterName,
   showAvatar = true,
   isContinuedSpeaker = false,
@@ -103,7 +102,6 @@ export function EnhancedDialogueDisplay({
       <DialogueDisplay
         text={text}
         className={className}
-        useChatPacing={useChatPacing}
         characterName={characterName}
         showAvatar={showAvatar}
         isContinuedSpeaker={isContinuedSpeaker}
@@ -111,31 +109,15 @@ export function EnhancedDialogueDisplay({
     )
   }
   
-  // Auto-chunk long text for chat pacing
-  const chunkedText = autoChunkDialogue(text, { 
+  // Auto-chunk long text
+  const chunkedText = autoChunkDialogue(text, {
     activationThreshold: 200,
     maxChunkLength: 100
   })
-  
+
   // Determine if avatar should be displayed
   const displayAvatar = showAvatar && shouldShowAvatar(characterName, isContinuedSpeaker, false)
-  
-  // If chat pacing is enabled, use ChatPacedDialogue wrapper
-  if (useChatPacing && characterName) {
-    // TODO: Integrate ChatPacedDialogue with RichTextRenderer
-    // For now, fall back to standard chat pacing
-    return (
-      <DialogueDisplay
-        text={chunkedText}
-        className={className}
-        useChatPacing={true}
-        characterName={characterName}
-        showAvatar={displayAvatar}
-        isContinuedSpeaker={isContinuedSpeaker}
-      />
-    )
-  }
-  
+
   // Use RichTextRenderer with standard layout
   const chunks = chunkedText.split('|').map(chunk => chunk.trim()).filter(chunk => chunk.length > 0)
   

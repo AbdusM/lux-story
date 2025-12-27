@@ -2,7 +2,6 @@
 
 import { useEffect } from 'react'
 import { GameStateManager } from '@/lib/game-state-manager'
-import { GameState } from '@/lib/character-state'
 
 export function EnvironmentalEffects() {
 

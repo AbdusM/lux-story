@@ -5,17 +5,16 @@ import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import { stagger, springs } from '@/lib/animations'
 import type { SkillWithState } from '@/hooks/useConstellationData'
-import { SKILL_CONNECTIONS, SKILL_CLUSTERS, type SkillCluster } from '@/lib/constellation/skill-positions'
+import { SKILL_CONNECTIONS, SKILL_CLUSTERS } from '@/lib/constellation/skill-positions'
 import { ClusterFilterChips, type ClusterFilter } from './ClusterFilterChips'
-import { SKILL_CHARACTER_HINTS } from '@/lib/skill-definitions'
 
 interface SkillsViewProps {
   skills: SkillWithState[]
   onOpenDetail?: (skill: SkillWithState) => void
 }
 
-// Animation variants based on skill state
-const stateVariants = {
+// Animation variants based on skill state (reserved for future use)
+const _stateVariants = {
   dormant: { scale: 0.85, opacity: 0.35 },
   awakening: { scale: 0.95, opacity: 0.6 },
   developing: { scale: 1, opacity: 0.8 },

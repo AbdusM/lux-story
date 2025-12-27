@@ -1177,6 +1177,13 @@ export const useGameSelectors = {
     return serialized.globalFlags
   },
 
+  // Get mysteries state
+  useMysteries: () => {
+    const serialized = useGameStore((state) => state.coreGameState)
+    if (!serialized) return null
+    return serialized.mysteries
+  },
+
   // Character Transformations
   useWitnessedTransformations: () => useGameStore((state) => state.witnessedTransformations),
   useHasWitnessedTransformation: (transformationId: string) =>

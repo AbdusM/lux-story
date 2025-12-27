@@ -3,7 +3,9 @@
 import { useMemo } from "react"
 import { motion, useReducedMotion } from "framer-motion"
 import { useConstellationData } from "@/hooks/useConstellationData"
+import { usePatternUnlocks } from "@/hooks/usePatternUnlocks"
 import { SKILL_CLUSTERS, type SkillCluster } from "@/lib/constellation/skill-positions"
+import { Sparkles, Lock } from "lucide-react"
 
 /**
  * Essence Sigil (The Soul Radar)
@@ -26,6 +28,7 @@ const RADIUS = 100
 
 export function EssenceSigil() {
     const { skills } = useConstellationData()
+    const { orbs, allUnlocks } = usePatternUnlocks()
     const prefersReducedMotion = useReducedMotion()
 
     // Calculate scores per cluster (0 to 1) - must be before any early returns (React hooks rules)
@@ -225,6 +228,86 @@ export function EssenceSigil() {
                         Skills Unlocked: {totalUnlocked}/{totalSkills}
                     </span>
                 </div>
+            </div>
+
+            {/* Unlocked Abilities Section */}
+            <div className="w-full max-w-md mx-auto px-4 space-y-4 pb-4">
+                <div className="flex items-center gap-2 text-xs text-slate-400 font-medium">
+                    <Sparkles className="w-4 h-4" />
+                    <span>UNLOCKED ABILITIES</span>
+                    <span className="ml-auto text-slate-500">{allUnlocks.length}/15</span>
+                </div>
+
+                {allUnlocks.length === 0 ? (
+                    <div className="py-6 border border-dashed border-slate-700 rounded-xl flex flex-col items-center text-center px-4">
+                        <Lock className={`w-6 h-6 mb-2 text-slate-500 opacity-60 ${prefersReducedMotion ? '' : 'animate-pulse'}`} />
+                        <p className="text-sm text-slate-400">No abilities unlocked yet</p>
+                        <p className="text-xs mt-1 text-slate-500">
+                            Make choices to fill your pattern orbs
+                        </p>
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-1 gap-2">
+                        {allUnlocks.map((unlock, i) => {
+                            const orb = orbs.find(o => o.pattern === unlock.pattern)
+                            return (
+                                <motion.div
+                                    key={unlock.id}
+                                    initial={prefersReducedMotion ? false : { opacity: 0, x: -10 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: i * 0.05 }}
+                                    className="flex items-center gap-3 p-3 rounded-lg bg-slate-800/50 border border-slate-700/50"
+                                >
+                                    <span className="text-xl">{unlock.icon}</span>
+                                    <div className="flex-1 min-w-0">
+                                        <div className="flex items-center gap-2">
+                                            <span className="text-sm font-medium text-slate-200">
+                                                {unlock.name}
+                                            </span>
+                                            <span
+                                                className="px-1.5 py-0.5 rounded text-[9px] uppercase font-bold"
+                                                style={{
+                                                    backgroundColor: `${orb?.color}20`,
+                                                    color: orb?.color
+                                                }}
+                                            >
+                                                {unlock.pattern}
+                                            </span>
+                                        </div>
+                                        <p className="text-xs text-slate-400 truncate">
+                                            {unlock.description}
+                                        </p>
+                                    </div>
+                                </motion.div>
+                            )
+                        })}
+                    </div>
+                )}
+
+                {/* Next Unlocks Preview */}
+                {orbs.some(o => o.nextUnlock) && (
+                    <div className="pt-4 border-t border-slate-800">
+                        <p className="text-xs text-slate-500 uppercase tracking-widest mb-3">Coming Soon</p>
+                        <div className="space-y-2">
+                            {orbs.filter(o => o.nextUnlock).slice(0, 3).map(orb => (
+                                <div
+                                    key={orb.pattern}
+                                    className="flex items-center gap-3 p-2 rounded-lg bg-slate-900/50 border border-slate-800/50 opacity-60"
+                                >
+                                    <Lock className="w-4 h-4 text-slate-600" />
+                                    <div className="flex-1 min-w-0">
+                                        <span className="text-xs text-slate-500">
+                                            {orb.nextUnlock?.name}
+                                        </span>
+                                        <span className="text-[10px] text-slate-600 ml-2">
+                                            ({orb.pointsToNext}% to unlock)
+                                        </span>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     )

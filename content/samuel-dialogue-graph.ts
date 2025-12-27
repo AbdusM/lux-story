@@ -530,6 +530,12 @@ export const samuelDialogueNodes: DialogueNode[] = [
         ]
       }
     ],
+    // MYSTERY PROGRESSION: Samuel's Past advances from 'hidden' to 'hinted'
+    onEnter: [
+      {
+        mysteryChanges: { samuelsPast: 'hinted' }
+      }
+    ],
     choices: [
       {
         choiceId: 'what_did_you_want',
