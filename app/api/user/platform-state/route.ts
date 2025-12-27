@@ -8,80 +8,40 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { getSupabaseServerClient } from '@/lib/supabase-server'
-import { validateUserId } from '@/lib/user-id-validation'
 import { logger } from '@/lib/logger'
+import {
+  extractAndValidateUserIdFromQuery,
+  validateUserIdFromBody,
+  supabaseErrorResponse,
+  handleApiError,
+  checkSupabaseConfigured
+} from '@/lib/api/api-utils'
 
 // Mark as dynamic for Next.js static export compatibility
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
 
+const OPERATION_GET = 'platform-state.get'
+const OPERATION_POST = 'platform-state.post'
+
 /**
  * POST /api/user/platform-state
- * Upsert platform state record (update if exists, insert if new)
- *
- * Body: {
- *   user_id: string,
- *   current_scene?: string,
- *   global_flags?: string[],
- *   patterns?: {
- *     analytical: number,
- *     helping: number,
- *     building: number,
- *     patience: number,
- *     exploring: number
- *   },
- *   updated_at?: string (ISO date)
- * }
+ * Upsert platform state record
  */
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
+    const { user_id, current_scene, global_flags, patterns, updated_at } = body
 
-    const {
-      user_id,
-      current_scene,
-      global_flags,
-      patterns,
-      updated_at
-    } = body
+    logger.debug('Platform state POST request', { operation: OPERATION_POST, userId: user_id })
 
-    logger.debug('Platform state POST request', {
-      operation: 'platform-state.post',
-      userId: user_id
-    })
-
-    if (!user_id) {
-      logger.warn('Missing user_id', { operation: 'platform-state.post' })
-      return NextResponse.json(
-        { error: 'Missing required field: user_id' },
-        { status: 400 }
-      )
-    }
-
-    const validation = validateUserId(user_id)
+    const validation = validateUserIdFromBody(user_id, OPERATION_POST)
     if (!validation.valid) {
-      return NextResponse.json(
-        { error: validation.error },
-        { status: 400 }
-      )
+      return validation.response
     }
 
-    // Check if Supabase is configured before processing
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL
-    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
-    
-    if (!supabaseUrl || !serviceRoleKey || supabaseUrl.includes('placeholder')) {
-      logger.warn('Supabase not configured - skipping platform state sync', {
-        operation: 'platform-state.post',
-        hasUrl: !!supabaseUrl,
-        hasServiceKey: !!serviceRoleKey
-      })
-      // Return success to prevent retry loops - data will be queued for later
-      return NextResponse.json({
-        success: true,
-        message: 'Supabase not configured - sync skipped'
-      })
-    }
+    const skipResponse = checkSupabaseConfigured(OPERATION_POST)
+    if (skipResponse) return skipResponse
 
     const supabase = getSupabaseServerClient()
 
@@ -90,62 +50,26 @@ export async function POST(request: NextRequest) {
       user_id,
       updated_at: updated_at || new Date().toISOString()
     }
+    if (current_scene !== undefined) updateData.current_scene = current_scene
+    if (global_flags !== undefined) updateData.global_flags = global_flags
+    if (patterns !== undefined) updateData.patterns = patterns
 
-    if (current_scene !== undefined) {
-      updateData.current_scene = current_scene
-    }
-
-    if (global_flags !== undefined) {
-      updateData.global_flags = global_flags
-    }
-
-    if (patterns !== undefined) {
-      // Store patterns as JSONB
-      updateData.patterns = patterns
-    }
-
-    // Upsert: update if user_id exists, otherwise insert
     const { data, error } = await supabase
       .from('platform_states')
-      .upsert(updateData, {
-        onConflict: 'user_id'
-      })
+      .upsert(updateData, { onConflict: 'user_id' })
       .select()
       .single()
 
-    // PGRST204 means "no content" - upsert succeeded but RLS prevents select
-    // This is normal when service role upserts but user RLS prevents reading back
+    // PGRST204 = upsert succeeded but RLS prevents select
     if (error && error.code !== 'PGRST204') {
-      logger.error('Supabase error', {
-        operation: 'platform-state.post',
-        errorCode: error.code,
-        userId: user_id
-      }, error instanceof Error ? error : undefined)
-      return NextResponse.json(
-        { error: 'Failed to upsert platform state' },
-        { status: 500 }
-      )
+      return supabaseErrorResponse(OPERATION_POST, error.code, 'Failed to upsert platform state', user_id)
     }
 
-    logger.debug('Platform state upserted', {
-      operation: 'platform-state.post',
-      userId: user_id
-    })
+    logger.debug('Platform state upserted', { operation: OPERATION_POST, userId: user_id })
 
-    return NextResponse.json({
-      success: true,
-      state: data
-    })
+    return NextResponse.json({ success: true, state: data })
   } catch (error) {
-    logger.error('Unexpected error in platform state POST', {
-      operation: 'platform-state.post'
-    }, error instanceof Error ? error : undefined)
-    const errorMessage = error instanceof Error ? error.message : "Internal server error"
-
-    return NextResponse.json(
-      { error: errorMessage },
-      { status: 500 }
-    )
+    return handleApiError(error, OPERATION_POST, 'POST')
   }
 }
 
@@ -155,24 +79,11 @@ export async function POST(request: NextRequest) {
  */
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url)
-    const userId = searchParams.get('userId')
-
-    if (!userId) {
-      logger.warn('Missing userId parameter', { operation: 'platform-state.get' })
-      return NextResponse.json(
-        { error: 'Missing userId parameter' },
-        { status: 400 }
-      )
-    }
-
-    const validation = validateUserId(userId)
+    const validation = extractAndValidateUserIdFromQuery(request, OPERATION_GET)
     if (!validation.valid) {
-      return NextResponse.json(
-        { error: validation.error },
-        { status: 400 }
-      )
+      return validation.response
     }
+    const { userId } = validation
 
     const supabase = getSupabaseServerClient()
 
@@ -182,29 +93,13 @@ export async function GET(request: NextRequest) {
       .eq('user_id', userId)
       .single()
 
-    if (error && error.code !== 'PGRST116') { // PGRST116 = no rows returned
-      logger.error('Supabase error', {
-        operation: 'platform-state.get',
-        errorCode: error.code,
-        userId
-      }, error instanceof Error ? error : undefined)
-      return NextResponse.json(
-        { error: 'Failed to fetch platform state' },
-        { status: 500 }
-      )
+    // PGRST116 = no rows returned (not an error)
+    if (error && error.code !== 'PGRST116') {
+      return supabaseErrorResponse(OPERATION_GET, error.code, 'Failed to fetch platform state', userId)
     }
 
-    return NextResponse.json({
-      success: true,
-      state: data || null
-    })
+    return NextResponse.json({ success: true, state: data || null })
   } catch (error) {
-    logger.error('Unexpected error in platform state GET', {
-      operation: 'platform-state.get'
-    }, error instanceof Error ? error : undefined)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return handleApiError(error, OPERATION_GET, 'GET')
   }
 }
