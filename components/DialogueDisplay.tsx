@@ -33,6 +33,7 @@ interface DialogueDisplayProps {
   richEffects?: RichTextEffect // Optional rich text effects (terminal-style animations)
   interaction?: InteractionType // Visual interaction animation ('big', 'small', 'shake', 'nod', 'ripple', 'bloom', 'jitter')
   emotion?: string // Emotion tag for the dialogue (e.g., 'anxious', 'excited', 'vulnerable')
+  patternSensation?: string | null // Atmospheric feedback after pattern choices (30% probability)
   playerPatterns?: {
     analytical?: number
     helping?: number
@@ -64,6 +65,7 @@ export function DialogueDisplay({
   richEffects,
   interaction,
   emotion,
+  patternSensation,
   playerPatterns: _playerPatterns
 }: DialogueDisplayProps) {
   // Get unlock-based content enhancements
@@ -123,6 +125,19 @@ export function DialogueDisplay({
         <div className="mt-3">
           <Subtext text={enhancements.subtextHint} />
         </div>
+      )}
+
+      {/* Pattern sensation - atmospheric feedback after pattern choices */}
+      {patternSensation && (
+        <motion.p
+          initial={{ opacity: 0, y: 5 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
+          className="mt-4 text-sm italic text-amber-200/60"
+        >
+          {patternSensation}
+        </motion.p>
       )}
     </div>
   )

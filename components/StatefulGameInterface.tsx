@@ -129,6 +129,7 @@ interface GameInterfaceState {
   showIdentityCeremony: boolean  // Identity internalization ceremony
   ceremonyPattern: PatternType | null  // Pattern being internalized
   hasNewTrust: boolean  // Track trust changes for Constellation attention indicator
+  hasNewMeeting: boolean  // Track first meeting with non-Samuel character
   isMuted: boolean
   isProcessing: boolean
 }
@@ -184,6 +185,7 @@ export default function StatefulGameInterface() {
     showIdentityCeremony: false,
     ceremonyPattern: null,
     hasNewTrust: false,
+    hasNewMeeting: false,
     isMuted: false,
     isProcessing: false
   })
@@ -481,6 +483,7 @@ export default function StatefulGameInterface() {
         showIdentityCeremony: false,
         ceremonyPattern: null,
         hasNewTrust: false,
+        hasNewMeeting: false,
         isMuted: false,
         showReport: false
       })
@@ -799,6 +802,8 @@ export default function StatefulGameInterface() {
       }
 
       const targetCharacter = newGameState.characters.get(targetCharacterId)!
+      // Track first meeting with non-Samuel character for Constellation nudge
+      const isFirstMeeting = targetCharacter.conversationHistory.length === 0 && targetCharacterId !== 'samuel'
       targetCharacter.conversationHistory.push(nextNode.nodeId)
       newGameState.currentNodeId = nextNode.nodeId
       newGameState.currentCharacterId = targetCharacterId
@@ -957,6 +962,7 @@ export default function StatefulGameInterface() {
         showIdentityCeremony: identityCeremonyPattern !== null,  // Identity ceremony if triggered
         ceremonyPattern: identityCeremonyPattern,  // Pattern being internalized
         hasNewTrust: trustDelta !== 0 ? true : state.hasNewTrust,  // Track trust changes for Constellation attention
+        hasNewMeeting: isFirstMeeting ? true : state.hasNewMeeting,  // Track first meeting for Constellation nudge
         isMuted: state.isMuted,
         showReport: state.showReport,
         isProcessing: false // ISP FIX: Unlock UI
@@ -1327,8 +1333,8 @@ export default function StatefulGameInterface() {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => setState(prev => ({ ...prev, showConstellation: true, hasNewTrust: false }))}
-                className={`relative h-9 w-9 p-0 text-slate-300 hover:text-white hover:bg-white/10 transition-all duration-300 rounded-md ${state.hasNewTrust
+                onClick={() => setState(prev => ({ ...prev, showConstellation: true, hasNewTrust: false, hasNewMeeting: false }))}
+                className={`relative h-9 w-9 p-0 text-slate-300 hover:text-white hover:bg-white/10 transition-all duration-300 rounded-md ${(state.hasNewTrust || state.hasNewMeeting)
                   ? 'text-purple-400 nav-attention-marquee nav-attention-border-purple nav-attention-halo nav-attention-halo-purple'
                   : ''
                   }`}
@@ -1445,6 +1451,7 @@ export default function StatefulGameInterface() {
                     richEffects={getRichEffectContext(state.currentDialogueContent, state.isLoading, state.recentSkills, state.useChatPacing)}
                     interaction={state.currentDialogueContent?.interaction}
                     emotion={state.currentDialogueContent?.emotion}
+                    patternSensation={state.patternSensation}
                   />
                 </CardContent>
               </Card>

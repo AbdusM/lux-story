@@ -267,7 +267,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Hey there. Welcome to Grand Central.\n\nI'm Samuel. Been helpin' folks find their way around here for... well, longer than I expected, honestly. You look like you got questions. Most people do when they first show up.",
+        text: "Hey there. Welcome to Grand Central.\n\nI'm Samuel. Been helpin' folks find their way around here for... well, longer than I expected, honestly. You look like you got questions. Most people do when they first show up.\n\nEvery choice you make here... the station pays attention. But we can get to that.",
         emotion: 'warm',
         variation_id: 'intro_v1_part1',
         patternReflection: [

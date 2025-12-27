@@ -142,13 +142,30 @@ function HarmonicOrb({ orb, index }: { orb: OrbState; index: number }) {
             <PatternIcon pattern={orb.pattern} className="w-6 h-6" style={{ color: orb.color }} />
 
             {/* Label (Always visible below orb) */}
-            <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-center pointer-events-none whitespace-nowrap">
+            <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 text-center pointer-events-none whitespace-nowrap w-24">
                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
                     {orb.label}
                 </p>
                 <p className="text-[9px] text-slate-500 font-mono">
                     {orb.fillPercent}%
                 </p>
+                {/* Progress to next unlock */}
+                {orb.nextUnlock && (
+                    <div className="mt-1">
+                        <div className="h-1 bg-slate-700/50 rounded-full overflow-hidden">
+                            <motion.div
+                                className="h-full rounded-full"
+                                style={{ backgroundColor: orb.color }}
+                                initial={{ width: 0 }}
+                                animate={{ width: `${orb.progressToNext}%` }}
+                                transition={{ duration: 0.5 }}
+                            />
+                        </div>
+                        <p className="text-[8px] text-slate-500 mt-0.5">
+                            {orb.pointsToNext}% to unlock
+                        </p>
+                    </div>
+                )}
             </div>
 
         </motion.button>
