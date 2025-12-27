@@ -409,7 +409,7 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
           key={index}
           onClick={() => onChoice(choice)}
           disabled={isProcessing}
-          variant="ghost"
+          variant={null}
           data-testid="choice-button"
           data-choice-text={choice.text}
           data-pattern={choice.pattern || ''}
@@ -419,7 +419,7 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
             w-full min-h-[60px] sm:min-h-[56px] h-auto px-5 py-4
             text-base sm:text-[15px] font-medium text-left justify-start break-words whitespace-normal leading-relaxed
             ${glass
-              ? 'text-slate-100 border border-white/[0.08] bg-[rgba(30,30,35,0.8)] shadow-[0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.05)]'
+              ? 'text-slate-100 border border-white/[0.08] bg-[rgba(30,30,35,0.85)] shadow-[0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.05)]'
               : 'text-stone-600 border border-transparent bg-white/80 backdrop-blur-sm shadow-sm'
             }
             ${(() => {
