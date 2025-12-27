@@ -1,34 +1,33 @@
+/**
+ * Action Plan API Endpoint
+ * Grand Central Terminus - Birmingham Career Exploration
+ *
+ * Handles saving user action plans
+ */
+
 import { NextRequest, NextResponse } from 'next/server'
 import { getSupabaseServerClient } from '@/lib/supabase-server'
 import { logger } from '@/lib/logger'
-import { validateUserId } from '@/lib/user-id-validation'
+import { validateUserIdFromBody, handleApiError } from '@/lib/api/api-utils'
+
+// Mark as dynamic for Next.js static export compatibility
+export const dynamic = 'force-dynamic'
+export const runtime = 'nodejs'
+
+const OPERATION_POST = 'action-plan.save'
 
 export async function POST(request: NextRequest) {
   try {
     const { userId, plan } = await request.json()
 
-    if (!userId || !plan) {
-      return NextResponse.json(
-        { success: false, error: 'Missing userId or plan data' },
-        { status: 400 }
-      )
+    if (!plan) {
+      return NextResponse.json({ success: false, error: 'Missing plan data' }, { status: 400 })
     }
 
-    const validation = validateUserId(userId)
+    const validation = validateUserIdFromBody(userId, OPERATION_POST)
     if (!validation.valid) {
-      return NextResponse.json(
-        { success: false, error: validation.error },
-        { status: 400 }
-      )
+      return NextResponse.json({ success: false, error: 'Missing userId' }, { status: 400 })
     }
-
-    // Upsert action plan
-    // Assuming a table 'action_plans' exists with columns: user_id (PK), plan_data (JSONB), updated_at
-    // If not, we can store it in a metadata column of player_profiles or create the table.
-    // For robustness, let's store it in a dedicated 'user_action_plans' table if possible, 
-    // or fall back to 'player_profiles' metadata if we want to avoid schema changes.
-    // Given "Schema First" isn't strictly enforced here, let's try to use a dedicated table 'user_action_plans'
-    // which is a standard pattern.
 
     const supabase = getSupabaseServerClient()
 
@@ -41,21 +40,14 @@ export async function POST(request: NextRequest) {
       }, { onConflict: 'user_id' })
 
     if (error) {
-      logger.error('Supabase error saving action plan', {
-        operation: 'action-plan.save',
-        userId,
-        error: error instanceof Error ? error.message : String(error)
-      }, error instanceof Error ? error : undefined)
-      // Fallback: Try to save to player_profiles metadata if table doesn't exist
-      if (error.code === '42P01') { // undefined_table
-         const { error: profileError } = await supabase
+      logger.error('Supabase error saving action plan', { operation: OPERATION_POST, userId }, error instanceof Error ? error : undefined)
+
+      // Fallback: Try player_profiles if table doesn't exist
+      if (error.code === '42P01') {
+        const { error: profileError } = await supabase
           .from('player_profiles')
-          .update({
-            last_action_plan: plan,
-            last_activity: new Date().toISOString()
-          })
+          .update({ last_action_plan: plan, last_activity: new Date().toISOString() })
           .eq('user_id', userId)
-        
         if (profileError) throw profileError
       } else {
         throw error
@@ -64,13 +56,6 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    logger.error('Error saving action plan', {
-      operation: 'action-plan.save',
-      error: error instanceof Error ? error.message : String(error)
-    }, error instanceof Error ? error : undefined)
-    return NextResponse.json(
-      { success: false, error: 'Internal server error' },
-      { status: 500 }
-    )
+    return handleApiError(error, OPERATION_POST, 'POST')
   }
 }
