@@ -1219,7 +1219,8 @@ David gave me that feeling. I want to pass it on.`,
       {
         characterId: 'rohan',
         addKnowledgeFlags: ['rohan_chose_foundation'],
-        addGlobalFlags: ['rohan_arc_complete']
+        addGlobalFlags: ['rohan_arc_complete'],
+        thoughtId: 'question-everything'
       }
     ],
     tags: ['ending', 'rohan_arc']

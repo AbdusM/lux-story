@@ -7,6 +7,7 @@ import { useMemo } from 'react'
 import { useGameStore } from '@/lib/game-store'
 import { CHARACTER_NODES, type CharacterId, type CharacterNodeData } from '@/lib/constellation/character-positions'
 import { SKILL_NODES, getSkillState, type SkillState, type SkillNodeData } from '@/lib/constellation/skill-positions'
+import { CHARACTER_RELATIONSHIP_WEB } from '@/lib/character-relationships'
 
 export interface CharacterWithState extends CharacterNodeData {
   trust: number
@@ -19,11 +20,18 @@ export interface SkillWithState extends SkillNodeData {
   state: SkillState
 }
 
+export interface RelationshipStats {
+  relationshipsRevealed: number
+  totalRelationships: number
+  percentRevealed: number
+}
+
 export interface ConstellationData {
   characters: CharacterWithState[]
   skills: SkillWithState[]
   metCharacterIds: CharacterId[]
   demonstratedSkillIds: string[]
+  relationshipStats: RelationshipStats
 }
 
 // Get trust state based on trust value
@@ -96,11 +104,38 @@ export function useConstellationData(): ConstellationData {
     return skillsWithState.filter(s => s.state !== 'dormant').map(s => s.id)
   }, [skillsWithState])
 
+  // Calculate relationship stats
+  const relationshipStats = useMemo<RelationshipStats>(() => {
+    // Total relationships (excluding self-referential Samuel hub spokes for counting)
+    // We count inter-character relationships where neither is Samuel
+    const nonSamuelEdges = CHARACTER_RELATIONSHIP_WEB.filter(
+      edge => edge.fromCharacterId !== 'samuel' && edge.toCharacterId !== 'samuel'
+    )
+    const totalRelationships = nonSamuelEdges.length
+
+    // Revealed = both characters have been met by player
+    const metSet = new Set(metCharacterIds)
+    const relationshipsRevealed = nonSamuelEdges.filter(
+      edge => metSet.has(edge.fromCharacterId as CharacterId) && metSet.has(edge.toCharacterId as CharacterId)
+    ).length
+
+    const percentRevealed = totalRelationships > 0
+      ? Math.round((relationshipsRevealed / totalRelationships) * 100)
+      : 0
+
+    return {
+      relationshipsRevealed,
+      totalRelationships,
+      percentRevealed
+    }
+  }, [metCharacterIds])
+
   return {
     characters,
     skills: skillsWithState,
     metCharacterIds,
-    demonstratedSkillIds
+    demonstratedSkillIds,
+    relationshipStats
   }
 }
 

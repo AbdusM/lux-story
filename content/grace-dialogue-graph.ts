@@ -120,6 +120,11 @@ You know how to just... be with someone. That's rare.`,
         }
       }
     ],
+    onEnter: [
+      {
+        thoughtId: 'steady-hand'
+      }
+    ],
     tags: ['grace_arc', 'connection']
   },
 
@@ -1124,7 +1129,8 @@ Go change the world, kid. Or at least... be present in it. That's enough.`,
     ],
     onEnter: [
       {
-        addGlobalFlags: ['grace_arc_complete']
+        addGlobalFlags: ['grace_arc_complete'],
+        thoughtId: 'long-game'
       }
     ],
     tags: ['ending', 'grace_arc', 'interrupt_response']
@@ -1176,7 +1182,8 @@ Take care of yourself. And if you ever need someone to just... sit with you? You
     ],
     onEnter: [
       {
-        addGlobalFlags: ['grace_arc_complete']
+        addGlobalFlags: ['grace_arc_complete'],
+        thoughtId: 'long-game'
       }
     ],
     tags: ['ending', 'grace_arc']

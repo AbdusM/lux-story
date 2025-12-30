@@ -124,6 +124,11 @@ export const devonDialogueNodes: DialogueNode[] = [
         }
       }
     ],
+    onEnter: [
+      {
+        thoughtId: 'pattern-seeker'
+      }
+    ],
     tags: ['simulation', 'devon_arc', 'immersive_scenario']
   },
 
@@ -601,7 +606,8 @@ export const devonDialogueNodes: DialogueNode[] = [
     tags: ['scene_break', 'pacing', 'devon_arc'],
     metadata: {
       sessionBoundary: true  // Session 1: Introduction complete
-    }  },
+    }
+  },
 
   {
     nodeId: 'devon_accepts_sympathy',
@@ -964,7 +970,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "Exactly. Your framework needed updating, not replacing.",
         nextNodeId: 'devon_pause_before_crossroads',
         pattern: 'helping',
-        skills: ["emotionalIntelligence","communication"],
+        skills: ["emotionalIntelligence", "communication"],
         consequence: {
           characterId: 'devon',
           trustChange: 1
@@ -980,7 +986,8 @@ export const devonDialogueNodes: DialogueNode[] = [
     tags: ['simulation', 'devon_arc'],
     metadata: {
       sessionBoundary: true  // Session 2: Crossroads complete
-    }  },
+    }
+  },
 
   {
     nodeId: 'devon_realizes_connection',
@@ -1155,14 +1162,15 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "Good luck with the call.",
         nextNodeId: 'devon_farewell_integration',
         pattern: 'analytical',
-        skills: ["criticalThinking","communication"]
+        skills: ["criticalThinking", "communication"]
       }
     ],
     onEnter: [
       {
         characterId: 'devon',
         addKnowledgeFlags: ['chose_integration', 'completed_arc'],
-        addGlobalFlags: ['devon_arc_complete']
+        addGlobalFlags: ['devon_arc_complete'],
+        thoughtId: 'pattern-seeker'
       }
     ],
     tags: ['ending', 'devon_arc']
@@ -1184,14 +1192,15 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "He'll hear you.",
         nextNodeId: 'devon_farewell_heart',
         pattern: 'helping',
-        skills: ["emotionalIntelligence","communication"]
+        skills: ["emotionalIntelligence", "communication"]
       }
     ],
     onEnter: [
       {
         characterId: 'devon',
         addKnowledgeFlags: ['chose_heart', 'completed_arc'],
-        addGlobalFlags: ['devon_arc_complete']
+        addGlobalFlags: ['devon_arc_complete'],
+        thoughtId: 'pattern-seeker'
       }
     ],
     tags: ['ending', 'devon_arc']
@@ -1213,14 +1222,15 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "Your mom would be proud.",
         nextNodeId: 'devon_farewell_presence',
         pattern: 'patience',
-        skills: ["emotionalIntelligence","communication"]
+        skills: ["emotionalIntelligence", "communication"]
       }
     ],
     onEnter: [
       {
         characterId: 'devon',
         addKnowledgeFlags: ['chose_presence', 'completed_arc'],
-        addGlobalFlags: ['devon_arc_complete']
+        addGlobalFlags: ['devon_arc_complete'],
+        thoughtId: 'pattern-seeker'
       }
     ],
     tags: ['ending', 'devon_arc']
@@ -1247,7 +1257,8 @@ export const devonDialogueNodes: DialogueNode[] = [
     ],
     onEnter: [
       {
-        addGlobalFlags: ['devon_chose_logic', 'devon_arc_complete']
+        addGlobalFlags: ['devon_chose_logic', 'devon_arc_complete'],
+        thoughtId: 'analytical-eye'
       }
     ],
     tags: ['ending', 'bad_ending', 'devon_arc']
@@ -1311,7 +1322,8 @@ export const devonDialogueNodes: DialogueNode[] = [
     tags: ['transition', 'devon_arc', 'bittersweet'],
     metadata: {
       sessionBoundary: true  // Session 3: Resolution reached
-    }  },
+    }
+  },
 
   {
     nodeId: 'devon_farewell_presence',
@@ -1333,45 +1345,45 @@ export const devonDialogueNodes: DialogueNode[] = [
     ],
     tags: ['transition', 'devon_arc', 'bittersweet']
   },
-  
+
   // [PLACEHOLDER FOR BONUS NODES - PRESERVED STRUCTURE]
   {
     nodeId: 'devon_realizes_bridge',
     speaker: 'Devon Kumar',
     content: [
-       {
-         text: "What if... what if I stopped trying to optimize the conversation and just... asked him about the systems he's debugging at Marshall?",
-         emotion: 'hopeful',
-         variation_id: 'realizes_bridge_v1'
-       }
+      {
+        text: "What if... what if I stopped trying to optimize the conversation and just... asked him about the systems he's debugging at Marshall?",
+        emotion: 'hopeful',
+        variation_id: 'realizes_bridge_v1'
+      }
     ],
     choices: [
-       {
-         choiceId: 'support_approach',
-         text: "That sounds like a real conversation, not a scripted one.",
-         nextNodeId: 'devon_grateful_insight',
-         pattern: 'helping',
-         skills: ['emotionalIntelligence', 'communication']
-       }
+      {
+        choiceId: 'support_approach',
+        text: "That sounds like a real conversation, not a scripted one.",
+        nextNodeId: 'devon_grateful_insight',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication']
+      }
     ]
   },
   {
     nodeId: 'devon_grateful_insight',
     speaker: 'Devon Kumar',
     content: [
-       {
-         text: "I've been so focused on fixing the conversation. I forgot we could have one.",
-         emotion: 'grateful',
-         variation_id: 'grateful_insight_v1'
-       }
+      {
+        text: "I've been so focused on fixing the conversation. I forgot we could have one.",
+        emotion: 'grateful',
+        variation_id: 'grateful_insight_v1'
+      }
     ],
     choices: [
-       {
-         choiceId: 'devon_continue_to_reciprocity',
-         text: "(Continue)",
-         nextNodeId: 'devon_asks_player',
-         pattern: 'patience'
-       }
+      {
+        choiceId: 'devon_continue_to_reciprocity',
+        text: "(Continue)",
+        nextNodeId: 'devon_asks_player',
+        pattern: 'patience'
+      }
     ]
   },
   // ============= RECIPROCITY: DEVON ASKS PLAYER =============

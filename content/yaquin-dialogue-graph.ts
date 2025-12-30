@@ -598,7 +598,8 @@ All day. Don't fix teeth. fix fear. That's what I'm selling.`,
     ],
     onEnter: [
       {
-        addGlobalFlags: ['yaquin_arc_complete', 'yaquin_launched']
+        addGlobalFlags: ['yaquin_arc_complete', 'yaquin_launched'],
+        thoughtId: 'community-heart'
       }
     ],
     tags: ['ending', 'yaquin_arc'],
@@ -628,7 +629,8 @@ All day. Don't fix teeth. fix fear. That's what I'm selling.`,
     ],
     onEnter: [
       {
-        addGlobalFlags: ['yaquin_arc_complete', 'yaquin_building_audience']
+        addGlobalFlags: ['yaquin_arc_complete', 'yaquin_building_audience'],
+        thoughtId: 'empathy-bridge'
       }
     ],
     tags: ['ending', 'yaquin_arc']
@@ -711,7 +713,8 @@ All day. Don't fix teeth. fix fear. That's what I'm selling.`,
       {
         characterId: 'yaquin',
         addKnowledgeFlags: ['completed_arc'],
-        addGlobalFlags: ['yaquin_arc_complete']
+        addGlobalFlags: ['yaquin_arc_complete'],
+        thoughtId: 'community-heart'
       }
     ],
     tags: ['transition', 'yaquin_arc']

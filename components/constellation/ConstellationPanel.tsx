@@ -215,6 +215,7 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
               item={detailItem?.item || null}
               type={detailItem?.type || 'character'}
               onClose={handleCloseDetail}
+              allCharacters={data.characters}
             />
           </>
         )}

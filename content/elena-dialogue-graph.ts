@@ -777,7 +777,8 @@ Now I've got work to do. But if you ever want to learn how to wire a three-way s
     ],
     onEnter: [
       {
-        addGlobalFlags: ['elena_arc_complete']
+        addGlobalFlags: ['elena_arc_complete'],
+        thoughtId: 'hands-on-truth'
       }
     ],
     tags: ['ending', 'elena_arc']

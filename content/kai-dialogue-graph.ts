@@ -1637,7 +1637,8 @@ But I'll never have to click 'Next' again.`,
       {
         characterId: 'kai',
         addKnowledgeFlags: ['kai_chose_studio'],
-        addGlobalFlags: ['kai_arc_complete']
+        addGlobalFlags: ['kai_arc_complete'],
+        thoughtId: 'steady-hand'
       }
     ],
     tags: ['ending', 'kai_arc']
