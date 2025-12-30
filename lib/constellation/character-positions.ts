@@ -3,7 +3,7 @@
  * Positions are normalized 0-100 coordinates, scaled at render time
  */
 
-export type CharacterId = 'samuel' | 'maya' | 'jordan' | 'devon' | 'kai' | 'tess' | 'rohan' | 'silas' | 'marcus' | 'kael' | 'omari' | 'yaquin'
+export type CharacterId = 'samuel' | 'maya' | 'jordan' | 'devon' | 'kai' | 'tess' | 'rohan' | 'silas' | 'marcus' | 'kael' | 'omari' | 'yaquin' | 'elena' | 'grace'
 
 export interface CharacterNodeData {
   id: CharacterId
@@ -132,6 +132,25 @@ export const CHARACTER_NODES: CharacterNodeData[] = [
     isMajor: false,
     color: 'sky',
     role: 'Cultural Architect'
+  },
+  // NEW: AI Displacement Theme Characters
+  {
+    id: 'elena',
+    name: 'Elena',
+    fullName: 'Elena Vasquez',
+    position: { x: 60, y: 65 }, // Inner Orbit Bottom-Right
+    isMajor: false,
+    color: 'amber',
+    role: 'Master Electrician'
+  },
+  {
+    id: 'grace',
+    name: 'Grace',
+    fullName: 'Grace Thompson',
+    position: { x: 40, y: 70 }, // Inner Orbit Bottom-Center
+    isMajor: false,
+    color: 'rose',
+    role: 'Home Health Aide'
   }
 ]
 
@@ -147,7 +166,9 @@ export const CHARACTER_CONNECTIONS: [CharacterId, CharacterId][] = [
   ['samuel', 'marcus'],
   ['samuel', 'kael'],
   ['samuel', 'omari'],
-  ['samuel', 'yaquin']
+  ['samuel', 'yaquin'],
+  ['samuel', 'elena'],
+  ['samuel', 'grace']
 ]
 
 // Helper to get character by ID

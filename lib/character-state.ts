@@ -84,7 +84,7 @@ export interface GameState {
   patterns: PlayerPatterns // Pattern tracking for final revelation
   lastSaved: number
   currentNodeId: string // Current position in dialogue graph
-  currentCharacterId: 'samuel' | 'maya' | 'devon' | 'jordan' | 'marcus' | 'tess' | 'yaquin' | 'kai' | 'alex' | 'rohan' | 'silas' // Current character being talked to
+  currentCharacterId: 'samuel' | 'maya' | 'devon' | 'jordan' | 'marcus' | 'tess' | 'yaquin' | 'kai' | 'alex' | 'rohan' | 'silas' | 'elena' | 'grace' | 'elena' | 'grace' // Current character being talked to
   thoughts: ActiveThought[]
   episodeNumber: number  // Track which episode the player is on
   sessionStartTime: number  // When current session started (for episode timer)
@@ -190,7 +190,7 @@ export interface SerializableGameState {
   patterns: PlayerPatterns
   lastSaved: number
   currentNodeId: string
-  currentCharacterId: 'samuel' | 'maya' | 'devon' | 'jordan' | 'marcus' | 'tess' | 'yaquin' | 'kai' | 'alex' | 'rohan' | 'silas'
+  currentCharacterId: 'samuel' | 'maya' | 'devon' | 'jordan' | 'marcus' | 'tess' | 'yaquin' | 'kai' | 'alex' | 'rohan' | 'silas' | 'elena' | 'grace'
   thoughts: ActiveThought[]
   episodeNumber: number
   sessionStartTime: number

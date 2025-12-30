@@ -2807,6 +2807,110 @@ export const samuelDialogueNodes: DialogueNode[] = [
     ]
   },
 
+  // ============= ELENA REFLECTION GATEWAY =============
+  {
+    nodeId: 'samuel_elena_reflection_gateway',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Elena just finished her shift. Third one this week she's trained someone new.\n\nYou know what she said? 'This one asks questions before touching anything.' High praise from her.\n\nYou helped her see that teaching isn't separate from the work. It IS the work.",
+        emotion: 'knowing',
+        variation_id: 'elena_gateway_v1'
+      }
+    ],
+    requiredState: {
+      hasGlobalFlags: ['elena_arc_complete'],
+      lacksKnowledgeFlags: ['reflected_on_elena']
+    },
+    choices: [
+      {
+        choiceId: 'elena_dignity',
+        text: "She takes pride in what she builds.",
+        nextNodeId: 'samuel_reflects_elena_building',
+        pattern: 'building',
+        skills: ['observation', 'communication']
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'samuel',
+        addKnowledgeFlags: ['reflected_on_elena']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_reflects_elena_building',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Pride in the work. That's what the trades have that people forget.\n\nElena can look at a building and say 'I made that safe.' Not 'my company' or 'my software.' Her hands. Her knowledge.\n\nYou reminded her that matters. That it's not just a job—it's a craft.",
+        emotion: 'warm',
+        variation_id: 'elena_building_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'elena_return_hub',
+        text: "The lights stay on because of her.",
+        nextNodeId: 'samuel_comprehensive_hub',
+        pattern: 'building'
+      }
+    ]
+  },
+
+  // ============= GRACE REFLECTION GATEWAY =============
+  {
+    nodeId: 'samuel_grace_reflection_gateway',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Grace just left for her next client. She looked... lighter.\n\nShe told me about your conversation. Said you didn't try to fix anything. You just stayed.\n\nIn a world that moves too fast, you reminded her that presence is the rarest gift.",
+        emotion: 'gentle',
+        variation_id: 'grace_gateway_v1'
+      }
+    ],
+    requiredState: {
+      hasGlobalFlags: ['grace_arc_complete'],
+      lacksKnowledgeFlags: ['reflected_on_grace']
+    },
+    choices: [
+      {
+        choiceId: 'grace_presence',
+        text: "She does impossible work.",
+        nextNodeId: 'samuel_reflects_grace_care',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'patience']
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'samuel',
+        addKnowledgeFlags: ['reflected_on_grace']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_reflects_grace_care',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Impossible and invisible. That's the heart of care work.\n\nGrace holds space for people at their most vulnerable. She's present when no one else can be. And the world barely notices.\n\nYou noticed. That's what she needed—to be seen seeing.",
+        emotion: 'warm',
+        variation_id: 'grace_care_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'grace_return_hub',
+        text: "Mrs. Patterson is lucky to have her.",
+        nextNodeId: 'samuel_comprehensive_hub',
+        pattern: 'helping'
+      }
+    ]
+  },
+
   {
     nodeId: 'samuel_maya_revisit_guidance',
     speaker: 'Samuel Washington',
@@ -5691,6 +5795,12 @@ export const samuelEntryPoints = {
 
   /** Reflection gateway - return from Alex (validates learning to learn) */
   ALEX_REFLECTION_GATEWAY: 'samuel_alex_reflection_gateway',
+
+  /** Reflection gateway - return from Elena (validates trades dignity) */
+  ELENA_REFLECTION_GATEWAY: 'samuel_elena_reflection_gateway',
+
+  /** Reflection gateway - return from Grace (validates presence-based care) */
+  GRACE_REFLECTION_GATEWAY: 'samuel_grace_reflection_gateway',
 
   /** Samuel's backstory reveal (trust-gated) */
   BACKSTORY: 'samuel_backstory_intro',

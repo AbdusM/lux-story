@@ -1,0 +1,1202 @@
+/**
+ * Grace's Dialogue Graph
+ * The Companion - Platform 5 (Elder Care / Home Health)
+ *
+ * CHARACTER: The Presence
+ * Core Conflict: Invisible labor vs. Essential humanity - proving care work has dignity
+ * Arc: From "just a caregiver" to recognizing the profound skill of presence
+ * Mechanic: "The Moment" - A quiet scene where small choices reveal big truths
+ */
+
+import { DialogueNode, DialogueGraph } from '../lib/dialogue-graph'
+import { samuelEntryPoints } from './samuel-dialogue-graph'
+
+export const graceDialogueNodes: DialogueNode[] = [
+  // ============= INTRODUCTION =============
+  {
+    nodeId: 'grace_introduction',
+    speaker: 'Grace',
+    content: [
+      {
+        text: `*A woman sits on a bench, a worn tote bag beside her. She's looking at her phone, but not really seeing it.*
+
+*She notices you and puts the phone away.*
+
+Sorry. Just got off shift. Twelve hours. My feet are having opinions.
+
+*Small tired smile.*
+
+You look a little lost yourself.`,
+        emotion: 'tired_warm',
+        variation_id: 'grace_intro_v1',
+        patternReflection: [
+          { pattern: 'helping', minLevel: 4, altText: "*A woman sits on a bench, looking tired but alert.*\n\n*She notices you and something shifts in her face—recognition.*\n\nYou have that look. The one that says you actually see people.\n\nCome sit. My feet need the break anyway.", altEmotion: 'knowing' },
+          { pattern: 'patience', minLevel: 4, altText: "*A woman sits on a bench, still and quiet.*\n\n*She notices you and doesn't rush to fill the silence.*\n\nYou're not in a hurry. Good. Neither am I.\n\n*Pats the bench.*\n\nSit if you want.", altEmotion: 'calm' }
+        ]
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'grace_intro_concern',
+        text: "Twelve hours? What kind of work?",
+        nextNodeId: 'grace_the_work',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'grace_intro_honest',
+        text: "I am a little lost. That's why I'm here.",
+        nextNodeId: 'grace_understands_lost',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'grace_intro_sit',
+        text: "[Sit down beside her quietly.]",
+        nextNodeId: 'grace_quiet_sit',
+        pattern: 'patience',
+        skills: ['adaptability'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 2
+        }
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'grace',
+        setRelationshipStatus: 'stranger'
+      }
+    ],
+    tags: ['introduction', 'grace_arc']
+  },
+
+  {
+    nodeId: 'grace_quiet_sit',
+    speaker: 'Grace',
+    content: [
+      {
+        text: `*You sit. She doesn't say anything for a moment.*
+
+*The station sounds wash over you both—distant announcements, footsteps, the hum of the building.*
+
+*Finally, she exhales.*
+
+That's nice. Most people talk right away. Fill every silence.
+
+*Looks at you sideways.*
+
+You know how to just... be with someone. That's rare.`,
+        emotion: 'appreciative',
+        interaction: 'small',
+        variation_id: 'quiet_sit_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'grace_silence_learned',
+        text: "Where'd you learn that? To value silence?",
+        nextNodeId: 'grace_the_work',
+        pattern: 'exploring',
+        skills: ['curiosity']
+      },
+      {
+        choiceId: 'grace_silence_gift',
+        text: "Sometimes silence is the gift.",
+        nextNodeId: 'grace_the_work',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['grace_arc', 'connection']
+  },
+
+  {
+    nodeId: 'grace_understands_lost',
+    speaker: 'Grace',
+    content: [
+      {
+        text: `*She nods slowly.*
+
+Lost is honest. Lost is where all the real figuring-out happens.
+
+*Shifts on the bench.*
+
+I've been lost a few times. Figured I'd end up somewhere different than where I am now.
+
+*Small laugh.*
+
+Turns out "different" isn't always "worse." Just... different.`,
+        emotion: 'reflective',
+        variation_id: 'understands_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'grace_where_ended',
+        text: "Where did you end up?",
+        nextNodeId: 'grace_the_work',
+        pattern: 'exploring',
+        skills: ['curiosity']
+      }
+    ],
+    tags: ['grace_arc']
+  },
+
+  // ============= THE WORK =============
+  {
+    nodeId: 'grace_the_work',
+    speaker: 'Grace',
+    content: [
+      {
+        text: `Home health aide. Seven years now.
+
+I go to people's houses. Mostly elderly. Help them with... everything. Getting dressed. Eating. Bathing. Medications.
+
+*Looks at her hands.*
+
+The stuff nobody wants to think about. The stuff that happens when bodies get old and minds get foggy.
+
+*Quiet.*
+
+It's not glamorous. But somebody's gotta do it.`,
+        emotion: 'matter_of_fact',
+        variation_id: 'the_work_v1',
+        patternReflection: [
+          { pattern: 'helping', minLevel: 4, altText: "Home health aide. Seven years.\n\nI go to people's houses. Help them with everything. Getting dressed. Eating. The things that get hard when bodies fail.\n\n*Looks at you.*\n\nYou understand. You've got that helper energy. You know some work is about more than tasks.", altEmotion: 'knowing' }
+        ]
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'grace_why_this',
+        text: "How did you end up in this work?",
+        nextNodeId: 'grace_origin',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'grace_hard_parts',
+        text: "What's the hardest part?",
+        nextNodeId: 'grace_the_hard',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence']
+      },
+      {
+        choiceId: 'grace_somebody',
+        text: "'Somebody's gotta do it' sounds like it's more than that to you.",
+        nextNodeId: 'grace_more_than',
+        pattern: 'analytical',
+        skills: ['observation'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['grace_arc', 'work']
+  },
+
+  {
+    nodeId: 'grace_more_than',
+    speaker: 'Grace',
+    content: [
+      {
+        text: `*She's quiet for a moment. Then looks at you.*
+
+You caught that, huh.
+
+*Sighs.*
+
+Yeah. It's more than "somebody's gotta."
+
+My grandmother raised me. Strong woman. Worked thirty years at a laundry, retired, thought she'd have time to rest.
+
+Then the dementia started.
+
+*Voice drops.*
+
+At the end... I was the only one who could calm her down. She didn't know my name anymore. But she knew my presence.
+
+That's when I knew. This work isn't about tasks. It's about being the calm in someone's storm.`,
+        emotion: 'vulnerable',
+        interaction: 'small',
+        variation_id: 'more_than_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'grace_grandmother_present',
+        text: "She's still with you. I can hear it.",
+        nextNodeId: 'grace_grandmother_response',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'grace_presence_skill',
+        text: "Presence. That's a skill most people don't even know exists.",
+        nextNodeId: 'grace_invisible_skill',
+        pattern: 'analytical',
+        skills: ['observation']
+      }
+    ],
+    tags: ['grace_arc', 'backstory', 'emotional_core']
+  },
+
+  {
+    nodeId: 'grace_grandmother_response',
+    speaker: 'Grace',
+    content: [
+      {
+        text: `*Her eyes get bright. She blinks it away.*
+
+Every day.
+
+Every time I sit with someone who's scared and confused, I think: what if this was her? What would I want someone to do?
+
+*Takes a breath.*
+
+That's the job. Not the tasks. The... remembering that every person used to be someone's whole world.
+
+Mrs. Patterson? She was a jazz singer. Mr. Chen? Built bridges. They're not just bodies that need help. They're people with stories.`,
+        emotion: 'tender',
+        interaction: 'nod',
+        variation_id: 'grandmother_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'grace_see_stories',
+        text: "You see their stories. That matters.",
+        nextNodeId: 'grace_invisible_skill',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
+      }
+    ],
+    tags: ['grace_arc', 'dignity']
+  },
+
+  {
+    nodeId: 'grace_origin',
+    speaker: 'Grace',
+    content: [
+      {
+        text: `*She shifts on the bench.*
+
+Fell into it, honestly. I was going to be a nurse. Had the grades, started at Jeff State.
+
+Then my grandmother got sick. Someone had to take care of her.
+
+*Shrugs.*
+
+By the time she passed, I'd been doing the work for two years. Figured I might as well get paid for it.
+
+Started as a CNA. Did the training. Now I'm certified home health. Eight clients a week.`,
+        emotion: 'resigned_peaceful',
+        variation_id: 'origin_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'grace_nurse_dream',
+        text: "Do you still think about nursing?",
+        nextNodeId: 'grace_nurse_comparison',
+        pattern: 'exploring',
+        skills: ['curiosity']
+      },
+      {
+        choiceId: 'grace_fell_stayed',
+        text: "Fell into it. But you stayed.",
+        nextNodeId: 'grace_why_stayed',
+        pattern: 'patience',
+        skills: ['observation'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['grace_arc', 'origin']
+  },
+
+  {
+    nodeId: 'grace_why_stayed',
+    speaker: 'Grace',
+    content: [
+      {
+        text: `*Long pause.*
+
+Because I'm good at it.
+
+Not the lifting. Not the medications. Those you can train.
+
+The being there. The... stillness when someone's scared.
+
+*Looks at her hands.*
+
+Mrs. Richardson—she's ninety-three, end-stage heart failure—she told her daughter: "Grace is the only one who doesn't make me feel like a burden."
+
+*Quiet.*
+
+That's why I stayed.`,
+        emotion: 'proud_quiet',
+        interaction: 'small',
+        variation_id: 'why_stayed_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'grace_not_burden',
+        text: "Making someone feel like they're not a burden. That's profound work.",
+        nextNodeId: 'grace_invisible_skill',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['grace_arc', 'meaning']
+  },
+
+  {
+    nodeId: 'grace_the_hard',
+    speaker: 'Grace',
+    content: [
+      {
+        text: `*She's quiet for a long moment.*
+
+The goodbyes.
+
+You spend months—sometimes years—with someone. You know how they take their coffee. What songs make them smile. Which grandchild is their favorite.
+
+And then one day... they're gone.
+
+*Exhales.*
+
+I've lost eleven clients in seven years. Eleven people I cared about.
+
+*Looks at the ceiling.*
+
+The work doesn't stop. There's always someone else who needs help. So you grieve in the car, and then you walk into the next house with a smile.`,
+        emotion: 'heavy',
+        interaction: 'small',
+        variation_id: 'the_hard_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'grace_how_cope',
+        text: "How do you keep going? With that kind of loss?",
+        nextNodeId: 'grace_coping',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'grace_loss_silence',
+        text: "[Let the weight of that sit. Don't try to fix it.]",
+        nextNodeId: 'grace_appreciated_silence',
+        pattern: 'patience',
+        skills: ['adaptability'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['grace_arc', 'grief']
+  },
+
+  {
+    nodeId: 'grace_appreciated_silence',
+    speaker: 'Grace',
+    content: [
+      {
+        text: `*She glances at you. Something softens.*
+
+You didn't try to make it better. Most people do. "They're in a better place." "At least they're not suffering."
+
+*Shakes head.*
+
+Sometimes grief just needs room to breathe.
+
+*Pause.*
+
+Thank you for that.`,
+        emotion: 'grateful',
+        variation_id: 'appreciated_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'grace_learned_patience',
+        text: "Sounds like you've learned a lot about what people actually need.",
+        nextNodeId: 'grace_invisible_skill',
+        pattern: 'helping',
+        skills: ['communication']
+      }
+    ],
+    tags: ['grace_arc', 'connection']
+  },
+
+  {
+    nodeId: 'grace_coping',
+    speaker: 'Grace',
+    content: [
+      {
+        text: `*She thinks.*
+
+I remember what I gave them.
+
+Mr. Jefferson—he was terrified of dying alone. I made sure I was there. Held his hand at the end.
+
+Mrs. Park—she wanted to die at home, not in a hospital. I helped make that happen.
+
+*Quiet.*
+
+I can't stop death. But I can make the journey less lonely.
+
+That's enough. It has to be.`,
+        emotion: 'resolved',
+        variation_id: 'coping_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'grace_that_enough',
+        text: "That's more than enough. That's everything.",
+        nextNodeId: 'grace_invisible_skill',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['grace_arc', 'meaning']
+  },
+
+  // ============= THE INVISIBLE SKILL =============
+  {
+    nodeId: 'grace_invisible_skill',
+    speaker: 'Grace',
+    content: [
+      {
+        text: `*She sits up a little straighter.*
+
+You know what nobody teaches you? The real skill.
+
+It's not the medications or the transfers or the wound care. That's trainable.
+
+It's reading a room. Knowing when someone needs to talk and when they need silence. Noticing when "I'm fine" means "I'm not fine."
+
+*Taps her temple.*
+
+This work is emotional labor. Constant calibration. And nobody sees it.`,
+        emotion: 'insistent',
+        variation_id: 'invisible_v1',
+        patternReflection: [
+          { pattern: 'analytical', minLevel: 4, altText: "*She sits up a little straighter.*\n\nThe real skill? Reading a room. Knowing when someone needs to talk and when they need silence.\n\nYou're analytical. You break things down. But this work is about feeling—and then responding. Constant calibration.\n\nNobody sees it. But you do.", altEmotion: 'knowing' }
+        ]
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'grace_not_automated',
+        text: "That can't be automated. That's human.",
+        nextNodeId: 'grace_automation_truth',
+        pattern: 'analytical',
+        skills: ['criticalThinking']
+      },
+      {
+        choiceId: 'grace_undervalued',
+        text: "And probably underpaid.",
+        nextNodeId: 'grace_economics',
+        pattern: 'helping',
+        skills: ['observation']
+      },
+      {
+        choiceId: 'grace_show_me',
+        text: "Show me what you mean. Give me an example.",
+        nextNodeId: 'grace_the_moment_setup',
+        pattern: 'exploring',
+        skills: ['curiosity']
+      }
+    ],
+    tags: ['grace_arc', 'invisible_labor']
+  },
+
+  {
+    nodeId: 'grace_automation_truth',
+    speaker: 'Grace',
+    content: [
+      {
+        text: `*She nods firmly.*
+
+Exactly.
+
+You can build a robot to dispense pills. Maybe even one that can lift someone into a wheelchair.
+
+But you can't build a robot that knows the difference between "leave me alone" meaning "I need space" versus "I'm testing to see if you'll stay."
+
+*Looks at you.*
+
+People talk about AI taking jobs. But this job? It's about presence. Connection. Being human with someone who's scared.
+
+No machine can do that.`,
+        emotion: 'certain',
+        interaction: 'nod',
+        variation_id: 'automation_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'grace_growing_need',
+        text: "And there's more need for this work every year.",
+        nextNodeId: 'grace_demographics',
+        pattern: 'analytical',
+        skills: ['systemsThinking']
+      },
+      {
+        choiceId: 'grace_to_future',
+        text: "Where do you see this field going?",
+        nextNodeId: 'grace_vision',
+        pattern: 'exploring',
+        skills: ['curiosity']
+      }
+    ],
+    tags: ['grace_arc', 'automation']
+  },
+
+  {
+    nodeId: 'grace_economics',
+    speaker: 'Grace',
+    content: [
+      {
+        text: `*Bitter laugh.*
+
+Fifteen dollars an hour. No benefits until last year. Mileage? Sometimes. Paid time off? Ha.
+
+I work twelve-hour shifts, drive fifty miles a day, and make less than the person who serves coffee at the hospital lobby.
+
+*Crosses arms.*
+
+We're "essential workers" when there's a pandemic. We're "unskilled labor" when it's time to set wages.
+
+*Quiet.*
+
+Funny how that works.`,
+        emotion: 'frustrated',
+        interaction: 'shake',
+        variation_id: 'economics_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'grace_why_stay_then',
+        text: "With all that... why stay?",
+        nextNodeId: 'grace_why_stay_real',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
+      },
+      {
+        choiceId: 'grace_what_changes',
+        text: "What needs to change?",
+        nextNodeId: 'grace_vision',
+        pattern: 'analytical',
+        skills: ['systemsThinking']
+      }
+    ],
+    tags: ['grace_arc', 'economics', 'labor_reality']
+  },
+
+  {
+    nodeId: 'grace_why_stay_real',
+    speaker: 'Grace',
+    content: [
+      {
+        text: `*Long pause. She looks at something far away.*
+
+Because Mrs. Richardson called me her angel.
+
+Because Mr. Chen's daughter hugged me at his funeral and said, "You gave him three more years."
+
+Because when I walk into a house and someone's eyes light up... that's not something you can put a price on.
+
+*Looks at you.*
+
+The money's terrible. The hours are brutal. But the meaning? The meaning is real.
+
+I'd rather be underpaid and matter than overpaid and empty.`,
+        emotion: 'fierce_tender',
+        interaction: 'bloom',
+        variation_id: 'why_stay_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'grace_meaning_clear',
+        text: "That's the clearest thing I've heard all day.",
+        nextNodeId: 'grace_vision',
+        pattern: 'helping',
+        skills: ['communication'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['grace_arc', 'meaning', 'values']
+  },
+
+  {
+    nodeId: 'grace_nurse_comparison',
+    speaker: 'Grace',
+    content: [
+      {
+        text: `*She considers.*
+
+Sometimes. But honestly? I'm not sure nursing is what I thought it was.
+
+Nurses are amazing. But they're stretched thin. Fifteen patients. Charting. Paperwork. Running.
+
+*Gestures.*
+
+I get to sit. I get to know people. I'm there for the slow moments, not just the emergencies.
+
+Different work. Not lesser. Just... different.`,
+        emotion: 'reflective',
+        variation_id: 'nurse_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'grace_different_value',
+        text: "Different can be exactly right.",
+        nextNodeId: 'grace_invisible_skill',
+        pattern: 'patience',
+        skills: ['communication']
+      }
+    ],
+    tags: ['grace_arc', 'comparison']
+  },
+
+  {
+    nodeId: 'grace_demographics',
+    speaker: 'Grace',
+    content: [
+      {
+        text: `*She nods gravely.*
+
+Ten thousand people turn 65 every day in this country. Every. Day.
+
+The boomers are aging. And there aren't enough of us. Not even close.
+
+*Spreads hands.*
+
+By 2030, we'll need a million more home health workers. A million. And right now, we can barely fill the jobs we have because the pay is garbage.
+
+*Shakes head.*
+
+It's a crisis in slow motion. And nobody's watching.`,
+        emotion: 'worried',
+        variation_id: 'demographics_v1',
+        interrupt: {
+          duration: 3000,
+          type: 'silence',
+          action: 'Hold her gaze. Let her know you see it.',
+          targetNodeId: 'grace_interrupt_acknowledge',
+          consequence: {
+            characterId: 'grace',
+            trustChange: 1
+          }
+        }
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'grace_what_solution',
+        text: "What's the solution?",
+        nextNodeId: 'grace_vision',
+        pattern: 'analytical',
+        skills: ['systemsThinking']
+      }
+    ],
+    tags: ['grace_arc', 'demographics', 'labor_gap']
+  },
+
+  // ============= THE MOMENT (Interactive Mechanic) =============
+  {
+    nodeId: 'grace_the_moment_setup',
+    speaker: 'Grace',
+    content: [
+      {
+        text: `*She looks at you for a long moment.*
+
+You want to know what this work really is?
+
+Let me tell you about yesterday.
+
+Mrs. Williams. Eighty-seven. Alzheimer's. Most days she doesn't know where she is.
+
+I came in for my shift. She was sitting by the window, crying.
+
+*Pause.*
+
+What would you do?`,
+        emotion: 'testing',
+        variation_id: 'moment_setup_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'moment_ask_wrong',
+        text: "Ask her what's wrong.",
+        nextNodeId: 'grace_moment_ask',
+        pattern: 'helping',
+        skills: ['communication']
+      },
+      {
+        choiceId: 'moment_sit_quiet',
+        text: "Sit down next to her. Don't say anything yet.",
+        nextNodeId: 'grace_moment_correct',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'moment_distract',
+        text: "Try to distract her. Put on music, start a task.",
+        nextNodeId: 'grace_moment_distract',
+        pattern: 'building',
+        skills: ['adaptability']
+      }
+    ],
+    tags: ['grace_arc', 'interactive', 'the_moment']
+  },
+
+  {
+    nodeId: 'grace_moment_ask',
+    speaker: 'Grace',
+    content: [
+      {
+        text: `Good instinct. Caring.
+
+But with Alzheimer's... she might not be able to tell you. The words get tangled. And asking can make it worse—she'll feel frustrated that she can't explain.
+
+*Soft.*
+
+Sometimes the question isn't "what's wrong." Sometimes it's just "I'm here."
+
+What else might you try?`,
+        emotion: 'teaching',
+        variation_id: 'moment_ask_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'moment_try_presence',
+        text: "Just... be there. Let her feel not-alone.",
+        nextNodeId: 'grace_moment_correct',
+        pattern: 'patience',
+        skills: ['adaptability'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['grace_arc', 'the_moment']
+  },
+
+  {
+    nodeId: 'grace_moment_distract',
+    speaker: 'Grace',
+    content: [
+      {
+        text: `That's what a lot of people try. And sometimes it works.
+
+But yesterday? She wasn't confused. She was grieving.
+
+*Quiet.*
+
+Her husband died forty years ago. But in her mind, it just happened. Every few months, she loses him again.
+
+Distraction would have... dismissed that. Made her feel crazy.
+
+What do you think she needed?`,
+        emotion: 'gentle',
+        variation_id: 'moment_distract_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'moment_presence_realize',
+        text: "Someone to sit with her in the grief. Not fix it.",
+        nextNodeId: 'grace_moment_correct',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['grace_arc', 'the_moment']
+  },
+
+  {
+    nodeId: 'grace_moment_correct',
+    speaker: 'Grace',
+    content: [
+      {
+        text: `*She looks at you with something like surprise.*
+
+That's it. That's exactly it.
+
+I sat down. Didn't say anything. After a few minutes, she took my hand.
+
+We sat there for half an hour. She cried. I stayed.
+
+Eventually she looked at me and said, "Thank you for not trying to fix it."
+
+*Quiet.*
+
+That's the work. Not fixing. Accompanying. Being the steady presence when everything else is chaos.
+
+You get it. Most people don't.`,
+        emotion: 'moved',
+        interaction: 'bloom',
+        variation_id: 'moment_correct_v1',
+        interrupt: {
+          duration: 3500,
+          type: 'connection',
+          action: 'Reach out and touch her shoulder',
+          targetNodeId: 'grace_interrupt_comfort',
+          consequence: {
+            characterId: 'grace',
+            trustChange: 2
+          }
+        }
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'grace_to_vision',
+        text: "That's a skill. A real, valuable skill.",
+        nextNodeId: 'grace_vision',
+        pattern: 'helping',
+        skills: ['communication']
+      }
+    ],
+    tags: ['grace_arc', 'the_moment', 'revelation']
+  },
+
+  // ============= VISION =============
+  {
+    nodeId: 'grace_vision',
+    speaker: 'Grace',
+    content: [
+      {
+        text: `*She sits up, energy returning.*
+
+What needs to change? Everything.
+
+Pay. Benefits. Respect. Career paths.
+
+Right now, there's no ladder. I'm doing the same work I did seven years ago. No way to advance without leaving the bedside.
+
+*Looks at the station.*
+
+I want to train people. Not just the tasks—the presence. The emotional intelligence.
+
+Start a program. "Companion Care." Teach people that this work isn't unskilled—it's differently skilled.
+
+*Quiet fire.*
+
+And then fight like hell for wages that match the value.`,
+        emotion: 'determined',
+        interaction: 'bloom',
+        variation_id: 'vision_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'grace_what_tell',
+        text: "What would you tell someone considering this work?",
+        nextNodeId: 'grace_advice',
+        pattern: 'helping',
+        skills: ['communication']
+      },
+      {
+        choiceId: 'grace_companion_program',
+        text: "Companion Care. That reframes everything.",
+        nextNodeId: 'grace_farewell',
+        pattern: 'building',
+        skills: ['creativity'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['grace_arc', 'vision']
+  },
+
+  {
+    nodeId: 'grace_advice',
+    speaker: 'Grace',
+    content: [
+      {
+        text: `*She thinks carefully.*
+
+Ask yourself: can you be with suffering without trying to fix it?
+
+That's the real question. Not "are you strong enough to lift someone." Not "can you handle bodily fluids."
+
+Can you sit with someone who's dying and not run away? Can you be present without needing to solve?
+
+*Looks at you.*
+
+If you can... this work will break your heart and fill it at the same time.
+
+It's not for everyone. But for the right person? It's everything.`,
+        emotion: 'wise',
+        variation_id: 'advice_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'grace_final',
+        text: "Thank you, Grace. Really.",
+        nextNodeId: 'grace_farewell',
+        pattern: 'helping',
+        skills: ['communication'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['grace_arc', 'advice']
+  },
+
+  // ============= INTERRUPT TARGET NODES =============
+  // These nodes are reached when player takes an interrupt opportunity
+
+  {
+    nodeId: 'grace_interrupt_comfort',
+    speaker: 'Grace',
+    content: [
+      {
+        text: `*She looks at your hand on her shoulder. For a moment, her composure wavers.*
+
+*Quiet laugh.*
+
+Sorry. I... don't usually tell that story.
+
+*Wipes eye quickly.*
+
+It's just... you listened. Really listened. Not waiting to give advice. Not trying to fix me.
+
+That's... that's what I try to give my patients. And nobody ever...
+
+*She takes a breath.*
+
+Thank you. For being present. That's the whole thing, isn't it? Just... being there.`,
+        emotion: 'vulnerable',
+        interaction: 'bloom',
+        variation_id: 'interrupt_comfort_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'grace_from_interrupt_comfort',
+        text: "That's a skill. A real, valuable skill.",
+        nextNodeId: 'grace_vision',
+        pattern: 'helping',
+        skills: ['communication']
+      }
+    ],
+    tags: ['grace_arc', 'interrupt_response']
+  },
+
+  {
+    nodeId: 'grace_interrupt_acknowledge',
+    speaker: 'Grace',
+    content: [
+      {
+        text: `*She stops mid-sentence, caught by your silence.*
+
+*Quiet.*
+
+You're watching. Aren't you.
+
+*Something shifts in her face.*
+
+I spend so much time feeling invisible. The work I do—people don't see it. They don't want to think about aging, about needing help.
+
+But you... you stopped. You're here.
+
+*Small, real smile.*
+
+That matters more than you know.`,
+        emotion: 'seen',
+        interaction: 'ripple',
+        variation_id: 'interrupt_acknowledge_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'grace_from_acknowledge',
+        text: "What you do deserves to be seen.",
+        nextNodeId: 'grace_vision',
+        pattern: 'helping',
+        skills: ['communication'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['grace_arc', 'interrupt_response']
+  },
+
+  {
+    nodeId: 'grace_interrupt_hug',
+    speaker: 'Grace',
+    content: [
+      {
+        text: `*She's surprised for just a moment. Then she hugs you back.*
+
+*Tight. Real.*
+
+*After a long moment, she pulls back, eyes bright.*
+
+You know what? I needed that.
+
+Twelve-hour shifts, you give and give and give. And sometimes you forget that you need to receive too.
+
+*She picks up her bag, looking lighter.*
+
+Go change the world, kid. Or at least... be present in it. That's enough.`,
+        emotion: 'grateful',
+        interaction: 'bloom',
+        variation_id: 'interrupt_hug_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'grace_after_hug',
+        text: "Take care of yourself, Grace.",
+        nextNodeId: samuelEntryPoints.GRACE_REFLECTION_GATEWAY,
+        pattern: 'helping'
+      }
+    ],
+    onEnter: [
+      {
+        addGlobalFlags: ['grace_arc_complete']
+      }
+    ],
+    tags: ['ending', 'grace_arc', 'interrupt_response']
+  },
+
+  // ============= FAREWELL =============
+  {
+    nodeId: 'grace_farewell',
+    speaker: 'Grace',
+    content: [
+      {
+        text: `*She stands, picks up her tote bag.*
+
+I should get home. Sleep before my next shift.
+
+*Looks at you.*
+
+Whatever you're figuring out... remember this:
+
+The world needs people who can be present. Not just productive. Present.
+
+That's rarer than you think. And it's worth something.
+
+*Small smile.*
+
+Take care of yourself. And if you ever need someone to just... sit with you? You know where to find me.`,
+        emotion: 'warm',
+        interaction: 'nod',
+        variation_id: 'farewell_v1',
+        interrupt: {
+          duration: 4000,
+          type: 'connection',
+          action: 'Step forward and hug her',
+          targetNodeId: 'grace_interrupt_hug',
+          consequence: {
+            characterId: 'grace',
+            trustChange: 2
+          }
+        }
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'grace_goodbye',
+        text: "Take care, Grace.",
+        nextNodeId: samuelEntryPoints.GRACE_REFLECTION_GATEWAY,
+        pattern: 'helping'
+      }
+    ],
+    onEnter: [
+      {
+        addGlobalFlags: ['grace_arc_complete']
+      }
+    ],
+    tags: ['ending', 'grace_arc']
+  }
+]
+
+export const graceEntryPoints = {
+  INTRODUCTION: 'grace_introduction'
+} as const
+
+export const graceDialogueGraph: DialogueGraph = {
+  version: '1.0.0',
+  nodes: new Map(graceDialogueNodes.map(node => [node.nodeId, node])),
+  startNodeId: graceEntryPoints.INTRODUCTION,
+  metadata: {
+    title: "Grace's Bench",
+    author: 'Guided Generation',
+    createdAt: Date.now(),
+    lastModified: Date.now(),
+    totalNodes: graceDialogueNodes.length,
+    totalChoices: graceDialogueNodes.reduce((sum, n) => sum + n.choices.length, 0)
+  }
+}

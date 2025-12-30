@@ -6,6 +6,7 @@
 
 import type { ExperienceSummaryData, ArcLearningObjective } from '@/components/ExperienceSummary'
 import type { GameState } from './character-state'
+import type { CharacterId } from './graph-registry'
 
 export const ARC_LEARNING_OBJECTIVES: Record<'maya' | 'devon' | 'jordan', {
   theme: string
@@ -246,26 +247,48 @@ export async function generateExperienceSummary(
 }
 
 /**
+ * All character arc completion flags
+ * Maps flag name to character ID
+ */
+const ARC_FLAG_TO_CHARACTER: Record<string, CharacterId> = {
+  'maya_arc_complete': 'maya',
+  'devon_arc_complete': 'devon',
+  'jordan_arc_complete': 'jordan',
+  'marcus_arc_complete': 'marcus',
+  'tess_arc_complete': 'tess',
+  'yaquin_arc_complete': 'yaquin',
+  'kai_arc_complete': 'kai',
+  'alex_arc_complete': 'alex',
+  'rohan_arc_complete': 'rohan',
+  'silas_arc_complete': 'silas',
+  'elena_arc_complete': 'elena',
+  'grace_arc_complete': 'grace'
+}
+
+/**
  * Check if an arc just completed based on state changes
+ * Returns the character whose arc just completed, or null
  */
 export function detectArcCompletion(
   previousState: GameState,
   currentState: GameState
-): 'maya' | 'devon' | 'jordan' | null {
-  const arcFlags = ['maya_arc_complete', 'devon_arc_complete', 'jordan_arc_complete']
-  
-  for (const flag of arcFlags) {
+): CharacterId | null {
+  for (const [flag, characterId] of Object.entries(ARC_FLAG_TO_CHARACTER)) {
     const wasComplete = previousState.globalFlags.has(flag)
     const isNowComplete = currentState.globalFlags.has(flag)
-    
+
     if (!wasComplete && isNowComplete) {
-      // Arc just completed
-      if (flag === 'maya_arc_complete') return 'maya'
-      if (flag === 'devon_arc_complete') return 'devon'
-      if (flag === 'jordan_arc_complete') return 'jordan'
+      return characterId
     }
   }
-  
+
   return null
+}
+
+/**
+ * Get the arc completion flag for a character
+ */
+export function getArcCompletionFlag(characterId: CharacterId): string {
+  return `${characterId}_arc_complete`
 }
 
