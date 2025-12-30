@@ -1177,7 +1177,8 @@ Those students need to hear that nothing is wasted.
     onEnter: [{
       characterId: 'jordan',
       addKnowledgeFlags: ['chose_accumulation', 'completed_arc'],
-      addGlobalFlags: ['jordan_arc_complete', 'jordan_chose_accumulation']
+      addGlobalFlags: ['jordan_arc_complete', 'jordan_chose_accumulation'],
+      thoughtId: 'curious-wanderer'
     }],
     tags: ['ending', 'jordan_arc']
   },
@@ -1320,7 +1321,8 @@ That's the speech. Raw. Honest. Just the truth.`,
     onEnter: [{
       characterId: 'jordan',
       addKnowledgeFlags: ['chose_internal', 'completed_arc'],
-      addGlobalFlags: ['jordan_arc_complete', 'jordan_chose_internal']
+      addGlobalFlags: ['jordan_arc_complete', 'jordan_chose_internal'],
+      thoughtId: 'hidden-connections'
     }],
     tags: ['ending', 'jordan_arc']
   },

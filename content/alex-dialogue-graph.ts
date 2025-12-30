@@ -1408,7 +1408,8 @@ They're the ones who kept showing up.`,
       {
         addGlobalFlags: ['alex_arc_complete'],
         characterId: 'alex',
-        setRelationshipStatus: 'acquaintance'
+        setRelationshipStatus: 'acquaintance',
+        thoughtId: 'curious-wanderer'
       }
     ],
     choices: [

@@ -38,6 +38,10 @@ export interface DelayedGift {
     text: string
     emotion?: string
   }
+  giftContext?: {
+    sourceChoiceText: string  // e.g. "You encouraged Maya..."
+    timeAgo: string           // e.g. "3 interactions ago"
+  }
   consumed: boolean                 // Once shown, don't repeat
   createdAt: number                 // Timestamp for ordering
 }
@@ -56,6 +60,10 @@ export interface SerializableDelayedGift {
   content: {
     text: string
     emotion?: string
+  }
+  giftContext?: {
+    sourceChoiceText: string
+    timeAgo: string
   }
   consumed: boolean
   createdAt: number
@@ -279,7 +287,8 @@ function generateGiftId(): string {
  */
 export function queueGiftForChoice(
   choiceId: string,
-  sourceCharacter: CharacterId
+  sourceCharacter: CharacterId,
+  sourceChoiceText?: string
 ): DelayedGift | null {
   // Find matching trigger
   const trigger = GIFT_TRIGGERS.find(
@@ -291,9 +300,9 @@ export function queueGiftForChoice(
   // Check if this gift is already queued (avoid duplicates)
   const existingGift = giftQueue.find(
     g => g.sourceChoice === choiceId &&
-         g.sourceCharacter === sourceCharacter &&
-         g.targetCharacter === trigger.targetCharacter &&
-         !g.consumed
+      g.sourceCharacter === sourceCharacter &&
+      g.targetCharacter === trigger.targetCharacter &&
+      !g.consumed
   )
 
   if (existingGift) return null
@@ -307,6 +316,10 @@ export function queueGiftForChoice(
     interactionsRemaining: trigger.delay,
     giftType: trigger.giftType,
     content: trigger.content,
+    giftContext: sourceChoiceText ? {
+      sourceChoiceText,
+      timeAgo: 'recently' // We could calculate this more precisely if needed
+    } : undefined,
     consumed: false,
     createdAt: Date.now()
   }
@@ -461,7 +474,14 @@ export function formatGiftAsSamuelDialogue(gift: DelayedGift): string {
   const sourceName = characterNames[gift.sourceCharacter] || gift.sourceCharacter
   const prefix = `Speaking of ${sourceName}...`
 
-  return `${prefix}\n\n${gift.content.text}`
+  let dialogue = `${prefix}\n\n${gift.content.text}`
+
+  // Add subtle attribution if context exists
+  if (gift.giftContext?.sourceChoiceText) {
+    dialogue += `\n\n(Recall: ${gift.giftContext.sourceChoiceText})`
+  }
+
+  return dialogue
 }
 
 /**

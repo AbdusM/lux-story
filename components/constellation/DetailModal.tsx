@@ -1,19 +1,21 @@
 "use client"
 
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Lock, User } from 'lucide-react'
+import { X, Lock, User, MessageCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { backdrop } from '@/lib/animations'
 import type { CharacterWithState, SkillWithState } from '@/hooks/useConstellationData'
 import { CHARACTER_COLORS } from '@/lib/constellation/character-positions'
 import { SKILL_DEFINITIONS, SKILL_CHARACTER_HINTS } from '@/lib/skill-definitions'
 import { SKILL_CLUSTERS } from '@/lib/constellation/skill-positions'
+import { CHARACTER_RELATIONSHIP_WEB } from '@/lib/character-relationships'
 
 interface DetailModalProps {
   item: CharacterWithState | SkillWithState | null
   type: 'character' | 'skill'
   onClose: () => void
+  allCharacters?: CharacterWithState[]
 }
 
 // modalVariants kept local - has unique y:50 motion that scaleFade lacks
@@ -35,7 +37,7 @@ const modalVariants: import('framer-motion').Variants = {
 
 // Using shared backdrop variant from lib/animations.ts
 
-export function DetailModal({ item, type, onClose }: DetailModalProps) {
+export function DetailModal({ item, type, onClose, allCharacters }: DetailModalProps) {
   // Escape key handler
   useEffect(() => {
     if (!item) return
@@ -90,7 +92,7 @@ export function DetailModal({ item, type, onClose }: DetailModalProps) {
               style={{ scrollbarGutter: 'stable' }}
             >
               {isCharacter && character && (
-                <CharacterDetail character={character} onClose={onClose} />
+                <CharacterDetail character={character} onClose={onClose} allCharacters={allCharacters} />
               )}
               {!isCharacter && skill && (
                 <SkillDetail skill={skill} onClose={onClose} />
@@ -103,8 +105,39 @@ export function DetailModal({ item, type, onClose }: DetailModalProps) {
   )
 }
 
-function CharacterDetail({ character, onClose }: { character: CharacterWithState; onClose: () => void }) {
+function CharacterDetail({ character, onClose, allCharacters }: { character: CharacterWithState; onClose: () => void; allCharacters?: CharacterWithState[] }) {
   const colors = CHARACTER_COLORS[character.color]
+
+  // Get opinions about this character from other characters
+  const otherOpinions = useMemo(() => {
+    if (!allCharacters) return []
+
+    // Find all relationships where someone has an opinion about this character
+    const opinionsAbout = CHARACTER_RELATIONSHIP_WEB.filter(
+      edge => edge.toCharacterId === character.id && edge.fromCharacterId !== 'samuel'
+    )
+
+    return opinionsAbout
+      .map(edge => {
+        // Find the character who has the opinion
+        const opinionGiver = allCharacters.find(c => c.id === edge.fromCharacterId)
+        if (!opinionGiver || !opinionGiver.hasMet) return null
+
+        // Determine which opinion to show based on trust with opinion giver
+        // Trust ≥ 6 reveals private opinion (deeper insight)
+        const isDeepReveal = opinionGiver.trust >= 6
+        const opinion = isDeepReveal ? edge.opinions.privateOpinion : edge.opinions.publicOpinion
+
+        return {
+          fromCharacter: opinionGiver,
+          opinion,
+          sentiment: edge.opinions.sentiment,
+          isDeepReveal,
+          relationshipType: edge.type
+        }
+      })
+      .filter((o): o is NonNullable<typeof o> => o !== null)
+  }, [character.id, allCharacters])
 
   return (
     <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
@@ -196,6 +229,60 @@ function CharacterDetail({ character, onClose }: { character: CharacterWithState
               </div>
             ))}
           </div>
+
+          {/* What Others Think - Inter-character opinions */}
+          {otherOpinions.length > 0 && (
+            <div className="space-y-3 pt-2">
+              <h3 className="text-sm font-medium text-slate-400 uppercase tracking-wider flex items-center gap-2">
+                <MessageCircle className="w-4 h-4" />
+                What Others Think
+              </h3>
+
+              <div className="space-y-2">
+                {otherOpinions.map((op) => {
+                  const opColors = CHARACTER_COLORS[op.fromCharacter.color]
+                  const sentimentColor =
+                    op.sentiment === 'positive' ? 'border-emerald-500/30' :
+                    op.sentiment === 'negative' ? 'border-red-500/30' :
+                    op.sentiment === 'conflicted' ? 'border-amber-500/30' :
+                    'border-slate-600'
+
+                  return (
+                    <div
+                      key={op.fromCharacter.id}
+                      className={cn(
+                        "p-3 rounded-xl bg-slate-800/50 border-l-2 transition-all",
+                        sentimentColor,
+                        op.isDeepReveal && "bg-slate-800/70"
+                      )}
+                    >
+                      <div className="flex items-center gap-2 mb-2">
+                        <div
+                          className={cn(
+                            "w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold",
+                            opColors.bg
+                          )}
+                        >
+                          {op.fromCharacter.name[0]}
+                        </div>
+                        <span className={cn("text-sm font-medium", opColors.text)}>
+                          {op.fromCharacter.name}
+                        </span>
+                        {op.isDeepReveal && (
+                          <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 uppercase tracking-wider">
+                            Private
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-sm text-slate-300 italic leading-relaxed">
+                        "{op.opinion}"
+                      </p>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

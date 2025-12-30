@@ -1,9 +1,10 @@
 "use client"
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { cn } from '@/lib/utils'
 import type { CharacterWithState } from '@/hooks/useConstellationData'
 import { CHARACTER_CONNECTIONS, CHARACTER_COLORS } from '@/lib/constellation/character-positions'
+import { CHARACTER_RELATIONSHIP_WEB } from '@/lib/character-relationships'
 
 interface ConstellationGraphProps {
     characters: CharacterWithState[]
@@ -18,6 +19,21 @@ export function ConstellationGraph({ characters, onOpenDetail }: ConstellationGr
 
     // Helper to get character state (since we need to look up connection targets)
     const getCharState = (id: string) => characters.find(c => c.id === id)
+
+    // Filter inter-character relationships to only show when both characters are met
+    // Exclude Samuel connections since those are already shown as hub spokes
+    const visibleRelationships = useMemo(() => {
+        return CHARACTER_RELATIONSHIP_WEB.filter(edge => {
+            // Skip Samuel relationships (those are hub spokes)
+            if (edge.fromCharacterId === 'samuel' || edge.toCharacterId === 'samuel') {
+                return false
+            }
+            // Only show if both characters have been met
+            const from = getCharState(edge.fromCharacterId)
+            const to = getCharState(edge.toCharacterId)
+            return from?.hasMet && to?.hasMet
+        })
+    }, [characters])
 
     // Interaction Handlers
     const handleNodeClick = (char: CharacterWithState) => {
@@ -68,6 +84,7 @@ export function ConstellationGraph({ characters, onOpenDetail }: ConstellationGr
 
                 {/* --- CONNECTIONS LAYER (Clean Lines) --- */}
                 <g className="links">
+                    {/* Hub spokes (Samuel to each character) */}
                     {CHARACTER_CONNECTIONS.map(([sourceId, targetId]) => {
                         const source = getCharState(sourceId)
                         const target = getCharState(targetId)
@@ -75,19 +92,59 @@ export function ConstellationGraph({ characters, onOpenDetail }: ConstellationGr
 
                         const bothMet = source.hasMet && target.hasMet
 
+                        // Interaction Logic
+                        const isConnectedToHover = hoveredId === sourceId || hoveredId === targetId
+                        const isDimmed = hoveredId !== null && !isConnectedToHover
+
                         // "Brass" Connection Lines (Warm, Dark, Ancient)
                         return (
                             <line
-                                key={`${sourceId}-${targetId}`}
+                                key={`hub-${sourceId}-${targetId}`}
                                 x1={source.position.x}
                                 y1={source.position.y}
                                 x2={target.position.x}
                                 y2={target.position.y}
                                 stroke={bothMet ? "#78350f" : "#475569"} // Amber-900 (Met) vs Slate-600 (Ghost)
-                                strokeWidth={bothMet ? "0.3" : "0.1"}
+                                strokeWidth={bothMet ? (isConnectedToHover ? "0.4" : "0.3") : "0.1"}
                                 className={cn(
                                     "transition-all duration-700",
-                                    bothMet ? "opacity-60" : "opacity-20"
+                                    bothMet
+                                        ? (isDimmed ? "opacity-10" : isConnectedToHover ? "opacity-100" : "opacity-60")
+                                        : "opacity-20"
+                                )}
+                            />
+                        )
+                    })}
+
+                    {/* Inter-character relationship edges (not hub spokes) */}
+                    {visibleRelationships.map((edge) => {
+                        const from = getCharState(edge.fromCharacterId)
+                        const to = getCharState(edge.toCharacterId)
+                        if (!from || !to) return null
+
+                        // Interaction Logic
+                        const isConnectedToHover = hoveredId === edge.fromCharacterId || hoveredId === edge.toCharacterId
+                        const isDimmed = hoveredId !== null && !isConnectedToHover
+
+                        // Color based on relationship sentiment
+                        const strokeColor = edge.opinions.sentiment === 'positive' ? '#059669' // Emerald-600
+                            : edge.opinions.sentiment === 'negative' ? '#dc2626' // Red-600
+                                : edge.opinions.sentiment === 'conflicted' ? '#d97706' // Amber-600
+                                    : '#64748b' // Slate-500 for neutral
+
+                        return (
+                            <line
+                                key={`rel-${edge.fromCharacterId}-${edge.toCharacterId}`}
+                                x1={from.position.x}
+                                y1={from.position.y}
+                                x2={to.position.x}
+                                y2={to.position.y}
+                                stroke={strokeColor}
+                                strokeWidth={isConnectedToHover ? "0.3" : "0.2"}
+                                strokeDasharray="1 1.5"
+                                className={cn(
+                                    "transition-all duration-500",
+                                    isDimmed ? "opacity-10" : isConnectedToHover ? "opacity-100" : "opacity-40"
                                 )}
                             />
                         )

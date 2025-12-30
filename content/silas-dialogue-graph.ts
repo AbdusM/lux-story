@@ -1025,7 +1025,8 @@ The basil is already perking up. The water finally reached its roots.`,
     ],
     onEnter: [
       {
-        addGlobalFlags: ['silas_full_arc_complete']
+        addGlobalFlags: ['silas_full_arc_complete'],
+        thoughtId: 'trust-process'
       }
     ],
     tags: ['silas_arc', 'ending']
@@ -1057,7 +1058,8 @@ Tell Samuel I said thanks. For building a station where people like me can find 
     ],
     onEnter: [
       {
-        addGlobalFlags: ['silas_arc_complete']
+        addGlobalFlags: ['silas_arc_complete'],
+        thoughtId: 'steady-hand'
       }
     ],
     tags: ['transition', 'silas_arc', 'good_ending'],

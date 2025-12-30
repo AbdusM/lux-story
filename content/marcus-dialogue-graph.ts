@@ -990,7 +990,8 @@ The machine held.`,
       {
         characterId: 'marcus',
         addKnowledgeFlags: ['completed_arc'],
-        addGlobalFlags: ['marcus_arc_complete']
+        addGlobalFlags: ['marcus_arc_complete'],
+        thoughtId: 'steady-hand'
       }
     ],
     tags: ['ending', 'marcus_arc']

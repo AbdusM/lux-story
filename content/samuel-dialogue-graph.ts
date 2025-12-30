@@ -415,6 +415,11 @@ export const samuelDialogueNodes: DialogueNode[] = [
         interaction: 'nod'
       }
     ],
+    onEnter: [
+      {
+        thoughtId: 'hidden-connections'
+      }
+    ],
     choices: [
       {
         choiceId: 'ready_after_wisdom',
@@ -437,48 +442,14 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "I've been helping people find their way in <bloom>Birmingham</bloom> for a long time. Longer than I expected.",
+        text: "I've been helping people find their way in <bloom>Birmingham</bloom> for a long time. Longer than I expected.\n\nYou're here to figure some things out. Good. That's what this place is for. No tests, no grades. Just real conversations.",
         emotion: 'warm',
-        variation_id: 'intro_v1_part2'
+        variation_id: 'intro_v1_combined'
       }
     ],
     choices: [
       {
-        choiceId: 'ask_what_is_this_2',
-        text: "What is this place?",
-        nextNodeId: 'samuel_explains_station',
-        pattern: 'exploring',
-        skills: ['communication', 'adaptability']
-      },
-      {
-        choiceId: 'ask_about_platforms_2',
-        text: "I see platforms. Where do they lead?",
-        nextNodeId: 'samuel_explains_platforms',
-        pattern: 'analytical',
-        skills: ['criticalThinking', 'communication']
-      },
-      {
-        choiceId: 'continue_intro_2',
-        text: "[Continue]",
-        nextNodeId: 'samuel_introduction_3',
-        pattern: 'patience',
-        skills: ['communication']
-      }
-    ]
-  },
-  {
-    nodeId: 'samuel_introduction_3',
-    speaker: 'Samuel Washington',
-    content: [
-      {
-        text: "You're here to figure some things out. Good. That's what this place is for. No tests, no grades. Just real conversations.",
-        emotion: 'warm',
-        variation_id: 'intro_v1_part3'
-      }
-    ],
-    choices: [
-      {
-        choiceId: 'ask_what_is_this_3',
+        choiceId: 'ask_what_is_this_combined',
         text: "What is this place?",
         nextNodeId: 'samuel_explains_station',
         pattern: 'exploring',
@@ -489,7 +460,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         }
       },
       {
-        choiceId: 'ask_about_platforms_3',
+        choiceId: 'ask_about_platforms_combined',
         text: "I see platforms. Where do they lead?",
         nextNodeId: 'samuel_explains_platforms',
         pattern: 'analytical',
@@ -500,7 +471,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         }
       },
       {
-        choiceId: 'ask_who_are_you_3',
+        choiceId: 'ask_who_are_you_combined',
         text: "Who are you, really?",
         nextNodeId: 'samuel_backstory_intro',
         pattern: 'patience',
@@ -511,8 +482,8 @@ export const samuelDialogueNodes: DialogueNode[] = [
         }
       },
       {
-        choiceId: 'ready_to_explore_intro',
-        text: "I'm ready to explore.",
+        choiceId: 'ready_to_explore_combined',
+        text: "I'm ready to find my way.",
         nextNodeId: 'samuel_orb_introduction',
         pattern: 'exploring',
         skills: ['communication']
@@ -562,6 +533,11 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "There's Platform 3, heading towards the medical centers. Platform 9 for the tech districts. But there's also the rare lines... \n\nI've seen a coder from Atlanta, a deep-sea welder off the Scottish coast. And just yesterday, a young brother torn between his own startup and helping HBCUs get their fair share of federal funding. \n\nThe question ain't where they're going. It's which song you're trying to hear.",
         emotion: 'thoughtful',
         variation_id: 'platforms_explained_v3'
+      }
+    ],
+    onEnter: [
+      {
+        thoughtId: 'hidden-connections'
       }
     ],
     choices: [
@@ -702,20 +678,18 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "I wanted to help folks figure out their own path, y'know? Not hand 'em answers - that never works. But help 'em find the right questions? That I can do.",
+        text: "I wanted to help folks figure out their own path, y'know? Not hand 'em answers - that never works. But help 'em find the right questions? That I can do.\n\nThat's why I'm here. This station sits right between what Birmingham was and what it's still becomin'.",
         emotion: 'warm',
-        variation_id: 'purpose_v1_part1',
+        variation_id: 'purpose_v1_combined',
         patternReflection: [
-          { pattern: 'helping', minLevel: 4, altText: "I wanted to help folks figure out their own path. Not hand 'em answers—that never works. But help 'em find the right questions?\n\nYou understand that, don't you? It's why you listen the way you do.", altEmotion: 'knowing' },
-          { pattern: 'exploring', minLevel: 4, altText: "I wanted to help folks find their own path. The right questions, not the easy answers.\n\nYou're already asking good questions. That's the whole point.", altEmotion: 'warm' },
-          { pattern: 'analytical', minLevel: 4, altText: "I wanted to help folks figure out their own path. Help 'em find the right questions—because the right question does most of the work.\n\nYou think that way too, I can tell.", altEmotion: 'knowing' }
+          { pattern: 'helping', minLevel: 4, altText: "I wanted to help folks figure out their own path. Not hand 'em answers—that never works. But help 'em find the right questions?\n\nYou understand that, don't you? It's why you listen the way you do.", altEmotion: 'knowing' }
         ]
       }
     ],
     choices: [
       {
         choiceId: 'beautiful',
-        text: "I respect that.",
+        text: "That's a beautiful purpose.",
         nextNodeId: 'samuel_orb_introduction',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
@@ -744,57 +718,12 @@ export const samuelDialogueNodes: DialogueNode[] = [
           characterId: 'samuel',
           trustChange: 1
         }
-      },
-      {
-        choiceId: 'continue_purpose',
-        text: "[Continue]",
-        nextNodeId: 'samuel_purpose_found_2',
-        pattern: 'patience',
-        skills: ['communication']
       }
     ],
     onEnter: [
       {
         characterId: 'samuel',
         addKnowledgeFlags: ['knows_purpose']
-      }
-    ]
-  },
-  {
-    nodeId: 'samuel_purpose_found_2',
-    speaker: 'Samuel Washington',
-    content: [
-      {
-        text: "That's this place. Sits right between what Birmingham was and what it's still becomin'. I didn't build it - it was already here. Just needed someone to look after it.",
-        emotion: 'warm',
-        variation_id: 'purpose_v1_part2'
-      }
-    ],
-    choices: [
-      {
-        choiceId: 'beautiful_2',
-        text: "That's a beautiful purpose.",
-        nextNodeId: 'samuel_orb_introduction',
-        pattern: 'helping',
-        skills: ['emotionalIntelligence', 'communication'],
-        consequence: {
-          characterId: 'samuel',
-          trustChange: 1
-        }
-      },
-      {
-        choiceId: 'ready_for_my_blueprint_2',
-        text: "I'm ready to find my blueprint.",
-        nextNodeId: 'samuel_orb_introduction',
-        pattern: 'exploring',
-        skills: ['communication']
-      },
-      {
-        choiceId: 'continue_purpose_2',
-        text: "[Continue]",
-        nextNodeId: 'samuel_purpose_found_3',
-        pattern: 'patience',
-        skills: ['communication']
       }
     ]
   },

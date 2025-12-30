@@ -2,6 +2,7 @@ import { GameState, TimeState, PlatformState, GameStateUtils } from './character
 import { EvaluatedChoice } from './dialogue-graph'
 import { calculatePatternGain } from './identity-system'
 import { isValidPattern, getPatternSensation, PatternType } from './patterns'
+import { detectRelationshipUpdates } from './character-relationships'
 
 /**
  * Result of processing a choice
@@ -16,6 +17,7 @@ export interface ChoiceProcessingResult {
         earnOrb?: PatternType
         checkIdentityThreshold?: boolean
         updateSkills?: string[] // List of skills demonstrated
+        relationshipUpdates?: Array<{ fromId: string; toId: string; newType: string }>
     }
 }
 
@@ -29,7 +31,6 @@ export interface ChoiceProcessingResult {
  * Output: Partial<GameState> (Changes to apply)
  */
 export class GameLogic {
-
     /**
      * Calculate Platform Resonance based on Career Values and Patterns
      * Migrated from GrandCentralStateManager.updatePlatformResonance
@@ -191,6 +192,7 @@ export class GameLogic {
 
         return 'undetermined'
     }
+
     /**
      * processChoice
      * The Master Logic Function. Determines all consequences of a player's action.
@@ -198,6 +200,9 @@ export class GameLogic {
     static processChoice(state: GameState, evaluatedChoice: EvaluatedChoice): ChoiceProcessingResult {
         const choice = evaluatedChoice.choice
         let newState = state
+
+        // Capture old flags for comparison
+        const oldFlags = state.globalFlags
 
         // 1. Apply explicit consequences (JSON-defined)
         if (choice.consequence) {
@@ -238,6 +243,44 @@ export class GameLogic {
             events.updateSkills = choice.skills
         }
 
+        // 5. Detect Relationship Updates
+        // Dynamic import to avoid circular dependency if possible, but for now assuming direct import is fine 
+        // given how clean the architecture is. 
+        // We need to import checkRelationshipEvolution from character-relationships, 
+        // but wait, we need the new detection function.
+        // Importing at top level is better.
+
+        // Note: We need to import detectRelationshipUpdates at the top of the file
+        // For now, I will assume it's imported.
+
+        // Actually, to make this work with the tool, I need to add the import first or do it all in one go.
+        // I will rely on a separate replace_file_content for the import if needed, 
+        // or just use valid TS in this block if I can access the function.
+
+        // Let's assume detectRelationshipUpdates is imported.
+        // Wait, I haven't added the import yet. I should do that.
+
+        // Since I can't do multiple disjoint edits easily without multi_replace, 
+        // and I am in a replace_file_content call, I will add the logic here 
+        // and then fix the import.
+
+        // But I need access to detectRelationshipUpdates.
+        // I will add the import in a subsequent step or use fully qualified if it were a module... 
+        // It's a named export.
+
+        // I'll proceed with adding the logic receiving the error about missing import, 
+        // then fix the import.
+
+        // Calculate new flags
+        const newFlags = newState.globalFlags
+
+        // This line will fail compilation until I add the import.
+        // events.relationshipUpdates = detectRelationshipUpdates(oldFlags, newFlags)
+        const relationshipUpdates = detectRelationshipUpdates(oldFlags, newState.globalFlags)
+        if (relationshipUpdates.length > 0) {
+            events.relationshipUpdates = relationshipUpdates
+        }
+
         return {
             newState,
             trustDelta,
@@ -245,4 +288,3 @@ export class GameLogic {
             events
         }
     }
-}

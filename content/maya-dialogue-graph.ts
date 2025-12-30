@@ -176,47 +176,75 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "My parents came here with nothing. Literally nothing. Worked three jobs each just to get me through school.\n\nAnd now their big dream is 'Our daughter, the doctor.' They say it to everyone at church. At the restaurant. To random customers.\n\nHow am I supposed to destroy that?",
+        text: "My parents came here with nothing. And I mean *nothing*.\n\nNow? Now they have a house in Hoover. A restaurant that wins awards. And a daughter who's supposed to be the crown jewel.",
         emotion: 'conflicted',
-        variation_id: 'family_intro_v1',
+        variation_id: 'family_intro_v2_interactive',
         patternReflection: [
-          { pattern: 'helping', minLevel: 5, altText: "My parents came here with nothing. Literally nothing. Worked three jobs each just to get me through school.\n\nYou get it, don't you? You have that look—like you understand what it means to carry someone else's hopes.\n\nTheir big dream is 'Our daughter, the doctor.' How am I supposed to destroy that?", altEmotion: 'vulnerable' },
-          { pattern: 'patience', minLevel: 5, altText: "My parents came here with nothing. Literally nothing. Worked three jobs each.\n\nYou're just... listening. Not jumping to tell me what to do. I appreciate that.\n\nTheir big dream is 'Our daughter, the doctor.' They say it to everyone. And I don't know how to be anything else.", altEmotion: 'conflicted' },
-          { pattern: 'building', minLevel: 5, altText: "My parents came here with nothing. Literally nothing. They built this life from scratch.\n\nAnd their big dream is 'Our daughter, the doctor.' But I build things too—different things. Robot parts and circuits.\n\nHow do I tell them my dream looks different from theirs?", altEmotion: 'conflicted' }
+          { pattern: 'helping', minLevel: 5, altText: "My parents came here with nothing. And I mean *nothing*.\n\nYou know that look people get when they're terrified of losing ground? That's them every day.\n\nNow they have a house, a restaurant... and a daughter who's supposed to be the proof it was all worth it.", altEmotion: 'vulnerable' }
         ]
       }
     ],
     choices: [
       {
-        choiceId: 'family_pressure',
-        text: "That sounds like a lot of pressure.",
+        choiceId: 'family_ask_expectations',
+        text: "Crown jewel? What does that clear path look like?",
+        nextNodeId: 'maya_family_expectations',
+        pattern: 'analytical',
+        skills: ['communication']
+      },
+      {
+        choiceId: 'family_empathy',
+        text: "That sounds heavy to carry alone.",
         nextNodeId: 'maya_family_pressure',
         pattern: 'helping',
-        skills: ['emotionalIntelligence', 'communication'],
+        skills: ['emotionalIntelligence'],
         consequence: {
           characterId: 'maya',
           trustChange: 1
         }
       },
       {
-        choiceId: 'family_dreams',
-        text: "I want to hear what you want.",
+        choiceId: 'family_legacy',
+        text: "They built an empire. You respect that.",
         nextNodeId: 'maya_deflect_passion',
-        pattern: 'exploring',
-        skills: ['communication', 'criticalThinking']
-      },
-      {
-        choiceId: 'family_let_weight_settle',
-        text: "[Let the weight of that land. Some things don't need immediate response.]",
-        nextNodeId: 'maya_deflect_passion',
-        pattern: 'patience',
-        skills: ['emotionalIntelligence', 'culturalCompetence'],
+        pattern: 'building',
+        skills: ['culturalCompetence'],
         consequence: {
           characterId: 'maya',
           trustChange: 1
         }
       }
     ]
+  },
+
+  // ============= NEW INTERACTIVE NODE: EXPECTATIONS =============
+  {
+    nodeId: 'maya_family_expectations',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "'Our daughter, the doctor.'\n\nThey say it to everyone. At church. To random customers at the restaurant. It's not just a career, it's... it's the finish line to their marathon.\n\nIf I trip, I don't just hurt myself. I waste forty years of their sweat.",
+        emotion: 'anxious',
+        variation_id: 'expectations_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'expectations_permission',
+        text: "You aren't a statue they built. You're a person.",
+        nextNodeId: 'maya_deflect_passion',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
+      },
+      {
+        choiceId: 'expectations_reality',
+        text: "But is medicine what YOU want?",
+        nextNodeId: 'maya_deflect_passion',
+        pattern: 'exploring',
+        skills: ['criticalThinking']
+      }
+    ],
+    tags: ['maya_arc', 'backstory_depth']
   },
 
   // ============= DEFLECT PASSION PATH =============
@@ -402,7 +430,8 @@ export const mayaDialogueNodes: DialogueNode[] = [
     onEnter: [
       {
         characterId: 'maya',
-        addKnowledgeFlags: ['knows_anxiety']
+        addKnowledgeFlags: ['knows_anxiety'],
+        thoughtId: 'maker-mindset'
       }
     ],
     tags: ['trust_gate', 'maya_arc', 'bg3_subtext']
@@ -585,10 +614,32 @@ export const mayaDialogueNodes: DialogueNode[] = [
     ],
     choices: [
       {
-        choiceId: 'retreat_continue',
+        choiceId: 'retreat_pivot_accepted',
         text: "Okay. Tell me about UAB.",
         nextNodeId: 'maya_studies_response',
-        pattern: 'patience'
+        pattern: 'patience',
+        skills: ['adaptability']
+      },
+      {
+        choiceId: 'retreat_pivot_challenged',
+        text: "You just lost months of work. You can take a minute.",
+        nextNodeId: 'maya_anxiety_reveal',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'retreat_pivot_curious',
+        text: "What was the hobby supposed to do?",
+        // 'maya_anxiety_reveal' is "late at night...". 
+        // Let's stick to pivot accepted/challenged for now to avoid logic loops.
+        // Or better: Link to 'maya_deflect_passion' ("Dreams are stupid...")
+        nextNodeId: 'maya_deflect_passion',
+        pattern: 'exploring',
+        skills: ['curiosity']
       }
     ],
     tags: ['maya_arc']
@@ -914,14 +965,15 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "I'm glad I could help.",
         nextNodeId: 'maya_reciprocity_ask',
         pattern: 'helping',
-        skills: ["emotionalIntelligence","communication"]
+        skills: ["emotionalIntelligence", "communication"]
       }
     ],
     onEnter: [
       {
         characterId: 'maya',
         addKnowledgeFlags: ['chose_robotics', 'completed_arc'],
-        addGlobalFlags: ['maya_arc_complete']
+        addGlobalFlags: ['maya_arc_complete'],
+        thoughtId: 'maker-mindset'
       }
     ],
     tags: ['ending', 'maya_arc']
@@ -943,14 +995,15 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "That's a beautiful path.",
         nextNodeId: 'maya_reciprocity_ask',
         pattern: 'helping',
-        skills: ["emotionalIntelligence","communication"]
+        skills: ["emotionalIntelligence", "communication"]
       }
     ],
     onEnter: [
       {
         characterId: 'maya',
         addKnowledgeFlags: ['chose_hybrid', 'completed_arc'],
-        addGlobalFlags: ['maya_arc_complete']
+        addGlobalFlags: ['maya_arc_complete'],
+        thoughtId: 'maker-mindset'
       }
     ],
     tags: ['ending', 'maya_arc']
@@ -975,14 +1028,15 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "I believe in you.",
         nextNodeId: 'maya_reciprocity_ask',
         pattern: 'patience',
-        skills: ["emotionalIntelligence","communication"]
+        skills: ["emotionalIntelligence", "communication"]
       }
     ],
     onEnter: [
       {
         characterId: 'maya',
         addKnowledgeFlags: ['chose_self', 'completed_arc'],
-        addGlobalFlags: ['maya_arc_complete']
+        addGlobalFlags: ['maya_arc_complete'],
+        thoughtId: 'maker-mindset'
       }
     ],
     tags: ['ending', 'maya_arc']

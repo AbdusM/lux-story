@@ -515,6 +515,348 @@ export const CHARACTER_RELATIONSHIP_WEB: CharacterRelationshipEdge[] = [
       trustMin: 4,
       charactersMet: ['marcus']
     }
+  },
+
+  // ============================================
+  // JORDAN'S RELATIONSHIPS
+  // ============================================
+
+  // Jordan → Samuel (Seeking direction)
+  {
+    fromCharacterId: 'jordan',
+    toCharacterId: 'samuel',
+    type: 'protege',
+    intensity: 5,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Samuel sees patterns in people. Seven jobs in, I\'m still trying to see the pattern in myself.',
+      privateOpinion: 'He doesn\'t tell me I\'m scattered. He tells me I\'m accumulating. That word changed something.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 3
+    }
+  },
+
+  // Jordan → Maya (Parallel struggles)
+  {
+    fromCharacterId: 'jordan',
+    toCharacterId: 'maya',
+    type: 'parallel',
+    intensity: 4,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Maya? She\'s figuring out what she wants. Same as everyone here.',
+      privateOpinion: 'She\'s torn between what her family wants and what she wants. At least she knows what she wants. That\'s further than me.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 4,
+      charactersMet: ['maya']
+    }
+  },
+
+  // Jordan → Devon (Different approaches)
+  {
+    fromCharacterId: 'jordan',
+    toCharacterId: 'devon',
+    type: 'parallel',
+    intensity: 3,
+    opinions: {
+      sentiment: 'conflicted',
+      publicOpinion: 'Devon knows exactly what he wants to build. Must be nice.',
+      privateOpinion: 'He picked a path and stuck to it. I picked seven. I used to think that made me a failure. Now I\'m not so sure.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 5,
+      charactersMet: ['devon']
+    }
+  },
+
+  // ============================================
+  // KAI'S RELATIONSHIPS
+  // ============================================
+
+  // Kai → Samuel (Mentor guidance)
+  {
+    fromCharacterId: 'kai',
+    toCharacterId: 'samuel',
+    type: 'protege',
+    intensity: 4,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Samuel understands that some decisions can\'t wait for consensus.',
+      privateOpinion: 'He told me once that the hardest part of keeping people safe is accepting you can\'t save everyone. He was right.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 3
+    }
+  },
+
+  // Kai → Marcus (Shared stakes)
+  {
+    fromCharacterId: 'kai',
+    toCharacterId: 'marcus',
+    type: 'ally',
+    intensity: 6,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Marcus and I speak the same language. We both know what it\'s like when seconds matter.',
+      privateOpinion: 'He saves lives in the ER. I prevent the situations that send people there. We\'re two sides of the same coin.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 4,
+      charactersMet: ['marcus']
+    }
+  },
+
+  // Kai → Silas (Crisis kinship)
+  {
+    fromCharacterId: 'kai',
+    toCharacterId: 'silas',
+    type: 'parallel',
+    intensity: 5,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Silas handles system failures. I handle safety failures. Same pressure, different domain.',
+      privateOpinion: 'When everything\'s breaking, we both have to stay calm. That\'s a rare skill. I respect it.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 4,
+      charactersMet: ['silas']
+    }
+  },
+
+  // ============================================
+  // SILAS'S RELATIONSHIPS
+  // ============================================
+
+  // Silas → Samuel (Wisdom seeker)
+  {
+    fromCharacterId: 'silas',
+    toCharacterId: 'samuel',
+    type: 'protege',
+    intensity: 5,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Samuel runs this place like a well-maintained system. Redundancy, graceful degradation, clear priorities.',
+      privateOpinion: 'He told me about failure modes once. Not in systems—in people. How burnout is just another kind of cascade failure. I think about that a lot.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 4
+    }
+  },
+
+  // Silas → Devon (Systems thinking)
+  {
+    fromCharacterId: 'silas',
+    toCharacterId: 'devon',
+    type: 'ally',
+    intensity: 5,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Devon builds systems. I keep them running when they break. We understand each other.',
+      privateOpinion: 'He thinks in dependencies and failure modes. So do I. The difference is he builds for ideal conditions. I plan for worst case.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 4,
+      charactersMet: ['devon']
+    }
+  },
+
+  // Silas → Kai (Mutual respect)
+  {
+    fromCharacterId: 'silas',
+    toCharacterId: 'kai',
+    type: 'parallel',
+    intensity: 5,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Kai knows what it\'s like when everything depends on you staying calm.',
+      privateOpinion: 'We both live in that space between action and consequence. Most people never have to make those calls. We make them every day.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 4,
+      charactersMet: ['kai']
+    }
+  },
+
+  // ============================================
+  // ALEX'S RELATIONSHIPS
+  // ============================================
+
+  // Alex → Samuel (Rediscovering purpose)
+  {
+    fromCharacterId: 'alex',
+    toCharacterId: 'samuel',
+    type: 'protege',
+    intensity: 4,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Samuel doesn\'t ask about credentials. He asks what you\'re curious about. Refreshing.',
+      privateOpinion: 'I was so burned out on the credential chase. He reminded me that learning used to be the point, not the certificate at the end.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 3
+    }
+  },
+
+  // Alex → Maya (Parallel paths)
+  {
+    fromCharacterId: 'alex',
+    toCharacterId: 'maya',
+    type: 'parallel',
+    intensity: 4,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Maya\'s building things, not collecting certificates. Smart.',
+      privateOpinion: 'She\'s doing what I forgot how to do—learning by making. Not learning to prove something.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 4,
+      charactersMet: ['maya']
+    }
+  },
+
+  // Alex → Yaquin (Education alliance)
+  {
+    fromCharacterId: 'alex',
+    toCharacterId: 'yaquin',
+    type: 'ally',
+    intensity: 5,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Yaquin\'s trying to make learning accessible. Same fight, different battlefield.',
+      privateOpinion: 'She actually cares about her students. Not about completion rates or testimonials. That\'s getting rare in EdTech.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 4,
+      charactersMet: ['yaquin']
+    }
+  },
+
+  // ============================================
+  // GRACE'S RELATIONSHIPS
+  // ============================================
+
+  // Grace → Samuel (Learned patience)
+  {
+    fromCharacterId: 'grace',
+    toCharacterId: 'samuel',
+    type: 'mentor',
+    intensity: 6,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Samuel knows about presence. About being there without needing to fix anything.',
+      privateOpinion: 'When I first came here, I was looking for answers about Mom. He gave me something better—permission to not have answers.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 3
+    }
+  },
+
+  // Grace → Marcus (Care professions)
+  {
+    fromCharacterId: 'grace',
+    toCharacterId: 'marcus',
+    type: 'ally',
+    intensity: 5,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Marcus understands care. The real kind, not the performative kind.',
+      privateOpinion: 'He sees patients as people, not conditions. That\'s how I try to see Mom. Not the disease—her.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 4,
+      charactersMet: ['marcus']
+    }
+  },
+
+  // Grace → Maya (Family weight)
+  {
+    fromCharacterId: 'grace',
+    toCharacterId: 'maya',
+    type: 'parallel',
+    intensity: 4,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Maya knows what it\'s like when family expectations feel heavy.',
+      privateOpinion: 'Her pressure is about success. Mine is about loss. Different weight, same shoulders.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 5,
+      charactersMet: ['maya']
+    }
+  },
+
+  // ============================================
+  // ELENA'S RELATIONSHIPS
+  // ============================================
+
+  // Elena → Samuel (Practical wisdom)
+  {
+    fromCharacterId: 'elena',
+    toCharacterId: 'samuel',
+    type: 'mentor',
+    intensity: 5,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Samuel\'s a troubleshooter too. Just with people instead of circuits.',
+      privateOpinion: 'He once told me that listening is like checking continuity. You can\'t fix what you can\'t trace. Best advice I\'ve gotten here.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 3
+    }
+  },
+
+  // Elena → Devon (Technical kinship, different approaches)
+  {
+    fromCharacterId: 'elena',
+    toCharacterId: 'devon',
+    type: 'parallel',
+    intensity: 4,
+    opinions: {
+      sentiment: 'conflicted',
+      publicOpinion: 'Devon thinks in software. I think in hardware. Different layers of the same stack.',
+      privateOpinion: 'He optimizes for elegance. I optimize for "will this not catch fire." Sometimes I wonder if we\'re solving different problems.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 4,
+      charactersMet: ['devon']
+    }
+  },
+
+  // Elena → Rohan (Ground truth alliance)
+  {
+    fromCharacterId: 'elena',
+    toCharacterId: 'rohan',
+    type: 'ally',
+    intensity: 5,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Rohan cares about fundamentals. So do I. You can\'t troubleshoot what you don\'t understand.',
+      privateOpinion: 'He\'s fighting the same fight I am—people who want shortcuts without understanding the basics. Can\'t skip the ground truth.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 5,
+      charactersMet: ['rohan']
+    }
   }
 ]
 
@@ -546,7 +888,7 @@ export function getCharacterMention(
   // Check reveal conditions
   if (relationship.revealConditions) {
     if (relationship.revealConditions.trustMin !== undefined &&
-        context.trust < relationship.revealConditions.trustMin) {
+      context.trust < relationship.revealConditions.trustMin) {
       return { canMention: false, opinion: null, sentiment: null, isDeepReveal: false }
     }
 
@@ -669,4 +1011,42 @@ export function checkRelationshipEvolution(
   }
 
   return { evolved: false }
+}
+
+/**
+ * Detect which relationships have changed based on flag updates
+ * Used to trigger visual feedback when a choice shifts dynamics
+ */
+export function detectRelationshipUpdates(
+  oldFlags: Set<string>,
+  newFlags: Set<string>
+): Array<{ fromId: string; toId: string; newType: string }> {
+  const updates: Array<{ fromId: string; toId: string; newType: string }> = []
+
+  // Optimization: If no new flags added, no dynamic rules can trigger (assuming purely additive flags for now)
+  // Actually, let's just check rules that require flags present in new but not old
+  const addedFlags = new Set([...newFlags].filter(x => !oldFlags.has(x)))
+  if (addedFlags.size === 0) return []
+
+  for (const relationship of CHARACTER_RELATIONSHIP_WEB) {
+    if (!relationship.dynamicRules) continue
+
+    for (const rule of relationship.dynamicRules) {
+      // Check if this rule is NOW satisfied but WAS NOT satisfied before
+      const nowSatisfied = rule.triggerFlags.every(f => newFlags.has(f))
+      const wasSatisfied = rule.triggerFlags.every(f => oldFlags.has(f))
+
+      if (nowSatisfied && !wasSatisfied) {
+        updates.push({
+          fromId: relationship.fromCharacterId,
+          toId: relationship.toCharacterId,
+          newType: rule.newType
+        })
+        // Only trigger one update per relationship per turn to avoid spam/conflicts
+        break
+      }
+    }
+  }
+
+  return updates
 }
