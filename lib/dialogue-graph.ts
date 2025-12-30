@@ -116,6 +116,50 @@ export interface DialogueContent {
     altText: string
     altEmotion?: string
   }>
+
+  /**
+   * Interrupt Window - ME2-style quick-time event during NPC speech
+   *
+   * Creates a brief window where player can act during NPC dialogue.
+   * If triggered: branch to interrupt node, apply bonus consequence.
+   * If missed: continue normally or branch to missedNodeId.
+   *
+   * @example
+   * interrupt: {
+   *   duration: 3000,
+   *   type: 'connection',
+   *   action: 'Reach out and touch her shoulder',
+   *   targetNodeId: 'grace_interrupt_comfort',
+   *   consequence: { characterId: 'grace', trustChange: 2 }
+   * }
+   */
+  interrupt?: InterruptWindow
+}
+
+/**
+ * Interrupt Window - A brief opportunity for player agency during NPC speech
+ *
+ * Inspired by Mass Effect 2's interrupt system. Creates emotional resonance
+ * by letting players choose to act in charged moments.
+ */
+export interface InterruptWindow {
+  /** Duration in milliseconds to respond (2000-4000 recommended) */
+  duration: number
+
+  /** Type of interrupt, affects visual styling */
+  type: 'connection' | 'challenge' | 'silence'
+
+  /** Visual description of the action (e.g., "Reach out") */
+  action: string
+
+  /** Where the interrupt leads if triggered */
+  targetNodeId: string
+
+  /** Optional bonus consequence for taking the interrupt */
+  consequence?: StateChange
+
+  /** Optional alternative node if interrupt is missed (defaults to continuing normally) */
+  missedNodeId?: string
 }
 
 /**

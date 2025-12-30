@@ -90,6 +90,18 @@ export const CHARACTER_VOICES: Record<string, Partial<VoiceStyle>> = {
     tracking: 'tracking-normal',
     weight: 'font-normal',
   },
+  'Elena': {
+    font: 'font-mono',
+    color: 'text-stone-800 dark:text-stone-200',
+    tracking: 'tracking-normal',
+    weight: 'font-normal',
+  },
+  'Grace': {
+    font: 'font-mono',
+    color: 'text-stone-800 dark:text-stone-200',
+    tracking: 'tracking-normal',
+    weight: 'font-normal',
+  },
   'Narrator': {
     font: 'font-mono',
     color: 'text-stone-600 dark:text-stone-400',

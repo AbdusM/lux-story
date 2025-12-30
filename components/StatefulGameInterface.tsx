@@ -22,6 +22,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { DialogueDisplay } from '@/components/DialogueDisplay'
+import { InterruptButton } from '@/components/game/InterruptButton'
 import type { RichTextEffect } from '@/components/RichTextRenderer'
 import { AtmosphericIntro } from '@/components/AtmosphericIntro'
 import { AtmosphericGameBackground } from '@/components/AtmosphericGameBackground'
@@ -44,7 +45,8 @@ import {
   DialogueContent,
   StateConditionEvaluator,
   DialogueGraphNavigator,
-  EvaluatedChoice
+  EvaluatedChoice,
+  InterruptWindow
 } from '@/lib/dialogue-graph'
 import {
   CharacterId,
@@ -78,7 +80,16 @@ import { PATTERN_TYPES, type PatternType, getPatternSensation, isValidPattern } 
 import { calculatePatternGain } from '@/lib/identity-system'
 import { getConsequenceEcho, checkPatternThreshold as checkPatternEchoThreshold, getPatternRecognitionEcho, getVoicedChoiceText, applyPatternReflection, getOrbMilestoneEcho, type ConsequenceEcho } from '@/lib/consequence-echoes'
 import { checkTransformationEligible, type TransformationMoment } from '@/lib/character-transformations'
+import { loadEchoQueue, saveEchoQueue, queueEchosForFlag, getAndUpdateEchosForCharacter, type CrossCharacterEchoQueueState } from '@/lib/cross-character-memory'
+import { CROSS_CHARACTER_ECHOES, getEchosForFlag } from '@/lib/cross-character-echoes'
+import { getArcCompletionFlag } from '@/lib/arc-learning-objectives'
+import { getPatternVoice, incrementPatternVoiceNodeCounter, type PatternVoiceResult, type PatternVoiceContext } from '@/lib/pattern-voices'
+import { PATTERN_VOICE_LIBRARY } from '@/content/pattern-voice-library'
+import { PatternVoice } from '@/components/game/PatternVoice'
 import { useOrbs } from '@/hooks/useOrbs'
+// Engagement Loop Systems
+import { detectReturningPlayer, getWaitingCharacters, getSamuelWaitingSummary, type CharacterWaitingState } from '@/lib/character-waiting'
+import { queueGiftForChoice, queueGiftsForArcComplete, tickGiftCounters, getReadyGiftsForCharacter, consumeGift, serializeGiftQueue, deserializeGiftQueue, type DelayedGift } from '@/lib/delayed-gifts'
 // ProgressToast removed - Journal glow effect replaces it
 import { selectAnnouncement } from '@/lib/platform-announcements'
 import { checkSessionBoundary, incrementBoundaryCounter, type SessionAnnouncement } from '@/lib/session-structure'
@@ -132,6 +143,12 @@ interface GameInterfaceState {
   hasNewMeeting: boolean  // Track first meeting with non-Samuel character
   isMuted: boolean
   isProcessing: boolean
+  activeInterrupt: InterruptWindow | null  // ME2-style interrupt window during dialogue
+  patternVoice: PatternVoiceResult | null  // Disco Elysium-style inner monologue
+  // Engagement Loop State
+  waitingCharacters: CharacterWaitingState[]  // Characters "waiting" for returning player
+  pendingGift: DelayedGift | null  // Gift ready to deliver
+  isReturningPlayer: boolean  // True if player returned after absence
 }
 
 export default function StatefulGameInterface() {
@@ -187,7 +204,12 @@ export default function StatefulGameInterface() {
     hasNewTrust: false,
     hasNewMeeting: false,
     isMuted: false,
-    isProcessing: false
+    isProcessing: false,
+    activeInterrupt: null,
+    patternVoice: null,
+    waitingCharacters: [],
+    pendingGift: null,
+    isReturningPlayer: false
   })
 
   // Derived State for UI Logic
@@ -448,6 +470,28 @@ export default function StatefulGameInterface() {
         gameState.patterns
       )
 
+      // ═══════════════════════════════════════════════════════════════════════════
+      // ENGAGEMENT LOOPS: Detect Returning Player
+      // If player was away for 4+ hours, detect who's been "waiting" for them
+      // ═══════════════════════════════════════════════════════════════════════════
+      const waitingContext = detectReturningPlayer(gameState)
+      const waitingCharacters = waitingContext.isReturningPlayer
+        ? getWaitingCharacters(gameState, waitingContext)
+        : []
+
+      // If returning player and characters are waiting, prepare Samuel's greeting
+      let returnEcho: ConsequenceEcho | null = null
+      if (waitingContext.isReturningPlayer && waitingCharacters.length > 0 && actualCharacterId === 'samuel') {
+        const waitingSummary = getSamuelWaitingSummary(waitingCharacters)
+        if (waitingSummary) {
+          returnEcho = {
+            text: `"${waitingSummary}"`,
+            emotion: 'warm',
+            timing: 'immediate' as const
+          }
+        }
+      }
+
       setState({
         gameState,
         currentNode,
@@ -477,7 +521,7 @@ export default function StatefulGameInterface() {
         achievementNotification: null,
         ambientEvent: null,
         patternSensation: null,
-        consequenceEcho: null,
+        consequenceEcho: returnEcho,
         sessionBoundary: null,
         previousTotalNodes: getTotalNodesVisited(gameState),
         showIdentityCeremony: false,
@@ -485,7 +529,12 @@ export default function StatefulGameInterface() {
         hasNewTrust: false,
         hasNewMeeting: false,
         isMuted: false,
-        showReport: false
+        showReport: false,
+        activeInterrupt: content.interrupt || null,
+        patternVoice: null,
+        waitingCharacters,
+        pendingGift: null,
+        isReturningPlayer: waitingContext.isReturningPlayer
       })
 
       // One-time local mode notice via Samuel (replaces persistent banner)
@@ -808,6 +857,49 @@ export default function StatefulGameInterface() {
       newGameState.currentNodeId = nextNode.nodeId
       newGameState.currentCharacterId = targetCharacterId
 
+      // Check for cross-character echoes (characters referencing other relationships)
+      // Echoes are delivered when entering a character's dialogue after another arc completes
+      if (!consequenceEcho) {
+        const echoQueue = loadEchoQueue()
+        const { echoes: crossEchoes, updatedQueue } = getAndUpdateEchosForCharacter(
+          targetCharacterId,
+          newGameState,
+          echoQueue
+        )
+        if (crossEchoes.length > 0) {
+          // Deliver the first ready echo as the consequence echo
+          consequenceEcho = crossEchoes[0]
+          saveEchoQueue(updatedQueue)
+          logger.info('[StatefulGameInterface] Delivered cross-character echo:', {
+            targetCharacter: targetCharacterId,
+            echoText: consequenceEcho.text.substring(0, 50) + '...'
+          })
+        }
+      }
+
+      // Check for delayed gifts ready to deliver
+      // Gifts surface after N interactions, creating "your choice mattered" moments
+      let pendingGift: DelayedGift | null = null
+      if (!consequenceEcho) {
+        const readyGifts = getReadyGiftsForCharacter(targetCharacterId)
+        if (readyGifts.length > 0) {
+          pendingGift = readyGifts[0]
+          // Deliver gift as consequence echo
+          consequenceEcho = {
+            text: `"${pendingGift.content.text}"`,
+            emotion: pendingGift.content.emotion || 'knowing',
+            timing: 'immediate' as const
+          }
+          consumeGift(pendingGift.id)
+          logger.info('[StatefulGameInterface] Delivered delayed gift:', {
+            giftId: pendingGift.id,
+            sourceCharacter: pendingGift.sourceCharacter,
+            targetCharacter: pendingGift.targetCharacter,
+            giftType: pendingGift.giftType
+          })
+        }
+      }
+
       // Check for session boundary (every 15-30 nodes, only at natural pause points)
       const boundary = checkSessionBoundary(newGameState, state.previousTotalNodes, nextNode)
       let sessionBoundaryAnnouncement: SessionAnnouncement | null = null
@@ -904,7 +996,41 @@ export default function StatefulGameInterface() {
         if (dominantPattern && isValidPattern(dominantPattern)) {
           earnBonusOrbs(dominantPattern, 5) // ORB_EARNINGS.arcCompletion
         }
+
+        // Queue cross-character echoes for this arc completion
+        // Other characters will reference this relationship in future conversations
+        const arcFlag = getArcCompletionFlag(completedArc)
+        const currentQueue = loadEchoQueue()
+        const updatedQueue = queueEchosForFlag(arcFlag, CROSS_CHARACTER_ECHOES, currentQueue)
+        saveEchoQueue(updatedQueue)
+        logger.info('[StatefulGameInterface] Queued cross-character echoes for:', { completedArc, arcFlag })
+
+        // Queue delayed gifts for arc completion
+        // These surface later when visiting other characters
+        const arcGifts = queueGiftsForArcComplete(completedArc as CharacterId)
+        if (arcGifts.length > 0) {
+          logger.info('[StatefulGameInterface] Queued delayed gifts for arc completion:', {
+            completedArc,
+            giftCount: arcGifts.length,
+            targets: arcGifts.map(g => g.targetCharacter)
+          })
+        }
       }
+
+      // Queue delayed gift for this specific choice (if applicable)
+      // Choices can trigger gifts that surface with different characters later
+      const choiceGift = queueGiftForChoice(choice.choice.choiceId, state.currentCharacterId)
+      if (choiceGift) {
+        logger.info('[StatefulGameInterface] Queued delayed gift for choice:', {
+          choiceId: choice.choice.choiceId,
+          sourceCharacter: state.currentCharacterId,
+          targetCharacter: choiceGift.targetCharacter,
+          delay: choiceGift.delayInteractions
+        })
+      }
+
+      // Tick gift counters (interactions decrease until gifts are ready)
+      tickGiftCounters()
 
       // Arc completion summary disabled - breaks immersion
       // Experience summaries available in admin dashboard/journey summary (menus/maps)
@@ -929,6 +1055,17 @@ export default function StatefulGameInterface() {
       }
       const achievementNotification: MetaAchievement | null = null
 
+      // Check for pattern voice (Disco Elysium-style inner monologue)
+      // Voices trigger based on pattern level and context
+      incrementPatternVoiceNodeCounter()
+      const patternVoiceContext: PatternVoiceContext = {
+        trigger: 'node_enter',
+        characterId: targetCharacterId,
+        npcEmotion: content.emotion,
+        nodeTags: nextNode.tags
+      }
+      const patternVoice = getPatternVoice(patternVoiceContext, newGameState, PATTERN_VOICE_LIBRARY)
+
       setState({
         gameState: newGameState,
         currentNode: nextNode,
@@ -952,6 +1089,7 @@ export default function StatefulGameInterface() {
         showConstellation: state.showConstellation,
         pendingFloatingModule: null, // Floating modules disabled
         showJourneySummary: state.showJourneySummary,
+        activeInterrupt: content.interrupt || null, // ME2-style interrupt window
         journeyNarrative: state.journeyNarrative,
         achievementNotification,
         ambientEvent: null,  // Clear ambient event when player acts
@@ -965,7 +1103,12 @@ export default function StatefulGameInterface() {
         hasNewMeeting: isFirstMeeting ? true : state.hasNewMeeting,  // Track first meeting for Constellation nudge
         isMuted: state.isMuted,
         showReport: state.showReport,
-        isProcessing: false // ISP FIX: Unlock UI
+        isProcessing: false, // ISP FIX: Unlock UI
+        patternVoice,  // Disco Elysium-style inner monologue
+        // Engagement Loop State (preserved across choice)
+        waitingCharacters: state.waitingCharacters,
+        pendingGift,
+        isReturningPlayer: state.isReturningPlayer
       })
       GameStateManager.saveGameState(newGameState)
 
@@ -1031,6 +1174,94 @@ export default function StatefulGameInterface() {
       // This ensures we don't accept clicks while the old node is still rendered.
     }
   }, [state.gameState, state.currentNode, state.recentSkills, state.showJournal, state.showConstellation, state.journeyNarrative, state.showJourneySummary, state.currentCharacterId, state.currentContent, state.previousTotalNodes, earnOrb, earnBonusOrbs, getUnacknowledgedMilestone, acknowledgeMilestone])
+
+  /**
+   * Handle interrupt trigger - player acted during NPC speech
+   */
+  const handleInterruptTrigger = useCallback(() => {
+    const interrupt = state.activeInterrupt
+    if (!interrupt || !state.gameState) return
+
+    logger.info('[StatefulGameInterface] Interrupt triggered:', { action: interrupt.action, targetNodeId: interrupt.targetNodeId })
+
+    // Apply interrupt consequence if present
+    let newGameState = state.gameState
+    if (interrupt.consequence) {
+      newGameState = GameStateUtils.applyStateChange(newGameState, interrupt.consequence)
+    }
+
+    // Navigate to the interrupt target node
+    const searchResult = findCharacterForNode(interrupt.targetNodeId, newGameState)
+    if (!searchResult) {
+      logger.error('[StatefulGameInterface] Interrupt target node not found:', { nodeId: interrupt.targetNodeId })
+      setState(prev => ({ ...prev, activeInterrupt: null }))
+      return
+    }
+
+    const targetNode = searchResult.graph.nodes.get(interrupt.targetNodeId)
+    if (!targetNode) {
+      logger.error('[StatefulGameInterface] Interrupt target node not in graph:', { nodeId: interrupt.targetNodeId })
+      setState(prev => ({ ...prev, activeInterrupt: null }))
+      return
+    }
+
+    const content = DialogueGraphNavigator.selectContent(targetNode, [])
+    const choices = StateConditionEvaluator.evaluateChoices(targetNode, newGameState, searchResult.characterId).filter(c => c.visible)
+    const reflected = applyPatternReflection(content.text, content.emotion, content.patternReflection, newGameState.patterns)
+
+    setState(prev => ({
+      ...prev,
+      gameState: newGameState,
+      currentNode: targetNode,
+      currentGraph: searchResult.graph,
+      currentCharacterId: searchResult.characterId,
+      availableChoices: choices,
+      currentContent: reflected.text,
+      currentDialogueContent: { ...content, text: reflected.text, emotion: reflected.emotion },
+      activeInterrupt: content.interrupt || null
+    }))
+
+    GameStateManager.saveGameState(newGameState)
+    useGameStore.getState().setCoreGameState(GameStateUtils.serialize(newGameState))
+  }, [state.activeInterrupt, state.gameState])
+
+  /**
+   * Handle interrupt timeout - player didn't act
+   */
+  const handleInterruptTimeout = useCallback(() => {
+    const interrupt = state.activeInterrupt
+    if (!interrupt || !state.gameState) return
+
+    logger.info('[StatefulGameInterface] Interrupt timed out:', { action: interrupt.action })
+
+    // Clear the interrupt - if there's a missedNodeId, navigate there
+    if (interrupt.missedNodeId) {
+      const searchResult = findCharacterForNode(interrupt.missedNodeId, state.gameState)
+      if (searchResult) {
+        const targetNode = searchResult.graph.nodes.get(interrupt.missedNodeId)
+        if (targetNode) {
+          const content = DialogueGraphNavigator.selectContent(targetNode, [])
+          const choices = StateConditionEvaluator.evaluateChoices(targetNode, state.gameState, searchResult.characterId).filter(c => c.visible)
+          const reflected = applyPatternReflection(content.text, content.emotion, content.patternReflection, state.gameState.patterns)
+
+          setState(prev => ({
+            ...prev,
+            currentNode: targetNode,
+            currentGraph: searchResult.graph,
+            currentCharacterId: searchResult.characterId,
+            availableChoices: choices,
+            currentContent: reflected.text,
+            currentDialogueContent: { ...content, text: reflected.text, emotion: reflected.emotion },
+            activeInterrupt: content.interrupt || null
+          }))
+          return
+        }
+      }
+    }
+
+    // No missedNodeId or it wasn't found - just clear the interrupt
+    setState(prev => ({ ...prev, activeInterrupt: null }))
+  }, [state.activeInterrupt, state.gameState])
 
   /**
    * Navigate back to Samuel's hub after completing a conversation
@@ -1266,7 +1497,9 @@ export default function StatefulGameInterface() {
     kai: 'Kai',
     alex: 'Alex',
     rohan: 'Rohan',
-    silas: 'Silas'
+    silas: 'Silas',
+    elena: 'Elena Vasquez',
+    grace: 'Grace Thompson'
   }
 
   const currentCharacter = state.gameState?.characters.get(state.currentCharacterId)
@@ -1454,6 +1687,29 @@ export default function StatefulGameInterface() {
                     emotion={state.currentDialogueContent?.emotion}
                     patternSensation={state.patternSensation}
                   />
+
+                  {/* ME2-style interrupt button - appears during NPC speech */}
+                  {state.activeInterrupt && (
+                    <div className="mt-6">
+                      <InterruptButton
+                        interrupt={state.activeInterrupt}
+                        onTrigger={handleInterruptTrigger}
+                        onTimeout={handleInterruptTimeout}
+                      />
+                    </div>
+                  )}
+
+                  {/* Disco Elysium-style pattern voice - inner monologue */}
+                  {state.patternVoice && (
+                    <div className="mt-6">
+                      <PatternVoice
+                        pattern={state.patternVoice.pattern}
+                        text={state.patternVoice.text}
+                        style={state.patternVoice.style}
+                        onDismiss={() => setState(prev => ({ ...prev, patternVoice: null }))}
+                      />
+                    </div>
+                  )}
                 </CardContent>
               </Card>
           </div>

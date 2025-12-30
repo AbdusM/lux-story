@@ -22,6 +22,8 @@ import { kaiDialogueGraph } from '@/content/kai-dialogue-graph'
 import { alexDialogueGraph } from '@/content/alex-dialogue-graph'
 import { rohanDialogueGraph } from '@/content/rohan-dialogue-graph'
 import { silasDialogueGraph } from '@/content/silas-dialogue-graph'
+import { elenaDialogueGraph } from '@/content/elena-dialogue-graph'
+import { graceDialogueGraph } from '@/content/grace-dialogue-graph'
 import { DialogueGraph } from './dialogue-graph'
 import { GameState } from './character-state'
 import { logger } from './logger'
@@ -43,7 +45,9 @@ export const DIALOGUE_GRAPHS = {
   kai: kaiDialogueGraph,
   alex: alexDialogueGraph,
   rohan: rohanDialogueGraph,
-  silas: silasDialogueGraph
+  silas: silasDialogueGraph,
+  elena: elenaDialogueGraph,
+  grace: graceDialogueGraph
   // Future expansion:
   // devon_revisit: devonRevisitGraph,
   // jordan_revisit: jordanRevisitGraph
@@ -53,12 +57,12 @@ export const DIALOGUE_GRAPHS = {
  * Character IDs that can be navigated to
  * Must match keys in GameState.characters Map
  */
-export type CharacterId = 'samuel' | 'maya' | 'devon' | 'jordan' | 'marcus' | 'tess' | 'yaquin' | 'kai' | 'alex' | 'rohan' | 'silas'
+export type CharacterId = 'samuel' | 'maya' | 'devon' | 'jordan' | 'marcus' | 'tess' | 'yaquin' | 'kai' | 'alex' | 'rohan' | 'silas' | 'elena' | 'grace'
 
 /**
  * All valid character IDs as an array for validation
  */
-export const CHARACTER_IDS: CharacterId[] = ['samuel', 'maya', 'devon', 'jordan', 'marcus', 'tess', 'yaquin', 'kai', 'alex', 'rohan', 'silas']
+export const CHARACTER_IDS: CharacterId[] = ['samuel', 'maya', 'devon', 'jordan', 'marcus', 'tess', 'yaquin', 'kai', 'alex', 'rohan', 'silas', 'elena', 'grace']
 
 /**
  * Validate if a string is a valid character ID

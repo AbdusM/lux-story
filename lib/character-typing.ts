@@ -128,6 +128,24 @@ export const CHARACTER_TYPING: Record<string, CharacterTypingConfig> = {
     personality: 'weighted'
   },
 
+  // Elena - Electrician practicality, no-nonsense but warm
+  elena: {
+    typingDuration: 650,
+    minChunkDelay: 250,
+    msPerChar: 5,
+    maxChunkDelay: 1100,
+    personality: 'practical'
+  },
+
+  // Grace - Caregiver patience, gentle and unhurried
+  grace: {
+    typingDuration: 900,
+    minChunkDelay: 400,
+    msPerChar: 7,
+    maxChunkDelay: 1700,
+    personality: 'gentle'
+  },
+
   // Narrator - Neutral, standard pacing
   narrator: {
     typingDuration: 700,
