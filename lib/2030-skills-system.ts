@@ -16,7 +16,7 @@ export interface FutureSkills {
   financialLiteracy: number // 0-1 scale
   timeManagement: number // 0-1 scale
   problemSolving: number // 0-1 scale
-  
+
   // Expanded Skills
   systemsThinking: number
   crisisManagement: number
@@ -58,6 +58,7 @@ export interface FutureSkills {
   empathy: number
   accountability: number
   visionaryThinking: number
+  promptEngineering: number // Added for 2025 Toolkit Mastery
 }
 
 export interface CareerPath2030 {
@@ -102,7 +103,7 @@ export class FutureSkillsSystem {
       financialLiteracy: 0.5,
       timeManagement: 0.5,
       problemSolving: 0.5,
-      
+
       systemsThinking: 0.5,
       crisisManagement: 0.5,
       instructionalDesign: 0.5,
@@ -142,9 +143,10 @@ export class FutureSkillsSystem {
       triage: 0.5,
       empathy: 0.5,
       accountability: 0.5,
-      visionaryThinking: 0.5
+      visionaryThinking: 0.5,
+      promptEngineering: 0.5
     }
-    
+
     this.skillHistory = []
     this.initializeCareerPaths()
     this.initializeSkillPrompts()
@@ -310,7 +312,7 @@ export class FutureSkillsSystem {
    */
   analyzeChoiceForSkills(choiceText: string, sceneContext: string): SkillContext[] {
     const skillContexts: SkillContext[] = []
-    
+
     // Analyze each skill type
     Object.keys(this.skills).forEach(skillType => {
       const skillValue = this.calculateSkillValue(choiceText, skillType as keyof FutureSkills)
@@ -324,7 +326,7 @@ export class FutureSkillsSystem {
           explanation: this.getSkillExplanation(skillType as keyof FutureSkills, skillValue)
         }
         skillContexts.push(context)
-        
+
         // Update skill level
         this.updateSkillLevel(skillType as keyof FutureSkills, skillValue)
       }
@@ -332,7 +334,7 @@ export class FutureSkillsSystem {
 
     // Add to history
     this.skillHistory.push(...skillContexts)
-    
+
     // Keep only last 50 skill contexts
     if (this.skillHistory.length > 50) {
       this.skillHistory = this.skillHistory.slice(-50)
@@ -355,7 +357,8 @@ export class FutureSkillsSystem {
       culturalCompetence: ['diverse', 'culture', 'community', 'different', 'inclusive', 'respect', 'background', 'heritage'],
       financialLiteracy: ['money', 'cost', 'budget', 'financial', 'salary', 'income', 'invest', 'save'],
       timeManagement: ['time', 'schedule', 'prioritize', 'deadline', 'urgent', 'plan', 'organize', 'efficient'],
-      problemSolving: ['solve', 'fix', 'resolve', 'address', 'tackle', 'approach', 'strategy', 'solution']
+      problemSolving: ['solve', 'fix', 'resolve', 'address', 'tackle', 'approach', 'strategy', 'solution'],
+      promptEngineering: ['prompt', 'instruct', 'context', 'refine', 'iterate', 'clarify', 'generate', 'output']
     }
 
     const text = choiceText.toLowerCase()
@@ -364,11 +367,11 @@ export class FutureSkillsSystem {
 
     const matches = keywords.filter(keyword => text.includes(keyword)).length
     const baseValue = Math.min(matches / keywords.length, 1)
-    
+
     // Adjust based on text complexity and length
     const wordCount = choiceText.split(' ').length
     const complexityFactor = Math.min(wordCount / 10, 1)
-    
+
     return Math.min(1, baseValue + (complexityFactor * 0.2))
   }
 
@@ -385,7 +388,8 @@ export class FutureSkillsSystem {
       culturalCompetence: 'Working across diverse cultures',
       financialLiteracy: 'Making informed financial decisions',
       timeManagement: 'Organizing and prioritizing tasks',
-      problemSolving: 'Identifying and solving challenges'
+      problemSolving: 'Identifying and solving challenges',
+      promptEngineering: 'Optimizing inputs for AI systems'
     }
     return contexts[skillType] || 'Developing important skills'
   }
@@ -403,7 +407,8 @@ export class FutureSkillsSystem {
       culturalCompetence: 'You\'re building skills to work in diverse, global workplaces.',
       financialLiteracy: 'You\'re developing financial skills that help with career decisions.',
       timeManagement: 'You\'re building organizational skills that employers need.',
-      problemSolving: 'You\'re developing problem-solving abilities that are highly valued.'
+      problemSolving: 'You\'re developing problem-solving abilities that are highly valued.',
+      promptEngineering: 'You\'re learning how to effectively direct AI tools.'
     }
     return explanations[skillType] || 'You\'re building important skills for your future career.'
   }
@@ -443,7 +448,7 @@ export class FutureSkillsSystem {
   getSkillPrompt(skillType: keyof FutureSkills): string | null {
     const prompts = this.skillPrompts.get(skillType)
     if (!prompts) return null
-    
+
     // Return a random prompt for this skill type
     return prompts[Math.floor(Math.random() * prompts.length)]
   }
@@ -453,7 +458,7 @@ export class FutureSkillsSystem {
    */
   getSkillsSummary(): Record<string, unknown> {
     const topSkills = Object.entries(this.skills)
-      .sort(([,a], [,b]) => b - a)
+      .sort(([, a], [, b]) => b - a)
       .slice(0, 5)
       .map(([skill, value]) => ({
         skill: skill.replace(/([A-Z])/g, ' $1').toLowerCase().trim(),
@@ -463,7 +468,7 @@ export class FutureSkillsSystem {
 
     const developingSkills = Object.entries(this.skills)
       .filter(([, value]) => value < 0.6)
-      .sort(([,a], [,b]) => b - a)
+      .sort(([, a], [, b]) => b - a)
       .slice(0, 3)
       .map(([skill, value]) => ({
         skill: skill.replace(/([A-Z])/g, ' $1').toLowerCase().trim(),

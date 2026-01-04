@@ -22,6 +22,13 @@ export class TextProcessor {
   static process(text: string, gameState: GameState): string {
     if (!text) return ''
 
+    // 0. Variable Interpolation (Pre-process)
+    // Inject Player ID for recursive loop narrative
+    if (text.includes('{{playerId}}')) {
+      // Simple string replacement for specific allowed variables
+      text = text.replace(/\{\{playerId\}\}/g, gameState.playerId)
+    }
+
     // Process from innermost conditionals outward
     // Use a non-greedy pattern that matches the innermost {{...}} first
     // Pattern matches {{condition:trueText}} or {{condition:trueText|falseText}}

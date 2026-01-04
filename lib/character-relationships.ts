@@ -857,6 +857,124 @@ export const CHARACTER_RELATIONSHIP_WEB: CharacterRelationshipEdge[] = [
       trustMin: 5,
       charactersMet: ['rohan']
     }
+  },
+
+  // ============================================
+  // ASHA'S RELATIONSHIPS
+  // ============================================
+
+  // Asha → Samuel (Visionary respect)
+  {
+    fromCharacterId: 'asha',
+    toCharacterId: 'samuel',
+    type: 'mentor',
+    intensity: 6,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Samuel sees the big picture. He understands that reality is flexible.',
+      privateOpinion: 'He encourages my visions. Everyone else calls them dreams. He calls them data.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 4
+    }
+  },
+
+  // Asha → Kai (Creative alignment)
+  {
+    fromCharacterId: 'asha',
+    toCharacterId: 'kai',
+    type: 'ally',
+    intensity: 7,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Kai designs specifically, I design abstractly. We need each other.',
+      privateOpinion: 'He focuses on safety, I focus on possibility. Together we make things that are safe enough to be possible.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 4,
+      charactersMet: ['kai']
+    }
+  },
+
+  // ============================================
+  // LIRA'S RELATIONSHIPS
+  // ============================================
+
+  // Lira → Tess (The Curators)
+  {
+    fromCharacterId: 'lira',
+    toCharacterId: 'tess',
+    type: 'protege',
+    intensity: 7,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Tess hears music in everything. She taught me how to listen to the station.',
+      privateOpinion: 'She curates the best sounds. I try to make new ones. She says my silence is the most important sound of all.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 5,
+      charactersMet: ['tess']
+    }
+  },
+
+  // Lira → Samuel (Quiet understanding)
+  {
+    fromCharacterId: 'lira',
+    toCharacterId: 'samuel',
+    type: 'mentor',
+    intensity: 5,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Samuel doesn\'t need words.',
+      privateOpinion: 'He sits with me in silence. It\'s the loudest conversation I have all day.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 4
+    }
+  },
+
+  // ============================================
+  // ZARA'S RELATIONSHIPS
+  // ============================================
+
+  // Zara → Devon (Logic vs Optimization)
+  {
+    fromCharacterId: 'zara',
+    toCharacterId: 'devon',
+    type: 'rival',
+    intensity: 4,
+    opinions: {
+      sentiment: 'conflicted',
+      publicOpinion: 'Devon optimizes for strict metrics. I analyze the variance.',
+      privateOpinion: 'He hates my outliers. I love them. That\'s where the truth hides.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 4,
+      charactersMet: ['devon']
+    }
+  },
+
+  // Zara → Marcus (Data vs Life)
+  {
+    fromCharacterId: 'zara',
+    toCharacterId: 'marcus',
+    type: 'parallel',
+    intensity: 5,
+    opinions: {
+      sentiment: 'neutral',
+      publicOpinion: 'Medical data is messy. Marcus handles the mess.',
+      privateOpinion: 'I tried to model his triage decisions. There\'s a variable I can\'t isolate. He calls it "gut feeling." I call it "unquantified heuristic."',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 4,
+      charactersMet: ['marcus']
+    }
   }
 ]
 

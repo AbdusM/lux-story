@@ -43,7 +43,11 @@ const characterAvatars: Record<string, { animal: AnimalType; name: string }> = {
   'Alex': { animal: 'raccoon', name: 'Alex' },                // Credential skeptic - clever raccoon
   'Silas': { animal: 'mouse', name: 'Silas' },
   'You': { animal: 'player', name: 'You' },                   // Player avatar
-  'Player': { animal: 'player', name: 'Player' }              // Player avatar alias
+  'Player': { animal: 'player', name: 'Player' },              // Player avatar alias
+  'Sector 0': { animal: 'owl', name: 'The Station' },
+  'Sector 1: The Grand Hall': { animal: 'owl', name: 'The Hall' },
+  'Sector 2: The Asset Exchange': { animal: 'owl', name: 'The Broker' },
+  'Sector 3: The Core': { animal: 'owl', name: 'The Origin' }
 }
 
 // Helper to find partial matches (e.g. "Devon Kumar" -> "Devon")
@@ -126,16 +130,16 @@ export function shouldShowAvatar(
 ): boolean {
   // Don't show if no character name
   if (!characterName) return false
-  
+
   // Don't show for continued speakers (avoid duplication)
   if (isContinuedSpeaker) return false
-  
+
   // Don't show for narration
   if (isNarration) return false
-  
+
   // Don't show for player
   if (characterName.toLowerCase() === 'you') return false
-  
+
   // Check if valid character exists (fuzzy match)
   return !!getCharacterConfig(characterName)
 }

@@ -303,6 +303,50 @@ export const SKILL_DEFINITIONS: Record<string, SkillDefinition> = {
         tacticalScenario: 'Use when team alignment is fracturing. Cut through jargon and ambiguity to realign everyone on the singular objective.'
     }
 }
+    ,
+    // --- FUTURE OF WORK (AI) ---
+    aiLiteracy: {
+        id: 'aiLiteracy',
+        title: 'AI Literacy',
+        superpowerName: 'Synthetic Fluency',
+        definition: 'Navigating the new intelligence layer with confidence.',
+        manifesto: 'You treat AI not as a magic box, but as a lever. You know when to push, when to pull, and when to let go.'
+    },
+    agenticCoding: {
+        id: 'agenticCoding',
+        title: 'Agentic Coding',
+        superpowerName: 'System Architecture',
+        definition: 'Directing autonomous agents to build complex systems.',
+        manifesto: 'You do not just write code; you orchestrate its creation. You are the conductor, not just the violinist.'
+    },
+    multimodalCreation: {
+        id: 'multimodalCreation',
+        title: 'Multimodal Creation',
+        superpowerName: 'Reality Synthesis',
+        definition: 'Blending text, image, and voice into cohesive narratives.',
+        manifesto: 'The medium is no longer the message. The vision is the message. You use every tool to manifest it.'
+    },
+    dataDemocratization: {
+        id: 'dataDemocratization',
+        title: 'Data Democratization',
+        superpowerName: 'Conversational Analytics',
+        definition: 'Asking questions of data as if it were a colleague.',
+        manifesto: 'You do not need a translator for the truth. You speak the language of facts directly.'
+    },
+    workflowOrchestration: {
+        id: 'workflowOrchestration',
+        title: 'Workflow Orchestration',
+        superpowerName: 'Friction Removal',
+        definition: 'Automating the mundane to liberate the mind for the meaningful.',
+        manifesto: 'If a machine can do it, a human should not. You preserve your energy for what only you can do.'
+    },
+    groundedResearch: {
+        id: 'groundedResearch',
+        title: 'Grounded Research',
+        superpowerName: 'Source Truth',
+        definition: 'Synthesizing vast knowledge without losing the thread of origin.',
+        manifesto: 'In an ocean of noise, you anchor to the facts. You trust, but you always verify.'
+    }
 
 // Skill-to-character development hints (Moved from SkillsView)
 export const SKILL_CHARACTER_HINTS: Record<string, string[]> = {

@@ -580,29 +580,25 @@ Let me show you what I found today.`,
   {
     nodeId: 'rohan_simulation_setup',
     speaker: 'Rohan',
-    content: [
-      {
-        text: `Look. The screen is a wall of white text on black. A single cursor blinks.
-
-SYSTEM: PROD_DB_MIGRATION_SCRIPT.py
-AUTHOR: CoPilot-v6
-STATUS: RUNNING (DRY RUN)
-
-It looks perfect. It's migrating 40 million user records.
-
-But look at line 402.
-
-'import { user_integrity_check } from "legacy-core"'
-
-'legacy-core' doesn't exist. I deleted it three years ago. The AI remembers a ghost.
-
-If this runs, it will call a null pointer on 40 million people.`,
-        emotion: 'quiet_intensity',
-        variation_id: 'sim_setup_v2',
-        richEffectContext: 'warning', // Terminal Mode
-        useChatPacing: true
-      }
-    ],
+    content: [{
+      text: "The AI is hallucinating a dependency. I need you to prove it wrong.",
+      emotion: 'neutral',
+      variation_id: 'sim_setup_v2'
+    }],
+    simulation: {
+      type: 'chat_negotiation',
+      title: 'Hallucination Debate',
+      taskDescription: 'The AI model insists the efficient code is correct. You must navigate the conversation to force it to acknowledge the "ghost" dependency.',
+      initialContext: {
+        label: 'Chat Session: CoPilot-v6',
+        content: `USER: This import fails. 'legacy-core' doesn't exist.
+AI: usage of 'legacy-core' is standard for 2019 architectures. I have verified the path.
+USER: I deleted that folder myself. It's not there.
+AI: My index shows it exists. Perhaps your local environment is out of sync.`,
+        displayStyle: 'text'
+      },
+      successFeedback: '✓ AI ACKNOWLEDGED ERROR: "Apologies. Re-checking index... Dependency removed."'
+    },
     requiredState: {
       trust: { min: 1 }
     },
@@ -632,7 +628,8 @@ If this runs, it will call a null pointer on 40 million people.`,
     tags: ['simulation', 'rohan_arc', 'immersive_scenario'],
     metadata: {
       sessionBoundary: true  // Session 1: Introduction complete
-    }  },
+    }
+  },
 
   // --- FAILURE STATE 1: HALLUCINATION LOOP ---
   {
@@ -1166,7 +1163,8 @@ I'm going to start an academy. Not 'Coding Bootcamp.' 'First Principles.'`,
     tags: ['rohan_arc'],
     metadata: {
       sessionBoundary: true  // Session 2: Crossroads complete
-    }  },
+    }
+  },
 
   {
     nodeId: 'rohan_legacy_question',

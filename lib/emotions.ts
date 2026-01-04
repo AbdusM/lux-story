@@ -199,7 +199,8 @@ export const NEURO_SKILL_MAPPING = {
 export function determineNervousSystemState(
   anxiety: number,
   trust: number,
-  skills?: Record<string, number>
+  skills?: Record<string, number>,
+  flags?: Set<string> | string[]
 ): NervousSystemState {
   // Normalize anxiety to 0-100 if it seems small
   const normalizedAnxiety = anxiety <= 10 ? anxiety * 10 : anxiety
@@ -219,7 +220,17 @@ export function determineNervousSystemState(
     if (skills.analytical) skillBuffer += skills.analytical * 2
   }
 
-  const effectiveAnxiety = Math.max(0, normalizedAnxiety - trustBuffer - skillBuffer)
+  // 3. Golden Prompt Regulation (The "Simulation Effect")
+  // Successful simulations (Golden Prompts) act as permanent nervous system regulators
+  let flagBuffer = 0
+  if (flags) {
+    const flagSet = Array.isArray(flags) ? new Set(flags) : flags
+    if (flagSet.has('golden_prompt_voice') || flagSet.has('golden_prompt_midjourney') || flagSet.has('golden_prompt_workflow')) {
+      flagBuffer = 30 // Massive stabilizer (e.g. "I know my purpose now")
+    }
+  }
+
+  const effectiveAnxiety = Math.max(0, normalizedAnxiety - trustBuffer - skillBuffer - flagBuffer)
 
   if (effectiveAnxiety > 80) return 'dorsal_vagal'     // Total shutdown
   if (effectiveAnxiety > 40) return 'sympathetic'      // Mobilized/Anxious

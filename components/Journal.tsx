@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
-import { Users, Zap, Compass, TrendingUp, Sparkles, X } from "lucide-react"
+import { Users, Zap, Compass, TrendingUp, Sparkles, X, Crown, Cpu } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useConstellationData } from "@/hooks/useConstellationData"
 import { useInsights } from "@/hooks/useInsights"
@@ -10,18 +10,21 @@ import { PlayerAvatar } from "./CharacterAvatar"
 import { PatternOrb } from "./PatternOrb"
 import { HarmonicsView } from "./HarmonicsView"
 import { EssenceSigil } from "./EssenceSigil"
+import { MasteryView } from "./MasteryView"
 import { ThoughtCabinet } from "./ThoughtCabinet"
+import { RelationshipWeb } from "./RelationshipWeb"
 import { ConstellationGraph } from "./constellation/ConstellationGraph"
 import { SkillConstellationGraph } from "./constellation/SkillConstellationGraph"
 import { SKILL_DEFINITIONS } from "@/lib/skill-definitions"
 import { SwipeablePanel } from "@/components/ui/SwipeablePanel"
+import { ToolkitView } from "./ToolkitView"
 
 interface JournalProps {
   isOpen: boolean
   onClose: () => void
 }
 
-type TabId = 'harmonics' | 'essence' | 'mind' | 'stars'
+type TabId = 'harmonics' | 'essence' | 'mastery' | 'mind' | 'stars' | 'toolkit'
 
 const tabContentVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -49,6 +52,9 @@ export function Journal({ isOpen, onClose }: JournalProps) {
   const hasNewSkills = skills.filter(s => s.state !== 'dormant').length > 0
   const hasActiveThoughts = thoughts.length > 0
   const hasMetCharacters = characters.filter(c => c.hasMet).length > 1 // More than just Samuel
+  // TODO: Add refined "new ability" tracking. For now, assume no badge or always false.
+  const hasNewAbilities = false
+  const hasNewTools = hasNewOrbs // Proxy: New patterns likely mean new tools
 
   // Track which tabs have been viewed this session
   const [viewedTabs, setViewedTabs] = useState<Set<TabId>>(new Set(['harmonics']))
@@ -68,8 +74,10 @@ export function Journal({ isOpen, onClose }: JournalProps) {
   const tabBadges: Record<TabId, boolean> = {
     harmonics: hasNewPatterns && !viewedTabs.has('harmonics'),
     essence: hasNewSkills && !viewedTabs.has('essence'),
+    mastery: hasNewAbilities && !viewedTabs.has('mastery'),
     mind: hasActiveThoughts && !viewedTabs.has('mind'),
-    stars: hasMetCharacters && !viewedTabs.has('stars')
+    stars: hasMetCharacters && !viewedTabs.has('stars'),
+    toolkit: hasNewTools && !viewedTabs.has('toolkit')
   }
 
 
@@ -84,9 +92,11 @@ export function Journal({ isOpen, onClose }: JournalProps) {
   const tabs: { id: TabId; label: string; icon: typeof Users }[] = [
     { id: 'harmonics', label: 'Harmonics', icon: Zap },
     { id: 'essence', label: 'Essence', icon: Compass },
+    { id: 'mastery', label: 'Mastery', icon: Crown },
     { id: 'mind', label: 'Mind', icon: TrendingUp },
     { id: 'stars', label: 'Constellation', icon: Sparkles }, // Renamed back to Constellation per user intent? Or "Network"? Let's stick to "Stars" but upgrade content. 
     // Actually user said "Social Constellation" and "Skill Constellation".
+    { id: 'toolkit', label: 'Toolkit', icon: Cpu },
   ]
 
   // Helper for detail view
@@ -271,7 +281,9 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                   >
                     {activeTab === 'harmonics' && <HarmonicsView />}
                     {activeTab === 'essence' && <EssenceSigil />}
+                    {activeTab === 'mastery' && <MasteryView />}
                     {activeTab === 'mind' && <ThoughtCabinet />}
+                    {activeTab === 'toolkit' && <ToolkitView />}
 
                     {activeTab === 'stars' && (
                       <div className="flex-1 flex flex-col">
@@ -306,13 +318,7 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                         {/* Graph Content */}
                         <div className="flex-1 relative">
                           {constellationMode === 'social' ? (
-                            <ConstellationGraph
-                              characters={characters}
-                            // Social details handled inside graph or can be lifted later. 
-                            // For now, ConstellationGraph has its own behavior, 
-                            // but ideally we'd show social details similarly? 
-                            // User didn't ask to change social, just add skills.
-                            />
+                            <RelationshipWeb />
                           ) : (
                             <SkillConstellationGraph
                               skills={skills}

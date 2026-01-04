@@ -5,6 +5,7 @@ import { PatternType, isValidPattern } from './patterns'
 import { INITIAL_TRUST, TRUST_THRESHOLDS, NARRATIVE_CONSTANTS as GLOBAL_NARRATIVE_CONSTANTS } from './constants'
 import { NervousSystemState, determineNervousSystemState, ChemicalReaction } from './emotions'
 import { calculateReaction } from './chemistry'
+import { ArchivistState } from './lore-system'
 
 /**
  * Core character relationship state
@@ -84,7 +85,7 @@ export interface GameState {
   patterns: PlayerPatterns // Pattern tracking for final revelation
   lastSaved: number
   currentNodeId: string // Current position in dialogue graph
-  currentCharacterId: 'samuel' | 'maya' | 'devon' | 'jordan' | 'marcus' | 'tess' | 'yaquin' | 'kai' | 'alex' | 'rohan' | 'silas' | 'elena' | 'grace' | 'elena' | 'grace' // Current character being talked to
+  currentCharacterId: 'samuel' | 'maya' | 'devon' | 'jordan' | 'marcus' | 'tess' | 'yaquin' | 'kai' | 'alex' | 'rohan' | 'silas' | 'elena' | 'grace' | 'asha' | 'lira' | 'zara' | 'station_entry' | 'grand_hall' | 'market' | 'deep_station'
   thoughts: ActiveThought[]
   episodeNumber: number  // Track which episode the player is on
   sessionStartTime: number  // When current session started (for episode timer)
@@ -101,6 +102,25 @@ export interface GameState {
     safeSpot?: string
     discoveredPaths: string[]
   }
+
+  // Character Check-In System (P1)
+  pendingCheckIns: PendingCheckIn[]
+
+  // Orb Capabilities (P0)
+  unlockedAbilities: string[] // Array of AbilityId
+
+  // Phase 1 Foundation: The Loremaster's Index
+  archivistState: ArchivistState
+}
+
+/**
+ * Check-In State
+ * Tracks characters waiting to revisit the player after an arc
+ */
+export interface PendingCheckIn {
+  characterId: string
+  sessionsRemaining: number // 0 = Ready to talk
+  dialogueNodeId: string    // Where the conversation starts
 }
 
 /**
@@ -190,7 +210,7 @@ export interface SerializableGameState {
   patterns: PlayerPatterns
   lastSaved: number
   currentNodeId: string
-  currentCharacterId: 'samuel' | 'maya' | 'devon' | 'jordan' | 'marcus' | 'tess' | 'yaquin' | 'kai' | 'alex' | 'rohan' | 'silas' | 'elena' | 'grace'
+  currentCharacterId: 'samuel' | 'maya' | 'devon' | 'jordan' | 'marcus' | 'tess' | 'yaquin' | 'kai' | 'alex' | 'rohan' | 'silas' | 'elena' | 'grace' | 'asha' | 'lira' | 'zara' | 'station_entry' | 'grand_hall' | 'market' | 'deep_station'
   thoughts: ActiveThought[]
   episodeNumber: number
   sessionStartTime: number
@@ -204,6 +224,13 @@ export interface SerializableGameState {
     letter: 'kept' | 'torn' | 'shown' | 'burned'
     safeSpot?: string
     discoveredPaths: string[]
+  }
+  pendingCheckIns: PendingCheckIn[]
+  unlockedAbilities: string[]
+  archivistState: {
+    collectedRecords: string[]
+    verifiedLore: string[]
+    sensoryCalibration: Record<string, number>
   }
 }
 
@@ -342,7 +369,8 @@ export class GameStateUtils {
         charState.nervousSystemState = determineNervousSystemState(
           charState.anxiety,
           charState.trust,
-          newState.patterns as unknown as Record<string, number> // The "Neuro-Link": Patterns -> Skills -> Biology
+          newState.patterns as unknown as Record<string, number>, // The "Neuro-Link": Patterns -> Skills -> Biology
+          newState.globalFlags // The "Simulation Effect": Golden Prompts -> Biology
         )
 
         // ISP UPDATE: The Chemistry Engine
@@ -448,9 +476,17 @@ export class GameStateUtils {
       mysteries: { ...state.mysteries },
       time: { ...state.time },
       quietHour: { ...state.quietHour },
-      items: { ...state.items }
+      items: { ...state.items },
+      pendingCheckIns: [...state.pendingCheckIns],
+      unlockedAbilities: [...state.unlockedAbilities],
+      archivistState: {
+        collectedRecords: new Set(state.archivistState.collectedRecords),
+        verifiedLore: new Set(state.archivistState.verifiedLore),
+        sensoryCalibration: { ...state.archivistState.sensoryCalibration }
+      }
     }
   }
+
 
   /**
    * Create a fresh game state for new game
@@ -470,7 +506,16 @@ export class GameStateUtils {
         ['kai', this.createCharacterState('kai')],
         ['alex', this.createCharacterState('alex')],
         ['rohan', this.createCharacterState('rohan')],
-        ['silas', this.createCharacterState('silas')]
+        ['silas', this.createCharacterState('silas')],
+        ['elena', this.createCharacterState('elena')],
+        ['grace', this.createCharacterState('grace')],
+        ['asha', this.createCharacterState('asha')],
+        ['lira', this.createCharacterState('lira')],
+        ['zara', this.createCharacterState('zara')],
+        ['station_entry', this.createCharacterState('station_entry')],
+        ['grand_hall', this.createCharacterState('grand_hall')],
+        ['market', this.createCharacterState('market')],
+        ['deep_station', this.createCharacterState('deep_station')]
       ]),
       globalFlags: new Set(),
       patterns: {
@@ -522,6 +567,18 @@ export class GameStateUtils {
       items: {
         letter: 'kept',
         discoveredPaths: []
+      },
+      pendingCheckIns: [],
+      unlockedAbilities: [],
+      archivistState: {
+        collectedRecords: new Set(),
+        verifiedLore: new Set(),
+        sensoryCalibration: {
+          engineers: 0,
+          syn_bio: 0,
+          data_flow: 0,
+          station_core: 0
+        }
       }
     }
   }
@@ -577,7 +634,14 @@ export class GameStateUtils {
       mysteries: state.mysteries,
       time: state.time,
       quietHour: state.quietHour,
-      items: state.items
+      items: state.items,
+      pendingCheckIns: state.pendingCheckIns,
+      unlockedAbilities: state.unlockedAbilities,
+      archivistState: {
+        collectedRecords: Array.from(state.archivistState.collectedRecords),
+        verifiedLore: Array.from(state.archivistState.verifiedLore),
+        sensoryCalibration: state.archivistState.sensoryCalibration
+      }
     }
   }
 
@@ -599,7 +663,8 @@ export class GameStateUtils {
             nervousSystemState: char.nervousSystemState ?? determineNervousSystemState(
               (10 - char.trust) * 10,
               char.trust,
-              serialized.patterns as unknown as Record<string, number>
+              serialized.patterns as unknown as Record<string, number>,
+              new Set(serialized.globalFlags) // Re-apply simulation effects on load
             ),
             lastReaction: char.lastReaction || null,
             knowledgeFlags: new Set(char.knowledgeFlags)
@@ -650,6 +715,18 @@ export class GameStateUtils {
       items: serialized.items || {
         letter: 'kept',
         discoveredPaths: []
+      },
+      pendingCheckIns: serialized.pendingCheckIns || [],
+      unlockedAbilities: serialized.unlockedAbilities || [],
+      archivistState: {
+        collectedRecords: new Set(serialized.archivistState?.collectedRecords || []),
+        verifiedLore: new Set(serialized.archivistState?.verifiedLore || []),
+        sensoryCalibration: serialized.archivistState?.sensoryCalibration || {
+          engineers: 0,
+          syn_bio: 0,
+          data_flow: 0,
+          station_core: 0
+        }
       }
     }
   }
@@ -728,6 +805,18 @@ export class StateValidation {
       items: {
         letter: 'kept',
         discoveredPaths: []
+      },
+      pendingCheckIns: [],
+      unlockedAbilities: [],
+      archivistState: {
+        collectedRecords: new Set(),
+        verifiedLore: new Set(),
+        sensoryCalibration: {
+          engineers: 0,
+          syn_bio: 0,
+          data_flow: 0,
+          station_core: 0
+        }
       }
     } as GameState
     return !!findCharacterForNode(nodeId, minimalState)

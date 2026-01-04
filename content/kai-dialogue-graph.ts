@@ -1078,7 +1078,8 @@ I thought she was exaggerating. She wasn't.`,
     tags: ['kai_arc', 'corporate_conflict'],
     metadata: {
       sessionBoundary: true  // Session 1: Introduction complete
-    }  },
+    }
+  },
 
   {
     nodeId: 'kai_pushback_story',
@@ -1211,27 +1212,33 @@ What do you do?`,
         useChatPacing: true
       }
     ],
+    simulation: {
+      type: 'visual_canvas',
+      title: 'Safety System Blueprint',
+      taskDescription: 'The current protocol relies entirely on individual compliance. Redesign the workflow to include systemic fail-safes that protect workers even when they make mistakes.',
+      initialContext: {
+        label: 'Blueprint: Zone 4 (Forklift Loading)',
+        content: 'Current State: [Worker] -> [Load Check] -> [Move]\nRisk Factor: High (Human Error)\n\nDrag components to build redundancy:\n[ ] Automated Load Sensors\n[ ] Physical Barriers\n[ ] Teammate Spotter Protocol',
+        displayStyle: 'code'
+      },
+      successFeedback: '✓ SYSTEM REDUNDANCY ACHIEVED.'
+    },
     choices: [
       {
         choiceId: 'sim_pressure_compliance',
-        text: "Follow the foreman's order. Move the load quickly.",
-        nextNodeId: 'kai_sim_fail_compliance',
-        pattern: 'building', // Trying to be "productive"
-        skills: ['adaptability'] 
+        text: 'Deploy: Add "Mandatory PDF Review" before shift.',
+        nextNodeId: 'kai_sim_fail_pdf',
+        pattern: 'building'
       },
       {
         choiceId: 'sim_pressure_safety',
-        text: "Stop. Get out of the cab. Refuse to move.",
+        text: 'Deploy: Install Auto-Sensors + Physical Barriers.',
         nextNodeId: 'kai_sim_success',
-        pattern: 'helping',
-        skills: ['courage', 'leadership']
-      },
-      {
-        choiceId: 'sim_check_manual',
-        text: "Check the safety manual PDF.",
-        nextNodeId: 'kai_sim_fail_pdf',
         pattern: 'analytical',
-        skills: ['informationLiteracy']
+        skills: ['systemsThinking'],
+        consequence: {
+          addGlobalFlags: ['golden_prompt_safety_design']
+        }
       }
     ],
     tags: ['simulation', 'kai_arc', 'immersive_scenario']
@@ -1573,7 +1580,8 @@ What do you think matters more. reaching more people, or reaching people more de
     tags: ['kai_arc', 'philosophical_choice'],
     metadata: {
       sessionBoundary: true  // Session 2: Crossroads complete
-    }  },
+    }
+  },
 
   {
     nodeId: 'kai_climax_decision',

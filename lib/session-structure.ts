@@ -261,53 +261,24 @@ export function checkSessionBoundary(
   const nodesSinceBoundary = currentTotalNodes - (previousTotalNodes || 0)
   const sessionDurationMinutes = getSessionDurationMinutes(gameState)
 
-  // Check if current node allows boundaries
-  const nodeAllowsBoundary = currentNode?.metadata?.sessionBoundary === true
-  const isVulnerabilityNode = currentNode?.tags?.some(tag =>
-    tag.includes('vulnerability') || tag.includes('reveal') || tag.includes('emotional')
-  ) ?? false
+  // 1. Check if this is a Natural Pause Point
+  // We strictly avoid interruptions unless we are at a narrative break
+  const nodeId = currentNode?.nodeId || ''
+  const isPausePoint = isNaturalPausePoint(nodeId, false) // Assumption: Caller handles choices check if needed, but here we just check ID pattern
+  const explicitlyAllowed = currentNode?.metadata?.sessionBoundary === true
 
-  // Never show boundary during vulnerability moments
-  if (isVulnerabilityNode) {
-    return {
-      shouldShow: false,
-      nodesSinceBoundary,
-      sessionDurationMinutes
-    }
-  }
+  // 2. Check Thresholds (Time or Effort) to decide if we *should* pause
+  const hasDoneEnough =
+    nodesSinceBoundary >= MIN_NODES_BETWEEN_BOUNDARIES ||
+    sessionDurationMinutes >= SESSION_THRESHOLDS.MEDIUM
 
-  // Determine if we should show a boundary based on node count
-  const boundaryInterval = getNextBoundaryInterval()
-  const metNodeThreshold = nodesSinceBoundary >= boundaryInterval
+  // 3. Trigger Condition:
+  // MUST be a Natural Pause Point (Explicit or ID-based)
+  // AND MUST have done enough work to warrant a break
+  if ((isPausePoint || explicitlyAllowed) && hasDoneEnough) {
 
-  // Check for time-based announcement (takes precedence, but still respects node)
-  const timeAnnouncement = checkTimeThreshold(
-    sessionDurationMinutes,
-    0 // We'll need to track last announcement time in game state
-  )
-
-  // If node explicitly allows boundary OR we've hit time threshold
-  if (timeAnnouncement && (nodeAllowsBoundary || metNodeThreshold)) {
-    return {
-      shouldShow: true,
-      announcement: timeAnnouncement,
-      nodesSinceBoundary,
-      sessionDurationMinutes
-    }
-  }
-
-  // Show node-based boundary only if:
-  // 1. Node explicitly allows it (preferred), OR
-  // 2. We've exceeded MAX threshold and node doesn't forbid it
-  const shouldShowBoundary =
-    (nodeAllowsBoundary && metNodeThreshold) ||
-    (nodesSinceBoundary >= MAX_NODES_BETWEEN_BOUNDARIES && currentNode?.metadata?.sessionBoundary !== false)
-
-  if (shouldShowBoundary) {
-    // Prefer resolution announcements when node explicitly allows boundary
-    const announcement = nodeAllowsBoundary
-      ? RESOLUTION_ANNOUNCEMENTS[Math.floor(Math.random() * RESOLUTION_ANNOUNCEMENTS.length)]
-      : selectAnnouncement(gameState.sessionBoundariesCrossed)
+    // Prefer resolution announcements for natural breaks
+    const announcement = RESOLUTION_ANNOUNCEMENTS[Math.floor(Math.random() * RESOLUTION_ANNOUNCEMENTS.length)]
 
     return {
       shouldShow: true,
@@ -316,6 +287,11 @@ export function checkSessionBoundary(
       sessionDurationMinutes
     }
   }
+
+  // 4. Fallback: Extended Limit (Safety Valve)
+  // If player goes way too long (25+ minutes or 40+ nodes) without hitting a natural break,
+  // we might eventually need to force it, but for P1.3 we prioritize immersion.
+  // We will NOT force it for now. Immersion > Mechanics.
 
   // No boundary to show
   return {

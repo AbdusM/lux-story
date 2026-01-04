@@ -1141,6 +1141,293 @@ export const CHARACTER_DEPTH: Record<string, CharacterDepthProfile> = {
         }
       }
     ]
+  },
+
+  // ============================================
+  // ELENA - The Architect
+  // ============================================
+  elena: {
+    characterId: 'elena',
+    vulnerabilities: [
+      {
+        id: 'elena_imperfect_creation',
+        topic: 'perfectionism',
+        displayName: 'The Flaw',
+        description: 'Elena fears her best work is behind her.',
+        triggerPhrases: ['perfect', 'flaw', 'mistake', 'broken'],
+        discoveryConditions: { trustMin: 4 },
+        responses: {
+          earlyTrust: 'Nothing is ever perfect.',
+          midTrust: 'I see the cracks in everything I build.',
+          highTrust: 'What if I never make anything beautiful again?'
+        },
+        rewards: {
+          knowledgeFlag: 'knows_elena_fear',
+          trustBonus: 2
+        }
+      }
+    ],
+    strengths: [
+      {
+        id: 'elena_structure',
+        domain: 'structural_integrity',
+        displayName: 'Structural Vision',
+        description: 'Elena sees how things hold together.',
+        demonstrationTopics: ['stability', 'foundation', 'core'],
+        helpDialogue: {
+          offerHelp: 'Let me check the foundations.',
+          successFeedback: 'Solid.',
+          recognitionResponse: 'Structure is truth.'
+        }
+      }
+    ],
+    growthArcs: []
+  },
+
+  // ============================================
+  // GRACE - The Mystic
+  // ============================================
+  grace: {
+    characterId: 'grace',
+    vulnerabilities: [
+      {
+        id: 'grace_compassion_fatigue',
+        topic: 'exhaustion',
+        displayName: 'The Weight of Care',
+        description: 'Grace fears she has nothing left to give.',
+        triggerPhrases: ['tired', 'rest', 'help', 'give'],
+        discoveryConditions: { trustMin: 4 },
+        responses: {
+          earlyTrust: 'I am fine. Others need me.',
+          midTrust: 'Sometimes the well runs dry.',
+          highTrust: 'I pour myself out until there is nothing left. Who refills me?'
+        },
+        rewards: {
+          knowledgeFlag: 'knows_grace_exhaustion',
+          trustBonus: 2
+        }
+      }
+    ],
+    strengths: [
+      {
+        id: 'grace_empathy',
+        domain: 'healing',
+        displayName: 'Deep Empathy',
+        description: 'Grace can heal emotional wounds.',
+        demonstrationTopics: ['pain', 'healing', 'comfort'],
+        helpDialogue: {
+          offerHelp: 'Let me sit with you.',
+          successFeedback: 'Peace returns.',
+          recognitionResponse: 'To heal others is a gift.'
+        }
+      }
+    ],
+    growthArcs: []
+  },
+
+  // ============================================
+  // ALEX - The Tactician
+  // ============================================
+  alex: {
+    characterId: 'alex',
+    vulnerabilities: [
+      {
+        id: 'alex_blind_loyalty',
+        topic: 'orders',
+        displayName: 'The Soldier\'s Dilemma',
+        description: 'Alex fears thinking for himself.',
+        triggerPhrases: ['orders', 'command', 'decide', 'choice'],
+        discoveryConditions: { trustMin: 4 },
+        responses: {
+          earlyTrust: 'Just following protocol.',
+          midTrust: 'It\'s easier when someone else decides.',
+          highTrust: 'If I choose, I might choose wrong. If I follow, the mistake isn\'t mine.'
+        },
+        rewards: {
+          knowledgeFlag: 'knows_alex_doubt',
+          trustBonus: 2
+        }
+      }
+    ],
+    strengths: [
+      {
+        id: 'alex_tactics',
+        domain: 'strategy',
+        displayName: 'Tactical Mind',
+        description: 'Alex sees the threats before they happen.',
+        demonstrationTopics: ['danger', 'plan', 'defense'],
+        helpDialogue: {
+          offerHelp: 'I got your six.',
+          successFeedback: 'threat neutralized.',
+          recognitionResponse: 'Vigilance is survival.'
+        }
+      }
+    ],
+    growthArcs: []
+  },
+
+  // ============================================
+  // ASHA - The Visionary
+  // ============================================
+  asha: {
+    characterId: 'asha',
+    vulnerabilities: [
+      {
+        id: 'asha_reality_disconnect',
+        topic: 'madness',
+        displayName: 'The Edge of Reality',
+        description: 'Asha fears her visions are just delusions.',
+        triggerPhrases: ['real', 'vision', 'dream', 'crazy'],
+        discoveryConditions: { trustMin: 4 },
+        responses: {
+          earlyTrust: 'You wouldn\'t understand.',
+          midTrust: 'It\'s so clear to me. Why can\'t others see it?',
+          highTrust: 'Sometimes I wonder if I\'m seeing the future, or just losing my mind.'
+        },
+        rewards: {
+          knowledgeFlag: 'knows_asha_fear',
+          trustBonus: 2
+        }
+      }
+    ],
+    strengths: [
+      {
+        id: 'asha_inspiration',
+        domain: 'vision',
+        displayName: 'Pure Vision',
+        description: 'Asha can see what could be.',
+        demonstrationTopics: ['future', 'possibility', 'dream'],
+        helpDialogue: {
+          offerHelp: 'Look closer. See the potential.',
+          successFeedback: 'Now you see.',
+          recognitionResponse: 'The future is waiting.'
+        }
+      }
+    ],
+    growthArcs: []
+  },
+
+  // ============================================
+  // SILAS - The Maintainer
+  // ============================================
+  silas: {
+    characterId: 'silas',
+    vulnerabilities: [
+      {
+        id: 'silas_obsolescence',
+        topic: 'useless',
+        displayName: 'Rust',
+        description: 'Silas fears being replaced by something newer.',
+        triggerPhrases: ['new', 'replace', 'old', 'broken'],
+        discoveryConditions: { trustMin: 4 },
+        responses: {
+          earlyTrust: 'Still got some miles in me.',
+          midTrust: 'They don\'t make \'em like they used to.',
+          highTrust: 'One day, I\'ll be the junk I\'m sweeping up. Just... scrap.'
+        },
+        rewards: {
+          knowledgeFlag: 'knows_silas_fear',
+          trustBonus: 2
+        }
+      }
+    ],
+    strengths: [
+      {
+        id: 'silas_maintenance',
+        domain: 'repair',
+        displayName: 'The Fixer',
+        description: 'Silas can fix anything broken.',
+        demonstrationTopics: ['broken', 'fix', 'repair'],
+        helpDialogue: {
+          offerHelp: 'Give it here. I\'ll sort it.',
+          successFeedback: 'Good as new.',
+          recognitionResponse: 'Everything can be fixed.'
+        }
+      }
+    ],
+    growthArcs: []
+  },
+
+  // ============================================
+  // LIRA - The Listener
+  // ============================================
+  lira: {
+    characterId: 'lira',
+    vulnerabilities: [
+      {
+        id: 'lira_lost_voice',
+        topic: 'silence',
+        displayName: 'The Muted Song',
+        description: 'Lira fears her voice has no power.',
+        triggerPhrases: ['sing', 'speak', 'heard', 'listen'],
+        discoveryConditions: { trustMin: 4 },
+        responses: {
+          earlyTrust: 'I prefer to listen.',
+          midTrust: 'My songs are small. Quiet.',
+          highTrust: 'I tried to sing once. No one listened. So I stopped.'
+        },
+        rewards: {
+          knowledgeFlag: 'knows_lira_silence',
+          trustBonus: 2
+        }
+      }
+    ],
+    strengths: [
+      {
+        id: 'lira_harmony',
+        domain: 'connection',
+        displayName: 'Harmonic Resonance',
+        description: 'Lira hears the truth in silence.',
+        demonstrationTopics: ['listen', 'hear', 'understand'],
+        helpDialogue: {
+          offerHelp: 'Listen closely.',
+          successFeedback: 'You hear it now.',
+          recognitionResponse: 'The world is music.'
+        }
+      }
+    ],
+    growthArcs: []
+  },
+
+  // ============================================
+  // ZARA - The Analyst
+  // ============================================
+  zara: {
+    characterId: 'zara',
+    vulnerabilities: [
+      {
+        id: 'zara_uncertainty',
+        topic: 'chaos',
+        displayName: 'The Variable',
+        description: 'Zara fears what cannot be calculated.',
+        triggerPhrases: ['unknown', 'random', 'chaos', 'guess'],
+        discoveryConditions: { trustMin: 4 },
+        responses: {
+          earlyTrust: 'There is always a probability.',
+          midTrust: 'Outliers are... disturbing.',
+          highTrust: 'I can calculate everything except why. Why are we here? There is no formula for that.'
+        },
+        rewards: {
+          knowledgeFlag: 'knows_zara_fear',
+          trustBonus: 2
+        }
+      }
+    ],
+    strengths: [
+      {
+        id: 'zara_prediction',
+        domain: 'analysis',
+        displayName: 'Predictive Logic',
+        description: 'Zara sees the likely outcome.',
+        demonstrationTopics: ['outcome', 'result', 'future'],
+        helpDialogue: {
+          offerHelp: 'Let me run the numbers.',
+          successFeedback: 'The data holds.',
+          recognitionResponse: 'Logic is safety.'
+        }
+      }
+    ],
+    growthArcs: []
   }
 }
 
@@ -1229,7 +1516,7 @@ export function getAvailableStrengths(
     if (!strength.revealConditions) return true
 
     if (strength.revealConditions.trustMin !== undefined &&
-        context.trust < strength.revealConditions.trustMin) {
+      context.trust < strength.revealConditions.trustMin) {
       return false
     }
 
@@ -1307,4 +1594,3 @@ export function getDiscoveryHints(
   }
 
   return hints
-}

@@ -24,6 +24,15 @@ import { rohanDialogueGraph } from '@/content/rohan-dialogue-graph'
 import { silasDialogueGraph } from '@/content/silas-dialogue-graph'
 import { elenaDialogueGraph } from '@/content/elena-dialogue-graph'
 import { graceDialogueGraph } from '@/content/grace-dialogue-graph'
+import { devonRevisitGraph } from '@/content/devon-revisit-graph'
+import { graceRevisitGraph } from '@/content/grace-revisit-graph'
+import { ashaDialogueGraph } from '@/content/asha-dialogue-graph'
+import { liraDialogueGraph } from '@/content/lira-dialogue-graph'
+import { zaraDialogueGraph } from '@/content/zara-dialogue-graph'
+import { stationEntryGraph } from '@/content/station-entry-graph'
+import { grandHallGraph } from '@/content/grand-hall-graph'
+import { marketGraph } from '@/content/market-graph'
+import { deepStationGraph } from '@/content/deep-station-graph'
 import { DialogueGraph } from './dialogue-graph'
 import { GameState } from './character-state'
 import { logger } from './logger'
@@ -47,26 +56,25 @@ export const DIALOGUE_GRAPHS = {
   rohan: rohanDialogueGraph,
   silas: silasDialogueGraph,
   elena: elenaDialogueGraph,
-  grace: graceDialogueGraph
-  // Future expansion:
-  // devon_revisit: devonRevisitGraph,
-  // jordan_revisit: jordanRevisitGraph
+  grace: graceDialogueGraph,
+  devon_revisit: devonRevisitGraph,
+  grace_revisit: graceRevisitGraph,
+  asha: ashaDialogueGraph,
+  lira: liraDialogueGraph,
+  zara: zaraDialogueGraph,
+  station_entry: stationEntryGraph,
+  grand_hall: grandHallGraph,
+  market: marketGraph,
+  deep_station: deepStationGraph,
 } as const
 
 /**
  * Character IDs that can be navigated to
- * Must match keys in GameState.characters Map
  */
-export type CharacterId = 'samuel' | 'maya' | 'devon' | 'jordan' | 'marcus' | 'tess' | 'yaquin' | 'kai' | 'alex' | 'rohan' | 'silas' | 'elena' | 'grace'
+export type CharacterId = 'samuel' | 'maya' | 'devon' | 'jordan' | 'marcus' | 'tess' | 'yaquin' | 'kai' | 'alex' | 'rohan' | 'silas' | 'elena' | 'grace' | 'asha' | 'lira' | 'zara' | 'station_entry' | 'grand_hall' | 'market' | 'deep_station'
 
-/**
- * All valid character IDs as an array for validation
- */
-export const CHARACTER_IDS: CharacterId[] = ['samuel', 'maya', 'devon', 'jordan', 'marcus', 'tess', 'yaquin', 'kai', 'alex', 'rohan', 'silas', 'elena', 'grace']
+export const CHARACTER_IDS: CharacterId[] = ['samuel', 'maya', 'devon' | 'jordan' | 'marcus' | 'tess' | 'yaquin' | 'kai' | 'alex' | 'rohan' | 'silas' | 'elena' | 'grace' | 'asha' | 'lira' | 'zara' | 'station_entry' | 'grand_hall' | 'market' | 'deep_station']
 
-/**
- * Validate if a string is a valid character ID
- */
 export function isValidCharacterId(id: string): id is CharacterId {
   return CHARACTER_IDS.includes(id as CharacterId)
 }
@@ -97,17 +105,17 @@ export function getGraphForCharacter(
     return DIALOGUE_GRAPHS.yaquin_revisit
   }
 
-  // DEVON: Future revisit logic
-  // if (characterId === 'devon' && gameState.globalFlags.has('devon_arc_complete')) {
-  //   logger.debug('Loading Devon revisit graph (arc completed)', { operation: 'graph-registry.devon-revisit' })
-  //   return DIALOGUE_GRAPHS.devon_revisit
-  // }
+  // DEVON: Revisit logic
+  if (characterId === 'devon' && gameState.globalFlags.has('devon_arc_complete')) {
+    logger.debug('Loading Devon revisit graph (arc completed)', { operation: 'graph-registry.devon-revisit' })
+    return DIALOGUE_GRAPHS.devon_revisit
+  }
 
-  // JORDAN: Future revisit logic
-  // if (characterId === 'jordan' && gameState.globalFlags.has('jordan_arc_complete')) {
-  //   logger.debug('Loading Jordan revisit graph (arc completed)', { operation: 'graph-registry.jordan-revisit' })
-  //   return DIALOGUE_GRAPHS.jordan_revisit
-  // }
+  // GRACE: Revisit logic
+  if (characterId === 'grace' && gameState.globalFlags.has('grace_arc_complete')) {
+    logger.debug('Loading Grace revisit graph (arc completed)', { operation: 'graph-registry.grace-revisit' })
+    return DIALOGUE_GRAPHS.grace_revisit
+  }
 
   // DEFAULT: Use base graph for this character
   return DIALOGUE_GRAPHS[characterId]

@@ -434,7 +434,7 @@ Forget the textbook. Chapter 4's garbage. Here's how you actually mix alginate w
         nextNodeId: 'yaquin_bad_ending',
         pattern: 'analytical',
         consequence: {
-           addGlobalFlags: ['yaquin_chose_safe'] 
+          addGlobalFlags: ['yaquin_chose_safe']
         }
       }
     ]
@@ -605,7 +605,8 @@ All day. Don't fix teeth. fix fear. That's what I'm selling.`,
     tags: ['ending', 'yaquin_arc'],
     metadata: {
       sessionBoundary: true  // Session 1: Introduction complete
-    }  },
+    }
+  },
 
   {
     nodeId: 'yaquin_audience_first',
@@ -792,6 +793,21 @@ Great content, wrong format. Need teacher, not YouTube.
         nextNodeId: 'yaquin_p2_refund_pressure',
         pattern: 'building',
         skills: ['pragmatism']
+      },
+      {
+        choiceId: 'p2_synthetic_director',
+        text: "[AI] Stop doing the manual labor. Design the curriculum, let a synthetic system deliver it.",
+        nextNodeId: 'yaquin_p2_format_decision',
+        pattern: 'patience',
+        visibleCondition: {
+          patterns: { patience: { min: 6 } }
+        },
+        consequence: {
+          characterId: 'yaquin',
+          trustChange: 2,
+          addKnowledgeFlags: ['used_synthetic_artist_insight'],
+          thoughtId: 'synthetic-artist'
+        }
       }
     ],
     tags: ['phase2', 'yaquin_arc', 'crisis']
@@ -982,7 +998,8 @@ What would you do?`,
     tags: ['phase2', 'yaquin_arc', 'product_strategy'],
     metadata: {
       sessionBoundary: true  // Session 2: Crossroads complete
-    }  },
+    }
+  },
 
   {
     nodeId: 'yaquin_p2_scaling_offer',

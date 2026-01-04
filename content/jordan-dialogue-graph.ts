@@ -618,26 +618,32 @@ And hundreds of conversations. Everyone's going somewhere.`,
     tags: ['job_revelation', 'jordan_arc'],
     metadata: {
       sessionBoundary: true  // Session 1: Introduction complete
-    }  },
+    }
+  },
 
   // ============= JOB REVEAL 7: UX Designer Current (Immersive Scenario) =============
   {
     nodeId: 'jordan_job_reveal_7',
     speaker: 'Jordan Packard',
     content: [{
-      // NOTE: Removed "She opens her laptop" - screen content shown, not process
-      text: `BJCC career fair. I stumbled into the Health Tech booth. They were looking for a UX designer.
-
-Chaotic whiteboard app. User journey for a diabetes management app.
-
-Look at this. This is what I do now.
-
-I'm seeing a retention failure at Day 3. Users download, setup... and then quit.`,
+      text: "The Product Manager is pinging me. We're launch-critical.",
       emotion: 'focused',
-      variation_id: 'job7_scenario_v2',
-      richEffectContext: 'warning', // UX Analysis Mode
-      useChatPacing: true
+      variation_id: 'job7_scenario_v2'
     }],
+    simulation: {
+      type: 'chat_negotiation',
+      title: 'Launch Crisis: Day 0',
+      taskDescription: 'The PM wants to ship the feature without the new onboarding flow to meet the deadline. You know this will cause 80% churn.',
+      initialContext: {
+        label: 'Slack: #product-launch',
+        content: `PM_Alex: We're red on timeline. Cut the new onboarding tour.
+Jordan: That's the retention fix. We can't cut it.
+PM_Alex: Marketing promises go live at 9 AM. The code isn't ready.
+PM_Alex: Ship the old flow. We'll patch it later.`,
+        displayStyle: 'text'
+      },
+      successFeedback: '✓ PM AGREED: "Fine. We delay launch 24h. Better than churn."'
+    },
     requiredState: {
       trust: { min: 8 },
       hasKnowledgeFlags: ['knows_job_6'],
@@ -696,7 +702,7 @@ It's not about the pixels. It's deeper than that. If I can't figure this out, ma
         nextNodeId: 'jordan_bad_ending',
         pattern: 'patience',
         consequence: {
-           addGlobalFlags: ['jordan_chose_shallow'] // BAD ENDING
+          addGlobalFlags: ['jordan_chose_shallow'] // BAD ENDING
         }
       }
     ],
@@ -1171,7 +1177,7 @@ Those students need to hear that nothing is wasted.
         text: "That's the speech they need to hear.",
         nextNodeId: 'jordan_farewell_accumulation',
         pattern: 'helping',
-        skills: ["emotionalIntelligence","communication"]
+        skills: ["emotionalIntelligence", "communication"]
       }
     ],
     onEnter: [{
@@ -1235,13 +1241,14 @@ Thank you. Good luck with your journey.`,
         text: "Good luck with your speech.",
         nextNodeId: samuelEntryPoints.JORDAN_REFLECTION_GATEWAY,
         pattern: 'helping',
-        skills: ["emotionalIntelligence","communication"]
+        skills: ["emotionalIntelligence", "communication"]
       }
     ],
     tags: ['transition', 'jordan_arc', 'bittersweet'],
     metadata: {
       sessionBoundary: true  // Session 2: Arc complete
-    }  },
+    }
+  },
 
   {
     nodeId: 'jordan_chooses_birmingham',
@@ -1291,7 +1298,7 @@ Good luck with yours.`,
         text: "Maybe so. Good luck with the speech.",
         nextNodeId: samuelEntryPoints.JORDAN_REFLECTION_GATEWAY,
         pattern: 'helping',
-        skills: ["emotionalIntelligence","communication"]
+        skills: ["emotionalIntelligence", "communication"]
       }
     ],
     tags: ['transition', 'jordan_arc', 'bittersweet']
@@ -1315,7 +1322,7 @@ That's the speech. Raw. Honest. Just the truth.`,
         text: "That vulnerability is your most powerful teaching tool.",
         nextNodeId: 'jordan_farewell_internal',
         pattern: 'helping',
-        skills: ["emotionalIntelligence","communication","leadership"]
+        skills: ["emotionalIntelligence", "communication", "leadership"]
       }
     ],
     onEnter: [{

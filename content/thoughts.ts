@@ -10,6 +10,11 @@ export interface ThoughtDefinition {
   iconName: 'Brain' | 'Leaf' | 'Hammer' | 'Shield' | 'Zap' | 'Heart'
   color: 'amber' | 'blue' | 'emerald' | 'purple' | 'rose' | 'slate'
   maxProgress: number // Usually 100
+  // P3 Logic: Trigger conditions
+  unlockCondition?: {
+    pattern?: { type: 'analytical' | 'helping' | 'building' | 'patience' | 'exploring', min: number }
+    // We can add flags later if needed, but for now patterns are the driver
+  }
 }
 
 export interface ActiveThought extends ThoughtDefinition {
@@ -27,7 +32,8 @@ export const THOUGHT_REGISTRY: Record<string, ThoughtDefinition> = {
     description: 'Birmingham\'s steel history isn\'t just dust; it\'s the foundation. You are starting to see strength in the old structures.',
     iconName: 'Hammer',
     color: 'amber',
-    maxProgress: 100
+    maxProgress: 100,
+    unlockCondition: { pattern: { type: 'building', min: 3 } }
   },
   'hands-on-truth': {
     id: 'hands-on-truth',
@@ -35,7 +41,8 @@ export const THOUGHT_REGISTRY: Record<string, ThoughtDefinition> = {
     description: 'Theory only takes you so far. Real understanding comes from touching, building, failing, and trying again.',
     iconName: 'Hammer',
     color: 'amber',
-    maxProgress: 100
+    maxProgress: 100,
+    unlockCondition: { pattern: { type: 'building', min: 6 } }
   },
   'maker-mindset': {
     id: 'maker-mindset',
@@ -43,7 +50,8 @@ export const THOUGHT_REGISTRY: Record<string, ThoughtDefinition> = {
     description: 'Every problem is a project waiting to be built. You find yourself mentally sketching solutions before others finish describing issues.',
     iconName: 'Hammer',
     color: 'amber',
-    maxProgress: 100
+    maxProgress: 100,
+    unlockCondition: { pattern: { type: 'building', min: 9 } }
   },
 
   // ============= EXPLORING PATTERN THOUGHTS =============
@@ -53,7 +61,8 @@ export const THOUGHT_REGISTRY: Record<string, ThoughtDefinition> = {
     description: 'Nature is reclaiming the city. You notice how life finds a way through the concrete cracks.',
     iconName: 'Leaf',
     color: 'emerald',
-    maxProgress: 100
+    maxProgress: 100,
+    unlockCondition: { pattern: { type: 'exploring', min: 3 } }
   },
   'curious-wanderer': {
     id: 'curious-wanderer',
@@ -61,7 +70,8 @@ export const THOUGHT_REGISTRY: Record<string, ThoughtDefinition> = {
     description: 'Not all who wander are lost. Some are just gathering data. You\'ve started seeing dead ends as detours, not defeats.',
     iconName: 'Leaf',
     color: 'emerald',
-    maxProgress: 100
+    maxProgress: 100,
+    unlockCondition: { pattern: { type: 'exploring', min: 6 } }
   },
   'hidden-connections': {
     id: 'hidden-connections',
@@ -69,7 +79,8 @@ export const THOUGHT_REGISTRY: Record<string, ThoughtDefinition> = {
     description: 'The world is full of invisible threads. You\'ve begun noticing how seemingly unrelated things connect in unexpected ways.',
     iconName: 'Leaf',
     color: 'emerald',
-    maxProgress: 100
+    maxProgress: 100,
+    unlockCondition: { pattern: { type: 'exploring', min: 9 } }
   },
 
   // ============= ANALYTICAL PATTERN THOUGHTS =============
@@ -79,7 +90,8 @@ export const THOUGHT_REGISTRY: Record<string, ThoughtDefinition> = {
     description: 'You are beginning to deconstruct the world around you, seeking patterns in the chaos.',
     iconName: 'Zap',
     color: 'blue',
-    maxProgress: 100
+    maxProgress: 100,
+    unlockCondition: { pattern: { type: 'analytical', min: 3 } }
   },
   'pattern-seeker': {
     id: 'pattern-seeker',
@@ -87,7 +99,8 @@ export const THOUGHT_REGISTRY: Record<string, ThoughtDefinition> = {
     description: 'Where others see noise, you see signal. The world reveals its structure to those who look closely enough.',
     iconName: 'Brain',
     color: 'blue',
-    maxProgress: 100
+    maxProgress: 100,
+    unlockCondition: { pattern: { type: 'analytical', min: 6 } }
   },
   'question-everything': {
     id: 'question-everything',
@@ -95,7 +108,8 @@ export const THOUGHT_REGISTRY: Record<string, ThoughtDefinition> = {
     description: 'The first answer is rarely the right one. You\'ve learned to dig deeper, ask "why" one more time.',
     iconName: 'Brain',
     color: 'blue',
-    maxProgress: 100
+    maxProgress: 100,
+    unlockCondition: { pattern: { type: 'analytical', min: 9 } }
   },
 
   // ============= HELPING PATTERN THOUGHTS =============
@@ -105,7 +119,8 @@ export const THOUGHT_REGISTRY: Record<string, ThoughtDefinition> = {
     description: 'Success isn\'t solitary. You feel the invisible threads connecting every person in the station.',
     iconName: 'Heart',
     color: 'rose',
-    maxProgress: 100
+    maxProgress: 100,
+    unlockCondition: { pattern: { type: 'helping', min: 3 } }
   },
   'empathy-bridge': {
     id: 'empathy-bridge',
@@ -113,7 +128,8 @@ export const THOUGHT_REGISTRY: Record<string, ThoughtDefinition> = {
     description: 'Understanding someone else\'s struggle isn\'t weakness. it\'s the first step to making real change.',
     iconName: 'Heart',
     color: 'rose',
-    maxProgress: 100
+    maxProgress: 100,
+    unlockCondition: { pattern: { type: 'helping', min: 6 } }
   },
   'collective-strength': {
     id: 'collective-strength',
@@ -121,7 +137,8 @@ export const THOUGHT_REGISTRY: Record<string, ThoughtDefinition> = {
     description: 'One person can spark change. Many people can sustain it. You\'re beginning to see leadership as lifting others up.',
     iconName: 'Heart',
     color: 'rose',
-    maxProgress: 100
+    maxProgress: 100,
+    unlockCondition: { pattern: { type: 'helping', min: 9 } }
   },
 
   // ============= PATIENCE PATTERN THOUGHTS =============
@@ -131,7 +148,8 @@ export const THOUGHT_REGISTRY: Record<string, ThoughtDefinition> = {
     description: 'Some things can\'t be rushed. You\'re learning that the best outcomes often require the most patience.',
     iconName: 'Shield',
     color: 'purple',
-    maxProgress: 100
+    maxProgress: 100,
+    unlockCondition: { pattern: { type: 'patience', min: 3 } }
   },
   'steady-hand': {
     id: 'steady-hand',
@@ -139,7 +157,8 @@ export const THOUGHT_REGISTRY: Record<string, ThoughtDefinition> = {
     description: 'Panic solves nothing. You\'ve started finding calm in moments that used to feel urgent.',
     iconName: 'Shield',
     color: 'purple',
-    maxProgress: 100
+    maxProgress: 100,
+    unlockCondition: { pattern: { type: 'patience', min: 6 } }
   },
   'trust-process': {
     id: 'trust-process',
@@ -147,11 +166,12 @@ export const THOUGHT_REGISTRY: Record<string, ThoughtDefinition> = {
     description: 'Growth is invisible until it isn\'t. You\'re learning to trust that today\'s effort becomes tomorrow\'s capability.',
     iconName: 'Shield',
     color: 'purple',
-    maxProgress: 100
+    maxProgress: 100,
+    unlockCondition: { pattern: { type: 'patience', min: 9 } }
   },
 
   // ============= IDENTITY OFFERING THOUGHTS (Threshold 5) =============
-  // These auto-trigger when pattern crosses threshold 5
+  // These auto-trigger when pattern crosses threshold 5 (Handled by IdentitySystem)
   // Disco Elysium principle: "Is this who you are?"
   'identity-analytical': {
     id: 'identity-analytical',
@@ -160,6 +180,7 @@ export const THOUGHT_REGISTRY: Record<string, ThoughtDefinition> = {
     iconName: 'Brain',
     color: 'blue',
     maxProgress: 100
+    // No unlock condition here, handled specially by identity system
   },
   'identity-patience': {
     id: 'identity-patience',
@@ -192,6 +213,52 @@ export const THOUGHT_REGISTRY: Record<string, ThoughtDefinition> = {
     iconName: 'Hammer',
     color: 'amber',
     maxProgress: 100
+  }
+  // ============= AI PARADIGM SHIFTS (P8) =============
+  'agentic-coder': {
+    id: 'agentic-coder',
+    title: 'The Agentic Coder',
+    description: 'You are no longer just writing code; you are orchestrating it. The machine predicts your intent, treating software as a conversation rather than a script.\n\nParadigm Shift: From "Typing" to "Architecting".',
+    iconName: 'Zap',
+    color: 'blue',
+    maxProgress: 100,
+    unlockCondition: { pattern: { type: 'building', min: 6 } }
+  },
+  'synthetic-artist': {
+    id: 'synthetic-artist',
+    title: 'The Synthetic Artist',
+    description: 'Creation without manual execution. You dream the image, and the station renders it in high fidelity. The gap between imagination and reality has collapsed.\n\nParadigm Shift: From "Drafting" to "Directing".',
+    iconName: 'Leaf',
+    color: 'emerald',
+    maxProgress: 100,
+    unlockCondition: { pattern: { type: 'patience', min: 6 } }
+  },
+  'infinite-memory': {
+    id: 'infinite-memory',
+    title: 'The Infinite Memory',
+    description: 'The archives are vast, but now they listen. Every document you\'ve ever referenced is instantly recalled and synthesized. You have a second brain.\n\nParadigm Shift: From "Searching" to "Knowing".',
+    iconName: 'Brain',
+    color: 'purple',
+    maxProgress: 100,
+    unlockCondition: { pattern: { type: 'exploring', min: 6 } }
+  },
+  'data-weaver': {
+    id: 'data-weaver',
+    title: 'The Data Weaver',
+    description: 'Spreadsheets are no longer static grids. You speak to the data, and it reveals its secrets in flowing charts. The noise becomes a symphony.\n\nParadigm Shift: From "Calculating" to "Conversing".',
+    iconName: 'Zap',
+    color: 'blue',
+    maxProgress: 100,
+    unlockCondition: { pattern: { type: 'analytical', min: 6 } }
+  },
+  'automated-self': {
+    id: 'automated-self',
+    title: 'The Automated Self',
+    description: 'Routine is for the machines. You have woven a web of agents to handle the trivial, leaving your mind free for the impossible.\n\nParadigm Shift: From "Busy" to "Effective".',
+    iconName: 'Hammer',
+    color: 'amber',
+    maxProgress: 100,
+    unlockCondition: { pattern: { type: 'building', min: 9 } }
   }
 }
 
