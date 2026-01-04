@@ -449,6 +449,286 @@ export const CHARACTER_ECHOES: Record<string, {
         { text: "\"She loves watching you create. It inspires her.\"", emotion: 'moved', timing: 'delayed', soundCue: 'pattern-building' }
       ]
     }
+  },
+
+  elena: {
+    trustUp: {
+      subtle: [
+        { text: "Elena notes the detail you mentioned.", emotion: "thoughtful", timing: "immediate" },
+        { text: "A glimmer of recognition in Elena's eyes.", emotion: "open", timing: "immediate" },
+        { text: "She pauses her work for a beat.", emotion: "curious", timing: "immediate" }
+      ],
+      noticeable: [
+        { text: "\"You see the structure underneath, don't you?\"", emotion: "approving", timing: "immediate" },
+        { text: "Elena actually stops sketching. \"Go on.\"", emotion: "engaged", timing: "immediate" },
+        { text: "\"That's a rare perspective.\"", emotion: "warm", timing: "immediate" }
+      ],
+      significant: [
+        { text: "\"I usually don't share these drafts.\" Elena opens a new file.", emotion: "guarded", timing: "immediate" },
+        { text: "\"You remind me of how I used to think. Before the accident.\"", emotion: "vulnerable", timing: "immediate" }
+      ]
+    },
+    trustDown: {
+      subtle: [
+        { text: "Elena turns back to her screen.", emotion: "neutral", timing: "immediate" },
+        { text: "\"Mm.\" She doesn't look up.", emotion: "distant", timing: "immediate" }
+      ],
+      noticeable: [
+        { text: "\"That's not how the system works.\"", emotion: "dismissive", timing: "immediate" },
+        { text: "Elena closes the projection. \"Let's move on.\"", emotion: "guarded", timing: "immediate" }
+      ],
+      significant: [
+        { text: "\"I don't have time for theories.\"", emotion: "cold", timing: "immediate" }
+      ]
+    },
+    patternRecognition: {
+      building: [
+        { text: "\"You understand that things must be made, not just dreamt.\"", emotion: "approving", timing: "delayed" }
+      ],
+      exploring: [
+        { text: "\"You look for the source code of the world. I respect that.\"", emotion: "curious", timing: "delayed" }
+      ]
+    }
+  },
+
+  grace: {
+    trustUp: {
+      subtle: [
+        { text: "Grace's smile reaches her eyes.", emotion: "warm", timing: "immediate" },
+        { text: "She nods, a slow, gentle movement.", emotion: "open", timing: "immediate" },
+        { text: "Grace leans in slightly.", emotion: "engaged", timing: "immediate" }
+      ],
+      noticeable: [
+        { text: "\"You have a kind spirit.\"", emotion: "warm", timing: "immediate" },
+        { text: "Grace rests her hands. \"I'm glad you're here.\"", emotion: "grateful", timing: "immediate" },
+        { text: "\"That is a wise observation.\"", emotion: "approving", timing: "immediate" }
+      ],
+      significant: [
+        { text: "\"I feel I can speak freely with you.\"", emotion: "trusting", timing: "immediate" },
+        { text: "Grace's voice drops to a whisper. \"Let me tell you something.\"", emotion: "vulnerable", timing: "immediate" }
+      ]
+    },
+    trustDown: {
+      subtle: [
+        { text: "Grace's smile fades slightly.", emotion: "neutral", timing: "immediate" },
+        { text: "She looks past you.", emotion: "distant", timing: "immediate" }
+      ],
+      noticeable: [
+        { text: "\"Perhaps we should speak later.\"", emotion: "polite", timing: "immediate" },
+        { text: "Grace withdraws her hand.", emotion: "guarded", timing: "immediate" }
+      ],
+      significant: [
+        { text: "\"I fear we do not understand each other.\"", emotion: "sad", timing: "immediate" }
+      ]
+    },
+    patternRecognition: {
+      helping: [
+        { text: "\"Your heart is open. It is a dangerous gift here.\"", emotion: "concerned", timing: "delayed" }
+      ],
+      patience: [
+        { text: "\"You know the value of stillness.\"", emotion: "approving", timing: "delayed" }
+      ]
+    }
+  },
+
+  alex: {
+    trustUp: {
+      subtle: [
+        { text: "Alex gives a sharp nod.", emotion: "approving", timing: "immediate" },
+        { text: "He checks his watch, but stays.", emotion: "curious", timing: "immediate" },
+        { text: "A flicker of interest.", emotion: "engaged", timing: "immediate" }
+      ],
+      noticeable: [
+        { text: "\"Smart call.\"", emotion: "approving", timing: "immediate" },
+        { text: "Alex lowers his guard. \"Okay, I'm listening.\"", emotion: "open", timing: "immediate" },
+        { text: "\"You handle yourself well.\"", emotion: "impressed", timing: "immediate" }
+      ],
+      significant: [
+        { text: "\"I don't trust easy. But you're alright.\"", emotion: "trusting", timing: "immediate" },
+        { text: "Alex signals the others to wait. He's talking to you.", emotion: "respectful", timing: "immediate" }
+      ]
+    },
+    trustDown: {
+      subtle: [
+        { text: "Alex shifts his weight.", emotion: "impatient", timing: "immediate" },
+        { text: "He scans the room.", emotion: "distracted", timing: "immediate" }
+      ],
+      noticeable: [
+        { text: "\"We're wasting time.\"", emotion: "annoyed", timing: "immediate" },
+        { text: "Alex checks his comms.", emotion: "dismissive", timing: "immediate" }
+      ],
+      significant: [
+        { text: "\"You're a liability.\"", emotion: "hostile", timing: "immediate" }
+      ]
+    },
+    patternRecognition: {
+      analytical: [
+        { text: "\"You see the angles. Good.\"", emotion: "approving", timing: "delayed" }
+      ],
+      building: [
+        { text: "\"Practical. I like practical.\"", emotion: "approving", timing: "delayed" }
+      ]
+    }
+  },
+
+  asha: {
+    trustUp: {
+      subtle: [
+        { text: "Asha stops pacing.", emotion: "curious", timing: "immediate" },
+        { text: "Her eyes widen slightly.", emotion: "interested", timing: "immediate" },
+        { text: "Asha tilts her head.", emotion: "thoughtful", timing: "immediate" }
+      ],
+      noticeable: [
+        { text: "\"Yes! Exactly!\"", emotion: "excited", timing: "immediate" },
+        { text: "Asha grabs her notebook. \"Say that again?\"", emotion: "engaged", timing: "immediate" },
+        { text: "\"Finally, someone gets the vision.\"", emotion: "relieved", timing: "immediate" }
+      ],
+      significant: [
+        { text: "\"You see it too. The potential.\"", emotion: "connected", timing: "immediate" },
+        { text: "Asha shows you the hidden page. \"Look at this.\"", emotion: "trusting", timing: "immediate" }
+      ]
+    },
+    trustDown: {
+      subtle: [
+        { text: "Asha taps her pen impatiently.", emotion: "annoyed", timing: "immediate" },
+        { text: "She looks at the ceiling.", emotion: "bored", timing: "immediate" }
+      ],
+      noticeable: [
+        { text: "\"You're thinking too small.\"", emotion: "critical", timing: "immediate" },
+        { text: "Asha closes her book.", emotion: "dismissive", timing: "immediate" }
+      ],
+      significant: [
+        { text: "\"You just don't see it.\"", emotion: "disappointed", timing: "immediate" }
+      ]
+    },
+    patternRecognition: {
+      exploring: [
+        { text: "\"You're a fellow voyager. I can tell.\"", emotion: "excited", timing: "delayed" }
+      ],
+      building: [
+        { text: "\"We are the architects of the new world.\"", emotion: "inspired", timing: "delayed" }
+      ]
+    }
+  },
+
+  silas: {
+    trustUp: {
+      subtle: [
+        { text: "Silas stops cleaning.", emotion: "attentive", timing: "immediate" },
+        { text: "A grunt of acknowledgement.", emotion: "neutral", timing: "immediate" },
+        { text: "He looks you in the eye.", emotion: "direct", timing: "immediate" }
+      ],
+      noticeable: [
+        { text: "\"Not bad, kid.\"", emotion: "approving", timing: "immediate" },
+        { text: "Silas leans on his broom. \"Tell me more.\"", emotion: "engaged", timing: "immediate" },
+        { text: "\"You got a good head on your shoulders.\"", emotion: "warm", timing: "immediate" }
+      ],
+      significant: [
+        { text: "\"I've seen 'em come and go. You... you might stay.\"", emotion: "reflective", timing: "immediate" },
+        { text: "Silas offers you the good chair.", emotion: "welcoming", timing: "immediate" }
+      ]
+    },
+    trustDown: {
+      subtle: [
+        { text: "Silas keeps sweeping.", emotion: "dismissive", timing: "immediate" },
+        { text: "He spits on the tracks.", emotion: "disgusted", timing: "immediate" }
+      ],
+      noticeable: [
+        { text: "\"Don't waste my time.\"", emotion: "gruff", timing: "immediate" },
+        { text: "Silas turns his back.", emotion: "cold", timing: "immediate" }
+      ],
+      significant: [
+        { text: "\"Get lost.\"", emotion: "hostile", timing: "immediate" }
+      ]
+    },
+    patternRecognition: {
+      building: [
+        { text: "\"You respect good work. I can see that.\"", emotion: "approving", timing: "delayed" }
+      ],
+      patience: [
+        { text: "\"You don't rush the job.\"", emotion: "approving", timing: "delayed" }
+      ]
+    }
+  },
+
+  lira: {
+    trustUp: {
+      subtle: [
+        { text: "Lira hums a soft note.", emotion: "happy", timing: "immediate" },
+        { text: "She nods to the rhythm.", emotion: "open", timing: "immediate" },
+        { text: "Lira pauses her song.", emotion: "attentive", timing: "immediate" }
+      ],
+      noticeable: [
+        { text: "\"You hear the melody.\"", emotion: "warm", timing: "immediate" },
+        { text: "Lira smiles. A real one.", emotion: "connected", timing: "immediate" },
+        { text: "\"We are in harmony.\"", emotion: "spiritual", timing: "immediate" }
+      ],
+      significant: [
+        { text: "\"I wrote this for someone special. Listen.\"", emotion: "vulnerable", timing: "immediate" },
+        { text: "Lira trusts you with the silence.", emotion: "peaceful", timing: "immediate" }
+      ]
+    },
+    trustDown: {
+      subtle: [
+        { text: "The humming stops.", emotion: "tense", timing: "immediate" },
+        { text: "Lira looks distressed.", emotion: "anxious", timing: "immediate" }
+      ],
+      noticeable: [
+        { text: "\"Too loud. Too much noise.\"", emotion: "overwhelmed", timing: "immediate" },
+        { text: "Lira covers her ears.", emotion: "defensive", timing: "immediate" }
+      ],
+      significant: [
+        { text: "\"The dissonance... it hurts.\"", emotion: "pained", timing: "immediate" }
+      ]
+    },
+    patternRecognition: {
+      exploring: [
+        { text: "\"You chase the new sounds.\"", emotion: "curious", timing: "delayed" }
+      ],
+      helping: [
+        { text: "\"Your voice heals.\"", emotion: "grateful", timing: "delayed" }
+      ]
+    }
+  },
+
+  zara: {
+    trustUp: {
+      subtle: [
+        { text: "Zara marks something on her clipboard.", emotion: "interested", timing: "immediate" },
+        { text: "She adjusts her glasses.", emotion: "thoughtful", timing: "immediate" },
+        { text: "A quick, efficient nod.", emotion: "approving", timing: "immediate" }
+      ],
+      noticeable: [
+        { text: "\"The data supports your conclusion.\"", emotion: "approving", timing: "immediate" },
+        { text: "Zara actually smiles. \"Logical.\"", emotion: "pleased", timing: "immediate" },
+        { text: "\"You might be an outlier.\"", emotion: "intrigued", timing: "immediate" }
+      ],
+      significant: [
+        { text: "\"I'm adjusting my predictive model for you.\"", emotion: "impressed", timing: "immediate" },
+        { text: "Zara shows you the raw feed. \"Don't tell management.\"", emotion: "conspiratorial", timing: "immediate" }
+      ]
+    },
+    trustDown: {
+      subtle: [
+        { text: "Zara checks the time.", emotion: "impatient", timing: "immediate" },
+        { text: "She frowns at the data.", emotion: "critical", timing: "immediate" }
+      ],
+      noticeable: [
+        { text: "\"That does not compute.\"", emotion: "confused", timing: "immediate" },
+        { text: "Zara writes a citation.", emotion: "stern", timing: "immediate" }
+      ],
+      significant: [
+        { text: "\"Inefficient. And disappointing.\"", emotion: "cold", timing: "immediate" }
+      ]
+    },
+    patternRecognition: {
+      analytical: [
+        { text: "\"Your variables are sound.\"", emotion: "approving", timing: "delayed" }
+      ],
+      building: [
+        { text: "\"You optimize the workflow.\"", emotion: "pleased", timing: "delayed" }
+      ]
+    }
   }
 }
 

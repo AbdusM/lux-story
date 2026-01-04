@@ -261,6 +261,63 @@ export const samuelDialogueNodes: DialogueNode[] = [
     ]
   },
 
+  // ============= SIMULATION: THE LISTENER'S LOG (HubSpot Metaphor) =============
+  {
+    nodeId: 'samuel_simulation_crm',
+    speaker: 'Samuel Washington',
+    content: [{
+      text: "Sometimes, helping folks ain't about speeches. It's about remembering.\n\nI keep a log. Every traveler, every question. Patterns emerge if you write 'em down.\n\nHere's a traveler struggling with the schedule. They think they're lost. They ain't lost—they just don't know the destination changed.",
+      emotion: 'thoughtful',
+      variation_id: 'sim_intro_v1'
+    }],
+    simulation: {
+      type: 'chat_negotiation',
+      title: 'Traveler Triage: The Lost Musician',
+      taskDescription: 'A traveler is panicking about a missed train. Use the station logs to realize their ticket was automatically rebooked, then calm them down.',
+      initialContext: {
+        label: 'Station Log: Direct Message',
+        content: `Traveler_88: I missed the 4:15 to Nashville! My audition is tomorrow!
+Traveler_88: The board says DELAYED but the platform is empty.
+Traveler_88: Am I stranded? Please, I can't miss this.`,
+        displayStyle: 'text'
+      },
+      successFeedback: '✓ TRAVELER CALMED: "Oh... it was rebooked to 5:30? Thank you. I can breathe now."'
+    },
+    choices: [
+      {
+        choiceId: 'sim_reassure_data',
+        text: "Check logs. 'Train 415 merged with 530 due to track maintenance.' Tell them they have time for coffee.",
+        nextNodeId: 'samuel_orb_introduction', // Proceed to main flow
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'digitalLiteracy'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1,
+          addGlobalFlags: ['golden_prompt_workflow']
+        }
+      },
+      {
+        choiceId: 'sim_analyze_pattern',
+        text: "Notice this happens every Tuesday. Suggest better signage for the merge.",
+        nextNodeId: 'samuel_orb_introduction',
+        pattern: 'analytical',
+        skills: ['systemsThinking', 'informationLiteracy'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1,
+          addGlobalFlags: ['golden_prompt_workflow']
+        }
+      },
+      {
+        choiceId: 'sim_dismiss',
+        text: "Tell them to just wait. The board is never wrong.",
+        nextNodeId: 'samuel_orb_introduction',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['simulation', 'samuel_arc']
+  },
+
   // ============= ORIGINAL INTRODUCTION (for direct step-off) =============
   {
     nodeId: 'samuel_introduction',
@@ -3813,6 +3870,45 @@ export const samuelDialogueNodes: DialogueNode[] = [
     ]
   },
 
+  // ============= CHECK MESSAGES SYSTEM =============
+  {
+    nodeId: 'samuel_check_messages',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*You pull up your device. The screen glows softly.*\n\nLooks like a few folks have been trying to reach you.",
+        emotion: 'neutral',
+        variation_id: 'check_messages_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'check_grace',
+        text: "Message from Grace: \"Writing things down...\"",
+        nextNodeId: 'grace_revisit_welcome',
+        pattern: 'helping',
+        visibleCondition: {
+          hasGlobalFlags: ['CheckInReady_grace']
+        }
+      },
+      {
+        choiceId: 'check_devon',
+        text: "Message from Devon: \"System Update.\"",
+        nextNodeId: 'devon_revisit_welcome',
+        pattern: 'building',
+        visibleCondition: {
+          hasGlobalFlags: ['CheckInReady_devon']
+        }
+      },
+      {
+        choiceId: 'close_messages',
+        text: "Close messages",
+        nextNodeId: 'samuel_hub_initial'
+      }
+    ],
+    tags: ['system', 'messaging']
+  },
+
   // ============= HUB: AFTER MAYA (Maya + Devon available) =============
   {
     nodeId: 'samuel_hub_after_maya',
@@ -5560,6 +5656,22 @@ export const samuelDialogueNodes: DialogueNode[] = [
     ],
     choices: [
       {
+        choiceId: 'hub_check_messages',
+        text: "Check new messages (1)",
+        nextNodeId: 'samuel_check_messages',
+        pattern: 'exploring',
+        visibleCondition: {
+          hasGlobalFlags: ['has_new_messages']
+        }
+      },
+      {
+        choiceId: 'hub_wait_quietly',
+        text: "Just wait for a while. Watch the station breathe.",
+        nextNodeId: 'samuel_hub_wait_loop',
+        pattern: 'patience',
+        skills: ['adaptability']
+      },
+      {
         choiceId: 'exploring_continue',
         text: "That's... a lot to think about.",
         nextNodeId: 'samuel_hub_initial',
@@ -5666,6 +5778,48 @@ export const samuelDialogueNodes: DialogueNode[] = [
       }
     ],
     tags: ['orb_gated', 'patience', 'samuel_backstory', 'mastery_tier']
+  },
+
+  // ============= MISSING NODES FIX =============
+  {
+    nodeId: 'samuel_hub_wait_loop',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*The station hums quietly around you. Samuel checks his pocket watch, then nods.*\n\nSometimes the best move is just to stand still and let the world turn a bit without you pushing it.",
+        emotion: 'peaceful',
+        variation_id: 'wait_loop_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'wait_loop_return',
+        text: "I'm ready to move again.",
+        nextNodeId: 'samuel_orb_introduction',
+        pattern: 'patience'
+      }
+    ]
+  },
+
+  // Grace Placeholder (Temporary)
+  {
+    nodeId: 'grace_revisit_welcome',
+    speaker: 'System',
+    content: [
+      {
+        text: "[Grace's content is currently under construction. Please check back later.]",
+        emotion: 'neutral',
+        variation_id: 'grace_placeholder'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'grace_placeholder_return',
+        text: "Return to Station",
+        nextNodeId: 'samuel_hub_initial'
+        // Removed invalid pattern: 'neutral'
+      }
+    ]
   },
 
   // ============= IDENTITY DIALOGUES =============

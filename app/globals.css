@@ -620,6 +620,20 @@ main {
 .atmosphere[data-character="silas"] { background-color: var(--atmosphere-silas); }
 .atmosphere[data-character="alex"] { background-color: var(--atmosphere-alex); }
 
+/* P5: Station Evolution Atmospheres */
+.atmosphere[data-atmosphere="dormant"] { background-color: #1e293b; /* slate-800 */ }
+.atmosphere[data-atmosphere="awakening"] { background-color: #1e3a8a; /* blue-900 */ }
+.atmosphere[data-atmosphere="alive"] { background-color: #064e3b; /* emerald-900 */ }
+.atmosphere[data-atmosphere="tense"] { background-color: #450a0a; /* red-950 */ }
+.atmosphere[data-atmosphere="harmonious"] { background-color: #4c1d95; /* violet-900 */ }
+
+/* Note: character-specific colors will override these if data-character is present on the same element.
+   However, AtmosphericGameBackground applies data-character to the div.
+   We need to ensure precedence or decide which one wins.
+   Currently: data-character selectors are strictly defined.
+   If characterId is null, these data-atmosphere selectors will take effect IF key is matched.
+*/
+
 /* Central radial glow */
 .atmosphere::before {
   content: '';

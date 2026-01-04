@@ -18,6 +18,7 @@ import * as React from "react"
 import { motion, useReducedMotion } from "framer-motion"
 import { cn } from "@/lib/utils"
 import type { CharacterId } from "@/lib/graph-registry"
+import { useStationStore } from "@/lib/station-state"
 
 export interface AtmosphericGameBackgroundProps {
   /** Current character being spoken to (determines atmosphere color) */
@@ -45,12 +46,16 @@ export function AtmosphericGameBackground({
 }: AtmosphericGameBackgroundProps) {
   const _prefersReducedMotion = useReducedMotion()
 
+  // P5: Subscribe to station atmosphere
+  const atmosphere = useStationStore((state) => state.atmosphere)
+
   return (
     <div className={cn("relative min-h-screen", className)}>
       {/* Atmospheric Background Layer - STABLE: No animations */}
       <div
         className="atmosphere"
         data-character={characterId}
+        data-atmosphere={atmosphere} // New attribute for P5
         aria-hidden="true"
       />
 
@@ -63,6 +68,7 @@ export function AtmosphericGameBackground({
     </div>
   )
 }
+
 
 /**
  * Standalone Atmosphere - For use without children wrapper

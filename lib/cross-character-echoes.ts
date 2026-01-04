@@ -326,6 +326,18 @@ export const CROSS_CHARACTER_ECHOES: CrossCharacterEcho[] = [
       timing: 'immediate'
     }
   },
+  // FALLBACK: Jordan affects Alex/Education
+  {
+    sourceCharacter: 'jordan',
+    sourceFlag: 'jordan_arc_complete',
+    targetCharacter: 'alex',
+    delay: 1,
+    echo: {
+      text: "Even Jordan seems more patient with the students. I heard you're the reason.",
+      emotion: 'curious',
+      timing: 'immediate'
+    }
+  },
 
   // ============= ALEX ARC COMPLETE =============
   {
@@ -350,6 +362,18 @@ export const CROSS_CHARACTER_ECHOES: CrossCharacterEcho[] = [
       timing: 'immediate'
     },
     requiredPattern: { pattern: 'exploring', minLevel: 3 }
+  },
+  // FALLBACK: Alex affects Rohan/Questions
+  {
+    sourceCharacter: 'alex',
+    sourceFlag: 'alex_arc_complete',
+    targetCharacter: 'rohan',
+    delay: 2,
+    echo: {
+      text: "Alex asked me a question yesterday that actually made me stop and think. They said you inspired it.",
+      emotion: 'impressed',
+      timing: 'immediate'
+    }
   }
 ]
 

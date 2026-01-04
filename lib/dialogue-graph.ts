@@ -65,10 +65,39 @@ export interface DialogueNode {
   /**
    * Node metadata for system features
    * sessionBoundary: Marks this node as a natural pause point in the narrative
+   * experienceId: Triggers a P6 Loyalty Experience (mini-game)
    */
   metadata?: {
     sessionBoundary?: boolean
+    experienceId?: string
   }
+
+  /**
+   * Simulation Configuration (ISP: Workflow Simulations)
+   * Transforms the node into an interactive mini-game or tool interface.
+   * Used for "Golden Prompt" mastery challenges.
+   */
+  simulation?: SimulationConfig
+}
+
+/**
+ * Configuration for Workflow Simulations
+ * Renders the node as a specialized tool interface rather than standard dialogue.
+ */
+export interface SimulationConfig {
+  type: 'terminal_coding' | 'system_architecture' | 'creative_direction' | 'data_analysis' | 'prompt_engineering' | 'code_refactor' | 'chat_negotiation' | 'dashboard_triage' | 'visual_canvas' | 'audio_studio'
+  title: string // e.g. "Prompt Refinement Protocol"
+  taskDescription: string // e.g. "The model is hallucinating citations. Fix the prompt."
+
+  // The "State" of the simulation before user input
+  initialContext: {
+    label: string // e.g. "Current Prompt"
+    content: string // e.g. "Write an essay about colonization."
+    displayStyle?: 'code' | 'text' | 'image_placeholder'
+  }
+
+  // Visual feedback when successful
+  successFeedback: string // e.g. "Hallucinations eliminated. Citations verified."
 }
 
 /**
@@ -78,6 +107,7 @@ export interface DialogueNode {
 export interface DialogueContent {
   text: string
   emotion?: string // Emotion tag - supports compound emotions like 'anxious_hopeful'
+  microAction?: string
   variation_id: string // For tracking which variation was shown
   useChatPacing?: boolean // If true, use ChatPacedDialogue component for sequential reveal (use sparingly!)
   richEffectContext?: 'thinking' | 'warning' | 'success' | 'executing' | 'error' // Optional context for rich text effects

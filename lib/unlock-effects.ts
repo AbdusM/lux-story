@@ -311,6 +311,28 @@ function evaluateBuildingUnlocks(ctx: UnlockContext): Partial<ContentEnhancement
   return enhancement
 }
 
+/**
+ * Evaluate new Ability Registry unlocks
+ */
+function evaluateAbilityUnlocks(ctx: UnlockContext): Partial<ContentEnhancement> {
+  const enhancement: Partial<ContentEnhancement> = {}
+  const unlocked = new Set(ctx.gameState.unlockedAbilities || [])
+
+  // ABILITY: Subtext Reader (Emotional Resonance)
+  if (unlocked.has('subtext_reader') && ctx.dialogueEmotion) {
+    // enhancement.showEmotionTag = true // Maybe? Or just the subtext.
+    enhancement.subtextHint = getEmotionSubtext(ctx.dialogueEmotion)
+  }
+
+  // ABILITY: Pattern Preview
+  // Only relevant if we are also highlighting choices based on pattern
+  // But wait, highlightPatterns logic in this file is about highlighting analytical choices if you are analytical.
+  // The 'pattern_preview' ability might be broader.
+  // For now, let's assume it empowers the highlight logic.
+
+  return enhancement
+}
+
 // ═══════════════════════════════════════════════════════════════
 // PUBLIC API
 // ═══════════════════════════════════════════════════════════════
@@ -328,6 +350,9 @@ export function getContentEnhancements(context: UnlockContext): ContentEnhanceme
   const helpingEnhancements = evaluateHelpingUnlocks(context)
   const buildingEnhancements = evaluateBuildingUnlocks(context)
 
+  // New Ability System
+  const abilityEnhancements = evaluateAbilityUnlocks(context)
+
   // Merge all enhancements (later ones take precedence for conflicts)
   // First merge all the enhancement objects
   const merged: ContentEnhancement = {
@@ -337,7 +362,8 @@ export function getContentEnhancements(context: UnlockContext): ContentEnhanceme
     ...patienceEnhancements,
     ...exploringEnhancements,
     ...helpingEnhancements,
-    ...buildingEnhancements
+    ...buildingEnhancements,
+    ...abilityEnhancements
   }
 
   // Then combine highlight patterns from all sources

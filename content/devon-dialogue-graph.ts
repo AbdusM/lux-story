@@ -19,6 +19,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         text: "Avondale coffee shop. Back booth. 2 AM.\n\nIf input is 'I'm fine,' route to branch 4.B, sub-routine 'gentle probe.'\n\nNo, wait. Latency's too high.\n\nOh. Didn't see you there.\n\nClosed system. Are you a variable I need to account for?",
         emotion: 'guarded',
+        microAction: 'He taps a rhythmic pattern on the table, eyes darting between three screens.',
         variation_id: 'intro_v1',
         patternReflection: [
           { pattern: 'analytical', minLevel: 5, altText: "Avondale coffee shop. Back booth. 2 AM.\n\nIf input is 'I'm fine,' route to branch 4.B, sub-routine 'gentle probe.'\n\nOh. You're reading the logic flow, aren't you? Most people don't even see it.\n\nClosed system. But maybe you understand closed systems.", altEmotion: 'curious' },
@@ -73,23 +74,39 @@ export const devonDialogueNodes: DialogueNode[] = [
   },
 
   // ============= EXPLAINING THE SYSTEM (Immersive Scenario) =============
+  // ============= EXPLAINING THE SYSTEM (Immersive Scenario) =============
   {
     nodeId: 'devon_explains_system',
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "Technically speaking... don't just look at it. Run it.\n\nSystem Active. Conversational Optimizer v1.4.\nSubject: Father.\nInput: 'I'm fine.'\nStatus: Processing...",
+        text: "Technically speaking... don't just look at it. Run it.\n\nI visualized the logic flow. It's cleaner this way.",
         emotion: 'focused',
         variation_id: 'explains_scenario_v1',
         richEffectContext: 'warning',
         useChatPacing: true,
         patternReflection: [
-          { pattern: 'analytical', minLevel: 5, altText: "Technically speaking... don't just look at it. Run it. You'll understand the architecture.\n\nSystem Active. Conversational Optimizer v1.4.\nSubject: Father.\nInput: 'I'm fine.'\nStatus: Processing...\n\nYou think in systems too. I can tell.", altEmotion: 'focused' },
-          { pattern: 'helping', minLevel: 5, altText: "Technically speaking... run it. But you're already seeing past the code, aren't you?\n\nSystem Active. Conversational Optimizer v1.4.\nSubject: Father.\n\nIt's about my dad. About reaching someone who won't talk.", altEmotion: 'vulnerable' },
-          { pattern: 'building', minLevel: 5, altText: "Technically speaking... run it. I built this whole thing.\n\nSystem Active. Conversational Optimizer v1.4.\nSubject: Father.\n\nYou build things too. You know how it feels when the thing you built doesn't work for the one reason that matters.", altEmotion: 'vulnerable' }
+          { pattern: 'analytical', minLevel: 5, altText: "Technically speaking... run it. You've built systems like this. You know the beauty of a clean decision tree.\n\nBut this one... this one has high latency.", altEmotion: 'focused' }
         ]
       }
     ],
+    simulation: {
+      type: 'visual_canvas',
+      title: 'Conversational Optimizer v1.4',
+      taskDescription: 'Debug the conversation flow. The "Father" node is returning unexpected null values.',
+      initialContext: {
+        label: 'Logic Map: Father_Interaction_Protocol',
+        content: `ROOT: [Initiate Call]
+  │
+  ├── IF [Input_Tone == "Warm"] → [Open_Up]
+  │
+  ├── IF [Input_Tone == "Cold"] → [Deflect]
+  │
+  └── IF [Input == "I'm fine"] → [???] <-- ERROR: RECURSIVE LOOP`,
+        displayStyle: 'code'
+      },
+      successFeedback: '✓ LOGIC BYPASSED. Emotional Override Initiated.'
+    },
     choices: [
       {
         choiceId: 'debug_literal',
@@ -107,14 +124,17 @@ export const devonDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'debug_emotional',
-        text: "[OVERRIDE] Ignore text. Query emotional state directly.",
+        text: "[OVERRIDE] Ignore logical branch. Query emotional state directly.",
         nextNodeId: 'devon_debug_result_override',
         pattern: 'helping',
-        skills: ['emotionalIntelligence']
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          addGlobalFlags: ['golden_prompt_voice']
+        }
       },
       {
         choiceId: 'debug_wait',
-        text: "[WAIT] Don't respond yet. Let the silence hold.",
+        text: "[WAIT] Increase latency. Let the silence hold.",
         nextNodeId: 'devon_debug_result_override',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'adaptability'],
@@ -326,6 +346,15 @@ export const devonDialogueNodes: DialogueNode[] = [
           characterId: 'devon',
           trustChange: 1
         }
+      },
+      {
+        choiceId: 'technical_simplified',
+        text: "So... it's a flowchart for feelings?",
+        nextNodeId: 'devon_simple_analogy',
+        pattern: 'analytical', // attempting to understand
+        visibleCondition: {
+          patterns: { analytical: { max: 2 } }
+        }
       }
     ]
   },
@@ -363,6 +392,28 @@ export const devonDialogueNodes: DialogueNode[] = [
         skills: ['communication']
       }
     ]
+  },
+
+  {
+    nodeId: 'devon_simple_analogy',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "*He laughs, surprising himself.*\n\nYeah. I guess it is. 'Flowchart for Feelings.' Sounds like a bad self-help book.\n\nBut that's the problem. Charts are binary. Feelings are... analog. Messy.",
+        emotion: 'amused',
+        variation_id: 'simple_analogy_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'simple_analogy_continue',
+        text: "Why do you need a chart for this person?",
+        nextNodeId: 'devon_father_hint',
+        pattern: 'exploring',
+        skills: ['communication']
+      }
+    ],
+    tags: ['devon_arc']
   },
 
   {
@@ -465,6 +516,21 @@ export const devonDialogueNodes: DialogueNode[] = [
         consequence: {
           characterId: 'devon',
           trustChange: 1
+        }
+      },
+      {
+        choiceId: 'people_data_weaver',
+        text: "[AI] Only noise if you can't read it. Treat emotions as high-complexity data streams.",
+        nextNodeId: 'devon_father_hint',
+        pattern: 'analytical',
+        visibleCondition: {
+          patterns: { analytical: { min: 6 } }
+        },
+        consequence: {
+          characterId: 'devon',
+          trustChange: 2,
+          addKnowledgeFlags: ['used_data_weaver_insight'],
+          thoughtId: 'data-weaver'
         }
       }
     ]
@@ -1468,7 +1534,40 @@ export const devonDialogueNodes: DialogueNode[] = [
         pattern: 'exploring'
       }
     ],
-    tags: ['farewell', 'devon_arc']
+    tags: ['farewell', 'devon_arc'],
+    onEnter: [
+      {
+        addGlobalFlags: ['devon_arc_complete'],
+        thoughtId: 'system-restored'
+      }
+    ]
+  },
+  {
+    nodeId: 'devon_revisit_welcome',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "You're back. I was just optimizing my schedule for next semester.\n\nDid you need something, or just checking if my logic processor is still overheating?",
+        emotion: 'amused',
+        variation_id: 'revisit_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'revisit_chat',
+        text: "Just wanted to see how you're doing.",
+        nextNodeId: 'devon_father_hint', // Loop back to main loop for now or simple close
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
+      },
+      {
+        choiceId: 'revisit_leave',
+        text: "I'll let you get back to it.",
+        nextNodeId: samuelEntryPoints.MAYA_REFLECTION_GATEWAY, // Return to hub
+        pattern: 'patience'
+      }
+    ],
+    tags: ['revisit', 'devon_arc']
   }
 ]
 

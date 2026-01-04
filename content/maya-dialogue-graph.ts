@@ -18,6 +18,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         text: "Sterne Library. Third floor. The table nobody wants because the AC's broken.\n\nOh. Hi. Were you watching me?\n\nBiochem notes. Robotics parts. Everywhere. I know it looks like a disaster. It is a disaster.\n\nI'm a disaster.",
         emotion: 'anxious_scattered',
+        microAction: 'She pushes a stray lock of hair behind her ear, her hands trembling slightly.',
         variation_id: 'intro_v2_clean',
         richEffectContext: 'warning',
         patternReflection: [
@@ -539,6 +540,34 @@ export const mayaDialogueNodes: DialogueNode[] = [
           characterId: 'maya',
           trustChange: 1
         }
+      },
+      {
+        choiceId: 'debug_assist',
+        text: "I don't know circuits, but I can hold it steady while you work.",
+        nextNodeId: 'maya_robotics_assist',
+        pattern: 'building',
+        visibleCondition: {
+          patterns: { building: { max: 3 } }
+        },
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'debug_agentic',
+        text: "[AI] Don't debug the code. Debug the intent. Let the station's architecture stabilize the signal.",
+        nextNodeId: 'maya_robotics_debug_success',
+        pattern: 'building',
+        visibleCondition: {
+          patterns: { building: { min: 6 } }
+        },
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2,
+          addKnowledgeFlags: ['used_agentic_insight'],
+          thoughtId: 'agentic-coder'
+        }
       }
     ],
     onEnter: [
@@ -643,6 +672,37 @@ export const mayaDialogueNodes: DialogueNode[] = [
       }
     ],
     tags: ['maya_arc']
+  },
+
+  // ============= SCENARIO ALTERNATIVE: ASSIST (Low Building) =============
+  {
+    nodeId: 'maya_robotics_assist',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "You hold the chassis. My hands stop shaking because I can brace against yours.\n\nThere. Stabilized.\n\nYou didn't try to take over. You just... became the foundation I needed. That's actually exactly what a good engineer does.",
+        emotion: 'grateful_vulnerable',
+        variation_id: 'robotics_assist_v1',
+        richEffectContext: 'success'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'assist_affirm',
+        text: "Every structure needs a foundation.",
+        nextNodeId: 'maya_encouraged',
+        pattern: 'building',
+        skills: ['collaboration']
+      },
+      {
+        choiceId: 'assist_humble',
+        text: "Glad I could be useful.",
+        nextNodeId: 'maya_encouraged',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
+      }
+    ],
+    tags: ['scenario_resolution', 'maya_arc']
   },
 
   // ============= SCENARIO RESOLUTION (SUCCESS) =============

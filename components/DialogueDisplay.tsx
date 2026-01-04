@@ -32,7 +32,8 @@ interface DialogueDisplayProps {
   isContinuedSpeaker?: boolean // Hide avatar if same speaker as previous
   richEffects?: RichTextEffect // Optional rich text effects (terminal-style animations)
   interaction?: InteractionType // Visual interaction animation ('big', 'small', 'shake', 'nod', 'ripple', 'bloom', 'jitter')
-  emotion?: string // Emotion tag for the dialogue (e.g., 'anxious', 'excited', 'vulnerable')
+  emotion?: string // Emotion tag for the dialogue
+  microAction?: string // Physiological micro-action (e.g., 'He rubs his temples.')
   patternSensation?: string | null // Atmospheric feedback after pattern choices (30% probability)
   playerPatterns?: {
     analytical?: number
@@ -65,11 +66,13 @@ export function DialogueDisplay({
   richEffects,
   interaction,
   emotion,
+  microAction,
   patternSensation,
   playerPatterns: _playerPatterns
 }: DialogueDisplayProps) {
   // Get unlock-based content enhancements
-  const enhancements = useUnlockEffects(text, emotion, characterId, characterName, gameState)
+  const enhancements = useUnlockEffects(text, emotion,
+  microAction, characterId, characterName, gameState)
   // Auto-chunk long text ONLY if NOT using richEffects
   // When richEffects is enabled, respect the original text structure completely
   const chunkedText = richEffects
@@ -107,6 +110,14 @@ export function DialogueDisplay({
       key="dialogue-chunks-container"
       style={{ transition: 'none' }}
     >
+      
+      {/* Micro-Action: Small physiological detail for humanlike feel (P1 Polish) */}
+      {microAction && (
+        <p className="not-italic text-indigo-200/70 mb-2 font-light text-base tracking-wide pl-1 border-l-2 border-indigo-500/20">
+          [{microAction}]
+        </p>
+      )}
+
       {/* Speaker Label - DISABLED: Now shown in header instead (removes duplicate)
           Original: Roadwarden research showed need for speaker labels
           Current: Header shows character name, so this is redundant */}

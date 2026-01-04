@@ -4,10 +4,11 @@ import { memo, useState, useEffect, useCallback, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { motion } from 'framer-motion'
 import { springs, stagger } from '@/lib/animations'
-import { Lock } from 'lucide-react'
+import { Lock, Microscope, Brain, Compass, Heart, Hammer, Zap } from 'lucide-react'
 import { type PatternType, PATTERN_METADATA, isValidPattern } from '@/lib/patterns'
 import { type GravityResult } from '@/lib/narrative-gravity'
 import { useMagneticElement } from '@/hooks/useMagneticElement'
+import { useGameStore } from '@/lib/game-store'
 
 /**
  * Pattern-specific hover colors for choice buttons
@@ -298,7 +299,7 @@ function getLockMessage(choice: Choice): string {
 }
 
 // Memoized choice button component
-const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, isLocked, glass }: {
+const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, isLocked, glass, showPatternIcon }: {
   choice: Choice
   index: number
   onChoice: (choice: Choice) => void
@@ -306,6 +307,7 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
   isFocused?: boolean
   isLocked?: boolean
   glass?: boolean
+  showPatternIcon?: boolean
 }) => {
   // Magnetic cursor effect (desktop-only, respects reduced motion)
   // Subtle attraction toward cursor for playful, premium feel
@@ -451,6 +453,15 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
               : ''}
           `}
         >
+          {showPatternIcon && choice.pattern && (
+            <div className="mr-3 opacity-90">
+              {choice.pattern === 'analytical' && <Microscope className="w-4 h-4 text-blue-500" />}
+              {choice.pattern === 'patience' && <Brain className="w-4 h-4 text-green-500" />}
+              {choice.pattern === 'exploring' && <Compass className="w-4 h-4 text-purple-500" />}
+              {choice.pattern === 'helping' && <Heart className="w-4 h-4 text-pink-500" />}
+              {choice.pattern === 'building' && <Hammer className="w-4 h-4 text-amber-500" />}
+            </div>
+          )}
           <span className="flex-1 line-clamp-4">{choice.text}</span>
         </Button>
       </motion.div>
@@ -506,6 +517,10 @@ const groupChoices = (choices: Choice[]) => {
  */
 export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevels, glass = false }: GameChoicesProps) => {
   const { focusedIndex, containerRef } = useKeyboardNavigation(choices, isProcessing, onChoice)
+
+  // ABILITY CHECK: Pattern Preview (P0)
+  const unlockedAbilities = useGameStore(state => state.gameState?.unlockedAbilities || [])
+  const hasPatternPreview = unlockedAbilities.includes('pattern_preview')
 
   if (!choices || choices.length === 0) {
     return null
@@ -584,6 +599,7 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
                     isFocused={focusedIndex === currentGlobalIndex}
                     isLocked={isLocked}
                     glass={glass}
+                    showPatternIcon={hasPatternPreview}
                   />
                 )
               })}
@@ -632,6 +648,7 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
               isFocused={focusedIndex === index}
               isLocked={isLocked}
               glass={glass}
+              showPatternIcon={hasPatternPreview}
             />
           )
         })

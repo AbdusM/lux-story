@@ -1,7 +1,7 @@
 import { GameState, TimeState, PlatformState, GameStateUtils } from './character-state'
 import { EvaluatedChoice } from './dialogue-graph'
 import { calculatePatternGain } from './identity-system'
-import { isValidPattern, getPatternSensation, PatternType } from './patterns'
+import { isValidPattern, getPatternSensation, PatternType, PATTERN_THRESHOLDS, PATTERN_SKILL_MAP } from './patterns'
 import { detectRelationshipUpdates } from './character-relationships'
 
 /**
@@ -127,19 +127,19 @@ export class GameLogic {
            We will assume rushing is low if patience is high.
         */
 
-        const highPatience = patterns.patience > 8
-        const helpedMany = patterns.helping > 6
+        const highPatience = patterns.patience > PATTERN_THRESHOLDS.DEVELOPING
+        const helpedMany = patterns.helping > PATTERN_THRESHOLDS.DEVELOPING
         const explored = items.discoveredPaths.length >= 4
 
         if (quietHour.potential && (highPatience || helpedMany || explored)) {
             // Actually trigger if conditions are very strong
-            if (highPatience && helpedMany && patterns.patience > 10) {
+            if (highPatience && helpedMany && patterns.patience > PATTERN_THRESHOLDS.FLOURISHING) {
                 return {
                     triggered: true,
                     triggerType: 'compassionate_patience',
                     timeState: { ...time, isStopped: true, flowRate: 0, currentDisplay: "TIME HOLDS ITS BREATH" }
                 }
-            } else if (explored && patterns.patience > 8 && helpedMany) {
+            } else if (explored && patterns.patience > PATTERN_THRESHOLDS.DEVELOPING && helpedMany) {
                 return {
                     triggered: true,
                     triggerType: 'patient_exploration',
@@ -159,27 +159,27 @@ export class GameLogic {
         const { patterns, careerValues } = state
 
         // Service Guide: High directImpact + helping patterns
-        if (careerValues.directImpact > 6 && patterns.helping > 8) {
+        if (careerValues.directImpact > 6 && patterns.helping > PATTERN_THRESHOLDS.DEVELOPING) {
             return 'service_guide'
         }
 
         // Systems Builder: High systemsThinking + building patterns
-        if (careerValues.systemsThinking > 6 && patterns.building > 8) {
+        if (careerValues.systemsThinking > 6 && patterns.building > PATTERN_THRESHOLDS.DEVELOPING) {
             return 'systems_builder'
         }
 
         // Data Analyst: High dataInsights + analyzing patterns
-        if (careerValues.dataInsights > 6 && patterns.analytical > 8) {
+        if (careerValues.dataInsights > 6 && patterns.analytical > PATTERN_THRESHOLDS.DEVELOPING) {
             return 'data_analyst'
         }
 
         // Future Pioneer: High futureBuilding + exploring patterns
-        if (careerValues.futureBuilding > 6 && patterns.exploring > 7) {
+        if (careerValues.futureBuilding > 6 && patterns.exploring > PATTERN_THRESHOLDS.DEVELOPING) {
             return 'future_pioneer'
         }
 
         // Independent Creator: High independence value + patterns (using exploring as proxy)
-        if (careerValues.independence > 6 && patterns.exploring > 7) {
+        if (careerValues.independence > 6 && patterns.exploring > PATTERN_THRESHOLDS.DEVELOPING) {
             return 'independent_creator'
         }
 
@@ -239,8 +239,16 @@ export class GameLogic {
             events.checkIdentityThreshold = true
         }
 
-        if (choice.skills && choice.skills.length > 0) {
-            events.updateSkills = choice.skills
+        // AUTO-DERIVE SKILLS from Pattern (Sprint AI)
+        const derivedSkills = (choice.pattern && isValidPattern(choice.pattern)) 
+            ? (PATTERN_SKILL_MAP[choice.pattern] || [])
+            : []
+        
+        const explicitSkills = choice.skills || []
+        const combinedSkills = Array.from(new Set([...derivedSkills, ...explicitSkills]))
+
+        if (combinedSkills.length > 0) {
+            events.updateSkills = combinedSkills
         }
 
         // 5. Detect Relationship Updates
@@ -288,3 +296,5 @@ export class GameLogic {
             events
         }
     }
+}
+

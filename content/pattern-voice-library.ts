@@ -325,6 +325,158 @@ export const PATTERN_VOICE_LIBRARY: PatternVoiceEntry[] = [
     ],
     style: 'whisper',
     cooldown: 15
+  },
+
+  // ============================================
+  // KAI - The Protector
+  // ============================================
+  {
+    pattern: 'analytical',
+    minLevel: 4,
+    trigger: 'node_enter',
+    condition: { characterId: 'kai' },
+    voices: ["He's assessing the threat level. You should too."],
+    style: 'urge'
+  },
+
+  // ============================================
+  // TESS - The Curator
+  // ============================================
+  {
+    pattern: 'analytical', // BS Detection
+    minLevel: 5,
+    trigger: 'before_choices',
+    condition: { characterId: 'tess' },
+    voices: ["She can hear the fake notes. Don't play them."],
+    style: 'urge'
+  },
+  {
+    pattern: 'building', // Constructing Taste
+    minLevel: 4,
+    trigger: 'before_choices',
+    condition: { characterId: 'tess' },
+    voices: ["Quality is a structure you build, not find."],
+    style: 'observation'
+  },
+
+  // ============================================
+  // ALEX - The Tactician
+  // ============================================
+  {
+    pattern: 'analytical',
+    minLevel: 4,
+    trigger: 'before_choices',
+    condition: { characterId: 'alex' },
+    voices: ["Check your six. Always."],
+    style: 'urge'
+  },
+  {
+    pattern: 'building',
+    minLevel: 5,
+    trigger: 'before_choices',
+    condition: { characterId: 'alex' },
+    voices: ["A solid plan. Reinforced."],
+    style: 'observation'
+  },
+
+  // ============================================
+  // ASHA - The Visionary
+  // ============================================
+  {
+    pattern: 'exploring',
+    minLevel: 5,
+    trigger: 'before_choices',
+    condition: { characterId: 'asha' },
+    voices: ["The map is not the territory. Look beyond it."],
+    style: 'urge'
+  },
+  {
+    pattern: 'building',
+    minLevel: 4,
+    trigger: 'before_choices',
+    condition: { characterId: 'asha' },
+    voices: ["We are building the future we want to see."],
+    style: 'observation'
+  },
+
+  // ============================================
+  // SILAS - The Maintainer
+  // ============================================
+  {
+    pattern: 'patience',
+    minLevel: 5,
+    trigger: 'before_choices',
+    condition: { characterId: 'silas' },
+    voices: ["Clean it right, or don't clean it at all."],
+    style: 'urge'
+  },
+  {
+    pattern: 'building',
+    minLevel: 4,
+    trigger: 'node_enter',
+    condition: { characterId: 'silas' },
+    voices: ["Things break. We fix 'em. That's the job."],
+    style: 'observation'
+  },
+
+  // ============================================
+  // LIRA - The Listener
+  // ============================================
+  {
+    pattern: 'helping',
+    minLevel: 5,
+    trigger: 'node_enter',
+    condition: { characterId: 'lira' },
+    voices: ["Listen to the silence between their words."],
+    style: 'urge'
+  },
+  {
+    pattern: 'exploring',
+    minLevel: 4,
+    trigger: 'before_choices',
+    condition: { characterId: 'lira' },
+    voices: ["A new harmony is forming."],
+    style: 'observation'
+  },
+
+  // ============================================
+  // ZARA - The Analyst
+  // ============================================
+  {
+    pattern: 'analytical',
+    minLevel: 5,
+    trigger: 'before_choices',
+    condition: { characterId: 'zara' },
+    voices: ["The data doesn't lie. Only people do."],
+    style: 'urge'
+  },
+  {
+    pattern: 'building',
+    minLevel: 4,
+    trigger: 'before_choices',
+    condition: { characterId: 'zara' },
+    voices: ["Optimization complete. Efficiency increased."],
+    style: 'observation'
+  },
+
+  // ============================================
+  // YAQUIN - The Bio-Architect
+  // ============================================
+  {
+    pattern: 'building',
+    minLevel: 5,
+    trigger: 'before_choices',
+    condition: { characterId: 'yaquin' },
+    voices: ["Grow it. Don't force it."],
+    style: 'urge'
+  },
+  {
+    pattern: 'exploring',
+    minLevel: 4,
+    trigger: 'node_enter',
+    condition: { characterId: 'yaquin' },
+    voices: ["Even the moss has a strategy."],
+    style: 'observation'
   }
 ]
 

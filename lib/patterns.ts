@@ -20,6 +20,16 @@ export const PATTERN_TYPES = [
 export type PatternType = typeof PATTERN_TYPES[number]
 
 /**
+ * Standard Pattern Thresholds
+ * Used across Logic, Voice, and Experience systems to ensure consistent difficulty.
+ */
+export const PATTERN_THRESHOLDS = {
+  EMERGING: 3,   // Level 1: Voice whispers, basic options unlock
+  DEVELOPING: 6, // Level 2: Voice urges, standard options unlock
+  FLOURISHING: 9 // Level 3: Voice commands, mastery options unlock
+} as const
+
+/**
  * Comprehensive pattern metadata - single source of truth
  */
 export const PATTERN_METADATA: Record<PatternType, {
@@ -47,7 +57,7 @@ export const PATTERN_METADATA: Record<PatternType, {
     color: '#3B82F6',
     tailwindBg: 'bg-blue-500',
     tailwindText: 'text-blue-600',
-    skills: ['criticalThinking', 'problemSolving', 'digitalLiteracy']
+    skills: ['criticalThinking', 'problemSolving', 'digitalLiteracy', 'dataDemocratization']
   },
   patience: {
     label: 'The Anchor',
@@ -57,7 +67,7 @@ export const PATTERN_METADATA: Record<PatternType, {
     color: '#10B981',
     tailwindBg: 'bg-green-500',
     tailwindText: 'text-green-600',
-    skills: ['timeManagement', 'adaptability', 'emotionalIntelligence']
+    skills: ['timeManagement', 'adaptability', 'emotionalIntelligence', 'groundedResearch']
   },
   exploring: {
     label: 'The Voyager',
@@ -67,7 +77,7 @@ export const PATTERN_METADATA: Record<PatternType, {
     color: '#8B5CF6',
     tailwindBg: 'bg-purple-500',
     tailwindText: 'text-purple-600',
-    skills: ['adaptability', 'creativity', 'criticalThinking']
+    skills: ['adaptability', 'creativity', 'criticalThinking', 'multimodalCreation']
   },
   helping: {
     label: 'The Harmonic',
@@ -77,7 +87,7 @@ export const PATTERN_METADATA: Record<PatternType, {
     color: '#EC4899',
     tailwindBg: 'bg-pink-500',
     tailwindText: 'text-pink-600',
-    skills: ['emotionalIntelligence', 'collaboration', 'communication']
+    skills: ['emotionalIntelligence', 'collaboration', 'communication', 'aiLiteracy']
   },
   building: {
     label: 'The Architect',
@@ -87,7 +97,7 @@ export const PATTERN_METADATA: Record<PatternType, {
     color: '#F59E0B',
     tailwindBg: 'bg-amber-500',
     tailwindText: 'text-amber-600',
-    skills: ['creativity', 'problemSolving', 'leadership']
+    skills: ['creativity', 'problemSolving', 'leadership', 'agenticCoding', 'workflowOrchestration']
   }
 }
 
