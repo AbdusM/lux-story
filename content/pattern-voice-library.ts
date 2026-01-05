@@ -477,6 +477,74 @@ export const PATTERN_VOICE_LIBRARY: PatternVoiceEntry[] = [
     condition: { characterId: 'yaquin' },
     voices: ["Even the moss has a strategy."],
     style: 'observation'
+  },
+
+  // ============================================
+  // SAMUEL - The Fallen Hero
+  // ============================================
+  {
+    pattern: 'analytical',
+    minLevel: 4,
+    trigger: 'node_enter',
+    condition: { characterId: 'samuel' },
+    voices: ["The hero archetype is a cage. He's trapped in it."],
+    style: 'whisper'
+  },
+  {
+    pattern: 'helping',
+    minLevel: 5,
+    trigger: 'before_choices',
+    condition: { characterId: 'samuel' },
+    voices: ["He needs forgiveness, not admiration."],
+    style: 'urge'
+  },
+
+  // ============================================
+  // JORDAN - The Runner
+  // ============================================
+  {
+    pattern: 'exploring',
+    minLevel: 4,
+    trigger: 'node_enter',
+    condition: { characterId: 'jordan' },
+    voices: ["He's running from himself. Keep up."],
+    style: 'urge'
+  },
+  {
+    pattern: 'building',
+    minLevel: 5,
+    trigger: 'before_choices',
+    condition: { characterId: 'jordan' },
+    voices: ["Momentum is useful. Direct it."],
+    style: 'observation'
+  },
+
+  // ============================================
+  // EXPANDED VOICES (Depth)
+  // ============================================
+  {
+    pattern: 'patience',
+    minLevel: 4,
+    trigger: 'node_enter',
+    condition: { characterId: 'kai' },
+    voices: ["Safety takes time. He knows the cost of rushing."],
+    style: 'whisper'
+  },
+  {
+    pattern: 'exploring',
+    minLevel: 4,
+    trigger: 'node_enter',
+    condition: { characterId: 'alex' },
+    voices: ["The shadows hide the best paths. Follow him."],
+    style: 'urge'
+  },
+  {
+    pattern: 'helping',
+    minLevel: 4,
+    trigger: 'node_enter',
+    condition: { characterId: 'grace' },
+    voices: ["Her silence is a gift. Accept it."],
+    style: 'observation'
   }
 ]
 

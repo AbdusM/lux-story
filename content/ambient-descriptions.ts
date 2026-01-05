@@ -87,14 +87,14 @@ export function calculateAmbientContext(gameState: GameState): {
         activeEvents.push({
             id: 'ai_display',
             text: 'Data streams on the walls seem to reorganize themselves before you can even articulate the query.',
-            intensity: 'active'
+            intensity: 'noticeable'
         })
     }
     if (gameState.patterns.building > 6) {
         activeEvents.push({
             id: 'ai_agent',
             text: 'A maintenance bot corrects a structural flaw without anyone issuing a command. Agentic workflow in action.',
-            intensity: 'active'
+            intensity: 'noticeable'
         })
     }
     return { atmosphere, activeEvents }

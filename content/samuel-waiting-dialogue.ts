@@ -88,7 +88,14 @@ export function getCharacterWaitingDetail(characterId: CharacterId): string {
     jordan: "Jordan reorganized the career pamphlets three times. Restless without direction to give.",
     kai: "Kai's been runnin' extra safety checks. His way of keepin' busy.",
     silas: "Silas has been more... present. Your conversations shifted somethin'.",
-    alex: "Alex found some new corners of the station. Says they're savin' 'em to show you."
+    alex: "Alex found some new corners of the station. Says they're savin' 'em to show you.",
+    asha: "Asha is calibrating the telescope.",
+    lira: "Lira is digitizing old records.",
+    zara: "Zara is optimizing the power grid.",
+    station_entry: "The entry is quiet.",
+    grand_hall: "The hall is bustling.",
+    market: "The market is active.",
+    deep_station: "The deep station hums."
   }
 
   return details[characterId] || ""

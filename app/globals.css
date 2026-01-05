@@ -48,8 +48,10 @@
 
 /* Base size respects browser/system settings - WCAG 1.4.4 compliance */
 html {
-  font-size: 100%; /* 16px default, scales with browser zoom and system preferences */
-  -webkit-text-size-adjust: 100%; /* Prevent iOS auto text size adjustment */
+  font-size: 100%;
+  /* 16px default, scales with browser zoom and system preferences */
+  -webkit-text-size-adjust: 100%;
+  /* Prevent iOS auto text size adjustment */
   text-size-adjust: 100%;
 }
 
@@ -84,27 +86,34 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
-/* Prevent whole page flashing during updates */
-html, body {
-  will-change: auto !important;
-}
+/* Safe area padding for main content on mobile */
+@layer utilities {
+  .pb-safe-mobile {
+    padding-bottom: calc(6rem + env(safe-area-inset-bottom, 20px));
+    /* Default 20px if env not supported */
+  }
 
-/* ══════════════════════════════════════════════════════════════════════════════
-   TOUCH-FRIENDLY INTERACTIONS
-   ══════════════════════════════════════════════════════════════════════════════ */
+  @media (min-width: 640px) {
+    .pb-safe-mobile {
+      padding-bottom: calc(8rem + env(safe-area-inset-bottom, 0px));
+    }
+  }
+
+  /* Narrative text styling - lifts text off dark backgrounds for readability */
+  .narrative-text {
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  }
+}
 
 /* Improve touch feedback on buttons */
-button, [role="button"], a {
+button,
+[role="button"],
+a {
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
-}
-
-/* Active state feedback for mobile */
-@media (hover: none) and (pointer: coarse) {
-  button:active, [role="button"]:active {
-    transform: scale(0.98);
-    transition: transform 0.1s ease;
-  }
+  min-height: 44px;
+  /* Ensure minimum touch target size */
+  min-width: 44px;
 }
 
 /* Ensure minimum touch target size (48x48px recommended by Apple/Google) */
@@ -127,6 +136,7 @@ button, [role="button"], a {
   .hide-scrollbar::-webkit-scrollbar {
     display: none;
   }
+
   .hide-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -146,52 +156,75 @@ main {
 
 /* Custom animations for polish effects */
 @keyframes progress {
-  0% { width: 0%; }
-  100% { width: 100%; }
+  0% {
+    width: 0%;
+  }
+
+  100% {
+    width: 100%;
+  }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideInFromBottom {
-  from { 
+  from {
     opacity: 0;
     transform: translateY(20px);
   }
-  to { 
+
+  to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
 @keyframes slideOutToBottom {
-  from { 
+  from {
     opacity: 1;
     transform: translateY(0);
   }
-  to { 
+
+  to {
     opacity: 0;
     transform: translateY(20px);
   }
 }
 
 @keyframes zoomIn {
-  from { 
+  from {
     opacity: 0;
     transform: scale(0.9);
   }
-  to { 
+
+  to {
     opacity: 1;
     transform: scale(1);
   }
 }
 
 @keyframes typingDot {
-  0%, 20% { opacity: 0; }
-  50% { opacity: 1; }
-  100% { opacity: 0; }
+
+  0%,
+  20% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
 }
 
 /* Animation utility classes */
@@ -233,14 +266,12 @@ main {
   left: -100%;
   width: 200%;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(251, 191, 36, 0.15) 25%,
-    rgba(251, 191, 36, 0.3) 50%,
-    rgba(251, 191, 36, 0.15) 75%,
-    transparent 100%
-  );
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(251, 191, 36, 0.15) 25%,
+      rgba(251, 191, 36, 0.3) 50%,
+      rgba(251, 191, 36, 0.15) 75%,
+      transparent 100%);
   animation: navMarqueeShimmer 2s ease-in-out infinite;
   pointer-events: none;
   border-radius: inherit;
@@ -254,14 +285,12 @@ main {
   left: 100%;
   width: 200%;
   height: 100%;
-  background: linear-gradient(
-    270deg,
-    transparent 0%,
-    rgba(245, 158, 11, 0.1) 25%,
-    rgba(245, 158, 11, 0.2) 50%,
-    rgba(245, 158, 11, 0.1) 75%,
-    transparent 100%
-  );
+  background: linear-gradient(270deg,
+      transparent 0%,
+      rgba(245, 158, 11, 0.1) 25%,
+      rgba(245, 158, 11, 0.2) 50%,
+      rgba(245, 158, 11, 0.1) 75%,
+      transparent 100%);
   animation: navMarqueeShimmerReverse 2s ease-in-out infinite;
   animation-delay: 1s;
   pointer-events: none;
@@ -272,6 +301,7 @@ main {
   0% {
     transform: translateX(0);
   }
+
   100% {
     transform: translateX(100%);
   }
@@ -281,6 +311,7 @@ main {
   0% {
     transform: translateX(0);
   }
+
   100% {
     transform: translateX(-100%);
   }
@@ -292,9 +323,12 @@ main {
 }
 
 @keyframes navBorderPulse {
-  0%, 100% {
+
+  0%,
+  100% {
     box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.4), 0 0 12px rgba(251, 191, 36, 0.3);
   }
+
   50% {
     box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.6), 0 0 20px rgba(251, 191, 36, 0.5);
   }
@@ -306,12 +340,64 @@ main {
 }
 
 @keyframes navBorderPulsePurple {
-  0%, 100% {
+
+  0%,
+  100% {
     box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.4), 0 0 12px rgba(139, 92, 246, 0.3);
   }
+
   50% {
     box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.6), 0 0 20px rgba(139, 92, 246, 0.5);
   }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   CHOICE BUTTON MARQUEE - Modern, layout-safe hover effect
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+@keyframes marquee-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+.marquee-border {
+  position: relative;
+  /* overflow: hidden; - Removed to allow shadows/glows if needed, but border effect usually requires it */
+  overflow: hidden;
+  isolation: isolate;
+  /* Create stacking context */
+}
+
+.marquee-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  /* Follow parent radius */
+  padding: 2px;
+  /* Border thickness */
+  background: linear-gradient(90deg, var(--color-start, #cbd5e1), var(--color-mid, #fff), var(--color-end, #cbd5e1));
+  background-size: 200% 200%;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  /* Hidden by default */
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.marquee-border:hover::before {
+  opacity: 1;
+  animation: marquee-flow 2s linear infinite;
 }
 
 /* ══════════════════════════════════════════════════════════════════════════════
@@ -329,12 +415,10 @@ main {
   position: absolute;
   inset: -6px;
   border-radius: 12px;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(251, 191, 36, 0.15) 0%,
-    rgba(251, 191, 36, 0.08) 40%,
-    transparent 70%
-  );
+  background: radial-gradient(ellipse at center,
+      rgba(251, 191, 36, 0.15) 0%,
+      rgba(251, 191, 36, 0.08) 40%,
+      transparent 70%);
   animation: haloGlow 2s ease-in-out infinite;
   pointer-events: none;
   z-index: -1;
@@ -342,19 +426,20 @@ main {
 
 /* Purple blur halo (Constellation/Trust) */
 .nav-attention-halo-purple::before {
-  background: radial-gradient(
-    ellipse at center,
-    rgba(139, 92, 246, 0.15) 0%,
-    rgba(139, 92, 246, 0.08) 40%,
-    transparent 70%
-  );
+  background: radial-gradient(ellipse at center,
+      rgba(139, 92, 246, 0.15) 0%,
+      rgba(139, 92, 246, 0.08) 40%,
+      transparent 70%);
 }
 
 @keyframes haloGlow {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 0.6;
     transform: scale(1);
   }
+
   50% {
     opacity: 1;
     transform: scale(1.05);
@@ -369,14 +454,12 @@ main {
   left: -100%;
   width: 200%;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(139, 92, 246, 0.15) 25%,
-    rgba(139, 92, 246, 0.3) 50%,
-    rgba(139, 92, 246, 0.15) 75%,
-    transparent 100%
-  );
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(139, 92, 246, 0.15) 25%,
+      rgba(139, 92, 246, 0.3) 50%,
+      rgba(139, 92, 246, 0.15) 75%,
+      transparent 100%);
   animation: navMarqueeShimmer 2s ease-in-out infinite;
   pointer-events: none;
   border-radius: inherit;
@@ -384,6 +467,7 @@ main {
 
 /* Mobile: slower animations for battery/performance */
 @media (max-width: 640px) {
+
   .nav-attention-marquee::before,
   .nav-attention-marquee::after,
   .nav-attention-marquee-purple::before {
@@ -393,6 +477,7 @@ main {
 
 /* Respect reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
+
   .nav-attention-marquee::before,
   .nav-attention-marquee::after,
   .nav-attention-marquee-purple::before,
@@ -404,19 +489,25 @@ main {
 
 /* Trust celebration when reaching 10/10 */
 @keyframes trustCelebration {
-  0%, 100% { 
-    color: rgb(100, 116, 139); /* slate-500 */
+
+  0%,
+  100% {
+    color: rgb(100, 116, 139);
+    /* slate-500 */
     transform: scale(1);
   }
-  50% { 
-    color: rgb(34, 197, 94); /* green-500 */
+
+  50% {
+    color: rgb(34, 197, 94);
+    /* green-500 */
     transform: scale(1.05);
     font-weight: 600;
   }
 }
 
 .trust-max-celebration {
-  animation: trustCelebration 2s ease-in-out 3; /* Play 3 times */
+  animation: trustCelebration 2s ease-in-out 3;
+  /* Play 3 times */
   display: inline-block;
 }
 
@@ -426,6 +517,7 @@ main {
     opacity: 0;
     transform: translateY(8px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -439,7 +531,8 @@ main {
 
 /* Second half of split text - delayed fade-in */
 .fade-in-text.delayed {
-  animation-delay: 0.5s; /* Start after first half completes */
+  animation-delay: 0.5s;
+  /* Start after first half completes */
 }
 
 /* Line-by-line fade-in animation */
@@ -448,6 +541,7 @@ main {
     opacity: 0;
     transform: translateY(4px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -468,36 +562,55 @@ main {
 :root {
   /* Atmosphere Colors - Character-reactive backgrounds */
   --atmosphere-void: #05070a;
-  --atmosphere-samuel: #08050d;    /* Deep violet-black - wise, mysterious */
-  --atmosphere-maya: #05070d;      /* Dark indigo - tech, innovative */
-  --atmosphere-devon: #050d08;     /* Forest black - systems, nature */
-  --atmosphere-marcus: #0d0808;    /* Warm black - medical, caring */
-  --atmosphere-tess: #0d0a05;      /* Copper-black - education, clever */
-  --atmosphere-jordan: #050a0d;    /* Cool slate - navigation */
-  --atmosphere-yaquin: #0a0d05;    /* Sage black - creativity */
-  --atmosphere-kai: #0d0505;       /* Safety red-black - protection */
-  --atmosphere-rohan: #050508;     /* Deep space - introspective */
-  --atmosphere-silas: #0d0a08;     /* Crisis amber - intensity */
-  --atmosphere-alex: #080d0a;      /* Fresh green - discovery */
+  --atmosphere-samuel: #08050d;
+  /* Deep violet-black - wise, mysterious */
+  --atmosphere-maya: #05070d;
+  /* Dark indigo - tech, innovative */
+  --atmosphere-devon: #050d08;
+  /* Forest black - systems, nature */
+  --atmosphere-marcus: #0d0808;
+  /* Warm black - medical, caring */
+  --atmosphere-tess: #0d0a05;
+  /* Copper-black - education, clever */
+  --atmosphere-jordan: #050a0d;
+  /* Cool slate - navigation */
+  --atmosphere-yaquin: #0a0d05;
+  /* Sage black - creativity */
+  --atmosphere-kai: #0d0505;
+  /* Safety red-black - protection */
+  --atmosphere-rohan: #050508;
+  /* Deep space - introspective */
+  --atmosphere-silas: #0d0a08;
+  /* Crisis amber - intensity */
+  --atmosphere-alex: #080d0a;
+  /* Fresh green - discovery */
 
   /* Glass Panel Properties */
-  --glass-bg: rgba(10, 12, 16, 0.60); /* Reduced from 0.75 for visible blur */
+  --glass-bg: rgba(10, 12, 16, 0.60);
+  /* Reduced from 0.75 for visible blur */
   --glass-bg-solid: rgba(10, 12, 16, 0.92);
   --glass-border: rgba(255, 255, 255, 0.08);
   --glass-border-hover: rgba(255, 255, 255, 0.12);
-  --glass-blur: 20px; /* Increased from 16px for perceptible glass effect */
-  --glass-radius: 14px; /* Unified from 16px */
+  --glass-blur: 20px;
+  /* Increased from 16px for perceptible glass effect */
+  --glass-radius: 14px;
+  /* Unified from 16px */
   --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 
   /* Dialogue text - WCAG AA compliant (8:1 on dark bg) */
   --text-dialogue: rgba(235, 205, 160, 0.93);
 
   /* Pattern Colors - MUST match lib/patterns.ts canonical source */
-  --pattern-analytical: #3B82F6;   /* Blue - The Weaver */
-  --pattern-helping: #EC4899;      /* Pink - The Harmonic */
-  --pattern-building: #F59E0B;     /* Amber - The Architect */
-  --pattern-patience: #10B981;     /* Green - The Anchor */
-  --pattern-exploring: #8B5CF6;    /* Purple - The Voyager */
+  --pattern-analytical: #3B82F6;
+  /* Blue - The Weaver */
+  --pattern-helping: #EC4899;
+  /* Pink - The Harmonic */
+  --pattern-building: #F59E0B;
+  /* Amber - The Architect */
+  --pattern-patience: #10B981;
+  /* Green - The Anchor */
+  --pattern-exploring: #8B5CF6;
+  /* Purple - The Voyager */
 
   /* Spring Physics Curves (for CSS keyframe animations only)
    * For React components, use lib/animations.ts springs instead */
@@ -564,35 +677,44 @@ main {
     inset 1px 1px 0 rgba(255, 255, 255, 0.1),
     inset -1px -1px 0 rgba(255, 255, 255, 0.05),
     var(--glass-shadow),
-    0 0 40px rgba(59, 130, 246, 0.15); /* #3B82F6 - The Weaver */
+    0 0 40px rgba(59, 130, 246, 0.15);
+  /* #3B82F6 - The Weaver */
 }
+
 .glass-panel[data-pattern="helping"] {
   box-shadow:
     inset 1px 1px 0 rgba(255, 255, 255, 0.1),
     inset -1px -1px 0 rgba(255, 255, 255, 0.05),
     var(--glass-shadow),
-    0 0 40px rgba(236, 72, 153, 0.15); /* #EC4899 - The Harmonic */
+    0 0 40px rgba(236, 72, 153, 0.15);
+  /* #EC4899 - The Harmonic */
 }
+
 .glass-panel[data-pattern="building"] {
   box-shadow:
     inset 1px 1px 0 rgba(255, 255, 255, 0.1),
     inset -1px -1px 0 rgba(255, 255, 255, 0.05),
     var(--glass-shadow),
-    0 0 40px rgba(245, 158, 11, 0.15); /* #F59E0B - The Architect */
+    0 0 40px rgba(245, 158, 11, 0.15);
+  /* #F59E0B - The Architect */
 }
+
 .glass-panel[data-pattern="patience"] {
   box-shadow:
     inset 1px 1px 0 rgba(255, 255, 255, 0.1),
     inset -1px -1px 0 rgba(255, 255, 255, 0.05),
     var(--glass-shadow),
-    0 0 40px rgba(16, 185, 129, 0.15); /* #10B981 - The Anchor */
+    0 0 40px rgba(16, 185, 129, 0.15);
+  /* #10B981 - The Anchor */
 }
+
 .glass-panel[data-pattern="exploring"] {
   box-shadow:
     inset 1px 1px 0 rgba(255, 255, 255, 0.1),
     inset -1px -1px 0 rgba(255, 255, 255, 0.05),
     var(--glass-shadow),
-    0 0 40px rgba(139, 92, 246, 0.15); /* #8B5CF6 - The Voyager */
+    0 0 40px rgba(139, 92, 246, 0.15);
+  /* #8B5CF6 - The Voyager */
 }
 
 /* ══════════════════════════════════════════════════════════════════════════════
@@ -608,24 +730,75 @@ main {
 }
 
 /* Character-specific atmospheres */
-.atmosphere[data-character="samuel"] { background-color: var(--atmosphere-samuel); }
-.atmosphere[data-character="maya"] { background-color: var(--atmosphere-maya); }
-.atmosphere[data-character="devon"] { background-color: var(--atmosphere-devon); }
-.atmosphere[data-character="marcus"] { background-color: var(--atmosphere-marcus); }
-.atmosphere[data-character="tess"] { background-color: var(--atmosphere-tess); }
-.atmosphere[data-character="jordan"] { background-color: var(--atmosphere-jordan); }
-.atmosphere[data-character="yaquin"] { background-color: var(--atmosphere-yaquin); }
-.atmosphere[data-character="kai"] { background-color: var(--atmosphere-kai); }
-.atmosphere[data-character="rohan"] { background-color: var(--atmosphere-rohan); }
-.atmosphere[data-character="silas"] { background-color: var(--atmosphere-silas); }
-.atmosphere[data-character="alex"] { background-color: var(--atmosphere-alex); }
+.atmosphere[data-character="samuel"] {
+  background-color: var(--atmosphere-samuel);
+}
+
+.atmosphere[data-character="maya"] {
+  background-color: var(--atmosphere-maya);
+}
+
+.atmosphere[data-character="devon"] {
+  background-color: var(--atmosphere-devon);
+}
+
+.atmosphere[data-character="marcus"] {
+  background-color: var(--atmosphere-marcus);
+}
+
+.atmosphere[data-character="tess"] {
+  background-color: var(--atmosphere-tess);
+}
+
+.atmosphere[data-character="jordan"] {
+  background-color: var(--atmosphere-jordan);
+}
+
+.atmosphere[data-character="yaquin"] {
+  background-color: var(--atmosphere-yaquin);
+}
+
+.atmosphere[data-character="kai"] {
+  background-color: var(--atmosphere-kai);
+}
+
+.atmosphere[data-character="rohan"] {
+  background-color: var(--atmosphere-rohan);
+}
+
+.atmosphere[data-character="silas"] {
+  background-color: var(--atmosphere-silas);
+}
+
+.atmosphere[data-character="alex"] {
+  background-color: var(--atmosphere-alex);
+}
 
 /* P5: Station Evolution Atmospheres */
-.atmosphere[data-atmosphere="dormant"] { background-color: #1e293b; /* slate-800 */ }
-.atmosphere[data-atmosphere="awakening"] { background-color: #1e3a8a; /* blue-900 */ }
-.atmosphere[data-atmosphere="alive"] { background-color: #064e3b; /* emerald-900 */ }
-.atmosphere[data-atmosphere="tense"] { background-color: #450a0a; /* red-950 */ }
-.atmosphere[data-atmosphere="harmonious"] { background-color: #4c1d95; /* violet-900 */ }
+.atmosphere[data-atmosphere="dormant"] {
+  background-color: #1e293b;
+  /* slate-800 */
+}
+
+.atmosphere[data-atmosphere="awakening"] {
+  background-color: #1e3a8a;
+  /* blue-900 */
+}
+
+.atmosphere[data-atmosphere="alive"] {
+  background-color: #064e3b;
+  /* emerald-900 */
+}
+
+.atmosphere[data-atmosphere="tense"] {
+  background-color: #450a0a;
+  /* red-950 */
+}
+
+.atmosphere[data-atmosphere="harmonious"] {
+  background-color: #4c1d95;
+  /* violet-900 */
+}
 
 /* Note: character-specific colors will override these if data-character is present on the same element.
    However, AtmosphericGameBackground applies data-character to the div.
@@ -639,11 +812,9 @@ main {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(
-    ellipse 80% 50% at 50% 50%,
-    rgba(139, 92, 246, 0.04) 0%,
-    transparent 50%
-  );
+  background: radial-gradient(ellipse 80% 50% at 50% 50%,
+      rgba(139, 92, 246, 0.04) 0%,
+      transparent 50%);
   animation: atmospherePulse 8s ease-in-out infinite;
   pointer-events: none;
 }
@@ -653,12 +824,10 @@ main {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(
-    ellipse at center,
-    transparent 0%,
-    transparent 40%,
-    rgba(0, 0, 0, 0.4) 100%
-  );
+  background: radial-gradient(ellipse at center,
+      transparent 0%,
+      transparent 40%,
+      rgba(0, 0, 0, 0.4) 100%);
   pointer-events: none;
 }
 
@@ -666,17 +835,22 @@ main {
 .atmosphere-grid {
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(
-    rgba(255, 255, 255, 0.02) 1px,
-    transparent 1px
-  );
+  background-image: radial-gradient(rgba(255, 255, 255, 0.02) 1px,
+      transparent 1px);
   background-size: 40px 40px;
   pointer-events: none;
 }
 
 @keyframes atmospherePulse {
-  0%, 100% { opacity: 0.6; }
-  50% { opacity: 1; }
+
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+
+  50% {
+    opacity: 1;
+  }
 }
 
 /* ══════════════════════════════════════════════════════════════════════════════
@@ -701,17 +875,34 @@ main {
   opacity: 0.4;
 }
 
-.pattern-orb[data-pattern="analytical"] { background: var(--pattern-analytical); }
-.pattern-orb[data-pattern="helping"] { background: var(--pattern-helping); }
-.pattern-orb[data-pattern="building"] { background: var(--pattern-building); }
-.pattern-orb[data-pattern="patience"] { background: var(--pattern-patience); }
-.pattern-orb[data-pattern="exploring"] { background: var(--pattern-exploring); }
+.pattern-orb[data-pattern="analytical"] {
+  background: var(--pattern-analytical);
+}
+
+.pattern-orb[data-pattern="helping"] {
+  background: var(--pattern-helping);
+}
+
+.pattern-orb[data-pattern="building"] {
+  background: var(--pattern-building);
+}
+
+.pattern-orb[data-pattern="patience"] {
+  background: var(--pattern-patience);
+}
+
+.pattern-orb[data-pattern="exploring"] {
+  background: var(--pattern-exploring);
+}
 
 @keyframes orbBreathe {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: scale(1);
     opacity: 0.8;
   }
+
   50% {
     transform: scale(1.08);
     opacity: 1;
@@ -724,10 +915,12 @@ main {
     transform: scale(1);
     box-shadow: 0 0 0 0 currentColor;
   }
+
   50% {
     transform: scale(1.15);
     box-shadow: 0 0 30px 10px currentColor;
   }
+
   100% {
     transform: scale(1);
     box-shadow: 0 0 0 0 transparent;
@@ -747,6 +940,7 @@ main {
     opacity: 0;
     transform: translateY(20px) scale(0.95);
   }
+
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -758,6 +952,7 @@ main {
     opacity: 0;
     transform: translateX(-30px) scale(0.95);
   }
+
   to {
     opacity: 1;
     transform: translateX(0) scale(1);
@@ -769,6 +964,7 @@ main {
     opacity: 0;
     transform: translateX(30px) scale(0.95);
   }
+
   to {
     opacity: 1;
     transform: translateX(0) scale(1);
@@ -792,6 +988,7 @@ main {
    ══════════════════════════════════════════════════════════════════════════════ */
 
 @media (prefers-reduced-motion: reduce) {
+
   .pattern-orb,
   .atmosphere::before,
   .glass-float-in,
@@ -800,8 +997,13 @@ main {
     animation: none !important;
   }
 
-  .pattern-orb { opacity: 1; }
-  .atmosphere::before { opacity: 0.8; }
+  .pattern-orb {
+    opacity: 1;
+  }
+
+  .atmosphere::before {
+    opacity: 0.8;
+  }
 
   .glass-float-in,
   .glass-float-in-left,
@@ -810,4 +1012,3 @@ main {
     transform: none;
   }
 }
-

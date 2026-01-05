@@ -352,11 +352,11 @@ function VersionCard({
       <div className="flex gap-4 justify-center border-t border-stone-800 pt-3">
         <div className="text-center">
           <SpriteRenderer sprites={foxSprites} palette={foxPalette} size={32} />
-          <p className="text-[10px] text-stone-600">32px</p>
+          <p className="text-2xs text-stone-600">32px</p>
         </div>
         <div className="text-center">
           <SpriteRenderer sprites={owlSprites} palette={owlPalette} size={32} />
-          <p className="text-[10px] text-stone-600">32px</p>
+          <p className="text-2xs text-stone-600">32px</p>
         </div>
       </div>
     </div>

@@ -91,10 +91,6 @@ export interface OrbBalance {
 
   // Totals
   totalEarned: number
-  /** @deprecated Vestigial - Allocation system not implemented. Always 0. See lib/archive/orb-allocation-design.ts */
-  totalAllocated: number
-  /** @deprecated Vestigial - Allocation system not implemented. Always 0. See lib/archive/orb-allocation-design.ts */
-  availableToAllocate: number
 
   // Streaks (consecutive choices of same pattern)
   currentStreak: number
@@ -112,7 +108,7 @@ export interface OrbBalance {
 export interface OrbTransaction {
   id: string
   timestamp: number
-  type: 'earned' | 'allocated' | 'bonus' | 'milestone'
+  type: 'earned' | 'bonus' | 'milestone'
   orbType: OrbType
   amount: number
   reason: string
@@ -120,18 +116,7 @@ export interface OrbTransaction {
   balanceAfter: number
 }
 
-/**
- * @deprecated Vestigial - Allocation system was designed but not implemented.
- * Keeping for backwards compatibility. See lib/archive/orb-allocation-design.ts
- */
-export interface AllocationTarget {
-  id: string
-  name: string
-  description: string
-  requiredOrbs: Record<OrbType, number>
-  unlocks: string[] // What this allocation unlocks
-  isUnlocked: boolean
-}
+// AllocationTarget removed (Vestigial)
 
 // ═══════════════════════════════════════════════════════════════════════════
 // EARNING MECHANICS
@@ -265,8 +250,6 @@ export const INITIAL_ORB_BALANCE: OrbBalance = {
   helping: 0,
   building: 0,
   totalEarned: 0,
-  totalAllocated: 0,
-  availableToAllocate: 0,
   currentStreak: 0,
   currentStreakType: null,
   bestStreak: 0,

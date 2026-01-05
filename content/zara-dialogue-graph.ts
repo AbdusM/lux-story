@@ -18,7 +18,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
                 text: "Why is it flagging them?",
                 nextNodeId: 'zara_explains_bias',
                 pattern: 'analytical',
-                skills: ['dataLiteracy'],
+                skills: ['technicalLiteracy'],
                 consequence: {
                     characterId: 'zara',
                     trustChange: 1
@@ -51,7 +51,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
                 text: "Show me the raw data.",
                 nextNodeId: 'zara_simulation_setup',
                 pattern: 'helping',
-                skills: ['dataLiteracy']
+                skills: ['technicalLiteracy']
             }
         ]
     },
@@ -109,7 +109,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
                 text: "Filter by 'Safety Check'. The algorithm counts safety protocols as 'Idle Time'.",
                 nextNodeId: 'zara_simulation_success',
                 pattern: 'analytical',
-                skills: ['dataLiteracy', 'systemsThinking'],
+                skills: ['technicalLiteracy', 'systemsThinking'],
                 consequence: {
                     characterId: 'zara',
                     addGlobalFlags: ['golden_prompt_workflow'] // Reusing workflow/data flag
@@ -120,7 +120,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
                 text: "It's penalizing 'Mandatory Breaks'. It violates labor laws.",
                 nextNodeId: 'zara_simulation_success',
                 pattern: 'helping',
-                skills: ['ethics', 'informationLiteracy'],
+                skills: ['integrity', 'informationLiteracy'],
                 consequence: {
                     characterId: 'zara',
                     addGlobalFlags: ['golden_prompt_workflow']
@@ -152,7 +152,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
                 text: "We have to look beyond the spreadsheet.",
                 nextNodeId: 'zara_conclusion',
                 pattern: 'helping',
-                skills: ['ethics']
+                skills: ['integrity'],
             }
         ]
     },

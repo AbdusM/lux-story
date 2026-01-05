@@ -51,7 +51,9 @@ export interface SessionAnnouncement {
  * Per sprint task: boundaries should feel natural, not arbitrary
  */
 const MIN_NODES_BETWEEN_BOUNDARIES = 15
+/*
 const MAX_NODES_BETWEEN_BOUNDARIES = 30
+*/
 
 /** Session duration thresholds (in minutes) */
 const SESSION_THRESHOLDS = {
@@ -69,6 +71,7 @@ const SESSION_THRESHOLDS = {
  * Platform announcements that fit the train station metaphor
  * Vary based on how many boundaries have been crossed
  */
+/*
 const BOUNDARY_ANNOUNCEMENTS: Record<number, SessionAnnouncement[]> = {
   // First boundary (after 8-12 nodes)
   0: [
@@ -113,10 +116,12 @@ const BOUNDARY_ANNOUNCEMENTS: Record<number, SessionAnnouncement[]> = {
     }
   ]
 }
+*/
 
 /**
  * Time-based announcements (shown when session duration crosses thresholds)
  */
+/*
 const TIME_ANNOUNCEMENTS: Record<keyof typeof SESSION_THRESHOLDS, SessionAnnouncement> = {
   SHORT: {
     text: "You've been on the platform for about 5 minutes.",
@@ -138,6 +143,7 @@ const TIME_ANNOUNCEMENTS: Record<keyof typeof SESSION_THRESHOLDS, SessionAnnounc
     type: 'pause_suggestion'
   }
 }
+*/
 
 /**
  * Resolution-type announcements - used when player reaches a natural story resolution
@@ -187,15 +193,24 @@ function getSessionDurationMinutes(gameState: GameState): number {
 /**
  * Get random interval for next boundary (8-12 nodes)
  */
+/**
+ * Get random interval for next boundary (8-12 nodes)
+ */
+/*
 function getNextBoundaryInterval(): number {
   return Math.floor(
     Math.random() * (MAX_NODES_BETWEEN_BOUNDARIES - MIN_NODES_BETWEEN_BOUNDARIES + 1)
   ) + MIN_NODES_BETWEEN_BOUNDARIES
 }
+*/
 
 /**
  * Select announcement based on boundary count
  */
+/**
+ * Select announcement based on boundary count
+ */
+/*
 function selectAnnouncement(boundaryCount: number): SessionAnnouncement {
   let pool: SessionAnnouncement[]
 
@@ -211,10 +226,15 @@ function selectAnnouncement(boundaryCount: number): SessionAnnouncement {
   const index = Math.floor(Math.random() * pool.length)
   return pool[index]
 }
+*/
 
 /**
  * Check if we should show a time-based announcement
  */
+/**
+ * Check if we should show a time-based announcement
+ */
+/*
 function checkTimeThreshold(
   durationMinutes: number,
   lastDuration: number
@@ -235,6 +255,7 @@ function checkTimeThreshold(
 
   return null
 }
+*/
 
 // ═══════════════════════════════════════════════════════════════
 // PUBLIC API

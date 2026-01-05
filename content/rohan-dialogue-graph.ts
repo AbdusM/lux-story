@@ -18,13 +18,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     speaker: 'Rohan',
     content: [
       {
-        text: `The server room is cold. It smells of ozone and stale coffee.
-
-It's beautiful. Look at this recursion. It's absolutely perfect.
-
-And it's fake. A machine wrote it. It calls a library that hasn't existed since 2019.
-
-It's hallucinating reality, and it's doing it better than I ever could.`,
+        text: "It's fake. The brass on this railing? It's painted plastic. Scratch it.\n\n[He leans back, staring at the ceiling.]\n\nEveryone thinks the Station is ancient. But look at the rivets. They were stamped yesterday.\n\nWhy does a machine need to lie to us?",
         emotion: 'terrified_awe',
         variation_id: 'rohan_intro_v2',
         richEffectContext: 'warning',

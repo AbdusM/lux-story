@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { ArrowLeft, Sparkles, TrendingUp, Target, Lightbulb, BookOpen, Rocket } from 'lucide-react'
+import { ArrowLeft, Sparkles, TrendingUp, Target, Lightbulb } from 'lucide-react'
 import { loadSkillProfile } from '@/lib/skill-profile-adapter'
 import type { SkillProfile } from '@/lib/skill-profile-adapter'
 import { YourJourneySection } from '@/components/student/sections/YourJourneySection'
@@ -12,9 +12,9 @@ import { PatternInsightsSection } from '@/components/student/sections/PatternIns
 import { SkillGrowthSection } from '@/components/student/sections/SkillGrowthSection'
 import { CareerExplorationSection } from '@/components/student/sections/CareerExplorationSection'
 import { NextStepsSection } from '@/components/student/sections/NextStepsSection'
-import { FrameworkInsights } from '@/components/FrameworkInsights'
-import { ActionPlanBuilder } from '@/components/ActionPlanBuilder'
-import { logger } from '@/lib/logger'
+// import { FrameworkInsights } from '@/components/FrameworkInsights'
+// import { ActionPlanBuilder } from '@/components/ActionPlanBuilder'
+
 
 export default function StudentInsightsPage() {
   const router = useRouter()
@@ -22,18 +22,16 @@ export default function StudentInsightsPage() {
   const [loading, setLoading] = useState(true)
   const [userId, setUserId] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [showFrameworks, setShowFrameworks] = useState(false)
-  const [showActionPlan, setShowActionPlan] = useState(false)
 
   useEffect(() => {
     // Get userId from localStorage (same as game uses)
     if (typeof window !== 'undefined') {
       // Try multiple possible keys (for compatibility)
-      const savedUserId = 
-        localStorage.getItem('lux-player-id') || 
-        localStorage.getItem('playerId') || 
+      const savedUserId =
+        localStorage.getItem('lux-player-id') ||
+        localStorage.getItem('playerId') ||
         localStorage.getItem('gameUserId')
-      
+
       if (!savedUserId) {
         setError('No user ID found. Please start playing the game first.')
         setLoading(false)
@@ -106,8 +104,8 @@ export default function StudentInsightsPage() {
       <div className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
-          <Button 
-            variant="ghost" 
+          <Button
+            variant="ghost"
             onClick={() => router.push('/')}
             className="text-gray-600 hover:text-gray-900"
           >
@@ -172,15 +170,15 @@ export default function StudentInsightsPage() {
         <CareerExplorationSection profile={profile} />
         <NextStepsSection profile={profile} />
 
-        {/* Framework Insights & Action Plan Buttons */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Framework Insights & Action Plan Buttons - DISABLED (Missing Components) */}
+        {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Card className="shadow-md border-2 border-indigo-200 bg-gradient-to-br from-indigo-50 to-purple-50">
             <CardContent className="p-6 text-center">
               <p className="text-gray-700 mb-4">
                 Want to understand the science behind your journey?
               </p>
               <Button
-                onClick={() => setShowFrameworks(true)}
+                // onClick={() => setShowFrameworks(true)}
                 className="bg-indigo-600 hover:bg-indigo-700 text-white w-full"
                 size="lg"
               >
@@ -196,7 +194,7 @@ export default function StudentInsightsPage() {
                 Ready to turn insights into action?
               </p>
               <Button
-                onClick={() => setShowActionPlan(true)}
+                // onClick={() => setShowActionPlan(true)}
                 className="bg-green-600 hover:bg-green-700 text-white w-full"
                 size="lg"
               >
@@ -205,19 +203,19 @@ export default function StudentInsightsPage() {
               </Button>
             </CardContent>
           </Card>
-        </div>
+        </div> */}
       </div>
 
       {/* Framework Insights Modal */}
-      {showFrameworks && profile && (
+      {/* {showFrameworks && profile && (
         <FrameworkInsights
           profile={profile}
           onClose={() => setShowFrameworks(false)}
         />
-      )}
+      )} */}
 
       {/* Action Plan Builder Modal */}
-      {showActionPlan && profile && (
+      {/* {showActionPlan && profile && (
         <ActionPlanBuilder
           profile={profile}
           onClose={() => setShowActionPlan(false)}
@@ -229,7 +227,7 @@ export default function StudentInsightsPage() {
             logger.debug('Action plan saved', { operation: 'student-insights.save-plan', plan: typeof plan === 'object' ? Object.keys(plan) : 'unknown' })
           }}
         />
-      )}
+      )} */}
     </div>
   )
 }

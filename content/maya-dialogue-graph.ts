@@ -16,7 +16,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Sterne Library. Third floor. The table nobody wants because the AC's broken.\n\nOh. Hi. Were you watching me?\n\nBiochem notes. Robotics parts. Everywhere. I know it looks like a disaster. It is a disaster.\n\nI'm a disaster.",
+        text: "Wait, don't touch that—! Oh. Hi. Sorry. I thought you were... never mind.\n\nSterne Library. Third floor. The AC is broken and I've been awake for... what day is it?\n\nBiochem notes. Robotics parts. It's a disaster. I'm a disaster.",
         emotion: 'anxious_scattered',
         microAction: 'She pushes a stray lock of hair behind her ear, her hands trembling slightly.',
         variation_id: 'intro_v2_clean',

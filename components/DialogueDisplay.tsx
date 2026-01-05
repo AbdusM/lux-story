@@ -18,7 +18,6 @@ import { motion } from "framer-motion"
 import { interactionAnimations, isKineticInteraction, type InteractionType, type MotionInteractionType } from "@/lib/interaction-parser"
 import { getVoiceClass } from "@/lib/voice-utils"
 import { useUnlockEffects } from "@/hooks/useUnlockEffects"
-import { Subtext } from "./unlock-enhancements"
 import type { GameState } from "@/lib/character-state"
 
 interface DialogueDisplayProps {
@@ -67,12 +66,12 @@ export function DialogueDisplay({
   interaction,
   emotion,
   microAction,
-  patternSensation,
+  patternSensation: _patternSensation,
   playerPatterns: _playerPatterns
 }: DialogueDisplayProps) {
   // Get unlock-based content enhancements
-  const enhancements = useUnlockEffects(text, emotion,
-  microAction, characterId, characterName, gameState)
+  const _enhancements = useUnlockEffects(text, emotion,
+    microAction, characterId, gameState)
   // Auto-chunk long text ONLY if NOT using richEffects
   // When richEffects is enabled, respect the original text structure completely
   const chunkedText = richEffects
@@ -110,7 +109,7 @@ export function DialogueDisplay({
       key="dialogue-chunks-container"
       style={{ transition: 'none' }}
     >
-      
+
       {/* Micro-Action: Small physiological detail for humanlike feel (P1 Polish) */}
       {microAction && (
         <p className="not-italic text-indigo-200/70 mb-2 font-light text-base tracking-wide pl-1 border-l-2 border-indigo-500/20">
@@ -131,15 +130,15 @@ export function DialogueDisplay({
         content
       )}
 
-      {/* Subtext hints - surfaced through text per Expedition 33 design */}
-      {enhancements.subtextHint && (
+      {/* Subtext hints - surfaced through text per Expedition 33 design (HIDDEN per UX simplification) */}
+      {/* {enhancements.subtextHint && (
         <div className="mt-3">
           <Subtext text={enhancements.subtextHint} />
         </div>
-      )}
+      )} */}
 
-      {/* Pattern sensation - atmospheric feedback after pattern choices */}
-      {patternSensation && (
+      {/* Pattern sensation - atmospheric feedback after pattern choices (HIDDEN per UX simplification) */}
+      {/* {patternSensation && (
         <motion.p
           initial={{ opacity: 0, y: 5 }}
           animate={{ opacity: 1, y: 0 }}
@@ -149,7 +148,7 @@ export function DialogueDisplay({
         >
           {patternSensation}
         </motion.p>
-      )}
+      )} */}
     </div>
   )
 }

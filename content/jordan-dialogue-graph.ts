@@ -20,17 +20,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_introduction',
     speaker: 'Jordan Packard',
     content: [{
-      text: `Hey! Career Day at Covalence. the coding bootcamp over in Innovation Depot. Got here way too early. Classic overcompensation.
-
-I've rewritten this speech six times.{{helping>=3:
-
-}}
-
-<jitter>UX Designer. Gym Manager. Marketing. Uber. Developer. Product Manager. Senior Designer.</jitter>
-
-Seven jobs. Twelve years.
-
-What do you tell students when your path looks like this?`,
+      text: "Stand up! Look around you. See that? That's not a crowd, that's potential energy waiting for a spark.\n\nWe don't need permission to fix the vents. We just need enough hands.\n\nYou. You've got hands. You in or out?",
       emotion: 'friendly_but_anxious',
       variation_id: 'jordan_intro_v2_visual_hook',
       patternReflection: [

@@ -19,13 +19,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
     content: [
       {
         // Stage 1: Show corporate frustration first (matches Samuel's "burning the rulebook" setup)
-        text: `Protective Life training office. Fluorescent lights. Late shift.
-
-Fifteen slides. Fifteen "Click Next" buttons. That's safety training here.
-
-Three hours on this module. "Ensure harness is secured." Click Next. "Report hazards." Click Next.
-
-Nobody clicks the actual harness.`,
+        text: "Wait—stay back! That railing... the bolt is loose. 2mm variance.\n\nTechnically it holds 80kg, but if you slip... static load becomes dynamic load and... just stand there. Please.\n\nSafety isn't a checkbox. It's gravity waiting to catch you.",
         emotion: 'frustrated',
         variation_id: 'kai_intro_v3',
         patternReflection: [

@@ -1,14 +1,14 @@
 import React from 'react'
-import { motion } from 'framer-motion'
+
 import { Lock, Eye, Activity, Zap } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useGameStore } from '@/lib/game-store'
-import { ABILITIES, Ability } from '@/lib/abilities'
+import { ABILITIES } from '@/lib/abilities'
 import { ORB_TIERS } from '@/lib/orbs'
 
 export function MasteryView() {
-    const gameState = useGameStore(state => state.gameState)
-    const unlockedIds = new Set(gameState?.unlockedAbilities || [])
+    const unlockedAbilities = useGameStore(state => state.unlockedAchievements)
+    const unlockedIds = new Set(unlockedAbilities || [])
 
     // Group abilities by tier for visual hierarchy?
     // Or just a flat grid sorted by tier. Let's do flat grid for now.
@@ -80,7 +80,7 @@ export function MasteryView() {
                                             {ability.name}
                                         </h4>
                                         {!isUnlocked && (
-                                            <span className="text-[10px] uppercase font-bold text-slate-600 bg-slate-800 px-2 py-0.5 rounded">
+                                            <span className="text-2xs uppercase font-bold text-slate-600 bg-slate-800 px-2 py-0.5 rounded">
                                                 {tierMeta.minOrbs} Orbs
                                             </span>
                                         )}

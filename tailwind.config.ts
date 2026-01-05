@@ -53,7 +53,7 @@ const config: Config = {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        
+
         // Game-Specific Character Colors
         lux: {
           DEFAULT: "#a855f7", // Purple-500
@@ -80,7 +80,7 @@ const config: Config = {
           glow: "rgba(250, 204, 21, 0.4)",
         },
       },
-      
+
       // Design System Spacing
       spacing: {
         // Game-specific spacing scale
@@ -90,7 +90,7 @@ const config: Config = {
         'game-lg': '3rem',      // 48px
         'game-xl': '4.5rem',    // 72px
         'game-2xl': '6rem',     // 96px
-        
+
         // Component-specific spacing
         'card-padding': '1.5rem',
         'button-padding-x': '1.25rem',
@@ -98,7 +98,7 @@ const config: Config = {
         'message-gap': '1rem',
         'scene-gap': '2rem',
       },
-      
+
       // Typography Scale
       fontSize: {
         // Game text sizes
@@ -106,6 +106,8 @@ const config: Config = {
         'dialogue': ['1rem', { lineHeight: '1.625', letterSpacing: '0.025em' }],
         'choice': ['0.875rem', { lineHeight: '1.5', letterSpacing: '0.01em' }],
         'hud': ['0.75rem', { lineHeight: '1.4', letterSpacing: '0.05em' }],
+        '2xs': ['0.625rem', { lineHeight: '0.75rem' }], // 10px
+        '3xs': ['0.5rem', { lineHeight: '0.625rem' }], // 8px
         'celebration': ['1.5rem', { lineHeight: '1.3', letterSpacing: '0' }],
       },
 
@@ -115,7 +117,7 @@ const config: Config = {
         mono: ["var(--font-space-mono)", "monospace"],
         slab: ["var(--font-roboto-slab)", "serif"],
       },
-      
+
       // Component Heights/Widths
       height: {
         'game-panel': '400px',
@@ -123,13 +125,13 @@ const config: Config = {
         'meditation-circle': '10rem',
         'companion': '5rem',
       },
-      
+
       width: {
         'game-container': '48rem', // max-w-3xl equivalent
         'meditation-circle': '10rem',
         'companion': '5rem',
       },
-      
+
       // Border Radius
       borderRadius: {
         lg: "var(--radius)",
@@ -139,7 +141,7 @@ const config: Config = {
         'button': '0.5rem',
         'card': '1rem',
       },
-      
+
       // Animation Durations (matching animations.css)
       transitionDuration: {
         'instant': '100ms',
@@ -149,14 +151,14 @@ const config: Config = {
         'slower': '1000ms',
         'slowest': '2000ms',
       },
-      
+
       // Animation Timing Functions
       transitionTimingFunction: {
         'game': 'cubic-bezier(0.4, 0, 0.2, 1)',
         'bounce': 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
         'elastic': 'cubic-bezier(0.175, 0.885, 0.32, 1.275)',
       },
-      
+
       // Box Shadows
       boxShadow: {
         'game-sm': '0 2px 4px rgba(0, 0, 0, 0.1)',
@@ -168,18 +170,27 @@ const config: Config = {
         'glow-yellow': '0 0 20px rgba(250, 204, 21, 0.4)',
         'pokemon': 'inset 2px 2px 0 rgba(255, 255, 255, 0.8), inset -2px -2px 0 rgba(0, 0, 0, 0.2), 0 4px 8px rgba(0, 0, 0, 0.3)',
       },
-      
+
       // Backdrop Filters
       backdropBlur: {
         'game': '8px',
       },
-      
+
       // Z-Index Scale
       zIndex: {
+        'behind': '-1',
         'hud': '40',
-        'modal': '50',
+        'modal': '50', // Legacy, keeping for safety
         'celebration': '60',
         'tooltip': '70',
+        // New Semantic Layers
+        'dropdown': '90',
+        'sticky': '100', // Headers, Nav
+        'overlay': '110', // Backdrops
+        'modal-content': '120', // The actual modal dialog
+        'popover': '200',
+        'toast': '300',
+        'cursor': '999',
       },
 
       // Game-specific animations

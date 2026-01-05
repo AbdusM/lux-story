@@ -87,7 +87,7 @@ export function PedagogicalImpactCard() {
                 <div>
                   <h4 className="font-semibold text-slate-900 flex items-center gap-2">
                     {framework.title}
-                    {isActive && <Badge variant="secondary" className="bg-purple-100 text-purple-700 text-[10px]">Active</Badge>}
+                    {isActive && <Badge variant="secondary" className="bg-purple-100 text-purple-700 text-2xs">Active</Badge>}
                   </h4>
                   <p className="text-sm text-slate-600 mt-1">{framework.description}</p>
                 </div>

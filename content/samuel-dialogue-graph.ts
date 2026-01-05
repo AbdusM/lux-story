@@ -1451,10 +1451,10 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     ],
     choices: [
       {
-        choiceId: 'meet_maya',
-        text: "I'd like to talk to her.",
-        nextNodeId: 'maya_introduction',
-        pattern: 'helping',
+        choiceId: 'meet_marcus',
+        text: 'I need to meet him.',
+        nextNodeId: 'marcus_intro',
+        pattern: 'building',
         skills: ['emotionalIntelligence', 'collaboration'],
         consequence: {
           addGlobalFlags: ['met_maya']
@@ -1753,7 +1753,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'meet_marcus',
         text: "I understand that weight. I'll talk to him.",
-        nextNodeId: 'marcus_introduction',
+        nextNodeId: 'marcus_intro',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
         consequence: {
@@ -4298,10 +4298,10 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     ],
     choices: [
       {
-        choiceId: 'go_to_jordan',
-        text: "I'll go talk to her.",
-        nextNodeId: 'jordan_introduction',
-        pattern: 'exploring',
+        choiceId: 'go_to_marcus',
+        text: 'I\'ll go talk to him.',
+        nextNodeId: 'marcus_intro',
+        pattern: 'helping',
         skills: ['communication'],
         consequence: {
           addGlobalFlags: ['met_jordan']
@@ -4468,7 +4468,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'go_to_marcus',
         text: "I'll go talk to him.",
-        nextNodeId: 'marcus_introduction', // Links to new graph
+        nextNodeId: 'marcus_intro', // Links to new graph
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
         consequence: {

@@ -90,7 +90,7 @@ export function ProgressIndicator({ className }: ProgressIndicatorProps) {
           />
         </svg>
         {/* Center text */}
-        <span className="absolute inset-0 flex items-center justify-center text-[8px] font-bold text-slate-500">
+        <span className="absolute inset-0 flex items-center justify-center text-3xs font-bold text-slate-500">
           {progress.overall}%
         </span>
       </div>

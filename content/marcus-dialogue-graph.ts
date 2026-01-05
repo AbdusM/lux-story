@@ -5,7 +5,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'marcus_intro',
     speaker: 'Marcus',
     content: [{
-      text: "I'm drowning. One user becomes ten. Ten becomes a hundred. Every single one needs a personal welcome, a troubleshoot, a follow-up. I haven't slept in three cycles.",
+      text: "My capacity is exceeded. One user becomes ten. Ten becomes a hundred. Every single unit requires a personal welcome, a troubleshoot, a follow-up. I have not entered sleep mode in three cycles.",
       emotion: 'exhausted',
       microAction: 'He rubs his temples, surrounded by buzzing message alerts.',
       variation_id: 'default'
@@ -37,7 +37,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'marcus_automation_lesson',
     speaker: 'Marcus',
     content: [{
-      text: "But they want *connection*. If I send auto-replies, I lose them. The community is built on trust.",
+      text: "However, the users require *connection*. If I send auto-replies, retention drops. The community architecture is built on trust.",
       emotion: 'skeptical',
       microAction: 'He gestures to the glowing "Trust" metric on his dash, which is plummeting.',
       variation_id: 'default'
@@ -67,7 +67,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'marcus_simulation_automation',
     speaker: 'Marcus',
     content: [{
-      text: "A system? Show me. Because right now, I'm the bottleneck.",
+      text: "A system? Demonstrate it. Currently, I am the bottleneck.",
       emotion: 'curious',
       variation_id: 'default'
     }],
@@ -112,7 +112,7 @@ WARNING: Response time > 48h`,
     nodeId: 'marcus_simulation_fail',
     speaker: 'Marcus',
     content: [{
-      text: "No! That's just noise. They'll unsubscribe instantly.",
+      text: "Negative. That is effectively noise. Unsubscribe rates will spike instantly.",
       emotion: 'frustrated',
       variation_id: 'default'
     }],
@@ -128,7 +128,7 @@ WARNING: Response time > 48h`,
     nodeId: 'marcus_relief',
     speaker: 'Marcus',
     content: [{
-      text: "It's... quiet. The queue is clearing. And the sentiment score is rising. They feel heard.",
+      text: "It is... quiet. The queue is clearing. Sentinel scores are rising. The users register as 'heard'.",
       emotion: 'relieved',
       variation_id: 'default'
     }],
@@ -144,7 +144,7 @@ WARNING: Response time > 48h`,
     nodeId: 'marcus_jasper_intro',
     speaker: 'Marcus',
     content: [{
-      text: "I can't write a hundred unique messages. My voice gets lost.",
+      text: "I cannot write one hundred unique messages. My core voice signal degrades.",
       emotion: 'anxious',
       variation_id: 'default'
     }],
@@ -161,7 +161,7 @@ WARNING: Response time > 48h`,
     nodeId: 'marcus_jasper_unlock',
     speaker: 'Marcus',
     content: [{
-      text: "It sounds like me. But... everywhere. All at once.",
+      text: "It resembles my output. But... omnipresent. Simultaneous.",
       emotion: 'empowered',
       variation_id: 'default'
     }],
@@ -179,7 +179,7 @@ WARNING: Response time > 48h`,
     nodeId: 'marcus_simulation_cursor',
     speaker: 'Marcus',
     content: [{
-      text: "The codebase is a mess of hotfixes. I'm afraid to touch the core.",
+      text: "The codebase structure is compromised by hotfixes. Modifying the core poses unacceptable risk.",
       emotion: 'worried',
       variation_id: 'default'
     }],
@@ -220,7 +220,7 @@ WARNING: Response time > 48h`,
     nodeId: 'marcus_simulation_cursor_fail',
     speaker: 'Marcus',
     content: [{
-      text: "It just hallucinated a bunch of broken imports! The build is failing!",
+      text: "It generated invalid dependencies. The build is failing.",
       emotion: 'panicked',
       variation_id: 'default'
     }],
@@ -236,7 +236,7 @@ WARNING: Response time > 48h`,
     nodeId: 'marcus_cursor_success',
     speaker: 'Marcus',
     content: [{
-      text: "It... it understood the intent. The plan is clean. I can implement this safely.",
+      text: "It... it parsed the intent. The plan is valid. I can implement this within safety parameters.",
       emotion: 'relieved',
       variation_id: 'default'
     }],
@@ -251,8 +251,40 @@ WARNING: Response time > 48h`,
         }
       }
     ]
+  },
+  {
+    nodeId: 'hub_return',
+    speaker: 'Narrator',
+    content: [{
+      text: 'You leave Marcus to his work. The station hums with new efficiency.',
+      emotion: 'neutral',
+      variation_id: 'hub_return_v1'
+    }],
+    choices: [] // End of arc - Engine returns to Hub or Loop
+  },
+  {
+    nodeId: 'marcus_burnout',
+    speaker: 'Marcus',
+    content: [{
+      text: 'I... I just need a minute. Everything is spinning.',
+      emotion: 'exhausted',
+      variation_id: 'burnout_v1'
+    }],
+    choices: [{ choiceId: 'return', text: 'Back', nextNodeId: 'marcus_intro' }]
+  },
+  {
+    nodeId: 'marcus_fail_trust',
+    speaker: 'Marcus',
+    content: [{
+      text: "They detected the automation. 'Response 34B'? Retention is lost. Trust score is zero.",
+      emotion: 'devastated',
+      variation_id: 'fail_trust_v1'
+    }],
+    choices: [{ choiceId: 'return', text: 'Try again', nextNodeId: 'marcus_intro' }]
   }
 ]
+
+export const marcusDialogueNodes = nodes
 
 export const marcusDialogueGraph: DialogueGraph = {
   version: '1.0.0',

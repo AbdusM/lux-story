@@ -71,7 +71,7 @@ export function CareerExplorationSection({ profile }: CareerExplorationSectionPr
                         .filter(([_, data]) => data.current >= 0.6)
                         .slice(0, 3)
                         .map(([skill]) => (
-                          <Badge key={skill} variant="secondary" className="text-[10px] px-1.5 py-0">
+                          <Badge key={skill} variant="secondary" className="text-2xs px-1.5 py-0">
                             {skill.replace(/([A-Z])/g, ' $1').trim()}
                           </Badge>
                         ))}

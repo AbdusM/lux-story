@@ -301,9 +301,7 @@ export const SKILL_DEFINITIONS: Record<string, SkillDefinition> = {
         definition: 'Transmitting complex ideas with zero signal loss.',
         manifesto: 'If they didn\'t understand, you didn\'t communicate. Simplicity is your sword.',
         tacticalScenario: 'Use when team alignment is fracturing. Cut through jargon and ambiguity to realign everyone on the singular objective.'
-    }
-}
-    ,
+    },
     // --- FUTURE OF WORK (AI) ---
     aiLiteracy: {
         id: 'aiLiteracy',
@@ -347,6 +345,7 @@ export const SKILL_DEFINITIONS: Record<string, SkillDefinition> = {
         definition: 'Synthesizing vast knowledge without losing the thread of origin.',
         manifesto: 'In an ocean of noise, you anchor to the facts. You trust, but you always verify.'
     }
+}
 
 // Skill-to-character development hints (Moved from SkillsView)
 export const SKILL_CHARACTER_HINTS: Record<string, string[]> = {

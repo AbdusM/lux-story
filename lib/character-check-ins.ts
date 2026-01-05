@@ -1,4 +1,4 @@
-import { GameState, PendingCheckIn, StateChange } from './character-state'
+import { GameState, PendingCheckIn } from './character-state'
 
 /**
  * Check-In Registry

@@ -23,6 +23,8 @@ import { useStationStore } from "@/lib/station-state"
 export interface AtmosphericGameBackgroundProps {
   /** Current character being spoken to (determines atmosphere color) */
   characterId: CharacterId | null
+  /** Current active emotion (determines visual hue/pulse) */
+  emotion?: 'fear_awe' | 'anxiety' | 'curiosity' | 'calm' | 'hope'
   /** Whether the game is processing (thinking indicator) */
   isProcessing?: boolean
   /** Children to render on top of the background */
@@ -40,6 +42,7 @@ export interface AtmosphericGameBackgroundProps {
  */
 export function AtmosphericGameBackground({
   characterId,
+  emotion, // Added missing prop
   isProcessing: _isProcessing = false,
   children,
   className
@@ -50,12 +53,21 @@ export function AtmosphericGameBackground({
   const atmosphere = useStationStore((state) => state.atmosphere)
 
   return (
-    <div className={cn("relative min-h-screen", className)}>
-      {/* Atmospheric Background Layer - STABLE: No animations */}
-      <div
-        className="atmosphere"
+    <div className={cn("relative min-h-screen transition-colors duration-[2000ms]", className)}>
+      {/* Atmospheric Background Layer - DYNAMIC SHADER */}
+      <motion.div
+        className="atmosphere absolute inset-0 w-full h-full -z-10"
         data-character={characterId}
-        data-atmosphere={atmosphere} // New attribute for P5
+        data-atmosphere={atmosphere}
+        data-emotion={emotion} // Triggers CSS variables for color
+        initial={false}
+        animate={{
+          filter: emotion === 'fear_awe' ? 'hue-rotate(240deg) saturate(0.5)' :
+            emotion === 'anxiety' ? 'hue-rotate(-20deg) saturate(1.2)' :
+              emotion === 'curiosity' ? 'hue-rotate(180deg) saturate(0.8)' :
+                'hue-rotate(0deg) saturate(1)'
+        }}
+        transition={{ duration: 3, ease: 'easeInOut' }}
         aria-hidden="true"
       />
 

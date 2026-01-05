@@ -18,21 +18,15 @@ export const yaquinDialogueNodes: DialogueNode[] = [
     speaker: 'Yaquin',
     content: [
       {
-        // NOTE: Strategic targeting - shake applied only to the self-doubt question, not the confident teaching setup.
-        // This isolates the vulnerable moment of imposter syndrome, emphasizing the internal conflict.
-        text: `Home office in Hoover. Ring light on. Camera rolling.
-
-Forget the textbook. Chapter 4's garbage. Here's how you actually mix alginate without gagging patients.
-
-<shake>Is it garbage? Or am I just uneducated?</shake>`,
-        emotion: 'conflicted',
-        variation_id: 'yaquin_intro_v1',
+        text: "[He is sitting cross-legged in the center of the room. Floating slightly? No, just good posture.]\n\nShhh. The static... it's thinning.\n\n[He points a telescope made of drain pipes at a blank wall.]\n\nCan you hear it? The Star Song. It's in the key of G minor today.",
+        emotion: 'mystical',
+        variation_id: 'yaquin_intro_elder_v1',
         richEffectContext: 'warning',
         useChatPacing: true,
         patternReflection: [
-          { pattern: 'building', minLevel: 4, altText: "Home office in Hoover. Ring light on. Camera rolling.\n\nForget the textbook. Chapter 4's garbage. Here's how you actually do it.\n\nYou build things too, don't you? You know the gap between theory and making it work.", altEmotion: 'curious' },
-          { pattern: 'helping', minLevel: 4, altText: "Home office in Hoover. Ring light on. Camera rolling.\n\nForget the textbook. Here's how you actually mix alginate without gagging patients.\n\n<shake>Is it garbage? Or am I just uneducated?</shake>\n\nYou have kind eyes. Most people would judge. You're listening.", altEmotion: 'vulnerable' },
-          { pattern: 'analytical', minLevel: 4, altText: "Home office in Hoover. Ring light on. Camera rolling.\n\nForget the textbook. Chapter 4's garbage—I tested it.\n\nYou're already evaluating, aren't you? You understand the difference between what's written and what works.", altEmotion: 'conflicted' }
+          { pattern: 'building', minLevel: 4, altText: "[He gestures at the pipe-telescope.]\n\nEngineering marvel, isn't it? Tuned to the frequency of the Void.\n\nYou're a builder. You hear the structure in the silence.", altEmotion: 'kindred' },
+          { pattern: 'helping', minLevel: 4, altText: "Shhh. The static is thinning.\n\nYou're worried about me. Don't be. The stars are heavy, but I can carry them.\n\nListen. G minor.", altEmotion: 'peaceful' },
+          { pattern: 'analytical', minLevel: 4, altText: "Shhh. Signal to noise ratio is improving.\n\n[He adjusts a dial.]\n\nYou're analyzing the data stream. Valid. But some data is felt, not measured.", altEmotion: 'challenge' }
         ]
       }
     ],

@@ -1,7 +1,7 @@
 import { GameState } from './character-state'
 import { THOUGHT_REGISTRY, ThoughtDefinition } from '@/content/thoughts'
 import { isIdentityThought } from './identity-system'
-import { GameStateUtils } from './character-state'
+
 
 export interface ThoughtUnlockResult {
     unlockedThoughtIds: string[]
@@ -36,7 +36,7 @@ export function checkThoughtTriggers(gameState: GameState): ThoughtUnlockResult 
     if (unlockedIds.length === 0) return null
 
     // Create state updates
-    let newState = { ...gameState }
+    // let newState = { ...gameState }
 
     // Add new thoughts
     // Note: We use GameStateUtils usually, but for batch additions we can do it manually 

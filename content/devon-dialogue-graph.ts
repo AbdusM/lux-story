@@ -17,14 +17,14 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "Avondale coffee shop. Back booth. 2 AM.\n\nIf input is 'I'm fine,' route to branch 4.B, sub-routine 'gentle probe.'\n\nNo, wait. Latency's too high.\n\nOh. Didn't see you there.\n\nClosed system. Are you a variable I need to account for?",
+        text: "Pass me the—no, the other wrench. The one that's actually regulation.\n\n[He wipes grease on a rag, barely looking at you.]\n\nShift change isn't for ten minutes. If you're here to complain about the heat, join the queue. If you're here to help, grab the duct tape.",
         emotion: 'guarded',
         microAction: 'He taps a rhythmic pattern on the table, eyes darting between three screens.',
         variation_id: 'intro_v1',
         patternReflection: [
-          { pattern: 'analytical', minLevel: 5, altText: "Avondale coffee shop. Back booth. 2 AM.\n\nIf input is 'I'm fine,' route to branch 4.B, sub-routine 'gentle probe.'\n\nOh. You're reading the logic flow, aren't you? Most people don't even see it.\n\nClosed system. But maybe you understand closed systems.", altEmotion: 'curious' },
+          { pattern: 'analytical', minLevel: 5, altText: "Avondale coffee shop. Back booth. 2 AM.\n\n*[Internal Log: If input is 'I'm fine,' route to branch 4.B, sub-routine 'gentle probe.']* \n\nOh. You're reading the logic flow, aren't you? Most people don't even see it.\n\nClosed system. But maybe you understand closed systems.", altEmotion: 'curious' },
           { pattern: 'building', minLevel: 5, altText: "Avondale coffee shop. Back booth. 2 AM.\n\nDecision tree. Flowchart. You've built things like this before, haven't you?\n\nMost people don't recognize the architecture. But you do.", altEmotion: 'interested' },
-          { pattern: 'patience', minLevel: 5, altText: "Avondale coffee shop. Back booth. 2 AM.\n\nIf input is 'I'm fine,' route to branch 4.B...\n\nOh. You're just... waiting. Not rushing me. That's. Different.\n\nClosed system. Are you a variable I need to account for?", altEmotion: 'guarded' }
+          { pattern: 'patience', minLevel: 5, altText: "Avondale coffee shop. Back booth. 2 AM.\n\n*[Internal Log: If input is 'I'm fine,' route to branch 4.B...]*\n\nOh. You're just... waiting. Not rushing me. That's. Different.\n\nClosed system. Are you a variable I need to account for?", altEmotion: 'guarded' }
         ]
       }
     ],

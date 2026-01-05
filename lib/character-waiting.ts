@@ -95,7 +95,23 @@ const WAITING_MESSAGES: Record<CharacterId, string[]> = {
   grace: [
     "Grace has been sitting peacefully. Presence matters to her.",
     "The caregiver spoke about your patience. It meant something."
-  ]
+  ],
+  asha: [
+    "Asha has been looking at the stars. She seems to be tracing a path.",
+    "The astronomer mentioned a new constellation she wanted to show you."
+  ],
+  lira: [
+    "Lira was asking if you'd returned. She has a question about history.",
+    "The archivist was organizing old logs. She found something interesting."
+  ],
+  zara: [
+    "Zara has been analyzing the station's efficiency. She had a thought.",
+    "The analyst mentioned a pattern she noticed in your choices."
+  ],
+  station_entry: [""],
+  grand_hall: [""],
+  market: [""],
+  deep_station: [""]
 }
 
 /**
@@ -340,7 +356,14 @@ function formatCharacterName(characterId: CharacterId): string {
     silas: 'Silas',
     alex: 'Alex',
     elena: 'Elena',
-    grace: 'Grace'
+    grace: 'Grace',
+    asha: 'Asha',
+    lira: 'Lira',
+    zara: 'Zara',
+    station_entry: 'Station Entry',
+    grand_hall: 'Grand Hall',
+    market: 'Market',
+    deep_station: 'Deep Station'
   }
   return names[characterId] || characterId
 }
@@ -418,7 +441,26 @@ export function getTimeAwareGreeting(
       short: "Oh, hey!",
       medium: "I found some new corners of the station.",
       long: "The station's big, but certain platforms feel less empty when you're around."
-    }
+    },
+    asha: {
+      short: "You've returned.",
+      medium: "The stars have moved since we spoke.",
+      long: "I was hoping you'd come back to see the new alignment."
+    },
+    lira: {
+      short: "Welcome back.",
+      medium: "I've uncovered more history.",
+      long: "History waits for no one, but I waited for you to share this."
+    },
+    zara: {
+      short: "System optimized.",
+      medium: "I've calculated new efficiencies.",
+      long: "Your return fits the optimal probability model. Good."
+    },
+    station_entry: { short: "", medium: "", long: "" },
+    grand_hall: { short: "", medium: "", long: "" },
+    market: { short: "", medium: "", long: "" },
+    deep_station: { short: "", medium: "", long: "" }
   }
 
   const charGreetings = greetings[characterId] || {

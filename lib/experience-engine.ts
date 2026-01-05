@@ -52,7 +52,7 @@ export interface ActiveExperienceState {
 // REGISTRY
 // ============================================================================
 
-export const EXPERIENCE_REGISTRY: Record<ExperienceId, LoyaltyExperience> = {} as any
+export const EXPERIENCE_REGISTRY: Partial<Record<ExperienceId, LoyaltyExperience>> = {}
 
 export function registerExperience(experience: LoyaltyExperience) {
     EXPERIENCE_REGISTRY[experience.id] = experience
@@ -89,6 +89,8 @@ export class ExperienceEngine {
         gameState: GameState
     ): { newState: ActiveExperienceState, updates: Partial<GameState>, isComplete: boolean, result?: 'success' | 'failure' | 'mixed' } {
         const exp = EXPERIENCE_REGISTRY[state.experienceId]
+        if (!exp) throw new Error("Experience not found: " + state.experienceId)
+
         const step = exp.steps[state.currentStepId]
         const choice = step.choices?.find(c => c.id === choiceId)
 
@@ -102,12 +104,12 @@ export class ExperienceEngine {
 
         // Check for completion
         if (['success', 'failure', 'mixed'].includes(nextStepId)) {
-            const finalUpdates = exp.onComplete(nextStepId as any, { ...gameState, ...immediateUpdates })
+            const finalUpdates = exp.onComplete(nextStepId as 'success' | 'failure' | 'mixed', { ...gameState, ...immediateUpdates })
             return {
                 newState: { ...state, currentStepId: nextStepId, history: [...state.history, choiceId] },
                 updates: { ...immediateUpdates, ...finalUpdates },
                 isComplete: true,
-                result: nextStepId as any
+                result: nextStepId as 'success' | 'failure' | 'mixed'
             }
         }
 
@@ -119,6 +121,5 @@ export class ExperienceEngine {
     }
 }
 
-// Side-effect imports to register content
-import '@/content/maya-loyalty'
-import '@/content/devon-loyalty'
+// Side-effect imports removed to prevent circular dependency
+// Import content in 'lib/init-experiences.ts' instead

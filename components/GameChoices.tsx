@@ -4,10 +4,10 @@ import { memo, useState, useEffect, useCallback, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { motion } from 'framer-motion'
 import { springs, stagger } from '@/lib/animations'
-import { Lock, Microscope, Brain, Compass, Heart, Hammer, Zap } from 'lucide-react'
+import { Lock, Microscope, Brain, Compass, Heart, Hammer } from 'lucide-react'
 import { type PatternType, PATTERN_METADATA, isValidPattern } from '@/lib/patterns'
 import { type GravityResult } from '@/lib/narrative-gravity'
-import { useMagneticElement } from '@/hooks/useMagneticElement'
+
 import { useGameStore } from '@/lib/game-store'
 
 /**
@@ -111,6 +111,24 @@ const DEFAULT_GLASS_STYLE = {
 }
 
 /**
+ * Marquee gradient colors for premium hover effect
+ * Maps patterns to start/mid/end colors for the flowing border
+ */
+const PATTERN_MARQUEE_COLORS: Record<PatternType, {
+  start: string
+  mid: string
+  end: string
+}> = {
+  analytical: { start: '#60a5fa', mid: '#22d3ee', end: '#60a5fa' }, // Blue-Cyan-Blue
+  patience: { start: '#34d399', mid: '#4ade80', end: '#34d399' },   // Emerald-Green-Emerald
+  exploring: { start: '#a78bfa', mid: '#e879f9', end: '#a78bfa' },   // Purple-Fuchsia-Purple
+  helping: { start: '#f472b6', mid: '#fb7185', end: '#f472b6' },     // Pink-Rose-Pink
+  building: { start: '#fbbf24', mid: '#fb923c', end: '#fbbf24' }     // Amber-Orange-Amber
+}
+
+const DEFAULT_MARQUEE_COLORS = { start: '#94a3b8', mid: '#ffffff', end: '#94a3b8' } // Slate-White-Slate
+
+/**
  * Orb fill requirement for gated choices (KOTOR-style)
  */
 interface OrbRequirement {
@@ -129,7 +147,8 @@ interface Choice {
   pivotal?: boolean
   /** Orb fill requirement - choice is locked until met (KOTOR-style) */
   requiredOrbFill?: OrbRequirement
-  /** ISP: Narrative Gravity Weight */
+  /** ISP: Narrative Gravity Weight */ // Added missing property documentation
+  ispGravity?: number
   gravity?: GravityResult
 }
 
@@ -255,7 +274,7 @@ const buttonVariants = {
     transition: { duration: 0.15, ease: [0.25, 0.1, 0.25, 1] as const } // easeOut cubic-bezier
   },
   tap: { scale: 0.98 },
-  hover: { scale: 1.01 }
+  hover: { scale: 1.0 } // REMOVED SCALE: 1.01 -> 1.0
 }
 
 const shakeVariant = {
@@ -309,12 +328,8 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
   glass?: boolean
   showPatternIcon?: boolean
 }) => {
-  // Magnetic cursor effect (desktop-only, respects reduced motion)
-  // Subtle attraction toward cursor for playful, premium feel
-  const magnetic = useMagneticElement<HTMLDivElement>({
-    strength: 0.25,
-    maxDistance: 12
-  })
+  // MAGNETIC EFFECT REMOVED for stability and "less disjointed" feel
+  // const magnetic = useMagneticElement(...)
 
   // Combine standard variants with feedback variants
   const combinedVariants = {
@@ -324,7 +339,7 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
     focused: {
       opacity: 1,
       y: 0,
-      scale: 1.02,
+      scale: 1.0, // Reduced from 1.02
       boxShadow: "0px 0px 0px 2px rgba(59,130,246,0.5)",
       transition: { duration: 0.15 }
     },
@@ -363,7 +378,7 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
   // Locked choice styling
   if (isLocked) {
     return (
-      <div ref={magnetic.ref} style={magnetic.style} className="w-full">
+      <div className="w-full">
         <motion.div
           variants={combinedVariants}
           custom={index}
@@ -396,10 +411,10 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
   }
 
   return (
-    <div ref={magnetic.ref} style={magnetic.style} className="w-full">
+    <div className="w-full">
       <motion.div
         variants={combinedVariants}
-        whileHover="hover"
+        // whileHover="hover" // REMOVED: No generic hover scale
         whileTap="tap"
         animate={_animateState} // ISP FIX: Prop moved to motion.div
         custom={index}
@@ -411,7 +426,7 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
           key={index}
           onClick={() => onChoice(choice)}
           disabled={isProcessing}
-          variant={null}
+          variant={glass ? "glass" : "outline"} // Agent 8: Systemic Fix - Use first-class glass variant
           data-testid="choice-button"
           data-choice-text={choice.text}
           data-pattern={choice.pattern || ''}
@@ -420,10 +435,7 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
           className={`
             w-full min-h-[60px] sm:min-h-[56px] h-auto px-5 py-4
             text-base sm:text-[15px] font-medium text-left justify-start break-words whitespace-normal leading-relaxed
-            ${glass
-              ? 'text-slate-100 border border-white/[0.08] bg-[rgba(30,30,35,0.85)] shadow-[0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.05)]'
-              : 'text-stone-600 border border-transparent bg-white/80 backdrop-blur-sm shadow-sm'
-            }
+            ${!glass && 'text-stone-600 bg-white/80 backdrop-blur-sm shadow-sm hover:text-stone-900'}
             ${(() => {
               const pattern = choice.pattern
               if (glass) {
@@ -431,10 +443,11 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
                 return `${styles.bg} ${styles.border} ${styles.shadow} ${styles.activeBg}`
               } else {
                 const styles = pattern && isValidPattern(pattern) ? PATTERN_HOVER_STYLES[pattern] : DEFAULT_HOVER_STYLE
-                return `${styles.bg} border border-transparent ${styles.shadow} ${styles.activeBg}` // Enforce transparent border
+                return `${styles.bg} border border-transparent ${styles.shadow} ${styles.activeBg}`
               }
             })()}
-            ${glass ? 'hover:text-white' : 'hover:text-stone-900'}
+            ${/* MARQUEE EFFECT: Only apply if choice is pivotal or has a pattern */ ''}
+            ${choice.pivotal || (choice.pattern && isValidPattern(choice.pattern)) ? 'marquee-border' : ''}
             active:shadow-none
             transition-colors duration-200
             rounded-[14px]
@@ -451,7 +464,19 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
             ${choice.gravity?.effect === 'attract' && !isFocused && !isLocked
               ? (glass ? 'border-emerald-400/30 bg-emerald-900/20 shadow-[0_0_20px_rgba(16,185,129,0.2)]' : 'border-emerald-200/50 bg-emerald-50/40 shadow-emerald-100')
               : ''}
+
           `}
+          style={{
+            ...((() => {
+              const pattern = choice.pattern
+              const colors = pattern && isValidPattern(pattern) ? PATTERN_MARQUEE_COLORS[pattern] : DEFAULT_MARQUEE_COLORS
+              return {
+                '--color-start': colors.start,
+                '--color-mid': colors.mid,
+                '--color-end': colors.end,
+              } as React.CSSProperties
+            })())
+          }}
         >
           {showPatternIcon && choice.pattern && (
             <div className="mr-3 opacity-90">
@@ -519,8 +544,9 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
   const { focusedIndex, containerRef } = useKeyboardNavigation(choices, isProcessing, onChoice)
 
   // ABILITY CHECK: Pattern Preview (P0)
-  const unlockedAbilities = useGameStore(state => state.gameState?.unlockedAbilities || [])
-  const hasPatternPreview = unlockedAbilities.includes('pattern_preview')
+  // FIX: Access coreGameState directly and avoid inline default array to prevent infinite loop
+  const unlockedAbilities = useGameStore(state => state.coreGameState?.unlockedAbilities)
+  const hasPatternPreview = (unlockedAbilities || []).includes('pattern_preview')
 
   if (!choices || choices.length === 0) {
     return null

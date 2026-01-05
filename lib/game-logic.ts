@@ -3,6 +3,7 @@ import { EvaluatedChoice } from './dialogue-graph'
 import { calculatePatternGain } from './identity-system'
 import { isValidPattern, getPatternSensation, PatternType, PATTERN_THRESHOLDS, PATTERN_SKILL_MAP } from './patterns'
 import { detectRelationshipUpdates } from './character-relationships'
+import { simulateDensityFluctuation, OVERDENSITY_CONSTANTS } from './overdensity-system'
 
 /**
  * Result of processing a choice
@@ -196,10 +197,29 @@ export class GameLogic {
     /**
      * processChoice
      * The Master Logic Function. Determines all consequences of a player's action.
+     * @param reactionTime Optional time in ms representing how long player lingered
      */
-    static processChoice(state: GameState, evaluatedChoice: EvaluatedChoice): ChoiceProcessingResult {
+    static processChoice(state: GameState, evaluatedChoice: EvaluatedChoice, reactionTime?: number): ChoiceProcessingResult {
         const choice = evaluatedChoice.choice
-        let newState = state
+        let newState = { ...state } // Clone ensuring we don't mutate input
+
+        // Clean up previous transient timing flags
+        newState.globalFlags = new Set(newState.globalFlags)
+        newState.globalFlags.delete('temporary_hesitation')
+        newState.globalFlags.delete('temporary_silence')
+        newState.globalFlags.delete('temporary_decisive')
+
+        // Apply new timing flags if time provided
+        if (reactionTime !== undefined) {
+            if (reactionTime > 15000) {
+                newState.globalFlags.add('temporary_silence')
+            } else if (reactionTime > 8000) {
+                newState.globalFlags.add('temporary_hesitation')
+            } else if (reactionTime < 1500) {
+                newState.globalFlags.add('temporary_decisive')
+            }
+        }
+
 
         // Capture old flags for comparison
         const oldFlags = state.globalFlags
@@ -207,6 +227,19 @@ export class GameLogic {
         // 1. Apply explicit consequences (JSON-defined)
         if (choice.consequence) {
             newState = GameStateUtils.applyStateChange(newState, choice.consequence)
+        }
+
+        // 1.5. Simulate Market Density (Sim-lite)
+        // ONLY if in Market sector (optimization) or generically everywhere if desired for background calc
+        // For now, running it globally as 'time passes'
+        const newDensity = simulateDensityFluctuation(newState.overdensity)
+        newState.overdensity = newDensity
+
+        // Trigger Crowd Surge Logic
+        if (newDensity >= OVERDENSITY_CONSTANTS.HIGH_DENSITY_THRESHOLD) {
+            newState.globalFlags.add('high_density')
+        } else if (newDensity <= OVERDENSITY_CONSTANTS.CLEAR_THRESHOLD) {
+            newState.globalFlags.delete('high_density')
         }
 
         // 2. Apply Pattern Changes (Weighted Identity Math)
@@ -240,10 +273,10 @@ export class GameLogic {
         }
 
         // AUTO-DERIVE SKILLS from Pattern (Sprint AI)
-        const derivedSkills = (choice.pattern && isValidPattern(choice.pattern)) 
+        const derivedSkills = (choice.pattern && isValidPattern(choice.pattern))
             ? (PATTERN_SKILL_MAP[choice.pattern] || [])
             : []
-        
+
         const explicitSkills = choice.skills || []
         const combinedSkills = Array.from(new Set([...derivedSkills, ...explicitSkills]))
 
@@ -280,7 +313,7 @@ export class GameLogic {
         // then fix the import.
 
         // Calculate new flags
-        const newFlags = newState.globalFlags
+
 
         // This line will fail compilation until I add the import.
         // events.relationshipUpdates = detectRelationshipUpdates(oldFlags, newFlags)

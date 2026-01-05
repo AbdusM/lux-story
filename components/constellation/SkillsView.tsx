@@ -253,7 +253,7 @@ export function SkillsView({ skills, onOpenDetail: _onOpenDetail }: SkillsViewPr
             </div>
             <div className="flex-1 min-w-0">
               <h3 className="text-sm font-bold text-slate-100 truncate tracking-wide">{selectedSkill.name}</h3>
-              <p className="text-[10px] uppercase tracking-widest text-slate-500 mt-0.5">
+              <p className="text-2xs uppercase tracking-widest text-slate-500 mt-0.5">
                 {selectedSkill.state === 'dormant' ? 'Locked' : `Level ${selectedSkill.demonstrationCount}`}
               </p>
             </div>

@@ -57,19 +57,19 @@ const STATE_THEMES = {
 export interface RichTextEffect {
   /** Animation mode - 'typewriter' is deprecated and maps to 'staggered' */
   mode?: 'static' | 'typewriter' | 'fade-in' | 'staggered' | 'line-fade-in'
-  
+
   /** State-based color theme */
   state?: keyof typeof STATE_THEMES
-  
+
   /** Words or phrases to highlight */
   highlightWords?: string[]
-  
+
   /** Speed of animations (1 = normal) */
   speed?: number
-  
+
   /** Enable flashing/blinking effect on highlighted text */
   flashing?: boolean
-  
+
   /** Enable rainbow cycling effect */
   rainbow?: boolean
 }
@@ -96,7 +96,7 @@ export function RichTextRenderer({
   const [isComplete, setIsComplete] = useState(false)
   const [visibleChunks, setVisibleChunks] = useState<number>(0)
   const shouldReduceMotion = useReducedMotion()
-  
+
   // Default to staggered if 'typewriter' is requested (migration strategy)
   const mode = effects.mode === 'typewriter' ? 'staggered' : (effects.mode || 'static')
 
@@ -120,33 +120,38 @@ export function RichTextRenderer({
 
     return paragraphs
   }, [text])
-  
+
   useEffect(() => {
     // Reset state when text changes
     setIsComplete(false)
     setVisibleChunks(0)
-    
+
     if (shouldReduceMotion || mode === 'static' || mode === 'fade-in') {
       setVisibleChunks(chunks.length)
       setIsComplete(true)
       onComplete?.()
       return
     }
-    
+
     // Staggered reveal logic
     if (mode === 'staggered') {
       let currentChunk = 0
-      
+
       const revealNextChunk = () => {
         if (currentChunk < chunks.length) {
           setVisibleChunks(prev => prev + 1)
           currentChunk++
-          
+
           // Calculate delay based on chunk length and character personality
           // Uses character-specific timing from lib/character-typing.ts
           const chunkLength = chunks[currentChunk - 1]?.length || 0
-          const delay = calculateChunkDelay(characterName, chunkLength)
-          
+          const calculatedDelay = calculateChunkDelay(characterName, chunkLength)
+
+          // ISP FIX: Enforce a visual floor to prevent "clumping" of paragraphs
+          // The CSS fade duration is 200ms. If delay < 300ms, paragraphs appear simultaneously.
+          // We enforce 350ms minimum to ensure each paragraph has a distinct "beat".
+          const delay = Math.max(calculatedDelay, 350)
+
           if (currentChunk < chunks.length) {
             setTimeout(revealNextChunk, delay)
           } else {
@@ -155,12 +160,12 @@ export function RichTextRenderer({
           }
         }
       }
-      
+
       // Start revealing immediately
       revealNextChunk()
     }
   }, [text, mode, chunks, onComplete, shouldReduceMotion, clickToComplete, characterName])
-  
+
   // Click to skip
   const handleSkip = () => {
     if (clickToComplete && !isComplete) {
@@ -169,7 +174,7 @@ export function RichTextRenderer({
       onComplete?.()
     }
   }
-  
+
   // Helper to highlight words and render inline interactions
   const renderChunkWithHighlights = (chunkText: string) => {
     // First, parse interactions like <shake>text</shake> or <wave>text</wave>
@@ -214,11 +219,23 @@ export function RichTextRenderer({
       return <React.Fragment key={`text-${index}`}>{content}</React.Fragment>
     })
   }
-  
+
   // Simple markdown parser (bold ** and italic *)
   const parseMarkdown = (mdText: string) => {
+    // Check for Internal Log pattern first: *[Internal Log: ...]* or just [Internal Log: ...]
+    // We strip the wrapping italics if present
+    const logMatch = mdText.match(/\*?\[Internal Log: (.*?)\]\*?/)
+    if (logMatch) {
+      return (
+        <span className="font-mono text-xs text-emerald-400 block my-3 p-3 bg-black/40 rounded border-l-2 border-emerald-500/30 whitespace-pre-wrap font-medium tracking-wide shadow-inner">
+          <span className="opacity-50 mr-2 uppercase tracking-widest text-2xs select-none">System Log</span>
+          {logMatch[1]}
+        </span>
+      )
+    }
+
     const parts = mdText.split(/(\*{1,3}[^*]+\*{1,3})/g)
-    
+
     return parts.map((part, i) => {
       if (part.startsWith('***') && part.endsWith('***')) {
         return <strong key={i} className="italic">{part.slice(3, -3)}</strong>
@@ -237,9 +254,9 @@ export function RichTextRenderer({
   const theme = STATE_THEMES[effects.state || 'default']
 
   return (
-    <div 
+    <div
       className={cn(
-        "rich-text-renderer space-y-4", 
+        "rich-text-renderer space-y-4",
         !isComplete && clickToComplete && "cursor-pointer",
         className
       )}
@@ -268,10 +285,10 @@ export function RichTextRenderer({
           </motion.div>
         </React.Fragment>
       ))}
-      
+
       {/* Thinking indicator (pulsing block) if processing */}
       {!isComplete && mode === 'staggered' && (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
