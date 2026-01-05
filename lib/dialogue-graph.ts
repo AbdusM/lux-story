@@ -109,8 +109,9 @@ export interface DialogueContent {
   emotion?: string // Emotion tag - supports compound emotions like 'anxious_hopeful'
   microAction?: string
   variation_id: string // For tracking which variation was shown
+  condition?: StateCondition // ISP: Allows content to be selected based on game state (e.g. hesitation)
   useChatPacing?: boolean // If true, use ChatPacedDialogue component for sequential reveal (use sparingly!)
-  richEffectContext?: 'thinking' | 'warning' | 'success' | 'executing' | 'error' // Optional context for rich text effects
+  richEffectContext?: 'warning' | 'thinking' | 'success' | 'executing' | 'error' | 'glitch' | 'data_stream' // Optional context for rich text effects
   /**
    * Visual interaction animation to apply to this content.
    * One-shot animations that enhance emphasis without looping.
@@ -583,10 +584,26 @@ export class DialogueGraphNavigator {
    * Select a content variation for a node
    * Can be random or sequential for variety
    */
-  static selectContent(node: DialogueNode, previousVariations?: string[]): DialogueContent {
+  static selectContent(node: DialogueNode, previousVariations?: string[], state?: GameState): DialogueContent {
     if (node.content.length === 0) {
       console.error(`Node ${node.nodeId} has no content`)
       return { text: '[Missing content]', variation_id: 'error' }
+    }
+
+    // ISP: Check for conditional content first (e.g. hesitation)
+    if (state) {
+      // Find FIRST content where condition is met
+      // We use finding the first one to allow priority override (assuming content is ordered by priority)
+      // or just filtering. Let's find matches.
+      const conditionalMatches = node.content.filter(c =>
+        c.condition && StateConditionEvaluator.evaluate(c.condition, state, this.getCharacterIdFromNode(node))
+      )
+
+      if (conditionalMatches.length > 0) {
+        // If multiple matches, pick random or first? 
+        // Usually conditional content is specific. Let's pick the first one to allow ordering control in the array.
+        return conditionalMatches[0]
+      }
     }
 
     // If only one variation, return it
@@ -595,14 +612,24 @@ export class DialogueGraphNavigator {
     }
 
     // Try to pick a variation that hasn't been used recently
+    // Filter out conditional content from general rotation to avoid showing specific reactions out of context?
+    // Actually, if a content has a condition, it should ONLY be shown if condition matches.
+    // So we should filter out content that HAS a condition but wasn't selected above.
+    const availableContent = node.content.filter(c => !c.condition)
+
+    if (availableContent.length === 0) {
+      // Fallback if all content is conditional but none matched (shouldn't happen with proper design)
+      return node.content[0]
+    }
+
     if (previousVariations && previousVariations.length > 0) {
-      const unused = node.content.filter(c => !previousVariations.includes(c.variation_id))
+      const unused = availableContent.filter(c => !previousVariations.includes(c.variation_id))
       if (unused.length > 0) {
         return unused[Math.floor(Math.random() * unused.length)]
       }
     }
 
-    // Random selection
-    return node.content[Math.floor(Math.random() * node.content.length)]
+    // Random selection from available
+    return availableContent[Math.floor(Math.random() * availableContent.length)]
   }
 }

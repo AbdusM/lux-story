@@ -65,7 +65,7 @@ const initialState: StationState = {
 export const useStationStore = create<StationState & StationActions>()(
     devtools(
         persist(
-            (set, get) => ({
+            (set, _get) => ({
                 ...initialState,
 
                 setAtmosphere: (atmosphere) => set({ atmosphere }),

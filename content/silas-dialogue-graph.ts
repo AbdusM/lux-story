@@ -18,18 +18,14 @@ export const silasDialogueNodes: DialogueNode[] = [
     speaker: 'Silas',
     content: [
       {
-        text: `The dashboard says we're fine. The dashboard says I'm a genius.
-
-But the basil is dying.
-
-I'm holding this soil. It crumbles into dust. Bone dry. The tablet says "MOISTURE OPTIMAL." The tablet lies.`,
-        emotion: 'fearful_disbelief',
-        variation_id: 'silas_intro_v2',
+        text: "[Metal scrapes on metal. He doesn't look up from polishing his riot shield.]\n\nCheckpoint is closed. Sector 7 restriction protocol is active.\n\nTurn around, citizen. There's nothing back here but dust and bad memories.",
+        emotion: 'commanding',
+        variation_id: 'silas_intro_wall_v1',
         richEffectContext: 'warning',
         patternReflection: [
-          { pattern: 'analytical', minLevel: 5, altText: "The dashboard says we're fine. The dashboard says I'm a genius.\n\nBut the basil is dying.\n\nYou're already seeing the gap, aren't you? Data says one thing. Reality says another.\n\nThe tablet says 'MOISTURE OPTIMAL.' The tablet lies.", altEmotion: 'bitter' },
-          { pattern: 'building', minLevel: 5, altText: "The dashboard says we're fine. I built that dashboard.\n\nBut the basil is dying.\n\nYou build things too. You know what it feels like when something you made fails the one test that matters.", altEmotion: 'vulnerable' },
-          { pattern: 'patience', minLevel: 5, altText: "The dashboard says we're fine.\n\nBut the basil is dying.\n\nYou're not jumping to solutions. Good. This isn't a quick fix problem.\n\nThe soil is bone dry. The tablet says 'MOISTURE OPTIMAL.' The tablet lies.", altEmotion: 'exhausted' }
+          { pattern: 'analytical', minLevel: 5, altText: "[Metal scrapes on metal.]\n\nCheckpoint closed. Sector 7 restriction.\n\nYou're counting the dents in my shield. Smart. You know this isn't just a patrol post.\n\nTurn around. You don't want to see what's behind this door.", altEmotion: 'suspicious' },
+          { pattern: 'building', minLevel: 5, altText: "[He polishes the shield. A rhythmic, heavy sound.]\n\nCheckpoint closed.\n\nYou built that exoskeleton yourself, didn't you? Impressive.\n\nDoesn't matter. Door's locked. Move along.", altEmotion: 'respectful' },
+          { pattern: 'patience', minLevel: 5, altText: "[He polishes the shield. Slowly. Deliberately.]\n\n...\n\nYou're waiting for me to acknowledge you. You've got discipline.\n\nCheckpoint is closed. Go home.", altEmotion: 'stoic' }
         ]
       }
     ],
@@ -457,7 +453,8 @@ They looked healthy for weeks. Green leaves, good structure. Then one morning. y
     tags: ['silas_arc', 'failure_story'],
     metadata: {
       sessionBoundary: true  // Session 1: Introduction complete
-    }  },
+    }
+  },
 
   {
     nodeId: 'silas_sensor_problem',
@@ -514,7 +511,7 @@ I override and flood them? Rot the roots. Do nothing? Dried out by morning.`,
         text: "Trust the data. Run a diagnostic on the valve software.",
         nextNodeId: 'silas_sim_fail_software',
         pattern: 'analytical', // Wrong tool
-        skills: ['digitalLiteracy'] 
+        skills: ['digitalLiteracy']
       },
       {
         choiceId: 'sim_physical_trace',
@@ -815,7 +812,8 @@ By Sunday, he was talking to a tomato plant. Not ironically. He'd realized the p
     tags: ['silas_arc', 'feral_lab'],
     metadata: {
       sessionBoundary: true  // Session 2: Crossroads complete
-    }  },
+    }
+  },
 
   {
     nodeId: 'silas_workshop_result',
@@ -1065,7 +1063,8 @@ Tell Samuel I said thanks. For building a station where people like me can find 
     tags: ['transition', 'silas_arc', 'good_ending'],
     metadata: {
       sessionBoundary: true  // Session 3: Resolution reached
-    }  },
+    }
+  },
 
   // ============= BAD ENDING =============
   {

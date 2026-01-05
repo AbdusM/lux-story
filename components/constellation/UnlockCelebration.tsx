@@ -112,8 +112,8 @@ export function UnlockCelebration({
   const bgColor = characterColor
     ? CHARACTER_COLORS[characterColor].bg
     : color
-    ? undefined
-    : 'bg-amber-500'
+      ? undefined
+      : 'bg-amber-500'
 
   const isMastery = type === 'skill_mastered' || type === 'character_trusted'
 
@@ -125,7 +125,7 @@ export function UnlockCelebration({
           animate="visible"
           exit="exit"
           variants={celebrationVariants}
-          className="fixed top-20 left-1/2 -translate-x-1/2 z-[200] pointer-events-none"
+          className="fixed top-20 left-1/2 -translate-x-1/2 z-popover pointer-events-none"
           role="alert"
           aria-live="polite"
           aria-label={`${message.title}: ${name}. ${message.subtitle}`}

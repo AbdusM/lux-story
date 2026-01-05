@@ -1594,3 +1594,4 @@ export function getDiscoveryHints(
   }
 
   return hints
+}

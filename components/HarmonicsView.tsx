@@ -4,6 +4,11 @@ import { motion, useSpring, useTransform, useReducedMotion } from "framer-motion
 import { usePatternUnlocks, type OrbState } from "@/hooks/usePatternUnlocks"
 import { playPatternSound } from "@/lib/audio-feedback"
 import { Microscope, Brain, Compass, Heart, Hammer } from "lucide-react"
+import { PatternType } from "@/lib/patterns"
+
+interface HarmonicsViewProps {
+    onOrbSelect?: (pattern: PatternType) => void
+}
 
 /**
  * Mobile Haptic helper
@@ -16,7 +21,7 @@ const triggerHaptic = (style: 'light' | 'medium' | 'heavy') => {
     }
 }
 
-export function HarmonicsView() {
+export function HarmonicsView({ onOrbSelect }: HarmonicsViewProps) {
     const { orbs: patternOrbs } = usePatternUnlocks()
 
     // Null guard: show loading state if orbs not yet available
@@ -43,18 +48,23 @@ export function HarmonicsView() {
             {/* The Totem - Vertical Stacking for Mobile (gap accounts for labels) */}
             <div className="flex-1 flex flex-col items-center justify-center gap-12 w-full max-w-[280px]">
                 {patternOrbs.map((orb, index) => (
-                    <HarmonicOrb key={orb.pattern} orb={orb} index={index} />
+                    <HarmonicOrb
+                        key={orb.pattern}
+                        orb={orb}
+                        index={index}
+                        onSelect={onOrbSelect}
+                    />
                 ))}
             </div>
 
             <p className="text-[9px] text-slate-500 font-mono text-center">
-                Tap orbs to listen • Tilt device to disturb
+                Tap orbs to inspect • Tilt device to disturb
             </p>
         </div>
     )
 }
 
-function HarmonicOrb({ orb, index }: { orb: OrbState; index: number }) {
+function HarmonicOrb({ orb, index, onSelect }: { orb: OrbState; index: number; onSelect?: (p: PatternType) => void }) {
     // Accessibility
     const prefersReducedMotion = useReducedMotion()
 
@@ -77,18 +87,16 @@ function HarmonicOrb({ orb, index }: { orb: OrbState; index: number }) {
         triggerHaptic('light')
 
         // Visual Jolt - Spring Physics
-        // We set a target, then quickly release it to let spring dampen it
-        const joltX = (Math.random() - 0.5) * 16  // ±8px (reduced from ±20px for subtler feedback)
+        const joltX = (Math.random() - 0.5) * 16
         const joltY = (Math.random() - 0.5) * 16
 
-        x.set(joltX) // Instant displacement (plucking the string)
+        x.set(joltX)
         y.set(joltY)
 
-        // The spring hook naturally wants to go to '0' (passed in hook)
-        // actually useSpring(0) sets the *goal* to 0. 
-        // .set() forcefully updates the *current value*.
-        // So setting it to 20 means "I am now at 20, go to 0".
-        // This creates a perfect organic recoil.
+        // Output Selection
+        if (onSelect) {
+            onSelect(orb.pattern)
+        }
     }
 
     return (
@@ -117,7 +125,7 @@ function HarmonicOrb({ orb, index }: { orb: OrbState; index: number }) {
                     duration: 3,
                     repeat: Infinity,
                     ease: "easeInOut"
-                  }
+                }
                 : { delay: index * 0.1, type: "spring" }
             }
         >
@@ -161,7 +169,7 @@ function HarmonicOrb({ orb, index }: { orb: OrbState; index: number }) {
                                 transition={{ duration: 0.5 }}
                             />
                         </div>
-                        <p className="text-[8px] text-slate-500 mt-0.5">
+                        <p className="text-3xs text-slate-500 mt-0.5">
                             {orb.pointsToNext}% to unlock
                         </p>
                     </div>

@@ -1,10 +1,10 @@
-import { useState } from 'react'
+
 import { motion } from 'framer-motion'
 import { DialogueNode } from '@/lib/dialogue-graph'
 import { Card } from '@/components/ui/card'
 import {
     Terminal, Cpu, MessageSquare, Activity,
-    Palette, LayoutDashboard, Code, MessageCircle
+    Palette
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -13,7 +13,7 @@ interface SimulationRendererProps {
     onChoice: (choiceIndex: number) => void
 }
 
-export function SimulationRenderer({ node, onChoice }: SimulationRendererProps) {
+export function SimulationRenderer({ node }: SimulationRendererProps) {
     const config = node.simulation
     if (!config) return null
 
@@ -72,11 +72,11 @@ export function SimulationRenderer({ node, onChoice }: SimulationRendererProps) 
                 <div className="p-4 bg-slate-950/30">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
                         <div className="bg-slate-900/80 p-3 rounded border border-slate-800">
-                            <div className="text-[10px] text-slate-500 uppercase font-bold">Status</div>
+                            <div className="text-2xs text-slate-500 uppercase font-bold">Status</div>
                             <div className="text-lg font-mono text-emerald-400">ONLINE</div>
                         </div>
                         <div className="bg-slate-900/80 p-3 rounded border border-slate-800">
-                            <div className="text-[10px] text-slate-500 uppercase font-bold">Pending</div>
+                            <div className="text-2xs text-slate-500 uppercase font-bold">Pending</div>
                             <div className="text-lg font-mono text-amber-400">ACTIVE</div>
                         </div>
                     </div>
@@ -184,7 +184,7 @@ export function SimulationRenderer({ node, onChoice }: SimulationRendererProps) 
                 </div>
                 <div className="flex items-center gap-2 px-3 py-1 bg-amber-500/10 rounded-full border border-amber-500/20">
                     <Cpu className="w-3 h-3 text-amber-400 animate-pulse" />
-                    <span className="text-[10px] font-bold text-amber-300 uppercase tracking-widest">
+                    <span className="text-2xs font-bold text-amber-300 uppercase tracking-widest">
                         LIVE
                     </span>
                 </div>

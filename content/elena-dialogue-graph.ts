@@ -325,6 +325,8 @@ const nodes: DialogueNode[] = [
   }
 ]
 
+export const elenaDialogueNodes = nodes
+
 export const elenaDialogueGraph: DialogueGraph = {
   version: '1.0.0',
   nodes: new Map(nodes.map(n => [n.nodeId, n])),

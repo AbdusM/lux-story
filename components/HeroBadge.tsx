@@ -80,7 +80,7 @@ export function HeroBadge({ patterns, className, compact = false }: HeroBadgePro
                     {compact ? metadata.shortLabel : metadata.label}
                 </span>
                 {!compact && (
-                    <span className="text-[10px] text-muted-foreground leading-none hidden">
+                    <span className="text-2xs text-muted-foreground leading-none hidden">
                         Lv. {Math.floor(dominant.value)} Archetype
                     </span>
                 )}

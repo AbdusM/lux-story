@@ -81,7 +81,7 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
               animate="visible"
               exit="hidden"
               variants={backdrop}
-              className="fixed inset-0 bg-black/50 z-[90] backdrop-blur-sm"
+              className="fixed inset-0 bg-black/50 z-dropdown backdrop-blur-sm"
               onClick={onClose}
             />
 
@@ -97,7 +97,7 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
               onDragEnd={(_, info) => {
                 if (info.offset.x > 100) onClose()
               }}
-              className="fixed right-0 top-0 bottom-0 w-full max-w-lg bg-slate-900 border-l border-slate-700 shadow-2xl z-[100] flex flex-col"
+              className="fixed right-0 top-0 bottom-0 w-full max-w-lg bg-slate-900 border-l border-slate-700 shadow-2xl z-sticky flex flex-col"
               style={{
                 paddingBottom: 'env(safe-area-inset-bottom, 0px)',
                 paddingRight: 'env(safe-area-inset-right, 0px)'
@@ -170,7 +170,7 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
                       exit="exit"
                       variants={contentVariants}
                       className="h-full overflow-y-auto"
-                      style={{ 
+                      style={{
                         paddingBottom: 'env(safe-area-inset-bottom, 0px)',
                         WebkitOverflowScrolling: 'touch'
                       }}
@@ -185,7 +185,7 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
                       exit="exit"
                       variants={contentVariants}
                       className="h-full overflow-y-auto"
-                      style={{ 
+                      style={{
                         paddingBottom: 'env(safe-area-inset-bottom, 0px)',
                         WebkitOverflowScrolling: 'touch'
                       }}
@@ -197,7 +197,7 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
               </div>
 
               {/* Footer */}
-              <div 
+              <div
                 className="flex-shrink-0 p-3 bg-slate-950 text-center border-t border-slate-800"
                 style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom, 0px))' }}
               >

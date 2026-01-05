@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react'
 import { Button } from '@/components/ui/button'
-import { ExperienceEngine, ActiveExperienceState, ExperienceStep } from '@/lib/experience-engine'
+import { ExperienceEngine, ActiveExperienceState } from '@/lib/experience-engine'
 import { GameState } from '@/lib/character-state'
 import { cn } from '@/lib/utils'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Brain, Clock, ShieldAlert } from 'lucide-react'
+import { Brain, Clock } from 'lucide-react'
 
 // Ensure content is loaded
 import '@/content/maya-loyalty'

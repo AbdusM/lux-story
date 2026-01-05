@@ -1,6 +1,6 @@
 import { GameState } from './character-state'
 import { ABILITIES, Ability, AbilityId } from './abilities'
-import { getOrbTier, ORB_TIERS } from './orbs'
+import { ORB_TIERS } from './orbs'
 import { logger } from './logger'
 
 /**

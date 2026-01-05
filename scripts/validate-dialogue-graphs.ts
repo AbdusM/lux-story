@@ -30,6 +30,10 @@ import { yaquinDialogueNodes } from '../content/yaquin-dialogue-graph'
 import { alexDialogueNodes } from '../content/alex-dialogue-graph'
 import { mayaRevisitNodes } from '../content/maya-revisit-graph'
 import { yaquinRevisitNodes } from '../content/yaquin-revisit-graph'
+import { grandHallDialogueNodes } from '../content/grand-hall-graph'
+import { marketDialogueNodes } from '../content/market-graph'
+import { deepStationDialogueNodes } from '../content/deep-station-graph'
+import { stationEntryDialogueNodes } from '../content/sector-0-entry-graph'
 
 // ============= TYPES =============
 
@@ -409,7 +413,8 @@ class DialogueGraphValidator {
     const externalPatterns = [
       'maya_', 'devon_', 'jordan_', 'kai_', 'silas_',
       'marcus_', 'tess_', 'rohan_', 'yaquin_', 'alex_',
-      'samuel_' // Samuel can reference himself across files
+      'marcus_', 'tess_', 'rohan_', 'yaquin_', 'alex_',
+      'samuel_', 'sector_', 'market_', 'grand_', 'deep_', 'wall_', 'trade_'
     ]
 
     // Check if this is likely a cross-graph reference
@@ -510,7 +515,7 @@ class DialogueGraphValidator {
       for (const node of graph.nodes) {
         for (const choice of node.choices) {
           if (!choice.nextNodeId) continue // Already validated in validateNode
-          
+
           // If the reference is external (not in this graph) but also doesn't exist anywhere
           const existsInThisGraph = graph.nodes.some(n => n.nodeId === choice.nextNodeId)
           const existsAnywhere = allNodeIds.has(choice.nextNodeId)
@@ -550,12 +555,16 @@ function main(): void {
     { name: 'jordan', nodes: jordanDialogueNodes, startNodeId: 'jordan_introduction' },
     { name: 'kai', nodes: kaiDialogueNodes, startNodeId: 'kai_introduction' },
     { name: 'silas', nodes: silasDialogueNodes, startNodeId: 'silas_introduction' },
-    { name: 'marcus', nodes: marcusDialogueNodes, startNodeId: 'marcus_introduction' },
+    { name: 'marcus', nodes: marcusDialogueNodes, startNodeId: 'marcus_intro' },
     { name: 'tess', nodes: tessDialogueNodes, startNodeId: 'tess_introduction' },
     { name: 'rohan', nodes: rohanDialogueNodes, startNodeId: 'rohan_introduction' },
     { name: 'yaquin', nodes: yaquinDialogueNodes, startNodeId: 'yaquin_introduction' },
     { name: 'alex', nodes: alexDialogueNodes, startNodeId: 'alex_introduction' },
     { name: 'yaquin-revisit', nodes: yaquinRevisitNodes, startNodeId: 'yaquin_revisit_welcome' },
+    { name: 'grand_hall', nodes: grandHallDialogueNodes, startNodeId: 'sector_1_hall' },
+    { name: 'market', nodes: marketDialogueNodes, startNodeId: 'sector_2_market' },
+    { name: 'deep_station', nodes: deepStationDialogueNodes, startNodeId: 'sector_3_office' },
+    { name: 'station_entry', nodes: stationEntryDialogueNodes, startNodeId: 'sector_0_entry' },
   ]
 
   const validator = new DialogueGraphValidator()

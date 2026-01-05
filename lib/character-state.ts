@@ -97,6 +97,7 @@ export interface GameState {
   mysteries: MysteryState
   time: TimeState
   quietHour: QuietHourState
+  overdensity: number // 0.0 - 1.0 (Market Crowd Simulation)
   items: {
     letter: 'kept' | 'torn' | 'shown' | 'burned'
     safeSpot?: string
@@ -220,6 +221,7 @@ export interface SerializableGameState {
   mysteries: MysteryState
   time: TimeState
   quietHour: QuietHourState
+  overdensity: number
   items: {
     letter: 'kept' | 'torn' | 'shown' | 'burned'
     safeSpot?: string
@@ -476,6 +478,7 @@ export class GameStateUtils {
       mysteries: { ...state.mysteries },
       time: { ...state.time },
       quietHour: { ...state.quietHour },
+      overdensity: state.overdensity,
       items: { ...state.items },
       pendingCheckIns: [...state.pendingCheckIns],
       unlockedAbilities: [...state.unlockedAbilities],
@@ -564,6 +567,7 @@ export class GameStateUtils {
         potential: false,
         experienced: []
       },
+      overdensity: 0.3,
       items: {
         letter: 'kept',
         discoveredPaths: []
@@ -634,6 +638,7 @@ export class GameStateUtils {
       mysteries: state.mysteries,
       time: state.time,
       quietHour: state.quietHour,
+      overdensity: state.overdensity,
       items: state.items,
       pendingCheckIns: state.pendingCheckIns,
       unlockedAbilities: state.unlockedAbilities,
@@ -712,6 +717,7 @@ export class GameStateUtils {
         potential: false,
         experienced: []
       },
+      overdensity: serialized.overdensity ?? 0.3,
       items: serialized.items || {
         letter: 'kept',
         discoveredPaths: []
@@ -798,14 +804,10 @@ export class StateValidation {
         flowRate: 1,
         isStopped: false
       },
-      quietHour: {
-        potential: false,
-        experienced: []
-      },
-      items: {
-        letter: 'kept',
-        discoveredPaths: []
-      },
+      quietHour: { potential: false, experienced: [] },
+      overdensity: 0.3,
+      items: { letter: 'kept', discoveredPaths: [] },
+
       pendingCheckIns: [],
       unlockedAbilities: [],
       archivistState: {

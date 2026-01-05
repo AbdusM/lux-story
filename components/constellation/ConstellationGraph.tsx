@@ -29,8 +29,8 @@ export function ConstellationGraph({ characters, onOpenDetail }: ConstellationGr
                 return false
             }
             // Only show if both characters have been met
-            const from = getCharState(edge.fromCharacterId)
-            const to = getCharState(edge.toCharacterId)
+            const from = characters.find(c => c.id === edge.fromCharacterId)
+            const to = characters.find(c => c.id === edge.toCharacterId)
             return from?.hasMet && to?.hasMet
         })
     }, [characters])

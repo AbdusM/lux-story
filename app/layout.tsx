@@ -11,6 +11,8 @@ import '../styles/game-juice.css'
 import '../styles/grand-central.css'
 import '../styles/environmental-response.css'
 import '../styles/narrative-interactions.css'
+// Initialize experience content to avoid circular dependencies
+import '@/lib/init-experiences'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -103,10 +105,10 @@ export default function RootLayout({
           <EnvironmentalEffects />
           <ErrorBoundary>
             <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 environment-responsive"
-                 style={{
-                   backgroundColor: 'var(--bg-primary, inherit)',
-                   color: 'var(--text-primary, inherit)'
-                 }}>
+              style={{
+                backgroundColor: 'var(--bg-primary, inherit)',
+                color: 'var(--text-primary, inherit)'
+              }}>
               {children}
             </div>
           </ErrorBoundary>

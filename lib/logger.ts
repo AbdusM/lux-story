@@ -108,6 +108,22 @@ export const logger = {
         console.error('Failed to send error to Sentry:', sentryError)
       }
     }
+
+    // ISP: Remote Log Capture (Dev Mode)
+    // Send critical errors to server terminal so AI Agent can see them
+    if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
+      const payload = {
+        message,
+        context: sanitize(context || {}),
+        stack: error?.stack
+      }
+      // Fire and forget
+      fetch('/api/log-error', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).catch(() => { }) // Ignore transport errors
+    }
   },
 
   verbose: (message: string, context?: LogContext) => {

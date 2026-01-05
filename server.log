@@ -1,0 +1,17 @@
+
+> lux-story@2.1.0 start
+> next start -p 3006
+
+   ▲ Next.js 15.5.7
+   - Local:        http://localhost:3006
+   - Network:      http://192.168.68.55:3006
+
+ ✓ Starting...
+ ✓ Ready in 519ms
+{"level":"warn","message":"Context length warning","timestamp":"2026-01-05T16:05:13.066Z","operation":"skill-summaries.post","skillName":"emotionalIntelligence","wordCount":31,"expected":"100-150 words"}
+{"level":"warn","message":"Context length warning","timestamp":"2026-01-05T16:05:13.261Z","operation":"skill-summaries.post","skillName":"communication","wordCount":31,"expected":"100-150 words"}
+{"level":"warn","message":"Context length warning","timestamp":"2026-01-05T16:07:04.124Z","operation":"skill-summaries.post","skillName":"communication","wordCount":21,"expected":"100-150 words"}
+{"level":"warn","message":"Context length warning","timestamp":"2026-01-05T16:07:05.955Z","operation":"skill-summaries.post","skillName":"communication","wordCount":21,"expected":"100-150 words"}
+{"level":"warn","message":"Context length warning","timestamp":"2026-01-05T17:10:14.846Z","operation":"skill-summaries.post","skillName":"criticalThinking","wordCount":23,"expected":"100-150 words"}
+{"level":"warn","message":"Context length warning","timestamp":"2026-01-05T17:10:14.921Z","operation":"skill-summaries.post","skillName":"criticalThinking","wordCount":23,"expected":"100-150 words"}
+{"level":"warn","message":"Context length warning","timestamp":"2026-01-05T17:10:16.802Z","operation":"skill-summaries.post","skillName":"criticalThinking","wordCount":23,"expected":"100-150 words"}

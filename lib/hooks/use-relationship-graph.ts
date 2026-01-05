@@ -2,10 +2,8 @@ import { useMemo } from 'react'
 import { useGameStore } from '@/lib/game-store'
 import {
     CHARACTER_RELATIONSHIP_WEB,
-    CharacterRelationshipEdge,
     RelationshipType
 } from '@/lib/character-relationships'
-import { CharacterState } from '@/lib/character-state'
 
 export interface GraphNode {
     id: string
@@ -30,7 +28,7 @@ export interface GraphLink {
 
 export const useRelationshipGraph = () => {
     // Use core state (Single Source of Truth)
-    const globalFlags = useGameStore(state => state.coreGameState?.globalFlags || []) // Core state has array (serialized) or Set (hydrated)? 
+
     // Wait, useGameStore().characters is from GameState which is a Map in Hydrated state?
     // Let's check how useGameStore is initialized.
 
@@ -58,7 +56,7 @@ export const useRelationshipGraph = () => {
             coreGameState.characters.forEach(char => {
                 // Check if met: 'met_[name]' flag OR conversation history > 0
                 // A simpler way: if they have any trust change or history
-                const hasMet = char.conversationHistory.length > 0 || char.trust !== 5 // Changed from default
+
 
                 // Actually, let's use the explicit 'met_[name]' flags if they exist, 
                 // OR rely on conversationHistory.

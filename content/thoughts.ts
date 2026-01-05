@@ -213,7 +213,7 @@ export const THOUGHT_REGISTRY: Record<string, ThoughtDefinition> = {
     iconName: 'Hammer',
     color: 'amber',
     maxProgress: 100
-  }
+  },
   // ============= AI PARADIGM SHIFTS (P8) =============
   'agentic-coder': {
     id: 'agentic-coder',

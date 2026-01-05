@@ -18,16 +18,10 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: `Platform 8. "The Learning Loop." Screens everywhere showing course thumbnails, completion bars frozen at 34%, headlines cycling between "THIS SKILL IS DEAD" and "THIS SKILL IS BACK."
-
-*Looks up from laptop.*
-
-Oh great, another traveler looking for the "right path."
-
-Let me guess—someone told you to "just learn AI" and now you're here wondering which certification will finally make you feel ready?`,
-        emotion: 'cynical',
+        text: "[A pair of eyes blink from inside the ventilation grate. Too big. Night vision goggles.]\n\nD'you bring it? The shiny?\n\n[He scuttles out, pockets jingling.]\n\nI got maps. I got codes. I got a protein bar from 2024. What's your trade?",
+        emotion: 'suspicious',
         interaction: 'shake',
-        variation_id: 'alex_intro_v1',
+        variation_id: 'alex_intro_rat_v1',
         richEffectContext: 'thinking',
         useChatPacing: true
       }
@@ -443,7 +437,8 @@ Probably wouldn't make any money.`,
     tags: ['alex_arc'],
     metadata: {
       sessionBoundary: true  // Session 1: Introduction complete
-    }  },
+    }
+  },
 
   {
     nodeId: 'alex_takes_time',

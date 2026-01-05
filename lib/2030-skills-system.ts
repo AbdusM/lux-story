@@ -215,16 +215,28 @@ export class FutureSkillsSystem {
         localOpportunities: ['Regions Bank', 'Alabama Power', 'UAB IT', 'Local Tech Companies']
       },
       {
-        id: 'community-health-worker',
-        name: 'Community Health Worker',
-        description: 'Bridge healthcare and community to improve health outcomes',
-        requiredSkills: ['communication', 'culturalCompetence', 'emotionalIntelligence', 'collaboration'],
-        skillLevels: { communication: 0.9, culturalCompetence: 0.9, emotionalIntelligence: 0.8, collaboration: 0.8 },
+        id: 'learning-experience-architect',
+        name: 'Learning Experience Architect',
+        description: 'Design structured learning journeys and emotional feedback loops to guide human development',
+        requiredSkills: ['instructionalDesign', 'emotionalIntelligence', 'mentorship', 'systemsThinking'],
+        skillLevels: { instructionalDesign: 0.9, emotionalIntelligence: 0.9, mentorship: 0.8, systemsThinking: 0.7 },
         birminghamRelevance: 0.9,
         growthProjection: 'high',
-        salaryRange: [35000, 55000],
-        educationPath: ['Jeff State Community Health', 'UAB Public Health', 'Community College + Certification'],
-        localOpportunities: ['UAB Hospital', 'Jefferson County Health', 'Community Clinics', 'Non-profits']
+        salaryRange: [65000, 105000],
+        educationPath: ['UAB Instructional Design', 'Psychology + EdTech', 'Human Systems Engineering'],
+        localOpportunities: ['Innovation Depot EdTech', 'UAB Learning System', 'Corporate L&D', 'Community Education Design']
+      },
+      {
+        id: 'advanced-logistics',
+        name: 'Advanced Logistics & Manufacturing',
+        description: 'Manage complex resource flows, supply chains, and critical infrastructure maintenance',
+        requiredSkills: ['systemsThinking', 'triage', 'adaptability', 'technicalLiteracy'],
+        skillLevels: { systemsThinking: 0.9, triage: 0.8, adaptability: 0.8, technicalLiteracy: 0.9 },
+        birminghamRelevance: 0.9,
+        growthProjection: 'high',
+        salaryRange: [45000, 95000],
+        educationPath: ['Jeff State Manufacturing', 'Supply Chain Certs', 'Apprenticeship'],
+        localOpportunities: ['Mercedes-Benz USI', 'Amazon Logistics', 'Bham Distribution Hubs', 'Advanced Manufacturing Center']
       }
     ]
   }

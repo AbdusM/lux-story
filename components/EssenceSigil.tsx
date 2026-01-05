@@ -198,7 +198,7 @@ export function EssenceSigil() {
                                     <text
                                         textAnchor="middle"
                                         dominantBaseline="middle"
-                                        className="text-[10px] font-bold uppercase tracking-widest fill-slate-400 dark:fill-slate-300 font-sans"
+                                        className="text-2xs font-bold uppercase tracking-widest fill-slate-400 dark:fill-slate-300 font-sans"
                                     >
                                         {SKILL_CLUSTERS[cluster].name}
                                     </text>
@@ -224,7 +224,7 @@ export function EssenceSigil() {
                 </h3>
                 <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-slate-800/50 backdrop-blur-sm rounded-full border border-slate-700/50">
                     <div className="w-1.5 h-1.5 rounded-full bg-violet-500 animate-pulse" />
-                    <span className="text-[10px] uppercase tracking-widest font-bold text-slate-300">
+                    <span className="text-2xs uppercase tracking-widest font-bold text-slate-300">
                         Skills Unlocked: {totalUnlocked}/{totalSkills}
                     </span>
                 </div>
@@ -299,7 +299,7 @@ export function EssenceSigil() {
                                         <span className="text-xs text-slate-500">
                                             {orb.nextUnlock?.name}
                                         </span>
-                                        <span className="text-[10px] text-slate-600 ml-2">
+                                        <span className="text-2xs text-slate-600 ml-2">
                                             ({orb.pointsToNext}% to unlock)
                                         </span>
                                     </div>

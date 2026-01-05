@@ -1,12 +1,11 @@
 'use client'
 
-import React, { useEffect, useRef, useState, useMemo } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import * as D3 from 'd3'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useRelationshipGraph, GraphNode, GraphLink } from '@/lib/hooks/use-relationship-graph'
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import { Card } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 
 // Force Simulation Types
@@ -28,8 +27,7 @@ export function RelationshipWeb({ width = 800, height = 600, className }: Relati
     const [simLinks, setSimLinks] = useState<SimulationLink[]>([])
 
     // Hover state
-    const [hoveredNode, setHoveredNode] = useState<string | null>(null)
-    const [selectedEdge, setSelectedEdge] = useState<SimulationLink | null>(null)
+
 
     // Initialize Simulation Data
     useEffect(() => {
@@ -39,7 +37,7 @@ export function RelationshipWeb({ width = 800, height = 600, className }: Relati
 
         setSimNodes(newNodes)
         setSimLinks(newLinks)
-    }, [nodes.length, links.length]) // Re-run only when graph topology changes
+    }, [nodes, links]) // Re-run only when graph topology changes
 
     // Run Simulation
     useEffect(() => {
@@ -62,7 +60,7 @@ export function RelationshipWeb({ width = 800, height = 600, className }: Relati
         return () => {
             simulation.stop()
         }
-    }, [simNodes.length, simLinks.length, width, height])
+    }, [simNodes, simLinks, width, height])
 
     // Drag Behavior (Optional - simplified for now to just click/hover)
     // ...
@@ -101,7 +99,7 @@ export function RelationshipWeb({ width = 800, height = 600, className }: Relati
 
                         if (!source.x || !target.x) return null
 
-                        const isSelected = selectedEdge?.id === link.id
+                        // const isSelected = selectedEdge?.id === link.id
 
                         return (
                             <motion.g
@@ -158,7 +156,7 @@ export function RelationshipWeb({ width = 800, height = 600, className }: Relati
                                             </Avatar>
 
                                             {/* Trust Badge */}
-                                            <div className="absolute -bottom-1 -right-1 bg-slate-900 text-[10px] text-slate-400 px-1.5 py-0.5 rounded-full border border-slate-700 font-mono">
+                                            <div className="absolute -bottom-1 -right-1 bg-slate-900 text-2xs text-slate-400 px-1.5 py-0.5 rounded-full border border-slate-700 font-mono">
                                                 {node.trust}
                                             </div>
                                         </div>

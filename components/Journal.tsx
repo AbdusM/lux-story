@@ -13,11 +13,13 @@ import { EssenceSigil } from "./EssenceSigil"
 import { MasteryView } from "./MasteryView"
 import { ThoughtCabinet } from "./ThoughtCabinet"
 import { RelationshipWeb } from "./RelationshipWeb"
-import { ConstellationGraph } from "./constellation/ConstellationGraph"
+
 import { SkillConstellationGraph } from "./constellation/SkillConstellationGraph"
 import { SKILL_DEFINITIONS } from "@/lib/skill-definitions"
 import { SwipeablePanel } from "@/components/ui/SwipeablePanel"
 import { ToolkitView } from "./ToolkitView"
+import { OrbDetailPanel } from "./OrbDetailPanel"
+import { PatternType } from "@/lib/patterns"
 
 interface JournalProps {
   isOpen: boolean
@@ -37,6 +39,7 @@ export function Journal({ isOpen, onClose }: JournalProps) {
   const [activeTab, setActiveTab] = useState<TabId>('harmonics')
   const [constellationMode, setConstellationMode] = useState<'social' | 'academy'>('social')
   const [detailSkillId, setDetailSkillId] = useState<string | null>(null)
+  const [detailPattern, setDetailPattern] = useState<PatternType | null>(null)
 
   // Accessibility
   const prefersReducedMotion = useReducedMotion()
@@ -84,6 +87,7 @@ export function Journal({ isOpen, onClose }: JournalProps) {
   // Reset detail view when tab changes
   useEffect(() => {
     setDetailSkillId(null)
+    setDetailPattern(null)
   }, [activeTab])
 
   // ... (variants)
@@ -117,7 +121,7 @@ export function Journal({ isOpen, onClose }: JournalProps) {
           />
           {/* Panel */}
           <motion.div
-            className="!fixed left-0 top-0 bottom-0 w-full max-w-md glass-panel !rounded-none border-r border-white/10 shadow-2xl z-[100] flex flex-col"
+            className="!fixed left-0 top-0 bottom-0 w-full max-w-md glass-panel !rounded-none border-r border-white/10 shadow-2xl z-sticky flex flex-col"
             initial={{ x: '-100%' }}
             animate={{ x: 0 }}
             exit={{ x: '-100%' }}
@@ -199,7 +203,13 @@ export function Journal({ isOpen, onClose }: JournalProps) {
               <div className="absolute inset-0 bg-grid-slate-800/20 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] pointer-events-none" />
 
               <AnimatePresence mode="wait">
-                {activeTab === 'stars' && detailSkillId ? (
+                {activeTab === 'harmonics' && detailPattern ? (
+                  <OrbDetailPanel
+                    key="orb-detail"
+                    patternType={detailPattern}
+                    onClose={() => setDetailPattern(null)}
+                  />
+                ) : activeTab === 'stars' && detailSkillId ? (
                   // --- DETAIL VIEW (THE LIBRARY) ---
                   <SwipeablePanel
                     key="skill-detail"
@@ -279,7 +289,7 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                     exit="exit"
                     className="min-h-full flex flex-col"
                   >
-                    {activeTab === 'harmonics' && <HarmonicsView />}
+                    {activeTab === 'harmonics' && <HarmonicsView onOrbSelect={setDetailPattern} />}
                     {activeTab === 'essence' && <EssenceSigil />}
                     {activeTab === 'mastery' && <MasteryView />}
                     {activeTab === 'mind' && <ThoughtCabinet />}

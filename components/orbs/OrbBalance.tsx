@@ -99,7 +99,7 @@ export function OrbBalance({
       {/* Distribution bars */}
       {showDistribution && balance.totalEarned > 0 && (
         <div className="space-y-2">
-          <h4 className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
+          <h4 className="text-2xs font-semibold uppercase tracking-wider text-slate-400">
             Your Approach
           </h4>
           <div className="space-y-1.5">
@@ -125,7 +125,7 @@ export function OrbBalance({
                       transition={{ duration: 0.5, ease: 'easeOut' }}
                     />
                   </div>
-                  <span className="text-[10px] font-mono text-slate-400 w-8 text-right">
+                  <span className="text-2xs font-mono text-slate-400 w-8 text-right">
                     {percentage}%
                   </span>
                 </div>

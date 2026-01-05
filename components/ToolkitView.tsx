@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { AI_TOOLS, AITool } from '@/lib/ai-tools'
 import { useGameSelectors } from '@/lib/game-store'
 import { Lock, Cpu, Code, PenTool, Image, Database, Mic, Video, Share2, Briefcase, Sparkles, Copy, Check } from 'lucide-react'

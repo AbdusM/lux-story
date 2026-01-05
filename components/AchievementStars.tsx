@@ -52,7 +52,7 @@ export function AchievementStars() {
                             {/* Label */}
                             <div className="space-y-1">
                                 <p className={cn(
-                                    "text-[10px] font-bold uppercase tracking-wider transition-colors",
+                                    "text-2xs font-bold uppercase tracking-wider transition-colors",
                                     isUnlocked ? "text-amber-600 dark:text-amber-400" : "text-slate-300 dark:text-slate-700"
                                 )}>
                                     {achievement.name}
@@ -71,7 +71,7 @@ export function AchievementStars() {
 
                             {/* Locked Tooltip */}
                             {!isUnlocked && (
-                                <div className="absolute inset-0 z-10 opacity-0 group-hover:opacity-100 transition-opacity bg-black/80 text-white text-[10px] p-2 rounded flex items-center justify-center pointer-events-none">
+                                <div className="absolute inset-0 z-10 opacity-0 group-hover:opacity-100 transition-opacity bg-black/80 text-white text-2xs p-2 rounded flex items-center justify-center pointer-events-none">
                                     Locked
                                 </div>
                             )}
@@ -80,7 +80,7 @@ export function AchievementStars() {
                 })}
             </div>
 
-            <p className="text-center text-[10px] text-slate-400 mt-8 italic">
+            <p className="text-center text-2xs text-slate-400 mt-8 italic">
                 The sky remembers what the ground forgets.
             </p>
         </div>

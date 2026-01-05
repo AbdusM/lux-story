@@ -60,11 +60,10 @@ export function DetailModal({ item, type, onClose, allCharacters }: DetailModalP
         <>
           {/* Backdrop */}
           <motion.div
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            variants={backdrop}
-            className="fixed inset-0 bg-black/60 z-[110]"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/60 z-overlay"
             onClick={onClose}
           />
 
@@ -74,7 +73,7 @@ export function DetailModal({ item, type, onClose, allCharacters }: DetailModalP
             animate="visible"
             exit="exit"
             variants={modalVariants}
-            className="fixed bottom-0 left-0 right-0 z-[120] max-h-[50vh] sm:max-h-[60vh] overflow-hidden rounded-t-2xl bg-slate-900 border-t border-slate-700 shadow-2xl"
+            className="fixed bottom-0 left-0 right-0 z-modal-content max-h-[50vh] sm:max-h-[60vh] overflow-hidden rounded-t-2xl bg-slate-900 border-t border-slate-700 shadow-2xl"
             style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
             onClick={(e) => e.stopPropagation()}
             role="dialog"
@@ -243,9 +242,9 @@ function CharacterDetail({ character, onClose, allCharacters }: { character: Cha
                   const opColors = CHARACTER_COLORS[op.fromCharacter.color]
                   const sentimentColor =
                     op.sentiment === 'positive' ? 'border-emerald-500/30' :
-                    op.sentiment === 'negative' ? 'border-red-500/30' :
-                    op.sentiment === 'conflicted' ? 'border-amber-500/30' :
-                    'border-slate-600'
+                      op.sentiment === 'negative' ? 'border-red-500/30' :
+                        op.sentiment === 'conflicted' ? 'border-amber-500/30' :
+                          'border-slate-600'
 
                   return (
                     <div

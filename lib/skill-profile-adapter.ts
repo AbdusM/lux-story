@@ -334,53 +334,53 @@ export async function loadSkillProfile(userId: string): Promise<SkillProfile | n
   }
 
   try {
-  // Try admin API first (uses service role key)
-  try {
-    const response = await fetch(`/api/admin/skill-data?userId=${encodeURIComponent(userId)}`, {
-      credentials: 'include', // Include cookies for authentication
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    if (response.ok) {
-      const result = await response.json()
-      if (result.success && result.profile) {
-        logger.debug('Loaded user from admin API', { operation: 'skill-profile-adapter.load', userId })
-        const profile = convertSupabaseProfileToDashboard(result.profile)
-        profileCache.set(userId, { profile, timestamp: Date.now() })
-        return profile
+    // Try admin API first (uses service role key)
+    try {
+      const response = await fetch(`/api/admin/skill-data?userId=${encodeURIComponent(userId)}`, {
+        credentials: 'include', // Include cookies for authentication
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      if (response.ok) {
+        const result = await response.json()
+        if (result.success && result.profile) {
+          logger.debug('Loaded user from admin API', { operation: 'skill-profile-adapter.load', userId })
+          const profile = convertSupabaseProfileToDashboard(result.profile)
+          profileCache.set(userId, { profile, timestamp: Date.now() })
+          return profile
+        } else {
+          console.warn(`[SkillProfileAdapter] Admin API returned unsuccessful result for ${userId}:`, result.error || 'Unknown error')
+        }
       } else {
-        console.warn(`[SkillProfileAdapter] Admin API returned unsuccessful result for ${userId}:`, result.error || 'Unknown error')
+        const errorText = await response.text().catch(() => 'Unable to read error response')
+        console.warn(`[SkillProfileAdapter] Admin API returned ${response.status} for ${userId}:`, errorText.substring(0, 200))
       }
-    } else {
-      const errorText = await response.text().catch(() => 'Unable to read error response')
-      console.warn(`[SkillProfileAdapter] Admin API returned ${response.status} for ${userId}:`, errorText.substring(0, 200))
+    } catch (apiError: unknown) {
+      console.warn(`[SkillProfileAdapter] Admin API failed for ${userId}:`, {
+        message: (apiError as Error)?.message || 'Network or fetch error',
+        name: (apiError as Error)?.name
+      })
     }
-  } catch (apiError: unknown) {
-    console.warn(`[SkillProfileAdapter] Admin API failed for ${userId}:`, {
-      message: (apiError as Error)?.message || 'Network or fetch error',
-      name: (apiError as Error)?.name
-    })
-  }
 
-  // Try career explorations API (optional - just for logging)
-  try {
-    const careerResponse = await fetch(`/api/user/career-explorations?userId=${encodeURIComponent(userId)}`, {
-      credentials: 'include',
-    })
-    if (careerResponse.ok) {
-      const careerResult = await careerResponse.json()
-      if (careerResult.success && careerResult.careerExplorations) {
-        logger.debug('Loaded career explorations', {
-          operation: 'skill-profile-adapter.load',
-          userId,
-          count: careerResult.careerExplorations.length
-        })
+    // Try career explorations API (optional - just for logging)
+    try {
+      const careerResponse = await fetch(`/api/user/career-explorations?userId=${encodeURIComponent(userId)}`, {
+        credentials: 'include',
+      })
+      if (careerResponse.ok) {
+        const careerResult = await careerResponse.json()
+        if (careerResult.success && careerResult.careerExplorations) {
+          logger.debug('Loaded career explorations', {
+            operation: 'skill-profile-adapter.load',
+            userId,
+            count: careerResult.careerExplorations.length
+          })
+        }
       }
+    } catch (_careerError) {
+      console.warn(`[SkillProfileAdapter] Career explorations API failed for ${userId}`)
     }
-  } catch (_careerError) {
-    console.warn(`[SkillProfileAdapter] Career explorations API failed for ${userId}`)
-  }
 
     // Fallback to direct Supabase (may be blocked by RLS)
     // Note: This is a fallback if admin API fails - it may fail due to RLS policies
@@ -405,11 +405,11 @@ export async function loadSkillProfile(userId: string): Promise<SkillProfile | n
 
       if (error) {
         // Check if it's a network error (Supabase unreachable)
-        const isNetworkError = 
+        const isNetworkError =
           error.message?.includes('Failed to fetch') ||
           error.message?.includes('fetch failed') ||
           !error.code // Network errors often don't have error codes
-        
+
         if (!isNetworkError) {
           // Only log non-network errors (actual Supabase errors)
           console.warn(`[SkillProfileAdapter] Supabase direct query error for ${userId}:`, {
@@ -428,12 +428,12 @@ export async function loadSkillProfile(userId: string): Promise<SkillProfile | n
     } catch (supabaseError: unknown) {
       // Check if it's a network error (Supabase unreachable)
       const error = supabaseError instanceof Error ? supabaseError : new Error(String(supabaseError))
-      const isNetworkError = 
+      const isNetworkError =
         error.message?.includes('Failed to fetch') ||
         error.message?.includes('ERR_NAME_NOT_RESOLVED') ||
         error.name === 'TypeError' ||
         String(supabaseError).includes('fetch')
-      
+
       if (!isNetworkError) {
         // Only log unexpected errors
         console.warn(`[SkillProfileAdapter] Supabase connection error for ${userId}:`, {
@@ -466,7 +466,7 @@ export async function loadSkillProfile(userId: string): Promise<SkillProfile | n
  */
 function convertSupabaseProfileToDashboard(supabaseProfile: Record<string, unknown>): SkillProfile {
   const userId = typeof supabaseProfile.user_id === 'string' ? supabaseProfile.user_id : ''
-  
+
   // Convert skill demonstrations from skill_summaries
   const skillDemonstrations: SkillDemonstrations = {}
   const skillSummaries = Array.isArray(supabaseProfile.skill_summaries) ? supabaseProfile.skill_summaries : []
@@ -475,17 +475,17 @@ function convertSupabaseProfileToDashboard(supabaseProfile: Record<string, unkno
     const summaryObj = summary as Record<string, unknown>
     const skillName = typeof summaryObj.skill_name === 'string' ? summaryObj.skill_name : ''
     if (!skillName) return
-    
+
     if (!skillDemonstrations[skillName]) {
       skillDemonstrations[skillName] = []
     }
-    
+
     const count = typeof summaryObj.demonstration_count === 'number' ? summaryObj.demonstration_count : 0
     const scenes = Array.isArray(summaryObj.scenes_involved) ? summaryObj.scenes_involved : []
     const firstScene = typeof scenes[0] === 'string' ? scenes[0] : 'unknown_scene'
     const latestContext = typeof summaryObj.latest_context === 'string' ? summaryObj.latest_context : 'Skill demonstration'
     const lastDemonstrated = typeof summaryObj.last_demonstrated === 'string' ? summaryObj.last_demonstrated : new Date().toISOString()
-    
+
     // Create demonstration entries based on demonstration_count
     for (let i = 0; i < count; i++) {
       skillDemonstrations[skillName].push({
@@ -498,7 +498,7 @@ function convertSupabaseProfileToDashboard(supabaseProfile: Record<string, unkno
       })
     }
   })
-  
+
   // Also include any legacy skill_demonstrations data
   const skillDemos = Array.isArray(supabaseProfile.skill_demonstrations) ? supabaseProfile.skill_demonstrations : []
   skillDemos.forEach((demo: unknown) => {
@@ -506,7 +506,7 @@ function convertSupabaseProfileToDashboard(supabaseProfile: Record<string, unkno
     const demoObj = demo as Record<string, unknown>
     const skillName = typeof demoObj.skill_name === 'string' ? demoObj.skill_name : ''
     if (!skillName) return
-    
+
     if (!skillDemonstrations[skillName]) {
       skillDemonstrations[skillName] = []
     }
@@ -514,7 +514,7 @@ function convertSupabaseProfileToDashboard(supabaseProfile: Record<string, unkno
     const choiceText = typeof demoObj.choice_text === 'string' ? demoObj.choice_text : 'Your choice'
     const context = typeof demoObj.context === 'string' ? demoObj.context : 'Skill demonstration'
     const demonstratedAt = typeof demoObj.demonstrated_at === 'string' ? demoObj.demonstrated_at : new Date().toISOString()
-    
+
     skillDemonstrations[skillName].push({
       scene: sceneId,
       choice: choiceText,
@@ -537,7 +537,7 @@ function convertSupabaseProfileToDashboard(supabaseProfile: Record<string, unkno
     const educationPaths = Array.isArray(careerObj.education_paths) ? careerObj.education_paths.map(p => String(p)) : []
     const localOpportunities = Array.isArray(careerObj.local_opportunities) ? careerObj.local_opportunities.map(o => String(o)) : []
     const readinessLevel = typeof careerObj.readiness_level === 'string' ? careerObj.readiness_level : 'exploratory'
-    
+
     careerMatches.push({
       id,
       name,
@@ -558,7 +558,7 @@ function convertSupabaseProfileToDashboard(supabaseProfile: Record<string, unkno
   // Calculate skill gaps (simplified)
   const skillGaps: SkillGap[] = []
   const allSkills = ['criticalThinking', 'communication', 'collaboration', 'creativity', 'adaptability', 'leadership', 'digitalLiteracy', 'emotionalIntelligence', 'culturalCompetence', 'financialLiteracy', 'timeManagement', 'problemSolving']
-  
+
   allSkills.forEach(skill => {
     const demos = skillDemonstrations[skill] || []
     if (demos.length < 3) { // Less than 3 demonstrations = gap
@@ -619,11 +619,11 @@ function convertSupabaseProfileToDashboard(supabaseProfile: Record<string, unkno
   const skillSummariesArray = Array.isArray(supabaseProfile.skill_summaries) ? supabaseProfile.skill_summaries : []
   const totalDemonstrations = skillSummariesArray.length > 0
     ? skillSummariesArray.reduce((sum: number, summary: unknown) => {
-        if (typeof summary !== 'object' || summary === null) return sum
-        const summaryObj = summary as Record<string, unknown>
-        const count = typeof summaryObj.demonstration_count === 'number' ? summaryObj.demonstration_count : 0
-        return sum + count
-      }, 0)
+      if (typeof summary !== 'object' || summary === null) return sum
+      const summaryObj = summary as Record<string, unknown>
+      const count = typeof summaryObj.demonstration_count === 'number' ? summaryObj.demonstration_count : 0
+      return sum + count
+    }, 0)
     : (typeof supabaseProfile.total_demonstrations === 'number' ? supabaseProfile.total_demonstrations : 0)
 
   return {
@@ -692,8 +692,8 @@ async function convertTrackerProfileToDashboard(
   // Generate skill evolution from milestones (evidence-based)
   const skillEvolution: SkillEvolutionPoint[] = trackerProfile.milestones.map(milestone => ({
     checkpoint: milestone.checkpoint.replace(/Start/g, 'Beginning their journey')
-                                   .replace(/Mid-Journey/g, 'Building confidence')
-                                   .replace(/Current/g, 'Active skill development'),
+      .replace(/Mid-Journey/g, 'Building confidence')
+      .replace(/Current/g, 'Active skill development'),
     totalDemonstrations: milestone.demonstrationCount || 0,
     timestamp: milestone.timestamp
   }))
@@ -702,16 +702,16 @@ async function convertTrackerProfileToDashboard(
   // Group by scene+choice to avoid duplicate insights for the same choice
   const keySkillMoments: KeySkillMoment[] = []
   const seenChoices = new Set<string>()
-  
+
   Object.entries(skillDemonstrations).forEach(([skill, demos]) => {
     if (demos.length > 0) {
       demos.forEach(demo => {
         const choiceKey = `${demo.scene}:${demo.choice || demo.context}`
-        
+
         // If we haven't seen this choice before, create a new moment
         if (!seenChoices.has(choiceKey)) {
           seenChoices.add(choiceKey)
-          
+
           // Find all skills demonstrated by this same choice
           const allSkillsFromChoice: string[] = []
           Object.entries(skillDemonstrations).forEach(([otherSkill, otherDemos]) => {
@@ -719,7 +719,7 @@ async function convertTrackerProfileToDashboard(
               allSkillsFromChoice.push(otherSkill)
             }
           })
-          
+
           keySkillMoments.push({
             scene: demo.scene,
             choice: demo.choice || demo.context,
@@ -730,7 +730,7 @@ async function convertTrackerProfileToDashboard(
       })
     }
   })
-  
+
   // Sort by most skills demonstrated and take top 5
   keySkillMoments.sort((a, b) => b.skillsDemonstrated.length - a.skillsDemonstrated.length)
   keySkillMoments.splice(5) // Keep only top 5
@@ -788,7 +788,8 @@ async function convertTrackerProfileToDashboard(
     triage: 0,
     empathy: 0,
     accountability: 0,
-    visionaryThinking: 0
+    visionaryThinking: 0,
+    promptEngineering: 0
   }
 
   // Boost internal levels based on demonstrations (for algorithms only)

@@ -73,7 +73,7 @@ export const DIALOGUE_GRAPHS = {
  */
 export type CharacterId = 'samuel' | 'maya' | 'devon' | 'jordan' | 'marcus' | 'tess' | 'yaquin' | 'kai' | 'alex' | 'rohan' | 'silas' | 'elena' | 'grace' | 'asha' | 'lira' | 'zara' | 'station_entry' | 'grand_hall' | 'market' | 'deep_station'
 
-export const CHARACTER_IDS: CharacterId[] = ['samuel', 'maya', 'devon' | 'jordan' | 'marcus' | 'tess' | 'yaquin' | 'kai' | 'alex' | 'rohan' | 'silas' | 'elena' | 'grace' | 'asha' | 'lira' | 'zara' | 'station_entry' | 'grand_hall' | 'market' | 'deep_station']
+export const CHARACTER_IDS: CharacterId[] = ['samuel', 'maya', 'devon', 'jordan', 'marcus', 'tess', 'yaquin', 'kai', 'alex', 'rohan', 'silas', 'elena', 'grace', 'asha', 'lira', 'zara', 'station_entry', 'grand_hall', 'market', 'deep_station']
 
 export function isValidCharacterId(id: string): id is CharacterId {
   return CHARACTER_IDS.includes(id as CharacterId)
@@ -205,7 +205,7 @@ export function findCharacterForNode(
  */
 export function getSafeStart(): NodeSearchResult {
   return {
-    characterId: 'samuel',
-    graph: samuelDialogueGraph
+    characterId: 'station_entry',
+    graph: stationEntryGraph
   }
 }
