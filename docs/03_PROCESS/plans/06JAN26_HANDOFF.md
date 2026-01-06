@@ -5,27 +5,22 @@
 ### Completed This Session
 
 **1. Voice Variations Sprint - COMPLETE (16/16 Characters)**
-- Grace: 6 variations
-- Elena: 6 variations
-- Alex: 6 variations
-- Silas: 6 variations
-- Asha: 6 variations
-- Lira: 6 variations
-- Zara: 6 variations
-- Kai: 6 variations
-- Rohan: 6 variations
-- **Total added: +54 variations (147 total)**
+All characters now have 6+ voice variations:
+```
+samuel: 32    maya: 12     jordan: 16    devon: 15
+marcus: 6     tess: 6      yaquin: 6     grace: 6
+elena: 6      alex: 6      silas: 6      asha: 6
+lira: 6       zara: 6      kai: 6        rohan: 6
+```
+**Total: 147 voice variations**
 
-**2. ISP Strategic Documentation**
-- Created `docs/03_PROCESS/ISP_COMPREHENSIVE_PRD.md` (950+ lines)
-  - 7 creative tensions explored
-  - 35+ divergent possibilities
-  - 3 crystallized directions
-  - Invisible Depth Principle established
-- Created `docs/03_PROCESS/ISP_FEATURE_SYNTHESIS.md` (700+ lines)
-  - 5 AAA tensions analyzed
-  - 5 features designed with safe implementations
-  - Full priority stack with deferred items
+**2. ISP Strategic Documentation Created**
+| Document | Purpose | Lines |
+|----------|---------|-------|
+| `50-isp-comprehensive-prd.md` | Product vision, Invisible Depth principle | 950+ |
+| `51-isp-feature-synthesis.md` | Feature designs from AAA analysis | 700+ |
+| `52-software-development-ready.md` | **THE** implementation checklist | 200+ |
+| `53-meta-cognitive-systems-audit.md` | System coverage analysis | 300+ |
 
 **3. Invisible Depth Principle Established**
 Core design constraint for all new features:
@@ -34,125 +29,144 @@ UNSAFE: New System → New UI → Player Learns → Cognitive Load
 SAFE:   Backend Tracks → Dialogue Changes → Player Experiences Naturally
 ```
 
-**4. Feature Transformations (Safe Versions)**
-| Original | → Safe Version | Manifestation |
-|----------|----------------|---------------|
-| Pattern Treasures (UI) | Silent Pattern Combos | Character dialogue mentions |
+**4. Document Control Cleanup**
+- Renamed ISP docs with proper numbering (50-53)
+- Fixed duplicate 13- numbering
+- Archived old handoffs and completed plans
+- Moved processed ToAllocate files to `processed/` subfolder
+- Updated README.md with clear document hierarchy
+
+**5. Safe Feature Transformations**
+| Original Concept | → Safe Version | Manifestation |
+|------------------|----------------|---------------|
+| Pattern Treasures (UI) | Silent Pattern Combos | Character dialogue mentions careers |
 | Samuel Hub (menu) | Samuel Context Choices | Dialogue visibility conditions |
 | Station Moments (popups) | Samuel Greeting Variations | Different greetings per milestone |
-
-**5. Software Development Ready**
-- Created `docs/03_PROCESS/SOFTWARE_DEVELOPMENT_READY.md`
-- Phase 1-3 implementation plan
-- Task checklists for each feature
-- Success criteria defined
-
-### Previous Session Work
-- Loyalty Experiences: 16/16 ✅
-- Derivatives System: 7 modules ✅
-- Dialogue Expansion: 624 → 946 nodes ✅
-- Interrupts: 16/16 ✅
-- Vulnerability Arcs: 16/16 ✅
-
-## Current State
+| Character States | Character States | Greeting prefixes, tone shifts |
 
 ### Tests
 - **617 passing** (24 test files)
 
-### Coverage Summary
-| Feature | Current | Target |
-|---------|---------|--------|
-| Voice Variations | 147 (16/16 chars) | ✅ Complete |
-| Pattern Reflections | 99 | 150+ |
-| Dialogue Nodes | 946 | ✅ Complete |
-| Interrupts | 16/16 | ✅ Complete |
-| Vulnerability Arcs | 16/16 | ✅ Complete |
+### Git Status
+- Branch: `main`
+- 15 commits ahead of origin (not pushed)
+- Working tree: clean
 
-### Voice Variations by Character (All Complete)
-```
-samuel: 32 ✅    maya: 12 ✅     jordan: 16 ✅    devon: 15 ✅
-marcus: 6 ✅     tess: 6 ✅      yaquin: 6 ✅     grace: 6 ✅
-elena: 6 ✅      alex: 6 ✅      silas: 6 ✅      asha: 6 ✅
-lira: 6 ✅       zara: 6 ✅      kai: 6 ✅        rohan: 6 ✅
-```
+---
 
-## Next Sprint Priorities (From SOFTWARE_DEVELOPMENT_READY.md)
+## Current System Coverage (All Complete)
 
-### Phase 1: Immediate
-1. **Silent Pattern Combos** - `lib/pattern-combos.ts`
-2. **Samuel Greeting Variations** - Update `samuel-dialogue-graph.ts`
-3. **Samuel Context Choices** - Visibility conditions on topics
-4. **Character States** - `lib/character-states.ts`
+| System | Coverage |
+|--------|----------|
+| Voice Variations | 147 (16/16 chars) |
+| Interrupts | 16/16 |
+| Vulnerability Arcs | 16/16 |
+| Consequence Echoes | 16/16 |
+| Pattern Voices | 16/16 |
+| Dialogue Nodes | 946 |
 
-### Phase 2: Next Sprint
-1. **Narrative Tiers** - `lib/character-tiers.ts`
-2. **Validation Pipeline** - `scripts/validate-dialogue-graphs.ts`
+---
 
-### Deferred (Invisible Depth Violations)
-- Pattern Weather visual system
-- Station Moments with visual effects
-- Full hub-and-spokes for all characters
+## Next Sprint: Software Development
 
-## Key Files Created This Session
+**Read:** `docs/03_PROCESS/52-software-development-ready.md`
 
-| File | Purpose |
-|------|---------|
-| `docs/03_PROCESS/ISP_COMPREHENSIVE_PRD.md` | Full product vision |
-| `docs/03_PROCESS/ISP_FEATURE_SYNTHESIS.md` | Feature designs |
-| `docs/03_PROCESS/SOFTWARE_DEVELOPMENT_READY.md` | Implementation checklist |
+### Phase 1: Immediate Implementation
+1. **Silent Pattern Combos** - `lib/pattern-combos.ts` (new)
+   - Backend tracks pattern combinations silently
+   - Characters mention careers in dialogue when combos achieved
+
+2. **Samuel Greeting Variations** - `content/samuel-dialogue-graph.ts`
+   - Different greetings based on pattern milestones (3+, 5+, 6+)
+
+3. **Samuel Context Choices** - `content/samuel-dialogue-graph.ts`
+   - Topics as dialogue choices with visibility conditions
+
+4. **Character States** - `lib/character-states.ts` (new)
+   - Trust-based demeanor (guarded → warming → open → vulnerable)
+   - Manifests through greeting prefixes
+
+### Success Criteria
+| Metric | Before | Target |
+|--------|--------|--------|
+| Pattern acknowledgment rate | 4% | 20%+ |
+| Career mentions per session | 0 | 2-3 |
+| Samuel dialogue variations | 1 | 5+ |
+
+---
+
+## Key Documents
+
+| Need | Read This |
+|------|-----------|
+| What to implement | `52-software-development-ready.md` |
+| Feature specs | `51-isp-feature-synthesis.md` |
+| Product vision | `50-isp-comprehensive-prd.md` |
+| Project overview | `/CLAUDE.md` |
+
+---
 
 ## Quick Context Recovery
 
 ```bash
-npm test   # Verify 617 tests pass
+# Verify tests
+npm test
 
-# Check voice variations count
-for f in content/*-dialogue-graph.ts; do
-  echo "$(basename "$f" -dialogue-graph.ts): $(grep -c 'voiceVariations:' "$f")"
-done
+# Check current state
+git status
+git log --oneline -5
 
-# Key docs
-cat docs/03_PROCESS/SOFTWARE_DEVELOPMENT_READY.md | head -100
+# Key doc
+cat docs/03_PROCESS/52-software-development-ready.md
 ```
 
-## Implementation Patterns
+---
 
-### Silent Pattern Combo
-```typescript
-// Backend tracks silently, manifests through dialogue
-if (meetsRequirements(patterns, combo.requirements)) {
-  gameState.pendingCareerMentions.push({
-    characterId: combo.characterId,
-    hint: combo.careerHint
-  });
-}
+## File Locations
+
+### New Files Created This Session
+```
+docs/03_PROCESS/
+├── 50-isp-comprehensive-prd.md      # Product vision
+├── 51-isp-feature-synthesis.md      # Feature designs
+├── 52-software-development-ready.md # Implementation checklist
+├── 53-meta-cognitive-systems-audit.md # Coverage audit
+├── archive/                         # Old handoffs, completed plans
+└── README.md                        # Updated doc hierarchy
+
+docs/04_ToAllocate/processed/        # Source files synthesized into ISP docs
 ```
 
-### Samuel Context Choice
-```typescript
-{
-  choiceId: 'ask_about_patterns',
-  text: "These patterns I'm developing...",
-  visibleCondition: { patterns: { analytical: { min: 3 } } }
-}
+### Voice Variations Added To
+```
+content/grace-dialogue-graph.ts
+content/elena-dialogue-graph.ts
+content/alex-dialogue-graph.ts
+content/silas-dialogue-graph.ts
+content/asha-dialogue-graph.ts
+content/lira-dialogue-graph.ts
+content/zara-dialogue-graph.ts
+content/kai-dialogue-graph.ts
+content/rohan-dialogue-graph.ts
 ```
 
-### Samuel Greeting Variation
-```typescript
-dynamicNext: (state) => {
-  if (anyPatternAt(state, 6)) return 'samuel_greeting_mastery';
-  if (anyPatternAt(state, 5)) return 'samuel_greeting_recognition';
-  if (anyPatternAt(state, 3)) return 'samuel_greeting_noticing';
-  return 'samuel_greeting_initial';
-}
+---
+
+## Commits This Session
+
 ```
-
-## Commits Made This Session
-
-1. `feat(voice): P0 voice variations sprint (+147 total)` - All 16 characters complete
+e5e12ea docs: Document control cleanup and ISP documentation organization
+55d7662 feat(content): Complete P0 voice variations sprint (+147 total)
+```
 
 ---
 
 **Invisible Depth Principle:** Backend can be infinitely sophisticated. Frontend stays pure dialogue.
 
 *"The most ambitious feature is the one the player never knows exists—they just feel its effects."*
+
+---
+
+**Last Updated:** January 6, 2026
+**Tests:** 617 passing
+**Ready For:** Software development (Phase 1 features)
