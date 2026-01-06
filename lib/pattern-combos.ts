@@ -297,6 +297,58 @@ export function getComboProgress(
 }
 
 /**
+ * Career match result for a specific pattern
+ */
+export interface PatternCareerMatch {
+  comboId: string
+  careerHint: string
+  progress: number
+  isUnlocked: boolean
+}
+
+/**
+ * Get career matches for a specific pattern
+ * Returns careers that require this pattern, sorted by progress
+ */
+export function getCareersForPattern(
+  pattern: PatternType,
+  patterns: PlayerPatterns
+): PatternCareerMatch[] {
+  // Find all combos that require this pattern
+  const relevantCombos = PATTERN_COMBOS.filter(combo =>
+    combo.requirements[pattern] !== undefined
+  )
+
+  // Calculate progress and sort by closest to unlocking
+  const matches = relevantCombos.map(combo => ({
+    comboId: combo.id,
+    careerHint: combo.careerHint,
+    progress: getComboProgress(patterns, combo),
+    isUnlocked: meetsComboRequirements(patterns, combo)
+  }))
+
+  // Sort: unlocked first, then by progress descending
+  return matches.sort((a, b) => {
+    if (a.isUnlocked !== b.isUnlocked) {
+      return a.isUnlocked ? -1 : 1
+    }
+    return b.progress - a.progress
+  })
+}
+
+/**
+ * Get top career hint for display on a pattern orb
+ * Returns the closest unlockable or already unlocked career
+ */
+export function getTopCareerForPattern(
+  pattern: PatternType,
+  patterns: PlayerPatterns
+): PatternCareerMatch | null {
+  const careers = getCareersForPattern(pattern, patterns)
+  return careers[0] || null
+}
+
+/**
  * Get combos that are close to being unlocked (>= 75% progress)
  * Characters might hint at these in dialogue
  */

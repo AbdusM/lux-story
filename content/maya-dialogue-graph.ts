@@ -948,6 +948,41 @@ STATUS: Signal fighting itself`,
       }
     ],
     choices: [
+      // Career observation routes (ISP: Only visible when pattern combos are achieved)
+      {
+        choiceId: 'encouraged_career_architect',
+        text: "The way you think about systems... it reminds me of something.",
+        nextNodeId: 'maya_career_reflection_architect',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'systemsThinking'],
+        visibleCondition: {
+          patterns: { analytical: { min: 5 }, building: { min: 4 } },
+          lacksGlobalFlags: ['maya_mentioned_career']
+        }
+      },
+      {
+        choiceId: 'encouraged_career_data',
+        text: "You have this way of finding patterns in things...",
+        nextNodeId: 'maya_career_reflection_data',
+        pattern: 'exploring',
+        skills: ['criticalThinking', 'informationLiteracy'],
+        visibleCondition: {
+          patterns: { analytical: { min: 5 }, exploring: { min: 4 } },
+          lacksGlobalFlags: ['maya_mentioned_career']
+        }
+      },
+      {
+        choiceId: 'encouraged_career_creative',
+        text: "You build things that make people feel something. That's rare.",
+        nextNodeId: 'maya_career_reflection_creative_tech',
+        pattern: 'building',
+        skills: ['creativity', 'emotionalIntelligence'],
+        visibleCondition: {
+          patterns: { building: { min: 5 }, exploring: { min: 4 } },
+          lacksGlobalFlags: ['maya_mentioned_career']
+        }
+      },
+      // Standard choices
       {
         choiceId: 'encouraged_parents',
         text: "How do you think your parents would react?",
@@ -2417,7 +2452,7 @@ The real one. Where their perfect daughter died in a bathroom five years ago, an
         text: "That sounds like something I'd be good at.",
         nextNodeId: 'maya_crossroads',
         pattern: 'building',
-        skills: ['selfAwareness']
+        skills: ['creativity']
       },
       {
         choiceId: 'architect_humble',

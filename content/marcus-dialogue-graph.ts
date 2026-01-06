@@ -458,6 +458,41 @@ const nodes: DialogueNode[] = [
       ]
     }],
     choices: [
+      // Career observation routes (ISP: Only visible when pattern combos are achieved)
+      {
+        choiceId: 'trust_career_coordinator',
+        text: "You see something in me. What is it?",
+        nextNodeId: 'marcus_career_reflection_coordinator',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        visibleCondition: {
+          patterns: { helping: { min: 6 }, patience: { min: 3 } },
+          lacksGlobalFlags: ['marcus_mentioned_career']
+        }
+      },
+      {
+        choiceId: 'trust_career_researcher',
+        text: "The way I approach problems... does it remind you of something?",
+        nextNodeId: 'marcus_career_reflection_researcher',
+        pattern: 'analytical',
+        skills: ['criticalThinking'],
+        visibleCondition: {
+          patterns: { analytical: { min: 5 }, helping: { min: 4 } },
+          lacksGlobalFlags: ['marcus_mentioned_career']
+        }
+      },
+      {
+        choiceId: 'trust_career_educator',
+        text: "You mentioned helping people understand. What did you mean?",
+        nextNodeId: 'marcus_career_reflection_educator',
+        pattern: 'patience',
+        skills: ['communication'],
+        visibleCondition: {
+          patterns: { helping: { min: 5 }, patience: { min: 4 } },
+          lacksGlobalFlags: ['marcus_mentioned_career']
+        }
+      },
+      // Standard choices
       {
         choiceId: 'return_rate',
         text: "Return rate as a trust metric. That's elegant.",

@@ -256,7 +256,7 @@ They *can't* be wrong. Because if they're wrong, then I don't know anything. I'm
         text: "Look at the dirt, Silas.",
         nextNodeId: 'silas_simulation_start',
         pattern: 'helping',
-        skills: ['grounding']
+        skills: ['groundedResearch']
       }
     ]
   },
@@ -754,7 +754,7 @@ I spent all year coding dashboards to avoid crawling in the dirt. But the answer
         },
         nextNodeId: 'silas_climax_decision',
         pattern: 'analytical',
-        skills: ['groundedness']
+        skills: ['groundedResearch']
       }
     ],
     tags: ['simulation_complete', 'silas_arc']
@@ -1104,7 +1104,26 @@ The basil is already perking up. The water finally reached its roots.`,
         text: "Keep growing, Silas.",
         nextNodeId: 'silas_farewell_good',
         pattern: 'helping',
-        skills: ['encouragement'],
+        skills: ['encouragement']
+      },
+      // Career observation route (ISP: Only visible when pattern combo is achieved)
+      {
+        choiceId: 'career_precision',
+        text: "Your precision combined with patience... that's advanced manufacturing thinking.",
+        nextNodeId: 'silas_career_reflection_precision',
+        pattern: 'building',
+        skills: ['systemsThinking', 'criticalThinking'],
+        visibleCondition: {
+          patterns: { building: { min: 6 }, patience: { min: 4 } },
+          lacksGlobalFlags: ['silas_mentioned_career']
+        }
+      },
+      {
+        choiceId: 'silas_farewell_deep_alt',
+        text: "Ground truth. I'll remember that.",
+        nextNodeId: 'silas_farewell_good',
+        pattern: 'analytical',
+        skills: ['criticalThinking'],
         consequence: {
           characterId: 'silas',
           trustChange: 2
@@ -1156,7 +1175,7 @@ Thank you. For... getting your hands dirty with me.`,
         text: "Sometimes the answer is under your feet.",
         nextNodeId: 'silas_simulation_start',
         pattern: 'patience',
-        skills: ['groundedness'],
+        skills: ['groundedResearch'],
         consequence: {
           characterId: 'silas',
           trustChange: 1

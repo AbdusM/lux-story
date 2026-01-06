@@ -43,9 +43,118 @@ export const zaraDialogueNodes: DialogueNode[] = [
                 nextNodeId: 'zara_challenge_efficiency',
                 pattern: 'building',
                 skills: ['systemsThinking']
+            },
+            {
+                choiceId: 'zara_intro_pattern_unlock',
+                text: "[Pattern Recognition] The 40% isn't random. You've already found the demographic pattern. Show me.",
+                nextNodeId: 'zara_demographic_insight',
+                pattern: 'analytical',
+                skills: ['criticalThinking', 'systemsThinking'],
+                visibleCondition: {
+                    patterns: { analytical: { min: 40 } }
+                },
+                consequence: {
+                    characterId: 'zara',
+                    trustChange: 2
+                }
+            },
+            {
+                choiceId: 'zara_intro_curiosity_unlock',
+                text: "[Ask the Right Questions] Who trained this algorithm? And what were they optimizing for—efficiency, or deniability?",
+                nextNodeId: 'zara_source_question',
+                pattern: 'exploring',
+                skills: ['criticalThinking', 'informationLiteracy'],
+                visibleCondition: {
+                    patterns: { exploring: { min: 50 } }
+                },
+                consequence: {
+                    characterId: 'zara',
+                    trustChange: 2
+                }
             }
         ],
         tags: ['introduction', 'zara_arc']
+    },
+
+    // ============= PATTERN-UNLOCK NODES =============
+    {
+        nodeId: 'zara_demographic_insight',
+        speaker: 'Zara El-Amin',
+        content: [
+            {
+                text: `*She stops scrolling. Stares at you.*
+
+...You're right.
+
+*She pulls up a hidden pivot table.*
+
+The 40% maps almost perfectly to routes in lower-income neighborhoods. Longer distances to warehouses. More traffic. More construction.
+
+*Her voice goes cold.*
+
+The algorithm isn't just inefficient. It's encoding existing inequality and calling it 'optimization.'
+
+*Looks at you differently.*
+
+Most people don't see that. They see numbers. You see systems.`,
+                emotion: 'impressed',
+                variation_id: 'zara_demographic_insight_v1'
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'zara_demographic_dig',
+                text: "What else is it hiding?",
+                nextNodeId: 'zara_explains_bias',
+                pattern: 'analytical',
+                skills: ['criticalThinking', 'systemsThinking'],
+                consequence: {
+                    characterId: 'zara',
+                    trustChange: 1
+                }
+            }
+        ],
+        tags: ['zara_arc', 'pattern_unlock']
+    },
+
+    {
+        nodeId: 'zara_source_question',
+        speaker: 'Zara El-Amin',
+        content: [
+            {
+                text: `*She goes very still.*
+
+...Deniability.
+
+*Her eyes narrow.*
+
+How did you know to ask that?
+
+*She pulls up a different document—internal emails.*
+
+The team that built this algorithm? They were explicitly told to 'minimize legal exposure' in their optimization criteria. That's why it doesn't flag for bias—it was designed not to see it.
+
+*Bitter laugh.*
+
+'Just following the data.' Right. The question no one asks is who decided what data counts.`,
+                emotion: 'grim',
+                variation_id: 'zara_source_question_v1'
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'zara_source_expose',
+                text: "What are you going to do with this?",
+                nextNodeId: 'zara_explains_bias',
+                pattern: 'exploring',
+                skills: ['integrity', 'informationLiteracy'],
+                consequence: {
+                    characterId: 'zara',
+                    trustChange: 1
+                }
+            }
+        ],
+        tags: ['zara_arc', 'pattern_unlock']
     },
 
     {
@@ -2270,7 +2379,6 @@ Sometimes the right answer is: slow down. Take the time. Get it right.`,
     {
         nodeId: 'zara_insight_art_data',
         speaker: 'Zara El-Amin',
-        characterId: 'zara',
         content: [
             {
                 text: `*She pulls up something unexpected on her screen—a colorful, abstract visualization.*
@@ -2330,7 +2438,6 @@ That's why I do both. The spreadsheet convinces the lawyers. The art convinces t
     {
         nodeId: 'zara_insight_translation',
         speaker: 'Zara El-Amin',
-        characterId: 'zara',
         content: [
             {
                 text: `*She opens a processing script alongside the visualization.*
@@ -2382,7 +2489,6 @@ That's the real skill. Not the coding. The translation. Making the machine's cho
     {
         nodeId: 'zara_insight_persuasion',
         speaker: 'Zara El-Amin',
-        characterId: 'zara',
         content: [
             {
                 text: `*She pauses. Something flickers across her face.*
@@ -2410,7 +2516,7 @@ Next week, they hired an external auditor. Full review. Changed three major poli
 One image did what six months of reports couldn't. Because reports talk to the brain. Art talks to the conscience.`,
                 emotion: 'vindicated',
                 variation_id: 'insight_persuasion_v1',
-                richEffectContext: 'revelation'
+                richEffectContext: 'success'
             }
         ],
         choices: [
@@ -2439,7 +2545,6 @@ One image did what six months of reports couldn't. Because reports talk to the b
     {
         nodeId: 'zara_insight_replication',
         speaker: 'Zara El-Amin',
-        characterId: 'zara',
         content: [
             {
                 text: `*She shakes her head slowly.*
@@ -2492,7 +2597,6 @@ That's the pattern I've noticed. Ethics work is cumulative. You rarely see the m
     {
         nodeId: 'zara_challenge_deaf_ears',
         speaker: 'Zara El-Amin',
-        characterId: 'zara',
         content: [
             {
                 text: `*Her expression hardens.*
@@ -2551,7 +2655,6 @@ What do you do when you've done everything right—documented the harm, showed t
     {
         nodeId: 'zara_challenge_whistleblow',
         speaker: 'Zara El-Amin',
-        characterId: 'zara',
         content: [
             {
                 text: `*She nods slowly.*
@@ -2606,7 +2709,6 @@ I don't judge anyone's answer to that question. I've been on both sides of it.`,
     {
         nodeId: 'zara_challenge_boundaries',
         speaker: 'Zara El-Amin',
-        characterId: 'zara',
         content: [
             {
                 text: `*She exhales.*
@@ -2658,7 +2760,6 @@ Boundaries aren't defeat. They're survival. You can't audit the world if you bur
     {
         nodeId: 'zara_challenge_persistence',
         speaker: 'Zara El-Amin',
-        characterId: 'zara',
         content: [
             {
                 text: `*Something fierce lights in her eyes.*
@@ -2714,7 +2815,6 @@ That's not persistence. That's martyrdom. And martyrs don't file audit reports.`
     {
         nodeId: 'zara_challenge_complicity',
         speaker: 'Zara El-Amin',
-        characterId: 'zara',
         content: [
             {
                 text: `*She pulls up a dataset on her screen.*
@@ -2748,7 +2848,7 @@ The company says: "It's just predicting who stays." I say: "You're predicting wh
 What would you do?`,
                 emotion: 'challenging',
                 variation_id: 'challenge_complicity_v1',
-                richEffectContext: 'decision'
+                richEffectContext: 'thinking'
             }
         ],
         choices: [
@@ -2788,7 +2888,6 @@ What would you do?`,
     {
         nodeId: 'zara_challenge_modification',
         speaker: 'Zara El-Amin',
-        characterId: 'zara',
         content: [
             {
                 text: `*She runs some code.*
@@ -2847,7 +2946,6 @@ The question is: will the company accept that truth? Or will they shop for an au
     {
         nodeId: 'zara_reflection_gallery',
         speaker: 'Zara El-Amin',
-        characterId: 'zara',
         content: [
             {
                 text: `*She opens a folder of images.*
@@ -2899,7 +2997,6 @@ Data scientists talk about "impact metrics." That woman's face is my impact metr
     {
         nodeId: 'zara_reflection_origins',
         speaker: 'Zara El-Amin',
-        characterId: 'zara',
         content: [
             {
                 text: `*She looks at her hands.*
@@ -2931,7 +3028,7 @@ My first piece was about the triage algorithm. The one that killed Marcus and De
 I had to see their deaths in a form I could hold. Art was how I processed what I'd been part of.`,
                 emotion: 'vulnerable_reflective',
                 variation_id: 'reflection_origins_v1',
-                richEffectContext: 'memory'
+                richEffectContext: 'warning'
             }
         ],
         choices: [
@@ -2964,7 +3061,6 @@ I had to see their deaths in a form I could hold. Art was how I processed what I
     {
         nodeId: 'zara_reflection_grandmother',
         speaker: 'Zara El-Amin',
-        characterId: 'zara',
         content: [
             {
                 text: `*She's quiet for a long moment.*
@@ -3022,7 +3118,6 @@ That's what calligraphy taught me. Every stroke has weight. Every choice leaves 
     {
         nodeId: 'zara_reflection_triage_art',
         speaker: 'Zara El-Amin',
-        characterId: 'zara',
         content: [
             {
                 text: `*She hesitates. Then opens a file.*
@@ -3081,7 +3176,6 @@ Harm isn't a single moment. It's a system. This piece is my attempt to make that
     {
         nodeId: 'zara_reflection_families',
         speaker: 'Zara El-Amin',
-        characterId: 'zara',
         content: [
             {
                 text: `*She nods slowly.*
@@ -3139,7 +3233,6 @@ Sometimes that's enough. Sometimes it isn't.`,
     {
         nodeId: 'zara_reflection_healing',
         speaker: 'Zara El-Amin',
-        characterId: 'zara',
         content: [
             {
                 text: `*She's quiet.*
@@ -3195,7 +3288,6 @@ Maybe that's the only kind of healing I get. Not moving past it. Just learning t
     {
         nodeId: 'zara_reflection_selfcare',
         speaker: 'Zara El-Amin',
-        characterId: 'zara',
         content: [
             {
                 text: `*She laughs—a little ruefully.*
@@ -3257,7 +3349,6 @@ You can't. The body keeps score.`,
     {
         nodeId: 'zara_reflection_choice',
         speaker: 'Zara El-Amin',
-        characterId: 'zara',
         content: [
             {
                 text: `*She's silent for a long moment.*
@@ -3293,7 +3384,7 @@ But I could sleep at night. Barely.
 Sometimes that's the best you get.`,
                 emotion: 'honest_heavy',
                 variation_id: 'reflection_choice_v1',
-                richEffectContext: 'memory'
+                richEffectContext: 'warning'
             }
         ],
         choices: [
@@ -3322,7 +3413,6 @@ Sometimes that's the best you get.`,
     {
         nodeId: 'zara_reflection_guilt',
         speaker: 'Zara El-Amin',
-        characterId: 'zara',
         content: [
             {
                 text: `*She doesn't answer right away.*
@@ -3384,7 +3474,6 @@ Some days are harder than others.`,
     {
         nodeId: 'zara_reflection_industry_reaction',
         speaker: 'Zara El-Amin',
-        characterId: 'zara',
         content: [
             {
                 text: `*She snorts.*
@@ -3447,7 +3536,6 @@ That's the point.`,
     {
         nodeId: 'zara_connection_patience',
         speaker: 'Zara El-Amin',
-        characterId: 'zara',
         content: [
             {
                 text: `*She looks at you with something like recognition.*
@@ -3508,7 +3596,6 @@ Thank you. For seeing the long game.`,
     {
         nodeId: 'zara_connection_support',
         speaker: 'Zara El-Amin',
-        characterId: 'zara',
         content: [
             {
                 text: `*She's quiet for a moment.*
@@ -3568,7 +3655,6 @@ I didn't have that, after the triage incident. Almost didn't survive it. Learned
     {
         nodeId: 'zara_connection_acceptance',
         speaker: 'Zara El-Amin',
-        characterId: 'zara',
         content: [
             {
                 text: `*She freezes.*
@@ -3639,7 +3725,6 @@ You're part of the network now. That means something.`,
     {
         nodeId: 'zara_connection_red_flags',
         speaker: 'Zara El-Amin',
-        characterId: 'zara',
         content: [
             {
                 text: `*She pulls out a mental checklist.*
@@ -3697,7 +3782,6 @@ Find the difference before you sign the offer letter.`,
     {
         nodeId: 'zara_connection_courage',
         speaker: 'Zara El-Amin',
-        characterId: 'zara',
         content: [
             {
                 text: `*She shakes her head.*
@@ -3761,7 +3845,6 @@ Maybe you see something I can't.`,
     {
         nodeId: 'zara_connection_understanding',
         speaker: 'Zara El-Amin',
-        characterId: 'zara',
         content: [
             {
                 text: `*She looks at you for a long moment.*
@@ -3823,7 +3906,6 @@ I don't know what you're going to do with your life. But I hope you keep this. T
     {
         nodeId: 'zara_insight_rejection_cost',
         speaker: 'Zara El-Amin',
-        characterId: 'zara',
         content: [
             {
                 text: `*She nods.*
@@ -3885,7 +3967,6 @@ You don't get credit for invisible prevention. But the math works out.`,
     {
         nodeId: 'zara_insight_root_cause',
         speaker: 'Zara El-Amin',
-        characterId: 'zara',
         content: [
             {
                 text: `*She pauses. A smile spreads slowly.*

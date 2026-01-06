@@ -171,7 +171,7 @@ export const samuelOrbResonanceNodes: DialogueNode[] = [
         text: '"What patterns do you see?"',
         nextNodeId: 'samuel_orb_developing_patterns',
         pattern: 'analytical',
-        skills: ['curiosity', 'selfAwareness']
+        skills: ['curiosity', 'emotionalIntelligence']
       },
       {
         choiceId: 'orb_developing_station',
@@ -302,10 +302,12 @@ export const samuelOrbResonanceNodes: DialogueNode[] = [
         variation_id: 'orb_flourishing_trust_v1'
       }
     ],
-    consequence: {
-      characterId: 'samuel',
-      trustChange: 1
-    },
+    onEnter: [
+      {
+        characterId: 'samuel',
+        trustChange: 1
+      }
+    ],
     choices: [
       {
         choiceId: 'orb_flourishing_trust_continue',
@@ -394,11 +396,13 @@ export const samuelOrbResonanceNodes: DialogueNode[] = [
         variation_id: 'orb_mastered_meaning_v1'
       }
     ],
-    consequence: {
-      characterId: 'samuel',
-      trustChange: 2,
-      addGlobalFlags: ['true_resonance_achieved']
-    },
+    onEnter: [
+      {
+        characterId: 'samuel',
+        trustChange: 2,
+        addGlobalFlags: ['true_resonance_achieved']
+      }
+    ],
     choices: [
       {
         choiceId: 'orb_mastered_meaning_continue',
@@ -419,11 +423,13 @@ export const samuelOrbResonanceNodes: DialogueNode[] = [
         variation_id: 'orb_mastered_gratitude_v1'
       }
     ],
-    consequence: {
-      characterId: 'samuel',
-      trustChange: 2,
-      addGlobalFlags: ['samuel_grateful', 'true_resonance_achieved']
-    },
+    onEnter: [
+      {
+        characterId: 'samuel',
+        trustChange: 2,
+        addGlobalFlags: ['samuel_grateful', 'true_resonance_achieved']
+      }
+    ],
     choices: [
       {
         choiceId: 'orb_mastered_gratitude_continue',

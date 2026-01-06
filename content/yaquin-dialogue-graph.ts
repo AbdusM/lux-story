@@ -527,7 +527,7 @@ Which opening sells the VALUE of practical experience?`,
         text: "That's your brand. 'The Cooking Show for Teeth.'",
         nextNodeId: 'yaquin_launch_decision',
         pattern: 'building',
-        skills: ['branding']
+        skills: ['marketing']
       }
     ],
     onEnter: [
@@ -628,7 +628,7 @@ All day. Don't fix teeth. fix fear. That's what I'm selling.`,
         text: "Build an audience anonymously first.",
         nextNodeId: 'yaquin_audience_first',
         pattern: 'analytical',
-        skills: ['strategy']
+        skills: ['strategicThinking']
       },
       {
         choiceId: 'launch_patience',

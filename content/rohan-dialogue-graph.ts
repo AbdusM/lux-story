@@ -793,7 +793,7 @@ The AI saw the bypass and thought it was a feature. It's trying to import a hack
         text: "Rewrite the integrity check using modern libraries. No hallucinations. First principles.",
         nextNodeId: 'rohan_sim_success',
         pattern: 'building',
-        skills: ['coding', 'respect']
+        skills: ['technicalLiteracy', 'respect']
       }
     ],
     tags: ['simulation', 'rohan_arc']
@@ -1353,6 +1353,29 @@ You've been helping me figure out what I want to build. Imagine we're sitting he
         nextNodeId: 'rohan_farewell',
         pattern: 'exploring',
         skills: ['emotionalIntelligence', 'adaptability']
+      },
+      // Career observation routes (ISP: Only visible when pattern combos are achieved)
+      {
+        choiceId: 'career_architect',
+        text: "The way you think about building systems... it reminds me of architects.",
+        nextNodeId: 'rohan_career_reflection_architect',
+        pattern: 'analytical',
+        skills: ['systemsThinking', 'criticalThinking'],
+        visibleCondition: {
+          patterns: { analytical: { min: 6 }, building: { min: 4 } },
+          lacksGlobalFlags: ['rohan_mentioned_career']
+        }
+      },
+      {
+        choiceId: 'career_security',
+        text: "Your patience with details... and seeing threats others miss. That's cybersecurity thinking.",
+        nextNodeId: 'rohan_career_reflection_security',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'problemSolving'],
+        visibleCondition: {
+          patterns: { analytical: { min: 5 }, patience: { min: 5 } },
+          lacksGlobalFlags: ['rohan_mentioned_career']
+        }
       }
     ],
     tags: ['reciprocity', 'player_reflection', 'rohan_arc']

@@ -244,7 +244,7 @@ Deprecated code preserved for reference:
 | System | Defined | Used | Status |
 |--------|---------|------|--------|
 | Patterns | 5 | 5 | ✅ Optimal variability |
-| Skills | 46 | 52 | ⚠️ 13 undefined, 7 unused |
+| Skills | 54 | 54 | ✅ All skills formalized (8 added, 7 renamed) |
 | Emotions | 59 | 491 | ✅ Compound emotions add depth |
 | Knowledge Flags | — | 210 | ✅ Rich state tracking |
 
@@ -283,6 +283,7 @@ Deprecated code preserved for reference:
 - `docs/01_MECHANICS/21-infinite-canvas-feature-catalog.md` - Full feature catalog
 
 ### Recently Completed (January 2026)
+- **Skill System Cleanup** - 8 new skills defined, 7 renamed to standard forms, all 54 skills formalized
 - **Pattern Unlock Nodes** - 12 pattern-gated nodes across 5 characters
 - **Conditional Choice Wiring** - Pattern unlocks reachable via introduction choices
 - **Meta-Cognitive Audit** - Full analysis of patterns, skills, emotions coverage
@@ -292,8 +293,8 @@ Deprecated code preserved for reference:
 
 ### Q1 2026 Priority Tasks
 1. **Voice Variations** - Add to 12 characters (only Maya, Jordan, Devon, Samuel have them)
-2. **Pattern Reflections** - Expand for Alex (1), Grace (3), Silas (3)
-3. **Skill System Cleanup** - Formalize 13 undefined skills, integrate 7 unused WEF 2030 skills
+2. ~~**Pattern Reflections**~~ ✅ COMPLETE - Alex (5), Grace (5), Silas (5) all at target
+3. ~~**Skill System Cleanup**~~ ✅ COMPLETE - 8 skills added, 7 renamed to standard forms
 
 ### Production
 - URL: https://lux-story.vercel.app

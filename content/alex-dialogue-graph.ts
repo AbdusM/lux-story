@@ -84,6 +84,34 @@ export const alexDialogueNodes: DialogueNode[] = [
           characterId: 'alex',
           trustChange: 1
         }
+      },
+      {
+        choiceId: 'alex_intro_system_unlock',
+        text: "[Pattern Recognition] The night vision. The jingling pockets. You've mapped more than air ducts—you've mapped information flow.",
+        nextNodeId: 'alex_system_insight',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'problemSolving'],
+        visibleCondition: {
+          patterns: { analytical: { min: 40 } }
+        },
+        consequence: {
+          characterId: 'alex',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'alex_intro_builder_unlock',
+        text: "[Decisive Action] Stop pitching. Show me what you've actually built.",
+        nextNodeId: 'alex_builder_reveal',
+        pattern: 'building',
+        skills: ['leadership', 'adaptability'],
+        visibleCondition: {
+          patterns: { building: { min: 50 } }
+        },
+        consequence: {
+          characterId: 'alex',
+          trustChange: 2
+        }
       }
     ],
     onEnter: [
@@ -228,6 +256,87 @@ You might actually survive out there.`,
       }
     ],
     tags: ['alex_arc']
+  },
+
+  // ============= PATTERN-UNLOCK NODES =============
+  {
+    nodeId: 'alex_system_insight',
+    speaker: 'Alex',
+    content: [
+      {
+        text: `*Freezes. Goggles slip down to his neck.*
+
+...You can see that?
+
+*Pulls out a worn notebook, pages covered in interconnected diagrams.*
+
+Three years mapping this station. The ventilation isn't just air—it's information. Who talks to who. Where the real decisions happen. Where the blockages form.
+
+Most people just see rats in walls. You see...
+
+*Trails off, looking at you differently.*
+
+...You see patterns.`,
+        emotion: 'impressed',
+        interaction: 'nod',
+        variation_id: 'alex_system_insight_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'alex_system_show_more',
+        text: "Show me what you've mapped.",
+        nextNodeId: 'alex_contradiction',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'systemsThinking'],
+        consequence: {
+          characterId: 'alex',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['alex_arc', 'pattern_unlock']
+  },
+
+  {
+    nodeId: 'alex_builder_reveal',
+    speaker: 'Alex',
+    content: [
+      {
+        text: `*Stops mid-sentence. Something shifts in his posture.*
+
+Okay. Fine.
+
+*Pulls out tablet, swipes through screens.*
+
+Bootcamp dropout tracker. Connects with 400+ former students across twelve cohorts. Not what they learned—what they *did* with it. Real outcomes, not LinkedIn theater.
+
+The patterns are brutal. But honest.
+
+*Looks up.*
+
+No one asked me to build this. No one's paying for it. I just... needed to know.`,
+        emotion: 'vulnerable',
+        interaction: 'nod',
+        variation_id: 'alex_builder_reveal_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'alex_builder_patterns',
+        text: "What patterns did you find?",
+        nextNodeId: 'alex_contradiction',
+        pattern: 'building',
+        skills: ['criticalThinking', 'leadership'],
+        consequence: {
+          characterId: 'alex',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['alex_arc', 'pattern_unlock']
   },
 
   // ============= SCENE 2: THE CONTRADICTION =============
@@ -1045,6 +1154,29 @@ Which one pulls you?`,
         consequence: {
           characterId: 'alex',
           trustChange: 2
+        }
+      },
+      // Career observation routes (ISP: Only visible when pattern combos are achieved)
+      {
+        choiceId: 'career_logistics',
+        text: "The way you think about systems and building... reminds me of supply chain thinking.",
+        nextNodeId: 'alex_career_reflection_logistics',
+        pattern: 'building',
+        skills: ['systemsThinking', 'problemSolving'],
+        visibleCondition: {
+          patterns: { analytical: { min: 4 }, building: { min: 5 } },
+          lacksGlobalFlags: ['alex_mentioned_career']
+        }
+      },
+      {
+        choiceId: 'career_operations',
+        text: "Your analytical patience... that's how operations analysts find hidden improvements.",
+        nextNodeId: 'alex_career_reflection_operations',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'problemSolving'],
+        visibleCondition: {
+          patterns: { analytical: { min: 5 }, patience: { min: 4 } },
+          lacksGlobalFlags: ['alex_mentioned_career']
         }
       }
     ],

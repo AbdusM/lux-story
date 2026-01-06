@@ -1258,6 +1258,18 @@ Past as liability? Past as asset? Or I define what it means?`,
       lacksGlobalFlags: ['jordan_chose_shallow'] // Only if NOT failed
     },
     choices: [
+      // Career observation route (ISP: Only visible when pattern combo is achieved)
+      {
+        choiceId: 'jordan_crossroads_career_counselor',
+        text: "You help people find their way. That sounds like a calling.",
+        nextNodeId: 'jordan_career_reflection_counselor',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication'],
+        visibleCondition: {
+          patterns: { helping: { min: 4 }, exploring: { min: 5 } },
+          lacksGlobalFlags: ['jordan_mentioned_career']
+        }
+      },
       // Pattern-enhanced: Helping players see mentorship framing
       {
         choiceId: 'jordan_crossroads_accumulation_helping',

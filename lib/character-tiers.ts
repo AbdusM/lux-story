@@ -16,6 +16,18 @@
 import { CharacterId } from './graph-registry'
 
 /**
+ * Location IDs (not actual characters - excluded from tier calculations)
+ */
+export const LOCATION_IDS: CharacterId[] = ['station_entry', 'grand_hall', 'market', 'deep_station']
+
+/**
+ * Check if an ID is a location rather than a character
+ */
+export function isLocationId(id: CharacterId): boolean {
+  return LOCATION_IDS.includes(id)
+}
+
+/**
  * Character narrative tiers
  */
 export type CharacterTier = 1 | 2 | 3 | 4
@@ -93,7 +105,13 @@ export const CHARACTER_TIERS: Record<CharacterId, CharacterTier> = {
   asha: 4,      // Conflict resolution
   lira: 4,      // Communications
   zara: 4,      // Data ethics
-  jordan: 4     // Career navigation
+  jordan: 4,    // Career navigation
+
+  // Locations (not characters - tier 4 as fallback for type safety)
+  station_entry: 4,
+  grand_hall: 4,
+  market: 4,
+  deep_station: 4
 }
 
 /**
@@ -116,10 +134,11 @@ export function getCharacterTierConfig(characterId: CharacterId): TierConfig {
 
 /**
  * Get all characters in a specific tier
+ * Excludes location IDs (station_entry, grand_hall, etc.)
  */
 export function getCharactersByTier(tier: CharacterTier): CharacterId[] {
   return (Object.entries(CHARACTER_TIERS) as [CharacterId, CharacterTier][])
-    .filter(([, t]) => t === tier)
+    .filter(([id, t]) => t === tier && !isLocationId(id))
     .map(([id]) => id)
 }
 
@@ -162,11 +181,14 @@ export function getExpansionPriority(
 
 /**
  * Get characters ordered by expansion priority
+ * Excludes location IDs (station_entry, grand_hall, etc.)
  */
 export function getExpansionOrder(
   currentStats: Map<CharacterId, { nodes: number; voiceVariations: number }>
 ): CharacterId[] {
-  const characters = Object.keys(CHARACTER_TIERS) as CharacterId[]
+  // Filter out locations - only include actual characters
+  const characters = (Object.keys(CHARACTER_TIERS) as CharacterId[])
+    .filter(id => !isLocationId(id))
 
   return characters.sort((a, b) => {
     const statsA = currentStats.get(a) || { nodes: 0, voiceVariations: 0 }

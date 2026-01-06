@@ -36,6 +36,7 @@ export interface FutureSkills {
   actionOrientation: number
   psychology: number
   grounding: number
+  groundedResearch: number // Consolidated from grounding/groundedness
   observation: number
   urgency: number
   resilience: number
@@ -122,6 +123,7 @@ export class FutureSkillsSystem {
       actionOrientation: 0.5,
       psychology: 0.5,
       grounding: 0.5,
+      groundedResearch: 0.5,
       observation: 0.5,
       urgency: 0.5,
       resilience: 0.5,

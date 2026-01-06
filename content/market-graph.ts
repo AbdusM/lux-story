@@ -147,7 +147,7 @@ export const marketDialogueNodes: DialogueNode[] = [
                     // Selling this secret might reduce trust with the "Underground" later
                     trustChange: 0
                 },
-                skills: ['financialLiteracy', 'strategy']
+                skills: ['financialLiteracy', 'strategicThinking']
             },
             // TRADE 1 (SOLD OUT)
             {
