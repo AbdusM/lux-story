@@ -36,6 +36,13 @@ export const rohanDialogueNodes: DialogueNode[] = [
         nextNodeId: 'rohan_fear_acknowledged',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
+        voiceVariations: {
+          analytical: "Your metrics show fear. Heart rate, voice tremor. What's the real threat?",
+          helping: "You sound afraid of it. What's scaring you?",
+          building: "Something in this code broke your confidence. What?",
+          exploring: "I hear something deeper than technical frustration. What is it?",
+          patience: "Take a breath. You sound afraid. I'm listening."
+        },
         consequence: {
           characterId: 'rohan',
           trustChange: 2
@@ -46,7 +53,14 @@ export const rohanDialogueNodes: DialogueNode[] = [
         text: "Hallucinated dependency? That's a supply chain attack vector.",
         nextNodeId: 'rohan_technical_dismissal',
         pattern: 'analytical',
-        skills: ['technicalLiteracy']
+        skills: ['technicalLiteracy'],
+        voiceVariations: {
+          analytical: "Hallucinated dependency? That's a supply chain attack vector.",
+          helping: "Wait—if the dependency is fake, people could get hurt relying on this.",
+          building: "Phantom libraries are a build-time bomb. How do we fix it?",
+          exploring: "That's wild. A machine invented a library that never existed?",
+          patience: "Let me make sure I understand. The code references something that doesn't exist?"
+        }
       },
       {
         choiceId: 'rohan_intro_wonder',
@@ -68,6 +82,13 @@ export const rohanDialogueNodes: DialogueNode[] = [
         nextNodeId: 'rohan_silence_acknowledged',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'adaptability'],
+        voiceVariations: {
+          analytical: "[Process the information. Don't rush to conclusions.]",
+          helping: "[Just be present. He needs someone to witness this.]",
+          building: "[Wait. Sometimes the best response is no response.]",
+          exploring: "[Let the mystery breathe. Don't collapse it with words.]",
+          patience: "[Stay quiet. Let the awe and dread coexist without comment.]"
+        },
         consequence: {
           characterId: 'rohan',
           trustChange: 1
@@ -103,7 +124,18 @@ You saw the terror underneath. That's... rare.`,
       }
     ],
     choices: [
-      { choiceId: 'tell_me_why', text: "Tell me why.", nextNodeId: 'rohan_erasure_reveal' }
+      {
+        choiceId: 'tell_me_why',
+        text: "Tell me why.",
+        nextNodeId: 'rohan_erasure_reveal',
+        voiceVariations: {
+          analytical: "Walk me through the logic. Why the fear?",
+          helping: "I want to understand. Tell me why.",
+          building: "What's the foundation of this fear?",
+          exploring: "Tell me more. I'm genuinely curious.",
+          patience: "Tell me why. Take all the time you need."
+        }
+      }
     ]
   },
   {

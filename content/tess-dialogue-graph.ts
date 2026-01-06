@@ -75,7 +75,14 @@ Offering to buy the building. "Prime real estate." Like it's just square footage
         text: "How's business?",
         nextNodeId: 'tess_the_numbers',
         pattern: 'building',
-        skills: ['criticalThinking', 'adaptability']
+        skills: ['criticalThinking', 'adaptability'],
+        voiceVariations: {
+          analytical: "What do the numbers actually look like?",
+          helping: "Is the shop doing okay? You seem stressed.",
+          building: "How's business? Is this model sustainable?",
+          exploring: "I'm curious—how does a record shop survive these days?",
+          patience: "Business must be complicated. How are things really?"
+        }
       },
       {
         choiceId: 'tess_intro_listen',
@@ -286,7 +293,14 @@ Next morning I quit. Everyone thought I lost my mind.`,
         text: "And now?",
         nextNodeId: 'tess_backstory_reality_response',
         pattern: 'patience',
-        skills: ['communication']
+        skills: ['communication'],
+        voiceVariations: {
+          analytical: "What's the current state of things?",
+          helping: "How are you holding up now?",
+          building: "What did you build from that decision?",
+          exploring: "Where did that journey lead you?",
+          patience: "And now?"
+        }
       }
     ]
   },
@@ -376,14 +390,28 @@ That's what this place does. Was. Is supposed to.`,
         text: "So fight for it.",
         nextNodeId: 'tess_phoniness_fight_response',
         pattern: 'building',
-        skills: ['emotionalIntelligence', 'problemSolving']
+        skills: ['emotionalIntelligence', 'problemSolving'],
+        voiceVariations: {
+          analytical: "The math says you need a new strategy. What's the plan?",
+          helping: "You clearly care about this. How can I help you fight?",
+          building: "So fight for it. Build something they can't ignore.",
+          exploring: "There's got to be a way forward. What haven't you tried?",
+          patience: "Real things take time to save. What's your next move?"
+        }
       },
       {
         choiceId: 'tess_phoniness_how',
         text: "But how? When the numbers don't work?",
         nextNodeId: 'tess_phoniness_how_response',
         pattern: 'analytical',
-        skills: ['criticalThinking']
+        skills: ['criticalThinking'],
+        voiceVariations: {
+          analytical: "But how? When the numbers don't work?",
+          helping: "What would it take to make this work? Really?",
+          building: "What would you need to build to survive?",
+          exploring: "What options haven't you explored yet?",
+          patience: "The numbers are one story. What's another way to look at this?"
+        }
       }
     ]
   },

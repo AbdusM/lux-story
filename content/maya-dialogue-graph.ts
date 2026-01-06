@@ -346,7 +346,14 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "You aren't a statue they built. You're a person.",
         nextNodeId: 'maya_deflect_passion',
         pattern: 'helping',
-        skills: ['emotionalIntelligence']
+        skills: ['emotionalIntelligence'],
+        voiceVariations: {
+          analytical: "Their sacrifice doesn't define your path. You're a person with your own data.",
+          helping: "You aren't a statue they built. You're a person.",
+          building: "They built a foundation. But you decide what goes on top.",
+          exploring: "Their marathon doesn't have to be your race.",
+          patience: "You carry their hopes. But you're still you."
+        }
       },
       {
         choiceId: 'expectations_reality',
@@ -393,7 +400,14 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "You don't sound happy with that.",
         nextNodeId: 'maya_anxiety_reveal',
         pattern: 'helping',
-        skills: ['emotionalIntelligence', 'communication']
+        skills: ['emotionalIntelligence', 'communication'],
+        voiceVariations: {
+          analytical: "Your voice says something different from your words.",
+          helping: "You don't sound happy with that.",
+          building: "That doesn't sound like a foundation you want to build on.",
+          exploring: "There's something else underneath that, isn't there?",
+          patience: "I hear the tension in that. Take your time."
+        }
       },
       {
         choiceId: 'deflect_understand',
@@ -484,6 +498,13 @@ export const mayaDialogueNodes: DialogueNode[] = [
         nextNodeId: 'maya_anxiety_reveal',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
+        voiceVariations: {
+          analytical: "Anxiety is just data. It means something matters to you.",
+          helping: "We all have our struggles. No judgment here.",
+          building: "Pressure means you're building something important.",
+          exploring: "That feeling? It means you're looking for something real.",
+          patience: "It's okay. Struggles take time to untangle."
+        },
         consequence: {
           characterId: 'maya',
           trustChange: 1

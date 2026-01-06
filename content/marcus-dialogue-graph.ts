@@ -47,21 +47,42 @@ const nodes: DialogueNode[] = [
         text: 'Drink some coffee. Power through it.',
         nextNodeId: 'marcus_burnout',
         pattern: 'building',
-        skills: ['resilience']
+        skills: ['resilience'],
+        voiceVariations: {
+          analytical: "The math says you need fuel. Coffee. Glucose. Something.",
+          helping: "You're exhausted. At least take care of yourself first.",
+          building: "Drink some coffee. Power through it.",
+          exploring: "What keeps you going when you're this depleted?",
+          patience: "Before we solve anything—when did you last rest?"
+        }
       },
       {
         choiceId: 'automate',
         text: "You're doing the work of a machine. Let the machines do it.",
         nextNodeId: 'marcus_automation_lesson',
         pattern: 'helping',
-        skills: ['leadership']
+        skills: ['leadership'],
+        voiceVariations: {
+          analytical: "Systems should scale. You're the bottleneck. Let automation help.",
+          helping: "You're doing the work of a machine. Let the machines do it.",
+          building: "Build the system once. Let it handle the repetition.",
+          exploring: "There's got to be a smarter way. What if you automated the routine?",
+          patience: "This pace isn't sustainable. Some of this could be automated."
+        }
       },
       {
         choiceId: 'ask_why_overloaded',
         text: "What put you in this position? This seems... unsustainable.",
         nextNodeId: 'marcus_origin_story',
         pattern: 'analytical',
-        skills: ['criticalThinking']
+        skills: ['criticalThinking'],
+        voiceVariations: {
+          analytical: "What put you in this position? This seems... unsustainable.",
+          helping: "Something happened that made you take all this on. What was it?",
+          building: "Systems fail for reasons. What broke to create this?",
+          exploring: "There's a story here. How did this start?",
+          patience: "This much pressure doesn't come from nowhere. What happened?"
+        }
       },
       // Pattern unlock choices - only visible when player has built enough pattern affinity
       {
@@ -392,6 +413,13 @@ const nodes: DialogueNode[] = [
         nextNodeId: 'marcus_automation_lesson',
         pattern: 'patience',
         skills: ['emotionalIntelligence'],
+        voiceVariations: {
+          analytical: "Control over your environment reduces variables. That makes sense.",
+          helping: "Having control over how you help—that's important.",
+          building: "Building your own systems. No dependencies. I get that.",
+          exploring: "So the station gave you space to explore solutions your way.",
+          patience: "Agency matters. Especially after having it taken away."
+        },
         consequence: {
           characterId: 'marcus',
           trustChange: 1
