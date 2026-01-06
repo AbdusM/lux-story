@@ -220,8 +220,8 @@ Deprecated code preserved for reference:
 ### Feature Catalog
 - **Total Features Documented:** 572 (in INFINITE_CANVAS_FEATURE_CATALOG.md)
 - **Implementation Status:** ~20% complete, ~6% partial, ~30% planned, ~44% future/moonshot
-- **Tests:** 617 passing
-- **Dialogue Nodes:** 946 total
+- **Tests:** 739 passing
+- **Dialogue Nodes:** 983 total
 
 ### Core Systems at 100% (16/16 Characters)
 | System | Coverage | Location |
@@ -251,30 +251,30 @@ Deprecated code preserved for reference:
 ### Adaptive Content Coverage
 | Feature | Coverage | Notes |
 |---------|----------|-------|
-| Pattern Reflections | 91 total | NPC dialogue varies by player pattern |
-| Voice Variations | 16/16 chars | All tiers meet targets (147 total) |
+| Pattern Reflections | 101 total | NPC dialogue varies by player pattern |
+| Voice Variations | 16/16 chars | All tiers meet targets (166 total) |
 | Conditional Choices | 120 total | visibleCondition gated |
 | Trust-Gated Nodes | 95 total | 8 trust levels |
 
-### Character Dialogue Depth (All Targets Met)
-| Character | Nodes | Status |
-|-----------|-------|--------|
-| Samuel | 186 | Hub ✅ |
-| Elena | 76 | Deep ✅ |
-| Marcus | 73 | Deep ✅ |
-| Zara | 71 | Deep ✅ |
-| Lira | 67 | Deep ✅ |
-| Kai | 50 | Standard ✅ |
-| Asha | 49 | Standard ✅ |
-| Tess | 48 | Standard ✅ |
-| Maya | 47 | Standard ✅ |
-| Alex | 45 | Standard ✅ |
-| Devon | 43 | Standard ✅ |
-| Yaquin | 43 | Standard ✅ |
-| Silas | 39 | Core ✅ |
-| Rohan | 38 | Core ✅ |
-| Jordan | 36 | Core ✅ |
-| Grace | 35 | Core ✅ |
+### Character Dialogue Depth (983 Total Nodes)
+| Character | Nodes | Tier | Status |
+|-----------|-------|------|--------|
+| Samuel | 195 | 1 | Hub ✅ |
+| Elena | 80 | 3 | Deep ✅ |
+| Marcus | 76 | 2 | Deep ✅ |
+| Zara | 73 | 4 | Deep ✅ |
+| Lira | 67 | 4 | Deep ✅ |
+| Kai | 51 | 2 | Standard ✅ |
+| Maya | 50 | 1 | ⚠️ Gap: 30 to T1 target |
+| Tess | 50 | 2 | Standard ✅ |
+| Asha | 49 | 4 | Standard ✅ |
+| Alex | 49 | 3 | Standard ✅ |
+| Devon | 45 | 1 | ⚠️ Gap: 35 to T1 target |
+| Yaquin | 43 | 3 | Standard ✅ |
+| Silas | 40 | 4 | Core ✅ |
+| Rohan | 40 | 2 | ⚠️ Gap: 10 to T2 target |
+| Grace | 38 | 3 | Core ✅ |
+| Jordan | 37 | 4 | Core ✅ |
 
 ### Key Documentation
 - `docs/03_PROCESS/META_COGNITIVE_SYSTEMS_AUDIT.md` - Pattern/skill/emotion coverage
