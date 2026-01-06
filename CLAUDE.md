@@ -234,10 +234,10 @@ Deprecated code preserved for reference:
 | Loyalty Experiences | 16/16 | `lib/loyalty-experience.ts` |
 | Derivatives System | 7/7 | `lib/*-derivatives.ts` (239 tests) |
 
-### Partial Systems (Need Completion)
-| System | Coverage | Missing |
-|--------|----------|---------|
-| Simulations | 10/16 | Maya, Tess, Yaquin, Grace, Alex, Silas |
+### Additional Complete Systems
+| System | Coverage | Location |
+|--------|----------|----------|
+| Simulations | 16/16 | `content/*-dialogue-graph.ts` (simulation blocks) |
 
 ### Character Dialogue Depth (All Targets Met)
 | Character | Nodes | Status |
@@ -588,7 +588,7 @@ Required sections:
 
 ### Q1 2026 Priority Tasks
 1. ~~**Loyalty Experiences** (16/16)~~ ✅ COMPLETE
-2. **Simulations** (10/16 → 16/16) - Add for: Maya, Tess, Yaquin, Grace, Alex, Silas
+2. ~~**Simulations** (16/16)~~ ✅ COMPLETE - All characters have simulations
 3. ~~**Expand Shallow Characters**~~ ✅ COMPLETE - All targets exceeded
 
 ### Key Type Definitions
