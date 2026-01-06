@@ -580,4 +580,24 @@ Each character has a dialogue graph at `content/{name}-dialogue-graph.ts` with:
 
 ---
 
+## Claude Code Skills
+
+### /terminus - Engineering Principles
+Use `/terminus` to review core engineering philosophies:
+- **The Ten Commandments** - Feel First, Friction is Failure, Never Break What Works, etc.
+- **Development Philosophy** - Surgical Enhancement, Risk Tiers
+- **Document Control** - Numbered prefixes, status tracking
+- **PRD Process** - Worldbuilding-first, Trojan Horse philosophy
+- **Quality Gates** - Pre-commit, pre-PR, pre-release checklists
+
+Location: `.claude/commands/terminus.md`
+
+### /orb - Development Best Practices
+Managed skill for project-specific guidance.
+
+### /orbStatus - Stabilization Progress
+Quick status check for ongoing work.
+
+---
+
 **Last Updated:** January 6, 2026
