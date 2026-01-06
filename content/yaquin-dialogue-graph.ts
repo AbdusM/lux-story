@@ -34,6 +34,13 @@ export const yaquinDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'yaquin_intro_garbage',
         text: "If the textbook doesn't work, it's garbage.",
+        voiceVariations: {
+          analytical: "Theory without application is incomplete data.",
+          helping: "Real knowledge comes from serving real people.",
+          building: "If it doesn't work in practice, it's not finished yet.",
+          exploring: "The textbook is a map, not the territory.",
+          patience: "Eight years of practice teaches what no book can."
+        },
         nextNodeId: 'yaquin_textbook_problem',
         pattern: 'building',
         skills: ['criticalThinking'],
@@ -45,6 +52,13 @@ export const yaquinDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'yaquin_intro_authority',
         text: "Why do you think you're uneducated?",
+        voiceVariations: {
+          analytical: "What's the metric? How are you measuring 'educated'?",
+          helping: "Who told you that? Whose voice is that in your head?",
+          building: "You've built eight years of expertise. That's an education.",
+          exploring: "I'm curious who gets to define 'educated' in your field.",
+          patience: "That belief sounds heavy. Where does it come from?"
+        },
         nextNodeId: 'yaquin_credential_gap',
         pattern: 'helping',
         skills: ['emotionalIntelligence']
@@ -93,6 +107,13 @@ export const yaquinDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'yaquin_tacit_knowledge',
         text: "That's knowledge nobody else can teach.",
+        voiceVariations: {
+          analytical: "Tacit knowledge. It's the hidden variable textbooks can't capture.",
+          helping: "That's wisdom earned through caring for people. It's irreplaceable.",
+          building: "You've constructed expertise through repetition. That's real craft.",
+          exploring: "The gap between theory and practice—that's where mastery lives.",
+          patience: "Eight years of patience and attention. That can't be rushed."
+        },
         nextNodeId: 'yaquin_curriculum_dream',
         pattern: 'analytical',
         skills: ['pedagogy']
@@ -100,6 +121,13 @@ export const yaquinDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'yaquin_teach_that',
         text: "So teach THAT. The real stuff.",
+        voiceVariations: {
+          analytical: "Strip away the theory. Document what actually works.",
+          helping: "Share what you know. People need teachers who've been there.",
+          building: "Build the course that should have existed when you started.",
+          exploring: "What if your curriculum rewrote the rules?",
+          patience: "The right lesson, at the right moment. That's what you can offer."
+        },
         nextNodeId: 'yaquin_curriculum_setup',
         pattern: 'building',
         skills: ['leadership']
@@ -145,6 +173,13 @@ export const yaquinDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'yaquin_competence',
         text: "Eight years doing the work. That's the credential.",
+        voiceVariations: {
+          analytical: "Eight years of data. That's a more reliable sample than any degree.",
+          helping: "You've earned your authority through service. That's real.",
+          building: "You built your expertise patient by patient. That's craftsmanship.",
+          exploring: "Experience is the credential the gatekeepers can't invalidate.",
+          patience: "Eight years. The credential writes itself."
+        },
         nextNodeId: 'yaquin_curriculum_dream',
         pattern: 'helping',
         skills: ['encouragement'],
@@ -173,6 +208,13 @@ export const yaquinDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'yaquin_build_own_credential',
         text: "What if your students are the proof?",
+        voiceVariations: {
+          analytical: "Outcomes are the only metric that matters. Track your students.",
+          helping: "Every person you've helped is a letter of recommendation.",
+          building: "Build your reputation through results, not paper.",
+          exploring: "What if success stories are the new credentials?",
+          patience: "Let time prove what you've taught. Results take patience."
+        },
         nextNodeId: 'yaquin_curriculum_dream',
         pattern: 'building',
         skills: ['creativity', 'leadership'],

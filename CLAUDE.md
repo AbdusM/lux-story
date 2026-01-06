@@ -221,7 +221,7 @@ Deprecated code preserved for reference:
 - **Total Features Documented:** 572 (in INFINITE_CANVAS_FEATURE_CATALOG.md)
 - **Implementation Status:** ~20% complete, ~6% partial, ~30% planned, ~44% future/moonshot
 - **Tests:** 617 passing
-- **Dialogue Nodes:** 934 total
+- **Dialogue Nodes:** 946 total
 
 ### Core Systems at 100% (16/16 Characters)
 | System | Coverage | Location |
@@ -238,38 +238,62 @@ Deprecated code preserved for reference:
 | System | Coverage | Location |
 |--------|----------|----------|
 | Simulations | 16/16 | `content/*-dialogue-graph.ts` (simulation blocks) |
+| Pattern Unlocks | 13/16 | Pattern-gated dialogue nodes |
+
+### Meta-Cognitive Systems
+| System | Defined | Used | Status |
+|--------|---------|------|--------|
+| Patterns | 5 | 5 | ✅ Optimal variability |
+| Skills | 46 | 52 | ⚠️ 13 undefined, 7 unused |
+| Emotions | 59 | 491 | ✅ Compound emotions add depth |
+| Knowledge Flags | — | 210 | ✅ Rich state tracking |
+
+### Adaptive Content Coverage
+| Feature | Coverage | Notes |
+|---------|----------|-------|
+| Pattern Reflections | 91 total | NPC dialogue varies by player pattern |
+| Voice Variations | 4/16 chars | Choice text varies (Maya, Jordan, Devon, Samuel) |
+| Conditional Choices | 120 total | visibleCondition gated |
+| Trust-Gated Nodes | 95 total | 8 trust levels |
 
 ### Character Dialogue Depth (All Targets Met)
 | Character | Nodes | Status |
 |-----------|-------|--------|
 | Samuel | 186 | Hub ✅ |
 | Elena | 76 | Deep ✅ |
-| Marcus | 71 | Deep ✅ |
+| Marcus | 73 | Deep ✅ |
 | Zara | 71 | Deep ✅ |
-| Lira | 65 | Deep ✅ |
+| Lira | 67 | Deep ✅ |
 | Kai | 50 | Standard ✅ |
+| Asha | 49 | Standard ✅ |
 | Tess | 48 | Standard ✅ |
-| Asha | 47 | Standard ✅ |
+| Maya | 47 | Standard ✅ |
 | Alex | 45 | Standard ✅ |
-| Maya | 44 | Standard ✅ |
 | Devon | 43 | Standard ✅ |
 | Yaquin | 43 | Standard ✅ |
 | Silas | 39 | Core ✅ |
 | Rohan | 38 | Core ✅ |
+| Jordan | 36 | Core ✅ |
 | Grace | 35 | Core ✅ |
-| Jordan | 33 | Core ✅ |
 
 ### Key Documentation
-- `docs/03_PROCESS/10-system-coverage.md` - Accurate system coverage audit
+- `docs/03_PROCESS/META_COGNITIVE_SYSTEMS_AUDIT.md` - Pattern/skill/emotion coverage
+- `docs/03_PROCESS/10-system-coverage.md` - System coverage audit
 - `docs/03_PROCESS/11-feature-progress-tracker.md` - All 572 features mapped
 - `docs/01_MECHANICS/21-infinite-canvas-feature-catalog.md` - Full feature catalog
 
 ### Recently Completed (January 2026)
+- **Pattern Unlock Nodes** - 12 pattern-gated nodes across 5 characters
+- **Conditional Choice Wiring** - Pattern unlocks reachable via introduction choices
+- **Meta-Cognitive Audit** - Full analysis of patterns, skills, emotions coverage
 - **Loyalty Experiences 16/16** - All characters have loyalty experiences
 - **Derivatives System** - 7 modules (trust, pattern, character, narrative, knowledge, interrupt, assessment)
-- **Dialogue Expansion** - 624 → 934 nodes (+50%), all shallow characters expanded
-- **16/16 Character Coverage** for interrupts and vulnerability arcs
-- Mobile optimization, Glass System refactor, UX hardening
+- **Dialogue Expansion** - 624 → 946 nodes (+52%)
+
+### Q1 2026 Priority Tasks
+1. **Voice Variations** - Add to 12 characters (only Maya, Jordan, Devon, Samuel have them)
+2. **Pattern Reflections** - Expand for Alex (1), Grace (3), Silas (3)
+3. **Skill System Cleanup** - Formalize 13 undefined skills, integrate 7 unused WEF 2030 skills
 
 ### Production
 - URL: https://lux-story.vercel.app
@@ -572,9 +596,10 @@ done
 
 ### Context Recovery (Priority Reading)
 1. `docs/03_PROCESS/plans/*_HANDOFF.md` - Latest session state
-2. `docs/03_PROCESS/10-system-coverage.md` - What's done vs missing
-3. `docs/03_PROCESS/11-feature-progress-tracker.md` - Full feature status
-4. This file (CLAUDE.md) - Current Status section
+2. `docs/03_PROCESS/META_COGNITIVE_SYSTEMS_AUDIT.md` - Pattern/skill/emotion coverage
+3. `docs/03_PROCESS/10-system-coverage.md` - What's done vs missing
+4. `docs/03_PROCESS/11-feature-progress-tracker.md` - Full feature status
+5. This file (CLAUDE.md) - Current Status section
 
 ### Handoff Pattern
 At session end, create: `docs/03_PROCESS/plans/DDMMMYY_HANDOFF.md`

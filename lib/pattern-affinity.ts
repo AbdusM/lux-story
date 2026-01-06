@@ -573,6 +573,236 @@ export const CHARACTER_PATTERN_AFFINITIES: Record<string, CharacterPatternAffini
         description: 'Silas shares their philosophy of triage and hard choices'
       }
     ]
+  },
+
+  grace: {
+    characterId: 'grace',
+    primary: 'helping',           // Healthcare operations = caring for systems and people
+    secondary: 'analytical',      // Operations requires systematic thinking
+    neutral: ['patience', 'building'],
+    friction: 'exploring',        // Healthcare needs stability, not constant experimentation
+
+    resonanceDescriptions: [
+      {
+        pattern: 'helping',
+        description: 'Grace recognizes a fellow caregiver. Her professional warmth becomes genuine warmth.'
+      },
+      {
+        pattern: 'analytical',
+        description: 'Grace appreciates your systematic approach. Healthcare runs on good systems.'
+      },
+      {
+        pattern: 'patience',
+        description: 'Grace nods approvingly. Medicine requires patience with processes and people.'
+      },
+      {
+        pattern: 'building',
+        description: 'Grace sees potential in your constructive approach to problems.'
+      },
+      {
+        pattern: 'exploring',
+        description: 'Grace hesitates. In healthcare, too much experimentation can hurt people.'
+      }
+    ],
+
+    patternUnlocks: [
+      {
+        pattern: 'helping',
+        threshold: 40,
+        unlockedNodeId: 'grace_patient_stories',
+        description: 'Grace shares stories from her years in healthcare'
+      },
+      {
+        pattern: 'analytical',
+        threshold: 50,
+        unlockedNodeId: 'grace_systems_insight',
+        description: 'Grace explains the hidden systems that make hospitals work'
+      }
+    ]
+  },
+
+  asha: {
+    characterId: 'asha',
+    primary: 'patience',          // Mediation requires deep patience
+    secondary: 'helping',         // Conflict resolution is fundamentally about helping
+    neutral: ['exploring', 'analytical'],
+    friction: 'building',         // Sometimes building means taking sides
+
+    resonanceDescriptions: [
+      {
+        pattern: 'patience',
+        description: 'Asha\'s eyes soften. "You understand that some things can\'t be rushed."'
+      },
+      {
+        pattern: 'helping',
+        description: 'Asha senses your genuine care for others. That\'s the foundation of her work.'
+      },
+      {
+        pattern: 'exploring',
+        description: 'Asha appreciates your curiosity about different perspectives.'
+      },
+      {
+        pattern: 'analytical',
+        description: 'Asha values your ability to see patterns in conflict.'
+      },
+      {
+        pattern: 'building',
+        description: 'Asha tenses slightly. "Building requires choosing materials. Mediation requires holding space for all of them."'
+      }
+    ],
+
+    patternUnlocks: [
+      {
+        pattern: 'patience',
+        threshold: 40,
+        unlockedNodeId: 'asha_mediation_philosophy',
+        description: 'Asha shares her philosophy of conflict resolution'
+      },
+      {
+        pattern: 'helping',
+        threshold: 50,
+        unlockedNodeId: 'asha_hardest_case',
+        description: 'Asha tells you about the hardest conflict she ever mediated'
+      }
+    ]
+  },
+
+  lira: {
+    characterId: 'lira',
+    primary: 'exploring',         // Sound design is about discovering new sonic territories
+    secondary: 'building',        // Creating soundscapes requires construction skills
+    neutral: ['analytical', 'patience'],
+    friction: 'helping',          // Lira creates for expression, not service
+
+    resonanceDescriptions: [
+      {
+        pattern: 'exploring',
+        description: 'Lira\'s energy rises. "You hear it too, don\'t you? The sounds no one else notices."'
+      },
+      {
+        pattern: 'building',
+        description: 'Lira appreciates your maker spirit. Sound design is architecture in time.'
+      },
+      {
+        pattern: 'analytical',
+        description: 'Lira respects your attention to detail. Frequencies don\'t lie.'
+      },
+      {
+        pattern: 'patience',
+        description: 'Lira nods. Good sound design requires waiting for the right moment.'
+      },
+      {
+        pattern: 'helping',
+        description: 'Lira pulls back slightly. "I create because I must, not because someone asked."'
+      }
+    ],
+
+    patternUnlocks: [
+      {
+        pattern: 'exploring',
+        threshold: 40,
+        unlockedNodeId: 'lira_sound_studio',
+        description: 'Lira invites you to experience her sound studio'
+      },
+      {
+        pattern: 'building',
+        threshold: 50,
+        unlockedNodeId: 'lira_collaboration',
+        description: 'Lira proposes a creative collaboration'
+      }
+    ]
+  },
+
+  zara: {
+    characterId: 'zara',
+    primary: 'analytical',        // Data ethics requires rigorous analysis
+    secondary: 'exploring',       // Art requires exploration and experimentation
+    neutral: ['patience', 'helping'],
+    friction: 'building',         // Zara questions what we build and why
+
+    resonanceDescriptions: [
+      {
+        pattern: 'analytical',
+        description: 'Zara leans in. "You ask the right questions. Most people just accept the data."'
+      },
+      {
+        pattern: 'exploring',
+        description: 'Zara smiles. Your curiosity mirrors her artistic investigations.'
+      },
+      {
+        pattern: 'patience',
+        description: 'Zara appreciates your thoughtfulness. Ethics isn\'t about quick answers.'
+      },
+      {
+        pattern: 'helping',
+        description: 'Zara sees your care for others. That\'s why data ethics matters.'
+      },
+      {
+        pattern: 'building',
+        description: 'Zara\'s expression becomes guarded. "Building without ethics is how we got here."'
+      }
+    ],
+
+    patternUnlocks: [
+      {
+        pattern: 'analytical',
+        threshold: 40,
+        unlockedNodeId: 'zara_ethics_framework',
+        description: 'Zara shares her framework for thinking about data ethics'
+      },
+      {
+        pattern: 'exploring',
+        threshold: 50,
+        unlockedNodeId: 'zara_art_meaning',
+        description: 'Zara explains how her art explores ethical questions'
+      }
+    ]
+  },
+
+  elena: {
+    characterId: 'elena',
+    primary: 'patience',          // Archives require patience and preservation
+    secondary: 'analytical',      // Information science is deeply analytical
+    neutral: ['exploring', 'helping'],
+    friction: 'building',         // Elena preserves; building can mean destroying the old
+
+    resonanceDescriptions: [
+      {
+        pattern: 'patience',
+        description: 'Elena relaxes. "You understand that some knowledge reveals itself slowly."'
+      },
+      {
+        pattern: 'analytical',
+        description: 'Elena\'s eyes light up. Your systematic thinking mirrors her cataloging mind.'
+      },
+      {
+        pattern: 'exploring',
+        description: 'Elena appreciates your curiosity. Archives reward the persistent searcher.'
+      },
+      {
+        pattern: 'helping',
+        description: 'Elena sees your desire to serve. Archivists serve the future.'
+      },
+      {
+        pattern: 'building',
+        description: 'Elena grows cautious. "New construction often buries what came before."'
+      }
+    ],
+
+    patternUnlocks: [
+      {
+        pattern: 'patience',
+        threshold: 40,
+        unlockedNodeId: 'elena_rare_collection',
+        description: 'Elena shows you the rare collection few people see'
+      },
+      {
+        pattern: 'analytical',
+        threshold: 50,
+        unlockedNodeId: 'elena_hidden_connections',
+        description: 'Elena reveals hidden connections in the archive\'s history'
+      }
+    ]
   }
 }
 

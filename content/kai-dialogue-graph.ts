@@ -40,6 +40,13 @@ export const kaiDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'kai_intro_curious',
         text: "Why does that matter to you personally?",
+        voiceVariations: {
+          analytical: "There's history behind that frustration. Why does it matter to you personally?",
+          helping: "I can hear this is personal. Why does it matter to you?",
+          building: "What happened that made you want to fix this? Why does it matter?",
+          exploring: "There's a story here. Why does it matter to you personally?",
+          patience: "Take your time. Why does this matter to you personally?"
+        },
         nextNodeId: 'kai_accident_hint',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
@@ -163,6 +170,13 @@ So I build green checkmarks. Legal shields. And last week...`,
       {
         choiceId: 'kai_what_happened',
         text: "What happened last week?",
+        voiceVariations: {
+          analytical: "What's the timeline? What happened last week?",
+          helping: "You can tell me. What happened last week?",
+          building: "What went wrong? What happened last week?",
+          exploring: "I want to understand. What happened last week?",
+          patience: "Whenever you're ready. What happened last week?"
+        },
         nextNodeId: 'kai_accident_reveal',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
@@ -279,6 +293,13 @@ We designed a green checkmark. We didn't design safety.`,
       {
         choiceId: 'kai_accountability',
         text: "You feel responsible because you designed the checkmark.",
+        voiceVariations: {
+          analytical: "The system worked as designed. You designed the checkmark.",
+          helping: "This is why it haunts you. You designed the checkmark.",
+          building: "You built something that failed its purpose. You designed the checkmark.",
+          exploring: "That's the weight you carry. You designed the checkmark.",
+          patience: "You feel responsible. Because you designed the checkmark."
+        },
         nextNodeId: 'kai_origin_story',
         pattern: 'helping',
         skills: ['emotionalIntelligence']
@@ -978,6 +999,13 @@ Maybe that someone is me.`,
       {
         choiceId: 'kai_hybrid_vision',
         text: "That's the path forward. You're bridging two worlds.",
+        voiceVariations: {
+          analytical: "That's a rare skillset. You're bridging two worlds.",
+          helping: "That's beautiful work. You're bridging two worlds.",
+          building: "You're the translator they need. You're bridging two worlds.",
+          exploring: "That's the path forward. You're bridging two worlds.",
+          patience: "You're exactly where you need to be. Bridging two worlds."
+        },
         nextNodeId: 'kai_hands_on_wisdom',
         pattern: 'helping',
         skills: ['encouragement', 'leadership']
@@ -1672,6 +1700,13 @@ But I'll never have to click 'Next' again.`,
       {
         choiceId: 'kai_farewell',
         text: "Go build it.",
+        voiceVariations: {
+          analytical: "The logic is sound. Go build it.",
+          helping: "You've got this. Go build it.",
+          building: "Start now. Go build it.",
+          exploring: "See what happens. Go build it.",
+          patience: "When you're ready. Go build it."
+        },
         nextNodeId: 'kai_farewell',
         pattern: 'building',
         skills: ['leadership']
@@ -1765,6 +1800,13 @@ My training passed inspection. Miguel didn't pass the fall.`,
       {
         choiceId: 'vuln_empathy',
         text: "You carry that weight because you care. That's not guilt—that's integrity.",
+        voiceVariations: {
+          analytical: "Accountability without power is still valuable. That's integrity.",
+          helping: "You care. That's not guilt—that's integrity.",
+          building: "That weight fuels better work. That's integrity.",
+          exploring: "Now I understand why you do this. That's integrity.",
+          patience: "You carry that weight because you care. That's integrity."
+        },
         nextNodeId: 'kai_vulnerability_reflection',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],

@@ -51,6 +51,13 @@ export const rohanDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'rohan_intro_wonder',
         text: "If it works, who cares how it got written?",
+        voiceVariations: {
+          analytical: "Results matter. If it works, who cares how it got written?",
+          helping: "Maybe it's okay to not understand everything. If it works, who cares?",
+          building: "Ship it. If it works, who cares how it got written?",
+          exploring: "Devil's advocate: if it works, who cares how it got written?",
+          patience: "Maybe that's a question worth sitting with. If it works..."
+        },
         nextNodeId: 'rohan_philosophy_trap',
         pattern: 'exploring',
         skills: ['criticalThinking']
@@ -142,6 +149,13 @@ If we accept this... David didn't matter. I don't matter. We're just slow, buggy
       {
         choiceId: 'rohan_value_human',
         text: "Understanding matters more than speed.",
+        voiceVariations: {
+          analytical: "Velocity without comprehension is just technical debt. Understanding matters.",
+          helping: "People need to truly understand, not just ship. Understanding matters.",
+          building: "Build foundations first. Understanding matters more than speed.",
+          exploring: "What's lost when we optimize for speed alone? Understanding matters.",
+          patience: "Some things can't be rushed. Understanding matters more than speed."
+        },
         nextNodeId: 'rohan_understanding_response',
         pattern: 'building',
         skills: ['wisdom', 'leadership'],
@@ -513,6 +527,13 @@ That knowledge doesn't disappear because a machine can type faster. It's not abo
       {
         choiceId: 'rohan_honor_david',
         text: "David matters to you.",
+        voiceVariations: {
+          analytical: "There's a connection here. David matters to you.",
+          helping: "I can see it. David matters to you.",
+          building: "That's why you're doing this work. David matters to you.",
+          exploring: "Tell me more about that. David matters to you.",
+          patience: "I understand. David matters to you."
+        },
         nextNodeId: 'rohan_honor_path',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'wisdom'],
@@ -936,6 +957,13 @@ We want to build something different. A place where people learn why before they
       {
         choiceId: 'rohan_academy_building_framework',
         text: "Start with a framework. What's the first principle you'd teach?",
+        voiceVariations: {
+          analytical: "What's the logical foundation? What's the first principle you'd teach?",
+          helping: "Help me understand your vision. What's the first principle you'd teach?",
+          building: "Start with a framework. What's the first principle you'd teach?",
+          exploring: "I want to see how you think. What's the first principle you'd teach?",
+          patience: "Walk me through it. What's the first principle you'd teach?"
+        },
         nextNodeId: 'rohan_curriculum_design',
         pattern: 'building',
         skills: ['systemsThinking', 'creativity'],
@@ -1227,6 +1255,13 @@ David gave me that feeling. I want to pass it on.`,
       {
         choiceId: 'rohan_legacy_farewell',
         text: "That's a legacy worth building. Passing on that feeling. that's what teaching really is.",
+        voiceVariations: {
+          analytical: "Knowledge transfer with emotional context. That's what teaching really is.",
+          helping: "You're giving others what David gave you. That's what teaching really is.",
+          building: "That's a legacy worth building. That's what teaching really is.",
+          exploring: "That moment of understanding you create. That's what teaching really is.",
+          patience: "Passing on that feeling, patiently. That's what teaching really is."
+        },
         nextNodeId: 'rohan_farewell',
         pattern: 'building',
         skills: ['leadership', 'wisdom'],
@@ -1395,6 +1430,13 @@ They said I was being "difficult." That I'd destroy careers if I went public. In
       {
         choiceId: 'vuln_right_choice',
         text: "You chose truth over comfort. That's not something to regret.",
+        voiceVariations: {
+          analytical: "Truth has long-term value. That's not something to regret.",
+          helping: "You chose integrity. That's not something to regret.",
+          building: "That choice built who you are. That's not something to regret.",
+          exploring: "That decision shaped everything after. That's not something to regret.",
+          patience: "You chose truth over comfort. That's not something to regret."
+        },
         nextNodeId: 'rohan_vulnerability_reflection',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],

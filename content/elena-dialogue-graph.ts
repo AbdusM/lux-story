@@ -27,6 +27,13 @@ const nodes: DialogueNode[] = [
       {
         choiceId: 'what_data',
         text: 'What kind of data?',
+        voiceVariations: {
+          analytical: "What kind of data? What's the signal-to-noise ratio?",
+          helping: "What kind of data? You seem overwhelmed.",
+          building: "What kind of data? Maybe we can structure it.",
+          exploring: "What kind of data? Show me.",
+          patience: "What kind of data? Take me through it slowly."
+        },
         nextNodeId: 'elena_overload',
         pattern: 'exploring',
         skills: ['observation']
@@ -34,6 +41,13 @@ const nodes: DialogueNode[] = [
       {
         choiceId: 'calm_down',
         text: 'Focus, Elena. One stream at a time.',
+        voiceVariations: {
+          analytical: "Prioritize, Elena. What's the most significant anomaly?",
+          helping: "Hey. I'm here. Let's take this together, one piece at a time.",
+          building: "Let's organize this. One stream at a time.",
+          exploring: "Slow down. What's the one thing you want me to see first?",
+          patience: "Breathe. One stream at a time. I'm not going anywhere."
+        },
         nextNodeId: 'elena_synthesis_lesson',
         pattern: 'patience',
         skills: ['emotionalIntelligence']
@@ -105,6 +119,13 @@ const nodes: DialogueNode[] = [
       {
         choiceId: 'what_did_you_find',
         text: "Show me what you found.",
+        voiceVariations: {
+          analytical: "Walk me through the data. What did you find?",
+          helping: "I'm listening. Show me what you found.",
+          building: "Let's build the picture. Show me what you found.",
+          exploring: "I'm curious. Show me what you found.",
+          patience: "Whenever you're ready. Show me what you found."
+        },
         nextNodeId: 'elena_first_pattern',
         pattern: 'exploring',
         skills: ['curiosity']
@@ -305,6 +326,13 @@ const nodes: DialogueNode[] = [
       {
         choiceId: 'what_happened',
         text: "What happened to your sister?",
+        voiceVariations: {
+          analytical: "What happened next? With your sister?",
+          helping: "What happened to your sister? Only if you want to share.",
+          building: "What happened after that? With your sister?",
+          exploring: "What happened to your sister? If you're okay telling me.",
+          patience: "Take your time. What happened to your sister?"
+        },
         nextNodeId: 'elena_origin_deeper',
         pattern: 'helping',
         skills: ['emotionalIntelligence']
@@ -312,6 +340,13 @@ const nodes: DialogueNode[] = [
       {
         choiceId: 'you_saw_it',
         text: "You saw what they couldn't see. That's why you do this.",
+        voiceVariations: {
+          analytical: "You saw the pattern before anyone else. That's why you do this.",
+          helping: "You saw what they couldn't see. You tried to protect her.",
+          building: "You saw it and you acted. That's why you do this work.",
+          exploring: "You saw what others missed. That's what drives you.",
+          patience: "You saw it. They didn't. And now you carry that."
+        },
         nextNodeId: 'elena_origin_acknowledged',
         pattern: 'patience',
         skills: ['emotionalIntelligence'],
@@ -525,6 +560,13 @@ const nodes: DialogueNode[] = [
       {
         choiceId: 'help_find_it',
         text: "Then let's find what's hiding in the noise. Together.",
+        voiceVariations: {
+          analytical: "Show me the data. Let's isolate the signal together.",
+          helping: "You're not alone in this anymore. Let's find it together.",
+          building: "Let's build a filter. Find what's hiding in the noise.",
+          exploring: "I want to see what you see. Let's dig in together.",
+          patience: "However long it takes. Let's find it together."
+        },
         nextNodeId: 'elena_simulation_perplexity',
         pattern: 'helping',
         skills: ['collaboration'],

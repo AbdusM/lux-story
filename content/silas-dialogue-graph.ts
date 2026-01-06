@@ -33,6 +33,13 @@ export const silasDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'silas_intro_reality',
         text: "The map isn't the territory.",
+        voiceVariations: {
+          analytical: "The map isn't the territory. Your sensors are abstractions.",
+          helping: "You're trusting data over your own eyes. That's the gap.",
+          building: "The system you built can't see what's actually happening.",
+          exploring: "The map isn't the territory. What's the real ground truth?",
+          patience: "Sometimes the data lies. Or tells a partial truth."
+        },
         nextNodeId: 'silas_map_territory_response',
         pattern: 'analytical',
         skills: ['wisdom'],
@@ -51,6 +58,13 @@ export const silasDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'silas_intro_empathy',
         text: "You look terrified.",
+        voiceVariations: {
+          analytical: "Your hands are shaking. You're terrified.",
+          helping: "Hey. You look terrified. What's really going on?",
+          building: "You're paralyzed. Something's failing, isn't it?",
+          exploring: "That's not confidence. You look terrified.",
+          patience: "Take a breath. You look terrified."
+        },
         nextNodeId: 'silas_fear_seen_response',
         pattern: 'helping',
         skills: ['emotionalIntelligence']
@@ -81,7 +95,18 @@ I spent fifteen years building systems that abstract reality into data. Clean nu
       }
     ],
     choices: [
-      { choiceId: 'tell_gap', text: "Tell me more about that gap.", nextNodeId: 'silas_bankruptcy_reveal' }
+      {
+        choiceId: 'tell_gap',
+        text: "Tell me more about that gap.",
+        voiceVariations: {
+          analytical: "What's the gap between what the data says and what's real?",
+          helping: "Tell me more about that gap. I want to understand.",
+          building: "Where's the gap? Between what you built and what you see?",
+          exploring: "I'm curious about that gap. Tell me more.",
+          patience: "Take your time. Tell me about that gap."
+        },
+        nextNodeId: 'silas_bankruptcy_reveal'
+      }
     ]
   },
   {
@@ -177,7 +202,11 @@ Because... because the tablet is supposed to know. That's why I bought it. That'
 
 But the tablet doesn't know, does it? The basil knows. My hands know. The tablet just... measures.`,
         emotion: 'dawning_realization',
-        variation_id: 'action_challenge_v1'
+        variation_id: 'action_challenge_v1',
+        patternReflection: [
+          { pattern: 'building', minLevel: 4, altText: "*He blinks. Looks at the tablet. Then the soil.*\n\nBecause the tablet is supposed to know. That's why I built this system.\n\n*He meets your eyes.*\n\nYou're a builder too. You understand—sometimes the thing you built becomes the thing that blinds you.\n\nThe basil knows. The tablet just measures.", altEmotion: 'recognized' },
+          { pattern: 'analytical', minLevel: 4, altText: "*He blinks. Looks at the tablet.*\n\nBecause the tablet is supposed to know.\n\n*Slow realization.*\n\nYou see the gap in the logic, don't you? Measurement isn't knowledge. Data isn't truth. I built an abstraction and forgot the territory underneath.", altEmotion: 'dawning' }
+        ]
       }
     ],
     choices: [
@@ -197,7 +226,11 @@ Fifteen years at Amazon. Every decision backed by data. Every insight validated 
 
 The soil is telling me something. And I keep looking for a JSON payload to confirm it.`,
         emotion: 'self_aware_pain',
-        variation_id: 'api_trust_v1'
+        variation_id: 'api_trust_v1',
+        patternReflection: [
+          { pattern: 'analytical', minLevel: 4, altText: "*He laughs - bitter, sharp.*\n\nGod. That's it, isn't it?\n\nFifteen years at Amazon. Every decision backed by data.\n\n*Looks at you with recognition.*\n\nYou're an analyst too. You see the trap. When everything requires validation, you lose the ability to perceive without processing.", altEmotion: 'recognized' },
+          { pattern: 'patience', minLevel: 4, altText: "*He laughs - bitter, sharp.*\n\nGod. That's it, isn't it?\n\nI forgot how to trust anything without a confidence interval.\n\n*Pause.*\n\nYou understand slowness. Sometimes the signal takes longer than the refresh rate allows.", altEmotion: 'dawning' }
+        ]
       }
     ],
     choices: [
@@ -354,6 +387,13 @@ No sensors. No dashboard. Just... attention.`,
       {
         choiceId: 'silas_hawkins_teach',
         text: "Did he teach you?",
+        voiceVariations: {
+          analytical: "Did he teach you his methodology? How he calibrated his senses?",
+          helping: "Did he teach you? What was it like to learn from him?",
+          building: "Did he teach you? Did you apprentice with him?",
+          exploring: "What did he teach you? I want to know.",
+          patience: "Did he take you under his wing? Teach you slowly?"
+        },
         nextNodeId: 'silas_hawkins_lesson',
         pattern: 'helping',
         skills: ['curiosity', 'patience'],
@@ -393,6 +433,13 @@ I thought I could encode that language into software. I thought I could scale Mr
       {
         choiceId: 'silas_scale_mistake',
         text: "But some things don't scale.",
+        voiceVariations: {
+          analytical: "Some things don't scale. Wisdom has no API.",
+          helping: "His knowledge was in his hands. That doesn't scale.",
+          building: "You can't mass-produce sixty years of attention.",
+          exploring: "What if his gift couldn't be encoded? Some things don't scale.",
+          patience: "Sixty years of slow learning. That doesn't scale."
+        },
         nextNodeId: 'silas_strawberry_detail',
         pattern: 'analytical',
         skills: ['wisdom']
@@ -698,6 +745,13 @@ I spent all year coding dashboards to avoid crawling in the dirt. But the answer
       {
         choiceId: 'silas_lesson',
         text: "You can't farm from a dashboard.",
+        voiceVariations: {
+          analytical: "The dashboard abstracts reality. You can't farm abstractions.",
+          helping: "The soil needs your hands, not your screens.",
+          building: "You built a monitoring system. But farming isn't monitoring.",
+          exploring: "The dashboard shows what it measures. Reality is everything else.",
+          patience: "Some things require presence. Not dashboards."
+        },
         nextNodeId: 'silas_climax_decision',
         pattern: 'analytical',
         skills: ['groundedness']

@@ -35,6 +35,13 @@ export const mayaDialogueNodes: DialogueNode[] = [
         nextNodeId: 'maya_studies_response',
         pattern: 'analytical',
         skills: ['criticalThinking', 'communication'],
+        voiceVariations: {
+          analytical: "Pre-med and robotics? Walk me through how those connect.",
+          building: "Pre-med and robotics? Are you building something that combines them?",
+          exploring: "Pre-med and robotics? That's unusual. What's the story there?",
+          helping: "That's a lot to balance. How are you managing both?",
+          patience: "Pre-med and robotics. That takes dedication."
+        },
         consequence: {
           characterId: 'maya',
           addKnowledgeFlags: ['asked_about_studies']
@@ -46,6 +53,13 @@ export const mayaDialogueNodes: DialogueNode[] = [
         nextNodeId: 'maya_anxiety_check',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
+        voiceVariations: {
+          helping: "That sounds exhausting. Being pulled in two directions.",
+          analytical: "Two tracks, one person. That's a structural problem.",
+          building: "You're trying to build two different futures. At the same time.",
+          exploring: "What if you didn't have to choose between them?",
+          patience: "Two paths. That's heavy to carry."
+        },
         consequence: {
           characterId: 'maya',
           trustChange: 1,
@@ -57,7 +71,14 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "This station appears when we need it most. Why are you here?",
         nextNodeId: 'maya_why_here',
         pattern: 'exploring',
-        skills: ['communication', 'criticalThinking']
+        skills: ['communication', 'criticalThinking'],
+        voiceVariations: {
+          exploring: "This station appears when we need it. What brought you here?",
+          analytical: "This place has a pattern. It shows up at crossroads. What's yours?",
+          helping: "This station finds people who are searching. What are you looking for?",
+          building: "People come here to figure out what to build next. You too?",
+          patience: "The station knows when we need a pause. Why now, for you?"
+        }
       },
       {
         choiceId: 'intro_patience',
@@ -65,9 +86,45 @@ export const mayaDialogueNodes: DialogueNode[] = [
         nextNodeId: 'maya_anxiety_check',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'adaptability'],
+        voiceVariations: {
+          patience: "[Give her space. Let the chaos settle on its own.]",
+          helping: "[She needs a moment. Be present without pushing.]",
+          analytical: "[Wait. Observe. The situation will clarify itself.]",
+          exploring: "[Interesting. See what she does when given room.]",
+          building: "[Sometimes the best thing is to not intervene.]"
+        },
         consequence: {
           characterId: 'maya',
           trustChange: 1
+        }
+      },
+      // Pattern unlock choices - only visible when player has built enough pattern affinity
+      {
+        choiceId: 'intro_workshop_unlock',
+        text: "[Builder's Eye] I see those component bins. You're building something real, aren't you?",
+        nextNodeId: 'maya_workshop_invitation',
+        pattern: 'building',
+        skills: ['creativity'],
+        visibleCondition: {
+          patterns: { building: { min: 40 } }
+        },
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'intro_technical_unlock',
+        text: "[Pattern Sense] The chaos has structure. Walk me through your system.",
+        nextNodeId: 'maya_technical_deep_dive',
+        pattern: 'analytical',
+        skills: ['systemsThinking'],
+        visibleCondition: {
+          patterns: { analytical: { min: 50 } }
+        },
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2
         }
       }
     ],
@@ -101,6 +158,13 @@ export const mayaDialogueNodes: DialogueNode[] = [
         nextNodeId: 'maya_family_intro',
         pattern: 'analytical',
         skills: ['criticalThinking', 'communication'],
+        voiceVariations: {
+          analytical: "Interesting word choice. 'My parents are proud.' Not 'I love it.'",
+          helping: "I noticed you talked about their pride. Not yours.",
+          exploring: "'My parents.' Not 'I am.' That's telling.",
+          building: "You mentioned what they built. What about you?",
+          patience: "Your words say one thing. Your face says another."
+        },
         consequence: {
           characterId: 'maya',
           trustChange: 1,
@@ -113,8 +177,13 @@ export const mayaDialogueNodes: DialogueNode[] = [
         nextNodeId: 'maya_deflect_passion',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
-        // Removed visibleCondition trust conflict - node already gates at max: 2
-        // This empathetic choice should always be available when node is visible
+        voiceVariations: {
+          helping: "Forget what they want for a second. What do YOU want?",
+          analytical: "Their goals are clear. What are yours?",
+          exploring: "If you could choose anything—what would it be?",
+          building: "What would YOU build, if no one was watching?",
+          patience: "Take a breath. What does your gut say?"
+        },
         consequence: {
           characterId: 'maya',
           trustChange: 2
@@ -144,7 +213,14 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "What kind of crossroads?",
         nextNodeId: 'maya_studies_response',
         pattern: 'exploring',
-        skills: ['communication']
+        skills: ['communication'],
+        voiceVariations: {
+          exploring: "What kind of crossroads? I want to understand.",
+          analytical: "Define 'crossroads.' What are the actual options?",
+          helping: "Tell me about this crossroads. I'm listening.",
+          building: "Crossroads means choices. What are you choosing between?",
+          patience: "A crossroads. Take your time explaining."
+        }
       },
       {
         choiceId: 'why_comfort',
@@ -152,6 +228,13 @@ export const mayaDialogueNodes: DialogueNode[] = [
         nextNodeId: 'maya_anxiety_check',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
+        voiceVariations: {
+          helping: "This place feels safe. Like you can breathe here.",
+          patience: "The station has a stillness to it. Calming.",
+          exploring: "There's something about this place. Protective.",
+          analytical: "Interesting—the architecture creates a sense of shelter.",
+          building: "Someone built this place to feel safe. They succeeded."
+        },
         consequence: {
           characterId: 'maya',
           trustChange: 1
@@ -163,6 +246,13 @@ export const mayaDialogueNodes: DialogueNode[] = [
         nextNodeId: 'maya_deflect_passion',
         pattern: 'building',
         skills: ['creativity', 'communication'],
+        voiceVariations: {
+          building: "Crossroads are where we build something new. What would you make?",
+          exploring: "If you could start fresh here—what would you create?",
+          analytical: "Crossroads = opportunity. What would you design differently?",
+          helping: "What would you build for yourself, if you could?",
+          patience: "If you had time to build anything... what would it be?"
+        },
         consequence: {
           characterId: 'maya',
           trustChange: 1
@@ -191,7 +281,14 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "Crown jewel? What does that clear path look like?",
         nextNodeId: 'maya_family_expectations',
         pattern: 'analytical',
-        skills: ['communication']
+        skills: ['communication'],
+        voiceVariations: {
+          analytical: "Crown jewel. What does that title actually require?",
+          exploring: "What does 'crown jewel' mean to them? What does it look like?",
+          helping: "That's a lot of weight in two words. What do they expect?",
+          building: "Crown jewels are made. What are they trying to make you into?",
+          patience: "Crown jewel... that's loaded. What does it mean for you?"
+        }
       },
       {
         choiceId: 'family_empathy',
@@ -199,6 +296,13 @@ export const mayaDialogueNodes: DialogueNode[] = [
         nextNodeId: 'maya_family_pressure',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
+        voiceVariations: {
+          helping: "That sounds really heavy. You don't have to carry it alone.",
+          patience: "That's a lot. I can feel the weight of it.",
+          analytical: "That's a significant burden. How long have you carried it?",
+          exploring: "Heavy. Do they know how it feels from your side?",
+          building: "They built their dream. But you're carrying it now."
+        },
         consequence: {
           characterId: 'maya',
           trustChange: 1
@@ -210,6 +314,13 @@ export const mayaDialogueNodes: DialogueNode[] = [
         nextNodeId: 'maya_deflect_passion',
         pattern: 'building',
         skills: ['culturalCompetence'],
+        voiceVariations: {
+          building: "They built something from nothing. That's real work.",
+          analytical: "Starting with nothing, ending with a restaurant. That's impressive math.",
+          patience: "Forty years of building. That deserves respect.",
+          helping: "They worked so hard for you. That's love, in their way.",
+          exploring: "From nothing to all this. What drove them?"
+        },
         consequence: {
           characterId: 'maya',
           trustChange: 1
@@ -243,6 +354,18 @@ export const mayaDialogueNodes: DialogueNode[] = [
         nextNodeId: 'maya_deflect_passion',
         pattern: 'exploring',
         skills: ['criticalThinking']
+      },
+      {
+        choiceId: 'expectations_deep_insight',
+        text: "[Insight] Their marathon ends at YOUR finish line. What if you ran a different race?",
+        nextNodeId: 'maya_deflect_passion',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'systemsThinking'],
+        requiredOrbFill: { pattern: 'analytical', threshold: 30 },
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2
+        }
       }
     ],
     tags: ['maya_arc', 'backstory_depth']
@@ -303,6 +426,18 @@ export const mayaDialogueNodes: DialogueNode[] = [
         visibleCondition: {
           patterns: { building: { min: 3 } }
         },
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'deflect_patience_deep',
+        text: "[Presence] Dreams don't disappear. They wait. Sometimes for years.",
+        nextNodeId: 'maya_anxiety_reveal',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'adaptability'],
+        requiredOrbFill: { pattern: 'patience', threshold: 25 },
         consequence: {
           characterId: 'maya',
           trustChange: 2
@@ -2101,6 +2236,149 @@ The real one. Where their perfect daughter died in a bathroom five years ago, an
       }
     ],
     tags: ['simulation', 'maya_arc', 'tech_demo', 'aftermath_fail']
+  },
+
+  // ============= PATTERN UNLOCK NODES =============
+  // These become available when player demonstrates sufficient pattern affinity
+
+  {
+    nodeId: 'maya_workshop_invitation',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "*Maya glances around, then leans in conspiratorially.*\n\nOkay. I don't show this to people. Ever. But you... you build things. You understand.\n\nMy apartment has a... situation. The closet isn't a closet anymore. It's a workshop. Soldering station, 3D printer, component bins. My roommate thinks I'm hoarding electronics.\n\n*A spark of genuine excitement.*\n\nI'm working on something. Not for class. Not for my parents. Just... because I have to know if it can work.\n\nDo you want to see it? The real project?",
+        emotion: 'excited_vulnerable',
+        variation_id: 'workshop_v1'
+      }
+    ],
+    requiredState: {
+      patterns: { building: { min: 40 } }
+    },
+    onEnter: [
+      {
+        characterId: 'maya',
+        addKnowledgeFlags: ['maya_workshop_revealed']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'workshop_yes',
+        text: "Show me everything. I want to see what you're really building.",
+        nextNodeId: 'maya_robotics_passion',
+        pattern: 'building',
+        skills: ['creativity'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 3
+        }
+      },
+      {
+        choiceId: 'workshop_curious',
+        text: "A secret workshop? What are you hiding from your parents?",
+        nextNodeId: 'maya_family_pressure',
+        pattern: 'exploring',
+        skills: ['communication'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['maya_arc', 'pattern_unlock', 'building']
+  },
+
+  {
+    nodeId: 'maya_technical_deep_dive',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "*Maya's demeanor shifts—the scattered energy focuses into precision.*\n\nYou think analytically. Good. Because I need to talk through something and everyone else just... glazes over.\n\nThe prosthetic hand. The servo response time is 47ms. Industry standard is 60ms. I'm faster. But the haptic feedback loop is creating a 12ms delay that compounds under load.\n\nI've tried three different approaches. Parallel processing, predictive algorithms, mechanical damping. Nothing's working.\n\n*Looks at you directly.*\n\nYou see patterns. What am I missing?",
+        emotion: 'focused_analytical',
+        variation_id: 'technical_v1'
+      }
+    ],
+    requiredState: {
+      patterns: { analytical: { min: 50 } }
+    },
+    onEnter: [
+      {
+        characterId: 'maya',
+        addKnowledgeFlags: ['maya_technical_shared']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'technical_systems',
+        text: "The delay compounds—that's a cascading failure pattern. What if you addressed the root, not the symptom?",
+        nextNodeId: 'maya_robotics_passion',
+        pattern: 'analytical',
+        skills: ['systemsThinking', 'criticalThinking'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 3
+        }
+      },
+      {
+        choiceId: 'technical_step_back',
+        text: "Before we solve this—why does 12ms matter so much to you?",
+        nextNodeId: 'maya_anxiety_reveal',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['maya_arc', 'pattern_unlock', 'analytical']
+  },
+
+  {
+    nodeId: 'maya_collaboration_offer',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "*Maya takes a deep breath. This is clearly difficult for her.*\n\nI've been thinking. About what you said. About building things together.\n\nI've never had a collaborator. Everything I make, I make alone. At 2am. In secret. Because if I share it and someone says it's not good enough...\n\n*Pause.*\n\nBut you build things. You understand that making something real is terrifying and exhilarating and you do it anyway.\n\n*Meets your eyes.*\n\nI have an idea. A bigger version of this. Affordable pediatric prosthetics. Open-source designs so any hospital can print them.\n\nI can't do it alone. Would you... would you build it with me?",
+        emotion: 'vulnerable_hopeful',
+        variation_id: 'collaboration_v1'
+      }
+    ],
+    requiredState: {
+      patterns: { building: { min: 70 } },
+      trust: { min: 5 }
+    },
+    onEnter: [
+      {
+        characterId: 'maya',
+        addKnowledgeFlags: ['maya_collaboration_offered'],
+        addGlobalFlags: ['maya_partnership_path']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'collab_yes',
+        text: "Yes. Let's build something that matters. Together.",
+        nextNodeId: 'maya_encouraged',
+        pattern: 'building',
+        skills: ['leadership', 'collaboration'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 4
+        }
+      },
+      {
+        choiceId: 'collab_plan',
+        text: "I'm in. But first—let's map out what we're actually building.",
+        nextNodeId: 'maya_crossroads',
+        pattern: 'analytical',
+        skills: ['systemsThinking'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 3
+        }
+      }
+    ],
+    tags: ['maya_arc', 'pattern_unlock', 'building', 'high_trust']
   }
 ]
 

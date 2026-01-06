@@ -39,6 +39,13 @@ You look a little lost yourself.`,
       {
         choiceId: 'grace_intro_concern',
         text: "Twelve hours? What kind of work?",
+        voiceVariations: {
+          analytical: "Twelve hours. That's a long shift. What kind of work demands that?",
+          helping: "That sounds exhausting. What kind of work keeps you that long?",
+          building: "Twelve hours building something. What kind of work?",
+          exploring: "I'm curious—what kind of work takes twelve hours?",
+          patience: "Twelve hours. You must love what you do. What is it?"
+        },
         nextNodeId: 'grace_the_work',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
@@ -50,6 +57,13 @@ You look a little lost yourself.`,
       {
         choiceId: 'grace_intro_honest',
         text: "I am a little lost. That's why I'm here.",
+        voiceVariations: {
+          analytical: "I'm trying to figure out my next steps. Still mapping the terrain.",
+          helping: "I am a little lost. But sometimes that's how you find what matters.",
+          building: "I'm between projects. Figuring out what to build next.",
+          exploring: "Lost is just another word for exploring. That's why I'm here.",
+          patience: "I am a little lost. Taking my time to find the right path."
+        },
         nextNodeId: 'grace_understands_lost',
         pattern: 'patience',
         skills: ['emotionalIntelligence'],
@@ -97,7 +111,11 @@ That's nice. Most people talk right away. Fill every silence.
 You know how to just... be with someone. That's rare.`,
         emotion: 'appreciative',
         interaction: 'small',
-        variation_id: 'quiet_sit_v1'
+        variation_id: 'quiet_sit_v1',
+        patternReflection: [
+          { pattern: 'patience', minLevel: 4, altText: "*You sit. The station sounds wash over you both.*\n\n*Finally, she exhales.*\n\nThat's nice. Most people fill every silence. You just... waited.\n\n*Something softens in her expression.*\n\nYou understand stillness. That's the hardest skill to teach.", altEmotion: 'recognized' },
+          { pattern: 'helping', minLevel: 4, altText: "*You sit. The silence stretches, comfortable.*\n\n*She exhales.*\n\nYou know how to be with someone without needing anything from them.\n\n*Small smile.*\n\nThat's what I do for a living. Recognize it when I see it.", altEmotion: 'kindred' }
+        ]
       }
     ],
     choices: [
@@ -188,6 +206,13 @@ It's not glamorous. But somebody's gotta do it.`,
       {
         choiceId: 'grace_why_this',
         text: "How did you end up in this work?",
+        voiceVariations: {
+          analytical: "What led you to this path? I'm trying to understand the decision.",
+          helping: "How did you end up caring for others this way?",
+          building: "What drew you to building this kind of career?",
+          exploring: "I'd love to hear your story. How did you find this work?",
+          patience: "That's a journey. How did you find your way here?"
+        },
         nextNodeId: 'grace_origin',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
@@ -199,6 +224,13 @@ It's not glamorous. But somebody's gotta do it.`,
       {
         choiceId: 'grace_hard_parts',
         text: "What's the hardest part?",
+        voiceVariations: {
+          analytical: "What challenges you most about this work? The variables you can't control?",
+          helping: "What's the hardest part? The part that stays with you?",
+          building: "Every meaningful work has hard parts. What's yours?",
+          exploring: "I want to understand the full picture. What's hardest?",
+          patience: "What takes the most from you? The part that requires the most patience?"
+        },
         nextNodeId: 'grace_the_hard',
         pattern: 'patience',
         skills: ['emotionalIntelligence']
@@ -206,6 +238,13 @@ It's not glamorous. But somebody's gotta do it.`,
       {
         choiceId: 'grace_somebody',
         text: "'Somebody's gotta do it' sounds like it's more than that to you.",
+        voiceVariations: {
+          analytical: "You said 'somebody's gotta do it.' But the way you said it—there's more data there.",
+          helping: "That phrase—'somebody's gotta do it'—it sounds like it carries weight for you.",
+          building: "'Somebody's gotta do it' usually means you've built something meaningful from it.",
+          exploring: "I heard something deeper when you said that. What's underneath?",
+          patience: "There's a story behind 'somebody's gotta do it.' Take your time."
+        },
         nextNodeId: 'grace_more_than',
         pattern: 'analytical',
         skills: ['observation'],
@@ -249,6 +288,13 @@ That's when I knew. This work isn't about tasks. It's about being the calm in so
       {
         choiceId: 'grace_grandmother_present',
         text: "She's still with you. I can hear it.",
+        voiceVariations: {
+          analytical: "The way you describe her—she's still part of how you think.",
+          helping: "She's still with you. I can hear her in everything you do.",
+          building: "You're still building on what she started. She's in the foundation.",
+          exploring: "She's part of your story. I can hear her in your voice.",
+          patience: "She's still with you. Some people stay with us like that."
+        },
         nextNodeId: 'grace_grandmother_response',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
@@ -366,7 +412,11 @@ Mrs. Richardson—she's ninety-three, end-stage heart failure—she told her dau
 That's why I stayed.`,
         emotion: 'proud_quiet',
         interaction: 'small',
-        variation_id: 'why_stayed_v1'
+        variation_id: 'why_stayed_v1',
+        patternReflection: [
+          { pattern: 'patience', minLevel: 4, altText: "*Long pause.*\n\nBecause I'm good at it. Not the lifting—the stillness.\n\nMrs. Richardson told her daughter: 'Grace is the only one who doesn't make me feel like a burden.'\n\n*Looks at you.*\n\nYou understand waiting. You sat with me just now without needing anything. That's the same skill.", altEmotion: 'recognized' },
+          { pattern: 'analytical', minLevel: 4, altText: "*Long pause.*\n\nBecause I'm good at it. The being there. The stillness.\n\n*Studies you.*\n\nYou're measuring what I said. 'Good at it'—not 'stuck with it.' There's a difference, isn't there? Most people assume I settled.", altEmotion: 'appreciative' }
+        ]
       }
     ],
     choices: [

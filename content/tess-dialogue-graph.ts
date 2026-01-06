@@ -41,6 +41,13 @@ Offering to buy the building. "Prime real estate." Like it's just square footage
       {
         choiceId: 'tess_intro_offer',
         text: "How much are they offering?",
+        voiceVariations: {
+          analytical: "What's the number? Let's understand the actual math here.",
+          helping: "They must be offering a lot to make you this conflicted.",
+          building: "Numbers matter. What would it take for you to walk away?",
+          exploring: "I'm curious—what does 'enough' look like to a developer?",
+          patience: "Take your time. What are they putting on the table?"
+        },
         nextNodeId: 'tess_the_offer',
         pattern: 'analytical',
         skills: ['criticalThinking', 'communication'],
@@ -52,6 +59,13 @@ Offering to buy the building. "Prime real estate." Like it's just square footage
       {
         choiceId: 'tess_intro_why_stay',
         text: "You don't want to sell?",
+        voiceVariations: {
+          analytical: "The rational move would be to take the money. Why aren't you?",
+          helping: "There's something here worth more than money, isn't there?",
+          building: "You built this. Selling feels like giving away part of yourself.",
+          exploring: "What's the story that makes this worth fighting for?",
+          patience: "I sense there's more to this than the offer."
+        },
         nextNodeId: 'tess_the_shop',
         pattern: 'exploring',
         skills: ['emotionalIntelligence', 'communication']
@@ -108,6 +122,13 @@ My accountant thinks I'm insane for even hesitating.`,
       {
         choiceId: 'tess_offer_rational',
         text: "Sounds like a smart deal. What's holding you back?",
+        voiceVariations: {
+          analytical: "The math works. What variable am I missing?",
+          helping: "You could rest. Finally take care of yourself. What's the hesitation?",
+          building: "Security vs. purpose. That's a hard calculation.",
+          exploring: "There's a story behind the hesitation. What is it?",
+          patience: "You've had time to think about this. What keeps surfacing?"
+        },
         nextNodeId: 'tess_the_shop',
         pattern: 'analytical',
         skills: ['criticalThinking']
@@ -115,6 +136,13 @@ My accountant thinks I'm insane for even hesitating.`,
       {
         choiceId: 'tess_offer_emotional',
         text: "Money isn't everything.",
+        voiceVariations: {
+          analytical: "ROI isn't just financial. What's the intangible value here?",
+          helping: "Your heart knows something your accountant doesn't.",
+          building: "Some things can't be bought back once they're sold.",
+          exploring: "There's a deeper currency at play here, isn't there?",
+          patience: "The things that matter most rarely come with a price tag."
+        },
         nextNodeId: 'tess_the_shop',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
@@ -184,6 +212,13 @@ This isn't a store. It's where real gets discovered before the algorithm buries 
       {
         choiceId: 'tess_shop_curious',
         text: "What made you start this?",
+        voiceVariations: {
+          analytical: "Walk me through the decision. What was the catalyst?",
+          helping: "Something called you here. What was it?",
+          building: "Every creator has an origin story. What's yours?",
+          exploring: "I want to understand the moment everything changed.",
+          patience: "Take me back to the beginning."
+        },
         nextNodeId: 'tess_backstory',
         pattern: 'exploring',
         skills: ['communication', 'emotionalIntelligence'],
@@ -231,6 +266,13 @@ Next morning I quit. Everyone thought I lost my mind.`,
       {
         choiceId: 'tess_backstory_risk',
         text: "That took guts.",
+        voiceVariations: {
+          analytical: "Statistically, most people wouldn't risk that. You beat the odds.",
+          helping: "Following your heart like that—most people are too scared.",
+          building: "Burning it down to build something real. I respect that.",
+          exploring: "Chasing the unknown over the comfortable. That's rare.",
+          patience: "Sometimes the right path takes years to reveal itself."
+        },
         nextNodeId: 'tess_backstory_courage_response',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
