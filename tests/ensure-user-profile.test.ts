@@ -13,9 +13,11 @@ import {
   userProfileExists
 } from '../lib/ensure-user-profile'
 
-// Mock data storage
-const mockData = new Map<string, unknown[]>()
-const mockErrors = new Map<string, Error>()
+// Use vi.hoisted to create shared mock state that survives hoisting
+const { mockData, mockErrors } = vi.hoisted(() => ({
+  mockData: new Map<string, unknown[]>(),
+  mockErrors: new Map<string, Error>()
+}))
 
 function resetSupabaseMock() {
   mockData.clear()
@@ -30,11 +32,11 @@ function setMockError(table: string, error: Error) {
   mockErrors.set(table, error)
 }
 
-// Mock the admin supabase client (FIXED: was mocking wrong module)
-vi.mock('../lib/admin-supabase-client', () => ({
-  getAdminSupabaseClient: () => ({
+// Mock the admin supabase client - include BOTH exports
+vi.mock('../lib/admin-supabase-client', () => {
+  const createMockClient = () => ({
     from: (tableName: string) => ({
-      upsert: (data: unknown, options?: unknown) => {
+      upsert: (data: unknown, _options?: unknown) => {
         const error = mockErrors.get(tableName)
         if (error) {
           return { error }
@@ -46,7 +48,7 @@ vi.mock('../lib/admin-supabase-client', () => ({
 
         return { error: null }
       },
-      select: (fields?: string) => ({
+      select: (_fields?: string) => ({
         eq: (column: string, value: unknown) => ({
           single: () => {
             const error = mockErrors.get(tableName)
@@ -70,7 +72,12 @@ vi.mock('../lib/admin-supabase-client', () => ({
       })
     })
   })
-}))
+
+  return {
+    getAdminSupabaseClient: createMockClient,
+    getAdminSupabaseClientOrNull: createMockClient
+  }
+})
 
 describe('ensureUserProfile', () => {
   beforeEach(() => {

@@ -51,7 +51,20 @@ vi.mock('@/lib/audit-logger', () => ({
   auditLog: vi.fn()
 }))
 
-// No need to mock admin-session anymore - using simple comparison
+// Mock auth-utils to handle session validation
+// The session store is in-memory, so we mock validateSession to recognize our test token
+vi.mock('@/lib/auth-utils', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@/lib/auth-utils')>()
+  return {
+    ...actual,
+    validateSession: vi.fn((token: string) => {
+      // Return admin user ID for our test token
+      if (token === MOCK_ADMIN_TOKEN) return 'admin-test-user'
+      return null
+    }),
+    createSession: vi.fn(() => MOCK_ADMIN_TOKEN)
+  }
+})
 
 // Helper to create request with cookies
 function createRequest(
