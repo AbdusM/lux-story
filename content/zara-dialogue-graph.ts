@@ -42,7 +42,17 @@ export const zaraDialogueNodes: DialogueNode[] = [
             {
                 text: "Because they stop for lunch.\n\nThe algorithm was trained on drone data. Drones don't eat. Drones don't rest. Applying drone metrics to human drivers isn't just 'optimizing', it's breaking them.\n\nI need to clean this dataset before the rollout. Want to help?",
                 emotion: 'determined',
-                variation_id: 'bias_v1'
+                variation_id: 'bias_v1',
+                interrupt: {
+                    duration: 3500,
+                    type: 'encouragement',
+                    action: 'Affirm that this work matters',
+                    targetNodeId: 'zara_interrupt_encouragement',
+                    consequence: {
+                        characterId: 'zara',
+                        trustChange: 2
+                    }
+                }
             }
         ],
         choices: [
@@ -196,6 +206,178 @@ export const zaraDialogueNodes: DialogueNode[] = [
                 pattern: 'exploring'
             }
         ]
+    },
+
+    // ============= INTERRUPT TARGET NODES =============
+    {
+        nodeId: 'zara_interrupt_encouragement',
+        speaker: 'Zara El-Amin',
+        content: [
+            {
+                text: `*She stops scrolling. Looks at you.*
+
+*Pause.*
+
+Most people in tech don't want to hear this. They want clean datasets and fast deployments. They don't want someone slowing them down with "ethics concerns."
+
+*Tired smile.*
+
+You're the first person today who hasn't said "just ship it."
+
+*Quieter.*
+
+Sometimes I wonder if anyone cares. If it's just me in this basement, fighting invisible wars in spreadsheets.
+
+Thank you. For making me feel like it matters.`,
+                emotion: 'vulnerable_grateful',
+                variation_id: 'interrupt_encouragement_v1'
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'zara_from_interrupt',
+                text: "The people those algorithms affect—they care.",
+                nextNodeId: 'zara_simulation_setup',
+                pattern: 'helping',
+                skills: ['emotionalIntelligence'],
+                consequence: {
+                    characterId: 'zara',
+                    trustChange: 1
+                }
+            }
+        ],
+        tags: ['zara_arc', 'interrupt_response']
+    },
+
+    // ============= VULNERABILITY ARC (Trust ≥ 6) =============
+    // "The model she missed" - the algorithm that caused real harm
+    {
+        nodeId: 'zara_vulnerability_arc',
+        speaker: 'Zara El-Amin',
+        content: [
+            {
+                text: `*She closes the spreadsheet. Stares at the blank screen.*
+
+You asked why I do this. Why I spend nights in basements hunting for bias in datasets.
+
+*Pause.*
+
+Three years ago. I was a junior analyst at a healthcare company. We built a triage algorithm. It ranked patients by "urgency." The dataset looked clean.
+
+*Voice drops.*
+
+I signed off on it. We deployed to twelve hospitals.
+
+*Hands shake slightly.*
+
+Six months later, the study came back. The algorithm was systematically deprioritizing patients from low-income zip codes. Classifying them as "low urgency" even with the same symptoms.
+
+*Bitter laugh.*
+
+We thought we were making healthcare more efficient. We were making it more biased.
+
+*Looks at you.*
+
+Fourteen patients. Delayed treatment. Three didn't make it.
+
+And I signed the deployment approval.`,
+                emotion: 'haunted_guilty',
+                variation_id: 'vulnerability_v1',
+                richEffectContext: 'warning'
+            }
+        ],
+        requiredState: {
+            trust: { min: 6 }
+        },
+        onEnter: [
+            {
+                characterId: 'zara',
+                addKnowledgeFlags: ['zara_vulnerability_revealed', 'knows_about_triage_algorithm']
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'zara_vuln_system_failed',
+                text: "The system failed. Not you. You were one analyst in a chain.",
+                nextNodeId: 'zara_vulnerability_response',
+                pattern: 'helping',
+                skills: ['emotionalIntelligence'],
+                consequence: {
+                    characterId: 'zara',
+                    trustChange: 1
+                }
+            },
+            {
+                choiceId: 'zara_vuln_carry_them',
+                text: "You carry those fourteen with you. Every audit is for them.",
+                nextNodeId: 'zara_vulnerability_response',
+                pattern: 'patience',
+                skills: ['emotionalIntelligence'],
+                consequence: {
+                    characterId: 'zara',
+                    trustChange: 2
+                }
+            },
+            {
+                choiceId: 'zara_vuln_silence',
+                text: "[Let the weight of it sit. She's carrying enough without needing absolution.]",
+                nextNodeId: 'zara_vulnerability_response',
+                pattern: 'patience',
+                skills: ['emotionalIntelligence'],
+                consequence: {
+                    characterId: 'zara',
+                    trustChange: 2
+                }
+            }
+        ],
+        tags: ['zara_arc', 'vulnerability', 'emotional_core']
+    },
+
+    {
+        nodeId: 'zara_vulnerability_response',
+        speaker: 'Zara El-Amin',
+        content: [
+            {
+                text: `*She wipes her eyes.*
+
+I could have left the industry. Gone to law school. Something without... blood on the spreadsheets.
+
+*Quiet.*
+
+But that would let the same thing happen again. With a different analyst. A different "clean dataset."
+
+*Looks at the logistics data.*
+
+So I stay in the basement. I hunt the bias. Every model I audit, every dataset I scrub—it's penance. And prevention.
+
+*Small, fierce determination.*
+
+This logistics algorithm? It's not going to hurt anyone. Not on my watch.
+
+*Turns back to the screen.*
+
+Because I know what "just ship it" really costs. I've counted the bodies.
+
+Now let's find what this one is hiding.`,
+                emotion: 'resolved_determined',
+                interaction: 'nod',
+                variation_id: 'vulnerability_response_v1'
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'zara_vuln_to_sim',
+                text: "Let's make sure this one ships clean.",
+                nextNodeId: 'zara_simulation_setup',
+                pattern: 'building',
+                skills: ['communication'],
+                consequence: {
+                    characterId: 'zara',
+                    trustChange: 1
+                }
+            }
+        ],
+        tags: ['zara_arc', 'vulnerability', 'resolution']
     }
 ]
 

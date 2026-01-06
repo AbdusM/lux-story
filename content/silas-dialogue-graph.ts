@@ -123,6 +123,16 @@ Last quarter, the sensors said the pH was perfect. I lost the entire strawberry 
 If this basil dies, I lose the farm. I lose my house.`,
         emotion: 'desperate',
         variation_id: 'bankruptcy_v1',
+        interrupt: {
+          duration: 3500,
+          type: 'grounding',
+          action: 'Kneel down and touch the soil yourself',
+          targetNodeId: 'silas_interrupt_grounding',
+          consequence: {
+            characterId: 'silas',
+            trustChange: 2
+          }
+        },
         patternReflection: [
           { pattern: 'building', minLevel: 4, altText: "I should be.\n\nI cashed out my Amazon stock options. All of it. Built this from nothing.\n\nYou build things. You know what it's like to watch something you made fail. $40,000 gone in a weekend.\n\nIf this basil dies, I lose everything I built.", altEmotion: 'desperate' },
           { pattern: 'exploring', minLevel: 4, altText: "I should be.\n\nI cashed out my Amazon stock options. Took the leap. You understand that, don't you? The curiosity that leads you somewhere unknown.\n\nBut sometimes the unknown has cliffs.\n\nIf this basil dies, I lose the farm.", altEmotion: 'desperate' }
@@ -1028,6 +1038,173 @@ The basil is already perking up. The water finally reached its roots.`,
       }
     ],
     tags: ['silas_arc', 'ending']
+  },
+
+  // ============= INTERRUPT TARGET NODES =============
+  {
+    nodeId: 'silas_interrupt_grounding',
+    speaker: 'Silas',
+    content: [
+      {
+        text: `*He stops mid-panic. Watches you kneel down. Touch the soil.*
+
+*Long silence.*
+
+*He kneels beside you. Presses his palm into the dirt.*
+
+It's... it's dry. The middle is dry.
+
+*His voice changes. Quieter. Present.*
+
+Mr. Hawkins used to do that. Just... touch it. No sensors. No apps. Just his hands and sixty years of knowing.
+
+*Looks at you.*
+
+I forgot. I got so lost in the data, I forgot the most basic thing. The soil tells you what it needs. If you listen.
+
+*Small, shaky laugh.*
+
+Thank you. For... getting your hands dirty with me.`,
+        emotion: 'grateful_grounded',
+        interaction: 'bloom',
+        variation_id: 'interrupt_grounding_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'silas_from_interrupt',
+        text: "Sometimes the answer is under your feet.",
+        nextNodeId: 'silas_simulation_start',
+        pattern: 'patience',
+        skills: ['groundedness'],
+        consequence: {
+          characterId: 'silas',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['silas_arc', 'interrupt_response']
+  },
+
+  // ============= VULNERABILITY ARC (Trust ≥ 6) =============
+  // "What he never told Mr. Hawkins" - regret and unfinished gratitude
+  {
+    nodeId: 'silas_vulnerability_arc',
+    speaker: 'Silas',
+    content: [
+      {
+        text: `*He's quiet for a long time. Staring at the trowel—Mr. Hawkins's trowel.*
+
+There's something I never told anyone.
+
+*Pause.*
+
+The day before Mr. Hawkins died... I was supposed to visit. Bring him the first harvest from my farm. Show him I'd learned something.
+
+I cancelled. Had a "critical system update" to run. Told myself I'd go next week.
+
+*Voice breaks.*
+
+There wasn't a next week.
+
+He died alone in his garden. And I was staring at a dashboard. Making sure my sensors were calibrated.
+
+*Looks at the trowel.*
+
+I never got to say thank you. Never got to show him that his sixty years of wisdom had found a home in someone.`,
+        emotion: 'grief_regret',
+        variation_id: 'vulnerability_v1',
+        richEffectContext: 'warning'
+      }
+    ],
+    requiredState: {
+      trust: { min: 6 }
+    },
+    onEnter: [
+      {
+        characterId: 'silas',
+        addKnowledgeFlags: ['silas_vulnerability_revealed', 'knows_about_hawkins_regret']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'silas_vuln_living_thanks',
+        text: "You're thanking him now. Every workshop. Every student who learns to touch the soil.",
+        nextNodeId: 'silas_vulnerability_response',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'silas',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'silas_vuln_he_knew',
+        text: "He knew. Teachers always know which students were listening.",
+        nextNodeId: 'silas_vulnerability_response',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'silas',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'silas_vuln_silence',
+        text: "[Sit with him in the grief. Let the trowel speak.]",
+        nextNodeId: 'silas_vulnerability_response',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'silas',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['silas_arc', 'vulnerability', 'emotional_core']
+  },
+
+  {
+    nodeId: 'silas_vulnerability_response',
+    speaker: 'Silas',
+    content: [
+      {
+        text: `*He picks up the trowel. Runs his thumb along the worn handle.*
+
+You know what I think about? His hands made this smooth. Sixty years of use. Sixty years of presence.
+
+*Quiet.*
+
+The dashboard didn't kill him. But it kept me from being present. From being where I should have been.
+
+*Looks at the basil plants.*
+
+That's what the Feral Lab is really about. Teaching people to be present. Before they miss the things that matter.
+
+*Small smile through tears.*
+
+Every time a burnt-out engineer puts their hands in the soil... that's me saying thank you to Mr. Hawkins.
+
+That's the only thank you that counts anymore.`,
+        emotion: 'resolved_tender',
+        interaction: 'bloom',
+        variation_id: 'vulnerability_response_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'silas_vuln_to_farewell',
+        text: "He'd be proud. I'm certain of it.",
+        nextNodeId: 'silas_farewell_good',
+        pattern: 'helping',
+        skills: ['communication'],
+        consequence: {
+          characterId: 'silas',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['silas_arc', 'vulnerability', 'resolution']
   },
 
   {

@@ -486,7 +486,18 @@ export const mayaDialogueNodes: DialogueNode[] = [
         emotion: 'vulnerable_focused',
         variation_id: 'robotics_scenario_v1',
         richEffectContext: 'warning', // Immersive "System Alert" feel
-        useChatPacing: true
+        useChatPacing: true,
+        // E2-031: Interrupt opportunity when Maya reveals inner conflict
+        interrupt: {
+          duration: 3500,
+          type: 'connection',
+          action: 'Reach out. Let her know she\'s not alone.',
+          targetNodeId: 'maya_interrupt_supported',
+          consequence: {
+            characterId: 'maya',
+            trustChange: 2
+          }
+        }
       }
     ],
     patternReflection: [
@@ -579,6 +590,39 @@ export const mayaDialogueNodes: DialogueNode[] = [
       }
     ],
     tags: ['major_reveal', 'trust_gate', 'maya_arc', 'immersive_scenario']
+  },
+
+  // ============= INTERRUPT TARGET: Player reached out during vulnerability =============
+  {
+    nodeId: 'maya_interrupt_supported',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "*She stops mid-sentence, startled by your gesture.*\n\n...\n\n*A shaky exhale.*\n\nI didn't expect that. Most people just... they look at the robot. At the problem. You looked at me.\n\n*Her voice catches.*\n\nThank you. I needed that more than I knew.",
+        emotion: 'touched',
+        variation_id: 'interrupt_supported_v1',
+        interaction: 'bloom'
+      }
+    ],
+    onEnter: [
+      {
+        addGlobalFlags: ['maya_felt_supported'],
+        patternChanges: { helping: 1 }
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'maya_after_interrupt',
+        text: "You're not alone in this.",
+        nextNodeId: 'maya_robotics_debug_success',
+        pattern: 'helping',
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['interrupt_target', 'emotional_moment', 'maya_arc']
   },
 
   // ============= SCENARIO FAILURE: BURNOUT =============
@@ -1178,6 +1222,105 @@ export const mayaDialogueNodes: DialogueNode[] = [
         skills: ['emotionalIntelligence', 'adaptability']
       }
     ]
+  },
+
+  // ============= MAYA'S VULNERABILITY ARC =============
+  // "The night she stopped being their perfect daughter"
+  {
+    nodeId: 'maya_vulnerability_arc',
+    speaker: 'Maya Chen',
+    content: [{
+      text: `*She's quiet for a long moment.*
+
+There's something I've never told anyone.
+
+The night I got into UAB. Everyone celebrating. My mom crying happy tears. My dad on the phone with relatives in Malaysia.
+
+And I'm in the bathroom. Hyperventilating. Because I'd just read about Boston Dynamics. About prosthetics that could feel. About robot-assisted surgery.
+
+*Her voice breaks.*
+
+That was the night I knew. The daughter they raised was already gone. And I've been pretending ever since.
+
+Five years of pretending. Do you know what that does to you?`,
+      emotion: 'shattered',
+      microAction: 'Her hands grip the robot prototype tighter.',
+      variation_id: 'vulnerability_v1',
+      richEffectContext: 'error'
+    }],
+    requiredState: {
+      trust: { min: 6 }
+    },
+    onEnter: [
+      {
+        characterId: 'maya',
+        addKnowledgeFlags: ['maya_vulnerability_revealed', 'knows_the_night']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'vuln_not_pretending',
+        text: "You weren't pretending. You were surviving.",
+        nextNodeId: 'maya_vulnerability_reflection',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'vuln_both_daughters',
+        text: "Both daughters are real. The one they raised AND the one you're becoming.",
+        nextNodeId: 'maya_vulnerability_reflection',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'culturalCompetence'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'vuln_silence',
+        text: "[Stay silent. This grief needs no fixing.]",
+        nextNodeId: 'maya_vulnerability_reflection',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['vulnerability_arc', 'maya_arc', 'emotional_core']
+  },
+  {
+    nodeId: 'maya_vulnerability_reflection',
+    speaker: 'Maya Chen',
+    content: [{
+      text: `*She wipes her eyes.*
+
+I've been so scared. That telling them would break something. Their hearts. Their sacrifice. Our family.
+
+But keeping this secret is breaking ME.
+
+*A deep breath.*
+
+You're the first person who's heard all of it. Not the edited version. Not the "I'm just exploring options" version.
+
+The real one. Where their perfect daughter died in a bathroom five years ago, and nobody noticed.`,
+      emotion: 'vulnerable_released',
+      variation_id: 'reflection_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'vuln_continue',
+        text: "(Continue)",
+        nextNodeId: 'maya_farewell_robotics',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['vulnerability_arc', 'maya_arc']
   },
 
   // ============= FAREWELL NODES =============

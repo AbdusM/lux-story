@@ -511,7 +511,17 @@ All day. Don't fix teeth. fix fear. That's what I'm selling.`,
         text: `Video ready. Platform ready.|<jitter>Publish. dentists see it. Might fire me. 'Who's this guy?'</jitter>|Don't publish. guy shouting at phone in basement.`,
         emotion: 'anxious',
         variation_id: 'launch_v1',
-        useChatPacing: true
+        useChatPacing: true,
+        interrupt: {
+          duration: 3500,
+          type: 'encouragement',
+          action: 'Put your hand over his on the publish button',
+          targetNodeId: 'yaquin_interrupt_encouragement',
+          consequence: {
+            characterId: 'yaquin',
+            trustChange: 2
+          }
+        }
       }
     ],
     patternReflection: [
@@ -658,6 +668,184 @@ All day. Don't fix teeth. fix fear. That's what I'm selling.`,
       }
     ],
     tags: ['ending', 'bad_ending', 'yaquin_arc']
+  },
+
+  // ============= INTERRUPT TARGET NODES =============
+  {
+    nodeId: 'yaquin_interrupt_encouragement',
+    speaker: 'Yaquin',
+    content: [
+      {
+        text: `*He freezes. Looks at your hand on his.*
+
+*Long silence.*
+
+*Then a shaky exhale.*
+
+Nobody ever... sat with me like this. Through the fear.
+
+*Voice quiet.*
+
+My father wanted me to be a dentist. Real dentist. With degree. When I said I was "just" assistant, he... didn't talk to me for a month.
+
+*Looks at the screen.*
+
+Publishing this means telling the world I'm good enough. Without the paper. Without his approval.
+
+*Meets your eyes.*
+
+You being here... it helps. Really helps.
+
+*Finger hovers over button.*
+
+Together?`,
+        emotion: 'vulnerable_hopeful',
+        interaction: 'bloom',
+        variation_id: 'interrupt_encouragement_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'yaquin_from_interrupt',
+        text: "Together.",
+        nextNodeId: 'yaquin_launched',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'yaquin',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['yaquin_arc', 'interrupt_response']
+  },
+
+  // ============= VULNERABILITY ARC (Trust ≥ 6) =============
+  // "The day his father stopped talking" - family shame and self-worth
+  {
+    nodeId: 'yaquin_vulnerability_arc',
+    speaker: 'Yaquin',
+    content: [
+      {
+        text: `*He sets down equipment. Something heavy in his posture.*
+
+Can tell you something? Not about course. About me.
+
+*Pause.*
+
+My father came here from Manila. 1989. Worked three jobs. Saved every penny. Sent all four kids to college.
+
+My sister: engineer. My brother: pharmacist. Other sister: accountant.
+
+Me: dental assistant.
+
+*Voice drops.*
+
+Day I told him I wasn't going to dental school... he looked at me like I'd died.
+
+Didn't speak to me for month. When he finally did, he said: "You had same chances as your siblings. Why you waste them?"
+
+*Quiet.*
+
+Still hears that. Every time someone says "just an assistant." Every time I doubt myself. His voice.`,
+        emotion: 'shame_pain',
+        variation_id: 'vulnerability_v1',
+        richEffectContext: 'warning',
+        useChatPacing: true
+      }
+    ],
+    requiredState: {
+      trust: { min: 6 }
+    },
+    onEnter: [
+      {
+        characterId: 'yaquin',
+        addKnowledgeFlags: ['yaquin_vulnerability_revealed', 'knows_about_father']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'yaquin_vuln_different_success',
+        text: "Your success looks different. That doesn't make it less.",
+        nextNodeId: 'yaquin_vulnerability_response',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'yaquin',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'yaquin_vuln_teaching_honored',
+        text: "He came here so you could have choices. You chose. That honors him.",
+        nextNodeId: 'yaquin_vulnerability_response',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'yaquin',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'yaquin_vuln_silence',
+        text: "[Let the weight of it sit. Some pain needs witness, not words.]",
+        nextNodeId: 'yaquin_vulnerability_response',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'yaquin',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['yaquin_arc', 'vulnerability', 'emotional_core']
+  },
+
+  {
+    nodeId: 'yaquin_vulnerability_response',
+    speaker: 'Yaquin',
+    content: [
+      {
+        text: `*Long exhale.*
+
+Know what's funny? My students—they ask where I learned this. I tell them: from watching. From failing. From eight years of "not good enough."
+
+*Small smile.*
+
+My father worked three jobs because he saw what he didn't have. Wanted us to have it.
+
+But maybe... what I have IS something. 200 people learning from my mistakes. That's... that's building something.
+
+*Looks at screen.*
+
+Maybe when course hits 1,000 students... I'll show him. Say: "Look, Tatay. This is what I built. Different than sister's buildings. Different than brother's pharmacy. But mine."
+
+*Pause.*
+
+Maybe he'll understand then. Maybe not.
+
+But I'll know.`,
+        emotion: 'resolved_hopeful',
+        interaction: 'bloom',
+        variation_id: 'vulnerability_response_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'yaquin_vuln_to_farewell',
+        text: "You already built something. Now you're sharing it.",
+        nextNodeId: 'yaquin_farewell',
+        pattern: 'helping',
+        skills: ['communication'],
+        consequence: {
+          characterId: 'yaquin',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['yaquin_arc', 'vulnerability', 'resolution']
   },
 
   {

@@ -178,7 +178,7 @@ export interface InterruptWindow {
   duration: number
 
   /** Type of interrupt, affects visual styling */
-  type: 'connection' | 'challenge' | 'silence'
+  type: 'connection' | 'challenge' | 'silence' | 'comfort' | 'grounding' | 'encouragement'
 
   /** Visual description of the action (e.g., "Reach out") */
   action: string

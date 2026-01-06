@@ -495,7 +495,18 @@ But his mind... his mind is still sharp. We video call every week. He can't writ
 
 That knowledge doesn't disappear because a machine can type faster. It's not about the typing.`,
         emotion: 'grief_determination',
-        variation_id: 'david_gone_v1'
+        variation_id: 'david_gone_v1',
+        // E2-031: Interrupt opportunity when Rohan reveals David's illness
+        interrupt: {
+          duration: 4000,
+          type: 'silence',
+          action: 'Hold the silence. Some grief needs a witness, not words.',
+          targetNodeId: 'rohan_interrupt_acknowledged',
+          consequence: {
+            characterId: 'rohan',
+            trustChange: 2
+          }
+        }
       }
     ],
     choices: [
@@ -532,6 +543,42 @@ That knowledge doesn't disappear because a machine can type faster. It's not abo
     tags: ['rohan_arc', 'emotional_core']
   },
 
+  {
+    nodeId: 'rohan_interrupt_acknowledged',
+    speaker: 'Rohan',
+    content: [{
+      text: `*He glances at you. Notes that you didn't rush to fill the silence.*
+
+You didn't try to fix it. Most people would offer solutions. "Maybe there's a treatment." "Technology is advancing." As if optimism could cure anything.
+
+You just... listened. David would appreciate that.`,
+      emotion: 'grateful_surprised',
+      microAction: 'His shoulders drop slightly, some tension releasing.',
+      variation_id: 'default'
+    }],
+    choices: [
+      {
+        choiceId: 'presence_is_enough',
+        text: "Some things can't be fixed. They can only be witnessed.",
+        nextNodeId: 'rohan_honor_path',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'rohan',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'david_lives_on',
+        text: "What he taught you—that's how he lives on.",
+        nextNodeId: 'rohan_honor_path',
+        pattern: 'helping',
+        consequence: {
+          characterId: 'rohan',
+          trustChange: 1
+        }
+      }
+    ]
+  },
   {
     nodeId: 'rohan_honor_path',
     speaker: 'Rohan',
@@ -1309,6 +1356,104 @@ Goodbye.`,
     tags: ['ending', 'bad_ending', 'rohan_arc']
   },
 
+  // ============= E2-065: ROHAN'S VULNERABILITY ARC =============
+  // "The truth that cost him relationships"
+  {
+    nodeId: 'rohan_vulnerability_arc',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: `*He stares at the server lights, then speaks quietly.*
+
+You want to know why I'm alone down here? It's not just introversion.
+
+I had friends. A girlfriend. A whole life outside the server room.
+
+Then I found it. A flaw in the algorithm that was making hiring decisions for half the Fortune 500. Biased against certain names. Certain zip codes. Automated discrimination at scale.
+
+*His voice hardens.*
+
+I reported it. My manager said "that's just how the data works." I showed it to my friends—they worked at the company that built it.
+
+They said I was being "difficult." That I'd destroy careers if I went public. Including theirs.`,
+        emotion: 'bitter_grief',
+        microAction: 'His jaw tightens.',
+        variation_id: 'vulnerability_v1',
+        richEffectContext: 'warning'
+      }
+    ],
+    requiredState: {
+      trust: { min: 6 }
+    },
+    onEnter: [
+      {
+        characterId: 'rohan',
+        addKnowledgeFlags: ['rohan_vulnerability_revealed', 'knows_about_algorithm']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'vuln_right_choice',
+        text: "You chose truth over comfort. That's not something to regret.",
+        nextNodeId: 'rohan_vulnerability_reflection',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'rohan',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'vuln_cost_question',
+        text: "What did it cost you?",
+        nextNodeId: 'rohan_vulnerability_reflection',
+        pattern: 'exploring',
+        skills: ['communication']
+      },
+      {
+        choiceId: 'vuln_silence',
+        text: "[Let the weight of that choice settle. Some truths need a witness.]",
+        nextNodeId: 'rohan_vulnerability_reflection',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'rohan',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['vulnerability_arc', 'rohan_arc', 'emotional_core']
+  },
+  {
+    nodeId: 'rohan_vulnerability_reflection',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: `*He exhales slowly.*
+
+I went public. The story broke. The algorithm got fixed—quietly, without credit.
+
+And I lost everyone. The girlfriend said I "valued being right more than being happy." My friends stopped returning calls. The industry blacklisted me for two years.
+
+*A pause.*
+
+David was the first person who didn't try to tell me I should have stayed quiet. He said: "Truth has a cost. Some of us are willing to pay it."
+
+You're the second person who's just... listened. Without trying to calculate whether I was right.`,
+        emotion: 'vulnerable_resolved',
+        variation_id: 'reflection_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'vuln_continue',
+        text: "(Continue)",
+        nextNodeId: 'rohan_farewell',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['vulnerability_arc', 'rohan_arc']
+  },
   {
     nodeId: 'rohan_farewell',
     speaker: 'Rohan',

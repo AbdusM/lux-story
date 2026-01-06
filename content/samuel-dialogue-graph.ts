@@ -672,7 +672,18 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
           { pattern: 'building', minLevel: 4, altText: "It was solid. But it <shake>wasn't mine</shake>, you know?\n\nTwenty-three years buildin' other people's systems. You understand that, don't you? The difference between making something because you're told to, and building something because it's yours.", altEmotion: 'knowing' },
           { pattern: 'exploring', minLevel: 4, altText: "It was solid. But it <shake>wasn't mine</shake>.\n\nI see that same restlessness in you—the need to find your own thing, not just accept what's handed to you. That's not easy. But it's necessary.", altEmotion: 'warm' },
           { pattern: 'patience', minLevel: 4, altText: "It was solid. But it <shake>wasn't mine</shake>.\n\nTook me twenty-three years to figure that out. You listening like this—you're doing it faster than I did. That's good.", altEmotion: 'reflective' }
-        ]
+        ],
+        // E2-031: Interrupt opportunity during vulnerable moment
+        interrupt: {
+          duration: 3500,
+          type: 'silence',
+          action: 'Hold the silence. Let him know you hear him.',
+          targetNodeId: 'samuel_interrupt_acknowledged',
+          consequence: {
+            characterId: 'samuel',
+            trustChange: 2
+          }
+        }
       }
     ],
     // MYSTERY PROGRESSION: Samuel's Past advances from 'hidden' to 'hinted'
@@ -706,6 +717,111 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         }
       }
     ]
+  },
+
+  // ============= INTERRUPT TARGET: Player held the silence =============
+  {
+    nodeId: 'samuel_interrupt_acknowledged',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*He pauses, meeting your eyes.*\n\nYou didn't try to fill the silence. That's rare.\n\n*A small, appreciative nod.*\n\nMost folks can't sit with someone else's weight. They rush to fix it, change the subject. You just... stayed.\n\nThat means somethin'.",
+        emotion: 'moved',
+        variation_id: 'interrupt_acknowledged_v1',
+        interaction: 'nod'
+      }
+    ],
+    onEnter: [
+      {
+        addGlobalFlags: ['samuel_felt_heard']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'samuel_after_interrupt',
+        text: "(Continue)",
+        nextNodeId: 'samuel_pause_after_backstory',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['interrupt_target', 'emotional_moment', 'samuel_arc']
+  },
+
+  // ============= E2-062: SAMUEL'S VULNERABILITY ARC =============
+  // "What he lost to become the Conductor"
+  {
+    nodeId: 'samuel_vulnerability_arc',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*He looks at the station lights, distant.*\n\nYou want the truth about what this job cost me?\n\nDorothy. My wife of twenty-eight years. When I left Southern Company, she thought I'd lost my mind. 'A train station that don't exist? Samuel, you sound like your father before he—'\n\n*He stops.*\n\nShe gave me a choice. The station or her. I told myself I'd make her understand. That once she saw what this place could do for people...\n\nShe was gone before the first passenger arrived.",
+        emotion: 'grief_raw',
+        variation_id: 'vulnerability_v1',
+        microAction: 'His hands rest on the console, trembling slightly.',
+        richEffectContext: 'thinking'
+      }
+    ],
+    requiredState: {
+      trust: { min: 6 }
+    },
+    onEnter: [
+      {
+        characterId: 'samuel',
+        addKnowledgeFlags: ['samuel_vulnerability_revealed', 'knows_about_dorothy']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'vuln_worth_it',
+        text: "Was it worth it?",
+        nextNodeId: 'samuel_vulnerability_reflection',
+        pattern: 'analytical',
+        skills: ['criticalThinking']
+      },
+      {
+        choiceId: 'vuln_silence',
+        text: "[Stay silent. Some grief needs no words.]",
+        nextNodeId: 'samuel_vulnerability_reflection',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'vuln_empathy',
+        text: "I'm sorry, Samuel. That's a heavy weight to carry.",
+        nextNodeId: 'samuel_vulnerability_reflection',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['vulnerability_arc', 'samuel_arc', 'emotional_core']
+  },
+  {
+    nodeId: 'samuel_vulnerability_reflection',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "*He straightens, collecting himself.*\n\nEvery day I wonder if I chose right. Every traveler that finds their path here... I tell myself that's the answer.\n\nBut late nights, when the station's quiet? I hear her voice in the echo. Askin' why the people who needed me most weren't the ones in front of me.\n\n*A long breath.*\n\nYou're the first person I've told that to. The station needed a conductor. But conductors still bleed.",
+        emotion: 'vulnerable_resolved',
+        variation_id: 'reflection_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'vuln_continue',
+        text: "(Continue)",
+        nextNodeId: 'samuel_pause_after_backstory',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['vulnerability_arc', 'samuel_arc']
   },
 
   // ============= PAUSE: After Backstory Revelation (Breathing Room) =============

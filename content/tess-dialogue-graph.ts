@@ -461,7 +461,18 @@ Developer's offer sits on my desk like a loaded question.`,
         emotion: 'vulnerable',
         interaction: 'small',
         variation_id: 'numbers_v1',
-        useChatPacing: true
+        useChatPacing: true,
+        // E2-031: Interrupt opportunity when Tess reveals financial vulnerability
+        interrupt: {
+          duration: 3500,
+          type: 'silence',
+          action: 'Let the weight of those numbers settle. She needs a witness, not advice.',
+          targetNodeId: 'tess_interrupt_acknowledged',
+          consequence: {
+            characterId: 'tess',
+            trustChange: 2
+          }
+        }
       }
     ],
     choices: [
@@ -496,6 +507,37 @@ Developer's offer sits on my desk like a loaded question.`,
       }
     ],
     tags: ['tess_arc', 'decision_point']
+  },
+  {
+    nodeId: 'tess_interrupt_acknowledged',
+    speaker: 'Tess',
+    content: [{
+      text: `*She looks at you, surprised by the silence.*
+
+You didn't jump in with advice. No "have you tried..." or "what if you..."
+
+*A small, tired laugh.*
+
+Everyone wants to fix it. You just... let it be heavy for a minute.
+
+That's rare. Most people can't sit with someone else's red ink.`,
+      emotion: 'grateful',
+      microAction: 'She sets down the spreadsheet.',
+      variation_id: 'interrupt_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'tess_interrupt_continue',
+        text: "What do you actually want? Not what makes sense—what do you want?",
+        nextNodeId: 'tess_real_fear',
+        pattern: 'helping',
+        consequence: {
+          characterId: 'tess',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['interrupt_target', 'emotional_moment', 'tess_arc']
   },
 
   // EXPANSION: Real fear
@@ -886,6 +928,107 @@ I'll think about it.`,
       }
     ],
     tags: ['tess_arc', 'decision']
+  },
+
+  // ============= TESS'S VULNERABILITY ARC =============
+  // "The partnership that ended her"
+  {
+    nodeId: 'tess_vulnerability_arc',
+    speaker: 'Tess',
+    content: [{
+      text: `*She runs her fingers along a dusty record sleeve.*
+
+This shop wasn't always mine alone.
+
+Elena. My business partner. My best friend. We built this place together. Every shelf, every playlist, every late night wondering if we'd make rent.
+
+*Her voice catches.*
+
+Three years in, she got an offer. Corporate gig. Six figures. Benefits. Security.
+
+She said: "Come with me. We can do this again later."
+
+I said: "This IS later. This is now."
+
+She left. Took half the startup capital with her. Legally hers. But it felt like she took half my belief too.`,
+      emotion: 'grief_anger',
+      microAction: 'She grips the record sleeve tighter.',
+      variation_id: 'vulnerability_v1',
+      richEffectContext: 'warning'
+    }],
+    requiredState: {
+      trust: { min: 6 }
+    },
+    onEnter: [
+      {
+        characterId: 'tess',
+        addKnowledgeFlags: ['tess_vulnerability_revealed', 'knows_about_elena']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'vuln_she_chose_fear',
+        text: "She chose security. You chose meaning. Neither is wrong.",
+        nextNodeId: 'tess_vulnerability_reflection',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'tess',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'vuln_still_standing',
+        text: "But you're still here. The shop is still here. You rebuilt.",
+        nextNodeId: 'tess_vulnerability_reflection',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication'],
+        consequence: {
+          characterId: 'tess',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'vuln_silence',
+        text: "[Let the grief have its space.]",
+        nextNodeId: 'tess_vulnerability_reflection',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'tess',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['vulnerability_arc', 'tess_arc', 'emotional_core']
+  },
+  {
+    nodeId: 'tess_vulnerability_reflection',
+    speaker: 'Tess',
+    content: [{
+      text: `*She sets the record down gently.*
+
+I haven't spoken to her in four years. She sends a Christmas card. I don't open them.
+
+*A bitter laugh.*
+
+The developer's offer? Part of me wants to take it just to prove I can walk away too. That I'm not the one who got left holding the dream while everyone else grew up.
+
+But that's spite talking. Not truth.
+
+You're the first person I've told the Elena story to. Everyone else just sees "passionate small business owner." They don't see the wound underneath.`,
+      emotion: 'vulnerable_released',
+      variation_id: 'reflection_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'vuln_continue',
+        text: "(Continue)",
+        nextNodeId: 'tess_farewell',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['vulnerability_arc', 'tess_arc']
   },
 
   // ============= FAREWELLS =============
