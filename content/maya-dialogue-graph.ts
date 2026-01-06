@@ -2379,6 +2379,130 @@ The real one. Where their perfect daughter died in a bathroom five years ago, an
       }
     ],
     tags: ['maya_arc', 'pattern_unlock', 'building', 'high_trust']
+  },
+
+  // ============= CAREER MENTION NODES (Invisible Depth) =============
+  // These nodes appear when player has achieved specific pattern combinations
+  // The career connection emerges naturally through Maya's dialogue
+
+  {
+    nodeId: 'maya_career_reflection_architect',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "*Maya pauses, studying you with a new kind of respect.*\n\nYou know what? You remind me of the systems architects I worked with at UAB's Innovation Lab. The way you think—breaking things down, seeing how the pieces connect, then building something new from that understanding.\n\nThat's not common. Most people are either good at analysis OR good at making things. You're both.\n\n*She tilts her head.*\n\nHave you ever thought about that? Systems architecture? It's like... being the translator between what people need and what technology can do.",
+        emotion: 'impressed',
+        variation_id: 'career_architect_v1'
+      }
+    ],
+    requiredState: {
+      patterns: { analytical: { min: 5 }, building: { min: 4 } }
+    },
+    onEnter: [
+      {
+        characterId: 'maya',
+        addGlobalFlags: ['combo_architect_vision_achieved', 'maya_mentioned_career']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'architect_curious',
+        text: "What do systems architects actually do?",
+        nextNodeId: 'maya_crossroads',
+        pattern: 'exploring',
+        skills: ['criticalThinking']
+      },
+      {
+        choiceId: 'architect_interested',
+        text: "That sounds like something I'd be good at.",
+        nextNodeId: 'maya_crossroads',
+        pattern: 'building',
+        skills: ['selfAwareness']
+      },
+      {
+        choiceId: 'architect_humble',
+        text: "I'm just trying to understand things.",
+        nextNodeId: 'maya_crossroads',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['career_mention', 'invisible_depth', 'architect']
+  },
+
+  {
+    nodeId: 'maya_career_reflection_data',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "*Maya looks at you with growing recognition.*\n\nYou're like the data scientists I've met. The good ones, not the ones who just run algorithms. You ask questions, dig into things, and you actually find the stories hiding in the information.\n\nBirmingham's healthcare sector is desperate for people like that. UAB alone processes millions of patient records. But raw data is just noise without someone who can find the signal.\n\n*A small smile.*\n\nYou'd be good at that. Finding the signal.",
+        emotion: 'thoughtful',
+        variation_id: 'career_data_v1'
+      }
+    ],
+    requiredState: {
+      patterns: { analytical: { min: 5 }, exploring: { min: 4 } }
+    },
+    onEnter: [
+      {
+        characterId: 'maya',
+        addGlobalFlags: ['combo_data_storyteller_achieved', 'maya_mentioned_career']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'data_curious',
+        text: "What kind of stories do you find in health data?",
+        nextNodeId: 'maya_crossroads',
+        pattern: 'exploring',
+        skills: ['criticalThinking']
+      },
+      {
+        choiceId: 'data_practical',
+        text: "How do you even get started in something like that?",
+        nextNodeId: 'maya_crossroads',
+        pattern: 'analytical',
+        skills: ['problemSolving']
+      }
+    ],
+    tags: ['career_mention', 'invisible_depth', 'data_science']
+  },
+
+  {
+    nodeId: 'maya_career_reflection_creative_tech',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "*Maya's eyes light up with recognition.*\n\nYou know what you remind me of? Creative technologists. The people who live at the intersection of art and engineering—making technology that feels human instead of cold.\n\nPepper started as an art project, really. A way to make physical therapy feel less like torture for kids. The tech part came later.\n\nThis whole field is opening up. VR experiences for therapy. Interactive installations for museums. Robots that don't just function—they connect.\n\nYou've got that same instinct. Building things that make people feel something.",
+        emotion: 'excited',
+        variation_id: 'career_creative_tech_v1'
+      }
+    ],
+    requiredState: {
+      patterns: { building: { min: 5 }, exploring: { min: 4 } }
+    },
+    onEnter: [
+      {
+        characterId: 'maya',
+        addGlobalFlags: ['combo_creative_technologist_achieved', 'maya_mentioned_career']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'creative_inspired',
+        text: "Making technology feel human... I love that.",
+        nextNodeId: 'maya_crossroads',
+        pattern: 'helping',
+        skills: ['creativity']
+      },
+      {
+        choiceId: 'creative_curious',
+        text: "Where do people like that even work?",
+        nextNodeId: 'maya_crossroads',
+        pattern: 'exploring',
+        skills: ['communication']
+      }
+    ],
+    tags: ['career_mention', 'invisible_depth', 'creative_tech']
   }
 ]
 

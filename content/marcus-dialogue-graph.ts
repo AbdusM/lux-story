@@ -2348,6 +2348,122 @@ WARNING: Response time > 48h`,
       }
     ],
     tags: ['marcus_arc', 'pattern_unlock', 'patience', 'foreshadowing']
+  },
+
+  // ============= CAREER MENTION NODES (Invisible Depth) =============
+  // These nodes appear when player has achieved specific pattern combinations
+  // The career connection emerges naturally through Marcus's dialogue
+
+  {
+    nodeId: 'marcus_career_reflection_coordinator',
+    speaker: 'Marcus Thompson',
+    content: [
+      {
+        text: "*Marcus sets down his tablet, giving you his full attention.*\n\nYou know what I see in you? The same thing that makes the best healthcare coordinators exceptional.\n\nIt's not just patience—though you've got plenty of that. It's the way you help without taking over. You create space for people to figure things out themselves.\n\n*A knowing look.*\n\nBirmingham's medical district is one of the largest in the Southeast. And the patients who fall through the cracks? They don't need more doctors. They need advocates who know how to navigate the system AND care enough to do it right.\n\nThat's what you'd be good at.",
+        emotion: 'thoughtful',
+        variation_id: 'career_coordinator_v1'
+      }
+    ],
+    requiredState: {
+      patterns: { helping: { min: 6 }, patience: { min: 3 } }
+    },
+    onEnter: [
+      {
+        characterId: 'marcus',
+        addGlobalFlags: ['combo_healers_path_achieved', 'marcus_mentioned_career']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'coordinator_curious',
+        text: "What does a healthcare coordinator actually do day-to-day?",
+        nextNodeId: 'marcus_trust_philosophy',
+        pattern: 'exploring',
+        skills: ['criticalThinking']
+      },
+      {
+        choiceId: 'coordinator_moved',
+        text: "I never thought about healthcare that way.",
+        nextNodeId: 'marcus_trust_philosophy',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['career_mention', 'invisible_depth', 'healthcare']
+  },
+
+  {
+    nodeId: 'marcus_career_reflection_researcher',
+    speaker: 'Marcus Thompson',
+    content: [
+      {
+        text: "*Marcus leans forward with sudden intensity.*\n\nYou've got the analytical mind of a researcher, but you lead with empathy. That combination? Rare as hell.\n\nMedical research isn't just data crunching. The breakthroughs come from people who can see the humanity in the numbers—who ask 'what does this mean for actual patients?' instead of just 'what's the p-value?'\n\n*He gestures toward the hospital corridor.*\n\nUAB is a leading research hospital. They need people who can bridge the gap between bench science and bedside care. Scientists who remember that every data point was someone's worst day.\n\nYou think like that.",
+        emotion: 'impressed',
+        variation_id: 'career_researcher_v1'
+      }
+    ],
+    requiredState: {
+      patterns: { analytical: { min: 5 }, helping: { min: 4 } }
+    },
+    onEnter: [
+      {
+        characterId: 'marcus',
+        addGlobalFlags: ['combo_medical_detective_achieved', 'marcus_mentioned_career']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'researcher_curious',
+        text: "What kind of research happens at UAB?",
+        nextNodeId: 'marcus_trust_philosophy',
+        pattern: 'exploring',
+        skills: ['criticalThinking']
+      },
+      {
+        choiceId: 'researcher_humble',
+        text: "I just try to understand what's actually going on.",
+        nextNodeId: 'marcus_trust_philosophy',
+        pattern: 'analytical'
+      }
+    ],
+    tags: ['career_mention', 'invisible_depth', 'research']
+  },
+
+  {
+    nodeId: 'marcus_career_reflection_educator',
+    speaker: 'Marcus Thompson',
+    content: [
+      {
+        text: "*Marcus's expression softens.*\n\nYou remind me of the community health workers I've met. The ones who actually make a difference.\n\nThey're not doctors. They're translators—between medical expertise and real people's lives. They take all the complicated health information and make it... accessible. Human.\n\n*He pauses.*\n\nMost health problems don't get solved in hospitals. They get solved in communities, by people who have the patience to meet folks where they are and the heart to keep showing up.\n\nYou've got both.",
+        emotion: 'warm',
+        variation_id: 'career_educator_v1'
+      }
+    ],
+    requiredState: {
+      patterns: { helping: { min: 5 }, patience: { min: 4 } }
+    },
+    onEnter: [
+      {
+        characterId: 'marcus',
+        addGlobalFlags: ['combo_health_educator_achieved', 'marcus_mentioned_career']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'educator_interested',
+        text: "Making health accessible... that sounds meaningful.",
+        nextNodeId: 'marcus_trust_philosophy',
+        pattern: 'helping',
+        skills: ['communication']
+      },
+      {
+        choiceId: 'educator_practical',
+        text: "How does someone get into community health work?",
+        nextNodeId: 'marcus_trust_philosophy',
+        pattern: 'exploring',
+        skills: ['adaptability']
+      }
+    ],
+    tags: ['career_mention', 'invisible_depth', 'community_health']
   }
 ]
 

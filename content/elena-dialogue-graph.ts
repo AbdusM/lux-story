@@ -2185,6 +2185,81 @@ Thank you. For closing the display. Most people want me to find things faster.`,
       }
     ],
     tags: ['transition', 'elena_arc']
+  },
+
+  // ============= CAREER MENTION NODES (Invisible Depth) =============
+  {
+    nodeId: 'elena_career_reflection_curator',
+    speaker: 'Elena',
+    content: [
+      {
+        text: `The way you organize your thinking... patient, analytical. You see how pieces connect.
+
+Information architects do that—they create systems that help people find what they need. Organizers of knowledge.
+
+In a world drowning in data, that skill matters more than ever.`,
+        emotion: 'appreciative',
+        variation_id: 'career_curator_v1'
+      }
+    ],
+    requiredState: {
+      patterns: {
+        analytical: { min: 4 },
+        patience: { min: 5 }
+      }
+    },
+    onEnter: [
+      {
+        characterId: 'elena',
+        addGlobalFlags: ['combo_knowledge_curator_achieved', 'elena_mentioned_career']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'elena_career_curator_continue',
+        text: "Making knowledge accessible. That resonates.",
+        nextNodeId: 'elena_intro',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['career_mention', 'invisible_depth', 'information_science']
+  },
+
+  {
+    nodeId: 'elena_career_reflection_navigator',
+    speaker: 'Elena',
+    content: [
+      {
+        text: `You explore with purpose. Following threads, asking the right questions.
+
+Research librarians are like that—guides through vast seas of information. They help discoveries happen by connecting seekers with knowledge.
+
+Your curiosity combined with analysis... that's exactly what they need.`,
+        emotion: 'interested',
+        variation_id: 'career_navigator_v1'
+      }
+    ],
+    requiredState: {
+      patterns: {
+        exploring: { min: 5 },
+        analytical: { min: 4 }
+      }
+    },
+    onEnter: [
+      {
+        characterId: 'elena',
+        addGlobalFlags: ['combo_research_navigator_achieved', 'elena_mentioned_career']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'elena_career_navigator_continue',
+        text: "Helping others find their way through information.",
+        nextNodeId: 'elena_intro',
+        pattern: 'exploring'
+      }
+    ],
+    tags: ['career_mention', 'invisible_depth', 'information_science']
   }
 ]
 

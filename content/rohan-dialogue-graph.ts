@@ -1535,6 +1535,81 @@ If you see Samuel, tell him... tell him I'm staying. Someone has to keep the lig
       }
     ],
     tags: ['transition', 'rohan_arc']
+  },
+
+  // ============= CAREER MENTION NODES (Invisible Depth) =============
+  {
+    nodeId: 'rohan_career_reflection_architect',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: `You know what separates good code from great code? The ability to see the whole system while building each piece.
+
+Software architects—the ones who build the foundations everyone else stands on—they think like you do. Analytical and constructive at once.
+
+Their code runs systems people use every day without knowing. Invisible but essential.`,
+        emotion: 'impressed',
+        variation_id: 'career_architect_v1'
+      }
+    ],
+    requiredState: {
+      patterns: {
+        analytical: { min: 6 },
+        building: { min: 4 }
+      }
+    },
+    onEnter: [
+      {
+        characterId: 'rohan',
+        addGlobalFlags: ['combo_deep_coder_achieved', 'rohan_mentioned_career']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'rohan_career_architect_continue',
+        text: "Building foundations that last. That's meaningful.",
+        nextNodeId: 'rohan_introduction',
+        pattern: 'building'
+      }
+    ],
+    tags: ['career_mention', 'invisible_depth', 'tech']
+  },
+
+  {
+    nodeId: 'rohan_career_reflection_security',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: `The way you analyze things... patient, thorough. You don't rush to conclusions.
+
+Cybersecurity specialists think that way. They have to understand systems deeply enough to protect them—and to think like the threats trying to break them.
+
+Digital guardians. Birmingham's becoming a hub for that kind of work.`,
+        emotion: 'respectful',
+        variation_id: 'career_security_v1'
+      }
+    ],
+    requiredState: {
+      patterns: {
+        analytical: { min: 5 },
+        patience: { min: 5 }
+      }
+    },
+    onEnter: [
+      {
+        characterId: 'rohan',
+        addGlobalFlags: ['combo_security_guardian_achieved', 'rohan_mentioned_career']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'rohan_career_security_continue',
+        text: "Protecting what matters. That takes patience.",
+        nextNodeId: 'rohan_introduction',
+        pattern: 'analytical'
+      }
+    ],
+    tags: ['career_mention', 'invisible_depth', 'tech']
   }
 ]
 

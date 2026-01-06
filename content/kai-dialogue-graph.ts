@@ -1988,6 +1988,45 @@ If you see Samuel... tell him I'm done with compliance. I'm in the business of r
       }
     ],
     tags: ['reciprocity', 'kai_arc']
+  },
+
+  // ============= CAREER MENTION NODES (Invisible Depth) =============
+  {
+    nodeId: 'kai_career_reflection_safety',
+    speaker: 'Kai',
+    content: [
+      {
+        text: `The way you think... analytical, caring, patient. All three at once.
+
+Safety engineers need exactly that combination. They design systems that protect people before danger arrives. Thinking ahead so others don't have to.
+
+It's not about compliance. It's about prevention. You get that.`,
+        emotion: 'serious',
+        variation_id: 'career_safety_v1'
+      }
+    ],
+    requiredState: {
+      patterns: {
+        analytical: { min: 4 },
+        helping: { min: 4 },
+        patience: { min: 3 }
+      }
+    },
+    onEnter: [
+      {
+        characterId: 'kai',
+        addGlobalFlags: ['combo_safety_designer_achieved', 'kai_mentioned_career']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'kai_career_safety_continue',
+        text: "Prevention over reaction. That's what matters.",
+        nextNodeId: 'kai_introduction',
+        pattern: 'helping'
+      }
+    ],
+    tags: ['career_mention', 'invisible_depth', 'safety']
   }
 ]
 

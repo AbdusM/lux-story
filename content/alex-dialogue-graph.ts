@@ -2187,6 +2187,81 @@ They're the ones who kept showing up.`,
       }
     ],
     tags: ['alex_arc', 'arc_complete']
+  },
+
+  // ============= CAREER MENTION NODES (Invisible Depth) =============
+  {
+    nodeId: 'alex_career_reflection_logistics',
+    speaker: 'Alex',
+    content: [
+      {
+        text: `You think in systems. Analytical and constructive at the same time.
+
+Supply chain managers work like that—orchestrators of movement. They make sure everything arrives where it needs to be, when it needs to be there.
+
+In a world where everything connects, that kind of thinking is gold.`,
+        emotion: 'appreciative',
+        variation_id: 'career_logistics_v1'
+      }
+    ],
+    requiredState: {
+      patterns: {
+        analytical: { min: 4 },
+        building: { min: 5 }
+      }
+    },
+    onEnter: [
+      {
+        characterId: 'alex',
+        addGlobalFlags: ['combo_logistics_master_achieved', 'alex_mentioned_career']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'alex_career_logistics_continue',
+        text: "Making sure things work together. I like that.",
+        nextNodeId: 'alex_crossroads_moment',
+        pattern: 'building'
+      }
+    ],
+    tags: ['career_mention', 'invisible_depth', 'operations']
+  },
+
+  {
+    nodeId: 'alex_career_reflection_operations',
+    speaker: 'Alex',
+    content: [
+      {
+        text: `You've got this way of analyzing things... patient, thorough. Finding the patterns.
+
+Operations analysts do that—efficiency experts who see what others miss. They find the hidden improvements in how things run.
+
+That combination of analysis and patience? Rare and valuable.`,
+        emotion: 'impressed',
+        variation_id: 'career_operations_v1'
+      }
+    ],
+    requiredState: {
+      patterns: {
+        analytical: { min: 5 },
+        patience: { min: 4 }
+      }
+    },
+    onEnter: [
+      {
+        characterId: 'alex',
+        addGlobalFlags: ['combo_operations_optimizer_achieved', 'alex_mentioned_career']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'alex_career_operations_continue',
+        text: "Finding hidden improvements. That sounds right.",
+        nextNodeId: 'alex_crossroads_moment',
+        pattern: 'analytical'
+      }
+    ],
+    tags: ['career_mention', 'invisible_depth', 'operations']
   }
 ]
 

@@ -234,7 +234,7 @@ export const deepStationDialogueNodes: DialogueNode[] = [
             {
                 choiceId: 'force_reset',
                 text: '[SYSTEM] Rebooting...',
-                nextNodeId: 'sector_0_hub',
+                nextNodeId: 'samuel_comprehensive_hub',
                 consequence: { addGlobalFlags: ['ng_plus_1', 'killed_by_samuel'] }
             }
         ]
@@ -256,7 +256,7 @@ export const deepStationDialogueNodes: DialogueNode[] = [
             {
                 choiceId: 'choice_reset',
                 text: '[ACCEPT] Reset the Simulation (New Game+)',
-                nextNodeId: 'sector_0_hub', // Loop back to start
+                nextNodeId: 'samuel_comprehensive_hub', // Loop back to start
                 consequence: {
                     addGlobalFlags: ['ng_plus_1', 'knows_the_truth'],
                     // Resetting trust/knowledge should happen here in a real engine
@@ -289,7 +289,7 @@ export const deepStationDialogueNodes: DialogueNode[] = [
             {
                 choiceId: 'ending_restart',
                 text: '[SYSTEM RESET] Reboot',
-                nextNodeId: 'sector_0_hub'
+                nextNodeId: 'samuel_comprehensive_hub'
             }
         ]
     }
