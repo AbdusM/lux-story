@@ -556,19 +556,35 @@ for f in content/*-dialogue-graph.ts; do
 done
 ```
 
-### Priority Documents to Read
-1. `docs/03_PROCESS/3X-handoff-*.md` - Latest handoff (most recent first)
-2. `docs/03_PROCESS/10-system-coverage.md` - What's done vs what's missing
-3. `docs/03_PROCESS/11-feature-progress-tracker.md` - Full 572-feature status
+### Document Control Philosophy
+
+**Core Principle:** Git-tracked plans are source of truth. Session artifacts are temporary.
+
+| Location | Purpose | Lifecycle |
+|----------|---------|-----------|
+| `~/.claude/plans/` | Working drafts, session artifacts | Ephemeral |
+| `docs/03_PROCESS/plans/` | Handoffs, active plans | Permanent |
+| `docs/03_PROCESS/archive/` | Superseded plans | Historical |
+
+**Naming Convention:**
+- Stable docs: `XX-descriptive-name.md` (numbered by purpose)
+- Time-sensitive: `DDMMMYY_DESCRIPTIVE_NAME.md` (dated)
+
+### Context Recovery (Priority Reading)
+1. `docs/03_PROCESS/plans/*_HANDOFF.md` - Latest session state
+2. `docs/03_PROCESS/10-system-coverage.md` - What's done vs missing
+3. `docs/03_PROCESS/11-feature-progress-tracker.md` - Full feature status
 4. This file (CLAUDE.md) - Current Status section
 
 ### Handoff Pattern
-Each session should create a handoff doc at `docs/03_PROCESS/3X-handoff-YYYY-MM-DD.md` containing:
-- Session summary (what was done)
-- Current state (tests, coverage)
-- Remaining gaps
-- Next steps
-- Quick context recovery commands
+At session end, create: `docs/03_PROCESS/plans/DDMMMYY_HANDOFF.md`
+
+Required sections:
+- Session Summary - What was done (with commit hashes)
+- Current State - Tests, coverage metrics
+- Remaining Gaps - What's incomplete
+- Next Steps - Prioritized actions
+- Quick Context Recovery - Commands to run
 
 ### Q1 2026 Priority Tasks
 1. ~~**Loyalty Experiences** (16/16)~~ ✅ COMPLETE

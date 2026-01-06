@@ -70,20 +70,28 @@ Feedback for every action. Make simple actions feel powerful.
 
 ## DOCUMENT CONTROL PRINCIPLES
 
-### File Naming Convention
-All documentation follows numbered prefixes: `00-`, `01-`, `02-`, etc.
-- Enables consistent ordering
-- Reduces cognitive load when navigating
-- Makes gaps and additions obvious
+### Core Principle
+Git-tracked plans are source of truth. Session artifacts are temporary.
 
-### Document Hierarchy
+### Location Policy
+| Location | Purpose | Lifecycle |
+|----------|---------|-----------|
+| `~/.claude/plans/` | Working drafts, session artifacts | Ephemeral |
+| `docs/03_PROCESS/plans/` | Handoffs, active plans | Permanent |
+| `docs/03_PROCESS/archive/` | Superseded plans | Historical |
+
+### Naming Convention
+- **Stable docs:** `XX-descriptive-name.md` (numbered by purpose)
+- **Time-sensitive:** `DDMMMYY_DESCRIPTIVE_NAME.md` (dated)
+
+### Document Hierarchy (Numbered)
 ```
 00-09: Core/Foundation
 10-19: Status/Progress
 20-29: Planning/Strategy
-30-39: Handoffs/Transitions
 40-49: Guides/Walkthroughs
 90-99: Archive/Reference
+plans/: Dated handoffs and active plans
 ```
 
 ### Status Tracking Pattern
@@ -91,6 +99,15 @@ Every system should have clear coverage metrics:
 - `16/16` = Complete
 - `10/16` = Partial (list what's missing)
 - Tests: Always report count
+
+### Lifecycle
+```
+ACTIVE (docs/plans/)     → Working plans, current baselines
+    ↓ [Completed]
+REFERENCE (docs/plans/)  → Historical decisions still relevant
+    ↓ [Superseded]
+ARCHIVE (docs/archive/)  → Historical context only
+```
 
 ---
 
