@@ -173,6 +173,20 @@ npm test -- --watch             # Watch mode
 - Playwright for E2E browser automation
 - Test page: `/test-pixels` for avatar verification
 
+### Git Commits
+Keep commit messages concise. No generated footers or co-author tags.
+```bash
+# Format
+<type>: <description>
+
+# Types: feat, fix, docs, refactor, test, chore
+
+# Examples
+feat: Add Maya simulation
+docs: Update system coverage
+fix: Resolve trust calculation bug
+```
+
 ---
 
 ## State Architecture
