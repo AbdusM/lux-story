@@ -252,7 +252,7 @@ Deprecated code preserved for reference:
 | Feature | Coverage | Notes |
 |---------|----------|-------|
 | Pattern Reflections | 91 total | NPC dialogue varies by player pattern |
-| Voice Variations | 4/16 chars | Choice text varies (Maya, Jordan, Devon, Samuel) |
+| Voice Variations | 16/16 chars | All tiers meet targets (147 total) |
 | Conditional Choices | 120 total | visibleCondition gated |
 | Trust-Gated Nodes | 95 total | 8 trust levels |
 
@@ -283,6 +283,7 @@ Deprecated code preserved for reference:
 - `docs/01_MECHANICS/21-infinite-canvas-feature-catalog.md` - Full feature catalog
 
 ### Recently Completed (January 2026)
+- **Voice Variations 16/16** - All characters meet tier targets (+19 variations to 5 chars)
 - **Skill System Cleanup** - 8 new skills defined, 7 renamed to standard forms, all 54 skills formalized
 - **Pattern Unlock Nodes** - 12 pattern-gated nodes across 5 characters
 - **Conditional Choice Wiring** - Pattern unlocks reachable via introduction choices
@@ -291,8 +292,8 @@ Deprecated code preserved for reference:
 - **Derivatives System** - 7 modules (trust, pattern, character, narrative, knowledge, interrupt, assessment)
 - **Dialogue Expansion** - 624 → 946 nodes (+52%)
 
-### Q1 2026 Priority Tasks
-1. **Voice Variations** - Add to 12 characters (only Maya, Jordan, Devon, Samuel have them)
+### Q1 2026 Priority Tasks ✅ ALL COMPLETE
+1. ~~**Voice Variations**~~ ✅ COMPLETE - All tiers meet targets (Tier 1: 15, Tier 2: 10, Tier 3-4: 6)
 2. ~~**Pattern Reflections**~~ ✅ COMPLETE - Alex (5), Grace (5), Silas (5) all at target
 3. ~~**Skill System Cleanup**~~ ✅ COMPLETE - 8 skills added, 7 renamed to standard forms
 
