@@ -1416,6 +1416,7 @@ That's why I left tech. That's why I teach bootcamps now. Because I couldn't han
         nextNodeId: 'jordan_vulnerability_reflection',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
+        requiredOrbFill: { pattern: 'helping', threshold: 25 },
         consequence: {
           characterId: 'jordan',
           trustChange: 2
@@ -1427,6 +1428,7 @@ That's why I left tech. That's why I teach bootcamps now. Because I couldn't han
         nextNodeId: 'jordan_vulnerability_reflection',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'communication'],
+        requiredOrbFill: { pattern: 'patience', threshold: 20 },
         consequence: {
           characterId: 'jordan',
           trustChange: 2
@@ -1438,6 +1440,7 @@ That's why I left tech. That's why I teach bootcamps now. Because I couldn't han
         nextNodeId: 'jordan_vulnerability_reflection',
         pattern: 'patience',
         skills: ['emotionalIntelligence'],
+        requiredOrbFill: { pattern: 'patience', threshold: 30 },
         consequence: {
           characterId: 'jordan',
           trustChange: 2

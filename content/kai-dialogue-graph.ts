@@ -1827,7 +1827,8 @@ My training passed inspection. Miguel didn't pass the fall.`,
         text: "The inspection failed him. Not you.",
         nextNodeId: 'kai_vulnerability_reflection',
         pattern: 'analytical',
-        skills: ['systemsThinking']
+        skills: ['systemsThinking'],
+        requiredOrbFill: { pattern: 'analytical', threshold: 25 }
       },
       {
         choiceId: 'vuln_empathy',
@@ -1842,6 +1843,7 @@ My training passed inspection. Miguel didn't pass the fall.`,
         nextNodeId: 'kai_vulnerability_reflection',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
+        requiredOrbFill: { pattern: 'helping', threshold: 20 },
         consequence: {
           characterId: 'kai',
           trustChange: 2
@@ -1853,6 +1855,7 @@ My training passed inspection. Miguel didn't pass the fall.`,
         nextNodeId: 'kai_vulnerability_reflection',
         pattern: 'patience',
         skills: ['emotionalIntelligence'],
+        requiredOrbFill: { pattern: 'patience', threshold: 30 },
         consequence: {
           characterId: 'kai',
           trustChange: 2

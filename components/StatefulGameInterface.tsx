@@ -107,6 +107,7 @@ import { playPatternSound, playTrustSound, playIdentitySound, playMilestoneSound
 // FoxTheatreGlow import removed - unused
 import { ExperienceRenderer } from '@/components/game/ExperienceRenderer'
 import { SimulationRenderer } from '@/components/game/SimulationRenderer'
+import { getPatternUnlockChoices } from '@/lib/pattern-unlock-choices'
 // Share prompts removed - too obtrusive
 
 // Trust feedback now dialogue-based via consequence echoes
@@ -576,7 +577,16 @@ export default function StatefulGameInterface() {
       }
 
       let content = DialogueGraphNavigator.selectContent(currentNode, character.conversationHistory, gameState)
-      const choices = StateConditionEvaluator.evaluateChoices(currentNode, gameState, actualCharacterId).filter(c => c.visible)
+      const regularChoices = StateConditionEvaluator.evaluateChoices(currentNode, gameState, actualCharacterId).filter(c => c.visible)
+
+      // Add pattern-unlocked choices (special dialogue branches unlocked by pattern investment)
+      const patternUnlockChoices = getPatternUnlockChoices(
+        actualCharacterId,
+        gameState.patterns,
+        actualGraph,
+        character.visitedPatternUnlocks
+      )
+      const choices = [...regularChoices, ...patternUnlockChoices]
 
       // Session Boundary Detection (clean, minimal)
       // If this node is marked as a session boundary, show atmospheric announcement
@@ -1086,6 +1096,19 @@ export default function StatefulGameInterface() {
       }
 
       const targetCharacter = newGameState.characters.get(targetCharacterId)!
+
+      // Track pattern unlock visit (so it doesn't show again)
+      if (choice.choice.choiceId?.startsWith('pattern_unlock_')) {
+        if (!targetCharacter.visitedPatternUnlocks) {
+          targetCharacter.visitedPatternUnlocks = new Set()
+        }
+        targetCharacter.visitedPatternUnlocks.add(nextNode.nodeId)
+        logger.info('[StatefulGameInterface] Pattern unlock visited:', {
+          characterId: targetCharacterId,
+          nodeId: nextNode.nodeId
+        })
+      }
+
       // Track first meeting with non-Samuel character for Constellation nudge
       const isFirstMeeting = targetCharacter.conversationHistory.length === 0 && targetCharacterId !== 'samuel'
       targetCharacter.conversationHistory.push(nextNode.nodeId)
@@ -1157,7 +1180,16 @@ export default function StatefulGameInterface() {
       }
 
       const content = DialogueGraphNavigator.selectContent(nextNode, targetCharacter.conversationHistory, newGameState)
-      const newChoices = StateConditionEvaluator.evaluateChoices(nextNode, newGameState, targetCharacterId).filter(c => c.visible)
+      const regularNewChoices = StateConditionEvaluator.evaluateChoices(nextNode, newGameState, targetCharacterId).filter(c => c.visible)
+
+      // Add pattern-unlocked choices
+      const patternUnlockNewChoices = getPatternUnlockChoices(
+        targetCharacterId,
+        newGameState.patterns,
+        targetGraph,
+        targetCharacter.visitedPatternUnlocks
+      )
+      const newChoices = [...regularNewChoices, ...patternUnlockNewChoices]
 
       // Apply pattern reflection to NPC dialogue based on player's patterns
       // Node-level patternReflection takes precedence over content-level
@@ -1516,7 +1548,17 @@ export default function StatefulGameInterface() {
     }
 
     const content = DialogueGraphNavigator.selectContent(targetNode, [], newGameState)
-    const choices = StateConditionEvaluator.evaluateChoices(targetNode, newGameState, searchResult.characterId).filter(c => c.visible)
+    const regularInterruptChoices = StateConditionEvaluator.evaluateChoices(targetNode, newGameState, searchResult.characterId).filter(c => c.visible)
+
+    // Add pattern-unlocked choices for interrupt context
+    const interruptCharState = newGameState.characters.get(searchResult.characterId)
+    const patternUnlockInterruptChoices = getPatternUnlockChoices(
+      searchResult.characterId,
+      newGameState.patterns,
+      searchResult.graph,
+      interruptCharState?.visitedPatternUnlocks
+    )
+    const choices = [...regularInterruptChoices, ...patternUnlockInterruptChoices]
     const reflected = applyPatternReflection(content.text, content.emotion, content.patternReflection, newGameState.patterns)
 
     setState(prev => ({
@@ -1551,7 +1593,17 @@ export default function StatefulGameInterface() {
         const targetNode = searchResult.graph.nodes.get(interrupt.missedNodeId)
         if (targetNode) {
           const content = DialogueGraphNavigator.selectContent(targetNode, [], state.gameState)
-          const choices = StateConditionEvaluator.evaluateChoices(targetNode, state.gameState, searchResult.characterId).filter(c => c.visible)
+          const regularMissedChoices = StateConditionEvaluator.evaluateChoices(targetNode, state.gameState, searchResult.characterId).filter(c => c.visible)
+
+          // Add pattern-unlocked choices
+          const missedCharState = state.gameState.characters.get(searchResult.characterId)
+          const patternUnlockMissedChoices = getPatternUnlockChoices(
+            searchResult.characterId,
+            state.gameState.patterns,
+            searchResult.graph,
+            missedCharState?.visitedPatternUnlocks
+          )
+          const choices = [...regularMissedChoices, ...patternUnlockMissedChoices]
           const reflected = applyPatternReflection(content.text, content.emotion, content.patternReflection, state.gameState.patterns)
 
           setState(prev => ({
@@ -1625,7 +1677,16 @@ export default function StatefulGameInterface() {
           const samuelChar = newGameState.characters.get('samuel') || GameStateUtils.createCharacterState('samuel')
           newGameState.characters.set('samuel', samuelChar)
           const content = DialogueGraphNavigator.selectContent(introNode, samuelChar.conversationHistory, newGameState)
-          const choices = StateConditionEvaluator.evaluateChoices(introNode, newGameState, 'samuel').filter(c => c.visible)
+          const regularSamuelChoices = StateConditionEvaluator.evaluateChoices(introNode, newGameState, 'samuel').filter(c => c.visible)
+
+          // Add pattern-unlocked choices for Samuel
+          const patternUnlockSamuelChoices = getPatternUnlockChoices(
+            'samuel',
+            newGameState.patterns,
+            samuelGraph,
+            samuelChar.visitedPatternUnlocks
+          )
+          const choices = [...regularSamuelChoices, ...patternUnlockSamuelChoices]
 
           // Apply pattern reflection
           const reflected = applyPatternReflection(
@@ -1709,7 +1770,16 @@ export default function StatefulGameInterface() {
       newGameState.currentCharacterId = targetCharacterId
 
       const content = DialogueGraphNavigator.selectContent(targetNode, targetCharacter.conversationHistory, newGameState)
-      const choices = StateConditionEvaluator.evaluateChoices(targetNode, newGameState, targetCharacterId).filter(c => c.visible)
+      const regularNavChoices = StateConditionEvaluator.evaluateChoices(targetNode, newGameState, targetCharacterId).filter(c => c.visible)
+
+      // Add pattern-unlocked choices
+      const patternUnlockNavChoices = getPatternUnlockChoices(
+        targetCharacterId,
+        newGameState.patterns,
+        targetGraph,
+        targetCharacter.visitedPatternUnlocks
+      )
+      const choices = [...regularNavChoices, ...patternUnlockNavChoices]
 
       // Apply pattern reflection
       const reflected = applyPatternReflection(

@@ -1495,6 +1495,7 @@ They said I was being "difficult." That I'd destroy careers if I went public. In
         nextNodeId: 'rohan_vulnerability_reflection',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
+        requiredOrbFill: { pattern: 'helping', threshold: 25 },
         consequence: {
           characterId: 'rohan',
           trustChange: 2
@@ -1505,7 +1506,8 @@ They said I was being "difficult." That I'd destroy careers if I went public. In
         text: "What did it cost you?",
         nextNodeId: 'rohan_vulnerability_reflection',
         pattern: 'exploring',
-        skills: ['communication']
+        skills: ['communication'],
+        requiredOrbFill: { pattern: 'exploring', threshold: 20 }
       },
       {
         choiceId: 'vuln_silence',
@@ -1513,6 +1515,7 @@ They said I was being "difficult." That I'd destroy careers if I went public. In
         nextNodeId: 'rohan_vulnerability_reflection',
         pattern: 'patience',
         skills: ['emotionalIntelligence'],
+        requiredOrbFill: { pattern: 'patience', threshold: 30 },
         consequence: {
           characterId: 'rohan',
           trustChange: 2
