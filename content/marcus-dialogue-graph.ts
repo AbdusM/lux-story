@@ -25,6 +25,10 @@ const nodes: DialogueNode[] = [
       emotion: 'exhausted',
       microAction: 'He rubs his temples, surrounded by buzzing message alerts.',
       variation_id: 'default',
+      patternReflection: [
+        { pattern: 'helping', minLevel: 4, altText: "My capacity is exceeded. One user becomes ten. Ten becomes a hundred.\n\n*He pauses, noticing something in your expression.*\n\nYou're already thinking about how to help. I recognize that look. Just... don't burn yourself the way I have.", altEmotion: 'warning' },
+        { pattern: 'patience', minLevel: 4, altText: "My capacity is exceeded. One user becomes ten. Ten becomes a hundred.\n\n*He takes a breath, steadied by your calm presence.*\n\nYou're not rushing to fix this. That is... appreciated. Most people throw solutions before they understand the problem.", altEmotion: 'grateful' }
+      ],
       // E2-031: Interrupt opportunity when Marcus shows exhaustion
       interrupt: {
         duration: 3000,
@@ -58,6 +62,35 @@ const nodes: DialogueNode[] = [
         nextNodeId: 'marcus_origin_story',
         pattern: 'analytical',
         skills: ['criticalThinking']
+      },
+      // Pattern unlock choices - only visible when player has built enough pattern affinity
+      {
+        choiceId: 'intro_patient_unlock',
+        text: "[Heart to Heart] You're not just tired. You're carrying something. Who was the first person you protected?",
+        nextNodeId: 'marcus_first_patient_story',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        visibleCondition: {
+          patterns: { helping: { min: 40 } }
+        },
+        consequence: {
+          characterId: 'marcus',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'intro_night_shift_unlock',
+        text: "[Deep Listening] Three cycles without rest. You've done this before. What do the sleepless hours teach?",
+        nextNodeId: 'marcus_night_shift_wisdom',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        visibleCondition: {
+          patterns: { patience: { min: 50 } }
+        },
+        consequence: {
+          characterId: 'marcus',
+          trustChange: 2
+        }
       }
     ],
     onEnter: [
@@ -99,12 +132,23 @@ const nodes: DialogueNode[] = [
     content: [{
       text: "*He pauses, fingers hovering over the keyboard.*\n\nUnsustainable. Yes. That is the accurate diagnosis.\n\n*Looks at you with tired eyes.*\n\nI was not always... this way. Before the station, I was a security analyst. Children's hospital. Birmingham General's pediatric wing.\n\n*His voice softens.*\n\nI built systems to protect the most vulnerable data in the world. Medical records of children. Their treatments. Their families' information.",
       emotion: 'reflective',
-      variation_id: 'origin_v1'
+      variation_id: 'origin_v1',
+      patternReflection: [
+        { pattern: 'analytical', minLevel: 4, altText: "*He pauses, recognizing something in your questions.*\n\nYou think in systems too. Unsustainable—that is an accurate diagnosis.\n\nBefore this, I was security. Children's hospital. Birmingham General.\n\n*A faint appreciation in his voice.*\n\nYou understand that systems have breaking points. Most people don't see the structure until it fails.", altEmotion: 'recognized' },
+        { pattern: 'building', minLevel: 4, altText: "*He pauses, noting how you approached the problem.*\n\nUnsustainable. Yes. You see it as something to *fix*, not just describe.\n\nBefore this, I built security systems. Children's hospital.\n\n*Slight nod.*\n\nBuilders recognize builders. We see broken things and cannot rest until they work.", altEmotion: 'kindred' }
+      ]
     }],
     choices: [
       {
         choiceId: 'why_leave_hospital',
         text: "What made you leave?",
+        voiceVariations: {
+          analytical: "Walk me through what changed. What shifted?",
+          helping: "Something happened, didn't it? Something that still hurts.",
+          building: "You left something you built. That doesn't happen easily.",
+          exploring: "There's more to this story. What aren't you saying?",
+          patience: "Take your time. I can tell this isn't easy to talk about."
+        },
         nextNodeId: 'marcus_why_left',
         pattern: 'patience',
         skills: ['emotionalIntelligence'],
@@ -146,6 +190,13 @@ const nodes: DialogueNode[] = [
       {
         choiceId: 'respect_privacy',
         text: "I understand. Some things take time to share.",
+        voiceVariations: {
+          analytical: "You'll tell me when the data supports it. No rush.",
+          helping: "I'm here when you're ready. That wound needs its own time.",
+          building: "We can work with what we have now. The rest can wait.",
+          exploring: "Some stories unfold in their own time. I'll be here.",
+          patience: "The silence says enough. I understand."
+        },
         nextNodeId: 'marcus_automation_lesson',
         pattern: 'patience',
         skills: ['emotionalIntelligence'],
@@ -157,6 +208,13 @@ const nodes: DialogueNode[] = [
       {
         choiceId: 'focus_on_now',
         text: "Then let's focus on now. How can I help with your workload?",
+        voiceVariations: {
+          analytical: "Let's map out the bottlenecks. What's eating most of your time?",
+          helping: "You shouldn't carry this alone. Let me help shoulder some of it.",
+          building: "Point me at the broken piece. Let's fix something today.",
+          exploring: "Show me where the system fails. I want to understand it.",
+          patience: "One step at a time. What's the most pressing thing right now?"
+        },
         nextNodeId: 'marcus_automation_lesson',
         pattern: 'building',
         skills: ['collaboration']
@@ -200,12 +258,23 @@ const nodes: DialogueNode[] = [
     content: [{
       text: "*His expression softens unexpectedly.*\n\nChildren cannot protect themselves. Their medical data - diagnoses, treatments, family histories - it follows them forever. A breach when they are eight affects their insurance at eighteen. Their employment at twenty-eight.\n\n*Quieter.*\n\nI took that personally. Every record was someone's child. Someone's future.\n\n*Pause.*\n\nThat is why... when things went wrong... it was not abstract. It was faces. Names. Kids I had seen in the hallways.",
       emotion: 'tender',
-      variation_id: 'children_v1'
+      variation_id: 'children_v1',
+      patternReflection: [
+        { pattern: 'helping', minLevel: 4, altText: "*His expression softens, recognizing something familiar in you.*\n\nYou understand. Children cannot protect themselves.\n\nA breach at eight affects insurance at eighteen. Employment at twenty-eight. Every record was someone's future.\n\n*He meets your eyes.*\n\nYou feel it too—the weight of protecting those who cannot protect themselves. That is why I trust you with this.", altEmotion: 'connected' },
+        { pattern: 'exploring', minLevel: 4, altText: "*His expression shifts as he watches your curiosity.*\n\nYou want to understand the *why*. Good.\n\nChildren's data follows them forever. A breach at eight affects insurance at eighteen. That is the system. Cold. Consequential.\n\n*Pause.*\n\nBut you are asking about the human cost. That is the question most people forget to ask.", altEmotion: 'appreciative' }
+      ]
     }],
     choices: [
       {
         choiceId: 'what_went_wrong',
         text: "What went wrong?",
+        voiceVariations: {
+          analytical: "You said 'when things went wrong.' What was the failure point?",
+          helping: "I can hear the weight in your voice. What happened to them?",
+          building: "Systems don't break randomly. What cracked?",
+          exploring: "You're dancing around something. What's the story you haven't told?",
+          patience: "You can tell me. When you're ready."
+        },
         nextNodeId: 'marcus_breach_hint',
         pattern: 'patience',
         skills: ['emotionalIntelligence'],
@@ -236,6 +305,13 @@ const nodes: DialogueNode[] = [
       {
         choiceId: 'father_proud',
         text: "He would be proud of what you're doing here.",
+        voiceVariations: {
+          analytical: "The data shows it: you're continuing his work. That's quantifiable legacy.",
+          helping: "He raised someone who protects others. That's the best kind of proud.",
+          building: "You took what he built and made it stronger. That's real honor.",
+          exploring: "I wonder what he'd think of this station. Of the person you've become.",
+          patience: "Legacy isn't measured in moments. You're living his values daily."
+        },
         nextNodeId: 'marcus_automation_lesson',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
@@ -272,6 +348,13 @@ const nodes: DialogueNode[] = [
       {
         choiceId: 'respect_timing',
         text: "I'll earn that trust. For now, let's focus on what you need.",
+        voiceVariations: {
+          analytical: "Trust is built in increments. I'll demonstrate reliability first.",
+          helping: "I'm not going anywhere. We'll get there when you're ready.",
+          building: "Let's build something together first. Trust follows shared work.",
+          exploring: "The full story can wait. Show me where you need help now.",
+          patience: "Some things take time. I understand. What can I help with today?"
+        },
         nextNodeId: 'marcus_automation_lesson',
         pattern: 'patience',
         skills: ['emotionalIntelligence'],
@@ -467,7 +550,11 @@ WARNING: Response time > 48h`,
     content: [{
       text: "It is... quiet. The queue is clearing. Sentinel scores are rising. The users register as 'heard'.\n\n*He watches the metrics stabilize.*\n\nYou understand triage. That is rare. Most people want to solve everything at once. You knew to filter first.",
       emotion: 'relieved',
-      variation_id: 'default'
+      variation_id: 'default',
+      patternReflection: [
+        { pattern: 'analytical', minLevel: 4, altText: "It is... quiet. The queue is clearing. Sentinel scores are rising.\n\n*He watches you with new respect.*\n\nYou approached this like a system, not a crisis. Filter, then process. Most panic and throw resources. You found the bottleneck first.\n\nThat is how I was trained to think. Before everything went wrong.", altEmotion: 'impressed' },
+        { pattern: 'building', minLevel: 4, altText: "It is... quiet. The queue is clearing.\n\n*He watches the metrics with something like wonder.*\n\nYou did not just fix it. You *built* something. A system that will keep working after we walk away.\n\nThat is the difference between a patch and a solution. You understand that.", altEmotion: 'grateful_impressed' }
+      ]
     }],
     choices: [
       {
@@ -2170,6 +2257,97 @@ WARNING: Response time > 48h`,
       }
     ],
     tags: ['marcus_arc', 'connection', 'boundaries']
+  },
+
+  // ============= PATTERN UNLOCK NODES =============
+  // These become available when player demonstrates sufficient pattern affinity
+
+  {
+    nodeId: 'marcus_first_patient_story',
+    speaker: 'Marcus',
+    content: [{
+      text: "*Marcus sets down his coffee. His usual measured demeanor softens.*\n\nYou care about people. I can see it in how you listen. So I will tell you something I do not share often.\n\n*Pause.*\n\nMy first patient was not a patient. She was a file. A four-year-old girl. Leukemia. Her records were in a system I was hired to secure.\n\n*Voice quieter.*\n\nI never met her. But I read her file to test access permissions. Treatment notes. Her mother's insurance disputes. A nurse's annotation: 'Brave girl. Smiled through the IV.'\n\n*Meets your eyes.*\n\nThat is when I understood. Every record is a person. Every breach is a betrayal of trust they never knew they gave.\n\nI have been protecting her ever since. Even though she is probably grown now. Even though she will never know my name.",
+      emotion: 'vulnerable_reverent',
+      variation_id: 'first_patient_v1'
+    }],
+    requiredState: {
+      patterns: { helping: { min: 40 } }
+    },
+    onEnter: [
+      {
+        characterId: 'marcus',
+        addKnowledgeFlags: ['marcus_first_patient_shared']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'patient_honored',
+        text: "She's lucky someone was watching over her. Even invisibly.",
+        nextNodeId: 'marcus_why_here',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'marcus',
+          trustChange: 3
+        }
+      },
+      {
+        choiceId: 'patient_weight',
+        text: "That's a heavy thing to carry. The faces behind the files.",
+        nextNodeId: 'marcus_reciprocity_intro',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'marcus',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['marcus_arc', 'pattern_unlock', 'helping', 'backstory']
+  },
+
+  {
+    nodeId: 'marcus_night_shift_wisdom',
+    speaker: 'Marcus',
+    content: [{
+      text: "*Marcus leans back. The exhaustion is still there, but something else surfaces—hard-won wisdom.*\n\nYou are patient. That is rare. Most people want quick answers.\n\n*He gestures at the screens around them.*\n\nThe night shifts taught me patience. Three years of 11pm to 7am. Watching systems. Waiting for anomalies.\n\n*Quiet.*\n\nMost attacks happen at 3am. When defenses are lowest. When the human watching is tired. The attackers count on impatience. On the guard checking the clock instead of the logs.\n\n*Looks at you.*\n\nBut patience is not passive. It is active waiting. It is noticing the small things because you are not rushing to the big ones.\n\n*Almost to himself.*\n\nThat is what I was doing the night before the breach. Being patient. Watching. And still... I missed it.\n\nNot because I was impatient. Because the threat came from inside.",
+      emotion: 'reflective_haunted',
+      variation_id: 'night_shift_v1'
+    }],
+    requiredState: {
+      patterns: { patience: { min: 50 } }
+    },
+    onEnter: [
+      {
+        characterId: 'marcus',
+        addKnowledgeFlags: ['marcus_night_shift_shared', 'marcus_breach_hinted']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'night_inside',
+        text: "From inside? What happened?",
+        nextNodeId: 'marcus_vulnerability_arc',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'marcus',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'night_wisdom',
+        text: "Active waiting. That's how you see patterns others miss.",
+        nextNodeId: 'marcus_trust_philosophy',
+        pattern: 'analytical',
+        skills: ['criticalThinking'],
+        consequence: {
+          characterId: 'marcus',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['marcus_arc', 'pattern_unlock', 'patience', 'foreshadowing']
   }
 ]
 

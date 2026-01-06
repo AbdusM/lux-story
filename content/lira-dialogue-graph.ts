@@ -20,13 +20,25 @@ export const liraDialogueNodes: DialogueNode[] = [
             {
                 text: "It's quiet here. Too quiet.\n\n[She adjusts a bulky headset, her eyes closed, fingers tracing the air as if conducting an invisible orchestra.]\n\n\"The prompt was 'Silence before the storm,'\" she whispers. \"But the AI keeps adding rain. It doesn't understand the *pressure* of silence.\"",
                 emotion: 'pensive',
-                variation_id: 'intro_v1'
+                variation_id: 'intro_v1',
+                patternReflection: [
+                    { pattern: 'patience', minLevel: 4, altText: "It's quiet here. Too quiet.\n\n[She adjusts her headset, eyes closed, fingers tracing the air.]\n\n\"The prompt was 'Silence before the storm.'\" She whispers, then opens her eyes.\n\n\"You're not rushing me. Most people can't sit in silence. You understand that silence *is* something.\"", altEmotion: 'curious' },
+                    { pattern: 'exploring', minLevel: 4, altText: "It's quiet here. Too quiet.\n\n[She adjusts her headset, conducting invisible sound.]\n\n\"The prompt was 'Silence before the storm.'\" She catches your interested gaze.\n\n\"You want to hear it, don't you? The nothing that's actually something. Most people just hear... nothing.\"", altEmotion: 'intrigued' },
+                    { pattern: 'building', minLevel: 4, altText: "It's quiet here. Too quiet.\n\n[She adjusts her headset, fingers tracing patterns.]\n\n\"The prompt was 'Silence before the storm.'\" She notices you studying her setup.\n\n\"You build things. You know that the empty space matters as much as what you put in it.\"", altEmotion: 'interested' }
+                ]
             }
         ],
         choices: [
             {
                 choiceId: 'intro_listening',
                 text: "What are you listening for?",
+                voiceVariations: {
+                    analytical: "What frequencies are you isolating? What are you listening for?",
+                    helping: "You seem deeply focused. What are you listening for?",
+                    building: "What are you capturing? What are you listening for?",
+                    exploring: "I'm curious. What are you listening for?",
+                    patience: "Take your time. What are you listening for?"
+                },
                 nextNodeId: 'lira_explains_silence',
                 pattern: 'patience',
                 skills: ['observation'],
@@ -45,12 +57,48 @@ export const liraDialogueNodes: DialogueNode[] = [
             {
                 choiceId: 'intro_creative',
                 text: "How do you teach a machine about pressure?",
+                voiceVariations: {
+                    analytical: "What's the training methodology? How do you teach a machine about pressure?",
+                    helping: "That sounds like meaningful work. How do you teach a machine about pressure?",
+                    building: "Show me your process. How do you teach a machine about pressure?",
+                    exploring: "That's fascinating. How do you teach a machine about pressure?",
+                    patience: "I'd like to understand. How do you teach a machine about pressure?"
+                },
                 nextNodeId: 'lira_teaching_machines',
                 pattern: 'exploring',
                 skills: ['creativity'],
                 consequence: {
                     characterId: 'lira',
                     trustChange: 1
+                }
+            },
+            // Pattern unlock choices - only visible when player has built enough pattern affinity
+            {
+                choiceId: 'intro_studio_unlock',
+                text: "[Seeker's Intuition] You're not just composing. You're collecting something. Show me what you hear.",
+                nextNodeId: 'lira_sound_studio',
+                pattern: 'exploring',
+                skills: ['creativity'],
+                visibleCondition: {
+                    patterns: { exploring: { min: 40 } }
+                },
+                consequence: {
+                    characterId: 'lira',
+                    trustChange: 2
+                }
+            },
+            {
+                choiceId: 'intro_collab_unlock',
+                text: "[Builder's Vision] Skeleton, skin, soul. You build in layers. I understand that architecture.",
+                nextNodeId: 'lira_collaboration',
+                pattern: 'building',
+                skills: ['creativity'],
+                visibleCondition: {
+                    patterns: { building: { min: 50 } }
+                },
+                consequence: {
+                    characterId: 'lira',
+                    trustChange: 2
                 }
             }
         ],
@@ -65,6 +113,10 @@ export const liraDialogueNodes: DialogueNode[] = [
                 text: "The space between notes. That's where the emotion lives.\n\nI'm scoring a film about memory loss. The director wants 'Sadness.' The AI generates minor keys and slow tempos. Cliche.\n\nTrue sadness isn't slow music. It's a melody that tries to be happy but... forgets how.",
                 emotion: 'melancholic',
                 variation_id: 'silence_v1',
+                patternReflection: [
+                    { pattern: 'helping', minLevel: 4, altText: "The space between notes. That's where the emotion lives.\n\nI'm scoring a film about memory loss. The director wants 'Sadness.' But sadness isn't a minor key.\n\n*She looks at you.*\n\nYou understand. You're listening to what I'm *not* saying. Most people just hear the words.", altEmotion: 'recognized' },
+                    { pattern: 'analytical', minLevel: 4, altText: "The space between notes. That's where the emotion lives.\n\nI'm scoring a film about memory loss. The AI generates minor keys and slow tempos. Pattern recognition without pattern *meaning*.\n\n*She tilts her head.*\n\nYou're analyzing this. Good. But analysis alone won't find the soul.", altEmotion: 'challenging' }
+                ],
                 interrupt: {
                     duration: 3500,
                     type: 'comfort',
@@ -107,13 +159,24 @@ export const liraDialogueNodes: DialogueNode[] = [
             {
                 text: "*She pauses, something shifting behind her eyes.*\n\nIt's called 'The Last Recital.' About a pianist in her seventies. Early-stage dementia. She can still play, but the pieces are... fragmenting.\n\nThe director found me specifically. Said my portfolio had 'something broken in the best way.'\n\n*Quiet laugh.*\n\nShe didn't know why. I never told her.",
                 emotion: 'guarded_vulnerable',
-                variation_id: 'film_context_v1'
+                variation_id: 'film_context_v1',
+                patternReflection: [
+                    { pattern: 'patience', minLevel: 4, altText: "*She pauses, something shifting behind her eyes.*\n\nIt's called 'The Last Recital.' About a pianist in her seventies. Early-stage dementia.\n\n*She notices you're not rushing her.*\n\nYou're patient. Most people would have interrupted by now, asking questions. You let me find my own rhythm.", altEmotion: 'grateful' },
+                    { pattern: 'helping', minLevel: 4, altText: "*She pauses, something shifting behind her eyes.*\n\nIt's called 'The Last Recital.' About a pianist... losing herself.\n\n*She meets your eyes.*\n\nYou're not just listening. You're *holding space*. That's rare. Most people listen to respond. You listen to understand.", altEmotion: 'vulnerable_recognized' }
+                ]
             }
         ],
         choices: [
             {
                 choiceId: 'ask_why_broken',
                 text: "Why does your music sound broken?",
+                voiceVariations: {
+                    analytical: "There's intentional fragmentation in your work. Why does your music sound broken?",
+                    helping: "That must come from somewhere real. Why does your music sound broken?",
+                    building: "The cracks seem deliberate. Why does your music sound broken?",
+                    exploring: "I hear something underneath. Why does your music sound broken?",
+                    patience: "If you're ready to share... why does your music sound broken?"
+                },
                 nextNodeId: 'lira_grandmother_hint',
                 pattern: 'helping',
                 skills: ['emotionalIntelligence'],
@@ -296,7 +359,11 @@ export const liraDialogueNodes: DialogueNode[] = [
             {
                 text: "*She pulls up a waveform on her screen.*\n\nThis is my process. I don't just prompt once. I build in layers.\n\nFirst: the skeleton. Basic melody, rhythm. The AI is good at this.\n\nSecond: the skin. Texture, timbre. This is where I fight it.\n\nThird: the soul. The thing that makes you *feel*. This is where I fail. Every time.",
                 emotion: 'determined',
-                variation_id: 'process_intro_v1'
+                variation_id: 'process_intro_v1',
+                patternReflection: [
+                    { pattern: 'building', minLevel: 4, altText: "*She pulls up a waveform on her screen.*\n\nThis is my process. Layers. You get that—you're a builder too.\n\nSkeleton, skin, soul. The AI handles the first. I fight the second. The third?\n\n*She looks at you.*\n\nMaybe you can help. Builders see structure where others see chaos.", altEmotion: 'hopeful' },
+                    { pattern: 'analytical', minLevel: 4, altText: "*She pulls up a waveform on her screen.*\n\nSkeleton. Skin. Soul. Three layers. The AI excels at pattern, fails at purpose.\n\n*She notices your systematic attention.*\n\nYou're mapping this. Good. But analysis is just the skeleton. Can you help me find the soul?", altEmotion: 'challenging' }
+                ]
             }
         ],
         choices: [
@@ -487,6 +554,13 @@ export const liraDialogueNodes: DialogueNode[] = [
             {
                 choiceId: 'fragmenting_honor',
                 text: "You're not just scoring a film. You're preserving her.",
+                voiceVariations: {
+                    analytical: "This is archival work, isn't it? You're preserving her.",
+                    helping: "I see what you're really doing. You're preserving her.",
+                    building: "You're building a monument. You're preserving her.",
+                    exploring: "This goes deeper than film. You're preserving her.",
+                    patience: "The music isn't the point, is it? You're preserving her."
+                },
                 nextNodeId: 'lira_preservation',
                 pattern: 'helping',
                 skills: ['emotionalIntelligence'],
@@ -1147,6 +1221,13 @@ That's what I'm trying to capture. Not sadness. Memory unraveling.`,
             {
                 choiceId: 'lira_vuln_honor_her',
                 text: "You're not just scoring a film. You're preserving her.",
+                voiceVariations: {
+                    analytical: "The film is a container. You're preserving her.",
+                    helping: "I understand now. You're preserving her.",
+                    building: "You're constructing memory. You're preserving her.",
+                    exploring: "The music carries something more. You're preserving her.",
+                    patience: "Every note is an offering. You're preserving her."
+                },
                 nextNodeId: 'lira_vulnerability_response',
                 pattern: 'helping',
                 skills: ['emotionalIntelligence'],
@@ -2365,6 +2446,13 @@ This soundtrack will have her in it. Somewhere in the static, in the gaps betwee
             {
                 choiceId: 'grief_honor',
                 text: "Some music is too important to hear alone.",
+                voiceVariations: {
+                    analytical: "Grief shared is grief processed. Some music is too important to hear alone.",
+                    helping: "I'm honored you let me witness this. Some music is too important to hear alone.",
+                    building: "You're building something sacred. Some music is too important to hear alone.",
+                    exploring: "Thank you for letting me into this space. Some music is too important to hear alone.",
+                    patience: "I'll sit with you in the silence. Some music is too important to hear alone."
+                },
                 nextNodeId: 'lira_conclusion_full',
                 pattern: 'patience',
                 skills: ['emotionalIntelligence'],
@@ -2438,6 +2526,103 @@ This soundtrack will have her in it. Somewhere in the static, in the gaps betwee
             }
         ],
         tags: ['lira_arc', 'connection', 'vision']
+    },
+
+    // ============= PATTERN UNLOCK NODES =============
+    // These become available when player demonstrates sufficient pattern affinity
+
+    {
+        nodeId: 'lira_sound_studio',
+        speaker: 'Lira Vance',
+        content: [
+            {
+                text: "*Lira removes her headphones slowly, studying you.*\n\nYou ask questions others don't. You want to understand, not just consume.\n\n*She gestures at the equipment around her.*\n\nMost people hear the final track. The polished thing. They don't hear the hundred variations I discarded. The 3am experiments. The sounds that taught me what NOT to do.\n\n*Quieter.*\n\nI have a collection. Field recordings from Birmingham. The steel mills at dawn. Church bells overlapping. A street musician who didn't know I was recording.\n\nWant to hear the city the way I hear it? The way most people never will?",
+                emotion: 'offering_rare',
+                variation_id: 'studio_v1'
+            }
+        ],
+        requiredState: {
+            patterns: { exploring: { min: 40 } }
+        },
+        onEnter: [
+            {
+                characterId: 'lira',
+                addKnowledgeFlags: ['lira_studio_invited']
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'studio_yes',
+                text: "Yes. I want to hear what you hear.",
+                nextNodeId: 'lira_process_intro',
+                pattern: 'exploring',
+                skills: ['creativity'],
+                consequence: {
+                    characterId: 'lira',
+                    trustChange: 3
+                }
+            },
+            {
+                choiceId: 'studio_why',
+                text: "Why do you collect sounds most people ignore?",
+                nextNodeId: 'lira_grandmother_hint',
+                pattern: 'helping',
+                skills: ['emotionalIntelligence'],
+                consequence: {
+                    characterId: 'lira',
+                    trustChange: 2
+                }
+            }
+        ],
+        tags: ['lira_arc', 'pattern_unlock', 'exploring']
+    },
+
+    {
+        nodeId: 'lira_collaboration',
+        speaker: 'Lira Vance',
+        content: [
+            {
+                text: "*Lira is quiet for a long moment. When she speaks, her voice is different—less guarded.*\n\nYou build things. I can tell. Not just listen to them—you understand the making.\n\n*She pulls up a waveform on her screen.*\n\nI've been stuck on this piece for three weeks. The film needs a score for a scene where the grandmother tries to play a song she's forgetting. The melody has to be familiar but... dissolving.\n\n*Meets your eyes.*\n\nI don't usually ask for help. I don't know how. But you understand structure. Maybe you can hear what I'm missing.\n\nWould you... collaborate with me? Just this once?",
+                emotion: 'vulnerable_hopeful',
+                variation_id: 'collaboration_v1'
+            }
+        ],
+        requiredState: {
+            patterns: { building: { min: 50 } },
+            trust: { min: 4 }
+        },
+        onEnter: [
+            {
+                characterId: 'lira',
+                addKnowledgeFlags: ['lira_collaboration_offered'],
+                addGlobalFlags: ['lira_creative_partnership']
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'collab_yes',
+                text: "Let's build this together. Show me the dissolving melody.",
+                nextNodeId: 'lira_process_intro',
+                pattern: 'building',
+                skills: ['creativity', 'collaboration'],
+                consequence: {
+                    characterId: 'lira',
+                    trustChange: 4
+                }
+            },
+            {
+                choiceId: 'collab_understand',
+                text: "Before we start—tell me about your grandmother. I think she's in this piece.",
+                nextNodeId: 'lira_vulnerability_arc',
+                pattern: 'helping',
+                skills: ['emotionalIntelligence'],
+                consequence: {
+                    characterId: 'lira',
+                    trustChange: 3
+                }
+            }
+        ],
+        tags: ['lira_arc', 'pattern_unlock', 'building', 'vulnerability']
     }
 ]
 

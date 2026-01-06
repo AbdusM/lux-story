@@ -34,21 +34,42 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "Step off the train",
         nextNodeId: 'samuel_introduction',
         pattern: 'exploring',
-        skills: ['adaptability']
+        skills: ['adaptability'],
+        voiceVariations: {
+          exploring: "Step off. See what this place has to offer.",
+          building: "Time to move. Standing here won't change anything.",
+          analytical: "Enough observation. Gather data from closer range.",
+          helping: "That man is waiting. Better not keep him.",
+          patience: "Alright. One step at a time."
+        }
       },
       {
         choiceId: 'observe_first',
         text: "Take a moment to look around first",
         nextNodeId: 'station_observation',
         pattern: 'patience',
-        skills: ['criticalThinking']
+        skills: ['criticalThinking'],
+        voiceVariations: {
+          patience: "Wait. Take this in before moving.",
+          analytical: "Observe first. Understand the environment.",
+          exploring: "Look around. There might be more to see.",
+          helping: "Pause. Make sure it's safe for others too.",
+          building: "Get the lay of the land before committing."
+        }
       },
       {
         choiceId: 'check_others',
         text: "See if anyone else is getting off",
         nextNodeId: 'observe_passengers',
         pattern: 'helping',
-        skills: ['emotionalIntelligence']
+        skills: ['emotionalIntelligence'],
+        voiceVariations: {
+          helping: "Check on the other passengers first.",
+          patience: "No rush. See who else is here.",
+          exploring: "Interesting—who else ended up in this place?",
+          analytical: "Who else is on this train? Data point.",
+          building: "See if anyone needs help with their bags."
+        }
       }
     ]
   },
@@ -71,14 +92,28 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "Step off and approach him",
         nextNodeId: 'samuel_introduction_patient',
         pattern: 'exploring',
-        skills: ['adaptability']
+        skills: ['adaptability'],
+        voiceVariations: {
+          exploring: "He seems welcoming. Let's find out more.",
+          patience: "Time to move forward. He's been patient.",
+          helping: "He looks kind. Go meet him.",
+          analytical: "Initial assessment complete. Approach.",
+          building: "Seen enough. Time to engage."
+        }
       },
       {
         choiceId: 'ask_about_platforms',
         text: "Those platform signs... where do they all go?",
         nextNodeId: 'samuel_introduction_curious',
         pattern: 'analytical',
-        skills: ['criticalThinking']
+        skills: ['criticalThinking'],
+        voiceVariations: {
+          analytical: "Those platform signs—I need to understand the system.",
+          exploring: "Where do all those platforms lead? I want to know everything.",
+          building: "Each platform is a different path. Which one's mine?",
+          patience: "Those signs... worth understanding before choosing.",
+          helping: "Do different platforms help different people?"
+        }
       }
     ]
   },
@@ -100,14 +135,28 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "Step off the train",
         nextNodeId: 'samuel_introduction_noticed',
         pattern: 'exploring',
-        skills: ['adaptability']
+        skills: ['adaptability'],
+        voiceVariations: {
+          exploring: "Interesting group. Time to join them.",
+          helping: "They all have their own journeys. Mine starts now.",
+          analytical: "Others noted. Now gather my own data.",
+          building: "Their paths, my path. Let's see where this leads.",
+          patience: "Everyone's moving at their own pace. Mine too."
+        }
       },
       {
         choiceId: 'wait_for_others',
         text: "Let the others go first",
         nextNodeId: 'samuel_introduction_humble',
         pattern: 'patience',
-        skills: ['emotionalIntelligence']
+        skills: ['emotionalIntelligence'],
+        voiceVariations: {
+          patience: "Let them go first. No need to rush.",
+          helping: "They might need clear space. Give them room.",
+          exploring: "Watch how they navigate. Learn from it.",
+          analytical: "Observe how others approach this. Then proceed.",
+          building: "Let the path clear before I step forward."
+        }
       }
     ]
   },
@@ -133,21 +182,42 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "What is this place exactly?",
         nextNodeId: 'systemic_calibration_start', // ISP: Reroute to Calibration
         pattern: 'exploring',
-        skills: ['communication', 'adaptability']
+        skills: ['communication', 'adaptability'],
+        voiceVariations: {
+          analytical: "What is this place? How does it work?",
+          helping: "What brings people here?",
+          building: "What is this place? What can I do here?",
+          exploring: "What is this place exactly?",
+          patience: "I'm curious about this place."
+        }
       },
       {
         choiceId: 'ask_about_platforms_patient',
         text: "The platforms—where do they lead?",
         nextNodeId: 'systemic_calibration_start', // ISP: Reroute to Calibration
         pattern: 'analytical',
-        skills: ['criticalThinking', 'communication']
+        skills: ['criticalThinking', 'communication'],
+        voiceVariations: {
+          analytical: "The platforms—where do they lead? What's the system?",
+          helping: "Those platforms—who can I meet there?",
+          building: "The platforms—what can I accomplish on each one?",
+          exploring: "Where do those platforms go?",
+          patience: "Tell me about the platforms when you're ready."
+        }
       },
       {
         choiceId: 'ask_who_are_you_patient',
         text: "How'd you end up here?",
         nextNodeId: 'samuel_backstory_intro',
         pattern: 'patience',
-        skills: ['emotionalIntelligence', 'communication']
+        skills: ['emotionalIntelligence', 'communication'],
+        voiceVariations: {
+          analytical: "What's your role here? How did that come about?",
+          helping: "You've helped a lot of people. What's your story?",
+          building: "How'd you build this position here?",
+          exploring: "That's a lot of history. How'd it start?",
+          patience: "How'd you end up here?"
+        }
       }
     ]
   },
@@ -168,21 +238,42 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "Tell me more about the platforms",
         nextNodeId: 'samuel_explains_platforms',
         pattern: 'exploring',
-        skills: ['communication', 'adaptability']
+        skills: ['communication', 'adaptability'],
+        voiceVariations: {
+          analytical: "Break down the platform system for me.",
+          helping: "Who would I meet on these platforms?",
+          building: "What opportunities are on each platform?",
+          exploring: "Tell me more about the platforms",
+          patience: "I'd like to hear about each platform."
+        }
       },
       {
         choiceId: 'who_are_you_curious',
         text: "And you help people... how?",
         nextNodeId: 'samuel_backstory_intro',
         pattern: 'analytical',
-        skills: ['criticalThinking', 'communication']
+        skills: ['criticalThinking', 'communication'],
+        voiceVariations: {
+          analytical: "And you help people... how exactly?",
+          helping: "You care about the travelers. Why?",
+          building: "What's your method for helping people?",
+          exploring: "What kinds of help do you give?",
+          patience: "Tell me more about how you help."
+        }
       },
       {
         choiceId: 'ready_to_explore_curious',
         text: "I'm ready to look around",
         nextNodeId: 'samuel_orb_introduction',
         pattern: 'exploring',
-        skills: ['communication']
+        skills: ['communication'],
+        voiceVariations: {
+          analytical: "I have enough context. Let's begin.",
+          helping: "I'm ready to meet people.",
+          building: "I'm ready to start. Where first?",
+          exploring: "I'm ready to look around",
+          patience: "I'm ready when you are."
+        }
       }
     ]
   },
@@ -203,21 +294,42 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "Who were those other passengers?",
         nextNodeId: 'samuel_explains_platforms',
         pattern: 'helping',
-        skills: ['emotionalIntelligence', 'communication']
+        skills: ['emotionalIntelligence', 'communication'],
+        voiceVariations: {
+          analytical: "Who were those passengers? What brings them here?",
+          helping: "Who were those other passengers? Are they okay?",
+          building: "The other passengers—what are they working on?",
+          exploring: "I noticed them too. Who are they?",
+          patience: "Tell me about the other passengers."
+        }
       },
       {
         choiceId: 'ask_about_self',
         text: "What's my reason for being here?",
         nextNodeId: 'samuel_explains_station',
         pattern: 'analytical',
-        skills: ['criticalThinking']
+        skills: ['criticalThinking'],
+        voiceVariations: {
+          analytical: "What's my reason for being here? What data do you have?",
+          helping: "I want to understand why I'm here.",
+          building: "What am I meant to accomplish here?",
+          exploring: "Why am I here, specifically?",
+          patience: "I suppose I'm here for a reason."
+        }
       },
       {
         choiceId: 'samuel_story_noticed',
         text: "You said you've been here a while...",
         nextNodeId: 'samuel_backstory_intro',
         pattern: 'patience',
-        skills: ['emotionalIntelligence', 'communication']
+        skills: ['emotionalIntelligence', 'communication'],
+        voiceVariations: {
+          analytical: "How long exactly have you been here?",
+          helping: "You've seen a lot of travelers. Does it ever get to you?",
+          building: "You've been here a while. What have you built?",
+          exploring: "You've been here a while. What's your story?",
+          patience: "You said you've been here a while..."
+        }
       }
     ]
   },
@@ -242,21 +354,42 @@ export const samuelDialogueNodes: DialogueNode[] = [
         text: "What is this place?",
         nextNodeId: 'samuel_explains_station',
         pattern: 'exploring',
-        skills: ['communication']
+        skills: ['communication'],
+        voiceVariations: {
+          analytical: "What is this place? What's the purpose?",
+          helping: "What brings people to a place like this?",
+          building: "What is this place? What happens here?",
+          exploring: "What is this place?",
+          patience: "I'm not in any rush. Tell me about this place."
+        }
       },
       {
         choiceId: 'ask_about_others_humble',
         text: "Will I see those other travelers again?",
         nextNodeId: 'samuel_explains_platforms',
         pattern: 'helping',
-        skills: ['emotionalIntelligence']
+        skills: ['emotionalIntelligence'],
+        voiceVariations: {
+          analytical: "Are traveler paths interconnected?",
+          helping: "Will I see those other travelers again?",
+          building: "Do travelers work together here?",
+          exploring: "Will our paths cross again?",
+          patience: "I wonder if I'll meet them again."
+        }
       },
       {
         choiceId: 'why_get_along',
         text: "Why do you say we'll get along?",
         nextNodeId: 'samuel_backstory_intro',
         pattern: 'patience',
-        skills: ['communication', 'emotionalIntelligence']
+        skills: ['communication', 'emotionalIntelligence'],
+        voiceVariations: {
+          analytical: "What makes you think we'll get along?",
+          helping: "You seem to understand people. How?",
+          building: "What do you see in me?",
+          exploring: "You noticed something about me. What?",
+          patience: "Why do you say we'll get along?"
+        }
       }
     ]
   },
@@ -294,6 +427,13 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
           characterId: 'samuel',
           trustChange: 1,
           addGlobalFlags: ['golden_prompt_workflow']
+        },
+        voiceVariations: {
+          analytical: "Cross-reference: Train 415 merged with 530. Communicate the reschedule.",
+          helping: "They're panicking. Check logs, then reassure them they have time.",
+          building: "Solve it: find the merge record and give them a clear action—coffee break.",
+          exploring: "Dig through the logs. There's gotta be an explanation.",
+          patience: "Let me check carefully. Yes—they have time. Tell them gently."
         }
       },
       {
@@ -306,13 +446,27 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
           characterId: 'samuel',
           trustChange: 1,
           addGlobalFlags: ['golden_prompt_workflow']
+        },
+        voiceVariations: {
+          analytical: "Pattern detected: Tuesday merges. Recommend signage improvement.",
+          helping: "This keeps happening to people. Suggest better signage so others don't panic.",
+          building: "Fix the root cause. Better signage prevents future confusion.",
+          exploring: "Wait—this happens every Tuesday? That's a systemic issue.",
+          patience: "If we improve signage now, fewer travelers will worry later."
         }
       },
       {
         choiceId: 'sim_dismiss',
         text: "Tell them to just wait. The board is never wrong.",
         nextNodeId: 'samuel_orb_introduction',
-        pattern: 'patience'
+        pattern: 'patience',
+        voiceVariations: {
+          analytical: "The board is accurate. They should trust the system.",
+          helping: "Just tell them to wait. It'll work out.",
+          building: "Waiting is the answer. No action needed.",
+          exploring: "Maybe they just need to wait and see.",
+          patience: "Tell them to just wait. The board is never wrong."
+        }
       }
     ],
     tags: ['simulation', 'samuel_arc']
@@ -344,6 +498,13 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         consequence: {
           characterId: 'samuel',
           trustChange: 1
+        },
+        voiceVariations: {
+          analytical: "What is this place? How does it function?",
+          helping: "What draws people to this place?",
+          building: "What is this place? What can I accomplish here?",
+          exploring: "What is this place exactly?",
+          patience: "Tell me about this place."
         }
       },
       {
@@ -355,6 +516,13 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         consequence: {
           characterId: 'samuel',
           trustChange: 1
+        },
+        voiceVariations: {
+          analytical: "The platforms seem organized by purpose. What's the system?",
+          helping: "I see different people heading different ways. Who's on each platform?",
+          building: "Those platforms—what opportunities are on each one?",
+          exploring: "I noticed the different platforms. Where do they all go?",
+          patience: "I see there are different platforms. Could you tell me about them?"
         }
       },
       {
@@ -366,6 +534,13 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         consequence: {
           characterId: 'samuel',
           trustChange: 2
+        },
+        voiceVariations: {
+          analytical: "What's your history here? How did you come to this role?",
+          helping: "You've been at this a while. What's your story?",
+          building: "How'd you build your life around this place?",
+          exploring: "I'm curious—how'd you end up here?",
+          patience: "How'd you end up working here?"
         }
       },
       {
@@ -377,6 +552,13 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         consequence: {
           characterId: 'samuel',
           trustChange: 1
+        },
+        voiceVariations: {
+          analytical: "You mentioned increased traffic. What's driving the change?",
+          helping: "More travelers... are people struggling out there?",
+          building: "The world's changing. What kind of changes?",
+          exploring: "You said more travelers lately. What's happening out there?",
+          patience: "Sounds like the world is shifting. Tell me more."
         }
       },
       {
@@ -384,7 +566,14 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         text: "I'm ready to look around",
         nextNodeId: 'samuel_orb_introduction',
         pattern: 'exploring',
-        skills: ['communication']
+        skills: ['communication'],
+        voiceVariations: {
+          analytical: "I have enough context. Show me what's here.",
+          helping: "I'm ready to meet the people here.",
+          building: "Let's get started. What's first?",
+          exploring: "I'm ready to look around",
+          patience: "I'm ready whenever you are."
+        }
       }
     ]
   },
@@ -415,6 +604,13 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         consequence: {
           characterId: 'samuel',
           trustChange: 1
+        },
+        voiceVariations: {
+          analytical: "What's the data on skilled trades? How are they adapting?",
+          helping: "What about the people doing physical work? Are they okay?",
+          building: "What about people who work with their hands? Factory workers, welders?",
+          exploring: "What's happening to the trades? The hands-on work?",
+          patience: "I wonder about the people doing physical work."
         }
       },
       {
@@ -422,13 +618,27 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         text: "How do patterns help when everything's uncertain?",
         nextNodeId: 'samuel_pattern_survival',
         pattern: 'analytical',
-        skills: ['criticalThinking']
+        skills: ['criticalThinking'],
+        voiceVariations: {
+          analytical: "How do patterns help when everything's uncertain?",
+          helping: "How do people find stability when things keep changing?",
+          building: "When the world shifts, what keeps people grounded?",
+          exploring: "If everything's changing, how does anyone know what to do?",
+          patience: "How do people stay steady when things are uncertain?"
+        }
       },
       {
         choiceId: 'back_to_exploring',
         text: "Thanks. I'd like to look around now.",
         nextNodeId: 'samuel_orb_introduction',
-        pattern: 'exploring'
+        pattern: 'exploring',
+        voiceVariations: {
+          analytical: "I understand. Let's proceed.",
+          helping: "Thank you for sharing that. I'm ready to meet others now.",
+          building: "That gives me context. What's next?",
+          exploring: "Thanks. I'd like to look around now.",
+          patience: "I appreciate the insight. I'm ready to continue."
+        }
       }
     ],
     tags: ['economic_context', 'samuel_arc']
@@ -449,13 +659,27 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         choiceId: 'visit_kai_from_trades',
         text: "I'd like to meet Kai.",
         nextNodeId: 'samuel_orb_introduction',
-        pattern: 'building'
+        pattern: 'building',
+        voiceVariations: {
+          analytical: "Kai sounds interesting. I want to learn more.",
+          helping: "I'd like to hear Kai's story.",
+          building: "I'd like to meet Kai.",
+          exploring: "Kai sounds like someone worth meeting.",
+          patience: "I'd like to talk to Kai when I get the chance."
+        }
       },
       {
         choiceId: 'more_about_patterns',
         text: "Tell me more about patterns.",
         nextNodeId: 'samuel_pattern_survival',
-        pattern: 'analytical'
+        pattern: 'analytical',
+        voiceVariations: {
+          analytical: "Tell me more about patterns. How do they work?",
+          helping: "How do patterns help people understand themselves?",
+          building: "How can patterns help me figure out my path?",
+          exploring: "I'm curious about these patterns you mention.",
+          patience: "I'd like to understand patterns better."
+        }
       }
     ],
     tags: ['trades', 'samuel_arc', 'economic_context']
@@ -489,6 +713,18 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         text: "Who should I talk to first?",
         nextNodeId: 'samuel_explains_platforms',
         pattern: 'helping'
+      },
+      {
+        choiceId: 'pattern_wisdom_deep',
+        text: "[Wisdom] You're describing emergence. Patterns that adapt create new possibilities.",
+        nextNodeId: 'samuel_orb_introduction',
+        pattern: 'exploring',
+        skills: ['systemsThinking', 'criticalThinking'],
+        requiredOrbFill: { pattern: 'exploring', threshold: 35 },
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 2
+        }
       }
     ],
     tags: ['patterns', 'samuel_arc', 'economic_context']

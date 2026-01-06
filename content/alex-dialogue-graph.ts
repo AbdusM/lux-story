@@ -30,6 +30,13 @@ export const alexDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'alex_intro_burnout',
         text: "You sound burned out.",
+        voiceVariations: {
+          analytical: "That pitch sounds rehearsed. And exhausted.",
+          helping: "You sound burned out. Are you okay?",
+          building: "That's a lot of hustle talk. What are you actually building?",
+          exploring: "What's behind the sales pitch? You sound tired.",
+          patience: "Take a breath. You don't have to perform for me."
+        },
         nextNodeId: 'alex_response_helping',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
@@ -41,6 +48,13 @@ export const alexDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'alex_intro_ai_worth',
         text: "Is learning AI actually worth it?",
+        voiceVariations: {
+          analytical: "Is learning AI actually worth it? What's the ROI?",
+          helping: "Everyone says learn AI. But is it worth the stress?",
+          building: "Should I be learning AI? Or building with it?",
+          exploring: "Is learning AI actually worth it? Or just hype?",
+          patience: "AI moves fast. Is any of it worth learning deeply?"
+        },
         nextNodeId: 'alex_response_analytical',
         pattern: 'analytical',
         skills: ['criticalThinking', 'adaptability'],
@@ -107,6 +121,13 @@ You're the first person to ask how I am instead of what I know.`,
       {
         choiceId: 'to_contradiction_from_helping',
         text: "What happened with the bootcamps?",
+        voiceVariations: {
+          analytical: "What data made you leave the bootcamps?",
+          helping: "What happened with the bootcamps? If you want to talk about it.",
+          building: "What went wrong with the bootcamps?",
+          exploring: "What happened? Why'd you stop teaching?",
+          patience: "Take your time. What happened with the bootcamps?"
+        },
         nextNodeId: 'alex_contradiction',
         pattern: 'exploring',
         skills: ['emotionalIntelligence']
@@ -247,6 +268,13 @@ I'm not saying don't learn. I'm saying... be suspicious of anyone who makes it s
       {
         choiceId: 'alex_contradict_cares',
         text: "It sounds like you still care about teaching.",
+        voiceVariations: {
+          analytical: "You're still analyzing what went wrong. You still care.",
+          helping: "The frustration is real. You still care about teaching.",
+          building: "That anger has a purpose. You want to build something better.",
+          exploring: "You're still asking questions. You still care.",
+          patience: "You wouldn't be this honest if you'd stopped caring."
+        },
         nextNodeId: 'alex_still_cares',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
@@ -258,6 +286,13 @@ I'm not saying don't learn. I'm saying... be suspicious of anyone who makes it s
       {
         choiceId: 'alex_contradict_learning',
         text: "What are YOU learning right now?",
+        voiceVariations: {
+          analytical: "Enough about them. What are YOU learning right now?",
+          helping: "What about you? What are you curious about?",
+          building: "What are you building? What are you learning?",
+          exploring: "Forget the students. What are YOU exploring?",
+          patience: "Step back from the frustration. What are YOU learning?"
+        },
         nextNodeId: 'alex_learning_now',
         pattern: 'exploring',
         skills: ['criticalThinking', 'creativity'],
@@ -310,7 +345,11 @@ Weird, right? We spend all this time on syntax and none on "why should anyone ca
         emotion: 'reflective',
         interaction: 'nod',
         variation_id: 'success_v1',
-        useChatPacing: true
+        useChatPacing: true,
+        patternReflection: [
+          { pattern: 'analytical', minLevel: 4, altText: "*Leans back.*\n\nThe ones who made it? They weren't the best coders.\n\nThey were the ones who could explain what they built and why it mattered.\n\n*Looks at you.*\n\nYou're processing that. Good. Most people want the simple answer: 'learn X framework.' The real variable is human.", altEmotion: 'recognized' },
+          { pattern: 'helping', minLevel: 4, altText: "*Leans back.*\n\nThe ones who made it? They weren't the best coders.\n\nThey were the ones who could connect. Tell stories. Make people care.\n\n*Quieter.*\n\nYou already do that, don't you? The technical stuff is learnable. What you have isn't.", altEmotion: 'knowing' }
+        ]
       }
     ],
     choices: [
@@ -342,7 +381,11 @@ I got tired of pretending I had answers I didn't have.`,
         emotion: 'vulnerable',
         interaction: 'nod',
         variation_id: 'cares_v1',
-        useChatPacing: true
+        useChatPacing: true,
+        patternReflection: [
+          { pattern: 'helping', minLevel: 4, altText: "*Long pause.*\n\n...Maybe.\n\nIt's hard to watch people struggle when you know the game is rigged.\n\n*Looks at you.*\n\nYou felt that, didn't you? The unfairness. You're not here to judge me—you want to understand. That's... rare.", altEmotion: 'connected' },
+          { pattern: 'patience', minLevel: 4, altText: "*Long pause.*\n\n...Maybe.\n\nIt's hard to watch people struggle. I got tired of pretending.\n\n*Notices your stillness.*\n\nYou're not rushing to fix me. That's... actually what I needed. Space to think.", altEmotion: 'grateful' }
+        ]
       }
     ],
     choices: [
@@ -378,7 +421,11 @@ It's dumb. It won't look good on a resume. But it's the first thing that's felt 
         emotion: 'surprised_honest',
         interaction: 'bloom',
         variation_id: 'learning_v1',
-        useChatPacing: true
+        useChatPacing: true,
+        patternReflection: [
+          { pattern: 'exploring', minLevel: 4, altText: "*Surprised laugh.*\n\nWhat am I learning?\n\n...Okay, fine. Local LLMs. Running models on my own machine. No agenda.\n\n*Eyes brighten.*\n\nYou get it, don't you? Curiosity without a business plan. That question you asked—most people don't even think to ask what others are exploring.", altEmotion: 'kindred' },
+          { pattern: 'building', minLevel: 4, altText: "*Surprised laugh.*\n\nWhat am I learning?\n\nLocal LLMs. Running models. Building things nobody asked for.\n\n*Slight smile.*\n\nYou're a maker. You understand the itch. The thing that keeps you up at night even when there's no profit in it.", altEmotion: 'recognized' }
+        ]
       }
     ],
     choices: [
@@ -418,7 +465,11 @@ Probably wouldn't make any money.`,
         emotion: 'dreaming',
         interaction: 'bloom',
         variation_id: 'no_watching_v1',
-        useChatPacing: true
+        useChatPacing: true,
+        patternReflection: [
+          { pattern: 'building', minLevel: 4, altText: "*Stops.*\n\nIf no one was watching?\n\n*Long pause.*\n\nI'd build a tool that helps people figure out what they actually want to learn.\n\n*Looks at you.*\n\nYou asked what I'd build. Not what I'd sell. That's... that's the right question. Most people skip straight to monetization.", altEmotion: 'hopeful' },
+          { pattern: 'analytical', minLevel: 4, altText: "*Stops.*\n\nIf no one was watching?\n\nA tool that asks questions instead of selling answers. Inverse of the current model.\n\n*Studies you.*\n\nYou're analyzing the premise. Good. Most people hear 'build' and think features. You hear 'build' and think purpose.", altEmotion: 'recognized' }
+        ]
       }
     ],
     choices: [
@@ -981,6 +1032,13 @@ Which one pulls you?`,
       {
         choiceId: 'alex_crossroads_both',
         text: "Can it be both? Practical AND meaningful?",
+        voiceVariations: {
+          analytical: "False dichotomy. Can't practical and meaningful overlap?",
+          helping: "What if they don't have to be separate? Practical AND meaningful?",
+          building: "I want to build something that pays AND matters. Possible?",
+          exploring: "What if I don't want to choose? Can it be both?",
+          patience: "Maybe the answer isn't either/or. Maybe it's both."
+        },
         nextNodeId: 'alex_final_synthesis',
         pattern: 'patience',
         skills: ['criticalThinking', 'emotionalIntelligence'],

@@ -10,13 +10,25 @@ export const zaraDialogueNodes: DialogueNode[] = [
             {
                 text: "Numbers don't lie. But the people who gather them do.\n\n[She scrolls through a waterfall of spreadsheet rows on a vertical monitor.]\n\n\"Look at this,\" she points. \"The 'Efficiency Algorithm' for the new logistics fleet. It's flagging 40% of the routes as 'sub-optimal'. Do you know why?\"",
                 emotion: 'analytical',
-                variation_id: 'intro_v1'
+                variation_id: 'intro_v1',
+                patternReflection: [
+                    { pattern: 'analytical', minLevel: 4, altText: "Numbers don't lie. But the people who gather them do.\n\n[She scrolls through spreadsheet rows.]\n\n\"Look at this.\" She notices your focused attention. \"You're actually reading the data, not just watching me scroll. Good.\n\nThe algorithm is flagging 40% of routes as 'sub-optimal'. Care to hypothesize why?\"", altEmotion: 'interested' },
+                    { pattern: 'exploring', minLevel: 4, altText: "Numbers don't lie. But the people who gather them do.\n\n[She scrolls through data.]\n\n\"You're curious.\" She catches your eye. \"Most people's eyes glaze over at spreadsheets. You're actually looking for something.\n\nThis algorithm is flagging 40% of routes as 'sub-optimal'. Want to dig into why?\"", altEmotion: 'intrigued' },
+                    { pattern: 'helping', minLevel: 4, altText: "Numbers don't lie. But the people who gather them do.\n\n[She scrolls through data, looking tired.]\n\n\"You stopped.\" She glances at you. \"Most people walk right past data work. You look like you want to understand.\n\nThis algorithm is flagging 40% of routes. It's going to hurt real people. Do you know why?\"", altEmotion: 'hopeful' }
+                ]
             }
         ],
         choices: [
             {
                 choiceId: 'intro_ask_why',
                 text: "Why is it flagging them?",
+                voiceVariations: {
+                    analytical: "What's the classification logic? Why is it flagging them?",
+                    helping: "That sounds concerning. Why is it flagging them?",
+                    building: "What's the data structure here? Why is it flagging them?",
+                    exploring: "Show me. Why is it flagging them?",
+                    patience: "Walk me through it. Why is it flagging them?"
+                },
                 nextNodeId: 'zara_explains_bias',
                 pattern: 'analytical',
                 skills: ['technicalLiteracy'],
@@ -44,6 +56,10 @@ export const zaraDialogueNodes: DialogueNode[] = [
                 text: "Because they stop for lunch.\n\nThe algorithm was trained on drone data. Drones don't eat. Drones don't rest. Applying drone metrics to human drivers isn't just 'optimizing', it's breaking them.\n\nI need to clean this dataset before the rollout. Want to help?",
                 emotion: 'determined',
                 variation_id: 'bias_v1',
+                patternReflection: [
+                    { pattern: 'analytical', minLevel: 4, altText: "Because they stop for lunch.\n\nThe algorithm was trained on drone data. Drones don't eat. You see the logical flaw, don't you?\n\nApplying drone metrics to human drivers isn't optimization—it's a category error.\n\nI need to clean this dataset. You think systematically. Want to help?", altEmotion: 'energized' },
+                    { pattern: 'helping', minLevel: 4, altText: "Because they stop for lunch.\n\nThe algorithm was trained on drone data. Drones don't rest. But humans need breaks.\n\n*Her voice tightens.*\n\nThis is going to hurt real drivers. Real families. I can see you care about that.\n\nWant to help me fix it?", altEmotion: 'urgent' }
+                ],
                 interrupt: {
                     duration: 3500,
                     type: 'encouragement',
@@ -60,6 +76,13 @@ export const zaraDialogueNodes: DialogueNode[] = [
             {
                 choiceId: 'offer_data_help',
                 text: "Show me the raw data.",
+                voiceVariations: {
+                    analytical: "I want to see the underlying patterns. Show me the raw data.",
+                    helping: "Let me help you fix this. Show me the raw data.",
+                    building: "I can work with this. Show me the raw data.",
+                    exploring: "I want to understand. Show me the raw data.",
+                    patience: "Start from the beginning. Show me the raw data."
+                },
                 nextNodeId: 'zara_simulation_setup',
                 pattern: 'helping',
                 skills: ['technicalLiteracy']
@@ -85,7 +108,11 @@ export const zaraDialogueNodes: DialogueNode[] = [
             {
                 text: "Efficiency at what cost? Burnout? Turnover?\n\nIf you optimize for speed alone, you lose resilience. A system that can't pause is a system that snaps.\n\nTake a look at the data. Tell me if you still think it's 'efficient'.",
                 emotion: 'challenging',
-                variation_id: 'efficiency_v1'
+                variation_id: 'efficiency_v1',
+                patternReflection: [
+                    { pattern: 'building', minLevel: 4, altText: "Efficiency at what cost? Burnout? Turnover?\n\nYou build things. You know that speed without structure collapses. A system that can't pause is a system that snaps.\n\nTake a look at the data. Tell me what you'd build differently.", altEmotion: 'challenging' },
+                    { pattern: 'patience', minLevel: 4, altText: "Efficiency at what cost?\n\n*She pauses, noticing your calm.*\n\nYou understand that some things can't be rushed. If you optimize for speed alone, you lose resilience.\n\nTake a look at the data. Tell me what you see.", altEmotion: 'receptive' }
+                ]
             }
         ],
         choices: [
@@ -344,6 +371,13 @@ And I signed the deployment approval.`,
             {
                 choiceId: 'zara_vuln_carry_them',
                 text: "You carry those fourteen with you. Every audit is for them.",
+                voiceVariations: {
+                    analytical: "The connection is clear. Every audit is for them.",
+                    helping: "That's why this matters so much to you. Every audit is for them.",
+                    building: "You've built this work on their foundation. Every audit is for them.",
+                    exploring: "Now I understand the weight. Every audit is for them.",
+                    patience: "You carry those fourteen with you. Every audit is for them."
+                },
                 nextNodeId: 'zara_vulnerability_response',
                 pattern: 'patience',
                 skills: ['emotionalIntelligence'],
@@ -974,6 +1008,13 @@ That's what I audit against now. Not just accuracy. Dignity.`,
             {
                 choiceId: 'zara_triage_dignity',
                 text: "Dignity. That's the metric that matters.",
+                voiceVariations: {
+                    analytical: "A non-quantifiable metric. But you're right. Dignity matters.",
+                    helping: "People over numbers. Dignity matters.",
+                    building: "That should be the foundation. Dignity matters.",
+                    exploring: "That reframes everything. Dignity matters.",
+                    patience: "The real measure. Dignity. That's what matters."
+                },
                 nextNodeId: 'zara_dignity_framework',
                 pattern: 'helping',
                 skills: ['communication'],
@@ -1299,6 +1340,13 @@ That has to be worth something. Even if my career doesn't think so.`,
             {
                 choiceId: 'zara_cost_purpose',
                 text: "It's worth something. You're the speed bump that saves lives.",
+                voiceVariations: {
+                    analytical: "Friction in the system has value. You're the speed bump that saves lives.",
+                    helping: "Don't discount your impact. You're the speed bump that saves lives.",
+                    building: "Critical infrastructure. You're the speed bump that saves lives.",
+                    exploring: "The invisible hero. You're the speed bump that saves lives.",
+                    patience: "It matters. You're the speed bump that saves lives."
+                },
                 nextNodeId: 'zara_speed_bump',
                 pattern: 'helping',
                 skills: ['emotionalIntelligence'],
@@ -3563,6 +3611,13 @@ You're part of the network now. That means something.`,
             {
                 choiceId: 'acceptance_promise',
                 text: "I'll remember what you taught me. The people algorithms affect.",
+                voiceVariations: {
+                    analytical: "I'll apply what you taught me. The data represents people.",
+                    helping: "I'll carry this forward. The people algorithms affect.",
+                    building: "I'll build with this in mind. The people algorithms affect.",
+                    exploring: "This changes how I see it all. The people algorithms affect.",
+                    patience: "I won't forget. The people algorithms affect."
+                },
                 nextNodeId: 'zara_farewell',
                 pattern: 'patience',
                 skills: ['emotionalIntelligence'],

@@ -38,6 +38,13 @@ export const devonDialogueNodes: DialogueNode[] = [
         consequence: {
           characterId: 'devon',
           trustChange: 1
+        },
+        voiceVariations: {
+          analytical: "What system is this? Walk me through the logic.",
+          helping: "You look like you're solving something important.",
+          building: "What are you building? I want to see.",
+          exploring: "What are you working on?",
+          patience: "I'm curious about what you're working on."
         }
       },
       {
@@ -50,6 +57,13 @@ export const devonDialogueNodes: DialogueNode[] = [
           characterId: 'devon',
           trustChange: 1,
           addKnowledgeFlags: ['recognizes_technical_work']
+        },
+        voiceVariations: {
+          analytical: "That looks like a decision tree. For what?",
+          helping: "That flowchart... it's about people, isn't it?",
+          building: "I recognize that structure. Decision tree. What's the output?",
+          exploring: "Interesting diagram. What does it do?",
+          patience: "That looks complex. A decision tree?"
         }
       },
       {
@@ -61,6 +75,13 @@ export const devonDialogueNodes: DialogueNode[] = [
         consequence: {
           characterId: 'devon',
           trustChange: 2
+        },
+        voiceVariations: {
+          analytical: "I won't interrupt your process. Just observing.",
+          helping: "I don't want to disrupt you. You seem deep in something.",
+          building: "I can see you're in the zone. I'll wait.",
+          exploring: "Don't mind me. I'm just curious what's happening here.",
+          patience: "I'm just passing through. You seem focused."
         }
       }
     ],
@@ -113,14 +134,28 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "[DEBUG] Accept input literal: \"Fine\" = No distress. End conversation.",
         nextNodeId: 'devon_debug_result_fail_literal',
         pattern: 'analytical',
-        skills: ['systemsThinking'] // Logical but wrong contextually
+        skills: ['systemsThinking'], // Logical but wrong contextually
+        voiceVariations: {
+          analytical: "[DEBUG] Accept input literal: \"Fine\" = No distress. End conversation.",
+          helping: "[ACCEPT] Maybe he really is fine. Trust the answer.",
+          building: "[CLOSE] Take the answer. Move on.",
+          exploring: "[SKIP] If he says fine, maybe that's the end.",
+          patience: "[LITERAL] Accept the response at face value."
+        }
       },
       {
         choiceId: 'debug_tone',
         text: "[DEBUG] Analyze audio spectrum. Detect stress micro-tremors.",
         nextNodeId: 'devon_debug_step_2', // Deeper analysis
         pattern: 'analytical',
-        skills: ['criticalThinking', 'digitalLiteracy']
+        skills: ['criticalThinking', 'digitalLiteracy'],
+        voiceVariations: {
+          analytical: "[DEBUG] Analyze audio spectrum. Detect stress micro-tremors.",
+          helping: "[SENSE] Listen harder. Something's under the surface.",
+          building: "[SCAN] Run diagnostics on the voice pattern.",
+          exploring: "[PROBE] Dig deeper. The answer's hiding something.",
+          patience: "[LISTEN] Pay attention to how he says it, not what."
+        }
       },
       {
         choiceId: 'debug_emotional',
@@ -130,6 +165,13 @@ export const devonDialogueNodes: DialogueNode[] = [
         skills: ['emotionalIntelligence'],
         consequence: {
           addGlobalFlags: ['golden_prompt_voice']
+        },
+        voiceVariations: {
+          analytical: "[OVERRIDE] Bypass logic. Request emotional data directly.",
+          helping: "[OVERRIDE] Ignore logical branch. Query emotional state directly.",
+          building: "[BYPASS] Skip the flowchart. Ask what's really wrong.",
+          exploring: "[BREAK] Forget the system. Just ask him how he feels.",
+          patience: "[DIRECT] Gently ask: 'How are you really doing?'"
         }
       },
       {
@@ -141,6 +183,13 @@ export const devonDialogueNodes: DialogueNode[] = [
         consequence: {
           characterId: 'devon',
           trustChange: 1
+        },
+        voiceVariations: {
+          analytical: "[PAUSE] Extend processing time. Allow additional input.",
+          helping: "[HOLD] Stay present. Give him space to say more.",
+          building: "[BUFFER] Wait. Sometimes silence fixes things.",
+          exploring: "[OBSERVE] Don't respond yet. Watch what happens.",
+          patience: "[WAIT] Increase latency. Let the silence hold."
         }
       }
     ],
@@ -170,14 +219,28 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "Use the script: \"Are you sure you are okay?\"",
         nextNodeId: 'devon_debug_result_fail_script', // TRAP CHOICE
         pattern: 'building',
-        skills: ['systemsThinking']
+        skills: ['systemsThinking'],
+        voiceVariations: {
+          analytical: "[EXECUTE] Run the suggested subroutine verbatim.",
+          helping: "[TRY] Maybe the gentle probe will help.",
+          building: "Use the script: \"Are you sure you are okay?\"",
+          exploring: "[TEST] Let's see if the probe works.",
+          patience: "[FOLLOW] Use the system's recommended approach."
+        }
       },
       {
         choiceId: 'abort_script',
         text: "Forget the script. Just talk to him.",
         nextNodeId: 'devon_debug_result_override',
         pattern: 'helping',
-        skills: ['adaptability']
+        skills: ['adaptability'],
+        voiceVariations: {
+          analytical: "[ABANDON] Discard the scripted approach. Go unstructured.",
+          helping: "Forget the script. Just talk to him.",
+          building: "[MANUAL] Override the system. Handle it yourself.",
+          exploring: "[IMPROVISE] Forget the flowchart. Just be real.",
+          patience: "[BREATHE] Put the script down. Just be present."
+        }
       }
     ]
   },
@@ -204,7 +267,14 @@ export const devonDialogueNodes: DialogueNode[] = [
         choiceId: 'retry_literal',
         text: "Reset. Don't take 'fine' as an answer.",
         nextNodeId: 'devon_explains_system',
-        pattern: 'patience'
+        pattern: 'patience',
+        voiceVariations: {
+          analytical: "[RESET] Iterate. Modify the acceptance criteria.",
+          helping: "Let's try again. You can do this differently.",
+          building: "[RESTART] Reset the system. New approach.",
+          exploring: "Let's run it again. Different input this time.",
+          patience: "Reset. Don't take 'fine' as an answer."
+        }
       },
       {
         choiceId: 'explore_failed_assumption',
@@ -215,6 +285,13 @@ export const devonDialogueNodes: DialogueNode[] = [
         consequence: {
           characterId: 'devon',
           trustChange: 1
+        },
+        voiceVariations: {
+          analytical: "What made you think 'fine' was ever literal?",
+          helping: "When people say 'fine,' it rarely means fine. You know that.",
+          building: "The assumption was wrong from the start. Why build on it?",
+          exploring: "'Fine' is almost never literal. What were you really testing?",
+          patience: "Have you ever said 'fine' when you meant something else?"
         }
       }
     ]
@@ -239,7 +316,14 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "I'm sorry. Let's try without the script.",
         nextNodeId: 'devon_explains_system',
         pattern: 'helping',
-        skills: ['emotionalIntelligence']
+        skills: ['emotionalIntelligence'],
+        voiceVariations: {
+          analytical: "Iteration two. Disabling script module.",
+          helping: "I'm sorry. Let's try without the script.",
+          building: "Start fresh. No script this time.",
+          exploring: "Scripts fail. Let's see what happens without one.",
+          patience: "It's okay. Let's try again, more naturally."
+        }
       },
       {
         choiceId: 'give_up_script',
@@ -248,6 +332,13 @@ export const devonDialogueNodes: DialogueNode[] = [
         pattern: 'analytical',
         consequence: {
           addGlobalFlags: ['devon_chose_logic'] // BAD ENDING
+        },
+        voiceVariations: {
+          analytical: "Maybe emotions really are just bugs.",
+          helping: "Maybe some things can't be fixed.",
+          building: "If the system keeps failing, maybe the system is the problem.",
+          exploring: "Maybe this approach was doomed from the start.",
+          patience: "Maybe some things aren't meant to be solved."
         }
       },
       {
@@ -262,6 +353,13 @@ export const devonDialogueNodes: DialogueNode[] = [
         consequence: {
           characterId: 'devon',
           trustChange: 2
+        },
+        voiceVariations: {
+          analytical: "Processing pause. Let the system rest before retry.",
+          helping: "It's okay to fail. Let's just breathe for a moment.",
+          building: "Step back. Sometimes distance shows the solution.",
+          exploring: "Let's not rush. Sit with what just happened.",
+          patience: "Sometimes we just need to sit with failure. Let's take a breath."
         }
       }
     ]
@@ -294,6 +392,25 @@ export const devonDialogueNodes: DialogueNode[] = [
         consequence: {
           characterId: 'devon',
           trustChange: 2
+        },
+        voiceVariations: {
+          analytical: "The system has a specific subject. Who is it optimized for?",
+          helping: "This is about someone you care about, isn't it?",
+          building: "You built this for someone. Who?",
+          exploring: "Who is this system for?",
+          patience: "You've been working on this for someone specific."
+        }
+      },
+      {
+        choiceId: 'override_helping_insight',
+        text: "[Empathy] You can't code connection. But you can create space for it.",
+        nextNodeId: 'devon_father_hint',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication'],
+        requiredOrbFill: { pattern: 'helping', threshold: 30 },
+        consequence: {
+          characterId: 'devon',
+          trustChange: 3
         }
       }
     ]

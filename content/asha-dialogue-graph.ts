@@ -9,13 +9,25 @@ export const ashaDialogueNodes: DialogueNode[] = [
             {
                 text: "You see a woman standing before a large, blank mural wall in the Arts District. She's holding a tablet, not a brush.\n\nShe swipes, and the wall seems to shimmer with projected light. Possibilities flickering—dragons, abstract geometry, photorealistic cities.\n\n\"The vision is clear,\" she murmurs. \"But the render... the render is still noisy.\"",
                 emotion: 'focused',
-                variation_id: 'intro_v1'
+                variation_id: 'intro_v1',
+                patternReflection: [
+                    { pattern: 'patience', minLevel: 4, altText: "You see a woman standing before a large mural wall. She's holding a tablet, not a brush.\n\nShe swipes slowly, deliberately. Light shimmers across the surface.\n\n\"The vision is clear,\" she murmurs. \"But the render... the render is still noisy.\"\n\n*She notices you watching. Doesn't rush to explain.*\n\n\"You're patient. Most people interrupt by now.\"", altEmotion: 'curious' },
+                    { pattern: 'exploring', minLevel: 4, altText: "You see a woman standing before a large mural wall. Projected light flickers—dragons, geometry, cities.\n\n\"The vision is clear,\" she murmurs. \"But the render... the render is still noisy.\"\n\n*She catches your curious gaze.*\n\n\"You want to know what it does, don't you? I can see it. That hunger to understand.\"", altEmotion: 'intrigued' },
+                    { pattern: 'building', minLevel: 4, altText: "You see a woman before a mural wall, tablet in hand. Light projects across the surface—possibilities flickering.\n\n\"The vision is clear,\" she murmurs. \"But the render... the render is still noisy.\"\n\n*She notices you studying the setup.*\n\n\"You're looking at the system, not just the art. A maker's eye.\"", altEmotion: 'interested' }
+                ]
             }
         ],
         choices: [
             {
                 choiceId: 'intro_curious',
                 text: "What are you creating?",
+                voiceVariations: {
+                    analytical: "What's the intended output? What are you creating?",
+                    helping: "This looks like important work. What are you creating?",
+                    building: "What are you building? What's the vision?",
+                    exploring: "I'm curious. What are you creating?",
+                    patience: "Take your time. What are you creating here?"
+                },
                 nextNodeId: 'asha_explains_vision',
                 pattern: 'exploring',
                 skills: ['creativity', 'communication'],
@@ -38,9 +50,45 @@ export const ashaDialogueNodes: DialogueNode[] = [
             {
                 choiceId: 'intro_offer_help',
                 text: "You look like you could use a second pair of eyes.",
+                voiceVariations: {
+                    analytical: "Fresh perspective might help. Need a second pair of eyes?",
+                    helping: "You look like you could use a second pair of eyes. Can I help?",
+                    building: "I can help troubleshoot. Need another perspective?",
+                    exploring: "Sometimes a fresh viewpoint helps. Want me to take a look?",
+                    patience: "You've been at this a while. Need a second pair of eyes?"
+                },
                 nextNodeId: 'asha_welcomes_help',
                 pattern: 'helping',
                 skills: ['emotionalIntelligence', 'collaboration'],
+                consequence: {
+                    characterId: 'asha',
+                    trustChange: 2
+                }
+            },
+            // Pattern unlock choices - only visible when player has built enough pattern affinity
+            {
+                choiceId: 'intro_philosophy_unlock',
+                text: "[Measured Response] The noise isn't technical. It's conflict—different visions fighting for space.",
+                nextNodeId: 'asha_mediation_philosophy',
+                pattern: 'patience',
+                skills: ['emotionalIntelligence'],
+                visibleCondition: {
+                    patterns: { patience: { min: 40 } }
+                },
+                consequence: {
+                    characterId: 'asha',
+                    trustChange: 2
+                }
+            },
+            {
+                choiceId: 'intro_hardest_unlock',
+                text: "[Supportive Presence] You're not just making art. You're mediating something. What's the hardest thing you've ever had to reconcile?",
+                nextNodeId: 'asha_hardest_case',
+                pattern: 'helping',
+                skills: ['emotionalIntelligence'],
+                visibleCondition: {
+                    patterns: { helping: { min: 50 } }
+                },
                 consequence: {
                     characterId: 'asha',
                     trustChange: 2
@@ -58,13 +106,24 @@ export const ashaDialogueNodes: DialogueNode[] = [
             {
                 text: "*She looks up, surprised.*\n\nMost people just walk by. They see the tech and think I'm working on some corporate installation.\n\n*A tired smile.*\n\nHonestly? Yeah. I've been staring at this so long I can't tell if it's art or just... pixels arranged badly.\n\nCome. Tell me what you see.",
                 emotion: 'grateful',
-                variation_id: 'welcomes_help_v1'
+                variation_id: 'welcomes_help_v1',
+                patternReflection: [
+                    { pattern: 'helping', minLevel: 4, altText: "*She looks up, surprised. Then her expression softens.*\n\nYou actually offered. Most people just walk by.\n\n*A tired but genuine smile.*\n\nHonestly? Yeah. I've been staring at this so long I can't tell if it's art anymore.\n\nYou have that look—like you actually want to help, not just give advice. Come. Tell me what you see.", altEmotion: 'touched' },
+                    { pattern: 'patience', minLevel: 4, altText: "*She looks up, surprised.*\n\nMost people walk by. You stopped. And you're not rushing me.\n\n*A tired smile.*\n\nI've been staring at this for hours. Maybe fresh eyes—patient eyes—are exactly what I need.\n\nCome. Take your time. Tell me what you see.", altEmotion: 'grateful' }
+                ]
             }
         ],
         choices: [
             {
                 choiceId: 'help_see_potential',
                 text: "I see something trying to break through. The colors are fighting each other.",
+                voiceVariations: {
+                    analytical: "There's visual tension here. The colors are competing for dominance.",
+                    helping: "Something beautiful is trying to emerge. The colors are fighting.",
+                    building: "The composition has conflict. The colors are fighting each other.",
+                    exploring: "I see something trying to break through. The colors are at war.",
+                    patience: "There's something underneath. The colors haven't found harmony yet."
+                },
                 nextNodeId: 'asha_artistic_process',
                 pattern: 'exploring',
                 skills: ['creativity'],
@@ -93,13 +152,24 @@ export const ashaDialogueNodes: DialogueNode[] = [
                 text: "*Her eyes light up.*\n\nYes! That's exactly it. The AI generates these perfect compositions, but they're too... harmonious. Like elevator music for the eyes.\n\nReal art has friction. Tension. The AI smooths everything out. Makes it \"pleasing.\"\n\n*She gestures at the projection.*\n\nI spend hours fighting the algorithm. Adding imperfection back in. Breaking what it builds.\n\nSome days I wonder if I'm the artist or just... the editor.",
                 emotion: 'conflicted',
                 variation_id: 'artistic_process_v1',
-                useChatPacing: true
+                useChatPacing: true,
+                patternReflection: [
+                    { pattern: 'analytical', minLevel: 4, altText: "*Her eyes light up.*\n\nYes! The AI generates perfect compositions, but they're too harmonious. Too optimized.\n\nYou see it too, don't you? The patterns. The way the algorithm defaults to 'pleasing.'\n\n*She gestures at the projection.*\n\nI spend hours adding imperfection back in. Fighting the optimization.\n\nSome days I wonder if I'm the artist or just... debugging the aesthetic.", altEmotion: 'animated' },
+                    { pattern: 'building', minLevel: 4, altText: "*Her eyes light up.*\n\nExactly! The AI builds these perfect compositions, but perfection is... boring.\n\nReal art needs friction. The algorithm smooths everything out.\n\n*She gestures at her setup.*\n\nI'm not just creating—I'm rebuilding what the machine makes. Breaking it to make it real.\n\nYou build things. You understand.", altEmotion: 'energized' }
+                ]
             }
         ],
         choices: [
             {
                 choiceId: 'process_validate',
                 text: "The curation IS the art. Knowing what to keep and what to break.",
+                voiceVariations: {
+                    analytical: "Selection criteria define the output. Curation IS the art.",
+                    helping: "Your judgment is the art. The AI just provides raw material.",
+                    building: "You're building meaning from noise. That's the real creation.",
+                    exploring: "The curation IS the art. You decide what lives and dies.",
+                    patience: "Knowing what to keep takes wisdom. That's where the art lives."
+                },
                 nextNodeId: 'asha_creative_philosophy',
                 pattern: 'building',
                 skills: ['creativity', 'criticalThinking'],
@@ -142,7 +212,11 @@ export const ashaDialogueNodes: DialogueNode[] = [
             {
                 text: "*She pauses, considering.*\n\nCuration as art. I've never heard someone put it that way.\n\nMy grandmother painted murals in Ahmedabad. Purely analog. She'd say the wall told her what it wanted.\n\n*Touches the tablet.*\n\nMaybe the AI is just... a faster conversation with the wall? Instead of weeks, I get answers in seconds.\n\nThe question is whether I'm still listening. Or just... accepting.",
                 emotion: 'contemplative',
-                variation_id: 'creative_philosophy_v1'
+                variation_id: 'creative_philosophy_v1',
+                patternReflection: [
+                    { pattern: 'patience', minLevel: 4, altText: "*She pauses, letting the thought settle.*\n\nCuration as art. I've never heard someone put it that way.\n\nMy grandmother painted murals in Ahmedabad. She'd say the wall told her what it wanted—if you were patient enough to listen.\n\n*Touches the tablet.*\n\nYou understand patience. Maybe that's why you see this differently.\n\nThe AI gives answers in seconds. But listening still takes time.", altEmotion: 'reflective' },
+                    { pattern: 'exploring', minLevel: 4, altText: "*She pauses, intrigued.*\n\nCuration as art. You're curious about the process, aren't you? Not just the product.\n\nMy grandmother painted murals in Ahmedabad. No tools like this. Just her and the wall.\n\n*Touches the tablet.*\n\nMaybe you're right to explore this question. Is the AI a tool or a collaborator?", altEmotion: 'curious' }
+                ]
             }
         ],
         choices: [
@@ -178,7 +252,11 @@ export const ashaDialogueNodes: DialogueNode[] = [
                 emotion: 'melancholy',
                 variation_id: 'grandmother_v1',
                 useChatPacing: true,
-                richEffectContext: 'thinking'
+                richEffectContext: 'thinking',
+                patternReflection: [
+                    { pattern: 'helping', minLevel: 4, altText: "*A soft smile crosses her face. She seems to sense you genuinely want to hear this.*\n\nNani used to wake at 4am to paint before the heat came. Bamboo scaffolding, community walls.\n\nNo planning software. Just... memory and faith.\n\n*She shows you an old photo.*\n\nThis was her last piece. She died on the scaffolding, brush in hand.\n\n*Her voice catches.*\n\nYou actually listen. Most people just wait for their turn to talk.", altEmotion: 'vulnerable' },
+                    { pattern: 'patience', minLevel: 4, altText: "*A soft smile crosses her face.*\n\nNani would wake at 4am. Three months for a single mural. Patient work.\n\n*She shows you an old photo.*\n\nShe died on the scaffolding, brush in hand. Never rushed. Never finished.\n\n*Quiet.*\n\nYou understand patience. Maybe that's why I'm telling you this.", altEmotion: 'trusting' }
+                ]
             }
         ],
         onEnter: [
@@ -191,6 +269,13 @@ export const ashaDialogueNodes: DialogueNode[] = [
             {
                 choiceId: 'grandmother_honor',
                 text: "She's still painting through you. Different tools, same devotion.",
+                voiceVariations: {
+                    analytical: "The methodology evolved, but the core practice continues through you.",
+                    helping: "She's still painting through you. Her spirit lives in your work.",
+                    building: "You're building on her foundation. Different tools, same devotion.",
+                    exploring: "Her legacy flows through you. Same calling, new canvas.",
+                    patience: "Some things transcend generations. She's still with you."
+                },
                 nextNodeId: 'asha_grandmother_connection',
                 pattern: 'helping',
                 skills: ['emotionalIntelligence', 'culturalCompetence'],
@@ -241,6 +326,13 @@ export const ashaDialogueNodes: DialogueNode[] = [
             {
                 choiceId: 'connection_community',
                 text: "Who do you WANT to paint for?",
+                voiceVariations: {
+                    analytical: "Strip away the constraints. Who's your ideal audience?",
+                    helping: "Forget the client. Who do you WANT to paint for?",
+                    building: "If you could choose your audience, who would you build for?",
+                    exploring: "Honest question: who do you WANT to paint for?",
+                    patience: "Take a moment. Who would you paint for if you could choose?"
+                },
                 nextNodeId: 'asha_purpose_discovery',
                 pattern: 'exploring',
                 skills: ['communication']
@@ -2275,6 +2367,103 @@ So really, the mentorship has already started. The question is whether we make i
             }
         ],
         tags: ['asha_arc', 'connection', 'mentorship']
+    },
+
+    // ============= PATTERN UNLOCK NODES =============
+    // These become available when player demonstrates sufficient pattern affinity
+
+    {
+        nodeId: 'asha_mediation_philosophy',
+        speaker: 'Asha',
+        content: [
+            {
+                text: "*Asha studies you with quiet attention.*\n\nYou don't rush. That's rare. Most people want quick resolutions—someone to be right, someone to be wrong.\n\n*She settles into stillness.*\n\nMy grandmother taught me something. Conflict isn't a problem to solve. It's a signal to understand.\n\nWhen two people argue, they're both saying something true that the other can't hear. My job isn't to pick sides. It's to translate until they can hear each other.\n\n*Quieter.*\n\nPatience isn't waiting for the fight to end. It's staying present while the truth emerges. Sometimes that takes years.",
+                emotion: 'teaching_profound',
+                variation_id: 'philosophy_v1'
+            }
+        ],
+        requiredState: {
+            patterns: { patience: { min: 40 } }
+        },
+        onEnter: [
+            {
+                characterId: 'asha',
+                addKnowledgeFlags: ['asha_philosophy_shared']
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'philosophy_practice',
+                text: "How do you practice that kind of patience? In the middle of conflict?",
+                nextNodeId: 'asha_artistic_process',
+                pattern: 'patience',
+                skills: ['emotionalIntelligence'],
+                consequence: {
+                    characterId: 'asha',
+                    trustChange: 3
+                }
+            },
+            {
+                choiceId: 'philosophy_grandmother',
+                text: "Your grandmother sounds wise. Tell me about her.",
+                nextNodeId: 'asha_grandmother_story',
+                pattern: 'helping',
+                skills: ['emotionalIntelligence'],
+                consequence: {
+                    characterId: 'asha',
+                    trustChange: 2
+                }
+            }
+        ],
+        tags: ['asha_arc', 'pattern_unlock', 'patience', 'philosophy']
+    },
+
+    {
+        nodeId: 'asha_hardest_case',
+        speaker: 'Asha',
+        content: [
+            {
+                text: "*Asha is quiet for a long moment. When she speaks, her voice carries weight.*\n\nYou really care. About people. Not just outcomes.\n\n*Pause.*\n\nThe hardest case I ever worked wasn't a custody dispute or a business conflict. It was two sisters who hadn't spoken in fifteen years.\n\nOne was dying. Cancer. She wanted to apologize before it was too late. The other wouldn't answer her calls.\n\n*Voice softens.*\n\nI spent three months. Not mediating—listening. Understanding why the silence had grown so thick neither could break through.\n\n*Meets your eyes.*\n\nThey reconciled. Eighteen days before she died. Eighteen days of saying everything that fifteen years had buried.\n\nThat's what helping really means. Not fixing. Witnessing. Holding space until people are ready to heal themselves.",
+                emotion: 'vulnerable_profound',
+                variation_id: 'hardest_v1'
+            }
+        ],
+        requiredState: {
+            patterns: { helping: { min: 50 } },
+            trust: { min: 4 }
+        },
+        onEnter: [
+            {
+                characterId: 'asha',
+                addKnowledgeFlags: ['asha_hardest_case_shared'],
+                addGlobalFlags: ['asha_deep_trust']
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'hardest_honored',
+                text: "Thank you for sharing that. Those eighteen days mattered more than most lifetimes.",
+                nextNodeId: 'asha_vulnerability_arc',
+                pattern: 'helping',
+                skills: ['emotionalIntelligence'],
+                consequence: {
+                    characterId: 'asha',
+                    trustChange: 4
+                }
+            },
+            {
+                choiceId: 'hardest_learn',
+                text: "How do you carry stories like that? How do you keep going?",
+                nextNodeId: 'asha_vulnerability_arc',
+                pattern: 'patience',
+                skills: ['emotionalIntelligence'],
+                consequence: {
+                    characterId: 'asha',
+                    trustChange: 3
+                }
+            }
+        ],
+        tags: ['asha_arc', 'pattern_unlock', 'helping', 'vulnerability', 'profound']
     }
 ]
 

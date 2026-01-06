@@ -40,6 +40,13 @@ export const jordanDialogueNodes: DialogueNode[] = [
           characterId: 'jordan',
           trustChange: 1,
           addKnowledgeFlags: ['noticed_job_diversity']
+        },
+        voiceVariations: {
+          analytical: "Seven jobs in twelve years. What pattern connects them?",
+          helping: "That's quite a journey. How did each role shape you?",
+          building: "Each role built on the last? What did you create in each?",
+          exploring: "That's a lot of different roles. What's the through-line?",
+          patience: "Seven jobs. Twelve years. That's a story. Take your time telling it."
         }
       },
       {
@@ -51,6 +58,13 @@ export const jordanDialogueNodes: DialogueNode[] = [
         consequence: {
           characterId: 'jordan',
           trustChange: 2
+        },
+        voiceVariations: {
+          analytical: "Six iterations. That's thorough preparation.",
+          helping: "Six rewrites means you care about getting it right.",
+          building: "Six drafts is solid craftsmanship. What's changing each time?",
+          exploring: "Six versions—you're searching for the right story.",
+          patience: "Taking time to get it right. That's wise."
         }
       },
       {
@@ -63,6 +77,13 @@ export const jordanDialogueNodes: DialogueNode[] = [
           characterId: 'jordan',
           trustChange: 1,
           addKnowledgeFlags: ['noticed_uncertainty']
+        },
+        voiceVariations: {
+          analytical: "You seem uncertain about your own story.",
+          helping: "Something's weighing on you about this speech.",
+          building: "You've built a lot. Why hesitate to share it?",
+          exploring: "There's doubt underneath the confidence, isn't there?",
+          patience: "You're wrestling with something. I can wait."
         }
       },
       {
@@ -74,6 +95,42 @@ export const jordanDialogueNodes: DialogueNode[] = [
         consequence: {
           characterId: 'jordan',
           trustChange: 1
+        },
+        voiceVariations: {
+          analytical: "[Wait. Observe what she does with the silence.]",
+          helping: "[Just be present. Let her find her words.]",
+          building: "[Hold space. She's assembling something.]",
+          exploring: "[Watch. Sometimes the pause reveals more than words.]",
+          patience: "[Let the silence hold. She's still figuring out how to begin.]"
+        }
+      },
+      // Pattern unlock choices - only visible when player has built enough pattern affinity
+      {
+        choiceId: 'intro_seven_jobs_unlock',
+        text: "[Seeker's Eye] Seven jobs isn't chaos—it's exploration. Tell me what you found.",
+        nextNodeId: 'jordan_seven_jobs_story',
+        pattern: 'exploring',
+        skills: ['communication'],
+        visibleCondition: {
+          patterns: { exploring: { min: 40 } }
+        },
+        consequence: {
+          characterId: 'jordan',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'intro_impostor_unlock',
+        text: "[Empathy Sense] You're nervous. Not about the speech—about whether you deserve to give it.",
+        nextNodeId: 'jordan_impostor_reveal',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        visibleCondition: {
+          patterns: { helping: { min: 50 } }
+        },
+        consequence: {
+          characterId: 'jordan',
+          trustChange: 2
         }
       }
     ],
@@ -113,6 +170,13 @@ I've rewritten this speech six times. What do you tell people when your path loo
         consequence: {
           characterId: 'jordan',
           trustChange: 1
+        },
+        voiceVariations: {
+          analytical: "Walk me through the data. What does your path look like?",
+          helping: "I'd like to hear your story. What does your path look like?",
+          building: "Show me the blueprint. What did you build over those twelve years?",
+          exploring: "What does your path look like?",
+          patience: "Take your time. Tell me what your path looks like."
         }
       },
       {
@@ -124,6 +188,13 @@ I've rewritten this speech six times. What do you tell people when your path loo
         consequence: {
           characterId: 'jordan',
           trustChange: 1
+        },
+        voiceVariations: {
+          analytical: "Non-linear paths are common. The honest data is messy.",
+          helping: "Real journeys aren't neat. Your mess might help someone.",
+          building: "The best projects have messy blueprints. Same with careers.",
+          exploring: "Maybe messy paths are the most honest ones to share.",
+          patience: "Life isn't linear. Maybe that's the point."
         }
       },
       {
@@ -135,6 +206,13 @@ I've rewritten this speech six times. What do you tell people when your path loo
         consequence: {
           characterId: 'jordan',
           trustChange: 1
+        },
+        voiceVariations: {
+          analytical: "Six rewrites means you're overthinking the story you're telling.",
+          helping: "You're being too hard on yourself with all those rewrites.",
+          building: "At some point, the drafts are done. Ship it.",
+          exploring: "Six versions—maybe you're looking for the wrong story.",
+          patience: "Sometimes the best version is just the one you finally let go."
         }
       },
       {
@@ -146,6 +224,13 @@ I've rewritten this speech six times. What do you tell people when your path loo
         consequence: {
           characterId: 'jordan',
           trustChange: 1
+        },
+        voiceVariations: {
+          analytical: "Reverse-engineer the narrative. Start from where you are now.",
+          helping: "What if you told it from where you landed, looking back?",
+          building: "What if you structured it differently? Build from the outcome backward.",
+          exploring: "What if you started at the end and worked backwards?",
+          patience: "Sometimes the ending shows you how the beginning should feel."
         }
       }
     ],
@@ -187,6 +272,13 @@ Twenty years old, back with my mom. She kept asking when I'd go back to school.`
           characterId: 'jordan',
           trustChange: 1,
           addKnowledgeFlags: ['knows_job_1']
+        },
+        voiceVariations: {
+          analytical: "The startup failed. Then what? Walk me through the recovery.",
+          helping: "That must have been hard. What came next?",
+          building: "So the first project failed. What did you build next?",
+          exploring: "What did you do after the startup collapsed?",
+          patience: "Take your time. What came after the crash?"
         }
       },
       {
@@ -199,6 +291,13 @@ Twenty years old, back with my mom. She kept asking when I'd go back to school.`
           characterId: 'jordan',
           trustChange: 1,
           addKnowledgeFlags: ['knows_job_1']
+        },
+        voiceVariations: {
+          analytical: "Failure at twenty means you tried. That's statistically rare.",
+          helping: "At least you took a risk. That's more than most people do at twenty.",
+          building: "You shipped something at twenty. Most people never ship anything.",
+          exploring: "Most people don't take risks like that. You did.",
+          patience: "You tried something big. That matters."
         }
       },
       {
@@ -214,6 +313,13 @@ Twenty years old, back with my mom. She kept asking when I'd go back to school.`
           characterId: 'jordan',
           trustChange: 1,
           addKnowledgeFlags: ['knows_job_1']
+        },
+        voiceVariations: {
+          analytical: "Sounds like you've been figuring it out as you go since the beginning.",
+          helping: "You've been adapting from the start. That's resilience.",
+          building: "No blueprint. Just iteration. That's how real things get built.",
+          exploring: "So the pattern started early—learning by doing.",
+          patience: "Life rarely follows a plan. You figured that out young."
         }
       },
       {
@@ -229,6 +335,13 @@ Twenty years old, back with my mom. She kept asking when I'd go back to school.`
           characterId: 'jordan',
           trustChange: 1,
           addKnowledgeFlags: ['knows_job_1']
+        },
+        voiceVariations: {
+          analytical: "[Process. That's significant context.]",
+          helping: "[Just be present. She's trusting you with something.]",
+          building: "[Let the foundation settle before building more.]",
+          exploring: "[Let her continue. There's more to this story.]",
+          patience: "[Nod quietly. That's a hard thing to share.]"
         }
       }
     ],
@@ -263,6 +376,13 @@ Customer service is applied empathy.`,
           characterId: 'jordan',
           trustChange: 1,
           addKnowledgeFlags: ['knows_job_2']
+        },
+        voiceVariations: {
+          analytical: "Sales has transferable skills. Did you leverage that into something else?",
+          helping: "That's a tough job. Did you move on after that?",
+          building: "Sales is a skill. What did you build on top of it?",
+          exploring: "Did you stay in sales after that?",
+          patience: "And then? What came next?"
         }
       },
       {
@@ -275,6 +395,13 @@ Customer service is applied empathy.`,
           characterId: 'jordan',
           trustChange: 1,
           addKnowledgeFlags: ['knows_job_2']
+        },
+        voiceVariations: {
+          analytical: "Reading people in three seconds—that's pattern recognition.",
+          helping: "That's actually a really valuable skill. reading people that quickly.",
+          building: "Three-second reads. That's a tool you can use anywhere.",
+          exploring: "Reading people fast is rare. Where else did you use that?",
+          patience: "That kind of intuition takes time to develop. You earned it."
         }
       },
       {
@@ -290,6 +417,13 @@ Customer service is applied empathy.`,
           characterId: 'jordan',
           trustChange: 1,
           addKnowledgeFlags: ['knows_job_2']
+        },
+        voiceVariations: {
+          analytical: "Applied empathy sounds a lot like user experience design.",
+          helping: "Understanding people's needs—that's what good design is about.",
+          building: "User research is just systematic empathy. You had a head start.",
+          exploring: "The connection between sales and UX—that's interesting.",
+          patience: "Listening. Understanding. That's the root of good design."
         }
       },
       {
@@ -302,6 +436,13 @@ Customer service is applied empathy.`,
           characterId: 'jordan',
           trustChange: 1,
           addKnowledgeFlags: ['knows_job_2']
+        },
+        voiceVariations: {
+          analytical: "[Data is still incoming. Wait for the full dataset.]",
+          helping: "[She's finding her voice. Just listen.]",
+          building: "[The story is under construction. Give it space.]",
+          exploring: "[There's more. Stay curious.]",
+          patience: "[Stay present. Let her find her rhythm in the telling.]"
         }
       }
     ],
@@ -1515,6 +1656,143 @@ My story is too messy. Better to hide it.`,
       addGlobalFlags: ['jordan_chose_shallow', 'jordan_arc_complete']
     }],
     tags: ['ending', 'bad_ending', 'jordan_arc']
+  },
+
+  // ============= PATTERN UNLOCK NODES =============
+  // These become available when player demonstrates sufficient pattern affinity
+
+  {
+    nodeId: 'jordan_seven_jobs_story',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: "*Jordan's professional composure cracks into something more real.*\n\nYou ask a lot of questions. Good ones. The kind that don't have easy answers.\n\n*They lean back.*\n\nSeven jobs. Four years. That's my track record. Barista. Data entry. Non-profit coordinator. Social media manager. Tutoring. Freelance writing. And now... this.\n\n*Gestures at the station around them.*\n\nMy parents call it 'unfocused.' LinkedIn would call it 'a red flag.'\n\n*Meets your eyes.*\n\nBut you know what? Every single one of those jobs taught me something. How to read people. How to translate between different worlds. How to find patterns in chaos.\n\nI'm not unfocused. I'm synthesizing.",
+      emotion: 'vulnerable_defiant',
+      variation_id: 'seven_jobs_v1'
+    }],
+    requiredState: {
+      patterns: { exploring: { min: 40 } }
+    },
+    onEnter: [
+      {
+        characterId: 'jordan',
+        addKnowledgeFlags: ['jordan_career_history_shared']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'seven_synthesis',
+        text: "Synthesizing. That's exactly what career navigation is—connecting dots others can't see.",
+        nextNodeId: 'jordan_career_insight',
+        pattern: 'exploring',
+        skills: ['communication'],
+        consequence: {
+          characterId: 'jordan',
+          trustChange: 3
+        }
+      },
+      {
+        choiceId: 'seven_pattern',
+        text: "What's the pattern you see across all seven?",
+        nextNodeId: 'jordan_career_insight',
+        pattern: 'analytical',
+        skills: ['criticalThinking'],
+        consequence: {
+          characterId: 'jordan',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['jordan_arc', 'pattern_unlock', 'exploring', 'backstory']
+  },
+
+  {
+    nodeId: 'jordan_impostor_reveal',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: "*Jordan's voice drops. This is clearly difficult.*\n\nYou really care, don't you? About people. Not just the answers.\n\n*Long pause.*\n\nCan I tell you something I don't tell... anyone?\n\n*They don't wait for an answer.*\n\nEvery day, I help people find their paths. I see their patterns. I match them with possibilities. And every single day, a voice in my head says: 'Who are you to guide anyone? You don't even know where YOU'RE going.'\n\n*Quiet laugh.*\n\nImpostor syndrome. The career navigator who can't navigate their own career.\n\n*Looks at you.*\n\nBut maybe that's why I'm good at this. Because I know what it's like to be lost. To feel like everyone else has a map except you.\n\nI don't guide people despite being lost. I guide them BECAUSE I understand lost.",
+      emotion: 'vulnerable_honest',
+      variation_id: 'impostor_v1'
+    }],
+    requiredState: {
+      patterns: { helping: { min: 50 } }
+    },
+    onEnter: [
+      {
+        characterId: 'jordan',
+        addKnowledgeFlags: ['jordan_impostor_revealed']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'impostor_strength',
+        text: "That's not impostor syndrome. That's empathy. Your uncertainty is your superpower.",
+        nextNodeId: 'jordan_career_insight',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'jordan',
+          trustChange: 4
+        }
+      },
+      {
+        choiceId: 'impostor_trust',
+        text: "Thank you for trusting me with that. It couldn't have been easy to say.",
+        nextNodeId: 'jordan_career_insight',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'jordan',
+          trustChange: 3
+        }
+      }
+    ],
+    tags: ['jordan_arc', 'pattern_unlock', 'helping', 'vulnerability']
+  },
+
+  {
+    nodeId: 'jordan_unexpected_paths',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: "*Jordan's energy shifts—something profound surfacing.*\n\nYou've asked a lot of questions today. More than most. And you've actually listened to the answers.\n\n*They pull out a worn notebook.*\n\nI keep a collection. Stories of people who found their path in unexpected ways. The accountant who became a chocolatier. The lawyer who became a forest ranger.\n\n*Opens to a specific page.*\n\nBut this one... this is my favorite. My grandmother.\n\nShe was going to be a teacher. Had the degree. Had the job offer. Then she met a woman on a bus who was starting a community center in a neighborhood everyone had given up on.\n\n*Voice softens.*\n\nGrandma spent forty years in that community center. Changed thousands of lives. Never taught in a classroom.\n\n*Meets your eyes.*\n\nThat's what I'm trying to do here. Help people find their bus moment. The unexpected conversation that changes everything.\n\nMaybe this is yours.",
+      emotion: 'profound_hopeful',
+      variation_id: 'unexpected_v1'
+    }],
+    requiredState: {
+      patterns: { exploring: { min: 70 } },
+      trust: { min: 5 }
+    },
+    onEnter: [
+      {
+        characterId: 'jordan',
+        addKnowledgeFlags: ['jordan_grandmother_story', 'jordan_deepest_shared'],
+        addGlobalFlags: ['jordan_full_trust']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'unexpected_honored',
+        text: "I hope it is. And I hope I can help someone find theirs someday.",
+        nextNodeId: 'jordan_career_insight',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'leadership'],
+        consequence: {
+          characterId: 'jordan',
+          trustChange: 4
+        }
+      },
+      {
+        choiceId: 'unexpected_curious',
+        text: "What happened to the woman who started the community center?",
+        nextNodeId: 'jordan_career_insight',
+        pattern: 'exploring',
+        skills: ['communication'],
+        consequence: {
+          characterId: 'jordan',
+          trustChange: 3
+        }
+      }
+    ],
+    tags: ['jordan_arc', 'pattern_unlock', 'exploring', 'high_trust', 'profound']
   }
 ]
 
