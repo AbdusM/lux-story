@@ -2,11 +2,25 @@
  * Loyalty Experience System Tests
  *
  * Tests for E2-034 to E2-039: Character loyalty experiences
+ * Original 7:
  * - E2-035: Maya's "The Demo"
  * - E2-036: Devon's "The Outage"
  * - E2-037: Samuel's "The Quiet Hour"
  * - E2-038: Marcus's "The Breach"
  * - E2-039: Rohan's "The Confrontation"
+ * - Tess's "The First Class"
+ * - Jordan's "The Crossroads"
+ *
+ * Extended 9:
+ * - Grace's "The Vigil"
+ * - Alex's "The Honest Course"
+ * - Kai's "The Inspection"
+ * - Yaquin's "The Launch"
+ * - Elena's "The Pattern"
+ * - Silas's "The Feral Lab"
+ * - Asha's "The Mural"
+ * - Lira's "The Memory Song"
+ * - Zara's "The Audit"
  */
 
 import { describe, test, expect } from 'vitest'
@@ -42,25 +56,36 @@ describe('Loyalty Experience System', () => {
   })
 
   describe('Experience Registry', () => {
-    test('should have all 7 loyalty experiences', () => {
-      expect(Object.keys(LOYALTY_EXPERIENCES)).toHaveLength(7)
+    test('should have all 16 loyalty experiences', () => {
+      expect(Object.keys(LOYALTY_EXPERIENCES)).toHaveLength(16)
     })
 
     test('each experience should have unique character', () => {
       const characters = Object.values(LOYALTY_EXPERIENCES).map(exp => exp.characterId)
       const uniqueCharacters = new Set(characters)
-      expect(uniqueCharacters.size).toBe(7)
+      expect(uniqueCharacters.size).toBe(16)
     })
 
     test('all experience types should be registered', () => {
       const types: LoyaltyExperienceType[] = [
+        // Original 7
         'the_demo',
         'the_outage',
         'the_quiet_hour',
         'the_breach',
         'the_confrontation',
         'the_first_class',
-        'the_crossroads'
+        'the_crossroads',
+        // Extended 9
+        'the_vigil',
+        'the_honest_course',
+        'the_inspection',
+        'the_launch',
+        'the_pattern',
+        'the_feral_lab',
+        'the_mural',
+        'the_memory_song',
+        'the_audit'
       ]
       types.forEach(type => {
         expect(LOYALTY_EXPERIENCES[type]).toBeDefined()
@@ -104,8 +129,13 @@ describe('Loyalty Experience System', () => {
       expect(exp?.id).toBe('the_crossroads')
     })
 
-    test('should return undefined for character without loyalty experience', () => {
+    test('should return Grace\'s experience', () => {
       const exp = getLoyaltyExperienceForCharacter('grace')
+      expect(exp?.id).toBe('the_vigil')
+    })
+
+    test('should return undefined for location without loyalty experience', () => {
+      const exp = getLoyaltyExperienceForCharacter('station_entry')
       expect(exp).toBeUndefined()
     })
   })

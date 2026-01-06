@@ -773,6 +773,28 @@ It's messy. Unmonetizable. Probably nobody needs it. But it's the first thing I'
         useChatPacing: true
       }
     ],
+    simulation: {
+      type: 'prompt_engineering',
+      title: 'Learning Pattern Discovery',
+      taskDescription: 'Alex\'s prototype needs a better opening prompt. The current version asks generic questions. Help refine it to uncover genuine curiosity patterns instead of career anxiety.',
+      initialContext: {
+        label: 'Current System Prompt (Draft v3)',
+        content: `CURRENT PROMPT:
+"What career do you want? What skills are you missing?
+Let me recommend courses to fill your gaps."
+
+PROBLEM: This triggers anxiety, not curiosity.
+
+GOAL: Redesign the opening to ask about:
+- What they explore when no one's watching
+- What problems they notice that others don't
+- What they'd build if monetization didn't matter
+
+Reframe the AI from "gap filler" to "pattern revealer"`,
+        displayStyle: 'code'
+      },
+      successFeedback: '✓ PROMPT REFINED: New opening focuses on intrinsic curiosity, not extrinsic pressure. "What would you learn if no one was grading you?"'
+    },
     choices: [
       {
         choiceId: 'alex_project_why',
@@ -1386,6 +1408,517 @@ Ask me again in a year. The answer will probably be different.`,
     tags: ['alex_arc']
   },
 
+  // ============= SIMULATION: LOGISTICS PUZZLE =============
+  // Alex encounters a supply chain scenario through documentation work
+  {
+    nodeId: 'alex_simulation_intro',
+    speaker: 'Alex',
+    content: [
+      {
+        text: `*Pulls up a different screen.*
+
+So I've been documenting this logistics platform. Small nonprofit trying to source supplies for Birmingham schools. And they hit a wall.
+
+*Shows you the dashboard.*
+
+Their usual supplier ghosted—can't fulfill orders anymore. They've got 2,000 kids waiting on school supplies, a donor deadline in 72 hours, and three alternative suppliers.
+
+*Looks at you.*
+
+Here's the thing: the "obvious" choice isn't obvious. Speed, cost, ethics—they're all pulling in different directions.
+
+Want to help me think through this? It's not my job, but... I can't stop looking at it.`,
+        emotion: 'engaged',
+        interaction: 'nod',
+        variation_id: 'sim_intro_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'alex_sim_dive_in',
+        text: "Show me the options. Let's figure this out.",
+        nextNodeId: 'alex_simulation_phase_1',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'problemSolving'],
+        consequence: {
+          characterId: 'alex',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'alex_sim_why_care',
+        text: "Why does this matter to you? It's not your project.",
+        nextNodeId: 'alex_simulation_why_care',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'alex',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['alex_arc', 'simulation', 'logistics']
+  },
+
+  {
+    nodeId: 'alex_simulation_why_care',
+    speaker: 'Alex',
+    content: [
+      {
+        text: `*Pauses.*
+
+Because I used to be one of those kids.
+
+Free lunch program. Hand-me-down textbooks with someone else's notes in them. The year the supply shipment got "delayed"—we spent September writing on napkins.
+
+*Shrugs.*
+
+The nonprofit doesn't know I'm looking at this. I'm supposed to be documenting the interface, not solving their problems.
+
+But when you can see the pattern—when you know what the delay means for real kids—it's hard to look away.`,
+        emotion: 'vulnerable_determined',
+        interaction: 'nod',
+        variation_id: 'why_care_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'alex_sim_to_phase_1',
+        text: "Then let's not look away. Show me the suppliers.",
+        nextNodeId: 'alex_simulation_phase_1',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'alex',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['alex_arc', 'simulation', 'backstory']
+  },
+
+  {
+    nodeId: 'alex_simulation_phase_1',
+    speaker: 'Alex',
+    content: [
+      {
+        text: `*Pulls up supplier comparison.*
+
+Three options. None perfect.`,
+        emotion: 'focused',
+        variation_id: 'phase_1_v1',
+        useChatPacing: true
+      }
+    ],
+    simulation: {
+      type: 'dashboard_triage',
+      title: 'Supply Chain Triage',
+      taskDescription: 'The nonprofit needs 2,000 supply kits in 72 hours. Each supplier has tradeoffs. Your recommendation will affect real students.',
+      initialContext: {
+        label: 'Supplier Analysis Dashboard',
+        content: `SUPPLIER A: FastShip Global
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+Delivery: 24 hours (FASTEST)
+Cost: $18.50/kit ($37,000 total)
+Ethics Score: 2/10 (labor violations, overseas)
+Quality: Mixed reviews (15% defect rate)
+
+SUPPLIER B: Regional Educational Supply Co.
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+Delivery: 48 hours
+Cost: $22.00/kit ($44,000 total)
+Ethics Score: 7/10 (domestic, union workers)
+Quality: Solid (3% defect rate)
+
+SUPPLIER C: Community-First Cooperative
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+Delivery: 72 hours (TIGHT)
+Cost: $24.50/kit ($49,000 total)
+Ethics Score: 10/10 (local, living wage, minority-owned)
+Quality: Excellent (1% defect rate)
+
+BUDGET: $45,000 | DEADLINE: 72 hours`,
+        displayStyle: 'code'
+      },
+      successFeedback: 'ANALYSIS COMPLETE: Tradeoffs mapped. Decision framework established.'
+    },
+    choices: [
+      {
+        choiceId: 'alex_sim_supplier_a',
+        text: "Supplier A. Speed is everything—kids can't wait.",
+        nextNodeId: 'alex_simulation_phase_2_speed',
+        pattern: 'building',
+        skills: ['problemSolving']
+      },
+      {
+        choiceId: 'alex_sim_supplier_b',
+        text: "Supplier B. Balance of speed, cost, and ethics.",
+        nextNodeId: 'alex_simulation_phase_2_balance',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'systemsThinking']
+      },
+      {
+        choiceId: 'alex_sim_supplier_c',
+        text: "Supplier C. Ethics matter—even if it's tight on time.",
+        nextNodeId: 'alex_simulation_phase_2_ethics',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'integrity']
+      },
+      {
+        choiceId: 'alex_sim_hybrid',
+        text: "Wait—can we split the order? Hybrid approach?",
+        nextNodeId: 'alex_simulation_phase_2_hybrid',
+        pattern: 'exploring',
+        skills: ['creativity', 'systemsThinking'],
+        consequence: {
+          characterId: 'alex',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['alex_arc', 'simulation', 'decision_point']
+  },
+
+  // Phase 2 branches based on first decision
+  {
+    nodeId: 'alex_simulation_phase_2_speed',
+    speaker: 'Alex',
+    content: [
+      {
+        text: `*Frowns.*
+
+FastShip. Okay. But here's the complication.
+
+*Pulls up a news article.*
+
+They got flagged six months ago for child labor in their overseas facilities. The nonprofit's donor—a local church group—specifically asked about ethical sourcing in their grant application.
+
+If this gets traced back... the nonprofit could lose future funding.
+
+*Looks at you.*
+
+Speed now, or sustainability later? That's the real question.`,
+        emotion: 'conflicted',
+        variation_id: 'speed_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'alex_speed_anyway',
+        text: "Kids need supplies NOW. Deal with reputation later.",
+        nextNodeId: 'alex_simulation_fail',
+        pattern: 'building',
+        skills: ['problemSolving']
+      },
+      {
+        choiceId: 'alex_speed_reconsider',
+        text: "You're right. Let me reconsider the options.",
+        nextNodeId: 'alex_simulation_phase_1',
+        pattern: 'patience',
+        skills: ['adaptability']
+      }
+    ],
+    tags: ['alex_arc', 'simulation']
+  },
+
+  {
+    nodeId: 'alex_simulation_phase_2_balance',
+    speaker: 'Alex',
+    content: [
+      {
+        text: `*Nods slowly.*
+
+Regional Supply. Middle path. But there's a catch.
+
+*Checks the numbers.*
+
+At $44,000, we're $1,000 under budget—but their minimum order for 48-hour delivery is 2,500 kits. We'd have 500 extra.
+
+*Thinks.*
+
+Those extras could go to the overflow waitlist—kids who applied late. Or we could negotiate a smaller order, but that bumps delivery to 60 hours.
+
+What matters more: reaching more kids, or guaranteed timeline?`,
+        emotion: 'thoughtful',
+        variation_id: 'balance_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'alex_balance_overflow',
+        text: "Order 2,500. Those waitlist kids deserve supplies too.",
+        nextNodeId: 'alex_simulation_success',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'systemsThinking'],
+        consequence: {
+          characterId: 'alex',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'alex_balance_negotiate',
+        text: "Negotiate down. Stick to the original scope.",
+        nextNodeId: 'alex_simulation_success_modest',
+        pattern: 'analytical',
+        skills: ['communication']
+      }
+    ],
+    tags: ['alex_arc', 'simulation']
+  },
+
+  {
+    nodeId: 'alex_simulation_phase_2_ethics',
+    speaker: 'Alex',
+    content: [
+      {
+        text: `*Smiles slightly.*
+
+Community-First. The "right" choice. But 72 hours means zero margin for error.
+
+*Pulls up logistics map.*
+
+Their warehouse is in Bessemer—20 minutes from the schools. If we can get volunteers for same-day distribution, we bypass the last-mile shipping delay.
+
+*Looks at you.*
+
+It's a gamble. Requires mobilizing community members on short notice. But if it works... we get quality, ethics, AND local impact.
+
+The question is: do you trust people to show up?`,
+        emotion: 'hopeful',
+        variation_id: 'ethics_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'alex_ethics_trust',
+        text: "Yes. People show up for their community. Make the call.",
+        nextNodeId: 'alex_simulation_success',
+        pattern: 'helping',
+        skills: ['leadership', 'communication'],
+        consequence: {
+          characterId: 'alex',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'alex_ethics_backup',
+        text: "Trust, but verify. Have Supplier B on standby.",
+        nextNodeId: 'alex_simulation_success',
+        pattern: 'patience',
+        skills: ['systemsThinking', 'adaptability'],
+        consequence: {
+          characterId: 'alex',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['alex_arc', 'simulation']
+  },
+
+  {
+    nodeId: 'alex_simulation_phase_2_hybrid',
+    speaker: 'Alex',
+    content: [
+      {
+        text: `*Eyes light up.*
+
+Hybrid. I didn't even think of that.
+
+*Starts calculating.*
+
+What if we split it: 1,000 kits from Community-First for the schools closest to Bessemer, and 1,000 from Regional Supply for the rest?
+
+*Runs the numbers.*
+
+$24,500 + $22,000 = $46,500. That's $1,500 over budget. But if we can get the church group to cover the overage as "local impact bonus"...
+
+We get speed, ethics, AND we support two suppliers building capacity for next year.
+
+*Looks at you.*
+
+This is systems thinking. You see the whole board, not just the pieces.`,
+        emotion: 'impressed',
+        variation_id: 'hybrid_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'alex_hybrid_pitch',
+        text: "Let's pitch it. Write up the proposal.",
+        nextNodeId: 'alex_simulation_success',
+        pattern: 'building',
+        skills: ['communication', 'leadership'],
+        consequence: {
+          characterId: 'alex',
+          trustChange: 3
+        }
+      },
+      {
+        choiceId: 'alex_hybrid_risky',
+        text: "It's elegant, but risky. What if the donor says no?",
+        nextNodeId: 'alex_simulation_success_modest',
+        pattern: 'patience',
+        skills: ['criticalThinking']
+      }
+    ],
+    tags: ['alex_arc', 'simulation', 'creative_solution']
+  },
+
+  // Success outcomes
+  {
+    nodeId: 'alex_simulation_success',
+    speaker: 'Alex',
+    content: [
+      {
+        text: `*Leans back, exhaling.*
+
+We did it. The order's in. Volunteers are mobilizing. The donor agreed to the approach.
+
+*Quiet.*
+
+You know what's wild? This wasn't my job. I'm supposed to document software, not solve logistics problems.
+
+But this—<bloom>this is what learning looks like</bloom>. Not courses. Not certificates. Real problems with real stakes.
+
+*Looks at you.*
+
+The bootcamp never taught me supply chain ethics. But curiosity did. And having someone to think with? That made the difference.
+
+*Small smile.*
+
+Thanks for not just telling me what to do. You asked the right questions.`,
+        emotion: 'grateful_illuminated',
+        interaction: 'bloom',
+        variation_id: 'success_v1',
+        useChatPacing: true
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'alex',
+        addKnowledgeFlags: ['alex_logistics_solved'],
+        addGlobalFlags: ['golden_prompt_logistics']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'alex_success_to_turn',
+        text: "The best learning happens when it matters.",
+        nextNodeId: 'alex_turn',
+        pattern: 'exploring',
+        skills: ['communication'],
+        consequence: {
+          characterId: 'alex',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['alex_arc', 'simulation', 'resolution']
+  },
+
+  {
+    nodeId: 'alex_simulation_success_modest',
+    speaker: 'Alex',
+    content: [
+      {
+        text: `*Nods.*
+
+Okay. It's done. Maybe not the perfect solution, but a working one.
+
+*Closes the dashboard.*
+
+2,000 kids will have supplies. The nonprofit met their deadline. Not everything needs to be revolutionary—sometimes "good enough" is actually good.
+
+*Looks at you.*
+
+But I'll remember that hybrid idea. For next time. Sometimes the creative solution needs more runway than we have.
+
+*Quiet smile.*
+
+Thanks for thinking through this with me. Even the imperfect path is clearer when you're not walking it alone.`,
+        emotion: 'peaceful',
+        interaction: 'nod',
+        variation_id: 'modest_v1',
+        useChatPacing: true
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'alex',
+        addKnowledgeFlags: ['alex_logistics_completed']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'alex_modest_to_turn',
+        text: "Progress over perfection. That's wisdom.",
+        nextNodeId: 'alex_turn',
+        pattern: 'patience',
+        skills: ['adaptability']
+      }
+    ],
+    tags: ['alex_arc', 'simulation', 'resolution']
+  },
+
+  // Failure outcome
+  {
+    nodeId: 'alex_simulation_fail',
+    speaker: 'Alex',
+    content: [
+      {
+        text: `*Watches the screen.*
+
+Order placed. FastShip confirmed.
+
+*Pause.*
+
+Three weeks later, the story broke. Local news. "Birmingham Nonprofit Linked to Labor Violation Supplier." The church group pulled their funding for next year.
+
+*Rubs face.*
+
+The kids got their supplies. But the program that serves them? It might not survive.
+
+*Looks at you.*
+
+Speed isn't always the answer. Sometimes the "obvious" choice is obvious because it ignores everything that matters.
+
+*Quiet.*
+
+I've seen this before. In the bootcamp world. "Ship fast, fix later." Except sometimes there is no later.
+
+Let me think on this more.`,
+        emotion: 'regretful',
+        interaction: 'shake',
+        variation_id: 'fail_v1',
+        useChatPacing: true,
+        richEffectContext: 'warning'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'alex_fail_retry',
+        text: "Hindsight. Want to walk through it again?",
+        nextNodeId: 'alex_simulation_intro',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence']
+      },
+      {
+        choiceId: 'alex_fail_accept',
+        text: "Hard lesson. At least the kids had supplies this year.",
+        nextNodeId: 'alex_turn',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
+      }
+    ],
+    tags: ['alex_arc', 'simulation', 'failure']
+  },
+
   // ============= INTERRUPT TARGET NODES =============
   {
     nodeId: 'alex_interrupt_comfort',
@@ -1600,7 +2133,8 @@ They're the ones who kept showing up.`,
 ]
 
 export const alexEntryPoints = {
-  INTRODUCTION: 'alex_introduction'
+  INTRODUCTION: 'alex_introduction',
+  SIMULATION: 'alex_simulation_intro'
 } as const
 
 export const alexDialogueGraph: DialogueGraph = {

@@ -500,6 +500,27 @@ export const mayaDialogueNodes: DialogueNode[] = [
         }
       }
     ],
+    simulation: {
+      type: 'system_architecture',
+      title: 'Servo Control Debugger',
+      taskDescription: 'The prosthetic hand is malfunctioning. The sensor readings look normal, but the actuator is oscillating. Identify the root cause in the control loop.',
+      initialContext: {
+        label: 'Control System: GripAssist_v2.3',
+        content: `SENSOR INPUT:  Pressure = 2.3N (target: 2.5N)
+ACTUATOR OUT:  Position = OSCILLATING (±15°)
+ERROR LOG:     PID_FEEDBACK_DELAY: 340ms
+
+Control Loop Architecture:
+[Sensor] -> [Filter] -> [PID Controller] -> [Actuator]
+                            ↑
+                   [Feedback Loop: 50ms target]
+
+WARNING: Feedback latency exceeds threshold
+STATUS: Signal fighting itself`,
+        displayStyle: 'code'
+      },
+      successFeedback: '✓ ROOT CAUSE: Feedback delay (340ms) causing control loop instability. Solution: Reduce PID gain or add predictive compensation.'
+    },
     patternReflection: [
       {
         pattern: 'building',
@@ -1611,6 +1632,475 @@ The real one. Where their perfect daughter died in a bathroom five years ago, an
     metadata: {
       sessionBoundary: true  // Session 3: Deep vulnerability revealed
     }
+  },
+
+  // ============= TECH DEMO SIMULATION =============
+  // Maya's simulation: Presenting a robotics prototype to skeptical investors
+  // while her parents watch from the audience, expecting her to fail
+  {
+    nodeId: 'maya_simulation_intro',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "*She looks at you with nervous energy.*\n\nOkay so... there's this thing. UAB's Innovation Showcase. They invited student projects to pitch to real investors.\n\nI submitted my prosthetic hand prototype. Secretly. My parents don't know.\n\nHere, look—\n\nBut now it's happening. Tomorrow. And my mom just texted saying they're coming to 'support me at your little science fair.'\n\n*Her voice cracks.*\n\nThey think it's a biochem poster. When they see me presenting robots to investors... everything falls apart.",
+        emotion: 'terrified_excited',
+        variation_id: 'sim_intro_v1',
+        useChatPacing: true,
+        richEffectContext: 'warning'
+      }
+    ],
+    requiredState: {
+      trust: { min: 4 },
+      hasKnowledgeFlags: ['knows_robotics']
+    },
+    choices: [
+      {
+        choiceId: 'sim_help_prepare',
+        text: "Let's prepare. If your pitch is undeniable, they'll have to see you differently.",
+        nextNodeId: 'maya_simulation_phase_1',
+        pattern: 'building',
+        skills: ['leadership', 'communication'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'sim_emotional_support',
+        text: "You've been hiding this part of yourself for years. Maybe it's time they finally meet the real Maya.",
+        nextNodeId: 'maya_simulation_phase_1',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'sim_analyze_situation',
+        text: "What's the worst that happens? Walk me through the scenarios.",
+        nextNodeId: 'maya_simulation_phase_1',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'problemSolving']
+      },
+      {
+        choiceId: 'sim_explore_options',
+        text: "What if we frame it differently? 'Medical robotics' sounds like doctor territory.",
+        nextNodeId: 'maya_simulation_phase_1',
+        pattern: 'exploring',
+        skills: ['creativity', 'communication'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'maya',
+        addKnowledgeFlags: ['simulation_started']
+      }
+    ],
+    tags: ['simulation', 'maya_arc', 'tech_demo']
+  },
+
+  {
+    nodeId: 'maya_simulation_phase_1',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "*The simulation loads around you. A sleek presentation room. Three investors at a table. Your parents in the back row, looking confused.*\n\n*Maya stands at a podium, her prosthetic hand prototype on display.*\n\nOkay. First challenge. The lead investor just asked: 'Why should we fund a pre-med student's side project?'\n\n*She looks at you.*\n\nWhat's my angle here?",
+        emotion: 'nervous_focused',
+        variation_id: 'phase_1_v1',
+        richEffectContext: 'thinking'
+      }
+    ],
+    simulation: {
+      type: 'chat_negotiation',
+      title: 'Investor Pitch Simulation',
+      taskDescription: "Help Maya respond to skeptical investors. Her parents are watching from the audience. One wrong move could confirm their fears.",
+      initialContext: {
+        label: 'Investor Question',
+        content: '"Why should we fund a pre-med student\'s side project? This seems like a distraction from your real career."',
+        displayStyle: 'text'
+      },
+      successFeedback: 'INVESTOR ENGAGED: "That\'s... actually a compelling angle. Continue."'
+    },
+    choices: [
+      {
+        choiceId: 'phase1_passion_first',
+        text: "Lead with passion. Tell them this isn't a side project - it's your calling.",
+        nextNodeId: 'maya_simulation_phase_1_passion_result',
+        pattern: 'helping',
+        skills: ['communication', 'emotionalIntelligence']
+      },
+      {
+        choiceId: 'phase1_data_driven',
+        text: "Lead with data. The prosthetics market is $8 billion. Your prototype costs 40% less than competitors.",
+        nextNodeId: 'maya_simulation_phase_2',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'problemSolving'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1,
+          addKnowledgeFlags: ['chose_analytical_approach']
+        }
+      },
+      {
+        choiceId: 'phase1_bridge_narrative',
+        text: "Bridge the gap. 'Pre-med taught me the problem. Engineering is how I solve it.'",
+        nextNodeId: 'maya_simulation_phase_2',
+        pattern: 'building',
+        skills: ['creativity', 'communication'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2,
+          addKnowledgeFlags: ['chose_bridge_approach']
+        }
+      },
+      {
+        choiceId: 'phase1_take_time',
+        text: "Pause. Let the silence work. Then: 'Because I've spent 18 months in children's hospitals. I've seen what these kids need.'",
+        nextNodeId: 'maya_simulation_phase_2',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'communication'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1,
+          addKnowledgeFlags: ['chose_patience_approach']
+        }
+      }
+    ],
+    tags: ['simulation', 'maya_arc', 'tech_demo', 'phase_1']
+  },
+
+  {
+    nodeId: 'maya_simulation_phase_1_passion_result',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "*Maya speaks from the heart. The investors look... politely skeptical.*\n\nThe lead investor interrupts: 'Passion is great. But passion doesn't scale. What's your market strategy?'\n\n*Maya's mother leans forward in the back row, frowning.*\n\n*Maya looks at you, slightly deflated.*\n\nThey want numbers. But I don't want to lose the human element...",
+        emotion: 'deflated',
+        variation_id: 'passion_result_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'phase1_recover_with_data',
+        text: "Recover with specifics. 'The human element is the market. 15,000 children in Alabama alone need grip assistance.'",
+        nextNodeId: 'maya_simulation_phase_2',
+        pattern: 'analytical',
+        skills: ['adaptability', 'problemSolving'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'phase1_double_down_story',
+        text: "Double down on story. 'Let me show you one of those children.' Pull up a video testimonial.",
+        nextNodeId: 'maya_simulation_phase_2',
+        pattern: 'helping',
+        skills: ['communication', 'emotionalIntelligence'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['simulation', 'maya_arc', 'tech_demo', 'recovery']
+  },
+
+  {
+    nodeId: 'maya_simulation_phase_2',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "*The investors are engaged now. But then the second investor speaks up.*\n\n'Your prototype is impressive. But manufacturing at scale requires partnerships. What's stopping a bigger company from copying this and crushing you?'\n\n*Maya's father has moved to the edge of his seat. He recognizes this - it's the same question he faced building the restaurant.*\n\n*Maya's hands tremble slightly.*\n\nThis is the make-or-break question...",
+        emotion: 'high_stakes',
+        variation_id: 'phase_2_v1',
+        useChatPacing: true,
+        richEffectContext: 'warning',
+        interrupt: {
+          duration: 4000,
+          type: 'encouragement',
+          action: 'Catch her eye. Nod. She knows this answer.',
+          targetNodeId: 'maya_simulation_interrupt_supported',
+          consequence: {
+            characterId: 'maya',
+            trustChange: 2
+          }
+        }
+      }
+    ],
+    simulation: {
+      type: 'chat_negotiation',
+      title: 'Competitive Moat Defense',
+      taskDescription: "The investors are probing for weaknesses. Maya needs to defend her competitive position without sounding naive.",
+      initialContext: {
+        label: 'Investor Challenge',
+        content: '"What\'s stopping a bigger company from copying this and crushing you?"',
+        displayStyle: 'text'
+      },
+      successFeedback: 'INVESTOR IMPRESSED: "You\'ve clearly thought this through. That\'s rare in student founders."'
+    },
+    choices: [
+      {
+        choiceId: 'phase2_patent_play',
+        text: "Intellectual property. 'I've filed provisional patents on the actuator design. The control algorithm is proprietary.'",
+        nextNodeId: 'maya_simulation_success',
+        pattern: 'analytical',
+        skills: ['problemSolving', 'criticalThinking'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'phase2_speed_advantage',
+        text: "Speed and mission. 'Big companies move slow. I move fast because every month matters to a kid waiting for a working hand.'",
+        nextNodeId: 'maya_simulation_success',
+        pattern: 'building',
+        skills: ['leadership', 'communication'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'phase2_honest_vulnerability',
+        text: "Honest vulnerability. 'They could. But they won't. Because to them, this is a market segment. To me, it's my life's work.'",
+        nextNodeId: 'maya_simulation_success',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'phase2_deflect_poorly',
+        text: "Deflect. 'I'm not worried about competition. I'm focused on the technology.'",
+        nextNodeId: 'maya_simulation_fail',
+        pattern: 'exploring',
+        skills: ['adaptability']
+      }
+    ],
+    tags: ['simulation', 'maya_arc', 'tech_demo', 'phase_2']
+  },
+
+  {
+    nodeId: 'maya_simulation_interrupt_supported',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "*She catches your eye. Something steadies in her.*\n\n*She takes a breath and speaks with new confidence.*\n\n'You're asking about moats. But here's what you're really asking: do I have the grit to fight for this when it gets hard?'\n\n*She looks directly at her parents.*\n\n'I've been fighting for this in secret for three years. Against every expectation. Every doubt. Every voice telling me to stay safe.'\n\n*The investors lean forward.*\n\n'That's my moat. I'm not doing this for market share. I'm doing it because I believe these kids deserve hands that work as well as yours.'",
+        emotion: 'empowered',
+        variation_id: 'interrupt_result_v1',
+        interaction: 'bloom'
+      }
+    ],
+    onEnter: [
+      {
+        addGlobalFlags: ['maya_found_voice']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'interrupt_to_success',
+        text: "(Watch the room respond)",
+        nextNodeId: 'maya_simulation_success',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['simulation', 'maya_arc', 'tech_demo', 'interrupt_target']
+  },
+
+  {
+    nodeId: 'maya_simulation_success',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "*The lead investor sets down her pen.*\n\n'We'd like to schedule a follow-up. This has real potential.'\n\n*Maya's hands are shaking, but she's smiling.*\n\n*Her mother stands in the back, tears streaming. Her father... her father is clapping. Slowly at first, then harder.*\n\n*After the investors leave, her parents approach.*\n\nMom: 'Why didn't you tell us?'\n\nDad: '...Because we never asked. We told. We never asked.'\n\n*He looks at the prototype.*\n\n'This. This is what you've been doing? All those late nights?'\n\n*Maya nods, unable to speak.*\n\n*He touches the prosthetic hand gently.*\n\n'It's beautiful, Maya. It's... it's yours.'",
+        emotion: 'emotional_breakthrough',
+        variation_id: 'success_v1',
+        useChatPacing: true,
+        richEffectContext: 'success',
+        interaction: 'bloom'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'maya',
+        addKnowledgeFlags: ['simulation_success', 'parents_saw_truth'],
+        addGlobalFlags: ['maya_simulation_complete']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'success_proud',
+        text: "You did it, Maya. You showed them who you really are.",
+        nextNodeId: 'maya_simulation_aftermath',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'success_practical',
+        text: "The investors are interested. This could actually happen.",
+        nextNodeId: 'maya_simulation_aftermath',
+        pattern: 'building',
+        skills: ['leadership']
+      },
+      {
+        choiceId: 'success_analyze',
+        text: "Your data and your story worked together. That's the formula.",
+        nextNodeId: 'maya_simulation_aftermath',
+        pattern: 'analytical',
+        skills: ['criticalThinking']
+      }
+    ],
+    tags: ['simulation', 'maya_arc', 'tech_demo', 'success']
+  },
+
+  {
+    nodeId: 'maya_simulation_fail',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "*The investor's expression hardens.*\n\n'If you're not worried about competition, you haven't done your homework. We're done here.'\n\n*They begin packing up. Maya stands frozen at the podium.*\n\n*Her mother's face cycles through confusion, concern, then settles on something worse: pity.*\n\n*Her father won't meet her eyes.*\n\n*The simulation fades.*\n\n*Maya is shaking.*\n\nThat... that's exactly what I was afraid of. They saw me try. And fail. At the thing I actually love.\n\n*Voice cracking.*\n\nMaybe they were right. Maybe I should just... stick to the path.",
+        emotion: 'devastated',
+        variation_id: 'fail_v1',
+        richEffectContext: 'error'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'maya',
+        addKnowledgeFlags: ['simulation_failed']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'fail_comfort',
+        text: "A failed pitch isn't a failed dream. You learned something. That's how founders grow.",
+        nextNodeId: 'maya_simulation_aftermath_fail',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'fail_analyze',
+        text: "Let's break down what went wrong. Every failed pitch teaches you something for the next one.",
+        nextNodeId: 'maya_simulation_aftermath_fail',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'problemSolving']
+      },
+      {
+        choiceId: 'fail_rebuild',
+        text: "The prototype still works. The technology is real. One pitch doesn't change that.",
+        nextNodeId: 'maya_simulation_aftermath_fail',
+        pattern: 'building',
+        skills: ['resilience', 'adaptability'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'fail_patience',
+        text: "[Sit with her. Sometimes failure needs space, not solutions.]",
+        nextNodeId: 'maya_simulation_aftermath_fail',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['simulation', 'maya_arc', 'tech_demo', 'fail']
+  },
+
+  {
+    nodeId: 'maya_simulation_aftermath',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "*The simulation fades. Maya is standing in the station, tears on her cheeks but smiling.*\n\nThat wasn't real. But... it could be. I can see it now. A version of the future where I don't have to hide.\n\n*She looks at her hands.*\n\nThe pitch won't go perfectly. My parents might still struggle. But I know now that I can do this.\n\n*Looks at you.*\n\nYou helped me see it. Not just the robotics. But the whole picture. Who I could become if I stop being afraid.\n\n*A real smile.*\n\nThank you. For believing in me before I believed in myself.",
+        emotion: 'grateful_transformed',
+        variation_id: 'aftermath_v1',
+        interaction: 'nod'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'aftermath_encourage',
+        text: "The Maya in that simulation? She's already you. You just needed to meet her.",
+        nextNodeId: 'maya_encouraged',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'aftermath_practical',
+        text: "Now let's make it real. What's your first step?",
+        nextNodeId: 'maya_crossroads',
+        pattern: 'building',
+        skills: ['leadership'],
+        visibleCondition: {
+          trust: { min: 5 },
+          hasKnowledgeFlags: ['knows_robotics', 'knows_family']
+        }
+      }
+    ],
+    tags: ['simulation', 'maya_arc', 'tech_demo', 'aftermath']
+  },
+
+  {
+    nodeId: 'maya_simulation_aftermath_fail',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "*The simulation fully fades. Maya takes a shaky breath.*\n\n...\n\nOkay. That hurt. A lot.\n\n*She's quiet for a moment.*\n\nBut you know what? I've never actually pitched before. Of course I bombed. That's... that's the point of practice.\n\n*Looks at the prototype in her hands.*\n\nThe hand still works. The code still runs. The children who need this... they're still waiting.\n\n*Meets your eyes.*\n\nOne simulation doesn't define me. Neither does one bad pitch. Neither does my parents' disappointment.\n\n*Stronger now.*\n\nI'll practice until I get it right. And then I'll practice some more.",
+        emotion: 'recovering_determined',
+        variation_id: 'aftermath_fail_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'aftermath_fail_encourage',
+        text: "That's the Maya who builds robots at 2am. Failure is just data.",
+        nextNodeId: 'maya_encouraged',
+        pattern: 'analytical',
+        skills: ['communication'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'aftermath_fail_support',
+        text: "I'll practice with you. We'll get it right together.",
+        nextNodeId: 'maya_encouraged',
+        pattern: 'helping',
+        skills: ['collaboration'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['simulation', 'maya_arc', 'tech_demo', 'aftermath_fail']
   }
 ]
 
@@ -1620,7 +2110,9 @@ export const mayaEntryPoints = {
   ANXIETY_REVEAL: 'maya_anxiety_reveal',
   ROBOTICS_PASSION: 'maya_robotics_passion',
   FAMILY_PRESSURE: 'maya_family_pressure',
-  CROSSROADS: 'maya_crossroads'
+  CROSSROADS: 'maya_crossroads',
+  /** Tech Demo Simulation - Pitching to investors with parents watching */
+  SIMULATION: 'maya_simulation_intro'
 } as const
 
 export type MayaEntryPoint = typeof mayaEntryPoints[keyof typeof mayaEntryPoints]
