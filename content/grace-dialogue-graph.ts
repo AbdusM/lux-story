@@ -82,6 +82,34 @@ You look a little lost yourself.`,
           characterId: 'grace',
           trustChange: 2
         }
+      },
+      {
+        choiceId: 'grace_intro_empathy_unlock',
+        text: "[Empathy Sense] You're not just tired. You're carrying something. A patient, maybe. Someone who didn't make it.",
+        nextNodeId: 'grace_carrying_weight',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'observation'],
+        visibleCondition: {
+          patterns: { helping: { min: 40 } }
+        },
+        consequence: {
+          characterId: 'grace',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'grace_intro_patience_unlock',
+        text: "[Deep Listening] The way you're not looking at your phone—you're avoiding something on it. Bad news?",
+        nextNodeId: 'grace_bad_news',
+        pattern: 'patience',
+        skills: ['observation', 'emotionalIntelligence'],
+        visibleCondition: {
+          patterns: { patience: { min: 50 } }
+        },
+        consequence: {
+          characterId: 'grace',
+          trustChange: 2
+        }
       }
     ],
     onEnter: [
@@ -91,6 +119,89 @@ You look a little lost yourself.`,
       }
     ],
     tags: ['introduction', 'grace_arc']
+  },
+
+  // ============= PATTERN-UNLOCK NODES =============
+  {
+    nodeId: 'grace_carrying_weight',
+    speaker: 'Grace',
+    content: [
+      {
+        text: `*Her face goes still. Then crumbles, just for a moment.*
+
+...How did you know?
+
+*She wipes her eyes quickly.*
+
+Mrs. Chen. Room 412. She was doing better. We thought—we really thought—
+
+*Deep breath.*
+
+I've been doing this fifteen years. You'd think it gets easier. It doesn't. It just gets... different.
+
+*Looks at you.*
+
+No one asks. They see the scrubs and assume I'm fine.`,
+        emotion: 'raw',
+        interaction: 'small',
+        variation_id: 'grace_carrying_weight_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'grace_carrying_respond',
+        text: "You're allowed to not be fine.",
+        nextNodeId: 'grace_the_work',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['grace_arc', 'pattern_unlock']
+  },
+
+  {
+    nodeId: 'grace_bad_news',
+    speaker: 'Grace',
+    content: [
+      {
+        text: `*She freezes. Looks down at the phone.*
+
+...Yeah.
+
+*Long pause.*
+
+My daughter. She got the job. Out of state. Starts next month.
+
+*Quiet laugh.*
+
+I should be happy. I am happy. She worked so hard for this.
+
+*Her voice catches.*
+
+I just... wasn't ready for the house to be quiet so soon.`,
+        emotion: 'bittersweet',
+        interaction: 'small',
+        variation_id: 'grace_bad_news_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'grace_daughter_respond',
+        text: "Good news and grief can live in the same moment.",
+        nextNodeId: 'grace_the_work',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'wisdom'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['grace_arc', 'pattern_unlock']
   },
 
   {
@@ -1083,6 +1194,18 @@ It's not for everyone. But for the right person? It's everything.`,
         consequence: {
           characterId: 'grace',
           trustChange: 1
+        }
+      },
+      // Career observation route (ISP: Only visible when pattern combo is achieved)
+      {
+        choiceId: 'career_coordinator',
+        text: "The way you blend empathy with systems thinking... that's care coordination.",
+        nextNodeId: 'grace_career_reflection_coordinator',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'systemsThinking'],
+        visibleCondition: {
+          patterns: { helping: { min: 5 }, analytical: { min: 4 } },
+          lacksGlobalFlags: ['grace_mentioned_career']
         }
       }
     ],

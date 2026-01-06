@@ -6434,11 +6434,48 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     tags: ['greeting', 'milestone']
   },
 
-  // Default return greeting
+  // Default return greeting - with station atmosphere variations
   {
     nodeId: 'samuel_greeting_return',
     speaker: 'Samuel Washington',
     content: [
+      // HARMONIOUS (5+ arcs) - Station is alive and thriving
+      {
+        text: "Listen to her sing.\n\n*Samuel gestures at the gleaming walls, the steady pulse of light.*\n\nFive lives touched. Five threads woven. The station hasn't felt like this in a long time.\n\nYou're not just visitin' anymore. You're part of the pattern.",
+        emotion: 'reverent',
+        variation_id: 'greeting_return_harmonious',
+        condition: {
+          hasGlobalFlags: ['maya_arc_complete', 'devon_arc_complete', 'jordan_arc_complete', 'marcus_arc_complete', 'tess_arc_complete']
+        }
+      },
+      // ALIVE (3+ arcs) - Station is waking up
+      {
+        text: "The corridors are brighter tonight. You notice?\n\n*Samuel's eyes crinkle.*\n\nThree threads woven, three lives touched. The station's rememberin' what it's for.\n\nWhat brings you through?",
+        emotion: 'warm_proud',
+        variation_id: 'greeting_return_alive',
+        condition: {
+          hasGlobalFlags: ['maya_arc_complete', 'devon_arc_complete', 'jordan_arc_complete']
+        }
+      },
+      // AWAKENING (1 arc - maya) - Station is stirring
+      {
+        text: "The lights hum different now. Warmer.\n\n*Samuel nods toward the ceiling.*\n\nOne thread woven. The station takes notice. It's been a long time since someone cared enough to really listen.\n\nWhat's on your mind?",
+        emotion: 'hopeful',
+        variation_id: 'greeting_return_awakening_maya',
+        condition: {
+          hasGlobalFlags: ['maya_arc_complete']
+        }
+      },
+      // AWAKENING (1 arc - devon)
+      {
+        text: "Somethin's different tonight. Feel that hum?\n\n*Samuel tilts his head, listening.*\n\nDevon's been talkin' about you. Said you actually listened. That's rare.\n\nThe station notices kindness. What brings you back?",
+        emotion: 'hopeful',
+        variation_id: 'greeting_return_awakening_devon',
+        condition: {
+          hasGlobalFlags: ['devon_arc_complete']
+        }
+      },
+      // DORMANT (default) - Station sleeping
       {
         text: "Good to see you back. The station's still here, and so am I.\n\nWhat brings you through tonight?",
         emotion: 'warm',

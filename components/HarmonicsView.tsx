@@ -1,10 +1,13 @@
 "use client"
 
+import { useMemo } from "react"
 import { motion, useSpring, useTransform, useReducedMotion } from "framer-motion"
 import { usePatternUnlocks, type OrbState } from "@/hooks/usePatternUnlocks"
 import { playPatternSound } from "@/lib/audio-feedback"
-import { Microscope, Brain, Compass, Heart, Hammer } from "lucide-react"
+import { Microscope, Brain, Compass, Heart, Hammer, Briefcase } from "lucide-react"
 import { PatternType } from "@/lib/patterns"
+import { getTopCareerForPattern, type PatternCareerMatch } from "@/lib/pattern-combos"
+import { useGameSelectors } from "@/lib/game-store"
 
 interface HarmonicsViewProps {
     onOrbSelect?: (pattern: PatternType) => void
@@ -23,6 +26,28 @@ const triggerHaptic = (style: 'light' | 'medium' | 'heavy') => {
 
 export function HarmonicsView({ onOrbSelect }: HarmonicsViewProps) {
     const { orbs: patternOrbs } = usePatternUnlocks()
+    const coreGameState = useGameSelectors.useCoreGameState()
+
+    // Compute career matches for each pattern
+    const careerMatches = useMemo((): Record<PatternType, PatternCareerMatch | null> => {
+        if (!coreGameState?.patterns) {
+            return {
+                analytical: null,
+                patience: null,
+                exploring: null,
+                helping: null,
+                building: null
+            }
+        }
+
+        return {
+            analytical: getTopCareerForPattern('analytical', coreGameState.patterns),
+            patience: getTopCareerForPattern('patience', coreGameState.patterns),
+            exploring: getTopCareerForPattern('exploring', coreGameState.patterns),
+            helping: getTopCareerForPattern('helping', coreGameState.patterns),
+            building: getTopCareerForPattern('building', coreGameState.patterns)
+        }
+    }, [coreGameState?.patterns])
 
     // Null guard: show loading state if orbs not yet available
     if (!patternOrbs || patternOrbs.length === 0) {
@@ -46,13 +71,14 @@ export function HarmonicsView({ onOrbSelect }: HarmonicsViewProps) {
             </div>
 
             {/* The Totem - Vertical Stacking for Mobile (gap accounts for labels) */}
-            <div className="flex-1 flex flex-col items-center justify-center gap-12 w-full max-w-[280px]">
+            <div className="flex-1 flex flex-col items-center justify-center gap-14 w-full max-w-[280px]">
                 {patternOrbs.map((orb, index) => (
                     <HarmonicOrb
                         key={orb.pattern}
                         orb={orb}
                         index={index}
                         onSelect={onOrbSelect}
+                        careerMatch={careerMatches[orb.pattern as PatternType] || null}
                     />
                 ))}
             </div>
@@ -64,7 +90,12 @@ export function HarmonicsView({ onOrbSelect }: HarmonicsViewProps) {
     )
 }
 
-function HarmonicOrb({ orb, index, onSelect }: { orb: OrbState; index: number; onSelect?: (p: PatternType) => void }) {
+function HarmonicOrb({ orb, index, onSelect, careerMatch }: {
+    orb: OrbState
+    index: number
+    onSelect?: (p: PatternType) => void
+    careerMatch: PatternCareerMatch | null
+}) {
     // Accessibility
     const prefersReducedMotion = useReducedMotion()
 
@@ -150,13 +181,25 @@ function HarmonicOrb({ orb, index, onSelect }: { orb: OrbState; index: number; o
             <PatternIcon pattern={orb.pattern} className="w-6 h-6" style={{ color: orb.color }} />
 
             {/* Label (Always visible below orb) */}
-            <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 text-center pointer-events-none whitespace-nowrap w-24">
+            <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 text-center pointer-events-none w-32">
                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
                     {orb.label}
                 </p>
                 <p className="text-[9px] text-slate-500 font-mono">
                     {orb.fillPercent}%
                 </p>
+                {/* Career Match Overlay */}
+                {careerMatch && careerMatch.progress > 0 && (
+                    <div className="mt-1.5 flex items-center justify-center gap-1">
+                        <Briefcase className="w-2.5 h-2.5 text-amber-500/70" />
+                        <span className={`text-3xs truncate max-w-[90px] ${careerMatch.isUnlocked ? 'text-amber-400' : 'text-slate-500'}`}>
+                            {careerMatch.careerHint}
+                        </span>
+                        <span className={`text-3xs font-mono ${careerMatch.isUnlocked ? 'text-emerald-400' : 'text-slate-500'}`}>
+                            {careerMatch.progress}%
+                        </span>
+                    </div>
+                )}
                 {/* Progress to next unlock */}
                 {orb.nextUnlock && (
                     <div className="mt-1">

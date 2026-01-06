@@ -767,6 +767,7 @@ async function convertTrackerProfileToDashboard(
     actionOrientation: 0,
     psychology: 0,
     grounding: 0,
+    groundedResearch: 0,
     observation: 0,
     urgency: 0,
     resilience: 0,

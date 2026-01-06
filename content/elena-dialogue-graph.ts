@@ -51,6 +51,34 @@ const nodes: DialogueNode[] = [
         nextNodeId: 'elena_synthesis_lesson',
         pattern: 'patience',
         skills: ['emotionalIntelligence']
+      },
+      {
+        choiceId: 'elena_intro_pattern_unlock',
+        text: "[Pattern Recognition] The hum isn't random. You've already found the pattern—you just haven't admitted it yet.",
+        nextNodeId: 'elena_pattern_insight',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'observation'],
+        visibleCondition: {
+          patterns: { analytical: { min: 40 } }
+        },
+        consequence: {
+          characterId: 'elena',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'elena_intro_patience_unlock',
+        text: "[Deep Listening] The data isn't screaming. You are. What are you really afraid of finding?",
+        nextNodeId: 'elena_fear_reveal',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'observation'],
+        visibleCondition: {
+          patterns: { patience: { min: 50 } }
+        },
+        consequence: {
+          characterId: 'elena',
+          trustChange: 2
+        }
       }
     ],
     onEnter: [
@@ -59,6 +87,85 @@ const nodes: DialogueNode[] = [
         addKnowledgeFlags: ['met_elena']
       }
     ]
+  },
+
+  // ============= PATTERN-UNLOCK NODES =============
+  {
+    nodeId: 'elena_pattern_insight',
+    speaker: 'Elena',
+    content: [{
+      text: `*She stops. The holographic display freezes.*
+
+How did you...
+
+*Her voice drops to a whisper.*
+
+Three weeks. I've been chasing fragments for three weeks. And you just... saw it.
+
+*She pulls up a specific document—a personnel transfer record.*
+
+The contradiction is here. Someone was in two places at once. Officially impossible. And I've been too scared to follow the thread because...
+
+*She looks at you.*
+
+Because I think I know where it leads.`,
+      emotion: 'vulnerable',
+      microAction: 'She lowers her defenses.',
+      variation_id: 'elena_pattern_insight_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'elena_pattern_follow',
+        text: "Then let's follow it together.",
+        nextNodeId: 'elena_overload',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'problemSolving'],
+        consequence: {
+          characterId: 'elena',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['elena_arc', 'pattern_unlock']
+  },
+
+  {
+    nodeId: 'elena_fear_reveal',
+    speaker: 'Elena',
+    content: [{
+      text: `*She goes completely still.*
+
+...
+
+*A long pause. The holographic noise dims.*
+
+I'm afraid of being right.
+
+*Her voice cracks.*
+
+If the contradiction is real—if someone manipulated the archives—then everything I've trusted about this station's history is compromised. Including my own appointment here.
+
+*She meets your eyes.*
+
+How did you know to ask that?`,
+      emotion: 'raw',
+      microAction: 'She lets her guard down completely.',
+      variation_id: 'elena_fear_reveal_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'elena_fear_response',
+        text: "Sometimes the data we're most afraid of is the data we already know.",
+        nextNodeId: 'elena_synthesis_lesson',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'communication'],
+        consequence: {
+          characterId: 'elena',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['elena_arc', 'pattern_unlock']
   },
 
   // ============= INITIAL BRANCH: DATA OVERLOAD =============
@@ -1543,6 +1650,29 @@ const nodes: DialogueNode[] = [
         nextNodeId: 'elena_reciprocity_uncertain',
         pattern: 'patience',
         skills: ['integrity']
+      },
+      // Career observation routes (ISP: Only visible when pattern combos are achieved)
+      {
+        choiceId: 'career_curator',
+        text: "The way you organize information... it's like building architecture for knowledge.",
+        nextNodeId: 'elena_career_reflection_curator',
+        pattern: 'analytical',
+        skills: ['systemsThinking', 'criticalThinking'],
+        visibleCondition: {
+          patterns: { analytical: { min: 4 }, patience: { min: 5 } },
+          lacksGlobalFlags: ['elena_mentioned_career']
+        }
+      },
+      {
+        choiceId: 'career_navigator',
+        text: "Your curiosity combined with analysis... that's how research librarians think.",
+        nextNodeId: 'elena_career_reflection_navigator',
+        pattern: 'exploring',
+        skills: ['curiosity', 'criticalThinking'],
+        visibleCondition: {
+          patterns: { exploring: { min: 5 }, analytical: { min: 4 } },
+          lacksGlobalFlags: ['elena_mentioned_career']
+        }
       }
     ],
     tags: ['reciprocity', 'elena_arc']

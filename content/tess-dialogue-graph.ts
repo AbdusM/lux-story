@@ -2206,6 +2206,29 @@ What are you building out there?`,
         nextNodeId: 'tess_p2_reciprocity_response',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'adaptability']
+      },
+      // Career observation routes (ISP: Only visible when pattern combos are achieved)
+      {
+        choiceId: 'p2_career_educator',
+        text: "You know... the way you teach through music reminds me of something.",
+        nextNodeId: 'tess_career_reflection_educator',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication'],
+        visibleCondition: {
+          patterns: { helping: { min: 5 }, patience: { min: 5 } },
+          lacksGlobalFlags: ['tess_mentioned_career']
+        }
+      },
+      {
+        choiceId: 'p2_career_curriculum',
+        text: "The way you build experiences here... it's like curriculum design.",
+        nextNodeId: 'tess_career_reflection_curriculum',
+        pattern: 'building',
+        skills: ['systemsThinking', 'creativity'],
+        visibleCondition: {
+          patterns: { building: { min: 4 }, helping: { min: 5 } },
+          lacksGlobalFlags: ['tess_mentioned_career']
+        }
       }
     ],
     tags: ['reciprocity', 'player_reflection', 'tess_arc', 'phase2']

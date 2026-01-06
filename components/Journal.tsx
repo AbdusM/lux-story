@@ -13,6 +13,8 @@ import { EssenceSigil } from "./EssenceSigil"
 import { MasteryView } from "./MasteryView"
 import { ThoughtCabinet } from "./ThoughtCabinet"
 import { RelationshipWeb } from "./RelationshipWeb"
+import { EchoLog } from "./EchoLog"
+import { LogSearch } from "./LogSearch"
 
 import { SkillConstellationGraph } from "./constellation/SkillConstellationGraph"
 import { SKILL_DEFINITIONS } from "@/lib/skill-definitions"
@@ -49,6 +51,13 @@ export function Journal({ isOpen, onClose }: JournalProps) {
   const insights = useInsights()
   const { hasNewOrbs, markOrbsViewed } = useOrbs()
   const thoughts = useGameSelectors.useThoughts()
+  const coreGameState = useGameSelectors.useCoreGameState()
+
+  // Derive completed arcs from global flags for EchoLog
+  const completedArcs = React.useMemo(() => {
+    const flags = coreGameState?.globalFlags || []
+    return new Set(flags.filter(f => f.endsWith('_arc_complete') || f.endsWith('_complete')))
+  }, [coreGameState?.globalFlags])
 
   // Tab badge indicators
   const hasNewPatterns = hasNewOrbs
@@ -160,6 +169,9 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                 </button>
               </div>
             </div>
+
+            {/* Searchable Log - Search through past conversations */}
+            <LogSearch />
 
             {/* Navigation Tabs */}
             <div className="flex border-b border-white/10 overflow-x-auto no-scrollbar">
@@ -336,6 +348,11 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                             />
                           )}
                         </div>
+
+                        {/* Echo Log - shows how choices ripple across characters */}
+                        {constellationMode === 'social' && completedArcs.size > 0 && (
+                          <EchoLog completedArcs={completedArcs} className="border-t border-white/10" />
+                        )}
 
                         <div className="p-4 text-center space-y-1">
                           <p className="text-[10px] text-slate-500 font-mono uppercase tracking-widest">

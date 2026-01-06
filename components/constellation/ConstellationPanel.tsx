@@ -1,21 +1,24 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { motion, AnimatePresence, LazyMotion, domAnimation } from 'framer-motion'
-import { X, Users, Sparkles } from 'lucide-react'
+import { X, Users, Sparkles, Compass } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { springs, backdrop, panelFromRight } from '@/lib/animations'
 import { useConstellationData, type CharacterWithState, type SkillWithState } from '@/hooks/useConstellationData'
 import { PeopleView } from './PeopleView'
 import { SkillsView } from './SkillsView'
+import { QuestsView } from './QuestsView'
 import { DetailModal } from './DetailModal'
+import { getQuestsWithStatus, getActiveQuests } from '@/lib/quest-system'
+import { useGameSelectors } from '@/lib/game-store'
 
 interface ConstellationPanelProps {
   isOpen: boolean
   onClose: () => void
 }
 
-type TabId = 'people' | 'skills'
+type TabId = 'people' | 'skills' | 'quests'
 
 // Using shared animation variants from lib/animations.ts: backdrop, panelFromRight
 
@@ -43,6 +46,27 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
   const [detailItem, setDetailItem] = useState<DetailItem>(null)
   const data = useConstellationData()
 
+  // Get game state for quest tracking
+  const coreGameState = useGameSelectors.useCoreGameState()
+  const quests = useMemo(() => {
+    if (!coreGameState) return []
+    // Reconstruct GameState from serialized form for quest evaluation
+    const globalFlags = new Set(coreGameState.globalFlags || [])
+    const patterns = coreGameState.patterns || { analytical: 0, helping: 0, building: 0, patience: 0, exploring: 0 }
+    const characters = new Map()
+    if (coreGameState.characters) {
+      coreGameState.characters.forEach(char => {
+        characters.set(char.characterId, {
+          ...char,
+          knowledgeFlags: new Set(char.knowledgeFlags || [])
+        })
+      })
+    }
+    const gameState = { globalFlags, patterns, characters } as Parameters<typeof getQuestsWithStatus>[0]
+    return getQuestsWithStatus(gameState)
+  }, [coreGameState])
+  const activeQuestsCount = quests.filter(q => q.status === 'active' || q.status === 'unlocked').length
+
   // Escape key handler
   useEffect(() => {
     if (!isOpen) return
@@ -67,7 +91,8 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
 
   const tabs: { id: TabId; label: string; icon: typeof Users; count: number }[] = [
     { id: 'people', label: 'People', icon: Users, count: data.metCharacterIds.length },
-    { id: 'skills', label: 'Skills', icon: Sparkles, count: data.demonstratedSkillIds.length }
+    { id: 'skills', label: 'Skills', icon: Sparkles, count: data.demonstratedSkillIds.length },
+    { id: 'quests', label: 'Quests', icon: Compass, count: activeQuestsCount }
   ]
 
   return (
@@ -162,7 +187,7 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
               {/* Content - with spacing from header for mobile touch */}
               <div className="flex-1 overflow-y-auto overflow-x-hidden pt-2" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
                 <AnimatePresence mode="wait">
-                  {activeTab === 'people' ? (
+                  {activeTab === 'people' && (
                     <motion.div
                       key="people"
                       initial="hidden"
@@ -177,7 +202,8 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
                     >
                       <PeopleView characters={data.characters} onOpenDetail={handleOpenCharacterDetail} />
                     </motion.div>
-                  ) : (
+                  )}
+                  {activeTab === 'skills' && (
                     <motion.div
                       key="skills"
                       initial="hidden"
@@ -193,6 +219,22 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
                       <SkillsView skills={data.skills} onOpenDetail={handleOpenSkillDetail} />
                     </motion.div>
                   )}
+                  {activeTab === 'quests' && (
+                    <motion.div
+                      key="quests"
+                      initial="hidden"
+                      animate="visible"
+                      exit="exit"
+                      variants={contentVariants}
+                      className="h-full overflow-y-auto"
+                      style={{
+                        paddingBottom: 'env(safe-area-inset-bottom, 0px)',
+                        WebkitOverflowScrolling: 'touch'
+                      }}
+                    >
+                      <QuestsView quests={quests} />
+                    </motion.div>
+                  )}
                 </AnimatePresence>
               </div>
 
@@ -204,7 +246,9 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
                 <p className="text-xs text-slate-500">
                   {activeTab === 'people'
                     ? 'Tap a character to see what they taught you'
-                    : 'Tap a skill to see your evidence'
+                    : activeTab === 'skills'
+                    ? 'Tap a skill to see your evidence'
+                    : 'Track your journey through the station'
                   }
                 </p>
               </div>

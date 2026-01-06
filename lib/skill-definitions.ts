@@ -344,6 +344,64 @@ export const SKILL_DEFINITIONS: Record<string, SkillDefinition> = {
         superpowerName: 'Source Truth',
         definition: 'Synthesizing vast knowledge without losing the thread of origin.',
         manifesto: 'In an ocean of noise, you anchor to the facts. You trust, but you always verify.'
+    },
+
+    // --- ADDITIONAL SKILLS (Formalized from content usage) ---
+    visionaryThinking: {
+        id: 'visionaryThinking',
+        title: 'Visionary Thinking',
+        superpowerName: 'Future Sight',
+        definition: 'Seeing possibilities that others dismiss as impossible.',
+        manifesto: 'You paint with colors that do not yet exist. The future is not discovered; it is invented.'
+    },
+    sustainability: {
+        id: 'sustainability',
+        title: 'Sustainability',
+        superpowerName: 'Regenerative Design',
+        definition: 'Building systems that strengthen rather than deplete.',
+        manifesto: 'You measure success not by what you take, but by what you leave behind for others.'
+    },
+    entrepreneurship: {
+        id: 'entrepreneurship',
+        title: 'Entrepreneurship',
+        superpowerName: 'Opportunity Alchemy',
+        definition: 'Transforming uncertainty into value through calculated action.',
+        manifesto: 'Where others see risk, you see runway. Where others see problems, you see products.'
+    },
+    instructionalDesign: {
+        id: 'instructionalDesign',
+        title: 'Instructional Design',
+        superpowerName: 'Learning Architecture',
+        definition: 'Engineering experiences that transform confusion into competence.',
+        manifesto: 'You do not just teach; you build the scaffolding for understanding itself.'
+    },
+    psychology: {
+        id: 'psychology',
+        title: 'Psychology',
+        superpowerName: 'Mind Mapping',
+        definition: 'Understanding the hidden drivers of human behavior.',
+        manifesto: 'You see the iceberg beneath the surface. What people do is only a fraction of who they are.'
+    },
+    pedagogy: {
+        id: 'pedagogy',
+        title: 'Pedagogy',
+        superpowerName: 'Teaching Craft',
+        definition: 'The art and science of helping others learn.',
+        manifesto: 'You meet learners where they are and guide them to where they need to be.'
+    },
+    promptEngineering: {
+        id: 'promptEngineering',
+        title: 'Prompt Engineering',
+        superpowerName: 'AI Whispering',
+        definition: 'Crafting precise instructions that unlock AI potential.',
+        manifesto: 'You speak the language of machines with the clarity of poetry. Garbage in, gold out.'
+    },
+    humor: {
+        id: 'humor',
+        title: 'Humor',
+        superpowerName: 'Tension Release',
+        definition: 'Using levity to disarm, connect, and illuminate.',
+        manifesto: 'You know that laughter is the shortest distance between two people.'
     }
 }
 

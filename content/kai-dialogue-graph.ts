@@ -1959,6 +1959,18 @@ Between us. I've shared my whole journey. Now I want to hear yours. What are you
           characterId: 'kai',
           trustChange: 3
         }
+      },
+      // Career observation route (ISP: Only visible when pattern combo is achieved)
+      {
+        choiceId: 'career_safety',
+        text: "Your combination of analysis, care, and patience... that's safety engineering thinking.",
+        nextNodeId: 'kai_career_reflection_safety',
+        pattern: 'analytical',
+        skills: ['systemsThinking', 'criticalThinking'],
+        visibleCondition: {
+          patterns: { analytical: { min: 4 }, helping: { min: 4 }, patience: { min: 3 } },
+          lacksGlobalFlags: ['kai_mentioned_career']
+        }
       }
     ],
     tags: ['reciprocity', 'player_reflection', 'kai_arc']

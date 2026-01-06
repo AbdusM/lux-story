@@ -73,6 +73,7 @@ import { GameChoices } from '@/components/GameChoices'
 import { BookOpen, Stars, Compass } from 'lucide-react'
 import { Journal } from '@/components/Journal'
 import { ConstellationPanel } from '@/components/constellation'
+import { StationStatusBadge } from '@/components/StationStatusBadge'
 import { TextProcessor } from '@/lib/text-processor'
 import { JourneySummary } from '@/components/JourneySummary'
 import { generateJourneyNarrative, isJourneyComplete, type JourneyNarrative } from '@/lib/journey-narrative-generator'
@@ -1892,12 +1893,8 @@ export default function StatefulGameInterface() {
             <div className="flex items-center justify-between py-2 border-b border-white/5">
               <Link href="/" className="text-sm font-semibold text-slate-100 hover:text-white transition-colors truncate min-w-0 flex flex-col">
                 <span>Grand Central Terminus</span>
-                {/* Ambient Status Subtitle */}
-                {state.gameState && state.currentCharacterId === 'samuel' && (
-                  <span className="text-2xs text-amber-500/80 font-normal uppercase tracking-wider">
-                    <AmbientDescriptionDisplay gameState={state.gameState} mode="inline" />
-                  </span>
-                )}
+                {/* Station Status - Always visible compact dashboard */}
+                <StationStatusBadge gameState={state.gameState} />
               </Link>
               <div className="flex items-center gap-1 flex-shrink-0">
                 {/* Hero Badge - Player Identity */}

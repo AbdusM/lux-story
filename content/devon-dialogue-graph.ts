@@ -1298,6 +1298,29 @@ export const devonDialogueNodes: DialogueNode[] = [
       lacksGlobalFlags: ['devon_chose_logic'] // Only if not failed
     },
     choices: [
+      // Career observation routes (ISP: Only visible when pattern combos are achieved)
+      {
+        choiceId: 'crossroads_career_systems',
+        text: "The way you analyze systems... it reminds me of something.",
+        nextNodeId: 'devon_career_reflection_systems',
+        pattern: 'analytical',
+        skills: ['systemsThinking'],
+        visibleCondition: {
+          patterns: { analytical: { min: 5 }, patience: { min: 4 } },
+          lacksGlobalFlags: ['devon_mentioned_career']
+        }
+      },
+      {
+        choiceId: 'crossroads_career_sustainability',
+        text: "You build things that last. That matters.",
+        nextNodeId: 'devon_career_reflection_sustainability',
+        pattern: 'building',
+        skills: ['creativity', 'systemsThinking'],
+        visibleCondition: {
+          patterns: { building: { min: 5 }, patience: { min: 4 } },
+          lacksGlobalFlags: ['devon_mentioned_career']
+        }
+      },
       // Pattern-enhanced: Analytical players see integration as system upgrade
       {
         choiceId: 'crossroads_integrated_analytical',
