@@ -3,22 +3,34 @@ import { test, expect } from '@playwright/test';
 
 /**
  * HYBRID UNIT TEST: "The Browser-as-Runtime"
- * 
+ *
  * Instead of testing the UI (clicking buttons), we test the Logic.
  * But we run it INSIDE the Browser (Guest) to ensure 100% fidelity with the production runtime.
- * 
+ *
  * We use the "Injection Bridge" pattern:
  * 1. Host (Node): Defines the test scenario.
  * 2. Bridge (page.evaluate): Injects the data/intent.
  * 3. Guest (Browser): Executes the actual Game Engine logic.
+ *
+ * NOTE: Requires dev server running on port 3005.
+ * These tests are SKIPPED when run via `npm test` (vitest).
+ * Run with `npx playwright test tests/browser-runtime/` when dev server is running.
  */
 
+const SERVER_URL = 'http://localhost:3005';
+
+// Skip these tests when running in vitest context (npm test)
+// They require a running dev server and should be run separately with playwright
+const isPlaywrightRun = typeof globalThis.__vitest__ === 'undefined';
+
 test.describe('Game Engine Logic (Browser Runtime)', () => {
+    // Skip all tests in this file unless running directly with playwright
+    test.skip(!isPlaywrightRun, 'Skipping browser runtime tests - run with npx playwright test');
 
     test('should traverse Sector 0 to Sector 3 Loop without UI', async ({ page }) => {
         // 1. Load the application to ensure scripts/modules are available
         // We visit the home page to bootstrap the JS environment
-        await page.goto('http://localhost:3005');
+        await page.goto(SERVER_URL);
 
         // 2. THE INJECTION BRIDGE
         // We execute logic INSIDE the browser context
@@ -71,7 +83,7 @@ test.describe('Game Engine Logic (Browser Runtime)', () => {
     });
 
     test('should correctly interpolate dynamic text in Browser Runtime', async ({ page }) => {
-        await page.goto('http://localhost:3005');
+        await page.goto(SERVER_URL);
 
         // Verify the TextProcessor logic via the UI output
         // We'll navigate rapidly to the Deep Station using the "Backdoor" (URL param or State Injection)

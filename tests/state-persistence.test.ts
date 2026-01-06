@@ -60,7 +60,7 @@ describe('State Persistence', () => {
 
       expect(state.playerId).toBe('player123')
       expect(state.saveVersion).toBe('1.0.0')
-      expect(state.characters.size).toBe(11) // Updated for all 11 characters
+      expect(state.characters.size).toBe(20) // 16 characters + 4 locations
       expect(state.globalFlags.size).toBe(0)
       expect(StateValidation.isValidGameState(state)).toBe(true)
     })
@@ -134,7 +134,7 @@ describe('State Persistence', () => {
 
       // Verify Map structure preserved
       expect(loaded.characters).toBeInstanceOf(Map)
-      expect(loaded.characters.size).toBe(11) // Updated for all 11 characters
+      expect(loaded.characters.size).toBe(20) // 16 characters + 4 locations
 
       // Verify data integrity
       for (const [id, char] of state.characters) {
