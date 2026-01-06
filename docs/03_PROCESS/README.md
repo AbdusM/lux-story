@@ -1,107 +1,121 @@
-# Process Documentation - Navigation Guide
+# Process Documentation - January 6, 2026
 
-This directory contains execution plans, session handoffs, and AI agent onboarding materials.
+## Document Hierarchy
 
----
+### Authoritative Documents (Source of Truth)
 
-## 🚀 Quick Start (New AI Agent)
+| # | Document | Purpose | Authority |
+|---|----------|---------|-----------|
+| **52** | `52-software-development-ready.md` | **THE** implementation checklist | Development tasks |
+| **50** | `50-isp-comprehensive-prd.md` | Product vision & Invisible Depth | Strategy |
+| **51** | `51-isp-feature-synthesis.md` | Feature designs from AAA analysis | Feature specs |
+| **53** | `53-meta-cognitive-systems-audit.md` | System coverage analysis | Audit |
 
-**Option 1: Quick Context (5 min read)**
-→ Start with **`QUICK_CONTEXT_PROMPT.md`** for essential conventions and commands
+### Reference Documents
 
-**Option 2: Full Onboarding (15 min read)**
-→ Start with **`AI_AGENT_ONBOARDING_PROMPT.md`** for comprehensive orientation
+| # | Document | Purpose |
+|---|----------|---------|
+| 00 | `00-readme.md` | Original directory readme |
+| 01 | `01-testing.md` | Testing strategy |
+| 02 | `02-methodology.md` | Development methodology |
+| 03 | `03-quick-context-prompt.md` | AI agent quick start |
+| 04 | `04-ai-agent-onboarding-prompt.md` | AI agent full onboarding |
+| 05 | `05-onboarding-materials-index.md` | Onboarding index |
 
-**Option 3: Deep Dive (30 min read)**
-→ Read **`ENGINEERING_HANDOVER_JAN2026.md`** for complete technical reference
+### Status Documents
 
----
+| # | Document | Purpose |
+|---|----------|---------|
+| 10 | `10-system-coverage.md` | System coverage status |
+| 11 | `11-feature-progress-tracker.md` | 572 features tracked |
+| 12 | `12-feature-prioritization-review.md` | Priority review |
+| 13 | `13-development-features.md` | Development features |
+| 14 | `14-infrastructure-audit.md` | Infrastructure audit |
+| 15 | `15-master-implementation-index.md` | Master index |
 
-## 📚 File Index
+### Execution Documents
 
-### Onboarding & Context
-| File | Purpose | Audience | Est. Time |
-|------|---------|----------|-----------|
-| **`QUICK_CONTEXT_PROMPT.md`** | Copy-paste orientation prompt | AI agents, new devs | 5 min |
-| **`AI_AGENT_ONBOARDING_PROMPT.md`** | Comprehensive onboarding guide | AI agents, new devs | 15 min |
-| **`ENGINEERING_HANDOVER_JAN2026.md`** | Complete technical reference (18 sections) | Engineering team | 30+ min |
+| # | Document | Purpose |
+|---|----------|---------|
+| 20 | `20-execution-strategy.md` | Execution strategy |
+| 21 | `21-engineering-handover.md` | Engineering handover |
 
-### Session Handoffs (Chronological)
-| File | Date | Session Summary |
-|------|------|-----------------|
-| **`HANDOFF_2026_01_05.md`** | Jan 5, 2026 | ISP extraction complete (1,512 features), documentation reorganization, engineering handover created |
-| **`HANDOFF_2026_01_04.md`** | Jan 4, 2026 | UI polish (generative scenery), overdensity mechanics (crowd surge), system verification, orb refactor |
+### Handoffs
 
-### Implementation Status
-| File | Purpose | Last Updated |
-|------|---------|--------------|
-| **`MASTER_IMPLEMENTATION_INDEX.md`** | Current implementation status, active tasks | Jan 4, 2026 |
+| # | Document | Purpose |
+|---|----------|---------|
+| 32 | `32-gemini-handoff.md` | Gemini session handoff |
+| plans/ | `06JAN26_HANDOFF.md` | **CURRENT** session handoff |
 
-### Process Documentation
-| File | Purpose |
-|------|---------|
-| **`01-testing.md`** | Testing strategy and coverage goals |
-| **`02-methodology.md`** | Development methodology and workflows |
+### Design Documents
 
----
+| # | Document | Purpose |
+|---|----------|---------|
+| 40 | `40-walkthrough.md` | Game walkthrough |
+| 41 | `41-expedition33-design-synthesis.md` | Design synthesis |
+| 42 | `42-worldbuilding-first-blueprint.md` | Worldbuilding |
 
-## 📖 Recommended Reading Order
+### Archive
 
-### For New AI Agents (Starting Fresh)
-1. **`QUICK_CONTEXT_PROMPT.md`** - Get oriented (5 min)
-2. **`/CLAUDE.md`** (root) - Project overview (10 min)
-3. **`ENGINEERING_HANDOVER_JAN2026.md`** - Technical deep dive (30 min)
-4. **`docs/01_MECHANICS/INFINITE_CANVAS_FEATURE_CATALOG.md`** - Feature roadmap (reference)
-
-### For New Engineers (Human Onboarding)
-1. **`/CLAUDE.md`** (root) - Project overview
-2. **`ENGINEERING_HANDOVER_JAN2026.md`** - Complete technical reference
-3. **`docs/00_CORE/DESIGN_PRINCIPLES.md`** - Design philosophy
-4. **`docs/01_MECHANICS/STATE_ARCHITECTURE.md`** - State management patterns
-5. **`MASTER_IMPLEMENTATION_INDEX.md`** - Current status
-
-### For Continuing Work (Session Resume)
-1. **`HANDOFF_2026_01_05.md`** (most recent) - What was completed last
-2. **`MASTER_IMPLEMENTATION_INDEX.md`** - Current priorities
-3. **`docs/01_MECHANICS/INFINITE_CANVAS_FEATURE_CATALOG.md`** - Pick next feature
-
----
-
-## 🔍 Quick Lookups
-
-**"What should I work on next?"**
-→ `MASTER_IMPLEMENTATION_INDEX.md` Section 2 (Active Implementation Tasks)
-
-**"How do I add a new character?"**
-→ `ENGINEERING_HANDOVER_JAN2026.md` Section 13.1
-
-**"What are the code conventions?"**
-→ `QUICK_CONTEXT_PROMPT.md` (Critical Conventions section)
-
-**"How do I deploy?"**
-→ `ENGINEERING_HANDOVER_JAN2026.md` Section 7 (Deployment)
-
-**"What was completed last session?"**
-→ `HANDOFF_2026_01_05.md` (most recent)
-
-**"What's the feature numbering system?"**
-→ `AI_AGENT_ONBOARDING_PROMPT.md` (Feature Catalog System section)
+| # | Document | Purpose |
+|---|----------|---------|
+| 90 | `90-archive-insights-database.md` | Archived insights |
+| 90 | `90-post-development.md` | Post-development notes |
+| 91 | `91-docs-reorg-log.md` | Reorg log |
+| 92 | `92-documentation-gap-analysis.md` | Gap analysis |
+| 93 | `93-summary-audit-and-reorg.md` | Summary audit |
+| archive/ | Completed/superseded docs | Historical reference |
 
 ---
 
-## 📊 Documentation Status
+## Quick Start
 
-| Document | Status | Last Updated | Next Review |
-|----------|--------|--------------|-------------|
-| QUICK_CONTEXT_PROMPT.md | ✅ Current | Jan 5, 2026 | As needed |
-| AI_AGENT_ONBOARDING_PROMPT.md | ✅ Current | Jan 5, 2026 | As needed |
-| ENGINEERING_HANDOVER_JAN2026.md | ✅ Current | Jan 5, 2026 | Feb 2026 or major change |
-| HANDOFF_2026_01_05.md | ✅ Current | Jan 5, 2026 | N/A (historical) |
-| HANDOFF_2026_01_04.md | ✅ Current | Jan 4, 2026 | N/A (historical) |
-| MASTER_IMPLEMENTATION_INDEX.md | ✅ Current | Jan 4, 2026 | Weekly |
+### For Software Development
+
+```
+1. Read: 52-software-development-ready.md (THE checklist)
+2. Reference: 51-isp-feature-synthesis.md (feature specs)
+3. Handoff: plans/06JAN26_HANDOFF.md (current state)
+```
+
+### For New AI Agents
+
+```
+1. Read: 03-quick-context-prompt.md (5 min)
+2. Read: /CLAUDE.md (root) (10 min)
+3. Handoff: plans/06JAN26_HANDOFF.md (current state)
+```
+
+### For Product Understanding
+
+```
+1. Read: 50-isp-comprehensive-prd.md (full vision)
+2. Reference: /docs/01_MECHANICS/INFINITE_CANVAS_FEATURE_CATALOG.md
+```
 
 ---
 
-**Last Updated:** January 5, 2026
-**Maintained By:** Development Team
-**Status:** ✅ Current and Complete
+## Document Numbering Convention
+
+| Range | Category |
+|-------|----------|
+| 00-09 | Readme, Testing, Onboarding |
+| 10-19 | Status, Coverage, Audits |
+| 20-29 | Execution, Strategy |
+| 30-39 | Handoffs |
+| 40-49 | Design, Worldbuilding |
+| 50-59 | ISP/PRD Documents |
+| 90-99 | Archive, Historical |
+
+---
+
+## Processed Sources
+
+Files in `04_ToAllocate/processed/` have been synthesized into ISP documents:
+- `aaa_strategic_framework.md` → `51-isp-feature-synthesis.md`
+- `aaa_game_implementation_addendum.md` → `51-isp-feature-synthesis.md`
+
+---
+
+**Last Updated:** January 6, 2026
+**Document Control Status:** Clean
