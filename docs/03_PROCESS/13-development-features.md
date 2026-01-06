@@ -1,23 +1,34 @@
 # Development Features - Code Focus Review
 
-**Date:** January 6, 2026
+**Date:** January 6, 2026 (Updated after infrastructure audit)
 **Purpose:** Organized catalog of code development features for prioritization
 **Scope:** Features requiring active development (excludes post-production items)
 
 ---
 
-## Quick Reference
+## KEY FINDING: Infrastructure Audit Results
 
-| Category | Feature Count | Priority Range |
-|----------|---------------|----------------|
-| Pattern System Derivatives | 12 | P1-P3 |
-| Trust System Derivatives | 7 | P1-P3 |
-| Dialogue & Narrative | 8 | P2-P3 |
-| Assessment & Skills | 7 | P2-P3 |
-| UI/UX & Accessibility | 11 | P2-P3 |
-| Content Expansion | 6 | P2-P4 |
-| Infrastructure | 8 | P3-P4 |
-| **Total Development Features** | **~59** | |
+**Most "derivative features" already have infrastructure built - the gap is CONTENT and WIRING.**
+
+See `14-infrastructure-audit.md` for full analysis.
+
+| Status | Count | Action Required |
+|--------|-------|-----------------|
+| Built & Active | 4 | None |
+| Built but Unused | 3 | Content authoring |
+| Partially Built | 3 | Wiring + content |
+| Not Built | ~10 | New code |
+
+---
+
+## Quick Reference (Revised)
+
+| Category | Feature Count | Priority |
+|----------|---------------|----------|
+| **Content Authoring** (no code) | 4 tasks | P1 - Immediate |
+| **Wiring** (low code) | 3 tasks | P2 - This week |
+| **Content Expansion** | 3 tasks | P3 - Near term |
+| **New Features** | ~10 tasks | P4 - After above |
 
 ---
 
