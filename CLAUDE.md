@@ -83,20 +83,25 @@ hooks/
 └── useGameState.ts             # Core game state management
 ```
 
-### Characters (11 Total)
-| Character | Animal | Role |
-|-----------|--------|------|
-| Samuel | Owl | Station keeper, wise mentor (Hub) |
-| Maya | Cat | Tech Innovator, family pressure |
-| Devon | Deer | Systems Thinker, engineering |
-| Jordan | — | Career Navigator |
-| Marcus | Bear | Medical Tech, healthcare |
-| Tess | Fox | Education Founder |
-| Yaquin | Rabbit | EdTech Creator |
-| Kai | — | Safety Specialist |
-| Rohan | Raven | Deep Tech, introspective |
-| Alex | — | Extra character |
-| Silas | — | Crisis Manager |
+### Characters (16 Total)
+| Character | Animal | Role | Tier |
+|-----------|--------|------|------|
+| Samuel | Owl | Station keeper, wise mentor (Hub) | Core |
+| Maya | Cat | Tech Innovator, family pressure | Core |
+| Marcus | Bear | Medical Tech, healthcare | Core |
+| Kai | — | Safety Specialist | Core |
+| Rohan | Raven | Deep Tech, introspective | Core |
+| Devon | Deer | Systems Thinker, engineering | Secondary |
+| Tess | Fox | Education Founder | Secondary |
+| Yaquin | Rabbit | EdTech Creator | Secondary |
+| Grace | — | Healthcare Operations | Secondary |
+| Elena | — | Information Science / Archivist | Secondary |
+| Alex | Rat | Supply Chain & Logistics | Secondary |
+| Jordan | — | Career Navigator | Secondary |
+| Silas | — | Advanced Manufacturing | Extended |
+| Asha | — | Conflict Resolution / Mediator | Extended |
+| Lira | — | Communications / Sound Design | Extended |
+| Zara | — | Data Ethics / Artist | Extended |
 
 ### Pattern System
 5 behavioral patterns tracked through choices:
@@ -196,23 +201,49 @@ Deprecated code preserved for reference:
 
 ---
 
-## Current Status (December 2024)
+## Current Status (January 2026)
 
-### Recently Completed (December 2024)
-- **Polish Sprint** (86% → 95%)
-  - Type safety: `PatternType`, `EmotionType` enforced
-  - Centralized constants in `lib/constants.ts`
-  - Complete consequence echoes for all 11 characters
-  - Validation layer with bounds checking
-  - State architecture documented
-  - Test coverage for core systems (33 tests)
-- Documentation consolidation (120 docs → 10 docs)
-- Philosophy Foundation document
-- Engineering Synthesis document (comprehensive SDP)
-- ISP Analysis (dormant capabilities, syntheses, futures)
-- Fake choice audit and fixes
-- 32×32 pixel avatar upgrade for all characters
-- UI consolidation (7 elements max)
+### Feature Catalog
+- **Total Features Documented:** 572 (in INFINITE_CANVAS_FEATURE_CATALOG.md)
+- **Implementation Status:** ~17% complete, ~8% partial, ~31% planned, ~44% future/moonshot
+- **Tests:** 377 passing
+
+### Core Systems at 100% (16/16 Characters)
+| System | Coverage | Location |
+|--------|----------|----------|
+| Interrupt System | 16/16 | `content/*-dialogue-graph.ts` (interrupt blocks) |
+| Vulnerability Arcs | 16/16 | `content/*-dialogue-graph.ts` (vulnerability_arc nodes) |
+| Consequence Echoes | 16/16 | `lib/consequence-echoes.ts` |
+| Pattern Voices | 16/16 | `content/pattern-voice-library.ts` |
+| Relationship Web | 16/16 | `lib/character-relationships.ts` |
+
+### Partial Systems (Need Completion)
+| System | Coverage | Missing |
+|--------|----------|---------|
+| Loyalty Experiences | 7/16 | Grace, Alex, Silas, Yaquin, Elena, Asha, Lira, Zara, Kai |
+| Simulations | 10/16 | Maya, Tess, Yaquin, Grace, Alex, Silas |
+
+### Shallow Characters (Need Dialogue Expansion)
+| Character | Current Nodes | Target |
+|-----------|---------------|--------|
+| Marcus | 16 | 35 |
+| Elena | 16 | 35 |
+| Asha | 10 | 25 |
+| Lira | 10 | 25 |
+| Zara | 10 | 25 |
+
+### Key Documentation
+- `docs/03_PROCESS/SYSTEM_COVERAGE_JAN2026.md` - Accurate system coverage audit
+- `docs/03_PROCESS/FEATURE_PROGRESS_TRACKER_JAN2026.md` - All 572 features mapped
+- `docs/01_MECHANICS/INFINITE_CANVAS_FEATURE_CATALOG.md` - Full feature catalog
+
+### Recently Completed (January 2026)
+- **16/16 Character Coverage** for interrupts and vulnerability arcs
+- Mobile optimization, Glass System refactor, UX hardening
+- Phases 3-7 expansion (Sectors 1-3)
+- Living station system (Tier 4)
+- Engagement loop systems
+- AI displacement dialogue with expert lens review
 
 ### Production
 - URL: https://lux-story.vercel.app
@@ -478,3 +509,63 @@ interface SectionProps {
 - Navigation between sections
 - View mode toggle
 - Context provider for child sections
+
+---
+
+## Context Recovery (If Auto-Compacted)
+
+**If you lose context mid-session, read these files to get oriented:**
+
+### Quick Status Check
+```bash
+# Run tests to verify state
+npm test
+
+# Check recent commits
+git log --oneline -10
+
+# Count dialogue nodes per character
+for f in content/*-dialogue-graph.ts; do
+  echo "$(basename "$f" -dialogue-graph.ts): $(grep -c 'nodeId:' "$f")"
+done
+```
+
+### Priority Documents to Read
+1. `docs/03_PROCESS/SYSTEM_COVERAGE_JAN2026.md` - What's done vs what's missing
+2. `docs/03_PROCESS/FEATURE_PROGRESS_TRACKER_JAN2026.md` - Full 572-feature status
+3. This file (CLAUDE.md) - Current Status section
+
+### Q1 2026 Priority Tasks
+1. **Loyalty Experiences** (7/16 → 16/16) - Add for: Grace, Alex, Silas, Yaquin, Elena, Asha, Lira, Zara, Kai
+2. **Simulations** (10/16 → 16/16) - Add for: Maya, Tess, Yaquin, Grace, Alex, Silas
+3. **Expand Shallow Characters** - Marcus, Elena, Asha, Lira, Zara need more dialogue nodes
+
+### Key Type Definitions
+- `lib/dialogue-graph.ts` - DialogueNode, InterruptWindow, DialogueChoice
+- `lib/loyalty-experience.ts` - LoyaltyExperience, LoyaltyExperiencePhase
+- `lib/patterns.ts` - PatternType (analytical, patience, exploring, helping, building)
+
+### Content File Pattern
+Each character has a dialogue graph at `content/{name}-dialogue-graph.ts` with:
+- Introduction nodes
+- Simulation nodes (if applicable)
+- Interrupt target nodes
+- Vulnerability arc nodes (Trust ≥ 6 gated)
+
+### Interrupt Types (6 total)
+`connection`, `challenge`, `silence`, `comfort`, `grounding`, `encouragement`
+
+### Vulnerability Arc Pattern
+```typescript
+{
+  nodeId: '{character}_vulnerability_arc',
+  requiredState: { trust: { min: 6 } },
+  onEnter: [{ characterId: '{id}', addKnowledgeFlags: ['{char}_vulnerability_revealed'] }],
+  content: [{ text: '...', emotion: '...', richEffectContext: 'warning' }],
+  choices: [...] // 2-3 response options with patterns
+}
+```
+
+---
+
+**Last Updated:** January 5, 2026
