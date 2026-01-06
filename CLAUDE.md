@@ -543,9 +543,18 @@ done
 ```
 
 ### Priority Documents to Read
-1. `docs/03_PROCESS/10-system-coverage.md` - What's done vs what's missing
-2. `docs/03_PROCESS/11-feature-progress-tracker.md` - Full 572-feature status
-3. This file (CLAUDE.md) - Current Status section
+1. `docs/03_PROCESS/3X-handoff-*.md` - Latest handoff (most recent first)
+2. `docs/03_PROCESS/10-system-coverage.md` - What's done vs what's missing
+3. `docs/03_PROCESS/11-feature-progress-tracker.md` - Full 572-feature status
+4. This file (CLAUDE.md) - Current Status section
+
+### Handoff Pattern
+Each session should create a handoff doc at `docs/03_PROCESS/3X-handoff-YYYY-MM-DD.md` containing:
+- Session summary (what was done)
+- Current state (tests, coverage)
+- Remaining gaps
+- Next steps
+- Quick context recovery commands
 
 ### Q1 2026 Priority Tasks
 1. ~~**Loyalty Experiences** (16/16)~~ ✅ COMPLETE
