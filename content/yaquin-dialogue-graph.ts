@@ -371,6 +371,32 @@ export const yaquinDialogueNodes: DialogueNode[] = [
         useChatPacing: true
       }
     ],
+    simulation: {
+      type: 'creative_direction',
+      title: 'Course Module Design',
+      taskDescription: 'Design the opening module for "The Real Dental Assistant" course. The hook needs to grab attention and prove this isn\'t another boring textbook.',
+      initialContext: {
+        label: 'Module 1 Draft Options',
+        content: `OPTION A: "Chapter 1: The History of Dental Assisting (1850-Present)"
+- Timeline of profession development
+- Key figures and milestones
+- Regulatory evolution
+
+OPTION B: "Module 1: The Perfect Impression (How Not to Choke Your Patient)"
+- Real scenario: anxious patient, 30 seconds to mix
+- Texture cues the textbook never mentions
+- Recovery moves when things go wrong
+
+OPTION C: "Unit 1: Anatomy Review and Medical Terminology"
+- Latin roots and prefixes
+- Tooth numbering systems
+- Quiz at the end
+
+Which opening sells the VALUE of practical experience?`,
+        displayStyle: 'text'
+      },
+      successFeedback: '✓ HOOK CONFIRMED: "The Perfect Impression" - practical, memorable, proves expertise immediately.'
+    },
     requiredState: {
       trust: { min: 1 }
     },
@@ -1473,15 +1499,485 @@ Critics → collaborators if humble enough to listen.`,
         text: "Return to Samuel",
         nextNodeId: samuelEntryPoints.YAQUIN_REFLECTION_GATEWAY,
         pattern: 'exploring'
+      },
+      {
+        choiceId: 'yaquin_check_reviews',
+        text: "Before I go... how are the course reviews looking?",
+        nextNodeId: 'yaquin_simulation_intro',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication'],
+        visibleCondition: {
+          hasGlobalFlags: ['yaquin_arc_complete']
+        }
       }
     ],
     tags: ['reciprocity', 'yaquin_arc']
+  },
+
+  // ============= COURSE REVIEW SIMULATION =============
+  // Theme: Dealing with controversial feedback on course content, balancing accuracy with audience needs
+  {
+    nodeId: 'yaquin_simulation_intro',
+    speaker: 'Yaquin',
+    content: [{
+      text: `*He pulls up his laptop, face tightening.*
+
+      Reviews came in. 200 students, 47 reviews posted.
+
+      Most are good. Five stars. "Changed my career." "Finally understand mixing ratios."
+
+      *Scrolls down.*
+
+      But three reviews... they're brutal. And one of them? From a DDS. Says I'm teaching "dangerous misinformation."
+
+      <shake>Posted publicly. Other students are asking questions now.</shake>`,
+      emotion: 'anxious',
+      variation_id: 'sim_intro_v1',
+      richEffectContext: 'warning',
+      useChatPacing: true
+    }],
+    choices: [
+      {
+        choiceId: 'sim_intro_show_reviews',
+        text: "Show me the reviews. Let's see what we're dealing with.",
+        nextNodeId: 'yaquin_simulation_phase_1',
+        pattern: 'analytical',
+        skills: ['criticalThinking']
+      },
+      {
+        choiceId: 'sim_intro_how_feel',
+        text: "How are you feeling about this? That sounds hard.",
+        nextNodeId: 'yaquin_simulation_phase_1',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'yaquin',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'sim_intro_wait',
+        text: "[Give him a moment. He's processing.]",
+        nextNodeId: 'yaquin_simulation_phase_1',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'yaquin',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['simulation', 'yaquin_arc', 'course_review']
+  },
+
+  {
+    nodeId: 'yaquin_simulation_phase_1',
+    speaker: 'Yaquin',
+    content: [{
+      text: `*He shows you the screen.*
+
+      **Review from Dr. Patricia Lam, DDS:**
+      "This course teaches outdated impression techniques. The 45-second mixing time is WRONG for modern alginate formulations. Students following this could compromise patient safety. 1 star."
+
+      **Review from DentalTech_Mike:**
+      "Great practical tips but the anatomy section has errors. Tooth numbering inconsistent between modules. Fix this."
+
+      **Review from Anonymous:**
+      "Yaquin isn't a real dentist. Why am I taking advice from an assistant? Refund requested."
+
+      *He looks at you.*
+
+      Three different problems. One is technical accuracy. One is production quality. One is... about me. Who I am.
+
+      Which one do I address first?`,
+      emotion: 'conflicted',
+      variation_id: 'phase1_v1',
+      useChatPacing: true
+    }],
+    simulation: {
+      type: 'dashboard_triage',
+      title: 'Course Review Triage',
+      taskDescription: 'Three critical reviews require different responses. Prioritize which to address first to protect course reputation while maintaining integrity.',
+      initialContext: {
+        label: 'Review Dashboard',
+        content: `CRITICAL REVIEWS (3)
+─────────────────────
+[1] Dr. Patricia Lam, DDS - Technical accuracy concern
+    Impact: HIGH (credibility at stake)
+    Type: Factual dispute
+
+[2] DentalTech_Mike - Production quality issue
+    Impact: MEDIUM (fixable)
+    Type: Error correction
+
+[3] Anonymous - Credential challenge
+    Impact: VARIABLE (emotional trigger)
+    Type: Identity attack`,
+        displayStyle: 'code'
+      },
+      successFeedback: 'TRIAGE COMPLETE: Priority response strategy identified.'
+    },
+    choices: [
+      {
+        choiceId: 'phase1_technical_first',
+        text: "Address Dr. Lam's technical concern first. If she's right, fix it. If she's wrong, defend with evidence.",
+        nextNodeId: 'yaquin_simulation_phase_2',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'integrity'],
+        consequence: {
+          characterId: 'yaquin',
+          trustChange: 1,
+          addKnowledgeFlags: ['chose_technical_first']
+        }
+      },
+      {
+        choiceId: 'phase1_credential_first',
+        text: "Address the credential attack first. If you don't own your expertise, the other criticisms hit harder.",
+        nextNodeId: 'yaquin_simulation_phase_2',
+        pattern: 'building',
+        skills: ['courage', 'communication'],
+        consequence: {
+          characterId: 'yaquin',
+          addKnowledgeFlags: ['chose_credential_first']
+        }
+      },
+      {
+        choiceId: 'phase1_quality_first',
+        text: "Fix the errors first. Quick wins build momentum and show responsiveness.",
+        nextNodeId: 'yaquin_simulation_phase_2',
+        pattern: 'building',
+        skills: ['pragmatism', 'adaptability'],
+        consequence: {
+          characterId: 'yaquin',
+          addKnowledgeFlags: ['chose_quality_first']
+        }
+      },
+      {
+        choiceId: 'phase1_patience',
+        text: "[Don't rush to respond. Reactive responses often make things worse.]",
+        nextNodeId: 'yaquin_simulation_phase_2',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'strategicThinking'],
+        consequence: {
+          characterId: 'yaquin',
+          trustChange: 1,
+          addKnowledgeFlags: ['chose_patience']
+        }
+      }
+    ],
+    tags: ['simulation', 'yaquin_arc', 'decision_point']
+  },
+
+  {
+    nodeId: 'yaquin_simulation_phase_2',
+    speaker: 'Yaquin',
+    content: [{
+      text: `*He nods slowly, considering.*
+
+      Okay. The technical one. Dr. Lam.
+
+      I looked up her claim. She's right about one thing—modern alginate brands vary. Some set in 30 seconds. Some in 60. My "45 seconds" was based on the brand I used for eight years.
+
+      But here's the thing... I also taught texture cues. "When it stops being shiny, it's ready." That works for ANY brand.
+
+      *Pulls up the response draft.*
+
+      How do I respond? Admit I was wrong? Defend my approach? Both?`,
+      emotion: 'analytical',
+      variation_id: 'phase2_v1',
+      useChatPacing: true
+    }],
+    simulation: {
+      type: 'chat_negotiation',
+      title: 'Public Response Strategy',
+      taskDescription: 'Dr. Lam raised a valid technical concern publicly. Craft a response that maintains credibility, acknowledges the feedback, and reinforces your teaching methodology.',
+      initialContext: {
+        label: 'Response Draft',
+        content: `DRAFT OPTIONS:
+─────────────────────
+[A] DEFENSIVE: "My 8 years of experience proves the 45-second method works. Dr. Lam may be referring to different clinical contexts."
+
+[B] FULL ADMISSION: "You're right. I'll remove the timing guidance entirely and update the module."
+
+[C] BALANCED: "Thank you for this feedback. You're correct that timing varies by brand—I'll add a comparison chart. However, the texture-based method I teach is brand-agnostic and the core skill."`,
+        displayStyle: 'text'
+      },
+      successFeedback: 'RESPONSE SENT: Balanced approach maintains credibility while showing growth.'
+    },
+    choices: [
+      {
+        choiceId: 'phase2_defensive',
+        text: "Go defensive. Your experience is valid. Don't let one DDS undermine your authority.",
+        nextNodeId: 'yaquin_simulation_fail',
+        pattern: 'building',
+        skills: ['courage'],
+        consequence: {
+          characterId: 'yaquin',
+          addKnowledgeFlags: ['chose_defensive']
+        }
+      },
+      {
+        choiceId: 'phase2_full_admit',
+        text: "Full admission. Remove the timing guidance. Better to be safe.",
+        nextNodeId: 'yaquin_simulation_fail',
+        pattern: 'helping',
+        skills: ['humility'],
+        consequence: {
+          characterId: 'yaquin',
+          addKnowledgeFlags: ['chose_full_admit']
+        }
+      },
+      {
+        choiceId: 'phase2_balanced',
+        text: "Balanced response. Acknowledge what's valid, reinforce what's still true, and improve the course.",
+        nextNodeId: 'yaquin_simulation_success',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'communication', 'integrity'],
+        consequence: {
+          characterId: 'yaquin',
+          trustChange: 2,
+          addKnowledgeFlags: ['chose_balanced']
+        }
+      },
+      {
+        choiceId: 'phase2_explore',
+        text: "What if you reached out to Dr. Lam privately first? Before responding publicly?",
+        nextNodeId: 'yaquin_simulation_success',
+        pattern: 'exploring',
+        skills: ['strategicThinking', 'collaboration'],
+        consequence: {
+          characterId: 'yaquin',
+          trustChange: 2,
+          addKnowledgeFlags: ['chose_private_outreach']
+        }
+      }
+    ],
+    tags: ['simulation', 'yaquin_arc', 'critical_decision']
+  },
+
+  {
+    nodeId: 'yaquin_simulation_success',
+    speaker: 'Yaquin',
+    content: [{
+      text: `*His shoulders relax. Something shifts.*
+
+      <bloom>That's it.</bloom>
+
+      Acknowledge what's true. Stand by what's still valid. Improve based on feedback.
+
+      *Types quickly.*
+
+      "Dr. Lam, thank you for this feedback. You're absolutely right—timing varies by brand, and I should have included a comparison chart. I'll update Module 1 this week. However, the texture-based method ('when it stops being shiny') remains the core skill because it's brand-agnostic. I learned this from 8 years of chair-side work. Perhaps we could collaborate on a more comprehensive timing guide? Your clinical expertise would strengthen the course."
+
+      *Looks at you.*
+
+      Not defensive. Not doormat. Professional.
+
+      The anonymous attacker? I'm not responding. Can't win that fight. But the students watching? They'll see how I handle legitimate criticism.
+
+      *Smiles.*
+
+      That's the real review. How I respond when challenged.`,
+      emotion: 'confident',
+      interaction: 'bloom',
+      variation_id: 'success_v1',
+      richEffectContext: 'success',
+      useChatPacing: true
+    }],
+    onEnter: [
+      {
+        characterId: 'yaquin',
+        addKnowledgeFlags: ['completed_review_simulation'],
+        addGlobalFlags: ['yaquin_review_simulation_complete']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'success_continue',
+        text: "That's the mark of a real educator. Growth, not ego.",
+        nextNodeId: 'yaquin_simulation_aftermath',
+        pattern: 'helping',
+        skills: ['communication'],
+        consequence: {
+          characterId: 'yaquin',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'success_dr_lam',
+        text: "What if Dr. Lam actually collaborates? That could be huge.",
+        nextNodeId: 'yaquin_simulation_aftermath',
+        pattern: 'exploring',
+        skills: ['visionaryThinking']
+      }
+    ],
+    tags: ['simulation', 'yaquin_arc', 'success_outcome']
+  },
+
+  {
+    nodeId: 'yaquin_simulation_fail',
+    speaker: 'Yaquin',
+    content: [{
+      text: `*He posts the response. Waits.*
+
+      *Minutes pass. Then more reviews flood in.*
+
+      "Can't even take feedback."
+      "This is why I don't trust non-credentialed instructors."
+      "Dr. Lam is right. Unsubscribed."
+
+      *He stares at the screen.*
+
+      Made it worse. Way worse.
+
+      *Looks at you.*
+
+      I reacted instead of responded. Let the fear drive. Now I've given them ammunition.
+
+      Can we... can we try again? Different approach?`,
+      emotion: 'devastated',
+      interaction: 'small',
+      variation_id: 'fail_v1',
+      richEffectContext: 'error',
+      useChatPacing: true
+    }],
+    choices: [
+      {
+        choiceId: 'fail_retry',
+        text: "Yes. Delete the response. Think it through. We can recover from this.",
+        nextNodeId: 'yaquin_simulation_phase_2',
+        pattern: 'building',
+        skills: ['resilience', 'adaptability']
+      },
+      {
+        choiceId: 'fail_learn',
+        text: "This is a lesson. Reactive responses hurt more than silence. Let's be strategic.",
+        nextNodeId: 'yaquin_simulation_phase_2',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'learningAgility'],
+        consequence: {
+          characterId: 'yaquin',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['simulation', 'yaquin_arc', 'failure_state', 'recovery']
+  },
+
+  {
+    nodeId: 'yaquin_simulation_aftermath',
+    speaker: 'Yaquin',
+    content: [{
+      text: `*A week later. He shows you the dashboard.*
+
+      Dr. Lam responded. Publicly.
+
+      "Impressed by how Yaquin handled this feedback. Rare to see an educator acknowledge gaps AND stand by their methodology. I'd be happy to review the timing chart. This is how professional development should work."
+
+      *Scrolls down.*
+
+      Five new five-star reviews. All mentioning the exchange.
+
+      "This is how a teacher should respond to criticism."
+      "Bought the course BECAUSE of how he handled Dr. Lam."
+      "Integrity matters more than perfection."
+
+      *Looks at you.*
+
+      The worst review became the best marketing.
+
+      Not because I won the argument. Because I didn't make it a fight.
+
+      *Quiet.*
+
+      That's what eight years of patient care taught me. Not how to be right. How to listen. How to grow. How to stay open when it hurts.
+
+      That's the real curriculum. The one textbooks can't teach.`,
+      emotion: 'proud_reflective',
+      interaction: 'nod',
+      variation_id: 'aftermath_v1',
+      useChatPacing: true
+    }],
+    choices: [
+      {
+        choiceId: 'aftermath_return',
+        text: "Return to Samuel",
+        nextNodeId: samuelEntryPoints.YAQUIN_REFLECTION_GATEWAY,
+        pattern: 'exploring'
+      },
+      {
+        choiceId: 'aftermath_insight',
+        text: "The real curriculum. That's what you're actually teaching.",
+        nextNodeId: 'yaquin_simulation_insight',
+        pattern: 'analytical',
+        skills: ['communication'],
+        consequence: {
+          characterId: 'yaquin',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['simulation', 'yaquin_arc', 'resolution']
+  },
+
+  {
+    nodeId: 'yaquin_simulation_insight',
+    speaker: 'Yaquin',
+    content: [{
+      text: `*He pauses. Something clicking into place.*
+
+      The real curriculum.
+
+      *Quiet.*
+
+      All this time, I thought I was teaching dental skills. Mixing paste. Calming patients. Reading cues.
+
+      But the students who stay? The ones who thrive? They're not just learning technique.
+
+      They're learning how to learn. How to take criticism. How to grow without breaking.
+
+      *Looks at the reviews.*
+
+      Dr. Lam taught me that. In public. Painfully. And now 200 students got to watch me learn it.
+
+      *Small smile.*
+
+      Maybe that's worth more than perfect content. A teacher who models growth.
+
+      *Nods at you.*
+
+      Thank you. For helping me see it.
+
+      See Samuel. Tell him... the curriculum expanded today.`,
+      emotion: 'grateful_enlightened',
+      interaction: 'bloom',
+      variation_id: 'insight_v1',
+      useChatPacing: true
+    }],
+    onEnter: [
+      {
+        characterId: 'yaquin',
+        addKnowledgeFlags: ['yaquin_curriculum_insight'],
+        thoughtId: 'growth-curriculum'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'insight_return',
+        text: "Return to Samuel",
+        nextNodeId: samuelEntryPoints.YAQUIN_REFLECTION_GATEWAY,
+        pattern: 'exploring'
+      }
+    ],
+    tags: ['simulation', 'yaquin_arc', 'insight', 'completion']
   }
 ]
 
 export const yaquinEntryPoints = {
   INTRODUCTION: 'yaquin_introduction',
-  PHASE2_ENTRY: 'yaquin_phase2_entry'
+  PHASE2_ENTRY: 'yaquin_phase2_entry',
+  /** Course review simulation - handling controversial feedback */
+  SIMULATION: 'yaquin_simulation_intro'
 } as const
 
 export const yaquinDialogueGraph: DialogueGraph = {

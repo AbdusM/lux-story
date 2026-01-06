@@ -35,6 +35,15 @@ export type LoyaltyExperienceType =
   | 'the_confrontation'  // Rohan - Data-Driven Courage
   | 'the_first_class'    // Tess - Education Crisis / Pedagogy
   | 'the_crossroads'     // Jordan - Career Counseling / Boundaries
+  | 'the_vigil'          // Grace - End-of-life Companionship
+  | 'the_honest_course'  // Alex - Ethical Learning Design
+  | 'the_inspection'     // Kai - Safety Training Validation
+  | 'the_launch'         // Yaquin - First Course Publication
+  | 'the_pattern'        // Elena - Critical Data Investigation
+  | 'the_feral_lab'      // Silas - Crisis Teaching Moment
+  | 'the_mural'          // Asha - Permanent Art Creation
+  | 'the_memory_song'    // Lira - Composing for Memory
+  | 'the_audit'          // Zara - Algorithmic Bias Exposure
 
 /**
  * Status of a loyalty experience
@@ -1211,6 +1220,1397 @@ But she pulls out her notes. "Next client. Fresh start. I'll do better."`,
   }
 }
 
+/**
+ * Grace's Loyalty Experience: "The Vigil"
+ * Stay present with a patient through their final hours
+ */
+export const GRACE_THE_VIGIL: LoyaltyExperience = {
+  id: 'the_vigil',
+  title: 'The Vigil',
+  characterId: 'grace',
+  description: 'Stay with Grace through a patient\'s final hours. Learn what it means to be truly present.',
+  skills: ['Emotional Presence', 'End-of-Life Care', 'Compassionate Communication'],
+  requirements: {
+    trustMin: LOYALTY_TRUST_THRESHOLD,
+    patternRequirement: { pattern: 'helping', minLevel: LOYALTY_PATTERN_THRESHOLD },
+    requiredFlags: ['grace_arc_complete']
+  },
+  introduction: `Grace's phone buzzes at 2 AM. Mrs. Patterson. Her favorite client of seven years.
+
+"The family called. They're not going to make it in time." Her voice breaks. "She shouldn't be alone."
+
+She looks at you. "I've sat vigil before. But never with someone who... understood. Will you come with me?"`,
+  phases: [
+    {
+      phaseId: 'arrival',
+      situation: 'Mrs. Patterson\'s room is dim. Soft machines hum. Her breathing is shallow. The family photo on the nightstand shows decades of life.',
+      timeContext: 'Hours, maybe less.',
+      choices: [
+        {
+          choiceId: 'take_position',
+          text: '[Sit beside Grace. Match her stillness.]',
+          pattern: 'patience',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Your presence anchors hers. She exhales.',
+            patternChanges: { patience: 1 }
+          },
+          nextPhaseId: 'the_wait'
+        },
+        {
+          choiceId: 'ask_about_patient',
+          text: '"Tell me about her."',
+          pattern: 'helping',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Grace\'s eyes soften. Stories help.',
+            trustChange: 1
+          },
+          nextPhaseId: 'the_wait'
+        }
+      ]
+    },
+    {
+      phaseId: 'the_wait',
+      situation: 'An hour passes. Mrs. Patterson stirs. Her eyes flutter open, confused. "Dorothy? Is that you?"',
+      timeContext: 'She\'s seeing someone who isn\'t there.',
+      choices: [
+        {
+          choiceId: 'gentle_presence',
+          text: '[Let Grace handle it. Trust her expertise.]',
+          pattern: 'patience',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Grace takes her hand. "I\'m here. You\'re safe." Mrs. Patterson settles.',
+            trustChange: 1
+          },
+          nextPhaseId: 'the_confession'
+        },
+        {
+          choiceId: 'correct_gently',
+          text: '"Mrs. Patterson, it\'s Grace. You\'re in your room."',
+          pattern: 'helping',
+          outcome: {
+            isSuccess: false,
+            feedback: 'Confusion deepens. Sometimes truth isn\'t what they need.'
+          },
+          nextPhaseId: 'the_confession'
+        }
+      ]
+    },
+    {
+      phaseId: 'the_confession',
+      situation: 'Grace whispers: "I almost quit last year. After Mr. Chen. After Mrs. Rodriguez. Everyone I love leaves." Her tears fall silently.',
+      choices: [
+        {
+          choiceId: 'witness_grief',
+          text: '[Stay silent. Let her grieve.]',
+          pattern: 'patience',
+          outcome: {
+            isSuccess: true,
+            feedback: 'She doesn\'t need words. She needs witness.',
+            patternChanges: { patience: 1 }
+          },
+          nextPhaseId: 'the_end'
+        },
+        {
+          choiceId: 'acknowledge_burden',
+          text: '"The weight you carry... it\'s not invisible. I see it."',
+          pattern: 'helping',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Recognition. The rarest gift in care work.',
+            trustChange: 2,
+            patternChanges: { helping: 1 }
+          },
+          nextPhaseId: 'the_end'
+        }
+      ]
+    },
+    {
+      phaseId: 'the_end',
+      situation: 'Mrs. Patterson\'s breathing changes. Slows. Grace holds her hand. "You can go now, Margaret. Everyone you loved is waiting."',
+      timeContext: 'The final moments.',
+      choices: [
+        {
+          choiceId: 'hold_space',
+          text: '[Place your hand on Grace\'s shoulder. Hold the space together.]',
+          pattern: 'helping',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Two witnesses. One departure. A sacred exchange.',
+            trustChange: 1,
+            setFlags: ['grace_vigil_success']
+          }
+        },
+        {
+          choiceId: 'honor_silence',
+          text: '[Bow your head. Honor what\'s happening with silence.]',
+          pattern: 'patience',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Some moments are too profound for touch.',
+            setFlags: ['grace_vigil_success']
+          }
+        }
+      ]
+    }
+  ],
+  successEnding: {
+    text: `Sunrise filters through the curtains. Mrs. Patterson is gone, peacefully.
+
+Grace sits back, exhausted but whole. "Seven years of invisible work. And tonight, someone saw it."
+
+She looks at you. "That's why I stay. Not for the ones who leave. For the ones who witness."
+
+Her phone buzzes. The family is an hour away. She'll be here when they arrive.`,
+    trustBonus: 3,
+    unlockedFlag: 'grace_loyalty_complete'
+  },
+  failureEnding: {
+    text: `The night passes, but something was lost in translation. Grace is alone again.
+
+"It's okay," she says, but her voice is hollow. "Not everyone can do this work."`,
+    canRetry: true
+  }
+}
+
+/**
+ * Alex's Loyalty Experience: "The Honest Course"
+ * Launch an ethical learning platform without the predatory tactics
+ */
+export const ALEX_THE_HONEST_COURSE: LoyaltyExperience = {
+  id: 'the_honest_course',
+  title: 'The Honest Course',
+  characterId: 'alex',
+  description: 'Help Alex launch an ethical alternative to the predatory bootcamp industry.',
+  skills: ['Curriculum Design', 'Ethical Marketing', 'Student Advocacy'],
+  requirements: {
+    trustMin: LOYALTY_TRUST_THRESHOLD,
+    patternRequirement: { pattern: 'exploring', minLevel: LOYALTY_PATTERN_THRESHOLD },
+    requiredFlags: ['alex_arc_complete']
+  },
+  introduction: `Alex has been building something in secret. A learning platform. No fake job guarantees. No predatory financing. Just honest education.
+
+"Tomorrow is launch day. But the marketing guy wants me to add 'GUARANTEED JOB PLACEMENT.'" He looks sick. "That's how it starts. One compromise."
+
+He shows you the screen. "Help me write copy that's honest AND compelling. I can't go back to being complicit."`,
+  phases: [
+    {
+      phaseId: 'the_copy',
+      situation: 'The landing page needs a headline. The marketing guy\'s suggestion: "Become a Six-Figure Developer in 12 Weeks - GUARANTEED!"',
+      choices: [
+        {
+          choiceId: 'honest_value',
+          text: '"Learn to code. For real. No false promises." - Lead with integrity.',
+          pattern: 'helping',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Honesty as differentiator. Alex\'s shoulders relax.',
+            patternChanges: { helping: 1 }
+          },
+          nextPhaseId: 'the_pricing'
+        },
+        {
+          choiceId: 'outcome_focus',
+          text: '"85% of graduates report career progress within 6 months." - Real data, no hype.',
+          pattern: 'analytical',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Measurable, honest, compelling. The best of both worlds.',
+            trustChange: 1
+          },
+          nextPhaseId: 'the_pricing'
+        }
+      ]
+    },
+    {
+      phaseId: 'the_pricing',
+      situation: 'Pricing decision. Competitors charge $15,000 with "income share agreements" that trap students. Alex wants $2,000 upfront.',
+      choices: [
+        {
+          choiceId: 'defend_price',
+          text: '"$2,000 is honest. It covers costs. Students aren\'t in debt for years."',
+          pattern: 'building',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Sustainable pricing that doesn\'t exploit. Revolutionary.',
+            patternChanges: { building: 1 }
+          },
+          nextPhaseId: 'the_doubt'
+        },
+        {
+          choiceId: 'scholarship_tier',
+          text: '"Add a scholarship tier. Let paying students fund those who can\'t."',
+          pattern: 'helping',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Community-funded learning. Alex\'s eyes light up.',
+            trustChange: 1
+          },
+          nextPhaseId: 'the_doubt'
+        }
+      ]
+    },
+    {
+      phaseId: 'the_doubt',
+      situation: 'Night before launch. Alex stares at the screen. "What if no one signs up? What if honesty doesn\'t sell?"',
+      timeContext: 'The fear is real.',
+      choices: [
+        {
+          choiceId: 'acknowledge_fear',
+          text: '"The fear means you care. But remember Maria - this is for students like her."',
+          pattern: 'patience',
+          outcome: {
+            isSuccess: true,
+            feedback: 'The memory of the student who cashed out her 401k. The reason this matters.',
+            trustChange: 2
+          },
+          nextPhaseId: 'launch'
+        },
+        {
+          choiceId: 'focus_on_mission',
+          text: '"Even if ten students learn something real, that\'s ten fewer people burned by the industry."',
+          pattern: 'exploring',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Small impact is still impact. The mission crystallizes.',
+            patternChanges: { exploring: 1 }
+          },
+          nextPhaseId: 'launch'
+        }
+      ]
+    },
+    {
+      phaseId: 'launch',
+      situation: 'Launch button glows on the screen. Alex\'s hand hovers. "Once it\'s out there, I can\'t take it back."',
+      choices: [
+        {
+          choiceId: 'together',
+          text: '"Press it together. I believe in what you\'ve built."',
+          pattern: 'helping',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Click. It\'s live. The honest alternative exists.',
+            trustChange: 1,
+            setFlags: ['alex_course_success']
+          }
+        },
+        {
+          choiceId: 'his_moment',
+          text: '"This is your moment. You\'ve earned it."',
+          pattern: 'patience',
+          outcome: {
+            isSuccess: true,
+            feedback: 'He presses it alone. But not lonely. You\'re watching.',
+            setFlags: ['alex_course_success']
+          }
+        }
+      ]
+    }
+  ],
+  successEnding: {
+    text: `Three days later. Twelve sign-ups. Not thousands. Twelve.
+
+Alex stares at the list. "Twelve people who chose honesty over hype."
+
+His phone buzzes. A message from one student: "Thank you for not lying to me. That's why I signed up."
+
+"Worth it," Alex whispers. "Every single one."`,
+    trustBonus: 3,
+    unlockedFlag: 'alex_loyalty_complete'
+  },
+  failureEnding: {
+    text: `The launch goes live, but something's off. The compromises crept in.
+
+Alex stares at the marketing copy. "I did it again," he says. "Started honest. Ended... complicit."
+
+But he doesn't delete it. "Tomorrow. Fix it tomorrow."`,
+    canRetry: true
+  }
+}
+
+/**
+ * Kai's Loyalty Experience: "The Inspection"
+ * Prove that thoughtful safety training actually saves lives
+ */
+export const KAI_THE_INSPECTION: LoyaltyExperience = {
+  id: 'the_inspection',
+  title: 'The Inspection',
+  characterId: 'kai',
+  description: 'Help Kai prove that real safety training saves lives when an OSHA inspector questions their methods.',
+  skills: ['Training Design', 'Safety Systems', 'Evidence-Based Practice'],
+  requirements: {
+    trustMin: LOYALTY_TRUST_THRESHOLD,
+    patternRequirement: { pattern: 'building', minLevel: LOYALTY_PATTERN_THRESHOLD },
+    requiredFlags: ['kai_arc_complete']
+  },
+  introduction: `OSHA inspector at the door. Unannounced. Kai's pilot program is under review.
+
+"Your training module takes three hours. Industry standard is forty-five minutes." The inspector's pen taps her clipboard. "Justify the difference."
+
+Kai's hands shake. The last time she was questioned, Marcus ended up in the hospital.
+
+"Help me show her. Help me prove that faster isn't better when lives are at stake."`,
+  phases: [
+    {
+      phaseId: 'the_challenge',
+      situation: 'The inspector reviews the training module. "Three hours for lockout/tagout? The checklist approach takes thirty minutes."',
+      choices: [
+        {
+          choiceId: 'show_outcomes',
+          text: 'Pull up incident data. "Zero injuries in six months. Previous program: four."',
+          pattern: 'analytical',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Data speaks. The inspector\'s eyebrow rises.',
+            patternChanges: { analytical: 1 }
+          },
+          nextPhaseId: 'the_simulation'
+        },
+        {
+          choiceId: 'explain_philosophy',
+          text: '"Compliance theater versus actual competence. We teach understanding, not just steps."',
+          pattern: 'building',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Philosophy before metrics. Risky, but authentic.',
+            trustChange: 1
+          },
+          nextPhaseId: 'the_simulation'
+        }
+      ]
+    },
+    {
+      phaseId: 'the_simulation',
+      situation: 'The inspector wants a demo. "Show me what your workers actually do."',
+      timeContext: 'A floor worker named James is nearby.',
+      choices: [
+        {
+          choiceId: 'live_demo',
+          text: '"James, walk the inspector through your last equipment lockout."',
+          pattern: 'building',
+          outcome: {
+            isSuccess: true,
+            feedback: 'James explains every step - AND why it matters. The inspector nods.',
+            trustChange: 1
+          },
+          nextPhaseId: 'the_question'
+        },
+        {
+          choiceId: 'scenario_test',
+          text: '"What if the pressure gauge reads wrong? James, what do you do?"',
+          pattern: 'analytical',
+          outcome: {
+            isSuccess: true,
+            feedback: 'James knows. Edge cases covered. Not just the happy path.',
+            patternChanges: { building: 1 }
+          },
+          nextPhaseId: 'the_question'
+        }
+      ]
+    },
+    {
+      phaseId: 'the_question',
+      situation: 'The inspector sets down her clipboard. "Why do you do this? Your method takes more time, more resources. Companies hate that."',
+      choices: [
+        {
+          choiceId: 'marcus_story',
+          text: '"Because Marcus is still in physical therapy. Because a forty-five minute checklist didn\'t prepare him."',
+          pattern: 'helping',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Personal cost. The inspector\'s demeanor shifts.',
+            trustChange: 2
+          },
+          nextPhaseId: 'verdict'
+        },
+        {
+          choiceId: 'father_story',
+          text: '"My father lost three fingers. The training manual said he was \'compliant.\'"',
+          pattern: 'patience',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Generational knowledge. The inspector understands.',
+            patternChanges: { patience: 1 }
+          },
+          nextPhaseId: 'verdict'
+        }
+      ]
+    },
+    {
+      phaseId: 'verdict',
+      situation: 'The inspector closes her notebook. The pause stretches.',
+      choices: [
+        {
+          choiceId: 'wait_for_verdict',
+          text: '[Wait. Let her process what she\'s seen.]',
+          pattern: 'patience',
+          outcome: {
+            isSuccess: true,
+            feedback: '"I\'m recommending your program as a case study," she says finally.',
+            setFlags: ['kai_inspection_success']
+          }
+        },
+        {
+          choiceId: 'ask_directly',
+          text: '"What\'s the verdict?"',
+          pattern: 'analytical',
+          outcome: {
+            isSuccess: true,
+            feedback: 'She smiles. "Pass. With distinction."',
+            setFlags: ['kai_inspection_success']
+          }
+        }
+      ]
+    }
+  ],
+  successEnding: {
+    text: `The inspector leaves. Kai slumps against the wall.
+
+"Six months of work. Years of doubt." She looks at you. "And someone finally said it matters."
+
+James walks by. "Hey Kai, thanks for teaching me why the steps matter. Not just what to do."
+
+Kai smiles. "That's the whole point."`,
+    trustBonus: 3,
+    unlockedFlag: 'kai_loyalty_complete'
+  },
+  failureEnding: {
+    text: `The inspection ends ambiguously. "Further review required."
+
+Kai stares at the paperwork. "Same as always. Good enough isn't good enough for them."
+
+But she's already revising the module. "Next time. I'll make it undeniable."`,
+    canRetry: true
+  }
+}
+
+/**
+ * Yaquin's Loyalty Experience: "The Launch"
+ * Publish the first course and navigate the creator economy
+ */
+export const YAQUIN_THE_LAUNCH: LoyaltyExperience = {
+  id: 'the_launch',
+  title: 'The Launch',
+  characterId: 'yaquin',
+  description: 'Help Yaquin launch her first online course and prove that hands-on expertise matters.',
+  skills: ['Content Creation', 'Self-Marketing', 'Tacit Knowledge Transfer'],
+  requirements: {
+    trustMin: LOYALTY_TRUST_THRESHOLD,
+    patternRequirement: { pattern: 'building', minLevel: LOYALTY_PATTERN_THRESHOLD },
+    requiredFlags: ['yaquin_arc_complete']
+  },
+  introduction: `Yaquin's finger hovers over the "Publish" button. Eight months of work. Forty-seven video lessons. Everything she knows about dental assisting, distilled.
+
+"My father still thinks I should have gone to dental school." Her voice is steady, but her hand isn't. "He doesn't understand that this... this is dental school. My version."
+
+She looks at you. "Will you watch me do this? I don't want to be alone when it either works or doesn't."`,
+  phases: [
+    {
+      phaseId: 'the_button',
+      situation: 'The publish button glows. Course price: $47. Eight years of experience for less than dinner.',
+      choices: [
+        {
+          choiceId: 'affirm_value',
+          text: '"Your knowledge saved patients from pain. That\'s worth more than any credential."',
+          pattern: 'helping',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Her shoulders drop. Validation.',
+            patternChanges: { helping: 1 }
+          },
+          nextPhaseId: 'first_student'
+        },
+        {
+          choiceId: 'focus_forward',
+          text: '"Press it. The only way to know if it works is to try."',
+          pattern: 'building',
+          outcome: {
+            isSuccess: true,
+            feedback: 'She clicks. It\'s live. The world can see it now.',
+            trustChange: 1
+          },
+          nextPhaseId: 'first_student'
+        }
+      ]
+    },
+    {
+      phaseId: 'first_student',
+      situation: 'Twenty-four hours. Three sales. Then a message: "I\'m a new dental assistant. Your video on anxious patients saved my first day. Thank you."',
+      choices: [
+        {
+          choiceId: 'celebrate_small',
+          text: '"Three students. Three people whose days will be better because of you."',
+          pattern: 'patience',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Small numbers, big impact. She starts to see it.',
+            trustChange: 1
+          },
+          nextPhaseId: 'the_doubt'
+        },
+        {
+          choiceId: 'share_message',
+          text: '"Read that message again. That\'s why this matters."',
+          pattern: 'helping',
+          outcome: {
+            isSuccess: true,
+            feedback: 'The human connection. Not metrics. Impact.',
+            patternChanges: { helping: 1 }
+          },
+          nextPhaseId: 'the_doubt'
+        }
+      ]
+    },
+    {
+      phaseId: 'the_doubt',
+      situation: 'Her father calls. "Mija, how much did you make?" She tells him. Silence. "That\'s... not very much."',
+      timeContext: 'The comparison to dental school salary hangs unspoken.',
+      choices: [
+        {
+          choiceId: 'reframe_success',
+          text: '"Three people trusted her enough to pay. Week one. This is the beginning, not the end."',
+          pattern: 'building',
+          outcome: {
+            isSuccess: true,
+            feedback: 'You speak to her father through her. The reframe lands.',
+            trustChange: 2
+          },
+          nextPhaseId: 'the_review'
+        },
+        {
+          choiceId: 'validate_feelings',
+          text: '"It hurts when family doesn\'t understand. But you know what you built."',
+          pattern: 'patience',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Acknowledgment before advice. She needed that.',
+            patternChanges: { patience: 1 }
+          },
+          nextPhaseId: 'the_review'
+        }
+      ]
+    },
+    {
+      phaseId: 'the_review',
+      situation: 'Week two. A negative review: "Too basic. Anyone could teach this." Yaquin stares at the screen.',
+      choices: [
+        {
+          choiceId: 'perspective',
+          text: '"One critic. Twelve positive messages. Which voice will you amplify?"',
+          pattern: 'analytical',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Data over drama. She nods slowly.',
+            setFlags: ['yaquin_launch_success']
+          }
+        },
+        {
+          choiceId: 'growth_mindset',
+          text: '"Use it. What could the next version teach that this one didn\'t?"',
+          pattern: 'exploring',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Criticism as fuel. She opens her notes app.',
+            setFlags: ['yaquin_launch_success']
+          }
+        }
+      ]
+    }
+  ],
+  successEnding: {
+    text: `Month one ends. Forty-seven students. Enough to cover her phone bill and then some.
+
+"It's not dental school money," Yaquin says. "But it's mine. Built from what I actually know."
+
+Her phone buzzes. Another message: "Your lesson on instrument sterilization is better than anything in my textbook."
+
+"That's the credential," she says, smiling. "Right there."`,
+    trustBonus: 3,
+    unlockedFlag: 'yaquin_loyalty_complete'
+  },
+  failureEnding: {
+    text: `The launch stalls. Self-doubt creeps in. "Maybe my father was right."
+
+But she doesn't delete the course. "I'll try again. Different approach."`,
+    canRetry: true
+  }
+}
+
+/**
+ * Elena's Loyalty Experience: "The Pattern"
+ * Investigate a critical data anomaly that others dismissed
+ */
+export const ELENA_THE_PATTERN: LoyaltyExperience = {
+  id: 'the_pattern',
+  title: 'The Pattern',
+  characterId: 'elena',
+  description: 'Help Elena investigate a data anomaly that everyone else is ignoring. The truth matters.',
+  skills: ['Data Analysis', 'Critical Thinking', 'Persistence'],
+  requirements: {
+    trustMin: LOYALTY_TRUST_THRESHOLD,
+    patternRequirement: { pattern: 'analytical', minLevel: LOYALTY_PATTERN_THRESHOLD },
+    requiredFlags: ['elena_arc_complete']
+  },
+  introduction: `Elena hasn't slept. Spreadsheets cover every surface. Her eyes are bloodshot.
+
+"I found something. Something everyone missed." Her voice is hoarse. "Supply chain data. There's a pattern in the anomalies. It's not random."
+
+She pulls up a graph. Points that look like noise. But when you squint...
+
+"Last time I dismissed anomalous data, four people died." Her hands shake. "Help me prove this isn't nothing."`,
+  phases: [
+    {
+      phaseId: 'the_data',
+      situation: 'The dataset is massive. Thousands of entries. Elena\'s eyes dart across screens. "The pattern is here. I can feel it."',
+      choices: [
+        {
+          choiceId: 'systematic_approach',
+          text: '"Walk me through your methodology. Start from the first anomaly you noticed."',
+          pattern: 'analytical',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Structure. She needed someone to slow her down.',
+            patternChanges: { analytical: 1 }
+          },
+          nextPhaseId: 'the_correlation'
+        },
+        {
+          choiceId: 'trust_instinct',
+          text: '"Your gut found something. Let\'s follow it. Show me what you see."',
+          pattern: 'exploring',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Intuition validated. She traces the thread.',
+            trustChange: 1
+          },
+          nextPhaseId: 'the_correlation'
+        }
+      ]
+    },
+    {
+      phaseId: 'the_correlation',
+      situation: 'There it is. Maintenance delays correlating with supplier batch numbers. A defective component slipping through.',
+      timeContext: 'If she\'s right, equipment is failing. Quietly.',
+      choices: [
+        {
+          choiceId: 'verify_twice',
+          text: '"Run it again. Different dataset. We need to be sure."',
+          pattern: 'patience',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Confirmation. The pattern holds across samples.',
+            patternChanges: { analytical: 1 }
+          },
+          nextPhaseId: 'the_report'
+        },
+        {
+          choiceId: 'document_now',
+          text: '"Document everything. Screenshots, timestamps, methodology. Before anyone can dismiss it."',
+          pattern: 'building',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Evidence trail. CYA before confrontation.',
+            trustChange: 1
+          },
+          nextPhaseId: 'the_report'
+        }
+      ]
+    },
+    {
+      phaseId: 'the_report',
+      situation: 'The operations manager dismisses the meeting request. "Elena sees patterns in everything. She\'s been wrong before."',
+      choices: [
+        {
+          choiceId: 'go_around',
+          text: '"Safety officer. They can\'t ignore a formal safety concern."',
+          pattern: 'building',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Process exists for a reason. Use it.',
+            trustChange: 1
+          },
+          nextPhaseId: 'the_vindication'
+        },
+        {
+          choiceId: 'persist_directly',
+          text: '"Send the data anyway. CC the safety team. Create a paper trail."',
+          pattern: 'analytical',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Assertive documentation. They\'ll have to respond.',
+            patternChanges: { patience: 1 }
+          },
+          nextPhaseId: 'the_vindication'
+        }
+      ]
+    },
+    {
+      phaseId: 'the_vindication',
+      situation: 'The safety officer calls. "We pulled the batch numbers you flagged. Six components failed inspection."',
+      choices: [
+        {
+          choiceId: 'quiet_relief',
+          text: '[Let Elena have this moment. The validation she\'s been seeking.]',
+          pattern: 'patience',
+          outcome: {
+            isSuccess: true,
+            feedback: 'She exhales. Years of self-doubt, answered.',
+            setFlags: ['elena_pattern_success']
+          }
+        },
+        {
+          choiceId: 'acknowledge_cost',
+          text: '"They should have listened sooner. You saved lives today."',
+          pattern: 'helping',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Recognition of what the doubt cost her.',
+            trustChange: 1,
+            setFlags: ['elena_pattern_success']
+          }
+        }
+      ]
+    }
+  ],
+  successEnding: {
+    text: `The recall goes out. Six facilities. Hundreds of units replaced.
+
+Elena stares at the safety report. "No injuries. Because someone listened this time."
+
+She looks at the Station Seven file, still open on her desk. "Can't fix the past. But I can make sure it matters."`,
+    trustBonus: 3,
+    unlockedFlag: 'elena_loyalty_complete'
+  },
+  failureEnding: {
+    text: `The data is buried. "Inconclusive," they call it.
+
+Elena saves her work. "I'll keep watching. Someone will listen eventually."`,
+    canRetry: true
+  }
+}
+
+/**
+ * Silas's Loyalty Experience: "The Feral Lab"
+ * Guide burnt-out engineers through a crisis using presence, not dashboards
+ */
+export const SILAS_THE_FERAL_LAB: LoyaltyExperience = {
+  id: 'the_feral_lab',
+  title: 'The Feral Lab',
+  characterId: 'silas',
+  description: 'Help Silas teach a cohort of burnt-out engineers that ground truth comes from observation, not dashboards.',
+  skills: ['Mentorship', 'Systems Observation', 'Patience'],
+  requirements: {
+    trustMin: LOYALTY_TRUST_THRESHOLD,
+    patternRequirement: { pattern: 'patience', minLevel: LOYALTY_PATTERN_THRESHOLD },
+    requiredFlags: ['silas_arc_complete']
+  },
+  introduction: `The vertical farm is struggling. Sensors show everything is fine. But the lettuce is dying.
+
+Three engineers from AWS, Google, and Meta stand in the grow room, staring at their tablets.
+
+"The data says humidity is optimal," one insists.
+
+Silas touches a leaf. Brown at the edges. He looks at you. "Help me teach them what Mr. Hawkins taught me. The dashboard lies. The plant doesn't."`,
+  phases: [
+    {
+      phaseId: 'the_disconnect',
+      situation: 'The engineers are frustrated. "We\'ve checked every sensor. Everything reads normal. The plants are just... wrong."',
+      choices: [
+        {
+          choiceId: 'question_sensors',
+          text: '"When did you last calibrate those sensors? Data is only as good as its source."',
+          pattern: 'analytical',
+          outcome: {
+            isSuccess: true,
+            feedback: 'One engineer frowns. "Calibrate? They\'re supposed to be self-calibrating..."',
+            patternChanges: { analytical: 1 }
+          },
+          nextPhaseId: 'the_observation'
+        },
+        {
+          choiceId: 'redirect_attention',
+          text: '"Put down the tablets. Look at the plants. What do you actually see?"',
+          pattern: 'patience',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Confusion. Then slowly, they look up from screens.',
+            trustChange: 1
+          },
+          nextPhaseId: 'the_observation'
+        }
+      ]
+    },
+    {
+      phaseId: 'the_observation',
+      situation: 'Silas kneels, touching soil. "What does this feel like?" One engineer reluctantly pokes the growing medium.',
+      timeContext: 'Literal ground truth.',
+      choices: [
+        {
+          choiceId: 'join_observation',
+          text: '[Kneel beside them. Feel the soil yourself. Model the behavior.]',
+          pattern: 'patience',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Touch. The soil is dry despite the sensor reading "optimal."',
+            trustChange: 1
+          },
+          nextPhaseId: 'the_lesson'
+        },
+        {
+          choiceId: 'ask_questions',
+          text: '"What does the soil tell you that the sensor doesn\'t?"',
+          pattern: 'exploring',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Socratic method. They start to answer their own questions.',
+            patternChanges: { exploring: 1 }
+          },
+          nextPhaseId: 'the_lesson'
+        }
+      ]
+    },
+    {
+      phaseId: 'the_lesson',
+      situation: 'The root cause: irrigation line clogged with mineral buildup. Sensors couldn\'t see it. Human touch could.',
+      choices: [
+        {
+          choiceId: 'gentle_wisdom',
+          text: '"Technology amplifies judgment. It doesn\'t replace it. This is the lesson."',
+          pattern: 'patience',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Silas nods. Mr. Hawkins would approve.',
+            trustChange: 2
+          },
+          nextPhaseId: 'the_integration'
+        },
+        {
+          choiceId: 'practical_fix',
+          text: '"Now let\'s fix it. And build a maintenance schedule that doesn\'t rely only on sensors."',
+          pattern: 'building',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Theory into practice. The engineers take notes.',
+            patternChanges: { building: 1 }
+          },
+          nextPhaseId: 'the_integration'
+        }
+      ]
+    },
+    {
+      phaseId: 'the_integration',
+      situation: 'One engineer stays late. "I left AWS because the dashboards made me feel disconnected. Today was the first time I felt like I understood something."',
+      choices: [
+        {
+          choiceId: 'affirm_journey',
+          text: '"That\'s why Silas built this place. To reconnect engineers with the real."',
+          pattern: 'helping',
+          outcome: {
+            isSuccess: true,
+            feedback: 'The engineer looks at the plants differently now.',
+            setFlags: ['silas_feral_success']
+          }
+        },
+        {
+          choiceId: 'invite_deeper',
+          text: '"Come back next week. The strawberries need attention. Bring your curiosity, leave the tablet."',
+          pattern: 'exploring',
+          outcome: {
+            isSuccess: true,
+            feedback: 'An invitation. The Feral Lab gains another convert.',
+            setFlags: ['silas_feral_success']
+          }
+        }
+      ]
+    }
+  ],
+  successEnding: {
+    text: `The lettuce recovers. The engineers return, week after week.
+
+Silas stands in the grow room, morning light filtering through leaves. "Mr. Hawkins was right. You can't understand a system from a dashboard. You have to be in it."
+
+He looks at the thriving plants, then at the engineers getting their hands dirty.
+
+"This is what I was meant to build."`,
+    trustBonus: 3,
+    unlockedFlag: 'silas_loyalty_complete'
+  },
+  failureEnding: {
+    text: `Some engineers return to their dashboards. Old habits.
+
+Silas watches them go. "Not everyone is ready to let go of the illusion of control."
+
+But one stayed. One learned. "That's how it starts."`,
+    canRetry: true
+  }
+}
+
+/**
+ * Asha's Loyalty Experience: "The Mural"
+ * Create art that can't be erased
+ */
+export const ASHA_THE_MURAL: LoyaltyExperience = {
+  id: 'the_mural',
+  title: 'The Mural',
+  characterId: 'asha',
+  description: 'Help Asha create a community mural that captures Birmingham\'s soul - one they can\'t paint over.',
+  skills: ['Creative Direction', 'Community Engagement', 'Artistic Vision'],
+  requirements: {
+    trustMin: LOYALTY_TRUST_THRESHOLD,
+    patternRequirement: { pattern: 'building', minLevel: LOYALTY_PATTERN_THRESHOLD },
+    requiredFlags: ['asha_arc_complete']
+  },
+  introduction: `The city council approved it. A permanent mural. Not projection mapping they can unplug. Not temporary paint they can cover. Permanent.
+
+Asha stands before the blank wall, AI-generated concept sketches in hand. "They painted over my last one in three days. 'Too political. Too diverse.'"
+
+She looks at you. "Help me make something they can't ignore. Something that's Birmingham. Not their Birmingham. Ours."`,
+  phases: [
+    {
+      phaseId: 'the_concept',
+      situation: 'Three concepts. One safe. One provocative. One that tells the truth. The council approved "safe." Asha wants "truth."',
+      choices: [
+        {
+          choiceId: 'truth_approach',
+          text: '"Paint the truth. Make it so beautiful they can\'t call it political."',
+          pattern: 'building',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Beauty as trojan horse. Asha grins.',
+            patternChanges: { building: 1 }
+          },
+          nextPhaseId: 'the_process'
+        },
+        {
+          choiceId: 'hybrid_approach',
+          text: '"Blend them. Start with safe, reveal truth. Let people discover it."',
+          pattern: 'patience',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Layers of meaning. Art that unfolds.',
+            trustChange: 1
+          },
+          nextPhaseId: 'the_process'
+        }
+      ]
+    },
+    {
+      phaseId: 'the_process',
+      situation: 'AI tools generate patterns, colors, compositions. But something\'s missing. "It looks like Birmingham. It doesn\'t feel like Birmingham."',
+      choices: [
+        {
+          choiceId: 'add_human',
+          text: '"What can\'t AI know? The stories. Add the people\'s stories."',
+          pattern: 'helping',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Community input. Faces of real people. Now it breathes.',
+            trustChange: 1
+          },
+          nextPhaseId: 'the_resistance'
+        },
+        {
+          choiceId: 'trust_instinct',
+          text: '"You\'re the director. What does YOUR Birmingham look like?"',
+          pattern: 'exploring',
+          outcome: {
+            isSuccess: true,
+            feedback: 'She stops deferring to algorithms. Her vision emerges.',
+            patternChanges: { exploring: 1 }
+          },
+          nextPhaseId: 'the_resistance'
+        }
+      ]
+    },
+    {
+      phaseId: 'the_resistance',
+      situation: 'Council member stops by. "This looks... different from what we approved." His tone is cold.',
+      timeContext: 'The mural is half-finished. Stopping now would waste weeks.',
+      choices: [
+        {
+          choiceId: 'stand_ground',
+          text: '"The community approved it. Ask them."',
+          pattern: 'building',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Community support is the shield. He has no leverage.',
+            trustChange: 2
+          },
+          nextPhaseId: 'the_unveiling'
+        },
+        {
+          choiceId: 'redirect',
+          text: '"Wait until it\'s finished. Art needs to be seen complete."',
+          pattern: 'patience',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Buy time. Finish before they can stop you.',
+            patternChanges: { patience: 1 }
+          },
+          nextPhaseId: 'the_unveiling'
+        }
+      ]
+    },
+    {
+      phaseId: 'the_unveiling',
+      situation: 'The mural is complete. A crowd gathers. Faces from the neighborhood, painted into history. Someone is crying.',
+      choices: [
+        {
+          choiceId: 'let_asha_speak',
+          text: '[Step back. Let Asha address her community.]',
+          pattern: 'patience',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Her voice carries. "This is us. All of us. Forever."',
+            setFlags: ['asha_mural_success']
+          }
+        },
+        {
+          choiceId: 'witness_silently',
+          text: '[Watch the community respond. This moment is theirs.]',
+          pattern: 'helping',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Children point at faces they recognize. History becomes personal.',
+            setFlags: ['asha_mural_success']
+          }
+        }
+      ]
+    }
+  ],
+  successEnding: {
+    text: `The mural stays. Months later, tourists stop to photograph it. Locals explain who the faces are.
+
+Asha runs her hand along the wall. "They can't paint over permanence. They can't unplug a wall."
+
+A child tugs her sleeve. "That's my grandma! She's famous now!"
+
+"Not famous," Asha says softly. "Remembered."`,
+    trustBonus: 3,
+    unlockedFlag: 'asha_loyalty_complete'
+  },
+  failureEnding: {
+    text: `The mural is "revised." Committee oversight. Some faces disappear.
+
+Asha photographs what remains. "The original lives in my files. In people's memories."
+
+She's already planning the next one.`,
+    canRetry: true
+  }
+}
+
+/**
+ * Lira's Loyalty Experience: "The Memory Song"
+ * Compose music that captures a memory before it fades
+ */
+export const LIRA_THE_MEMORY_SONG: LoyaltyExperience = {
+  id: 'the_memory_song',
+  title: 'The Memory Song',
+  characterId: 'lira',
+  description: 'Help Lira compose a piece for her grandmother, capturing the sound of a memory trying to remember itself.',
+  skills: ['Sound Design', 'Emotional Expression', 'AI-Assisted Creation'],
+  requirements: {
+    trustMin: LOYALTY_TRUST_THRESHOLD,
+    patternRequirement: { pattern: 'patience', minLevel: LOYALTY_PATTERN_THRESHOLD },
+    requiredFlags: ['lira_arc_complete']
+  },
+  introduction: `Lira's grandmother was a concert pianist. Dementia took the music first. Then the words. Now she sits by the window, humming fragments of songs she can't quite recall.
+
+"I want to give it back to her," Lira says, voice raw. "One piece. The song she used to play for me. But I can only remember pieces."
+
+She shows you an AI audio generator. "Help me describe what a song trying to remember itself sounds like."`,
+  phases: [
+    {
+      phaseId: 'the_prompt',
+      situation: 'The AI needs a description. "Piano song, melancholy" gives generic results. They need something specific.',
+      choices: [
+        {
+          choiceId: 'sensory_description',
+          text: '"What did the room feel like when she played? Start there."',
+          pattern: 'patience',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Lira closes her eyes. "Afternoon light. Dust in the air. Her hands..."',
+            patternChanges: { patience: 1 }
+          },
+          nextPhaseId: 'the_iteration'
+        },
+        {
+          choiceId: 'emotional_core',
+          text: '"What does forgetting feel like? Describe the emotion, not the notes."',
+          pattern: 'helping',
+          outcome: {
+            isSuccess: true,
+            feedback: '"Like reaching for something just out of grasp." The prompt takes shape.',
+            trustChange: 1
+          },
+          nextPhaseId: 'the_iteration'
+        }
+      ]
+    },
+    {
+      phaseId: 'the_iteration',
+      situation: 'Version 12. Close but not right. "It sounds like loss. But Grandma wasn\'t just loss. She was joy first."',
+      choices: [
+        {
+          choiceId: 'add_light',
+          text: '"Start with the joy. Let the forgetting creep in at the edges."',
+          pattern: 'building',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Structure shift. Joy fading to fog. Better.',
+            patternChanges: { building: 1 }
+          },
+          nextPhaseId: 'the_fragment'
+        },
+        {
+          choiceId: 'embrace_imperfection',
+          text: '"Maybe perfection isn\'t the goal. Memory is imperfect by nature."',
+          pattern: 'patience',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Permission to be incomplete. The pressure lifts.',
+            trustChange: 1
+          },
+          nextPhaseId: 'the_fragment'
+        }
+      ]
+    },
+    {
+      phaseId: 'the_fragment',
+      situation: 'Lira plays a few notes on her keyboard. "This fragment. I remember this. It was in the middle somewhere."',
+      timeContext: 'A real memory surfacing through the process.',
+      choices: [
+        {
+          choiceId: 'build_around',
+          text: '"Use that as the anchor. Build the AI generation around your real memory."',
+          pattern: 'building',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Human memory + AI texture. The hybrid works.',
+            trustChange: 2
+          },
+          nextPhaseId: 'the_gift'
+        },
+        {
+          choiceId: 'honor_fragment',
+          text: '"That fragment is enough. Maybe that\'s all she needs to remember."',
+          pattern: 'patience',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Less is more. The fragment becomes the center.',
+            patternChanges: { patience: 1 }
+          },
+          nextPhaseId: 'the_gift'
+        }
+      ]
+    },
+    {
+      phaseId: 'the_gift',
+      situation: 'The piece is ready. Lira\'s hands shake as she sets up speakers in her grandmother\'s room.',
+      choices: [
+        {
+          choiceId: 'stay_with_her',
+          text: '[Stay for the moment. Witness what happens.]',
+          pattern: 'patience',
+          outcome: {
+            isSuccess: true,
+            feedback: 'The music plays. Grandmother\'s eyes shift. Something flickers.',
+            setFlags: ['lira_memory_success']
+          }
+        },
+        {
+          choiceId: 'give_privacy',
+          text: '"This moment is yours. I\'ll wait outside."',
+          pattern: 'helping',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Sacred privacy. The gift is between them.',
+            setFlags: ['lira_memory_success']
+          }
+        }
+      ]
+    }
+  ],
+  successEnding: {
+    text: `Lira emerges an hour later, face streaked with tears but smiling.
+
+"She hummed along. Just for a moment. She remembered something."
+
+The recording device captured it. Grandmother humming a phrase she'd lost years ago.
+
+"It came back," Lira whispers. "Just for a moment, it came back."`,
+    trustBonus: 3,
+    unlockedFlag: 'lira_loyalty_complete'
+  },
+  failureEnding: {
+    text: `The music plays. Grandmother listens. But recognition doesn't come.
+
+Lira cries quietly. "Maybe it's not about her remembering. Maybe it's about me not forgetting."
+
+She saves the file. Plays it sometimes. For herself.`,
+    canRetry: true
+  }
+}
+
+/**
+ * Zara's Loyalty Experience: "The Audit"
+ * Expose algorithmic bias before it harms more people
+ */
+export const ZARA_THE_AUDIT: LoyaltyExperience = {
+  id: 'the_audit',
+  title: 'The Audit',
+  characterId: 'zara',
+  description: 'Help Zara expose algorithmic bias in a healthcare system before it causes more harm.',
+  skills: ['Data Auditing', 'Bias Detection', 'Ethical Analysis'],
+  requirements: {
+    trustMin: LOYALTY_TRUST_THRESHOLD,
+    patternRequirement: { pattern: 'analytical', minLevel: LOYALTY_PATTERN_THRESHOLD },
+    requiredFlags: ['zara_arc_complete']
+  },
+  introduction: `Zara's laptop shows a spreadsheet. Thousands of rows. Hospital triage priority scores.
+
+"There's a pattern," she says, voice flat. "Patients from three zip codes are systematically deprioritized. Same symptoms. Different treatment windows."
+
+She pulls up a map. Low-income neighborhoods, highlighted.
+
+"Last time I found something like this, I was too slow. Three people died." Her jaw tightens. "Not this time."`,
+  phases: [
+    {
+      phaseId: 'the_evidence',
+      situation: 'The correlation is clear. But correlation isn\'t causation. "They\'ll say it\'s coincidence. They always do."',
+      choices: [
+        {
+          choiceId: 'control_variables',
+          text: '"Control for every variable. Age, condition severity, time of admission. Make it undeniable."',
+          pattern: 'analytical',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Rigorous methodology. The pattern survives every filter.',
+            patternChanges: { analytical: 1 }
+          },
+          nextPhaseId: 'the_mechanism'
+        },
+        {
+          choiceId: 'find_mechanism',
+          text: '"Find the mechanism. How does the algorithm KNOW which zip code they\'re from?"',
+          pattern: 'exploring',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Insurance type. Payment history. Proxies for income.',
+            trustChange: 1
+          },
+          nextPhaseId: 'the_mechanism'
+        }
+      ]
+    },
+    {
+      phaseId: 'the_mechanism',
+      situation: 'The algorithm uses "payor mix" as a factor. Insurance type. Perfectly legal. Systematically harmful.',
+      choices: [
+        {
+          choiceId: 'document_impact',
+          text: '"Show the human cost. Delayed treatments. Worse outcomes. Make it real."',
+          pattern: 'helping',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Statistics become stories. Three patients identified who can testify.',
+            trustChange: 2
+          },
+          nextPhaseId: 'the_escalation'
+        },
+        {
+          choiceId: 'legal_angle',
+          text: '"Civil rights law. Disparate impact. They can\'t hide behind \'the algorithm.\'"',
+          pattern: 'analytical',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Legal framework established. This is actionable.',
+            patternChanges: { building: 1 }
+          },
+          nextPhaseId: 'the_escalation'
+        }
+      ]
+    },
+    {
+      phaseId: 'the_escalation',
+      situation: 'Zara\'s manager calls. "The hospital is a major client. Are you sure you want to escalate this?"',
+      timeContext: 'Career pressure.',
+      choices: [
+        {
+          choiceId: 'firm_escalation',
+          text: '"Patients are dying because of this algorithm. I\'m escalating."',
+          pattern: 'building',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Moral clarity. The manager backs down.',
+            trustChange: 1
+          },
+          nextPhaseId: 'the_result'
+        },
+        {
+          choiceId: 'documentation_first',
+          text: '"I\'m sending you the documentation. Read it. Then tell me not to escalate."',
+          pattern: 'patience',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Evidence speaks. The manager goes quiet.',
+            patternChanges: { patience: 1 }
+          },
+          nextPhaseId: 'the_result'
+        }
+      ]
+    },
+    {
+      phaseId: 'the_result',
+      situation: 'Two weeks later. The algorithm is pulled for review. Zara receives an email from hospital administration: "Thank you for your thorough work."',
+      choices: [
+        {
+          choiceId: 'quiet_victory',
+          text: '"You did it. The invisible work mattered."',
+          pattern: 'helping',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Recognition of what she does in spreadsheets, alone, for hours.',
+            setFlags: ['zara_audit_success']
+          }
+        },
+        {
+          choiceId: 'look_forward',
+          text: '"This one is fixed. How many more are out there?"',
+          pattern: 'exploring',
+          outcome: {
+            isSuccess: true,
+            feedback: 'The work continues. But today is a win.',
+            setFlags: ['zara_audit_success']
+          }
+        }
+      ]
+    }
+  ],
+  successEnding: {
+    text: `The algorithm is replaced. New policy: triage cannot use insurance type as a proxy.
+
+Zara stares at the empty inbox. No thank-you notes from patients. They'll never know what almost happened.
+
+"Invisible work," she says. "That's okay. The outcomes are visible. That's what counts."
+
+She opens the next dataset. Another algorithm. Another audit.`,
+    trustBonus: 3,
+    unlockedFlag: 'zara_loyalty_complete'
+  },
+  failureEnding: {
+    text: `The report is buried. "Under review indefinitely."
+
+Zara saves her documentation. Someday, someone will need it.
+
+"They can't hide data forever. I'll wait."`,
+    canRetry: true
+  }
+}
+
 // ═══════════════════════════════════════════════════════════════════════════
 // REGISTRY
 // ═══════════════════════════════════════════════════════════════════════════
@@ -1219,13 +2619,24 @@ But she pulls out her notes. "Next client. Fresh start. I'll do better."`,
  * All loyalty experiences indexed by type
  */
 export const LOYALTY_EXPERIENCES: Record<LoyaltyExperienceType, LoyaltyExperience> = {
+  // Original 7
   'the_demo': MAYA_THE_DEMO,
   'the_outage': DEVON_THE_OUTAGE,
   'the_quiet_hour': SAMUEL_THE_QUIET_HOUR,
   'the_breach': MARCUS_THE_BREACH,
   'the_confrontation': ROHAN_THE_CONFRONTATION,
   'the_first_class': TESS_THE_FIRST_CLASS,
-  'the_crossroads': JORDAN_THE_CROSSROADS
+  'the_crossroads': JORDAN_THE_CROSSROADS,
+  // Extended 9
+  'the_vigil': GRACE_THE_VIGIL,
+  'the_honest_course': ALEX_THE_HONEST_COURSE,
+  'the_inspection': KAI_THE_INSPECTION,
+  'the_launch': YAQUIN_THE_LAUNCH,
+  'the_pattern': ELENA_THE_PATTERN,
+  'the_feral_lab': SILAS_THE_FERAL_LAB,
+  'the_mural': ASHA_THE_MURAL,
+  'the_memory_song': LIRA_THE_MEMORY_SONG,
+  'the_audit': ZARA_THE_AUDIT
 }
 
 /**

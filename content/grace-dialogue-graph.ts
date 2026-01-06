@@ -779,6 +779,30 @@ What would you do?`,
         variation_id: 'moment_setup_v1'
       }
     ],
+    simulation: {
+      type: 'chat_negotiation',
+      title: 'The Moment of Presence',
+      taskDescription: 'Mrs. Williams is crying by the window. She has Alzheimer\'s and may not remember why she\'s upset. Your response will shape whether she feels alone or accompanied.',
+      initialContext: {
+        label: 'Patient Context: Mrs. Williams',
+        content: `PATIENT: Dorothy Williams, 87
+CONDITION: Alzheimer's, mid-stage
+CURRENT STATE: Sitting by window, crying softly
+
+CARE NOTES:
+- Husband passed 40 years ago
+- Sometimes "relives" his death as if it just happened
+- Words often fail her when distressed
+- Responds well to gentle presence, not questions
+
+QUESTION: How do you approach her?
+- Asking "What's wrong?" may frustrate her
+- Distraction dismisses her grief
+- Sometimes presence is the answer`,
+        displayStyle: 'text'
+      },
+      successFeedback: '✓ GRACE: "You sat. You stayed. After a few minutes, she took your hand. That\'s the work. Not fixing. Accompanying."'
+    },
     choices: [
       {
         choiceId: 'moment_ask_wrong',
@@ -1136,6 +1160,336 @@ Go change the world, kid. Or at least... be present in it. That's enough.`,
     tags: ['ending', 'grace_arc', 'interrupt_response']
   },
 
+  // ============= SIMULATION: PATIENT COMFORT =============
+  // A worried family member during a medical crisis - balancing honesty with hope
+
+  {
+    nodeId: 'grace_simulation_intro',
+    speaker: 'Grace',
+    content: [
+      {
+        text: `*She looks at you thoughtfully.*
+
+You want to understand what this work really takes? Let me share something from last week.
+
+Mrs. Rodriguez's daughter, Maria. Twenty-eight years old. Her mother had a stroke three days ago.
+
+*She pulls out her phone, shows you a photo of an older woman smiling.*
+
+Maria's been at the hospital every day. But her mother was just transferred to home care. My care.
+
+When I arrived for my first shift, Maria was pacing the living room. Red eyes. Shaking hands.
+
+*Quieter.*
+
+What do you do with that? Someone who's terrified they're going to lose their mother, and you're the stranger walking into their home?`,
+        emotion: 'teaching',
+        variation_id: 'sim_intro_v1'
+      }
+    ],
+    simulation: {
+      type: 'chat_negotiation',
+      title: 'The Worried Daughter',
+      taskDescription: 'Maria Rodriguez is terrified about her mother\'s condition. She needs information, but more than that, she needs to feel heard. Your approach will determine whether she trusts you with her mother\'s care.',
+      initialContext: {
+        label: 'Situation Context',
+        content: `PATIENT: Rosa Rodriguez, 72
+CONDITION: Post-stroke, day 3, transferred to home care
+FAMILY: Daughter Maria (28), sole caregiver
+
+MARIA'S STATE:
+- Has not slept in 3 days
+- Asking rapid-fire medical questions
+- Checking and rechecking equipment
+- Voice trembling when she speaks
+
+YOUR ROLE: First home health visit
+CHALLENGE: Build trust while being honest about the difficult road ahead`,
+        displayStyle: 'text'
+      },
+      successFeedback: 'GRACE: "You found the balance. Information delivered with care. That\'s the invisible skill."'
+    },
+    choices: [
+      {
+        choiceId: 'sim_intro_medical',
+        text: "Start with the medical facts. She needs information.",
+        nextNodeId: 'grace_simulation_phase_1',
+        pattern: 'analytical',
+        skills: ['communication']
+      },
+      {
+        choiceId: 'sim_intro_acknowledge',
+        text: "Start by acknowledging how hard this must be for her.",
+        nextNodeId: 'grace_simulation_phase_1',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'sim_intro_routine',
+        text: "Jump into the care routine. Action calms anxiety.",
+        nextNodeId: 'grace_simulation_phase_1',
+        pattern: 'building',
+        skills: ['adaptability']
+      }
+    ],
+    tags: ['grace_arc', 'simulation', 'patient_comfort']
+  },
+
+  {
+    nodeId: 'grace_simulation_phase_1',
+    speaker: 'Grace',
+    content: [
+      {
+        text: `*Grace nods, considering your approach.*
+
+Okay. Let's say you chose to start there. Maria's still pacing, but she stops. Looks at you.
+
+*Imitates Maria's voice, slightly higher, strained.*
+
+"The hospital said she might not recover fully. What does that mean? Will she walk again? Will she know who I am? The doctor talked so fast and I couldn't—"
+
+*She breaks off, takes a breath.*
+
+She's spiraling. Three questions at once. Each one bigger than the last.
+
+*Looks at you.*
+
+How do you handle this?`,
+        emotion: 'testing',
+        variation_id: 'phase1_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'phase1_answer_all',
+        text: "Answer each question honestly, one at a time.",
+        nextNodeId: 'grace_simulation_phase_2',
+        pattern: 'analytical',
+        skills: ['communication']
+      },
+      {
+        choiceId: 'phase1_slow_down',
+        text: "Gently slow her down. 'Let's sit. I'm here. We'll take this one step at a time.'",
+        nextNodeId: 'grace_simulation_phase_2',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'phase1_reassure',
+        text: "Reassure her that everything will be okay.",
+        nextNodeId: 'grace_simulation_fail',
+        pattern: 'helping',
+        skills: ['communication']
+      },
+      {
+        choiceId: 'phase1_deflect',
+        text: "Tell her to ask the doctor those questions.",
+        nextNodeId: 'grace_simulation_fail',
+        pattern: 'exploring',
+        skills: ['adaptability']
+      }
+    ],
+    tags: ['grace_arc', 'simulation', 'patient_comfort']
+  },
+
+  {
+    nodeId: 'grace_simulation_phase_2',
+    speaker: 'Grace',
+    content: [
+      {
+        text: `*Grace's expression softens.*
+
+Better. You didn't give false hope. You didn't dodge. You met her where she was.
+
+*Continues the scenario.*
+
+Maria sits. Her hands are still shaking, but she's listening now.
+
+"The doctors say there's a long road ahead. That recovery could take months or... or longer. I don't know how to do this. I work full time. I can't afford to quit. But I can't leave her alone."
+
+*Pause.*
+
+She's not asking a medical question anymore. She's asking you to tell her it's possible to hold all of this together.
+
+*Looks at you directly.*
+
+What do you say?`,
+        emotion: 'serious',
+        variation_id: 'phase2_v1',
+        interrupt: {
+          duration: 4000,
+          type: 'comfort',
+          action: 'Reach out and gently touch her arm',
+          targetNodeId: 'grace_interrupt_comfort',
+          consequence: {
+            characterId: 'grace',
+            trustChange: 1
+          }
+        }
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'phase2_practical',
+        text: "'Let me tell you about the support systems available. Respite care, community resources, flexible scheduling.'",
+        nextNodeId: 'grace_simulation_success',
+        pattern: 'building',
+        skills: ['problemSolving'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'phase2_honest',
+        text: "'It's hard. I won't lie. But you're not alone. I'm here. And we'll figure this out together, day by day.'",
+        nextNodeId: 'grace_simulation_success',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'phase2_boundaries',
+        text: "'That's not really my area. I'm here for the medical care, not the life advice.'",
+        nextNodeId: 'grace_simulation_fail',
+        pattern: 'analytical',
+        skills: ['communication']
+      },
+      {
+        choiceId: 'phase2_overcommit',
+        text: "'Don't worry! I'll take care of everything. You just focus on work.'",
+        nextNodeId: 'grace_simulation_fail',
+        pattern: 'patience',
+        skills: ['adaptability']
+      }
+    ],
+    tags: ['grace_arc', 'simulation', 'patient_comfort']
+  },
+
+  {
+    nodeId: 'grace_simulation_success',
+    speaker: 'Grace',
+    content: [
+      {
+        text: `*Grace exhales. A real smile.*
+
+That's it. That's exactly it.
+
+*Sits back.*
+
+You didn't promise the impossible. You didn't dismiss her fears. You met her in the hard truth AND gave her something to hold onto.
+
+*Quieter.*
+
+Maria cried after that. Not the panicked crying from before. Relief. Someone finally saw how heavy this was.
+
+*Looks at her hands.*
+
+Her mother's recovery took eight months. Maria took a leave of absence from work—we helped her apply for FMLA. Her mother walks with a cane now. Knows her daughter's name.
+
+*Meets your eyes.*
+
+But here's the thing: that moment in the living room? That's when the real healing started. Not with the medicine. With being seen.
+
+That's the invisible skill. Holding space for fear without drowning in it.`,
+        emotion: 'proud',
+        interaction: 'bloom',
+        variation_id: 'success_v1'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'grace',
+        addKnowledgeFlags: ['grace_simulation_complete']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'success_to_vision',
+        text: "You make it look natural. But it's not, is it?",
+        nextNodeId: 'grace_vision',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'success_learn_more',
+        text: "What happens when you can't find that balance?",
+        nextNodeId: 'grace_the_hard',
+        pattern: 'exploring',
+        skills: ['curiosity']
+      }
+    ],
+    tags: ['grace_arc', 'simulation', 'success']
+  },
+
+  {
+    nodeId: 'grace_simulation_fail',
+    speaker: 'Grace',
+    content: [
+      {
+        text: `*Grace shakes her head slowly.*
+
+I understand the impulse. But...
+
+*Pause.*
+
+When you make promises you can't keep, trust breaks. When you deflect, people feel abandoned. When you set walls too high, you become just another stranger in their crisis.
+
+*Quieter.*
+
+Maria? With the wrong approach, she would have called the agency the next day. Asked for a different aide. Or worse—stopped asking for help at all.
+
+*Looks at you.*
+
+I've seen both. The families who feel supported enough to let you in. And the ones who build walls because someone before you made them feel like a burden.
+
+*Sighs.*
+
+This work is about more than tasks. It's about trust. And trust, once broken, is hard to rebuild.
+
+Want to try again?`,
+        emotion: 'disappointed_gentle',
+        variation_id: 'fail_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'fail_retry',
+        text: "Yes. Show me what I missed.",
+        nextNodeId: 'grace_simulation_intro',
+        pattern: 'patience',
+        skills: ['learningAgility']
+      },
+      {
+        choiceId: 'fail_reflect',
+        text: "I see it now. The balance between honesty and hope.",
+        nextNodeId: 'grace_invisible_skill',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['grace_arc', 'simulation', 'failure']
+  },
+
   // ============= VULNERABILITY ARC (Trust ≥ 6) =============
   // "The night she almost quit" - when invisible labor became unbearable
   {
@@ -1349,7 +1703,8 @@ Take care of yourself. And if you ever need someone to just... sit with you? You
 ]
 
 export const graceEntryPoints = {
-  INTRODUCTION: 'grace_introduction'
+  INTRODUCTION: 'grace_introduction',
+  SIMULATION: 'grace_simulation_intro'
 } as const
 
 export const graceDialogueGraph: DialogueGraph = {

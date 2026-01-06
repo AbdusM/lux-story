@@ -593,6 +593,23 @@ Not just survive. Actually matter again.`,
         useChatPacing: true
       }
     ],
+    simulation: {
+      type: 'chat_negotiation',
+      title: 'Pitch Practice: The Skeptical Investor',
+      taskDescription: 'An old friend from your corporate days is considering investing. But she thinks vinyl is dead. Convince her that The B-Side 2.0 is about community, not product.',
+      initialContext: {
+        label: 'Text Messages: Rachel (Former Colleague)',
+        content: `RACHEL: Got your pitch deck. I like you, Tess. But vinyl? In 2024?
+
+RACHEL: The margins are terrible. Streaming owns the market.
+
+RACHEL: What am I missing?
+
+[Your response will shape whether she invests...]`,
+        displayStyle: 'text'
+      },
+      successFeedback: '✓ RACHEL: "Community hub with vinyl as the hook... that\'s different. Let\'s talk numbers over coffee."'
+    },
     requiredState: {
       trust: { min: 1 }
     },
@@ -1196,6 +1213,600 @@ And see Samuel. He'll want to know how this went.`,
     tags: ['reciprocity', 'tess_arc']
   },
 
+  // ============= CLASSROOM CRISIS SIMULATION =============
+  // Tess's simulation: Managing a student conflict that escalates
+  {
+    nodeId: 'tess_simulation_intro',
+    speaker: 'Tess',
+    content: [
+      {
+        text: `*She sets down a worn lesson planner.*
+
+Before I ran the shop, I taught. Middle school. Music and English.
+
+*Her eyes go distant.*
+
+You want to know what running a small business taught me about people? Nothing the classroom hadn't already.
+
+*Pulls out an old photo.*
+
+There was this day. Two students. A conflict that started small. I had thirty seconds to decide how to handle it.
+
+Want to walk through it? See how you'd have handled it?`,
+        emotion: 'reflective',
+        variation_id: 'sim_intro_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'tess_sim_accept',
+        text: "Show me. I want to understand.",
+        nextNodeId: 'tess_simulation_phase_1',
+        pattern: 'exploring',
+        skills: ['emotionalIntelligence', 'communication'],
+        consequence: {
+          characterId: 'tess',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'tess_sim_why_matters',
+        text: "Why does this moment still stay with you?",
+        nextNodeId: 'tess_simulation_context',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence']
+      }
+    ],
+    tags: ['simulation', 'tess_arc']
+  },
+
+  {
+    nodeId: 'tess_simulation_context',
+    speaker: 'Tess',
+    content: [
+      {
+        text: `*She traces the edge of the photo.*
+
+Because I got it wrong the first time. Then I got it right.
+
+The difference taught me everything I know about running this place. About people. About what they really need when things get heated.
+
+*Sets the photo down.*
+
+Marcus - one of the kids - he ended up becoming a teacher himself. Told me years later that day changed how he saw conflict.
+
+*Quiet.*
+
+We shape people in ways we never see. Until sometimes, we do.`,
+        emotion: 'moved',
+        variation_id: 'context_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'tess_sim_ready',
+        text: "I'm ready. Show me what happened.",
+        nextNodeId: 'tess_simulation_phase_1',
+        pattern: 'exploring',
+        skills: ['communication']
+      }
+    ],
+    tags: ['simulation', 'tess_arc', 'backstory']
+  },
+
+  {
+    nodeId: 'tess_simulation_phase_1',
+    speaker: 'Tess',
+    content: [
+      {
+        text: `*The scene shifts. A classroom. Twenty-five students. The hum of pre-class chaos.*
+
+Maya and Jordan. Both smart. Both proud. They're arguing over a group project.
+
+*Maya's voice rising.*
+
+"You didn't do ANY of the work! And now you want credit?"
+
+*Jordan, defensive.*
+
+"I was dealing with stuff at home! You don't know what I'm going through!"
+
+*Maya, louder.*
+
+"Everyone's going through something! That doesn't mean the rest of us carry you!"
+
+*The class is watching now. The tension is electric.*
+
+What do you do?`,
+        emotion: 'tense',
+        variation_id: 'phase1_v1',
+        useChatPacing: true
+      }
+    ],
+    simulation: {
+      type: 'chat_negotiation',
+      title: 'The Escalating Conflict',
+      taskDescription: 'Two students are in a public confrontation about fairness and contribution. The class is watching. Your response will set the tone for how conflict is handled.',
+      initialContext: {
+        label: 'Classroom Situation',
+        content: `Maya: Frustrated, feels taken advantage of, publicly calling out Jordan
+Jordan: Defensive, dealing with undisclosed home issues, feeling attacked
+Class: 25 witnesses, tension rising, waiting for adult intervention
+Stakes: Trust, fairness, emotional safety for both students`,
+        displayStyle: 'text'
+      },
+      successFeedback: 'Both students feel heard. The class learns that conflict can be resolved with dignity.'
+    },
+    choices: [
+      {
+        choiceId: 'tess_p1_authority',
+        text: "Stop. Both of you, outside. Now. We're not doing this in front of everyone.",
+        nextNodeId: 'tess_simulation_phase_2_authority',
+        pattern: 'building',
+        skills: ['leadership']
+      },
+      {
+        choiceId: 'tess_p1_empathy',
+        text: "Maya, I hear you're frustrated. Jordan, it sounds like something's going on. Let's pause and breathe.",
+        nextNodeId: 'tess_simulation_phase_2_empathy',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication']
+      },
+      {
+        choiceId: 'tess_p1_analyze',
+        text: "Hold on. What's the actual problem here? Is this about the project, or something else?",
+        nextNodeId: 'tess_simulation_phase_2_analyze',
+        pattern: 'analytical',
+        skills: ['criticalThinking']
+      },
+      {
+        choiceId: 'tess_p1_wait',
+        text: "[Wait. Let them get it out. Sometimes people need to be heard before they can hear.]",
+        nextNodeId: 'tess_simulation_phase_2_patience',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence']
+      }
+    ],
+    tags: ['simulation', 'tess_arc', 'decision_point']
+  },
+
+  // Phase 2 branches based on Phase 1 choice
+  {
+    nodeId: 'tess_simulation_phase_2_authority',
+    speaker: 'Tess',
+    content: [
+      {
+        text: `*You gesture firmly to the door.*
+
+Both students hesitate. The class watches.
+
+*Maya crosses her arms.*
+
+"Fine. But this isn't over."
+
+*Jordan follows, head down.*
+
+*Outside, in the hallway, the dynamic shifts. No audience. But both are still defensive.*
+
+*Maya, arms still crossed.*
+
+"I'm not apologizing. I did the work."
+
+*Jordan, quieter now.*
+
+"I didn't ask you to."
+
+What's your next move?`,
+        emotion: 'controlled',
+        variation_id: 'p2_authority_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'tess_p2a_separate',
+        text: "I'm going to talk to each of you separately. Maya, wait here. Jordan, come with me.",
+        nextNodeId: 'tess_simulation_success',
+        pattern: 'analytical',
+        skills: ['leadership', 'communication'],
+        consequence: {
+          characterId: 'tess',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'tess_p2a_force_dialogue',
+        text: "You're both going to stand here until you actually hear each other. Maya, what do you need Jordan to understand?",
+        nextNodeId: 'tess_simulation_fail',
+        pattern: 'building',
+        skills: ['leadership']
+      }
+    ],
+    tags: ['simulation', 'tess_arc']
+  },
+
+  {
+    nodeId: 'tess_simulation_phase_2_empathy',
+    speaker: 'Tess',
+    content: [
+      {
+        text: `*Your calm tone cuts through the tension.*
+
+Maya's hands unclench slightly. Jordan's shoulders drop an inch.
+
+*Maya, still frustrated but calmer.*
+
+"I just... I worked so hard. And it feels like no one cares."
+
+*Jordan, barely audible.*
+
+"I do care. I just... couldn't."
+
+*The class is still watching, but the energy has shifted. This isn't entertainment anymore. It's something real.*
+
+*A student in the back whispers.*
+
+"This is heavy."
+
+How do you guide this forward?`,
+        emotion: 'tender',
+        variation_id: 'p2_empathy_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'tess_p2e_private',
+        text: "Thank you both for being honest. Let's finish this conversation privately. Class, open your notebooks.",
+        nextNodeId: 'tess_simulation_success',
+        pattern: 'patience',
+        skills: ['leadership', 'emotionalIntelligence'],
+        consequence: {
+          characterId: 'tess',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'tess_p2e_class_moment',
+        text: "This is real. And the class should see what happens next. Jordan, would you be willing to share what's been going on?",
+        nextNodeId: 'tess_simulation_fail',
+        pattern: 'exploring',
+        skills: ['communication']
+      }
+    ],
+    tags: ['simulation', 'tess_arc']
+  },
+
+  {
+    nodeId: 'tess_simulation_phase_2_analyze',
+    speaker: 'Tess',
+    content: [
+      {
+        text: `*Your question lands like a pause button.*
+
+Both students blink. The momentum breaks.
+
+*Maya, caught off guard.*
+
+"The project! Obviously!"
+
+*You wait.*
+
+*Maya, slower.*
+
+"...Okay, maybe it's not just the project. I'm tired of being the one who always has to care."
+
+*Jordan, surprised.*
+
+"I didn't know you felt like that."
+
+*The class leans in. Something has shifted.*
+
+Where do you take this?`,
+        emotion: 'curious',
+        variation_id: 'p2_analyze_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'tess_p2n_deeper',
+        text: "Maya, that sounds exhausting. Jordan, what's making it hard to contribute right now?",
+        nextNodeId: 'tess_simulation_success',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication'],
+        consequence: {
+          characterId: 'tess',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'tess_p2n_solve',
+        text: "Good. Now we know the real issue. Let's fix the project division right now.",
+        nextNodeId: 'tess_simulation_fail',
+        pattern: 'building',
+        skills: ['problemSolving']
+      }
+    ],
+    tags: ['simulation', 'tess_arc']
+  },
+
+  {
+    nodeId: 'tess_simulation_phase_2_patience',
+    speaker: 'Tess',
+    content: [
+      {
+        text: `*You don't intervene. The room holds its breath.*
+
+*Maya, expecting you to stop it, looks confused when you don't.*
+
+"Aren't you going to... do something?"
+
+*You meet her eyes calmly.*
+
+*Maya, deflating.*
+
+"...I'm just so tired. I always have to be the one who cares."
+
+*Jordan, voice cracking.*
+
+"I care too. I just... things are really hard at home right now."
+
+*The anger drains from Maya's face.*
+
+*Quiet.*
+
+"...I didn't know."
+
+Now what?`,
+        emotion: 'raw',
+        variation_id: 'p2_patience_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'tess_p2p_bridge',
+        text: "You're both carrying more than you should have to. Let's figure this out together - privately.",
+        nextNodeId: 'tess_simulation_success',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'leadership'],
+        consequence: {
+          characterId: 'tess',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'tess_p2p_public_resolution',
+        text: "The class should see how this resolves. Jordan, would you feel comfortable sharing more?",
+        nextNodeId: 'tess_simulation_fail',
+        pattern: 'exploring',
+        skills: ['communication']
+      }
+    ],
+    tags: ['simulation', 'tess_arc']
+  },
+
+  // Success outcome
+  {
+    nodeId: 'tess_simulation_success',
+    speaker: 'Tess',
+    content: [
+      {
+        text: `*The scene fades. Tess nods slowly.*
+
+That's what I should have done. What I eventually learned to do.
+
+*She picks up the photo again.*
+
+Maya became a social worker. Jordan's a teacher now - teaches conflict resolution to middle schoolers.
+
+*A rare, warm smile.*
+
+You protected their dignity. Gave them space to be human without an audience judging them.
+
+*Sets the photo down.*
+
+That's what I try to do here. At the shop. When artists are struggling. When customers are hurting.
+
+People need to be seen. But they also need the grace of privacy when they're falling apart.
+
+*Looks at you.*
+
+You understand that. Not everyone does.`,
+        emotion: 'proud',
+        interaction: 'bloom',
+        variation_id: 'success_v1',
+        useChatPacing: true
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'tess',
+        addKnowledgeFlags: ['tess_simulation_complete', 'tess_teaching_past']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'tess_success_teaching',
+        text: "You were a good teacher. You still are.",
+        nextNodeId: 'tess_simulation_reflection',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'tess',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'tess_success_privacy',
+        text: "Privacy and dignity. That's what the shop is really about.",
+        nextNodeId: 'tess_simulation_reflection',
+        pattern: 'analytical',
+        skills: ['communication'],
+        consequence: {
+          characterId: 'tess',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['simulation', 'tess_arc', 'success']
+  },
+
+  // Failure outcome
+  {
+    nodeId: 'tess_simulation_fail',
+    speaker: 'Tess',
+    content: [
+      {
+        text: `*The scene fades. Tess shakes her head slowly.*
+
+That's what I did. The first time.
+
+*She looks at the photo with regret.*
+
+I pushed too hard. Made it public when it needed to be private. Jordan shut down completely. Didn't talk for a week.
+
+*Quiet.*
+
+Maya felt guilty for months. Said she'd ruined Jordan's life by calling them out.
+
+*Sets the photo down.*
+
+People need to be seen. But not dissected in front of an audience. There's a difference between transparency and exposure.
+
+*Looks at you.*
+
+I learned that the hard way. Cost me a relationship with two students I really cared about.
+
+*Pause.*
+
+Want to try again? See a different path?`,
+        emotion: 'regretful',
+        variation_id: 'fail_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'tess_fail_retry',
+        text: "Yes. Show me how to do it right.",
+        nextNodeId: 'tess_simulation_phase_1',
+        pattern: 'exploring',
+        skills: ['adaptability']
+      },
+      {
+        choiceId: 'tess_fail_reflect',
+        text: "What did you learn from getting it wrong?",
+        nextNodeId: 'tess_simulation_fail_reflection',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'tess',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['simulation', 'tess_arc', 'failure']
+  },
+
+  {
+    nodeId: 'tess_simulation_fail_reflection',
+    speaker: 'Tess',
+    content: [
+      {
+        text: `*She's quiet for a moment.*
+
+I learned that being right isn't the same as being helpful.
+
+*Looks at her hands.*
+
+I wanted to fix it. Publicly. Show the class that conflict could be resolved. That I was a good teacher.
+
+*Shakes her head.*
+
+But it wasn't about me. It wasn't about the class. It was about two kids who were hurting.
+
+*Meets your eyes.*
+
+I made their pain educational. That's not teaching. That's exploitation.
+
+*Quieter.*
+
+After that, I changed. Every time I wanted to make something a "learning moment," I asked: whose moment is this? If it's theirs, step back. Let them own it.
+
+*Small smile.*
+
+That's why the shop works. It's not my moment. It's theirs. I just hold the space.`,
+        emotion: 'wise',
+        variation_id: 'fail_reflect_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'tess_fail_to_sim_reflection',
+        text: "That's wisdom earned through failure. Thank you for sharing it.",
+        nextNodeId: 'tess_simulation_reflection',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'tess',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['simulation', 'tess_arc', 'wisdom']
+  },
+
+  {
+    nodeId: 'tess_simulation_reflection',
+    speaker: 'Tess',
+    content: [
+      {
+        text: `*She puts the photo away.*
+
+You know what's funny? Running a record shop is exactly like teaching.
+
+People come in confused. Looking for something they can't name. And you have thirty seconds to decide: do I tell them what to listen to? Or do I help them discover it themselves?
+
+*Gestures around the shop.*
+
+Every customer is Maya and Jordan. Carrying something. Looking for space to process it.
+
+*Meets your eyes.*
+
+And every day, I get to choose: authority or empathy. Analysis or patience. Fixing or witnessing.
+
+*Small laugh.*
+
+Most days, I still get it wrong. But I know what I'm aiming for now.
+
+That's something.`,
+        emotion: 'content',
+        variation_id: 'reflection_v1',
+        useChatPacing: true
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'tess',
+        addKnowledgeFlags: ['tess_teaching_wisdom']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'tess_sim_to_main',
+        text: "[Continue]",
+        nextNodeId: 'tess_the_numbers',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['simulation', 'tess_arc', 'conclusion']
+  },
+
   // ============= PHASE 2: THE PIVOT =============
   {
     nodeId: 'tess_phase2_entry',
@@ -1595,7 +2206,8 @@ Go on. Samuel's waiting. Tell him The B-Side is still standing.`,
 
 export const tessEntryPoints = {
   INTRODUCTION: 'tess_introduction',
-  PHASE2_ENTRY: 'tess_phase2_entry'
+  PHASE2_ENTRY: 'tess_phase2_entry',
+  SIMULATION: 'tess_simulation_intro'
 } as const
 
 export const tessDialogueGraph: DialogueGraph = {

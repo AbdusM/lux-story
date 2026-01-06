@@ -512,6 +512,32 @@ I override and flood them? Rot the roots. Do nothing? Dried out by morning.`,
         useChatPacing: true
       }
     ],
+    simulation: {
+      type: 'dashboard_triage',
+      title: 'Ground Truth Diagnostic',
+      taskDescription: 'The dashboard says everything is optimal, but the plants are dying. Something is lying. Find the discrepancy between sensor data and physical reality.',
+      initialContext: {
+        label: 'FarmOS Dashboard - Zone 4 (Basil)',
+        content: `SENSOR ARRAY STATUS: ALL GREEN
+================================
+Humidity Sensor [Z4-H01]:  65% (OPTIMAL)
+Soil Moisture [Z4-SM01]:   42% (OPTIMAL)
+Flow Rate [Z4-FL01]:       2.5 L/hr (ACTIVE)
+Valve Position [Z4-V01]:   OPEN
+pH Level [Z4-PH01]:        6.4 (OPTIMAL)
+Temperature [Z4-T01]:      72°F (OPTIMAL)
+
+VISUAL OBSERVATION (manual):
+- Leaves curling inward
+- Soil surface appears dry/cracked
+- Plants wilting despite "optimal" moisture
+
+QUESTION: If sensors are correct, why are plants dying?
+HINT: Sensors measure WHERE they're placed...`,
+        displayStyle: 'code'
+      },
+      successFeedback: '✓ ROOT CAUSE: Sensor placement error. Moisture sensor at bed edge (wet). Bed center is dry. The map is not the territory.'
+    },
     requiredState: {
       trust: { min: 1 }
     },
