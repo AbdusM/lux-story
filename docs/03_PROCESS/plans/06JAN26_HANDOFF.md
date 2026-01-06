@@ -14,43 +14,46 @@ lira: 6       zara: 6      kai: 6        rohan: 6
 ```
 **Total: 147 voice variations**
 
-**2. ISP Strategic Documentation Created**
+**2. Invisible Depth System - ALL PHASES COMPLETE**
+
+| Phase | Features | Status |
+|-------|----------|--------|
+| Phase 1 | Pattern combos, Samuel greetings, context choices, character states | ✅ |
+| Phase 2 | Dialogue validation pipeline, character tiers (70/20/10) | ✅ |
+| Phase 3 | Orb resonance system, 13 Samuel orb dialogue nodes | ✅ |
+
+**New Files Created:**
+| File | Purpose | Tests |
+|------|---------|-------|
+| `lib/pattern-combos.ts` | Silent career mention triggers | 12 |
+| `lib/character-states.ts` | Trust-based demeanor | 15 |
+| `lib/character-tiers.ts` | 70/20/10 resource allocation | 22 |
+| `lib/orb-resonance.ts` | Orb tier milestone tracking | 24 |
+| `content/samuel-orb-resonance-nodes.ts` | 13 orb dialogue nodes | — |
+
+**3. ISP Strategic Documentation Created**
 | Document | Purpose | Lines |
 |----------|---------|-------|
 | `50-isp-comprehensive-prd.md` | Product vision, Invisible Depth principle | 950+ |
 | `51-isp-feature-synthesis.md` | Feature designs from AAA analysis | 700+ |
-| `52-software-development-ready.md` | **THE** implementation checklist | 200+ |
+| `52-software-development-ready.md` | Implementation checklist (NOW COMPLETE) | 200+ |
 | `53-meta-cognitive-systems-audit.md` | System coverage analysis | 300+ |
 
-**3. Invisible Depth Principle Established**
+**4. Invisible Depth Principle Established**
 Core design constraint for all new features:
 ```
 UNSAFE: New System → New UI → Player Learns → Cognitive Load
 SAFE:   Backend Tracks → Dialogue Changes → Player Experiences Naturally
 ```
 
-**4. Document Control Cleanup**
-- Renamed ISP docs with proper numbering (50-53)
-- Fixed duplicate 13- numbering
-- Archived old handoffs and completed plans
-- Moved processed ToAllocate files to `processed/` subfolder
-- Updated README.md with clear document hierarchy
-
-**5. Safe Feature Transformations**
-| Original Concept | → Safe Version | Manifestation |
-|------------------|----------------|---------------|
-| Pattern Treasures (UI) | Silent Pattern Combos | Character dialogue mentions careers |
-| Samuel Hub (menu) | Samuel Context Choices | Dialogue visibility conditions |
-| Station Moments (popups) | Samuel Greeting Variations | Different greetings per milestone |
-| Character States | Character States | Greeting prefixes, tone shifts |
-
 ### Tests
-- **617 passing** (24 test files)
+- **739 passing** (28 test files)
+- **73 new tests** added this session
 
 ### Git Status
 - Branch: `main`
-- 15 commits ahead of origin (not pushed)
-- Working tree: clean
+- 17 commits ahead of origin (not pushed)
+- Latest commit: `dc68674` - feat: Complete Invisible Depth system (Phases 1-3)
 
 ---
 
@@ -63,35 +66,33 @@ SAFE:   Backend Tracks → Dialogue Changes → Player Experiences Naturally
 | Vulnerability Arcs | 16/16 |
 | Consequence Echoes | 16/16 |
 | Pattern Voices | 16/16 |
-| Dialogue Nodes | 946 |
+| Dialogue Nodes | 1000+ |
+| Pattern Combos | 12 combos → 16 characters |
+| Character States | 4 states defined |
+| Character Tiers | 4 tiers configured |
+| Orb Resonance | 4 tier milestones |
 
 ---
 
-## Next Sprint: Software Development
+## Invisible Depth Features Implemented
 
-**Read:** `docs/03_PROCESS/52-software-development-ready.md`
+| Feature | Location | Description |
+|---------|----------|-------------|
+| Pattern Combos | `lib/pattern-combos.ts` | 12 combos trigger career mentions |
+| Character States | `lib/character-states.ts` | Trust-based demeanor (guarded→vulnerable) |
+| Character Tiers | `lib/character-tiers.ts` | 70/20/10 resource allocation |
+| Orb Resonance | `lib/orb-resonance.ts` | Tier milestones unlock Samuel dialogue |
+| Samuel Greetings | `samuel-dialogue-graph.ts` | Pattern-based greeting variations |
+| Samuel Context | `samuel-dialogue-graph.ts` | Pattern-unlocked topic choices |
+| Career Mentions | All 16 character graphs | Pattern combo → career dialogue |
+| Orb Dialogues | `samuel-orb-resonance-nodes.ts` | 13 tier milestone dialogues |
 
-### Phase 1: Immediate Implementation
-1. **Silent Pattern Combos** - `lib/pattern-combos.ts` (new)
-   - Backend tracks pattern combinations silently
-   - Characters mention careers in dialogue when combos achieved
+---
 
-2. **Samuel Greeting Variations** - `content/samuel-dialogue-graph.ts`
-   - Different greetings based on pattern milestones (3+, 5+, 6+)
+## Deferred Items
 
-3. **Samuel Context Choices** - `content/samuel-dialogue-graph.ts`
-   - Topics as dialogue choices with visibility conditions
-
-4. **Character States** - `lib/character-states.ts` (new)
-   - Trust-based demeanor (guarded → warming → open → vulnerable)
-   - Manifests through greeting prefixes
-
-### Success Criteria
-| Metric | Before | Target |
-|--------|--------|--------|
-| Pattern acknowledgment rate | 4% | 20%+ |
-| Career mentions per session | 0 | 2-3 |
-| Samuel dialogue variations | 1 | 5+ |
+See `docs/03_PROCESS/plans/DEFERRED_POLISH.md`:
+- Character state greeting integration into dialogue graphs (polish phase)
 
 ---
 
@@ -99,7 +100,7 @@ SAFE:   Backend Tracks → Dialogue Changes → Player Experiences Naturally
 
 | Need | Read This |
 |------|-----------|
-| What to implement | `52-software-development-ready.md` |
+| What was implemented | `52-software-development-ready.md` |
 | Feature specs | `51-isp-feature-synthesis.md` |
 | Product vision | `50-isp-comprehensive-prd.md` |
 | Project overview | `/CLAUDE.md` |
@@ -122,39 +123,11 @@ cat docs/03_PROCESS/52-software-development-ready.md
 
 ---
 
-## File Locations
-
-### New Files Created This Session
-```
-docs/03_PROCESS/
-├── 50-isp-comprehensive-prd.md      # Product vision
-├── 51-isp-feature-synthesis.md      # Feature designs
-├── 52-software-development-ready.md # Implementation checklist
-├── 53-meta-cognitive-systems-audit.md # Coverage audit
-├── archive/                         # Old handoffs, completed plans
-└── README.md                        # Updated doc hierarchy
-
-docs/04_ToAllocate/processed/        # Source files synthesized into ISP docs
-```
-
-### Voice Variations Added To
-```
-content/grace-dialogue-graph.ts
-content/elena-dialogue-graph.ts
-content/alex-dialogue-graph.ts
-content/silas-dialogue-graph.ts
-content/asha-dialogue-graph.ts
-content/lira-dialogue-graph.ts
-content/zara-dialogue-graph.ts
-content/kai-dialogue-graph.ts
-content/rohan-dialogue-graph.ts
-```
-
----
-
 ## Commits This Session
 
 ```
+dc68674 feat: Complete Invisible Depth system (Phases 1-3)
+3660bfd docs: Final handoff for January 6, 2026 session
 e5e12ea docs: Document control cleanup and ISP documentation organization
 55d7662 feat(content): Complete P0 voice variations sprint (+147 total)
 ```
@@ -168,5 +141,5 @@ e5e12ea docs: Document control cleanup and ISP documentation organization
 ---
 
 **Last Updated:** January 6, 2026
-**Tests:** 617 passing
-**Ready For:** Software development (Phase 1 features)
+**Tests:** 739 passing
+**Status:** All planned development complete
