@@ -53,6 +53,33 @@ const INTERRUPT_STYLES = {
     progressColor: 'bg-blue-400',
     glowColor: 'shadow-blue-500/30',
     label: 'Wait'
+  },
+  comfort: {
+    icon: Heart,
+    bgColor: 'bg-rose-500/20',
+    borderColor: 'border-rose-500/50',
+    textColor: 'text-rose-200',
+    progressColor: 'bg-rose-400',
+    glowColor: 'shadow-rose-500/30',
+    label: 'Comfort'
+  },
+  grounding: {
+    icon: Heart,
+    bgColor: 'bg-emerald-500/20',
+    borderColor: 'border-emerald-500/50',
+    textColor: 'text-emerald-200',
+    progressColor: 'bg-emerald-400',
+    glowColor: 'shadow-emerald-500/30',
+    label: 'Ground'
+  },
+  encouragement: {
+    icon: Heart,
+    bgColor: 'bg-violet-500/20',
+    borderColor: 'border-violet-500/50',
+    textColor: 'text-violet-200',
+    progressColor: 'bg-violet-400',
+    glowColor: 'shadow-violet-500/30',
+    label: 'Encourage'
   }
 }
 

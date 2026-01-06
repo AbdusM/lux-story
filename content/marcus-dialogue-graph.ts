@@ -8,7 +8,18 @@ const nodes: DialogueNode[] = [
       text: "My capacity is exceeded. One user becomes ten. Ten becomes a hundred. Every single unit requires a personal welcome, a troubleshoot, a follow-up. I have not entered sleep mode in three cycles.",
       emotion: 'exhausted',
       microAction: 'He rubs his temples, surrounded by buzzing message alerts.',
-      variation_id: 'default'
+      variation_id: 'default',
+      // E2-031: Interrupt opportunity when Marcus shows exhaustion
+      interrupt: {
+        duration: 3000,
+        type: 'silence',
+        action: 'Pause. Let him catch his breath.',
+        targetNodeId: 'marcus_interrupt_acknowledged',
+        consequence: {
+          characterId: 'marcus',
+          trustChange: 1
+        }
+      }
     }],
     choices: [
       {
@@ -30,6 +41,30 @@ const nodes: DialogueNode[] = [
       {
         characterId: 'marcus',
         addKnowledgeFlags: ['met_marcus']
+      }
+    ]
+  },
+  {
+    nodeId: 'marcus_interrupt_acknowledged',
+    speaker: 'Marcus',
+    content: [{
+      text: "You... noticed. Most would have pushed for answers. I appreciate the space.",
+      emotion: 'grateful',
+      microAction: 'He takes a deep breath, some tension leaving his shoulders.',
+      variation_id: 'default'
+    }],
+    choices: [
+      {
+        choiceId: 'offer_help',
+        text: "When you're ready, let's find a better way to handle this load.",
+        nextNodeId: 'marcus_automation_lesson',
+        pattern: 'helping'
+      },
+      {
+        choiceId: 'acknowledge_struggle',
+        text: "The station asks a lot of its people. That's worth remembering.",
+        nextNodeId: 'marcus_automation_lesson',
+        pattern: 'patience'
       }
     ]
   },
@@ -261,6 +296,78 @@ WARNING: Response time > 48h`,
       variation_id: 'hub_return_v1'
     }],
     choices: [] // End of arc - Engine returns to Hub or Loop
+  },
+  // ============= E2-063: MARCUS'S VULNERABILITY ARC =============
+  // "The breach he couldn't prevent"
+  {
+    nodeId: 'marcus_vulnerability_arc',
+    speaker: 'Marcus',
+    content: [{
+      text: "There is something I do not speak of. The incident that brought me to this station.\n\nChildren's Hospital. A ransomware attack. I was lead security. I *saw* the phishing attempt three days before. Flagged it. Management said the patch could wait until after the quarterly audit.\n\n*His voice drops.*\n\nLife support systems. Eighteen hours offline. Three children... did not survive the delay.\n\nI could not prevent what I could not authorize. The breach was not technical. It was bureaucratic.",
+      emotion: 'haunted',
+      microAction: 'His hands clench, then slowly release.',
+      variation_id: 'vulnerability_v1',
+      richEffectContext: 'error'
+    }],
+    requiredState: {
+      trust: { min: 6 }
+    },
+    onEnter: [
+      {
+        characterId: 'marcus',
+        addKnowledgeFlags: ['marcus_vulnerability_revealed', 'knows_about_breach']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'vuln_not_your_fault',
+        text: "That wasn't your failure. You did everything you could.",
+        nextNodeId: 'marcus_vulnerability_reflection',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'marcus',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'vuln_system_failure',
+        text: "The system failed those children. Not you.",
+        nextNodeId: 'marcus_vulnerability_reflection',
+        pattern: 'analytical',
+        skills: ['systemsThinking']
+      },
+      {
+        choiceId: 'vuln_silence',
+        text: "[Hold space for his grief. Some wounds don't need words.]",
+        nextNodeId: 'marcus_vulnerability_reflection',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'marcus',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['vulnerability_arc', 'marcus_arc', 'emotional_core']
+  },
+  {
+    nodeId: 'marcus_vulnerability_reflection',
+    speaker: 'Marcus',
+    content: [{
+      text: "*He meets your eyes.*\n\nI became the operator so that bureaucracy would never block critical action again. Every workflow I architect now has fail-safes. Escalation paths that bypass approval chains when lives are at stake.\n\nThe station gave me that power. But some nights, I run the scenario again. Wondering if I could have found another way.\n\n*A pause.*\n\nYou are the first who has not tried to tell me it was 'meant to be.' Thank you for that.",
+      emotion: 'resolved_grief',
+      variation_id: 'reflection_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'vuln_continue',
+        text: "(Continue)",
+        nextNodeId: 'hub_return',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['vulnerability_arc', 'marcus_arc']
   },
   {
     nodeId: 'marcus_burnout',

@@ -600,7 +600,18 @@ export const devonDialogueNodes: DialogueNode[] = [
         emotion: 'vulnerable',
         variation_id: 'father_reveal_v1',
         richEffectContext: 'thinking',
-        useChatPacing: true
+        useChatPacing: true,
+        // E2-031: Interrupt opportunity when Devon reveals grief
+        interrupt: {
+          duration: 3500,
+          type: 'silence',
+          action: 'Wait. Let the silence hold space for his grief.',
+          targetNodeId: 'devon_interrupt_acknowledged',
+          consequence: {
+            characterId: 'devon',
+            trustChange: 2
+          }
+        }
       }
     ],
     patternReflection: [
@@ -651,6 +662,38 @@ export const devonDialogueNodes: DialogueNode[] = [
     ]
   },
 
+  {
+    nodeId: 'devon_interrupt_acknowledged',
+    speaker: 'Devon Kumar',
+    content: [{
+      text: "You didn't try to fix it. You just... waited. Let the error state exist without rushing to clear it.\n\nThat's not how I process. But maybe that's what he needs.",
+      emotion: 'surprised_grateful',
+      microAction: 'He pauses, the constant tapping of his fingers finally still.',
+      variation_id: 'default'
+    }],
+    choices: [
+      {
+        choiceId: 'silence_is_data',
+        text: "Silence can be data too. Just a different kind.",
+        nextNodeId: 'devon_pause_after_father_reveal',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'presence_matters',
+        text: "Sometimes presence is more valuable than solutions.",
+        nextNodeId: 'devon_pause_after_father_reveal',
+        pattern: 'helping',
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1
+        }
+      }
+    ]
+  },
   {
     nodeId: 'devon_pause_after_father_reveal',
     speaker: 'Devon Kumar',
@@ -1515,6 +1558,108 @@ export const devonDialogueNodes: DialogueNode[] = [
       }
     ],
     tags: ['crossroads', 'devon_arc']
+  },
+  // ============= DEVON'S VULNERABILITY ARC =============
+  // "The call he didn't answer"
+  {
+    nodeId: 'devon_vulnerability_arc',
+    speaker: 'Devon Kumar',
+    content: [{
+      text: `*He stares at his phone.*
+
+There's something I've never processed.
+
+The night mom died. I was debugging a production outage. Critical system. Couldn't leave.
+
+Dad called. Twice. I silenced both.
+
+*His voice is mechanical, distant.*
+
+Third call. Voicemail. "Devon, your mother—she's—please come."
+
+I optimized for the wrong system. Fixed the server. Lost the goodbye.
+
+Two hours. That's how long it would have taken to drive home. Two hours I could have had. Instead I watched log files.`,
+      emotion: 'hollowed',
+      microAction: 'His fingers tap an invisible keyboard, a nervous habit.',
+      variation_id: 'vulnerability_v1',
+      richEffectContext: 'error'
+    }],
+    requiredState: {
+      trust: { min: 6 }
+    },
+    onEnter: [
+      {
+        characterId: 'devon',
+        addKnowledgeFlags: ['devon_vulnerability_revealed', 'knows_the_call']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'vuln_couldnt_know',
+        text: "You couldn't have known. That's not optimization—that's being human.",
+        nextNodeId: 'devon_vulnerability_reflection',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'vuln_system_taught',
+        text: "The system you learned that night—is that why you're trying to be present for your dad now?",
+        nextNodeId: 'devon_vulnerability_reflection',
+        pattern: 'analytical',
+        skills: ['emotionalIntelligence', 'systemsThinking'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'vuln_silence',
+        text: "[Don't fill the silence. Let him feel it.]",
+        nextNodeId: 'devon_vulnerability_reflection',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['vulnerability_arc', 'devon_arc', 'emotional_core']
+  },
+  {
+    nodeId: 'devon_vulnerability_reflection',
+    speaker: 'Devon Kumar',
+    content: [{
+      text: `*A long breath.*
+
+Dad never blamed me. That's worse, somehow.
+
+He just said: "You were doing your job. Your mother would have understood."
+
+But I don't understand. I don't understand how I became someone who optimizes systems instead of showing up for people.
+
+*He looks at you.*
+
+You're the first person I've told the full sequence. Not the sanitized "I was at work" version.
+
+The one where I chose code over family. And I still don't know how to forgive the algorithm that made that choice.`,
+      emotion: 'broken_honest',
+      variation_id: 'reflection_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'vuln_continue',
+        text: "(Continue)",
+        nextNodeId: 'devon_farewell',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['vulnerability_arc', 'devon_arc']
   },
   {
     nodeId: 'devon_farewell',

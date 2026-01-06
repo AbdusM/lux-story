@@ -261,7 +261,18 @@ The investigation cleared us. "Employee completed mandatory safety training on O
 
 We designed a green checkmark. We didn't design safety.`,
         emotion: 'guilty',
-        variation_id: 'accident_v1'
+        variation_id: 'accident_v1',
+        // E2-031: Interrupt opportunity when Kai reveals their guilt
+        interrupt: {
+          duration: 3500,
+          type: 'connection',
+          action: 'Reach out. Let them know this weight isn\'t theirs alone.',
+          targetNodeId: 'kai_interrupt_acknowledged',
+          consequence: {
+            characterId: 'kai',
+            trustChange: 2
+          }
+        }
       }
     ],
     choices: [
@@ -303,6 +314,37 @@ We designed a green checkmark. We didn't design safety.`,
     ]
   },
 
+  {
+    nodeId: 'kai_interrupt_acknowledged',
+    speaker: 'Kai',
+    content: [{
+      text: `*They look at you, surprised.*
+
+You didn't try to fix it. Didn't offer solutions. Just... stayed.
+
+*A shaky breath.*
+
+Most people hear "someone got hurt" and immediately pivot to problem-solving mode. You let me feel it first.
+
+That's... that's what actual safety looks like. Presence before protocol.`,
+      emotion: 'moved',
+      microAction: 'Their shoulders drop slightly.',
+      variation_id: 'interrupt_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'kai_interrupt_continue',
+        text: "Tell me what you want to do about it.",
+        nextNodeId: 'kai_origin_story',
+        pattern: 'helping',
+        consequence: {
+          characterId: 'kai',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['interrupt_target', 'emotional_moment', 'kai_arc']
+  },
   {
     nodeId: 'kai_marcus_reference',
     speaker: 'Kai',
@@ -1679,6 +1721,100 @@ Thanks for trying.`,
     tags: ['ending', 'bad_ending', 'kai_arc']
   },
 
+  // ============= E2-064: KAI'S VULNERABILITY ARC =============
+  // "The project that failed inspection"
+  {
+    nodeId: 'kai_vulnerability_arc',
+    speaker: 'Kai',
+    content: [
+      {
+        text: `*They look at the safety manuals, then away.*
+
+There's a reason I obsess over every millimeter. Every warning sign.
+
+Building 7. I designed the safety training for that crew. Forty-two slides. Perfect compliance scores. The inspection passed with flying colors.
+
+*Their voice cracks.*
+
+Three months later, a scaffold collapsed. Miguel Rodriguez, father of two, fell four stories because the harness clip I trained him on... wasn't rated for the angle he was working at.
+
+My training passed inspection. Miguel didn't pass the fall.`,
+        emotion: 'devastated',
+        microAction: 'Their hands grip the edge of the table.',
+        variation_id: 'vulnerability_v1',
+        richEffectContext: 'error'
+      }
+    ],
+    requiredState: {
+      trust: { min: 6 }
+    },
+    onEnter: [
+      {
+        characterId: 'kai',
+        addKnowledgeFlags: ['kai_vulnerability_revealed', 'knows_about_miguel']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'vuln_inspection_failure',
+        text: "The inspection failed him. Not you.",
+        nextNodeId: 'kai_vulnerability_reflection',
+        pattern: 'analytical',
+        skills: ['systemsThinking']
+      },
+      {
+        choiceId: 'vuln_empathy',
+        text: "You carry that weight because you care. That's not guilt—that's integrity.",
+        nextNodeId: 'kai_vulnerability_reflection',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'kai',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'vuln_silence',
+        text: "[Stay silent. This wound is still open.]",
+        nextNodeId: 'kai_vulnerability_reflection',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'kai',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['vulnerability_arc', 'kai_arc', 'emotional_core']
+  },
+  {
+    nodeId: 'kai_vulnerability_reflection',
+    speaker: 'Kai',
+    content: [
+      {
+        text: `*They take a shaky breath.*
+
+I visited his family. Couldn't tell them I was the one who trained him. Just said I was sorry.
+
+That's when I stopped building "passing" training. Started building training that actually prepares people for real danger. Not inspection-ready. Reality-ready.
+
+*A pause.*
+
+You're the first person I've told the whole story to. Everyone else just sees the compliance evangelist. They don't see why.`,
+        emotion: 'vulnerable_resolved',
+        variation_id: 'reflection_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'vuln_continue',
+        text: "(Continue)",
+        nextNodeId: 'kai_farewell',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['vulnerability_arc', 'kai_arc']
+  },
   {
     nodeId: 'kai_farewell',
     speaker: 'Kai',

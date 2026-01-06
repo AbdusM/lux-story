@@ -73,6 +73,31 @@ export const TRUST_THRESHOLDS = {
 } as const
 
 // ═══════════════════════════════════════════════════════════════════════════
+// VULNERABILITY SYSTEM (E2-061 to E2-065)
+// ═══════════════════════════════════════════════════════════════════════════
+
+/**
+ * Trust level required to unlock vulnerability arc (character backstory reveal)
+ * Per E2-061: Trust-gated vulnerability reveals require high trust
+ */
+export const VULNERABILITY_TRUST_THRESHOLD = 6
+
+// ═══════════════════════════════════════════════════════════════════════════
+// LOYALTY EXPERIENCE SYSTEM (E2-034 to E2-039)
+// ═══════════════════════════════════════════════════════════════════════════
+
+/**
+ * Trust level required to unlock loyalty experience
+ * These are culminating mini-games that require deep relationship
+ */
+export const LOYALTY_TRUST_THRESHOLD = 8
+
+/**
+ * Pattern level required in relevant pattern for loyalty unlock
+ */
+export const LOYALTY_PATTERN_THRESHOLD = 5
+
+// ═══════════════════════════════════════════════════════════════════════════
 // IDENTITY SYSTEM (Disco Elysium mechanic)
 // ═══════════════════════════════════════════════════════════════════════════
 

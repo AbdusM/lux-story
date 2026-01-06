@@ -40,7 +40,17 @@ const nodes: DialogueNode[] = [
       text: "Everything. Supply chains, crew manifestos, external comms. There's a contradiction in the archives. A lie buried under three petabytes of noise.",
       emotion: 'paranoid',
       microAction: 'She swipes a document away violently.',
-      variation_id: 'default'
+      variation_id: 'default',
+      interrupt: {
+        duration: 3500,
+        type: 'grounding',
+        action: 'Gently close the holographic display',
+        targetNodeId: 'elena_interrupt_grounding',
+        consequence: {
+          characterId: 'elena',
+          trustChange: 2
+        }
+      }
     }],
     choices: [
       {
@@ -322,6 +332,155 @@ const nodes: DialogueNode[] = [
         }
       }
     ]
+  },
+  // ============= INTERRUPT TARGET NODES =============
+  {
+    nodeId: 'elena_interrupt_grounding',
+    speaker: 'Elena',
+    content: [{
+      text: `*The holographics fade. She blinks like waking from a trance.*
+
+*Long breath.*
+
+Sorry. I... I get lost in it. The patterns. The noise.
+
+*Quieter.*
+
+You're the first person who's tried to pull me out instead of pushing me deeper.
+
+*Looks at her hands.*
+
+My therapist calls it "data spiraling." I call it... not being able to look away from the fire.
+
+Thank you. For closing the display. Most people want me to find things faster.`,
+      emotion: 'vulnerable_grateful',
+      variation_id: 'interrupt_grounding_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'elena_from_interrupt',
+        text: "The truth will still be there after you breathe.",
+        nextNodeId: 'elena_synthesis_lesson',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'elena',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['elena_arc', 'interrupt_response']
+  },
+
+  // ============= VULNERABILITY ARC (Trust ≥ 6) =============
+  // "The signal she missed" - why she's obsessed with finding hidden truths
+  {
+    nodeId: 'elena_vulnerability_arc',
+    speaker: 'Elena',
+    content: [{
+      text: `*She stops scrolling. Stares at nothing.*
+
+Can I tell you why I do this? Why I can't stop looking?
+
+*Pause.*
+
+Three years ago. Station Seven. I was the data analyst on duty.
+
+There was an anomaly in the life support logs. Three data points. I flagged it as "sensor drift." Standard procedure.
+
+*Voice drops.*
+
+It wasn't drift. It was a slow leak. By the time anyone noticed... four people. Four people who trusted that someone was watching the data.
+
+*Looks at you.*
+
+I was watching. And I dismissed it as noise.`,
+      emotion: 'haunted_guilty',
+      variation_id: 'vulnerability_v1',
+      richEffectContext: 'warning'
+    }],
+    requiredState: {
+      trust: { min: 6 }
+    },
+    onEnter: [
+      {
+        characterId: 'elena',
+        addKnowledgeFlags: ['elena_vulnerability_revealed', 'knows_about_station_seven']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'elena_vuln_not_your_fault',
+        text: "You followed procedure. The system failed, not you.",
+        nextNodeId: 'elena_vulnerability_response',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'elena',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'elena_vuln_carry_them',
+        text: "You carry them with you. Every anomaly you chase.",
+        nextNodeId: 'elena_vulnerability_response',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'elena',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'elena_vuln_silence',
+        text: "[Let the weight of it sit. She needs a witness, not absolution.]",
+        nextNodeId: 'elena_vulnerability_response',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'elena',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['elena_arc', 'vulnerability', 'emotional_core']
+  },
+
+  {
+    nodeId: 'elena_vulnerability_response',
+    speaker: 'Elena',
+    content: [{
+      text: `*She wipes her eyes.*
+
+I know I can't save them. But every lie I uncover... every contradiction I surface... it's for them.
+
+*Quiet.*
+
+The paranoia isn't paranoia when you know what you missed. When you know what "noise" can hide.
+
+*Small, tired smile.*
+
+So I keep looking. Because somewhere in three petabytes of data, there might be another three data points. And this time... this time I won't dismiss them.
+
+That's why I can't stop. That's why I need the tools. Not to replace my judgment—to extend it. To see what I couldn't see before.`,
+      emotion: 'resolved_determined',
+      interaction: 'nod',
+      variation_id: 'vulnerability_response_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'elena_vuln_to_truth',
+        text: "Then let's find what's hiding in this noise. Together.",
+        nextNodeId: 'elena_truth_found',
+        pattern: 'helping',
+        skills: ['communication'],
+        consequence: {
+          characterId: 'elena',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['elena_arc', 'vulnerability', 'resolution']
   }
 ]
 

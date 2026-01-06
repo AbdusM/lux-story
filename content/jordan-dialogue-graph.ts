@@ -864,7 +864,18 @@ Felt like a fraud.
 
 Voice in my head: "Who are you to teach? You couldn't even keep one job."`,
       emotion: 'raw',
-      variation_id: 'impostor_v1'
+      variation_id: 'impostor_v1',
+      // E2-031: Interrupt opportunity when Jordan reveals impostor syndrome
+      interrupt: {
+        duration: 3500,
+        type: 'connection',
+        action: 'Reach out. That inner critic needs a witness.',
+        targetNodeId: 'jordan_interrupt_acknowledged',
+        consequence: {
+          characterId: 'jordan',
+          trustChange: 2
+        }
+      }
     }],
     choices: [
       {
@@ -880,6 +891,37 @@ Voice in my head: "Who are you to teach? You couldn't even keep one job."`,
       }
     ],
     tags: ['jordan_arc', 'impostor_syndrome']
+  },
+  {
+    nodeId: 'jordan_interrupt_acknowledged',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: `*They stop. Look at you.*
+
+You didn't argue with it. Didn't say "you're not a fraud" like everyone does.
+
+*A breath.*
+
+You just... heard it. The voice. Without flinching.
+
+That's different. Most people rush to fix impostor syndrome. You let it exist first.`,
+      emotion: 'seen',
+      microAction: 'Their shoulders relax slightly.',
+      variation_id: 'interrupt_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'jordan_interrupt_continue',
+        text: "That voice learned those words somewhere. Where?",
+        nextNodeId: 'jordan_what_jobs_taught',
+        pattern: 'exploring',
+        consequence: {
+          characterId: 'jordan',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['interrupt_target', 'emotional_moment', 'jordan_arc']
   },
 
   // EXPANSION: What jobs taught
@@ -1179,6 +1221,106 @@ Those students need to hear that nothing is wasted.
     tags: ['ending', 'jordan_arc']
   },
 
+  // ============= JORDAN'S VULNERABILITY ARC =============
+  // "The job that broke her"
+  {
+    nodeId: 'jordan_vulnerability_arc',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: `*She stares at her hands.*
+
+There's a reason I've had seven jobs. It's not wanderlust.
+
+Job four. Startup. I was head of product. Eighty-hour weeks. I believed in it. Really believed.
+
+Then I found the Slack channel. The one I wasn't supposed to see.
+
+*Her voice tightens.*
+
+"Jordan's great for optics but we need a real PM." From my own CEO. The person who hired me.
+
+I didn't quit. I stayed six more months. Smiled. Delivered. Then had a breakdown in a Target parking lot.
+
+That's why I left tech. That's why I teach bootcamps now. Because I couldn't handle being the person they pretended to value.`,
+      emotion: 'shattered',
+      microAction: 'Her confident posture crumbles slightly.',
+      variation_id: 'vulnerability_v1',
+      richEffectContext: 'error'
+    }],
+    requiredState: {
+      trust: { min: 6 }
+    },
+    onEnter: [
+      {
+        characterId: 'jordan',
+        addKnowledgeFlags: ['jordan_vulnerability_revealed', 'knows_the_slack']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'vuln_not_optics',
+        text: "You weren't optics. You were doing the work while they took credit.",
+        nextNodeId: 'jordan_vulnerability_reflection',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'jordan',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'vuln_teaching_matters',
+        text: "Teaching isn't running away. It's using everything you learned to protect others.",
+        nextNodeId: 'jordan_vulnerability_reflection',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'communication'],
+        consequence: {
+          characterId: 'jordan',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'vuln_silence',
+        text: "[Stay silent. Let her feel the weight of finally saying it.]",
+        nextNodeId: 'jordan_vulnerability_reflection',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'jordan',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['vulnerability_arc', 'jordan_arc', 'emotional_core']
+  },
+  {
+    nodeId: 'jordan_vulnerability_reflection',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: `*She takes a breath.*
+
+I've never told anyone about that Slack channel. Not my therapist. Not my mom.
+
+*A fragile laugh.*
+
+The impostor syndrome isn't random. It started there. In that moment where I realized they saw me as decoration, not contribution.
+
+But you know what? Those bootcamp students? They don't see decoration. They see someone who's been through it.
+
+Maybe that's worth more than a title ever was.`,
+      emotion: 'vulnerable_resolved',
+      variation_id: 'reflection_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'vuln_continue',
+        text: "(Continue)",
+        nextNodeId: 'jordan_farewell_accumulation',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['vulnerability_arc', 'jordan_arc']
+  },
   {
     nodeId: 'jordan_farewell_accumulation',
     speaker: 'Jordan Packard',

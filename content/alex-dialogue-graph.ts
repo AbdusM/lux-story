@@ -492,7 +492,17 @@ I realized I was teaching people to play a game I didn't understand and couldn't
         emotion: 'haunted',
         interaction: 'shake',
         variation_id: 'breaking_v1',
-        useChatPacing: true
+        useChatPacing: true,
+        interrupt: {
+          duration: 3500,
+          type: 'comfort',
+          action: 'Put a hand on their shoulder',
+          targetNodeId: 'alex_interrupt_comfort',
+          consequence: {
+            characterId: 'alex',
+            trustChange: 2
+          }
+        }
       }
     ],
     choices: [
@@ -1374,6 +1384,176 @@ Ask me again in a year. The answer will probably be different.`,
       }
     ],
     tags: ['alex_arc']
+  },
+
+  // ============= INTERRUPT TARGET NODES =============
+  {
+    nodeId: 'alex_interrupt_comfort',
+    speaker: 'Alex',
+    content: [
+      {
+        text: `*They freeze at the contact. Then something breaks.*
+
+*Voice cracks.*
+
+Sorry. I just... nobody asks about them. The students. Everyone talks about "outcomes" and "placement rates." Nobody asks what happens to the ones who don't make it.
+
+*Wipes eyes.*
+
+That kid with the accessibility tool? Jamie. They messaged me on their birthday last year. Said they were "still trying." Still applying. Still hoping.
+
+*Quiet.*
+
+I couldn't respond. What do you say? "Keep going"? "Give up"? I'm supposed to have answers. I taught answers.
+
+*Looks at you.*
+
+Thank you. For... this. For not trying to fix it.`,
+        emotion: 'vulnerable_grateful',
+        interaction: 'bloom',
+        variation_id: 'interrupt_comfort_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'alex_from_interrupt',
+        text: "Some things can't be fixed. Only witnessed.",
+        nextNodeId: 'alex_ai_hype_cycle',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'alex',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['alex_arc', 'interrupt_response']
+  },
+
+  // ============= VULNERABILITY ARC (Trust ≥ 6) =============
+  // "The student who didn't make it" - the cost of selling hope
+  {
+    nodeId: 'alex_vulnerability_arc',
+    speaker: 'Alex',
+    content: [
+      {
+        text: `*Long silence. They set down their laptop.*
+
+I've never told anyone this.
+
+*Pause.*
+
+There was a student. Maria. Single mom. Cashed out her 401k to pay for the bootcamp. I told her—I told her she was doing the right thing.
+
+Six months after graduation. Zero callbacks. She stopped showing up to alumni events.
+
+*Voice drops.*
+
+I found out later she'd moved back in with her parents. Three states away. Gave up on tech entirely.
+
+Last thing she messaged me was: "You made it sound so possible."
+
+*Looks away.*
+
+I did. I made it sound possible because I needed to believe it was. Because if it wasn't possible for her, what was I even selling?`,
+        emotion: 'haunted_guilty',
+        variation_id: 'vulnerability_v1',
+        richEffectContext: 'warning',
+        useChatPacing: true
+      }
+    ],
+    requiredState: {
+      trust: { min: 6 }
+    },
+    onEnter: [
+      {
+        characterId: 'alex',
+        addKnowledgeFlags: ['alex_vulnerability_revealed', 'knows_about_maria']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'alex_vuln_not_your_fault',
+        text: "You gave her tools. The system failed her, not you.",
+        nextNodeId: 'alex_vulnerability_response',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'alex',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'alex_vuln_feel_guilty',
+        text: "You feel responsible.",
+        nextNodeId: 'alex_vulnerability_response',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'alex',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'alex_vuln_silence',
+        text: "[Let the confession breathe. Don't rush to absolve.]",
+        nextNodeId: 'alex_vulnerability_response',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'alex',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['alex_arc', 'vulnerability', 'emotional_core']
+  },
+
+  {
+    nodeId: 'alex_vulnerability_response',
+    speaker: 'Alex',
+    content: [
+      {
+        text: `*Long exhale.*
+
+Yeah. I do.
+
+Not because I lied—I believed what I taught. But because believing isn't the same as knowing.
+
+*Pause.*
+
+That's why I do this now. The documentation. The skepticism. I'm not trying to tear down the industry. I'm trying to make sure nobody else makes it sound simpler than it is.
+
+*Small, tired smile.*
+
+Maria's daughter would be starting school now. Sometimes I think about what I'd tell her.
+
+"Learn to learn. Question everything. And be suspicious of anyone—including yourself—who makes the future sound guaranteed."
+
+*Looks at you.*
+
+Including me. Even now.`,
+        emotion: 'resolved_honest',
+        interaction: 'nod',
+        variation_id: 'vulnerability_response_v1',
+        useChatPacing: true
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'alex_vuln_to_turn',
+        text: "That's not selling. That's teaching.",
+        nextNodeId: 'alex_turn',
+        pattern: 'helping',
+        skills: ['communication'],
+        consequence: {
+          characterId: 'alex',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['alex_arc', 'vulnerability', 'resolution']
   },
 
   // ============= PATTERN SUMMARY =============

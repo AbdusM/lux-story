@@ -1136,6 +1136,164 @@ Go change the world, kid. Or at least... be present in it. That's enough.`,
     tags: ['ending', 'grace_arc', 'interrupt_response']
   },
 
+  // ============= VULNERABILITY ARC (Trust ≥ 6) =============
+  // "The night she almost quit" - when invisible labor became unbearable
+  {
+    nodeId: 'grace_vulnerability_arc',
+    speaker: 'Grace',
+    content: [
+      {
+        text: `*She's quiet for a long moment. Then looks at you with something raw.*
+
+Can I tell you something I've never told anyone?
+
+*Pause.*
+
+Three years ago... I almost quit. Not just the job. Everything.
+
+Mrs. Patterson—the jazz singer I mentioned—she'd just passed. Third client that month. And my daughter's school called because I missed her recital. Again.
+
+I sat in my car in the parking lot for two hours. Couldn't go in. Couldn't go home.
+
+*Voice drops.*
+
+Nobody sees what this costs. They see the angel. They don't see the woman who forgot her own mother's birthday because she was too busy remembering everyone else's medications.`,
+        emotion: 'raw_vulnerable',
+        variation_id: 'vulnerability_v1',
+        richEffectContext: 'warning'
+      }
+    ],
+    requiredState: {
+      trust: { min: 6 }
+    },
+    onEnter: [
+      {
+        characterId: 'grace',
+        addKnowledgeFlags: ['grace_vulnerability_revealed', 'knows_about_almost_quitting']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'grace_vuln_what_kept',
+        text: "What kept you from quitting?",
+        nextNodeId: 'grace_vulnerability_what_saved',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'grace_vuln_daughter',
+        text: "Your daughter... does she understand now?",
+        nextNodeId: 'grace_vulnerability_daughter',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'grace_vuln_silence',
+        text: "[Just be present. Let her feel not alone in this.]",
+        nextNodeId: 'grace_vulnerability_what_saved',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['grace_arc', 'vulnerability', 'emotional_core']
+  },
+
+  {
+    nodeId: 'grace_vulnerability_what_saved',
+    speaker: 'Grace',
+    content: [
+      {
+        text: `*She wipes her eyes.*
+
+Mr. Chen.
+
+He was dying. We both knew it. But that day, in the parking lot, my phone buzzed.
+
+A text from his daughter: "Dad's been asking for you all morning. Says you're the only one who makes him laugh."
+
+*Quiet.*
+
+I realized... I'm not giving too much. I'm giving exactly enough. To the people who need it.
+
+The problem wasn't the work. It was trying to be everything to everyone. Now I draw lines. Not walls—lines.
+
+*Looks at you.*
+
+I still miss recitals sometimes. But my daughter knows why. And she's proud of me.
+
+That's enough. It has to be.`,
+        emotion: 'resolved_tender',
+        interaction: 'bloom',
+        variation_id: 'what_saved_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'grace_vuln_to_vision',
+        text: "Lines, not walls. That's wisdom.",
+        nextNodeId: 'grace_vision',
+        pattern: 'helping',
+        skills: ['communication'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['grace_arc', 'vulnerability', 'resolution']
+  },
+
+  {
+    nodeId: 'grace_vulnerability_daughter',
+    speaker: 'Grace',
+    content: [
+      {
+        text: `*Small smile.*
+
+She's sixteen now. Volunteers at the nursing home on weekends.
+
+*Voice catches.*
+
+Last month, she told me: "Mom, I used to be angry you weren't at my stuff. Then I realized you were at someone else's 'last stuff.' That's more important."
+
+*Pause.*
+
+I cried for an hour.
+
+She sees me now. Really sees me. That's worth more than every recital I missed.`,
+        emotion: 'tender_proud',
+        interaction: 'bloom',
+        variation_id: 'daughter_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'grace_daughter_to_vision',
+        text: "She learned presence from watching you.",
+        nextNodeId: 'grace_vision',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['grace_arc', 'vulnerability', 'family']
+  },
+
   // ============= FAREWELL =============
   {
     nodeId: 'grace_farewell',
