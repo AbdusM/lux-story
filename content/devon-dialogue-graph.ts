@@ -1830,6 +1830,82 @@ The one where I chose code over family. And I still don't know how to forgive th
       }
     ],
     tags: ['revisit', 'devon_arc']
+  },
+
+  // ============= CAREER MENTION NODES (Invisible Depth) =============
+  {
+    nodeId: 'devon_career_reflection_systems',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "*Devon looks at you with new understanding.*\n\nYou think like a process engineer. Not just fixing problems—understanding why systems break in the first place.\n\nI used to think engineering was about building things. But the best engineers I've met? They're optimizers. They see the whole picture and find the leverage points.\n\n*A rare moment of openness.*\n\nThat patience you have—waiting for the right answer instead of the fast one—that's what separates good engineers from great ones.",
+        emotion: 'impressed',
+        variation_id: 'career_systems_v1'
+      }
+    ],
+    requiredState: {
+      patterns: { analytical: { min: 5 }, patience: { min: 4 } }
+    },
+    onEnter: [
+      {
+        characterId: 'devon',
+        addGlobalFlags: ['combo_systems_thinker_achieved', 'devon_mentioned_career']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'systems_curious',
+        text: "What do process engineers actually work on?",
+        nextNodeId: 'devon_crossroads',
+        pattern: 'exploring',
+        skills: ['criticalThinking']
+      },
+      {
+        choiceId: 'systems_relate',
+        text: "I like understanding how things connect.",
+        nextNodeId: 'devon_crossroads',
+        pattern: 'analytical'
+      }
+    ],
+    tags: ['career_mention', 'invisible_depth', 'engineering']
+  },
+
+  {
+    nodeId: 'devon_career_reflection_sustainability',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "*Devon sets down their work, giving you full attention.*\n\nYou build things that last. I can tell by how you approach problems—not just solving for now, but thinking about what comes after.\n\nSustainability engineering is exactly that. Designing systems that don't just work today, but heal instead of harm over time.\n\n*Devon glances at their own projects.*\n\nAlabama Power, Southern Company—they're investing heavily in sustainable infrastructure. People who can build AND think long-term? They're in demand.\n\nYou've got that combination.",
+        emotion: 'thoughtful',
+        variation_id: 'career_sustainability_v1'
+      }
+    ],
+    requiredState: {
+      patterns: { building: { min: 5 }, patience: { min: 4 } }
+    },
+    onEnter: [
+      {
+        characterId: 'devon',
+        addGlobalFlags: ['combo_sustainable_builder_achieved', 'devon_mentioned_career']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'sustainability_interested',
+        text: "Building things that heal... that's what I want.",
+        nextNodeId: 'devon_crossroads',
+        pattern: 'building',
+        skills: ['systemsThinking']
+      },
+      {
+        choiceId: 'sustainability_practical',
+        text: "How do you get into sustainability engineering?",
+        nextNodeId: 'devon_crossroads',
+        pattern: 'exploring',
+        skills: ['adaptability']
+      }
+    ],
+    tags: ['career_mention', 'invisible_depth', 'sustainability']
   }
 ]
 

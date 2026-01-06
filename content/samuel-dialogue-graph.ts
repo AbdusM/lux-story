@@ -13,6 +13,7 @@ import {
 } from '@/lib/dialogue-graph'
 import { mayaRevisitEntryPoints } from './maya-revisit-graph'
 import { samuelIdentityNodes } from './samuel-identity-nodes'
+import { samuelOrbResonanceNodes } from './samuel-orb-resonance-nodes'
 import { systemicCalibrationNodes } from './systemic-calibration' // ISP: The Grand Convergence
 
 export const samuelDialogueNodes: DialogueNode[] = [
@@ -6174,10 +6175,535 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     ]
   },
 
+  // ============= PATTERN MILESTONE GREETINGS =============
+  // Samuel greets returning players differently based on pattern progress
+  // INVISIBLE DEPTH: Player feels recognized without explicit notifications
+
+  // Greeting Router - directs to appropriate greeting based on pattern milestones
+  {
+    nodeId: 'samuel_greeting_router',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You're back.",
+        emotion: 'warm',
+        variation_id: 'greeting_router_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'route_to_mastery',
+        text: "[Continue]",
+        nextNodeId: 'samuel_greeting_mastery',
+        visibleCondition: {
+          patterns: {
+            analytical: { min: 6 }
+          }
+        }
+      },
+      {
+        choiceId: 'route_to_mastery_helping',
+        text: "[Continue]",
+        nextNodeId: 'samuel_greeting_mastery',
+        visibleCondition: {
+          patterns: {
+            helping: { min: 6 }
+          }
+        }
+      },
+      {
+        choiceId: 'route_to_mastery_building',
+        text: "[Continue]",
+        nextNodeId: 'samuel_greeting_mastery',
+        visibleCondition: {
+          patterns: {
+            building: { min: 6 }
+          }
+        }
+      },
+      {
+        choiceId: 'route_to_mastery_patience',
+        text: "[Continue]",
+        nextNodeId: 'samuel_greeting_mastery',
+        visibleCondition: {
+          patterns: {
+            patience: { min: 6 }
+          }
+        }
+      },
+      {
+        choiceId: 'route_to_mastery_exploring',
+        text: "[Continue]",
+        nextNodeId: 'samuel_greeting_mastery',
+        visibleCondition: {
+          patterns: {
+            exploring: { min: 6 }
+          }
+        }
+      },
+      {
+        choiceId: 'route_to_recognition',
+        text: "[Continue]",
+        nextNodeId: 'samuel_greeting_recognition',
+        visibleCondition: {
+          patterns: {
+            analytical: { min: 5 }
+          }
+        }
+      },
+      {
+        choiceId: 'route_to_recognition_helping',
+        text: "[Continue]",
+        nextNodeId: 'samuel_greeting_recognition',
+        visibleCondition: {
+          patterns: {
+            helping: { min: 5 }
+          }
+        }
+      },
+      {
+        choiceId: 'route_to_recognition_building',
+        text: "[Continue]",
+        nextNodeId: 'samuel_greeting_recognition',
+        visibleCondition: {
+          patterns: {
+            building: { min: 5 }
+          }
+        }
+      },
+      {
+        choiceId: 'route_to_recognition_patience',
+        text: "[Continue]",
+        nextNodeId: 'samuel_greeting_recognition',
+        visibleCondition: {
+          patterns: {
+            patience: { min: 5 }
+          }
+        }
+      },
+      {
+        choiceId: 'route_to_recognition_exploring',
+        text: "[Continue]",
+        nextNodeId: 'samuel_greeting_recognition',
+        visibleCondition: {
+          patterns: {
+            exploring: { min: 5 }
+          }
+        }
+      },
+      {
+        choiceId: 'route_to_noticing',
+        text: "[Continue]",
+        nextNodeId: 'samuel_greeting_noticing',
+        visibleCondition: {
+          patterns: {
+            analytical: { min: 3 }
+          }
+        }
+      },
+      {
+        choiceId: 'route_to_noticing_helping',
+        text: "[Continue]",
+        nextNodeId: 'samuel_greeting_noticing',
+        visibleCondition: {
+          patterns: {
+            helping: { min: 3 }
+          }
+        }
+      },
+      {
+        choiceId: 'route_to_noticing_building',
+        text: "[Continue]",
+        nextNodeId: 'samuel_greeting_noticing',
+        visibleCondition: {
+          patterns: {
+            building: { min: 3 }
+          }
+        }
+      },
+      {
+        choiceId: 'route_to_noticing_patience',
+        text: "[Continue]",
+        nextNodeId: 'samuel_greeting_noticing',
+        visibleCondition: {
+          patterns: {
+            patience: { min: 3 }
+          }
+        }
+      },
+      {
+        choiceId: 'route_to_noticing_exploring',
+        text: "[Continue]",
+        nextNodeId: 'samuel_greeting_noticing',
+        visibleCondition: {
+          patterns: {
+            exploring: { min: 3 }
+          }
+        }
+      },
+      {
+        choiceId: 'route_to_default',
+        text: "[Continue]",
+        nextNodeId: 'samuel_greeting_return'
+      }
+    ],
+    tags: ['greeting', 'router']
+  },
+
+  // Pattern 3+ - First recognition
+  {
+    nodeId: 'samuel_greeting_noticing',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "The station stirs when you enter. Somethin' in your walk has changed since you first stepped off that train.\n\nI've seen it before—folks start movin' through here with more purpose. Like they're rememberin' who they are instead of searchin' for it.",
+        emotion: 'observant',
+        variation_id: 'greeting_noticing_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'noticing_continue',
+        text: "What do you mean?",
+        nextNodeId: 'samuel_contextual_hub',
+        pattern: 'analytical'
+      },
+      {
+        choiceId: 'noticing_accept',
+        text: "I feel different here.",
+        nextNodeId: 'samuel_contextual_hub',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['greeting', 'milestone']
+  },
+
+  // Pattern 5+ - Growing respect
+  {
+    nodeId: 'samuel_greeting_recognition',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "The Weaver takes note of you now. I see the threads formin' around your choices—patterns that weren't there when you arrived.\n\nYou're not just passin' through anymore. This place is becomin' part of you, and you're becomin' part of it.",
+        emotion: 'impressed',
+        variation_id: 'greeting_recognition_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'recognition_curious',
+        text: "The Weaver?",
+        nextNodeId: 'samuel_contextual_hub',
+        pattern: 'exploring'
+      },
+      {
+        choiceId: 'recognition_accept',
+        text: "I can feel it.",
+        nextNodeId: 'samuel_contextual_hub',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['greeting', 'milestone']
+  },
+
+  // Pattern 6+ - Mastery acknowledgment
+  {
+    nodeId: 'samuel_greeting_mastery',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You've become part of the station's pattern now, not just a visitor passin' through.\n\nI've watched a lot of travelers come through here. Most of 'em find one thread and follow it. You? You're weavin' somethin' new. The station remembers people like you.",
+        emotion: 'reverent',
+        variation_id: 'greeting_mastery_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'mastery_humble',
+        text: "I'm just trying to figure things out.",
+        nextNodeId: 'samuel_contextual_hub',
+        pattern: 'patience'
+      },
+      {
+        choiceId: 'mastery_curious',
+        text: "What does the station remember?",
+        nextNodeId: 'samuel_contextual_hub',
+        pattern: 'exploring'
+      }
+    ],
+    tags: ['greeting', 'milestone']
+  },
+
+  // Default return greeting
+  {
+    nodeId: 'samuel_greeting_return',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Good to see you back. The station's still here, and so am I.\n\nWhat brings you through tonight?",
+        emotion: 'warm',
+        variation_id: 'greeting_return_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'return_continue',
+        text: "Just exploring.",
+        nextNodeId: 'samuel_contextual_hub',
+        pattern: 'exploring'
+      }
+    ],
+    tags: ['greeting']
+  },
+
+  // ============= CONTEXTUAL HUB =============
+  // Topics appear based on player progress - Invisible Depth in action
+  {
+    nodeId: 'samuel_contextual_hub',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "What would you like to know?",
+        emotion: 'attentive',
+        variation_id: 'contextual_hub_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'ctx_about_station',
+        text: "What is this place, really?",
+        nextNodeId: 'samuel_station_deep_explanation',
+        pattern: 'exploring',
+        skills: ['criticalThinking']
+      },
+      {
+        choiceId: 'ctx_about_patterns',
+        text: "These patterns I'm developing...",
+        nextNodeId: 'samuel_pattern_insight',
+        pattern: 'analytical',
+        skills: ['criticalThinking'],
+        visibleCondition: {
+          patterns: {
+            analytical: { min: 3 }
+          }
+        }
+      },
+      {
+        choiceId: 'ctx_about_patterns_helping',
+        text: "I keep wanting to help people. Is that a pattern?",
+        nextNodeId: 'samuel_pattern_insight',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        visibleCondition: {
+          patterns: {
+            helping: { min: 3 }
+          }
+        }
+      },
+      {
+        choiceId: 'ctx_about_patterns_building',
+        text: "I notice I keep wanting to build things...",
+        nextNodeId: 'samuel_pattern_insight',
+        pattern: 'building',
+        skills: ['creativity'],
+        visibleCondition: {
+          patterns: {
+            building: { min: 3 }
+          }
+        }
+      },
+      {
+        choiceId: 'ctx_about_people',
+        text: "Tell me about the people here.",
+        nextNodeId: 'samuel_comprehensive_hub',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        visibleCondition: {
+          hasGlobalFlags: ['met_maya']
+        }
+      },
+      {
+        choiceId: 'ctx_about_careers',
+        text: "What careers might fit someone like me?",
+        nextNodeId: 'samuel_career_preview',
+        pattern: 'exploring',
+        skills: ['criticalThinking'],
+        visibleCondition: {
+          patterns: {
+            analytical: { min: 4 },
+            building: { min: 4 }
+          }
+        }
+      },
+      {
+        choiceId: 'ctx_about_careers_helping',
+        text: "Are there careers for people who want to help?",
+        nextNodeId: 'samuel_career_preview',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        visibleCondition: {
+          patterns: {
+            helping: { min: 4 },
+            patience: { min: 3 }
+          }
+        }
+      },
+      {
+        choiceId: 'ctx_meet_someone',
+        text: "I'd like to meet someone new.",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'exploring',
+        skills: ['communication']
+      }
+    ],
+    tags: ['hub', 'contextual']
+  },
+
+  // Deep station explanation (unlocked via contextual hub)
+  {
+    nodeId: 'samuel_station_deep_explanation',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "This place... it exists between where you've been and where you're goin'. Call it a crossroads, a waystation, a moment of clarity before the next choice.\n\nEvery platform here represents a different path—not destinations, but ways of movin' through the world. The station doesn't tell you where to go. It shows you who you already are, and lets you decide what to do with that knowledge.",
+        emotion: 'philosophical',
+        variation_id: 'station_deep_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'station_deep_how',
+        text: "How does it show you who you are?",
+        nextNodeId: 'samuel_pattern_insight',
+        pattern: 'analytical'
+      },
+      {
+        choiceId: 'station_deep_accept',
+        text: "That makes sense.",
+        nextNodeId: 'samuel_contextual_hub',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['lore', 'station']
+  },
+
+  // Pattern insight (unlocked at pattern 3+)
+  {
+    nodeId: 'samuel_pattern_insight',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Every choice you make here leaves a trace. Not good or bad—just... true. The station watches how you move through problems, how you connect with people, what questions you ask.\n\nThose patterns? They're not somethin' we give you. They're somethin' you already had. We just help you see 'em clearer.",
+        emotion: 'knowing',
+        variation_id: 'pattern_insight_v1',
+        patternReflection: [
+          {
+            pattern: 'analytical',
+            minLevel: 5,
+            altText: "You think before you move. Every conversation, you're trackin' the logic, findin' the structure underneath. That's not somethin' everyone does—or can do.\n\nThe Weaver sees it in you. The station marks you as someone who finds the truth in the tangles.",
+            altEmotion: 'impressed'
+          },
+          {
+            pattern: 'helping',
+            minLevel: 5,
+            altText: "You lead with your heart. I've watched you with the other travelers—you listen before you speak, and when you do speak, you're already thinkin' about how to help.\n\nThe Harmonic resonates through you. The station knows a healer when it sees one.",
+            altEmotion: 'warm'
+          },
+          {
+            pattern: 'building',
+            minLevel: 5,
+            altText: "You don't just see problems—you see possibilities. Your mind's always buildin' somethin', even when you're standin' still.\n\nThe Architect stirs when you're near. The station recognizes someone who shapes the world instead of just movin' through it.",
+            altEmotion: 'impressed'
+          },
+          {
+            pattern: 'patience',
+            minLevel: 5,
+            altText: "You give things time to unfold. Where others rush, you wait. Where others push, you listen.\n\nThe Anchor holds steady in you. The station values someone who knows that the best answers come to those who can be still.",
+            altEmotion: 'reverent'
+          },
+          {
+            pattern: 'exploring',
+            minLevel: 5,
+            altText: "Questions lead you forward. You're not satisfied with surface answers—you dig until you find somethin' real.\n\nThe Voyager calls through you. The station opens its hidden paths to those who seek them.",
+            altEmotion: 'knowing'
+          }
+        ]
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'insight_what_next',
+        text: "What do I do with that knowledge?",
+        nextNodeId: 'samuel_contextual_hub',
+        pattern: 'building'
+      },
+      {
+        choiceId: 'insight_accept',
+        text: "I think I understand.",
+        nextNodeId: 'samuel_contextual_hub',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['patterns', 'insight']
+  },
+
+  // Career preview (unlocked at pattern 4+ in multiple areas)
+  {
+    nodeId: 'samuel_career_preview',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Careers? The station doesn't think in job titles. It thinks in... resonance. What makes your heart beat faster, what problems you can't look away from, what you'd do even if nobody paid you.\n\nTalk to the travelers here. Each one's found their own answer to that question. In their stories, you might hear echoes of your own.",
+        emotion: 'warm',
+        variation_id: 'career_preview_v1',
+        patternReflection: [
+          {
+            pattern: 'analytical',
+            minLevel: 5,
+            altText: "You've got the mind for systems—seein' how things connect, findin' the patterns others miss. There are fields that need people who think like you.\n\nMaya could tell you about tech and innovation. Rohan knows the deep engineering side. Elena's got insights about information and research. Each one's found a different way to use that analytical gift.",
+            altEmotion: 'knowing'
+          },
+          {
+            pattern: 'helping',
+            minLevel: 5,
+            altText: "You lead with care—that's worth more than most realize. There are whole careers built around helpin' others find their way.\n\nMarcus works in healthcare. Grace navigates patient systems. Tess builds education programs. Jordan guides people through career decisions. Each one turned that impulse to help into a life's work.",
+            altEmotion: 'warm'
+          },
+          {
+            pattern: 'building',
+            minLevel: 5,
+            altText: "You're a maker. Can see it in how you approach things—always thinkin' about what could be, not just what is.\n\nMaya builds robots. Devon designs systems. Silas works with his hands in advanced manufacturing. They've all found ways to turn that builder's instinct into somethin' real.",
+            altEmotion: 'knowing'
+          }
+        ]
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'career_preview_continue',
+        text: "I'd like to talk to someone specific.",
+        nextNodeId: 'samuel_comprehensive_hub',
+        pattern: 'exploring'
+      },
+      {
+        choiceId: 'career_preview_think',
+        text: "Let me think about that.",
+        nextNodeId: 'samuel_contextual_hub',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['careers', 'guidance']
+  },
+
   // ============= IDENTITY DIALOGUES =============
   // Triggered when patterns cross threshold 5
   // Samuel notices emerging identity and creates space for reflection
-  ...samuelIdentityNodes
+  ...samuelIdentityNodes,
+
+  // ============= ORB RESONANCE DIALOGUES =============
+  // Triggered when orb tiers are reached (10+, 30+, 60+, 100+ total choices)
+  // Samuel acknowledges the player's journey depth
+  ...samuelOrbResonanceNodes
 ]
 
 // ============= PUBLIC API: EXPORTED ENTRY POINTS =============
@@ -6255,7 +6781,26 @@ export const samuelEntryPoints = {
   IDENTITY_PATIENCE: 'samuel_identity_patience',
   IDENTITY_EXPLORING: 'samuel_identity_exploring',
   IDENTITY_HELPING: 'samuel_identity_helping',
-  IDENTITY_BUILDING: 'samuel_identity_building'
+  IDENTITY_BUILDING: 'samuel_identity_building',
+
+  /** Pattern Milestone Greetings - Invisible Depth System */
+  GREETING_ROUTER: 'samuel_greeting_router',
+  GREETING_NOTICING: 'samuel_greeting_noticing',
+  GREETING_RECOGNITION: 'samuel_greeting_recognition',
+  GREETING_MASTERY: 'samuel_greeting_mastery',
+  GREETING_RETURN: 'samuel_greeting_return',
+
+  /** Contextual Hub - Pattern-unlocked topics */
+  CONTEXTUAL_HUB: 'samuel_contextual_hub',
+  STATION_DEEP_EXPLANATION: 'samuel_station_deep_explanation',
+  PATTERN_INSIGHT: 'samuel_pattern_insight',
+  CAREER_PREVIEW: 'samuel_career_preview',
+
+  /** Orb Resonance - Tier milestone dialogues */
+  ORB_EMERGING: 'samuel_orb_emerging',
+  ORB_DEVELOPING: 'samuel_orb_developing',
+  ORB_FLOURISHING: 'samuel_orb_flourishing',
+  ORB_MASTERED: 'samuel_orb_mastered'
 } as const
 
 // Type export for TypeScript autocomplete

@@ -1377,6 +1377,44 @@ If you see Samuel, tell him... tell him the sensor was wrong. The ground was rig
       }
     ],
     tags: ['transition', 'silas_arc']
+  },
+
+  // ============= CAREER MENTION NODES (Invisible Depth) =============
+  {
+    nodeId: 'silas_career_reflection_precision',
+    speaker: 'Silas',
+    content: [
+      {
+        text: `You build things with patience. Not rushing, not cutting corners.
+
+Advanced manufacturing specialists work like that—craftspeople of the future. Precision meets innovation.
+
+Mercedes, Honda—they've got facilities near Birmingham. They need people who understand that quality takes time.`,
+        emotion: 'respectful',
+        variation_id: 'career_precision_v1'
+      }
+    ],
+    requiredState: {
+      patterns: {
+        building: { min: 6 },
+        patience: { min: 4 }
+      }
+    },
+    onEnter: [
+      {
+        characterId: 'silas',
+        addGlobalFlags: ['combo_precision_maker_achieved', 'silas_mentioned_career']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'silas_career_precision_continue',
+        text: "Quality over speed. That's a good principle.",
+        nextNodeId: 'silas_introduction',
+        pattern: 'building'
+      }
+    ],
+    tags: ['career_mention', 'invisible_depth', 'manufacturing']
   }
 ]
 

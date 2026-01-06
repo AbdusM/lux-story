@@ -31,9 +31,15 @@ import { alexDialogueNodes } from '../content/alex-dialogue-graph'
 import { mayaRevisitNodes } from '../content/maya-revisit-graph'
 import { yaquinRevisitNodes } from '../content/yaquin-revisit-graph'
 import { grandHallDialogueNodes } from '../content/grand-hall-graph'
+import { graceDialogueNodes } from '../content/grace-dialogue-graph'
+import { elenaDialogueNodes } from '../content/elena-dialogue-graph'
+import { zaraDialogueNodes } from '../content/zara-dialogue-graph'
+import { ashaDialogueNodes } from '../content/asha-dialogue-graph'
+import { liraDialogueNodes } from '../content/lira-dialogue-graph'
 import { marketDialogueNodes } from '../content/market-graph'
 import { deepStationDialogueNodes } from '../content/deep-station-graph'
-import { stationEntryDialogueNodes } from '../content/sector-0-entry-graph'
+// Note: station-entry-graph uses Map format, skipped for now
+// import { stationEntryDialogueNodes } from '../content/station-entry-graph'
 
 // ============= TYPES =============
 
@@ -564,7 +570,12 @@ function main(): void {
     { name: 'grand_hall', nodes: grandHallDialogueNodes, startNodeId: 'sector_1_hall' },
     { name: 'market', nodes: marketDialogueNodes, startNodeId: 'sector_2_market' },
     { name: 'deep_station', nodes: deepStationDialogueNodes, startNodeId: 'sector_3_office' },
-    { name: 'station_entry', nodes: stationEntryDialogueNodes, startNodeId: 'sector_0_entry' },
+    // { name: 'station_entry', nodes: stationEntryDialogueNodes, startNodeId: 'entry_arrival' }, // Map format
+    { name: 'grace', nodes: graceDialogueNodes, startNodeId: 'grace_introduction' },
+    { name: 'elena', nodes: elenaDialogueNodes, startNodeId: 'elena_intro' },
+    { name: 'zara', nodes: zaraDialogueNodes, startNodeId: 'zara_introduction' },
+    { name: 'asha', nodes: ashaDialogueNodes, startNodeId: 'asha_introduction' },
+    { name: 'lira', nodes: liraDialogueNodes, startNodeId: 'lira_introduction' },
   ]
 
   const validator = new DialogueGraphValidator()

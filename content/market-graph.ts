@@ -44,7 +44,7 @@ export const marketDialogueNodes: DialogueNode[] = [
             {
                 choiceId: 'transit_normal',
                 text: 'CONTINUE',
-                nextNodeId: 'sector_0_hub',
+                nextNodeId: 'samuel_comprehensive_hub',
                 visibleCondition: { lacksGlobalFlags: ['high_density'] }
             }
         ]

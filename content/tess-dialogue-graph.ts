@@ -2243,6 +2243,81 @@ Go on. Samuel's waiting. Tell him The B-Side is still standing.`,
     metadata: {
       sessionBoundary: true  // Session 3: Arc complete
     }
+  },
+
+  // ============= CAREER MENTION NODES (Invisible Depth) =============
+  {
+    nodeId: 'tess_career_reflection_educator',
+    speaker: 'Tess',
+    content: [
+      {
+        text: `You know what I see in you? Someone who understands that real learning takes time.
+
+Not everyone gets that. Most people want quick fixes. Fast results. But you... you've got the patience.
+
+Education specialists—the ones who create spaces where everyone can grow—they all have what you have. That rare combination of wanting to help and knowing it can't be rushed.`,
+        emotion: 'thoughtful',
+        variation_id: 'career_educator_v1'
+      }
+    ],
+    requiredState: {
+      patterns: {
+        helping: { min: 5 },
+        patience: { min: 5 }
+      }
+    },
+    onEnter: [
+      {
+        characterId: 'tess',
+        addGlobalFlags: ['combo_patient_teacher_achieved', 'tess_mentioned_career']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'tess_career_educator_continue',
+        text: "That's something to think about.",
+        nextNodeId: 'tess_phase2_entry',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['career_mention', 'invisible_depth', 'education']
+  },
+
+  {
+    nodeId: 'tess_career_reflection_curriculum',
+    speaker: 'Tess',
+    content: [
+      {
+        text: `I've been thinking about the way you approach things. Building while helping.
+
+Curriculum developers do that—they're architects of learning experiences. Building bridges between knowledge and understanding.
+
+Not just teaching, but designing how others learn. Your instincts point that direction.`,
+        emotion: 'warm',
+        variation_id: 'career_curriculum_v1'
+      }
+    ],
+    requiredState: {
+      patterns: {
+        building: { min: 4 },
+        helping: { min: 5 }
+      }
+    },
+    onEnter: [
+      {
+        characterId: 'tess',
+        addGlobalFlags: ['combo_curriculum_designer_achieved', 'tess_mentioned_career']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'tess_career_curriculum_continue',
+        text: "Building how people learn... I hadn't thought of it that way.",
+        nextNodeId: 'tess_phase2_entry',
+        pattern: 'building'
+      }
+    ],
+    tags: ['career_mention', 'invisible_depth', 'education']
   }
 ]
 

@@ -1682,7 +1682,7 @@ My story is too messy. Better to hide it.`,
       {
         choiceId: 'seven_synthesis',
         text: "Synthesizing. That's exactly what career navigation is—connecting dots others can't see.",
-        nextNodeId: 'jordan_career_insight',
+        nextNodeId: 'jordan_crossroads',
         pattern: 'exploring',
         skills: ['communication'],
         consequence: {
@@ -1693,7 +1693,7 @@ My story is too messy. Better to hide it.`,
       {
         choiceId: 'seven_pattern',
         text: "What's the pattern you see across all seven?",
-        nextNodeId: 'jordan_career_insight',
+        nextNodeId: 'jordan_crossroads',
         pattern: 'analytical',
         skills: ['criticalThinking'],
         consequence: {
@@ -1726,7 +1726,7 @@ My story is too messy. Better to hide it.`,
       {
         choiceId: 'impostor_strength',
         text: "That's not impostor syndrome. That's empathy. Your uncertainty is your superpower.",
-        nextNodeId: 'jordan_career_insight',
+        nextNodeId: 'jordan_crossroads',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
         consequence: {
@@ -1737,7 +1737,7 @@ My story is too messy. Better to hide it.`,
       {
         choiceId: 'impostor_trust',
         text: "Thank you for trusting me with that. It couldn't have been easy to say.",
-        nextNodeId: 'jordan_career_insight',
+        nextNodeId: 'jordan_crossroads',
         pattern: 'patience',
         skills: ['emotionalIntelligence'],
         consequence: {
@@ -1772,7 +1772,7 @@ My story is too messy. Better to hide it.`,
       {
         choiceId: 'unexpected_honored',
         text: "I hope it is. And I hope I can help someone find theirs someday.",
-        nextNodeId: 'jordan_career_insight',
+        nextNodeId: 'jordan_crossroads',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'leadership'],
         consequence: {
@@ -1783,7 +1783,7 @@ My story is too messy. Better to hide it.`,
       {
         choiceId: 'unexpected_curious',
         text: "What happened to the woman who started the community center?",
-        nextNodeId: 'jordan_career_insight',
+        nextNodeId: 'jordan_crossroads',
         pattern: 'exploring',
         skills: ['communication'],
         consequence: {
@@ -1793,6 +1793,44 @@ My story is too messy. Better to hide it.`,
       }
     ],
     tags: ['jordan_arc', 'pattern_unlock', 'exploring', 'high_trust', 'profound']
+  },
+
+  // ============= CAREER MENTION NODES (Invisible Depth) =============
+  {
+    nodeId: 'jordan_career_reflection_counselor',
+    speaker: 'Jordan Packard',
+    content: [
+      {
+        text: `You explore while helping. That's rare—most people pick one or the other.
+
+Career counselors have that combination. They're guides who help others find their way—seeing potential before it blooms.
+
+Seven jobs taught me something: the best navigators are the ones who genuinely want to help people explore.`,
+        emotion: 'reflective',
+        variation_id: 'career_counselor_v1'
+      }
+    ],
+    requiredState: {
+      patterns: {
+        helping: { min: 4 },
+        exploring: { min: 5 }
+      }
+    },
+    onEnter: [
+      {
+        characterId: 'jordan',
+        addGlobalFlags: ['combo_path_finder_achieved', 'jordan_mentioned_career']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'jordan_career_counselor_continue',
+        text: "Helping others explore their paths. That resonates.",
+        nextNodeId: 'jordan_crossroads',
+        pattern: 'exploring'
+      }
+    ],
+    tags: ['career_mention', 'invisible_depth', 'career_services']
   }
 ]
 

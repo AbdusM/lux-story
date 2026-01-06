@@ -1749,6 +1749,44 @@ Take care of yourself. And if you ever need someone to just... sit with you? You
       }
     ],
     tags: ['ending', 'grace_arc']
+  },
+
+  // ============= CAREER MENTION NODES (Invisible Depth) =============
+  {
+    nodeId: 'grace_career_reflection_coordinator',
+    speaker: 'Grace',
+    content: [
+      {
+        text: `You know what I see in you? Someone who helps while thinking clearly.
+
+Patient care coordinators do that—they navigate complex systems while never losing sight of the person at the center. Blending empathy with analysis.
+
+Ensuring care flows smoothly. That's what you have the instincts for.`,
+        emotion: 'warm',
+        variation_id: 'career_coordinator_v1'
+      }
+    ],
+    requiredState: {
+      patterns: {
+        helping: { min: 5 },
+        analytical: { min: 4 }
+      }
+    },
+    onEnter: [
+      {
+        characterId: 'grace',
+        addGlobalFlags: ['combo_care_coordinator_achieved', 'grace_mentioned_career']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'grace_career_coordinator_continue',
+        text: "Keeping the person at the center. That matters.",
+        nextNodeId: 'grace_introduction',
+        pattern: 'helping'
+      }
+    ],
+    tags: ['career_mention', 'invisible_depth', 'healthcare']
   }
 ]
 

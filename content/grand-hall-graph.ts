@@ -205,7 +205,7 @@ export const grandHallDialogueNodes: DialogueNode[] = [
             variation_id: 'secret_reveal_v2'
         }],
         choices: [
-            { choiceId: 'enter_crawlspace', text: 'Crawl to Station Entry (Sector 0)', nextNodeId: 'sector_0_hub' },
+            { choiceId: 'enter_crawlspace', text: 'Crawl to Station Entry (Sector 0)', nextNodeId: 'samuel_comprehensive_hub' },
             { choiceId: 'stay_hall', text: 'Stay in the Hall', nextNodeId: 'sector_1_hall_real' }
         ]
     }
