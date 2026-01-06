@@ -1,9 +1,9 @@
 # LUX STORY: AAA PRODUCT REQUIREMENTS DOCUMENT (PRD)
 ## "The Worldbuilding OS" for Career Discovery
 
-**Version:** 1.3 (ISP / Infinite Horizon)
+**Version:** 1.9 (Satellite OS / Side Menu)
 **Date:** January 6, 2026  
-**Status:** DRAFT - Visionary  
+**Status:** DRAFT - Technical Vision  
 **Target Quadrant:** B (High Quality / Focused) -> **Ω (Category Redefining)**
 
 ---
@@ -14,7 +14,7 @@
 
 **Core Value Proposition:**
 *   **For Players:** A premium, narrative-driven indie RPG experience. No "edutainment" stink.
-*   **For Stakeholders:** A sophisticated psychometric instrument capable of mapping 50+ granular skills to real-world career paths without explicit testing.
+*   **For Stakeholders:** A sophisticated psychometric instrument capable of mapping 50+ granular skills to real-world career paths.
 
 **Strategic Positioning:**
 We are targeting **Quadrant B (Focused AAA)**: High polish, 20-30 hour deep narrative campaign.
@@ -38,17 +38,18 @@ We are targeting **Quadrant B (Focused AAA)**: High polish, 20-30 hour deep narr
 *   **Experience:** Doing the actual work, not just talking about it.
 *   **System:** Mini-Game/Simulation Layer embedded in narrative flow.
 *   **Key Features:**
-    *   **System Triage:** Debugging station systems (Coding/Logistics).
-    *   **Resource Management:** Allocating power/supplies (FinTech/Ops).
-    *   **Crisis Negotiation:** De-escalating conflicts (Leadership/HR).
+    *   **Loyalty Experiences:** Character-specific deep-dive missions (e.g., "The Outage" with Devon).
+    *   **System Triage:** Debugging station systems.
+    *   **Resource Management:** Allocating power/supplies.
 
 ### Pillar 3: "The Brain" (The 2030 Skills System)
 *   **Experience:** "The game knows me better than I know myself."
 *   **System:** Comprehensive tracking of 50+ weighted skill variables.
 *   **Key Features (Implemented & Core):**
+    *   **Thought Cabinet:** Inventory of internalized concepts.
     *   **Harmonics Interface:** Visualizing skill growth as a dynamic "Constellation".
-    *   **Pattern Voices:** *Disco Elysium*-style inner monologues.
-    *   **Career Translation:** Real-time mapping to O*NET/Birmingham job codes.
+    *   **Pattern Voices:** Inner monologues.
+    *   **Career Translation:** Real-time mapping to O*NET.
 
 ---
 
@@ -56,25 +57,16 @@ We are targeting **Quadrant B (Focused AAA)**: High polish, 20-30 hour deep narr
 *Solving contradictions to create novel gameplay.*
 
 ### A. The "Self-Awareness" Mechanic (Stealth vs. Feedback)
-*   **The Contradiction:** We want "Stealth Assessment" (hiding the test) AND "Useful Feedback" (showing the stats).
 *   **The Solution:** **The Fog of War Assessment.**
-    *   **Subjective View:** The UI initially shows what the player *thinks* they are (Self-Perception). E.g., Player picks "Aggressive" options but thinks they are being "Assertive".
-    *   **Objective View:** The hidden engine tracks the *real* data.
-    *   **The Gameplay Loop:** The *Delta* between "Self-Perception" and "Reality" is a visible stat called **Self-Awareness**.
-    *   **Resolution:** "Breakthrough Moments" (boss fights of the mind) crash the UI and force the two graphs to align, revealing the player's true nature in a dramatic "System Reboot".
+    *   **Gameplay Loop:** Crashing the system to align subjective vs objective data.
 
 ### B. Sensory Immersion (Text vs. Feeling)
-*   **The Contradiction:** Text-based games often feel detached. We want AAA immersion without 3D cinematics.
 *   **The Solution:** **Synesthetic UX.**
-    *   **Haptics:** "Pattern Voices" have distinct vibration textures (e.g., *Analytical* is a sharp, rhythmic buzz; *Helping* is a warm, steady hum).
-    *   **Binaural Audio:** Voices don't just appear as text; they are whispered in 3D space (Left ear for Logic, Right ear for Empathy).
-    *   **Diegetic Glitching:** When the player is stressed (Crisis Management), the actual game UI begins to artifact and lag, forcing them to "focus" (gameplay mechanic) to stabilize the interface.
+    *   Haptics & Binaural Audio.
 
 ### C. The "Worldbuilding OS" (Game vs. Tool)
-*   **The Contradiction:** Is it a game or a desktop app?
 *   **The Solution:** **The Borderless Window.**
-    *   The game can minimize into a "Tray App" mode where it behaves like a real OS utility, sending "System Notifications" from Terminus Characters directly to your Windows/Mac Notification Center.
-    *   *Experience:* You get a real Slack-style ping from Marcus: "I need you at the terminal." It blurs the line between playing and working.
+    *   Minimizes to "Tray App".
 
 ---
 
@@ -82,79 +74,138 @@ We are targeting **Quadrant B (Focused AAA)**: High polish, 20-30 hour deep narr
 
 ### 70% Scope: The "Station Core" (Phase 2 - IMMINENT)
 **Immediate Production Deliverables (Narrative Excellence):**
-*   **Marcus Arc (Crisis Management):** Escalation from project manager to crisis leader.
-*   **Tess Arc (Technical Leadership):** Transition from debugger to architect.
-*   **Yaquin Arc (Strategic Execution):** Moving from idea to implementation.
+*   **Marcus Arc (Crisis Management):** `stakeholder_management`, `adaptive_leadership`, `crisis_communication`.
+*   **Tess Arc (Technical Leadership):** `technical_leadership`, `system_design`, `mentorship`.
+*   **Yaquin Arc (Strategic Execution):** `strategic_execution`, `resource_management`, `change_management`.
 *   **Samuel Hub (Mentorship):** Providing cross-arc synthesis.
 
 ### 20% Scope: "Station Life" (Breadth)
 *   **"They're Waiting For You":** Return hooks.
-*   **Delayed Gifts:** Choices that pay off later.
+*   **Delayed Gifts:** Payoff choices.
 *   **Relationship Web:** Dynamic visualization.
 
 ### 10% Scope: "The Deep Station" (Mastery)
-*   **New Game+:** Replay with different unlocked "Pattern Voices".
-*   **Hard Mode Simulations:** Purely mechanical challenges.
+*   **New Game+:** Replay with different Patterns.
+*   **Station Evolution:** Visual environment changes.
 
 ---
 
-## 5. TECHNICAL ARCHITECTURE SPECIFICATIONS
+## 5. TECHNICAL ARCHITECTURE & ENGINEERING SPECIFICATIONS
 
 ### A. Dialogue System ("The Heart")
 *   **Structure:** Graph-based (Nodes + Edges).
 *   **Data Schema:** Standardized JSON/TS.
-*   **Pipeline:** Hot-reloadable content files with automated validation.
+*   **Pipeline:** Automated validation (`validate-dialogue-graphs.ts`).
 
 ### B. Quest/Mission System
-*   **Pattern:** "Event-Driven" over "Polled".
+*   **Pattern:** "Event-Driven".
 *   **State Machine:** `LOCKED` -> `UNLOCKED` -> `ACTIVE` -> `COMPLETED`.
 
 ### C. Character & Progression ("The Brain")
-*   **Model:** Hybrid Class/Skill (Patterns + granular Skills).
+*   **Model:** Hybrid Class/Skill.
 *   **Visualizer:** "Galaxy Map" style skill tree.
 
-### D. Inventory & Economy
+### D. Inventory & Loot Algorithms
 *   **Data:** Component-Based Item System.
-*   **Logic:** List-Based Inventory (Narrative focus).
+*   **Loot Logic:** Weighted Random Selection.
 
-### E. Animation & Fidelity
-*   **State Machine:** Hierarchical State Machine (HSM).
-*   **Event Notifiers:** Audio/FX tied to animation frames.
+### E. Animation State & Fidelity
+*   **State Machine:** Hierarchical (HSM) with Additive Blending.
+
+### F. World Simulation & Density
+*   **POI Distribution:** Radial Distribution Model ("Rule of 40 Seconds").
+*   **NPC Scheduling:** Radiant AI Pattern.
+*   **Station Evolution System:** State-driven visual layer.
+
+### G. Performance & Streaming
+*   **Strategy:** Asset Bundles / Sector Streaming.
+
+### H. THE SATELLITE OS (SIDE MENU ARCHITECTURE)
+*The "Device" through which the player interacts with their data. Must be Deeply Implemented, not just a list.*
+
+1.  **Dashboard (Home Screen):**
+    *   **Experience:** "Morning Briefing".
+    *   **Features:**
+        *   **Active Quest Tracker:** Only top 1 priority displayed.
+        *   **Notifications:** "3 Unread Echoes", "1 New Thought Formed".
+        *   **Station Status:** "Sector 2 Power: 45%" (Dynamic world state).
+    *   **Implementation:** `DashboardView.tsx` aggregating disparate state slices.
+
+2.  **Harmonics (Skills & Career):**
+    *   **Experience:** "Navigating a Galaxy".
+    *   **Features:**
+        *   **Constellation View:** 3D rotatable graph of Patterns (Stars) and Skills (Planets).
+        *   **"The Fog":** Unused skills are dimmed/blurred.
+        *   **Career Projection:** Overlay showing "Code 15-1121" matches your current shape.
+    *   **Implementation:** D3.js or React-Three-Fiber visualization driven by `skill-state.ts`.
+
+3.  **Relations (Social Graph):**
+    *   **Experience:** "Spy Agency Org Chart".
+    *   **Features:**
+        *   **Web View:** Force-directed graph showing who knows who (The "Echoes" network).
+        *   **Deep Profile:** Clicking a face shows "Public Stance" (what they say) vs "Private Opinion" (unlocked by Trust).
+        *   **Gift Log:** "You gave advice to Maya -> Manifested in Devon's Arc".
+    *   **Implementation:** Shared `RelationshipWeb` component consuming `character-relationships.ts`.
+
+4.  **The Mind (Thought Cabinet):**
+    *   **Experience:** "Developing Photos in a Darkroom".
+    *   **Features:**
+        *   **Inventory:** Grid of "Unknown Thoughts" (Locked slots) vs "Active Thoughts" (Equipped).
+        *   **Internalization:** Thoughts "cook" over time (in-game minutes) to become permanent buffs.
+        *   **Synergy:** Certain thoughts unlock unique dialogue options (e.g., "Maker Mindset" unlocks Engineering choices).
+    *   **Implementation:** `ThoughtCabinet.tsx` with timer logic in `game-loop.ts`.
+
+5.  **Log (Legacy Journal):**
+    *   **Experience:** "Captain's Log".
+    *   **Features:**
+        *   **Auto-Summarization:** LLM-generated summaries of completed arcs (baked, not real-time cost).
+        *   **Searchable History:** "What did Marcus say about the budget?"
+    *   **Implementation:** `JournalView.tsx` with text search.
 
 ---
 
-## 6. AAA ACCESSIBILITY & UX STANDARDS
-*Non-negotiable features for a modern "Quality" title.*
-
-1.  **Cognitive Accessibility:**
-    *   **"Review Mode":** All dialogue history is scrollable and searchable (don't rely on player working memory).
-    *   **"Decision Pause":** No timed choices unless explicitly creating "Stress" (and toggleable).
-2.  **Visual Accessibility:**
-    *   **Colorblind Support:** Pattern archetypes use Shape + Color + Sound (Triple Coding).
-    *   **Scalable UI:** Text size adjustments without breaking layout.
-3.  **Input Accessibility:**
-    *   **One-Handed Mode:** Entire game playable with just a mouse or just a numpad.
-    *   **Remappable Controls:** Full freedom.
+## 6. PLAYER PSYCHOLOGY ARCHITECTURE
+*   **Layer 1 (Core Fun):** Dialogue/Interrupts.
+*   **Layer 2 (Progression):** Harmonics/Thought Cabinet.
+*   **Layer 3 (Achievement):** Relationship Web.
+*   **Layer 4 (Mastery):** Hard Mode.
 
 ---
 
-## 7. STRATEGIC RESOURCE ALLOCATION
-
-### A. Team Scaling Model
-*   **Phase 1:** ~20-50 people (Proof of Concept).
-*   **Phase 2:** ~200 people (Content Scaling).
-*   **Phase 3:** ~150 people (Polish).
-
-### B. Financial Modeling
-*   **Budget:** ~$20-40M (Indie AAA) to ~$150M (Full AAA).
-
-### C. Build vs. Buy
-*   **Buy:** Engine (Unity/Unreal), Audio (Wwise).
-*   **Build:** Dialogue Graph, Skill Engine, Quest Logic.
+## 7. PRODUCTION RESILIENCE & PROCESS
+*   **MoSCoW:** Core = Arcs/Skills. Should = Cabinet/Web. Won't = Multiplayer.
+*   **Crisis Protocol:** Cut Features ("Legs"), not Quality.
 
 ---
 
-## 8. RISK MANAGEMENT & SUCCESS METRICS
-*   **Risk:** "Edutainment" Perception. -> **Mitigation:** Synesthetic UX & Diegetic interfaces.
-*   **Success Metric:** Retention D30 > 25%.
-*   **Success Metric:** "Self-Awareness" Delta Closure (Players' self-perception aligns with data by endgame).
+## 8. POST-LAUNCH & LIFECYCLE STRATEGY
+*   **Launch:** Sector 0+1.
+*   **Sequel:** Legacy Save (Career State).
+
+---
+
+## 9. AAA ACCESSIBILITY & UX STANDARDS
+1.  **Cognitive:** Review Mode, Decision Pause.
+2.  **Visual:** Colorblind Triple Coding, Scalable UI.
+3.  **Input:** One-Handed Mode, Remapping.
+
+---
+
+## 10. STRATEGIC RESOURCE ALLOCATION
+*   **Team:** 50 -> 200 -> 150.
+*   **Budget:** $20M - $150M.
+*   **Build vs Buy:** License Engine/Audio; Build Narrative/Skill Tech.
+
+---
+
+## 11. APPENDIX A: POTENTIAL FEATURE BACKLOG
+*   [ ] Procedural Texture Text
+*   [ ] Dynamic World Events
+*   [ ] Crafting System
+*   [ ] Desktop OS Integration
+*   [ ] Mobile Companion App
+
+## 12. APPENDIX B: TECHNICAL CONSIDERATIONS
+*   **Networking:** NO Multiplayer.
+*   **Localization:** Architecture Yes, Content English-Only first.
+*   **Physics:** Baked Only.
