@@ -1059,6 +1059,7 @@ She left. Took half the startup capital with her. Legally hers. But it felt like
         nextNodeId: 'tess_vulnerability_reflection',
         pattern: 'patience',
         skills: ['emotionalIntelligence'],
+        requiredOrbFill: { pattern: 'patience', threshold: 25 },
         consequence: {
           characterId: 'tess',
           trustChange: 2
@@ -1070,6 +1071,7 @@ She left. Took half the startup capital with her. Legally hers. But it felt like
         nextNodeId: 'tess_vulnerability_reflection',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
+        requiredOrbFill: { pattern: 'helping', threshold: 20 },
         consequence: {
           characterId: 'tess',
           trustChange: 2
@@ -1081,6 +1083,7 @@ She left. Took half the startup capital with her. Legally hers. But it felt like
         nextNodeId: 'tess_vulnerability_reflection',
         pattern: 'patience',
         skills: ['emotionalIntelligence'],
+        requiredOrbFill: { pattern: 'patience', threshold: 30 },
         consequence: {
           characterId: 'tess',
           trustChange: 2

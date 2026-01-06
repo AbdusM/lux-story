@@ -1267,6 +1267,7 @@ WARNING: Response time > 48h`,
         nextNodeId: 'marcus_vulnerability_reflection',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
+        requiredOrbFill: { pattern: 'helping', threshold: 25 },
         consequence: {
           characterId: 'marcus',
           trustChange: 2
@@ -1277,7 +1278,8 @@ WARNING: Response time > 48h`,
         text: "The system failed those children. Not you.",
         nextNodeId: 'marcus_vulnerability_reflection',
         pattern: 'analytical',
-        skills: ['systemsThinking']
+        skills: ['systemsThinking'],
+        requiredOrbFill: { pattern: 'analytical', threshold: 25 }
       },
       {
         choiceId: 'vuln_silence',
@@ -1285,6 +1287,7 @@ WARNING: Response time > 48h`,
         nextNodeId: 'marcus_vulnerability_reflection',
         pattern: 'patience',
         skills: ['emotionalIntelligence'],
+        requiredOrbFill: { pattern: 'patience', threshold: 30 },
         consequence: {
           characterId: 'marcus',
           trustChange: 2

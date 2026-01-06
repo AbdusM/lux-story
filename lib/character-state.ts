@@ -20,6 +20,7 @@ export interface CharacterState {
   knowledgeFlags: Set<string> // What this character knows about the player
   relationshipStatus: 'stranger' | 'acquaintance' | 'confidant'
   conversationHistory: string[] // Node IDs visited with this character
+  visitedPatternUnlocks?: Set<string> // Pattern-unlocked nodes already visited
 }
 
 /**
