@@ -35,7 +35,14 @@ export const kaiDialogueNodes: DialogueNode[] = [
         text: "Compliance theater. The company gets liability protection, workers get a checkbox.",
         nextNodeId: 'kai_systemic_response',
         pattern: 'analytical',
-        skills: ['systemsThinking', 'criticalThinking']
+        skills: ['systemsThinking', 'criticalThinking'],
+        voiceVariations: {
+          analytical: "Compliance theater. The company gets liability protection, workers get a checkbox.",
+          helping: "This sounds like it protects companies, not people.",
+          building: "The system's broken. Check the box, skip the learning.",
+          exploring: "So it's all theater? Nobody actually learns anything?",
+          patience: "That's a frustrating gap. Between what's required and what works."
+        }
       },
       {
         choiceId: 'kai_intro_curious',
@@ -60,7 +67,14 @@ export const kaiDialogueNodes: DialogueNode[] = [
         text: "So redesign it. Make something better.",
         nextNodeId: 'kai_practical_response',
         pattern: 'building',
-        skills: ['leadership', 'creativity']
+        skills: ['leadership', 'creativity'],
+        voiceVariations: {
+          analytical: "The current model has clear failure points. Build a better one.",
+          helping: "If this isn't working for people, what would?",
+          building: "So redesign it. Make something better.",
+          exploring: "What would actually effective training look like?",
+          patience: "Sometimes change starts with one person rebuilding one system."
+        }
       },
       {
         choiceId: 'kai_intro_patience',
@@ -68,6 +82,13 @@ export const kaiDialogueNodes: DialogueNode[] = [
         nextNodeId: 'kai_patience_response',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'adaptability'],
+        voiceVariations: {
+          analytical: "[Wait. Collect more data before responding.]",
+          helping: "[Stay present. They need space to process.]",
+          building: "[Hold. Sometimes the best action is waiting.]",
+          exploring: "[Let the moment unfold. There's more coming.]",
+          patience: "[Let the silence hold. They'll continue when ready.]"
+        },
         consequence: {
           characterId: 'kai',
           trustChange: 1
@@ -103,7 +124,18 @@ That's rare. Usually I have to explain why "completing training" and "being trai
       }
     ],
     choices: [
-      { choiceId: 'tell_gap', text: "Tell me more about that gap.", nextNodeId: 'kai_system_frustration' }
+      {
+        choiceId: 'tell_gap',
+        text: "Tell me more about that gap.",
+        nextNodeId: 'kai_system_frustration',
+        voiceVariations: {
+          analytical: "Quantify the gap for me. Where does the system fail?",
+          helping: "Tell me more about that gap. It clearly matters to you.",
+          building: "What's the delta between policy and practice?",
+          exploring: "I want to understand. Tell me more about that gap.",
+          patience: "Take your time. Tell me more about that gap."
+        }
+      }
     ]
   },
   {
