@@ -246,9 +246,9 @@ Deprecated code preserved for reference:
 | Jordan | 33 | Core ✅ |
 
 ### Key Documentation
-- `docs/03_PROCESS/SYSTEM_COVERAGE_JAN2026.md` - Accurate system coverage audit
-- `docs/03_PROCESS/FEATURE_PROGRESS_TRACKER_JAN2026.md` - All 572 features mapped
-- `docs/01_MECHANICS/INFINITE_CANVAS_FEATURE_CATALOG.md` - Full feature catalog
+- `docs/03_PROCESS/10-system-coverage.md` - Accurate system coverage audit
+- `docs/03_PROCESS/11-feature-progress-tracker.md` - All 572 features mapped
+- `docs/01_MECHANICS/21-infinite-canvas-feature-catalog.md` - Full feature catalog
 
 ### Recently Completed (January 2026)
 - **Loyalty Experiences 16/16** - All characters have loyalty experiences
@@ -543,8 +543,8 @@ done
 ```
 
 ### Priority Documents to Read
-1. `docs/03_PROCESS/SYSTEM_COVERAGE_JAN2026.md` - What's done vs what's missing
-2. `docs/03_PROCESS/FEATURE_PROGRESS_TRACKER_JAN2026.md` - Full 572-feature status
+1. `docs/03_PROCESS/10-system-coverage.md` - What's done vs what's missing
+2. `docs/03_PROCESS/11-feature-progress-tracker.md` - Full 572-feature status
 3. This file (CLAUDE.md) - Current Status section
 
 ### Q1 2026 Priority Tasks
