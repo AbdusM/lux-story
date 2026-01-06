@@ -1,8 +1,8 @@
 # System Coverage Status - January 2026
 
-**Date:** January 5, 2026
+**Date:** January 6, 2026
 **Purpose:** Accurate audit of all narrative systems coverage across 16 characters
-**Tests:** 377 passing
+**Tests:** 617 passing
 
 ---
 
@@ -22,8 +22,9 @@ The codebase has achieved **100% coverage** across all core narrative systems fo
 | **Consequence Echoes** | 8/15 (53%) | **16/16** | ✅ 100% |
 | **Pattern Voices** | 6/15 (40%) | **16/16** | ✅ 100% |
 | **Relationship Web** | 8/15 (53%) | **16/16** | ✅ 100% |
-| **Loyalty Experiences** | 5 chars | **7/16** | 🟡 44% |
+| **Loyalty Experiences** | 5 chars | **16/16** | ✅ 100% |
 | **Simulations** | Not measured | **10/16** | 🟡 63% |
+| **Derivatives System** | N/A | **7/7 modules** | ✅ 100% |
 
 ---
 
@@ -32,23 +33,23 @@ The codebase has achieved **100% coverage** across all core narrative systems fo
 | # | Character | Role | Dialogue Nodes | Tier |
 |---|-----------|------|----------------|------|
 | 1 | Samuel | The Conductor (Hub) | 186 | Core |
-| 2 | Maya | The Engineer | 35 | Core |
-| 3 | Marcus | The System | 16 | Core |
+| 2 | Maya | The Engineer | 44 | Core |
+| 3 | Marcus | The System | 71 | Core |
 | 4 | Kai | The Inspector | 50 | Core |
 | 5 | Rohan | The Skeptic | 38 | Core |
 | 6 | Devon | The Builder | 43 | Secondary |
-| 7 | Tess | The Merchant | 37 | Secondary |
-| 8 | Yaquin | The Scholar | 36 | Secondary |
-| 9 | Grace | The Doctor | 30 | Secondary |
-| 10 | Elena | The Historian | 16 | Secondary |
-| 11 | Alex | The Rat | 35 | Secondary |
+| 7 | Tess | The Merchant | 48 | Secondary |
+| 8 | Yaquin | The Scholar | 43 | Secondary |
+| 9 | Grace | The Doctor | 35 | Secondary |
+| 10 | Elena | The Historian | 76 | Secondary |
+| 11 | Alex | The Rat | 45 | Secondary |
 | 12 | Jordan | Career Navigator | 33 | Secondary |
 | 13 | Silas | The Mechanic | 39 | Extended |
-| 14 | Asha | The Mediator | 10 | Extended |
-| 15 | Lira | The Voice | 10 | Extended |
-| 16 | Zara | The Artist | 10 | Extended |
+| 14 | Asha | The Mediator | 47 | Extended |
+| 15 | Lira | The Voice | 65 | Extended |
+| 16 | Zara | The Artist | 71 | Extended |
 
-**Total Dialogue Nodes:** 624
+**Total Dialogue Nodes:** 934
 
 ---
 
@@ -144,7 +145,7 @@ Each character has 2-6 relationship edges to other characters.
 
 ---
 
-### 6. Loyalty Experiences (7/16) 🟡
+### 6. Loyalty Experiences (16/16) ✅
 
 Deep-dive gameplay experiences requiring Trust ≥ 8 and Pattern ≥ 5.
 
@@ -157,15 +158,15 @@ Deep-dive gameplay experiences requiring Trust ≥ 8 and Pattern ≥ 5.
 | Rohan | "The Confrontation" | ✅ |
 | Tess | "The First Class" | ✅ |
 | Jordan | "The Crossroads" | ✅ |
-| Grace | TBD | ❌ |
-| Alex | TBD | ❌ |
-| Silas | TBD | ❌ |
-| Yaquin | TBD | ❌ |
-| Elena | TBD | ❌ |
-| Asha | TBD | ❌ |
-| Lira | TBD | ❌ |
-| Zara | TBD | ❌ |
-| Kai | TBD | ❌ |
+| Grace | "The Night Shift" | ✅ |
+| Alex | "The Shortage" | ✅ |
+| Silas | "The Inspection" | ✅ |
+| Yaquin | "The Lecture" | ✅ |
+| Elena | "The Archive" | ✅ |
+| Asha | "The Mediation" | ✅ |
+| Lira | "The Broadcast" | ✅ |
+| Zara | "The Algorithm" | ✅ |
+| Kai | "The Variance" | ✅ |
 
 ---
 
@@ -198,43 +199,47 @@ Interactive mini-games within dialogue.
 
 ### Characters by Dialogue Depth
 
-| Tier | Characters | Avg Nodes | Recommendation |
-|------|------------|-----------|----------------|
-| **Hub** | Samuel | 186 | Complete |
-| **Deep** (40+) | Kai, Devon, Silas, Rohan | 42.5 | Complete |
-| **Standard** (30-39) | Tess, Yaquin, Alex, Maya, Jordan, Grace | 34.3 | Complete |
-| **Shallow** (10-16) | Marcus, Elena, Asha, Lira, Zara | 12.4 | **Expand** |
+| Tier | Characters | Avg Nodes | Status |
+|------|------------|-----------|--------|
+| **Hub** | Samuel | 186 | ✅ Complete |
+| **Deep** (60+) | Elena, Marcus, Zara, Lira | 70.8 | ✅ Complete |
+| **Standard** (40-59) | Kai, Asha, Tess, Alex, Maya, Devon, Yaquin | 46.3 | ✅ Complete |
+| **Core** (30-39) | Rohan, Silas, Grace, Jordan | 36.3 | ✅ Complete |
 
-### Priority: Expand Shallow Characters
+### All Character Depth Targets Met ✅
 
-These 5 characters have only 10-16 nodes each and would benefit from expansion:
+All previously shallow characters have been expanded beyond targets:
 
-1. **Marcus** (16 nodes) - Core Cast, has loyalty experience
-2. **Elena** (16 nodes) - Has simulation, needs more dialogue
-3. **Asha** (10 nodes) - Has simulation + vulnerability, needs dialogue
-4. **Lira** (10 nodes) - Has simulation + vulnerability, needs dialogue
-5. **Zara** (10 nodes) - Has simulation + vulnerability, needs dialogue
+| Character | Before | After | Target | Status |
+|-----------|--------|-------|--------|--------|
+| Marcus | 16 | 71 | 35 | ✅ +106% |
+| Elena | 16 | 76 | 35 | ✅ +117% |
+| Asha | 10 | 47 | 25 | ✅ +88% |
+| Lira | 10 | 65 | 25 | ✅ +160% |
+| Zara | 10 | 71 | 25 | ✅ +184% |
 
 ---
 
 ## Priority Actions
 
-### Immediate (Complete Systems)
+### Completed ✅
 
-1. **Loyalty Experiences** (7/16 → 16/16)
-   - Add experiences for: Grace, Alex, Silas, Yaquin, Elena, Asha, Lira, Zara, Kai
+1. **Loyalty Experiences** (16/16) ✅
+   - All 16 characters now have loyalty experiences
 
-2. **Simulations** (10/16 → 16/16)
+2. **Dialogue Expansion** ✅
+   - All shallow characters expanded beyond targets
+   - Total nodes: 624 → 934 (+50%)
+
+3. **Derivatives System** (7/7 modules) ✅
+   - trust-derivatives, pattern-derivatives, character-derivatives
+   - narrative-derivatives, knowledge-derivatives, interrupt-derivatives
+   - assessment-derivatives (239 new tests)
+
+### Remaining (Complete Systems)
+
+1. **Simulations** (10/16 → 16/16)
    - Add simulations for: Maya, Tess, Yaquin, Grace, Alex, Silas
-
-### Medium-Term (Depth)
-
-3. **Expand Shallow Characters**
-   - Marcus: 16 → 35 nodes
-   - Elena: 16 → 35 nodes
-   - Asha: 10 → 25 nodes
-   - Lira: 10 → 25 nodes
-   - Zara: 10 → 25 nodes
 
 ---
 
@@ -262,5 +267,6 @@ Those documents should be updated or reference this file for accurate coverage d
 ---
 
 **Generated:** January 5, 2026
-**Tests:** 377 passing
-**Status:** Comprehensive audit complete
+**Updated:** January 6, 2026
+**Tests:** 617 passing
+**Status:** Comprehensive audit complete - Loyalty 16/16, Derivatives 7/7
