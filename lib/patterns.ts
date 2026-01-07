@@ -182,6 +182,104 @@ export function getPatternColor(pattern: PatternType | string): string {
   return '#6B7280'
 }
 
+// ═══════════════════════════════════════════════════════════════════════════
+// D-077: COLOR BLIND PATTERN MODES
+// Accessible color palettes for different types of color vision deficiency
+// ═══════════════════════════════════════════════════════════════════════════
+
+/**
+ * Color blind mode types
+ */
+export type ColorBlindMode = 'default' | 'protanopia' | 'deuteranopia' | 'tritanopia' | 'highContrast'
+
+/**
+ * Color blind-friendly palettes
+ * Research-based colors optimized for each type of color vision deficiency
+ */
+export const COLOR_BLIND_PALETTES: Record<ColorBlindMode, Record<PatternType, string>> = {
+  default: {
+    analytical: '#3B82F6',  // Blue
+    patience: '#10B981',    // Green
+    exploring: '#8B5CF6',   // Purple
+    helping: '#EC4899',     // Pink
+    building: '#F59E0B'     // Amber
+  },
+  // Protanopia (red-blind): Replace red/green with blue/yellow spectrum
+  protanopia: {
+    analytical: '#0077BB',  // Blue
+    patience: '#33BBEE',    // Cyan
+    exploring: '#EE7733',   // Orange
+    helping: '#CC3311',     // Dark red (visible as darker)
+    building: '#EE3377'     // Magenta
+  },
+  // Deuteranopia (green-blind): Similar adjustments, shift green to blue
+  deuteranopia: {
+    analytical: '#0077BB',  // Blue
+    patience: '#009988',    // Teal
+    exploring: '#EE7733',   // Orange
+    helping: '#CC3311',     // Dark red
+    building: '#EE3377'     // Magenta
+  },
+  // Tritanopia (blue-blind): Replace blue/purple with red/green spectrum
+  tritanopia: {
+    analytical: '#117733',  // Dark green
+    patience: '#44AA99',    // Teal-green
+    exploring: '#CC6677',   // Rose
+    helping: '#882255',     // Dark magenta
+    building: '#DDCC77'     // Yellow-tan
+  },
+  // High contrast: Maximum distinction for low vision
+  highContrast: {
+    analytical: '#0000FF',  // Pure blue
+    patience: '#00FF00',    // Pure green
+    exploring: '#FF00FF',   // Magenta
+    helping: '#FF0000',     // Pure red
+    building: '#FFFF00'     // Yellow
+  }
+}
+
+/**
+ * Get accessible color for pattern based on color blind mode
+ */
+export function getAccessiblePatternColor(
+  pattern: PatternType | string,
+  mode: ColorBlindMode = 'default'
+): string {
+  if (pattern in PATTERN_METADATA) {
+    return COLOR_BLIND_PALETTES[mode][pattern as PatternType]
+  }
+  return '#6B7280'
+}
+
+/**
+ * Get all pattern colors for a specific color blind mode
+ */
+export function getPatternColorPalette(mode: ColorBlindMode = 'default'): Record<PatternType, string> {
+  return COLOR_BLIND_PALETTES[mode]
+}
+
+/**
+ * Color blind mode labels for UI
+ */
+export const COLOR_BLIND_MODE_LABELS: Record<ColorBlindMode, string> = {
+  default: 'Default',
+  protanopia: 'Protanopia (Red-blind)',
+  deuteranopia: 'Deuteranopia (Green-blind)',
+  tritanopia: 'Tritanopia (Blue-blind)',
+  highContrast: 'High Contrast'
+}
+
+/**
+ * Color blind mode descriptions for accessibility settings
+ */
+export const COLOR_BLIND_MODE_DESCRIPTIONS: Record<ColorBlindMode, string> = {
+  default: 'Standard color palette',
+  protanopia: 'Optimized for red-green color blindness (red-blind type)',
+  deuteranopia: 'Optimized for red-green color blindness (green-blind type)',
+  tritanopia: 'Optimized for blue-yellow color blindness',
+  highContrast: 'Maximum contrast for low vision accessibility'
+}
+
 /**
  * Get skills associated with a pattern
  * @example getPatternSkills('analytical') => ['criticalThinking', 'problemSolving', 'digitalLiteracy']

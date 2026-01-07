@@ -84,7 +84,10 @@ import { calculatePatternGain } from '@/lib/identity-system'
 import { getConsequenceEcho, checkPatternThreshold as checkPatternEchoThreshold, getPatternRecognitionEcho, createResonanceEchoFromDescription, getVoicedChoiceText, applyPatternReflection, getOrbMilestoneEcho, getDiscoveryHint, DISCOVERY_HINTS, type ConsequenceEcho } from '@/lib/consequence-echoes'
 import { calculateResonantTrustChange } from '@/lib/pattern-affinity'
 import { getEchoIntensity, ECHO_INTENSITY_MODIFIERS } from '@/lib/trust-derivatives'
-import { calculateCharacterTrustDecay } from '@/lib/pattern-derivatives'
+import { calculateCharacterTrustDecay, getPatternRecognitionComments, type PatternRecognitionComment } from '@/lib/pattern-derivatives'
+import { getNewlyAvailableCombinations, type KnowledgeCombination } from '@/lib/knowledge-derivatives'
+import { getActiveTextEffects, getTextEffectClasses, getTextEffectStyles } from '@/lib/narrative-derivatives'
+import { INTERRUPT_PATTERN_ALIGNMENT } from '@/lib/interrupt-derivatives'
 import { checkTransformationEligible, type TransformationMoment } from '@/lib/character-transformations'
 import { loadEchoQueue, saveEchoQueue, queueEchosForFlag, getAndUpdateEchosForCharacter, type CrossCharacterEchoQueueState } from '@/lib/cross-character-memory'
 import { CheckInQueue } from '@/lib/character-check-ins'
@@ -169,6 +172,27 @@ interface GameInterfaceState {
 
 import type { ExperienceSummaryData } from '@/components/ExperienceSummary'
 
+// D-009: Filter interrupt visibility based on player's developed patterns
+// Only see interrupts aligned with patterns at EMERGING threshold (2+)
+const EMERGING_THRESHOLD = 2 // Matches PATTERN_THRESHOLDS.EMERGING
+function shouldShowInterrupt(
+  interrupt: InterruptWindow | null | undefined,
+  patterns: { analytical: number; patience: number; exploring: number; helping: number; building: number }
+): InterruptWindow | null {
+  if (!interrupt) return null
+
+  // Get patterns aligned with this interrupt type
+  const alignedPatterns = INTERRUPT_PATTERN_ALIGNMENT[interrupt.type]
+  if (!alignedPatterns) return interrupt // Unknown type - show by default
+
+  // Check if any aligned pattern is at EMERGING threshold
+  const hasAlignedPattern = alignedPatterns.some(
+    patternKey => patterns[patternKey] >= EMERGING_THRESHOLD
+  )
+
+  // If no aligned pattern developed, hide the interrupt
+  return hasAlignedPattern ? interrupt : null
+}
 
 function AmbientDescriptionDisplay({ gameState, mode = 'fixed' }: { gameState: GameState, mode?: 'fixed' | 'inline' }) {
   const [description, setDescription] = useState('')
@@ -687,7 +711,7 @@ export default function StatefulGameInterface() {
         hasNewMeeting: false,
         isMuted: false,
         showReport: false,
-        activeInterrupt: content.interrupt || null,
+        activeInterrupt: shouldShowInterrupt(content.interrupt, gameState.patterns), // D-009: Filter by pattern
         patternVoice: null,
         waitingCharacters,
         pendingGift: null,
@@ -1192,6 +1216,78 @@ export default function StatefulGameInterface() {
         }
       }
 
+      // D-004: Check for pattern recognition comments
+      // Characters notice and comment on player's developed patterns
+      if (!consequenceEcho) {
+        // Get shown comments from localStorage (or could add to game state)
+        const shownCommentsKey = 'lux_pattern_recognition_shown'
+        const shownCommentsRaw = typeof window !== 'undefined' ? localStorage.getItem(shownCommentsKey) : null
+        const shownComments = new Set<string>(shownCommentsRaw ? JSON.parse(shownCommentsRaw) : [])
+
+        const patternComments = getPatternRecognitionComments(
+          targetCharacterId,
+          newGameState.patterns,
+          shownComments
+        )
+
+        if (patternComments.length > 0) {
+          const comment = patternComments[0]
+          consequenceEcho = {
+            text: `"${comment.comment}"`,
+            emotion: comment.emotion,
+            timing: 'immediate'
+          }
+
+          // Mark as shown
+          const commentKey = `${comment.characterId}_${comment.pattern}_${comment.threshold}`
+          shownComments.add(commentKey)
+          if (typeof window !== 'undefined') {
+            localStorage.setItem(shownCommentsKey, JSON.stringify([...shownComments]))
+          }
+
+          logger.info('[StatefulGameInterface] D-004 Pattern recognition comment:', {
+            characterId: targetCharacterId,
+            pattern: comment.pattern,
+            comment: comment.comment.substring(0, 40) + '...'
+          })
+        }
+      }
+
+      // D-006: Check for newly available knowledge combinations
+      // When player has gathered enough knowledge pieces, they can make connections
+      if (!consequenceEcho) {
+        // Get character knowledge map
+        const characterKnowledge = new Map<string, Set<string>>()
+        newGameState.characters.forEach((char, charId) => {
+          characterKnowledge.set(charId, char.knowledgeFlags)
+        })
+
+        // Check for new combinations (compare old vs new state)
+        const oldGlobalFlags = state.gameState?.globalFlags || new Set<string>()
+        const newCombinations = getNewlyAvailableCombinations(
+          oldGlobalFlags,
+          newGameState.globalFlags,
+          characterKnowledge
+        )
+
+        if (newCombinations.length > 0) {
+          const combo = newCombinations[0]
+          consequenceEcho = {
+            text: combo.discoveryText,
+            emotion: 'revelation',
+            timing: 'immediate'
+          }
+          // Add the unlock flag
+          newGameState.globalFlags.add(combo.unlocksFlag)
+
+          logger.info('[StatefulGameInterface] D-006 Knowledge combination discovered:', {
+            comboId: combo.id,
+            comboName: combo.name,
+            unlocksNode: combo.unlocksNodeId
+          })
+        }
+      }
+
       // Check for delayed gifts ready to deliver
       // Gifts surface after N interactions, creating "your choice mattered" moments
       let pendingGift: DelayedGift | null = null
@@ -1456,7 +1552,7 @@ export default function StatefulGameInterface() {
         showConstellation: state.showConstellation,
         pendingFloatingModule: null, // Floating modules disabled
         showJourneySummary: state.showJourneySummary,
-        activeInterrupt: content.interrupt || null, // ME2-style interrupt window
+        activeInterrupt: shouldShowInterrupt(content.interrupt, newGameState.patterns), // D-009: Filter by pattern
         journeyNarrative: state.journeyNarrative,
         achievementNotification,
         ambientEvent: null,  // Clear ambient event when player acts
@@ -1649,7 +1745,7 @@ export default function StatefulGameInterface() {
       availableChoices: choices,
       currentContent: reflected.text,
       currentDialogueContent: { ...content, text: reflected.text, emotion: reflected.emotion },
-      activeInterrupt: content.interrupt || null
+      activeInterrupt: shouldShowInterrupt(content.interrupt, newGameState.patterns) // D-009: Filter by pattern
     }))
 
     GameStateManager.saveGameState(newGameState)
@@ -1693,7 +1789,7 @@ export default function StatefulGameInterface() {
             availableChoices: choices,
             currentContent: reflected.text,
             currentDialogueContent: { ...content, text: reflected.text, emotion: reflected.emotion },
-            activeInterrupt: content.interrupt || null
+            activeInterrupt: state.gameState ? shouldShowInterrupt(content.interrupt, state.gameState.patterns) : null // D-009: Filter by pattern
           }))
           return
         }
@@ -2207,19 +2303,31 @@ export default function StatefulGameInterface() {
                         </div>
                       ) : (
                         <div className="p-6 md:p-8">
-                          <DialogueDisplay
-                            key={`dialogue-display-${state.gameState?.currentNodeId || 'none'}-${state.currentCharacterId}-${state.currentContent?.substring(0, 20) || ''}`}
-                            text={cleanContent(state.gameState ? TextProcessor.process(state.currentContent || '', state.gameState) : (state.currentContent || ''))}
-                            characterName={state.currentNode?.speaker}
-                            characterId={state.currentCharacterId}
-                            gameState={state.gameState ?? undefined}
-                            showAvatar={false}
-                            richEffects={getRichEffectContext(state.currentDialogueContent, state.isLoading, state.recentSkills, state.useChatPacing)}
-                            interaction={state.currentDialogueContent?.interaction}
-                            emotion={state.currentDialogueContent?.emotion}
-                            microAction={state.currentDialogueContent?.microAction}
-                            patternSensation={state.patternSensation}
-                          />
+                          {/* D-008: Compute text effects based on player state */}
+                          {(() => {
+                            const textEffects = state.gameState
+                              ? getActiveTextEffects(state.gameState, state.currentCharacterId)
+                              : []
+                            const textEffectClasses = getTextEffectClasses(textEffects)
+                            const textEffectStyles = getTextEffectStyles(textEffects)
+                            return (
+                              <DialogueDisplay
+                                key={`dialogue-display-${state.gameState?.currentNodeId || 'none'}-${state.currentCharacterId}-${state.currentContent?.substring(0, 20) || ''}`}
+                                text={cleanContent(state.gameState ? TextProcessor.process(state.currentContent || '', state.gameState) : (state.currentContent || ''))}
+                                characterName={state.currentNode?.speaker}
+                                characterId={state.currentCharacterId}
+                                gameState={state.gameState ?? undefined}
+                                showAvatar={false}
+                                richEffects={getRichEffectContext(state.currentDialogueContent, state.isLoading, state.recentSkills, state.useChatPacing)}
+                                interaction={state.currentDialogueContent?.interaction}
+                                emotion={state.currentDialogueContent?.emotion}
+                                microAction={state.currentDialogueContent?.microAction}
+                                patternSensation={state.patternSensation}
+                                textEffectClasses={textEffectClasses}
+                                textEffectStyles={textEffectStyles}
+                              />
+                            )
+                          })()}
 
                           {/* ME2-style interrupt button - appears during NPC speech */}
                           {state.activeInterrupt && (

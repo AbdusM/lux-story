@@ -11,6 +11,7 @@
  * - Meta-narrative access at pattern mastery
  */
 
+import type { CSSProperties } from 'react'
 import { PatternType, PATTERN_THRESHOLDS } from './patterns'
 import { PlayerPatterns, GameState } from './character-state'
 import { CharacterId } from './graph-registry'
@@ -177,6 +178,61 @@ export function getActiveTextEffects(
   }
 
   return effects
+}
+
+/**
+ * Convert TextEffect[] to CSS class string for styling
+ * Maps effects to corresponding CSS classes in globals.css
+ */
+export function getTextEffectClasses(effects: TextEffect[]): string {
+  if (effects.length === 0) return ''
+
+  const classes: string[] = []
+
+  effects.forEach(effect => {
+    // Base effect class
+    classes.push(`text-effect-${effect.type}`)
+
+    // Intensity modifier
+    if (effect.intensity) {
+      classes.push(`text-effect-${effect.intensity}`)
+    }
+
+    // Pattern-specific color override
+    if (effect.trigger.condition === 'pattern_level' && effect.trigger.pattern) {
+      classes.push(`text-effect-pattern-${effect.trigger.pattern}`)
+    }
+
+    // Character-specific color override
+    if (effect.trigger.condition === 'character_speaking' && effect.trigger.characterId) {
+      classes.push(`text-effect-character-${effect.trigger.characterId}`)
+    }
+  })
+
+  return classes.join(' ')
+}
+
+/**
+ * Get CSS style object for inline color variables
+ * Used when effects need custom colors beyond CSS class defaults
+ */
+export function getTextEffectStyles(effects: TextEffect[]): CSSProperties {
+  const styles: CSSProperties = {}
+
+  effects.forEach(effect => {
+    if (effect.color) {
+      // Set appropriate CSS variable based on effect type
+      if (effect.type === 'shimmer') {
+        (styles as Record<string, string>)['--shimmer-color'] = effect.color
+      } else if (effect.type === 'glow') {
+        (styles as Record<string, string>)['--glow-color'] = effect.color
+      } else if (effect.type === 'echo') {
+        (styles as Record<string, string>)['--echo-color'] = effect.color
+      }
+    }
+  })
+
+  return styles
 }
 
 // ═══════════════════════════════════════════════════════════════════════════

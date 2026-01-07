@@ -41,6 +41,9 @@ interface DialogueDisplayProps {
     patience?: number
     exploring?: number
   }
+  // D-008: Rich text state effects
+  textEffectClasses?: string // CSS classes from getTextEffectClasses()
+  textEffectStyles?: React.CSSProperties // Inline styles from getTextEffectStyles()
 }
 
 /**
@@ -67,7 +70,9 @@ export function DialogueDisplay({
   emotion,
   microAction,
   patternSensation: _patternSensation,
-  playerPatterns: _playerPatterns
+  playerPatterns: _playerPatterns,
+  textEffectClasses,
+  textEffectStyles
 }: DialogueDisplayProps) {
   // Get unlock-based content enhancements
   const _enhancements = useUnlockEffects(text, emotion,
@@ -91,13 +96,21 @@ export function DialogueDisplay({
 
   // Use RichTextRenderer for all standard rendering (replacing legacy manual parsing)
   // It handles | splitting, inline interactions, and markdown internally
-  const content = (
+  // D-008: Wrap in span with text effect classes/styles if provided
+  const rendererContent = (
     <RichTextRenderer
       text={chunkedText}
       effects={richEffects || { mode: 'static' }}
       className={cn("text-lg leading-loose text-[color:var(--text-dialogue)] narrative-text", voiceClass, interactionClass)} // WCAG AA warm cream from --text-dialogue
     />
   )
+
+  // D-008: Apply text effect styling from getActiveTextEffects()
+  const content = textEffectClasses ? (
+    <span className={textEffectClasses} style={textEffectStyles}>
+      {rendererContent}
+    </span>
+  ) : rendererContent
 
   return (
     <div
