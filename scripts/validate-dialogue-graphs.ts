@@ -56,6 +56,7 @@ interface GraphStats {
   name: string
   totalNodes: number
   totalChoices: number
+  totalInterrupts: number
   reachableNodes: number
   orphanedNodes: number
   brokenReferences: number
@@ -211,10 +212,15 @@ class DialogueGraphValidator {
     }
 
     // Calculate stats
+    const totalInterrupts = nodes.reduce((sum, n) =>
+      sum + (n.content || []).filter(c => c.interrupt).length, 0
+    )
+
     const stats: GraphStats = {
       name,
       totalNodes: nodes.length,
       totalChoices: nodes.reduce((sum, n) => sum + n.choices.length, 0),
+      totalInterrupts,
       reachableNodes: reachableFromStart.size,
       orphanedNodes: orphanedNodes.length,
       brokenReferences: this.errors.filter(e => e.graph === name && e.message.includes('points to non-existent')).length,
@@ -311,6 +317,55 @@ class DialogueGraphValidator {
         })
       }
       variationIds.add(content.variation_id)
+
+      // Validate interrupt windows in content
+      if (content.interrupt) {
+        const interrupt = content.interrupt
+
+        // Check interrupt targetNodeId exists
+        if (!interrupt.targetNodeId) {
+          this.errors.push({
+            severity: 'error',
+            graph: graphName,
+            nodeId: node.nodeId,
+            message: 'Interrupt missing targetNodeId',
+            suggestion: 'Every interrupt must point to a target node'
+          })
+        } else if (!nodeMap.has(interrupt.targetNodeId) && !this.isExternalReference(interrupt.targetNodeId)) {
+          this.errors.push({
+            severity: 'error',
+            graph: graphName,
+            nodeId: node.nodeId,
+            message: `Interrupt points to non-existent node: "${interrupt.targetNodeId}"`,
+            suggestion: `Create node "${interrupt.targetNodeId}" or fix the reference`
+          })
+        }
+
+        // Validate interrupt trust change is within bounds
+        const interruptTrustChange = interrupt.consequence?.trustChange
+        if (interruptTrustChange !== undefined) {
+          if (interruptTrustChange < -2 || interruptTrustChange > 2) {
+            this.warnings.push({
+              severity: 'warning',
+              graph: graphName,
+              nodeId: node.nodeId,
+              message: `Interrupt trust change ${interruptTrustChange} is outside recommended range [-2, 2]`,
+              suggestion: 'Large trust changes can feel jarring. Consider smaller incremental changes.'
+            })
+          }
+        }
+
+        // Validate interrupt duration
+        if (interrupt.duration && (interrupt.duration < 1000 || interrupt.duration > 10000)) {
+          this.warnings.push({
+            severity: 'warning',
+            graph: graphName,
+            nodeId: node.nodeId,
+            message: `Interrupt duration ${interrupt.duration}ms is outside recommended range [1000, 10000]`,
+            suggestion: 'Duration should give players time to react (2000-4000ms recommended)'
+          })
+        }
+      }
     }
 
     // Validate choices
@@ -397,6 +452,21 @@ class DialogueGraphValidator {
             choiceId: choice.choiceId,
             message: `Consequence targets "${choice.consequence.characterId}" but graph is for "${expectedChar}"`,
             suggestion: 'Ensure consequence characterId matches the graph character'
+          })
+        }
+      }
+
+      // Validate trust change is within reasonable bounds [-2, 2]
+      const trustChange = choice.consequence?.trustChange
+      if (trustChange !== undefined) {
+        if (trustChange < -2 || trustChange > 2) {
+          this.warnings.push({
+            severity: 'warning',
+            graph: graphName,
+            nodeId: node.nodeId,
+            choiceId: choice.choiceId,
+            message: `Trust change ${trustChange} is outside recommended range [-2, 2]`,
+            suggestion: 'Large trust changes can feel jarring. Consider smaller incremental changes.'
           })
         }
       }
@@ -587,14 +657,19 @@ function main(): void {
 
   let totalNodes = 0
   let totalChoices = 0
+  let totalInterrupts = 0
 
   for (const stat of result.stats) {
     totalNodes += stat.totalNodes
     totalChoices += stat.totalChoices
+    totalInterrupts += stat.totalInterrupts
 
     console.log(`\n${stat.name}:`)
     console.log(`  Nodes: ${stat.totalNodes} (${stat.reachableNodes} reachable)`)
     console.log(`  Choices: ${stat.totalChoices}`)
+    if (stat.totalInterrupts > 0) {
+      console.log(`  Interrupts: ${stat.totalInterrupts}`)
+    }
     console.log(`  Max depth: ${stat.maxDepth}`)
     console.log(`  Trust-gated: ${stat.trustGatedNodes}`)
     console.log(`  Flag-gated: ${stat.flagGatedNodes}`)
@@ -619,7 +694,7 @@ function main(): void {
   }
 
   console.log('\n' + '─'.repeat(50))
-  console.log(`TOTAL: ${totalNodes} nodes, ${totalChoices} choices across ${graphs.length} graphs`)
+  console.log(`TOTAL: ${totalNodes} nodes, ${totalChoices} choices, ${totalInterrupts} interrupts across ${graphs.length} graphs`)
 
   // Print errors
   if (result.errors.length > 0) {
