@@ -83,8 +83,8 @@ import { PATTERN_TYPES, type PatternType, getPatternSensation, isValidPattern } 
 import { calculatePatternGain } from '@/lib/identity-system'
 import { getConsequenceEcho, checkPatternThreshold as checkPatternEchoThreshold, getPatternRecognitionEcho, createResonanceEchoFromDescription, getVoicedChoiceText, applyPatternReflection, getOrbMilestoneEcho, getDiscoveryHint, DISCOVERY_HINTS, type ConsequenceEcho } from '@/lib/consequence-echoes'
 import { calculateResonantTrustChange } from '@/lib/pattern-affinity'
-import { getEchoIntensity, ECHO_INTENSITY_MODIFIERS, analyzeTrustAsymmetry, getAsymmetryComment, type AsymmetryReaction, calculateInheritedTrust } from '@/lib/trust-derivatives'
-import { calculateCharacterTrustDecay, getPatternRecognitionComments, type PatternRecognitionComment, getUnlockedGates, PATTERN_TRUST_GATES, checkNewAchievements, type PatternAchievement } from '@/lib/pattern-derivatives'
+import { getEchoIntensity, ECHO_INTENSITY_MODIFIERS, analyzeTrustAsymmetry, getAsymmetryComment, type AsymmetryReaction, calculateInheritedTrust, recordTrustChange, type TrustTimeline } from '@/lib/trust-derivatives'
+import { calculateCharacterTrustDecay, getPatternRecognitionComments, type PatternRecognitionComment, getUnlockedGates, PATTERN_TRUST_GATES, checkNewAchievements, type PatternAchievement, recordPatternEvolution, type PatternEvolutionHistory } from '@/lib/pattern-derivatives'
 import { getNewlyAvailableCombinations, type KnowledgeCombination, recordIcebergMention, getInvestigableTopics, type IcebergReference } from '@/lib/knowledge-derivatives'
 import { getActiveTextEffects, getTextEffectClasses, getTextEffectStyles, getActiveMagicalRealisms, type MagicalRealism } from '@/lib/narrative-derivatives'
 import {
@@ -878,6 +878,25 @@ export default function StatefulGameInterface() {
           context: `Made ${result.events.earnOrb} choice with ${state.currentCharacterId || 'the station'}`
         })
 
+        // D-040: Record pattern evolution for heatmap visualization
+        if (newGameState.patternEvolutionHistory) {
+          const baseGain = 1 // Standard pattern gain
+          const patternGain = calculatePatternGain(baseGain, result.events.earnOrb, newGameState)
+          newGameState.patternEvolutionHistory = recordPatternEvolution(
+            newGameState.patternEvolutionHistory,
+            state.currentNode?.nodeId || 'unknown',
+            state.currentCharacterId || 'station',
+            result.events.earnOrb,
+            patternGain,
+            choice.choice.text.substring(0, 50)
+          )
+          logger.info('[StatefulGameInterface] D-040 Pattern evolution recorded:', {
+            pattern: result.events.earnOrb,
+            delta: patternGain,
+            characterId: state.currentCharacterId
+          })
+        }
+
         if (crossedThreshold5) {
           const identityThoughtId = `identity-${result.events.earnOrb}` as const
           newGameState = GameStateUtils.applyStateChange(newGameState, {
@@ -1041,6 +1060,23 @@ export default function StatefulGameInterface() {
         // Audio feedback for trust increase
         if (trustDelta > 0) {
           playTrustSound()
+        }
+
+        // D-039: Record trust change in timeline for visualization
+        const charState = newGameState.characters.get(state.currentCharacterId)
+        if (charState?.trustTimeline) {
+          charState.trustTimeline = recordTrustChange(
+            charState.trustTimeline,
+            charState.trust,
+            trustDelta,
+            state.currentNode?.nodeId || 'unknown',
+            choice.choice.text.substring(0, 50)
+          )
+          logger.info('[StatefulGameInterface] D-039 Trust timeline recorded:', {
+            characterId: state.currentCharacterId,
+            newTrust: charState.trust,
+            delta: trustDelta
+          })
         }
       }
 
@@ -1213,6 +1249,17 @@ export default function StatefulGameInterface() {
               oldTrust,
               newTrust: targetCharacter.trust
             })
+
+            // D-039: Record trust decay in timeline
+            if (targetCharacter.trustTimeline) {
+              targetCharacter.trustTimeline = recordTrustChange(
+                targetCharacter.trustTimeline,
+                targetCharacter.trust,
+                -decayAmount,
+                nextNode.nodeId,
+                `Trust decay (${sessionsAbsent} sessions absent)`
+              )
+            }
           }
         }
       }

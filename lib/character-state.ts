@@ -6,8 +6,9 @@ import { INITIAL_TRUST, TRUST_THRESHOLDS, NARRATIVE_CONSTANTS as GLOBAL_NARRATIV
 import { NervousSystemState, determineNervousSystemState, ChemicalReaction } from './emotions'
 import { calculateReaction } from './chemistry'
 import { ArchivistState } from './lore-system'
-import { type TrustMomentum, createTrustMomentum, updateTrustMomentum, applyMomentumToTrustChange } from './trust-derivatives'
+import { type TrustMomentum, createTrustMomentum, updateTrustMomentum, applyMomentumToTrustChange, type TrustTimeline, createTrustTimeline } from './trust-derivatives'
 import { type IcebergState, createIcebergState } from './knowledge-derivatives'
+import { type PatternEvolutionHistory, createPatternEvolutionHistory } from './pattern-derivatives'
 
 /**
  * Core character relationship state
@@ -27,6 +28,8 @@ export interface CharacterState {
   lastInteractionTimestamp?: number
   /** D-082: Trust momentum - accelerates/decelerates trust changes based on history */
   trustMomentum?: TrustMomentum
+  /** D-039: Trust timeline - history of trust changes for visualization */
+  trustTimeline?: TrustTimeline
 }
 
 /**
@@ -122,6 +125,9 @@ export interface GameState {
 
   // D-019: Iceberg References - casual mentions become investigable topics
   icebergState?: IcebergState
+
+  // D-040: Pattern Evolution Heatmap - tracks when/where patterns grew
+  patternEvolutionHistory?: PatternEvolutionHistory
 }
 
 /**
@@ -216,6 +222,8 @@ export interface SerializableGameState {
     knowledgeFlags: string[]
     relationshipStatus: 'stranger' | 'acquaintance' | 'confidant'
     conversationHistory: string[]
+    // D-039: Trust timeline for visualization
+    trustTimeline?: TrustTimeline
   }>
   globalFlags: string[]
   patterns: PlayerPatterns
@@ -261,6 +269,8 @@ export interface SerializableGameState {
     }>
     investigatedTopics: string[]
   }
+  // D-040: Serializable pattern evolution history
+  patternEvolutionHistory?: PatternEvolutionHistory
 }
 
 
@@ -495,7 +505,12 @@ export class GameStateUtils {
             lastReaction: char.lastReaction,
             knowledgeFlags: new Set(char.knowledgeFlags),
             relationshipStatus: char.relationshipStatus,
-            conversationHistory: [...char.conversationHistory]
+            conversationHistory: [...char.conversationHistory],
+            // D-039: Clone trust timeline
+            trustTimeline: char.trustTimeline ? {
+              ...char.trustTimeline,
+              points: [...char.trustTimeline.points]
+            } : undefined
           }
         ])
       ),
@@ -531,6 +546,12 @@ export class GameStateUtils {
           ])
         ),
         investigatedTopics: new Set(state.icebergState.investigatedTopics)
+      } : undefined,
+      // D-040: Clone pattern evolution history
+      patternEvolutionHistory: state.patternEvolutionHistory ? {
+        points: [...state.patternEvolutionHistory.points],
+        patternTotals: { ...state.patternEvolutionHistory.patternTotals },
+        milestones: [...state.patternEvolutionHistory.milestones]
       } : undefined
     }
   }
@@ -630,7 +651,9 @@ export class GameStateUtils {
         }
       },
       // D-019: Initialize iceberg reference tracking
-      icebergState: createIcebergState()
+      icebergState: createIcebergState(),
+      // D-040: Initialize pattern evolution history
+      patternEvolutionHistory: createPatternEvolutionHistory()
     }
   }
 
@@ -650,7 +673,9 @@ export class GameStateUtils {
       lastReaction: null,
       knowledgeFlags: new Set(),
       relationshipStatus: NARRATIVE_CONSTANTS.DEFAULT_RELATIONSHIP,
-      conversationHistory: []
+      conversationHistory: [],
+      // D-039: Trust timeline for visualization
+      trustTimeline: createTrustTimeline(characterId)
     }
   }
 
@@ -669,7 +694,9 @@ export class GameStateUtils {
         lastReaction: char.lastReaction,
         knowledgeFlags: Array.from(char.knowledgeFlags),
         relationshipStatus: char.relationshipStatus,
-        conversationHistory: char.conversationHistory
+        conversationHistory: char.conversationHistory,
+        // D-039: Serialize trust timeline
+        trustTimeline: char.trustTimeline
       })),
       globalFlags: Array.from(state.globalFlags),
       patterns: state.patterns,
@@ -698,7 +725,9 @@ export class GameStateUtils {
       icebergState: state.icebergState ? {
         references: Array.from(state.icebergState.references.values()),
         investigatedTopics: Array.from(state.icebergState.investigatedTopics)
-      } : undefined
+      } : undefined,
+      // D-040: Serialize pattern evolution history
+      patternEvolutionHistory: state.patternEvolutionHistory
     }
   }
 
@@ -715,7 +744,7 @@ export class GameStateUtils {
           {
             ...char,
             anxiety: char.anxiety ?? (10 - char.trust) * 10,
-            // ISP UPDATE: Added empty pattern object fallback; deserialization occurs before pattern load usually, 
+            // ISP UPDATE: Added empty pattern object fallback; deserialization occurs before pattern load usually,
             // but for safety we default to empty. Realtime updates will correct this.
             nervousSystemState: char.nervousSystemState ?? determineNervousSystemState(
               (10 - char.trust) * 10,
@@ -724,7 +753,9 @@ export class GameStateUtils {
               new Set(serialized.globalFlags) // Re-apply simulation effects on load
             ),
             lastReaction: char.lastReaction || null,
-            knowledgeFlags: new Set(char.knowledgeFlags)
+            knowledgeFlags: new Set(char.knowledgeFlags),
+            // D-039: Deserialize trust timeline or create fresh
+            trustTimeline: char.trustTimeline || createTrustTimeline(char.characterId)
           }
         ])
       ),
@@ -792,7 +823,9 @@ export class GameStateUtils {
           serialized.icebergState.references.map(ref => [ref.id, ref])
         ),
         investigatedTopics: new Set(serialized.icebergState.investigatedTopics)
-      } : createIcebergState()
+      } : createIcebergState(),
+      // D-040: Deserialize pattern evolution history or create fresh
+      patternEvolutionHistory: serialized.patternEvolutionHistory || createPatternEvolutionHistory()
     }
   }
 }
