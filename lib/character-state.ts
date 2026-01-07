@@ -6,6 +6,7 @@ import { INITIAL_TRUST, TRUST_THRESHOLDS, NARRATIVE_CONSTANTS as GLOBAL_NARRATIV
 import { NervousSystemState, determineNervousSystemState, ChemicalReaction } from './emotions'
 import { calculateReaction } from './chemistry'
 import { ArchivistState } from './lore-system'
+import { type TrustMomentum, createTrustMomentum, updateTrustMomentum, applyMomentumToTrustChange } from './trust-derivatives'
 
 /**
  * Core character relationship state
@@ -23,6 +24,8 @@ export interface CharacterState {
   visitedPatternUnlocks?: Set<string> // Pattern-unlocked nodes already visited
   /** D-001: Timestamp of last interaction for pattern-influenced trust decay */
   lastInteractionTimestamp?: number
+  /** D-082: Trust momentum - accelerates/decelerates trust changes based on history */
+  trustMomentum?: TrustMomentum
 }
 
 /**
@@ -361,9 +364,17 @@ export class GameStateUtils {
               : undefined
           )
 
+        // D-082: Apply trust momentum (accelerates/decelerates changes based on history)
+        // Initialize momentum if not present
+        if (!charState.trustMomentum) {
+          charState.trustMomentum = createTrustMomentum(change.characterId)
+        }
+        const momentumAdjustedTrust = applyMomentumToTrustChange(modifiedTrust, charState.trustMomentum)
+        charState.trustMomentum = updateTrustMomentum(charState.trustMomentum, modifiedTrust)
+
         charState.trust = Math.max(
           NARRATIVE_CONSTANTS.MIN_TRUST,
-          Math.min(NARRATIVE_CONSTANTS.MAX_TRUST, charState.trust + modifiedTrust)
+          Math.min(NARRATIVE_CONSTANTS.MAX_TRUST, charState.trust + momentumAdjustedTrust)
         )
 
         // Limbic System Update: Recalculate biological state
