@@ -21,6 +21,8 @@ export interface CharacterState {
   relationshipStatus: 'stranger' | 'acquaintance' | 'confidant'
   conversationHistory: string[] // Node IDs visited with this character
   visitedPatternUnlocks?: Set<string> // Pattern-unlocked nodes already visited
+  /** D-001: Timestamp of last interaction for pattern-influenced trust decay */
+  lastInteractionTimestamp?: number
 }
 
 /**

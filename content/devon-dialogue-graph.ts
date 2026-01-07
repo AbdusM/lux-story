@@ -1929,6 +1929,1370 @@ The one where I chose code over family. And I still don't know how to forgive th
       }
     ],
     tags: ['career_mention', 'invisible_depth', 'sustainability']
+  },
+
+  // ============= ADDITIONAL CAREER REFLECTIONS =============
+  {
+    nodeId: 'devon_career_reflection_ux',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: `*Devon looks at you with recognition.*
+
+You know what I see in how you approach problems? You're thinking about the user. The human at the end of the system.
+
+UX engineering combines both worlds—the technical rigor of building systems and the empathy of understanding people.
+
+It's where my flowcharts and my... family work... actually overlap. Understanding why people do what they do. Then building things that meet them where they are.`,
+        emotion: 'connecting',
+        variation_id: 'career_ux_v1'
+      }
+    ],
+    requiredState: {
+      patterns: { helping: { min: 5 }, building: { min: 4 } }
+    },
+    onEnter: [
+      {
+        characterId: 'devon',
+        addGlobalFlags: ['combo_ux_engineer_achieved', 'devon_mentioned_career']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'ux_interested',
+        text: "Systems and empathy together. That's where the real solutions live.",
+        nextNodeId: 'devon_crossroads',
+        pattern: 'helping',
+        skills: ['systemsThinking']
+      }
+    ],
+    tags: ['career_mention', 'invisible_depth', 'ux']
+  },
+
+  {
+    nodeId: 'devon_career_reflection_operations',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: `*Devon nods approvingly.*
+
+You think like an operations engineer. The big picture. How all the pieces fit together.
+
+Operations management is about keeping complex systems running—factories, hospitals, supply chains. Making sure the right things happen at the right time.
+
+Birmingham's rebuilding its manufacturing sector. They need people who can see the whole machine, not just the individual gears.`,
+        emotion: 'respectful',
+        variation_id: 'career_operations_v1'
+      }
+    ],
+    requiredState: {
+      patterns: { analytical: { min: 5 }, patience: { min: 4 } }
+    },
+    onEnter: [
+      {
+        characterId: 'devon',
+        addGlobalFlags: ['combo_operations_achieved', 'devon_mentioned_career']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'operations_continue',
+        text: "Keeping the machine running. That takes patience and precision.",
+        nextNodeId: 'devon_crossroads',
+        pattern: 'patience',
+        skills: ['systemsThinking']
+      }
+    ],
+    tags: ['career_mention', 'invisible_depth', 'operations']
+  },
+
+  // ============= FATHER RELATIONSHIP DEPTH =============
+  {
+    nodeId: 'devon_father_memory',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: `*Devon stares at his flowchart.*
+
+My dad used to do this too. Not flowcharts—he was a mechanic. But the same thing. Breaking problems into pieces.
+
+When I was ten, our car broke down. He didn't call a tow truck. He sat me down, opened the hood, and said: "Every problem has a cause. Find the cause, find the fix."
+
+We spent four hours tracing wires. I thought I was helping. Really, he was teaching.
+
+*Pause.*
+
+I haven't heard his voice in two years. Not really. Just... polite distance.`,
+        emotion: 'tender_grief',
+        variation_id: 'father_memory_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 5 }
+    },
+    choices: [
+      {
+        choiceId: 'father_memory_continue',
+        text: "He taught you how to think. That's still with you.",
+        nextNodeId: 'devon_father_teaching',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'father_memory_question',
+        text: "What happened? Between you and him.",
+        nextNodeId: 'devon_father_distance',
+        pattern: 'exploring',
+        skills: ['communication']
+      }
+    ],
+    tags: ['devon_arc', 'father', 'emotional_depth']
+  },
+
+  {
+    nodeId: 'devon_father_teaching',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: `*Devon looks down at his hands.*
+
+Yeah. He's in everything I build.
+
+The way I label my variables—his naming convention for parts. The way I test things twice—his "measure twice, cut once." Even this flowchart... it's his diagnostic method, just digitized.
+
+*Small laugh.*
+
+I never told him any of this. He thinks I left behind everything he taught me when I went to college.
+
+He doesn't know he's the foundation of every system I design.`,
+        emotion: 'realization',
+        variation_id: 'father_teaching_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'teaching_continue',
+        text: "Maybe he needs to hear that. That he's still part of what you build.",
+        nextNodeId: 'devon_introduction',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['devon_arc', 'father', 'insight']
+  },
+
+  {
+    nodeId: 'devon_father_distance',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: `*Devon's jaw tightens.*
+
+Mom died. Three years ago. Cancer.
+
+And Dad just... shut down. Same way he used to when a car was too broken to fix. "Some things you can't diagnose."
+
+I tried to help. Made spreadsheets of her medications. Optimized her care schedule. Built systems to make the impossible manageable.
+
+*Bitter.*
+
+He called it "cold." Said I was treating her like a machine problem, not a person.
+
+Maybe he was right. Or maybe it was the only way I knew how to love her.`,
+        emotion: 'raw_pain',
+        variation_id: 'father_distance_v1'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'devon',
+        addKnowledgeFlags: ['knows_about_mother']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'distance_understand',
+        text: "You loved her the way you know how. Systems were your language.",
+        nextNodeId: 'devon_systems_love',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['devon_arc', 'vulnerability', 'grief']
+  },
+
+  {
+    nodeId: 'devon_systems_love',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: `*Devon's voice cracks slightly.*
+
+Systems were my language.
+
+When I was scared, I made lists. When I was helpless, I made schedules. When I couldn't fix her, I tried to fix everything around her.
+
+*Pause.*
+
+Dad dealt with it by being present. Just sitting with her. Holding her hand. No agenda.
+
+We both loved her. In completely different languages.
+
+And after she was gone... we couldn't translate anymore.`,
+        emotion: 'vulnerable_clarity',
+        variation_id: 'systems_love_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'systems_love_continue',
+        text: "The flowchart. It's teaching you his language, isn't it?",
+        nextNodeId: 'devon_introduction',
+        pattern: 'analytical',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['devon_arc', 'vulnerability', 'breakthrough']
+  },
+
+  {
+    nodeId: 'devon_father_hope',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: `*Devon looks at the flowchart with new eyes.*
+
+The Conversation Optimizer isn't really about him, is it?
+
+It's about me. Learning to listen instead of solve. To be present instead of productive.
+
+*Quiet.*
+
+What if I showed him the flowchart? Not to use it on him. To show him I'm trying.
+
+"Dad, I built this because I didn't know how to talk to you. But I want to learn."
+
+Would that be crazy? Using a system to apologize for using systems?`,
+        emotion: 'hopeful_uncertain',
+        variation_id: 'father_hope_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 6 }
+    },
+    choices: [
+      {
+        choiceId: 'hope_encourage',
+        text: "It's not crazy. It's honest. You're showing him who you are while reaching for who he is.",
+        nextNodeId: 'devon_introduction',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'wisdom'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['devon_arc', 'father', 'hope']
+  },
+
+  // ============= SYSTEMS PHILOSOPHY =============
+  {
+    nodeId: 'devon_systems_philosophy',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: `*Devon leans back, thoughtful.*
+
+You know what most people get wrong about systems? They think systems are cold. Mechanical. Inhuman.
+
+But every system is a story about what matters.
+
+Traffic lights tell a story about safety. Hospital schedules tell a story about care. My flowchart... it tells a story about a son trying to reconnect.
+
+The logic isn't the opposite of feeling. It's feeling, made visible.`,
+        emotion: 'philosophical',
+        variation_id: 'systems_philosophy_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'philosophy_agree',
+        text: "Logic as feeling made visible. I've never thought of it that way.",
+        nextNodeId: 'devon_introduction',
+        pattern: 'analytical',
+        skills: ['systemsThinking'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['devon_arc', 'philosophy', 'insight']
+  },
+
+  {
+    nodeId: 'devon_optimization_trap',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: `*Devon laughs ruefully.*
+
+Want to hear about my worst habit?
+
+I optimize everything. Shower routine: 7 minutes. Morning coffee: while code compiles. Conversations: mapped for maximum information transfer.
+
+Efficient. Also exhausting. Also lonely.
+
+*Pause.*
+
+Some of the best moments with Mom were completely unoptimized. Sitting on the porch. Not talking. Just... being.
+
+I'm trying to remember how to waste time with people I love. It's harder than it should be.`,
+        emotion: 'self_aware',
+        variation_id: 'optimization_trap_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'optimization_respond',
+        text: "Wasted time with people you love isn't wasted. It's the whole point.",
+        nextNodeId: 'devon_introduction',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['devon_arc', 'vulnerability', 'growth']
+  },
+
+  {
+    nodeId: 'devon_debug_people',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: `*Devon traces a line on his flowchart.*
+
+Here's something I've learned the hard way: you can't debug people.
+
+Code has consistent behavior. Same input, same output. People? They're different every day. Different moods, different contexts, different histories.
+
+My first instinct is always "find the pattern, fix the bug." But people aren't bugs. They're features. Complicated, contradictory, beautiful features.
+
+*Small smile.*
+
+I'm learning to appreciate the inconsistency. Slowly.`,
+        emotion: 'growing',
+        variation_id: 'debug_people_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'debug_continue',
+        text: "Features, not bugs. That's a healthier way to see people.",
+        nextNodeId: 'devon_introduction',
+        pattern: 'helping',
+        skills: ['wisdom']
+      }
+    ],
+    tags: ['devon_arc', 'philosophy', 'growth']
+  },
+
+  // ============= BIRMINGHAM CONNECTION =============
+  {
+    nodeId: 'devon_birmingham_roots',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: `*Devon gestures at the city beyond the station.*
+
+People think Birmingham is behind. Rust Belt. Manufacturing ghost town.
+
+They're wrong. This city is rebuilding itself. From iron forges to medical research. From steel mills to tech incubators.
+
+I could work anywhere. Silicon Valley called. Twice. But here... here I can build things that matter to people I know.
+
+My neighbor's daughter uses an app I helped design. My old teacher's hospital runs on systems I optimized.
+
+That's not possible in San Francisco. Here, I can see the impact.`,
+        emotion: 'rooted_pride',
+        variation_id: 'birmingham_roots_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'birmingham_continue',
+        text: "Building for people you know. That changes what you build.",
+        nextNodeId: 'devon_introduction',
+        pattern: 'building',
+        skills: ['wisdom'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['devon_arc', 'birmingham', 'local']
+  },
+
+  {
+    nodeId: 'devon_birmingham_future',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: `*Devon's eyes light up.*
+
+You want to know what Birmingham looks like in ten years? I've been modeling it.
+
+Clean energy hub. Medical technology corridor. Advanced manufacturing center. All the pieces are there—UAB, the startup scene, the workforce ready to be retrained.
+
+The old Birmingham made things with iron and sweat. The new Birmingham will make things with code and creativity.
+
+And I want to be part of building it. Not as an outsider importing solutions. As someone who grew up here, building for here.`,
+        emotion: 'visionary',
+        variation_id: 'birmingham_future_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'future_continue',
+        text: "From iron to code. That's not just progress. That's transformation.",
+        nextNodeId: 'devon_introduction',
+        pattern: 'building',
+        skills: ['visionaryThinking']
+      }
+    ],
+    tags: ['devon_arc', 'birmingham', 'future']
+  },
+
+  // ============= CROSS-CHARACTER CONNECTIONS =============
+  {
+    nodeId: 'devon_mentions_maya',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: `*Devon pauses, considering.*
+
+There's this student—Maya. Works on robots for physical therapy.
+
+She thinks she's not a "real engineer." Meanwhile, she's building adaptive AI systems that most professionals couldn't dream of.
+
+*Shakes head.*
+
+Imposter syndrome. I had it too. Still do, sometimes. The fear that someone's going to realize you're faking it.
+
+She doesn't see how her heart makes her work better, not worse. Empathy as engineering input.`,
+        emotion: 'admiring',
+        variation_id: 'mentions_maya_v1'
+      }
+    ],
+    requiredState: {
+      hasGlobalFlags: ['met_maya']
+    },
+    choices: [
+      {
+        choiceId: 'maya_continue',
+        text: "Empathy as engineering input. You understand that now too.",
+        nextNodeId: 'devon_introduction',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
+      }
+    ],
+    tags: ['devon_arc', 'cross_character', 'maya']
+  },
+
+  {
+    nodeId: 'devon_mentions_rohan',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: `*Devon nods toward the lower platforms.*
+
+Rohan. The ghost hunter. Have you met him?
+
+He's down there tracing hallucinated code, trying to understand what machines dream about.
+
+We argue sometimes. He thinks I'm too focused on efficiency. I think he's too attached to the past. But we're both asking the same question:
+
+What does it mean to understand something? Really understand it, not just use it?
+
+Different approaches. Same obsession.`,
+        emotion: 'respectful_disagreement',
+        variation_id: 'mentions_rohan_v1'
+      }
+    ],
+    requiredState: {
+      hasGlobalFlags: ['met_rohan']
+    },
+    choices: [
+      {
+        choiceId: 'rohan_continue',
+        text: "Different approaches to the same obsession. That's how breakthroughs happen.",
+        nextNodeId: 'devon_introduction',
+        pattern: 'analytical',
+        skills: ['systemsThinking']
+      }
+    ],
+    tags: ['devon_arc', 'cross_character', 'rohan']
+  },
+
+  // ============= EMOTIONAL DEPTH =============
+  {
+    nodeId: 'devon_loneliness',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: `*Devon stares at his screens.*
+
+You want to know something pathetic?
+
+I have 3,000 connections on LinkedIn. 47 "close friends" on a social app. Zero people I can call at 3am when I can't sleep.
+
+I optimized my social network. Pruned the inactive connections. Maintained relationships with strategic value.
+
+*Bitter laugh.*
+
+Congratulations, Devon. Your social graph is beautiful. And you're completely alone.`,
+        emotion: 'lonely_honest',
+        variation_id: 'loneliness_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 6 }
+    },
+    choices: [
+      {
+        choiceId: 'loneliness_respond',
+        text: "You're not alone right now. This conversation is real.",
+        nextNodeId: 'devon_loneliness_response',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['devon_arc', 'vulnerability', 'loneliness']
+  },
+
+  {
+    nodeId: 'devon_loneliness_response',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: `*Devon looks at you, surprised.*
+
+Yeah. This is real, isn't it?
+
+No agenda. No strategic value. Just... talking. Like people used to do.
+
+*Pause.*
+
+Maybe that's what I've been missing. Not more connections. Fewer. But real ones.
+
+Quality over quantity. Isn't that basic systems design? I somehow forgot to apply it to my own life.`,
+        emotion: 'dawning_realization',
+        variation_id: 'loneliness_response_v1'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'devon',
+        addKnowledgeFlags: ['devon_loneliness_acknowledged']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'loneliness_continue',
+        text: "The best systems are simple. Maybe relationships are the same.",
+        nextNodeId: 'devon_introduction',
+        pattern: 'patience',
+        skills: ['wisdom']
+      }
+    ],
+    tags: ['devon_arc', 'vulnerability', 'breakthrough']
+  },
+
+  {
+    nodeId: 'devon_failure_story',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: `*Devon grimaces.*
+
+My biggest failure? Easy. The Day Mom's Medical System Crashed.
+
+I'd built this beautiful medication tracker. Alerts, interactions, scheduling. My masterpiece.
+
+It crashed the morning of her worst day. Corrupted database. No backup. Because I was so confident in my code, I didn't test the recovery path.
+
+She missed her meds. Had a bad reaction. Dad had to rush her to the ER.
+
+*Quiet.*
+
+He never said "I told you so." He didn't have to. The silence was enough.`,
+        emotion: 'shame',
+        variation_id: 'failure_story_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'failure_respond',
+        text: "You learned something that day that no textbook could teach.",
+        nextNodeId: 'devon_introduction',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['devon_arc', 'failure', 'growth']
+  },
+
+  {
+    nodeId: 'devon_what_ifs',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: `*Devon speaks quietly.*
+
+I run scenarios. Professionally and... personally.
+
+What if I hadn't gone to college across the country? What if I'd stayed closer to home?
+
+What if I'd spent less time building systems and more time sitting with Mom?
+
+What if the last real conversation I had with Dad wasn't an argument?
+
+*Pause.*
+
+The scenarios don't help. But I can't stop running them.`,
+        emotion: 'regret',
+        variation_id: 'what_ifs_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 5 }
+    },
+    choices: [
+      {
+        choiceId: 'what_ifs_respond',
+        text: "You can't optimize the past. But you can still write the future.",
+        nextNodeId: 'devon_introduction',
+        pattern: 'analytical',
+        skills: ['wisdom'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['devon_arc', 'vulnerability', 'regret']
+  },
+
+  // ============= WORK AND PURPOSE =============
+  {
+    nodeId: 'devon_why_systems',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: `*Devon traces his flowchart.*
+
+Why systems? Everyone asks.
+
+When I was eight, there was a power outage. Three days. No heat. February.
+
+I watched my dad figure out, step by step, how to keep us warm. Blankets layered in specific order. Candles positioned for maximum heat distribution. A system.
+
+He made chaos manageable. He made the impossible feel possible.
+
+That's what systems are for. Not control. Calm. Making sense of things that don't make sense.`,
+        emotion: 'origin_story',
+        variation_id: 'why_systems_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'why_systems_continue',
+        text: "Systems as calm in chaos. That's what you're building for your dad now.",
+        nextNodeId: 'devon_introduction',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['devon_arc', 'origin', 'purpose']
+  },
+
+  {
+    nodeId: 'devon_best_work',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: `*Devon's face softens.*
+
+My best work? Not the enterprise systems. Not the optimized workflows.
+
+A grief support app. Never launched. Personal project after Mom died.
+
+It didn't try to fix grief. It just helped you track it. Good days, bad days, triggers, small victories.
+
+No solutions. Just acknowledgment. "Today is hard. That's real. You're not crazy."
+
+I showed it to a therapist friend. She cried. Said it was the first tech she'd seen that actually understood grief.
+
+*Pause.*
+
+Maybe that's what Dad needs. Not a conversation optimizer. A grief companion. Something that says "this is hard" instead of "here's how to fix it."`,
+        emotion: 'tender_insight',
+        variation_id: 'best_work_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 5 }
+    },
+    choices: [
+      {
+        choiceId: 'best_work_continue',
+        text: "You already know what he needs. You just built it in the wrong direction.",
+        nextNodeId: 'devon_introduction',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['devon_arc', 'purpose', 'breakthrough']
+  },
+
+  {
+    nodeId: 'devon_process',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: `*Devon gestures at his screens.*
+
+Want to see how I actually work?
+
+Step one: Define the problem. Not the surface problem—the real one underneath.
+
+Step two: Map the system. All the pieces. All the connections.
+
+Step three: Find the leverage point. The one change that affects everything else.
+
+Step four: Test. Fail. Learn. Repeat.
+
+Simple, right? Except step one takes forever. Because people—including me—are terrible at knowing what the real problem is.`,
+        emotion: 'teaching',
+        variation_id: 'process_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'process_continue',
+        text: "The real problem with your dad isn't communication. It's connection.",
+        nextNodeId: 'devon_introduction',
+        pattern: 'analytical',
+        skills: ['criticalThinking'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['devon_arc', 'process', 'insight']
+  },
+
+  // ============= ADDITIONAL DEPTH =============
+  {
+    nodeId: 'devon_midnight_work',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: `*Devon rubs his eyes.*
+
+You know when the best ideas come? 2am. When the world goes quiet and there's no one to perform for.
+
+That's when the flowchart started. Not during the day when I was "working." In the dark, when I couldn't sleep because I missed my dad.
+
+*Quiet.*
+
+I think my brain solves problems while my heart grieves. They run in parallel. Different processes. Same system.`,
+        emotion: 'tired_honest',
+        variation_id: 'midnight_work_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'midnight_continue',
+        text: "Parallel processes. Your heart and brain are both working on the same problem.",
+        nextNodeId: 'devon_introduction',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence']
+      }
+    ],
+    tags: ['devon_arc', 'process', 'vulnerability']
+  },
+
+  {
+    nodeId: 'devon_mentors',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: `*Devon thinks for a moment.*
+
+My first programming teacher. Mr. Krishnan. Community college intro course.
+
+He didn't just teach syntax. He taught thinking. "Every program is a conversation with future you. Be kind to that person."
+
+I still comment my code like I'm explaining it to someone I care about. Because of him.
+
+*Pause.*
+
+Dad thinks I left behind everything he taught me. But Mr. Krishnan? He built on Dad's foundation. The careful thinking, the systematic approach.
+
+Dad just can't see the connection. Or I haven't shown it to him.`,
+        emotion: 'grateful_reflective',
+        variation_id: 'mentors_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'mentors_continue',
+        text: "Show him the connection. He might recognize himself in your code.",
+        nextNodeId: 'devon_introduction',
+        pattern: 'helping',
+        skills: ['wisdom']
+      }
+    ],
+    tags: ['devon_arc', 'mentors', 'father']
+  },
+
+  {
+    nodeId: 'devon_identity',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: `*Devon looks at his reflection in a dark screen.*
+
+Who am I if I'm not optimizing something?
+
+I've been the "systems guy" since I was twelve. The one who fixes things. Organizes things. Makes things work.
+
+What happens if I just... stop? Be present without purpose. Exist without producing.
+
+*Uncertain.*
+
+It terrifies me. The idea of being valuable just because I exist, not because I'm useful.
+
+That's probably something I should work on, huh?`,
+        emotion: 'vulnerable_self_awareness',
+        variation_id: 'identity_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 6 }
+    },
+    choices: [
+      {
+        choiceId: 'identity_respond',
+        text: "Your dad loved you before you could optimize anything. That hasn't changed.",
+        nextNodeId: 'devon_introduction',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['devon_arc', 'vulnerability', 'identity']
+  },
+
+  {
+    nodeId: 'devon_hope',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: `*Devon straightens up, something shifting in his expression.*
+
+You know what? I'm going to call him.
+
+Not with the flowchart. Not with a script. Just... call.
+
+"Hey Dad. I miss you. I miss Mom. I'm scared I'm losing you too."
+
+No system. No optimization. Just the truth.
+
+*Pause.*
+
+Terrifying. But maybe that's the whole point. Love isn't supposed to be efficient.`,
+        emotion: 'resolved_scared',
+        variation_id: 'hope_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 7 }
+    },
+    choices: [
+      {
+        choiceId: 'hope_encourage',
+        text: "That's the most beautiful system you could build. Truth without optimization.",
+        nextNodeId: 'devon_crossroads',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'wisdom'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['devon_arc', 'hope', 'breakthrough']
+  },
+
+  // ============= ADDITIONAL DEPTH =============
+  {
+    nodeId: 'devon_college_choice',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: `*Devon stares out the window.*
+
+Georgia Tech. 500 miles from home. Everyone asked why I didn't stay closer.
+
+*Pause.*
+
+I told them it was the program. The rankings. The opportunities.
+
+Truth? I was running. Every time I saw Mom, I saw what we were losing. Every conversation reminded me time was finite.
+
+*Bitter.*
+
+I thought distance would hurt less than watching. Turns out distance has its own kind of pain.`,
+        emotion: 'regret_honesty',
+        variation_id: 'college_choice_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 5 }
+    },
+    choices: [
+      {
+        choiceId: 'college_understand',
+        text: "Running isn't the same as not caring. Sometimes we run because we care too much.",
+        nextNodeId: 'devon_introduction',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['devon_arc', 'college', 'running']
+  },
+
+  {
+    nodeId: 'devon_first_debug',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: `*Devon smiles, distant.*
+
+My first real debug. I was ten.
+
+Dad's truck wouldn't start. He'd been under the hood for hours, frustrated. Mom was worried—she had a doctor's appointment.
+
+I sat in the driver's seat, turned the key when he said, and watched the dashboard. Noticed something. A pattern.
+
+"Dad, the battery light flickers before it dies. Maybe there's a loose connection?"
+
+*Quiet pride.*
+
+He found the corroded terminal in five minutes. Looked at me like I was magic.
+
+First time I understood: watching systems carefully shows you what's wrong. First time I felt... useful.`,
+        emotion: 'nostalgic_pride',
+        variation_id: 'first_debug_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'first_debug_respond',
+        text: "You were helping him debug before you knew the word for it.",
+        nextNodeId: 'devon_introduction',
+        pattern: 'analytical',
+        skills: ['criticalThinking'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['devon_arc', 'origin', 'dad']
+  },
+
+  {
+    nodeId: 'devon_mom_final_words',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: `*Devon's voice drops.*
+
+Last coherent thing Mom ever said to me. Three days before the end.
+
+She grabbed my hand—stronger than she'd been in weeks—and said:
+
+"Devon. Stop trying to fix everything. Some things just need to be felt."
+
+*Long pause.*
+
+I didn't understand then. I thought she was giving up. Now I realize she was giving me permission.
+
+Permission to not be useful. To just... be present. To let things be broken and love them anyway.`,
+        emotion: 'grief_clarity',
+        variation_id: 'mom_final_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 7 }
+    },
+    onEnter: [
+      {
+        characterId: 'devon',
+        addKnowledgeFlags: ['devon_mom_final_words_revealed']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'mom_words_honor',
+        text: "She saw exactly what you needed to hear. Even at the end, she was helping you.",
+        nextNodeId: 'devon_introduction',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'wisdom'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['devon_arc', 'vulnerability', 'mom', 'breakthrough']
+  },
+
+  {
+    nodeId: 'devon_coding_escape',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: `*Devon gestures at invisible screens.*
+
+You want to know why I code at 2am? Why I take every side project?
+
+Because code makes sense. Variables don't have feelings. Functions don't die. Errors have solutions.
+
+*Quiet.*
+
+Real life doesn't work that way. Real life is messy and unpredictable and people leave and nothing you build can stop it.
+
+So I hide in logic. Build systems where I'm in control. Pretend that making something perfect somewhere makes up for the chaos everywhere else.
+
+It doesn't. But it's easier than facing what I'm avoiding.`,
+        emotion: 'raw_honesty',
+        variation_id: 'coding_escape_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 6 }
+    },
+    choices: [
+      {
+        choiceId: 'escape_acknowledge',
+        text: "Knowing why you escape is the first step to coming back.",
+        nextNodeId: 'devon_introduction',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['devon_arc', 'vulnerability', 'avoidance']
+  },
+
+  {
+    nodeId: 'devon_birmingham_future',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: `*Devon looks thoughtful.*
+
+Everyone at Tech talks about Silicon Valley. Seattle. New York. The big moves.
+
+But Birmingham... it's changing. Medical research is booming. UAB is doing incredible work. Tech companies are actually looking here.
+
+*Pause.*
+
+And Dad's here. Still in the house I grew up in. Still working on cars.
+
+What if the best opportunity isn't somewhere else? What if it's building something where it matters most? Close to home. Close to him.`,
+        emotion: 'hopeful_uncertain',
+        variation_id: 'birmingham_future_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'birmingham_support',
+        text: "Sometimes the most courageous move is staying. Building where your roots are.",
+        nextNodeId: 'devon_introduction',
+        pattern: 'building',
+        skills: ['wisdom'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['devon_arc', 'birmingham', 'future', 'dad']
+  },
+
+  {
+    nodeId: 'devon_uncertainty',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: `*Devon runs a hand through his hair.*
+
+You know what nobody tells you about systems engineering?
+
+There's always another layer. Always something you don't understand. The more you learn, the more you realize how much you don't know.
+
+*Nervous laugh.*
+
+I present this confident face. "Devon knows systems." But half the time I'm terrified someone will ask a question I can't answer.
+
+*Quiet.*
+
+Imposter syndrome doesn't go away. You just get better at hiding it.`,
+        emotion: 'vulnerable_confession',
+        variation_id: 'uncertainty_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 5 }
+    },
+    choices: [
+      {
+        choiceId: 'uncertainty_normalize',
+        text: "The smartest people I know are the ones who admit what they don't know.",
+        nextNodeId: 'devon_introduction',
+        pattern: 'helping',
+        skills: ['communication'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['devon_arc', 'vulnerability', 'imposter']
+  },
+
+  {
+    nodeId: 'devon_small_joys',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: `*Devon's expression softens.*
+
+Mom taught me something I keep forgetting.
+
+She'd stop mid-sentence sometimes. Point out a bird. A flower. The way light hit the window.
+
+"Devon, look. Isn't that beautiful?"
+
+*Pause.*
+
+I'd nod and get back to whatever I was doing. Optimizing. Always optimizing.
+
+Now I try to notice. The morning coffee. The way code compiles. A conversation that goes nowhere but feels good.
+
+*Quiet smile.*
+
+Small joys. Non-optimized moments. She was teaching me all along. I'm just now learning to listen.`,
+        emotion: 'bittersweet_growth',
+        variation_id: 'small_joys_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'small_joys_celebrate',
+        text: "That's a kind of pattern too. Recognizing beauty without trying to optimize it.",
+        nextNodeId: 'devon_introduction',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['devon_arc', 'mom', 'growth', 'mindfulness']
+  },
+
+  {
+    nodeId: 'devon_dad_birthday',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: `*Devon winces.*
+
+Dad's birthday is next month. First one since Mom.
+
+Last year, she organized everything. The cake he pretends not to want. The dinner with his old mechanic buddies. The card where she wrote things I should have said.
+
+*Pause.*
+
+This year... I don't know what to do. Part of me wants to recreate it. Make sure he doesn't feel the absence.
+
+But maybe that's wrong. Maybe trying to fill her space makes it worse.
+
+What do you do for someone's first birthday alone?`,
+        emotion: 'uncertain_grief',
+        variation_id: 'dad_birthday_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 6 }
+    },
+    choices: [
+      {
+        choiceId: 'birthday_presence',
+        text: "Maybe just being there is enough. Not filling her space—just filling yours.",
+        nextNodeId: 'devon_introduction',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'wisdom'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['devon_arc', 'dad', 'grief', 'birthday']
+  },
+
+  {
+    nodeId: 'devon_future_vision',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: `*Devon looks up, something hopeful in his eyes.*
+
+You know what I keep imagining?
+
+Five years from now. Working at UAB's research hospital. Building systems that actually help people—not just optimize profits.
+
+Coming home to Birmingham. Having dinner with Dad. Not because I'm trying to fix anything. Just because I want to.
+
+*Pause.*
+
+Maybe the Conversation Optimizer becomes a joke between us. "Remember when you tried to script our relationship?" And we laugh. Because we figured out something better.
+
+*Quiet.*
+
+That's the future I want to build. Not optimal. Just... real.`,
+        emotion: 'hopeful',
+        variation_id: 'future_vision_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 7 }
+    },
+    choices: [
+      {
+        choiceId: 'future_encourage',
+        text: "That's a vision worth working toward. And you've already started.",
+        nextNodeId: 'devon_introduction',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['devon_arc', 'future', 'hope', 'growth']
+  },
+
+  {
+    nodeId: 'devon_gratitude',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: `*Devon takes a breath.*
+
+Hey. I don't say this enough. To anyone.
+
+Thank you.
+
+*Genuine.*
+
+Not for fixing anything. Not for optimizing my situation. Just for... listening. Being here while I figured things out loud.
+
+That's what I was missing with Dad. Not solutions. Presence.
+
+*Small smile.*
+
+You taught me something just now. By doing nothing except paying attention.
+
+Maybe that's what I needed all along.`,
+        emotion: 'grateful',
+        variation_id: 'gratitude_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 6 }
+    },
+    choices: [
+      {
+        choiceId: 'gratitude_return',
+        text: "You taught me something too. About the courage it takes to show up imperfectly.",
+        nextNodeId: 'devon_crossroads',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['devon_arc', 'gratitude', 'connection', 'breakthrough']
   }
 ]
 

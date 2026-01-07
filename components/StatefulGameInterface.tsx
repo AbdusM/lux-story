@@ -81,7 +81,10 @@ import { evaluateAchievements, type MetaAchievement } from '@/lib/meta-achieveme
 import { selectAmbientEvent, IDLE_CONFIG, type AmbientEvent } from '@/lib/ambient-events'
 import { PATTERN_TYPES, type PatternType, getPatternSensation, isValidPattern } from '@/lib/patterns'
 import { calculatePatternGain } from '@/lib/identity-system'
-import { getConsequenceEcho, checkPatternThreshold as checkPatternEchoThreshold, getPatternRecognitionEcho, getVoicedChoiceText, applyPatternReflection, getOrbMilestoneEcho, type ConsequenceEcho } from '@/lib/consequence-echoes'
+import { getConsequenceEcho, checkPatternThreshold as checkPatternEchoThreshold, getPatternRecognitionEcho, createResonanceEchoFromDescription, getVoicedChoiceText, applyPatternReflection, getOrbMilestoneEcho, getDiscoveryHint, DISCOVERY_HINTS, type ConsequenceEcho } from '@/lib/consequence-echoes'
+import { calculateResonantTrustChange } from '@/lib/pattern-affinity'
+import { getEchoIntensity, ECHO_INTENSITY_MODIFIERS } from '@/lib/trust-derivatives'
+import { calculateCharacterTrustDecay } from '@/lib/pattern-derivatives'
 import { checkTransformationEligible, type TransformationMoment } from '@/lib/character-transformations'
 import { loadEchoQueue, saveEchoQueue, queueEchosForFlag, getAndUpdateEchosForCharacter, type CrossCharacterEchoQueueState } from '@/lib/cross-character-memory'
 import { CheckInQueue } from '@/lib/character-check-ins'
@@ -954,8 +957,36 @@ export default function StatefulGameInterface() {
 
       // 5. Generate Consequence Echoes (Dialogue Feedback)
       let consequenceEcho: ConsequenceEcho | null = null
+      // D-010: Get current trust level for echo intensity
+      const currentTrust = newGameState.characters.get(state.currentCharacterId)?.trust ?? 5
+
       if (trustDelta !== 0) {
-        consequenceEcho = getConsequenceEcho(state.currentCharacterId, trustDelta)
+        // Check if pattern resonance affected this trust change
+        // Resonance descriptions are more meaningful than generic trust echoes
+        const choicePattern = choice.choice.pattern as PatternType | undefined
+        const resonanceResult = calculateResonantTrustChange(
+          trustDelta,
+          state.currentCharacterId,
+          newGameState.patterns as Record<PatternType, number>,
+          choicePattern
+        )
+
+        // Use resonance echo if triggered, otherwise fall back to generic trust echo
+        if (resonanceResult.resonanceTriggered && resonanceResult.resonanceDescription) {
+          consequenceEcho = createResonanceEchoFromDescription(resonanceResult.resonanceDescription)
+          logger.info('[StatefulGameInterface] Resonance echo triggered:', {
+            characterId: state.currentCharacterId,
+            description: resonanceResult.resonanceDescription.substring(0, 50) + '...'
+          })
+        } else {
+          consequenceEcho = getConsequenceEcho(state.currentCharacterId, trustDelta)
+        }
+
+        // D-010: Add trust level to echo for intensity-based display
+        if (consequenceEcho) {
+          consequenceEcho = { ...consequenceEcho, trustAtEvent: currentTrust }
+        }
+
         // Audio feedback for trust increase
         if (trustDelta > 0) {
           playTrustSound()
@@ -1097,6 +1128,9 @@ export default function StatefulGameInterface() {
 
       const targetCharacter = newGameState.characters.get(targetCharacterId)!
 
+      // D-001: Update last interaction timestamp for trust decay calculation
+      targetCharacter.lastInteractionTimestamp = Date.now()
+
       // Track pattern unlock visit (so it doesn't show again)
       if (choice.choice.choiceId?.startsWith('pattern_unlock_')) {
         if (!targetCharacter.visitedPatternUnlocks) {
@@ -1107,6 +1141,29 @@ export default function StatefulGameInterface() {
           characterId: targetCharacterId,
           nodeId: nextNode.nodeId
         })
+      }
+
+      // D-001: Apply pattern-influenced trust decay when returning to a character
+      // Only apply if character has been interacted with before and some time has passed
+      if (targetCharacter.lastInteractionTimestamp && targetCharacterId !== state.currentCharacterId) {
+        const SESSION_DURATION_MS = 10 * 60 * 1000 // 10 minutes = 1 "session"
+        const timeSinceLastInteraction = Date.now() - targetCharacter.lastInteractionTimestamp
+        const sessionsAbsent = Math.floor(timeSinceLastInteraction / SESSION_DURATION_MS)
+
+        if (sessionsAbsent > 0) {
+          const decayAmount = calculateCharacterTrustDecay(sessionsAbsent, newGameState.patterns)
+          if (decayAmount > 0 && targetCharacter.trust > 0) {
+            const oldTrust = targetCharacter.trust
+            targetCharacter.trust = Math.max(0, targetCharacter.trust - decayAmount)
+            logger.info('[StatefulGameInterface] D-001 Trust decay applied:', {
+              characterId: targetCharacterId,
+              sessionsAbsent,
+              decayAmount,
+              oldTrust,
+              newTrust: targetCharacter.trust
+            })
+          }
+        }
       }
 
       // Track first meeting with non-Samuel character for Constellation nudge
@@ -1164,6 +1221,28 @@ export default function StatefulGameInterface() {
             targetCharacter: pendingGift.targetCharacter,
             giftType: pendingGift.giftType
           })
+        }
+      }
+
+      // Check for discovery hints (vulnerability foreshadowing for Maya/Devon)
+      // 20% chance per interaction, only if no other echo is active
+      if (!consequenceEcho && DISCOVERY_HINTS[targetCharacterId] && Math.random() < 0.2) {
+        const vulnerabilities = DISCOVERY_HINTS[targetCharacterId]
+        for (const vuln of vulnerabilities) {
+          // Check if vulnerability not yet discovered
+          const discoveryFlag = `${targetCharacterId}_${vuln.vulnerability}_revealed`
+          if (!targetCharacter.knowledgeFlags.has(discoveryFlag)) {
+            const hint = getDiscoveryHint(targetCharacterId, vuln.vulnerability, targetCharacter.trust)
+            if (hint) {
+              consequenceEcho = hint
+              logger.info('[StatefulGameInterface] Discovery hint triggered:', {
+                characterId: targetCharacterId,
+                vulnerability: vuln.vulnerability,
+                trust: targetCharacter.trust
+              })
+              break // Only one hint per interaction
+            }
+          }
         }
       }
 
@@ -2168,17 +2247,27 @@ export default function StatefulGameInterface() {
                         </div>
                       )} */}
 
-                      {/* Consequence Echo - Dialogue Feedback */}
-                      {/* Consequence Echo - HIDDEN per user feedback */}
-                      {/* {state.consequenceEcho && (
+                      {/* Consequence Echo - Dialogue Feedback (Resonance descriptions) */}
+                      {state.consequenceEcho && (
                         <motion.div
-                          initial={{ opacity: 0, y: 10 }}
+                          initial={{ opacity: 0, y: 5 }}
                           animate={{ opacity: 1, y: 0 }}
-                          className="mt-6 mx-6 md:mx-8 mb-6 p-4 rounded-lg bg-indigo-950/30 border border-indigo-500/20 text-indigo-200/80 italic text-sm font-serif"
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="mt-4 mx-6 md:mx-8 mb-4 p-3 rounded-lg bg-amber-950/20 border border-amber-500/10 text-amber-200/70 italic text-sm font-serif"
                         >
-                          {state.consequenceEcho.text}
+                          {/* D-010: Apply intensity-based formatting */}
+                          {(() => {
+                            const trust = state.consequenceEcho?.trustAtEvent ?? 5
+                            const intensity = getEchoIntensity(trust)
+                            const modifier = ECHO_INTENSITY_MODIFIERS[intensity]
+                            // High trust = vivid, low trust = faded
+                            return modifier.detailLevel >= 0.7
+                              ? state.consequenceEcho?.text
+                              : `${modifier.prefix} ${state.consequenceEcho?.text || ''}`
+                          })()}
                         </motion.div>
-                      )} */}
+                      )}
                     </CardContent>
                   </Card>
                 </CardContent>
@@ -2327,6 +2416,7 @@ export default function StatefulGameInterface() {
                         if (original) handleChoice(original)
                       }}
                       glass={true}
+                      playerPatterns={state.gameState?.patterns}
                     />
                   </div>
 

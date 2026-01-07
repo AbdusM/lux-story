@@ -5,8 +5,10 @@ import { Button } from '@/components/ui/button'
 import { motion } from 'framer-motion'
 import { springs, stagger } from '@/lib/animations'
 import { Lock, Microscope, Brain, Compass, Heart, Hammer } from 'lucide-react'
-import { type PatternType, PATTERN_METADATA, isValidPattern } from '@/lib/patterns'
+import { type PatternType, PATTERN_METADATA, isValidPattern, PATTERN_THRESHOLDS } from '@/lib/patterns'
 import { type GravityResult } from '@/lib/narrative-gravity'
+import { getPatternPreviewStyles, getPatternHintText } from '@/lib/pattern-derivatives'
+import { type PlayerPatterns } from '@/lib/character-state'
 
 import { useGameStore } from '@/lib/game-store'
 
@@ -171,6 +173,8 @@ interface GameChoicesProps {
   orbFillLevels?: OrbFillLevels
   /** Use glass morphism styling for dark theme */
   glass?: boolean
+  /** Player's pattern scores for D-007 pattern previews */
+  playerPatterns?: PlayerPatterns
 }
 
 /**
@@ -318,7 +322,7 @@ function getLockMessage(choice: Choice): string {
 }
 
 // Memoized choice button component
-const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, isLocked, glass, showPatternIcon }: {
+const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, isLocked, glass, showPatternIcon, playerPatterns }: {
   choice: Choice
   index: number
   onChoice: (choice: Choice) => void
@@ -327,6 +331,8 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
   isLocked?: boolean
   glass?: boolean
   showPatternIcon?: boolean
+  /** D-007: Player patterns for subtle preview glow */
+  playerPatterns?: PlayerPatterns
 }) => {
   // MAGNETIC EFFECT REMOVED for stability and "less disjointed" feel
   // const magnetic = useMagneticElement(...)
@@ -467,6 +473,7 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
 
           `}
           style={{
+            // Marquee colors for pivotal choices
             ...((() => {
               const pattern = choice.pattern
               const colors = pattern && isValidPattern(pattern) ? PATTERN_MARQUEE_COLORS[pattern] : DEFAULT_MARQUEE_COLORS
@@ -475,8 +482,13 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
                 '--color-mid': colors.mid,
                 '--color-end': colors.end,
               } as React.CSSProperties
-            })())
+            })()),
+            // D-007: Pattern preview glow for developed patterns
+            ...(glass && playerPatterns && choice.pattern && isValidPattern(choice.pattern)
+              ? getPatternPreviewStyles(choice.pattern, playerPatterns)
+              : {})
           }}
+          title={playerPatterns && choice.pattern ? (getPatternHintText(choice.pattern, playerPatterns) || undefined) : undefined}
         >
           {showPatternIcon && choice.pattern && (
             <div className="mr-3 opacity-90">
@@ -540,7 +552,7 @@ const groupChoices = (choices: Choice[]) => {
  * - 1-9: Direct selection of choice by number
  * - Escape: Clear focus
  */
-export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevels, glass = false }: GameChoicesProps) => {
+export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevels, glass = false, playerPatterns }: GameChoicesProps) => {
   const { focusedIndex, containerRef } = useKeyboardNavigation(choices, isProcessing, onChoice)
 
   // ABILITY CHECK: Pattern Preview (P0)
@@ -626,6 +638,7 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
                     isLocked={isLocked}
                     glass={glass}
                     showPatternIcon={hasPatternPreview}
+                    playerPatterns={playerPatterns}
                   />
                 )
               })}
@@ -675,6 +688,7 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
               isLocked={isLocked}
               glass={glass}
               showPatternIcon={hasPatternPreview}
+              playerPatterns={playerPatterns}
             />
           )
         })

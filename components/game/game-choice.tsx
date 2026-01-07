@@ -15,6 +15,8 @@ import { LoadingDots } from "@/components/ui/loading-dots"
 import { cn } from "@/lib/utils"
 import { springs, STAGGER_DELAY } from "@/lib/animations"
 import { type PatternType, getPatternColor } from "@/lib/patterns"
+import { type PlayerPatterns } from "@/lib/character-state"
+import { getPatternPreviewStyles, getPatternHintText } from "@/lib/pattern-derivatives"
 
 /**
  * Convert hex color to rgba with opacity
@@ -52,6 +54,8 @@ export interface GameChoiceProps
   animated?: boolean
   /** Use glass morphism styling */
   glass?: boolean
+  /** Player's pattern scores for D-007 pattern previews */
+  playerPatterns?: PlayerPatterns
 }
 
 const GameChoice = React.forwardRef<HTMLButtonElement, GameChoiceProps>(
@@ -64,6 +68,7 @@ const GameChoice = React.forwardRef<HTMLButtonElement, GameChoiceProps>(
     index = 0,
     animated = true,
     glass = false, // Default to standard styling for backwards compatibility
+    playerPatterns,
     disabled,
     ...props
   }, ref) => {
@@ -73,6 +78,15 @@ const GameChoice = React.forwardRef<HTMLButtonElement, GameChoiceProps>(
     const patternGlowShadow = glass && choice.pattern
       ? getPatternGlowShadow(choice.pattern)
       : undefined
+
+    // D-007: Pattern preview styles (subtle glow for developed patterns)
+    const defaultPatterns: PlayerPatterns = { analytical: 0, patience: 0, exploring: 0, helping: 0, building: 0 }
+    const patternPreviewStyles = glass && playerPatterns
+      ? getPatternPreviewStyles(choice.pattern, playerPatterns)
+      : {}
+    const patternHintText = playerPatterns
+      ? getPatternHintText(choice.pattern, playerPatterns)
+      : null
 
     // Animation variants - spring from bottom
     const variants = {
@@ -96,6 +110,9 @@ const GameChoice = React.forwardRef<HTMLButtonElement, GameChoiceProps>(
         animate="visible"
         variants={variants}
         whileHover={patternGlowShadow ? { boxShadow: patternGlowShadow } : undefined}
+        style={patternPreviewStyles}
+        title={patternHintText || undefined}
+        aria-label={patternHintText ? `${choice.text}. ${patternHintText}` : undefined}
         className={cn(
           // Base styles - clean and minimal
           "w-full text-left",
