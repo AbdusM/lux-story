@@ -281,6 +281,330 @@ Browser automation agents should parse these JSON blocks for structured test exe
 }
 ```
 
+### Test Suite: Journal Panel ("The Prism")
+
+The Journal is a left-sliding panel with 6 tabs covering player progression.
+
+```json
+{
+  "test_suite": "journal_panel",
+  "description": "Journal side menu - 6 tabs with player stats and progression",
+  "panel_behavior": {
+    "trigger": "Book icon in game header",
+    "position": "Left side panel (max-width: 448px)",
+    "close_methods": ["X button", "Click backdrop", "Swipe left"],
+    "animation": "Slide from left with spring physics"
+  },
+  "cases": [
+    {
+      "id": "JOURNAL_001",
+      "name": "Panel Open/Close",
+      "priority": "P0",
+      "steps": [
+        "Click Journal button in game header",
+        "Verify panel slides in from left",
+        "Verify backdrop dims main content",
+        "Close via X button",
+        "Reopen and close via backdrop click"
+      ],
+      "expected": "Panel opens/closes smoothly, backdrop interaction works",
+      "selectors": {
+        "journal_button": "[class*='journal'], button[aria-label*='journal']",
+        "journal_panel": "[class*='Journal'], .glass-panel",
+        "close_button": "button[aria-label='Close prism']",
+        "backdrop": ".bg-black\\/60"
+      }
+    },
+    {
+      "id": "JOURNAL_002",
+      "name": "Tab: Harmonics (Pattern Orbs)",
+      "priority": "P0",
+      "tab_id": "harmonics",
+      "steps": [
+        "Open Journal",
+        "Verify Harmonics tab is default/active",
+        "Observe 5 pattern orbs displayed",
+        "Verify pattern names visible: Analytical, Helping, Building, Patience, Exploring",
+        "Tap on a pattern orb for detail view"
+      ],
+      "expected": "Pattern orbs show current levels (0-10 scale), detail view opens on tap",
+      "visual_elements": [
+        "Pattern orbs with fill level",
+        "Dominant pattern highlighted",
+        "Pattern labels"
+      ]
+    },
+    {
+      "id": "JOURNAL_003",
+      "name": "Tab: Essence (Skills)",
+      "priority": "P1",
+      "tab_id": "essence",
+      "steps": [
+        "Navigate to Essence tab",
+        "Observe skill constellation graph",
+        "Identify dormant vs demonstrated skills",
+        "Tap on a skill node for detail"
+      ],
+      "expected": "Skill graph renders, demonstrated skills visually distinct from dormant",
+      "visual_elements": [
+        "SkillConstellationGraph visualization",
+        "Skill nodes with state indicators",
+        "Skill detail panel on tap"
+      ]
+    },
+    {
+      "id": "JOURNAL_004",
+      "name": "Tab: Mastery (Abilities)",
+      "priority": "P2",
+      "tab_id": "mastery",
+      "steps": [
+        "Navigate to Mastery tab",
+        "View unlocked abilities/mastery levels"
+      ],
+      "expected": "Mastery progression displayed, abilities listed if any unlocked"
+    },
+    {
+      "id": "JOURNAL_005",
+      "name": "Tab: Mind (Thought Cabinet)",
+      "priority": "P1",
+      "tab_id": "mind",
+      "steps": [
+        "Navigate to Mind tab",
+        "View active thoughts from gameplay",
+        "Verify thoughts reflect recent choices"
+      ],
+      "expected": "Thought Cabinet shows contextual reflections from player actions"
+    },
+    {
+      "id": "JOURNAL_006",
+      "name": "Tab: Stars (Relationship Web)",
+      "priority": "P1",
+      "tab_id": "stars",
+      "steps": [
+        "Navigate to Stars/Constellation tab",
+        "Toggle between Social and Academy modes",
+        "View relationship web connecting characters",
+        "Tap on character node"
+      ],
+      "expected": "Relationship web shows met characters, mode toggle switches view",
+      "visual_elements": [
+        "RelationshipWeb graph",
+        "Social/Academy toggle buttons",
+        "Character nodes with trust indicators",
+        "Completed arc badges"
+      ]
+    },
+    {
+      "id": "JOURNAL_007",
+      "name": "Tab: Toolkit",
+      "priority": "P2",
+      "tab_id": "toolkit",
+      "steps": [
+        "Navigate to Toolkit tab",
+        "View available tools/utilities"
+      ],
+      "expected": "Toolkit view displays player resources"
+    },
+    {
+      "id": "JOURNAL_008",
+      "name": "Tab Badge Indicators",
+      "priority": "P1",
+      "steps": [
+        "Make choices that trigger pattern changes",
+        "Open Journal",
+        "Observe badge dot on Harmonics tab",
+        "Visit Harmonics tab",
+        "Verify badge clears after viewing"
+      ],
+      "expected": "New content badges appear on relevant tabs, clear after viewing",
+      "visual_elements": [
+        "Amber dot badge on tab icon",
+        "Pulse animation on badge"
+      ]
+    },
+    {
+      "id": "JOURNAL_009",
+      "name": "Log Search",
+      "priority": "P2",
+      "steps": [
+        "Open Journal",
+        "Locate search input below header",
+        "Type search term related to past dialogue",
+        "Review search results"
+      ],
+      "expected": "LogSearch filters past conversation content"
+    },
+    {
+      "id": "JOURNAL_010",
+      "name": "Player Avatar & Stage Label",
+      "priority": "P2",
+      "steps": [
+        "Open Journal",
+        "Observe header area",
+        "Verify player avatar visible",
+        "Verify journey stage label (e.g., 'Beginning Resonance')"
+      ],
+      "expected": "PlayerAvatar renders, stage label reflects progression"
+    }
+  ]
+}
+```
+
+### Test Suite: Constellation Panel ("Your Journey")
+
+The Constellation is a right-sliding panel with 3 tabs covering characters, skills, and quests.
+
+```json
+{
+  "test_suite": "constellation_panel",
+  "description": "Constellation side menu - 3 tabs for characters, skills, quests",
+  "panel_behavior": {
+    "trigger": "Stars icon in game header",
+    "position": "Right side panel (max-width: 512px)",
+    "close_methods": ["X button", "Click backdrop", "Swipe right", "Escape key"],
+    "animation": "Slide from right with spring physics",
+    "gesture": "Drag right to close (threshold: 100px)"
+  },
+  "cases": [
+    {
+      "id": "CONST_001",
+      "name": "Panel Open/Close",
+      "priority": "P0",
+      "steps": [
+        "Click Constellation button in game header",
+        "Verify panel slides in from right",
+        "Verify backdrop dims main content",
+        "Close via X button",
+        "Reopen and close via swipe right gesture",
+        "Reopen and close via Escape key"
+      ],
+      "expected": "Panel opens/closes via all methods, gesture threshold works",
+      "selectors": {
+        "constellation_button": "[class*='constellation'], button[aria-label*='constellation']",
+        "panel": "[aria-label='Your Journey - Character and Skill Progress']",
+        "close_button": "button[aria-label='Close constellation view']"
+      }
+    },
+    {
+      "id": "CONST_002",
+      "name": "Tab: People (Characters)",
+      "priority": "P0",
+      "tab_id": "people",
+      "steps": [
+        "Open Constellation",
+        "Verify People tab is default/active",
+        "View list of met characters",
+        "Verify count badge matches met character count",
+        "Tap on a character card"
+      ],
+      "expected": "Character list shows met NPCs, count badge accurate, detail opens on tap",
+      "visual_elements": [
+        "Character cards with avatars",
+        "Trust level indicator per character",
+        "Met/unmet visual distinction",
+        "Character count badge on tab"
+      ]
+    },
+    {
+      "id": "CONST_003",
+      "name": "Tab: Skills",
+      "priority": "P1",
+      "tab_id": "skills",
+      "steps": [
+        "Navigate to Skills tab",
+        "View demonstrated skills list",
+        "Verify count badge matches demonstrated skill count",
+        "Tap on a skill for detail"
+      ],
+      "expected": "Skills list shows demonstrated abilities, detail modal opens",
+      "visual_elements": [
+        "Skill cards with state indicators",
+        "Demonstrated vs dormant styling",
+        "Skill count badge on tab"
+      ]
+    },
+    {
+      "id": "CONST_004",
+      "name": "Tab: Quests",
+      "priority": "P1",
+      "tab_id": "quests",
+      "steps": [
+        "Navigate to Quests tab",
+        "View active and unlocked quests",
+        "Verify count badge shows active quest count",
+        "Read quest descriptions and requirements"
+      ],
+      "expected": "Quest list shows progression objectives with status",
+      "quest_statuses": ["locked", "unlocked", "active", "completed"]
+    },
+    {
+      "id": "CONST_005",
+      "name": "Character Detail Modal",
+      "priority": "P1",
+      "steps": [
+        "Open People tab",
+        "Tap on any character card",
+        "Verify detail modal opens",
+        "Review character info (name, role, trust level)",
+        "Close detail modal",
+        "Verify return to People list"
+      ],
+      "expected": "Detail modal shows character info, closes cleanly"
+    },
+    {
+      "id": "CONST_006",
+      "name": "Skill Detail Modal",
+      "priority": "P1",
+      "steps": [
+        "Open Skills tab",
+        "Tap on any demonstrated skill",
+        "Verify detail modal opens",
+        "Review skill info (name, description, related patterns)",
+        "Close detail modal"
+      ],
+      "expected": "Detail modal shows skill info with progression context"
+    },
+    {
+      "id": "CONST_007",
+      "name": "Tab Switching Animation",
+      "priority": "P2",
+      "steps": [
+        "Rapidly switch between People, Skills, Quests tabs",
+        "Observe animated tab indicator"
+      ],
+      "expected": "Tab indicator slides smoothly (layoutId animation), content fades",
+      "visual_elements": [
+        "Amber gradient underline on active tab",
+        "Content fade transition between tabs"
+      ]
+    },
+    {
+      "id": "CONST_008",
+      "name": "Empty States",
+      "priority": "P2",
+      "steps": [
+        "On fresh game, open Constellation",
+        "Check Skills tab with no demonstrated skills",
+        "Check Quests tab with no active quests"
+      ],
+      "expected": "Helpful empty state messaging, not blank/broken"
+    },
+    {
+      "id": "CONST_009",
+      "name": "Safe Area Padding",
+      "priority": "P1",
+      "viewport": { "device": "iPhone with notch" },
+      "steps": [
+        "Open Constellation on device with safe areas",
+        "Scroll to bottom of content",
+        "Verify content not hidden behind home indicator"
+      ],
+      "expected": "Bottom padding accounts for env(safe-area-inset-bottom)"
+    }
+  ]
+}
+```
+
 ### Test Suite: UI Validation
 
 ```json
@@ -826,8 +1150,8 @@ Browser automation agents should parse these JSON blocks for structured test exe
       { "id": "C1", "requirement": "Game loads without errors on prod URL", "suite": "core_mechanics" },
       { "id": "C2", "requirement": "Complete intro - Samuel - first character flow", "suite": "golden_paths" },
       { "id": "C3", "requirement": "Make 10+ choices without errors", "suite": "core_mechanics" },
-      { "id": "C4", "requirement": "Journal opens and shows entries", "suite": "golden_paths" },
-      { "id": "C5", "requirement": "Constellation opens and is interactive", "suite": "golden_paths" },
+      { "id": "C4", "requirement": "Journal opens, all 6 tabs accessible", "suite": "journal_panel" },
+      { "id": "C5", "requirement": "Constellation opens, all 3 tabs accessible", "suite": "constellation_panel" },
       { "id": "C6", "requirement": "Pattern orbs visually respond to choices", "suite": "core_mechanics" },
       { "id": "C7", "requirement": "Mobile viewport (375px) - no critical issues", "suite": "ui_validation" },
       { "id": "C8", "requirement": "Desktop viewport (1440px) - no critical issues", "suite": "ui_validation" },
@@ -838,7 +1162,11 @@ Browser automation agents should parse these JSON blocks for structured test exe
       { "id": "S1", "requirement": "Complete trust journey 3-6 for any character" },
       { "id": "S2", "requirement": "Test all 7 viewport sizes" },
       { "id": "S3", "requirement": "Verify keyboard navigation works" },
-      { "id": "S4", "requirement": "No P1 bugs found" }
+      { "id": "S4", "requirement": "No P1 bugs found" },
+      { "id": "S5", "requirement": "Journal: Test all detail views (pattern orbs, skills)", "suite": "journal_panel" },
+      { "id": "S6", "requirement": "Constellation: Test character and skill detail modals", "suite": "constellation_panel" },
+      { "id": "S7", "requirement": "Journal: Verify LogSearch filters conversation history", "suite": "journal_panel" },
+      { "id": "S8", "requirement": "Constellation: Quest system shows correct statuses", "suite": "constellation_panel" }
     ]
   }
 }
@@ -853,6 +1181,18 @@ Browser automation agents should parse these JSON blocks for structured test exe
 - [ ] Tested on desktop viewport (1280px+ width)
 - [ ] Found no blocking visual bugs
 - [ ] Animations feel smooth and intentional
+
+### Side Panel Deep-Dive Criteria
+- [ ] Journal: Visited all 6 tabs (Harmonics, Essence, Mastery, Mind, Stars, Toolkit)
+- [ ] Journal: Verified pattern orb detail view opens on tap
+- [ ] Journal: Tested Social/Academy toggle in Stars tab
+- [ ] Journal: Observed tab badge indicators appear and clear
+- [ ] Constellation: Visited all 3 tabs (People, Skills, Quests)
+- [ ] Constellation: Opened character detail modal
+- [ ] Constellation: Opened skill detail modal
+- [ ] Constellation: Verified quest statuses display correctly
+- [ ] Constellation: Tested swipe-to-close gesture
+- [ ] Constellation: Tested Escape key to close
 
 ---
 
