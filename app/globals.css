@@ -1159,3 +1159,215 @@ main {
     background-clip: unset;
   }
 }
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   D-080: LARGE TEXT MODE
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* Base text size variables */
+:root {
+  --text-scale: 1;
+  --text-base: 1rem;
+  --text-sm: 0.875rem;
+  --text-xs: 0.75rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --line-height-scale: 1;
+}
+
+/* Large text mode classes */
+.text-size-large {
+  --text-scale: 1.25;
+  font-size: calc(1rem * var(--text-scale));
+}
+
+.text-size-x-large {
+  --text-scale: 1.5;
+  font-size: calc(1rem * var(--text-scale));
+}
+
+.text-size-xx-large {
+  --text-scale: 2;
+  font-size: calc(1rem * var(--text-scale));
+}
+
+/* Ensure text scales properly but doesn't break layouts */
+.text-size-large *,
+.text-size-x-large *,
+.text-size-xx-large * {
+  line-height: calc(1.5 * var(--line-height-scale, 1));
+}
+
+/* Container-aware text scaling */
+.text-responsive {
+  font-size: clamp(var(--text-sm), var(--text-base), var(--text-lg));
+}
+
+/* Button text doesn't scale beyond container */
+.text-size-x-large button,
+.text-size-xx-large button {
+  font-size: min(calc(1rem * var(--text-scale)), 1.5rem);
+}
+
+/* Choice buttons with scroll for overflow */
+.text-size-x-large .choice-button,
+.text-size-xx-large .choice-button {
+  overflow-y: auto;
+  max-height: 120px;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   D-030: VISUAL ACCESSIBILITY PROFILES
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* Dyslexia-friendly font */
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: local('OpenDyslexic'), local('OpenDyslexic-Regular');
+  font-display: swap;
+}
+
+.font-dyslexic {
+  font-family: 'OpenDyslexic', 'Comic Sans MS', sans-serif !important;
+  letter-spacing: 0.05em;
+  word-spacing: 0.1em;
+}
+
+/* High contrast mode */
+.high-contrast {
+  --bg-color: #000000;
+  --text-color: #ffffff;
+  --accent-color: #ffff00;
+  --border-color: #ffffff;
+}
+
+.high-contrast * {
+  border-color: var(--border-color, currentColor) !important;
+}
+
+.high-contrast .glass-panel {
+  background: #000000 !important;
+  border: 2px solid #ffffff !important;
+}
+
+.high-contrast a,
+.high-contrast button {
+  text-decoration: underline;
+}
+
+.high-contrast a:focus,
+.high-contrast button:focus {
+  outline: 3px solid #ffff00 !important;
+  outline-offset: 2px !important;
+}
+
+/* Reduce transparency mode */
+.reduce-transparency {
+  --backdrop-blur: 0px;
+}
+
+.reduce-transparency .glass-panel {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: rgba(10, 12, 16, 0.98) !important;
+}
+
+/* Reduce motion mode (class-based, in addition to media query) */
+.reduce-motion * {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
+/* Large touch targets */
+.large-touch-targets button,
+.large-touch-targets a,
+.large-touch-targets [role="button"] {
+  min-height: 56px !important;
+  min-width: 56px !important;
+  padding: 12px 16px !important;
+}
+
+/* Simplified UI mode */
+.simplified-ui .decorative,
+.simplified-ui .animation-only,
+.simplified-ui .bg-pattern {
+  display: none !important;
+}
+
+.simplified-ui .glass-panel {
+  border-radius: 4px !important;
+}
+
+/* Screen reader optimized */
+.sr-optimized .sr-only-visible {
+  position: static !important;
+  width: auto !important;
+  height: auto !important;
+  clip: auto !important;
+  clip-path: none !important;
+  margin: 0 !important;
+}
+
+/* Focus indicators - enhanced for accessibility */
+:root {
+  --focus-ring-color: #f59e0b;
+  --focus-ring-width: 2px;
+}
+
+*:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: 2px;
+}
+
+.high-contrast *:focus-visible {
+  outline-color: #ffff00;
+  outline-width: 3px;
+}
+
+/* Line height utilities for accessibility */
+.leading-relaxed-all * {
+  line-height: 1.75 !important;
+}
+
+.leading-loose-all * {
+  line-height: 2 !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   D-026: STATE-BASED ANIMATION SUPPORT
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* Animation mood CSS variables */
+:root {
+  --animation-mood: 'neutral';
+  --animation-glow-color: transparent;
+}
+
+/* Mood-specific glow effects */
+[data-animation-mood="warm"] {
+  --animation-glow-color: rgba(251, 191, 36, 0.2);
+}
+
+[data-animation-mood="tense"] {
+  --animation-glow-color: rgba(239, 68, 68, 0.3);
+}
+
+[data-animation-mood="reflective"] {
+  --animation-glow-color: rgba(139, 92, 246, 0.2);
+}
+
+[data-animation-mood="triumphant"] {
+  --animation-glow-color: rgba(34, 197, 94, 0.3);
+}
+
+[data-animation-mood="vulnerable"] {
+  --animation-glow-color: rgba(244, 114, 182, 0.2);
+}
+
+/* Apply mood glow to containers */
+[data-animation-mood]:not([data-animation-mood="neutral"]):not([data-animation-mood="cautious"]) .glass-panel {
+  box-shadow: 0 0 20px var(--animation-glow-color);
+}
