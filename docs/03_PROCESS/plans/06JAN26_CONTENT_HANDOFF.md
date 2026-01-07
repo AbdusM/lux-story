@@ -1,19 +1,22 @@
-# Content-Heavy Feature Handoff
+# Content-Heavy & Admin Feature Handoff
 
 **Date:** January 6, 2026
 **From:** Claude Code Session
 **To:** Content Development (Google/Gemini)
-**Status:** Infrastructure Complete, Content Needed
+**Status:** Infrastructure Complete, Content & Admin Work Needed
 
 ---
 
 ## Executive Summary
 
-All derivative system **infrastructure** is built and tested. The following features need **content authoring** to become functional. The code exists - it just needs data.
+All derivative system **infrastructure** is built and tested. This document covers:
+1. **Content-Heavy Features** - Need authored content to function
+2. **Admin Dashboard Features** - Assessment/analytics systems
+3. **Complex Character Features** - Need scenario authoring
 
 ---
 
-## Features Requiring Content
+## PART A: CONTENT-HEAVY FEATURES
 
 ### 1. D-057: Trust as Currency (Information Trading)
 
@@ -81,9 +84,9 @@ const MAYA_INFO_TRADES: InfoTradeOffer[] = [
 
 ### 2. D-056: Information Trading System
 
-**Location:** `lib/knowledge-derivatives.ts` (needs creation)
+**Location:** `lib/knowledge-derivatives.ts` (needs expansion)
 
-**What's Built:** Nothing yet - this is the exchange mechanic for D-057
+**What's Built:** Basic interfaces
 
 **What's Needed:**
 - Knowledge items that can be traded between characters
@@ -109,7 +112,7 @@ interface KnowledgeItem {
 **Location:** Needs `lib/story-arcs.ts` and `content/story-arcs/`
 
 **What's Needed:**
-Story arcs are multi-session narrative threads that span multiple characters and track progress over time.
+Story arcs are multi-session narrative threads that span multiple characters.
 
 **Structure:**
 ```typescript
@@ -178,7 +181,7 @@ interface SynthesisPuzzle {
     'rohan_deep_station_theory'
   ],
   hint: 'Samuel knows the history, Elena has the records, and Rohan has a theory...',
-  solution: 'The station isn\'t just a place - it\'s a manifestation of collective potential. It appears to those at crossroads, built from the echoes of every choice ever made here.',
+  solution: 'The station isn\'t just a place - it\'s a manifestation of collective potential.',
   reward: {
     patternBonus: { exploring: 2 },
     unlockFlag: 'station_nature_understood'
@@ -188,18 +191,262 @@ interface SynthesisPuzzle {
 
 ---
 
-## Already Complete (For Reference)
+## PART B: ADMIN DASHBOARD FEATURES
+
+These features power the admin/analytics dashboard, not the main game loop.
+
+### 5. D-011: Dynamic Career Recommendations
+
+**Location:** `lib/assessment-derivatives.ts`
+
+**What's Built:**
+- `Skill` interface with 50+ skills defined
+- `CareerField` interface
+- Skill categories (communication, technical, analytical, interpersonal, leadership, creative)
+
+**What's Needed:**
+- `CareerField` entries for Birmingham-specific careers
+- Career-to-skill mappings
+- Pattern-to-career alignments
+
+**Structure:**
+```typescript
+interface CareerField {
+  id: string
+  name: string
+  sector: string
+  requiredSkills: { skillId: string; minLevel: number }[]
+  preferredPatterns: PatternType[]
+  characterExamples: CharacterId[]
+  birminghamEmployers?: string[]  // Local employers
+}
+```
+
+**Content Needed:**
+- 20-30 career fields covering Birmingham's key sectors
+- Healthcare, Tech, Manufacturing, Education, Creative, Finance
+- Each with 3-5 required skills and pattern alignments
+
+**Suggested File:** `content/career-fields.ts`
+
+---
+
+### 6. D-012: Skill Transfer Visualization
+
+**Location:** `lib/assessment-derivatives.ts`
+
+**What's Built:**
+- Skill `transferDomains` property
+- Cross-domain skill tracking
+
+**What's Needed:**
+- Transfer pathway descriptions between domains
+- Visual connection data for skill graph
+
+**Content Pattern:**
+```typescript
+interface SkillTransfer {
+  fromDomain: string
+  toDomain: string
+  transferableSkills: string[]
+  difficulty: 'easy' | 'medium' | 'hard'
+  description: string  // How skills transfer
+}
+```
+
+---
+
+### 7. D-014: Skill Gap Identification
+
+**Location:** `lib/assessment-derivatives.ts`
+
+**What's Built:** Basic skill tracking
+
+**What's Needed:**
+- Target career skill profiles
+- Gap analysis recommendations
+- Learning pathway suggestions
+
+**Content Pattern:**
+```typescript
+interface SkillGap {
+  skillId: string
+  currentLevel: number
+  targetLevel: number
+  gapDescription: string
+  developmentSuggestions: string[]
+  relatedCharacters: CharacterId[]  // Who can help develop this
+}
+```
+
+---
+
+### 8. D-015: Pattern-Skill Correlation Analysis
+
+**Location:** `lib/assessment-derivatives.ts`
+
+**What's Built:** Pattern-to-skill alignments in `SKILLS` registry
+
+**What's Needed:**
+- Correlation strength data
+- Explanation text for each correlation
+- Dashboard visualization data
+
+---
+
+### 9. D-053: Skill Application Challenges
+
+**Location:** `lib/assessment-derivatives.ts`
+
+**What's Needed:**
+Mini-challenges that test skill application.
+
+**Structure:**
+```typescript
+interface SkillChallenge {
+  id: string
+  skillId: string
+  characterId: CharacterId  // Who presents this
+  scenario: string
+  options: {
+    text: string
+    skillLevel: number  // Demonstrates this level
+    feedback: string
+  }[]
+}
+```
+
+**Content Needed:** 2-3 challenges per skill category
+
+---
+
+### 10. D-094: Skill Decay Mechanics
+
+**Location:** `lib/assessment-derivatives.ts`
+
+**What's Built:** Decay calculation functions
+
+**What's Needed:**
+- Decay rate configurations per skill type
+- Refresh activity definitions
+- Dashboard decay warnings
+
+---
+
+## PART C: COMPLEX CHARACTER FEATURES
+
+These need authored scenarios and relationship content.
+
+### 11. D-018: Sector-Specific Character Appearances
+
+**Location:** `lib/character-derivatives.ts:419-560`
+
+**What's Built:**
+- `CHARACTER_LOCATIONS` registry with all 16 characters
+- Sector definitions (hub, market, deep_station, platforms, workshops, archives)
+- Time-of-day and flag-based conditions
+
+**What's Needed:**
+- Sector-specific dialogue variations
+- Location-based encounter descriptions
+- Time-based dialogue changes
+
+**Content Pattern:**
+```typescript
+interface SectorDialogue {
+  characterId: string
+  sector: SectorId
+  timeOfDay?: 'morning' | 'afternoon' | 'evening' | 'night'
+  greetings: string[]
+  ambientComments: string[]
+}
+```
+
+---
+
+### 12. D-063: Character Relationship Drama
+
+**Location:** `lib/character-derivatives.ts` (needs expansion)
+
+**What's Needed:**
+Scenarios where character relationships create tension.
+
+**Structure:**
+```typescript
+interface RelationshipDrama {
+  id: string
+  characters: [CharacterId, CharacterId]  // The two in conflict
+  trigger: {
+    minTrustWithBoth?: number
+    requiredFlags?: string[]
+  }
+  scenario: string
+  playerChoices: {
+    text: string
+    sidesWith: CharacterId | 'neither' | 'both'
+    consequence: {
+      trustChanges: Record<string, number>
+      flagsSet: string[]
+    }
+  }[]
+}
+```
+
+**Suggested Dramas:**
+- Maya vs Devon: Innovation vs Stability
+- Tess vs Alex: Education vs Efficiency
+- Rohan vs Zara: Truth vs Ethics
+- Asha vs Lira: Visual vs Audio expression
+
+---
+
+### 13. D-095: Multi-Character Simultaneous Interactions
+
+**Location:** `lib/character-derivatives.ts` (needs creation)
+
+**What's Needed:**
+Scenes with 3+ characters interacting together.
+
+**Structure:**
+```typescript
+interface MultiCharacterScene {
+  id: string
+  characters: CharacterId[]  // 3+ characters
+  trigger: {
+    location: SectorId
+    minTrustSum: number  // Combined trust across characters
+    requiredFlags?: string[]
+  }
+  dialogue: {
+    speaker: CharacterId
+    text: string
+    emotion?: string
+  }[]
+  choices: DialogueChoice[]
+}
+```
+
+**Suggested Scenes:**
+- The Council (Samuel, Tess, Marcus, Rohan)
+- The Collaboration (Maya, Devon, Yaquin)
+- The Symphony (Lira, Asha, Elena)
+
+---
+
+## PART D: ALREADY COMPLETE (For Reference)
 
 These features are **fully wired** and working:
 
 | Feature | What It Does |
 |---------|--------------|
+| D-001 | Pattern-influenced trust decay |
 | D-002 | Pattern-gated content unlocks |
 | D-003 | Trust-based voice tone |
 | D-004 | Cross-character recognition comments |
 | D-005 | Trust asymmetry reactions |
 | D-007 | Pattern choice previews |
 | D-009 | Pattern-filtered interrupts |
+| D-010 | Echo intensity based on trust |
 | D-019 | Iceberg references (casual mentions → investigations) |
 | D-020 | Magical realism manifestations |
 | D-039 | Trust timeline tracking |
@@ -209,6 +456,15 @@ These features are **fully wired** and working:
 | D-084 | Interrupt combo chains |
 | D-093 | Trust inheritance |
 | D-096 | Voice conflicts |
+
+**Being Wired by Claude (in parallel):**
+| Feature | What It Does |
+|---------|--------------|
+| D-016 | Environmental changes from character trust |
+| D-017 | Cross-character loyalty prerequisites |
+| D-062 | Consequence cascade chains |
+| D-064 | Narrative framing by dominant pattern |
+| D-065 | Meta-narrative at pattern mastery |
 
 ---
 
@@ -221,24 +477,24 @@ These features are **fully wired** and working:
 
 ### Character Reference
 
-| Character | Role | Voice Style |
-|-----------|------|-------------|
-| Samuel | Station Keeper | Wise, measured, slightly mysterious |
-| Maya | Tech Innovator | Passionate, conflicted about family |
-| Marcus | Medical Tech | Caring, practical, health-focused |
-| Devon | Systems Thinker | Analytical, process-oriented |
-| Tess | Education Founder | Warm, encouraging, mission-driven |
-| Yaquin | EdTech Creator | Creative, youthful energy |
-| Kai | Safety Specialist | Protective, detail-oriented |
-| Alex | Supply Chain | Efficient, logistics-minded |
-| Rohan | Deep Tech | Introspective, philosophical |
-| Jordan | Career Navigator | Supportive, options-focused |
-| Silas | Manufacturing | Hands-on, builder mentality |
-| Elena | Archivist | Scholarly, pattern-seeking |
-| Grace | Healthcare Ops | Compassionate, systemic thinker |
-| Asha | Mediator | Calm, conflict-resolution focused |
-| Lira | Communications | Expressive, audio/visual oriented |
-| Zara | Data Ethics | Thoughtful, values-driven |
+| Character | Role | Voice Style | Sector |
+|-----------|------|-------------|--------|
+| Samuel | Station Keeper | Wise, measured, mysterious | Hub |
+| Maya | Tech Innovator | Passionate, conflicted | Platforms |
+| Marcus | Medical Tech | Caring, practical | Deep Station |
+| Devon | Systems Thinker | Analytical, process-oriented | Workshops |
+| Tess | Education Founder | Warm, encouraging | Market |
+| Yaquin | EdTech Creator | Creative, youthful | Platforms |
+| Kai | Safety Specialist | Protective, detail-oriented | Hub |
+| Alex | Supply Chain | Efficient, logistics-minded | Market |
+| Rohan | Deep Tech | Introspective, philosophical | Deep Station |
+| Jordan | Career Navigator | Supportive, options-focused | Hub |
+| Silas | Manufacturing | Hands-on, builder mentality | Workshops |
+| Elena | Archivist | Scholarly, pattern-seeking | Archives |
+| Grace | Healthcare Ops | Compassionate, systemic | Deep Station |
+| Asha | Mediator/Artist | Calm, visual expression | Wandering |
+| Lira | Communications | Expressive, audio-oriented | Deep Station |
+| Zara | Data Ethics | Thoughtful, values-driven | Archives |
 
 ### Pattern Integration
 Content should naturally reinforce the 5 patterns:
@@ -258,6 +514,11 @@ Content should naturally reinforce the 5 patterns:
 | Story Arcs | `content/story-arcs/` |
 | Synthesis Puzzles | `content/synthesis-puzzles.ts` |
 | Knowledge Items | `content/knowledge-items.ts` |
+| Career Fields | `content/career-fields.ts` |
+| Skill Challenges | `content/skill-challenges.ts` |
+| Relationship Dramas | `content/relationship-dramas.ts` |
+| Multi-Character Scenes | `content/multi-character-scenes.ts` |
+| Sector Dialogues | `content/sector-dialogues.ts` |
 
 ---
 
@@ -272,16 +533,27 @@ npm test
 
 # Count content entries
 grep -c "id:" content/info-trades.ts
+grep -c "id:" content/career-fields.ts
 ```
 
 ---
 
-## Questions for Content Author
+## Priority Order
 
-1. Should info trades be character-specific files or one unified file?
-2. How many story arcs should exist at launch?
-3. Should synthesis puzzles require specific character combinations or any 3+ sources?
-4. What's the desired ratio of common:rare:legendary info trades?
+### High Priority (Core Experience)
+1. D-057 Info Trades (16 chars × 5 tiers)
+2. D-083 Synthesis Puzzles (5-10 puzzles)
+3. D-063 Relationship Dramas (4-6 scenarios)
+
+### Medium Priority (Depth)
+4. D-061 Story Arcs (3-4 arcs)
+5. D-056 Knowledge Trading chains
+6. D-095 Multi-Character Scenes (3-5 scenes)
+
+### Lower Priority (Admin/Analytics)
+7. D-011 Career Fields (20-30 entries)
+8. D-053 Skill Challenges (15-20 challenges)
+9. D-012, D-014, D-015 correlation data
 
 ---
 
@@ -290,8 +562,12 @@ grep -c "id:" content/info-trades.ts
 - **Dialogue Nodes:** 946
 - **Tests:** 929 passing
 - **Characters:** 16
-- **Derivative Systems:** 16 wired
+- **Derivative Systems:** 22 total (17 wired, 5 in progress)
+- **Skills Defined:** 50+
 
 ---
 
-**Next Session:** Wire content into game loop once authored
+**Next Steps:**
+1. Google/Gemini authors content using interfaces above
+2. Claude wires D-016, D-017, D-062, D-064, D-065
+3. Integration session to connect new content
