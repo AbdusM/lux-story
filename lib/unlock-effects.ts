@@ -206,10 +206,12 @@ function evaluateAnalyticalUnlocks(ctx: UnlockContext): Partial<ContentEnhanceme
 
   // Level 2 (50%): Pattern Recognition - Show trust insights
   if (ctx.hasUnlock('analytical-2') && ctx.currentCharacter && ctx.characterName) {
+    // Get initial trust from D-039 trust timeline, or default to 5 (starting trust)
+    const initialTrust = ctx.currentCharacter.trustTimeline?.points[0]?.trust ?? 5
     const insight = generateTrustInsight(
       ctx.characterName,
       ctx.currentCharacter.trust,
-      0 // TODO: Track initial trust if needed
+      initialTrust
     )
     if (insight) {
       enhancement.journalInsight = insight
