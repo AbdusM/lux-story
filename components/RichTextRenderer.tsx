@@ -100,6 +100,10 @@ export function RichTextRenderer({
   // Default to staggered if 'typewriter' is requested (migration strategy)
   const mode = effects.mode === 'typewriter' ? 'staggered' : (effects.mode || 'static')
 
+  // FORCE DISABLE FLASHING: User feedback indicates it's confusing/weird.
+  // We override the prop to ensure stable text rendering.
+  const isFlashing = false // was: effects.flashing
+
   // Split text into chunks respecting author intent
   // Priority: 1) Manual | separators, 2) Paragraph breaks (\n\n), 3) Keep as single chunk
   const chunks = React.useMemo(() => {
@@ -244,7 +248,22 @@ export function RichTextRenderer({
         return <strong key={i}>{part.slice(2, -2)}</strong>
       }
       if (part.startsWith('*') && part.endsWith('*')) {
-        return <em key={i}>{part.slice(1, -1)}</em>
+        const text = part.slice(1, -1)
+        // Heuristic: If it looks like a full sentence (starts with capital, > 20 chars), treat as narrative action
+        // This separates "He shuts down the hologram." (Action) from "I *really* mean it" (Emphasis)
+        const isAction = /^[A-Z]/.test(text) && text.length > 20
+        return (
+          <em
+            key={i}
+            className={cn(
+              isAction
+                ? "text-amber-200/60 font-serif opacity-90 block my-2" // Block display for actions creates separation
+                : "font-semibold text-amber-100" // Brighter for emphasis
+            )}
+          >
+            {text}
+          </em>
+        )
       }
       return <span key={i}>{part}</span>
     })

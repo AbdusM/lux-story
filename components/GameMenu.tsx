@@ -11,7 +11,7 @@ import {
 import { Settings, FileText, Volume2, VolumeX, Brain, Stars } from 'lucide-react'
 
 interface GameMenuProps {
-    onShowReport: () => void
+    onShowReport?: () => void
     onReturnToStation?: () => void
     onShowConstellation?: () => void
     isMuted?: boolean
@@ -34,44 +34,27 @@ export function GameMenu({ onShowReport, onReturnToStation: _onReturnToStation, 
                         Adjust settings or return to the main station.
                     </DialogDescription>
                 </DialogHeader>
-                <div className="grid gap-4 py-4 overflow-y-auto hide-scrollbar pr-2">
+                <div className="flex flex-col gap-1 py-4 pr-1">
                     <Button
                         onClick={onShowReport}
-                        variant="ghost-dark"
-                        className="flex items-center justify-start gap-4 h-16 shrink-0 group border border-white/10 rounded-xl"
+                        variant="ghost"
+                        className="w-full flex items-center justify-start gap-3 h-12 px-4 rounded-lg hover:bg-white/5 transition-all text-slate-300 hover:text-white"
                     >
-                        <FileText className="w-5 h-5 text-slate-400 group-hover:text-amber-400 transition-colors" />
-                        <div className="flex flex-col items-start gap-0.5">
-                            <span className="font-semibold text-base">Career Profile</span>
-                            <span className="text-xs text-slate-400 group-hover:text-amber-200/80">View your strategic analysis</span>
-                        </div>
+                        <FileText className="w-4 h-4 text-amber-500/80" />
+                        <span className="text-sm font-medium">Career Profile</span>
                     </Button>
 
-                    {onShowConstellation && (
-                        <Button
-                            onClick={onShowConstellation}
-                            variant="ghost-dark"
-                            className="flex items-center justify-start gap-4 h-16 shrink-0 group border border-white/10 rounded-xl"
-                        >
-                            <Stars className="w-5 h-5 text-indigo-400 group-hover:text-indigo-300" />
-                            <div className="flex flex-col items-start gap-0.5">
-                                <span className="font-semibold text-base">Connections</span>
-                                <span className="text-xs text-slate-400 group-hover:text-indigo-200/80">View your network & skills</span>
-                            </div>
-                        </Button>
-                    )}
-
                     {playerId && (
-                        <Link href={`/admin/${playerId}`} passHref>
+                        <Link href={`/admin/${playerId}`} passHref legacyBehavior>
                             <Button
-                                variant="ghost-dark"
-                                className="flex items-center justify-start gap-4 h-16 w-full mb-4 shrink-0 group border border-white/10 rounded-xl"
+                                asChild
+                                variant="ghost"
+                                className="w-full flex items-center justify-start gap-3 h-12 px-4 rounded-lg hover:bg-white/5 transition-all text-slate-300 hover:text-white"
                             >
-                                <Brain className="w-5 h-5 text-emerald-400 group-hover:text-emerald-300" />
-                                <div className="flex flex-col items-start gap-0.5">
-                                    <span className="font-semibold text-base">Clinical Audit</span>
-                                    <span className="text-xs text-slate-400 group-hover:text-emerald-200/80">MIVA 2.0 Self-Reflection</span>
-                                </div>
+                                <a>
+                                    <Brain className="w-4 h-4 text-emerald-500/80" />
+                                    <span className="text-sm font-medium">Clinical Audit</span>
+                                </a>
                             </Button>
                         </Link>
                     )}
@@ -79,22 +62,17 @@ export function GameMenu({ onShowReport, onReturnToStation: _onReturnToStation, 
                     {onToggleMute && (
                         <Button
                             onClick={onToggleMute}
-                            variant="ghost-dark"
-                            className="flex items-center justify-start gap-4 h-16 shrink-0 group border border-white/10 rounded-xl"
+                            variant="ghost"
+                            className="w-full flex items-center justify-start gap-3 h-12 px-4 rounded-lg hover:bg-white/5 transition-all text-slate-300 hover:text-white"
                         >
                             {isMuted ? (
-                                <VolumeX className="w-5 h-5 text-red-400 group-hover:text-red-300" />
+                                <VolumeX className="w-4 h-4 text-red-400/80" />
                             ) : (
-                                <Volume2 className="w-5 h-5 text-slate-400 group-hover:text-slate-300" />
+                                <Volume2 className="w-4 h-4 text-slate-400" />
                             )}
-                            <div className="flex flex-col items-start gap-0.5">
-                                <span className="font-semibold text-base">{isMuted ? 'Unmute Audio' : 'Mute Audio'}</span>
-                                <span className="text-xs text-slate-400 group-hover:text-slate-300">Toggle sound effects</span>
-                            </div>
+                            <span className="text-sm font-medium">{isMuted ? 'Unmute Audio' : 'Mute Audio'}</span>
                         </Button>
                     )}
-
-                    {/* Return to Station Removed for Simplicity (Jobsian Focus) */}
                 </div>
             </DialogContent>
         </Dialog>
