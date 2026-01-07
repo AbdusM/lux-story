@@ -83,10 +83,10 @@ import { PATTERN_TYPES, type PatternType, getPatternSensation, isValidPattern } 
 import { calculatePatternGain } from '@/lib/identity-system'
 import { getConsequenceEcho, checkPatternThreshold as checkPatternEchoThreshold, getPatternRecognitionEcho, createResonanceEchoFromDescription, getVoicedChoiceText, applyPatternReflection, getOrbMilestoneEcho, getDiscoveryHint, DISCOVERY_HINTS, type ConsequenceEcho } from '@/lib/consequence-echoes'
 import { calculateResonantTrustChange } from '@/lib/pattern-affinity'
-import { getEchoIntensity, ECHO_INTENSITY_MODIFIERS, analyzeTrustAsymmetry, getAsymmetryComment, type AsymmetryReaction } from '@/lib/trust-derivatives'
-import { calculateCharacterTrustDecay, getPatternRecognitionComments, type PatternRecognitionComment } from '@/lib/pattern-derivatives'
+import { getEchoIntensity, ECHO_INTENSITY_MODIFIERS, analyzeTrustAsymmetry, getAsymmetryComment, type AsymmetryReaction, calculateInheritedTrust } from '@/lib/trust-derivatives'
+import { calculateCharacterTrustDecay, getPatternRecognitionComments, type PatternRecognitionComment, getUnlockedGates, PATTERN_TRUST_GATES, checkNewAchievements, type PatternAchievement } from '@/lib/pattern-derivatives'
 import { getNewlyAvailableCombinations, type KnowledgeCombination, recordIcebergMention, getInvestigableTopics, type IcebergReference } from '@/lib/knowledge-derivatives'
-import { getActiveTextEffects, getTextEffectClasses, getTextEffectStyles } from '@/lib/narrative-derivatives'
+import { getActiveTextEffects, getTextEffectClasses, getTextEffectStyles, getActiveMagicalRealisms, type MagicalRealism } from '@/lib/narrative-derivatives'
 import {
   INTERRUPT_PATTERN_ALIGNMENT,
   INTERRUPT_COMBO_CHAINS,
@@ -615,6 +615,16 @@ export default function StatefulGameInterface() {
       let character = gameState.characters.get(actualCharacterId)
       if (!character) {
         character = GameStateUtils.createCharacterState(actualCharacterId)
+        // D-093: Apply inherited trust from related characters
+        const inheritedTrust = calculateInheritedTrust(actualCharacterId, gameState.characters)
+        if (inheritedTrust > 0) {
+          character.trust = Math.min(10, character.trust + inheritedTrust)
+          logger.info('[StatefulGameInterface] D-093 Trust inheritance applied:', {
+            characterId: actualCharacterId,
+            inheritedTrust,
+            newTrust: character.trust
+          })
+        }
         gameState.characters.set(actualCharacterId, character)
       }
 
@@ -1351,6 +1361,94 @@ export default function StatefulGameInterface() {
               })
             }
           }
+        }
+      }
+
+      // D-002: Check for newly unlocked pattern-trust gates
+      // Special content requires BOTH high trust AND specific pattern development
+      if (!consequenceEcho) {
+        const prevUnlockedGates = state.gameState
+          ? getUnlockedGates(targetCharacterId, state.gameState.characters.get(targetCharacterId)?.trust || 0, state.gameState.patterns)
+          : []
+        const nowUnlockedGates = getUnlockedGates(targetCharacterId, targetCharacter.trust, newGameState.patterns)
+        const newlyUnlocked = nowUnlockedGates.filter(g => !prevUnlockedGates.includes(g))
+
+        if (newlyUnlocked.length > 0) {
+          const gateId = newlyUnlocked[0]
+          const gate = PATTERN_TRUST_GATES[gateId]
+          if (gate) {
+            consequenceEcho = {
+              text: `Something shifts in ${targetCharacterId}'s demeanor... ${gate.description}`,
+              emotion: 'intrigued',
+              timing: 'immediate'
+            }
+            // Add flag so dialogue can check for this
+            newGameState.globalFlags.add(`gate_unlocked_${gateId}`)
+            logger.info('[StatefulGameInterface] D-002 Pattern-trust gate unlocked:', {
+              gateId,
+              trust: targetCharacter.trust,
+              pattern: gate.pattern,
+              patternLevel: newGameState.patterns[gate.pattern]
+            })
+          }
+        }
+      }
+
+      // D-020: Check for newly active magical realism manifestations
+      // At high pattern levels, reality becomes more fluid
+      if (!consequenceEcho) {
+        const shownMagicalKey = 'lux_magical_realism_shown'
+        const shownMagicalRaw = typeof window !== 'undefined' ? localStorage.getItem(shownMagicalKey) : null
+        const shownMagical = new Set<string>(shownMagicalRaw ? JSON.parse(shownMagicalRaw) : [])
+
+        const prevManifestations = state.gameState ? getActiveMagicalRealisms(state.gameState.patterns) : []
+        const nowManifestations = getActiveMagicalRealisms(newGameState.patterns)
+
+        // Find newly unlocked manifestations that haven't been shown
+        const newlyActive = nowManifestations.filter(m =>
+          !prevManifestations.some(p => p.id === m.id) && !shownMagical.has(m.id)
+        )
+
+        if (newlyActive.length > 0) {
+          const manifestation = newlyActive[0]
+          consequenceEcho = {
+            text: manifestation.manifestation,
+            emotion: 'wonder',
+            timing: 'immediate'
+          }
+
+          // Mark as shown
+          shownMagical.add(manifestation.id)
+          if (typeof window !== 'undefined') {
+            localStorage.setItem(shownMagicalKey, JSON.stringify([...shownMagical]))
+          }
+
+          // Add flag for dialogue to reference
+          newGameState.globalFlags.add(`magical_${manifestation.id}`)
+          logger.info('[StatefulGameInterface] D-020 Magical realism manifestation:', {
+            id: manifestation.id,
+            name: manifestation.name,
+            pattern: manifestation.triggerPattern
+          })
+        }
+      }
+
+      // D-059: Check for newly earned pattern achievements
+      if (!consequenceEcho && state.gameState) {
+        const newAchievements = checkNewAchievements(state.gameState.patterns, newGameState.patterns)
+
+        if (newAchievements.length > 0) {
+          const achievement = newAchievements[0]
+          consequenceEcho = {
+            text: `${achievement.icon} ${achievement.name}: ${achievement.description}${achievement.reward ? `\n\n${achievement.reward}` : ''}`,
+            emotion: 'triumph',
+            timing: 'immediate'
+          }
+          newGameState.globalFlags.add(`achievement_${achievement.id}`)
+          logger.info('[StatefulGameInterface] D-059 Achievement earned:', {
+            id: achievement.id,
+            name: achievement.name
+          })
         }
       }
 
