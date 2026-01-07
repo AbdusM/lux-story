@@ -19,10 +19,46 @@ export const STORAGE_CONFIG: StorageConfig = {
     prefix: 'lux_story_v1_'
 }
 
+// Keys that can be cleared when quota is exceeded (non-essential)
+const NON_ESSENTIAL_KEYS = [
+    'shownMagical',
+    'shownConflicts',
+    'shownAchievements',
+    'shownIcebergs',
+    'analytics_snapshots',
+    'session_metrics',
+    'shown_notifications',
+    'tutorial_progress'
+]
+
+// Keys that must be preserved (critical game state)
+const CRITICAL_KEYS = [
+    'gameState',
+    'character_states',
+    'player_profile'
+]
+
 export class SafeStorage {
     /**
+     * Clear non-essential storage to free up space
+     * Called when quota is exceeded
+     */
+    private static clearNonEssentialStorage(): number {
+        let clearedCount = 0
+        for (const key of NON_ESSENTIAL_KEYS) {
+            const fullKey = this.getKey(key)
+            if (window.localStorage.getItem(fullKey)) {
+                window.localStorage.removeItem(fullKey)
+                clearedCount++
+            }
+        }
+        console.info(`SafeStorage: Cleared ${clearedCount} non-essential keys to free space`)
+        return clearedCount
+    }
+
+    /**
      * Safe wrapper for localStorage.setItem
-     * Handles QuotaExceededError and other storage exceptions
+     * Handles QuotaExceededError with automatic cleanup and retry
      */
     static set<T>(key: string, value: T): boolean {
         if (typeof window === 'undefined') return false
@@ -41,8 +77,49 @@ export class SafeStorage {
             if (error instanceof Error) {
                 if (error.name === 'QuotaExceededError' ||
                     error.name === 'NS_ERROR_DOM_QUOTA_REACHED') {
-                    console.error('SafeStorage: Quota exceeded. storage failed.', error)
-                    // TODO: Implement critical save strategy (e.g. clear non-essential keys)
+                    console.warn('SafeStorage: Quota exceeded, attempting cleanup...')
+
+                    // Clear non-essential keys and retry
+                    const cleared = this.clearNonEssentialStorage()
+                    if (cleared > 0) {
+                        try {
+                            const serialized = JSON.stringify({
+                                version: STORAGE_CONFIG.version,
+                                timestamp: Date.now(),
+                                data: value
+                            })
+                            window.localStorage.setItem(this.getKey(key), serialized)
+                            console.info('SafeStorage: Save succeeded after cleanup')
+                            return true
+                        } catch (retryError) {
+                            console.error('SafeStorage: Save failed even after cleanup', retryError)
+                        }
+                    }
+
+                    // If this is a critical key, try more aggressive cleanup
+                    if (CRITICAL_KEYS.some(k => key.includes(k))) {
+                        console.warn('SafeStorage: Critical save failed, preserving only essentials')
+                        // Clear everything except critical keys
+                        const allKeys = Object.keys(window.localStorage)
+                        for (const k of allKeys) {
+                            if (k.startsWith(STORAGE_CONFIG.prefix) &&
+                                !CRITICAL_KEYS.some(ck => k.includes(ck))) {
+                                window.localStorage.removeItem(k)
+                            }
+                        }
+                        // Final retry
+                        try {
+                            const serialized = JSON.stringify({
+                                version: STORAGE_CONFIG.version,
+                                timestamp: Date.now(),
+                                data: value
+                            })
+                            window.localStorage.setItem(this.getKey(key), serialized)
+                            return true
+                        } catch {
+                            console.error('SafeStorage: Critical save failed completely')
+                        }
+                    }
                 } else {
                     console.error('SafeStorage: Save failed.', error)
                 }
