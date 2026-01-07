@@ -7,6 +7,7 @@ import { NervousSystemState, determineNervousSystemState, ChemicalReaction } fro
 import { calculateReaction } from './chemistry'
 import { ArchivistState } from './lore-system'
 import { type TrustMomentum, createTrustMomentum, updateTrustMomentum, applyMomentumToTrustChange } from './trust-derivatives'
+import { type IcebergState, createIcebergState } from './knowledge-derivatives'
 
 /**
  * Core character relationship state
@@ -118,6 +119,9 @@ export interface GameState {
 
   // Phase 1 Foundation: The Loremaster's Index
   archivistState: ArchivistState
+
+  // D-019: Iceberg References - casual mentions become investigable topics
+  icebergState?: IcebergState
 }
 
 /**
@@ -239,6 +243,23 @@ export interface SerializableGameState {
     collectedRecords: string[]
     verifiedLore: string[]
     sensoryCalibration: Record<string, number>
+  }
+  // D-019: Serializable iceberg state
+  icebergState?: {
+    references: Array<{
+      id: string
+      topic: string
+      description: string
+      mentionThreshold: number
+      investigationNodeId: string
+      mentions: Array<{
+        characterId: string
+        nodeId: string
+        mentionText: string
+        timestamp: number
+      }>
+    }>
+    investigatedTopics: string[]
   }
 }
 
@@ -500,7 +521,17 @@ export class GameStateUtils {
         collectedRecords: new Set(state.archivistState.collectedRecords),
         verifiedLore: new Set(state.archivistState.verifiedLore),
         sensoryCalibration: { ...state.archivistState.sensoryCalibration }
-      }
+      },
+      // D-019: Clone iceberg state if present
+      icebergState: state.icebergState ? {
+        references: new Map(
+          Array.from(state.icebergState.references.entries()).map(([id, ref]) => [
+            id,
+            { ...ref, mentions: [...ref.mentions] }
+          ])
+        ),
+        investigatedTopics: new Set(state.icebergState.investigatedTopics)
+      } : undefined
     }
   }
 
@@ -597,7 +628,9 @@ export class GameStateUtils {
           data_flow: 0,
           station_core: 0
         }
-      }
+      },
+      // D-019: Initialize iceberg reference tracking
+      icebergState: createIcebergState()
     }
   }
 
@@ -660,7 +693,12 @@ export class GameStateUtils {
         collectedRecords: Array.from(state.archivistState.collectedRecords),
         verifiedLore: Array.from(state.archivistState.verifiedLore),
         sensoryCalibration: state.archivistState.sensoryCalibration
-      }
+      },
+      // D-019: Serialize iceberg state if present
+      icebergState: state.icebergState ? {
+        references: Array.from(state.icebergState.references.values()),
+        investigatedTopics: Array.from(state.icebergState.investigatedTopics)
+      } : undefined
     }
   }
 
@@ -747,7 +785,14 @@ export class GameStateUtils {
           data_flow: 0,
           station_core: 0
         }
-      }
+      },
+      // D-019: Deserialize iceberg state if present, otherwise initialize fresh
+      icebergState: serialized.icebergState ? {
+        references: new Map(
+          serialized.icebergState.references.map(ref => [ref.id, ref])
+        ),
+        investigatedTopics: new Set(serialized.icebergState.investigatedTopics)
+      } : createIcebergState()
     }
   }
 }
