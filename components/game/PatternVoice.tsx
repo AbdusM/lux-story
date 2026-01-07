@@ -25,14 +25,21 @@ interface PatternVoiceProps {
   pattern: PatternType
   text: string
   style: PatternVoiceStyle
+  /** D-003: Trust-derived intensity 0-1 */
+  intensity?: number
   onDismiss?: () => void
   autoDismissMs?: number
 }
 
+/**
+ * D-003: Style classes include trust-derived tones (speak, command)
+ */
 const STYLE_CLASSES: Record<PatternVoiceStyle, string> = {
-  whisper: 'opacity-70 italic',
-  urge: 'opacity-90 font-medium',
-  observation: 'opacity-80'
+  whisper: 'opacity-60 italic text-sm',           // Low trust - uncertain, quiet
+  speak: 'opacity-75',                             // Medium trust - normal
+  urge: 'opacity-90 font-medium',                  // High trust - insistent
+  command: 'opacity-100 font-semibold uppercase',  // Max trust - confident assertion
+  observation: 'opacity-80'                        // Neutral observation
 }
 
 export function PatternVoice({
