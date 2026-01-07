@@ -2559,6 +2559,1188 @@ The real one. Where their perfect daughter died in a bathroom five years ago, an
       }
     ],
     tags: ['career_mention', 'invisible_depth', 'creative_tech']
+  },
+
+  // ============= ADDITIONAL CAREER REFLECTIONS =============
+  {
+    nodeId: 'maya_career_reflection_ux',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: `*Maya pauses, considering you.*
+
+You notice things others miss. How I arranged my study space. The way my hands shake when I talk about certain topics.
+
+UX researchers do that. They observe humans interacting with technology—finding the friction points, the moments of confusion, the sparks of delight.
+
+It's part psychology, part design, part detective work. Figuring out why people struggle with things that should be simple.
+
+That kind of empathy? It's rare. And tech companies are desperate for it.`,
+        emotion: 'impressed',
+        variation_id: 'career_ux_v1'
+      }
+    ],
+    requiredState: {
+      patterns: { helping: { min: 5 }, analytical: { min: 4 } }
+    },
+    onEnter: [
+      {
+        characterId: 'maya',
+        addGlobalFlags: ['combo_ux_researcher_achieved', 'maya_mentioned_career']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'ux_interested',
+        text: "Making technology more human. That matters.",
+        nextNodeId: 'maya_crossroads',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
+      }
+    ],
+    tags: ['career_mention', 'invisible_depth', 'ux']
+  },
+
+  {
+    nodeId: 'maya_career_reflection_robotics_eng',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: `*Maya looks at you with sudden intensity.*
+
+The way you think through problems—methodical but creative. You don't just want things to work. You want to understand WHY they work.
+
+Robotics engineers are like that. Building machines that move through the real world—it requires physics, programming, mechanical design, all woven together.
+
+And here's the secret: the best robotics jobs aren't in Silicon Valley anymore. They're in places like Birmingham, where manufacturing is being reinvented.
+
+You'd be designing the robots that build the future. Literally.`,
+        emotion: 'passionate',
+        variation_id: 'career_robotics_eng_v1'
+      }
+    ],
+    requiredState: {
+      patterns: { building: { min: 5 }, analytical: { min: 5 } }
+    },
+    onEnter: [
+      {
+        characterId: 'maya',
+        addGlobalFlags: ['combo_robotics_engineer_achieved', 'maya_mentioned_career']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'robotics_eng_inspired',
+        text: "Building things that build things. That's meta.",
+        nextNodeId: 'maya_crossroads',
+        pattern: 'building',
+        skills: ['systemsThinking']
+      }
+    ],
+    tags: ['career_mention', 'invisible_depth', 'robotics']
+  },
+
+  // ============= FAMILY DEPTH =============
+  {
+    nodeId: 'maya_family_deeper',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: `*Her voice drops, more private now.*
+
+My dad was a machinist in Guangzhou. Precision work. Gears, bearings, things that had to fit together perfectly or not at all.
+
+When they came here, he couldn't get those jobs. Wrong certifications. Wrong connections. He ended up in restaurant kitchens.
+
+He never complained. But I saw him sometimes, late at night, sketching mechanical things. Designs he'd never build.
+
+*Pause.*
+
+When he sees me with Pepper? I think he sees those sketches coming alive.`,
+        emotion: 'tender',
+        variation_id: 'family_deeper_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 5 }
+    },
+    choices: [
+      {
+        choiceId: 'family_deeper_continue',
+        text: "You're building his dreams too. In a way.",
+        nextNodeId: 'maya_family_legacy',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'family_deeper_mom',
+        text: "What about your mom? Where does she fit in this?",
+        nextNodeId: 'maya_mom_story',
+        pattern: 'exploring',
+        skills: ['communication']
+      }
+    ],
+    tags: ['maya_arc', 'family', 'emotional_depth']
+  },
+
+  {
+    nodeId: 'maya_family_legacy',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: `*Her eyes get bright.*
+
+I never thought of it that way.
+
+His dreams. My hands. Pepper.
+
+*She laughs, a wet sound.*
+
+God. He'd hate that I'm getting emotional about this. He's so practical. "Don't think about what could have been. Think about what's next."
+
+But maybe what's next can honor what could have been?`,
+        emotion: 'moved',
+        variation_id: 'legacy_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'legacy_continue',
+        text: "That's not contradiction. That's continuation.",
+        nextNodeId: 'maya_introduction',
+        pattern: 'patience',
+        skills: ['wisdom'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['maya_arc', 'family', 'emotional_depth']
+  },
+
+  {
+    nodeId: 'maya_mom_story',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: `*Maya's expression shifts—more complicated.*
+
+Mom. She's the one who wanted me to be a doctor. Not for prestige. For survival.
+
+She was a nurse in China. Here? She had to start over. Certifications don't transfer. She works at a medical supply company now. Warehouse inventory.
+
+She sees medicine as security. The one thing that doesn't depend on who you know or where you're from. A patient is a patient.
+
+When she says "be a doctor," she's really saying "be safe. Be necessary."
+
+I can't hate her for that. But I can't be a prisoner to her fear either.`,
+        emotion: 'conflicted',
+        variation_id: 'mom_story_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'mom_story_continue',
+        text: "Her fear and your dreams don't have to be opposites.",
+        nextNodeId: 'maya_introduction',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['maya_arc', 'family', 'emotional_depth']
+  },
+
+  {
+    nodeId: 'maya_parents_together',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: `*She looks at her robotics parts, then at her biochem notes.*
+
+You know what's funny? My parents never agree on anything. Dad thinks I worry too much. Mom thinks I don't worry enough.
+
+But they both wake up at 5am every day. Both work jobs they're overqualified for. Both never complain.
+
+They disagree about my future because they both want me to have one better than theirs.
+
+*Small laugh.*
+
+Sometimes I wish they'd just fight about whose turn it is to do dishes like normal parents.`,
+        emotion: 'wistful_affection',
+        variation_id: 'parents_together_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'parents_together_continue',
+        text: "They love you. It just comes out as pressure.",
+        nextNodeId: 'maya_introduction',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence']
+      }
+    ],
+    tags: ['maya_arc', 'family']
+  },
+
+  // ============= IMPOSTER SYNDROME DEPTH =============
+  {
+    nodeId: 'maya_imposter_deep',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: `*Maya's hands stop moving. She stares at them.*
+
+Can I tell you something I've never told anyone?
+
+When Pepper wins a competition... when people clap and take pictures... I feel like I'm going to throw up.
+
+Not from joy. From terror.
+
+Because any second now, someone's going to realize I don't belong here. That I'm just a pre-med student playing with circuits. That real engineers can see right through me.
+
+The awards make it worse. More expectations. More chances to be exposed.`,
+        emotion: 'raw_fear',
+        variation_id: 'imposter_deep_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 6 }
+    },
+    choices: [
+      {
+        choiceId: 'imposter_validate',
+        text: "That feeling? It has a name. Imposter syndrome. And it lies.",
+        nextNodeId: 'maya_imposter_named',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'imposter_question',
+        text: "What would it feel like to actually belong?",
+        nextNodeId: 'maya_imposter_imagine',
+        pattern: 'exploring',
+        skills: ['communication']
+      }
+    ],
+    tags: ['maya_arc', 'vulnerability', 'imposter_syndrome']
+  },
+
+  {
+    nodeId: 'maya_imposter_named',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: `*She looks up sharply.*
+
+Imposter syndrome.
+
+I've read about it. In psychology textbooks. About how high-achieving people feel like frauds.
+
+But knowing the name doesn't make it stop.
+
+*Pause.*
+
+Although... hearing someone else say it's a lie. That helps more than the textbooks.
+
+You really think the fear is lying?`,
+        emotion: 'searching',
+        variation_id: 'imposter_named_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'imposter_named_confirm',
+        text: "Pepper works. The awards are real. You're not performing competence—you have it.",
+        nextNodeId: 'maya_imposter_acceptance',
+        pattern: 'analytical',
+        skills: ['criticalThinking'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['maya_arc', 'vulnerability', 'imposter_syndrome']
+  },
+
+  {
+    nodeId: 'maya_imposter_imagine',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: `*She closes her eyes.*
+
+Belonging. What would that even feel like?
+
+Maybe... not checking over my shoulder? Not waiting for someone to tap me and say "excuse me, this seat is taken"?
+
+*Opens eyes.*
+
+Maybe it would feel like showing Pepper to someone and being proud instead of defensive. Like "look what I made" instead of "please don't look too closely."
+
+I don't know if I've ever felt that. About anything.`,
+        emotion: 'vulnerable_wonder',
+        variation_id: 'imposter_imagine_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'imposter_imagine_continue',
+        text: "You're showing me Pepper right now. And you're not defending. You're sharing.",
+        nextNodeId: 'maya_imposter_acceptance',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['maya_arc', 'vulnerability', 'imposter_syndrome']
+  },
+
+  {
+    nodeId: 'maya_imposter_acceptance',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: `*She looks down at Pepper. Then back at you.*
+
+Huh.
+
+You're right. I am sharing. Not defending.
+
+That's... weird. In a good way.
+
+*She touches Pepper's chassis gently.*
+
+Maybe belonging isn't something you achieve once. Maybe it's something you practice. Like a muscle.
+
+This conversation. Right now. This is practice.`,
+        emotion: 'dawning_realization',
+        variation_id: 'imposter_acceptance_v1'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'maya',
+        addKnowledgeFlags: ['maya_imposter_acknowledged']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'acceptance_continue',
+        text: "And you're getting stronger.",
+        nextNodeId: 'maya_introduction',
+        pattern: 'helping',
+        skills: ['leadership', 'encouragement']
+      }
+    ],
+    tags: ['maya_arc', 'vulnerability', 'breakthrough']
+  },
+
+  // ============= ROBOTICS PASSION DEPTH =============
+  {
+    nodeId: 'maya_pepper_origin',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: `*Maya runs her fingers over Pepper's sensors.*
+
+Want to know how Pepper started?
+
+I was eleven. My grandmother had a stroke. Couldn't use her left hand anymore. She was a seamstress—that hand was her life.
+
+I watched her in physical therapy. Squeezing balls. Moving pegs. So bored. So frustrated.
+
+I thought: what if the exercises were a game? What if the equipment responded to you?
+
+I built a terrible prototype with LEGOs and a light sensor. When she squeezed hard enough, it played music.
+
+She cried. Not from the stroke. From joy.
+
+That's where Pepper began.`,
+        emotion: 'tender_pride',
+        variation_id: 'pepper_origin_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 4 }
+    },
+    choices: [
+      {
+        choiceId: 'pepper_origin_grandmother',
+        text: "Your grandmother. Did she recover?",
+        nextNodeId: 'maya_grandmother',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
+      },
+      {
+        choiceId: 'pepper_origin_evolution',
+        text: "How did LEGO Pepper become this Pepper?",
+        nextNodeId: 'maya_pepper_evolution',
+        pattern: 'analytical',
+        skills: ['curiosity']
+      }
+    ],
+    tags: ['maya_arc', 'robotics', 'origin_story']
+  },
+
+  {
+    nodeId: 'maya_grandmother',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: `*Maya's voice catches.*
+
+She passed. Three years ago. Never fully recovered, but those last years... she was so alive.
+
+She'd show my LEGO thing to everyone who visited. "My granddaughter made this. She's going to be an engineer."
+
+*Laugh-cry.*
+
+Not a doctor. An engineer. She got it. Before I did, even.
+
+Sometimes I think Pepper isn't just for kids in therapy. It's for her. Still. Always.`,
+        emotion: 'grief_and_love',
+        variation_id: 'grandmother_v1'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'maya',
+        addKnowledgeFlags: ['knows_about_grandmother']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'grandmother_continue',
+        text: "She saw you clearly. Before anyone else did.",
+        nextNodeId: 'maya_introduction',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['maya_arc', 'family', 'emotional_core']
+  },
+
+  {
+    nodeId: 'maya_pepper_evolution',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: `*Maya's energy shifts—this is her element.*
+
+Oh man. So many iterations.
+
+Version 2 was cardboard and Arduino. Motion sensors that tracked arm movement.
+
+Version 3 was 3D printed. Started learning CAD at 14. My school didn't have robotics club, so I convinced the shop teacher to let me stay after.
+
+Version 4 was the breakthrough—adaptive difficulty. Pepper adjusts exercises based on how the patient is doing. Too easy? Harder. Frustrated? Easier. Real-time.
+
+This is version 7. Machine learning integration. Emotion recognition. Haptic feedback.
+
+Each version taught me something I didn't know I needed to learn.`,
+        emotion: 'technical_excitement',
+        variation_id: 'pepper_evolution_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'evolution_ml',
+        text: "Machine learning for physical therapy. That's cutting edge.",
+        nextNodeId: 'maya_pepper_ml',
+        pattern: 'analytical',
+        skills: ['technicalLiteracy']
+      },
+      {
+        choiceId: 'evolution_alone',
+        text: "You taught yourself all of this?",
+        nextNodeId: 'maya_self_taught',
+        pattern: 'exploring',
+        skills: ['curiosity']
+      }
+    ],
+    tags: ['maya_arc', 'robotics', 'technical']
+  },
+
+  {
+    nodeId: 'maya_pepper_ml',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: `*She nods rapidly.*
+
+That's the part that scares people. "AI in healthcare." Sounds dystopian.
+
+But Pepper's ML isn't making medical decisions. It's just reading patterns. Is the patient slowing down? Getting frustrated? Compensating with other muscles?
+
+Human therapists catch this stuff, but not in real-time. Not with the granularity a sensor can.
+
+The AI is a support tool. The therapist is still the expert. Pepper just gives them better data.
+
+That's the pitch I can never quite land with investors. They want to hear "AI replaces expensive therapists." I'm saying "AI makes therapists superhuman."
+
+One of those is fundable. The other is true.`,
+        emotion: 'passionate_frustrated',
+        variation_id: 'pepper_ml_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'ml_continue',
+        text: "The right investors will hear the difference. Keep looking.",
+        nextNodeId: 'maya_introduction',
+        pattern: 'helping',
+        skills: ['strategicThinking', 'encouragement'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['maya_arc', 'robotics', 'AI', 'entrepreneurship']
+  },
+
+  {
+    nodeId: 'maya_self_taught',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: `*She shrugs, almost embarrassed.*
+
+YouTube. Stack Overflow. GitHub. Library books. So many library books.
+
+My high school didn't have programming classes. Definitely no robotics. I learned on borrowed laptops and public wifi.
+
+The first time I compiled code that actually ran? I literally cried. In a Starbucks. People thought I was breaking up with someone.
+
+*Laughs.*
+
+Being self-taught means you have weird gaps. Things everyone "should" know that I had to discover by breaking stuff.
+
+But it also means I understand failure differently. I've rebuilt from zero so many times. Nothing feels impossible anymore. Just hard.`,
+        emotion: 'hard_won_pride',
+        variation_id: 'self_taught_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'self_taught_continue',
+        text: "That resilience is worth more than any degree.",
+        nextNodeId: 'maya_introduction',
+        pattern: 'helping',
+        skills: ['encouragement'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['maya_arc', 'learning', 'resilience']
+  },
+
+  // ============= BIRMINGHAM CONNECTION =============
+  {
+    nodeId: 'maya_birmingham_roots',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: `*Maya looks around at the station.*
+
+People always ask why I don't just move to San Francisco. Or Boston. The "real" tech hubs.
+
+But Birmingham is where my grandmother's ashes are scattered. Where my parents built a life from nothing. Where people pronounce my name right without me spelling it.
+
+And you know what? The robotics scene here is actually growing. UAB has an incredible medical device program. There are makerspaces now. Startup incubators.
+
+I don't have to leave home to build my future. I can build my future at home.`,
+        emotion: 'rooted_pride',
+        variation_id: 'birmingham_roots_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 4 }
+    },
+    choices: [
+      {
+        choiceId: 'birmingham_roots_continue',
+        text: "Home isn't where you escape from. It's where you build.",
+        nextNodeId: 'maya_introduction',
+        pattern: 'building',
+        skills: ['wisdom'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['maya_arc', 'birmingham', 'local']
+  },
+
+  {
+    nodeId: 'maya_birmingham_community',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: `*Maya pulls out her phone, scrolling through photos.*
+
+See this? Birmingham Robotics Club. Twenty kids. Every Saturday at Innovation Depot.
+
+I started volunteering there last year. Teaching basics. LEGOs and sensors, like I started.
+
+There's this one kid, Marcus Jr.—not related to our Marcus—who built a robot that helps his mom organize her medication. She has MS. Forgets doses.
+
+*Her eyes shine.*
+
+That's what I mean. These kids aren't waiting for permission. They're solving their own problems. In their own communities.
+
+Silicon Valley doesn't have a monopoly on innovation. It just has better marketing.`,
+        emotion: 'community_fire',
+        variation_id: 'birmingham_community_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'community_inspired',
+        text: "You're not just building robots. You're building builders.",
+        nextNodeId: 'maya_introduction',
+        pattern: 'helping',
+        skills: ['mentorship'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['maya_arc', 'birmingham', 'community', 'mentorship']
+  },
+
+  // ============= FUTURE VISION =============
+  {
+    nodeId: 'maya_future_vision',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: `*Maya's voice goes dreamy.*
+
+Five years from now. Here's what I see.
+
+Pepper in every children's hospital in Alabama. Then the Southeast. Then everywhere kids need help moving again.
+
+A company—not a startup trying to get acquired, but a real company. Sustainable. Mission-driven. Based here.
+
+Employment for people who look like me. Who came from where I came from. Who never saw themselves in tech because tech never showed up in their neighborhoods.
+
+*Refocuses.*
+
+That's the dream. Bigger than one robot. Bigger than one person.
+
+Is it naive? Maybe. But naive people built everything that matters.`,
+        emotion: 'visionary_fire',
+        variation_id: 'future_vision_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 5 }
+    },
+    choices: [
+      {
+        choiceId: 'future_vision_believe',
+        text: "It's not naive. It's necessary. The world needs more builders like you.",
+        nextNodeId: 'maya_introduction',
+        pattern: 'building',
+        skills: ['visionaryThinking'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['maya_arc', 'vision', 'future']
+  },
+
+  // ============= MENTOR INFLUENCE =============
+  {
+    nodeId: 'maya_mentor_devon',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: `*Maya glances toward the engineering platform.*
+
+Devon. Have you met him? The systems thinker upstairs.
+
+He doesn't know it, but he's kind of my model for how to handle family pressure.
+
+His dad wanted him to be an athlete. Football scholarship material. Devon chose engineering anyway. Almost lost his relationship with his family over it.
+
+But he didn't rage against them. He just... kept being excellent. Kept showing up. Eventually they saw what he saw.
+
+Patience as rebellion. I'm still learning that.`,
+        emotion: 'admiring_thoughtful',
+        variation_id: 'mentor_devon_v1'
+      }
+    ],
+    requiredState: {
+      hasGlobalFlags: ['met_devon']
+    },
+    choices: [
+      {
+        choiceId: 'mentor_devon_continue',
+        text: "Patience as rebellion. That's beautiful.",
+        nextNodeId: 'maya_introduction',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence']
+      }
+    ],
+    tags: ['maya_arc', 'cross_character', 'devon']
+  },
+
+  {
+    nodeId: 'maya_mentor_tess',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: `*Maya's face lights up.*
+
+Tess! Have you talked to her yet? The education founder.
+
+She's the one who convinced me the robotics club was worth starting. I thought "who am I to teach?"
+
+She said: "You're someone who knows what it's like to not have a teacher. That makes you exactly the right person."
+
+*Pause.*
+
+Tess understands something most people don't. The best teachers aren't the ones who never struggled. They're the ones who remember what struggling felt like.`,
+        emotion: 'grateful',
+        variation_id: 'mentor_tess_v1'
+      }
+    ],
+    requiredState: {
+      hasGlobalFlags: ['met_tess']
+    },
+    choices: [
+      {
+        choiceId: 'mentor_tess_continue',
+        text: "Teaching from scars instead of credentials. That's real.",
+        nextNodeId: 'maya_introduction',
+        pattern: 'helping',
+        skills: ['wisdom']
+      }
+    ],
+    tags: ['maya_arc', 'cross_character', 'tess']
+  },
+
+  // ============= TECHNICAL PHILOSOPHY =============
+  {
+    nodeId: 'maya_tech_philosophy',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: `*Maya looks at her hands—half circuits, half biochem notes.*
+
+You know what I've realized? Medicine and engineering aren't opposites. They're the same thing at different scales.
+
+A cell is a machine. DNA is code. The heart is a pump. The brain is a processor—well, sort of. Terrible metaphor actually. The brain is weirder.
+
+*Grins.*
+
+Point is: my parents think I'm rejecting medicine for robots. But I'm not. I'm just working on different machines.
+
+Bodies are machines we can't fully debug yet. Robots are machines I can actually fix.
+
+Both matter. Both heal.`,
+        emotion: 'philosophical_clarity',
+        variation_id: 'tech_philosophy_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'tech_philosophy_continue',
+        text: "Different machines. Same purpose. Helping people.",
+        nextNodeId: 'maya_introduction',
+        pattern: 'analytical',
+        skills: ['systemsThinking'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['maya_arc', 'philosophy', 'insight']
+  },
+
+  {
+    nodeId: 'maya_failure_story',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: `*Maya laughs, but it's sharp.*
+
+Want to hear about my biggest failure?
+
+Last year. State robotics competition. Pepper froze mid-demo. Just... stopped. In front of judges, sponsors, everyone.
+
+I stood there for what felt like an hour. Forty-five seconds, probably. The longest silence of my life.
+
+Finally figured it out. Power management bug. Battery drainage I hadn't tested for. Rookie mistake.
+
+*Pause.*
+
+I almost quit after that. Seriously. Thought "this is the universe telling me to go to medical school."
+
+But then I realized: every engineer has that story. The public failure. The moment they almost walked away.
+
+The ones who become great? They debug and keep going.`,
+        emotion: 'rueful_wisdom',
+        variation_id: 'failure_story_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'failure_continue',
+        text: "You debugged and kept going. That's the difference.",
+        nextNodeId: 'maya_introduction',
+        pattern: 'helping',
+        skills: ['problemSolving', 'encouragement'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['maya_arc', 'failure', 'resilience']
+  },
+
+  {
+    nodeId: 'maya_competition_memory',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: `*Maya traces a dent in Pepper's chassis.*
+
+See this? FIRST Robotics regional, 2023. Another team's robot crashed into ours during the final match.
+
+We lost. Badly. I cried in the parking lot.
+
+But here's the thing: that other team? They came and found me. Apologized. Offered to help fix the damage.
+
+We ended up staying until 2am in their workshop, rebuilding Pepper together. Trading techniques. Sharing failures.
+
+*Smiles.*
+
+Competition isn't zero-sum. The best rivals make you better. Even when they beat you.`,
+        emotion: 'warm_competitive',
+        variation_id: 'competition_memory_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'competition_continue',
+        text: "Competitors who become collaborators. That's how innovation really works.",
+        nextNodeId: 'maya_introduction',
+        pattern: 'building',
+        skills: ['collaboration']
+      }
+    ],
+    tags: ['maya_arc', 'competition', 'collaboration']
+  },
+
+  // ============= EMOTIONAL DEPTH =============
+  {
+    nodeId: 'maya_loneliness',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: `*Maya looks at the empty seats around her.*
+
+Can I tell you something weird?
+
+I'm never more alone than when I'm succeeding.
+
+Awards ceremonies. Competitions. Demos. I'm surrounded by people... and I can't talk to any of them. Not really.
+
+They see "impressive young roboticist." They don't see the person who eats lunch alone because she doesn't fit with the pre-meds OR the engineers.
+
+*Quiet.*
+
+This station. Talking to you. It's the least alone I've felt in months.`,
+        emotion: 'lonely_honest',
+        variation_id: 'loneliness_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 6 }
+    },
+    choices: [
+      {
+        choiceId: 'loneliness_seen',
+        text: "I see the person. Not the roboticist. Just... you.",
+        nextNodeId: 'maya_loneliness_response',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['maya_arc', 'vulnerability', 'loneliness']
+  },
+
+  {
+    nodeId: 'maya_loneliness_response',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: `*Her eyes get wet. She doesn't look away.*
+
+Thank you.
+
+That's... that's what I needed to hear. More than advice. More than solutions.
+
+Just being seen.
+
+*Deep breath.*
+
+Maybe that's what Pepper is really about. Not the sensors or the algorithms. Just... making kids in therapy feel seen. Making them feel like someone understands.
+
+We build what we need. Don't we?`,
+        emotion: 'grateful_tears',
+        variation_id: 'loneliness_response_v1'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'maya',
+        addKnowledgeFlags: ['maya_loneliness_shared']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'loneliness_continue',
+        text: "We build what we need. And then we share it.",
+        nextNodeId: 'maya_introduction',
+        pattern: 'building',
+        skills: ['wisdom']
+      }
+    ],
+    tags: ['maya_arc', 'vulnerability', 'breakthrough']
+  },
+
+  // ============= ADDITIONAL DEPTH NODES =============
+  {
+    nodeId: 'maya_midnight_coding',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: `*Maya yawns, then catches herself.*
+
+You know my favorite time to code? 2am. When everyone's asleep.
+
+No notifications. No expectations. Just me and the problem.
+
+There's something holy about those hours. The world goes quiet and my brain finally stops second-guessing itself.
+
+That's when Pepper's best features were born. Not in daylight. In the dark. When nobody was watching.`,
+        emotion: 'peaceful_tired',
+        variation_id: 'midnight_coding_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'midnight_continue',
+        text: "The best work happens when you stop performing.",
+        nextNodeId: 'maya_introduction',
+        pattern: 'patience',
+        skills: ['creativity']
+      }
+    ],
+    tags: ['maya_arc', 'process', 'insight']
+  },
+
+  {
+    nodeId: 'maya_doubt_spiral',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: `*Maya's energy dips suddenly.*
+
+Sometimes I wonder if I'm just... playing. You know?
+
+Like there are real engineers out there. Proper training. Proper education. And here I am, a pre-med dropout with YouTube tutorials and salvaged parts.
+
+What if Pepper is just a toy? What if I'm wasting years on something that real professionals would build in a weekend?
+
+*Shakes head.*
+
+Sorry. The doubt spirals come sometimes. Usually at 4am.`,
+        emotion: 'vulnerable_doubt',
+        variation_id: 'doubt_spiral_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 5 }
+    },
+    choices: [
+      {
+        choiceId: 'doubt_counter',
+        text: "Real professionals don't build with this much heart. That's your advantage.",
+        nextNodeId: 'maya_introduction',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['maya_arc', 'vulnerability', 'doubt']
+  },
+
+  {
+    nodeId: 'maya_first_user',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: `*Maya's face transforms—pure joy.*
+
+Want to hear about the first kid who used Pepper? Real patient, not testing.
+
+Eight years old. Car accident. Learning to use her arm again.
+
+Physical therapy was going terribly. She'd just cry. Refused to do the exercises.
+
+Her therapist let me bring Pepper in. Just as an experiment.
+
+*Eyes bright.*
+
+Twenty minutes. She did twenty minutes of exercises. Laughing. Competing with Pepper's challenges. Forgot she was in therapy.
+
+Her mom cried. The therapist cried. I definitely didn't cry. Okay, I cried.
+
+That's why I can't quit. Not the awards. Not the pitch competitions. Her.`,
+        emotion: 'profound_joy',
+        variation_id: 'first_user_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 5 }
+    },
+    choices: [
+      {
+        choiceId: 'first_user_continue',
+        text: "You're not building a product. You're building moments like that.",
+        nextNodeId: 'maya_introduction',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['maya_arc', 'impact', 'purpose']
+  },
+
+  {
+    nodeId: 'maya_name_meaning',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: `*Maya traces her name badge absentmindedly.*
+
+You know what Maya means? In Sanskrit, it's "illusion." The magic that makes the world appear as it is.
+
+My grandmother chose it. She said: "You will show people what's possible. What they thought was impossible."
+
+I used to think it was about magic tricks. Silly stage stuff.
+
+Now I think she meant something else. The illusion isn't deception. It's vision.
+
+Showing people a future they couldn't imagine until you made it real.`,
+        emotion: 'contemplative',
+        variation_id: 'name_meaning_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'name_continue',
+        text: "Vision made real. That's exactly what you're doing.",
+        nextNodeId: 'maya_introduction',
+        pattern: 'exploring',
+        skills: ['wisdom']
+      }
+    ],
+    tags: ['maya_arc', 'identity', 'meaning']
+  },
+
+  {
+    nodeId: 'maya_what_if',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: `*Maya stares into the middle distance.*
+
+What if my parents are right?
+
+What if I'm throwing away a guaranteed future for a dream that might never work?
+
+What if I'm thirty years old, still tinkering with robots in my parents' garage, watching my med school friends buy houses?
+
+*Pause.*
+
+But also... what if I don't try?
+
+What if I become a doctor and spend my whole life wondering who I could have been?
+
+Which regret is worse? I genuinely don't know.`,
+        emotion: 'existential_uncertainty',
+        variation_id: 'what_if_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 4 }
+    },
+    choices: [
+      {
+        choiceId: 'what_if_try',
+        text: "The regret of not trying lasts forever. The regret of failing teaches you something.",
+        nextNodeId: 'maya_introduction',
+        pattern: 'analytical',
+        skills: ['wisdom'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'what_if_both',
+        text: "Maybe you don't have to choose between them. Maybe there's a third path.",
+        nextNodeId: 'maya_crossroads',
+        pattern: 'exploring',
+        skills: ['creativity']
+      }
+    ],
+    tags: ['maya_arc', 'crossroads', 'philosophy']
   }
 ]
 

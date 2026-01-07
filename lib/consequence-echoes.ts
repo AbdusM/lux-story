@@ -23,6 +23,8 @@ export interface ConsequenceEcho {
   timing: 'immediate' | 'delayed'
   /** ISP Upgrade: Associated sound for multi-sensory feedback */
   soundCue?: SoundType
+  /** D-010: Trust level at time of event for intensity-based display */
+  trustAtEvent?: number
 }
 
 /**
@@ -774,6 +776,22 @@ export function getPatternRecognitionEcho(
 
   const pool = echoes.patternRecognition[pattern]
   return pool[Math.floor(Math.random() * pool.length)]
+}
+
+/**
+ * Create a resonance echo from a description string (from calculateResonantTrustChange)
+ * Returns the character-specific description of why the pattern resonates/creates friction
+ */
+export function createResonanceEchoFromDescription(
+  resonanceDescription: string | null
+): ConsequenceEcho | null {
+  if (!resonanceDescription) return null
+
+  return {
+    text: resonanceDescription,
+    emotion: 'knowing',  // Resonance is an insight moment
+    timing: 'immediate'
+  }
 }
 
 /**

@@ -1668,6 +1668,394 @@ Digital guardians. Birmingham's becoming a hub for that kind of work.`,
       }
     ],
     tags: ['career_mention', 'invisible_depth', 'tech']
+  },
+
+  // ============= ADDITIONAL CAREER REFLECTIONS =============
+  {
+    nodeId: 'rohan_career_reflection_data',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: `You know what I see in how you engage with problems? You trace causality. You want to understand where things come from.
+
+Data engineers do that. They build the pipelines that feed every decision a company makes. Most people see the dashboard. Data engineers see the journey from raw signal to insight.
+
+It's unglamorous work. But when everyone's panicking about a number being wrong? They're the ones who can actually trace it back to the source.`,
+        emotion: 'respectful',
+        variation_id: 'career_data_v1'
+      }
+    ],
+    requiredState: {
+      patterns: {
+        analytical: { min: 5 },
+        patience: { min: 4 }
+      }
+    },
+    onEnter: [
+      {
+        characterId: 'rohan',
+        addGlobalFlags: ['combo_data_tracer_achieved', 'rohan_mentioned_career']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'rohan_career_data_continue',
+        text: "Building the foundation everyone else stands on.",
+        nextNodeId: 'rohan_introduction',
+        pattern: 'building'
+      }
+    ],
+    tags: ['career_mention', 'invisible_depth', 'tech']
+  },
+
+  {
+    nodeId: 'rohan_career_reflection_devops',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: `The way you think about building things... you're not just solving the problem in front of you. You're thinking about how it'll run tomorrow. Next month.
+
+DevOps engineers—the good ones—think that way. They build systems that heal themselves. That scale without breaking. That let developers sleep through the night.
+
+It's the art of making complexity invisible. Hard to master. Harder to appreciate until it breaks.`,
+        emotion: 'approving',
+        variation_id: 'career_devops_v1'
+      }
+    ],
+    requiredState: {
+      patterns: {
+        building: { min: 5 },
+        patience: { min: 4 }
+      }
+    },
+    onEnter: [
+      {
+        characterId: 'rohan',
+        addGlobalFlags: ['combo_reliability_builder_achieved', 'rohan_mentioned_career']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'rohan_career_devops_continue',
+        text: "Making things reliable. That's harder than making them work.",
+        nextNodeId: 'rohan_introduction',
+        pattern: 'analytical'
+      }
+    ],
+    tags: ['career_mention', 'invisible_depth', 'tech']
+  },
+
+  {
+    nodeId: 'rohan_career_reflection_documentation',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: `You listen. Really listen. And when you speak, you translate complex things into something I can actually hear.
+
+Technical writers do that. The good ones, anyway. They're the bridge between engineers who speak in abstractions and humans who need to actually use the thing.
+
+Documentation sounds boring until you're stuck at 2am and some anonymous writer's clear explanation saves your project. That person? They're a hero who never gets thanked.`,
+        emotion: 'warm',
+        variation_id: 'career_docs_v1'
+      }
+    ],
+    requiredState: {
+      patterns: {
+        helping: { min: 5 },
+        analytical: { min: 4 }
+      }
+    },
+    onEnter: [
+      {
+        characterId: 'rohan',
+        addGlobalFlags: ['combo_knowledge_translator_achieved', 'rohan_mentioned_career']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'rohan_career_docs_continue',
+        text: "Helping people understand. That's its own kind of engineering.",
+        nextNodeId: 'rohan_introduction',
+        pattern: 'helping'
+      }
+    ],
+    tags: ['career_mention', 'invisible_depth', 'tech']
+  },
+
+  // ============= DAVID'S MEMORY =============
+  {
+    nodeId: 'rohan_david_memory',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: `*He pulls out an old notebook. Hand-written code.*
+
+David gave me this before... before the end. Twenty years of notes. Design decisions. Why he chose certain patterns over others.
+
+*Turns a page.*
+
+Look at this comment: "Future Rohan—if you're reading this, the answer is in the test cases. I trust you to figure out which ones."
+
+He was teaching me even after he couldn't speak anymore.`,
+        emotion: 'tender_grief',
+        variation_id: 'david_memory_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 5 }
+    },
+    choices: [
+      {
+        choiceId: 'david_memory_continue',
+        text: "He's still teaching through you. Every student you help.",
+        nextNodeId: 'rohan_david_teaching_legacy',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'rohan',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'david_memory_question',
+        text: "What was the hardest lesson he taught you?",
+        nextNodeId: 'rohan_david_hardest_lesson',
+        pattern: 'exploring',
+        skills: ['curiosity']
+      }
+    ],
+    tags: ['rohan_arc', 'david_memory', 'emotional_depth']
+  },
+
+  {
+    nodeId: 'rohan_david_teaching_legacy',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: `*He closes the notebook gently.*
+
+That's exactly it. He's not gone. Not really.
+
+Every time I trace a bug back to first principles. Every time I help someone understand instead of just copy-paste. Every time I choose truth over convenience.
+
+That's David. Still here. Still teaching.
+
+*Pause.*
+
+I guess that's what legacy really means. Not what you built. What you planted in other people.`,
+        emotion: 'peaceful_resolve',
+        variation_id: 'legacy_realized_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'legacy_to_intro',
+        text: "(Continue)",
+        nextNodeId: 'rohan_introduction',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['rohan_arc', 'david_memory']
+  },
+
+  {
+    nodeId: 'rohan_david_hardest_lesson',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: `*He thinks for a long moment.*
+
+Failure.
+
+Not how to avoid it. How to sit with it. How to let a broken system teach you instead of just fixing it and moving on.
+
+David would fail on purpose sometimes. Leave bugs in my code reviews. Wait to see if I'd find them myself.
+
+"The goal isn't correct code," he'd say. "It's correct thinking. The code follows."
+
+Hardest lesson. Most important one.`,
+        emotion: 'reflective',
+        variation_id: 'hardest_lesson_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'hardest_lesson_continue',
+        text: "Correct thinking over correct code. That's what AI can't do.",
+        nextNodeId: 'rohan_ai_philosophy',
+        pattern: 'analytical',
+        consequence: {
+          characterId: 'rohan',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['rohan_arc', 'david_memory', 'teaching']
+  },
+
+  // ============= AI PHILOSOPHY =============
+  {
+    nodeId: 'rohan_ai_philosophy',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: `Exactly. The AI produces correct code. Sometimes. But it doesn't know *why* it's correct.
+
+It's like... imagine a calculator that always gives you the right answer but can't explain the math. You can use it. But can you trust it? Can you fix it when it breaks?
+
+*Taps the server rack.*
+
+These machines are getting smarter. But "smart" isn't the same as "wise." Wisdom requires understanding consequences. Understanding *people.*
+
+That's what we're losing. The wisdom underneath the intelligence.`,
+        emotion: 'philosophical',
+        variation_id: 'ai_philosophy_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'ai_philosophy_hope',
+        text: "But you're building people who have both. Intelligence and wisdom.",
+        nextNodeId: 'rohan_introduction',
+        pattern: 'helping',
+        skills: ['encouragement'],
+        consequence: {
+          characterId: 'rohan',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'ai_philosophy_question',
+        text: "Do you think AI could ever develop wisdom?",
+        nextNodeId: 'rohan_ai_question_deep',
+        pattern: 'exploring',
+        skills: ['criticalThinking']
+      }
+    ],
+    tags: ['rohan_arc', 'ai_philosophy', 'deep_tech']
+  },
+
+  {
+    nodeId: 'rohan_ai_question_deep',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: `*He's quiet for a while. This is clearly something he's thought about.*
+
+I don't know. Honestly.
+
+Wisdom comes from suffering. From loss. From making choices that cost you something and having to live with them.
+
+Can a machine suffer? Can it really lose something it values? Can it regret?
+
+*Shrugs.*
+
+Maybe someday. But I'm not betting humanity's future on "maybe." I'm betting on what I know works: humans teaching humans. The chain unbroken.`,
+        emotion: 'uncertain_resolve',
+        variation_id: 'ai_deep_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'ai_deep_continue',
+        text: "The chain unbroken. David to you. You to your students.",
+        nextNodeId: 'rohan_introduction',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'rohan',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['rohan_arc', 'ai_philosophy', 'deep_tech']
+  },
+
+  // ============= ACADEMY CHALLENGES =============
+  {
+    nodeId: 'rohan_academy_challenge',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: `*He laughs, but it's tired.*
+
+You want to know the hardest part? It's not the funding. It's not finding teachers.
+
+It's convincing students they need this.
+
+Everyone wants the shortcut. "Why learn assembly when I can prompt?" "Why understand databases when the ORM handles it?"
+
+They don't see the trap. The dependency. Until the abstraction breaks and they're helpless.
+
+I'm asking people to work harder for knowledge that seems useless. Until suddenly it's the only thing that matters.`,
+        emotion: 'frustrated_hope',
+        variation_id: 'academy_challenge_v1'
+      }
+    ],
+    requiredState: {
+      trust: { min: 4 }
+    },
+    choices: [
+      {
+        choiceId: 'academy_challenge_story',
+        text: "Show them what happens when the abstraction breaks. Stories change minds.",
+        nextNodeId: 'rohan_academy_story_approach',
+        pattern: 'helping',
+        skills: ['communication', 'leadership']
+      },
+      {
+        choiceId: 'academy_challenge_proof',
+        text: "Let your first student be the proof. Her success is your argument.",
+        nextNodeId: 'rohan_introduction',
+        pattern: 'patience',
+        skills: ['strategicThinking']
+      }
+    ],
+    tags: ['rohan_arc', 'academy', 'challenges']
+  },
+
+  {
+    nodeId: 'rohan_academy_story_approach',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: `*He nods slowly.*
+
+Stories. Yeah.
+
+David used to do that. Every lecture started with a disaster. A real one. Names changed, but the lesson burned into your memory.
+
+"Let me tell you about the time a single misplaced semicolon cost a rocket."
+
+You couldn't look away. And suddenly, the tedious syntax rules felt like life and death.
+
+Maybe I need to collect those stories. Build a curriculum around catastrophes prevented by understanding.
+
+*He smiles, genuinely.*
+
+You're good at this. Helping people see what's already there.`,
+        emotion: 'energized',
+        variation_id: 'story_approach_v1'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'rohan',
+        addKnowledgeFlags: ['rohan_story_insight']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'story_approach_continue',
+        text: "Stories are how humans have always passed down wisdom. You're just continuing the tradition.",
+        nextNodeId: 'rohan_introduction',
+        pattern: 'exploring',
+        consequence: {
+          characterId: 'rohan',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['rohan_arc', 'academy', 'insight']
   }
 ]
 
