@@ -9,6 +9,7 @@ import { getPersonaTracker, type PlayerPersona } from './player-persona'
 import { getPersonalizedOpportunities } from '../content/birmingham-opportunities'
 import type { Choice } from './story-engine'
 import { logger } from './logger'
+import { getPerformanceSystem } from './performance-system'
 
 export interface CareerPathAffinities {
   healthcare: number
@@ -252,6 +253,22 @@ export class CareerAnalyticsEngine {
 
     const sortedAffinities = Object.entries(affinities).sort(([,a], [,b]) => b - a)
 
+    // Get performance metrics for response time and exploration data
+    const perfMetrics = getPerformanceSystem().getMetrics()
+
+    // Calculate average response time from choice timestamps
+    let averageResponseTime = 0
+    if (perfMetrics.choiceTimestamps.length > 1) {
+      const intervals: number[] = []
+      for (let i = 1; i < perfMetrics.choiceTimestamps.length; i++) {
+        intervals.push(perfMetrics.choiceTimestamps[i] - perfMetrics.choiceTimestamps[i - 1])
+      }
+      averageResponseTime = intervals.reduce((a, b) => a + b, 0) / intervals.length
+    }
+
+    // Get platforms explored from character interactions
+    const platformsExplored = perfMetrics.characterInteractions || []
+
     const snapshot: AnalyticsSnapshot = {
       playerId,
       sessionId,
@@ -261,9 +278,9 @@ export class CareerAnalyticsEngine {
       patternDistribution: persona?.patternCounts || {},
       careerAffinities: affinities,
 
-      averageResponseTime: 0, // TODO: Implement from performance monitor
+      averageResponseTime,
       sessionDuration: Date.now() - (Date.now() - (60 * 1000)), // Assume 1 minute for now
-      platformsExplored: [], // TODO: Get from Zustand store
+      platformsExplored,
 
       primaryAffinity: sortedAffinities[0]?.[0] as keyof CareerPathAffinities || 'technology',
       secondaryAffinity: sortedAffinities[1]?.[0] as keyof CareerPathAffinities || 'healthcare',
