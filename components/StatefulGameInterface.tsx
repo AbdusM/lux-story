@@ -3,17 +3,83 @@
 
 
 /**
- * Stateful Game Interface - Restored Card Layout
+ * Stateful Game Interface - Main Game Component
  *
- * Reverts structure to the "Classic" card-based design as requested by the user.
- * Keeps the internal engine upgrades (Staggered Fade-In Text, robust State Manager).
+ * The central orchestrator for the game experience. Manages all game state,
+ * dialogue flow, choice handling, and UI rendering.
  *
- * Changes from "Modern":
- * - Removed fixed header / scrollable content area.
- * - Restored `min-h-screen` page container.
- * - Restored separate <Card> for Character Header.
- * - Restored "Your Response" header on Choices card.
- * - Restored Avatar display inside DialogueDisplay (via props).
+ * ========================================================================
+ * STRUCTURE MAP (3,363 lines)
+ * ========================================================================
+ *
+ * SECTION 1: IMPORTS (lines 1-145)
+ *   80+ imports from lib, content, components
+ *
+ * SECTION 2: TYPES (lines 147-203)
+ *   - GameInterfaceState interface
+ *   - EMERGING_THRESHOLD constant
+ *
+ * SECTION 3: HELPER FUNCTIONS (lines 204-248)
+ *   - shouldShowInterrupt() - Interrupt visibility logic
+ *   - AmbientDescriptionDisplay - Ambient text component
+ *
+ * SECTION 4: MAIN COMPONENT START (lines 249-408)
+ *   - Refs (inputDisabledRef, lastChoiceTimeRef, etc.)
+ *   - Initial state declaration
+ *   - useState hooks (12 state variables)
+ *
+ * SECTION 5: MEMOS & CALLBACKS (lines 409-532)
+ *   - currentEmotion memo
+ *   - getDominantPattern callback
+ *   - resetIdleTimer callback
+ *   - Idle timer useEffect
+ *
+ * SECTION 6: INITIALIZATION (lines 533-840)
+ *   - handleAtmosphericIntroStart
+ *   - initializeGame (async, ~280 lines)
+ *   - emergencyReset
+ *
+ * SECTION 7: HANDLE CHOICE (lines 841-2291) ⚠️ LARGEST SECTION
+ *   The main choice handler - 1,450 lines covering:
+ *   - State updates (trust, patterns, knowledge flags)
+ *   - Audio feedback (pattern, trust, identity sounds)
+ *   - Consequence echoes and derivative calculations
+ *   - Story arc progression
+ *   - Cross-character memory and check-ins
+ *   - Achievement checking
+ *   - Telemetry and analytics
+ *   - Node navigation
+ *
+ * SECTION 8: NODE EFFECTS (lines 2292-2346)
+ *   - useEffect for node changes
+ *   - Silence detection timer
+ *
+ * SECTION 9: INTERRUPT HANDLERS (lines 2347-2535)
+ *   - handleInterruptTrigger
+ *   - handleInterruptTimeout
+ *
+ * SECTION 10: RETURN TO STATION (lines 2536-2767)
+ *   - handleReturnToStation (~230 lines)
+ *
+ * SECTION 11: EXPERIENCE HANDLER (lines 2768-2792)
+ *   - handleExperienceChoice
+ *
+ * SECTION 12: RENDER (lines 2793-3363)
+ *   - Intro screens (AtmosphericIntro)
+ *   - Journey complete (JourneySummary, IdentityCeremony)
+ *   - Loading states
+ *   - Main game UI (header, dialogue, choices, panels)
+ *
+ * ========================================================================
+ * REFACTORING NOTES
+ * ========================================================================
+ *
+ * handleChoice (Section 7) is a candidate for extraction into hooks:
+ *   - useConsequenceProcessor - Echo and consequence logic
+ *   - useGameAudio - Audio feedback
+ *   - useStoryArcProgress - Story arc management
+ *
+ * See: docs/03_PROCESS/STATEFUL_GAME_INTERFACE_ANALYSIS.md
  */
 
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react'
