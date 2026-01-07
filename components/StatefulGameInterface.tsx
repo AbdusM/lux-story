@@ -86,7 +86,8 @@ import { calculateResonantTrustChange } from '@/lib/pattern-affinity'
 import { getEchoIntensity, ECHO_INTENSITY_MODIFIERS, analyzeTrustAsymmetry, getAsymmetryComment, type AsymmetryReaction, calculateInheritedTrust, recordTrustChange, type TrustTimeline } from '@/lib/trust-derivatives'
 import { calculateCharacterTrustDecay, getPatternRecognitionComments, type PatternRecognitionComment, getUnlockedGates, PATTERN_TRUST_GATES, checkNewAchievements, type PatternAchievement, recordPatternEvolution, type PatternEvolutionHistory } from '@/lib/pattern-derivatives'
 import { getNewlyAvailableCombinations, type KnowledgeCombination, recordIcebergMention, getInvestigableTopics, type IcebergReference } from '@/lib/knowledge-derivatives'
-import { getActiveTextEffects, getTextEffectClasses, getTextEffectStyles, getActiveMagicalRealisms, type MagicalRealism } from '@/lib/narrative-derivatives'
+import { getActiveTextEffects, getTextEffectClasses, getTextEffectStyles, getActiveMagicalRealisms, type MagicalRealism, getNewlyDiscoveredArcs, getCascadeEffectsForFlag, getNarrativeFraming, getUnlockedMetaRevelations, type EmergentStoryArc, type CascadeEffect, type MetaNarrativeRevelation } from '@/lib/narrative-derivatives'
+import { getActiveEnvironmentalEffects, getAvailableCrossCharacterExperiences, type EnvironmentalEffect, type CrossCharacterRequirement } from '@/lib/character-derivatives'
 import {
   INTERRUPT_PATTERN_ALIGNMENT,
   INTERRUPT_COMBO_CHAINS,
@@ -1498,6 +1499,120 @@ export default function StatefulGameInterface() {
           })
         }
       }
+
+      // D-016: Check for newly active environmental effects from character trust
+      if (!consequenceEcho && state.gameState) {
+        const prevEffects = getActiveEnvironmentalEffects(state.gameState)
+        const nowEffects = getActiveEnvironmentalEffects(newGameState)
+        const newEffects = nowEffects.filter(e =>
+          !prevEffects.some(p => p.effect === e.effect)
+        )
+
+        if (newEffects.length > 0) {
+          const effect = newEffects[0]
+          consequenceEcho = {
+            text: effect.visualDescription,
+            emotion: 'wonder',
+            timing: 'immediate'
+          }
+          newGameState.globalFlags.add(`env_${effect.effect}`)
+          logger.info('[StatefulGameInterface] D-016 Environmental effect triggered:', {
+            effect: effect.effect,
+            warmthChange: effect.warmthChange
+          })
+        }
+      }
+
+      // D-017: Check for newly available cross-character experiences
+      if (!consequenceEcho && state.gameState) {
+        const prevExperiences = getAvailableCrossCharacterExperiences(state.gameState)
+        const nowExperiences = getAvailableCrossCharacterExperiences(newGameState)
+        const newExperiences = nowExperiences.filter(e =>
+          !prevExperiences.some(p => p.experienceId === e.experienceId)
+        )
+
+        if (newExperiences.length > 0) {
+          const exp = newExperiences[0]
+          consequenceEcho = {
+            text: `${exp.unlockHint}\n\n(New experience available: ${exp.experienceName})`,
+            emotion: 'intrigued',
+            timing: 'immediate'
+          }
+          newGameState.globalFlags.add(`exp_available_${exp.experienceId}`)
+          logger.info('[StatefulGameInterface] D-017 Cross-character experience available:', {
+            experienceId: exp.experienceId,
+            experienceName: exp.experienceName
+          })
+        }
+      }
+
+      // D-062: Check for cascade effects triggered by new flags
+      if (!consequenceEcho && state.gameState) {
+        // Find flags that were just added
+        const newFlags = [...newGameState.globalFlags].filter(f => !state.gameState!.globalFlags.has(f))
+
+        for (const flag of newFlags) {
+          const cascade = getCascadeEffectsForFlag(flag, targetCharacterId)
+          if (cascade && cascade.chain.length > 0) {
+            // Get the first degree effect
+            const firstEffect = cascade.chain.find(c => c.degree === 1)
+            if (firstEffect) {
+              consequenceEcho = {
+                text: firstEffect.description,
+                emotion: 'knowing',
+                timing: 'immediate'
+              }
+              // Apply first degree effects immediately
+              if (firstEffect.effect.flagSet) {
+                newGameState.globalFlags.add(firstEffect.effect.flagSet)
+              }
+              // Queue later effects via global flags for tracking
+              newGameState.globalFlags.add(`cascade_${cascade.id}_triggered`)
+              logger.info('[StatefulGameInterface] D-062 Cascade triggered:', {
+                cascadeId: cascade.id,
+                triggerFlag: flag,
+                chainLength: cascade.chain.length
+              })
+              break
+            }
+          }
+        }
+      }
+
+      // D-065: Check for newly unlocked meta-narrative revelations
+      if (!consequenceEcho && state.gameState) {
+        const prevRevelations = getUnlockedMetaRevelations(state.gameState.patterns)
+        const nowRevelations = getUnlockedMetaRevelations(newGameState.patterns)
+        const newRevelations = nowRevelations.filter(r =>
+          !prevRevelations.some(p => p.id === r.id) &&
+          !newGameState.globalFlags.has(`meta_${r.id}`)
+        )
+
+        if (newRevelations.length > 0) {
+          const revelation = newRevelations[0]
+          consequenceEcho = {
+            text: `${revelation.revelation}\n\n${revelation.characterAcknowledgement.dialogue}`,
+            emotion: 'profound',
+            timing: 'immediate'
+          }
+          newGameState.globalFlags.add(`meta_${revelation.id}`)
+          // Unlock associated dialogue nodes
+          revelation.unlocksDialogue.forEach(nodeId => {
+            newGameState.globalFlags.add(`dialogue_unlocked_${nodeId}`)
+          })
+          logger.info('[StatefulGameInterface] D-065 Meta-narrative revelation:', {
+            id: revelation.id,
+            name: revelation.name
+          })
+        }
+      }
+
+      // D-064: Log narrative framing for current session (UI will use this)
+      const narrativeFraming = getNarrativeFraming(newGameState.patterns)
+      logger.debug('[StatefulGameInterface] D-064 Current narrative framing:', {
+        dominantPattern: narrativeFraming.pattern,
+        stationMetaphor: narrativeFraming.stationMetaphor
+      })
 
       // Check for delayed gifts ready to deliver
       // Gifts surface after N interactions, creating "your choice mattered" moments
