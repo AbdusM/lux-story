@@ -173,7 +173,7 @@ const RESOLUTION_ANNOUNCEMENTS: SessionAnnouncement[] = [
 /**
  * Calculate total nodes visited across all characters
  */
-function getTotalNodesVisited(gameState: GameState): number {
+export function getTotalNodesVisited(gameState: GameState): number {
   let total = 0
   gameState.characters.forEach(char => {
     total += char.conversationHistory.length

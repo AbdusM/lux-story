@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { useShallow } from 'zustand/react/shallow'
 import { devtools, persist } from 'zustand/middleware'
 import { ActiveThought, ThoughtStatus, THOUGHT_REGISTRY } from '@/content/thoughts'
 import {
@@ -1082,7 +1083,7 @@ export const useGameSelectors = {
     useGameStore((state) => state.characterHelped[characterId] || 0),
 
   // Pattern selectors - DERIVED FROM coreGameState (single source of truth)
-  usePatterns: () => useGameStore((state) => {
+  usePatterns: () => useGameStore(useShallow((state) => {
     // Derive from coreGameState (single source of truth)
     if (state.coreGameState?.patterns) {
       return {
@@ -1095,7 +1096,7 @@ export const useGameSelectors = {
       }
     }
     return state.patterns
-  }),
+  })),
   usePatternValue: (pattern: keyof PatternTracking) =>
     useGameStore((state) => {
       // Derive from coreGameState for core patterns
@@ -1130,7 +1131,7 @@ export const useGameSelectors = {
   usePlatformWarmthAll: () => useGameStore((state) => state.platformWarmth),
   usePlatformAccessibleAll: () => useGameStore((state) => state.platformAccessible),
   // DERIVED FROM coreGameState (single source of truth)
-  useCharacterTrustAll: () => useGameStore((state) => {
+  useCharacterTrustAll: () => useGameStore(useShallow((state) => {
     if (state.coreGameState) {
       const trustRecord: Record<string, number> = {}
       for (const char of state.coreGameState.characters) {
@@ -1139,7 +1140,7 @@ export const useGameSelectors = {
       return trustRecord
     }
     return state.characterTrust
-  }),
+  })),
   useCharacterHelpedAll: () => useGameStore((state) => state.characterHelped),
 
   // ═══════════════════════════════════════════════════════════════════════════

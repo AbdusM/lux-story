@@ -1549,6 +1549,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     content: [
       {
         text: "{{knows_backstory:Like I was sayin', I spent years buildin' other people's systems. These folks here? They're tryin' to build their own.|{{trust>2:Good to see you gettin' comfortable.|Got a few travelers tonight. Each one at their own crossroads.}}}}\n\nSomebody here you should meet. But first - what's pullin' at you?",
+        // samuel seems willing to share smeothing; // a distinant memory sits/// -- to me this is improtant metadata for future; but should not be in dialogue driven version for now
         emotion: 'curious',
         variation_id: 'hub_initial_v1',
         patternReflection: [

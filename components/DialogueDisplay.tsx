@@ -123,10 +123,10 @@ export function DialogueDisplay({
       style={{ transition: 'none' }}
     >
 
-      {/* Micro-Action: Small physiological detail for humanlike feel (P1 Polish) */}
+      {/* Micro-Action: Immersive narrative action (Novel style) */}
       {microAction && (
-        <p className="not-italic text-indigo-200/70 mb-2 font-light text-base tracking-wide pl-1 border-l-2 border-indigo-500/20">
-          [{microAction}]
+        <p className="text-amber-200/60 mb-4 font-serif italic text-[0.95rem] leading-relaxed opacity-90">
+          {microAction}
         </p>
       )}
 

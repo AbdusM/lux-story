@@ -130,7 +130,7 @@ import { detectReturningPlayer, getWaitingCharacters, getSamuelWaitingSummary, t
 import { queueGiftForChoice, queueGiftsForArcComplete, tickGiftCounters, getReadyGiftsForCharacter, consumeGift, serializeGiftQueue, deserializeGiftQueue, type DelayedGift } from '@/lib/delayed-gifts'
 // ProgressToast removed - Journal glow effect replaces it
 import { selectAnnouncement } from '@/lib/platform-announcements'
-import { checkSessionBoundary, incrementBoundaryCounter, type SessionAnnouncement } from '@/lib/session-structure'
+import { checkSessionBoundary, incrementBoundaryCounter, getTotalNodesVisited, type SessionAnnouncement } from '@/lib/session-structure'
 import { SessionBoundaryAnnouncement } from '@/components/SessionBoundaryAnnouncement'
 import { IdentityCeremony } from '@/components/IdentityCeremony'
 import { playPatternSound, playTrustSound, playIdentitySound, playMilestoneSound, playEpisodeSound, playSound, initializeAudio, setAudioEnabled } from '@/lib/audio-feedback'
@@ -429,14 +429,7 @@ export default function StatefulGameInterface() {
   const idleCountRef = useRef(0)  // Track how many ambient events shown this idle period
   const lastChoiceTimeRef = useRef(Date.now())
 
-  // Helper to calculate total nodes visited across all characters
-  const getTotalNodesVisited = (gameState: GameState): number => {
-    let total = 0
-    gameState.characters.forEach(char => {
-      total += char.conversationHistory.length
-    })
-    return total
-  }
+
 
   // Helper to clean atmospheric tags
   const cleanContent = (text: string) => {
@@ -804,7 +797,10 @@ export default function StatefulGameInterface() {
       })
 
     } catch (error) {
-      logger.error('Init error', { error })
+      logger.error('Init error', {
+        message: error instanceof Error ? error.message : String(error),
+        stack: error instanceof Error ? error.stack : undefined
+      })
       setState(prev => ({
         ...prev,
         error: {
@@ -2995,24 +2991,41 @@ export default function StatefulGameInterface() {
                   data-testid="dialogue-content"
                   data-speaker={state.currentNode?.speaker || ''}
                 >
-                  {/* Session Boundary Announcement - Platform pause point */}
-                  {state.sessionBoundary && (
-                    <div className="mb-6">
-                      <SessionBoundaryAnnouncement
-                        announcement={state.sessionBoundary}
-                        onDismiss={() => setState(prev => ({ ...prev, sessionBoundary: null }))}
-                      />
-                    </div>
-                  )}
 
-                  {/* Dialogue Card */}
-                  <Card className="border-0 shadow-lg bg-black/40 backdrop-blur-xl relative overflow-hidden">
+
+                  {/* Dialogue Card - Dynamic Marquee Effect */}
+                  <Card className={`shadow-lg backdrop-blur-xl relative overflow-hidden transition-all duration-500 ${(() => {
+                      // 1. Loyalty Event (Amber) - Warm, engaging
+                      if (state.activeExperience) {
+                        return 'bg-slate-950/80 border-amber-500/40 shadow-[0_0_30px_rgba(245,158,11,0.2)]'
+                      }
+
+                      // 2. System/Discovery Moment (Blue/Purple) - Technical, cool
+                      // (Heuristic: If emotion is 'analytical' or 'knowing')
+                      if (state.currentDialogueContent?.emotion === 'analytical' || state.currentDialogueContent?.emotion === 'knowing') {
+                        return 'bg-slate-950/80 border-indigo-500/40 shadow-[0_0_30px_rgba(99,102,241,0.2)]'
+                      }
+
+                      // 3. Danger/Tension (Red) - Urgent
+                      // (Heuristic: If emotion is 'fear' or 'tension')
+                      if (state.currentDialogueContent?.emotion === 'fear' || state.currentDialogueContent?.emotion === 'tension') {
+                        return 'bg-slate-950/80 border-red-500/40 shadow-[0_0_30px_rgba(239,68,68,0.2)]'
+                      }
+
+                      // Default - Subtle Glass
+                      return 'bg-black/40 border-white/5 hover:border-white/10'
+                    })()
+                    }`}>
                     <CardContent className="p-0">
+                      {/* Marquee Header Overlay */}
+                      {state.activeExperience && (
+                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-amber-500/50 to-transparent opacity-50" />
+                      )}
                       {/* P6: Experience Mode Overlay */}
                       {state.activeExperience ? (
                         <div className="p-6 md:p-8 space-y-6">
                           <div className="flex items-center gap-3 text-amber-500 mb-4">
-                            <Stars className="w-5 h-5 animate-pulse" />
+                            <Stars className="w-5 h-5 text-amber-400" />
                             <span className="text-sm uppercase tracking-widest font-bold">Loyalty Event</span>
                           </div>
 
@@ -3088,27 +3101,7 @@ export default function StatefulGameInterface() {
                         </div>
                       )} */}
 
-                      {/* Consequence Echo - Dialogue Feedback (Resonance descriptions) */}
-                      {state.consequenceEcho && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 5 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0 }}
-                          transition={{ duration: 0.3 }}
-                          className="mt-4 mx-6 md:mx-8 mb-4 p-3 rounded-lg bg-amber-950/20 border border-amber-500/10 text-amber-200/70 italic text-sm font-serif"
-                        >
-                          {/* D-010: Apply intensity-based formatting */}
-                          {(() => {
-                            const trust = state.consequenceEcho?.trustAtEvent ?? 5
-                            const intensity = getEchoIntensity(trust)
-                            const modifier = ECHO_INTENSITY_MODIFIERS[intensity]
-                            // High trust = vivid, low trust = faded
-                            return modifier.detailLevel >= 0.7
-                              ? state.consequenceEcho?.text
-                              : `${modifier.prefix} ${state.consequenceEcho?.text || ''}`
-                          })()}
-                        </motion.div>
-                      )}
+
                     </CardContent>
                   </Card>
                 </CardContent>

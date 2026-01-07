@@ -326,11 +326,13 @@ main {
 
   0%,
   100% {
-    box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.4), 0 0 12px rgba(251, 191, 36, 0.3);
+    box-shadow: 0 0 0 1px rgba(251, 191, 36, 0.3), 0 0 8px rgba(251, 191, 36, 0.2);
+    border-radius: 9999px; /* Force rounding */
   }
 
   50% {
-    box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.6), 0 0 20px rgba(251, 191, 36, 0.5);
+    box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.5), 0 0 16px rgba(251, 191, 36, 0.4);
+    border-radius: 9999px; /* Force rounding */
   }
 }
 
