@@ -984,6 +984,138 @@ main {
 }
 
 /* ══════════════════════════════════════════════════════════════════════════════
+   D-008: RICH TEXT STATE EFFECTS
+   Text styling triggered by player state (patterns, trust, character)
+   Colors match lib/narrative-derivatives.ts canonical mappings
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* Shimmer effect - sparkle/glitter (Exploring pattern, Lira) */
+@keyframes textShimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.text-effect-shimmer {
+  background: linear-gradient(
+    90deg,
+    currentColor 0%,
+    var(--shimmer-color, #fbbf24) 25%,
+    currentColor 50%,
+    var(--shimmer-color, #fbbf24) 75%,
+    currentColor 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: textShimmer 3s ease-in-out infinite;
+}
+
+/* Pulse effect - gentle pulsing (Building pattern) */
+@keyframes textPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.text-effect-pulse {
+  animation: textPulse 2s ease-in-out infinite;
+}
+
+/* Glow effect - luminous glow (Helping pattern) */
+.text-effect-glow {
+  text-shadow:
+    0 0 4px var(--glow-color, #f472b6),
+    0 0 8px var(--glow-color, #f472b6),
+    0 0 12px color-mix(in srgb, var(--glow-color, #f472b6) 50%, transparent);
+}
+
+/* Echo effect - trailing echo (Samuel character) */
+@keyframes textEcho {
+  0% { text-shadow: none; }
+  25% { text-shadow: 2px 0 4px var(--echo-color, #f5f5dc); }
+  50% { text-shadow: 4px 0 8px color-mix(in srgb, var(--echo-color, #f5f5dc) 60%, transparent); }
+  75% { text-shadow: 2px 0 4px var(--echo-color, #f5f5dc); }
+  100% { text-shadow: none; }
+}
+
+.text-effect-echo {
+  animation: textEcho 4s ease-in-out infinite;
+}
+
+/* Fade effect - fading in/out (Patience pattern) */
+@keyframes textFade {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.text-effect-fade {
+  animation: textFade 2s ease-in-out infinite;
+}
+
+/* Static effect - glitch/static (Rohan character) */
+@keyframes textStatic {
+  0%, 90%, 100% { opacity: 1; transform: none; }
+  92% { opacity: 0.8; transform: translateX(-1px); }
+  94% { opacity: 1; transform: translateX(1px); }
+  96% { opacity: 0.9; transform: translateX(-1px); }
+  98% { opacity: 1; transform: none; }
+}
+
+.text-effect-static {
+  animation: textStatic 4s ease-in-out infinite;
+}
+
+/* Handwritten effect - cursive/personal (Trust >= 8) */
+.text-effect-handwritten {
+  font-style: italic;
+  letter-spacing: 0.02em;
+  font-weight: 300;
+}
+
+/* Typewriter effect - mechanical typing (Analytical pattern) */
+.text-effect-typewriter {
+  font-family: ui-monospace, 'SF Mono', 'Cascadia Code', monospace;
+  letter-spacing: 0.05em;
+}
+
+/* Whisper effect - smaller, intimate (Trust >= 9) */
+.text-effect-whisper {
+  font-size: 0.9em;
+  opacity: 0.85;
+  font-style: italic;
+}
+
+/* Bold emphasis effect - strong emphasis */
+.text-effect-bold_emphasis {
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+/* Intensity modifiers */
+.text-effect-subtle {
+  --effect-intensity: 0.5;
+}
+
+.text-effect-medium {
+  --effect-intensity: 0.75;
+}
+
+.text-effect-strong {
+  --effect-intensity: 1;
+}
+
+/* Pattern-specific color overrides */
+.text-effect-pattern-analytical { --shimmer-color: #60a5fa; --glow-color: #60a5fa; }
+.text-effect-pattern-patience { --shimmer-color: #34d399; --glow-color: #34d399; }
+.text-effect-pattern-exploring { --shimmer-color: #fbbf24; --glow-color: #fbbf24; }
+.text-effect-pattern-helping { --shimmer-color: #f472b6; --glow-color: #f472b6; }
+.text-effect-pattern-building { --shimmer-color: #a78bfa; --glow-color: #a78bfa; }
+
+/* Character-specific color overrides */
+.text-effect-character-samuel { --echo-color: #f5f5dc; }
+.text-effect-character-rohan { --glow-color: #6b7280; }
+.text-effect-character-lira { --shimmer-color: #c084fc; }
+
+/* ══════════════════════════════════════════════════════════════════════════════
    REDUCED MOTION SUPPORT
    ══════════════════════════════════════════════════════════════════════════════ */
 
@@ -1010,5 +1142,20 @@ main {
   .glass-float-in-right {
     opacity: 1;
     transform: none;
+  }
+
+  /* D-008: Disable text effect animations */
+  .text-effect-shimmer,
+  .text-effect-pulse,
+  .text-effect-echo,
+  .text-effect-fade,
+  .text-effect-static {
+    animation: none !important;
+  }
+
+  .text-effect-shimmer {
+    background: none;
+    -webkit-background-clip: unset;
+    background-clip: unset;
   }
 }
