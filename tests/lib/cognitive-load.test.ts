@@ -21,12 +21,12 @@ import type { EvaluatedChoice } from '@/lib/dialogue-graph'
 
 // Mock choices for testing
 const mockChoices: EvaluatedChoice[] = [
-  { choice: { text: 'Critical choice', next: 'node1' }, visible: true, evaluatedText: 'Critical choice' },
-  { choice: { text: 'Analytical choice', next: 'node2', pattern: 'analytical' }, visible: true, evaluatedText: 'Analytical choice' },
-  { choice: { text: 'Helping choice', next: 'node3', pattern: 'helping' }, visible: true, evaluatedText: 'Helping choice' },
-  { choice: { text: 'Building choice', next: 'node4', pattern: 'building' }, visible: true, evaluatedText: 'Building choice' },
-  { choice: { text: 'Patience choice', next: 'node5', pattern: 'patience' }, visible: true, evaluatedText: 'Patience choice' },
-  { choice: { text: 'Exploring choice', next: 'node6', pattern: 'exploring' }, visible: true, evaluatedText: 'Exploring choice' }
+  { choice: { choiceId: '1', text: 'Critical choice', nextNodeId: 'node1' }, visible: true, enabled: true },
+  { choice: { choiceId: '2', text: 'Analytical choice', nextNodeId: 'node2', pattern: 'analytical' }, visible: true, enabled: true },
+  { choice: { choiceId: '3', text: 'Helping choice', nextNodeId: 'node3', pattern: 'helping' }, visible: true, enabled: true },
+  { choice: { choiceId: '4', text: 'Building choice', nextNodeId: 'node4', pattern: 'building' }, visible: true, enabled: true },
+  { choice: { choiceId: '5', text: 'Patience choice', nextNodeId: 'node5', pattern: 'patience' }, visible: true, enabled: true },
+  { choice: { choiceId: '6', text: 'Exploring choice', nextNodeId: 'node6', pattern: 'exploring' }, visible: true, enabled: true }
 ]
 
 describe('Cognitive Load System (D-078)', () => {

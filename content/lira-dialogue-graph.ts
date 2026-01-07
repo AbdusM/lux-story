@@ -2623,6 +2623,57 @@ This soundtrack will have her in it. Somewhere in the static, in the gaps betwee
             }
         ],
         tags: ['lira_arc', 'pattern_unlock', 'building', 'vulnerability']
+    },
+
+    // ============= ARC 3: THE QUIET HOUR =============
+    {
+        nodeId: 'lira_silence_comment',
+        speaker: 'Lira Vance',
+        content: [
+            {
+                text: "*Lira pulls her headphones down to her neck. She isn't conducting anymore. She's just standing there, eyes wide.*\n\nIt stopped. The ambient hum. The ventilation. The distant mag-lev vibration.\n\n*She whispers.*\n\nTrue silence. It's not empty. It's heavy. Can you feel the weight of it?",
+                emotion: 'awestruck',
+                variation_id: 'arc3_silence_v1'
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'lira_silence_response',
+                text: "It feels like the station is holding its breath.",
+                nextNodeId: 'lira_introduction',
+                pattern: 'patience',
+                skills: ['observation'],
+                consequence: {
+                    addGlobalFlags: ['quiet_hour_witnessed']
+                }
+            }
+        ],
+        tags: ['arc_quiet_hour']
+    },
+
+    {
+        nodeId: 'lira_static_navigation',
+        speaker: 'Lira Vance',
+        content: [
+            {
+                text: "*She moves through the frozen station with dreamlike ease.*\n\nThe air is static. Sound doesn't travel right here. It drops straight to the floor.\n\n*She touches a frozen holographic display.*\n\nWe're walking between the frames of the movie. Samuel calls it 'The Pause.' I call it 'The Breath.'\n\nIf you listen closely... you can hear the station thinking.",
+                emotion: 'mystical',
+                variation_id: 'arc3_static_v1'
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'lira_hear_thinking',
+                text: "What is it thinking?",
+                nextNodeId: 'lira_introduction',
+                pattern: 'exploring',
+                skills: ['curiosity'],
+                consequence: {
+                    addGlobalFlags: ['quiet_hour_entered']
+                }
+            }
+        ],
+        tags: ['arc_quiet_hour']
     }
 ]
 

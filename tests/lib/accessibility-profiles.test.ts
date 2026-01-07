@@ -25,20 +25,20 @@ describe('Accessibility Profiles (D-030)', () => {
   describe('ACCESSIBILITY_PROFILES', () => {
     it('should have settings for all profiles', () => {
       profiles.forEach(profile => {
-        expect(ACCESSIBILITY_PROFILES[profile]).toBeDefined()
+        expect(ACCESSIBILITY_PROFILES[profile as keyof typeof ACCESSIBILITY_PROFILES]).toBeDefined()
       })
     })
 
     it('should have valid font family for all profiles', () => {
       profiles.forEach(profile => {
-        const settings = ACCESSIBILITY_PROFILES[profile]
+        const settings = ACCESSIBILITY_PROFILES[profile as keyof typeof ACCESSIBILITY_PROFILES]
         expect(['default', 'dyslexic', 'mono', 'sans']).toContain(settings.fontFamily)
       })
     })
 
     it('should have valid font size for all profiles', () => {
       profiles.forEach(profile => {
-        const settings = ACCESSIBILITY_PROFILES[profile]
+        const settings = ACCESSIBILITY_PROFILES[profile as keyof typeof ACCESSIBILITY_PROFILES]
         expect(['normal', 'large', 'x-large']).toContain(settings.fontSize)
       })
     })
@@ -137,7 +137,7 @@ describe('Accessibility Profiles (D-030)', () => {
     it('should return correct settings for each profile', () => {
       profiles.forEach(profile => {
         const settings = getProfileSettings(profile)
-        expect(settings).toEqual(ACCESSIBILITY_PROFILES[profile])
+        expect(settings).toEqual(ACCESSIBILITY_PROFILES[profile as keyof typeof ACCESSIBILITY_PROFILES])
       })
     })
 

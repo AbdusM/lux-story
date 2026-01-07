@@ -83,7 +83,11 @@ import { PATTERN_TYPES, type PatternType, getPatternSensation, isValidPattern } 
 import { calculatePatternGain } from '@/lib/identity-system'
 import { getConsequenceEcho, checkPatternThreshold as checkPatternEchoThreshold, getPatternRecognitionEcho, createResonanceEchoFromDescription, getVoicedChoiceText, applyPatternReflection, getOrbMilestoneEcho, getDiscoveryHint, DISCOVERY_HINTS, type ConsequenceEcho } from '@/lib/consequence-echoes'
 import { calculateResonantTrustChange } from '@/lib/pattern-affinity'
-import { getEchoIntensity, ECHO_INTENSITY_MODIFIERS, analyzeTrustAsymmetry, getAsymmetryComment, type AsymmetryReaction, calculateInheritedTrust, recordTrustChange, type TrustTimeline } from '@/lib/trust-derivatives'
+import { getEchoIntensity, ECHO_INTENSITY_MODIFIERS, analyzeTrustAsymmetry, getAsymmetryComment, type AsymmetryReaction, calculateInheritedTrust, recordTrustChange, type TrustTimeline, executeInfoTrade, getAvailableInfoTrades, type InfoTradeOffer } from '@/lib/trust-derivatives'
+// D-057: Info Trades
+import { ALL_INFO_TRADES } from '@/content/info-trades'
+// D-056: Knowledge Items
+import { KNOWLEDGE_ITEMS, TRADE_CHAINS, getKnowledgeItem, type KnowledgeItem } from '@/content/knowledge-items'
 import { calculateCharacterTrustDecay, getPatternRecognitionComments, type PatternRecognitionComment, getUnlockedGates, PATTERN_TRUST_GATES, checkNewAchievements, type PatternAchievement, recordPatternEvolution, type PatternEvolutionHistory } from '@/lib/pattern-derivatives'
 import { getNewlyAvailableCombinations, type KnowledgeCombination, recordIcebergMention, getInvestigableTopics, type IcebergReference } from '@/lib/knowledge-derivatives'
 import { getActiveTextEffects, getTextEffectClasses, getTextEffectStyles, getActiveMagicalRealisms, type MagicalRealism, getNewlyDiscoveredArcs, getCascadeEffectsForFlag, getNarrativeFraming, getUnlockedMetaRevelations, type EmergentStoryArc, type CascadeEffect, type MetaNarrativeRevelation } from '@/lib/narrative-derivatives'
@@ -112,6 +116,15 @@ import { getPatternVoice, incrementPatternVoiceNodeCounter, checkVoiceConflict, 
 import { PATTERN_VOICE_LIBRARY } from '@/content/pattern-voice-library'
 import { PatternVoice } from '@/components/game/PatternVoice'
 import { useOrbs } from '@/hooks/useOrbs'
+// Analytics Hooks
+import { trackUserOnNode, recordVisit } from '@/lib/admin-analytics'
+// Complex Character Hooks
+import { processComplexCharacterTick } from '@/lib/character-complex'
+// D-061: Story Arc System
+import { checkArcUnlock, startStoryArc, completeChapter, getCurrentChapter } from '@/lib/story-arcs'
+import { ALL_STORY_ARCS, getArcById } from '@/content/story-arcs'
+// D-083: Synthesis Puzzles
+import { SYNTHESIS_PUZZLES, type SynthesisPuzzle } from '@/content/synthesis-puzzles'
 // Engagement Loop Systems
 import { detectReturningPlayer, getWaitingCharacters, getSamuelWaitingSummary, type CharacterWaitingState } from '@/lib/character-waiting'
 import { queueGiftForChoice, queueGiftsForArcComplete, tickGiftCounters, getReadyGiftsForCharacter, consumeGift, serializeGiftQueue, deserializeGiftQueue, type DelayedGift } from '@/lib/delayed-gifts'
@@ -611,6 +624,10 @@ export default function StatefulGameInterface() {
 
       gameState.currentNodeId = currentNode.nodeId
       gameState.currentCharacterId = actualCharacterId
+
+      // D-011/D-012: Analytics Tracking (Initial Load)
+      trackUserOnNode(gameState.playerId, currentNode.nodeId)
+      recordVisit(currentNode.nodeId)
 
       // Ensure character exists, create if missing
       let character = gameState.characters.get(actualCharacterId)
@@ -1270,6 +1287,277 @@ export default function StatefulGameInterface() {
       targetCharacter.conversationHistory.push(nextNode.nodeId)
       newGameState.currentNodeId = nextNode.nodeId
       newGameState.currentCharacterId = targetCharacterId
+
+      // D-011/D-012: Analytics Tracking
+      trackUserOnNode(newGameState.playerId, nextNode.nodeId)
+      recordVisit(nextNode.nodeId)
+
+      // D-018/D-063/D-095: Complex Character Tick
+      processComplexCharacterTick(newGameState, targetCharacterId)
+
+      // D-061: Story Arc Progression
+      // Initialize story arc state if missing
+      if (!newGameState.storyArcState) {
+        const { createStoryArcState } = await import('@/lib/story-arcs')
+        newGameState = {
+          ...newGameState,
+          storyArcState: createStoryArcState()
+        }
+      }
+
+      // Check for newly unlockable arcs
+      for (const arc of ALL_STORY_ARCS) {
+        const arcState = newGameState.storyArcState!
+        if (!arcState.activeArcs.has(arc.id) && !arcState.completedArcs.has(arc.id)) {
+          if (checkArcUnlock(arc, newGameState)) {
+            newGameState = {
+              ...newGameState,
+              storyArcState: startStoryArc(arcState, arc.id)
+            }
+            // Generate unlock echo if no other echo pending
+            if (!consequenceEcho) {
+              consequenceEcho = {
+                text: `A new thread emerges: "${arc.title}" - ${arc.description}`,
+                emotion: 'intrigued',
+                timing: 'immediate'
+              }
+            }
+            logger.info('[StatefulGameInterface] D-061 Story arc unlocked:', {
+              arcId: arc.id,
+              title: arc.title
+            })
+          }
+        }
+      }
+
+      // Check if current node advances any active arc chapters
+      const arcState = newGameState.storyArcState!
+      for (const arcId of arcState.activeArcs) {
+        const arc = getArcById(arcId)
+        if (!arc) continue
+
+        const currentChapter = getCurrentChapter(arcState, arc)
+        if (!currentChapter) continue
+
+        // Check if visited node is in current chapter's nodeIds
+        if (currentChapter.nodeIds.includes(nextNode.nodeId)) {
+          // Mark chapter complete if this was the last required node
+          const visitedChapterNodes = currentChapter.nodeIds.filter(nodeId =>
+            targetCharacter.conversationHistory.includes(nodeId) || nodeId === nextNode.nodeId
+          )
+
+          if (visitedChapterNodes.length >= currentChapter.nodeIds.length) {
+            // Complete the chapter
+            const { newState: updatedArcState, arcCompleted } = completeChapter(arcState, arc, currentChapter.id)
+            newGameState = {
+              ...newGameState,
+              storyArcState: updatedArcState
+            }
+
+            // Set the chapter completion flag
+            newGameState.globalFlags.add(currentChapter.completionFlag)
+
+            // Show completion echo if no other echo pending
+            if (!consequenceEcho) {
+              if (arcCompleted) {
+                consequenceEcho = {
+                  text: `Story complete: "${arc.title}" - The threads have woven together.`,
+                  emotion: 'satisfied',
+                  timing: 'immediate'
+                }
+              } else {
+                consequenceEcho = {
+                  text: `Chapter complete: "${currentChapter.title}" - The story continues...`,
+                  emotion: 'curious',
+                  timing: 'immediate'
+                }
+              }
+            }
+
+            logger.info('[StatefulGameInterface] D-061 Chapter completed:', {
+              arcId: arc.id,
+              chapterId: currentChapter.id,
+              completionFlag: currentChapter.completionFlag,
+              arcCompleted
+            })
+          }
+        }
+      }
+
+      // D-083: Synthesis Puzzle Auto-Checking
+      // Track completed puzzles to avoid re-triggering
+      const completedPuzzlesKey = 'lux_completed_synthesis_puzzles'
+      const completedPuzzlesRaw = typeof window !== 'undefined' ? localStorage.getItem(completedPuzzlesKey) : null
+      const completedPuzzles = new Set<string>(completedPuzzlesRaw ? JSON.parse(completedPuzzlesRaw) : [])
+
+      // Also track puzzles where we've shown the hint
+      const hintShownKey = 'lux_synthesis_hints_shown'
+      const hintShownRaw = typeof window !== 'undefined' ? localStorage.getItem(hintShownKey) : null
+      const hintsShown = new Set<string>(hintShownRaw ? JSON.parse(hintShownRaw) : [])
+
+      // Collect all knowledge flags (global + character-specific)
+      const allKnowledge = new Set<string>(newGameState.globalFlags)
+      newGameState.characters.forEach(char => {
+        char.knowledgeFlags.forEach(flag => allKnowledge.add(flag))
+      })
+
+      for (const puzzle of SYNTHESIS_PUZZLES) {
+        // Skip already completed puzzles
+        if (completedPuzzles.has(puzzle.id)) continue
+        if (newGameState.globalFlags.has(puzzle.reward.unlockFlag || '')) continue
+
+        // Count how many required flags we have
+        const matchingFlags = puzzle.requiredKnowledge.filter(flag => allKnowledge.has(flag))
+        const progress = matchingFlags.length / puzzle.requiredKnowledge.length
+
+        // Puzzle complete - all knowledge gathered
+        if (progress >= 1.0) {
+          // Apply rewards
+          if (puzzle.reward.patternBonus) {
+            for (const [pattern, bonus] of Object.entries(puzzle.reward.patternBonus)) {
+              newGameState.patterns[pattern as keyof typeof newGameState.patterns] += bonus as number
+            }
+          }
+          if (puzzle.reward.unlockFlag) {
+            newGameState.globalFlags.add(puzzle.reward.unlockFlag)
+          }
+
+          // Mark as completed
+          completedPuzzles.add(puzzle.id)
+          if (typeof window !== 'undefined') {
+            localStorage.setItem(completedPuzzlesKey, JSON.stringify([...completedPuzzles]))
+          }
+
+          // Show completion echo if no other pending
+          if (!consequenceEcho) {
+            consequenceEcho = {
+              text: `Synthesis complete: "${puzzle.title}" - ${puzzle.solution}`,
+              emotion: 'revelation',
+              timing: 'immediate'
+            }
+          }
+
+          logger.info('[StatefulGameInterface] D-083 Synthesis puzzle completed:', {
+            puzzleId: puzzle.id,
+            title: puzzle.title,
+            unlockFlag: puzzle.reward.unlockFlag
+          })
+        }
+        // Puzzle partially complete (50%+) - show hint
+        else if (progress >= 0.5 && !hintsShown.has(puzzle.id)) {
+          hintsShown.add(puzzle.id)
+          if (typeof window !== 'undefined') {
+            localStorage.setItem(hintShownKey, JSON.stringify([...hintsShown]))
+          }
+
+          if (!consequenceEcho) {
+            consequenceEcho = {
+              text: `Something is connecting... "${puzzle.title}" - ${puzzle.hint}`,
+              emotion: 'curious',
+              timing: 'immediate'
+            }
+          }
+
+          logger.info('[StatefulGameInterface] D-083 Synthesis puzzle hint shown:', {
+            puzzleId: puzzle.id,
+            progress: Math.round(progress * 100) + '%'
+          })
+        }
+      }
+
+      // D-057: Info Trade Availability Check
+      // Track completed trades to avoid re-notification
+      const completedTradesKey = 'lux_completed_info_trades'
+      const completedTradesRaw = typeof window !== 'undefined' ? localStorage.getItem(completedTradesKey) : null
+      const completedTrades = new Set<string>(completedTradesRaw ? JSON.parse(completedTradesRaw) : [])
+
+      // Track trades we've already notified about this session
+      const notifiedTradesKey = 'lux_notified_info_trades'
+      const notifiedTradesRaw = typeof window !== 'undefined' ? localStorage.getItem(notifiedTradesKey) : null
+      const notifiedTrades = new Set<string>(notifiedTradesRaw ? JSON.parse(notifiedTradesRaw) : [])
+
+      // Check for newly available trades with this character
+      const availableTrades = getAvailableInfoTrades(
+        targetCharacterId,
+        targetCharacter.trust,
+        ALL_INFO_TRADES,
+        completedTrades
+      )
+
+      // Find trades we haven't notified about yet
+      const newTradeAvailable = availableTrades.find(trade => !notifiedTrades.has(trade.id))
+
+      if (newTradeAvailable && !consequenceEcho) {
+        notifiedTrades.add(newTradeAvailable.id)
+        if (typeof window !== 'undefined') {
+          localStorage.setItem(notifiedTradesKey, JSON.stringify([...notifiedTrades]))
+        }
+
+        consequenceEcho = {
+          text: `${targetCharacter.characterId} seems willing to share something: "${newTradeAvailable.description}" ${newTradeAvailable.trustCost > 0 ? `(Trust cost: ${newTradeAvailable.trustCost})` : ''}`,
+          emotion: 'intrigued',
+          timing: 'immediate'
+        }
+
+        logger.info('[StatefulGameInterface] D-057 Info trade available:', {
+          characterId: targetCharacterId,
+          tradeId: newTradeAvailable.id,
+          tier: newTradeAvailable.tier
+        })
+      }
+
+      // D-056: Knowledge Item Discovery Tracking
+      // Track discovered knowledge items to avoid re-notification
+      const discoveredKnowledgeKey = 'lux_discovered_knowledge_items'
+      const discoveredKnowledgeRaw = typeof window !== 'undefined' ? localStorage.getItem(discoveredKnowledgeKey) : null
+      const discoveredKnowledge = new Set<string>(discoveredKnowledgeRaw ? JSON.parse(discoveredKnowledgeRaw) : [])
+
+      // Check if any new knowledge items were gained via flags
+      const prevGlobalFlags = state.gameState?.globalFlags || new Set<string>()
+      const newFlags = Array.from(newGameState.globalFlags).filter(flag => !prevGlobalFlags.has(flag))
+
+      // Also check character knowledge flags
+      const prevCharacterFlags = state.gameState?.characters.get(targetCharacterId)?.knowledgeFlags || new Set<string>()
+      const newCharacterFlags = Array.from(targetCharacter.knowledgeFlags).filter(flag => !prevCharacterFlags.has(flag))
+
+      const allNewFlags = [...newFlags, ...newCharacterFlags]
+
+      // Find knowledge items that match newly gained flags
+      for (const flag of allNewFlags) {
+        const matchingItem = KNOWLEDGE_ITEMS.find(item => item.id === flag)
+        if (matchingItem && !discoveredKnowledge.has(matchingItem.id)) {
+          discoveredKnowledge.add(matchingItem.id)
+          if (typeof window !== 'undefined') {
+            localStorage.setItem(discoveredKnowledgeKey, JSON.stringify([...discoveredKnowledge]))
+          }
+
+          // Show discovery echo if no other pending
+          if (!consequenceEcho) {
+            const tierEmoji = matchingItem.tier === 'truth' ? '✦' :
+              matchingItem.tier === 'secret' ? '⚡' :
+                matchingItem.tier === 'insight' ? '💡' : '💬'
+            consequenceEcho = {
+              text: `${tierEmoji} Knowledge gained: "${matchingItem.topic}" - ${matchingItem.content}`,
+              emotion: 'curious',
+              timing: 'immediate'
+            }
+          }
+
+          logger.info('[StatefulGameInterface] D-056 Knowledge item discovered:', {
+            itemId: matchingItem.id,
+            topic: matchingItem.topic,
+            tier: matchingItem.tier,
+            source: matchingItem.sourceCharacterId
+          })
+
+          // Check if this unlocks trades with other characters
+          if (matchingItem.unlocksTradesWith.length > 0) {
+            logger.info('[StatefulGameInterface] D-056 New trades unlocked with:', {
+              characters: matchingItem.unlocksTradesWith
+            })
+          }
+        }
+      }
 
       // Check for cross-character echoes (characters referencing other relationships)
       // Echoes are delivered when entering a character's dialogue after another arc completes

@@ -9,6 +9,7 @@ import { ArchivistState } from './lore-system'
 import { type TrustMomentum, createTrustMomentum, updateTrustMomentum, applyMomentumToTrustChange, type TrustTimeline, createTrustTimeline } from './trust-derivatives'
 import { type IcebergState, createIcebergState } from './knowledge-derivatives'
 import { type PatternEvolutionHistory, createPatternEvolutionHistory } from './pattern-derivatives'
+import { type StoryArcState, createStoryArcState } from './story-arcs'
 
 /**
  * Core character relationship state
@@ -128,6 +129,9 @@ export interface GameState {
 
   // D-040: Pattern Evolution Heatmap - tracks when/where patterns grew
   patternEvolutionHistory?: PatternEvolutionHistory
+
+  // D-061: Story Arcs - multi-session narrative threads
+  storyArcState?: StoryArcState
 }
 
 /**
@@ -271,6 +275,13 @@ export interface SerializableGameState {
   }
   // D-040: Serializable pattern evolution history
   patternEvolutionHistory?: PatternEvolutionHistory
+  // D-061: Serializable story arc state
+  storyArcState?: {
+    activeArcs: string[]
+    completedArcs: string[]
+    chapterProgress: Array<[string, number]>
+    completedChapters: string[]
+  }
 }
 
 
@@ -727,7 +738,14 @@ export class GameStateUtils {
         investigatedTopics: Array.from(state.icebergState.investigatedTopics)
       } : undefined,
       // D-040: Serialize pattern evolution history
-      patternEvolutionHistory: state.patternEvolutionHistory
+      patternEvolutionHistory: state.patternEvolutionHistory,
+      // D-061: Serialize story arc state
+      storyArcState: state.storyArcState ? {
+        activeArcs: Array.from(state.storyArcState.activeArcs),
+        completedArcs: Array.from(state.storyArcState.completedArcs),
+        chapterProgress: Array.from(state.storyArcState.chapterProgress.entries()),
+        completedChapters: Array.from(state.storyArcState.completedChapters)
+      } : undefined
     }
   }
 
@@ -825,7 +843,14 @@ export class GameStateUtils {
         investigatedTopics: new Set(serialized.icebergState.investigatedTopics)
       } : createIcebergState(),
       // D-040: Deserialize pattern evolution history or create fresh
-      patternEvolutionHistory: serialized.patternEvolutionHistory || createPatternEvolutionHistory()
+      patternEvolutionHistory: serialized.patternEvolutionHistory || createPatternEvolutionHistory(),
+      // D-061: Deserialize story arc state or create fresh
+      storyArcState: serialized.storyArcState ? {
+        activeArcs: new Set(serialized.storyArcState.activeArcs),
+        completedArcs: new Set(serialized.storyArcState.completedArcs),
+        chapterProgress: new Map(serialized.storyArcState.chapterProgress),
+        completedChapters: new Set(serialized.storyArcState.completedChapters)
+      } : createStoryArcState()
     }
   }
 }

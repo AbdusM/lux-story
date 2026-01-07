@@ -21,7 +21,7 @@ const SERVER_URL = 'http://localhost:3005';
 
 // Skip these tests when running in vitest context (npm test)
 // They require a running dev server and should be run separately with playwright
-const isPlaywrightRun = typeof globalThis.__vitest__ === 'undefined';
+const isPlaywrightRun = typeof (globalThis as any).__vitest__ === 'undefined';
 
 test.describe('Game Engine Logic (Browser Runtime)', () => {
     // Skip all tests in this file unless running directly with playwright

@@ -3293,6 +3293,97 @@ Maybe that's what I needed all along.`,
       }
     ],
     tags: ['devon_arc', 'gratitude', 'connection', 'breakthrough']
+  },
+
+  // ============= ARC 4: CAREER CROSSROADS =============
+  {
+    nodeId: 'devon_probability_map',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "*Devon manipulates a holographic projection. It looks like a subway map, but 3D and constantly shifting.*\n\nJordan calls this the 'Scary Map.' It's a probability tree of her career paths.\n\nSee this branch? Staying in architecture school. Probability dropping to zero. This one? The personal training gig. Had a 40% chance of leading to physical therapy school, but she branched here instead.\n\n*He rotates the model.*\n\nPeople think choices are forks in the road. They're not. They're fluid dynamics. You don't take a path. You flow into the one of least resistance... unless you build a dam.",
+        emotion: 'focused',
+        variation_id: 'arc4_prob_map_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'prob_map_agency',
+        text: "Building a dam takes effort. Most people just float.",
+        nextNodeId: 'devon_crossroads', // This connects to the node referenced by gratitude
+        pattern: 'building',
+        skills: ['systemsThinking'],
+        consequence: {
+          addGlobalFlags: ['devon_explained_probability']
+        }
+      },
+      {
+        choiceId: 'prob_map_beauty',
+        text: "It's beautiful. Like a river system.",
+        nextNodeId: 'devon_crossroads',
+        pattern: 'exploring',
+        skills: ['creativity']
+      }
+    ],
+    tags: ['arc_career_crossroads']
+  },
+
+  {
+    nodeId: 'devon_crossroads',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "*He shuts down the hologram.*\n\nThe probability model for my career is robust. It's safe.\n\nBut the probability model for my happiness? It's throwing errors.\n\nI can stay here, build something real, and risk it failing. Or I can go to Silicon Valley, make millions, and always wonder what I left behind.\n\nDebug that for me.",
+        emotion: 'conflicted',
+        variation_id: 'arc4_crossroads_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'crossroads_stay',
+        text: "The hardest bugs are the ones you can't reproduce. If you leave, you can never reproduce what you have here.",
+        nextNodeId: 'devon_introduction', // Leads to acceptance
+        pattern: 'building',
+        skills: ['wisdom'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 3,
+          addGlobalFlags: ['devon_chose_stay']
+        }
+      },
+      {
+        choiceId: 'crossroads_go',
+        text: "Sometimes you have to leave the system to understand it.",
+        nextNodeId: 'devon_introduction',
+        pattern: 'exploring',
+        skills: ['systemsThinking']
+      }
+    ],
+    tags: ['arc_career_crossroads', 'turning_point']
+  },
+
+  {
+    nodeId: 'devon_birmingham_reward',
+    speaker: 'Devon Kumar',
+    content: [{
+      text: "*Devon looks at the blueprint, then out at the city.*\n\nYou're right. Birmingham isn't just a location. It's a forge. This station... it's powered by that energy. The urge to make something new from what's broken.",
+      emotion: 'inspired',
+      variation_id: 'puzzle_bham_v1'
+    }],
+    choices: [{ choiceId: 'bham_ack', text: "It's a good place to build.", nextNodeId: 'devon_introduction' }],
+    tags: ['puzzle_reward', 'legendary_info']
+  },
+
+  {
+    nodeId: 'devon_patterns_reward',
+    speaker: 'Devon Kumar',
+    content: [{
+      text: "The Healer, The Builder, The Navigator... *He runs the simulation.*\n\nYou found the source code. We're not just people. We're functions. As long as the city has these needs, the station summons us to fill them.",
+      emotion: 'analytical_awe',
+      variation_id: 'puzzle_patterns_v1'
+    }],
+    choices: [{ choiceId: 'patterns_ack', text: "We all play our part.", nextNodeId: 'devon_introduction' }],
+    tags: ['puzzle_reward', 'legendary_info']
   }
 ]
 
