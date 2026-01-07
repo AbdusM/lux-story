@@ -85,7 +85,7 @@ import { getConsequenceEcho, checkPatternThreshold as checkPatternEchoThreshold,
 import { calculateResonantTrustChange } from '@/lib/pattern-affinity'
 import { getEchoIntensity, ECHO_INTENSITY_MODIFIERS, analyzeTrustAsymmetry, getAsymmetryComment, type AsymmetryReaction } from '@/lib/trust-derivatives'
 import { calculateCharacterTrustDecay, getPatternRecognitionComments, type PatternRecognitionComment } from '@/lib/pattern-derivatives'
-import { getNewlyAvailableCombinations, type KnowledgeCombination } from '@/lib/knowledge-derivatives'
+import { getNewlyAvailableCombinations, type KnowledgeCombination, recordIcebergMention, getInvestigableTopics, type IcebergReference } from '@/lib/knowledge-derivatives'
 import { getActiveTextEffects, getTextEffectClasses, getTextEffectStyles } from '@/lib/narrative-derivatives'
 import {
   INTERRUPT_PATTERN_ALIGNMENT,
@@ -1302,6 +1302,55 @@ export default function StatefulGameInterface() {
             comboName: combo.name,
             unlocksNode: combo.unlocksNodeId
           })
+        }
+      }
+
+      // D-019: Check for iceberg references in dialogue node tags
+      // Tags prefixed with "iceberg:" indicate casual mentions of mystery topics
+      if (nextNode.tags && newGameState.icebergState) {
+        const icebergTags = nextNode.tags.filter(tag => tag.startsWith('iceberg:'))
+
+        if (icebergTags.length > 0) {
+          // Record previous investigable topics for comparison
+          const prevInvestigable = getInvestigableTopics(newGameState.icebergState)
+          const prevInvestigableIds = new Set(prevInvestigable.map(t => t.id))
+
+          // Record each iceberg mention
+          for (const tag of icebergTags) {
+            const topicId = tag.replace('iceberg:', '')
+            // Use first content variation's text as mention context (or node ID as fallback)
+            const mentionText = nextNode.content[0]?.text?.substring(0, 100) || nextNode.nodeId
+            newGameState = {
+              ...newGameState,
+              icebergState: recordIcebergMention(
+                newGameState.icebergState!,
+                topicId,
+                targetCharacterId,
+                nextNode.nodeId,
+                mentionText
+              )
+            }
+          }
+
+          // Check if any new topics became investigable
+          if (!consequenceEcho) {
+            const nowInvestigable = getInvestigableTopics(newGameState.icebergState!)
+            const newlyInvestigable = nowInvestigable.filter(t => !prevInvestigableIds.has(t.id))
+
+            if (newlyInvestigable.length > 0) {
+              const topic = newlyInvestigable[0]
+              consequenceEcho = {
+                text: `Something clicks... "${topic.topic}" - you've heard this mentioned enough times now. Perhaps there's more to investigate.`,
+                emotion: 'intrigued',
+                timing: 'immediate'
+              }
+              logger.info('[StatefulGameInterface] D-019 Iceberg topic now investigable:', {
+                topicId: topic.id,
+                topic: topic.topic,
+                investigationNodeId: topic.investigationNodeId
+              })
+            }
+          }
         }
       }
 
