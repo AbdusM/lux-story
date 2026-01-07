@@ -8,6 +8,7 @@
     "dev": "PORT=3005 next dev",
     "prebuild": "node scripts/validate-build-config.cjs",
     "build": "next build",
+    "build:analyze": "ANALYZE=true next build",
     "start": "next start",
     "lint": "next lint",
     "test": "vitest",
@@ -96,6 +97,7 @@
     "zustand": "^5.0.8"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^16.1.1",
     "@next/eslint-plugin-next": "^15.5.3",
     "@playwright/test": "^1.56.1",
     "@testing-library/jest-dom": "^6.9.1",

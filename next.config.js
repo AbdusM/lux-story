@@ -1,8 +1,15 @@
 import path from 'path'
 import { fileURLToPath } from 'url'
+import bundleAnalyzer from '@next/bundle-analyzer'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
+
+// Bundle analyzer - run with ANALYZE=true npm run build
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true',
+  openAnalyzer: true
+})
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -124,4 +131,6 @@ const nextConfig = {
 // Sentry configuration (only in production or when enabled)
 // Note: Sentry wrapper is applied via instrumentation.ts and sentry config files
 // This allows conditional Sentry setup without breaking the build if Sentry is not installed
-export default nextConfig
+
+// Wrap with bundle analyzer
+export default withBundleAnalyzer(nextConfig)
