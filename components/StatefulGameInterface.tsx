@@ -87,7 +87,18 @@ import { getEchoIntensity, ECHO_INTENSITY_MODIFIERS, analyzeTrustAsymmetry, getA
 import { calculateCharacterTrustDecay, getPatternRecognitionComments, type PatternRecognitionComment } from '@/lib/pattern-derivatives'
 import { getNewlyAvailableCombinations, type KnowledgeCombination } from '@/lib/knowledge-derivatives'
 import { getActiveTextEffects, getTextEffectClasses, getTextEffectStyles } from '@/lib/narrative-derivatives'
-import { INTERRUPT_PATTERN_ALIGNMENT } from '@/lib/interrupt-derivatives'
+import {
+  INTERRUPT_PATTERN_ALIGNMENT,
+  INTERRUPT_COMBO_CHAINS,
+  startComboChain,
+  advanceComboChain,
+  isComboChainComplete,
+  getComboChainReward,
+  isComboChainExpired,
+  getAvailableComboChains,
+  type ActiveComboState,
+  type InterruptComboChain
+} from '@/lib/interrupt-derivatives'
 import { checkTransformationEligible, type TransformationMoment } from '@/lib/character-transformations'
 import { loadEchoQueue, saveEchoQueue, queueEchosForFlag, getAndUpdateEchosForCharacter, type CrossCharacterEchoQueueState } from '@/lib/cross-character-memory'
 import { CheckInQueue } from '@/lib/character-check-ins'
@@ -162,6 +173,7 @@ interface GameInterfaceState {
   activeInterrupt: InterruptWindow | null  // ME2-style interrupt window during dialogue
   patternVoice: PatternVoiceResult | null  // Disco Elysium-style inner monologue
   voiceConflict: VoiceConflictResult | null  // D-096: Voice conflict when patterns disagree
+  activeComboChain: ActiveComboState | null  // D-084: Active interrupt combo chain
   // Engagement Loop State
   waitingCharacters: CharacterWaitingState[]  // Characters "waiting" for returning player
   pendingGift: DelayedGift | null  // Gift ready to deliver
@@ -278,6 +290,7 @@ export default function StatefulGameInterface() {
     activeInterrupt: null,
     patternVoice: null,
     voiceConflict: null,
+    activeComboChain: null,
     waitingCharacters: [],
     pendingGift: null,
     isReturningPlayer: false,
@@ -716,6 +729,7 @@ export default function StatefulGameInterface() {
         activeInterrupt: shouldShowInterrupt(content.interrupt, gameState.patterns), // D-009: Filter by pattern
         patternVoice: null,
         voiceConflict: null,
+        activeComboChain: null,
         waitingCharacters,
         pendingGift: null,
         isReturningPlayer: waitingContext.isReturningPlayer
@@ -1609,6 +1623,7 @@ export default function StatefulGameInterface() {
         isProcessing: false, // ISP FIX: Unlock UI
         patternVoice,  // Disco Elysium-style inner monologue
         voiceConflict,  // D-096: Voice conflict when patterns disagree
+        activeComboChain: state.activeComboChain,  // D-084: Preserve combo chain state
         // Engagement Loop State (preserved across choice)
         waitingCharacters: state.waitingCharacters,
         pendingGift,
@@ -1748,6 +1763,82 @@ export default function StatefulGameInterface() {
       newGameState = GameStateUtils.applyStateChange(newGameState, interrupt.consequence)
     }
 
+    // D-084: Track interrupt combo chains
+    let newComboChain = state.activeComboChain
+
+    // Check if current combo is expired
+    if (newComboChain && isComboChainExpired(newComboChain)) {
+      logger.info('[StatefulGameInterface] D-084: Combo chain expired', { chainId: newComboChain.chainId })
+      newComboChain = null
+    }
+
+    // Check if this interrupt advances or starts a combo
+    if (newComboChain) {
+      // Check if interrupt type matches current step
+      const chain = INTERRUPT_COMBO_CHAINS.find(c => c.id === newComboChain!.chainId)
+      if (chain) {
+        const currentStepIndex = newComboChain.currentStep - 1
+        if (currentStepIndex < chain.steps.length) {
+          const expectedStep = chain.steps[currentStepIndex]
+          if (interrupt.type === expectedStep.interruptType) {
+            // Advance the combo!
+            newComboChain = advanceComboChain(newComboChain, expectedStep)
+            logger.info('[StatefulGameInterface] D-084: Combo chain advanced!', {
+              chainId: newComboChain.chainId,
+              step: newComboChain.currentStep,
+              successText: expectedStep.successText
+            })
+
+            // Check if combo is complete
+            if (isComboChainComplete(newComboChain)) {
+              const reward = getComboChainReward(newComboChain)
+              if (reward) {
+                logger.info('[StatefulGameInterface] D-084: Combo chain COMPLETE!', {
+                  chainId: newComboChain.chainId,
+                  reward
+                })
+                // Apply combo rewards
+                newGameState = GameStateUtils.applyStateChange(newGameState, {
+                  trustChange: reward.trustBonus,
+                  patternChanges: { [reward.patternBonus.pattern]: reward.patternBonus.amount }
+                })
+                if (reward.specialFlag) {
+                  newGameState = GameStateUtils.applyStateChange(newGameState, {
+                    addGlobalFlags: [reward.specialFlag]
+                  })
+                }
+              }
+              newComboChain = null // Reset after completion
+            }
+          } else {
+            // Wrong interrupt type - chain broken
+            logger.info('[StatefulGameInterface] D-084: Combo chain broken - wrong type', {
+              expected: expectedStep.interruptType,
+              got: interrupt.type
+            })
+            newComboChain = null
+          }
+        }
+      }
+    } else {
+      // No active combo - check if this interrupt starts one
+      const availableChains = getAvailableComboChains(newGameState.patterns)
+      const matchingChain = availableChains.find(chain =>
+        chain.steps[0].interruptType === interrupt.type
+      )
+      if (matchingChain) {
+        newComboChain = startComboChain(matchingChain.id)
+        if (newComboChain) {
+          // Advance past first step since we just completed it
+          newComboChain = advanceComboChain(newComboChain, matchingChain.steps[0])
+          logger.info('[StatefulGameInterface] D-084: Combo chain started!', {
+            chainId: matchingChain.id,
+            chainName: matchingChain.name
+          })
+        }
+      }
+    }
+
     // Navigate to the interrupt target node
     const searchResult = findCharacterForNode(interrupt.targetNodeId, newGameState)
     if (!searchResult) {
@@ -1786,12 +1877,13 @@ export default function StatefulGameInterface() {
       availableChoices: choices,
       currentContent: reflected.text,
       currentDialogueContent: { ...content, text: reflected.text, emotion: reflected.emotion },
-      activeInterrupt: shouldShowInterrupt(content.interrupt, newGameState.patterns) // D-009: Filter by pattern
+      activeInterrupt: shouldShowInterrupt(content.interrupt, newGameState.patterns), // D-009: Filter by pattern
+      activeComboChain: newComboChain  // D-084: Track combo chain state
     }))
 
     GameStateManager.saveGameState(newGameState)
     useGameStore.getState().setCoreGameState(GameStateUtils.serialize(newGameState))
-  }, [state.activeInterrupt, state.gameState])
+  }, [state.activeInterrupt, state.gameState, state.activeComboChain])
 
   /**
    * Handle interrupt timeout - player didn't act
@@ -1822,6 +1914,7 @@ export default function StatefulGameInterface() {
           const choices = [...regularMissedChoices, ...patternUnlockMissedChoices]
           const reflected = applyPatternReflection(content.text, content.emotion, content.patternReflection, state.gameState.patterns)
 
+          // D-084: Reset combo chain when interrupt is missed
           setState(prev => ({
             ...prev,
             currentNode: targetNode,
@@ -1830,7 +1923,8 @@ export default function StatefulGameInterface() {
             availableChoices: choices,
             currentContent: reflected.text,
             currentDialogueContent: { ...content, text: reflected.text, emotion: reflected.emotion },
-            activeInterrupt: state.gameState ? shouldShowInterrupt(content.interrupt, state.gameState.patterns) : null // D-009: Filter by pattern
+            activeInterrupt: state.gameState ? shouldShowInterrupt(content.interrupt, state.gameState.patterns) : null, // D-009: Filter by pattern
+            activeComboChain: null  // D-084: Reset combo on missed interrupt
           }))
           return
         }
@@ -1838,7 +1932,8 @@ export default function StatefulGameInterface() {
     }
 
     // No missedNodeId or it wasn't found - just clear the interrupt
-    setState(prev => ({ ...prev, activeInterrupt: null }))
+    // D-084: Also reset combo chain
+    setState(prev => ({ ...prev, activeInterrupt: null, activeComboChain: null }))
   }, [state.activeInterrupt, state.gameState])
 
   /**
