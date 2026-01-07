@@ -1,12 +1,12 @@
 import StatefulGameInterface from '@/components/StatefulGameInterface'
-import { ErrorBoundary } from '@/components/ErrorBoundary'
+import { GameErrorBoundary } from '@/components/LayeredErrorBoundaries'
 
 export default function Home() {
   return (
     <main className="min-h-screen" style={{ willChange: 'auto', contain: 'layout style paint' }}>
-      <ErrorBoundary>
+      <GameErrorBoundary>
         <StatefulGameInterface />
-      </ErrorBoundary>
+      </GameErrorBoundary>
     </main>
   )
 }

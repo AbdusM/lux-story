@@ -139,6 +139,7 @@ import { GameChoices } from '@/components/GameChoices'
 import { BookOpen, Stars, Compass } from 'lucide-react'
 import { Journal } from '@/components/Journal'
 import { ConstellationPanel } from '@/components/constellation'
+import { SectionErrorBoundary } from '@/components/LayeredErrorBoundaries'
 import { StationStatusBadge } from '@/components/StationStatusBadge'
 import { TextProcessor } from '@/lib/text-processor'
 import { JourneySummary } from '@/components/JourneySummary'
@@ -3377,16 +3378,20 @@ export default function StatefulGameInterface() {
         {/* Users can view arc summaries in admin dashboard or journey summary when they choose */}
 
         {/* Journal */}
-        <Journal
-          isOpen={state.showJournal}
-          onClose={() => setState(prev => ({ ...prev, showJournal: false }))}
-        />
+        <SectionErrorBoundary sectionName="Journal" compact>
+          <Journal
+            isOpen={state.showJournal}
+            onClose={() => setState(prev => ({ ...prev, showJournal: false }))}
+          />
+        </SectionErrorBoundary>
 
         {/* Constellation */}
-        <ConstellationPanel
-          isOpen={state.showConstellation}
-          onClose={() => setState(prev => ({ ...prev, showConstellation: false }))}
-        />
+        <SectionErrorBoundary sectionName="Constellation" compact>
+          <ConstellationPanel
+            isOpen={state.showConstellation}
+            onClose={() => setState(prev => ({ ...prev, showConstellation: false }))}
+          />
+        </SectionErrorBoundary>
 
         {/* Floating Module Interlude - DISABLED: broke dialogue immersion */}
 
