@@ -8,11 +8,17 @@
  *
  * Philosophy: Your patterns aren't just numbers - they're voices in your head.
  * As you become more analytical, the analytical voice gets louder.
+ *
+ * D-003: Trust-Based Voice Tone
+ * Voice intensity changes based on trust with current character.
+ * Low trust = whispered doubts. High trust = confident assertions.
  */
 
 import type { PatternType } from './patterns'
 import type { CharacterId } from './graph-registry'
 import type { GameState } from './character-state'
+import { getVoiceToneForTrust, formatVoiceWithTone, type VoiceTone } from './trust-derivatives'
+import { getActiveVoiceConflicts, type VoiceConflict } from './pattern-derivatives'
 
 /**
  * When a pattern voice should trigger
@@ -21,8 +27,9 @@ export type PatternVoiceTrigger = 'node_enter' | 'before_choices' | 'npc_emotion
 
 /**
  * How the pattern voice should be styled
+ * D-003: Extended with trust-derived tones (speak, command)
  */
-export type PatternVoiceStyle = 'whisper' | 'urge' | 'observation'
+export type PatternVoiceStyle = 'whisper' | 'speak' | 'urge' | 'command' | 'observation'
 
 /**
  * A single pattern voice entry
@@ -53,15 +60,21 @@ export interface PatternVoiceEntry {
 
 /**
  * Result of checking for pattern voice
+ * D-003: Extended with trust-derived intensity and tone
  */
 export interface PatternVoiceResult {
   pattern: PatternType
   text: string
   style: PatternVoiceStyle
+  /** D-003: Trust-derived voice tone */
+  trustTone?: VoiceTone
+  /** D-003: Voice intensity 0-1 based on trust */
+  intensity?: number
 }
 
 /**
  * Context for evaluating pattern voices
+ * D-003: Extended with trust for tone calculation
  */
 export interface PatternVoiceContext {
   /** Current trigger point */
@@ -72,6 +85,8 @@ export interface PatternVoiceContext {
   npcEmotion?: string
   /** Current node tags */
   nodeTags?: string[]
+  /** D-003: Current trust with character for tone derivation */
+  characterTrust?: number
 }
 
 // Track recently shown voices to prevent spam
@@ -142,10 +157,29 @@ export function getPatternVoice(
   recentVoices.set(voiceKey, 1)
   nodesSinceLastVoice = 0
 
+  // D-003: Calculate trust-based tone and intensity
+  const trust = context.characterTrust ?? 5 // Default to middle trust
+  const trustTone = getVoiceToneForTrust(trust)
+  const { text: formattedText, intensity } = formatVoiceWithTone(
+    selected.entry.pattern,
+    voiceText,
+    trust
+  )
+
+  // D-003: Use trust-derived tone for styling when appropriate
+  // Trust tone overrides entry style for whisper/command (extreme trust)
+  // Otherwise preserve the authored style
+  const effectiveStyle: PatternVoiceStyle =
+    trustTone === 'whisper' ? 'whisper' :
+    trustTone === 'command' ? 'command' :
+    selected.entry.style
+
   return {
     pattern: selected.entry.pattern,
-    text: voiceText,
-    style: selected.entry.style
+    text: formattedText,
+    style: effectiveStyle,
+    trustTone,
+    intensity
   }
 }
 
@@ -187,3 +221,63 @@ export function getPatternDisplayInfo(pattern: PatternType): {
   }
   return info[pattern]
 }
+
+// ═══════════════════════════════════════════════════════════════════════════
+// D-096: VOICE CONFLICTS
+// When two strong patterns disagree, show both arguments
+// ═══════════════════════════════════════════════════════════════════════════
+
+/**
+ * Result when voices conflict (D-096)
+ */
+export interface VoiceConflictResult {
+  type: 'conflict'
+  conflictId: string
+  situation: string
+  voices: {
+    pattern: PatternType
+    argument: string
+    tone: 'urging' | 'warning' | 'questioning' | 'suggesting'
+  }[]
+}
+
+// Track shown conflicts to avoid repetition
+const shownConflicts = new Set<string>()
+
+/**
+ * Check if a voice conflict should trigger (D-096)
+ * Returns a conflict when player has two competing strong patterns
+ */
+export function checkVoiceConflict(
+  gameState: GameState
+): VoiceConflictResult | null {
+  // Only check occasionally (10% chance to avoid spam)
+  if (Math.random() > 0.1) return null
+
+  const activeConflicts = getActiveVoiceConflicts(gameState.patterns, shownConflicts)
+
+  if (activeConflicts.length === 0) return null
+
+  // Pick the first active conflict
+  const conflict = activeConflicts[0]
+
+  // Mark as shown
+  shownConflicts.add(conflict.id)
+
+  return {
+    type: 'conflict',
+    conflictId: conflict.id,
+    situation: conflict.situation,
+    voices: conflict.voices
+  }
+}
+
+/**
+ * Reset voice conflict tracking (for new game)
+ */
+export function resetVoiceConflictState(): void {
+  shownConflicts.clear()
+}
+
+// Re-export VoiceConflict type for external use
+export type { VoiceConflict }

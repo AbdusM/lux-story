@@ -83,7 +83,7 @@ import { PATTERN_TYPES, type PatternType, getPatternSensation, isValidPattern } 
 import { calculatePatternGain } from '@/lib/identity-system'
 import { getConsequenceEcho, checkPatternThreshold as checkPatternEchoThreshold, getPatternRecognitionEcho, createResonanceEchoFromDescription, getVoicedChoiceText, applyPatternReflection, getOrbMilestoneEcho, getDiscoveryHint, DISCOVERY_HINTS, type ConsequenceEcho } from '@/lib/consequence-echoes'
 import { calculateResonantTrustChange } from '@/lib/pattern-affinity'
-import { getEchoIntensity, ECHO_INTENSITY_MODIFIERS } from '@/lib/trust-derivatives'
+import { getEchoIntensity, ECHO_INTENSITY_MODIFIERS, analyzeTrustAsymmetry, getAsymmetryComment, type AsymmetryReaction } from '@/lib/trust-derivatives'
 import { calculateCharacterTrustDecay, getPatternRecognitionComments, type PatternRecognitionComment } from '@/lib/pattern-derivatives'
 import { getNewlyAvailableCombinations, type KnowledgeCombination } from '@/lib/knowledge-derivatives'
 import { getActiveTextEffects, getTextEffectClasses, getTextEffectStyles } from '@/lib/narrative-derivatives'
@@ -96,7 +96,7 @@ import { ABILITIES } from '@/lib/abilities'
 import { THOUGHT_REGISTRY } from '@/content/thoughts'
 import { CROSS_CHARACTER_ECHOES, getEchosForFlag } from '@/lib/cross-character-echoes'
 import { getArcCompletionFlag } from '@/lib/arc-learning-objectives'
-import { getPatternVoice, incrementPatternVoiceNodeCounter, type PatternVoiceResult, type PatternVoiceContext } from '@/lib/pattern-voices'
+import { getPatternVoice, incrementPatternVoiceNodeCounter, checkVoiceConflict, type PatternVoiceResult, type PatternVoiceContext, type VoiceConflictResult } from '@/lib/pattern-voices'
 import { PATTERN_VOICE_LIBRARY } from '@/content/pattern-voice-library'
 import { PatternVoice } from '@/components/game/PatternVoice'
 import { useOrbs } from '@/hooks/useOrbs'
@@ -161,6 +161,7 @@ interface GameInterfaceState {
   isProcessing: boolean
   activeInterrupt: InterruptWindow | null  // ME2-style interrupt window during dialogue
   patternVoice: PatternVoiceResult | null  // Disco Elysium-style inner monologue
+  voiceConflict: VoiceConflictResult | null  // D-096: Voice conflict when patterns disagree
   // Engagement Loop State
   waitingCharacters: CharacterWaitingState[]  // Characters "waiting" for returning player
   pendingGift: DelayedGift | null  // Gift ready to deliver
@@ -276,6 +277,7 @@ export default function StatefulGameInterface() {
     isProcessing: false,
     activeInterrupt: null,
     patternVoice: null,
+    voiceConflict: null,
     waitingCharacters: [],
     pendingGift: null,
     isReturningPlayer: false,
@@ -713,6 +715,7 @@ export default function StatefulGameInterface() {
         showReport: false,
         activeInterrupt: shouldShowInterrupt(content.interrupt, gameState.patterns), // D-009: Filter by pattern
         patternVoice: null,
+        voiceConflict: null,
         waitingCharacters,
         pendingGift: null,
         isReturningPlayer: waitingContext.isReturningPlayer
@@ -1342,6 +1345,38 @@ export default function StatefulGameInterface() {
         }
       }
 
+      // D-005: Check for trust asymmetry (character notices player trusts others differently)
+      // 15% chance per interaction, only if no other echo and asymmetry is notable or major
+      if (!consequenceEcho && Math.random() < 0.15) {
+        const asymmetries = analyzeTrustAsymmetry(newGameState.characters, targetCharacterId)
+        // Get the most significant asymmetry
+        const significantAsymmetry = asymmetries.find(a => a.asymmetry.level === 'notable' || a.asymmetry.level === 'major')
+
+        if (significantAsymmetry) {
+          // Determine reaction type based on direction
+          const reaction: AsymmetryReaction = significantAsymmetry.direction === 'higher'
+            ? 'curiosity'  // Player trusts this character more
+            : 'jealousy'   // Player trusts others more
+
+          const asymmetryText = getAsymmetryComment(targetCharacterId, reaction, newGameState)
+
+          if (asymmetryText) {
+            consequenceEcho = {
+              text: asymmetryText,
+              timing: 'immediate',
+              soundCue: undefined
+            }
+            logger.info('[StatefulGameInterface] D-005: Trust asymmetry comment triggered:', {
+              characterId: targetCharacterId,
+              asymmetryWith: significantAsymmetry.characterId,
+              level: significantAsymmetry.asymmetry.level,
+              direction: significantAsymmetry.direction,
+              reaction
+            })
+          }
+        }
+      }
+
       // Check for session boundary (every 15-30 nodes, only at natural pause points)
       const boundary = checkSessionBoundary(newGameState, state.previousTotalNodes, nextNode)
       let sessionBoundaryAnnouncement: SessionAnnouncement | null = null
@@ -1519,14 +1554,19 @@ export default function StatefulGameInterface() {
 
       // Check for pattern voice (Disco Elysium-style inner monologue)
       // Voices trigger based on pattern level and context
+      // D-003: Pass character trust for voice tone modulation
       incrementPatternVoiceNodeCounter()
       const patternVoiceContext: PatternVoiceContext = {
         trigger: 'node_enter',
         characterId: targetCharacterId,
         npcEmotion: content.emotion,
-        nodeTags: nextNode.tags
+        nodeTags: nextNode.tags,
+        characterTrust: targetCharacter.trust  // D-003: Trust-based voice tone
       }
       const patternVoice = getPatternVoice(patternVoiceContext, newGameState, PATTERN_VOICE_LIBRARY)
+
+      // D-096: Check for voice conflicts (when strong patterns disagree)
+      const voiceConflict = checkVoiceConflict(newGameState)
 
       setState({
         gameState: newGameState,
@@ -1568,6 +1608,7 @@ export default function StatefulGameInterface() {
         showReport: state.showReport,
         isProcessing: false, // ISP FIX: Unlock UI
         patternVoice,  // Disco Elysium-style inner monologue
+        voiceConflict,  // D-096: Voice conflict when patterns disagree
         // Engagement Loop State (preserved across choice)
         waitingCharacters: state.waitingCharacters,
         pendingGift,
