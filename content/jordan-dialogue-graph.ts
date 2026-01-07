@@ -1846,6 +1846,76 @@ Seven jobs taught me something: the best navigators are the ones who genuinely w
       }
     ],
     tags: ['career_mention', 'invisible_depth', 'career_services']
+  },
+
+  // ============= ARC 4: CAREER CROSSROADS =============
+  {
+    nodeId: 'jordan_alternative_lives',
+    speaker: 'Jordan Packard',
+    content: [
+      {
+        text: "*Jordan looks at the probability map Devon generated. It's a branching tree of light, showing thousands of divergent paths.*\n\nLook at that. There's a version of me that stayed in the startup. A version that became a full-time trainer. A version that went back to architecture school.\n\n*Tracy the line with a finger.*\n\nI used to think those were wasted lives. Dead ends. But seeing them like this... they're just different drafts of the same story.",
+        emotion: 'awestruck',
+        variation_id: 'arc4_alternatives_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'jordan_alt_perspective',
+        text: "You didn't lose those lives. You integrated them.",
+        nextNodeId: 'jordan_crossroads',
+        pattern: 'building',
+        skills: ['systemsThinking'],
+        consequence: {
+          addGlobalFlags: ['jordan_alternatives_integrated']
+        }
+      },
+      {
+        choiceId: 'jordan_alt_choice',
+        text: "Which one looks the happiest?",
+        nextNodeId: 'jordan_crossroads',
+        pattern: 'exploring',
+        skills: ['emotionalIntelligence']
+      }
+    ],
+    tags: ['arc_career_crossroads']
+  },
+
+  {
+    nodeId: 'jordan_crossroads',
+    speaker: 'Jordan Packard',
+    content: [
+      {
+        text: "The students are waiting. All thirty of them. They want to know the 'secret' to a perfect career.\n\n*She takes a deep breath.*\n\nI can give them the polished LinkedIn version. The 'Seven Steps to Success.' It's safe. It's what they paid for.\n\nOr I can tell them the truth. That I'm still figuring it out. That the 'path' is just a series of best guesses and course corrections.\n\nWhich Jordan should walks through that door?",
+        emotion: 'conflicted',
+        variation_id: 'crossroads_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'crossroads_truth',
+        text: "Tell them the truth. They need to know it's okay to be lost.",
+        nextNodeId: 'jordan_chooses_internal',
+        pattern: 'helping',
+        skills: ['leadership', 'integrity'],
+        consequence: {
+          characterId: 'jordan',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'crossroads_safe',
+        text: "Give them the framework. They need structure before they can handle chaos.",
+        nextNodeId: 'jordan_chooses_birmingham',
+        pattern: 'building',
+        skills: ['pedagogy'],
+        consequence: {
+          characterId: 'jordan',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['arc_career_crossroads', 'turning_point']
   }
 ]
 

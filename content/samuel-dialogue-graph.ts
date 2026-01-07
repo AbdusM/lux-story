@@ -6740,7 +6740,186 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
   // ============= ORB RESONANCE DIALOGUES =============
   // Triggered when orb tiers are reached (10+, 30+, 60+, 100+ total choices)
   // Samuel acknowledges the player's journey depth
-  ...samuelOrbResonanceNodes
+  ...samuelOrbResonanceNodes,
+
+  // ============= ARC 2: PLATFORM SEVEN (The Substructure) =============
+  {
+    nodeId: 'samuel_platform_deflect',
+    speaker: 'Samuel Washington',
+    content: [{
+      text: "*He laughs, but it doesn't reach his eyes.*\n\nYou been talkin' to Rohan? That boy sees ghosts in the wiring. There ain't no Platform Seven. Skip in the numbers, that's all. Like floors in a hotel skippin' thirteen.",
+      emotion: 'defensive',
+      variation_id: 'arc2_deflect_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'samuel_platform_push',
+        text: "He showed me the power draw. It's real.",
+        nextNodeId: 'samuel_platform_warning',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'courage'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: -1
+        }
+      },
+      {
+        choiceId: 'samuel_platform_drop',
+        text: "Okay. Just asking.",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['arc_platform_seven', 'samuel_arc']
+  },
+
+  {
+    nodeId: 'samuel_platform_warning',
+    speaker: 'Samuel Washington',
+    content: [{
+      text: "Listen to me closely. Some doors stay closed for a reason. Not because what's behind 'em is evil. But because it's heavy. Heavier than you can carry right now.",
+      emotion: 'serious',
+      variation_id: 'arc2_warning_v1'
+    }],
+    choices: [{ choiceId: 'samuel_hub_return_warned', text: "I understand.", nextNodeId: 'samuel_hub_initial' }]
+  },
+
+  {
+    nodeId: 'samuel_platform_7_truth',
+    speaker: 'Samuel Washington',
+    content: [{
+      text: "You went down there. I can see it on you. *He sighs.*\n\nI suppose you earned the truth, then. It's the buffer. Where we keep the things that almost happened. The timelines that were too heavy to be real.",
+      emotion: 'resigned',
+      variation_id: 'arc2_truth_v1'
+    }],
+    choices: [{ choiceId: 'samuel_hub_return_truth', text: "Why hide it?", nextNodeId: 'samuel_hub_initial' }]
+  },
+
+  // ============= ARC 3: THE QUIET HOUR =============
+  {
+    nodeId: 'samuel_frozen_time',
+    speaker: 'Samuel Washington',
+    content: [{
+      text: "Don't move. *The station is silent. Dust motes hang suspended in the air. The clock's second hand is stuck between ticks.*\n\nThe Quiet Hour. Happens once a cycle. System reboot. Just... breathe. It'll pass.",
+      emotion: 'whisper',
+      variation_id: 'arc3_frozen_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'quiet_hour_wonder',
+        text: "It's beautiful.",
+        nextNodeId: 'samuel_quiet_hour_explanation',
+        pattern: 'exploring',
+        skills: ['observation']
+      },
+      {
+        choiceId: 'quiet_hour_fear',
+        text: "Is this a glitch?",
+        nextNodeId: 'samuel_quiet_hour_explanation',
+        pattern: 'analytical'
+      }
+    ],
+    tags: ['arc_quiet_hour', 'samuel_arc']
+  },
+
+  {
+    nodeId: 'samuel_quiet_hour_explanation',
+    speaker: 'Samuel Washington',
+    content: [{
+      text: "When you process this much potential... this many futures... the machine gets hot. Needs to cool down. For one hour, no time passes. No choices matter. We just... exist.",
+      emotion: 'philosophical',
+      variation_id: 'arc3_explain_v1'
+    }],
+    choices: [{ choiceId: 'quiet_hour_end', text: "A pause in the chaos.", nextNodeId: 'samuel_hub_initial' }]
+  },
+
+  // ============= PUZZLE REWARD: TIME LOOPS =============
+  {
+    nodeId: 'samuel_time_loop_dialogue',
+    speaker: 'Samuel Washington',
+    content: [{
+      text: "You figured out the sequence, didn't you? The loops aren't mistakes. They're rehearsals. We practice the future until we get it right.",
+      emotion: 'impressed',
+      variation_id: 'puzzle_loop_v1'
+    }],
+    choices: [{ choiceId: 'puzzle_loop_ack', text: "Practice makes perfect.", nextNodeId: 'samuel_hub_initial' }],
+    tags: ['puzzle_reward', 'legendary_info']
+  },
+
+  {
+    nodeId: 'samuel_station_origin_reward',
+    speaker: 'Samuel Washington',
+    content: [{
+      text: "You see it now. The station isn't a place. It's a wish. A collective wish for a second chance.\n\nEvery brick here was laid by someone who wanted to change their path. You're just the latest architect.",
+      emotion: 'proud',
+      variation_id: 'puzzle_origin_v1'
+    }],
+    choices: [{ choiceId: 'origin_ack', text: "I'll build something good.", nextNodeId: 'samuel_hub_initial' }],
+    tags: ['puzzle_reward', 'legendary_info']
+  },
+
+  {
+    nodeId: 'samuel_burden_reward',
+    speaker: 'Samuel Washington',
+    content: [{
+      text: "*Samuel touches the pocket watch.*\n\nSomeone has to hold the door open. If I leave... if the Anchor lifts... all these potential futures collapse into a single hard reality.\n\nNot everyone is ready for that. So I stay. I hold the moment open.",
+      emotion: 'resigned_noble',
+      variation_id: 'puzzle_burden_v1'
+    }],
+    choices: [{ choiceId: 'burden_ack', text: "Thank you for holding the door.", nextNodeId: 'samuel_hub_initial' }],
+    tags: ['puzzle_reward', 'legendary_info']
+  },
+  {
+    nodeId: 'samuel_letter_confrontation',
+    speaker: 'Samuel (The Conductor)',
+    content: [
+      {
+        variation_id: 'default',
+        text: '"Every invitation is a disruption," Samuel sighs, finally acknowledging the letter. "I sent it because the station required a variable. You are that variable."',
+        emotion: 'resigned'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'sam_admission_why',
+        text: 'Why me?',
+        nextNodeId: 'samuel_admission',
+        visibleCondition: undefined
+      },
+      {
+        choiceId: 'sam_admission_anger',
+        text: 'You manipulated my life.',
+        nextNodeId: 'samuel_admission',
+        visibleCondition: undefined
+      }
+    ]
+  },
+  {
+    nodeId: 'samuel_admission',
+    speaker: 'Samuel (The Conductor)',
+    content: [
+      {
+        variation_id: 'default',
+        text: '"We are all manipulated by gravity," Samuel says, turning to the departure board. "The question is not who pulled you here, but whether you have the strength to pull back."',
+        emotion: 'grave'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'sam_end_arc1',
+        text: 'End Conversation',
+        nextNodeId: 'samuel_hub_root',
+        consequence: {
+          addGlobalFlags: ['letter_mystery_solved'],
+          trustChange: 2
+        }
+      }
+    ]
+  }
 ]
 
 // ============= PUBLIC API: EXPORTED ENTRY POINTS =============

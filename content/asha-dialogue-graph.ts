@@ -2464,6 +2464,57 @@ So really, the mentorship has already started. The question is whether we make i
             }
         ],
         tags: ['asha_arc', 'pattern_unlock', 'helping', 'vulnerability', 'profound']
+    },
+
+    // ============= ARC 3: THE QUIET HOUR =============
+    {
+        nodeId: 'asha_stillness_observation',
+        speaker: 'Asha Patel',
+        content: [
+            {
+                text: "*Asha stands still, her hand hovering over the tablet without touching it.*\n\nI couldn't project this if I tried. The texture of the air changed.\n\n*She closes her eyes.*\n\nUsually, I have to fight the noise of the station to focus. Now? The focus is the only thing left. It's almost... frighteningly clear.",
+                emotion: 'awestruck',
+                variation_id: 'arc3_stillness_v1'
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'asha_stillness_response',
+                text: "Clarity can be overwhelming when you're used to noise.",
+                nextNodeId: 'asha_introduction',
+                pattern: 'patience',
+                skills: ['emotionalIntelligence'],
+                consequence: {
+                    addGlobalFlags: ['quiet_hour_witnessed']
+                }
+            }
+        ],
+        tags: ['arc_quiet_hour']
+    },
+
+    {
+        nodeId: 'asha_heartbeat_sync',
+        speaker: 'Asha Patel',
+        content: [
+            {
+                text: "*She presses her hand against the physical wall, not the projection.*\n\nCan you feel that? A rhythm. Deep down. Thrum-thrum... thrum-thrum.\n\nIt's not a machine. Or if it is, it's a machine that's dreaming. It matches my own pulse perfectly.",
+                emotion: 'mystical',
+                variation_id: 'arc3_heartbeat_v1'
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'asha_heartbeat_response',
+                text: "Maybe the station is alive in its own way.",
+                nextNodeId: 'asha_introduction',
+                pattern: 'exploring',
+                skills: ['systemsThinking'],
+                consequence: {
+                    addGlobalFlags: ['station_heartbeat_heard']
+                }
+            }
+        ],
+        tags: ['arc_quiet_hour']
     }
 ]
 

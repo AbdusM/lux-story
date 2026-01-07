@@ -10,7 +10,7 @@
  * All manifestation happens through dialogue nodes with visibleCondition.
  */
 
-import { PatternType, PATTERN_THRESHOLDS } from './patterns'
+import { PatternType } from './patterns'
 import { CharacterId } from './graph-registry'
 import { PlayerPatterns } from './character-state'
 

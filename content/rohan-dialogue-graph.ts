@@ -10,6 +10,9 @@
 
 import { DialogueNode, DialogueGraph } from '../lib/dialogue-graph'
 import { samuelEntryPoints } from './samuel-dialogue-graph'
+// ARC 2 IMPORTS
+import { ALL_STORY_ARCS } from './story-arcs'
+
 
 export const rohanDialogueNodes: DialogueNode[] = [
   // ============= INTRODUCTION =============
@@ -1595,7 +1598,180 @@ If you see Samuel, tell him... tell him I'm staying. Someone has to keep the lig
     tags: ['transition', 'rohan_arc']
   },
 
+
   // ============= CAREER MENTION NODES (Invisible Depth) =============
+  // ... (previous content ends here)
+
+  // ============= ARC 2: PLATFORM SEVEN (The Substructure) =============
+
+  // CHAPTER 1: WHISPERED WARNINGS
+  {
+    nodeId: 'rohan_platform_mention',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: `*He stares at the schematics, tracing a line that ends abruptly.*
+        
+Platform Seven. It's not on the public map. It's not on the maintenance map.
+        
+But look at the power draw. The station bleeds 15% of its energy into a sector that doesn't exist.
+        
+Samuel calls it "structural dampening." That's engineer-speak for "stop asking questions."`,
+        emotion: 'suspicious',
+        variation_id: 'arc2_ch1_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'ask_samuel_platform',
+        text: "I'll ask Samuel directly.",
+        nextNodeId: 'rohan_warns_samuel',
+        pattern: 'helping',
+        skills: ['communication'],
+        consequence: {
+          characterId: 'rohan',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'trace_cables',
+        text: "Can we trace the physical cables?",
+        nextNodeId: 'rohan_trace_plan',
+        pattern: 'analytical',
+        skills: ['systemsThinking']
+      },
+      {
+        choiceId: 'leave_mystery',
+        text: "Some places aren't meant to be found.",
+        nextNodeId: 'rohan_mystery_rejection',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'rohan',
+          trustChange: -1
+        }
+      }
+    ],
+    tags: ['rohan_arc', 'arc_platform_seven', 'chapter_1']
+  },
+
+  {
+    nodeId: 'rohan_warns_samuel',
+    speaker: 'Rohan',
+    content: [{
+      text: "Be careful. Samuel guards the station's myths like a dragon guards gold. If you poke the Platform Seven question, he won't get angry. He'll just... redirect you. He's very good at making you forget what you were asking.",
+      emotion: 'concerned',
+      variation_id: 'warn_samuel_v1'
+    }],
+    choices: [{ choiceId: 'continue_arc2', text: "[Note: Ask Samuel about Platform Seven]", nextNodeId: 'rohan_introduction' }] // Loop back or generic
+  },
+
+  {
+    nodeId: 'rohan_trace_plan',
+    speaker: 'Rohan',
+    content: [{
+      text: "I tried. The cables go into the concrete foundation of Pillar 4. But there's no basement there. Just solid earth. Unless... unless the platform isn't *down*. Maybe it's *in*.",
+      emotion: 'curious',
+      variation_id: 'trace_plan_v1'
+    }],
+    choices: [{ choiceId: 'continue_arc2_b', text: "I'll investigate.", nextNodeId: 'rohan_introduction' }]
+  },
+
+  {
+    nodeId: 'rohan_mystery_rejection',
+    speaker: 'Rohan',
+    content: [{
+      text: "That's exactly what they want you to think. Apathy is the best security system.",
+      emotion: 'disappointed',
+      variation_id: 'mystery_rejection_v1'
+    }],
+    choices: [{ choiceId: 'continue_arc2_c', text: "...", nextNodeId: 'rohan_introduction' }]
+  },
+
+  // CHAPTER 3: THE DESCENT
+  {
+    nodeId: 'rohan_platform_journey',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: `*Rohan stands by Pillar 4, holding a frequency scanner.*
+        
+You found the gap in Elena's archives? The missing 1920s records?
+        
+It matches. When the station \"reboots\" during the Quiet Hour, this wall vibrates at 17 hertz. It's not concrete. It's a phase shift.
+        
+We don't need a key. We just need to step through when the hum stops.`,
+        emotion: 'terrified_awe',
+        variation_id: 'arc2_ch3_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'step_through',
+        text: "Let's go.",
+        nextNodeId: 'platform_seven_arrival', // Links to Generic/Deep Station Node
+        pattern: 'exploring',
+        skills: ['adaptability', 'curiosity'],
+        consequence: {
+          addGlobalFlags: ['platform_seven_visited']
+        }
+      },
+      {
+        choiceId: 'wait_for_proof',
+        text: "I need to know what's on the other side first.",
+        nextNodeId: 'rohan_hesitation',
+        pattern: 'analytical'
+      }
+    ],
+    tags: ['rohan_arc', 'arc_platform_seven', 'chapter_3']
+  },
+
+  {
+    nodeId: 'rohan_hesitation',
+    speaker: 'Rohan',
+    content: [{
+      text: "Logic won't help you here. The readings make no sense. Mass is negative. Light is... slow. You have to jump.",
+      emotion: 'urgent',
+      variation_id: 'hesitation_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'jump_now',
+        text: "[Jump]",
+        nextNodeId: 'platform_seven_arrival',
+        pattern: 'exploring'
+      }
+    ]
+  },
+
+  // PUZZLE REWARD: PLATFORM 7 TRUTH
+  {
+    nodeId: 'rohan_platform_7_truth',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: `*He sits on the floor of the hidden platform, looking at the infinite recursive tracks.*
+        
+It's a buffer.
+        
+Computer science 101. When you process too much data, you need a buffer to hold the overflow.
+        
+The station processes human potential. Decisions. Futures. When there's too much... when a war starts, or a pandemic, or a revolution... the overflow goes here.
+        
+Platform Seven is where the station keeps the timelines that were too heavy to happen.`,
+        emotion: 'epiphany',
+        variation_id: 'puzzle_truth_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'end_puzzle_dialogue',
+        text: "It's the world's recycle bin.",
+        nextNodeId: 'rohan_introduction',
+        pattern: 'analytical'
+      }
+    ],
+    tags: ['rohan_arc', 'puzzle_reward', 'legendary_info']
+  },
   {
     nodeId: 'rohan_career_reflection_architect',
     speaker: 'Rohan',
@@ -2056,6 +2232,18 @@ You're good at this. Helping people see what's already there.`,
       }
     ],
     tags: ['rohan_arc', 'academy', 'insight']
+  },
+
+  {
+    nodeId: 'rohan_platform_reward',
+    speaker: 'Rohan Patel',
+    content: [{
+      text: "*Rohan traces the schematic you drew.*\n\nYou found it. The inward track. I knew the power draw wasn't a phantom.\n\nIt's not just a platform, is it? It's a recursion loop. The station examining itself. Dangerous engineering.",
+      emotion: 'intense',
+      variation_id: 'puzzle_platform_v1'
+    }],
+    choices: [{ choiceId: 'platform_ack', text: "Dangerous but necessary.", nextNodeId: 'rohan_introduction' }],
+    tags: ['puzzle_reward', 'legendary_info']
   }
 ]
 

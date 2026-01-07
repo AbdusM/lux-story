@@ -3736,11 +3736,78 @@ Which regret is worse? I genuinely don't know.`,
         choiceId: 'what_if_both',
         text: "Maybe you don't have to choose between them. Maybe there's a third path.",
         nextNodeId: 'maya_crossroads',
-        pattern: 'exploring',
-        skills: ['creativity']
       }
     ],
     tags: ['maya_arc', 'crossroads', 'philosophy']
+  },
+
+  // ============= ARC 4: CAREER CROSSROADS =============
+  {
+    nodeId: 'maya_work_doubt',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "*Maya stops tinkering with the servo. She sits back, hands covered in grease.*\n\nMy dad asked me yesterday: 'When does the hobby end and the career start?'\n\n*She looks at the robot.*\n\nHe meant: when do I put the toys away and start studying for the MCAT.\n\nBut it made me wonder. What if this *is* the career? And I'm the only one who can't see it because I'm too busy apologizing for it?",
+        emotion: 'vulnerable_doubt',
+        variation_id: 'arc4_doubt_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'doubt_reframing',
+        text: "Hobbies don't solve problems for real people. Correcting that grip strength? That's work.",
+        nextNodeId: 'maya_introduction',
+        pattern: 'building',
+        skills: ['leadership'],
+        consequence: {
+          addGlobalFlags: ['career_doubt_sown']
+        }
+      },
+      {
+        choiceId: 'doubt_question',
+        text: "What would happen if you stopped apologizing?",
+        nextNodeId: 'maya_crossroads',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
+      }
+    ],
+    tags: ['arc_career_crossroads']
+  },
+
+  {
+    nodeId: 'maya_crossroads',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "*She picks up a soldering iron.*\n\nIf I choose robotics, I lose their approval. If I choose medicine, I lose... this.\n\n*Gestures to the workshop.*\n\nI need to know which loss I can live with. Because I can't have both.\n\nOr... can I? Is there a third option I'm not seeing?",
+        emotion: 'conflicted',
+        variation_id: 'arc4_crossroads_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'crossroads_third_way',
+        text: "Biomedical engineering. Build the tools doctors use. It honors both paths.",
+        nextNodeId: 'maya_introduction', // Leads to acceptance in later chapters
+        pattern: 'analytical',
+        skills: ['systemsThinking'],
+        consequence: {
+          addGlobalFlags: ['maya_third_path_suggested']
+        }
+      },
+      {
+        choiceId: 'crossroads_choose_yourself',
+        text: "The only approval you get to keep forever is your own.",
+        nextNodeId: 'maya_introduction',
+        pattern: 'helping',
+        skills: ['integrity'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['arc_career_crossroads', 'turning_point']
   }
 ]
 

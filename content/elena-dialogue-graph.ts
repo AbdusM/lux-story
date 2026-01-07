@@ -2390,6 +2390,71 @@ Your curiosity combined with analysis... that's exactly what they need.`,
       }
     ],
     tags: ['career_mention', 'invisible_depth', 'information_science']
+  },
+
+  // ============= ARC 2: PLATFORM SEVEN (The Missing Records) =============
+  {
+    nodeId: 'elena_missing_pages',
+    speaker: 'Elena',
+    content: [{
+      text: "*She frowns at a gap in the timeline.*\n\nIt happens every cycle. 03:00 to 04:00. The power signatures spike, but the location data... it just vanishes. Like the station forgets where that energy is going.",
+      emotion: 'confused',
+      variation_id: 'arc2_missing_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'elena_suggest_platform_seven',
+        text: "Rohan mentioned a Platform Seven. Could it be going there?",
+        nextNodeId: 'elena_discovered_gap',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'collaboration'],
+        consequence: {
+          characterId: 'elena',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'elena_archive_glitch',
+        text: "Probably just a glitch in the sensors.",
+        nextNodeId: 'elena_intro',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['arc_platform_seven', 'elena_arc']
+  },
+
+  {
+    nodeId: 'elena_discovered_gap',
+    speaker: 'Elena',
+    content: [{
+      text: "*She freezes. Her fingers fly across the interface.*\n\nPlatform Seven... there's no index for it. But look at the negative space. The cables rout around a void.\n\n*She looks up, pale.*\n\nIt's not that the records are missing. They were erased. Systematically. Someone wanted this place to stay hidden.",
+      emotion: 'scared_determined',
+      variation_id: 'arc2_gap_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'elena_gap_pursue',
+        text: "We need to find out why.",
+        nextNodeId: 'elena_intro',
+        pattern: 'building',
+        skills: ['courage'],
+        consequence: {
+          addGlobalFlags: ['platform_records_found']
+        }
+      }
+    ]
+  },
+
+  {
+    nodeId: 'elena_archives_reward',
+    speaker: 'Elena',
+    content: [{
+      text: "*Elena closes the false panel revealing the true archives.*\n\nYou weren't supposed to see this. The timelines where things went wrong.\n\nBut maybe you needed to. Knowledge is weight. If you're going to change the future, you have to know what you're changing it *from*.",
+      emotion: 'guarded_respect',
+      variation_id: 'puzzle_archives_v1'
+    }],
+    choices: [{ choiceId: 'archives_ack', text: "I can carry the weight.", nextNodeId: 'elena_intro' }],
+    tags: ['puzzle_reward', 'legendary_info']
   }
 ]
 

@@ -4026,13 +4026,111 @@ Usually it's the people who'd have to change if you did.`,
             }
         ],
         tags: ['zara_arc', 'insight', 'systems']
+    },
+    // ============= ARC 5: THE SHADOW WAR =============
+    {
+        nodeId: 'zara_signal_discovery',
+        speaker: 'Zara El-Amin',
+        content: [
+            {
+                text: "*Zara is staring at a spectrum analyzer. The lines are jagged, frantic.*\n\n\"Look at this frequency. 405 THz. That's not station telemetry. It's carrying data.\"\n\n*She taps the screen.*\n\n\"It's encrypted. But look at the packet headers. 'Archive_Null'. Someone is siphoning passenger memories before they even reach the core.\"",
+                emotion: 'alarmed',
+                variation_id: 'signal_discovery_v1'
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'signal_confirm',
+                text: "Can we trace the source?",
+                nextNodeId: 'zara_encryption_break',
+                pattern: 'analytical',
+                skills: ['systemsThinking']
+            },
+            {
+                choiceId: 'signal_moral',
+                text: "Stealing memories? That's a violation of everything the station stands for.",
+                nextNodeId: 'zara_encryption_break',
+                pattern: 'helping',
+                skills: ['integrity', 'emotionalIntelligence']
+            }
+        ],
+        tags: ['shadow_war_arc', 'start']
+    },
+    {
+        nodeId: 'zara_encryption_break',
+        speaker: 'Zara El-Amin',
+        content: [
+            {
+                text: "\"The encryption is old. Pre-Station. It's... military grade?\"\n\n*She types furiously.*\n\n\"I can't break it with brute force. It's designed to dissolve if forced. We need a key. Or... a trap.\"\n\n*She looks at you.*\n\n\"If we feed it a fake memory—something inconsistent—the system might choke on the validation logic. Reveal its IP.\"",
+                emotion: 'calculating',
+                variation_id: 'encryption_break_v1'
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'trap_construct',
+                text: "Let's build a paradox. A memory that couldn't exist.",
+                nextNodeId: 'zara_broker_trap',
+                pattern: 'building',
+                skills: ['creativity', 'criticalThinking'],
+                consequence: {
+                    characterId: 'zara',
+                    trustChange: 1
+                }
+            }
+        ]
+    },
+    {
+        nodeId: 'zara_broker_trap',
+        speaker: 'Zara El-Amin',
+        content: [
+            {
+                text: "*The trap is set. The screen pulses.*\n\n\"It's taking the bait. Processing... Processing...\"\n\n*A sudden red flash. Coordinates appear.*\n\n\"Got you. Level 9. Maintenance Sector 4. The server isn't physical. It's... biological? It's routing through the hydroponics control system?\"",
+                emotion: 'shocked',
+                variation_id: 'broker_trap_v1'
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'broker_confront',
+                text: "Shut it down.",
+                nextNodeId: 'shadow_broker_confrontation',
+                pattern: 'building',
+                skills: ['leadership']
+            }
+        ]
+    },
+    {
+        nodeId: 'shadow_broker_confrontation',
+        speaker: 'Zara El-Amin',
+        content: [
+            {
+                text: "*Zara initiates the purge sequence.*\n\n\"It's fighting back. It's... trying to delete me from the payroll system? Cute.\"\n\n*She executes the final command.*\n\n\"Done. The node is isolated. The stolen memories? They're encrypted garbage now. Nobody can read them. Not even us.\"\n\n*She leans back.*\n\n\"We didn't catch the Broker. But we burned down their shop.\"",
+                emotion: 'triumphant',
+                variation_id: 'confrontation_v1'
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'war_end',
+                text: "Good work. We'll be ready if they come back.",
+                nextNodeId: 'zara_introduction', // Loop back to hub or similar
+                pattern: 'helping',
+                consequence: {
+                    addGlobalFlags: ['shadow_broker_exposed'],
+                    trustChange: 2
+                }
+            }
+        ],
+        tags: ['shadow_war_arc', 'end']
     }
 ]
 
 export const zaraEntryPoints = {
     INTRODUCTION: 'zara_introduction',
     METHODOLOGY: 'zara_audit_methodology',
-    VULNERABILITY: 'zara_vulnerability_arc'
+    VULNERABILITY: 'zara_vulnerability_arc',
+    SHADOW_WAR: 'zara_signal_discovery'
 } as const
 
 export const zaraDialogueGraph: DialogueGraph = {

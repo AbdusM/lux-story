@@ -13,8 +13,8 @@
  */
 
 import { PatternType, PATTERN_TYPES, PATTERN_THRESHOLDS, PATTERN_METADATA, getPatternColor } from './patterns'
-import { PlayerPatterns, GameState } from './character-state'
-import { TRUST_THRESHOLDS, LOYALTY_PATTERN_THRESHOLD } from './constants'
+import { PlayerPatterns } from './character-state'
+import { } from './constants'
 
 // ═══════════════════════════════════════════════════════════════════════════
 // D-001: PATTERN-INFLUENCED TRUST DECAY RATES
@@ -789,7 +789,7 @@ export const PATTERN_ACHIEVEMENTS: PatternAchievement[] = [
     icon: '💡❤️',
     condition: (p) => {
       return p.analytical >= PATTERN_THRESHOLDS.DEVELOPING &&
-             p.helping >= PATTERN_THRESHOLDS.DEVELOPING
+        p.helping >= PATTERN_THRESHOLDS.DEVELOPING
     }
   },
   {
@@ -799,7 +799,7 @@ export const PATTERN_ACHIEVEMENTS: PatternAchievement[] = [
     icon: '🐢🔭',
     condition: (p) => {
       return p.patience >= PATTERN_THRESHOLDS.DEVELOPING &&
-             p.exploring >= PATTERN_THRESHOLDS.DEVELOPING
+        p.exploring >= PATTERN_THRESHOLDS.DEVELOPING
     }
   },
   {
@@ -809,7 +809,7 @@ export const PATTERN_ACHIEVEMENTS: PatternAchievement[] = [
     icon: '🔨⏳',
     condition: (p) => {
       return p.building >= PATTERN_THRESHOLDS.DEVELOPING &&
-             p.patience >= PATTERN_THRESHOLDS.DEVELOPING
+        p.patience >= PATTERN_THRESHOLDS.DEVELOPING
     }
   }
 ]

@@ -14,14 +14,22 @@ function createMockGraph(nodeIds: string[]): DialogueGraph {
     nodes.set(nodeId, {
       nodeId,
       speaker: 'Test Character',
-      content: [{ text: 'Test content', emotion: 'neutral' }],
+      content: [{ text: 'Test content', emotion: 'neutral', variation_id: 'test_v1' }],
       choices: []
     })
   }
   return {
     nodes,
     startNodeId: nodeIds[0] || 'start',
-    metadata: { title: 'Test Graph', version: '1.0' }
+    version: '1.0',
+    metadata: {
+      title: 'Test Graph',
+      author: 'Test',
+      createdAt: 0,
+      lastModified: 0,
+      totalNodes: nodes.size,
+      totalChoices: 0
+    }
   }
 }
 

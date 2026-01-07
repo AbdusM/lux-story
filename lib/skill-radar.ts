@@ -8,7 +8,7 @@
  * - Gap analysis between current and target
  */
 
-import { PatternType, PATTERN_METADATA, getPatternColor } from './patterns'
+import { PatternType } from './patterns'
 import { PlayerPatterns } from './character-state'
 
 // ═══════════════════════════════════════════════════════════════════════════

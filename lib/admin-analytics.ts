@@ -54,7 +54,7 @@ export interface DropOffMetrics {
     dropOffRate: number
 }
 
-const EXIT_TRACKING = new Map<string, { visits: number, exits: number }>()
+export const EXIT_TRACKING = new Map<string, { visits: number, exits: number }>()
 
 export function recordVisit(nodeId: string): void {
     const current = EXIT_TRACKING.get(nodeId) || { visits: 0, exits: 0 }

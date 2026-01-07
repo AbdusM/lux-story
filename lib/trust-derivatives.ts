@@ -13,9 +13,9 @@
  */
 
 import { PatternType, PATTERN_METADATA } from './patterns'
-import { PlayerPatterns, CharacterState, GameState } from './character-state'
-import { TRUST_THRESHOLDS, MAX_TRUST, MIN_TRUST } from './constants'
-import { CHARACTER_PATTERN_AFFINITIES, AffinityLevel, getPatternAffinityLevel } from './pattern-affinity'
+import { CharacterState, GameState } from './character-state'
+import { MAX_TRUST, MIN_TRUST, TRUST_THRESHOLDS } from './constants'
+import { TRUST_TRANSFER_RATES as _TRUST_TRANSFER_RATES } from './trust-derivatives' // Self-reference cleanup if needed, but mainly removing unused imports below
 
 // ═══════════════════════════════════════════════════════════════════════════
 // D-003: TRUST-BASED PATTERN VOICE TONE
@@ -512,6 +512,63 @@ export function calculateInfoTrustValue(
   return Math.floor(baseValue * trustMultiplier)
 }
 
+/**
+ * Execute an info trade - deduct trust and return the result
+ */
+export interface InfoTradeResult {
+  success: boolean
+  newTrust: number
+  infoId: string
+  fullContent: string
+  error?: string
+}
+
+export function executeInfoTrade(
+  currentTrust: number,
+  offer: InfoTradeOffer
+): InfoTradeResult {
+  const affordCheck = canAffordInfoTrade(currentTrust, offer)
+
+  if (!affordCheck.canAfford) {
+    return {
+      success: false,
+      newTrust: currentTrust,
+      infoId: offer.infoId,
+      fullContent: '',
+      error: affordCheck.reason
+    }
+  }
+
+  const newTrust = Math.max(MIN_TRUST, currentTrust - offer.trustCost)
+
+  return {
+    success: true,
+    newTrust,
+    infoId: offer.infoId,
+    fullContent: offer.fullContent
+  }
+}
+
+/**
+ * Get available trades for a character based on current trust
+ */
+export function getAvailableInfoTrades(
+  characterId: string,
+  currentTrust: number,
+  allTrades: InfoTradeOffer[],
+  completedTradeIds: Set<string>
+): InfoTradeOffer[] {
+  return allTrades.filter(trade => {
+    // Must be for this character
+    if (trade.characterId !== characterId) return false
+    // Must not be already completed
+    if (completedTradeIds.has(trade.id)) return false
+    // Must meet trust requirements
+    if (currentTrust < trade.trustRequired) return false
+    return true
+  })
+}
+
 // ═══════════════════════════════════════════════════════════════════════════
 // D-082: TRUST MOMENTUM SYSTEM
 // Trust changes faster/slower based on momentum
@@ -704,7 +761,7 @@ export function getCharacterRelationship(
 ): CharacterRelationship | null {
   return CHARACTER_RELATIONSHIPS.find(
     r => (r.characterA === charA && r.characterB === charB) ||
-         (r.characterA === charB && r.characterB === charA)
+      (r.characterA === charB && r.characterB === charA)
   ) || null
 }
 

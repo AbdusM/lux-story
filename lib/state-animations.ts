@@ -11,7 +11,7 @@
 
 import { PatternType, PATTERN_THRESHOLDS } from './patterns'
 import { PlayerPatterns } from './character-state'
-import { springs } from './animations'
+
 
 // ═══════════════════════════════════════════════════════════════════════════
 // TYPES
@@ -357,7 +357,7 @@ export function getMoodStaggerDelay(mood: AnimationMood): number {
 /**
  * Generate stagger container variants for a mood
  */
-export function getStaggerContainer(mood: AnimationMood, itemCount: number) {
+export function getStaggerContainer(mood: AnimationMood, _itemCount: number) {
   const staggerDelay = getMoodStaggerDelay(mood)
 
   return {
