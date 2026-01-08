@@ -44,6 +44,11 @@ export type LoyaltyExperienceType =
   | 'the_mural'          // Asha - Permanent Art Creation
   | 'the_memory_song'    // Lira - Composing for Memory
   | 'the_audit'          // Zara - Algorithmic Bias Exposure
+  // LinkedIn 2026 Career Expansion
+  | 'the_portfolio'      // Quinn - Personal Investment Philosophy
+  | 'the_real_pitch'     // Dante - Authentic Sales Coaching
+  | 'the_whiteboard'     // Nadia - AI Ethics Problem Solving
+  | 'the_site_visit'     // Isaiah - On-the-Ground Impact
 
 /**
  * Status of a loyalty experience
@@ -2612,6 +2617,494 @@ Zara saves her documentation. Someday, someone will need it.
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
+// LINKEDIN 2026 CAREER EXPANSION - LOYALTY EXPERIENCES
+// ═══════════════════════════════════════════════════════════════════════════
+
+export const QUINN_THE_PORTFOLIO: LoyaltyExperience = {
+  id: 'the_portfolio',
+  title: 'The Portfolio Review',
+  characterId: 'quinn',
+  description: 'Quinn invites you to review his personal investment philosophy—the real one, not the public version.',
+  skills: ['Financial Literacy', 'Values Assessment', 'Long-term Thinking'],
+  requirements: {
+    trustMin: LOYALTY_TRUST_THRESHOLD,
+    patternRequirement: { pattern: 'analytical', minLevel: LOYALTY_PATTERN_THRESHOLD },
+    requiredFlags: ['quinn_arc_complete']
+  },
+  introduction: `Quinn's office after hours. No clients. Just two chairs and a worn leather portfolio.
+
+"I want to show you something I don't share. My real investment philosophy. The one that came after the 400 jobs."
+
+He opens the portfolio. Not spreadsheets. Letters. From people whose lives his algorithms affected.`,
+  phases: [
+    {
+      phaseId: 'the_letters',
+      situation: 'Quinn spreads the letters across the table. "Every decision I make, I ask: would I write to these people about it?"',
+      choices: [
+        {
+          choiceId: 'ask_about_change',
+          text: '"When did you start keeping these? What changed you?"',
+          pattern: 'exploring',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Quinn pauses. "The day I met one of them. At a coffee shop. She didn\'t know I was the one."',
+            trustChange: 1
+          },
+          nextPhaseId: 'the_philosophy'
+        },
+        {
+          choiceId: 'recognize_accountability',
+          text: '"This is accountability. Real accountability, not quarterly reports."',
+          pattern: 'analytical',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Quinn nods slowly. "You understand. That\'s rare."',
+            patternChanges: { analytical: 1 }
+          },
+          nextPhaseId: 'the_philosophy'
+        }
+      ]
+    },
+    {
+      phaseId: 'the_philosophy',
+      situation: '"Money is a tool," Quinn says. "The question is: what are you building? Who benefits? At what cost?"',
+      choices: [
+        {
+          choiceId: 'values_first',
+          text: '"So you evaluate investments by values first, returns second?"',
+          pattern: 'analytical',
+          outcome: {
+            isSuccess: true,
+            feedback: '"Not second. Together. Returns that harm are debts, not profits."',
+            trustChange: 1
+          },
+          nextPhaseId: 'the_invitation'
+        },
+        {
+          choiceId: 'long_term',
+          text: '"You\'re playing a longer game than most. Generational thinking."',
+          pattern: 'patience',
+          outcome: {
+            isSuccess: true,
+            feedback: '"Exactly. What good is wealth you can\'t face in the mirror?"',
+            patternChanges: { patience: 1 }
+          },
+          nextPhaseId: 'the_invitation'
+        }
+      ]
+    },
+    {
+      phaseId: 'the_invitation',
+      situation: 'Quinn closes the portfolio. "I want you to help me with something. A decision I can\'t make alone."',
+      choices: [
+        {
+          choiceId: 'accept_trust',
+          text: '"I\'m honored you\'d ask. What do you need?"',
+          pattern: 'helping',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Quinn smiles—rare and genuine. "A second perspective. On everything."',
+            trustChange: 2
+          },
+          nextPhaseId: undefined
+        },
+        {
+          choiceId: 'ask_why_me',
+          text: '"Why me? You have advisors, partners, experts."',
+          pattern: 'exploring',
+          outcome: {
+            isSuccess: true,
+            feedback: '"Because you asked the right questions. Not about returns. About impact."',
+            trustChange: 2
+          },
+          nextPhaseId: undefined
+        }
+      ]
+    }
+  ],
+  successEnding: {
+    text: `Quinn puts the portfolio away. Not locked. Just... resting.
+
+"You know what the best investment I ever made was? Trust. In people who see beyond the numbers."
+
+He hands you a key. To the office. "Come back anytime. The real work happens after hours."`,
+    trustBonus: 3,
+    unlockedFlag: 'quinn_loyalty_complete'
+  },
+  failureEnding: {
+    text: `Quinn closes the portfolio. "Maybe another time. When you're ready."
+
+He's not angry. Just patient. He's learned to wait.`,
+    canRetry: true
+  }
+}
+
+export const DANTE_THE_REAL_PITCH: LoyaltyExperience = {
+  id: 'the_real_pitch',
+  title: 'The Real Pitch',
+  characterId: 'dante',
+  description: 'Dante asks you to watch him pitch—and call out anything that feels off.',
+  skills: ['Authentic Communication', 'Feedback', 'Trust Building'],
+  requirements: {
+    trustMin: LOYALTY_TRUST_THRESHOLD,
+    patternRequirement: { pattern: 'helping', minLevel: LOYALTY_PATTERN_THRESHOLD },
+    requiredFlags: ['dante_arc_complete']
+  },
+  introduction: `Empty conference room. Dante pacing.
+
+"I have a pitch tomorrow. Biggest client of my career. And I need you to do something uncomfortable."
+
+He stops. Looks at you directly.
+
+"I need you to tell me when I'm being fake. When I slip into 'sales mode.' I can't always tell anymore."`,
+  phases: [
+    {
+      phaseId: 'the_practice',
+      situation: 'Dante begins his pitch. Smooth. Professional. Then—a subtle shift. His smile becomes a mask.',
+      choices: [
+        {
+          choiceId: 'call_it_out',
+          text: '"Stop. Right there. That smile. It\'s not you."',
+          pattern: 'helping',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Dante freezes. Then exhales. "You saw it. Good. I needed to know someone would."',
+            trustChange: 1
+          },
+          nextPhaseId: 'the_adjustment'
+        },
+        {
+          choiceId: 'ask_feeling',
+          text: '"What were you feeling just then? Before the smile?"',
+          pattern: 'exploring',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Dante pauses. "Nervous. Afraid they won\'t like the real me."',
+            patternChanges: { exploring: 1 }
+          },
+          nextPhaseId: 'the_adjustment'
+        }
+      ]
+    },
+    {
+      phaseId: 'the_adjustment',
+      situation: '"The real me sold used cars to single moms," Dante says quietly. "One of them couldn\'t pay. I didn\'t care. That\'s not who I want to be."',
+      choices: [
+        {
+          choiceId: 'affirm_growth',
+          text: '"That\'s not who you are now. The fact that it haunts you proves that."',
+          pattern: 'helping',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Dante\'s shoulders relax. "Thank you. I needed to hear that."',
+            trustChange: 1
+          },
+          nextPhaseId: 'the_breakthrough'
+        },
+        {
+          choiceId: 'use_it',
+          text: '"What if that\'s the source of your authenticity? Knowing what you won\'t do?"',
+          pattern: 'building',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Dante\'s eyes widen. "Turn the wound into wisdom... yeah."',
+            patternChanges: { building: 1 }
+          },
+          nextPhaseId: 'the_breakthrough'
+        }
+      ]
+    },
+    {
+      phaseId: 'the_breakthrough',
+      situation: 'Dante runs the pitch again. This time, when he gets nervous, he says so. The pitch becomes a conversation.',
+      choices: [
+        {
+          choiceId: 'honest_feedback',
+          text: '"That was real. I\'d buy from that person."',
+          pattern: 'helping',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Dante laughs—genuine this time. "The irony. Being real is the best sales technique."',
+            trustChange: 2
+          },
+          nextPhaseId: undefined
+        },
+        {
+          choiceId: 'next_steps',
+          text: '"Now you know what it feels like. You can find your way back."',
+          pattern: 'patience',
+          outcome: {
+            isSuccess: true,
+            feedback: '"Like a compass. I just needed to remember where north was."',
+            trustChange: 2
+          },
+          nextPhaseId: undefined
+        }
+      ]
+    }
+  ],
+  successEnding: {
+    text: `The next day, Dante sends a text: "Got the deal. But more importantly—I liked myself while doing it."
+
+A week later, he asks if you'll be his accountability partner. Permanently.
+
+"Some people help you close deals. You help me stay open."`,
+    trustBonus: 3,
+    unlockedFlag: 'dante_loyalty_complete'
+  },
+  failureEnding: {
+    text: `Dante nods slowly. "Not ready yet. That's okay. I'll keep practicing."
+
+He goes back to pacing. Still searching for authentic.`,
+    canRetry: true
+  }
+}
+
+export const NADIA_THE_WHITEBOARD: LoyaltyExperience = {
+  id: 'the_whiteboard',
+  title: 'The Whiteboard Session',
+  characterId: 'nadia',
+  description: 'Nadia invites you to help her work through a thorny AI ethics problem.',
+  skills: ['Systems Thinking', 'Ethical Reasoning', 'Collaborative Problem Solving'],
+  requirements: {
+    trustMin: LOYALTY_TRUST_THRESHOLD,
+    patternRequirement: { pattern: 'analytical', minLevel: LOYALTY_PATTERN_THRESHOLD },
+    requiredFlags: ['nadia_arc_complete']
+  },
+  introduction: `Nadia's office. Whiteboard covered in diagrams, arrows, question marks.
+
+"I've been stuck on this for three weeks. A hospital wants to deploy an AI for patient triage. It's 94% accurate."
+
+She taps a red circle on the board.
+
+"But that 6% error rate falls disproportionately on patients who don't speak English well. I can't figure out how to advise them."`,
+  phases: [
+    {
+      phaseId: 'the_problem',
+      situation: 'The board shows the tradeoff: deploy now (save lives, but harm some), or wait (harm everyone equally by delay).',
+      choices: [
+        {
+          choiceId: 'question_framing',
+          text: '"Is this really a binary choice? What if we map all stakeholders first?"',
+          pattern: 'analytical',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Nadia pauses. "I\'ve been so focused on the algorithm, I forgot about the system around it."',
+            trustChange: 1
+          },
+          nextPhaseId: 'the_mapping'
+        },
+        {
+          choiceId: 'name_the_tension',
+          text: '"You\'re carrying the weight of people you\'ll never meet. That\'s heavy."',
+          pattern: 'helping',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Nadia sets down her marker. "Sometimes I forget I\'m allowed to feel this."',
+            patternChanges: { helping: 1 }
+          },
+          nextPhaseId: 'the_mapping'
+        }
+      ]
+    },
+    {
+      phaseId: 'the_mapping',
+      situation: 'Together, you map stakeholders: patients, families, nurses, doctors, hospital admin, the AI vendor, regulators.',
+      choices: [
+        {
+          choiceId: 'find_the_gap',
+          text: '"Who\'s missing from this map? Who speaks for the 6%?"',
+          pattern: 'exploring',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Nadia circles empty space. "Community health workers. Translators. The bridge."',
+            trustChange: 1
+          },
+          nextPhaseId: 'the_solution'
+        },
+        {
+          choiceId: 'system_view',
+          text: '"The AI is a tool. The system around it determines outcomes."',
+          pattern: 'analytical',
+          outcome: {
+            isSuccess: true,
+            feedback: '"So we don\'t fix the AI. We fix the deployment context."',
+            patternChanges: { analytical: 1 }
+          },
+          nextPhaseId: 'the_solution'
+        }
+      ]
+    },
+    {
+      phaseId: 'the_solution',
+      situation: 'The new diagram: AI as second opinion, never sole decision-maker for flagged patients. Human review for all edge cases.',
+      choices: [
+        {
+          choiceId: 'validate_approach',
+          text: '"This isn\'t slower—it\'s smarter. Technology amplifies human judgment."',
+          pattern: 'building',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Nadia steps back from the board. "We built something. Thank you."',
+            trustChange: 2
+          },
+          nextPhaseId: undefined
+        },
+        {
+          choiceId: 'note_the_shift',
+          text: '"Your perspective changed the diagram. That\'s what collaboration does."',
+          pattern: 'patience',
+          outcome: {
+            isSuccess: true,
+            feedback: '"I\'ve been trying to solve this alone. That was the real error."',
+            trustChange: 2
+          },
+          nextPhaseId: undefined
+        }
+      ]
+    }
+  ],
+  successEnding: {
+    text: `Nadia erases the old diagram. Draws a new one: concentric circles with "patient dignity" at the center.
+
+"I'm going to frame this. As a reminder."
+
+She looks at you. "The best AI systems have humans like you in the loop. Want to keep being in mine?"`,
+    trustBonus: 3,
+    unlockedFlag: 'nadia_loyalty_complete'
+  },
+  failureEnding: {
+    text: `Nadia stares at the board. "I need more time with this. More perspectives."
+
+She's not giving up. Just regrouping.`,
+    canRetry: true
+  }
+}
+
+export const ISAIAH_THE_SITE_VISIT: LoyaltyExperience = {
+  id: 'the_site_visit',
+  title: 'The Site Visit',
+  characterId: 'isaiah',
+  description: 'Isaiah takes you to see the actual program in action.',
+  skills: ['Presence', 'Impact Assessment', 'Authentic Connection'],
+  requirements: {
+    trustMin: LOYALTY_TRUST_THRESHOLD,
+    patternRequirement: { pattern: 'helping', minLevel: LOYALTY_PATTERN_THRESHOLD },
+    requiredFlags: ['isaiah_arc_complete']
+  },
+  introduction: `A youth center in Woodlawn. Afternoon light through dusty windows. Kids everywhere.
+
+Isaiah stands at the entrance, not going in yet.
+
+"I wanted you to see this. Not the spreadsheets. Not the grant reports. This."
+
+A teenager waves at him. Isaiah waves back, but his eyes are somewhere else.
+
+"There was a kid named Marcus. Before your time. I want to tell you about him while we're here."`,
+  phases: [
+    {
+      phaseId: 'the_memory',
+      situation: 'Isaiah points to an empty chair in the corner. "That was Marcus\'s spot. He came every day. Until he didn\'t."',
+      choices: [
+        {
+          choiceId: 'listen_fully',
+          text: '[Stay quiet. Let Isaiah tell the story at his own pace.]',
+          pattern: 'patience',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Isaiah takes a breath. "He got caught up in something. We couldn\'t reach him in time."',
+            trustChange: 1
+          },
+          nextPhaseId: 'the_weight'
+        },
+        {
+          choiceId: 'gentle_question',
+          text: '"What do you remember most about him?"',
+          pattern: 'helping',
+          outcome: {
+            isSuccess: true,
+            feedback: '"His laugh. And his questions. He asked why everything worked the way it did."',
+            patternChanges: { helping: 1 }
+          },
+          nextPhaseId: 'the_weight'
+        }
+      ]
+    },
+    {
+      phaseId: 'the_weight',
+      situation: '"I used to think if I worked harder, I could save everyone. Marcus taught me that\'s not how it works."',
+      choices: [
+        {
+          choiceId: 'acknowledge_limits',
+          text: '"You can\'t carry all of them. But you can carry what you can."',
+          pattern: 'patience',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Isaiah\'s eyes glisten. "Yeah. That\'s... that\'s the lesson I keep learning."',
+            trustChange: 1
+          },
+          nextPhaseId: 'the_present'
+        },
+        {
+          choiceId: 'honor_the_work',
+          text: '"The ones you do reach—they matter. This room is full of them."',
+          pattern: 'helping',
+          outcome: {
+            isSuccess: true,
+            feedback: 'Isaiah looks around at the kids. Some doing homework. Some laughing. Alive.',
+            trustChange: 1
+          },
+          nextPhaseId: 'the_present'
+        }
+      ]
+    },
+    {
+      phaseId: 'the_present',
+      situation: 'A girl runs up to Isaiah. "Mr. Isaiah! Can you help with my college essay?" His face transforms.',
+      choices: [
+        {
+          choiceId: 'witness_impact',
+          text: '[Watch him work. This is why he does it.]',
+          pattern: 'patience',
+          outcome: {
+            isSuccess: true,
+            feedback: 'For twenty minutes, he\'s fully present. The girl leaves smiling. Isaiah returns.',
+            trustChange: 2
+          },
+          nextPhaseId: undefined
+        },
+        {
+          choiceId: 'join_in',
+          text: '"Can I help? Two perspectives might be better than one."',
+          pattern: 'helping',
+          outcome: {
+            isSuccess: true,
+            feedback: 'The girl beams. "Two helpers!" Isaiah catches your eye. Gratitude.',
+            trustChange: 2
+          },
+          nextPhaseId: undefined
+        }
+      ]
+    }
+  ],
+  successEnding: {
+    text: `Walking out, Isaiah stops at Marcus's chair. Touches it once.
+
+"Thank you for being here. For seeing this." He pauses. "The reports don't capture it. The impact is in the moments."
+
+He hands you a volunteer badge. "Come back anytime. We could use someone who understands."`,
+    trustBonus: 3,
+    unlockedFlag: 'isaiah_loyalty_complete'
+  },
+  failureEnding: {
+    text: `Isaiah looks at the chair. "Maybe another time. When you're ready to really see."
+
+He's not judging. Just waiting for the right moment.`,
+    canRetry: true
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
 // REGISTRY
 // ═══════════════════════════════════════════════════════════════════════════
 
@@ -2636,7 +3129,12 @@ export const LOYALTY_EXPERIENCES: Record<LoyaltyExperienceType, LoyaltyExperienc
   'the_feral_lab': SILAS_THE_FERAL_LAB,
   'the_mural': ASHA_THE_MURAL,
   'the_memory_song': LIRA_THE_MEMORY_SONG,
-  'the_audit': ZARA_THE_AUDIT
+  'the_audit': ZARA_THE_AUDIT,
+  // LinkedIn 2026 Career Expansion
+  'the_portfolio': QUINN_THE_PORTFOLIO,
+  'the_real_pitch': DANTE_THE_REAL_PITCH,
+  'the_whiteboard': NADIA_THE_WHITEBOARD,
+  'the_site_visit': ISAIAH_THE_SITE_VISIT
 }
 
 /**
