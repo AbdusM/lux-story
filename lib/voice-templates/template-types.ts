@@ -12,7 +12,7 @@ import type { PlayerPatterns } from '@/lib/character-state'
 export type { PlayerPatterns }
 
 /**
- * The 16 primary character IDs for voice profiles
+ * The 20 primary character IDs for voice profiles
  * (Excludes location graphs which don't need voice profiles)
  */
 export type VoiceCharacterId =
@@ -32,6 +32,11 @@ export type VoiceCharacterId =
   | 'asha'
   | 'lira'
   | 'zara'
+  // LinkedIn 2026 Career Expansion
+  | 'quinn'
+  | 'dante'
+  | 'nadia'
+  | 'isaiah'
 
 /**
  * Template Archetypes - the 10 semantic categories of player utterances

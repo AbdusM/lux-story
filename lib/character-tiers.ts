@@ -107,6 +107,15 @@ export const CHARACTER_TIERS: Record<CharacterId, CharacterTier> = {
   zara: 4,      // Data ethics
   jordan: 4,    // Career navigation
 
+  // NEW: LinkedIn 2026 Character Expansion
+  // Quinn & Nadia: Tier 2 (Primary) - Finance & AI Strategy are key growth areas
+  quinn: 2,     // Finance/Investment - LinkedIn #12, #20, #21
+  nadia: 2,     // AI Strategy - LinkedIn #2 (fastest growing)
+
+  // Dante & Isaiah: Tier 3 (Secondary) - Sales & Nonprofit supporting paths
+  dante: 3,     // Sales/Marketing - LinkedIn #8, #10, #13, #16
+  isaiah: 3,    // Nonprofit/Fundraising - LinkedIn #14
+
   // Locations (not characters - tier 4 as fallback for type safety)
   station_entry: 4,
   grand_hall: 4,

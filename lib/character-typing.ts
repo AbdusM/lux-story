@@ -146,6 +146,78 @@ export const CHARACTER_TYPING: Record<string, CharacterTypingConfig> = {
     personality: 'gentle'
   },
 
+  // Alex - Logistics energy, quick and practical
+  alex: {
+    typingDuration: 550,
+    minChunkDelay: 200,
+    msPerChar: 4,
+    maxChunkDelay: 900,
+    personality: 'practical'
+  },
+
+  // Asha - Mediator calm, measured and thoughtful
+  asha: {
+    typingDuration: 850,
+    minChunkDelay: 350,
+    msPerChar: 6,
+    maxChunkDelay: 1500,
+    personality: 'calm'
+  },
+
+  // Lira - Sound designer rhythm, flowing and musical
+  lira: {
+    typingDuration: 700,
+    minChunkDelay: 280,
+    msPerChar: 5,
+    maxChunkDelay: 1300,
+    personality: 'musical'
+  },
+
+  // Zara - Data artist precision, deliberate but creative
+  zara: {
+    typingDuration: 750,
+    minChunkDelay: 320,
+    msPerChar: 6,
+    maxChunkDelay: 1400,
+    personality: 'artistic'
+  },
+
+  // Quinn - Financier deliberation, measured and intentional
+  quinn: {
+    typingDuration: 750,
+    minChunkDelay: 300,
+    msPerChar: 6,
+    maxChunkDelay: 1400,
+    personality: 'measured'
+  },
+
+  // Dante - Sales charm, energetic but controlled
+  dante: {
+    typingDuration: 450,
+    minChunkDelay: 180,
+    msPerChar: 4,
+    maxChunkDelay: 800,
+    personality: 'energetic'
+  },
+
+  // Nadia - AI ethicist clarity, precise and thoughtful
+  nadia: {
+    typingDuration: 600,
+    minChunkDelay: 250,
+    msPerChar: 5,
+    maxChunkDelay: 1100,
+    personality: 'clear'
+  },
+
+  // Isaiah - Nonprofit thoughtfulness, slow and story-paced
+  isaiah: {
+    typingDuration: 850,
+    minChunkDelay: 350,
+    msPerChar: 7,
+    maxChunkDelay: 1600,
+    personality: 'storyteller'
+  },
+
   // Narrator - Neutral, standard pacing
   narrator: {
     typingDuration: 700,

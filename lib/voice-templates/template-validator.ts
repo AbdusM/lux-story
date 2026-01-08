@@ -47,6 +47,8 @@ const CHARACTER_TIER_TARGETS: Record<VoiceCharacterId, number> = {
   kai: 10,
   tess: 10,
   rohan: 10,
+  quinn: 10,    // LinkedIn 2026 - Finance Cluster
+  nadia: 10,    // LinkedIn 2026 - AI Strategy
 
   // Tier 3-4 - Extended/Specialized (6 variations)
   yaquin: 6,
@@ -57,7 +59,9 @@ const CHARACTER_TIER_TARGETS: Record<VoiceCharacterId, number> = {
   silas: 6,
   asha: 6,
   lira: 6,
-  zara: 6
+  zara: 6,
+  dante: 6,     // LinkedIn 2026 - Sales/Marketing
+  isaiah: 6     // LinkedIn 2026 - Nonprofit
 }
 
 // ============================================================

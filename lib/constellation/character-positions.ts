@@ -3,7 +3,7 @@
  * Positions are normalized 0-100 coordinates, scaled at render time
  */
 
-export type CharacterId = 'samuel' | 'maya' | 'jordan' | 'devon' | 'kai' | 'tess' | 'rohan' | 'silas' | 'marcus' | 'kael' | 'omari' | 'yaquin' | 'elena' | 'grace'
+export type CharacterId = 'samuel' | 'maya' | 'jordan' | 'devon' | 'kai' | 'tess' | 'rohan' | 'silas' | 'marcus' | 'kael' | 'omari' | 'yaquin' | 'elena' | 'grace' | 'alex' | 'asha' | 'lira' | 'zara' | 'quinn' | 'dante' | 'nadia' | 'isaiah'
 
 export interface CharacterNodeData {
   id: CharacterId
@@ -151,6 +151,44 @@ export const CHARACTER_NODES: CharacterNodeData[] = [
     isMajor: false,
     color: 'rose',
     role: 'Home Health Aide'
+  },
+
+  // NEW: LinkedIn 2026 Career Expansion Characters
+  {
+    id: 'quinn',
+    name: 'Quinn',
+    fullName: 'Quinn Montgomery',
+    position: { x: 72, y: 32 }, // Upper right (finance/analytical quadrant)
+    isMajor: false,
+    color: 'amber',
+    role: 'Finance Specialist'
+  },
+  {
+    id: 'dante',
+    name: 'Dante',
+    fullName: 'Dante Reyes',
+    position: { x: 78, y: 62 }, // Right side (sales/communication)
+    isMajor: false,
+    color: 'blue',
+    role: 'Sales Strategist'
+  },
+  {
+    id: 'nadia',
+    name: 'Nadia',
+    fullName: 'Nadia Okonkwo',
+    position: { x: 38, y: 22 }, // Upper left (tech/strategy near Maya)
+    isMajor: false,
+    color: 'teal',
+    role: 'AI Strategist'
+  },
+  {
+    id: 'isaiah',
+    name: 'Isaiah',
+    fullName: 'Isaiah Brooks',
+    position: { x: 28, y: 68 }, // Lower left (helping/community quadrant)
+    isMajor: false,
+    color: 'emerald',
+    role: 'Nonprofit Leader'
   }
 ]
 
@@ -168,7 +206,12 @@ export const CHARACTER_CONNECTIONS: [CharacterId, CharacterId][] = [
   ['samuel', 'omari'],
   ['samuel', 'yaquin'],
   ['samuel', 'elena'],
-  ['samuel', 'grace']
+  ['samuel', 'grace'],
+  // LinkedIn 2026 Career Expansion
+  ['samuel', 'quinn'],
+  ['samuel', 'dante'],
+  ['samuel', 'nadia'],
+  ['samuel', 'isaiah']
 ]
 
 // Helper to get character by ID

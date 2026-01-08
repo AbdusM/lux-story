@@ -975,6 +975,400 @@ export const CHARACTER_RELATIONSHIP_WEB: CharacterRelationshipEdge[] = [
       trustMin: 4,
       charactersMet: ['marcus']
     }
+  },
+
+  // ============================================
+  // QUINN'S RELATIONSHIPS (LinkedIn 2026 - Finance)
+  // ============================================
+
+  // Quinn → Samuel (Seeks redemption wisdom)
+  {
+    fromCharacterId: 'quinn',
+    toCharacterId: 'samuel',
+    type: 'protege',
+    intensity: 6,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Samuel understands that some currencies can\'t be traded. Time. Trust. Second chances.',
+      privateOpinion: 'He\'s the first person who looked at my past and saw possibility instead of liability. That portfolio is worth more than anything I\'ve ever managed.',
+      memories: [
+        'When I told him about the 400 jobs. He just nodded and asked what I learned.'
+      ]
+    },
+    revealConditions: {
+      trustMin: 3
+    }
+  },
+
+  // Quinn → Marcus (Respects steadiness)
+  {
+    fromCharacterId: 'quinn',
+    toCharacterId: 'marcus',
+    type: 'ally',
+    intensity: 4,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Marcus works in a world where returns are measured in heartbeats. Different metrics, same discipline.',
+      privateOpinion: 'He makes life-or-death calls without a model. I used to think that was reckless. Now I think it\'s the purest form of conviction.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 4,
+      charactersMet: ['marcus']
+    }
+  },
+
+  // Quinn → Devon (Systems collaboration)
+  {
+    fromCharacterId: 'quinn',
+    toCharacterId: 'devon',
+    type: 'ally',
+    intensity: 5,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Devon builds models. So do I. His just don\'t have dollar signs attached.',
+      privateOpinion: 'He\'s trying to optimize human connection. I tried to optimize human value. We both learned that some things resist optimization.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 4,
+      charactersMet: ['devon']
+    }
+  },
+
+  // Quinn → Nadia (Professional rivalry)
+  {
+    fromCharacterId: 'quinn',
+    toCharacterId: 'nadia',
+    type: 'rival',
+    intensity: 4,
+    opinions: {
+      sentiment: 'conflicted',
+      publicOpinion: 'Nadia thinks finance is the problem. I think unexamined finance is the problem. There\'s a difference.',
+      privateOpinion: 'She\'s right more often than I\'d like to admit. But she doesn\'t understand that capital allocation can be a force for good. When it\'s done right.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 5,
+      charactersMet: ['nadia']
+    }
+  },
+
+  // Quinn → Isaiah (Mentorship)
+  {
+    fromCharacterId: 'quinn',
+    toCharacterId: 'isaiah',
+    type: 'mentor',
+    intensity: 5,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Isaiah understands impact. Real impact, not the kind you put in a quarterly report.',
+      privateOpinion: 'I\'m teaching him how capital works. He\'s teaching me what capital is for. I\'m getting the better deal.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 4,
+      charactersMet: ['isaiah']
+    }
+  },
+
+  // ============================================
+  // DANTE'S RELATIONSHIPS (LinkedIn 2026 - Sales)
+  // ============================================
+
+  // Dante → Samuel (Seeking authenticity)
+  {
+    fromCharacterId: 'dante',
+    toCharacterId: 'samuel',
+    type: 'protege',
+    intensity: 5,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Samuel doesn\'t sell. He invites. There\'s a masterclass in that distinction.',
+      privateOpinion: 'Every pitch I made used to be about closing. Samuel showed me that the best relationships never close. They just keep opening.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 3
+    }
+  },
+
+  // Dante → Quinn (Friendly tension)
+  {
+    fromCharacterId: 'dante',
+    toCharacterId: 'quinn',
+    type: 'rival',
+    intensity: 3,
+    opinions: {
+      sentiment: 'conflicted',
+      publicOpinion: 'Quinn thinks in spreadsheets. I think in handshakes. Somehow we understand each other.',
+      privateOpinion: 'He\'s trying to redeem capital. I\'m trying to redeem persuasion. We\'re both reforming things people love to hate.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 4,
+      charactersMet: ['quinn']
+    }
+  },
+
+  // Dante → Lira (Creative partners)
+  {
+    fromCharacterId: 'dante',
+    toCharacterId: 'lira',
+    type: 'ally',
+    intensity: 5,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Lira hears what people don\'t say. That\'s the whole game, isn\'t it?',
+      privateOpinion: 'She taught me to listen for the silence between words. Best sales training I never paid for.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 4,
+      charactersMet: ['lira']
+    }
+  },
+
+  // Dante → Jordan (Mutual respect)
+  {
+    fromCharacterId: 'dante',
+    toCharacterId: 'jordan',
+    type: 'ally',
+    intensity: 4,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Jordan helps people find their path. I help people see value. Similar missions.',
+      privateOpinion: 'Seven jobs? I see someone who kept learning until they found the right fit. That\'s not scattered. That\'s thorough.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 4,
+      charactersMet: ['jordan']
+    }
+  },
+
+  // Dante → Tess (Admiration)
+  {
+    fromCharacterId: 'dante',
+    toCharacterId: 'tess',
+    type: 'protege',
+    intensity: 5,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Tess left corporate to build something real. That takes guts.',
+      privateOpinion: 'She\'s who I want to be when I fully trust my own voice. Someone who creates instead of convinces.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 4,
+      charactersMet: ['tess']
+    }
+  },
+
+  // ============================================
+  // NADIA'S RELATIONSHIPS (LinkedIn 2026 - AI Ethics)
+  // ============================================
+
+  // Nadia → Samuel (Ethical grounding)
+  {
+    fromCharacterId: 'nadia',
+    toCharacterId: 'samuel',
+    type: 'mentor',
+    intensity: 6,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Samuel guides without controlling. That\'s what responsible AI should do.',
+      privateOpinion: 'He reminds me that humans figured out ethics before algorithms existed. Sometimes the old frameworks are the most robust.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 3
+    }
+  },
+
+  // Nadia → Rohan (Deep respect)
+  {
+    fromCharacterId: 'nadia',
+    toCharacterId: 'rohan',
+    type: 'ally',
+    intensity: 6,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Rohan asks the questions I wish more AI researchers would ask.',
+      privateOpinion: 'He sees technology as a threat to human depth. I see it as a responsibility to human safety. We\'re worried about the same thing from different angles.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 5,
+      charactersMet: ['rohan']
+    }
+  },
+
+  // Nadia → Maya (Complicated)
+  {
+    fromCharacterId: 'nadia',
+    toCharacterId: 'maya',
+    type: 'complicated',
+    intensity: 4,
+    opinions: {
+      sentiment: 'conflicted',
+      publicOpinion: 'Maya builds things quickly. I worry about the things we don\'t have time to anticipate.',
+      privateOpinion: 'She has the spark I had before I saw what unchecked innovation can do. I don\'t want to dim it. I just want to guide it.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 4,
+      charactersMet: ['maya']
+    }
+  },
+
+  // Nadia → Quinn (Professional rivalry)
+  {
+    fromCharacterId: 'nadia',
+    toCharacterId: 'quinn',
+    type: 'rival',
+    intensity: 4,
+    opinions: {
+      sentiment: 'conflicted',
+      publicOpinion: 'Quinn thinks capital can solve ethics. I think ethics should constrain capital.',
+      privateOpinion: 'He\'s not wrong that money shapes outcomes. He\'s wrong that it should be the primary shaper. But at least he\'s thinking about it.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 5,
+      charactersMet: ['quinn']
+    }
+  },
+
+  // Nadia → Zara (Philosophical allies)
+  {
+    fromCharacterId: 'nadia',
+    toCharacterId: 'zara',
+    type: 'ally',
+    intensity: 5,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Zara sees the bias in data. That\'s half of responsible AI right there.',
+      privateOpinion: 'She fights the same fight I do—making the invisible visible. Her domain is statistics. Mine is deployment. Same war.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 4,
+      charactersMet: ['zara']
+    }
+  },
+
+  // Nadia → Devon (Collaboration)
+  {
+    fromCharacterId: 'nadia',
+    toCharacterId: 'devon',
+    type: 'ally',
+    intensity: 4,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Devon builds systems. I try to make sure they\'re safe to deploy.',
+      privateOpinion: 'He\'s genuinely trying to help people. His heart is in the right place. I just want to make sure his code follows.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 4,
+      charactersMet: ['devon']
+    }
+  },
+
+  // ============================================
+  // ISAIAH'S RELATIONSHIPS (LinkedIn 2026 - Nonprofit)
+  // ============================================
+
+  // Isaiah → Samuel (Reverence)
+  {
+    fromCharacterId: 'isaiah',
+    toCharacterId: 'samuel',
+    type: 'protege',
+    intensity: 7,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Samuel builds community without asking for credit. That\'s the purest form of service.',
+      privateOpinion: 'He saw Marcus in me—the kid I couldn\'t save—and he didn\'t look away. He asked what I learned from the loss. That question changed everything.',
+      memories: [
+        'The night I told him about Marcus. He listened for an hour. Then he said, "That pain is what makes you effective." I\'ve held onto those words.'
+      ]
+    },
+    revealConditions: {
+      trustMin: 4
+    }
+  },
+
+  // Isaiah → Quinn (Mentored by)
+  {
+    fromCharacterId: 'isaiah',
+    toCharacterId: 'quinn',
+    type: 'protege',
+    intensity: 5,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Quinn teaches me how money moves. I teach him what it should move toward.',
+      privateOpinion: 'He\'s seen the dark side of capital. That\'s why he\'s the right teacher. He knows what to avoid.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 4,
+      charactersMet: ['quinn']
+    }
+  },
+
+  // Isaiah → Asha (Deep partners)
+  {
+    fromCharacterId: 'isaiah',
+    toCharacterId: 'asha',
+    type: 'ally',
+    intensity: 7,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Asha resolves conflicts. I prevent the conditions that create them. Perfect partnership.',
+      privateOpinion: 'She holds space for tension without rushing to resolve it. That\'s what the kids need. Someone who doesn\'t flinch at their pain.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 5,
+      charactersMet: ['asha']
+    }
+  },
+
+  // Isaiah → Tess (Mutual admiration)
+  {
+    fromCharacterId: 'isaiah',
+    toCharacterId: 'tess',
+    type: 'ally',
+    intensity: 5,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Tess left money to follow meaning. That\'s the nonprofit gospel right there.',
+      privateOpinion: 'She proves you can build something sustainable outside the traditional funding models. That gives me hope.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 4,
+      charactersMet: ['tess']
+    }
+  },
+
+  // Isaiah → Grace (Collaborates)
+  {
+    fromCharacterId: 'isaiah',
+    toCharacterId: 'grace',
+    type: 'ally',
+    intensity: 5,
+    opinions: {
+      sentiment: 'positive',
+      publicOpinion: 'Grace cares for individuals. I try to care for systems. We need both.',
+      privateOpinion: 'She understands that care is exhausting. That it costs something. The donors never see that cost.',
+      memories: []
+    },
+    revealConditions: {
+      trustMin: 4,
+      charactersMet: ['grace']
+    }
   }
 ]
 
