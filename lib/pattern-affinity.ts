@@ -177,13 +177,13 @@ export const CHARACTER_PATTERN_AFFINITIES: Record<string, CharacterPatternAffini
       {
         pattern: 'analytical',
         threshold: 40,
-        unlockedNodeId: 'devon_optimizer_demo',
-        description: 'Devon shows you his Conversation Optimizer'
+        unlockedNodeId: 'devon_optimization_trap',
+        description: 'Devon reflects on his optimization habits'
       },
       {
         pattern: 'patience',
         threshold: 60,
-        unlockedNodeId: 'devon_father_story',
+        unlockedNodeId: 'devon_father_reveal',
         description: 'Devon opens up about his father'
       }
     ]

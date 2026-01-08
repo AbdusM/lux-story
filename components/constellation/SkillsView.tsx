@@ -163,6 +163,9 @@ export function SkillsView({ skills, onOpenDetail }: SkillsViewProps) {
 
           {/* Skill nodes (3D Orb Style - matches Network view) */}
           {filteredSkills.map((skill) => {
+            // Skip skills without valid positions (defensive guard)
+            if (skill.position?.x === undefined || skill.position?.y === undefined) return null
+
             const baseSize = skill.id === 'communication' ? 5 : 3.5
             const size = skill.state === 'mastered' ? baseSize * 1.1 : baseSize
             const isUnlocked = skill.state !== 'dormant'
@@ -250,6 +253,19 @@ export function SkillsView({ skills, onOpenDetail }: SkillsViewProps) {
                     strokeWidth="0.15"
                     className="opacity-50"
                   />
+                )}
+
+                {/* Skill Name Label (visible for demonstrated skills) */}
+                {isUnlocked && (
+                  <text
+                    x={skill.position.x}
+                    y={skill.position.y + size + 3}
+                    textAnchor="middle"
+                    className="fill-slate-300 text-[1.8px] font-medium tracking-wide pointer-events-none"
+                    style={{ fontSize: '1.8px' }}
+                  >
+                    {skill.name}
+                  </text>
                 )}
               </motion.g>
             )
