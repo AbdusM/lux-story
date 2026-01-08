@@ -84,7 +84,8 @@ export class GameStateManager {
     try {
       const json = localStorage.getItem(STORAGE_KEY)
       if (!json) {
-        logger.debug('No save file found', { operation: 'game-state-manager.load' })
+        // Use verbose to avoid log spam - this is called frequently
+        logger.verbose('No save file found', { operation: 'game-state-manager.load' })
         return null
       }
 
@@ -151,7 +152,8 @@ export class GameStateManager {
         return this.resetToHub(gameState)
       }
 
-      logger.debug('Game loaded successfully', { operation: 'game-state-manager.load', version: gameState.saveVersion })
+      // Use verbose to avoid log spam - this is called frequently
+      logger.verbose('Game loaded successfully', { operation: 'game-state-manager.load', version: gameState.saveVersion })
       return gameState
 
     } catch (error) {

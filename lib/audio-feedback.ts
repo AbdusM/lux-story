@@ -235,6 +235,9 @@ function applyModulation(config: SoundConfig, modulation?: StateModulation): Sou
  * @param modulation - Optional state values to modulate the sound
  */
 export function playSound(sound: SoundType, modulation?: StateModulation): void {
+  // Check if audio is enabled (mute check)
+  if (!audioEnabled) return
+
   const ctx = getAudioContext()
   if (!ctx) return
 

@@ -62,7 +62,7 @@ export function LandingPage() {
             Ready to Explore?
           </h2>
           <p className="text-lg text-slate-600 mb-8">
-            Start your journey through Grand Central Terminus today
+            Start your journey through Terminus today
           </p>
 
           <Link href="/play">

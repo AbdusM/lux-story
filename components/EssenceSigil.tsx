@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo } from "react"
+import { useMemo, useState, useEffect } from "react"
 import { motion, useReducedMotion } from "framer-motion"
 import { useConstellationData } from "@/hooks/useConstellationData"
 import { usePatternUnlocks } from "@/hooks/usePatternUnlocks"
@@ -27,9 +27,15 @@ const CENTER = { x: 150, y: 150 }
 const RADIUS = 100
 
 export function EssenceSigil() {
+    const [mounted, setMounted] = useState(false)
     const { skills } = useConstellationData()
     const { orbs, allUnlocks } = usePatternUnlocks()
     const prefersReducedMotion = useReducedMotion()
+
+    // Prevent hydration mismatch - only render after client mount
+    useEffect(() => {
+        setMounted(true)
+    }, [])
 
     // Calculate scores per cluster (0 to 1) - must be before any early returns (React hooks rules)
     const clusterScores = useMemo(() => {
@@ -60,8 +66,8 @@ export function EssenceSigil() {
         return scores
     }, [skills])
 
-    // Null guard: show loading state if skills not yet available
-    if (!skills || skills.length === 0) {
+    // Null guard: show loading state if not mounted or skills not yet available
+    if (!mounted || !skills || skills.length === 0) {
         return (
             <div className="flex flex-col items-center justify-center py-8 space-y-4 min-h-[400px] text-center">
                 <div className="relative w-[200px] h-[200px] flex items-center justify-center">
@@ -188,10 +194,9 @@ export function EssenceSigil() {
                             <g key={cluster}>
                                 {/* Data Dot */}
                                 <motion.circle
-                                    cx={x} cy={y}
                                     r={4}
                                     fill={SKILL_CLUSTERS[cluster].color}
-                                    initial={{ scale: 0 }}
+                                    initial={{ scale: 0, cx: x, cy: y }}
                                     animate={{ scale: 1, cx: x, cy: y }}
                                     transition={{ delay: 0.5 + i * 0.1 }}
                                 />
@@ -209,7 +214,7 @@ export function EssenceSigil() {
                                         y={12}
                                         textAnchor="middle"
                                         dominantBaseline="middle"
-                                        className="text-[8px] fill-slate-400 dark:fill-slate-500 font-mono"
+                                        className="text-[10px] fill-slate-400 dark:fill-slate-500 font-mono"
                                     >
                                         {Math.round(score * 100)}%
                                     </text>
@@ -268,7 +273,7 @@ export function EssenceSigil() {
                                                 {unlock.name}
                                             </span>
                                             <span
-                                                className="px-1.5 py-0.5 rounded text-[9px] uppercase font-bold"
+                                                className="px-1.5 py-0.5 rounded text-xs uppercase font-bold"
                                                 style={{
                                                     backgroundColor: `${orb?.color}20`,
                                                     color: orb?.color

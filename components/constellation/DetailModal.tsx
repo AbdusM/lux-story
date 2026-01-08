@@ -278,7 +278,7 @@ function CharacterDetail({ character, onClose, allCharacters }: { character: Cha
                           {op.fromCharacter.name}
                         </span>
                         {op.isDeepReveal && (
-                          <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 uppercase tracking-wider">
+                          <span className="text-xs px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 uppercase tracking-wider">
                             Private
                           </span>
                         )}
@@ -348,7 +348,7 @@ function SkillDetail({ skill, onClose }: { skill: SkillWithState; onClose: () =>
           {/* Cluster Badge */}
           <div className="flex items-center gap-2 mt-2">
             <span
-              className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase"
+              className="px-2 py-0.5 rounded-full text-xs font-bold uppercase"
               style={{
                 backgroundColor: `${clusterInfo.color}20`,
                 color: clusterInfo.color
@@ -432,7 +432,7 @@ function SkillDetail({ skill, onClose }: { skill: SkillWithState; onClose: () =>
             {/* TACTICAL SCENARIO (Video Game Style Application) */}
             {def.tacticalScenario && (
               <div className="bg-slate-800/80 rounded-lg p-4 border-l-2 border-amber-500">
-                <h4 className="text-[10px] font-bold text-amber-500 uppercase tracking-widest mb-1 flex items-center gap-2">
+                <h4 className="text-xs font-bold text-amber-500 uppercase tracking-widest mb-1 flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
                   Tactical Application
                 </h4>
@@ -501,7 +501,7 @@ function QuestDetail({ quest, onClose }: { quest: Quest; onClose: () => void }) 
       <header className="relative z-10 mb-8">
         <div className="flex items-start justify-between">
           <div>
-            <h4 className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-2 font-mono">
+            <h4 className="text-xs font-bold text-slate-500 uppercase tracking-[0.2em] mb-2 font-mono">
               Mission Dossier // {quest.id.split('_').pop()?.toUpperCase()}
             </h4>
             <h2 className="text-2xl font-bold text-white font-mono tracking-tighter max-w-[80%] leading-tight">
@@ -515,14 +515,14 @@ function QuestDetail({ quest, onClose }: { quest: Quest; onClose: () => void }) 
 
         <div className="mt-4 flex gap-3">
           <span className={cn(
-            "px-3 py-1 rounded-sm text-[10px] font-bold uppercase tracking-widest border",
+            "px-3 py-1 rounded-sm text-xs font-bold uppercase tracking-widest border",
             isCompleted ? "bg-emerald-950/40 border-emerald-500/30 text-emerald-400" :
               isLocked ? "bg-slate-900 border-slate-700 text-slate-500" :
                 "bg-amber-950/40 border-amber-500/30 text-amber-400"
           )}>
             {isCompleted ? 'ARCHIVED' : isLocked ? 'ENCRYPTED' : 'ACTIVE'}
           </span>
-          <span className="px-3 py-1 rounded-sm text-[10px] font-bold uppercase tracking-widest border border-slate-800 bg-slate-900/50 text-slate-400">
+          <span className="px-3 py-1 rounded-sm text-xs font-bold uppercase tracking-widest border border-slate-800 bg-slate-900/50 text-slate-400">
             Priority: Standard
           </span>
         </div>
@@ -578,7 +578,7 @@ function QuestDetail({ quest, onClose }: { quest: Quest; onClose: () => void }) 
                 <p className="text-xs font-bold text-emerald-400 uppercase tracking-wide">
                   {quest.reward.type}
                 </p>
-                <p className="text-[10px] text-emerald-500/70">
+                <p className="text-xs text-emerald-500/70">
                   {quest.reward.description}
                 </p>
               </div>
@@ -587,7 +587,7 @@ function QuestDetail({ quest, onClose }: { quest: Quest; onClose: () => void }) 
         )}
 
         {/* Footer Metadata */}
-        <div className="pt-6 border-t border-slate-800 flex items-center justify-between text-[10px] text-slate-600 font-mono">
+        <div className="pt-6 border-t border-slate-800 flex items-center justify-between text-xs text-slate-600 font-mono">
           <span className="flex items-center gap-1.5">
             <Clock className="w-3 h-3" />
             LOGGED: 2049.03.15

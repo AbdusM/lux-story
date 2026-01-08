@@ -44,7 +44,7 @@ export class GameErrorBoundary extends Component<GameErrorBoundaryProps> {
           <div className="apple-game-container">
             <div className="apple-game-main">
               <div className="apple-header">
-                <div className="apple-text-headline">Grand Central Terminus</div>
+                <div className="apple-text-headline">Terminus</div>
                 <div className="apple-text-caption">Birmingham Career Exploration</div>
               </div>
               

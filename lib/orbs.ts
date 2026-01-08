@@ -46,7 +46,7 @@ export const ORB_TIERS: Record<OrbTier, {
   },
   emerging: {
     minOrbs: 10,
-    label: 'Emerging',
+    label: 'Growing',
     description: 'Patterns are starting to form',
     color: '#60A5FA', // blue-400
     glowIntensity: 0.4

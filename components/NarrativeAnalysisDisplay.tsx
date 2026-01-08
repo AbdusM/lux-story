@@ -70,7 +70,7 @@ export function NarrativeAnalysisDisplay() {
             {patternData.balanceScore}
             <span className="text-sm text-slate-600 font-normal">/100</span>
           </div>
-          <div className="text-[10px] text-slate-500 uppercase tracking-wider font-bold">Balance</div>
+          <div className="text-xs text-slate-500 uppercase tracking-wider font-bold">Balance</div>
         </div>
       </div>
 
@@ -301,7 +301,7 @@ export function NarrativeAnalysisDisplay() {
                             style={{ width: `${Math.min(100, char.trust * 10)}%` }}
                           />
                         </div>
-                        <span className="text-[10px] text-slate-500 w-8">
+                        <span className="text-xs text-slate-500 w-8">
                           {char.trust}/10
                         </span>
                       </div>
@@ -381,7 +381,7 @@ export function NarrativeAnalysisDisplay() {
                           {rec.matchReasons.slice(0, 2).map((reason, j) => (
                             <span
                               key={j}
-                              className="text-[10px] px-1.5 py-0.5 bg-slate-800 text-slate-400 rounded"
+                              className="text-xs px-1.5 py-0.5 bg-slate-800 text-slate-400 rounded"
                             >
                               {reason}
                             </span>
@@ -403,7 +403,7 @@ export function NarrativeAnalysisDisplay() {
                     {careerData.skillGaps.gaps.slice(0, 3).map(gap => (
                       <div key={gap.skillId} className="flex items-center gap-2">
                         <div className="flex-1 text-xs text-slate-300">{gap.skillName}</div>
-                        <div className="text-[10px] text-amber-400">
+                        <div className="text-xs text-amber-400">
                           {gap.currentLevel}/{gap.requiredLevel}
                         </div>
                       </div>
@@ -429,7 +429,7 @@ function MetricCard({ label, value, suffix = '%' }: { label: string; value: numb
       <div className="text-xl font-bold text-white mb-1">
         {value}{suffix}
       </div>
-      <div className="text-[9px] text-slate-500 uppercase tracking-wider font-bold">{label}</div>
+      <div className="text-xs text-slate-500 uppercase tracking-wider font-bold">{label}</div>
     </div>
   )
 }

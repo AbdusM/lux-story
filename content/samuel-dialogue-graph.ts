@@ -2227,7 +2227,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Alright, here's everybody:\n\n**Maya Chen** - Platform 1. Pre-med brilliance, secret robotics dreams.\n\n**Devon Kumar** - Platform 3. Engineer tryin' to debug grief.\n\n**Jordan Packard** - Railroad Park. Seven careers. Still askin' the same question.\n\n**Marcus** - Platform 4. CVICU nurse. Where machines meet medicine.\n\n**Tess** - Pizitz Food Hall. Buildin' a whole new kind of school.\n\n**Yaquin** - Platform 5. Teachin' outside the system.\n\n**Kai** - Platform 6. Innovation within constraints.\n\n**Rohan** - Platform 7. Infrastructure guardian.\n\n**Silas** - Platform 8. Debuggin' nature.\n\nWho you wanna meet?",
+        text: "Alright, here's everybody:\n\n**Maya Chen** - Platform 1. Pre-med brilliance, secret robotics dreams.\n\n**Devon Kumar** - Platform 3. Engineer tryin' to debug grief.\n\n**Jordan Packard** - Railroad Park. Seven careers. Still askin' the same question.\n\n**Marcus** - Platform 4. CVICU nurse. Where machines meet medicine.\n\n**Tess** - Pizitz Food Hall. Buildin' a whole new kind of school.\n\n**Yaquin** - Platform 5. Teachin' outside the system.\n\n**Kai** - Platform 6. Innovation within constraints.\n\n**Rohan** - Platform 7. Infrastructure guardian.\n\n**Silas** - Platform 8. Debuggin' nature.\n\n**Alex** - Platform 9. Supply chain. Keepin' things movin'.\n\n**Asha** - Platform 10. Mediator. Turns conflict into understanding.\n\n**Elena** - Platform 11. Archivist. What patterns hide in the data.\n\n**Grace** - Platform 12. Healthcare aide. Care that can't be automated.\n\n**Lira** - Platform 13. Sound designer. Where tech meets art.\n\n**Zara** - Platform 14. Data ethics. The questions no one's askin'.\n\nWho you wanna meet?",
         emotion: 'patient_informative',
         variation_id: 'other_travelers_v2'
       }
@@ -2304,6 +2304,66 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         nextNodeId: 'samuel_discovers_silas',
         pattern: 'building',
         skills: ['sustainability', 'systemsThinking']
+      },
+      {
+        choiceId: 'meet_alex_alt',
+        text: "Alex on Platform 9.",
+        nextNodeId: 'alex_introduction',
+        pattern: 'building',
+        skills: ['systemsThinking', 'pragmatism'],
+        consequence: {
+          addGlobalFlags: ['met_alex']
+        }
+      },
+      {
+        choiceId: 'meet_asha_alt',
+        text: "Asha on Platform 10.",
+        nextNodeId: 'asha_introduction',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication'],
+        consequence: {
+          addGlobalFlags: ['met_asha']
+        }
+      },
+      {
+        choiceId: 'meet_elena_alt',
+        text: "Elena on Platform 11.",
+        nextNodeId: 'elena_intro',
+        pattern: 'analytical',
+        skills: ['informationLiteracy', 'criticalThinking'],
+        consequence: {
+          addGlobalFlags: ['met_elena']
+        }
+      },
+      {
+        choiceId: 'meet_grace_alt',
+        text: "Grace on Platform 12.",
+        nextNodeId: 'grace_introduction',
+        pattern: 'helping',
+        skills: ['empathy', 'patience'],
+        consequence: {
+          addGlobalFlags: ['met_grace']
+        }
+      },
+      {
+        choiceId: 'meet_lira_alt',
+        text: "Lira on Platform 13.",
+        nextNodeId: 'lira_introduction',
+        pattern: 'exploring',
+        skills: ['creativity', 'technicalLiteracy'],
+        consequence: {
+          addGlobalFlags: ['met_lira']
+        }
+      },
+      {
+        choiceId: 'meet_zara_alt',
+        text: "Zara on Platform 14.",
+        nextNodeId: 'zara_introduction',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'fairness'],
+        consequence: {
+          addGlobalFlags: ['met_zara']
+        }
       }
     ]
   },
