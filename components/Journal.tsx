@@ -12,12 +12,14 @@ import { HarmonicsView } from "./HarmonicsView"
 import { EssenceSigil } from "./EssenceSigil"
 import { MasteryView } from "./MasteryView"
 import { ThoughtCabinet } from "./ThoughtCabinet"
-import { LogSearch } from "./LogSearch"
+// LogSearch hidden for now
+// import { LogSearch } from "./LogSearch"
 import { NarrativeAnalysisDisplay } from "./NarrativeAnalysisDisplay"
 import { ToolkitView } from "./ToolkitView"
 import { SimulationsArchive } from "./SimulationsArchive"
 import { OrbDetailPanel } from "./OrbDetailPanel"
 import { PatternType } from "@/lib/patterns"
+import { ORB_TIERS } from "@/lib/orbs"
 import { useSimulations } from "@/hooks/useSimulations"
 
 interface JournalProps {
@@ -165,19 +167,20 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                     <span className="text-sm font-bold text-amber-300 tabular-nums">
                       {balance.totalEarned}
                     </span>
-                    <span className="text-[10px] text-slate-400 uppercase tracking-wider">
+                    <span className="text-xs text-slate-400 uppercase tracking-wider">
                       orbs
                     </span>
-                    <span className="text-[9px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 font-medium capitalize">
-                      {tier}
+                    <span className="text-xs px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 font-medium">
+                      {ORB_TIERS[tier].label}
                     </span>
                   </div>
                 </div>
               )}
             </div>
 
-            {/* Searchable Log - Search through past conversations */}
+            {/* Searchable Log - Hidden for now
             <LogSearch />
+            */}
 
             {/* Navigation Tabs */}
             <div className="flex border-b border-white/10 overflow-x-auto no-scrollbar">
@@ -266,7 +269,7 @@ export function Journal({ isOpen, onClose }: JournalProps) {
 
             {/* Footer - minimal branding */}
             <div className="p-2 border-t border-white/5 bg-transparent">
-              <p className="text-[9px] text-center text-slate-600 font-mono tracking-wider">
+              <p className="text-xs text-center text-slate-600 font-mono tracking-wider">
                 THE PRISM
               </p>
             </div>

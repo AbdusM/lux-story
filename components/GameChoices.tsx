@@ -395,19 +395,22 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
           <div
             className={`
               w-full min-h-[56px] sm:min-h-[52px] h-auto px-4 sm:px-6 py-4 sm:py-3
-              text-base sm:text-sm font-medium text-stone-400 text-left
-              border border-stone-200 bg-stone-50
+              text-base sm:text-sm font-medium text-left
               rounded-[14px]
               flex items-center gap-3
               cursor-not-allowed
+              ${glass
+                ? 'text-slate-500 border border-slate-700/50 bg-slate-900/40'
+                : 'text-stone-400 border border-stone-200 bg-stone-50'
+              }
             `}
             aria-label={`Locked choice: ${choice.text}. Requires ${getLockMessage(choice)}`}
             role="button"
             aria-disabled="true"
           >
-            <Lock className="w-4 h-4 flex-shrink-0 text-stone-400" />
+            <Lock className={`w-4 h-4 flex-shrink-0 ${glass ? 'text-slate-500' : 'text-stone-400'}`} />
             <span className="flex-1 line-clamp-2">{choice.text}</span>
-            <span className="text-xs text-stone-400 flex-shrink-0 whitespace-nowrap">
+            <span className={`text-xs flex-shrink-0 whitespace-nowrap ${glass ? 'text-slate-500' : 'text-stone-400'}`}>
               {getLockMessage(choice)}
             </span>
           </div>
@@ -441,8 +444,7 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
           className={`
             w-full min-h-[60px] sm:min-h-[56px] h-auto px-5 py-4
             text-base sm:text-[15px] font-medium text-left justify-start break-words whitespace-normal leading-relaxed
-            ${glass && '!text-slate-100 !bg-slate-900/60 border-white/10'}
-            ${!glass && '!text-stone-700 bg-white/90 backdrop-blur-sm shadow-sm hover:!text-stone-900'}
+            ${glass ? '!text-slate-100 !bg-slate-900/60 border-white/10' : '!text-stone-700 bg-white/90 backdrop-blur-sm shadow-sm hover:!text-stone-900'}
             ${(() => {
               const pattern = choice.pattern
               if (glass) {
@@ -453,8 +455,7 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
                 return `${styles.bg} border border-transparent ${styles.shadow} ${styles.activeBg}`
               }
             })()}
-            ${/* MARQUEE EFFECT: Only apply if choice is pivotal or has a pattern */ ''}
-            ${choice.pivotal || (choice.pattern && isValidPattern(choice.pattern)) ? 'marquee-border' : ''}
+            ${(choice.pivotal || (choice.pattern && isValidPattern(choice.pattern))) ? 'marquee-border' : ''}
             active:shadow-none
             transition-colors duration-200
             rounded-[14px]
@@ -464,16 +465,20 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
             ${isFocused ? (glass
               ? 'ring-2 ring-white/30 ring-offset-2 ring-offset-transparent border-white/30 bg-white/15'
               : 'ring-2 ring-stone-900/10 ring-offset-2 border-stone-300 bg-stone-50') : ''}
-            ${/* Gravity Repulsion Styling - Dimmed Text */ ''}
-            ${choice.gravity?.effect === 'repel' && !isFocused && !isLocked
+            ${(choice.gravity?.effect === 'repel' && !isFocused && !isLocked)
               ? (glass ? 'text-slate-400 bg-white/[0.02] shadow-none' : 'text-stone-400 bg-stone-50/50 shadow-none')
               : ''}
-            ${choice.gravity?.effect === 'attract' && !isFocused && !isLocked
+            ${(choice.gravity?.effect === 'attract' && !isFocused && !isLocked)
               ? (glass ? 'border-emerald-400/30 bg-emerald-900/20 shadow-[0_0_20px_rgba(16,185,129,0.2)]' : 'border-emerald-200/50 bg-emerald-50/40 shadow-emerald-100')
               : ''}
-
           `}
           style={{
+            // GLASS MODE: Force dark background via inline style (tailwind-merge strips !important classes)
+            ...(glass ? {
+              backgroundColor: 'rgba(15, 23, 42, 0.7)',
+              color: 'rgb(241, 245, 249)',
+              borderColor: 'rgba(255, 255, 255, 0.1)'
+            } : {}),
             // Marquee colors for pivotal choices
             ...((() => {
               const pattern = choice.pattern

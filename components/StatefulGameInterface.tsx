@@ -2877,19 +2877,49 @@ export default function StatefulGameInterface() {
   if (!state.hasStarted) {
     if (!hasSaveFile) return <AtmosphericIntro onStart={handleAtmosphericIntroStart} />
     return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md shadow-xl border-0">
-          <CardContent className="p-8 text-center">
-            <div className="space-y-3">
-              <Button onClick={initializeGame} size="lg" className="w-full bg-slate-900/40 hover:bg-slate-900/60 backdrop-blur-md border border-white/10 text-white shadow-lg animate-beckon transition-all duration-500">Continue</Button>
-              <Button onClick={() => {
-                // Clear all save data for true reset
-                GameStateManager.nuclearReset()
-                window.location.reload()
-              }} variant="outline" size="lg" className="w-full">Start Over</Button>
+      <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 p-3 sm:p-4 flex items-center justify-center">
+        <div className="max-w-2xl mx-auto text-center">
+          {/* Header */}
+          <h1 className="text-3xl sm:text-4xl font-bold text-slate-100 mb-6">
+            Terminus
+          </h1>
+
+          {/* Welcome back message */}
+          <div className="glass-panel rounded-xl p-6 sm:p-8 mb-8">
+            <p className="text-lg sm:text-xl text-slate-100 leading-relaxed mb-2">
+              Welcome back, traveler.
+            </p>
+            <p className="text-base text-slate-400 leading-relaxed">
+              The station remembers you.
+            </p>
+          </div>
+
+          {/* Buttons */}
+          <div className="space-y-4">
+            <Button
+              onClick={initializeGame}
+              variant="default"
+              size="lg"
+              className="w-full sm:w-auto min-h-[48px] px-8 bg-violet-600 hover:bg-violet-500 text-white font-semibold shadow-lg shadow-violet-900/30"
+            >
+              Continue Journey
+            </Button>
+            <div>
+              <Button
+                onClick={() => {
+                  // Clear all save data for true reset
+                  GameStateManager.nuclearReset()
+                  window.location.reload()
+                }}
+                variant="ghost"
+                size="sm"
+                className="text-slate-400 hover:text-slate-200 hover:bg-white/5"
+              >
+                Start Over
+              </Button>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     )
   }
@@ -2952,7 +2982,7 @@ export default function StatefulGameInterface() {
             {/* Top Row - Title and Navigation */}
             <div className="flex items-center justify-between py-2 border-b border-white/5">
               <Link href="/" className="text-sm font-semibold text-slate-100 hover:text-white transition-colors truncate min-w-0 flex flex-col">
-                <span>Grand Central Terminus</span>
+                <span>Terminus</span>
                 {/* Station Status - Always visible compact dashboard */}
                 <StationStatusBadge gameState={state.gameState} />
               </Link>
@@ -3065,8 +3095,8 @@ export default function StatefulGameInterface() {
                 }
               >
                 <CardContent
-                  className={`p-5 sm:p-8 md:p-10 min-h-[200px] sm:min-h-[300px] max-h-[50vh] sm:max-h-[55vh] overflow-y-auto`}
-                  style={{ WebkitOverflowScrolling: 'touch' }}
+                  className={`p-5 sm:p-8 md:p-10 h-[45vh] sm:h-[50vh] overflow-y-auto`}
+                  style={{ WebkitOverflowScrolling: 'touch', scrollbarGutter: 'stable' }}
                   // Note: Removed text-center for narration - left-align is easier to read (eye hunts for line starts when centered)
                   data-testid="dialogue-content"
                   data-speaker={state.currentNode?.speaker || ''}
@@ -3074,7 +3104,8 @@ export default function StatefulGameInterface() {
 
 
                   {/* Dialogue Card - Dynamic Marquee Effect */}
-                  <Card className={`shadow-lg backdrop-blur-xl relative overflow-hidden transition-all duration-500 ${(() => {
+                  {/* STABILITY: Removed transition-all to prevent container jumping */}
+                  <Card className={`shadow-lg backdrop-blur-xl relative overflow-hidden rounded-xl ${(() => {
                     // 1. Loyalty Event (Amber) - Warm, engaging
                     if (state.activeExperience) {
                       return 'bg-slate-950/80 border-amber-500/40 shadow-[0_0_30px_rgba(245,158,11,0.2)]'
@@ -3210,7 +3241,7 @@ export default function StatefulGameInterface() {
                           The Station Knows You Now
                         </h3>
                         <p className="text-sm text-slate-600 italic mb-4">
-                          Your journey through Grand Central Terminus is complete.
+                          Your journey through Terminus is complete.
                         </p>
                       </div>
                       <div className="space-y-3">
@@ -3272,7 +3303,7 @@ export default function StatefulGameInterface() {
         < AnimatePresence mode="wait" >
           {!isEnding && (
             <footer
-              className="flex-shrink-0 glass-panel mx-3 sm:mx-auto sm:max-w-3xl lg:max-w-4xl z-20"
+              className="flex-shrink-0 glass-panel max-w-4xl mx-auto px-3 sm:px-4 z-20"
               style={{
                 marginTop: '1.5rem',
                 // PC: Raise higher (2.5rem base), Mobile: Keep safe (calc)
@@ -3351,12 +3382,12 @@ export default function StatefulGameInterface() {
         {
           state.error && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm animate-fade-in">
-              <div className="mx-4 max-w-md bg-white rounded-xl shadow-xl border border-red-200 overflow-hidden">
-                <div className="px-6 py-4 bg-red-50 border-b border-red-200">
-                  <h3 className="text-lg font-semibold text-red-800">{state.error.title}</h3>
+              <div className="mx-4 max-w-md bg-slate-900 rounded-xl shadow-xl border border-red-900/50 overflow-hidden">
+                <div className="px-6 py-4 bg-red-950/50 border-b border-red-900/30">
+                  <h3 className="text-lg font-semibold text-red-300">{state.error.title}</h3>
                 </div>
                 <div className="px-6 py-4">
-                  <p className="text-slate-700 mb-4">{state.error.message}</p>
+                  <p className="text-slate-300 mb-4">{state.error.message}</p>
                   <div className="flex gap-3">
                     <Button
                       onClick={() => window.location.reload()}

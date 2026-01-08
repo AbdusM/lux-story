@@ -14,7 +14,7 @@ interface GameHeaderProps {
 export const GameHeader = memo(({ visualAdjustments }: GameHeaderProps) => {
   return (
     <div className="apple-header" style={visualAdjustments.style}>
-      <div className="apple-text-headline">Grand Central Terminus</div>
+      <div className="apple-text-headline">Terminus</div>
       <div className="apple-text-caption">Birmingham Career Exploration</div>
     </div>
   )

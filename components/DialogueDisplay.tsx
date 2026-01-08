@@ -105,12 +105,9 @@ export function DialogueDisplay({
     />
   )
 
-  // D-008: Apply text effect styling from getActiveTextEffects()
-  const content = textEffectClasses ? (
-    <span className={textEffectClasses} style={textEffectStyles}>
-      {rendererContent}
-    </span>
-  ) : rendererContent
+  // D-008: Full-text effects DISABLED - too obstructive
+  // Text effects should only apply to inline words (via RichTextRenderer), not entire blocks
+  const content = rendererContent
 
   return (
     <div

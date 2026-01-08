@@ -81,7 +81,7 @@ function SimulationCard({ sim, index }: { sim: SimulationWithStatus; index: numb
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-0.5">
             <span className={cn(
-              "text-[10px] font-mono uppercase tracking-widest",
+              "text-xs font-mono uppercase tracking-widest",
               sim.isCompleted ? "text-emerald-500/70" : sim.isAvailable ? "text-amber-500/70" : "text-slate-600"
             )}>
               {sim.characterName}
@@ -119,7 +119,7 @@ function SimulationCard({ sim, index }: { sim: SimulationWithStatus; index: numb
         {!isLocked && (
           <div className="mt-3 flex items-center gap-2 flex-wrap">
             <span className={cn(
-              "text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border",
+              "text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded border",
               sim.isCompleted
                 ? "border-emerald-500/20 text-emerald-400/80 bg-emerald-950/30"
                 : "border-amber-500/20 text-amber-400/70 bg-amber-950/20"
@@ -128,7 +128,7 @@ function SimulationCard({ sim, index }: { sim: SimulationWithStatus; index: numb
             </span>
 
             {sim.aiTool && (
-              <span className="text-[9px] font-mono text-slate-500 border border-slate-800 px-2 py-0.5 rounded bg-black/20">
+              <span className="text-xs font-mono text-slate-500 border border-slate-800 px-2 py-0.5 rounded bg-black/20">
                 {sim.aiTool}
               </span>
             )}
@@ -139,7 +139,7 @@ function SimulationCard({ sim, index }: { sim: SimulationWithStatus; index: numb
         {sim.isAvailable && !sim.isCompleted && (
           <div className="mt-3 flex items-center gap-1.5 text-amber-400/60">
             <Play className="w-3 h-3" />
-            <span className="text-[10px] font-medium uppercase tracking-wider">
+            <span className="text-xs font-medium uppercase tracking-wider">
               Available to play
             </span>
           </div>

@@ -102,7 +102,7 @@ export function MasteryView() {
 
                                     {isUnlocked && (
                                         <div className="pt-2">
-                                            <span className="text-[9px] uppercase tracking-wider text-amber-500/80 font-medium">
+                                            <span className="text-xs uppercase tracking-wider text-amber-500/80 font-medium">
                                                 Active
                                             </span>
                                         </div>
@@ -126,7 +126,7 @@ export function MasteryView() {
                     <p className="text-sm text-slate-400">
                         Milestones earned through your pattern development.
                     </p>
-                    <p className="text-[10px] text-slate-500">
+                    <p className="text-xs text-slate-500">
                         {earnedAchievements.length} / {PATTERN_ACHIEVEMENTS.length} unlocked
                     </p>
                 </div>
@@ -159,14 +159,14 @@ export function MasteryView() {
                                 </h4>
                                 <p
                                     className={cn(
-                                        "text-[10px] leading-tight",
+                                        "text-xs leading-tight",
                                         isEarned ? "text-slate-400" : "text-slate-600"
                                     )}
                                 >
                                     {achievement.description}
                                 </p>
                                 {isEarned && achievement.reward && (
-                                    <p className="text-[9px] text-purple-400/80 mt-1.5 italic">
+                                    <p className="text-xs text-purple-400/80 mt-1.5 italic">
                                         "{achievement.reward}"
                                     </p>
                                 )}

@@ -124,7 +124,7 @@ function QuestCard({ quest, index, onSelect }: { quest: Quest; index: number; on
           </div>
           <div className="flex flex-col items-start">
             <span className={cn(
-              "text-[10px] font-mono tracking-widest uppercase opacity-70 mb-0.5",
+              "text-xs font-mono tracking-widest uppercase opacity-70 mb-0.5",
               status.color
             )}>
               {status.label}
@@ -159,14 +159,14 @@ function QuestCard({ quest, index, onSelect }: { quest: Quest; index: number; on
 
         {/* Footer Meta */}
         <div className="mt-3 pt-3 border-t border-white/5 flex items-center justify-between">
-          <div className="flex items-center gap-1.5 text-[10px] text-slate-500 uppercase tracking-widest font-bold">
+          <div className="flex items-center gap-1.5 text-xs text-slate-500 uppercase tracking-widest font-bold">
             <TypeIcon className="w-3 h-3 opacity-70" />
             <span>{type.label}</span>
           </div>
 
           {/* XP / Reward Hint */}
           {quest.status !== 'locked' && !isCompleted && (
-            <span className="text-[9px] font-mono text-slate-600 border border-slate-800 px-1.5 py-0.5 rounded bg-black/20">
+            <span className="text-xs font-mono text-slate-600 border border-slate-800 px-1.5 py-0.5 rounded bg-black/20">
               ID: {quest.id.split('_').pop()?.toUpperCase() ?? 'UNK'}
             </span>
           )}

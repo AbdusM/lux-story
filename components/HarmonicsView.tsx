@@ -95,7 +95,7 @@ export function HarmonicsView({ onOrbSelect }: HarmonicsViewProps) {
                 <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-slate-300">
                     Resonance Field
                 </h3>
-                <p className="text-[10px] text-slate-400">
+                <p className="text-xs text-slate-400">
                     Your patterns echoing in the void
                 </p>
             </div>
@@ -113,7 +113,7 @@ export function HarmonicsView({ onOrbSelect }: HarmonicsViewProps) {
                 ))}
             </div>
 
-            <p className="relative z-10 text-[9px] text-slate-500 font-mono text-center">
+            <p className="relative z-10 text-xs text-slate-500 font-mono text-center">
                 Tap orbs to inspect • Tilt device to disturb
             </p>
         </div>
@@ -229,7 +229,7 @@ function HarmonicOrb({ orb, index, onSelect, careerMatch }: {
                             transition={{ duration: 0.5 }}
                         />
                     </div>
-                    <p className="text-[11px] text-slate-400 font-mono mt-1">
+                    <p className="text-xs text-slate-400 font-mono mt-1">
                         {orb.fillPercent}% resonance
                     </p>
                 </div>
@@ -238,7 +238,7 @@ function HarmonicOrb({ orb, index, onSelect, careerMatch }: {
                 {careerMatch && careerMatch.progress > 0 && (
                     <div className="mt-2 flex items-center justify-center gap-1.5 bg-slate-900/40 px-2 py-1 rounded-full border border-white/5 backdrop-blur-sm">
                         <Briefcase className="w-3.5 h-3.5 text-amber-500/80" />
-                        <span className={`text-[11px] truncate max-w-[100px] ${careerMatch.isUnlocked ? 'text-amber-300' : 'text-slate-400'}`}>
+                        <span className={`text-xs truncate max-w-[100px] ${careerMatch.isUnlocked ? 'text-amber-300' : 'text-slate-400'}`}>
                             {careerMatch.careerHint}
                         </span>
                     </div>

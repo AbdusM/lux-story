@@ -51,6 +51,8 @@ export function SkillConstellationGraph({ skills, onOpenDetail }: SkillConstella
                         const target = getSkillState(targetId)
 
                         if (!source || !target) return null
+                        // Skip if positions undefined (defensive guard)
+                        if (source.position?.x === undefined || target.position?.x === undefined) return null
 
                         // Show connection if EITHER node is awakened
                         const isVisible = source.state !== 'dormant' || target.state !== 'dormant'

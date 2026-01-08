@@ -96,7 +96,7 @@ export function ProgressIndicator({ className }: ProgressIndicatorProps) {
       </div>
 
       {/* Stats breakdown (hidden on mobile for space) */}
-      <div className="hidden sm:flex gap-3 text-[10px] text-slate-400">
+      <div className="hidden sm:flex gap-3 text-xs text-slate-400">
         <span title="Characters met">{progress.charactersMet}/{progress.maxCharacters} 👤</span>
         <span title="Scenes visited">{progress.scenesVisited} 📍</span>
       </div>

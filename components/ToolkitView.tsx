@@ -24,7 +24,7 @@ export function ToolkitView() {
     return (
         <div className="relative p-6 pb-20 space-y-8 min-h-full">
             {/* Background Schematic Pattern */}
-            <div className="absolute inset-0 opacity-[0.05] pointer-events-none bg-[url('/hex-pattern.svg')] bg-[size:50px_50px]" />
+            <div className="absolute inset-0 opacity-[0.05] pointer-events-none bg-[url('/grid-pattern.svg')] bg-[size:50px_50px]" />
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500/0 via-emerald-500/50 to-emerald-500/0" />
 
             <header className="relative">
@@ -112,10 +112,10 @@ function ToolSchematic({ tool, isUnlocked, index }: { tool: AITool, isUnlocked: 
                                 {isUnlocked && <Shield className="w-3 h-3 text-emerald-500" />}
                             </div>
                             <div className="flex items-center gap-3">
-                                <span className="text-[10px] uppercase font-bold tracking-widest text-slate-500 bg-slate-900 px-2 py-0.5 border border-slate-800 rounded-sm">
+                                <span className="text-sm uppercase font-bold tracking-widest text-slate-500 bg-slate-900 px-2 py-0.5 border border-slate-800 rounded-sm">
                                     REQ: {tool.requiredPattern} {tool.requiredLevel}
                                 </span>
-                                <span className="text-[9px] font-mono text-slate-600">
+                                <span className="text-xs font-mono text-slate-600">
                                     v.{tool.requiredLevel}.0.1
                                 </span>
                             </div>
@@ -124,7 +124,7 @@ function ToolSchematic({ tool, isUnlocked, index }: { tool: AITool, isUnlocked: 
 
                     {/* Status indicator */}
                     <div className={cn(
-                        "px-2 py-1 text-[9px] font-bold uppercase tracking-widest border",
+                        "px-2 py-1 text-xs font-bold uppercase tracking-widest border",
                         isUnlocked
                             ? "border-emerald-500/30 text-emerald-400 bg-emerald-950/30"
                             : "border-slate-800 text-slate-600 bg-black/50"
@@ -147,14 +147,14 @@ function ToolSchematic({ tool, isUnlocked, index }: { tool: AITool, isUnlocked: 
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-slate-800/50 border border-slate-800">
                                 <div className="bg-slate-950 p-3 relative group/mod">
                                     <div className="absolute inset-0 bg-emerald-500/5 opacity-0 group-hover/mod:opacity-100 transition-opacity" />
-                                    <h4 className="text-[9px] text-emerald-500/70 uppercase tracking-widest font-bold mb-1 font-mono">
+                                    <h4 className="text-xs text-emerald-500/70 uppercase tracking-widest font-bold mb-1 font-mono">
                                         {'// STATION_PROTOCOL'}
                                     </h4>
                                     <p className="text-xs text-slate-400 font-mono">{tool.luxParallel}</p>
                                 </div>
                                 <div className="bg-slate-950 p-3 relative group/mod">
                                     <div className="absolute inset-0 bg-cyan-500/5 opacity-0 group-hover/mod:opacity-100 transition-opacity" />
-                                    <h4 className="text-[9px] text-cyan-500/70 uppercase tracking-widest font-bold mb-1 font-mono">
+                                    <h4 className="text-xs text-cyan-500/70 uppercase tracking-widest font-bold mb-1 font-mono">
                                         {'// REALITY_LINK'}
                                     </h4>
                                     <p className="text-xs text-slate-400">{tool.realWorldUse}</p>
@@ -170,7 +170,7 @@ function ToolSchematic({ tool, isUnlocked, index }: { tool: AITool, isUnlocked: 
                                         <Lock className="w-4 h-4 text-slate-600" />
                                         <div>
                                             <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider font-mono">Golden Prompt Encrypted</h4>
-                                            <p className="text-[10px] text-slate-600">Run simulation to decrypt artifact.</p>
+                                            <p className="text-sm text-slate-600">Run simulation to decrypt artifact.</p>
                                         </div>
                                     </div>
                                 )
@@ -204,13 +204,13 @@ function GoldenPromptSchematic({ prompt }: { prompt: NonNullable<AITool['goldenP
             <div className="px-3 py-1.5 bg-amber-950/20 border-b border-amber-500/10 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                     <Sparkles className="w-3 h-3 text-amber-400" />
-                    <span className="text-[10px] font-bold text-amber-500 uppercase tracking-widest font-mono">
+                    <span className="text-sm font-bold text-amber-500 uppercase tracking-widest font-mono">
                         GOLDEN_ARTIFACT.txt
                     </span>
                 </div>
                 <button
                     onClick={handleCopy}
-                    className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-wider text-amber-400/70 hover:text-amber-200 transition-colors"
+                    className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-amber-400/70 hover:text-amber-200 transition-colors"
                 >
                     {copied ? "COPIED" : "EXTRACT"}
                 </button>
@@ -219,13 +219,13 @@ function GoldenPromptSchematic({ prompt }: { prompt: NonNullable<AITool['goldenP
             <div className="p-3">
                 <h4 className="text-xs font-bold text-slate-300 mb-2">{prompt.title}</h4>
                 <div className="relative">
-                    <pre className="text-[10px] font-mono leading-relaxed text-amber-100/70 whitespace-pre-wrap break-words border-l-2 border-amber-500/20 pl-3">
+                    <pre className="text-sm font-mono leading-relaxed text-amber-100/70 whitespace-pre-wrap break-words border-l-2 border-amber-500/20 pl-3">
                         {prompt.content}
                     </pre>
                 </div>
                 <div className="mt-3 pt-2 border-t border-white/5 flex items-center bg-black/20 p-1.5">
-                    <span className="text-[9px] text-slate-500 uppercase tracking-wider font-bold mr-2">CONTEXT:</span>
-                    <p className="text-[10px] text-slate-400 italic">
+                    <span className="text-xs text-slate-500 uppercase tracking-wider font-bold mr-2">CONTEXT:</span>
+                    <p className="text-sm text-slate-400 italic">
                         {prompt.usageContext}
                     </p>
                 </div>

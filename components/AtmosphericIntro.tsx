@@ -39,24 +39,24 @@ export function AtmosphericIntro({ onStart }: AtmosphericIntroProps) {
   }, [])
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 p-3 sm:p-4 flex items-center justify-center">
+    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 p-3 sm:p-4 flex items-center justify-center">
       <div className="max-w-2xl mx-auto text-center">
 
-        {/* Header - Fox Theatre Marquee Title */}
+        {/* Header */}
         <h1
-          className="text-3xl sm:text-4xl font-bold text-slate-900 mb-8"
+          className="text-3xl sm:text-4xl font-bold text-slate-100 mb-8"
           data-testid="intro-title"
         >
-          Grand Central Terminus
+          Terminus
         </h1>
 
         {/* Value proposition */}
-        <div className="bg-white border border-slate-200 rounded-lg p-6 sm:p-8 shadow-sm mb-8">
-          <p className="text-lg sm:text-xl text-slate-800 leading-relaxed mb-4">
+        <div className="glass-panel rounded-xl p-6 sm:p-8 mb-8">
+          <p className="text-lg sm:text-xl text-slate-100 leading-relaxed mb-4">
             Play. Learn what moves you.
           </p>
 
-          <p className="text-base text-slate-600 leading-relaxed">
+          <p className="text-base text-slate-400 leading-relaxed">
             What you discover lights the way for others.
           </p>
         </div>
@@ -64,16 +64,16 @@ export function AtmosphericIntro({ onStart }: AtmosphericIntroProps) {
         {/* Rotating Quote */}
         <p className="text-sm italic text-slate-500 mb-6">
           {quote.text}
-          <span className="block mt-1 not-italic">— {quote.author}</span>
+          <span className="block mt-1 not-italic text-slate-400">— {quote.author}</span>
         </p>
 
-        {/* CTA Button - Fox Theatre Marquee */}
+        {/* CTA Button */}
         <Button
           onClick={onStart}
           variant="default"
           size="lg"
-          className="w-full sm:w-auto min-h-[48px] px-8"
-          aria-label="Begin your journey at Grand Central Terminus"
+          className="w-full sm:w-auto min-h-[48px] px-8 bg-violet-600 hover:bg-violet-500 text-white font-semibold shadow-lg shadow-violet-900/30"
+          aria-label="Begin your journey at Terminus"
           data-testid="intro-cta"
         >
           Enter the Station

@@ -176,7 +176,7 @@ export function OrbDetailPanel({ patternType, onClose }: OrbDetailPanelProps) {
                                                     {ability.name}
                                                 </h4>
                                                 {!isUnlocked && (
-                                                    <span className="text-[9px] uppercase font-bold text-slate-600 bg-slate-800 px-1.5 py-0.5 rounded">
+                                                    <span className="text-xs uppercase font-bold text-slate-600 bg-slate-800 px-1.5 py-0.5 rounded">
                                                         {tierMeta.minOrbs} Orbs
                                                     </span>
                                                 )}
@@ -202,7 +202,7 @@ export function OrbDetailPanel({ patternType, onClose }: OrbDetailPanelProps) {
                                                         />
                                                     </div>
                                                     {isVeryClose && (
-                                                        <p className="text-[9px] text-amber-500/80 mt-1 font-medium animate-pulse">
+                                                        <p className="text-xs text-amber-500/80 mt-1 font-medium animate-pulse">
                                                             Close to awakening...
                                                         </p>
                                                     )}

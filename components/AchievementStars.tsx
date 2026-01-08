@@ -62,7 +62,7 @@ export function AchievementStars() {
                                     <motion.div
                                         initial={{ opacity: 0, height: 0 }}
                                         animate={{ opacity: 1, height: 'auto' }}
-                                        className="text-[9px] text-slate-500 leading-tight"
+                                        className="text-xs text-slate-500 leading-tight"
                                     >
                                         {achievement.description}
                                     </motion.div>

@@ -18,7 +18,7 @@ export function CharacterIntro({ onStart, onContinue, hasSavedProgress }: Charac
           <div className="mx-auto w-24 h-24 bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 rounded-full flex items-center justify-center mb-4">
             <span className="text-4xl">🚂</span>
           </div>
-          <CardTitle className="text-2xl">Grand Central Terminus</CardTitle>
+          <CardTitle className="text-2xl">Terminus</CardTitle>
           <CardDescription className="text-lg">Career Exploration Platform</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">

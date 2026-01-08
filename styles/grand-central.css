@@ -303,24 +303,25 @@
 }
 
 /* Enhanced choice button styling for career themes */
+/* DARK THEME: Use dark slate backgrounds instead of light white gradients */
 .choice-button {
   position: relative;
   transition: all 0.4s ease;
   border-radius: 8px;
-  background: linear-gradient(135deg, 
-    rgba(255,255,255,0.05) 0%, 
-    rgba(255,255,255,0.02) 100%);
+  background: linear-gradient(135deg,
+    rgba(15, 23, 42, 0.8) 0%,
+    rgba(30, 41, 59, 0.7) 100%);
   border: 1px solid rgba(255,255,255,0.1);
   backdrop-filter: blur(10px);
 }
 
 .choice-button:hover {
   background: linear-gradient(135deg,
-    rgba(255,255,255,0.08) 0%,
-    rgba(255,255,255,0.04) 100%);
+    rgba(30, 41, 59, 0.9) 0%,
+    rgba(51, 65, 85, 0.8) 100%);
   border-color: rgba(255,255,255,0.2);
   /* transform: translateY(-2px); -- REMOVED: Framer Motion handles transforms */
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 }
 
 /* Career theme choice indicators */
@@ -1006,7 +1007,7 @@
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 0;
+  z-index: -1; /* Behind all content */
   background: radial-gradient(
     ellipse 120% 80% at 50% 100%,
     hsla(var(--character-hue, 0), var(--character-sat, 0%), 15%, 0.25) 0%,

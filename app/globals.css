@@ -606,8 +606,8 @@ main {
   /* Slightly softer corners */
   --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 
-  /* Dialogue text - WCAG AA compliant (8:1 on dark bg) */
-  --text-dialogue: rgba(235, 205, 160, 0.93);
+  /* Dialogue text - WCAG AA compliant, slightly brighter for readability */
+  --text-dialogue: rgba(245, 220, 180, 0.96);
 
   /* Pattern Colors - MUST match lib/patterns.ts canonical source */
   --pattern-analytical: #3B82F6;

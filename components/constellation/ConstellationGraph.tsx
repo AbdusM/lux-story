@@ -89,6 +89,8 @@ export function ConstellationGraph({ characters, onOpenDetail }: ConstellationGr
                         const source = getCharState(sourceId)
                         const target = getCharState(targetId)
                         if (!source || !target) return null
+                        // Skip if positions undefined (defensive guard)
+                        if (source.position?.x === undefined || target.position?.x === undefined) return null
 
                         const bothMet = source.hasMet && target.hasMet
 
@@ -121,6 +123,8 @@ export function ConstellationGraph({ characters, onOpenDetail }: ConstellationGr
                         const from = getCharState(edge.fromCharacterId)
                         const to = getCharState(edge.toCharacterId)
                         if (!from || !to) return null
+                        // Skip if positions undefined (defensive guard)
+                        if (from.position?.x === undefined || to.position?.x === undefined) return null
 
                         // Interaction Logic
                         const isConnectedToHover = hoveredId === edge.fromCharacterId || hoveredId === edge.toCharacterId
@@ -154,6 +158,9 @@ export function ConstellationGraph({ characters, onOpenDetail }: ConstellationGr
                 {/* --- NODES LAYER (3D Orbs) --- */}
                 <g className="nodes">
                     {characters.map((char) => {
+                        // Skip characters without valid positions (defensive guard)
+                        if (char.position?.x === undefined || char.position?.y === undefined) return null
+
                         const isSelected = selectedId === char.id
                         const isHovered = hoveredId === char.id
                         const colors = CHARACTER_COLORS[char.color]
@@ -272,7 +279,7 @@ export function ConstellationGraph({ characters, onOpenDetail }: ConstellationGr
 
             {/* Scanning Text (Retro) */}
             <div className="absolute bottom-6 text-center pointer-events-none opacity-30">
-                <p className="text-[10px] text-slate-500 font-mono tracking-[0.2em] uppercase">
+                <p className="text-xs text-slate-500 font-mono tracking-[0.2em] uppercase">
                     {selectedChar ? `Target: ${selectedChar.name}` : "Scanning Constellation..."}
                 </p>
             </div>
