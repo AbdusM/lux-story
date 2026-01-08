@@ -657,6 +657,861 @@ export const PATTERN_VOICE_LIBRARY: PatternVoiceEntry[] = [
     condition: { characterId: 'isaiah' },
     voices: ["Systems that outlast their builders. That's the real philanthropy."],
     style: 'whisper'
+  },
+
+  // ============================================
+  // PHASE 1: CORE CHARACTER EXPANSION (5/5 Coverage)
+  // devon, rohan, maya, marcus, elena
+  // ============================================
+
+  // ============================================
+  // DEVON - The Systems Thinker (was 1/5, adding 4)
+  // Has: analytical
+  // Adding: patience, exploring, helping, building
+  // ============================================
+  {
+    pattern: 'patience',
+    minLevel: 5,
+    trigger: 'before_choices',
+    condition: { characterId: 'devon' },
+    voices: [
+      "Complex systems reveal themselves slowly. Let him show you.",
+      "He's debugging in real-time. Give him space.",
+      "The architecture needs time to explain itself."
+    ],
+    style: 'observation'
+  },
+  {
+    pattern: 'exploring',
+    minLevel: 4,
+    trigger: 'node_enter',
+    condition: { characterId: 'devon' },
+    voices: [
+      "There are subsystems here you haven't mapped yet.",
+      "Ask him about the edge cases. That's where it gets interesting.",
+      "Every system has hidden doors. Find them."
+    ],
+    style: 'urge'
+  },
+  {
+    pattern: 'helping',
+    minLevel: 5,
+    trigger: 'before_choices',
+    condition: { characterId: 'devon' },
+    voices: [
+      "He's carrying more than code. See the person behind the systems.",
+      "Engineers need support too. Offer it.",
+      "His precision hides something softer. Meet him there."
+    ],
+    style: 'whisper'
+  },
+  {
+    pattern: 'building',
+    minLevel: 4,
+    trigger: 'node_enter',
+    condition: { characterId: 'devon' },
+    voices: [
+      "He builds to solve. So do you.",
+      "Infrastructure isn't glamorous. It's essential. He gets that.",
+      "The foundation he's laying will hold weight. Appreciate it."
+    ],
+    style: 'observation'
+  },
+
+  // ============================================
+  // ROHAN - The Deep Tech Philosopher (was 1/5, adding 4)
+  // Has: analytical
+  // Adding: patience, exploring, helping, building
+  // ============================================
+  {
+    pattern: 'patience',
+    minLevel: 5,
+    trigger: 'node_enter',
+    condition: { characterId: 'rohan' },
+    voices: [
+      "His thoughts spiral deep. Follow them slowly.",
+      "Introspection takes time. Honor that.",
+      "The pause before his answer holds meaning."
+    ],
+    style: 'whisper'
+  },
+  {
+    pattern: 'exploring',
+    minLevel: 4,
+    trigger: 'before_choices',
+    condition: { characterId: 'rohan' },
+    voices: [
+      "He's questioning everything. Join him.",
+      "There's a rabbit hole here. Worth falling into.",
+      "Philosophy disguised as engineering. Dig deeper."
+    ],
+    style: 'urge'
+  },
+  {
+    pattern: 'helping',
+    minLevel: 5,
+    trigger: 'before_choices',
+    condition: { characterId: 'rohan' },
+    voices: [
+      "Brilliance can be lonely. Acknowledge his.",
+      "He needs a witness, not a judge.",
+      "Sometimes the sharpest minds need the softest support."
+    ],
+    style: 'observation'
+  },
+  {
+    pattern: 'building',
+    minLevel: 4,
+    trigger: 'node_enter',
+    condition: { characterId: 'rohan' },
+    voices: [
+      "He's building something no one's seen before.",
+      "Innovation requires construction. He's doing both.",
+      "Theory becomes reality when you build it. He knows."
+    ],
+    style: 'urge'
+  },
+
+  // ============================================
+  // MAYA - The Tech Innovator (was 1/5, adding 4)
+  // Has: exploring
+  // Adding: analytical, patience, helping, building
+  // ============================================
+  {
+    pattern: 'analytical',
+    minLevel: 5,
+    trigger: 'before_choices',
+    condition: { characterId: 'maya' },
+    voices: [
+      "Her code has logic you can follow. Trace it.",
+      "She's optimizing something. Figure out what.",
+      "The pattern in her work mirrors your thinking."
+    ],
+    style: 'urge'
+  },
+  {
+    pattern: 'patience',
+    minLevel: 4,
+    trigger: 'node_enter',
+    condition: { characterId: 'maya' },
+    voices: [
+      "Family expectations are heavy. She's carrying them.",
+      "Pressure makes diamonds. Or breaks things. Wait and see.",
+      "Her secrets unfold on their own timeline."
+    ],
+    style: 'whisper'
+  },
+  {
+    pattern: 'helping',
+    minLevel: 5,
+    trigger: 'before_choices',
+    condition: { characterId: 'maya' },
+    voices: [
+      "She's proving something to people who aren't here.",
+      "Success and loneliness often travel together. She knows.",
+      "Behind the innovation is someone who needs to be seen."
+    ],
+    style: 'observation'
+  },
+  {
+    pattern: 'building',
+    minLevel: 4,
+    trigger: 'node_enter',
+    condition: { characterId: 'maya' },
+    voices: [
+      "She's creating something real. Respect the craft.",
+      "Every line of code is an act of construction.",
+      "Builders recognize builders. You see each other."
+    ],
+    style: 'urge'
+  },
+
+  // ============================================
+  // MARCUS - The Medical Tech (was 1/5, adding 4)
+  // Has: helping
+  // Adding: analytical, patience, exploring, building
+  // ============================================
+  {
+    pattern: 'analytical',
+    minLevel: 5,
+    trigger: 'before_choices',
+    condition: { characterId: 'marcus' },
+    voices: [
+      "Diagnosis is pattern recognition. He's doing it constantly.",
+      "Medical precision requires analytical clarity. Match his.",
+      "He sees symptoms. You see systems. Same skill."
+    ],
+    style: 'observation'
+  },
+  {
+    pattern: 'patience',
+    minLevel: 4,
+    trigger: 'node_enter',
+    condition: { characterId: 'marcus' },
+    voices: [
+      "Healing takes time. He's learned that the hard way.",
+      "Crisis responders know how to wait. He's teaching you.",
+      "The calm in his voice is earned. Listen to it."
+    ],
+    style: 'whisper'
+  },
+  {
+    pattern: 'exploring',
+    minLevel: 5,
+    trigger: 'before_choices',
+    condition: { characterId: 'marcus' },
+    voices: [
+      "There are stories in these walls he hasn't told yet.",
+      "Healthcare has hidden corners. He knows them all.",
+      "Ask about the ones he couldn't save. That's where the truth is."
+    ],
+    style: 'urge'
+  },
+  {
+    pattern: 'building',
+    minLevel: 4,
+    trigger: 'node_enter',
+    condition: { characterId: 'marcus' },
+    voices: [
+      "He's building something bigger than patient care.",
+      "Systems that save lives. That's his architecture.",
+      "Every protocol he creates is a future crisis prevented."
+    ],
+    style: 'observation'
+  },
+
+  // ============================================
+  // ELENA - The Archivist (was 1/5, adding 4)
+  // Has: building
+  // Adding: analytical, patience, exploring, helping
+  // ============================================
+  {
+    pattern: 'analytical',
+    minLevel: 5,
+    trigger: 'before_choices',
+    condition: { characterId: 'elena' },
+    voices: [
+      "She categorizes everything. That's how she makes sense of chaos.",
+      "Information architecture. She's built it in her mind.",
+      "Her filing system has logic. Understand it."
+    ],
+    style: 'observation'
+  },
+  {
+    pattern: 'patience',
+    minLevel: 4,
+    trigger: 'node_enter',
+    condition: { characterId: 'elena' },
+    voices: [
+      "Archives reward the patient. She'll show you.",
+      "History reveals itself slowly. She's used to waiting.",
+      "The past isn't going anywhere. Neither should you."
+    ],
+    style: 'whisper'
+  },
+  {
+    pattern: 'exploring',
+    minLevel: 5,
+    trigger: 'before_choices',
+    condition: { characterId: 'elena' },
+    voices: [
+      "There are secrets in her collection. Uncover them.",
+      "Every archive has hidden treasures. Ask her.",
+      "She knows where the interesting things are buried."
+    ],
+    style: 'urge'
+  },
+  {
+    pattern: 'helping',
+    minLevel: 4,
+    trigger: 'node_enter',
+    condition: { characterId: 'elena' },
+    voices: [
+      "Preservation is an act of care. She understands that.",
+      "She saves things so others won't lose them.",
+      "Behind the organization is someone who wants to protect."
+    ],
+    style: 'observation'
+  },
+
+  // ============================================
+  // PHASE 2: SECONDARY CHARACTER EXPANSION (5/5 Coverage)
+  // grace, kai, tess, asha, silas, lira, zara, yaquin, samuel, jordan
+  // ============================================
+
+  // ============================================
+  // GRACE - Healthcare Operations (was 2/5, adding 3)
+  // Has: patience, helping
+  // Adding: analytical, exploring, building
+  // ============================================
+  {
+    pattern: 'analytical',
+    minLevel: 5,
+    trigger: 'before_choices',
+    condition: { characterId: 'grace' },
+    voices: [
+      "She tracks patterns in patient outcomes. That's data.",
+      "Healthcare logistics is systems thinking. She knows.",
+      "Her intuition is just analysis she doesn't explain."
+    ],
+    style: 'observation'
+  },
+  {
+    pattern: 'exploring',
+    minLevel: 4,
+    trigger: 'node_enter',
+    condition: { characterId: 'grace' },
+    voices: [
+      "There's more to her story than bedside manner.",
+      "The quiet ones hold the deepest mysteries.",
+      "Ask her about what she's seen. If you're ready."
+    ],
+    style: 'urge'
+  },
+  {
+    pattern: 'building',
+    minLevel: 5,
+    trigger: 'before_choices',
+    condition: { characterId: 'grace' },
+    voices: [
+      "She builds bridges between suffering and healing.",
+      "Every routine she creates saves someone later.",
+      "Steady hands build steady systems."
+    ],
+    style: 'whisper'
+  },
+
+  // ============================================
+  // KAI - Safety Specialist (was 2/5, adding 3)
+  // Has: analytical, patience
+  // Adding: exploring, helping, building
+  // ============================================
+  {
+    pattern: 'exploring',
+    minLevel: 4,
+    trigger: 'node_enter',
+    condition: { characterId: 'kai' },
+    voices: [
+      "Danger lurks in overlooked corners. He finds them.",
+      "Safety requires knowing what can go wrong. Explore it.",
+      "He's mapped every risk. Ask him about the interesting ones."
+    ],
+    style: 'urge'
+  },
+  {
+    pattern: 'helping',
+    minLevel: 5,
+    trigger: 'before_choices',
+    condition: { characterId: 'kai' },
+    voices: [
+      "Protection is love expressed through vigilance.",
+      "He keeps people safe because he cares. That's it.",
+      "Every protocol comes from caring about someone."
+    ],
+    style: 'observation'
+  },
+  {
+    pattern: 'building',
+    minLevel: 4,
+    trigger: 'node_enter',
+    condition: { characterId: 'kai' },
+    voices: [
+      "Safety systems don't build themselves. He does.",
+      "Prevention is construction. He's an architect of it.",
+      "Every guard rail he installs is a future saved."
+    ],
+    style: 'whisper'
+  },
+
+  // ============================================
+  // TESS - Education Founder (was 2/5, adding 3)
+  // Has: analytical, building
+  // Adding: patience, exploring, helping
+  // ============================================
+  {
+    pattern: 'patience',
+    minLevel: 5,
+    trigger: 'node_enter',
+    condition: { characterId: 'tess' },
+    voices: [
+      "Education is slow work. She's accepted that.",
+      "Growth doesn't rush. She's learned to wait.",
+      "The seeds she plants won't bloom for years. She plants anyway."
+    ],
+    style: 'whisper'
+  },
+  {
+    pattern: 'exploring',
+    minLevel: 4,
+    trigger: 'before_choices',
+    condition: { characterId: 'tess' },
+    voices: [
+      "Her curriculum has hidden depths. Discover them.",
+      "What drives someone to teach? Ask her.",
+      "Every educator has a story about the one who almost didn't make it."
+    ],
+    style: 'urge'
+  },
+  {
+    pattern: 'helping',
+    minLevel: 5,
+    trigger: 'before_choices',
+    condition: { characterId: 'tess' },
+    voices: [
+      "Teaching is service dressed as profession.",
+      "She's invested in futures she'll never see.",
+      "Every student is a bet on the world getting better."
+    ],
+    style: 'observation'
+  },
+
+  // ============================================
+  // ASHA - Conflict Resolution (was 2/5, adding 3)
+  // Has: exploring, building
+  // Adding: analytical, patience, helping
+  // ============================================
+  {
+    pattern: 'analytical',
+    minLevel: 5,
+    trigger: 'before_choices',
+    condition: { characterId: 'asha' },
+    voices: [
+      "She reads the room like data. Every tension catalogued.",
+      "Mediation requires understanding all perspectives. She does.",
+      "The pattern in conflict is always fear. She sees it."
+    ],
+    style: 'observation'
+  },
+  {
+    pattern: 'patience',
+    minLevel: 4,
+    trigger: 'node_enter',
+    condition: { characterId: 'asha' },
+    voices: [
+      "Resolution can't be rushed. She knows the cost of trying.",
+      "She sits with discomfort so others don't have to.",
+      "Peace takes longer than war. She's committed to the timeline."
+    ],
+    style: 'whisper'
+  },
+  {
+    pattern: 'helping',
+    minLevel: 5,
+    trigger: 'before_choices',
+    condition: { characterId: 'asha' },
+    voices: [
+      "She stands between people and their worst impulses.",
+      "Conflict resolution is care work with higher stakes.",
+      "Every bridge she builds saves someone from burning one."
+    ],
+    style: 'urge'
+  },
+
+  // ============================================
+  // SILAS - Advanced Manufacturing (was 2/5, adding 3)
+  // Has: patience, building
+  // Adding: analytical, exploring, helping
+  // ============================================
+  {
+    pattern: 'analytical',
+    minLevel: 5,
+    trigger: 'before_choices',
+    condition: { characterId: 'silas' },
+    voices: [
+      "Machines don't lie. Neither does he.",
+      "He diagnoses problems by sound. That's pattern recognition.",
+      "Efficiency is a form of elegance. He sees it everywhere."
+    ],
+    style: 'observation'
+  },
+  {
+    pattern: 'exploring',
+    minLevel: 4,
+    trigger: 'node_enter',
+    condition: { characterId: 'silas' },
+    voices: [
+      "The factory floor has stories the office never hears.",
+      "What happens when the machines stop? Ask him.",
+      "There's dignity in his work most people miss. Find it."
+    ],
+    style: 'urge'
+  },
+  {
+    pattern: 'helping',
+    minLevel: 5,
+    trigger: 'before_choices',
+    condition: { characterId: 'silas' },
+    voices: [
+      "He keeps the line running so families get paid.",
+      "Skilled trades support entire communities. He knows.",
+      "Behind every functioning machine is someone who cares."
+    ],
+    style: 'whisper'
+  },
+
+  // ============================================
+  // LIRA - Communications / Sound Design (was 2/5, adding 3)
+  // Has: helping, exploring
+  // Adding: analytical, patience, building
+  // ============================================
+  {
+    pattern: 'analytical',
+    minLevel: 5,
+    trigger: 'before_choices',
+    condition: { characterId: 'lira' },
+    voices: [
+      "Sound has structure. She deconstructs it.",
+      "Every frequency carries information. She reads it.",
+      "Her ear catches patterns others miss entirely."
+    ],
+    style: 'observation'
+  },
+  {
+    pattern: 'patience',
+    minLevel: 4,
+    trigger: 'node_enter',
+    condition: { characterId: 'lira' },
+    voices: [
+      "The right sound takes time to find. She waits for it.",
+      "Silence teaches as much as noise. She listens to both.",
+      "Music rewards those who can be still."
+    ],
+    style: 'whisper'
+  },
+  {
+    pattern: 'building',
+    minLevel: 5,
+    trigger: 'before_choices',
+    condition: { characterId: 'lira' },
+    voices: [
+      "Soundscapes are architecture for the ears.",
+      "She constructs experiences out of thin air.",
+      "Every mix is a structure built from vibrations."
+    ],
+    style: 'urge'
+  },
+
+  // ============================================
+  // ZARA - Data Ethics (was 2/5, adding 3)
+  // Has: analytical, building
+  // Adding: patience, exploring, helping
+  // ============================================
+  {
+    pattern: 'patience',
+    minLevel: 5,
+    trigger: 'node_enter',
+    condition: { characterId: 'zara' },
+    voices: [
+      "Ethics can't be rushed. She knows the cost of shortcuts.",
+      "The right answer takes longer than the convenient one.",
+      "She's played the long game before. She'll do it again."
+    ],
+    style: 'whisper'
+  },
+  {
+    pattern: 'exploring',
+    minLevel: 4,
+    trigger: 'before_choices',
+    condition: { characterId: 'zara' },
+    voices: [
+      "What's the data really hiding? She'll help you see.",
+      "Ethics requires asking uncomfortable questions. Ask them.",
+      "The edge cases reveal the true cost. She knows them all."
+    ],
+    style: 'urge'
+  },
+  {
+    pattern: 'helping',
+    minLevel: 5,
+    trigger: 'before_choices',
+    condition: { characterId: 'zara' },
+    voices: [
+      "She protects people from algorithms that don't see them.",
+      "Data ethics is care work at scale.",
+      "Behind every policy she writes is someone she's trying to save."
+    ],
+    style: 'observation'
+  },
+
+  // ============================================
+  // YAQUIN - EdTech Creator (was 2/5, adding 3)
+  // Has: building, exploring
+  // Adding: analytical, patience, helping
+  // ============================================
+  {
+    pattern: 'analytical',
+    minLevel: 5,
+    trigger: 'before_choices',
+    condition: { characterId: 'yaquin' },
+    voices: [
+      "Learning has patterns. He's mapped them.",
+      "EdTech is education plus systems thinking.",
+      "He measures what matters. That's harder than it sounds."
+    ],
+    style: 'observation'
+  },
+  {
+    pattern: 'patience',
+    minLevel: 4,
+    trigger: 'node_enter',
+    condition: { characterId: 'yaquin' },
+    voices: [
+      "Behavior change takes time. He's built for it.",
+      "The best tools work slowly. He knows.",
+      "Growth is invisible until it isn't. He trusts the process."
+    ],
+    style: 'whisper'
+  },
+  {
+    pattern: 'helping',
+    minLevel: 5,
+    trigger: 'before_choices',
+    condition: { characterId: 'yaquin' },
+    voices: [
+      "Every feature he builds is meant to unlock someone.",
+      "Accessibility is care embedded in code.",
+      "He remembers being the kid who needed help. He builds for that kid."
+    ],
+    style: 'urge'
+  },
+
+  // ============================================
+  // SAMUEL - Station Keeper (was 2/5, adding 3)
+  // Has: analytical, helping
+  // Adding: patience, exploring, building
+  // ============================================
+  {
+    pattern: 'patience',
+    minLevel: 5,
+    trigger: 'node_enter',
+    condition: { characterId: 'samuel' },
+    voices: [
+      "He's waited here longer than you know.",
+      "The station unfolds at its own pace. Trust it.",
+      "Wisdom isn't rushed. Neither is he."
+    ],
+    style: 'whisper'
+  },
+  {
+    pattern: 'exploring',
+    minLevel: 4,
+    trigger: 'before_choices',
+    condition: { characterId: 'samuel' },
+    voices: [
+      "The hub hides more than it shows. He knows where.",
+      "Every platform has a secret. He's seen them all.",
+      "Ask him about the trains that never arrive."
+    ],
+    style: 'urge'
+  },
+  {
+    pattern: 'building',
+    minLevel: 5,
+    trigger: 'before_choices',
+    condition: { characterId: 'samuel' },
+    voices: [
+      "He's built this place, conversation by conversation.",
+      "The station is his creation. Respect the craft.",
+      "Stewardship is a form of construction."
+    ],
+    style: 'observation'
+  },
+
+  // ============================================
+  // JORDAN - Career Navigator (was 2/5, adding 3)
+  // Has: exploring, building
+  // Adding: analytical, patience, helping
+  // ============================================
+  {
+    pattern: 'analytical',
+    minLevel: 5,
+    trigger: 'before_choices',
+    condition: { characterId: 'jordan' },
+    voices: [
+      "He sees the patterns in your choices. So should you.",
+      "Navigation requires understanding the map. He does.",
+      "Every question he asks is calibrated. Pay attention."
+    ],
+    style: 'observation'
+  },
+  {
+    pattern: 'patience',
+    minLevel: 4,
+    trigger: 'node_enter',
+    condition: { characterId: 'jordan' },
+    voices: [
+      "The right path reveals itself. He's learned to wait.",
+      "Career journeys take time. He's not rushing you.",
+      "Running is his thing. But he knows when to stop."
+    ],
+    style: 'whisper'
+  },
+  {
+    pattern: 'helping',
+    minLevel: 5,
+    trigger: 'before_choices',
+    condition: { characterId: 'jordan' },
+    voices: [
+      "He's not just navigating. He's guiding.",
+      "Your path matters to him. That's not an act.",
+      "He's walked lost before. That's why he helps now."
+    ],
+    style: 'urge'
+  },
+
+  // ============================================
+  // PHASE 3: LINKEDIN 2026 CHARACTER EXPANSION (5/5 Coverage)
+  // quinn, dante, nadia, isaiah, alex
+  // ============================================
+
+  // ============================================
+  // QUINN - The Reformed Financier (was 3/5, adding 2)
+  // Has: analytical, patience, building
+  // Adding: exploring, helping
+  // ============================================
+  {
+    pattern: 'exploring',
+    minLevel: 4,
+    trigger: 'node_enter',
+    condition: { characterId: 'quinn' },
+    voices: [
+      "His past has chapters he hasn't shared. Worth exploring.",
+      "Wall Street taught him things Birmingham needs. Ask what.",
+      "Every reformed person has a turning point. Find his."
+    ],
+    style: 'urge'
+  },
+  {
+    pattern: 'helping',
+    minLevel: 5,
+    trigger: 'before_choices',
+    condition: { characterId: 'quinn' },
+    voices: [
+      "He's giving back what he once took. Respect the journey.",
+      "Wealth redistribution as personal mission. He's serious.",
+      "His help comes with wisdom bought at a price."
+    ],
+    style: 'observation'
+  },
+
+  // ============================================
+  // DANTE - The Reformed Closer (was 3/5, adding 2)
+  // Has: helping, exploring, building
+  // Adding: analytical, patience
+  // ============================================
+  {
+    pattern: 'analytical',
+    minLevel: 5,
+    trigger: 'before_choices',
+    condition: { characterId: 'dante' },
+    voices: [
+      "He reads people like spreadsheets. Every tell catalogued.",
+      "Sales is psychology with numbers. He knows both.",
+      "The pitch has structure. He's deconstructed it."
+    ],
+    style: 'observation'
+  },
+  {
+    pattern: 'patience',
+    minLevel: 4,
+    trigger: 'node_enter',
+    condition: { characterId: 'dante' },
+    voices: [
+      "He learned to stop closing and start listening.",
+      "Rushing killed deals. Now he waits.",
+      "Patience is the skill he had to teach himself."
+    ],
+    style: 'whisper'
+  },
+
+  // ============================================
+  // NADIA - The AI Ethicist (was 3/5, adding 2)
+  // Has: analytical, helping, patience
+  // Adding: exploring, building
+  // ============================================
+  {
+    pattern: 'exploring',
+    minLevel: 4,
+    trigger: 'node_enter',
+    condition: { characterId: 'nadia' },
+    voices: [
+      "The bleeding edge of AI has corners she's seen. Ask about them.",
+      "Her questions go places most people avoid.",
+      "What happens when the machine makes the wrong call? She knows."
+    ],
+    style: 'urge'
+  },
+  {
+    pattern: 'building',
+    minLevel: 5,
+    trigger: 'before_choices',
+    condition: { characterId: 'nadia' },
+    voices: [
+      "She's not just critiquing—she's constructing better frameworks.",
+      "Ethics needs architecture. She's drafting the blueprints.",
+      "Guardrails don't build themselves. She does."
+    ],
+    style: 'observation'
+  },
+
+  // ============================================
+  // ISAIAH - The Reluctant Fundraiser (was 3/5, adding 2)
+  // Has: helping, patience, building
+  // Adding: analytical, exploring
+  // ============================================
+  {
+    pattern: 'analytical',
+    minLevel: 5,
+    trigger: 'before_choices',
+    condition: { characterId: 'isaiah' },
+    voices: [
+      "He tracks impact, not just dollars. Different metrics.",
+      "Nonprofit math has its own logic. He's mastered it.",
+      "Every grant has hidden strings. He sees them all."
+    ],
+    style: 'observation'
+  },
+  {
+    pattern: 'exploring',
+    minLevel: 4,
+    trigger: 'node_enter',
+    condition: { characterId: 'isaiah' },
+    voices: [
+      "His reluctance hides a story. Worth uncovering.",
+      "Why does fundraising feel like selling out? Ask him.",
+      "The tension between mission and money—he lives it."
+    ],
+    style: 'urge'
+  },
+
+  // ============================================
+  // ALEX - The Tactician (was 3/5, adding 2)
+  // Has: analytical, exploring, building
+  // Adding: patience, helping
+  // ============================================
+  {
+    pattern: 'patience',
+    minLevel: 5,
+    trigger: 'node_enter',
+    condition: { characterId: 'alex' },
+    voices: [
+      "Strategy requires waiting for the right moment. He does.",
+      "The best tacticians know when not to move.",
+      "His calm is earned through chaos navigated."
+    ],
+    style: 'whisper'
+  },
+  {
+    pattern: 'helping',
+    minLevel: 4,
+    trigger: 'before_choices',
+    condition: { characterId: 'alex' },
+    voices: [
+      "Supply chains feed families. He never forgets that.",
+      "Logistics is service at scale. He's good at it.",
+      "Every route he optimizes helps someone he'll never meet."
+    ],
+    style: 'observation'
   }
 ]
 
