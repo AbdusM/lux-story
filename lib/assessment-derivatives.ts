@@ -318,6 +318,92 @@ export const CAREER_FIELDS: CareerField[] = [
     preferredPatterns: ['analytical', 'patience'],
     characterExamples: ['zara', 'kai'],
     birminghamEmployers: ['Regions Bank', 'BBVA', 'Blue Cross Blue Shield']
+  },
+
+  // LinkedIn 2026 Career Expansion Fields
+  {
+    id: 'finance_investment',
+    name: 'Finance & Investment',
+    sector: 'Financial Services',
+    requiredSkills: [
+      { skillId: 'data_analysis', minLevel: 4 },
+      { skillId: 'critical_thinking', minLevel: 4 },
+      { skillId: 'decision_making', minLevel: 4 },
+      { skillId: 'mentoring', minLevel: 2 }
+    ],
+    preferredPatterns: ['analytical', 'building'],
+    characterExamples: ['quinn', 'marcus'],
+    birminghamEmployers: ['Regions Financial', 'Protective Life', 'Birmingham Angel Network', 'Harbert Management']
+  },
+  {
+    id: 'sales_business_dev',
+    name: 'Sales & Business Development',
+    sector: 'Commercial',
+    requiredSkills: [
+      { skillId: 'persuasion', minLevel: 4 },
+      { skillId: 'teamwork', minLevel: 4 },
+      { skillId: 'active_listening', minLevel: 3 },
+      { skillId: 'conflict_resolution', minLevel: 3 }
+    ],
+    preferredPatterns: ['helping', 'building'],
+    characterExamples: ['dante', 'jordan'],
+    birminghamEmployers: ['Shipt', 'Southern Company', 'Birmingham Business Alliance', 'Innovation Depot']
+  },
+  {
+    id: 'ai_strategy',
+    name: 'AI Strategy & Consulting',
+    sector: 'Technology',
+    requiredSkills: [
+      { skillId: 'systems_thinking', minLevel: 4 },
+      { skillId: 'decision_making', minLevel: 4 },
+      { skillId: 'crisis_management', minLevel: 3 },
+      { skillId: 'critical_thinking', minLevel: 4 }
+    ],
+    preferredPatterns: ['analytical', 'exploring'],
+    characterExamples: ['nadia', 'rohan', 'maya'],
+    birminghamEmployers: ['UAB Health System', 'Alabama AI Initiative', 'Southern Research', 'Innovation Depot']
+  },
+  {
+    id: 'nonprofit_fundraising',
+    name: 'Nonprofit & Fundraising',
+    sector: 'Social Impact',
+    requiredSkills: [
+      { skillId: 'written_communication', minLevel: 4 },
+      { skillId: 'teamwork', minLevel: 4 },
+      { skillId: 'empathy', minLevel: 4 },
+      { skillId: 'public_speaking', minLevel: 3 }
+    ],
+    preferredPatterns: ['helping', 'patience'],
+    characterExamples: ['isaiah', 'asha', 'grace'],
+    birminghamEmployers: ['Community Foundation of Greater Birmingham', 'United Way of Central Alabama', 'Birmingham Promise', 'Urban Ministry']
+  },
+  {
+    id: 'manufacturing',
+    name: 'Advanced Manufacturing',
+    sector: 'Industrial',
+    requiredSkills: [
+      { skillId: 'problem_solving', minLevel: 4 },
+      { skillId: 'systems_thinking', minLevel: 3 },
+      { skillId: 'crisis_management', minLevel: 3 },
+      { skillId: 'teamwork', minLevel: 3 }
+    ],
+    preferredPatterns: ['building', 'analytical'],
+    characterExamples: ['silas', 'devon', 'kai'],
+    birminghamEmployers: ['Mercedes-Benz', 'Honda Manufacturing', 'Austal USA', 'Vulcan Materials']
+  },
+  {
+    id: 'logistics_supply_chain',
+    name: 'Logistics & Supply Chain',
+    sector: 'Operations',
+    requiredSkills: [
+      { skillId: 'systems_thinking', minLevel: 4 },
+      { skillId: 'data_analysis', minLevel: 3 },
+      { skillId: 'problem_solving', minLevel: 4 },
+      { skillId: 'decision_making', minLevel: 3 }
+    ],
+    preferredPatterns: ['analytical', 'building'],
+    characterExamples: ['alex', 'devon'],
+    birminghamEmployers: ['Amazon', 'FedEx', 'UPS', 'Norfolk Southern']
   }
 ]
 
@@ -797,8 +883,10 @@ export interface ChallengeResult {
 
 /**
  * Skill challenges registry
+ * Each skill has at least one challenge tied to a character
  */
 export const SKILL_CHALLENGES: SkillChallenge[] = [
+  // Communication Skills
   {
     id: 'active_listening_samuel',
     skillTested: 'active_listening',
@@ -818,6 +906,264 @@ export const SKILL_CHALLENGES: SkillChallenge[] = [
     ],
     passingScore: 60
   },
+  {
+    id: 'persuasion_dante',
+    skillTested: 'persuasion',
+    characterId: 'dante',
+    name: 'The Reluctant Buyer',
+    description: 'Convince a skeptical client through genuine connection',
+    difficulty: 'hard',
+    scenarios: [
+      {
+        situation: 'The client has had bad experiences with salespeople before. They\'re guarded.',
+        options: [
+          { text: 'Ask about their previous experiences and concerns', skillDemonstration: 3, feedback: 'Understanding before selling. Smart.' },
+          { text: 'Launch into your pitch immediately', skillDemonstration: 0, feedback: 'You pushed when they needed space.' },
+          { text: 'Offer a discount to sweeten the deal', skillDemonstration: 1, feedback: 'Price isn\'t their concern - trust is.' }
+        ]
+      }
+    ],
+    passingScore: 70
+  },
+  {
+    id: 'public_speaking_tess',
+    skillTested: 'public_speaking',
+    characterId: 'tess',
+    name: 'The First Day',
+    description: 'Help Tess address a classroom of skeptical students',
+    difficulty: 'medium',
+    scenarios: [
+      {
+        situation: 'The students look bored before you\'ve even started speaking.',
+        options: [
+          { text: 'Open with a personal story that shows vulnerability', skillDemonstration: 3, feedback: 'Authenticity captures attention.' },
+          { text: 'Start with the lesson plan and objectives', skillDemonstration: 1, feedback: 'Technically correct, but you lost them.' },
+          { text: 'Tell a joke to break the ice', skillDemonstration: 2, feedback: 'Good instinct, but substance matters more.' }
+        ]
+      }
+    ],
+    passingScore: 60
+  },
+  {
+    id: 'written_communication_isaiah',
+    skillTested: 'written_communication',
+    characterId: 'isaiah',
+    name: 'The Grant Deadline',
+    description: 'Help Isaiah craft a compelling grant proposal under pressure',
+    difficulty: 'hard',
+    timeLimit: 180,
+    scenarios: [
+      {
+        situation: 'The grant requires demonstrating community impact in 250 words.',
+        options: [
+          { text: 'Lead with a specific person\'s story, then show broader impact', skillDemonstration: 3, feedback: 'Personal stories make data memorable.' },
+          { text: 'List statistics and metrics of your organization', skillDemonstration: 1, feedback: 'Numbers alone don\'t move hearts.' },
+          { text: 'Describe your programs in general terms', skillDemonstration: 0, feedback: 'Too vague. Specificity creates trust.' }
+        ]
+      }
+    ],
+    passingScore: 70
+  },
+
+  // Technical Skills
+  {
+    id: 'data_analysis_elena',
+    skillTested: 'data_analysis',
+    characterId: 'elena',
+    name: 'The Pattern',
+    description: 'Help Elena find meaning in fragmented historical records',
+    difficulty: 'hard',
+    scenarios: [
+      {
+        situation: 'Elena shows you three seemingly unrelated documents. "What do you see?"',
+        options: [
+          { text: 'Look for dates, names, and locations that repeat', skillDemonstration: 3, feedback: 'You see the threads connecting them.' },
+          { text: 'Focus on the most complete document first', skillDemonstration: 1, feedback: 'Context requires comparison.' },
+          { text: 'Ask what she\'s looking for specifically', skillDemonstration: 2, feedback: 'Good, but sometimes discovery comes first.' }
+        ]
+      }
+    ],
+    passingScore: 70
+  },
+  {
+    id: 'programming_maya',
+    skillTested: 'programming',
+    characterId: 'maya',
+    name: 'The Demo',
+    description: 'Debug Maya\'s robotics code before the demonstration',
+    difficulty: 'hard',
+    timeLimit: 120,
+    scenarios: [
+      {
+        situation: 'The robot moves erratically. The demo is in 10 minutes.',
+        options: [
+          { text: 'Check the sensor inputs and calibration first', skillDemonstration: 3, feedback: 'Garbage in, garbage out. Good instinct.' },
+          { text: 'Rewrite the movement algorithm', skillDemonstration: 0, feedback: 'No time for complete rewrites.' },
+          { text: 'Add print statements to trace the logic', skillDemonstration: 2, feedback: 'Debugging helps, but start with inputs.' }
+        ]
+      }
+    ],
+    passingScore: 70
+  },
+  {
+    id: 'cybersecurity_marcus',
+    skillTested: 'cybersecurity',
+    characterId: 'marcus',
+    name: 'The Breach',
+    description: 'Help Marcus contain a hospital data breach',
+    difficulty: 'hard',
+    timeLimit: 90,
+    scenarios: [
+      {
+        situation: 'Suspicious network activity detected. Patient records may be at risk.',
+        options: [
+          { text: 'Isolate affected systems immediately', skillDemonstration: 3, feedback: 'Containment first. Smart.' },
+          { text: 'Try to identify the attacker\'s methods', skillDemonstration: 1, feedback: 'Important, but stop the bleeding first.' },
+          { text: 'Notify all staff via email', skillDemonstration: 0, feedback: 'That could alert the attacker.' }
+        ]
+      }
+    ],
+    passingScore: 80
+  },
+  {
+    id: 'systems_thinking_alex',
+    skillTested: 'systems_thinking',
+    characterId: 'alex',
+    name: 'The Bottleneck',
+    description: 'Help Alex optimize a supply chain disruption',
+    difficulty: 'medium',
+    scenarios: [
+      {
+        situation: 'Deliveries are delayed. Alex shows you the logistics map.',
+        options: [
+          { text: 'Trace backwards from the delay to find dependencies', skillDemonstration: 3, feedback: 'Following the chain reveals the weak link.' },
+          { text: 'Speed up the final delivery step', skillDemonstration: 0, feedback: 'The problem is upstream.' },
+          { text: 'Ask which vendors are performing well', skillDemonstration: 2, feedback: 'Good data, but you need the whole picture.' }
+        ]
+      }
+    ],
+    passingScore: 60
+  },
+
+  // Analytical Skills
+  {
+    id: 'critical_thinking_zara',
+    skillTested: 'critical_thinking',
+    characterId: 'zara',
+    name: 'The Algorithm',
+    description: 'Help Zara evaluate a hiring algorithm for hidden bias',
+    difficulty: 'hard',
+    scenarios: [
+      {
+        situation: 'The algorithm rejects 40% more candidates from certain zip codes.',
+        options: [
+          { text: 'Examine what other factors correlate with zip code', skillDemonstration: 3, feedback: 'You see through the proxy discrimination.' },
+          { text: 'The zip code isn\'t a protected class, so it\'s legal', skillDemonstration: 0, feedback: 'Legal doesn\'t mean ethical.' },
+          { text: 'Suggest removing zip code from the inputs', skillDemonstration: 2, feedback: 'Good start, but the bias may persist elsewhere.' }
+        ]
+      }
+    ],
+    passingScore: 70
+  },
+  {
+    id: 'problem_solving_kai',
+    skillTested: 'problem_solving',
+    characterId: 'kai',
+    name: 'The Inspection',
+    description: 'Help Kai find the root cause of a safety concern',
+    difficulty: 'medium',
+    scenarios: [
+      {
+        situation: 'A worker reported feeling dizzy in Section C. No obvious cause.',
+        options: [
+          { text: 'Check ventilation, gas levels, and recent changes systematically', skillDemonstration: 3, feedback: 'Methodical approach finds hidden dangers.' },
+          { text: 'Close Section C until someone figures it out', skillDemonstration: 1, feedback: 'Safe but reactive. We need answers.' },
+          { text: 'Ask if the worker is feeling better now', skillDemonstration: 0, feedback: 'The symptom may return if the cause persists.' }
+        ]
+      }
+    ],
+    passingScore: 60
+  },
+  {
+    id: 'research_rohan',
+    skillTested: 'research',
+    characterId: 'rohan',
+    name: 'The Dataset',
+    description: 'Help Rohan validate research findings under scrutiny',
+    difficulty: 'hard',
+    scenarios: [
+      {
+        situation: 'A reviewer questions your methodology. Your data supports your conclusion.',
+        options: [
+          { text: 'Review methodology for potential confounds before responding', skillDemonstration: 3, feedback: 'Intellectual honesty strengthens your position.' },
+          { text: 'Defend your work by showing the statistical significance', skillDemonstration: 1, feedback: 'Significance doesn\'t prove methodology was sound.' },
+          { text: 'Request clarification on what specifically concerns them', skillDemonstration: 2, feedback: 'Good, but self-examination comes first.' }
+        ]
+      }
+    ],
+    passingScore: 70
+  },
+
+  // Interpersonal Skills
+  {
+    id: 'empathy_grace',
+    skillTested: 'empathy',
+    characterId: 'grace',
+    name: 'The Vigil',
+    description: 'Support a worried family member',
+    difficulty: 'medium',
+    scenarios: [
+      {
+        situation: 'A worried parent is asking questions you can\'t answer.',
+        options: [
+          { text: 'Acknowledge their fear, stay present', skillDemonstration: 3, feedback: 'Sometimes presence is enough.' },
+          { text: 'Promise everything will be okay', skillDemonstration: 0, feedback: 'Don\'t make promises you can\'t keep.' },
+          { text: 'Explain the medical process', skillDemonstration: 1, feedback: 'Information helps, but they needed comfort.' }
+        ]
+      }
+    ],
+    passingScore: 60
+  },
+  {
+    id: 'conflict_resolution_asha',
+    skillTested: 'conflict_resolution',
+    characterId: 'asha',
+    name: 'The Mural',
+    description: 'Help Asha mediate between community members with opposing visions',
+    difficulty: 'hard',
+    scenarios: [
+      {
+        situation: 'Two groups want completely different themes for the mural. Voices are rising.',
+        options: [
+          { text: 'Ask each side to share what the theme means to them personally', skillDemonstration: 3, feedback: 'Finding the deeper "why" reveals common ground.' },
+          { text: 'Propose a compromise: split the wall in half', skillDemonstration: 1, feedback: 'Division isn\'t resolution.' },
+          { text: 'Let the majority vote decide', skillDemonstration: 0, feedback: 'The minority will feel unheard.' }
+        ]
+      }
+    ],
+    passingScore: 70
+  },
+  {
+    id: 'teamwork_jordan',
+    skillTested: 'teamwork',
+    characterId: 'jordan',
+    name: 'The Build',
+    description: 'Coordinate a construction crew with different skill levels',
+    difficulty: 'medium',
+    scenarios: [
+      {
+        situation: 'An experienced worker is frustrated with a new hire\'s pace.',
+        options: [
+          { text: 'Pair them together so the veteran can teach', skillDemonstration: 3, feedback: 'Mentorship transforms friction into growth.' },
+          { text: 'Assign them to separate tasks', skillDemonstration: 1, feedback: 'Avoids conflict but wastes the teaching opportunity.' },
+          { text: 'Tell the veteran to be more patient', skillDemonstration: 0, feedback: 'Directives don\'t build understanding.' }
+        ]
+      }
+    ],
+    passingScore: 60
+  },
+
+  // Leadership Skills
   {
     id: 'crisis_management_devon',
     skillTested: 'crisis_management',
@@ -839,23 +1185,122 @@ export const SKILL_CHALLENGES: SkillChallenge[] = [
     passingScore: 70
   },
   {
-    id: 'empathy_grace',
-    skillTested: 'empathy',
-    characterId: 'grace',
-    name: 'The Vigil',
-    description: 'Support a worried family member',
+    id: 'decision_making_quinn',
+    skillTested: 'decision_making',
+    characterId: 'quinn',
+    name: 'The Portfolio',
+    description: 'Help Quinn make an investment decision with incomplete information',
+    difficulty: 'hard',
+    scenarios: [
+      {
+        situation: 'A promising startup needs an answer by tomorrow. The due diligence is 70% complete.',
+        options: [
+          { text: 'Identify the remaining unknowns and their potential impact', skillDemonstration: 3, feedback: 'You know what you don\'t know. That\'s wisdom.' },
+          { text: 'Pass on the deal - too much uncertainty', skillDemonstration: 1, feedback: 'Risk-averse but you might miss opportunities.' },
+          { text: 'Invest at a lower valuation to compensate for risk', skillDemonstration: 2, feedback: 'Creative, but doesn\'t address the unknowns.' }
+        ]
+      }
+    ],
+    passingScore: 70
+  },
+  {
+    id: 'mentoring_samuel',
+    skillTested: 'mentoring',
+    characterId: 'samuel',
+    name: 'The Crossroads',
+    description: 'Guide someone facing a difficult career decision',
     difficulty: 'medium',
     scenarios: [
       {
-        situation: 'A worried parent is asking questions you can\'t answer.',
+        situation: 'A traveler asks: "Should I take the safe job or follow my passion?"',
         options: [
-          { text: 'Acknowledge their fear, stay present', skillDemonstration: 3, feedback: 'Sometimes presence is enough.' },
-          { text: 'Promise everything will be okay', skillDemonstration: 0, feedback: 'Don\'t make promises you can\'t keep.' },
-          { text: 'Explain the medical process', skillDemonstration: 1, feedback: 'Information helps, but they needed comfort.' }
+          { text: 'Ask what makes each option feel meaningful to them', skillDemonstration: 3, feedback: 'The answer is always within them.' },
+          { text: 'Share what you would do in their situation', skillDemonstration: 1, feedback: 'Your path isn\'t their path.' },
+          { text: 'Present a pros and cons analysis', skillDemonstration: 2, feedback: 'Logic helps, but meaning matters more.' }
         ]
       }
     ],
     passingScore: 60
+  },
+
+  // Creative Skills
+  {
+    id: 'design_thinking_lira',
+    skillTested: 'design_thinking',
+    characterId: 'lira',
+    name: 'The Soundscape',
+    description: 'Help Lira design an audio experience for a community space',
+    difficulty: 'medium',
+    scenarios: [
+      {
+        situation: 'The space needs to feel welcoming but also energizing.',
+        options: [
+          { text: 'Observe how people currently use the space first', skillDemonstration: 3, feedback: 'Design starts with understanding.' },
+          { text: 'Test different music styles and see what sticks', skillDemonstration: 2, feedback: 'Experimentation helps, but context matters.' },
+          { text: 'Research what sounds work in similar spaces', skillDemonstration: 1, feedback: 'This space is unique. Start there.' }
+        ]
+      }
+    ],
+    passingScore: 60
+  },
+  {
+    id: 'innovation_yaquin',
+    skillTested: 'innovation',
+    characterId: 'yaquin',
+    name: 'The Launch',
+    description: 'Help Yaquin iterate on EdTech product feedback',
+    difficulty: 'hard',
+    scenarios: [
+      {
+        situation: 'Beta users love the concept but engagement drops after Day 3.',
+        options: [
+          { text: 'Interview Day 3 dropoffs to understand what changed', skillDemonstration: 3, feedback: 'The answer is in the moment of friction.' },
+          { text: 'Add more gamification features', skillDemonstration: 1, feedback: 'Features without understanding are noise.' },
+          { text: 'Shorten the onboarding process', skillDemonstration: 2, feedback: 'Day 3 isn\'t onboarding - it\'s retention.' }
+        ]
+      }
+    ],
+    passingScore: 70
+  },
+
+  // LinkedIn 2026 Character Challenges
+  {
+    id: 'strategic_thinking_nadia',
+    skillTested: 'critical_thinking',
+    characterId: 'nadia',
+    name: 'The Hype Meeting',
+    description: 'Help Nadia manage stakeholder expectations about AI capabilities',
+    difficulty: 'hard',
+    scenarios: [
+      {
+        situation: 'Executives want AI to "fix everything" but don\'t understand the limitations.',
+        options: [
+          { text: 'Ask what specific problem they\'re trying to solve', skillDemonstration: 3, feedback: 'Specificity defeats vague expectations.' },
+          { text: 'Show demos of what AI can actually do', skillDemonstration: 2, feedback: 'Demos help, but alignment on goals comes first.' },
+          { text: 'Agree to the project and manage expectations later', skillDemonstration: 0, feedback: 'Setting up for failure.' }
+        ]
+      }
+    ],
+    passingScore: 70
+  },
+  {
+    id: 'manufacturing_silas',
+    skillTested: 'problem_solving',
+    characterId: 'silas',
+    name: 'The Calibration',
+    description: 'Help Silas diagnose a precision manufacturing issue',
+    difficulty: 'hard',
+    scenarios: [
+      {
+        situation: 'Parts are consistently 0.02mm off spec. The machine passed calibration.',
+        options: [
+          { text: 'Check environmental factors: temperature, humidity, vibration', skillDemonstration: 3, feedback: 'Precision requires controlling what others overlook.' },
+          { text: 'Recalibrate the machine more frequently', skillDemonstration: 1, feedback: 'Treating symptoms, not causes.' },
+          { text: 'Adjust the spec tolerance to accept the deviation', skillDemonstration: 0, feedback: 'Compromising quality isn\'t problem-solving.' }
+        ]
+      }
+    ],
+    passingScore: 70
   }
 ]
 

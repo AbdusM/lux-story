@@ -194,6 +194,266 @@ export const CHARACTER_INFLUENCES: CharacterInfluence[] = [
         visualDescription: 'You\'re part of Tess\'s network now. Doors open that were closed.'
       }
     ]
+  },
+
+  // LinkedIn 2026 Career Expansion Characters
+  {
+    characterId: 'quinn',
+    domain: 'commerce',
+    description: 'Quinn influences financial literacy and investment mindset in the station',
+    trustThreshold: 6,
+    effects: [
+      {
+        trigger: 'trust_reached',
+        triggerValue: 6,
+        effect: 'financial_insights',
+        visualDescription: 'You start seeing value where others see risk. Quinn\'s lessons sink in.'
+      },
+      {
+        trigger: 'loyalty_complete',
+        effect: 'mentor_network',
+        visualDescription: 'Quinn has introduced you to his network of mentors and investors.'
+      }
+    ]
+  },
+  {
+    characterId: 'dante',
+    domain: 'commerce',
+    description: 'Dante transforms how relationships are built at the station',
+    trustThreshold: 5,
+    effects: [
+      {
+        trigger: 'trust_reached',
+        triggerValue: 5,
+        effect: 'authentic_connections',
+        visualDescription: 'Conversations feel more genuine. Dante\'s approach is rubbing off on you.',
+        warmthChange: 2
+      },
+      {
+        trigger: 'loyalty_complete',
+        effect: 'trust_ambassador',
+        visualDescription: 'You\'ve become someone people want to connect with. Dante is proud.'
+      }
+    ]
+  },
+  {
+    characterId: 'nadia',
+    domain: 'secrets',
+    description: 'Nadia reveals the hidden systems and algorithms shaping the station',
+    trustThreshold: 7,
+    effects: [
+      {
+        trigger: 'trust_reached',
+        triggerValue: 7,
+        effect: 'system_awareness',
+        visualDescription: 'You notice patterns in how the station operates. The algorithms become visible.'
+      },
+      {
+        trigger: 'loyalty_complete',
+        effect: 'ethical_framework',
+        visualDescription: 'Nadia has taught you to question systems and advocate for fairness.'
+      }
+    ]
+  },
+  {
+    characterId: 'isaiah',
+    domain: 'atmosphere',
+    description: 'Isaiah brings community warmth and mission-driven purpose to the station',
+    trustThreshold: 5,
+    effects: [
+      {
+        trigger: 'trust_reached',
+        triggerValue: 5,
+        effect: 'community_presence',
+        visualDescription: 'The station feels warmer. More people gather, more stories are shared.',
+        warmthChange: 3
+      },
+      {
+        trigger: 'loyalty_complete',
+        effect: 'impact_ambassador',
+        visualDescription: 'Isaiah has shown you how to turn compassion into sustainable action.'
+      }
+    ]
+  },
+
+  // Original characters missing from CHARACTER_INFLUENCES
+  {
+    characterId: 'maya',
+    domain: 'infrastructure',
+    description: 'Maya brings innovation and automation to station systems',
+    trustThreshold: 5,
+    effects: [
+      {
+        trigger: 'trust_reached',
+        triggerValue: 5,
+        effect: 'smart_systems',
+        visualDescription: 'Small robots now assist around the station. Maya\'s prototypes are everywhere.',
+        warmthChange: 1
+      },
+      {
+        trigger: 'loyalty_complete',
+        effect: 'tech_hub_access',
+        visualDescription: 'Maya has given you access to her innovation lab.'
+      }
+    ]
+  },
+  {
+    characterId: 'jordan',
+    domain: 'commerce',
+    description: 'Jordan connects travelers to opportunities and resources',
+    trustThreshold: 5,
+    effects: [
+      {
+        trigger: 'trust_reached',
+        triggerValue: 5,
+        effect: 'opportunity_board',
+        visualDescription: 'The opportunity board shows listings you didn\'t see before. Jordan\'s put in a word.',
+        warmthChange: 1
+      },
+      {
+        trigger: 'loyalty_complete',
+        effect: 'career_network',
+        visualDescription: 'Jordan has connected you to their network of professionals across Birmingham.'
+      }
+    ]
+  },
+  {
+    characterId: 'marcus',
+    domain: 'infrastructure',
+    description: 'Marcus ensures the station\'s health systems run smoothly',
+    trustThreshold: 6,
+    effects: [
+      {
+        trigger: 'trust_reached',
+        triggerValue: 6,
+        effect: 'health_systems_stable',
+        visualDescription: 'Medical stations are well-stocked. Emergency protocols are clear.',
+        warmthChange: 1
+      },
+      {
+        trigger: 'loyalty_complete',
+        effect: 'crisis_protocols',
+        visualDescription: 'Marcus has trained you in emergency response. You know what to do.'
+      }
+    ]
+  },
+  {
+    characterId: 'yaquin',
+    domain: 'aesthetics',
+    description: 'Yaquin transforms learning spaces throughout the station',
+    trustThreshold: 5,
+    effects: [
+      {
+        trigger: 'trust_reached',
+        triggerValue: 5,
+        effect: 'learning_corners',
+        visualDescription: 'Quiet corners now have interactive learning stations. Yaquin\'s touch.',
+        warmthChange: 1
+      },
+      {
+        trigger: 'loyalty_complete',
+        effect: 'education_network',
+        visualDescription: 'Yaquin has connected you to educators and learners across the station.'
+      }
+    ]
+  },
+  {
+    characterId: 'kai',
+    domain: 'infrastructure',
+    description: 'Kai maintains safety and security throughout the station',
+    trustThreshold: 6,
+    effects: [
+      {
+        trigger: 'trust_reached',
+        triggerValue: 6,
+        effect: 'safe_passages',
+        visualDescription: 'Paths feel safer. Kai has ensured the station watches over you.',
+        warmthChange: 1
+      },
+      {
+        trigger: 'loyalty_complete',
+        effect: 'safety_awareness',
+        visualDescription: 'Kai has taught you to see hazards before they become dangers.'
+      }
+    ]
+  },
+  {
+    characterId: 'alex',
+    domain: 'commerce',
+    description: 'Alex optimizes the flow of goods and resources through the station',
+    trustThreshold: 5,
+    effects: [
+      {
+        trigger: 'trust_reached',
+        triggerValue: 5,
+        effect: 'efficient_routes',
+        visualDescription: 'Deliveries arrive faster. Alex has optimized the supply chain.',
+        warmthChange: 1
+      },
+      {
+        trigger: 'loyalty_complete',
+        effect: 'logistics_network',
+        visualDescription: 'Alex has shown you the hidden pathways that keep the station running.'
+      }
+    ]
+  },
+  {
+    characterId: 'elena',
+    domain: 'secrets',
+    description: 'Elena preserves and reveals the station\'s history',
+    trustThreshold: 6,
+    effects: [
+      {
+        trigger: 'trust_reached',
+        triggerValue: 6,
+        effect: 'history_revealed',
+        visualDescription: 'Old photographs appear on walls. Elena has unlocked the archives for you.'
+      },
+      {
+        trigger: 'loyalty_complete',
+        effect: 'archive_access',
+        visualDescription: 'Elena has given you full access to the station\'s historical archives.'
+      }
+    ]
+  },
+  {
+    characterId: 'grace',
+    domain: 'atmosphere',
+    description: 'Grace brings compassion and care to station interactions',
+    trustThreshold: 5,
+    effects: [
+      {
+        trigger: 'trust_reached',
+        triggerValue: 5,
+        effect: 'caring_presence',
+        visualDescription: 'People seem kinder. Grace\'s compassion is contagious.',
+        warmthChange: 2
+      },
+      {
+        trigger: 'loyalty_complete',
+        effect: 'healing_spaces',
+        visualDescription: 'Grace has shown you spaces where people go to heal and reflect.'
+      }
+    ]
+  },
+  {
+    characterId: 'zara',
+    domain: 'secrets',
+    description: 'Zara exposes hidden biases and advocates for fairness',
+    trustThreshold: 6,
+    effects: [
+      {
+        trigger: 'trust_reached',
+        triggerValue: 6,
+        effect: 'bias_awareness',
+        visualDescription: 'You start noticing unfairness you didn\'t see before. Zara has opened your eyes.'
+      },
+      {
+        trigger: 'loyalty_complete',
+        effect: 'advocacy_skills',
+        visualDescription: 'Zara has taught you to speak up for those who can\'t speak for themselves.'
+      }
+    ]
   }
 ]
 
@@ -558,6 +818,32 @@ export const CHARACTER_LOCATIONS: CharacterLocation[] = [
     primarySector: 'workshops',
     secondarySectors: ['platforms'],
     description: 'Kai ensures everything meets safety standards'
+  },
+
+  // LinkedIn 2026 Career Expansion Characters
+  {
+    characterId: 'quinn',
+    primarySector: 'market',
+    secondarySectors: ['hub', 'archives'],
+    description: 'Quinn advises on financial matters and investment philosophy'
+  },
+  {
+    characterId: 'dante',
+    primarySector: 'market',
+    secondarySectors: ['hub', 'platforms'],
+    description: 'Dante builds bridges and facilitates connections throughout the station'
+  },
+  {
+    characterId: 'nadia',
+    primarySector: 'workshops',
+    secondarySectors: ['archives', 'hub'],
+    description: 'Nadia analyzes systems and advocates for ethical technology'
+  },
+  {
+    characterId: 'isaiah',
+    primarySector: 'hub',
+    secondarySectors: ['platforms', 'deep_station'],
+    description: 'Isaiah mobilizes community support and shares stories of impact'
   }
 ]
 
@@ -695,6 +981,52 @@ export const CHARACTER_TENSIONS: CharacterTension[] = [
       characterA: 'asha_elena_tension_mentioned',
       characterB: 'elena_asha_tension_mentioned',
       playerAware: 'player_knows_asha_elena_tension'
+    }
+  },
+
+  // LinkedIn 2026 Career Expansion Character Tensions
+  {
+    characters: ['quinn', 'nadia'],
+    nature: 'professional',
+    description: 'Quinn optimizes for returns. Nadia questions who benefits and who\'s harmed.',
+    triggersAt: { bothTrust: 6 },
+    dialogueFlags: {
+      characterA: 'quinn_nadia_tension_mentioned',
+      characterB: 'nadia_quinn_tension_mentioned',
+      playerAware: 'player_knows_quinn_nadia_tension'
+    }
+  },
+  {
+    characters: ['dante', 'zara'],
+    nature: 'philosophical',
+    description: 'Dante persuades with charm. Zara sees manipulation in every pitch.',
+    triggersAt: { bothTrust: 5 },
+    dialogueFlags: {
+      characterA: 'dante_zara_tension_mentioned',
+      characterB: 'zara_dante_tension_mentioned',
+      playerAware: 'player_knows_dante_zara_tension'
+    }
+  },
+  {
+    characters: ['isaiah', 'quinn'],
+    nature: 'philosophical',
+    description: 'Isaiah measures impact by lives changed. Quinn measures by sustainable scale.',
+    triggersAt: { bothTrust: 6 },
+    dialogueFlags: {
+      characterA: 'isaiah_quinn_tension_mentioned',
+      characterB: 'quinn_isaiah_tension_mentioned',
+      playerAware: 'player_knows_isaiah_quinn_tension'
+    }
+  },
+  {
+    characters: ['nadia', 'maya'],
+    nature: 'professional',
+    description: 'Nadia thinks strategically. Maya wants to ship fast and iterate.',
+    triggersAt: { bothTrust: 5 },
+    dialogueFlags: {
+      characterA: 'nadia_maya_tension_mentioned',
+      characterB: 'maya_nadia_tension_mentioned',
+      playerAware: 'player_knows_nadia_maya_tension'
     }
   }
 ]

@@ -9,6 +9,8 @@ import { Brain, Clock } from 'lucide-react'
 // Ensure content is loaded
 import '@/content/maya-loyalty'
 import '@/content/devon-loyalty'
+// Load ALL 20 loyalty experiences via adapter
+import '@/lib/loyalty-adapter'
 
 interface ExperienceRendererProps {
     state: ActiveExperienceState

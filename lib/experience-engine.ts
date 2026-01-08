@@ -6,7 +6,18 @@ import { CharacterId } from './graph-registry'
 // TYPES
 // ============================================================================
 
-export type ExperienceId = 'maya_demo' | 'devon_outage' | 'samuel_quiet_hour'
+export type ExperienceId =
+  // Original 3 (legacy format)
+  | 'maya_demo' | 'devon_outage' | 'samuel_quiet_hour'
+  // Original 7 (adapted from loyalty-experience.ts)
+  | 'demo_exp' | 'outage_exp' | 'quiet_hour_exp'
+  | 'breach_exp' | 'confrontation_exp' | 'first_class_exp' | 'crossroads_exp'
+  // Extended 9
+  | 'vigil_exp' | 'honest_course_exp' | 'inspection_exp'
+  | 'launch_exp' | 'pattern_exp' | 'feral_lab_exp'
+  | 'mural_exp' | 'memory_song_exp' | 'audit_exp'
+  // LinkedIn 2026 Career Expansion
+  | 'portfolio_exp' | 'real_pitch_exp' | 'whiteboard_exp' | 'site_visit_exp'
 
 export interface ExperienceStep {
     id: string
