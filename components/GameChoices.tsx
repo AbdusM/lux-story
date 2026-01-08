@@ -441,7 +441,8 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
           className={`
             w-full min-h-[60px] sm:min-h-[56px] h-auto px-5 py-4
             text-base sm:text-[15px] font-medium text-left justify-start break-words whitespace-normal leading-relaxed
-            ${!glass && 'text-stone-600 bg-white/80 backdrop-blur-sm shadow-sm hover:text-stone-900'}
+            ${glass && '!text-slate-100 !bg-slate-900/60 border-white/10'}
+            ${!glass && '!text-stone-700 bg-white/90 backdrop-blur-sm shadow-sm hover:!text-stone-900'}
             ${(() => {
               const pattern = choice.pattern
               if (glass) {
