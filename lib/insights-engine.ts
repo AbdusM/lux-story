@@ -141,6 +141,84 @@ const CHARACTER_INFO: Record<string, {
     archetype: 'creative',
     description: 'creates experiences that reach learners where they are'
   },
+  marcus: {
+    name: 'Marcus',
+    color: 'text-cyan-600',
+    role: 'Medical Tech',
+    archetype: 'practical',
+    description: 'bridges technology and human care in healthcare'
+  },
+  grace: {
+    name: 'Grace',
+    color: 'text-rose-600',
+    role: 'Healthcare Operations',
+    archetype: 'social',
+    description: 'keeps healthcare systems running with compassion'
+  },
+  alex: {
+    name: 'Alex',
+    color: 'text-violet-600',
+    role: 'Supply Chain',
+    archetype: 'analytical',
+    description: 'optimizes systems to get resources where they are needed'
+  },
+  elena: {
+    name: 'Elena',
+    color: 'text-amber-600',
+    role: 'Information Scientist',
+    archetype: 'analytical',
+    description: 'organizes knowledge so others can find what they need'
+  },
+  asha: {
+    name: 'Asha',
+    color: 'text-pink-600',
+    role: 'Mediator',
+    archetype: 'social',
+    description: 'transforms conflict into understanding'
+  },
+  lira: {
+    name: 'Lira',
+    color: 'text-purple-600',
+    role: 'Sound Designer',
+    archetype: 'creative',
+    description: 'shapes how we experience stories through sound'
+  },
+  zara: {
+    name: 'Zara',
+    color: 'text-teal-600',
+    role: 'Data Ethics',
+    archetype: 'analytical',
+    description: 'ensures technology serves humanity responsibly'
+  },
+  // LinkedIn 2026 Career Expansion
+  quinn: {
+    name: 'Quinn',
+    color: 'text-amber-600',
+    role: 'Finance Specialist',
+    archetype: 'analytical',
+    description: 'balances financial wisdom with human values'
+  },
+  dante: {
+    name: 'Dante',
+    color: 'text-blue-600',
+    role: 'Sales Strategist',
+    archetype: 'social',
+    description: 'builds authentic relationships through ethical persuasion'
+  },
+  nadia: {
+    name: 'Nadia',
+    color: 'text-teal-600',
+    role: 'AI Strategist',
+    archetype: 'analytical',
+    description: 'guides responsible AI adoption with clarity and care'
+  },
+  isaiah: {
+    name: 'Isaiah',
+    color: 'text-emerald-600',
+    role: 'Nonprofit Leader',
+    archetype: 'social',
+    description: 'connects resources to communities that need them most'
+  },
 }
 
 // ═══════════════════════════════════════════════════════════════════════════

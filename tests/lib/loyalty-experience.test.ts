@@ -56,14 +56,14 @@ describe('Loyalty Experience System', () => {
   })
 
   describe('Experience Registry', () => {
-    test('should have all 16 loyalty experiences', () => {
-      expect(Object.keys(LOYALTY_EXPERIENCES)).toHaveLength(16)
+    test('should have all 20 loyalty experiences', () => {
+      expect(Object.keys(LOYALTY_EXPERIENCES)).toHaveLength(20) // 16 original + 4 LinkedIn 2026
     })
 
     test('each experience should have unique character', () => {
       const characters = Object.values(LOYALTY_EXPERIENCES).map(exp => exp.characterId)
       const uniqueCharacters = new Set(characters)
-      expect(uniqueCharacters.size).toBe(16)
+      expect(uniqueCharacters.size).toBe(20) // 16 original + 4 LinkedIn 2026
     })
 
     test('all experience types should be registered', () => {
@@ -85,7 +85,12 @@ describe('Loyalty Experience System', () => {
         'the_feral_lab',
         'the_mural',
         'the_memory_song',
-        'the_audit'
+        'the_audit',
+        // LinkedIn 2026 Career Expansion
+        'the_portfolio',
+        'the_real_pitch',
+        'the_whiteboard',
+        'the_site_visit'
       ]
       types.forEach(type => {
         expect(LOYALTY_EXPERIENCES[type]).toBeDefined()
