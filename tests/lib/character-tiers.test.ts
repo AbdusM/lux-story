@@ -119,10 +119,10 @@ describe('Character Tiers System', () => {
     })
 
     it('should return correct count per tier', () => {
-      expect(getCharactersByTier(1).length).toBe(3)
-      expect(getCharactersByTier(2).length).toBe(4)
-      expect(getCharactersByTier(3).length).toBe(4)
-      expect(getCharactersByTier(4).length).toBe(5)
+      expect(getCharactersByTier(1).length).toBe(3)  // samuel, maya, devon
+      expect(getCharactersByTier(2).length).toBe(6)  // marcus, tess, rohan, kai, quinn, nadia
+      expect(getCharactersByTier(3).length).toBe(6)  // grace, elena, alex, yaquin, dante, isaiah
+      expect(getCharactersByTier(4).length).toBe(5)  // silas, asha, lira, zara, jordan
     })
   })
 
@@ -206,7 +206,7 @@ describe('Character Tiers System', () => {
       const stats = new Map<CharacterId, { nodes: number; voiceVariations: number }>()
       const order = getExpansionOrder(stats)
 
-      expect(order.length).toBe(16)
+      expect(order.length).toBe(20)  // 16 original + 4 new (quinn, dante, nadia, isaiah)
     })
   })
 

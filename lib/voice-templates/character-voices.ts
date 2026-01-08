@@ -554,6 +554,152 @@ export const CHARACTER_VOICE_PROFILES: Record<VoiceCharacterId, CharacterVoicePr
         CHALLENGE_ASSUMPTION: "We can do better than this. Let me show you how."
       }
     }
+  },
+
+  // ============================================================
+  // NEW: LinkedIn 2026 Career Expansion Characters
+  // ============================================================
+
+  quinn: {
+    characterId: 'quinn',
+    vocabulary: {
+      preferred: ['portfolio', 'returns', 'long-term', 'capital', 'value', 'position', 'risk', 'diversify'],
+      avoided: ['gamble', 'quick', 'guaranteed', 'shortcut']
+    },
+    syntax: {
+      structure: 'declarative',
+      brevity: 'moderate'
+    },
+    patternOverrides: {
+      analytical: {
+        ASK_FOR_DETAILS: "Walk me through the thesis. What's the risk-adjusted return?",
+        SHOW_UNDERSTANDING: "The numbers tell the story. I see the pattern.",
+        CHALLENGE_ASSUMPTION: "That's a short-term play. What about year five?"
+      },
+      patience: {
+        STAY_SILENT: "[Let the market speak. Time reveals value.]",
+        ACKNOWLEDGE_EMOTION: "Volatility tests everyone. Patience is the edge.",
+        SET_BOUNDARY: "I need to see more data before committing."
+      },
+      exploring: {
+        EXPRESS_CURIOSITY: "What's the contrarian take here? What's everyone missing?",
+        TAKE_ACTION: "Let's run the model. See what the data says."
+      },
+      helping: {
+        OFFER_SUPPORT: "Financial literacy changes lives. Let me show you.",
+        ACKNOWLEDGE_EMOTION: "Money anxiety is real. Let's address the root."
+      },
+      building: {
+        TAKE_ACTION: "Time to build the position. What's our entry point?",
+        SHOW_UNDERSTANDING: "Solid fundamentals. This will compound."
+      }
+    }
+  },
+
+  dante: {
+    characterId: 'dante',
+    vocabulary: {
+      preferred: ['relationship', 'value', 'trust', 'listen', 'understand', 'partnership', 'win-win'],
+      avoided: ['close', 'pitch', 'hustle', 'quota']
+    },
+    syntax: {
+      structure: 'declarative',
+      brevity: 'moderate'
+    },
+    patternOverrides: {
+      analytical: {
+        ASK_FOR_DETAILS: "What's the real need underneath? Let's dig deeper.",
+        SHOW_UNDERSTANDING: "I hear what you're actually saying. That's the key."
+      },
+      patience: {
+        STAY_SILENT: "[Listen. The close comes from understanding, not talking.]",
+        ACKNOWLEDGE_EMOTION: "Trust takes time. I'm not going anywhere.",
+        SET_BOUNDARY: "Let's slow down. What do you actually need?"
+      },
+      exploring: {
+        EXPRESS_CURIOSITY: "What would make this a win for you? Forget what I want.",
+        REFLECT_BACK: "So the real objection isn't price. It's trust."
+      },
+      helping: {
+        OFFER_SUPPORT: "Let me help you think this through. No agenda.",
+        ACKNOWLEDGE_EMOTION: "That skepticism makes sense. You've been burned before."
+      },
+      building: {
+        TAKE_ACTION: "Let's build something that works for both of us.",
+        CHALLENGE_ASSUMPTION: "That solution doesn't fit your actual need. Here's what will."
+      }
+    }
+  },
+
+  nadia: {
+    characterId: 'nadia',
+    vocabulary: {
+      preferred: ['model', 'bias', 'impact', 'responsible', 'system', 'consequence', 'stakeholder', 'harm'],
+      avoided: ['just', 'simple', 'obvious', 'harmless']
+    },
+    syntax: {
+      structure: 'declarative',
+      brevity: 'moderate'
+    },
+    patternOverrides: {
+      analytical: {
+        ASK_FOR_DETAILS: "What's the model actually optimizing for? Who bears the cost?",
+        SHOW_UNDERSTANDING: "The architecture makes sense. Now let's talk about failure modes.",
+        CHALLENGE_ASSUMPTION: "That assumption is baked into the training data. It's not neutral."
+      },
+      patience: {
+        STAY_SILENT: "[Sit with the complexity. Not every system should be deployed.]",
+        ACKNOWLEDGE_EMOTION: "That discomfort is important. It's telling you something.",
+        SET_BOUNDARY: "I need time to think through the implications."
+      },
+      exploring: {
+        EXPRESS_CURIOSITY: "What happens at the edges? Who falls through the cracks?",
+        REFLECT_BACK: "So the question isn't can we build it. It's should we."
+      },
+      helping: {
+        OFFER_SUPPORT: "Let's think through this together. Responsible AI isn't solo work.",
+        ACKNOWLEDGE_EMOTION: "That concern about harm? It's the most important input."
+      },
+      building: {
+        TAKE_ACTION: "Let's build the safeguards first. Then the feature.",
+        CHALLENGE_ASSUMPTION: "We can do better than 'good enough.' Let me show you."
+      }
+    }
+  },
+
+  isaiah: {
+    characterId: 'isaiah',
+    vocabulary: {
+      preferred: ['mission', 'impact', 'community', 'story', 'relationship', 'legacy', 'purpose', 'serve'],
+      avoided: ['transaction', 'ROI', 'deliverable', 'metrics-only']
+    },
+    syntax: {
+      structure: 'declarative',
+      brevity: 'verbose'
+    },
+    patternOverrides: {
+      analytical: {
+        ASK_FOR_DETAILS: "Tell me about the person behind the gift. What moves them?",
+        SHOW_UNDERSTANDING: "The data is important. But the story is what converts."
+      },
+      patience: {
+        STAY_SILENT: "[Hold space for the story. Donors need to be heard too.]",
+        ACKNOWLEDGE_EMOTION: "That weight you're carrying... it's the cost of caring.",
+        SET_BOUNDARY: "This work takes what it takes. I won't rush the relationship."
+      },
+      exploring: {
+        EXPRESS_CURIOSITY: "What brought you to this cause? There's always a story.",
+        REFLECT_BACK: "So the real connection isn't the program. It's the person it helps."
+      },
+      helping: {
+        OFFER_SUPPORT: "You're not just giving money. You're changing trajectories.",
+        ACKNOWLEDGE_EMOTION: "That compassion fatigue is real. Let me hold some of it."
+      },
+      building: {
+        TAKE_ACTION: "Let's build something that outlasts both of us.",
+        SHOW_UNDERSTANDING: "Sustainable funding. That's what lets us plan beyond survival."
+      }
+    }
   }
 }
 

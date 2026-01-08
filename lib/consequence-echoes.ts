@@ -733,6 +733,191 @@ export const CHARACTER_ECHOES: Record<string, {
         { text: "\"You optimize the workflow.\"", emotion: "pleased", timing: "delayed" }
       ]
     }
+  },
+
+  // ============================================
+  // NEW: LinkedIn 2026 Career Expansion Characters
+  // ============================================
+
+  quinn: {
+    trustUp: {
+      subtle: [
+        { text: "Quinn's pen pauses over his notepad.", emotion: "thoughtful", timing: "immediate" },
+        { text: "A slight nod. The kind that means he's recalculating.", emotion: "curious", timing: "immediate" },
+        { text: "Quinn's posture shifts—almost imperceptibly more open.", emotion: "open", timing: "immediate" }
+      ],
+      noticeable: [
+        { text: "\"That's... not the answer I expected.\" Quinn sounds intrigued.", emotion: "surprised", timing: "immediate" },
+        { text: "Quinn sets down his coffee. \"Say more about that.\"", emotion: "engaged", timing: "immediate" },
+        { text: "\"You're thinking longer-term than most.\" Approval colors his voice.", emotion: "approving", timing: "immediate" }
+      ],
+      significant: [
+        { text: "Quinn goes quiet. \"I used to think like that. Before the 400 jobs.\"", emotion: "vulnerable", timing: "immediate" },
+        { text: "\"You see the whole board, not just the next move.\" Quinn's guard drops.", emotion: "warm", timing: "immediate" },
+        { text: "\"Most people don't understand that wealth without meaning is just... numbers.\" He looks at you differently now.", emotion: "trusting", timing: "immediate" }
+      ]
+    },
+    trustDown: {
+      subtle: [
+        { text: "Quinn glances at his watch.", emotion: "neutral", timing: "immediate" },
+        { text: "His smile becomes professionally pleasant.", emotion: "guarded", timing: "immediate" },
+        { text: "Quinn returns to his notepad.", emotion: "distant", timing: "immediate" }
+      ],
+      noticeable: [
+        { text: "\"That's a short-term play.\" Quinn sounds disappointed.", emotion: "disappointed", timing: "immediate" },
+        { text: "Something closes behind Quinn's eyes. Back to business.", emotion: "guarded", timing: "immediate" }
+      ],
+      significant: [
+        { text: "\"I've seen that thinking destroy portfolios. And people.\" Quinn's voice is cold.", emotion: "cold", timing: "immediate" },
+        { text: "Quinn stands. \"I have other meetings.\" He doesn't.", emotion: "dismissive", timing: "immediate" }
+      ]
+    },
+    patternRecognition: {
+      analytical: [
+        { text: "\"You think in systems. That's rare in this business.\"", emotion: "approving", timing: "delayed" }
+      ],
+      patience: [
+        { text: "\"You understand that real returns take time. Most people don't.\"", emotion: "warm", timing: "delayed" }
+      ],
+      building: [
+        { text: "\"You want to build something that lasts. I respect that.\"", emotion: "approving", timing: "delayed" }
+      ]
+    }
+  },
+
+  dante: {
+    trustUp: {
+      subtle: [
+        { text: "Dante's smile reaches his eyes.", emotion: "warm", timing: "immediate" },
+        { text: "He leans in slightly. Really listening.", emotion: "engaged", timing: "immediate" },
+        { text: "Something relaxes in Dante's shoulders.", emotion: "open", timing: "immediate" }
+      ],
+      noticeable: [
+        { text: "\"Now that's refreshing.\" Dante laughs—a real one.", emotion: "pleased", timing: "immediate" },
+        { text: "\"Most people don't see past the pitch. You do.\"", emotion: "warm", timing: "immediate" },
+        { text: "Dante puts his phone face-down. Full attention.", emotion: "engaged", timing: "immediate" }
+      ],
+      significant: [
+        { text: "\"I almost quit after that single mom thing. True story.\" Dante's voice catches.", emotion: "vulnerable", timing: "immediate" },
+        { text: "\"You remind me why I stopped chasing numbers.\" Dante looks moved.", emotion: "moved", timing: "immediate" },
+        { text: "\"The real close isn't the sale. It's the relationship after.\" He sounds like he's finally saying it out loud.", emotion: "trusting", timing: "immediate" }
+      ]
+    },
+    trustDown: {
+      subtle: [
+        { text: "Dante's smile becomes a performance.", emotion: "guarded", timing: "immediate" },
+        { text: "He checks his phone. Casual but deliberate.", emotion: "dismissive", timing: "immediate" }
+      ],
+      noticeable: [
+        { text: "\"That's one way to look at it.\" Translation: wrong way.", emotion: "disappointed", timing: "immediate" },
+        { text: "Dante's energy recedes. The charming mask slides into place.", emotion: "guarded", timing: "immediate" }
+      ],
+      significant: [
+        { text: "\"I've heard that pitch before. From people who meant it less.\" Dante's warmth vanishes.", emotion: "cold", timing: "immediate" },
+        { text: "\"Good luck with that approach.\" Dante's already looking past you.", emotion: "dismissive", timing: "immediate" }
+      ]
+    },
+    patternRecognition: {
+      helping: [
+        { text: "\"You actually care about the person, not just the deal. That's my language.\"", emotion: "warm", timing: "delayed" }
+      ],
+      exploring: [
+        { text: "\"You're curious about what makes people tick. That's the real skill.\"", emotion: "approving", timing: "delayed" }
+      ],
+      building: [
+        { text: "\"You want to build something real, not just close and move on.\"", emotion: "approving", timing: "delayed" }
+      ]
+    }
+  },
+
+  nadia: {
+    trustUp: {
+      subtle: [
+        { text: "Nadia's typing slows.", emotion: "thoughtful", timing: "immediate" },
+        { text: "She tilts her head slightly. Processing.", emotion: "curious", timing: "immediate" },
+        { text: "A micro-nod. Acknowledgment.", emotion: "approving", timing: "immediate" }
+      ],
+      noticeable: [
+        { text: "\"That's... actually a sophisticated question.\" Nadia sounds surprised.", emotion: "surprised", timing: "immediate" },
+        { text: "Nadia closes her laptop partially. \"Go on.\"", emotion: "engaged", timing: "immediate" },
+        { text: "\"You understand the complexity. Most people just want the hype.\"", emotion: "warm", timing: "immediate" }
+      ],
+      significant: [
+        { text: "\"I watched a biased algorithm ruin lives. Your question... it matters.\" Nadia's voice is quiet.", emotion: "vulnerable", timing: "immediate" },
+        { text: "\"The hardest part isn't building AI. It's living with what you've built.\" She looks at you like you might understand.", emotion: "trusting", timing: "immediate" },
+        { text: "\"You see the person behind the prediction. That's what this field needs.\"", emotion: "moved", timing: "immediate" }
+      ]
+    },
+    trustDown: {
+      subtle: [
+        { text: "Nadia's fingers resume typing.", emotion: "distant", timing: "immediate" },
+        { text: "\"Mm.\" She doesn't look up.", emotion: "dismissive", timing: "immediate" }
+      ],
+      noticeable: [
+        { text: "\"That's the surface-level take.\" Nadia sounds tired.", emotion: "disappointed", timing: "immediate" },
+        { text: "Her screen reflects in her glasses. She's already elsewhere.", emotion: "guarded", timing: "immediate" }
+      ],
+      significant: [
+        { text: "\"That kind of thinking is how harm gets shipped as 'innovation.'\"", emotion: "cold", timing: "immediate" },
+        { text: "\"I've had this conversation too many times.\" Nadia's done.", emotion: "exhausted", timing: "immediate" }
+      ]
+    },
+    patternRecognition: {
+      analytical: [
+        { text: "\"You think systematically about consequences. That's essential for this work.\"", emotion: "approving", timing: "delayed" }
+      ],
+      helping: [
+        { text: "\"You see the humans in the data. That's what separates ethics from compliance.\"", emotion: "warm", timing: "delayed" }
+      ],
+      patience: [
+        { text: "\"You understand that 'move fast and break things' breaks people. Thank you.\"", emotion: "grateful", timing: "delayed" }
+      ]
+    }
+  },
+
+  isaiah: {
+    trustUp: {
+      subtle: [
+        { text: "Isaiah's story pauses. He's really looking at you now.", emotion: "attentive", timing: "immediate" },
+        { text: "Something warms in his expression.", emotion: "warm", timing: "immediate" },
+        { text: "Isaiah nods slowly. Taking you seriously.", emotion: "thoughtful", timing: "immediate" }
+      ],
+      noticeable: [
+        { text: "\"You understand that this isn't about money. It never was.\"", emotion: "moved", timing: "immediate" },
+        { text: "Isaiah leans back. \"Tell me more. I'm listening.\"", emotion: "engaged", timing: "immediate" },
+        { text: "\"Most people see nonprofits as charities. You see them as systems of change.\"", emotion: "approving", timing: "immediate" }
+      ],
+      significant: [
+        { text: "\"There was a kid. Marcus. I couldn't save him.\" Isaiah's voice breaks slightly.", emotion: "vulnerable", timing: "immediate" },
+        { text: "\"You remind me why I do this work. Even when it breaks my heart.\"", emotion: "trusting", timing: "immediate" },
+        { text: "\"The donors don't see the faces. But you do. I can tell.\"", emotion: "moved", timing: "immediate" }
+      ]
+    },
+    trustDown: {
+      subtle: [
+        { text: "Isaiah's story becomes more... professional.", emotion: "guarded", timing: "immediate" },
+        { text: "He glances at the clock.", emotion: "distant", timing: "immediate" }
+      ],
+      noticeable: [
+        { text: "\"That's the corporate approach.\" Isaiah doesn't hide his disappointment.", emotion: "disappointed", timing: "immediate" },
+        { text: "The warmth fades from Isaiah's eyes.", emotion: "guarded", timing: "immediate" }
+      ],
+      significant: [
+        { text: "\"I've heard that justification before. From people who wrote checks instead of showing up.\"", emotion: "bitter", timing: "immediate" },
+        { text: "\"The kids don't need efficiency. They need presence.\" Isaiah's voice is cold.", emotion: "cold", timing: "immediate" }
+      ]
+    },
+    patternRecognition: {
+      helping: [
+        { text: "\"You lead with your heart. That's what this work demands.\"", emotion: "warm", timing: "delayed" }
+      ],
+      patience: [
+        { text: "\"You understand that change takes time. Generational time.\"", emotion: "approving", timing: "delayed" }
+      ],
+      building: [
+        { text: "\"You want to build systems that outlast you. That's the real legacy.\"", emotion: "knowing", timing: "delayed" }
+      ]
+    }
   }
 }
 

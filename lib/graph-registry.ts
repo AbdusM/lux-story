@@ -29,6 +29,10 @@ import { graceRevisitGraph } from '@/content/grace-revisit-graph'
 import { ashaDialogueGraph } from '@/content/asha-dialogue-graph'
 import { liraDialogueGraph } from '@/content/lira-dialogue-graph'
 import { zaraDialogueGraph } from '@/content/zara-dialogue-graph'
+import { quinnDialogueGraph } from '@/content/quinn-dialogue-graph'
+import { danteDialogueGraph } from '@/content/dante-dialogue-graph'
+import { nadiaDialogueGraph } from '@/content/nadia-dialogue-graph'
+import { isaiahDialogueGraph } from '@/content/isaiah-dialogue-graph'
 import { stationEntryGraph } from '@/content/station-entry-graph'
 import { grandHallGraph } from '@/content/grand-hall-graph'
 import { marketGraph } from '@/content/market-graph'
@@ -62,6 +66,10 @@ export const DIALOGUE_GRAPHS = {
   asha: ashaDialogueGraph,
   lira: liraDialogueGraph,
   zara: zaraDialogueGraph,
+  quinn: quinnDialogueGraph,
+  dante: danteDialogueGraph,
+  nadia: nadiaDialogueGraph,
+  isaiah: isaiahDialogueGraph,
   station_entry: stationEntryGraph,
   grand_hall: grandHallGraph,
   market: marketGraph,
@@ -71,9 +79,9 @@ export const DIALOGUE_GRAPHS = {
 /**
  * Character IDs that can be navigated to
  */
-export type CharacterId = 'samuel' | 'maya' | 'devon' | 'jordan' | 'marcus' | 'tess' | 'yaquin' | 'kai' | 'alex' | 'rohan' | 'silas' | 'elena' | 'grace' | 'asha' | 'lira' | 'zara' | 'station_entry' | 'grand_hall' | 'market' | 'deep_station'
+export type CharacterId = 'samuel' | 'maya' | 'devon' | 'jordan' | 'marcus' | 'tess' | 'yaquin' | 'kai' | 'alex' | 'rohan' | 'silas' | 'elena' | 'grace' | 'asha' | 'lira' | 'zara' | 'quinn' | 'dante' | 'nadia' | 'isaiah' | 'station_entry' | 'grand_hall' | 'market' | 'deep_station'
 
-export const CHARACTER_IDS: CharacterId[] = ['samuel', 'maya', 'devon', 'jordan', 'marcus', 'tess', 'yaquin', 'kai', 'alex', 'rohan', 'silas', 'elena', 'grace', 'asha', 'lira', 'zara', 'station_entry', 'grand_hall', 'market', 'deep_station']
+export const CHARACTER_IDS: CharacterId[] = ['samuel', 'maya', 'devon', 'jordan', 'marcus', 'tess', 'yaquin', 'kai', 'alex', 'rohan', 'silas', 'elena', 'grace', 'asha', 'lira', 'zara', 'quinn', 'dante', 'nadia', 'isaiah', 'station_entry', 'grand_hall', 'market', 'deep_station']
 
 export function isValidCharacterId(id: string): id is CharacterId {
   return CHARACTER_IDS.includes(id as CharacterId)

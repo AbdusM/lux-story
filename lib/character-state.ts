@@ -96,7 +96,7 @@ export interface GameState {
   patterns: PlayerPatterns // Pattern tracking for final revelation
   lastSaved: number
   currentNodeId: string // Current position in dialogue graph
-  currentCharacterId: 'samuel' | 'maya' | 'devon' | 'jordan' | 'marcus' | 'tess' | 'yaquin' | 'kai' | 'alex' | 'rohan' | 'silas' | 'elena' | 'grace' | 'asha' | 'lira' | 'zara' | 'station_entry' | 'grand_hall' | 'market' | 'deep_station'
+  currentCharacterId: 'samuel' | 'maya' | 'devon' | 'jordan' | 'marcus' | 'tess' | 'yaquin' | 'kai' | 'alex' | 'rohan' | 'silas' | 'elena' | 'grace' | 'asha' | 'lira' | 'zara' | 'quinn' | 'dante' | 'nadia' | 'isaiah' | 'station_entry' | 'grand_hall' | 'market' | 'deep_station'
   thoughts: ActiveThought[]
   episodeNumber: number  // Track which episode the player is on
   sessionStartTime: number  // When current session started (for episode timer)
@@ -233,7 +233,7 @@ export interface SerializableGameState {
   patterns: PlayerPatterns
   lastSaved: number
   currentNodeId: string
-  currentCharacterId: 'samuel' | 'maya' | 'devon' | 'jordan' | 'marcus' | 'tess' | 'yaquin' | 'kai' | 'alex' | 'rohan' | 'silas' | 'elena' | 'grace' | 'asha' | 'lira' | 'zara' | 'station_entry' | 'grand_hall' | 'market' | 'deep_station'
+  currentCharacterId: 'samuel' | 'maya' | 'devon' | 'jordan' | 'marcus' | 'tess' | 'yaquin' | 'kai' | 'alex' | 'rohan' | 'silas' | 'elena' | 'grace' | 'asha' | 'lira' | 'zara' | 'quinn' | 'dante' | 'nadia' | 'isaiah' | 'station_entry' | 'grand_hall' | 'market' | 'deep_station'
   thoughts: ActiveThought[]
   episodeNumber: number
   sessionStartTime: number

@@ -545,6 +545,118 @@ export const PATTERN_VOICE_LIBRARY: PatternVoiceEntry[] = [
     condition: { characterId: 'grace' },
     voices: ["Her silence is a gift. Accept it."],
     style: 'observation'
+  },
+
+  // ============================================
+  // QUINN - The Reformed Financier
+  // ============================================
+  {
+    pattern: 'analytical',
+    minLevel: 5,
+    trigger: 'before_choices',
+    condition: { characterId: 'quinn' },
+    voices: ["He thinks in decades. Match his timeframe."],
+    style: 'urge'
+  },
+  {
+    pattern: 'patience',
+    minLevel: 4,
+    trigger: 'node_enter',
+    condition: { characterId: 'quinn' },
+    voices: ["Compounding works both ways. In money. In relationships."],
+    style: 'observation'
+  },
+  {
+    pattern: 'building',
+    minLevel: 5,
+    trigger: 'before_choices',
+    condition: { characterId: 'quinn' },
+    voices: ["He's building portfolios. You're building futures. Find the overlap."],
+    style: 'whisper'
+  },
+
+  // ============================================
+  // DANTE - The Reformed Closer
+  // ============================================
+  {
+    pattern: 'helping',
+    minLevel: 5,
+    trigger: 'before_choices',
+    condition: { characterId: 'dante' },
+    voices: ["He's looking for authenticity, not tactics. Give him the real thing."],
+    style: 'urge'
+  },
+  {
+    pattern: 'exploring',
+    minLevel: 4,
+    trigger: 'node_enter',
+    condition: { characterId: 'dante' },
+    voices: ["Every question is an opportunity to understand, not to close."],
+    style: 'observation'
+  },
+  {
+    pattern: 'building',
+    minLevel: 4,
+    trigger: 'before_choices',
+    condition: { characterId: 'dante' },
+    voices: ["Real sales is relationship architecture. Build it."],
+    style: 'whisper'
+  },
+
+  // ============================================
+  // NADIA - The AI Ethicist
+  // ============================================
+  {
+    pattern: 'analytical',
+    minLevel: 5,
+    trigger: 'before_choices',
+    condition: { characterId: 'nadia' },
+    voices: ["She sees the edge cases. The failures. Show her you do too."],
+    style: 'urge'
+  },
+  {
+    pattern: 'helping',
+    minLevel: 5,
+    trigger: 'node_enter',
+    condition: { characterId: 'nadia' },
+    voices: ["Ethics isn't a checkbox. It's care encoded in systems."],
+    style: 'observation'
+  },
+  {
+    pattern: 'patience',
+    minLevel: 4,
+    trigger: 'before_choices',
+    condition: { characterId: 'nadia' },
+    voices: ["Move fast and break things. She's seen the broken things."],
+    style: 'whisper'
+  },
+
+  // ============================================
+  // ISAIAH - The Reluctant Fundraiser
+  // ============================================
+  {
+    pattern: 'helping',
+    minLevel: 5,
+    trigger: 'before_choices',
+    condition: { characterId: 'isaiah' },
+    voices: ["He carries the weight of faces, not metrics. Meet him there."],
+    style: 'urge'
+  },
+  {
+    pattern: 'patience',
+    minLevel: 5,
+    trigger: 'node_enter',
+    condition: { characterId: 'isaiah' },
+    voices: ["Generational change. That's his horizon. Match it."],
+    style: 'observation'
+  },
+  {
+    pattern: 'building',
+    minLevel: 4,
+    trigger: 'before_choices',
+    condition: { characterId: 'isaiah' },
+    voices: ["Systems that outlast their builders. That's the real philanthropy."],
+    style: 'whisper'
   }
 ]
 

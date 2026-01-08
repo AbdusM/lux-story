@@ -1,4 +1,4 @@
-export type AnimalType = 'fox' | 'owl' | 'raccoon' | 'bear' | 'chameleon' | 'dog' | 'mouse' | 'parrot' | 'raven' | 'rabbit' | 'butterfly' | 'deer' | 'cat' | 'player'
+export type AnimalType = 'fox' | 'owl' | 'raccoon' | 'bear' | 'chameleon' | 'dog' | 'mouse' | 'parrot' | 'raven' | 'rabbit' | 'butterfly' | 'deer' | 'cat' | 'player' | 'hedgehog' | 'peacock' | 'barnowl' | 'elephant'
 
 // 32×32 Sprite System - 4× pixel budget for expressive, legible characters
 // Design principles:
@@ -191,6 +191,59 @@ export const PALETTES: Record<AnimalType, Record<string, string>> = {
         'W': '#F5F5F5',
         'B': '#1A1A1A',
         'H': '#FFFFFF',
+    },
+    // Quinn - Hedgehog: Careful, protective (amber/copper tones)
+    hedgehog: {
+        '.': 'transparent',
+        'B': '#1A1A1A',  // Black (eyes, nose)
+        'S': '#8B6914',  // Brown spines
+        's': '#6B4F0E',  // Dark spines (shadow)
+        'T': '#D4A857',  // Tan (face, belly)
+        't': '#C49545',  // Tan shadow
+        'W': '#F5F5F5',  // Eye whites
+        'H': '#FFFFFF',  // Highlight
+        'N': '#2D2D2D',  // Nose
+        'P': '#FFB6C1',  // Pink (inner ear)
+    },
+    // Dante - Peacock: Charismatic, bold (blue/teal/gold)
+    peacock: {
+        '.': 'transparent',
+        'B': '#1A1A1A',  // Black (eye outline)
+        'U': '#1E90FF',  // Blue (main feathers)
+        'u': '#0066CC',  // Dark blue (shadow)
+        'T': '#20B2AA',  // Teal (neck)
+        't': '#178B8B',  // Dark teal
+        'G': '#FFD700',  // Gold (accents)
+        'g': '#DAA520',  // Dark gold
+        'W': '#F5F5F5',  // Eye whites
+        'H': '#FFFFFF',  // Highlight
+        'N': '#4A4A4A',  // Beak gray
+    },
+    // Nadia - Barn Owl: Wise, watchful (cream/tan/teal)
+    barnowl: {
+        '.': 'transparent',
+        'B': '#1A1A1A',  // Black (pupils)
+        'C': '#F5E6D3',  // Cream (face disk)
+        'c': '#E8D4C4',  // Cream shadow
+        'T': '#D4A857',  // Tan (feathers)
+        't': '#B8934A',  // Dark tan
+        'W': '#F5F5F5',  // Eye whites
+        'H': '#FFFFFF',  // Highlight
+        'Y': '#2D2D2D',  // Beak dark
+        'E': '#20B2AA',  // Teal eyes (unique)
+    },
+    // Isaiah - Elephant: Community-minded, memorable (gray/green)
+    elephant: {
+        '.': 'transparent',
+        'B': '#1A1A1A',  // Black (pupils)
+        'G': '#808080',  // Gray (main)
+        'g': '#606060',  // Dark gray (shadow)
+        'L': '#A0A0A0',  // Light gray (highlights)
+        'P': '#FFB6C1',  // Pink (inner ear)
+        'E': '#2E8B57',  // Green (eyes - wisdom)
+        'W': '#F5F5F5',  // Eye whites
+        'H': '#FFFFFF',  // Highlight
+        'T': '#707070',  // Trunk gray
     }
 }
 
@@ -681,5 +734,145 @@ export const SPRITES: Record<AnimalType, string[]> = {
         "................................",
         "................................",
         "................................",
+    ],
+    // Quinn - Hedgehog: Rounded body with spines, small face
+    hedgehog: [
+        "................................",  // 0
+        "................................",  // 1
+        ".........SSSSSSSS..............",  // 2: Spine tips
+        "........SSSsSSSsSS.............",  // 3
+        ".......SSsSSsSSsSSS............",  // 4
+        "......SSsSSSsSSSsSSS...........",  // 5
+        ".....SSsSSSSSSSSsSSSS..........",  // 6
+        "....SSsSSSSSSSSSSsSSSS.........",  // 7
+        "...SSsSSSSSSSSSSSSSsSSSS.......",  // 8
+        "...SsSSSSSSSSSSSSSSSSsSSS......",  // 9
+        "..SSSSSTTTTTTTTTTSSSSSSSS......",  // 10: Face starts
+        "..SSSSTTTTTTTTTTTTTTsSSS.......",  // 11
+        "..SSSTTTTTTTTTTTTTTTTsSS.......",  // 12
+        "..SSTTTWHBTTTTTTBHWTTsS........",  // 13: Eyes
+        "..SSTTTWWBTTTTTTBWWTTsS........",  // 14
+        "..SSTTTTTTTTTTTTTTTTTsS........",  // 15
+        "...STTTTTTTTTTTTTTTTsS.........",  // 16
+        "...STTTTTTTNNTTTTTTsS..........",  // 17: Nose
+        "....STTTTTTNNTTTTTsS...........",  // 18
+        "....sTTTTTTTTTTTTsS............",  // 19
+        ".....sTTTTTTTTTTsS.............",  // 20
+        "......ssTTTTTTssS..............",  // 21
+        ".......SssssssSS...............",  // 22
+        "........SSSSSS.................",  // 23
+        "................................",  // 24
+        "................................",  // 25
+        "................................",  // 26
+        "................................",  // 27
+        "................................",  // 28
+        "................................",  // 29
+        "................................",  // 30
+        "................................",  // 31
+    ],
+    // Dante - Peacock: Elegant crest, colorful display
+    peacock: [
+        "................................",  // 0
+        "........GgGgGgG................",  // 1: Crest feathers (gold)
+        ".......GGGGGGGGG...............",  // 2
+        "......GGGGGGGGGGG..............",  // 3
+        ".......UUUUUUUUU...............",  // 4: Head (blue)
+        "......UUUUUUUUUUU..............",  // 5
+        ".....UUUUUuUUuUUUU.............",  // 6
+        ".....UUUUuUUUUuUUUU............",  // 7
+        "....UUUUuUUUUUUuUUUU...........",  // 8
+        "....UUUuTTTTTTTTuUUU...........",  // 9: Neck (teal)
+        "....UUuTTTTTTTTTTuUU...........",  // 10
+        "....UuTTTTTTTTTTTTuU...........",  // 11
+        "....uTTTTTTTTTTTTTTu...........",  // 12
+        "....uTTWHBTTTTBHWTTu...........",  // 13: Eyes
+        "....uTTWWBTTTTBWWTTu...........",  // 14
+        "....uTTTTTTTTTTTTTTu...........",  // 15
+        ".....uTTTTTTTTTTTTu............",  // 16
+        ".....uTTTTNNNTTTTu.............",  // 17: Beak
+        "......uTTTNNNTTTu..............",  // 18
+        "......uTTTTTTTTu...............",  // 19
+        ".......uTTTTTTu................",  // 20
+        "........uTTTTu.................",  // 21
+        ".........uTTu..................",  // 22
+        "..........uu...................",  // 23
+        "................................",  // 24
+        "................................",  // 25
+        "................................",  // 26
+        "................................",  // 27
+        "................................",  // 28
+        "................................",  // 29
+        "................................",  // 30
+        "................................",  // 31
+    ],
+    // Nadia - Barn Owl: Heart-shaped face, large eyes
+    barnowl: [
+        "................................",  // 0
+        "................................",  // 1
+        ".....TTTT........TTTT..........",  // 2: Ear tufts (tan)
+        "....TTTTT........TTTTT.........",  // 3
+        "....TTTtTT......TTtTTT.........",  // 4
+        "...TTTTtTTT....TTTtTTTT........",  // 5
+        "...TTTtTTTTTTTTTTTtTTTT........",  // 6
+        "..TTTtTTTTTTTTTTTTtTTTT........",  // 7
+        "..TTtTTCCCCCCCCCCTTtTTT........",  // 8: Face disk (cream)
+        "..TtTCCCCCCCCCCCCCCTtTT........",  // 9
+        "..TtCCCCCCCCCCCCCCCCtTT........",  // 10
+        "..TtCCCCCCCCCCCCCCCCtTT........",  // 11
+        "..TtCCCCCCCCCCCCCCCCtTT........",  // 12
+        "..TtCCWHBCCCCCCBHWCCtT.........",  // 13: Eyes (teal)
+        "..TtCCWEBCCCCCCBEWCCtT.........",  // 14: Teal eyes
+        "..TtCCCCCCCCCCCCCCCCtT.........",  // 15
+        "...TtCCCCCCCCCCCCCCtT..........",  // 16
+        "...TtCCCCCYYYCCCCCtT...........",  // 17: Beak
+        "....TtCCCCYYYCCCCtT............",  // 18
+        "....TtCCCCCYCCCCtT.............",  // 19
+        ".....TtCCCCCCCCtT..............",  // 20
+        "......TtCCCCCCtT...............",  // 21
+        ".......TtCCCCtT................",  // 22
+        "........TttttT.................",  // 23
+        ".........TTTT..................",  // 24
+        "................................",  // 25
+        "................................",  // 26
+        "................................",  // 27
+        "................................",  // 28
+        "................................",  // 29
+        "................................",  // 30
+        "................................",  // 31
+    ],
+    // Isaiah - Elephant: Large ears, trunk, wise expression
+    elephant: [
+        "................................",  // 0
+        "................................",  // 1
+        "...GGGG..........GGGG..........",  // 2: Ears
+        "..GGGPGG........GGPGGG.........",  // 3: Pink inner ear
+        ".GGGPPGGG......GGGPPGGG........",  // 4
+        ".GGGPPGGG......GGGPPGGG........",  // 5
+        ".GGGPGGGG......GGGGPGGG........",  // 6
+        ".GGGGGGGGGGGGGGGGGGGGGG........",  // 7: Head
+        "..GGGGGGGGGGGGGGGGGGgGG........",  // 8
+        "..GGGGGgGGGGGGGGGgGGgGG........",  // 9
+        "..GGGGgGGGGGGGGGGgGGgGG........",  // 10
+        "..GGGgGGGGGGGGGGGGgGgGG........",  // 11
+        "..GGgGGGGGGGGGGGGGGgGG.........",  // 12
+        "..GgGGWHBGGGGGGBHWGgGG.........",  // 13: Eyes (green)
+        "..GgGGWEBGGGGGGBEWGgGG.........",  // 14: Green eyes
+        "..GgGGGGGGGGGGGGGGGgGG.........",  // 15
+        "...GgGGGGGTTTTGGGGgGG..........",  // 16: Trunk starts
+        "...GgGGGGTTTTTTGGGgGG..........",  // 17
+        "....GgGGTTTTTTTTGgGG...........",  // 18
+        "....GgGGTTTTTTTTGgGG...........",  // 19
+        ".....GgGGTTTTTTGgGG............",  // 20
+        ".....GgGGGTTTTGGgGG............",  // 21
+        "......GgGGTTTGGgG..............",  // 22
+        ".......GgGTTGgG................",  // 23
+        "........GgTgG..................",  // 24
+        ".........GTG...................",  // 25
+        "................................",  // 26
+        "................................",  // 27
+        "................................",  // 28
+        "................................",  // 29
+        "................................",  // 30
+        "................................",  // 31
     ]
 }

@@ -108,6 +108,22 @@ const WAITING_MESSAGES: Record<CharacterId, string[]> = {
     "Zara has been analyzing the station's efficiency. She had a thought.",
     "The analyst mentioned a pattern she noticed in your choices."
   ],
+  quinn: [
+    "Quinn has been reviewing old market data. Something in the patterns reminded him of you.",
+    "The financier mentioned your conversation. Said it was refreshing."
+  ],
+  dante: [
+    "Dante has been practicing his pauses. He mentioned wanting to continue your talk.",
+    "The sales mentor asked if you'd returned. Had something more to share."
+  ],
+  nadia: [
+    "Nadia has been auditing systems with extra care. Your questions stayed with her.",
+    "The AI ethicist mentioned you. Said you asked the right questions."
+  ],
+  isaiah: [
+    "Isaiah has been more reflective lately. Your conversation mattered to him.",
+    "The nonprofit leader saved an article he thought you'd appreciate."
+  ],
   station_entry: [""],
   grand_hall: [""],
   market: [""],
@@ -360,6 +376,10 @@ function formatCharacterName(characterId: CharacterId): string {
     asha: 'Asha',
     lira: 'Lira',
     zara: 'Zara',
+    quinn: 'Quinn',
+    dante: 'Dante',
+    nadia: 'Nadia',
+    isaiah: 'Isaiah',
     station_entry: 'Station Entry',
     grand_hall: 'Grand Hall',
     market: 'Market',
@@ -456,6 +476,26 @@ export function getTimeAwareGreeting(
       short: "System optimized.",
       medium: "I've calculated new efficiencies.",
       long: "Your return fits the optimal probability model. Good."
+    },
+    quinn: {
+      short: "You came back.",
+      medium: "Markets change. Some people don't. Good to see you.",
+      long: "Most people drift away. You returned. That says something."
+    },
+    dante: {
+      short: "Perfect timing.",
+      medium: "I've been saving a pause for you.",
+      long: "Some conversations deserve a sequel. This is one of those."
+    },
+    nadia: {
+      short: "Good. You're here.",
+      medium: "I've been thinking about our discussion.",
+      long: "The questions you asked... they stayed with me. That's rare."
+    },
+    isaiah: {
+      short: "Hey.",
+      medium: "Some visitors leave a mark. You did.",
+      long: "I've been working through some things. Glad you're back to hear about it."
     },
     station_entry: { short: "", medium: "", long: "" },
     grand_hall: { short: "", medium: "", long: "" },

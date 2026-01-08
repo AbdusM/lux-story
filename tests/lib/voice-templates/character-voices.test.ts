@@ -11,9 +11,9 @@ import {
 } from '@/lib/voice-templates/character-voices'
 
 describe('CHARACTER_VOICE_PROFILES', () => {
-  it('has profiles for all 16 characters', () => {
+  it('has profiles for all 20 characters', () => {
     const characterIds = Object.keys(CHARACTER_VOICE_PROFILES)
-    expect(characterIds).toHaveLength(16)
+    expect(characterIds).toHaveLength(20)  // 16 original + 4 LinkedIn 2026 (quinn, dante, nadia, isaiah)
   })
 
   it('includes all required fields', () => {
@@ -110,7 +110,8 @@ describe('getCharacterVoice', () => {
   it('returns profile for all characters', () => {
     const characterIds = [
       'samuel', 'maya', 'devon', 'marcus', 'kai', 'tess', 'rohan',
-      'yaquin', 'grace', 'alex', 'elena', 'jordan', 'silas', 'asha', 'lira', 'zara'
+      'yaquin', 'grace', 'alex', 'elena', 'jordan', 'silas', 'asha', 'lira', 'zara',
+      'quinn', 'dante', 'nadia', 'isaiah'  // LinkedIn 2026 Career Expansion
     ] as const
 
     for (const charId of characterIds) {
