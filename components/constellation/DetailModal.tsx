@@ -4,8 +4,6 @@ import { useEffect, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Lock, User, MessageCircle, Compass, Target, Clock, ShieldAlert } from 'lucide-react'
 import { cn } from '@/lib/utils'
-// backdrop animation available for future use
-// import { backdrop } from '@/lib/animations'
 import type { CharacterWithState, SkillWithState } from '@/hooks/useConstellationData'
 import type { Quest } from '@/lib/quest-system'
 import { CHARACTER_COLORS } from '@/lib/constellation/character-positions'
@@ -541,25 +539,27 @@ function QuestDetail({ quest, onClose }: { quest: Quest; onClose: () => void }) 
           </p>
         </div>
 
-        {/* Objectives Simulation */}
+        {/* Objectives - Dynamic based on quest conditions */}
         <div>
           <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3 flex items-center gap-2">
             <Target className="w-4 h-4" />
             Objectives
           </h3>
           <div className="space-y-2">
-            <div className="flex items-start gap-3 p-3 bg-slate-900/40 border border-slate-800/50 rounded-sm">
-              <div className={cn("w-4 h-4 mt-0.5 rounded-full border flex items-center justify-center",
-                isCompleted ? "bg-emerald-500 border-emerald-500" : "border-slate-600"
-              )}>
-                {isCompleted && <div className="w-2 h-2 bg-white rounded-full" />}
+            {getQuestObjectives(quest).map((objective, idx) => (
+              <div key={idx} className="flex items-start gap-3 p-3 bg-slate-900/40 border border-slate-800/50 rounded-sm">
+                <div className={cn("w-4 h-4 mt-0.5 rounded-full border flex items-center justify-center",
+                  isCompleted ? "bg-emerald-500 border-emerald-500" : "border-slate-600"
+                )}>
+                  {isCompleted && <div className="w-2 h-2 bg-white rounded-full" />}
+                </div>
+                <div>
+                  <p className={cn("text-xs font-medium", isCompleted ? "text-slate-400 line-through" : "text-slate-200")}>
+                    {objective}
+                  </p>
+                </div>
               </div>
-              <div>
-                <p className={cn("text-xs font-medium", isCompleted ? "text-slate-400 line-through" : "text-slate-200")}>
-                  Complete mission requirements logic
-                </p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
 
@@ -604,6 +604,59 @@ function QuestDetail({ quest, onClose }: { quest: Quest; onClose: () => void }) 
 // Helper functions
 
 // getStateOrder and getNextMilestone removed - unused
+
+/**
+ * Generate dynamic objectives for a quest based on its conditions
+ */
+function getQuestObjectives(quest: Quest): string[] {
+  const objectives: string[] = []
+
+  // Character arc quests
+  if (quest.type === 'character_arc' && quest.characterId) {
+    objectives.push(`Build trust with ${quest.characterId.charAt(0).toUpperCase() + quest.characterId.slice(1)}`)
+    if (quest.completeCondition.hasGlobalFlags) {
+      objectives.push(`Complete their story arc`)
+    }
+  }
+
+  // Discovery quests
+  if (quest.type === 'discovery') {
+    if (quest.completeCondition.hasGlobalFlags?.includes('station_history_revealed')) {
+      objectives.push(`Ask Samuel about the station's past`)
+      objectives.push(`Uncover the hidden history`)
+    }
+    if (quest.completeCondition.minPatterns) {
+      objectives.push(`Develop at least one pattern to level 6`)
+    }
+  }
+
+  // Return hooks
+  if (quest.type === 'return_hook') {
+    objectives.push(`Revisit the character after completing their arc`)
+    objectives.push(`Discover what's changed`)
+  }
+
+  // Generic objectives based on conditions
+  if (quest.completeCondition.metCharacters?.length) {
+    const chars = quest.completeCondition.metCharacters.map(c =>
+      c.charAt(0).toUpperCase() + c.slice(1)
+    ).join(', ')
+    objectives.push(`Meet: ${chars}`)
+  }
+
+  if (quest.completeCondition.minTrust?.length) {
+    quest.completeCondition.minTrust.forEach(({ characterId, trust }) => {
+      objectives.push(`Reach trust level ${trust} with ${characterId.charAt(0).toUpperCase() + characterId.slice(1)}`)
+    })
+  }
+
+  // Fallback if no specific objectives generated
+  if (objectives.length === 0) {
+    objectives.push(quest.description.split('.')[0] + '.')
+  }
+
+  return objectives
+}
 
 function getCharacterDescription(id: string): string {
   const descriptions: Record<string, string> = {

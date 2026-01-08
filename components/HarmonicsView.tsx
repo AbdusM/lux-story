@@ -52,8 +52,12 @@ export function HarmonicsView({ onOrbSelect }: HarmonicsViewProps) {
     // Null guard: show loading state if orbs not yet available
     if (!patternOrbs || patternOrbs.length === 0) {
         return (
-            <div className="p-4 space-y-8 min-h-[500px] flex flex-col items-center justify-center">
-                <p className="text-xs text-slate-500 animate-pulse">Patterns forming...</p>
+            <div className="p-4 space-y-4 min-h-[500px] flex flex-col items-center justify-center text-center">
+                <Compass className="w-8 h-8 text-slate-600 animate-pulse" />
+                <div className="space-y-1">
+                    <p className="text-sm text-slate-400">Your patterns are waiting to emerge</p>
+                    <p className="text-xs text-slate-500">Make choices in conversations to reveal them</p>
+                </div>
             </div>
         )
     }
@@ -208,45 +212,50 @@ function HarmonicOrb({ orb, index, onSelect, careerMatch }: {
                 <PatternIcon pattern={orb.pattern} className="w-6 h-6 z-10" style={{ color: orb.color }} />
             </motion.button>
 
-            {/* Label - Flow Layout (No longer absolute) */}
-            <div className="text-center w-40 flex flex-col items-center">
-                <p className="text-xs font-bold text-slate-300 uppercase tracking-widest text-shadow-sm">
+            {/* Label - Flow Layout */}
+            <div className="text-center w-44 flex flex-col items-center">
+                <p className="text-sm font-bold text-slate-200 uppercase tracking-wider">
                     {orb.label}
                 </p>
-                <div className="flex items-baseline gap-1">
-                    <p className="text-[10px] text-slate-500 font-mono">
-                        {orb.fillPercent}%
+
+                {/* Progress Bar with integrated percentage */}
+                <div className="mt-2 w-full max-w-[120px]">
+                    <div className="h-1.5 bg-slate-800/60 rounded-full overflow-hidden">
+                        <motion.div
+                            className="h-full rounded-full"
+                            style={{ backgroundColor: orb.color }}
+                            initial={{ width: 0 }}
+                            animate={{ width: `${orb.fillPercent}%` }}
+                            transition={{ duration: 0.5 }}
+                        />
+                    </div>
+                    <p className="text-[11px] text-slate-400 font-mono mt-1">
+                        {orb.fillPercent}% resonance
                     </p>
                 </div>
 
                 {/* Career Match Overlay */}
                 {careerMatch && careerMatch.progress > 0 && (
                     <div className="mt-2 flex items-center justify-center gap-1.5 bg-slate-900/40 px-2 py-1 rounded-full border border-white/5 backdrop-blur-sm">
-                        <Briefcase className="w-3 h-3 text-amber-500/80" />
-                        <span className={`text-[10px] truncate max-w-[100px] ${careerMatch.isUnlocked ? 'text-amber-300' : 'text-slate-400'}`}>
+                        <Briefcase className="w-3.5 h-3.5 text-amber-500/80" />
+                        <span className={`text-[11px] truncate max-w-[100px] ${careerMatch.isUnlocked ? 'text-amber-300' : 'text-slate-400'}`}>
                             {careerMatch.careerHint}
-                        </span>
-                        <span className={`text-[10px] font-mono ${careerMatch.isUnlocked ? 'text-emerald-400' : 'text-slate-500'}`}>
-                            {careerMatch.progress}%
                         </span>
                     </div>
                 )}
 
-                {/* Progress to next unlock */}
-                {orb.nextUnlock && (
-                    <div className="mt-1 w-full max-w-[80px]">
+                {/* Next unlock progress (smaller, subtle) */}
+                {orb.nextUnlock && orb.progressToNext > 0 && (
+                    <div className="mt-2 w-full max-w-[100px]">
                         <div className="h-0.5 bg-slate-700/30 rounded-full overflow-hidden">
                             <motion.div
-                                className="h-full rounded-full"
+                                className="h-full rounded-full opacity-60"
                                 style={{ backgroundColor: orb.color }}
                                 initial={{ width: 0 }}
                                 animate={{ width: `${orb.progressToNext}%` }}
                                 transition={{ duration: 0.5 }}
                             />
                         </div>
-                        <p className="text-[9px] text-slate-600 mt-1">
-                            to unlock
-                        </p>
                     </div>
                 )}
             </div>

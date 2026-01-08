@@ -178,9 +178,9 @@ function ToolSchematic({ tool, isUnlocked, index }: { tool: AITool, isUnlocked: 
                         </div>
                     </div>
                 ) : (
-                    <div className="mt-4 p-3 bg-black/40 border border-slate-800/50 text-center">
-                        <p className="text-xs text-slate-500 font-mono">
-                            <span className="text-amber-500/50 animate-pulse">Warning:</span> Insufficient Neural Pattern Match.
+                    <div className="mt-4 p-3 bg-black/40 border border-slate-800/50">
+                        <p className="text-xs text-slate-500">
+                            {tool.description}
                         </p>
                     </div>
                 )}

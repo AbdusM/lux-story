@@ -63,11 +63,14 @@ export function EssenceSigil() {
     // Null guard: show loading state if skills not yet available
     if (!skills || skills.length === 0) {
         return (
-            <div className="flex flex-col items-center justify-center py-8 space-y-6 min-h-[400px]">
-                <div className="relative w-[300px] h-[300px] flex items-center justify-center">
-                    <div className="w-24 h-24 rounded-full border-2 border-dashed border-slate-600 animate-pulse" />
+            <div className="flex flex-col items-center justify-center py-8 space-y-4 min-h-[400px] text-center">
+                <div className="relative w-[200px] h-[200px] flex items-center justify-center">
+                    <div className="w-20 h-20 rounded-full border-2 border-dashed border-slate-600 animate-pulse" />
                 </div>
-                <p className="text-xs text-slate-500 animate-pulse">Essence forming...</p>
+                <div className="space-y-1">
+                    <p className="text-sm text-slate-400">Your essence awaits discovery</p>
+                    <p className="text-xs text-slate-500">Skills emerge through your conversations</p>
+                </div>
             </div>
         )
     }

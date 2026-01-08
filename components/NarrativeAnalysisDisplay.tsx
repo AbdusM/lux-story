@@ -36,9 +36,11 @@ export function NarrativeAnalysisDisplay() {
   if (!hasEnoughData) {
     return (
       <div className="flex flex-col items-center justify-center p-12 text-slate-500 border border-dashed border-slate-800 rounded-lg">
-        <Compass className="w-8 h-8 mb-3 opacity-50" />
-        <p className="text-sm">Keep exploring to unlock insights</p>
-        <p className="text-xs text-slate-600 mt-1">Make a few more choices...</p>
+        <Compass className="w-8 h-8 mb-3 opacity-50 animate-pulse" />
+        <p className="text-sm text-slate-400">Analysis unlocks as you explore</p>
+        <p className="text-xs text-slate-600 mt-2 max-w-[200px] text-center leading-relaxed">
+          Talk to characters and make choices to generate insights about your journey
+        </p>
       </div>
     )
   }

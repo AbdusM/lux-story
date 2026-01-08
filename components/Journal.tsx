@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
-import { Users, Zap, Compass, TrendingUp, X, Crown, Cpu } from "lucide-react"
+import { Users, Zap, Compass, TrendingUp, X, Crown, Cpu, Play, Sparkles } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useConstellationData } from "@/hooks/useConstellationData"
 import { useInsights } from "@/hooks/useInsights"
@@ -12,25 +12,20 @@ import { HarmonicsView } from "./HarmonicsView"
 import { EssenceSigil } from "./EssenceSigil"
 import { MasteryView } from "./MasteryView"
 import { ThoughtCabinet } from "./ThoughtCabinet"
-// Available for future use:
-// import { RelationshipWeb } from "./RelationshipWeb"
-// import { EchoLog } from "./EchoLog"
 import { LogSearch } from "./LogSearch"
-import { NarrativeAnalysisDisplay } from "./NarrativeAnalysisDisplay" // Integration
-
-// import { SkillConstellationGraph } from "./constellation/SkillConstellationGraph"
-import { SKILL_DEFINITIONS } from "@/lib/skill-definitions"
-// import { SwipeablePanel } from "@/components/ui/SwipeablePanel"
+import { NarrativeAnalysisDisplay } from "./NarrativeAnalysisDisplay"
 import { ToolkitView } from "./ToolkitView"
+import { SimulationsArchive } from "./SimulationsArchive"
 import { OrbDetailPanel } from "./OrbDetailPanel"
 import { PatternType } from "@/lib/patterns"
+import { useSimulations } from "@/hooks/useSimulations"
 
 interface JournalProps {
   isOpen: boolean
   onClose: () => void
 }
 
-type TabId = 'harmonics' | 'essence' | 'mastery' | 'mind' | 'toolkit' | 'analysis'
+type TabId = 'harmonics' | 'essence' | 'mastery' | 'mind' | 'toolkit' | 'simulations' | 'analysis'
 
 const tabContentVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -41,32 +36,25 @@ const tabContentVariants = {
 export function Journal({ isOpen, onClose }: JournalProps) {
   // "The Prism" Interface
   const [activeTab, setActiveTab] = useState<TabId>('harmonics')
-  const [detailSkillId, setDetailSkillId] = useState<string | null>(null)
+  const [_detailSkillId, setDetailSkillId] = useState<string | null>(null)
   const [detailPattern, setDetailPattern] = useState<PatternType | null>(null)
 
   // Accessibility
   const prefersReducedMotion = useReducedMotion()
 
   // Data hooks
-  const { characters: _characters, skills } = useConstellationData()
+  const { skills } = useConstellationData()
   const insights = useInsights()
-  const { hasNewOrbs, markOrbsViewed } = useOrbs()
+  const { hasNewOrbs, markOrbsViewed, balance, tier } = useOrbs()
   const thoughts = useGameSelectors.useThoughts()
-  const coreGameState = useGameSelectors.useCoreGameState()
-
-  // Derive completed arcs from global flags for EchoLog
-  const _completedArcs = React.useMemo(() => {
-    const flags = coreGameState?.globalFlags || []
-    return new Set(flags.filter(f => f.endsWith('_arc_complete') || f.endsWith('_complete')))
-  }, [coreGameState?.globalFlags])
+  const { availableCount: availableSimulations } = useSimulations()
 
   // Tab badge indicators
   const hasNewPatterns = hasNewOrbs
   const hasNewSkills = skills.filter(s => s.state !== 'dormant').length > 0
   const hasActiveThoughts = thoughts.length > 0
-  // const hasMetCharacters = characters.filter(c => c.hasMet).length > 1 // REMOVED: Now in Journey Panel
-  const hasNewAbilities = false
   const hasNewTools = hasNewOrbs // Proxy: New patterns likely mean new tools
+  const hasNewSimulations = availableSimulations > 0
 
   // Track which tabs have been viewed this session
   const [viewedTabs, setViewedTabs] = useState<Set<TabId>>(new Set(['harmonics']))
@@ -86,9 +74,10 @@ export function Journal({ isOpen, onClose }: JournalProps) {
   const tabBadges: Record<TabId, boolean> = {
     harmonics: hasNewPatterns && !viewedTabs.has('harmonics'),
     essence: hasNewSkills && !viewedTabs.has('essence'),
-    mastery: hasNewAbilities && !viewedTabs.has('mastery'),
+    mastery: false, // No new-achievement tracking yet
     mind: hasActiveThoughts && !viewedTabs.has('mind'),
     toolkit: hasNewTools && !viewedTabs.has('toolkit'),
+    simulations: hasNewSimulations && !viewedTabs.has('simulations'),
     analysis: false
   }
 
@@ -107,14 +96,11 @@ export function Journal({ isOpen, onClose }: JournalProps) {
     { id: 'essence', label: 'Essence', icon: Compass },
     { id: 'mastery', label: 'Mastery', icon: Crown },
     { id: 'mind', label: 'Mind', icon: TrendingUp },
-
     { id: 'toolkit', label: 'Toolkit', icon: Cpu },
+    { id: 'simulations', label: 'Sims', icon: Play },
     { id: 'analysis', label: 'Analysis', icon: TrendingUp },
   ]
 
-  // Helper for detail view (available for skill detail panel)
-  const _activeSkillDef = detailSkillId ? SKILL_DEFINITIONS[detailSkillId] : null
-  const _activeSkillState = detailSkillId ? skills.find(s => s.id === detailSkillId) : null
 
   return (
     <AnimatePresence>
@@ -138,36 +124,56 @@ export function Journal({ isOpen, onClose }: JournalProps) {
           >
             {/* ... (Header & Tabs unchanged) ... */}
 
-            {/* Header Code ... */}
-            <div className="p-4 sm:p-6 border-b border-white/5 flex items-center justify-between bg-transparent">
-              <div className="flex items-center gap-4">
-                <PlayerAvatar size="lg" />
-                <div>
-                  <h2 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-amber-500 to-purple-600 font-serif">
-                    The Prism
-                  </h2>
-                  <p className="text-xs text-slate-400 font-medium tracking-wide">
-                    {insights?.journey?.stageLabel || 'Beginning'} Resonance
-                  </p>
+            {/* Header */}
+            <div className="p-4 sm:p-6 border-b border-white/5 bg-transparent">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <PlayerAvatar size="lg" />
+                  <div>
+                    <h2 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-amber-500 to-purple-600 font-serif">
+                      The Prism
+                    </h2>
+                    <p className="text-xs text-slate-400 font-medium tracking-wide">
+                      {insights?.journey?.stageLabel || 'Beginning'} Resonance
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  {/* Dominant Pattern Orb - shows player's current tendency */}
+                  {insights?.decisionStyle?.primaryPattern && (
+                    <PatternOrb
+                      pattern={insights.decisionStyle.primaryPattern.type}
+                      size="sm"
+                      celebrate={false}
+                    />
+                  )}
+                  <button
+                    onClick={onClose}
+                    className="p-2 rounded-full hover:bg-white/10 transition-colors"
+                    aria-label="Close prism"
+                  >
+                    <X className="w-5 h-5 text-slate-400" />
+                  </button>
                 </div>
               </div>
-              <div className="flex items-center gap-3">
-                {/* Dominant Pattern Orb - shows player's current tendency */}
-                {insights?.decisionStyle?.primaryPattern && (
-                  <PatternOrb
-                    pattern={insights.decisionStyle.primaryPattern.type}
-                    size="sm"
-                    celebrate={false}
-                  />
-                )}
-                <button
-                  onClick={onClose}
-                  className="p-2 rounded-full hover:bg-white/10 transition-colors"
-                  aria-label="Close prism"
-                >
-                  <X className="w-5 h-5 text-slate-400" />
-                </button>
-              </div>
+
+              {/* Orb Collection Counter */}
+              {balance.totalEarned > 0 && (
+                <div className="mt-3 flex justify-center">
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-amber-950/40 to-purple-950/40 rounded-full border border-amber-500/20">
+                    <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                    <span className="text-sm font-bold text-amber-300 tabular-nums">
+                      {balance.totalEarned}
+                    </span>
+                    <span className="text-[10px] text-slate-400 uppercase tracking-wider">
+                      orbs
+                    </span>
+                    <span className="text-[9px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 font-medium capitalize">
+                      {tier}
+                    </span>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Searchable Log - Search through past conversations */}
@@ -189,14 +195,28 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                   <tab.icon className={cn("w-5 h-5 transition-transform", activeTab === tab.id && "scale-110")} />
                   <span>{tab.label}</span>
 
-                  {/* Badge indicator for new content */}
+                  {/* Badge indicator for new content - Marquee style */}
                   {tabBadges[tab.id] && (
                     <motion.div
                       initial={prefersReducedMotion ? false : { scale: 0 }}
                       animate={{ scale: 1 }}
-                      className="absolute top-2 right-2 w-2 h-2 rounded-full bg-amber-500"
-                      style={prefersReducedMotion ? {} : { animation: 'pulse 2s infinite' }}
-                    />
+                      className="absolute top-1.5 right-1.5"
+                    >
+                      {/* Marquee spinning ring */}
+                      <svg className="w-4 h-4 absolute -inset-1" viewBox="0 0 20 20">
+                        <circle
+                          cx="10" cy="10" r="8"
+                          fill="none"
+                          stroke="#f59e0b"
+                          strokeWidth="0.75"
+                          strokeDasharray="2 4"
+                          className={prefersReducedMotion ? "" : "animate-[spin_4s_linear_infinite]"}
+                          opacity="0.6"
+                        />
+                      </svg>
+                      {/* Core dot */}
+                      <div className="w-2 h-2 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.5)]" />
+                    </motion.div>
                   )}
 
                   {activeTab === tab.id && (
@@ -236,8 +256,9 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                     {activeTab === 'essence' && <EssenceSigil />}
                     {activeTab === 'mastery' && <MasteryView />}
                     {activeTab === 'mind' && <ThoughtCabinet />}
-                    {activeTab === 'analysis' && <NarrativeAnalysisDisplay />}
                     {activeTab === 'toolkit' && <ToolkitView />}
+                    {activeTab === 'simulations' && <SimulationsArchive />}
+                    {activeTab === 'analysis' && <NarrativeAnalysisDisplay />}
                   </motion.div>
                 )}
               </AnimatePresence>

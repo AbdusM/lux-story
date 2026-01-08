@@ -118,7 +118,7 @@ export const CHARACTER_NODES: CharacterNodeData[] = [
     id: 'silas',
     name: 'Silas',
     fullName: 'Silas',
-    position: { x: 35, y: 65 }, // Inner Orbit Bottom-Left
+    position: { x: 28, y: 58 }, // Inner Orbit Bottom-Left (spaced from Grace)
     isMajor: false,
     color: 'slate',
     role: 'Crisis Manager'
@@ -147,7 +147,7 @@ export const CHARACTER_NODES: CharacterNodeData[] = [
     id: 'grace',
     name: 'Grace',
     fullName: 'Grace Thompson',
-    position: { x: 40, y: 70 }, // Inner Orbit Bottom-Center
+    position: { x: 48, y: 72 }, // Inner Orbit Bottom-Center (spaced from Silas)
     isMajor: false,
     color: 'rose',
     role: 'Home Health Aide'

@@ -13,6 +13,7 @@ import {
   StateValidation
 } from './character-state'
 import { getGraphForCharacter, findCharacterForNode, getSafeStart, type CharacterId } from './graph-registry'
+import { generateUserId } from './safe-storage'
 import { logger } from './logger'
 
 const STORAGE_KEY = 'grand-central-terminus-save'
@@ -219,6 +220,18 @@ export class GameStateManager {
     // Future migration logic goes here
     // For now, we'll just update the version
     // In the future, this would handle structural changes
+
+    // Fix invalid UUIDs (legacy IDs)
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+    if (!uuidRegex.test(save.playerId)) {
+      // Use the authoritative ID from safe-storage (which is now guaranteed to be a UUID)
+      // or generate a new one if that fails
+      const newId = generateUserId()
+      logger.info('Migrating legacy player ID to UUID', { oldId: save.playerId, newId })
+      save.playerId = newId
+      // Also update the version to ensure this sticks
+      save.saveVersion = currentVersion
+    }
 
     return {
       ...save,

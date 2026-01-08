@@ -50,7 +50,7 @@ export const QUEST_DEFINITIONS: Omit<Quest, 'status'>[] = [
   {
     id: 'maya_arc',
     title: "Maya's Path",
-    description: "Help Maya navigate the tension between family expectations and her own aspirations.",
+    description: "Maya's torn between her family's expectations and her passion for tech innovation. Talk to her about the pressure she faces and help her find her own way forward.",
     type: 'character_arc',
     characterId: 'maya',
     unlockCondition: {
@@ -61,13 +61,13 @@ export const QUEST_DEFINITIONS: Omit<Quest, 'status'>[] = [
     },
     reward: {
       type: 'insight',
-      description: "Understanding how to balance external pressure with internal drive"
+      description: "Learned how to balance external pressure with personal drive"
     }
   },
   {
     id: 'devon_arc',
     title: "Devon's Journey",
-    description: "Walk with Devon through the challenges of systems thinking and emotional resilience.",
+    description: "Devon sees the world in systems and patterns, but struggles with the emotional side of leadership. Help them understand that logic and feelings aren't opposites.",
     type: 'character_arc',
     characterId: 'devon',
     unlockCondition: {
@@ -78,13 +78,13 @@ export const QUEST_DEFINITIONS: Omit<Quest, 'status'>[] = [
     },
     reward: {
       type: 'insight',
-      description: "Seeing how analytical minds process emotional challenges"
+      description: "Discovered how analytical minds can embrace emotional intelligence"
     }
   },
   {
     id: 'jordan_arc',
     title: "Jordan's Crossroads",
-    description: "Support Jordan as they question their winding career path and find meaning in the journey.",
+    description: "Jordan's career has taken unexpected turns—from one field to another. They're wondering if the winding path was worth it. Talk to them about finding meaning in the detours.",
     type: 'character_arc',
     characterId: 'jordan',
     unlockCondition: {
@@ -95,13 +95,13 @@ export const QUEST_DEFINITIONS: Omit<Quest, 'status'>[] = [
     },
     reward: {
       type: 'insight',
-      description: "Discovering that non-linear paths can lead to unexpected clarity"
+      description: "Realized that non-linear paths often lead to unexpected clarity"
     }
   },
   {
     id: 'marcus_arc',
     title: "Marcus's Challenge",
-    description: "Help Marcus balance the demands of healthcare leadership with personal well-being.",
+    description: "Marcus leads a healthcare team, but the weight of responsibility is getting heavy. Help him figure out how to care for others without losing himself in the process.",
     type: 'character_arc',
     characterId: 'marcus',
     unlockCondition: {
@@ -112,13 +112,13 @@ export const QUEST_DEFINITIONS: Omit<Quest, 'status'>[] = [
     },
     reward: {
       type: 'insight',
-      description: "Understanding the weight of responsibility in service roles"
+      description: "Understood how to sustain yourself while serving others"
     }
   },
   {
     id: 'tess_arc',
     title: "Tess's Vision",
-    description: "Explore Tess's journey from educator to founder, and the sacrifices it requires.",
+    description: "Tess left teaching to build something bigger—an education startup. But founding a company means sacrifice. Explore what she's gained and lost along the way.",
     type: 'character_arc',
     characterId: 'tess',
     unlockCondition: {
@@ -129,7 +129,7 @@ export const QUEST_DEFINITIONS: Omit<Quest, 'status'>[] = [
     },
     reward: {
       type: 'insight',
-      description: "Learning how passion transforms into purpose"
+      description: "Saw how passion transforms into purpose through risk"
     }
   },
 
@@ -137,7 +137,7 @@ export const QUEST_DEFINITIONS: Omit<Quest, 'status'>[] = [
   {
     id: 'station_secrets',
     title: "Station Secrets",
-    description: "Uncover the hidden history of Grand Central Terminus.",
+    description: "This station isn't what it seems. Samuel hints at a deeper history—old platforms, forgotten routes, memories embedded in the walls. Ask him about the station's past.",
     type: 'discovery',
     unlockCondition: {
       metCharacters: ['samuel']
@@ -147,13 +147,13 @@ export const QUEST_DEFINITIONS: Omit<Quest, 'status'>[] = [
     },
     reward: {
       type: 'unlock',
-      description: "Access to deeper station lore"
+      description: "Unlocked deeper station lore and hidden areas"
     }
   },
   {
     id: 'pattern_mastery',
     title: "Finding Your Pattern",
-    description: "Develop a strong affinity for one of the five patterns.",
+    description: "Your choices reveal who you are. Keep making decisions—whether analytical, patient, exploratory, helpful, or creative—and you'll discover your dominant pattern.",
     type: 'discovery',
     unlockCondition: {
       metCharacters: ['samuel']
@@ -173,7 +173,7 @@ export const QUEST_DEFINITIONS: Omit<Quest, 'status'>[] = [
   {
     id: 'waiting_characters',
     title: "They're Waiting",
-    description: "Return to characters you've connected with—they have more to share.",
+    description: "You've helped Maya work through something important. But your story together isn't over—visit her again. She has more to share now that you've earned her trust.",
     type: 'return_hook',
     unlockCondition: {
       hasGlobalFlags: ['maya_arc_complete']
@@ -183,7 +183,7 @@ export const QUEST_DEFINITIONS: Omit<Quest, 'status'>[] = [
     },
     reward: {
       type: 'connection',
-      description: "Deeper relationship unlocked"
+      description: "Deepened your bond with Maya"
     }
   }
 ]

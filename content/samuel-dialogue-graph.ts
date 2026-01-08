@@ -82,7 +82,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: '', // Atmospheric narration
     content: [
       {
-        text: "You pause at the train door, taking it in.\n\nThe station's bigger than it looked from outside. Vaulted ceilings stretch up into shadow, old ironwork catching the light. Platform signs point to places you half-recognize.some you don't. The air smells like old wood and something faintly electric, like possibility.\n\nA few travelers drift past, each heading somewhere with quiet purpose.\n\nThe older man on the platform notices you looking. He smiles, patient. No rush.",
+        text: "You pause at the train door, taking it in.\n\nThe station's bigger than it looked from outside. Vaulted ceilings stretch up into shadow, old ironwork catching the light. Platform signs point to places you half-recognize—some you don't. The air smells like old wood and something faintly electric, like possibility.\n\nA few travelers drift past, each heading somewhere with quiet purpose.\n\nThe older man on the platform notices you looking. He smiles, patient. No rush.",
         emotion: 'atmospheric',
         variation_id: 'observation_v1'
       }
