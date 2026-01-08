@@ -6,28 +6,40 @@ interface CharacterLoadingStateProps {
 }
 
 export function CharacterLoadingState({ characterName, context = 'thinking' }: CharacterLoadingStateProps) {
-  const messages = {
+  const messages: Record<string, Record<string, string>> = {
     thinking: {
       samuel: "The Station Keeper considers your words...",
       maya: "Maya gathers her thoughts...",
       devon: "Devon processes his emotions...",
-      jordan: "Jordan reflects on her journey..."
+      jordan: "Jordan reflects on her journey...",
+      quinn: "Quinn calculates the possibilities...",
+      dante: "Dante finds the right words...",
+      nadia: "Nadia maps the implications...",
+      isaiah: "Isaiah holds space for your words..."
     },
     transitioning: {
       samuel: "The Station Keeper prepares to speak...",
       maya: "Maya approaches...",
       devon: "Devon takes a breath...",
-      jordan: "Jordan arrives..."
+      jordan: "Jordan arrives...",
+      quinn: "Quinn adjusts his approach...",
+      dante: "Dante shifts his energy...",
+      nadia: "Nadia organizes her thoughts...",
+      isaiah: "Isaiah centers himself..."
     },
     initial: {
       samuel: "The Station Keeper awaits at Platform 7...",
       maya: "Preparing your conversation with Maya...",
       devon: "Preparing your conversation with Devon...",
-      jordan: "Preparing your conversation with Jordan..."
+      jordan: "Preparing your conversation with Jordan...",
+      quinn: "Preparing your conversation with Quinn...",
+      dante: "Preparing your conversation with Dante...",
+      nadia: "Preparing your conversation with Nadia...",
+      isaiah: "Preparing your conversation with Isaiah..."
     }
   }
-  
-  const characterKey = characterName.toLowerCase().split(' ')[0] as 'samuel' | 'maya' | 'devon' | 'jordan'
+
+  const characterKey = characterName.toLowerCase().split(' ')[0]
   const message = messages[context][characterKey] || "Loading..."
   
   return (

@@ -37,11 +37,20 @@ const characterAvatars: Record<string, { animal: AnimalType; name: string }> = {
   'Rohan': { animal: 'raven', name: 'Rohan' },               // Mysterious, introspective - raven
   'Yaquin': { animal: 'rabbit', name: 'Yaquin' },            // Gentle, curious - cream rabbit
   'Lira': { animal: 'butterfly', name: 'Lira' },             // Ethereal, transformative - butterfly
-  // Legacy mappings for backwards compatibility
-  'Jordan': { animal: 'chameleon', name: 'Jordan' },
-  'Kai': { animal: 'dog', name: 'Kai' },
-  'Alex': { animal: 'raccoon', name: 'Alex' },                // Credential skeptic - clever raccoon
-  'Silas': { animal: 'mouse', name: 'Silas' },
+  'Jordan': { animal: 'chameleon', name: 'Jordan' },         // Adaptable, versatile
+  'Kai': { animal: 'dog', name: 'Kai' },                     // Loyal, protective
+  'Alex': { animal: 'raccoon', name: 'Alex' },               // Credential skeptic - clever raccoon
+  'Silas': { animal: 'mouse', name: 'Silas' },               // Precise, detail-oriented
+  'Elena': { animal: 'owl', name: 'Elena' },                 // Wise, archival - barn owl variant
+  'Grace': { animal: 'rabbit', name: 'Grace' },              // Gentle, caring - soft rabbit
+  'Asha': { animal: 'owl', name: 'Asha' },                    // Peaceful, mediating - wise observer
+  'Zara': { animal: 'cat', name: 'Zara' },                   // Observant, ethical - sleek cat
+  // LinkedIn 2026 Career Expansion
+  'Quinn': { animal: 'hedgehog', name: 'Quinn Montgomery' }, // Analytical, protected - hedgehog
+  'Dante': { animal: 'peacock', name: 'Dante Reyes' },       // Charismatic, colorful - peacock
+  'Nadia': { animal: 'barnowl', name: 'Nadia Okonkwo' },     // Wise, observant - barn owl
+  'Isaiah': { animal: 'elephant', name: 'Isaiah Brooks' },   // Strong, community - elephant
+  // Player and location avatars
   'You': { animal: 'player', name: 'You' },                   // Player avatar
   'Player': { animal: 'player', name: 'Player' },              // Player avatar alias
   'Sector 0': { animal: 'owl', name: 'The Station' },
