@@ -294,7 +294,9 @@ export function getWaitingCharacters(
   // Check each character (except Samuel - he's always there)
   const characterIds: CharacterId[] = [
     'maya', 'devon', 'elena', 'grace', 'marcus',
-    'tess', 'yaquin', 'rohan', 'jordan', 'kai', 'silas', 'alex'
+    'tess', 'yaquin', 'rohan', 'jordan', 'kai', 'silas', 'alex',
+    'asha', 'lira', 'zara',  // Extended characters
+    'quinn', 'dante', 'nadia', 'isaiah'  // LinkedIn 2026
   ]
 
   for (const characterId of characterIds) {
