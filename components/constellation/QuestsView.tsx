@@ -99,6 +99,23 @@ function QuestCard({ quest, index, onSelect }: { quest: Quest; index: number; on
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-amber-500/5 to-transparent h-[200%] w-full animate-[scan_4s_linear_infinite] pointer-events-none" />
       )}
 
+      {/* Marquee Ring for Newly Unlocked Quests */}
+      {quest.status === 'unlocked' && (
+        <div className="absolute -top-1 -left-1 w-6 h-6 pointer-events-none">
+          <svg viewBox="0 0 24 24" className="w-full h-full">
+            <circle
+              cx="12" cy="12" r="10"
+              fill="none"
+              stroke="#3b82f6"
+              strokeWidth="1"
+              strokeDasharray="3 5"
+              className="animate-[spin_6s_linear_infinite]"
+              opacity="0.5"
+            />
+          </svg>
+        </div>
+      )}
+
       {/* Header Row */}
       <div className="flex items-start justify-between gap-3 relative z-10">
         <div className="flex items-center gap-2.5">

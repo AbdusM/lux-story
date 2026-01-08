@@ -700,7 +700,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         speaker: 'Lira Vance',
         content: [
             {
-                text: "[The sound fills the room - a beautiful, broken piano melody that fades into static.]\n\nThat's it. You hear the static? That's the memory fading.\n\nYou didn't just ask for 'sad.' You described the *mechanism* of sadness. That's how you talk to the machine.",
+                text: "The sound fills the room - a beautiful, broken piano melody that fades into static.\n\nThat's it. You hear the static? That's the memory fading.\n\nYou didn't just ask for 'sad.' You described the *mechanism* of sadness. That's how you talk to the machine.",
                 emotion: 'amazed',
                 variation_id: 'sim_success_v1'
             }
@@ -1872,7 +1872,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         speaker: 'Lira Vance',
         content: [
             {
-                text: "[Piano music fills the space. Confident at first, then...]\n\nThis was her last recital. 2019. She didn't know it would be the last. None of us did.\n\nListen... right there. She forgot the next phrase. She covered it with a trill, moved on. But I can hear the moment she realized something was wrong.\n\nShe kept playing. For another three minutes. Because stopping would mean admitting something she wasn't ready to face.\n\nThat's courage. That's what I'm trying to capture.",
+                text: "Piano music fills the space. Confident at first, then...\n\nThis was her last recital. 2019. She didn't know it would be the last. None of us did.\n\nListen... right there. She forgot the next phrase. She covered it with a trill, moved on. But I can hear the moment she realized something was wrong.\n\nShe kept playing. For another three minutes. Because stopping would mean admitting something she wasn't ready to face.\n\nThat's courage. That's what I'm trying to capture.",
                 emotion: 'grieving_awed',
                 variation_id: 'reflection_recital_v1',
                 richEffectContext: 'warning'
@@ -1887,7 +1887,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         choices: [
             {
                 choiceId: 'recital_silence',
-                text: "[Let the music finish. Some moments are too sacred for words.]",
+                text: "Let the music finish. Some moments are too sacred for words.",
                 nextNodeId: 'lira_connection_shared_grief',
                 pattern: 'patience',
                 skills: ['emotionalIntelligence'],

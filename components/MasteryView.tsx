@@ -1,14 +1,16 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 
-import { Lock, Eye, Activity, Zap } from 'lucide-react'
+import { Lock, Eye, Activity, Zap, Trophy, Star } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { useGameStore } from '@/lib/game-store'
+import { useGameStore, useGameSelectors } from '@/lib/game-store'
 import { ABILITIES } from '@/lib/abilities'
 import { ORB_TIERS } from '@/lib/orbs'
+import { PATTERN_ACHIEVEMENTS, getEarnedAchievements } from '@/lib/pattern-derivatives'
 
 export function MasteryView() {
     const unlockedAbilities = useGameStore(state => state.unlockedAchievements)
     const unlockedIds = new Set(unlockedAbilities || [])
+    const coreGameState = useGameSelectors.useCoreGameState()
 
     // Group abilities by tier for visual hierarchy?
     // Or just a flat grid sorted by tier. Let's do flat grid for now.
@@ -25,6 +27,14 @@ export function MasteryView() {
         pattern_preview: Activity,
         deep_intuition: Zap
     }
+
+    // Get pattern achievements
+    const earnedAchievements = useMemo(() => {
+        if (!coreGameState?.patterns) return []
+        return getEarnedAchievements(coreGameState.patterns)
+    }, [coreGameState?.patterns])
+
+    const earnedIds = new Set(earnedAchievements.map(a => a.id))
 
     return (
         <div className="p-6 space-y-6">
@@ -102,6 +112,68 @@ export function MasteryView() {
                         </div>
                     )
                 })}
+            </div>
+
+            {/* Pattern Achievements Section */}
+            <div className="pt-6 border-t border-white/5 space-y-4">
+                <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                        <Trophy className="w-4 h-4 text-purple-400" />
+                        <h3 className="text-xs font-bold text-purple-400 uppercase tracking-widest">
+                            Pattern Achievements
+                        </h3>
+                    </div>
+                    <p className="text-sm text-slate-400">
+                        Milestones earned through your pattern development.
+                    </p>
+                    <p className="text-[10px] text-slate-500">
+                        {earnedAchievements.length} / {PATTERN_ACHIEVEMENTS.length} unlocked
+                    </p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                    {PATTERN_ACHIEVEMENTS.map((achievement) => {
+                        const isEarned = earnedIds.has(achievement.id)
+
+                        return (
+                            <div
+                                key={achievement.id}
+                                className={cn(
+                                    "relative overflow-hidden rounded-lg border p-3 transition-all duration-300",
+                                    isEarned
+                                        ? "bg-purple-950/30 border-purple-500/30"
+                                        : "bg-slate-900/30 border-white/5 opacity-50"
+                                )}
+                            >
+                                <div className="flex items-center gap-2 mb-1.5">
+                                    <span className="text-lg">{achievement.icon}</span>
+                                    {isEarned && <Star className="w-3 h-3 text-purple-400 fill-purple-400" />}
+                                </div>
+                                <h4
+                                    className={cn(
+                                        "text-xs font-bold mb-0.5",
+                                        isEarned ? "text-purple-200" : "text-slate-500"
+                                    )}
+                                >
+                                    {achievement.name}
+                                </h4>
+                                <p
+                                    className={cn(
+                                        "text-[10px] leading-tight",
+                                        isEarned ? "text-slate-400" : "text-slate-600"
+                                    )}
+                                >
+                                    {achievement.description}
+                                </p>
+                                {isEarned && achievement.reward && (
+                                    <p className="text-[9px] text-purple-400/80 mt-1.5 italic">
+                                        "{achievement.reward}"
+                                    </p>
+                                )}
+                            </div>
+                        )
+                    })}
+                </div>
             </div>
         </div>
     )

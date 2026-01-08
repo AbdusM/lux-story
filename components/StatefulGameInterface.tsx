@@ -2979,7 +2979,7 @@ export default function StatefulGameInterface() {
                   size="sm"
                   onClick={() => setState(prev => ({ ...prev, showConstellation: true, hasNewTrust: false, hasNewMeeting: false }))}
                   className={`relative h-9 w-9 p-0 text-slate-300 hover:text-white hover:bg-white/10 transition-all duration-300 rounded-md ${(state.hasNewTrust || state.hasNewMeeting)
-                    ? 'text-purple-400 nav-attention-marquee nav-attention-border-purple nav-attention-halo nav-attention-halo-purple'
+                    ? 'text-purple-400 nav-attention-marquee nav-attention-halo nav-attention-halo-purple'
                     : ''
                     }`}
                   title="Your Journey"
@@ -3155,7 +3155,10 @@ export default function StatefulGameInterface() {
                             )
                           })()}
 
-                          {/* ME2-style interrupt button - appears during NPC speech */}
+                          {/* ME2-style interrupt button - DISABLED per UX review
+                              Issue: Appears in narrative area instead of choice framework
+                              Issue: No audio feedback, feels incomplete
+                              TODO: Reimplement as part of choice system if needed
                           {state.activeInterrupt && (
                             <div className="mt-6">
                               <InterruptButton
@@ -3165,6 +3168,7 @@ export default function StatefulGameInterface() {
                               />
                             </div>
                           )}
+                          */}
                         </div>
                       )}
 

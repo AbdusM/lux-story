@@ -13,6 +13,9 @@ interface SkillsViewProps {
   onOpenDetail?: (skill: SkillWithState) => void
 }
 
+// Brass rim color (matches network view)
+const RIM_COLOR = "#d97706" // Amber-600
+
 // Animation variants based on skill state (reserved for future use)
 const _stateVariants = {
   dormant: { scale: 0.85, opacity: 0.35 },
@@ -107,6 +110,22 @@ export function SkillsView({ skills, onOpenDetail }: SkillsViewProps) {
           animate="visible"
           variants={containerVariants}
         >
+          {/* --- DEFINITIONS (Reusable Gradients - matches Network view) --- */}
+          <defs>
+            {/* Sphere Highlight (Top-Left Shine) */}
+            <radialGradient id="skill-sphere-shine" cx="30%" cy="30%" r="70%">
+              <stop offset="0%" stopColor="white" stopOpacity="0.9" />
+              <stop offset="20%" stopColor="white" stopOpacity="0.5" />
+              <stop offset="100%" stopColor="white" stopOpacity="0" />
+            </radialGradient>
+
+            {/* Sphere Shadow (Bottom-Right/Edge Depth) */}
+            <radialGradient id="skill-sphere-shadow" cx="50%" cy="50%" r="50%">
+              <stop offset="70%" stopColor="black" stopOpacity="0" />
+              <stop offset="100%" stopColor="black" stopOpacity="0.6" />
+            </radialGradient>
+          </defs>
+
           {/* Connection lines (Clean Blueprint Style) */}
           {visibleConnections.map(([from, to]) => {
             const fromPos = getSkillPos(from)
@@ -142,26 +161,58 @@ export function SkillsView({ skills, onOpenDetail }: SkillsViewProps) {
             )
           })}
 
-          {/* Skill nodes (Geometric Purity) */}
+          {/* Skill nodes (3D Orb Style - matches Network view) */}
           {filteredSkills.map((skill) => {
             const baseSize = skill.id === 'communication' ? 5 : 3.5
             const size = skill.state === 'mastered' ? baseSize * 1.1 : baseSize
             const isUnlocked = skill.state !== 'dormant'
+            const isActive = skill.state === 'developing' || skill.state === 'strong' || skill.state === 'mastered'
 
             return (
               <motion.g
                 key={skill.id}
                 variants={itemVariants}
-                className={cn("cursor-pointer transition-all duration-300", !isUnlocked && "grayscale opacity-40")}
+                className={cn("cursor-pointer transition-all duration-300")}
                 onClick={() => onOpenDetail?.(skill)}
                 role="button"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
+                style={{ opacity: isUnlocked ? 1 : 0.4 }}
               >
                 {/* Hit Area */}
                 <circle cx={skill.position.x} cy={skill.position.y} r={10} fill="transparent" />
 
-                {/* Main Node (Solid) */}
+                {/* Outer Ring (Brass Rim - visible when unlocked) */}
+                {isUnlocked && (
+                  <circle
+                    cx={skill.position.x}
+                    cy={skill.position.y}
+                    r={size + 1.2}
+                    fill="none"
+                    stroke={RIM_COLOR}
+                    strokeWidth={isActive ? "0.5" : "0.3"}
+                    className={cn(
+                      "transition-all duration-300",
+                      isActive ? "opacity-90" : "opacity-60"
+                    )}
+                  />
+                )}
+
+                {/* MARQUEE: Scanning Ring (for newly activated or mastered) */}
+                {(skill.state === 'awakening' || skill.state === 'mastered') && (
+                  <circle
+                    cx={skill.position.x}
+                    cy={skill.position.y}
+                    r={size + 3}
+                    fill="none"
+                    stroke={RIM_COLOR}
+                    strokeWidth="0.15"
+                    strokeDasharray="1 2.5"
+                    className="animate-[spin_8s_linear_infinite] opacity-40"
+                  />
+                )}
+
+                {/* 1. Base Color Orb */}
                 <circle
                   cx={skill.position.x}
                   cy={skill.position.y}
@@ -170,16 +221,34 @@ export function SkillsView({ skills, onOpenDetail }: SkillsViewProps) {
                   className="transition-colors duration-300"
                 />
 
-                {/* Mastery Indicator (Minimal Ring instead of Aura) */}
+                {/* 2. Inner Shadow (Depth) */}
+                <circle
+                  cx={skill.position.x}
+                  cy={skill.position.y}
+                  r={size}
+                  fill="url(#skill-sphere-shadow)"
+                  className="pointer-events-none"
+                />
+
+                {/* 3. Top Shine (Gloss) */}
+                <circle
+                  cx={skill.position.x}
+                  cy={skill.position.y}
+                  r={size}
+                  fill="url(#skill-sphere-shine)"
+                  className="pointer-events-none mix-blend-overlay"
+                />
+
+                {/* Mastery Indicator (Extra outer glow ring) */}
                 {skill.state === 'mastered' && (
                   <circle
                     cx={skill.position.x}
                     cy={skill.position.y}
-                    r={size + 1}
+                    r={size + 2}
                     fill="none"
-                    stroke="currentColor"
-                    strokeWidth="0.2"
-                    className="text-amber-400 opacity-60"
+                    stroke="#fbbf24"
+                    strokeWidth="0.15"
+                    className="opacity-50"
                   />
                 )}
               </motion.g>

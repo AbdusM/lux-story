@@ -12,8 +12,6 @@ import { PeopleView } from './PeopleView'
 import { SkillsView } from './SkillsView'
 import { QuestsView } from './QuestsView'
 import { DetailModal } from './DetailModal'
-// Pattern unlocks available for future use
-// import { usePatternUnlocks } from '@/hooks/usePatternUnlocks'
 
 interface ConstellationPanelProps {
   isOpen: boolean

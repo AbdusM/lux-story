@@ -1,13 +1,13 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-    DialogDescription,
-} from '@/components/ui/dialog'
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { Settings, FileText, Volume2, VolumeX, Brain } from 'lucide-react'
 
 interface GameMenuProps {
@@ -21,60 +21,41 @@ interface GameMenuProps {
 
 export function GameMenu({ onShowReport, onReturnToStation: _onReturnToStation, onShowConstellation: _onShowConstellation, isMuted = false, onToggleMute, playerId }: GameMenuProps) {
     return (
-        <Dialog>
-            <DialogTrigger asChild>
-                <Button variant="ghost" size="icon" className="text-slate-500 hover:text-slate-900">
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="text-slate-400 hover:text-white hover:bg-white/5">
                     <Settings className="w-5 h-5" />
                 </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-md max-h-[80vh] overflow-hidden flex flex-col glass-panel border-white/10 bg-slate-900/95 text-slate-100">
-                <DialogHeader>
-                    <DialogTitle className="text-slate-100">Game Menu</DialogTitle>
-                    <DialogDescription className="text-xs text-slate-400">
-                        Adjust settings or return to the main station.
-                    </DialogDescription>
-                </DialogHeader>
-                <div className="flex flex-col gap-1 py-4 pr-1">
-                    <Button
-                        onClick={onShowReport}
-                        variant="ghost"
-                        className="w-full flex items-center justify-start gap-3 h-12 px-4 rounded-lg hover:bg-white/5 transition-all text-slate-300 hover:text-white"
-                    >
-                        <FileText className="w-4 h-4 text-amber-500/80" />
-                        <span className="text-sm font-medium">Career Profile</span>
-                    </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-52">
+                <DropdownMenuLabel>Settings</DropdownMenuLabel>
+                <DropdownMenuSeparator />
 
-                    {playerId && (
-                        <Link href={`/admin/${playerId}`} passHref legacyBehavior>
-                            <Button
-                                asChild
-                                variant="ghost"
-                                className="w-full flex items-center justify-start gap-3 h-12 px-4 rounded-lg hover:bg-white/5 transition-all text-slate-300 hover:text-white"
-                            >
-                                <a>
-                                    <Brain className="w-4 h-4 text-emerald-500/80" />
-                                    <span className="text-sm font-medium">Clinical Audit</span>
-                                </a>
-                            </Button>
+                <DropdownMenuItem onClick={onShowReport}>
+                    <FileText className="w-4 h-4 mr-3 text-amber-500/80" />
+                    <span>Career Profile</span>
+                </DropdownMenuItem>
+
+                {playerId && (
+                    <DropdownMenuItem asChild>
+                        <Link href={`/admin/${playerId}`} className="flex items-center">
+                            <Brain className="w-4 h-4 mr-3 text-emerald-500/80" />
+                            <span>Clinical Audit</span>
                         </Link>
-                    )}
+                    </DropdownMenuItem>
+                )}
 
-                    {onToggleMute && (
-                        <Button
-                            onClick={onToggleMute}
-                            variant="ghost"
-                            className="w-full flex items-center justify-start gap-3 h-12 px-4 rounded-lg hover:bg-white/5 transition-all text-slate-300 hover:text-white"
-                        >
-                            {isMuted ? (
-                                <VolumeX className="w-4 h-4 text-red-400/80" />
-                            ) : (
-                                <Volume2 className="w-4 h-4 text-slate-400" />
-                            )}
-                            <span className="text-sm font-medium">{isMuted ? 'Unmute Audio' : 'Mute Audio'}</span>
-                        </Button>
-                    )}
-                </div>
-            </DialogContent>
-        </Dialog>
+                {onToggleMute && (
+                    <DropdownMenuItem onClick={onToggleMute}>
+                        {isMuted ? (
+                            <VolumeX className="w-4 h-4 mr-3 text-red-400/80" />
+                        ) : (
+                            <Volume2 className="w-4 h-4 mr-3 text-slate-400" />
+                        )}
+                        <span>{isMuted ? 'Unmute Audio' : 'Mute Audio'}</span>
+                    </DropdownMenuItem>
+                )}
+            </DropdownMenuContent>
+        </DropdownMenu>
     )
 }

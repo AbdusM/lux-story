@@ -32,130 +32,130 @@ export type VoiceStyle = {
 export const CHARACTER_VOICES: Record<string, Partial<VoiceStyle>> = {
   'Samuel': {
     font: 'font-mono',
-    color: 'text-stone-800 dark:text-stone-200',
+    color: 'text-[color:var(--text-dialogue)]',
     tracking: 'tracking-normal',
     weight: 'font-normal',
   },
   'Maya': {
     font: 'font-mono',
-    color: 'text-stone-800 dark:text-stone-200',
+    color: 'text-[color:var(--text-dialogue)]',
     tracking: 'tracking-normal',
     weight: 'font-normal',
   },
   'Devon': {
     font: 'font-mono',
-    color: 'text-stone-800 dark:text-stone-200',
+    color: 'text-[color:var(--text-dialogue)]',
     tracking: 'tracking-normal',
     weight: 'font-normal',
   },
   'Kai': {
     font: 'font-mono',
-    color: 'text-stone-800 dark:text-stone-200',
+    color: 'text-[color:var(--text-dialogue)]',
     tracking: 'tracking-normal',
     weight: 'font-normal',
   },
   'Jordan': {
     font: 'font-mono',
-    color: 'text-stone-800 dark:text-stone-200',
+    color: 'text-[color:var(--text-dialogue)]',
     tracking: 'tracking-normal',
     weight: 'font-normal',
   },
   'Tess': {
     font: 'font-mono',
-    color: 'text-stone-800 dark:text-stone-200',
+    color: 'text-[color:var(--text-dialogue)]',
     tracking: 'tracking-normal',
     weight: 'font-normal',
   },
   'Rohan': {
     font: 'font-mono',
-    color: 'text-stone-800 dark:text-stone-200',
+    color: 'text-[color:var(--text-dialogue)]',
     tracking: 'tracking-normal',
     weight: 'font-normal',
   },
   'Silas': {
     font: 'font-mono',
-    color: 'text-stone-800 dark:text-stone-200',
+    color: 'text-[color:var(--text-dialogue)]',
     tracking: 'tracking-normal',
     weight: 'font-normal',
   },
   'Marcus': {
     font: 'font-mono',
-    color: 'text-stone-800 dark:text-stone-200',
+    color: 'text-[color:var(--text-dialogue)]',
     tracking: 'tracking-normal',
     weight: 'font-normal',
   },
   'Yaquin': {
     font: 'font-mono',
-    color: 'text-stone-800 dark:text-stone-200',
+    color: 'text-[color:var(--text-dialogue)]',
     tracking: 'tracking-normal',
     weight: 'font-normal',
   },
   'Elena': {
     font: 'font-mono',
-    color: 'text-stone-800 dark:text-stone-200',
+    color: 'text-[color:var(--text-dialogue)]',
     tracking: 'tracking-normal',
     weight: 'font-normal',
   },
   'Grace': {
     font: 'font-mono',
-    color: 'text-stone-800 dark:text-stone-200',
+    color: 'text-[color:var(--text-dialogue)]',
     tracking: 'tracking-normal',
     weight: 'font-normal',
   },
   'Narrator': {
     font: 'font-mono',
-    color: 'text-stone-600 dark:text-stone-400',
+    color: 'text-[color:var(--text-dialogue)] opacity-80',
     tracking: 'tracking-normal',
     style: 'italic',
-    border: 'border-l-2 border-stone-300 pl-4',
+    border: 'border-l-2 border-white/20 pl-4',
   },
   'System': {
     font: 'font-mono',
-    color: 'text-emerald-700 dark:text-emerald-400',
+    color: 'text-emerald-400',
     tracking: 'tracking-normal',
     weight: 'font-bold',
-    background: 'bg-stone-100/50 dark:bg-stone-900/50 p-2 rounded',
+    background: 'bg-black/40 p-2 rounded',
   },
   'You': {
     font: 'font-mono',
-    color: 'text-stone-500 dark:text-stone-400',
+    color: 'text-[color:var(--text-dialogue)] opacity-70',
     style: 'italic',
     tracking: 'tracking-tight',
   },
   // Internal monologue - player's inner thoughts, distinct from choices
   'Internal': {
     font: 'font-mono',
-    color: 'text-stone-500 dark:text-stone-400',
+    color: 'text-[color:var(--text-dialogue)] opacity-60',
     style: 'italic text-[0.95em]',
     tracking: 'tracking-tight',
   },
   // Pattern sensation - brief atmospheric feedback after pattern choices
   'Sensation': {
     font: 'font-serif',
-    color: 'text-amber-600/80 dark:text-amber-400/80',
+    color: 'text-amber-400/90',
     style: 'italic text-sm',
     tracking: 'tracking-normal',
   },
   // Ambient event - station atmosphere, 3rd person limited
   'Ambient': {
     font: 'font-serif',
-    color: 'text-stone-500/90 dark:text-stone-400/90',
+    color: 'text-[color:var(--text-dialogue)] opacity-60',
     style: 'italic text-sm',
     tracking: 'tracking-normal',
   }
 }
 
 export function getVoiceClass(characterName?: string): string {
-  if (!characterName) return "font-mono text-stone-800 dark:text-stone-200"
-  
+  if (!characterName) return "font-mono text-[color:var(--text-dialogue)]"
+
   // Normalize
   const lower = characterName.toLowerCase()
   const key = Object.keys(CHARACTER_VOICES).find(k => lower.includes(k.toLowerCase()))
-  
+
   const style = key ? CHARACTER_VOICES[key] : null
-  
-  if (!style) return "font-sans text-slate-800 dark:text-slate-200"
-  
+
+  if (!style) return "font-sans text-[color:var(--text-dialogue)]"
+
   return cn(
     style.font,
     style.color,
