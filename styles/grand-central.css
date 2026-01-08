@@ -50,14 +50,16 @@
 
 .platform-warm {
   --platform-color: 40, 65%, 55%;
-  filter: hue-rotate(15deg) brightness(1.08) saturate(1.15);
+  /* Reduced brightness to prevent washed-out UI */
+  filter: hue-rotate(10deg) brightness(1.02) saturate(1.08);
   animation: warm-glow 4s ease-in-out infinite;
   transition: all 2s ease-in-out;
 }
 
 .platform-resonant {
   --platform-color: 280, 75%, 65%;
-  filter: hue-rotate(-15deg) brightness(1.15) saturate(1.25);
+  /* Reduced brightness to prevent washed-out UI */
+  filter: hue-rotate(-10deg) brightness(1.05) saturate(1.1);
   animation: resonant-pulse 2.5s ease-in-out infinite;
   transition: all 2s ease-in-out;
 }
@@ -75,7 +77,8 @@
 
 .career-alignment-high {
   opacity: 1;
-  filter: brightness(1.1) saturate(1.2);
+  /* Reduced brightness to prevent washed-out UI */
+  filter: brightness(1.03) saturate(1.1);
   animation: alignment-glow 3s ease-in-out infinite;
 }
 

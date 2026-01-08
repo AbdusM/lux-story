@@ -24,15 +24,17 @@
 
 .platform-warmth-3 {
   --warmth-color: 35, 55%, 55%;
-  filter: brightness(1.1) saturate(1.2) hue-rotate(-10deg);
+  /* Reduced brightness to prevent washed-out UI */
+  filter: brightness(1.02) saturate(1.05) hue-rotate(-5deg);
   animation: warm-platform 4s ease-in-out infinite;
 }
 
 .platform-warmth-5 {
   --warmth-color: 30, 70%, 60%;
-  filter: brightness(1.2) saturate(1.3) hue-rotate(-20deg);
+  /* Reduced brightness to prevent washed-out UI - was 1.2, now 1.05 */
+  filter: brightness(1.05) saturate(1.1) hue-rotate(-10deg);
   animation: resonant-platform 2s ease-in-out infinite;
-  box-shadow: 0 0 30px hsla(var(--warmth-color), 0.4);
+  box-shadow: 0 0 20px hsla(var(--warmth-color), 0.25);
 }
 
 /* Time speed effects based on patience/rushing */
