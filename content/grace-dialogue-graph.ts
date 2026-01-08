@@ -18,20 +18,12 @@ export const graceDialogueNodes: DialogueNode[] = [
     speaker: 'Grace',
     content: [
       {
-        text: `*A woman sits on a bench, a worn tote bag beside her. She's looking at her phone, but not really seeing it.*
-
-*She notices you and puts the phone away.*
-
-Sorry. Just got off shift. Twelve hours. My feet are having opinions.
-
-*Small tired smile.*
-
-You look a little lost yourself.`,
+        text: "Sorry. Just got off shift. Twelve hours. My feet are having opinions.\n\nYou look a little lost yourself.",
         emotion: 'tired_warm',
         variation_id: 'grace_intro_v1',
         patternReflection: [
-          { pattern: 'helping', minLevel: 4, altText: "*A woman sits on a bench, looking tired but alert.*\n\n*She notices you and something shifts in her face—recognition.*\n\nYou have that look. The one that says you actually see people.\n\nCome sit. My feet need the break anyway.", altEmotion: 'knowing' },
-          { pattern: 'patience', minLevel: 4, altText: "*A woman sits on a bench, still and quiet.*\n\n*She notices you and doesn't rush to fill the silence.*\n\nYou're not in a hurry. Good. Neither am I.\n\n*Pats the bench.*\n\nSit if you want.", altEmotion: 'calm' }
+          { pattern: 'helping', minLevel: 4, altText: "You have that look. The one that says you actually see people.\n\nCome sit. My feet need the break anyway.", altEmotion: 'knowing' },
+          { pattern: 'patience', minLevel: 4, altText: "You're not in a hurry. Good. Neither am I.\n\nSit if you want.", altEmotion: 'calm' }
         ]
       }
     ],
@@ -43,7 +35,7 @@ You look a little lost yourself.`,
           analytical: "Twelve hours. That's a long shift. What kind of work demands that?",
           helping: "That sounds exhausting. What kind of work keeps you that long?",
           building: "Twelve hours building something. What kind of work?",
-          exploring: "I'm curious—what kind of work takes twelve hours?",
+          exploring: "I'm curious. What kind of work takes twelve hours?",
           patience: "Twelve hours. You must love what you do. What is it?"
         },
         nextNodeId: 'grace_the_work',
@@ -99,7 +91,7 @@ You look a little lost yourself.`,
       },
       {
         choiceId: 'grace_intro_patience_unlock',
-        text: "[Deep Listening] The way you're not looking at your phone—you're avoiding something on it. Bad news?",
+        text: "[Deep Listening] The way you're not looking at your phone. You're avoiding something on it. Bad news?",
         nextNodeId: 'grace_bad_news',
         pattern: 'patience',
         skills: ['observation', 'emotionalIntelligence'],
@@ -127,21 +119,7 @@ You look a little lost yourself.`,
     speaker: 'Grace',
     content: [
       {
-        text: `*Her face goes still. Then crumbles, just for a moment.*
-
-...How did you know?
-
-*She wipes her eyes quickly.*
-
-Mrs. Chen. Room 412. She was doing better. We thought—we really thought—
-
-*Deep breath.*
-
-I've been doing this fifteen years. You'd think it gets easier. It doesn't. It just gets... different.
-
-*Looks at you.*
-
-No one asks. They see the scrubs and assume I'm fine.`,
+        text: "...How did you know?\n\nMrs. Chen. Room 412. She was doing better. We thought. We really thought.\n\nI've been doing this fifteen years. You'd think it gets easier. It doesn't. It just gets different.\n\nNo one asks. They see the scrubs and assume I'm fine.",
         emotion: 'raw',
         interaction: 'small',
         variation_id: 'grace_carrying_weight_v1'
@@ -154,6 +132,7 @@ No one asks. They see the scrubs and assume I'm fine.`,
         nextNodeId: 'grace_the_work',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
+        archetype: 'ACKNOWLEDGE_EMOTION',
         consequence: {
           characterId: 'grace',
           trustChange: 1
@@ -168,21 +147,7 @@ No one asks. They see the scrubs and assume I'm fine.`,
     speaker: 'Grace',
     content: [
       {
-        text: `*She freezes. Looks down at the phone.*
-
-...Yeah.
-
-*Long pause.*
-
-My daughter. She got the job. Out of state. Starts next month.
-
-*Quiet laugh.*
-
-I should be happy. I am happy. She worked so hard for this.
-
-*Her voice catches.*
-
-I just... wasn't ready for the house to be quiet so soon.`,
+        text: "...Yeah.\n\nMy daughter. She got the job. Out of state. Starts next month.\n\nI should be happy. I am happy. She worked so hard for this.\n\nI just... wasn't ready for the house to be quiet so soon.",
         emotion: 'bittersweet',
         interaction: 'small',
         variation_id: 'grace_bad_news_v1'
@@ -195,6 +160,7 @@ I just... wasn't ready for the house to be quiet so soon.`,
         nextNodeId: 'grace_the_work',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'wisdom'],
+        archetype: 'SHARE_PERSPECTIVE',
         consequence: {
           characterId: 'grace',
           trustChange: 1
@@ -209,23 +175,13 @@ I just... wasn't ready for the house to be quiet so soon.`,
     speaker: 'Grace',
     content: [
       {
-        text: `*You sit. She doesn't say anything for a moment.*
-
-*The station sounds wash over you both—distant announcements, footsteps, the hum of the building.*
-
-*Finally, she exhales.*
-
-That's nice. Most people talk right away. Fill every silence.
-
-*Looks at you sideways.*
-
-You know how to just... be with someone. That's rare.`,
+        text: "That's nice. Most people talk right away. Fill every silence.\n\nYou know how to just... be with someone. That's rare.",
         emotion: 'appreciative',
         interaction: 'small',
         variation_id: 'quiet_sit_v1',
         patternReflection: [
-          { pattern: 'patience', minLevel: 4, altText: "*You sit. The station sounds wash over you both.*\n\n*Finally, she exhales.*\n\nThat's nice. Most people fill every silence. You just... waited.\n\n*Something softens in her expression.*\n\nYou understand stillness. That's the hardest skill to teach.", altEmotion: 'recognized' },
-          { pattern: 'helping', minLevel: 4, altText: "*You sit. The silence stretches, comfortable.*\n\n*She exhales.*\n\nYou know how to be with someone without needing anything from them.\n\n*Small smile.*\n\nThat's what I do for a living. Recognize it when I see it.", altEmotion: 'kindred' }
+          { pattern: 'patience', minLevel: 4, altText: "That's nice. Most people fill every silence. You just... waited.\n\nYou understand stillness. That's the hardest skill to teach.", altEmotion: 'recognized' },
+          { pattern: 'helping', minLevel: 4, altText: "You know how to be with someone without needing anything from them.\n\nThat's what I do for a living. Recognize it when I see it.", altEmotion: 'kindred' }
         ]
       }
     ],
@@ -235,7 +191,8 @@ You know how to just... be with someone. That's rare.`,
         text: "Where'd you learn that? To value silence?",
         nextNodeId: 'grace_the_work',
         pattern: 'exploring',
-        skills: ['curiosity']
+        skills: ['curiosity'],
+        archetype: 'ASK_FOR_DETAILS'
       },
       {
         choiceId: 'grace_silence_gift',
@@ -243,6 +200,7 @@ You know how to just... be with someone. That's rare.`,
         nextNodeId: 'grace_the_work',
         pattern: 'patience',
         skills: ['emotionalIntelligence'],
+        archetype: 'SHARE_PERSPECTIVE',
         consequence: {
           characterId: 'grace',
           trustChange: 1
@@ -262,17 +220,7 @@ You know how to just... be with someone. That's rare.`,
     speaker: 'Grace',
     content: [
       {
-        text: `*She nods slowly.*
-
-Lost is honest. Lost is where all the real figuring-out happens.
-
-*Shifts on the bench.*
-
-I've been lost a few times. Figured I'd end up somewhere different than where I am now.
-
-*Small laugh.*
-
-Turns out "different" isn't always "worse." Just... different.`,
+        text: "Lost is honest. Lost is where all the real figuring-out happens.\n\nI've been lost a few times. Figured I'd end up somewhere different than where I am now.\n\nTurns out \"different\" isn't always \"worse.\" Just... different.",
         emotion: 'reflective',
         variation_id: 'understands_v1'
       }
@@ -283,7 +231,8 @@ Turns out "different" isn't always "worse." Just... different.`,
         text: "Where did you end up?",
         nextNodeId: 'grace_the_work',
         pattern: 'exploring',
-        skills: ['curiosity']
+        skills: ['curiosity'],
+        archetype: 'ASK_FOR_DETAILS'
       }
     ],
     tags: ['grace_arc']
@@ -295,21 +244,11 @@ Turns out "different" isn't always "worse." Just... different.`,
     speaker: 'Grace',
     content: [
       {
-        text: `Home health aide. Seven years now.
-
-I go to people's houses. Mostly elderly. Help them with... everything. Getting dressed. Eating. Bathing. Medications.
-
-*Looks at her hands.*
-
-The stuff nobody wants to think about. The stuff that happens when bodies get old and minds get foggy.
-
-*Quiet.*
-
-It's not glamorous. But somebody's gotta do it.`,
+        text: "Home health aide. Seven years now.\n\nI go to people's houses. Mostly elderly. Help them with everything. Getting dressed. Eating. Bathing. Medications.\n\nThe stuff nobody wants to think about. The stuff that happens when bodies get old and minds get foggy.\n\nIt's not glamorous. But somebody's gotta do it.",
         emotion: 'matter_of_fact',
         variation_id: 'the_work_v1',
         patternReflection: [
-          { pattern: 'helping', minLevel: 4, altText: "Home health aide. Seven years.\n\nI go to people's houses. Help them with everything. Getting dressed. Eating. The things that get hard when bodies fail.\n\n*Looks at you.*\n\nYou understand. You've got that helper energy. You know some work is about more than tasks.", altEmotion: 'knowing' }
+          { pattern: 'helping', minLevel: 4, altText: "Home health aide. Seven years.\n\nI go to people's houses. Help them with everything. Getting dressed. Eating. The things that get hard when bodies fail.\n\nYou understand. You've got that helper energy. You know some work is about more than tasks.", altEmotion: 'knowing' }
         ]
       }
     ],
@@ -350,8 +289,8 @@ It's not glamorous. But somebody's gotta do it.`,
         choiceId: 'grace_somebody',
         text: "'Somebody's gotta do it' sounds like it's more than that to you.",
         voiceVariations: {
-          analytical: "You said 'somebody's gotta do it.' But the way you said it—there's more data there.",
-          helping: "That phrase—'somebody's gotta do it'—it sounds like it carries weight for you.",
+          analytical: "You said 'somebody's gotta do it.' But the way you said it. There's more data there.",
+          helping: "That phrase. 'Somebody's gotta do it.' It sounds like it carries weight for you.",
           building: "'Somebody's gotta do it' usually means you've built something meaningful from it.",
           exploring: "I heard something deeper when you said that. What's underneath?",
           patience: "There's a story behind 'somebody's gotta do it.' Take your time."
@@ -373,23 +312,7 @@ It's not glamorous. But somebody's gotta do it.`,
     speaker: 'Grace',
     content: [
       {
-        text: `*She's quiet for a moment. Then looks at you.*
-
-You caught that, huh.
-
-*Sighs.*
-
-Yeah. It's more than "somebody's gotta."
-
-My grandmother raised me. Strong woman. Worked thirty years at a laundry, retired, thought she'd have time to rest.
-
-Then the dementia started.
-
-*Voice drops.*
-
-At the end... I was the only one who could calm her down. She didn't know my name anymore. But she knew my presence.
-
-That's when I knew. This work isn't about tasks. It's about being the calm in someone's storm.`,
+        text: "You caught that, huh.\n\nYeah. It's more than \"somebody's gotta.\"\n\nMy grandmother raised me. Strong woman. Worked thirty years at a laundry, retired, thought she'd have time to rest. Then the dementia started.\n\nAt the end... I was the only one who could calm her down. She didn't know my name anymore. But she knew my presence.\n\nThat's when I knew. This work isn't about tasks. It's about being the calm in someone's storm.",
         emotion: 'vulnerable',
         interaction: 'small',
         variation_id: 'more_than_v1'
@@ -400,7 +323,7 @@ That's when I knew. This work isn't about tasks. It's about being the calm in so
         choiceId: 'grace_grandmother_present',
         text: "She's still with you. I can hear it.",
         voiceVariations: {
-          analytical: "The way you describe her—she's still part of how you think.",
+          analytical: "The way you describe her. She's still part of how you think.",
           helping: "She's still with you. I can hear her in everything you do.",
           building: "You're still building on what she started. She's in the foundation.",
           exploring: "She's part of your story. I can hear her in your voice.",
@@ -419,7 +342,8 @@ That's when I knew. This work isn't about tasks. It's about being the calm in so
         text: "Presence. That's a skill most people don't even know exists.",
         nextNodeId: 'grace_invisible_skill',
         pattern: 'analytical',
-        skills: ['observation']
+        skills: ['observation'],
+        archetype: 'MAKE_OBSERVATION'
       }
     ],
     tags: ['grace_arc', 'backstory', 'emotional_core']
@@ -430,17 +354,7 @@ That's when I knew. This work isn't about tasks. It's about being the calm in so
     speaker: 'Grace',
     content: [
       {
-        text: `*Her eyes get bright. She blinks it away.*
-
-Every day.
-
-Every time I sit with someone who's scared and confused, I think: what if this was her? What would I want someone to do?
-
-*Takes a breath.*
-
-That's the job. Not the tasks. The... remembering that every person used to be someone's whole world.
-
-Mrs. Patterson? She was a jazz singer. Mr. Chen? Built bridges. They're not just bodies that need help. They're people with stories.`,
+        text: "Every day.\n\nEvery time I sit with someone who's scared and confused, I think: what if this was her? What would I want someone to do?\n\nThat's the job. Not the tasks. The remembering that every person used to be someone's whole world.\n\nMrs. Patterson? She was a jazz singer. Mr. Chen? Built bridges. They're not just bodies that need help. They're people with stories.",
         emotion: 'tender',
         interaction: 'nod',
         variation_id: 'grandmother_v1'
@@ -463,17 +377,7 @@ Mrs. Patterson? She was a jazz singer. Mr. Chen? Built bridges. They're not just
     speaker: 'Grace',
     content: [
       {
-        text: `*She shifts on the bench.*
-
-Fell into it, honestly. I was going to be a nurse. Had the grades, started at Jeff State.
-
-Then my grandmother got sick. Someone had to take care of her.
-
-*Shrugs.*
-
-By the time she passed, I'd been doing the work for two years. Figured I might as well get paid for it.
-
-Started as a CNA. Did the training. Now I'm certified home health. Eight clients a week.`,
+        text: "Fell into it, honestly. I was going to be a nurse. Had the grades, started at Jeff State.\n\nThen my grandmother got sick. Someone had to take care of her.\n\nBy the time she passed, I'd been doing the work for two years. Figured I might as well get paid for it.\n\nStarted as a CNA. Did the training. Now I'm certified home health. Eight clients a week.",
         emotion: 'resigned_peaceful',
         variation_id: 'origin_v1'
       }
@@ -506,27 +410,13 @@ Started as a CNA. Did the training. Now I'm certified home health. Eight clients
     speaker: 'Grace',
     content: [
       {
-        text: `*Long pause.*
-
-Because I'm good at it.
-
-Not the lifting. Not the medications. Those you can train.
-
-The being there. The... stillness when someone's scared.
-
-*Looks at her hands.*
-
-Mrs. Richardson—she's ninety-three, end-stage heart failure—she told her daughter: "Grace is the only one who doesn't make me feel like a burden."
-
-*Quiet.*
-
-That's why I stayed.`,
+        text: "Because I'm good at it.\n\nNot the lifting. Not the medications. Those you can train.\n\nThe being there. The stillness when someone's scared.\n\nMrs. Richardson. She's ninety-three, end-stage heart failure. She told her daughter: \"Grace is the only one who doesn't make me feel like a burden.\"\n\nThat's why I stayed.",
         emotion: 'proud_quiet',
         interaction: 'small',
         variation_id: 'why_stayed_v1',
         patternReflection: [
-          { pattern: 'patience', minLevel: 4, altText: "*Long pause.*\n\nBecause I'm good at it. Not the lifting—the stillness.\n\nMrs. Richardson told her daughter: 'Grace is the only one who doesn't make me feel like a burden.'\n\n*Looks at you.*\n\nYou understand waiting. You sat with me just now without needing anything. That's the same skill.", altEmotion: 'recognized' },
-          { pattern: 'analytical', minLevel: 4, altText: "*Long pause.*\n\nBecause I'm good at it. The being there. The stillness.\n\n*Studies you.*\n\nYou're measuring what I said. 'Good at it'—not 'stuck with it.' There's a difference, isn't there? Most people assume I settled.", altEmotion: 'appreciative' }
+          { pattern: 'patience', minLevel: 4, altText: "Because I'm good at it. Not the lifting. The stillness.\n\nMrs. Richardson told her daughter: 'Grace is the only one who doesn't make me feel like a burden.'\n\nYou understand waiting. You sat with me just now without needing anything. That's the same skill.", altEmotion: 'recognized' },
+          { pattern: 'analytical', minLevel: 4, altText: "Because I'm good at it. The being there. The stillness.\n\nYou're measuring what I said. 'Good at it.' Not 'stuck with it.' There's a difference, isn't there? Most people assume I settled.", altEmotion: 'appreciative' }
         ]
       }
     ],
@@ -551,21 +441,7 @@ That's why I stayed.`,
     speaker: 'Grace',
     content: [
       {
-        text: `*She's quiet for a long moment.*
-
-The goodbyes.
-
-You spend months—sometimes years—with someone. You know how they take their coffee. What songs make them smile. Which grandchild is their favorite.
-
-And then one day... they're gone.
-
-*Exhales.*
-
-I've lost eleven clients in seven years. Eleven people I cared about.
-
-*Looks at the ceiling.*
-
-The work doesn't stop. There's always someone else who needs help. So you grieve in the car, and then you walk into the next house with a smile.`,
+        text: "The goodbyes.\n\nYou spend months with someone. Sometimes years. You know how they take their coffee. What songs make them smile. Which grandchild is their favorite.\n\nAnd then one day... they're gone.\n\nI've lost eleven clients in seven years. Eleven people I cared about.\n\nThe work doesn't stop. There's always someone else who needs help. So you grieve in the car, and then you walk into the next house with a smile.",
         emotion: 'heavy',
         interaction: 'small',
         variation_id: 'the_hard_v1'
@@ -603,17 +479,7 @@ The work doesn't stop. There's always someone else who needs help. So you grieve
     speaker: 'Grace',
     content: [
       {
-        text: `*She glances at you. Something softens.*
-
-You didn't try to make it better. Most people do. "They're in a better place." "At least they're not suffering."
-
-*Shakes head.*
-
-Sometimes grief just needs room to breathe.
-
-*Pause.*
-
-Thank you for that.`,
+        text: "You didn't try to make it better. Most people do. \"They're in a better place.\" \"At least they're not suffering.\"\n\nSometimes grief just needs room to breathe.\n\nThank you for that.",
         emotion: 'grateful',
         variation_id: 'appreciated_v1'
       }
@@ -635,19 +501,7 @@ Thank you for that.`,
     speaker: 'Grace',
     content: [
       {
-        text: `*She thinks.*
-
-I remember what I gave them.
-
-Mr. Jefferson—he was terrified of dying alone. I made sure I was there. Held his hand at the end.
-
-Mrs. Park—she wanted to die at home, not in a hospital. I helped make that happen.
-
-*Quiet.*
-
-I can't stop death. But I can make the journey less lonely.
-
-That's enough. It has to be.`,
+        text: "I remember what I gave them.\n\nMr. Jefferson. He was terrified of dying alone. I made sure I was there. Held his hand at the end.\n\nMrs. Park. She wanted to die at home, not in a hospital. I helped make that happen.\n\nI can't stop death. But I can make the journey less lonely.\n\nThat's enough. It has to be.",
         emotion: 'resolved',
         variation_id: 'coping_v1'
       }
@@ -674,21 +528,11 @@ That's enough. It has to be.`,
     speaker: 'Grace',
     content: [
       {
-        text: `*She sits up a little straighter.*
-
-You know what nobody teaches you? The real skill.
-
-It's not the medications or the transfers or the wound care. That's trainable.
-
-It's reading a room. Knowing when someone needs to talk and when they need silence. Noticing when "I'm fine" means "I'm not fine."
-
-*Taps her temple.*
-
-This work is emotional labor. Constant calibration. And nobody sees it.`,
+        text: "You know what nobody teaches you? The real skill.\n\nIt's not the medications or the transfers or the wound care. That's trainable.\n\nIt's reading a room. Knowing when someone needs to talk and when they need silence. Noticing when \"I'm fine\" means \"I'm not fine.\"\n\nThis work is emotional labor. Constant calibration. And nobody sees it.",
         emotion: 'insistent',
         variation_id: 'invisible_v1',
         patternReflection: [
-          { pattern: 'analytical', minLevel: 4, altText: "*She sits up a little straighter.*\n\nThe real skill? Reading a room. Knowing when someone needs to talk and when they need silence.\n\nYou're analytical. You break things down. But this work is about feeling—and then responding. Constant calibration.\n\nNobody sees it. But you do.", altEmotion: 'knowing' }
+          { pattern: 'analytical', minLevel: 4, altText: "The real skill? Reading a room. Knowing when someone needs to talk and when they need silence.\n\nYou're analytical. You break things down. But this work is about feeling, and then responding. Constant calibration.\n\nNobody sees it. But you do.", altEmotion: 'knowing' }
         ]
       }
     ],
@@ -723,19 +567,7 @@ This work is emotional labor. Constant calibration. And nobody sees it.`,
     speaker: 'Grace',
     content: [
       {
-        text: `*She nods firmly.*
-
-Exactly.
-
-You can build a robot to dispense pills. Maybe even one that can lift someone into a wheelchair.
-
-But you can't build a robot that knows the difference between "leave me alone" meaning "I need space" versus "I'm testing to see if you'll stay."
-
-*Looks at you.*
-
-People talk about AI taking jobs. But this job? It's about presence. Connection. Being human with someone who's scared.
-
-No machine can do that.`,
+        text: "Exactly.\n\nYou can build a robot to dispense pills. Maybe even one that can lift someone into a wheelchair.\n\nBut you can't build a robot that knows the difference between \"leave me alone\" meaning \"I need space\" versus \"I'm testing to see if you'll stay.\"\n\nPeople talk about AI taking jobs. But this job? It's about presence. Connection. Being human with someone who's scared.\n\nNo machine can do that.",
         emotion: 'certain',
         interaction: 'nod',
         variation_id: 'automation_v1'
@@ -765,19 +597,7 @@ No machine can do that.`,
     speaker: 'Grace',
     content: [
       {
-        text: `*Bitter laugh.*
-
-Fifteen dollars an hour. No benefits until last year. Mileage? Sometimes. Paid time off? Ha.
-
-I work twelve-hour shifts, drive fifty miles a day, and make less than the person who serves coffee at the hospital lobby.
-
-*Crosses arms.*
-
-We're "essential workers" when there's a pandemic. We're "unskilled labor" when it's time to set wages.
-
-*Quiet.*
-
-Funny how that works.`,
+        text: "Fifteen dollars an hour. No benefits until last year. Mileage? Sometimes. Paid time off? Ha.\n\nI work twelve-hour shifts, drive fifty miles a day, and make less than the person who serves coffee at the hospital lobby.\n\nWe're \"essential workers\" when there's a pandemic. We're \"unskilled labor\" when it's time to set wages.\n\nFunny how that works.",
         emotion: 'frustrated',
         interaction: 'shake',
         variation_id: 'economics_v1'
@@ -807,19 +627,7 @@ Funny how that works.`,
     speaker: 'Grace',
     content: [
       {
-        text: `*Long pause. She looks at something far away.*
-
-Because Mrs. Richardson called me her angel.
-
-Because Mr. Chen's daughter hugged me at his funeral and said, "You gave him three more years."
-
-Because when I walk into a house and someone's eyes light up... that's not something you can put a price on.
-
-*Looks at you.*
-
-The money's terrible. The hours are brutal. But the meaning? The meaning is real.
-
-I'd rather be underpaid and matter than overpaid and empty.`,
+        text: "Because Mrs. Richardson called me her angel.\n\nBecause Mr. Chen's daughter hugged me at his funeral and said, \"You gave him three more years.\"\n\nBecause when I walk into a house and someone's eyes light up... that's not something you can put a price on.\n\nThe money's terrible. The hours are brutal. But the meaning? The meaning is real.\n\nI'd rather be underpaid and matter than overpaid and empty.",
         emotion: 'fierce_tender',
         interaction: 'bloom',
         variation_id: 'why_stay_v1'
@@ -846,17 +654,7 @@ I'd rather be underpaid and matter than overpaid and empty.`,
     speaker: 'Grace',
     content: [
       {
-        text: `*She considers.*
-
-Sometimes. But honestly? I'm not sure nursing is what I thought it was.
-
-Nurses are amazing. But they're stretched thin. Fifteen patients. Charting. Paperwork. Running.
-
-*Gestures.*
-
-I get to sit. I get to know people. I'm there for the slow moments, not just the emergencies.
-
-Different work. Not lesser. Just... different.`,
+        text: "Sometimes. But honestly? I'm not sure nursing is what I thought it was.\n\nNurses are amazing. But they're stretched thin. Fifteen patients. Charting. Paperwork. Running.\n\nI get to sit. I get to know people. I'm there for the slow moments, not just the emergencies.\n\nDifferent work. Not lesser. Just different.",
         emotion: 'reflective',
         variation_id: 'nurse_v1'
       }
@@ -878,19 +676,7 @@ Different work. Not lesser. Just... different.`,
     speaker: 'Grace',
     content: [
       {
-        text: `*She nods gravely.*
-
-Ten thousand people turn 65 every day in this country. Every. Day.
-
-The boomers are aging. And there aren't enough of us. Not even close.
-
-*Spreads hands.*
-
-By 2030, we'll need a million more home health workers. A million. And right now, we can barely fill the jobs we have because the pay is garbage.
-
-*Shakes head.*
-
-It's a crisis in slow motion. And nobody's watching.`,
+        text: "Ten thousand people turn 65 every day in this country. Every. Day.\n\nThe boomers are aging. And there aren't enough of us. Not even close.\n\nBy 2030, we'll need a million more home health workers. A million. And right now, we can barely fill the jobs we have because the pay is garbage.\n\nIt's a crisis in slow motion. And nobody's watching.",
         emotion: 'worried',
         variation_id: 'demographics_v1',
         interrupt: {
@@ -923,19 +709,7 @@ It's a crisis in slow motion. And nobody's watching.`,
     speaker: 'Grace',
     content: [
       {
-        text: `*She looks at you for a long moment.*
-
-You want to know what this work really is?
-
-Let me tell you about yesterday.
-
-Mrs. Williams. Eighty-seven. Alzheimer's. Most days she doesn't know where she is.
-
-I came in for my shift. She was sitting by the window, crying.
-
-*Pause.*
-
-What would you do?`,
+        text: "You want to know what this work really is?\n\nLet me tell you about yesterday.\n\nMrs. Williams. Eighty-seven. Alzheimer's. Most days she doesn't know where she is.\n\nI came in for my shift. She was sitting by the window, crying.\n\nWhat would you do?",
         emotion: 'testing',
         variation_id: 'moment_setup_v1'
       }
@@ -999,15 +773,7 @@ QUESTION: How do you approach her?
     speaker: 'Grace',
     content: [
       {
-        text: `Good instinct. Caring.
-
-But with Alzheimer's... she might not be able to tell you. The words get tangled. And asking can make it worse—she'll feel frustrated that she can't explain.
-
-*Soft.*
-
-Sometimes the question isn't "what's wrong." Sometimes it's just "I'm here."
-
-What else might you try?`,
+        text: "Good instinct. Caring.\n\nBut with Alzheimer's... she might not be able to tell you. The words get tangled. And asking can make it worse. She'll feel frustrated that she can't explain.\n\nSometimes the question isn't \"what's wrong.\" Sometimes it's just \"I'm here.\"\n\nWhat else might you try?",
         emotion: 'teaching',
         variation_id: 'moment_ask_v1'
       }
@@ -1033,17 +799,7 @@ What else might you try?`,
     speaker: 'Grace',
     content: [
       {
-        text: `That's what a lot of people try. And sometimes it works.
-
-But yesterday? She wasn't confused. She was grieving.
-
-*Quiet.*
-
-Her husband died forty years ago. But in her mind, it just happened. Every few months, she loses him again.
-
-Distraction would have... dismissed that. Made her feel crazy.
-
-What do you think she needed?`,
+        text: "That's what a lot of people try. And sometimes it works.\n\nBut yesterday? She wasn't confused. She was grieving.\n\nHer husband died forty years ago. But in her mind, it just happened. Every few months, she loses him again.\n\nDistraction would have dismissed that. Made her feel crazy.\n\nWhat do you think she needed?",
         emotion: 'gentle',
         variation_id: 'moment_distract_v1'
       }
@@ -1069,21 +825,7 @@ What do you think she needed?`,
     speaker: 'Grace',
     content: [
       {
-        text: `*She looks at you with something like surprise.*
-
-That's it. That's exactly it.
-
-I sat down. Didn't say anything. After a few minutes, she took my hand.
-
-We sat there for half an hour. She cried. I stayed.
-
-Eventually she looked at me and said, "Thank you for not trying to fix it."
-
-*Quiet.*
-
-That's the work. Not fixing. Accompanying. Being the steady presence when everything else is chaos.
-
-You get it. Most people don't.`,
+        text: "That's it. That's exactly it.\n\nI sat down. Didn't say anything. After a few minutes, she took my hand.\n\nWe sat there for half an hour. She cried. I stayed.\n\nEventually she looked at me and said, \"Thank you for not trying to fix it.\"\n\nThat's the work. Not fixing. Accompanying. Being the steady presence when everything else is chaos.\n\nYou get it. Most people don't.",
         emotion: 'moved',
         interaction: 'bloom',
         variation_id: 'moment_correct_v1',
@@ -1117,23 +859,7 @@ You get it. Most people don't.`,
     speaker: 'Grace',
     content: [
       {
-        text: `*She sits up, energy returning.*
-
-What needs to change? Everything.
-
-Pay. Benefits. Respect. Career paths.
-
-Right now, there's no ladder. I'm doing the same work I did seven years ago. No way to advance without leaving the bedside.
-
-*Looks at the station.*
-
-I want to train people. Not just the tasks—the presence. The emotional intelligence.
-
-Start a program. "Companion Care." Teach people that this work isn't unskilled—it's differently skilled.
-
-*Quiet fire.*
-
-And then fight like hell for wages that match the value.`,
+        text: "What needs to change? Everything.\n\nPay. Benefits. Respect. Career paths.\n\nRight now, there's no ladder. I'm doing the same work I did seven years ago. No way to advance without leaving the bedside.\n\nI want to train people. Not just the tasks. The presence. The emotional intelligence.\n\nStart a program. \"Companion Care.\" Teach people that this work isn't unskilled. It's differently skilled.\n\nAnd then fight like hell for wages that match the value.",
         emotion: 'determined',
         interaction: 'bloom',
         variation_id: 'vision_v1'
@@ -1167,19 +893,7 @@ And then fight like hell for wages that match the value.`,
     speaker: 'Grace',
     content: [
       {
-        text: `*She thinks carefully.*
-
-Ask yourself: can you be with suffering without trying to fix it?
-
-That's the real question. Not "are you strong enough to lift someone." Not "can you handle bodily fluids."
-
-Can you sit with someone who's dying and not run away? Can you be present without needing to solve?
-
-*Looks at you.*
-
-If you can... this work will break your heart and fill it at the same time.
-
-It's not for everyone. But for the right person? It's everything.`,
+        text: "Ask yourself: can you be with suffering without trying to fix it?\n\nThat's the real question. Not \"are you strong enough to lift someone.\" Not \"can you handle bodily fluids.\"\n\nCan you sit with someone who's dying and not run away? Can you be present without needing to solve?\n\nIf you can... this work will break your heart and fill it at the same time.\n\nIt's not for everyone. But for the right person? It's everything.",
         emotion: 'wise',
         variation_id: 'advice_v1'
       }
@@ -1220,21 +934,7 @@ It's not for everyone. But for the right person? It's everything.`,
     speaker: 'Grace',
     content: [
       {
-        text: `*She looks at your hand on her shoulder. For a moment, her composure wavers.*
-
-*Quiet laugh.*
-
-Sorry. I... don't usually tell that story.
-
-*Wipes eye quickly.*
-
-It's just... you listened. Really listened. Not waiting to give advice. Not trying to fix me.
-
-That's... that's what I try to give my patients. And nobody ever...
-
-*She takes a breath.*
-
-Thank you. For being present. That's the whole thing, isn't it? Just... being there.`,
+        text: "Sorry. I don't usually tell that story.\n\nIt's just... you listened. Really listened. Not waiting to give advice. Not trying to fix me.\n\nThat's what I try to give my patients. And nobody ever...\n\nThank you. For being present. That's the whole thing, isn't it? Just being there.",
         emotion: 'vulnerable',
         interaction: 'bloom',
         variation_id: 'interrupt_comfort_v1'
@@ -1257,21 +957,7 @@ Thank you. For being present. That's the whole thing, isn't it? Just... being th
     speaker: 'Grace',
     content: [
       {
-        text: `*She stops mid-sentence, caught by your silence.*
-
-*Quiet.*
-
-You're watching. Aren't you.
-
-*Something shifts in her face.*
-
-I spend so much time feeling invisible. The work I do—people don't see it. They don't want to think about aging, about needing help.
-
-But you... you stopped. You're here.
-
-*Small, real smile.*
-
-That matters more than you know.`,
+        text: "You're watching. Aren't you.\n\nI spend so much time feeling invisible. The work I do. People don't see it. They don't want to think about aging, about needing help.\n\nBut you... you stopped. You're here.\n\nThat matters more than you know.",
         emotion: 'seen',
         interaction: 'ripple',
         variation_id: 'interrupt_acknowledge_v1'
@@ -1298,19 +984,7 @@ That matters more than you know.`,
     speaker: 'Grace',
     content: [
       {
-        text: `*She's surprised for just a moment. Then she hugs you back.*
-
-*Tight. Real.*
-
-*After a long moment, she pulls back, eyes bright.*
-
-You know what? I needed that.
-
-Twelve-hour shifts, you give and give and give. And sometimes you forget that you need to receive too.
-
-*She picks up her bag, looking lighter.*
-
-Go change the world, kid. Or at least... be present in it. That's enough.`,
+        text: "You know what? I needed that.\n\nTwelve-hour shifts, you give and give and give. And sometimes you forget that you need to receive too.\n\nGo change the world, kid. Or at least be present in it. That's enough.",
         emotion: 'grateful',
         interaction: 'bloom',
         variation_id: 'interrupt_hug_v1'
@@ -1341,21 +1015,7 @@ Go change the world, kid. Or at least... be present in it. That's enough.`,
     speaker: 'Grace',
     content: [
       {
-        text: `*She looks at you thoughtfully.*
-
-You want to understand what this work really takes? Let me share something from last week.
-
-Mrs. Rodriguez's daughter, Maria. Twenty-eight years old. Her mother had a stroke three days ago.
-
-*She pulls out her phone, shows you a photo of an older woman smiling.*
-
-Maria's been at the hospital every day. But her mother was just transferred to home care. My care.
-
-When I arrived for my first shift, Maria was pacing the living room. Red eyes. Shaking hands.
-
-*Quieter.*
-
-What do you do with that? Someone who's terrified they're going to lose their mother, and you're the stranger walking into their home?`,
+        text: "You want to understand what this work really takes? Let me share something from last week.\n\nMrs. Rodriguez's daughter, Maria. Twenty-eight years old. Her mother had a stroke three days ago.\n\nMaria's been at the hospital every day. But her mother was just transferred to home care. My care.\n\nWhen I arrived for my first shift, Maria was pacing the living room. Red eyes. Shaking hands.\n\nWhat do you do with that? Someone who's terrified they're going to lose their mother, and you're the stranger walking into their home?",
         emotion: 'teaching',
         variation_id: 'sim_intro_v1'
       }
@@ -1417,21 +1077,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
     speaker: 'Grace',
     content: [
       {
-        text: `*Grace nods, considering your approach.*
-
-Okay. Let's say you chose to start there. Maria's still pacing, but she stops. Looks at you.
-
-*Imitates Maria's voice, slightly higher, strained.*
-
-"The hospital said she might not recover fully. What does that mean? Will she walk again? Will she know who I am? The doctor talked so fast and I couldn't—"
-
-*She breaks off, takes a breath.*
-
-She's spiraling. Three questions at once. Each one bigger than the last.
-
-*Looks at you.*
-
-How do you handle this?`,
+        text: "Okay. Let's say you chose to start there. Maria's still pacing, but she stops. Looks at you.\n\n\"The hospital said she might not recover fully. What does that mean? Will she walk again? Will she know who I am? The doctor talked so fast and I couldn't...\"\n\nShe's spiraling. Three questions at once. Each one bigger than the last.\n\nHow do you handle this?",
         emotion: 'testing',
         variation_id: 'phase1_v1'
       }
@@ -1478,23 +1124,7 @@ How do you handle this?`,
     speaker: 'Grace',
     content: [
       {
-        text: `*Grace's expression softens.*
-
-Better. You didn't give false hope. You didn't dodge. You met her where she was.
-
-*Continues the scenario.*
-
-Maria sits. Her hands are still shaking, but she's listening now.
-
-"The doctors say there's a long road ahead. That recovery could take months or... or longer. I don't know how to do this. I work full time. I can't afford to quit. But I can't leave her alone."
-
-*Pause.*
-
-She's not asking a medical question anymore. She's asking you to tell her it's possible to hold all of this together.
-
-*Looks at you directly.*
-
-What do you say?`,
+        text: "Better. You didn't give false hope. You didn't dodge. You met her where she was.\n\nMaria sits. Her hands are still shaking, but she's listening now.\n\n\"The doctors say there's a long road ahead. That recovery could take months or longer. I don't know how to do this. I work full time. I can't afford to quit. But I can't leave her alone.\"\n\nShe's not asking a medical question anymore. She's asking you to tell her it's possible to hold all of this together.\n\nWhat do you say?",
         emotion: 'serious',
         variation_id: 'phase2_v1',
         interrupt: {
@@ -1555,27 +1185,7 @@ What do you say?`,
     speaker: 'Grace',
     content: [
       {
-        text: `*Grace exhales. A real smile.*
-
-That's it. That's exactly it.
-
-*Sits back.*
-
-You didn't promise the impossible. You didn't dismiss her fears. You met her in the hard truth AND gave her something to hold onto.
-
-*Quieter.*
-
-Maria cried after that. Not the panicked crying from before. Relief. Someone finally saw how heavy this was.
-
-*Looks at her hands.*
-
-Her mother's recovery took eight months. Maria took a leave of absence from work—we helped her apply for FMLA. Her mother walks with a cane now. Knows her daughter's name.
-
-*Meets your eyes.*
-
-But here's the thing: that moment in the living room? That's when the real healing started. Not with the medicine. With being seen.
-
-That's the invisible skill. Holding space for fear without drowning in it.`,
+        text: "That's it. That's exactly it.\n\nYou didn't promise the impossible. You didn't dismiss her fears. You met her in the hard truth AND gave her something to hold onto.\n\nMaria cried after that. Not the panicked crying from before. Relief. Someone finally saw how heavy this was.\n\nHer mother's recovery took eight months. Maria took a leave of absence. We helped her apply for FMLA. Her mother walks with a cane now. Knows her daughter's name.\n\nBut here's the thing: that moment in the living room? That's when the real healing started. Not with the medicine. With being seen.\n\nThat's the invisible skill. Holding space for fear without drowning in it.",
         emotion: 'proud',
         interaction: 'bloom',
         variation_id: 'success_v1'
@@ -1615,27 +1225,7 @@ That's the invisible skill. Holding space for fear without drowning in it.`,
     speaker: 'Grace',
     content: [
       {
-        text: `*Grace shakes her head slowly.*
-
-I understand the impulse. But...
-
-*Pause.*
-
-When you make promises you can't keep, trust breaks. When you deflect, people feel abandoned. When you set walls too high, you become just another stranger in their crisis.
-
-*Quieter.*
-
-Maria? With the wrong approach, she would have called the agency the next day. Asked for a different aide. Or worse—stopped asking for help at all.
-
-*Looks at you.*
-
-I've seen both. The families who feel supported enough to let you in. And the ones who build walls because someone before you made them feel like a burden.
-
-*Sighs.*
-
-This work is about more than tasks. It's about trust. And trust, once broken, is hard to rebuild.
-
-Want to try again?`,
+        text: "I understand the impulse. But...\n\nWhen you make promises you can't keep, trust breaks. When you deflect, people feel abandoned. When you set walls too high, you become just another stranger in their crisis.\n\nMaria? With the wrong approach, she would have called the agency the next day. Asked for a different aide. Or worse. Stopped asking for help at all.\n\nI've seen both. The families who feel supported enough to let you in. And the ones who build walls because someone before you made them feel like a burden.\n\nThis work is about more than tasks. It's about trust. And trust, once broken, is hard to rebuild.\n\nWant to try again?",
         emotion: 'disappointed_gentle',
         variation_id: 'fail_v1'
       }
@@ -1670,21 +1260,7 @@ Want to try again?`,
     speaker: 'Grace',
     content: [
       {
-        text: `*She's quiet for a long moment. Then looks at you with something raw.*
-
-Can I tell you something I've never told anyone?
-
-*Pause.*
-
-Three years ago... I almost quit. Not just the job. Everything.
-
-Mrs. Patterson—the jazz singer I mentioned—she'd just passed. Third client that month. And my daughter's school called because I missed her recital. Again.
-
-I sat in my car in the parking lot for two hours. Couldn't go in. Couldn't go home.
-
-*Voice drops.*
-
-Nobody sees what this costs. They see the angel. They don't see the woman who forgot her own mother's birthday because she was too busy remembering everyone else's medications.`,
+        text: "Can I tell you something I've never told anyone?\n\nThree years ago... I almost quit. Not just the job. Everything.\n\nMrs. Patterson. The jazz singer I mentioned. She'd just passed. Third client that month. And my daughter's school called because I missed her recital. Again.\n\nI sat in my car in the parking lot for two hours. Couldn't go in. Couldn't go home.\n\nNobody sees what this costs. They see the angel. They don't see the woman who forgot her own mother's birthday because she was too busy remembering everyone else's medications.",
         emotion: 'raw_vulnerable',
         variation_id: 'vulnerability_v1',
         richEffectContext: 'warning'
@@ -1742,25 +1318,7 @@ Nobody sees what this costs. They see the angel. They don't see the woman who fo
     speaker: 'Grace',
     content: [
       {
-        text: `*She wipes her eyes.*
-
-Mr. Chen.
-
-He was dying. We both knew it. But that day, in the parking lot, my phone buzzed.
-
-A text from his daughter: "Dad's been asking for you all morning. Says you're the only one who makes him laugh."
-
-*Quiet.*
-
-I realized... I'm not giving too much. I'm giving exactly enough. To the people who need it.
-
-The problem wasn't the work. It was trying to be everything to everyone. Now I draw lines. Not walls—lines.
-
-*Looks at you.*
-
-I still miss recitals sometimes. But my daughter knows why. And she's proud of me.
-
-That's enough. It has to be.`,
+        text: "Mr. Chen.\n\nHe was dying. We both knew it. But that day, in the parking lot, my phone buzzed.\n\nA text from his daughter: \"Dad's been asking for you all morning. Says you're the only one who makes him laugh.\"\n\nI realized... I'm not giving too much. I'm giving exactly enough. To the people who need it.\n\nThe problem wasn't the work. It was trying to be everything to everyone. Now I draw lines. Not walls. Lines.\n\nI still miss recitals sometimes. But my daughter knows why. And she's proud of me.\n\nThat's enough. It has to be.",
         emotion: 'resolved_tender',
         interaction: 'bloom',
         variation_id: 'what_saved_v1'
@@ -1787,19 +1345,7 @@ That's enough. It has to be.`,
     speaker: 'Grace',
     content: [
       {
-        text: `*Small smile.*
-
-She's sixteen now. Volunteers at the nursing home on weekends.
-
-*Voice catches.*
-
-Last month, she told me: "Mom, I used to be angry you weren't at my stuff. Then I realized you were at someone else's 'last stuff.' That's more important."
-
-*Pause.*
-
-I cried for an hour.
-
-She sees me now. Really sees me. That's worth more than every recital I missed.`,
+        text: "She's sixteen now. Volunteers at the nursing home on weekends.\n\nLast month, she told me: \"Mom, I used to be angry you weren't at my stuff. Then I realized you were at someone else's 'last stuff.' That's more important.\"\n\nI cried for an hour.\n\nShe sees me now. Really sees me. That's worth more than every recital I missed.",
         emotion: 'tender_proud',
         interaction: 'bloom',
         variation_id: 'daughter_v1'
@@ -1827,21 +1373,7 @@ She sees me now. Really sees me. That's worth more than every recital I missed.`
     speaker: 'Grace',
     content: [
       {
-        text: `*She stands, picks up her tote bag.*
-
-I should get home. Sleep before my next shift.
-
-*Looks at you.*
-
-Whatever you're figuring out... remember this:
-
-The world needs people who can be present. Not just productive. Present.
-
-That's rarer than you think. And it's worth something.
-
-*Small smile.*
-
-Take care of yourself. And if you ever need someone to just... sit with you? You know where to find me.`,
+        text: "I should get home. Sleep before my next shift.\n\nWhatever you're figuring out... remember this:\n\nThe world needs people who can be present. Not just productive. Present.\n\nThat's rarer than you think. And it's worth something.\n\nTake care of yourself. And if you ever need someone to just sit with you? You know where to find me.",
         emotion: 'warm',
         interaction: 'nod',
         variation_id: 'farewell_v1',
@@ -1880,11 +1412,7 @@ Take care of yourself. And if you ever need someone to just... sit with you? You
     speaker: 'Grace',
     content: [
       {
-        text: `You know what I see in you? Someone who helps while thinking clearly.
-
-Patient care coordinators do that—they navigate complex systems while never losing sight of the person at the center. Blending empathy with analysis.
-
-Ensuring care flows smoothly. That's what you have the instincts for.`,
+        text: "You know what I see in you? Someone who helps while thinking clearly.\n\nPatient care coordinators do that. They navigate complex systems while never losing sight of the person at the center. Blending empathy with analysis.\n\nEnsuring care flows smoothly. That's what you have the instincts for.",
         emotion: 'warm',
         variation_id: 'career_coordinator_v1'
       }

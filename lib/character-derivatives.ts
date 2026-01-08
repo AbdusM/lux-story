@@ -10,9 +10,9 @@
  * - Multi-character simultaneous interactions
  */
 
-import { PatternType } from './patterns'
-import { GameState, CharacterState, PlayerPatterns } from './character-state'
-import { CharacterId, CHARACTER_IDS } from './graph-registry'
+import type { PatternType as _PatternType } from './patterns'
+import { GameState, CharacterState as _CharacterState, PlayerPatterns } from './character-state'
+import { CharacterId, CHARACTER_IDS as _CHARACTER_IDS } from './graph-registry'
 
 // ═══════════════════════════════════════════════════════════════════════════
 // D-016: CHARACTER-INFLUENCED ENVIRONMENTAL CHANGES
@@ -612,7 +612,7 @@ export function getCharactersInSector(
  */
 export function getCharacterCurrentSector(
   characterId: CharacterId,
-  gameState: GameState
+  _gameState: GameState
 ): SectorId {
   const location = CHARACTER_LOCATIONS.find(l => l.characterId === characterId)
   return location?.primarySector ?? 'hub'

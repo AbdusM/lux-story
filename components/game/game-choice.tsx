@@ -17,6 +17,8 @@ import { springs, STAGGER_DELAY } from "@/lib/animations"
 import { type PatternType, getPatternColor } from "@/lib/patterns"
 import { type PlayerPatterns } from "@/lib/character-state"
 import { getPatternPreviewStyles, getPatternHintText } from "@/lib/pattern-derivatives"
+import { getVoicedText } from "@/lib/voice-templates"
+import type { TemplateArchetype } from "@/lib/voice-templates/template-types"
 
 /**
  * Convert hex color to rgba with opacity
@@ -46,6 +48,10 @@ export interface GameChoiceProps
     next?: string
     consequence?: string
     pattern?: PatternType
+    /** Voice variations for pattern-specific text */
+    voiceVariations?: Partial<Record<PatternType, string>>
+    /** Archetype hint for template-based voice resolution */
+    archetype?: TemplateArchetype
   }
   onSelect?: () => void
   isSelected?: boolean
@@ -80,13 +86,22 @@ const GameChoice = React.forwardRef<HTMLButtonElement, GameChoiceProps>(
       : undefined
 
     // D-007: Pattern preview styles (subtle glow for developed patterns)
-    const defaultPatterns: PlayerPatterns = { analytical: 0, patience: 0, exploring: 0, helping: 0, building: 0 }
+    const _defaultPatterns: PlayerPatterns = { analytical: 0, patience: 0, exploring: 0, helping: 0, building: 0 }
     const patternPreviewStyles = glass && playerPatterns
       ? getPatternPreviewStyles(choice.pattern, playerPatterns)
       : {}
     const patternHintText = playerPatterns
       ? getPatternHintText(choice.pattern, playerPatterns)
       : null
+
+    // Voice template integration - transform choice text based on player's dominant pattern
+    const voicedText = React.useMemo(() => {
+      if (!playerPatterns) return choice.text
+      return getVoicedText(choice.text, playerPatterns, {
+        voiceVariations: choice.voiceVariations,
+        archetype: choice.archetype
+      })
+    }, [choice.text, choice.voiceVariations, choice.archetype, playerPatterns])
 
     // Animation variants - spring from bottom
     const variants = {
@@ -167,7 +182,7 @@ const GameChoice = React.forwardRef<HTMLButtonElement, GameChoiceProps>(
         {...props}
       >
         <div className="flex-1">
-          <div>{choice.text}</div>
+          <div>{voicedText}</div>
           {choice.subtext && (
             <div className="text-[15px] text-slate-400 mt-0.5">
               {choice.subtext}

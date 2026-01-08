@@ -16,15 +16,14 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Wait, don't touch that—! Oh. Hi. Sorry. I thought you were... never mind.\n\nSterne Library. Third floor. The AC is broken and I've been awake for... what day is it?\n\nBiochem notes. Robotics parts. It's a disaster. I'm a disaster.",
+        text: "Wait. Don't touch that.\n\nOh. Hi.\n\nYou aren't one of the librarians. Usually the only people up here are chasing me out.",
         emotion: 'anxious_scattered',
-        microAction: 'She pushes a stray lock of hair behind her ear, her hands trembling slightly.',
-        variation_id: 'intro_v2_clean',
+        variation_id: 'intro_v3_minimal',
         richEffectContext: 'warning',
         patternReflection: [
-          { pattern: 'helping', minLevel: 5, altText: "Sterne Library. Third floor. The table nobody wants because the AC's broken.\n\nOh. Hi. Were you... you have kind eyes. Sorry. I'm scattered.\n\nBiochem notes. Robotics parts. Everywhere. I know it looks like a disaster. It is a disaster.\n\nI'm a disaster.", altEmotion: 'vulnerable' },
-          { pattern: 'analytical', minLevel: 5, altText: "Sterne Library. Third floor. The table nobody wants because the AC's broken.\n\nOh. Hi. You're taking this all in, aren't you? The chaos?\n\nBiochem notes. Robotics parts. Yes, there's a system. Sort of. I'm trying to be two different people at the same table.", altEmotion: 'anxious_scattered' },
-          { pattern: 'building', minLevel: 5, altText: "Sterne Library. Third floor. The table nobody wants because the AC's broken.\n\nOh. Hi. You noticed the robot parts? Most people don't even see them under all the biochem stuff.\n\nI know it looks like chaos. But there's something I'm building here. Something real.", altEmotion: 'hopeful' }
+          { pattern: 'helping', minLevel: 5, altText: "Wait. Don't touch that.\n\nOh. Hi.\n\nYou have kind eyes. Sorry, I'm scattered.\n\nBiochem notes, robotics parts. I know it looks like a disaster. It is a disaster.", altEmotion: 'vulnerable' },
+          { pattern: 'analytical', minLevel: 5, altText: "Wait. Don't touch that.\n\nOh. Hi.\n\nYou're taking this all in, aren't you? The chaos.\n\nYes, there's a system. Sort of. I'm trying to be two different people at the same table.", altEmotion: 'anxious_scattered' },
+          { pattern: 'building', minLevel: 5, altText: "Wait. Don't touch that.\n\nOh. Hi.\n\nYou noticed the robot parts. Most people don't even see them under all the biochem stuff.\n\nI know it looks like chaos. But there's something I'm building here. Something real.", altEmotion: 'hopeful' }
         ]
       }
     ],
@@ -105,6 +104,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         nextNodeId: 'maya_workshop_invitation',
         pattern: 'building',
         skills: ['creativity'],
+        archetype: 'MAKE_OBSERVATION',
         visibleCondition: {
           patterns: { building: { min: 40 } }
         },
@@ -119,6 +119,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         nextNodeId: 'maya_technical_deep_dive',
         pattern: 'analytical',
         skills: ['systemsThinking'],
+        archetype: 'ASK_FOR_DETAILS',
         visibleCondition: {
           patterns: { analytical: { min: 50 } }
         },
@@ -180,7 +181,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         voiceVariations: {
           helping: "Forget what they want for a second. What do YOU want?",
           analytical: "Their goals are clear. What are yours?",
-          exploring: "If you could choose anything—what would it be?",
+          exploring: "If you could choose anything. What would it be?",
           building: "What would YOU build, if no one was watching?",
           patience: "Take a breath. What does your gut say?"
         },
@@ -232,7 +233,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
           helping: "This place feels safe. Like you can breathe here.",
           patience: "The station has a stillness to it. Calming.",
           exploring: "There's something about this place. Protective.",
-          analytical: "Interesting—the architecture creates a sense of shelter.",
+          analytical: "Interesting. The architecture creates a sense of shelter.",
           building: "Someone built this place to feel safe. They succeeded."
         },
         consequence: {
@@ -248,7 +249,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         skills: ['creativity', 'communication'],
         voiceVariations: {
           building: "Crossroads are where we build something new. What would you make?",
-          exploring: "If you could start fresh here—what would you create?",
+          exploring: "If you could start fresh here. What would you create?",
           analytical: "Crossroads = opportunity. What would you design differently?",
           helping: "What would you build for yourself, if you could?",
           patience: "If you had time to build anything... what would it be?"
@@ -638,16 +639,16 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "I build these. Or try to. This is a prototype for pediatric grip assistance - helps kids with weak hands grip stuff.\n\nLook. The index actuator's oscillating. I've checked the code like a thousand times. Won't stabilize.\n\nThe hand keeps spasming. Fingers clench into a fist.\n\nIt's fighting itself. Just like me.",
+        text: "Pediatric grip assist. Prototype 4.\n\nCode is clean. Power is stable.\n\nBut every time I initialize the grip... it fights itself. Knows what it needs to do, but just locks up.",
         emotion: 'vulnerable_focused',
-        variation_id: 'robotics_scenario_v1',
+        variation_id: 'robotics_scenario_v2_minimal',
         richEffectContext: 'warning', // Immersive "System Alert" feel
         useChatPacing: true,
         // E2-031: Interrupt opportunity when Maya reveals inner conflict
         interrupt: {
           duration: 3500,
           type: 'connection',
-          action: 'Reach out. Let her know she\'s not alone.',
+          action: 'Reach out',
           targetNodeId: 'maya_interrupt_supported',
           consequence: {
             characterId: 'maya',
@@ -775,7 +776,7 @@ STATUS: Signal fighting itself`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*She stops mid-sentence, startled by your gesture.*\n\n...\n\n*A shaky exhale.*\n\nI didn't expect that. Most people just... they look at the robot. At the problem. You looked at me.\n\n*Her voice catches.*\n\nThank you. I needed that more than I knew.",
+        text: "...\n\nI didn't expect that. Most people just... they look at the robot. At the problem. You looked at me.\n\nThank you. I needed that more than I knew.",
         emotion: 'touched',
         variation_id: 'interrupt_supported_v1',
         interaction: 'bloom'
@@ -1442,19 +1443,7 @@ STATUS: Signal fighting itself`,
     nodeId: 'maya_vulnerability_arc',
     speaker: 'Maya Chen',
     content: [{
-      text: `*She's quiet for a long moment.*
-
-There's something I've never told anyone.
-
-The night I got into UAB. Everyone celebrating. My mom crying happy tears. My dad on the phone with relatives in Malaysia.
-
-And I'm in the bathroom. Hyperventilating. Because I'd just read about Boston Dynamics. About prosthetics that could feel. About robot-assisted surgery.
-
-*Her voice breaks.*
-
-That was the night I knew. The daughter they raised was already gone. And I've been pretending ever since.
-
-Five years of pretending. Do you know what that does to you?`,
+      text: "There's something I've never told anyone.\n\nThe night I got into UAB. Everyone celebrating. My mom crying happy tears. My dad on the phone with relatives in Malaysia.\n\nAnd I'm in the bathroom. Hyperventilating. Because I'd just read about Boston Dynamics. About prosthetics that could feel. About robot-assisted surgery.\n\nThat was the night I knew. The daughter they raised was already gone. And I've been pretending ever since.\n\nFive years of pretending. Do you know what that does to you?",
       emotion: 'shattered',
       microAction: 'Her hands grip the robot prototype tighter.',
       variation_id: 'vulnerability_v1',
@@ -1510,17 +1499,7 @@ Five years of pretending. Do you know what that does to you?`,
     nodeId: 'maya_vulnerability_reflection',
     speaker: 'Maya Chen',
     content: [{
-      text: `*She wipes her eyes.*
-
-I've been so scared. That telling them would break something. Their hearts. Their sacrifice. Our family.
-
-But keeping this secret is breaking ME.
-
-*A deep breath.*
-
-You're the first person who's heard all of it. Not the edited version. Not the "I'm just exploring options" version.
-
-The real one. Where their perfect daughter died in a bathroom five years ago, and nobody noticed.`,
+      text: "I've been so scared. That telling them would break something. Their hearts. Their sacrifice. Our family.\n\nBut keeping this secret is breaking ME.\n\nYou're the first person who's heard all of it. Not the edited version. Not the \"I'm just exploring options\" version.\n\nThe real one. Where their perfect daughter died in a bathroom five years ago, and nobody noticed.",
       emotion: 'vulnerable_released',
       variation_id: 'reflection_v1'
     }],
@@ -1833,7 +1812,7 @@ The real one. Where their perfect daughter died in a bathroom five years ago, an
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*She looks at you with nervous energy.*\n\nOkay so... there's this thing. UAB's Innovation Showcase. They invited student projects to pitch to real investors.\n\nI submitted my prosthetic hand prototype. Secretly. My parents don't know.\n\nHere, look—\n\nBut now it's happening. Tomorrow. And my mom just texted saying they're coming to 'support me at your little science fair.'\n\n*Her voice cracks.*\n\nThey think it's a biochem poster. When they see me presenting robots to investors... everything falls apart.",
+        text: "Okay so... there's this thing. UAB's Innovation Showcase. They invited student projects to pitch to real investors.\n\nI submitted my prosthetic hand prototype. Secretly. My parents don't know.\n\nHere, look.\n\nBut now it's happening. Tomorrow. And my mom just texted saying they're coming to 'support me at your little science fair.'\n\nThey think it's a biochem poster. When they see me presenting robots to investors... everything falls apart.",
         emotion: 'terrified_excited',
         variation_id: 'sim_intro_v1',
         useChatPacing: true,
@@ -1900,7 +1879,7 @@ The real one. Where their perfect daughter died in a bathroom five years ago, an
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*The simulation loads around you. A sleek presentation room. Three investors at a table. Your parents in the back row, looking confused.*\n\n*Maya stands at a podium, her prosthetic hand prototype on display.*\n\nOkay. First challenge. The lead investor just asked: 'Why should we fund a pre-med student's side project?'\n\n*She looks at you.*\n\nWhat's my angle here?",
+        text: "Okay. First challenge. The lead investor just asked: 'Why should we fund a pre-med student's side project?'\n\nWhat's my angle here?",
         emotion: 'nervous_focused',
         variation_id: 'phase_1_v1',
         richEffectContext: 'thinking'
@@ -1970,7 +1949,7 @@ The real one. Where their perfect daughter died in a bathroom five years ago, an
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*Maya speaks from the heart. The investors look... politely skeptical.*\n\nThe lead investor interrupts: 'Passion is great. But passion doesn't scale. What's your market strategy?'\n\n*Maya's mother leans forward in the back row, frowning.*\n\n*Maya looks at you, slightly deflated.*\n\nThey want numbers. But I don't want to lose the human element...",
+        text: "The lead investor interrupts: 'Passion is great. But passion doesn't scale. What's your market strategy?'\n\nThey want numbers. But I don't want to lose the human element...",
         emotion: 'deflated',
         variation_id: 'passion_result_v1'
       }
@@ -2007,7 +1986,7 @@ The real one. Where their perfect daughter died in a bathroom five years ago, an
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*The investors are engaged now. But then the second investor speaks up.*\n\n'Your prototype is impressive. But manufacturing at scale requires partnerships. What's stopping a bigger company from copying this and crushing you?'\n\n*Maya's father has moved to the edge of his seat. He recognizes this - it's the same question he faced building the restaurant.*\n\n*Maya's hands tremble slightly.*\n\nThis is the make-or-break question...",
+        text: "'Your prototype is impressive. But manufacturing at scale requires partnerships. What's stopping a bigger company from copying this and crushing you?'\n\nThis is the make-or-break question...",
         emotion: 'high_stakes',
         variation_id: 'phase_2_v1',
         useChatPacing: true,
@@ -2085,7 +2064,7 @@ The real one. Where their perfect daughter died in a bathroom five years ago, an
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*She catches your eye. Something steadies in her.*\n\n*She takes a breath and speaks with new confidence.*\n\n'You're asking about moats. But here's what you're really asking: do I have the grit to fight for this when it gets hard?'\n\n*She looks directly at her parents.*\n\n'I've been fighting for this in secret for three years. Against every expectation. Every doubt. Every voice telling me to stay safe.'\n\n*The investors lean forward.*\n\n'That's my moat. I'm not doing this for market share. I'm doing it because I believe these kids deserve hands that work as well as yours.'",
+        text: "'You're asking about moats. But here's what you're really asking: do I have the grit to fight for this when it gets hard?'\n\n'I've been fighting for this in secret for three years. Against every expectation. Every doubt. Every voice telling me to stay safe.'\n\n'That's my moat. I'm not doing this for market share. I'm doing it because I believe these kids deserve hands that work as well as yours.'",
         emotion: 'empowered',
         variation_id: 'interrupt_result_v1',
         interaction: 'bloom'
@@ -2112,7 +2091,7 @@ The real one. Where their perfect daughter died in a bathroom five years ago, an
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*The lead investor sets down her pen.*\n\n'We'd like to schedule a follow-up. This has real potential.'\n\n*Maya's hands are shaking, but she's smiling.*\n\n*Her mother stands in the back, tears streaming. Her father... her father is clapping. Slowly at first, then harder.*\n\n*After the investors leave, her parents approach.*\n\nMom: 'Why didn't you tell us?'\n\nDad: '...Because we never asked. We told. We never asked.'\n\n*He looks at the prototype.*\n\n'This. This is what you've been doing? All those late nights?'\n\n*Maya nods, unable to speak.*\n\n*He touches the prosthetic hand gently.*\n\n'It's beautiful, Maya. It's... it's yours.'",
+        text: "'We'd like to schedule a follow-up. This has real potential.'\n\nMom: 'Why didn't you tell us?'\n\nDad: '...Because we never asked. We told. We never asked.'\n\n'This. This is what you've been doing? All those late nights?'\n\n'It's beautiful, Maya. It's... it's yours.'",
         emotion: 'emotional_breakthrough',
         variation_id: 'success_v1',
         useChatPacing: true,
@@ -2162,7 +2141,7 @@ The real one. Where their perfect daughter died in a bathroom five years ago, an
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*The investor's expression hardens.*\n\n'If you're not worried about competition, you haven't done your homework. We're done here.'\n\n*They begin packing up. Maya stands frozen at the podium.*\n\n*Her mother's face cycles through confusion, concern, then settles on something worse: pity.*\n\n*Her father won't meet her eyes.*\n\n*The simulation fades.*\n\n*Maya is shaking.*\n\nThat... that's exactly what I was afraid of. They saw me try. And fail. At the thing I actually love.\n\n*Voice cracking.*\n\nMaybe they were right. Maybe I should just... stick to the path.",
+        text: "'If you're not worried about competition, you haven't done your homework. We're done here.'\n\nThat... that's exactly what I was afraid of. They saw me try. And fail. At the thing I actually love.\n\nMaybe they were right. Maybe I should just... stick to the path.",
         emotion: 'devastated',
         variation_id: 'fail_v1',
         richEffectContext: 'error'
@@ -2224,7 +2203,7 @@ The real one. Where their perfect daughter died in a bathroom five years ago, an
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*The simulation fades. Maya is standing in the station, tears on her cheeks but smiling.*\n\nThat wasn't real. But... it could be. I can see it now. A version of the future where I don't have to hide.\n\n*She looks at her hands.*\n\nThe pitch won't go perfectly. My parents might still struggle. But I know now that I can do this.\n\n*Looks at you.*\n\nYou helped me see it. Not just the robotics. But the whole picture. Who I could become if I stop being afraid.\n\n*A real smile.*\n\nThank you. For believing in me before I believed in myself.",
+        text: "That wasn't real. But... it could be. I can see it now. A version of the future where I don't have to hide.\n\nThe pitch won't go perfectly. My parents might still struggle. But I know now that I can do this.\n\nYou helped me see it. Not just the robotics. But the whole picture. Who I could become if I stop being afraid.\n\nThank you. For believing in me before I believed in myself.",
         emotion: 'grateful_transformed',
         variation_id: 'aftermath_v1',
         interaction: 'nod'
@@ -2262,7 +2241,7 @@ The real one. Where their perfect daughter died in a bathroom five years ago, an
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*The simulation fully fades. Maya takes a shaky breath.*\n\n...\n\nOkay. That hurt. A lot.\n\n*She's quiet for a moment.*\n\nBut you know what? I've never actually pitched before. Of course I bombed. That's... that's the point of practice.\n\n*Looks at the prototype in her hands.*\n\nThe hand still works. The code still runs. The children who need this... they're still waiting.\n\n*Meets your eyes.*\n\nOne simulation doesn't define me. Neither does one bad pitch. Neither does my parents' disappointment.\n\n*Stronger now.*\n\nI'll practice until I get it right. And then I'll practice some more.",
+        text: "...\n\nOkay. That hurt. A lot.\n\nBut you know what? I've never actually pitched before. Of course I bombed. That's... that's the point of practice.\n\nThe hand still works. The code still runs. The children who need this... they're still waiting.\n\nOne simulation doesn't define me. Neither does one bad pitch. Neither does my parents' disappointment.\n\nI'll practice until I get it right. And then I'll practice some more.",
         emotion: 'recovering_determined',
         variation_id: 'aftermath_fail_v1'
       }
@@ -2302,7 +2281,7 @@ The real one. Where their perfect daughter died in a bathroom five years ago, an
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*Maya glances around, then leans in conspiratorially.*\n\nOkay. I don't show this to people. Ever. But you... you build things. You understand.\n\nMy apartment has a... situation. The closet isn't a closet anymore. It's a workshop. Soldering station, 3D printer, component bins. My roommate thinks I'm hoarding electronics.\n\n*A spark of genuine excitement.*\n\nI'm working on something. Not for class. Not for my parents. Just... because I have to know if it can work.\n\nDo you want to see it? The real project?",
+        text: "Okay. I don't show this to people. Ever. But you... you build things. You understand.\n\nMy apartment has a... situation. The closet isn't a closet anymore. It's a workshop. Soldering station, 3D printer, component bins. My roommate thinks I'm hoarding electronics.\n\nI'm working on something. Not for class. Not for my parents. Just... because I have to know if it can work.\n\nDo you want to see it? The real project?",
         emotion: 'excited_vulnerable',
         variation_id: 'workshop_v1'
       }
@@ -2348,7 +2327,7 @@ The real one. Where their perfect daughter died in a bathroom five years ago, an
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*Maya's demeanor shifts—the scattered energy focuses into precision.*\n\nYou think analytically. Good. Because I need to talk through something and everyone else just... glazes over.\n\nThe prosthetic hand. The servo response time is 47ms. Industry standard is 60ms. I'm faster. But the haptic feedback loop is creating a 12ms delay that compounds under load.\n\nI've tried three different approaches. Parallel processing, predictive algorithms, mechanical damping. Nothing's working.\n\n*Looks at you directly.*\n\nYou see patterns. What am I missing?",
+        text: "You think analytically. Good. Because I need to talk through something and everyone else just... glazes over.\n\nThe prosthetic hand. The servo response time is 47ms. Industry standard is 60ms. I'm faster. But the haptic feedback loop is creating a 12ms delay that compounds under load.\n\nI've tried three different approaches. Parallel processing, predictive algorithms, mechanical damping. Nothing's working.\n\nYou see patterns. What am I missing?",
         emotion: 'focused_analytical',
         variation_id: 'technical_v1'
       }
@@ -2365,7 +2344,7 @@ The real one. Where their perfect daughter died in a bathroom five years ago, an
     choices: [
       {
         choiceId: 'technical_systems',
-        text: "The delay compounds—that's a cascading failure pattern. What if you addressed the root, not the symptom?",
+        text: "The delay compounds. That's a cascading failure pattern. What if you addressed the root, not the symptom?",
         nextNodeId: 'maya_robotics_passion',
         pattern: 'analytical',
         skills: ['systemsThinking', 'criticalThinking'],
@@ -2376,7 +2355,7 @@ The real one. Where their perfect daughter died in a bathroom five years ago, an
       },
       {
         choiceId: 'technical_step_back',
-        text: "Before we solve this—why does 12ms matter so much to you?",
+        text: "Before we solve this. Why does 12ms matter so much to you?",
         nextNodeId: 'maya_anxiety_reveal',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
@@ -2394,7 +2373,7 @@ The real one. Where their perfect daughter died in a bathroom five years ago, an
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*Maya takes a deep breath. This is clearly difficult for her.*\n\nI've been thinking. About what you said. About building things together.\n\nI've never had a collaborator. Everything I make, I make alone. At 2am. In secret. Because if I share it and someone says it's not good enough...\n\n*Pause.*\n\nBut you build things. You understand that making something real is terrifying and exhilarating and you do it anyway.\n\n*Meets your eyes.*\n\nI have an idea. A bigger version of this. Affordable pediatric prosthetics. Open-source designs so any hospital can print them.\n\nI can't do it alone. Would you... would you build it with me?",
+        text: "I've been thinking. About what you said. About building things together.\n\nI've never had a collaborator. Everything I make, I make alone. At 2am. In secret. Because if I share it and someone says it's not good enough...\n\nBut you build things. You understand that making something real is terrifying and exhilarating and you do it anyway.\n\nI have an idea. A bigger version of this. Affordable pediatric prosthetics. Open-source designs so any hospital can print them.\n\nI can't do it alone. Would you... would you build it with me?",
         emotion: 'vulnerable_hopeful',
         variation_id: 'collaboration_v1'
       }
@@ -2424,7 +2403,7 @@ The real one. Where their perfect daughter died in a bathroom five years ago, an
       },
       {
         choiceId: 'collab_plan',
-        text: "I'm in. But first—let's map out what we're actually building.",
+        text: "I'm in. But first, let's map out what we're actually building.",
         nextNodeId: 'maya_crossroads',
         pattern: 'analytical',
         skills: ['systemsThinking'],
@@ -2446,7 +2425,7 @@ The real one. Where their perfect daughter died in a bathroom five years ago, an
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*Maya pauses, studying you with a new kind of respect.*\n\nYou know what? You remind me of the systems architects I worked with at UAB's Innovation Lab. The way you think—breaking things down, seeing how the pieces connect, then building something new from that understanding.\n\nThat's not common. Most people are either good at analysis OR good at making things. You're both.\n\n*She tilts her head.*\n\nHave you ever thought about that? Systems architecture? It's like... being the translator between what people need and what technology can do.",
+        text: "You know what? You remind me of the systems architects I worked with at UAB's Innovation Lab. The way you think. Breaking things down, seeing how the pieces connect, then building something new from that understanding.\n\nThat's not common. Most people are either good at analysis OR good at making things. You're both.\n\nHave you ever thought about that? Systems architecture? It's like... being the translator between what people need and what technology can do.",
         emotion: 'impressed',
         variation_id: 'career_architect_v1'
       }
@@ -2490,7 +2469,7 @@ The real one. Where their perfect daughter died in a bathroom five years ago, an
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*Maya looks at you with growing recognition.*\n\nYou're like the data scientists I've met. The good ones, not the ones who just run algorithms. You ask questions, dig into things, and you actually find the stories hiding in the information.\n\nBirmingham's healthcare sector is desperate for people like that. UAB alone processes millions of patient records. But raw data is just noise without someone who can find the signal.\n\n*A small smile.*\n\nYou'd be good at that. Finding the signal.",
+        text: "You're like the data scientists I've met. The good ones, not the ones who just run algorithms. You ask questions, dig into things, and you actually find the stories hiding in the information.\n\nBirmingham's healthcare sector is desperate for people like that. UAB alone processes millions of patient records. But raw data is just noise without someone who can find the signal.\n\nYou'd be good at that. Finding the signal.",
         emotion: 'thoughtful',
         variation_id: 'career_data_v1'
       }
@@ -2528,7 +2507,7 @@ The real one. Where their perfect daughter died in a bathroom five years ago, an
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*Maya's eyes light up with recognition.*\n\nYou know what you remind me of? Creative technologists. The people who live at the intersection of art and engineering—making technology that feels human instead of cold.\n\nPepper started as an art project, really. A way to make physical therapy feel less like torture for kids. The tech part came later.\n\nThis whole field is opening up. VR experiences for therapy. Interactive installations for museums. Robots that don't just function—they connect.\n\nYou've got that same instinct. Building things that make people feel something.",
+        text: "You know what you remind me of? Creative technologists. The people who live at the intersection of art and engineering. Making technology that feels human instead of cold.\n\nPepper started as an art project, really. A way to make physical therapy feel less like torture for kids. The tech part came later.\n\nThis whole field is opening up. VR experiences for therapy. Interactive installations for museums. Robots that don't just function. They connect.\n\nYou've got that same instinct. Building things that make people feel something.",
         emotion: 'excited',
         variation_id: 'career_creative_tech_v1'
       }
@@ -2567,15 +2546,7 @@ The real one. Where their perfect daughter died in a bathroom five years ago, an
     speaker: 'Maya Chen',
     content: [
       {
-        text: `*Maya pauses, considering you.*
-
-You notice things others miss. How I arranged my study space. The way my hands shake when I talk about certain topics.
-
-UX researchers do that. They observe humans interacting with technology—finding the friction points, the moments of confusion, the sparks of delight.
-
-It's part psychology, part design, part detective work. Figuring out why people struggle with things that should be simple.
-
-That kind of empathy? It's rare. And tech companies are desperate for it.`,
+        text: "You notice things others miss. How I arranged my study space. The way my hands shake when I talk about certain topics.\n\nUX researchers do that. They observe humans interacting with technology. Finding the friction points, the moments of confusion, the sparks of delight.\n\nIt's part psychology, part design, part detective work. Figuring out why people struggle with things that should be simple.\n\nThat kind of empathy? It's rare. And tech companies are desperate for it.",
         emotion: 'impressed',
         variation_id: 'career_ux_v1'
       }
@@ -2606,15 +2577,7 @@ That kind of empathy? It's rare. And tech companies are desperate for it.`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: `*Maya looks at you with sudden intensity.*
-
-The way you think through problems—methodical but creative. You don't just want things to work. You want to understand WHY they work.
-
-Robotics engineers are like that. Building machines that move through the real world—it requires physics, programming, mechanical design, all woven together.
-
-And here's the secret: the best robotics jobs aren't in Silicon Valley anymore. They're in places like Birmingham, where manufacturing is being reinvented.
-
-You'd be designing the robots that build the future. Literally.`,
+        text: "The way you think through problems. Methodical but creative. You don't just want things to work. You want to understand WHY they work.\n\nRobotics engineers are like that. Building machines that move through the real world. It requires physics, programming, mechanical design, all woven together.\n\nAnd here's the secret: the best robotics jobs aren't in Silicon Valley anymore. They're in places like Birmingham, where manufacturing is being reinvented.\n\nYou'd be designing the robots that build the future. Literally.",
         emotion: 'passionate',
         variation_id: 'career_robotics_eng_v1'
       }
@@ -2646,17 +2609,7 @@ You'd be designing the robots that build the future. Literally.`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: `*Her voice drops, more private now.*
-
-My dad was a machinist in Guangzhou. Precision work. Gears, bearings, things that had to fit together perfectly or not at all.
-
-When they came here, he couldn't get those jobs. Wrong certifications. Wrong connections. He ended up in restaurant kitchens.
-
-He never complained. But I saw him sometimes, late at night, sketching mechanical things. Designs he'd never build.
-
-*Pause.*
-
-When he sees me with Pepper? I think he sees those sketches coming alive.`,
+        text: "My dad was a machinist in Guangzhou. Precision work. Gears, bearings, things that had to fit together perfectly or not at all.\n\nWhen they came here, he couldn't get those jobs. Wrong certifications. Wrong connections. He ended up in restaurant kitchens.\n\nHe never complained. But I saw him sometimes, late at night, sketching mechanical things. Designs he'd never build.\n\nWhen he sees me with Pepper? I think he sees those sketches coming alive.",
         emotion: 'tender',
         variation_id: 'family_deeper_v1'
       }
@@ -2692,17 +2645,7 @@ When he sees me with Pepper? I think he sees those sketches coming alive.`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: `*Her eyes get bright.*
-
-I never thought of it that way.
-
-His dreams. My hands. Pepper.
-
-*She laughs, a wet sound.*
-
-God. He'd hate that I'm getting emotional about this. He's so practical. "Don't think about what could have been. Think about what's next."
-
-But maybe what's next can honor what could have been?`,
+        text: "I never thought of it that way.\n\nHis dreams. My hands. Pepper.\n\nGod. He'd hate that I'm getting emotional about this. He's so practical. \"Don't think about what could have been. Think about what's next.\"\n\nBut maybe what's next can honor what could have been?",
         emotion: 'moved',
         variation_id: 'legacy_v1'
       }
@@ -2728,17 +2671,7 @@ But maybe what's next can honor what could have been?`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: `*Maya's expression shifts—more complicated.*
-
-Mom. She's the one who wanted me to be a doctor. Not for prestige. For survival.
-
-She was a nurse in China. Here? She had to start over. Certifications don't transfer. She works at a medical supply company now. Warehouse inventory.
-
-She sees medicine as security. The one thing that doesn't depend on who you know or where you're from. A patient is a patient.
-
-When she says "be a doctor," she's really saying "be safe. Be necessary."
-
-I can't hate her for that. But I can't be a prisoner to her fear either.`,
+        text: "Mom. She's the one who wanted me to be a doctor. Not for prestige. For survival.\n\nShe was a nurse in China. Here? She had to start over. Certifications don't transfer. She works at a medical supply company now. Warehouse inventory.\n\nShe sees medicine as security. The one thing that doesn't depend on who you know or where you're from. A patient is a patient.\n\nWhen she says \"be a doctor,\" she's really saying \"be safe. Be necessary.\"\n\nI can't hate her for that. But I can't be a prisoner to her fear either.",
         emotion: 'conflicted',
         variation_id: 'mom_story_v1'
       }
@@ -2764,17 +2697,7 @@ I can't hate her for that. But I can't be a prisoner to her fear either.`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: `*She looks at her robotics parts, then at her biochem notes.*
-
-You know what's funny? My parents never agree on anything. Dad thinks I worry too much. Mom thinks I don't worry enough.
-
-But they both wake up at 5am every day. Both work jobs they're overqualified for. Both never complain.
-
-They disagree about my future because they both want me to have one better than theirs.
-
-*Small laugh.*
-
-Sometimes I wish they'd just fight about whose turn it is to do dishes like normal parents.`,
+        text: "You know what's funny? My parents never agree on anything. Dad thinks I worry too much. Mom thinks I don't worry enough.\n\nBut they both wake up at 5am every day. Both work jobs they're overqualified for. Both never complain.\n\nThey disagree about my future because they both want me to have one better than theirs.\n\nSometimes I wish they'd just fight about whose turn it is to do dishes like normal parents.",
         emotion: 'wistful_affection',
         variation_id: 'parents_together_v1'
       }
@@ -2797,17 +2720,7 @@ Sometimes I wish they'd just fight about whose turn it is to do dishes like norm
     speaker: 'Maya Chen',
     content: [
       {
-        text: `*Maya's hands stop moving. She stares at them.*
-
-Can I tell you something I've never told anyone?
-
-When Pepper wins a competition... when people clap and take pictures... I feel like I'm going to throw up.
-
-Not from joy. From terror.
-
-Because any second now, someone's going to realize I don't belong here. That I'm just a pre-med student playing with circuits. That real engineers can see right through me.
-
-The awards make it worse. More expectations. More chances to be exposed.`,
+        text: "Can I tell you something I've never told anyone?\n\nWhen Pepper wins a competition... when people clap and take pictures... I feel like I'm going to throw up.\n\nNot from joy. From terror.\n\nBecause any second now, someone's going to realize I don't belong here. That I'm just a pre-med student playing with circuits. That real engineers can see right through me.\n\nThe awards make it worse. More expectations. More chances to be exposed.",
         emotion: 'raw_fear',
         variation_id: 'imposter_deep_v1'
       }
@@ -2843,19 +2756,7 @@ The awards make it worse. More expectations. More chances to be exposed.`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: `*She looks up sharply.*
-
-Imposter syndrome.
-
-I've read about it. In psychology textbooks. About how high-achieving people feel like frauds.
-
-But knowing the name doesn't make it stop.
-
-*Pause.*
-
-Although... hearing someone else say it's a lie. That helps more than the textbooks.
-
-You really think the fear is lying?`,
+        text: "Imposter syndrome.\n\nI've read about it. In psychology textbooks. About how high-achieving people feel like frauds.\n\nBut knowing the name doesn't make it stop.\n\nAlthough... hearing someone else say it's a lie. That helps more than the textbooks.\n\nYou really think the fear is lying?",
         emotion: 'searching',
         variation_id: 'imposter_named_v1'
       }
@@ -2863,7 +2764,7 @@ You really think the fear is lying?`,
     choices: [
       {
         choiceId: 'imposter_named_confirm',
-        text: "Pepper works. The awards are real. You're not performing competence—you have it.",
+        text: "Pepper works. The awards are real. You're not performing competence. You have it.",
         nextNodeId: 'maya_imposter_acceptance',
         pattern: 'analytical',
         skills: ['criticalThinking'],
@@ -2881,17 +2782,7 @@ You really think the fear is lying?`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: `*She closes her eyes.*
-
-Belonging. What would that even feel like?
-
-Maybe... not checking over my shoulder? Not waiting for someone to tap me and say "excuse me, this seat is taken"?
-
-*Opens eyes.*
-
-Maybe it would feel like showing Pepper to someone and being proud instead of defensive. Like "look what I made" instead of "please don't look too closely."
-
-I don't know if I've ever felt that. About anything.`,
+        text: "Belonging. What would that even feel like?\n\nMaybe... not checking over my shoulder? Not waiting for someone to tap me and say \"excuse me, this seat is taken\"?\n\nMaybe it would feel like showing Pepper to someone and being proud instead of defensive. Like \"look what I made\" instead of \"please don't look too closely.\"\n\nI don't know if I've ever felt that. About anything.",
         emotion: 'vulnerable_wonder',
         variation_id: 'imposter_imagine_v1'
       }
@@ -2917,19 +2808,7 @@ I don't know if I've ever felt that. About anything.`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: `*She looks down at Pepper. Then back at you.*
-
-Huh.
-
-You're right. I am sharing. Not defending.
-
-That's... weird. In a good way.
-
-*She touches Pepper's chassis gently.*
-
-Maybe belonging isn't something you achieve once. Maybe it's something you practice. Like a muscle.
-
-This conversation. Right now. This is practice.`,
+        text: "Huh.\n\nYou're right. I am sharing. Not defending.\n\nThat's... weird. In a good way.\n\nMaybe belonging isn't something you achieve once. Maybe it's something you practice. Like a muscle.\n\nThis conversation. Right now. This is practice.",
         emotion: 'dawning_realization',
         variation_id: 'imposter_acceptance_v1'
       }
@@ -2958,21 +2837,7 @@ This conversation. Right now. This is practice.`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: `*Maya runs her fingers over Pepper's sensors.*
-
-Want to know how Pepper started?
-
-I was eleven. My grandmother had a stroke. Couldn't use her left hand anymore. She was a seamstress—that hand was her life.
-
-I watched her in physical therapy. Squeezing balls. Moving pegs. So bored. So frustrated.
-
-I thought: what if the exercises were a game? What if the equipment responded to you?
-
-I built a terrible prototype with LEGOs and a light sensor. When she squeezed hard enough, it played music.
-
-She cried. Not from the stroke. From joy.
-
-That's where Pepper began.`,
+        text: "Want to know how Pepper started?\n\nI was eleven. My grandmother had a stroke. Couldn't use her left hand anymore. She was a seamstress. That hand was her life.\n\nI watched her in physical therapy. Squeezing balls. Moving pegs. So bored. So frustrated.\n\nI thought: what if the exercises were a game? What if the equipment responded to you?\n\nI built a terrible prototype with LEGOs and a light sensor. When she squeezed hard enough, it played music.\n\nShe cried. Not from the stroke. From joy.\n\nThat's where Pepper began.",
         emotion: 'tender_pride',
         variation_id: 'pepper_origin_v1'
       }
@@ -3004,17 +2869,7 @@ That's where Pepper began.`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: `*Maya's voice catches.*
-
-She passed. Three years ago. Never fully recovered, but those last years... she was so alive.
-
-She'd show my LEGO thing to everyone who visited. "My granddaughter made this. She's going to be an engineer."
-
-*Laugh-cry.*
-
-Not a doctor. An engineer. She got it. Before I did, even.
-
-Sometimes I think Pepper isn't just for kids in therapy. It's for her. Still. Always.`,
+        text: "She passed. Three years ago. Never fully recovered, but those last years... she was so alive.\n\nShe'd show my LEGO thing to everyone who visited. \"My granddaughter made this. She's going to be an engineer.\"\n\nNot a doctor. An engineer. She got it. Before I did, even.\n\nSometimes I think Pepper isn't just for kids in therapy. It's for her. Still. Always.",
         emotion: 'grief_and_love',
         variation_id: 'grandmother_v1'
       }
@@ -3046,19 +2901,7 @@ Sometimes I think Pepper isn't just for kids in therapy. It's for her. Still. Al
     speaker: 'Maya Chen',
     content: [
       {
-        text: `*Maya's energy shifts—this is her element.*
-
-Oh man. So many iterations.
-
-Version 2 was cardboard and Arduino. Motion sensors that tracked arm movement.
-
-Version 3 was 3D printed. Started learning CAD at 14. My school didn't have robotics club, so I convinced the shop teacher to let me stay after.
-
-Version 4 was the breakthrough—adaptive difficulty. Pepper adjusts exercises based on how the patient is doing. Too easy? Harder. Frustrated? Easier. Real-time.
-
-This is version 7. Machine learning integration. Emotion recognition. Haptic feedback.
-
-Each version taught me something I didn't know I needed to learn.`,
+        text: "Oh man. So many iterations.\n\nVersion 2 was cardboard and Arduino. Motion sensors that tracked arm movement.\n\nVersion 3 was 3D printed. Started learning CAD at 14. My school didn't have robotics club, so I convinced the shop teacher to let me stay after.\n\nVersion 4 was the breakthrough. Adaptive difficulty. Pepper adjusts exercises based on how the patient is doing. Too easy? Harder. Frustrated? Easier. Real-time.\n\nThis is version 7. Machine learning integration. Emotion recognition. Haptic feedback.\n\nEach version taught me something I didn't know I needed to learn.",
         emotion: 'technical_excitement',
         variation_id: 'pepper_evolution_v1'
       }
@@ -3087,19 +2930,7 @@ Each version taught me something I didn't know I needed to learn.`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: `*She nods rapidly.*
-
-That's the part that scares people. "AI in healthcare." Sounds dystopian.
-
-But Pepper's ML isn't making medical decisions. It's just reading patterns. Is the patient slowing down? Getting frustrated? Compensating with other muscles?
-
-Human therapists catch this stuff, but not in real-time. Not with the granularity a sensor can.
-
-The AI is a support tool. The therapist is still the expert. Pepper just gives them better data.
-
-That's the pitch I can never quite land with investors. They want to hear "AI replaces expensive therapists." I'm saying "AI makes therapists superhuman."
-
-One of those is fundable. The other is true.`,
+        text: "That's the part that scares people. \"AI in healthcare.\" Sounds dystopian.\n\nBut Pepper's ML isn't making medical decisions. It's just reading patterns. Is the patient slowing down? Getting frustrated? Compensating with other muscles?\n\nHuman therapists catch this stuff, but not in real-time. Not with the granularity a sensor can.\n\nThe AI is a support tool. The therapist is still the expert. Pepper just gives them better data.\n\nThat's the pitch I can never quite land with investors. They want to hear \"AI replaces expensive therapists.\" I'm saying \"AI makes therapists superhuman.\"\n\nOne of those is fundable. The other is true.",
         emotion: 'passionate_frustrated',
         variation_id: 'pepper_ml_v1'
       }
@@ -3125,19 +2956,7 @@ One of those is fundable. The other is true.`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: `*She shrugs, almost embarrassed.*
-
-YouTube. Stack Overflow. GitHub. Library books. So many library books.
-
-My high school didn't have programming classes. Definitely no robotics. I learned on borrowed laptops and public wifi.
-
-The first time I compiled code that actually ran? I literally cried. In a Starbucks. People thought I was breaking up with someone.
-
-*Laughs.*
-
-Being self-taught means you have weird gaps. Things everyone "should" know that I had to discover by breaking stuff.
-
-But it also means I understand failure differently. I've rebuilt from zero so many times. Nothing feels impossible anymore. Just hard.`,
+        text: "YouTube. Stack Overflow. GitHub. Library books. So many library books.\n\nMy high school didn't have programming classes. Definitely no robotics. I learned on borrowed laptops and public wifi.\n\nThe first time I compiled code that actually ran? I literally cried. In a Starbucks. People thought I was breaking up with someone.\n\nBeing self-taught means you have weird gaps. Things everyone \"should\" know that I had to discover by breaking stuff.\n\nBut it also means I understand failure differently. I've rebuilt from zero so many times. Nothing feels impossible anymore. Just hard.",
         emotion: 'hard_won_pride',
         variation_id: 'self_taught_v1'
       }
@@ -3164,15 +2983,7 @@ But it also means I understand failure differently. I've rebuilt from zero so ma
     speaker: 'Maya Chen',
     content: [
       {
-        text: `*Maya looks around at the station.*
-
-People always ask why I don't just move to San Francisco. Or Boston. The "real" tech hubs.
-
-But Birmingham is where my grandmother's ashes are scattered. Where my parents built a life from nothing. Where people pronounce my name right without me spelling it.
-
-And you know what? The robotics scene here is actually growing. UAB has an incredible medical device program. There are makerspaces now. Startup incubators.
-
-I don't have to leave home to build my future. I can build my future at home.`,
+        text: "People always ask why I don't just move to San Francisco. Or Boston. The \"real\" tech hubs.\n\nBut Birmingham is where my grandmother's ashes are scattered. Where my parents built a life from nothing. Where people pronounce my name right without me spelling it.\n\nAnd you know what? The robotics scene here is actually growing. UAB has an incredible medical device program. There are makerspaces now. Startup incubators.\n\nI don't have to leave home to build my future. I can build my future at home.",
         emotion: 'rooted_pride',
         variation_id: 'birmingham_roots_v1'
       }
@@ -3201,19 +3012,7 @@ I don't have to leave home to build my future. I can build my future at home.`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: `*Maya pulls out her phone, scrolling through photos.*
-
-See this? Birmingham Robotics Club. Twenty kids. Every Saturday at Innovation Depot.
-
-I started volunteering there last year. Teaching basics. LEGOs and sensors, like I started.
-
-There's this one kid, Marcus Jr.—not related to our Marcus—who built a robot that helps his mom organize her medication. She has MS. Forgets doses.
-
-*Her eyes shine.*
-
-That's what I mean. These kids aren't waiting for permission. They're solving their own problems. In their own communities.
-
-Silicon Valley doesn't have a monopoly on innovation. It just has better marketing.`,
+        text: "See this? Birmingham Robotics Club. Twenty kids. Every Saturday at Innovation Depot.\n\nI started volunteering there last year. Teaching basics. LEGOs and sensors, like I started.\n\nThere's this one kid, Marcus Jr. Not related to our Marcus. He built a robot that helps his mom organize her medication. She has MS. Forgets doses.\n\nThat's what I mean. These kids aren't waiting for permission. They're solving their own problems. In their own communities.\n\nSilicon Valley doesn't have a monopoly on innovation. It just has better marketing.",
         emotion: 'community_fire',
         variation_id: 'birmingham_community_v1'
       }
@@ -3240,21 +3039,7 @@ Silicon Valley doesn't have a monopoly on innovation. It just has better marketi
     speaker: 'Maya Chen',
     content: [
       {
-        text: `*Maya's voice goes dreamy.*
-
-Five years from now. Here's what I see.
-
-Pepper in every children's hospital in Alabama. Then the Southeast. Then everywhere kids need help moving again.
-
-A company—not a startup trying to get acquired, but a real company. Sustainable. Mission-driven. Based here.
-
-Employment for people who look like me. Who came from where I came from. Who never saw themselves in tech because tech never showed up in their neighborhoods.
-
-*Refocuses.*
-
-That's the dream. Bigger than one robot. Bigger than one person.
-
-Is it naive? Maybe. But naive people built everything that matters.`,
+        text: "Five years from now. Here's what I see.\n\nPepper in every children's hospital in Alabama. Then the Southeast. Then everywhere kids need help moving again.\n\nA company. Not a startup trying to get acquired, but a real company. Sustainable. Mission-driven. Based here.\n\nEmployment for people who look like me. Who came from where I came from. Who never saw themselves in tech because tech never showed up in their neighborhoods.\n\nThat's the dream. Bigger than one robot. Bigger than one person.\n\nIs it naive? Maybe. But naive people built everything that matters.",
         emotion: 'visionary_fire',
         variation_id: 'future_vision_v1'
       }
@@ -3284,17 +3069,7 @@ Is it naive? Maybe. But naive people built everything that matters.`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: `*Maya glances toward the engineering platform.*
-
-Devon. Have you met him? The systems thinker upstairs.
-
-He doesn't know it, but he's kind of my model for how to handle family pressure.
-
-His dad wanted him to be an athlete. Football scholarship material. Devon chose engineering anyway. Almost lost his relationship with his family over it.
-
-But he didn't rage against them. He just... kept being excellent. Kept showing up. Eventually they saw what he saw.
-
-Patience as rebellion. I'm still learning that.`,
+        text: "Devon. Have you met him? The systems thinker upstairs.\n\nHe doesn't know it, but he's kind of my model for how to handle family pressure.\n\nHis dad wanted him to be an athlete. Football scholarship material. Devon chose engineering anyway. Almost lost his relationship with his family over it.\n\nBut he didn't rage against them. He just... kept being excellent. Kept showing up. Eventually they saw what he saw.\n\nPatience as rebellion. I'm still learning that.",
         emotion: 'admiring_thoughtful',
         variation_id: 'mentor_devon_v1'
       }
@@ -3319,17 +3094,7 @@ Patience as rebellion. I'm still learning that.`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: `*Maya's face lights up.*
-
-Tess! Have you talked to her yet? The education founder.
-
-She's the one who convinced me the robotics club was worth starting. I thought "who am I to teach?"
-
-She said: "You're someone who knows what it's like to not have a teacher. That makes you exactly the right person."
-
-*Pause.*
-
-Tess understands something most people don't. The best teachers aren't the ones who never struggled. They're the ones who remember what struggling felt like.`,
+        text: "Tess! Have you talked to her yet? The education founder.\n\nShe's the one who convinced me the robotics club was worth starting. I thought \"who am I to teach?\"\n\nShe said: \"You're someone who knows what it's like to not have a teacher. That makes you exactly the right person.\"\n\nTess understands something most people don't. The best teachers aren't the ones who never struggled. They're the ones who remember what struggling felt like.",
         emotion: 'grateful',
         variation_id: 'mentor_tess_v1'
       }
@@ -3355,19 +3120,7 @@ Tess understands something most people don't. The best teachers aren't the ones 
     speaker: 'Maya Chen',
     content: [
       {
-        text: `*Maya looks at her hands—half circuits, half biochem notes.*
-
-You know what I've realized? Medicine and engineering aren't opposites. They're the same thing at different scales.
-
-A cell is a machine. DNA is code. The heart is a pump. The brain is a processor—well, sort of. Terrible metaphor actually. The brain is weirder.
-
-*Grins.*
-
-Point is: my parents think I'm rejecting medicine for robots. But I'm not. I'm just working on different machines.
-
-Bodies are machines we can't fully debug yet. Robots are machines I can actually fix.
-
-Both matter. Both heal.`,
+        text: "You know what I've realized? Medicine and engineering aren't opposites. They're the same thing at different scales.\n\nA cell is a machine. DNA is code. The heart is a pump. The brain is a processor. Well, sort of. Terrible metaphor actually. The brain is weirder.\n\nPoint is: my parents think I'm rejecting medicine for robots. But I'm not. I'm just working on different machines.\n\nBodies are machines we can't fully debug yet. Robots are machines I can actually fix.\n\nBoth matter. Both heal.",
         emotion: 'philosophical_clarity',
         variation_id: 'tech_philosophy_v1'
       }
@@ -3393,23 +3146,7 @@ Both matter. Both heal.`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: `*Maya laughs, but it's sharp.*
-
-Want to hear about my biggest failure?
-
-Last year. State robotics competition. Pepper froze mid-demo. Just... stopped. In front of judges, sponsors, everyone.
-
-I stood there for what felt like an hour. Forty-five seconds, probably. The longest silence of my life.
-
-Finally figured it out. Power management bug. Battery drainage I hadn't tested for. Rookie mistake.
-
-*Pause.*
-
-I almost quit after that. Seriously. Thought "this is the universe telling me to go to medical school."
-
-But then I realized: every engineer has that story. The public failure. The moment they almost walked away.
-
-The ones who become great? They debug and keep going.`,
+        text: "Want to hear about my biggest failure?\n\nLast year. State robotics competition. Pepper froze mid-demo. Just... stopped. In front of judges, sponsors, everyone.\n\nI stood there for what felt like an hour. Forty-five seconds, probably. The longest silence of my life.\n\nFinally figured it out. Power management bug. Battery drainage I hadn't tested for. Rookie mistake.\n\nI almost quit after that. Seriously. Thought \"this is the universe telling me to go to medical school.\"\n\nBut then I realized: every engineer has that story. The public failure. The moment they almost walked away.\n\nThe ones who become great? They debug and keep going.",
         emotion: 'rueful_wisdom',
         variation_id: 'failure_story_v1'
       }
@@ -3435,19 +3172,7 @@ The ones who become great? They debug and keep going.`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: `*Maya traces a dent in Pepper's chassis.*
-
-See this? FIRST Robotics regional, 2023. Another team's robot crashed into ours during the final match.
-
-We lost. Badly. I cried in the parking lot.
-
-But here's the thing: that other team? They came and found me. Apologized. Offered to help fix the damage.
-
-We ended up staying until 2am in their workshop, rebuilding Pepper together. Trading techniques. Sharing failures.
-
-*Smiles.*
-
-Competition isn't zero-sum. The best rivals make you better. Even when they beat you.`,
+        text: "See this? FIRST Robotics regional, 2023. Another team's robot crashed into ours during the final match.\n\nWe lost. Badly. I cried in the parking lot.\n\nBut here's the thing: that other team? They came and found me. Apologized. Offered to help fix the damage.\n\nWe ended up staying until 2am in their workshop, rebuilding Pepper together. Trading techniques. Sharing failures.\n\nCompetition isn't zero-sum. The best rivals make you better. Even when they beat you.",
         emotion: 'warm_competitive',
         variation_id: 'competition_memory_v1'
       }
@@ -3470,19 +3195,7 @@ Competition isn't zero-sum. The best rivals make you better. Even when they beat
     speaker: 'Maya Chen',
     content: [
       {
-        text: `*Maya looks at the empty seats around her.*
-
-Can I tell you something weird?
-
-I'm never more alone than when I'm succeeding.
-
-Awards ceremonies. Competitions. Demos. I'm surrounded by people... and I can't talk to any of them. Not really.
-
-They see "impressive young roboticist." They don't see the person who eats lunch alone because she doesn't fit with the pre-meds OR the engineers.
-
-*Quiet.*
-
-This station. Talking to you. It's the least alone I've felt in months.`,
+        text: "Can I tell you something weird?\n\nI'm never more alone than when I'm succeeding.\n\nAwards ceremonies. Competitions. Demos. I'm surrounded by people... and I can't talk to any of them. Not really.\n\nThey see \"impressive young roboticist.\" They don't see the person who eats lunch alone because she doesn't fit with the pre-meds OR the engineers.\n\nThis station. Talking to you. It's the least alone I've felt in months.",
         emotion: 'lonely_honest',
         variation_id: 'loneliness_v1'
       }
@@ -3511,19 +3224,7 @@ This station. Talking to you. It's the least alone I've felt in months.`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: `*Her eyes get wet. She doesn't look away.*
-
-Thank you.
-
-That's... that's what I needed to hear. More than advice. More than solutions.
-
-Just being seen.
-
-*Deep breath.*
-
-Maybe that's what Pepper is really about. Not the sensors or the algorithms. Just... making kids in therapy feel seen. Making them feel like someone understands.
-
-We build what we need. Don't we?`,
+        text: "Thank you.\n\nThat's... that's what I needed to hear. More than advice. More than solutions.\n\nJust being seen.\n\nMaybe that's what Pepper is really about. Not the sensors or the algorithms. Just... making kids in therapy feel seen. Making them feel like someone understands.\n\nWe build what we need. Don't we?",
         emotion: 'grateful_tears',
         variation_id: 'loneliness_response_v1'
       }
@@ -3552,15 +3253,7 @@ We build what we need. Don't we?`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: `*Maya yawns, then catches herself.*
-
-You know my favorite time to code? 2am. When everyone's asleep.
-
-No notifications. No expectations. Just me and the problem.
-
-There's something holy about those hours. The world goes quiet and my brain finally stops second-guessing itself.
-
-That's when Pepper's best features were born. Not in daylight. In the dark. When nobody was watching.`,
+        text: "You know my favorite time to code? 2am. When everyone's asleep.\n\nNo notifications. No expectations. Just me and the problem.\n\nThere's something holy about those hours. The world goes quiet and my brain finally stops second-guessing itself.\n\nThat's when Pepper's best features were born. Not in daylight. In the dark. When nobody was watching.",
         emotion: 'peaceful_tired',
         variation_id: 'midnight_coding_v1'
       }
@@ -3582,17 +3275,7 @@ That's when Pepper's best features were born. Not in daylight. In the dark. When
     speaker: 'Maya Chen',
     content: [
       {
-        text: `*Maya's energy dips suddenly.*
-
-Sometimes I wonder if I'm just... playing. You know?
-
-Like there are real engineers out there. Proper training. Proper education. And here I am, a pre-med dropout with YouTube tutorials and salvaged parts.
-
-What if Pepper is just a toy? What if I'm wasting years on something that real professionals would build in a weekend?
-
-*Shakes head.*
-
-Sorry. The doubt spirals come sometimes. Usually at 4am.`,
+        text: "Sometimes I wonder if I'm just... playing. You know?\n\nLike there are real engineers out there. Proper training. Proper education. And here I am, a pre-med dropout with YouTube tutorials and salvaged parts.\n\nWhat if Pepper is just a toy? What if I'm wasting years on something that real professionals would build in a weekend?\n\nSorry. The doubt spirals come sometimes. Usually at 4am.",
         emotion: 'vulnerable_doubt',
         variation_id: 'doubt_spiral_v1'
       }
@@ -3621,23 +3304,7 @@ Sorry. The doubt spirals come sometimes. Usually at 4am.`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: `*Maya's face transforms—pure joy.*
-
-Want to hear about the first kid who used Pepper? Real patient, not testing.
-
-Eight years old. Car accident. Learning to use her arm again.
-
-Physical therapy was going terribly. She'd just cry. Refused to do the exercises.
-
-Her therapist let me bring Pepper in. Just as an experiment.
-
-*Eyes bright.*
-
-Twenty minutes. She did twenty minutes of exercises. Laughing. Competing with Pepper's challenges. Forgot she was in therapy.
-
-Her mom cried. The therapist cried. I definitely didn't cry. Okay, I cried.
-
-That's why I can't quit. Not the awards. Not the pitch competitions. Her.`,
+        text: "Want to hear about the first kid who used Pepper? Real patient, not testing.\n\nEight years old. Car accident. Learning to use her arm again.\n\nPhysical therapy was going terribly. She'd just cry. Refused to do the exercises.\n\nHer therapist let me bring Pepper in. Just as an experiment.\n\nTwenty minutes. She did twenty minutes of exercises. Laughing. Competing with Pepper's challenges. Forgot she was in therapy.\n\nHer mom cried. The therapist cried. I definitely didn't cry. Okay, I cried.\n\nThat's why I can't quit. Not the awards. Not the pitch competitions. Her.",
         emotion: 'profound_joy',
         variation_id: 'first_user_v1'
       }
@@ -3666,17 +3333,7 @@ That's why I can't quit. Not the awards. Not the pitch competitions. Her.`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: `*Maya traces her name badge absentmindedly.*
-
-You know what Maya means? In Sanskrit, it's "illusion." The magic that makes the world appear as it is.
-
-My grandmother chose it. She said: "You will show people what's possible. What they thought was impossible."
-
-I used to think it was about magic tricks. Silly stage stuff.
-
-Now I think she meant something else. The illusion isn't deception. It's vision.
-
-Showing people a future they couldn't imagine until you made it real.`,
+        text: "You know what Maya means? In Sanskrit, it's \"illusion.\" The magic that makes the world appear as it is.\n\nMy grandmother chose it. She said: \"You will show people what's possible. What they thought was impossible.\"\n\nI used to think it was about magic tricks. Silly stage stuff.\n\nNow I think she meant something else. The illusion isn't deception. It's vision.\n\nShowing people a future they couldn't imagine until you made it real.",
         emotion: 'contemplative',
         variation_id: 'name_meaning_v1'
       }
@@ -3698,21 +3355,7 @@ Showing people a future they couldn't imagine until you made it real.`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: `*Maya stares into the middle distance.*
-
-What if my parents are right?
-
-What if I'm throwing away a guaranteed future for a dream that might never work?
-
-What if I'm thirty years old, still tinkering with robots in my parents' garage, watching my med school friends buy houses?
-
-*Pause.*
-
-But also... what if I don't try?
-
-What if I become a doctor and spend my whole life wondering who I could have been?
-
-Which regret is worse? I genuinely don't know.`,
+        text: "What if my parents are right?\n\nWhat if I'm throwing away a guaranteed future for a dream that might never work?\n\nWhat if I'm thirty years old, still tinkering with robots in my parents' garage, watching my med school friends buy houses?\n\nBut also... what if I don't try?\n\nWhat if I become a doctor and spend my whole life wondering who I could have been?\n\nWhich regret is worse? I genuinely don't know.",
         emotion: 'existential_uncertainty',
         variation_id: 'what_if_v1'
       }
@@ -3747,7 +3390,7 @@ Which regret is worse? I genuinely don't know.`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*Maya stops tinkering with the servo. She sits back, hands covered in grease.*\n\nMy dad asked me yesterday: 'When does the hobby end and the career start?'\n\n*She looks at the robot.*\n\nHe meant: when do I put the toys away and start studying for the MCAT.\n\nBut it made me wonder. What if this *is* the career? And I'm the only one who can't see it because I'm too busy apologizing for it?",
+        text: "My dad asked me yesterday: 'When does the hobby end and the career start?'\n\nHe meant: when do I put the toys away and start studying for the MCAT.\n\nBut it made me wonder. What if this IS the career? And I'm the only one who can't see it because I'm too busy apologizing for it?",
         emotion: 'vulnerable_doubt',
         variation_id: 'arc4_doubt_v1'
       }
@@ -3779,7 +3422,7 @@ Which regret is worse? I genuinely don't know.`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: "*She picks up a soldering iron.*\n\nIf I choose robotics, I lose their approval. If I choose medicine, I lose... this.\n\n*Gestures to the workshop.*\n\nI need to know which loss I can live with. Because I can't have both.\n\nOr... can I? Is there a third option I'm not seeing?",
+        text: "If I choose robotics, I lose their approval. If I choose medicine, I lose... this.\n\nI need to know which loss I can live with. Because I can't have both.\n\nOr... can I? Is there a third option I'm not seeing?",
         emotion: 'conflicted',
         variation_id: 'arc4_crossroads_v1'
       }

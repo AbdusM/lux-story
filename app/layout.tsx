@@ -96,7 +96,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${inter.variable} ${crimsonPro.variable} ${spaceMono.variable} ${robotoSlab.variable}`}>
-      <body className="grand-central-terminus" style={{
+      <body className="grand-central-terminus" suppressHydrationWarning style={{
         fontSize: 'var(--font-size-base, 1rem)'
       }}>
         {/* Global SVG filter definitions for gooey/glow effects */}

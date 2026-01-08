@@ -238,6 +238,32 @@ export interface ConditionalChoice {
   voiceVariations?: Partial<Record<PatternType, string>>
 
   /**
+   * Template archetype hint for automatic voice variation.
+   * When set, the template system uses this archetype for pattern-specific text
+   * even without explicit voiceVariations. Explicit voiceVariations always win.
+   *
+   * Available archetypes:
+   * - ASK_FOR_DETAILS: Questions asking for more info
+   * - STAY_SILENT: Patience-based silence choices
+   * - ACKNOWLEDGE_EMOTION: Validating feelings
+   * - EXPRESS_CURIOSITY: Showing interest
+   * - OFFER_SUPPORT: Offering help
+   * - CHALLENGE_ASSUMPTION: Questioning assumptions
+   * - SHOW_UNDERSTANDING: Confirming understanding
+   * - TAKE_ACTION: Initiating action
+   * - REFLECT_BACK: Mirroring what was said
+   * - SET_BOUNDARY: Setting limits
+   * - MAKE_OBSERVATION: Direct observations
+   * - SIMPLE_CONTINUE: Continuation markers
+   * - AFFIRM_CHOICE: Committing to something
+   * - SHARE_PERSPECTIVE: Sharing viewpoint
+   *
+   * @example
+   * archetype: 'ASK_FOR_DETAILS'
+   */
+  archetype?: import('./voice-templates/template-types').TemplateArchetype
+
+  /**
    * Visual interaction animation to apply to this choice button.
    * One-shot animations that enhance emphasis when the choice appears.
    *

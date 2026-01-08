@@ -248,6 +248,10 @@ main {
   animation: progress 1s ease-out;
 }
 
+.animate-beckon {
+  animation: beckon 3s ease-in-out infinite;
+}
+
 /* ══════════════════════════════════════════════════════════════════════════════
    NAV BAR ATTENTION MARQUEE - Visual feedback when player earns something
    Philosophy: Clean UI nuances indicate different situations
@@ -327,12 +331,14 @@ main {
   0%,
   100% {
     box-shadow: 0 0 0 1px rgba(251, 191, 36, 0.3), 0 0 8px rgba(251, 191, 36, 0.2);
-    border-radius: 9999px; /* Force rounding */
+    border-radius: 9999px;
+    /* Force rounding */
   }
 
   50% {
     box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.5), 0 0 16px rgba(251, 191, 36, 0.4);
-    border-radius: 9999px; /* Force rounding */
+    border-radius: 9999px;
+    /* Force rounding */
   }
 }
 
@@ -588,16 +594,17 @@ main {
   /* Fresh green - discovery */
 
   /* Glass Panel Properties */
-  --glass-bg: rgba(10, 12, 16, 0.60);
-  /* Reduced from 0.75 for visible blur */
-  --glass-bg-solid: rgba(10, 12, 16, 0.92);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-border-hover: rgba(255, 255, 255, 0.12);
-  --glass-blur: 20px;
-  /* Increased from 16px for perceptible glass effect */
-  --glass-radius: 14px;
-  /* Unified from 16px */
-  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --glass-bg: rgba(10, 12, 16, 0.40);
+  /* Reduced from 0.60 for ethereal feel */
+  --glass-bg-solid: rgba(10, 12, 16, 0.95);
+  --glass-border: rgba(255, 255, 255, 0.05);
+  /* Reduced opacity for subtlety */
+  --glass-border-hover: rgba(255, 255, 255, 0.10);
+  --glass-blur: 24px;
+  /* Increased from 20px */
+  --glass-radius: 16px;
+  /* Slightly softer corners */
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 
   /* Dialogue text - WCAG AA compliant (8:1 on dark bg) */
   --text-dialogue: rgba(235, 205, 160, 0.93);
@@ -993,19 +1000,24 @@ main {
 
 /* Shimmer effect - sparkle/glitter (Exploring pattern, Lira) */
 @keyframes textShimmer {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
 }
 
 .text-effect-shimmer {
-  background: linear-gradient(
-    90deg,
-    currentColor 0%,
-    var(--shimmer-color, #fbbf24) 25%,
-    currentColor 50%,
-    var(--shimmer-color, #fbbf24) 75%,
-    currentColor 100%
-  );
+  background: linear-gradient(90deg,
+      currentColor 0%,
+      var(--shimmer-color, #fbbf24) 25%,
+      currentColor 50%,
+      var(--shimmer-color, #fbbf24) 75%,
+      currentColor 100%);
   background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;
@@ -1014,8 +1026,15 @@ main {
 
 /* Pulse effect - gentle pulsing (Building pattern) */
 @keyframes textPulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.7;
+  }
 }
 
 .text-effect-pulse {
@@ -1032,11 +1051,25 @@ main {
 
 /* Echo effect - trailing echo (Samuel character) */
 @keyframes textEcho {
-  0% { text-shadow: none; }
-  25% { text-shadow: 2px 0 4px var(--echo-color, #f5f5dc); }
-  50% { text-shadow: 4px 0 8px color-mix(in srgb, var(--echo-color, #f5f5dc) 60%, transparent); }
-  75% { text-shadow: 2px 0 4px var(--echo-color, #f5f5dc); }
-  100% { text-shadow: none; }
+  0% {
+    text-shadow: none;
+  }
+
+  25% {
+    text-shadow: 2px 0 4px var(--echo-color, #f5f5dc);
+  }
+
+  50% {
+    text-shadow: 4px 0 8px color-mix(in srgb, var(--echo-color, #f5f5dc) 60%, transparent);
+  }
+
+  75% {
+    text-shadow: 2px 0 4px var(--echo-color, #f5f5dc);
+  }
+
+  100% {
+    text-shadow: none;
+  }
 }
 
 .text-effect-echo {
@@ -1045,8 +1078,15 @@ main {
 
 /* Fade effect - fading in/out (Patience pattern) */
 @keyframes textFade {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.6;
+  }
 }
 
 .text-effect-fade {
@@ -1055,11 +1095,33 @@ main {
 
 /* Static effect - glitch/static (Rohan character) */
 @keyframes textStatic {
-  0%, 90%, 100% { opacity: 1; transform: none; }
-  92% { opacity: 0.8; transform: translateX(-1px); }
-  94% { opacity: 1; transform: translateX(1px); }
-  96% { opacity: 0.9; transform: translateX(-1px); }
-  98% { opacity: 1; transform: none; }
+
+  0%,
+  90%,
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+
+  92% {
+    opacity: 0.8;
+    transform: translateX(-1px);
+  }
+
+  94% {
+    opacity: 1;
+    transform: translateX(1px);
+  }
+
+  96% {
+    opacity: 0.9;
+    transform: translateX(-1px);
+  }
+
+  98% {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .text-effect-static {
@@ -1106,16 +1168,43 @@ main {
 }
 
 /* Pattern-specific color overrides */
-.text-effect-pattern-analytical { --shimmer-color: #60a5fa; --glow-color: #60a5fa; }
-.text-effect-pattern-patience { --shimmer-color: #34d399; --glow-color: #34d399; }
-.text-effect-pattern-exploring { --shimmer-color: #fbbf24; --glow-color: #fbbf24; }
-.text-effect-pattern-helping { --shimmer-color: #f472b6; --glow-color: #f472b6; }
-.text-effect-pattern-building { --shimmer-color: #a78bfa; --glow-color: #a78bfa; }
+.text-effect-pattern-analytical {
+  --shimmer-color: #60a5fa;
+  --glow-color: #60a5fa;
+}
+
+.text-effect-pattern-patience {
+  --shimmer-color: #34d399;
+  --glow-color: #34d399;
+}
+
+.text-effect-pattern-exploring {
+  --shimmer-color: #fbbf24;
+  --glow-color: #fbbf24;
+}
+
+.text-effect-pattern-helping {
+  --shimmer-color: #f472b6;
+  --glow-color: #f472b6;
+}
+
+.text-effect-pattern-building {
+  --shimmer-color: #a78bfa;
+  --glow-color: #a78bfa;
+}
 
 /* Character-specific color overrides */
-.text-effect-character-samuel { --echo-color: #f5f5dc; }
-.text-effect-character-rohan { --glow-color: #6b7280; }
-.text-effect-character-lira { --shimmer-color: #c084fc; }
+.text-effect-character-samuel {
+  --echo-color: #f5f5dc;
+}
+
+.text-effect-character-rohan {
+  --glow-color: #6b7280;
+}
+
+.text-effect-character-lira {
+  --shimmer-color: #c084fc;
+}
 
 /* ══════════════════════════════════════════════════════════════════════════════
    REDUCED MOTION SUPPORT

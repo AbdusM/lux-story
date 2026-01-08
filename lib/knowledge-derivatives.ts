@@ -9,7 +9,7 @@
  * - Knowledge flag synthesis puzzles
  */
 
-import { GameState, PlayerPatterns } from './character-state'
+import { GameState as _GameState, PlayerPatterns } from './character-state'
 import { PatternType } from './patterns'
 
 // ═══════════════════════════════════════════════════════════════════════════

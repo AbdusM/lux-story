@@ -6,12 +6,14 @@ import { X, Users, Sparkles, Compass } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { springs, backdrop, panelFromRight } from '@/lib/animations'
 import { useConstellationData, type CharacterWithState, type SkillWithState } from '@/hooks/useConstellationData'
+import { getQuestsWithStatus, type Quest } from '@/lib/quest-system'
+import { useGameSelectors } from '@/lib/game-store'
 import { PeopleView } from './PeopleView'
 import { SkillsView } from './SkillsView'
 import { QuestsView } from './QuestsView'
 import { DetailModal } from './DetailModal'
-import { getQuestsWithStatus, getActiveQuests } from '@/lib/quest-system'
-import { useGameSelectors } from '@/lib/game-store'
+// Pattern unlocks available for future use
+// import { usePatternUnlocks } from '@/hooks/usePatternUnlocks'
 
 interface ConstellationPanelProps {
   isOpen: boolean
@@ -39,12 +41,15 @@ const contentVariants = {
 type DetailItem =
   | { type: 'character'; item: CharacterWithState }
   | { type: 'skill'; item: SkillWithState }
+  | { type: 'quest'; item: Quest }
   | null
 
 export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps) {
   const [activeTab, setActiveTab] = useState<TabId>('people')
   const [detailItem, setDetailItem] = useState<DetailItem>(null)
   const data = useConstellationData()
+
+
 
   // Get game state for quest tracking
   const coreGameState = useGameSelectors.useCoreGameState()
@@ -85,12 +90,17 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
     setDetailItem({ type: 'skill', item: skill })
   }
 
+  const handleOpenQuestDetail = (quest: Quest) => {
+    setDetailItem({ type: 'quest', item: quest })
+  }
+
   const handleCloseDetail = () => {
     setDetailItem(null)
   }
 
+  // Unified Tab Structure
   const tabs: { id: TabId; label: string; icon: typeof Users; count: number }[] = [
-    { id: 'people', label: 'People', icon: Users, count: data.metCharacterIds.length },
+    { id: 'people', label: 'Network', icon: Users, count: data.metCharacterIds.length },
     { id: 'skills', label: 'Skills', icon: Sparkles, count: data.demonstratedSkillIds.length },
     { id: 'quests', label: 'Quests', icon: Compass, count: activeQuestsCount }
   ]
@@ -122,7 +132,7 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
               onDragEnd={(_, info) => {
                 if (info.offset.x > 100) onClose()
               }}
-              className="fixed right-0 top-0 bottom-0 w-full max-w-lg bg-slate-900 border-l border-slate-700 shadow-2xl z-sticky flex flex-col"
+              className="fixed right-0 top-0 bottom-0 w-full max-w-lg glass-panel-solid !rounded-l-2xl !rounded-r-none border-l border-white/10 shadow-2xl z-sticky flex flex-col"
               style={{
                 paddingBottom: 'env(safe-area-inset-bottom, 0px)',
                 paddingRight: 'env(safe-area-inset-right, 0px)'
@@ -132,22 +142,22 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
               aria-label="Your Journey - Character and Skill Progress"
             >
               {/* Header */}
-              <div className="flex-shrink-0 p-4 border-b border-slate-700 flex items-center justify-between bg-slate-900/95">
+              <div className="flex-shrink-0 p-4 border-b border-white/5 flex items-center justify-between bg-transparent">
                 <div>
-                  <h2 className="text-xl font-bold text-white font-serif">Your Journey</h2>
-                  <p className="text-sm text-slate-400">Connections & growth</p>
+                  <h2 className="text-xl font-bold text-white font-serif tracking-wide">Your Journey</h2>
+                  <p className="text-sm text-slate-400">Growth, Connections & Tools</p>
                 </div>
                 <button
                   onClick={onClose}
-                  className="min-w-[44px] min-h-[44px] p-2 rounded-full hover:bg-slate-800 transition-colors flex items-center justify-center"
-                  aria-label="Close constellation view"
+                  className="min-w-[44px] min-h-[44px] p-2 rounded-full hover:bg-white/5 transition-colors flex items-center justify-center group"
+                  aria-label="Close journey panel"
                 >
-                  <X className="w-5 h-5 text-slate-400" />
+                  <X className="w-5 h-5 text-slate-400 group-hover:text-white transition-colors" />
                 </button>
               </div>
 
-              {/* Tabs with animated indicator */}
-              <div className="flex-shrink-0 flex border-b border-slate-700 relative" role="tablist">
+              {/* Tabs with animated indicator - Scrollable for mobile */}
+              <div className="flex-shrink-0 flex border-b border-white/5 relative bg-transparent overflow-x-auto no-scrollbar" role="tablist">
                 {tabs.map(tab => (
                   <button
                     key={tab.id}
@@ -155,10 +165,10 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
                     role="tab"
                     aria-selected={activeTab === tab.id}
                     className={cn(
-                      "flex-1 py-3 px-4 text-sm font-medium transition-colors flex items-center justify-center gap-2 min-h-[44px] relative",
+                      "flex-none py-3 px-4 text-sm font-medium transition-colors flex items-center justify-center gap-2 min-h-[44px] relative whitespace-nowrap",
                       activeTab === tab.id
-                        ? "text-amber-400"
-                        : "text-slate-400 hover:text-slate-300 hover:bg-slate-800/30"
+                        ? "text-amber-100"
+                        : "text-slate-400 hover:text-slate-200 hover:bg-white/5"
                     )}
                   >
                     <tab.icon className="w-4 h-4" />
@@ -167,8 +177,8 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
                       <span className={cn(
                         "text-xs px-1.5 py-0.5 rounded-full",
                         activeTab === tab.id
-                          ? "bg-amber-400/20 text-amber-300"
-                          : "bg-slate-700 text-slate-400"
+                          ? "bg-amber-500/20 text-amber-200"
+                          : "bg-slate-800 text-slate-400"
                       )}>
                         {tab.count}
                       </span>
@@ -187,6 +197,9 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
               {/* Content - with spacing from header for mobile touch */}
               <div className="flex-1 overflow-y-auto overflow-x-hidden pt-2" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
                 <AnimatePresence mode="wait">
+
+
+                  {/* NETWORK (People) */}
                   {activeTab === 'people' && (
                     <motion.div
                       key="people"
@@ -203,6 +216,8 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
                       <PeopleView characters={data.characters} onOpenDetail={handleOpenCharacterDetail} />
                     </motion.div>
                   )}
+
+                  {/* SKILLS */}
                   {activeTab === 'skills' && (
                     <motion.div
                       key="skills"
@@ -219,6 +234,10 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
                       <SkillsView skills={data.skills} onOpenDetail={handleOpenSkillDetail} />
                     </motion.div>
                   )}
+
+
+
+                  {/* QUESTS */}
                   {activeTab === 'quests' && (
                     <motion.div
                       key="quests"
@@ -232,7 +251,7 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
                         WebkitOverflowScrolling: 'touch'
                       }}
                     >
-                      <QuestsView quests={quests} />
+                      <QuestsView quests={quests} onSelectQuest={handleOpenQuestDetail} />
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -240,16 +259,13 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
 
               {/* Footer */}
               <div
-                className="flex-shrink-0 p-3 bg-slate-950 text-center border-t border-slate-800"
+                className="flex-shrink-0 p-3 bg-transparent text-center border-t border-white/5"
                 style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom, 0px))' }}
               >
                 <p className="text-xs text-slate-500">
-                  {activeTab === 'people'
-                    ? 'Tap a character to see what they taught you'
-                    : activeTab === 'skills'
-                    ? 'Tap a skill to see your evidence'
-                    : 'Track your journey through the station'
-                  }
+                  {activeTab === 'people' ? 'Tap a character to see what they taught you' :
+                    activeTab === 'skills' ? 'Tap a skill to see your evidence' :
+                      'Track your journey through the station'}
                 </p>
               </div>
             </motion.div>

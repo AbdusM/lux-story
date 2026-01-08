@@ -4,6 +4,7 @@ import { calculatePatternGain } from './identity-system'
 import { isValidPattern, getPatternSensation, PatternType, PATTERN_THRESHOLDS, PATTERN_SKILL_MAP } from './patterns'
 import { detectRelationshipUpdates } from './character-relationships'
 import { simulateDensityFluctuation, OVERDENSITY_CONSTANTS } from './overdensity-system'
+import { checkVoiceRevelationTrigger, getVoiceRevelationEcho, type ConsequenceEcho } from './consequence-echoes'
 
 /**
  * Result of processing a choice
@@ -19,6 +20,7 @@ export interface ChoiceProcessingResult {
         checkIdentityThreshold?: boolean
         updateSkills?: string[] // List of skills demonstrated
         relationshipUpdates?: Array<{ fromId: string; toId: string; newType: string }>
+        voiceRevelationEcho?: ConsequenceEcho // "Surface the Magic" - reveal voice system to player
     }
 }
 
@@ -244,6 +246,9 @@ export class GameLogic {
 
         // 2. Apply Pattern Changes (Weighted Identity Math)
         let patternSensation: string | null = null
+        // Capture old patterns for voice revelation check
+        const oldPatterns = { ...newState.patterns }
+
         if (choice.pattern) {
             const baseGain = 1
             const modifiedGain = calculatePatternGain(baseGain, choice.pattern, newState)
@@ -320,6 +325,19 @@ export class GameLogic {
         const relationshipUpdates = detectRelationshipUpdates(oldFlags, newState.globalFlags)
         if (relationshipUpdates.length > 0) {
             events.relationshipUpdates = relationshipUpdates
+        }
+
+        // 6. Voice Revelation Check ("Surface the Magic")
+        // When player's dominant pattern crosses threshold 5, reveal the voice system
+        const alreadyRevealed = newState.globalFlags.has('voice_system_revealed')
+        const triggerPattern = checkVoiceRevelationTrigger(oldPatterns, newState.patterns, alreadyRevealed)
+        if (triggerPattern) {
+            const revelationEcho = getVoiceRevelationEcho(triggerPattern)
+            if (revelationEcho) {
+                events.voiceRevelationEcho = revelationEcho
+                // Mark as revealed to prevent future triggers
+                newState.globalFlags.add('voice_system_revealed')
+            }
         }
 
         return {

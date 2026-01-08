@@ -18,15 +18,15 @@ export const yaquinDialogueNodes: DialogueNode[] = [
     speaker: 'Yaquin',
     content: [
       {
-        text: "[He is sitting cross-legged in the center of the room. Floating slightly? No, just good posture.]\n\nShhh. The static... it's thinning.\n\n[He points a telescope made of drain pipes at a blank wall.]\n\nCan you hear it? The Star Song. It's in the key of G minor today.",
+        text: "Shhh. The static... it's thinning.\n\nCan you hear it? The Star Song. It's in the key of G minor today.",
         emotion: 'mystical',
-        variation_id: 'yaquin_intro_elder_v1',
+        variation_id: 'yaquin_intro_elder_v2_minimal',
         richEffectContext: 'warning',
         useChatPacing: true,
         patternReflection: [
-          { pattern: 'building', minLevel: 4, altText: "[He gestures at the pipe-telescope.]\n\nEngineering marvel, isn't it? Tuned to the frequency of the Void.\n\nYou're a builder. You hear the structure in the silence.", altEmotion: 'kindred' },
-          { pattern: 'helping', minLevel: 4, altText: "Shhh. The static is thinning.\n\nYou're worried about me. Don't be. The stars are heavy, but I can carry them.\n\nListen. G minor.", altEmotion: 'peaceful' },
-          { pattern: 'analytical', minLevel: 4, altText: "Shhh. Signal to noise ratio is improving.\n\n[He adjusts a dial.]\n\nYou're analyzing the data stream. Valid. But some data is felt, not measured.", altEmotion: 'challenge' }
+          { pattern: 'building', minLevel: 4, altText: "Engineering marvel isn't it? Tuned to the frequency of the Void.\n\nYou're a builder. You hear the structure in the silence.", altEmotion: 'kindred' },
+          { pattern: 'helping', minLevel: 4, altText: "Shhh. The static is thinning.\n\nYou're worried about me. Don't be. The stars are heavy but I can carry them.\n\nListen. G minor.", altEmotion: 'peaceful' },
+          { pattern: 'analytical', minLevel: 4, altText: "Shhh. Signal to noise ratio is improving.\n\nYou're analyzing the data stream. Valid. But some data is felt not measured.", altEmotion: 'challenge' }
         ]
       }
     ],
@@ -68,7 +68,8 @@ export const yaquinDialogueNodes: DialogueNode[] = [
         text: "You're teaching online?",
         nextNodeId: 'yaquin_creator_path',
         pattern: 'exploring',
-        skills: ['digitalLiteracy']
+        skills: ['digitalLiteracy'],
+        archetype: 'ASK_FOR_DETAILS'
       },
       {
         choiceId: 'yaquin_intro_patience',
@@ -76,6 +77,7 @@ export const yaquinDialogueNodes: DialogueNode[] = [
         nextNodeId: 'yaquin_credential_gap',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'adaptability'],
+        archetype: 'STAY_SILENT',
         consequence: {
           characterId: 'yaquin',
           trustChange: 1
@@ -96,10 +98,10 @@ export const yaquinDialogueNodes: DialogueNode[] = [
     speaker: 'Yaquin',
     content: [
       {
-        text: `Imagine... the textbook says 'mix 45 seconds.' Do that. sets in the bowl. Mold ruined.|8 years experience. Know the paste feel. Know patient fear.|Books don't teach that.`,
+        text: "Textbook says 'mix 45 seconds.' Do that? Sets in the bowl. Mold ruined.\n\n8 years experience. Know the paste feel. Know patient fear.\n\nBooks don't teach that.",
         emotion: 'focused',
         interaction: 'nod',
-        variation_id: 'textbook_v1',
+        variation_id: 'textbook_v2_minimal',
         useChatPacing: true
       }
     ],
@@ -111,7 +113,7 @@ export const yaquinDialogueNodes: DialogueNode[] = [
           analytical: "Tacit knowledge. It's the hidden variable textbooks can't capture.",
           helping: "That's wisdom earned through caring for people. It's irreplaceable.",
           building: "You've constructed expertise through repetition. That's real craft.",
-          exploring: "The gap between theory and practice—that's where mastery lives.",
+          exploring: "The gap between theory and practice. That's where mastery lives.",
           patience: "Eight years of patience and attention. That can't be rushed."
         },
         nextNodeId: 'yaquin_curriculum_dream',
@@ -138,6 +140,7 @@ export const yaquinDialogueNodes: DialogueNode[] = [
         nextNodeId: 'yaquin_curriculum_dream',
         pattern: 'exploring',
         skills: ['curiosity', 'emotionalIntelligence'],
+        archetype: 'ASK_FOR_DETAILS',
         consequence: {
           characterId: 'yaquin',
           trustChange: 1
@@ -151,13 +154,13 @@ export const yaquinDialogueNodes: DialogueNode[] = [
     speaker: 'Yaquin',
     content: [
       {
-        text: `'Just' an assistant. No dental school.|But dentists ask me about difficult patients. Ask me to train new hires.|Doing the work. No paper.`,
+        text: "'Just' an assistant. No dental school.\n\nBut dentists ask me about difficult patients. Ask me to train new hires.\n\nDoing the work. No paper.",
         emotion: 'vulnerable',
         interaction: 'small',
-        variation_id: 'credential_v1',
+        variation_id: 'credential_v2_minimal',
         useChatPacing: true,
         patternReflection: [
-          { pattern: 'helping', minLevel: 4, altText: "'Just' an assistant. No dental school.\n\nBut dentists ask me about difficult patients. Ask me to train new hires.\n\nYou get it, don't you? The gap between what you do and what you're called.", altEmotion: 'vulnerable' },
+          { pattern: 'helping', minLevel: 4, altText: "'Just' an assistant. No dental school.\n\nBut dentists ask me about difficult patients. Ask me to train new hires.\n\nYou get it don't you? The gap between what you do and what you're called.", altEmotion: 'vulnerable' },
           { pattern: 'building', minLevel: 4, altText: "'Just' an assistant. No dental school.\n\nBut dentists ask me to train new hires. I built my skills through doing.\n\nYou build things. You know competence isn't about paper.", altEmotion: 'reflective' },
           { pattern: 'patience', minLevel: 4, altText: "'Just' an assistant. No dental school.\n\nBut dentists ask me about difficult patients. Eight years.\n\nYou're not jumping to reassure me. That's... good. I need to sit with this.", altEmotion: 'grateful' }
         ]
@@ -236,7 +239,7 @@ export const yaquinDialogueNodes: DialogueNode[] = [
       {
         // NOTE: Strategic targeting - jitter applied only to the anxious core question about validation and audience.
         // Targets the existential doubt ("shouting into void?"), not the factual setup about followers.
-        text: `Started six months ago. Phone videos. No plan.|"Here's what textbooks miss."|87 followers. Some dental assistants. Some students. Few actual dentists watching.|<jitter>Real question. teaching online or shouting into void?</jitter>`,
+        text: "Started six months ago. Phone videos. No plan.|'Here's what textbooks miss.'|87 followers. Some dental assistants. Some students. Few actual dentists watching.|<jitter>Real question. teaching online or shouting into void?</jitter>",
         emotion: 'curious',
         variation_id: 'creator_v1',
         useChatPacing: true
@@ -285,13 +288,13 @@ export const yaquinDialogueNodes: DialogueNode[] = [
     speaker: 'Yaquin',
     content: [
       {
-        text: `87... right.|Before the videos? Zero. Eight years doing the work. Nobody asking questions. Nobody learning from the mistakes I already made.|Now 87 people want to know what I know.`,
+        text: "87. Right.|Before the videos? Zero. Eight years doing the work. Nobody asking questions. Nobody learning from the mistakes I already made.|Now 87 people want to know what I know.",
         emotion: 'reflective',
         variation_id: 'encouraged_v1',
         useChatPacing: true
       },
       {
-        text: `Maybe that's not shouting into void. Maybe that's... building something.`,
+        text: "Maybe that's not shouting into void. Maybe that's building something.",
         emotion: 'hopeful',
         variation_id: 'encouraged_v2'
       }
@@ -311,13 +314,13 @@ export const yaquinDialogueNodes: DialogueNode[] = [
     speaker: 'Yaquin',
     content: [
       {
-        text: `The dentists? Good question.|They watch but don't comment. Think they're embarrassed? Like admitting they don't know something basic.`,
+        text: "The dentists? Good question.|They watch but don't comment. Think they're embarrassed? Like admitting they don't know something basic.",
         emotion: 'curious',
         variation_id: 'explored_v1',
         useChatPacing: true
       },
       {
-        text: `Or maybe... they see what I see. The gap between textbook and chair. What you're supposed to know versus what actually works.|That gap? Eight years of filling it. Maybe that's what they want.`,
+        text: "Or maybe they see what I see. The gap between textbook and chair. What you're supposed to know versus what actually works.|That gap? Eight years of filling it. Maybe that's what they want.",
         emotion: 'realizing',
         variation_id: 'explored_v2'
       }
@@ -337,13 +340,13 @@ export const yaquinDialogueNodes: DialogueNode[] = [
     speaker: 'Yaquin',
     content: [
       {
-        text: `Build WITH them?|Never thought of it like that. Always felt like... I teach, they learn. One direction.`,
+        text: "Build WITH them?|Never thought of it like that. Always felt like I teach, they learn. One direction.",
         emotion: 'surprised',
         variation_id: 'community_v1',
         useChatPacing: true
       },
       {
-        text: `But you're right. Some of them been doing this longer than me. Different clinics. Different problems. Different solutions.|What if the course isn't me telling them things... but us figuring it out together?`,
+        text: "But you're right. Some of them been doing this longer than me. Different clinics. Different problems. Different solutions.|What if the course isn't me telling them things but us figuring it out together?",
         emotion: 'excited',
         variation_id: 'community_v2'
       }
@@ -365,7 +368,7 @@ export const yaquinDialogueNodes: DialogueNode[] = [
       {
         // NOTE: Strategic targeting - jitter applied only to the anxiety about scope creep and fluff.
         // Isolates the moment of panic ("keeps adding..."), not the vision statement.
-        text: `Want to build a course. 'The Real Dental Assistant.'|Reality. not theory. Calm crying kids. Mix paste. Anticipate doctor needs.|<jitter>But the syllabus... keeps adding history. Anatomy. Ethics.</jitter>`,
+        text: "Want to build a course. 'The Real Dental Assistant.'|Reality. not theory. Calm crying kids. Mix paste. Anticipate doctor needs.|<jitter>But the syllabus keeps adding history. Anatomy. Ethics.</jitter>",
         emotion: 'anxious',
         variation_id: 'dream_v1',
         useChatPacing: true
@@ -404,9 +407,7 @@ export const yaquinDialogueNodes: DialogueNode[] = [
         // NOTE: Removed "slams" and "points" - showing environment and result, not choreography
         // NOTE: Strategic targeting - shake applied only to the high-stakes consequence statement.
         // Targets the climactic moment of pressure ("Back to cleaning spit valves"), not the setup.
-        text: `This list. 8 years instinct → checklist. Impossible.
-
-<shake>One pilot this weekend. Pick wrong. nobody watches. Back to cleaning spit valves.</shake>`,
+        text: "This list. 8 years instinct to checklist. Impossible.\n\n<shake>One pilot this weekend. Pick wrong. nobody watches. Back to cleaning spit valves.</shake>",
         emotion: 'tense',
         variation_id: 'curriculum_setup_v2',
         richEffectContext: 'warning',
@@ -475,7 +476,7 @@ Which opening sells the VALUE of practical experience?`,
     content: [
       {
         // NOTE: Removed filming process and "head in hands" - dialogue carries the failure without choreography
-        text: `"Hello class. Today. 19th century forceps."|"Bored watching myself. Nobody pays $50 for this. Sound like professors I hated."`,
+        text: "'Hello class. Today. 19th century forceps.'|'Bored watching myself. Nobody pays $50 for this. Sound like professors I hated.'",
         emotion: 'heavy',
         interaction: 'small',
         variation_id: 'fail_boring_v1',
@@ -511,9 +512,7 @@ Which opening sells the VALUE of practical experience?`,
         // TODO: [SFX] Mixing sounds, laughter, timer ticking
         // TODO: [VFX] Success glow on playback screen
         // NOTE: Removed filming process and "grins" - converted to audio cues only
-        text: `Pink. Goopy. 30 seconds before stone. Go!
-
-<bloom>That's it.</bloom> Not lecture. Cooking show for teeth.`,
+        text: "Pink. Goopy. 30 seconds before stone. Go!\n\n<bloom>That's it.</bloom> Not lecture. Cooking show for teeth.",
         emotion: 'excited',
         interaction: 'bloom',
         variation_id: 'success_practical_v1',
@@ -542,9 +541,7 @@ Which opening sells the VALUE of practical experience?`,
     speaker: 'Yaquin',
     content: [
       {
-        text: `You're nervous. Drill's loud. Watch my eyes. Breathe with me.
-
-All day. Don't fix teeth. fix fear. That's what I'm selling.`,
+        text: "You're nervous. Drill's loud. Watch my eyes. Breathe with me.\n\nAll day. Don't fix teeth. fix fear. That's what I'm selling.",
         emotion: 'inspired',
         interaction: 'bloom',
         variation_id: 'success_psych_v1',
@@ -576,7 +573,7 @@ All day. Don't fix teeth. fix fear. That's what I'm selling.`,
       {
         // NOTE: Strategic targeting - jitter applied only to the anxiety peaks about career consequences.
         // Targets the panic about professional risk, not the factual readiness statement.
-        text: `Video ready. Platform ready.|<jitter>Publish. dentists see it. Might fire me. 'Who's this guy?'</jitter>|Don't publish. guy shouting at phone in basement.`,
+        text: "Video ready. Platform ready.|<jitter>Publish. dentists see it. Might fire me. 'Who's this guy?'</jitter>|Don't publish. guy shouting at phone in basement.",
         emotion: 'anxious',
         variation_id: 'launch_v1',
         useChatPacing: true,
@@ -653,7 +650,7 @@ All day. Don't fix teeth. fix fear. That's what I'm selling.`,
         // TODO: [VFX] Screen flash, comment notification pop
         // TODO: [MUSIC] Triumphant swell, achievement fanfare
         // NOTE: Removed "hits button" - action implicit from "Live"
-        text: `Live.|First comment: 'Finally someone explains mixing ratio!'|Doing it. Actually doing it. Teacher.`,
+        text: "Live.|First comment: 'Finally someone explains mixing ratio!'|Doing it. Actually doing it. Teacher.",
         emotion: 'excited',
         interaction: 'big',
         variation_id: 'launched_v1',
@@ -685,7 +682,7 @@ All day. Don't fix teeth. fix fear. That's what I'm selling.`,
     speaker: 'Yaquin',
     content: [
       {
-        text: `Smart. Brand name. 'Dental Ninja.' Build trust, then sell.|Safer. Still forward.|Thank you. Kept me from reckless mistake.`,
+        text: "Smart. Brand name. 'Dental Ninja.' Build trust, then sell.|Safer. Still forward.|Thank you. Kept me from reckless mistake.",
         emotion: 'relieved',
         interaction: 'nod',
         variation_id: 'audience_v1',
@@ -715,7 +712,7 @@ All day. Don't fix teeth. fix fear. That's what I'm selling.`,
     speaker: 'Yaquin',
     content: [
       {
-        text: `Yeah. Back to school. Get degree. Maybe then people listen.|Nice fantasy. Just an assistant.|Thanks for listening.`,
+        text: "Yeah. Back to school. Get degree. Maybe then people listen.|Nice fantasy. Just an assistant.|Thanks for listening.",
         emotion: 'heavy',
         interaction: 'small',
         variation_id: 'bad_ending_v1',
@@ -744,29 +741,7 @@ All day. Don't fix teeth. fix fear. That's what I'm selling.`,
     speaker: 'Yaquin',
     content: [
       {
-        text: `*He freezes. Looks at your hand on his.*
-
-*Long silence.*
-
-*Then a shaky exhale.*
-
-Nobody ever... sat with me like this. Through the fear.
-
-*Voice quiet.*
-
-My father wanted me to be a dentist. Real dentist. With degree. When I said I was "just" assistant, he... didn't talk to me for a month.
-
-*Looks at the screen.*
-
-Publishing this means telling the world I'm good enough. Without the paper. Without his approval.
-
-*Meets your eyes.*
-
-You being here... it helps. Really helps.
-
-*Finger hovers over button.*
-
-Together?`,
+        text: "Nobody ever sat with me like this. Through the fear.\n\nMy father wanted me to be a dentist. Real dentist. With degree. When I said I was 'just' assistant, he didn't talk to me for a month.\n\nPublishing this means telling the world I'm good enough. Without the paper. Without his approval.\n\nYou being here. It helps. Really helps.\n\nTogether?",
         emotion: 'vulnerable_hopeful',
         interaction: 'bloom',
         variation_id: 'interrupt_encouragement_v1',
@@ -796,27 +771,7 @@ Together?`,
     speaker: 'Yaquin',
     content: [
       {
-        text: `*He sets down equipment. Something heavy in his posture.*
-
-Can tell you something? Not about course. About me.
-
-*Pause.*
-
-My father came here from Manila. 1989. Worked three jobs. Saved every penny. Sent all four kids to college.
-
-My sister: engineer. My brother: pharmacist. Other sister: accountant.
-
-Me: dental assistant.
-
-*Voice drops.*
-
-Day I told him I wasn't going to dental school... he looked at me like I'd died.
-
-Didn't speak to me for month. When he finally did, he said: "You had same chances as your siblings. Why you waste them?"
-
-*Quiet.*
-
-Still hears that. Every time someone says "just an assistant." Every time I doubt myself. His voice.`,
+        text: "Can tell you something? Not about course. About me.\n\nMy father came here from Manila. 1989. Worked three jobs. Saved every penny. Sent all four kids to college.\n\nMy sister: engineer. My brother: pharmacist. Other sister: accountant.\n\nMe: dental assistant.\n\nDay I told him I wasn't going to dental school. He looked at me like I'd died.\n\nDidn't speak to me for month. When he finally did, he said: 'You had same chances as your siblings. Why you waste them?'\n\nStill hears that. Every time someone says 'just an assistant.' Every time I doubt myself. His voice.",
         emotion: 'shame_pain',
         variation_id: 'vulnerability_v1',
         richEffectContext: 'warning',
@@ -875,25 +830,7 @@ Still hears that. Every time someone says "just an assistant." Every time I doub
     speaker: 'Yaquin',
     content: [
       {
-        text: `*Long exhale.*
-
-Know what's funny? My students—they ask where I learned this. I tell them: from watching. From failing. From eight years of "not good enough."
-
-*Small smile.*
-
-My father worked three jobs because he saw what he didn't have. Wanted us to have it.
-
-But maybe... what I have IS something. 200 people learning from my mistakes. That's... that's building something.
-
-*Looks at screen.*
-
-Maybe when course hits 1,000 students... I'll show him. Say: "Look, Tatay. This is what I built. Different than sister's buildings. Different than brother's pharmacy. But mine."
-
-*Pause.*
-
-Maybe he'll understand then. Maybe not.
-
-But I'll know.`,
+        text: "Know what's funny? My students ask where I learned this. I tell them: from watching. From failing. From eight years of 'not good enough.'\n\nMy father worked three jobs because he saw what he didn't have. Wanted us to have it.\n\nBut maybe what I have IS something. 200 people learning from my mistakes. That's building something.\n\nMaybe when course hits 1,000 students, I'll show him. Say: 'Look, Tatay. This is what I built. Different than sister's buildings. Different than brother's pharmacy. But mine.'\n\nMaybe he'll understand then. Maybe not.\n\nBut I'll know.",
         emotion: 'resolved_hopeful',
         interaction: 'bloom',
         variation_id: 'vulnerability_response_v1',
@@ -921,7 +858,7 @@ But I'll know.`,
     speaker: 'Yaquin',
     content: [
       {
-        text: `Lot of editing ahead.|See Samuel? Tell him. class is in session.`,
+        text: "Lot of editing ahead.|See Samuel? Tell him. class is in session.",
         emotion: 'proud',
         interaction: 'nod',
         variation_id: 'farewell_v1',
@@ -981,13 +918,7 @@ But I'll know.`,
       // TODO: [VFX] Screen overlays showing dashboards, red notification badges
       // NOTE: Strategic targeting - shake applied only to the overwhelming cascade of problems and realizations.
       // Targets the crescendo moment revealing the full scope of challenges.
-      text: `It worked. The course launched. 127 students enrolled.
-
-Eight weeks later. Three laptops. Support tickets. Dashboards.
-
-<shake>47 unread messages. 15 refunds. DDS calling it "amateur hour."</shake>
-
-Teaching? Easy. Running a course business? That's the real education.`,
+      text: "It worked. The course launched. 127 students enrolled.\n\nEight weeks later. Three laptops. Support tickets. Dashboards.\n\n<shake>47 unread messages. 15 refunds. DDS calling it 'amateur hour.'</shake>\n\nTeaching? Easy. Running a course business? That's the real education.",
       emotion: 'exhausted',
       variation_id: 'p2_entry_v1',
       useChatPacing: true
@@ -1020,11 +951,7 @@ Teaching? Easy. Running a course business? That's the real education.`,
     content: [{
       // NOTE: Strategic targeting - shake applied only to the realization of the fundamental format problem.
       // Targets the vulnerability moment of failure awareness ("Struggling. Refunds."), not the customer feedback.
-      text: `Self-paced doesn't work. Need live instruction. Videos too fast. Can't stay motivated.
-
-Great content, wrong format. Need teacher, not YouTube.
-
-<shake>Half career-switchers. crushing it. Other half. boss-mandated. Struggling. Refunds.</shake>`,
+      text: "Self-paced doesn't work. Need live instruction. Videos too fast. Can't stay motivated.\n\nGreat content, wrong format. Need teacher, not YouTube.\n\n<shake>Half career-switchers. crushing it. Other half. boss-mandated. Struggling. Refunds.</shake>",
       emotion: 'tense',
       variation_id: 'quality_crisis_v1',
       useChatPacing: true
@@ -1067,11 +994,7 @@ Great content, wrong format. Need teacher, not YouTube.
     nodeId: 'yaquin_p2_dds_comment',
     speaker: 'Yaquin',
     content: [{
-      text: `**Dr. Sarah Chen, DDS**: "Amateur hour. No credentials, structure, accountability. YouTube videos for $497. Assistants deserve real education, not shortcuts."
-
-Not wrong about credentials. Assistant teaching assistants. No degree. No training.
-
-Want to ignore her. Defend myself. Or... maybe she's right.`,
+      text: "**Dr. Sarah Chen, DDS**: 'Amateur hour. No credentials, structure, accountability. YouTube videos for $497. Assistants deserve real education, not shortcuts.'\n\nNot wrong about credentials. Assistant teaching assistants. No degree. No training.\n\nWant to ignore her. Defend myself. Or maybe she's right.",
       emotion: 'vulnerable',
       interaction: 'small',
       variation_id: 'dds_comment_v1',
@@ -1102,13 +1025,7 @@ Want to ignore her. Defend myself. Or... maybe she's right.`,
     content: [{
       // NOTE: Strategic targeting - jitter applied only to the core moment of self-doubt and uncertainty.
       // Targets the anxiety about whether the criticism is valid ("Maybe IS..."), isolating the panic from policy discussion.
-      text: `30-day guarantee. No questions. Stand behind quality.
-
-Boss made me. Too hard. Didn't finish, want money.
-
-Honor all. lose $7,500. Get strict. look like scammer.
-
-<jitter>Worst part? Don't know if they're right. Maybe IS too hard. Maybe IS "amateur hour."</jitter>`,
+      text: "30-day guarantee. No questions. Stand behind quality.\n\nBoss made me. Too hard. Didn't finish, want money.\n\nHonor all. lose $7,500. Get strict. look like scammer.\n\n<jitter>Worst part? Don't know if they're right. Maybe IS too hard. Maybe IS 'amateur hour.'</jitter>",
       emotion: 'conflicted',
       variation_id: 'refund_v1',
       useChatPacing: true
@@ -1147,13 +1064,7 @@ Honor all. lose $7,500. Get strict. look like scammer.
     nodeId: 'yaquin_p2_credibility_response',
     speaker: 'Yaquin',
     content: [{
-      text: `Ignore Dr. Chen. Or...
-
-Invite her to review? Add as credentialed advisor?
-
-Or respond publicly: "Not a DDS. 40 hours/week doing actual work. Students need both perspectives."
-
-Defend ground or acknowledge gap?`,
+      text: "Ignore Dr. Chen. Or.\n\nInvite her to review? Add as credentialed advisor?\n\nOr respond publicly: 'Not a DDS. 40 hours/week doing actual work. Students need both perspectives.'\n\nDefend ground or acknowledge gap?",
       emotion: 'analytical',
       interaction: 'nod',
       variation_id: 'credibility_v1',
@@ -1200,15 +1111,7 @@ Defend ground or acknowledge gap?`,
     content: [{
       // TODO: [SFX] Pen scratching on paper, data visualization sounds
       // TODO: [VFX] Animated charts/graphs showing completion rates, decision tree branches
-      text: `Data:
-**Self-motivated**: 85% completion. Glowing reviews.
-**Boss-mandated**: 32% completion. Most refunds.
-
-**Option 1**: Cohort-based. Fewer students, live, higher price.
-**Option 2**: Improve self-paced. Forums, office hours.
-**Option 3**: Two-tier. Self-paced ($497) + Cohort ($1,497).
-
-What would you do?`,
+      text: "Data:\n**Self-motivated**: 85% completion. Glowing reviews.\n**Boss-mandated**: 32% completion. Most refunds.\n\n**Option 1**: Cohort-based. Fewer students, live, higher price.\n**Option 2**: Improve self-paced. Forums, office hours.\n**Option 3**: Two-tier. Self-paced ($497) + Cohort ($1,497).\n\nWhat would you do?",
       emotion: 'analytical',
       interaction: 'nod',
       variation_id: 'format_v1',
@@ -1255,15 +1158,7 @@ What would you do?`,
     nodeId: 'yaquin_p2_scaling_offer',
     speaker: 'Yaquin',
     content: [{
-      text: `Three Birmingham offices reached out. License course for new hires. 50+ students.
-
-**Offer**: $15K/office, annual. They onboard, I provide content.
-
-$45K. Nine months salary.
-
-But not teaching. licensing. Content creator, not educator.
-
-That what I want?`,
+      text: "Three Birmingham offices reached out. License course for new hires. 50+ students.\n\n**Offer**: $15K/office, annual. They onboard, I provide content.\n\n$45K. Nine months salary.\n\nBut not teaching. licensing. Content creator, not educator.\n\nThat what I want?",
       emotion: 'conflicted',
       interaction: 'small',
       variation_id: 'scaling_v1',
@@ -1303,9 +1198,7 @@ That what I want?`,
     nodeId: 'yaquin_p2_scaling_choice',
     speaker: 'Yaquin',
     content: [{
-      text: `Keep self-paced for motivated learners. Add cohort "Dental Mastery". 8 weeks, live, small groups. Maybe reach out to Dr. Chen. Co-teach advanced modules.
-
-Not about perfect. Serving students where they are. Some need independence. Some need structure. Why not both?`,
+      text: "Keep self-paced for motivated learners. Add cohort 'Dental Mastery'. 8 weeks, live, small groups. Maybe reach out to Dr. Chen. Co-teach advanced modules.\n\nNot about perfect. Serving students where they are. Some need independence. Some need structure. Why not both?",
       emotion: 'focused',
       interaction: 'nod',
       variation_id: 'scaling_choice_v1',
@@ -1329,15 +1222,7 @@ Not about perfect. Serving students where they are. Some need independence. Some
     content: [{
       // TODO: [SFX] Success notification chimes, positive metrics sounds
       // TODO: [VFX] Green upward arrows on metrics, growth visualization
-      text: `Two weeks later. Implemented changes:
-• Cohort program: 24 students @ $1,497
-• Self-paced: office hours, forum
-• Refunds: approved 8, denied 7
-• Dr. Chen: reviewing curriculum (for fee)
-
-Revenue up. Completion up. Refunds down.
-
-More important? Learning business, not just teaching skill.`,
+      text: "Two weeks later. Implemented changes:\n- Cohort program: 24 students @ $1,497\n- Self-paced: office hours, forum\n- Refunds: approved 8, denied 7\n- Dr. Chen: reviewing curriculum (for fee)\n\nRevenue up. Completion up. Refunds down.\n\nMore important? Learning business, not just teaching skill.",
       emotion: 'proud',
       interaction: 'bloom',
       variation_id: 'implementation_v1',
@@ -1359,11 +1244,7 @@ More important? Learning business, not just teaching skill.`,
     nodeId: 'yaquin_p2_student_reactions',
     speaker: 'Yaquin',
     content: [{
-      text: `Mixed. Refunded students. 1-star reviews: "Bait and switch." Stayed students thriving: "Real teaching now, not just videos."
-
-**Student**: "Almost quit. Cohort saved me. Getting hired next week because of you."
-
-That's why. Not revenue. Not validation. That message.`,
+      text: "Mixed. Refunded students. 1-star reviews: 'Bait and switch.' Stayed students thriving: 'Real teaching now, not just videos.'\n\n**Student**: 'Almost quit. Cohort saved me. Getting hired next week because of you.'\n\nThat's why. Not revenue. Not validation. That message.",
       emotion: 'grateful',
       interaction: 'small',
       variation_id: 'reactions_v1',
@@ -1385,15 +1266,7 @@ That's why. Not revenue. Not validation. That message.`,
     nodeId: 'yaquin_p2_dds_outcome',
     speaker: 'Yaquin',
     content: [{
-      text: `Dr. Chen reviewed curriculum. Tore apart. "Outdated. Wrong. Too simplified." Brutal.
-
-She was right. Updated everything.
-
-Then: "Missing the why. Teach how, but students need why."
-
-Now paid consultant. Reviews content. Cited as clinical advisor.
-
-Critics → collaborators if humble enough to listen.`,
+      text: "Dr. Chen reviewed curriculum. Tore apart. 'Outdated. Wrong. Too simplified.' Brutal.\n\nShe was right. Updated everything.\n\nThen: 'Missing the why. Teach how, but students need why.'\n\nNow paid consultant. Reviews content. Cited as clinical advisor.\n\nCritics become collaborators if humble enough to listen.",
       emotion: 'proud',
       interaction: 'bloom',
       variation_id: 'dds_outcome_v1',
@@ -1415,7 +1288,7 @@ Critics → collaborators if humble enough to listen.`,
     nodeId: 'yaquin_p2_operational_wisdom',
     speaker: 'Yaquin',
     content: [{
-      text: `{{met_jordan:Jordan calls it 'user experience.' I call it survival.|I learned that from running the clinic floor.}}|If the student is confused, it's my fault. If the tool is hard to use, fix the tool.|Academics blame the student. I blame the design.`,
+      text: "{{met_jordan:Jordan calls it 'user experience.' I call it survival.|I learned that from running the clinic floor.}}|If the student is confused, it's my fault. If the tool is hard to use, fix the tool.|Academics blame the student. I blame the design.",
       emotion: 'confident',
       interaction: 'nod',
       variation_id: 'operational_wisdom_v1',
@@ -1437,7 +1310,7 @@ Critics → collaborators if humble enough to listen.`,
     nodeId: 'yaquin_p2_reflection',
     speaker: 'Yaquin',
     content: [{
-      text: `Started. assistant who thought textbooks garbage.|Now. creator who knows content is 20%.|Other 80%? Operations. Strategy. Communication. Resilience.|*Smiles.*|200+ students. Some finish. Some quit. Bad reviews.|Okay with that.|Because who succeed? Know things textbooks never taught.|Just like I did.`,
+      text: "Started. assistant who thought textbooks garbage.|Now. creator who knows content is 20%.|Other 80%? Operations. Strategy. Communication. Resilience.|200+ students. Some finish. Some quit. Bad reviews.|Okay with that.|Because who succeed? Know things textbooks never taught.|Just like I did.",
       emotion: 'proud',
       interaction: 'bloom',
       variation_id: 'reflection_v1',
@@ -1459,7 +1332,7 @@ Critics → collaborators if humble enough to listen.`,
     nodeId: 'yaquin_p2_complete',
     speaker: 'Yaquin',
     content: [{
-      text: `For being here when messy.|*Packing equipment.*|Cohort Monday. Twenty students. Live sessions. Real teaching.|See Samuel? Tell him. building business that teaches.`,
+      text: "For being here when messy.|Cohort Monday. Twenty students. Live sessions. Real teaching.|See Samuel? Tell him. building business that teaches.",
       emotion: 'grateful',
       interaction: 'nod',
       variation_id: 'complete_v1',
@@ -1487,7 +1360,7 @@ Critics → collaborators if humble enough to listen.`,
     nodeId: 'yaquin_asks_player',
     speaker: 'Yaquin',
     content: [{
-      text: `*Stops packing. Looks at you.*|Biggest challenge?|*Thinks.*|Scaling. How teach 200 students same quality as 20?|But you. what's your challenge?|You help people. But who helps you figure out your path?`,
+      text: "Biggest challenge?|Scaling. How teach 200 students same quality as 20?|But you. what's your challenge?|You help people. But who helps you figure out your path?",
       emotion: 'curious_engaged',
       interaction: 'nod',
       variation_id: 'yaquin_reciprocity_v1',
@@ -1529,7 +1402,7 @@ Critics → collaborators if humble enough to listen.`,
     nodeId: 'yaquin_reciprocity_response',
     speaker: 'Yaquin',
     content: [{
-      text: `*Nods.*|Know that feeling.|But you here. Helping. That's path.|Not about having all answers.|About showing up when messy.|*Resumes packing.*|You doing that.|See Samuel. Tell him Yaquin says you ready.`,
+      text: "Know that feeling.|But you here. Helping. That's path.|Not about having all answers.|About showing up when messy.|You doing that.|See Samuel. Tell him Yaquin says you ready.",
       emotion: 'affirming',
       interaction: 'nod',
       variation_id: 'yaquin_response_v1',
@@ -1562,17 +1435,7 @@ Critics → collaborators if humble enough to listen.`,
     nodeId: 'yaquin_simulation_intro',
     speaker: 'Yaquin',
     content: [{
-      text: `*He pulls up his laptop, face tightening.*
-
-      Reviews came in. 200 students, 47 reviews posted.
-
-      Most are good. Five stars. "Changed my career." "Finally understand mixing ratios."
-
-      *Scrolls down.*
-
-      But three reviews... they're brutal. And one of them? From a DDS. Says I'm teaching "dangerous misinformation."
-
-      <shake>Posted publicly. Other students are asking questions now.</shake>`,
+      text: "Reviews came in. 200 students, 47 reviews posted.\n\nMost are good. Five stars. 'Changed my career.' 'Finally understand mixing ratios.'\n\nBut three reviews. They're brutal. And one of them? From a DDS. Says I'm teaching 'dangerous misinformation.'\n\n<shake>Posted publicly. Other students are asking questions now.</shake>",
       emotion: 'anxious',
       variation_id: 'sim_intro_v1',
       richEffectContext: 'warning',
@@ -1616,22 +1479,7 @@ Critics → collaborators if humble enough to listen.`,
     nodeId: 'yaquin_simulation_phase_1',
     speaker: 'Yaquin',
     content: [{
-      text: `*He shows you the screen.*
-
-      **Review from Dr. Patricia Lam, DDS:**
-      "This course teaches outdated impression techniques. The 45-second mixing time is WRONG for modern alginate formulations. Students following this could compromise patient safety. 1 star."
-
-      **Review from DentalTech_Mike:**
-      "Great practical tips but the anatomy section has errors. Tooth numbering inconsistent between modules. Fix this."
-
-      **Review from Anonymous:**
-      "Yaquin isn't a real dentist. Why am I taking advice from an assistant? Refund requested."
-
-      *He looks at you.*
-
-      Three different problems. One is technical accuracy. One is production quality. One is... about me. Who I am.
-
-      Which one do I address first?`,
+      text: "**Review from Dr. Patricia Lam, DDS:**\n'This course teaches outdated impression techniques. The 45-second mixing time is WRONG for modern alginate formulations. Students following this could compromise patient safety. 1 star.'\n\n**Review from DentalTech_Mike:**\n'Great practical tips but the anatomy section has errors. Tooth numbering inconsistent between modules. Fix this.'\n\n**Review from Anonymous:**\n'Yaquin isn't a real dentist. Why am I taking advice from an assistant? Refund requested.'\n\nThree different problems. One is technical accuracy. One is production quality. One is about me. Who I am.\n\nWhich one do I address first?",
       emotion: 'conflicted',
       variation_id: 'phase1_v1',
       useChatPacing: true
@@ -1714,17 +1562,7 @@ Critics → collaborators if humble enough to listen.`,
     nodeId: 'yaquin_simulation_phase_2',
     speaker: 'Yaquin',
     content: [{
-      text: `*He nods slowly, considering.*
-
-      Okay. The technical one. Dr. Lam.
-
-      I looked up her claim. She's right about one thing—modern alginate brands vary. Some set in 30 seconds. Some in 60. My "45 seconds" was based on the brand I used for eight years.
-
-      But here's the thing... I also taught texture cues. "When it stops being shiny, it's ready." That works for ANY brand.
-
-      *Pulls up the response draft.*
-
-      How do I respond? Admit I was wrong? Defend my approach? Both?`,
+      text: "Okay. The technical one. Dr. Lam.\n\nI looked up her claim. She's right about one thing. Modern alginate brands vary. Some set in 30 seconds. Some in 60. My '45 seconds' was based on the brand I used for eight years.\n\nBut here's the thing. I also taught texture cues. 'When it stops being shiny, it's ready.' That works for ANY brand.\n\nHow do I respond? Admit I was wrong? Defend my approach? Both?",
       emotion: 'analytical',
       variation_id: 'phase2_v1',
       useChatPacing: true
@@ -1741,7 +1579,7 @@ Critics → collaborators if humble enough to listen.`,
 
 [B] FULL ADMISSION: "You're right. I'll remove the timing guidance entirely and update the module."
 
-[C] BALANCED: "Thank you for this feedback. You're correct that timing varies by brand—I'll add a comparison chart. However, the texture-based method I teach is brand-agnostic and the core skill."`,
+[C] BALANCED: "Thank you for this feedback. You're correct that timing varies by brand. I'll add a comparison chart. However, the texture-based method I teach is brand-agnostic and the core skill."`,
         displayStyle: 'text'
       },
       successFeedback: 'RESPONSE SENT: Balanced approach maintains credibility while showing growth.'
@@ -1801,25 +1639,7 @@ Critics → collaborators if humble enough to listen.`,
     nodeId: 'yaquin_simulation_success',
     speaker: 'Yaquin',
     content: [{
-      text: `*His shoulders relax. Something shifts.*
-
-      <bloom>That's it.</bloom>
-
-      Acknowledge what's true. Stand by what's still valid. Improve based on feedback.
-
-      *Types quickly.*
-
-      "Dr. Lam, thank you for this feedback. You're absolutely right—timing varies by brand, and I should have included a comparison chart. I'll update Module 1 this week. However, the texture-based method ('when it stops being shiny') remains the core skill because it's brand-agnostic. I learned this from 8 years of chair-side work. Perhaps we could collaborate on a more comprehensive timing guide? Your clinical expertise would strengthen the course."
-
-      *Looks at you.*
-
-      Not defensive. Not doormat. Professional.
-
-      The anonymous attacker? I'm not responding. Can't win that fight. But the students watching? They'll see how I handle legitimate criticism.
-
-      *Smiles.*
-
-      That's the real review. How I respond when challenged.`,
+      text: "<bloom>That's it.</bloom>\n\nAcknowledge what's true. Stand by what's still valid. Improve based on feedback.\n\n'Dr. Lam, thank you for this feedback. You're absolutely right. Timing varies by brand, and I should have included a comparison chart. I'll update Module 1 this week. However, the texture-based method remains the core skill because it's brand-agnostic. I learned this from 8 years of chair-side work. Perhaps we could collaborate on a more comprehensive timing guide? Your clinical expertise would strengthen the course.'\n\nNot defensive. Not doormat. Professional.\n\nThe anonymous attacker? I'm not responding. Can't win that fight. But the students watching? They'll see how I handle legitimate criticism.\n\nThat's the real review. How I respond when challenged.",
       emotion: 'confident',
       interaction: 'bloom',
       variation_id: 'success_v1',
@@ -1860,23 +1680,7 @@ Critics → collaborators if humble enough to listen.`,
     nodeId: 'yaquin_simulation_fail',
     speaker: 'Yaquin',
     content: [{
-      text: `*He posts the response. Waits.*
-
-      *Minutes pass. Then more reviews flood in.*
-
-      "Can't even take feedback."
-      "This is why I don't trust non-credentialed instructors."
-      "Dr. Lam is right. Unsubscribed."
-
-      *He stares at the screen.*
-
-      Made it worse. Way worse.
-
-      *Looks at you.*
-
-      I reacted instead of responded. Let the fear drive. Now I've given them ammunition.
-
-      Can we... can we try again? Different approach?`,
+      text: "Posted the response. Waited.\n\nMinutes pass. Then more reviews flood in.\n\n'Can't even take feedback.'\n'This is why I don't trust non-credentialed instructors.'\n'Dr. Lam is right. Unsubscribed.'\n\nMade it worse. Way worse.\n\nI reacted instead of responded. Let the fear drive. Now I've given them ammunition.\n\nCan we try again? Different approach?",
       emotion: 'devastated',
       interaction: 'small',
       variation_id: 'fail_v1',
@@ -1910,31 +1714,7 @@ Critics → collaborators if humble enough to listen.`,
     nodeId: 'yaquin_simulation_aftermath',
     speaker: 'Yaquin',
     content: [{
-      text: `*A week later. He shows you the dashboard.*
-
-      Dr. Lam responded. Publicly.
-
-      "Impressed by how Yaquin handled this feedback. Rare to see an educator acknowledge gaps AND stand by their methodology. I'd be happy to review the timing chart. This is how professional development should work."
-
-      *Scrolls down.*
-
-      Five new five-star reviews. All mentioning the exchange.
-
-      "This is how a teacher should respond to criticism."
-      "Bought the course BECAUSE of how he handled Dr. Lam."
-      "Integrity matters more than perfection."
-
-      *Looks at you.*
-
-      The worst review became the best marketing.
-
-      Not because I won the argument. Because I didn't make it a fight.
-
-      *Quiet.*
-
-      That's what eight years of patient care taught me. Not how to be right. How to listen. How to grow. How to stay open when it hurts.
-
-      That's the real curriculum. The one textbooks can't teach.`,
+      text: "A week later. Dr. Lam responded. Publicly.\n\n'Impressed by how Yaquin handled this feedback. Rare to see an educator acknowledge gaps AND stand by their methodology. I'd be happy to review the timing chart. This is how professional development should work.'\n\nFive new five-star reviews. All mentioning the exchange.\n\n'This is how a teacher should respond to criticism.'\n'Bought the course BECAUSE of how he handled Dr. Lam.'\n'Integrity matters more than perfection.'\n\nThe worst review became the best marketing.\n\nNot because I won the argument. Because I didn't make it a fight.\n\nThat's what eight years of patient care taught me. Not how to be right. How to listen. How to grow. How to stay open when it hurts.\n\nThat's the real curriculum. The one textbooks can't teach.",
       emotion: 'proud_reflective',
       interaction: 'nod',
       variation_id: 'aftermath_v1',
@@ -1966,31 +1746,7 @@ Critics → collaborators if humble enough to listen.`,
     nodeId: 'yaquin_simulation_insight',
     speaker: 'Yaquin',
     content: [{
-      text: `*He pauses. Something clicking into place.*
-
-      The real curriculum.
-
-      *Quiet.*
-
-      All this time, I thought I was teaching dental skills. Mixing paste. Calming patients. Reading cues.
-
-      But the students who stay? The ones who thrive? They're not just learning technique.
-
-      They're learning how to learn. How to take criticism. How to grow without breaking.
-
-      *Looks at the reviews.*
-
-      Dr. Lam taught me that. In public. Painfully. And now 200 students got to watch me learn it.
-
-      *Small smile.*
-
-      Maybe that's worth more than perfect content. A teacher who models growth.
-
-      *Nods at you.*
-
-      Thank you. For helping me see it.
-
-      See Samuel. Tell him... the curriculum expanded today.`,
+      text: "The real curriculum.\n\nAll this time, I thought I was teaching dental skills. Mixing paste. Calming patients. Reading cues.\n\nBut the students who stay? The ones who thrive? They're not just learning technique.\n\nThey're learning how to learn. How to take criticism. How to grow without breaking.\n\nDr. Lam taught me that. In public. Painfully. And now 200 students got to watch me learn it.\n\nMaybe that's worth more than perfect content. A teacher who models growth.\n\nThank you. For helping me see it.\n\nSee Samuel. Tell him the curriculum expanded today.",
       emotion: 'grateful_enlightened',
       interaction: 'bloom',
       variation_id: 'insight_v1',

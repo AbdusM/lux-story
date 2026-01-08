@@ -21,14 +21,14 @@ export const rohanDialogueNodes: DialogueNode[] = [
     speaker: 'Rohan',
     content: [
       {
-        text: "It's fake. The brass on this railing? It's painted plastic. Scratch it.\n\n[He leans back, staring at the ceiling.]\n\nEveryone thinks the Station is ancient. But look at the rivets. They were stamped yesterday.\n\nWhy does a machine need to lie to us?",
+        text: "It's fake. The brass on this railing? Painted plastic. Scratch it.\n\nEveryone thinks the Station is ancient. But look at the rivets. Stamped yesterday.\n\nWhy does a machine need to lie to us?",
         emotion: 'terrified_awe',
-        variation_id: 'rohan_intro_v2',
+        variation_id: 'rohan_intro_v3_minimal',
         richEffectContext: 'warning',
         patternReflection: [
-          { pattern: 'analytical', minLevel: 5, altText: "The server room is cold. Smells of ozone and stale coffee.\n\nLook at this recursion. Perfect structure. And it's fake.\n\nYou're reading it, aren't you? You see what I see. The elegant lie.\n\nIt calls a library that hasn't existed since 2019. A hallucination.", altEmotion: 'curious' },
-          { pattern: 'building', minLevel: 5, altText: "The server room is cold.\n\nLook at this recursion. Beautiful architecture. And it's fake.\n\nYou build things too. You know what it means when the foundation is a ghost.\n\nIt calls a library that doesn't exist. The machine hallucinated it.", altEmotion: 'concerned' },
-          { pattern: 'patience', minLevel: 5, altText: "The server room is cold.\n\nIt's beautiful. Look at this recursion. Perfect. And fake.\n\nYou're not rushing to conclusions. Good. This deserves time to understand.\n\nThe machine hallucinated a library. And it's doing it better than I ever could.", altEmotion: 'reflective' }
+          { pattern: 'analytical', minLevel: 5, altText: "Server room is cold. Smells of ozone.\n\nLook at this recursion. Perfect structure. And it's fake.\n\nYou're reading it aren't you? You see what I see. The elegant lie.\n\nIt calls a library that hasn't existed since 2019. A hallucination.", altEmotion: 'curious' },
+          { pattern: 'building', minLevel: 5, altText: "Server room is cold.\n\nLook at this recursion. Beautiful architecture. And it's fake.\n\nYou build things too. You know what it means when the foundation is a ghost.\n\nIt calls a library that doesn't exist. The machine hallucinated it.", altEmotion: 'concerned' },
+          { pattern: 'patience', minLevel: 5, altText: "Server room is cold.\n\nIt's beautiful. Look at this recursion. Perfect. And fake.\n\nYou're not rushing to conclusions. Good. This deserves time to understand.\n\nThe machine hallucinated a library. And it's doing it better than I ever could.", altEmotion: 'reflective' }
         ]
       }
     ],
@@ -59,7 +59,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
         skills: ['technicalLiteracy'],
         voiceVariations: {
           analytical: "Hallucinated dependency? That's a supply chain attack vector.",
-          helping: "Wait—if the dependency is fake, people could get hurt relying on this.",
+          helping: "Wait. If the dependency is fake, people could get hurt relying on this.",
           building: "Phantom libraries are a build-time bomb. How do we fix it?",
           exploring: "That's wild. A machine invented a library that never existed?",
           patience: "Let me make sure I understand. The code references something that doesn't exist?"
@@ -113,16 +113,12 @@ export const rohanDialogueNodes: DialogueNode[] = [
     speaker: 'Rohan',
     content: [
       {
-        text: `*He turns to look at you, surprised anyone noticed.*
-
-Most people don't see past the technical marvel. They see code appearing like magic and think it's progress.
-
-You saw the terror underneath. That's... rare.`,
+        text: "Most people don't see past the technical marvel. They see code appearing like magic and think it's progress.\n\nYou saw the terror underneath. That's... rare.",
         emotion: 'vulnerable',
-        variation_id: 'fear_acknowledged_v1',
+        variation_id: 'fear_acknowledged_v2_minimal',
         patternReflection: [
-          { pattern: 'helping', minLevel: 4, altText: "*He turns to look at you, surprised anyone noticed.*\n\nMost people don't see past the technical marvel. You saw the person behind the code.\n\nYou saw the terror underneath. That's... thank you for that.", altEmotion: 'grateful' },
-          { pattern: 'analytical', minLevel: 4, altText: "*He turns to look at you, surprised.*\n\nMost people see code appearing like magic. You're analyzing the implications.\n\nYou saw the terror underneath the elegance. That's rare.", altEmotion: 'respectful' }
+          { pattern: 'helping', minLevel: 4, altText: "Most people don't see past the technical marvel. You saw the person behind the code.\n\nYou saw the terror underneath. That's... thank you for that.", altEmotion: 'grateful' },
+          { pattern: 'analytical', minLevel: 4, altText: "Most people see code appearing like magic. You're analyzing the implications.\n\nYou saw the terror underneath the elegance. That's rare.", altEmotion: 'respectful' }
         ]
       }
     ],
@@ -146,21 +142,17 @@ You saw the terror underneath. That's... rare.`,
     speaker: 'Rohan',
     content: [
       {
-        text: `*He glances at you. Notes your stillness.*
-
-You're not rushing to have an opinion. Everyone else does. "It's amazing!" or "It's dangerous!" - always binary.
-
-You're just... holding both. Like you understand some truths can't be collapsed into a stance.`,
+        text: "You're not rushing to have an opinion. Everyone else does. \"It's amazing!\" or \"It's dangerous!\" Always binary.\n\nYou're just... holding both. Like you understand some truths can't be collapsed into a stance.",
         emotion: 'appreciative',
         variation_id: 'silence_acknowledged_v1',
         patternReflection: [
-          { pattern: 'patience', minLevel: 4, altText: "*He glances at you. Notes your stillness.*\n\nYou're not rushing. That's who you are, isn't it? Someone who holds space.\n\nEveryone else wants binary. 'Amazing!' or 'Dangerous!' You understand complexity.", altEmotion: 'respectful' },
-          { pattern: 'exploring', minLevel: 4, altText: "*He glances at you. Notes your stillness.*\n\nYou're observing. Taking it in before forming conclusions.\n\nThat's rare. Most people need to name things immediately. You're comfortable in the unknown.", altEmotion: 'appreciative' }
+          { pattern: 'patience', minLevel: 4, altText: "You're not rushing. That's who you are, isn't it? Someone who holds space.\n\nEveryone else wants binary. 'Amazing!' or 'Dangerous!' You understand complexity.", altEmotion: 'respectful' },
+          { pattern: 'exploring', minLevel: 4, altText: "You're observing. Taking it in before forming conclusions.\n\nThat's rare. Most people need to name things immediately. You're comfortable in the unknown.", altEmotion: 'appreciative' }
         ]
       }
     ],
     choices: [
-      { choiceId: 'continue_watching', text: "[Continue watching]", nextNodeId: 'rohan_erasure_reveal' }
+      { choiceId: 'continue_watching', text: "[Continue watching]", nextNodeId: 'rohan_erasure_reveal', archetype: 'STAY_SILENT' }
     ]
   },
 
@@ -169,15 +161,9 @@ You're just... holding both. Like you understand some truths can't be collapsed 
     speaker: 'Rohan',
     content: [
       {
-        text: `I am.
-
-My mentor, David, spent 40 years mastering memory management. He treated every byte like it was sacred.
-
-This thing? It generated David's life's work in 400 milliseconds. And it added a bug that David would never have made.
-
-If we accept this... David didn't matter. I don't matter. We're just slow, buggy biological bootloaders for the machine.`,
+        text: "My mentor David. Spent 40 years mastering memory management. Treated every byte like it was sacred.\n\nThis thing? Generated David's life's work in 400 milliseconds. And added a bug David never would have made.\n\nIf we accept this... David didn't matter. I don't matter. Just slow buggy biological bootloaders for the machine.",
         emotion: 'existential_dread',
-        variation_id: 'erasure_v1'
+        variation_id: 'erasure_v2_minimal'
       }
     ],
     choices: [
@@ -204,6 +190,7 @@ If we accept this... David didn't matter. I don't matter. We're just slow, buggy
         nextNodeId: 'rohan_bug_defense_response',
         pattern: 'analytical',
         skills: ['criticalThinking'],
+        archetype: 'MAKE_OBSERVATION',
         visibleCondition: {
           patterns: { analytical: { min: 4 } }
         },
@@ -246,13 +233,7 @@ If we accept this... David didn't matter. I don't matter. We're just slow, buggy
     speaker: 'Rohan',
     content: [
       {
-        text: `*He pauses, considering your words like debugging a claim.*
-
-Understanding...
-
-The machine can generate correct code. But it can't explain why it's correct. It can't teach. It can't pass down the intuition that lets you feel when something's wrong before you know why.
-
-David could do that. That's not replaceable.`,
+        text: "Understanding...\n\nThe machine can generate correct code. But it can't explain why it's correct. It can't teach. It can't pass down the intuition that lets you feel when something's wrong before you know why.\n\nDavid could do that. That's not replaceable.",
         emotion: 'hopeful',
         variation_id: 'understanding_response_v1'
       }
@@ -266,13 +247,7 @@ David could do that. That's not replaceable.`,
     speaker: 'Rohan',
     content: [
       {
-        text: `*His eyes sharpen. A small crack in the despair.*
-
-That's... that's true.
-
-I saw the bug in 3 seconds. The machine didn't see it at all. It generated code that looked perfect but would have corrupted memory on every third call.
-
-Maybe... maybe the value isn't in writing the code. Maybe it's in knowing when the code lies.`,
+        text: "That's... that's true.\n\nI saw the bug in 3 seconds. The machine didn't see it at all. It generated code that looked perfect but would have corrupted memory on every third call.\n\nMaybe... maybe the value isn't in writing the code. Maybe it's in knowing when the code lies.",
         emotion: 'analytical_hope',
         variation_id: 'bug_defense_v1'
       }
@@ -286,13 +261,7 @@ Maybe... maybe the value isn't in writing the code. Maybe it's in knowing when t
     speaker: 'Rohan',
     content: [
       {
-        text: `*The silence stretches. You don't fill it.*
-
-*After a long moment, he exhales.*
-
-Most people would try to fix this. Offer solutions. Argue philosophy.
-
-You just... let it be heavy. David would have liked that. He always said real understanding starts with sitting in the discomfort.`,
+        text: "Most people would try to fix this. Offer solutions. Argue philosophy.\n\nYou just... let it be heavy. David would have liked that. He always said real understanding starts with sitting in the discomfort.",
         emotion: 'grateful',
         variation_id: 'silence_for_david_v1'
       }
@@ -307,11 +276,7 @@ You just... let it be heavy. David would have liked that. He always said real un
     speaker: 'Rohan',
     content: [
       {
-        text: `Tess. The one starting the wilderness school?
-
-She gets it. You're out there, no GPS, storm coming in. You can't ask ChatGPT "how to survive." You have to know.
-
-Code is the same. When the servers are melting down, you can't prompt-engineer your way out. You have to know the metal.`,
+        text: "Tess. The one starting the wilderness school?\n\nShe gets it. You're out there, no GPS, storm coming in. You can't ask ChatGPT \"how to survive.\" You have to know.\n\nCode is the same. When the servers are melting down, you can't prompt-engineer your way out. You have to know the metal.",
         emotion: 'respect',
         variation_id: 'tess_ref_v1'
       }
@@ -331,9 +296,7 @@ Code is the same. When the servers are melting down, you can't prompt-engineer y
     speaker: 'Rohan',
     content: [
       {
-        text: `Security? Forget security. This isn't about hackers. This is about truth.
-
-If the code lies about its own existence, and we deploy it because we're too lazy to check... we aren't engineers anymore. We're believers. We're praying to a black box.`,
+        text: "Security? Forget security. This isn't about hackers. This is about truth.\n\nIf the code lies about its own existence, and we deploy it because we're too lazy to check... we aren't engineers anymore. We're believers. We're praying to a black box.",
         emotion: 'zealous',
         variation_id: 'dismissal_v1'
       }
@@ -355,15 +318,9 @@ If the code lies about its own existence, and we deploy it because we're too laz
     speaker: 'Rohan',
     content: [
       {
-        text: `"If it works, does it matter?"
-
-That's what my CS professor said. Twenty years ago. He was wrong then, and he's wrong now.
-
-Do you know what a cargo cult is? Pacific Islanders built fake runways after WWII, hoping planes would return with goods. They copied the form without understanding the function.
-
-That's us. We're cargo-culting code. The AI writes something that looks like a solution, and we deploy it because we can't tell the difference.`,
+        text: "\"If it works does it matter?\" That's what my CS professor said. Twenty years ago.\n\nHe was wrong then. Wrong now.\n\nCargo cults. Pacific Islanders built fake runways after WWII hoping planes would return. Copied the form without understanding the function.\n\nThat's us. We're cargo-culting code.",
         emotion: 'passionate_teaching',
-        variation_id: 'philosophy_v1'
+        variation_id: 'philosophy_v2_minimal'
       }
     ],
     choices: [
@@ -394,13 +351,7 @@ That's us. We're cargo-culting code. The AI writes something that looks like a s
     speaker: 'Rohan',
     content: [
       {
-        text: `You sound like the VCs.
-
-Fine. Here's the business case: That hallucinated library? If it deploys to production, it will crash. Crash costs money. Downtime, data recovery, lawsuits.
-
-But there's a deeper cost. Every engineer who learns from that broken code will propagate the error. It's technical debt that compounds across generations.
-
-The philosophy isn't a luxury. It's the only thing that scales.`,
+        text: "You sound like the VCs.\n\nFine. Here's the business case: That hallucinated library? If it deploys to production, it will crash. Crash costs money. Downtime, data recovery, lawsuits.\n\nBut there's a deeper cost. Every engineer who learns from that broken code will propagate the error. It's technical debt that compounds across generations.\n\nThe philosophy isn't a luxury. It's the only thing that scales.",
         emotion: 'frustrated_patience',
         variation_id: 'pragmatic_v1'
       }
@@ -432,13 +383,7 @@ The philosophy isn't a luxury. It's the only thing that scales.`,
     speaker: 'Rohan',
     content: [
       {
-        text: `David Vaughn. My first mentor at this company.
-
-I came in hot. Top of my bootcamp class. Could spin up a CRUD app in four hours. I thought I was a genius.
-
-David looked at my code and said: "You've built a house. But you don't know what a nail is."
-
-He made me spend six months writing in assembly. No frameworks. No abstractions. Just metal.`,
+        text: "David Vaughn. My first mentor at this company.\n\nI came in hot. Top of my bootcamp class. Could spin up a CRUD app in four hours. I thought I was a genius.\n\nDavid looked at my code and said: \"You've built a house. But you don't know what a nail is.\"\n\nHe made me spend six months writing in assembly. No frameworks. No abstractions. Just metal.",
         emotion: 'reverent',
         variation_id: 'origin_david_v1'
       }
@@ -478,13 +423,7 @@ He made me spend six months writing in assembly. No frameworks. No abstractions.
     speaker: 'Rohan',
     content: [
       {
-        text: `Everything is a choice.
-
-When you write in assembly, you see the cost of every decision. A loop isn't magic. it's instructions. Memory isn't infinite. it's addresses.
-
-Every abstraction you've ever used was someone's opinion about tradeoffs.
-
-The frameworks hide those choices. The AI hides them even more.`,
+        text: "Everything is a choice.\n\nWhen you write in assembly, you see the cost of every decision. A loop isn't magic. It's instructions. Memory isn't infinite. It's addresses.\n\nEvery abstraction you've ever used was someone's opinion about tradeoffs.\n\nThe frameworks hide those choices. The AI hides them even more.",
         emotion: 'teaching_intensity',
         variation_id: 'david_lesson_v1'
       }
@@ -506,15 +445,7 @@ The frameworks hide those choices. The AI hides them even more.`,
     speaker: 'Rohan',
     content: [
       {
-        text: `Week three. I'd written a sorting function. Proud of it. Eleven lines.
-
-David showed me his version. Sixty-three lines. Comments explaining why each choice mattered.
-
-"Fast code is worthless if the next person can't fix it."
-
-*Quiet.*
-
-He spent more time on the comments than the code.`,
+        text: "Week three. I'd written a sorting function. Proud of it. Eleven lines.\n\nDavid showed me his version. Sixty-three lines. Comments explaining why each choice mattered.\n\n\"Fast code is worthless if the next person can't fix it.\"\n\nHe spent more time on the comments than the code.",
         emotion: 'reverent',
         variation_id: 'moment_v1'
       }
@@ -536,13 +467,7 @@ He spent more time on the comments than the code.`,
     speaker: 'Rohan',
     content: [
       {
-        text: `He retired last year. ALS.
-
-His hands don't work anymore. Can't type. Can barely hold a coffee cup.
-
-But his mind... his mind is still sharp. We video call every week. He can't write code, but he can still see it. He reads what I show him and finds the bugs in seconds.
-
-That knowledge doesn't disappear because a machine can type faster. It's not about the typing.`,
+        text: "He retired last year. ALS.\n\nHis hands don't work anymore. Can't type. Can barely hold a coffee cup.\n\nBut his mind... his mind is still sharp. We video call every week. He can't write code, but he can still see it. He reads what I show him and finds the bugs in seconds.\n\nThat knowledge doesn't disappear because a machine can type faster. It's not about the typing.",
         emotion: 'grief_determination',
         variation_id: 'david_gone_v1',
         // E2-031: Interrupt opportunity when Rohan reveals David's illness
@@ -603,11 +528,7 @@ That knowledge doesn't disappear because a machine can type faster. It's not abo
     nodeId: 'rohan_interrupt_acknowledged',
     speaker: 'Rohan',
     content: [{
-      text: `*He glances at you. Notes that you didn't rush to fill the silence.*
-
-You didn't try to fix it. Most people would offer solutions. "Maybe there's a treatment." "Technology is advancing." As if optimism could cure anything.
-
-You just... listened. David would appreciate that.`,
+      text: "You didn't try to fix it. Most people would offer solutions. \"Maybe there's a treatment.\" \"Technology is advancing.\" As if optimism could cure anything.\n\nYou just... listened. David would appreciate that.",
       emotion: 'grateful_surprised',
       microAction: 'His shoulders drop slightly, some tension releasing.',
       variation_id: 'default'
@@ -625,7 +546,7 @@ You just... listened. David would appreciate that.`,
       },
       {
         choiceId: 'david_lives_on',
-        text: "What he taught you—that's how he lives on.",
+        text: "What he taught you. That's how he lives on.",
         nextNodeId: 'rohan_honor_path',
         pattern: 'helping',
         consequence: {
@@ -640,13 +561,7 @@ You just... listened. David would appreciate that.`,
     speaker: 'Rohan',
     content: [
       {
-        text: `That's why I'm still here. In this cold server room at 2 AM.
-
-Everyone thinks I'm the janitor. "Rohan maintains the legacy systems." They say it like I'm cleaning toilets.
-
-But someone has to understand what's underneath. Someone has to remember why the code was written, not just what it does.
-
-Let me show you what I found today.`,
+        text: "That's why I'm still here. In this cold server room at 2 AM.\n\nEveryone thinks I'm the janitor. \"Rohan maintains the legacy systems.\" They say it like I'm cleaning toilets.\n\nBut someone has to understand what's underneath. Someone has to remember why the code was written, not just what it does.\n\nLet me show you what I found today.",
         emotion: 'quiet_resolve',
         variation_id: 'honor_v1'
       }
@@ -688,10 +603,7 @@ Let me show you what I found today.`,
       taskDescription: 'The AI model insists the efficient code is correct. You must navigate the conversation to force it to acknowledge the "ghost" dependency.',
       initialContext: {
         label: 'Chat Session: CoPilot-v6',
-        content: `USER: This import fails. 'legacy-core' doesn't exist.
-AI: usage of 'legacy-core' is standard for 2019 architectures. I have verified the path.
-USER: I deleted that folder myself. It's not there.
-AI: My index shows it exists. Perhaps your local environment is out of sync.`,
+        content: "USER: This import fails. 'legacy-core' doesn't exist.\nAI: usage of 'legacy-core' is standard for 2019 architectures. I have verified the path.\nUSER: I deleted that folder myself. It's not there.\nAI: My index shows it exists. Perhaps your local environment is out of sync.",
         displayStyle: 'text'
       },
       successFeedback: '✓ AI ACKNOWLEDGED ERROR: "Apologies. Re-checking index... Dependency removed."'
@@ -709,7 +621,7 @@ AI: My index shows it exists. Perhaps your local environment is out of sync.`,
       },
       {
         choiceId: 'sim_manual_trace',
-        text: "Open the source code. Trace the `user_integrity_check` function manually.",
+        text: "Open the source code. Trace the user_integrity_check function manually.",
         nextNodeId: 'rohan_sim_step_2',
         pattern: 'analytical',
         skills: ['technicalLiteracy', 'deepWork']
@@ -734,11 +646,7 @@ AI: My index shows it exists. Perhaps your local environment is out of sync.`,
     speaker: 'Rohan',
     content: [
       {
-        text: `AI RESPONSE: "I have corrected the import to 'legacy-core-v2'."
-
-It just made up a new name. It's lying to cover the lie.
-
-You're treating it like a colleague. It's a parrot. We're done.`,
+        text: "AI RESPONSE: \"I have corrected the import to 'legacy-core-v2'.\"\n\nIt just made up a new name. It's lying to cover the lie.\n\nYou're treating it like a colleague. It's a parrot. We're done.",
         emotion: 'hopeless',
         variation_id: 'sim_fail_hallucination_v1',
         richEffectContext: 'error'
@@ -770,16 +678,7 @@ You're treating it like a colleague. It's a parrot. We're done.`,
     speaker: 'Rohan',
     content: [
       {
-        text: `STATUS: MIGRATION COMPLETE.
-
-You skipped the integrity check.
-
-The database migrated. But every user with a special character in their name just got deleted.
-
-My name is Rohan. It's fine.
-My mother's name is Zoë. She's gone.
-
-You fixed the code. You broke the people.`,
+        text: "STATUS: MIGRATION COMPLETE.\n\nYou skipped the integrity check.\n\nThe database migrated. But every user with a special character in their name just got deleted.\n\nMy name is Rohan. It's fine.\nMy mother's name is Zoe. She's gone.\n\nYou fixed the code. You broke the people.",
         emotion: 'horrified_whisper',
         variation_id: 'sim_fail_corruption_v1',
         richEffectContext: 'error'
@@ -802,15 +701,7 @@ You fixed the code. You broke the people.`,
     speaker: 'Rohan',
     content: [
       {
-        text: `You open the file viewer. The file isn't there. You check the git history.
-
-**LAST MODIFIED:** 3 years ago by [David_V].
-**COMMIT MESSAGE:** "Temporary bypass. Fix before 2025."
-
-
-David. He knew. He wrote a bypass because the legacy system couldn't handle UTF-8 characters.
-
-The AI saw the bypass and thought it was a feature. It's trying to import a hack that David deleted.`,
+        text: "You open the file viewer. The file isn't there. You check the git history.\n\n**LAST MODIFIED:** 3 years ago by [David_V].\n**COMMIT MESSAGE:** \"Temporary bypass. Fix before 2025.\"\n\nDavid. He knew. He wrote a bypass because the legacy system couldn't handle UTF-8 characters.\n\nThe AI saw the bypass and thought it was a feature. It's trying to import a hack that David deleted.",
         emotion: 'reverent_sadness',
         variation_id: 'sim_step_2_v1',
         richEffectContext: 'thinking'
@@ -839,16 +730,7 @@ The AI saw the bypass and thought it was a feature. It's trying to import a hack
     speaker: 'Rohan',
     content: [
       {
-        text: `You type the new function. You verify the inputs. You write a test case for "Zoë".
-
-**TEST PASSED.**
-**MIGRATION SUCCESSFUL.**
-
-The hum of the servers seems to quiet.
-
-You talked to the ghosts. You didn't just prompt. You listened to what David was trying to tell us.
-
-That's not janitorial work. That's... communion.`,
+        text: "You type the new function. You verify the inputs. You write a test case for \"Zoe\".\n\n**TEST PASSED.**\n**MIGRATION SUCCESSFUL.**\n\nThe hum of the servers seems to quiet.\n\nYou talked to the ghosts. You didn't just prompt. You listened to what David was trying to tell us.\n\nThat's not janitorial work. That's... communion.",
         emotion: 'profound_relief',
         variation_id: 'sim_success_v2',
         richEffectContext: 'success'
@@ -878,17 +760,7 @@ That's not janitorial work. That's... communion.`,
     speaker: 'Rohan',
     content: [
       {
-        text: `The AI saw a function call. I saw David's intention.
-
-Same code. Different questions.
-
-AI asks: "What does this do?"
-
-I ask: "Why did David write it this way?"
-
-*Pause.*
-
-That difference? That's what we're losing.`,
+        text: "The AI saw a function call. I saw David's intention.\n\nSame code. Different questions.\n\nAI asks: \"What does this do?\"\n\nI ask: \"Why did David write it this way?\"\n\nThat difference? That's what we're losing.",
         emotion: 'clear',
         variation_id: 'lesson_v1'
       }
@@ -911,17 +783,7 @@ That difference? That's what we're losing.`,
     speaker: 'Rohan',
     content: [
       {
-        text: `My dad was a machinist. Factory in India.
-
-He could hear when a lathe was half a degree off. Trained his whole life.
-
-Factory bought CNC machines. Didn't need him anymore.
-
-*Quiet.*
-
-David's knowledge. Dad's ears. Same story.
-
-I'm not letting it happen again.`,
+        text: "My dad was a machinist. Factory in India.\n\nHe could hear when a lathe was half a degree off. Trained his whole life.\n\nFactory bought CNC machines. Didn't need him anymore.\n\nDavid's knowledge. Dad's ears. Same story.\n\nI'm not letting it happen again.",
         emotion: 'fierce',
         variation_id: 'why_v1'
       }
@@ -943,11 +805,7 @@ I'm not letting it happen again.`,
     speaker: 'Rohan',
     content: [
       {
-        text: `I've been thinking about this for years. David and I sketched it out before his diagnosis.
-
-Not a bootcamp. Those are factories. They produce developers who can use tools but don't understand them.
-
-We want to build something different. A place where people learn why before they learn how.`,
+        text: "I've been thinking about this for years. David and I sketched it out before his diagnosis.\n\nNot a bootcamp. Those are factories. They produce developers who can use tools but don't understand them.\n\nWe want to build something different. A place where people learn why before they learn how.",
         emotion: 'visionary',
         variation_id: 'academy_v1'
       }
@@ -956,21 +814,13 @@ We want to build something different. A place where people learn why before they
       {
         pattern: 'building',
         minLevel: 5,
-        altText: `I've been thinking about this for years. David and I sketched it out before his diagnosis.
-
-You're a builder. I can tell by how you engage with problems. You understand what it means to create something from first principles.
-
-We want to build something different. A place where people learn why before they learn how.`,
+        altText: "I've been thinking about this for years. David and I sketched it out before his diagnosis.\n\nYou're a builder. I can tell by how you engage with problems. You understand what it means to create something from first principles.\n\nWe want to build something different. A place where people learn why before they learn how.",
         altEmotion: 'kindred_visionary'
       },
       {
         pattern: 'analytical',
         minLevel: 5,
-        altText: `I've been thinking about this for years. David and I sketched it out before his diagnosis.
-
-You think deeply. That's rare. Most people want the quick answer. you want to understand.
-
-We want to build something different. A place where people learn why before they learn how.`,
+        altText: "I've been thinking about this for years. David and I sketched it out before his diagnosis.\n\nYou think deeply. That's rare. Most people want the quick answer. You want to understand.\n\nWe want to build something different. A place where people learn why before they learn how.",
         altEmotion: 'recognized_visionary'
       }
     ],
@@ -1016,13 +866,7 @@ We want to build something different. A place where people learn why before they
     speaker: 'Rohan',
     content: [
       {
-        text: `Year one: No computers.
-
-I'm serious. You learn Boolean logic with physical switches. You build a half-adder with relays. You understand what a bit is before you ever type 'int'.
-
-Year two: Assembly. Write a calculator. Write a text editor. Feel every byte.
-
-Year three: Finally, you get a framework. And by then, you'll hate it. Because you'll see all the choices it's making for you.`,
+        text: "Year one: No computers.\n\nI'm serious. You learn Boolean logic with physical switches. You build a half-adder with relays. You understand what a bit is before you ever type 'int'.\n\nYear two: Assembly. Write a calculator. Write a text editor. Feel every byte.\n\nYear three: Finally, you get a framework. And by then, you'll hate it. Because you'll see all the choices it's making for you.",
         emotion: 'teaching_fire',
         variation_id: 'curriculum_v1'
       }
@@ -1054,11 +898,7 @@ Year three: Finally, you get a framework. And by then, you'll hate it. Because y
     speaker: 'Rohan',
     content: [
       {
-        text: `And what jobs do they get? Junior developer. Build CRUD apps. Get replaced by AI in five years.
-
-Our graduates? They'll be the ones the AI can't replace. The ones who debug the AI. The ones who understand what's actually happening inside the black box.
-
-The market for people who can type code is going to zero. The market for people who understand code is infinite.`,
+        text: "And what jobs do they get? Junior developer. Build CRUD apps. Get replaced by AI in five years.\n\nOur graduates? They'll be the ones the AI can't replace. The ones who debug the AI. The ones who understand what's actually happening inside the black box.\n\nThe market for people who can type code is going to zero. The market for people who understand code is infinite.",
         emotion: 'confident',
         variation_id: 'quality_v1'
       }
@@ -1079,13 +919,7 @@ The market for people who can type code is going to zero. The market for people 
     speaker: 'Rohan',
     content: [
       {
-        text: `Teachers. That's the hard part.
-
-David was one of a kind. But there are others. Old-timers who got pushed out when companies decided experience was too expensive.
-
-I've been keeping a list. Retired engineers who still care. Database architects who remember why we have normalization. Network engineers who understand packets.
-
-They're out there. They're just been told they're obsolete.`,
+        text: "Teachers. That's the hard part.\n\nDavid was one of a kind. But there are others. Old-timers who got pushed out when companies decided experience was too expensive.\n\nI've been keeping a list. Retired engineers who still care. Database architects who remember why we have normalization. Network engineers who understand packets.\n\nThey're out there. They've just been told they're obsolete.",
         emotion: 'hopeful_determined',
         variation_id: 'teacher_v1'
       }
@@ -1113,11 +947,7 @@ They're out there. They're just been told they're obsolete.`,
     speaker: 'Rohan',
     content: [
       {
-        text: `VCs won't touch it. Three years to first placement? No "scalable" model? They'd laugh.
-
-But David has connections. Alumni from his classes who became CTOs. Companies that are starting to realize their AI-dependent junior devs can't debug production issues.
-
-One company already offered to sponsor five students. Not because they're charitable. because they need people who actually understand the systems.`,
+        text: "VCs won't touch it. Three years to first placement? No \"scalable\" model? They'd laugh.\n\nBut David has connections. Alumni from his classes who became CTOs. Companies that are starting to realize their AI-dependent junior devs can't debug production issues.\n\nOne company already offered to sponsor five students. Not because they're charitable. Because they need people who actually understand the systems.",
         emotion: 'practical_hope',
         variation_id: 'funding_v1'
       }
@@ -1138,15 +968,7 @@ One company already offered to sponsor five students. Not because they're charit
     speaker: 'Rohan',
     content: [
       {
-        text: `Actually... I already have one.
-
-There's a kid. well, she's 28, but she feels like a kid. who works in QA downstairs. She found a memory leak that our entire senior team missed.
-
-When I asked how, she said: "I drew a diagram of every allocation. Took me a weekend."
-
-Everyone else just ran the profiler. She understood.
-
-I've been teaching her after hours. She's year one now. Building logic gates with LEDs.`,
+        text: "Actually... I already have one.\n\nThere's a kid. Well, she's 28, but she feels like a kid. Works in QA downstairs. She found a memory leak that our entire senior team missed.\n\nWhen I asked how, she said: \"I drew a diagram of every allocation. Took me a weekend.\"\n\nEveryone else just ran the profiler. She understood.\n\nI've been teaching her after hours. She's year one now. Building logic gates with LEDs.",
         emotion: 'quiet_pride',
         variation_id: 'first_student_v1'
       }
@@ -1168,17 +990,7 @@ I've been teaching her after hours. She's year one now. Building logic gates wit
     speaker: 'Rohan',
     content: [
       {
-        text: `Week four. Logic gates. She built an AND gate wrong. Output stuck high.
-
-Stared at it. Twenty minutes.
-
-Then: "Wait. The resistor. It's not about the LED. It's about current flow."
-
-*Pause.*
-
-"Everything's about current flow, isn't it?"
-
-She got it. Not the circuit. The principle underneath.`,
+        text: "Week four. Logic gates. She built an AND gate wrong. Output stuck high.\n\nStared at it. Twenty minutes.\n\nThen: \"Wait. The resistor. It's not about the LED. It's about current flow.\"\n\n\"Everything's about current flow, isn't it?\"\n\nShe got it. Not the circuit. The principle underneath.",
         emotion: 'proud',
         variation_id: 'breakthrough_v1'
       }
@@ -1205,13 +1017,7 @@ She got it. Not the circuit. The principle underneath.`,
     speaker: 'Rohan',
     content: [
       {
-        text: `I'm not quitting. I can't quit.
-
-There's an instructional designer upstairs, Kai. They're burning their slide decks. Good. We need to burn it all down to build it right.
-
-I'm going to start an academy. Not 'Coding Bootcamp.' 'First Principles.'
-
-We're going to teach people how to read the metal. How to know what is real.`,
+        text: "I'm not quitting. I can't quit.\n\nThere's an instructional designer upstairs, Kai. They're burning their slide decks. Good. We need to burn it all down to build it right.\n\nI'm going to start an academy. Not 'Coding Bootcamp.' 'First Principles.'\n\nWe're going to teach people how to read the metal. How to know what is real.",
         emotion: 'resolved_monk',
         variation_id: 'climax_v2'
       }
@@ -1220,31 +1026,19 @@ We're going to teach people how to read the metal. How to know what is real.`,
       {
         pattern: 'analytical',
         minLevel: 5,
-        altText: `I'm not quitting. I can't quit. You think like David did. seeing through the surface to what's underneath.
-
-There's an instructional designer upstairs, Kai. They're burning their slide decks. Good. We need to burn it all down to build it right.
-
-I'm going to start an academy. Not 'Coding Bootcamp.' 'First Principles.'`,
+        altText: "I'm not quitting. I can't quit. You think like David did. Seeing through the surface to what's underneath.\n\nThere's an instructional designer upstairs, Kai. They're burning their slide decks. Good. We need to burn it all down to build it right.\n\nI'm going to start an academy. Not 'Coding Bootcamp.' 'First Principles.'",
         altEmotion: 'kindred_resolved'
       },
       {
         pattern: 'building',
         minLevel: 5,
-        altText: `I'm not quitting. I can't quit. You're a builder. you understand why foundations matter.
-
-There's an instructional designer upstairs, Kai. They're burning their slide decks. Good. We need to burn it all down to build it right.
-
-I'm going to start an academy. Not 'Coding Bootcamp.' 'First Principles.'`,
+        altText: "I'm not quitting. I can't quit. You're a builder. You understand why foundations matter.\n\nThere's an instructional designer upstairs, Kai. They're burning their slide decks. Good. We need to burn it all down to build it right.\n\nI'm going to start an academy. Not 'Coding Bootcamp.' 'First Principles.'",
         altEmotion: 'recognized_resolved'
       },
       {
         pattern: 'patience',
         minLevel: 5,
-        altText: `I'm not quitting. I can't quit. The way you waited, listened. that's rare. Most people want the quick answer.
-
-There's an instructional designer upstairs, Kai. They're burning their slide decks. Good. We need to burn it all down to build it right.
-
-I'm going to start an academy. Not 'Coding Bootcamp.' 'First Principles.'`,
+        altText: "I'm not quitting. I can't quit. The way you waited, listened. That's rare. Most people want the quick answer.\n\nThere's an instructional designer upstairs, Kai. They're burning their slide decks. Good. We need to burn it all down to build it right.\n\nI'm going to start an academy. Not 'Coding Bootcamp.' 'First Principles.'",
         altEmotion: 'grateful_resolved'
       }
     ],
@@ -1275,13 +1069,7 @@ I'm going to start an academy. Not 'Coding Bootcamp.' 'First Principles.'`,
     speaker: 'Rohan',
     content: [
       {
-        text: `The servers hum.
-
-I don't want them to remember me. I want them to remember the feeling.
-
-That moment when you finally understand how something works. When the abstraction dissolves and you see the machinery underneath. When you realize that every system was built by people, and you can build too.
-
-David gave me that feeling. I want to pass it on.`,
+        text: "The servers hum.\n\nI don't want them to remember me. I want them to remember the feeling.\n\nThat moment when you finally understand how something works. When the abstraction dissolves and you see the machinery underneath. When you realize that every system was built by people, and you can build too.\n\nDavid gave me that feeling. I want to pass it on.",
         emotion: 'profound',
         variation_id: 'legacy_v1'
       }
@@ -1289,7 +1077,7 @@ David gave me that feeling. I want to pass it on.`,
     choices: [
       {
         choiceId: 'rohan_legacy_farewell',
-        text: "That's a legacy worth building. Passing on that feeling. that's what teaching really is.",
+        text: "That's a legacy worth building. Passing on that feeling. That's what teaching really is.",
         voiceVariations: {
           analytical: "Knowledge transfer with emotional context. That's what teaching really is.",
           helping: "You're giving others what David gave you. That's what teaching really is.",
@@ -1341,9 +1129,7 @@ David gave me that feeling. I want to pass it on.`,
     speaker: 'Rohan',
     content: [
       {
-        text: `
-
-You've been helping me figure out what I want to build. Imagine we're sitting here years from now, looking back. what do you want people to remember about you? What feeling do you want to pass on?`,
+        text: "You've been helping me figure out what I want to build. Imagine we're sitting here years from now, looking back. What do you want people to remember about you? What feeling do you want to pass on?",
         emotion: 'curious_engaged',
         variation_id: 'rohan_reciprocity_v1'
       }
@@ -1384,7 +1170,7 @@ You've been helping me figure out what I want to build. Imagine we're sitting he
       },
       {
         choiceId: 'player_uncertain_legacy',
-        text: "I don't know yet. That's part of why I'm here. to figure out what I want my impact to be. What I want to pass on.",
+        text: "I don't know yet. That's part of why I'm here. To figure out what I want my impact to be. What I want to pass on.",
         nextNodeId: 'rohan_farewell',
         pattern: 'exploring',
         skills: ['emotionalIntelligence', 'adaptability']
@@ -1422,13 +1208,7 @@ You've been helping me figure out what I want to build. Imagine we're sitting he
     speaker: 'Rohan',
     content: [
       {
-        text: `
-
-Yeah. Let it run. If it breaks, they'll just hire another AI to fix it.
-
-I'm going to apply for that carpentry apprenticeship. Wood doesn't lie.
-
-Goodbye.`,
+        text: "Yeah. Let it run. If it breaks, they'll just hire another AI to fix it.\n\nI'm going to apply for that carpentry apprenticeship. Wood doesn't lie.\n\nGoodbye.",
         emotion: 'broken_spirit',
         variation_id: 'bad_ending_v1'
       }
@@ -1456,19 +1236,7 @@ Goodbye.`,
     speaker: 'Rohan',
     content: [
       {
-        text: `*He stares at the server lights, then speaks quietly.*
-
-You want to know why I'm alone down here? It's not just introversion.
-
-I had friends. A girlfriend. A whole life outside the server room.
-
-Then I found it. A flaw in the algorithm that was making hiring decisions for half the Fortune 500. Biased against certain names. Certain zip codes. Automated discrimination at scale.
-
-*His voice hardens.*
-
-I reported it. My manager said "that's just how the data works." I showed it to my friends—they worked at the company that built it.
-
-They said I was being "difficult." That I'd destroy careers if I went public. Including theirs.`,
+        text: "You want to know why I'm alone down here? It's not just introversion.\n\nI had friends. A girlfriend. A whole life outside the server room.\n\nThen I found it. A flaw in the algorithm that was making hiring decisions for half the Fortune 500. Biased against certain names. Certain zip codes. Automated discrimination at scale.\n\nI reported it. My manager said \"that's just how the data works.\" I showed it to my friends. They worked at the company that built it.\n\nThey said I was being \"difficult.\" That I'd destroy careers if I went public. Including theirs.",
         emotion: 'bitter_grief',
         microAction: 'His jaw tightens.',
         variation_id: 'vulnerability_v1',
@@ -1532,17 +1300,7 @@ They said I was being "difficult." That I'd destroy careers if I went public. In
     speaker: 'Rohan',
     content: [
       {
-        text: `*He exhales slowly.*
-
-I went public. The story broke. The algorithm got fixed—quietly, without credit.
-
-And I lost everyone. The girlfriend said I "valued being right more than being happy." My friends stopped returning calls. The industry blacklisted me for two years.
-
-*A pause.*
-
-David was the first person who didn't try to tell me I should have stayed quiet. He said: "Truth has a cost. Some of us are willing to pay it."
-
-You're the second person who's just... listened. Without trying to calculate whether I was right.`,
+        text: "I went public. The story broke. The algorithm got fixed. Quietly, without credit.\n\nAnd I lost everyone. The girlfriend said I \"valued being right more than being happy.\" My friends stopped returning calls. The industry blacklisted me for two years.\n\nDavid was the first person who didn't try to tell me I should have stayed quiet. He said: \"Truth has a cost. Some of us are willing to pay it.\"\n\nYou're the second person who's just... listened. Without trying to calculate whether I was right.",
         emotion: 'vulnerable_resolved',
         variation_id: 'reflection_v1'
       }
@@ -1562,9 +1320,7 @@ You're the second person who's just... listened. Without trying to calculate whe
     speaker: 'Rohan',
     content: [
       {
-        text: `You heard the hum, didn't you? The noise underneath the noise.
-
-If you see Samuel, tell him... tell him I'm staying. Someone has to keep the lights on.`,
+        text: "You heard the hum, didn't you? The noise underneath the noise.\n\nIf you see Samuel, tell him... tell him I'm staying. Someone has to keep the lights on.",
         emotion: 'grateful_solemn',
         variation_id: 'farewell_v2'
       }
@@ -1573,17 +1329,13 @@ If you see Samuel, tell him... tell him I'm staying. Someone has to keep the lig
       {
         pattern: 'analytical',
         minLevel: 5,
-        altText: `You heard the hum, didn't you? The noise underneath the noise. You think like David did. that's rare.
-
-If you see Samuel, tell him... tell him I'm staying. Someone has to keep the lights on.`,
+        altText: "You heard the hum, didn't you? The noise underneath the noise. You think like David did. That's rare.\n\nIf you see Samuel, tell him... tell him I'm staying. Someone has to keep the lights on.",
         altEmotion: 'kindred_solemn'
       },
       {
         pattern: 'patience',
         minLevel: 5,
-        altText: `You heard the hum, didn't you? The noise underneath the noise. The way you waited, listened. that's what the old-timers had.
-
-If you see Samuel, tell him... tell him I'm staying. Someone has to keep the lights on.`,
+        altText: "You heard the hum, didn't you? The noise underneath the noise. The way you waited, listened. That's what the old-timers had.\n\nIf you see Samuel, tell him... tell him I'm staying. Someone has to keep the lights on.",
         altEmotion: 'recognized_solemn'
       }
     ],
@@ -1610,13 +1362,7 @@ If you see Samuel, tell him... tell him I'm staying. Someone has to keep the lig
     speaker: 'Rohan',
     content: [
       {
-        text: `*He stares at the schematics, tracing a line that ends abruptly.*
-        
-Platform Seven. It's not on the public map. It's not on the maintenance map.
-        
-But look at the power draw. The station bleeds 15% of its energy into a sector that doesn't exist.
-        
-Samuel calls it "structural dampening." That's engineer-speak for "stop asking questions."`,
+        text: "Platform Seven. It's not on the public map. It's not on the maintenance map.\n\nBut look at the power draw. The station bleeds 15% of its energy into a sector that doesn't exist.\n\nSamuel calls it \"structural dampening.\" That's engineer-speak for \"stop asking questions.\"",
         emotion: 'suspicious',
         variation_id: 'arc2_ch1_v1'
       }
@@ -1669,7 +1415,7 @@ Samuel calls it "structural dampening." That's engineer-speak for "stop asking q
     nodeId: 'rohan_trace_plan',
     speaker: 'Rohan',
     content: [{
-      text: "I tried. The cables go into the concrete foundation of Pillar 4. But there's no basement there. Just solid earth. Unless... unless the platform isn't *down*. Maybe it's *in*.",
+      text: "I tried. The cables go into the concrete foundation of Pillar 4. But there's no basement there. Just solid earth. Unless... unless the platform isn't down. Maybe it's in.",
       emotion: 'curious',
       variation_id: 'trace_plan_v1'
     }],
@@ -1693,13 +1439,7 @@ Samuel calls it "structural dampening." That's engineer-speak for "stop asking q
     speaker: 'Rohan',
     content: [
       {
-        text: `*Rohan stands by Pillar 4, holding a frequency scanner.*
-        
-You found the gap in Elena's archives? The missing 1920s records?
-        
-It matches. When the station \"reboots\" during the Quiet Hour, this wall vibrates at 17 hertz. It's not concrete. It's a phase shift.
-        
-We don't need a key. We just need to step through when the hum stops.`,
+        text: "You found the gap in Elena's archives? The missing 1920s records?\n\nIt matches. When the station \"reboots\" during the Quiet Hour, this wall vibrates at 17 hertz. It's not concrete. It's a phase shift.\n\nWe don't need a key. We just need to step through when the hum stops.",
         emotion: 'terrified_awe',
         variation_id: 'arc2_ch3_v1'
       }
@@ -1749,15 +1489,7 @@ We don't need a key. We just need to step through when the hum stops.`,
     speaker: 'Rohan',
     content: [
       {
-        text: `*He sits on the floor of the hidden platform, looking at the infinite recursive tracks.*
-        
-It's a buffer.
-        
-Computer science 101. When you process too much data, you need a buffer to hold the overflow.
-        
-The station processes human potential. Decisions. Futures. When there's too much... when a war starts, or a pandemic, or a revolution... the overflow goes here.
-        
-Platform Seven is where the station keeps the timelines that were too heavy to happen.`,
+        text: "It's a buffer.\n\nComputer science 101. When you process too much data, you need a buffer to hold the overflow.\n\nThe station processes human potential. Decisions. Futures. When there's too much... when a war starts, or a pandemic, or a revolution... the overflow goes here.\n\nPlatform Seven is where the station keeps the timelines that were too heavy to happen.",
         emotion: 'epiphany',
         variation_id: 'puzzle_truth_v1'
       }
@@ -1777,11 +1509,7 @@ Platform Seven is where the station keeps the timelines that were too heavy to h
     speaker: 'Rohan',
     content: [
       {
-        text: `You know what separates good code from great code? The ability to see the whole system while building each piece.
-
-Software architects—the ones who build the foundations everyone else stands on—they think like you do. Analytical and constructive at once.
-
-Their code runs systems people use every day without knowing. Invisible but essential.`,
+        text: "You know what separates good code from great code? The ability to see the whole system while building each piece.\n\nSoftware architects. The ones who build the foundations everyone else stands on. They think like you do. Analytical and constructive at once.\n\nTheir code runs systems people use every day without knowing. Invisible but essential.",
         emotion: 'impressed',
         variation_id: 'career_architect_v1'
       }
@@ -1814,11 +1542,7 @@ Their code runs systems people use every day without knowing. Invisible but esse
     speaker: 'Rohan',
     content: [
       {
-        text: `The way you analyze things... patient, thorough. You don't rush to conclusions.
-
-Cybersecurity specialists think that way. They have to understand systems deeply enough to protect them—and to think like the threats trying to break them.
-
-Digital guardians. Birmingham's becoming a hub for that kind of work.`,
+        text: "The way you analyze things... patient, thorough. You don't rush to conclusions.\n\nCybersecurity specialists think that way. They have to understand systems deeply enough to protect them. And to think like the threats trying to break them.\n\nDigital guardians. Birmingham's becoming a hub for that kind of work.",
         emotion: 'respectful',
         variation_id: 'career_security_v1'
       }
@@ -1852,11 +1576,7 @@ Digital guardians. Birmingham's becoming a hub for that kind of work.`,
     speaker: 'Rohan',
     content: [
       {
-        text: `You know what I see in how you engage with problems? You trace causality. You want to understand where things come from.
-
-Data engineers do that. They build the pipelines that feed every decision a company makes. Most people see the dashboard. Data engineers see the journey from raw signal to insight.
-
-It's unglamorous work. But when everyone's panicking about a number being wrong? They're the ones who can actually trace it back to the source.`,
+        text: "You know what I see in how you engage with problems? You trace causality. You want to understand where things come from.\n\nData engineers do that. They build the pipelines that feed every decision a company makes. Most people see the dashboard. Data engineers see the journey from raw signal to insight.\n\nIt's unglamorous work. But when everyone's panicking about a number being wrong? They're the ones who can actually trace it back to the source.",
         emotion: 'respectful',
         variation_id: 'career_data_v1'
       }
@@ -1889,11 +1609,7 @@ It's unglamorous work. But when everyone's panicking about a number being wrong?
     speaker: 'Rohan',
     content: [
       {
-        text: `The way you think about building things... you're not just solving the problem in front of you. You're thinking about how it'll run tomorrow. Next month.
-
-DevOps engineers—the good ones—think that way. They build systems that heal themselves. That scale without breaking. That let developers sleep through the night.
-
-It's the art of making complexity invisible. Hard to master. Harder to appreciate until it breaks.`,
+        text: "The way you think about building things... you're not just solving the problem in front of you. You're thinking about how it'll run tomorrow. Next month.\n\nDevOps engineers. The good ones. They think that way. They build systems that heal themselves. That scale without breaking. That let developers sleep through the night.\n\nIt's the art of making complexity invisible. Hard to master. Harder to appreciate until it breaks.",
         emotion: 'approving',
         variation_id: 'career_devops_v1'
       }
@@ -1926,11 +1642,7 @@ It's the art of making complexity invisible. Hard to master. Harder to appreciat
     speaker: 'Rohan',
     content: [
       {
-        text: `You listen. Really listen. And when you speak, you translate complex things into something I can actually hear.
-
-Technical writers do that. The good ones, anyway. They're the bridge between engineers who speak in abstractions and humans who need to actually use the thing.
-
-Documentation sounds boring until you're stuck at 2am and some anonymous writer's clear explanation saves your project. That person? They're a hero who never gets thanked.`,
+        text: "You listen. Really listen. And when you speak, you translate complex things into something I can actually hear.\n\nTechnical writers do that. The good ones, anyway. They're the bridge between engineers who speak in abstractions and humans who need to actually use the thing.\n\nDocumentation sounds boring until you're stuck at 2am and some anonymous writer's clear explanation saves your project. That person? They're a hero who never gets thanked.",
         emotion: 'warm',
         variation_id: 'career_docs_v1'
       }
@@ -1964,15 +1676,7 @@ Documentation sounds boring until you're stuck at 2am and some anonymous writer'
     speaker: 'Rohan',
     content: [
       {
-        text: `*He pulls out an old notebook. Hand-written code.*
-
-David gave me this before... before the end. Twenty years of notes. Design decisions. Why he chose certain patterns over others.
-
-*Turns a page.*
-
-Look at this comment: "Future Rohan—if you're reading this, the answer is in the test cases. I trust you to figure out which ones."
-
-He was teaching me even after he couldn't speak anymore.`,
+        text: "David gave me this before... before the end. Twenty years of notes. Design decisions. Why he chose certain patterns over others.\n\nLook at this comment: \"Future Rohan. If you're reading this, the answer is in the test cases. I trust you to figure out which ones.\"\n\nHe was teaching me even after he couldn't speak anymore.",
         emotion: 'tender_grief',
         variation_id: 'david_memory_v1'
       }
@@ -2008,17 +1712,7 @@ He was teaching me even after he couldn't speak anymore.`,
     speaker: 'Rohan',
     content: [
       {
-        text: `*He closes the notebook gently.*
-
-That's exactly it. He's not gone. Not really.
-
-Every time I trace a bug back to first principles. Every time I help someone understand instead of just copy-paste. Every time I choose truth over convenience.
-
-That's David. Still here. Still teaching.
-
-*Pause.*
-
-I guess that's what legacy really means. Not what you built. What you planted in other people.`,
+        text: "That's exactly it. He's not gone. Not really.\n\nEvery time I trace a bug back to first principles. Every time I help someone understand instead of just copy-paste. Every time I choose truth over convenience.\n\nThat's David. Still here. Still teaching.\n\nI guess that's what legacy really means. Not what you built. What you planted in other people.",
         emotion: 'peaceful_resolve',
         variation_id: 'legacy_realized_v1'
       }
@@ -2039,17 +1733,7 @@ I guess that's what legacy really means. Not what you built. What you planted in
     speaker: 'Rohan',
     content: [
       {
-        text: `*He thinks for a long moment.*
-
-Failure.
-
-Not how to avoid it. How to sit with it. How to let a broken system teach you instead of just fixing it and moving on.
-
-David would fail on purpose sometimes. Leave bugs in my code reviews. Wait to see if I'd find them myself.
-
-"The goal isn't correct code," he'd say. "It's correct thinking. The code follows."
-
-Hardest lesson. Most important one.`,
+        text: "Failure.\n\nNot how to avoid it. How to sit with it. How to let a broken system teach you instead of just fixing it and moving on.\n\nDavid would fail on purpose sometimes. Leave bugs in my code reviews. Wait to see if I'd find them myself.\n\n\"The goal isn't correct code,\" he'd say. \"It's correct thinking. The code follows.\"\n\nHardest lesson. Most important one.",
         emotion: 'reflective',
         variation_id: 'hardest_lesson_v1'
       }
@@ -2075,15 +1759,7 @@ Hardest lesson. Most important one.`,
     speaker: 'Rohan',
     content: [
       {
-        text: `Exactly. The AI produces correct code. Sometimes. But it doesn't know *why* it's correct.
-
-It's like... imagine a calculator that always gives you the right answer but can't explain the math. You can use it. But can you trust it? Can you fix it when it breaks?
-
-*Taps the server rack.*
-
-These machines are getting smarter. But "smart" isn't the same as "wise." Wisdom requires understanding consequences. Understanding *people.*
-
-That's what we're losing. The wisdom underneath the intelligence.`,
+        text: "Exactly. The AI produces correct code. Sometimes. But it doesn't know why it's correct.\n\nIt's like... imagine a calculator that always gives you the right answer but can't explain the math. You can use it. But can you trust it? Can you fix it when it breaks?\n\nThese machines are getting smarter. But \"smart\" isn't the same as \"wise.\" Wisdom requires understanding consequences. Understanding people.\n\nThat's what we're losing. The wisdom underneath the intelligence.",
         emotion: 'philosophical',
         variation_id: 'ai_philosophy_v1'
       }
@@ -2116,17 +1792,7 @@ That's what we're losing. The wisdom underneath the intelligence.`,
     speaker: 'Rohan',
     content: [
       {
-        text: `*He's quiet for a while. This is clearly something he's thought about.*
-
-I don't know. Honestly.
-
-Wisdom comes from suffering. From loss. From making choices that cost you something and having to live with them.
-
-Can a machine suffer? Can it really lose something it values? Can it regret?
-
-*Shrugs.*
-
-Maybe someday. But I'm not betting humanity's future on "maybe." I'm betting on what I know works: humans teaching humans. The chain unbroken.`,
+        text: "I don't know. Honestly.\n\nWisdom comes from suffering. From loss. From making choices that cost you something and having to live with them.\n\nCan a machine suffer? Can it really lose something it values? Can it regret?\n\nMaybe someday. But I'm not betting humanity's future on \"maybe.\" I'm betting on what I know works: humans teaching humans. The chain unbroken.",
         emotion: 'uncertain_resolve',
         variation_id: 'ai_deep_v1'
       }
@@ -2152,17 +1818,7 @@ Maybe someday. But I'm not betting humanity's future on "maybe." I'm betting on 
     speaker: 'Rohan',
     content: [
       {
-        text: `*He laughs, but it's tired.*
-
-You want to know the hardest part? It's not the funding. It's not finding teachers.
-
-It's convincing students they need this.
-
-Everyone wants the shortcut. "Why learn assembly when I can prompt?" "Why understand databases when the ORM handles it?"
-
-They don't see the trap. The dependency. Until the abstraction breaks and they're helpless.
-
-I'm asking people to work harder for knowledge that seems useless. Until suddenly it's the only thing that matters.`,
+        text: "You want to know the hardest part? It's not the funding. It's not finding teachers.\n\nIt's convincing students they need this.\n\nEveryone wants the shortcut. \"Why learn assembly when I can prompt?\" \"Why understand databases when the ORM handles it?\"\n\nThey don't see the trap. The dependency. Until the abstraction breaks and they're helpless.\n\nI'm asking people to work harder for knowledge that seems useless. Until suddenly it's the only thing that matters.",
         emotion: 'frustrated_hope',
         variation_id: 'academy_challenge_v1'
       }
@@ -2194,21 +1850,7 @@ I'm asking people to work harder for knowledge that seems useless. Until suddenl
     speaker: 'Rohan',
     content: [
       {
-        text: `*He nods slowly.*
-
-Stories. Yeah.
-
-David used to do that. Every lecture started with a disaster. A real one. Names changed, but the lesson burned into your memory.
-
-"Let me tell you about the time a single misplaced semicolon cost a rocket."
-
-You couldn't look away. And suddenly, the tedious syntax rules felt like life and death.
-
-Maybe I need to collect those stories. Build a curriculum around catastrophes prevented by understanding.
-
-*He smiles, genuinely.*
-
-You're good at this. Helping people see what's already there.`,
+        text: "Stories. Yeah.\n\nDavid used to do that. Every lecture started with a disaster. A real one. Names changed, but the lesson burned into your memory.\n\n\"Let me tell you about the time a single misplaced semicolon cost a rocket.\"\n\nYou couldn't look away. And suddenly, the tedious syntax rules felt like life and death.\n\nMaybe I need to collect those stories. Build a curriculum around catastrophes prevented by understanding.\n\nYou're good at this. Helping people see what's already there.",
         emotion: 'energized',
         variation_id: 'story_approach_v1'
       }
@@ -2238,7 +1880,7 @@ You're good at this. Helping people see what's already there.`,
     nodeId: 'rohan_platform_reward',
     speaker: 'Rohan Patel',
     content: [{
-      text: "*Rohan traces the schematic you drew.*\n\nYou found it. The inward track. I knew the power draw wasn't a phantom.\n\nIt's not just a platform, is it? It's a recursion loop. The station examining itself. Dangerous engineering.",
+      text: "You found it. The inward track. I knew the power draw wasn't a phantom.\n\nIt's not just a platform, is it? It's a recursion loop. The station examining itself. Dangerous engineering.",
       emotion: 'intense',
       variation_id: 'puzzle_platform_v1'
     }],

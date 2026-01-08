@@ -17,14 +17,13 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "Pass me the—no, the other wrench. The one that's actually regulation.\n\n[He wipes grease on a rag, barely looking at you.]\n\nShift change isn't for ten minutes. If you're here to complain about the heat, join the queue. If you're here to help, grab the duct tape.",
+        text: "Pass me the... no, the other wrench. The one that's actually regulation.\n\nShift change isn't for ten minutes. If you're here to complain about the heat, join the queue. If you're here to help, grab the duct tape.",
         emotion: 'guarded',
-        microAction: 'He taps a rhythmic pattern on the table, eyes darting between three screens.',
-        variation_id: 'intro_v1',
+        variation_id: 'intro_v2_minimal',
         patternReflection: [
-          { pattern: 'analytical', minLevel: 5, altText: "Avondale coffee shop. Back booth. 2 AM.\n\n*[Internal Log: If input is 'I'm fine,' route to branch 4.B, sub-routine 'gentle probe.']* \n\nOh. You're reading the logic flow, aren't you? Most people don't even see it.\n\nClosed system. But maybe you understand closed systems.", altEmotion: 'curious' },
+          { pattern: 'analytical', minLevel: 5, altText: "Avondale coffee shop. Back booth. 2 AM.\n\nOh. You're reading the logic flow, aren't you? Most people don't even see it.\n\nClosed system. But maybe you understand closed systems.", altEmotion: 'curious' },
           { pattern: 'building', minLevel: 5, altText: "Avondale coffee shop. Back booth. 2 AM.\n\nDecision tree. Flowchart. You've built things like this before, haven't you?\n\nMost people don't recognize the architecture. But you do.", altEmotion: 'interested' },
-          { pattern: 'patience', minLevel: 5, altText: "Avondale coffee shop. Back booth. 2 AM.\n\n*[Internal Log: If input is 'I'm fine,' route to branch 4.B...]*\n\nOh. You're just... waiting. Not rushing me. That's. Different.\n\nClosed system. Are you a variable I need to account for?", altEmotion: 'guarded' }
+          { pattern: 'patience', minLevel: 5, altText: "Avondale coffee shop. Back booth. 2 AM.\n\nOh. You're just... waiting. Not rushing me. That's different.\n\nClosed system. Are you a variable I need to account for?", altEmotion: 'guarded' }
         ]
       }
     ],
@@ -103,7 +102,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         text: "Technically speaking... don't just look at it. Run it.\n\nI visualized the logic flow. It's cleaner this way.",
         emotion: 'focused',
-        variation_id: 'explains_scenario_v1',
+        variation_id: 'explains_scenario_v2_minimal',
         richEffectContext: 'warning',
         useChatPacing: true,
         patternReflection: [
@@ -492,6 +491,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "[Wait quietly]",
         nextNodeId: 'devon_opens_up',
         pattern: 'patience',
+        archetype: 'STAY_SILENT',
         skills: ['emotionalIntelligence', 'adaptability'],
         visibleCondition: {
           patterns: { patience: { min: 3 } }
@@ -506,6 +506,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "People aren't predictable?",
         nextNodeId: 'devon_people_problem',
         pattern: 'exploring',
+        archetype: 'ASK_FOR_DETAILS',
         skills: ['communication']
       }
     ]
@@ -516,7 +517,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "*He laughs, surprising himself.*\n\nYeah. I guess it is. 'Flowchart for Feelings.' Sounds like a bad self-help book.\n\nBut that's the problem. Charts are binary. Feelings are... analog. Messy.",
+        text: "Yeah. I guess it is. 'Flowchart for Feelings.' Sounds like a bad self-help book.\n\nBut that's the problem. Charts are binary. Feelings are... analog. Messy.",
         emotion: 'amused',
         variation_id: 'simple_analogy_v1'
       }
@@ -549,6 +550,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "Who is it for?",
         nextNodeId: 'devon_father_hint',
         pattern: 'exploring',
+        archetype: 'ASK_FOR_DETAILS',
         skills: ['communication', 'emotionalIntelligence'],
         consequence: {
           characterId: 'devon',
@@ -560,6 +562,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "They must mean a lot to you.",
         nextNodeId: 'devon_father_hint',
         pattern: 'helping',
+        archetype: 'ACKNOWLEDGE_EMOTION',
         skills: ['emotionalIntelligence'],
         consequence: {
           characterId: 'devon',
@@ -596,6 +599,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "Maybe feelings aren't bugs to fix?",
         nextNodeId: 'devon_father_hint',
         pattern: 'helping',
+        archetype: 'CHALLENGE_ASSUMPTION',
         skills: ['emotionalIntelligence', 'criticalThinking'],
         consequence: {
           characterId: 'devon',
@@ -607,6 +611,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "Is there someone specific you're trying to understand?",
         nextNodeId: 'devon_father_hint',
         pattern: 'exploring',
+        archetype: 'ASK_FOR_DETAILS',
         skills: ['emotionalIntelligence', 'communication'],
         consequence: {
           characterId: 'devon',
@@ -618,6 +623,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "[Nod slowly. Give them space to think.]",
         nextNodeId: 'devon_father_hint',
         pattern: 'patience',
+        archetype: 'STAY_SILENT',
         skills: ['emotionalIntelligence', 'adaptability'],
         consequence: {
           characterId: 'devon',
@@ -794,6 +800,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "Silence can be data too. Just a different kind.",
         nextNodeId: 'devon_pause_after_father_reveal',
         pattern: 'patience',
+        archetype: 'SHARE_PERSPECTIVE',
         consequence: {
           characterId: 'devon',
           trustChange: 1
@@ -949,7 +956,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "*He stops. Completely stops.*\n\n*For a moment, his hands don't fidget. His eyes aren't scanning for the next problem to solve.*\n\n...Nobody's ever said that to me before.\n\nEveryone says 'time heals' or 'stay busy' or 'process it logically.' Nobody's ever said... just feel it.",
+        text: "Nobody's ever said that to me before.\n\nEveryone says 'time heals' or 'stay busy' or 'process it logically.' Nobody's ever said... just feel it.",
         emotion: 'vulnerable',
         variation_id: 'grief_felt_v1'
       }
@@ -969,7 +976,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "*He laughs - short, sharp, surprised.*\n\nOh god. You're right. I'm running the same subroutine he does.\n\nProblem detected → isolate variables → test solutions → repeat until fixed.\n\nExcept feelings aren't... they don't have error codes. There's no stack trace for sadness.",
+        text: "Oh god. You're right. I'm running the same subroutine he does.\n\nProblem detected. Isolate variables. Test solutions. Repeat until fixed.\n\nExcept feelings aren't... they don't have error codes. There's no stack trace for sadness.",
         emotion: 'self_aware',
         variation_id: 'debug_parallel_v1'
       }
@@ -1081,6 +1088,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         text: "That must have hurt.",
         nextNodeId: 'devon_admits_hurt',
         pattern: 'helping',
+        archetype: 'ACKNOWLEDGE_EMOTION',
         skills: ['emotionalIntelligence', 'communication'],
         consequence: {
           characterId: 'devon',
@@ -1276,7 +1284,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         pattern: 'analytical',
         minLevel: 5,
-        altText: "You think like I do—systems, patterns, frameworks. But you also see what I was missing. You helped me see emotions as data.\n\nI need to call him. Differently. No flowchart. Me, talking to my dad.",
+        altText: "You think like I do. Systems, patterns, frameworks. But you also see what I was missing. You helped me see emotions as data.\n\nI need to call him. Differently. No flowchart. Me, talking to my dad.",
         altEmotion: 'recognized'
       },
       {
@@ -1579,7 +1587,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "I'm going to call him. Be present. No agenda.\n\nMom knew how to be both. Present and helpful. I only knew helpful.\n\nLearning to exist with someone's pain—everything in me screams to act.\n\nBut maybe that's growth.\n\nSamuel's waiting.",
+        text: "I'm going to call him. Be present. No agenda.\n\nMom knew how to be both. Present and helpful. I only knew helpful.\n\nLearning to exist with someone's pain. Everything in me screams to act.\n\nBut maybe that's growth.\n\nSamuel's waiting.",
         emotion: 'raw_courage',
         variation_id: 'farewell_presence_v2_complex'
       }
@@ -1705,21 +1713,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     nodeId: 'devon_vulnerability_arc',
     speaker: 'Devon Kumar',
     content: [{
-      text: `*He stares at his phone.*
-
-There's something I've never processed.
-
-The night mom died. I was debugging a production outage. Critical system. Couldn't leave.
-
-Dad called. Twice. I silenced both.
-
-*His voice is mechanical, distant.*
-
-Third call. Voicemail. "Devon, your mother—she's—please come."
-
-I optimized for the wrong system. Fixed the server. Lost the goodbye.
-
-Two hours. That's how long it would have taken to drive home. Two hours I could have had. Instead I watched log files.`,
+      text: "There's something I've never processed.\n\nThe night mom died. I was debugging a production outage. Critical system. Couldn't leave.\n\nDad called. Twice. I silenced both.\n\nThird call. Voicemail. \"Devon, your mother... she's... please come.\"\n\nI optimized for the wrong system. Fixed the server. Lost the goodbye.\n\nTwo hours. That's how long it would have taken to drive home. Two hours I could have had. Instead I watched log files.",
       emotion: 'hollowed',
       microAction: 'His fingers tap an invisible keyboard, a nervous habit.',
       variation_id: 'vulnerability_v1',
@@ -1737,7 +1731,7 @@ Two hours. That's how long it would have taken to drive home. Two hours I could 
     choices: [
       {
         choiceId: 'vuln_couldnt_know',
-        text: "You couldn't have known. That's not optimization—that's being human.",
+        text: "You couldn't have known. That's not optimization. That's being human.",
         nextNodeId: 'devon_vulnerability_reflection',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
@@ -1748,7 +1742,7 @@ Two hours. That's how long it would have taken to drive home. Two hours I could 
       },
       {
         choiceId: 'vuln_system_taught',
-        text: "The system you learned that night—is that why you're trying to be present for your dad now?",
+        text: "The system you learned that night. Is that why you're trying to be present for your dad now?",
         nextNodeId: 'devon_vulnerability_reflection',
         pattern: 'analytical',
         skills: ['emotionalIntelligence', 'systemsThinking'],
@@ -1762,6 +1756,7 @@ Two hours. That's how long it would have taken to drive home. Two hours I could 
         text: "[Don't fill the silence. Let him feel it.]",
         nextNodeId: 'devon_vulnerability_reflection',
         pattern: 'patience',
+        archetype: 'STAY_SILENT',
         skills: ['emotionalIntelligence'],
         consequence: {
           characterId: 'devon',
@@ -1775,19 +1770,7 @@ Two hours. That's how long it would have taken to drive home. Two hours I could 
     nodeId: 'devon_vulnerability_reflection',
     speaker: 'Devon Kumar',
     content: [{
-      text: `*A long breath.*
-
-Dad never blamed me. That's worse, somehow.
-
-He just said: "You were doing your job. Your mother would have understood."
-
-But I don't understand. I don't understand how I became someone who optimizes systems instead of showing up for people.
-
-*He looks at you.*
-
-You're the first person I've told the full sequence. Not the sanitized "I was at work" version.
-
-The one where I chose code over family. And I still don't know how to forgive the algorithm that made that choice.`,
+      text: "Dad never blamed me. That's worse, somehow.\n\nHe just said: \"You were doing your job. Your mother would have understood.\"\n\nBut I don't understand. I don't understand how I became someone who optimizes systems instead of showing up for people.\n\nYou're the first person I've told the full sequence. Not the sanitized \"I was at work\" version.\n\nThe one where I chose code over family. And I still don't know how to forgive the algorithm that made that choice.",
       emotion: 'broken_honest',
       variation_id: 'reflection_v1'
     }],
@@ -1806,7 +1789,7 @@ The one where I chose code over family. And I still don't know how to forgive th
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "For listening. For not trying to fix me.\n\nI think I know what to do now. Not a solution—a different approach.\n\nSamuel's waiting. Good luck with your own journey.",
+        text: "For listening. For not trying to fix me.\n\nI think I know what to do now. Not a solution. A different approach.\n\nSamuel's waiting. Good luck with your own journey.",
         emotion: 'grateful_resolved',
         variation_id: 'devon_farewell_v1'
       }
@@ -1861,7 +1844,7 @@ The one where I chose code over family. And I still don't know how to forgive th
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "*Devon looks at you with new understanding.*\n\nYou think like a process engineer. Not just fixing problems—understanding why systems break in the first place.\n\nI used to think engineering was about building things. But the best engineers I've met? They're optimizers. They see the whole picture and find the leverage points.\n\n*A rare moment of openness.*\n\nThat patience you have—waiting for the right answer instead of the fast one—that's what separates good engineers from great ones.",
+        text: "You think like a process engineer. Not just fixing problems. Understanding why systems break in the first place.\n\nI used to think engineering was about building things. But the best engineers I've met? They're optimizers. They see the whole picture and find the leverage points.\n\nThat patience you have. Waiting for the right answer instead of the fast one. That's what separates good engineers from great ones.",
         emotion: 'impressed',
         variation_id: 'career_systems_v1'
       }
@@ -1898,7 +1881,7 @@ The one where I chose code over family. And I still don't know how to forgive th
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "*Devon sets down their work, giving you full attention.*\n\nYou build things that last. I can tell by how you approach problems—not just solving for now, but thinking about what comes after.\n\nSustainability engineering is exactly that. Designing systems that don't just work today, but heal instead of harm over time.\n\n*Devon glances at their own projects.*\n\nAlabama Power, Southern Company—they're investing heavily in sustainable infrastructure. People who can build AND think long-term? They're in demand.\n\nYou've got that combination.",
+        text: "You build things that last. I can tell by how you approach problems. Not just solving for now, but thinking about what comes after.\n\nSustainability engineering is exactly that. Designing systems that don't just work today, but heal instead of harm over time.\n\nAlabama Power, Southern Company. They're investing heavily in sustainable infrastructure. People who can build AND think long-term? They're in demand.\n\nYou've got that combination.",
         emotion: 'thoughtful',
         variation_id: 'career_sustainability_v1'
       }
@@ -1937,13 +1920,7 @@ The one where I chose code over family. And I still don't know how to forgive th
     speaker: 'Devon Kumar',
     content: [
       {
-        text: `*Devon looks at you with recognition.*
-
-You know what I see in how you approach problems? You're thinking about the user. The human at the end of the system.
-
-UX engineering combines both worlds—the technical rigor of building systems and the empathy of understanding people.
-
-It's where my flowcharts and my... family work... actually overlap. Understanding why people do what they do. Then building things that meet them where they are.`,
+        text: "You know what I see in how you approach problems? You're thinking about the user. The human at the end of the system.\n\nUX engineering combines both worlds. The technical rigor of building systems and the empathy of understanding people.\n\nIt's where my flowcharts and my... family work... actually overlap. Understanding why people do what they do. Then building things that meet them where they are.",
         emotion: 'connecting',
         variation_id: 'career_ux_v1'
       }
@@ -1974,13 +1951,7 @@ It's where my flowcharts and my... family work... actually overlap. Understandin
     speaker: 'Devon Kumar',
     content: [
       {
-        text: `*Devon nods approvingly.*
-
-You think like an operations engineer. The big picture. How all the pieces fit together.
-
-Operations management is about keeping complex systems running—factories, hospitals, supply chains. Making sure the right things happen at the right time.
-
-Birmingham's rebuilding its manufacturing sector. They need people who can see the whole machine, not just the individual gears.`,
+        text: "You think like an operations engineer. The big picture. How all the pieces fit together.\n\nOperations management is about keeping complex systems running. Factories, hospitals, supply chains. Making sure the right things happen at the right time.\n\nBirmingham's rebuilding its manufacturing sector. They need people who can see the whole machine, not just the individual gears.",
         emotion: 'respectful',
         variation_id: 'career_operations_v1'
       }
@@ -2012,17 +1983,7 @@ Birmingham's rebuilding its manufacturing sector. They need people who can see t
     speaker: 'Devon Kumar',
     content: [
       {
-        text: `*Devon stares at his flowchart.*
-
-My dad used to do this too. Not flowcharts—he was a mechanic. But the same thing. Breaking problems into pieces.
-
-When I was ten, our car broke down. He didn't call a tow truck. He sat me down, opened the hood, and said: "Every problem has a cause. Find the cause, find the fix."
-
-We spent four hours tracing wires. I thought I was helping. Really, he was teaching.
-
-*Pause.*
-
-I haven't heard his voice in two years. Not really. Just... polite distance.`,
+        text: "My dad used to do this too. Not flowcharts. He was a mechanic. But the same thing. Breaking problems into pieces.\n\nWhen I was ten, our car broke down. He didn't call a tow truck. He sat me down, opened the hood, and said: \"Every problem has a cause. Find the cause, find the fix.\"\n\nWe spent four hours tracing wires. I thought I was helping. Really, he was teaching.\n\nI haven't heard his voice in two years. Not really. Just... polite distance.",
         emotion: 'tender_grief',
         variation_id: 'father_memory_v1'
       }
@@ -2058,17 +2019,7 @@ I haven't heard his voice in two years. Not really. Just... polite distance.`,
     speaker: 'Devon Kumar',
     content: [
       {
-        text: `*Devon looks down at his hands.*
-
-Yeah. He's in everything I build.
-
-The way I label my variables—his naming convention for parts. The way I test things twice—his "measure twice, cut once." Even this flowchart... it's his diagnostic method, just digitized.
-
-*Small laugh.*
-
-I never told him any of this. He thinks I left behind everything he taught me when I went to college.
-
-He doesn't know he's the foundation of every system I design.`,
+        text: "Yeah. He's in everything I build.\n\nThe way I label my variables. His naming convention for parts. The way I test things twice. His \"measure twice, cut once.\" Even this flowchart... it's his diagnostic method, just digitized.\n\nI never told him any of this. He thinks I left behind everything he taught me when I went to college.\n\nHe doesn't know he's the foundation of every system I design.",
         emotion: 'realization',
         variation_id: 'father_teaching_v1'
       }
@@ -2094,19 +2045,7 @@ He doesn't know he's the foundation of every system I design.`,
     speaker: 'Devon Kumar',
     content: [
       {
-        text: `*Devon's jaw tightens.*
-
-Mom died. Three years ago. Cancer.
-
-And Dad just... shut down. Same way he used to when a car was too broken to fix. "Some things you can't diagnose."
-
-I tried to help. Made spreadsheets of her medications. Optimized her care schedule. Built systems to make the impossible manageable.
-
-*Bitter.*
-
-He called it "cold." Said I was treating her like a machine problem, not a person.
-
-Maybe he was right. Or maybe it was the only way I knew how to love her.`,
+        text: "Mom died. Three years ago. Cancer.\n\nAnd Dad just... shut down. Same way he used to when a car was too broken to fix. \"Some things you can't diagnose.\"\n\nI tried to help. Made spreadsheets of her medications. Optimized her care schedule. Built systems to make the impossible manageable.\n\nHe called it \"cold.\" Said I was treating her like a machine problem, not a person.\n\nMaybe he was right. Or maybe it was the only way I knew how to love her.",
         emotion: 'raw_pain',
         variation_id: 'father_distance_v1'
       }
@@ -2138,19 +2077,7 @@ Maybe he was right. Or maybe it was the only way I knew how to love her.`,
     speaker: 'Devon Kumar',
     content: [
       {
-        text: `*Devon's voice cracks slightly.*
-
-Systems were my language.
-
-When I was scared, I made lists. When I was helpless, I made schedules. When I couldn't fix her, I tried to fix everything around her.
-
-*Pause.*
-
-Dad dealt with it by being present. Just sitting with her. Holding her hand. No agenda.
-
-We both loved her. In completely different languages.
-
-And after she was gone... we couldn't translate anymore.`,
+        text: "Systems were my language.\n\nWhen I was scared, I made lists. When I was helpless, I made schedules. When I couldn't fix her, I tried to fix everything around her.\n\nDad dealt with it by being present. Just sitting with her. Holding her hand. No agenda.\n\nWe both loved her. In completely different languages.\n\nAnd after she was gone... we couldn't translate anymore.",
         emotion: 'vulnerable_clarity',
         variation_id: 'systems_love_v1'
       }
@@ -2176,19 +2103,7 @@ And after she was gone... we couldn't translate anymore.`,
     speaker: 'Devon Kumar',
     content: [
       {
-        text: `*Devon looks at the flowchart with new eyes.*
-
-The Conversation Optimizer isn't really about him, is it?
-
-It's about me. Learning to listen instead of solve. To be present instead of productive.
-
-*Quiet.*
-
-What if I showed him the flowchart? Not to use it on him. To show him I'm trying.
-
-"Dad, I built this because I didn't know how to talk to you. But I want to learn."
-
-Would that be crazy? Using a system to apologize for using systems?`,
+        text: "The Conversation Optimizer isn't really about him, is it?\n\nIt's about me. Learning to listen instead of solve. To be present instead of productive.\n\nWhat if I showed him the flowchart? Not to use it on him. To show him I'm trying.\n\n\"Dad, I built this because I didn't know how to talk to you. But I want to learn.\"\n\nWould that be crazy? Using a system to apologize for using systems?",
         emotion: 'hopeful_uncertain',
         variation_id: 'father_hope_v1'
       }
@@ -2218,15 +2133,7 @@ Would that be crazy? Using a system to apologize for using systems?`,
     speaker: 'Devon Kumar',
     content: [
       {
-        text: `*Devon leans back, thoughtful.*
-
-You know what most people get wrong about systems? They think systems are cold. Mechanical. Inhuman.
-
-But every system is a story about what matters.
-
-Traffic lights tell a story about safety. Hospital schedules tell a story about care. My flowchart... it tells a story about a son trying to reconnect.
-
-The logic isn't the opposite of feeling. It's feeling, made visible.`,
+        text: "You know what most people get wrong about systems? They think systems are cold. Mechanical. Inhuman.\n\nBut every system is a story about what matters.\n\nTraffic lights tell a story about safety. Hospital schedules tell a story about care. My flowchart... it tells a story about a son trying to reconnect.\n\nThe logic isn't the opposite of feeling. It's feeling, made visible.",
         emotion: 'philosophical',
         variation_id: 'systems_philosophy_v1'
       }
@@ -2252,19 +2159,7 @@ The logic isn't the opposite of feeling. It's feeling, made visible.`,
     speaker: 'Devon Kumar',
     content: [
       {
-        text: `*Devon laughs ruefully.*
-
-Want to hear about my worst habit?
-
-I optimize everything. Shower routine: 7 minutes. Morning coffee: while code compiles. Conversations: mapped for maximum information transfer.
-
-Efficient. Also exhausting. Also lonely.
-
-*Pause.*
-
-Some of the best moments with Mom were completely unoptimized. Sitting on the porch. Not talking. Just... being.
-
-I'm trying to remember how to waste time with people I love. It's harder than it should be.`,
+        text: "Want to hear about my worst habit?\n\nI optimize everything. Shower routine: 7 minutes. Morning coffee: while code compiles. Conversations: mapped for maximum information transfer.\n\nEfficient. Also exhausting. Also lonely.\n\nSome of the best moments with Mom were completely unoptimized. Sitting on the porch. Not talking. Just... being.\n\nI'm trying to remember how to waste time with people I love. It's harder than it should be.",
         emotion: 'self_aware',
         variation_id: 'optimization_trap_v1'
       }
@@ -2290,17 +2185,7 @@ I'm trying to remember how to waste time with people I love. It's harder than it
     speaker: 'Devon Kumar',
     content: [
       {
-        text: `*Devon traces a line on his flowchart.*
-
-Here's something I've learned the hard way: you can't debug people.
-
-Code has consistent behavior. Same input, same output. People? They're different every day. Different moods, different contexts, different histories.
-
-My first instinct is always "find the pattern, fix the bug." But people aren't bugs. They're features. Complicated, contradictory, beautiful features.
-
-*Small smile.*
-
-I'm learning to appreciate the inconsistency. Slowly.`,
+        text: "Here's something I've learned the hard way: you can't debug people.\n\nCode has consistent behavior. Same input, same output. People? They're different every day. Different moods, different contexts, different histories.\n\nMy first instinct is always \"find the pattern, fix the bug.\" But people aren't bugs. They're features. Complicated, contradictory, beautiful features.\n\nI'm learning to appreciate the inconsistency. Slowly.",
         emotion: 'growing',
         variation_id: 'debug_people_v1'
       }
@@ -2323,17 +2208,7 @@ I'm learning to appreciate the inconsistency. Slowly.`,
     speaker: 'Devon Kumar',
     content: [
       {
-        text: `*Devon gestures at the city beyond the station.*
-
-People think Birmingham is behind. Rust Belt. Manufacturing ghost town.
-
-They're wrong. This city is rebuilding itself. From iron forges to medical research. From steel mills to tech incubators.
-
-I could work anywhere. Silicon Valley called. Twice. But here... here I can build things that matter to people I know.
-
-My neighbor's daughter uses an app I helped design. My old teacher's hospital runs on systems I optimized.
-
-That's not possible in San Francisco. Here, I can see the impact.`,
+        text: "People think Birmingham is behind. Rust Belt. Manufacturing ghost town.\n\nThey're wrong. This city is rebuilding itself. From iron forges to medical research. From steel mills to tech incubators.\n\nI could work anywhere. Silicon Valley called. Twice. But here... here I can build things that matter to people I know.\n\nMy neighbor's daughter uses an app I helped design. My old teacher's hospital runs on systems I optimized.\n\nThat's not possible in San Francisco. Here, I can see the impact.",
         emotion: 'rooted_pride',
         variation_id: 'birmingham_roots_v1'
       }
@@ -2359,15 +2234,7 @@ That's not possible in San Francisco. Here, I can see the impact.`,
     speaker: 'Devon Kumar',
     content: [
       {
-        text: `*Devon's eyes light up.*
-
-You want to know what Birmingham looks like in ten years? I've been modeling it.
-
-Clean energy hub. Medical technology corridor. Advanced manufacturing center. All the pieces are there—UAB, the startup scene, the workforce ready to be retrained.
-
-The old Birmingham made things with iron and sweat. The new Birmingham will make things with code and creativity.
-
-And I want to be part of building it. Not as an outsider importing solutions. As someone who grew up here, building for here.`,
+        text: "You want to know what Birmingham looks like in ten years? I've been modeling it.\n\nClean energy hub. Medical technology corridor. Advanced manufacturing center. All the pieces are there. UAB, the startup scene, the workforce ready to be retrained.\n\nThe old Birmingham made things with iron and sweat. The new Birmingham will make things with code and creativity.\n\nAnd I want to be part of building it. Not as an outsider importing solutions. As someone who grew up here, building for here.",
         emotion: 'visionary',
         variation_id: 'birmingham_future_v1'
       }
@@ -2390,17 +2257,7 @@ And I want to be part of building it. Not as an outsider importing solutions. As
     speaker: 'Devon Kumar',
     content: [
       {
-        text: `*Devon pauses, considering.*
-
-There's this student—Maya. Works on robots for physical therapy.
-
-She thinks she's not a "real engineer." Meanwhile, she's building adaptive AI systems that most professionals couldn't dream of.
-
-*Shakes head.*
-
-Imposter syndrome. I had it too. Still do, sometimes. The fear that someone's going to realize you're faking it.
-
-She doesn't see how her heart makes her work better, not worse. Empathy as engineering input.`,
+        text: "There's this student. Maya. Works on robots for physical therapy.\n\nShe thinks she's not a \"real engineer.\" Meanwhile, she's building adaptive AI systems that most professionals couldn't dream of.\n\nImposter syndrome. I had it too. Still do, sometimes. The fear that someone's going to realize you're faking it.\n\nShe doesn't see how her heart makes her work better, not worse. Empathy as engineering input.",
         emotion: 'admiring',
         variation_id: 'mentions_maya_v1'
       }
@@ -2425,17 +2282,7 @@ She doesn't see how her heart makes her work better, not worse. Empathy as engin
     speaker: 'Devon Kumar',
     content: [
       {
-        text: `*Devon nods toward the lower platforms.*
-
-Rohan. The ghost hunter. Have you met him?
-
-He's down there tracing hallucinated code, trying to understand what machines dream about.
-
-We argue sometimes. He thinks I'm too focused on efficiency. I think he's too attached to the past. But we're both asking the same question:
-
-What does it mean to understand something? Really understand it, not just use it?
-
-Different approaches. Same obsession.`,
+        text: "Rohan. The ghost hunter. Have you met him?\n\nHe's down there tracing hallucinated code, trying to understand what machines dream about.\n\nWe argue sometimes. He thinks I'm too focused on efficiency. I think he's too attached to the past. But we're both asking the same question:\n\nWhat does it mean to understand something? Really understand it, not just use it?\n\nDifferent approaches. Same obsession.",
         emotion: 'respectful_disagreement',
         variation_id: 'mentions_rohan_v1'
       }
@@ -2461,17 +2308,7 @@ Different approaches. Same obsession.`,
     speaker: 'Devon Kumar',
     content: [
       {
-        text: `*Devon stares at his screens.*
-
-You want to know something pathetic?
-
-I have 3,000 connections on LinkedIn. 47 "close friends" on a social app. Zero people I can call at 3am when I can't sleep.
-
-I optimized my social network. Pruned the inactive connections. Maintained relationships with strategic value.
-
-*Bitter laugh.*
-
-Congratulations, Devon. Your social graph is beautiful. And you're completely alone.`,
+        text: "You want to know something pathetic?\n\nI have 3,000 connections on LinkedIn. 47 \"close friends\" on a social app. Zero people I can call at 3am when I can't sleep.\n\nI optimized my social network. Pruned the inactive connections. Maintained relationships with strategic value.\n\nCongratulations, Devon. Your social graph is beautiful. And you're completely alone.",
         emotion: 'lonely_honest',
         variation_id: 'loneliness_v1'
       }
@@ -2500,17 +2337,7 @@ Congratulations, Devon. Your social graph is beautiful. And you're completely al
     speaker: 'Devon Kumar',
     content: [
       {
-        text: `*Devon looks at you, surprised.*
-
-Yeah. This is real, isn't it?
-
-No agenda. No strategic value. Just... talking. Like people used to do.
-
-*Pause.*
-
-Maybe that's what I've been missing. Not more connections. Fewer. But real ones.
-
-Quality over quantity. Isn't that basic systems design? I somehow forgot to apply it to my own life.`,
+        text: "Yeah. This is real, isn't it?\n\nNo agenda. No strategic value. Just... talking. Like people used to do.\n\nMaybe that's what I've been missing. Not more connections. Fewer. But real ones.\n\nQuality over quantity. Isn't that basic systems design? I somehow forgot to apply it to my own life.",
         emotion: 'dawning_realization',
         variation_id: 'loneliness_response_v1'
       }
@@ -2538,19 +2365,7 @@ Quality over quantity. Isn't that basic systems design? I somehow forgot to appl
     speaker: 'Devon Kumar',
     content: [
       {
-        text: `*Devon grimaces.*
-
-My biggest failure? Easy. The Day Mom's Medical System Crashed.
-
-I'd built this beautiful medication tracker. Alerts, interactions, scheduling. My masterpiece.
-
-It crashed the morning of her worst day. Corrupted database. No backup. Because I was so confident in my code, I didn't test the recovery path.
-
-She missed her meds. Had a bad reaction. Dad had to rush her to the ER.
-
-*Quiet.*
-
-He never said "I told you so." He didn't have to. The silence was enough.`,
+        text: "My biggest failure? Easy. The Day Mom's Medical System Crashed.\n\nI'd built this beautiful medication tracker. Alerts, interactions, scheduling. My masterpiece.\n\nIt crashed the morning of her worst day. Corrupted database. No backup. Because I was so confident in my code, I didn't test the recovery path.\n\nShe missed her meds. Had a bad reaction. Dad had to rush her to the ER.\n\nHe never said \"I told you so.\" He didn't have to. The silence was enough.",
         emotion: 'shame',
         variation_id: 'failure_story_v1'
       }
@@ -2576,19 +2391,7 @@ He never said "I told you so." He didn't have to. The silence was enough.`,
     speaker: 'Devon Kumar',
     content: [
       {
-        text: `*Devon speaks quietly.*
-
-I run scenarios. Professionally and... personally.
-
-What if I hadn't gone to college across the country? What if I'd stayed closer to home?
-
-What if I'd spent less time building systems and more time sitting with Mom?
-
-What if the last real conversation I had with Dad wasn't an argument?
-
-*Pause.*
-
-The scenarios don't help. But I can't stop running them.`,
+        text: "I run scenarios. Professionally and... personally.\n\nWhat if I hadn't gone to college across the country? What if I'd stayed closer to home?\n\nWhat if I'd spent less time building systems and more time sitting with Mom?\n\nWhat if the last real conversation I had with Dad wasn't an argument?\n\nThe scenarios don't help. But I can't stop running them.",
         emotion: 'regret',
         variation_id: 'what_ifs_v1'
       }
@@ -2618,17 +2421,7 @@ The scenarios don't help. But I can't stop running them.`,
     speaker: 'Devon Kumar',
     content: [
       {
-        text: `*Devon traces his flowchart.*
-
-Why systems? Everyone asks.
-
-When I was eight, there was a power outage. Three days. No heat. February.
-
-I watched my dad figure out, step by step, how to keep us warm. Blankets layered in specific order. Candles positioned for maximum heat distribution. A system.
-
-He made chaos manageable. He made the impossible feel possible.
-
-That's what systems are for. Not control. Calm. Making sense of things that don't make sense.`,
+        text: "Why systems? Everyone asks.\n\nWhen I was eight, there was a power outage. Three days. No heat. February.\n\nI watched my dad figure out, step by step, how to keep us warm. Blankets layered in specific order. Candles positioned for maximum heat distribution. A system.\n\nHe made chaos manageable. He made the impossible feel possible.\n\nThat's what systems are for. Not control. Calm. Making sense of things that don't make sense.",
         emotion: 'origin_story',
         variation_id: 'why_systems_v1'
       }
@@ -2654,21 +2447,7 @@ That's what systems are for. Not control. Calm. Making sense of things that don'
     speaker: 'Devon Kumar',
     content: [
       {
-        text: `*Devon's face softens.*
-
-My best work? Not the enterprise systems. Not the optimized workflows.
-
-A grief support app. Never launched. Personal project after Mom died.
-
-It didn't try to fix grief. It just helped you track it. Good days, bad days, triggers, small victories.
-
-No solutions. Just acknowledgment. "Today is hard. That's real. You're not crazy."
-
-I showed it to a therapist friend. She cried. Said it was the first tech she'd seen that actually understood grief.
-
-*Pause.*
-
-Maybe that's what Dad needs. Not a conversation optimizer. A grief companion. Something that says "this is hard" instead of "here's how to fix it."`,
+        text: "My best work? Not the enterprise systems. Not the optimized workflows.\n\nA grief support app. Never launched. Personal project after Mom died.\n\nIt didn't try to fix grief. It just helped you track it. Good days, bad days, triggers, small victories.\n\nNo solutions. Just acknowledgment. \"Today is hard. That's real. You're not crazy.\"\n\nI showed it to a therapist friend. She cried. Said it was the first tech she'd seen that actually understood grief.\n\nMaybe that's what Dad needs. Not a conversation optimizer. A grief companion. Something that says \"this is hard\" instead of \"here's how to fix it.\"",
         emotion: 'tender_insight',
         variation_id: 'best_work_v1'
       }
@@ -2697,19 +2476,7 @@ Maybe that's what Dad needs. Not a conversation optimizer. A grief companion. So
     speaker: 'Devon Kumar',
     content: [
       {
-        text: `*Devon gestures at his screens.*
-
-Want to see how I actually work?
-
-Step one: Define the problem. Not the surface problem—the real one underneath.
-
-Step two: Map the system. All the pieces. All the connections.
-
-Step three: Find the leverage point. The one change that affects everything else.
-
-Step four: Test. Fail. Learn. Repeat.
-
-Simple, right? Except step one takes forever. Because people—including me—are terrible at knowing what the real problem is.`,
+        text: "Want to see how I actually work?\n\nStep one: Define the problem. Not the surface problem. The real one underneath.\n\nStep two: Map the system. All the pieces. All the connections.\n\nStep three: Find the leverage point. The one change that affects everything else.\n\nStep four: Test. Fail. Learn. Repeat.\n\nSimple, right? Except step one takes forever. Because people, including me, are terrible at knowing what the real problem is.",
         emotion: 'teaching',
         variation_id: 'process_v1'
       }
@@ -2736,15 +2503,7 @@ Simple, right? Except step one takes forever. Because people—including me—ar
     speaker: 'Devon Kumar',
     content: [
       {
-        text: `*Devon rubs his eyes.*
-
-You know when the best ideas come? 2am. When the world goes quiet and there's no one to perform for.
-
-That's when the flowchart started. Not during the day when I was "working." In the dark, when I couldn't sleep because I missed my dad.
-
-*Quiet.*
-
-I think my brain solves problems while my heart grieves. They run in parallel. Different processes. Same system.`,
+        text: "You know when the best ideas come? 2am. When the world goes quiet and there's no one to perform for.\n\nThat's when the flowchart started. Not during the day when I was \"working.\" In the dark, when I couldn't sleep because I missed my dad.\n\nI think my brain solves problems while my heart grieves. They run in parallel. Different processes. Same system.",
         emotion: 'tired_honest',
         variation_id: 'midnight_work_v1'
       }
@@ -2766,19 +2525,7 @@ I think my brain solves problems while my heart grieves. They run in parallel. D
     speaker: 'Devon Kumar',
     content: [
       {
-        text: `*Devon thinks for a moment.*
-
-My first programming teacher. Mr. Krishnan. Community college intro course.
-
-He didn't just teach syntax. He taught thinking. "Every program is a conversation with future you. Be kind to that person."
-
-I still comment my code like I'm explaining it to someone I care about. Because of him.
-
-*Pause.*
-
-Dad thinks I left behind everything he taught me. But Mr. Krishnan? He built on Dad's foundation. The careful thinking, the systematic approach.
-
-Dad just can't see the connection. Or I haven't shown it to him.`,
+        text: "My first programming teacher. Mr. Krishnan. Community college intro course.\n\nHe didn't just teach syntax. He taught thinking. \"Every program is a conversation with future you. Be kind to that person.\"\n\nI still comment my code like I'm explaining it to someone I care about. Because of him.\n\nDad thinks I left behind everything he taught me. But Mr. Krishnan? He built on Dad's foundation. The careful thinking, the systematic approach.\n\nDad just can't see the connection. Or I haven't shown it to him.",
         emotion: 'grateful_reflective',
         variation_id: 'mentors_v1'
       }
@@ -2800,19 +2547,7 @@ Dad just can't see the connection. Or I haven't shown it to him.`,
     speaker: 'Devon Kumar',
     content: [
       {
-        text: `*Devon looks at his reflection in a dark screen.*
-
-Who am I if I'm not optimizing something?
-
-I've been the "systems guy" since I was twelve. The one who fixes things. Organizes things. Makes things work.
-
-What happens if I just... stop? Be present without purpose. Exist without producing.
-
-*Uncertain.*
-
-It terrifies me. The idea of being valuable just because I exist, not because I'm useful.
-
-That's probably something I should work on, huh?`,
+        text: "Who am I if I'm not optimizing something?\n\nI've been the \"systems guy\" since I was twelve. The one who fixes things. Organizes things. Makes things work.\n\nWhat happens if I just... stop? Be present without purpose. Exist without producing.\n\nIt terrifies me. The idea of being valuable just because I exist, not because I'm useful.\n\nThat's probably something I should work on, huh?",
         emotion: 'vulnerable_self_awareness',
         variation_id: 'identity_v1'
       }
@@ -2841,19 +2576,7 @@ That's probably something I should work on, huh?`,
     speaker: 'Devon Kumar',
     content: [
       {
-        text: `*Devon straightens up, something shifting in his expression.*
-
-You know what? I'm going to call him.
-
-Not with the flowchart. Not with a script. Just... call.
-
-"Hey Dad. I miss you. I miss Mom. I'm scared I'm losing you too."
-
-No system. No optimization. Just the truth.
-
-*Pause.*
-
-Terrifying. But maybe that's the whole point. Love isn't supposed to be efficient.`,
+        text: "You know what? I'm going to call him.\n\nNot with the flowchart. Not with a script. Just... call.\n\n\"Hey Dad. I miss you. I miss Mom. I'm scared I'm losing you too.\"\n\nNo system. No optimization. Just the truth.\n\nTerrifying. But maybe that's the whole point. Love isn't supposed to be efficient.",
         emotion: 'resolved_scared',
         variation_id: 'hope_v1'
       }
@@ -2883,19 +2606,7 @@ Terrifying. But maybe that's the whole point. Love isn't supposed to be efficien
     speaker: 'Devon Kumar',
     content: [
       {
-        text: `*Devon stares out the window.*
-
-Georgia Tech. 500 miles from home. Everyone asked why I didn't stay closer.
-
-*Pause.*
-
-I told them it was the program. The rankings. The opportunities.
-
-Truth? I was running. Every time I saw Mom, I saw what we were losing. Every conversation reminded me time was finite.
-
-*Bitter.*
-
-I thought distance would hurt less than watching. Turns out distance has its own kind of pain.`,
+        text: "Georgia Tech. 500 miles from home. Everyone asked why I didn't stay closer.\n\nI told them it was the program. The rankings. The opportunities.\n\nTruth? I was running. Every time I saw Mom, I saw what we were losing. Every conversation reminded me time was finite.\n\nI thought distance would hurt less than watching. Turns out distance has its own kind of pain.",
         emotion: 'regret_honesty',
         variation_id: 'college_choice_v1'
       }
@@ -2924,21 +2635,7 @@ I thought distance would hurt less than watching. Turns out distance has its own
     speaker: 'Devon Kumar',
     content: [
       {
-        text: `*Devon smiles, distant.*
-
-My first real debug. I was ten.
-
-Dad's truck wouldn't start. He'd been under the hood for hours, frustrated. Mom was worried—she had a doctor's appointment.
-
-I sat in the driver's seat, turned the key when he said, and watched the dashboard. Noticed something. A pattern.
-
-"Dad, the battery light flickers before it dies. Maybe there's a loose connection?"
-
-*Quiet pride.*
-
-He found the corroded terminal in five minutes. Looked at me like I was magic.
-
-First time I understood: watching systems carefully shows you what's wrong. First time I felt... useful.`,
+        text: "My first real debug. I was ten.\n\nDad's truck wouldn't start. He'd been under the hood for hours, frustrated. Mom was worried. She had a doctor's appointment.\n\nI sat in the driver's seat, turned the key when he said, and watched the dashboard. Noticed something. A pattern.\n\n\"Dad, the battery light flickers before it dies. Maybe there's a loose connection?\"\n\nHe found the corroded terminal in five minutes. Looked at me like I was magic.\n\nFirst time I understood: watching systems carefully shows you what's wrong. First time I felt... useful.",
         emotion: 'nostalgic_pride',
         variation_id: 'first_debug_v1'
       }
@@ -2964,19 +2661,7 @@ First time I understood: watching systems carefully shows you what's wrong. Firs
     speaker: 'Devon Kumar',
     content: [
       {
-        text: `*Devon's voice drops.*
-
-Last coherent thing Mom ever said to me. Three days before the end.
-
-She grabbed my hand—stronger than she'd been in weeks—and said:
-
-"Devon. Stop trying to fix everything. Some things just need to be felt."
-
-*Long pause.*
-
-I didn't understand then. I thought she was giving up. Now I realize she was giving me permission.
-
-Permission to not be useful. To just... be present. To let things be broken and love them anyway.`,
+        text: "Last coherent thing Mom ever said to me. Three days before the end.\n\nShe grabbed my hand, stronger than she'd been in weeks, and said:\n\n\"Devon. Stop trying to fix everything. Some things just need to be felt.\"\n\nI didn't understand then. I thought she was giving up. Now I realize she was giving me permission.\n\nPermission to not be useful. To just... be present. To let things be broken and love them anyway.",
         emotion: 'grief_clarity',
         variation_id: 'mom_final_v1'
       }
@@ -3011,19 +2696,7 @@ Permission to not be useful. To just... be present. To let things be broken and 
     speaker: 'Devon Kumar',
     content: [
       {
-        text: `*Devon gestures at invisible screens.*
-
-You want to know why I code at 2am? Why I take every side project?
-
-Because code makes sense. Variables don't have feelings. Functions don't die. Errors have solutions.
-
-*Quiet.*
-
-Real life doesn't work that way. Real life is messy and unpredictable and people leave and nothing you build can stop it.
-
-So I hide in logic. Build systems where I'm in control. Pretend that making something perfect somewhere makes up for the chaos everywhere else.
-
-It doesn't. But it's easier than facing what I'm avoiding.`,
+        text: "You want to know why I code at 2am? Why I take every side project?\n\nBecause code makes sense. Variables don't have feelings. Functions don't die. Errors have solutions.\n\nReal life doesn't work that way. Real life is messy and unpredictable and people leave and nothing you build can stop it.\n\nSo I hide in logic. Build systems where I'm in control. Pretend that making something perfect somewhere makes up for the chaos everywhere else.\n\nIt doesn't. But it's easier than facing what I'm avoiding.",
         emotion: 'raw_honesty',
         variation_id: 'coding_escape_v1'
       }
@@ -3052,17 +2725,7 @@ It doesn't. But it's easier than facing what I'm avoiding.`,
     speaker: 'Devon Kumar',
     content: [
       {
-        text: `*Devon looks thoughtful.*
-
-Everyone at Tech talks about Silicon Valley. Seattle. New York. The big moves.
-
-But Birmingham... it's changing. Medical research is booming. UAB is doing incredible work. Tech companies are actually looking here.
-
-*Pause.*
-
-And Dad's here. Still in the house I grew up in. Still working on cars.
-
-What if the best opportunity isn't somewhere else? What if it's building something where it matters most? Close to home. Close to him.`,
+        text: "Everyone at Tech talks about Silicon Valley. Seattle. New York. The big moves.\n\nBut Birmingham... it's changing. Medical research is booming. UAB is doing incredible work. Tech companies are actually looking here.\n\nAnd Dad's here. Still in the house I grew up in. Still working on cars.\n\nWhat if the best opportunity isn't somewhere else? What if it's building something where it matters most? Close to home. Close to him.",
         emotion: 'hopeful_uncertain',
         variation_id: 'birmingham_future_v1'
       }
@@ -3088,19 +2751,7 @@ What if the best opportunity isn't somewhere else? What if it's building somethi
     speaker: 'Devon Kumar',
     content: [
       {
-        text: `*Devon runs a hand through his hair.*
-
-You know what nobody tells you about systems engineering?
-
-There's always another layer. Always something you don't understand. The more you learn, the more you realize how much you don't know.
-
-*Nervous laugh.*
-
-I present this confident face. "Devon knows systems." But half the time I'm terrified someone will ask a question I can't answer.
-
-*Quiet.*
-
-Imposter syndrome doesn't go away. You just get better at hiding it.`,
+        text: "You know what nobody tells you about systems engineering?\n\nThere's always another layer. Always something you don't understand. The more you learn, the more you realize how much you don't know.\n\nI present this confident face. \"Devon knows systems.\" But half the time I'm terrified someone will ask a question I can't answer.\n\nImposter syndrome doesn't go away. You just get better at hiding it.",
         emotion: 'vulnerable_confession',
         variation_id: 'uncertainty_v1'
       }
@@ -3129,23 +2780,7 @@ Imposter syndrome doesn't go away. You just get better at hiding it.`,
     speaker: 'Devon Kumar',
     content: [
       {
-        text: `*Devon's expression softens.*
-
-Mom taught me something I keep forgetting.
-
-She'd stop mid-sentence sometimes. Point out a bird. A flower. The way light hit the window.
-
-"Devon, look. Isn't that beautiful?"
-
-*Pause.*
-
-I'd nod and get back to whatever I was doing. Optimizing. Always optimizing.
-
-Now I try to notice. The morning coffee. The way code compiles. A conversation that goes nowhere but feels good.
-
-*Quiet smile.*
-
-Small joys. Non-optimized moments. She was teaching me all along. I'm just now learning to listen.`,
+        text: "Mom taught me something I keep forgetting.\n\nShe'd stop mid-sentence sometimes. Point out a bird. A flower. The way light hit the window.\n\n\"Devon, look. Isn't that beautiful?\"\n\nI'd nod and get back to whatever I was doing. Optimizing. Always optimizing.\n\nNow I try to notice. The morning coffee. The way code compiles. A conversation that goes nowhere but feels good.\n\nSmall joys. Non-optimized moments. She was teaching me all along. I'm just now learning to listen.",
         emotion: 'bittersweet_growth',
         variation_id: 'small_joys_v1'
       }
@@ -3171,19 +2806,7 @@ Small joys. Non-optimized moments. She was teaching me all along. I'm just now l
     speaker: 'Devon Kumar',
     content: [
       {
-        text: `*Devon winces.*
-
-Dad's birthday is next month. First one since Mom.
-
-Last year, she organized everything. The cake he pretends not to want. The dinner with his old mechanic buddies. The card where she wrote things I should have said.
-
-*Pause.*
-
-This year... I don't know what to do. Part of me wants to recreate it. Make sure he doesn't feel the absence.
-
-But maybe that's wrong. Maybe trying to fill her space makes it worse.
-
-What do you do for someone's first birthday alone?`,
+        text: "Dad's birthday is next month. First one since Mom.\n\nLast year, she organized everything. The cake he pretends not to want. The dinner with his old mechanic buddies. The card where she wrote things I should have said.\n\nThis year... I don't know what to do. Part of me wants to recreate it. Make sure he doesn't feel the absence.\n\nBut maybe that's wrong. Maybe trying to fill her space makes it worse.\n\nWhat do you do for someone's first birthday alone?",
         emotion: 'uncertain_grief',
         variation_id: 'dad_birthday_v1'
       }
@@ -3194,7 +2817,7 @@ What do you do for someone's first birthday alone?`,
     choices: [
       {
         choiceId: 'birthday_presence',
-        text: "Maybe just being there is enough. Not filling her space—just filling yours.",
+        text: "Maybe just being there is enough. Not filling her space. Just filling yours.",
         nextNodeId: 'devon_introduction',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'wisdom'],
@@ -3212,21 +2835,7 @@ What do you do for someone's first birthday alone?`,
     speaker: 'Devon Kumar',
     content: [
       {
-        text: `*Devon looks up, something hopeful in his eyes.*
-
-You know what I keep imagining?
-
-Five years from now. Working at UAB's research hospital. Building systems that actually help people—not just optimize profits.
-
-Coming home to Birmingham. Having dinner with Dad. Not because I'm trying to fix anything. Just because I want to.
-
-*Pause.*
-
-Maybe the Conversation Optimizer becomes a joke between us. "Remember when you tried to script our relationship?" And we laugh. Because we figured out something better.
-
-*Quiet.*
-
-That's the future I want to build. Not optimal. Just... real.`,
+        text: "You know what I keep imagining?\n\nFive years from now. Working at UAB's research hospital. Building systems that actually help people. Not just optimize profits.\n\nComing home to Birmingham. Having dinner with Dad. Not because I'm trying to fix anything. Just because I want to.\n\nMaybe the Conversation Optimizer becomes a joke between us. \"Remember when you tried to script our relationship?\" And we laugh. Because we figured out something better.\n\nThat's the future I want to build. Not optimal. Just... real.",
         emotion: 'hopeful',
         variation_id: 'future_vision_v1'
       }
@@ -3255,23 +2864,7 @@ That's the future I want to build. Not optimal. Just... real.`,
     speaker: 'Devon Kumar',
     content: [
       {
-        text: `*Devon takes a breath.*
-
-Hey. I don't say this enough. To anyone.
-
-Thank you.
-
-*Genuine.*
-
-Not for fixing anything. Not for optimizing my situation. Just for... listening. Being here while I figured things out loud.
-
-That's what I was missing with Dad. Not solutions. Presence.
-
-*Small smile.*
-
-You taught me something just now. By doing nothing except paying attention.
-
-Maybe that's what I needed all along.`,
+        text: "Hey. I don't say this enough. To anyone.\n\nThank you.\n\nNot for fixing anything. Not for optimizing my situation. Just for... listening. Being here while I figured things out loud.\n\nThat's what I was missing with Dad. Not solutions. Presence.\n\nYou taught me something just now. By doing nothing except paying attention.\n\nMaybe that's what I needed all along.",
         emotion: 'grateful',
         variation_id: 'gratitude_v1'
       }
@@ -3301,7 +2894,7 @@ Maybe that's what I needed all along.`,
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "*Devon manipulates a holographic projection. It looks like a subway map, but 3D and constantly shifting.*\n\nJordan calls this the 'Scary Map.' It's a probability tree of her career paths.\n\nSee this branch? Staying in architecture school. Probability dropping to zero. This one? The personal training gig. Had a 40% chance of leading to physical therapy school, but she branched here instead.\n\n*He rotates the model.*\n\nPeople think choices are forks in the road. They're not. They're fluid dynamics. You don't take a path. You flow into the one of least resistance... unless you build a dam.",
+        text: "Jordan calls this the 'Scary Map.' It's a probability tree of her career paths.\n\nSee this branch? Staying in architecture school. Probability dropping to zero. This one? The personal training gig. Had a 40% chance of leading to physical therapy school, but she branched here instead.\n\nPeople think choices are forks in the road. They're not. They're fluid dynamics. You don't take a path. You flow into the one of least resistance... unless you build a dam.",
         emotion: 'focused',
         variation_id: 'arc4_prob_map_v1'
       }
@@ -3333,7 +2926,7 @@ Maybe that's what I needed all along.`,
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "*He shuts down the hologram.*\n\nThe probability model for my career is robust. It's safe.\n\nBut the probability model for my happiness? It's throwing errors.\n\nI can stay here, build something real, and risk it failing. Or I can go to Silicon Valley, make millions, and always wonder what I left behind.\n\nDebug that for me.",
+        text: "The probability model for my career is robust. It's safe.\n\nBut the probability model for my happiness? It's throwing errors.\n\nI can stay here, build something real, and risk it failing. Or I can go to Silicon Valley, make millions, and always wonder what I left behind.\n\nDebug that for me.",
         emotion: 'conflicted',
         variation_id: 'arc4_crossroads_v1'
       }
@@ -3366,7 +2959,7 @@ Maybe that's what I needed all along.`,
     nodeId: 'devon_birmingham_reward',
     speaker: 'Devon Kumar',
     content: [{
-      text: "*Devon looks at the blueprint, then out at the city.*\n\nYou're right. Birmingham isn't just a location. It's a forge. This station... it's powered by that energy. The urge to make something new from what's broken.",
+      text: "You're right. Birmingham isn't just a location. It's a forge. This station... it's powered by that energy. The urge to make something new from what's broken.",
       emotion: 'inspired',
       variation_id: 'puzzle_bham_v1'
     }],
@@ -3378,7 +2971,7 @@ Maybe that's what I needed all along.`,
     nodeId: 'devon_patterns_reward',
     speaker: 'Devon Kumar',
     content: [{
-      text: "The Healer, The Builder, The Navigator... *He runs the simulation.*\n\nYou found the source code. We're not just people. We're functions. As long as the city has these needs, the station summons us to fill them.",
+      text: "The Healer, The Builder, The Navigator...\n\nYou found the source code. We're not just people. We're functions. As long as the city has these needs, the station summons us to fill them.",
       emotion: 'analytical_awe',
       variation_id: 'puzzle_patterns_v1'
     }],

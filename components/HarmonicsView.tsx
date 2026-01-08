@@ -59,9 +59,35 @@ export function HarmonicsView({ onOrbSelect }: HarmonicsViewProps) {
     }
 
     return (
-        <div className="p-4 space-y-8 min-h-[500px] flex flex-col items-center">
+        <div className="relative p-4 space-y-8 min-h-[500px] flex flex-col items-center">
+            {/* RESONANCE FIELD: Background Animation */}
+            <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+                <svg viewBox="0 0 400 600" className="w-full h-full opacity-20">
+                    <defs>
+                        <radialGradient id="field-grad" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" stopColor="#fff" stopOpacity="0.1" />
+                            <stop offset="100%" stopColor="#000" stopOpacity="0" />
+                        </radialGradient>
+                    </defs>
+                    <circle cx="200" cy="300" r="150" fill="url(#field-grad)" className="animate-[pulse_8s_ease-in-out_infinite]" />
+                    {[1, 2, 3].map(i => (
+                        <circle
+                            key={i}
+                            cx="200" cy="300"
+                            r={100 + i * 40}
+                            fill="none"
+                            stroke="white"
+                            strokeWidth="0.5"
+                            strokeOpacity={0.1 - (i * 0.02)}
+                            className="animate-[spin_60s_linear_infinite]"
+                            style={{ animationDuration: `${60 - i * 10}s`, animationDirection: i % 2 === 0 ? 'normal' : 'reverse' }}
+                        />
+                    ))}
+                </svg>
+            </div>
+
             {/* Header */}
-            <div className="text-center space-y-1">
+            <div className="relative z-10 text-center space-y-1">
                 <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-slate-300">
                     Resonance Field
                 </h3>
@@ -70,8 +96,8 @@ export function HarmonicsView({ onOrbSelect }: HarmonicsViewProps) {
                 </p>
             </div>
 
-            {/* The Totem - Vertical Stacking for Mobile (gap accounts for labels) */}
-            <div className="flex-1 flex flex-col items-center justify-center gap-14 w-full max-w-[280px]">
+            {/* The Totem - Vertical Stacking for Mobile */}
+            <div className="flex-1 flex flex-col items-center justify-center gap-6 w-full max-w-[280px] pb-12 relative z-10">
                 {patternOrbs.map((orb, index) => (
                     <HarmonicOrb
                         key={orb.pattern}
@@ -83,7 +109,7 @@ export function HarmonicsView({ onOrbSelect }: HarmonicsViewProps) {
                 ))}
             </div>
 
-            <p className="text-[9px] text-slate-500 font-mono text-center">
+            <p className="relative z-10 text-[9px] text-slate-500 font-mono text-center">
                 Tap orbs to inspect • Tilt device to disturb
             </p>
         </div>
@@ -131,79 +157,85 @@ function HarmonicOrb({ orb, index, onSelect, careerMatch }: {
     }
 
     return (
-        <motion.button
-            className="relative rounded-full flex items-center justify-center group outline-none touch-manipulation"
-            style={{
-                width: baseSize,
-                height: baseSize,
-                x,
-                y,
-                backgroundColor: `${orb.color}10`, // Very subtle tint background
-                border: `1px solid ${orb.color}40`,
-                boxShadow: `0 0 20px ${orb.color}10`,
-            }}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={handleInteraction}
-            initial={{ opacity: 0, scale: 0 }}
-            animate={isDormant
-                ? { opacity: [0.6, 0.85, 0.6], scale: [1, 1.03, 1] }  // Breathing for dormant
-                : { opacity: 1, scale: 1 }  // Static for active
-            }
-            transition={isDormant
-                ? {
-                    delay: index * 0.1,
-                    duration: 3,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                }
-                : { delay: index * 0.1, type: "spring" }
-            }
-        >
-            {/* Core - The "Pupil" representing the pattern code */}
-            <div
-                className="absolute inset-2 rounded-full opacity-80"
-                style={{ border: `1px dashed ${orb.color}` }}
-            />
-
-            {/* Liquid Fill */}
-            <motion.div
-                className="absolute bottom-0 left-0 right-0 bg-current transition-colors"
+        <div className="flex flex-col items-center gap-3 z-10">
+            <motion.button
+                className="relative rounded-full flex items-center justify-center group outline-none touch-manipulation backdrop-blur-sm"
                 style={{
-                    height: useTransform(fillSpring, v => `${v}%`),
-                    backgroundColor: orb.color,
-                    opacity: 0.2,
-                    borderRadius: '0 0 999px 999px' // Clipped to circle approx (overflow hidden on parent better)
+                    width: baseSize,
+                    height: baseSize,
+                    x,
+                    y,
+                    backgroundColor: `${orb.color}15`, // Increased opacity slightly for glass feel
+                    border: `1px solid ${orb.color}30`,
+                    boxShadow: `0 0 30px ${orb.color}10`, // Larger subtle glow
                 }}
-            />
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handleInteraction}
+                initial={{ opacity: 0, scale: 0 }}
+                animate={isDormant
+                    ? { opacity: [0.6, 0.85, 0.6], scale: [1, 1.03, 1] }
+                    : { opacity: 1, scale: 1 }
+                }
+                transition={isDormant
+                    ? {
+                        delay: index * 0.1,
+                        duration: 3,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                    }
+                    : { delay: index * 0.1, type: "spring" }
+                }
+            >
+                {/* Core - The "Pupil" */}
+                <div
+                    className="absolute inset-2 rounded-full opacity-60"
+                    style={{ border: `1px dashed ${orb.color}` }}
+                />
 
-            {/* Symbol */}
-            <PatternIcon pattern={orb.pattern} className="w-6 h-6" style={{ color: orb.color }} />
+                {/* Liquid Fill */}
+                <motion.div
+                    className="absolute bottom-0 left-0 right-0 bg-current transition-colors"
+                    style={{
+                        height: useTransform(fillSpring, v => `${v}%`),
+                        backgroundColor: orb.color,
+                        opacity: 0.25,
+                        borderRadius: '0 0 999px 999px'
+                    }}
+                />
 
-            {/* Label (Always visible below orb) */}
-            <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 text-center pointer-events-none w-32">
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                {/* Symbol */}
+                <PatternIcon pattern={orb.pattern} className="w-6 h-6 z-10" style={{ color: orb.color }} />
+            </motion.button>
+
+            {/* Label - Flow Layout (No longer absolute) */}
+            <div className="text-center w-40 flex flex-col items-center">
+                <p className="text-xs font-bold text-slate-300 uppercase tracking-widest text-shadow-sm">
                     {orb.label}
                 </p>
-                <p className="text-[9px] text-slate-500 font-mono">
-                    {orb.fillPercent}%
-                </p>
+                <div className="flex items-baseline gap-1">
+                    <p className="text-[10px] text-slate-500 font-mono">
+                        {orb.fillPercent}%
+                    </p>
+                </div>
+
                 {/* Career Match Overlay */}
                 {careerMatch && careerMatch.progress > 0 && (
-                    <div className="mt-1.5 flex items-center justify-center gap-1">
-                        <Briefcase className="w-2.5 h-2.5 text-amber-500/70" />
-                        <span className={`text-3xs truncate max-w-[90px] ${careerMatch.isUnlocked ? 'text-amber-400' : 'text-slate-500'}`}>
+                    <div className="mt-2 flex items-center justify-center gap-1.5 bg-slate-900/40 px-2 py-1 rounded-full border border-white/5 backdrop-blur-sm">
+                        <Briefcase className="w-3 h-3 text-amber-500/80" />
+                        <span className={`text-[10px] truncate max-w-[100px] ${careerMatch.isUnlocked ? 'text-amber-300' : 'text-slate-400'}`}>
                             {careerMatch.careerHint}
                         </span>
-                        <span className={`text-3xs font-mono ${careerMatch.isUnlocked ? 'text-emerald-400' : 'text-slate-500'}`}>
+                        <span className={`text-[10px] font-mono ${careerMatch.isUnlocked ? 'text-emerald-400' : 'text-slate-500'}`}>
                             {careerMatch.progress}%
                         </span>
                     </div>
                 )}
+
                 {/* Progress to next unlock */}
                 {orb.nextUnlock && (
-                    <div className="mt-1">
-                        <div className="h-1 bg-slate-700/50 rounded-full overflow-hidden">
+                    <div className="mt-1 w-full max-w-[80px]">
+                        <div className="h-0.5 bg-slate-700/30 rounded-full overflow-hidden">
                             <motion.div
                                 className="h-full rounded-full"
                                 style={{ backgroundColor: orb.color }}
@@ -212,14 +244,13 @@ function HarmonicOrb({ orb, index, onSelect, careerMatch }: {
                                 transition={{ duration: 0.5 }}
                             />
                         </div>
-                        <p className="text-3xs text-slate-500 mt-0.5">
-                            {orb.pointsToNext}% to unlock
+                        <p className="text-[9px] text-slate-600 mt-1">
+                            to unlock
                         </p>
                     </div>
                 )}
             </div>
-
-        </motion.button>
+        </div>
     )
 }
 

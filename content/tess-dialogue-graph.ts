@@ -18,22 +18,16 @@ export const tessDialogueNodes: DialogueNode[] = [
     speaker: 'Tess',
     content: [
       {
-        text: `The B-Side. Vinyl crates, concert posters. Phone rings. She ignores it.
-
-*Flipping through records.*
-
-That phone. Developer again. Third call today.
-
-Offering to buy the building. "Prime real estate." Like it's just square footage.`,
+        text: "The B-Side. Vinyl crates. Concert posters.\n\nPhone rings. Ignore it.\n\nDeveloper again. Third call today.\n\nOffering to buy the building. \"Prime real estate.\" Like it's just square footage.",
         emotion: 'frustrated',
         interaction: 'shake',
-        variation_id: 'tess_intro_v1',
+        variation_id: 'tess_intro_v2_minimal',
         richEffectContext: 'thinking',
         useChatPacing: true,
         patternReflection: [
-          { pattern: 'patience', minLevel: 5, altText: "The B-Side. Vinyl crates, concert posters. Phone rings. She ignores it.\n\n*Flipping through records.*\n\nYou're not rushing me. That's nice. Most people want the quick version.\n\nThat phone. Developer again. Wants to buy the building.", altEmotion: 'grateful' },
-          { pattern: 'building', minLevel: 5, altText: "The B-Side. Vinyl crates. Concert posters I designed myself.\n\n*Flipping through records.*\n\nYou look like someone who makes things. This whole place—I built it from nothing.\n\nNow developers want to buy it. 'Prime real estate.'", altEmotion: 'conflicted' },
-          { pattern: 'exploring', minLevel: 5, altText: "The B-Side. Vinyl crates, concert posters. Phone rings. She ignores it.\n\nYou're looking around. Good. Most people don't even see what's here.\n\nThat phone. Developer again. Wants to turn this into something... else.", altEmotion: 'curious' }
+          { pattern: 'patience', minLevel: 5, altText: "The B-Side. Vinyl crates. Phone rings. Ignore it.\n\nYou're not rushing me. That's nice. Most people want the quick version.\n\nThat phone. Developer again. Wants to buy the building.", altEmotion: 'grateful' },
+          { pattern: 'building', minLevel: 5, altText: "The B-Side. Vinyl crates. Concert posters I designed myself.\n\nYou look like someone who makes things. This whole place. I built it from nothing.\n\nNow developers want to buy it. 'Prime real estate.'", altEmotion: 'conflicted' },
+          { pattern: 'exploring', minLevel: 5, altText: "The B-Side. Vinyl crates. Phone rings. Ignore it.\n\nYou're looking around. Good. Most people don't even see what's here.\n\nThat phone. Developer again. Wants to turn this into something... else.", altEmotion: 'curious' }
         ]
       }
     ],
@@ -45,7 +39,7 @@ Offering to buy the building. "Prime real estate." Like it's just square footage
           analytical: "What's the number? Let's understand the actual math here.",
           helping: "They must be offering a lot to make you this conflicted.",
           building: "Numbers matter. What would it take for you to walk away?",
-          exploring: "I'm curious—what does 'enough' look like to a developer?",
+          exploring: "I'm curious. What does 'enough' look like to a developer?",
           patience: "Take your time. What are they putting on the table?"
         },
         nextNodeId: 'tess_the_offer',
@@ -80,7 +74,7 @@ Offering to buy the building. "Prime real estate." Like it's just square footage
           analytical: "What do the numbers actually look like?",
           helping: "Is the shop doing okay? You seem stressed.",
           building: "How's business? Is this model sustainable?",
-          exploring: "I'm curious—how does a record shop survive these days?",
+          exploring: "I'm curious. How does a record shop survive these days?",
           patience: "Business must be complicated. How are things really?"
         }
       },
@@ -89,6 +83,7 @@ Offering to buy the building. "Prime real estate." Like it's just square footage
         text: "[Wait. Let her talk.]",
         nextNodeId: 'tess_the_shop',
         pattern: 'patience',
+        archetype: 'STAY_SILENT',
         skills: ['emotionalIntelligence', 'adaptability'],
         consequence: {
           characterId: 'tess',
@@ -110,18 +105,14 @@ Offering to buy the building. "Prime real estate." Like it's just square footage
     speaker: 'Tess',
     content: [
       {
-        text: `Enough to retire. Buy a condo somewhere warm. Never worry about rent again.
-
-*Laughs.*
-
-My accountant thinks I'm insane for even hesitating.`,
+        text: "Enough to retire. Buy a condo somewhere warm. Never worry about rent again.\n\nMy accountant thinks I'm insane for even hesitating.",
         emotion: 'conflicted',
         interaction: 'nod',
-        variation_id: 'offer_v1',
+        variation_id: 'offer_v2_minimal',
         useChatPacing: true,
         patternReflection: [
-          { pattern: 'analytical', minLevel: 4, altText: "Enough to retire. Buy a condo somewhere warm. Never worry about rent again.\n\nYou're running the numbers in your head, aren't you? I can see it.\n\nMy accountant thinks I'm insane for hesitating. He's probably right.", altEmotion: 'conflicted' },
-          { pattern: 'building', minLevel: 4, altText: "Enough to retire. Never worry about rent again.\n\nBut this place... I built it. You understand that, don't you? The difference between a smart deal and something you created.\n\nMy accountant thinks I'm insane for hesitating.", altEmotion: 'vulnerable' }
+          { pattern: 'analytical', minLevel: 4, altText: "Enough to retire. Buy a condo. Never worry about rent.\n\nYou're running the numbers in your head aren't you? I can see it.\n\nMy accountant thinks I'm insane for hesitating. He's probably right.", altEmotion: 'conflicted' },
+          { pattern: 'building', minLevel: 4, altText: "Enough to retire. Never worry about rent again.\n\nBut this place... I built it. You understand that don't you? The difference between a smart deal and something you created.\n\nMy accountant thinks I'm insane for hesitating.", altEmotion: 'vulnerable' }
         ]
       }
     ],
@@ -166,21 +157,13 @@ My accountant thinks I'm insane for even hesitating.`,
     speaker: 'Tess',
     content: [
       {
-        text: `Started this place twelve years ago. Just me, two crates, and a dream.
-
-Know how many artists played their first show here? Before anyone knew their names?
-
-*Points to wall of photos.*
-
-That kid right there. Now selling out arenas. First gig was in my back room to fifteen people.
-
-This isn't a store. It's where real gets discovered before the algorithm buries it.`,
+        text: "Started this place twelve years ago. Just me. Two crates. And a dream.\n\nKnow how many artists played their first show here? Before anyone knew their names?\n\nThat kid right there. Now selling out arenas. First gig was in my back room to fifteen people.\n\nThis isn't a store. It's where real gets discovered before the algorithm buries it.",
         emotion: 'passionate',
         interaction: 'bloom',
-        variation_id: 'shop_v1',
+        variation_id: 'shop_v2_minimal',
         useChatPacing: true,
         patternReflection: [
-          { pattern: 'building', minLevel: 4, altText: "Started this place twelve years ago. Just me, two crates, and a dream.\n\nYou build things. You understand what it means to make something from nothing.\n\n*Points to wall of photos.*\n\nThat kid there. Selling out arenas now. First gig was here.", altEmotion: 'proud' },
+          { pattern: 'building', minLevel: 4, altText: "Started this place twelve years ago. Just me. Two crates.\n\nYou build things. You understand what it means to make something from nothing.\n\nThat kid there. Selling out arenas now. First gig was here.", altEmotion: 'proud' },
           { pattern: 'helping', minLevel: 4, altText: "Know how many artists played their first show here? Before anyone knew their names?\n\nYou care about people. I can tell. This place is about giving people a chance.\n\nThat kid right there. Selling out arenas now.", altEmotion: 'passionate' }
         ]
       }
@@ -197,6 +180,7 @@ This isn't a store. It's where real gets discovered before the algorithm buries 
         text: "Tell me about someone this place changed.",
         nextNodeId: 'tess_customer_moment',
         pattern: 'exploring',
+        archetype: 'ASK_FOR_DETAILS',
         skills: ['communication', 'emotionalIntelligence'],
         visibleCondition: {
           patterns: { exploring: { min: 4 } }
@@ -211,6 +195,7 @@ This isn't a store. It's where real gets discovered before the algorithm buries 
         text: "That matters. But can it pay the bills?",
         nextNodeId: 'tess_the_numbers',
         pattern: 'building',
+        archetype: 'CHALLENGE_ASSUMPTION',
         skills: ['criticalThinking', 'communication'],
         visibleCondition: {
           patterns: { building: { min: 3 } }
@@ -256,13 +241,7 @@ This isn't a store. It's where real gets discovered before the algorithm buries 
     speaker: 'Tess',
     content: [
       {
-        text: `Was working corporate. Marketing. Good salary. Nice apartment.
-
-Every day felt fake. Selling people things they didn't need with words that didn't mean anything.
-
-Then one night. Small venue. Unknown band. Something real happened in that room.
-
-Next morning I quit. Everyone thought I lost my mind.`,
+        text: "Was working corporate. Marketing. Good salary. Nice apartment.\n\nEvery day felt fake. Selling people things they didn't need with words that didn't mean anything.\n\nThen one night. Small venue. Unknown band. Something real happened in that room.\n\nNext morning I quit. Everyone thought I lost my mind.",
         emotion: 'reflective',
         interaction: 'small',
         variation_id: 'backstory_v1',
@@ -275,7 +254,7 @@ Next morning I quit. Everyone thought I lost my mind.`,
         text: "That took guts.",
         voiceVariations: {
           analytical: "Statistically, most people wouldn't risk that. You beat the odds.",
-          helping: "Following your heart like that—most people are too scared.",
+          helping: "Following your heart like that. Most people are too scared.",
           building: "Burning it down to build something real. I respect that.",
           exploring: "Chasing the unknown over the comfortable. That's rare.",
           patience: "Sometimes the right path takes years to reveal itself."
@@ -311,15 +290,7 @@ Next morning I quit. Everyone thought I lost my mind.`,
     speaker: 'Tess',
     content: [
       {
-        text: `*Pauses. Surprised.*
-
-Most people call it reckless. Or lucky. You're the first to call it guts.
-
-*Looks around the shop.*
-
-Maybe it was both. Reckless enough to jump. Lucky enough to land somewhere that matters.
-
-But courage... yeah. I'll take that.`,
+        text: "Most people call it reckless. Or lucky. You're the first to call it guts.\n\nMaybe it was both. Reckless enough to jump. Lucky enough to land somewhere that matters.\n\nBut courage... yeah. I'll take that.",
         emotion: 'touched',
         variation_id: 'courage_response_v1',
         useChatPacing: true
@@ -340,15 +311,7 @@ But courage... yeah. I'll take that.`,
     speaker: 'Tess',
     content: [
       {
-        text: `*Short laugh.*
-
-Now? Now I'm standing in my own shop wondering if I traded one kind of fake for another kind of broke.
-
-*Quieter.*
-
-At least when I couldn't sleep in the corporate job, it was because I felt hollow. Now when I can't sleep, it's because I feel everything.
-
-Not sure which is worse. But at least this is mine.`,
+        text: "Now? Now I'm standing in my own shop wondering if I traded one kind of fake for another kind of broke.\n\nAt least when I couldn't sleep in the corporate job, it was because I felt hollow. Now when I can't sleep, it's because I feel everything.\n\nNot sure which is worse. But at least this is mine.",
         emotion: 'wry',
         variation_id: 'reality_response_v1',
         useChatPacing: true
@@ -369,15 +332,7 @@ Not sure which is worse. But at least this is mine.`,
     speaker: 'Tess',
     content: [
       {
-        text: `Exactly. Streaming killed discovery. Everything optimized for engagement. Safe. Predictable.
-
-Real music. The stuff that changes you. It's getting harder to find.
-
-Someone has to catch it. Before it disappears.
-
-*Gestures around.*
-
-That's what this place does. Was. Is supposed to.`,
+        text: "Exactly. Streaming killed discovery. Everything optimized for engagement. Safe. Predictable.\n\nReal music. The stuff that changes you. It's getting harder to find.\n\nSomeone has to catch it. Before it disappears.\n\nThat's what this place does. Was. Is supposed to.",
         emotion: 'determined',
         interaction: 'shake',
         variation_id: 'phoniness_v1',
@@ -422,19 +377,7 @@ That's what this place does. Was. Is supposed to.`,
     speaker: 'Tess',
     content: [
       {
-        text: `*Looks at you sharply.*
-
-Fight for it. Like it's simple.
-
-*But then something shifts.*
-
-You know what? You're right. Everyone tells me to be practical. Be realistic. Take the money.
-
-No one's said "fight for it" in months.
-
-*Nods slowly.*
-
-Maybe that's the problem.`,
+        text: "Fight for it. Like it's simple.\n\nYou know what? You're right. Everyone tells me to be practical. Be realistic. Take the money.\n\nNo one's said \"fight for it\" in months.\n\nMaybe that's the problem.",
         emotion: 'fierce',
         variation_id: 'fight_response_v1',
         useChatPacing: true
@@ -455,15 +398,7 @@ Maybe that's the problem.`,
     speaker: 'Tess',
     content: [
       {
-        text: `*Sighs.*
-
-That's the question, isn't it? "How" is where dreams go to die.
-
-Passion says keep going. Math says sell.
-
-*Looks at the books on her desk.*
-
-Every month I solve that equation differently. Some months passion wins. Lately, math's been catching up.`,
+        text: "That's the question, isn't it? \"How\" is where dreams go to die.\n\nPassion says keep going. Math says sell.\n\nEvery month I solve that equation differently. Some months passion wins. Lately, math's been catching up.",
         emotion: 'tired',
         variation_id: 'how_response_v1',
         useChatPacing: true
@@ -485,15 +420,7 @@ Every month I solve that equation differently. Some months passion wins. Lately,
     speaker: 'Tess',
     content: [
       {
-        text: `Kid came in last week. Sixteen. Headphones generation.
-
-Said her mom used to come here. Before she died.
-
-Spent three hours listening. Crying. Finding pieces of her mom in the grooves.
-
-*Quiet.*
-
-Can't do that on Spotify.`,
+        text: "Kid came in last week. Sixteen. Headphones generation.\n\nSaid her mom used to come here. Before she died.\n\nSpent three hours listening. Crying. Finding pieces of her mom in the grooves.\n\nCan't do that on Spotify.",
         emotion: 'moved',
         interaction: 'small',
         variation_id: 'customer_v1',
@@ -506,6 +433,7 @@ Can't do that on Spotify.`,
         text: "That's why this matters.",
         nextNodeId: 'tess_the_numbers',
         pattern: 'helping',
+        archetype: 'ACKNOWLEDGE_EMOTION',
         skills: ['emotionalIntelligence'],
         consequence: {
           characterId: 'tess',
@@ -521,13 +449,7 @@ Can't do that on Spotify.`,
     speaker: 'Tess',
     content: [
       {
-        text: `Here's reality. Vinyl sales cover rent. Barely.
-
-Shows used to pay the rest. Venues closing everywhere.
-
-Last three months. Red. Red. Red.
-
-Developer's offer sits on my desk like a loaded question.`,
+        text: "Here's reality. Vinyl sales cover rent. Barely.\n\nShows used to pay the rest. Venues closing everywhere.\n\nLast three months. Red. Red. Red.\n\nDeveloper's offer sits on my desk like a loaded question.",
         emotion: 'vulnerable',
         interaction: 'small',
         variation_id: 'numbers_v1',
@@ -551,6 +473,7 @@ Developer's offer sits on my desk like a loaded question.`,
         text: "What scares you most? Selling or staying?",
         nextNodeId: 'tess_real_fear',
         pattern: 'helping',
+        archetype: 'ASK_FOR_DETAILS',
         skills: ['emotionalIntelligence', 'communication'],
         consequence: {
           characterId: 'tess',
@@ -562,6 +485,7 @@ Developer's offer sits on my desk like a loaded question.`,
         text: "What if you pivoted? Changed the model?",
         nextNodeId: 'tess_the_pitch_setup',
         pattern: 'building',
+        archetype: 'SHARE_PERSPECTIVE',
         skills: ['problemSolving', 'creativity'],
         consequence: {
           characterId: 'tess',
@@ -573,6 +497,7 @@ Developer's offer sits on my desk like a loaded question.`,
         text: "Sometimes endings aren't failures.",
         nextNodeId: 'tess_decision_cautious_path',
         pattern: 'patience',
+        archetype: 'SHARE_PERSPECTIVE',
         skills: ['emotionalIntelligence', 'adaptability']
       }
     ],
@@ -582,15 +507,7 @@ Developer's offer sits on my desk like a loaded question.`,
     nodeId: 'tess_interrupt_acknowledged',
     speaker: 'Tess',
     content: [{
-      text: `*She looks at you, surprised by the silence.*
-
-You didn't jump in with advice. No "have you tried..." or "what if you..."
-
-*A small, tired laugh.*
-
-Everyone wants to fix it. You just... let it be heavy for a minute.
-
-That's rare. Most people can't sit with someone else's red ink.`,
+      text: "You didn't jump in with advice. No \"have you tried...\" or \"what if you...\"\n\nEveryone wants to fix it. You just... let it be heavy for a minute.\n\nThat's rare. Most people can't sit with someone else's red ink.",
       emotion: 'grateful',
       microAction: 'She sets down the spreadsheet.',
       variation_id: 'interrupt_v1'
@@ -598,9 +515,10 @@ That's rare. Most people can't sit with someone else's red ink.`,
     choices: [
       {
         choiceId: 'tess_interrupt_continue',
-        text: "What do you actually want? Not what makes sense—what do you want?",
+        text: "What do you actually want? Not what makes sense. What do you want?",
         nextNodeId: 'tess_real_fear',
         pattern: 'helping',
+        archetype: 'ASK_FOR_DETAILS',
         consequence: {
           characterId: 'tess',
           trustChange: 1
@@ -616,18 +534,10 @@ That's rare. Most people can't sit with someone else's red ink.`,
     speaker: 'Tess',
     content: [
       {
-        text: `Selling? I'd survive. Get a condo. Retire early.
-
-Staying? I might fail. Lose everything anyway.
-
-*Pause.*
-
-But the real fear? Becoming what I left corporate for.
-
-Phony. Safe. Optimized.`,
+        text: "Selling? I'd survive. Get a condo. Retire early.\n\nStaying? I might fail. Lose everything anyway.\n\nBut the real fear? Becoming what I left corporate for.\n\nPhony. Safe. Optimized.",
         emotion: 'raw',
         interaction: 'shake',
-        variation_id: 'fear_v1',
+        variation_id: 'fear_v2_minimal',
         useChatPacing: true
       }
     ],
@@ -637,6 +547,7 @@ Phony. Safe. Optimized.`,
         text: "Then let's find a way that stays real.",
         nextNodeId: 'tess_the_pitch_setup',
         pattern: 'building',
+        archetype: 'OFFER_SUPPORT',
         skills: ['problemSolving', 'emotionalIntelligence']
       }
     ],
@@ -649,13 +560,7 @@ Phony. Safe. Optimized.`,
     speaker: 'Tess',
     content: [
       {
-        text: `Ideas keep me up at night. But I can't see them clearly.
-
-*Pulls out notebook.*
-
-Help me think. What's the pitch? What could this place become?
-
-Not just survive. Actually matter again.`,
+        text: "Ideas keep me up at night. But I can't see them clearly.\n\nHelp me think. What's the pitch? What could this place become?\n\nNot just survive. Actually matter again.",
         emotion: 'focused',
         interaction: 'nod',
         variation_id: 'pitch_setup_v1',
@@ -715,13 +620,7 @@ RACHEL: What am I missing?
     speaker: 'Tess',
     content: [
       {
-        text: `Online-only. Cut the physical space. Just ship records.
-
-*Stares at the room.*
-
-Then I'm just another website. Competing with Amazon. Why would anyone choose me?
-
-The whole point was the space. The discovery. The human.`,
+        text: "Online-only. Cut the physical space. Just ship records.\n\nThen I'm just another website. Competing with Amazon. Why would anyone choose me?\n\nThe whole point was the space. The discovery. The human.",
         emotion: 'deflated',
         interaction: 'small',
         variation_id: 'pitch_fail_v1',
@@ -755,15 +654,7 @@ The whole point was the space. The discovery. The human.`,
     speaker: 'Tess',
     content: [
       {
-        text: `Community. Yes. People are lonely. Headphones isolate.
-
-*Writing fast.*
-
-Weekly listening sessions. Curated. Deep dives. Talk about what we're hearing.
-
-Record club. Like book club. But for albums. Monthly memberships.
-
-Not selling plastic. Selling belonging.`,
+        text: "Community. Yes. People are lonely. Headphones isolate.\n\nWeekly listening sessions. Curated. Deep dives. Talk about what we're hearing.\n\nRecord club. Like book club. But for albums. Monthly memberships.\n\nNot selling plastic. Selling belonging.",
         emotion: 'excited',
         interaction: 'bloom',
         variation_id: 'community_v1',
@@ -794,7 +685,7 @@ Not selling plastic. Selling belonging.`,
       {
         pattern: 'helping',
         minLevel: 5,
-        altText: `Community. Yes. People are lonely. Headphones isolate.\n\n*Writing fast.*\n\nYou see it clearly. Connection. Belonging. That's what you've been pointing at in every conversation.\n\nNot selling plastic. Selling what people actually need.`,
+        altText: "Community. Yes. People are lonely. Headphones isolate.\n\nYou see it clearly. Connection. Belonging. That's what you've been pointing at in every conversation.\n\nNot selling plastic. Selling what people actually need.",
         altEmotion: 'inspired'
       }
     ]
@@ -806,13 +697,7 @@ Not selling plastic. Selling belonging.`,
     speaker: 'Tess',
     content: [
       {
-        text: `Experience. Can't stream this.
-
-*Gestures around.*
-
-The smell of vinyl. The crackle before the first note. Someone handing you an album and saying "this will change you."
-
-Maybe the business isn't records at all. It's curation. Discovery. The human recommending what no algorithm ever could.`,
+        text: "Experience. Can't stream this.\n\nThe smell of vinyl. The crackle before the first note. Someone handing you an album and saying \"this will change you.\"\n\nMaybe the business isn't records at all. It's curation. Discovery. The human recommending what no algorithm ever could.",
         emotion: 'inspired',
         interaction: 'bloom',
         variation_id: 'experience_v1',
@@ -843,7 +728,7 @@ Maybe the business isn't records at all. It's curation. Discovery. The human rec
       {
         pattern: 'building',
         minLevel: 5,
-        altText: `Experience. Can't stream this.\n\n*Gestures around.*\n\nYou're a builder. You see structures. Possibility in the bones of a thing.\n\nThe business isn't records. It's what we build around them.`,
+        altText: "Experience. Can't stream this.\n\nYou're a builder. You see structures. Possibility in the bones of a thing.\n\nThe business isn't records. It's what we build around them.",
         altEmotion: 'kindred'
       }
     ]
@@ -855,15 +740,7 @@ Maybe the business isn't records at all. It's curation. Discovery. The human rec
     speaker: 'Tess',
     content: [
       {
-        text: `*Stares at notebook. Pages of scrawl.*
-
-This could work. Community hub. Experience destination. Local artist residency.
-
-The B-Side 2.0.
-
-Still scared. Still might fail.
-
-But at least it means something.`,
+        text: "This could work. Community hub. Experience destination. Local artist residency.\n\nThe B-Side 2.0.\n\nStill scared. Still might fail.\n\nBut at least it means something.",
         emotion: 'hopeful',
         interaction: 'nod',
         variation_id: 'climax_v1',
@@ -876,6 +753,7 @@ But at least it means something.`,
         text: "Do it. Call the developer. Tell them no.",
         nextNodeId: 'tess_moment_before',
         pattern: 'building',
+        archetype: 'TAKE_ACTION',
         skills: ['problemSolving', 'adaptability'],
         consequence: {
           characterId: 'tess',
@@ -894,6 +772,7 @@ But at least it means something.`,
         text: "What's the first step? Start there.",
         nextNodeId: 'tess_moment_before',
         pattern: 'exploring',
+        archetype: 'SEEK_CLARIFICATION',
         skills: ['problemSolving', 'criticalThinking'],
         consequence: {
           characterId: 'tess',
@@ -904,7 +783,8 @@ But at least it means something.`,
     tags: ['tess_arc', 'climax'],
     metadata: {
       sessionBoundary: true  // Session 1: Introduction complete
-    }  },
+    }
+  },
 
   // EXPANSION: Moment before
   {
@@ -912,13 +792,7 @@ But at least it means something.`,
     speaker: 'Tess',
     content: [
       {
-        text: `*Looks at the wall of photos. Twelve years.*
-
-Every artist up there. Before anyone cared.
-
-*Turns back.*
-
-Yeah. I'm calling.`,
+        text: "Every artist up there. Before anyone cared.\n\nYeah. I'm calling.",
         emotion: 'resolute',
         interaction: 'nod',
         variation_id: 'moment_v1',
@@ -942,17 +816,7 @@ Yeah. I'm calling.`,
     speaker: 'Tess',
     content: [
       {
-        text: `*Picks up phone. Dials.*
-
-"Mr. Harrison? Tess Rivera. About your offer. I'm going to have to decline."
-
-*Pause.*
-
-"Because I'm not done yet."
-
-*Hangs up.*
-
-Scared. Alive. Both.`,
+        text: "\"Mr. Harrison? Tess Rivera. About your offer. I'm going to have to decline.\"\n\n\"Because I'm not done yet.\"\n\nScared. Alive. Both.",
         emotion: 'determined',
         interaction: 'bloom',
         variation_id: 'decision_bold_v1',
@@ -983,15 +847,7 @@ Scared. Alive. Both.`,
     speaker: 'Tess',
     content: [
       {
-        text: `*Looks around the room.*
-
-Twelve years. That's a good run. Better than most.
-
-Maybe the smart play is knowing when it's over.
-
-*Picks up developer's card.*
-
-I'll think about it.`,
+        text: "Twelve years. That's a good run. Better than most.\n\nMaybe the smart play is knowing when it's over.\n\nI'll think about it.",
         emotion: 'resigned',
         interaction: 'small',
         variation_id: 'decision_cautious_v1',
@@ -1023,21 +879,7 @@ I'll think about it.`,
     nodeId: 'tess_vulnerability_arc',
     speaker: 'Tess',
     content: [{
-      text: `*She runs her fingers along a dusty record sleeve.*
-
-This shop wasn't always mine alone.
-
-Elena. My business partner. My best friend. We built this place together. Every shelf, every playlist, every late night wondering if we'd make rent.
-
-*Her voice catches.*
-
-Three years in, she got an offer. Corporate gig. Six figures. Benefits. Security.
-
-She said: "Come with me. We can do this again later."
-
-I said: "This IS later. This is now."
-
-She left. Took half the startup capital with her. Legally hers. But it felt like she took half my belief too.`,
+      text: "This shop wasn't always mine alone.\n\nElena. My business partner. My best friend. We built this place together. Every shelf, every playlist, every late night wondering if we'd make rent.\n\nThree years in, she got an offer. Corporate gig. Six figures. Benefits. Security.\n\nShe said: \"Come with me. We can do this again later.\"\n\nI said: \"This IS later. This is now.\"\n\nShe left. Took half the startup capital with her. Legally hers. But it felt like she took half my belief too.",
       emotion: 'grief_anger',
       microAction: 'She grips the record sleeve tighter.',
       variation_id: 'vulnerability_v1',
@@ -1058,6 +900,7 @@ She left. Took half the startup capital with her. Legally hers. But it felt like
         text: "She chose security. You chose meaning. Neither is wrong.",
         nextNodeId: 'tess_vulnerability_reflection',
         pattern: 'patience',
+        archetype: 'SHOW_UNDERSTANDING',
         skills: ['emotionalIntelligence'],
         requiredOrbFill: { pattern: 'patience', threshold: 25 },
         consequence: {
@@ -1070,6 +913,7 @@ She left. Took half the startup capital with her. Legally hers. But it felt like
         text: "But you're still here. The shop is still here. You rebuilt.",
         nextNodeId: 'tess_vulnerability_reflection',
         pattern: 'helping',
+        archetype: 'ACKNOWLEDGE_EMOTION',
         skills: ['emotionalIntelligence', 'communication'],
         requiredOrbFill: { pattern: 'helping', threshold: 20 },
         consequence: {
@@ -1082,6 +926,7 @@ She left. Took half the startup capital with her. Legally hers. But it felt like
         text: "[Let the grief have its space.]",
         nextNodeId: 'tess_vulnerability_reflection',
         pattern: 'patience',
+        archetype: 'STAY_SILENT',
         skills: ['emotionalIntelligence'],
         requiredOrbFill: { pattern: 'patience', threshold: 30 },
         consequence: {
@@ -1096,17 +941,7 @@ She left. Took half the startup capital with her. Legally hers. But it felt like
     nodeId: 'tess_vulnerability_reflection',
     speaker: 'Tess',
     content: [{
-      text: `*She sets the record down gently.*
-
-I haven't spoken to her in four years. She sends a Christmas card. I don't open them.
-
-*A bitter laugh.*
-
-The developer's offer? Part of me wants to take it just to prove I can walk away too. That I'm not the one who got left holding the dream while everyone else grew up.
-
-But that's spite talking. Not truth.
-
-You're the first person I've told the Elena story to. Everyone else just sees "passionate small business owner." They don't see the wound underneath.`,
+      text: "I haven't spoken to her in four years. She sends a Christmas card. I don't open them.\n\nThe developer's offer? Part of me wants to take it just to prove I can walk away too. That I'm not the one who got left holding the dream while everyone else grew up.\n\nBut that's spite talking. Not truth.\n\nYou're the first person I've told the Elena story to. Everyone else just sees \"passionate small business owner.\" They don't see the wound underneath.",
       emotion: 'vulnerable_released',
       variation_id: 'reflection_v1'
     }],
@@ -1127,15 +962,7 @@ You're the first person I've told the Elena story to. Everyone else just sees "p
     speaker: 'Tess',
     content: [
       {
-        text: `You. Stranger walking in. Helped me see it.
-
-Sometimes we need someone outside our own head.
-
-*Hands you a record.*
-
-House gift. Something I think you'll like.
-
-Come back when we reopen. First listening session's on me.`,
+        text: "You. Stranger walking in. Helped me see it.\n\nSometimes we need someone outside our own head.\n\nHouse gift. Something I think you'll like.\n\nCome back when we reopen. First listening session's on me.",
         emotion: 'grateful',
         interaction: 'nod',
         variation_id: 'farewell_v1',
@@ -1146,13 +973,13 @@ Come back when we reopen. First listening session's on me.`,
       {
         pattern: 'building',
         minLevel: 5,
-        altText: `You're a builder. I saw it in how you think.\n\n*Hands you a record.*\n\nHouse gift. Something I think you'll like.\n\nCome back when we reopen. You might want to help build it.`,
+        altText: "You're a builder. I saw it in how you think.\n\nHouse gift. Something I think you'll like.\n\nCome back when we reopen. You might want to help build it.",
         altEmotion: 'kindred'
       },
       {
         pattern: 'exploring',
         minLevel: 5,
-        altText: `You asked the right questions. Explorers always do.\n\n*Hands you a record.*\n\nHouse gift. Something I think you'll like.\n\nCome back when we reopen. Curious people belong here.`,
+        altText: "You asked the right questions. Explorers always do.\n\nHouse gift. Something I think you'll like.\n\nCome back when we reopen. Curious people belong here.",
         altEmotion: 'recognized'
       }
     ],
@@ -1180,13 +1007,7 @@ Come back when we reopen. First listening session's on me.`,
     speaker: 'Tess',
     content: [
       {
-        text: `*Looks around one more time.*
-
-If this is how it ends. At least it was real.
-
-Twelve years of catching what mattered before it disappeared.
-
-That's not nothing.`,
+        text: "If this is how it ends. At least it was real.\n\nTwelve years of catching what mattered before it disappeared.\n\nThat's not nothing.",
         emotion: 'melancholic',
         interaction: 'small',
         variation_id: 'farewell_cautious_v1',
@@ -1211,9 +1032,7 @@ That's not nothing.`,
     speaker: 'Tess',
     content: [
       {
-        text: `Enough about me. You walked into a record shop and helped a stranger figure out her life.
-
-What are you looking for? What's your version of this?`,
+        text: "Enough about me. You walked into a record shop and helped a stranger figure out her life.\n\nWhat are you looking for? What's your version of this?",
         emotion: 'curious_engaged',
         interaction: 'nod',
         variation_id: 'asks_v1',
@@ -1258,17 +1077,7 @@ What are you looking for? What's your version of this?`,
     speaker: 'Tess',
     content: [
       {
-        text: `*Nods.*
-
-That's worth protecting. Whatever it is.
-
-Don't let the phoniness get to it.
-
-*Picks up phone again.*
-
-I have some calls to make. Come back sometime.
-
-And see Samuel. He'll want to know how this went.`,
+        text: "That's worth protecting. Whatever it is.\n\nDon't let the phoniness get to it.\n\nI have some calls to make. Come back sometime.\n\nAnd see Samuel. He'll want to know how this went.",
         emotion: 'affirming',
         interaction: 'nod',
         variation_id: 'reciprocity_v1',
@@ -1293,19 +1102,7 @@ And see Samuel. He'll want to know how this went.`,
     speaker: 'Tess',
     content: [
       {
-        text: `*She sets down a worn lesson planner.*
-
-Before I ran the shop, I taught. Middle school. Music and English.
-
-*Her eyes go distant.*
-
-You want to know what running a small business taught me about people? Nothing the classroom hadn't already.
-
-*Pulls out an old photo.*
-
-There was this day. Two students. A conflict that started small. I had thirty seconds to decide how to handle it.
-
-Want to walk through it? See how you'd have handled it?`,
+        text: "Before I ran the shop, I taught. Middle school. Music and English.\n\nYou want to know what running a small business taught me about people? Nothing the classroom hadn't already.\n\nThere was this day. Two students. A conflict that started small. I had thirty seconds to decide how to handle it.\n\nWant to walk through it? See how you'd have handled it?",
         emotion: 'reflective',
         variation_id: 'sim_intro_v1',
         useChatPacing: true
@@ -1339,19 +1136,7 @@ Want to walk through it? See how you'd have handled it?`,
     speaker: 'Tess',
     content: [
       {
-        text: `*She traces the edge of the photo.*
-
-Because I got it wrong the first time. Then I got it right.
-
-The difference taught me everything I know about running this place. About people. About what they really need when things get heated.
-
-*Sets the photo down.*
-
-Marcus - one of the kids - he ended up becoming a teacher himself. Told me years later that day changed how he saw conflict.
-
-*Quiet.*
-
-We shape people in ways we never see. Until sometimes, we do.`,
+        text: "Because I got it wrong the first time. Then I got it right.\n\nThe difference taught me everything I know about running this place. About people. About what they really need when things get heated.\n\nMarcus. One of the kids. He ended up becoming a teacher himself. Told me years later that day changed how he saw conflict.\n\nWe shape people in ways we never see. Until sometimes, we do.",
         emotion: 'moved',
         variation_id: 'context_v1',
         useChatPacing: true
@@ -1374,25 +1159,7 @@ We shape people in ways we never see. Until sometimes, we do.`,
     speaker: 'Tess',
     content: [
       {
-        text: `*The scene shifts. A classroom. Twenty-five students. The hum of pre-class chaos.*
-
-Maya and Jordan. Both smart. Both proud. They're arguing over a group project.
-
-*Maya's voice rising.*
-
-"You didn't do ANY of the work! And now you want credit?"
-
-*Jordan, defensive.*
-
-"I was dealing with stuff at home! You don't know what I'm going through!"
-
-*Maya, louder.*
-
-"Everyone's going through something! That doesn't mean the rest of us carry you!"
-
-*The class is watching now. The tension is electric.*
-
-What do you do?`,
+        text: "A classroom. Twenty-five students. The hum of pre-class chaos.\n\nMaya and Jordan. Both smart. Both proud. They're arguing over a group project.\n\nMaya: \"You didn't do ANY of the work! And now you want credit?\"\n\nJordan: \"I was dealing with stuff at home! You don't know what I'm going through!\"\n\nMaya: \"Everyone's going through something! That doesn't mean the rest of us carry you!\"\n\nThe class is watching now. The tension is electric.\n\nWhat do you do?",
         emotion: 'tense',
         variation_id: 'phase1_v1',
         useChatPacing: true
@@ -1439,6 +1206,7 @@ Stakes: Trust, fairness, emotional safety for both students`,
         text: "[Wait. Let them get it out. Sometimes people need to be heard before they can hear.]",
         nextNodeId: 'tess_simulation_phase_2_patience',
         pattern: 'patience',
+        archetype: 'STAY_SILENT',
         skills: ['emotionalIntelligence']
       }
     ],
@@ -1451,27 +1219,7 @@ Stakes: Trust, fairness, emotional safety for both students`,
     speaker: 'Tess',
     content: [
       {
-        text: `*You gesture firmly to the door.*
-
-Both students hesitate. The class watches.
-
-*Maya crosses her arms.*
-
-"Fine. But this isn't over."
-
-*Jordan follows, head down.*
-
-*Outside, in the hallway, the dynamic shifts. No audience. But both are still defensive.*
-
-*Maya, arms still crossed.*
-
-"I'm not apologizing. I did the work."
-
-*Jordan, quieter now.*
-
-"I didn't ask you to."
-
-What's your next move?`,
+        text: "Both students hesitate. The class watches.\n\nMaya: \"Fine. But this isn't over.\"\n\nJordan follows, head down.\n\nOutside, in the hallway, the dynamic shifts. No audience. But both are still defensive.\n\nMaya: \"I'm not apologizing. I did the work.\"\n\nJordan: \"I didn't ask you to.\"\n\nWhat's your next move?",
         emotion: 'controlled',
         variation_id: 'p2_authority_v1',
         useChatPacing: true
@@ -1505,25 +1253,7 @@ What's your next move?`,
     speaker: 'Tess',
     content: [
       {
-        text: `*Your calm tone cuts through the tension.*
-
-Maya's hands unclench slightly. Jordan's shoulders drop an inch.
-
-*Maya, still frustrated but calmer.*
-
-"I just... I worked so hard. And it feels like no one cares."
-
-*Jordan, barely audible.*
-
-"I do care. I just... couldn't."
-
-*The class is still watching, but the energy has shifted. This isn't entertainment anymore. It's something real.*
-
-*A student in the back whispers.*
-
-"This is heavy."
-
-How do you guide this forward?`,
+        text: "Your calm tone cuts through the tension.\n\nMaya's hands unclench slightly. Jordan's shoulders drop an inch.\n\nMaya: \"I just... I worked so hard. And it feels like no one cares.\"\n\nJordan: \"I do care. I just... couldn't.\"\n\nThe class is still watching, but the energy has shifted. This isn't entertainment anymore. It's something real.\n\nA student in the back whispers: \"This is heavy.\"\n\nHow do you guide this forward?",
         emotion: 'tender',
         variation_id: 'p2_empathy_v1',
         useChatPacing: true
@@ -1557,27 +1287,7 @@ How do you guide this forward?`,
     speaker: 'Tess',
     content: [
       {
-        text: `*Your question lands like a pause button.*
-
-Both students blink. The momentum breaks.
-
-*Maya, caught off guard.*
-
-"The project! Obviously!"
-
-*You wait.*
-
-*Maya, slower.*
-
-"...Okay, maybe it's not just the project. I'm tired of being the one who always has to care."
-
-*Jordan, surprised.*
-
-"I didn't know you felt like that."
-
-*The class leans in. Something has shifted.*
-
-Where do you take this?`,
+        text: "Your question lands like a pause button.\n\nBoth students blink. The momentum breaks.\n\nMaya: \"The project! Obviously!\"\n\nYou wait.\n\nMaya, slower: \"...Okay, maybe it's not just the project. I'm tired of being the one who always has to care.\"\n\nJordan: \"I didn't know you felt like that.\"\n\nThe class leans in. Something has shifted.\n\nWhere do you take this?",
         emotion: 'curious',
         variation_id: 'p2_analyze_v1',
         useChatPacing: true
@@ -1611,29 +1321,7 @@ Where do you take this?`,
     speaker: 'Tess',
     content: [
       {
-        text: `*You don't intervene. The room holds its breath.*
-
-*Maya, expecting you to stop it, looks confused when you don't.*
-
-"Aren't you going to... do something?"
-
-*You meet her eyes calmly.*
-
-*Maya, deflating.*
-
-"...I'm just so tired. I always have to be the one who cares."
-
-*Jordan, voice cracking.*
-
-"I care too. I just... things are really hard at home right now."
-
-*The anger drains from Maya's face.*
-
-*Quiet.*
-
-"...I didn't know."
-
-Now what?`,
+        text: "You don't intervene. The room holds its breath.\n\nMaya, expecting you to stop it, looks confused when you don't.\n\nMaya: \"Aren't you going to... do something?\"\n\nYou meet her eyes calmly.\n\nMaya: \"...I'm just so tired. I always have to be the one who cares.\"\n\nJordan: \"I care too. I just... things are really hard at home right now.\"\n\nThe anger drains from Maya's face.\n\nMaya: \"...I didn't know.\"\n\nNow what?",
         emotion: 'raw',
         variation_id: 'p2_patience_v1',
         useChatPacing: true
@@ -1668,27 +1356,7 @@ Now what?`,
     speaker: 'Tess',
     content: [
       {
-        text: `*The scene fades. Tess nods slowly.*
-
-That's what I should have done. What I eventually learned to do.
-
-*She picks up the photo again.*
-
-Maya became a social worker. Jordan's a teacher now - teaches conflict resolution to middle schoolers.
-
-*A rare, warm smile.*
-
-You protected their dignity. Gave them space to be human without an audience judging them.
-
-*Sets the photo down.*
-
-That's what I try to do here. At the shop. When artists are struggling. When customers are hurting.
-
-People need to be seen. But they also need the grace of privacy when they're falling apart.
-
-*Looks at you.*
-
-You understand that. Not everyone does.`,
+        text: "That's what I should have done. What I eventually learned to do.\n\nMaya became a social worker. Jordan's a teacher now. Teaches conflict resolution to middle schoolers.\n\nYou protected their dignity. Gave them space to be human without an audience judging them.\n\nThat's what I try to do here. At the shop. When artists are struggling. When customers are hurting.\n\nPeople need to be seen. But they also need the grace of privacy when they're falling apart.\n\nYou understand that. Not everyone does.",
         emotion: 'proud',
         interaction: 'bloom',
         variation_id: 'success_v1',
@@ -1734,29 +1402,7 @@ You understand that. Not everyone does.`,
     speaker: 'Tess',
     content: [
       {
-        text: `*The scene fades. Tess shakes her head slowly.*
-
-That's what I did. The first time.
-
-*She looks at the photo with regret.*
-
-I pushed too hard. Made it public when it needed to be private. Jordan shut down completely. Didn't talk for a week.
-
-*Quiet.*
-
-Maya felt guilty for months. Said she'd ruined Jordan's life by calling them out.
-
-*Sets the photo down.*
-
-People need to be seen. But not dissected in front of an audience. There's a difference between transparency and exposure.
-
-*Looks at you.*
-
-I learned that the hard way. Cost me a relationship with two students I really cared about.
-
-*Pause.*
-
-Want to try again? See a different path?`,
+        text: "That's what I did. The first time.\n\nI pushed too hard. Made it public when it needed to be private. Jordan shut down completely. Didn't talk for a week.\n\nMaya felt guilty for months. Said she'd ruined Jordan's life by calling them out.\n\nPeople need to be seen. But not dissected in front of an audience. There's a difference between transparency and exposure.\n\nI learned that the hard way. Cost me a relationship with two students I really cared about.\n\nWant to try again? See a different path?",
         emotion: 'regretful',
         variation_id: 'fail_v1',
         useChatPacing: true
@@ -1790,29 +1436,7 @@ Want to try again? See a different path?`,
     speaker: 'Tess',
     content: [
       {
-        text: `*She's quiet for a moment.*
-
-I learned that being right isn't the same as being helpful.
-
-*Looks at her hands.*
-
-I wanted to fix it. Publicly. Show the class that conflict could be resolved. That I was a good teacher.
-
-*Shakes her head.*
-
-But it wasn't about me. It wasn't about the class. It was about two kids who were hurting.
-
-*Meets your eyes.*
-
-I made their pain educational. That's not teaching. That's exploitation.
-
-*Quieter.*
-
-After that, I changed. Every time I wanted to make something a "learning moment," I asked: whose moment is this? If it's theirs, step back. Let them own it.
-
-*Small smile.*
-
-That's why the shop works. It's not my moment. It's theirs. I just hold the space.`,
+        text: "I learned that being right isn't the same as being helpful.\n\nI wanted to fix it. Publicly. Show the class that conflict could be resolved. That I was a good teacher.\n\nBut it wasn't about me. It wasn't about the class. It was about two kids who were hurting.\n\nI made their pain educational. That's not teaching. That's exploitation.\n\nAfter that, I changed. Every time I wanted to make something a \"learning moment,\" I asked: whose moment is this? If it's theirs, step back. Let them own it.\n\nThat's why the shop works. It's not my moment. It's theirs. I just hold the space.",
         emotion: 'wise',
         variation_id: 'fail_reflect_v1',
         useChatPacing: true
@@ -1839,25 +1463,7 @@ That's why the shop works. It's not my moment. It's theirs. I just hold the spac
     speaker: 'Tess',
     content: [
       {
-        text: `*She puts the photo away.*
-
-You know what's funny? Running a record shop is exactly like teaching.
-
-People come in confused. Looking for something they can't name. And you have thirty seconds to decide: do I tell them what to listen to? Or do I help them discover it themselves?
-
-*Gestures around the shop.*
-
-Every customer is Maya and Jordan. Carrying something. Looking for space to process it.
-
-*Meets your eyes.*
-
-And every day, I get to choose: authority or empathy. Analysis or patience. Fixing or witnessing.
-
-*Small laugh.*
-
-Most days, I still get it wrong. But I know what I'm aiming for now.
-
-That's something.`,
+        text: "You know what's funny? Running a record shop is exactly like teaching.\n\nPeople come in confused. Looking for something they can't name. And you have thirty seconds to decide: do I tell them what to listen to? Or do I help them discover it themselves?\n\nEvery customer is Maya and Jordan. Carrying something. Looking for space to process it.\n\nAnd every day, I get to choose: authority or empathy. Analysis or patience. Fixing or witnessing.\n\nMost days, I still get it wrong. But I know what I'm aiming for now.\n\nThat's something.",
         emotion: 'content',
         variation_id: 'reflection_v1',
         useChatPacing: true
@@ -1886,13 +1492,7 @@ That's something.`,
     speaker: 'Tess',
     content: [
       {
-        text: `Six weeks later. Back room converted. Listening stations. Coffee bar.
-
-*Exhausted but alive.*
-
-First listening session yesterday. Forty people. Sold out.
-
-Problem: now I'm doing everything. Coffee. Curation. Community. Accounting. Dying.`,
+        text: "Six weeks later. Back room converted. Listening stations. Coffee bar.\n\nFirst listening session yesterday. Forty people. Sold out.\n\nProblem: now I'm doing everything. Coffee. Curation. Community. Accounting. Dying.",
         emotion: 'overwhelmed',
         interaction: 'shake',
         variation_id: 'p2_entry_v1',
@@ -1934,15 +1534,7 @@ Problem: now I'm doing everything. Coffee. Curation. Community. Accounting. Dyin
     speaker: 'Tess',
     content: [
       {
-        text: `Working: the vibe. People lingering. Conversations happening. Artists booking the space.
-
-Not working: me. I haven't slept in three days. Made a customer cry yesterday because I snapped.
-
-Money's still tight. But the energy... there's something here.
-
-*Phone buzzes.*
-
-Developer again. Raised the offer.`,
+        text: "Working: the vibe. People lingering. Conversations happening. Artists booking the space.\n\nNot working: me. I haven't slept in three days. Made a customer cry yesterday because I snapped.\n\nMoney's still tight. But the energy... there's something here.\n\nDeveloper again. Raised the offer.",
         emotion: 'conflicted',
         interaction: 'small',
         variation_id: 'p2_crisis_v1',
@@ -1984,13 +1576,7 @@ Developer again. Raised the offer.`,
     speaker: 'Tess',
     content: [
       {
-        text: `*Takes a breath.*
-
-You're right. Can't catch anything if I fall first.
-
-Know what's funny? I left corporate because it felt fake. Now I'm building my own business. Same pressure.
-
-But different. This time it's real.`,
+        text: "You're right. Can't catch anything if I fall first.\n\nKnow what's funny? I left corporate because it felt fake. Now I'm building my own business. Same pressure.\n\nBut different. This time it's real.",
         emotion: 'determined',
         interaction: 'nod',
         variation_id: 'p2_solution_v1',
@@ -2018,15 +1604,7 @@ But different. This time it's real.`,
     speaker: 'Tess',
     content: [
       {
-        text: `Posted for help yesterday. Barista slash music lover. Part-time.
-
-Applications flooded in. People want to be part of this.
-
-*Shows phone.*
-
-One girl. Sixteen. Same kid from before. Her mom's old record shop.
-
-She gets it. Hired her this morning.`,
+        text: "Posted for help yesterday. Barista slash music lover. Part-time.\n\nApplications flooded in. People want to be part of this.\n\nOne girl. Sixteen. Same kid from before. Her mom's old record shop.\n\nShe gets it. Hired her this morning.",
         emotion: 'hopeful',
         interaction: 'bloom',
         variation_id: 'p2_hire_v1',
@@ -2051,15 +1629,7 @@ She gets it. Hired her this morning.`,
     speaker: 'Tess',
     content: [
       {
-        text: `Artist came in last night. Said she found her sound here. Listening party, three months ago.
-
-Signed to a label last week. Independent. Small. Real.
-
-First thing she did? Booked a show here. "Where it started."
-
-*Quiet.*
-
-This is why. Not money. This.`,
+        text: "Artist came in last night. Said she found her sound here. Listening party, three months ago.\n\nSigned to a label last week. Independent. Small. Real.\n\nFirst thing she did? Booked a show here. \"Where it started.\"\n\nThis is why. Not money. This.",
         emotion: 'moved',
         interaction: 'bloom',
         variation_id: 'p2_community_v1',
@@ -2083,17 +1653,7 @@ This is why. Not money. This.`,
     speaker: 'Tess',
     content: [
       {
-        text: `*Deletes developer's number.*
-
-First: hire Maya. She's been helping volunteer. Knows the music. Needs a job.
-
-Second: cap events at twice a week. Quality over quantity.
-
-Third: remember why I'm doing this.
-
-*Picks up record. Puts it on.*
-
-This. This is why.`,
+        text: "First: hire Maya. She's been helping volunteer. Knows the music. Needs a job.\n\nSecond: cap events at twice a week. Quality over quantity.\n\nThird: remember why I'm doing this.\n\nThis. This is why.",
         emotion: 'peaceful',
         interaction: 'bloom',
         variation_id: 'p2_resolution_v1',
@@ -2117,15 +1677,7 @@ This. This is why.`,
     speaker: 'Tess',
     content: [
       {
-        text: `People keep asking if I regret not selling. Every time the rent comes due.
-
-But last night. Kid came in. Maybe seventeen. Flipping through crates like I used to.
-
-Watched her find something. Eyes went wide.
-
-That moment. Can't stream that. Can't algorithm that.
-
-That's what I'm catching.`,
+        text: "People keep asking if I regret not selling. Every time the rent comes due.\n\nBut last night. Kid came in. Maybe seventeen. Flipping through crates like I used to.\n\nWatched her find something. Eyes went wide.\n\nThat moment. Can't stream that. Can't algorithm that.\n\nThat's what I'm catching.",
         emotion: 'content',
         interaction: 'nod',
         variation_id: 'p2_reflection_v1',
@@ -2136,13 +1688,13 @@ That's what I'm catching.`,
       {
         pattern: 'building',
         minLevel: 5,
-        altText: `People keep asking if I regret not selling.\n\nBut you know the answer. You're a builder. You see what I'm building here.\n\nNot just a store. A place where real survives.\n\nThat's what we're catching.`,
+        altText: "People keep asking if I regret not selling.\n\nBut you know the answer. You're a builder. You see what I'm building here.\n\nNot just a store. A place where real survives.\n\nThat's what we're catching.",
         altEmotion: 'kindred'
       },
       {
         pattern: 'exploring',
         minLevel: 5,
-        altText: `People keep asking if I regret not selling.\n\nBut explorers like you understand. The question isn't profit. It's discovery.\n\nWhat happens in that moment when someone finds something real.\n\nThat's what we're catching.`,
+        altText: "People keep asking if I regret not selling.\n\nBut explorers like you understand. The question isn't profit. It's discovery.\n\nWhat happens in that moment when someone finds something real.\n\nThat's what we're catching.",
         altEmotion: 'recognized'
       }
     ],
@@ -2162,13 +1714,7 @@ That's what I'm catching.`,
     speaker: 'Tess',
     content: [
       {
-        text: `*Pulls out album. Hands it over.*
-
-For you. Something new. Artist playing here next month.
-
-You showed up. Twice. Helped me see what I was building.
-
-Don't be a stranger.`,
+        text: "For you. Something new. Artist playing here next month.\n\nYou showed up. Twice. Helped me see what I was building.\n\nDon't be a stranger.",
         emotion: 'grateful',
         interaction: 'nod',
         variation_id: 'p2_complete_v1',
@@ -2198,11 +1744,7 @@ Don't be a stranger.`,
     speaker: 'Tess',
     content: [
       {
-        text: `Next? Keep going. One album at a time. One listener at a time.
-
-But I'm curious. What about you?
-
-What are you building out there?`,
+        text: "Next? Keep going. One album at a time. One listener at a time.\n\nBut I'm curious. What about you?\n\nWhat are you building out there?",
         emotion: 'curious_engaged',
         interaction: 'nod',
         variation_id: 'p2_asks_v1',
@@ -2270,15 +1812,7 @@ What are you building out there?`,
     speaker: 'Tess',
     content: [
       {
-        text: `*Nods.*
-
-Good. Keep at it. Whatever it is.
-
-The world needs more real. Less algorithm. Less phony.
-
-*Music swells.*
-
-Go on. Samuel's waiting. Tell him The B-Side is still standing.`,
+        text: "Good. Keep at it. Whatever it is.\n\nThe world needs more real. Less algorithm. Less phony.\n\nGo on. Samuel's waiting. Tell him The B-Side is still standing.",
         emotion: 'affirming',
         interaction: 'nod',
         variation_id: 'p2_reciprocity_v1',
@@ -2305,11 +1839,7 @@ Go on. Samuel's waiting. Tell him The B-Side is still standing.`,
     speaker: 'Tess',
     content: [
       {
-        text: `You know what I see in you? Someone who understands that real learning takes time.
-
-Not everyone gets that. Most people want quick fixes. Fast results. But you... you've got the patience.
-
-Education specialists—the ones who create spaces where everyone can grow—they all have what you have. That rare combination of wanting to help and knowing it can't be rushed.`,
+        text: "You know what I see in you? Someone who understands that real learning takes time.\n\nNot everyone gets that. Most people want quick fixes. Fast results. But you... you've got the patience.\n\nEducation specialists. The ones who create spaces where everyone can grow. They all have what you have. That rare combination of wanting to help and knowing it can't be rushed.",
         emotion: 'thoughtful',
         variation_id: 'career_educator_v1'
       }
@@ -2342,11 +1872,7 @@ Education specialists—the ones who create spaces where everyone can grow—the
     speaker: 'Tess',
     content: [
       {
-        text: `I've been thinking about the way you approach things. Building while helping.
-
-Curriculum developers do that—they're architects of learning experiences. Building bridges between knowledge and understanding.
-
-Not just teaching, but designing how others learn. Your instincts point that direction.`,
+        text: "I've been thinking about the way you approach things. Building while helping.\n\nCurriculum developers do that. They're architects of learning experiences. Building bridges between knowledge and understanding.\n\nNot just teaching, but designing how others learn. Your instincts point that direction.",
         emotion: 'warm',
         variation_id: 'career_curriculum_v1'
       }

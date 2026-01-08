@@ -78,28 +78,28 @@ interface JourneyStats {
 const PATTERN_NARRATIVES: Record<string, { name: string; description: string; metaphor: string }> = {
   analytical: {
     name: 'The Observer',
-    description: 'You watched. You noticed. You saw what others missed.',
-    metaphor: 'like reading between the lines of a story everyone else skimmed'
+    description: 'You noticed what others missed',
+    metaphor: '—like reading between the lines of a story everyone else skimmed'
   },
   helping: {
     name: 'The Supporter',
-    description: 'You reached out. You listened. You made space for others.',
-    metaphor: 'like a steady hand in uncertain times'
+    description: 'You made space for others',
+    metaphor: '—like a steady hand in uncertain times'
   },
   building: {
     name: 'The Creator',
-    description: 'You imagined. You constructed. You brought ideas to life.',
-    metaphor: 'like an architect seeing the blueprint in bare ground'
+    description: 'You brought ideas to life',
+    metaphor: '—like seeing the blueprint before the ground is broken'
   },
   patience: {
     name: 'The Steady One',
-    description: 'You waited. You held space. You trusted the process.',
-    metaphor: 'like roots growing deep before the tree reaches high'
+    description: 'You trusted the process',
+    metaphor: '—like roots growing deep before the tree reaches high'
   },
   exploring: {
     name: 'The Seeker',
-    description: 'You wandered. You questioned. You found paths others overlooked.',
-    metaphor: 'like a compass that finds north by trying every direction'
+    description: 'You found paths others overlooked',
+    metaphor: '—like a compass finding north by trying every direction'
   }
 }
 
@@ -131,13 +131,7 @@ function generateOpening(stats: JourneyStats, _gameState: GameState | Serializab
 
   const patternData = PATTERN_NARRATIVES[stats.dominantPattern] || PATTERN_NARRATIVES.helping
 
-  return `*Samuel settles into his chair, a knowing warmth in his eyes.*
-
-"When you first walked into this station, you were looking for something. Maybe you knew what it was. Maybe you didn't. But you stayed. You talked to ${arcsText}. You listened."
-
-*He pauses, considering his words.*
-
-"And somewhere along the way, I started to notice something about you. ${patternData.description} ${patternData.metaphor}."`
+  return `"You came looking for something. You stayed. You talked to ${arcsText}. You listened. Somewhere along the way, a pattern emerged: ${patternData.description} ${patternData.metaphor}."`
 }
 
 /**
@@ -147,11 +141,7 @@ function generatePatternReflection(stats: JourneyStats): string {
   const primary = PATTERN_NARRATIVES[stats.dominantPattern] || PATTERN_NARRATIVES.helping
   const secondary = PATTERN_NARRATIVES[stats.secondaryPattern] || PATTERN_NARRATIVES.analytical
 
-  return `"They call it '${primary.name}' in some circles. Not a title. more like a way of moving through the world. You've got some '${secondary.name}' in you too. Most interesting people have a mix."
-
-*He leans forward.*
-
-"That's not a test result. That's what I saw, watching you navigate conversations that could've gone a dozen different ways. You chose yours."`
+  return `"Some call it '${primary.name}'. I call it a choice. You've got clear traces of '${secondary.name}' too—the most interesting people usually do. It's not a test result; it's how you navigated conversations that could've gone a dozen different ways."`
 }
 
 /**
@@ -175,13 +165,13 @@ function generateRelationshipReflections(gameState: GameState | SerializableGame
     let narrativeText: string
 
     if (trust >= 8) {
-      narrativeText = `"${characterName}... they opened up to you in ways I've rarely seen. That kind of trust isn't given. it's earned, one honest moment at a time. Whatever you said to them? It mattered."`
+      narrativeText = `"${characterName}... they opened up to you. That kind of trust isn't given; it's earned. You earned it."`
     } else if (trust >= 6) {
-      narrativeText = `"${characterName} felt comfortable with you. That's not nothing. Some people spend years trying to make connections like that."`
+      narrativeText = `"${characterName} felt comfortable with you. That's rare. You made a real connection."`
     } else if (trust >= 4) {
-      narrativeText = `"You and ${characterName} found some common ground. Maybe not everything, but enough to understand each other a little better."`
+      narrativeText = `"You and ${characterName} found common ground. Enough to understand each other."`
     } else {
-      narrativeText = `"${characterName}. you two circled each other a bit. Sometimes the most important conversations are the ones we're still figuring out how to have."`
+      narrativeText = `"${characterName}... you two circled each other. Some conversations take time."`
     }
 
     reflections.push({
@@ -310,11 +300,7 @@ function generateClosingWisdom(stats: JourneyStats): string {
   // Select based on a hash of the journey stats for consistency
   const index = (stats.arcsCompleted + stats.totalChoices) % closings.length
 
-  return `*Samuel stands, extending his hand.*
-
-${closings[index]}
-
-*He smiles.*
+  return `${closings[index]}
 
 "The station's always here if you want to come back. But I think you're ready to find your own way now."`
 }

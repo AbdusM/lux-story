@@ -124,8 +124,8 @@ export function getTextSizeClass(preset: TextSizePreset): string {
 export function getResponsiveTextSize(
   baseSize: number,
   preset: TextSizePreset,
-  minViewport: number = 320,
-  maxViewport: number = 1200
+  _minViewport: number = 320,
+  _maxViewport: number = 1200
 ): string {
   const config = TEXT_SIZE_CONFIGS[preset]
   const scaled = baseSize * config.scaleMultiplier

@@ -109,7 +109,7 @@ export class NarrativeQualityReporter {
     const consistencyIssues = this.narrativeSystem.getConsistencyIssues()
     const criticalIssues = consistencyIssues.filter(issue => issue.severity === 'critical')
     const majorIssues = consistencyIssues.filter(issue => issue.severity === 'major')
-    
+
     // Lower score for more critical issues
     let score = 100
     score -= criticalIssues.length * 20
@@ -147,26 +147,26 @@ export class NarrativeQualityReporter {
     // Story arc strengths
     const highCompletionArcs = storyArcs.filter(arc => arc.completionPercentage > 80)
     if (highCompletionArcs.length > 0) {
-      strengths.push(`${highCompletionArcs.length} story arcs are well-developed (80%+ completion)`)
+      strengths.push(`${highCompletionArcs.length} story arcs well-developed (80%+)`)
     }
 
     // Character journey strengths
     const onTrackJourneys = characterJourneys.filter(journey => journey.alignment === 'on-track')
     if (onTrackJourneys.length > 0) {
-      strengths.push(`${onTrackJourneys.length} character journeys are on-track`)
+      strengths.push(`${onTrackJourneys.length} character journeys on-track`)
     }
 
     // Hook strengths
     const wellBalancedHooks = hookAssessments.filter(assessment => assessment.assessment === 'well-balanced')
     if (wellBalancedHooks.length > 0) {
-      strengths.push(`${wellBalancedHooks.length} narrative hooks are well-balanced`)
+      strengths.push(`${wellBalancedHooks.length} narrative hooks well-balanced`)
     }
 
     // Specific strengths
     strengths.push('Strong Birmingham integration with authentic local references')
-    strengths.push('Compelling character crises that drive career exploration')
+    strengths.push('Compelling character crises driving career exploration')
     strengths.push('Effective train station metaphor for career paths')
-    strengths.push('Good balance of mystery and practical career guidance')
+    strengths.push('Good balance of mystery and practical guidance')
 
     return strengths
   }
@@ -189,9 +189,9 @@ export class NarrativeQualityReporter {
     }
 
     // Specific critical issues
-    criticalIssues.push('Platform 7 purpose needs clearer establishment')
-    criticalIssues.push('Samuel\'s temporal paradoxes may confuse Birmingham youth')
-    criticalIssues.push('Some high-impact hooks are buried in subtext')
+    // Specific critical issues
+    criticalIssues.push('Samuel\'s temporal paradoxes active')
+    criticalIssues.push('High-impact hooks buried')
 
     return criticalIssues
   }

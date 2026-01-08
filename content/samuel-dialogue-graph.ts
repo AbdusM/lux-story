@@ -67,7 +67,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         voiceVariations: {
           helping: "Check on the other passengers first.",
           patience: "No rush. See who else is here.",
-          exploring: "Interesting—who else ended up in this place?",
+          exploring: "Interesting.who else ended up in this place?",
           analytical: "Who else is on this train? Data point.",
           building: "See if anyone needs help with their bags."
         }
@@ -82,7 +82,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: '', // Atmospheric narration
     content: [
       {
-        text: "You pause at the train door, taking it in.\n\nThe station's bigger than it looked from outside. Vaulted ceilings stretch up into shadow, old ironwork catching the light. Platform signs point to places you half-recognize—some you don't. The air smells like old wood and something faintly electric, like possibility.\n\nA few travelers drift past, each heading somewhere with quiet purpose.\n\nThe older man on the platform notices you looking. He smiles, patient. No rush.",
+        text: "You pause at the train door, taking it in.\n\nThe station's bigger than it looked from outside. Vaulted ceilings stretch up into shadow, old ironwork catching the light. Platform signs point to places you half-recognize.some you don't. The air smells like old wood and something faintly electric, like possibility.\n\nA few travelers drift past, each heading somewhere with quiet purpose.\n\nThe older man on the platform notices you looking. He smiles, patient. No rush.",
         emotion: 'atmospheric',
         variation_id: 'observation_v1'
       }
@@ -109,7 +109,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         pattern: 'analytical',
         skills: ['criticalThinking'],
         voiceVariations: {
-          analytical: "Those platform signs—I need to understand the system.",
+          analytical: "Those platform signs.I need to understand the system.",
           exploring: "Where do all those platforms lead? I want to know everything.",
           building: "Each platform is a different path. Which one's mine?",
           patience: "Those signs... worth understanding before choosing.",
@@ -125,7 +125,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: '', // Atmospheric narration
     content: [
       {
-        text: "You glance down the train car. A few other passengers are gathering their things—a young woman with paint-stained fingers, a guy in scrubs looking exhausted but focused, someone your age staring out the window like they're working up courage.\n\nEach of them alone. Each of them here for something.\n\nOn the platform, the older man waits. His eyes move across all of you, but when they land on you, something shifts. Recognition, maybe. Or just welcome.",
+        text: "You glance down the train car. A few other passengers are gathering their things.a young woman with paint-stained fingers, a guy in scrubs looking exhausted but focused, someone your age staring out the window like they're working up courage.\n\nEach of them alone. Each of them here for something.\n\nOn the platform, the older man waits. His eyes move across all of you, but when they land on you, something shifts. Recognition, maybe. Or just welcome.",
         emotion: 'atmospheric',
         variation_id: 'passengers_v1'
       }
@@ -168,11 +168,11 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You took your time. Good.\n\nMost folks rush off the train like they're late for somethin'. But you... you looked first. That's smart.\n\nI'm Samuel. Been helpin' folks find their way around here for longer than I expected. You look like you got questions—and that's exactly what this place is for.",
+        text: "You took your time. Good.\n\nMost folks rush off the train like they're late for somethin'. But you... you looked first. That's smart.\n\nI'm Samuel. Been helpin' folks find their way around here for longer than I expected. You look like you got questions.and that's exactly what this place is for.",
         emotion: 'warm',
         variation_id: 'intro_patient_v1',
         patternReflection: [
-          { pattern: 'patience', minLevel: 4, altText: "You took your time. Good.\n\nI can tell that's not new for you—you're someone who looks before they leap. That's wisdom some folks never learn.\n\nI'm Samuel. You're gonna do well here.", altEmotion: 'knowing' },
+          { pattern: 'patience', minLevel: 4, altText: "You took your time. Good.\n\nI can tell that's not new for you.you're someone who looks before they leap. That's wisdom some folks never learn.\n\nI'm Samuel. You're gonna do well here.", altEmotion: 'knowing' },
           { pattern: 'analytical', minLevel: 4, altText: "You took your time. Good.\n\nI see you taking it all in, processing. That's exactly the kind of mind this place rewards.\n\nI'm Samuel. Welcome to Grand Central.", altEmotion: 'warm' }
         ]
       }
@@ -194,14 +194,14 @@ export const samuelDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'ask_about_platforms_patient',
-        text: "The platforms—where do they lead?",
+        text: "The platforms.where do they lead?",
         nextNodeId: 'systemic_calibration_start', // ISP: Reroute to Calibration
         pattern: 'analytical',
         skills: ['criticalThinking', 'communication'],
         voiceVariations: {
-          analytical: "The platforms—where do they lead? What's the system?",
-          helping: "Those platforms—who can I meet there?",
-          building: "The platforms—what can I accomplish on each one?",
+          analytical: "The platforms.where do they lead? What's the system?",
+          helping: "Those platforms.who can I meet there?",
+          building: "The platforms.what can I accomplish on each one?",
           exploring: "Where do those platforms go?",
           patience: "Tell me about the platforms when you're ready."
         }
@@ -228,7 +228,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Ha! Straight to the big questions. I like that.\n\nI'm Samuel. And those platforms? They go to different... let's call 'em possibilities. Each one's got folks who've walked paths you might want to walk. Or might not. That's the thing about this place—it don't tell you what to choose. Just helps you see clearer.\n\nBut we can get to all that. First—welcome to Grand Central.",
+        text: "Ha! Straight to the big questions. I like that.\n\nI'm Samuel. And those platforms? They go to different... let's call 'em possibilities. Each one's got folks who've walked paths you might want to walk. Or might not. That's the thing about this place.it don't tell you what to choose. Just helps you see clearer.\n\nBut we can get to all that. First.welcome to Grand Central.",
         emotion: 'warm',
         variation_id: 'intro_curious_v1'
       }
@@ -284,7 +284,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You noticed the others. That's good—means you're payin' attention.\n\nEvery person on that train's got their own story, their own reason for being here. Some know it. Some don't yet. That's what this place helps with.\n\nI'm Samuel. Been here a while. And you... you look like you see more than most. That's gonna serve you well.",
+        text: "You noticed the others. That's good.means you're payin' attention.\n\nEvery person on that train's got their own story, their own reason for being here. Some know it. Some don't yet. That's what this place helps with.\n\nI'm Samuel. Been here a while. And you... you look like you see more than most. That's gonna serve you well.",
         emotion: 'warm',
         variation_id: 'intro_noticed_v1'
       }
@@ -299,7 +299,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         voiceVariations: {
           analytical: "Who were those passengers? What brings them here?",
           helping: "Who were those other passengers? Are they okay?",
-          building: "The other passengers—what are they working on?",
+          building: "The other passengers.what are they working on?",
           exploring: "I noticed them too. Who are they?",
           patience: "Tell me about the other passengers."
         }
@@ -345,7 +345,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
         variation_id: 'intro_humble_v1',
         patternReflection: [
           { pattern: 'helping', minLevel: 4, altText: "You let them go first. Watched 'em find their footing.\n\nThat's who you are, isn't it? Someone who makes room for others. I've been watching people arrive here for years, and that quality... it's rarer than you'd think.\n\nI'm Samuel. Welcome home.", altEmotion: 'knowing' },
-          { pattern: 'patience', minLevel: 4, altText: "You let them go first. No rush.\n\nI know that kind of patience. It's not passive—it's watching, understanding. That's a strength, even if the world doesn't always see it that way.\n\nI'm Samuel. Welcome to Grand Central.", altEmotion: 'warm' }
+          { pattern: 'patience', minLevel: 4, altText: "You let them go first. No rush.\n\nI know that kind of patience. It's not passive.it's watching, understanding. That's a strength, even if the world doesn't always see it that way.\n\nI'm Samuel. Welcome to Grand Central.", altEmotion: 'warm' }
         ]
       }
     ],
@@ -400,7 +400,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     nodeId: 'samuel_simulation_crm',
     speaker: 'Samuel Washington',
     content: [{
-      text: "Sometimes, helping folks ain't about speeches. It's about remembering.\n\nI keep a log. Every traveler, every question. Patterns emerge if you write 'em down.\n\nHere's a traveler struggling with the schedule. They think they're lost. They ain't lost—they just don't know the destination changed.",
+      text: "Sometimes, helping folks ain't about speeches. It's about remembering.\n\nI keep a log. Every traveler, every question. Patterns emerge if you write 'em down.\n\nHere's a traveler struggling with the schedule. They think they're lost. They ain't lost.they just don't know the destination changed.",
       emotion: 'thoughtful',
       variation_id: 'sim_intro_v1'
     }],
@@ -432,9 +432,9 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         voiceVariations: {
           analytical: "Cross-reference: Train 415 merged with 530. Communicate the reschedule.",
           helping: "They're panicking. Check logs, then reassure them they have time.",
-          building: "Solve it: find the merge record and give them a clear action—coffee break.",
+          building: "Solve it: find the merge record and give them a clear action.coffee break.",
           exploring: "Dig through the logs. There's gotta be an explanation.",
-          patience: "Let me check carefully. Yes—they have time. Tell them gently."
+          patience: "Let me check carefully. Yes.they have time. Tell them gently."
         }
       },
       {
@@ -452,7 +452,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
           analytical: "Pattern detected: Tuesday merges. Recommend signage improvement.",
           helping: "This keeps happening to people. Suggest better signage so others don't panic.",
           building: "Fix the root cause. Better signage prevents future confusion.",
-          exploring: "Wait—this happens every Tuesday? That's a systemic issue.",
+          exploring: "Wait.this happens every Tuesday? That's a systemic issue.",
           patience: "If we improve signage now, fewer travelers will worry later."
         }
       },
@@ -483,9 +483,9 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         emotion: 'warm',
         variation_id: 'intro_v1_part1',
         patternReflection: [
-          { pattern: 'analytical', minLevel: 5, altText: "Hey there. Welcome to Grand Central.\n\nI'm Samuel. Been helpin' folks find their way around here for... well, longer than I expected. Lot more travelers lately—world's changin' fast. You look like someone who thinks things through. That's gonna matter more than ever.", altEmotion: 'knowing' },
+          { pattern: 'analytical', minLevel: 5, altText: "Hey there. Welcome to Grand Central.\n\nI'm Samuel. Been helpin' folks find their way around here for... well, longer than I expected. Lot more travelers lately.world's changin' fast. You look like someone who thinks things through. That's gonna matter more than ever.", altEmotion: 'knowing' },
           { pattern: 'helping', minLevel: 5, altText: "Hey there. Welcome to Grand Central.\n\nI'm Samuel. Been helpin' folks find their way around here for a long time. More people arrivin' every day now. You look like someone who notices people. That's rare, and it's gonna serve you well here.", altEmotion: 'warm' },
-          { pattern: 'exploring', minLevel: 5, altText: "Hey there. Welcome to Grand Central.\n\nI'm Samuel. Been helpin' folks find their way around here longer than I expected. Lot more travelers lately. You look like someone who's ready to discover things. Good—this place rewards curiosity.", altEmotion: 'warm' }
+          { pattern: 'exploring', minLevel: 5, altText: "Hey there. Welcome to Grand Central.\n\nI'm Samuel. Been helpin' folks find their way around here longer than I expected. Lot more travelers lately. You look like someone who's ready to discover things. Good.this place rewards curiosity.", altEmotion: 'warm' }
         ]
       }
     ],
@@ -521,7 +521,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         voiceVariations: {
           analytical: "The platforms seem organized by purpose. What's the system?",
           helping: "I see different people heading different ways. Who's on each platform?",
-          building: "Those platforms—what opportunities are on each one?",
+          building: "Those platforms.what opportunities are on each one?",
           exploring: "I noticed the different platforms. Where do they all go?",
           patience: "I see there are different platforms. Could you tell me about them?"
         }
@@ -540,7 +540,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
           analytical: "What's your history here? How did you come to this role?",
           helping: "You've been at this a while. What's your story?",
           building: "How'd you build your life around this place?",
-          exploring: "I'm curious—how'd you end up here?",
+          exploring: "I'm curious.how'd you end up here?",
           patience: "How'd you end up working here?"
         }
       },
@@ -585,13 +585,13 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*Samuel pauses, looking out at the platforms.*\n\nWorld's changin'. Always has been, but... feels faster now. Machines doin' what people used to do. Jobs that were steady for generations, gone in a decade.\n\nBut here's what I've learned: the work might change, but what people need don't. Someone to fix things when they break. Someone to care for folks when they're vulnerable. Someone to teach the young ones.\n\nThat's why patterns matter more than job titles. You figure out how you're built to contribute, you'll find your place—even when everything else is shiftin'.",
+        text: "World's changin'. Always has been, but feels faster now. Machines doin' what people used to do. Jobs that were steady for generations, gone in a decade.\n\nBut here's what I've learned: the work might change, but what people need don't. Someone to fix things when they break. Someone to care for folks when they're vulnerable. Someone to teach the young ones.\n\nThat's why patterns matter more than job titles. You figure out how you're built to contribute, you'll find your place. Even when everything else is shiftin'.",
         emotion: 'wise',
         variation_id: 'changing_world_v1',
         patternReflection: [
-          { pattern: 'analytical', minLevel: 4, altText: "*Samuel pauses, looking out at the platforms.*\n\nWorld's changin'. Always has been, but faster now. You can see it in the numbers—automation, AI, industries shrinkin'. But here's what the data don't tell you: the skills underneath stay valuable. Problem-solvin'. Seein' systems. Figurin' out what's really broken.\n\nThat's why patterns matter more than job titles. You figure out how you think, you'll find where you fit.", altEmotion: 'knowing' },
-          { pattern: 'building', minLevel: 4, altText: "*Samuel pauses, looking out at the platforms.*\n\nWorld's changin'. Jobs that were steady for generations, gone. But here's what I've learned watchin' folks come through here: people who build things, fix things, make things with their hands—that work's solid ground.\n\nMachines can automate a lot, but they can't replace someone who knows how to solve a problem they've never seen before. That's a builder's gift.", altEmotion: 'warm' },
-          { pattern: 'helping', minLevel: 4, altText: "*Samuel pauses, looking out at the platforms.*\n\nWorld's changin'. Lot of scared folks comin' through these days. But here's what I've noticed: the jobs that need real human connection, they're not goin' nowhere.\n\nCarin' for people. Teachin'. Healin'. Machines can do a lot, but they can't sit with someone who's hurtin'. That kind of presence... that's always gonna matter.", altEmotion: 'warm' }
+          { pattern: 'analytical', minLevel: 4, altText: "World's changin'. Always has been, but faster now. You can see it in the numbers. Automation, AI, industries shrinkin'. But here's what the data don't tell you: the skills underneath stay valuable. Problem-solvin'. Seein' systems. Figurin' out what's really broken.\n\nThat's why patterns matter more than job titles. You figure out how you think, you'll find where you fit.", altEmotion: 'knowing' },
+          { pattern: 'building', minLevel: 4, altText: "World's changin'. Jobs that were steady for generations, gone. But here's what I've learned watchin' folks come through here: people who build things, fix things, make things with their hands. That work's solid ground.\n\nMachines can automate a lot, but they can't replace someone who knows how to solve a problem they've never seen before. That's a builder's gift.", altEmotion: 'warm' },
+          { pattern: 'helping', minLevel: 4, altText: "World's changin'. Lot of scared folks comin' through these days. But here's what I've noticed: the jobs that need real human connection, they're not goin' nowhere.\n\nCarin' for people. Teachin'. Healin'. Machines can do a lot, but they can't sit with someone who's hurtin'. That kind of presence. That's always gonna matter.", altEmotion: 'warm' }
         ]
       }
     ],
@@ -650,7 +650,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*A flicker of something crosses his face—respect.*\n\nThose folks? They're gonna be alright. Not because nothin's changin' for them—it is. But because they know how to do things that matter.\n\nMy daddy was a welder at Sloss Furnaces. Sixty years ago, folks said that work was dyin'. Still needs welders today. Different machines, same hands.\n\nKai on Platform 6... they came from factory work. Nucor Steel. Knows what it means to build something that holds. Talk to 'em if you want to understand how the old ways and new ways can fit together.",
+        text: "Those folks? They're gonna be alright. Not because nothin's changin' for them. It is. But because they know how to do things that matter.\n\nMy daddy was a welder at Sloss Furnaces. Sixty years ago, folks said that work was dyin'. Still needs welders today. Different machines, same hands.\n\nKai on Platform 6, they came from factory work. Nucor Steel. Knows what it means to build something that holds. Talk to 'em if you want to understand how the old ways and new ways can fit together.",
         emotion: 'warm',
         variation_id: 'trades_v1'
       }
@@ -691,7 +691,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*He looks at you for a long moment.*\n\nPatterns ain't about what job you have. Jobs change. Always have.\n\nIt's about how you move through the world when things get hard. Some folks think their way through. Some folks build their way through. Some folks help others find the way.\n\nMachines can follow instructions. But they can't adapt when the instructions don't fit anymore. You can.\n\nThat's not somethin' you learn from a slide deck.",
+        text: "Patterns ain't about what job you have. Jobs change. Always have.\n\nIt's about how you move through the world when things get hard. Some folks think their way through. Some folks build their way through. Some folks help others find the way.\n\nMachines can follow instructions. But they can't adapt when the instructions don't fit anymore. You can.\n\nThat's not somethin' you learn from a slide deck.",
         emotion: 'wise',
         variation_id: 'pattern_survival_v1',
         interaction: 'nod'
@@ -795,8 +795,8 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         emotion: 'warm',
         variation_id: 'explains_v1',
         patternReflection: [
-          { pattern: 'analytical', minLevel: 5, altText: "Fox Theatre Station. Been here since 1929, same as the theatre upstairs. Beautiful old building.\n\nEach platform connects you to different folks. Lot of 'em came here because the world moved faster than they expected. You seem like the type who wants to understand how it all fits together—that's exactly how you find your footing.", altEmotion: 'knowing' },
-          { pattern: 'building', minLevel: 5, altText: "Fox Theatre Station. Been here since 1929, same as the theatre upstairs. Beautiful old building—took real craftsmanship to make this.\n\nEach platform connects to different folks. People who build things, fix things, make things. You seem like one of 'em. That kind of work... it's solid ground.", altEmotion: 'warm' },
+          { pattern: 'analytical', minLevel: 5, altText: "Fox Theatre Station. Been here since 1929, same as the theatre upstairs. Beautiful old building.\n\nEach platform connects you to different folks. Lot of 'em came here because the world moved faster than they expected. You seem like the type who wants to understand how it all fits together.that's exactly how you find your footing.", altEmotion: 'knowing' },
+          { pattern: 'building', minLevel: 5, altText: "Fox Theatre Station. Been here since 1929, same as the theatre upstairs. Beautiful old building.took real craftsmanship to make this.\n\nEach platform connects to different folks. People who build things, fix things, make things. You seem like one of 'em. That kind of work... it's solid ground.", altEmotion: 'warm' },
           { pattern: 'patience', minLevel: 5, altText: "Fox Theatre Station. Been here since 1929. This place takes its time with folks, and I can tell you do too.\n\nEach platform connects to different people. World's rushin', but some things can't be rushed. The right conversations happen when they're supposed to.", altEmotion: 'warm' }
         ]
       }
@@ -866,9 +866,9 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         emotion: 'reflective',
         variation_id: 'backstory_v1',
         patternReflection: [
-          { pattern: 'building', minLevel: 5, altText: "My story? Yeah, alright.\n\nWorked at Southern Company for twenty-three years. Power plants, electrical grids—you know, the real infrastructure that keeps Birmingham running. You've got builder hands yourself, don't you? I can tell.", altEmotion: 'warm' },
-          { pattern: 'patience', minLevel: 5, altText: "My story? Yeah, alright. You're the first person in a while to actually ask.\n\nWorked at Southern Company for twenty-three years. Power plants, electrical grids. My daddy was real proud—first in our family to work in an office instead of out at Sloss Furnaces.", altEmotion: 'reflective' },
-          { pattern: 'helping', minLevel: 5, altText: "My story? Yeah, you actually want to hear it. That's kind.\n\nWorked at Southern Company for twenty-three years. Power plants, electrical grids—keeping the lights on for people. That mattered to me. My daddy was real proud.", altEmotion: 'warm' }
+          { pattern: 'building', minLevel: 5, altText: "My story? Yeah, alright.\n\nWorked at Southern Company for twenty-three years. Power plants, electrical grids.you know, the real infrastructure that keeps Birmingham running. You've got builder hands yourself, don't you? I can tell.", altEmotion: 'warm' },
+          { pattern: 'patience', minLevel: 5, altText: "My story? Yeah, alright. You're the first person in a while to actually ask.\n\nWorked at Southern Company for twenty-three years. Power plants, electrical grids. My daddy was real proud.first in our family to work in an office instead of out at Sloss Furnaces.", altEmotion: 'reflective' },
+          { pattern: 'helping', minLevel: 5, altText: "My story? Yeah, you actually want to hear it. That's kind.\n\nWorked at Southern Company for twenty-three years. Power plants, electrical grids.keeping the lights on for people. That mattered to me. My daddy was real proud.", altEmotion: 'warm' }
         ]
       }
     ],
@@ -878,14 +878,16 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         text: "So why'd you leave?",
         nextNodeId: 'samuel_backstory_revelation',
         pattern: 'exploring',
-        skills: ['communication']
+        skills: ['communication'],
+        archetype: 'ASK_FOR_DETAILS'
       },
       {
         choiceId: 'acknowledge',
         text: "Sounds like a solid life",
         nextNodeId: 'samuel_backstory_revelation',
         pattern: 'patience',
-        skills: ['emotionalIntelligence', 'communication']
+        skills: ['emotionalIntelligence', 'communication'],
+        archetype: 'SHOW_UNDERSTANDING'
       }
     ],
     onEnter: [
@@ -907,8 +909,8 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         variation_id: 'revelation_v1',
         patternReflection: [
           { pattern: 'building', minLevel: 4, altText: "It was solid. But it <shake>wasn't mine</shake>, you know?\n\nTwenty-three years buildin' other people's systems. You understand that, don't you? The difference between making something because you're told to, and building something because it's yours.", altEmotion: 'knowing' },
-          { pattern: 'exploring', minLevel: 4, altText: "It was solid. But it <shake>wasn't mine</shake>.\n\nI see that same restlessness in you—the need to find your own thing, not just accept what's handed to you. That's not easy. But it's necessary.", altEmotion: 'warm' },
-          { pattern: 'patience', minLevel: 4, altText: "It was solid. But it <shake>wasn't mine</shake>.\n\nTook me twenty-three years to figure that out. You listening like this—you're doing it faster than I did. That's good.", altEmotion: 'reflective' }
+          { pattern: 'exploring', minLevel: 4, altText: "It was solid. But it <shake>wasn't mine</shake>.\n\nI see that same restlessness in you.the need to find your own thing, not just accept what's handed to you. That's not easy. But it's necessary.", altEmotion: 'warm' },
+          { pattern: 'patience', minLevel: 4, altText: "It was solid. But it <shake>wasn't mine</shake>.\n\nTook me twenty-three years to figure that out. You listening like this.you're doing it faster than I did. That's good.", altEmotion: 'reflective' }
         ],
         // E2-031: Interrupt opportunity during vulnerable moment
         interrupt: {
@@ -947,6 +949,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         nextNodeId: 'samuel_pause_after_backstory',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
+        archetype: 'ACKNOWLEDGE_EMOTION',
         consequence: {
           characterId: 'samuel',
           trustChange: 2,
@@ -962,7 +965,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*He pauses, meeting your eyes.*\n\nYou didn't try to fill the silence. That's rare.\n\n*A small, appreciative nod.*\n\nMost folks can't sit with someone else's weight. They rush to fix it, change the subject. You just... stayed.\n\nThat means somethin'.",
+        text: "You didn't try to fill the silence. That's rare.\n\nMost folks can't sit with someone else's weight. They rush to fix it, change the subject. You just stayed.\n\nThat means somethin'.",
         emotion: 'moved',
         variation_id: 'interrupt_acknowledged_v1',
         interaction: 'nod'
@@ -991,7 +994,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*He looks at the station lights, distant.*\n\nYou want the truth about what this job cost me?\n\nDorothy. My wife of twenty-eight years. When I left Southern Company, she thought I'd lost my mind. 'A train station that don't exist? Samuel, you sound like your father before he—'\n\n*He stops.*\n\nShe gave me a choice. The station or her. I told myself I'd make her understand. That once she saw what this place could do for people...\n\nShe was gone before the first passenger arrived.",
+        text: "You want the truth about what this job cost me?\n\nDorothy. My wife of twenty-eight years. When I left Southern Company, she thought I'd lost my mind. 'A train station that don't exist? Samuel, you sound like your father before he...'\n\nShe gave me a choice. The station or her. I told myself I'd make her understand. That once she saw what this place could do for people.\n\nShe was gone before the first passenger arrived.",
         emotion: 'grief_raw',
         variation_id: 'vulnerability_v1',
         microAction: 'His hands rest on the console, trembling slightly.',
@@ -1013,7 +1016,8 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         text: "Was it worth it?",
         nextNodeId: 'samuel_vulnerability_reflection',
         pattern: 'analytical',
-        skills: ['criticalThinking']
+        skills: ['criticalThinking'],
+        archetype: 'ASK_FOR_DETAILS'
       },
       {
         choiceId: 'vuln_silence',
@@ -1021,6 +1025,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         nextNodeId: 'samuel_vulnerability_reflection',
         pattern: 'patience',
         skills: ['emotionalIntelligence'],
+        archetype: 'STAY_SILENT',
         consequence: {
           characterId: 'samuel',
           trustChange: 2
@@ -1032,6 +1037,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         nextNodeId: 'samuel_vulnerability_reflection',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
+        archetype: 'ACKNOWLEDGE_EMOTION',
         consequence: {
           characterId: 'samuel',
           trustChange: 1
@@ -1045,7 +1051,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*He straightens, collecting himself.*\n\nEvery day I wonder if I chose right. Every traveler that finds their path here... I tell myself that's the answer.\n\nBut late nights, when the station's quiet? I hear her voice in the echo. Askin' why the people who needed me most weren't the ones in front of me.\n\n*A long breath.*\n\nYou're the first person I've told that to. The station needed a conductor. But conductors still bleed.",
+        text: "Every day I wonder if I chose right. Every traveler that finds their path here... I tell myself that's the answer.\n\nBut late nights, when the station's quiet? I hear her voice in the echo. Askin' why the people who needed me most weren't the ones in front of me.\n\nYou're the first person I've told that to. The station needed a conductor. But conductors still bleed.",
         emotion: 'vulnerable_resolved',
         variation_id: 'reflection_v1'
       }
@@ -1092,7 +1098,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         emotion: 'warm',
         variation_id: 'purpose_v1_combined',
         patternReflection: [
-          { pattern: 'helping', minLevel: 4, altText: "I wanted to help folks figure out their own path. Not hand 'em answers—that never works. But help 'em find the right questions?\n\nYou understand that, don't you? It's why you listen the way you do.", altEmotion: 'knowing' }
+          { pattern: 'helping', minLevel: 4, altText: "I wanted to help folks figure out their own path. Not hand 'em answers.that never works. But help 'em find the right questions?\n\nYou understand that, don't you? It's why you listen the way you do.", altEmotion: 'knowing' }
         ]
       }
     ],
@@ -1207,14 +1213,16 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         text: "What was your crossroads?",
         nextNodeId: 'samuel_origin_choice',
         pattern: 'exploring',
-        skills: ['communication']
+        skills: ['communication'],
+        archetype: 'EXPRESS_CURIOSITY'
       },
       {
         choiceId: 'samuel_origin_listen',
         text: "[Listen]",
         nextNodeId: 'samuel_origin_choice',
         pattern: 'patience',
-        skills: ['emotionalIntelligence']
+        skills: ['emotionalIntelligence'],
+        archetype: 'STAY_SILENT'
       }
     ],
     onEnter: [
@@ -1238,8 +1246,8 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         emotion: 'reflective',
         variation_id: 'origin_choice_v1',
         patternReflection: [
-          { pattern: 'building', minLevel: 4, altText: "VP of Engineering. Corner office. Or stay technical—keep my hands in the work.\n\nYou build things. You understand that choice. The difference between managing builders and being one.\n\nBig money and a fancy title. Or doin' what I actually loved.", altEmotion: 'reflective' },
-          { pattern: 'exploring', minLevel: 4, altText: "VP of Engineering. Or stay technical—keep buildin' the grid that powers Birmingham.\n\nYou're curious about paths not taken, aren't you? That's the right question.\n\nBig money. Or doin' what I actually loved.", altEmotion: 'knowing' }
+          { pattern: 'building', minLevel: 4, altText: "VP of Engineering. Corner office. Or stay technical.keep my hands in the work.\n\nYou build things. You understand that choice. The difference between managing builders and being one.\n\nBig money and a fancy title. Or doin' what I actually loved.", altEmotion: 'reflective' },
+          { pattern: 'exploring', minLevel: 4, altText: "VP of Engineering. Or stay technical.keep buildin' the grid that powers Birmingham.\n\nYou're curious about paths not taken, aren't you? That's the right question.\n\nBig money. Or doin' what I actually loved.", altEmotion: 'knowing' }
         ]
       }
     ],
@@ -1260,7 +1268,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Management. *sighs* Twenty years of meetin's about meetin's.\n\nEvery promotion pushed me further from why I got into engineerin' in the first place.",
+        text: "Management. Twenty years of meetin's about meetin's.\n\nEvery promotion pushed me further from why I got into engineerin' in the first place.",
         emotion: 'regretful',
         variation_id: 'wrong_train_v1'
       }
@@ -1271,7 +1279,8 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         text: "What made you realize?",
         nextNodeId: 'samuel_origin_daughter_moment',
         pattern: 'exploring',
-        skills: ['communication']
+        skills: ['communication'],
+        archetype: 'ASK_FOR_DETAILS'
       }
     ],
     tags: ['backstory', 'samuel_arc']
@@ -1327,6 +1336,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         nextNodeId: 'samuel_daughter_path',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
+        archetype: 'ACKNOWLEDGE_EMOTION',
         consequence: {
           characterId: 'samuel',
           trustChange: 2
@@ -1474,7 +1484,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Noticed those patterns already, didn't you? <bloom>Curious things</bloom>, aren't they?\n\nStation's got a way of rememberin'. Every choice you make leaves an echo. Those orbs you're seein'? They're mirrors—not what you've done, but <ripple>who you're becomin'</ripple>.",
+        text: "Noticed those patterns already, didn't you? <bloom>Curious things</bloom>, aren't they?\n\nStation's got a way of rememberin'. Every choice you make leaves an echo. Those orbs you're seein'? They're mirrors.not what you've done, but <ripple>who you're becomin'</ripple>.",
         emotion: 'knowing',
         variation_id: 'orb_explanation_v1'
       }
@@ -2351,7 +2361,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*Nods slowly.*\n\nYou did. But not the way most people think 'helpin'' works.\n\nYou didn't fix her problem. You made space for her to see options she couldn't see before.\n\nThat helper instinct? Same thing that drives UAB resident advisors and guidance counselors all over Birmingham. Real valuable.",
+        text: "You did. But not the way most people think 'helpin'' works.\n\nYou didn't fix her problem. You made space for her to see options she couldn't see before.\n\nThat helper instinct? Same thing that drives UAB resident advisors and guidance counselors all over Birmingham. Real valuable.",
         emotion: 'affirming',
         variation_id: 'helped_response_v1'
       }
@@ -2371,7 +2381,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*Chuckles softly.*\n\nThat uncertainty? That's actually wisdom.\n\nMost people walk away from conversations thinkin' they gave great advice. You're askin' what really happened. That's the difference between talkin' at someone and actually connectin'.\n\nYou explored her world instead of mappin' your own onto it.",
+        text: "That uncertainty? That's actually wisdom.\n\nMost people walk away from conversations thinkin' they gave great advice. You're askin' what really happened. That's the difference between talkin' at someone and actually connectin'.\n\nYou explored her world instead of mappin' your own onto it.",
         emotion: 'appreciative',
         variation_id: 'unsure_response_v1'
       }
@@ -2628,6 +2638,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         nextNodeId: 'samuel_hub_after_maya',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'leadership'],
+        archetype: 'SHOW_UNDERSTANDING',
         consequence: {
           characterId: 'samuel',
           trustChange: 2
@@ -2772,6 +2783,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         nextNodeId: 'samuel_solidarity',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'communication'],
+        archetype: 'SHARE_PERSPECTIVE',
         consequence: {
           characterId: 'samuel',
           trustChange: 2,
@@ -2803,7 +2815,8 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         choiceId: 'continue_deep',
         text: "[Sit with this truth]",
         nextNodeId: 'samuel_hub_after_maya',
-        pattern: 'patience'
+        pattern: 'patience',
+        archetype: 'STAY_SILENT'
       }
     ]
   },
@@ -2824,7 +2837,8 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         text: "Thank you for seeing that.",
         nextNodeId: 'samuel_hub_after_maya',
         pattern: 'patience',
-        skills: ["emotionalIntelligence", "communication"]
+        skills: ["emotionalIntelligence", "communication"],
+        archetype: 'EXPRESS_GRATITUDE'
       }
     ]
   },
@@ -3132,7 +3146,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Curiosity over fear. That's the whole game, isn't it?\n\nAlex spent years selling shortcuts. Now they understand—there are no shortcuts to becoming yourself.\n\nYou reminded them why they started teaching in the first place.",
+        text: "Curiosity over fear. That's the whole game, isn't it?\n\nAlex spent years selling shortcuts. Now they understand.there are no shortcuts to becoming yourself.\n\nYou reminded them why they started teaching in the first place.",
         emotion: 'warm',
         variation_id: 'alex_learning_v1'
       }
@@ -3184,7 +3198,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Pride in the work. That's what the trades have that people forget.\n\nElena can look at a building and say 'I made that safe.' Not 'my company' or 'my software.' Her hands. Her knowledge.\n\nYou reminded her that matters. That it's not just a job—it's a craft.",
+        text: "Pride in the work. That's what the trades have that people forget.\n\nElena can look at a building and say 'I made that safe.' Not 'my company' or 'my software.' Her hands. Her knowledge.\n\nYou reminded her that matters. That it's not just a job.it's a craft.",
         emotion: 'warm',
         variation_id: 'elena_building_v1'
       }
@@ -3236,7 +3250,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Impossible and invisible. That's the heart of care work.\n\nGrace holds space for people at their most vulnerable. She's present when no one else can be. And the world barely notices.\n\nYou noticed. That's what she needed—to be seen seeing.",
+        text: "Impossible and invisible. That's the heart of care work.\n\nGrace holds space for people at their most vulnerable. She's present when no one else can be. And the world barely notices.\n\nYou noticed. That's what she needed.to be seen seeing.",
         emotion: 'warm',
         variation_id: 'grace_care_v1'
       }
@@ -3554,7 +3568,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*Nods appreciatively.*\n\nIntegration. That's the engineering word for it, ain't it? Making separate systems work as one.\n\nDevon's been runnin' emotion and logic on separate tracks his whole life. You showed him they can share the same rail.\n\nThat's systems thinking at its best - applied to the self.",
+        text: "Integration. That's the engineering word for it, ain't it? Making separate systems work as one.\n\nDevon's been runnin' emotion and logic on separate tracks his whole life. You showed him they can share the same rail.\n\nThat's systems thinking at its best. Applied to the self.",
         emotion: 'impressed',
         variation_id: 'devon_integrate_v1'
       }
@@ -3574,7 +3588,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*Leans back.*\n\nConnection instead of fixin'. That's somethin' most folks never learn.\n\nEverybody wants to solve everybody else's problems. You gave Devon somethin' rarer - presence. Attention without agenda.\n\nThat's what his dad needs too. Not solutions. Company.",
+        text: "Connection instead of fixin'. That's somethin' most folks never learn.\n\nEverybody wants to solve everybody else's problems. You gave Devon somethin' rarer. Presence. Attention without agenda.\n\nThat's what his dad needs too. Not solutions. Company.",
         emotion: 'warm',
         variation_id: 'devon_connection_v1'
       }
@@ -3594,7 +3608,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*Quiet smile.*\n\nJust listened. Three simple words that most people never learn to do.\n\nDevon's spent his life solvin' problems. Racing to the answer. You gave him permission to not know. To sit in the question.\n\nSometimes the best thing we can do is hold space while someone finds their own way.",
+        text: "Just listened. Three simple words that most people never learn to do.\n\nDevon's spent his life solvin' problems. Racing to the answer. You gave him permission to not know. To sit in the question.\n\nSometimes the best thing we can do is hold space while someone finds their own way.",
         emotion: 'approving',
         variation_id: 'devon_listened_v1'
       }
@@ -3647,7 +3661,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*Nods.*\n\nA choice. After months of avoidance and algorithms. That's what matters.\n\nDoesn't matter if the conversation goes perfectly. What matters is he's showin' up. Present. Ready to be human instead of efficient.",
+        text: "A choice. After months of avoidance and algorithms. That's what matters.\n\nDoesn't matter if the conversation goes perfectly. What matters is he's showin' up. Present. Ready to be human instead of efficient.",
         emotion: 'hopeful',
         variation_id: 'devon_choice_v1'
       }
@@ -3667,7 +3681,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*Eyes light up.*\n\nNow that's insight. Systems can hold grief. Structure can create space for feeling.\n\nMost people think you gotta abandon logic to feel. Devon's learnin' you can build a framework FOR emotion. A container for the chaos.\n\nThat's engineer wisdom applied to the heart.",
+        text: "Now that's insight. Systems can hold grief. Structure can create space for feeling.\n\nMost people think you gotta abandon logic to feel. Devon's learnin' you can build a framework FOR emotion. A container for the chaos.\n\nThat's engineer wisdom applied to the heart.",
         emotion: 'delighted',
         variation_id: 'devon_systems_r_v1'
       }
@@ -3920,7 +3934,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*Considers this.*\n\nMost people are. The difference is whether they admit it.\n\nJordan wore her searching openly. That takes courage. The ones who pretend they have it figured out? They're the truly lost ones - can't find something you won't acknowledge you're looking for.",
+        text: "Most people are. The difference is whether they admit it.\n\nJordan wore her searching openly. That takes courage. The ones who pretend they have it figured out? They're the truly lost ones. Can't find something you won't acknowledge you're looking for.",
         emotion: 'thoughtful',
         variation_id: 'jordan_lost_v1'
       }
@@ -3934,7 +3948,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*Eyes brighten.*\n\nNow that's a systems thinker's observation. You saw accumulation where others saw chaos.\n\nSeven jobs isn't instability when each one adds a new tool to the kit. Jordan was building a Swiss Army knife while everyone else thought she was just collecting broken pieces.",
+        text: "Now that's a systems thinker's observation. You saw accumulation where others saw chaos.\n\nSeven jobs isn't instability when each one adds a new tool to the kit. Jordan was building a Swiss Army knife while everyone else thought she was just collecting broken pieces.",
         emotion: 'impressed',
         variation_id: 'jordan_building_v1'
       }
@@ -3948,7 +3962,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*Pauses, something shifting in his expression.*\n\nThat recognition... it matters. When we see ourselves in someone's struggle, we can offer understanding no manual provides.\n\nThe station brought you here for a reason. Perhaps it knew you'd understand journeys that don't follow straight lines.",
+        text: "That recognition. It matters. When we see ourselves in someone's struggle, we can offer understanding no manual provides.\n\nThe station brought you here for a reason. Perhaps it knew you'd understand journeys that don't follow straight lines.",
         emotion: 'knowing',
         variation_id: 'jordan_resonance_v1'
       }
@@ -4003,7 +4017,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*Nods slowly.*\n\nMirrors are tricky tools. Hold one up and people might see their flaws first.\n\nBut you didn't show her what was wrong - you showed her what was hidden. The experience she'd been discounting. The skills she'd been calling 'just survival.'\n\nThat kind of reflecting? It's an act of faith.",
+        text: "Mirrors are tricky tools. Hold one up and people might see their flaws first.\n\nBut you didn't show her what was wrong. You showed her what was hidden. The experience she'd been discounting. The skills she'd been calling 'just survival.'\n\nThat kind of reflecting? It's an act of faith.",
         emotion: 'affirming',
         variation_id: 'jordan_mirror_v1'
       }
@@ -4017,7 +4031,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*A quiet smile.*\n\nThe Socratic approach. Oldest teaching method there is - and the hardest.\n\nAnyone can give answers. But questions? Questions let people own their discoveries. Jordan didn't walk out of there with your wisdom. She walked out with her own.\n\nThat's the difference between a lecture and a conversation.",
+        text: "The Socratic approach. Oldest teaching method there is. And the hardest.\n\nAnyone can give answers. But questions? Questions let people own their discoveries. Jordan didn't walk out of there with your wisdom. She walked out with her own.\n\nThat's the difference between a lecture and a conversation.",
         emotion: 'wise',
         variation_id: 'jordan_questions_v1'
       }
@@ -4031,7 +4045,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*Closes his eyes briefly, as if remembering something.*\n\nMmm. The rarest gift.\n\nMost people listen just long enough to plan their response. But true listening - the kind that holds space without filling it - that's where people find their own answers.\n\nJordan probably talked herself into courage. You just gave her the room.",
+        text: "Mmm. The rarest gift.\n\nMost people listen just long enough to plan their response. But true listening, the kind that holds space without filling it, that's where people find their own answers.\n\nJordan probably talked herself into courage. You just gave her the room.",
         emotion: 'reverent',
         variation_id: 'jordan_listened_v1'
       }
@@ -4230,7 +4244,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*You pull up your device. The screen glows softly.*\n\nLooks like a few folks have been trying to reach you.",
+        text: "Looks like a few folks have been trying to reach you.",
         emotion: 'neutral',
         variation_id: 'check_messages_v1'
       }
@@ -4276,13 +4290,13 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
           {
             pattern: 'helping',
             minLevel: 4,
-            altText: "Saw how you were with Maya. You lead with empathy—that's not somethin' you can teach.\n\nPlatform 3 has Devon Kumar. Engineering student. Builds systems to avoid dealing with emotions. Could use someone who knows how to reach past walls.",
+            altText: "Saw how you were with Maya. You lead with empathy.that's not somethin' you can teach.\n\nPlatform 3 has Devon Kumar. Engineering student. Builds systems to avoid dealing with emotions. Could use someone who knows how to reach past walls.",
             altEmotion: 'knowing'
           },
           {
             pattern: 'analytical',
             minLevel: 4,
-            altText: "You asked Maya the right questions. Dug deeper than most would.\n\nPlatform 3 has Devon Kumar. Engineering student like yourself—well, like the way you think. Builds systems to make sense of chaos. You two might understand each other.",
+            altText: "You asked Maya the right questions. Dug deeper than most would.\n\nPlatform 3 has Devon Kumar. Engineering student like yourself.well, like the way you think. Builds systems to make sense of chaos. You two might understand each other.",
             altEmotion: 'knowing'
           },
           {
@@ -4294,7 +4308,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
           {
             pattern: 'building',
             minLevel: 4,
-            altText: "You helped Maya see what she could build. Creator recognizes creator.\n\nPlatform 3 has Devon Kumar. Engineering student who builds systems to avoid feelings. He's got the technical side covered—could use someone to help him build the human side.",
+            altText: "You helped Maya see what she could build. Creator recognizes creator.\n\nPlatform 3 has Devon Kumar. Engineering student who builds systems to avoid feelings. He's got the technical side covered.could use someone to help him build the human side.",
             altEmotion: 'knowing'
           },
           {
@@ -4581,7 +4595,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*Gestures toward Platform 3.*\n\nDirect. I appreciate that.\n\nSome people need to overthink every connection before they make one. But sometimes the best way to understand someone is to just... show up.\n\nHe's probably deep in some schematic. Don't let that fool you - there's a lot going on under the surface.",
+        text: "Direct. I appreciate that.\n\nSome people need to overthink every connection before they make one. But sometimes the best way to understand someone is to just show up.\n\nHe's probably deep in some schematic. Don't let that fool you. There's a lot going on under the surface.",
         emotion: 'encouraging',
         variation_id: 'devon_eager_v1'
       }
@@ -4600,7 +4614,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*Something shifts in his eyes - recognition.*\n\nThen you might be exactly who he needs to meet.\n\nDevon's built walls out of logic. It's safer to think than to feel. But you... you just showed you know what it costs to let those walls down.\n\nGo easy with him. But don't let him hide behind his blueprints.",
+        text: "Then you might be exactly who he needs to meet.\n\nDevon's built walls out of logic. It's safer to think than to feel. But you just showed you know what it costs to let those walls down.\n\nGo easy with him. But don't let him hide behind his blueprints.",
         emotion: 'meaningful',
         variation_id: 'devon_empathy_v1'
       }
@@ -4720,7 +4734,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
           {
             pattern: 'analytical',
             minLevel: 5,
-            altText: "You're startin' to see how this station works, aren't you? The patterns. The connections.\n\nMaya's still processin'. Devon's building bridges he didn't know he needed. Jordan's about to face a room full of people.\n\nYour analytical eye—where does it tell you to go?",
+            altText: "You're startin' to see how this station works, aren't you? The patterns. The connections.\n\nMaya's still processin'. Devon's building bridges he didn't know he needed. Jordan's about to face a room full of people.\n\nYour analytical eye.where does it tell you to go?",
             altEmotion: 'knowing'
           },
           {
@@ -4732,13 +4746,13 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
           {
             pattern: 'building',
             minLevel: 5,
-            altText: "You're a builder, through and through. Not just things—futures.\n\nMaya's designing her path. Devon's constructing connection. Jordan's rebuilding her confidence.\n\nWhat do you want to help build next?",
+            altText: "You're a builder, through and through. Not just things.futures.\n\nMaya's designing her path. Devon's constructing connection. Jordan's rebuilding her confidence.\n\nWhat do you want to help build next?",
             altEmotion: 'knowing'
           },
           {
             pattern: 'patience',
             minLevel: 5,
-            altText: "You take your time. That's rare in this station—everyone's in such a hurry to their next platform.\n\nMaya needed space. Devon needed someone who wouldn't rush him. Jordan needs someone who can sit with uncertainty.\n\nYour patience opens doors, friend.",
+            altText: "You take your time. That's rare in this station.everyone's in such a hurry to their next platform.\n\nMaya needed space. Devon needed someone who wouldn't rush him. Jordan needs someone who can sit with uncertainty.\n\nYour patience opens doors, friend.",
             altEmotion: 'appreciative'
           },
           {
@@ -6140,7 +6154,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*The station hums quietly around you. Samuel checks his pocket watch, then nods.*\n\nSometimes the best move is just to stand still and let the world turn a bit without you pushing it.",
+        text: "Sometimes the best move is just to stand still and let the world turn a bit without you pushing it.",
         emotion: 'peaceful',
         variation_id: 'wait_loop_v1'
       }
@@ -6357,7 +6371,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "The station stirs when you enter. Somethin' in your walk has changed since you first stepped off that train.\n\nI've seen it before—folks start movin' through here with more purpose. Like they're rememberin' who they are instead of searchin' for it.",
+        text: "The station stirs when you enter. Somethin' in your walk has changed since you first stepped off that train.\n\nI've seen it before.folks start movin' through here with more purpose. Like they're rememberin' who they are instead of searchin' for it.",
         emotion: 'observant',
         variation_id: 'greeting_noticing_v1'
       }
@@ -6385,7 +6399,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "The Weaver takes note of you now. I see the threads formin' around your choices—patterns that weren't there when you arrived.\n\nYou're not just passin' through anymore. This place is becomin' part of you, and you're becomin' part of it.",
+        text: "The Weaver takes note of you now. I see the threads formin' around your choices.patterns that weren't there when you arrived.\n\nYou're not just passin' through anymore. This place is becomin' part of you, and you're becomin' part of it.",
         emotion: 'impressed',
         variation_id: 'greeting_recognition_v1'
       }
@@ -6442,7 +6456,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     content: [
       // HARMONIOUS (5+ arcs) - Station is alive and thriving
       {
-        text: "Listen to her sing.\n\n*Samuel gestures at the gleaming walls, the steady pulse of light.*\n\nFive lives touched. Five threads woven. The station hasn't felt like this in a long time.\n\nYou're not just visitin' anymore. You're part of the pattern.",
+        text: "Listen to her sing.\n\nFive lives touched. Five threads woven. The station hasn't felt like this in a long time.\n\nYou're not just visitin' anymore. You're part of the pattern.",
         emotion: 'reverent',
         variation_id: 'greeting_return_harmonious',
         condition: {
@@ -6451,7 +6465,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       },
       // ALIVE (3+ arcs) - Station is waking up
       {
-        text: "The corridors are brighter tonight. You notice?\n\n*Samuel's eyes crinkle.*\n\nThree threads woven, three lives touched. The station's rememberin' what it's for.\n\nWhat brings you through?",
+        text: "The corridors are brighter tonight. You notice?\n\nThree threads woven, three lives touched. The station's rememberin' what it's for.\n\nWhat brings you through?",
         emotion: 'warm_proud',
         variation_id: 'greeting_return_alive',
         condition: {
@@ -6460,7 +6474,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       },
       // AWAKENING (1 arc - maya) - Station is stirring
       {
-        text: "The lights hum different now. Warmer.\n\n*Samuel nods toward the ceiling.*\n\nOne thread woven. The station takes notice. It's been a long time since someone cared enough to really listen.\n\nWhat's on your mind?",
+        text: "The lights hum different now. Warmer.\n\nOne thread woven. The station takes notice. It's been a long time since someone cared enough to really listen.\n\nWhat's on your mind?",
         emotion: 'hopeful',
         variation_id: 'greeting_return_awakening_maya',
         condition: {
@@ -6469,7 +6483,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       },
       // AWAKENING (1 arc - devon)
       {
-        text: "Somethin's different tonight. Feel that hum?\n\n*Samuel tilts his head, listening.*\n\nDevon's been talkin' about you. Said you actually listened. That's rare.\n\nThe station notices kindness. What brings you back?",
+        text: "Somethin's different tonight. Feel that hum?\n\nDevon's been talkin' about you. Said you actually listened. That's rare.\n\nThe station notices kindness. What brings you back?",
         emotion: 'hopeful',
         variation_id: 'greeting_return_awakening_devon',
         condition: {
@@ -6603,7 +6617,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "This place... it exists between where you've been and where you're goin'. Call it a crossroads, a waystation, a moment of clarity before the next choice.\n\nEvery platform here represents a different path—not destinations, but ways of movin' through the world. The station doesn't tell you where to go. It shows you who you already are, and lets you decide what to do with that knowledge.",
+        text: "This place... it exists between where you've been and where you're goin'. Call it a crossroads, a waystation, a moment of clarity before the next choice.\n\nEvery platform here represents a different path.not destinations, but ways of movin' through the world. The station doesn't tell you where to go. It shows you who you already are, and lets you decide what to do with that knowledge.",
         emotion: 'philosophical',
         variation_id: 'station_deep_v1'
       }
@@ -6631,26 +6645,26 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Every choice you make here leaves a trace. Not good or bad—just... true. The station watches how you move through problems, how you connect with people, what questions you ask.\n\nThose patterns? They're not somethin' we give you. They're somethin' you already had. We just help you see 'em clearer.",
+        text: "Every choice you make here leaves a trace. Not good or bad.just... true. The station watches how you move through problems, how you connect with people, what questions you ask.\n\nThose patterns? They're not somethin' we give you. They're somethin' you already had. We just help you see 'em clearer.",
         emotion: 'knowing',
         variation_id: 'pattern_insight_v1',
         patternReflection: [
           {
             pattern: 'analytical',
             minLevel: 5,
-            altText: "You think before you move. Every conversation, you're trackin' the logic, findin' the structure underneath. That's not somethin' everyone does—or can do.\n\nThe Weaver sees it in you. The station marks you as someone who finds the truth in the tangles.",
+            altText: "You think before you move. Every conversation, you're trackin' the logic, findin' the structure underneath. That's not somethin' everyone does.or can do.\n\nThe Weaver sees it in you. The station marks you as someone who finds the truth in the tangles.",
             altEmotion: 'impressed'
           },
           {
             pattern: 'helping',
             minLevel: 5,
-            altText: "You lead with your heart. I've watched you with the other travelers—you listen before you speak, and when you do speak, you're already thinkin' about how to help.\n\nThe Harmonic resonates through you. The station knows a healer when it sees one.",
+            altText: "You lead with your heart. I've watched you with the other travelers.you listen before you speak, and when you do speak, you're already thinkin' about how to help.\n\nThe Harmonic resonates through you. The station knows a healer when it sees one.",
             altEmotion: 'warm'
           },
           {
             pattern: 'building',
             minLevel: 5,
-            altText: "You don't just see problems—you see possibilities. Your mind's always buildin' somethin', even when you're standin' still.\n\nThe Architect stirs when you're near. The station recognizes someone who shapes the world instead of just movin' through it.",
+            altText: "You don't just see problems.you see possibilities. Your mind's always buildin' somethin', even when you're standin' still.\n\nThe Architect stirs when you're near. The station recognizes someone who shapes the world instead of just movin' through it.",
             altEmotion: 'impressed'
           },
           {
@@ -6662,7 +6676,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
           {
             pattern: 'exploring',
             minLevel: 5,
-            altText: "Questions lead you forward. You're not satisfied with surface answers—you dig until you find somethin' real.\n\nThe Voyager calls through you. The station opens its hidden paths to those who seek them.",
+            altText: "Questions lead you forward. You're not satisfied with surface answers.you dig until you find somethin' real.\n\nThe Voyager calls through you. The station opens its hidden paths to those who seek them.",
             altEmotion: 'knowing'
           }
         ]
@@ -6698,19 +6712,19 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
           {
             pattern: 'analytical',
             minLevel: 5,
-            altText: "You've got the mind for systems—seein' how things connect, findin' the patterns others miss. There are fields that need people who think like you.\n\nMaya could tell you about tech and innovation. Rohan knows the deep engineering side. Elena's got insights about information and research. Each one's found a different way to use that analytical gift.",
+            altText: "You've got the mind for systems.seein' how things connect, findin' the patterns others miss. There are fields that need people who think like you.\n\nMaya could tell you about tech and innovation. Rohan knows the deep engineering side. Elena's got insights about information and research. Each one's found a different way to use that analytical gift.",
             altEmotion: 'knowing'
           },
           {
             pattern: 'helping',
             minLevel: 5,
-            altText: "You lead with care—that's worth more than most realize. There are whole careers built around helpin' others find their way.\n\nMarcus works in healthcare. Grace navigates patient systems. Tess builds education programs. Jordan guides people through career decisions. Each one turned that impulse to help into a life's work.",
+            altText: "You lead with care.that's worth more than most realize. There are whole careers built around helpin' others find their way.\n\nMarcus works in healthcare. Grace navigates patient systems. Tess builds education programs. Jordan guides people through career decisions. Each one turned that impulse to help into a life's work.",
             altEmotion: 'warm'
           },
           {
             pattern: 'building',
             minLevel: 5,
-            altText: "You're a maker. Can see it in how you approach things—always thinkin' about what could be, not just what is.\n\nMaya builds robots. Devon designs systems. Silas works with his hands in advanced manufacturing. They've all found ways to turn that builder's instinct into somethin' real.",
+            altText: "You're a maker. Can see it in how you approach things.always thinkin' about what could be, not just what is.\n\nMaya builds robots. Devon designs systems. Silas works with his hands in advanced manufacturing. They've all found ways to turn that builder's instinct into somethin' real.",
             altEmotion: 'knowing'
           }
         ]
@@ -6748,7 +6762,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     nodeId: 'samuel_platform_deflect',
     speaker: 'Samuel Washington',
     content: [{
-      text: "*He laughs, but it doesn't reach his eyes.*\n\nYou been talkin' to Rohan? That boy sees ghosts in the wiring. There ain't no Platform Seven. Skip in the numbers, that's all. Like floors in a hotel skippin' thirteen.",
+      text: "You been talkin' to Rohan? That boy sees ghosts in the wiring. There ain't no Platform Seven. Skip in the numbers, that's all. Like floors in a hotel skippin' thirteen.",
       emotion: 'defensive',
       variation_id: 'arc2_deflect_v1'
     }],
@@ -6793,7 +6807,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     nodeId: 'samuel_platform_7_truth',
     speaker: 'Samuel Washington',
     content: [{
-      text: "You went down there. I can see it on you. *He sighs.*\n\nI suppose you earned the truth, then. It's the buffer. Where we keep the things that almost happened. The timelines that were too heavy to be real.",
+      text: "You went down there. I can see it on you.\n\nI suppose you earned the truth, then. It's the buffer. Where we keep the things that almost happened. The timelines that were too heavy to be real.",
       emotion: 'resigned',
       variation_id: 'arc2_truth_v1'
     }],
@@ -6805,7 +6819,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     nodeId: 'samuel_frozen_time',
     speaker: 'Samuel Washington',
     content: [{
-      text: "Don't move. *The station is silent. Dust motes hang suspended in the air. The clock's second hand is stuck between ticks.*\n\nThe Quiet Hour. Happens once a cycle. System reboot. Just... breathe. It'll pass.",
+      text: "Don't move.\n\nThe Quiet Hour. Happens once a cycle. System reboot. Just breathe. It'll pass.",
       emotion: 'whisper',
       variation_id: 'arc3_frozen_v1'
     }],
@@ -6867,7 +6881,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     nodeId: 'samuel_burden_reward',
     speaker: 'Samuel Washington',
     content: [{
-      text: "*Samuel touches the pocket watch.*\n\nSomeone has to hold the door open. If I leave... if the Anchor lifts... all these potential futures collapse into a single hard reality.\n\nNot everyone is ready for that. So I stay. I hold the moment open.",
+      text: "Someone has to hold the door open. If I leave, if the Anchor lifts, all these potential futures collapse into a single hard reality.\n\nNot everyone is ready for that. So I stay. I hold the moment open.",
       emotion: 'resigned_noble',
       variation_id: 'puzzle_burden_v1'
     }],

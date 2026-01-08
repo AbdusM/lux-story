@@ -18,14 +18,14 @@ export const silasDialogueNodes: DialogueNode[] = [
     speaker: 'Silas',
     content: [
       {
-        text: "[Metal scrapes on metal. He doesn't look up from polishing his riot shield.]\n\nCheckpoint is closed. Sector 7 restriction protocol is active.\n\nTurn around, citizen. There's nothing back here but dust and bad memories.",
+        text: "Checkpoint is closed.\n\nSector 7 restriction protocol is active.\n\nTurn around. Nothing back here but dust and bad memories.",
         emotion: 'commanding',
-        variation_id: 'silas_intro_wall_v1',
+        variation_id: 'silas_intro_wall_v2_minimal',
         richEffectContext: 'warning',
         patternReflection: [
-          { pattern: 'analytical', minLevel: 5, altText: "[Metal scrapes on metal.]\n\nCheckpoint closed. Sector 7 restriction.\n\nYou're counting the dents in my shield. Smart. You know this isn't just a patrol post.\n\nTurn around. You don't want to see what's behind this door.", altEmotion: 'suspicious' },
-          { pattern: 'building', minLevel: 5, altText: "[He polishes the shield. A rhythmic, heavy sound.]\n\nCheckpoint closed.\n\nYou built that exoskeleton yourself, didn't you? Impressive.\n\nDoesn't matter. Door's locked. Move along.", altEmotion: 'respectful' },
-          { pattern: 'patience', minLevel: 5, altText: "[He polishes the shield. Slowly. Deliberately.]\n\n...\n\nYou're waiting for me to acknowledge you. You've got discipline.\n\nCheckpoint is closed. Go home.", altEmotion: 'stoic' }
+          { pattern: 'analytical', minLevel: 5, altText: "Checkpoint closed. Sector 7 restriction.\n\nYou're counting the dents in my shield. Smart. You know this isn't just a patrol post.\n\nTurn around. You don't want to see what's behind this door.", altEmotion: 'suspicious' },
+          { pattern: 'building', minLevel: 5, altText: "Checkpoint closed.\n\nYou built that exoskeleton yourself didn't you? Impressive.\n\nDoesn't matter. Door's locked. Move along.", altEmotion: 'respectful' },
+          { pattern: 'patience', minLevel: 5, altText: "You're waiting for me to acknowledge you. You've got discipline.\n\nCheckpoint is closed. Go home.", altEmotion: 'stoic' }
         ]
       }
     ],
@@ -51,6 +51,7 @@ export const silasDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'silas_intro_tech',
         text: "Sensor calibration drift?",
+        archetype: 'ASK_FOR_DETAILS',
         nextNodeId: 'silas_tech_defense',
         pattern: 'analytical',
         skills: ['technicalLiteracy']
@@ -85,11 +86,7 @@ export const silasDialogueNodes: DialogueNode[] = [
     speaker: 'Silas',
     content: [
       {
-        text: `*He freezes. Stares at you.*
-
-That's... yeah. That's exactly it.
-
-I spent fifteen years building systems that abstract reality into data. Clean numbers. Dashboards. KPIs. And now I'm standing here realizing the abstraction has a gap wide enough to kill my basil.`,
+        text: "That's... yeah. That's exactly it.\n\nFifteen years building systems that abstract reality into data. Clean numbers. Dashboards. KPIs.\n\nAnd the abstraction has a gap wide enough to kill my basil.",
         emotion: 'stunned_recognition',
         variation_id: 'map_territory_v1'
       }
@@ -114,23 +111,17 @@ I spent fifteen years building systems that abstract reality into data. Clean nu
     speaker: 'Silas',
     content: [
       {
-        text: `*He looks up. Something cracks in his composure.*
-
-...Yeah. I am.
-
-Most people look at this setup and see innovation. High-tech farming, the future of food security. They don't see a terrified man holding dying plants while his tablet tells him everything is perfect.
-
-You saw it immediately.`,
+        text: "...Yeah. I am.\n\nMost people look at this setup and see innovation. High-tech farming, the future of food security.\n\nThey don't see a terrified man holding dying plants while his tablet tells him everything is perfect.\n\nYou saw it immediately.",
         emotion: 'vulnerable',
         variation_id: 'fear_seen_v1',
         patternReflection: [
-          { pattern: 'helping', minLevel: 4, altText: "*He looks up. Something cracks in his composure.*\n\n...Yeah. I am.\n\nYou have this way of seeing through the surface. Most people don't look past the innovation. You saw the fear.\n\nThat's... rare.", altEmotion: 'grateful' },
-          { pattern: 'patience', minLevel: 4, altText: "*He looks up. Something cracks in his composure.*\n\n...Yeah. I am.\n\nYou didn't rush to fix it. You just... named it. That's harder than solutions sometimes.\n\nYou saw it immediately.", altEmotion: 'vulnerable' }
+          { pattern: 'helping', minLevel: 4, altText: "...Yeah. I am.\n\nYou have this way of seeing through the surface. Most people don't look past the innovation. You saw the fear.\n\nThat's... rare.", altEmotion: 'grateful' },
+          { pattern: 'patience', minLevel: 4, altText: "...Yeah. I am.\n\nYou didn't rush to fix it. You just named it. That's harder than solutions sometimes.\n\nYou saw it immediately.", altEmotion: 'vulnerable' }
         ]
       }
     ],
     choices: [
-      { choiceId: 'fear_not_wrong', text: "Fear doesn't mean you're wrong.", nextNodeId: 'silas_bankruptcy_reveal' }
+      { choiceId: 'fear_not_wrong', text: "Fear doesn't mean you're wrong.", archetype: 'OFFER_SUPPORT', nextNodeId: 'silas_bankruptcy_reveal' }
     ]
   },
 
@@ -139,13 +130,7 @@ You saw it immediately.`,
     speaker: 'Silas',
     content: [
       {
-        text: `I should be.
-
-I cashed out my Amazon stock options. All of it. Bought this vertical farm. "High-Efficiency Aeroponics."
-
-Last quarter, the sensors said the pH was perfect. I lost the entire strawberry crop. $40,000 gone in a weekend.
-
-If this basil dies, I lose the farm. I lose my house.`,
+        text: "I should be.\n\nI cashed out my Amazon stock options. All of it. Bought this vertical farm. \"High-Efficiency Aeroponics.\"\n\nLast quarter, the sensors said the pH was perfect. I lost the entire strawberry crop. $40,000 gone in a weekend.\n\nIf this basil dies, I lose the farm. I lose my house.",
         emotion: 'desperate',
         variation_id: 'bankruptcy_v1',
         interrupt: {
@@ -168,6 +153,7 @@ If this basil dies, I lose the farm. I lose my house.`,
       {
         choiceId: 'silas_stakes_high',
         text: "So why are you staring at the tablet?",
+        archetype: 'CHALLENGE_ASSUMPTION',
         nextNodeId: 'silas_action_challenge_response',
         pattern: 'building',
         skills: ['actionOrientation'],
@@ -178,6 +164,7 @@ If this basil dies, I lose the farm. I lose my house.`,
       {
         choiceId: 'silas_fear_paralysis',
         text: "You're afraid to trust your eyes because they don't have an API.",
+        archetype: 'MAKE_OBSERVATION',
         nextNodeId: 'silas_api_trust_response',
         pattern: 'analytical',
         skills: ['psychology'],
@@ -194,23 +181,17 @@ If this basil dies, I lose the farm. I lose my house.`,
     speaker: 'Silas',
     content: [
       {
-        text: `*He blinks. Looks down at the tablet in his hand. Then at the soil.*
-
-Because... because the tablet is supposed to know. That's why I bought it. That's why I built this whole system.
-
-*He sets the tablet down slowly.*
-
-But the tablet doesn't know, does it? The basil knows. My hands know. The tablet just... measures.`,
+        text: "Because... because the tablet is supposed to know. That's why I bought it. That's why I built this whole system.\n\nBut the tablet doesn't know, does it? The basil knows. My hands know. The tablet just measures.",
         emotion: 'dawning_realization',
         variation_id: 'action_challenge_v1',
         patternReflection: [
-          { pattern: 'building', minLevel: 4, altText: "*He blinks. Looks at the tablet. Then the soil.*\n\nBecause the tablet is supposed to know. That's why I built this system.\n\n*He meets your eyes.*\n\nYou're a builder too. You understand—sometimes the thing you built becomes the thing that blinds you.\n\nThe basil knows. The tablet just measures.", altEmotion: 'recognized' },
-          { pattern: 'analytical', minLevel: 4, altText: "*He blinks. Looks at the tablet.*\n\nBecause the tablet is supposed to know.\n\n*Slow realization.*\n\nYou see the gap in the logic, don't you? Measurement isn't knowledge. Data isn't truth. I built an abstraction and forgot the territory underneath.", altEmotion: 'dawning' }
+          { pattern: 'building', minLevel: 4, altText: "Because the tablet is supposed to know. That's why I built this system.\n\nYou're a builder too. You understand. Sometimes the thing you built becomes the thing that blinds you.\n\nThe basil knows. The tablet just measures.", altEmotion: 'recognized' },
+          { pattern: 'analytical', minLevel: 4, altText: "Because the tablet is supposed to know.\n\nYou see the gap in the logic, don't you? Measurement isn't knowledge. Data isn't truth.\n\nI built an abstraction and forgot the territory underneath.", altEmotion: 'dawning' }
         ]
       }
     ],
     choices: [
-      { choiceId: 'hands_tell', text: "So what do your hands tell you?", nextNodeId: 'silas_simulation_start' }
+      { choiceId: 'hands_tell', text: "So what do your hands tell you?", archetype: 'EXPRESS_CURIOSITY', nextNodeId: 'silas_simulation_start' }
     ]
   },
   {
@@ -218,23 +199,17 @@ But the tablet doesn't know, does it? The basil knows. My hands know. The tablet
     speaker: 'Silas',
     content: [
       {
-        text: `*He laughs - bitter, sharp.*
-
-God. That's it, isn't it?
-
-Fifteen years at Amazon. Every decision backed by data. Every insight validated by metrics. I forgot how to trust anything that doesn't come with a confidence interval.
-
-The soil is telling me something. And I keep looking for a JSON payload to confirm it.`,
+        text: "God. That's it, isn't it?\n\nFifteen years at Amazon. Every decision backed by data. Every insight validated by metrics.\n\nI forgot how to trust anything that doesn't come with a confidence interval.\n\nThe soil is telling me something. And I keep looking for a JSON payload to confirm it.",
         emotion: 'self_aware_pain',
         variation_id: 'api_trust_v1',
         patternReflection: [
-          { pattern: 'analytical', minLevel: 4, altText: "*He laughs - bitter, sharp.*\n\nGod. That's it, isn't it?\n\nFifteen years at Amazon. Every decision backed by data.\n\n*Looks at you with recognition.*\n\nYou're an analyst too. You see the trap. When everything requires validation, you lose the ability to perceive without processing.", altEmotion: 'recognized' },
-          { pattern: 'patience', minLevel: 4, altText: "*He laughs - bitter, sharp.*\n\nGod. That's it, isn't it?\n\nI forgot how to trust anything without a confidence interval.\n\n*Pause.*\n\nYou understand slowness. Sometimes the signal takes longer than the refresh rate allows.", altEmotion: 'dawning' }
+          { pattern: 'analytical', minLevel: 4, altText: "God. That's it, isn't it?\n\nFifteen years at Amazon. Every decision backed by data.\n\nYou're an analyst too. You see the trap. When everything requires validation, you lose the ability to perceive without processing.", altEmotion: 'recognized' },
+          { pattern: 'patience', minLevel: 4, altText: "God. That's it, isn't it?\n\nI forgot how to trust anything without a confidence interval.\n\nYou understand slowness. Sometimes the signal takes longer than the refresh rate allows.", altEmotion: 'dawning' }
         ]
       }
     ],
     choices: [
-      { choiceId: 'listen_soil', text: "What if you just... listened to the soil?", nextNodeId: 'silas_simulation_start' }
+      { choiceId: 'listen_soil', text: "What if you just... listened to the soil?", archetype: 'SHARE_PERSPECTIVE', nextNodeId: 'silas_simulation_start' }
     ]
   },
 
@@ -243,9 +218,7 @@ The soil is telling me something. And I keep looking for a JSON payload to confi
     speaker: 'Silas',
     content: [
       {
-        text: `It's not drift! These are military-grade hygrometers. They cost more than my truck.
-
-They *can't* be wrong. Because if they're wrong, then I don't know anything. I'm just a guy playing in the dirt with expensive toys.`,
+        text: "It's not drift! These are military-grade hygrometers. They cost more than my truck.\n\nThey CAN'T be wrong. Because if they're wrong, then I don't know anything. I'm just a guy playing in the dirt with expensive toys.",
         emotion: 'defensive_panic',
         variation_id: 'tech_defense_v1'
       }
@@ -254,6 +227,7 @@ They *can't* be wrong. Because if they're wrong, then I don't know anything. I'm
       {
         choiceId: 'silas_look_down',
         text: "Look at the dirt, Silas.",
+        archetype: 'TAKE_ACTION',
         nextNodeId: 'silas_simulation_start',
         pattern: 'helping',
         skills: ['groundedResearch']
@@ -267,11 +241,7 @@ They *can't* be wrong. Because if they're wrong, then I don't know anything. I'm
     speaker: 'Silas',
     content: [
       {
-        text: `You want to know how I got here?
-
-Ten years at Amazon Web Services. Principal Engineer. I designed infrastructure that handled Black Friday traffic. Millions of requests per second, and I made them flow.
-
-I was good at it. Really good. But I never touched what I was building. It was all abstractions.`,
+        text: "You want to know how I got here?\n\nTen years at Amazon Web Services. Principal Engineer. I designed infrastructure that handled Black Friday traffic.\n\nMillions of requests per second, and I made them flow. I was good at it. Really good.\n\nBut I never touched what I was building. It was all abstractions.",
         emotion: 'reflective',
         variation_id: 'amazon_v1'
       }
@@ -300,9 +270,7 @@ I was good at it. Really good. But I never touched what I was building. It was a
     speaker: 'Silas',
     content: [
       {
-        text: `There was an outage. Big one. Three hours of downtime. Cost the company millions.
-
-We fixed it. I stayed up for 36 hours straight, tracing the bug through layers of abstraction. Found it in a race condition in a service I'd never heard of.`,
+        text: "There was an outage. Big one. Three hours of downtime. Cost the company millions.\n\nWe fixed it. I stayed up for 36 hours straight, tracing the bug through layers of abstraction.\n\nFound it in a race condition in a service I'd never heard of.",
         emotion: 'humbled_realization',
         variation_id: 'burnout_v1_part1'
       }
@@ -322,9 +290,7 @@ We fixed it. I stayed up for 36 hours straight, tracing the bug through layers o
     speaker: 'Silas',
     content: [
       {
-        text: `When it was over, I went home, sat in my backyard, and looked at a tomato plant my neighbor had given me. It was dying. I didn't know how to save it.
-
-I could orchestrate a million servers, but I couldn't keep one plant alive.`,
+        text: "When it was over, I went home, sat in my backyard, and looked at a tomato plant my neighbor had given me. It was dying. I didn't know how to save it.\n\nI could orchestrate a million servers, but I couldn't keep one plant alive.",
         emotion: 'humbled_realization',
         variation_id: 'burnout_v1_part2'
       }
@@ -345,13 +311,7 @@ I could orchestrate a million servers, but I couldn't keep one plant alive.`,
     speaker: 'Silas',
     content: [
       {
-        text: `I thought I understood systems. Turns out I only understood one kind.
-
-Cloud infrastructure is forgiving. You can roll back. You can restart. You can scale horizontally.
-
-A plant? If you kill it, it's dead. No rollbacks. No retries. Just consequences.
-
-I wanted to learn the kind of system that doesn't forgive.`,
+        text: "I thought I understood systems. Turns out I only understood one kind.\n\nCloud infrastructure is forgiving. You can roll back. You can restart. You can scale horizontally.\n\nA plant? If you kill it, it's dead. No rollbacks. No retries. Just consequences.\n\nI wanted to learn the kind of system that doesn't forgive.",
         emotion: 'determined',
         variation_id: 'pivot_v1'
       }
@@ -372,13 +332,7 @@ I wanted to learn the kind of system that doesn't forgive.`,
     speaker: 'Silas',
     content: [
       {
-        text: `There was an old farmer at the market. Mr. Hawkins. Eighty years old, hands like tree bark.
-
-I asked him: "How do you know when to water?"
-
-He looked at me like I was crazy. "I look at the plant. I touch the soil. I smell the air."
-
-No sensors. No dashboard. Just... attention.`,
+        text: "There was an old farmer at the market. Mr. Hawkins. Eighty years old, hands like tree bark.\n\nI asked him: \"How do you know when to water?\"\n\nHe looked at me like I was crazy. \"I look at the plant. I touch the soil. I smell the air.\"\n\nNo sensors. No dashboard. Just attention.",
         emotion: 'reverent',
         variation_id: 'learning_v1'
       }
@@ -418,13 +372,7 @@ No sensors. No dashboard. Just... attention.`,
     speaker: 'Silas',
     content: [
       {
-        text: `Every Saturday for two years. He'd wake up at 4 AM, and I'd be there.
-
-He never used a single sensor. Never even had a thermometer. He'd stick his finger in the dirt and tell you the moisture content within 5%.
-
-"The soil talks," he'd say. "You just have to learn its language."
-
-I thought I could encode that language into software. I thought I could scale Mr. Hawkins.`,
+        text: "Every Saturday for two years. He'd wake up at 4 AM, and I'd be there.\n\nHe never used a single sensor. Never even had a thermometer. He'd stick his finger in the dirt and tell you the moisture content within 5%.\n\n\"The soil talks,\" he'd say. \"You just have to learn its language.\"\n\nI thought I could encode that language into software. I thought I could scale Mr. Hawkins.",
         emotion: 'nostalgic_guilt',
         variation_id: 'hawkins_lesson_v1'
       }
@@ -452,13 +400,7 @@ I thought I could encode that language into software. I thought I could scale Mr
     speaker: 'Silas',
     content: [
       {
-        text: `I thought I could improve it. Engineer around the human limitation.
-
-Mr. Hawkins could only tend one farm. My sensors could tend thousands. That was the pitch to myself.
-
-But I forgot something. Mr. Hawkins never lost a crop. Not once in sixty years.
-
-I've been farming for two years and I've lost three.`,
+        text: "I thought I could improve it. Engineer around the human limitation.\n\nMr. Hawkins could only tend one farm. My sensors could tend thousands. That was the pitch to myself.\n\nBut I forgot something. Mr. Hawkins never lost a crop. Not once in sixty years.\n\nI've been farming for two years and I've lost three.",
         emotion: 'chastened',
         variation_id: 'hubris_v1'
       }
@@ -480,13 +422,7 @@ I've been farming for two years and I've lost three.`,
     speaker: 'Silas',
     content: [
       {
-        text: `The strawberries. That was the worst.
-
-The pH sensor said 6.5. perfect for strawberries. But the sensor was in the wrong spot. Edge of the bed, where the water pooled.
-
-The center of the bed was at 5.2. Too acidic. The plants couldn't absorb iron.
-
-They looked healthy for weeks. Green leaves, good structure. Then one morning. yellow. Chlorosis. Iron deficiency. Dead in 48 hours.`,
+        text: "The strawberries. That was the worst.\n\nThe pH sensor said 6.5. Perfect for strawberries. But the sensor was in the wrong spot. Edge of the bed, where the water pooled.\n\nThe center of the bed was at 5.2. Too acidic. The plants couldn't absorb iron.\n\nThey looked healthy for weeks. Green leaves, good structure. Then one morning, yellow. Chlorosis. Iron deficiency. Dead in 48 hours.",
         emotion: 'haunted',
         variation_id: 'strawberry_v1'
       }
@@ -502,6 +438,7 @@ They looked healthy for weeks. Green leaves, good structure. Then one morning. y
       {
         choiceId: 'silas_strawberry_feel',
         text: "That must have been devastating.",
+        archetype: 'ACKNOWLEDGE_EMOTION',
         nextNodeId: 'silas_sensor_problem',
         pattern: 'helping',
         skills: ['empathy']
@@ -518,13 +455,7 @@ They looked healthy for weeks. Green leaves, good structure. Then one morning. y
     speaker: 'Silas',
     content: [
       {
-        text: `Exactly. A sensor gives you one number. One point in space, one moment in time.
-
-Mr. Hawkins would walk the whole field. Touch soil in twenty spots. Smell it. Taste it sometimes.
-
-He had a mental model of the whole system. I had a dashboard with green checkmarks.
-
-The checkmarks were true. They just weren't complete.`,
+        text: "Exactly. A sensor gives you one number. One point in space, one moment in time.\n\nMr. Hawkins would walk the whole field. Touch soil in twenty spots. Smell it. Taste it sometimes.\n\nHe had a mental model of the whole system. I had a dashboard with green checkmarks.\n\nThe checkmarks were true. They just weren't complete.",
         emotion: 'understanding',
         variation_id: 'sensor_problem_v1'
       }
@@ -546,13 +477,7 @@ The checkmarks were true. They just weren't complete.`,
     speaker: 'Silas',
     content: [
       {
-        text: `Look at this dashboard. Zone 4: 65% humidity. Optimal. Flow rate: 2.5 liters. Valve open.
-
-Everything is fine. According to this.
-
-But look at them. They're gasping.
-
-I override and flood them? Rot the roots. Do nothing? Dried out by morning.`,
+        text: "Look at this dashboard. Zone 4: 65% humidity. Optimal. Flow rate: 2.5 liters. Valve open.\n\nEverything is fine. According to this.\n\nBut look at them. They're gasping.\n\nI override and flood them? Rot the roots. Do nothing? Dried out by morning.",
         emotion: 'paralyzed',
         variation_id: 'sim_start_v2',
         richEffectContext: 'warning',
@@ -620,15 +545,7 @@ HINT: Sensors measure WHERE they're placed...`,
     speaker: 'Silas',
     content: [
       {
-        text: `You run the diagnostic. A loading bar spins.
-
-A green checkmark appears: "NO ERRORS FOUND."
-
-A leaf falls off the basil plant next to him. It crunches when it hits the floor.
-
-The software says we're fine. The plant is dead.
-
-I... I can't do this. I'm going back to cloud computing. At least there, when it says 'Up', it means 'Up'.`,
+        text: "You run the diagnostic. A loading bar spins.\n\nA green checkmark appears: \"NO ERRORS FOUND.\"\n\nA leaf falls off the basil plant. It crunches when it hits the floor.\n\nThe software says we're fine. The plant is dead.\n\nI can't do this. I'm going back to cloud computing. At least there, when it says 'Up', it means 'Up'.",
         emotion: 'defeated_hollow',
         variation_id: 'sim_fail_software_v1',
         richEffectContext: 'error'
@@ -660,16 +577,7 @@ I... I can't do this. I'm going back to cloud computing. At least there, when it
     speaker: 'Silas',
     content: [
       {
-        text: `You yank the manual lever. Water roars into the bed.
-
-The dry soil turns to mud instantly. But the water doesn't drain. It sits there, stagnating.
-
-The tablet flashes: "ALERT: ROOT ANOXIA DETECTED."
-
-
-We drowned them. The soil was compacted. It couldn't drain. Now they'll rot before morning.
-
-I panicked. I broke the system because I was scared.`,
+        text: "You yank the manual lever. Water roars into the bed.\n\nThe dry soil turns to mud instantly. But the water doesn't drain. It sits there, stagnating.\n\nThe tablet flashes: \"ALERT: ROOT ANOXIA DETECTED.\"\n\nWe drowned them. The soil was compacted. It couldn't drain. Now they'll rot before morning.\n\nI panicked. I broke the system because I was scared.",
         emotion: 'guilt',
         variation_id: 'sim_fail_rot_v1',
         richEffectContext: 'error'
@@ -692,15 +600,7 @@ I panicked. I broke the system because I was scared.`,
     speaker: 'Silas',
     content: [
       {
-        text: `*You crawl under the rack. You trace the PVC pipe. It vibrates. there's water inside.*
-
-*But right before the nozzle... a kink. A physical crimp in the line.*
-
-*Silas crawls next to you.*
-
-The sensor measures flow at the *valve*. The kink is *after* the valve.
-
-The sensor wasn't lying. It was measuring the wrong thing. It was measuring intent, not delivery.`,
+        text: "You crawl under the rack. You trace the PVC pipe. It vibrates. There's water inside.\n\nBut right before the nozzle... a kink. A physical crimp in the line.\n\nThe sensor measures flow at the VALVE. The kink is AFTER the valve.\n\nThe sensor wasn't lying. It was measuring the wrong thing. It was measuring intent, not delivery.",
         emotion: 'epiphany',
         variation_id: 'sim_step_2_v2',
         richEffectContext: 'thinking'
@@ -723,13 +623,7 @@ The sensor wasn't lying. It was measuring the wrong thing. It was measuring inte
     speaker: 'Silas',
     content: [
       {
-        text: `*A hiss of air, then a steady trickle of water. The soil darkens.*
-
-*Silas touches the wet dirt. He closes his eyes.*
-
-Ground truth.
-
-I spent all year coding dashboards to avoid crawling in the dirt. But the answer was in the dirt.`,
+        text: "A hiss of air, then a steady trickle of water. The soil darkens.\n\nSilas touches the wet dirt. He closes his eyes.\n\nGround truth.\n\nI spent all year coding dashboards to avoid crawling in the dirt. But the answer was in the dirt.",
         emotion: 'humbled',
         variation_id: 'sim_success_v2',
         richEffectContext: 'success'
@@ -766,13 +660,7 @@ I spent all year coding dashboards to avoid crawling in the dirt. But the answer
     speaker: 'Silas',
     content: [
       {
-        text: `Systems are everywhere. I saw a kid, Devon, drawing flowcharts for his dad. He gets it. A family is just a network that needs maintenance.
-
-But I'm done with 'Smart Farming.'
-
-I'm going to start a 'Feral Lab.' Low-tech. High-biology.
-
-We teach engineers how to touch grass. Real grass. How to listen to a system that doesn't have an API.`,
+        text: "Systems are everywhere. I saw a kid, Devon, drawing flowcharts for his dad. He gets it. A family is just a network that needs maintenance.\n\nBut I'm done with 'Smart Farming.'\n\nI'm going to start a 'Feral Lab.' Low-tech. High-biology.\n\nWe teach engineers how to touch grass. Real grass. How to listen to a system that doesn't have an API.",
         emotion: 'resolved_grounded',
         variation_id: 'climax_v2'
       }
@@ -812,13 +700,7 @@ We teach engineers how to touch grass. Real grass. How to listen to a system tha
     speaker: 'Silas',
     content: [
       {
-        text: `*His eyes light up. He wipes dirt on his jeans and pulls out a worn notebook.*
-
-I've been sketching this for months. The "Feral Lab."
-
-Not a coding bootcamp. Not an accelerator. A deceleration program.
-
-We take burnt-out engineers. people like I was. and we put them in a greenhouse. No WiFi. No Slack. Just seeds, soil, and time.`,
+        text: "I've been sketching this for months. The \"Feral Lab.\"\n\nNot a coding bootcamp. Not an accelerator. A deceleration program.\n\nWe take burnt-out engineers. People like I was. And we put them in a greenhouse. No WiFi. No Slack. Just seeds, soil, and time.",
         emotion: 'excited',
         variation_id: 'feral_concept_v1'
       }
@@ -847,13 +729,7 @@ We take burnt-out engineers. people like I was. and we put them in a greenhouse.
     speaker: 'Silas',
     content: [
       {
-        text: `Feral: wild, having escaped domestication.
-
-Tech workers are domesticated. We've been trained to respond to notifications, to measure our worth in metrics, to fear uncertainty.
-
-Feral means rewilding. Teaching people to trust their senses again. To be comfortable not knowing.
-
-Mr. Hawkins never googled anything. He just... watched. For sixty years. And he knew more about soil than any PhD I've met.`,
+        text: "Feral: wild, having escaped domestication.\n\nTech workers are domesticated. We've been trained to respond to notifications, to measure our worth in metrics, to fear uncertainty.\n\nFeral means rewilding. Teaching people to trust their senses again. To be comfortable not knowing.\n\nMr. Hawkins never googled anything. He just watched. For sixty years. And he knew more about soil than any PhD I've met.",
         emotion: 'philosophical',
         variation_id: 'feral_name_v1'
       }
@@ -874,11 +750,7 @@ Mr. Hawkins never googled anything. He just... watched. For sixty years. And he 
     speaker: 'Silas',
     content: [
       {
-        text: `Three months ago, I ran a pilot. Six engineers from the tech park downtown. One weekend.
-
-One guy, Marcus. not the paramedic, different Marcus. came in with three phones. Product manager at a startup. Couldn't sit still for ten minutes.
-
-By Sunday, he was talking to a tomato plant. Not ironically. He'd realized the plant's leaves were telling him it was thirsty before any sensor could.`,
+        text: "Three months ago, I ran a pilot. Six engineers from the tech park downtown. One weekend.\n\nOne guy, Marcus. Not the paramedic, different Marcus. Came in with three phones. Product manager at a startup. Couldn't sit still for ten minutes.\n\nBy Sunday, he was talking to a tomato plant. Not ironically. He'd realized the plant's leaves were telling him it was thirsty before any sensor could.",
         emotion: 'proud',
         variation_id: 'first_workshop_v1'
       }
@@ -910,11 +782,7 @@ By Sunday, he was talking to a tomato plant. Not ironically. He'd realized the p
     speaker: 'Silas',
     content: [
       {
-        text: `He quit his startup three weeks later. Started a consulting practice. Works half the hours.
-
-But here's the thing. he's not less productive. He's more productive. He just stopped confusing activity with progress.
-
-Last week he sent me a photo. His company built a meditation garden at their office. He's teaching his team to debug their minds before they debug code.`,
+        text: "He quit his startup three weeks later. Started a consulting practice. Works half the hours.\n\nBut here's the thing. He's not less productive. He's more productive. He just stopped confusing activity with progress.\n\nLast week he sent me a photo. His company built a meditation garden at their office. He's teaching his team to debug their minds before they debug code.",
         emotion: 'satisfied',
         variation_id: 'workshop_result_v1'
       }
@@ -935,11 +803,7 @@ Last week he sent me a photo. His company built a meditation garden at their off
     speaker: 'Silas',
     content: [
       {
-        text: `Week One: Observation. No phones. You sit in the greenhouse and draw what you see. Every day, the same plant. You notice things change.
-
-Week Two: Failure. You grow something that will definitely die. You watch it die. You learn that death isn't a bug. it's part of the system.
-
-Week Three: Integration. You design a sensor. But the rule is: the sensor can only confirm what you already suspected from looking. It's a check, not a crutch.`,
+        text: "Week One: Observation. No phones. You sit in the greenhouse and draw what you see. Every day, the same plant. You notice things change.\n\nWeek Two: Failure. You grow something that will definitely die. You watch it die. You learn that death isn't a bug. It's part of the system.\n\nWeek Three: Integration. You design a sensor. But the rule is: the sensor can only confirm what you already suspected from looking. It's a check, not a crutch.",
         emotion: 'pedagogical',
         variation_id: 'curriculum_v1'
       }
@@ -961,13 +825,7 @@ Week Three: Integration. You design a sensor. But the rule is: the sensor can on
     speaker: 'Silas',
     content: [
       {
-        text: `That technology should amplify human judgment, not replace it.
-
-By week three, they've developed intuition. The sensor becomes a tool for calibrating that intuition. not a substitute for it.
-
-One woman, a data scientist, said something that stuck with me: "I used to think dashboards showed me reality. Now I know they show me someone's decision about what to measure."
-
-That's the shift. Sensors don't lie. they just answer the question you asked. The wisdom is in asking the right question.`,
+        text: "That technology should amplify human judgment, not replace it.\n\nBy week three, they've developed intuition. The sensor becomes a tool for calibrating that intuition. Not a substitute for it.\n\nOne woman, a data scientist, said something that stuck with me: \"I used to think dashboards showed me reality. Now I know they show me someone's decision about what to measure.\"\n\nThat's the shift. Sensors don't lie. They just answer the question you asked. The wisdom is in asking the right question.",
         emotion: 'teaching',
         variation_id: 'integration_v1'
       }
@@ -988,13 +846,7 @@ That's the shift. Sensors don't lie. they just answer the question you asked. Th
     speaker: 'Silas',
     content: [
       {
-        text: `Ground truth. It's a surveying term. The actual measurement from the field, not the model.
-
-My hands are calloused now.
-
-But I think it's bigger than that. Ground truth is what happens when you stop mediating reality through screens and actually touch it.
-
-Mr. Hawkins had ground truth. He could feel a storm coming before the barometer dropped. Not magic. just sixty years of paying attention to things that don't have notification sounds.`,
+        text: "Ground truth. It's a surveying term. The actual measurement from the field, not the model.\n\nMy hands are calloused now.\n\nBut I think it's bigger than that. Ground truth is what happens when you stop mediating reality through screens and actually touch it.\n\nMr. Hawkins had ground truth. He could feel a storm coming before the barometer dropped. Not magic. Just sixty years of paying attention to things that don't have notification sounds.",
         emotion: 'reverent',
         variation_id: 'philosophy_v1'
       }
@@ -1023,11 +875,7 @@ Mr. Hawkins had ground truth. He could feel a storm coming before the barometer 
     speaker: 'Silas',
     content: [
       {
-        text: `He passed last spring. In his garden. His daughter found him kneeling in the strawberry bed.
-
-At his funeral, there were no PowerPoints. No eulogies. People just told stories about things he'd taught them. How to read clouds. When to plant by the moon. How to make compost that smelled like coffee instead of rot.
-
-He left me his trowel. It's 50 years old. The handle is worn smooth from his hands.`,
+        text: "He passed last spring. In his garden. His daughter found him kneeling in the strawberry bed.\n\nAt his funeral, there were no PowerPoints. No eulogies. People just told stories about things he'd taught them. How to read clouds. When to plant by the moon. How to make compost that smelled like coffee instead of rot.\n\nHe left me his trowel. It's 50 years old. The handle is worn smooth from his hands.",
         emotion: 'grief_gratitude',
         variation_id: 'hawkins_death_v1'
       }
@@ -1049,9 +897,7 @@ He left me his trowel. It's 50 years old. The handle is worn smooth from his han
     speaker: 'Silas',
     content: [
       {
-        text: `I want to scale Mr. Hawkins. But not through software.
-
-One workshop at a time. One burnt-out engineer learning to feel the difference between wet soil and dry. One product manager realizing that "move fast and break things" doesn't work when the thing you break is alive.`,
+        text: "I want to scale Mr. Hawkins. But not through software.\n\nOne workshop at a time. One burnt-out engineer learning to feel the difference between wet soil and dry.\n\nOne product manager realizing that \"move fast and break things\" doesn't work when the thing you break is alive.",
         emotion: 'resolved_peaceful',
         variation_id: 'final_vision_v1_part1'
       }
@@ -1071,9 +917,7 @@ One workshop at a time. One burnt-out engineer learning to feel the difference b
     speaker: 'Silas',
     content: [
       {
-        text: `The goal isn't to reject technology. It's to remember that we're the sensors. We're the real-time processing. The dashboards should serve us, not the other way around.
-
-The basil is already perking up. The water finally reached its roots.`,
+        text: "The goal isn't to reject technology. It's to remember that we're the sensors. We're the real-time processing.\n\nThe dashboards should serve us, not the other way around.\n\nThe basil is already perking up. The water finally reached its roots.",
         emotion: 'resolved_peaceful',
         variation_id: 'final_vision_v1_part2'
       }
@@ -1093,7 +937,7 @@ The basil is already perking up. The water finally reached its roots.`,
     speaker: 'Silas',
     content: [
       {
-        text: `Ground truth. It's not just about farming. It's about how we know what we know.`,
+        text: "Ground truth. It's not just about farming. It's about how we know what we know.",
         emotion: 'resolved_peaceful',
         variation_id: 'final_vision_v1_part3'
       }
@@ -1145,25 +989,7 @@ The basil is already perking up. The water finally reached its roots.`,
     speaker: 'Silas',
     content: [
       {
-        text: `*He stops mid-panic. Watches you kneel down. Touch the soil.*
-
-*Long silence.*
-
-*He kneels beside you. Presses his palm into the dirt.*
-
-It's... it's dry. The middle is dry.
-
-*His voice changes. Quieter. Present.*
-
-Mr. Hawkins used to do that. Just... touch it. No sensors. No apps. Just his hands and sixty years of knowing.
-
-*Looks at you.*
-
-I forgot. I got so lost in the data, I forgot the most basic thing. The soil tells you what it needs. If you listen.
-
-*Small, shaky laugh.*
-
-Thank you. For... getting your hands dirty with me.`,
+        text: "It's... it's dry. The middle is dry.\n\nMr. Hawkins used to do that. Just touch it. No sensors. No apps. Just his hands and sixty years of knowing.\n\nI forgot. I got so lost in the data, I forgot the most basic thing. The soil tells you what it needs. If you listen.\n\nThank you. For getting your hands dirty with me.",
         emotion: 'grateful_grounded',
         interaction: 'bloom',
         variation_id: 'interrupt_grounding_v1'
@@ -1192,25 +1018,7 @@ Thank you. For... getting your hands dirty with me.`,
     speaker: 'Silas',
     content: [
       {
-        text: `*He's quiet for a long time. Staring at the trowel—Mr. Hawkins's trowel.*
-
-There's something I never told anyone.
-
-*Pause.*
-
-The day before Mr. Hawkins died... I was supposed to visit. Bring him the first harvest from my farm. Show him I'd learned something.
-
-I cancelled. Had a "critical system update" to run. Told myself I'd go next week.
-
-*Voice breaks.*
-
-There wasn't a next week.
-
-He died alone in his garden. And I was staring at a dashboard. Making sure my sensors were calibrated.
-
-*Looks at the trowel.*
-
-I never got to say thank you. Never got to show him that his sixty years of wisdom had found a home in someone.`,
+        text: "There's something I never told anyone.\n\nThe day before Mr. Hawkins died... I was supposed to visit. Bring him the first harvest from my farm. Show him I'd learned something.\n\nI cancelled. Had a \"critical system update\" to run. Told myself I'd go next week.\n\nThere wasn't a next week.\n\nHe died alone in his garden. And I was staring at a dashboard. Making sure my sensors were calibrated.\n\nI never got to say thank you. Never got to show him that his sixty years of wisdom had found a home in someone.",
         emotion: 'grief_regret',
         variation_id: 'vulnerability_v1',
         richEffectContext: 'warning'
@@ -1268,23 +1076,7 @@ I never got to say thank you. Never got to show him that his sixty years of wisd
     speaker: 'Silas',
     content: [
       {
-        text: `*He picks up the trowel. Runs his thumb along the worn handle.*
-
-You know what I think about? His hands made this smooth. Sixty years of use. Sixty years of presence.
-
-*Quiet.*
-
-The dashboard didn't kill him. But it kept me from being present. From being where I should have been.
-
-*Looks at the basil plants.*
-
-That's what the Feral Lab is really about. Teaching people to be present. Before they miss the things that matter.
-
-*Small smile through tears.*
-
-Every time a burnt-out engineer puts their hands in the soil... that's me saying thank you to Mr. Hawkins.
-
-That's the only thank you that counts anymore.`,
+        text: "You know what I think about? His hands made this smooth. Sixty years of use. Sixty years of presence.\n\nThe dashboard didn't kill him. But it kept me from being present. From being where I should have been.\n\nThat's what the Feral Lab is really about. Teaching people to be present. Before they miss the things that matter.\n\nEvery time a burnt-out engineer puts their hands in the soil... that's me saying thank you to Mr. Hawkins.\n\nThat's the only thank you that counts anymore.",
         emotion: 'resolved_tender',
         interaction: 'bloom',
         variation_id: 'vulnerability_response_v1'
@@ -1311,13 +1103,7 @@ That's the only thank you that counts anymore.`,
     speaker: 'Silas',
     content: [
       {
-        text: `*He smiles. maybe the first genuine smile you've seen from him.*
-
-I will. And hey. if you ever burn out, come find me.
-
-I'll teach you how to grow something. Something that can't be debugged. Something that just... grows.
-
-Tell Samuel I said thanks. For building a station where people like me can find people like you.`,
+        text: "I will. And hey, if you ever burn out, come find me.\n\nI'll teach you how to grow something. Something that can't be debugged. Something that just grows.\n\nTell Samuel I said thanks. For building a station where people like me can find people like you.",
         emotion: 'warm',
         variation_id: 'farewell_good_v1'
       }
@@ -1348,13 +1134,7 @@ Tell Samuel I said thanks. For building a station where people like me can find 
     speaker: 'Silas',
     content: [
       {
-        text: `*Silas stands up, dusting off his knees.*
-
-I'm listing the equipment on eBay tomorrow.
-
-I'll take a contract job. Database admin. Something air-conditioned. Something where I can't kill anything.
-
-Safe travels.`,
+        text: "I'm listing the equipment on eBay tomorrow.\n\nI'll take a contract job. Database admin. Something air-conditioned. Something where I can't kill anything.\n\nSafe travels.",
         emotion: 'resigned',
         variation_id: 'bad_ending_v1'
       }
@@ -1380,9 +1160,7 @@ Safe travels.`,
     speaker: 'Silas',
     content: [
       {
-        text: `I will.
-
-If you see Samuel, tell him... tell him the sensor was wrong. The ground was right.`,
+        text: "I will.\n\nIf you see Samuel, tell him the sensor was wrong. The ground was right.",
         emotion: 'peaceful',
         variation_id: 'farewell_v2'
       }
@@ -1404,11 +1182,7 @@ If you see Samuel, tell him... tell him the sensor was wrong. The ground was rig
     speaker: 'Silas',
     content: [
       {
-        text: `You build things with patience. Not rushing, not cutting corners.
-
-Advanced manufacturing specialists work like that—craftspeople of the future. Precision meets innovation.
-
-Mercedes, Honda—they've got facilities near Birmingham. They need people who understand that quality takes time.`,
+        text: "You build things with patience. Not rushing, not cutting corners.\n\nAdvanced manufacturing specialists work like that. Craftspeople of the future. Precision meets innovation.\n\nMercedes, Honda. They've got facilities near Birmingham. They need people who understand that quality takes time.",
         emotion: 'respectful',
         variation_id: 'career_precision_v1'
       }

@@ -623,9 +623,9 @@ export function analyzeSkillGaps(
 
     if (currentLevel < req.minLevel) {
       // Find suggested character based on skill
-      const suggestedChar = career.characterExamples.find(charId => {
+      const suggestedChar = career.characterExamples.find(_charId => {
         // Characters who exemplify this skill
-        return skill.alignedPatterns.some(p => {
+        return skill.alignedPatterns.some(_p => {
           // Simplified: suggest career example characters
           return true
         })

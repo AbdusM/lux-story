@@ -7,13 +7,13 @@ export const ashaDialogueNodes: DialogueNode[] = [
         speaker: 'Asha Patel',
         content: [
             {
-                text: "You see a woman standing before a large, blank mural wall in the Arts District. She's holding a tablet, not a brush.\n\nShe swipes, and the wall seems to shimmer with projected light. Possibilities flickering—dragons, abstract geometry, photorealistic cities.\n\n\"The vision is clear,\" she murmurs. \"But the render... the render is still noisy.\"",
+                text: "You see a woman standing before a large, blank mural wall in the Arts District. She's holding a tablet, not a brush.\n\nShe swipes, and the wall seems to shimmer with projected light. Possibilities flickering. Dragons, abstract geometry, photorealistic cities.\n\n\"The vision is clear,\" she murmurs. \"But the render... the render is still noisy.\"",
                 emotion: 'focused',
                 variation_id: 'intro_v1',
                 patternReflection: [
-                    { pattern: 'patience', minLevel: 4, altText: "You see a woman standing before a large mural wall. She's holding a tablet, not a brush.\n\nShe swipes slowly, deliberately. Light shimmers across the surface.\n\n\"The vision is clear,\" she murmurs. \"But the render... the render is still noisy.\"\n\n*She notices you watching. Doesn't rush to explain.*\n\n\"You're patient. Most people interrupt by now.\"", altEmotion: 'curious' },
-                    { pattern: 'exploring', minLevel: 4, altText: "You see a woman standing before a large mural wall. Projected light flickers—dragons, geometry, cities.\n\n\"The vision is clear,\" she murmurs. \"But the render... the render is still noisy.\"\n\n*She catches your curious gaze.*\n\n\"You want to know what it does, don't you? I can see it. That hunger to understand.\"", altEmotion: 'intrigued' },
-                    { pattern: 'building', minLevel: 4, altText: "You see a woman before a mural wall, tablet in hand. Light projects across the surface—possibilities flickering.\n\n\"The vision is clear,\" she murmurs. \"But the render... the render is still noisy.\"\n\n*She notices you studying the setup.*\n\n\"You're looking at the system, not just the art. A maker's eye.\"", altEmotion: 'interested' }
+                    { pattern: 'patience', minLevel: 4, altText: "You see a woman standing before a large mural wall. She's holding a tablet, not a brush.\n\nShe swipes slowly, deliberately. Light shimmers across the surface.\n\n\"The vision is clear,\" she murmurs. \"But the render... the render is still noisy.\"\n\nShe notices you watching. Doesn't rush to explain.\n\n\"You're patient. Most people interrupt by now.\"", altEmotion: 'curious' },
+                    { pattern: 'exploring', minLevel: 4, altText: "You see a woman standing before a large mural wall. Projected light flickers. Dragons, geometry, cities.\n\n\"The vision is clear,\" she murmurs. \"But the render... the render is still noisy.\"\n\nShe catches your curious gaze.\n\n\"You want to know what it does, don't you? I can see it. That hunger to understand.\"", altEmotion: 'intrigued' },
+                    { pattern: 'building', minLevel: 4, altText: "You see a woman before a mural wall, tablet in hand. Light projects across the surface. Possibilities flickering.\n\n\"The vision is clear,\" she murmurs. \"But the render... the render is still noisy.\"\n\nShe notices you studying the setup.\n\n\"You're looking at the system, not just the art. A maker's eye.\"", altEmotion: 'interested' }
                 ]
             }
         ],
@@ -39,6 +39,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
             {
                 choiceId: 'intro_technical',
                 text: "Is that a projection mapping setup or AR?",
+                archetype: 'ASK_FOR_DETAILS',
                 nextNodeId: 'asha_explains_tech',
                 pattern: 'building',
                 skills: ['digitalLiteracy'],
@@ -68,7 +69,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
             // Pattern unlock choices - only visible when player has built enough pattern affinity
             {
                 choiceId: 'intro_philosophy_unlock',
-                text: "[Measured Response] The noise isn't technical. It's conflict—different visions fighting for space.",
+                text: "[Measured Response] The noise isn't technical. It's conflict, different visions fighting for space.",
                 nextNodeId: 'asha_mediation_philosophy',
                 pattern: 'patience',
                 skills: ['emotionalIntelligence'],
@@ -104,12 +105,12 @@ export const ashaDialogueNodes: DialogueNode[] = [
         speaker: 'Asha Patel',
         content: [
             {
-                text: "*She looks up, surprised.*\n\nMost people just walk by. They see the tech and think I'm working on some corporate installation.\n\n*A tired smile.*\n\nHonestly? Yeah. I've been staring at this so long I can't tell if it's art or just... pixels arranged badly.\n\nCome. Tell me what you see.",
+                text: "Most people just walk by. They see the tech and think I'm working on some corporate installation.\n\nHonestly? Yeah. I've been staring at this so long I can't tell if it's art or just... pixels arranged badly.\n\nCome. Tell me what you see.",
                 emotion: 'grateful',
                 variation_id: 'welcomes_help_v1',
                 patternReflection: [
-                    { pattern: 'helping', minLevel: 4, altText: "*She looks up, surprised. Then her expression softens.*\n\nYou actually offered. Most people just walk by.\n\n*A tired but genuine smile.*\n\nHonestly? Yeah. I've been staring at this so long I can't tell if it's art anymore.\n\nYou have that look—like you actually want to help, not just give advice. Come. Tell me what you see.", altEmotion: 'touched' },
-                    { pattern: 'patience', minLevel: 4, altText: "*She looks up, surprised.*\n\nMost people walk by. You stopped. And you're not rushing me.\n\n*A tired smile.*\n\nI've been staring at this for hours. Maybe fresh eyes—patient eyes—are exactly what I need.\n\nCome. Take your time. Tell me what you see.", altEmotion: 'grateful' }
+                    { pattern: 'helping', minLevel: 4, altText: "You actually offered. Most people just walk by.\n\nHonestly? Yeah. I've been staring at this so long I can't tell if it's art anymore.\n\nYou have that look. Like you actually want to help, not just give advice. Come. Tell me what you see.", altEmotion: 'touched' },
+                    { pattern: 'patience', minLevel: 4, altText: "Most people walk by. You stopped. And you're not rushing me.\n\nI've been staring at this for hours. Maybe fresh eyes, patient eyes, are exactly what I need.\n\nCome. Take your time. Tell me what you see.", altEmotion: 'grateful' }
                 ]
             }
         ],
@@ -135,6 +136,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
             {
                 choiceId: 'help_ask_intent',
                 text: "What are you TRYING to say with this?",
+                archetype: 'ASK_FOR_DETAILS',
                 nextNodeId: 'asha_explains_vision',
                 pattern: 'helping',
                 skills: ['communication']
@@ -149,13 +151,13 @@ export const ashaDialogueNodes: DialogueNode[] = [
         speaker: 'Asha Patel',
         content: [
             {
-                text: "*Her eyes light up.*\n\nYes! That's exactly it. The AI generates these perfect compositions, but they're too... harmonious. Like elevator music for the eyes.\n\nReal art has friction. Tension. The AI smooths everything out. Makes it \"pleasing.\"\n\n*She gestures at the projection.*\n\nI spend hours fighting the algorithm. Adding imperfection back in. Breaking what it builds.\n\nSome days I wonder if I'm the artist or just... the editor.",
+                text: "Yes! That's exactly it. The AI generates these perfect compositions, but they're too... harmonious. Like elevator music for the eyes.\n\nReal art has friction. Tension. The AI smooths everything out. Makes it \"pleasing.\"\n\nI spend hours fighting the algorithm. Adding imperfection back in. Breaking what it builds.\n\nSome days I wonder if I'm the artist or just... the editor.",
                 emotion: 'conflicted',
                 variation_id: 'artistic_process_v1',
                 useChatPacing: true,
                 patternReflection: [
-                    { pattern: 'analytical', minLevel: 4, altText: "*Her eyes light up.*\n\nYes! The AI generates perfect compositions, but they're too harmonious. Too optimized.\n\nYou see it too, don't you? The patterns. The way the algorithm defaults to 'pleasing.'\n\n*She gestures at the projection.*\n\nI spend hours adding imperfection back in. Fighting the optimization.\n\nSome days I wonder if I'm the artist or just... debugging the aesthetic.", altEmotion: 'animated' },
-                    { pattern: 'building', minLevel: 4, altText: "*Her eyes light up.*\n\nExactly! The AI builds these perfect compositions, but perfection is... boring.\n\nReal art needs friction. The algorithm smooths everything out.\n\n*She gestures at her setup.*\n\nI'm not just creating—I'm rebuilding what the machine makes. Breaking it to make it real.\n\nYou build things. You understand.", altEmotion: 'energized' }
+                    { pattern: 'analytical', minLevel: 4, altText: "Yes! The AI generates perfect compositions, but they're too harmonious. Too optimized.\n\nYou see it too, don't you? The patterns. The way the algorithm defaults to 'pleasing.'\n\nI spend hours adding imperfection back in. Fighting the optimization.\n\nSome days I wonder if I'm the artist or just... debugging the aesthetic.", altEmotion: 'animated' },
+                    { pattern: 'building', minLevel: 4, altText: "Exactly! The AI builds these perfect compositions, but perfection is... boring.\n\nReal art needs friction. The algorithm smooths everything out.\n\nI'm not just creating. I'm rebuilding what the machine makes. Breaking it to make it real.\n\nYou build things. You understand.", altEmotion: 'energized' }
                 ]
             }
         ],
@@ -181,6 +183,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
             {
                 choiceId: 'process_question',
                 text: "Do you ever miss just... painting? No algorithm. Just you and the wall.",
+                archetype: 'EXPRESS_CURIOSITY',
                 nextNodeId: 'asha_before_ai',
                 pattern: 'exploring',
                 skills: ['emotionalIntelligence'],
@@ -192,6 +195,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
             {
                 choiceId: 'process_patience',
                 text: "[Let her sit with the question she just asked herself.]",
+                archetype: 'STAY_SILENT',
                 nextNodeId: 'asha_self_reflection',
                 pattern: 'patience',
                 skills: ['emotionalIntelligence'],
@@ -210,12 +214,12 @@ export const ashaDialogueNodes: DialogueNode[] = [
         speaker: 'Asha Patel',
         content: [
             {
-                text: "*She pauses, considering.*\n\nCuration as art. I've never heard someone put it that way.\n\nMy grandmother painted murals in Ahmedabad. Purely analog. She'd say the wall told her what it wanted.\n\n*Touches the tablet.*\n\nMaybe the AI is just... a faster conversation with the wall? Instead of weeks, I get answers in seconds.\n\nThe question is whether I'm still listening. Or just... accepting.",
+                text: "Curation as art. I've never heard someone put it that way.\n\nMy grandmother painted murals in Ahmedabad. Purely analog. She'd say the wall told her what it wanted.\n\nMaybe the AI is just... a faster conversation with the wall? Instead of weeks, I get answers in seconds.\n\nThe question is whether I'm still listening. Or just... accepting.",
                 emotion: 'contemplative',
                 variation_id: 'creative_philosophy_v1',
                 patternReflection: [
-                    { pattern: 'patience', minLevel: 4, altText: "*She pauses, letting the thought settle.*\n\nCuration as art. I've never heard someone put it that way.\n\nMy grandmother painted murals in Ahmedabad. She'd say the wall told her what it wanted—if you were patient enough to listen.\n\n*Touches the tablet.*\n\nYou understand patience. Maybe that's why you see this differently.\n\nThe AI gives answers in seconds. But listening still takes time.", altEmotion: 'reflective' },
-                    { pattern: 'exploring', minLevel: 4, altText: "*She pauses, intrigued.*\n\nCuration as art. You're curious about the process, aren't you? Not just the product.\n\nMy grandmother painted murals in Ahmedabad. No tools like this. Just her and the wall.\n\n*Touches the tablet.*\n\nMaybe you're right to explore this question. Is the AI a tool or a collaborator?", altEmotion: 'curious' }
+                    { pattern: 'patience', minLevel: 4, altText: "Curation as art. I've never heard someone put it that way.\n\nMy grandmother painted murals in Ahmedabad. She'd say the wall told her what it wanted, if you were patient enough to listen.\n\nYou understand patience. Maybe that's why you see this differently.\n\nThe AI gives answers in seconds. But listening still takes time.", altEmotion: 'reflective' },
+                    { pattern: 'exploring', minLevel: 4, altText: "Curation as art. You're curious about the process, aren't you? Not just the product.\n\nMy grandmother painted murals in Ahmedabad. No tools like this. Just her and the wall.\n\nMaybe you're right to explore this question. Is the AI a tool or a collaborator?", altEmotion: 'curious' }
                 ]
             }
         ],
@@ -223,6 +227,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
             {
                 choiceId: 'philosophy_listening',
                 text: "You're clearly still listening. Otherwise you wouldn't be fighting the algorithm.",
+                archetype: 'OFFER_SUPPORT',
                 nextNodeId: 'asha_simulation_setup',
                 pattern: 'helping',
                 skills: ['emotionalIntelligence']
@@ -248,14 +253,14 @@ export const ashaDialogueNodes: DialogueNode[] = [
         speaker: 'Asha Patel',
         content: [
             {
-                text: "*A soft smile crosses her face.*\n\nNani used to wake at 4am to paint before the heat came. She'd stand on scaffolding made of bamboo and rope, painting temples and community walls.\n\nNo reference images. No planning software. Just... memory and faith.\n\n*She pulls out her phone, shows an old photo.*\n\nThis was her last piece. A goddess emerging from lotus flowers. Took her three months.\n\nShe never saw it finished. Died on the scaffolding, brush in hand.\n\n*Quiet.*\n\nSometimes I think she was the last real artist in our family.",
+                text: "Nani used to wake at 4am to paint before the heat came. She'd stand on scaffolding made of bamboo and rope, painting temples and community walls.\n\nNo reference images. No planning software. Just... memory and faith.\n\nThis was her last piece. A goddess emerging from lotus flowers. Took her three months.\n\nShe never saw it finished. Died on the scaffolding, brush in hand.\n\nSometimes I think she was the last real artist in our family.",
                 emotion: 'melancholy',
                 variation_id: 'grandmother_v1',
                 useChatPacing: true,
                 richEffectContext: 'thinking',
                 patternReflection: [
-                    { pattern: 'helping', minLevel: 4, altText: "*A soft smile crosses her face. She seems to sense you genuinely want to hear this.*\n\nNani used to wake at 4am to paint before the heat came. Bamboo scaffolding, community walls.\n\nNo planning software. Just... memory and faith.\n\n*She shows you an old photo.*\n\nThis was her last piece. She died on the scaffolding, brush in hand.\n\n*Her voice catches.*\n\nYou actually listen. Most people just wait for their turn to talk.", altEmotion: 'vulnerable' },
-                    { pattern: 'patience', minLevel: 4, altText: "*A soft smile crosses her face.*\n\nNani would wake at 4am. Three months for a single mural. Patient work.\n\n*She shows you an old photo.*\n\nShe died on the scaffolding, brush in hand. Never rushed. Never finished.\n\n*Quiet.*\n\nYou understand patience. Maybe that's why I'm telling you this.", altEmotion: 'trusting' }
+                    { pattern: 'helping', minLevel: 4, altText: "Nani used to wake at 4am to paint before the heat came. Bamboo scaffolding, community walls.\n\nNo planning software. Just... memory and faith.\n\nThis was her last piece. She died on the scaffolding, brush in hand.\n\nYou actually listen. Most people just wait for their turn to talk.", altEmotion: 'vulnerable' },
+                    { pattern: 'patience', minLevel: 4, altText: "Nani would wake at 4am. Three months for a single mural. Patient work.\n\nShe died on the scaffolding, brush in hand. Never rushed. Never finished.\n\nYou understand patience. Maybe that's why I'm telling you this.", altEmotion: 'trusting' }
                 ]
             }
         ],
@@ -286,7 +291,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'grandmother_parallel',
-                text: "She died doing what she loved. That's not tragedy—that's completion.",
+                text: "She died doing what she loved. That's not tragedy. That's completion.",
                 nextNodeId: 'asha_grandmother_connection',
                 pattern: 'patience',
                 skills: ['emotionalIntelligence'],
@@ -316,7 +321,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
         speaker: 'Asha Patel',
         content: [
             {
-                text: "*Her eyes glisten.*\n\nI... I've never thought about it that way.\n\nShe painted for community. For devotion. Not for galleries or Instagram likes.\n\n*Looks at the blank wall.*\n\nMaybe that's what I've lost. Not the brush. Not the skill. The... purpose.\n\nWhen I paint now, who am I painting for?",
+                text: "I... I've never thought about it that way.\n\nShe painted for community. For devotion. Not for galleries or Instagram likes.\n\nMaybe that's what I've lost. Not the brush. Not the skill. The... purpose.\n\nWhen I paint now, who am I painting for?",
                 emotion: 'vulnerable',
                 variation_id: 'grandmother_connection_v1',
                 interaction: 'bloom'
@@ -358,7 +363,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
         speaker: 'Asha Patel',
         content: [
             {
-                text: "*Long pause.*\n\nI want to paint for the kids who look like me. Who never see themselves in public art.\n\nI want to paint for the old ladies who walk past this wall every day. The ones who remember when this neighborhood was something else.\n\n*Voice strengthening.*\n\nI want to paint for the future. For the Birmingham that could be. Not the generic \"smart city\" the developers want.\n\nThe real one. Messy. Diverse. Alive.",
+                text: "I want to paint for the kids who look like me. Who never see themselves in public art.\n\nI want to paint for the old ladies who walk past this wall every day. The ones who remember when this neighborhood was something else.\n\nI want to paint for the future. For the Birmingham that could be. Not the generic \"smart city\" the developers want.\n\nThe real one. Messy. Diverse. Alive.",
                 emotion: 'determined',
                 variation_id: 'purpose_v1',
                 useChatPacing: true
@@ -386,7 +391,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
         speaker: 'Asha Patel',
         content: [
             {
-                text: "*The question hits her hard.*\n\nWhat will I leave behind?\n\n*She looks at the projected images, then away.*\n\nNothing. Not yet. Everything I've made in the last two years has been... safe. Approved. Forgettable.\n\n*Bitter laugh.*\n\nExcept one piece. And they painted over that in three days.\n\n*She catches herself.*\n\nSorry. I don't usually... that's not something I talk about.",
+                text: "What will I leave behind?\n\nNothing. Not yet. Everything I've made in the last two years has been... safe. Approved. Forgettable.\n\nExcept one piece. And they painted over that in three days.\n\nSorry. I don't usually... that's not something I talk about.",
                 emotion: 'guarded',
                 variation_id: 'legacy_question_v1'
             }
@@ -395,6 +400,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
             {
                 choiceId: 'legacy_curious',
                 text: "What piece? What happened?",
+                archetype: 'EXPRESS_CURIOSITY',
                 nextNodeId: 'asha_vulnerability_teaser',
                 pattern: 'exploring',
                 skills: ['communication'],
@@ -406,6 +412,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
             {
                 choiceId: 'legacy_respect_boundary',
                 text: "[Nod. Don't push. She'll share when she's ready.]",
+                archetype: 'STAY_SILENT',
                 nextNodeId: 'asha_simulation_setup',
                 pattern: 'patience',
                 skills: ['emotionalIntelligence'],
@@ -424,7 +431,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
         speaker: 'Asha Patel',
         content: [
             {
-                text: "*She hesitates.*\n\nMaybe later. It's still... raw.\n\n*Forces a smile.*\n\nLet's focus on this piece. The one that might actually survive.\n\nHelp me make something they can't paint over this time.",
+                text: "Maybe later. It's still... raw.\n\nLet's focus on this piece. The one that might actually survive.\n\nHelp me make something they can't paint over this time.",
                 emotion: 'deflecting',
                 variation_id: 'vulnerability_teaser_v1'
             }
@@ -451,7 +458,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
         speaker: 'Asha Patel',
         content: [
             {
-                text: "*She sets down the tablet.*\n\nEvery day.\n\nI used to spend six weeks on a single mural. Every brushstroke intentional. Every color mixed by hand.\n\nNow I generate fifty variations before breakfast. More options than I could ever need.\n\n*Quiet.*\n\nBut options aren't the same as vision. And speed isn't the same as truth.\n\nI switched to AI after... after something happened. Something that made me not want to put myself into the work anymore.",
+                text: "Every day.\n\nI used to spend six weeks on a single mural. Every brushstroke intentional. Every color mixed by hand.\n\nNow I generate fifty variations before breakfast. More options than I could ever need.\n\nBut options aren't the same as vision. And speed isn't the same as truth.\n\nI switched to AI after... after something happened. Something that made me not want to put myself into the work anymore.",
                 emotion: 'vulnerable',
                 variation_id: 'before_ai_v1',
                 useChatPacing: true
@@ -461,6 +468,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
             {
                 choiceId: 'before_what_happened',
                 text: "What happened?",
+                archetype: 'ASK_FOR_DETAILS',
                 nextNodeId: 'asha_vulnerability_teaser',
                 pattern: 'exploring',
                 skills: ['communication']
@@ -486,7 +494,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
         speaker: 'Asha Patel',
         content: [
             {
-                text: "*She stares at you for a long moment.*\n\nYou... get it.\n\nMost people either tell me AI is evil and I should go back to \"real art.\" Or they say I should embrace efficiency and stop being sentimental.\n\n*Shakes her head.*\n\nYou're the first person who understood it's not about the tool. It's about... protection.\n\nThe AI is my armor. My distance.\n\nWhen they reject the work, they're rejecting an algorithm. Not me.",
+                text: "You... get it.\n\nMost people either tell me AI is evil and I should go back to \"real art.\" Or they say I should embrace efficiency and stop being sentimental.\n\nYou're the first person who understood it's not about the tool. It's about... protection.\n\nThe AI is my armor. My distance.\n\nWhen they reject the work, they're rejecting an algorithm. Not me.",
                 emotion: 'seen',
                 variation_id: 'feels_seen_v1',
                 interaction: 'bloom'
@@ -521,7 +529,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
         speaker: 'Asha Patel',
         content: [
             {
-                text: "*She winces.*\n\nI know. Believe me, I know.\n\nThe safety comes with a cost. The work is... competent. Professional. But it's missing something.\n\n*Touches her chest.*\n\nThe heartbeat. The thing that made my grandmother's murals feel alive.\n\n*Looks at the wall.*\n\nMaybe... maybe this piece could be different. If I let myself actually feel it.\n\nWill you help me try?",
+                text: "I know. Believe me, I know.\n\nThe safety comes with a cost. The work is... competent. Professional. But it's missing something.\n\nThe heartbeat. The thing that made my grandmother's murals feel alive.\n\nMaybe... maybe this piece could be different. If I let myself actually feel it.\n\nWill you help me try?",
                 emotion: 'hopeful',
                 variation_id: 'armor_reflection_v1'
             }
@@ -548,7 +556,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
         speaker: 'Asha Patel',
         content: [
             {
-                text: "*The silence stretches. She doesn't fill it.*\n\n*Eventually, very quietly:*\n\nI'm the editor.\n\n*A tear falls.*\n\nI've been telling myself I'm still creating. But I'm just... arranging. Curating someone else's output.\n\n*Looks at you.*\n\nThank you for not answering. I needed to hear myself say it.",
+                text: "I'm the editor.\n\nI've been telling myself I'm still creating. But I'm just... arranging. Curating someone else's output.\n\nThank you for not answering. I needed to hear myself say it.",
                 emotion: 'raw',
                 variation_id: 'self_reflection_v1',
                 interaction: 'ripple'
@@ -729,17 +737,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
         speaker: 'Asha Patel',
         content: [
             {
-                text: `*She saves the new render, then steps back to look at it.*
-
-This is what I've been missing. A collaborator who understands that art isn't just about pixels. It's about meaning.
-
-*Turns to you.*
-
-The AI can generate a million images. But it takes a human to say: "This one. This one tells the truth."
-
-*Small smile.*
-
-You have a good eye. And more importantly... a good heart.`,
+                text: "This is what I've been missing. A collaborator who understands that art isn't just about pixels. It's about meaning.\n\nThe AI can generate a million images. But it takes a human to say: \"This one. This one tells the truth.\"\n\nYou have a good eye. And more importantly... a good heart.",
                 emotion: 'grateful',
                 variation_id: 'post_success_v1'
             }
@@ -779,17 +777,7 @@ You have a good eye. And more importantly... a good heart.`,
         speaker: 'Asha Patel',
         content: [
             {
-                text: `*She nods, focused on the new render.*
-
-Thanks for the help. Really.
-
-*Starts adjusting settings on the tablet.*
-
-I should get back to work. This mural won't paint itself. Well... technically it could. But that's not the point.
-
-*Small wave.*
-
-Stop by again sometime. I could use more eyes like yours.`,
+                text: "Thanks for the help. Really.\n\nI should get back to work. This mural won't paint itself. Well... technically it could. But that's not the point.\n\nStop by again sometime. I could use more eyes like yours.",
                 emotion: 'friendly_distracted',
                 variation_id: 'post_success_low_trust_v1'
             }
@@ -856,21 +844,7 @@ Stop by again sometime. I could use more eyes like yours.`,
         speaker: 'Asha Patel',
         content: [
             {
-                text: `*She follows your gesture to the blank wall. Something shifts in her expression.*
-
-*Quiet laugh.*
-
-You're right. I keep staring at the screen. But the wall... the wall is what matters.
-
-*Touches the concrete.*
-
-My grandmother painted murals in Ahmedabad. No projectors. No AI. Just her hands and her vision.
-
-She used to say: "The wall knows what it wants. You just have to listen."
-
-*Looks at you.*
-
-I forgot to listen. I was so busy fighting the algorithm, I forgot to ask the wall.`,
+                text: "You're right. I keep staring at the screen. But the wall... the wall is what matters.\n\nMy grandmother painted murals in Ahmedabad. No projectors. No AI. Just her hands and her vision.\n\nShe used to say: \"The wall knows what it wants. You just have to listen.\"\n\nI forgot to listen. I was so busy fighting the algorithm, I forgot to ask the wall.",
                 emotion: 'grateful_grounded',
                 variation_id: 'interrupt_encouragement_v1'
             }
@@ -898,25 +872,7 @@ I forgot to listen. I was so busy fighting the algorithm, I forgot to ask the wa
         speaker: 'Asha Patel',
         content: [
             {
-                text: `*She stops projecting. The wall goes dark.*
-
-I haven't told anyone this.
-
-*Pause.*
-
-Two years ago, I got my first major commission. City hall. "Celebrate Birmingham's Future."
-
-I painted for six weeks. No AI. Every brushstroke mine. A vision of the city where everyone belonged.
-
-*Voice drops.*
-
-They painted over it in three days. "Too political." "Not what we envisioned." Someone on the council said it looked "too diverse."
-
-*Bitter laugh.*
-
-They replaced it with a generic skyline. Chrome towers. No people.
-
-That's when I started using AI. Because at least when the algorithm fails, it's not... it's not ME they're rejecting.`,
+                text: "I haven't told anyone this.\n\nTwo years ago, I got my first major commission. City hall. \"Celebrate Birmingham's Future.\"\n\nI painted for six weeks. No AI. Every brushstroke mine. A vision of the city where everyone belonged.\n\nThey painted over it in three days. \"Too political.\" \"Not what we envisioned.\" Someone on the council said it looked \"too diverse.\"\n\nThey replaced it with a generic skyline. Chrome towers. No people.\n\nThat's when I started using AI. Because at least when the algorithm fails, it's not... it's not ME they're rejecting.",
                 emotion: 'bitter_vulnerable',
                 variation_id: 'vulnerability_v1',
                 richEffectContext: 'warning',
@@ -987,21 +943,7 @@ That's when I started using AI. Because at least when the algorithm fails, it's 
         speaker: 'Asha Patel',
         content: [
             {
-                text: `*She flinches. Then slowly nods.*
-
-You see right through me, don't you?
-
-*Wraps her arms around herself.*
-
-Yeah. The AI is my shield. If they reject the art, they're rejecting Midjourney. DALL-E. Some algorithm trained on a million images.
-
-Not me. Not my family. Not my grandmother's lineage of muralists stretching back generations.
-
-*Bitter.*
-
-The irony is... I became an artist to be SEEN. To put my truth on walls where people couldn't ignore it.
-
-Now I spend all my energy making sure they never see me at all.`,
+                text: "You see right through me, don't you?\n\nYeah. The AI is my shield. If they reject the art, they're rejecting Midjourney. DALL-E. Some algorithm trained on a million images.\n\nNot me. Not my family. Not my grandmother's lineage of muralists stretching back generations.\n\nThe irony is... I became an artist to be SEEN. To put my truth on walls where people couldn't ignore it.\n\nNow I spend all my energy making sure they never see me at all.",
                 emotion: 'vulnerable',
                 variation_id: 'vulnerability_deeper_v1',
                 useChatPacing: true,
@@ -1041,25 +983,7 @@ Now I spend all my energy making sure they never see me at all.`,
         speaker: 'Asha Patel',
         content: [
             {
-                text: `*Long silence.*
-
-*Then, quietly:*
-
-I don't know.
-
-*Looks at the wall.*
-
-But I know I'm tired of hiding. Tired of making "safe" art that doesn't mean anything.
-
-*Picks up the tablet, then deliberately sets it down.*
-
-What if... what if I started with this mural? Put something real on that wall. Something that's actually me.
-
-And if they paint over it again...
-
-*Deep breath.*
-
-At least I'll know I tried.`,
+                text: "I don't know.\n\nBut I know I'm tired of hiding. Tired of making \"safe\" art that doesn't mean anything.\n\nWhat if... what if I started with this mural? Put something real on that wall. Something that's actually me.\n\nAnd if they paint over it again...\n\nAt least I'll know I tried.",
                 emotion: 'resolute',
                 variation_id: 'ready_to_be_seen_v1',
                 interaction: 'bloom'
@@ -1087,25 +1011,7 @@ At least I'll know I tried.`,
         speaker: 'Asha Patel',
         content: [
             {
-                text: `*The silence stretches between you. She doesn't try to fill it.*
-
-*After a long moment, tears falling:*
-
-Thank you.
-
-*Voice breaking.*
-
-Everyone wants to fix it. Tell me to move on. Get angry on my behalf.
-
-You're the first person who just... let it be heavy.
-
-*Wipes her eyes.*
-
-Six weeks of work. My heart on that wall. Three days of white paint.
-
-*Looks at you.*
-
-Sometimes grief just needs a witness.`,
+                text: "Thank you.\n\nEveryone wants to fix it. Tell me to move on. Get angry on my behalf.\n\nYou're the first person who just... let it be heavy.\n\nSix weeks of work. My heart on that wall. Three days of white paint.\n\nSometimes grief just needs a witness.",
                 emotion: 'grateful_raw',
                 variation_id: 'silence_response_v1',
                 interaction: 'ripple'
@@ -1133,23 +1039,7 @@ Sometimes grief just needs a witness.`,
         speaker: 'Asha Patel',
         content: [
             {
-                text: `*Her eyes go distant, remembering.*
-
-It was called "Birmingham Rising."
-
-Three panels. Past, present, future.
-
-The past showed the civil rights marches. The children who faced fire hoses. The 16th Street Baptist Church.
-
-The present showed the city as it is. Steel workers. Immigrants. The homeless man who sleeps by the library. A trans teenager finding community. A grandmother teaching her grandchild to cook.
-
-*Voice hardens.*
-
-The future showed what we could become. All of us. Together. Black, white, brown, everything in between. Building something new from the bones of what came before.
-
-*Bitter laugh.*
-
-"Too diverse." That's what they said. As if diversity was a problem to be solved instead of... the entire point.`,
+                text: "It was called \"Birmingham Rising.\"\n\nThree panels. Past, present, future.\n\nThe past showed the civil rights marches. The children who faced fire hoses. The 16th Street Baptist Church.\n\nThe present showed the city as it is. Steel workers. Immigrants. The homeless man who sleeps by the library. A trans teenager finding community. A grandmother teaching her grandchild to cook.\n\nThe future showed what we could become. All of us. Together. Black, white, brown, everything in between. Building something new from the bones of what came before.\n\n\"Too diverse.\" That's what they said. As if diversity was a problem to be solved instead of... the entire point.",
                 emotion: 'passionate_bitter',
                 variation_id: 'mural_description_v1',
                 useChatPacing: true
@@ -1199,19 +1089,7 @@ The future showed what we could become. All of us. Together. Black, white, brown
         speaker: 'Asha Patel',
         content: [
             {
-                text: `*She nods slowly.*
-
-That's exactly it. They weren't afraid of bad art. They were afraid of truth.
-
-The truth that Birmingham's future requires remembering Birmingham's past. The truth that "progress" that erases people isn't progress at all.
-
-*Looks at the blank wall.*
-
-The AI can't threaten them like that. It generates "acceptable" visions. Sanitized futures. Nobody's truth but nobody's threat either.
-
-*Quiet.*
-
-That's why I switched. Not just to protect myself. But because truth-telling stopped feeling worth the cost.`,
+                text: "That's exactly it. They weren't afraid of bad art. They were afraid of truth.\n\nThe truth that Birmingham's future requires remembering Birmingham's past. The truth that \"progress\" that erases people isn't progress at all.\n\nThe AI can't threaten them like that. It generates \"acceptable\" visions. Sanitized futures. Nobody's truth but nobody's threat either.\n\nThat's why I switched. Not just to protect myself. But because truth-telling stopped feeling worth the cost.",
                 emotion: 'contemplative',
                 variation_id: 'fear_of_truth_v1'
             }
@@ -1234,27 +1112,7 @@ That's why I switched. Not just to protect myself. But because truth-telling sto
         speaker: 'Asha Patel',
         content: [
             {
-                text: `*Her eyes widen.*
-
-Bigger? Where they can't...
-
-*She looks at the community center wall. Really looks at it.*
-
-This wall is three times the size of the city hall commission. And it's owned by the community, not the council.
-
-*A spark ignites in her eyes.*
-
-Oh god. I could do it, couldn't I? Not exactly the same. Better. With everything I've learned.
-
-*Turns to you, suddenly alive.*
-
-You're right. Why am I making something new when I could resurrect what they tried to kill?
-
-Birmingham Rising. Version 2.0.
-
-*Determined.*
-
-They can't paint over a community.`,
+                text: "Bigger? Where they can't...\n\nThis wall is three times the size of the city hall commission. And it's owned by the community, not the council.\n\nOh god. I could do it, couldn't I? Not exactly the same. Better. With everything I've learned.\n\nYou're right. Why am I making something new when I could resurrect what they tried to kill?\n\nBirmingham Rising. Version 2.0.\n\nThey can't paint over a community.",
                 emotion: 'ignited',
                 variation_id: 'recreate_dream_v1',
                 interaction: 'bloom'
@@ -1282,25 +1140,7 @@ They can't paint over a community.`,
         speaker: 'Asha Patel',
         content: [
             {
-                text: `*She wipes her eyes.*
-
-Yeah. I guess I am hiding.
-
-*Looks at the blank wall.*
-
-But here's the thing. This mural? For the community center? They asked for ME. Not an algorithm. Not a "safe" design.
-
-They said: "We want Asha Patel's vision. The real one."
-
-*Small smile.*
-
-Maybe it's time to stop hiding behind the machine. Use it as a collaborator, not a shield.
-
-*Touches the tablet, then sets it down.*
-
-My grandmother never had AI. But she had something better. She had courage.
-
-Maybe it's time I found mine again.`,
+                text: "Yeah. I guess I am hiding.\n\nBut here's the thing. This mural? For the community center? They asked for ME. Not an algorithm. Not a \"safe\" design.\n\nThey said: \"We want Asha Patel's vision. The real one.\"\n\nMaybe it's time to stop hiding behind the machine. Use it as a collaborator, not a shield.\n\nMy grandmother never had AI. But she had something better. She had courage.\n\nMaybe it's time I found mine again.",
                 emotion: 'resolved_hopeful',
                 interaction: 'bloom',
                 variation_id: 'vulnerability_response_v1'
@@ -1339,25 +1179,7 @@ Maybe it's time I found mine again.`,
         speaker: 'Asha Patel',
         content: [
             {
-                text: `*She takes a deep breath.*
-
-You know what? I think you're right.
-
-*Looks at the tablet, then at the wall.*
-
-The AI isn't the enemy. And neither am I. We're both just... tools. In service of something bigger.
-
-*Picks up the tablet with new purpose.*
-
-I'm going to use this thing to sketch faster, generate references, explore possibilities. But the vision? The heart?
-
-*Touches her chest.*
-
-That stays mine.
-
-*Smiles.*
-
-Thank you. For listening. For not judging. For helping me remember why I started doing this in the first place.`,
+                text: "You know what? I think you're right.\n\nThe AI isn't the enemy. And neither am I. We're both just... tools. In service of something bigger.\n\nI'm going to use this thing to sketch faster, generate references, explore possibilities. But the vision? The heart?\n\nThat stays mine.\n\nThank you. For listening. For not judging. For helping me remember why I started doing this in the first place.",
                 emotion: 'grateful_resolved',
                 variation_id: 'final_reflection_v1',
                 useChatPacing: true
@@ -1392,15 +1214,7 @@ Thank you. For listening. For not judging. For helping me remember why I started
         speaker: 'Asha Patel',
         content: [
             {
-                text: `*She sets down the tablet, really looking at you for the first time.*
-
-Wait. We've been talking about me this whole time.
-
-*Curious.*
-
-What brought YOU to the station? Most people don't just... wander into places like this.
-
-Are you at a crossroads too?`,
+                text: "Wait. We've been talking about me this whole time.\n\nWhat brought YOU to the station? Most people don't just... wander into places like this.\n\nAre you at a crossroads too?",
                 emotion: 'curious',
                 variation_id: 'reciprocity_v1'
             }
@@ -1444,21 +1258,7 @@ Are you at a crossroads too?`,
         speaker: 'Asha Patel',
         content: [
             {
-                text: `*She nods thoughtfully.*
-
-That's beautiful.
-
-*Looks at the wall, then back at you.*
-
-You know what I've learned today? Sometimes the people who help us most are the ones who don't try to fix us.
-
-They just... see us. And that seeing becomes a mirror that helps us see ourselves.
-
-*Extends her hand.*
-
-Whatever you're building, wherever you're going... I hope you find it. And I hope it's everything you need it to be.
-
-Come back when the mural is done. I want you to see what you helped create.`,
+                text: "That's beautiful.\n\nYou know what I've learned today? Sometimes the people who help us most are the ones who don't try to fix us.\n\nThey just... see us. And that seeing becomes a mirror that helps us see ourselves.\n\nWhatever you're building, wherever you're going... I hope you find it. And I hope it's everything you need it to be.\n\nCome back when the mural is done. I want you to see what you helped create.",
                 emotion: 'warm_grateful',
                 variation_id: 'reciprocity_response_v1',
                 interaction: 'bloom'
@@ -1487,21 +1287,7 @@ Come back when the mural is done. I want you to see what you helped create.`,
         speaker: 'Asha Patel',
         content: [
             {
-                text: `*She pauses mid-gesture, something clicking.*
-
-You know what I just realized? The way you've been listening to me... that's mediation.
-
-*Thoughtful.*
-
-In conflict resolution, we call it "active witnessing." You're not trying to fix me or judge me. You're just... present.
-
-Most people hear but don't listen. They're already formulating their response before the other person finishes talking.
-
-*Looks at you with new appreciation.*
-
-But you wait. You let the silence breathe. You ask questions instead of offering solutions.
-
-That's rare. And it's exactly what people need when they're in conflict—someone who makes space for the full story to emerge.`,
+                text: "You know what I just realized? The way you've been listening to me... that's mediation.\n\nIn conflict resolution, we call it \"active witnessing.\" You're not trying to fix me or judge me. You're just... present.\n\nMost people hear but don't listen. They're already formulating their response before the other person finishes talking.\n\nBut you wait. You let the silence breathe. You ask questions instead of offering solutions.\n\nThat's rare. And it's exactly what people need when they're in conflict. Someone who makes space for the full story to emerge.",
                 emotion: 'insightful',
                 variation_id: 'insight_listening_v1',
                 richEffectContext: 'thinking',
@@ -1554,27 +1340,7 @@ That's rare. And it's exactly what people need when they're in conflict—someon
         speaker: 'Asha Patel',
         content: [
             {
-                text: `*Her eyes light up.*
-
-Yes! That's exactly it. Art IS mediation.
-
-*Gestures at the wall.*
-
-When I create a mural, I'm mediating between the community's past and its future. Between what people remember and what they dream.
-
-*Passionate now.*
-
-The best murals don't tell people what to think. They create a space where different perspectives can coexist. Where someone can see their grandmother's story next to their neighbor's story.
-
-*Quieter.*
-
-That's why the city hall piece hurt so much. They didn't want mediation. They wanted propaganda. A single approved narrative.
-
-But real communities are messy. Contradictory. Beautiful in their complexity.
-
-*Looks at you.*
-
-My art doesn't resolve conflict. It makes space for it to breathe.`,
+                text: "Yes! That's exactly it. Art IS mediation.\n\nWhen I create a mural, I'm mediating between the community's past and its future. Between what people remember and what they dream.\n\nThe best murals don't tell people what to think. They create a space where different perspectives can coexist. Where someone can see their grandmother's story next to their neighbor's story.\n\nThat's why the city hall piece hurt so much. They didn't want mediation. They wanted propaganda. A single approved narrative.\n\nBut real communities are messy. Contradictory. Beautiful in their complexity.\n\nMy art doesn't resolve conflict. It makes space for it to breathe.",
                 emotion: 'passionate',
                 variation_id: 'insight_art_mediation_v1',
                 interaction: 'bloom'
@@ -1589,7 +1355,7 @@ My art doesn't resolve conflict. It makes space for it to breathe.`,
         choices: [
             {
                 choiceId: 'art_mediation_apply',
-                text: "So this new mural—what conflict are you mediating?",
+                text: "So this new mural. What conflict are you mediating?",
                 nextNodeId: 'asha_challenge_community_conflict',
                 pattern: 'exploring',
                 skills: ['criticalThinking'],
@@ -1619,23 +1385,7 @@ My art doesn't resolve conflict. It makes space for it to breathe.`,
         speaker: 'Asha Patel',
         content: [
             {
-                text: `*She sighs, the weight of it visible.*
-
-The community center is caught between two groups.
-
-The elders want the mural to honor the neighborhood's history. The civil rights marches. The steel mills. The church that burned and was rebuilt.
-
-*Pulls up photos on her tablet.*
-
-But the young people... they want to see themselves. LGBTQ+ pride. Climate activism. The future they're building.
-
-*Sets the tablet down.*
-
-Both sides think the other is trying to erase them. The elders say the youth don't respect history. The youth say the elders are stuck in the past.
-
-*Looks at you.*
-
-I have to create something that honors both. Without erasing either. How do you mediate between the past and the future?`,
+                text: "The community center is caught between two groups.\n\nThe elders want the mural to honor the neighborhood's history. The civil rights marches. The steel mills. The church that burned and was rebuilt.\n\nBut the young people... they want to see themselves. LGBTQ+ pride. Climate activism. The future they're building.\n\nBoth sides think the other is trying to erase them. The elders say the youth don't respect history. The youth say the elders are stuck in the past.\n\nI have to create something that honors both. Without erasing either. How do you mediate between the past and the future?",
                 emotion: 'conflicted',
                 variation_id: 'challenge_community_v1',
                 richEffectContext: 'warning',
@@ -1700,23 +1450,7 @@ I have to create something that honors both. Without erasing either. How do you 
         speaker: 'Asha Patel',
         content: [
             {
-                text: `*Her jaw tightens.*
-
-There's something else I haven't told you.
-
-*Pulls up an email on her tablet.*
-
-A developer has been contacting the community center. They want to "sponsor" the mural. In exchange for "input on the creative direction."
-
-*Bitter.*
-
-Translation: they want to sanitize it. Make it "welcoming to future residents." Code for erasing the neighborhood's history to sell luxury condos.
-
-*Looks at you.*
-
-The center needs the money. But if I take it, I'm selling out everything the mural is supposed to represent.
-
-What would you do?`,
+                text: "There's something else I haven't told you.\n\nA developer has been contacting the community center. They want to \"sponsor\" the mural. In exchange for \"input on the creative direction.\"\n\nTranslation: they want to sanitize it. Make it \"welcoming to future residents.\" Code for erasing the neighborhood's history to sell luxury condos.\n\nThe center needs the money. But if I take it, I'm selling out everything the mural is supposed to represent.\n\nWhat would you do?",
                 emotion: 'conflicted_angry',
                 variation_id: 'challenge_developer_v1',
                 richEffectContext: 'warning'
@@ -1784,25 +1518,7 @@ What would you do?`,
         speaker: 'Asha Patel',
         content: [
             {
-                text: `*She stares at you, then slowly smiles.*
-
-The bridge. Of course.
-
-*Starts sketching on the tablet.*
-
-The children who marched in 1963... they were the same age as the activists today. Fighting for the same thing: the right to exist fully, without apology.
-
-*Shows you a rough sketch.*
-
-What if I paint them together? Not past vs. future, but a continuum. The fire hoses become rising water from climate change. The "Whites Only" signs become housing discrimination. The church doors become community centers.
-
-*Excited now.*
-
-Same struggle. Different chapter.
-
-*Looks at you with gratitude.*
-
-That's what mediators do, isn't it? Find the common ground underneath the conflict.`,
+                text: "The bridge. Of course.\n\nThe children who marched in 1963... they were the same age as the activists today. Fighting for the same thing: the right to exist fully, without apology.\n\nWhat if I paint them together? Not past vs. future, but a continuum. The fire hoses become rising water from climate change. The \"Whites Only\" signs become housing discrimination. The church doors become community centers.\n\nSame struggle. Different chapter.\n\nThat's what mediators do, isn't it? Find the common ground underneath the conflict.",
                 emotion: 'inspired',
                 variation_id: 'resolution_bridge_v1',
                 interaction: 'bloom'
@@ -1829,29 +1545,7 @@ That's what mediators do, isn't it? Find the common ground underneath the confli
         speaker: 'Asha Patel',
         content: [
             {
-                text: `*She pauses.*
-
-Brought them together? No. I've been shuttling between them like a diplomat.
-
-*Considers.*
-
-But you're right. That's not mediation. That's just message-passing.
-
-*Pulls out her phone.*
-
-What if I hosted a listening session? Before I paint anything. Let the elders tell their stories while the young people listen. Then switch.
-
-*Voice strengthening.*
-
-No debate. No "yeah, but." Just listening.
-
-*Looks at the wall.*
-
-And then I paint what I hear. Not my vision. Theirs. Combined.
-
-*Nods slowly.*
-
-That's how a community heals, isn't it? Not by having someone solve their problems. By being heard.`,
+                text: "Brought them together? No. I've been shuttling between them like a diplomat.\n\nBut you're right. That's not mediation. That's just message-passing.\n\nWhat if I hosted a listening session? Before I paint anything. Let the elders tell their stories while the young people listen. Then switch.\n\nNo debate. No \"yeah, but.\" Just listening.\n\nAnd then I paint what I hear. Not my vision. Theirs. Combined.\n\nThat's how a community heals, isn't it? Not by having someone solve their problems. By being heard.",
                 emotion: 'resolute',
                 variation_id: 'resolution_dialogue_v1'
             }
@@ -1877,29 +1571,7 @@ That's how a community heals, isn't it? Not by having someone solve their proble
         speaker: 'Asha Patel',
         content: [
             {
-                text: `*She stops. Really stops.*
-
-The root fear...
-
-*Long pause.*
-
-The elders are afraid of being forgotten. Of having their struggle erased.
-
-*Softer.*
-
-And the young people are afraid of being trapped. Of being told their story doesn't matter because it's "not as hard" as what came before.
-
-*Eyes widening.*
-
-They're both afraid of erasure. Just from different directions.
-
-*Sits down heavily.*
-
-God. That's it. That's the whole conflict. Not past vs. future. It's "will I be remembered?" vs. "will I be seen?"
-
-*Looks at you.*
-
-How did you see that when I've been staring at it for months?`,
+                text: "The root fear...\n\nThe elders are afraid of being forgotten. Of having their struggle erased.\n\nAnd the young people are afraid of being trapped. Of being told their story doesn't matter because it's \"not as hard\" as what came before.\n\nThey're both afraid of erasure. Just from different directions.\n\nGod. That's it. That's the whole conflict. Not past vs. future. It's \"will I be remembered?\" vs. \"will I be seen?\"\n\nHow did you see that when I've been staring at it for months?",
                 emotion: 'stunned',
                 variation_id: 'resolution_root_v1',
                 interaction: 'ripple'
@@ -1932,29 +1604,7 @@ How did you see that when I've been staring at it for months?`,
         speaker: 'Asha Patel',
         content: [
             {
-                text: `*She tilts her head, intrigued.*
-
-A mural that evolves?
-
-*Starts pacing.*
-
-What if... what if it's not a static image? What if I leave spaces? Panels that can be added to?
-
-*Getting excited.*
-
-The first layer is history. The foundation. But I design it so the community can add their own stories over time.
-
-*Turns to you.*
-
-The elders paint their chapter. The youth paint theirs. And ten years from now, the next generation adds more.
-
-*Laughs.*
-
-It's not a mural. It's a living document. A story that never stops being written.
-
-*Shakes her head in wonder.*
-
-I've been thinking like a painter. But maybe I should think like... a gardener. Plant something that keeps growing.`,
+                text: "A mural that evolves?\n\nWhat if... what if it's not a static image? What if I leave spaces? Panels that can be added to?\n\nThe first layer is history. The foundation. But I design it so the community can add their own stories over time.\n\nThe elders paint their chapter. The youth paint theirs. And ten years from now, the next generation adds more.\n\nIt's not a mural. It's a living document. A story that never stops being written.\n\nI've been thinking like a painter. But maybe I should think like... a gardener. Plant something that keeps growing.",
                 emotion: 'delighted',
                 variation_id: 'resolution_time_v1',
                 interaction: 'bloom'
@@ -1981,25 +1631,7 @@ I've been thinking like a painter. But maybe I should think like... a gardener. 
         speaker: 'Asha Patel',
         content: [
             {
-                text: `*She looks at you for a long moment, then exhales.*
-
-You know what's funny? Every option you could have given me would have been a valid mediation strategy.
-
-*Counts on her fingers.*
-
-Walk away—sometimes the best negotiation is knowing when not to negotiate. Counter-propose—find creative terms both sides can live with. Bring in the community—transparency builds trust. Wait—timing can create new options.
-
-*Small smile.*
-
-There's no single right answer in conflict resolution. There's just... the answer that fits the situation and the people involved.
-
-*Looks at the developer's email, then deletes it.*
-
-For now? I'm going to wait. Build the mural the community wants. If we prove it has value, maybe we can find funding that doesn't compromise the vision.
-
-*Turns to you.*
-
-That's the thing about mediation. You can't force resolution. You can only create conditions where it becomes possible.`,
+                text: "You know what's funny? Every option you could have given me would have been a valid mediation strategy.\n\nWalk away. Sometimes the best negotiation is knowing when not to negotiate. Counter-propose. Find creative terms both sides can live with. Bring in the community. Transparency builds trust. Wait. Timing can create new options.\n\nThere's no single right answer in conflict resolution. There's just... the answer that fits the situation and the people involved.\n\nFor now? I'm going to wait. Build the mural the community wants. If we prove it has value, maybe we can find funding that doesn't compromise the vision.\n\nThat's the thing about mediation. You can't force resolution. You can only create conditions where it becomes possible.",
                 emotion: 'grounded',
                 variation_id: 'developer_response_v1',
                 useChatPacing: true
@@ -2038,27 +1670,7 @@ That's the thing about mediation. You can't force resolution. You can only creat
         speaker: 'Asha Patel',
         content: [
             {
-                text: `*She settles back, remembering.*
-
-My parents owned a small grocery store in a mixed neighborhood. Black, white, South Asian, Latino. Everyone shopped there.
-
-*Small smile.*
-
-I grew up watching my mother handle disputes. Someone would come in angry about something—a bounced check, a perceived slight, neighborhood drama—and she'd just... listen.
-
-*Demonstrates, hands open.*
-
-She never took sides. She'd say: "I hear you. What do you need?"
-
-*Pause.*
-
-Nine times out of ten, people just needed to be heard. The anger wasn't really about the groceries. It was about feeling invisible.
-
-*Looks at you.*
-
-She didn't have a degree in conflict resolution. She just understood that most fights aren't about what they seem to be about.
-
-That's where it started for me. Watching my mother turn a corner store into a community space where people could be seen.`,
+                text: "My parents owned a small grocery store in a mixed neighborhood. Black, white, South Asian, Latino. Everyone shopped there.\n\nI grew up watching my mother handle disputes. Someone would come in angry about something. A bounced check, a perceived slight, neighborhood drama. And she'd just... listen.\n\nShe never took sides. She'd say: \"I hear you. What do you need?\"\n\nNine times out of ten, people just needed to be heard. The anger wasn't really about the groceries. It was about feeling invisible.\n\nShe didn't have a degree in conflict resolution. She just understood that most fights aren't about what they seem to be about.\n\nThat's where it started for me. Watching my mother turn a corner store into a community space where people could be seen.",
                 emotion: 'nostalgic',
                 variation_id: 'reflection_origin_v1',
                 useChatPacing: true
@@ -2102,25 +1714,7 @@ That's where it started for me. Watching my mother turn a corner store into a co
         speaker: 'Asha Patel',
         content: [
             {
-                text: `*Her expression shifts.*
-
-She passed three years ago. Heart attack. Right there in the store.
-
-*Quiet.*
-
-The neighborhood held a vigil. Hundreds of people. Telling stories about how she'd helped them. Feuding families stood side by side.
-
-*Wipes her eye.*
-
-That's when I really understood what she'd built. Not a business. A web of relationships. A safety net made of trust.
-
-*Looks at the blank wall.*
-
-That's what I want my murals to be. Not just art. Infrastructure. A permanent reminder that this community exists, that it matters, that it can hold its contradictions and still be whole.
-
-*Turns to you.*
-
-I'm not just painting walls. I'm trying to continue her work. Building spaces where people can find each other.`,
+                text: "She passed three years ago. Heart attack. Right there in the store.\n\nThe neighborhood held a vigil. Hundreds of people. Telling stories about how she'd helped them. Feuding families stood side by side.\n\nThat's when I really understood what she'd built. Not a business. A web of relationships. A safety net made of trust.\n\nThat's what I want my murals to be. Not just art. Infrastructure. A permanent reminder that this community exists, that it matters, that it can hold its contradictions and still be whole.\n\nI'm not just painting walls. I'm trying to continue her work. Building spaces where people can find each other.",
                 emotion: 'bittersweet',
                 variation_id: 'mother_legacy_v1',
                 richEffectContext: 'thinking',
@@ -2165,27 +1759,7 @@ I'm not just painting walls. I'm trying to continue her work. Building spaces wh
         speaker: 'Asha Patel',
         content: [
             {
-                text: `*She nods slowly.*
-
-Earned is the right word. I've made plenty of mistakes.
-
-*Leans against the wall.*
-
-Early on, I thought mediation meant finding compromise. Splitting the difference. Making everyone equally unhappy.
-
-*Shakes her head.*
-
-But that's not it. Real resolution isn't about compromise. It's about transformation. Helping people see the situation differently.
-
-*Gestures at the wall.*
-
-When I painted over that city hall mural... I was devastated. But you know what I learned? Sometimes losing helps you understand what you were really fighting for.
-
-I thought I was fighting for my art. But really I was fighting for my community's right to tell its own story.
-
-*Looks at you.*
-
-The mural is gone. But that understanding? That's permanent. That's what I build from now.`,
+                text: "Earned is the right word. I've made plenty of mistakes.\n\nEarly on, I thought mediation meant finding compromise. Splitting the difference. Making everyone equally unhappy.\n\nBut that's not it. Real resolution isn't about compromise. It's about transformation. Helping people see the situation differently.\n\nWhen I painted over that city hall mural... I was devastated. But you know what I learned? Sometimes losing helps you understand what you were really fighting for.\n\nI thought I was fighting for my art. But really I was fighting for my community's right to tell its own story.\n\nThe mural is gone. But that understanding? That's permanent. That's what I build from now.",
                 emotion: 'wise',
                 variation_id: 'hard_lessons_v1',
                 useChatPacing: true
@@ -2224,27 +1798,7 @@ The mural is gone. But that understanding? That's permanent. That's what I build
         speaker: 'Asha Patel',
         content: [
             {
-                text: `*She puts down her tablet and really looks at you.*
-
-You know, I've been doing all the talking. But I can tell there's more to you than you're letting on.
-
-*Thoughtful.*
-
-The way you listen. The questions you ask. You're not just curious—you're seeking something.
-
-*Offers a small card.*
-
-If you're interested in community work—mediation, public art, social justice—I mentor young people.
-
-*Slight smile.*
-
-No pressure. But you've got the instincts. The patience. The ability to hold space for complexity.
-
-Those aren't skills everyone has. And they're exactly what this city needs.
-
-*Looks at the mural wall.*
-
-Think about it. Whatever path you choose, you've already got the foundation. Now it's just about finding the form.`,
+                text: "You know, I've been doing all the talking. But I can tell there's more to you than you're letting on.\n\nThe way you listen. The questions you ask. You're not just curious. You're seeking something.\n\nIf you're interested in community work (mediation, public art, social justice), I mentor young people.\n\nNo pressure. But you've got the instincts. The patience. The ability to hold space for complexity.\n\nThose aren't skills everyone has. And they're exactly what this city needs.\n\nThink about it. Whatever path you choose, you've already got the foundation. Now it's just about finding the form.",
                 emotion: 'warm_earnest',
                 variation_id: 'connection_mentor_v1',
                 interaction: 'bloom'
@@ -2314,29 +1868,7 @@ Think about it. Whatever path you choose, you've already got the foundation. Now
         speaker: 'Asha Patel',
         content: [
             {
-                text: `*She considers the question seriously.*
-
-It's not formal. No curriculum or certificates. Just... learning by doing.
-
-*Counts off.*
-
-We'd work on community projects together. Murals, yes, but also facilitation. Helping groups in conflict find common ground.
-
-*More animated.*
-
-I'd introduce you to the network—artists, organizers, elders. The people who've been building this city one relationship at a time.
-
-*Honest.*
-
-And you'd challenge me. That's the part most mentors don't talk about. Teaching someone forces you to examine what you actually believe.
-
-*Looks at you directly.*
-
-You've already done that today. Made me question assumptions I didn't know I had.
-
-*Small laugh.*
-
-So really, the mentorship has already started. The question is whether we make it official.`,
+                text: "It's not formal. No curriculum or certificates. Just learning by doing.\n\nWe'd work on community projects together. Murals, yes, but also facilitation. Helping groups in conflict find common ground.\n\nI'd introduce you to the network. Artists, organizers, elders. The people who've been building this city one relationship at a time.\n\nAnd you'd challenge me. That's the part most mentors don't talk about. Teaching someone forces you to examine what you actually believe.\n\nYou've already done that today. Made me question assumptions I didn't know I had.\n\nSo really, the mentorship has already started. The question is whether we make it official.",
                 emotion: 'open',
                 variation_id: 'mentorship_details_v1'
             }
@@ -2377,7 +1909,7 @@ So really, the mentorship has already started. The question is whether we make i
         speaker: 'Asha',
         content: [
             {
-                text: "*Asha studies you with quiet attention.*\n\nYou don't rush. That's rare. Most people want quick resolutions—someone to be right, someone to be wrong.\n\n*She settles into stillness.*\n\nMy grandmother taught me something. Conflict isn't a problem to solve. It's a signal to understand.\n\nWhen two people argue, they're both saying something true that the other can't hear. My job isn't to pick sides. It's to translate until they can hear each other.\n\n*Quieter.*\n\nPatience isn't waiting for the fight to end. It's staying present while the truth emerges. Sometimes that takes years.",
+                text: "You don't rush. That's rare. Most people want quick resolutions. Someone to be right, someone to be wrong.\n\nMy grandmother taught me something. Conflict isn't a problem to solve. It's a signal to understand.\n\nWhen two people argue, they're both saying something true that the other can't hear. My job isn't to pick sides. It's to translate until they can hear each other.\n\nPatience isn't waiting for the fight to end. It's staying present while the truth emerges. Sometimes that takes years.",
                 emotion: 'teaching_profound',
                 variation_id: 'philosophy_v1'
             }
@@ -2423,7 +1955,7 @@ So really, the mentorship has already started. The question is whether we make i
         speaker: 'Asha',
         content: [
             {
-                text: "*Asha is quiet for a long moment. When she speaks, her voice carries weight.*\n\nYou really care. About people. Not just outcomes.\n\n*Pause.*\n\nThe hardest case I ever worked wasn't a custody dispute or a business conflict. It was two sisters who hadn't spoken in fifteen years.\n\nOne was dying. Cancer. She wanted to apologize before it was too late. The other wouldn't answer her calls.\n\n*Voice softens.*\n\nI spent three months. Not mediating—listening. Understanding why the silence had grown so thick neither could break through.\n\n*Meets your eyes.*\n\nThey reconciled. Eighteen days before she died. Eighteen days of saying everything that fifteen years had buried.\n\nThat's what helping really means. Not fixing. Witnessing. Holding space until people are ready to heal themselves.",
+                text: "You really care. About people. Not just outcomes.\n\nThe hardest case I ever worked wasn't a custody dispute or a business conflict. It was two sisters who hadn't spoken in fifteen years.\n\nOne was dying. Cancer. She wanted to apologize before it was too late. The other wouldn't answer her calls.\n\nI spent three months. Not mediating. Listening. Understanding why the silence had grown so thick neither could break through.\n\nThey reconciled. Eighteen days before she died. Eighteen days of saying everything that fifteen years had buried.\n\nThat's what helping really means. Not fixing. Witnessing. Holding space until people are ready to heal themselves.",
                 emotion: 'vulnerable_profound',
                 variation_id: 'hardest_v1'
             }
@@ -2472,7 +2004,7 @@ So really, the mentorship has already started. The question is whether we make i
         speaker: 'Asha Patel',
         content: [
             {
-                text: "*Asha stands still, her hand hovering over the tablet without touching it.*\n\nI couldn't project this if I tried. The texture of the air changed.\n\n*She closes her eyes.*\n\nUsually, I have to fight the noise of the station to focus. Now? The focus is the only thing left. It's almost... frighteningly clear.",
+                text: "I couldn't project this if I tried. The texture of the air changed.\n\nUsually, I have to fight the noise of the station to focus. Now? The focus is the only thing left. It's almost frighteningly clear.",
                 emotion: 'awestruck',
                 variation_id: 'arc3_stillness_v1'
             }
@@ -2497,7 +2029,7 @@ So really, the mentorship has already started. The question is whether we make i
         speaker: 'Asha Patel',
         content: [
             {
-                text: "*She presses her hand against the physical wall, not the projection.*\n\nCan you feel that? A rhythm. Deep down. Thrum-thrum... thrum-thrum.\n\nIt's not a machine. Or if it is, it's a machine that's dreaming. It matches my own pulse perfectly.",
+                text: "Can you feel that? A rhythm. Deep down.\n\nIt's not a machine. Or if it is, it's a machine that's dreaming. It matches my own pulse perfectly.",
                 emotion: 'mystical',
                 variation_id: 'arc3_heartbeat_v1'
             }

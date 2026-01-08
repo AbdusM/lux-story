@@ -102,7 +102,7 @@ export function RichTextRenderer({
 
   // FORCE DISABLE FLASHING: User feedback indicates it's confusing/weird.
   // We override the prop to ensure stable text rendering.
-  const isFlashing = false // was: effects.flashing
+  const _isFlashing = false // was: effects.flashing
 
   // Split text into chunks respecting author intent
   // Priority: 1) Manual | separators, 2) Paragraph breaks (\n\n), 3) Keep as single chunk

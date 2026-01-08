@@ -174,12 +174,12 @@ export class NarrativeAnalysisSystem {
         suggestedFix: 'Simplify Samuel\'s language while keeping train conductor metaphor'
       },
       {
-        issue: 'Platform 7 purpose not clearly established',
+        issue: 'Platform 7 purpose unclear',
         type: 'plot-hole',
         severity: 'critical',
-        location: 'Platform discovery scenes',
+        location: 'Discovery scenes',
         description: 'Players may not understand why Platform 7 exists or what it represents',
-        suggestedFix: 'Add clearer explanation of Platform 7 as career exploration space'
+        suggestedFix: 'Clarify Platform 7 as career exploration space'
       },
       {
         issue: 'Career path transitions feel abrupt',
