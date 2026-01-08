@@ -82,6 +82,9 @@ export function SkillConstellationGraph({ skills, onOpenDetail }: SkillConstella
                 {/* --- NODES LAYER --- */}
                 <g className="nodes">
                     {skills.map((skill) => {
+                        // Skip skills without valid positions (defensive guard)
+                        if (skill.position?.x === undefined || skill.position?.y === undefined) return null
+
                         const isSelected = selectedId === skill.id
                         const isHovered = hoveredId === skill.id
                         const isUnlocked = skill.state !== 'dormant'
