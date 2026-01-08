@@ -101,7 +101,7 @@ export function DialogueDisplay({
     <RichTextRenderer
       text={chunkedText}
       effects={richEffects || { mode: 'static' }}
-      className={cn("text-lg leading-loose text-[color:var(--text-dialogue)] narrative-text", voiceClass, interactionClass)} // WCAG AA warm cream from --text-dialogue
+      className={cn("text-lg leading-loose tracking-wide text-[color:var(--text-dialogue)] narrative-text font-serif", voiceClass, interactionClass)} // WCAG AA warm cream from --text-dialogue
     />
   )
 

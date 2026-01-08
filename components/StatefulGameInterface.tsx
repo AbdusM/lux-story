@@ -1052,6 +1052,25 @@ export default function StatefulGameInterface() {
         playIdentitySound()
       }
 
+      // 7. Voice Revelation Echo ("Surface the Magic")
+      // When player's dominant pattern crosses threshold 5, reveal the voice system
+      if (result.events.voiceRevelationEcho) {
+        const echo = result.events.voiceRevelationEcho
+        // Show revelation as consequence feedback
+        setState(prev => ({
+          ...prev,
+          consequenceFeedback: {
+            message: echo.text
+          }
+        }))
+        logger.info('[StatefulGameInterface] Voice system revelation triggered:', {
+          echoText: echo.text.substring(0, 50)
+        })
+        // Play identity sound for the meaningful moment
+        const { playIdentitySound: playRevelation } = await import('@/lib/audio-feedback')
+        playRevelation()
+      }
+
       // Check for identity threshold (existing logic)
       if (result.events.checkIdentityThreshold) {
         // Validation: confirm this function exists in scope or defined above
@@ -2862,7 +2881,7 @@ export default function StatefulGameInterface() {
         <Card className="w-full max-w-md shadow-xl border-0">
           <CardContent className="p-8 text-center">
             <div className="space-y-3">
-              <Button onClick={initializeGame} size="lg" className="w-full bg-slate-900 hover:bg-slate-800 text-white">Continue</Button>
+              <Button onClick={initializeGame} size="lg" className="w-full bg-slate-900/40 hover:bg-slate-900/60 backdrop-blur-md border border-white/10 text-white shadow-lg animate-beckon transition-all duration-500">Continue</Button>
               <Button onClick={() => {
                 // Clear all save data for true reset
                 GameStateManager.nuclearReset()
@@ -2949,15 +2968,9 @@ export default function StatefulGameInterface() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => {
-                    markOrbsViewed()
-                    setState(prev => ({ ...prev, showJournal: true }))
-                  }}
-                  className={`relative h-9 w-9 p-0 text-slate-300 hover:text-white hover:bg-white/10 transition-all duration-300 rounded-md ${hasNewOrbs
-                    ? 'text-amber-400 nav-attention-marquee nav-attention-border nav-attention-halo'
-                    : ''
-                    }`}
-                  title="Journal"
+                  onClick={() => setState(prev => ({ ...prev, showJournal: true }))}
+                  className={`relative h-9 w-9 p-0 text-slate-300 hover:text-white hover:bg-white/10 transition-all duration-300 rounded-md ${hasNewOrbs ? 'text-amber-400 nav-attention-halo nav-attention-halo-amber' : ''}`}
+                  title="The Prism"
                 >
                   <BookOpen className="h-4 w-4" />
                 </Button>
@@ -2969,7 +2982,7 @@ export default function StatefulGameInterface() {
                     ? 'text-purple-400 nav-attention-marquee nav-attention-border-purple nav-attention-halo nav-attention-halo-purple'
                     : ''
                     }`}
-                  title="Constellation"
+                  title="Your Journey"
                 >
                   <Stars className="h-4 w-4" />
                 </Button>
@@ -3062,26 +3075,26 @@ export default function StatefulGameInterface() {
 
                   {/* Dialogue Card - Dynamic Marquee Effect */}
                   <Card className={`shadow-lg backdrop-blur-xl relative overflow-hidden transition-all duration-500 ${(() => {
-                      // 1. Loyalty Event (Amber) - Warm, engaging
-                      if (state.activeExperience) {
-                        return 'bg-slate-950/80 border-amber-500/40 shadow-[0_0_30px_rgba(245,158,11,0.2)]'
-                      }
+                    // 1. Loyalty Event (Amber) - Warm, engaging
+                    if (state.activeExperience) {
+                      return 'bg-slate-950/80 border-amber-500/40 shadow-[0_0_30px_rgba(245,158,11,0.2)]'
+                    }
 
-                      // 2. System/Discovery Moment (Blue/Purple) - Technical, cool
-                      // (Heuristic: If emotion is 'analytical' or 'knowing')
-                      if (state.currentDialogueContent?.emotion === 'analytical' || state.currentDialogueContent?.emotion === 'knowing') {
-                        return 'bg-slate-950/80 border-indigo-500/40 shadow-[0_0_30px_rgba(99,102,241,0.2)]'
-                      }
+                    // 2. System/Discovery Moment (Blue/Purple) - Technical, cool
+                    // (Heuristic: If emotion is 'analytical' or 'knowing')
+                    if (state.currentDialogueContent?.emotion === 'analytical' || state.currentDialogueContent?.emotion === 'knowing') {
+                      return 'bg-slate-950/80 border-indigo-500/40 shadow-[0_0_30px_rgba(99,102,241,0.2)]'
+                    }
 
-                      // 3. Danger/Tension (Red) - Urgent
-                      // (Heuristic: If emotion is 'fear' or 'tension')
-                      if (state.currentDialogueContent?.emotion === 'fear' || state.currentDialogueContent?.emotion === 'tension') {
-                        return 'bg-slate-950/80 border-red-500/40 shadow-[0_0_30px_rgba(239,68,68,0.2)]'
-                      }
+                    // 3. Danger/Tension (Red) - Urgent
+                    // (Heuristic: If emotion is 'fear' or 'tension')
+                    if (state.currentDialogueContent?.emotion === 'fear' || state.currentDialogueContent?.emotion === 'tension') {
+                      return 'bg-slate-950/80 border-red-500/40 shadow-[0_0_30px_rgba(239,68,68,0.2)]'
+                    }
 
-                      // Default - Subtle Glass
-                      return 'bg-black/40 border-white/5 hover:border-white/10'
-                    })()
+                    // Default - Subtle Glass
+                    return 'bg-black/40 border-white/5 hover:border-white/10'
+                  })()
                     }`}>
                     <CardContent className="p-0">
                       {/* Marquee Header Overlay */}

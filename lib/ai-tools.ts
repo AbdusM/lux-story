@@ -347,5 +347,20 @@ export const AI_TOOLS: AITool[] = [
             content: 'Take this [Blog Post URL]. Remix it into: 1. A LinkedIn Thread (professional). 2. A Twitter Thread (punchy). 3. An Instagram Caption (visual). Maintain Brand Voice: "Witty Authority".',
             usageContext: 'Turn one asset into a multi-channel campaign instantly.'
         }
+    },
+    {
+        id: 'linguistic-stabilizer',
+        name: 'Linguistic Stabilizer',
+        category: 'productivity',
+        description: 'Translates technical complexity into universal metaphors.',
+        realWorldUse: 'Simplifying jargon for accessibility (Middle-Grade Level).',
+        luxParallel: 'Cognitive Bridge Protocol',
+        requiredPattern: 'patience',
+        requiredLevel: 3,
+        goldenPrompt: {
+            title: 'The Universal Translator',
+            content: 'Rewrite: "[Complex Text]". Constraint: Middle-grade reading level. Metaphor: [Everyday Object]. Bold key takeaway.',
+            usageContext: 'Make dense proposals instantly understandable to anyone.'
+        }
     }
 ]

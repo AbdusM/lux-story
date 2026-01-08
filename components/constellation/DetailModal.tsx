@@ -2,18 +2,20 @@
 
 import { useEffect, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Lock, User, MessageCircle } from 'lucide-react'
+import { X, Lock, User, MessageCircle, Compass, Target, Clock, ShieldAlert } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { backdrop } from '@/lib/animations'
+// backdrop animation available for future use
+// import { backdrop } from '@/lib/animations'
 import type { CharacterWithState, SkillWithState } from '@/hooks/useConstellationData'
+import type { Quest } from '@/lib/quest-system'
 import { CHARACTER_COLORS } from '@/lib/constellation/character-positions'
 import { SKILL_DEFINITIONS, SKILL_CHARACTER_HINTS } from '@/lib/skill-definitions'
 import { SKILL_CLUSTERS } from '@/lib/constellation/skill-positions'
 import { CHARACTER_RELATIONSHIP_WEB } from '@/lib/character-relationships'
 
 interface DetailModalProps {
-  item: CharacterWithState | SkillWithState | null
-  type: 'character' | 'skill'
+  item: CharacterWithState | SkillWithState | Quest | null
+  type: 'character' | 'skill' | 'quest'
   onClose: () => void
   allCharacters?: CharacterWithState[]
 }
@@ -51,8 +53,11 @@ export function DetailModal({ item, type, onClose, allCharacters }: DetailModalP
   if (!item) return null
 
   const isCharacter = type === 'character'
+  const isQuest = type === 'quest'
+
   const character = isCharacter ? (item as CharacterWithState) : null
-  const skill = !isCharacter ? (item as SkillWithState) : null
+  const skill = type === 'skill' ? (item as SkillWithState) : null
+  const quest = isQuest ? (item as Quest) : null
 
   return (
     <AnimatePresence>
@@ -78,7 +83,11 @@ export function DetailModal({ item, type, onClose, allCharacters }: DetailModalP
             onClick={(e) => e.stopPropagation()}
             role="dialog"
             aria-modal="true"
-            aria-label={isCharacter && character ? `${character.fullName} details` : skill ? `${skill.name} skill details` : 'Details'}
+            aria-label={
+              isCharacter && character ? `${character.fullName} details` :
+                skill ? `${skill.name} skill details` :
+                  quest ? `${quest.title} dossier` : 'Details'
+            }
           >
             {/* Drag handle */}
             <div className="flex justify-center py-2 bg-slate-900" aria-hidden="true">
@@ -87,14 +96,17 @@ export function DetailModal({ item, type, onClose, allCharacters }: DetailModalP
 
             {/* Content */}
             <div
-              className="overflow-y-auto max-h-[calc(50vh-40px)] sm:max-h-[calc(60vh-40px)]"
+              className="overflow-y-auto max-h-[calc(50vh-40px)] sm:max-h-[calc(60vh-40px)] pb-12 sm:pb-16"
               style={{ scrollbarGutter: 'stable' }}
             >
-              {isCharacter && character && (
+              {character && (
                 <CharacterDetail character={character} onClose={onClose} allCharacters={allCharacters} />
               )}
-              {!isCharacter && skill && (
+              {skill && (
                 <SkillDetail skill={skill} onClose={onClose} />
+              )}
+              {quest && (
+                <QuestDetail quest={quest} onClose={onClose} />
               )}
             </div>
           </motion.div>
@@ -476,6 +488,119 @@ function SkillDetail({ skill, onClose }: { skill: SkillWithState; onClose: () =>
   )
 }
 
+function QuestDetail({ quest, onClose }: { quest: Quest; onClose: () => void }) {
+  const isCompleted = quest.status === 'completed'
+  const isLocked = quest.status === 'locked'
+
+  return (
+    <div className="relative p-6 pt-8">
+      {/* Background Watermark */}
+      <div className="absolute top-10 right-6 opacity-10 pointer-events-none">
+        <Compass className="w-32 h-32 text-amber-500" />
+      </div>
+
+      {/* Header */}
+      <header className="relative z-10 mb-8">
+        <div className="flex items-start justify-between">
+          <div>
+            <h4 className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-2 font-mono">
+              Mission Dossier // {quest.id.split('_').pop()?.toUpperCase()}
+            </h4>
+            <h2 className="text-2xl font-bold text-white font-mono tracking-tighter max-w-[80%] leading-tight">
+              {quest.title}
+            </h2>
+          </div>
+          <button onClick={onClose} className="p-2 hover:bg-slate-800 rounded-full transition-colors">
+            <X className="w-6 h-6 text-slate-400" />
+          </button>
+        </div>
+
+        <div className="mt-4 flex gap-3">
+          <span className={cn(
+            "px-3 py-1 rounded-sm text-[10px] font-bold uppercase tracking-widest border",
+            isCompleted ? "bg-emerald-950/40 border-emerald-500/30 text-emerald-400" :
+              isLocked ? "bg-slate-900 border-slate-700 text-slate-500" :
+                "bg-amber-950/40 border-amber-500/30 text-amber-400"
+          )}>
+            {isCompleted ? 'ARCHIVED' : isLocked ? 'ENCRYPTED' : 'ACTIVE'}
+          </span>
+          <span className="px-3 py-1 rounded-sm text-[10px] font-bold uppercase tracking-widest border border-slate-800 bg-slate-900/50 text-slate-400">
+            Priority: Standard
+          </span>
+        </div>
+      </header>
+
+      {/* Body */}
+      <div className="relative z-10 space-y-6">
+        <div className="p-4 bg-slate-950/50 border border-slate-800 rounded-sm relative overflow-hidden group">
+          <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-[0.03]" />
+          <div className="absolute left-0 top-0 bottom-0 w-1 bg-amber-500/20" />
+
+          <p className="text-sm text-slate-300 leading-relaxed font-sans relative z-10">
+            {quest.description}
+          </p>
+        </div>
+
+        {/* Objectives Simulation */}
+        <div>
+          <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3 flex items-center gap-2">
+            <Target className="w-4 h-4" />
+            Objectives
+          </h3>
+          <div className="space-y-2">
+            <div className="flex items-start gap-3 p-3 bg-slate-900/40 border border-slate-800/50 rounded-sm">
+              <div className={cn("w-4 h-4 mt-0.5 rounded-full border flex items-center justify-center",
+                isCompleted ? "bg-emerald-500 border-emerald-500" : "border-slate-600"
+              )}>
+                {isCompleted && <div className="w-2 h-2 bg-white rounded-full" />}
+              </div>
+              <div>
+                <p className={cn("text-xs font-medium", isCompleted ? "text-slate-400 line-through" : "text-slate-200")}>
+                  Complete mission requirements logic
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Rewards */}
+        {quest.reward && (
+          <div>
+            <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3 flex items-center gap-2">
+              <ShieldAlert className="w-4 h-4" />
+              Reward Clearance
+            </h3>
+            <div className="p-3 bg-emerald-950/10 border border-emerald-500/20 rounded-sm flex items-center gap-3">
+              <div className="w-8 h-8 rounded bg-emerald-500/10 flex items-center justify-center text-emerald-400 font-bold text-xs">
+                XP
+              </div>
+              <div>
+                <p className="text-xs font-bold text-emerald-400 uppercase tracking-wide">
+                  {quest.reward.type}
+                </p>
+                <p className="text-[10px] text-emerald-500/70">
+                  {quest.reward.description}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Footer Metadata */}
+        <div className="pt-6 border-t border-slate-800 flex items-center justify-between text-[10px] text-slate-600 font-mono">
+          <span className="flex items-center gap-1.5">
+            <Clock className="w-3 h-3" />
+            LOGGED: 2049.03.15
+          </span>
+          <span>
+            REF: {quest.id}
+          </span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 // Helper functions
 
 // getStateOrder and getNextMilestone removed - unused
@@ -497,4 +622,3 @@ function getCharacterDescription(id: string): string {
   }
   return descriptions[id] || "A unique perspective on career and growth."
 }
-

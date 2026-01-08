@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import { AI_TOOLS, AITool } from '@/lib/ai-tools'
 import { useGameSelectors } from '@/lib/game-store'
-import { Lock, Cpu, Code, PenTool, Image, Database, Mic, Video, Share2, Briefcase, Sparkles, Copy, Check } from 'lucide-react'
+import { Lock, Cpu, Code, PenTool, Image, Database, Mic, Video, Share2, Briefcase, Sparkles, Terminal, Shield } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 export function ToolkitView() {
@@ -22,24 +22,40 @@ export function ToolkitView() {
     const unlockedCount = AI_TOOLS.filter(t => patterns[t.requiredPattern] >= t.requiredLevel).length
 
     return (
-        <div className="p-6 pb-20 space-y-8">
-            <header>
-                <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-cyan-500 font-serif mb-2">
-                    Future Toolkit
-                </h2>
-                <p className="text-sm text-slate-400 max-w-xs">
-                    Real-world technologies mirrored by your station capabilities.
-                    <span className="block mt-1 text-emerald-400 font-bold">
-                        Unlocked: {unlockedCount} / {AI_TOOLS.length}
+        <div className="relative p-6 pb-20 space-y-8 min-h-full">
+            {/* Background Schematic Pattern */}
+            <div className="absolute inset-0 opacity-[0.05] pointer-events-none bg-[url('/hex-pattern.svg')] bg-[size:50px_50px]" />
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500/0 via-emerald-500/50 to-emerald-500/0" />
+
+            <header className="relative">
+                <div className="flex items-center gap-2 mb-2">
+                    <Terminal className="w-5 h-5 text-emerald-500 animate-pulse" />
+                    <h2 className="text-xs font-bold text-emerald-500/80 uppercase tracking-[0.2em] font-mono">
+                        System Architecture
+                    </h2>
+                </div>
+                <h1 className="text-3xl font-bold text-white font-mono tracking-tighter mb-2">
+                    NEURAL<span className="text-emerald-500">_DECK</span>
+                </h1>
+
+                <div className="flex items-center gap-4 text-xs font-mono text-slate-400">
+                    <span className="flex items-center gap-1.5">
+                        <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
+                        ONLINE: {unlockedCount}
                     </span>
-                </p>
+                    <span className="flex items-center gap-1.5 opacity-60">
+                        <div className="w-2 h-2 rounded-full bg-slate-700" />
+                        OFFLINE: {AI_TOOLS.length - unlockedCount}
+                    </span>
+                </div>
             </header>
 
-            <div className="grid grid-cols-1 gap-4">
-                {sortedTools.map((tool) => (
-                    <ToolCard
+            <div className="grid grid-cols-1 gap-6 relative z-10">
+                {sortedTools.map((tool, i) => (
+                    <ToolSchematic
                         key={tool.id}
                         tool={tool}
+                        index={i}
                         isUnlocked={patterns[tool.requiredPattern] >= tool.requiredLevel}
                     />
                 ))}
@@ -48,11 +64,10 @@ export function ToolkitView() {
     )
 }
 
-function ToolCard({ tool, isUnlocked }: { tool: AITool, isUnlocked: boolean }) {
+function ToolSchematic({ tool, isUnlocked, index }: { tool: AITool, isUnlocked: boolean, index: number }) {
     const CategoryIcon = getCategoryIcon(tool.category)
     const globalFlags = useGameSelectors.useGlobalFlags()
 
-    // Key Logic: Prompt is unlocked if it has no flag OR if the flag is present
     const isPromptUnlocked = tool.goldenPrompt && (
         !tool.goldenPrompt.requiredFlag ||
         globalFlags.includes(tool.goldenPrompt.requiredFlag)
@@ -60,98 +75,121 @@ function ToolCard({ tool, isUnlocked }: { tool: AITool, isUnlocked: boolean }) {
 
     return (
         <motion.div
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1 }}
             className={cn(
-                "relative rounded-xl border p-4 transition-all duration-300",
+                "relative group overflow-hidden transition-all duration-500",
+                "border-l-2 bg-slate-950/80 backdrop-blur-sm",
                 isUnlocked
-                    ? "bg-slate-900/80 border-cyan-500/30 shadow-[0_0_15px_rgba(6,182,212,0.1)]"
-                    : "bg-slate-900/40 border-slate-800"
+                    ? "border-emerald-500 shadow-[0_0_30px_rgba(16,185,129,0.05)]"
+                    : "border-slate-800 opacity-70 grayscale-[0.5]"
             )}
         >
-            {/* Header */}
-            <div className="flex items-start justify-between mb-3">
-                <div className="flex items-center gap-3">
-                    <div className={cn(
-                        "w-10 h-10 rounded-lg flex items-center justify-center",
-                        isUnlocked ? "bg-cyan-500/10 text-cyan-400" : "bg-slate-800 text-slate-600"
-                    )}>
-                        <CategoryIcon className="w-5 h-5" />
-                    </div>
-                    <div>
-                        <h3 className={cn(
-                            "font-bold text-lg leading-none mb-1",
-                            isUnlocked ? "text-slate-100" : "text-slate-500"
+            {/* Corner Markers (Tech UI) */}
+            <div className="absolute top-0 right-0 w-3 h-3 border-t border-r border-white/20" />
+            <div className="absolute bottom-0 left-0 w-3 h-3 border-b border-l border-white/20" />
+
+            <div className="p-5">
+                {/* Header Section */}
+                <div className="flex items-start justify-between mb-4">
+                    <div className="flex items-center gap-4">
+                        <div className={cn(
+                            "w-12 h-12 flex items-center justify-center border",
+                            "bg-gradient-to-br from-black to-slate-900",
+                            isUnlocked ? "border-emerald-500/30 text-emerald-400" : "border-slate-800 text-slate-600"
                         )}>
-                            {tool.name}
-                        </h3>
-                        <div className="flex items-center gap-2">
-                            <span className="text-[10px] uppercase tracking-wider text-slate-500 font-semibold bg-slate-800/50 px-2 py-0.5 rounded">
-                                {tool.category}
-                            </span>
-                            {isUnlocked && (
-                                <span className="text-[10px] uppercase tracking-wider text-emerald-400 font-bold flex items-center gap-1">
-                                    <Cpu className="w-3 h-3" />
-                                    Active
+                            <CategoryIcon className="w-6 h-6" />
+                        </div>
+                        <div>
+                            <div className="flex items-center gap-2 mb-1">
+                                <h3 className={cn(
+                                    "text-lg font-bold font-mono tracking-tight",
+                                    isUnlocked ? "text-white" : "text-slate-500"
+                                )}>
+                                    {tool.name}
+                                </h3>
+                                {isUnlocked && <Shield className="w-3 h-3 text-emerald-500" />}
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <span className="text-[10px] uppercase font-bold tracking-widest text-slate-500 bg-slate-900 px-2 py-0.5 border border-slate-800 rounded-sm">
+                                    REQ: {tool.requiredPattern} {tool.requiredLevel}
                                 </span>
+                                <span className="text-[9px] font-mono text-slate-600">
+                                    v.{tool.requiredLevel}.0.1
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Status indicator */}
+                    <div className={cn(
+                        "px-2 py-1 text-[9px] font-bold uppercase tracking-widest border",
+                        isUnlocked
+                            ? "border-emerald-500/30 text-emerald-400 bg-emerald-950/30"
+                            : "border-slate-800 text-slate-600 bg-black/50"
+                    )}>
+                        {isUnlocked ? "INSTALLED" : "LOCKED"}
+                    </div>
+                </div>
+
+                {isUnlocked ? (
+                    <div className="space-y-4 relative">
+                        {/* Connecting Line Decoration */}
+                        <div className="absolute top-0 left-6 bottom-0 w-px bg-emerald-500/10 -z-10" />
+
+                        <div className="pl-6 space-y-4">
+                            <p className="text-sm text-slate-300 leading-relaxed font-sans border-l-2 border-emerald-500/20 pl-4">
+                                {tool.description}
+                            </p>
+
+                            {/* Data Modules */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-slate-800/50 border border-slate-800">
+                                <div className="bg-slate-950 p-3 relative group/mod">
+                                    <div className="absolute inset-0 bg-emerald-500/5 opacity-0 group-hover/mod:opacity-100 transition-opacity" />
+                                    <h4 className="text-[9px] text-emerald-500/70 uppercase tracking-widest font-bold mb-1 font-mono">
+                                        {'// STATION_PROTOCOL'}
+                                    </h4>
+                                    <p className="text-xs text-slate-400 font-mono">{tool.luxParallel}</p>
+                                </div>
+                                <div className="bg-slate-950 p-3 relative group/mod">
+                                    <div className="absolute inset-0 bg-cyan-500/5 opacity-0 group-hover/mod:opacity-100 transition-opacity" />
+                                    <h4 className="text-[9px] text-cyan-500/70 uppercase tracking-widest font-bold mb-1 font-mono">
+                                        {'// REALITY_LINK'}
+                                    </h4>
+                                    <p className="text-xs text-slate-400">{tool.realWorldUse}</p>
+                                </div>
+                            </div>
+
+                            {/* GOLDEN PROMPT SECTION */}
+                            {tool.goldenPrompt && (
+                                isPromptUnlocked ? (
+                                    <GoldenPromptSchematic prompt={tool.goldenPrompt} />
+                                ) : (
+                                    <div className="mt-4 border border-dashed border-slate-800 bg-black/30 p-3 flex items-center gap-3">
+                                        <Lock className="w-4 h-4 text-slate-600" />
+                                        <div>
+                                            <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider font-mono">Golden Prompt Encrypted</h4>
+                                            <p className="text-[10px] text-slate-600">Run simulation to decrypt artifact.</p>
+                                        </div>
+                                    </div>
+                                )
                             )}
                         </div>
                     </div>
-                </div>
-
-                {!isUnlocked && (
-                    <div className="flex items-center gap-1 text-xs text-amber-500/80 font-mono bg-amber-900/10 px-2 py-1 rounded border border-amber-500/20">
-                        <Lock className="w-3 h-3" />
-                        <span>{tool.requiredPattern.toUpperCase()} {tool.requiredLevel}</span>
+                ) : (
+                    <div className="mt-4 p-3 bg-black/40 border border-slate-800/50 text-center">
+                        <p className="text-xs text-slate-500 font-mono">
+                            <span className="text-amber-500/50 animate-pulse">Warning:</span> Insufficient Neural Pattern Match.
+                        </p>
                     </div>
                 )}
             </div>
-
-            {/* Content */}
-            {isUnlocked ? (
-                <div className="space-y-3">
-                    <p className="text-sm text-slate-300 leading-relaxed">
-                        {tool.description}
-                    </p>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
-                        <div className="bg-slate-950/50 rounded-lg p-3 border border-slate-800">
-                            <h4 className="text-[10px] text-cyan-500 uppercase tracking-widest font-bold mb-1">Station Parallel</h4>
-                            <p className="text-xs text-slate-400 font-mono">{tool.luxParallel}</p>
-                        </div>
-                        <div className="bg-emerald-950/20 rounded-lg p-3 border border-emerald-900/30">
-                            <h4 className="text-[10px] text-emerald-500 uppercase tracking-widest font-bold mb-1">Real World Use</h4>
-                            <p className="text-xs text-emerald-100/70">{tool.realWorldUse}</p>
-                        </div>
-                    </div>
-
-                    {/* GOLDEN PROMPT SECTION */}
-                    {tool.goldenPrompt && (
-                        isPromptUnlocked ? (
-                            <GoldenPromptCard prompt={tool.goldenPrompt} />
-                        ) : (
-                            <div className="mt-4 border border-slate-800 bg-slate-950/30 rounded-lg p-3 flex items-center gap-3 opacity-60">
-                                <Lock className="w-4 h-4 text-slate-500" />
-                                <div>
-                                    <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Golden Prompt Locked</h4>
-                                    <p className="text-[10px] text-slate-500">Complete the Toolkit Simulation to unlock this artifact.</p>
-                                </div>
-                            </div>
-                        )
-                    )}
-                </div>
-            ) : (
-                <div className="mt-4 pt-4 border-t border-slate-800/50">
-                    <p className="text-xs text-slate-600 italic">
-                        Align your neural patterns to {tool.requiredPattern} to decrypt this capability.
-                    </p>
-                </div>
-            )}
         </motion.div>
     )
 }
 
-function GoldenPromptCard({ prompt }: { prompt: NonNullable<AITool['goldenPrompt']> }) {
+function GoldenPromptSchematic({ prompt }: { prompt: NonNullable<AITool['goldenPrompt']> }) {
     const [copied, setCopied] = useState(false)
 
     const handleCopy = () => {
@@ -161,40 +199,36 @@ function GoldenPromptCard({ prompt }: { prompt: NonNullable<AITool['goldenPrompt
     }
 
     return (
-        <div className="mt-4 border border-amber-500/20 bg-amber-950/10 rounded-lg overflow-hidden">
-            <div className="px-3 py-2 bg-amber-950/30 border-b border-amber-500/10 flex items-center justify-between">
+        <div className="mt-4 border border-amber-500/20 bg-amber-950/5 relative overflow-hidden group">
+            {/* Header */}
+            <div className="px-3 py-1.5 bg-amber-950/20 border-b border-amber-500/10 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                     <Sparkles className="w-3 h-3 text-amber-400" />
-                    <span className="text-xs font-bold text-amber-400 uppercase tracking-wider">Golden Prompt Artifact</span>
+                    <span className="text-[10px] font-bold text-amber-500 uppercase tracking-widest font-mono">
+                        GOLDEN_ARTIFACT.txt
+                    </span>
                 </div>
                 <button
                     onClick={handleCopy}
-                    className="flex items-center gap-1.5 text-[10px] font-medium text-amber-300 hover:text-amber-100 transition-colors"
+                    className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-wider text-amber-400/70 hover:text-amber-200 transition-colors"
                 >
-                    {copied ? (
-                        <>
-                            <Check className="w-3 h-3" />
-                            Copied
-                        </>
-                    ) : (
-                        <>
-                            <Copy className="w-3 h-3" />
-                            Copy to Reality
-                        </>
-                    )}
+                    {copied ? "COPIED" : "EXTRACT"}
                 </button>
             </div>
 
-            <div className="p-3 space-y-2">
-                <h4 className="text-sm font-semibold text-slate-200">{prompt.title}</h4>
-                <div className="relative group">
-                    <pre className="text-xs font-mono text-amber-100/80 bg-black/40 p-2 rounded border border-amber-500/10 whitespace-pre-wrap break-words">
+            <div className="p-3">
+                <h4 className="text-xs font-bold text-slate-300 mb-2">{prompt.title}</h4>
+                <div className="relative">
+                    <pre className="text-[10px] font-mono leading-relaxed text-amber-100/70 whitespace-pre-wrap break-words border-l-2 border-amber-500/20 pl-3">
                         {prompt.content}
                     </pre>
                 </div>
-                <p className="text-[10px] text-slate-500 italic border-l-2 border-slate-700 pl-2">
-                    Usage: {prompt.usageContext}
-                </p>
+                <div className="mt-3 pt-2 border-t border-white/5 flex items-center bg-black/20 p-1.5">
+                    <span className="text-[9px] text-slate-500 uppercase tracking-wider font-bold mr-2">CONTEXT:</span>
+                    <p className="text-[10px] text-slate-400 italic">
+                        {prompt.usageContext}
+                    </p>
+                </div>
             </div>
         </div>
     )

@@ -6,7 +6,7 @@
  * Supports prefers-reduced-motion and prefers-color-scheme
  */
 
-import { ColorBlindMode, getPatternColorPalette } from './patterns'
+import { ColorBlindMode } from './patterns'
 
 // ═══════════════════════════════════════════════════════════════════════════
 // TYPES

@@ -234,6 +234,10 @@ const config: Config = {
           '80%': { transform: 'translate(2px, -2px)' },
           '100%': { transform: 'translate(0)' },
         },
+        'beckon': {
+          '0%, 100%': { boxShadow: '0 0 10px rgba(251, 191, 36, 0.2)', transform: 'scale(1)' },
+          '50%': { boxShadow: '0 0 25px rgba(251, 191, 36, 0.5)', transform: 'scale(1.02)' },
+        },
       },
     },
   },

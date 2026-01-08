@@ -19,11 +19,11 @@ export const kaiDialogueNodes: DialogueNode[] = [
     content: [
       {
         // Stage 1: Show corporate frustration first (matches Samuel's "burning the rulebook" setup)
-        text: "Wait—stay back! That railing... the bolt is loose. 2mm variance.\n\nTechnically it holds 80kg, but if you slip... static load becomes dynamic load and... just stand there. Please.\n\nSafety isn't a checkbox. It's gravity waiting to catch you.",
+        text: "Wait. Stay back. That railing.\n\nBolt is loose. 2mm variance.\n\nTechnically it holds 80kg. But if you slip... static load becomes dynamic load.\n\nSafety isn't a checkbox. It's gravity waiting to catch you.",
         emotion: 'frustrated',
-        variation_id: 'kai_intro_v3',
+        variation_id: 'kai_intro_v3_minimal',
         patternReflection: [
-          { pattern: 'analytical', minLevel: 5, altText: "Protective Life training office. Fluorescent lights. Late shift.\n\nFifteen slides. Fifteen 'Click Next' buttons.\n\nYou're already analyzing the system, aren't you? You can see the gap between compliance and actual safety.", altEmotion: 'interested' },
+          { pattern: 'analytical', minLevel: 5, altText: "Protective Life training office. Fluorescent lights. Late shift.\n\nFifteen slides. Fifteen 'Click Next' buttons.\n\nYou're already analyzing the system aren't you? You can see the gap between compliance and actual safety.", altEmotion: 'interested' },
           { pattern: 'building', minLevel: 5, altText: "Protective Life training office. Late shift.\n\nFifteen slides. Fifteen 'Click Next' buttons. That's what passes for safety training.\n\nYou look like someone who builds things. You know this could be designed better.", altEmotion: 'frustrated' },
           { pattern: 'helping', minLevel: 5, altText: "Protective Life training office. Fluorescent lights.\n\nFifteen slides. 'Ensure harness is secured.' Click Next.\n\nYou've got kind eyes. You're probably wondering why this matters to me so much.", altEmotion: 'vulnerable' }
         ]
@@ -110,16 +110,12 @@ export const kaiDialogueNodes: DialogueNode[] = [
     speaker: 'Kai',
     content: [
       {
-        text: `*They pause, a sharp look crossing their face.*
-
-You get it. Most people see a checkbox and think "safety." You see the gap between the policy and the practice.
-
-That's rare. Usually I have to explain why "completing training" and "being trained" aren't the same thing.`,
+        text: "You get it. Most people see a checkbox and think 'safety.' You see the gap between the policy and the practice.\n\nThat's rare. Usually I have to explain why 'completing training' and 'being trained' aren't the same thing.",
         emotion: 'surprised_respect',
         variation_id: 'systemic_response_v1',
         patternReflection: [
-          { pattern: 'analytical', minLevel: 4, altText: "*They pause, a sharp look crossing their face.*\n\nYou get it. You see systems the way I do—not just the outputs, but the logic failures hiding inside.\n\nMost people see a checkbox and think 'safety.' You see the gap.", altEmotion: 'impressed' },
-          { pattern: 'building', minLevel: 4, altText: "*They pause.*\n\nYou get it. You're already thinking about how to fix it, aren't you?\n\nMost people stop at 'this is broken.' You see what it could be.", altEmotion: 'hopeful' }
+          { pattern: 'analytical', minLevel: 4, altText: "You get it. You see systems the way I do. Not just the outputs, but the logic failures hiding inside.\n\nMost people see a checkbox and think 'safety.' You see the gap.", altEmotion: 'impressed' },
+          { pattern: 'building', minLevel: 4, altText: "You get it. You're already thinking about how to fix it, aren't you?\n\nMost people stop at 'this is broken.' You see what it could be.", altEmotion: 'hopeful' }
         ]
       }
     ],
@@ -128,6 +124,7 @@ That's rare. Usually I have to explain why "completing training" and "being trai
         choiceId: 'tell_gap',
         text: "Tell me more about that gap.",
         nextNodeId: 'kai_system_frustration',
+        archetype: 'ASK_FOR_DETAILS',
         voiceVariations: {
           analytical: "Quantify the gap for me. Where does the system fail?",
           helping: "Tell me more about that gap. It clearly matters to you.",
@@ -143,23 +140,17 @@ That's rare. Usually I have to explain why "completing training" and "being trai
     speaker: 'Kai',
     content: [
       {
-        text: `*They laugh - but it's hollow.*
-
-Redesign it. Yeah. I have a master's degree in exactly that. Instructional design. UAB, 2022.
-
-You want to know what my capstone was? A VR safety simulation for manufacturing floors. Haptic feedback, real scenarios, actual muscle memory.
-
-It's sitting on a hard drive. Never deployed. Too expensive.`,
+        text: "Redesign it. Yeah. I have a master's degree in exactly that. Instructional design. UAB, 2022.\n\nYou want to know what my capstone was? A VR safety simulation for manufacturing floors. Haptic feedback, real scenarios, actual muscle memory.\n\nIt's sitting on a hard drive. Never deployed. Too expensive.",
         emotion: 'bitter_amusement',
         variation_id: 'practical_response_v1',
         patternReflection: [
-          { pattern: 'building', minLevel: 4, altText: "*They laugh - but it's hollow.*\n\nRedesign it. Yeah. I have a master's degree in exactly that.\n\nYou build things. You know what it's like to create something good that never gets used. VR safety simulation. Haptic feedback. Real scenarios.\n\nSitting on a hard drive. Too expensive.", altEmotion: 'vulnerable' },
-          { pattern: 'exploring', minLevel: 4, altText: "*They laugh - but it's hollow.*\n\nRedesign it. I have a master's degree in exactly that. UAB, 2022.\n\nYou're curious about the gap, aren't you? Between what's possible and what gets deployed.\n\nMy capstone is sitting on a hard drive. Never deployed.", altEmotion: 'bitter_amusement' }
+          { pattern: 'building', minLevel: 4, altText: "Redesign it. Yeah. I have a master's degree in exactly that.\n\nYou build things. You know what it's like to create something good that never gets used. VR safety simulation. Haptic feedback. Real scenarios.\n\nSitting on a hard drive. Too expensive.", altEmotion: 'vulnerable' },
+          { pattern: 'exploring', minLevel: 4, altText: "Redesign it. I have a master's degree in exactly that. UAB, 2022.\n\nYou're curious about the gap, aren't you? Between what's possible and what gets deployed.\n\nMy capstone is sitting on a hard drive. Never deployed.", altEmotion: 'bitter_amusement' }
         ]
       }
     ],
     choices: [
-      { choiceId: 'sounds_frustrating', text: "That sounds frustrating.", nextNodeId: 'kai_system_frustration' }
+      { choiceId: 'sounds_frustrating', text: "That sounds frustrating.", nextNodeId: 'kai_system_frustration', archetype: 'ACKNOWLEDGE_EMOTION' }
     ]
   },
   {
@@ -167,19 +158,13 @@ It's sitting on a hard drive. Never deployed. Too expensive.`,
     speaker: 'Kai',
     content: [
       {
-        text: `*They take a breath. The fluorescent lights hum.*
-
-*After a moment, they continue - but their voice is quieter now.*
-
-Between us... you're the first person who hasn't tried to fix it with advice. Everyone else wants to solve me like I'm a problem to debug.
-
-Sometimes you just need someone to sit in the frustration with you.`,
+        text: "Between us... you're the first person who hasn't tried to fix it with advice. Everyone else wants to solve me like I'm a problem to debug.\n\nSometimes you just need someone to sit in the frustration with you.",
         emotion: 'grateful',
         variation_id: 'patience_response_v1'
       }
     ],
     choices: [
-      { choiceId: 'stay_quiet', text: "[Stay quiet. Let them continue.]", nextNodeId: 'kai_system_frustration' }
+      { choiceId: 'stay_quiet', text: "[Stay quiet. Let them continue.]", nextNodeId: 'kai_system_frustration', archetype: 'STAY_SILENT' }
     ]
   },
 
@@ -189,11 +174,7 @@ Sometimes you just need someone to sit in the frustration with you.`,
     speaker: 'Kai',
     content: [
       {
-        text: `Between us... that's exactly it. I know how people actually learn. I have a master's in instructional design. I could build simulations, scenarios, real practice.
-
-But that costs money. "Click Next" costs nothing.
-
-So I build green checkmarks. Legal shields. And last week...`,
+        text: "Between us... that's exactly it. I know how people actually learn. I have a master's in instructional design. I could build simulations, scenarios, real practice.\n\nBut that costs money. 'Click Next' costs nothing.\n\nSo I build green checkmarks. Legal shields. And last week...",
         emotion: 'bitter',
         variation_id: 'system_frustration_v1'
       }
@@ -247,9 +228,7 @@ So I build green checkmarks. Legal shields. And last week...`,
     speaker: 'Kai',
     content: [
       {
-        text: `Because three days ago, someone got hurt. Someone who clicked every button. Watched every video. Passed every quiz.
-
-And none of it mattered when he was standing twenty feet up without checking his harness.`,
+        text: "Because three days ago, someone got hurt. Someone who clicked every button. Watched every video. Passed every quiz.\n\nAnd none of it mattered when he was standing twenty feet up without checking his harness.",
         emotion: 'pained',
         variation_id: 'accident_hint_v1'
       }
@@ -260,6 +239,7 @@ And none of it mattered when he was standing twenty feet up without checking his
         text: "Tell me what happened.",
         nextNodeId: 'kai_accident_reveal',
         pattern: 'helping',
+        archetype: 'ASK_FOR_DETAILS',
         skills: ['emotionalIntelligence', 'empathy'],
         visibleCondition: {
           patterns: { helping: { min: 4 } }
@@ -274,6 +254,7 @@ And none of it mattered when he was standing twenty feet up without checking his
         text: "You designed the training. You feel responsible.",
         nextNodeId: 'kai_accident_reveal',
         pattern: 'analytical',
+        archetype: 'REFLECT_BACK',
         skills: ['emotionalIntelligence']
       },
       {
@@ -281,6 +262,7 @@ And none of it mattered when he was standing twenty feet up without checking his
         text: "What would it take to actually prepare someone? Not just check a box?",
         nextNodeId: 'kai_accident_reveal',
         pattern: 'exploring',
+        archetype: 'EXPRESS_CURIOSITY',
         skills: ['curiosity', 'criticalThinking'],
         visibleCondition: {
           patterns: { exploring: { min: 4 }, building: { min: 2 } }
@@ -299,13 +281,7 @@ And none of it mattered when he was standing twenty feet up without checking his
     speaker: 'Kai',
     content: [
       {
-        text: `Warehouse accident. Broken pelvis.
-
-He's 22. Same age as my little brother.
-
-The investigation cleared us. "Employee completed mandatory safety training on Oct 4th." The certificate is in the system. Green checkmark.
-
-We designed a green checkmark. We didn't design safety.`,
+        text: "Warehouse accident. Broken pelvis.\n\nHe's 22. Same age as my little brother.\n\nThe investigation cleared us. 'Employee completed mandatory safety training on Oct 4th.' The certificate is in the system. Green checkmark.\n\nWe designed a green checkmark. We didn't design safety.",
         emotion: 'guilty',
         variation_id: 'accident_v1',
         // E2-031: Interrupt opportunity when Kai reveals their guilt
@@ -371,15 +347,7 @@ We designed a green checkmark. We didn't design safety.`,
     nodeId: 'kai_interrupt_acknowledged',
     speaker: 'Kai',
     content: [{
-      text: `*They look at you, surprised.*
-
-You didn't try to fix it. Didn't offer solutions. Just... stayed.
-
-*A shaky breath.*
-
-Most people hear "someone got hurt" and immediately pivot to problem-solving mode. You let me feel it first.
-
-That's... that's what actual safety looks like. Presence before protocol.`,
+      text: "You didn't try to fix it. Didn't offer solutions. Just... stayed.\n\nMost people hear 'someone got hurt' and immediately pivot to problem-solving mode. You let me feel it first.\n\nThat's what actual safety looks like. Presence before protocol.",
       emotion: 'moved',
       microAction: 'Their shoulders drop slightly.',
       variation_id: 'interrupt_v1'
@@ -403,13 +371,7 @@ That's... that's what actual safety looks like. Presence before protocol.`,
     speaker: 'Kai',
     content: [
       {
-        text: `Marcus. The ECMO specialist? I read about his case in a medical ethics journal.
-
-He has to decide, in seconds, who lives. I have months to design these courses, and I still failed.
-
-If he makes a mistake, a patient dies. If I make a mistake... 50,000 employees learn the wrong thing. And then what happens?
-
-The scale is different. The guilt is the same.`,
+        text: "Marcus. The ECMO specialist? I read about his case in a medical ethics journal.\n\nHe has to decide, in seconds, who lives. I have months to design these courses, and I still failed.\n\nIf he makes a mistake, a patient dies. If I make a mistake... 50,000 employees learn the wrong thing. And then what happens?\n\nThe scale is different. The guilt is the same.",
         emotion: 'reflective_guilt',
         variation_id: 'marcus_ref_v1'
       }
@@ -430,11 +392,7 @@ The scale is different. The guilt is the same.`,
     content: [
       {
         // NOTE: Removed "Kai laughs, a brittle, snapping sound" - anger conveyed through dialogue
-        text: `Legally covered. Yes. That's what my VP said. "Great work, Kai. The audit trail is perfect."
-
-He's in the hospital, and we're celebrating our audit trail.
-
-I can't do this anymore. I can't build shields for the company that leave the people exposed.`,
+        text: "Legally covered. Yes. That's what my VP said. 'Great work, Kai. The audit trail is perfect.'\n\nHe's in the hospital, and we're celebrating our audit trail.\n\nI can't do this anymore. I can't build shields for the company that leave the people exposed.",
         emotion: 'angry',
         variation_id: 'compliance_v1'
       }
@@ -462,11 +420,7 @@ I can't do this anymore. I can't build shields for the company that leave the pe
     speaker: 'Kai',
     content: [
       {
-        text: `You want to know why I do this?
-
-My dad worked at Sloss Furnaces. Well, what became of it. Thirty years making pipe fittings. He came home smelling like iron and machine oil.
-
-When I was twelve, he almost lost his hand. The guard was broken. Everyone knew it was broken. But production quotas don't wait for safety repairs.`,
+        text: "You want to know why I do this?\n\nMy dad worked at Sloss Furnaces. Well, what became of it. Thirty years making pipe fittings. He came home smelling like iron and machine oil.\n\nWhen I was twelve, he almost lost his hand. The guard was broken. Everyone knew it was broken. But production quotas don't wait for safety repairs.",
         emotion: 'reflective',
         variation_id: 'origin_v1'
       }
@@ -477,6 +431,7 @@ When I was twelve, he almost lost his hand. The guard was broken. Everyone knew 
         text: "What happened to your dad?",
         nextNodeId: 'kai_father_outcome',
         pattern: 'helping',
+        archetype: 'ASK_FOR_DETAILS',
         skills: ['emotionalIntelligence', 'empathy'],
         consequence: {
           characterId: 'kai',
@@ -488,6 +443,7 @@ When I was twelve, he almost lost his hand. The guard was broken. Everyone knew 
         text: "So you went into training to fix that system.",
         nextNodeId: 'kai_training_choice',
         pattern: 'analytical',
+        archetype: 'SHOW_UNDERSTANDING',
         skills: ['criticalThinking']
       }
     ],
@@ -499,11 +455,7 @@ When I was twelve, he almost lost his hand. The guard was broken. Everyone knew 
     speaker: 'Kai',
     content: [
       {
-        text: `He kept the hand. Lost two fingers. The company paid for surgery and called it "workplace wellness."
-
-He never complained. Said it was part of the job. But every time I saw him struggle to hold a coffee cup, I thought: someone designed that training. Someone signed off on it.
-
-That someone is now me.`,
+        text: "He kept the hand. Lost two fingers. The company paid for surgery and called it 'workplace wellness.'\n\nHe never complained. Said it was part of the job. But every time I saw him struggle to hold a coffee cup, I thought: someone designed that training. Someone signed off on it.\n\nThat someone is now me.",
         emotion: 'determined',
         variation_id: 'father_v1'
       }
@@ -530,11 +482,7 @@ That someone is now me.`,
     speaker: 'Kai',
     content: [
       {
-        text: `I thought I could change things from the inside. Get a degree in instructional design. Join a big company with resources. Build something better.
-
-But you know what they taught me in school? "Engaging content." "Gamification." "Learner analytics."
-
-Not a single class on how to keep someone alive.`,
+        text: "I thought I could change things from the inside. Get a degree in instructional design. Join a big company with resources. Build something better.\n\nBut you know what they taught me in school? 'Engaging content.' 'Gamification.' 'Learner analytics.'\n\nNot a single class on how to keep someone alive.",
         emotion: 'frustrated',
         variation_id: 'training_v1'
       }
@@ -564,15 +512,7 @@ Not a single class on how to keep someone alive.`,
     speaker: 'Kai',
     content: [
       {
-        text: `I did. Two summers during high school. Nucor Steel Birmingham. Rebar production.
-
-110 degrees on the factory floor. Safety goggles fogging up. Molten steel running through channels.
-
-Learned more about systems in two months than four years of college.
-
-But my mom... she didn't want me to end up like my dad. Missing fingers. Bad back. Retiring at 60 with nothing.
-
-"You're smart, Kai. Get the degree. Get the office job."`,
+        text: "I did. Two summers during high school. Nucor Steel Birmingham. Rebar production.\n\n110 degrees on the factory floor. Safety goggles fogging up. Molten steel running through channels.\n\nLearned more about systems in two months than four years of college.\n\nBut my mom... she didn't want me to end up like my dad. Missing fingers. Bad back. Retiring at 60 with nothing.\n\n'You're smart, Kai. Get the degree. Get the office job.'",
         emotion: 'conflicted',
         variation_id: 'extended_v1'
       }
@@ -605,13 +545,7 @@ But my mom... she didn't want me to end up like my dad. Missing fingers. Bad bac
     speaker: 'Kai',
     content: [
       {
-        text: `Before the degree, I went to Lawson State Community College. Welding program.
-
-My dad was proud. Thought I'd follow his path. Make things with my hands.
-
-But every time I picked up the torch, I kept thinking: who designed this safety protocol? Who wrote the training manual that nobody reads?
-
-I didn't want to just be good at the work. I wanted to fix why the work was dangerous.`,
+        text: "Before the degree, I went to Lawson State Community College. Welding program.\n\nMy dad was proud. Thought I'd follow his path. Make things with my hands.\n\nBut every time I picked up the torch, I kept thinking: who designed this safety protocol? Who wrote the training manual that nobody reads?\n\nI didn't want to just be good at the work. I wanted to fix why the work was dangerous.",
         emotion: 'reflective',
         variation_id: 'vocational_v1'
       }
@@ -640,17 +574,7 @@ I didn't want to just be good at the work. I wanted to fix why the work was dang
     speaker: 'Kai',
     content: [
       {
-        text: `*Smiles slightly.*
-
-Yeah. TIG welding. Aluminum, stainless, mild steel.
-
-There's something about it. Watching the puddle form. Controlling the heat. Building something that holds.
-
-My instructor used to say: "A good weld is stronger than the metal itself."
-
-That's when I understood. The connection matters more than the parts.
-
-Same with teaching. The learning matters more than the certificate.`,
+        text: "Yeah. TIG welding. Aluminum, stainless, mild steel.\n\nThere's something about it. Watching the puddle form. Controlling the heat. Building something that holds.\n\nMy instructor used to say: 'A good weld is stronger than the metal itself.'\n\nThat's when I understood. The connection matters more than the parts.\n\nSame with teaching. The learning matters more than the certificate.",
         emotion: 'warm',
         interaction: 'small',
         variation_id: 'weld_v1'
@@ -684,17 +608,7 @@ Same with teaching. The learning matters more than the certificate.`,
     speaker: 'Kai',
     content: [
       {
-        text: `The factory floor is all systems. Input, process, output.
-
-Steel comes in as scrap. Gets melted in the arc furnace. Poured into molds. Cooled. Cut. Shipped.
-
-But the real system? The people.
-
-The crane operator who signals the pour. The quality inspector who checks the specs. The maintenance crew who fixes the torch before it breaks.
-
-If anyone fails, the whole line stops. Or worse, someone gets hurt.
-
-That's what I learned: safety isn't a checklist. It's how the system works together.`,
+        text: "The factory floor is all systems. Input, process, output.\n\nSteel comes in as scrap. Gets melted in the arc furnace. Poured into molds. Cooled. Cut. Shipped.\n\nBut the real system? The people.\n\nThe crane operator who signals the pour. The quality inspector who checks the specs. The maintenance crew who fixes the torch before it breaks.\n\nIf anyone fails, the whole line stops. Or worse, someone gets hurt.\n\nThat's what I learned: safety isn't a checklist. It's how the system works together.",
         emotion: 'illuminated',
         interaction: 'bloom',
         variation_id: 'systems_v1'
@@ -724,19 +638,7 @@ That's what I learned: safety isn't a checklist. It's how the system works toget
     speaker: 'Kai',
     content: [
       {
-        text: `My mom didn't give me a choice. "You're going to UAB. You're getting the degree. No son of mine is losing fingers."
-
-My dad didn't say anything. Just looked at his hand.
-
-So I went. Instructional design. Educational technology. Learning sciences.
-
-Everyone in my cohort wanted to design corporate onboarding. Build apps for schools.
-
-I wanted to keep my dad's coworkers alive.
-
-*Quiet.*
-
-They thought I was weird.`,
+        text: "My mom didn't give me a choice. 'You're going to UAB. You're getting the degree. No son of mine is losing fingers.'\n\nMy dad didn't say anything. Just looked at his hand.\n\nSo I went. Instructional design. Educational technology. Learning sciences.\n\nEveryone in my cohort wanted to design corporate onboarding. Build apps for schools.\n\nI wanted to keep my dad's coworkers alive.\n\nThey thought I was weird.",
         emotion: 'isolated',
         variation_id: 'college_v1'
       }
@@ -747,6 +649,7 @@ They thought I was weird.`,
         text: "You weren't weird. You cared about something that mattered.",
         nextNodeId: 'kai_birmingham_steel',
         pattern: 'helping',
+        archetype: 'ACKNOWLEDGE_EMOTION',
         skills: ['emotionalIntelligence', 'encouragement'],
         consequence: {
           characterId: 'kai',
@@ -758,6 +661,7 @@ They thought I was weird.`,
         text: "That perspective made you unique. You understood both sides.",
         nextNodeId: 'kai_hybrid_path',
         pattern: 'analytical',
+        archetype: 'SHARE_PERSPECTIVE',
         skills: ['systemsThinking', 'communication']
       }
     ],
@@ -769,19 +673,7 @@ They thought I was weird.`,
     speaker: 'Kai',
     content: [
       {
-        text: `You know what's funny? Birmingham's still got manufacturing.
-
-Nucor Steel. Mercedes-Benz U.S. International in Tuscaloosa. Lots of small fabrication shops.
-
-They're hiring. Good pay. Union benefits. Real skills.
-
-But nobody talks about it. Everyone pushes college. "Get out of Birmingham. Get a tech job."
-
-Meanwhile, the factory jobs pay better than half the office jobs I've seen.
-
-And they're building things that matter. Cars. Steel beams. Infrastructure.
-
-Not... slideshows.`,
+        text: "You know what's funny? Birmingham's still got manufacturing.\n\nNucor Steel. Mercedes-Benz U.S. International in Tuscaloosa. Lots of small fabrication shops.\n\nThey're hiring. Good pay. Union benefits. Real skills.\n\nBut nobody talks about it. Everyone pushes college. 'Get out of Birmingham. Get a tech job.'\n\nMeanwhile, the factory jobs pay better than half the office jobs I've seen.\n\nAnd they're building things that matter. Cars. Steel beams. Infrastructure.\n\nNot... slideshows.",
         emotion: 'frustrated',
         variation_id: 'birmingham_v1'
       }
@@ -792,6 +684,7 @@ Not... slideshows.`,
         text: "What if you could do both? Manufacturing expertise + training design.",
         nextNodeId: 'kai_hybrid_path',
         pattern: 'building',
+        archetype: 'CHALLENGE_ASSUMPTION',
         skills: ['creativity', 'problemSolving']
       },
       {
@@ -810,21 +703,7 @@ Not... slideshows.`,
     speaker: 'Kai',
     content: [
       {
-        text: `Last year. Nucor asked me to redesign their safety onboarding.
-
-I spent a week on the factory floor. Shadowing Tommy, a 30-year veteran machinist.
-
-He showed me how to read a blueprint. How to set up a CNC mill. How to spot when a tool's about to fail.
-
-Then he showed me their training manual. "This is garbage," he said. "Nobody reads it. We just show the new guys what to do."
-
-*Small laugh.*
-
-That's when I knew. The manual wasn't the training. Tommy was.
-
-I designed a mentorship program instead of a PDF. Paired every new hire with a veteran.
-
-Injury rate dropped 40% in six months.`,
+        text: "Last year. Nucor asked me to redesign their safety onboarding.\n\nI spent a week on the factory floor. Shadowing Tommy, a 30-year veteran machinist.\n\nHe showed me how to read a blueprint. How to set up a CNC mill. How to spot when a tool's about to fail.\n\nThen he showed me their training manual. 'This is garbage,' he said. 'Nobody reads it. We just show the new guys what to do.'\n\nThat's when I knew. The manual wasn't the training. Tommy was.\n\nI designed a mentorship program instead of a PDF. Paired every new hire with a veteran.\n\nInjury rate dropped 40% in six months.",
         emotion: 'proud',
         interaction: 'bloom',
         variation_id: 'mentorship_v1'
@@ -854,17 +733,7 @@ Injury rate dropped 40% in six months.`,
     speaker: 'Kai',
     content: [
       {
-        text: `Tommy retired last month. Sixty-two. Bad knees. Good pension.
-
-The CNC machines can do most of what he did. Faster. More precise. No sick days.
-
-But they can't teach. Can't spot when something's wrong by the sound. Can't mentor the kid who's scared of the mill.
-
-Nucor replaced Tommy with a robotic arm. Kept the safety program I built... for now.
-
-*Looks at hands.*
-
-That's the future. Machines making things. Humans making sure the machines don't kill anyone.`,
+        text: "Tommy retired last month. Sixty-two. Bad knees. Good pension.\n\nThe CNC machines can do most of what he did. Faster. More precise. No sick days.\n\nBut they can't teach. Can't spot when something's wrong by the sound. Can't mentor the kid who's scared of the mill.\n\nNucor replaced Tommy with a robotic arm. Kept the safety program I built... for now.\n\nThat's the future. Machines making things. Humans making sure the machines don't kill anyone.",
         emotion: 'uncertain',
         variation_id: 'automation_v1'
       }
@@ -905,23 +774,13 @@ That's the future. Machines making things. Humans making sure the machines don't
     speaker: 'Kai',
     content: [
       {
-        text: `*Quiet for a moment.*
-
-Half the people I trained over the past year are looking for new work now. Not because they failed—because their jobs got automated.
-
-DeShawn. Forty-three. Twenty years running the arc furnace. Company offered him "retraining"—eight weeks of computer classes. Then nothing.
-
-Maria. Shift supervisor. They told her to "reskill into tech." She's got three kids and no time to go back to school for two years.
-
-*Voice drops.*
-
-That's what no one talks about. The retraining sounds good in a press release. But who's paying the mortgage while you learn to code?`,
+        text: "Half the people I trained over the past year are looking for new work now. Not because they failed. Because their jobs got automated.\n\nDeShawn. Forty-three. Twenty years running the arc furnace. Company offered him 'retraining.' Eight weeks of computer classes. Then nothing.\n\nMaria. Shift supervisor. They told her to 'reskill into tech.' She's got three kids and no time to go back to school for two years.\n\nThat's what no one talks about. The retraining sounds good in a press release. But who's paying the mortgage while you learn to code?",
         emotion: 'frustrated',
         interaction: 'small',
         variation_id: 'retraining_v1',
         patternReflection: [
-          { pattern: 'helping', minLevel: 4, altText: "*Quiet for a moment.*\n\nHalf the people I trained are looking for new work. Not because they failed—because their jobs got automated.\n\nDeShawn. Twenty years at the furnace. Maria. Three kids, shift supervisor.\n\n*Voice drops.*\n\nYou asked about them. Most people don't. They talk about 'the workforce' like it's a spreadsheet, not people with families.", altEmotion: 'vulnerable' },
-          { pattern: 'analytical', minLevel: 4, altText: "*Quiet for a moment.*\n\nHalf the people I trained are looking for new work. The data's clear—automation displaces faster than retraining scales.\n\nCompanies promise 'reskilling' because it's cheaper than severance. But eight weeks of computer classes doesn't replace twenty years of expertise.\n\nThe economics are brutal. Who pays the mortgage while someone learns to code?", altEmotion: 'analytical_bitter' }
+          { pattern: 'helping', minLevel: 4, altText: "Half the people I trained are looking for new work. Not because they failed. Because their jobs got automated.\n\nDeShawn. Twenty years at the furnace. Maria. Three kids, shift supervisor.\n\nYou asked about them. Most people don't. They talk about 'the workforce' like it's a spreadsheet, not people with families.", altEmotion: 'vulnerable' },
+          { pattern: 'analytical', minLevel: 4, altText: "Half the people I trained are looking for new work. The data's clear. Automation displaces faster than retraining scales.\n\nCompanies promise 'reskilling' because it's cheaper than severance. But eight weeks of computer classes doesn't replace twenty years of expertise.\n\nThe economics are brutal. Who pays the mortgage while someone learns to code?", altEmotion: 'analytical_bitter' }
         ]
       }
     ],
@@ -949,13 +808,7 @@ That's what no one talks about. The retraining sounds good in a press release. B
     speaker: 'Kai',
     content: [
       {
-        text: `Building on what they already know. Not starting over.
-
-DeShawn doesn't need to become a software engineer. He needs to learn how to work WITH the robotic arm. His twenty years of metallurgy? That's still valuable. The machine can't tell good steel from bad by the color of the pour.
-
-That's what I'm building. Training that bridges—not replaces. Show a machinist how to program the CNC. Show a welder how to operate the automated torch. Meet people where they are.
-
-The companies that figure this out? They'll have workers who actually know what they're doing. The ones that don't? They'll have expensive robots and nobody who knows how to fix them when they break.`,
+        text: "Building on what they already know. Not starting over.\n\nDeShawn doesn't need to become a software engineer. He needs to learn how to work WITH the robotic arm. His twenty years of metallurgy? That's still valuable. The machine can't tell good steel from bad by the color of the pour.\n\nThat's what I'm building. Training that bridges. Not replaces. Show a machinist how to program the CNC. Show a welder how to operate the automated torch. Meet people where they are.\n\nThe companies that figure this out? They'll have workers who actually know what they're doing. The ones that don't? They'll have expensive robots and nobody who knows how to fix them when they break.",
         emotion: 'determined',
         interaction: 'bloom',
         variation_id: 'what_works_v1'
@@ -977,19 +830,11 @@ The companies that figure this out? They'll have workers who actually know what 
     speaker: 'Kai',
     content: [
       {
-        text: `*Small shake of the head.*
-
-Not hopeless. Just... honest.
-
-The jobs aren't all disappearing. They're changing. Healthcare needs people—can't automate wiping someone's tears. Construction needs people—can't robot your way through a renovation in a 100-year-old building. Education needs people—kids don't learn from screens.
-
-The question isn't whether there's work. It's whether people can get to it. And right now? The bridge is broken.
-
-That's why I'm here. Building better bridges. One simulation at a time.`,
+        text: "Not hopeless. Just... honest.\n\nThe jobs aren't all disappearing. They're changing. Healthcare needs people. Can't automate wiping someone's tears. Construction needs people. Can't robot your way through a renovation in a 100-year-old building. Education needs people. Kids don't learn from screens.\n\nThe question isn't whether there's work. It's whether people can get to it. And right now? The bridge is broken.\n\nThat's why I'm here. Building better bridges. One simulation at a time.",
         emotion: 'resolved',
         variation_id: 'not_hopeless_v1',
         patternReflection: [
-          { pattern: 'helping', minLevel: 4, altText: "*Small shake of the head.*\n\nNot hopeless. Just honest.\n\nThe caring jobs aren't going anywhere. Healthcare. Teaching. Elder care. You can't automate sitting with someone who's scared.\n\nThe question is whether people can get to those jobs. Right now, the bridge is broken. That's why I'm building better bridges.", altEmotion: 'determined' }
+          { pattern: 'helping', minLevel: 4, altText: "Not hopeless. Just honest.\n\nThe caring jobs aren't going anywhere. Healthcare. Teaching. Elder care. You can't automate sitting with someone who's scared.\n\nThe question is whether people can get to those jobs. Right now, the bridge is broken. That's why I'm building better bridges.", altEmotion: 'determined' }
         ]
       }
     ],
@@ -1009,19 +854,7 @@ That's why I'm here. Building better bridges. One simulation at a time.`,
     speaker: 'Kai',
     content: [
       {
-        text: `That's what I'm building toward. Hybrid path.
-
-Trade skills + systems thinking. Hands-on work + digital literacy.
-
-The welder who understands robotics. The machinist who can program the CNC. The safety officer who builds VR simulations.
-
-Birmingham needs that. The manufacturing jobs aren't going away. They're just changing.
-
-And someone needs to teach people how to navigate that change.
-
-*Looks up.*
-
-Maybe that someone is me.`,
+        text: "That's what I'm building toward. Hybrid path.\n\nTrade skills + systems thinking. Hands-on work + digital literacy.\n\nThe welder who understands robotics. The machinist who can program the CNC. The safety officer who builds VR simulations.\n\nBirmingham needs that. The manufacturing jobs aren't going away. They're just changing.\n\nAnd someone needs to teach people how to navigate that change.\n\nMaybe that someone is me.",
         emotion: 'determined',
         interaction: 'nod',
         variation_id: 'hybrid_v1'
@@ -1058,15 +891,7 @@ Maybe that someone is me.`,
     speaker: 'Kai',
     content: [
       {
-        text: `You know what I miss most about factory work?
-
-The feedback loop. You weld a joint, you test it, you see if it holds. Immediate. Real.
-
-In corporate training? I build a module. Someone clicks through it. I get a completion metric. Did they learn? Who knows.
-
-But when I'm teaching someone to weld, I watch their hands. I see the bead form. I know if they got it.
-
-That's the kind of learning I want to design. Where you can see the result. Where failure teaches you before it kills you.`,
+        text: "You know what I miss most about factory work?\n\nThe feedback loop. You weld a joint, you test it, you see if it holds. Immediate. Real.\n\nIn corporate training? I build a module. Someone clicks through it. I get a completion metric. Did they learn? Who knows.\n\nBut when I'm teaching someone to weld, I watch their hands. I see the bead form. I know if they got it.\n\nThat's the kind of learning I want to design. Where you can see the result. Where failure teaches you before it kills you.",
         emotion: 'passionate',
         interaction: 'bloom',
         variation_id: 'wisdom_v1'
@@ -1096,19 +921,7 @@ That's the kind of learning I want to design. Where you can see the result. Wher
     speaker: 'Kai',
     content: [
       {
-        text: `Manufacturing + instructional design. That's my path.
-
-Not compliance training. Not corporate checkboxes.
-
-Safety simulations for industrial workers. Built by someone who understands both the factory floor and the learning science.
-
-Birmingham-based. Serving the companies that kept this city alive. Nucor. Mercedes. The fabrication shops in Bessemer.
-
-Training that actually protects people.
-
-*Quiet confidence.*
-
-That's what I'm building.`,
+        text: "Manufacturing + instructional design. That's my path.\n\nNot compliance training. Not corporate checkboxes.\n\nSafety simulations for industrial workers. Built by someone who understands both the factory floor and the learning science.\n\nBirmingham-based. Serving the companies that kept this city alive. Nucor. Mercedes. The fabrication shops in Bessemer.\n\nTraining that actually protects people.\n\nThat's what I'm building.",
         emotion: 'resolved',
         interaction: 'bloom',
         variation_id: 'synthesis_v1'
@@ -1146,11 +959,7 @@ That's what I'm building.`,
     speaker: 'Kai',
     content: [
       {
-        text: `The VP pulled me aside on my first week. You know what she said?
-
-"Kai, your job is to make the lawyers happy. The slides are legal documentation. If someone gets hurt, we show the completion certificate. That's the training."
-
-I thought she was exaggerating. She wasn't.`,
+        text: "The VP pulled me aside on my first week. You know what she said?\n\n'Kai, your job is to make the lawyers happy. The slides are legal documentation. If someone gets hurt, we show the completion certificate. That's the training.'\n\nI thought she was exaggerating. She wasn't.",
         emotion: 'disillusioned',
         variation_id: 'corporate_v1'
       }
@@ -1182,11 +991,7 @@ I thought she was exaggerating. She wasn't.`,
     speaker: 'Kai',
     content: [
       {
-        text: `Once. I proposed a simulation-based module for hazmat handling. Real scenarios, real consequences, no "Click Next."
-
-The VP ran the numbers. "This costs 40 hours per employee. The current module is 45 minutes."
-
-She didn't even look at the injury data. Just the time-to-completion metrics.`,
+        text: "Once. I proposed a simulation-based module for hazmat handling. Real scenarios, real consequences, no 'Click Next.'\n\nThe VP ran the numbers. 'This costs 40 hours per employee. The current module is 45 minutes.'\n\nShe didn't even look at the injury data. Just the time-to-completion metrics.",
         emotion: 'bitter',
         variation_id: 'pushback_v1'
       }
@@ -1207,11 +1012,7 @@ She didn't even look at the injury data. Just the time-to-completion metrics.`,
     speaker: 'Kai',
     content: [
       {
-        text: `Exactly. The metrics are designed to measure the wrong thing.
-
-Completion rate: 98%. Average quiz score: 92%. Injury rate: "Not our department."
-
-We're optimizing for numbers that don't matter while people get hurt.`,
+        text: "Exactly. The metrics are designed to measure the wrong thing.\n\nCompletion rate: 98%. Average quiz score: 92%. Injury rate: 'Not our department.'\n\nWe're optimizing for numbers that don't matter while people get hurt.",
         emotion: 'analytical_anger',
         variation_id: 'compliance_rev_v1'
       }
@@ -1233,11 +1034,7 @@ We're optimizing for numbers that don't matter while people get hurt.`,
     speaker: 'Kai',
     content: [
       {
-        text: `I visited him. Marcus. not the nurse, the worker. Same name, different person.
-
-He's 22. Two kids. The doctors say he'll walk again, but warehouse work? Probably not.
-
-His wife looked at me and asked: "Did you design the training he took?"`,
+        text: "I visited him. Marcus. Not the nurse, the worker. Same name, different person.\n\nHe's 22. Two kids. The doctors say he'll walk again, but warehouse work? Probably not.\n\nHis wife looked at me and asked: 'Did you design the training he took?'",
         emotion: 'guilt_shame',
         variation_id: 'hospital_v1'
       }
@@ -1266,11 +1063,7 @@ His wife looked at me and asked: "Did you design the training he took?"`,
     speaker: 'Kai',
     content: [
       {
-        text: `I said yes. And I apologized. Not the corporate apology. the real one.
-
-She didn't yell. She didn't threaten to sue. She just said: "Fix it. So this doesn't happen to someone else's husband."
-
-That's when I started building. Secretly. After hours.`,
+        text: "I said yes. And I apologized. Not the corporate apology. The real one.\n\nShe didn't yell. She didn't threaten to sue. She just said: 'Fix it. So this doesn't happen to someone else's husband.'\n\nThat's when I started building. Secretly. After hours.",
         emotion: 'determined_quiet',
         variation_id: 'confession_v1'
       }
@@ -1281,6 +1074,7 @@ That's when I started building. Secretly. After hours.`,
         text: "Show me what you're building.",
         nextNodeId: 'kai_simulation_setup',
         pattern: 'building',
+        archetype: 'EXPRESS_CURIOSITY',
         skills: ['curiosity', 'problemSolving']
       }
     ]
@@ -1293,15 +1087,7 @@ That's when I started building. Secretly. After hours.`,
     content: [
       {
         // NOTE: Removed "Kai turns" and "Kai taps" - showing screen result, not process
-        text: `I deleted the module. The new one... I'm building it now. Secretly.
-
-Rough, grainy video feed simulation. Forklift Operator scenario. No text. No "Click Next."
-
-*The view shakes.*
-
-You're in the cab. The load is unstable. The foreman is screaming at you to hurry up because the truck is waiting.
-
-What do you do?`,
+        text: "I deleted the module. The new one... I'm building it now. Secretly.\n\nRough, grainy video feed simulation. Forklift Operator scenario. No text. No 'Click Next.'\n\nThe view shakes.\n\nYou're in the cab. The load is unstable. The foreman is screaming at you to hurry up because the truck is waiting.\n\nWhat do you do?",
         emotion: 'intense',
         variation_id: 'sim_setup_v2',
         richEffectContext: 'thinking',
@@ -1379,13 +1165,7 @@ What do you do?`,
     content: [
       {
         // NOTE: Removed "Kai shakes their head" - frustration conveyed through teaching moment
-        text: `A 40-page document opens.
-
-While you're reading, the load shifts. The crate falls.
-
-The screen flashes red. "INJURY REPORTED."
-
-Nobody reads the PDF in a crisis. You hesitated. Real life doesn't pause for documentation.`,
+        text: "A 40-page document opens.\n\nWhile you're reading, the load shifts. The crate falls.\n\nThe screen flashes red. 'INJURY REPORTED.'\n\nNobody reads the PDF in a crisis. You hesitated. Real life doesn't pause for documentation.",
         emotion: 'frustrated',
         variation_id: 'sim_fail_pdf_v1',
         richEffectContext: 'warning'
@@ -1409,13 +1189,7 @@ Nobody reads the PDF in a crisis. You hesitated. Real life doesn't pause for doc
     content: [
       {
         // NOTE: Removed "Kai exhales, shoulders dropping" - relief conveyed through dialogue revelation
-        text: `The foreman screams in your face. The AI voice is deafening.
-
-But you stopped. The load wobbles, then settles. Safe.
-
-You stopped. You ignored the authority figure to save the human.
-
-That's it. That's the skill. Not "harness safety." *Courage.*`,
+        text: "The foreman screams in your face. The AI voice is deafening.\n\nBut you stopped. The load wobbles, then settles. Safe.\n\nYou stopped. You ignored the authority figure to save the human.\n\nThat's it. That's the skill. Not 'harness safety.' Courage.",
         emotion: 'relieved',
         variation_id: 'sim_success_v2',
         richEffectContext: 'success'
@@ -1452,11 +1226,7 @@ That's it. That's the skill. Not "harness safety." *Courage.*`,
     speaker: 'Kai',
     content: [
       {
-        text: `I ran the simulation with three warehouse workers last night. Off the clock. Confidential.
-
-The first one. DeShawn, 15 years on the floor. he failed the forklift scenario three times. On the fourth try, he stopped the load.
-
-You know what he said? "I've never done that. Never stopped. I always just finished the job."`,
+        text: "I ran the simulation with three warehouse workers last night. Off the clock. Confidential.\n\nThe first one. DeShawn, 15 years on the floor. He failed the forklift scenario three times. On the fourth try, he stopped the load.\n\nYou know what he said? 'I've never done that. Never stopped. I always just finished the job.'",
         emotion: 'hopeful',
         variation_id: 'real_test_v1'
       }
@@ -1485,11 +1255,7 @@ You know what he said? "I've never done that. Never stopped. I always just finis
     speaker: 'Kai',
     content: [
       {
-        text: `Maria, she's a shift supervisor, she said something that broke me.
-
-"Twenty years I've been doing this job. Not once has anyone asked me what I need to know. They send the slides and wait for the green check."
-
-These are the people I'm supposed to protect. And I've been hiding behind PDFs.`,
+        text: "Maria, she's a shift supervisor, she said something that broke me.\n\n'Twenty years I've been doing this job. Not once has anyone asked me what I need to know. They send the slides and wait for the green check.'\n\nThese are the people I'm supposed to protect. And I've been hiding behind PDFs.",
         emotion: 'revelation',
         variation_id: 'feedback_v1'
       }
@@ -1517,11 +1283,7 @@ These are the people I'm supposed to protect. And I've been hiding behind PDFs.`
     speaker: 'Kai',
     content: [
       {
-        text: `No. Not in the corporate structure. The VP would never approve the time investment.
-
-But here's what I realized: I don't need to train 50,000 people. I need to train the right 50 people first.
-
-Supervisors. Safety leads. The ones who can actually stop a dangerous situation before it starts.`,
+        text: "No. Not in the corporate structure. The VP would never approve the time investment.\n\nBut here's what I realized: I don't need to train 50,000 people. I need to train the right 50 people first.\n\nSupervisors. Safety leads. The ones who can actually stop a dangerous situation before it starts.",
         emotion: 'strategic',
         variation_id: 'scale_v1'
       }
@@ -1542,11 +1304,7 @@ Supervisors. Safety leads. The ones who can actually stop a dangerous situation 
     speaker: 'Kai',
     content: [
       {
-        text: `Exactly. Forklifts. Heights. Chemical handling. The jobs where a mistake means someone doesn't go home.
-
-If I can prove the simulation reduces real injuries—not compliance metrics—maybe someone will listen.
-
-Or maybe I do it anyway. Without permission.`,
+        text: "Exactly. Forklifts. Heights. Chemical handling. The jobs where a mistake means someone doesn't go home.\n\nIf I can prove the simulation reduces real injuries. Not compliance metrics. Maybe someone will listen.\n\nOr maybe I do it anyway. Without permission.",
         emotion: 'determined',
         variation_id: 'impact_v1'
       }
@@ -1568,11 +1326,7 @@ Or maybe I do it anyway. Without permission.`,
     speaker: 'Kai',
     content: [
       {
-        text: `I have to show this. Not to the VP. to the workers.
-
-The training is broken. I'm building checkmarks that hide the danger.
-
-If I stay, I'm complicit. If I leave, I can build something that actually protects them.`,
+        text: "I have to show this. Not to the VP. To the workers.\n\nThe training is broken. I'm building checkmarks that hide the danger.\n\nIf I stay, I'm complicit. If I leave, I can build something that actually protects them.",
         emotion: 'determined',
         variation_id: 'studio_v2'
       }
@@ -1600,11 +1354,7 @@ If I stay, I'm complicit. If I leave, I can build something that actually protec
     speaker: 'Kai',
     content: [
       {
-        text: `I thought about that. Change from within. But you know how long it takes to change a corporate culture?
-
-Marcus. the worker in the hospital. he can't wait five years for me to get promoted to the right level. His kids need their dad healthy now.
-
-Sometimes the system is too slow. Sometimes you have to step outside it.`,
+        text: "I thought about that. Change from within. But you know how long it takes to change a corporate culture?\n\nMarcus. The worker in the hospital. He can't wait five years for me to get promoted to the right level. His kids need their dad healthy now.\n\nSometimes the system is too slow. Sometimes you have to step outside it.",
         emotion: 'resolved',
         variation_id: 'insider_v1'
       }
@@ -1626,11 +1376,7 @@ Sometimes the system is too slow. Sometimes you have to step outside it.`,
     speaker: 'Kai',
     content: [
       {
-        text: `Before I go, I want to ask you something.
-
-I've been building training for years. Thousands of slides. Millions of checkmarks.
-
-What do you think matters more. reaching more people, or reaching people more deeply?`,
+        text: "Before I go, I want to ask you something.\n\nI've been building training for years. Thousands of slides. Millions of checkmarks.\n\nWhat do you think matters more. Reaching more people, or reaching people more deeply?",
         emotion: 'reflective',
         variation_id: 'final_choice_v1'
       }
@@ -1684,11 +1430,7 @@ What do you think matters more. reaching more people, or reaching people more de
     speaker: 'Kai',
     content: [
       {
-        text: `<bloom>Kairos Learning Design</bloom>. No certificates. Just survival.
-
-It's terrifying. I'm giving up the salary, the benefits... the green checkmarks.
-
-But I'll never have to click 'Next' again.`,
+        text: "<bloom>Kairos Learning Design</bloom>. No certificates. Just survival.\n\nIt's terrifying. I'm giving up the salary, the benefits... the green checkmarks.\n\nBut I'll never have to click 'Next' again.",
         emotion: 'liberated',
         variation_id: 'climax_v2'
       }
@@ -1697,31 +1439,19 @@ But I'll never have to click 'Next' again.`,
       {
         pattern: 'building',
         minLevel: 5,
-        altText: `You understand. You're a builder too. I can tell by how you think. <bloom>Kairos Learning Design</bloom>. No certificates. Just survival.
-
-It's terrifying. I'm giving up the salary, the benefits... the green checkmarks.
-
-But I'll never have to click 'Next' again.`,
+        altText: "You understand. You're a builder too. I can tell by how you think. <bloom>Kairos Learning Design</bloom>. No certificates. Just survival.\n\nIt's terrifying. I'm giving up the salary, the benefits... the green checkmarks.\n\nBut I'll never have to click 'Next' again.",
         altEmotion: 'kindred_liberated'
       },
       {
         pattern: 'helping',
         minLevel: 5,
-        altText: `You've been helping me see what I couldn't see alone. That's real teaching. <bloom>Kairos Learning Design</bloom>. No certificates. Just survival.
-
-It's terrifying. I'm giving up the salary, the benefits... the green checkmarks.
-
-But I'll never have to click 'Next' again.`,
+        altText: "You've been helping me see what I couldn't see alone. That's real teaching. <bloom>Kairos Learning Design</bloom>. No certificates. Just survival.\n\nIt's terrifying. I'm giving up the salary, the benefits... the green checkmarks.\n\nBut I'll never have to click 'Next' again.",
         altEmotion: 'grateful_liberated'
       },
       {
         pattern: 'analytical',
         minLevel: 5,
-        altText: `You cut through the noise. straight to what matters. That's the skill I need to teach. <bloom>Kairos Learning Design</bloom>. No certificates. Just survival.
-
-It's terrifying. I'm giving up the salary, the benefits... the green checkmarks.
-
-But I'll never have to click 'Next' again.`,
+        altText: "You cut through the noise. Straight to what matters. That's the skill I need to teach. <bloom>Kairos Learning Design</bloom>. No certificates. Just survival.\n\nIt's terrifying. I'm giving up the salary, the benefits... the green checkmarks.\n\nBut I'll never have to click 'Next' again.",
         altEmotion: 'recognized_liberated'
       }
     ],
@@ -1761,13 +1491,7 @@ But I'll never have to click 'Next' again.`,
     speaker: 'Kai',
     content: [
       {
-        text: `The screen goes dark.
-
-Yeah. You're right. It's too risky. The VP will never approve it.
-
-I'll just... add a bold font to the safety warning. That should be enough.
-
-Thanks for trying.`,
+        text: "The screen goes dark.\n\nYeah. You're right. It's too risky. The VP will never approve it.\n\nI'll just... add a bold font to the safety warning. That should be enough.\n\nThanks for trying.",
         emotion: 'defeated',
         variation_id: 'bad_ending_v1'
       }
@@ -1795,17 +1519,7 @@ Thanks for trying.`,
     speaker: 'Kai',
     content: [
       {
-        text: `*They look at the safety manuals, then away.*
-
-There's a reason I obsess over every millimeter. Every warning sign.
-
-Building 7. I designed the safety training for that crew. Forty-two slides. Perfect compliance scores. The inspection passed with flying colors.
-
-*Their voice cracks.*
-
-Three months later, a scaffold collapsed. Miguel Rodriguez, father of two, fell four stories because the harness clip I trained him on... wasn't rated for the angle he was working at.
-
-My training passed inspection. Miguel didn't pass the fall.`,
+        text: "There's a reason I obsess over every millimeter. Every warning sign.\n\nBuilding 7. I designed the safety training for that crew. Forty-two slides. Perfect compliance scores. The inspection passed with flying colors.\n\nThree months later, a scaffold collapsed. Miguel Rodriguez, father of two, fell four stories because the harness clip I trained him on... wasn't rated for the angle he was working at.\n\nMy training passed inspection. Miguel didn't pass the fall.",
         emotion: 'devastated',
         microAction: 'Their hands grip the edge of the table.',
         variation_id: 'vulnerability_v1',
@@ -1832,10 +1546,10 @@ My training passed inspection. Miguel didn't pass the fall.`,
       },
       {
         choiceId: 'vuln_empathy',
-        text: "You carry that weight because you care. That's not guilt—that's integrity.",
+        text: "You carry that weight because you care. That's not guilt. That's integrity.",
         voiceVariations: {
           analytical: "Accountability without power is still valuable. That's integrity.",
-          helping: "You care. That's not guilt—that's integrity.",
+          helping: "You care. That's not guilt. That's integrity.",
           building: "That weight fuels better work. That's integrity.",
           exploring: "Now I understand why you do this. That's integrity.",
           patience: "You carry that weight because you care. That's integrity."
@@ -1869,15 +1583,7 @@ My training passed inspection. Miguel didn't pass the fall.`,
     speaker: 'Kai',
     content: [
       {
-        text: `*They take a shaky breath.*
-
-I visited his family. Couldn't tell them I was the one who trained him. Just said I was sorry.
-
-That's when I stopped building "passing" training. Started building training that actually prepares people for real danger. Not inspection-ready. Reality-ready.
-
-*A pause.*
-
-You're the first person I've told the whole story to. Everyone else just sees the compliance evangelist. They don't see why.`,
+        text: "I visited his family. Couldn't tell them I was the one who trained him. Just said I was sorry.\n\nThat's when I stopped building 'passing' training. Started building training that actually prepares people for real danger. Not inspection-ready. Reality-ready.\n\nYou're the first person I've told the whole story to. Everyone else just sees the compliance evangelist. They don't see why.",
         emotion: 'vulnerable_resolved',
         variation_id: 'reflection_v1'
       }
@@ -1897,9 +1603,7 @@ You're the first person I've told the whole story to. Everyone else just sees th
     speaker: 'Kai',
     content: [
       {
-        text: `You helped me stop lying to myself.
-
-Before I go—I've laid all my cards out. What about you? What are you building? What connection matters most?`,
+        text: "You helped me stop lying to myself.\n\nBefore I go. I've laid all my cards out. What about you? What are you building? What connection matters most?",
         emotion: 'curious_engaged',
         variation_id: 'farewell_v2'
       }
@@ -1908,17 +1612,13 @@ Before I go—I've laid all my cards out. What about you? What are you building?
       {
         pattern: 'building',
         minLevel: 5,
-        altText: `You helped me stop lying to myself.
-
-Between us... you're a builder. I recognized that the moment you started thinking in systems. What are you building next?`,
+        altText: "You helped me stop lying to myself.\n\nBetween us... you're a builder. I recognized that the moment you started thinking in systems. What are you building next?",
         altEmotion: 'kindred_curious'
       },
       {
         pattern: 'helping',
         minLevel: 5,
-        altText: `You helped me stop lying to myself.
-
-Between us... you care deeply about people. I saw it in every question you asked. What impact do you want to have?`,
+        altText: "You helped me stop lying to myself.\n\nBetween us... you care deeply about people. I saw it in every question you asked. What impact do you want to have?",
         altEmotion: 'grateful_curious'
       }
     ],
@@ -1945,11 +1645,7 @@ Between us... you care deeply about people. I saw it in every question you asked
     speaker: 'Kai',
     content: [
       {
-        text: `*Looks at you directly.*
-
-I've been building training for years. Thousands of slides. Millions of checkmarks.
-
-Between us. I've shared my whole journey. Now I want to hear yours. What are you building? What connection are you trying to create?`,
+        text: "I've been building training for years. Thousands of slides. Millions of checkmarks.\n\nBetween us. I've shared my whole journey. Now I want to hear yours. What are you building? What connection are you trying to create?",
         emotion: 'curious_engaged',
         variation_id: 'kai_reciprocity_v1'
       }
@@ -2015,13 +1711,7 @@ Between us. I've shared my whole journey. Now I want to hear yours. What are you
     speaker: 'Kai',
     content: [
       {
-        text: `
-        
-That's it. That's the question.
-
-Keep asking it. Keep building. Even if you don't know what it is yet.
-
-If you see Samuel... tell him I'm done with compliance. I'm in the business of reality now.`,
+        text: "That's it. That's the question.\n\nKeep asking it. Keep building. Even if you don't know what it is yet.\n\nIf you see Samuel... tell him I'm done with compliance. I'm in the business of reality now.",
         emotion: 'affirming',
         variation_id: 'kai_response_v1'
       }
@@ -2043,11 +1733,7 @@ If you see Samuel... tell him I'm done with compliance. I'm in the business of r
     speaker: 'Kai',
     content: [
       {
-        text: `The way you think... analytical, caring, patient. All three at once.
-
-Safety engineers need exactly that combination. They design systems that protect people before danger arrives. Thinking ahead so others don't have to.
-
-It's not about compliance. It's about prevention. You get that.`,
+        text: "The way you think... analytical, caring, patient. All three at once.\n\nSafety engineers need exactly that combination. They design systems that protect people before danger arrives. Thinking ahead so others don't have to.\n\nIt's not about compliance. It's about prevention. You get that.",
         emotion: 'serious',
         variation_id: 'career_safety_v1'
       }

@@ -41,10 +41,9 @@ const itemVariants: import('framer-motion').Variants = {
   }
 }
 
-export function SkillsView({ skills, onOpenDetail: _onOpenDetail }: SkillsViewProps) {
-  const [selectedId, setSelectedId] = useState<string | null>(null)
+export function SkillsView({ skills, onOpenDetail }: SkillsViewProps) {
   const [activeFilter, setActiveFilter] = useState<ClusterFilter>('all')
-  const selectedSkill = skills.find(s => s.id === selectedId)
+  // Removed local selectedId/selectedSkill state in favor of global modal
 
   // Calculate skill counts per cluster (demonstrated only)
   const skillCounts = useMemo(() => {
@@ -145,7 +144,6 @@ export function SkillsView({ skills, onOpenDetail: _onOpenDetail }: SkillsViewPr
 
           {/* Skill nodes (Geometric Purity) */}
           {filteredSkills.map((skill) => {
-            const isSelected = selectedId === skill.id
             const baseSize = skill.id === 'communication' ? 5 : 3.5
             const size = skill.state === 'mastered' ? baseSize * 1.1 : baseSize
             const isUnlocked = skill.state !== 'dormant'
@@ -155,24 +153,13 @@ export function SkillsView({ skills, onOpenDetail: _onOpenDetail }: SkillsViewPr
                 key={skill.id}
                 variants={itemVariants}
                 className={cn("cursor-pointer transition-all duration-300", !isUnlocked && "grayscale opacity-40")}
-                onClick={() => setSelectedId(isSelected ? null : skill.id)}
+                onClick={() => onOpenDetail?.(skill)}
                 role="button"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
               >
                 {/* Hit Area */}
                 <circle cx={skill.position.x} cy={skill.position.y} r={10} fill="transparent" />
-
-                {/* Selection Ring (Sharp) */}
-                {isSelected && (
-                  <circle
-                    cx={skill.position.x}
-                    cy={skill.position.y}
-                    r={size + 3}
-                    fill="none"
-                    stroke="white"
-                    strokeWidth="0.2"
-                    className="opacity-50"
-                  />
-                )}
 
                 {/* Main Node (Solid) */}
                 <circle
@@ -234,32 +221,6 @@ export function SkillsView({ skills, onOpenDetail: _onOpenDetail }: SkillsViewPr
           })}
         </motion.svg>
       </div>
-
-      {/* Selected skill detail panel */}
-      {selectedSkill && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 20 }}
-          className="flex-shrink-0 bg-slate-900 border-t border-slate-800 p-4"
-          style={{ paddingBottom: 'max(16px, env(safe-area-inset-bottom, 0px))' }}
-        >
-          <div className="flex items-center gap-4">
-            <div
-              className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-white text-xs font-bold"
-              style={{ backgroundColor: selectedSkill.state === 'dormant' ? '#334155' : selectedSkill.color }}
-            >
-              {selectedSkill.state === 'dormant' ? '' : selectedSkill.demonstrationCount}
-            </div>
-            <div className="flex-1 min-w-0">
-              <h3 className="text-sm font-bold text-slate-100 truncate tracking-wide">{selectedSkill.name}</h3>
-              <p className="text-2xs uppercase tracking-widest text-slate-500 mt-0.5">
-                {selectedSkill.state === 'dormant' ? 'Locked' : `Level ${selectedSkill.demonstrationCount}`}
-              </p>
-            </div>
-          </div>
-        </motion.div>
-      )}
     </div>
   )
 }

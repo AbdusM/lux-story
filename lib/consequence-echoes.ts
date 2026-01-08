@@ -10,6 +10,8 @@
 
 import type { PlayerPatterns } from './character-state'
 import type { SoundType } from './audio-feedback'
+import type { TemplateArchetype, VoiceCharacterId } from './voice-templates/template-types'
+import { resolveVoiceVariation } from './voice-templates/template-resolver'
 
 // Note: Using string for emotion to support compound emotions in dialogue content
 
@@ -875,6 +877,42 @@ export function getVoicedChoiceText(
 }
 
 /**
+ * Enhanced voice resolution using the template system
+ *
+ * Priority chain:
+ * 1. Custom voiceVariations (hand-authored) - ALWAYS wins
+ * 2. Character-specific pattern override
+ * 3. Template archetype transform
+ * 4. Base text fallback
+ *
+ * @param baseText - The original choice text
+ * @param voiceVariations - Hand-authored voice variations (optional)
+ * @param patterns - Player's current pattern scores
+ * @param characterId - Character being spoken to (enables character overrides)
+ * @param archetype - Explicit archetype hint (auto-detected if not provided)
+ * @returns The voiced text appropriate for the player's dominant pattern
+ */
+export function getVoicedChoiceTextV2(
+  baseText: string,
+  voiceVariations: Partial<Record<keyof PlayerPatterns, string>> | undefined,
+  patterns: PlayerPatterns,
+  characterId?: VoiceCharacterId,
+  archetype?: TemplateArchetype
+): string {
+  const result = resolveVoiceVariation(
+    {
+      baseText,
+      customOverride: voiceVariations,
+      characterId,
+      archetype
+    },
+    patterns
+  )
+
+  return result.text
+}
+
+/**
  * Determine if a pattern threshold has been crossed
  * Returns the pattern name if threshold crossed, null otherwise
  */
@@ -951,6 +989,134 @@ export function getOrbMilestoneEcho(
   if (!pool || pool.length === 0) return null
 
   return pool[Math.floor(Math.random() * pool.length)]
+}
+
+// ============================================
+// VOICE REVELATION ECHOES - "Surface the Magic"
+// ============================================
+
+/**
+ * Meta-moment echoes that reveal the voice variation system to players.
+ * These trigger once when a player establishes a dominant pattern.
+ *
+ * Purpose: Per Game Designer analysis, the voice variation system is
+ * "invisible sophistication" that players may never notice. These
+ * one-time echoes surface the magic without breaking immersion.
+ *
+ * Trigger: First time dominant pattern >= 5 (strong preference established)
+ */
+export const VOICE_REVELATION_ECHOES: Record<keyof PlayerPatterns, ConsequenceEcho[]> = {
+  analytical: [
+    {
+      text: "Samuel pauses mid-thought. \"You notice it, don't you? The way people respond to you. They pick up on how you think—and they match it. Or try to.\"",
+      emotion: 'knowing',
+      timing: 'delayed'
+    },
+    {
+      text: "\"Interesting thing about this station,\" Samuel muses. \"The people here... they listen. Really listen. To HOW you say things, not just what. Your questions have a certain... precision. They respond to that.\"",
+      emotion: 'warm',
+      timing: 'delayed'
+    }
+  ],
+  patience: [
+    {
+      text: "Samuel watches you for a moment. \"You take your time with things. People notice that. They slow down around you. Give themselves permission to breathe.\"",
+      emotion: 'knowing',
+      timing: 'delayed'
+    },
+    {
+      text: "\"There's something about the way you hold space,\" Samuel says quietly. \"Others feel it. Watch how they talk to you—they'll be different. More open.\"",
+      emotion: 'warm',
+      timing: 'delayed'
+    }
+  ],
+  exploring: [
+    {
+      text: "\"You've got that look,\" Samuel smiles. \"The one that says 'what else?' People here pick up on it. They'll show you paths they don't show everyone.\"",
+      emotion: 'knowing',
+      timing: 'delayed'
+    },
+    {
+      text: "Samuel chuckles. \"Curious ones like you... you bring it out in others. Watch how people talk to you—they'll be more open to wondering.\"",
+      emotion: 'warm',
+      timing: 'delayed'
+    }
+  ],
+  helping: [
+    {
+      text: "\"People trust you,\" Samuel observes. \"You can see it in how they talk to you. They share things they might not share with others.\"",
+      emotion: 'knowing',
+      timing: 'delayed'
+    },
+    {
+      text: "Samuel leans closer. \"You lead with your heart. People sense that. Watch how they respond to you—there's a softness there. A willingness.\"",
+      emotion: 'warm',
+      timing: 'delayed'
+    }
+  ],
+  building: [
+    {
+      text: "\"You're a maker,\" Samuel says with a nod. \"People can tell. Watch how they talk to you—they'll be practical. Solution-focused. They match your energy.\"",
+      emotion: 'knowing',
+      timing: 'delayed'
+    },
+    {
+      text: "\"There's something about builders,\" Samuel muses. \"Others sense it. They get more concrete with you. More action-oriented. You bring that out.\"",
+      emotion: 'warm',
+      timing: 'delayed'
+    }
+  ]
+}
+
+/**
+ * Get a voice revelation echo when player establishes dominant pattern
+ * Should only trigger ONCE per playthrough, stored in knowledge flags
+ *
+ * @param dominantPattern - The player's established dominant pattern
+ * @returns Echo to surface, or null if none available
+ */
+export function getVoiceRevelationEcho(
+  dominantPattern: keyof PlayerPatterns
+): ConsequenceEcho | null {
+  const pool = VOICE_REVELATION_ECHOES[dominantPattern]
+  if (!pool || pool.length === 0) return null
+
+  return pool[Math.floor(Math.random() * pool.length)]
+}
+
+/**
+ * Check if voice revelation should trigger
+ * Returns the dominant pattern if threshold just crossed, null otherwise
+ */
+export function checkVoiceRevelationTrigger(
+  oldPatterns: PlayerPatterns,
+  newPatterns: PlayerPatterns,
+  alreadyRevealed: boolean
+): keyof PlayerPatterns | null {
+  // Only trigger once per playthrough
+  if (alreadyRevealed) return null
+
+  // Check if any pattern just crossed the revelation threshold (5)
+  const REVELATION_THRESHOLD = 5
+  const patternKeys: (keyof PlayerPatterns)[] = ['analytical', 'patience', 'exploring', 'helping', 'building']
+
+  for (const pattern of patternKeys) {
+    const oldValue = oldPatterns[pattern] || 0
+    const newValue = newPatterns[pattern] || 0
+
+    if (oldValue < REVELATION_THRESHOLD && newValue >= REVELATION_THRESHOLD) {
+      // Also verify this is actually the dominant pattern
+      const isDominant = patternKeys.every(p =>
+        p === pattern || newPatterns[p] < newValue
+      )
+
+      if (isDominant) {
+        return pattern
+      }
+    }
+  }
+
+  return null
 }
 
 // ============================================

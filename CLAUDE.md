@@ -256,25 +256,25 @@ Deprecated code preserved for reference:
 | Conditional Choices | 120 total | visibleCondition gated |
 | Trust-Gated Nodes | 95 total | 8 trust levels |
 
-### Character Dialogue Depth (983 Total Nodes)
+### Character Dialogue Depth (1145 Total Nodes)
 | Character | Nodes | Tier | Status |
 |-----------|-------|------|--------|
-| Samuel | 195 | 1 | Hub ✅ |
-| Elena | 80 | 3 | Deep ✅ |
+| Samuel | 205 | Hub | Hub ✅ |
+| Devon | 84 | 1 | Deep ✅ |
+| Elena | 83 | 3 | Deep ✅ |
+| Maya | 82 | 1 | Deep ✅ |
+| Zara | 77 | 4 | Deep ✅ |
 | Marcus | 76 | 2 | Deep ✅ |
-| Zara | 73 | 4 | Deep ✅ |
-| Lira | 67 | 4 | Deep ✅ |
+| Lira | 69 | 4 | Deep ✅ |
+| Rohan | 58 | 2 | Standard ✅ |
 | Kai | 51 | 2 | Standard ✅ |
-| Maya | 50 | 1 | ⚠️ Gap: 30 to T1 target |
+| Asha | 51 | 4 | Standard ✅ |
 | Tess | 50 | 2 | Standard ✅ |
-| Asha | 49 | 4 | Standard ✅ |
 | Alex | 49 | 3 | Standard ✅ |
-| Devon | 45 | 1 | ⚠️ Gap: 35 to T1 target |
 | Yaquin | 43 | 3 | Standard ✅ |
 | Silas | 40 | 4 | Core ✅ |
-| Rohan | 40 | 2 | ⚠️ Gap: 10 to T2 target |
-| Grace | 38 | 3 | Core ✅ |
-| Jordan | 37 | 4 | Core ✅ |
+| Jordan | 39 | 4 | Core ✅ |
+| Grace | 38 | 3 | Core ⚠️ (-2) |
 
 ### Key Documentation
 - `docs/03_PROCESS/META_COGNITIVE_SYSTEMS_AUDIT.md` - Pattern/skill/emotion coverage
