@@ -83,7 +83,7 @@ hooks/
 └── useGameState.ts             # Core game state management
 ```
 
-### Characters (16 Total)
+### Characters (20 Total)
 | Character | Animal | Role | Tier |
 |-----------|--------|------|------|
 | Samuel | Owl | Station keeper, wise mentor (Hub) | Core |
@@ -102,6 +102,10 @@ hooks/
 | Asha | — | Conflict Resolution / Mediator | Extended |
 | Lira | — | Communications / Sound Design | Extended |
 | Zara | — | Data Ethics / Artist | Extended |
+| Quinn | Hedgehog | Finance Specialist (LinkedIn 2026) | Secondary |
+| Dante | Peacock | Sales Strategist (LinkedIn 2026) | Extended |
+| Nadia | Barn Owl | AI Strategist (LinkedIn 2026) | Secondary |
+| Isaiah | Elephant | Nonprofit Leader (LinkedIn 2026) | Extended |
 
 ### Pattern System
 5 behavioral patterns tracked through choices:
@@ -220,25 +224,25 @@ Deprecated code preserved for reference:
 ### Feature Catalog
 - **Total Features Documented:** 572 (in INFINITE_CANVAS_FEATURE_CATALOG.md)
 - **Implementation Status:** ~20% complete, ~6% partial, ~30% planned, ~44% future/moonshot
-- **Tests:** 739 passing
-- **Dialogue Nodes:** 983 total
+- **Tests:** 1025 passing
+- **Dialogue Nodes:** 1158 total (983 + 175 LinkedIn 2026)
 
-### Core Systems at 100% (16/16 Characters)
+### Core Systems at 100% (20/20 Characters)
 | System | Coverage | Location |
 |--------|----------|----------|
-| Interrupt System | 16/16 | `content/*-dialogue-graph.ts` (interrupt blocks) |
-| Vulnerability Arcs | 16/16 | `content/*-dialogue-graph.ts` (vulnerability_arc nodes) |
-| Consequence Echoes | 16/16 | `lib/consequence-echoes.ts` |
-| Pattern Voices | 16/16 | `content/pattern-voice-library.ts` |
-| Relationship Web | 16/16 | `lib/character-relationships.ts` |
-| Loyalty Experiences | 16/16 | `lib/loyalty-experience.ts` |
+| Interrupt System | 20/20 | `content/*-dialogue-graph.ts` (interrupt blocks) |
+| Vulnerability Arcs | 20/20 | `content/*-dialogue-graph.ts` (vulnerability_arc nodes) |
+| Consequence Echoes | 20/20 | `lib/consequence-echoes.ts` |
+| Pattern Voices | 20/20 | `content/pattern-voice-library.ts` |
+| Relationship Web | 20/20 | `lib/character-relationships.ts` |
+| Loyalty Experiences | 20/20 | `lib/loyalty-experience.ts` |
 | Derivatives System | 7/7 | `lib/*-derivatives.ts` (239 tests) |
 
 ### Additional Complete Systems
 | System | Coverage | Location |
 |--------|----------|----------|
-| Simulations | 16/16 | `content/*-dialogue-graph.ts` (simulation blocks) |
-| Pattern Unlocks | 13/16 | Pattern-gated dialogue nodes |
+| Simulations | 20/20 | `content/*-dialogue-graph.ts` (simulation blocks) |
+| Pattern Unlocks | 17/20 | Pattern-gated dialogue nodes |
 
 ### Meta-Cognitive Systems
 | System | Defined | Used | Status |
@@ -251,12 +255,12 @@ Deprecated code preserved for reference:
 ### Adaptive Content Coverage
 | Feature | Coverage | Notes |
 |---------|----------|-------|
-| Pattern Reflections | 101 total | NPC dialogue varies by player pattern |
-| Voice Variations | 16/16 chars | All tiers meet targets (166 total) |
-| Conditional Choices | 120 total | visibleCondition gated |
-| Trust-Gated Nodes | 95 total | 8 trust levels |
+| Pattern Reflections | 113 total | NPC dialogue varies by player pattern |
+| Voice Variations | 20/20 chars | All tiers meet targets (178 total) |
+| Conditional Choices | 132 total | visibleCondition gated |
+| Trust-Gated Nodes | 107 total | 8 trust levels |
 
-### Character Dialogue Depth (1145 Total Nodes)
+### Character Dialogue Depth (1158 Total Nodes)
 | Character | Nodes | Tier | Status |
 |-----------|-------|------|--------|
 | Samuel | 205 | Hub | Hub ✅ |
@@ -271,8 +275,12 @@ Deprecated code preserved for reference:
 | Asha | 51 | 4 | Standard ✅ |
 | Tess | 50 | 2 | Standard ✅ |
 | Alex | 49 | 3 | Standard ✅ |
+| Nadia | 48 | 2 | Standard ✅ (LinkedIn 2026) |
+| Quinn | 45 | 2 | Standard ✅ (LinkedIn 2026) |
 | Yaquin | 43 | 3 | Standard ✅ |
+| Isaiah | 42 | 3 | Standard ✅ (LinkedIn 2026) |
 | Silas | 40 | 4 | Core ✅ |
+| Dante | 40 | 3 | Core ✅ (LinkedIn 2026) |
 | Jordan | 39 | 4 | Core ✅ |
 | Grace | 38 | 3 | Core ⚠️ (-2) |
 
@@ -283,19 +291,23 @@ Deprecated code preserved for reference:
 - `docs/01_MECHANICS/21-infinite-canvas-feature-catalog.md` - Full feature catalog
 
 ### Recently Completed (January 2026)
-- **Voice Variations 16/16** - All characters meet tier targets (+19 variations to 5 chars)
+- **LinkedIn 2026 Career Expansion** - 4 new characters (Quinn, Dante, Nadia, Isaiah) with 175 dialogue nodes
+- **Voice Variations 20/20** - All characters meet tier targets (+12 for new characters)
+- **Pixel Sprites** - New animal types: hedgehog, peacock, barnowl, elephant
+- **Relationship Web** - 20 new edges connecting new characters to existing cast
 - **Skill System Cleanup** - 8 new skills defined, 7 renamed to standard forms, all 54 skills formalized
 - **Pattern Unlock Nodes** - 12 pattern-gated nodes across 5 characters
 - **Conditional Choice Wiring** - Pattern unlocks reachable via introduction choices
 - **Meta-Cognitive Audit** - Full analysis of patterns, skills, emotions coverage
-- **Loyalty Experiences 16/16** - All characters have loyalty experiences
+- **Loyalty Experiences 20/20** - All characters have loyalty experiences
 - **Derivatives System** - 7 modules (trust, pattern, character, narrative, knowledge, interrupt, assessment)
-- **Dialogue Expansion** - 624 → 946 nodes (+52%)
+- **Dialogue Expansion** - 983 → 1158 nodes (+18%)
 
 ### Q1 2026 Priority Tasks ✅ ALL COMPLETE
 1. ~~**Voice Variations**~~ ✅ COMPLETE - All tiers meet targets (Tier 1: 15, Tier 2: 10, Tier 3-4: 6)
 2. ~~**Pattern Reflections**~~ ✅ COMPLETE - Alex (5), Grace (5), Silas (5) all at target
 3. ~~**Skill System Cleanup**~~ ✅ COMPLETE - 8 skills added, 7 renamed to standard forms
+4. ~~**LinkedIn 2026 Expansion**~~ ✅ COMPLETE - Quinn, Dante, Nadia, Isaiah fully integrated
 
 ### Production
 - URL: https://lux-story.vercel.app
@@ -614,8 +626,8 @@ Required sections:
 - Quick Context Recovery - Commands to run
 
 ### Q1 2026 Priority Tasks
-1. ~~**Loyalty Experiences** (16/16)~~ ✅ COMPLETE
-2. ~~**Simulations** (16/16)~~ ✅ COMPLETE - All characters have simulations
+1. ~~**Loyalty Experiences** (20/20)~~ ✅ COMPLETE
+2. ~~**Simulations** (20/20)~~ ✅ COMPLETE - All characters have simulations
 3. ~~**Expand Shallow Characters**~~ ✅ COMPLETE - All targets exceeded
 
 ### Key Type Definitions
