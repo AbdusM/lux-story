@@ -1,9 +1,9 @@
 // Service Worker for Grand Central Terminus
 // Provides offline capability and caching
 
-const CACHE_NAME = 'gct-v2.0.0'
-const STATIC_CACHE = 'gct-static-v2.0.0'
-const DYNAMIC_CACHE = 'gct-dynamic-v2.0.0'
+const CACHE_NAME = 'gct-v2.1.0'
+const STATIC_CACHE = 'gct-static-v2.1.0'
+const DYNAMIC_CACHE = 'gct-dynamic-v2.1.0'
 
 // Files to cache for offline use
 const STATIC_FILES = [
@@ -14,7 +14,7 @@ const STATIC_FILES = [
 
 // Install event - cache static files
 self.addEventListener('install', (event) => {
-  console.log('Service Worker: Installing...')
+  console.log('Service Worker: Installing v2.1.0...')
   event.waitUntil(
     caches.open(STATIC_CACHE)
       .then((cache) => {
@@ -30,7 +30,7 @@ self.addEventListener('install', (event) => {
 
 // Activate event - clean up old caches
 self.addEventListener('activate', (event) => {
-  console.log('Service Worker: Activating...')
+  console.log('Service Worker: Activating v2.1.0...')
   event.waitUntil(
     caches.keys()
       .then((cacheNames) => {
@@ -117,7 +117,7 @@ async function syncGameProgress() {
   try {
     // Get game state from IndexedDB
     const gameState = await getGameState()
-    
+
     if (gameState) {
       // Sync with server when available
       console.log('Service Worker: Syncing game progress')
