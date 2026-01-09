@@ -46,6 +46,7 @@ export interface OrbState {
   nextUnlock: PatternUnlock | null
   pointsToNext: number
   progressToNext: number
+  hasNewGrowth: boolean  // True if this pattern grew since last Journal view (for marquee)
 }
 
 /**
@@ -75,7 +76,7 @@ export interface UsePatternUnlocksReturn {
 const MAX_ORB_COUNT = 100
 
 export function usePatternUnlocks(): UsePatternUnlocksReturn {
-  const { balance } = useOrbs()
+  const { balance, patternsWithNewOrbs } = useOrbs()
 
   // Build orb state for each pattern
   const orbs = useMemo((): OrbState[] => {
@@ -102,9 +103,10 @@ export function usePatternUnlocks(): UsePatternUnlocksReturn {
         nextUnlock,
         pointsToNext: pointsNeeded,
         progressToNext: progressPercent,
+        hasNewGrowth: patternsWithNewOrbs.has(pattern as any),
       }
     })
-  }, [balance])
+  }, [balance, patternsWithNewOrbs])
 
   // Quick lookup by pattern
   const getOrb = useMemo(() => {
