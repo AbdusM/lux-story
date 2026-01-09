@@ -10,6 +10,11 @@ import { CHARACTER_COLORS } from '@/lib/constellation/character-positions'
 import { SKILL_DEFINITIONS, SKILL_CHARACTER_HINTS } from '@/lib/skill-definitions'
 import { SKILL_CLUSTERS } from '@/lib/constellation/skill-positions'
 import { CHARACTER_RELATIONSHIP_WEB } from '@/lib/character-relationships'
+import { getLoyaltyExperienceForCharacter } from '@/lib/loyalty-experience'
+import { LOYALTY_TRUST_THRESHOLD, LOYALTY_PATTERN_THRESHOLD } from '@/lib/constants'
+import { useGameStore } from '@/lib/game-store'
+import { PATTERN_METADATA, type PatternType } from '@/lib/patterns'
+import { Trophy, CheckCircle2, Circle } from 'lucide-react'
 
 interface DetailModalProps {
   item: CharacterWithState | SkillWithState | Quest | null
@@ -116,6 +121,39 @@ export function DetailModal({ item, type, onClose, allCharacters }: DetailModalP
 
 function CharacterDetail({ character, onClose, allCharacters }: { character: CharacterWithState; onClose: () => void; allCharacters?: CharacterWithState[] }) {
   const colors = CHARACTER_COLORS[character.color]
+
+  // Get loyalty experience for this character
+  const loyaltyExperience = useMemo(() => getLoyaltyExperienceForCharacter(character.id as any), [character.id])
+
+  // Get player's current patterns and flags for loyalty requirement checking
+  const coreGameState = useGameStore(state => state.coreGameState)
+  const playerPatterns = (coreGameState?.patterns || {}) as Record<PatternType, number>
+  const globalFlags = new Set(coreGameState?.globalFlags || [])
+
+  // Compute loyalty requirement status
+  const loyaltyStatus = useMemo(() => {
+    if (!loyaltyExperience) return null
+
+    const req = loyaltyExperience.requirements
+    const trustMet = character.trust >= req.trustMin
+    const patternReq = req.patternRequirement
+    const patternLevel = patternReq ? (playerPatterns[patternReq.pattern] || 0) : 0
+    const patternMet = patternReq ? patternLevel >= patternReq.minLevel : true
+    const arcFlag = req.requiredFlags?.[0] // Usually "{char}_arc_complete"
+    const arcMet = arcFlag ? globalFlags.has(arcFlag) : true
+
+    return {
+      trustMet,
+      trustCurrent: character.trust,
+      trustRequired: req.trustMin,
+      patternMet,
+      patternCurrent: patternLevel,
+      patternRequired: patternReq?.minLevel || 0,
+      patternType: patternReq?.pattern,
+      arcMet,
+      allMet: trustMet && patternMet && arcMet
+    }
+  }, [loyaltyExperience, character.trust, playerPatterns, globalFlags])
 
   // Get opinions about this character from other characters
   const otherOpinions = useMemo(() => {
@@ -238,6 +276,72 @@ function CharacterDetail({ character, onClose, allCharacters }: { character: Cha
               </div>
             ))}
           </div>
+
+          {/* Loyalty Experience Requirements */}
+          {loyaltyExperience && loyaltyStatus && (
+            <div className="space-y-3 pt-2">
+              <h3 className="text-sm font-medium text-slate-400 uppercase tracking-wider flex items-center gap-2">
+                <Trophy className="w-4 h-4" />
+                Loyalty Experience
+              </h3>
+
+              <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700">
+                <p className="text-sm text-slate-300 mb-3">{loyaltyExperience.description}</p>
+
+                {/* Requirements Checklist */}
+                <div className="space-y-2">
+                  {/* Trust Requirement */}
+                  <div className="flex items-center gap-2">
+                    {loyaltyStatus.trustMet ? (
+                      <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                    ) : (
+                      <Circle className="w-4 h-4 text-slate-500" />
+                    )}
+                    <span className={cn("text-xs", loyaltyStatus.trustMet ? "text-emerald-400" : "text-slate-400")}>
+                      Trust {loyaltyStatus.trustCurrent}/{loyaltyStatus.trustRequired}
+                    </span>
+                  </div>
+
+                  {/* Pattern Requirement */}
+                  {loyaltyStatus.patternType && (
+                    <div className="flex items-center gap-2">
+                      {loyaltyStatus.patternMet ? (
+                        <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                      ) : (
+                        <Circle className="w-4 h-4 text-slate-500" />
+                      )}
+                      <span className={cn("text-xs", loyaltyStatus.patternMet ? "text-emerald-400" : "text-slate-400")}>
+                        {PATTERN_METADATA[loyaltyStatus.patternType]?.label || loyaltyStatus.patternType} pattern ({loyaltyStatus.patternCurrent}/{loyaltyStatus.patternRequired})
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Arc Completion */}
+                  <div className="flex items-center gap-2">
+                    {loyaltyStatus.arcMet ? (
+                      <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                    ) : (
+                      <Circle className="w-4 h-4 text-slate-500" />
+                    )}
+                    <span className={cn("text-xs", loyaltyStatus.arcMet ? "text-emerald-400" : "text-slate-400")}>
+                      Complete {character.name}'s story arc
+                    </span>
+                  </div>
+                </div>
+
+                {/* Status Badge */}
+                <div className="mt-3 pt-3 border-t border-slate-700">
+                  {loyaltyStatus.allMet ? (
+                    <span className="text-xs font-medium text-amber-400">Ready to unlock!</span>
+                  ) : (
+                    <span className="text-xs text-slate-500">
+                      {3 - [loyaltyStatus.trustMet, loyaltyStatus.patternMet, loyaltyStatus.arcMet].filter(Boolean).length} requirements remaining
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* What Others Think - Inter-character opinions */}
           {otherOpinions.length > 0 && (

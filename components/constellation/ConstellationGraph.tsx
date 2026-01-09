@@ -232,6 +232,20 @@ export function ConstellationGraph({ characters, onOpenDetail, onTravel }: Const
                                     />
                                 )}
 
+                                {/* Trust Progress Arc (only for met characters with trust > 0) */}
+                                {char.hasMet && char.trust > 0 && (
+                                    <circle
+                                        r={radius + 2.5}
+                                        fill="none"
+                                        stroke="#f59e0b"
+                                        strokeWidth="0.4"
+                                        strokeLinecap="round"
+                                        strokeDasharray={`${(char.trust / 10) * 2 * Math.PI * (radius + 2.5)} ${2 * Math.PI * (radius + 2.5)}`}
+                                        transform="rotate(-90)"
+                                        className="opacity-60"
+                                    />
+                                )}
+
                                 {/* MARQUIS: Scanning Ring (Unmet or Hovered) */}
                                 {(!char.hasMet || isHovered) && (
                                     <circle
@@ -312,6 +326,30 @@ export function ConstellationGraph({ characters, onOpenDetail, onTravel }: Const
                         <span className="text-xs text-amber-500 font-mono tracking-[0.2em] uppercase font-bold drop-shadow-md">
                             {selectedChar.name}
                         </span>
+
+                        {/* Trust Progress Indicator */}
+                        {selectedChar.hasMet && (
+                            <div className="flex flex-col items-center gap-1 mt-1">
+                                <div className="flex items-center gap-2">
+                                    <div className="w-24 h-1 bg-slate-700/50 rounded-full overflow-hidden">
+                                        <div
+                                            className="h-full bg-amber-500/80 rounded-full transition-all duration-500"
+                                            style={{ width: `${selectedChar.trust * 10}%` }}
+                                        />
+                                    </div>
+                                    <span className="text-[10px] text-slate-400 font-mono">
+                                        {selectedChar.trust}/10
+                                    </span>
+                                </div>
+                                <span className="text-[9px] text-slate-500">
+                                    {selectedChar.trust < 6
+                                        ? `${6 - selectedChar.trust} to deeper connection`
+                                        : selectedChar.trust < 8
+                                            ? `${8 - selectedChar.trust} to loyalty`
+                                            : 'Trusted ally'}
+                                </span>
+                            </div>
+                        )}
 
                         {/* Action Buttons for Selection */}
                         <div
