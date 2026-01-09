@@ -1,6 +1,3 @@
-"use client"
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
@@ -18,12 +15,9 @@ import {
     Sparkles
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { SimulationConfig } from '../SimulationRenderer'
+import { SimulationComponentProps } from './types'
 
-interface PitchDeckProps {
-    config: SimulationConfig
-    onSuccess: (result?: any) => void
-}
+interface PitchDeckProps extends SimulationComponentProps { }
 
 // Slide types
 type SlideType = 'problem' | 'solution' | 'market' | 'traction' | 'team' | 'ask'
@@ -50,7 +44,7 @@ interface SlideElement {
  * For Quinn: Build a compelling pitch deck by filling in key slides
  * with data points, metrics, and narrative elements.
  */
-export function PitchDeck({ config, onSuccess }: PitchDeckProps) {
+export function PitchDeck({ onSuccess }: PitchDeckProps) {
     const [currentSlide, setCurrentSlide] = useState(0)
     const [slides, setSlides] = useState<SlideContent[]>([
         {
@@ -107,7 +101,6 @@ export function PitchDeck({ config, onSuccess }: PitchDeckProps) {
         }
     ])
     const [isComplete, setIsComplete] = useState(false)
-    const [score, setScore] = useState(0)
 
     const currentSlideData = slides[currentSlide]
     const totalRequired = slides.reduce((sum, s) => sum + s.requiredElements, 0)
@@ -126,8 +119,8 @@ export function PitchDeck({ config, onSuccess }: PitchDeckProps) {
             }
         }))
 
-        const newScore = totalFilled + 1
-        setScore(newScore)
+        const newScore = Math.min(100, Math.round(100 - (totalFilled * 2.5)))
+        // Score calculation only)
 
         // Check completion (need at least 80% filled)
         if (newScore >= totalRequired * 0.8 && !isComplete) {
@@ -324,7 +317,10 @@ export function PitchDeck({ config, onSuccess }: PitchDeckProps) {
                         ...slide,
                         elements: slide.elements.map(el => ({ ...el, filled: true }))
                     })))
-                    setScore(totalRequired)
+                    setSlides(prev => prev.map(slide => ({
+                        ...slide,
+                        elements: slide.elements.map(el => ({ ...el, filled: true }))
+                    })))
                     setIsComplete(true)
                     setTimeout(() => {
                         onSuccess({ slidesFilled: totalRequired, totalSlides: slides.length, completionRate: 100 })

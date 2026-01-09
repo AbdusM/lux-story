@@ -945,12 +945,105 @@ export const kaiDialogueNodes: DialogueNode[] = [
           characterId: 'kai',
           trustChange: 1
         }
+      },
+      {
+        choiceId: 'kai_deep_dive_unlock',
+        text: "[Deep Dive] Show me the real blueprint. The one you're afraid to build.",
+        nextNodeId: 'kai_deep_dive',
+        pattern: 'building',
+        skills: ['systemsThinking', 'courage'],
+        visibleCondition: {
+          trust: { min: 4 },
+          patterns: { building: { min: 6 } }
+        },
+        preview: "Enter the Safety Systems Deep Dive",
+        interaction: 'bloom'
       }
     ],
     tags: ['kai_arc', 'career_synthesis', 'manufacturing_design'],
     metadata: {
       sessionBoundary: true  // Session 2: Career vision crystallized
     }
+  },
+
+  // ============= DEEP DIVE: SYSTEM SAFETY ARCHITECT =============
+  {
+    nodeId: 'kai_deep_dive',
+    speaker: 'Kai',
+    content: [
+      {
+        text: "You want the real work? Okay.\n\nStation Life Support. Sector 4. The hydroponics failure wasn't just a glitch. It was a design flaw in the safety interlocks.\n\nThey optimized for yield, not resilience. I've been sketching a redesign that prioritizes worker safety over efficiency.\n\nHelp me balance the system. We can't let it fail again.",
+        emotion: 'intense_focused',
+        variation_id: 'deep_dive_v1'
+      }
+    ],
+    simulation: {
+      type: 'visual_canvas',
+      title: 'Hydroponics Safety Grid',
+      taskDescription: 'Redesign the Sector 4 Life Support safety protocol. Balance nutrient flow efficiency against critical fail-safe redundancy.',
+      initialContext: {
+        label: 'SECTOR_4_SCHEMATIC',
+        content: `Current System Efficiency: 98%
+Safety Margin: 2% (CRITICAL LOW)
+
+Redesign Goals:
+1. Increase Safety Margin > 15%
+2. Maintain Yield > 85%
+
+Available Components:
+[ ] Pressure Relief Valves
+[ ] Bio-Filters (Redundant)
+[ ] Automated Shutdown Logic
+[ ] Manual Override Stations`,
+        displayStyle: 'code'
+      },
+      successFeedback: 'SAFETY GRID OPTIMIZED. Margin 18%. Yield 92%. System stable.',
+      mode: 'fullscreen'
+    },
+    choices: [
+      {
+        choiceId: 'kai_dive_success',
+        text: "The yield dropped slightly, but the system won't kill anyone now.",
+        nextNodeId: 'kai_deep_dive_success',
+        pattern: 'building',
+        skills: ['systemsThinking']
+      },
+      {
+        choiceId: 'kai_dive_analytical',
+        text: "Redundancy isn't waste. It's insurance.",
+        nextNodeId: 'kai_deep_dive_success',
+        pattern: 'analytical',
+        skills: ['criticalThinking']
+      }
+    ],
+    tags: ['deep_dive', 'mastery', 'safety_systems']
+  },
+
+  {
+    nodeId: 'kai_deep_dive_success',
+    speaker: 'Kai',
+    content: [
+      {
+        text: "Look at that. 92% yield. 18% safety margin.\n\nThe VP said it was impossible. Said we couldn't prioritize safety without crashing production.\n\nWe just proved them wrong.\n\nThis... this is what I need to build. Not slides. Systems that save lives.",
+        emotion: 'inspired_determined',
+        variation_id: 'deep_dive_success_v1',
+        interaction: 'bloom'
+      }
+    ],
+    onEnter: [
+      {
+        addGlobalFlags: ['kai_mastery_achieved', 'kai_blueprint_finalized']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'kai_dive_complete',
+        text: "Go build it.",
+        nextNodeId: 'kai_farewell',
+        pattern: 'building',
+        skills: ['leadership']
+      }
+    ]
   },
 
   // ============= SCENE 4: CORPORATE REALITY =============

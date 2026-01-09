@@ -52,7 +52,7 @@ export const silasDialogueNodes: DialogueNode[] = [
         choiceId: 'silas_intro_tech',
         text: "Sensor calibration drift?",
         archetype: 'ASK_FOR_DETAILS',
-        nextNodeId: 'silas_tech_defense',
+        nextNodeId: 'silas_handshake_network',
         pattern: 'analytical',
         skills: ['technicalLiteracy']
       },
@@ -78,6 +78,49 @@ export const silasDialogueNodes: DialogueNode[] = [
       }
     ],
     tags: ['introduction', 'silas_arc']
+  },
+
+  // ============= HANDSHAKE NODE: SENSOR CALIBRATION =============
+  {
+    nodeId: 'silas_handshake_network',
+    speaker: 'Silas',
+    content: [{
+      text: "You think it's just drift? Look at the raw feed.\n\nNitrogen levels spiking where there's no soil. Moisture readings in a drought. The ground truth doesn't match the map.\n\nCan you zero it out?",
+      emotion: 'frustrated',
+      variation_id: 'silas_handshake_intro',
+      interaction: 'ripple'
+    }],
+    simulation: {
+      type: 'data_ticker',
+      mode: 'inline',
+      title: 'Sensor Calibration',
+      taskDescription: 'Stabilize sensor inputs to find ground truth.',
+      initialContext: {
+        label: 'Sensor Array 7',
+        content: JSON.stringify([
+          { id: '1', label: 'MOISTURE_S1', value: 12, priority: 'critical', trend: 'down' },
+          { id: '2', label: 'NITROGEN_S4', value: 45, priority: 'medium', trend: 'stable' },
+          { id: '3', label: 'PH_LEVEL_S2', value: 8.5, priority: 'high', trend: 'up' },
+          { id: '4', label: 'LIGHT_PAR_S3', value: 95, priority: 'critical', trend: 'up' },
+          { id: '5', label: 'TEMP_K_S1', value: 312, priority: 'high', trend: 'up' }
+        ])
+      },
+      successFeedback: 'CALIBRATION COMPLETE. ANOMALY CONFIRMED.'
+    },
+    choices: [
+      {
+        choiceId: 'sensor_complete',
+        text: "It's not drift. The data is... inverted.",
+        nextNodeId: 'silas_tech_defense', // Route back to main arc
+        pattern: 'analytical',
+        skills: ['technicalLiteracy'],
+        voiceVariations: {
+          analytical: "Calibration done. The baseline is wrong.",
+          building: "I fixed the drift, but the foundation is off.",
+          exploring: "That wasn't noise. That was a rewrite."
+        }
+      }
+    ]
   },
 
   // Divergent responses for intro
@@ -866,6 +909,19 @@ HINT: Sensors measure WHERE they're placed...`,
         nextNodeId: 'silas_final_vision',
         pattern: 'exploring',
         skills: ['strategicThinking']
+      },
+      {
+        choiceId: 'silas_deep_dive_trigger',
+        text: "[Deep Dive] You said Ground Truth is a measurement. Let's measure the ghost signal.",
+        nextNodeId: 'silas_deep_dive',
+        pattern: 'analytical',
+        skills: ['systemsThinking', 'technicalLiteracy'],
+        visibleCondition: {
+          trust: { min: 0 },
+          patterns: { analytical: { min: 0 } }
+        },
+        preview: "Initiating Network Drift Diagnostic",
+        interaction: 'bloom'
       }
     ],
     tags: ['silas_arc', 'philosophy']
@@ -1283,6 +1339,82 @@ HINT: Sensors measure WHERE they're placed...`,
       variation_id: 'hub_return_v1'
     }],
     choices: []
+  },
+
+  // ============= DEEP DIVE: NETWORK DRIFT =============
+  {
+    nodeId: 'silas_deep_dive',
+    speaker: 'Silas',
+    content: [
+      {
+        text: "You want to see the real noise? The stuff I filter out to keep the dashboards pretty?\n\nConnect to the raw sensor bus. Sector 4 is screaming. The temperature readings are oscillating in a pattern that matches the station's heartbeat.\n\nIt's not data drift. It's a memory.\n\nStabilize the feed. Don't smooth it out. Listen to it.",
+        emotion: 'intense_focused',
+        variation_id: 'deep_dive_v1'
+      }
+    ],
+    simulation: {
+      type: 'secure_terminal',
+      title: 'Sensor Calibration: Ground Truth',
+      taskDescription: 'The sensor array is picking up "ghost data"—anomalies that persist across reboots. Isolate the signal pattern and lock the baseline.',
+      initialContext: {
+        systemName: 'SENSOR_BUS_ROOT',
+        isSecure: true,
+        history: [
+          { type: 'output', content: 'Connecting to RAW_FEED_V4...' },
+          { type: 'success', content: 'CONNECTION ESTABLISHED' },
+          { type: 'warning', content: 'SIGNAL_TO_NOISE RATIO: < 12dB' },
+          { type: 'output', content: 'DETECTED OSCILLATION: ~4Hz (Theta Wave Pattern?)' },
+          { type: 'error', content: 'Unable to auto-calibrate. Manual interventions required.' }
+        ],
+        displayStyle: 'code' // Optional, SecureTerminal usually handles its own style
+      },
+      successFeedback: 'BASELINE LOCKED. GHOST SIGNAL ISOLATED.',
+      mode: 'fullscreen'
+    },
+    choices: [
+      {
+        choiceId: 'dive_success_pattern',
+        text: "It's not random. It's binary. Someone wrote this code years ago.",
+        nextNodeId: 'silas_deep_dive_success',
+        pattern: 'analytical',
+        skills: ['technicalLiteracy', 'systemsThinking']
+      },
+      {
+        choiceId: 'dive_success_memory',
+        text: "The station remembers. We just learned to listen.",
+        nextNodeId: 'silas_deep_dive_success',
+        pattern: 'exploring',
+        skills: ['wisdom', 'emotionalIntelligence']
+      }
+    ],
+    tags: ['deep_dive', 'mastery', 'network_drift']
+  },
+
+  {
+    nodeId: 'silas_deep_dive_success',
+    speaker: 'Silas',
+    content: [
+      {
+        text: "You heard it too.\n\nI used to think it was interference. Bad wiring. But you stabilized it, and it didn't go away. It got clearer.\n\nMr. Hawkins said the soil talks. I think the station talks too. We just stopped listening because the signal didn't fit our JSON schema.\n\nGood work. You've got hands for this.",
+        emotion: 'impressed_reverent',
+        variation_id: 'deep_dive_success_v1',
+        interaction: 'bloom'
+      }
+    ],
+    onEnter: [
+      {
+        addGlobalFlags: ['silas_mastery_achieved', 'silas_ghost_listener']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'dive_complete',
+        text: "Ground truth acknowledged.",
+        nextNodeId: 'silas_hub_return', // Return to main flow context
+        pattern: 'building',
+        skills: ['resilience']
+      }
+    ]
   }
 ]
 

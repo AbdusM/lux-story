@@ -1,6 +1,9 @@
 "use client"
 
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
+// ...
+
+
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { X, Clock, Users, Compass } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -41,10 +44,10 @@ export function SessionSummary({ onDismiss }: SessionSummaryProps) {
     }
   }, [coreGameState])
 
-  const handleDismiss = () => {
+  const handleDismiss = useCallback(() => {
     setIsVisible(false)
     onDismiss?.()
-  }
+  }, [onDismiss])
 
   // Auto-dismiss after 8 seconds
   useEffect(() => {
@@ -54,7 +57,7 @@ export function SessionSummary({ onDismiss }: SessionSummaryProps) {
       }, 8000)
       return () => clearTimeout(timer)
     }
-  }, [isVisible])
+  }, [isVisible, handleDismiss])
 
   const patternColor = useMemo(() => {
     if (!summary?.dominantPattern) return '#f59e0b' // Default amber

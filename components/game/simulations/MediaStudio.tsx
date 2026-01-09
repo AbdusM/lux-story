@@ -1,15 +1,10 @@
-"use client"
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { useState, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
-import { Music, Waves, CheckCircle2, Heart, Zap, Wind } from 'lucide-react'
+import { CheckCircle2, Music, Heart, Zap, Wind } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { SimulationConfig } from '../SimulationRenderer'
+import { SimulationComponentProps } from './types'
 
-interface MediaStudioProps {
-    config: SimulationConfig
-    onSuccess: (result: any) => void
+interface MediaStudioProps extends SimulationComponentProps {
     variant?: 'audio_studio' | 'news_feed' // Lira vs Nadia
 }
 
@@ -22,7 +17,7 @@ interface MediaStudioProps {
  * For Nadia: Headline emotional tone - teaching players to craft
  * emotionally resonant news headlines.
  */
-export function MediaStudio({ config, onSuccess, variant = 'audio_studio' }: MediaStudioProps) {
+export function MediaStudio({ onSuccess, variant = 'audio_studio' }: MediaStudioProps) {
     // Emotional parameters (0-100)
     const [tempo, setTempo] = useState(50)      // Fast/Slow
     const [mood, setMood] = useState(50)        // Dark/Bright
@@ -38,7 +33,7 @@ export function MediaStudio({ config, onSuccess, variant = 'audio_studio' }: Med
     const TARGET_TEMPO = 30
     const TARGET_MOOD = 25
     const TARGET_TEXTURE = 20
-    const TOLERANCE = 15
+
 
     // Generate waveform based on parameters
     const generateWaveform = useCallback(() => {

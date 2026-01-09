@@ -169,13 +169,48 @@ const nodes: DialogueNode[] = [
       {
         choiceId: 'ai_research',
         text: 'We don\'t read it. We query it. Let me show you how to filter the noise.',
-        nextNodeId: 'elena_simulation_perplexity',
+        nextNodeId: 'elena_handshake_ticker', // CHANGED: Points to handshake node
         pattern: 'analytical',
         skills: ['digitalLiteracy'],
         visibleCondition: {
           patterns: {
             analytical: { min: 1 }
           }
+        }
+      }
+    ]
+  },
+
+  // ============= HANDSHAKE NODE: DATA TICKER =============
+  {
+    nodeId: 'elena_handshake_ticker',
+    speaker: 'Elena', // She speaks while you work
+    content: [{
+      text: "You can filter it? The data streams are fluctuating wildly... can you stabilize the signal?",
+      emotion: 'anxious',
+      variation_id: 'handshake_intro',
+      interaction: 'ripple'
+    }],
+    simulation: {
+      type: 'data_ticker',
+      mode: 'inline',
+      title: 'Signal Stabilization Protocol',
+      taskDescription: 'Stabilize 3 fluctuating data streams.',
+      initialContext: {
+        label: 'Signal Status',
+        content: 'FLUCTUATING'
+      },
+      successFeedback: 'SIGNAL LOCKED. ANOMALY DETECTED.'
+    },
+    choices: [
+      {
+        choiceId: 'ticker_complete',
+        text: 'Signal stabilized. Look at this anomaly.',
+        nextNodeId: 'elena_simulation_perplexity', // Continue to original path
+        pattern: 'analytical',
+        voiceVariations: {
+          analytical: "I've locked the signal. The anomaly is isolated.",
+          building: "Stabilization complete. Now we can build a query."
         }
       }
     ]

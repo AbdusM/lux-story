@@ -35,7 +35,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'jordan_intro_ask_jobs',
         text: "That's a lot of different roles. What's the through-line?",
-        nextNodeId: 'jordan_career_question',
+        nextNodeId: 'jordan_handshake_layout',
         pattern: 'exploring',
         skills: ['communication'],
         consequence: {
@@ -141,6 +141,44 @@ export const jordanDialogueNodes: DialogueNode[] = [
       setRelationshipStatus: 'stranger'
     }],
     tags: ['introduction', 'jordan_arc', 'bg3_hook']
+  },
+
+  // ============= HANDSHAKE NODE: ROOM LAYOUT =============
+  {
+    nodeId: 'jordan_handshake_layout',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: "Actually, forget the speech. Look at this floor plan. They put the high-voltage demo next to the hydration station. Classic disaster.",
+      emotion: 'focused',
+      variation_id: 'jordan_handshake_intro',
+      interaction: 'ripple'
+    }],
+    simulation: {
+      type: 'visual_canvas',
+      mode: 'inline',
+      inlineHeight: 'h-80',
+      title: 'Room Layout Safety Check',
+      taskDescription: 'Place 4 sensors to ensure event safety.',
+      initialContext: {
+        label: 'Main Hall',
+        content: 'Grid Layout'
+      },
+      successFeedback: 'LAYOUT OPTIMIZED. SAFETY PROTOCOLS ACTIVE.'
+    },
+    choices: [
+      {
+        choiceId: 'layout_complete',
+        text: "Safety grid established. You're clear.",
+        nextNodeId: 'jordan_career_question', // Route back to main arc
+        pattern: 'building',
+        skills: ['systemsThinking'],
+        voiceVariations: {
+          analytical: "Grid secured. Risk minimized.",
+          building: "The foundation is safe now. We can build.",
+          helping: "People are safe. That's what matters."
+        }
+      }
+    ]
   },
 
   {
@@ -1156,6 +1194,19 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
       lacksGlobalFlags: ['jordan_chose_shallow'] // Only if NOT failed
     },
     choices: [
+      {
+        choiceId: 'jordan_crossroads_deep_dive',
+        text: "[Deep Dive] Forget the speech. Show them what adaptation looks like.",
+        nextNodeId: 'jordan_deep_dive',
+        pattern: 'building',
+        skills: ['systemsThinking', 'resilience'],
+        visibleCondition: {
+          trust: { min: 4 },
+          patterns: { building: { min: 6 } }
+        },
+        preview: "Reinforce the failing corridor structure",
+        interaction: 'bloom'
+      },
       // Career observation route (ISP: Only visible when pattern combo is achieved)
       {
         choiceId: 'jordan_crossroads_career_counselor',
@@ -1810,6 +1861,83 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
       variation_id: 'hub_return_v1'
     }],
     choices: []
+  },
+
+  // ============= DEEP DIVE: STRUCTURAL INTEGRITY =============
+  {
+    nodeId: 'jordan_deep_dive',
+    speaker: 'Jordan Packard',
+    content: [
+      {
+        text: "The speech... the speech is just words.\n\n(A low rumble shakes the floor nearby.)\n\nYou feel that? The service corridor behind the stage. The support struts are vibrating. They're going to buckle under the weight of the crowd.\n\nI used to frame houses one summer. I know that sound.\n\nForget the PowerPoint. Grab that toolkit. We have ten minutes before the doors open.",
+        emotion: 'commanding',
+        variation_id: 'deep_dive_v1'
+      }
+    ],
+    simulation: {
+      type: 'visual_canvas',
+      title: 'Structural Reinforcement',
+      taskDescription: 'The corridor supports are failing. Reinforce the load-bearing points using improvised materials. Prioritize stability over aesthetics.',
+      initialContext: {
+        label: 'Service Corridor B',
+        content: 'Load Map: CRITICAL',
+        tools: ['Brace', 'Weld', 'Jack'],
+        gridSize: 8,
+        elements: [
+          { x: 3, y: 7, type: 'beam_stress_high' },
+          { x: 4, y: 7, type: 'beam_stress_critical' },
+          { x: 3, y: 3, type: 'load_vector_down' }
+        ],
+        displayStyle: 'visual',
+        mode: 'fullscreen'
+      },
+      successFeedback: 'INTEGRITY RESTORED. COLLAPSE AVERTED.',
+      mode: 'fullscreen'
+    },
+    choices: [
+      {
+        choiceId: 'dive_success_hands',
+        text: "You didn't hesitate. You just fixed it.",
+        nextNodeId: 'jordan_deep_dive_success',
+        pattern: 'building',
+        skills: ['systemsThinking', 'problemSolving']
+      },
+      {
+        choiceId: 'dive_success_synthesis',
+        text: "Framing houses. Physics. Leadership. You used it all.",
+        nextNodeId: 'jordan_deep_dive_success',
+        pattern: 'analytical',
+        skills: ['criticalThinking']
+      }
+    ],
+    tags: ['deep_dive', 'mastery', 'crisis']
+  },
+
+  {
+    nodeId: 'jordan_deep_dive_success',
+    speaker: 'Jordan Packard',
+    content: [
+      {
+        text: "Dust on my blazer. Grease on my hands.\n\nI feel... calm.\n\nI was so worried about explaining my value that I forgot I actually HAVE value. Real, tangible capability.\n\nI'm going to go out there like this. Dirty hands and all. Let them see the work.",
+        emotion: 'empowered_calm',
+        variation_id: 'deep_dive_success_v1',
+        interaction: 'bloom'
+      }
+    ],
+    onEnter: [
+      {
+        addGlobalFlags: ['jordan_mastery_achieved', 'jordan_builder_unlocked']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'dive_complete',
+        text: "Show them the work, Jordan.",
+        nextNodeId: 'jordan_mentor_context', // Return to flow but changed
+        pattern: 'building',
+        skills: ['leadership']
+      }
+    ]
   }
 ]
 

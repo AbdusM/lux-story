@@ -1,11 +1,7 @@
-"use client"
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import {
     CheckCircle2,
-    Terminal,
     Search,
     Database,
     Book,
@@ -15,13 +11,11 @@ import {
     Unlock
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { SimulationConfig } from '../SimulationRenderer'
+import { SimulationComponentProps } from './types'
 
 type TerminalVariant = 'audit' | 'archive' | 'query'
 
-interface SecureTerminalProps {
-    config: SimulationConfig
-    onSuccess: (result?: any) => void
+interface SecureTerminalProps extends SimulationComponentProps {
     variant?: TerminalVariant
 }
 
@@ -49,7 +43,7 @@ interface QueryOption {
  * - archive: Yaquin's historical research
  * - query: Elena's search refinement
  */
-export function SecureTerminal({ config, onSuccess, variant = 'audit' }: SecureTerminalProps) {
+export function SecureTerminal({ onSuccess, variant = 'audit' }: SecureTerminalProps) {
     const [logs, setLogs] = useState<LogEntry[]>([])
     const [queryOptions, setQueryOptions] = useState<QueryOption[]>([])
     const [selectedQueries, setSelectedQueries] = useState<string[]>([])
@@ -90,7 +84,19 @@ export function SecureTerminal({ config, onSuccess, variant = 'audit' }: SecureT
     const currentConfig = variantConfig[variant]
     const Icon = currentConfig.icon
 
-    // Initialize
+    // Add log entry with typing effect
+    const addLog = useCallback((entry: LogEntry) => {
+        setIsTyping(true)
+        setCurrentQuery(entry.content)
+
+        setTimeout(() => {
+            setLogs(prev => [...prev, entry])
+            setIsTyping(false)
+            setCurrentQuery('')
+        }, 300 + entry.content.length * 10)
+    }, [])
+
+    // Initialize with context
     useEffect(() => {
         const initialLogs = getInitialLogs(variant)
         const options = getQueryOptions(variant)
@@ -106,24 +112,12 @@ export function SecureTerminal({ config, onSuccess, variant = 'audit' }: SecureT
                 type: 'info'
             })
         }, 500)
-    }, [variant])
+    }, [variant, addLog])
 
     // Auto-scroll to bottom
     useEffect(() => {
         logEndRef.current?.scrollIntoView({ behavior: 'smooth' })
     }, [logs])
-
-    // Add log entry with typing effect
-    const addLog = useCallback((entry: LogEntry) => {
-        setIsTyping(true)
-        setCurrentQuery(entry.content)
-
-        setTimeout(() => {
-            setLogs(prev => [...prev, entry])
-            setIsTyping(false)
-            setCurrentQuery('')
-        }, 300 + entry.content.length * 10)
-    }, [])
 
     // Execute a query
     const executeQuery = useCallback((queryId: string) => {
@@ -220,7 +214,7 @@ export function SecureTerminal({ config, onSuccess, variant = 'audit' }: SecureT
 
                 {/* Log Output */}
                 <div className="p-3 h-40 overflow-y-auto space-y-1">
-                    {logs.map((log, i) => (
+                    {logs.map((log, _i) => (
                         <motion.div
                             key={log.id}
                             initial={{ opacity: 0, x: -10 }}

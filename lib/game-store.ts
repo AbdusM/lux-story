@@ -8,6 +8,7 @@ import {
   GameStateUtils,
   StateChange
 } from './character-state'
+import { SimulationConfig } from '@/components/game/simulations/types'
 import { updateAmbientMusic } from './audio-feedback'
 
 // Core game state interfaces
@@ -25,7 +26,7 @@ export interface GameState {
 
   // Navigation state
   pendingTravelTarget: string | null
-  debugSimulation: any | null // GOD MODE: Force-load a simulation context
+  debugSimulation: SimulationConfig | null // GOD MODE: Force-load a simulation context
 
   // Game progress
   visitedScenes: string[]
@@ -179,7 +180,7 @@ export interface GameActions {
   setProcessing: (processing: boolean) => void
   setChoiceStartTime: (time: number | null) => void
   setPendingTravelTarget: (target: string | null) => void
-  setDebugSimulation: (simulation: any | null) => void
+  setDebugSimulation: (simulation: SimulationConfig | null) => void
 
   // Message management
   addMessage: (message: Omit<GameMessage, 'id' | 'timestamp'>) => void

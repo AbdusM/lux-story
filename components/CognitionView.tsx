@@ -1,8 +1,8 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useState } from "react"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
-import { Brain, ChevronDown, ChevronUp, Activity, TrendingUp, AlertCircle } from "lucide-react"
+import { Brain, ChevronDown, ChevronUp, Activity, TrendingUp } from "lucide-react"
 import {
   useCognitiveDomains,
   useDomainProgress,
@@ -12,11 +12,8 @@ import {
   CognitiveDomainId,
   CognitiveDomainScore,
   DOMAIN_METADATA,
-  DOMAIN_COLORS,
   getLevelLabel,
-  getLevelColor,
-  getCoreDomains,
-  getAdvancedDomains
+  getLevelColor
 } from "@/lib/cognitive-domains"
 import { CognitionRadar } from "./constellation/CognitionRadar"
 import { springs, STAGGER_DELAY } from "@/lib/animations"
@@ -36,7 +33,6 @@ export function CognitionView() {
     domains,
     engagement,
     strongestDomains,
-    developmentAreas,
     nearThreshold,
     profile,
     coreDomains,

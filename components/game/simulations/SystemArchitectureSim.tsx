@@ -1,18 +1,12 @@
 "use client"
-/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Activity, Zap, CheckCircle2, RotateCcw } from 'lucide-react'
+import { Activity, CheckCircle2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { SimulationConfig } from '../SimulationRenderer'
+import { SimulationComponentProps } from './types'
 
-interface SystemArchitectureSimProps {
-    config: SimulationConfig
-    onSuccess: (result?: any) => void
-}
-
-export function SystemArchitectureSim({ config, onSuccess }: SystemArchitectureSimProps) {
+export function SystemArchitectureSim({ onSuccess }: SimulationComponentProps) {
     // State for PID controller parameters
     const [pGain, setPGain] = useState(50)
     const [dGain, setDGain] = useState(50)
@@ -22,10 +16,8 @@ export function SystemArchitectureSim({ config, onSuccess }: SystemArchitectureS
     const [oscillation, setOscillation] = useState(100) // Start at high oscillation
     const [isStabilized, setIsStabilized] = useState(false)
 
-    // Target values (hidden from user)
     const TARGET_P = 75 // Required P-gain
     const TARGET_D = 30 // Required D-gain
-    const TOLERANCE = 10 // Allowable error range
 
     useEffect(() => {
         // Calculate stability based on distance from target
@@ -49,7 +41,7 @@ export function SystemArchitectureSim({ config, onSuccess }: SystemArchitectureS
                 setIsStabilized(true)
                 // Trigger success after a brief hold
                 setTimeout(() => {
-                    onSuccess()
+                    onSuccess({ success: true, score: 100 })
                 }, 1500)
             }
         } else {

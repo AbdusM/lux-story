@@ -12,6 +12,43 @@
 import { DialogueNode, DialogueGraph } from '../lib/dialogue-graph'
 
 export const liraDialogueNodes: DialogueNode[] = [
+    // ============= INTRO HANDSHAKE =============
+    {
+        nodeId: 'lira_handshake_audio',
+        speaker: 'Lira Vance',
+        content: [{
+            text: "It's not just about teaching. It's about feeling. Here, take the fader.\n\nDon't listen to the notes. Listen to the texture. Can you make it feel... lonely?",
+            emotion: 'pensive',
+            variation_id: 'lira_handshake_intro',
+            interaction: 'ripple'
+        }],
+        simulation: {
+            type: 'audio_studio',
+            mode: 'inline',
+            inlineHeight: 'h-64',
+            title: 'Synesthesia Tuning',
+            taskDescription: 'Tune the frequency to match the emotion.',
+            initialContext: {
+                targetMood: 'Melancholy'
+            },
+            successFeedback: 'RESONANCE ACHIEVED. HARMONY LOCKED.'
+        },
+        choices: [
+            {
+                choiceId: 'audio_complete',
+                text: "I hear it now. The space between the notes.",
+                nextNodeId: 'lira_teaching_machines', // Route back to main arc
+                pattern: 'exploring',
+                skills: ['creativity'],
+                voiceVariations: {
+                    analytical: "Frequency aligned. The mood is precise.",
+                    exploring: "I hear it now. The space between the notes.",
+                    helping: "It sounds like memory."
+                }
+            }
+        ]
+    },
+
     // ============= INTRODUCTION =============
     {
         nodeId: 'lira_introduction',
@@ -65,7 +102,7 @@ export const liraDialogueNodes: DialogueNode[] = [
                     exploring: "That's fascinating. How do you teach a machine about pressure?",
                     patience: "I'd like to understand. How do you teach a machine about pressure?"
                 },
-                nextNodeId: 'lira_teaching_machines',
+                nextNodeId: 'lira_handshake_audio',
                 pattern: 'exploring',
                 skills: ['creativity'],
                 consequence: {
@@ -2575,6 +2612,19 @@ export const liraDialogueNodes: DialogueNode[] = [
                 }
             },
             {
+                choiceId: 'collab_deep_dive',
+                text: "[Deep Dive] The melody is just one part. Let's harmonize the entire station.",
+                nextNodeId: 'lira_deep_dive',
+                pattern: 'building',
+                skills: ['systemsThinking', 'creativity'],
+                visibleCondition: {
+                    trust: { min: 4 },
+                    patterns: { building: { min: 6 } }
+                },
+                preview: "Composing the Station Symphony",
+                interaction: 'bloom'
+            },
+            {
                 choiceId: 'collab_understand',
                 text: "Before we start. Tell me about your grandmother. I think she's in this piece.",
                 nextNodeId: 'lira_vulnerability_arc',
@@ -2587,6 +2637,81 @@ export const liraDialogueNodes: DialogueNode[] = [
             }
         ],
         tags: ['lira_arc', 'pattern_unlock', 'building', 'vulnerability']
+    },
+
+    // ============= DEEP DIVE: SYMPHONY OF THE STATION =============
+    {
+        nodeId: 'lira_deep_dive',
+        speaker: 'Lira Vance',
+        content: [
+            {
+                text: "The film score is just one layer. The real composition is the station itself.\n\nI want to weave it all together. The mechanical thrum of the core. The footsteps in the corridor. The silence of the void.\n\nBut the layers keep fighting each other. The machine noise drowns out the human voices.\n\nTake the mixer. Help me find the harmony.",
+                emotion: 'visionary',
+                variation_id: 'deep_dive_v1'
+            }
+        ],
+        simulation: {
+            type: 'audio_studio',
+            title: 'Station Symphony: The Living Score',
+            taskDescription: 'Compose the "Sound of the Station" by layering 4 distinct audio tracks. Balance the volume to ensure no single layer overpowers the others.',
+            initialContext: {
+                label: 'MULTITRACK_MIXER',
+                content: `Track 1: Core Servo Hum (BASS)
+Track 2: Crowd Ambience (MID)
+Track 3: Void Silence (Atmosphere)
+Track 4: Piano Melody (TREBLE)
+
+Current State: DISSONANT
+Warning: Core Hum saturating mix.`,
+                displayStyle: 'code'
+            },
+            successFeedback: 'HARMONIC BALANCE ACHIEVED. The station breathes.',
+            mode: 'fullscreen'
+        },
+        choices: [
+            {
+                choiceId: 'dive_success_harmony',
+                text: "The machine supports the melody. It doesn't crush it.",
+                nextNodeId: 'lira_deep_dive_success',
+                pattern: 'building',
+                skills: ['creativity']
+            },
+            {
+                choiceId: 'dive_success_silence',
+                text: "The silence glues it all together.",
+                nextNodeId: 'lira_deep_dive_success',
+                pattern: 'exploring',
+                skills: ['emotionalIntelligence']
+            }
+        ],
+        tags: ['deep_dive', 'mastery', 'audio_engineering']
+    },
+
+    {
+        nodeId: 'lira_deep_dive_success',
+        speaker: 'Lira Vance',
+        content: [
+            {
+                text: "[The sound fills the room. It sounds like a heart beating inside a cathedral.]\n\nThat's it. That's the ghost in the machine.\n\nYou didn't just mix audio. You reconciled the metal with the memory.\n\nThis... this is what I was trying to preserve. Not just her. But us. All of us.",
+                emotion: 'transcendent',
+                variation_id: 'deep_dive_success_v1',
+                interaction: 'bloom'
+            }
+        ],
+        onEnter: [
+            {
+                addGlobalFlags: ['lira_mastery_achieved', 'lira_symphony_complete']
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'dive_complete',
+                text: "It's beautiful.",
+                nextNodeId: 'lira_hub_return',
+                pattern: 'helping',
+                skills: ['emotionalIntelligence']
+            }
+        ]
     },
 
     // ============= ARC 3: THE QUIET HOUR =============

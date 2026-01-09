@@ -201,6 +201,7 @@ import { selectAnnouncement } from '@/lib/platform-announcements'
 import { checkSessionBoundary, incrementBoundaryCounter, getTotalNodesVisited, type SessionAnnouncement } from '@/lib/session-structure'
 import { SessionBoundaryAnnouncement } from '@/components/SessionBoundaryAnnouncement'
 import { IdentityCeremony } from '@/components/IdentityCeremony'
+import { JourneyComplete } from '@/components/JourneyComplete'
 import { playPatternSound, playTrustSound, playIdentitySound, playMilestoneSound, playEpisodeSound, playSound, initializeAudio, setAudioEnabled } from '@/lib/audio-feedback'
 // OnboardingScreen removed - discovery-based learning via Samuel's firstOrb echo instead
 // FoxTheatreGlow import removed - unused
@@ -248,6 +249,8 @@ interface GameInterfaceState {
   previousTotalNodes: number  // Track total nodes for boundary calculation
   showIdentityCeremony: boolean  // Identity internalization ceremony
   ceremonyPattern: PatternType | null  // Pattern being internalized
+  showPatternEnding: boolean  // Pattern-based journey ending screen
+  endingPattern: PatternType | null  // Dominant pattern for ending
   hasNewTrust: boolean  // Track trust changes for Constellation attention indicator
   hasNewMeeting: boolean  // Track first meeting with non-Samuel character
   isMuted: boolean
@@ -392,6 +395,8 @@ export default function StatefulGameInterface() {
     previousTotalNodes: 0,
     showIdentityCeremony: false,
     ceremonyPattern: null,
+    showPatternEnding: false,
+    endingPattern: null,
     hasNewTrust: false,
     hasNewMeeting: false,
     isMuted: false,
@@ -963,6 +968,8 @@ export default function StatefulGameInterface() {
         previousTotalNodes: getTotalNodesVisited(gameState),
         showIdentityCeremony: false,
         ceremonyPattern: null,
+        showPatternEnding: false,
+        endingPattern: null,
         hasNewTrust: false,
         hasNewMeeting: false,
         isMuted: false,
@@ -2432,6 +2439,23 @@ export default function StatefulGameInterface() {
       // D-096: Check for voice conflicts (when strong patterns disagree)
       const voiceConflict = checkVoiceConflict(newGameState)
 
+      // Check for journey complete trigger - show pattern-based ending screen
+      const isJourneyCompleteNode = nextNode.nodeId === 'journey_complete_trigger'
+      let dominantPattern: PatternType | null = null
+      if (isJourneyCompleteNode) {
+        // Calculate dominant pattern for ending
+        const patterns = newGameState.patterns
+        let maxValue = 0
+        for (const [pattern, value] of Object.entries(patterns)) {
+          if (value > maxValue) {
+            maxValue = value
+            dominantPattern = pattern as PatternType
+          }
+        }
+        // Default to exploring if no clear pattern
+        if (!dominantPattern) dominantPattern = 'exploring'
+      }
+
       setState({
         gameState: newGameState,
         currentNode: nextNode,
@@ -2466,6 +2490,8 @@ export default function StatefulGameInterface() {
         previousTotalNodes: getTotalNodesVisited(newGameState),  // Track for next boundary check
         showIdentityCeremony: identityCeremonyPattern !== null,  // Identity ceremony if triggered
         ceremonyPattern: identityCeremonyPattern,  // Pattern being internalized
+        showPatternEnding: isJourneyCompleteNode,  // Pattern-based journey ending
+        endingPattern: dominantPattern,  // Dominant pattern for ending
         hasNewTrust: trustDelta !== 0 ? true : state.hasNewTrust,  // Track trust changes for Constellation attention
         hasNewMeeting: isFirstMeeting ? true : state.hasNewMeeting,  // Track first meeting for Constellation nudge
         isMuted: state.isMuted,
@@ -3302,11 +3328,11 @@ export default function StatefulGameInterface() {
                             />
                           </div>
                         </div>
-                      ) : state.currentNode?.simulation ? (
-                        // ISP: Workflow Simulation Renderer
+                      ) : (state.currentNode?.simulation && state.currentNode.simulation.mode !== 'inline') ? (
+                        // ISP: FULLSCREEN Workflow Simulation Renderer (Legacy God Mode)
                         <div className="p-6 h-full">
                           <SimulationRenderer
-                            simulation={state.currentNode.simulation}
+                            simulation={state.currentNode.simulation as any}
                             onComplete={(result) => {
                               logger.info('Simulation Complete', result)
                               // Auto-advance to next node if choices exist
@@ -3343,6 +3369,22 @@ export default function StatefulGameInterface() {
                               />
                             )
                           })()}
+
+                          {/* ISP: INLINE SIMULATION WIDGET (Handshake Protocol) */}
+                          {state.currentNode?.simulation && state.currentNode.simulation.mode === 'inline' && (
+                            <div className="mt-6">
+                              <SimulationRenderer
+                                simulation={state.currentNode.simulation as any}
+                                onComplete={(result) => {
+                                  logger.info('Inline Simulation Complete', result)
+                                  // Auto-advance logic
+                                  if (state.availableChoices.length > 0) {
+                                    handleChoice(state.availableChoices[0])
+                                  }
+                                }}
+                              />
+                            </div>
+                          )}
 
                           {/* ME2-style interrupt button - DISABLED per UX review
                               Issue: Appears in narrative area instead of choice framework
@@ -3617,6 +3659,14 @@ export default function StatefulGameInterface() {
           isVisible={state.showIdentityCeremony}
           onComplete={() => setState(prev => ({ ...prev, showIdentityCeremony: false, ceremonyPattern: null }))}
         />
+
+        {/* Pattern-Based Journey Ending */}
+        {state.showPatternEnding && state.endingPattern && (
+          <JourneyComplete
+            pattern={state.endingPattern}
+            onRestart={() => setState(prev => ({ ...prev, showPatternEnding: false, endingPattern: null }))}
+          />
+        )}
 
         {/* Limbic System Overlay REMOVED - caused distracting color flashing */}
         {/* The Reality Interface - Career Report */}
