@@ -1,4 +1,5 @@
 "use client"
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -180,7 +181,7 @@ export function DiplomacyTable({ config, onSuccess, variant = 'negotiation' }: D
                     <svg className="w-full h-full">
                         <defs>
                             <pattern id="diplo-grid" width="30" height="30" patternUnits="userSpaceOnUse">
-                                <circle cx="15" cy="15" r="1" fill="white"/>
+                                <circle cx="15" cy="15" r="1" fill="white" />
                             </pattern>
                         </defs>
                         <rect width="100%" height="100%" fill="url(#diplo-grid)" />
@@ -226,7 +227,7 @@ export function DiplomacyTable({ config, onSuccess, variant = 'negotiation' }: D
                 {/* Nodes */}
                 {nodes.map(node => {
                     const NodeIcon = node.type === 'person' ? Users :
-                                    node.type === 'action' ? Zap : Shield
+                        node.type === 'action' ? Zap : Shield
                     return (
                         <motion.div
                             key={node.id}

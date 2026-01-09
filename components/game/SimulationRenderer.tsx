@@ -1,4 +1,5 @@
 "use client"
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -63,8 +64,8 @@ export function SimulationRenderer({ simulation, onComplete }: SimulationRendere
             case 'visual_canvas': // Kai (blueprint), Asha (art), Rohan (navigation)
                 // Determine variant based on title/context
                 const canvasVariant = simulation.title.toLowerCase().includes('mural') ? 'art' :
-                                      simulation.title.toLowerCase().includes('star') || simulation.title.toLowerCase().includes('constellation') ? 'navigation' :
-                                      'blueprint'
+                    simulation.title.toLowerCase().includes('star') || simulation.title.toLowerCase().includes('constellation') ? 'navigation' :
+                        'blueprint'
                 return <VisualCanvas config={simulation} onSuccess={handleSuccess} variant={canvasVariant} />
 
             case 'architect_3d':  // Jordan - uses navigation variant for route plotting
@@ -76,8 +77,8 @@ export function SimulationRenderer({ simulation, onComplete }: SimulationRendere
             case 'dashboard_triage': // Marcus/Grace/Silas/Isaiah
                 // Determine variant based on context
                 const triageVariant = simulation.title.toLowerCase().includes('supply') || simulation.title.toLowerCase().includes('route') ? 'logistics' :
-                                      simulation.title.toLowerCase().includes('soil') || simulation.title.toLowerCase().includes('sensor') ? 'analysis' :
-                                      'triage'
+                    simulation.title.toLowerCase().includes('soil') || simulation.title.toLowerCase().includes('sensor') ? 'analysis' :
+                        'triage'
                 return <DataDashboard config={simulation} onSuccess={handleSuccess} variant={triageVariant} />
 
             case 'market_visualizer': // Elena

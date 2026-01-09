@@ -1,5 +1,6 @@
 "use client"
 
+import { type ElementType } from 'react'
 import { motion } from 'framer-motion'
 import {
     Wrench, DraftingCompass, Music, Activity, Sprout, Users, Shield, Database,
@@ -10,7 +11,7 @@ import { useGameStore } from '@/lib/game-store'
 import { SIMULATION_REGISTRY, SimulationDefinition } from '@/content/simulation-registry'
 
 // Icon mapping
-const iconMap: Record<string, any> = {
+const iconMap: Record<string, ElementType> = {
     wrench: Wrench,
     draftjs: DraftingCompass,
     music: Music,
@@ -84,7 +85,7 @@ export function SimulationGodView({ onClose }: { onClose?: () => void }) {
                                     <div className="flex-1">
                                         <div className="flex items-center justify-between">
                                             <div className="text-[10px] font-mono uppercase tracking-widest text-slate-500 mb-1">
-                                                {sim.characterId.toUpperCase()} // {sim.type}
+                                                {sim.characterId.toUpperCase()} {'//'} {sim.type}
                                             </div>
                                             {/* Phase Indicator */}
                                             <div className="flex items-center gap-1">
