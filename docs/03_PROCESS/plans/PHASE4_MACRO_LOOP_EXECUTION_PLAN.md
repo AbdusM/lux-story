@@ -6,31 +6,119 @@
 
 ---
 
-## CRITICAL RULES - READ FIRST
+## 📋 EXECUTIVE SUMMARY
 
-### DO NOT:
-- ❌ Modify any file in `lib/` except where explicitly specified
-- ❌ Change function signatures or interfaces
-- ❌ Remove or rename existing nodeIds
-- ❌ Add new dependencies or imports to core files
-- ❌ Touch `StatefulGameInterface.tsx` (it's fragile)
-- ❌ Create new component files unless specified
-- ❌ Use `any` type - always use proper types
+This plan has **3 Execution Phases** with **4 Checkpoints**. Complete each phase fully before moving to the next.
 
-### ALWAYS:
-- ✅ Run `npm run type-check` after every file change
-- ✅ Run `npm test` before committing
-- ✅ Follow existing patterns exactly (copy-paste, then modify)
-- ✅ Use existing types from `lib/dialogue-graph.ts`
-- ✅ Keep commits small and focused (one task = one commit)
+| Phase | Description | Files Changed | Checkpoint |
+|-------|-------------|---------------|------------|
+| **A** | Arc Completion Visuals | 3 component files | ✅ Checkpoint 1 |
+| **B** | Mystery Breadcrumbs | 20 dialogue files | ✅ Checkpoint 2 |
+| **C** | Pattern Endings | 2 new files | ✅ Checkpoint 3 |
+| **QA** | Opus reviews & wires | TBD | ✅ Final |
+
+**Total Estimated Work:**
+- Phase A: ~30 min
+- Phase B: ~2-3 hours (19 files)
+- Phase C: ~30 min
 
 ---
 
-## Task 4.1: Character Arc Completion Recognition
+## 🚨 CRITICAL RULES - READ BEFORE STARTING
 
-**Goal:** Show visual feedback when player completes a character's vulnerability arc.
+### ❌ DO NOT:
+| Rule | Why |
+|------|-----|
+| Modify any file in `lib/` except where specified | Core game logic - very fragile |
+| Change function signatures or interfaces | Breaks dependent code |
+| Remove or rename existing nodeIds | Breaks save files and navigation |
+| Add new dependencies or imports to core files | Creates coupling |
+| Touch `StatefulGameInterface.tsx` | Opus will wire it during QA |
+| Create new component files unless specified | Scope creep |
+| Use `any` type | Type safety required |
+| Guess at node IDs or character names | Must match exactly |
 
-### Step 4.1.1: Add Arc Completion Visual to ConstellationGraph
+### ✅ ALWAYS:
+| Rule | When |
+|------|------|
+| Run `npm run type-check` | After EVERY file save |
+| Run `npm test` | Before EVERY commit |
+| Copy existing patterns exactly | Then modify values only |
+| Search for existing similar code | Before writing new code |
+| Stop and ask if unsure | Better than breaking |
+
+---
+
+## 🔄 WORKFLOW FOR EACH FILE
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│ 1. READ the file first (understand structure)               │
+├─────────────────────────────────────────────────────────────┤
+│ 2. FIND the exact location (search for anchor text)         │
+├─────────────────────────────────────────────────────────────┤
+│ 3. ADD code (copy from plan, paste, adjust values)          │
+├─────────────────────────────────────────────────────────────┤
+│ 4. SAVE the file                                            │
+├─────────────────────────────────────────────────────────────┤
+│ 5. RUN: npm run type-check                                  │
+│    - If PASS → Continue to next file                        │
+│    - If FAIL → Fix error BEFORE continuing                  │
+├─────────────────────────────────────────────────────────────┤
+│ 6. At checkpoint → RUN: npm test                            │
+│    - If PASS → Commit and continue                          │
+│    - If FAIL → Fix or rollback                              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 🔙 ROLLBACK INSTRUCTIONS
+
+If something breaks and you can't fix it:
+
+### Option 1: Undo Single File
+```bash
+# Discard changes to specific file
+git checkout -- path/to/file.ts
+```
+
+### Option 2: Undo All Uncommitted Changes
+```bash
+# WARNING: Loses all work since last commit
+git checkout -- .
+```
+
+### Option 3: Revert Last Commit
+```bash
+# If you committed broken code
+git revert HEAD
+```
+
+### Option 4: Ask Opus
+If you hit a wall, document:
+1. What you were trying to do
+2. The exact error message
+3. Which file(s) you modified
+
+Then stop and wait for guidance.
+
+---
+
+## 🏁 PHASE A: Arc Completion Visuals
+
+**Goal:** Show visual indicator when player completes a character's vulnerability arc.
+
+**Files to modify:**
+1. `components/constellation/ConstellationGraph.tsx`
+2. `hooks/useConstellationData.ts`
+3. `components/constellation/DetailModal.tsx`
+
+**Time estimate:** ~30 minutes
+
+---
+
+### Step A.1: Add Arc Completion Visual to ConstellationGraph
 
 **File:** `components/constellation/ConstellationGraph.tsx`
 
@@ -81,7 +169,7 @@ If you get an error about `arcComplete` not existing on type, that's expected - 
 
 ---
 
-### Step 4.1.2: Add arcComplete to CharacterWithState
+### Step A.2: Add arcComplete to CharacterWithState
 
 **File:** `hooks/useConstellationData.ts`
 
@@ -111,7 +199,7 @@ npm run type-check
 
 ---
 
-### Step 4.1.3: Add Arc Completion Message to DetailModal
+### Step A.3: Add Arc Completion Message to DetailModal
 
 **File:** `components/constellation/DetailModal.tsx`
 
@@ -145,11 +233,46 @@ npm run type-check
 
 ---
 
-## Task 4.2: Station Mystery Breadcrumbs
+## ✅ CHECKPOINT 1: Phase A Complete
 
-**Goal:** Add mystery hints to Samuel's dialogue that unlock at trust thresholds.
+**Before continuing, verify ALL of the following:**
 
-### Step 4.2.1: Add Mystery Hint Nodes to Samuel
+```bash
+# 1. Type check passes
+npm run type-check
+
+# 2. All tests pass
+npm test
+
+# 3. No uncommitted changes remain after commit
+git status
+```
+
+**Commit Phase A:**
+```bash
+git add components/constellation/ConstellationGraph.tsx hooks/useConstellationData.ts components/constellation/DetailModal.tsx
+git commit -m "feat: add arc completion visual indicators in constellation"
+```
+
+**✅ Only proceed to Phase B after commit succeeds.**
+
+---
+
+## 🏁 PHASE B: Mystery Breadcrumbs (All 20 Characters)
+
+**Goal:** Add mystery hints to ALL character dialogues that unlock at trust thresholds.
+
+**Files to modify:** 20 dialogue files in `content/`
+
+**Time estimate:** 2-3 hours
+
+**Strategy:**
+- Samuel first (7 nodes) - most complex
+- Then 19 other characters (2 nodes each) - repetitive pattern
+
+---
+
+### Step B.1: Add Mystery Nodes to Samuel
 
 **File:** `content/samuel-dialogue-graph.ts`
 
@@ -383,7 +506,7 @@ npm test tests/content/dialogue-graphs.test.ts
 
 ---
 
-### Step 4.2.2: Add Mystery Nodes to Samuel's Entry Points
+### Step B.2: Add Mystery Nodes to Samuel's Entry Points
 
 **File:** `content/samuel-dialogue-graph.ts`
 
@@ -406,23 +529,7 @@ npm run type-check
 
 ---
 
-## Task 4.2B: Mystery Breadcrumbs for ALL Characters (Full Coverage)
-
-**Goal:** Add 1-2 mystery hint nodes to each of the 19 non-Samuel characters.
-
-**CRITICAL:** Each character file follows the same pattern. You will:
-1. Find the end of the nodes array
-2. Add the mystery node(s) BEFORE the array closes
-3. Run type-check after EACH file
-
-**Trust Gating Strategy:**
-- Trust 4+: Subtle hints ("Something feels different here...")
-- Trust 6+: Direct observations ("The station seems to... respond")
-- Trust 7+: Personal revelations ("I think I was meant to meet you")
-
----
-
-### Step 4.2B.1: Maya Chen (Tech Innovator)
+### Step B.3: Maya Chen (Tech Innovator)
 
 **File:** `content/maya-dialogue-graph.ts`
 
@@ -500,7 +607,7 @@ npm run type-check
 
 ---
 
-### Step 4.2B.2: Marcus Thompson (Medical Tech)
+### Step B.4: Marcus Thompson (Medical Tech)
 
 **File:** `content/marcus-dialogue-graph.ts`
 
@@ -571,7 +678,7 @@ npm run type-check
 
 ---
 
-### Step 4.2B.3: Devon Kumar (Systems Thinker)
+### Step B.5: Devon Kumar (Systems Thinker)
 
 **File:** `content/devon-dialogue-graph.ts`
 
@@ -647,7 +754,7 @@ npm run type-check
 
 ---
 
-### Step 4.2B.4: Kai Rivera (Safety Specialist)
+### Step B.6: Kai Rivera (Safety Specialist)
 
 **File:** `content/kai-dialogue-graph.ts`
 
@@ -718,7 +825,7 @@ npm run type-check
 
 ---
 
-### Step 4.2B.5: Rohan Patel (Deep Tech)
+### Step B.7: Rohan Patel (Deep Tech)
 
 **File:** `content/rohan-dialogue-graph.ts`
 
@@ -789,7 +896,7 @@ npm run type-check
 
 ---
 
-### Step 4.2B.6: Tess Williams (Education Founder)
+### Step B.8: Tess Williams (Education Founder)
 
 **File:** `content/tess-dialogue-graph.ts`
 
@@ -860,7 +967,7 @@ npm run type-check
 
 ---
 
-### Step 4.2B.7: Yaquin Okonkwo (EdTech Creator)
+### Step B.9: Yaquin Okonkwo (EdTech Creator)
 
 **File:** `content/yaquin-dialogue-graph.ts`
 
@@ -931,7 +1038,7 @@ npm run type-check
 
 ---
 
-### Step 4.2B.8: Grace Chen (Healthcare Operations)
+### Step B.10: Grace Chen (Healthcare Operations)
 
 **File:** `content/grace-dialogue-graph.ts`
 
@@ -1002,7 +1109,7 @@ npm run type-check
 
 ---
 
-### Step 4.2B.9: Elena Vasquez (Information Science / Archivist)
+### Step B.11: Elena Vasquez (Information Science / Archivist)
 
 **File:** `content/elena-dialogue-graph.ts`
 
@@ -1073,7 +1180,7 @@ npm run type-check
 
 ---
 
-### Step 4.2B.10: Alex Park (Supply Chain & Logistics)
+### Step B.12: Alex Park (Supply Chain & Logistics)
 
 **File:** `content/alex-dialogue-graph.ts`
 
@@ -1144,7 +1251,7 @@ npm run type-check
 
 ---
 
-### Step 4.2B.11: Jordan Mitchell (Career Navigator)
+### Step B.13: Jordan Mitchell (Career Navigator)
 
 **File:** `content/jordan-dialogue-graph.ts`
 
@@ -1215,7 +1322,7 @@ npm run type-check
 
 ---
 
-### Step 4.2B.12: Silas Brown (Advanced Manufacturing)
+### Step B.14: Silas Brown (Advanced Manufacturing)
 
 **File:** `content/silas-dialogue-graph.ts`
 
@@ -1286,7 +1393,7 @@ npm run type-check
 
 ---
 
-### Step 4.2B.13: Asha Desai (Conflict Resolution / Mediator)
+### Step B.15: Asha Desai (Conflict Resolution / Mediator)
 
 **File:** `content/asha-dialogue-graph.ts`
 
@@ -1357,7 +1464,7 @@ npm run type-check
 
 ---
 
-### Step 4.2B.14: Lira Santos (Communications / Sound Design)
+### Step B.16: Lira Santos (Communications / Sound Design)
 
 **File:** `content/lira-dialogue-graph.ts`
 
@@ -1428,7 +1535,7 @@ npm run type-check
 
 ---
 
-### Step 4.2B.15: Zara Ahmed (Data Ethics / Artist)
+### Step B.17: Zara Ahmed (Data Ethics / Artist)
 
 **File:** `content/zara-dialogue-graph.ts`
 
@@ -1499,7 +1606,7 @@ npm run type-check
 
 ---
 
-### Step 4.2B.16: Quinn Foster (Finance Specialist) - LinkedIn 2026
+### Step B.18: Quinn Foster (Finance Specialist) - LinkedIn 2026
 
 **File:** `content/quinn-dialogue-graph.ts`
 
@@ -1570,7 +1677,7 @@ npm run type-check
 
 ---
 
-### Step 4.2B.17: Dante Romano (Sales Strategist) - LinkedIn 2026
+### Step B.19: Dante Romano (Sales Strategist) - LinkedIn 2026
 
 **File:** `content/dante-dialogue-graph.ts`
 
@@ -1641,7 +1748,7 @@ npm run type-check
 
 ---
 
-### Step 4.2B.18: Nadia Petrova (AI Strategist) - LinkedIn 2026
+### Step B.20: Nadia Petrova (AI Strategist) - LinkedIn 2026
 
 **File:** `content/nadia-dialogue-graph.ts`
 
@@ -1712,7 +1819,7 @@ npm run type-check
 
 ---
 
-### Step 4.2B.19: Isaiah Washington (Nonprofit Leader) - LinkedIn 2026
+### Step B.21: Isaiah Washington (Nonprofit Leader) - LinkedIn 2026
 
 **File:** `content/isaiah-dialogue-graph.ts`
 
@@ -1783,7 +1890,7 @@ npm run type-check
 
 ---
 
-## Step 4.2B.20: Add Hub Return Nodes (If Missing)
+## Step B.22: Add Hub Return Nodes (If Missing)
 
 **IMPORTANT:** Each mystery node above references a `{character}_hub_return` node. If this node doesn't exist in the character's graph, you need to add it.
 
@@ -1809,27 +1916,22 @@ npm run type-check
 
 ---
 
-## Verification After All Mystery Breadcrumbs
+## ✅ CHECKPOINT 2: Phase B Complete
 
-After adding nodes to ALL 19 character files:
+**Before continuing, verify ALL of the following:**
 
 ```bash
-# Run type-check (must pass)
+# 1. Type check passes
 npm run type-check
 
-# Run ALL tests (must pass)
+# 2. All tests pass
 npm test
 
-# Specifically test dialogue graphs
+# 3. Specifically test dialogue graphs
 npm test tests/content/dialogue-graphs.test.ts
 ```
 
----
-
-## Commit Strategy for 4.2B
-
-Make ONE commit with all mystery breadcrumbs:
-
+**Commit Phase B:**
 ```bash
 git add content/*.ts
 git commit -m "feat: add mystery breadcrumbs to all 20 characters
@@ -1841,13 +1943,23 @@ git commit -m "feat: add mystery breadcrumbs to all 20 characters
 - Total: 38 new dialogue nodes"
 ```
 
+**✅ Only proceed to Phase C after commit succeeds.**
+
 ---
 
-## Task 4.3: Pattern-Based Ending Framework
+## 🏁 PHASE C: Pattern-Based Ending Framework
 
 **Goal:** Create infrastructure for 5 different endings based on dominant pattern.
 
-### Step 4.3.1: Create Ending Definitions
+**Files to create:**
+1. `lib/pattern-endings.ts` - Ending definitions and logic
+2. `components/JourneyComplete.tsx` - Ending screen component
+
+**Time estimate:** ~30 minutes
+
+---
+
+### Step C.1: Create Ending Definitions
 
 **File:** `lib/pattern-endings.ts` (NEW FILE)
 
@@ -1971,7 +2083,7 @@ npm run type-check
 
 ---
 
-### Step 4.3.2: Create Journey Complete Screen
+### Step C.2: Create Journey Complete Screen
 
 **File:** `components/JourneyComplete.tsx` (NEW FILE)
 
@@ -2126,75 +2238,139 @@ npm run type-check
 
 ---
 
-## Final Verification Checklist
+## ✅ CHECKPOINT 3: Phase C Complete
 
-Before requesting QA review, run ALL of these:
+**Before continuing, verify ALL of the following:**
 
 ```bash
-# 1. Type check (must pass with 0 errors)
+# 1. Type check passes
 npm run type-check
 
-# 2. All tests (must pass)
+# 2. All tests pass
 npm test
 
-# 3. Build (must succeed)
+# 3. Build succeeds
 npm run build
-
-# 4. Check for any console errors in dev
-npm run dev
-# Then open http://localhost:3000 and check browser console
 ```
+
+**Commit Phase C:**
+```bash
+git add lib/pattern-endings.ts components/JourneyComplete.tsx
+git commit -m "feat: add pattern-based ending framework
+
+- 5 pattern-specific endings (analytical, patience, exploring, helping, building)
+- JourneyComplete component with animated reveal
+- Eligibility check based on station_truth_revealed flag"
+```
+
+**✅ Phase C complete. Request QA review from Opus.**
 
 ---
 
-## Commit Strategy
+## ✅ FINAL CHECKPOINT: QA Review
 
-Make **separate commits** for each task:
+**DO NOT proceed beyond this point. Opus will:**
 
-```bash
-# After Task 4.1
-git add components/constellation/ConstellationGraph.tsx hooks/useConstellationData.ts components/constellation/DetailModal.tsx
-git commit -m "feat: add arc completion visual indicators in constellation"
+1. Review all commits for correctness
+2. Wire the JourneyComplete component into StatefulGameInterface
+3. Add the `journey_complete_trigger` node routing
+4. Test end-to-end flow
+5. Make any necessary adjustments
 
-# After Task 4.2
-git add content/samuel-dialogue-graph.ts
-git commit -m "feat: add station mystery breadcrumb nodes to Samuel"
+**Your job is done after Phase C commit. Stop here and report completion.**
 
-# After Task 4.3
-git add lib/pattern-endings.ts components/JourneyComplete.tsx
-git commit -m "feat: add pattern-based ending framework"
-```
+---
+
+## Summary: All Commits Made
+
+| Phase | Commit Message |
+|-------|----------------|
+| A | `feat: add arc completion visual indicators in constellation` |
+| B | `feat: add mystery breadcrumbs to all 20 characters` |
+| C | `feat: add pattern-based ending framework` |
 
 ---
 
 ## Files Changed Summary
 
-| File | Action | Risk Level |
-|------|--------|------------|
-| `components/constellation/ConstellationGraph.tsx` | MODIFY | Low |
-| `hooks/useConstellationData.ts` | MODIFY | Medium |
-| `components/constellation/DetailModal.tsx` | MODIFY | Low |
-| `content/samuel-dialogue-graph.ts` | ADD NODES ONLY | Medium |
-| `lib/pattern-endings.ts` | CREATE NEW | Low |
-| `components/JourneyComplete.tsx` | CREATE NEW | Low |
+| Phase | File | Action | Risk Level |
+|-------|------|--------|------------|
+| A | `components/constellation/ConstellationGraph.tsx` | MODIFY | Low |
+| A | `hooks/useConstellationData.ts` | MODIFY | Medium |
+| A | `components/constellation/DetailModal.tsx` | MODIFY | Low |
+| B | `content/samuel-dialogue-graph.ts` | ADD NODES | Medium |
+| B | `content/maya-dialogue-graph.ts` | ADD NODES | Low |
+| B | `content/marcus-dialogue-graph.ts` | ADD NODES | Low |
+| B | `content/devon-dialogue-graph.ts` | ADD NODES | Low |
+| B | `content/kai-dialogue-graph.ts` | ADD NODES | Low |
+| B | `content/rohan-dialogue-graph.ts` | ADD NODES | Low |
+| B | `content/tess-dialogue-graph.ts` | ADD NODES | Low |
+| B | `content/yaquin-dialogue-graph.ts` | ADD NODES | Low |
+| B | `content/grace-dialogue-graph.ts` | ADD NODES | Low |
+| B | `content/elena-dialogue-graph.ts` | ADD NODES | Low |
+| B | `content/alex-dialogue-graph.ts` | ADD NODES | Low |
+| B | `content/jordan-dialogue-graph.ts` | ADD NODES | Low |
+| B | `content/silas-dialogue-graph.ts` | ADD NODES | Low |
+| B | `content/asha-dialogue-graph.ts` | ADD NODES | Low |
+| B | `content/lira-dialogue-graph.ts` | ADD NODES | Low |
+| B | `content/zara-dialogue-graph.ts` | ADD NODES | Low |
+| B | `content/quinn-dialogue-graph.ts` | ADD NODES | Low |
+| B | `content/dante-dialogue-graph.ts` | ADD NODES | Low |
+| B | `content/nadia-dialogue-graph.ts` | ADD NODES | Low |
+| B | `content/isaiah-dialogue-graph.ts` | ADD NODES | Low |
+| C | `lib/pattern-endings.ts` | CREATE NEW | Low |
+| C | `components/JourneyComplete.tsx` | CREATE NEW | Low |
 
 ---
 
-## What NOT To Do (Common Mistakes)
+## ⚠️ What NOT To Do (Common Mistakes)
 
-1. **Don't modify existing dialogue nodes** - Only ADD new ones
-2. **Don't change the DialogueNode type** - Use it as-is
-3. **Don't import JourneyComplete into StatefulGameInterface yet** - Opus will do that in QA
-4. **Don't add journey_complete_trigger node** - That requires careful integration
-5. **Don't modify lib/game-store.ts** - It's complex and fragile
+| Mistake | Why It's Bad | What To Do Instead |
+|---------|--------------|-------------------|
+| Modify existing dialogue nodes | Breaks save files, navigation | Only ADD new nodes |
+| Change DialogueNode type | Breaks all graphs | Use type as-is |
+| Import JourneyComplete into StatefulGameInterface | Complex integration | Opus will do in QA |
+| Add journey_complete_trigger node | Requires routing logic | Opus will do in QA |
+| Modify lib/game-store.ts | Complex, fragile | Don't touch |
+| Fix type errors "creatively" | Causes more errors | Stop and ask Opus |
 
 ---
 
-## Questions? Stop and Ask
+## 🆘 Questions? Stop and Ask
 
 If anything is unclear or you hit an unexpected error:
-1. **STOP** - Don't try to fix it creatively
-2. **Document** the exact error message
-3. **Ask Opus** for guidance before proceeding
 
-The goal is clean, working code - not speed.
+1. **STOP** - Don't try to fix it creatively
+2. **DOCUMENT** - Write down the exact error message
+3. **ASK OPUS** - Share what you tried and what failed
+
+**The goal is clean, working code - not speed.**
+
+---
+
+## Quick Reference: Character IDs
+
+Use these exact IDs in your code:
+
+| Character | ID | File |
+|-----------|-----|------|
+| Samuel | `samuel` | samuel-dialogue-graph.ts |
+| Maya | `maya` | maya-dialogue-graph.ts |
+| Marcus | `marcus` | marcus-dialogue-graph.ts |
+| Devon | `devon` | devon-dialogue-graph.ts |
+| Kai | `kai` | kai-dialogue-graph.ts |
+| Rohan | `rohan` | rohan-dialogue-graph.ts |
+| Tess | `tess` | tess-dialogue-graph.ts |
+| Yaquin | `yaquin` | yaquin-dialogue-graph.ts |
+| Grace | `grace` | grace-dialogue-graph.ts |
+| Elena | `elena` | elena-dialogue-graph.ts |
+| Alex | `alex` | alex-dialogue-graph.ts |
+| Jordan | `jordan` | jordan-dialogue-graph.ts |
+| Silas | `silas` | silas-dialogue-graph.ts |
+| Asha | `asha` | asha-dialogue-graph.ts |
+| Lira | `lira` | lira-dialogue-graph.ts |
+| Zara | `zara` | zara-dialogue-graph.ts |
+| Quinn | `quinn` | quinn-dialogue-graph.ts |
+| Dante | `dante` | dante-dialogue-graph.ts |
+| Nadia | `nadia` | nadia-dialogue-graph.ts |
+| Isaiah | `isaiah` | isaiah-dialogue-graph.ts |
