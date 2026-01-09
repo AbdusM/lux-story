@@ -368,6 +368,12 @@ export const devonDialogueNodes: DialogueNode[] = [
   {
     nodeId: 'devon_debug_result_override',
     speaker: 'Devon Kumar',
+    onEnter: [
+      {
+        characterId: 'devon',
+        addKnowledgeFlags: ['devon_simulation_phase1_complete']
+      }
+    ],
     content: [
       {
         // NOTE: Removed "Devon looks at you, intrigued" - emotion conveyed through dialogue

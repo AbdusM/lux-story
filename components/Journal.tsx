@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
-import { Users, Zap, Compass, TrendingUp, X, Crown, Cpu, Play, Sparkles } from "lucide-react"
+import { Users, Zap, Compass, TrendingUp, X, Crown, Cpu, Play, Sparkles, AlertTriangle, Brain } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useConstellationData } from "@/hooks/useConstellationData"
 import { useInsights } from "@/hooks/useInsights"
@@ -17,7 +17,9 @@ import { ThoughtCabinet } from "./ThoughtCabinet"
 import { NarrativeAnalysisDisplay } from "./NarrativeAnalysisDisplay"
 import { ToolkitView } from "./ToolkitView"
 import { SimulationsArchive } from "./SimulationsArchive"
+import { SimulationGodView } from "./journal/SimulationGodView"
 import { OrbDetailPanel } from "./OrbDetailPanel"
+import { CognitionView } from "./CognitionView"
 import { PatternType } from "@/lib/patterns"
 import { ORB_TIERS } from "@/lib/orbs"
 import { useSimulations } from "@/hooks/useSimulations"
@@ -27,7 +29,7 @@ interface JournalProps {
   onClose: () => void
 }
 
-type TabId = 'harmonics' | 'essence' | 'mastery' | 'mind' | 'toolkit' | 'simulations' | 'analysis'
+type TabId = 'harmonics' | 'essence' | 'mastery' | 'mind' | 'toolkit' | 'simulations' | 'cognition' | 'analysis' | 'god_mode'
 
 const tabContentVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -80,7 +82,9 @@ export function Journal({ isOpen, onClose }: JournalProps) {
     mind: hasActiveThoughts && !viewedTabs.has('mind'),
     toolkit: hasNewTools && !viewedTabs.has('toolkit'),
     simulations: hasNewSimulations && !viewedTabs.has('simulations'),
-    analysis: false
+    cognition: false, // Cognitive domains don't have badge notifications yet
+    analysis: false,
+    god_mode: false
   }
 
 
@@ -100,7 +104,9 @@ export function Journal({ isOpen, onClose }: JournalProps) {
     { id: 'mind', label: 'Mind', icon: TrendingUp },
     { id: 'toolkit', label: 'Toolkit', icon: Cpu },
     { id: 'simulations', label: 'Sims', icon: Play },
+    { id: 'cognition', label: 'Cognition', icon: Brain },
     { id: 'analysis', label: 'Analysis', icon: TrendingUp },
+    { id: 'god_mode', label: 'GOD MODE', icon: AlertTriangle }, // ISP: Exposed for testing
   ]
 
 
@@ -118,7 +124,7 @@ export function Journal({ isOpen, onClose }: JournalProps) {
           />
           {/* Panel */}
           <motion.div
-            className="!fixed left-0 top-0 bottom-0 w-full max-w-md glass-panel-solid !rounded-none border-r border-white/10 shadow-2xl z-sticky flex flex-col"
+            className="!fixed left-2 top-2 bottom-2 right-2 sm:right-auto sm:w-full max-w-md glass-panel-solid !rounded-2xl border border-white/10 shadow-2xl z-sticky flex flex-col overflow-hidden"
             initial={{ x: '-100%' }}
             animate={{ x: 0 }}
             exit={{ x: '-100%' }}
@@ -261,7 +267,9 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                     {activeTab === 'mind' && <ThoughtCabinet />}
                     {activeTab === 'toolkit' && <ToolkitView />}
                     {activeTab === 'simulations' && <SimulationsArchive />}
+                    {activeTab === 'cognition' && <CognitionView />}
                     {activeTab === 'analysis' && <NarrativeAnalysisDisplay />}
+                    {activeTab === 'god_mode' && <SimulationGodView onClose={onClose} />}
                   </motion.div>
                 )}
               </AnimatePresence>

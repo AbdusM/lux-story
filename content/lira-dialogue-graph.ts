@@ -705,6 +705,12 @@ export const liraDialogueNodes: DialogueNode[] = [
                 variation_id: 'sim_success_v1'
             }
         ],
+        onEnter: [
+            {
+                characterId: 'lira',
+                addKnowledgeFlags: ['lira_simulation_phase1_complete']
+            }
+        ],
         choices: [
             {
                 choiceId: 'success_mechanism',

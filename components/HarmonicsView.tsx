@@ -1,13 +1,14 @@
 "use client"
 
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 import { motion, useSpring, useTransform, useReducedMotion } from "framer-motion"
 import { usePatternUnlocks, type OrbState } from "@/hooks/usePatternUnlocks"
 import { playPatternSound } from "@/lib/audio-feedback"
-import { Microscope, Brain, Compass, Heart, Hammer, Briefcase } from "lucide-react"
+import { Microscope, Brain, Compass, Heart, Hammer, Briefcase, History, ChevronDown, ChevronUp } from "lucide-react"
 import { PatternType } from "@/lib/patterns"
 import { getTopCareerForPattern, type PatternCareerMatch } from "@/lib/pattern-combos"
 import { useGameSelectors } from "@/lib/game-store"
+import { PatternMomentCapture } from "./PatternMomentCapture"
 
 interface HarmonicsViewProps {
     onOrbSelect?: (pattern: PatternType) => void
@@ -27,6 +28,7 @@ const triggerHaptic = (style: 'light' | 'medium' | 'heavy') => {
 export function HarmonicsView({ onOrbSelect }: HarmonicsViewProps) {
     const { orbs: patternOrbs } = usePatternUnlocks()
     const coreGameState = useGameSelectors.useCoreGameState()
+    const [showMoments, setShowMoments] = useState(false)
 
     // Compute career matches for each pattern
     const careerMatches = useMemo((): Record<PatternType, PatternCareerMatch | null> => {
@@ -116,6 +118,36 @@ export function HarmonicsView({ onOrbSelect }: HarmonicsViewProps) {
             <p className="relative z-10 text-xs text-slate-500 font-mono text-center">
                 Tap orbs to inspect • Tilt device to disturb
             </p>
+
+            {/* Pattern Moment Capture Section */}
+            <div className="relative z-10 w-full max-w-sm">
+                <button
+                    onClick={() => setShowMoments(!showMoments)}
+                    className="w-full flex items-center justify-between p-3 bg-slate-900/30 border border-slate-800 rounded-lg hover:bg-slate-800/40 transition-colors"
+                >
+                    <div className="flex items-center gap-2">
+                        <History className="w-4 h-4 text-amber-500/80" />
+                        <span className="text-sm text-slate-300">Pattern Moments</span>
+                    </div>
+                    {showMoments ? (
+                        <ChevronUp className="w-4 h-4 text-slate-500" />
+                    ) : (
+                        <ChevronDown className="w-4 h-4 text-slate-500" />
+                    )}
+                </button>
+
+                {showMoments && (
+                    <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="mt-2 overflow-hidden"
+                    >
+                        <PatternMomentCapture compact />
+                    </motion.div>
+                )}
+            </div>
         </div>
     )
 }

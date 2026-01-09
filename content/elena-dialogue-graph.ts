@@ -762,7 +762,7 @@ const nodes: DialogueNode[] = [
         consequence: {
           characterId: 'elena',
           trustChange: 10,
-          addKnowledgeFlags: ['unlocked_perplexity'],
+          addKnowledgeFlags: ['unlocked_perplexity', 'elena_simulation_phase1_complete'],
           addGlobalFlags: ['golden_prompt_deep_search']
         }
       }

@@ -713,6 +713,12 @@ export const ashaDialogueNodes: DialogueNode[] = [
                 variation_id: 'sim_success_v1'
             }
         ],
+        onEnter: [
+            {
+                characterId: 'asha',
+                addKnowledgeFlags: ['asha_simulation_phase1_complete']
+            }
+        ],
         choices: [
             {
                 choiceId: 'success_humble',

@@ -91,6 +91,20 @@ export const isaiahDialogueNodes: DialogueNode[] = [
           exploring: "Tell me about the kids you work with.",
           patience: "Youth. That's where you started."
         }
+      },
+      {
+        choiceId: 'isaiah_intro_show_work',
+        text: "Show me what you're working on.",
+        nextNodeId: 'isaiah_sim_donor',
+        pattern: 'exploring',
+        skills: ['curiosity', 'learningAgility'],
+        voiceVariations: {
+          exploring: "Can you walk me through a fundraising challenge?",
+          analytical: "Show me the mechanics of donor cultivation.",
+          building: "Let me see how you build funding relationships.",
+          helping: "I'd like to understand what you're up against.",
+          patience: "Show me. I'll observe."
+        }
       }
     ],
     onEnter: [
@@ -546,6 +560,12 @@ export const isaiahDialogueNodes: DialogueNode[] = [
         variation_id: 'isaiah_connect_v1',
         text: "[Isaiah actually smiles—a real one.]\n\nThat's exactly right. That's what I would do.\n\nMaybe music was important to her son. Maybe she played piano as a kid and it saved her. The 'what' matters less than the 'why.'\n\nOnce you understand why music matters to her, you can often find a connection to your actual work. 'We don't have a formal music program, but we partner with the community center next door. And our mentors use creative expression in their sessions.'\n\nYou're not lying. You're finding genuine alignment.\n\nThe best fundraisers are translators, not salespeople.",
         emotion: 'approving'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'isaiah',
+        addKnowledgeFlags: ['isaiah_simulation_phase1_complete']
       }
     ],
     choices: [

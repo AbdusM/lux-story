@@ -313,6 +313,33 @@ function AmbientDescriptionDisplay({ gameState, mode = 'fixed' }: { gameState: G
   )
 }
 
+const characterNames: Record<CharacterId, string> = {
+  samuel: 'Samuel Washington',
+  maya: 'Maya Chen',
+  devon: 'Devon Solis',
+  jordan: 'Jordan Kyles',
+  marcus: 'Marcus Vance',
+  tess: 'Tess O\'Malley',
+  yaquin: 'Dr. Yaquin',
+  kai: 'Kai',
+  alex: 'Alex',
+  rohan: 'Rohan',
+  silas: 'Silas',
+  elena: 'Elena',
+  grace: 'Grace',
+  asha: 'Asha Patel',
+  lira: 'Lira Vance',
+  zara: 'Zara El-Amin',
+  quinn: 'Quinn Almeida',
+  dante: 'Dante Moreau',
+  nadia: 'Nadia Petrova',
+  isaiah: 'Isaiah Greene',
+  station_entry: 'Sector 0',
+  grand_hall: 'Sector 1: The Grand Hall',
+  market: 'Sector 2: The Asset Exchange',
+  deep_station: 'Sector 3: The Core'
+}
+
 export default function StatefulGameInterface() {
   const safeStart = getSafeStart()
 
@@ -378,6 +405,24 @@ export default function StatefulGameInterface() {
     // activeExperience: null
   })
 
+  // 5. GOD MODE OVERRIDE (High Priority) - Access from zustand store
+  const debugSimulation = useGameStore(s => s.debugSimulation)
+  if (debugSimulation) {
+    return (
+      <SimulationRenderer
+        simulation={{
+          ...debugSimulation,
+          // Inject explicit back button for God Mode
+          onExit: () => useGameStore.getState().setDebugSimulation(null)
+        }}
+        onComplete={(result) => {
+          logger.info('God Mode Simulation Complete', result)
+          useGameStore.getState().setDebugSimulation(null)
+        }}
+      />
+    )
+  }
+
   // Derived State for UI Logic
   const currentState = state.gameState ? 'dialogue' : 'station'
 
@@ -437,6 +482,113 @@ export default function StatefulGameInterface() {
       }
     }
   }, [])
+
+  // 4. NAVIGATION BRIDGE (Connects Constellation Panel to Game Interface)
+  // Listen for navigation requests from the Zustand store
+  const requestedSceneId = useGameStore(s => s.currentSceneId)
+
+  useEffect(() => {
+    if (!requestedSceneId || !state.gameState) return
+
+    // Logic: If it's a CharacterID, go to their Intro/Hub. If it's a NodeID, go there.
+    // We assume it's a CharacterID first
+    const targetCharId = requestedSceneId as CharacterId
+
+    // ============= CONDUCTOR MODE LOGIC =============
+    // D-102: Route all travel through Samuel (The Conductor) unless:
+    // 1. We are already talking to Samuel (avoid loops)
+    // 2. The target IS Samuel (direct travel permitted)
+    // 3. It's a specific internal node jump (contains underscores not ending in 'introduction')
+
+    // Check if it's a "Travel" command (Character ID) or a specific node jump
+    const isCharacterJump = !requestedSceneId.includes('_') || requestedSceneId.endsWith('_introduction')
+    const isTargetSamuel = targetCharId === 'samuel' || requestedSceneId.startsWith('samuel_')
+    const currentIsSamuel = state.currentCharacterId === 'samuel'
+
+    if (isCharacterJump && !isTargetSamuel && !currentIsSamuel) {
+      logger.info('[Conductor Mode] Intercepting travel request', { target: targetCharId })
+
+      // 1. Store the destination
+      useGameStore.getState().setPendingTravelTarget(targetCharId)
+
+      // 2. Clear the request to stop this hook re-firing immediately
+      useGameStore.getState().setCurrentScene(null)
+
+      // 3. Immediately trigger navigation to Samuel's Conductor Node
+      // We manually set state here because we can't use setCurrentScene (would loop)
+      const conductorNodeId = 'samuel_conductor'
+      const samuelGraph = getGraphForCharacter('samuel', state.gameState)
+      const conductorNode = samuelGraph.nodes.get(conductorNodeId)
+
+
+      if (conductorNode) {
+        // Dynamic Variable Injection for Conductor Mode
+        const targetCharacter = state.gameState?.characters.get(targetCharId)
+        const hasMet = (targetCharacter?.conversationHistory?.length || 0) > 0
+        const targetName = characterNames[targetCharId] || 'someone'
+        const conductorAction = hasMet ? 'Heading back to' : 'Off to see'
+
+        // Pre-process the content with the variables
+        const processedText = TextProcessor.process(
+          conductorNode.content[0].text,
+          state.gameState!,
+          { targetName, conductorAction }
+        )
+
+        setState(prev => ({
+          ...prev,
+          currentNode: conductorNode,
+          currentGraph: samuelGraph,
+          currentCharacterId: 'samuel',
+          currentContent: processedText, // Injected name
+          currentDialogueContent: conductorNode.content[0],
+          availableChoices: StateConditionEvaluator.evaluateChoices(conductorNode, state.gameState!, 'samuel'),
+          previousSpeaker: null
+        }))
+        return // Stop processing the direct jump
+      }
+    }
+    // ===============================================
+
+    // Default to [char]_introduction convention
+    const targetNodeId = `${requestedSceneId}_introduction`
+    const graph = getGraphForCharacter(targetCharId, state.gameState)
+
+    // Check if the graph actually has this node, otherwise fallback to first node
+    let targetNode = graph.nodes.get(targetNodeId)
+    if (!targetNode && graph.nodes.size > 0) {
+      // Fallback: Pick the first node in the graph (usually the entry)
+      targetNode = graph.nodes.values().next().value
+    }
+
+    if (targetNode) {
+      logger.info('Navigating via Constellation', { target: requestedSceneId, resolvedNode: targetNode.nodeId })
+
+      // Update State to Render New Scene
+      setState(prev => ({
+        ...prev,
+        currentNode: targetNode!,
+        currentGraph: graph,
+        currentCharacterId: targetCharId,
+        currentContent: targetNode!.content[0].text, // simplified load
+        currentDialogueContent: targetNode!.content[0],
+        availableChoices: StateConditionEvaluator.evaluateChoices(targetNode!, state.gameState!, targetCharId),
+        previousSpeaker: null // Reset speaker on jump
+      }))
+
+      // Persist the jump
+      const newState = {
+        ...state.gameState,
+        currentNodeId: targetNode.nodeId,
+        currentCharacterId: targetCharId
+      }
+      GameStateManager.saveGameState(newState)
+    }
+
+    // Reset the request so we don't loop
+    useGameStore.getState().setCurrentScene(null)
+
+  }, [requestedSceneId, state.gameState, state.currentCharacterId])
 
   // ═══════════════════════════════════════════════════════════════════════════
   // STATION EVOLUTION: Sync Station State & Ambience
@@ -1258,6 +1410,27 @@ export default function StatefulGameInterface() {
       // Floating modules disabled - broke dialogue immersion
       const zustandStore = useGameStore.getState()
 
+      // ============= CONDUCTOR MODE INTERCEPTION =============
+      if (choice.choice.nextNodeId === 'TRAVEL_PENDING') {
+        const pendingTarget = useGameStore.getState().pendingTravelTarget
+        logger.info('[Conductor Mode] Executing pending travel', { pendingTarget })
+
+        if (pendingTarget) {
+          // Clear current choices to prevent further interaction
+          setState(prev => ({ ...prev, availableChoices: [] }))
+
+          // Trigger the jump via the standard navigation system
+          useGameStore.getState().setCurrentScene(pendingTarget)
+          useGameStore.getState().setPendingTravelTarget(null)
+          return
+        } else {
+          // Fallback
+          logger.warn('[Conductor Mode] Missing pending target, rerouting to Station Hub')
+          useGameStore.getState().setCurrentScene('samuel')
+          return
+        }
+      }
+
       const searchResult = findCharacterForNode(choice.choice.nextNodeId, newGameState)
       if (!searchResult) {
         logger.error('[StatefulGameInterface] Could not find character graph for node:', { nodeId: choice.choice.nextNodeId })
@@ -1280,16 +1453,6 @@ export default function StatefulGameInterface() {
           characterId: searchResult.characterId,
           graphName: searchResult.graph.metadata?.title || 'unknown'
         })
-        setState(prev => ({
-          ...prev,
-          error: {
-            title: 'Navigation Error',
-            message: `Node "${choice.choice.nextNodeId}" not found in ${searchResult.characterId}'s graph.`,
-            severity: 'error' as const
-          },
-          isLoading: false
-        }))
-        isProcessingChoiceRef.current = false
         return
       }
 
@@ -1313,7 +1476,14 @@ export default function StatefulGameInterface() {
         }
       }
 
-      const targetCharacter = newGameState.characters.get(targetCharacterId)!
+      let targetCharacter = newGameState.characters.get(targetCharacterId)
+
+      // AUTO-HEAL: If character is missing from state (e.g. old save), create them
+      if (!targetCharacter) {
+        logger.warn('[StatefulGameInterface] Target character missing from state, initializing:', { characterId: targetCharacterId })
+        targetCharacter = GameStateUtils.createCharacterState(targetCharacterId)
+        newGameState.characters.set(targetCharacterId, targetCharacter)
+      }
 
       // D-001: Update last interaction timestamp for trust decay calculation
       targetCharacter.lastInteractionTimestamp = Date.now()
@@ -2924,32 +3094,8 @@ export default function StatefulGameInterface() {
     )
   }
 
-  const characterNames: Record<CharacterId, string> = {
-    samuel: 'Samuel Washington',
-    maya: 'Maya Chen',
-    devon: 'Devon Kumar',
-    jordan: 'Jordan Packard',
-    marcus: 'Marcus',
-    tess: 'Tess',
-    yaquin: 'Yaquin',
-    kai: 'Kai',
-    alex: 'Alex',
-    rohan: 'Rohan',
-    silas: 'Silas',
-    elena: 'Elena Vasquez',
-    grace: 'Grace Thompson',
-    asha: 'Asha Patel',
-    lira: 'Lira Vance',
-    zara: 'Zara El-Amin',
-    quinn: 'Quinn Almeida',
-    dante: 'Dante Moreau',
-    nadia: 'Nadia Petrova',
-    isaiah: 'Isaiah Greene',
-    station_entry: 'Sector 0',
-    grand_hall: 'Sector 1: The Grand Hall',
-    market: 'Sector 2: The Asset Exchange',
-    deep_station: 'Sector 3: The Core'
-  }
+
+
 
   const currentCharacter = state.gameState?.characters.get(state.currentCharacterId)
   const isEnding = state.availableChoices.length === 0
@@ -3110,8 +3256,8 @@ export default function StatefulGameInterface() {
                   {/* Dialogue Card - Dynamic Marquee Effect */}
                   {/* STABILITY: Removed transition-all to prevent container jumping */}
                   <Card className={`shadow-lg backdrop-blur-xl relative overflow-hidden rounded-xl ${(() => {
-                    // 1. Loyalty Event (Amber) - Warm, engaging
-                    if (state.activeExperience) {
+                    // 1. Loyalty Event or Simulation (Amber/Gold) - Focused, Technical
+                    if (state.activeExperience || state.currentNode?.simulation) {
                       return 'bg-slate-950/80 border-amber-500/40 shadow-[0_0_30px_rgba(245,158,11,0.2)]'
                     }
 
@@ -3133,7 +3279,7 @@ export default function StatefulGameInterface() {
                     }`}>
                     <CardContent className="p-0">
                       {/* Marquee Header Overlay */}
-                      {state.activeExperience && (
+                      {(state.activeExperience || state.currentNode?.simulation) && (
                         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-amber-500/50 to-transparent opacity-50" />
                       )}
                       {/* P6: Experience Mode Overlay */}
@@ -3156,9 +3302,13 @@ export default function StatefulGameInterface() {
                         // ISP: Workflow Simulation Renderer
                         <div className="p-6 h-full">
                           <SimulationRenderer
-                            node={state.currentNode}
-                            onChoice={(index) => {
-                              // Default handled by footer
+                            simulation={state.currentNode.simulation}
+                            onComplete={(result) => {
+                              logger.info('Simulation Complete', result)
+                              // Auto-advance to next node if choices exist
+                              if (state.availableChoices.length > 0) {
+                                handleChoice(state.availableChoices[0])
+                              }
                             }}
                           />
                         </div>
@@ -3310,8 +3460,8 @@ export default function StatefulGameInterface() {
               className="flex-shrink-0 glass-panel max-w-4xl mx-auto px-3 sm:px-4 z-20"
               style={{
                 marginTop: '1.5rem',
-                // PC: Raise higher (2.5rem base), Mobile: Keep safe (calc)
-                marginBottom: 'max(1rem, calc(2.5rem + env(safe-area-inset-bottom, 0px)))'
+                // PC: Raise higher (2.5rem base), Mobile: Keep safe (calc) - Increased to 3.5rem base for extra safety
+                marginBottom: 'max(1rem, calc(3.5rem + env(safe-area-inset-bottom, 0px)))'
               }}
             >
               {/* Response label - clean, modern styling */}
@@ -3321,7 +3471,7 @@ export default function StatefulGameInterface() {
                 </span>
               </div>
 
-              <div className="px-4 sm:px-6 pb-4 sm:pb-5 pt-2">
+              <div className="px-4 sm:px-6 pb-12 sm:pb-5 pt-2">
                 {/* Scrollable choices container with scroll indicator */}
                 <div className="relative w-full">
                   <div
@@ -3368,7 +3518,8 @@ export default function StatefulGameInterface() {
                         const original = state.availableChoices[index]
                         if (original) handleChoice(original)
                       }}
-                      glass={true}
+                      // FIX: Ensure glass mode is ON for dark atmospheres to prevent white-on-white text
+                      glass={['dormant', 'awakening', 'alive'].includes(stationAtmosphere)}
                       playerPatterns={state.gameState?.patterns}
                     />
                   </div>

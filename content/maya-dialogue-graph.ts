@@ -97,6 +97,21 @@ export const mayaDialogueNodes: DialogueNode[] = [
           trustChange: 1
         }
       },
+      // Shift Left: Early simulation access
+      {
+        choiceId: 'maya_intro_show_work',
+        text: "Show me what you're working on.",
+        nextNodeId: 'maya_simulation_intro',
+        pattern: 'exploring',
+        skills: ['curiosity', 'learningAgility'],
+        voiceVariations: {
+          exploring: "Can you show me what you're building?",
+          analytical: "Let me see this chaos in action.",
+          building: "Show me the prototype.",
+          helping: "I'd love to understand what drives you.",
+          patience: "Demonstrate. I'll watch."
+        }
+      },
       // Pattern unlock choices - only visible when player has built enough pattern affinity
       {
         choiceId: 'intro_workshop_unlock',
@@ -2102,7 +2117,7 @@ STATUS: Signal fighting itself`,
     onEnter: [
       {
         characterId: 'maya',
-        addKnowledgeFlags: ['simulation_success', 'parents_saw_truth'],
+        addKnowledgeFlags: ['simulation_success', 'parents_saw_truth', 'maya_simulation_phase1_complete'],
         addGlobalFlags: ['maya_simulation_complete']
       }
     ],

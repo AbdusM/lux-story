@@ -1366,7 +1366,7 @@ Stakes: Trust, fairness, emotional safety for both students`,
     onEnter: [
       {
         characterId: 'tess',
-        addKnowledgeFlags: ['tess_simulation_complete', 'tess_teaching_past']
+        addKnowledgeFlags: ['tess_simulation_complete', 'tess_teaching_past', 'tess_simulation_phase1_complete']
       }
     ],
     choices: [

@@ -1194,7 +1194,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
     onEnter: [
       {
         characterId: 'grace',
-        addKnowledgeFlags: ['grace_simulation_complete']
+        addKnowledgeFlags: ['grace_simulation_complete', 'grace_simulation_phase1_complete']
       }
     ],
     choices: [

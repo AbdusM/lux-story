@@ -287,6 +287,12 @@ export const zaraDialogueNodes: DialogueNode[] = [
                 variation_id: 'sim_success_v1'
             }
         ],
+        onEnter: [
+            {
+                characterId: 'zara',
+                addKnowledgeFlags: ['zara_simulation_phase1_complete']
+            }
+        ],
         choices: [
             {
                 choiceId: 'success_ethics',

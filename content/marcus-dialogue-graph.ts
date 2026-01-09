@@ -83,6 +83,21 @@ const nodes: DialogueNode[] = [
           patience: "This much pressure doesn't come from nowhere. What happened?"
         }
       },
+      // Shift Left: Early simulation access
+      {
+        choiceId: 'marcus_intro_show_work',
+        text: "Show me what you're working on.",
+        nextNodeId: 'marcus_simulation_automation',
+        pattern: 'exploring',
+        skills: ['curiosity', 'learningAgility'],
+        voiceVariations: {
+          exploring: "Can you show me how you handle all this?",
+          analytical: "Let me see your system in action.",
+          building: "Walk me through your workflow.",
+          helping: "I'd like to understand what you're protecting.",
+          patience: "Demonstrate. I'll observe."
+        }
+      },
       // Pattern unlock choices - only visible when player has built enough pattern affinity
       {
         choiceId: 'intro_patient_unlock',
@@ -594,7 +609,7 @@ WARNING: Response time > 48h`,
         consequence: {
           characterId: 'marcus',
           trustChange: 10,
-          addKnowledgeFlags: ['unlocked_hubspot_breeze'],
+          addKnowledgeFlags: ['unlocked_hubspot_breeze', 'marcus_simulation_phase1_complete'],
           addGlobalFlags: ['golden_prompt_workflow']
         }
       }

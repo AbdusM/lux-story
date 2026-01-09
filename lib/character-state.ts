@@ -181,6 +181,9 @@ export interface StateCondition {
       max?: number
     }
   }
+
+  // Mystery conditions (for mystery-gated content)
+  mysteries?: Partial<MysteryState>
 }
 
 /**

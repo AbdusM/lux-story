@@ -1198,7 +1198,8 @@ export const kaiDialogueNodes: DialogueNode[] = [
     onEnter: [
       {
         characterId: 'kai',
-        thoughtId: 'hands-on-truth'
+        thoughtId: 'hands-on-truth',
+        addKnowledgeFlags: ['kai_simulation_phase1_complete']
       }
     ],
     choices: [

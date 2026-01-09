@@ -90,6 +90,20 @@ export const danteDialogueNodes: DialogueNode[] = [
           building: "Accent tells a story of where you built yourself.",
           patience: "New Orleans. That explains the rhythm."
         }
+      },
+      {
+        choiceId: 'dante_intro_show_work',
+        text: "Show me what you're working on.",
+        nextNodeId: 'dante_sim_reluctant',
+        pattern: 'exploring',
+        skills: ['curiosity', 'learningAgility'],
+        voiceVariations: {
+          exploring: "Can you show me what this looks like in practice?",
+          analytical: "Let me see your methodology in action.",
+          building: "Walk me through a real scenario.",
+          helping: "I'd love to see how you help people.",
+          patience: "Demonstrate. I'll observe."
+        }
       }
     ],
     onEnter: [
@@ -803,6 +817,12 @@ export const danteDialogueNodes: DialogueNode[] = [
         emotion: 'teaching'
       }
     ],
+    onEnter: [
+      {
+        characterId: 'dante',
+        addKnowledgeFlags: ['dante_simulation_phase1_complete']
+      }
+    ],
     choices: [
       {
         choiceId: 'dante_more_sim',
@@ -872,6 +892,94 @@ export const danteDialogueNodes: DialogueNode[] = [
       }
     ],
     tags: ['dante_arc', 'growth', 'connection']
+  },
+
+  // ============= MISSING NODES FIX =============
+  {
+    nodeId: 'dante_katrina',
+    speaker: 'Dante Moreau',
+    content: [
+      {
+        variation_id: 'dante_katrina_v1',
+        text: "We lost the house. Water to the roof. I was twelve.\n\nBut you know what I remember? Not the loss. The rebuilding. How neighbors who had nothing shared what little they had.\n\nThat's where I learned that value isn't physical. Value is... presence. Showing up when it counts. That's the only currency that never inflates.",
+        emotion: 'somber'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'dante_katrina_value',
+        text: "Presence as currency. I like that.",
+        nextNodeId: 'dante_exploration_hub',
+        pattern: 'helping',
+        skills: ['empathy', 'resilience']
+      },
+      {
+        choiceId: 'dante_katrina_rebuild',
+        text: "How did that shape your career?",
+        nextNodeId: 'dante_techniques',
+        pattern: 'building',
+        skills: ['adaptability']
+      }
+    ],
+    tags: ['dante_arc', 'backstory', 'resilience']
+  },
+
+  {
+    nodeId: 'dante_grandmother_lessons',
+    speaker: 'Dante Moreau',
+    content: [
+      {
+        variation_id: 'dante_grandma_v1',
+        text: "She didn't have an MBA. She had intuition.\n\nShe'd say, 'Baby, people don't buy sugar. They buy the memory of their mama's kitchen. They buy a moment of sweetness in a bitter day.'\n\nShe taught me to sell the feeling, not the object. The object is just the delivery mechanism.",
+        emotion: 'warm'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'dante_grandma_feeling',
+        text: "Sell the feeling. That's powerful.",
+        nextNodeId: 'dante_techniques',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
+      },
+      {
+        choiceId: 'dante_grandma_mechanism',
+        text: "So the product doesn't matter?",
+        nextNodeId: 'dante_flip_everything',
+        pattern: 'analytical',
+        skills: ['criticalThinking']
+      }
+    ],
+    tags: ['dante_arc', 'backstory', 'wisdom']
+  },
+
+  {
+    nodeId: 'dante_flip_everything',
+    speaker: 'Dante Moreau',
+    content: [
+      {
+        variation_id: 'dante_flip_v1',
+        text: "It matters—it has to be good. You can't build trust on a lie.\n\nBut the product isn't the *point*. The connection is the point. The product is just the souvenir of the connection.\n\nOnce you get that, you stop pushing. You start inviting. And that changes the whole game.",
+        emotion: 'teaching'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'dante_flip_invite',
+        text: "I want to learn how to invite like that.",
+        nextNodeId: 'dante_techniques',
+        pattern: 'building',
+        skills: ['communication']
+      },
+      {
+        choiceId: 'dante_flip_hub',
+        text: "I think I understand.",
+        nextNodeId: 'dante_exploration_hub',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence']
+      }
+    ],
+    tags: ['dante_arc', 'philosophy', 'sales']
   }
 ]
 

@@ -81,6 +81,38 @@ export interface DialogueNode {
 }
 
 /**
+ * Simulation phase (1-3)
+ * Phase 1: Introduction - accessible early (trust 0-2)
+ * Phase 2: Application - complex scenarios (trust 5+)
+ * Phase 3: Mastery - expert challenges (trust 8+)
+ */
+export type SimulationPhase = 1 | 2 | 3
+
+/**
+ * Simulation difficulty tier
+ */
+export type SimulationDifficulty = 'introduction' | 'application' | 'mastery'
+
+/**
+ * Unlock requirements for simulation phases
+ */
+export interface SimulationUnlockRequirements {
+  /** Previous phase variant ID that must be completed */
+  previousPhaseCompleted?: string
+  /** Minimum trust with character */
+  trustMin?: number
+  /** Required pattern and minimum level */
+  patternRequirement?: {
+    pattern: PatternType
+    minLevel: number
+  }
+  /** Required knowledge flags */
+  requiredKnowledge?: string[]
+  /** Required global flags */
+  requiredFlags?: string[]
+}
+
+/**
  * Configuration for Workflow Simulations
  * Renders the node as a specialized tool interface rather than standard dialogue.
  */
@@ -98,6 +130,49 @@ export interface SimulationConfig {
 
   // Visual feedback when successful
   successFeedback: string // e.g. "Hallucinations eliminated. Citations verified."
+
+  // === 3-PHASE SYSTEM (all optional for backwards compat) ===
+
+  /**
+   * Phase of this simulation (1, 2, or 3)
+   * @default 1 - If omitted, treated as Phase 1
+   */
+  phase?: SimulationPhase
+
+  /**
+   * Difficulty tier for UI display
+   * @default 'introduction' - If omitted, treated as introduction
+   */
+  difficulty?: SimulationDifficulty
+
+  /**
+   * Unique simulation variant ID for tracking
+   * Format: {characterId}_{simType}_phase{N}
+   * @example 'maya_servo_debugger_phase1'
+   */
+  variantId?: string
+
+  /**
+   * Unlock requirements for this phase
+   * Phase 1: Usually no requirements (or trust >= 2)
+   * Phase 2: Requires Phase 1 completion
+   * Phase 3: Requires Phase 2 completion + trust >= 8
+   */
+  unlockRequirements?: SimulationUnlockRequirements
+
+  /**
+   * Time limit in seconds (optional)
+   * Phase 1: No limit
+   * Phase 2: 120s suggested
+   * Phase 3: 60s suggested
+   */
+  timeLimit?: number
+
+  /**
+   * Success threshold percentage (0-100)
+   * Phase 3 might require 95%+ accuracy vs Phase 1's 75%
+   */
+  successThreshold?: number
 }
 
 /**
@@ -439,6 +514,16 @@ export class StateConditionEvaluator {
       }
     }
 
+    // Evaluate mystery conditions
+    if (condition.mysteries !== undefined) {
+      for (const [mystery, requiredValue] of Object.entries(condition.mysteries)) {
+        const currentValue = gameState.mysteries[mystery as keyof typeof gameState.mysteries]
+        if (currentValue !== requiredValue) {
+          return false
+        }
+      }
+    }
+
     // All conditions passed
     return true
   }
@@ -658,4 +743,188 @@ export class DialogueGraphNavigator {
     // Random selection from available
     return availableContent[Math.floor(Math.random() * availableContent.length)]
   }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// SIMULATION ACCESS EVALUATION
+// Phase unlock logic for 3-phase simulation system
+// ═══════════════════════════════════════════════════════════════════════════
+
+/**
+ * Result of simulation access evaluation
+ */
+export interface SimulationAccessResult {
+  /** Whether the simulation phase is accessible */
+  canAccess: boolean
+  /** Reason code for inaccessibility */
+  reason?: 'trust_too_low' | 'previous_phase_incomplete' | 'pattern_requirement_not_met' | 'missing_knowledge' | 'missing_flag'
+  /** Human-readable explanation */
+  message?: string
+  /** Progress towards unlock (0-1) */
+  progress?: number
+}
+
+/**
+ * Evaluate whether a player can access a simulation phase
+ *
+ * @param requirements - Unlock requirements from SimulationConfig
+ * @param gameState - Current game state
+ * @param characterId - Character ID for trust lookup
+ * @returns Access result with reason if blocked
+ *
+ * @example
+ * ```typescript
+ * const result = evaluateSimulationAccess(
+ *   simulation.unlockRequirements,
+ *   gameState,
+ *   'maya'
+ * )
+ * if (!result.canAccess) {
+ *   console.log(`Blocked: ${result.message}`)
+ * }
+ * ```
+ */
+export function evaluateSimulationAccess(
+  requirements: SimulationUnlockRequirements | undefined,
+  gameState: GameState,
+  characterId: string
+): SimulationAccessResult {
+  // No requirements = always accessible (Phase 1 default)
+  if (!requirements) {
+    return { canAccess: true }
+  }
+
+  // Check trust minimum
+  if (requirements.trustMin !== undefined) {
+    const characterState = gameState.characters.get(characterId)
+    const currentTrust = characterState?.trust ?? 0
+    if (currentTrust < requirements.trustMin) {
+      return {
+        canAccess: false,
+        reason: 'trust_too_low',
+        message: `Requires trust level ${requirements.trustMin} (current: ${currentTrust})`,
+        progress: currentTrust / requirements.trustMin
+      }
+    }
+  }
+
+  // Check previous phase completion
+  if (requirements.previousPhaseCompleted) {
+    const completionFlag = requirements.previousPhaseCompleted
+    const characterState = gameState.characters.get(characterId)
+    const hasFlag = characterState?.knowledgeFlags?.has(completionFlag) ?? false
+    if (!hasFlag) {
+      return {
+        canAccess: false,
+        reason: 'previous_phase_incomplete',
+        message: `Complete Phase 1 to unlock this phase`,
+        progress: 0
+      }
+    }
+  }
+
+  // Check pattern requirement
+  if (requirements.patternRequirement) {
+    const { pattern, minLevel } = requirements.patternRequirement
+    const currentLevel = gameState.patterns[pattern] ?? 0
+    if (currentLevel < minLevel) {
+      return {
+        canAccess: false,
+        reason: 'pattern_requirement_not_met',
+        message: `Requires ${pattern} pattern level ${minLevel} (current: ${currentLevel})`,
+        progress: currentLevel / minLevel
+      }
+    }
+  }
+
+  // Check required knowledge flags
+  if (requirements.requiredKnowledge && requirements.requiredKnowledge.length > 0) {
+    const characterState = gameState.characters.get(characterId)
+    const knowledgeFlags = characterState?.knowledgeFlags ?? new Set<string>()
+    const missingKnowledge = requirements.requiredKnowledge.filter(
+      flag => !knowledgeFlags.has(flag)
+    )
+    if (missingKnowledge.length > 0) {
+      return {
+        canAccess: false,
+        reason: 'missing_knowledge',
+        message: `Missing required knowledge: ${missingKnowledge.join(', ')}`,
+        progress: (requirements.requiredKnowledge.length - missingKnowledge.length) / requirements.requiredKnowledge.length
+      }
+    }
+  }
+
+  // Check required global flags
+  if (requirements.requiredFlags && requirements.requiredFlags.length > 0) {
+    const globalFlags = gameState.globalFlags ?? new Set<string>()
+    const missingFlags = requirements.requiredFlags.filter(
+      flag => !globalFlags.has(flag)
+    )
+    if (missingFlags.length > 0) {
+      return {
+        canAccess: false,
+        reason: 'missing_flag',
+        message: `Missing required progress: ${missingFlags.join(', ')}`,
+        progress: (requirements.requiredFlags.length - missingFlags.length) / requirements.requiredFlags.length
+      }
+    }
+  }
+
+  // All requirements met
+  return { canAccess: true }
+}
+
+/**
+ * Get all available simulation phases for a character
+ * Returns phases the player can currently access
+ *
+ * @param simulations - Array of SimulationConfig objects for a character
+ * @param gameState - Current game state
+ * @param characterId - Character ID for trust lookup
+ * @returns Array of accessible simulations with their phase info
+ */
+export function getAvailableSimulationPhases(
+  simulations: SimulationConfig[],
+  gameState: GameState,
+  characterId: string
+): Array<{ simulation: SimulationConfig; accessResult: SimulationAccessResult }> {
+  return simulations.map(simulation => ({
+    simulation,
+    accessResult: evaluateSimulationAccess(
+      simulation.unlockRequirements,
+      gameState,
+      characterId
+    )
+  })).filter(result => result.accessResult.canAccess)
+}
+
+/**
+ * Get the next locked simulation phase for a character
+ * Useful for showing "coming soon" or progress indicators
+ *
+ * @param simulations - Array of SimulationConfig objects for a character
+ * @param gameState - Current game state
+ * @param characterId - Character ID for trust lookup
+ * @returns The next locked phase with unlock requirements, or null if all unlocked
+ */
+export function getNextLockedSimulationPhase(
+  simulations: SimulationConfig[],
+  gameState: GameState,
+  characterId: string
+): { simulation: SimulationConfig; accessResult: SimulationAccessResult } | null {
+  // Sort by phase to get lowest locked phase
+  const sortedByPhase = [...simulations].sort((a, b) => (a.phase ?? 1) - (b.phase ?? 1))
+
+  for (const simulation of sortedByPhase) {
+    const accessResult = evaluateSimulationAccess(
+      simulation.unlockRequirements,
+      gameState,
+      characterId
+    )
+    if (!accessResult.canAccess) {
+      return { simulation, accessResult }
+    }
+  }
+
+  return null // All phases unlocked
 }

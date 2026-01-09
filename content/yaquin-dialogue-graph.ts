@@ -1649,7 +1649,7 @@ Which opening sells the VALUE of practical experience?`,
     onEnter: [
       {
         characterId: 'yaquin',
-        addKnowledgeFlags: ['completed_review_simulation'],
+        addKnowledgeFlags: ['completed_review_simulation', 'yaquin_simulation_phase1_complete'],
         addGlobalFlags: ['yaquin_review_simulation_complete']
       }
     ],

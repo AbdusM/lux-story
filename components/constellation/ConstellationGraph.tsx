@@ -9,11 +9,12 @@ import { CHARACTER_RELATIONSHIP_WEB } from '@/lib/character-relationships'
 interface ConstellationGraphProps {
     characters: CharacterWithState[]
     onOpenDetail?: (character: CharacterWithState) => void
+    onTravel?: (characterId: string) => void
     width?: number
     height?: number
 }
 
-export function ConstellationGraph({ characters, onOpenDetail }: ConstellationGraphProps) {
+export function ConstellationGraph({ characters, onOpenDetail, onTravel }: ConstellationGraphProps) {
     const [hoveredId, setHoveredId] = useState<string | null>(null)
     const [selectedId, setSelectedId] = useState<string | null>(null)
 
@@ -37,9 +38,17 @@ export function ConstellationGraph({ characters, onOpenDetail }: ConstellationGr
 
     // Interaction Handlers
     const handleNodeClick = (char: CharacterWithState) => {
-        if (!char.hasMet) return // Ignore clicks on ghost nodes
+        // ALLOW CLICKING UNMET CHARACTERS (Star Walking allows discovery)
+        // if (!char.hasMet) return // REMOVED
 
         const isSelected = selectedId === char.id
+
+        // If already selected and we have a travel handler, travel there (Double Tap behavior)
+        if (isSelected && onTravel) {
+            onTravel(char.id)
+            return
+        }
+
         setSelectedId(isSelected ? null : char.id)
         if (!isSelected) {
             // Small haptic if available
@@ -50,15 +59,34 @@ export function ConstellationGraph({ characters, onOpenDetail }: ConstellationGr
     }
 
     const handleNodeDoubleClick = (char: CharacterWithState) => {
-        if (char.hasMet && onOpenDetail) onOpenDetail(char)
+        // Double click acts as direct travel if enabled, otherwise open detail
+        // ALLOW DOUBLE CLICK ON UNMET CHARACTERS
+        if (onTravel) {
+            onTravel(char.id)
+        } else if (onOpenDetail) {
+            onOpenDetail(char)
+        }
+    }
+
+    const handleTravelClick = (e: React.MouseEvent, charId: string) => {
+        e.stopPropagation()
+        if (onTravel) onTravel(charId)
+    }
+
+    const handleDetailClick = (e: React.MouseEvent, char: CharacterWithState) => {
+        e.stopPropagation()
+        if (onOpenDetail) onOpenDetail(char)
     }
 
     const selectedChar = characters.find(c => c.id === selectedId)
 
     return (
-        <div className="relative w-full h-full flex items-center justify-center bg-slate-900">
+        <div className="relative w-full h-full flex items-center justify-center bg-slate-900 overflow-hidden rounded-xl border border-white/10 shadow-inner">
             {/* Clean Radial Gradient Background */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-slate-800 via-slate-900 to-black opacity-80" />
+
+            {/* Grid overlay for 'Holographic' feel */}
+            <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:20px_20px] pointer-events-none" />
 
             {/* SVG Container */}
             <svg
@@ -278,10 +306,41 @@ export function ConstellationGraph({ characters, onOpenDetail }: ConstellationGr
             </svg>
 
             {/* Scanning Text (Retro) */}
-            <div className="absolute bottom-6 text-center pointer-events-none opacity-30">
-                <p className="text-xs text-slate-500 font-mono tracking-[0.2em] uppercase">
-                    {selectedChar ? `Target: ${selectedChar.name}` : "Scanning Constellation..."}
-                </p>
+            <div className="absolute bottom-6 left-0 right-0 text-center pointer-events-none">
+                {selectedChar ? (
+                    <div className="flex flex-col items-center gap-1 animate-in fade-in slide-in-from-bottom-2 duration-300">
+                        <span className="text-xs text-amber-500 font-mono tracking-[0.2em] uppercase font-bold drop-shadow-md">
+                            {selectedChar.name}
+                        </span>
+
+                        {/* Action Buttons for Selection */}
+                        <div
+                            className="flex gap-2 mt-1 pointer-events-auto"
+                            onPointerDown={(e) => e.stopPropagation()} // FIX: Prevent parent drag from swallowing taps
+                        >
+                            {onTravel && (
+                                <button
+                                    onClick={(e) => handleTravelClick(e, selectedChar.id)}
+                                    className="px-4 py-2 bg-amber-500/20 hover:bg-amber-500/40 border border-amber-500/50 rounded-md text-[11px] uppercase text-amber-200 tracking-widest transition-all hover:scale-105 active:scale-95 shadow-[0_0_10px_rgba(245,158,11,0.2)] touch-manipulation"
+                                >
+                                    Travel
+                                </button>
+                            )}
+                            {onOpenDetail && (
+                                <button
+                                    onClick={(e) => handleDetailClick(e, selectedChar)}
+                                    className="px-4 py-2 bg-slate-800/50 hover:bg-slate-700/50 border border-slate-600 rounded-md text-[11px] uppercase text-slate-300 tracking-widest transition-all hover:scale-105 active:scale-95 touch-manipulation"
+                                >
+                                    Target Info
+                                </button>
+                            )}
+                        </div>
+                    </div>
+                ) : (
+                    <p className="text-xs text-slate-600 font-mono tracking-[0.2em] uppercase opacity-60">
+                        System Online
+                    </p>
+                )}
             </div>
         </div>
     )
