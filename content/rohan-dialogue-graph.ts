@@ -1954,6 +1954,42 @@ export const rohanDialogueNodes: DialogueNode[] = [
       variation_id: 'hub_return_v1'
     }],
     choices: []
+  },
+
+  // Platform Seven arrival - the mystical jump destination
+  {
+    nodeId: 'platform_seven_arrival',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: "The light here is... wrong. It's slower. I can see individual photons drifting like snow.\n\nThis is Platform Seven. The station's buffer. Where timelines too heavy to process get stored.",
+        emotion: 'awe',
+        variation_id: 'platform_seven_arrival_v1',
+        interaction: 'bloom'
+      }
+    ],
+    onEnter: [
+      {
+        addGlobalFlags: ['platform_seven_reached', 'deep_mystery_begun']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'platform_explore',
+        text: "What do you mean, 'too heavy'?",
+        nextNodeId: 'rohan_platform_7_truth',
+        pattern: 'exploring',
+        skills: ['curiosity', 'criticalThinking']
+      },
+      {
+        choiceId: 'platform_return',
+        text: "We should go back.",
+        nextNodeId: 'rohan_hub_return',
+        pattern: 'patience',
+        skills: ['riskManagement']
+      }
+    ],
+    tags: ['platform_seven', 'mystery', 'arrival']
   }
 ]
 

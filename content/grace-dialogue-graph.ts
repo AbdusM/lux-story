@@ -1602,6 +1602,36 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
         skills: ['visionaryThinking']
       }
     ]
+  },
+
+  // Missing node referenced from introduction
+  {
+    nodeId: 'grace_handshake_vitals',
+    speaker: 'Grace',
+    content: [
+      {
+        text: "Healthcare operations. Hospital systems. Twelve hours watching monitors, tracking vitals, making sure the numbers that keep people alive don't slip.\n\nMost people think hospitals run on doctors. They run on data. On systems. On people like me who notice when something's about to go wrong.",
+        emotion: 'matter_of_fact',
+        variation_id: 'handshake_vitals_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'vitals_curiosity',
+        text: "What made you choose this work?",
+        nextNodeId: 'grace_hub_return',
+        pattern: 'exploring',
+        skills: ['curiosity']
+      },
+      {
+        choiceId: 'vitals_respect',
+        text: "That's a lot of responsibility.",
+        nextNodeId: 'grace_hub_return',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
+      }
+    ],
+    tags: ['introduction', 'healthcare']
   }
 ]
 
