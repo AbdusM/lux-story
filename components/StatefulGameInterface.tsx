@@ -138,6 +138,7 @@ import { isSupabaseConfigured } from '@/lib/supabase'
 import { GameChoices } from '@/components/GameChoices'
 import { BookOpen, Stars, Compass } from 'lucide-react'
 import { Journal } from '@/components/Journal'
+import { SessionSummary } from '@/components/SessionSummary'
 import { ConstellationPanel } from '@/components/constellation'
 import { SectionErrorBoundary } from '@/components/LayeredErrorBoundaries'
 import { StationStatusBadge } from '@/components/StationStatusBadge'
@@ -3107,6 +3108,9 @@ export default function StatefulGameInterface() {
       isProcessing={state.isProcessing}
       className="h-[100dvh]"
     >
+      {/* Session Summary - Welcome back overlay for returning players */}
+      <SessionSummary />
+
       <div
         key="game-container"
         className="h-full flex flex-col"
