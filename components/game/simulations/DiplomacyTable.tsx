@@ -1,6 +1,3 @@
-"use client"
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
@@ -9,19 +6,16 @@ import {
     Network,
     Train,
     ArrowRight,
-    Heart,
     Zap,
     Shield,
     MessageCircle
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { SimulationConfig } from '../SimulationRenderer'
+import { SimulationComponentProps } from './types'
 
 type DiplomacyVariant = 'negotiation' | 'cognitive' | 'operations'
 
-interface DiplomacyTableProps {
-    config: SimulationConfig
-    onSuccess: (result?: any) => void
+interface DiplomacyTableProps extends SimulationComponentProps {
     variant?: DiplomacyVariant
 }
 
@@ -61,10 +55,10 @@ interface DialogueOption {
  * - cognitive: Devon's family dynamics mapping
  * - operations: Samuel's station control
  */
-export function DiplomacyTable({ config, onSuccess, variant = 'negotiation' }: DiplomacyTableProps) {
+export function DiplomacyTable({ onSuccess, variant = 'negotiation' }: DiplomacyTableProps) {
     const [nodes, setNodes] = useState<RelationNode[]>(() => getInitialNodes(variant))
     const [connections, setConnections] = useState<Connection[]>(() => getInitialConnections(variant))
-    const [dialogueOptions, setDialogueOptions] = useState<DialogueOption[]>(() => getDialogueOptions(variant))
+    const [dialogueOptions, _setDialogueOptions] = useState<DialogueOption[]>(() => getDialogueOptions(variant))
     const [selectedOptions, setSelectedOptions] = useState<string[]>([])
     const [influence, setInfluence] = useState(0)
     const [isComplete, setIsComplete] = useState(false)

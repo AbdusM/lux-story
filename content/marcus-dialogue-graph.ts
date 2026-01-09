@@ -87,7 +87,7 @@ const nodes: DialogueNode[] = [
       {
         choiceId: 'marcus_intro_show_work',
         text: "Show me what you're working on.",
-        nextNodeId: 'marcus_simulation_automation',
+        nextNodeId: 'marcus_handshake_logistics',
         pattern: 'exploring',
         skills: ['curiosity', 'learningAgility'],
         voiceVariations: {
@@ -135,6 +135,48 @@ const nodes: DialogueNode[] = [
       }
     ]
   },
+
+  // ============= HANDSHAKE NODE: LOGISTICS TRIAGE =============
+  {
+    nodeId: 'marcus_handshake_logistics',
+    speaker: 'Marcus',
+    content: [{
+      text: "Show you? It is not much to look at. Just a queue that never empties.\n\nHere. This supply route is blocked. Three clinics waiting. Where do you send the last filter?",
+      emotion: 'skeptical',
+      variation_id: 'marcus_handshake_intro',
+      interaction: 'ripple'
+    }],
+    simulation: {
+      type: 'dashboard_triage',
+      mode: 'inline',
+      inlineHeight: 'h-64',
+      title: 'Supply Chain Routing',
+      taskDescription: 'Route critical medical supplies.',
+      initialContext: {
+        items: [
+          { id: '1', label: 'MED_KIT_7', value: 90, status: 'delayed', priority: 'critical' },
+          { id: '2', label: 'WATER_FILTERS', value: 45, status: 'transit', priority: 'high' },
+          { id: '3', label: 'VACCINE_BOX', value: 80, status: 'pending', priority: 'critical' }
+        ]
+      },
+      successFeedback: 'ROUTING OPTIMIZED. DELIVERY CONFIRMED.'
+    },
+    choices: [
+      {
+        choiceId: 'logistics_complete',
+        text: "Route confirmed. They'll get it in time.",
+        nextNodeId: 'marcus_automation_lesson', // Route back to main arc
+        pattern: 'helping',
+        skills: ['crisisManagement'],
+        voiceVariations: {
+          analytical: "Logistics optimized. Route clear.",
+          helping: "They have what they need. For today.",
+          building: "The chain is fixed. Supplies are moving."
+        }
+      }
+    ]
+  },
+
   {
     nodeId: 'marcus_interrupt_acknowledged',
     speaker: 'Marcus',
@@ -2215,6 +2257,19 @@ WARNING: Response time > 48h`,
           characterId: 'marcus',
           trustChange: 1
         }
+      },
+      {
+        choiceId: 'heal_deep_dive',
+        text: "[Deep Dive] We can't fix the past. But we can prepare for the future. Let's run the Crisis Protocol.",
+        nextNodeId: 'marcus_deep_dive',
+        pattern: 'analytical',
+        skills: ['crisisManagement', 'systemsThinking'],
+        visibleCondition: {
+          trust: { min: 4 },
+          patterns: { analytical: { min: 6 } }
+        },
+        preview: "Initiating Mass Casualty Simulation",
+        interaction: 'bloom'
       }
     ],
     tags: ['marcus_arc', 'reflection', 'healing']
@@ -2555,6 +2610,82 @@ WARNING: Response time > 48h`,
     ],
     tags: ['career_mention', 'invisible_depth', 'community_health']
   },
+
+
+  // ============= DEEP DIVE: CRISIS TRIAGE =============
+  {
+    nodeId: 'marcus_deep_dive',
+    speaker: 'Marcus',
+    content: [
+      {
+        text: "You want to test the system? Really test it?\n\nThis is the scenario that keeps me awake. Sector 7 breach. 500 casualties. Communication lines overloaded.\n\nMost people freeze. They try to save everyone and save no one.\n\nTake the command console. Prioritize the flow. Do not hesitate.",
+        emotion: 'intense_focused',
+        variation_id: 'deep_dive_v1'
+      }
+    ],
+    simulation: {
+      type: 'dashboard_triage',
+      title: 'Mass Casualty Response: Sector 7',
+      taskDescription: 'A reactor breach has occurred. Casualties are flooding the system. Triage incoming reports to maximize survival. CRITICAL: prioritize life-threatening injuries over structural damage.',
+      initialContext: {
+        items: [
+          { id: '1', label: 'Hull Breach - Sector 7G', value: 95, priority: 'critical', trend: 'down' },
+          { id: '2', label: 'Radiation Burns - Group A', value: 88, priority: 'critical', trend: 'up' },
+          { id: '3', label: 'Panic Attack - Cafeteria', value: 45, priority: 'low', trend: 'stable' },
+          { id: '4', label: 'Debris Clearance', value: 60, priority: 'medium', trend: 'stable' },
+          { id: '5', label: 'Oxygen Failure - Med Bay', value: 92, priority: 'critical', trend: 'down' },
+          { id: '6', label: 'Minor Lacerations', value: 30, priority: 'low', trend: 'stable' }
+        ]
+      },
+      successFeedback: 'CASUALTY RATE MINIMIZED. CRITICAL SYSTEMS STABILIZED.',
+      mode: 'fullscreen'
+    },
+    choices: [
+      {
+        choiceId: 'dive_success_triage',
+        text: "The hard choices are made. The system held.",
+        nextNodeId: 'marcus_deep_dive_success',
+        pattern: 'analytical',
+        skills: ['leadership', 'strategicThinking']
+      },
+      {
+        choiceId: 'dive_success_healer',
+        text: "We saved the ones we could.",
+        nextNodeId: 'marcus_deep_dive_success',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'resilience']
+      }
+    ],
+    tags: ['deep_dive', 'mastery', 'crisis_simulation']
+  },
+
+  {
+    nodeId: 'marcus_deep_dive_success',
+    speaker: 'Marcus',
+    content: [
+      {
+        text: "You cleared the board. You ignored the noise and focused on the signal.\n\nIn the hospital... during the breach... I hesitated. I questioned the data. That hesitation cost lives.\n\nBut you didn't hesitate. Watching you work... it gives me hope. That next time, the system will hold.",
+        emotion: 'relieved_proud',
+        variation_id: 'deep_dive_success_v1',
+        interaction: 'nod'
+      }
+    ],
+    onEnter: [
+      {
+        addGlobalFlags: ['marcus_mastery_achieved', 'marcus_crisis_ready']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'dive_complete',
+        text: "We're ready.",
+        nextNodeId: 'marcus_simulation_automation', // Return to main flow context
+        pattern: 'building',
+        skills: ['leadership']
+      }
+    ]
+  },
+
   // ═══════════════════════════════════════════════════════════════
   // MYSTERY BREADCRUMBS
   // ═══════════════════════════════════════════════════════════════

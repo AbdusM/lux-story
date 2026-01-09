@@ -38,7 +38,7 @@ export const graceDialogueNodes: DialogueNode[] = [
           exploring: "I'm curious. What kind of work takes twelve hours?",
           patience: "Twelve hours. You must love what you do. What is it?"
         },
-        nextNodeId: 'grace_the_work',
+        nextNodeId: 'grace_handshake_vitals',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
         consequence: {
@@ -883,6 +883,19 @@ QUESTION: How do you approach her?
           characterId: 'grace',
           trustChange: 1
         }
+      },
+      {
+        choiceId: 'grace_deep_dive_cure',
+        text: "[Deep Dive] We can do more than comfort. We can cure. Let's synthesize the protocol.",
+        nextNodeId: 'grace_deep_dive',
+        pattern: 'helping',
+        skills: ['systemsThinking', 'technicalLiteracy'],
+        visibleCondition: {
+          trust: { min: 4 },
+          patterns: { helping: { min: 6 } }
+        },
+        preview: "Initiating Lung Scrub Synthesis",
+        interaction: 'bloom'
       }
     ],
     tags: ['grace_arc', 'vision']
@@ -1512,6 +1525,83 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
       variation_id: 'hub_return_v1'
     }],
     choices: []
+  },
+
+  // ============= DEEP DIVE: CELLULAR SYNTHESIS =============
+  {
+    nodeId: 'grace_deep_dive',
+    speaker: 'Grace',
+    content: [
+      {
+        text: "You want to address the root cause?\n\nIt's the air filtration in Sector 7. It's causing 'Space Lung' in the elderly. I can soothe the cough, but I can't stop the fibrosis.\n\nBut Silas gave me access to the hydroponics lab. We found a spore that might scrub the lungs. But it needs to be synthesized perfectly.\n\nI have the hands for care. I need your eyes for the chemistry.",
+        emotion: 'determined_focused',
+        variation_id: 'deep_dive_v1'
+      }
+    ],
+    simulation: {
+      type: 'botany_grid', // Reusing BotanyGrid as a synthesis interface (grid balancing)
+      title: 'Synthesis: Lung Scrub Protocol',
+      taskDescription: 'Synthesize the cure for Sector 7 fibrosis. Balance the active spore culture against the stabilizer compound. Warning: High toxicity if unbalanced.',
+      initialContext: {
+        gridSize: 6,
+        targetGrowth: 85,
+        resources: { water: 50, nutrients: 50, energy: 40 }, // Abstracted as chemical precursors
+        layout: [
+          { x: 2, y: 2, type: 'concentrator', status: 'active' },
+          { x: 3, y: 2, type: 'stabilizer', status: 'active' },
+          { x: 2, y: 3, type: 'spore_culture', status: 'warning' },
+          { x: 3, y: 3, type: 'catalyst', status: 'idle' }
+        ],
+        successFeedback: 'SYNTHESIS STABLE. COMPOUND PURITY: 99.8%.',
+        mode: 'fullscreen'
+      },
+      successFeedback: 'SYNTHESIS COMPLETE. WE HAVE A TREATMENT.', // Redundant but consistent with schema
+      mode: 'fullscreen'
+    },
+    choices: [
+      {
+        choiceId: 'dive_success_cure',
+        text: "The compound is stable. It's ready for nebulizers.",
+        nextNodeId: 'grace_deep_dive_success',
+        pattern: 'helping',
+        skills: ['technicalLiteracy', 'criticalThinking']
+      },
+      {
+        choiceId: 'dive_success_system',
+        text: "We didn't just fix the patient. We fixed the air.",
+        nextNodeId: 'grace_deep_dive_success',
+        pattern: 'analytical',
+        skills: ['systemsThinking', 'technicalLiteracy']
+      }
+    ],
+    tags: ['deep_dive', 'mastery', 'bio_synthesis']
+  },
+
+  {
+    nodeId: 'grace_deep_dive_success',
+    speaker: 'Grace',
+    content: [
+      {
+        text: "It's clear. Look at that clarity.\n\nI've spent seven years holding hands while people suffocated. Today, for the first time, I think I can tell Mrs. Kowalski she's going to breathe easier.\n\nCompanion Care isn't just about dying well anymore. It's about living.",
+        emotion: 'hopeful_tears',
+        variation_id: 'deep_dive_success_v1',
+        interaction: 'bloom'
+      }
+    ],
+    onEnter: [
+      {
+        addGlobalFlags: ['grace_mastery_achieved', 'grace_healer_unlocked']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'dive_complete',
+        text: "This changes everything.",
+        nextNodeId: 'grace_hub_return', // Return to main flow context
+        pattern: 'building',
+        skills: ['visionaryThinking']
+      }
+    ]
   }
 ]
 

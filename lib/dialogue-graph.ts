@@ -117,19 +117,34 @@ export interface SimulationUnlockRequirements {
  * Renders the node as a specialized tool interface rather than standard dialogue.
  */
 export interface SimulationConfig {
-  type: 'terminal_coding' | 'system_architecture' | 'creative_direction' | 'data_analysis' | 'prompt_engineering' | 'code_refactor' | 'chat_negotiation' | 'dashboard_triage' | 'visual_canvas' | 'audio_studio'
+  type: 'terminal_coding' | 'system_architecture' | 'creative_direction' | 'data_analysis' | 'prompt_engineering' | 'code_refactor' | 'chat_negotiation' | 'dashboard_triage' | 'visual_canvas' | 'audio_studio' | 'data_ticker' | 'data_audit' | 'secure_terminal' | 'botany_grid'
   title: string // e.g. "Prompt Refinement Protocol"
   taskDescription: string // e.g. "The model is hallucinating citations. Fix the prompt."
 
   // The "State" of the simulation before user input
   initialContext: {
-    label: string // e.g. "Current Prompt"
-    content: string // e.g. "Write an essay about colonization."
-    displayStyle?: 'code' | 'text' | 'image_placeholder'
+    label?: string // e.g. "Current Prompt"
+    content?: string // e.g. "Write an essay about colonization."
+    displayStyle?: 'code' | 'text' | 'image_placeholder' | 'visual'
+    [key: string]: unknown // Allow flexible data for specific engines (items, query, etc)
   }
 
   // Visual feedback when successful
   successFeedback: string // e.g. "Hallucinations eliminated. Citations verified."
+
+  /**
+   * Display Mode (ISP: Handshake Protocol)
+   * - 'fullscreen': Replaces the entire dialogue card (Legacy "God Mode")
+   * - 'inline': Renders as a widget below the dialogue text ("Handshake Lite")
+   * @default 'fullscreen'
+   */
+  mode?: 'fullscreen' | 'inline'
+
+  /**
+   * Tailwind height class for inline mode
+   * @default 'h-48'
+   */
+  inlineHeight?: string
 
   // === 3-PHASE SYSTEM (all optional for backwards compat) ===
 

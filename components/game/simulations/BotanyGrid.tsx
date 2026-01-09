@@ -1,23 +1,15 @@
 "use client"
-/* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import {
     CheckCircle2,
     Sprout,
-    Droplet,
-    Sun,
     Leaf,
     AlertTriangle
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { SimulationConfig } from '../SimulationRenderer'
-
-interface BotanyGridProps {
-    config: SimulationConfig
-    onSuccess: (result?: any) => void
-}
+import { SimulationComponentProps } from './types'
 
 // Grid cell representing a plant section
 interface GridCell {
@@ -34,7 +26,7 @@ interface GridCell {
  * For Tess: Adjust N-P-K (Nitrogen, Phosphorus, Potassium) balance
  * to optimize plant health in a grid-based cellular automata style.
  */
-export function BotanyGrid({ config, onSuccess }: BotanyGridProps) {
+export function BotanyGrid({ onSuccess }: SimulationComponentProps) {
     // Nutrient levels (0-100)
     const [nitrogen, setNitrogen] = useState(30)
     const [phosphorus, setPhosphorus] = useState(50)
@@ -49,7 +41,6 @@ export function BotanyGrid({ config, onSuccess }: BotanyGridProps) {
     const TARGET_N = 65
     const TARGET_P = 40
     const TARGET_K = 55
-    const TOLERANCE = 15
 
     // Initialize grid
     useEffect(() => {
@@ -94,13 +85,16 @@ export function BotanyGrid({ config, onSuccess }: BotanyGridProps) {
         if (baseHealth > 85 && !isComplete) {
             setIsComplete(true)
             setTimeout(() => {
-                onSuccess({ health: baseHealth, nutrients: { nitrogen, phosphorus, potassium } })
+                onSuccess({
+                    success: true,
+                    data: { health: baseHealth, nutrients: { nitrogen, phosphorus, potassium } }
+                })
             }, 1500)
         }
     }, [nitrogen, phosphorus, potassium, isComplete, onSuccess])
 
     // Get cell color based on health
-    const getCellColor = (health: number, growth: string) => {
+    const getCellColor = (growth: string) => {
         if (growth === 'thriving') return 'bg-emerald-500/60 border-emerald-400'
         if (growth === 'growing') return 'bg-lime-500/40 border-lime-400'
         if (growth === 'struggling') return 'bg-yellow-500/30 border-yellow-500'
@@ -156,7 +150,7 @@ export function BotanyGrid({ config, onSuccess }: BotanyGridProps) {
                             key={cell.id}
                             className={cn(
                                 "aspect-square rounded flex items-center justify-center border transition-colors duration-500",
-                                getCellColor(cell.health, cell.growth)
+                                getCellColor(cell.growth)
                             )}
                             initial={{ scale: 0, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
@@ -184,7 +178,7 @@ export function BotanyGrid({ config, onSuccess }: BotanyGridProps) {
 
             {/* Nutrient hint */}
             <div className="text-center text-xs text-white/40 italic">
-                "Moonlight Orchid requires balanced nutrition with elevated nitrogen..."
+                &quot;Moonlight Orchid requires balanced nutrition with elevated nitrogen...&quot;
             </div>
 
             {/* Controls */}

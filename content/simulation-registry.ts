@@ -1,5 +1,5 @@
 
-import { SimulationConfig } from '@/components/game/SimulationRenderer'
+import { SimulationConfig } from '@/components/game/simulations/types'
 import { SimulationPhase, SimulationDifficulty } from '@/lib/dialogue-graph'
 
 // ISP: The "Context Factory"

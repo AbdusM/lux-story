@@ -12,7 +12,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronDown, ChevronUp } from 'lucide-react'
 import { useGameSelectors } from '@/lib/game-store'
-import { getPatternHeatmapData, type PatternEvolutionHistory } from '@/lib/pattern-derivatives'
+import { getPatternHeatmapData } from '@/lib/pattern-derivatives'
 import { getPatternColor, type PatternType, PATTERN_TYPES } from '@/lib/patterns'
 import { cn } from '@/lib/utils'
 

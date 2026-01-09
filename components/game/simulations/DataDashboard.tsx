@@ -1,13 +1,9 @@
-"use client"
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, ElementType } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
     CheckCircle2,
     Activity,
     TrendingUp,
-    TrendingDown,
     AlertTriangle,
     ArrowUp,
     ArrowDown,
@@ -17,24 +13,12 @@ import {
     Thermometer
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { SimulationConfig } from '../SimulationRenderer'
+import { SimulationComponentProps, DataItem } from './types'
 
 type DashboardVariant = 'triage' | 'market' | 'logistics' | 'analysis'
 
-interface DataDashboardProps {
-    config: SimulationConfig
-    onSuccess: (result?: any) => void
+interface DataDashboardProps extends SimulationComponentProps {
     variant?: DashboardVariant
-}
-
-// Data item for sorting/prioritization
-interface DataItem {
-    id: string
-    label: string
-    value: number
-    priority: 'critical' | 'high' | 'medium' | 'low'
-    trend?: 'up' | 'down' | 'stable'
-    selected?: boolean
 }
 
 /**
@@ -53,11 +37,15 @@ export function DataDashboard({ config, onSuccess, variant = 'triage' }: DataDas
     const [isComplete, setIsComplete] = useState(false)
     const [feedback, setFeedback] = useState<string | null>(null)
 
-    // Initialize data based on variant
+    // Initialize data based on variant or provided context
     useEffect(() => {
-        const initialItems = getInitialItems(variant)
-        setItems(initialItems)
-    }, [variant])
+        if (config.initialContext?.items && Array.isArray(config.initialContext.items)) {
+            setItems(config.initialContext.items as DataItem[])
+        } else {
+            const initialItems = getInitialItems(variant)
+            setItems(initialItems)
+        }
+    }, [variant, config.initialContext])
 
     // Variant configuration
     const variantConfig = {
@@ -98,27 +86,53 @@ export function DataDashboard({ config, onSuccess, variant = 'triage' }: DataDas
     const currentConfig = variantConfig[variant]
     const Icon = currentConfig.icon
 
+    // Check win condition
+    const checkCompletion = useCallback((finalScore: number, currentDecisions: string[]) => {
+        // Win if player prioritized correctly (got critical items first)
+        const minScore = currentConfig.targetDecisions * 2 // At least "high" priority average
+
+        if (finalScore >= minScore && !isComplete) {
+            setIsComplete(true)
+            setTimeout(() => {
+                onSuccess({ score: finalScore, decisions: currentDecisions, variant })
+            }, 1000)
+        }
+    }, [currentConfig.targetDecisions, isComplete, onSuccess, variant])
+
     // Handle item selection/action
     const handleItemAction = useCallback((itemId: string) => {
         if (isComplete) return
 
         const item = items.find(i => i.id === itemId)
-        if (!item || item.selected) return
+        if (!item) return
 
-        // Mark as selected
-        setItems(prev => prev.map(i =>
-            i.id === itemId ? { ...i, selected: true } : i
-        ))
+        if (item.priority === 'low') {
+            setFeedback('Low priority - Focus on critical items')
+            setTimeout(() => setFeedback(null), 1000)
+            return
+        }
 
-        // Track decision
-        setDecisions(prev => [...prev, itemId])
-        const newDecisionCount = decisions.length + 1
+        // Update state
+        setDecisions(prev => {
+            const newDecisions = [...prev, itemId];
 
-        // Score based on priority (critical = 3, high = 2, medium = 1)
-        const points = item.priority === 'critical' ? 3 :
-            item.priority === 'high' ? 2 : 1
-        const newScore = score + points
-        setScore(newScore)
+            // Calculate point value
+            const points = item.priority === 'critical' ? 3 : item.priority === 'high' ? 2 : 1
+            setScore(prevScore => {
+                const newScore = prevScore + points;
+
+                // Check completion
+                if (newDecisions.length >= currentConfig.targetDecisions) {
+                    checkCompletion(newScore, newDecisions);
+                }
+                return newScore;
+            });
+
+            return newDecisions;
+        });
+
+        // Remove item from active list (or mark done)
+        setItems(prev => prev.filter(i => i.id !== itemId))
 
         // Feedback
         if (item.priority === 'critical') {
@@ -129,24 +143,7 @@ export function DataDashboard({ config, onSuccess, variant = 'triage' }: DataDas
 
         setTimeout(() => setFeedback(null), 1500)
 
-        // Check completion
-        if (newDecisionCount >= currentConfig.targetDecisions) {
-            checkCompletion(newScore)
-        }
-    }, [items, decisions, score, isComplete, currentConfig])
-
-    // Check win condition
-    const checkCompletion = useCallback((finalScore: number) => {
-        // Win if player prioritized correctly (got critical items first)
-        const minScore = currentConfig.targetDecisions * 2 // At least "high" priority average
-
-        if (finalScore >= minScore && !isComplete) {
-            setIsComplete(true)
-            setTimeout(() => {
-                onSuccess({ score: finalScore, decisions: decisions.length, variant })
-            }, 1500)
-        }
-    }, [currentConfig, decisions, isComplete, onSuccess, variant])
+    }, [items, isComplete, currentConfig, checkCompletion])
 
     // Get priority color
     const getPriorityColor = (priority: string) => {
@@ -321,7 +318,7 @@ export function DataDashboard({ config, onSuccess, variant = 'triage' }: DataDas
 }
 
 // Metric Card Component
-function MetricCard({ label, value, icon: Icon, color }: { label: string; value: string | number; icon: any; color: string }) {
+function MetricCard({ label, value, icon: Icon, color }: { label: string; value: string | number; icon: ElementType; color: string }) {
     return (
         <div className="bg-black/30 p-2 rounded border border-white/5">
             <div className="flex items-center gap-1 text-[10px] text-white/50 mb-1">

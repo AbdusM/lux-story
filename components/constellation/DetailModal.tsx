@@ -1,9 +1,6 @@
-"use client"
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { useEffect, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Lock, User, MessageCircle, Compass, Target, Clock, ShieldAlert } from 'lucide-react'
+import { X, Lock, User, MessageCircle, Compass, Target, Clock, ShieldAlert, Trophy, CheckCircle2, Circle } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { CharacterWithState, SkillWithState } from '@/hooks/useConstellationData'
 import type { Quest } from '@/lib/quest-system'
@@ -14,8 +11,9 @@ import { CHARACTER_RELATIONSHIP_WEB } from '@/lib/character-relationships'
 import { getLoyaltyExperienceForCharacter } from '@/lib/loyalty-experience'
 import { LOYALTY_TRUST_THRESHOLD, LOYALTY_PATTERN_THRESHOLD } from '@/lib/constants'
 import { useGameStore } from '@/lib/game-store'
-import { PATTERN_METADATA, type PatternType } from '@/lib/patterns'
-import { Trophy, CheckCircle2, Circle } from 'lucide-react'
+import { PATTERN_METADATA } from '@/lib/patterns'
+import type { PatternType } from '@/lib/patterns'
+import type { CharacterId } from '@/lib/graph-registry'
 
 interface DetailModalProps {
   item: CharacterWithState | SkillWithState | Quest | null
@@ -124,7 +122,7 @@ function CharacterDetail({ character, onClose, allCharacters }: { character: Cha
   const colors = CHARACTER_COLORS[character.color]
 
   // Get loyalty experience for this character
-  const loyaltyExperience = useMemo(() => getLoyaltyExperienceForCharacter(character.id as any), [character.id])
+  const loyaltyExperience = useMemo(() => getLoyaltyExperienceForCharacter(character.id as CharacterId), [character.id])
 
   // Get player's current patterns and flags for loyalty requirement checking
   const coreGameState = useGameStore(state => state.coreGameState)

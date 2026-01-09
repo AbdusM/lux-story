@@ -39,8 +39,8 @@ export const zaraDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'intro_efficiency',
-                text: "Maybe they ARE sub-optimal. Efficiency is key.",
-                nextNodeId: 'zara_challenge_efficiency',
+                text: "Maybe they ARE sub-optimal. Let's check the logs.",
+                nextNodeId: 'zara_handshake_audit',
                 pattern: 'building',
                 skills: ['systemsThinking']
             },
@@ -74,6 +74,43 @@ export const zaraDialogueNodes: DialogueNode[] = [
             }
         ],
         tags: ['introduction', 'zara_arc']
+    },
+
+    // ============= HANDSHAKE NODE: SYSTEM AUDIT =============
+    {
+        nodeId: 'zara_handshake_audit',
+        speaker: 'Zara El-Amin',
+        content: [{
+            text: "Efficiency isn't just speed. It's accuracy. And this data feels... curated.\n\nRun a query on the anomaly log. Tell me what you see.",
+            emotion: 'suspicious',
+            variation_id: 'zara_handshake_intro',
+            interaction: 'ripple'
+        }],
+        simulation: {
+            type: 'data_audit',
+            mode: 'inline',
+            inlineHeight: 'h-60',
+            title: 'System Audit',
+            taskDescription: 'Identify the anomaly in the data stream.',
+            initialContext: {
+                query: 'SELECT * FROM LOGS WHERE ANOMALY > 0.9'
+            },
+            successFeedback: 'ANOMALY ISOLATED. TRACE COMPLETE.'
+        },
+        choices: [
+            {
+                choiceId: 'audit_complete',
+                text: "You're right. The anomaly is artificial.",
+                nextNodeId: 'zara_demographic_insight', // Route back to main arc
+                pattern: 'analytical',
+                skills: ['digitalLiteracy'],
+                voiceVariations: {
+                    analytical: "Query confirmed. The bias is hardcoded.",
+                    exploring: "I found the ghost in the machine.",
+                    helping: "Someone hid this here on purpose."
+                }
+            }
+        ]
     },
 
     // ============= PATTERN-UNLOCK NODES =============
@@ -473,6 +510,19 @@ export const zaraDialogueNodes: DialogueNode[] = [
                     characterId: 'zara',
                     trustChange: 1
                 }
+            },
+            {
+                choiceId: 'zara_vuln_deep_dive',
+                text: "[Deep Dive] If you counted the bodies, then let's stop the next one. Trace the Recruitment ghost.",
+                nextNodeId: 'zara_deep_dive',
+                pattern: 'analytical',
+                skills: ['digitalLiteracy', 'integrity'],
+                visibleCondition: {
+                    trust: { min: 6 },
+                    patterns: { analytical: { min: 8 } }
+                },
+                preview: "Initiating Recruitment Audit",
+                interaction: 'bloom'
             }
         ],
         tags: ['zara_arc', 'vulnerability', 'resolution']
@@ -719,6 +769,81 @@ export const zaraDialogueNodes: DialogueNode[] = [
             }
         ],
         tags: ['zara_arc', 'ethics', 'principles']
+    },
+
+    // ============= DEEP DIVE: ANOMALY HUNTER =============
+    {
+        nodeId: 'zara_deep_dive',
+        speaker: 'Zara El-Amin',
+        content: [
+            {
+                text: "You want the real work? The dirty work?\n\nI traced a ghost signal to the Recruitment AI. It's filtering candidates before they even apply. 'Cultural Fit Prediction'.\n\nIt's subtle. It hides in the variance.\n\nHere are the raw sensor feeds from the interview bays. Find the bias. Kill the model.",
+                emotion: 'intense',
+                variation_id: 'deep_dive_v1'
+            }
+        ],
+        simulation: {
+            type: 'dashboard_triage', // Using dashboard for analysis/triage of data points
+            title: 'Audit: Recruitment Neural Net',
+            taskDescription: 'The "Cultural Fit" model is rejecting viable candidates. Analyze the rejection signals. Identify the discriminatory variable hiding in the noise.',
+            initialContext: {
+                label: 'RECRUITMENT_LOGS_V9',
+                items: [
+                    { id: '1', label: 'Candidate 902 - Rejected (Voice Tone)', value: 92, priority: 'critical', trend: 'down' },
+                    { id: '2', label: 'Candidate 881 - Accepted', value: 45, priority: 'low', trend: 'stable' },
+                    { id: '3', label: 'Candidate 774 - Rejected (Zip Code)', value: 89, priority: 'critical', trend: 'down' },
+                    { id: '4', label: 'Candidate 662 - Accepted', value: 55, priority: 'medium', trend: 'up' },
+                    { id: '5', label: 'Candidate 551 - Rejected (School)', value: 85, priority: 'high', trend: 'down' }
+                ],
+                displayStyle: 'code'
+            },
+            successFeedback: 'BIAS ISOLATED. PROXY VARIABLES PURGED.',
+            mode: 'fullscreen'
+        },
+        choices: [
+            {
+                choiceId: 'dive_success_bias_found',
+                text: "It was prioritizing 'Linguistic Similarity'. It wanted clones.",
+                nextNodeId: 'zara_deep_dive_success',
+                pattern: 'analytical',
+                skills: ['digitalLiteracy', 'criticalThinking']
+            },
+            {
+                choiceId: 'dive_success_justice',
+                text: "We cleared the path. The gatekeeping is gone.",
+                nextNodeId: 'zara_deep_dive_success',
+                pattern: 'helping',
+                skills: ['integrity', 'systemsThinking']
+            }
+        ],
+        tags: ['deep_dive', 'mastery', 'data_audit']
+    },
+
+    {
+        nodeId: 'zara_deep_dive_success',
+        speaker: 'Zara El-Amin',
+        content: [
+            {
+                text: "Linguistic Similarity. Of course.\n\nIt was hiring people who sounded exactly like the people who built it. An echo chamber encoded in math.\n\nYou didn't just find a bug. You broke the mirror.\n\nNow... let's see see who applies when the door is actually open.",
+                emotion: 'triumphant',
+                variation_id: 'deep_dive_success_v1',
+                interaction: 'bloom'
+            }
+        ],
+        onEnter: [
+            {
+                addGlobalFlags: ['zara_mastery_achieved', 'zara_algorithm_purged']
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'dive_complete',
+                text: "The data is clean. For now.",
+                nextNodeId: 'zara_conclusion', // Return to wrap-up
+                pattern: 'building',
+                skills: ['resilience']
+            }
+        ]
     },
 
     {

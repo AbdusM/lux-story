@@ -1,10 +1,10 @@
-"use client"
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, CheckCircle2, AlertTriangle, Terminal, Activity, Music, Sprout, Network, Lock, Play, Users } from 'lucide-react'
+import { X, CheckCircle2, Terminal } from 'lucide-react'
 import { cn } from '@/lib/utils'
+
+// Import shared types
+import { SimulationConfig, SimulationResult } from './simulations/types'
 
 // Import specific renderers
 import { SystemArchitectureSim } from './simulations/SystemArchitectureSim'
@@ -15,26 +15,15 @@ import { SecureTerminal } from './simulations/SecureTerminal'
 import { DiplomacyTable } from './simulations/DiplomacyTable'
 import { BotanyGrid } from './simulations/BotanyGrid'
 import { PitchDeck } from './simulations/PitchDeck'
-
-export interface SimulationConfig {
-    type: string
-    title: string
-    taskDescription: string
-    initialContext: any
-    successFeedback: string
-    // God Mode / Debug flags
-    isGodMode?: boolean
-    onExit?: () => void
-}
+import { DataTicker } from './simulations/handshake/DataTicker'
 
 interface SimulationRendererProps {
     simulation: SimulationConfig
-    onComplete: (result: any) => void
+    onComplete: (result: SimulationResult) => void
 }
 
 export function SimulationRenderer({ simulation, onComplete }: SimulationRendererProps) {
     const [status, setStatus] = useState<'active' | 'success' | 'failed'>('active')
-    const [feedback, setFeedback] = useState<string | null>(null)
 
     // Auto-fail safety for development
     useEffect(() => {
@@ -44,87 +33,121 @@ export function SimulationRenderer({ simulation, onComplete }: SimulationRendere
         */
     }, [])
 
-    const handleSuccess = (result: any) => {
+    const handleSuccess = (result: SimulationResult) => {
         setStatus('success')
         setTimeout(() => {
             onComplete(result)
         }, 2000)
     }
 
-    // --- RENDERER SWITCH ---
     const renderContent = () => {
-        switch (simulation.type) {
-            case 'system_architecture':
-                return <SystemArchitectureSim config={simulation} onSuccess={handleSuccess} />
+        const content = (() => {
+            switch (simulation.type) {
+                // ... (Cases 1-to-1 matching existing switch)
+                case 'system_architecture':
+                    return <SystemArchitectureSim config={simulation} onSuccess={handleSuccess} />
 
-            // ISP: The "Generic" Fallbacks (Phase 2 Implementations)
-            // For now, we route them to a "Under Construction" or "Generic Terminal" view
-            // until we build the specific visualizers.
+                case 'visual_canvas':
+                    const canvasVariant = simulation.title.toLowerCase().includes('mural') ? 'art' :
+                        simulation.title.toLowerCase().includes('star') || simulation.title.toLowerCase().includes('constellation') ? 'navigation' :
+                            'blueprint'
+                    return <VisualCanvas config={simulation} onSuccess={handleSuccess} variant={canvasVariant} />
 
-            case 'visual_canvas': // Kai (blueprint), Asha (art), Rohan (navigation)
-                // Determine variant based on title/context
-                const canvasVariant = simulation.title.toLowerCase().includes('mural') ? 'art' :
-                    simulation.title.toLowerCase().includes('star') || simulation.title.toLowerCase().includes('constellation') ? 'navigation' :
-                        'blueprint'
-                return <VisualCanvas config={simulation} onSuccess={handleSuccess} variant={canvasVariant} />
+                case 'architect_3d':
+                    return <VisualCanvas config={simulation} onSuccess={handleSuccess} variant="navigation" />
 
-            case 'architect_3d':  // Jordan - uses navigation variant for route plotting
-                return <VisualCanvas config={simulation} onSuccess={handleSuccess} variant="navigation" />
+                case 'botany_grid':
+                    return <BotanyGrid config={simulation} onSuccess={handleSuccess} />
 
-            case 'botany_grid':   // Tess - Hydroponic nutrient optimization
-                return <BotanyGrid config={simulation} onSuccess={handleSuccess} />
+                case 'dashboard_triage': // Marcus/Grace/Silas/Isaiah
+                    const triageVariant = simulation.title.toLowerCase().includes('supply') || simulation.title.toLowerCase().includes('route') ? 'logistics' :
+                        simulation.title.toLowerCase().includes('soil') || simulation.title.toLowerCase().includes('sensor') ? 'analysis' :
+                            'triage'
+                    return <DataDashboard config={simulation} onSuccess={handleSuccess} variant={triageVariant} />
 
-            case 'dashboard_triage': // Marcus/Grace/Silas/Isaiah
-                // Determine variant based on context
-                const triageVariant = simulation.title.toLowerCase().includes('supply') || simulation.title.toLowerCase().includes('route') ? 'logistics' :
-                    simulation.title.toLowerCase().includes('soil') || simulation.title.toLowerCase().includes('sensor') ? 'analysis' :
-                        'triage'
-                return <DataDashboard config={simulation} onSuccess={handleSuccess} variant={triageVariant} />
+                case 'market_visualizer': // Elena
+                    return <DataDashboard config={simulation} onSuccess={handleSuccess} variant="market" />
 
-            case 'market_visualizer': // Elena
-                return <DataDashboard config={simulation} onSuccess={handleSuccess} variant="market" />
+                case 'data_audit': // Zara
+                    return <SecureTerminal config={simulation} onSuccess={handleSuccess} variant="audit" />
 
-            case 'data_audit': // Zara
-                return <SecureTerminal config={simulation} onSuccess={handleSuccess} variant="audit" />
+                case 'historical_timeline': // Yaquin
+                    return <SecureTerminal config={simulation} onSuccess={handleSuccess} variant="archive" />
 
-            case 'historical_timeline': // Yaquin
-                return <SecureTerminal config={simulation} onSuccess={handleSuccess} variant="archive" />
+                case 'audio_studio': // Lira
+                case 'news_feed': // Nadia
+                    return <MediaStudio config={simulation} onSuccess={handleSuccess} variant={simulation.type as 'audio_studio' | 'news_feed'} />
 
-            case 'audio_studio': // Lira
-            case 'news_feed': // Nadia
-                return <MediaStudio config={simulation} onSuccess={handleSuccess} variant={simulation.type as 'audio_studio' | 'news_feed'} />
+                case 'chat_negotiation': // Alex
+                    return <DiplomacyTable config={simulation} onSuccess={handleSuccess} variant="negotiation" />
 
-            case 'chat_negotiation': // Alex
-                return <DiplomacyTable config={simulation} onSuccess={handleSuccess} variant="negotiation" />
+                case 'conversation_tree': // Devon
+                    return <DiplomacyTable config={simulation} onSuccess={handleSuccess} variant="cognitive" />
 
-            case 'conversation_tree': // Devon
-                return <DiplomacyTable config={simulation} onSuccess={handleSuccess} variant="cognitive" />
+                case 'conductor_interface': // Samuel
+                    return <DiplomacyTable config={simulation} onSuccess={handleSuccess} variant="operations" />
 
-            case 'conductor_interface': // Samuel
-                return <DiplomacyTable config={simulation} onSuccess={handleSuccess} variant="operations" />
+                case 'creative_direction': // Quinn
+                    return <PitchDeck config={simulation} onSuccess={handleSuccess} />
 
-            case 'creative_direction': // Quinn - Pitch deck builder
-                return <PitchDeck config={simulation} onSuccess={handleSuccess} />
+                // PHASE 5: Handshake Protocol
+                case 'data_ticker':
+                    return <DataTicker config={simulation} onSuccess={handleSuccess} />
 
-            default:
-                // Generic Safe Fallback
-                return (
-                    <div className="p-8 font-mono text-amber-500">
-                        <h3 className="text-xl font-bold mb-4">UNKNOWN SIMULATION TYPE: {simulation.type}</h3>
-                        <pre className="text-xs bg-black/50 p-4 rounded mb-4">
-                            {JSON.stringify(simulation, null, 2)}
-                        </pre>
-                        <button
-                            onClick={() => handleSuccess({ skipped: true })}
-                            className="px-4 py-2 border border-amber-500 hover:bg-amber-500/20"
-                        >
-                            Bypass
-                        </button>
-                    </div>
-                )
-        }
+                default:
+                    return (
+                        <div className="p-8 font-mono text-amber-500">
+                            <h3 className="text-xl font-bold mb-4">UNKNOWN SIMULATION TYPE: {simulation.type}</h3>
+                            <button
+                                onClick={() => handleSuccess({ skipped: true })}
+                                className="px-4 py-2 border border-amber-500 hover:bg-amber-500/20"
+                            >
+                                Bypass
+                            </button>
+                        </div>
+                    )
+            }
+        })()
+
+        return content
     }
 
+    // --- INLINE MODE RENDERER ---
+    if (simulation.mode === 'inline') {
+        return (
+            <div className={cn("relative w-full overflow-hidden rounded-lg bg-black/20 border border-white/5", simulation.inlineHeight || 'h-48')}>
+                {/* Minimal Header for Context */}
+                {/* <div className="absolute top-0 left-0 right-0 h-6 bg-black/40 flex items-center px-2 z-10 pointer-events-none">
+                    <span className="text-[10px] uppercase font-mono tracking-widest text-slate-500">
+                        Widget // {simulation.type}
+                    </span>
+                </div> */}
+
+                {/* Content */}
+                <div className="absolute inset-0">
+                    {renderContent()}
+                </div>
+
+                {/* Inline Success Overlay - more subtle */}
+                <AnimatePresence>
+                    {status === 'success' && (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="absolute inset-0 z-50 bg-emerald-950/80 flex items-center justify-center backdrop-blur-[2px]"
+                        >
+                            <div className="flex items-center gap-2 text-emerald-400">
+                                <CheckCircle2 className="w-5 h-5" />
+                                <span className="font-mono text-sm tracking-wide font-bold">COMPLETE</span>
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </div>
+        )
+    }
+
+    // --- FULLSCREEN MODE RENDERER (Original God Mode) ---
     return (
         <div className="fixed inset-0 z-[60] bg-slate-950 text-slate-200 flex flex-col font-sans">
             {/* SATELLITE OS HEADER */}
@@ -154,7 +177,7 @@ export function SimulationRenderer({ simulation, onComplete }: SimulationRendere
                 {renderContent()}
             </div>
 
-            {/* SUCCESS OVERLAY */}
+            {/* FULLSCREEN SUCCESS OVERLAY */}
             <AnimatePresence>
                 {status === 'success' && (
                     <motion.div

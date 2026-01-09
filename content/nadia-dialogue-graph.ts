@@ -95,7 +95,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'nadia_intro_show_work',
         text: "Show me what you're working on.",
-        nextNodeId: 'nadia_sim_hype',
+        nextNodeId: 'nadia_handshake_news',
         pattern: 'exploring',
         skills: ['curiosity', 'learningAgility'],
         voiceVariations: {
@@ -112,6 +112,49 @@ export const nadiaDialogueNodes: DialogueNode[] = [
       { characterId: 'nadia', addKnowledgeFlags: ['nadia_met'] }
     ],
     tags: ['nadia_intro', 'first_meeting']
+  },
+
+  // ============= HANDSHAKE NODE: NEWS TICKER =============
+  {
+    nodeId: 'nadia_handshake_news',
+    speaker: 'Nadia Petrova',
+    content: [{
+      text: "Look at the feed. These aren't just headlines. They're feedback loops. The algorithm amplifies what outrages us, and we feed it back more outrage.\n\nCan you stabilize the signal? Find the human impact hidden in the noise.",
+      emotion: 'urgent',
+      variation_id: 'nadia_handshake_intro',
+      interaction: 'ripple'
+    }],
+    simulation: {
+      type: 'data_ticker',
+      mode: 'inline',
+      title: 'Global Sentiment Monitor',
+      taskDescription: 'Stabilize the viral headlines to find the truth.',
+      initialContext: {
+        label: 'Live Feed',
+        content: JSON.stringify([
+          { id: '1', label: 'AI_SURGE', value: 92, priority: 'critical', trend: 'up' },
+          { id: '2', label: 'MARKET_CRASH', value: 88, priority: 'critical', trend: 'down' },
+          { id: '3', label: 'ETHICS_BILL', value: 45, priority: 'medium', trend: 'stable' },
+          { id: '4', label: 'NEW_MODEL', value: 76, priority: 'high', trend: 'up' },
+          { id: '5', label: 'PUBLIC_OUTCRY', value: 95, priority: 'critical', trend: 'up' }
+        ])
+      },
+      successFeedback: 'NOISE FILTERED. HUMAN IMPACT DETECTED.'
+    },
+    choices: [
+      {
+        choiceId: 'news_complete',
+        text: "I've filtered the noise. It's... intense.",
+        nextNodeId: 'nadia_choosing_sight', // Route back to main arc
+        pattern: 'analytical',
+        skills: ['digitalLiteracy'],
+        voiceVariations: {
+          analytical: "Signal stabilized. The pattern is clear.",
+          helping: "I see the people behind the data now.",
+          exploring: "That was chaos. But I found the thread."
+        }
+      }
+    ]
   },
 
   // ============= CHOOSING SIGHT =============

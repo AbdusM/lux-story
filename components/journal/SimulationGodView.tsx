@@ -9,6 +9,7 @@ import {
 import { cn } from '@/lib/utils'
 import { useGameStore } from '@/lib/game-store'
 import { SIMULATION_REGISTRY, SimulationDefinition } from '@/content/simulation-registry'
+import { SimulationConfig } from '@/components/game/simulations/types'
 
 // Icon mapping
 const iconMap: Record<string, ElementType> = {
@@ -29,7 +30,7 @@ export function SimulationGodView({ onClose }: { onClose?: () => void }) {
     const handleMount = (sim: SimulationDefinition) => {
         // ISP: The "Context Factory" in action
         // We construct a full SimulationConfig object on the fly
-        const debugConfig = {
+        const debugConfig: SimulationConfig = {
             type: sim.type,
             title: `[DEBUG] ${sim.title}`,
             taskDescription: sim.defaultContext.taskDescription,
@@ -130,6 +131,6 @@ export function SimulationGodView({ onClose }: { onClose?: () => void }) {
                     )
                 })}
             </div>
-        </div>
+        </div >
     )
 }

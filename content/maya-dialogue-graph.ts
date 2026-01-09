@@ -2470,6 +2470,19 @@ STATUS: Signal fighting itself`,
         skills: ['creativity']
       },
       {
+        choiceId: 'architect_deep_dive',
+        text: "[Deep Dive] Lead me through a real system. Show me the station's heartbeat.",
+        nextNodeId: 'maya_deep_dive',
+        pattern: 'analytical',
+        skills: ['systemsThinking'],
+        visibleCondition: {
+          trust: { min: 4 },
+          patterns: { analytical: { min: 6 } }
+        },
+        preview: "Enter the System Architecture Deep Dive",
+        interaction: 'bloom'
+      },
+      {
         choiceId: 'architect_humble',
         text: "I'm just trying to understand things.",
         nextNodeId: 'maya_crossroads',
@@ -2477,6 +2490,84 @@ STATUS: Signal fighting itself`,
       }
     ],
     tags: ['career_mention', 'invisible_depth', 'architect']
+  },
+
+  // ============= DEEP DIVE: SYSTEM ARCHITECT =============
+  {
+    nodeId: 'maya_deep_dive',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "You want to see the real thing?\n\nOkay. I found a terminal in the maintenance sub-level. It's connected to the station's attitude stabilizers.\n\nThe servos are drifting. Just like my prosthetic hand was, but on a massive scale. If they drift too far... well, let's just say gravity gets weird.\n\nI've been afraid to touch it. But with you watching my back? Maybe we can fix it.",
+        emotion: 'focused_intense',
+        variation_id: 'deep_dive_v1',
+        richEffectContext: 'warning'
+      }
+    ],
+    simulation: {
+      type: 'system_architecture',
+      title: 'Station Attitude Stabilizer',
+      taskDescription: 'The station gyroscope is destabilizing due to harmonic resonance. Tune the PID controller to dampen the oscillation before structural stress becomes critical.',
+      initialContext: {
+        label: 'GYROSCOPE_CORE_V9',
+        content: `STATUS: CRITICAL RESONANCE detected
+HARMONIC FREQUENCY: 142Hz
+DAMPING RATIO: 0.1 (Unstable)
+
+PID TUNING REQUIRED:
+- Proportional (P): Gain too high?
+- Derivative (D): Damping insufficient?
+
+MISSION: Stabilize the wave form within safety limits.`,
+        displayStyle: 'code'
+      },
+      successFeedback: 'STABILIZATION ACHIEVED. Harmonic resonance dampened. Station gravity normalized.',
+      mode: 'fullscreen'
+    },
+    choices: [
+      {
+        choiceId: 'dive_success_analytical',
+        text: "That was... elegant. Perfect balance.",
+        nextNodeId: 'maya_deep_dive_success',
+        pattern: 'analytical',
+        skills: ['systemsThinking']
+      },
+      {
+        choiceId: 'dive_success_building',
+        text: "We just kept the station from spinning apart. Nice build.",
+        nextNodeId: 'maya_deep_dive_success',
+        pattern: 'building',
+        skills: ['collaboration']
+      }
+    ],
+    tags: ['deep_dive', 'mastery', 'system_architecture']
+  },
+
+  {
+    nodeId: 'maya_deep_dive_success',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "Did you feel that? The hum changed. It's smooth now.\n\nI've spent so long fixing small things. Toys. Models. I never thought I could fix something... this big.\n\nMaybe I am an architect.",
+        emotion: 'awed_empowered',
+        variation_id: 'deep_dive_success_v1',
+        interaction: 'bloom'
+      }
+    ],
+    onEnter: [
+      {
+        addGlobalFlags: ['maya_mastery_achieved']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'dive_complete',
+        text: "You always were.",
+        nextNodeId: 'maya_crossroads',
+        pattern: 'helping',
+        skills: ['encouragement']
+      }
+    ]
   },
 
   {

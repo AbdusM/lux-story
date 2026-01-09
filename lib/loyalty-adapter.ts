@@ -58,7 +58,7 @@ export function adaptLoyaltyExperience(newExp: NewLoyaltyExperience): OldLoyalty
   }
 
   // Convert each phase to a step
-  newExp.phases.forEach((phase, index) => {
+  newExp.phases.forEach((phase, _index) => {
     const choices: ExperienceChoice[] = phase.choices.map(choice => {
       // Determine next step
       let nextStepId: string
@@ -77,24 +77,24 @@ export function adaptLoyaltyExperience(newExp: NewLoyaltyExperience): OldLoyalty
         nextStepId,
         effect: choice.outcome.patternChanges || choice.outcome.trustChange
           ? (gameState: GameState) => {
-              const updates: Partial<GameState> = {}
+            const updates: Partial<GameState> = {}
 
-              // Apply pattern changes
-              if (choice.outcome.patternChanges) {
-                const newPatterns = { ...gameState.patterns }
-                for (const [patternKey, change] of Object.entries(choice.outcome.patternChanges)) {
-                  const pattern = patternKey as keyof typeof newPatterns
-                  if (pattern in newPatterns) {
-                    newPatterns[pattern] = (newPatterns[pattern] || 0) + (change as number)
-                  }
+            // Apply pattern changes
+            if (choice.outcome.patternChanges) {
+              const newPatterns = { ...gameState.patterns }
+              for (const [patternKey, change] of Object.entries(choice.outcome.patternChanges)) {
+                const pattern = patternKey as keyof typeof newPatterns
+                if (pattern in newPatterns) {
+                  newPatterns[pattern] = (newPatterns[pattern] || 0) + (change as number)
                 }
-                updates.patterns = newPatterns
               }
-
-              // Trust changes are handled at completion level
-
-              return updates
+              updates.patterns = newPatterns
             }
+
+            // Trust changes are handled at completion level
+
+            return updates
+          }
           : undefined
       }
     })
@@ -161,7 +161,7 @@ export function adaptLoyaltyExperience(newExp: NewLoyaltyExperience): OldLoyalty
  * Register all 20 loyalty experiences from the new system
  */
 export function registerAllLoyaltyExperiences(): void {
-  for (const [id, experience] of Object.entries(LOYALTY_EXPERIENCES)) {
+  for (const [_id, experience] of Object.entries(LOYALTY_EXPERIENCES)) {
     const adapted = adaptLoyaltyExperience(experience)
     registerExperience(adapted)
   }
