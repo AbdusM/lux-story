@@ -223,6 +223,22 @@ function HarmonicOrb({ orb, index, onSelect, careerMatch }: {
                     : { delay: index * 0.1, type: "spring" }
                 }
             >
+                {/* Fox Theatre Chase Effect - New Growth Marquee */}
+                {orb.hasNewGrowth && !prefersReducedMotion && (
+                    <motion.div
+                        className="absolute inset-[-6px] rounded-full pointer-events-none"
+                        style={{
+                            background: `conic-gradient(from 0deg, transparent 0%, ${orb.color}99 15%, transparent 30%)`,
+                        }}
+                        animate={{ rotate: 360 }}
+                        transition={{
+                            duration: 2,
+                            repeat: 2,
+                            ease: 'linear'
+                        }}
+                    />
+                )}
+
                 {/* Core - The "Pupil" */}
                 <div
                     className="absolute inset-2 rounded-full opacity-60"
@@ -276,9 +292,9 @@ function HarmonicOrb({ orb, index, onSelect, careerMatch }: {
                     </div>
                 )}
 
-                {/* Next unlock progress (smaller, subtle) */}
-                {orb.nextUnlock && orb.progressToNext > 0 && (
-                    <div className="mt-2 w-full max-w-[100px]">
+                {/* Next unlock progress with explicit text */}
+                {orb.nextUnlock && (
+                    <div className="mt-2 w-full max-w-[120px]">
                         <div className="h-0.5 bg-slate-700/30 rounded-full overflow-hidden">
                             <motion.div
                                 className="h-full rounded-full opacity-60"
@@ -288,6 +304,9 @@ function HarmonicOrb({ orb, index, onSelect, careerMatch }: {
                                 transition={{ duration: 0.5 }}
                             />
                         </div>
+                        <p className="text-[10px] text-slate-500 mt-1 text-center truncate" title={orb.nextUnlock.name}>
+                            {orb.pointsToNext > 0 ? `${orb.pointsToNext} orbs to "${orb.nextUnlock.name}"` : `Unlocked: ${orb.nextUnlock.name}`}
+                        </p>
                     </div>
                 )}
             </div>

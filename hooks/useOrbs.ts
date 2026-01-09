@@ -58,6 +58,7 @@ interface UseOrbsReturn {
   tier: ReturnType<typeof getOrbTier>
   hasOrbs: boolean
   hasNewOrbs: boolean  // True if new orbs since last Journal view
+  patternsWithNewOrbs: Set<OrbType>  // Which patterns have grown since last view (for marquee)
   dominantPattern: OrbType | null
 }
 
@@ -87,6 +88,12 @@ export function useOrbs(): UseOrbsReturn {
   const [lastViewedTotal, setLastViewedTotal] = useLocalStorage<number>(
     'lux-orb-last-viewed',
     0
+  )
+
+  // Track per-pattern last viewed counts for strategic marquee effects
+  const [lastViewedBalance, setLastViewedBalance] = useLocalStorage<Partial<Record<OrbType, number>>>(
+    'lux-orb-last-viewed-balance',
+    {}
   )
 
   // Track which milestones Samuel has acknowledged (so he doesn't repeat)
@@ -174,7 +181,15 @@ export function useOrbs(): UseOrbsReturn {
    */
   const markOrbsViewed = useCallback(() => {
     setLastViewedTotal(balance.totalEarned)
-  }, [setLastViewedTotal, balance.totalEarned])
+    // Also save per-pattern counts for marquee targeting
+    setLastViewedBalance({
+      analytical: balance.analytical,
+      patience: balance.patience,
+      exploring: balance.exploring,
+      helping: balance.helping,
+      building: balance.building
+    })
+  }, [setLastViewedTotal, setLastViewedBalance, balance])
 
   /**
    * Get the next unacknowledged milestone for Samuel to recognize
@@ -221,6 +236,19 @@ export function useOrbs(): UseOrbsReturn {
   // Check if there are new orbs since last Journal view
   const hasNewOrbs = balance.totalEarned > lastViewedTotal
 
+  // Compute which specific patterns have new orbs (for strategic marquee)
+  const patternsWithNewOrbs = useMemo((): Set<OrbType> => {
+    const newPatterns = new Set<OrbType>()
+    const types: OrbType[] = ['analytical', 'patience', 'exploring', 'helping', 'building']
+    for (const type of types) {
+      const lastViewed = lastViewedBalance[type] ?? 0
+      if (balance[type] > lastViewed) {
+        newPatterns.add(type)
+      }
+    }
+    return newPatterns
+  }, [balance, lastViewedBalance])
+
   const dominantPattern = useMemo((): OrbType | null => {
     const types: OrbType[] = ['analytical', 'patience', 'exploring', 'helping', 'building']
     let maxType: OrbType | null = null
@@ -247,6 +275,7 @@ export function useOrbs(): UseOrbsReturn {
     tier,
     hasOrbs,
     hasNewOrbs,
+    patternsWithNewOrbs,
     dominantPattern
   }
 }
