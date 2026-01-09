@@ -7137,7 +7137,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'sam_end_arc1',
         text: 'End Conversation',
-        nextNodeId: 'samuel_hub_root',
+        nextNodeId: 'samuel_hub_initial',
         consequence: {
           addGlobalFlags: ['letter_mystery_solved'],
           trustChange: 2
