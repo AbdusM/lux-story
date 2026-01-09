@@ -1,4 +1,5 @@
 "use client"
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -171,7 +172,7 @@ export function PitchDeck({ config, onSuccess }: PitchDeckProps) {
                     <div className={cn(
                         "text-xl font-mono",
                         totalFilled >= totalRequired * 0.8 ? "text-emerald-400" :
-                        totalFilled >= totalRequired * 0.5 ? "text-amber-400" : "text-red-400"
+                            totalFilled >= totalRequired * 0.5 ? "text-amber-400" : "text-red-400"
                     )}>
                         {Math.round((totalFilled / totalRequired) * 100)}%
                     </div>
@@ -199,7 +200,7 @@ export function PitchDeck({ config, onSuccess }: PitchDeckProps) {
                             <Icon className={cn(
                                 "w-4 h-4",
                                 status === 'complete' ? "text-emerald-400" :
-                                status === 'partial' ? "text-amber-400" : "text-white/50"
+                                    status === 'partial' ? "text-amber-400" : "text-white/50"
                             )} />
                         </button>
                     )

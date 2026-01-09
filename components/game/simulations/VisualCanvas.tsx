@@ -1,4 +1,5 @@
 "use client"
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { useState, useCallback } from 'react'
 import { motion } from 'framer-motion'
@@ -178,7 +179,7 @@ export function VisualCanvas({ config, onSuccess, variant = 'blueprint' }: Visua
             <div className="flex items-center justify-between bg-black/40 p-3 rounded-lg border border-white/10">
                 <div className="flex items-center gap-3">
                     <Icon className={cn("w-5 h-5", isComplete ? "text-emerald-400" : `text-[${currentConfig.color}]`)}
-                          style={{ color: isComplete ? undefined : currentConfig.color }} />
+                        style={{ color: isComplete ? undefined : currentConfig.color }} />
                     <div>
                         <div className="text-xs uppercase tracking-widest text-white/50">{currentConfig.title}</div>
                         <div className={cn("text-sm font-medium", isComplete ? "text-emerald-400" : "text-white")}>
@@ -231,7 +232,7 @@ export function VisualCanvas({ config, onSuccess, variant = 'blueprint' }: Visua
                     <svg className="w-full h-full">
                         <defs>
                             <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
-                                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="white" strokeWidth="0.5"/>
+                                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="white" strokeWidth="0.5" />
                             </pattern>
                         </defs>
                         <rect width="100%" height="100%" fill="url(#grid)" />
@@ -309,7 +310,7 @@ export function VisualCanvas({ config, onSuccess, variant = 'blueprint' }: Visua
                             <CheckCircle2 className="w-12 h-12 mb-2" />
                             <span className="text-lg font-bold tracking-widest">
                                 {variant === 'blueprint' ? 'CIRCUIT VERIFIED' :
-                                 variant === 'art' ? 'ARTWORK APPROVED' : 'ROUTE PLOTTED'}
+                                    variant === 'art' ? 'ARTWORK APPROVED' : 'ROUTE PLOTTED'}
                             </span>
                         </div>
                     </motion.div>

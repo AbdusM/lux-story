@@ -1,4 +1,5 @@
 "use client"
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -115,7 +116,7 @@ export function DataDashboard({ config, onSuccess, variant = 'triage' }: DataDas
 
         // Score based on priority (critical = 3, high = 2, medium = 1)
         const points = item.priority === 'critical' ? 3 :
-                      item.priority === 'high' ? 2 : 1
+            item.priority === 'high' ? 2 : 1
         const newScore = score + points
         setScore(newScore)
 

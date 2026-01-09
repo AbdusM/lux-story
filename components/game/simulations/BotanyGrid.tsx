@@ -1,4 +1,5 @@
 "use client"
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { useState, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
@@ -82,8 +83,8 @@ export function BotanyGrid({ config, onSuccess }: BotanyGridProps) {
             const variation = (Math.random() - 0.5) * 10
             const cellHealth = Math.max(0, Math.min(100, baseHealth + variation))
             const growth = cellHealth > 80 ? 'thriving' :
-                          cellHealth > 60 ? 'growing' :
-                          cellHealth > 40 ? 'struggling' : 'dormant'
+                cellHealth > 60 ? 'growing' :
+                    cellHealth > 40 ? 'struggling' : 'dormant'
             return { ...cell, health: cellHealth, growth }
         }))
 
@@ -132,8 +133,8 @@ export function BotanyGrid({ config, onSuccess }: BotanyGridProps) {
                     <div className={cn(
                         "text-xl font-mono",
                         overallHealth > 80 ? "text-emerald-400" :
-                        overallHealth > 60 ? "text-lime-400" :
-                        overallHealth > 40 ? "text-yellow-400" : "text-red-400"
+                            overallHealth > 60 ? "text-lime-400" :
+                                overallHealth > 40 ? "text-yellow-400" : "text-red-400"
                     )}>
                         {overallHealth}%
                     </div>
@@ -280,7 +281,7 @@ function NutrientCard({ label, name, value, target, color }: {
                 <span className={cn(
                     "text-[10px] uppercase",
                     status === 'optimal' ? "text-emerald-400" :
-                    status === 'close' ? "text-yellow-400" : "text-red-400"
+                        status === 'close' ? "text-yellow-400" : "text-red-400"
                 )}>
                     {status}
                 </span>
