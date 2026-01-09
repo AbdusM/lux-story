@@ -1438,12 +1438,87 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
       }
     ],
     tags: ['career_mention', 'invisible_depth', 'healthcare']
+  },
+
+  // ═══════════════════════════════════════════════════════════════
+  // MYSTERY BREADCRUMBS
+  // ═══════════════════════════════════════════════════════════════
+
+  {
+    nodeId: 'grace_mystery_hint',
+    speaker: 'grace',
+    requiredState: {
+      trust: { min: 5 }
+    },
+    content: [
+      {
+        text: "In healthcare, we call it triage. Putting people where they need to be, when they need to be there.\\n\\nThis station does that automatically. Everyone ends up exactly where they should be.",
+        emotion: 'observant',
+        variation_id: 'mystery_hint_v1'
+      },
+      {
+        text: "It's like an invisible hand guiding the flow. I've never seen anything so <shake>efficient</shake>.",
+        emotion: 'impressed',
+        variation_id: 'mystery_hint_v2'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'grace_mystery_ask',
+        text: "Do you think it's intentional?",
+        nextNodeId: 'grace_mystery_response',
+        pattern: 'analytical'
+      },
+      {
+        choiceId: 'grace_mystery_feel',
+        text: "It guided me to you.",
+        nextNodeId: 'grace_mystery_response',
+        pattern: 'helping'
+      }
+    ],
+    tags: ['mystery', 'breadcrumb']
+  },
+
+  {
+    nodeId: 'grace_mystery_response',
+    speaker: 'grace',
+    content: [
+      {
+        text: "Intentional or not, it works. And in my field, that's what matters.\\n\\nSome systems don't need to be understood. They need to be appreciated.",
+        emotion: 'accepting',
+        variation_id: 'mystery_response_v1'
+      }
+    ],
+    onEnter: [
+      { characterId: 'grace', addKnowledgeFlags: ['grace_mystery_noticed'] }
+    ],
+    choices: [
+      {
+        choiceId: 'grace_mystery_return',
+        text: "I appreciate meeting you.",
+        nextNodeId: 'grace_hub_return',
+        pattern: 'helping'
+      }
+    ],
+    tags: ['mystery', 'breadcrumb']
+  },
+
+  {
+    nodeId: 'grace_hub_return',
+    speaker: 'grace',
+    content: [{
+      text: "I'll be here if you need anything else.",
+      emotion: 'warm',
+      variation_id: 'hub_return_v1'
+    }],
+    choices: []
   }
 ]
 
 export const graceEntryPoints = {
   INTRODUCTION: 'grace_introduction',
-  SIMULATION: 'grace_simulation_intro'
+  SIMULATION: 'grace_simulation_intro',
+  MYSTERY_HINT: 'grace_mystery_hint'
 } as const
 
 export const graceDialogueGraph: DialogueGraph = {

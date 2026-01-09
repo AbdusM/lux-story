@@ -7144,6 +7144,394 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         }
       }
     ]
+  },
+
+  // ═══════════════════════════════════════════════════════════════
+  // MYSTERY BREADCRUMBS - Trust-gated hints about station nature
+  // ═══════════════════════════════════════════════════════════════
+
+  {
+    nodeId: 'samuel_mystery_hint_1',
+    speaker: 'samuel',
+    requiredState: {
+      trust: { min: 4 }
+    },
+    content: [
+      {
+        text: "You ever wonder why folks end up here? At this particular station?\\n\\nAin't random. Never is.",
+        emotion: 'mysterious',
+        variation_id: 'mystery_hint_1_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'mystery_ask_more',
+        text: "What do you mean?",
+        nextNodeId: 'samuel_mystery_deflect_1',
+        pattern: 'exploring'
+      },
+      {
+        choiceId: 'mystery_accept',
+        text: "I think I'm starting to understand.",
+        nextNodeId: 'samuel_hub_return',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['mystery', 'breadcrumb']
+  },
+
+  {
+    nodeId: 'samuel_mystery_deflect_1',
+    speaker: 'samuel',
+    content: [
+      {
+        text: "Ha. You'll figure it out. Everyone does, eventually.\\n\\nRight now, focus on the folks here. Their stories... they're connected to yours more than you know.",
+        emotion: 'knowing',
+        variation_id: 'mystery_deflect_1_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'mystery_understood',
+        text: "I'll keep that in mind.",
+        nextNodeId: 'samuel_hub_return',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['mystery', 'breadcrumb']
+  },
+
+  {
+    nodeId: 'samuel_mystery_hint_2',
+    speaker: 'samuel',
+    requiredState: {
+      trust: { min: 6 }
+    },
+    content: [
+      {
+        text: "The station... it ain't just a place. It's more like a <shake>mirror</shake>.\\n\\nShows you what you need to see. Not always what you want to.",
+        emotion: 'vulnerable',
+        variation_id: 'mystery_hint_2_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'mystery_mirror_ask',
+        text: "A mirror? What am I supposed to see?",
+        nextNodeId: 'samuel_mystery_mirror_response',
+        pattern: 'exploring'
+      },
+      {
+        choiceId: 'mystery_mirror_reflect',
+        text: "I think I've already started seeing it.",
+        nextNodeId: 'samuel_mystery_mirror_response',
+        pattern: 'analytical'
+      }
+    ],
+    tags: ['mystery', 'revelation']
+  },
+
+  {
+    nodeId: 'samuel_mystery_mirror_response',
+    speaker: 'samuel',
+    content: [
+      {
+        text: "Yourself. Who you really are. Who you could become.\\n\\nEvery conversation here, every choice... it's all showing you something. Pay attention.",
+        emotion: 'knowing',
+        variation_id: 'mystery_mirror_response_v1'
+      }
+    ],
+    onEnter: [
+      { characterId: 'samuel', addKnowledgeFlags: ['mystery_mirror_revealed'] }
+    ],
+    choices: [
+      {
+        choiceId: 'return_to_hub',
+        text: "Thank you, Samuel.",
+        nextNodeId: 'samuel_hub_return',
+        pattern: 'helping'
+      }
+    ],
+    tags: ['mystery', 'revelation']
+  },
+
+  {
+    nodeId: 'samuel_mystery_revelation',
+    speaker: 'samuel',
+    requiredState: {
+      trust: { min: 8 },
+      hasKnowledgeFlags: ['mystery_mirror_revealed']
+    },
+    content: [
+      {
+        text: "You've been here a while now. Talked to a lot of folks. Learned their stories.\\n\\n<bloom>You ready to hear what this place really is?</bloom>",
+        emotion: 'serious',
+        variation_id: 'mystery_revelation_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'mystery_ready',
+        text: "I'm ready.",
+        nextNodeId: 'samuel_station_truth',
+        pattern: 'patience'
+      },
+      {
+        choiceId: 'mystery_not_yet',
+        text: "Not yet. I want to talk to more people first.",
+        nextNodeId: 'samuel_hub_return',
+        pattern: 'exploring'
+      }
+    ],
+    tags: ['mystery', 'climax']
+  },
+
+  {
+    nodeId: 'samuel_station_truth',
+    speaker: 'samuel',
+    content: [
+      {
+        text: "Grand Central Terminus ain't a train station. Not really.\\n\\nIt's a <bloom>crossroads</bloom>. A place between who you were and who you're becoming.",
+        emotion: 'vulnerable',
+        variation_id: 'station_truth_v1'
+      },
+      {
+        text: "Every person you met here? They're real. Their struggles are real. But you found 'em because <shake>you needed to</shake>.\\n\\nTheir paths crossed yours for a reason.",
+        emotion: 'knowing',
+        variation_id: 'station_truth_v2'
+      },
+      {
+        text: "The patterns you've been building... analytical, helping, building, exploring, patience...\\n\\nThey ain't just words. They're <bloom>who you are</bloom>. And now you know it.",
+        emotion: 'proud',
+        variation_id: 'station_truth_v3'
+      }
+    ],
+    onEnter: [
+      { characterId: 'samuel', addKnowledgeFlags: ['station_truth_revealed'] }
+    ],
+    choices: [
+      {
+        choiceId: 'truth_grateful',
+        text: "Thank you for showing me this.",
+        nextNodeId: 'samuel_truth_farewell',
+        pattern: 'helping'
+      },
+      {
+        choiceId: 'truth_question',
+        text: "What happens now?",
+        nextNodeId: 'samuel_truth_farewell',
+        pattern: 'exploring'
+      }
+    ],
+    tags: ['mystery', 'revelation', 'climax']
+  },
+
+  {
+    nodeId: 'samuel_truth_farewell',
+    speaker: 'samuel',
+    content: [
+      {
+        text: "Now? You take what you learned here and you <bloom>live it</bloom>.\\n\\nThe station will always be here if you need it. But the real journey... that's out there.",
+        emotion: 'warm',
+        variation_id: 'truth_farewell_v1'
+      },
+      {
+        text: "I'm proud of you. Truly.\\n\\nNow go. Show the world who you've become.",
+        emotion: 'proud',
+        variation_id: 'truth_farewell_v2'
+      }
+    ],
+    onEnter: [
+      { characterId: 'samuel', addKnowledgeFlags: ['samuel_farewell_complete'] }
+    ],
+    choices: [
+      {
+        choiceId: 'farewell_stay',
+        text: "I'd like to stay a little longer.",
+        nextNodeId: 'samuel_hub_return'
+      },
+      {
+        choiceId: 'farewell_go',
+        text: "Goodbye, Samuel.",
+        nextNodeId: 'journey_complete_trigger',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['farewell', 'ending']
+  },
+
+
+  {
+    nodeId: 'samuel_mystery_hint_2',
+    speaker: 'samuel',
+    requiredState: {
+      trust: { min: 6 }
+    },
+    content: [
+      {
+        text: "The station... it ain't just a place. It's more like a <shake>mirror</shake>.\\n\\nShows you what you need to see. Not always what you want to.",
+        emotion: 'vulnerable',
+        variation_id: 'mystery_mirror_1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'mystery_mirror_ask',
+        text: "A mirror? What am I supposed to see?",
+        nextNodeId: 'samuel_mystery_mirror_response',
+        pattern: 'exploring'
+      },
+      {
+        choiceId: 'mystery_mirror_reflect',
+        text: "I think I've already started seeing it.",
+        nextNodeId: 'samuel_mystery_mirror_response',
+        pattern: 'analytical'
+      }
+    ],
+    tags: ['mystery', 'revelation']
+  },
+
+  {
+    nodeId: 'samuel_mystery_mirror_response',
+    speaker: 'samuel',
+    content: [
+      {
+        text: "Yourself. Who you really are. Who you could become.\\n\\nEvery conversation here, every choice... it's all showing you something. Pay attention.",
+        emotion: 'knowing',
+        variation_id: 'mystery_mirror_2'
+      }
+    ],
+    onEnter: [
+      { characterId: 'samuel', addKnowledgeFlags: ['mystery_mirror_revealed'] }
+    ],
+    choices: [
+      {
+        choiceId: 'return_to_hub',
+        text: "Thank you, Samuel.",
+        nextNodeId: 'samuel_hub_return',
+        pattern: 'helping'
+      }
+    ],
+    tags: ['mystery', 'revelation']
+  },
+
+  {
+    nodeId: 'samuel_mystery_revelation',
+    speaker: 'samuel',
+    requiredState: {
+      trust: { min: 8 },
+      hasKnowledgeFlags: ['mystery_mirror_revealed']
+    },
+    content: [
+      {
+        text: "You've been here a while now. Talked to a lot of folks. Learned their stories.\\n\\n<bloom>You ready to hear what this place really is?</bloom>",
+        emotion: 'serious',
+        variation_id: 'mystery_revelation_1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'mystery_ready',
+        text: "I'm ready.",
+        nextNodeId: 'samuel_station_truth',
+        pattern: 'patience'
+      },
+      {
+        choiceId: 'mystery_not_yet',
+        text: "Not yet. I want to talk to more people first.",
+        nextNodeId: 'samuel_hub_return',
+        pattern: 'exploring'
+      }
+    ],
+    tags: ['mystery', 'climax']
+  },
+
+  {
+    nodeId: 'samuel_station_truth',
+    speaker: 'samuel',
+    content: [
+      {
+        text: "Grand Central Terminus ain't a train station. Not really.\\n\\nIt's a <bloom>crossroads</bloom>. A place between who you were and who you're becoming.",
+        emotion: 'vulnerable',
+        variation_id: 'mystery_truth_1'
+      },
+      {
+        text: "Every person you met here? They're real. Their struggles are real. But you found 'em because <shake>you needed to</shake>.\\n\\nTheir paths crossed yours for a reason.",
+        emotion: 'knowing',
+        variation_id: 'mystery_truth_2'
+      },
+      {
+        text: "The patterns you've been building... analytical, helping, building, exploring, patience...\\n\\nThey ain't just words. They're <bloom>who you are</bloom>. And now you know it.",
+        emotion: 'proud',
+        variation_id: 'mystery_truth_3'
+      }
+    ],
+    onEnter: [
+      { characterId: 'samuel', addKnowledgeFlags: ['station_truth_revealed'] }
+    ],
+    choices: [
+      {
+        choiceId: 'truth_grateful',
+        text: "Thank you for showing me this.",
+        nextNodeId: 'samuel_truth_farewell',
+        pattern: 'helping'
+      },
+      {
+        choiceId: 'truth_question',
+        text: "What happens now?",
+        nextNodeId: 'samuel_truth_farewell',
+        pattern: 'exploring'
+      }
+    ],
+    tags: ['mystery', 'revelation', 'climax']
+  },
+
+  {
+    nodeId: 'samuel_truth_farewell',
+    speaker: 'samuel',
+    content: [
+      {
+        text: "Now? You take what you learned here and you <bloom>live it</bloom>.\\n\\nThe station will always be here if you need it. But the real journey... that's out there.",
+        emotion: 'warm',
+        variation_id: 'mystery_farewell_1'
+      },
+      {
+        text: "I'm proud of you. Truly.\\n\\nNow go. Show the world who you've become.",
+        emotion: 'proud',
+        variation_id: 'mystery_farewell_2'
+      }
+    ],
+    onEnter: [
+      { characterId: 'samuel', addKnowledgeFlags: ['samuel_farewell_complete'] }
+    ],
+    choices: [
+      {
+        choiceId: 'farewell_stay',
+        text: "I'd like to stay a little longer.",
+        nextNodeId: 'samuel_hub_return'
+      },
+      {
+        choiceId: 'farewell_go',
+        text: "Goodbye, Samuel.",
+        nextNodeId: 'journey_complete_trigger',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['farewell', 'ending']
+  },
+
+  {
+    nodeId: 'samuel_hub_return',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You got more questions, or you ready to head somewhere?",
+        emotion: 'warm',
+        variation_id: 'hub_return_v1'
+      }
+    ],
+    choices: [],
+    tags: ['farewell']
   }
 ]
 
@@ -7241,7 +7629,12 @@ export const samuelEntryPoints = {
   ORB_EMERGING: 'samuel_orb_emerging',
   ORB_DEVELOPING: 'samuel_orb_developing',
   ORB_FLOURISHING: 'samuel_orb_flourishing',
-  ORB_MASTERED: 'samuel_orb_mastered'
+  ORB_MASTERED: 'samuel_orb_mastered',
+
+  /** Mystery Breadcrumbs */
+  MYSTERY_HINT_1: 'samuel_mystery_hint_1',
+  MYSTERY_HINT_2: 'samuel_mystery_hint_2',
+  MYSTERY_REVELATION: 'samuel_mystery_revelation'
 } as const
 
 // Type export for TypeScript autocomplete

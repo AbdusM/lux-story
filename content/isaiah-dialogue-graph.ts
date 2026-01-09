@@ -907,6 +907,81 @@ export const isaiahDialogueNodes: DialogueNode[] = [
       }
     ],
     tags: ['isaiah_arc', 'marcus', 'healing', 'connection']
+  },
+
+  // ═══════════════════════════════════════════════════════════════
+  // MYSTERY BREADCRUMBS
+  // ═══════════════════════════════════════════════════════════════
+
+  {
+    nodeId: 'isaiah_mystery_hint',
+    speaker: 'isaiah',
+    requiredState: {
+      trust: { min: 5 }
+    },
+    content: [
+      {
+        text: "I've spent my life building communities. Bringing people together around shared purpose.\\n\\nThis station does that effortlessly. No fundraising, no marketing, no struggle for attention. People just... <shake>show up</shake>.",
+        emotion: 'amazed',
+        variation_id: 'mystery_hint_v1'
+      },
+      {
+        text: "And they show up ready. Ready to help. Ready to connect. Ready to change.",
+        emotion: 'inspired',
+        variation_id: 'mystery_hint_v2'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'isaiah_mystery_dig',
+        text: "What do you think draws them here?",
+        nextNodeId: 'isaiah_mystery_response',
+        pattern: 'exploring'
+      },
+      {
+        choiceId: 'isaiah_mystery_feel',
+        text: "Maybe they were always ready. They just needed a place.",
+        nextNodeId: 'isaiah_mystery_response',
+        pattern: 'helping'
+      }
+    ],
+    tags: ['mystery', 'breadcrumb']
+  },
+
+  {
+    nodeId: 'isaiah_mystery_response',
+    speaker: 'isaiah',
+    content: [
+      {
+        text: "That's beautiful. And I think you're right.\\n\\nThe station isn't creating community. It's revealing it. Showing us we were connected all along.\\n\\nThat's the real miracle.",
+        emotion: 'moved',
+        variation_id: 'mystery_response_v1'
+      }
+    ],
+    onEnter: [
+      { characterId: 'isaiah', addKnowledgeFlags: ['isaiah_mystery_noticed'] }
+    ],
+    choices: [
+      {
+        choiceId: 'isaiah_mystery_return',
+        text: "I'm glad I'm part of this community.",
+        nextNodeId: 'isaiah_hub_return',
+        pattern: 'helping'
+      }
+    ],
+    tags: ['mystery', 'breadcrumb']
+  },
+
+  {
+    nodeId: 'isaiah_hub_return',
+    speaker: 'isaiah',
+    content: [{
+      text: "It was good talking with you. Come back anytime.",
+      emotion: 'warm',
+      variation_id: 'hub_return_v1'
+    }],
+    choices: [],
+    tags: ['farewell']
   }
 ]
 
@@ -914,7 +989,8 @@ export const isaiahDialogueNodes: DialogueNode[] = [
 export const isaiahEntryPoints = {
   INTRODUCTION: 'isaiah_introduction',
   SIMULATION: 'isaiah_sim_donor',
-  VULNERABILITY: 'isaiah_vulnerability_arc'
+  VULNERABILITY: 'isaiah_vulnerability_arc',
+  MYSTERY_HINT: 'isaiah_mystery_hint'
 } as const
 
 // Build the graph

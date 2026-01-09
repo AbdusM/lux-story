@@ -1887,6 +1887,73 @@ export const rohanDialogueNodes: DialogueNode[] = [
     }],
     choices: [{ choiceId: 'platform_ack', text: "Dangerous but necessary.", nextNodeId: 'rohan_introduction' }],
     tags: ['puzzle_reward', 'legendary_info']
+  },
+  // ═══════════════════════════════════════════════════════════════
+  // MYSTERY BREADCRUMBS
+  // ═══════════════════════════════════════════════════════════════
+  {
+    nodeId: 'rohan_mystery_hint_1',
+    speaker: 'Rohan',
+    requiredState: {
+      trust: { min: 5 }
+    },
+    content: [
+      {
+        text: "The code for this place... it's not compiled. It's interpreted. Live.\n\nEvery time you make a choice, the station recompiles around you. That's why the layout changes.\n\nWe aren't users. We're runtime variables.",
+        emotion: 'mysterious',
+        variation_id: 'mystery_hint_1_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'rohan_mystery_ask',
+        text: "Runtime variables?",
+        nextNodeId: 'rohan_mystery_response_1',
+        pattern: 'analytical'
+      },
+      {
+        choiceId: 'rohan_mystery_accept',
+        text: "Then let's be good variables.",
+        nextNodeId: 'rohan_hub_return',
+        pattern: 'helping'
+      }
+    ],
+    tags: ['mystery', 'breadcrumb']
+  },
+  {
+    nodeId: 'rohan_mystery_response_1',
+    speaker: 'Rohan',
+    content: [
+      {
+        text: "If we leave, the program crashes. Or maybe it terminates successfully. That's the terrifying part.\n\nIs 'departure' a bug or a feature? I'm digging into the kernel to find out.",
+        emotion: 'determined',
+        variation_id: 'mystery_response_1_v1'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'rohan',
+        addKnowledgeFlags: ['rohan_mystery_noticed']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'rohan_mystery_return',
+        text: "Keep digging.",
+        nextNodeId: 'rohan_hub_return',
+        pattern: 'building'
+      }
+    ]
+  },
+  {
+    nodeId: 'rohan_hub_return',
+    speaker: 'Rohan',
+    content: [{
+      text: "I've got a debugger attached to the lighting system. Let's see what happens if I pause execution.",
+      emotion: 'thoughtful',
+      variation_id: 'hub_return_v1'
+    }],
+    choices: []
   }
 ]
 

@@ -980,6 +980,81 @@ export const danteDialogueNodes: DialogueNode[] = [
       }
     ],
     tags: ['dante_arc', 'philosophy', 'sales']
+  },
+
+  // ═══════════════════════════════════════════════════════════════
+  // MYSTERY BREADCRUMBS
+  // ═══════════════════════════════════════════════════════════════
+
+  {
+    nodeId: 'dante_mystery_hint',
+    speaker: 'dante',
+    requiredState: {
+      trust: { min: 5 }
+    },
+    content: [
+      {
+        text: "I know a setup when I see one. A perfectly curated environment designed to close a deal.\\n\\nBut I can't figure out who the seller is. Or what they're selling.",
+        emotion: 'suspicious',
+        variation_id: 'mystery_hint_v1'
+      },
+      {
+        text: "Every person I meet here needs exactly what I have to offer. And I need what they have. It's the perfect <shake>exchange</shake>.",
+        emotion: 'intrigued',
+        variation_id: 'mystery_hint_v2'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'dante_mystery_dig',
+        text: "Maybe that's not coincidence.",
+        nextNodeId: 'dante_mystery_response',
+        pattern: 'analytical'
+      },
+      {
+        choiceId: 'dante_mystery_feel',
+        text: "Some connections are meant to happen.",
+        nextNodeId: 'dante_mystery_response',
+        pattern: 'helping'
+      }
+    ],
+    tags: ['mystery', 'breadcrumb']
+  },
+
+  {
+    nodeId: 'dante_mystery_response',
+    speaker: 'dante',
+    content: [
+      {
+        text: "You know what's wild? For once, I'm not trying to close deals. I'm just... connecting. And it feels better than any sale I've ever made.\\n\\nMaybe that's what the station's selling. Authenticity.",
+        emotion: 'vulnerable',
+        variation_id: 'mystery_response_v1'
+      }
+    ],
+    onEnter: [
+      { characterId: 'dante', addKnowledgeFlags: ['dante_mystery_noticed'] }
+    ],
+    choices: [
+      {
+        choiceId: 'dante_mystery_return',
+        text: "That's a product worth buying.",
+        nextNodeId: 'dante_hub_return',
+        pattern: 'helping'
+      }
+    ],
+    tags: ['mystery', 'breadcrumb']
+  },
+
+  {
+    nodeId: 'dante_hub_return',
+    speaker: 'dante',
+    content: [{
+      text: "It was good talking with you. Come back anytime.",
+      emotion: 'warm',
+      variation_id: 'hub_return_v1'
+    }],
+    choices: [],
+    tags: ['farewell']
   }
 ]
 
@@ -987,7 +1062,8 @@ export const danteDialogueNodes: DialogueNode[] = [
 export const danteEntryPoints = {
   INTRODUCTION: 'dante_introduction',
   SIMULATION: 'dante_sim_reluctant',
-  VULNERABILITY: 'dante_vulnerability_arc'
+  VULNERABILITY: 'dante_vulnerability_arc',
+  MYSTERY_HINT: 'dante_mystery_hint'
 } as const
 
 // Build the graph

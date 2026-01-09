@@ -3466,6 +3466,73 @@ STATUS: Signal fighting itself`,
       }
     ],
     tags: ['arc_career_crossroads', 'turning_point']
+  },
+  // ═══════════════════════════════════════════════════════════════
+  // MYSTERY BREADCRUMBS
+  // ═══════════════════════════════════════════════════════════════
+  {
+    nodeId: 'maya_mystery_hint_1',
+    speaker: 'Maya Chen',
+    requiredState: {
+      trust: { min: 4 }
+    },
+    content: [
+      {
+        text: "My grandmother used to talk about 'thin places.' Where the veil between worlds is worn through.\n\nShe meant holy sites. Temples. But looking at the schematics for this station... the structural stress patterns are impossible. They shouldn't hold.\n\nUnless something else is holding them.",
+        emotion: 'mysterious',
+        variation_id: 'mystery_hint_1_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'mystery_ask_more',
+        text: "What do you think is holding them?",
+        nextNodeId: 'maya_mystery_response_1',
+        pattern: 'analytical'
+      },
+      {
+        choiceId: 'mystery_accept',
+        text: "Some things aren't meant to be engineered.",
+        nextNodeId: 'maya_hub_return',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['mystery', 'breadcrumb']
+  },
+  {
+    nodeId: 'maya_mystery_response_1',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "That's just it. The math says 'nothing.' But the readings say 'expectation.'\n\nLike the station stands because we *believe* it stands. Is that engineering? Or is it faith?",
+        emotion: 'wondering',
+        variation_id: 'mystery_response_1_v1'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'maya',
+        addKnowledgeFlags: ['maya_mystery_noticed']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'mystery_close',
+        text: "A question for another time.",
+        nextNodeId: 'maya_hub_return',
+        pattern: 'patience'
+      }
+    ]
+  },
+  {
+    nodeId: 'maya_hub_return',
+    speaker: 'Maya Chen',
+    content: [{
+      text: "I should get back to these schematics. The numbers don't add up, but they're beautiful regardless.\n\nTalk later.",
+      emotion: 'thoughtful',
+      variation_id: 'hub_return_v1'
+    }],
+    choices: []
   }
 ]
 
