@@ -23,6 +23,10 @@ export interface GameState {
   messages: GameMessage[]
   messageId: number
 
+  // Navigation state
+  pendingTravelTarget: string | null
+  debugSimulation: any | null // GOD MODE: Force-load a simulation context
+
   // Game progress
   visitedScenes: string[]
   choiceHistory: ChoiceRecord[]
@@ -174,6 +178,8 @@ export interface GameActions {
   startGame: () => void
   setProcessing: (processing: boolean) => void
   setChoiceStartTime: (time: number | null) => void
+  setPendingTravelTarget: (target: string | null) => void
+  setDebugSimulation: (simulation: any | null) => void
 
   // Message management
   addMessage: (message: Omit<GameMessage, 'id' | 'timestamp'>) => void
@@ -251,6 +257,8 @@ const initialState: GameState = {
   showIntro: true,
   isProcessing: false,
   choiceStartTime: null,
+  pendingTravelTarget: null,
+  debugSimulation: null,
 
   // Message management
   messages: [],
@@ -378,6 +386,8 @@ export const useGameStore = create<GameState & GameActions>()(
         startGame: () => set({ hasStarted: true, showIntro: false }),
         setProcessing: (processing) => set({ isProcessing: processing }),
         setChoiceStartTime: (time) => set({ choiceStartTime: time }),
+        setPendingTravelTarget: (target) => set({ pendingTravelTarget: target }),
+        setDebugSimulation: (sim) => set({ debugSimulation: sim }),
 
         // Message management actions
         addMessage: (message) => {
@@ -1183,6 +1193,20 @@ export const useGameSelectors = {
     const serialized = useGameStore((state) => state.coreGameState)
     if (!serialized) return null
     return serialized.mysteries
+  },
+
+  // Get career values (for Analysis tab radar chart)
+  useCareerValues: () => {
+    const serialized = useGameStore((state) => state.coreGameState)
+    if (!serialized) return null
+    return serialized.careerValues
+  },
+
+  // Get pattern evolution history (for pattern moment capture visualization)
+  usePatternEvolutionHistory: () => {
+    const serialized = useGameStore((state) => state.coreGameState)
+    if (!serialized) return null
+    return serialized.patternEvolutionHistory || null
   },
 
   // Character Transformations

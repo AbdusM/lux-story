@@ -1497,7 +1497,7 @@ export const alexDialogueNodes: DialogueNode[] = [
         onEnter: [
           {
             characterId: 'alex',
-            addKnowledgeFlags: ['alex_logistics_solved'],
+            addKnowledgeFlags: ['alex_logistics_solved', 'alex_simulation_phase1_complete'],
             addGlobalFlags: ['golden_prompt_logistics']
           }
         ],
@@ -1532,7 +1532,7 @@ export const alexDialogueNodes: DialogueNode[] = [
         onEnter: [
           {
             characterId: 'alex',
-            addKnowledgeFlags: ['alex_logistics_completed']
+            addKnowledgeFlags: ['alex_logistics_completed', 'alex_simulation_phase1_complete']
           }
         ],
         content: [

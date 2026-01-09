@@ -739,7 +739,8 @@ export const rohanDialogueNodes: DialogueNode[] = [
     onEnter: [
       {
         characterId: 'rohan',
-        thoughtId: 'curious-wanderer'
+        thoughtId: 'curious-wanderer',
+        addKnowledgeFlags: ['rohan_simulation_phase1_complete']
       }
     ],
     choices: [

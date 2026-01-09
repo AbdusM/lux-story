@@ -467,6 +467,12 @@ export const quinnDialogueNodes: DialogueNode[] = [
         emotion: 'teaching_bittersweet'
       }
     ],
+    onEnter: [
+      {
+        characterId: 'quinn',
+        addKnowledgeFlags: ['quinn_simulation_phase1_complete']
+      }
+    ],
     choices: [
       {
         choiceId: 'quinn_pitch_a_lesson',
@@ -500,6 +506,12 @@ export const quinnDialogueNodes: DialogueNode[] = [
         emotion: 'honest_conflicted'
       }
     ],
+    onEnter: [
+      {
+        characterId: 'quinn',
+        addKnowledgeFlags: ['quinn_simulation_phase1_complete']
+      }
+    ],
     choices: [
       {
         choiceId: 'quinn_pitch_b_feeling',
@@ -531,6 +543,12 @@ export const quinnDialogueNodes: DialogueNode[] = [
         variation_id: 'quinn_v8',
         text: "*Something shifts in Quinn's expression.*\n\nYou saw what I saw.\n\nThat founder was me. Ten years younger, before I burned out the first time. If someone had funded that app back then—if I'd had permission to build from my own pain instead of optimizing for someone else's metrics...\n\nI funded her. It's still running. She's still standing. Sometimes that's the real return.",
         emotion: 'moved'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'quinn',
+        addKnowledgeFlags: ['quinn_simulation_phase1_complete']
       }
     ],
     choices: [

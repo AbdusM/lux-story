@@ -756,7 +756,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
     successFeedback: '✓ PM AGREED: "Fine. We delay launch 24h. Better than churn."'
   },
   requiredState: {
-    trust: { min: 8 },
+    trust: { min: 2 },  // Shift Left: lowered from 8 for early accessibility
     hasKnowledgeFlags: ['knows_job_6'],
       lacksKnowledgeFlags: ['knows_job_7']
   },
@@ -832,7 +832,8 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
         onEnter: [
           {
             characterId: 'jordan',
-            thoughtId: 'hidden-connections'
+            thoughtId: 'hidden-connections',
+            addKnowledgeFlags: ['jordan_simulation_phase1_complete']
           }
         ],
           choices: [

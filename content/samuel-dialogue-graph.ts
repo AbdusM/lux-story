@@ -18,6 +18,36 @@ import { systemicCalibrationNodes } from './systemic-calibration' // ISP: The Gr
 
 export const samuelDialogueNodes: DialogueNode[] = [
   ...systemicCalibrationNodes, // Inject Calibration nodes first
+
+  // ============= CONDUCTOR MODE INTERCEPTION =============
+  {
+    nodeId: 'samuel_conductor',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "{{conductorAction}} {{targetName}}? Step lively, then.\n\nDon't just stare at the schedule. Looking at it won't get you there.",
+        emotion: 'warm_guiding',
+        variation_id: 'conductor_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'conductor_confirm',
+        text: "Let's go.",
+        nextNodeId: 'TRAVEL_PENDING',
+        pattern: 'exploring',
+        skills: ['adaptability'],
+        voiceVariations: {
+          exploring: "On my way.",
+          building: "Time to move.",
+          analytical: "Proceeding to destination.",
+          helping: "Thanks for the direction, Samuel.",
+          patience: "I'm ready."
+        }
+      }
+    ]
+  },
+
   // ============= ATMOSPHERIC ARRIVAL =============
   {
     nodeId: 'station_arrival',
@@ -427,7 +457,8 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         consequence: {
           characterId: 'samuel',
           trustChange: 1,
-          addGlobalFlags: ['golden_prompt_workflow']
+          addGlobalFlags: ['golden_prompt_workflow'],
+          addKnowledgeFlags: ['samuel_simulation_phase1_complete']
         },
         voiceVariations: {
           analytical: "Cross-reference: Train 415 merged with 530. Communicate the reschedule.",
@@ -446,7 +477,8 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         consequence: {
           characterId: 'samuel',
           trustChange: 1,
-          addGlobalFlags: ['golden_prompt_workflow']
+          addGlobalFlags: ['golden_prompt_workflow'],
+          addKnowledgeFlags: ['samuel_simulation_phase1_complete']
         },
         voiceVariations: {
           analytical: "Pattern detected: Tuesday merges. Recommend signage improvement.",
@@ -1008,6 +1040,10 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         characterId: 'samuel',
         addKnowledgeFlags: ['samuel_vulnerability_revealed', 'knows_about_dorothy']
+      },
+      // MYSTERY PROGRESSION: Letter sender advances to 'investigating' at trust 6
+      {
+        mysteryChanges: { letterSender: 'investigating' }
       }
     ],
     choices: [
@@ -1065,6 +1101,108 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       }
     ],
     tags: ['vulnerability_arc', 'samuel_arc']
+  },
+
+  // ============= MYSTERY REVEAL: Letter Sender (Trust 8) =============
+  // "The truth about the letter that brought you here"
+  {
+    nodeId: 'samuel_letter_reveal',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You've been patient with me. More patient than most folks ever been. I reckon it's time I told you something.\n\nThat letter you got. The one that brought you here. The handwriting you couldn't quite place.",
+        emotion: 'confessional',
+        variation_id: 'letter_reveal_v1',
+        microAction: 'He pulls a worn envelope from his vest pocket.',
+        richEffectContext: 'warning'
+      }
+    ],
+    requiredState: {
+      trust: { min: 8 },
+      mysteries: { letterSender: 'investigating' }
+    },
+    onEnter: [
+      {
+        characterId: 'samuel',
+        addKnowledgeFlags: ['letter_sender_known']
+      },
+      // MYSTERY PROGRESSION: Letter sender revealed at trust 8
+      {
+        mysteryChanges: { letterSender: 'samuel_knows' }
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'letter_you_wrote_it',
+        text: "You wrote it. Didn't you?",
+        nextNodeId: 'samuel_letter_confession',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'observation'],
+        archetype: 'MAKE_OBSERVATION'
+      },
+      {
+        choiceId: 'letter_wait_patiently',
+        text: "[Wait for him to continue]",
+        nextNodeId: 'samuel_letter_confession',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        archetype: 'STAY_SILENT',
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'letter_why_now',
+        text: "Why tell me now?",
+        nextNodeId: 'samuel_letter_confession',
+        pattern: 'exploring',
+        skills: ['communication']
+      }
+    ],
+    tags: ['mystery_reveal', 'letter_sender', 'samuel_arc']
+  },
+  {
+    nodeId: 'samuel_letter_confession',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "The station... it knows things. Knows when someone's ready. Knows when someone needs to be here.\n\nI don't write the letters. But I know who does. And it ain't any person you'd recognize.\n\nThis place called you here. Same way it called me, all those years ago. Some journeys choose their travelers.",
+        emotion: 'mysterious_reverent',
+        variation_id: 'letter_confession_v1',
+        richEffectContext: 'thinking'
+      }
+    ],
+    onEnter: [
+      {
+        mysteryChanges: { stationNature: 'sensing' }
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'station_alive',
+        text: "The station is... alive?",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'exploring',
+        skills: ['creativity', 'criticalThinking'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'station_accept',
+        text: "I think I understand. Some things don't need explaining.",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['mystery_reveal', 'station_nature', 'samuel_arc']
   },
 
   // ============= PAUSE: After Backstory Revelation (Breathing Room) =============
@@ -4414,6 +4552,18 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         visibleCondition: {
           trust: { min: 3 },
           patterns: { patience: { min: 3 } }
+        }
+      },
+      // MYSTERY: Letter sender reveal path (trust 8 + investigating)
+      {
+        choiceId: 'ask_about_letter',
+        text: "Samuel... who sent me that letter?",
+        nextNodeId: 'samuel_letter_reveal',
+        pattern: 'exploring',
+        skills: ['criticalThinking', 'observation'],
+        visibleCondition: {
+          trust: { min: 8 },
+          mysteries: { letterSender: 'investigating' }
         }
       }
     ],

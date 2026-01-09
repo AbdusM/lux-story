@@ -220,6 +220,52 @@ export const SIMULATION_REGISTRY: SimulationMeta[] = [
     completionFlag: { type: 'global', flag: 'samuel_listener_complete' },
     entryNodeId: 'samuel_listener_intro',
     icon: 'users'
+  },
+
+  // === LINKEDIN 2026 CHARACTERS ===
+  {
+    id: 'quinn_pitch',
+    characterId: 'quinn',
+    title: 'Portfolio Analysis',
+    subtitle: 'Investment Strategy',
+    description: 'Analyze investment risk and opportunity with Quinn\'s data-driven approach.',
+    theme: 'Risk vs. Reward',
+    completionFlag: { type: 'global', flag: 'quinn_simulation_complete' },
+    entryNodeId: 'quinn_simulation_pitch_intro',
+    icon: 'briefcase'
+  },
+  {
+    id: 'dante_pitch',
+    characterId: 'dante',
+    title: 'Pitch Deck Builder',
+    subtitle: 'Sales Strategy',
+    description: 'Craft persuasive sales narratives and navigate client objections with Dante.',
+    theme: 'Persuasion vs. Authenticity',
+    completionFlag: { type: 'global', flag: 'dante_simulation_complete' },
+    entryNodeId: 'dante_sim_reluctant',
+    icon: 'briefcase'
+  },
+  {
+    id: 'nadia_news',
+    characterId: 'nadia',
+    title: 'Headline Editor',
+    subtitle: 'Strategic Communication',
+    description: 'Shape public perception through strategic framing and ethical journalism with Nadia.',
+    theme: 'Truth vs. Impact',
+    completionFlag: { type: 'global', flag: 'nadia_simulation_complete' },
+    entryNodeId: 'nadia_sim_hype',
+    icon: 'book'
+  },
+  {
+    id: 'isaiah_logistics',
+    characterId: 'isaiah',
+    title: 'Supply Chain Map',
+    subtitle: 'Resource Allocation',
+    description: 'Route critical resources to communities in need with Isaiah\'s coalition-building approach.',
+    theme: 'Efficiency vs. Equity',
+    completionFlag: { type: 'global', flag: 'isaiah_simulation_complete' },
+    entryNodeId: 'isaiah_sim_donor',
+    icon: 'compass'
   }
 ]
 

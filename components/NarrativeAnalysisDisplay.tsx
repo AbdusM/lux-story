@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { usePlayerAnalysis } from '@/hooks/usePlayerAnalysis'
+import { useGameSelectors } from '@/lib/game-store'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   BarChart3,
@@ -16,6 +17,7 @@ import {
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { getPatternColor } from '@/lib/patterns'
+import { CareerValuesRadar } from './CareerValuesRadar'
 
 /**
  * Player Analysis Display Component
@@ -29,6 +31,9 @@ export function NarrativeAnalysisDisplay() {
     careerData,
     hasEnoughData
   } = usePlayerAnalysis()
+
+  // Get career values from game store for radar chart
+  const careerValues = useGameSelectors.useCareerValues()
 
   type TabId = 'overview' | 'relationships' | 'characters' | 'growth'
   const [activeTab, setActiveTab] = useState<TabId>('overview')
@@ -341,6 +346,18 @@ export function NarrativeAnalysisDisplay() {
               exit={{ opacity: 0, y: -10 }}
               className="space-y-4"
             >
+              {/* Career Values Radar Chart */}
+              {careerValues && (
+                <div className="p-4 bg-slate-900/50 border border-slate-800 rounded-lg">
+                  <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wide mb-3">
+                    Career Values Profile
+                  </h4>
+                  <div className="flex justify-center">
+                    <CareerValuesRadar values={careerValues} size={180} />
+                  </div>
+                </div>
+              )}
+
               {/* Career Recommendations */}
               <div className="space-y-3">
                 <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wide">

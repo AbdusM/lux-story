@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils'
 import { springs, backdrop, panelFromRight } from '@/lib/animations'
 import { useConstellationData, type CharacterWithState, type SkillWithState } from '@/hooks/useConstellationData'
 import { getQuestsWithStatus, type Quest } from '@/lib/quest-system'
-import { useGameSelectors } from '@/lib/game-store'
+import { useGameSelectors, useGameStore } from '@/lib/game-store'
 import { PeopleView } from './PeopleView'
 import { SkillsView } from './SkillsView'
 import { QuestsView } from './QuestsView'
@@ -103,6 +103,15 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
     { id: 'quests', label: 'Quests', icon: Compass, count: activeQuestsCount }
   ]
 
+  // Navigation Logic (Star Walking)
+  const setCurrentScene = useGameStore(state => state.setCurrentScene) // Handle travel action (called by button or double-click from Graph)
+  const handleTravel = (characterId: string) => {
+    // Logic: Travel to the character's 'hub' or 'intro' node
+    // We now just send the characterId, and StatefulGameInterface smart-resolves the entry node
+    setCurrentScene(characterId)
+    onClose() // Close the panel after traveling
+  }
+
   return (
     <LazyMotion features={domAnimation}>
       <AnimatePresence>
@@ -130,7 +139,7 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
               onDragEnd={(_, info) => {
                 if (info.offset.x > 100) onClose()
               }}
-              className="fixed right-0 top-0 bottom-0 w-full max-w-lg glass-panel-solid !rounded-l-2xl !rounded-r-none border-l border-white/10 shadow-2xl z-sticky flex flex-col"
+              className="fixed right-2 top-2 bottom-2 left-2 sm:left-auto sm:w-full max-w-lg glass-panel-solid !rounded-2xl border border-white/10 shadow-2xl z-sticky flex flex-col overflow-hidden"
               style={{
                 paddingBottom: 'env(safe-area-inset-bottom, 0px)',
                 paddingRight: 'env(safe-area-inset-right, 0px)'
@@ -211,7 +220,11 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
                         WebkitOverflowScrolling: 'touch'
                       }}
                     >
-                      <PeopleView characters={data.characters} onOpenDetail={handleOpenCharacterDetail} />
+                      <PeopleView
+                        characters={data.characters}
+                        onOpenDetail={handleOpenCharacterDetail}
+                        onTravel={handleTravel}
+                      />
                     </motion.div>
                   )}
 

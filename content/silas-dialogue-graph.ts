@@ -632,7 +632,8 @@ HINT: Sensors measure WHERE they're placed...`,
     onEnter: [
       {
         characterId: 'silas',
-        thoughtId: 'green-frontier'
+        thoughtId: 'green-frontier',
+        addKnowledgeFlags: ['silas_simulation_phase1_complete']
       }
     ],
     choices: [

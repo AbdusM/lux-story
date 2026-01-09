@@ -19,10 +19,19 @@ export class TextProcessor {
    * Process text and inject dynamic content based on game state
    * Supports nested conditionals by processing inside-out
    */
-  static process(text: string, gameState: GameState): string {
+  static process(text: string, gameState: GameState, variables?: Record<string, string>): string {
     if (!text) return ''
 
     // 0. Variable Interpolation (Pre-process)
+
+    // Inject custom variables if provided
+    if (variables) {
+      for (const [key, value] of Object.entries(variables)) {
+        const regex = new RegExp(`\\{\\{${key}\\}\\}`, 'g')
+        text = text.replace(regex, value)
+      }
+    }
+
     // Inject Player ID for recursive loop narrative
     if (text.includes('{{playerId}}')) {
       // Simple string replacement for specific allowed variables

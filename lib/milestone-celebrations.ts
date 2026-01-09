@@ -22,8 +22,9 @@ import type { MetaAchievement } from './meta-achievements'
 export type CelebrationType =
   | 'first_meeting'      // Met a new character
   | 'trust_milestone'    // Reached trust level 5 or 10
-  | 'pattern_emerging'   // Pattern reached EMERGING threshold
-  | 'pattern_flourishing'// Pattern reached FLOURISHING threshold
+  | 'pattern_emerging'   // Pattern reached EMERGING threshold (3)
+  | 'pattern_developing' // Pattern reached DEVELOPING threshold (6)
+  | 'pattern_flourishing'// Pattern reached FLOURISHING threshold (9)
   | 'arc_complete'       // Completed a character arc
   | 'achievement'        // Unlocked a meta-achievement
   | 'full_trust'         // Reached trust 10 with a character
@@ -86,6 +87,11 @@ export const CELEBRATION_DEFAULTS: Record<CelebrationType, {
     duration: 2000,
     icon: '🌱'
   },
+  pattern_developing: {
+    effect: 'glow',
+    duration: 2500,
+    icon: '🌿'
+  },
   pattern_flourishing: {
     effect: 'confetti',
     duration: 3000,
@@ -118,26 +124,32 @@ export const CELEBRATION_DEFAULTS: Record<CelebrationType, {
  */
 export const PATTERN_CELEBRATION_MESSAGES: Record<PatternType, {
   emerging: string
+  developing: string
   flourishing: string
 }> = {
   analytical: {
     emerging: 'Your analytical nature is awakening',
+    developing: 'The patterns reveal themselves to you',
     flourishing: 'The Weaver emerges - you see the threads others miss'
   },
   patience: {
     emerging: 'Patience takes root within you',
+    developing: 'You understand the wisdom of stillness',
     flourishing: 'The Anchor is forged - you are the stillness in the storm'
   },
   exploring: {
     emerging: 'Curiosity stirs in your heart',
+    developing: 'The horizon calls ever stronger',
     flourishing: 'The Voyager awakens - the unknown beckons you forward'
   },
   helping: {
     emerging: 'Your caring nature surfaces',
+    developing: 'Others sense the warmth you carry',
     flourishing: 'The Harmonic resonates - you feel the connections between all things'
   },
   building: {
     emerging: 'The urge to create grows stronger',
+    developing: 'Your hands shape what your mind envisions',
     flourishing: 'The Architect rises - you forge the future with your hands'
   }
 }
@@ -196,21 +208,31 @@ export function createTrustMilestoneCelebration(
  */
 export function createPatternCelebration(
   pattern: PatternType,
-  threshold: 'emerging' | 'flourishing'
+  threshold: 'emerging' | 'developing' | 'flourishing'
 ): MilestoneCelebration {
-  const isFlourishing = threshold === 'flourishing'
-  const type = isFlourishing ? 'pattern_flourishing' : 'pattern_emerging'
+  const typeMap: Record<typeof threshold, CelebrationType> = {
+    emerging: 'pattern_emerging',
+    developing: 'pattern_developing',
+    flourishing: 'pattern_flourishing'
+  }
+  const type = typeMap[threshold]
   const defaults = CELEBRATION_DEFAULTS[type]
   const messages = PATTERN_CELEBRATION_MESSAGES[pattern]
   const metadata = PATTERN_METADATA[pattern]
+
+  const titleMap: Record<typeof threshold, string> = {
+    emerging: `${metadata.shortLabel} Emerging`,
+    developing: `${metadata.shortLabel} Developing`,
+    flourishing: metadata.label
+  }
 
   return {
     id: `pattern_${pattern}_${threshold}_${Date.now()}`,
     type,
     effect: defaults.effect,
     duration: defaults.duration,
-    title: isFlourishing ? metadata.label : `${metadata.shortLabel} Emerging`,
-    message: isFlourishing ? messages.flourishing : messages.emerging,
+    title: titleMap[threshold],
+    message: messages[threshold],
     icon: defaults.icon,
     color: metadata.color,
     patternType: pattern
@@ -291,10 +313,14 @@ export function createIdentityCelebration(
 export function checkPatternCelebration(
   oldLevel: number,
   newLevel: number
-): 'emerging' | 'flourishing' | null {
-  // Check flourishing first (higher priority)
+): 'emerging' | 'developing' | 'flourishing' | null {
+  // Check flourishing first (highest priority)
   if (oldLevel < PATTERN_THRESHOLDS.FLOURISHING && newLevel >= PATTERN_THRESHOLDS.FLOURISHING) {
     return 'flourishing'
+  }
+  // Then check developing
+  if (oldLevel < PATTERN_THRESHOLDS.DEVELOPING && newLevel >= PATTERN_THRESHOLDS.DEVELOPING) {
+    return 'developing'
   }
   // Then check emerging
   if (oldLevel < PATTERN_THRESHOLDS.EMERGING && newLevel >= PATTERN_THRESHOLDS.EMERGING) {

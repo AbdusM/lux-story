@@ -281,3 +281,132 @@ export function resetVoiceConflictState(): void {
 
 // Re-export VoiceConflict type for external use
 export type { VoiceConflict }
+
+// ═══════════════════════════════════════════════════════════════════════════
+// B7: VOICE PROGRESSION STAGES
+// Pattern level determines voice strength: whisper → speak → command
+// ═══════════════════════════════════════════════════════════════════════════
+
+import { PATTERN_THRESHOLDS } from './patterns'
+
+/**
+ * Voice progression stages tied to pattern thresholds
+ */
+export type VoiceStage = 'dormant' | 'whisper' | 'speak' | 'command'
+
+/**
+ * Metadata for each voice stage
+ */
+export const VOICE_STAGE_META: Record<VoiceStage, {
+  label: string
+  description: string
+  intensity: number // 0-1
+  icon: string
+}> = {
+  dormant: {
+    label: 'Dormant',
+    description: 'This voice has not yet awakened',
+    intensity: 0,
+    icon: '💤'
+  },
+  whisper: {
+    label: 'Whisper',
+    description: 'A faint voice emerges in quiet moments',
+    intensity: 0.33,
+    icon: '🌱'
+  },
+  speak: {
+    label: 'Speak',
+    description: 'The voice speaks with growing confidence',
+    intensity: 0.66,
+    icon: '🌿'
+  },
+  command: {
+    label: 'Command',
+    description: 'This voice shapes how you see the world',
+    intensity: 1.0,
+    icon: '🌟'
+  }
+}
+
+/**
+ * Get voice stage from pattern level
+ * Maps EMERGING/DEVELOPING/FLOURISHING thresholds to whisper/speak/command
+ */
+export function getVoiceStage(patternLevel: number): VoiceStage {
+  if (patternLevel >= PATTERN_THRESHOLDS.FLOURISHING) {
+    return 'command'
+  }
+  if (patternLevel >= PATTERN_THRESHOLDS.DEVELOPING) {
+    return 'speak'
+  }
+  if (patternLevel >= PATTERN_THRESHOLDS.EMERGING) {
+    return 'whisper'
+  }
+  return 'dormant'
+}
+
+/**
+ * Get voice stages for all patterns
+ */
+export function getAllVoiceStages(patterns: Record<PatternType, number>): Record<PatternType, VoiceStage> {
+  return {
+    analytical: getVoiceStage(patterns.analytical || 0),
+    patience: getVoiceStage(patterns.patience || 0),
+    exploring: getVoiceStage(patterns.exploring || 0),
+    helping: getVoiceStage(patterns.helping || 0),
+    building: getVoiceStage(patterns.building || 0)
+  }
+}
+
+/**
+ * Get progress towards next voice stage
+ * Returns 0-1 progress within current stage
+ */
+export function getVoiceStageProgress(patternLevel: number): {
+  stage: VoiceStage
+  progress: number
+  nextStage: VoiceStage | null
+  thresholdToNext: number | null
+} {
+  const stage = getVoiceStage(patternLevel)
+
+  if (stage === 'dormant') {
+    return {
+      stage,
+      progress: patternLevel / PATTERN_THRESHOLDS.EMERGING,
+      nextStage: 'whisper',
+      thresholdToNext: PATTERN_THRESHOLDS.EMERGING
+    }
+  }
+
+  if (stage === 'whisper') {
+    const rangeStart = PATTERN_THRESHOLDS.EMERGING
+    const rangeEnd = PATTERN_THRESHOLDS.DEVELOPING
+    return {
+      stage,
+      progress: (patternLevel - rangeStart) / (rangeEnd - rangeStart),
+      nextStage: 'speak',
+      thresholdToNext: PATTERN_THRESHOLDS.DEVELOPING
+    }
+  }
+
+  if (stage === 'speak') {
+    const rangeStart = PATTERN_THRESHOLDS.DEVELOPING
+    const rangeEnd = PATTERN_THRESHOLDS.FLOURISHING
+    return {
+      stage,
+      progress: (patternLevel - rangeStart) / (rangeEnd - rangeStart),
+      nextStage: 'command',
+      thresholdToNext: PATTERN_THRESHOLDS.FLOURISHING
+    }
+  }
+
+  // Command stage - maxed out
+  return {
+    stage,
+    progress: 1.0,
+    nextStage: null,
+    thresholdToNext: null
+  }
+}

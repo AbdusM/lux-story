@@ -164,19 +164,26 @@ describe('Milestone Celebrations (D-038)', () => {
       expect(checkPatternCelebration(2, 5)).toBe('emerging')
     })
 
-    it('should return flourishing when crossing threshold 9', () => {
-      expect(checkPatternCelebration(8, 9)).toBe('flourishing')
-      expect(checkPatternCelebration(5, 10)).toBe('flourishing')
+    it('should return developing when crossing threshold 6', () => {
+      expect(checkPatternCelebration(5, 6)).toBe('developing')
+      expect(checkPatternCelebration(5, 8)).toBe('developing')
     })
 
-    it('should prioritize flourishing over emerging', () => {
-      // If jumping from 0 to 10, should return flourishing
+    it('should return flourishing when crossing threshold 9', () => {
+      expect(checkPatternCelebration(8, 9)).toBe('flourishing')
+      expect(checkPatternCelebration(6, 10)).toBe('flourishing')
+    })
+
+    it('should prioritize flourishing over developing over emerging', () => {
+      // If jumping from 0 to 10, should return flourishing (highest crossed)
       expect(checkPatternCelebration(0, 10)).toBe('flourishing')
+      // If jumping from 2 to 7, should return developing (crosses both 3 and 6)
+      expect(checkPatternCelebration(2, 7)).toBe('developing')
     })
 
     it('should return null if no threshold crossed', () => {
       expect(checkPatternCelebration(3, 4)).toBeNull()
-      expect(checkPatternCelebration(5, 8)).toBeNull()
+      expect(checkPatternCelebration(6, 8)).toBeNull()
     })
   })
 

@@ -51,6 +51,19 @@ export function AtmosphericGameBackground({
 
   // P5: Subscribe to station atmosphere
   const atmosphere = useStationStore((state) => state.atmosphere)
+  const [visibleAtmosphere, setVisibleAtmosphere] = React.useState<string | null>(atmosphere)
+
+  React.useEffect(() => {
+    // Show atmosphere when it changes (or on mount)
+    setVisibleAtmosphere(atmosphere)
+
+    // Fade out after 8 seconds (Pulse effect)
+    const timer = setTimeout(() => {
+      setVisibleAtmosphere(null)
+    }, 8000)
+
+    return () => clearTimeout(timer)
+  }, [atmosphere])
 
   return (
     <div className={cn("relative min-h-screen transition-colors duration-[2000ms]", className)}>
@@ -58,7 +71,7 @@ export function AtmosphericGameBackground({
       <motion.div
         className="atmosphere absolute inset-0 w-full h-full -z-10"
         data-character={characterId}
-        data-atmosphere={atmosphere}
+        data-atmosphere={visibleAtmosphere}
         data-emotion={emotion} // Triggers CSS variables for color
         initial={false}
         animate={{

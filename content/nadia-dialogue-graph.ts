@@ -91,6 +91,20 @@ export const nadiaDialogueNodes: DialogueNode[] = [
           building: "Did you choose the owl, or did it choose you?",
           patience: "The owl. It matters to you."
         }
+      },
+      {
+        choiceId: 'nadia_intro_show_work',
+        text: "Show me what you're working on.",
+        nextNodeId: 'nadia_sim_hype',
+        pattern: 'exploring',
+        skills: ['curiosity', 'learningAgility'],
+        voiceVariations: {
+          exploring: "Can you show me an example of this tension in action?",
+          analytical: "Walk me through a real AI ethics scenario.",
+          building: "Let me see the problem you're trying to solve.",
+          helping: "Show me where the harm happens.",
+          patience: "Demonstrate. I'll learn by watching."
+        }
       }
     ],
     onEnter: [
@@ -604,6 +618,12 @@ export const nadiaDialogueNodes: DialogueNode[] = [
         variation_id: 'nadia_team_v1',
         text: "New scenario. Harder.\n\nYou're on a team building a recommendation system. Your data shows it works really well—but only for users who match the demographic of your test group.\n\nYour manager wants to ship. Your timeline is tight. If you flag this, the launch delays three months.\n\nBut if you don't flag it, the system will work poorly for users who aren't like your test group. They'll have worse experiences. Some might be harmed by bad recommendations.\n\nWhat do you do?",
         emotion: 'serious'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'nadia',
+        addKnowledgeFlags: ['nadia_simulation_phase1_complete']
       }
     ],
     choices: [
