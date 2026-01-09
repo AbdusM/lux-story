@@ -406,6 +406,1443 @@ npm run type-check
 
 ---
 
+## Task 4.2B: Mystery Breadcrumbs for ALL Characters (Full Coverage)
+
+**Goal:** Add 1-2 mystery hint nodes to each of the 19 non-Samuel characters.
+
+**CRITICAL:** Each character file follows the same pattern. You will:
+1. Find the end of the nodes array
+2. Add the mystery node(s) BEFORE the array closes
+3. Run type-check after EACH file
+
+**Trust Gating Strategy:**
+- Trust 4+: Subtle hints ("Something feels different here...")
+- Trust 6+: Direct observations ("The station seems to... respond")
+- Trust 7+: Personal revelations ("I think I was meant to meet you")
+
+---
+
+### Step 4.2B.1: Maya Chen (Tech Innovator)
+
+**File:** `content/maya-dialogue-graph.ts`
+
+**Add these nodes before the array closes:**
+
+```typescript
+    // ═══════════════════════════════════════════════════════════════
+    // MYSTERY BREADCRUMBS
+    // ═══════════════════════════════════════════════════════════════
+
+    {
+        nodeId: 'maya_mystery_hint',
+        speaker: 'maya',
+        requiredState: {
+            trust: { min: 5 }
+        },
+        content: [
+            {
+                text: "Can I tell you something weird?\n\nI've been tracking the patterns here. The platforms, the people who show up. It's not random.",
+                emotion: 'curious',
+                voiceStyle: 'technical'
+            },
+            {
+                text: "There's an <shake>algorithm</shake> to this place. I just can't figure out who wrote it.",
+                emotion: 'intrigued',
+                voiceStyle: 'analytical'
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'maya_mystery_dig',
+                text: "Have you found any patterns?",
+                nextNodeId: 'maya_mystery_pattern',
+                pattern: 'analytical'
+            },
+            {
+                choiceId: 'maya_mystery_dismiss',
+                text: "Maybe some things don't need explaining.",
+                nextNodeId: 'maya_hub_return',
+                pattern: 'patience'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+
+    {
+        nodeId: 'maya_mystery_pattern',
+        speaker: 'maya',
+        content: [
+            {
+                text: "The people who arrive here... they're all at some kind of crossroads. Career stuff, identity stuff.\n\nAnd they keep meeting exactly the right people to help them figure it out.",
+                emotion: 'thoughtful',
+                voiceStyle: 'reflective'
+            },
+            {
+                text: "Like you and me. What are the odds we'd meet? And that you'd be exactly the person I needed to talk to?",
+                emotion: 'vulnerable',
+                voiceStyle: 'warm'
+            }
+        ],
+        onEnter: [
+            { characterId: 'maya', addKnowledgeFlags: ['maya_mystery_noticed'] }
+        ],
+        choices: [
+            {
+                choiceId: 'maya_mystery_agree',
+                text: "I've noticed that too.",
+                nextNodeId: 'maya_hub_return',
+                pattern: 'exploring'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+```
+
+---
+
+### Step 4.2B.2: Marcus Thompson (Medical Tech)
+
+**File:** `content/marcus-dialogue-graph.ts`
+
+```typescript
+    // ═══════════════════════════════════════════════════════════════
+    // MYSTERY BREADCRUMBS
+    // ═══════════════════════════════════════════════════════════════
+
+    {
+        nodeId: 'marcus_mystery_hint',
+        speaker: 'marcus',
+        requiredState: {
+            trust: { min: 5 }
+        },
+        content: [
+            {
+                text: "You know what's strange? In the hospital, I see patients at their worst. Scared, vulnerable.\n\nBut here... everyone I meet is at a turning point. Not sick, just... <shake>searching</shake>.",
+                emotion: 'reflective',
+                voiceStyle: 'thoughtful'
+            },
+            {
+                text: "It's like the station collects people who are ready to change.",
+                emotion: 'curious',
+                voiceStyle: 'warm'
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'marcus_mystery_agree',
+                text: "I feel that too. Like I'm supposed to be here.",
+                nextNodeId: 'marcus_mystery_response',
+                pattern: 'helping'
+            },
+            {
+                choiceId: 'marcus_mystery_question',
+                text: "What do you think it means?",
+                nextNodeId: 'marcus_mystery_response',
+                pattern: 'exploring'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+
+    {
+        nodeId: 'marcus_mystery_response',
+        speaker: 'marcus',
+        content: [
+            {
+                text: "I don't know. But I've learned not to question when something feels right.\n\nMeeting you felt right. That's enough for me.",
+                emotion: 'warm',
+                voiceStyle: 'caring'
+            }
+        ],
+        onEnter: [
+            { characterId: 'marcus', addKnowledgeFlags: ['marcus_mystery_noticed'] }
+        ],
+        choices: [
+            {
+                choiceId: 'marcus_mystery_return',
+                text: "I'm glad we met too.",
+                nextNodeId: 'marcus_hub_return',
+                pattern: 'helping'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+```
+
+---
+
+### Step 4.2B.3: Devon Kumar (Systems Thinker)
+
+**File:** `content/devon-dialogue-graph.ts`
+
+```typescript
+    // ═══════════════════════════════════════════════════════════════
+    // MYSTERY BREADCRUMBS
+    // ═══════════════════════════════════════════════════════════════
+
+    {
+        nodeId: 'devon_mystery_hint',
+        speaker: 'devon',
+        requiredState: {
+            trust: { min: 5 }
+        },
+        content: [
+            {
+                text: "I've been mapping this place. The platforms, the connections, the flow of people.\n\nIt doesn't follow normal system architecture. It's almost like it... <shake>adapts</shake>.",
+                emotion: 'intrigued',
+                voiceStyle: 'analytical'
+            },
+            {
+                text: "Every time I think I understand the pattern, it shifts. Like it's responding to something.",
+                emotion: 'curious',
+                voiceStyle: 'technical'
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'devon_mystery_dig',
+                text: "Responding to what?",
+                nextNodeId: 'devon_mystery_theory',
+                pattern: 'analytical'
+            },
+            {
+                choiceId: 'devon_mystery_accept',
+                text: "Some systems are beyond mapping.",
+                nextNodeId: 'devon_hub_return',
+                pattern: 'patience'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+
+    {
+        nodeId: 'devon_mystery_theory',
+        speaker: 'devon',
+        content: [
+            {
+                text: "To us. To what we need.\n\nI know that sounds unscientific. But the data supports it. People here find exactly what they're looking for, even when they don't know they're looking.",
+                emotion: 'vulnerable',
+                voiceStyle: 'reflective'
+            },
+            {
+                text: "You found me. And... I think I needed to be found.",
+                emotion: 'grateful',
+                voiceStyle: 'warm'
+            }
+        ],
+        onEnter: [
+            { characterId: 'devon', addKnowledgeFlags: ['devon_mystery_noticed'] }
+        ],
+        choices: [
+            {
+                choiceId: 'devon_mystery_return',
+                text: "Maybe that's how it's supposed to work.",
+                nextNodeId: 'devon_hub_return',
+                pattern: 'patience'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+```
+
+---
+
+### Step 4.2B.4: Kai Rivera (Safety Specialist)
+
+**File:** `content/kai-dialogue-graph.ts`
+
+```typescript
+    // ═══════════════════════════════════════════════════════════════
+    // MYSTERY BREADCRUMBS
+    // ═══════════════════════════════════════════════════════════════
+
+    {
+        nodeId: 'kai_mystery_hint',
+        speaker: 'kai',
+        requiredState: {
+            trust: { min: 5 }
+        },
+        content: [
+            {
+                text: "In my line of work, I assess environments for risk. Hazards, escape routes, structural integrity.\n\nThis station? It breaks every rule. And yet... it feels <shake>safe</shake>.",
+                emotion: 'puzzled',
+                voiceStyle: 'analytical'
+            },
+            {
+                text: "Safer than anywhere I've ever been. How does that make sense?",
+                emotion: 'curious',
+                voiceStyle: 'reflective'
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'kai_mystery_explore',
+                text: "Maybe safety isn't always about physical structures.",
+                nextNodeId: 'kai_mystery_response',
+                pattern: 'helping'
+            },
+            {
+                choiceId: 'kai_mystery_agree',
+                text: "I feel it too. Something protective about this place.",
+                nextNodeId: 'kai_mystery_response',
+                pattern: 'patience'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+
+    {
+        nodeId: 'kai_mystery_response',
+        speaker: 'kai',
+        content: [
+            {
+                text: "Yeah. It's like the station itself is... looking out for us.\n\nI know how that sounds. But after everything I've seen, I've learned to trust my instincts.",
+                emotion: 'accepting',
+                voiceStyle: 'warm'
+            }
+        ],
+        onEnter: [
+            { characterId: 'kai', addKnowledgeFlags: ['kai_mystery_noticed'] }
+        ],
+        choices: [
+            {
+                choiceId: 'kai_mystery_return',
+                text: "Your instincts brought you here. That says something.",
+                nextNodeId: 'kai_hub_return',
+                pattern: 'helping'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+```
+
+---
+
+### Step 4.2B.5: Rohan Patel (Deep Tech)
+
+**File:** `content/rohan-dialogue-graph.ts`
+
+```typescript
+    // ═══════════════════════════════════════════════════════════════
+    // MYSTERY BREADCRUMBS
+    // ═══════════════════════════════════════════════════════════════
+
+    {
+        nodeId: 'rohan_mystery_hint',
+        speaker: 'rohan',
+        requiredState: {
+            trust: { min: 5 }
+        },
+        content: [
+            {
+                text: "I've been thinking about emergence. How complex behaviors arise from simple rules.\n\nThis station... it exhibits emergent properties I can't explain.",
+                emotion: 'intrigued',
+                voiceStyle: 'technical'
+            },
+            {
+                text: "The conversations here. They <shake>compound</shake>. Each one builds on the last in ways that feel... designed.",
+                emotion: 'curious',
+                voiceStyle: 'analytical'
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'rohan_mystery_dig',
+                text: "Designed by whom?",
+                nextNodeId: 'rohan_mystery_theory',
+                pattern: 'analytical'
+            },
+            {
+                choiceId: 'rohan_mystery_accept',
+                text: "Maybe design and emergence aren't opposites.",
+                nextNodeId: 'rohan_mystery_theory',
+                pattern: 'patience'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+
+    {
+        nodeId: 'rohan_mystery_theory',
+        speaker: 'rohan',
+        content: [
+            {
+                text: "I don't know. But I've stopped needing to know.\n\nSome systems are meant to be experienced, not reverse-engineered. This might be one of them.",
+                emotion: 'peaceful',
+                voiceStyle: 'reflective'
+            }
+        ],
+        onEnter: [
+            { characterId: 'rohan', addKnowledgeFlags: ['rohan_mystery_noticed'] }
+        ],
+        choices: [
+            {
+                choiceId: 'rohan_mystery_return',
+                text: "That's surprisingly zen for an engineer.",
+                nextNodeId: 'rohan_hub_return',
+                pattern: 'helping'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+```
+
+---
+
+### Step 4.2B.6: Tess Williams (Education Founder)
+
+**File:** `content/tess-dialogue-graph.ts`
+
+```typescript
+    // ═══════════════════════════════════════════════════════════════
+    // MYSTERY BREADCRUMBS
+    // ═══════════════════════════════════════════════════════════════
+
+    {
+        nodeId: 'tess_mystery_hint',
+        speaker: 'tess',
+        requiredState: {
+            trust: { min: 5 }
+        },
+        content: [
+            {
+                text: "You know what the best classrooms have? They make you feel like you belong there.\n\nThis station has that. Everyone who comes through... they're supposed to be here.",
+                emotion: 'warm',
+                voiceStyle: 'nurturing'
+            },
+            {
+                text: "I've never believed in fate. But I believe in <shake>readiness</shake>. And everyone here is ready for something.",
+                emotion: 'knowing',
+                voiceStyle: 'mentor'
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'tess_mystery_ask',
+                text: "Ready for what?",
+                nextNodeId: 'tess_mystery_response',
+                pattern: 'exploring'
+            },
+            {
+                choiceId: 'tess_mystery_agree',
+                text: "I think I'm ready too. I just don't know for what yet.",
+                nextNodeId: 'tess_mystery_response',
+                pattern: 'patience'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+
+    {
+        nodeId: 'tess_mystery_response',
+        speaker: 'tess',
+        content: [
+            {
+                text: "To become who they're meant to be. That's what education really is—not filling empty vessels, but lighting fires.\n\nThis place? It's full of sparks waiting to catch.",
+                emotion: 'inspired',
+                voiceStyle: 'passionate'
+            }
+        ],
+        onEnter: [
+            { characterId: 'tess', addKnowledgeFlags: ['tess_mystery_noticed'] }
+        ],
+        choices: [
+            {
+                choiceId: 'tess_mystery_return',
+                text: "You're one of those sparks too.",
+                nextNodeId: 'tess_hub_return',
+                pattern: 'helping'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+```
+
+---
+
+### Step 4.2B.7: Yaquin Okonkwo (EdTech Creator)
+
+**File:** `content/yaquin-dialogue-graph.ts`
+
+```typescript
+    // ═══════════════════════════════════════════════════════════════
+    // MYSTERY BREADCRUMBS
+    // ═══════════════════════════════════════════════════════════════
+
+    {
+        nodeId: 'yaquin_mystery_hint',
+        speaker: 'yaquin',
+        requiredState: {
+            trust: { min: 5 }
+        },
+        content: [
+            {
+                text: "I build learning platforms. Adaptive ones that respond to how users interact.\n\nThis station reminds me of my best work. Except I didn't build this, and it's way more sophisticated.",
+                emotion: 'amazed',
+                voiceStyle: 'technical'
+            },
+            {
+                text: "It's like the whole place is a <shake>learning environment</shake>. And we're all students.",
+                emotion: 'intrigued',
+                voiceStyle: 'curious'
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'yaquin_mystery_dig',
+                text: "What do you think it's teaching us?",
+                nextNodeId: 'yaquin_mystery_response',
+                pattern: 'exploring'
+            },
+            {
+                choiceId: 'yaquin_mystery_meta',
+                text: "Maybe it's teaching us about ourselves.",
+                nextNodeId: 'yaquin_mystery_response',
+                pattern: 'analytical'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+
+    {
+        nodeId: 'yaquin_mystery_response',
+        speaker: 'yaquin',
+        content: [
+            {
+                text: "That's exactly it. The curriculum is us. Our choices, our conversations, our growth.\n\nWhoever designed this place... they understood something profound about how people change.",
+                emotion: 'respectful',
+                voiceStyle: 'reflective'
+            }
+        ],
+        onEnter: [
+            { characterId: 'yaquin', addKnowledgeFlags: ['yaquin_mystery_noticed'] }
+        ],
+        choices: [
+            {
+                choiceId: 'yaquin_mystery_return',
+                text: "I'm glad I'm learning alongside you.",
+                nextNodeId: 'yaquin_hub_return',
+                pattern: 'helping'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+```
+
+---
+
+### Step 4.2B.8: Grace Chen (Healthcare Operations)
+
+**File:** `content/grace-dialogue-graph.ts`
+
+```typescript
+    // ═══════════════════════════════════════════════════════════════
+    // MYSTERY BREADCRUMBS
+    // ═══════════════════════════════════════════════════════════════
+
+    {
+        nodeId: 'grace_mystery_hint',
+        speaker: 'grace',
+        requiredState: {
+            trust: { min: 5 }
+        },
+        content: [
+            {
+                text: "In healthcare, we call it triage. Putting people where they need to be, when they need to be there.\n\nThis station does that automatically. Everyone ends up exactly where they should be.",
+                emotion: 'observant',
+                voiceStyle: 'analytical'
+            },
+            {
+                text: "It's like an invisible hand guiding the flow. I've never seen anything so <shake>efficient</shake>.",
+                emotion: 'impressed',
+                voiceStyle: 'professional'
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'grace_mystery_ask',
+                text: "Do you think it's intentional?",
+                nextNodeId: 'grace_mystery_response',
+                pattern: 'analytical'
+            },
+            {
+                choiceId: 'grace_mystery_feel',
+                text: "It guided me to you.",
+                nextNodeId: 'grace_mystery_response',
+                pattern: 'helping'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+
+    {
+        nodeId: 'grace_mystery_response',
+        speaker: 'grace',
+        content: [
+            {
+                text: "Intentional or not, it works. And in my field, that's what matters.\n\nSome systems don't need to be understood. They need to be appreciated.",
+                emotion: 'accepting',
+                voiceStyle: 'warm'
+            }
+        ],
+        onEnter: [
+            { characterId: 'grace', addKnowledgeFlags: ['grace_mystery_noticed'] }
+        ],
+        choices: [
+            {
+                choiceId: 'grace_mystery_return',
+                text: "I appreciate meeting you.",
+                nextNodeId: 'grace_hub_return',
+                pattern: 'helping'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+```
+
+---
+
+### Step 4.2B.9: Elena Vasquez (Information Science / Archivist)
+
+**File:** `content/elena-dialogue-graph.ts`
+
+```typescript
+    // ═══════════════════════════════════════════════════════════════
+    // MYSTERY BREADCRUMBS
+    // ═══════════════════════════════════════════════════════════════
+
+    {
+        nodeId: 'elena_mystery_hint',
+        speaker: 'elena',
+        requiredState: {
+            trust: { min: 5 }
+        },
+        content: [
+            {
+                text: "I've catalogued thousands of documents. Birth records, death records, everything in between.\n\nBut this station... it doesn't appear in any archive. It's like it exists <shake>outside</shake> normal records.",
+                emotion: 'mystified',
+                voiceStyle: 'scholarly'
+            },
+            {
+                text: "Places this significant always leave traces. This one doesn't. It's fascinating.",
+                emotion: 'intrigued',
+                voiceStyle: 'curious'
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'elena_mystery_dig',
+                text: "Have you tried to document it yourself?",
+                nextNodeId: 'elena_mystery_response',
+                pattern: 'analytical'
+            },
+            {
+                choiceId: 'elena_mystery_accept',
+                text: "Maybe some things aren't meant to be archived.",
+                nextNodeId: 'elena_mystery_response',
+                pattern: 'patience'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+
+    {
+        nodeId: 'elena_mystery_response',
+        speaker: 'elena',
+        content: [
+            {
+                text: "I tried. But every time I write about it, the words feel... incomplete. Like the station is bigger than language.\n\nMaybe it's meant to be experienced, not recorded. That's a new thought for an archivist.",
+                emotion: 'humbled',
+                voiceStyle: 'reflective'
+            }
+        ],
+        onEnter: [
+            { characterId: 'elena', addKnowledgeFlags: ['elena_mystery_noticed'] }
+        ],
+        choices: [
+            {
+                choiceId: 'elena_mystery_return',
+                text: "Some stories are written in people, not paper.",
+                nextNodeId: 'elena_hub_return',
+                pattern: 'helping'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+```
+
+---
+
+### Step 4.2B.10: Alex Park (Supply Chain & Logistics)
+
+**File:** `content/alex-dialogue-graph.ts`
+
+```typescript
+    // ═══════════════════════════════════════════════════════════════
+    // MYSTERY BREADCRUMBS
+    // ═══════════════════════════════════════════════════════════════
+
+    {
+        nodeId: 'alex_mystery_hint',
+        speaker: 'alex',
+        requiredState: {
+            trust: { min: 5 }
+        },
+        content: [
+            {
+                text: "I optimize routes for a living. Getting things from A to B as efficiently as possible.\n\nBut this station doesn't have routes. Or if it does, they change based on who's walking them.",
+                emotion: 'puzzled',
+                voiceStyle: 'analytical'
+            },
+            {
+                text: "It's like the destination finds you, not the other way around. That breaks every logistics model I know.",
+                emotion: 'intrigued',
+                voiceStyle: 'curious'
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'alex_mystery_dig',
+                text: "Maybe people aren't packages.",
+                nextNodeId: 'alex_mystery_response',
+                pattern: 'helping'
+            },
+            {
+                choiceId: 'alex_mystery_analyze',
+                text: "What if the station optimizes for something we can't measure?",
+                nextNodeId: 'alex_mystery_response',
+                pattern: 'analytical'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+
+    {
+        nodeId: 'alex_mystery_response',
+        speaker: 'alex',
+        content: [
+            {
+                text: "Ha. Fair point. Maybe the metric here isn't time or distance. Maybe it's... meaning?\n\nGod, that sounds soft. But I'm starting to think it might be true.",
+                emotion: 'vulnerable',
+                voiceStyle: 'honest'
+            }
+        ],
+        onEnter: [
+            { characterId: 'alex', addKnowledgeFlags: ['alex_mystery_noticed'] }
+        ],
+        choices: [
+            {
+                choiceId: 'alex_mystery_return',
+                text: "Soft isn't the same as wrong.",
+                nextNodeId: 'alex_hub_return',
+                pattern: 'patience'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+```
+
+---
+
+### Step 4.2B.11: Jordan Mitchell (Career Navigator)
+
+**File:** `content/jordan-dialogue-graph.ts`
+
+```typescript
+    // ═══════════════════════════════════════════════════════════════
+    // MYSTERY BREADCRUMBS
+    // ═══════════════════════════════════════════════════════════════
+
+    {
+        nodeId: 'jordan_mystery_hint',
+        speaker: 'jordan',
+        requiredState: {
+            trust: { min: 5 }
+        },
+        content: [
+            {
+                text: "I've helped hundreds of people find their career paths. Asked all the standard questions.\n\nBut here? The questions ask themselves. People discover things about themselves just by being here.",
+                emotion: 'amazed',
+                voiceStyle: 'professional'
+            },
+            {
+                text: "It's like the station is doing my job, but better. And it doesn't even have a methodology.",
+                emotion: 'humbled',
+                voiceStyle: 'reflective'
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'jordan_mystery_dig',
+                text: "Maybe its methodology is the people themselves.",
+                nextNodeId: 'jordan_mystery_response',
+                pattern: 'analytical'
+            },
+            {
+                choiceId: 'jordan_mystery_feel',
+                text: "You helped me discover things too.",
+                nextNodeId: 'jordan_mystery_response',
+                pattern: 'helping'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+
+    {
+        nodeId: 'jordan_mystery_response',
+        speaker: 'jordan',
+        content: [
+            {
+                text: "You know what? I think you're right. The station isn't the teacher. We are. It just... brings us together.\n\nEvery conversation here is a kind of guidance session. Including this one.",
+                emotion: 'realizing',
+                voiceStyle: 'warm'
+            }
+        ],
+        onEnter: [
+            { characterId: 'jordan', addKnowledgeFlags: ['jordan_mystery_noticed'] }
+        ],
+        choices: [
+            {
+                choiceId: 'jordan_mystery_return',
+                text: "Then I'm glad we had this session.",
+                nextNodeId: 'jordan_hub_return',
+                pattern: 'helping'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+```
+
+---
+
+### Step 4.2B.12: Silas Brown (Advanced Manufacturing)
+
+**File:** `content/silas-dialogue-graph.ts`
+
+```typescript
+    // ═══════════════════════════════════════════════════════════════
+    // MYSTERY BREADCRUMBS
+    // ═══════════════════════════════════════════════════════════════
+
+    {
+        nodeId: 'silas_mystery_hint',
+        speaker: 'silas',
+        requiredState: {
+            trust: { min: 5 }
+        },
+        content: [
+            {
+                text: "I've worked with my hands my whole life. Metal, wood, machinery. I understand how things are made.\n\nBut this station... I can't figure out how it was built. Or who built it.",
+                emotion: 'puzzled',
+                voiceStyle: 'practical'
+            },
+            {
+                text: "The architecture doesn't follow any style I know. It's like it <shake>grew</shake> instead of being constructed.",
+                emotion: 'mystified',
+                voiceStyle: 'observant'
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'silas_mystery_dig',
+                text: "Maybe it did grow. From all of us.",
+                nextNodeId: 'silas_mystery_response',
+                pattern: 'exploring'
+            },
+            {
+                choiceId: 'silas_mystery_practical',
+                text: "Does it matter how it was made, if it works?",
+                nextNodeId: 'silas_mystery_response',
+                pattern: 'building'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+
+    {
+        nodeId: 'silas_mystery_response',
+        speaker: 'silas',
+        content: [
+            {
+                text: "Heh. You sound like my old foreman. 'Don't ask how the sausage is made, just appreciate the sausage.'\n\nBut yeah. Some things work best when you don't overthink them.",
+                emotion: 'accepting',
+                voiceStyle: 'practical'
+            }
+        ],
+        onEnter: [
+            { characterId: 'silas', addKnowledgeFlags: ['silas_mystery_noticed'] }
+        ],
+        choices: [
+            {
+                choiceId: 'silas_mystery_return',
+                text: "You've built good things too. That counts.",
+                nextNodeId: 'silas_hub_return',
+                pattern: 'helping'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+```
+
+---
+
+### Step 4.2B.13: Asha Desai (Conflict Resolution / Mediator)
+
+**File:** `content/asha-dialogue-graph.ts`
+
+```typescript
+    // ═══════════════════════════════════════════════════════════════
+    // MYSTERY BREADCRUMBS
+    // ═══════════════════════════════════════════════════════════════
+
+    {
+        nodeId: 'asha_mystery_hint',
+        speaker: 'asha',
+        requiredState: {
+            trust: { min: 5 }
+        },
+        content: [
+            {
+                text: "In mediation, I create safe spaces for difficult conversations. Neutral ground where people can be honest.\n\nThis station... it does that naturally. Everyone here feels safe to be vulnerable.",
+                emotion: 'impressed',
+                voiceStyle: 'thoughtful'
+            },
+            {
+                text: "I've spent years learning to create that feeling. This place just <shake>has</shake> it.",
+                emotion: 'humbled',
+                voiceStyle: 'reflective'
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'asha_mystery_dig',
+                text: "Maybe the station learned from people like you.",
+                nextNodeId: 'asha_mystery_response',
+                pattern: 'helping'
+            },
+            {
+                choiceId: 'asha_mystery_feel',
+                text: "You create that feeling too. I've felt it talking with you.",
+                nextNodeId: 'asha_mystery_response',
+                pattern: 'helping'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+
+    {
+        nodeId: 'asha_mystery_response',
+        speaker: 'asha',
+        content: [
+            {
+                text: "Thank you for saying that. I think the station amplifies what we bring to it. Our openness, our willingness to connect.\n\nWe make each other safe. The station just gives us the space to do it.",
+                emotion: 'warm',
+                voiceStyle: 'nurturing'
+            }
+        ],
+        onEnter: [
+            { characterId: 'asha', addKnowledgeFlags: ['asha_mystery_noticed'] }
+        ],
+        choices: [
+            {
+                choiceId: 'asha_mystery_return',
+                text: "You've made me feel safe to share.",
+                nextNodeId: 'asha_hub_return',
+                pattern: 'helping'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+```
+
+---
+
+### Step 4.2B.14: Lira Santos (Communications / Sound Design)
+
+**File:** `content/lira-dialogue-graph.ts`
+
+```typescript
+    // ═══════════════════════════════════════════════════════════════
+    // MYSTERY BREADCRUMBS
+    // ═══════════════════════════════════════════════════════════════
+
+    {
+        nodeId: 'lira_mystery_hint',
+        speaker: 'lira',
+        requiredState: {
+            trust: { min: 5 }
+        },
+        content: [
+            {
+                text: "Listen. Really listen.\n\nThe station has a sound. Not the trains, not the announcements. Underneath all that. A <shake>hum</shake>.",
+                emotion: 'focused',
+                voiceStyle: 'artistic'
+            },
+            {
+                text: "It changes based on who's here. More conversations, the hum gets richer. Like we're all contributing to one big chord.",
+                emotion: 'inspired',
+                voiceStyle: 'passionate'
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'lira_mystery_listen',
+                text: "I think I can hear it...",
+                nextNodeId: 'lira_mystery_response',
+                pattern: 'exploring'
+            },
+            {
+                choiceId: 'lira_mystery_meaning',
+                text: "What do you think it means?",
+                nextNodeId: 'lira_mystery_response',
+                pattern: 'analytical'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+
+    {
+        nodeId: 'lira_mystery_response',
+        speaker: 'lira',
+        content: [
+            {
+                text: "I think we're all instruments. And the station is the concert hall.\n\nEvery conversation, every connection—it's music. You just have to learn to hear it.",
+                emotion: 'transcendent',
+                voiceStyle: 'poetic'
+            }
+        ],
+        onEnter: [
+            { characterId: 'lira', addKnowledgeFlags: ['lira_mystery_noticed'] }
+        ],
+        choices: [
+            {
+                choiceId: 'lira_mystery_return',
+                text: "You've helped me hear things I never noticed before.",
+                nextNodeId: 'lira_hub_return',
+                pattern: 'helping'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+```
+
+---
+
+### Step 4.2B.15: Zara Ahmed (Data Ethics / Artist)
+
+**File:** `content/zara-dialogue-graph.ts`
+
+```typescript
+    // ═══════════════════════════════════════════════════════════════
+    // MYSTERY BREADCRUMBS
+    // ═══════════════════════════════════════════════════════════════
+
+    {
+        nodeId: 'zara_mystery_hint',
+        speaker: 'zara',
+        requiredState: {
+            trust: { min: 5 }
+        },
+        content: [
+            {
+                text: "I study how algorithms shape human behavior. Usually, it's manipulative. Surveillance capitalism, attention hijacking.\n\nBut whatever algorithm runs this place? It's... <shake>kind</shake>.",
+                emotion: 'surprised',
+                voiceStyle: 'analytical'
+            },
+            {
+                text: "It brings people together without exploiting them. I didn't think that was possible.",
+                emotion: 'hopeful',
+                voiceStyle: 'reflective'
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'zara_mystery_dig',
+                text: "What makes it different?",
+                nextNodeId: 'zara_mystery_response',
+                pattern: 'analytical'
+            },
+            {
+                choiceId: 'zara_mystery_feel',
+                text: "Maybe because it serves us, not the other way around.",
+                nextNodeId: 'zara_mystery_response',
+                pattern: 'helping'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+
+    {
+        nodeId: 'zara_mystery_response',
+        speaker: 'zara',
+        content: [
+            {
+                text: "It optimizes for connection, not engagement. For growth, not addiction.\n\nImagine if all technology worked that way. This station gives me hope that it's possible.",
+                emotion: 'inspired',
+                voiceStyle: 'passionate'
+            }
+        ],
+        onEnter: [
+            { characterId: 'zara', addKnowledgeFlags: ['zara_mystery_noticed'] }
+        ],
+        choices: [
+            {
+                choiceId: 'zara_mystery_return',
+                text: "Maybe you'll build something like it someday.",
+                nextNodeId: 'zara_hub_return',
+                pattern: 'building'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+```
+
+---
+
+### Step 4.2B.16: Quinn Foster (Finance Specialist) - LinkedIn 2026
+
+**File:** `content/quinn-dialogue-graph.ts`
+
+```typescript
+    // ═══════════════════════════════════════════════════════════════
+    // MYSTERY BREADCRUMBS
+    // ═══════════════════════════════════════════════════════════════
+
+    {
+        nodeId: 'quinn_mystery_hint',
+        speaker: 'quinn',
+        requiredState: {
+            trust: { min: 5 }
+        },
+        content: [
+            {
+                text: "In finance, everything has a value. Assets, liabilities, risk-adjusted returns.\n\nBut the currency here isn't money. It's... <shake>attention</shake>. Real attention. The kind you can't fake.",
+                emotion: 'reflective',
+                voiceStyle: 'analytical'
+            },
+            {
+                text: "Every conversation here feels like an investment. And the returns are... different.",
+                emotion: 'thoughtful',
+                voiceStyle: 'honest'
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'quinn_mystery_dig',
+                text: "What kind of returns?",
+                nextNodeId: 'quinn_mystery_response',
+                pattern: 'analytical'
+            },
+            {
+                choiceId: 'quinn_mystery_agree',
+                text: "Some investments pay off in ways money can't measure.",
+                nextNodeId: 'quinn_mystery_response',
+                pattern: 'patience'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+
+    {
+        nodeId: 'quinn_mystery_response',
+        speaker: 'quinn',
+        content: [
+            {
+                text: "Clarity. Purpose. The feeling that you're exactly where you should be.\n\nMy whole career, I've been measuring the wrong things. This place is teaching me that.",
+                emotion: 'vulnerable',
+                voiceStyle: 'honest'
+            }
+        ],
+        onEnter: [
+            { characterId: 'quinn', addKnowledgeFlags: ['quinn_mystery_noticed'] }
+        ],
+        choices: [
+            {
+                choiceId: 'quinn_mystery_return',
+                text: "You're not too late to measure what matters.",
+                nextNodeId: 'quinn_hub_return',
+                pattern: 'helping'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+```
+
+---
+
+### Step 4.2B.17: Dante Romano (Sales Strategist) - LinkedIn 2026
+
+**File:** `content/dante-dialogue-graph.ts`
+
+```typescript
+    // ═══════════════════════════════════════════════════════════════
+    // MYSTERY BREADCRUMBS
+    // ═══════════════════════════════════════════════════════════════
+
+    {
+        nodeId: 'dante_mystery_hint',
+        speaker: 'dante',
+        requiredState: {
+            trust: { min: 5 }
+        },
+        content: [
+            {
+                text: "I've sold everything. Products, services, ideas. I know how to read people, figure out what they want.\n\nBut this station? It already knows. Before I even ask.",
+                emotion: 'impressed',
+                voiceStyle: 'confident'
+            },
+            {
+                text: "Every person I meet here needs exactly what I have to offer. And I need what they have. It's the perfect <shake>exchange</shake>.",
+                emotion: 'intrigued',
+                voiceStyle: 'strategic'
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'dante_mystery_dig',
+                text: "Maybe that's not coincidence.",
+                nextNodeId: 'dante_mystery_response',
+                pattern: 'analytical'
+            },
+            {
+                choiceId: 'dante_mystery_feel',
+                text: "Some connections are meant to happen.",
+                nextNodeId: 'dante_mystery_response',
+                pattern: 'helping'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+
+    {
+        nodeId: 'dante_mystery_response',
+        speaker: 'dante',
+        content: [
+            {
+                text: "You know what's wild? For once, I'm not trying to close deals. I'm just... connecting. And it feels better than any sale I've ever made.\n\nMaybe that's what the station's selling. Authenticity.",
+                emotion: 'vulnerable',
+                voiceStyle: 'honest'
+            }
+        ],
+        onEnter: [
+            { characterId: 'dante', addKnowledgeFlags: ['dante_mystery_noticed'] }
+        ],
+        choices: [
+            {
+                choiceId: 'dante_mystery_return',
+                text: "That's a product worth buying.",
+                nextNodeId: 'dante_hub_return',
+                pattern: 'helping'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+```
+
+---
+
+### Step 4.2B.18: Nadia Petrova (AI Strategist) - LinkedIn 2026
+
+**File:** `content/nadia-dialogue-graph.ts`
+
+```typescript
+    // ═══════════════════════════════════════════════════════════════
+    // MYSTERY BREADCRUMBS
+    // ═══════════════════════════════════════════════════════════════
+
+    {
+        nodeId: 'nadia_mystery_hint',
+        speaker: 'nadia',
+        requiredState: {
+            trust: { min: 5 }
+        },
+        content: [
+            {
+                text: "I work with AI systems. I've seen what they can do—and what they can't.\n\nThis station operates like the most advanced AI I've ever encountered. But there's no server room. No data center.",
+                emotion: 'mystified',
+                voiceStyle: 'analytical'
+            },
+            {
+                text: "It's like the intelligence is... <shake>distributed</shake>. In all of us.",
+                emotion: 'intrigued',
+                voiceStyle: 'technical'
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'nadia_mystery_dig',
+                text: "You mean we're the processing power?",
+                nextNodeId: 'nadia_mystery_response',
+                pattern: 'analytical'
+            },
+            {
+                choiceId: 'nadia_mystery_feel',
+                text: "Maybe intelligence isn't always artificial.",
+                nextNodeId: 'nadia_mystery_response',
+                pattern: 'patience'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+
+    {
+        nodeId: 'nadia_mystery_response',
+        speaker: 'nadia',
+        content: [
+            {
+                text: "Exactly. The station isn't running ON us—it's running THROUGH us. Our connections are the network.\n\nI've spent my career building artificial systems. This one is beautifully, irreducibly human.",
+                emotion: 'awed',
+                voiceStyle: 'reflective'
+            }
+        ],
+        onEnter: [
+            { characterId: 'nadia', addKnowledgeFlags: ['nadia_mystery_noticed'] }
+        ],
+        choices: [
+            {
+                choiceId: 'nadia_mystery_return',
+                text: "Maybe the best intelligence is the one we build together.",
+                nextNodeId: 'nadia_hub_return',
+                pattern: 'building'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+```
+
+---
+
+### Step 4.2B.19: Isaiah Washington (Nonprofit Leader) - LinkedIn 2026
+
+**File:** `content/isaiah-dialogue-graph.ts`
+
+```typescript
+    // ═══════════════════════════════════════════════════════════════
+    // MYSTERY BREADCRUMBS
+    // ═══════════════════════════════════════════════════════════════
+
+    {
+        nodeId: 'isaiah_mystery_hint',
+        speaker: 'isaiah',
+        requiredState: {
+            trust: { min: 5 }
+        },
+        content: [
+            {
+                text: "I've spent my life building communities. Bringing people together around shared purpose.\n\nThis station does that effortlessly. No fundraising, no marketing, no struggle for attention. People just... <shake>show up</shake>.",
+                emotion: 'amazed',
+                voiceStyle: 'passionate'
+            },
+            {
+                text: "And they show up ready. Ready to help. Ready to connect. Ready to change.",
+                emotion: 'inspired',
+                voiceStyle: 'warm'
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'isaiah_mystery_dig',
+                text: "What do you think draws them here?",
+                nextNodeId: 'isaiah_mystery_response',
+                pattern: 'exploring'
+            },
+            {
+                choiceId: 'isaiah_mystery_feel',
+                text: "Maybe they were always ready. They just needed a place.",
+                nextNodeId: 'isaiah_mystery_response',
+                pattern: 'helping'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+
+    {
+        nodeId: 'isaiah_mystery_response',
+        speaker: 'isaiah',
+        content: [
+            {
+                text: "That's beautiful. And I think you're right.\n\nThe station isn't creating community. It's revealing it. Showing us we were connected all along.\n\nThat's the real miracle.",
+                emotion: 'moved',
+                voiceStyle: 'reflective'
+            }
+        ],
+        onEnter: [
+            { characterId: 'isaiah', addKnowledgeFlags: ['isaiah_mystery_noticed'] }
+        ],
+        choices: [
+            {
+                choiceId: 'isaiah_mystery_return',
+                text: "I'm glad I'm part of this community.",
+                nextNodeId: 'isaiah_hub_return',
+                pattern: 'helping'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+```
+
+---
+
+## Step 4.2B.20: Add Hub Return Nodes (If Missing)
+
+**IMPORTANT:** Each mystery node above references a `{character}_hub_return` node. If this node doesn't exist in the character's graph, you need to add it.
+
+**Pattern for hub return node:**
+
+```typescript
+    {
+        nodeId: '{character}_hub_return',
+        speaker: '{character}',
+        content: [
+            {
+                text: "It was good talking with you. Come back anytime.",
+                emotion: 'warm',
+                voiceStyle: 'friendly'
+            }
+        ],
+        choices: [],  // Empty choices = conversation end, return to hub
+        tags: ['farewell']
+    },
+```
+
+**Check each file:** Search for `hub_return` - if it exists, you're good. If not, add the above pattern with the correct character name.
+
+---
+
+## Verification After All Mystery Breadcrumbs
+
+After adding nodes to ALL 19 character files:
+
+```bash
+# Run type-check (must pass)
+npm run type-check
+
+# Run ALL tests (must pass)
+npm test
+
+# Specifically test dialogue graphs
+npm test tests/content/dialogue-graphs.test.ts
+```
+
+---
+
+## Commit Strategy for 4.2B
+
+Make ONE commit with all mystery breadcrumbs:
+
+```bash
+git add content/*.ts
+git commit -m "feat: add mystery breadcrumbs to all 20 characters
+
+- Each character has 2 mystery nodes (hint + response)
+- Trust-gated at level 5+
+- Adds knowledge flags for tracking
+- Connects to station's metaphysical nature
+- Total: 38 new dialogue nodes"
+```
+
+---
+
 ## Task 4.3: Pattern-Based Ending Framework
 
 **Goal:** Create infrastructure for 5 different endings based on dominant pattern.
