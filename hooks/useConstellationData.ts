@@ -13,6 +13,7 @@ export interface CharacterWithState extends CharacterNodeData {
   trust: number
   hasMet: boolean
   trustState: 'unmet' | 'met' | 'connected' | 'trusted'
+  arcComplete: boolean
 }
 
 export interface SkillWithState extends SkillNodeData {
@@ -53,11 +54,13 @@ export function useConstellationData(): ConstellationData {
     // Build maps from coreGameState for trust and conversation history
     const characterTrustMap = new Map<string, number>()
     const characterConversations = new Map<string, number>()
+    const characterArcMap = new Map<string, boolean>()
 
     if (coreGameState) {
       for (const char of coreGameState.characters) {
         characterTrustMap.set(char.characterId, char.trust)
         characterConversations.set(char.characterId, char.conversationHistory.length)
+        characterArcMap.set(char.characterId, char.knowledgeFlags?.includes(`${char.characterId}_arc_complete`) || false)
       }
     }
 
@@ -76,7 +79,8 @@ export function useConstellationData(): ConstellationData {
         ...node,
         trust,
         hasMet,
-        trustState: getTrustState(trust)
+        trustState: getTrustState(trust),
+        arcComplete: characterArcMap.get(node.id) || false
       }
     })
   }, [coreGameState, legacyCharacterTrust])

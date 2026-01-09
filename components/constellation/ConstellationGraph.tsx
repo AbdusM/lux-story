@@ -287,6 +287,29 @@ export function ConstellationGraph({ characters, onOpenDetail, onTravel }: Const
                                     <circle r={radius + 5} fill="none" stroke="currentColor" strokeWidth="0.1" className="text-amber-500/50" />
                                 )}
 
+                                {/* Arc Complete Indicator */}
+                                {char.hasMet && char.arcComplete && (
+                                    <g className="arc-complete-badge">
+                                        <circle
+                                            r={radius + 1.8}
+                                            fill="none"
+                                            stroke="#10b981"
+                                            strokeWidth="0.5"
+                                            strokeDasharray="2 1"
+                                            className="opacity-80"
+                                        />
+                                        <text
+                                            x={radius + 2}
+                                            y={-radius - 1}
+                                            textAnchor="middle"
+                                            className="fill-emerald-400 text-[2.5px]"
+                                            style={{ fontSize: '2.5px' }}
+                                        >
+                                            ✓
+                                        </text>
+                                    </g>
+                                )}
+
                                 {/* Label (Visible for ALL, just dimmer if unmet) */}
                                 {(isHovered || isSelected || char.isMajor || !char.hasMet) && (
                                     <g className={cn("transition-opacity duration-300", !isHovered && !isSelected && !char.isMajor ? "opacity-60" : "opacity-100")}>

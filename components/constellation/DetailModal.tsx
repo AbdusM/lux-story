@@ -201,6 +201,15 @@ function CharacterDetail({ character, onClose, allCharacters }: { character: Cha
         <div className="flex-1">
           <h2 className="text-xl font-bold text-white">{character.fullName}</h2>
           <p className="text-slate-400">{character.role}</p>
+
+          {/* Arc Completion Badge */}
+          {character.arcComplete && (
+            <div className="flex items-center gap-1.5 mt-2 px-2 py-1 bg-emerald-900/30 border border-emerald-700/50 rounded-full w-fit">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+              <span className="text-xs text-emerald-300">Story Complete</span>
+            </div>
+          )}
+
           <div className="flex items-center gap-2 mt-2">
             <span className={cn("text-sm font-medium capitalize", colors.text)}>
               {character.trustState}
