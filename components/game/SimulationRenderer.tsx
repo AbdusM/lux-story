@@ -1,207 +1,176 @@
+"use client"
 
-import { motion } from 'framer-motion'
-import { DialogueNode } from '@/lib/dialogue-graph'
-import { Card } from '@/components/ui/card'
-import {
-    Terminal, Cpu, MessageSquare, Activity,
-    Palette
-} from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { X, CheckCircle2, AlertTriangle, Terminal, Activity, Music, Sprout, Network, Lock, Play, Users } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-interface SimulationRendererProps {
-    node: DialogueNode
-    onChoice: (choiceIndex: number) => void
+// Import specific renderers
+import { SystemArchitectureSim } from './simulations/SystemArchitectureSim'
+import { MediaStudio } from './simulations/MediaStudio'
+import { VisualCanvas } from './simulations/VisualCanvas'
+import { DataDashboard } from './simulations/DataDashboard'
+import { SecureTerminal } from './simulations/SecureTerminal'
+import { DiplomacyTable } from './simulations/DiplomacyTable'
+import { BotanyGrid } from './simulations/BotanyGrid'
+import { PitchDeck } from './simulations/PitchDeck'
+
+export interface SimulationConfig {
+    type: string
+    title: string
+    taskDescription: string
+    initialContext: any
+    successFeedback: string
+    // God Mode / Debug flags
+    isGodMode?: boolean
+    onExit?: () => void
 }
 
-export function SimulationRenderer({ node }: SimulationRendererProps) {
-    const config = node.simulation
-    if (!config) return null
+interface SimulationRendererProps {
+    simulation: SimulationConfig
+    onComplete: (result: any) => void
+}
 
-    // --- RENDER HELPERS ---
+export function SimulationRenderer({ simulation, onComplete }: SimulationRendererProps) {
+    const [status, setStatus] = useState<'active' | 'success' | 'failed'>('active')
+    const [feedback, setFeedback] = useState<string | null>(null)
 
-    const renderHeaderIcon = () => {
-        switch (config.type) {
-            case 'chat_negotiation':
-                return <MessageSquare className="w-5 h-5 text-emerald-400" />
-            case 'dashboard_triage':
-            case 'data_analysis':
-                return <Activity className="w-5 h-5 text-blue-400" />
-            case 'visual_canvas':
-            case 'creative_direction':
-                return <Palette className="w-5 h-5 text-purple-400" />
-            default: // code, prompt, system
-                return <Terminal className="w-5 h-5 text-indigo-400" />
-        }
+    // Auto-fail safety for development
+    useEffect(() => {
+        /* 
+           ISP: In God Mode, we might want to auto-win or tweak params.
+           For now, we just let the sim run. 
+        */
+    }, [])
+
+    const handleSuccess = (result: any) => {
+        setStatus('success')
+        setTimeout(() => {
+            onComplete(result)
+        }, 2000)
     }
 
-    const renderHeadeTitle = () => {
-        return config.type.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
-    }
+    // --- RENDERER SWITCH ---
+    const renderContent = () => {
+        switch (simulation.type) {
+            case 'system_architecture':
+                return <SystemArchitectureSim config={simulation} onSuccess={handleSuccess} />
 
-    const renderContentArea = () => {
-        const content = config.initialContext.content
+            // ISP: The "Generic" Fallbacks (Phase 2 Implementations)
+            // For now, we route them to a "Under Construction" or "Generic Terminal" view
+            // until we build the specific visualizers.
 
-        // 1. CHAT INTERFACE (Slack/Teams/SMS style)
-        if (config.type === 'chat_negotiation') {
-            return (
-                <div className="flex flex-col gap-3 p-4 bg-slate-900/40 min-h-[200px]">
-                    <div className="flex items-start gap-3 opacity-70">
-                        <div className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center">
-                            <span className="text-xs font-bold text-slate-300">SYS</span>
-                        </div>
-                        <div className="bg-slate-800 rounded-lg rounded-tl-none p-3 max-w-[80%]">
-                            <p className="text-xs text-slate-400 mb-1">System • Now</p>
-                            <p className="text-sm text-slate-300">{content}</p>
-                        </div>
+            case 'visual_canvas': // Kai (blueprint), Asha (art), Rohan (navigation)
+                // Determine variant based on title/context
+                const canvasVariant = simulation.title.toLowerCase().includes('mural') ? 'art' :
+                                      simulation.title.toLowerCase().includes('star') || simulation.title.toLowerCase().includes('constellation') ? 'navigation' :
+                                      'blueprint'
+                return <VisualCanvas config={simulation} onSuccess={handleSuccess} variant={canvasVariant} />
+
+            case 'architect_3d':  // Jordan - uses navigation variant for route plotting
+                return <VisualCanvas config={simulation} onSuccess={handleSuccess} variant="navigation" />
+
+            case 'botany_grid':   // Tess - Hydroponic nutrient optimization
+                return <BotanyGrid config={simulation} onSuccess={handleSuccess} />
+
+            case 'dashboard_triage': // Marcus/Grace/Silas/Isaiah
+                // Determine variant based on context
+                const triageVariant = simulation.title.toLowerCase().includes('supply') || simulation.title.toLowerCase().includes('route') ? 'logistics' :
+                                      simulation.title.toLowerCase().includes('soil') || simulation.title.toLowerCase().includes('sensor') ? 'analysis' :
+                                      'triage'
+                return <DataDashboard config={simulation} onSuccess={handleSuccess} variant={triageVariant} />
+
+            case 'market_visualizer': // Elena
+                return <DataDashboard config={simulation} onSuccess={handleSuccess} variant="market" />
+
+            case 'data_audit': // Zara
+                return <SecureTerminal config={simulation} onSuccess={handleSuccess} variant="audit" />
+
+            case 'historical_timeline': // Yaquin
+                return <SecureTerminal config={simulation} onSuccess={handleSuccess} variant="archive" />
+
+            case 'audio_studio': // Lira
+            case 'news_feed': // Nadia
+                return <MediaStudio config={simulation} onSuccess={handleSuccess} variant={simulation.type as 'audio_studio' | 'news_feed'} />
+
+            case 'chat_negotiation': // Alex
+                return <DiplomacyTable config={simulation} onSuccess={handleSuccess} variant="negotiation" />
+
+            case 'conversation_tree': // Devon
+                return <DiplomacyTable config={simulation} onSuccess={handleSuccess} variant="cognitive" />
+
+            case 'conductor_interface': // Samuel
+                return <DiplomacyTable config={simulation} onSuccess={handleSuccess} variant="operations" />
+
+            case 'creative_direction': // Quinn - Pitch deck builder
+                return <PitchDeck config={simulation} onSuccess={handleSuccess} />
+
+            default:
+                // Generic Safe Fallback
+                return (
+                    <div className="p-8 font-mono text-amber-500">
+                        <h3 className="text-xl font-bold mb-4">UNKNOWN SIMULATION TYPE: {simulation.type}</h3>
+                        <pre className="text-xs bg-black/50 p-4 rounded mb-4">
+                            {JSON.stringify(simulation, null, 2)}
+                        </pre>
+                        <button
+                            onClick={() => handleSuccess({ skipped: true })}
+                            className="px-4 py-2 border border-amber-500 hover:bg-amber-500/20"
+                        >
+                            Bypass
+                        </button>
                     </div>
-                    {/* Mock "Typing" indicator to make it feel alive */}
-                    <motion.div
-                        initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                        className="flex items-center gap-2 mt-auto text-xs text-slate-500 pl-1"
-                    >
-                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                        Channel active
-                    </motion.div>
-                </div>
-            )
+                )
         }
-
-        // 2. DASHBOARD / TRIAGE (Grid of cards)
-        if (config.type === 'dashboard_triage' || config.type === 'data_analysis') {
-            return (
-                <div className="p-4 bg-slate-950/30">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
-                        <div className="bg-slate-900/80 p-3 rounded border border-slate-800">
-                            <div className="text-2xs text-slate-500 uppercase font-bold">Status</div>
-                            <div className="text-lg font-mono text-emerald-400">ONLINE</div>
-                        </div>
-                        <div className="bg-slate-900/80 p-3 rounded border border-slate-800">
-                            <div className="text-2xs text-slate-500 uppercase font-bold">Pending</div>
-                            <div className="text-lg font-mono text-amber-400">ACTIVE</div>
-                        </div>
-                    </div>
-                    <div className="font-mono text-sm text-slate-300 bg-slate-900/50 p-3 rounded border border-slate-800/50">
-                        {content.split('\n').map((line, i) => (
-                            <div key={i} className={cn("mb-1", line.includes('ERROR') ? "text-red-400" : "")}>
-                                {line}
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            )
-        }
-
-        // 3. VISUAL CANVAS (Placeholder for image gen)
-        if (config.type === 'visual_canvas' || config.type === 'creative_direction') {
-            return (
-                <div className="relative min-h-[200px] flex items-center justify-center bg-grid-white/[0.02]">
-                    <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-blue-500/5 pointer-events-none" />
-                    <div className="text-center space-y-2 p-6">
-                        <Palette className="w-8 h-8 text-purple-500/40 mx-auto" />
-                        <p className="text-sm text-purple-200/60 font-medium italic">
-                            "{content}"
-                        </p>
-                        <div className="text-xs text-slate-500 border border-slate-800 rounded-full px-3 py-1 inline-block mt-4">
-                            Canvas Empty • Awaiting Prompt
-                        </div>
-                    </div>
-                </div>
-            )
-        }
-
-        // 4. AUDIO STUDIO (Suno/Udio Waveform)
-        if (config.type === 'audio_studio') {
-            return (
-                <div className="relative min-h-[200px] flex flex-col items-center justify-center bg-slate-950/50">
-                    <div className="flex items-end gap-1 h-12 mb-4 opacity-50">
-                        {[40, 60, 30, 80, 50, 90, 40, 60, 20, 70, 40, 60].map((h, i) => (
-                            <motion.div
-                                key={i}
-                                initial={{ height: '20%' }}
-                                animate={{ height: `${h}%` }}
-                                transition={{
-                                    repeat: Infinity,
-                                    repeatType: 'reverse',
-                                    duration: 0.5,
-                                    delay: i * 0.1
-                                }}
-                                className="w-2 bg-indigo-500/50 rounded-full"
-                            />
-                        ))}
-                    </div>
-                    <div className="text-center space-y-2">
-                        <p className="text-xs font-mono text-indigo-300/60 uppercase tracking-widest">
-                            Synthesizing Audio...
-                        </p>
-                        <p className="text-sm text-indigo-200 italic">
-                            "{content}"
-                        </p>
-                    </div>
-                </div>
-            )
-        }
-
-        // DEFAULT: CODE / TERMINAL VIEW
-        return (
-            <div className="flex flex-col">
-                <div className="px-4 py-2 bg-slate-900/80 border-b border-slate-700/50 flex items-center justify-between">
-                    <span className="text-xs font-mono text-slate-400">{config.initialContext.label || 'terminal'}</span>
-                    <div className="flex gap-1.5">
-                        <div className="w-2.5 h-2.5 rounded-full bg-red-500/20" />
-                        <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/20" />
-                        <div className="w-2.5 h-2.5 rounded-full bg-green-500/20" />
-                    </div>
-                </div>
-                <div className="p-6 font-mono text-sm overflow-y-auto min-h-[150px] max-h-[300px]">
-                    <pre className="text-emerald-300 whitespace-pre-wrap">
-                        <code>{content}</code>
-                    </pre>
-                </div>
-            </div>
-        )
     }
 
     return (
-        <div className="w-full flex flex-col gap-6 animate-in fade-in duration-500 mb-6">
-            {/* HEADER */}
-            <div className="flex items-center justify-between border-b border-white/10 pb-4">
-                <div className="flex items-center gap-3">
-                    <div className={cn("p-2 rounded-lg bg-slate-800",
-                        config.type.includes('chat') ? "bg-emerald-500/10" :
-                            config.type.includes('visual') ? "bg-purple-500/10" :
-                                "bg-indigo-500/10"
-                    )}>
-                        {renderHeaderIcon()}
-                    </div>
-                    <div>
-                        <h3 className="text-sm font-bold text-slate-200 uppercase tracking-wider">
-                            {renderHeadeTitle()}
-                        </h3>
-                        <p className="text-xs text-slate-500 font-mono">
-                            SESSION: {node.nodeId.split('_').pop()}
-                        </p>
-                    </div>
+        <div className="fixed inset-0 z-[60] bg-slate-950 text-slate-200 flex flex-col font-sans">
+            {/* SATELLITE OS HEADER */}
+            <div className="h-12 border-b border-slate-800 bg-slate-900/80 flex items-center justify-between px-4 select-none">
+                <div className="flex items-center gap-2 text-xs font-mono tracking-widest text-slate-500">
+                    <Terminal className="w-4 h-4 text-amber-500" />
+                    <span>SIMULATION_CORE // {simulation.type.toUpperCase()}</span>
                 </div>
-                <div className="flex items-center gap-2 px-3 py-1 bg-amber-500/10 rounded-full border border-amber-500/20">
-                    <Cpu className="w-3 h-3 text-amber-400 animate-pulse" />
-                    <span className="text-2xs font-bold text-amber-300 uppercase tracking-widest">
-                        LIVE
-                    </span>
-                </div>
+
+                {/* GOD MODE EXIT */}
+                {simulation.onExit && (
+                    <button
+                        onClick={simulation.onExit}
+                        className="flex items-center gap-2 px-3 py-1 bg-red-900/20 border border-red-500/30 text-red-400 text-xs rounded hover:bg-red-900/40 transition-colors"
+                    >
+                        <X className="w-3 h-3" />
+                        ABORT SIMULATION
+                    </button>
+                )}
             </div>
 
-            {/* OBJECTIVE CARD */}
-            <div className="bg-slate-900/30 p-4 rounded-lg border-l-2 border-slate-700">
-                <h4 className="text-xs font-bold text-slate-400 uppercase mb-1">Mission Objective</h4>
-                <p className="text-sm text-slate-200 leading-relaxed">
-                    {config.taskDescription}
-                </p>
+            {/* MAIN VIEWPORT */}
+            <div className="flex-1 relative overflow-hidden bg-slate-950">
+                {/* CRT Scanline Effect */}
+                <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.1)_50%),linear-gradient(90deg,rgba(255,0,0,0.03),rgba(0,255,0,0.01),rgba(0,0,255,0.03))] z-20 pointer-events-none bg-[length:100%_2px,3px_100%] opacity-20" />
+
+                {renderContent()}
             </div>
 
-            {/* MAIN INTERFACE CONTAINER */}
-            <Card className="flex-1 bg-black/40 border-slate-700/50 overflow-hidden flex flex-col shadow-xl">
-                {renderContentArea()}
-            </Card>
+            {/* SUCCESS OVERLAY */}
+            <AnimatePresence>
+                {status === 'success' && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="absolute inset-0 z-50 bg-emerald-950/90 flex items-center justify-center backdrop-blur-sm"
+                    >
+                        <div className="text-center p-8 bg-black/40 border border-emerald-500/30 rounded-lg max-w-md">
+                            <CheckCircle2 className="w-16 h-16 text-emerald-500 mx-auto mb-4" />
+                            <h2 className="text-2xl font-bold text-emerald-400 mb-2">SEQUENCE COMPLETE</h2>
+                            <p className="text-emerald-200/60 font-mono text-sm">
+                                {simulation.successFeedback || "Data synchronized."}
+                            </p>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     )
 }
