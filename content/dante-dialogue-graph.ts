@@ -1055,6 +1055,310 @@ export const danteDialogueNodes: DialogueNode[] = [
     }],
     choices: [],
     tags: ['farewell']
+  },
+
+  // ═══════════════════════════════════════════════════════════════
+  // MISSING NODES - Added to fix broken navigation
+  // ═══════════════════════════════════════════════════════════════
+
+  {
+    nodeId: 'dante_hard_questions',
+    speaker: 'Dante Moreau',
+    content: [{
+      text: "Hard questions force honesty. Easy questions let people hide.\n\nWhen I ask 'What's really holding you back?'—that pause before they answer? That's where the real conversation begins.\n\nMost salespeople are afraid of that pause. I live for it.",
+      emotion: 'knowing',
+      variation_id: 'hard_questions_v1'
+    }],
+    choices: [
+      { choiceId: 'hq_try', text: "I want to try asking a hard question.", nextNodeId: 'dante_exploration_hub', pattern: 'exploring' },
+      { choiceId: 'hq_understand', text: "That takes courage.", nextNodeId: 'dante_hub_return', pattern: 'helping' }
+    ],
+    tags: ['dante_arc', 'technique']
+  },
+
+  {
+    nodeId: 'dante_honest_discomfort',
+    speaker: 'Dante Moreau',
+    content: [{
+      text: "Uncomfortable but honest. That's the whole game right there.\n\nComfort is where people perform. Discomfort is where they're real. My job isn't to make you comfortable—it's to make you clear.",
+      emotion: 'appreciative',
+      variation_id: 'honest_discomfort_v1'
+    }],
+    choices: [
+      { choiceId: 'hd_more', text: "Tell me more about that clarity.", nextNodeId: 'dante_exploration_hub', pattern: 'analytical' },
+      { choiceId: 'hd_felt', text: "I appreciate you creating that space.", nextNodeId: 'dante_hub_return', pattern: 'patience' }
+    ],
+    tags: ['dante_arc', 'trust']
+  },
+
+  {
+    nodeId: 'dante_birmingham_choice',
+    speaker: 'Dante Moreau',
+    content: [{
+      text: "Birmingham's a city that knows reinvention. Steel city that became something else.\n\nMaybe that's why I ended up here. I'm still figuring out what I'm becoming after I stopped being just a closer.",
+      emotion: 'reflective',
+      variation_id: 'birmingham_v1'
+    }],
+    choices: [
+      { choiceId: 'bc_reinvent', text: "What does reinvention look like for you?", nextNodeId: 'dante_exploration_hub', pattern: 'exploring' },
+      { choiceId: 'bc_thanks', text: "Thanks for sharing that.", nextNodeId: 'dante_hub_return', pattern: 'helping' }
+    ],
+    tags: ['dante_arc', 'backstory']
+  },
+
+  {
+    nodeId: 'dante_childhood',
+    speaker: 'Dante Moreau',
+    content: [{
+      text: "Growing up in New Orleans, you learn to read a room fast. Who's celebrating, who's grieving, who's about to start trouble.\n\nThat skill saved me. Also cursed me. Hard to turn it off when you can see what everyone needs before they say it.",
+      emotion: 'vulnerable',
+      variation_id: 'childhood_v1'
+    }],
+    choices: [
+      { choiceId: 'ch_curse', text: "Why do you call it a curse?", nextNodeId: 'dante_exploration_hub', pattern: 'analytical' },
+      { choiceId: 'ch_thanks', text: "That's a heavy gift to carry.", nextNodeId: 'dante_hub_return', pattern: 'helping' }
+    ],
+    tags: ['dante_arc', 'backstory', 'vulnerability']
+  },
+
+  {
+    nodeId: 'dante_courage_acknowledgment',
+    speaker: 'Dante Moreau',
+    content: [{
+      text: "Takes courage to sit with silence. Most people fill it with noise.\n\nYou didn't. That tells me something about you.",
+      emotion: 'warm',
+      variation_id: 'courage_v1'
+    }],
+    choices: [
+      { choiceId: 'ca_what', text: "What does it tell you?", nextNodeId: 'dante_exploration_hub', pattern: 'exploring' },
+      { choiceId: 'ca_thanks', text: "Thank you for noticing.", nextNodeId: 'dante_hub_return', pattern: 'patience' }
+    ],
+    tags: ['dante_arc', 'trust']
+  },
+
+  {
+    nodeId: 'dante_desiree_follow',
+    speaker: 'Dante Moreau',
+    content: [{
+      text: "Desiree—my grandmother—she always said 'People tell you who they are in the first ten seconds. The rest is just decoration.'\n\nTook me years to understand what she meant. And years more to stop ignoring what I saw.",
+      emotion: 'nostalgic',
+      variation_id: 'desiree_v1'
+    }],
+    choices: [
+      { choiceId: 'df_saw', text: "What did you see that you ignored?", nextNodeId: 'dante_exploration_hub', pattern: 'exploring' },
+      { choiceId: 'df_wise', text: "She sounds wise.", nextNodeId: 'dante_hub_return', pattern: 'helping' }
+    ],
+    tags: ['dante_arc', 'backstory']
+  },
+
+  {
+    nodeId: 'dante_ethics_application',
+    speaker: 'Dante Moreau',
+    content: [{
+      text: "Ethical selling isn't about being soft. It's about being honest—even when honesty costs you the deal.\n\nI've walked away from six-figure contracts because I couldn't look myself in the mirror after. That's the application.",
+      emotion: 'serious',
+      variation_id: 'ethics_app_v1'
+    }],
+    choices: [
+      { choiceId: 'ea_example', text: "Tell me about one you walked away from.", nextNodeId: 'dante_exploration_hub', pattern: 'exploring' },
+      { choiceId: 'ea_respect', text: "That takes real integrity.", nextNodeId: 'dante_hub_return', pattern: 'helping' }
+    ],
+    tags: ['dante_arc', 'ethics']
+  },
+
+  {
+    nodeId: 'dante_ethics_framework',
+    speaker: 'Dante Moreau',
+    content: [{
+      text: "My framework's simple: Would I sell this to my grandmother? Would I be proud if my daughter watched?\n\nIf the answer's no, I don't care how big the commission is. Some money isn't worth what it costs you.",
+      emotion: 'firm',
+      variation_id: 'ethics_frame_v1'
+    }],
+    choices: [
+      { choiceId: 'ef_test', text: "Has that framework ever been tested?", nextNodeId: 'dante_exploration_hub', pattern: 'analytical' },
+      { choiceId: 'ef_clear', text: "That's a clear line to hold.", nextNodeId: 'dante_hub_return', pattern: 'patience' }
+    ],
+    tags: ['dante_arc', 'ethics']
+  },
+
+  {
+    nodeId: 'dante_exit_economics',
+    speaker: 'Dante Moreau',
+    content: [{
+      text: "Exit economics. What's it cost you to stay versus leave?\n\nMost people only count the money. They forget to count the pieces of themselves they're giving away. That's the real math.",
+      emotion: 'knowing',
+      variation_id: 'exit_econ_v1'
+    }],
+    choices: [
+      { choiceId: 'ee_pieces', text: "What pieces did you lose?", nextNodeId: 'dante_exploration_hub', pattern: 'exploring' },
+      { choiceId: 'ee_heavy', text: "That's heavy calculus.", nextNodeId: 'dante_hub_return', pattern: 'analytical' }
+    ],
+    tags: ['dante_arc', 'reflection']
+  },
+
+  {
+    nodeId: 'dante_liability_who',
+    speaker: 'Dante Moreau',
+    content: [{
+      text: "Who's liable when persuasion works too well? When someone buys something they can't afford because I was too good?\n\nThat question haunted me for years. Still does, some nights.",
+      emotion: 'troubled',
+      variation_id: 'liability_v1'
+    }],
+    choices: [
+      { choiceId: 'lw_answer', text: "What's your answer to that?", nextNodeId: 'dante_exploration_hub', pattern: 'analytical' },
+      { choiceId: 'lw_hard', text: "That's a hard question to carry.", nextNodeId: 'dante_hub_return', pattern: 'helping' }
+    ],
+    tags: ['dante_arc', 'ethics', 'vulnerability']
+  },
+
+  {
+    nodeId: 'dante_mirroring',
+    speaker: 'Dante Moreau',
+    content: [{
+      text: "Mirroring. It's a technique—match their body language, their pace, their energy. Makes people feel understood.\n\nProblem is, I got so good at it I forgot who I was underneath all those reflections.",
+      emotion: 'vulnerable',
+      variation_id: 'mirroring_v1'
+    }],
+    choices: [
+      { choiceId: 'mi_find', text: "How did you find yourself again?", nextNodeId: 'dante_exploration_hub', pattern: 'exploring' },
+      { choiceId: 'mi_recognize', text: "I recognize that feeling.", nextNodeId: 'dante_hub_return', pattern: 'helping' }
+    ],
+    tags: ['dante_arc', 'technique', 'vulnerability']
+  },
+
+  {
+    nodeId: 'dante_mom_deep',
+    speaker: 'Dante Moreau',
+    content: [{
+      text: "My mom raised three of us alone after Katrina. Worked two jobs, never complained.\n\nShe's why I can't fake it anymore. Every time I tried to sell something I didn't believe in, I'd hear her voice: 'Dante, is this the man you want to be?'",
+      emotion: 'tender',
+      variation_id: 'mom_deep_v1'
+    }],
+    choices: [
+      { choiceId: 'md_answer', text: "What's your answer to her now?", nextNodeId: 'dante_exploration_hub', pattern: 'exploring' },
+      { choiceId: 'md_strong', text: "She sounds incredible.", nextNodeId: 'dante_hub_return', pattern: 'helping' }
+    ],
+    tags: ['dante_arc', 'backstory', 'vulnerability']
+  },
+
+  {
+    nodeId: 'dante_need_philosophy',
+    speaker: 'Dante Moreau',
+    content: [{
+      text: "Need versus want. That's the philosophy.\n\nI can sell you anything you want. But should I? Do you need it? Will it make your life better?\n\nThose questions changed everything for me.",
+      emotion: 'thoughtful',
+      variation_id: 'need_phil_v1'
+    }],
+    choices: [
+      { choiceId: 'np_change', text: "How did that change your approach?", nextNodeId: 'dante_exploration_hub', pattern: 'analytical' },
+      { choiceId: 'np_rare', text: "That's a rare perspective in sales.", nextNodeId: 'dante_hub_return', pattern: 'patience' }
+    ],
+    tags: ['dante_arc', 'ethics']
+  },
+
+  {
+    nodeId: 'dante_neuro_pause',
+    speaker: 'Dante Moreau',
+    content: [{
+      text: "Neuroscience says it takes 6-8 seconds for the prefrontal cortex to override emotional reactions.\n\nSo I wait. I give people space to think, not just react. Most salespeople are afraid of that space. I've learned to live in it.",
+      emotion: 'knowing',
+      variation_id: 'neuro_v1'
+    }],
+    choices: [
+      { choiceId: 'np_practice', text: "Can we practice that pause?", nextNodeId: 'dante_pause_experience', pattern: 'patience' },
+      { choiceId: 'np_interesting', text: "That's fascinating.", nextNodeId: 'dante_hub_return', pattern: 'analytical' }
+    ],
+    tags: ['dante_arc', 'technique']
+  },
+
+  {
+    nodeId: 'dante_no_regrets',
+    speaker: 'Dante Moreau',
+    content: [{
+      text: "No regrets is a lie people tell themselves. I've got plenty.\n\nBut I'm not carrying them anymore. I put them down. Learned from them. Let them make me better instead of bitter.",
+      emotion: 'peaceful',
+      variation_id: 'no_regrets_v1'
+    }],
+    choices: [
+      { choiceId: 'nr_how', text: "How do you put down regret?", nextNodeId: 'dante_exploration_hub', pattern: 'exploring' },
+      { choiceId: 'nr_wise', text: "That's wisdom.", nextNodeId: 'dante_hub_return', pattern: 'patience' }
+    ],
+    tags: ['dante_arc', 'growth']
+  },
+
+  {
+    nodeId: 'dante_performing_now',
+    speaker: 'Dante Moreau',
+    content: [{
+      text: "Am I performing right now? Talking to you?\n\n[He pauses, genuinely considering.]\n\nHonestly? Probably some. Old habits. But I'm trying to let you see the real parts. That's the work—being real even when performance is easier.",
+      emotion: 'honest',
+      variation_id: 'performing_v1'
+    }],
+    choices: [
+      { choiceId: 'pn_real', text: "I appreciate the honesty.", nextNodeId: 'dante_hub_return', pattern: 'helping' },
+      { choiceId: 'pn_tell', text: "How can I tell the difference?", nextNodeId: 'dante_exploration_hub', pattern: 'analytical' }
+    ],
+    tags: ['dante_arc', 'trust', 'vulnerability']
+  },
+
+  {
+    nodeId: 'dante_silent_understanding',
+    speaker: 'Dante Moreau',
+    content: [{
+      text: "Sometimes understanding doesn't need words. You just... get it. And they know you get it.\n\nThat's the connection I'm always chasing. Not the sale. The moment when two people really see each other.",
+      emotion: 'warm',
+      variation_id: 'silent_under_v1'
+    }],
+    choices: [
+      { choiceId: 'su_chasing', text: "What happens when you find it?", nextNodeId: 'dante_exploration_hub', pattern: 'exploring' },
+      { choiceId: 'su_rare', text: "That's rare.", nextNodeId: 'dante_hub_return', pattern: 'patience' }
+    ],
+    tags: ['dante_arc', 'connection']
+  },
+
+  {
+    nodeId: 'dante_sim_demo_response',
+    speaker: 'Dante Moreau',
+    content: [{
+      text: "You saw it. The technique, yeah, but also what's under it. The why.\n\nMost people just want the tricks. You wanted to understand. That tells me something about you.",
+      emotion: 'appreciative',
+      variation_id: 'sim_demo_v1'
+    }],
+    choices: [
+      { choiceId: 'sdr_what', text: "What does it tell you?", nextNodeId: 'dante_exploration_hub', pattern: 'exploring' },
+      { choiceId: 'sdr_thanks', text: "Thank you for showing me.", nextNodeId: 'dante_hub_return', pattern: 'helping' }
+    ],
+    tags: ['dante_arc', 'simulation']
+  },
+
+  {
+    nodeId: 'dante_surprise_story',
+    speaker: 'Dante Moreau',
+    content: [{
+      text: "Caught me off guard with that one. Don't usually tell these stories.\n\nBut you asked the right way. Not curious for entertainment. Curious to understand. There's a difference.",
+      emotion: 'surprised',
+      variation_id: 'surprise_v1'
+    }],
+    choices: [
+      { choiceId: 'ss_more', text: "Is there more you want to share?", nextNodeId: 'dante_exploration_hub', pattern: 'helping' },
+      { choiceId: 'ss_honor', text: "I'm honored you shared.", nextNodeId: 'dante_hub_return', pattern: 'patience' }
+    ],
+    tags: ['dante_arc', 'trust']
+  },
+
+  {
+    nodeId: 'dante_wise_reflection',
+    speaker: 'Dante Moreau',
+    content: [{
+      text: "Wisdom's just mistakes you survived long enough to learn from.\n\nI've made plenty. Still making them. But at least now I'm making new ones instead of repeating the old.",
+      emotion: 'reflective',
+      variation_id: 'wise_ref_v1'
+    }],
+    choices: [
+      { choiceId: 'wr_new', text: "What new mistakes are you making?", nextNodeId: 'dante_exploration_hub', pattern: 'exploring' },
+      { choiceId: 'wr_growth', text: "That's growth.", nextNodeId: 'dante_hub_return', pattern: 'patience' }
+    ],
+    tags: ['dante_arc', 'growth']
   }
 ]
 
