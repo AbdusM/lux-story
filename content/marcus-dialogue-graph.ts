@@ -2554,6 +2554,73 @@ WARNING: Response time > 48h`,
       }
     ],
     tags: ['career_mention', 'invisible_depth', 'community_health']
+  },
+  // ═══════════════════════════════════════════════════════════════
+  // MYSTERY BREADCRUMBS
+  // ═══════════════════════════════════════════════════════════════
+  {
+    nodeId: 'marcus_mystery_hint_1',
+    speaker: 'Marcus',
+    requiredState: {
+      trust: { min: 5 }
+    },
+    content: [
+      {
+        text: "I check the logs every night. Security protocol. But there is a pattern I cannot explain.\n\nEvery day at 3:33 AM, the station's internal clock syncs. Not with Greenwich. Not with atomic time.\n\nIt syncs with the pulse of the passengers. Biological rhythm overrides digital time. That... should not be possible.",
+        emotion: 'mysterious',
+        variation_id: 'mystery_hint_1_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'marcus_mystery_ask',
+        text: "Are we powering the station?",
+        nextNodeId: 'marcus_mystery_response_1',
+        pattern: 'analytical'
+      },
+      {
+        choiceId: 'marcus_mystery_accept',
+        text: "Maybe we ARE the station.",
+        nextNodeId: 'marcus_hub_return',
+        pattern: 'exploring'
+      }
+    ],
+    tags: ['mystery', 'breadcrumb']
+  },
+  {
+    nodeId: 'marcus_mystery_response_1',
+    speaker: 'Marcus',
+    content: [
+      {
+        text: "Powering it? No. We are dreaming it.\n\nThe dataflow isn't electricity. It's memory. I saw a packet yesterday that looked exactly like a childhood fear I never wrote down.\n\nBe careful what you remember here. It might end up in the architecture.",
+        emotion: 'concerned',
+        variation_id: 'mystery_response_1_v1'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'marcus',
+        addKnowledgeFlags: ['marcus_mystery_noticed']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'marcus_mystery_return',
+        text: "I'll keep that in mind.",
+        nextNodeId: 'marcus_hub_return',
+        pattern: 'helping'
+      }
+    ]
+  },
+  {
+    nodeId: 'marcus_hub_return',
+    speaker: 'Marcus',
+    content: [{
+      text: "I need to run diagnostics on these unexpected packets. Stay safe out there.",
+      emotion: 'thoughtful',
+      variation_id: 'hub_return_v1'
+    }],
+    choices: []
   }
 ]
 

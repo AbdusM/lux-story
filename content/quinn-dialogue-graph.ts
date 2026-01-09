@@ -2047,6 +2047,80 @@ export const quinnDialogueNodes: DialogueNode[] = [
       }
     ],
     tags: ['quinn_arc', 'values', 'growth']
+  },
+
+  // ═══════════════════════════════════════════════════════════════
+  // MYSTERY BREADCRUMBS
+  // ═══════════════════════════════════════════════════════════════
+
+  {
+    nodeId: 'quinn_mystery_hint',
+    speaker: 'quinn',
+    requiredState: {
+      trust: { min: 5 }
+    },
+    content: [
+      {
+        text: "In finance, everything has a value. Assets, liabilities, risk-adjusted returns.\\n\\nBut the currency here isn't money. It's... <shake>attention</shake>. Real attention. The kind you can't fake.",
+        emotion: 'reflective',
+        variation_id: 'mystery_hint_v1'
+      },
+      {
+        text: "Every conversation here feels like an investment. And the returns are... different.",
+        emotion: 'thoughtful',
+        variation_id: 'mystery_hint_v2'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'quinn_mystery_dig',
+        text: "What kind of returns?",
+        nextNodeId: 'quinn_mystery_response',
+        pattern: 'analytical'
+      },
+      {
+        choiceId: 'quinn_mystery_agree',
+        text: "Some investments pay off in ways money can't measure.",
+        nextNodeId: 'quinn_mystery_response',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['mystery', 'breadcrumb']
+  },
+
+  {
+    nodeId: 'quinn_mystery_response',
+    speaker: 'quinn',
+    content: [
+      {
+        text: "Clarity. Purpose. The feeling that you're exactly where you should be.\\n\\nMy whole career, I've been measuring the wrong things. This place is teaching me that.",
+        emotion: 'vulnerable',
+        variation_id: 'mystery_response_v1'
+      }
+    ],
+    onEnter: [
+      { characterId: 'quinn', addKnowledgeFlags: ['quinn_mystery_noticed'] }
+    ],
+    choices: [
+      {
+        choiceId: 'quinn_mystery_return',
+        text: "You're not too late to measure what matters.",
+        nextNodeId: 'quinn_hub_return',
+        pattern: 'helping'
+      }
+    ],
+    tags: ['mystery', 'breadcrumb']
+  },
+
+  {
+    nodeId: 'quinn_hub_return',
+    speaker: 'quinn',
+    content: [{
+      text: "Thanks. I'm working on it.\\n\\nLet's keep looking at the numbers, but... differently.",
+      emotion: 'determined',
+      variation_id: 'hub_return_v1'
+    }],
+    choices: []
   }
 ]
 
@@ -2054,7 +2128,8 @@ export const quinnDialogueNodes: DialogueNode[] = [
 export const quinnEntryPoints = {
   INTRODUCTION: 'quinn_introduction',
   THE_PITCH: 'quinn_sim_pitch',
-  VULNERABILITY: 'quinn_vulnerability_arc'
+  VULNERABILITY: 'quinn_vulnerability_arc',
+  MYSTERY_HINT: 'quinn_mystery_hint'
 } as const
 
 // Build the graph

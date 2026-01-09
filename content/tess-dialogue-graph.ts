@@ -1898,13 +1898,88 @@ Stakes: Trust, fairness, emotional safety for both students`,
       }
     ],
     tags: ['career_mention', 'invisible_depth', 'education']
+  },
+
+  // ═══════════════════════════════════════════════════════════════
+  // MYSTERY BREADCRUMBS
+  // ═══════════════════════════════════════════════════════════════
+
+  {
+    nodeId: 'tess_mystery_hint',
+    speaker: 'tess',
+    requiredState: {
+      trust: { min: 5 }
+    },
+    content: [
+      {
+        text: "You know what the best classrooms have? They make you feel like you belong there.\\n\\nThis station has that. Everyone who comes through... they're supposed to be here.",
+        emotion: 'warm',
+        variation_id: 'mystery_hint_v1'
+      },
+      {
+        text: "I've never believed in fate. But I believe in <shake>readiness</shake>. And everyone here is ready for something.",
+        emotion: 'knowing',
+        variation_id: 'mystery_hint_v2'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'tess_mystery_ask',
+        text: "Ready for what?",
+        nextNodeId: 'tess_mystery_response',
+        pattern: 'exploring'
+      },
+      {
+        choiceId: 'tess_mystery_agree',
+        text: "I think I'm ready too. I just don't know for what yet.",
+        nextNodeId: 'tess_mystery_response',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['mystery', 'breadcrumb']
+  },
+
+  {
+    nodeId: 'tess_mystery_response',
+    speaker: 'tess',
+    content: [
+      {
+        text: "To become who they're meant to be. That's what education really is—not filling empty vessels, but lighting fires.\\n\\nThis place? It's full of sparks waiting to catch.",
+        emotion: 'inspired',
+        variation_id: 'mystery_response_v1'
+      }
+    ],
+    onEnter: [
+      { characterId: 'tess', addKnowledgeFlags: ['tess_mystery_noticed'] }
+    ],
+    choices: [
+      {
+        choiceId: 'tess_mystery_return',
+        text: "You're one of those sparks too.",
+        nextNodeId: 'tess_hub_return',
+        pattern: 'helping'
+      }
+    ],
+    tags: ['mystery', 'breadcrumb']
+  },
+
+  {
+    nodeId: 'tess_hub_return',
+    speaker: 'tess',
+    content: [{
+      text: "I'll be here if you need to trace some more connections.",
+      emotion: 'warm',
+      variation_id: 'hub_return_v1'
+    }],
+    choices: []
   }
 ]
 
 export const tessEntryPoints = {
   INTRODUCTION: 'tess_introduction',
   PHASE2_ENTRY: 'tess_phase2_entry',
-  SIMULATION: 'tess_simulation_intro'
+  SIMULATION: 'tess_simulation_intro',
+  MYSTERY_HINT: 'tess_mystery_hint'
 } as const
 
 export const tessDialogueGraph: DialogueGraph = {

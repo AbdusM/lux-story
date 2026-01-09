@@ -2638,11 +2638,86 @@ export const liraDialogueNodes: DialogueNode[] = [
             }
         ],
         tags: ['arc_quiet_hour']
+    },
+
+    // ═══════════════════════════════════════════════════════════════
+    // MYSTERY BREADCRUMBS
+    // ═══════════════════════════════════════════════════════════════
+
+    {
+        nodeId: 'lira_mystery_hint',
+        speaker: 'lira',
+        requiredState: {
+            trust: { min: 5 }
+        },
+        content: [
+            {
+                text: "Listen. Really listen.\\n\\nThe station has a sound. Not the trains, not the announcements. Underneath all that. A <shake>hum</shake>.",
+                emotion: 'focused',
+                variation_id: 'mystery_hint_v1'
+            },
+            {
+                text: "It changes based on who's here. More conversations, the hum gets richer. Like we're all contributing to one big chord.",
+                emotion: 'inspired',
+                variation_id: 'mystery_hint_v2'
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'lira_mystery_listen',
+                text: "I think I can hear it...",
+                nextNodeId: 'lira_mystery_response',
+                pattern: 'exploring'
+            },
+            {
+                choiceId: 'lira_mystery_meaning',
+                text: "What do you think it means?",
+                nextNodeId: 'lira_mystery_response',
+                pattern: 'analytical'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+
+    {
+        nodeId: 'lira_mystery_response',
+        speaker: 'lira',
+        content: [
+            {
+                text: "I think we're all instruments. And the station is the concert hall.\\n\\nEvery conversation, every connection—it's music. You just have to learn to hear it.",
+                emotion: 'transcendent',
+                variation_id: 'mystery_response_v1'
+            }
+        ],
+        onEnter: [
+            { characterId: 'lira', addKnowledgeFlags: ['lira_mystery_noticed'] }
+        ],
+        choices: [
+            {
+                choiceId: 'lira_mystery_return',
+                text: "You've helped me hear things I never noticed before.",
+                nextNodeId: 'lira_hub_return',
+                pattern: 'helping'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+
+    {
+        nodeId: 'lira_hub_return',
+        speaker: 'lira',
+        content: [{
+            text: "Keep listening. The station always has more to say.",
+            emotion: 'encouraging',
+            variation_id: 'hub_return_v1'
+        }],
+        choices: []
     }
 ]
 
 export const liraEntryPoints = {
-    INTRODUCTION: 'lira_introduction'
+    INTRODUCTION: 'lira_introduction',
+    MYSTERY_HINT: 'lira_mystery_hint'
 } as const
 
 export const liraDialogueGraph: DialogueGraph = {

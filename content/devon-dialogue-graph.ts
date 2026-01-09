@@ -2983,6 +2983,74 @@ export const devonDialogueNodes: DialogueNode[] = [
     }],
     choices: [{ choiceId: 'patterns_ack', text: "We all play our part.", nextNodeId: 'devon_introduction' }],
     tags: ['puzzle_reward', 'legendary_info']
+  },
+  // ═══════════════════════════════════════════════════════════════
+  // MYSTERY BREADCRUMBS
+  // ═══════════════════════════════════════════════════════════════
+  {
+    nodeId: 'devon_mystery_hint_1',
+    speaker: 'Devon Kumar',
+    requiredState: {
+      trust: { min: 5 }
+    },
+    content: [
+      {
+        text: "I optimized the passenger flow algorithms yesterday. Perfect efficiency. But the passengers didn't follow the lines.\n\nThey stood in pools of light. They walked in spirals. They moved like... like water.\n\nMy algorithm assumed people want to get somewhere. But nobody here is trying to leave. They're waiting. For what?",
+        emotion: 'mysterious',
+        variation_id: 'mystery_hint_1_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'devon_mystery_ask',
+        text: "What do you think they're waiting for?",
+        nextNodeId: 'devon_mystery_response_1',
+        pattern: 'helping',
+        skills: ['curiosity']
+      },
+      {
+        choiceId: 'devon_mystery_accept',
+        text: "Maybe waiting is the point.",
+        nextNodeId: 'devon_hub_return',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['mystery', 'breadcrumb']
+  },
+  {
+    nodeId: 'devon_mystery_response_1',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "Permission. To change.\n\nThe station feels like a holding pattern. A waiting room for the soul. I can't optimize a waiting room if I don't know when the doctor is coming.\n\nOr if there IS a doctor.",
+        emotion: 'wondering',
+        variation_id: 'mystery_response_1_v1'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'devon',
+        addKnowledgeFlags: ['devon_mystery_noticed']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'devon_mystery_return',
+        text: "We'll figure it out.",
+        nextNodeId: 'devon_hub_return',
+        pattern: 'helping'
+      }
+    ]
+  },
+  {
+    nodeId: 'devon_hub_return',
+    speaker: 'Devon Kumar',
+    content: [{
+      text: "I'm going to watch the traffic patterns a bit longer. See if I can decode the spiral.",
+      emotion: 'thoughtful',
+      variation_id: 'hub_return_v1'
+    }],
+    choices: []
   }
 ]
 

@@ -2657,6 +2657,80 @@ export const zaraDialogueNodes: DialogueNode[] = [
             }
         ],
         tags: ['shadow_war_arc', 'end']
+    },
+
+    // ═══════════════════════════════════════════════════════════════
+    // MYSTERY BREADCRUMBS
+    // ═══════════════════════════════════════════════════════════════
+
+    {
+        nodeId: 'zara_mystery_hint',
+        speaker: 'zara',
+        requiredState: {
+            trust: { min: 5 }
+        },
+        content: [
+            {
+                text: "I study how algorithms shape human behavior. Usually, it's manipulative. Surveillance capitalism, attention hijacking.\\n\\nBut whatever algorithm runs this place? It's... <shake>kind</shake>.",
+                emotion: 'surprised',
+                variation_id: 'mystery_hint_v1'
+            },
+            {
+                text: "It brings people together without exploiting them. I didn't think that was possible.",
+                emotion: 'hopeful',
+                variation_id: 'mystery_hint_v2'
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'zara_mystery_dig',
+                text: "What makes it different?",
+                nextNodeId: 'zara_mystery_response',
+                pattern: 'analytical'
+            },
+            {
+                choiceId: 'zara_mystery_feel',
+                text: "Maybe because it serves us, not the other way around.",
+                nextNodeId: 'zara_mystery_response',
+                pattern: 'helping'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+
+    {
+        nodeId: 'zara_mystery_response',
+        speaker: 'zara',
+        content: [
+            {
+                text: "It optimizes for connection, not engagement. For growth, not addiction.\\n\\nImagine if all technology worked that way. This station gives me hope that it's possible.",
+                emotion: 'inspired',
+                variation_id: 'mystery_response_v1'
+            }
+        ],
+        onEnter: [
+            { characterId: 'zara', addKnowledgeFlags: ['zara_mystery_noticed'] }
+        ],
+        choices: [
+            {
+                choiceId: 'zara_mystery_return',
+                text: "Maybe you'll build something like it someday.",
+                nextNodeId: 'zara_hub_return',
+                pattern: 'building'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+
+    {
+        nodeId: 'zara_hub_return',
+        speaker: 'zara',
+        content: [{
+            text: "Maybe I will. With the right data.\\n\\nSpeaking of data, did you need something?",
+            emotion: 'focused',
+            variation_id: 'hub_return_v1'
+        }],
+        choices: []
     }
 ]
 
@@ -2664,7 +2738,8 @@ export const zaraEntryPoints = {
     INTRODUCTION: 'zara_introduction',
     METHODOLOGY: 'zara_audit_methodology',
     VULNERABILITY: 'zara_vulnerability_arc',
-    SHADOW_WAR: 'zara_signal_discovery'
+    SHADOW_WAR: 'zara_signal_discovery',
+    MYSTERY_HINT: 'zara_mystery_hint'
 } as const
 
 export const zaraDialogueGraph: DialogueGraph = {

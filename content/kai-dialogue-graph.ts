@@ -1761,6 +1761,73 @@ export const kaiDialogueNodes: DialogueNode[] = [
       }
     ],
     tags: ['career_mention', 'invisible_depth', 'safety']
+  },
+  // ═══════════════════════════════════════════════════════════════
+  // MYSTERY BREADCRUMBS
+  // ═══════════════════════════════════════════════════════════════
+  {
+    nodeId: 'kai_mystery_hint_1',
+    speaker: 'Kai',
+    requiredState: {
+      trust: { min: 5 }
+    },
+    content: [
+      {
+        text: "I audited the safety manuals for the lower levels. They don't exist. No fire exits. No capacity limits.\n\nEvery other floor is regulated to death. But down there? It's like the rules of physics are... optional.\n\nHave you been down to Platform Seven? I saw a warning sign that just said 'REMEMBER.'",
+        emotion: 'mysterious',
+        variation_id: 'mystery_hint_1_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'kai_mystery_ask',
+        text: "Did you go down there?",
+        nextNodeId: 'kai_mystery_response_1',
+        pattern: 'exploring'
+      },
+      {
+        choiceId: 'kai_mystery_avoid',
+        text: "Sounds like a place to avoid.",
+        nextNodeId: 'kai_hub_return',
+        pattern: 'building'
+      }
+    ],
+    tags: ['mystery', 'breadcrumb']
+  },
+  {
+    nodeId: 'kai_mystery_response_1',
+    speaker: 'Kai',
+    content: [
+      {
+        text: "I tried. The elevator wouldn't stop. It just kept going down, but the floor numbers went up.\n\n7... 8... 9... then words. 'REGRET'. 'HOPE'. 'FORGIVENESS'.\n\nI pressed emergency stop. I wasn't ready for a safety inspection of my own soul.",
+        emotion: 'fearful',
+        variation_id: 'mystery_response_1_v1'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'kai',
+        addKnowledgeFlags: ['kai_mystery_noticed']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'kai_mystery_return',
+        text: "Maybe next time.",
+        nextNodeId: 'kai_hub_return',
+        pattern: 'patience'
+      }
+    ]
+  },
+  {
+    nodeId: 'kai_hub_return',
+    speaker: 'Kai',
+    content: [{
+      text: "I'm sticking to the upper levels for now. Regulations make sense up here.",
+      emotion: 'neutral',
+      variation_id: 'hub_return_v1'
+    }],
+    choices: []
   }
 ]
 

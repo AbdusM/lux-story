@@ -1209,11 +1209,86 @@ HINT: Sensors measure WHERE they're placed...`,
       }
     ],
     tags: ['career_mention', 'invisible_depth', 'manufacturing']
+  },
+
+  // ═══════════════════════════════════════════════════════════════
+  // MYSTERY BREADCRUMBS
+  // ═══════════════════════════════════════════════════════════════
+
+  {
+    nodeId: 'silas_mystery_hint',
+    speaker: 'silas',
+    requiredState: {
+      trust: { min: 5 }
+    },
+    content: [
+      {
+        text: "I've worked with my hands my whole life. Metal, wood, machinery. I understand how things are made.\\n\\nBut this station... I can't figure out how it was built. Or who built it.",
+        emotion: 'puzzled',
+        variation_id: 'mystery_hint_v1'
+      },
+      {
+        text: "The architecture doesn't follow any style I know. It's like it <shake>grew</shake> instead of being constructed.",
+        emotion: 'mystified',
+        variation_id: 'mystery_hint_v2'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'silas_mystery_dig',
+        text: "Maybe it did grow. From all of us.",
+        nextNodeId: 'silas_mystery_response',
+        pattern: 'exploring'
+      },
+      {
+        choiceId: 'silas_mystery_practical',
+        text: "Does it matter how it was made, if it works?",
+        nextNodeId: 'silas_mystery_response',
+        pattern: 'building'
+      }
+    ],
+    tags: ['mystery', 'breadcrumb']
+  },
+
+  {
+    nodeId: 'silas_mystery_response',
+    speaker: 'silas',
+    content: [
+      {
+        text: "Heh. You sound like my old foreman. 'Don't ask how the sausage is made, just appreciate the sausage.'\\n\\nBut yeah. Some things work best when you don't overthink them.",
+        emotion: 'accepting',
+        variation_id: 'mystery_response_v1'
+      }
+    ],
+    onEnter: [
+      { characterId: 'silas', addKnowledgeFlags: ['silas_mystery_noticed'] }
+    ],
+    choices: [
+      {
+        choiceId: 'silas_mystery_return',
+        text: "You've built good things too. That counts.",
+        nextNodeId: 'silas_hub_return',
+        pattern: 'helping'
+      }
+    ],
+    tags: ['mystery', 'breadcrumb']
+  },
+
+  {
+    nodeId: 'silas_hub_return',
+    speaker: 'silas',
+    content: [{
+      text: "I'll be in the workshop if you need me.",
+      emotion: 'content',
+      variation_id: 'hub_return_v1'
+    }],
+    choices: []
   }
 ]
 
 export const silasEntryPoints = {
-  INTRODUCTION: 'silas_introduction'
+  INTRODUCTION: 'silas_introduction',
+  MYSTERY_HINT: 'silas_mystery_hint'
 } as const
 
 export const silasDialogueGraph: DialogueGraph = {

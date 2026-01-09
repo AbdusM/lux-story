@@ -944,6 +944,81 @@ export const nadiaDialogueNodes: DialogueNode[] = [
       }
     ],
     tags: ['nadia_arc', 'healing', 'growth']
+  },
+
+  // ═══════════════════════════════════════════════════════════════
+  // MYSTERY BREADCRUMBS
+  // ═══════════════════════════════════════════════════════════════
+
+  {
+    nodeId: 'nadia_mystery_hint',
+    speaker: 'nadia',
+    requiredState: {
+      trust: { min: 5 }
+    },
+    content: [
+      {
+        text: "I work with AI systems. I've seen what they can do—and what they can't.\\n\\nThis station operates like the most advanced AI I've ever encountered. But there's no server room. No data center.",
+        emotion: 'mystified',
+        variation_id: 'mystery_hint_v1'
+      },
+      {
+        text: "It's like the intelligence is... <shake>distributed</shake>. In all of us.",
+        emotion: 'intrigued',
+        variation_id: 'mystery_hint_v2'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'nadia_mystery_dig',
+        text: "You mean we're the processing power?",
+        nextNodeId: 'nadia_mystery_response',
+        pattern: 'analytical'
+      },
+      {
+        choiceId: 'nadia_mystery_feel',
+        text: "Maybe intelligence isn't always artificial.",
+        nextNodeId: 'nadia_mystery_response',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['mystery', 'breadcrumb']
+  },
+
+  {
+    nodeId: 'nadia_mystery_response',
+    speaker: 'nadia',
+    content: [
+      {
+        text: "Exactly. The station isn't running ON us—it's running THROUGH us. Our connections are the network.\\n\\nI've spent my career building artificial systems. This one is beautifully, irreducibly human.",
+        emotion: 'awed',
+        variation_id: 'mystery_response_v1'
+      }
+    ],
+    onEnter: [
+      { characterId: 'nadia', addKnowledgeFlags: ['nadia_mystery_noticed'] }
+    ],
+    choices: [
+      {
+        choiceId: 'nadia_mystery_return',
+        text: "Maybe the best intelligence is the one we build together.",
+        nextNodeId: 'nadia_hub_return',
+        pattern: 'building'
+      }
+    ],
+    tags: ['mystery', 'breadcrumb']
+  },
+
+  {
+    nodeId: 'nadia_hub_return',
+    speaker: 'nadia',
+    content: [{
+      text: "It was good talking with you. Come back anytime.",
+      emotion: 'warm',
+      variation_id: 'hub_return_v1'
+    }],
+    choices: [],
+    tags: ['farewell']
   }
 ]
 
@@ -951,7 +1026,8 @@ export const nadiaDialogueNodes: DialogueNode[] = [
 export const nadiaEntryPoints = {
   INTRODUCTION: 'nadia_introduction',
   SIMULATION: 'nadia_sim_hype',
-  VULNERABILITY: 'nadia_vulnerability_arc'
+  VULNERABILITY: 'nadia_vulnerability_arc',
+  MYSTERY_HINT: 'nadia_mystery_hint'
 } as const
 
 // Build the graph

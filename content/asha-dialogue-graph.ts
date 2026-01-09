@@ -2053,6 +2053,80 @@ export const ashaDialogueNodes: DialogueNode[] = [
             }
         ],
         tags: ['arc_quiet_hour']
+    },
+
+    // ═══════════════════════════════════════════════════════════════
+    // MYSTERY BREADCRUMBS
+    // ═══════════════════════════════════════════════════════════════
+
+    {
+        nodeId: 'asha_mystery_hint',
+        speaker: 'asha',
+        requiredState: {
+            trust: { min: 5 }
+        },
+        content: [
+            {
+                text: "In mediation, I create safe spaces for difficult conversations. Neutral ground where people can be honest.\\n\\nThis station... it does that naturally. Everyone here feels safe to be vulnerable.",
+                emotion: 'impressed',
+                variation_id: 'mystery_hint_v1'
+            },
+            {
+                text: "I've spent years learning to create that feeling. This place just <shake>has</shake> it.",
+                emotion: 'humbled',
+                variation_id: 'mystery_hint_v2'
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'asha_mystery_dig',
+                text: "Maybe the station learned from people like you.",
+                nextNodeId: 'asha_mystery_response',
+                pattern: 'helping'
+            },
+            {
+                choiceId: 'asha_mystery_feel',
+                text: "You create that feeling too. I've felt it talking with you.",
+                nextNodeId: 'asha_mystery_response',
+                pattern: 'helping'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+
+    {
+        nodeId: 'asha_mystery_response',
+        speaker: 'asha',
+        content: [
+            {
+                text: "Thank you for saying that. I think the station amplifies what we bring to it. Our openness, our willingness to connect.\\n\\nWe make each other safe. The station just gives us the space to do it.",
+                emotion: 'warm',
+                variation_id: 'mystery_response_v1'
+            }
+        ],
+        onEnter: [
+            { characterId: 'asha', addKnowledgeFlags: ['asha_mystery_noticed'] }
+        ],
+        choices: [
+            {
+                choiceId: 'asha_mystery_return',
+                text: "You've made me feel safe to share.",
+                nextNodeId: 'asha_hub_return',
+                pattern: 'helping'
+            }
+        ],
+        tags: ['mystery', 'breadcrumb']
+    },
+
+    {
+        nodeId: 'asha_hub_return',
+        speaker: 'asha',
+        content: [{
+            text: "I'm glad. That's all I want to do.",
+            emotion: 'warm',
+            variation_id: 'hub_return_v1'
+        }],
+        choices: []
     }
 ]
 
@@ -2062,7 +2136,8 @@ export const ashaEntryPoints = {
     ARTISTIC_PROCESS: 'asha_artistic_process',
     SIMULATION_SETUP: 'asha_simulation_setup',
     VULNERABILITY_ARC: 'asha_vulnerability_arc',
-    GRANDMOTHER_STORY: 'asha_grandmother_story'
+    GRANDMOTHER_STORY: 'asha_grandmother_story',
+    MYSTERY_HINT: 'asha_mystery_hint'
 } as const
 
 export type AshaEntryPoint = typeof ashaEntryPoints[keyof typeof ashaEntryPoints]

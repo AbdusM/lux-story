@@ -1768,6 +1768,80 @@ Which opening sells the VALUE of practical experience?`,
       }
     ],
     tags: ['simulation', 'yaquin_arc', 'insight', 'completion']
+  },
+
+  // ═══════════════════════════════════════════════════════════════
+  // MYSTERY BREADCRUMBS
+  // ═══════════════════════════════════════════════════════════════
+
+  {
+    nodeId: 'yaquin_mystery_hint',
+    speaker: 'yaquin',
+    requiredState: {
+      trust: { min: 5 }
+    },
+    content: [
+      {
+        text: "I build learning platforms. Adaptive ones that respond to how users interact.\\n\\nThis station reminds me of my best work. Except I didn't build this, and it's way more sophisticated.",
+        emotion: 'amazed',
+        variation_id: 'mystery_hint_v1'
+      },
+      {
+        text: "It's like the whole place is a <shake>learning environment</shake>. And we're all students.",
+        emotion: 'intrigued',
+        variation_id: 'mystery_hint_v2'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'yaquin_mystery_dig',
+        text: "What do you think it's teaching us?",
+        nextNodeId: 'yaquin_mystery_response',
+        pattern: 'exploring'
+      },
+      {
+        choiceId: 'yaquin_mystery_meta',
+        text: "Maybe it's teaching us about ourselves.",
+        nextNodeId: 'yaquin_mystery_response',
+        pattern: 'analytical'
+      }
+    ],
+    tags: ['mystery', 'breadcrumb']
+  },
+
+  {
+    nodeId: 'yaquin_mystery_response',
+    speaker: 'yaquin',
+    content: [
+      {
+        text: "That's exactly it. The curriculum is us. Our choices, our conversations, our growth.\\n\\nWhoever designed this place... they understood something profound about how people change.",
+        emotion: 'respectful',
+        variation_id: 'mystery_response_v1'
+      }
+    ],
+    onEnter: [
+      { characterId: 'yaquin', addKnowledgeFlags: ['yaquin_mystery_noticed'] }
+    ],
+    choices: [
+      {
+        choiceId: 'yaquin_mystery_return',
+        text: "I'm glad I'm learning alongside you.",
+        nextNodeId: 'yaquin_hub_return',
+        pattern: 'helping'
+      }
+    ],
+    tags: ['mystery', 'breadcrumb']
+  },
+
+  {
+    nodeId: 'yaquin_hub_return',
+    speaker: 'yaquin',
+    content: [{
+      text: "I'm taking notes on everything. This place is a masterclass.",
+      emotion: 'thoughtful',
+      variation_id: 'hub_return_v1'
+    }],
+    choices: []
   }
 ]
 
@@ -1775,7 +1849,8 @@ export const yaquinEntryPoints = {
   INTRODUCTION: 'yaquin_introduction',
   PHASE2_ENTRY: 'yaquin_phase2_entry',
   /** Course review simulation - handling controversial feedback */
-  SIMULATION: 'yaquin_simulation_intro'
+  SIMULATION: 'yaquin_simulation_intro',
+  MYSTERY_HINT: 'yaquin_mystery_hint'
 } as const
 
 export const yaquinDialogueGraph: DialogueGraph = {

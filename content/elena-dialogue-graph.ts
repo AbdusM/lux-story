@@ -2383,6 +2383,80 @@ Your curiosity combined with analysis... that's exactly what they need.`,
     }],
     choices: [{ choiceId: 'archives_ack', text: "I can carry the weight.", nextNodeId: 'elena_intro' }],
     tags: ['puzzle_reward', 'legendary_info']
+  },
+
+  // ═══════════════════════════════════════════════════════════════
+  // MYSTERY BREADCRUMBS
+  // ═══════════════════════════════════════════════════════════════
+
+  {
+    nodeId: 'elena_mystery_hint',
+    speaker: 'elena',
+    requiredState: {
+      trust: { min: 5 }
+    },
+    content: [
+      {
+        text: "I've catalogued thousands of documents. Birth records, death records, everything in between.\\n\\nBut this station... it doesn't appear in any archive. It's like it exists <shake>outside</shake> normal records.",
+        emotion: 'mystified',
+        variation_id: 'mystery_hint_v1'
+      },
+      {
+        text: "Places this significant always leave traces. This one doesn't. It's fascinating.",
+        emotion: 'intrigued',
+        variation_id: 'mystery_hint_v2'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'elena_mystery_dig',
+        text: "Have you tried to document it yourself?",
+        nextNodeId: 'elena_mystery_response',
+        pattern: 'analytical'
+      },
+      {
+        choiceId: 'elena_mystery_accept',
+        text: "Maybe some things aren't meant to be archived.",
+        nextNodeId: 'elena_mystery_response',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['mystery', 'breadcrumb']
+  },
+
+  {
+    nodeId: 'elena_mystery_response',
+    speaker: 'elena',
+    content: [
+      {
+        text: "I tried. But every time I write about it, the words feel... incomplete. Like the station is bigger than language.\\n\\nMaybe it's meant to be experienced, not recorded. That's a new thought for an archivist.",
+        emotion: 'humbled',
+        variation_id: 'mystery_response_v1'
+      }
+    ],
+    onEnter: [
+      { characterId: 'elena', addKnowledgeFlags: ['elena_mystery_noticed'] }
+    ],
+    choices: [
+      {
+        choiceId: 'elena_mystery_return',
+        text: "Some stories are written in people, not paper.",
+        nextNodeId: 'elena_hub_return',
+        pattern: 'helping'
+      }
+    ],
+    tags: ['mystery', 'breadcrumb']
+  },
+
+  {
+    nodeId: 'elena_hub_return',
+    speaker: 'elena',
+    content: [{
+      text: "I'll go back to the records. Maybe I missed something in the margins.",
+      emotion: 'thoughtful',
+      variation_id: 'hub_return_v1'
+    }],
+    choices: []
   }
 ]
 
@@ -2408,7 +2482,9 @@ export const elenaEntryPoints = {
   DEEP_TRUST: 'elena_deep_trust',
 
   /** Meta reflection - player pattern analysis */
-  META_REFLECTION: 'elena_meta_reflection'
+  META_REFLECTION: 'elena_meta_reflection',
+
+  MYSTERY_HINT: 'elena_mystery_hint'
 } as const
 
 export type ElenaEntryPoint = typeof elenaEntryPoints[keyof typeof elenaEntryPoints]
