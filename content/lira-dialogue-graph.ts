@@ -2729,7 +2729,7 @@ Warning: Core Hum saturating mix.`,
             {
                 choiceId: 'lira_silence_response',
                 text: "It feels like the station is holding its breath.",
-                nextNodeId: 'lira_introduction',
+                nextNodeId: 'lira_hub_return',
                 pattern: 'patience',
                 skills: ['observation'],
                 consequence: {
@@ -2754,7 +2754,7 @@ Warning: Core Hum saturating mix.`,
             {
                 choiceId: 'lira_hear_thinking',
                 text: "What is it thinking?",
-                nextNodeId: 'lira_introduction',
+                nextNodeId: 'lira_hub_return',
                 pattern: 'exploring',
                 skills: ['curiosity'],
                 consequence: {

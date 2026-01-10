@@ -2760,7 +2760,7 @@ MISSION: Stabilize the wave form within safety limits.`,
       {
         choiceId: 'legacy_continue',
         text: "That's not contradiction. That's continuation.",
-        nextNodeId: 'maya_introduction',
+        nextNodeId: 'maya_hub_return',
         pattern: 'patience',
         skills: ['wisdom'],
         consequence: {
@@ -2786,7 +2786,7 @@ MISSION: Stabilize the wave form within safety limits.`,
       {
         choiceId: 'mom_story_continue',
         text: "Her fear and your dreams don't have to be opposites.",
-        nextNodeId: 'maya_introduction',
+        nextNodeId: 'maya_hub_return',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
         consequence: {
@@ -2812,7 +2812,7 @@ MISSION: Stabilize the wave form within safety limits.`,
       {
         choiceId: 'parents_together_continue',
         text: "They love you. It just comes out as pressure.",
-        nextNodeId: 'maya_introduction',
+        nextNodeId: 'maya_hub_return',
         pattern: 'patience',
         skills: ['emotionalIntelligence']
       }
@@ -2929,7 +2929,7 @@ MISSION: Stabilize the wave form within safety limits.`,
       {
         choiceId: 'acceptance_continue',
         text: "And you're getting stronger.",
-        nextNodeId: 'maya_introduction',
+        nextNodeId: 'maya_hub_return',
         pattern: 'helping',
         skills: ['leadership', 'encouragement']
       }
@@ -2990,7 +2990,7 @@ MISSION: Stabilize the wave form within safety limits.`,
       {
         choiceId: 'grandmother_continue',
         text: "She saw you clearly. Before anyone else did.",
-        nextNodeId: 'maya_introduction',
+        nextNodeId: 'maya_hub_return',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
         consequence: {
@@ -3045,7 +3045,7 @@ MISSION: Stabilize the wave form within safety limits.`,
       {
         choiceId: 'ml_continue',
         text: "The right investors will hear the difference. Keep looking.",
-        nextNodeId: 'maya_introduction',
+        nextNodeId: 'maya_hub_return',
         pattern: 'helping',
         skills: ['strategicThinking', 'encouragement'],
         consequence: {
@@ -3071,7 +3071,7 @@ MISSION: Stabilize the wave form within safety limits.`,
       {
         choiceId: 'self_taught_continue',
         text: "That resilience is worth more than any degree.",
-        nextNodeId: 'maya_introduction',
+        nextNodeId: 'maya_hub_return',
         pattern: 'helping',
         skills: ['encouragement'],
         consequence: {
@@ -3101,7 +3101,7 @@ MISSION: Stabilize the wave form within safety limits.`,
       {
         choiceId: 'birmingham_roots_continue',
         text: "Home isn't where you escape from. It's where you build.",
-        nextNodeId: 'maya_introduction',
+        nextNodeId: 'maya_hub_return',
         pattern: 'building',
         skills: ['wisdom'],
         consequence: {
@@ -3127,7 +3127,7 @@ MISSION: Stabilize the wave form within safety limits.`,
       {
         choiceId: 'community_inspired',
         text: "You're not just building robots. You're building builders.",
-        nextNodeId: 'maya_introduction',
+        nextNodeId: 'maya_hub_return',
         pattern: 'helping',
         skills: ['mentorship'],
         consequence: {
@@ -3157,7 +3157,7 @@ MISSION: Stabilize the wave form within safety limits.`,
       {
         choiceId: 'future_vision_believe',
         text: "It's not naive. It's necessary. The world needs more builders like you.",
-        nextNodeId: 'maya_introduction',
+        nextNodeId: 'maya_hub_return',
         pattern: 'building',
         skills: ['visionaryThinking'],
         consequence: {
@@ -3187,7 +3187,7 @@ MISSION: Stabilize the wave form within safety limits.`,
       {
         choiceId: 'mentor_devon_continue',
         text: "Patience as rebellion. That's beautiful.",
-        nextNodeId: 'maya_introduction',
+        nextNodeId: 'maya_hub_return',
         pattern: 'patience',
         skills: ['emotionalIntelligence']
       }
@@ -3212,7 +3212,7 @@ MISSION: Stabilize the wave form within safety limits.`,
       {
         choiceId: 'mentor_tess_continue',
         text: "Teaching from scars instead of credentials. That's real.",
-        nextNodeId: 'maya_introduction',
+        nextNodeId: 'maya_hub_return',
         pattern: 'helping',
         skills: ['wisdom']
       }
@@ -3235,7 +3235,7 @@ MISSION: Stabilize the wave form within safety limits.`,
       {
         choiceId: 'tech_philosophy_continue',
         text: "Different machines. Same purpose. Helping people.",
-        nextNodeId: 'maya_introduction',
+        nextNodeId: 'maya_hub_return',
         pattern: 'analytical',
         skills: ['systemsThinking'],
         consequence: {
@@ -3261,7 +3261,7 @@ MISSION: Stabilize the wave form within safety limits.`,
       {
         choiceId: 'failure_continue',
         text: "You debugged and kept going. That's the difference.",
-        nextNodeId: 'maya_introduction',
+        nextNodeId: 'maya_hub_return',
         pattern: 'helping',
         skills: ['problemSolving', 'encouragement'],
         consequence: {
@@ -3287,7 +3287,7 @@ MISSION: Stabilize the wave form within safety limits.`,
       {
         choiceId: 'competition_continue',
         text: "Competitors who become collaborators. That's how innovation really works.",
-        nextNodeId: 'maya_introduction',
+        nextNodeId: 'maya_hub_return',
         pattern: 'building',
         skills: ['collaboration']
       }
@@ -3345,7 +3345,7 @@ MISSION: Stabilize the wave form within safety limits.`,
       {
         choiceId: 'loneliness_continue',
         text: "We build what we need. And then we share it.",
-        nextNodeId: 'maya_introduction',
+        nextNodeId: 'maya_hub_return',
         pattern: 'building',
         skills: ['wisdom']
       }
@@ -3368,7 +3368,7 @@ MISSION: Stabilize the wave form within safety limits.`,
       {
         choiceId: 'midnight_continue',
         text: "The best work happens when you stop performing.",
-        nextNodeId: 'maya_introduction',
+        nextNodeId: 'maya_hub_return',
         pattern: 'patience',
         skills: ['creativity']
       }
@@ -3393,7 +3393,7 @@ MISSION: Stabilize the wave form within safety limits.`,
       {
         choiceId: 'doubt_counter',
         text: "Real professionals don't build with this much heart. That's your advantage.",
-        nextNodeId: 'maya_introduction',
+        nextNodeId: 'maya_hub_return',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
         consequence: {
@@ -3422,7 +3422,7 @@ MISSION: Stabilize the wave form within safety limits.`,
       {
         choiceId: 'first_user_continue',
         text: "You're not building a product. You're building moments like that.",
-        nextNodeId: 'maya_introduction',
+        nextNodeId: 'maya_hub_return',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
         consequence: {
@@ -3448,7 +3448,7 @@ MISSION: Stabilize the wave form within safety limits.`,
       {
         choiceId: 'name_continue',
         text: "Vision made real. That's exactly what you're doing.",
-        nextNodeId: 'maya_introduction',
+        nextNodeId: 'maya_hub_return',
         pattern: 'exploring',
         skills: ['wisdom']
       }
@@ -3473,7 +3473,7 @@ MISSION: Stabilize the wave form within safety limits.`,
       {
         choiceId: 'what_if_try',
         text: "The regret of not trying lasts forever. The regret of failing teaches you something.",
-        nextNodeId: 'maya_introduction',
+        nextNodeId: 'maya_hub_return',
         pattern: 'analytical',
         skills: ['wisdom'],
         consequence: {
@@ -3505,7 +3505,7 @@ MISSION: Stabilize the wave form within safety limits.`,
       {
         choiceId: 'doubt_reframing',
         text: "Hobbies don't solve problems for real people. Correcting that grip strength? That's work.",
-        nextNodeId: 'maya_introduction',
+        nextNodeId: 'maya_hub_return',
         pattern: 'building',
         skills: ['leadership'],
         consequence: {
@@ -3515,7 +3515,7 @@ MISSION: Stabilize the wave form within safety limits.`,
       {
         choiceId: 'doubt_question',
         text: "What would happen if you stopped apologizing?",
-        nextNodeId: 'maya_crossroads',
+        nextNodeId: 'maya_career_crossroads',
         pattern: 'helping',
         skills: ['emotionalIntelligence']
       }
@@ -3524,7 +3524,7 @@ MISSION: Stabilize the wave form within safety limits.`,
   },
 
   {
-    nodeId: 'maya_crossroads',
+    nodeId: 'maya_career_crossroads',
     speaker: 'Maya Chen',
     content: [
       {
@@ -3537,7 +3537,7 @@ MISSION: Stabilize the wave form within safety limits.`,
       {
         choiceId: 'crossroads_third_way',
         text: "Biomedical engineering. Build the tools doctors use. It honors both paths.",
-        nextNodeId: 'maya_introduction', // Leads to acceptance in later chapters
+        nextNodeId: 'maya_hub_return', // Leads to acceptance in later chapters
         pattern: 'analytical',
         skills: ['systemsThinking'],
         consequence: {
@@ -3547,7 +3547,7 @@ MISSION: Stabilize the wave form within safety limits.`,
       {
         choiceId: 'crossroads_choose_yourself',
         text: "The only approval you get to keep forever is your own.",
-        nextNodeId: 'maya_introduction',
+        nextNodeId: 'maya_hub_return',
         pattern: 'helping',
         skills: ['integrity'],
         consequence: {

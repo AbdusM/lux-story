@@ -14,6 +14,7 @@
 import { useGameStore, type FutureSkills } from './game-store'
 import { SKILL_NODES } from './constellation/skill-positions'
 import { logger } from './logger'
+import { safeStorage } from './safe-storage'
 
 // Skill IDs from constellation that we track
 const CONSTELLATION_SKILL_IDS = new Set(SKILL_NODES.map(node => node.id))
@@ -113,7 +114,7 @@ export function getSkillCountsFromLocalStorage(userId: string): Record<string, n
 
   try {
     const key = `skill_tracker_${userId}`
-    const saved = localStorage.getItem(key)
+    const saved = safeStorage.getItem(key)
 
     if (!saved) {
       return {}

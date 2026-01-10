@@ -1446,7 +1446,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
       {
         choiceId: 'grace_career_coordinator_continue',
         text: "Keeping the person at the center. That matters.",
-        nextNodeId: 'grace_introduction',
+        nextNodeId: 'grace_hub_return',
         pattern: 'helping'
       }
     ],

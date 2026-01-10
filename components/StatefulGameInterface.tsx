@@ -411,23 +411,8 @@ export default function StatefulGameInterface() {
     // activeExperience: null
   })
 
-  // 5. GOD MODE OVERRIDE (High Priority) - Access from zustand store
+  // 5. GOD MODE OVERRIDE - Access from zustand store (conditional render at end of component)
   const debugSimulation = useGameStore(s => s.debugSimulation)
-  if (debugSimulation) {
-    return (
-      <SimulationRenderer
-        simulation={{
-          ...debugSimulation,
-          // Inject explicit back button for God Mode
-          onExit: () => useGameStore.getState().setDebugSimulation(null)
-        }}
-        onComplete={(result) => {
-          logger.info('God Mode Simulation Complete', result)
-          useGameStore.getState().setDebugSimulation(null)
-        }}
-      />
-    )
-  }
 
   // Derived State for UI Logic
   const currentState = state.gameState ? 'dialogue' : 'station'
@@ -579,7 +564,8 @@ export default function StatefulGameInterface() {
         currentContent: targetNode!.content[0].text, // simplified load
         currentDialogueContent: targetNode!.content[0],
         availableChoices: StateConditionEvaluator.evaluateChoices(targetNode!, state.gameState!, targetCharId),
-        previousSpeaker: null // Reset speaker on jump
+        previousSpeaker: null, // Reset speaker on jump
+        consequenceEcho: null  // Clear echo from previous character
       }))
 
       // Persist the jump
@@ -1425,7 +1411,8 @@ export default function StatefulGameInterface() {
 
         if (pendingTarget) {
           // Clear current choices to prevent further interaction
-          setState(prev => ({ ...prev, availableChoices: [] }))
+          setState(prev => ({ ...prev, availableChoices: [], isProcessing: false }))
+          isProcessingChoiceRef.current = false  // Release lock before travel
 
           // Trigger the jump via the standard navigation system
           useGameStore.getState().setCurrentScene(pendingTarget)
@@ -1434,6 +1421,8 @@ export default function StatefulGameInterface() {
         } else {
           // Fallback
           logger.warn('[Conductor Mode] Missing pending target, rerouting to Station Hub')
+          isProcessingChoiceRef.current = false  // Release lock before travel
+          setState(prev => ({ ...prev, isProcessing: false }))
           useGameStore.getState().setCurrentScene('samuel')
           return
         }
@@ -1442,6 +1431,7 @@ export default function StatefulGameInterface() {
       const searchResult = findCharacterForNode(choice.choice.nextNodeId, newGameState)
       if (!searchResult) {
         logger.error('[StatefulGameInterface] Could not find character graph for node:', { nodeId: choice.choice.nextNodeId })
+        isProcessingChoiceRef.current = false  // Release lock on error
         setState(prev => ({
           ...prev,
           error: {
@@ -1449,7 +1439,8 @@ export default function StatefulGameInterface() {
             message: `Could not find node "${choice.choice.nextNodeId}". Please refresh the page to restart.`,
             severity: 'error' as const
           },
-          isLoading: false
+          isLoading: false,
+          isProcessing: false
         }))
         return
       }
@@ -1461,6 +1452,16 @@ export default function StatefulGameInterface() {
           characterId: searchResult.characterId,
           graphName: searchResult.graph.metadata?.title || 'unknown'
         })
+        isProcessingChoiceRef.current = false  // Release lock on error
+        setState(prev => ({
+          ...prev,
+          error: {
+            title: 'Navigation Error',
+            message: `Node "${choice.choice.nextNodeId}" not found in ${searchResult.graph.metadata?.title || 'graph'}. Please refresh.`,
+            severity: 'error' as const
+          },
+          isProcessing: false
+        }))
         return
       }
 
@@ -3126,6 +3127,23 @@ export default function StatefulGameInterface() {
 
   const currentCharacter = state.gameState?.characters.get(state.currentCharacterId)
   const isEnding = state.availableChoices.length === 0
+
+  // GOD MODE OVERRIDE - Render simulation if active (must be at end after all hooks)
+  if (debugSimulation) {
+    return (
+      <SimulationRenderer
+        simulation={{
+          ...debugSimulation,
+          // Inject explicit back button for God Mode
+          onExit: () => useGameStore.getState().setDebugSimulation(null)
+        }}
+        onComplete={(result) => {
+          logger.info('God Mode Simulation Complete', result)
+          useGameStore.getState().setDebugSimulation(null)
+        }}
+      />
+    )
+  }
 
   return (
     <AtmosphericGameBackground

@@ -4,7 +4,7 @@ import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { EnvironmentalEffects } from '@/components/EnvironmentalEffects'
 import { ServiceWorkerProvider } from '@/components/ServiceWorkerProvider'
 import { SVGFilterProvider } from '@/lib/svg-filters'
-import '@/sentry.client.config'
+// Sentry config is auto-loaded by Next.js - don't import directly
 import './globals.css'
 import '../styles/accessibility.css'
 import '../styles/game-juice.css'

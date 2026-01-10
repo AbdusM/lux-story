@@ -3,10 +3,13 @@
  *
  * React hook that provides interpreted insights from game state.
  * Uses the insights-engine to transform raw data into meaningful interpretations.
+ *
+ * IMPORTANT: Uses derived selectors from coreGameState (single source of truth)
+ * to avoid stale data issues when game state is reset/loaded.
  */
 
 import { useMemo } from 'react'
-import { useGameStore, type PatternTracking, type ChoiceRecord } from '@/lib/game-store'
+import { useGameStore, useGameSelectors, type PatternTracking, type ChoiceRecord } from '@/lib/game-store'
 import {
   generateCombinedInsights,
   type CombinedInsights,
@@ -69,8 +72,10 @@ export interface InsightsData {
  * }
  */
 export function useInsights(): InsightsData {
-  const patterns = useGameStore(state => state.patterns)
-  const characterTrust = useGameStore(state => state.characterTrust)
+  // Use derived selectors from coreGameState (single source of truth)
+  // This prevents stale data when game is reset or new game is started
+  const patterns = useGameSelectors.usePatterns()
+  const characterTrust = useGameSelectors.useCharacterTrustAll()
   const choiceHistory = useGameStore(state => state.choiceHistory)
 
   const insights = useMemo<CombinedInsights>(() => {
@@ -79,7 +84,7 @@ export function useInsights(): InsightsData {
 
   // Determine if we have enough data for meaningful insights
   const hasEnoughData = useMemo(() => {
-    const totalPatternCount = Object.values(patterns).reduce((sum, val) => sum + val, 0)
+    const totalPatternCount = Object.values(patterns).reduce((sum: number, val: number) => sum + val, 0)
     return totalPatternCount >= 3 || choiceHistory.length >= 5
   }, [patterns, choiceHistory])
 
