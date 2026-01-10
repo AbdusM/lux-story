@@ -24,6 +24,8 @@ export interface GraphLink {
     type: RelationshipType
     intensity: number
     sentiment: 'positive' | 'neutral' | 'negative' | 'conflicted'
+    publicOpinion: string
+    privateOpinion: string
 }
 
 export const useRelationshipGraph = () => {
@@ -77,6 +79,9 @@ export const useRelationshipGraph = () => {
         // 2. Filter Edges
         const links: GraphLink[] = []
 
+        // Pre-compute flag set for performance
+        const globalFlagsSet = new Set(coreGameState?.globalFlags || [])
+
         CHARACTER_RELATIONSHIP_WEB.forEach((edge, index) => {
             // Both nodes must be met
             if (!metCharacterIds.has(edge.fromCharacterId) || !metCharacterIds.has(edge.toCharacterId)) {
@@ -99,20 +104,40 @@ export const useRelationshipGraph = () => {
 
                 // Flags check
                 if (edge.revealConditions.requiredFlags && coreGameState) {
-                    // coreGameState.globalFlags is string[] in SerializableGameState
-                    const flags = new Set(coreGameState.globalFlags)
-                    const hasFlags = edge.revealConditions.requiredFlags.every(flag => flags.has(flag))
+                    const hasFlags = edge.revealConditions.requiredFlags.every(flag => globalFlagsSet.has(flag))
                     if (!hasFlags) return
                 }
+            }
+
+            // Calculate Dynamic State
+            let currentType = edge.type
+            let currentIntensity = edge.intensity
+            let currentPublicOpinion = edge.opinions.publicOpinion
+            let currentPrivateOpinion = edge.opinions.privateOpinion
+            let currentSentiment = edge.opinions.sentiment
+
+            // Apply Dynamic Rules
+            if (edge.dynamicRules) {
+                edge.dynamicRules.forEach(rule => {
+                    const allFlagsMet = rule.triggerFlags.every(f => globalFlagsSet.has(f))
+                    if (allFlagsMet) {
+                        currentType = rule.newType
+                        currentIntensity = rule.newIntensity
+                        if (rule.newPublicOpinion) currentPublicOpinion = rule.newPublicOpinion
+                        if (rule.newPrivateOpinion) currentPrivateOpinion = rule.newPrivateOpinion
+                    }
+                })
             }
 
             links.push({
                 id: `link-${index}`, // Unique ID for D3
                 source: edge.fromCharacterId,
                 target: edge.toCharacterId,
-                type: edge.type,
-                intensity: edge.intensity,
-                sentiment: edge.opinions.sentiment
+                type: currentType,
+                intensity: currentIntensity,
+                sentiment: currentSentiment,
+                publicOpinion: currentPublicOpinion,
+                privateOpinion: currentPrivateOpinion
             })
         })
 

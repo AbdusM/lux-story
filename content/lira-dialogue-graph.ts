@@ -25,11 +25,21 @@ export const liraDialogueNodes: DialogueNode[] = [
         simulation: {
             type: 'audio_studio',
             mode: 'inline',
-            inlineHeight: 'h-64',
+            inlineHeight: 'h-[500px]',
             title: 'Synesthesia Tuning',
             taskDescription: 'Tune the frequency to match the emotion.',
             initialContext: {
-                targetMood: 'Melancholy'
+                label: 'Training Module',
+                content: 'Target Emotion: Melancholy',
+                displayStyle: 'visual',
+                target: {
+                    targetState: {
+                        tempo: 40,
+                        mood: 30,
+                        texture: 40
+                    },
+                    tolerance: 15
+                }
             },
             successFeedback: 'RESONANCE ACHIEVED. HARMONY LOCKED.'
         },
@@ -683,7 +693,16 @@ export const liraDialogueNodes: DialogueNode[] = [
             initialContext: {
                 label: 'Track: fading_echoes_v1.mp3',
                 content: '[Prompt: "Sad ambient music, slow, piano"] -> Result: Generic spa music.',
-                displayStyle: 'text'
+                displayStyle: 'visual',
+                // Synesthesia Target: "Dementia/Confusion" -> Slow, Dark, Sparse but irregular
+                target: {
+                    targetState: {
+                        tempo: 30,    // Slow / Lethargic
+                        mood: 25,     // Dark / Minor key
+                        texture: 60   // Dense/Confused texture
+                    },
+                    tolerance: 15     // Forgiving for Phase 1
+                }
             },
             successFeedback: 'RESONANCE ACHIEVED: The generated track features a disintegrating piano melody with vinyl crackle and unexpected silences.'
         },

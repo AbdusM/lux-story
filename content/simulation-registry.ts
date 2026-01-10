@@ -86,7 +86,16 @@ export const SIMULATION_REGISTRY: SimulationDefinition[] = [
             initialContext: {
                 label: 'Audio Stream: Deck 4',
                 content: 'Analyzing harmonic spectrum...',
-                displayStyle: 'code'
+                displayStyle: 'code',
+                // Synesthesia Target: "Dementia/Confusion" -> Slow, Dark, Sparse but irregular
+                target: {
+                    targetState: {
+                        tempo: 30,    // Slow / Lethargic
+                        mood: 25,     // Dark / Minor key
+                        texture: 60   // Dense/Confused texture (unlike the 20 in the placeholder)
+                    },
+                    tolerance: 12     // A bit flexible
+                }
             },
             successFeedback: '✓ HARMONIC ALIGNED: Resonance optimal.'
         }
@@ -124,14 +133,24 @@ export const SIMULATION_REGISTRY: SimulationDefinition[] = [
         phase: 1,
         difficulty: 'introduction',
         defaultContext: {
-            taskDescription: 'The "Moonlight Orchid" is wilting. Adjust the N-P-K balance.',
+            taskDescription: 'The Moonlight Orchid is fading. Rebalance nutrient mix to match genetic markers.',
             initialContext: {
-                label: 'Tank 4 Analysis',
-                content: 'Nitrogen levels critical.',
-                displayStyle: 'code'
+                label: 'Genetic Profile: Moonlight Orchid',
+                displayStyle: 'visual',
+                target: {
+                    targetState: {
+                        nitrogen: 65,
+                        phosphorus: 40,
+                        potassium: 55
+                    },
+                    tolerance: 8,
+                    plantName: 'Moonlight Orchid (Rare)',
+                    hint: 'High nitrogen requirements observed. Phosphorus toxicity risk at high levels.'
+                }
             },
-            successFeedback: '✓ GROWTH DETECTED: Photosynthesis efficiency +15%.'
-        }
+            successFeedback: 'GROWTH OPTIMIZED. GENETIC MARKERS STABILIZED.'
+        },
+
     },
 
     // --- HIDDEN / SPECIALIST ---
@@ -425,7 +444,16 @@ export const SIMULATION_REGISTRY: SimulationDefinition[] = [
             initialContext: {
                 label: 'Headline Draft',
                 content: '"Riots in Sector 4!"',
-                displayStyle: 'text'
+                displayStyle: 'text',
+                // Synesthesia Target: "De-escalation" -> Low Urgency, Neutral Tone, High Nuance
+                target: {
+                    targetState: {
+                        tempo: 20,    // Low Urgency
+                        mood: 40,     // Neutral/Calm Tone
+                        texture: 80   // High Nuance (Complex)
+                    },
+                    tolerance: 15
+                }
             },
             successFeedback: '✓ SENTIMENT IMPROVED: Headline changed to "Protests in Sector 4".'
         }

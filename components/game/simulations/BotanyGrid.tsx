@@ -10,6 +10,7 @@ import {
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { SimulationComponentProps } from './types'
+import { BotanyTarget } from '@/lib/visualizers/botany-types'
 
 // Grid cell representing a plant section
 interface GridCell {
@@ -26,7 +27,21 @@ interface GridCell {
  * For Tess: Adjust N-P-K (Nitrogen, Phosphorus, Potassium) balance
  * to optimize plant health in a grid-based cellular automata style.
  */
-export function BotanyGrid({ onSuccess }: SimulationComponentProps) {
+export function BotanyGrid({ config, onSuccess }: SimulationComponentProps) {
+    // Extract target from config or use defaults
+    const targetConfig: BotanyTarget = (config.initialContext?.target as BotanyTarget) || {
+        targetState: {
+            nitrogen: 65,
+            phosphorus: 40,
+            potassium: 55
+        },
+        tolerance: 10,
+        plantName: "Unknown Species",
+        hint: "Analyze nutrient requirements to proceed."
+    }
+
+    const { targetState, tolerance, plantName, hint } = targetConfig
+
     // Nutrient levels (0-100)
     const [nitrogen, setNitrogen] = useState(30)
     const [phosphorus, setPhosphorus] = useState(50)
@@ -36,11 +51,6 @@ export function BotanyGrid({ onSuccess }: SimulationComponentProps) {
     const [grid, setGrid] = useState<GridCell[]>([])
     const [overallHealth, setOverallHealth] = useState(40)
     const [isComplete, setIsComplete] = useState(false)
-
-    // Target values for "Moonlight Orchid"
-    const TARGET_N = 65
-    const TARGET_P = 40
-    const TARGET_K = 55
 
     // Initialize grid
     useEffect(() => {
@@ -61,12 +71,13 @@ export function BotanyGrid({ onSuccess }: SimulationComponentProps) {
 
     // Update grid health based on nutrient levels
     useEffect(() => {
-        const nDist = Math.abs(nitrogen - TARGET_N)
-        const pDist = Math.abs(phosphorus - TARGET_P)
-        const kDist = Math.abs(potassium - TARGET_K)
+        const nDist = Math.abs(nitrogen - targetState.nitrogen)
+        const pDist = Math.abs(phosphorus - targetState.phosphorus)
+        const kDist = Math.abs(potassium - targetState.potassium)
         const totalDist = nDist + pDist + kDist
 
         // Calculate health (lower distance = higher health)
+        // Adjust divider based on tolerance somewhat, but keep it challenging
         const baseHealth = Math.max(0, Math.min(100, 100 - (totalDist / 1.5)))
 
         // Update each cell with some variation
@@ -82,16 +93,20 @@ export function BotanyGrid({ onSuccess }: SimulationComponentProps) {
         setOverallHealth(Math.round(baseHealth))
 
         // Check completion
+        // Success if health > 85 (meaning very close to target)
         if (baseHealth > 85 && !isComplete) {
             setIsComplete(true)
             setTimeout(() => {
                 onSuccess({
                     success: true,
-                    data: { health: baseHealth, nutrients: { nitrogen, phosphorus, potassium } }
+                    data: {
+                        health: baseHealth,
+                        nutrients: { nitrogen, phosphorus, potassium }
+                    }
                 })
             }, 1500)
         }
-    }, [nitrogen, phosphorus, potassium, isComplete, onSuccess])
+    }, [nitrogen, phosphorus, potassium, isComplete, onSuccess, targetState])
 
     // Get cell color based on health
     const getCellColor = (growth: string) => {
@@ -116,7 +131,7 @@ export function BotanyGrid({ onSuccess }: SimulationComponentProps) {
                 <div className="flex items-center gap-3">
                     <Sprout className={cn("w-5 h-5", isComplete ? "text-emerald-400" : "text-lime-400")} />
                     <div>
-                        <div className="text-xs uppercase tracking-widest text-white/50">HYDROPONIC GRID</div>
+                        <div className="text-xs uppercase tracking-widest text-white/50">{plantName}</div>
                         <div className={cn("text-sm font-medium", isComplete ? "text-emerald-400" : "text-white")}>
                             {isComplete ? "GROWTH OPTIMAL" : "CALIBRATING..."}
                         </div>
@@ -137,9 +152,9 @@ export function BotanyGrid({ onSuccess }: SimulationComponentProps) {
 
             {/* Nutrient Status Bar */}
             <div className="grid grid-cols-3 gap-2">
-                <NutrientCard label="N" name="Nitrogen" value={nitrogen} target={TARGET_N} color="#3B82F6" />
-                <NutrientCard label="P" name="Phosphorus" value={phosphorus} target={TARGET_P} color="#F59E0B" />
-                <NutrientCard label="K" name="Potassium" value={potassium} target={TARGET_K} color="#8B5CF6" />
+                <NutrientCard label="N" name="Nitrogen" value={nitrogen} target={targetState.nitrogen} tolerance={tolerance} color="#3B82F6" />
+                <NutrientCard label="P" name="Phosphorus" value={phosphorus} target={targetState.phosphorus} tolerance={tolerance} color="#F59E0B" />
+                <NutrientCard label="K" name="Potassium" value={potassium} target={targetState.potassium} tolerance={tolerance} color="#8B5CF6" />
             </div>
 
             {/* Grid Visualization */}
@@ -178,7 +193,7 @@ export function BotanyGrid({ onSuccess }: SimulationComponentProps) {
 
             {/* Nutrient hint */}
             <div className="text-center text-xs text-white/40 italic">
-                &quot;Moonlight Orchid requires balanced nutrition with elevated nitrogen...&quot;
+                &quot;{hint}&quot;
             </div>
 
             {/* Controls */}
@@ -243,25 +258,30 @@ export function BotanyGrid({ onSuccess }: SimulationComponentProps) {
 
             {/* Debug */}
             <button
-                onClick={() => { setNitrogen(TARGET_N); setPhosphorus(TARGET_P); setPotassium(TARGET_K) }}
+                onClick={() => {
+                    setNitrogen(targetState.nitrogen);
+                    setPhosphorus(targetState.phosphorus);
+                    setPotassium(targetState.potassium)
+                }}
                 className="text-[10px] text-white/20 hover:text-white/50 w-full text-center"
             >
-                [DEBUG] Auto-Balance
+                [DEBUG] Auto-Balance ({targetState.nitrogen}/{targetState.phosphorus}/{targetState.potassium})
             </button>
         </div>
     )
 }
 
 // Nutrient status card
-function NutrientCard({ label, name, value, target, color }: {
+function NutrientCard({ label, name, value, target, tolerance, color }: {
     label: string
     name: string
     value: number
     target: number
+    tolerance: number
     color: string
 }) {
     const diff = Math.abs(value - target)
-    const status = diff < 10 ? 'optimal' : diff < 20 ? 'close' : 'off'
+    const status = diff < tolerance ? 'optimal' : diff < (tolerance * 2) ? 'close' : 'off'
 
     return (
         <div className="bg-black/30 p-2 rounded border border-white/5">

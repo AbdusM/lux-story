@@ -1,37 +1,28 @@
-"use client"
-
-import { useMemo, useState } from "react"
-import { motion, useSpring, useTransform, useReducedMotion } from "framer-motion"
-import { usePatternUnlocks, type OrbState } from "@/hooks/usePatternUnlocks"
-import { playPatternSound } from "@/lib/audio-feedback"
-import { Microscope, Brain, Compass, Heart, Hammer, Briefcase, History, ChevronDown, ChevronUp } from "lucide-react"
-import { PatternType } from "@/lib/patterns"
-import { getTopCareerForPattern, type PatternCareerMatch } from "@/lib/pattern-combos"
-import { useGameSelectors } from "@/lib/game-store"
+import React, { useState, useMemo } from 'react'
+import { motion, AnimatePresence, useReducedMotion, useSpring, useTransform } from 'framer-motion'
+import { Users, Activity, Compass, History, ChevronUp, ChevronDown, Briefcase, Microscope, Brain, Heart, Hammer } from 'lucide-react'
+import { RelationshipWeb } from "./RelationshipWeb"
+import { usePatternUnlocks, type OrbState } from '@/hooks/usePatternUnlocks'
+import { useGameSelectors } from '@/lib/game-store'
+import { type PatternType } from '@/lib/patterns'
+import { getTopCareerForPattern, type PatternCareerMatch } from '@/lib/pattern-combos'
 import { PatternMomentCapture } from "./PatternMomentCapture"
+import { playPatternSound } from '@/lib/audio-feedback'
+import { hapticFeedback } from '@/lib/haptic-feedback'
 
 interface HarmonicsViewProps {
     onOrbSelect?: (pattern: PatternType) => void
-}
-
-/**
- * Mobile Haptic helper
- */
-const triggerHaptic = (style: 'light' | 'medium' | 'heavy') => {
-    if (typeof navigator !== 'undefined' && navigator.vibrate) {
-        if (style === 'light') navigator.vibrate(5)
-        if (style === 'medium') navigator.vibrate(10)
-        if (style === 'heavy') navigator.vibrate(20)
-    }
 }
 
 export function HarmonicsView({ onOrbSelect }: HarmonicsViewProps) {
     const { orbs: patternOrbs } = usePatternUnlocks()
     const coreGameState = useGameSelectors.useCoreGameState()
     const [showMoments, setShowMoments] = useState(false)
+    const [viewMode, setViewMode] = useState<'field' | 'web'>('field')
 
     // Compute career matches for each pattern
     const careerMatches = useMemo((): Record<PatternType, PatternCareerMatch | null> => {
+        // ... implementation remains the same
         if (!coreGameState?.patterns) {
             return {
                 analytical: null,
@@ -41,7 +32,6 @@ export function HarmonicsView({ onOrbSelect }: HarmonicsViewProps) {
                 building: null
             }
         }
-
         return {
             analytical: getTopCareerForPattern('analytical', coreGameState.patterns),
             patience: getTopCareerForPattern('patience', coreGameState.patterns),
@@ -51,7 +41,7 @@ export function HarmonicsView({ onOrbSelect }: HarmonicsViewProps) {
         }
     }, [coreGameState?.patterns])
 
-    // Null guard: show loading state if orbs not yet available
+    // Null guard
     if (!patternOrbs || patternOrbs.length === 0) {
         return (
             <div className="p-4 space-y-4 min-h-[500px] flex flex-col items-center justify-center text-center">
@@ -65,89 +55,143 @@ export function HarmonicsView({ onOrbSelect }: HarmonicsViewProps) {
     }
 
     return (
-        <div className="relative p-4 space-y-8 min-h-[500px] flex flex-col items-center">
+        <div className="relative p-4 space-y-8 min-h-[500px] flex flex-col items-center w-full">
             {/* RESONANCE FIELD: Background Animation */}
-            <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-                <svg viewBox="0 0 400 600" className="w-full h-full opacity-20">
-                    <defs>
-                        <radialGradient id="field-grad" cx="50%" cy="50%" r="50%">
-                            <stop offset="0%" stopColor="#fff" stopOpacity="0.1" />
-                            <stop offset="100%" stopColor="#000" stopOpacity="0" />
-                        </radialGradient>
-                    </defs>
-                    <circle cx="200" cy="300" r="150" fill="url(#field-grad)" className="animate-[pulse_8s_ease-in-out_infinite]" />
-                    {[1, 2, 3].map(i => (
-                        <circle
-                            key={i}
-                            cx="200" cy="300"
-                            r={100 + i * 40}
-                            fill="none"
-                            stroke="white"
-                            strokeWidth="0.5"
-                            strokeOpacity={0.1 - (i * 0.02)}
-                            className="animate-[spin_60s_linear_infinite]"
-                            style={{ animationDuration: `${60 - i * 10}s`, animationDirection: i % 2 === 0 ? 'normal' : 'reverse' }}
-                        />
-                    ))}
-                </svg>
-            </div>
+            {viewMode === 'field' && (
+                <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+                    <svg viewBox="0 0 400 600" className="w-full h-full opacity-20">
+                        <defs>
+                            <radialGradient id="field-grad" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stopColor="#fff" stopOpacity="0.1" />
+                                <stop offset="100%" stopColor="#000" stopOpacity="0" />
+                            </radialGradient>
+                        </defs>
+                        <circle cx="200" cy="300" r="150" fill="url(#field-grad)" className="animate-[pulse_8s_ease-in-out_infinite]" />
+                        {[1, 2, 3].map(i => (
+                            <circle
+                                key={i}
+                                cx="200" cy="300"
+                                r={100 + i * 40}
+                                fill="none"
+                                stroke="white"
+                                strokeWidth="0.5"
+                                strokeOpacity={0.1 - (i * 0.02)}
+                                className="animate-[spin_60s_linear_infinite]"
+                                style={{ animationDuration: `${60 - i * 10}s`, animationDirection: i % 2 === 0 ? 'normal' : 'reverse' }}
+                            />
+                        ))}
+                    </svg>
+                </div>
+            )}
 
-            {/* Header */}
-            <div className="relative z-10 text-center space-y-1">
-                <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-slate-300">
-                    Resonance Field
-                </h3>
-                <p className="text-xs text-slate-400">
-                    Your patterns echoing in the void
-                </p>
-            </div>
+            {/* Header & View Switcher */}
+            <div className="relative z-10 w-full flex items-center justify-between">
+                <div className="text-left space-y-1">
+                    <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-slate-300">
+                        {viewMode === 'field' ? 'Resonance Field' : 'Relationship Web'}
+                    </h3>
+                    <p className="text-xs text-slate-400">
+                        {viewMode === 'field'
+                            ? 'Your patterns echoing in the void'
+                            : 'The invisible threads that bind us'
+                        }
+                    </p>
+                </div>
 
-            {/* The Totem - Vertical Stacking for Mobile */}
-            <div className="flex-1 flex flex-col items-center justify-center gap-6 w-full max-w-[280px] pb-12 relative z-10">
-                {patternOrbs.map((orb, index) => (
-                    <HarmonicOrb
-                        key={orb.pattern}
-                        orb={orb}
-                        index={index}
-                        onSelect={onOrbSelect}
-                        careerMatch={careerMatches[orb.pattern as PatternType] || null}
-                    />
-                ))}
-            </div>
-
-            <p className="relative z-10 text-xs text-slate-500 font-mono text-center">
-                Tap orbs to inspect • Tilt device to disturb
-            </p>
-
-            {/* Pattern Moment Capture Section */}
-            <div className="relative z-10 w-full max-w-sm">
-                <button
-                    onClick={() => setShowMoments(!showMoments)}
-                    className="w-full flex items-center justify-between p-3 bg-slate-900/30 border border-slate-800 rounded-lg hover:bg-slate-800/40 transition-colors"
-                >
-                    <div className="flex items-center gap-2">
-                        <History className="w-4 h-4 text-amber-500/80" />
-                        <span className="text-sm text-slate-300">Pattern Moments</span>
-                    </div>
-                    {showMoments ? (
-                        <ChevronUp className="w-4 h-4 text-slate-500" />
-                    ) : (
-                        <ChevronDown className="w-4 h-4 text-slate-500" />
-                    )}
-                </button>
-
-                {showMoments && (
-                    <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.2 }}
-                        className="mt-2 overflow-hidden"
+                {/* View Toggle */}
+                <div className="flex bg-slate-900/50 p-1 rounded-lg border border-slate-800">
+                    <button
+                        onClick={() => setViewMode('field')}
+                        className={`p-2 rounded-md transition-all ${viewMode === 'field' ? 'bg-slate-700 text-amber-400' : 'text-slate-500 hover:text-slate-300'}`}
+                        title="Resonance Field"
                     >
-                        <PatternMomentCapture compact />
-                    </motion.div>
-                )}
+                        <Activity className="w-4 h-4" />
+                    </button>
+                    <button
+                        onClick={() => setViewMode('web')}
+                        className={`p-2 rounded-md transition-all ${viewMode === 'web' ? 'bg-slate-700 text-blue-400' : 'text-slate-500 hover:text-slate-300'}`}
+                        title="Relationship Web"
+                    >
+                        <Users className="w-4 h-4" />
+                    </button>
+                </div>
             </div>
+
+            {/* MAIN CONTENT AREA */}
+            <div className="flex-1 w-full relative z-10 min-h-[400px]">
+                <AnimatePresence mode="wait">
+                    {viewMode === 'field' ? (
+                        <motion.div
+                            key="field"
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 1.05 }}
+                            transition={{ duration: 0.3 }}
+                            className="flex flex-col items-center justify-center gap-6 w-full pb-12"
+                        >
+                            {/* The Totem - Vertical Stacking */}
+                            <div className="flex flex-col items-center justify-center gap-6 w-full max-w-[280px]">
+                                {patternOrbs.map((orb, index) => (
+                                    <HarmonicOrb
+                                        key={orb.pattern}
+                                        orb={orb}
+                                        index={index}
+                                        onSelect={onOrbSelect}
+                                        careerMatch={careerMatches[orb.pattern as PatternType] || null}
+                                    />
+                                ))}
+                            </div>
+
+                            <p className="text-xs text-slate-500 font-mono text-center mt-8">
+                                Tap orbs to inspect • Tilt device to disturb
+                            </p>
+                        </motion.div>
+                    ) : (
+                        <motion.div
+                            key="web"
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 1.05 }}
+                            transition={{ duration: 0.3 }}
+                            className="w-full h-[600px]"
+                        >
+                            <RelationshipWeb width={600} height={600} className="h-full bg-slate-900/20 border-0" />
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </div>
+
+            {/* Pattern Moment Capture Section (Only in Field Mode for now, or both?) */}
+            {viewMode === 'field' && (
+                <div className="relative z-10 w-full max-w-sm mt-auto">
+                    <button
+                        onClick={() => setShowMoments(!showMoments)}
+                        className="w-full flex items-center justify-between p-3 bg-slate-900/30 border border-slate-800 rounded-lg hover:bg-slate-800/40 transition-colors"
+                    >
+                        <div className="flex items-center gap-2">
+                            <History className="w-4 h-4 text-amber-500/80" />
+                            <span className="text-sm text-slate-300">Pattern Moments</span>
+                        </div>
+                        {showMoments ? (
+                            <ChevronUp className="w-4 h-4 text-slate-500" />
+                        ) : (
+                            <ChevronDown className="w-4 h-4 text-slate-500" />
+                        )}
+                    </button>
+
+                    {showMoments && (
+                        <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.2 }}
+                            className="mt-2 overflow-hidden"
+                        >
+                            <PatternMomentCapture compact />
+                        </motion.div>
+                    )}
+                </div>
+            )}
         </div>
     )
 }
@@ -177,7 +221,7 @@ function HarmonicOrb({ orb, index, onSelect, careerMatch }: {
         playPatternSound(orb.pattern)
 
         // Trigger Haptic
-        triggerHaptic('light')
+        hapticFeedback.light()
 
         // Visual Jolt - Spring Physics
         const joltX = (Math.random() - 0.5) * 16

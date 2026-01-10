@@ -232,6 +232,17 @@ export const tessDialogueNodes: DialogueNode[] = [
           characterId: 'tess',
           trustChange: 1
         }
+      },
+      {
+        choiceId: 'tess_shop_plants',
+        text: "[Notice the grow lights in the back room]",
+        nextNodeId: 'tess_botany_intro',
+        pattern: 'exploring',
+        archetype: 'MAKE_OBSERVATION',
+        skills: ['observation'],
+        visibleCondition: {
+          patterns: { exploring: { min: 2 } }
+        }
       }
     ]
   },
@@ -1972,6 +1983,53 @@ Stakes: Trust, fairness, emotional safety for both students`,
       variation_id: 'hub_return_v1'
     }],
     choices: []
+  },
+
+  // ============= BOTANY SIMULATION =============
+  {
+    nodeId: 'tess_botany_intro',
+    speaker: 'Tess',
+    content: [
+      {
+        text: "Plants don't care about algorithms. They just grow toward the light.\n\nI keep a hydroponic setup in the back. It's finicky—needs precise nutrient balancing. But keeping it alive helps me remember what real growth looks like.",
+        emotion: 'calm',
+        interaction: 'nod',
+        variation_id: 'botany_intro_v1'
+      }
+    ],
+    simulation: {
+      type: 'botany_grid',
+      title: 'Hydroponic Genetic Sequencer',
+      taskDescription: 'The Moonlight Orchid is fading. Rebalance nutrient mix to match genetic markers.',
+      initialContext: {
+        label: 'Genetic Profile: Moonlight Orchid',
+        displayStyle: 'visual',
+        target: {
+          targetState: {
+            nitrogen: 65,
+            phosphorus: 40,
+            potassium: 55
+          },
+          tolerance: 8,
+          plantName: 'Moonlight Orchid',
+          hint: 'High nitrogen requirements observed. Phosphorus toxicity risk at high levels.'
+        }
+      },
+      successFeedback: 'GROWTH OPTIMIZED. GENETIC MARKERS STABILIZED.'
+    },
+    choices: [
+      {
+        choiceId: 'botany_complete',
+        text: "It's thriving now.",
+        nextNodeId: 'tess_the_shop',
+        pattern: 'building',
+        voiceVariations: {
+          building: "System stabilized. It's thriving.",
+          helping: "It looks much healthier now.",
+          analytical: "Nutrient balance optimal."
+        }
+      }
+    ]
   }
 ]
 
