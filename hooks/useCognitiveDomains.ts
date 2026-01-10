@@ -12,8 +12,9 @@
  */
 
 import { useMemo, useCallback, useEffect, useState } from 'react'
-import { useGameStore } from '@/lib/game-store'
+import { useGameStore, useGameSelectors } from '@/lib/game-store'
 import { safeStorage } from '@/lib/safe-storage'
+import { GameStateManager } from '@/lib/game-state-manager'
 import {
   CognitiveDomainId,
   CognitiveDomainScore,
@@ -86,8 +87,8 @@ export interface CognitiveDomainData {
 // -----------------------------------------------------------------------------
 
 export function useCognitiveDomains(): CognitiveDomainData {
-  // Get game state
-  const patterns = useGameStore(state => state.patterns)
+  // Get game state - use derived selector for patterns (single source of truth)
+  const patterns = useGameSelectors.usePatterns()
   const skills = useGameStore(state => state.skills)
   const coreGameState = useGameStore(state => state.coreGameState)
 
@@ -96,13 +97,17 @@ export function useCognitiveDomains(): CognitiveDomainData {
   const [lastUpdated, setLastUpdated] = useState(0)
   const [cachedState, setCachedState] = useState<CognitiveDomainState | null>(null)
 
-  // Get user ID for storage
+  // Get user ID for storage - must match the playerId used by SkillTracker
   const userId = useMemo(() => {
     if (typeof window !== 'undefined') {
-      return safeStorage.getItem('lux_user_id') || 'anonymous'
+      // Use the playerId from saved game state (same as SkillTracker uses)
+      const metadata = GameStateManager.getSaveMetadata()
+      if (metadata?.playerId) {
+        return metadata.playerId
+      }
     }
     return 'anonymous'
-  }, [])
+  }, [coreGameState])
 
   // Load skill demonstrations from storage
   const demonstrations = useMemo<SkillDemonstration[]>(() => {

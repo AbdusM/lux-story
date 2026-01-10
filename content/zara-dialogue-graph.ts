@@ -2773,7 +2773,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
             {
                 choiceId: 'war_end',
                 text: "Good work. We'll be ready if they come back.",
-                nextNodeId: 'zara_introduction', // Loop back to hub or similar
+                nextNodeId: 'zara_hub_return', // Loop back to hub or similar
                 pattern: 'helping',
                 consequence: {
                     addGlobalFlags: ['shadow_broker_exposed'],

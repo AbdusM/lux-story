@@ -1260,7 +1260,7 @@ HINT: Sensors measure WHERE they're placed...`,
       {
         choiceId: 'silas_career_precision_continue',
         text: "Quality over speed. That's a good principle.",
-        nextNodeId: 'silas_introduction',
+        nextNodeId: 'silas_hub_return',
         pattern: 'building'
       }
     ],

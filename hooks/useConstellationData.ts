@@ -143,9 +143,16 @@ export function useConstellationData(): ConstellationData {
   }
 }
 
-// Selector for individual character
+// Selector for individual character - delegates to derived selector (single source of truth)
 export function useCharacterTrust(characterId: CharacterId): number {
-  return useGameStore(state => state.characterTrust[characterId] || 0)
+  // Derive from coreGameState, fallback to legacy field
+  return useGameStore(state => {
+    if (state.coreGameState) {
+      const char = state.coreGameState.characters.find(c => c.characterId === characterId)
+      if (char) return char.trust
+    }
+    return state.characterTrust[characterId] || 0
+  })
 }
 
 // Selector for individual skill

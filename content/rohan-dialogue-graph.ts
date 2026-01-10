@@ -1409,7 +1409,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
       emotion: 'concerned',
       variation_id: 'warn_samuel_v1'
     }],
-    choices: [{ choiceId: 'continue_arc2', text: "[Note: Ask Samuel about Platform Seven]", nextNodeId: 'rohan_introduction' }] // Loop back or generic
+    choices: [{ choiceId: 'continue_arc2', text: "[Note: Ask Samuel about Platform Seven]", nextNodeId: 'rohan_hub_return' }]
   },
 
   {
@@ -1420,7 +1420,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
       emotion: 'curious',
       variation_id: 'trace_plan_v1'
     }],
-    choices: [{ choiceId: 'continue_arc2_b', text: "I'll investigate.", nextNodeId: 'rohan_introduction' }]
+    choices: [{ choiceId: 'continue_arc2_b', text: "I'll investigate.", nextNodeId: 'rohan_hub_return' }]
   },
 
   {
@@ -1431,7 +1431,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
       emotion: 'disappointed',
       variation_id: 'mystery_rejection_v1'
     }],
-    choices: [{ choiceId: 'continue_arc2_c', text: "...", nextNodeId: 'rohan_introduction' }]
+    choices: [{ choiceId: 'continue_arc2_c', text: "...", nextNodeId: 'rohan_hub_return' }]
   },
 
   // CHAPTER 3: THE DESCENT
@@ -1499,7 +1499,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'end_puzzle_dialogue',
         text: "It's the world's recycle bin.",
-        nextNodeId: 'rohan_introduction',
+        nextNodeId: 'rohan_hub_return',
         pattern: 'analytical'
       }
     ],
@@ -1531,7 +1531,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'rohan_career_architect_continue',
         text: "Building foundations that last. That's meaningful.",
-        nextNodeId: 'rohan_introduction',
+        nextNodeId: 'rohan_hub_return',
         pattern: 'building'
       }
     ],
@@ -1564,7 +1564,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'rohan_career_security_continue',
         text: "Protecting what matters. That takes patience.",
-        nextNodeId: 'rohan_introduction',
+        nextNodeId: 'rohan_hub_return',
         pattern: 'analytical'
       }
     ],
@@ -1598,7 +1598,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'rohan_career_data_continue',
         text: "Building the foundation everyone else stands on.",
-        nextNodeId: 'rohan_introduction',
+        nextNodeId: 'rohan_hub_return',
         pattern: 'building'
       }
     ],
@@ -1631,7 +1631,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'rohan_career_devops_continue',
         text: "Making things reliable. That's harder than making them work.",
-        nextNodeId: 'rohan_introduction',
+        nextNodeId: 'rohan_hub_return',
         pattern: 'analytical'
       }
     ],
@@ -1664,7 +1664,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'rohan_career_docs_continue',
         text: "Helping people understand. That's its own kind of engineering.",
-        nextNodeId: 'rohan_introduction',
+        nextNodeId: 'rohan_hub_return',
         pattern: 'helping'
       }
     ],
@@ -1722,7 +1722,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'legacy_to_intro',
         text: "(Continue)",
-        nextNodeId: 'rohan_introduction',
+        nextNodeId: 'rohan_hub_return',
         pattern: 'patience'
       }
     ],
@@ -1769,7 +1769,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'ai_philosophy_hope',
         text: "But you're building people who have both. Intelligence and wisdom.",
-        nextNodeId: 'rohan_introduction',
+        nextNodeId: 'rohan_hub_return',
         pattern: 'helping',
         skills: ['encouragement'],
         consequence: {
@@ -1802,7 +1802,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'ai_deep_continue',
         text: "The chain unbroken. David to you. You to your students.",
-        nextNodeId: 'rohan_introduction',
+        nextNodeId: 'rohan_hub_return',
         pattern: 'patience',
         consequence: {
           characterId: 'rohan',
@@ -1838,7 +1838,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'academy_challenge_proof',
         text: "Let your first student be the proof. Her success is your argument.",
-        nextNodeId: 'rohan_introduction',
+        nextNodeId: 'rohan_hub_return',
         pattern: 'patience',
         skills: ['strategicThinking']
       }
@@ -1866,7 +1866,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'story_approach_continue',
         text: "Stories are how humans have always passed down wisdom. You're just continuing the tradition.",
-        nextNodeId: 'rohan_introduction',
+        nextNodeId: 'rohan_hub_return',
         pattern: 'exploring',
         consequence: {
           characterId: 'rohan',
@@ -1885,7 +1885,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
       emotion: 'intense',
       variation_id: 'puzzle_platform_v1'
     }],
-    choices: [{ choiceId: 'platform_ack', text: "Dangerous but necessary.", nextNodeId: 'rohan_introduction' }],
+    choices: [{ choiceId: 'platform_ack', text: "Dangerous but necessary.", nextNodeId: 'rohan_hub_return' }],
     tags: ['puzzle_reward', 'legendary_info']
   },
   // ═══════════════════════════════════════════════════════════════

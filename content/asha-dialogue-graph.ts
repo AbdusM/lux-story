@@ -2019,7 +2019,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
             {
                 choiceId: 'asha_stillness_response',
                 text: "Clarity can be overwhelming when you're used to noise.",
-                nextNodeId: 'asha_introduction',
+                nextNodeId: 'asha_hub_return',
                 pattern: 'patience',
                 skills: ['emotionalIntelligence'],
                 consequence: {
@@ -2044,7 +2044,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
             {
                 choiceId: 'asha_heartbeat_response',
                 text: "Maybe the station is alive in its own way.",
-                nextNodeId: 'asha_introduction',
+                nextNodeId: 'asha_hub_return',
                 pattern: 'exploring',
                 skills: ['systemsThinking'],
                 consequence: {

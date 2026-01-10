@@ -1734,7 +1734,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
       {
         choiceId: 'jordan_alt_perspective',
         text: "You didn't lose those lives. You integrated them.",
-        nextNodeId: 'jordan_crossroads',
+        nextNodeId: 'jordan_career_crossroads',
         pattern: 'building',
         skills: ['systemsThinking'],
         consequence: {
@@ -1744,7 +1744,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
       {
         choiceId: 'jordan_alt_choice',
         text: "Which one looks the happiest?",
-        nextNodeId: 'jordan_crossroads',
+        nextNodeId: 'jordan_career_crossroads',
         pattern: 'exploring',
         skills: ['emotionalIntelligence']
       }
@@ -1753,7 +1753,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
   },
 
   {
-    nodeId: 'jordan_crossroads',
+    nodeId: 'jordan_career_crossroads',
     speaker: 'Jordan Packard',
     content: [
       {

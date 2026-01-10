@@ -2034,7 +2034,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'teaching_continue',
         text: "Maybe he needs to hear that. That he's still part of what you build.",
-        nextNodeId: 'devon_introduction',
+        nextNodeId: 'devon_hub_return',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
         consequence: {
@@ -2092,7 +2092,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'systems_love_continue',
         text: "The flowchart. It's teaching you his language, isn't it?",
-        nextNodeId: 'devon_introduction',
+        nextNodeId: 'devon_hub_return',
         pattern: 'analytical',
         skills: ['emotionalIntelligence'],
         consequence: {
@@ -2121,7 +2121,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'hope_encourage',
         text: "It's not crazy. It's honest. You're showing him who you are while reaching for who he is.",
-        nextNodeId: 'devon_introduction',
+        nextNodeId: 'devon_hub_return',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'wisdom'],
         consequence: {
@@ -2148,7 +2148,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'philosophy_agree',
         text: "Logic as feeling made visible. I've never thought of it that way.",
-        nextNodeId: 'devon_introduction',
+        nextNodeId: 'devon_hub_return',
         pattern: 'analytical',
         skills: ['systemsThinking'],
         consequence: {
@@ -2174,7 +2174,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'optimization_respond',
         text: "Wasted time with people you love isn't wasted. It's the whole point.",
-        nextNodeId: 'devon_introduction',
+        nextNodeId: 'devon_hub_return',
         pattern: 'patience',
         skills: ['emotionalIntelligence'],
         consequence: {
@@ -2200,7 +2200,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'debug_continue',
         text: "Features, not bugs. That's a healthier way to see people.",
-        nextNodeId: 'devon_introduction',
+        nextNodeId: 'devon_hub_return',
         pattern: 'helping',
         skills: ['wisdom']
       }
@@ -2223,7 +2223,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'birmingham_continue',
         text: "Building for people you know. That changes what you build.",
-        nextNodeId: 'devon_introduction',
+        nextNodeId: 'devon_hub_return',
         pattern: 'building',
         skills: ['wisdom'],
         consequence: {
@@ -2249,7 +2249,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'future_continue',
         text: "From iron to code. That's not just progress. That's transformation.",
-        nextNodeId: 'devon_introduction',
+        nextNodeId: 'devon_hub_return',
         pattern: 'building',
         skills: ['visionaryThinking']
       }
@@ -2275,7 +2275,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'maya_continue',
         text: "Empathy as engineering input. You understand that now too.",
-        nextNodeId: 'devon_introduction',
+        nextNodeId: 'devon_hub_return',
         pattern: 'helping',
         skills: ['emotionalIntelligence']
       }
@@ -2300,7 +2300,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'rohan_continue',
         text: "Different approaches to the same obsession. That's how breakthroughs happen.",
-        nextNodeId: 'devon_introduction',
+        nextNodeId: 'devon_hub_return',
         pattern: 'analytical',
         skills: ['systemsThinking']
       }
@@ -2358,7 +2358,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'loneliness_continue',
         text: "The best systems are simple. Maybe relationships are the same.",
-        nextNodeId: 'devon_introduction',
+        nextNodeId: 'devon_hub_return',
         pattern: 'patience',
         skills: ['wisdom']
       }
@@ -2380,7 +2380,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'failure_respond',
         text: "You learned something that day that no textbook could teach.",
-        nextNodeId: 'devon_introduction',
+        nextNodeId: 'devon_hub_return',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
         consequence: {
@@ -2409,7 +2409,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'what_ifs_respond',
         text: "You can't optimize the past. But you can still write the future.",
-        nextNodeId: 'devon_introduction',
+        nextNodeId: 'devon_hub_return',
         pattern: 'analytical',
         skills: ['wisdom'],
         consequence: {
@@ -2436,7 +2436,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'why_systems_continue',
         text: "Systems as calm in chaos. That's what you're building for your dad now.",
-        nextNodeId: 'devon_introduction',
+        nextNodeId: 'devon_hub_return',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
         consequence: {
@@ -2465,7 +2465,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'best_work_continue',
         text: "You already know what he needs. You just built it in the wrong direction.",
-        nextNodeId: 'devon_introduction',
+        nextNodeId: 'devon_hub_return',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
         consequence: {
@@ -2491,7 +2491,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'process_continue',
         text: "The real problem with your dad isn't communication. It's connection.",
-        nextNodeId: 'devon_introduction',
+        nextNodeId: 'devon_hub_return',
         pattern: 'analytical',
         skills: ['criticalThinking'],
         consequence: {
@@ -2518,7 +2518,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'midnight_continue',
         text: "Parallel processes. Your heart and brain are both working on the same problem.",
-        nextNodeId: 'devon_introduction',
+        nextNodeId: 'devon_hub_return',
         pattern: 'patience',
         skills: ['emotionalIntelligence']
       }
@@ -2540,7 +2540,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'mentors_continue',
         text: "Show him the connection. He might recognize himself in your code.",
-        nextNodeId: 'devon_introduction',
+        nextNodeId: 'devon_hub_return',
         pattern: 'helping',
         skills: ['wisdom']
       }
@@ -2565,7 +2565,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'identity_respond',
         text: "Your dad loved you before you could optimize anything. That hasn't changed.",
-        nextNodeId: 'devon_introduction',
+        nextNodeId: 'devon_hub_return',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
         consequence: {
@@ -2624,7 +2624,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'college_understand',
         text: "Running isn't the same as not caring. Sometimes we run because we care too much.",
-        nextNodeId: 'devon_introduction',
+        nextNodeId: 'devon_hub_return',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
         consequence: {
@@ -2650,7 +2650,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'first_debug_respond',
         text: "You were helping him debug before you knew the word for it.",
-        nextNodeId: 'devon_introduction',
+        nextNodeId: 'devon_hub_return',
         pattern: 'analytical',
         skills: ['criticalThinking'],
         consequence: {
@@ -2685,7 +2685,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'mom_words_honor',
         text: "She saw exactly what you needed to hear. Even at the end, she was helping you.",
-        nextNodeId: 'devon_introduction',
+        nextNodeId: 'devon_hub_return',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'wisdom'],
         consequence: {
@@ -2714,7 +2714,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'escape_acknowledge',
         text: "Knowing why you escape is the first step to coming back.",
-        nextNodeId: 'devon_introduction',
+        nextNodeId: 'devon_hub_return',
         pattern: 'patience',
         skills: ['emotionalIntelligence'],
         consequence: {
@@ -2727,7 +2727,7 @@ export const devonDialogueNodes: DialogueNode[] = [
   },
 
   {
-    nodeId: 'devon_birmingham_future',
+    nodeId: 'devon_birmingham_future_roots',
     speaker: 'Devon Kumar',
     content: [
       {
@@ -2740,7 +2740,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'birmingham_support',
         text: "Sometimes the most courageous move is staying. Building where your roots are.",
-        nextNodeId: 'devon_introduction',
+        nextNodeId: 'devon_hub_return',
         pattern: 'building',
         skills: ['wisdom'],
         consequence: {
@@ -2769,7 +2769,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'uncertainty_normalize',
         text: "The smartest people I know are the ones who admit what they don't know.",
-        nextNodeId: 'devon_introduction',
+        nextNodeId: 'devon_hub_return',
         pattern: 'helping',
         skills: ['communication'],
         consequence: {
@@ -2795,7 +2795,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'small_joys_celebrate',
         text: "That's a kind of pattern too. Recognizing beauty without trying to optimize it.",
-        nextNodeId: 'devon_introduction',
+        nextNodeId: 'devon_hub_return',
         pattern: 'patience',
         skills: ['emotionalIntelligence'],
         consequence: {
@@ -2824,7 +2824,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'birthday_presence',
         text: "Maybe just being there is enough. Not filling her space. Just filling yours.",
-        nextNodeId: 'devon_introduction',
+        nextNodeId: 'devon_hub_return',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'wisdom'],
         consequence: {
@@ -2853,7 +2853,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'future_encourage',
         text: "That's a vision worth working toward. And you've already started.",
-        nextNodeId: 'devon_introduction',
+        nextNodeId: 'devon_hub_return',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
         consequence: {
@@ -2909,7 +2909,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'prob_map_agency',
         text: "Building a dam takes effort. Most people just float.",
-        nextNodeId: 'devon_crossroads', // This connects to the node referenced by gratitude
+        nextNodeId: 'devon_career_crossroads',
         pattern: 'building',
         skills: ['systemsThinking'],
         consequence: {
@@ -2919,7 +2919,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'prob_map_beauty',
         text: "It's beautiful. Like a river system.",
-        nextNodeId: 'devon_crossroads',
+        nextNodeId: 'devon_career_crossroads',
         pattern: 'exploring',
         skills: ['creativity']
       }
@@ -2928,7 +2928,7 @@ export const devonDialogueNodes: DialogueNode[] = [
   },
 
   {
-    nodeId: 'devon_crossroads',
+    nodeId: 'devon_career_crossroads',
     speaker: 'Devon Kumar',
     content: [
       {
@@ -2941,7 +2941,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'crossroads_stay',
         text: "The hardest bugs are the ones you can't reproduce. If you leave, you can never reproduce what you have here.",
-        nextNodeId: 'devon_introduction', // Leads to acceptance
+        nextNodeId: 'devon_hub_return', // Leads to acceptance
         pattern: 'building',
         skills: ['wisdom'],
         consequence: {
@@ -2953,7 +2953,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'crossroads_go',
         text: "Sometimes you have to leave the system to understand it.",
-        nextNodeId: 'devon_introduction',
+        nextNodeId: 'devon_hub_return',
         pattern: 'exploring',
         skills: ['systemsThinking']
       }
@@ -2969,7 +2969,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       emotion: 'inspired',
       variation_id: 'puzzle_bham_v1'
     }],
-    choices: [{ choiceId: 'bham_ack', text: "It's a good place to build.", nextNodeId: 'devon_introduction' }],
+    choices: [{ choiceId: 'bham_ack', text: "It's a good place to build.", nextNodeId: 'devon_hub_return' }],
     tags: ['puzzle_reward', 'legendary_info']
   },
 
@@ -2981,7 +2981,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       emotion: 'analytical_awe',
       variation_id: 'puzzle_patterns_v1'
     }],
-    choices: [{ choiceId: 'patterns_ack', text: "We all play our part.", nextNodeId: 'devon_introduction' }],
+    choices: [{ choiceId: 'patterns_ack', text: "We all play our part.", nextNodeId: 'devon_hub_return' }],
     tags: ['puzzle_reward', 'legendary_info']
   },
   // ═══════════════════════════════════════════════════════════════

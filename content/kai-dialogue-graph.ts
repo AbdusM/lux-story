@@ -1849,7 +1849,7 @@ Available Components:
       {
         choiceId: 'kai_career_safety_continue',
         text: "Prevention over reaction. That's what matters.",
-        nextNodeId: 'kai_introduction',
+        nextNodeId: 'kai_hub_return',
         pattern: 'helping'
       }
     ],
