@@ -275,8 +275,11 @@ export function Journal({ isOpen, onClose }: JournalProps) {
               </AnimatePresence>
             </div>
 
-            {/* Footer - minimal branding */}
-            <div className="p-2 border-t border-white/5 bg-transparent">
+            {/* Footer - minimal branding with safe area */}
+            <div
+              className="p-2 border-t border-white/5 bg-transparent"
+              style={{ paddingBottom: 'max(0.5rem, env(safe-area-inset-bottom, 8px))' }}
+            >
               <p className="text-xs text-center text-slate-600 font-mono tracking-wider">
                 THE PRISM
               </p>

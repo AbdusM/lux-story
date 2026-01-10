@@ -539,6 +539,44 @@ export default function StatefulGameInterface() {
         return // Stop processing the direct jump
       }
     }
+
+    // ============= GOD MODE CONDUCTOR =============
+    // Handle God Mode simulation requests that go through Samuel
+    if (requestedSceneId === 'samuel_conductor_god_mode') {
+      logger.info('[God Mode Conductor] Routing simulation through Samuel')
+
+      // Clear the request
+      useGameStore.getState().setCurrentScene(null)
+
+      // Navigate to Samuel's God Mode conductor node
+      const conductorNodeId = 'samuel_conductor_god_mode'
+      const samuelGraph = getGraphForCharacter('samuel', state.gameState)
+      const conductorNode = samuelGraph.nodes.get(conductorNodeId)
+
+      if (conductorNode) {
+        const pendingSim = useGameStore.getState().pendingGodModeSimulation
+        const simTitle = pendingSim?.title?.replace('[DEBUG] ', '') || 'a simulation'
+
+        // Pre-process content with simulation title
+        const processedText = TextProcessor.process(
+          conductorNode.content[0].text,
+          state.gameState!,
+          { simulationTitle: simTitle }
+        )
+
+        setState(prev => ({
+          ...prev,
+          currentNode: conductorNode,
+          currentGraph: samuelGraph,
+          currentCharacterId: 'samuel',
+          currentContent: processedText,
+          currentDialogueContent: conductorNode.content[0],
+          availableChoices: StateConditionEvaluator.evaluateChoices(conductorNode, state.gameState!, 'samuel'),
+          previousSpeaker: null
+        }))
+        return
+      }
+    }
     // ===============================================
 
     // Default to [char]_introduction convention
@@ -1424,6 +1462,29 @@ export default function StatefulGameInterface() {
           isProcessingChoiceRef.current = false  // Release lock before travel
           setState(prev => ({ ...prev, isProcessing: false }))
           useGameStore.getState().setCurrentScene('samuel')
+          return
+        }
+      }
+
+      // ============= GOD MODE SIMULATION INTERCEPTION =============
+      if (choice.choice.nextNodeId === 'SIMULATION_PENDING') {
+        const pendingSimulation = useGameStore.getState().pendingGodModeSimulation
+        logger.info('[God Mode] Executing pending simulation', { title: pendingSimulation?.title })
+
+        if (pendingSimulation) {
+          // Clear current choices and mount the simulation
+          setState(prev => ({ ...prev, availableChoices: [], isProcessing: false }))
+          isProcessingChoiceRef.current = false
+
+          // Execute the simulation
+          useGameStore.getState().setDebugSimulation(pendingSimulation)
+          useGameStore.getState().setPendingGodModeSimulation(null)
+          return
+        } else {
+          // Fallback - no simulation pending
+          logger.warn('[God Mode] Missing pending simulation, returning to Samuel')
+          isProcessingChoiceRef.current = false
+          setState(prev => ({ ...prev, isProcessing: false }))
           return
         }
       }
@@ -3163,8 +3224,7 @@ export default function StatefulGameInterface() {
           contain: 'layout style paint',
           transition: 'none',
           // Safe area insets for notched devices (iPhone X+)
-          // paddingTop handled by header for edge-to-edge look
-          paddingBottom: 'env(safe-area-inset-bottom)',
+          // paddingTop handled by header, paddingBottom handled by footer
           paddingLeft: 'env(safe-area-inset-left)',
           paddingRight: 'env(safe-area-inset-right)'
         }}
@@ -3524,8 +3584,8 @@ export default function StatefulGameInterface() {
               className="flex-shrink-0 glass-panel max-w-4xl mx-auto px-3 sm:px-4 z-20"
               style={{
                 marginTop: '1.5rem',
-                // PC: Raise higher (2.5rem base), Mobile: Keep safe (calc) - Increased to 3.5rem base for extra safety
-                marginBottom: 'max(1rem, calc(3.5rem + env(safe-area-inset-bottom, 0px)))'
+                // Safe area only - let content breathe closer to bottom
+                marginBottom: 'max(1rem, env(safe-area-inset-bottom, 16px))'
               }}
             >
               {/* Response label - clean, modern styling */}
@@ -3535,12 +3595,12 @@ export default function StatefulGameInterface() {
                 </span>
               </div>
 
-              <div className="px-4 sm:px-6 pb-12 sm:pb-5 pt-2">
+              <div className="px-4 sm:px-6 pb-4 pt-2">
                 {/* Scrollable choices container with scroll indicator */}
                 <div className="relative w-full">
                   <div
                     id="choices-scroll-container"
-                    className="max-h-[180px] sm:max-h-[200px] overflow-y-auto overflow-x-hidden overscroll-contain scroll-smooth w-full"
+                    className="max-h-[220px] sm:max-h-[260px] overflow-y-auto overflow-x-hidden overscroll-contain scroll-smooth w-full"
                     style={{
                       WebkitOverflowScrolling: 'touch',
                       scrollSnapType: 'y proximity',

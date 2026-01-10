@@ -27,6 +27,7 @@ export interface GameState {
   // Navigation state
   pendingTravelTarget: string | null
   debugSimulation: SimulationConfig | null // GOD MODE: Force-load a simulation context
+  pendingGodModeSimulation: SimulationConfig | null // GOD MODE: Pending simulation (awaiting Samuel transition)
 
   // Game progress
   visitedScenes: string[]
@@ -181,6 +182,7 @@ export interface GameActions {
   setChoiceStartTime: (time: number | null) => void
   setPendingTravelTarget: (target: string | null) => void
   setDebugSimulation: (simulation: SimulationConfig | null) => void
+  setPendingGodModeSimulation: (simulation: SimulationConfig | null) => void
 
   // Message management
   addMessage: (message: Omit<GameMessage, 'id' | 'timestamp'>) => void
@@ -260,6 +262,7 @@ const initialState: GameState = {
   choiceStartTime: null,
   pendingTravelTarget: null,
   debugSimulation: null,
+  pendingGodModeSimulation: null,
 
   // Message management
   messages: [],
@@ -389,6 +392,7 @@ export const useGameStore = create<GameState & GameActions>()(
         setChoiceStartTime: (time) => set({ choiceStartTime: time }),
         setPendingTravelTarget: (target) => set({ pendingTravelTarget: target }),
         setDebugSimulation: (sim) => set({ debugSimulation: sim }),
+        setPendingGodModeSimulation: (sim) => set({ pendingGodModeSimulation: sim }),
 
         // Message management actions
         addMessage: (message) => {
