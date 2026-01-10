@@ -48,6 +48,35 @@ export const samuelDialogueNodes: DialogueNode[] = [
     ]
   },
 
+  // ============= GOD MODE CONDUCTOR =============
+  {
+    nodeId: 'samuel_conductor_god_mode',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You want to enter {{simulationTitle}}?\n\nThat's... unusual. But you've got that look in your eye. The one that says you know what you're doin'.\n\nStep on through, then.",
+        emotion: 'knowing',
+        variation_id: 'conductor_god_mode_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'god_mode_confirm',
+        text: "Ready when you are.",
+        nextNodeId: 'SIMULATION_PENDING',
+        pattern: 'exploring',
+        skills: ['adaptability'],
+        voiceVariations: {
+          exploring: "Let's see what this is about.",
+          building: "Time to get hands-on.",
+          analytical: "Initiating simulation.",
+          helping: "Thanks, Samuel.",
+          patience: "I'm prepared."
+        }
+      }
+    ]
+  },
+
   // ============= ATMOSPHERIC ARRIVAL =============
   {
     nodeId: 'station_arrival',

@@ -141,7 +141,7 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
               }}
               className="fixed right-2 top-2 bottom-2 left-2 sm:left-auto sm:w-full max-w-lg glass-panel-solid !rounded-2xl border border-white/10 shadow-2xl z-sticky flex flex-col overflow-hidden"
               style={{
-                paddingBottom: 'env(safe-area-inset-bottom, 0px)',
+                // Safe area handled by footer only - prevent nested padding
                 paddingRight: 'env(safe-area-inset-right, 0px)'
               }}
               role="dialog"
@@ -202,7 +202,7 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
               </div>
 
               {/* Content - with spacing from header for mobile touch */}
-              <div className="flex-1 overflow-y-auto overflow-x-hidden pt-2" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
+              <div className="flex-1 overflow-y-auto overflow-x-hidden pt-2">
                 <AnimatePresence mode="wait">
 
 
@@ -215,10 +215,7 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
                       exit="exit"
                       variants={contentVariants}
                       className="h-full overflow-y-auto"
-                      style={{
-                        paddingBottom: 'env(safe-area-inset-bottom, 0px)',
-                        WebkitOverflowScrolling: 'touch'
-                      }}
+                      style={{ WebkitOverflowScrolling: 'touch' }}
                     >
                       <PeopleView
                         characters={data.characters}
@@ -237,10 +234,7 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
                       exit="exit"
                       variants={contentVariants}
                       className="h-full overflow-y-auto"
-                      style={{
-                        paddingBottom: 'env(safe-area-inset-bottom, 0px)',
-                        WebkitOverflowScrolling: 'touch'
-                      }}
+                      style={{ WebkitOverflowScrolling: 'touch' }}
                     >
                       <SkillsView skills={data.skills} onOpenDetail={handleOpenSkillDetail} />
                     </motion.div>
@@ -257,10 +251,7 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
                       exit="exit"
                       variants={contentVariants}
                       className="h-full overflow-y-auto"
-                      style={{
-                        paddingBottom: 'env(safe-area-inset-bottom, 0px)',
-                        WebkitOverflowScrolling: 'touch'
-                      }}
+                      style={{ WebkitOverflowScrolling: 'touch' }}
                     >
                       <QuestsView quests={quests} onSelectQuest={handleOpenQuestDetail} />
                     </motion.div>
@@ -271,7 +262,7 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
               {/* Footer */}
               <div
                 className="flex-shrink-0 p-3 bg-transparent text-center border-t border-white/5"
-                style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom, 0px))' }}
+                style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom, 16px))' }}
               >
                 <p className="text-xs text-slate-500">
                   {activeTab === 'people' ? 'Tap a character to see what they taught you' :

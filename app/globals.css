@@ -86,25 +86,6 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
-/* Safe area padding for main content on mobile */
-@layer utilities {
-  .pb-safe-mobile {
-    padding-bottom: calc(6rem + env(safe-area-inset-bottom, 20px));
-    /* Default 20px if env not supported */
-  }
-
-  @media (min-width: 640px) {
-    .pb-safe-mobile {
-      padding-bottom: calc(8rem + env(safe-area-inset-bottom, 0px));
-    }
-  }
-
-  /* Narrative text styling - lifts text off dark backgrounds for readability */
-  .narrative-text {
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-  }
-}
-
 /* Improve touch feedback on buttons */
 button,
 [role="button"],

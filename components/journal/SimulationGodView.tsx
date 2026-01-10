@@ -1,10 +1,10 @@
 "use client"
 
-import { type ElementType } from 'react'
+import { type ElementType, type MouseEvent } from 'react'
 import { motion } from 'framer-motion'
 import {
     Wrench, DraftingCompass, Music, Activity, Sprout, Users, Shield, Database,
-    Terminal, Play, AlertTriangle
+    Terminal, Play, AlertTriangle, Zap
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useGameStore } from '@/lib/game-store'
@@ -26,8 +26,10 @@ const iconMap: Record<string, ElementType> = {
 
 export function SimulationGodView({ onClose }: { onClose?: () => void }) {
     const setDebugSimulation = useGameStore(state => state.setDebugSimulation)
+    const setPendingGodModeSimulation = useGameStore(state => state.setPendingGodModeSimulation)
+    const setCurrentScene = useGameStore(state => state.setCurrentScene)
 
-    const handleMount = (sim: SimulationDefinition) => {
+    const handleMount = (sim: SimulationDefinition, e: MouseEvent) => {
         // ISP: The "Context Factory" in action
         // We construct a full SimulationConfig object on the fly
         const debugConfig: SimulationConfig = {
@@ -40,8 +42,17 @@ export function SimulationGodView({ onClose }: { onClose?: () => void }) {
             isGodMode: true
         }
 
-        setDebugSimulation(debugConfig)
-        if (onClose) onClose() // Close Journal to see sim
+        // Shift+Click = Force mount (bypass Samuel transition)
+        if (e.shiftKey) {
+            setDebugSimulation(debugConfig)
+            if (onClose) onClose()
+            return
+        }
+
+        // Normal click = Route through Samuel's conductor scene
+        setPendingGodModeSimulation(debugConfig)
+        setCurrentScene('samuel_conductor_god_mode')
+        if (onClose) onClose()
     }
 
     return (
@@ -53,7 +64,7 @@ export function SimulationGodView({ onClose }: { onClose?: () => void }) {
                     SIMULATION CORE // GOD MODE
                 </h2>
                 <p className="text-amber-500/60 text-sm mt-1 font-mono">
-                    WARNING: FORCE MOUNTING SIMULATIONS BYPASSES NARRATIVE CHECKS.
+                    Click = Samuel transition first. Shift+Click = Force mount (bypass).
                 </p>
             </div>
 
@@ -115,13 +126,14 @@ export function SimulationGodView({ onClose }: { onClose?: () => void }) {
 
                                 {/* Bottom Action */}
                                 <button
-                                    onClick={() => handleMount(sim)}
+                                    onClick={(e) => handleMount(sim, e)}
                                     className={cn(
                                         "w-full flex items-center justify-center gap-2 py-2 text-xs font-bold uppercase tracking-wider",
                                         "bg-slate-900 border border-slate-700 text-slate-400",
                                         "group-hover:bg-amber-950/30 group-hover:border-amber-500/50 group-hover:text-amber-400",
                                         "transition-all"
                                     )}
+                                    title="Click to mount via Samuel. Shift+Click to force mount."
                                 >
                                     <Play className="w-3 h-3" />
                                     Mount Context
