@@ -125,21 +125,26 @@ export const nadiaDialogueNodes: DialogueNode[] = [
       interaction: 'ripple'
     }],
     simulation: {
-      type: 'data_ticker',
+      type: 'news_feed',
       mode: 'inline',
+      inlineHeight: 'h-[500px]',
       title: 'Global Sentiment Monitor',
-      taskDescription: 'Stabilize the viral headlines to find the truth.',
+      taskDescription: 'The feed is unstable. Adjust the editorial filters to dampen the "Panic" signal and amplify "Nuance".',
       initialContext: {
         label: 'Live Feed',
-        content: JSON.stringify([
-          { id: '1', label: 'AI_SURGE', value: 92, priority: 'critical', trend: 'up' },
-          { id: '2', label: 'MARKET_CRASH', value: 88, priority: 'critical', trend: 'down' },
-          { id: '3', label: 'ETHICS_BILL', value: 45, priority: 'medium', trend: 'stable' },
-          { id: '4', label: 'NEW_MODEL', value: 76, priority: 'high', trend: 'up' },
-          { id: '5', label: 'PUBLIC_OUTCRY', value: 95, priority: 'critical', trend: 'up' }
-        ])
+        content: 'Analyzing sentiment volatility...',
+        displayStyle: 'visual',
+        // Target: Calm (Low Tempo), Neutral (Mid Mood), Nuanced (High Texture)
+        target: {
+          targetState: {
+            tempo: 20,    // Calm/Low Urgency
+            mood: 50,     // Neutral Tone
+            texture: 80   // High Nuance
+          },
+          tolerance: 15
+        }
       },
-      successFeedback: 'NOISE FILTERED. HUMAN IMPACT DETECTED.'
+      successFeedback: 'SIGNAL STABILIZED. HUMAN IMPACT DETECTED.'
     },
     choices: [
       {

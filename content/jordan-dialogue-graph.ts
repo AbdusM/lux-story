@@ -154,16 +154,20 @@ export const jordanDialogueNodes: DialogueNode[] = [
       interaction: 'ripple'
     }],
     simulation: {
-      type: 'visual_canvas',
+      type: 'architect_3d',
       mode: 'inline',
       inlineHeight: 'h-80',
-      title: 'Room Layout Safety Check',
-      taskDescription: 'Place 4 sensors to ensure event safety.',
+      title: 'Crowd Flow Dynamics',
+      taskDescription: 'Plot 3 waypoints for optimal safe egress pathways.',
       initialContext: {
-        label: 'Main Hall',
-        content: 'Grid Layout'
+        label: 'Main Hall Analysis',
+        content: 'Capacity: 300. Flow Status: Chaotic.',
+        target: {
+          // Navigation variant expects connected route (3+ waypoints, 2+ connections)
+          targetScore: 3
+        }
       },
-      successFeedback: 'LAYOUT OPTIMIZED. SAFETY PROTOCOLS ACTIVE.'
+      successFeedback: 'FLOW OPTIMIZED. EGRESS ROUTES SECURE.'
     },
     choices: [
       {

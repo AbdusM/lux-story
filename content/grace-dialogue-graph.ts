@@ -113,6 +113,51 @@ export const graceDialogueNodes: DialogueNode[] = [
     tags: ['introduction', 'grace_arc']
   },
 
+  // ============= HANDSHAKE NODE: MEDICAL TRIAGE =============
+  {
+    nodeId: 'grace_handshake_vitals',
+    speaker: 'Grace',
+    content: [{
+      text: "Triage. It's not about who's loudest. It's about who's fading fastest.\n\nTake a look at the board. Five new admits. One bed. Who gets it?",
+      emotion: 'testing',
+      variation_id: 'grace_triage_intro',
+      interaction: 'ripple'
+    }],
+    simulation: {
+      type: 'dashboard_triage',
+      mode: 'inline',
+      inlineHeight: 'h-80',
+      title: 'ER Triage Protocol',
+      taskDescription: 'Prioritize 3 critical patients from the incoming queue.',
+      initialContext: {
+        label: 'Waiting Room Status',
+        content: 'Capacity: 110%. Staffing: 60%.',
+        items: [
+          { id: 'p1', label: 'Chest Pain (45M)', value: 'HR 110', priority: 'critical', trend: 'up' },
+          { id: 'p2', label: 'Migraine (22F)', value: 'Pain 8/10', priority: 'medium', trend: 'stable' },
+          { id: 'p3', label: 'Febrile Infant', value: 'Temp 104', priority: 'critical', trend: 'up' },
+          { id: 'p4', label: 'Ankle Sprain', value: 'Swollen', priority: 'low', trend: 'stable' },
+          { id: 'p5', label: 'Difficulty Breathing', value: 'O2 88%', priority: 'critical', trend: 'down' }
+        ]
+      },
+      successFeedback: 'TRIAGE COMPLETE. CRITICAL CASES ASSIGNED.'
+    },
+    choices: [
+      {
+        choiceId: 'triage_complete',
+        text: "Critical cases routed. The rest can wait.",
+        nextNodeId: 'grace_the_work',
+        pattern: 'helping',
+        skills: ['triage'],
+        voiceVariations: {
+          analytical: "Prioritization complete based on vitals stability.",
+          helping: "The sickest are safe. We'll get to the others.",
+          building: "Queue optimized. Flow restored."
+        }
+      }
+    ]
+  },
+
   // ============= PATTERN-UNLOCK NODES =============
   {
     nodeId: 'grace_carrying_weight',

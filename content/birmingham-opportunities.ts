@@ -5,6 +5,8 @@
  * organized by career platform and accessibility level
  */
 
+import { PatternType } from '@/lib/patterns'
+
 export interface BirminghamOpportunity {
   id: string
   name: string
@@ -21,6 +23,10 @@ export interface BirminghamOpportunity {
   tags: string[]
   ageRange: string
   seasonalAvailability?: string
+  unlockCondition: {
+    pattern: PatternType
+    minLevel: number
+  }
 }
 
 export interface OpportunityFilter {
@@ -58,7 +64,8 @@ const BIRMINGHAM_OPPORTUNITIES: BirminghamOpportunity[] = [
     location: 'UAB Hospital District',
     tags: ['healthcare', 'medicine', 'direct_care', 'hospital'],
     ageRange: '16-18',
-    seasonalAvailability: 'Year-round'
+    seasonalAvailability: 'Year-round',
+    unlockCondition: { pattern: 'helping', minLevel: 4 }
   },
   {
     id: 'childrens-volunteer',
@@ -71,7 +78,8 @@ const BIRMINGHAM_OPPORTUNITIES: BirminghamOpportunity[] = [
     timeCommitment: '3-6 hours per week',
     location: 'Children\'s Hospital',
     tags: ['pediatrics', 'patient_care', 'child_development'],
-    ageRange: '16-18'
+    ageRange: '16-18',
+    unlockCondition: { pattern: 'helping', minLevel: 3 }
   },
   {
     id: 'nursing-exploration',
@@ -86,7 +94,8 @@ const BIRMINGHAM_OPPORTUNITIES: BirminghamOpportunity[] = [
     location: 'UAB Campus',
     tags: ['nursing', 'healthcare_education', 'summer_program'],
     ageRange: '16-17',
-    seasonalAvailability: 'Summer only'
+    seasonalAvailability: 'Summer only',
+    unlockCondition: { pattern: 'helping', minLevel: 5 }
   },
 
   // Engineering/Building Platform Opportunities
@@ -101,7 +110,8 @@ const BIRMINGHAM_OPPORTUNITIES: BirminghamOpportunity[] = [
     timeCommitment: '2 hours per month',
     location: 'Downtown Birmingham office',
     tags: ['electrical_engineering', 'power_systems', 'infrastructure'],
-    ageRange: '15-18'
+    ageRange: '15-18',
+    unlockCondition: { pattern: 'building', minLevel: 4 }
   },
   {
     id: 'nucor-manufacturing',
@@ -115,7 +125,8 @@ const BIRMINGHAM_OPPORTUNITIES: BirminghamOpportunity[] = [
     compensation: 'Paid apprenticeship',
     location: 'Nucor Birmingham facility',
     tags: ['manufacturing', 'steel_production', 'automation', 'skilled_trades'],
-    ageRange: '17-18'
+    ageRange: '17-18',
+    unlockCondition: { pattern: 'building', minLevel: 6 }
   },
   {
     id: 'bbva-field-engineering',
@@ -128,7 +139,8 @@ const BIRMINGHAM_OPPORTUNITIES: BirminghamOpportunity[] = [
     timeCommitment: '1 day per month',
     location: 'BBVA Field',
     tags: ['civil_engineering', 'facilities_management', 'sports_engineering'],
-    ageRange: '14-18'
+    ageRange: '14-18',
+    unlockCondition: { pattern: 'building', minLevel: 3 }
   },
 
   // Technology/Data Platform Opportunities
@@ -145,7 +157,8 @@ const BIRMINGHAM_OPPORTUNITIES: BirminghamOpportunity[] = [
     location: 'Regions Center downtown',
     tags: ['fintech', 'mobile_development', 'digital_banking', 'software'],
     ageRange: '17-18',
-    seasonalAvailability: 'Summer primarily'
+    seasonalAvailability: 'Summer primarily',
+    unlockCondition: { pattern: 'analytical', minLevel: 6 }
   },
   {
     id: 'bbva-innovation',
@@ -160,7 +173,8 @@ const BIRMINGHAM_OPPORTUNITIES: BirminghamOpportunity[] = [
     location: 'Innovation Center downtown',
     tags: ['artificial_intelligence', 'blockchain', 'innovation', 'emerging_tech'],
     ageRange: '16-18',
-    seasonalAvailability: 'Summer'
+    seasonalAvailability: 'Summer',
+    unlockCondition: { pattern: 'analytical', minLevel: 7 }
   },
   {
     id: 'uab-health-informatics',
@@ -173,7 +187,8 @@ const BIRMINGHAM_OPPORTUNITIES: BirminghamOpportunity[] = [
     timeCommitment: '3 credit hours',
     location: 'UAB Campus',
     tags: ['health_informatics', 'data_analysis', 'medical_technology'],
-    ageRange: '16-18'
+    ageRange: '16-18',
+    unlockCondition: { pattern: 'analytical', minLevel: 4 }
   },
 
   // Sustainability/Environment Platform Opportunities
@@ -190,7 +205,8 @@ const BIRMINGHAM_OPPORTUNITIES: BirminghamOpportunity[] = [
     location: 'Multiple renewable sites',
     tags: ['renewable_energy', 'solar_power', 'environmental_science'],
     ageRange: '15-17',
-    seasonalAvailability: 'Summer'
+    seasonalAvailability: 'Summer',
+    unlockCondition: { pattern: 'exploring', minLevel: 4 }
   },
   {
     id: 'city-environmental-services',
@@ -203,7 +219,8 @@ const BIRMINGHAM_OPPORTUNITIES: BirminghamOpportunity[] = [
     timeCommitment: '4-8 hours per month',
     location: 'Various city locations',
     tags: ['environmental_monitoring', 'water_quality', 'urban_planning'],
-    ageRange: '16-18'
+    ageRange: '16-18',
+    unlockCondition: { pattern: 'exploring', minLevel: 3 }
   },
   {
     id: 'urban-agriculture',
@@ -216,7 +233,8 @@ const BIRMINGHAM_OPPORTUNITIES: BirminghamOpportunity[] = [
     timeCommitment: '6 hours per week',
     location: 'Community gardens citywide',
     tags: ['urban_agriculture', 'sustainability', 'community_leadership'],
-    ageRange: '15-18'
+    ageRange: '15-18',
+    unlockCondition: { pattern: 'exploring', minLevel: 5 }
   },
 
   // Entrepreneurship/Innovation Opportunities
@@ -231,7 +249,8 @@ const BIRMINGHAM_OPPORTUNITIES: BirminghamOpportunity[] = [
     timeCommitment: '12-week program',
     location: 'Innovation Depot downtown',
     tags: ['entrepreneurship', 'startup_development', 'business_planning'],
-    ageRange: '16-18'
+    ageRange: '16-18',
+    unlockCondition: { pattern: 'building', minLevel: 7 }
   },
   {
     id: 'velocity-accelerator',
@@ -244,7 +263,8 @@ const BIRMINGHAM_OPPORTUNITIES: BirminghamOpportunity[] = [
     timeCommitment: '2-4 hours per week',
     location: 'Velocity downtown location',
     tags: ['startup_operations', 'product_development', 'business_development'],
-    ageRange: '17-18'
+    ageRange: '17-18',
+    unlockCondition: { pattern: 'exploring', minLevel: 6 }
   },
 
   // Creative Arts Platform Opportunities
@@ -259,7 +279,8 @@ const BIRMINGHAM_OPPORTUNITIES: BirminghamOpportunity[] = [
     timeCommitment: '4 hours per week',
     location: 'UAB Arts buildings',
     tags: ['visual_arts', 'portfolio_development', 'artistic_career'],
-    ageRange: '16-18'
+    ageRange: '16-18',
+    unlockCondition: { pattern: 'building', minLevel: 5 }
   },
   {
     id: 'birmingham-design-week',
@@ -273,7 +294,8 @@ const BIRMINGHAM_OPPORTUNITIES: BirminghamOpportunity[] = [
     location: 'Various Birmingham venues',
     tags: ['graphic_design', 'event_planning', 'creative_networking'],
     ageRange: '16-18',
-    seasonalAvailability: 'Annual event'
+    seasonalAvailability: 'Annual event',
+    unlockCondition: { pattern: 'exploring', minLevel: 4 }
   },
 
   // Service/Community Platform Opportunities
@@ -288,7 +310,8 @@ const BIRMINGHAM_OPPORTUNITIES: BirminghamOpportunity[] = [
     timeCommitment: '8-week program',
     location: 'United Way office',
     tags: ['community_service', 'social_issues', 'nonprofit_operations'],
-    ageRange: '16-18'
+    ageRange: '16-18',
+    unlockCondition: { pattern: 'helping', minLevel: 6 }
   },
   {
     id: 'civil-rights-institute',
@@ -301,7 +324,8 @@ const BIRMINGHAM_OPPORTUNITIES: BirminghamOpportunity[] = [
     timeCommitment: '6 hours per month',
     location: 'Civil Rights Institute',
     tags: ['history_education', 'public_speaking', 'civil_rights'],
-    ageRange: '16-18'
+    ageRange: '16-18',
+    unlockCondition: { pattern: 'helping', minLevel: 4 }
   }
 ]
 

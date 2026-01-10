@@ -174,6 +174,21 @@ export function SimulationRenderer({ simulation, onComplete }: SimulationRendere
                 {/* CRT Scanline Effect */}
                 <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.1)_50%),linear-gradient(90deg,rgba(255,0,0,0.03),rgba(0,255,0,0.01),rgba(0,0,255,0.03))] z-20 pointer-events-none bg-[length:100%_2px,3px_100%] opacity-20" />
 
+                {/* Task Context Overlay */}
+                <div className="absolute top-4 left-4 z-30 max-w-md pointer-events-none">
+                    <motion.div
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.5 }}
+                        className="bg-black/60 backdrop-blur-md border border-white/10 p-4 rounded-lg shadow-xl"
+                    >
+                        <h3 className="text-sm font-bold text-white mb-1 tracking-wide">{simulation.title}</h3>
+                        <p className="text-xs text-white/70 leading-relaxed font-mono">
+                            {simulation.taskDescription}
+                        </p>
+                    </motion.div>
+                </div>
+
                 {renderContent()}
             </div>
 

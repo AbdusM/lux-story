@@ -1,8 +1,10 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { CheckCircle2, Music, Heart, Zap, Wind } from 'lucide-react'
+import { CheckCircle2, Music, Heart, Zap, Wind, AlertTriangle, Megaphone, FileText, Newspaper } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { SimulationComponentProps } from './types'
+import { useSynesthesiaEngine } from '@/lib/hooks/use-synesthesia-engine'
+import { SynesthesiaTarget } from '@/lib/visualizers/synesthesia-types'
 
 interface MediaStudioProps extends SimulationComponentProps {
     variant?: 'audio_studio' | 'news_feed' // Lira vs Nadia
@@ -17,73 +19,41 @@ interface MediaStudioProps extends SimulationComponentProps {
  * For Nadia: Headline emotional tone - teaching players to craft
  * emotionally resonant news headlines.
  */
-export function MediaStudio({ onSuccess, variant = 'audio_studio' }: MediaStudioProps) {
-    // Emotional parameters (0-100)
-    const [tempo, setTempo] = useState(50)      // Fast/Slow
-    const [mood, setMood] = useState(50)        // Dark/Bright
-    const [texture, setTexture] = useState(50)  // Sparse/Dense
+export function MediaStudio({ config, onSuccess, variant = 'audio_studio' }: MediaStudioProps) {
+    // Extract target from config or use defaults
+    const targetConfig: SynesthesiaTarget = (config.initialContext?.target as SynesthesiaTarget) || {
+        targetState: {
+            tempo: 30,    // Slow
+            mood: 25,     // Dark
+            texture: 20   // Sparse
+        },
+        tolerance: 10
+    }
 
-    // Derived state
-    const [resonance, setResonance] = useState(0)
-    const [isComplete, setIsComplete] = useState(false)
+    const [state, updateState, { resonance, waveform, isLocked }] = useSynesthesiaEngine({
+        target: targetConfig,
+        initialState: { tempo: 50, mood: 50, texture: 50 } // Start at neutral
+    })
 
-    // Target values (hidden from user) - based on Lira's dementia music prompt
-    // "Piano melody, early dementia, the music knows something is wrong before she does"
-    // = Slow tempo (30), Dark mood (25), Sparse texture (20)
-    const TARGET_TEMPO = 30
-    const TARGET_MOOD = 25
-    const TARGET_TEXTURE = 20
+    const [hasTriggeredSuccess, setHasTriggeredSuccess] = useState(false)
 
-
-    // Generate waveform based on parameters
-    const generateWaveform = useCallback(() => {
-        const points: { x: number; y: number }[] = []
-        const width = 400
-        const height = 150
-        const centerY = height / 2
-
-        for (let x = 0; x < width; x += 4) {
-            // Frequency based on tempo (higher tempo = more oscillations)
-            const frequency = (tempo / 50) * 0.08
-            // Amplitude based on mood (darker = smaller waves, more decay)
-            const amplitude = (mood / 100) * 40 + 10
-            // Noise based on texture (denser = more noise)
-            const noise = (texture / 100) * 15
-
-            const baseWave = Math.sin(x * frequency) * amplitude
-            const noiseWave = Math.sin(x * 0.3) * noise
-            const y = centerY + baseWave + noiseWave
-
-            points.push({ x, y })
+    // Handle Success
+    useEffect(() => {
+        if (isLocked && !hasTriggeredSuccess) {
+            setHasTriggeredSuccess(true)
+            setTimeout(() => {
+                onSuccess({
+                    success: true,
+                    score: resonance,
+                    data: { parameters: state }
+                })
+            }, 2000) // 2s delay to admire the lock-in
         }
-        return points
-    }, [tempo, mood, texture])
+    }, [isLocked, hasTriggeredSuccess, onSuccess, resonance, state])
 
-    const waveformPoints = generateWaveform()
-    const pathD = waveformPoints
+    const pathD = waveform
         .map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`)
         .join(' ')
-
-    // Calculate resonance (how close to target)
-    useEffect(() => {
-        const tempoDistance = Math.abs(tempo - TARGET_TEMPO)
-        const moodDistance = Math.abs(mood - TARGET_MOOD)
-        const textureDistance = Math.abs(texture - TARGET_TEXTURE)
-
-        // Max possible distance is ~255 (3 * 85)
-        const totalDistance = tempoDistance + moodDistance + textureDistance
-        const newResonance = Math.max(0, Math.min(100, 100 - (totalDistance / 2)))
-
-        setResonance(Math.round(newResonance))
-
-        // Check for success
-        if (newResonance > 85 && !isComplete) {
-            setIsComplete(true)
-            setTimeout(() => {
-                onSuccess({ resonance: newResonance, parameters: { tempo, mood, texture } })
-            }, 1500)
-        }
-    }, [tempo, mood, texture, isComplete, onSuccess])
 
     // Color based on resonance
     const getResonanceColor = () => {
@@ -98,25 +68,54 @@ export function MediaStudio({ onSuccess, variant = 'audio_studio' }: MediaStudio
         return '#94a3b8'
     }
 
+    // --- VARIANT CONFIGURATION ---
+    const isAudio = variant === 'audio_studio'
+
+    const labels = isAudio ? {
+        title: 'Synesthesia Engine',
+        param1: { label: 'Tempo', low: 'Slow', high: 'Fast', icon: Zap },
+        param2: { label: 'Mood', low: 'Dark', high: 'Bright', icon: Heart },
+        param3: { label: 'Texture', low: 'Sparse', high: 'Dense', icon: Wind },
+        hint: '"The music knows something is wrong before she does..."',
+        mainIcon: Music
+    } : {
+        title: 'Headline Studio',
+        param1: { label: 'Urgency', low: 'Calm', high: 'Panic', icon: AlertTriangle },
+        param2: { label: 'Tone', low: 'Objective', high: 'Sensational', icon: Megaphone },
+        param3: { label: 'Nuance', low: 'Simple', high: 'Complex', icon: FileText },
+        hint: '"Find the emotional truth in the headline..."',
+        mainIcon: Newspaper
+    }
+
+    // Param 1 (Tempo/Urgency) Slider Class
+    const param1Color = isAudio ? "accent-purple-500 hover:accent-purple-400" : "accent-orange-500 hover:accent-orange-400"
+    // Param 2 (Mood/Tone) Slider Class
+    const param2Color = isAudio ? "accent-rose-500 hover:accent-rose-400" : "accent-red-500 hover:accent-red-400"
+    // Param 3 (Texture/Nuance) Slider Class
+    const param3Color = isAudio ? "accent-cyan-500 hover:accent-cyan-400" : "accent-blue-500 hover:accent-blue-400"
+
+
     return (
         <div className="space-y-6">
             {/* Header / Status */}
             <div className="flex items-center justify-between bg-black/40 p-4 rounded-lg border border-white/10">
                 <div className="flex items-center gap-3">
-                    <Music className={cn("w-5 h-5", isComplete ? "text-emerald-400" : "text-purple-400")} />
+                    <labels.mainIcon className={cn("w-5 h-5", isLocked ? "text-emerald-400" : "text-purple-400")} />
                     <div>
                         <div className="text-xs uppercase tracking-widest text-white/50">
-                            {variant === 'audio_studio' ? 'Synesthesia Engine' : 'Headline Studio'}
+                            {labels.title}
                         </div>
-                        <div className={cn("text-sm font-medium", isComplete ? "text-emerald-400" : "text-purple-400")}>
-                            {isComplete ? "RESONANCE ACHIEVED" : "SEARCHING..."}
+                        <div className={cn("text-sm font-medium", isLocked ? "text-emerald-400" : "text-purple-400")}>
+                            {isLocked ? "RESONANCE ACHIEVED" : "SEARCHING..."}
                         </div>
                     </div>
                 </div>
                 <div className="text-right">
-                    <div className="text-xs uppercase tracking-widest text-white/50">Emotional Resonance</div>
+                    <div className="text-xs uppercase tracking-widest text-white/50">
+                        {isAudio ? "Emotional Resonance" : "Public Sentiment"}
+                    </div>
                     <div className={cn("text-xl font-mono", getResonanceColor())}>
-                        {resonance}%
+                        {Math.round(resonance)}%
                     </div>
                 </div>
             </div>
@@ -126,7 +125,7 @@ export function MediaStudio({ onSuccess, variant = 'audio_studio' }: MediaStudio
                 {/* Background frequency bands */}
                 <div className="absolute inset-0 flex items-end justify-around px-4 opacity-20">
                     {Array.from({ length: 32 }).map((_, i) => {
-                        const height = 20 + Math.sin(i * 0.5 + tempo * 0.1) * 40 + Math.random() * 20
+                        const height = 20 + Math.sin(i * 0.5 + state.tempo * 0.1) * 40 + Math.random() * 20
                         return (
                             <motion.div
                                 key={i}
@@ -154,7 +153,7 @@ export function MediaStudio({ onSuccess, variant = 'audio_studio' }: MediaStudio
                 </svg>
 
                 {/* Success overlay */}
-                {isComplete && (
+                {isLocked && (
                     <motion.div
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
@@ -162,7 +161,9 @@ export function MediaStudio({ onSuccess, variant = 'audio_studio' }: MediaStudio
                     >
                         <div className="flex flex-col items-center text-emerald-400">
                             <CheckCircle2 className="w-12 h-12 mb-2" />
-                            <span className="text-lg font-bold tracking-widest">RESONANCE FOUND</span>
+                            <span className="text-lg font-bold tracking-widest">
+                                {isAudio ? "RESONANCE FOUND" : "SENTIMENT ALIGNED"}
+                            </span>
                         </div>
                     </motion.div>
                 )}
@@ -170,95 +171,93 @@ export function MediaStudio({ onSuccess, variant = 'audio_studio' }: MediaStudio
 
             {/* Emotion hint */}
             <div className="text-center text-xs text-white/40 italic">
-                {variant === 'audio_studio'
-                    ? '"The music knows something is wrong before she does..."'
-                    : '"Find the emotional truth in the headline..."'}
+                {labels.hint}
             </div>
 
             {/* Controls */}
             <div className="space-y-4">
-                {/* Tempo Slider */}
+                {/* Param 1: Tempo / Urgency */}
                 <div className="space-y-2">
                     <div className="flex justify-between items-center text-xs text-white/70">
                         <span className="flex items-center gap-2">
-                            <Zap className="w-3 h-3" />
-                            Tempo
+                            <labels.param1.icon className="w-3 h-3" />
+                            {labels.param1.label}
                         </span>
                         <span className="font-mono text-white/50">
-                            {tempo < 40 ? 'Slow' : tempo > 60 ? 'Fast' : 'Moderate'}
+                            {state.tempo < 40 ? labels.param1.low : state.tempo > 60 ? labels.param1.high : 'Moderate'}
                         </span>
                     </div>
                     <input
                         type="range"
                         min="0"
                         max="100"
-                        value={tempo}
-                        onChange={(e) => setTempo(parseInt(e.target.value))}
-                        className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-purple-500 hover:accent-purple-400"
+                        value={state.tempo}
+                        onChange={(e) => updateState({ tempo: parseInt(e.target.value) })}
+                        className={cn("w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer", param1Color)}
                     />
                     <div className="flex justify-between text-[10px] text-white/30">
-                        <span>Slow</span>
-                        <span>Fast</span>
+                        <span>{labels.param1.low}</span>
+                        <span>{labels.param1.high}</span>
                     </div>
                 </div>
 
-                {/* Mood Slider */}
+                {/* Param 2: Mood / Tone */}
                 <div className="space-y-2">
                     <div className="flex justify-between items-center text-xs text-white/70">
                         <span className="flex items-center gap-2">
-                            <Heart className="w-3 h-3" />
-                            Mood
+                            <labels.param2.icon className="w-3 h-3" />
+                            {labels.param2.label}
                         </span>
                         <span className="font-mono text-white/50">
-                            {mood < 40 ? 'Dark' : mood > 60 ? 'Bright' : 'Neutral'}
+                            {state.mood < 40 ? labels.param2.low : state.mood > 60 ? labels.param2.high : 'Neutral'}
                         </span>
                     </div>
                     <input
                         type="range"
                         min="0"
                         max="100"
-                        value={mood}
-                        onChange={(e) => setMood(parseInt(e.target.value))}
-                        className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-rose-500 hover:accent-rose-400"
+                        value={state.mood}
+                        onChange={(e) => updateState({ mood: parseInt(e.target.value) })}
+                        className={cn("w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer", param2Color)}
                     />
                     <div className="flex justify-between text-[10px] text-white/30">
-                        <span>Dark</span>
-                        <span>Bright</span>
+                        <span>{labels.param2.low}</span>
+                        <span>{labels.param2.high}</span>
                     </div>
                 </div>
 
-                {/* Texture Slider */}
+                {/* Param 3: Texture / Nuance */}
                 <div className="space-y-2">
                     <div className="flex justify-between items-center text-xs text-white/70">
                         <span className="flex items-center gap-2">
-                            <Wind className="w-3 h-3" />
-                            Texture
+                            <labels.param3.icon className="w-3 h-3" />
+                            {labels.param3.label}
                         </span>
                         <span className="font-mono text-white/50">
-                            {texture < 40 ? 'Sparse' : texture > 60 ? 'Dense' : 'Balanced'}
+                            {state.texture < 40 ? labels.param3.low : state.texture > 60 ? labels.param3.high : 'Balanced'}
                         </span>
                     </div>
                     <input
                         type="range"
                         min="0"
                         max="100"
-                        value={texture}
-                        onChange={(e) => setTexture(parseInt(e.target.value))}
-                        className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-cyan-500 hover:accent-cyan-400"
+                        value={state.texture}
+                        onChange={(e) => updateState({ texture: parseInt(e.target.value) })}
+                        className={cn("w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer", param3Color)}
                     />
                     <div className="flex justify-between text-[10px] text-white/30">
-                        <span>Sparse</span>
-                        <span>Dense</span>
+                        <span>{labels.param3.low}</span>
+                        <span>{labels.param3.high}</span>
                     </div>
                 </div>
             </div>
 
             {/* Debug/Skip */}
             <button
-                onClick={() => { setTempo(TARGET_TEMPO); setMood(TARGET_MOOD); setTexture(TARGET_TEXTURE) }}
+                onClick={() => updateState(targetConfig.targetState)}
                 className="text-[10px] text-white/20 hover:text-white/50 w-full text-center mt-4"
             >
-                [DEBUG] Auto-Tune
+                [DEBUG] Auto-Tune (Target: {targetConfig.targetState.tempo}/{targetConfig.targetState.mood}/{targetConfig.targetState.texture})
             </button>
         </div>
     )

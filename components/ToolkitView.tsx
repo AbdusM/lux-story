@@ -67,6 +67,7 @@ export function ToolkitView() {
 function ToolSchematic({ tool, isUnlocked, index }: { tool: AITool, isUnlocked: boolean, index: number }) {
     const CategoryIcon = getCategoryIcon(tool.category)
     const globalFlags = useGameSelectors.useGlobalFlags()
+    const patterns = useGameSelectors.usePatterns()
 
     const isPromptUnlocked = tool.goldenPrompt && (
         !tool.goldenPrompt.requiredFlag ||
@@ -178,10 +179,28 @@ function ToolSchematic({ tool, isUnlocked, index }: { tool: AITool, isUnlocked: 
                         </div>
                     </div>
                 ) : (
-                    <div className="mt-4 p-3 bg-black/40 border border-slate-800/50">
+                    <div className="mt-4 p-3 bg-black/40 border border-slate-800/50 space-y-3">
                         <p className="text-xs text-slate-500">
                             {tool.description}
                         </p>
+
+                        {/* Unlock Progress Hint */}
+                        <div className="border-t border-white/5 pt-2">
+                            <div className="flex items-center justify-between text-[10px] text-slate-500 mb-1">
+                                <span className="font-mono uppercase tracking-widest">Progress</span>
+                                <span className="font-bold">
+                                    {patterns[tool.requiredPattern] || 0}/{tool.requiredLevel} {tool.requiredPattern}
+                                </span>
+                            </div>
+                            <div className="h-1 bg-slate-800 rounded-full overflow-hidden">
+                                <div
+                                    className="h-full bg-slate-600 rounded-full"
+                                    style={{
+                                        width: `${Math.min(100, ((patterns[tool.requiredPattern] || 0) / tool.requiredLevel) * 100)}%`
+                                    }}
+                                />
+                            </div>
+                        </div>
                     </div>
                 )}
             </div>

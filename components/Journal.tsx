@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
-import { Users, Zap, Compass, TrendingUp, X, Crown, Cpu, Play, Sparkles, AlertTriangle, Brain } from "lucide-react"
+import { Users, Zap, Compass, TrendingUp, X, Crown, Cpu, Play, Sparkles, AlertTriangle, Brain, Building2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useConstellationData } from "@/hooks/useConstellationData"
 import { useInsights } from "@/hooks/useInsights"
 import { useOrbs } from "@/hooks/useOrbs"
-import { useGameSelectors } from "@/lib/game-store"
+import { useGameSelectors, useGameStore } from "@/lib/game-store"
 import { PlayerAvatar } from "./CharacterAvatar"
 import { PatternOrb } from "./PatternOrb"
 import { HarmonicsView } from "./HarmonicsView"
@@ -18,6 +18,7 @@ import { NarrativeAnalysisDisplay } from "./NarrativeAnalysisDisplay"
 import { ToolkitView } from "./ToolkitView"
 import { SimulationsArchive } from "./SimulationsArchive"
 import { SimulationGodView } from "./journal/SimulationGodView"
+import { OpportunitiesView } from "./journal/OpportunitiesView"
 import { OrbDetailPanel } from "./OrbDetailPanel"
 import { CognitionView } from "./CognitionView"
 import { PatternType } from "@/lib/patterns"
@@ -29,7 +30,7 @@ interface JournalProps {
   onClose: () => void
 }
 
-type TabId = 'harmonics' | 'essence' | 'mastery' | 'mind' | 'toolkit' | 'simulations' | 'cognition' | 'analysis' | 'god_mode'
+type TabId = 'harmonics' | 'essence' | 'mastery' | 'mind' | 'toolkit' | 'simulations' | 'cognition' | 'analysis' | 'god_mode' | 'opportunities'
 
 const tabContentVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -60,8 +61,19 @@ export function Journal({ isOpen, onClose }: JournalProps) {
   const hasNewTools = hasNewOrbs // Proxy: New patterns likely mean new tools
   const hasNewSimulations = availableSimulations > 0
 
+
+
   // Track which tabs have been viewed this session
   const [viewedTabs, setViewedTabs] = useState<Set<TabId>>(new Set(['harmonics']))
+
+  // New: Badge logic for fixed tabs
+  const unlockedAchievementsCount = useGameStore(state => state.unlockedAchievements.length)
+  const hasNewAchievements = unlockedAchievementsCount > 0 && !viewedTabs.has('mastery')
+  const hasPlayerAnalysis = useInsights() !== null
+  const hasAnalysisData = hasPlayerAnalysis && !viewedTabs.has('analysis')
+  // Cognition badge: show if we have skills but haven't viewed the tab
+  const hasCognitionData = skills.length > 0 && !viewedTabs.has('cognition')
+  const hasNewOpportunities = !viewedTabs.has('opportunities') // Simple new indicator for now
 
   // Mark tab as viewed when selected
   const handleTabSelect = (tabId: TabId) => {
@@ -78,13 +90,14 @@ export function Journal({ isOpen, onClose }: JournalProps) {
   const tabBadges: Record<TabId, boolean> = {
     harmonics: hasNewPatterns && !viewedTabs.has('harmonics'),
     essence: hasNewSkills && !viewedTabs.has('essence'),
-    mastery: false, // No new-achievement tracking yet
+    mastery: hasNewAchievements,
     mind: hasActiveThoughts && !viewedTabs.has('mind'),
     toolkit: hasNewTools && !viewedTabs.has('toolkit'),
     simulations: hasNewSimulations && !viewedTabs.has('simulations'),
-    cognition: false, // Cognitive domains don't have badge notifications yet
-    analysis: false,
-    god_mode: false
+    cognition: hasCognitionData,
+    analysis: hasAnalysisData,
+    god_mode: false,
+    opportunities: hasNewOpportunities
   }
 
 
@@ -101,6 +114,7 @@ export function Journal({ isOpen, onClose }: JournalProps) {
     { id: 'harmonics', label: 'Harmonics', icon: Zap },
     { id: 'essence', label: 'Essence', icon: Compass },
     { id: 'mastery', label: 'Mastery', icon: Crown },
+    { id: 'opportunities', label: 'Opportunities', icon: Building2 },
     { id: 'mind', label: 'Mind', icon: TrendingUp },
     { id: 'toolkit', label: 'Toolkit', icon: Cpu },
     { id: 'simulations', label: 'Sims', icon: Play },
@@ -269,6 +283,7 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                     {activeTab === 'simulations' && <SimulationsArchive />}
                     {activeTab === 'cognition' && <CognitionView />}
                     {activeTab === 'analysis' && <NarrativeAnalysisDisplay />}
+                    {activeTab === 'opportunities' && <OpportunitiesView />}
                     {activeTab === 'god_mode' && <SimulationGodView onClose={onClose} />}
                   </motion.div>
                 )}

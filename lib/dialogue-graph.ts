@@ -117,7 +117,7 @@ export interface SimulationUnlockRequirements {
  * Renders the node as a specialized tool interface rather than standard dialogue.
  */
 export interface SimulationConfig {
-  type: 'terminal_coding' | 'system_architecture' | 'creative_direction' | 'data_analysis' | 'prompt_engineering' | 'code_refactor' | 'chat_negotiation' | 'dashboard_triage' | 'visual_canvas' | 'audio_studio' | 'data_ticker' | 'data_audit' | 'secure_terminal' | 'botany_grid'
+  type: 'terminal_coding' | 'system_architecture' | 'creative_direction' | 'data_analysis' | 'prompt_engineering' | 'code_refactor' | 'chat_negotiation' | 'dashboard_triage' | 'visual_canvas' | 'audio_studio' | 'news_feed' | 'data_ticker' | 'data_audit' | 'secure_terminal' | 'botany_grid' | 'architect_3d'
   title: string // e.g. "Prompt Refinement Protocol"
   taskDescription: string // e.g. "The model is hallucinating citations. Fix the prompt."
 
