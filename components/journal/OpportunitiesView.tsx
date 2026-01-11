@@ -1,7 +1,7 @@
 
 import React, { useMemo } from 'react'
 import { motion } from 'framer-motion'
-import { Building2, MapPin, Calendar, Lock, ArrowRight, ExternalLink } from 'lucide-react'
+import { Building2, MapPin, Calendar, Lock } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useGameSelectors } from '@/lib/game-store'
 import { getBirminghamOpportunities, type BirminghamOpportunity as Opportunity } from '@/content/birmingham-opportunities'

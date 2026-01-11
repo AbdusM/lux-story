@@ -2,16 +2,19 @@
 
 import { memo, useState, useEffect, useCallback, useRef } from 'react'
 import { Button } from '@/components/ui/button'
-import { motion } from 'framer-motion'
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { springs, stagger } from '@/lib/animations'
 import { Lock, Microscope, Brain, Compass, Heart, Hammer } from 'lucide-react'
 import { type PatternType, PATTERN_METADATA, isValidPattern } from '@/lib/patterns'
+import { cn } from '@/lib/utils'
 import { type GravityResult } from '@/lib/narrative-gravity'
 import { getPatternPreviewStyles, getPatternHintText } from '@/lib/pattern-derivatives'
 import { type PlayerPatterns } from '@/lib/character-state'
 
 import { useGameStore } from '@/lib/game-store'
 import { truncateTextForLoad, CognitiveLoadLevel } from '@/lib/cognitive-load'
+
+// ... (retain pattern styles constants: PATTERN_HOVER_STYLES, DEFAULT_HOVER_STYLE, PATTERN_GLASS_STYLES, DEFAULT_GLASS_STYLE, PATTERN_MARQUEE_COLORS, DEFAULT_MARQUEE_COLORS) ...
 
 /**
  * Pattern-specific hover colors for choice buttons

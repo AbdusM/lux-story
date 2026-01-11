@@ -4,7 +4,7 @@ import { type ElementType, type MouseEvent } from 'react'
 import { motion } from 'framer-motion'
 import {
     Wrench, DraftingCompass, Music, Activity, Sprout, Users, Shield, Database,
-    Terminal, Play, AlertTriangle, Zap
+    Terminal, Play, AlertTriangle
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useGameStore } from '@/lib/game-store'

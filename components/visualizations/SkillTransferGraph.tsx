@@ -79,6 +79,7 @@ export function SkillTransferGraph({ className, width = 600, height = 400 }: Ski
             .selectAll("g")
             .data(data.nodes)
             .join("g")
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             .call(drag(simulation) as any)
             .on('mouseover', (event, d) => setHoveredNode(d))
             .on('mouseout', () => setHoveredNode(null))
@@ -119,17 +120,20 @@ export function SkillTransferGraph({ className, width = 600, height = 400 }: Ski
 
         // Drag Helper
         function drag(simulation: d3.Simulation<SimulatedNode, undefined>) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             function dragstarted(event: any) {
                 if (!event.active) simulation.alphaTarget(0.3).restart()
                 event.subject.fx = event.subject.x
                 event.subject.fy = event.subject.y
             }
 
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             function dragged(event: any) {
                 event.subject.fx = event.x
                 event.subject.fy = event.y
             }
 
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             function dragended(event: any) {
                 if (!event.active) simulation.alphaTarget(0)
                 event.subject.fx = null

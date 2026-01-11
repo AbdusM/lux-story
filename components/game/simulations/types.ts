@@ -15,6 +15,8 @@ export type SimulationType =
     | 'creative_direction'
     | 'data_ticker'
     | 'secure_terminal'
+    | 'prompt_engineering'
+    | 'code_refactor'
 
 
 export interface BaseSimulationContext {
