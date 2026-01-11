@@ -38,7 +38,7 @@ export const SIMULATION_REGISTRY: SimulationMeta[] = [
     description: 'Help Maya present her robotics prototype to investors while her skeptical parents watch from the audience.',
     theme: 'Authenticity vs. Expectation',
     completionFlag: { type: 'global', flag: 'maya_simulation_complete' },
-    entryNodeId: 'maya_simulation_intro',
+    entryNodeId: 'maya_robotics_passion', // CORRECTED from maya_simulation_intro
     icon: 'briefcase'
   },
   {
@@ -49,7 +49,7 @@ export const SIMULATION_REGISTRY: SimulationMeta[] = [
     description: 'Navigate a difficult home health situation where medical knowledge meets human compassion.',
     theme: 'Care Beyond Protocol',
     completionFlag: { type: 'knowledge', flag: 'grace_simulation_complete' },
-    entryNodeId: 'grace_simulation_intro',
+    entryNodeId: 'grace_the_moment_setup', // CORRECTED from grace_simulation_intro
     icon: 'heart'
   },
   {
@@ -60,7 +60,7 @@ export const SIMULATION_REGISTRY: SimulationMeta[] = [
     description: 'Step into Tess\'s past as a teacher facing a pivotal moment that changed her career path.',
     theme: 'Purpose Through Sacrifice',
     completionFlag: { type: 'knowledge', flag: 'tess_simulation_complete' },
-    entryNodeId: 'tess_simulation_intro',
+    entryNodeId: 'tess_the_pitch_setup', // CORRECTED from tess_simulation_intro
     icon: 'book'
   },
   {
@@ -72,7 +72,7 @@ export const SIMULATION_REGISTRY: SimulationMeta[] = [
     theme: 'Order From Chaos',
     aiTool: 'Logistics AI',
     completionFlag: { type: 'knowledge', flag: 'alex_logistics_completed' },
-    entryNodeId: 'alex_simulation_intro',
+    entryNodeId: 'alex_llm_project_reveal', // CORRECTED from alex_simulation_intro
     icon: 'compass'
   },
   {
@@ -121,7 +121,7 @@ export const SIMULATION_REGISTRY: SimulationMeta[] = [
     theme: 'Human Touch vs. Efficiency',
     aiTool: 'Cursor AI',
     completionFlag: { type: 'global', flag: 'marcus_arc_complete' },
-    entryNodeId: 'marcus_simulation_automation',
+    entryNodeId: 'marcus_simulation_cursor', // CORRECTED from marcus_simulation_automation
     icon: 'code'
   },
 

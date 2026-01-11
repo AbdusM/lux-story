@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
+import { CognitiveLoadLevel } from './cognitive-load'
 
 // ============================================================================
 // STATION STATE SCHEMA
@@ -34,6 +35,9 @@ export interface StationState {
     // Tracked metrics for the station's health
     stationIntegrity: number // 0-1
     energyLevel: number // 0-1
+
+    // Accessibility / Claim 16
+    cognitiveLoad: CognitiveLoadLevel
 }
 
 // ============================================================================
@@ -47,6 +51,7 @@ export interface StationActions {
     triggerAmbientEvent: (event: AmbientEvent) => void
     clearExpiredEvents: () => void
     updateIntegrity: (delta: number) => void
+    setCognitiveLoad: (level: CognitiveLoadLevel) => void
     resetStation: () => void
 }
 
@@ -59,7 +64,8 @@ const initialState: StationState = {
     platformVisuals: {},
     activeAmbientEvents: [],
     stationIntegrity: 0.5,
-    energyLevel: 0.2
+    energyLevel: 0.2,
+    cognitiveLoad: 'normal'
 }
 
 export const useStationStore = create<StationState & StationActions>()(
@@ -102,6 +108,8 @@ export const useStationStore = create<StationState & StationActions>()(
                 updateIntegrity: (delta) => set((state) => ({
                     stationIntegrity: Math.max(0, Math.min(1, state.stationIntegrity + delta))
                 })),
+
+                setCognitiveLoad: (level) => set({ cognitiveLoad: level }),
 
                 resetStation: () => set(initialState)
             }),

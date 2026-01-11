@@ -18,6 +18,7 @@ export type AmbientEventType =
   | 'character_idle'      // Companion shifts, looks around
   | 'environmental'       // Light changes, sounds, details
   | 'distant_life'        // Other travelers, station workers
+  | 'skill_decay'         // Internal monologue about fading skills
 
 export interface AmbientEvent {
   id: string

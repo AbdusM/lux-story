@@ -1,3 +1,5 @@
+import { GameState } from '@/lib/character-state'
+
 /**
  * Character Relationships System
  * Creates a living web of inter-character dynamics
@@ -1561,4 +1563,58 @@ export function detectRelationshipUpdates(
   }
 
   return updates
+}
+
+/**
+ * Get a relevant cross-character echo for the current situation
+ * Favors characters the player has met and has high trust with
+ */
+export function getRelevantCrossCharacterEcho(
+  speakerId: string,
+  gameState: GameState
+): { text: string; emotion?: string } | null {
+  const speaker = gameState.characters.get(speakerId)
+  if (!speaker) return null
+
+  // Get all potential connections
+  const relationships = CHARACTER_RELATIONSHIP_WEB.filter(r => r.fromCharacterId === speakerId)
+
+  const validEchoes: Array<{
+    text: string
+    emotion: string
+    intensity: number
+    isDeep: boolean
+  }> = []
+
+  // Derive context from GameState
+  const context = {
+    trust: speaker.trust,
+    globalFlags: gameState.globalFlags,
+    charactersMet: Array.from(gameState.characters.values())
+      .filter(c => c.conversationHistory.length > 0) // Player has interacted with them
+      .map(c => c.characterId)
+  }
+
+  for (const rel of relationships) {
+    const mention = getCharacterMention(speakerId, rel.toCharacterId, context)
+
+    if (mention.canMention && mention.opinion) {
+      validEchoes.push({
+        text: mention.opinion,
+        emotion: mention.sentiment || 'neutral',
+        intensity: rel.intensity,
+        isDeep: mention.isDeepReveal
+      })
+    }
+  }
+
+  if (validEchoes.length === 0) return null
+
+  // Simple random selection for variety
+  const selected = validEchoes[Math.floor(Math.random() * validEchoes.length)]
+
+  return {
+    text: selected.text,
+    emotion: selected.emotion
+  }
 }

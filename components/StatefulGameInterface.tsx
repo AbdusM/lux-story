@@ -91,7 +91,7 @@ import { DialogueDisplay } from '@/components/DialogueDisplay'
 import { InterruptButton } from '@/components/game/InterruptButton'
 import type { RichTextEffect } from '@/components/RichTextRenderer'
 import { AtmosphericIntro } from '@/components/AtmosphericIntro'
-import { AtmosphericGameBackground } from '@/components/AtmosphericGameBackground'
+import { LivingAtmosphere } from '@/components/LivingAtmosphere' // ISP: Living Interface
 import { calculateAmbientContext, ATMOSPHERES } from '@/content/ambient-descriptions'
 import { PatternOrb } from '@/components/PatternOrb'
 import { GooeyPatternOrbs, patternScoresToWeights } from '@/components/GooeyPatternOrbs'
@@ -105,7 +105,8 @@ import { StrategyReport } from '@/components/career/StrategyReport'
 import { GameMenu } from '@/components/GameMenu'
 import { GameStateManager } from '@/lib/game-state-manager'
 import { useBackgroundSync } from '@/hooks/useBackgroundSync'
-import { useStationStore } from '@/lib/station-state' // Fixed: Top-level import
+import { StationState, useStationStore } from '@/lib/station-state'
+import { filterChoicesByLoad, CognitiveLoadLevel } from '@/lib/cognitive-load' // Fixed: Top-level import
 import { generateUserId } from '@/lib/safe-storage'
 import {
   DialogueGraph,
@@ -160,6 +161,7 @@ import { calculateCharacterTrustDecay, getPatternRecognitionComments, type Patte
 import { getNewlyAvailableCombinations, type KnowledgeCombination, recordIcebergMention, getInvestigableTopics, type IcebergReference } from '@/lib/knowledge-derivatives'
 import { getActiveTextEffects, getTextEffectClasses, getTextEffectStyles, getActiveMagicalRealisms, type MagicalRealism, getNewlyDiscoveredArcs, getCascadeEffectsForFlag, getNarrativeFraming, getUnlockedMetaRevelations, type EmergentStoryArc, type CascadeEffect, type MetaNarrativeRevelation } from '@/lib/narrative-derivatives'
 import { getActiveEnvironmentalEffects, getAvailableCrossCharacterExperiences, type EnvironmentalEffect, type CrossCharacterRequirement } from '@/lib/character-derivatives'
+import { getRelevantCrossCharacterEcho } from '@/lib/character-relationships'
 import {
   INTERRUPT_PATTERN_ALIGNMENT,
   INTERRUPT_COMBO_CHAINS,
@@ -207,7 +209,9 @@ import { playPatternSound, playTrustSound, playIdentitySound, playMilestoneSound
 // FoxTheatreGlow import removed - unused
 import { ExperienceRenderer } from '@/components/game/ExperienceRenderer'
 import { SimulationRenderer } from '@/components/game/SimulationRenderer'
+import { GameErrorBoundary } from '@/components/GameErrorBoundary'
 import { getPatternUnlockChoices } from '@/lib/pattern-unlock-choices'
+import { calculateSkillDecay, getSkillDecayNarrative } from '@/lib/assessment-derivatives'
 // Share prompts removed - too obtrusive
 
 // Trust feedback now dialogue-based via consequence echoes
@@ -655,6 +659,7 @@ export default function StatefulGameInterface() {
 
   // P5: Derive Atmospheric Emotion (Moved to top level to avoid conditional hook error)
   const stationAtmosphere = useStationStore(s => s.atmosphere)
+  const cognitiveLoad = useStationStore(s => s.cognitiveLoad)
   const currentEmotion = useMemo(() => {
     if (stationAtmosphere === 'tense') return 'anxiety'
     if (stationAtmosphere === 'awakening') return 'fear_awe'
@@ -836,15 +841,63 @@ export default function StatefulGameInterface() {
         // This ensures if they refresh right away, we don't count it again (lastSaved will be now)
         GameStateManager.saveGameState(gameState)
         zustandStore.setCoreGameState(GameStateUtils.serialize(gameState)) // Sync store
+
+        // P1: SKILL DECAY INTEGRATION (Claim 14)
+        // Check for "use it or lose it" atrophy if session has advanced
+        // This MUST happen after session checks to ensure 'lastUsedSession' logic is valid
+        if (gameState && gameState.skillLevels && gameState.skillUsage) {
+          const activeState = gameState // Capture for closure safety
+          try {
+            const decayResult = calculateSkillDecay(
+              activeState.skillLevels,
+              activeState.skillUsage,
+              activeState.episodeNumber
+            )
+
+            // Detect if anything decayed
+            const decayedSkills = Object.keys(activeState.skillLevels).filter(
+              id => (activeState.skillLevels[id] || 0) > (decayResult[id] || 0)
+            )
+
+            if (decayedSkills.length > 0) {
+              logger.info('Skill Decay Detected', { skills: decayedSkills })
+
+              // 1. Apply changes state
+              gameState = {
+                ...gameState,
+                skillLevels: decayResult
+              }
+              GameStateManager.saveGameState(gameState)
+              zustandStore.setCoreGameState(GameStateUtils.serialize(gameState))
+
+              // 2. Trigger DIEGETIC notification (Ambient "Intrusive Thought")
+              // Pick one random skill to narrate so we don't spam
+              const targetSkillId = decayedSkills[Math.floor(Math.random() * decayedSkills.length)]
+              const narrative = getSkillDecayNarrative(targetSkillId)
+
+              // 3. Inject into Ambient System immediately
+              // Map to StationState's AmbientEvent format
+              useStationStore.getState().triggerAmbientEvent({
+                id: `decay_${targetSkillId}_${Date.now()}`,
+                text: narrative,
+                intensity: 'subtle', // Internal thoughts are subtle
+                duration: 8000
+              })
+            }
+          } catch (e) {
+            logger.warn('Failed to calculate skill decay', { error: e })
+          }
+        }
       }
 
+      const activeGameState = gameState! // Assert non-null for subsequent logic
       if (typeof window !== 'undefined' && !skillTrackerRef.current) {
-        skillTrackerRef.current = new SkillTracker(gameState.playerId)
+        skillTrackerRef.current = new SkillTracker(activeGameState.playerId)
       }
 
-      const characterId = (gameState.currentCharacterId || 'samuel') as CharacterId
-      const currentGraph = getGraphForCharacter(characterId, gameState)
-      const nodeId = gameState.currentNodeId
+      const characterId = (activeGameState.currentCharacterId || 'samuel') as CharacterId
+      const currentGraph = getGraphForCharacter(characterId, activeGameState)
+      const nodeId = activeGameState.currentNodeId
 
       let currentNode = currentGraph.nodes.get(nodeId)
       let actualCharacterId = characterId
@@ -1167,7 +1220,14 @@ export default function StatefulGameInterface() {
           newGameState = GameStateUtils.applyStateChange(newGameState, {
             thoughtId: identityThoughtId
           })
-          // Play Identity Sound immediately if threshold crossed
+
+          // Trigger the Identity Ceremony (Visual & Audio)
+          setState(prev => ({
+            ...prev,
+            showIdentityCeremony: true,
+            ceremonyPattern: result.events.earnOrb || null
+          }))
+
           if (result.events.checkIdentityThreshold) {
             playIdentitySound()
           }
@@ -1334,6 +1394,23 @@ export default function StatefulGameInterface() {
           })
         } else {
           consequenceEcho = getConsequenceEcho(state.currentCharacterId, trustDelta)
+
+          // P4: If no direct trust feedback, check for relationship echoes (Gossip)
+          if (!consequenceEcho) {
+            const crossEcho = getRelevantCrossCharacterEcho(state.currentCharacterId, newGameState)
+            if (crossEcho) {
+              consequenceEcho = {
+                text: crossEcho.text,
+                emotion: crossEcho.emotion,
+                timing: 'immediate',
+                trustAtEvent: currentTrust
+              }
+              logger.info('[StatefulGameInterface] Cross-Character echo triggered', {
+                speaker: state.currentCharacterId,
+                text: crossEcho.text.substring(0, 30)
+              })
+            }
+          }
         }
 
         // D-010: Add trust level to echo for intensity-based display
@@ -3192,33 +3269,30 @@ export default function StatefulGameInterface() {
   // GOD MODE OVERRIDE - Render simulation if active (must be at end after all hooks)
   if (debugSimulation) {
     return (
-      <SimulationRenderer
-        simulation={{
-          ...debugSimulation,
-          // Inject explicit back button for God Mode
-          onExit: () => useGameStore.getState().setDebugSimulation(null)
-        }}
-        onComplete={(result) => {
-          logger.info('God Mode Simulation Complete', result)
-          useGameStore.getState().setDebugSimulation(null)
-        }}
-      />
+      <GameErrorBoundary componentName="GodModeSimulation">
+        <SimulationRenderer
+          simulation={{
+            ...debugSimulation,
+            // Inject explicit back button for God Mode
+            onExit: () => useGameStore.getState().setDebugSimulation(null)
+          }}
+          onComplete={(result) => {
+            logger.info('God Mode Simulation Complete', result)
+            useGameStore.getState().setDebugSimulation(null)
+          }}
+        />
+      </GameErrorBoundary>
+```
     )
+
   }
 
   return (
-    <AtmosphericGameBackground
+    <LivingAtmosphere
       characterId={state.currentCharacterId}
-      emotion={currentEmotion === 'neutral' ? undefined : currentEmotion}
-      isProcessing={state.isProcessing}
-      className="h-[100dvh]"
+      emotion={currentEmotion}
+      className={currentState === 'station' ? 'cursor-default' : ''}
     >
-      {/* Session Summary - Welcome back overlay for returning players */}
-      <SessionSummary />
-
-      <div
-        key="game-container"
-        className="h-full flex flex-col"
         style={{
           willChange: 'auto',
           contain: 'layout style paint',
@@ -3257,7 +3331,7 @@ export default function StatefulGameInterface() {
                   variant="ghost"
                   size="sm"
                   onClick={() => setState(prev => ({ ...prev, showJournal: true }))}
-                  className={`relative h-9 w-9 p-0 text-slate-300 hover:text-white hover:bg-white/10 transition-all duration-300 rounded-md ${hasNewOrbs ? 'text-amber-400 nav-attention-halo nav-attention-halo-amber' : ''}`}
+                  className={`relative h - 9 w - 9 p - 0 text - slate - 300 hover: text - white hover: bg - white / 10 transition - all duration - 300 rounded - md ${ hasNewOrbs ? 'text-amber-400 nav-attention-halo nav-attention-halo-amber' : '' } `}
                   title="The Prism"
                 >
                   <BookOpen className="h-4 w-4" />
@@ -3266,10 +3340,11 @@ export default function StatefulGameInterface() {
                   variant="ghost"
                   size="sm"
                   onClick={() => setState(prev => ({ ...prev, showConstellation: true, hasNewTrust: false, hasNewMeeting: false }))}
-                  className={`relative h-9 w-9 p-0 text-slate-300 hover:text-white hover:bg-white/10 transition-all duration-300 rounded-md ${(state.hasNewTrust || state.hasNewMeeting)
-                    ? 'text-purple-400 nav-attention-marquee nav-attention-halo nav-attention-halo-purple'
-                    : ''
-                    }`}
+                  className={`relative h - 9 w - 9 p - 0 text - slate - 300 hover: text - white hover: bg - white / 10 transition - all duration - 300 rounded - md ${
+      (state.hasNewTrust || state.hasNewMeeting)
+      ? 'text-purple-400 nav-attention-marquee nav-attention-halo nav-attention-halo-purple'
+      : ''
+    } `}
                   title="Your Journey"
                 >
                   <Stars className="h-4 w-4" />
@@ -3283,7 +3358,7 @@ export default function StatefulGameInterface() {
                   isMuted={state.isMuted}
                   onToggleMute={() => {
                     const newMuted = !state.isMuted
-                    console.log(`[GameMenu] Toggling Mute to: ${newMuted}`)
+                    console.log(`[GameMenu] Toggling Mute to: ${ newMuted } `)
                     setState(prev => ({ ...prev, isMuted: newMuted }))
                     synthEngine.setMute(newMuted)
                     setAudioEnabled(!newMuted) // NEW: Kill the OGG tracks too
@@ -3328,7 +3403,7 @@ export default function StatefulGameInterface() {
         >
           <div className="max-w-4xl mx-auto px-3 sm:px-4 py-4 md:pt-8 lg:pt-12 pb-6 sm:pb-8">
             {/* Dialogue container - STABLE: no animations to prevent layout shifts */}
-            <div key={`dialogue-${state.gameState?.currentNodeId || 'none'}-${state.currentCharacterId}`}>
+            <div key={`dialogue - ${ state.gameState?.currentNodeId || 'none' } -${ state.currentCharacterId } `}>
               <Card
                 className="glass-panel text-white"
                 style={{ transition: 'none', background: 'rgba(10, 12, 16, 0.85)' }}
@@ -3353,7 +3428,7 @@ export default function StatefulGameInterface() {
                 }
               >
                 <CardContent
-                  className={`p-5 sm:p-8 md:p-10 h-[45vh] sm:h-[50vh] overflow-y-auto`}
+                  className={`p - 5 sm: p - 8 md: p - 10 h - [45vh] sm: h - [50vh] overflow - y - auto`}
                   style={{ WebkitOverflowScrolling: 'touch', scrollbarGutter: 'stable' }}
                   // Note: Removed text-center for narration - left-align is easier to read (eye hunts for line starts when centered)
                   data-testid="dialogue-content"
@@ -3363,28 +3438,29 @@ export default function StatefulGameInterface() {
 
                   {/* Dialogue Card - Dynamic Marquee Effect */}
                   {/* STABILITY: Removed transition-all to prevent container jumping */}
-                  <Card className={`shadow-lg backdrop-blur-xl relative overflow-hidden rounded-xl ${(() => {
-                    // 1. Loyalty Event or Simulation (Amber/Gold) - Focused, Technical
-                    if (state.activeExperience || state.currentNode?.simulation) {
-                      return 'bg-slate-950/80 border-amber-500/40 shadow-[0_0_30px_rgba(245,158,11,0.2)]'
-                    }
+                  <Card className={`shadow - lg backdrop - blur - xl relative overflow - hidden rounded - xl ${
+      (() => {
+        // 1. Loyalty Event or Simulation (Amber/Gold) - Focused, Technical
+        if (state.activeExperience || state.currentNode?.simulation) {
+          return 'bg-slate-950/80 border-amber-500/40 shadow-[0_0_30px_rgba(245,158,11,0.2)]'
+        }
 
-                    // 2. System/Discovery Moment (Blue/Purple) - Technical, cool
-                    // (Heuristic: If emotion is 'analytical' or 'knowing')
-                    if (state.currentDialogueContent?.emotion === 'analytical' || state.currentDialogueContent?.emotion === 'knowing') {
-                      return 'bg-slate-950/80 border-indigo-500/40 shadow-[0_0_30px_rgba(99,102,241,0.2)]'
-                    }
+        // 2. System/Discovery Moment (Blue/Purple) - Technical, cool
+        // (Heuristic: If emotion is 'analytical' or 'knowing')
+        if (state.currentDialogueContent?.emotion === 'analytical' || state.currentDialogueContent?.emotion === 'knowing') {
+          return 'bg-slate-950/80 border-indigo-500/40 shadow-[0_0_30px_rgba(99,102,241,0.2)]'
+        }
 
-                    // 3. Danger/Tension (Red) - Urgent
-                    // (Heuristic: If emotion is 'fear' or 'tension')
-                    if (state.currentDialogueContent?.emotion === 'fear' || state.currentDialogueContent?.emotion === 'tension') {
-                      return 'bg-slate-950/80 border-red-500/40 shadow-[0_0_30px_rgba(239,68,68,0.2)]'
-                    }
+        // 3. Danger/Tension (Red) - Urgent
+        // (Heuristic: If emotion is 'fear' or 'tension')
+        if (state.currentDialogueContent?.emotion === 'fear' || state.currentDialogueContent?.emotion === 'tension') {
+          return 'bg-slate-950/80 border-red-500/40 shadow-[0_0_30px_rgba(239,68,68,0.2)]'
+        }
 
-                    // Default - Subtle Glass
-                    return 'bg-black/40 border-white/5 hover:border-white/10'
-                  })()
-                    }`}>
+        // Default - Subtle Glass
+        return 'bg-black/40 border-white/5 hover:border-white/10'
+      })()
+    } `}>
                     <CardContent className="p-0">
                       {/* Marquee Header Overlay */}
                       {(state.activeExperience || state.currentNode?.simulation) && (
@@ -3409,16 +3485,29 @@ export default function StatefulGameInterface() {
                       ) : (state.currentNode?.simulation && state.currentNode.simulation.mode !== 'inline') ? (
                         // ISP: FULLSCREEN Workflow Simulation Renderer (Legacy God Mode)
                         <div className="p-6 h-full">
-                          <SimulationRenderer
-                            simulation={state.currentNode.simulation as any}
-                            onComplete={(result) => {
-                              logger.info('Simulation Complete', result)
-                              // Auto-advance to next node if choices exist
-                              if (state.availableChoices.length > 0) {
-                                handleChoice(state.availableChoices[0])
-                              }
-                            }}
-                          />
+                          <GameErrorBoundary
+                            componentName="FullscreenSimulation"
+                            fallback={
+                              <div className="flex flex-col items-center justify-center h-full p-8 text-center border-l-2 border-red-500/50 bg-red-500/5 rounded-r-lg">
+                                <h3 className="text-lg font-bold text-red-400 mb-2">Simulation Offline</h3>
+                                <p className="text-sm text-red-300/80 mb-4">Connection to the internal network was interrupted.</p>
+                                <Button onClick={() => handleChoice(state.availableChoices[0])} variant="outline" className="border-red-500/20 hover:bg-red-500/10 text-red-400">
+                                  Bypass Protocol
+                                </Button>
+                              </div>
+                            }
+                          >
+                            <SimulationRenderer
+                              simulation={state.currentNode.simulation as any}
+                              onComplete={(result) => {
+                                logger.info('Simulation Complete', result)
+                                // Auto-advance to next node if choices exist
+                                if (state.availableChoices.length > 0) {
+                                  handleChoice(state.availableChoices[0])
+                                }
+                              }}
+                            />
+                          </GameErrorBoundary>
                         </div>
                       ) : (
                         <div className="p-6 md:p-8">
@@ -3431,7 +3520,7 @@ export default function StatefulGameInterface() {
                             const textEffectStyles = getTextEffectStyles(textEffects)
                             return (
                               <DialogueDisplay
-                                key={`dialogue-display-${state.gameState?.currentNodeId || 'none'}-${state.currentCharacterId}-${state.currentContent?.substring(0, 20) || ''}`}
+                                key={`dialogue - display - ${ state.gameState?.currentNodeId || 'none' } -${ state.currentCharacterId } -${ state.currentContent?.substring(0, 20) || '' } `}
                                 text={cleanContent(state.gameState ? TextProcessor.process(state.currentContent || '', state.gameState) : (state.currentContent || ''))}
                                 characterName={state.currentNode?.speaker}
                                 characterId={state.currentCharacterId}
@@ -3451,16 +3540,25 @@ export default function StatefulGameInterface() {
                           {/* ISP: INLINE SIMULATION WIDGET (Handshake Protocol) */}
                           {state.currentNode?.simulation && state.currentNode.simulation.mode === 'inline' && (
                             <div className="mt-6">
-                              <SimulationRenderer
-                                simulation={state.currentNode.simulation as any}
-                                onComplete={(result) => {
-                                  logger.info('Inline Simulation Complete', result)
-                                  // Auto-advance logic
-                                  if (state.availableChoices.length > 0) {
-                                    handleChoice(state.availableChoices[0])
-                                  }
-                                }}
-                              />
+                              <GameErrorBoundary
+                                componentName="InlineSimulation"
+                                fallback={
+                                  <div className="p-4 border border-red-900/50 bg-red-950/20 rounded-lg text-center">
+                                    <span className="text-xs font-mono text-red-400">SIMULATION_RENDER_FAILURE</span>
+                                  </div>
+                                }
+                              >
+                                <SimulationRenderer
+                                  simulation={state.currentNode.simulation as any}
+                                  onComplete={(result) => {
+                                    logger.info('Inline Simulation Complete', result)
+                                    // Auto-advance logic
+                                    if (state.availableChoices.length > 0) {
+                                      handleChoice(state.availableChoices[0])
+                                    }
+                                  }}
+                                />
+                              </GameErrorBoundary>
                             </div>
                           )}
 
@@ -3505,10 +3603,11 @@ export default function StatefulGameInterface() {
 
             {/* Ending State - Shows in scroll area when conversation complete */}
             {isEnding && (
-              <Card className={`mt-4 rounded-xl shadow-md ${state.gameState && isJourneyComplete(state.gameState)
-                ? 'bg-gradient-to-b from-amber-50 to-white border-amber-200'
-                : ''
-                }`}>
+              <Card className={`mt - 4 rounded - xl shadow - md ${
+      state.gameState && isJourneyComplete(state.gameState)
+      ? 'bg-gradient-to-b from-amber-50 to-white border-amber-200'
+      : ''
+    } `}>
                 <CardContent className="p-4 sm:p-6 text-center">
                   {state.gameState && isJourneyComplete(state.gameState) ? (
                     <>
@@ -3616,25 +3715,40 @@ export default function StatefulGameInterface() {
                     }}
                   >
                     <GameChoices
-                      choices={state.availableChoices.map((c, index) => {
+                      choices={(() => {
+                        // Hoist pivotal check effectively
                         const nodeTags = state.currentNode?.tags || []
-                        const isPivotal = nodeTags.some(tag =>
+                        const isNodePivotal = nodeTags.some(tag =>
                           ['pivotal', 'defining_moment', 'final_choice', 'climax', 'revelation', 'introduction'].includes(tag)
                         )
-                        const voicedText = state.gameState ? getVoicedChoiceText(
-                          c.choice.text,
-                          c.choice.voiceVariations,
-                          state.gameState.patterns
-                        ) : c.choice.text
-                        return {
-                          text: voicedText,
-                          pattern: c.choice.pattern,
-                          feedback: c.choice.interaction === 'shake' ? 'shake' : undefined,
-                          pivotal: isPivotal,
-                          requiredOrbFill: c.choice.requiredOrbFill,
-                          next: String(index)
-                        }
-                      })}
+
+                        return filterChoicesByLoad(
+                          state.availableChoices,
+                          cognitiveLoad,
+                          undefined, // Todo: Pass dominant pattern
+                          isNodePivotal // Bypass filtering for pivotal moments
+                        ).map((c) => {
+                          // Find original index for the callback
+                          const originalIndex = state.availableChoices.indexOf(c)
+                          // Recalculate pivotal for UI styling (redundant but safe)
+                          // or just use isNodePivotal if appropriate, but UI expects per-choice styling
+                          // Actually GameChoices uses the 'pivotal' prop for specific styling
+
+                          const voicedText = state.gameState ? getVoicedChoiceText(
+                            c.choice.text,
+                            c.choice.voiceVariations,
+                            state.gameState.patterns
+                          ) : c.choice.text
+                          return {
+                            text: voicedText,
+                            pattern: c.choice.pattern,
+                            feedback: c.choice.interaction === 'shake' ? 'shake' : undefined,
+                            pivotal: isNodePivotal,
+                            requiredOrbFill: c.choice.requiredOrbFill,
+                            next: String(originalIndex)
+                          }
+                        })
+                      })()}
                       isProcessing={state.isProcessing}
                       orbFillLevels={orbFillLevels}
                       onChoice={(c) => {
@@ -3645,6 +3759,7 @@ export default function StatefulGameInterface() {
                       // FIX: Ensure glass mode is ON for dark atmospheres to prevent white-on-white text
                       glass={['dormant', 'awakening', 'alive'].includes(stationAtmosphere)}
                       playerPatterns={state.gameState?.patterns}
+                      cognitiveLoad={cognitiveLoad}
                     />
                   </div>
 

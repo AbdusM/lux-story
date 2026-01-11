@@ -70,7 +70,8 @@ export function OrbDetailPanel({ patternType, onClose }: OrbDetailPanelProps) {
                         <PatternOrb
                             pattern={patternType}
                             size="lg"
-                            celebrate={false} // Maybe true if leveled up recently?
+                            celebrate={false}
+                            intensity={Math.floor(orbState.fillPercent / 20)}
                         />
                         {/* Tier Badge */}
                         <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-slate-900 border border-slate-700 px-3 py-1 rounded-full flex items-center gap-1.5 shadow-xl">

@@ -118,8 +118,12 @@ export function getCognitiveLoadConfig(level: CognitiveLoadLevel): CognitiveLoad
 export function filterChoicesByLoad(
   choices: EvaluatedChoice[],
   level: CognitiveLoadLevel,
-  playerDominantPattern?: string
+  playerDominantPattern?: string,
+  bypass: boolean = false
 ): EvaluatedChoice[] {
+  // Safety Valve: Never filter choices if explicitly bypassed (e.g. pivotal moments)
+  if (bypass) return choices
+
   const config = COGNITIVE_LOAD_CONFIG[level]
 
   if (choices.length <= config.maxChoices) {
