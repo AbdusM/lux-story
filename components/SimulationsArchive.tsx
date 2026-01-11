@@ -8,6 +8,8 @@ import {
 import { cn } from '@/lib/utils'
 import { springs } from '@/lib/animations'
 import { useSimulations, SimulationWithStatus } from '@/hooks/useSimulations'
+import { useGameStore } from '@/lib/game-store'
+import { Button } from '@/components/ui/button'
 
 const iconMap = {
   briefcase: Briefcase,
@@ -24,9 +26,23 @@ const iconMap = {
   compass: Compass
 }
 
-function SimulationCard({ sim, index }: { sim: SimulationWithStatus; index: number }) {
+function SimulationCard({ sim, index, onClose }: { sim: SimulationWithStatus; index: number; onClose?: () => void }) {
   const Icon = iconMap[sim.icon]
   const isLocked = !sim.isAvailable
+
+  const handlePlay = () => {
+    if (!sim.isAvailable || sim.isCompleted) return // Or allow replay if completed?
+    // ISP: Allow replay if completed for "Mastery" check
+
+    // Close journal
+    onClose?.()
+
+    // Navigate to entry node
+    useGameStore.getState().updateCoreGameState(state => ({
+      ...state,
+      currentSceneId: sim.entryNodeId
+    }))
+  }
 
   return (
     <motion.div
@@ -135,13 +151,24 @@ function SimulationCard({ sim, index }: { sim: SimulationWithStatus; index: numb
           </div>
         )}
 
-        {/* Status indicator */}
-        {sim.isAvailable && !sim.isCompleted && (
-          <div className="mt-3 flex items-center gap-1.5 text-amber-400/60">
-            <Play className="w-3 h-3" />
-            <span className="text-xs font-medium uppercase tracking-wider">
-              Available to play
-            </span>
+        {/* Status indicator / Play Button */}
+        {sim.isAvailable && (
+          <div className="mt-4 flex items-center justify-between">
+            <div className="flex items-center gap-1.5 text-amber-400/60">
+              <Play className="w-3 h-3" />
+              <span className="text-xs font-medium uppercase tracking-wider">
+                {sim.isCompleted ? 'Replay Simulation' : 'Available to play'}
+              </span>
+            </div>
+
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-7 text-xs border-amber-500/30 text-amber-500 hover:bg-amber-500/10 hover:text-amber-400"
+              onClick={handlePlay}
+            >
+              {sim.isCompleted ? 'Revisit' : 'Start'}
+            </Button>
           </div>
         )}
       </div>
@@ -149,7 +176,7 @@ function SimulationCard({ sim, index }: { sim: SimulationWithStatus; index: numb
   )
 }
 
-export function SimulationsArchive() {
+export function SimulationsArchive({ onClose }: { onClose?: () => void }) {
   const { simulations, completedCount, totalCount } = useSimulations()
 
   return (
@@ -182,7 +209,7 @@ export function SimulationsArchive() {
       <div className="space-y-3">
         <AnimatePresence mode="popLayout">
           {simulations.map((sim, idx) => (
-            <SimulationCard key={sim.id} sim={sim} index={idx} />
+            <SimulationCard key={sim.id} sim={sim} index={idx} onClose={onClose} />
           ))}
         </AnimatePresence>
       </div>

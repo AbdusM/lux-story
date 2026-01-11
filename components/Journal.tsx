@@ -280,7 +280,7 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                     {activeTab === 'mastery' && <MasteryView />}
                     {activeTab === 'mind' && <ThoughtCabinet />}
                     {activeTab === 'toolkit' && <ToolkitView />}
-                    {activeTab === 'simulations' && <SimulationsArchive />}
+                    {activeTab === 'simulations' && <SimulationsArchive onClose={onClose} />}
                     {activeTab === 'cognition' && <CognitionView />}
                     {activeTab === 'analysis' && <NarrativeAnalysisDisplay />}
                     {activeTab === 'opportunities' && <OpportunitiesView />}

@@ -149,11 +149,11 @@ export const DOMAIN_METADATA: Record<CognitiveDomainId, DomainMetadata> = {
     colorblindSafe: DOMAIN_COLORS.complexAttention.colorblind,
     icon: 'Focus',
     skills: [
-      { skillId: 'deepWork', weight: 1.0 },
-      { skillId: 'timeManagement', weight: 0.9 },
+      { skillId: 'deep_work', weight: 1.0 },
+      { skillId: 'time_management', weight: 0.9 },
       { skillId: 'observation', weight: 0.8 },
       { skillId: 'patience', weight: 0.7 },
-      { skillId: 'groundedResearch', weight: 0.6 }
+      { skillId: 'grounded_research', weight: 0.6 }
     ]
   },
   executiveFunctions: {
@@ -166,13 +166,13 @@ export const DOMAIN_METADATA: Record<CognitiveDomainId, DomainMetadata> = {
     colorblindSafe: DOMAIN_COLORS.executiveFunctions.colorblind,
     icon: 'Brain',
     skills: [
-      { skillId: 'strategicThinking', weight: 1.0 },
-      { skillId: 'problemSolving', weight: 1.0 },
-      { skillId: 'systemsThinking', weight: 0.9 },
-      { skillId: 'criticalThinking', weight: 0.9 },
+      { skillId: 'strategic_thinking', weight: 1.0 },
+      { skillId: 'problem_solving', weight: 1.0 },
+      { skillId: 'systems_thinking', weight: 0.9 },
+      { skillId: 'critical_thinking', weight: 0.9 },
       { skillId: 'triage', weight: 0.8 },
-      { skillId: 'riskManagement', weight: 0.8 },
-      { skillId: 'crisisManagement', weight: 0.7 },
+      { skillId: 'risk_management', weight: 0.8 },
+      { skillId: 'crisis_management', weight: 0.7 },
       { skillId: 'accountability', weight: 0.6 }
     ]
   },
@@ -186,11 +186,11 @@ export const DOMAIN_METADATA: Record<CognitiveDomainId, DomainMetadata> = {
     colorblindSafe: DOMAIN_COLORS.learningMemory.colorblind,
     icon: 'BookOpen',
     skills: [
-      { skillId: 'learningAgility', weight: 1.0 },
-      { skillId: 'informationLiteracy', weight: 0.9 },
+      { skillId: 'learning_agility', weight: 1.0 },
+      { skillId: 'information_literacy', weight: 0.9 },
       { skillId: 'curiosity', weight: 0.9 },
       { skillId: 'observation', weight: 0.7 },
-      { skillId: 'groundedResearch', weight: 0.8 },
+      { skillId: 'grounded_research', weight: 0.8 },
       { skillId: 'pedagogy', weight: 0.6 }
     ]
   },
@@ -206,8 +206,8 @@ export const DOMAIN_METADATA: Record<CognitiveDomainId, DomainMetadata> = {
     skills: [
       { skillId: 'communication', weight: 1.0 },
       { skillId: 'marketing', weight: 0.8 },
-      { skillId: 'curriculumDesign', weight: 0.7 },
-      { skillId: 'instructionalDesign', weight: 0.7 },
+      { skillId: 'curriculum_design', weight: 0.7 },
+      { skillId: 'instructional_design', weight: 0.7 },
       { skillId: 'humor', weight: 0.5 },
       { skillId: 'wisdom', weight: 0.4 }
     ]
@@ -222,11 +222,11 @@ export const DOMAIN_METADATA: Record<CognitiveDomainId, DomainMetadata> = {
     colorblindSafe: DOMAIN_COLORS.perceptualMotor.colorblind,
     icon: 'Eye',
     skills: [
-      { skillId: 'technicalLiteracy', weight: 1.0 },
-      { skillId: 'digitalLiteracy', weight: 0.9 },
-      { skillId: 'agenticCoding', weight: 0.8 },
-      { skillId: 'workflowOrchestration', weight: 0.7 },
-      { skillId: 'multimodalCreation', weight: 0.6 }
+      { skillId: 'technical_literacy', weight: 1.0 },
+      { skillId: 'digital_literacy', weight: 0.9 },
+      { skillId: 'agentic_coding', weight: 0.8 },
+      { skillId: 'workflow_orchestration', weight: 0.7 },
+      { skillId: 'multimodal_creation', weight: 0.6 }
     ]
   },
   socialCognition: {
@@ -239,9 +239,9 @@ export const DOMAIN_METADATA: Record<CognitiveDomainId, DomainMetadata> = {
     colorblindSafe: DOMAIN_COLORS.socialCognition.colorblind,
     icon: 'Users',
     skills: [
-      { skillId: 'emotionalIntelligence', weight: 1.0 },
+      { skillId: 'emotional_intelligence', weight: 1.0 },
       { skillId: 'empathy', weight: 1.0 },
-      { skillId: 'culturalCompetence', weight: 0.9 },
+      { skillId: 'cultural_competence', weight: 0.9 },
       { skillId: 'respect', weight: 0.8 },
       { skillId: 'mentorship', weight: 0.7 },
       { skillId: 'encouragement', weight: 0.6 }
@@ -257,10 +257,10 @@ export const DOMAIN_METADATA: Record<CognitiveDomainId, DomainMetadata> = {
     colorblindSafe: DOMAIN_COLORS.metacognition.colorblind,
     icon: 'Lightbulb',
     skills: [
-      { skillId: 'criticalThinking', weight: 0.9 },
+      { skillId: 'critical_thinking', weight: 0.9 },
       { skillId: 'humility', weight: 1.0 },
       { skillId: 'pragmatism', weight: 0.8 },
-      { skillId: 'visionaryThinking', weight: 0.7 },
+      { skillId: 'visionary_thinking', weight: 0.7 },
       { skillId: 'psychology', weight: 0.8 },
       { skillId: 'wisdom', weight: 0.6 }
     ]
@@ -279,7 +279,7 @@ export const DOMAIN_METADATA: Record<CognitiveDomainId, DomainMetadata> = {
       { skillId: 'integrity', weight: 0.9 },
       { skillId: 'fairness', weight: 0.9 },
       { skillId: 'accountability', weight: 0.8 },
-      { skillId: 'strategicThinking', weight: 0.7 }
+      { skillId: 'strategic_thinking', weight: 0.7 }
     ]
   },
   creativitySynthesis: {
@@ -293,10 +293,10 @@ export const DOMAIN_METADATA: Record<CognitiveDomainId, DomainMetadata> = {
     icon: 'Sparkles',
     skills: [
       { skillId: 'creativity', weight: 1.0 },
-      { skillId: 'multimodalCreation', weight: 0.9 },
+      { skillId: 'multimodal_creation', weight: 0.9 },
       { skillId: 'entrepreneurship', weight: 0.8 },
-      { skillId: 'visionaryThinking', weight: 0.9 },
-      { skillId: 'promptEngineering', weight: 0.6 }
+      { skillId: 'visionary_thinking', weight: 0.9 },
+      { skillId: 'prompt_engineering', weight: 0.6 }
     ]
   },
   emotionalIntelligence: {
@@ -309,7 +309,7 @@ export const DOMAIN_METADATA: Record<CognitiveDomainId, DomainMetadata> = {
     colorblindSafe: DOMAIN_COLORS.emotionalIntelligence.colorblind,
     icon: 'Heart',
     skills: [
-      { skillId: 'emotionalIntelligence', weight: 1.0 },
+      { skillId: 'emotional_intelligence', weight: 1.0 },
       { skillId: 'empathy', weight: 0.9 },
       { skillId: 'patience', weight: 0.8 },
       { skillId: 'resilience', weight: 0.8 },
@@ -328,12 +328,12 @@ export const DOMAIN_METADATA: Record<CognitiveDomainId, DomainMetadata> = {
     icon: 'Zap',
     skills: [
       { skillId: 'adaptability', weight: 1.0 },
-      { skillId: 'actionOrientation', weight: 0.9 },
+      { skillId: 'action_orientation', weight: 0.9 },
       { skillId: 'urgency', weight: 0.7 },
       { skillId: 'collaboration', weight: 0.8 },
       { skillId: 'leadership', weight: 0.8 },
-      { skillId: 'aiLiteracy', weight: 0.6 },
-      { skillId: 'financialLiteracy', weight: 0.5 }
+      { skillId: 'ai_literacy', weight: 0.6 },
+      { skillId: 'financial_literacy', weight: 0.5 }
     ]
   }
 }

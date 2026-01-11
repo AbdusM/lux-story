@@ -214,6 +214,7 @@ export const SKILLS: Record<string, Skill> = {
     alignedPatterns: ['building', 'exploring'],
     transferDomains: ['product', 'UX', 'architecture', 'consulting']
   },
+
   innovation: {
     id: 'innovation',
     name: 'Innovation',
@@ -221,7 +222,114 @@ export const SKILLS: Record<string, Skill> = {
     description: 'Creating new ideas and approaches',
     alignedPatterns: ['building', 'exploring'],
     transferDomains: ['entrepreneurship', 'R&D', 'marketing', 'engineering']
-  }
+  },
+
+  // Neuro & Behavioral Sciences (New Addition)
+  neuroscience_literacy: {
+    id: 'neuroscience_literacy',
+    name: 'Neuroscience Literacy',
+    category: 'technical',
+    description: 'Understanding brain function and cognitive processes',
+    alignedPatterns: ['analytical', 'exploring'],
+    transferDomains: ['healthcare', 'research', 'education', 'tech_bio']
+  },
+  behavioral_psychology: {
+    id: 'behavioral_psychology',
+    name: 'Behavioral Psychology',
+    category: 'analytical',
+    description: 'Analyzing human behavior and decision patterns',
+    alignedPatterns: ['analytical', 'patience'],
+    transferDomains: ['marketing', 'UX', 'policy', 'healthcare']
+  },
+  cognitive_flexibility: {
+    id: 'cognitive_flexibility',
+    name: 'Cognitive Flexibility',
+    category: 'interpersonal',
+    description: 'Adapting thinking to new and unexpected situations',
+    alignedPatterns: ['exploring', 'building'],
+    transferDomains: ['leadership', 'innovation', 'crisis_management']
+  },
+
+  // Expanded Skills for Visualization & Hexagon
+  creativity: {
+    id: 'creativity',
+    name: 'Creativity',
+    category: 'creative',
+    description: 'Thinking outside the box',
+    alignedPatterns: ['building', 'exploring'],
+    transferDomains: ['arts', 'innovation', 'marketing']
+  },
+  leadership: {
+    id: 'leadership',
+    name: 'Leadership',
+    category: 'leadership',
+    description: 'Guiding and motivating others',
+    alignedPatterns: ['helping', 'building'],
+    transferDomains: ['management', 'politics', 'education']
+  },
+  adaptability: {
+    id: 'adaptability',
+    name: 'Adaptability',
+    category: 'interpersonal',
+    description: 'Adjusting to new conditions',
+    alignedPatterns: ['exploring', 'patience'],
+    transferDomains: ['consulting', 'crisis_management', 'startups']
+  },
+  deep_work: {
+    id: 'deep_work',
+    name: 'Deep Work',
+    category: 'technical',
+    description: 'Focusing on demanding tasks',
+    alignedPatterns: ['analytical', 'patience'],
+    transferDomains: ['research', 'programming', 'writing']
+  },
+  emotional_intelligence: {
+    id: 'emotional_intelligence',
+    name: 'Emotional Intelligence',
+    category: 'interpersonal',
+    description: 'Managing own and others emotions',
+    alignedPatterns: ['helping', 'patience'],
+    transferDomains: ['leadership', 'counseling', 'hr']
+  },
+  strategic_thinking: {
+    id: 'strategic_thinking',
+    name: 'Strategic Thinking',
+    category: 'leadership',
+    description: 'Planning for the future',
+    alignedPatterns: ['analytical', 'exploring'],
+    transferDomains: ['management', 'chess', 'policy']
+  },
+
+  // Literacy Cluster
+  digital_literacy: { id: 'digital_literacy', name: 'Digital Literacy', category: 'technical', description: '', alignedPatterns: ['analytical'], transferDomains: ['all'] },
+  technical_literacy: { id: 'technical_literacy', name: 'Technical Literacy', category: 'technical', description: '', alignedPatterns: ['building'], transferDomains: ['engineering'] },
+  information_literacy: { id: 'information_literacy', name: 'Information Literacy', category: 'analytical', description: '', alignedPatterns: ['exploring'], transferDomains: ['research'] },
+
+  // Others required by Visualizer
+  cultural_competence: { id: 'cultural_competence', name: 'Cultural Competence', category: 'interpersonal', description: '', alignedPatterns: ['helping'], transferDomains: ['diplomacy'] },
+  encouragement: { id: 'encouragement', name: 'Encouragement', category: 'interpersonal', description: '', alignedPatterns: ['helping'], transferDomains: ['coaching'] },
+  respect: { id: 'respect', name: 'Respect', category: 'interpersonal', description: '', alignedPatterns: ['patience'], transferDomains: ['all'] },
+  collaboration: { id: 'collaboration', name: 'Collaboration', category: 'interpersonal', description: '', alignedPatterns: ['helping'], transferDomains: ['teamwork'] },
+  marketing: { id: 'marketing', name: 'Marketing', category: 'communication', description: '', alignedPatterns: ['building'], transferDomains: ['sales'] },
+  curriculum_design: { id: 'curriculum_design', name: 'Curriculum Design', category: 'creative', description: '', alignedPatterns: ['building'], transferDomains: ['education'] },
+  wisdom: { id: 'wisdom', name: 'Wisdom', category: 'leadership', description: '', alignedPatterns: ['patience'], transferDomains: ['life'] },
+  curiosity: { id: 'curiosity', name: 'Curiosity', category: 'analytical', description: '', alignedPatterns: ['exploring'], transferDomains: ['research'] },
+  observation: { id: 'observation', name: 'Observation', category: 'analytical', description: '', alignedPatterns: ['patience'], transferDomains: ['science'] },
+  triage: { id: 'triage', name: 'Triage', category: 'leadership', description: '', alignedPatterns: ['analytical'], transferDomains: ['healthcare'] },
+  courage: { id: 'courage', name: 'Courage', category: 'leadership', description: '', alignedPatterns: ['helping'], transferDomains: ['leadership'] },
+  resilience: { id: 'resilience', name: 'Resilience', category: 'interpersonal', description: '', alignedPatterns: ['patience'], transferDomains: ['life'] },
+  action_orientation: { id: 'action_orientation', name: 'Action Orientation', category: 'leadership', description: '', alignedPatterns: ['building'], transferDomains: ['entrepreneurship'] },
+  risk_management: { id: 'risk_management', name: 'Risk Management', category: 'analytical', description: '', alignedPatterns: ['analytical'], transferDomains: ['finance'] },
+  urgency: { id: 'urgency', name: 'Urgency', category: 'leadership', description: '', alignedPatterns: ['building'], transferDomains: ['crisis'] },
+  learning_agility: { id: 'learning_agility', name: 'Learning Agility', category: 'analytical', description: '', alignedPatterns: ['exploring'], transferDomains: ['learning'] },
+  humility: { id: 'humility', name: 'Humility', category: 'interpersonal', description: '', alignedPatterns: ['patience'], transferDomains: ['leadership'] },
+  fairness: { id: 'fairness', name: 'Fairness', category: 'interpersonal', description: '', alignedPatterns: ['patience'], transferDomains: ['justice'] },
+  pragmatism: { id: 'pragmatism', name: 'Pragmatism', category: 'analytical', description: '', alignedPatterns: ['building'], transferDomains: ['engineering'] },
+  integrity: { id: 'integrity', name: 'Integrity', category: 'leadership', description: '', alignedPatterns: ['patience'], transferDomains: ['ethics'] },
+  accountability: { id: 'accountability', name: 'Accountability', category: 'leadership', description: '', alignedPatterns: ['building'], transferDomains: ['management'] },
+  time_management: { id: 'time_management', name: 'Time Management', category: 'technical', description: '', alignedPatterns: ['analytical'], transferDomains: ['productivity'] },
+  financial_literacy: { id: 'financial_literacy', name: 'Financial Literacy', category: 'technical', description: '', alignedPatterns: ['analytical'], transferDomains: ['finance'] },
+
 }
 
 /**
@@ -391,6 +499,7 @@ export const CAREER_FIELDS: CareerField[] = [
     characterExamples: ['silas', 'devon', 'kai'],
     birminghamEmployers: ['Mercedes-Benz', 'Honda Manufacturing', 'Austal USA', 'Vulcan Materials']
   },
+
   {
     id: 'logistics_supply_chain',
     name: 'Logistics & Supply Chain',
@@ -404,6 +513,36 @@ export const CAREER_FIELDS: CareerField[] = [
     preferredPatterns: ['analytical', 'building'],
     characterExamples: ['alex', 'devon'],
     birminghamEmployers: ['Amazon', 'FedEx', 'UPS', 'Norfolk Southern']
+  },
+
+  // Neuro & Behavioral Expansions
+  {
+    id: 'neuro_technology',
+    name: 'Neuro-Technology & BCI',
+    sector: 'Technology',
+    requiredSkills: [
+      { skillId: 'neuroscience_literacy', minLevel: 4 },
+      { skillId: 'programming', minLevel: 3 },
+      { skillId: 'data_analysis', minLevel: 3 },
+      { skillId: 'innovation', minLevel: 3 }
+    ],
+    preferredPatterns: ['analytical', 'exploring'],
+    characterExamples: ['maya', 'elena'],
+    birminghamEmployers: ['UAB Neuroengineering', 'Southern Research', 'Innovation Depot']
+  },
+  {
+    id: 'organizational_psychology',
+    name: 'Organizational Psychology',
+    sector: 'Human Services',
+    requiredSkills: [
+      { skillId: 'behavioral_psychology', minLevel: 4 },
+      { skillId: 'systems_thinking', minLevel: 3 },
+      { skillId: 'empathy', minLevel: 3 },
+      { skillId: 'data_analysis', minLevel: 2 }
+    ],
+    preferredPatterns: ['analytical', 'helping'],
+    characterExamples: ['jordan', 'grace', 'zara'],
+    birminghamEmployers: ['Leadership Birmingham', 'Regions HR', 'UAB Medicine']
   }
 ]
 
@@ -435,7 +574,8 @@ function calculatePatternMatch(
 
   career.preferredPatterns.forEach(pattern => {
     const patternValue = patterns[pattern]
-    const contribution = Math.min(patternValue / 10, 1) * maxPerPattern
+    // Max pattern level is 5, so we divide by 5 to get 0-1 ratio
+    const contribution = Math.min(patternValue / 5, 1) * maxPerPattern
     score += contribution
   })
 
@@ -570,7 +710,7 @@ export function getSkillTransfers(skillId: string): SkillTransfer | null {
     fromDomain: skill.category,
     toDomains: skill.transferDomains,
     transferStrength: skill.transferDomains.length > 4 ? 'high' :
-                      skill.transferDomains.length > 2 ? 'medium' : 'low',
+      skill.transferDomains.length > 2 ? 'medium' : 'low',
     description: `${skill.name} transfers across ${skill.transferDomains.length} domains`
   }
 }
@@ -1454,4 +1594,56 @@ function getCharacterForSkill(skillId: string): CharacterId {
   )
 
   return career?.characterExamples[0] ?? 'samuel'
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// D-016: SKILL DECAY NARRATIVE
+// Internal monologue generation for decaying skills
+// ═══════════════════════════════════════════════════════════════════════════
+
+/**
+ * Get internal monologue text for a decaying skill
+ */
+export function getSkillDecayNarrative(skillId: string): string {
+  const skill = SKILLS[skillId]
+  if (!skill) return "You feel a part of yourself fading, but you can't quite place what it is."
+
+  const narratives: Record<SkillCategory, string[]> = {
+    communication: [
+      `Your ability to articulate [${skill.name}] feels heavy on your tongue today.`,
+      `Words regarding [${skill.name}] don't come as easily as they used to.`,
+      `You struggle to find the right phrasing for [${skill.name}]. It's been too long.`
+    ],
+    technical: [
+      `The precise details of [${skill.name}] seem a bit blurry in your mind.`,
+      `Your technical grasp on [${skill.name}] feels rusty. Like a machine left in the rain.`,
+      `You reach for a concept related to [${skill.name}], but it slips through your fingers.`
+    ],
+    analytical: [
+      `Your [${skill.name}] pathways feel slower. Connections aren't sparking as fast.`,
+      `The sharp edge of your [${skill.name}] has dulled from disuse.`,
+      `It takes you a moment longer to process [${skill.name}] than it did last week.`
+    ],
+    interpersonal: [
+      `Your connection to [${skill.name}] feels distant. A wall has grown.`,
+      `Reading the emotional nuance of [${skill.name}] feels like reading a foreign language today.`,
+      `You feel a bit out of sync with [${skill.name}]. The rhythm is off.`
+    ],
+    leadership: [
+      `The weight of [${skill.name}] feels heavier. Your command is slipping.`,
+      `Your instinct for [${skill.name}] hesitates. Confidence has eroded.`,
+      `You question your own authority on [${skill.name}]. The certainty is gone.`
+    ],
+    creative: [
+      `The spark of [${skill.name}] is dim. The ideas aren't flowing.`,
+      `Your vision for [${skill.name}] is static. The colors have faded.`,
+      `You try to summon [${skill.name}], but the muse is silent.`
+    ]
+  }
+
+  const options = narratives[skill.category] || narratives.analytical
+  const template = options[Math.floor(Math.random() * options.length)]
+
+  // Clean up bracketed name if template uses it, otherwise just return text
+  return template.replace(`[${skill.name}]`, skill.name)
 }

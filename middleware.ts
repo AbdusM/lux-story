@@ -10,6 +10,7 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   // Protect all /admin routes (except login)
+  /* TEMPORARILY DISABLED PER USER REQUEST
   if (pathname.startsWith('/admin') && !pathname.startsWith('/admin/login')) {
     // Check for auth token in cookie
     const authToken = request.cookies.get('admin_auth_token')?.value
@@ -22,6 +23,7 @@ export function middleware(request: NextRequest) {
       return NextResponse.redirect(loginUrl)
     }
   }
+  */
 
   return NextResponse.next()
 }

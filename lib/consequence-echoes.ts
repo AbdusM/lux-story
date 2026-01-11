@@ -575,6 +575,8 @@ export const CHARACTER_ECHOES: Record<string, {
     }
   },
 
+
+
   asha: {
     trustUp: {
       subtle: [
@@ -651,6 +653,12 @@ export const CHARACTER_ECHOES: Record<string, {
       ],
       patience: [
         { text: "\"You don't rush the job.\"", emotion: "approving", timing: "delayed" }
+      ],
+      analytical: [
+        { text: "\"You measure twice, cut once. That's good practice.\"", emotion: "approving", timing: "delayed" }
+      ],
+      helping: [
+        { text: "\"You don't just fix the machine. You help the person running it.\"", emotion: "warm", timing: "delayed" }
       ]
     }
   },
@@ -691,6 +699,12 @@ export const CHARACTER_ECHOES: Record<string, {
       ],
       helping: [
         { text: "\"Your voice heals.\"", emotion: "grateful", timing: "delayed" }
+      ],
+      patience: [
+        { text: "\"You listen to the silence between the notes.\"", emotion: "peaceful", timing: "delayed" }
+      ],
+      building: [
+        { text: "\"You compose your own reality.\"", emotion: "inspired", timing: "delayed" }
       ]
     }
   },
@@ -731,6 +745,12 @@ export const CHARACTER_ECHOES: Record<string, {
       ],
       building: [
         { text: "\"You optimize the workflow.\"", emotion: "pleased", timing: "delayed" }
+      ],
+      exploring: [
+        { text: "\"You look for the data that isn't there. The outliers.\"", emotion: "intrigued", timing: "delayed" }
+      ],
+      patience: [
+        { text: "\"You wait for statistical significance.\"", emotion: "approving", timing: "delayed" }
       ]
     }
   },

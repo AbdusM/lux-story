@@ -11,6 +11,7 @@ import { getPatternPreviewStyles, getPatternHintText } from '@/lib/pattern-deriv
 import { type PlayerPatterns } from '@/lib/character-state'
 
 import { useGameStore } from '@/lib/game-store'
+import { truncateTextForLoad, CognitiveLoadLevel } from '@/lib/cognitive-load'
 
 /**
  * Pattern-specific hover colors for choice buttons
@@ -175,6 +176,8 @@ interface GameChoicesProps {
   glass?: boolean
   /** Player's pattern scores for D-007 pattern previews */
   playerPatterns?: PlayerPatterns
+  /** Claim 16: Cognitive Load Level (truncates text) */
+  cognitiveLoad?: CognitiveLoadLevel
 }
 
 /**
@@ -322,7 +325,7 @@ function getLockMessage(choice: Choice): string {
 }
 
 // Memoized choice button component
-const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, isLocked, glass, showPatternIcon, playerPatterns }: {
+const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, isLocked, glass, showPatternIcon, playerPatterns, cognitiveLoad }: {
   choice: Choice
   index: number
   onChoice: (choice: Choice) => void
@@ -333,6 +336,7 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
   showPatternIcon?: boolean
   /** D-007: Player patterns for subtle preview glow */
   playerPatterns?: PlayerPatterns
+  cognitiveLoad?: CognitiveLoadLevel
 }) => {
   // MAGNETIC EFFECT REMOVED for stability and "less disjointed" feel
   // const magnetic = useMagneticElement(...)
@@ -505,7 +509,9 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
               {choice.pattern === 'building' && <Hammer className="w-4 h-4 text-amber-500" />}
             </div>
           )}
-          <span className="flex-1 line-clamp-4">{choice.text}</span>
+          <span className="flex-1 line-clamp-4">
+            {cognitiveLoad ? truncateTextForLoad(choice.text, cognitiveLoad) : choice.text}
+          </span>
         </Button>
       </motion.div>
     </div>
@@ -558,7 +564,7 @@ const groupChoices = (choices: Choice[]) => {
  * - 1-9: Direct selection of choice by number
  * - Escape: Clear focus
  */
-export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevels, glass = false, playerPatterns }: GameChoicesProps) => {
+export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevels, glass = false, playerPatterns, cognitiveLoad = 'normal' }: GameChoicesProps) => {
   const { focusedIndex, containerRef } = useKeyboardNavigation(choices, isProcessing, onChoice)
 
   // ABILITY CHECK: Pattern Preview (P0)
@@ -645,6 +651,7 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
                     glass={glass}
                     showPatternIcon={hasPatternPreview}
                     playerPatterns={playerPatterns}
+                    cognitiveLoad={cognitiveLoad}
                   />
                 )
               })}
@@ -695,6 +702,7 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
               glass={glass}
               showPatternIcon={hasPatternPreview}
               playerPatterns={playerPatterns}
+              cognitiveLoad={cognitiveLoad}
             />
           )
         })

@@ -78,14 +78,21 @@ export function SimulationRenderer({ simulation, onComplete }: SimulationRendere
                 case 'news_feed': // Nadia
                     return <MediaStudio config={simulation} onSuccess={handleSuccess} variant={simulation.type as 'audio_studio' | 'news_feed'} />
 
-                case 'chat_negotiation': // Alex
+                case 'chat_negotiation': // Grace/Tess
                     return <DiplomacyTable config={simulation} onSuccess={handleSuccess} variant="negotiation" />
 
-                case 'conversation_tree': // Devon
+                case 'conversation_tree': // Devon (Older nodes?)
                     return <DiplomacyTable config={simulation} onSuccess={handleSuccess} variant="cognitive" />
 
                 case 'conductor_interface': // Samuel
                     return <DiplomacyTable config={simulation} onSuccess={handleSuccess} variant="operations" />
+
+                case 'prompt_engineering': // Alex
+                    // Using SecureTerminal as it handles text/code display best
+                    return <SecureTerminal config={simulation} onSuccess={handleSuccess} variant="query" />
+
+                case 'code_refactor': // Marcus
+                    return <SecureTerminal config={simulation} onSuccess={handleSuccess} variant="audit" />
 
                 case 'creative_direction': // Quinn
                     return <PitchDeck config={simulation} onSuccess={handleSuccess} />

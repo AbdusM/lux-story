@@ -10,6 +10,7 @@ import { type TrustMomentum, createTrustMomentum, updateTrustMomentum, applyMome
 import { type IcebergState, createIcebergState } from './knowledge-derivatives'
 import { type PatternEvolutionHistory, createPatternEvolutionHistory } from './pattern-derivatives'
 import { type StoryArcState, createStoryArcState } from './story-arcs'
+import { SkillUsageRecord } from './assessment-derivatives'
 
 /**
  * Core character relationship state
@@ -131,7 +132,13 @@ export interface GameState {
   patternEvolutionHistory?: PatternEvolutionHistory
 
   // D-061: Story Arcs - multi-session narrative threads
+  // D-061: Story Arcs - multi-session narrative threads
+  // D-061: Story Arcs - multi-session narrative threads
   storyArcState?: StoryArcState
+
+  // D-014: Skill Tracking (Claim 14)
+  skillLevels: Record<string, number>
+  skillUsage: Map<string, SkillUsageRecord>
 }
 
 /**
@@ -285,6 +292,9 @@ export interface SerializableGameState {
     chapterProgress: Array<[string, number]>
     completedChapters: string[]
   }
+  // D-014: Serializable skills
+  skillLevels: Record<string, number>
+  skillUsage: Array<{ key: string, value: SkillUsageRecord }>
 }
 
 
@@ -566,7 +576,10 @@ export class GameStateUtils {
         points: [...state.patternEvolutionHistory.points],
         patternTotals: { ...state.patternEvolutionHistory.patternTotals },
         milestones: [...state.patternEvolutionHistory.milestones]
-      } : undefined
+      } : undefined,
+      // D-014: Clone skills
+      skillLevels: { ...state.skillLevels },
+      skillUsage: new Map(state.skillUsage)
     }
   }
 
@@ -665,9 +678,13 @@ export class GameStateUtils {
         }
       },
       // D-019: Initialize iceberg reference tracking
+      // D-019: Initialize iceberg reference tracking
       icebergState: createIcebergState(),
       // D-040: Initialize pattern evolution history
-      patternEvolutionHistory: createPatternEvolutionHistory()
+      patternEvolutionHistory: createPatternEvolutionHistory(),
+      // D-014: Skills
+      skillLevels: {},
+      skillUsage: new Map()
     }
   }
 
@@ -748,7 +765,9 @@ export class GameStateUtils {
         completedArcs: Array.from(state.storyArcState.completedArcs),
         chapterProgress: Array.from(state.storyArcState.chapterProgress.entries()),
         completedChapters: Array.from(state.storyArcState.completedChapters)
-      } : undefined
+      } : undefined,
+      skillLevels: state.skillLevels,
+      skillUsage: Array.from(state.skillUsage.entries()).map(([key, value]) => ({ key, value }))
     }
   }
 
@@ -853,7 +872,9 @@ export class GameStateUtils {
         completedArcs: new Set(serialized.storyArcState.completedArcs),
         chapterProgress: new Map(serialized.storyArcState.chapterProgress),
         completedChapters: new Set(serialized.storyArcState.completedChapters)
-      } : createStoryArcState()
+      } : createStoryArcState(),
+      skillLevels: serialized.skillLevels || {},
+      skillUsage: new Map((serialized.skillUsage || []).map(item => [item.key, item.value]))
     }
   }
 }
@@ -939,7 +960,10 @@ export class StateValidation {
           data_flow: 0,
           station_core: 0
         }
-      }
+      },
+      // D-014: Skills (Minimal)
+      skillLevels: {},
+      skillUsage: new Map()
     } as GameState
     return !!findCharacterForNode(nodeId, minimalState)
   }

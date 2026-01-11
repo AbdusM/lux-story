@@ -1,5 +1,5 @@
 
-import { SimulationConfig } from '@/components/game/simulations/types'
+import { SimulationDefaultContext, SimulationType } from '@/components/game/simulations/types'
 import { SimulationPhase, SimulationDifficulty } from '@/lib/dialogue-graph'
 
 // ISP: The "Context Factory"
@@ -11,7 +11,7 @@ export type SimulationDefinition = {
     id: string
     characterId: string
     title: string
-    type: string // To match SimulationConfig['type']
+    type: SimulationType // Enforce strict union
     icon: string
     description: string
 
@@ -20,11 +20,7 @@ export type SimulationDefinition = {
     difficulty: SimulationDifficulty
 
     // The default context used when loaded via God Mode
-    defaultContext: {
-        taskDescription: string
-        initialContext: any
-        successFeedback: string
-    }
+    defaultContext: SimulationDefaultContext
 }
 
 export const SIMULATION_REGISTRY: SimulationDefinition[] = [

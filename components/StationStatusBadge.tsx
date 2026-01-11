@@ -14,6 +14,7 @@ import { motion, useReducedMotion } from 'framer-motion'
 import type { GameState } from '@/lib/character-state'
 import { calculateAmbientContext } from '@/content/ambient-descriptions'
 import { getWaitingCharacters } from '@/lib/character-waiting'
+import { calculatePlayerEngagement } from '@/lib/engagement-metrics'
 
 interface StationStatusBadgeProps {
   gameState: GameState | null
@@ -29,6 +30,12 @@ const ATMOSPHERE_LABELS: Record<string, { label: string; color: string }> = {
   harmonious: { label: 'Harmonious', color: 'text-purple-400' }
 }
 
+const ENGAGEMENT_LABELS = {
+  low: { label: 'Drifting', color: 'text-slate-500' },
+  moderate: { label: 'Stable', color: 'text-blue-300' },
+  high: { label: 'Locked', color: 'text-emerald-300' }
+}
+
 export function StationStatusBadge({ gameState, className = '' }: StationStatusBadgeProps) {
   const prefersReducedMotion = useReducedMotion()
 
@@ -41,13 +48,17 @@ export function StationStatusBadge({ gameState, className = '' }: StationStatusB
     return {
       atmosphere,
       atmosphereLabel: ATMOSPHERE_LABELS[atmosphere] || ATMOSPHERE_LABELS.dormant,
-      waitingCount: waitingCharacters.length
+      waitingCount: waitingCharacters.length,
+      engagement: calculatePlayerEngagement(gameState.playerId).engagementLevel
     }
   }, [gameState])
 
   if (!statusData) return null
 
-  const { atmosphereLabel, waitingCount } = statusData
+  if (!statusData) return null
+
+  const { atmosphereLabel, waitingCount, engagement } = statusData
+  const engagementMeta = ENGAGEMENT_LABELS[engagement || 'low']
 
   return (
     <motion.div
@@ -61,6 +72,7 @@ export function StationStatusBadge({ gameState, className = '' }: StationStatusB
       </span>
 
       {/* Waiting characters (only show if there are any) */}
+
       {waitingCount > 0 && (
         <>
           <span className="text-slate-500">|</span>
@@ -69,6 +81,12 @@ export function StationStatusBadge({ gameState, className = '' }: StationStatusB
           </span>
         </>
       )}
+
+      {/* Engagement Indicator (Claim 15) */}
+      <span className="text-slate-500">|</span>
+      <span className={engagementMeta.color} title="Neural Synchronization Level">
+        Sync: {engagementMeta.label}
+      </span>
     </motion.div>
   )
 }

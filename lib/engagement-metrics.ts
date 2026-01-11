@@ -38,6 +38,7 @@ export interface EngagementMetrics {
   localEngagement: number // Interest in Birmingham opportunities
   careerReadiness: 'exploring' | 'focused' | 'ready' | 'committed'
   recommendationAlignment: number // How well recommendations match behavior
+  engagementLevel: 'low' | 'moderate' | 'high' // Claim 15: Exposed for UI
 
   // Quality indicators
   meaningfulChoices: number // Choices that led to insights
@@ -127,6 +128,25 @@ export class EngagementMetricsEngine {
     // Calculate recommendation alignment
     const recommendationAlignment = this.calculateRecommendationAlignment(persona, careerInsights)
 
+    // Helper object for categorization
+    const tempMetrics = {
+      choicesPerSession: totalChoices > 0 ? totalChoices / Math.max(1, Math.floor(totalChoices / 8)) : 0,
+      strongAffinities,
+      localEngagement,
+      patternConsistency
+    }
+
+    // Calculate level (Claim 15)
+    // Replicates logic from categorizeEngagementLevel to avoid circular type issues before object creation
+    const engagementScore = (tempMetrics.choicesPerSession * 0.2) +
+      (tempMetrics.strongAffinities * 0.3) +
+      (tempMetrics.localEngagement * 0.3) +
+      (tempMetrics.patternConsistency * 0.2)
+
+    let engagementLevel: 'low' | 'moderate' | 'high' = 'low'
+    if (engagementScore >= 0.7) engagementLevel = 'high'
+    else if (engagementScore >= 0.4) engagementLevel = 'moderate'
+
     const metrics: EngagementMetrics = {
       playerId,
       sessionId,
@@ -157,6 +177,7 @@ export class EngagementMetricsEngine {
       localEngagement,
       careerReadiness,
       recommendationAlignment,
+      engagementLevel,
 
       // Quality indicators
       meaningfulChoices: this.calculateMeaningfulChoices(totalChoices, careerInsights.length),
@@ -523,9 +544,9 @@ export class EngagementMetricsEngine {
    */
   private categorizeEngagementLevel(metrics: EngagementMetrics): 'low' | 'moderate' | 'high' {
     const engagementScore = (metrics.choicesPerSession * 0.2) +
-                           (metrics.strongAffinities * 0.3) +
-                           (metrics.localEngagement * 0.3) +
-                           (metrics.patternConsistency * 0.2)
+      (metrics.strongAffinities * 0.3) +
+      (metrics.localEngagement * 0.3) +
+      (metrics.patternConsistency * 0.2)
 
     if (engagementScore < 0.4) return 'low'
     if (engagementScore < 0.7) return 'moderate'

@@ -452,7 +452,7 @@ function DomainDetailPanel({ domainId, onClose }: DomainDetailPanelProps) {
                 className="flex items-center justify-between text-xs"
               >
                 <span className="text-slate-300 capitalize">
-                  {evidence.skillId.replace(/([A-Z])/g, ' $1').trim()}
+                  {evidence.skillId.replace(/_/g, ' ')}
                 </span>
                 <span className="text-slate-500">
                   {evidence.demonstrationCount} demos
