@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useMemo } from 'react'
-import { Card, CardContent } from '@/components/ui/card'
+import {  } from '@/components/ui/card'
 import { analyzeSkillGaps } from '@/lib/assessment-derivatives'
 import { useGameStore } from '@/lib/game-store'
 import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Legend } from 'recharts'

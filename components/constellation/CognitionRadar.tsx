@@ -8,7 +8,6 @@ import {
   COGNITIVE_DOMAIN_IDS,
   DOMAIN_METADATA,
   DOMAIN_THRESHOLDS,
-  getLevelColor
 } from "@/lib/cognitive-domains"
 import { useColorBlindMode } from "@/hooks/useColorBlindMode"
 import { springs } from "@/lib/animations"

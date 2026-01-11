@@ -160,7 +160,7 @@ export function LivingAtmosphere({
                 duration: 20,
                 repeat: Infinity,
                 repeatType: "mirror" as const,
-                ease: "easeInOut"
+                ease: "easeInOut" as const
             }
         }
     }

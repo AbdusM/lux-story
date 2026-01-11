@@ -288,15 +288,19 @@ export function RichTextRenderer({
             <div className="h-6" aria-hidden="true" />
           )}
           <motion.div
-            initial={{ opacity: 0 }}
+            initial={{ opacity: 0, filter: 'blur(8px)', scale: 0.98, y: 4 }}
             animate={{
-              opacity: index < visibleChunks ? 1 : 0
+              opacity: index < visibleChunks ? 1 : 0,
+              filter: index < visibleChunks ? 'blur(0px)' : 'blur(8px)',
+              scale: index < visibleChunks ? 1 : 0.98,
+              y: index < visibleChunks ? 0 : 4
             }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
+            transition={{
+              duration: 0.5, // Slower, more atmospheric
+              ease: [0.2, 0.6, 0.2, 1] // Organic easeOut
+            }}
             className={cn(
-              "leading-relaxed",  // Color inherited from parent className (--text-dialogue)
-              // Use invisible (not hidden) to reserve layout space and prevent CLS
-              // This keeps the container height stable as chunks reveal
+              "leading-relaxed",
               index >= visibleChunks && "invisible pointer-events-none"
             )}
           >

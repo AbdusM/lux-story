@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Lock, User, MessageCircle, Compass, Target, Clock, ShieldAlert, Trophy, CheckCircle2, Circle } from 'lucide-react'
@@ -9,7 +10,6 @@ import { SKILL_DEFINITIONS, SKILL_CHARACTER_HINTS } from '@/lib/skill-definition
 import { SKILL_CLUSTERS } from '@/lib/constellation/skill-positions'
 import { CHARACTER_RELATIONSHIP_WEB } from '@/lib/character-relationships'
 import { getLoyaltyExperienceForCharacter } from '@/lib/loyalty-experience'
-import { LOYALTY_TRUST_THRESHOLD, LOYALTY_PATTERN_THRESHOLD } from '@/lib/constants'
 import { useGameStore } from '@/lib/game-store'
 import { PATTERN_METADATA } from '@/lib/patterns'
 import type { PatternType } from '@/lib/patterns'

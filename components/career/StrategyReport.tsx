@@ -202,50 +202,52 @@ export function StrategyReport({ gameState, onClose }: StrategyReportProps) {
                             </CardContent>
                         </Card>
 
-                        {/* TAB 3: NEURO-COGNITIVE (The Brain Hexagon) */}
-                        <TabsContent value="neuro" className="space-y-6 print:hidden">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <Card className="bg-slate-950 border-slate-800">
-                                    <CardHeader>
-                                        <CardTitle className="text-slate-100 flex items-center gap-2">
-                                            <Brain className="w-5 h-5 text-purple-400" />
-                                            Cognitive Architecture
-                                        </CardTitle>
-                                    </CardHeader>
-                                    <CardContent className="flex justify-center p-6">
-                                        <NeuroHexagon stats={neuroStats} />
-                                    </CardContent>
-                                </Card>
+                    </TabsContent>
 
-                                <Card className="bg-slate-950 border-slate-800">
-                                    <CardHeader>
-                                        <CardTitle className="text-slate-100">Profile Interpretation</CardTitle>
-                                    </CardHeader>
-                                    <CardContent className="text-slate-400 text-sm space-y-4">
-                                        <p>
-                                            Your neural profile indicates a strong inclination towards
-                                            <span className="text-purple-300"> {
-                                                Object.entries(neuroStats).sort(([, a], [, b]) => b - a)[0][0].toUpperCase()
-                                            }</span> processing.
-                                        </p>
-                                        <p>
-                                            The hexagon visualization maps your demonstrated competencies across six key cognitive domains. A balanced shape indicates generalist adaptability, while specific spikes indicate specialized neural pathways.
-                                        </p>
-                                        <div className="grid grid-cols-2 gap-2 mt-4">
-                                            {Object.entries(neuroStats)
-                                                .sort(([, a], [, b]) => b - a)
-                                                .slice(0, 4)
-                                                .map(([key, val]) => (
-                                                    <div key={key} className="flex justify-between border-b border-slate-800 py-1">
-                                                        <span className="capitalize">{key}</span>
-                                                        <span className="text-slate-200">{val}%</span>
-                                                    </div>
-                                                ))}
-                                        </div>
-                                    </CardContent>
-                                </Card>
-                            </div>
-                        </TabsContent>
+                    {/* TAB 3: NEURO-COGNITIVE (The Brain Hexagon) */}
+                    <TabsContent value="neuro" className="space-y-6 print:hidden">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <Card className="bg-slate-950 border-slate-800">
+                                <CardHeader>
+                                    <CardTitle className="text-slate-100 flex items-center gap-2">
+                                        <Brain className="w-5 h-5 text-purple-400" />
+                                        Cognitive Architecture
+                                    </CardTitle>
+                                </CardHeader>
+                                <CardContent className="flex justify-center p-6">
+                                    <NeuroHexagon stats={neuroStats} />
+                                </CardContent>
+                            </Card>
+
+                            <Card className="bg-slate-950 border-slate-800">
+                                <CardHeader>
+                                    <CardTitle className="text-slate-100">Profile Interpretation</CardTitle>
+                                </CardHeader>
+                                <CardContent className="text-slate-400 text-sm space-y-4">
+                                    <p>
+                                        Your neural profile indicates a strong inclination towards
+                                        <span className="text-purple-300"> {
+                                            Object.entries(neuroStats).sort(([, a], [, b]) => b - a)[0][0].toUpperCase()
+                                        }</span> processing.
+                                    </p>
+                                    <p>
+                                        The hexagon visualization maps your demonstrated competencies across six key cognitive domains. A balanced shape indicates generalist adaptability, while specific spikes indicate specialized neural pathways.
+                                    </p>
+                                    <div className="grid grid-cols-2 gap-2 mt-4">
+                                        {Object.entries(neuroStats)
+                                            .sort(([, a], [, b]) => b - a)
+                                            .slice(0, 4)
+                                            .map(([key, val]) => (
+                                                <div key={key} className="flex justify-between border-b border-slate-800 py-1">
+                                                    <span className="capitalize">{key}</span>
+                                                    <span className="text-slate-200">{val}%</span>
+                                                </div>
+                                            ))}
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        </div>
+                    </TabsContent>
                 </Tabs>
             </div>
 

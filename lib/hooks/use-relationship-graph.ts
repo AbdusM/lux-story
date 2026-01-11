@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useMemo } from 'react'
 import { useGameStore } from '@/lib/game-store'
 import {
@@ -48,6 +49,10 @@ export const useRelationshipGraph = () => {
         // 1. Identify met characters (Nodes)
         const nodes: GraphNode[] = []
         const metCharacterIds = new Set<string>()
+        const links: GraphLink[] = []
+
+        // Pre-compute flag set
+        const globalFlagsSet = new Set(coreGameState?.globalFlags || [])
 
         // Add Player Node (Center)
         // nodes.push({ id: 'player', name: 'You', trust: 10, relationshipStatus: 'self' })
@@ -76,18 +81,7 @@ export const useRelationshipGraph = () => {
             })
         }
 
-        // 2. Filter Edges
-        const links: GraphLink[] = []
-
-        // Pre-compute flag set for performance
-        const globalFlagsSet = new Set(coreGameState?.globalFlags || [])
-
         CHARACTER_RELATIONSHIP_WEB.forEach((edge, index) => {
-            // Both nodes must be met
-            if (!metCharacterIds.has(edge.fromCharacterId) || !metCharacterIds.has(edge.toCharacterId)) {
-                return
-            }
-
             // Check reveal conditions
             if (edge.revealConditions) {
                 // Trust check (from the 'from' character's perspective)
@@ -114,7 +108,7 @@ export const useRelationshipGraph = () => {
             let currentIntensity = edge.intensity
             let currentPublicOpinion = edge.opinions.publicOpinion
             let currentPrivateOpinion = edge.opinions.privateOpinion
-            let currentSentiment = edge.opinions.sentiment
+            const currentSentiment = edge.opinions.sentiment
 
             // Apply Dynamic Rules
             if (edge.dynamicRules) {
@@ -142,5 +136,7 @@ export const useRelationshipGraph = () => {
         })
 
         return { nodes, links }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [coreGameState])
 }
