@@ -419,6 +419,9 @@ export default function StatefulGameInterface() {
   // 5. GOD MODE OVERRIDE-Access from zustand store (conditional render at end of component)
   const debugSimulation = useGameStore(s => s.debugSimulation)
 
+  // Force re-render when God Mode navigates (refreshCounter increments trigger React update)
+  const refreshCounter = useGameStore(s => s.refreshCounter)
+
   // Derived State for UI Logic
   const currentState = state.gameState ? 'dialogue' : 'station'
 
@@ -478,6 +481,35 @@ export default function StatefulGameInterface() {
       }
     }
   }, [])
+
+  // God Mode Refresh: Reload dialogue when refreshCounter changes (God Mode navigation)
+  useEffect(() => {
+    if (!state.gameState || refreshCounter === 0) return
+
+    const coreState = useGameStore.getState().coreGameState
+    if (!coreState) return
+
+    // Reload dialogue from coreGameState
+    const characterId = coreState.currentCharacterId as CharacterId
+    const nodeId = coreState.currentNodeId
+    const graph = getGraphForCharacter(characterId, state.gameState)
+    const node = graph.nodes.get(nodeId)
+
+    if (node) {
+      logger.info('[God Mode Refresh] Reloading dialogue', { characterId, nodeId })
+
+      setState(prev => ({
+        ...prev,
+        currentNode: node,
+        currentGraph: graph,
+        currentCharacterId: characterId,
+        currentContent: node.content[0].text,
+        currentDialogueContent: node.content[0],
+        availableChoices: StateConditionEvaluator.evaluateChoices(node, state.gameState!, characterId),
+        previousSpeaker: null
+      }))
+    }
+  }, [refreshCounter])
 
   // 4. NAVIGATION BRIDGE (Connects Constellation Panel to Game Interface)
   // Listen for navigation requests from the Zustand store

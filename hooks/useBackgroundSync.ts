@@ -17,6 +17,9 @@ import { SyncQueue, SyncResult, QueueStats } from '@/lib/sync-queue'
 import { db } from '@/lib/database-service'
 import { logger } from '@/lib/logger'
 
+// Debounce delay for sync processing (allows actions to batch)
+const SYNC_DEBOUNCE_MS = 2000 // Wait 2s for actions to accumulate
+
 interface UseBackgroundSyncOptions {
   enabled?: boolean
   intervalMs?: number // How often to attempt sync (default: 30000 = 30s)
@@ -48,46 +51,58 @@ export function useBackgroundSync(
   // Use ref to prevent concurrent sync attempts
   const syncInProgressRef = useRef(false)
 
+  // Debounce timer for batching sync operations
+  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null)
+
   /**
-   * Core sync function - processes the queue
+   * Core sync function - processes the queue (debounced)
+   * Waits for actions to accumulate before syncing to reduce API calls
    */
   const triggerSync = useCallback(async () => {
-    // Prevent concurrent sync attempts (silent skip to reduce spam)
-    if (syncInProgressRef.current) {
-      return
+    // Clear existing debounce timer
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current)
     }
 
-    // Check if we're in browser environment
-    if (typeof window === 'undefined') {
-      return
-    }
-
-    syncInProgressRef.current = true
-    setIsProcessing(true)
-
-    try {
-      const result = await SyncQueue.processQueue(db as unknown as Record<string, (...args: unknown[]) => Promise<unknown>>)
-      setLastSyncResult(result)
-
-      // Update stats after sync
-      const stats = SyncQueue.getStats()
-      setQueueStats(stats)
-
-      // Log results
-      if (result.processed > 0) {
-        logger.debug('Synced actions', { operation: 'use-background-sync.sync', processed: result.processed })
-      }
-      if (result.failed > 0) {
-        console.warn(`[useBackgroundSync] ${result.failed} actions failed`)
+    // Debounce: Wait for actions to accumulate
+    debounceTimerRef.current = setTimeout(async () => {
+      // Prevent concurrent sync attempts (silent skip to reduce spam)
+      if (syncInProgressRef.current) {
+        return
       }
 
-    } catch (error) {
-      console.error('[useBackgroundSync] Sync error:', error)
-      setLastSyncResult({ success: false, processed: 0, failed: 0 })
-    } finally {
-      syncInProgressRef.current = false
-      setIsProcessing(false)
-    }
+      // Check if we're in browser environment
+      if (typeof window === 'undefined') {
+        return
+      }
+
+      syncInProgressRef.current = true
+      setIsProcessing(true)
+
+      try {
+        const result = await SyncQueue.processQueue(db as unknown as Record<string, (...args: unknown[]) => Promise<unknown>>)
+        setLastSyncResult(result)
+
+        // Update stats after sync
+        const stats = SyncQueue.getStats()
+        setQueueStats(stats)
+
+        // Log results
+        if (result.processed > 0) {
+          logger.debug('Synced actions', { operation: 'use-background-sync.sync', processed: result.processed })
+        }
+        if (result.failed > 0) {
+          console.warn(`[useBackgroundSync] ${result.failed} actions failed`)
+        }
+
+      } catch (error) {
+        console.error('[useBackgroundSync] Sync error:', error)
+        setLastSyncResult({ success: false, processed: 0, failed: 0 })
+      } finally {
+        syncInProgressRef.current = false
+        setIsProcessing(false)
+      }
+    }, SYNC_DEBOUNCE_MS) // Wait for actions to batch
   }, [])
 
   /**
@@ -103,7 +118,13 @@ export function useBackgroundSync(
     // Initial sync on mount
     triggerSync()
 
-    return () => clearInterval(interval)
+    return () => {
+      clearInterval(interval)
+      // Clean up debounce timer
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current)
+      }
+    }
   }, [enabled, intervalMs, triggerSync])
 
   /**
