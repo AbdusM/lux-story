@@ -76,6 +76,13 @@ npx tsx scripts/validate-dialogue-graphs.ts
 ---
 
 ## 📄 Documentation
+
+### For New Team Members
+*   [Navigation Guide](docs/03_PROCESS/onboarding/00-navigation-guide.md) - Start here! Complete guide to finding what you need.
+*   [Character Quick Reference](docs/03_PROCESS/onboarding/01-character-quick-reference.md) - All 20 characters at a glance.
+*   [Game Terminology Glossary](docs/03_PROCESS/onboarding/02-glossary.md) - Understand patterns, trust, simulations, and more.
+
+### Technical Documentation
 *   [Game Capabilities Audit](docs/01_MECHANICS/GAME_CAPABILITIES_AUDIT.md) - Full feature breakdown.
 *   [System Integration Report](docs/01_MECHANICS/SYSTEM_INTEGRATION_REPORT.md) - Verification of Career/Skill mapping.
 *   [Worldbuilding Bible](docs/02_WORLD/STATION_HISTORY_BIBLE.md) - The lore foundation.

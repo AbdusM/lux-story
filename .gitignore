@@ -69,3 +69,12 @@ Thumbs.db
 playwright-report/
 test-results/
 .playwright-mcp/
+
+# Test outputs and validation
+dialogue-length-report.json
+validation_output.txt
+*.log
+
+# Temporary files
+*.temp.*
+temp_*.json
