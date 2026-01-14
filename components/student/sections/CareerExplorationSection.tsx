@@ -53,6 +53,8 @@ export function CareerExplorationSection({ profile }: CareerExplorationSectionPr
               {topCareers.map((career) => (
                 <div
                   key={career.id || career.name}
+                  data-testid="career-match-card"
+                  data-career-name={career.name}
                   className="border rounded-lg p-4 hover:bg-gray-50 transition-colors"
                 >
                   <div className="flex items-start justify-between mb-2">

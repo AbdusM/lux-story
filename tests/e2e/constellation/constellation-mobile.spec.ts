@@ -112,27 +112,31 @@ async function openConstellationPanel(page: Page): Promise<boolean> {
   const enterButton = page.getByRole('button', { name: /enter.*station/i })
   if (await enterButton.isVisible({ timeout: 3000 }).catch(() => false)) {
     await enterButton.click()
-    await page.waitForTimeout(1000)
+    // Wait for transition - either Continue button or constellation button appears
+    await Promise.race([
+      page.getByRole('button', { name: /continue/i }).waitFor({ state: 'visible', timeout: 5000 }).catch(() => {}),
+      page.getByLabel('Open Skill Constellation').waitFor({ state: 'visible', timeout: 5000 }).catch(() => {})
+    ])
   }
 
   // Try to click Continue button if visible
   const continueButton = page.getByRole('button', { name: /continue/i })
   if (await continueButton.isVisible({ timeout: 2000 }).catch(() => false)) {
     await continueButton.click()
-    await page.waitForTimeout(1000)
+    // Wait for constellation button to appear after continue
+    await page.getByLabel('Open Skill Constellation').waitFor({ state: 'visible', timeout: 5000 }).catch(() => {})
   }
 
-  // Wait for game UI
-  await page.waitForTimeout(2000)
-
-  // Look for constellation button
+  // Look for constellation button (already visible if previous waits succeeded)
   const constellationBtn = page.getByLabel('Open Skill Constellation')
   if (!await constellationBtn.isVisible({ timeout: 5000 }).catch(() => false)) {
     return false
   }
 
   await constellationBtn.click()
-  await page.waitForTimeout(500)
+
+  // Wait for dialog to open
+  await page.getByRole('dialog').waitFor({ state: 'visible', timeout: 5000 }).catch(() => {})
   return true
 }
 
@@ -190,10 +194,12 @@ test.describe('Constellation Mobile UX', () => {
     // Switch to Skills tab
     const skillsTab = page.getByRole('tab', { name: /skills/i })
     await skillsTab.click()
-    await page.waitForTimeout(500)
 
-    // Verify cluster filter chips are visible
+    // Wait for tab to be selected and filter chips to appear
+    await expect(skillsTab).toHaveAttribute('aria-selected', 'true', { timeout: 3000 })
     await expect(page.getByRole('button', { name: 'All' })).toBeVisible({ timeout: 3000 })
+
+    // Verify all cluster filter chips are visible
     await expect(page.getByRole('button', { name: 'Mind' })).toBeVisible()
     await expect(page.getByRole('button', { name: 'Heart' })).toBeVisible()
   })
@@ -206,16 +212,18 @@ test.describe('Constellation Mobile UX', () => {
     }
 
     // Switch to Skills tab
-    await page.getByRole('tab', { name: /skills/i }).click()
-    await page.waitForTimeout(500)
+    const skillsTab = page.getByRole('tab', { name: /skills/i })
+    await skillsTab.click()
+
+    // Wait for tab to be selected
+    await expect(skillsTab).toHaveAttribute('aria-selected', 'true', { timeout: 3000 })
 
     // Click Mind cluster filter
     const mindFilter = page.getByRole('button', { name: 'Mind' })
     await mindFilter.click()
-    await page.waitForTimeout(300)
 
-    // Verify filter is active (has pressed state)
-    await expect(mindFilter).toHaveAttribute('aria-pressed', 'true')
+    // Wait for filter to be active (has pressed state)
+    await expect(mindFilter).toHaveAttribute('aria-pressed', 'true', { timeout: 3000 })
 
     // Click All to reset
     await page.getByRole('button', { name: 'All' }).click()
@@ -229,8 +237,12 @@ test.describe('Constellation Mobile UX', () => {
     }
 
     // Switch to Skills tab
-    await page.getByRole('tab', { name: /skills/i }).click()
-    await page.waitForTimeout(500)
+    const skillsTab = page.getByRole('tab', { name: /skills/i })
+    await skillsTab.click()
+
+    // Wait for tab to be selected and SVG to render
+    await expect(skillsTab).toHaveAttribute('aria-selected', 'true', { timeout: 3000 })
+    await expect(page.locator('svg[role="img"]')).toBeVisible({ timeout: 3000 })
 
     // Click on Communication skill (should be in center as hub)
     const communicationNode = page.locator('g[role="button"][aria-label*="Communication"]')
@@ -330,8 +342,12 @@ test.describe('Constellation Mobile UX', () => {
 
     // Check cluster filter chips
     await skillsTab.click()
-    await page.waitForTimeout(500)
+
+    // Wait for tab to be selected and filter chips to appear
+    await expect(skillsTab).toHaveAttribute('aria-selected', 'true', { timeout: 3000 })
     const allChip = page.getByRole('button', { name: 'All' })
+    await expect(allChip).toBeVisible({ timeout: 3000 })
+
     const chipBox = await allChip.boundingBox()
     expect(chipBox).not.toBeNull()
     if (chipBox) {

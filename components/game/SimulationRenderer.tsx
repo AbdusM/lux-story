@@ -122,7 +122,11 @@ export function SimulationRenderer({ simulation, onComplete }: SimulationRendere
     // --- INLINE MODE RENDERER ---
     if (simulation.mode === 'inline') {
         return (
-            <div className={cn("relative w-full overflow-hidden rounded-lg bg-black/20 border border-white/5", simulation.inlineHeight || 'h-48')}>
+            <div
+                data-testid="simulation-interface"
+                data-simulation-type={simulation.type}
+                className={cn("relative w-full overflow-hidden rounded-lg bg-black/20 border border-white/5", simulation.inlineHeight || 'h-48')}
+            >
                 {/* Minimal Header for Context */}
                 {/* <div className="absolute top-0 left-0 right-0 h-6 bg-black/40 flex items-center px-2 z-10 pointer-events-none">
                     <span className="text-[10px] uppercase font-mono tracking-widest text-slate-500">
@@ -131,7 +135,7 @@ export function SimulationRenderer({ simulation, onComplete }: SimulationRendere
                 </div> */}
 
                 {/* Content */}
-                <div className="absolute inset-0">
+                <div className="absolute inset-0" data-testid={`simulation-${simulation.type}`}>
                     {renderContent()}
                 </div>
 
@@ -156,7 +160,11 @@ export function SimulationRenderer({ simulation, onComplete }: SimulationRendere
 
     // --- FULLSCREEN MODE RENDERER (Original God Mode) ---
     return (
-        <div className="fixed inset-0 z-[60] bg-slate-950 text-slate-200 flex flex-col font-sans">
+        <div
+            data-testid="simulation-interface"
+            data-simulation-type={simulation.type}
+            className="fixed inset-0 z-[60] bg-slate-950 text-slate-200 flex flex-col font-sans"
+        >
             {/* SATELLITE OS HEADER */}
             <div className="h-12 border-b border-slate-800 bg-slate-900/80 flex items-center justify-between px-4 select-none">
                 <div className="flex items-center gap-2 text-xs font-mono tracking-widest text-slate-500">
@@ -196,7 +204,9 @@ export function SimulationRenderer({ simulation, onComplete }: SimulationRendere
                     </motion.div>
                 </div>
 
-                {renderContent()}
+                <div data-testid={`simulation-${simulation.type}`}>
+                    {renderContent()}
+                </div>
             </div>
 
             {/* FULLSCREEN SUCCESS OVERLAY */}

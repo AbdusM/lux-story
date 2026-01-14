@@ -167,15 +167,143 @@ vercel --prod        # Deploy to production
 ```
 
 ### Testing
+
+**Test Framework:** Comprehensive 3-layer testing strategy
+- **Unit Tests** (Vitest) - Pure logic, <100ms
+- **Integration Tests** (Playwright) - Browser APIs, localStorage
+- **E2E Tests** (Playwright) - Full user flows
+
+#### Running Tests
+
 ```bash
-npm test                        # Run all tests
-npm test tests/lib              # Run lib tests only
+# Unit tests (Vitest)
+npm test                        # All tests
+npm test tests/lib              # Lib tests only
 npm test -- --watch             # Watch mode
+
+# E2E tests (Playwright)
+npm run test:e2e                # All E2E tests
+npm run test:e2e:headed         # Visual mode
+npm run test:e2e:debug          # Step-through debugging
+
+# Specific projects
+npm run test:e2e -- --project=core-game
+npm run test:e2e -- --project=mobile-iphone-se
+npm run test:e2e -- --project=auth
+
+# Specific files
+npm run test:e2e tests/e2e/core-game-loop.spec.ts
+npm run test:e2e tests/e2e/mobile/game-flow.spec.ts
 ```
 
-- Vitest for unit testing
-- Playwright for E2E browser automation
-- Test page: `/test-pixels` for avatar verification
+#### Test Projects (Parallelization)
+
+| Project | Coverage | Workers | Runtime |
+|---------|----------|---------|---------|
+| `auth` | Admin authentication | 1 (serial) | ~2min |
+| `core-game` | Game loop, journey summary | 2 | ~3min |
+| `ui-components` | Constellation, homepage | 2 | ~2min |
+| `mobile-iphone-se` | Mobile tests (375×667) | 2 | ~5min |
+| `mobile-iphone-14` | Mobile tests (390×844) | 2 | ~5min |
+| `mobile-galaxy-s21` | Mobile tests (360×800) | 2 | ~5min |
+
+#### Test Structure
+
+```
+tests/
+├── e2e/                           # End-to-end tests
+│   ├── admin/                     # Auth tests (serial)
+│   ├── core-game-loop.spec.ts    # Critical game loop
+│   ├── journey-summary.spec.ts   # Journey summary
+│   ├── constellation/            # UI components
+│   ├── user-flows/               # Homepage, navigation
+│   ├── mobile/                   # Mobile-specific
+│   │   ├── game-flow.spec.ts     # Core flow on mobile
+│   │   ├── touch-targets.spec.ts # 44px validation
+│   │   ├── safe-areas.spec.ts    # iPhone notch/home
+│   │   └── performance.spec.ts   # Performance benchmarks
+│   └── fixtures/                 # Reusable test utilities
+│       ├── game-state-fixtures.ts
+│       └── auth-fixtures.ts
+├── lib/                          # Unit tests (Vitest)
+│   ├── game-loop-logic.test.ts   # 28 tests, 6ms
+│   └── helpers/                  # Test helpers
+└── browser-runtime/              # Integration tests
+    └── game-loop-integration.spec.ts
+
+```
+
+#### Key Test Files
+
+**Core Game Loop** (CRITICAL - highest priority)
+- `tests/lib/game-loop-logic.test.ts` - Pure logic (28 tests, 95% coverage)
+- `tests/browser-runtime/game-loop-integration.spec.ts` - Browser APIs (8 tests)
+- `tests/e2e/core-game-loop.spec.ts` - Full user flows (8 tests)
+
+**Mobile Testing** (Target audience validation)
+- `tests/e2e/mobile/game-flow.spec.ts` - Game flow on 3 viewports (18 test cases)
+- `tests/e2e/mobile/touch-targets.spec.ts` - 44px minimum (7 tests)
+- `tests/e2e/mobile/safe-areas.spec.ts` - iPhone notch/home (8 tests)
+- `tests/e2e/mobile/performance.spec.ts` - Performance benchmarks (8 tests)
+
+#### Writing Tests
+
+**Use Fixtures for State:**
+
+```typescript
+import { test, expect } from '../fixtures/game-state-fixtures'
+
+test('My feature', async ({ page, freshGame }) => {
+  // State already seeded!
+  await expect(page.getByTestId('dialogue-content')).toBeVisible()
+})
+```
+
+**Available Fixtures:**
+- `freshGame` - New player at station entrance
+- `journeyComplete` - 2 arcs complete, patterns developed
+- `withDemonstratedSkills` - Skills unlocked
+- `withHighTrust` - Maya at trust 6
+- `adminAuth` - Admin authenticated
+
+**Selector Priority:**
+1. ✅ `data-testid` - Most stable
+2. ✅ Role + accessible name - Semantic
+3. ❌ Text content - LAST RESORT
+
+**Smart Waits (NO HARD WAITS):**
+
+```typescript
+// ✅ GOOD
+await expect(page.getByTestId('dialogue-content')).toBeVisible({ timeout: 5000 })
+
+// ❌ BAD
+await page.waitForTimeout(2000)
+```
+
+#### Performance Metrics
+
+| Metric | Target | Status |
+|--------|--------|--------|
+| First Contentful Paint | <2s | ✅ Validated |
+| Game Interface Load | <3s | ✅ Validated |
+| Dialogue Render | <1s | ✅ Validated |
+| Animation FPS | >50 FPS | ✅ Validated |
+| Memory (5 choices) | <5MB | ✅ Validated |
+| localStorage Save | <50ms | ✅ Validated |
+
+#### Documentation
+
+- [Test Authoring Guide](tests/README.md) - Comprehensive testing guide
+- [Selector Standards](docs/testing/selector-standards.md) - Stable selector patterns
+- Test page: `/test-pixels` - Avatar verification
+
+#### CI/CD
+
+Tests run in parallel on GitHub Actions:
+- **Local:** 4 workers, ~5min for full suite
+- **CI:** 6 parallel jobs (auth, core-game, ui-components, 3× mobile)
+- **Runtime:** <3min in CI with parallel execution
 
 ### Git Commits
 Keep commit messages concise. No generated footers or co-author tags.

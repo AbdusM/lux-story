@@ -94,8 +94,8 @@ test.describe('Journey Summary', () => {
       await page.waitForLoadState('networkidle')
     }
 
-    // Wait briefly for game to initialize
-    await page.waitForTimeout(2000)
+    // Wait for game interface to load (indicates initialization complete)
+    await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 5000 })
 
     // Journey Summary button should NOT be visible at game start
     const journeyButton = page.getByLabel('View Journey Summary')
@@ -196,7 +196,10 @@ test.describe('Journey Summary', () => {
         // Click Next button
         const nextButton = page.getByRole('button', { name: 'Next' })
         await nextButton.click()
-        await page.waitForTimeout(200)
+
+        // Wait for next section to appear
+        const nextSectionText = sections[i + 1]
+        await expect(page.getByRole('heading', { name: nextSectionText }).or(page.getByText(nextSectionText))).toBeVisible({ timeout: 3000 })
       }
     }
 
@@ -244,17 +247,15 @@ test.describe('Journey Summary', () => {
     // Click on the third dot (Connections Made section - index 2)
     const dots = page.locator('.flex.justify-center.gap-2 button')
     await dots.nth(2).click()
-    await page.waitForTimeout(200)
 
-    // Should be on Connections Made
-    await expect(page.getByText('Connections Made')).toBeVisible()
+    // Wait for Connections Made section to appear
+    await expect(page.getByText('Connections Made')).toBeVisible({ timeout: 3000 })
 
     // Click on first dot (The Beginning)
     await dots.nth(0).click()
-    await page.waitForTimeout(200)
 
-    // Should be back on The Beginning
-    await expect(page.getByText('The Beginning')).toBeVisible()
+    // Wait for The Beginning section to reappear
+    await expect(page.getByText('The Beginning')).toBeVisible({ timeout: 3000 })
   })
 
   test.skip('Journey Summary Back button is disabled on first section', async ({ page }) => {
@@ -294,10 +295,20 @@ test.describe('Journey Summary', () => {
     await journeyButton.click()
 
     // Navigate to last section
+    const sections = [
+      'The Beginning',
+      'Your Patterns',
+      'Connections Made',
+      'Skills Demonstrated',
+      "Samuel's Wisdom"
+    ]
+
     for (let i = 0; i < 4; i++) {
       const nextButton = page.getByRole('button', { name: 'Next' })
       await nextButton.click()
-      await page.waitForTimeout(200)
+
+      // Wait for next section to appear
+      await expect(page.getByText(sections[i + 1])).toBeVisible({ timeout: 3000 })
     }
 
     // Should be on Samuel's Wisdom (last section)
@@ -328,7 +339,9 @@ test.describe('Journey Summary', () => {
     // Navigate to Connections Made section (index 2)
     const dots = page.locator('.flex.justify-center.gap-2 button')
     await dots.nth(2).click()
-    await page.waitForTimeout(200)
+
+    // Wait for Connections Made section to appear
+    await expect(page.getByText('Connections Made')).toBeVisible({ timeout: 3000 })
 
     // Should show character names from seeded state
     await expect(page.getByText('Maya Chen').or(page.getByText('Devon Kumar'))).toBeVisible({ timeout: 3000 })
@@ -351,7 +364,9 @@ test.describe('Journey Summary', () => {
     // Navigate to Your Patterns section (index 1)
     const dots = page.locator('.flex.justify-center.gap-2 button')
     await dots.nth(1).click()
-    await page.waitForTimeout(200)
+
+    // Wait for Your Patterns section to appear
+    await expect(page.getByText('Your Patterns')).toBeVisible({ timeout: 3000 })
 
     // Should show pattern information (helping is highest in seeded state)
     await expect(page.getByText('Your Pattern Profile')).toBeVisible()

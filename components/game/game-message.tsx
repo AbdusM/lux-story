@@ -133,18 +133,20 @@ export function GameMessage({
       className
     )} data-type={type}>
 
-      <Card className={cn(
-        "relative w-full max-w-xl mx-auto transition-all duration-300",
-        messageWeight === 'critical' && "border-red-500 shadow-red-500/20 shadow-lg",
-        messageWeight === 'primary' && "border-slate-200 dark:border-slate-700",
-        messageWeight === 'aside' && "border-slate-100 dark:border-slate-800 opacity-90",
-        isUserMessage && "border-emerald-500 shadow-emerald-500/20",
-        typewriter && "cursor-pointer",
-        // Pokemon-style box shadow
-        "shadow-[0_2px_0_0_rgba(0,0,0,0.2),0_0_0_1px_rgba(0,0,0,0.2),inset_0_1px_0_0_#ffffff,inset_0_0_0_1px_rgba(0,0,0,0.2),0_4px_8px_rgba(0,0,0,0.3)]"
-      )}
-      role="article"
-      aria-label={`Message from ${speaker}`}
+      <Card
+        data-testid="dialogue-card"
+        className={cn(
+          "relative w-full max-w-xl mx-auto transition-all duration-300",
+          messageWeight === 'critical' && "border-red-500 shadow-red-500/20 shadow-lg",
+          messageWeight === 'primary' && "border-slate-200 dark:border-slate-700",
+          messageWeight === 'aside' && "border-slate-100 dark:border-slate-800 opacity-90",
+          isUserMessage && "border-emerald-500 shadow-emerald-500/20",
+          typewriter && "cursor-pointer",
+          // Pokemon-style box shadow
+          "shadow-[0_2px_0_0_rgba(0,0,0,0.2),0_0_0_1px_rgba(0,0,0,0.2),inset_0_1px_0_0_#ffffff,inset_0_0_0_1px_rgba(0,0,0,0.2),0_4px_8px_rgba(0,0,0,0.3)]"
+        )}
+        role="article"
+        aria-label={`Message from ${speaker}`}
       >
 
         {/* Character Header */}
@@ -175,14 +177,17 @@ export function GameMessage({
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-1">
                   {/* Keep Typography here for the speaker name as it is small and standard */}
-                  <span className={cn(
-                    "text-lg font-mono uppercase tracking-wider font-bold",
-                    characterColor
-                  )}
-                  style={{
-                    fontFamily: "'Courier New', monospace, 'Pokemon GB'",
-                    textShadow: "1px 1px 0px rgba(0,0,0,0.3)"
-                  }}>
+                  <span
+                    data-testid="speaker-name"
+                    className={cn(
+                      "text-lg font-mono uppercase tracking-wider font-bold",
+                      characterColor
+                    )}
+                    style={{
+                      fontFamily: "'Courier New', monospace, 'Pokemon GB'",
+                      textShadow: "1px 1px 0px rgba(0,0,0,0.3)"
+                    }}
+                  >
                     {speaker}
                   </span>
 
@@ -207,7 +212,9 @@ export function GameMessage({
         <CardContent className={cn(
           showCharacterAvatar ? "pt-0" : "pt-6"
         )}>
-          <div className={cn(
+          <div
+            data-testid="dialogue-content"
+            className={cn(
               "whitespace-pre-wrap font-medium text-base leading-relaxed",
               isNarration && "text-center italic text-slate-600 dark:text-slate-400",
               isWhisper && "opacity-90 italic",
