@@ -14,7 +14,8 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  // Optimize for local development: limit workers to reduce resource usage
+  workers: process.env.CI ? 1 : 2,
 
   // Reporter configuration
   reporter: [
@@ -27,6 +28,9 @@ export default defineConfig({
   use: {
     // Base URL for navigation
     baseURL: 'http://localhost:3005',
+
+    // Force headless mode (no visual windows, prevents window jumping)
+    headless: true,
 
     // Collect trace when retrying failed tests
     trace: 'on-first-retry',
@@ -45,7 +49,10 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: {
+        ...devices['Desktop Chrome'],
+        headless: true, // Explicit at project level
+      },
     },
 
     // Uncomment for cross-browser testing in CI
