@@ -202,6 +202,9 @@ export function createGodModeAPI(): GodModeAPI {
         currentNodeId: nodeId
       }))
 
+      // Force UI refresh to show new dialogue
+      store.forceRefresh()
+
       console.log(`[God Mode] Jumped to node: ${nodeId} (character: ${result.characterId})`)
       return true
     },
@@ -230,6 +233,9 @@ export function createGodModeAPI(): GodModeAPI {
         currentCharacterId: characterId as CharacterId,
         currentNodeId: introNode.nodeId
       }))
+
+      // Force UI refresh to show new dialogue
+      store.forceRefresh()
 
       console.log(`[God Mode] Jumped to character: ${characterId} (node: ${introNode.nodeId})`)
       return true

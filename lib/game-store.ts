@@ -75,6 +75,9 @@ export interface GameState {
   // Character Transformations (witnessed transformation moments)
   witnessedTransformations: string[]
 
+  // God Mode refresh trigger
+  refreshCounter: number
+
   // ═══════════════════════════════════════════════════════════════════════════
   // CORE GAME STATE: Single source of truth for dialogue/narrative system
   // This is the SerializableGameState from character-state.ts
@@ -245,6 +248,7 @@ export interface GameActions {
   applyCoreStateChange: (change: StateChange) => void
   getCoreGameStateHydrated: () => CoreGameState | null
   syncDerivedState: () => void  // Sync characterTrust/patterns from coreGameState
+  forceRefresh: () => void  // Force UI re-render (God Mode)
 
   // Meta-Achievements
   unlockAchievements: (achievementIds: string[]) => void
@@ -392,6 +396,9 @@ const initialState: GameState = {
 
   // Character Transformations
   witnessedTransformations: [],
+
+  // God Mode refresh trigger
+  refreshCounter: 0,
 
   // Core Game State (single source of truth)
   coreGameState: null
@@ -792,6 +799,12 @@ export const useGameStore = create<GameState & GameActions>()(
               console.warn('[Limbic Audio] Failed to update ambient music', e)
             }
           }
+        },
+
+        // Force UI refresh (for God Mode navigation)
+        forceRefresh: () => {
+          set(state => ({ ...state, refreshCounter: state.refreshCounter + 1 }))
+          console.log('[God Mode] UI refresh triggered')
         },
 
         // Meta-Achievements - unlock new achievements (dedupes automatically)
