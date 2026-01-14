@@ -1734,9 +1734,107 @@ export const alexDialogueNodes: DialogueNode[] = [
         text: "Return to Samuel",
         nextNodeId: samuelEntryPoints.ALEX_REFLECTION_GATEWAY,
         pattern: 'exploring'
+      },
+      // Loyalty Experience trigger - only visible at high trust + exploring pattern
+      {
+        choiceId: 'offer_honest_course_help',
+        text: "[Explorer's Curiosity] Alex, you mentioned wanting to teach what you've learned. What if we built that course together?",
+        nextNodeId: 'alex_loyalty_trigger',
+        pattern: 'exploring',
+        skills: ['curiosity', 'collaboration'],
+        visibleCondition: {
+          trust: { min: 8 },
+          patterns: { exploring: { min: 50 } },
+          hasGlobalFlags: ['alex_arc_complete']
+        }
       }
     ],
     tags: ['alex_arc', 'arc_complete']
+  },
+
+  // ============= LOYALTY EXPERIENCE TRIGGER =============
+  {
+    nodeId: 'alex_loyalty_trigger',
+    speaker: 'Alex',
+    content: [{
+      text: "You want to build it together?\n\nI've been drafting the outline. \"The Honest Course: What They Don't Teach You About Supply Chains.\" No certificates. No shortcuts. Just real talk about what it takes to move things from Point A to Point B without lying to yourself.\n\nBut here's the problem. I know logistics. I don't know teaching. Don't know curriculum design. Don't know how to structure learning so people actually retain it.\n\nAnd if I launch something half-baked, I'm just another person selling shortcuts. Exactly what I'm trying to counter.\n\nYou understand exploring and discovering. You ask good questions. Would you... help me build this course the right way?",
+      emotion: 'anxious_hopeful',
+      variation_id: 'loyalty_trigger_v1',
+      richEffectContext: 'warning'
+    }],
+    requiredState: {
+      trust: { min: 8 },
+      patterns: { exploring: { min: 5 } },
+      hasGlobalFlags: ['alex_arc_complete']
+    },
+    metadata: {
+      experienceId: 'the_honest_course'  // Triggers loyalty experience engine
+    },
+    choices: [
+      {
+        choiceId: 'accept_honest_course_challenge',
+        text: "Let's figure it out together. Real learning, no shortcuts.",
+        nextNodeId: 'alex_loyalty_start',
+        pattern: 'exploring',
+        skills: ['curiosity', 'collaboration'],
+        consequence: {
+          characterId: 'alex',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'encourage_but_decline',
+        text: "Alex, you've got the substance. The structure will follow. Trust the process.",
+        nextNodeId: 'alex_loyalty_declined',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence']
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'alex',
+        addKnowledgeFlags: ['loyalty_offered']
+      }
+    ],
+    tags: ['loyalty_experience', 'alex_loyalty', 'high_trust']
+  },
+
+  {
+    nodeId: 'alex_loyalty_declined',
+    speaker: 'Alex',
+    content: [{
+      text: "Trust the process. Yeah.\n\nI've been overthinking it. Trying to make it perfect before I start. Classic mistake.\n\nI know how to learn by doing. I can teach by doing too. Iterate. Get feedback. Improve.\n\nThanks for the reminder. Sometimes you need someone to tell you to just start moving.",
+      emotion: 'resolved',
+      variation_id: 'loyalty_declined_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'loyalty_declined_farewell',
+        text: "Go build something honest. That's what matters.",
+        nextNodeId: samuelEntryPoints.ALEX_REFLECTION_GATEWAY,
+        pattern: 'patience'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'alex',
+        addKnowledgeFlags: ['loyalty_declined_gracefully']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'alex_loyalty_start',
+    speaker: 'Alex',
+    content: [{
+      text: "Real learning. No shortcuts. That's exactly it.\n\nOkay. Let's build this together. You bring the questions. I'll bring the supply chain war stories.\n\nThe Honest Course. Let's make it something worth showing up for.",
+      emotion: 'excited_determined',
+      variation_id: 'loyalty_start_v1'
+    }],
+    metadata: {
+      experienceId: 'the_honest_course'  // Experience engine takes over
+    },
+    choices: []  // Experience engine handles next steps
   },
 
   // ============= CAREER MENTION NODES (Invisible Depth) =============
@@ -1867,6 +1965,146 @@ export const alexDialogueNodes: DialogueNode[] = [
       }
     ],
     tags: ['mystery', 'breadcrumb']
+  },
+
+  // ============= SIMULATION 3: CURRICULUM DESIGN =============
+  {
+    nodeId: 'alex_sim3_curriculum_intro',
+    speaker: 'Alex',
+    content: [{
+      text: "Alright. Final scenario. This one's about design.\n\nYou're building a new learning program. Not a bootcamp. Not a certification factory. A real learning experience.\n\nYour target: Birmingham high school students exploring tech careers.\n\nYou have two temptations:\n\n1. **The Credential Path**: Structure it like existing bootcamps. Clear modules, tests, certificates. Looks good on LinkedIn. Gets hired. But kills curiosity.\n\n2. **The Exploration Path**: No tests, no certificates. Pure project-based learning. Students build whatever excites them. High engagement, but no 'proof' for employers.\n\nMost programs pick one. Bootcamps pick credentials. Progressive schools pick exploration.\n\nBut what if there's a third way? What if you could design for BOTH genuine learning AND employability?\n\nHow would you structure it?",
+      emotion: 'teaching_challenging',
+      variation_id: 'sim3_intro_v1'
+    }],
+    simulation: {
+      type: 'chat_negotiation',
+      title: 'Curriculum Design: The Learning Paradox',
+      taskDescription: 'Design a learning program that serves both genuine curiosity AND employability. Most programs sacrifice one for the other. Can you do both?',
+      initialContext: {
+        label: 'Program Design Canvas',
+        content: `DESIGN CHALLENGE: Tech Learning Program for Birmingham Youth
+
+TARGET: High school students (ages 14-18)
+DURATION: 12 weeks
+GOAL: Genuine skill development + employability
+
+TWO EXTREMES:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+BOOTCAMP MODEL:
+- Structured curriculum
+- Weekly tests and grading
+- Final certificate
+- High completion rates (82%)
+- Low curiosity retention (34% still coding 1 year later)
+- Employers recognize credentials
+
+EXPLORATION MODEL:
+- Student-directed projects
+- No tests or grades
+- No formal credential
+- High engagement during program (94%)
+- High curiosity retention (78% still coding 1 year later)
+- Employers skeptical without proof
+
+CONSTRAINT: You need BOTH outcomes.
+How do you design for genuine learning AND employability?`,
+        displayStyle: 'text'
+      },
+      successFeedback: 'CURRICULUM SUBMITTED: Analyzing learning vs credentialing balance...'
+    },
+    requiredState: {
+      hasKnowledgeFlags: ['alex_project_unmonetizable', 'alex_curiosity_rekindled', 'alex_simulation_complete']
+    },
+    choices: [
+      {
+        choiceId: 'sim3_portfolio_over_cert',
+        text: "No certificates. Build portfolios. Real projects are better proof than paper.",
+        nextNodeId: 'alex_sim3_partial',
+        pattern: 'building',
+        skills: ['creativity', 'leadership']
+      },
+      {
+        choiceId: 'sim3_micro_credentials',
+        text: "Micro-credentials. Students earn badges for genuine skill demonstrations, not tests.",
+        nextNodeId: 'alex_sim3_success',
+        pattern: 'analytical',
+        skills: ['systemsThinking', 'instructionalDesign']
+      },
+      {
+        choiceId: 'sim3_dual_track',
+        text: "Dual track: exploration modules + optional certification prep for those who want it.",
+        nextNodeId: 'alex_sim3_fail',
+        pattern: 'patience',
+        skills: ['projectManagement']
+      }
+    ],
+    tags: ['simulation', 'alex_arc', 'phase3', 'mastery']
+  },
+
+  {
+    nodeId: 'alex_sim3_success',
+    speaker: 'Alex',
+    content: [{
+      text: "Micro-credentials. Yes.\n\nHere's how it works:\n\n**Week 1-2**: Students explore freely. Build whatever interests them. No pressure.\n\n**Week 3**: They demonstrate ONE skill they actually used. Not from a test. From their project.\n\nExample: \"I used Git to collaborate with my teammate. Here's my commit history. Here's the merge conflict I resolved.\"\n\nBadge earned: 'Version Control - Demonstrated in Context'\n\n**The magic**: The badge isn't for completing a module. It's for USING the skill in a real project.\n\nEmployers see the badge. They also see the project. Both matter.\n\nStudents stay curious because they're building what they want. But they're also building a credential portfolio that proves real capability, not test scores.\n\nBest of both worlds. You design for learning THROUGH making. The credentials are evidence, not the goal.\n\nThat's it. That's the design pattern that escapes the bootcamp trap.\n\nMost people never figure this out. They think it's either/or.\n\nYou just proved it's AND.",
+      emotion: 'proud_inspired_breakthrough',
+      interaction: 'bloom',
+      variation_id: 'sim3_success_v1',
+      richEffectContext: 'success'
+    }],
+    onEnter: [{
+      characterId: 'alex',
+      trustChange: 2,
+      addKnowledgeFlags: ['alex_sim3_complete', 'alex_all_sims_complete']
+    }],
+    choices: [{
+      choiceId: 'sim3_complete',
+      text: "Credentials as evidence, not as goal. That changes everything.",
+      nextNodeId: 'alex_hub_return',
+      pattern: 'building',
+      skills: ['wisdom', 'instructionalDesign']
+    }],
+    tags: ['simulation', 'alex_arc', 'phase3', 'success']
+  },
+
+  {
+    nodeId: 'alex_sim3_partial',
+    speaker: 'Alex',
+    content: [{
+      text: "Portfolios. I love the instinct. Real work beats paper credentials.\n\nBut here's the problem: employers don't know how to evaluate portfolios. Especially for entry-level candidates.\n\nTwo students apply:\n1. Portfolio with 3 half-finished projects\n2. Certificate from a recognized bootcamp\n\nWhich one gets the interview? The certificate. Every time.\n\nNot because it's better. Because it's legible. HR departments have rubrics for certificates. They don't have rubrics for 'showed genuine curiosity.'\n\nSo portfolios alone won't solve this. You need BOTH the real work AND the legible proof.\n\nWhat if you did micro-credentials? Students build real projects (portfolio) and earn skill badges (credential) by demonstrating what they learned IN context?\n\nSee the difference? You're not choosing between learning and employability. You're designing for both.",
+      emotion: 'patient_teaching',
+      variation_id: 'sim3_partial_v1'
+    }],
+    onEnter: [{
+      characterId: 'alex',
+      addKnowledgeFlags: ['alex_sim3_partial']
+    }],
+    choices: [{
+      choiceId: 'sim3_partial_reflect',
+      text: "Both the real work AND the legible proof. Got it.",
+      nextNodeId: 'alex_hub_return',
+      pattern: 'analytical',
+      skills: ['systemsThinking']
+    }],
+    tags: ['simulation', 'alex_arc', 'phase3', 'partial']
+  },
+
+  {
+    nodeId: 'alex_sim3_fail',
+    speaker: 'Alex',
+    content: [{
+      text: "Dual track. Exploration for the curious, certification for the practical.\n\nHere's what happens: Students self-select into tracks. The 'explorers' feel superior. The 'certifiers' feel behind.\n\nWorst of both worlds.\n\nThe explorers build cool projects but have no way to prove their skills to employers. The certifiers get jobs but lose their curiosity along the way.\n\nYou've recreated the problem you were trying to solve—just within one program instead of across the industry.\n\nThe goal isn't to offer both paths. It's to INTEGRATE them.\n\nWhat if credentials weren't separate from exploration? What if students earned badges by demonstrating skills WITHIN their self-directed projects?\n\nNo dual track. One path. Learning through making. Credentials as evidence, not as goal.\n\nSee how that's different?",
+      emotion: 'firm_teaching',
+      variation_id: 'sim3_fail_v1',
+      richEffectContext: 'error'
+    }],
+    choices: [{
+      choiceId: 'sim3_retry',
+      text: "I see it. Integration, not separation. Micro-credentials in context.",
+      nextNodeId: 'alex_sim3_success',
+      pattern: 'building',
+      skills: ['learningAgility']
+    }],
+    tags: ['simulation', 'alex_arc', 'phase3', 'failure']
   },
 
   {

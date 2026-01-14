@@ -840,8 +840,106 @@ export const ashaDialogueNodes: DialogueNode[] = [
                 text: "Return to Station",
                 nextNodeId: 'samuel_orb_introduction',
                 pattern: 'exploring'
+            },
+            // Loyalty Experience trigger - only visible at high trust + building pattern
+            {
+                choiceId: 'offer_mural_help',
+                text: "[Builder's Vision] Asha, before I go... that community mural project. Want another set of hands?",
+                nextNodeId: 'asha_loyalty_trigger',
+                pattern: 'building',
+                skills: ['creativity', 'collaboration'],
+                visibleCondition: {
+                    trust: { min: 8 },
+                    patterns: { building: { min: 50 } },
+                    hasGlobalFlags: ['asha_arc_complete']
+                }
             }
         ]
+    },
+
+    // ============= LOYALTY EXPERIENCE TRIGGER =============
+    {
+        nodeId: 'asha_loyalty_trigger',
+        speaker: 'Asha Patel',
+        content: [{
+            text: "You want to help with the mural.\n\nIt's a neighborhood project. Twenty kids. Blank wall. Their vision of what Birmingham could be.\n\nBut here's the problem. Two of the kids have completely different ideas. One wants celebration. The other wants protest. Both are valid. Both are important.\n\nAnd they won't compromise. Won't collaborate. The project is falling apart before we've even started.\n\nI'm supposed to be the mediator. The one who helps people find common ground. But I can't figure out how to make this work without erasing someone's truth.\n\nYou understand building things together. Would you... help me find a way to honor both visions?",
+            emotion: 'anxious_determined',
+            variation_id: 'loyalty_trigger_v1',
+            richEffectContext: 'warning'
+        }],
+        requiredState: {
+            trust: { min: 8 },
+            patterns: { building: { min: 5 } },
+            hasGlobalFlags: ['asha_arc_complete']
+        },
+        metadata: {
+            experienceId: 'the_mural'  // Triggers loyalty experience engine
+        },
+        choices: [
+            {
+                choiceId: 'accept_mural_challenge',
+                text: "Let's talk to them together. Maybe the wall is big enough for both.",
+                nextNodeId: 'asha_loyalty_start',
+                pattern: 'building',
+                skills: ['creativity', 'collaboration'],
+                consequence: {
+                    characterId: 'asha',
+                    trustChange: 1
+                }
+            },
+            {
+                choiceId: 'encourage_but_decline',
+                text: "Asha, you've mediated harder conflicts than this. Trust your process.",
+                nextNodeId: 'asha_loyalty_declined',
+                pattern: 'patience',
+                skills: ['emotionalIntelligence']
+            }
+        ],
+        onEnter: [
+            {
+                characterId: 'asha',
+                addKnowledgeFlags: ['loyalty_offered']
+            }
+        ],
+        tags: ['loyalty_experience', 'asha_loyalty', 'high_trust']
+    },
+
+    {
+        nodeId: 'asha_loyalty_declined',
+        speaker: 'Asha Patel',
+        content: [{
+            text: "You're right. I've sat between people with opposing truths before.\n\nI know how to hold space for conflict without forcing resolution. How to let both voices be heard.\n\nI just needed to remember that contradiction can be creative. That tension can be art.\n\nThank you. Sometimes I forget I know how to do this.",
+            emotion: 'resolved',
+            variation_id: 'loyalty_declined_v1'
+        }],
+        choices: [
+            {
+                choiceId: 'loyalty_declined_farewell',
+                text: "The wall will be beautiful because it's honest. Go create.",
+                nextNodeId: 'samuel_orb_introduction',
+                pattern: 'patience'
+            }
+        ],
+        onEnter: [
+            {
+                characterId: 'asha',
+                addKnowledgeFlags: ['loyalty_declined_gracefully']
+            }
+        ]
+    },
+
+    {
+        nodeId: 'asha_loyalty_start',
+        speaker: 'Asha Patel',
+        content: [{
+            text: "The wall is big enough for both. Yes.\n\nOkay. Let's go talk to them. Two builders. Twenty kids. One mural that holds it all.\n\nThe Mural. Let's make something that doesn't erase anyone.",
+            emotion: 'hopeful_determined',
+            variation_id: 'loyalty_start_v1'
+        }],
+        metadata: {
+            experienceId: 'the_mural'  // Experience engine takes over
+        },
+        choices: []  // Experience engine handles next steps
     },
 
     // ============= INTERRUPT TARGET NODES =============
@@ -2116,6 +2214,266 @@ export const ashaDialogueNodes: DialogueNode[] = [
             }
         ],
         tags: ['mystery', 'breadcrumb']
+    },
+
+    // ============= SIMULATION 2: STAKEHOLDER BALANCE =============
+    {
+        nodeId: 'asha_sim2_community_intro',
+        speaker: 'Asha Patel',
+        content: [{
+            text: "Okay. Next challenge. Real one this time.\n\nCommunity mural project for the Smithfield neighborhood. Three stakeholders, three different visions:\n\n1. Residents: Want to honor local Black history, civil rights heritage\n2. City Council: Wants 'aspirational' imagery, future-focused, economic development\n3. Corporate Sponsor: Paid for half. Wants their brand values reflected—'innovation and sustainability'\n\nYou're the art director. You have to synthesize this. One mural. Everyone needs to feel seen.\n\nWhere do you start?",
+            emotion: 'teaching_serious',
+            variation_id: 'sim2_intro_v1'
+        }],
+        simulation: {
+            type: 'chat_negotiation',
+            title: 'Stakeholder Synthesis: The Community Mural',
+            taskDescription: 'Three groups want different things from one mural. Find the creative direction that honors all voices.',
+            initialContext: {
+                label: 'Stakeholder Visions',
+                content: `SMITHFIELD COMMUNITY MURAL PROJECT
+
+RESIDENTS (40 families):
+- "Honor our elders who marched"
+- "Show the Black businesses that built this neighborhood"
+- "Don't erase our history for 'progress'"
+
+CITY COUNCIL (Budget Approval):
+- "Attract new businesses and residents"
+- "Show Birmingham's bright future"
+- "Avoid 'dwelling on the past'"
+
+CORPORATE SPONSOR (50% Funding):
+- "Reflect our sustainability mission"
+- "Visible brand alignment (green tech company)"
+- "Inspire innovation"
+
+CHALLENGE: One mural. All voices honored.`,
+                displayStyle: 'text'
+            },
+            successFeedback: 'CONCEPT SUBMITTED: Reviewing stakeholder alignment...'
+        },
+        requiredState: {
+            hasKnowledgeFlags: ['asha_simulation_phase1_complete']
+        },
+        choices: [
+            {
+                choiceId: 'sim2_layered_time',
+                text: "Three panels: Past (civil rights), Present (community today), Future (green tech). Linear narrative.",
+                nextNodeId: 'asha_sim2_partial',
+                pattern: 'analytical',
+                skills: ['communication', 'projectManagement']
+            },
+            {
+                choiceId: 'sim2_tree_metaphor',
+                text: "A tree: roots (Black history), trunk (current community), branches (sustainable future). All connected.",
+                nextNodeId: 'asha_sim2_success',
+                pattern: 'building',
+                skills: ['creativity', 'systemsThinking', 'metaphoricalThinking']
+            },
+            {
+                choiceId: 'sim2_compromise',
+                text: "Split the wall: 50% history, 50% future. Keep everyone half-happy.",
+                nextNodeId: 'asha_sim2_fail',
+                pattern: 'patience',
+                skills: ['negotiation']
+            }
+        ],
+        tags: ['simulation', 'asha_arc', 'phase2']
+    },
+
+    {
+        nodeId: 'asha_sim2_success',
+        speaker: 'Asha Patel',
+        content: [{
+            text: "Yes! The tree. Perfect.\n\nResidents see their elders' faces carved in the roots—the foundation that holds everything.\n\nCity Council sees the branches reaching toward solar panels, green rooftops, thriving economy.\n\nSponsor sees their sustainability mission literally growing from community history. Authentic brand alignment.\n\nEveryone gets the whole story, not a piece of it. You didn't compromise—you synthesized.\n\nThat's the skill. Not 'making everyone happy.' Finding the truth that contains all perspectives.\n\nMost designers never learn this. You just did.",
+            emotion: 'proud_inspired',
+            interaction: 'bloom',
+            variation_id: 'sim2_success_v1',
+            richEffectContext: 'success'
+        }],
+        onEnter: [{
+            characterId: 'asha',
+            addKnowledgeFlags: ['asha_sim2_complete']
+        }],
+        choices: [{
+            choiceId: 'sim2_complete',
+            text: "Synthesis, not compromise. I'll remember that.",
+            nextNodeId: 'asha_hub_return',
+            pattern: 'building',
+            skills: ['creativity']
+        }],
+        tags: ['simulation', 'asha_arc', 'phase2', 'success']
+    },
+
+    {
+        nodeId: 'asha_sim2_partial',
+        speaker: 'Asha Patel',
+        content: [{
+            text: "Three panels. Linear. Past, present, future.\n\nIt works. Functionally. Everyone gets their section.\n\nBut here's what happens: people only look at 'their' panel. Residents stop at the civil rights section. Council walks straight to the future panel. The sponsor photographs the green tech part for their website.\n\nThe mural becomes a menu, not a story. Fragmented. Segregated, even.\n\nWhat if the goal wasn't to separate the visions—but to show how they're already connected?\n\nA tree, maybe. Roots, trunk, branches. All one organism. Past feeds present feeds future.\n\nSee the difference?",
+            emotion: 'patient_teaching',
+            variation_id: 'sim2_partial_v1'
+        }],
+        onEnter: [{
+            characterId: 'asha',
+            addKnowledgeFlags: ['asha_sim2_partial']
+        }],
+        choices: [{
+            choiceId: 'sim2_partial_reflect',
+            text: "Connected, not separated. That's deeper.",
+            nextNodeId: 'asha_hub_return',
+            pattern: 'helping',
+            skills: ['systemsThinking']
+        }],
+        tags: ['simulation', 'asha_arc', 'phase2', 'partial']
+    },
+
+    {
+        nodeId: 'asha_sim2_fail',
+        speaker: 'Asha Patel',
+        content: [{
+            text: "50/50 split. The compromise play.\n\nHere's what happens: everyone feels half-ignored. Residents feel like their history is being minimized. Council thinks you're dwelling on the past. Sponsor wonders why they're funding something that doesn't fully represent them.\n\nCompromise in art doesn't create unity—it creates resentment.\n\nThe goal isn't to split the difference. It's to find the deeper truth that contains all perspectives.\n\nA tree, for instance. Roots (history), trunk (community), branches (future). Not separated—integrated. One living system.\n\nSee how that's different from 50/50?",
+            emotion: 'firm_teaching',
+            variation_id: 'sim2_fail_v1',
+            richEffectContext: 'error'
+        }],
+        choices: [{
+            choiceId: 'sim2_retry',
+            text: "I see it now. Integration, not division.",
+            nextNodeId: 'asha_sim2_success',
+            pattern: 'building',
+            skills: ['learningAgility']
+        }],
+        tags: ['simulation', 'asha_arc', 'phase2', 'failure']
+    },
+
+    // ============= SIMULATION 3: PUBLIC CRITIQUE =============
+    {
+        nodeId: 'asha_sim3_critique_intro',
+        speaker: 'Asha Patel',
+        content: [{
+            text: "Final lesson. The hardest one.\n\nYour mural is up. Public installation downtown. You spent six months on it. Poured everything into it.\n\nLocal art critic publishes a review: 'Derivative. Saccharine. Tries too hard to please everyone and ends up saying nothing.'\n\nSocial media picks it up. Memes. Mockery. 'AI could do better.'\n\nBut you also have this: A grandmother brought her granddaughter to see it. They stood there for twenty minutes. The girl asked questions. The grandmother cried.\n\nA teacher emailed: 'I'm using your mural for my lesson on Birmingham history. The kids finally get it.'\n\nTwo truths. Which one defines your work?\n\nHow do you respond?",
+            emotion: 'serious_vulnerable',
+            variation_id: 'sim3_intro_v1'
+        }],
+        simulation: {
+            type: 'visual_canvas',
+            title: 'Navigating Public Critique',
+            taskDescription: 'Your mural receives harsh criticism from an art critic and social media, but deep praise from community members. How do you respond?',
+            initialContext: {
+                label: 'Critique Summary',
+                content: `NEGATIVE:
+- Birmingham Arts Review: "Derivative. Saccharine. Tries to please everyone, says nothing." (2/5 stars)
+- Social media: Memes, mockery, "AI could do this"
+- Fellow artists: "Sold out for corporate money"
+
+POSITIVE:
+- Grandmother + granddaughter: Stood for 20 minutes, tears, questions
+- Teacher: "Using it for Birmingham history lessons. Kids finally understand."
+- 47 community members: Personal thank-you messages
+- City Council: Renewed funding for 3 more murals
+
+YOUR RESPONSE OPTIONS:
+1. Defend the work publicly
+2. Ignore critics, focus on community impact
+3. Internalize criticism, question your choices`,
+                displayStyle: 'text'
+            },
+            successFeedback: "RESPONSE LOGGED: The artist's relationship to critique defines longevity."
+        },
+        requiredState: {
+            hasKnowledgeFlags: ['asha_sim2_complete', 'asha_sim2_partial']
+        },
+        choices: [
+            {
+                choiceId: 'sim3_defend',
+                text: "Write a response: 'Art isn't for critics. It's for the people it serves.'",
+                nextNodeId: 'asha_sim3_defensive',
+                pattern: 'building',
+                skills: ['communication', 'confidence']
+            },
+            {
+                choiceId: 'sim3_listen_integrate',
+                text: "Read the criticism carefully. Ask: 'What truth is buried in the harshness?'",
+                nextNodeId: 'asha_sim3_success',
+                pattern: 'analytical',
+                skills: ['humility', 'learningAgility', 'criticalThinking']
+            },
+            {
+                choiceId: 'sim3_ignore_all',
+                text: "Ignore critics entirely. Focus on the grandmother and the teacher. That's enough.",
+                nextNodeId: 'asha_sim3_partial',
+                pattern: 'patience',
+                skills: ['resilience', 'values']
+            }
+        ],
+        tags: ['simulation', 'asha_arc', 'phase3', 'mastery']
+    },
+
+    {
+        nodeId: 'asha_sim3_success',
+        speaker: 'Asha Patel',
+        content: [{
+            text: "You read it. The whole review. The harsh parts. The memes.\n\nAnd you find the signal in the noise:\n\n'Tries too hard to please everyone.'\n\nIs that true? Did you dilute your vision trying to make all three stakeholders happy? Did the tree metaphor become safe instead of bold?\n\nYou sit with that question. And you realize: the critic is half-right. You could have pushed harder on the visual language. Made it less literal, more evocative.\n\nBut you also know: the grandmother crying, the teacher's email—that's not 'saccharine.' That's connection. That's impact.\n\nSo you take the lesson. Make a note for the next mural: 'Be bolder in the execution. Keep the heart.'\n\nYou don't respond publicly. You don't need to. The work speaks. And you're already better because of the critique.\n\nThat's mastery. Holding space for both truths: the work landed, AND it could be better.\n\nMost artists never learn this balance. They either crumble under criticism or close their ears entirely.\n\nYou just walked the line. Welcome to the other side.",
+            emotion: 'wise_proud_grateful',
+            interaction: 'bloom',
+            variation_id: 'sim3_success_v1',
+            richEffectContext: 'success'
+        }],
+        onEnter: [{
+            characterId: 'asha',
+            trustChange: 2,
+            addKnowledgeFlags: ['asha_sim3_complete', 'asha_all_sims_complete']
+        }],
+        choices: [{
+            choiceId: 'sim3_complete',
+            text: "Both truths. The work landed AND it could be better.",
+            nextNodeId: 'asha_hub_return',
+            pattern: 'building',
+            skills: ['wisdom', 'humility', 'growth']
+        }],
+        tags: ['simulation', 'asha_arc', 'phase3', 'success']
+    },
+
+    {
+        nodeId: 'asha_sim3_partial',
+        speaker: 'Asha Patel',
+        content: [{
+            text: "You ignore the critics. Focus on the grandmother, the teacher, the 47 thank-you messages.\n\n'They're the ones who matter,' you tell yourself. 'The work was for them, not for some art critic.'\n\nAnd that's true. Mostly.\n\nBut here's what you lose: growth. The critic, for all their harshness, might be pointing at something real. Maybe the composition IS too safe. Maybe you DID play it too careful trying to please everyone.\n\nYou'll never know, because you closed the door.\n\nThe community's love is real. It matters. But if you only listen to praise, you stop evolving.\n\nThe best artists hold both: the validation that says 'this worked' and the criticism that says 'this could be better.'\n\nIt's uncomfortable. But that's where growth lives.",
+            emotion: 'patient_honest',
+            variation_id: 'sim3_partial_v1'
+        }],
+        onEnter: [{
+            characterId: 'asha',
+            addKnowledgeFlags: ['asha_sim3_partial']
+        }],
+        choices: [{
+            choiceId: 'sim3_partial_reflect',
+            text: "Growth lives in the discomfort. I hear you.",
+            nextNodeId: 'asha_hub_return',
+            pattern: 'helping',
+            skills: ['openness']
+        }],
+        tags: ['simulation', 'asha_arc', 'phase3', 'partial']
+    },
+
+    {
+        nodeId: 'asha_sim3_defensive',
+        speaker: 'Asha Patel',
+        content: [{
+            text: "You write the response. Post it publicly:\n\n'Art isn't for critics. It's for the people it serves. A grandmother cried. A teacher found meaning. That's what matters.'\n\nThe community rallies. Shares your post. Defends the mural. You get a wave of support.\n\nBut.\n\nYou notice something in yourself. A tightness. A defensiveness that wasn't there before.\n\nEvery time you think about the next mural, you hear that critic's voice. 'Derivative. Saccharine.' And instead of learning from it, you're fighting it.\n\nDefending art publicly feels powerful in the moment. But it can trap you. Make you rigid. Make you define yourself against criticism instead of growing through it.\n\nWhat if you'd just... sat with the critique? Let it sting. Then asked: 'Is there truth here I can use?'\n\nYou'd be free. And better.",
+            emotion: 'reflective_regretful',
+            variation_id: 'sim3_defensive_v1',
+            richEffectContext: 'warning'
+        }],
+        choices: [{
+            choiceId: 'sim3_defensive_learn',
+            text: "I see it now. I trapped myself. How do I undo that?",
+            nextNodeId: 'asha_sim3_success',
+            pattern: 'helping',
+            skills: ['selfAwareness']
+        }],
+        tags: ['simulation', 'asha_arc', 'phase3']
     },
 
     {

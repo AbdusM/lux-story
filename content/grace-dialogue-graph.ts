@@ -1677,6 +1677,249 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
       }
     ],
     tags: ['introduction', 'healthcare']
+  },
+
+  // ============= LOYALTY EXPERIENCE: THE VIGIL =============
+  // Endgame content (Trust ≥ 8) - End-of-life companionship crisis
+  {
+    nodeId: 'grace_loyalty_trigger',
+    speaker: 'Grace',
+    content: [{
+      text: "I need to ask you something.\n\nMr. Okonkwo. He's been my client for eighteen months. Prostate cancer, metastasized. We've known for a while that this was coming.\n\nHis family called this morning. Hospice said it's time. Days, maybe hours.\n\nHe asked for me. Specifically. Said he wants me there at the end.\n\nI've done this before. Eleven times. But this one... he reminds me of my grandfather. The way he laughs. The way he tells stories.\n\nI don't know if I can be present the way he needs me to be. Not this time.\n\nWould you... would you come with me? Just be there? I think I need someone to help me stay steady.",
+      emotion: 'vulnerable_exhausted',
+      variation_id: 'loyalty_trigger_v1',
+      useChatPacing: true
+    }],
+    requiredState: {
+      trust: { min: 8 },
+      hasKnowledgeFlags: ['grace_vulnerability_revealed']
+    },
+    choices: [
+      {
+        choiceId: 'accept_loyalty',
+        text: "I'll be there. You don't have to do this alone.",
+        nextNodeId: 'grace_loyalty_start',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'courage']
+      },
+      {
+        choiceId: 'decline_loyalty',
+        text: "This feels like something you need to face on your own. You have the strength.",
+        nextNodeId: 'grace_loyalty_declined',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['loyalty_experience', 'the_vigil']
+  },
+
+  {
+    nodeId: 'grace_loyalty_declined',
+    speaker: 'Grace',
+    content: [{
+      text: "You're right. This is my work. My calling.\n\nThank you for believing I can do it.\n\nI'll let you know when... when it's over.",
+      emotion: 'resolved_tired',
+      variation_id: 'declined_v1',
+      useChatPacing: true
+    }],
+    choices: [{
+      choiceId: 'declined_return',
+      text: "You've walked this path before. You know the way.",
+      nextNodeId: 'grace_hub_return',
+      pattern: 'patience'
+    }],
+    onEnter: [{
+      characterId: 'grace',
+      addKnowledgeFlags: ['grace_loyalty_declined']
+    }],
+    tags: ['loyalty_experience', 'the_vigil', 'declined']
+  },
+
+  {
+    nodeId: 'grace_loyalty_start',
+    speaker: 'Grace',
+    content: [{
+      text: "[Mr. Okonkwo's house. The living room has been converted to a hospice room. Soft music playing. His family gathered in the kitchen, giving him space.]\n\n[He's awake. Breathing shallow. His hand reaches out when Grace enters.]\n\n\"Grace. My angel. You came.\"\n\n[Grace takes his hand. Her own hand is shaking.]\n\n\"Of course I came, Mr. O. I told you I'd be here.\"\n\n[He looks at you.]\n\n\"You brought a friend. Good. Grace shouldn't be alone for this either.\"",
+      emotion: 'tender_fragile',
+      variation_id: 'start_v1',
+      useChatPacing: true
+    }],
+    choices: [
+      {
+        choiceId: 'acknowledge_mr_o',
+        text: "It's an honor to be here, Mr. Okonkwo.",
+        nextNodeId: 'grace_loyalty_vigil_begins',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
+      },
+      {
+        choiceId: 'silence_respect',
+        text: "[Nod respectfully. Some moments don't need words.]",
+        nextNodeId: 'grace_loyalty_vigil_begins',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 1
+        }
+      }
+    ],
+    onEnter: [{
+      characterId: 'grace',
+      addKnowledgeFlags: ['grace_loyalty_accepted']
+    }],
+    tags: ['loyalty_experience', 'the_vigil']
+  },
+
+  {
+    nodeId: 'grace_loyalty_vigil_begins',
+    speaker: 'Grace',
+    content: [{
+      text: "[Hours pass. The room grows quieter. Mr. Okonkwo drifts in and out of consciousness.]\n\n[Grace sits beside him, holding his hand. But you can see it in her eyes - she's somewhere else. Remembering her grandfather. Her eleven other clients. The weight of all those goodbyes.]\n\n[Her breathing becomes uneven. She stands abruptly.]\n\n\"I need... I need some air. Just for a minute.\"\n\n[She's heading for the door. Leaving. Running.]",
+      emotion: 'overwhelmed',
+      variation_id: 'vigil_begins_v1',
+      useChatPacing: true
+    }],
+    choices: [
+      {
+        choiceId: 'let_her_go',
+        text: "Go. I'll stay with him. Take the time you need.",
+        nextNodeId: 'grace_loyalty_partial',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'adaptability']
+      },
+      {
+        choiceId: 'stop_her_gently',
+        text: "[Place a hand on her shoulder. Gently.] \"Stay. I'm here. You're not alone in this.\"",
+        nextNodeId: 'grace_loyalty_choice',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'courage'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'remind_her',
+        text: "He asked for you. Not anyone else. You.",
+        nextNodeId: 'grace_loyalty_choice',
+        pattern: 'helping',
+        skills: ['communication']
+      }
+    ],
+    tags: ['loyalty_experience', 'the_vigil', 'critical_moment']
+  },
+
+  {
+    nodeId: 'grace_loyalty_choice',
+    speaker: 'Grace',
+    content: [{
+      text: "[She stops. Turns. Eyes wet.]\n\n\"I can't keep doing this. Watching people I care about disappear. Building these connections and then... and then losing them.\n\nEleven people. Eleven times I've sat in a room and watched someone take their last breath.\n\nHow many more times can I break?\"\n\n[Mr. Okonkwo's breathing changes. A rattle. Hospice calls it the 'death rattle.'\n\nHis daughter appears in the doorway. Sees Grace. Waits.]",
+      emotion: 'breaking',
+      variation_id: 'choice_v1',
+      useChatPacing: true
+    }],
+    choices: [
+      {
+        choiceId: 'reframe_breaking',
+        text: "You're not breaking. You're honoring. Every single time.",
+        nextNodeId: 'grace_loyalty_success',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'wisdom']
+      },
+      {
+        choiceId: 'be_present_together',
+        text: "[Take her other hand.] \"Then break with someone beside you. Not alone.\"",
+        nextNodeId: 'grace_loyalty_success',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'step_away_option',
+        text: "Maybe this is the sign. Maybe it's time to step away from bedside care.",
+        nextNodeId: 'grace_loyalty_incomplete',
+        pattern: 'analytical',
+        skills: ['communication']
+      }
+    ],
+    tags: ['loyalty_experience', 'the_vigil', 'breaking_point']
+  },
+
+  {
+    nodeId: 'grace_loyalty_partial',
+    speaker: 'Grace',
+    content: [{
+      text: "[Grace steps outside. You stay with Mr. Okonkwo.]\n\n[His daughter enters. Sits on the other side of the bed. Takes his other hand.]\n\n[Ten minutes later, his breathing slows. Stops.]\n\n[You find Grace in the backyard. Tell her.]\n\n\"I missed it. I wasn't there.\"\n\n[She sits down heavily.]\n\n\"He needed me and I ran. That's the truth I have to live with.\"\n\n[Two days later, you get a text.]\n\n\"His daughter called. Said he wouldn't have wanted me to suffer. That he knew how much I cared.\n\nBut I know the truth. When it mattered most, I wasn't present. I teach presence and I couldn't hold it.\n\nI'm taking some time off. Need to figure out if I can keep doing this.\"",
+      emotion: 'defeated_regretful',
+      variation_id: 'partial_v1',
+      richEffectContext: 'warning',
+      useChatPacing: true
+    }],
+    choices: [{
+      choiceId: 'partial_return',
+      text: "Taking time is wise. Healing takes time too.",
+      nextNodeId: 'grace_hub_return',
+      pattern: 'patience',
+      skills: ['emotionalIntelligence']
+    }],
+    onEnter: [{
+      characterId: 'grace',
+      trustChange: 1,
+      addKnowledgeFlags: ['grace_loyalty_partial']
+    }],
+    tags: ['loyalty_experience', 'the_vigil', 'partial']
+  },
+
+  {
+    nodeId: 'grace_loyalty_incomplete',
+    speaker: 'Grace',
+    content: [{
+      text: "[Grace nods slowly.]\n\n\"Maybe you're right. Maybe I've given enough.\"\n\n[She steps outside. You stay with Mr. Okonkwo. His daughter enters. They say their goodbyes. He passes peacefully an hour later.]\n\n[You find Grace later. Tell her.]\n\n\"I thought I'd feel relieved. That stepping away was the right choice.\n\nBut I just feel... hollow. Like I abandoned him. Like I abandoned all of them.\"\n\n[A week later, she texts.]\n\n\"Turned in my notice at the agency. Taking a desk job. Healthcare administration. No more bedside.\n\nI know it's the smart choice. The safe choice.\n\nSo why does it feel like I left a part of myself in that room?\"",
+      emotion: 'lost_hollow',
+      variation_id: 'incomplete_v1',
+      richEffectContext: 'error',
+      useChatPacing: true
+    }],
+    choices: [{
+      choiceId: 'incomplete_return',
+      text: "[Sometimes the hardest losses are the ones we choose.]",
+      nextNodeId: 'grace_hub_return',
+      pattern: 'patience'
+    }],
+    onEnter: [{
+      characterId: 'grace',
+      addKnowledgeFlags: ['grace_loyalty_incomplete']
+    }],
+    tags: ['loyalty_experience', 'the_vigil', 'incomplete']
+  },
+
+  {
+    nodeId: 'grace_loyalty_success',
+    speaker: 'Grace',
+    content: [{
+      text: "[Grace takes a shaking breath. Nods. Sits back down beside Mr. Okonkwo.]\n\n[His daughter enters. Sits on the other side. You stand at the foot of the bed.]\n\n[Grace begins to sing. Softly. A hymn. Mr. Okonkwo mentioned once that his mother used to sing it.]\n\n[His breathing slows. Steadies. His eyes open one last time.]\n\n\"Thank you, Grace. For being here. For seeing me.\"\n\n[He looks at his daughter.]\n\n\"I love you, baby girl.\"\n\n[And then... stillness.]\n\n[Grace keeps singing. Finishes the hymn. Gently closes his eyes.]\n\n\"Go well, Mr. O. You were seen. You were loved. You were not alone.\"\n\n[She stands. Turns to you. Tears streaming.]\n\n\"I stayed. I was present. Even when it hurt. Especially when it hurt.\n\nThat's the work. Not avoiding the pain. Walking through it. With someone. For someone.\n\nThank you. For being the 'someone' for me today.\n\nI couldn't have done this alone. And that's okay. Presence doesn't mean solitary. It means showing up. Even when it breaks you.\n\nEspecially then.\"",
+      emotion: 'grief_peace_gratitude',
+      variation_id: 'success_v1',
+      richEffectContext: 'success',
+      useChatPacing: true
+    }],
+    choices: [{
+      choiceId: 'success_return',
+      text: "He wasn't alone. Because of you, he wasn't alone.",
+      nextNodeId: 'grace_hub_return',
+      pattern: 'helping',
+      skills: ['emotionalIntelligence']
+    }],
+    onEnter: [{
+      characterId: 'grace',
+      trustChange: 3,
+      addKnowledgeFlags: ['grace_loyalty_complete'],
+      addGlobalFlags: ['grace_vigil_triumph']
+    }],
+    tags: ['loyalty_experience', 'the_vigil', 'success']
   }
 ]
 

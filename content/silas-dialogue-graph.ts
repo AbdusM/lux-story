@@ -1228,9 +1228,107 @@ HINT: Sensors measure WHERE they're placed...`,
         text: "Return to Samuel",
         nextNodeId: samuelEntryPoints.SILAS_REFLECTION_GATEWAY,
         pattern: 'exploring'
+      },
+      // Loyalty Experience trigger - only visible at high trust + patience pattern
+      {
+        choiceId: 'offer_feral_lab_help',
+        text: "[Patient Observer] Silas, that experimental lab you mentioned... the one people called 'feral.' Want to show me?",
+        nextNodeId: 'silas_loyalty_trigger',
+        pattern: 'patience',
+        skills: ['patience', 'problemSolving'],
+        visibleCondition: {
+          trust: { min: 8 },
+          patterns: { patience: { min: 50 } },
+          hasGlobalFlags: ['silas_arc_complete']
+        }
       }
     ],
     tags: ['transition', 'silas_arc']
+  },
+
+  // ============= LOYALTY EXPERIENCE TRIGGER =============
+  {
+    nodeId: 'silas_loyalty_trigger',
+    speaker: 'Silas',
+    content: [{
+      text: "The Feral Lab.\n\nThat's what the investors called it when they pulled funding. Uncontrolled experiments. No reproducibility. A mess.\n\nBut it wasn't feral. It was emergent. I let the systems find their own equilibrium instead of forcing predetermined outcomes.\n\nI've got six months of sensor data. Patterns nobody else would have patience to see. Growth patterns that defy the textbooks.\n\nBut the funding's gone. Lab access expires next week. If I don't document what I learned, it's lost forever.\n\nYou understand patience. Watching systems unfold. Would you... help me make sense of it before it disappears?",
+      emotion: 'anxious_determined',
+      variation_id: 'loyalty_trigger_v1',
+      richEffectContext: 'warning'
+    }],
+    requiredState: {
+      trust: { min: 8 },
+      patterns: { patience: { min: 5 } },
+      hasGlobalFlags: ['silas_arc_complete']
+    },
+    metadata: {
+      experienceId: 'the_feral_lab'  // Triggers loyalty experience engine
+    },
+    choices: [
+      {
+        choiceId: 'accept_feral_lab_challenge',
+        text: "Show me the lab. We'll document it together.",
+        nextNodeId: 'silas_loyalty_start',
+        pattern: 'patience',
+        skills: ['patience', 'problemSolving'],
+        consequence: {
+          characterId: 'silas',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'encourage_but_decline',
+        text: "Silas, you know what you saw. Trust your observations.",
+        nextNodeId: 'silas_loyalty_declined',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence']
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'silas',
+        addKnowledgeFlags: ['loyalty_offered']
+      }
+    ],
+    tags: ['loyalty_experience', 'silas_loyalty', 'high_trust']
+  },
+
+  {
+    nodeId: 'silas_loyalty_declined',
+    speaker: 'Silas',
+    content: [{
+      text: "You're right. Six months. Every day. I watched those systems.\n\nI know what I saw. The data is there. The patterns are real.\n\nI don't need external validation to trust six months of careful observation.\n\nThank you. Sometimes I forget that patience itself is a form of evidence.",
+      emotion: 'resolved',
+      variation_id: 'loyalty_declined_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'loyalty_declined_farewell',
+        text: "Trust the ground. It was right all along.",
+        nextNodeId: samuelEntryPoints.SILAS_REFLECTION_GATEWAY,
+        pattern: 'patience'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'silas',
+        addKnowledgeFlags: ['loyalty_declined_gracefully']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'silas_loyalty_start',
+    speaker: 'Silas',
+    content: [{
+      text: "Thank you. I've been afraid to face it alone. Afraid I'll look and see nothing but chaos.\n\nBut with you... maybe we'll see what I've been too close to notice.\n\nLet's go to the Feral Lab. Two patient observers. One emergent system. Let's see what it was trying to tell us.",
+      emotion: 'hopeful_determined',
+      variation_id: 'loyalty_start_v1'
+    }],
+    metadata: {
+      experienceId: 'the_feral_lab'  // Experience engine takes over
+    },
+    choices: []  // Experience engine handles next steps
   },
 
   // ============= CAREER MENTION NODES (Invisible Depth) =============

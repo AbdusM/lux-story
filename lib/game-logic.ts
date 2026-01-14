@@ -203,10 +203,10 @@ export class GameLogic {
      */
     static processChoice(state: GameState, evaluatedChoice: EvaluatedChoice, reactionTime?: number): ChoiceProcessingResult {
         const choice = evaluatedChoice.choice
-        let newState = { ...state } // Clone ensuring we don't mutate input
+        // STATE FIX: Use deep clone instead of shallow clone to prevent mutations
+        let newState = GameStateUtils.cloneGameState(state)
 
         // Clean up previous transient timing flags
-        newState.globalFlags = new Set(newState.globalFlags)
         newState.globalFlags.delete('temporary_hesitation')
         newState.globalFlags.delete('temporary_silence')
         newState.globalFlags.delete('temporary_decisive')

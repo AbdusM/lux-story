@@ -4,6 +4,7 @@ import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { EnvironmentalEffects } from '@/components/EnvironmentalEffects'
 import { ServiceWorkerProvider } from '@/components/ServiceWorkerProvider'
 import { SVGFilterProvider } from '@/lib/svg-filters'
+import { GodModeBootstrap } from '@/components/GodModeBootstrap'
 // Sentry config is auto-loaded by Next.js - don't import directly
 import './globals.css'
 import '../styles/accessibility.css'
@@ -101,6 +102,8 @@ export default function RootLayout({
       }}>
         {/* Global SVG filter definitions for gooey/glow effects */}
         <SVGFilterProvider />
+        {/* God Mode API - Development only */}
+        <GodModeBootstrap />
         <ServiceWorkerProvider>
           <EnvironmentalEffects />
           <ErrorBoundary>

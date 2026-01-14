@@ -1842,6 +1842,213 @@ Which opening sells the VALUE of practical experience?`,
       variation_id: 'hub_return_v1'
     }],
     choices: []
+  },
+
+  // ============= LOYALTY EXPERIENCE: THE LAUNCH =============
+  // Endgame content (Trust ≥ 8) - First course publication crisis
+  {
+    nodeId: 'yaquin_loyalty_trigger',
+    speaker: 'Yaquin',
+    content: [{
+      text: "Need to ask you something.\n\nThe course is ready. Everything. Videos edited. Platform tested. Payment system working.\n\nBut it's sitting there. Unpublished. Private.\n\nEvery time I move the cursor to 'Publish,' I freeze.\n\nWhat if nobody enrolls? What if they do enroll and it's not good enough? What if I'm not good enough?\n\nMy father's voice: 'Just an assistant.' Dr. Chen's review: 'Amateur hour.'\n\nBut you've been here through all of this. Through the doubt, the revision, the fear.\n\nWill you be there when I hit publish? Like... moral support? I think I need someone in the room when it goes live.",
+      emotion: 'vulnerable_anxious',
+      variation_id: 'loyalty_trigger_v1',
+      useChatPacing: true
+    }],
+    requiredState: {
+      trust: { min: 8 },
+      hasKnowledgeFlags: ['yaquin_vulnerability_revealed']
+    },
+    choices: [
+      {
+        choiceId: 'accept_loyalty',
+        text: "I'll be there. Let's launch this together.",
+        nextNodeId: 'yaquin_loyalty_start',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'encouragement']
+      },
+      {
+        choiceId: 'decline_loyalty',
+        text: "This feels like something you need to do on your own. You've got this.",
+        nextNodeId: 'yaquin_loyalty_declined',
+        pattern: 'building'
+      }
+    ],
+    tags: ['loyalty_experience', 'the_launch']
+  },
+
+  {
+    nodeId: 'yaquin_loyalty_declined',
+    speaker: 'Yaquin',
+    content: [{
+      text: "You're right. This is my step.\n\nThank you. For everything up to here. I'll let you know when it's live.",
+      emotion: 'resolved',
+      variation_id: 'declined_v1',
+      useChatPacing: true
+    }],
+    choices: [{
+      choiceId: 'declined_return',
+      text: "You've already done the hard work. Publishing is just the button.",
+      nextNodeId: 'yaquin_hub_return',
+      pattern: 'helping'
+    }],
+    onEnter: [{
+      characterId: 'yaquin',
+      addKnowledgeFlags: ['yaquin_loyalty_declined']
+    }],
+    tags: ['loyalty_experience', 'the_launch', 'declined']
+  },
+
+  {
+    nodeId: 'yaquin_loyalty_start',
+    speaker: 'Yaquin',
+    content: [{
+      text: "[He opens his laptop. The dashboard is loaded. Everything is ready.]\n\n\"Price: $497. 40 hours of content. 8 weeks of support.\"\n\n[His cursor hovers over the 'Make Course Public' button.]\n\n\"Wait. Should I review the intro video one more time? Maybe the lighting's off. Or the audio levels. Or—\"",
+      emotion: 'anxious',
+      variation_id: 'start_v1',
+      useChatPacing: true
+    }],
+    choices: [
+      {
+        choiceId: 'review_again',
+        text: "If reviewing again will give you confidence, do it. There's no rush.",
+        nextNodeId: 'yaquin_loyalty_perfectionist',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence']
+      },
+      {
+        choiceId: 'publish_now',
+        text: "You've reviewed it ten times. It's ready. Hit publish.",
+        nextNodeId: 'yaquin_loyalty_choice',
+        pattern: 'building',
+        skills: ['encouragement', 'courage']
+      },
+      {
+        choiceId: 'acknowledge_fear',
+        text: "This fear isn't about the video quality. What are you really afraid of?",
+        nextNodeId: 'yaquin_loyalty_choice',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'yaquin',
+          trustChange: 1
+        }
+      }
+    ],
+    onEnter: [{
+      characterId: 'yaquin',
+      addKnowledgeFlags: ['yaquin_loyalty_accepted']
+    }],
+    tags: ['loyalty_experience', 'the_launch']
+  },
+
+  {
+    nodeId: 'yaquin_loyalty_choice',
+    speaker: 'Yaquin',
+    content: [{
+      text: "[He closes his eyes. Takes a breath.]\n\n\"You're right. This isn't about the video.\n\nIt's about what happens after. Once it's public, I can't take it back. I'm claiming something. 'I am a teacher. I have something worth $497.'\n\nEight years I've been 'just an assistant.' Publishing this means I'm not 'just' anything anymore.\n\nThat's terrifying.\"",
+      emotion: 'vulnerable',
+      variation_id: 'choice_v1',
+      useChatPacing: true
+    }],
+    choices: [
+      {
+        choiceId: 'publish_imperfect',
+        text: "Then be terrified and publish anyway. Courage isn't the absence of fear.",
+        nextNodeId: 'yaquin_loyalty_success',
+        pattern: 'helping',
+        skills: ['encouragement', 'emotionalIntelligence']
+      },
+      {
+        choiceId: 'publish_together',
+        text: "You're not claiming it alone. Your students will claim it with you. Together.",
+        nextNodeId: 'yaquin_loyalty_success',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
+      },
+      {
+        choiceId: 'wait_one_week',
+        text: "What if you wait one week? Polish it. Then publish with confidence.",
+        nextNodeId: 'yaquin_loyalty_partial',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence']
+      }
+    ],
+    tags: ['loyalty_experience', 'the_launch', 'critical_moment']
+  },
+
+  {
+    nodeId: 'yaquin_loyalty_perfectionist',
+    speaker: 'Yaquin',
+    content: [{
+      text: "[He clicks back into the intro video. Watches it. Pauses. Rewinds. Watches again.]\n\n\"The lighting IS a bit yellow. And I stumble over the word 'alginate' at 2:14.\"\n\n[He opens the editing software.]\n\n\"Just... just let me fix this one thing. Then I'll publish. Promise.\"\n\n[Hours pass. The sun sets. The laptop screen glows in the dark.]\n\n\"Maybe tomorrow. When I'm fresh. When it's perfect.\"",
+      emotion: 'defeated',
+      variation_id: 'perfectionist_v1',
+      richEffectContext: 'error',
+      useChatPacing: true
+    }],
+    choices: [{
+      choiceId: 'incomplete_return',
+      text: "[The moment passes. The course stays unpublished.]",
+      nextNodeId: 'yaquin_hub_return',
+      pattern: 'patience'
+    }],
+    onEnter: [{
+      characterId: 'yaquin',
+      addKnowledgeFlags: ['yaquin_loyalty_incomplete']
+    }],
+    tags: ['loyalty_experience', 'the_launch', 'incomplete']
+  },
+
+  {
+    nodeId: 'yaquin_loyalty_partial',
+    speaker: 'Yaquin',
+    content: [{
+      text: "[One week later. You get a text.]\n\n\"Published it today. Took the week to fix a few things. Added a welcome email sequence. Recorded a bonus module.\n\nThree enrollments in the first hour. Real people. Paying $497. For my teaching.\n\nOne of them left a comment: 'Finally, someone who gets it.'\n\nStill scared. But it's out there. It's real.\n\nThank you for giving me permission to wait. To make it right before putting it in the world.\"",
+      emotion: 'grateful_relieved',
+      variation_id: 'partial_v1',
+      richEffectContext: 'success',
+      useChatPacing: true
+    }],
+    choices: [{
+      choiceId: 'partial_return',
+      text: "Three students who needed exactly what you built. That's everything.",
+      nextNodeId: 'yaquin_hub_return',
+      pattern: 'helping',
+      skills: ['emotionalIntelligence']
+    }],
+    onEnter: [{
+      characterId: 'yaquin',
+      trustChange: 1,
+      addKnowledgeFlags: ['yaquin_loyalty_partial']
+    }],
+    tags: ['loyalty_experience', 'the_launch', 'partial']
+  },
+
+  {
+    nodeId: 'yaquin_loyalty_success',
+    speaker: 'Yaquin',
+    content: [{
+      text: "[His hand moves to the mouse. Hovers over the button.]\n\n\"Together?\"\n\n[You nod.]\n\n[Click.]\n\n[The page refreshes. 'Course Status: LIVE' appears in green.]\n\n[He stares at it. Silent. Then—]\n\n\"I did it. It's live. The Real Dental Assistant. By Yaquin.\"\n\n[A notification pops up: 'New Enrollment: Sarah M.']\n\n[Another: 'New Enrollment: James K.']\n\n[Another: 'New Enrollment: Patricia L.']\n\n\"Three people. In two minutes. Three people who think what I know is worth learning.\"\n\n[He looks at you. Eyes wet.]\n\n\"Not 'just an assistant.' Not anymore. Teacher. Creator. Educator.\n\nI'm claiming it. Right now. With you as witness.\n\nThis is what I am. What I've been. What I'll keep being.\n\nThank you. For being here when it mattered most.\"",
+      emotion: 'triumphant_grateful',
+      variation_id: 'success_v1',
+      richEffectContext: 'success',
+      useChatPacing: true
+    }],
+    choices: [{
+      choiceId: 'success_return',
+      text: "You were always a teacher. Now the world knows it too.",
+      nextNodeId: 'yaquin_hub_return',
+      pattern: 'helping',
+      skills: ['emotionalIntelligence']
+    }],
+    onEnter: [{
+      characterId: 'yaquin',
+      trustChange: 3,
+      addKnowledgeFlags: ['yaquin_loyalty_complete'],
+      addGlobalFlags: ['yaquin_launch_triumph']
+    }],
+    tags: ['loyalty_experience', 'the_launch', 'success']
   }
 ]
 

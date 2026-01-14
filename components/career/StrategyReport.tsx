@@ -1,15 +1,15 @@
-import { useState } from 'react'
 import { generateCareerProfile } from '@/lib/career-translation'
 import { GameState } from '@/lib/character-state'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Printer, Network, FileText, TrendingUp, BarChart3, Brain } from 'lucide-react'
+import { Printer, Network, FileText, BarChart3, Brain } from 'lucide-react'
 import { SkillTransferGraph } from '../visualizations/SkillTransferGraph'
 import { NeuroHexagon } from '@/components/visualizations/NeuroHexagon'
-import { SKILL_NODES, SkillCluster } from '@/lib/constellation/skill-positions'
+import { SKILL_NODES } from '@/lib/constellation/skill-positions'
 import { CareerForecast } from '../dashboard/CareerForecast'
 import { SkillGapVisualizer } from '../dashboard/SkillGapVisualizer'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { useGameStore } from '@/lib/game-store'
 
 /**
  * STRATEGY REPORT
@@ -26,6 +26,7 @@ interface StrategyReportProps {
 
 export function StrategyReport({ gameState, onClose }: StrategyReportProps) {
     const profile = generateCareerProfile(gameState)
+    const skills = useGameStore((state) => state.skills)
 
     // Calculate Neuro-Cognitive Cluster Stats
     const clusterStats = {
@@ -35,11 +36,8 @@ export function StrategyReport({ gameState, onClose }: StrategyReportProps) {
 
     SKILL_NODES.forEach(node => {
         if (node.cluster === 'center') return
-        // @ts-ignore - Indexing
-        const level = gameState.skills[node.id] || 0
-        // @ts-ignore
+        const level = (skills as unknown as Record<string, number>)[node.id] || 0
         clusterStats[node.cluster] += level
-        // @ts-ignore
         clusterMax[node.cluster] += 5
     })
 
@@ -265,7 +263,6 @@ export function StrategyReport({ gameState, onClose }: StrategyReportProps) {
 }
 
 import { getCareerRecommendations } from '@/lib/assessment-derivatives'
-import { useGameStore } from '@/lib/game-store'
 
 function SkillGapVisualizerWrapper() {
     // Wrapper to get the top career ID from the store logic

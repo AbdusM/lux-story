@@ -3051,6 +3051,639 @@ export const devonDialogueNodes: DialogueNode[] = [
       variation_id: 'hub_return_v1'
     }],
     choices: []
+  },
+
+  // ============= PHASE 1 SIMULATION: SYSTEM DEBUGGER (Trust ≥ 2) =============
+  {
+    nodeId: 'devon_simulation_phase1_setup',
+    speaker: 'Devon Kumar',
+    content: [{
+      text: "Okay. You want to see how I think?\n\nThere's a ventilation controller down in sub-level 3. It's been cycling on and off every 47 seconds for the past two days. Nobody's touched it. The logs show normal operation.\n\nBut it's fighting itself. Just like...\n\n...doesn't matter. You want to debug it with me?",
+      emotion: 'focused_curious',
+      variation_id: 'simulation_intro_v1'
+    }],
+    requiredState: {
+      trust: { min: 2 }
+    },
+    choices: [
+      {
+        choiceId: 'phase1_accept',
+        text: "Let's debug it together.",
+        nextNodeId: 'devon_simulation_phase1',
+        pattern: 'analytical',
+        skills: ['problemSolving']
+      },
+      {
+        choiceId: 'phase1_decline',
+        text: "Maybe another time.",
+        nextNodeId: 'devon_crossroads',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['simulation', 'devon_arc']
+  },
+
+  {
+    nodeId: 'devon_simulation_phase1',
+    speaker: 'Devon Kumar',
+    content: [{
+      text: "Here's the control system. Find the bug.",
+      emotion: 'focused',
+      variation_id: 'simulation_phase1_v1'
+    }],
+    simulation: {
+      type: 'terminal_coding',
+      title: 'Ventilation Control Debug',
+      taskDescription: 'The HVAC controller is cycling on/off every 47 seconds. The sensor readings are normal, but the system is unstable. Identify the root cause.',
+      phase: 1,
+      difficulty: 'introduction',
+      variantId: 'devon_hvac_debug_phase1',
+      initialContext: {
+        label: 'HVAC_Controller_v4.2',
+        content: `SENSOR: Temperature = 21.5°C (target: 21.0°C)
+ACTUATOR: Fan = ON (cycling every 47s)
+ERROR LOG: None
+
+Control Logic:
+if (temp > target + 0.5):
+    fan = ON
+if (temp < target - 0.5):
+    fan = OFF
+
+Problem: System oscillating instead of stabilizing
+Hint: Check the hysteresis logic`,
+        displayStyle: 'code'
+      },
+      successFeedback: '✓ BUG FOUND: Hysteresis threshold too wide (±0.5°C). System overshoots and oscillates. Solution: Narrow band to ±0.2°C.',
+      successThreshold: 75,
+      unlockRequirements: {
+        trustMin: 2
+      }
+    },
+    choices: [
+      {
+        choiceId: 'phase1_success',
+        text: "That was elegant. Simple fix.",
+        nextNodeId: 'devon_simulation_phase1_success',
+        pattern: 'analytical',
+        skills: ['problemSolving']
+      }
+    ],
+    onEnter: [{
+      characterId: 'devon',
+      addKnowledgeFlags: ['devon_simulation_phase1_complete']
+    }],
+    tags: ['simulation', 'phase1']
+  },
+
+  {
+    nodeId: 'devon_simulation_phase1_success',
+    speaker: 'Devon Kumar',
+    content: [{
+      text: "You see it too. The system was fighting itself because the tolerances were too wide.\n\nMost people would've just replaced the whole controller. But you debugged it. Found the root cause.\n\nThat's... that's how I think. Everything's a system. Everything has logic.",
+      emotion: 'seen_warm',
+      variation_id: 'phase1_success_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'phase1_success_continue',
+        text: "Systems thinking is powerful.",
+        nextNodeId: 'devon_crossroads',
+        pattern: 'analytical',
+        skills: ['criticalThinking'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['simulation', 'success']
+  },
+
+  {
+    nodeId: 'devon_simulation_phase1_fail',
+    speaker: 'Devon Kumar',
+    content: [{
+      text: "That's... not it. The system's still cycling.\n\nIt's okay. Debugging takes practice. Most people don't even try to understand the logic.\n\nMaybe we'll take another crack at it later.",
+      emotion: 'patient_disappointed',
+      variation_id: 'phase1_fail_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'phase1_fail_continue',
+        text: "I'll learn from this.",
+        nextNodeId: 'devon_crossroads',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['simulation', 'fail']
+  },
+
+  // ============= PHASE 2 SIMULATION: ARCHITECTURE UNDER CONSTRAINTS (Trust ≥ 5) =============
+  {
+    nodeId: 'devon_simulation_phase2_setup',
+    speaker: 'Devon Kumar',
+    content: [{
+      text: "I've been thinking about redundancy. The station's life support has a single point of failure in the oxygen recycler.\n\nIf it goes down, we have 6 hours of reserve air. That's it.\n\nI've been designing a backup system, but... I can't get the constraints to balance. Power budget is maxed. Space is limited. Cost matters.\n\nWant to see if you can architect something I missed?",
+      emotion: 'focused_vulnerable',
+      variation_id: 'simulation_phase2_intro_v1'
+    }],
+    requiredState: {
+      trust: { min: 5 },
+      hasKnowledgeFlags: ['devon_simulation_phase1_complete']
+    },
+    choices: [
+      {
+        choiceId: 'phase2_accept',
+        text: "Let's design it together.",
+        nextNodeId: 'devon_simulation_phase2',
+        pattern: 'building',
+        skills: ['systemsThinking']
+      },
+      {
+        choiceId: 'phase2_decline',
+        text: "This feels important. Are you sure you want my input?",
+        nextNodeId: 'devon_crossroads',
+        pattern: 'helping',
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['simulation', 'devon_arc']
+  },
+
+  {
+    nodeId: 'devon_simulation_phase2',
+    speaker: 'Devon Kumar',
+    content: [{
+      text: "Here are the constraints. Design a backup oxygen system that fits within them.",
+      emotion: 'focused',
+      variation_id: 'simulation_phase2_v1'
+    }],
+    simulation: {
+      type: 'system_architecture',
+      title: 'Redundant Life Support Design',
+      taskDescription: 'Design a backup oxygen recycling system under strict constraints: 500W power budget, 2m³ space, 48-hour oxygen reserve minimum.',
+      phase: 2,
+      difficulty: 'application',
+      variantId: 'devon_life_support_phase2',
+      timeLimit: 120,
+      initialContext: {
+        label: 'SYSTEM_CONSTRAINTS',
+        content: `REQUIREMENTS:
+- Backup O2 capacity: 48 hours minimum
+- Power budget: 500W max
+- Physical space: 2m³ max
+- Cost: $50k max
+
+DESIGN OPTIONS:
+A) Chemical O2 generators (250W, 1m³, $30k, 72hr capacity)
+B) Compressed O2 tanks (0W, 3m³, $20k, 96hr capacity)
+C) Electrolysis backup (450W, 1.5m³, $45k, infinite if water available)
+D) Hybrid: Tanks + Electrolysis (450W, 2.5m³, $65k, 120hr)
+
+TRADE-OFFS: Power vs Space vs Cost vs Reliability
+
+Which architecture balances the constraints?`,
+        displayStyle: 'code'
+      },
+      successFeedback: '✓ OPTIMAL DESIGN: Option A (Chemical) meets all constraints with 50% power headroom. Cost-effective, fits space, exceeds minimum capacity.',
+      successThreshold: 85,
+      unlockRequirements: {
+        trustMin: 5,
+        previousPhaseCompleted: 'devon_hvac_debug_phase1'
+      }
+    },
+    choices: [
+      {
+        choiceId: 'phase2_success',
+        text: "Chemical generators. Elegant compromise.",
+        nextNodeId: 'devon_simulation_phase2_success',
+        pattern: 'analytical',
+        skills: ['systemsThinking', 'problemSolving']
+      }
+    ],
+    onEnter: [{
+      characterId: 'devon',
+      addKnowledgeFlags: ['devon_simulation_phase2_complete']
+    }],
+    tags: ['simulation', 'phase2']
+  },
+
+  {
+    nodeId: 'devon_simulation_phase2_success',
+    speaker: 'Devon Kumar',
+    content: [{
+      text: "You balanced it. Power, space, cost, reliability.\n\nMost engineers optimize for one thing and ignore the rest. But you saw the whole system. The constraints aren't enemies - they're design parameters.\n\nThat's... that's how you build things that last.\n\nMaybe that applies to more than just engineering.",
+      emotion: 'awed_thoughtful',
+      variation_id: 'phase2_success_v1',
+      richEffectContext: 'warning'
+    }],
+    choices: [
+      {
+        choiceId: 'phase2_success_continue',
+        text: "Constraints force creativity.",
+        nextNodeId: 'devon_crossroads',
+        pattern: 'building',
+        skills: ['creativity'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['simulation', 'success']
+  },
+
+  {
+    nodeId: 'devon_simulation_phase2_fail',
+    speaker: 'Devon Kumar',
+    content: [{
+      text: "That design... it violates the power budget. Or the space constraint. One of them.\n\nIt's harder than it looks, right? Optimizing for everything at once.\n\nI've been stuck on this for weeks. Maybe there isn't a perfect solution.",
+      emotion: 'frustrated_tired',
+      variation_id: 'phase2_fail_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'phase2_fail_continue',
+        text: "Sometimes there are only trade-offs, not solutions.",
+        nextNodeId: 'devon_crossroads',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['simulation', 'fail']
+  },
+
+  // ============= PHASE 3 SIMULATION: HUMAN SYSTEM DESIGN (Trust ≥ 8, Post-Vulnerability) =============
+  {
+    nodeId: 'devon_simulation_phase3_setup',
+    speaker: 'Devon Kumar',
+    content: [{
+      text: "I need your help with something.\n\nNot a technical system. A human one.\n\nMy dad. We haven't really talked since mom died. I keep trying to... debug the relationship. Fix the communication protocol. But every time I try to optimize for efficiency, I just make it worse.\n\nYou've seen how I think. Maybe... maybe you can help me design a better approach.\n\nNot a fix. Just... a framework.",
+      emotion: 'vulnerable_hopeful',
+      variation_id: 'simulation_phase3_intro_v1',
+      richEffectContext: 'warning'
+    }],
+    requiredState: {
+      trust: { min: 8 },
+      hasGlobalFlags: ['devon_vulnerability_revealed'],
+      hasKnowledgeFlags: ['devon_simulation_phase2_complete']
+    },
+    choices: [
+      {
+        choiceId: 'phase3_accept',
+        text: "Let's design it together.",
+        nextNodeId: 'devon_simulation_phase3',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
+      },
+      {
+        choiceId: 'phase3_gentle',
+        text: "This isn't a system to debug, Devon. It's a relationship to rebuild.",
+        nextNodeId: 'devon_crossroads',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['simulation', 'devon_arc', 'emotional']
+  },
+
+  {
+    nodeId: 'devon_simulation_phase3',
+    speaker: 'Devon Kumar',
+    content: [{
+      text: "Here's what I know about him. Help me design a communication framework.",
+      emotion: 'vulnerable_focused',
+      variation_id: 'simulation_phase3_v1'
+    }],
+    simulation: {
+      type: 'visual_canvas',
+      title: 'Communication Framework Design',
+      taskDescription: 'Design a communication approach for Devon to reconnect with his grieving father. Balance emotional safety, authenticity, and gradual trust-building.',
+      phase: 3,
+      difficulty: 'mastery',
+      variantId: 'devon_human_system_phase3',
+      timeLimit: 90,
+      initialContext: {
+        label: 'FATHER_PROFILE',
+        content: `CONTEXT:
+- Grieving wife of 35 years
+- Emotionally guarded (engineer, like Devon)
+- Avoids direct emotional conversations
+- Responds to: practical help, shared activities, silence
+
+DEVON'S PAST ATTEMPTS (all failed):
+1. "We should process this together" → Shutdown
+2. "Let's establish regular check-ins" → Avoidance
+3. "I made you a grief support workflow" → Anger
+
+DESIGN PARAMETERS:
+- Safety: No forced emotional vulnerability
+- Authenticity: Can't be purely transactional
+- Sustainability: Must work long-term, not just once
+- Respect: Honors his grieving process
+
+What communication approach balances these?`,
+        displayStyle: 'text'
+      },
+      successFeedback: '✓ FRAMEWORK: Start with shared repair work (garage project). Let conversations emerge naturally. Silence is data, not failure. Emotional connection is the output, not the input.',
+      successThreshold: 95,
+      unlockRequirements: {
+        trustMin: 8,
+        previousPhaseCompleted: 'devon_life_support_phase2',
+        requiredFlags: ['devon_vulnerability_revealed']
+      }
+    },
+    choices: [
+      {
+        choiceId: 'phase3_success',
+        text: "It's not about optimizing. It's about being present.",
+        nextNodeId: 'devon_simulation_phase3_success',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication']
+      }
+    ],
+    onEnter: [{
+      characterId: 'devon',
+      addKnowledgeFlags: ['devon_simulation_phase3_complete']
+    }],
+    tags: ['simulation', 'phase3', 'mastery']
+  },
+
+  {
+    nodeId: 'devon_simulation_phase3_success',
+    speaker: 'Devon Kumar',
+    content: [{
+      text: "You're right.\n\nI've been trying to debug grief like it's a system error. But it's not broken. It's... human.\n\nShared work. Silence as data. Emotional connection as the output, not the input.\n\nThat's not a fix. It's a framework for being present.\n\nI think... I think I can do that.\n\nThank you. For seeing the system I couldn't see. The one that includes hearts, not just logic.",
+      emotion: 'grateful_transformed',
+      variation_id: 'phase3_success_v1',
+      richEffectContext: 'success'
+    }],
+    choices: [
+      {
+        choiceId: 'phase3_success_continue',
+        text: "You were always capable of this. You just needed a new framework.",
+        nextNodeId: 'devon_crossroads',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 3,
+          addGlobalFlags: ['devon_human_systems_mastery']
+        }
+      }
+    ],
+    tags: ['simulation', 'success', 'transformation']
+  },
+
+  {
+    nodeId: 'devon_simulation_phase3_fail',
+    speaker: 'Devon Kumar',
+    content: [{
+      text: "That still feels like I'm trying to engineer the outcome. To optimize for a result.\n\nBut relationships aren't systems. They're... messier than that.\n\nI don't know if I can do this without turning it into another flowchart.",
+      emotion: 'defeated_vulnerable',
+      variation_id: 'phase3_fail_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'phase3_fail_continue',
+        text: "It's okay to not have the answer yet.",
+        nextNodeId: 'devon_crossroads',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['simulation', 'fail']
+  },
+
+  // ═══════════════════════════════════════════════════════════════
+  // LOYALTY EXPERIENCE: The Outage (trust ≥ 8, post-vulnerability)
+  // ═══════════════════════════════════════════════════════════════
+
+  {
+    nodeId: 'devon_loyalty_trigger',
+    speaker: 'Devon Kumar',
+    content: [{
+      text: "I need your help. Right now.\n\n[His phone is buzzing nonstop. He looks exhausted.]\n\nStation's HVAC system just failed. Main controller's down. Backup didn't kick in. Temperature's rising in the server room—if it hits 85°F, we lose data infrastructure for the entire building.\n\nI've got 30 minutes before critical failure. Maybe less.\n\nI can fix this, but I need someone to help me triage. Make the calls I can't make while I'm elbow-deep in the control panel.\n\nCan you do that?",
+      emotion: 'urgent_focused',
+      variation_id: 'loyalty_trigger_v1'
+    }],
+    requiredState: {
+      trust: { min: 8 },
+      hasKnowledgeFlags: ['devon_vulnerability_revealed']
+    },
+    choices: [
+      {
+        choiceId: 'accept_loyalty',
+        text: "Tell me what you need. I'm here.",
+        nextNodeId: 'devon_loyalty_start',
+        pattern: 'helping',
+        skills: ['crisisManagement']
+      },
+      {
+        choiceId: 'decline_loyalty',
+        text: "This sounds serious. Maybe call building maintenance?",
+        nextNodeId: 'devon_loyalty_declined',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['loyalty_experience', 'the_outage']
+  },
+
+  {
+    nodeId: 'devon_loyalty_declined',
+    speaker: 'Devon Kumar',
+    content: [{
+      text: "[He nods, already moving.]\n\nYeah. You're right. I'll handle it.\n\n[He disappears into the mechanical room. You hear metal clanging, muttered calculations.]",
+      emotion: 'focused',
+      variation_id: 'loyalty_declined_v1'
+    }],
+    choices: [{
+      choiceId: 'return_to_hub',
+      text: "(Let him work)",
+      nextNodeId: 'devon_hub_return',
+      pattern: 'patience'
+    }],
+    tags: ['loyalty_declined']
+  },
+
+  {
+    nodeId: 'devon_loyalty_start',
+    speaker: 'Devon Kumar',
+    content: [{
+      text: "[He hands you his tablet. A system diagram glows—red zones spreading.]\n\n\"Main controller's fried. Lightning strike hit the transformer last night. Surge protection failed.\n\nI can reroute through the backup, but it'll take 20 minutes of manual rewiring. During that time, systems will be unstable.\n\nHere's what I need: Monitor these three subsystems. If any of them hit critical, you tell me IMMEDIATELY. I'll have to choose which one to prioritize.\n\nReady?\"",
+      emotion: 'intense_focused',
+      variation_id: 'loyalty_start_v1'
+    }],
+    onEnter: [
+      { characterId: 'devon', addKnowledgeFlags: ['devon_loyalty_accepted'] }
+    ],
+    choices: [{
+      choiceId: 'begin_triage',
+      text: "[Nod] I'm watching the systems.",
+      nextNodeId: 'devon_loyalty_crisis_1',
+      pattern: 'analytical',
+      skills: ['attentionToDetail']
+    }],
+    tags: ['loyalty_experience', 'the_outage', 'crisis_start']
+  },
+
+  {
+    nodeId: 'devon_loyalty_crisis_1',
+    speaker: 'Devon Kumar',
+    content: [{
+      text: "[He's inside the panel now. Sparks fly. His hands move fast—disconnecting, reconnecting, testing voltage.]\n\n[Your tablet beeps. WARNING: Server Room Temp 78°F. Rising 2° per minute.]\n\n[Another beep. WARNING: Emergency Lighting Circuit Unstable.]\n\n[A third beep. WARNING: Fire Suppression System Offline.]\n\n[Devon calls out, not looking up.]\n\n\"Which one first? I can only stabilize one at a time. What's the priority?\"",
+      emotion: 'tense',
+      variation_id: 'crisis_1_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'prioritize_servers',
+        text: "Server room. If we lose data, everything else is meaningless.",
+        nextNodeId: 'devon_loyalty_servers_first',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'triage']
+      },
+      {
+        choiceId: 'prioritize_fire',
+        text: "Fire suppression. If something catches, it's all over.",
+        nextNodeId: 'devon_loyalty_fire_first',
+        pattern: 'helping',
+        skills: ['riskManagement']
+      },
+      {
+        choiceId: 'freeze_indecision',
+        text: "I... I don't know. You decide.",
+        nextNodeId: 'devon_loyalty_freeze',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['loyalty_experience', 'the_outage', 'crisis_triage']
+  },
+
+  {
+    nodeId: 'devon_loyalty_servers_first',
+    speaker: 'Devon Kumar',
+    content: [{
+      text: "[He nods sharply.]\n\n\"Servers. Got it.\"\n\n[Pulls a jumper cable, reroutes power. The server room temp stabilizes at 79°F.]\n\n\"Holding. Fire suppression still offline. Emergency lights flickering.\"\n\n[Ten minutes pass. He's soaked in sweat.]\n\n\"Backup controller's online. Routing primary systems now. We're... we're stable.\"\n\n[He emerges from the panel. Sits on the floor.]\n\n\"You made the right call. Servers first. Data is irreplaceable. Everything else we can fix later.\n\nYou didn't freeze. That's... that's the hardest part of crisis management. Making a choice when any choice could be wrong.\"",
+      emotion: 'exhausted_grateful',
+      variation_id: 'servers_first_v1',
+      richEffectContext: 'success'
+    }],
+    choices: [{
+      choiceId: 'servers_success',
+      text: "You did the hard part. I just prioritized.",
+      nextNodeId: 'devon_loyalty_success',
+      pattern: 'helping',
+      skills: ['humility']
+    }],
+    tags: ['loyalty_experience', 'the_outage', 'servers_priority']
+  },
+
+  {
+    nodeId: 'devon_loyalty_fire_first',
+    speaker: 'Devon Kumar',
+    content: [{
+      text: "[He hesitates for half a second.]\n\n\"Fire suppression. Okay.\"\n\n[Switches the priority. Fire suppression comes online. But the server room alarm screams—82°F.]\n\n\"Servers are critical. I have to switch now.\"\n\n[He works frantically. Gets the servers under control at 83°F—just before failure threshold.]\n\n[Fifteen minutes later, backup's online. He stumbles out, pale.]\n\n\"We made it. Barely. Fire suppression was the safer choice, but... servers were the critical path.\n\nI should have overruled you. But I didn't trust my own judgment in the moment.\n\nWe got lucky. Next time, we might not.\"",
+      emotion: 'conflicted_exhausted',
+      variation_id: 'fire_first_v1'
+    }],
+    choices: [{
+      choiceId: 'fire_partial',
+      text: "We both learned something. That counts.",
+      nextNodeId: 'devon_loyalty_partial',
+      pattern: 'patience',
+      skills: ['resilience']
+    }],
+    tags: ['loyalty_experience', 'the_outage', 'fire_priority']
+  },
+
+  {
+    nodeId: 'devon_loyalty_freeze',
+    speaker: 'Devon Kumar',
+    content: [{
+      text: "[He looks up, frustrated.]\n\n\"I need you to DECIDE. I can't—\"\n\n[The tablet screams. Server room hits 81°F.]\n\n\"Damn it. Servers. Has to be servers.\"\n\n[He makes the call himself. Fixes it. But it's close—84°F before he stabilizes it.]\n\n[Later, he sits outside, not looking at you.]\n\n\"I asked you because I needed someone to make the hard calls while I was physically unable to. When you froze, I had to do both.\n\nIt worked out. This time.\n\nBut in crisis management, hesitation kills.\"",
+      emotion: 'disappointed_tired',
+      variation_id: 'freeze_v1'
+    }],
+    choices: [{
+      choiceId: 'freeze_return',
+      text: "I'm sorry. I wasn't ready.",
+      nextNodeId: 'devon_hub_return',
+      pattern: 'patience'
+    }],
+    onEnter: [{
+      characterId: 'devon',
+      addKnowledgeFlags: ['devon_loyalty_incomplete']
+    }],
+    tags: ['loyalty_experience', 'the_outage', 'freeze']
+  },
+
+  {
+    nodeId: 'devon_loyalty_success',
+    speaker: 'Devon Kumar',
+    content: [{
+      text: "[He looks at you seriously.]\n\n\"No. You don't understand.\n\nI've been managing systems for eight years. I've handled outages, failures, critical incidents. I'm good at this.\n\nBut I'm terrible at asking for help. At trusting someone else to make the call when I can't.\n\nToday, you proved I can. That I don't have to carry every system, every decision, alone.\n\nThat's worth more than fixing an HVAC controller.\n\nThank you. For not freezing. For making the hard choice. For being someone I can trust when systems fail.\"",
+      emotion: 'vulnerable_grateful',
+      variation_id: 'success_v1',
+      richEffectContext: 'success'
+    }],
+    choices: [{
+      choiceId: 'success_return',
+      text: "Systems fail. People don't have to.",
+      nextNodeId: 'devon_hub_return',
+      pattern: 'helping',
+      skills: ['emotionalIntelligence']
+    }],
+    onEnter: [
+      {
+        characterId: 'devon',
+        trustChange: 3,
+        addKnowledgeFlags: ['devon_loyalty_complete'],
+        addGlobalFlags: ['devon_outage_mastery']
+      }
+    ],
+    tags: ['loyalty_experience', 'the_outage', 'success']
+  },
+
+  {
+    nodeId: 'devon_loyalty_partial',
+    speaker: 'Devon Kumar',
+    content: [{
+      text: "[He nods slowly.]\n\n\"Yeah. We learned.\n\nYou learned that crisis decisions have stakes. I learned that I need to trust my own judgment even when someone else is helping.\n\nWe didn't fail. But we didn't excel either.\n\nNext crisis, we'll both be better.\"",
+      emotion: 'reflective_tired',
+      variation_id: 'partial_v1'
+    }],
+    choices: [{
+      choiceId: 'partial_return',
+      text: "Next time.",
+      nextNodeId: 'devon_hub_return',
+      pattern: 'patience'
+    }],
+    onEnter: [
+      {
+        characterId: 'devon',
+        trustChange: 1,
+        addKnowledgeFlags: ['devon_loyalty_partial']
+      }
+    ],
+    tags: ['loyalty_experience', 'the_outage', 'partial']
   }
 ]
 

@@ -7,7 +7,9 @@
  */
 
 import { useMemo } from 'react';
-import type { GameState } from './game-store';
+// Archived - game-store import removed
+// import type { GameState } from './game-store';
+type GameState = any; // Legacy type placeholder
 
 // Simple shallow equality check
 function shallowEqual(a: unknown, b: unknown): boolean {

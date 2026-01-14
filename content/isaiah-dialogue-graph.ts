@@ -480,6 +480,11 @@ export const isaiahDialogueNodes: DialogueNode[] = [
         emotion: 'searching'
       }
     ],
+    onEnter: [
+      {
+        addGlobalFlags: ['isaiah_arc_complete']
+      }
+    ],
     choices: [
       {
         choiceId: 'isaiah_meaning_found',
@@ -764,9 +769,89 @@ export const isaiahDialogueNodes: DialogueNode[] = [
         nextNodeId: 'isaiah_exploration_hub',
         pattern: 'patience',
         skills: ['curiosity']
+      },
+      {
+        choiceId: 'offer_site_visit',
+        text: "[Helper] Isaiah, you look like you could use support. Something happening today?",
+        nextNodeId: 'isaiah_loyalty_trigger',
+        pattern: 'helping',
+        skills: ['empathy', 'emotionalIntelligence'],
+        visibleCondition: {
+          trust: { min: 8 },
+          patterns: { helping: { min: 5 } },
+          hasGlobalFlags: ['isaiah_arc_complete']
+        }
       }
     ],
     tags: ['isaiah_arc', 'hub', 'navigation']
+  },
+
+  // ═══════════════════════════════════════════════════════════════
+  // LOYALTY EXPERIENCE: THE SITE VISIT
+  // Requires: Trust >= 8, Helping >= 50%, isaiah_arc_complete
+  // ═══════════════════════════════════════════════════════════════
+
+  {
+    nodeId: 'isaiah_loyalty_trigger',
+    speaker: 'Isaiah Greene',
+    content: [{
+      text: "Major donor site visit. Today. Two hours from now.\n\nDr. Patricia Chen. Runs a foundation that could fund our entire youth program for three years. She wants to see the work. Meet the kids. Understand the impact.\n\nNormally I'd be excited. Prepared. This is what I do.\n\nBut one of our kids—Jamal—just found out his mom's back in rehab. He's fourteen. He's barely holding it together. He asked if he could sit in my office during the visit.\n\nI could tell him no. Explain that this is important. That we need to look professional. That sometimes you have to put the mission ahead of the individual.\n\nBut that would make me a liar. Because the mission IS the individual. It's Jamal. And all the kids like him.\n\nYou understand presence. Would you... come with me? Help me figure out how to honor both? How to show Dr. Chen what matters without making Jamal invisible?",
+      emotion: 'conflicted_determined',
+      variation_id: 'loyalty_trigger_v1',
+      richEffectContext: 'warning'
+    }],
+    requiredState: {
+      trust: { min: 8 },
+      patterns: { helping: { min: 5 } },
+      hasGlobalFlags: ['isaiah_arc_complete']
+    },
+    metadata: {
+      experienceId: 'the_site_visit'
+    },
+    choices: [
+      {
+        choiceId: 'accept_site_visit',
+        text: "I'll be there.",
+        nextNodeId: 'isaiah_loyalty_start',
+        pattern: 'helping'
+      },
+      {
+        choiceId: 'decline_site_visit',
+        text: "That sounds like something you need to navigate yourself.",
+        nextNodeId: 'isaiah_loyalty_declined'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'isaiah_loyalty_declined',
+    speaker: 'Isaiah Greene',
+    content: [{
+      text: "I get it. Not everyone wants to be in the middle of that kind of tension.\n\nI'll figure it out. Always do.",
+      emotion: 'understanding',
+      variation_id: 'loyalty_declined_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'return_to_hub',
+        text: "Good luck with the visit.",
+        nextNodeId: 'isaiah_return_hub'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'isaiah_loyalty_start',
+    speaker: 'Isaiah Greene',
+    content: [{
+      text: "Youth center. Third floor. Conference room overlooks the gym.\n\nJamal will probably be in the corner with his headphones. Dr. Chen arrives at 2pm.\n\nThank you. For understanding that sometimes the work is holding space for two truths at once.",
+      emotion: 'warm_grateful',
+      variation_id: 'loyalty_start_v1'
+    }],
+    onEnter: [
+      { characterId: 'isaiah', addKnowledgeFlags: ['isaiah_loyalty_accepted'] }
+    ],
+    choices: []
   },
 
   // ============= ADDITIONAL DEPTH NODES =============
@@ -1022,7 +1107,431 @@ export const isaiahDialogueNodes: DialogueNode[] = [
   { nodeId: 'isaiah_therapy_insight', speaker: 'Isaiah Thompson', content: [{ text: "Therapy helped me see that I was trying to save everyone because I couldn't save everyone from my past. Heavy stuff.", emotion: 'vulnerable', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Thank you for sharing that.", nextNodeId: 'isaiah_hub_return', pattern: 'helping' }], tags: ['stub'] },
   { nodeId: 'isaiah_translation_work', speaker: 'Isaiah Thompson', content: [{ text: "Translation is a big part of the job. Translating community needs for funders. Translating funder expectations for staff.", emotion: 'thoughtful', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Bridging worlds.", nextNodeId: 'isaiah_hub_return', pattern: 'analytical' }], tags: ['stub'] },
   { nodeId: 'isaiah_uncomfortable_money', speaker: 'Isaiah Thompson', content: [{ text: "Money conversations are uncomfortable. But discomfort is where growth happens—for me and for donors.", emotion: 'honest', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Leaning into discomfort.", nextNodeId: 'isaiah_hub_return', pattern: 'patience' }], tags: ['stub'] },
-  { nodeId: 'isaiah_witnesses', speaker: 'Isaiah Thompson', content: [{ text: "Sometimes the most important thing isn't solving problems. It's witnessing them. Saying 'I see you. This matters.'", emotion: 'tender', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Being seen is powerful.", nextNodeId: 'isaiah_hub_return', pattern: 'helping' }], tags: ['stub'] }
+  { nodeId: 'isaiah_witnesses', speaker: 'Isaiah Thompson', content: [{ text: "Sometimes the most important thing isn't solving problems. It's witnessing them. Saying 'I see you. This matters.'", emotion: 'tender', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Being seen is powerful.", nextNodeId: 'isaiah_hub_return', pattern: 'helping' }], tags: ['stub'] },
+
+  // ═══════════════════════════════════════════════════════════════
+  // SIMULATION PHASE 1: Authentic Donor Cultivation (trust ≥ 2)
+  // ═══════════════════════════════════════════════════════════════
+
+  {
+    nodeId: 'isaiah_simulation_phase1_setup',
+    speaker: 'Isaiah Greene',
+    content: [{
+      text: "Got a new donor prospect. Dr. Williams. Retired surgeon. Wealth advisor suggested us.\n\nFirst coffee meeting tomorrow. This is where it all starts—building real connection or falling into transactional fundraising.\n\nWant to help me think through the approach?",
+      emotion: 'focused',
+      variation_id: 'sim_phase1_setup_v1'
+    }],
+    requiredState: {
+      trust: { min: 2 }
+    },
+    choices: [
+      {
+        choiceId: 'phase1_accept',
+        text: "Let\'s build authentic connection.",
+        nextNodeId: 'isaiah_simulation_phase1',
+        pattern: 'helping',
+        skills: ['communication']
+      },
+      {
+        choiceId: 'phase1_decline',
+        text: "You know how to cultivate donors. You\'ve done this hundreds of times.",
+        nextNodeId: 'isaiah_hub_return',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['simulation', 'isaiah_sim', 'phase1']
+  },
+
+  {
+    nodeId: 'isaiah_simulation_phase1',
+    speaker: 'Isaiah Greene',
+    content: [{
+      text: "Here\'s the situation. First ten minutes of the meeting.",
+      emotion: 'teaching',
+      variation_id: 'simulation_phase1_v1'
+    }],
+    simulation: {
+      type: 'chat_negotiation',
+      title: 'Authentic Donor Cultivation',
+      taskDescription: 'First coffee meeting with a major donor prospect. Build genuine connection without being transactional. How do you start?',
+      phase: 1,
+      difficulty: 'introduction',
+      variantId: 'isaiah_donor_cultivation_phase1',
+      timeLimit: 90,
+      initialContext: {
+        label: 'COFFEE_MEETING',
+        content: `DR. WILLIAMS (reserved but curious):
+"So. Isaiah. Tell me about your organization."
+
+WHAT YOU KNOW:
+- Retired surgeon, 68
+- Lost his practice to malpractice insurance costs
+- Wealth advisor recommended you (tax planning)
+- No obvious connection to youth work
+- First time considering nonprofit giving beyond church
+
+APPROACH OPTIONS:
+A) Launch into your elevator pitch - statistics, outcomes, impact metrics (professional)
+B) Ask him about his life first - what brought him to Birmingham, what he cares about (curious)
+C) Share a kid\'s story that will pull heartstrings (emotional appeal)
+D) Ask why his advisor recommended youth work specifically (strategic)
+
+What builds authentic connection instead of transactional fundraising?`,
+        displayStyle: 'text'
+      },
+      successFeedback: '✓ CONNECTION: Option B - He talks about losing his practice. How powerless he felt. How he wishes someone had mentored him earlier in his career. The "why" emerges naturally. You didn\'t extract it. You invited it.',
+      successThreshold: 80,
+      unlockRequirements: {
+        trustMin: 2
+      }
+    },
+    choices: [{
+      choiceId: 'phase1_success',
+      text: "He opened up. The connection came first, not the ask.",
+      nextNodeId: 'isaiah_simulation_phase1_success',
+      pattern: 'helping',
+      skills: ['empathy', 'communication']
+    }],
+    onEnter: [{
+      characterId: 'isaiah',
+      addKnowledgeFlags: ['isaiah_simulation_phase1_complete']
+    }],
+    tags: ['simulation', 'phase1', 'isaiah_sim']
+  },
+
+  {
+    nodeId: 'isaiah_simulation_phase1_success',
+    speaker: 'Isaiah Greene',
+    content: [{
+      text: "Exactly. THAT\'S the difference.\n\nTransactional fundraisers see donors as ATMs. Authentic fundraisers see them as people with stories, wounds, hopes.\n\nWhen you start with curiosity instead of strategy, people feel it. They relax. They share.\n\nAnd when they share their \'why,\' the giving becomes inevitable. Not because you manipulated it. Because you helped them see how their values can take action.\n\nThat\'s the work at its best.",
+      emotion: 'warm',
+      variation_id: 'phase1_success_v1',
+      richEffectContext: 'success'
+    }],
+    choices: [{
+      choiceId: 'phase1_success_continue',
+      text: "People want to be seen before they\'re asked.",
+      nextNodeId: 'isaiah_hub_return',
+      pattern: 'helping',
+      skills: ['emotionalIntelligence']
+    }],
+    onEnter: [{
+      characterId: 'isaiah',
+      trustChange: 2
+    }],
+    tags: ['simulation', 'phase1', 'success']
+  },
+
+  {
+    nodeId: 'isaiah_simulation_phase1_fail',
+    speaker: 'Isaiah Greene',
+    content: [{
+      text: "That approach... it works sometimes. Gets the gift.\n\nBut you know what it doesn\'t get? A relationship. A partner. Someone who feels genuinely connected to the mission.\n\nYou get a transaction. One and done.\n\nAnd in fundraising, transactions burn out. Relationships renew.\n\nThe best donors aren\'t the ones you convinced. They\'re the ones who convinced themselves—because you gave them space to discover their own reasons for caring.",
+      emotion: 'disappointed',
+      variation_id: 'phase1_fail_v1',
+      richEffectContext: 'error'
+    }],
+    choices: [{
+      choiceId: 'phase1_fail_reflect',
+      text: "Relationships over transactions. I see that now.",
+      nextNodeId: 'isaiah_hub_return',
+      pattern: 'patience',
+      skills: ['criticalThinking']
+    }],
+    onEnter: [{
+      characterId: 'isaiah',
+      trustChange: 1
+    }],
+    tags: ['simulation', 'phase1', 'fail']
+  },
+
+  // ═══════════════════════════════════════════════════════════════
+  // SIMULATION PHASE 2: Emergency Fundraising (trust ≥ 5)
+  // ═══════════════════════════════════════════════════════════════
+
+  {
+    nodeId: 'isaiah_simulation_phase2_setup',
+    speaker: 'Isaiah Greene',
+    content: [{
+      text: "Crisis. Big one.\n\nLost our largest corporate sponsor. Budget shortfall: $50,000. We have 30 days before we have to cut the after-school program. That\'s 80 kids who won\'t have anywhere safe to go after school.\n\nI need to make emergency asks to donors we\'ve been cultivating. But emergency appeals can burn relationships if you\'re not careful.\n\nHow do you ask for urgent help without being manipulative? Want to work through it?",
+      emotion: 'anxious',
+      variation_id: 'sim_phase2_setup_v1'
+    }],
+    requiredState: {
+      trust: { min: 5 },
+      hasKnowledgeFlags: ['isaiah_simulation_phase1_complete']
+    },
+    choices: [
+      {
+        choiceId: 'phase2_accept',
+        text: "Let\'s find the honest urgency.",
+        nextNodeId: 'isaiah_simulation_phase2',
+        pattern: 'helping',
+        skills: ['problemSolving']
+      },
+      {
+        choiceId: 'phase2_decline',
+        text: "You know how to navigate crisis fundraising. Trust your integrity.",
+        nextNodeId: 'isaiah_hub_return',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['simulation', 'isaiah_sim', 'phase2']
+  },
+
+  {
+    nodeId: 'isaiah_simulation_phase2',
+    speaker: 'Isaiah Greene',
+    content: [{
+      text: "Here\'s the call I have to make. Help me find the right words.",
+      emotion: 'tense',
+      variation_id: 'simulation_phase2_v1'
+    }],
+    simulation: {
+      type: 'chat_negotiation',
+      title: 'Emergency Fundraising with Integrity',
+      taskDescription: 'Make an emergency ask to a cultivated donor. $50k needed in 30 days or 80 kids lose their after-school program. How do you ask without manipulating?',
+      phase: 2,
+      difficulty: 'application',
+      variantId: 'isaiah_emergency_ask_phase2',
+      timeLimit: 120,
+      initialContext: {
+        label: 'EMERGENCY_CALL',
+        content: `THE SITUATION:
+- Lost $50k corporate sponsor (merged with another company, cut community giving)
+- 30 days until budget gap forces program cuts
+- 80 kids in after-school program would lose their safe place
+- This donor (Sarah Chen) has given $5k annually for 3 years
+- You\'ve built genuine relationship with her
+- She cares deeply but has limited capacity ($10-15k max)
+
+SARAH (answering phone):
+"Isaiah! Good to hear from you. How are things?"
+
+APPROACH OPTIONS:
+A) Lead with crisis immediately: "Sarah, I need help. We\'re in trouble." (urgent)
+B) Share the news honestly but calmly: "Sarah, something happened I need to share with you." (honest)
+C) Ask how she is first, then transition: "Before I share some challenging news..." (relationship-first)
+D) Minimize the crisis to avoid burdening her: "Small hiccup, wondering if you could help." (protective)
+
+What honors both the urgency and the relationship?`,
+        displayStyle: 'text'
+      },
+      successFeedback: '✓ INTEGRITY: Option B+C combined - You ask about her first. Then: "Sarah, we lost our largest sponsor. I\'m making calls to people I trust to think through this with me. Not asking you to solve it alone. But I want you to know what\'s happening." She says: "Tell me what you need."',
+      successThreshold: 85,
+      unlockRequirements: {
+        trustMin: 5,
+        previousPhaseCompleted: 'isaiah_donor_cultivation_phase1'
+      }
+    },
+    choices: [{
+      choiceId: 'phase2_success',
+      text: "You invited her in as a partner, not a solution.",
+      nextNodeId: 'isaiah_simulation_phase2_success',
+      pattern: 'helping',
+      skills: ['communication', 'integrity']
+    }],
+    onEnter: [{
+      characterId: 'isaiah',
+      addKnowledgeFlags: ['isaiah_simulation_phase2_complete']
+    }],
+    tags: ['simulation', 'phase2', 'isaiah_sim']
+  },
+
+  {
+    nodeId: 'isaiah_simulation_phase2_success',
+    speaker: 'Isaiah Greene',
+    content: [{
+      text: "That\'s it. That\'s the skill most fundraisers never learn.\n\nEmergency fundraising doesn\'t mean panic fundraising. Urgency is real. Manipulation is when you exaggerate urgency to force a decision.\n\nWhen you invite donors in as PARTNERS in solving the problem—not ATMs to extract from—they feel respected. They want to help. They think creatively. They often give MORE than you asked for.\n\nSarah didn\'t just write a check. She called three other donors and organized a matching campaign. Raised $40k in two weeks.\n\nBecause you treated her like a partner, not a target.",
+      emotion: 'relieved_grateful',
+      variation_id: 'phase2_success_v1',
+      richEffectContext: 'success'
+    }],
+    choices: [{
+      choiceId: 'phase2_success_continue',
+      text: "Partnership multiplies impact.",
+      nextNodeId: 'isaiah_hub_return',
+      pattern: 'building',
+      skills: ['collaboration']
+    }],
+    onEnter: [{
+      characterId: 'isaiah',
+      trustChange: 2
+    }],
+    tags: ['simulation', 'phase2', 'success']
+  },
+
+  {
+    nodeId: 'isaiah_simulation_phase2_fail',
+    speaker: 'Isaiah Greene',
+    content: [{
+      text: "That approach... yeah, it might get the money. This time.\n\nBut next time you call Sarah, she\'ll see your name and think: \'What crisis is it now? What do they want from me?\'\n\nEmergency appeals work once. Maybe twice. Then donors start avoiding you.\n\nBecause they don\'t feel like partners. They feel like rescue services you only call when you\'re drowning.\n\nThe best fundraisers share the full truth—the good AND the hard—so donors can be genuine partners in both.",
+      emotion: 'weary',
+      variation_id: 'phase2_fail_v1',
+      richEffectContext: 'error'
+    }],
+    choices: [{
+      choiceId: 'phase2_fail_reflect',
+      text: "I was solving for short-term money instead of long-term partnership.",
+      nextNodeId: 'isaiah_hub_return',
+      pattern: 'analytical',
+      skills: ['criticalThinking']
+    }],
+    onEnter: [{
+      characterId: 'isaiah',
+      trustChange: 1
+    }],
+    tags: ['simulation', 'phase2', 'fail']
+  },
+
+  // ═══════════════════════════════════════════════════════════════
+  // SIMULATION PHASE 3: The Marcus Memorial (trust ≥ 8)
+  // ═══════════════════════════════════════════════════════════════
+
+  {
+    nodeId: 'isaiah_simulation_phase3_setup',
+    speaker: 'Isaiah Greene',
+    content: [{
+      text: "[Isaiah\'s voice is tight. Controlled.]\n\nGot an email this morning. Donor I\'ve never met. Elizabeth Morrison.\n\nHer son died two years ago. Eighteen years old. Car accident on the way to his college orientation.\n\nShe wants to fund a scholarship program in his name. Full ride for kids aging out of foster care. $500,000 over five years.\n\nIt\'s... it\'s exactly what we need. It would change everything.\n\nBut I have to sit across from a mother who lost her son and talk about Marcus. About what we do. About hope.\n\nAnd I don\'t... I don\'t know if I can hold her grief and mine at the same time without breaking.\n\nWill you... can you be there? In case I need...",
+      emotion: 'vulnerable_afraid',
+      variation_id: 'sim_phase3_setup_v1',
+      richEffectContext: 'warning'
+    }],
+    requiredState: {
+      trust: { min: 8 },
+      hasKnowledgeFlags: ['isaiah_simulation_phase2_complete', 'isaiah_vulnerability_revealed']
+    },
+    choices: [
+      {
+        choiceId: 'phase3_accept',
+        text: "I\'ll be there. You don\'t have to hold this alone.",
+        nextNodeId: 'isaiah_simulation_phase3',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
+      },
+      {
+        choiceId: 'phase3_decline',
+        text: "This one you might need to do alone. But you can.",
+        nextNodeId: 'isaiah_hub_return',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['simulation', 'isaiah_sim', 'phase3', 'vulnerability']
+  },
+
+  {
+    nodeId: 'isaiah_simulation_phase3',
+    speaker: 'Isaiah Greene',
+    content: [{
+      text: "[Conference room. Elizabeth Morrison sits across from you both. She\'s composed. Too composed.]\n\nHere we are.",
+      emotion: 'tense',
+      variation_id: 'simulation_phase3_v1'
+    }],
+    simulation: {
+      type: 'chat_negotiation',
+      title: 'The Marcus Memorial',
+      taskDescription: 'A grieving mother wants to fund a scholarship in her dead son\'s name. Isaiah must honor her grief while carrying Marcus\'s memory. How does he accept this gift without breaking?',
+      phase: 3,
+      difficulty: 'mastery',
+      variantId: 'isaiah_marcus_memorial_phase3',
+      timeLimit: 90,
+      initialContext: {
+        label: 'THE_MEETING',
+        content: `ELIZABETH MORRISON (grief barely contained):
+"My son David was going to study social work. He wanted to help kids in the system. Kids like him.
+
+He aged out of foster care at seventeen. Full scholarship to UAB. We met at a church event—I became his mentor, then... well, he became my son in every way that mattered.
+
+He died before he could help anyone.
+
+This scholarship—$500,000 over five years—it\'s what he would have done. I need his death to mean something.
+
+I need you to tell me this will save someone. That David\'s name will be attached to hope, not just... loss."
+
+ISAIAH\'S INTERNAL VOICE:
+"She\'s talking about David. But I\'m seeing Marcus. Eighteen. Dead. Me trying to make his death mean something by staying in this work.
+
+Can I accept this money without falling apart? Can I hold her grief when mine is still so raw?
+
+Do I tell her about Marcus? Do I stay professional? Do I let her see that I understand EXACTLY what she\'s feeling—because I\'m still feeling it too?"
+
+APPROACH OPTIONS:
+A) Stay professional - accept the gift graciously without sharing Marcus\'s story (safe)
+B) Share Marcus - let her know she\'s not alone in this grief (vulnerable)
+C) Redirect to the kids - focus on the impact, not the loss (mission-focused)
+D) Ask her what David would want - help her find her own meaning (therapeutic)
+
+What honors both Elizabeth\'s grief and Isaiah\'s without breaking either?`,
+        displayStyle: 'text'
+      },
+      successFeedback: '✓ WITNESSED GRIEF: Option B+D combined - Isaiah shares Marcus. Not as a fundraising tactic. As a witness. "I lost a kid too. Marcus. I understand wanting their death to mean something. But David already meant something. To you. This scholarship... it doesn\'t make his death meaningful. It extends his love." Elizabeth cries. Isaiah cries. The gift becomes sacred, not transactional.',
+      successThreshold: 95,
+      unlockRequirements: {
+        trustMin: 8,
+        previousPhaseCompleted: 'isaiah_emergency_ask_phase2',
+        requiredFlags: ['isaiah_vulnerability_revealed']
+      }
+    },
+    choices: [{
+      choiceId: 'phase3_success',
+      text: "You didn\'t accept a donation. You honored two boys who deserved better.",
+      nextNodeId: 'isaiah_simulation_phase3_success',
+      pattern: 'helping',
+      skills: ['emotionalIntelligence', 'integrity']
+    }],
+    onEnter: [{
+      characterId: 'isaiah',
+      addKnowledgeFlags: ['isaiah_simulation_phase3_complete', 'isaiah_elizabeth_partnership']
+    }],
+    tags: ['simulation', 'phase3', 'isaiah_sim', 'mastery']
+  },
+
+  {
+    nodeId: 'isaiah_simulation_phase3_success',
+    speaker: 'Isaiah Greene',
+    content: [{
+      text: "[Isaiah is crying. Not hiding it.]\n\nI\'ve been doing this work for twelve years. Raised millions of dollars. Sat with hundreds of donors.\n\nThat was the first time I brought Marcus into the room.\n\nNot as a story to illustrate impact. As a wound that\'s still bleeding. As proof that I\'m not separate from the grief I\'m asking donors to care about.\n\nElizabeth didn\'t want a fundraiser. She wanted a witness. Someone who understood that money can\'t fix death, but love can outlast it.\n\nMarcus\'s name will be on that scholarship too. Next to David\'s. Two boys who deserved more time.\n\nThank you. For being here when I couldn\'t do it alone.",
+      emotion: 'grief_gratitude_peace',
+      variation_id: 'phase3_success_v1',
+      richEffectContext: 'success'
+    }],
+    choices: [{
+      choiceId: 'phase3_success_continue',
+      text: "You honored them both. That\'s what sacred fundraising looks like.",
+      nextNodeId: 'isaiah_hub_return',
+      pattern: 'helping',
+      skills: ['emotionalIntelligence', 'integrity']
+    }],
+    onEnter: [{
+      characterId: 'isaiah',
+      trustChange: 3,
+      addGlobalFlags: ['isaiah_mastery_achieved']
+    }],
+    tags: ['simulation', 'phase3', 'success', 'transformation']
+  },
+
+  {
+    nodeId: 'isaiah_simulation_phase3_fail',
+    speaker: 'Isaiah Greene',
+    content: [{
+      text: "[Isaiah stares at the signed gift agreement. $500,000.]\n\nI got the money. Stayed professional. Didn\'t break down.\n\nBut when Elizabeth left, she looked... empty. Like she\'d written a check to assuage guilt, not to honor love.\n\nI didn\'t give her what she needed. I gave her what was easiest for me.\n\nAnd now I have half a million dollars that feels... hollow.\n\nMarcus would have told me to do better. To be braver. To let people see the wound, not just the work.\n\nI failed him again.",
+      emotion: 'hollow_regret',
+      variation_id: 'phase3_fail_v1',
+      richEffectContext: 'error'
+    }],
+    choices: [{
+      choiceId: 'phase3_fail_reflect',
+      text: "Maybe you can call her. Tell her what you couldn\'t say in the room.",
+      nextNodeId: 'isaiah_hub_return',
+      pattern: 'patience',
+      skills: ['courage']
+    }],
+    onEnter: [{
+      characterId: 'isaiah',
+      trustChange: 1
+    }],
+    tags: ['simulation', 'phase3', 'fail']
+  }
 ]
 
 // Entry points for navigation

@@ -14,6 +14,7 @@ import { useGameStore } from '@/lib/game-store'
 import { PATTERN_METADATA } from '@/lib/patterns'
 import type { PatternType } from '@/lib/patterns'
 import type { CharacterId } from '@/lib/graph-registry'
+import { MODAL_HEIGHT, SAFE_AREA } from '@/lib/ui-constants'
 
 interface DetailModalProps {
   item: CharacterWithState | SkillWithState | Quest | null
@@ -80,8 +81,11 @@ export function DetailModal({ item, type, onClose, allCharacters }: DetailModalP
             animate="visible"
             exit="exit"
             variants={modalVariants}
-            className="fixed bottom-0 left-0 right-0 z-modal-content max-h-[50vh] sm:max-h-[60vh] overflow-hidden rounded-t-2xl bg-slate-900 border-t border-slate-700 shadow-2xl"
-            style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
+            className="fixed bottom-0 left-0 right-0 z-modal-content sm:max-h-[calc(60vh+max(16px,env(safe-area-inset-bottom)))] overflow-hidden rounded-t-2xl bg-slate-900 border-t border-slate-700 shadow-2xl"
+            style={{
+              maxHeight: `calc(${MODAL_HEIGHT.mobile} + ${SAFE_AREA.bottom})`,
+              paddingBottom: SAFE_AREA.bottom
+            }}
             onClick={(e) => e.stopPropagation()}
             role="dialog"
             aria-modal="true"
@@ -98,8 +102,11 @@ export function DetailModal({ item, type, onClose, allCharacters }: DetailModalP
 
             {/* Content */}
             <div
-              className="overflow-y-auto max-h-[calc(50vh-40px)] sm:max-h-[calc(60vh-40px)] pb-12 sm:pb-16"
-              style={{ scrollbarGutter: 'stable' }}
+              className="overflow-y-auto pb-4"
+              style={{
+                maxHeight: `calc(${MODAL_HEIGHT.mobile} - ${MODAL_HEIGHT.dragHandle}px)`,
+                scrollbarGutter: 'stable'
+              }}
             >
               {character && (
                 <CharacterDetail character={character} onClose={onClose} allCharacters={allCharacters} />

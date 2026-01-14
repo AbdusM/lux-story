@@ -71,8 +71,8 @@ export function DialogueDisplay({
   microAction,
   patternSensation: _patternSensation,
   playerPatterns: _playerPatterns,
-  textEffectClasses,
-  textEffectStyles
+  textEffectClasses: _textEffectClasses,
+  textEffectStyles: _textEffectStyles
 }: DialogueDisplayProps) {
   // Get unlock-based content enhancements
   const _enhancements = useUnlockEffects(text, emotion,

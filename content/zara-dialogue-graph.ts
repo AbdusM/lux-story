@@ -1502,6 +1502,19 @@ export const zaraDialogueNodes: DialogueNode[] = [
                     characterId: 'zara',
                     trustChange: 1
                 }
+            },
+            // Loyalty Experience trigger - only visible at high trust + analytical pattern
+            {
+                choiceId: 'offer_audit_help',
+                text: "[Ethics Analyst] Zara, you mentioned an algorithm audit that's being buried. Want a second set of eyes?",
+                nextNodeId: 'zara_loyalty_trigger',
+                pattern: 'analytical',
+                skills: ['criticalThinking', 'dataAnalysis'],
+                visibleCondition: {
+                    trust: { min: 8 },
+                    patterns: { analytical: { min: 50 } },
+                    hasGlobalFlags: ['zara_arc_complete']
+                }
             }
         ],
         onEnter: [
@@ -1511,6 +1524,91 @@ export const zaraDialogueNodes: DialogueNode[] = [
             }
         ],
         tags: ['ending', 'zara_arc', 'interrupt_response']
+    },
+
+    // ============= LOYALTY EXPERIENCE TRIGGER =============
+    {
+        nodeId: 'zara_loyalty_trigger',
+        speaker: 'Zara El-Amin',
+        content: [{
+            text: "You know about the audit.\n\nRecommendation algorithm. Predicting what users want before they want it. Sounds innocent.\n\nBut I ran the bias analysis. It's amplifying extremism. Deliberately. Outrage drives engagement. Engagement drives ad revenue.\n\nI documented it. Sent it up the chain. Got told to 'adjust the methodology' until the results looked better.\n\nSo I have two choices. Bury the truth and keep my job. Or leak it and become unemployable in the industry I've spent ten years building.\n\nYou understand ethics and analysis. Would you... help me find a third option before I have to choose between integrity and survival?",
+            emotion: 'anxious_determined',
+            variation_id: 'loyalty_trigger_v1',
+            richEffectContext: 'warning'
+        }],
+        requiredState: {
+            trust: { min: 8 },
+            patterns: { analytical: { min: 5 } },
+            hasGlobalFlags: ['zara_arc_complete']
+        },
+        metadata: {
+            experienceId: 'the_audit'  // Triggers loyalty experience engine
+        },
+        choices: [
+            {
+                choiceId: 'accept_audit_challenge',
+                text: "Show me the data. We'll find the third option together.",
+                nextNodeId: 'zara_loyalty_start',
+                pattern: 'analytical',
+                skills: ['criticalThinking', 'dataAnalysis'],
+                consequence: {
+                    characterId: 'zara',
+                    trustChange: 1
+                }
+            },
+            {
+                choiceId: 'encourage_but_decline',
+                text: "Zara, you've already done the hard part. Trust your analysis.",
+                nextNodeId: 'zara_loyalty_declined',
+                pattern: 'patience',
+                skills: ['emotionalIntelligence']
+            }
+        ],
+        onEnter: [
+            {
+                characterId: 'zara',
+                addKnowledgeFlags: ['loyalty_offered']
+            }
+        ],
+        tags: ['loyalty_experience', 'zara_loyalty', 'high_trust']
+    },
+
+    {
+        nodeId: 'zara_loyalty_declined',
+        speaker: 'Zara El-Amin',
+        content: [{
+            text: "You're right. The analysis is solid. The methodology is sound. The conclusions are inevitable.\n\nI don't need someone else to validate what the data already shows.\n\nI just need to be brave enough to act on it.\n\nThank you for believing in the work. Sometimes I forget that good analysis speaks for itself.",
+            emotion: 'resolved',
+            variation_id: 'loyalty_declined_v1'
+        }],
+        choices: [
+            {
+                choiceId: 'loyalty_declined_farewell',
+                text: "The truth is on your side. Go make them listen.",
+                nextNodeId: samuelEntryPoints.HUB_INITIAL,
+                pattern: 'patience'
+            }
+        ],
+        onEnter: [
+            {
+                characterId: 'zara',
+                addKnowledgeFlags: ['loyalty_declined_gracefully']
+            }
+        ]
+    },
+
+    {
+        nodeId: 'zara_loyalty_start',
+        speaker: 'Zara El-Amin',
+        content: [{
+            text: "Thank you. I've been carrying this alone. Afraid to trust anyone.\n\nBut you understand what's at stake. Not just my career. The people being manipulated by this algorithm.\n\nLet's find the third option. Two analysts. One audit. One chance to do this right.",
+            emotion: 'determined_grateful',
+            variation_id: 'loyalty_start_v1'
+        }],
+        metadata: {
+            experienceId: 'the_audit'  // Experience engine takes over
+        },
+        choices: []  // Experience engine handles next steps
     },
 
     // ============= ADDITIONAL BRANCHING NODES =============
