@@ -50,6 +50,10 @@ export default defineConfig({
     actionTimeout: 10 * 1000,
   },
 
+  // Global setup for authentication (runs once before all tests)
+  // Note: globalSetup file doesn't exist yet - will be created when needed
+  // globalSetup: resolve(__dirname, './tests/e2e/global-setup'),
+
   // Configure projects for feature-based parallelization
   projects: [
     // Desktop projects (feature-based)
@@ -58,7 +62,6 @@ export default defineConfig({
       testDir: './tests/e2e/admin',
       fullyParallel: false, // Serial (shares auth state)
       workers: 1,
-      globalSetup: resolve(__dirname, './tests/e2e/global-setup'),
       use: {
         ...devices['Desktop Chrome'],
         headless: true,
