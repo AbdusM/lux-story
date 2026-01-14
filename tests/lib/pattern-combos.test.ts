@@ -73,7 +73,8 @@ describe('Pattern Combos System', () => {
       requirements: { analytical: 5, building: 4 },
       careerHint: 'test career',
       careerDescription: 'test description',
-      characterId: 'maya'
+      characterId: 'maya',
+      primaryPattern: 'analytical'
     }
 
     it('should return true when all requirements are met', () => {
@@ -107,7 +108,8 @@ describe('Pattern Combos System', () => {
         requirements: { helping: 6 },
         careerHint: 'helper',
         careerDescription: 'helping role',
-        characterId: 'marcus'
+        characterId: 'marcus',
+        primaryPattern: 'helping'
       }
       expect(meetsComboRequirements(createPatterns({ helping: 6 }), singleReqCombo)).toBe(true)
       expect(meetsComboRequirements(createPatterns({ helping: 5 }), singleReqCombo)).toBe(false)
@@ -119,7 +121,8 @@ describe('Pattern Combos System', () => {
         requirements: { analytical: 4, helping: 4, patience: 3 },
         careerHint: 'complex role',
         careerDescription: 'multi-skill role',
-        characterId: 'kai'
+        characterId: 'kai',
+        primaryPattern: 'analytical'
       }
       expect(meetsComboRequirements(
         createPatterns({ analytical: 4, helping: 4, patience: 3 }),
@@ -225,7 +228,8 @@ describe('Pattern Combos System', () => {
       requirements: { analytical: 5, building: 5 },
       careerHint: 'test',
       careerDescription: 'test',
-      characterId: 'maya'
+      characterId: 'maya',
+      primaryPattern: 'analytical'
     }
 
     it('should return 0 when no progress', () => {
