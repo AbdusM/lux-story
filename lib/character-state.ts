@@ -692,17 +692,17 @@ export class GameStateUtils {
 
   /**
    * Create initial character state
+   * For unmet characters, use neutral anxiety (50) instead of panic (100)
    */
   static createCharacterState(characterId: string): CharacterState {
+    // Neutral anxiety for unmet characters (will update on first interaction)
+    const NEUTRAL_ANXIETY = 50
+
     return {
       characterId,
       trust: NARRATIVE_CONSTANTS.DEFAULT_TRUST,
-      anxiety: (10 - NARRATIVE_CONSTANTS.DEFAULT_TRUST) * 10,
-      nervousSystemState: determineNervousSystemState(
-        (10 - NARRATIVE_CONSTANTS.DEFAULT_TRUST) * 10,
-        NARRATIVE_CONSTANTS.DEFAULT_TRUST,
-        {} // No patterns for initial state
-      ),
+      anxiety: NEUTRAL_ANXIETY, // Neutral state until player meets character
+      nervousSystemState: 'ventral_vagal', // Calm/neutral for unmet characters
       lastReaction: null,
       knowledgeFlags: new Set(),
       relationshipStatus: NARRATIVE_CONSTANTS.DEFAULT_RELATIONSHIP,
