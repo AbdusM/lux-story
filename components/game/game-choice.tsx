@@ -43,6 +43,7 @@ function getPatternGlowShadow(pattern: PatternType): string {
 export interface GameChoiceProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onAnimationStart' | 'onDrag' | 'onDragStart' | 'onDragEnd'> {
   choice: {
+    choiceId?: string
     text: string
     subtext?: string
     next?: string
@@ -178,6 +179,8 @@ const GameChoice = React.forwardRef<HTMLButtonElement, GameChoiceProps>(
 
           className
         )}
+        data-testid="choice-button"
+        data-choice-id={choice.choiceId}
         data-pattern={choice.pattern}
         {...props}
       >
@@ -211,6 +214,7 @@ export const GameChoiceGroup = React.forwardRef<
       className={cn("space-y-3", className)}
       role="group"
       aria-label="Story choices"
+      data-testid="game-choices"
       {...props}
     >
       {children}

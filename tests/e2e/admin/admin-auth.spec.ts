@@ -102,25 +102,17 @@ test.describe('Admin Authentication', () => {
     // Fill password
     await page.fill('input[type="password"]', 'any-password')
 
-    // Click and check for loading state - may be disabled or show loading text
+    // Click submit button
     const submitButton = page.getByRole('button', { name: /login/i })
+    await submitButton.click()
 
-    // Use Promise.race to check loading state during API call
+    // Either we'll see an error message OR redirect to admin page
     await Promise.race([
-      submitButton.click().then(() => {
-        // If we get here, the click completed - check button state
-        return submitButton.isDisabled().then(isDisabled => {
-          // Either disabled or the request completed quickly - both are valid
-          return true
-        })
-      }),
-      page.waitForTimeout(100).then(() => {
-        // Just verify the button was clickable
-        return true
-      })
+      page.waitForURL(/\/admin\/login/, { timeout: 5000 }),
+      page.locator('text=Invalid password').waitFor({ state: 'visible', timeout: 5000 })
     ])
 
-    // The test passes if we get here - loading state handling is implicit
+    // The test passes - authentication was processed
     expect(true).toBe(true)
   })
 })
@@ -136,8 +128,12 @@ test.describe('Admin Dashboard Navigation', () => {
   })
 
   test('should display student list on dashboard', async ({ page }) => {
-    // Wait for loading to complete
-    await page.waitForTimeout(3000)
+    // Wait for loading to complete - dashboard shows one of three states
+    await Promise.race([
+      page.locator('a[href*="/urgency"]').first().waitFor({ state: 'visible', timeout: 5000 }).catch(() => {}),
+      page.locator('text=No Students Yet').waitFor({ state: 'visible', timeout: 5000 }).catch(() => {}),
+      page.locator('text=Database Connection Issue').waitFor({ state: 'visible', timeout: 5000 }).catch(() => {})
+    ])
 
     // Dashboard should show either students or empty state
     // Student cards link to /admin/{userId}/urgency pattern
@@ -151,8 +147,11 @@ test.describe('Admin Dashboard Navigation', () => {
   })
 
   test('should have pattern filter controls', async ({ page }) => {
-    // Wait for potential loading
-    await page.waitForTimeout(3000)
+    // Wait for dashboard to load
+    await Promise.race([
+      page.locator('a[href*="/urgency"]').first().waitFor({ state: 'visible', timeout: 5000 }).catch(() => {}),
+      page.locator('text=No Students Yet').waitFor({ state: 'visible', timeout: 5000 }).catch(() => {})
+    ])
 
     // If there are students, filter should be visible
     const studentCards = page.locator('a[href*="/urgency"]')
@@ -166,10 +165,9 @@ test.describe('Admin Dashboard Navigation', () => {
 
   test('should navigate to student detail page', async ({ page }) => {
     // Wait for students to load
-    await page.waitForTimeout(3000)
-
-    // Find first student link (links to /admin/{userId}/urgency)
     const studentLinks = page.locator('a[href*="/urgency"]')
+    await studentLinks.first().waitFor({ state: 'visible', timeout: 5000 }).catch(() => {})
+
     const count = await studentLinks.count()
 
     if (count > 0) {
@@ -197,10 +195,10 @@ test.describe('Admin Student Detail Pages', () => {
 
   test('should show loading state for non-existent user', async ({ page }) => {
     // Navigate to a fake user
-    await page.goto('/admin/player_nonexistent_12345/urgency')
+    await page.goto('/admin/player_nonexistent_12345/urgency', { waitUntil: 'networkidle' })
 
-    // Should show some UI (either loading, error, or redirect)
-    await page.waitForTimeout(3000)
+    // Wait for page to finish loading
+    await page.locator('body').waitFor({ state: 'visible', timeout: 5000 })
 
     // Page should have loaded something
     const bodyText = await page.locator('body').textContent()
@@ -210,9 +208,9 @@ test.describe('Admin Student Detail Pages', () => {
   test('should have navigation tabs in student detail view', async ({ page }) => {
     // First get a real student ID
     await page.goto('/admin')
-    await page.waitForTimeout(3000)
 
     const studentLinks = page.locator('a[href*="/urgency"]')
+    await studentLinks.first().waitFor({ state: 'visible', timeout: 5000 }).catch(() => {})
     const count = await studentLinks.count()
 
     if (count > 0) {
@@ -227,8 +225,12 @@ test.describe('Admin Student Detail Pages', () => {
         // If loading takes too long, content may still have navigation
       })
 
-      // Give UI time to render after loading completes
-      await page.waitForTimeout(1000)
+      // Wait for navigation elements to render
+      await Promise.race([
+        page.locator('a[href*="/urgency"]').first().waitFor({ state: 'visible', timeout: 3000 }).catch(() => {}),
+        page.locator('a[href*="/skills"]').first().waitFor({ state: 'visible', timeout: 3000 }).catch(() => {}),
+        page.locator('a[href*="/patterns"]').first().waitFor({ state: 'visible', timeout: 3000 }).catch(() => {})
+      ])
 
       // Check for navigation elements (tabs or links to other sections)
       // The layout should have links to different sections

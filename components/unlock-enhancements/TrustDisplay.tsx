@@ -40,6 +40,8 @@ export function TrustDisplay({ trust, characterName, className }: TrustDisplayPr
 
   return (
     <motion.div
+      data-testid="trust-level-indicator"
+      data-trust-value={trust}
       initial={{ opacity: 0, x: -10 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.2, ease: 'easeOut' }}

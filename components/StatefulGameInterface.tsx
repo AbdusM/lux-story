@@ -3407,7 +3407,7 @@ export default function StatefulGameInterface() {
                     characterName={characterNames[state.currentCharacterId]}
                     size="sm"
                   />
-                  <span className="truncate max-w-[150px] sm:max-w-none">{characterNames[state.currentCharacterId]}</span>
+                  <span data-testid="speaker-name" className="truncate max-w-[150px] sm:max-w-none">{characterNames[state.currentCharacterId]}</span>
                 </div>
                 <div className="flex flex-col items-end">
                   {/* Trust Label hidden for immersion */}

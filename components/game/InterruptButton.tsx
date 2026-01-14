@@ -153,6 +153,8 @@ export function InterruptButton({ interrupt, onTrigger, onTimeout }: InterruptBu
     <AnimatePresence>
       {isVisible && (
         <motion.button
+          data-testid="interrupt-button"
+          data-interrupt-type={interrupt.type}
           initial={{ opacity: 0, scale: 0.9, y: 10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: -5 }}

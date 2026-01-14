@@ -37,8 +37,14 @@ test.describe('Homepage', () => {
     await page.goto('/')
     await page.waitForLoadState('networkidle')
 
-    // Wait for any dynamic content to load
-    await page.waitForTimeout(2000)
+    // Wait for dynamic content by checking for one of the expected elements
+    await Promise.race([
+      page.getByTestId('game-interface').waitFor({ state: 'visible', timeout: 5000 }).catch(() => {}),
+      page.locator('text=Samuel').waitFor({ state: 'visible', timeout: 5000 }).catch(() => {}),
+      page.locator('text=Birmingham').waitFor({ state: 'visible', timeout: 5000 }).catch(() => {}),
+      page.locator('text=Enter the Station').waitFor({ state: 'visible', timeout: 5000 }).catch(() => {}),
+      page.locator('text=Welcome').waitFor({ state: 'visible', timeout: 5000 }).catch(() => {})
+    ])
 
     // Check for game content - could be intro screen or main game interface
     const hasGameInterface = await page.getByTestId('game-interface').count() > 0
