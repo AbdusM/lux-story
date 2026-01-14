@@ -81,7 +81,8 @@ export const PATTERN_COMBOS: PatternCombo[] = [
     careerHint: 'data scientists',
     careerDescription: 'Explorers who find stories hidden in numbers - turning raw data into insights that change how we understand the world.',
     characterId: 'maya',
-    birminghamConnection: 'Birmingham\'s healthcare sector needs data talent'
+    birminghamConnection: 'Birmingham\'s healthcare sector needs data talent',
+    primaryPattern: 'analytical'
   },
   {
     id: 'creative_technologist',
@@ -99,7 +100,8 @@ export const PATTERN_COMBOS: PatternCombo[] = [
     careerHint: 'healthcare coordinators',
     careerDescription: 'The patient advocates who navigate complex medical systems - making sure no one falls through the cracks.',
     characterId: 'marcus',
-    birminghamConnection: 'Birmingham\'s medical district is one of the largest in the Southeast'
+    birminghamConnection: 'Birmingham\'s medical district is one of the largest in the Southeast',
+    primaryPattern: 'helping'
   },
   {
     id: 'medical_detective',

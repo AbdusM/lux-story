@@ -38,6 +38,7 @@
     "node_modules",
     "archived-scripts",
     "scripts",
-    "lib/archive"
+    "lib/archive",
+    "docs/03_PROCESS/archive"
   ]
 }
